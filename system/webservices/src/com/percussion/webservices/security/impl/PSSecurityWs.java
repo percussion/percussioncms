@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -29,12 +29,20 @@ import com.percussion.i18n.PSI18nUtils;
 import com.percussion.i18n.PSLocale;
 import com.percussion.security.PSSecurityToken;
 import com.percussion.security.PSThreadRequestUtils;
-import com.percussion.server.*;
+import com.percussion.server.IPSRequestContext;
+import com.percussion.server.PSRequest;
+import com.percussion.server.PSRequestContext;
+import com.percussion.server.PSUserSession;
+import com.percussion.server.PSUserSessionManager;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.guidmgr.data.PSGuid;
 import com.percussion.services.legacy.IPSCmsObjectMgr;
 import com.percussion.services.legacy.PSCmsObjectMgrLocator;
-import com.percussion.services.security.*;
+import com.percussion.services.security.IPSAclService;
+import com.percussion.services.security.IPSBackEndRoleMgr;
+import com.percussion.services.security.PSAclServiceLocator;
+import com.percussion.services.security.PSAclUtils;
+import com.percussion.services.security.PSRoleMgrLocator;
 import com.percussion.services.security.data.PSCommunity;
 import com.percussion.services.security.data.PSLogin;
 import com.percussion.servlets.PSSecurityFilter;
@@ -48,7 +56,7 @@ import com.percussion.webservices.security.IPSSecurityWs;
 import com.percussion.webservices.system.IPSSystemWs;
 import com.percussion.webservices.system.PSSystemWsLocator;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.transaction.annotation.Transactional;
@@ -168,7 +176,7 @@ public class PSSecurityWs extends PSSecurityBaseWs implements IPSSecurityWs
             catch (RuntimeException e)
             {
                // just in case
-               LogFactory.getLog(getClass()).error(e);
+               LogManager.getLogger(getClass()).error(e);
             }
          }
       }

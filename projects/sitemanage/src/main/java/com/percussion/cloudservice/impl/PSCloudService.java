@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -28,6 +28,7 @@ import com.percussion.cloudservice.IPSCloudService;
 import com.percussion.cloudservice.data.PSCloudLicenseType;
 import com.percussion.cloudservice.data.PSCloudServiceInfo;
 import com.percussion.cloudservice.data.PSCloudServicePageData;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.licensemanagement.data.PSModuleLicense;
 import com.percussion.licensemanagement.error.PSLicenseServiceException;
 import com.percussion.licensemanagement.service.impl.PSLicenseService;
@@ -40,12 +41,18 @@ import com.percussion.share.dao.IPSFolderHelper;
 import com.percussion.share.data.PSItemProperties;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.ws.rs.*;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import java.io.File;
 import java.util.List;
@@ -54,8 +61,6 @@ import java.util.List;
 @Path("/cloudservice")
 public class PSCloudService implements IPSCloudService {
 
-	protected static final String PAGE_OPTIMIZER_KEY_PROP = "PAGE_OPTIMIZER_KEY";
-	protected static final String PAGE_OPTIMIZER_URL_PROP = "PAGE_OPTIMIZER_URL";
 	protected static final String PAGE_THUMB_ROOT = "/rx_resources/images/TemplateImages/";
 	protected static final String PAGE_THUMB_SUFFIX = "-page.jpg";
 	protected static final String CLOUD_SERVICE_TYPE_CM1 = "CM1";
@@ -65,7 +70,7 @@ public class PSCloudService implements IPSCloudService {
 	protected IPSPageService pageService;
 	protected PSLicenseService licenseService;
 	protected boolean isLogged;
-	protected static Log log;
+	protected static Logger log;
 	
 	@Autowired
 	public PSCloudService(IPSFolderHelper folderHelper, IPSRenderService renderService, 
@@ -74,7 +79,7 @@ public class PSCloudService implements IPSCloudService {
 	    this.renderService = renderService;
 	    this.pageService = pageService;
 		this.licenseService = licenseService;
-		this.log = LogFactory.getLog(PSCloudService.class);
+		this.log = LogManager.getLogger(PSCloudService.class);
 	}
 
 	@Override
@@ -112,7 +117,7 @@ public class PSCloudService implements IPSCloudService {
 	@GET
 	@Path("/info")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-	public PSCloudServiceInfo getInfo() {
+	public PSCloudServiceInfo getInfo() throws PSCloudServiceException {
        PSModuleLicense poLic = null;
        
         try {
@@ -145,8 +150,10 @@ public class PSCloudService implements IPSCloudService {
 
         try {
             poLic = getLicense(licenseType);
-        } catch (PSLicenseServiceException le) { 
-            throw new PSCloudServiceException(licenseType.toFriendlyString() + " is not enabled for this instance of CM1");
+        } catch (PSLicenseServiceException le) {
+			log.error(le.getMessage());
+			log.debug(le.getMessage(),le);
+        	throw new WebApplicationException(licenseType.toFriendlyString() + " is not enabled for this instance of Percussion CMS");
         }
         
         PSCloudServiceInfo info = new PSCloudServiceInfo();
@@ -160,8 +167,14 @@ public class PSCloudService implements IPSCloudService {
     @Path("/pagedata/{pageId}")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public PSCloudServicePageData getPageData(@PathParam("pageId") String pageId) {
-        PSCloudServiceInfo info = getInfo();
-        return getPageData(info, pageId);
+	    try {
+            PSCloudServiceInfo info = getInfo();
+            return getPageData(info, pageId);
+        } catch (PSCloudServiceException e) {
+	        log.error(PSExceptionUtils.getMessageForLog(e));
+	        log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+            throw new WebApplicationException(e);
+        }
     }
 
     @Override
@@ -171,8 +184,14 @@ public class PSCloudService implements IPSCloudService {
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public PSCloudServicePageData getPageData(@PathParam("licenseType") PSCloudLicenseType licenseType,
             @PathParam("pageId") String pageId) {
-        PSCloudServiceInfo info = getInfo(licenseType);
-        return getPageData(info, pageId);
+	    try {
+            PSCloudServiceInfo info = getInfo(licenseType);
+            return getPageData(info, pageId);
+        } catch (PSCloudServiceException e) {
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(e.getMessage() ,e);
+	    	throw new WebApplicationException(e);
+        }
     }
     
     @Override
@@ -190,7 +209,7 @@ public class PSCloudService implements IPSCloudService {
             pageService.save(page);
         }
         catch (Throwable cause) {
-            throw new PSCloudServiceException(cause);
+            throw new WebApplicationException(cause);
         }
     }
     
@@ -241,9 +260,9 @@ public class PSCloudService implements IPSCloudService {
 		} catch (PSLicenseServiceException le) {
 			if (!isLogged) {
 				isLogged = true;
-				log.info(licenseType.toFriendlyString()
-						+ " is not enabled for this instance of CM1, activate the license using license monitor gadget.");
-				log.error(le);
+				log.info("{} is not enabled for this instance of CM1, activate the license using license monitor gadget.",licenseType.toFriendlyString());
+				log.error(PSExceptionUtils.getMessageForLog(le));
+				log.debug(le);
 			}
 		}
 		return poLic != null;
@@ -265,7 +284,7 @@ public class PSCloudService implements IPSCloudService {
 		return poLic;
 	}
 
-    private PSCloudServicePageData getPageData(PSCloudServiceInfo info, String pageId) {
+    private PSCloudServicePageData getPageData(PSCloudServiceInfo info, String pageId) throws PSCloudServiceException {
         PSItemProperties itemProps = null;
         String siteName = "";
         PSPage page = null;
@@ -308,7 +327,7 @@ public class PSCloudService implements IPSCloudService {
             pageData.setPageName(path.substring(path.lastIndexOf("/") + 1));
         }
         else {
-            log.error("Failed to find the name for the page with path " + path);
+            log.error("Failed to find the name for the page with path {}", path);
         }
         
         pageData.setLastPublished(itemProps.getLastPublishedDate());

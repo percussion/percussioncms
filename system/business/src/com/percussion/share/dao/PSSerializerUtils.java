@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -17,16 +17,21 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.share.dao;
 
-import net.sf.json.*;
+import com.percussion.error.PSExceptionUtils;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONException;
+import net.sf.json.JSONNull;
+import net.sf.json.JSONObject;
+import net.sf.json.JSONSerializer;
 import org.apache.commons.beanutils.BeanUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.codehaus.jettison.mapped.MappedNamespaceConvention;
 import org.codehaus.jettison.mapped.MappedXMLStreamWriter;
 
@@ -39,12 +44,16 @@ import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.io.StringReader;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.io.StringWriter;
 import java.lang.reflect.InvocationTargetException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static java.util.Arrays.asList;
 import static org.apache.commons.lang.StringUtils.removeEnd;
@@ -73,12 +82,14 @@ public class PSSerializerUtils
         StringWriter sw = new StringWriter();
         try
         {
+
            PSJaxbContext.createMarshaller(object.getClass()).marshal(object, sw);
            return sw.toString();
         }
         catch (JAXBException e)
         {
-           log.error("Unable to marshall JAXB object:" + object.toString(), e);
+           log.error("Unable to marshall JAXB object: {} Error: {}", object, PSExceptionUtils.getMessageForLog(e));
+           log.debug(PSExceptionUtils.getDebugMessageForLog(e));
            return null;
         }
     }
@@ -95,15 +106,17 @@ public class PSSerializerUtils
    public static <T> T unmarshal(String dataField, Class<T> type)
     {
         T object;
-        StringReader reader = new StringReader(dataField);
-        try
-      {
-         object = (T) PSJaxbContext.createUnmarshaller(type).unmarshal(reader);
+        try {
+            Reader reader = new InputStreamReader(
+                    new ByteArrayInputStream(dataField.getBytes(StandardCharsets.UTF_8)));
+         object = (T) Objects.requireNonNull(PSJaxbContext.createUnmarshaller(type)).unmarshal(reader);
          return object;
       }
       catch (JAXBException e)
       {
-         log.error("Unable to unmarshall JAXB object:" + dataField);
+         log.error("Unable to load XML file.  Check for syntax problems. Error: {}, Data: {}" ,
+                 PSExceptionUtils.getMessageForLog(e),
+                 dataField);
          return null;
       }
         
@@ -164,7 +177,7 @@ public class PSSerializerUtils
     }
     
     public static <T> List<T> copyFullToSummaries(List<? extends T> froms, Class<T> type) {
-        List<T> newList = new ArrayList<T>();
+        List<T> newList = new ArrayList<>();
         for(T from : froms) {
             T sum;
             try
@@ -271,7 +284,7 @@ public class PSSerializerUtils
         catch (JSONException e)
         {
             if(log.isDebugEnabled())
-                log.warn("Bad json string: " + json);
+                log.warn("Bad json string: {}" , json);
             return json;
         }    
     }
@@ -287,10 +300,10 @@ public class PSSerializerUtils
       data = removeEnd(data, "]");
       return data;
     }
-    
+
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log log = LogFactory.getLog(PSSerializerUtils.class);
+    private static final Logger log = LogManager.getLogger(PSSerializerUtils.class);
     
 }

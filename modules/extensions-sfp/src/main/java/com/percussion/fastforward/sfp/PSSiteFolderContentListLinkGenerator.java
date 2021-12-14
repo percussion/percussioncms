@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -25,6 +25,7 @@ package com.percussion.fastforward.sfp;
 
 import com.percussion.data.PSConversionException;
 import com.percussion.design.objectstore.PSNotFoundException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSExtensionManager;
 import com.percussion.extension.IPSUdfProcessor;
 import com.percussion.extension.PSExtensionException;
@@ -33,6 +34,8 @@ import com.percussion.server.IPSRequestContext;
 import com.percussion.server.PSServer;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.util.PSUrlUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -40,7 +43,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
 
 /**
  * Defines methods to generate various types of assembly locations.
@@ -155,8 +157,9 @@ public class PSSiteFolderContentListLinkGenerator
       catch (MalformedURLException e)
       {
          // this exception should never occur
-         e.printStackTrace();
-         throw new RuntimeException(e.toString());
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+         throw new RuntimeException(e);
       }
    }
 
@@ -237,7 +240,8 @@ public class PSSiteFolderContentListLinkGenerator
       catch (PSConversionException e)
       {
          log.error(this.getClass().getName(), e);
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
       finally
       {
@@ -270,8 +274,9 @@ public class PSSiteFolderContentListLinkGenerator
       {
          // this exception should never occur
          log.error(this.getClass().getName(), e);
-         e.printStackTrace();
-         throw new RuntimeException(e.toString());
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+         throw new RuntimeException(e);
       }
    }
 
@@ -321,10 +326,7 @@ public class PSSiteFolderContentListLinkGenerator
     */
    private IPSUdfProcessor m_generatorUDF = null;
 
-   /**
-    * Reference to Log4j singleton object used to log any errors or debug info.
-    */
-   private Logger log = Logger.getLogger(getClass());
+   private static final Logger log = LogManager.getLogger(PSSiteFolderContentListLinkGenerator.class);
 
    /**
     * String constant for the assembly generation UDF.

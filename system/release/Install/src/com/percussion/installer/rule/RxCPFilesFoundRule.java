@@ -76,7 +76,7 @@ public class RxCPFilesFoundRule extends RxIARule
       RxLogger.logInfo("Searching for .cp files");
       
       // first clear out .cp file list
-      ms_cpFiles = new ArrayList<String>();
+      ms_cpFiles = new ArrayList<>();
       
       boolean foundCpFiles = false;
       
@@ -165,7 +165,7 @@ public class RxCPFilesFoundRule extends RxIARule
     * List of .cp files (if any), never <code>null</code>,
     * may be empty.
     */
-    private static List<String> ms_cpFiles = new ArrayList<String>();
+    private static List<String> ms_cpFiles = new ArrayList<>();
     
    /**
     * The directory to which all .cp files will be moved during upgrade,

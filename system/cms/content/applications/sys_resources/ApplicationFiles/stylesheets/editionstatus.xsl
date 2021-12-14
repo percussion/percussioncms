@@ -1,14 +1,14 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!DOCTYPE xsl:stylesheet [
-	<!ENTITY % HTMLlat1 SYSTEM "/Rhythmyx/DTD/HTMLlat1x.ent">
-		%HTMLlat1;
-	<!ENTITY % HTMLsymbol SYSTEM "/Rhythmyx/DTD/HTMLsymbolx.ent">
-		%HTMLsymbol;
-	<!ENTITY % HTMLspecial SYSTEM "/Rhythmyx/DTD/HTMLspecialx.ent">
-		%HTMLspecial;
+        <!ENTITY % HTMLlat1 PUBLIC "-//W3C//ENTITIES_Latin_1_for_XHTML//EN" "https://www.percussion.com/DTD/HTMLlat1x.ent">
+        %HTMLlat1;
+        <!ENTITY % HTMLsymbol PUBLIC "-//W3C//ENTITIES_Symbols_for_XHTML//EN" "https://www.percussion.com/DTD/HTMLsymbolx.ent">
+        %HTMLsymbol;
+        <!ENTITY % HTMLspecial PUBLIC "-//W3C//ENTITIES_Special_for_XHTML//EN" "https://www.percussion.com/DTD/HTMLspecialx.ent">
+        %HTMLspecial;
 ]>
 
-<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:psxpub="urn://www.percussion.com/publisher">
+<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:import href="file:rx_resources/stylesheets/rx_bannerTemplate.xsl"/>
 <xsl:variable name="relatedlinks" select="/*/relatedlinks"/>
   <xsl:template match="/">
@@ -16,12 +16,12 @@
       <head>
         <meta name="generator" content="Percussion XSpLit Version 3.0"/>
         <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
-        <link rel="stylesheet" type="text/css" href="../sys_resources/css/templates.css"/>
-        <link rel="stylesheet" type="text/css" href="../rx_resources/css/templates.css"/>
+        <link rel="stylesheet" type="text/css" href="/sys_resources/css/templates.css"/>
+        <link rel="stylesheet" type="text/css" href="/rx_resources/css/templates.css"/>
         <script src="../sys_resources/js/href.js">;</script>
 
         <title>Rhythmyx - Publisher - Publication Status Details</title>
-        <script language="javascript">
+        <script>
            function Reload()
            {
               var loc = document.location.href;
@@ -52,7 +52,7 @@
             <td class="outerboxcell" align="right" valign="top"><span class="outerboxcellfont">Publication Status Details</span></td>
           </tr>
           <tr> 
-            <td width="100%" height="1" class="bordercolor"><img src="../sys_resources/images/invis.gif" width="1" height="1" border="0" alt="" /></td>
+            <td width="100%" height="1" class="bordercolor"><img src="/sys_resources/images/invis.gif" width="1" height="1" border="0" alt="" /></td>
           </tr>
 	<tr><td valign="top" class="bordercolor">
 		        	<xsl:apply-templates select="." mode="mode1"/>

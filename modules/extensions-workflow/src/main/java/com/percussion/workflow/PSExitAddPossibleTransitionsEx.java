@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -26,6 +26,7 @@ package com.percussion.workflow;
 
 import com.percussion.cms.objectstore.PSCmsObject;
 import com.percussion.data.PSDataExtractionException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSExtension;
 import com.percussion.extension.IPSExtensionDef;
 import com.percussion.extension.IPSExtensionErrors;
@@ -44,6 +45,8 @@ import com.percussion.util.IPSHtmlParameters;
 import com.percussion.util.PSCms;
 import com.percussion.utils.exceptions.PSORMException;
 import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -62,6 +65,9 @@ import java.util.Map;
 public class PSExitAddPossibleTransitionsEx
    implements IPSResultDocumentProcessor
 {
+
+   private static final Logger log = LogManager.getLogger(PSExitAddPossibleTransitionsEx.class);
+
    /**
     * This class is used to save and restore workflow state information 
     * during a single set of related requests.
@@ -458,7 +464,8 @@ public class PSExitAddPossibleTransitionsEx
          }
          catch (Exception e)
          {
-            e.printStackTrace();
+           log.error(PSExceptionUtils.getMessageForLog(e));
+           log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new PSExtensionProcessingException(m_fullExtensionName, e);
          }
       }

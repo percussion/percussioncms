@@ -17,21 +17,17 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.utils.jdbc;
 
 import com.percussion.utils.spring.IPSBeanConfig;
-import com.percussion.utils.xml.PSInvalidXmlException;
 
 import java.util.List;
 import java.util.Properties;
 import java.util.stream.Collectors;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 /**
  * Resolves an <code>IPSConnectionInfo</code> object to an 

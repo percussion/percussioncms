@@ -17,22 +17,26 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.delivery.service.impl;
 
-import static org.apache.commons.lang.Validate.notNull;
-
 import com.percussion.delivery.data.PSDeliveryInfo;
 import com.percussion.delivery.service.impl.DeliveryServer.Password;
+import com.percussion.error.PSExceptionUtils;
+import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
+import com.percussion.security.PSEncryptionException;
+import com.percussion.security.PSEncryptor;
 import com.percussion.server.config.PSServerConfigException;
 import com.percussion.share.dao.PSSerializerUtils;
-import com.percussion.utils.security.PSEncryptionException;
-import com.percussion.utils.security.PSEncryptor;
-import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
+import com.percussion.utils.io.PathUtils;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -40,14 +44,10 @@ import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import static org.apache.commons.lang.Validate.notNull;
 
 /**
  * Class responsible for loading the delivery servers configuration
@@ -62,7 +62,7 @@ public class PSDeliveryInfoLoader
     /**
      * Logger for this class
      */
-    public static Log log = LogFactory.getLog(PSDeliveryInfoLoader.class);
+    public static final Logger log = LogManager.getLogger(PSDeliveryInfoLoader.class);
 
     /**
      * Delivery servers list.
@@ -80,7 +80,7 @@ public class PSDeliveryInfoLoader
     {
         notNull(configFile);
         
-        deliveryServers = new ArrayList<PSDeliveryInfo>();
+        deliveryServers = new ArrayList<>();
 
         if (configFile.exists())
             readAndEncryptConfigFile(configFile);
@@ -111,9 +111,13 @@ public class PSDeliveryInfoLoader
             {
                 String decryptedPassword = "";
                 try{
-                    decryptedPassword = PSEncryptor.getInstance().decrypt(pwdVal);
+                    decryptedPassword = PSEncryptor.decryptProperty(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),configFile.getAbsolutePath(),null,pwdVal);
                 }catch(Exception e){
-                     decryptedPassword = PSLegacyEncrypter.getInstance().decrypt(pwdVal, PSLegacyEncrypter.getPartOneKey());
+                     decryptedPassword = PSLegacyEncrypter.getInstance(
+                             PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+                     ).decrypt(pwdVal, PSLegacyEncrypter.getInstance(
+                             PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+                     ).getPartOneKey(),null);
                 }
                 serverInfo.setPassword(decryptedPassword);
                 
@@ -122,9 +126,9 @@ public class PSDeliveryInfoLoader
 
             String enc = "";
             try {
-                enc = PSEncryptor.getInstance().encrypt(pwdVal);
+                enc = PSEncryptor.encryptString(PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR),pwdVal);
             } catch (PSEncryptionException e) {
-                log.error("Error encrypting password: " + e.getMessage(),e);
+                log.error("Error encrypting password: " + PSExceptionUtils.getMessageForLog(e),e);
             }
             pwd.setValue(enc);
             pwd.setEncrypted(Boolean.TRUE);
@@ -145,7 +149,7 @@ public class PSDeliveryInfoLoader
             catch (IOException e)
             {
                 log.error("Error writing the delivery servers file: " +
-                        e.getMessage());
+                        PSExceptionUtils.getMessageForLog(e));
             }
             finally
             {
@@ -208,12 +212,12 @@ public class PSDeliveryInfoLoader
      */
     private DeliveryServerConfig getDeliveryServerConfig(File configFile)
     {
-        InputStream in = null;
-        try
-        {
-            in = new FileInputStream(configFile);
-            DeliveryServerConfig config = PSSerializerUtils.unmarshalWithValidation(in, DeliveryServerConfig.class);
-            return config;
+
+
+
+        try(InputStream in = new FileInputStream(configFile)){
+            return  PSSerializerUtils.unmarshalWithValidation(in, DeliveryServerConfig.class);
+
         }
         catch (Exception e)
         {
@@ -229,10 +233,6 @@ public class PSDeliveryInfoLoader
            }
            log.error("Error getting delivery servers from configuration file: " +  msg,e);
            return new DeliveryServerConfig();
-        }
-        finally
-        {
-            IOUtils.closeQuietly(in);
         }
     }
 

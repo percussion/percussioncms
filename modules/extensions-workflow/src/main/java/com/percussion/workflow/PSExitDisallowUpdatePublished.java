@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -35,14 +35,13 @@ import com.percussion.i18n.PSI18nUtils;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.services.legacy.IPSCmsObjectMgr;
 import com.percussion.services.legacy.PSCmsObjectMgrLocator;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Iterator;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
  * This class is an extension that is part of Rhythmyx workflow engine. The
@@ -51,7 +50,7 @@ import org.apache.commons.logging.LogFactory;
  */
 public class PSExitDisallowUpdatePublished implements IPSRequestPreProcessor
 {
-   private static Log ms_log = LogFactory.getLog(PSExitDisallowUpdatePublished.class);
+   private static final Logger ms_log = LogManager.getLogger(PSExitDisallowUpdatePublished.class);
    /* Set the parameter count to not initialized */
    static private int ms_correctParamCount = NOT_INITIALIZED;
 

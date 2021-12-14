@@ -18,7 +18,7 @@
   ~      Burlington, MA 01803, USA
   ~      +01-781-438-9900
   ~      support@percussion.com
-  ~      https://www.percusssion.com
+  ~      https://www.percussion.com
   ~
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   -->
@@ -31,22 +31,24 @@
     </ModulePrefs>
     <Content type="html">
         <![CDATA[
+        <!DOCTYPE html>
     <!-- All These files are for the PercFinderTree - Perhaps this should be a feature -->
     <link href="/cm/cui/components/twitter-bootstrap-3.0.0/dist/css/bootstrap.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="/cm/gadgets/repository/perc_bulk_file_upload_gadget/css/jquery.fileupload.css" type="text/css"/>
     <link  rel="stylesheet" href="/cm/gadgets/repository/perc_bulk_file_upload_gadget/css/perc_bulk_file_upload.css" type="text/css"/>
-    <link rel="stylesheet" href="https://use.fontawesome.com/b5599b836a.css" />
+    <link rel="stylesheet" type="text/css" href="/cm/jslib/profiles/3x/libraries/fontawesome/css/all.css"/>
 
     <script  src="/Rhythmyx/tmx/tmx.jsp?mode=js&amp;prefix=perc.ui.&amp;"></script>
+    <script src="/cm/jslib/profiles/3x/libraries/bowser/es5.js"</script>
+    <script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-jeditable/jquery.jeditable.js"></script>
+    <script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-percutils/jquery.percutils.js"</script>
     <script  src="/cm/plugins/perc_path_constants.js"></script>
     <script  src="/cm/plugins/perc_utils.js"></script>
     <script  src="/cm/services/PercServiceUtils.js"></script>
-    <script src="/cm/gadgets/repository/perc_bulk_file_upload_gadget/js/vendor/jquery.ui.widget.js"></script>
-    <script  src="/cm/widgets/PercFinderTree.js?"></script>
-    <script  src="/cm/jslib/jquery.dynatree.js?"></script>
+    <script  src="/cm/widgets/PercFinderTree.js"></script>
+    <script  src="/cm/jslib/profiles/3x/jquery/plugins/jquery-dynatree/jquery.dynatree.js"></script>
     <script src="/cm/gadgets/repository/perc_bulk_file_upload_gadget/js/jquery.fileupload.js"></script>
     <script  src="/cm/services/PercWorkflowService.js"></script>
-    <script src="/cm/gadgets/repository/perc_bulk_file_upload_gadget/js/perc_bulk_file_upload_collapse.js"></script>
     <script src="/cm/gadgets/repository/perc_bulk_file_upload_gadget/js/perc_bulk_file_upload_finder_tree.js"></script>
     <script src="/cm/gadgets/repository/perc_bulk_file_upload_gadget/js/perc_bulk_file_upload.js"></script>
 
@@ -55,8 +57,8 @@
         <!-- DynaTree Folder Selection -->
         <div id="perc-bulk-top-section">
             <div id="perc-bulk-form">
-                <a aria-label="Expand upload target folder path location" class="perc-bulk-collapse" id="perc-bulk-target-collapser" href="#" title="Expand target folder path"></a>
-                <label id="perc-bulk-target-folder-label" for="perc-bulk-target-tree" class="perc-label">Target folder:</label>
+                <a aria-label="Expand upload target folder path location" id="perc-bulk-target-collapser" href="#" title="Expand target folder path"></a>
+                <label id="perc-bulk-target-folder-label" class="perc-label">Target folder:</label>
                 <span id="perc-bulk-target-folder">Select target folder</span>
                 <br/>
                 <div id="perc-bulk-target-tree-container" role="presentation">
@@ -100,8 +102,7 @@
                 <!-- The fileinput-button span is used to style the file input field as button -->
                 <span id="perc-upload-add" class="btn perc-button btn-primary fileinput-button">
                     <span aria-hidden="true" class="glyphicon glyphicon-plus"></span>
-                    <span>Add files...</span>
-                    <label for="perc-files-upload" style="display:none;">Add files for upload</label>
+                    <label for="perc-files-upload" >Add files for upload</label>
                     <input type="file" id="perc-files-upload" name="files[]" title="" multiple>
                 </span>
                 <button id="perc-upload-start" type="submit" class="btn perc-button btn-primary" aria-label="Start upload">
@@ -133,13 +134,13 @@
         </div>
         <div id="perc-buttonbar2" class="perc-row fileupload-buttonbar">
             <div class="col-lg-7" style="margin-top:10px">
-                <a class="perc-bulk-expand" title="Expand upload details" id="perc-bulk-details-collapser" href="#" aria-label="Expand upload details"></a>
+                <a title="Expand upload details" id="perc-bulk-details-collapser" href="#" aria-label="Expand upload details"></a>
                 <label id="perc-bulk-details-label" class="perc-label">Details:</label><span id="perc-bulk-status">0 file(s) queued for upload</span>
             </div>
             <div class="col-lg-7">
-                <div id="perc-bulk-details-section" style="display: none;">
+                <div id="perc-bulk-details-section" >
                     <!-- The table listing the files available for upload/download -->
-                    <table id="perc-added-files" role="presentation" style="display:none;" class="table table-striped">
+                    <table id="perc-added-files" role="presentation" class="table table-striped">
                         <tbody class="files">
                             <tr>
                                 <th>Name</th>

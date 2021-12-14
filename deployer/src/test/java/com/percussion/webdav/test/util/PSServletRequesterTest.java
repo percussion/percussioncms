@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -37,7 +37,8 @@ import com.percussion.util.servlet.PSServletRequester;
 import com.percussion.utils.testing.IntegrationTest;
 import com.percussion.webdav.PSWebdavServlet;
 import com.percussion.webdav.method.PSWebdavUtils;
-import org.apache.log4j.Logger;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import org.apache.logging.log4j.LogManager;
 import org.junit.experimental.categories.Category;
 
 import javax.servlet.ServletException;
@@ -337,6 +338,7 @@ public class PSServletRequesterTest extends PSWebdavServlet
     * formatting tags
     * @param e
     */
+   @SuppressFBWarnings("INFORMATION_EXPOSURE_THROUGH_AN_ERROR_MESSAGE")
    private void writeStackTrace(Exception e)
    {
        m_writer.println("<pre><font size=\"2\" color=\"blue\">");
@@ -382,9 +384,8 @@ public class PSServletRequesterTest extends PSWebdavServlet
          writeln(test + " failed with errors", ERROR);
          writeStackTrace((Exception)e.getTargetException());
          writeln("");
-         
-         //EC_UNRELATED_TYPES 
-         Logger.getLogger(getClass()).error(e.getLocalizedMessage(),e);
+
+         LogManager.getLogger(getClass()).error(e.getLocalizedMessage(),e);
           
       }      
    

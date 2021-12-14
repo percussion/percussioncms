@@ -276,24 +276,10 @@ IPSProxyLocator
          File srcFile = new File(source.getPath());
          File tempFile = new File(tempDir, srcFile.getName());
          
-         InputStream in = source.openStream();
-         OutputStream out = new FileOutputStream(tempFile);
-         
-         try
-         {
-            IOTools.copyStream(in, out);
-            resourceFile = tempFile;
-         }
-         finally
-         {
-            if (in != null)
-            {
-               in.close();
-            }
-            
-            if (out != null)
-            {
-               out.close();
+         try(InputStream in = source.openStream()) {
+            try (OutputStream out = new FileOutputStream(tempFile)) {
+               IOTools.copyStream(in, out);
+               resourceFile = tempFile;
             }
          }
       }

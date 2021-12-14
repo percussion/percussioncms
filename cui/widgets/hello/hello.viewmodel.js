@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -31,7 +31,7 @@ define(['knockout'], function(ko) {
         self.debug = ko.observable(options.debug);
         self.message = ko.observable('');
         self.ready = ko.computed(function () {
-            return self.hello().length == 0 ? false : true;
+            return self.hello().length !== 0;
         }, self);
         
         /**
@@ -39,9 +39,9 @@ define(['knockout'], function(ko) {
          */
         self.init = function() {
             self.hello("Contributor");
-        }
+        };
         self.showMessage = function(){
             self.message("Thanks for clicking me!");
-        }
-    }
+        };
+    };
 });

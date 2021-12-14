@@ -17,20 +17,19 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.controls.contenteditor.checkboxtree;
 
-import java.awt.event.MouseEvent;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.swing.JTree;
+import javax.swing.*;
 import javax.swing.event.MouseInputAdapter;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.tree.TreePath;
+import java.awt.event.MouseEvent;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * The selection toggle controls the mouse behavior. A single click toggles
@@ -108,7 +107,7 @@ public class PSCheckboxTreeToggle extends MouseInputAdapter
    public void setParameters(Map<String, String> parameters)
    {
       if (parameters == null)
-         m_parameters = new HashMap<String, String>();
+         m_parameters = new HashMap<>();
       else
          m_parameters = parameters;
    }
@@ -117,7 +116,7 @@ public class PSCheckboxTreeToggle extends MouseInputAdapter
     * The extra parameters set for this listener, never <code>null</code>, may
     * be empty.
     */
-   private Map<String, String> m_parameters = new HashMap<String, String>();
+   private Map<String, String> m_parameters = new HashMap<>();
 
    /**
     * The containing tree, never <code>null</code> after construction.

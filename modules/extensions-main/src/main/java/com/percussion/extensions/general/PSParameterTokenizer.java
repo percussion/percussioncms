@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -17,23 +17,25 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.extensions.general;
 
+import com.percussion.cms.IPSConstants;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSRequestPreProcessor;
 import com.percussion.extension.PSDefaultExtension;
 import com.percussion.extension.PSExtensionProcessingException;
 import com.percussion.extension.PSParameterMismatchException;
 import com.percussion.server.IPSRequestContext;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import java.io.StringWriter;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
+import java.util.Map;
 import java.util.StringTokenizer;
 
 /**
@@ -67,6 +69,8 @@ import java.util.StringTokenizer;
 public class PSParameterTokenizer extends PSDefaultExtension implements
 IPSRequestPreProcessor {
 
+   private static final Logger log = LogManager.getLogger(IPSConstants.ASSEMBLY_LOG);
+
 /**
  * Process the pre-exit request.
  *
@@ -83,7 +87,7 @@ IPSRequestPreProcessor {
          throws PSExtensionProcessingException, PSParameterMismatchException
    {
    int i;
-   ArrayList outputParams = new ArrayList(params.length);
+   ArrayList<HTMLParameter> outputParams = new ArrayList<>(params.length);
 
    try  {
 
@@ -97,7 +101,7 @@ IPSRequestPreProcessor {
       * This exit will be called every time the resource is invoked
       * perform a quick check to see if there's anything to do
       */
-      HashMap htmlParams = request.getParameters();
+      Map<String,Object> htmlParams = request.getParameters();
       if(htmlParams == null) {
          // no, this request has no HTML parameters at all
          request.printTraceMessage("No HTML parameters found");
@@ -108,14 +112,14 @@ IPSRequestPreProcessor {
          // there's no input parameter in the map.
          request.printTraceMessage("The input parameter is null");
          return;
-         };
+         }
 
       //special case: an empty string, we leave now.
       //Note: this won't catch an empty array list
       if(inputArray.toString().trim().length() == 0) {
          request.printTraceMessage("The input parameter is empty");
          return;
-         };
+         }
 
       // now look at the rest of the parameter list and build the name list.
       for(i=1; i < params.length && params[i] != null; i++) {
@@ -135,34 +139,25 @@ IPSRequestPreProcessor {
             return;
             }
          request.printTraceMessage("multiple values found:"
-            + inputArray.toString());
-
-         ArrayList contentList = new ArrayList(inputList.size());
-         ArrayList variantList = new ArrayList(inputList.size());
+            + inputArray);
 
          //iterate across the list of input parameters
-         Iterator inTer = inputList.iterator();
-         while(inTer.hasNext()) {
-            String inputValue = (String) inTer.next();
-            StringTokenizer tok = new StringTokenizer(inputValue,SEPARATORS);
+         for (Object o : inputList) {
+            String inputValue = (String) o;
+            StringTokenizer tok = new StringTokenizer(inputValue, SEPARATORS);
             //now iterate across the tokens of the string
-            Iterator outTer = outputParams.iterator();
-            while(outTer.hasNext()) {
-               HTMLParameter currParam = (HTMLParameter) outTer.next();
-               if(tok.hasMoreTokens()) {
+            for (HTMLParameter currParam : outputParams) {
+               if (tok.hasMoreTokens()) {
                   currParam.addParamValue(tok.nextToken());
-                  }
-               else {
+               } else {
                   currParam.addParamValue("");
-                  }
-               }   // while more tokens
-            }  // while more parameters
+               }
+            }   // while more tokens
+         }  // while more parameters
          // now go back and add the parameters to the request's map
-         Iterator outTer = outputParams.iterator();
-         while(outTer.hasNext()) {
-            HTMLParameter currParam = (HTMLParameter) outTer.next();
-            htmlParams.put(currParam.getName(),currParam.getArray());
-            }
+         for (HTMLParameter currParam : outputParams) {
+            htmlParams.put(currParam.getName(), currParam.getArray());
+         }
          }
       else
          {
@@ -172,25 +167,17 @@ IPSRequestPreProcessor {
          StringTokenizer tok = new StringTokenizer(inputValue,SEPARATORS);
 
          //iterate across the tokens
-         Iterator outTer = outputParams.iterator();
-         while(outTer.hasNext()) {
-            HTMLParameter currParam = (HTMLParameter) outTer.next();
-            //this is much easier, just add to the HTML parameter map directly
-            if(tok.hasMoreTokens()) {
-               htmlParams.put(currParam.getName(),tok.nextToken());
+            for (HTMLParameter currParam : outputParams) {
+               //this is much easier, just add to the HTML parameter map directly
+               if (tok.hasMoreTokens()) {
+                  htmlParams.put(currParam.getName(), tok.nextToken());
                }
             }
          }
-      return;
 
    } catch (Exception e){ // just in case we missed something
-      StringWriter stackWriter = new StringWriter();
-      stackWriter.write("Unexpected Exception in " +
-         this.getClass().getName() + "\n");
-      e.printStackTrace(new java.io.PrintWriter((java.io.Writer)stackWriter,
-         true));
-      request.printTraceMessage(stackWriter.toString());
-      System.out.println(stackWriter.toString());
+      log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+      request.printTraceMessage(PSExceptionUtils.getMessageForLog(e));
       throw new PSExtensionProcessingException(this.getClass().getName(),e);
       }
 }

@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -26,13 +26,13 @@ package com.percussion.siteimportsummary.service.impl;
 
 import com.percussion.services.siteimportsummary.IPSSiteImportSummaryDao;
 import com.percussion.services.siteimportsummary.data.PSSiteImportSummary;
+import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.sitesummaryservice.service.IPSSiteImportSummaryService;
-
-import java.util.Map;
-
 import org.apache.commons.lang.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.Map;
 
 @Component("siteImportSummaryService")
 public class PSSiteImportSummaryService implements IPSSiteImportSummaryService
@@ -51,8 +51,7 @@ public class PSSiteImportSummaryService implements IPSSiteImportSummaryService
     }
 
     @Override
-    public PSSiteImportSummary create(int siteId)
-    {
+    public PSSiteImportSummary create(int siteId) throws IPSGenericDao.SaveException {
         PSSiteImportSummary summary = new PSSiteImportSummary();
         summary.setSiteId(siteId);
         summaryDao.save(summary);
@@ -63,13 +62,13 @@ public class PSSiteImportSummaryService implements IPSSiteImportSummaryService
     public void deleteBySiteId(int siteId)
     {
         PSSiteImportSummary summary = find(siteId);
-        if(summary != null)
+        if(summary != null) {
             summaryDao.delete(summary);
+        }
     }
 
     @Override
-    public PSSiteImportSummary update(int siteId, Map<SiteImportSummaryTypeEnum, Integer> fields)
-    {
+    public PSSiteImportSummary update(int siteId, Map<SiteImportSummaryTypeEnum, Integer> fields) throws IPSGenericDao.SaveException {
         Validate.notNull(fields);
         PSSiteImportSummary summary = find(siteId);
         if(summary == null)

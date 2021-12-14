@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -17,11 +17,15 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.installerbot;
+
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.time.FastDateFormat;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -31,8 +35,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
@@ -41,7 +43,6 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.apache.commons.lang.StringUtils;
 
 
 /**
@@ -49,7 +50,7 @@ import org.apache.commons.lang.StringUtils;
  * of Rhythmyx server.
  *
  * @author Andriy Palamarchuk
- * @todo use generics, StringBuffer when backwards compatibility
+ * @todo use generics, StringBuilder when backwards compatibility
  * with 1.4 is not required anymore. (Andriy) 
  */
 public class PSRxInstallerBot
@@ -57,8 +58,7 @@ public class PSRxInstallerBot
    /**
     * Standalone invocation entry point.
     */
-   public static void main(String[] args)
-   {
+   public static void main(String[] args) throws InterruptedException {
       final int result = INSTANCE.run(args);
       INSTANCE.exit(result);
    }
@@ -77,8 +77,7 @@ public class PSRxInstallerBot
     * @param args command-line arguments as received by {@link #main(String[])}.
     * @return value to be returned by the program to OS on exit.
     */
-   public int run(String[] args)
-   {
+   public int run(String[] args) throws InterruptedException {
       if (args.length != EXPECTED_COMMAND_LINE_ARGS_COUNT)
       {
          m_out.println("Unexpected number of arguments. "
@@ -117,8 +116,7 @@ public class PSRxInstallerBot
     * @throws PSConsoleAppDriverException on installation session failure.
     */
    int configureAndRunInstaller(final Properties properties)
-         throws PSConsoleAppDriverException
-   {
+           throws PSConsoleAppDriverException, InterruptedException {
       final String message;
       message = parseConfiguration(properties);
       if (message != null) {
@@ -132,6 +130,7 @@ public class PSRxInstallerBot
    /**
     * Prints exception description to program output. 
     */
+   @SuppressFBWarnings("INFORMATION_EXPOSURE_THROUGH_AN_ERROR_MESSAGE")
    private void printExceptionError(final Exception e)
    {
       m_out.println("Installation error");
@@ -146,10 +145,13 @@ public class PSRxInstallerBot
     * @throws FileNotFoundException if file not found.
     * @throws IOException on file reading failure.
     */
+   @SuppressFBWarnings("PATH_TRAVERSAL_IN")
    Properties loadProperties(final String propertiesFileName) throws IOException
    {
       final Properties properties = new Properties();
-      properties.load(new FileInputStream(propertiesFileName));
+      try(FileInputStream fs = new FileInputStream(propertiesFileName)){
+         properties.load(fs);
+      }
       return properties;
    }
 
@@ -167,9 +169,8 @@ public class PSRxInstallerBot
       m_out.println("You can copy and paste text below to create configuration "
             + "property file.\n\n");
 
-      final BufferedReader reader =
-         new BufferedReader(new InputStreamReader(openDefaultConfiguration()));
-      try
+      try(BufferedReader reader =
+                  new BufferedReader(new InputStreamReader(openDefaultConfiguration())))
       {
          String s;
          while ((s = reader.readLine()) != null)
@@ -180,17 +181,6 @@ public class PSRxInstallerBot
       catch (IOException e)
       {
          assert false : e;
-      }
-      finally
-      {
-         try
-         {
-            reader.close();
-         }
-         catch (IOException e)
-         {
-            assert false : e;
-         }
       }
    }
 
@@ -207,8 +197,7 @@ public class PSRxInstallerBot
     * Launches and runs installation process. The bot should be configured.
     * @throws PSConsoleAppDriverException on installation failure.
     */
-   void runInstaller() throws PSConsoleAppDriverException
-   {
+   void runInstaller() throws PSConsoleAppDriverException, InterruptedException {
       m_driver.launchApplication(
             getLaunchInstallerCommand(), getInstallerTimeoutInSeconds());
       try {
@@ -278,16 +267,8 @@ public class PSRxInstallerBot
     * it bombs out later.
     * Ideally needs to be further researched.
     */
-   protected void sleepOverExpectJBug()
-   {
-      try
-      {
+   protected void sleepOverExpectJBug() throws InterruptedException {
          Thread.sleep(SHORT_WAIT * MILISECONDS_IN_SEC);
-      }
-      catch (InterruptedException ignore)
-      {
-         ignore.printStackTrace();
-      }
    }
 
    /**
@@ -711,7 +692,7 @@ public class PSRxInstallerBot
     */
    String parseConfiguration(final Properties properties)
    {
-      final StringBuffer message = new StringBuffer();
+      final StringBuilder message = new StringBuilder();
       checkForUnrecognizedKeys(properties, message);
       checkForMissingKeys(properties, message);
       if (message.length() == 0)
@@ -726,7 +707,7 @@ public class PSRxInstallerBot
     * @param properties the installation configuration.
     * @param message buffer to add validation error messages to.
     */
-   void parseValues(final Properties properties, final StringBuffer message)
+   void parseValues(final Properties properties, final StringBuilder message)
    {
       setLogFile(properties.getProperty(LOG_FILE_PROP));
       setLaunchInstallerCommand(
@@ -764,8 +745,8 @@ public class PSRxInstallerBot
       readFastForward(properties, message);
 
       validateBooleanProperty(properties, INSTALL_DB_PUBLISHER_PROP, message);
-      setInstallDbPublisher(Boolean.valueOf(
-            properties.getProperty(INSTALL_DB_PUBLISHER_PROP)).booleanValue());
+      setInstallDbPublisher(Boolean.parseBoolean(
+            properties.getProperty(INSTALL_DB_PUBLISHER_PROP)));
       
       readDeleteExistingInstallation(properties, message);
    }
@@ -773,7 +754,7 @@ public class PSRxInstallerBot
    /**
     * Reads value of property {@link #RHYTHMYX_PORT_PROP}.
     */
-   private void readRhythmyxPort(Properties properties, StringBuffer message)
+   private void readRhythmyxPort(Properties properties, StringBuilder message)
    {
       if (isNewInstallation())
       {
@@ -788,7 +769,7 @@ public class PSRxInstallerBot
    private Set<String> getMandatoryProperties()
    {
       final Set<String> mandatoryProperties =
-            new HashSet<String>(CONFIGURATION_PROPERTY_NAMES);
+            new HashSet<>(CONFIGURATION_PROPERTY_NAMES);
       mandatoryProperties.remove(DB_DATABASE_PROP);
       if (isUpdateInstallation())
       {
@@ -813,7 +794,7 @@ public class PSRxInstallerBot
     * @param message buffer to add validation error messages to.
     */
    private void validateBooleanProperty(final Properties properties,
-         final String propertyName, StringBuffer message)
+         final String propertyName, StringBuilder message)
    {
       final String value = properties.getProperty(propertyName);
       if (!value.equalsIgnoreCase(Boolean.TRUE.toString()) &&
@@ -835,7 +816,7 @@ public class PSRxInstallerBot
     * @param message buffer to add validation error messages to.
     */
    private void validatePortNumber(final Properties properties,
-         final String propertyName, StringBuffer message)
+         final String propertyName, StringBuilder message)
    {
       final String value = properties.getProperty(propertyName);
       if (!StringUtils.isNumeric(value))
@@ -854,7 +835,7 @@ public class PSRxInstallerBot
     * @param message buffer to add validation error messages to.
     */
    private void readFastForward(final Properties properties,
-         final StringBuffer message)
+         final StringBuilder message)
    {
       validateBooleanProperty(properties, INSTALL_FASTFORWARD_PROP, message);
       setInstallFastForward(Boolean.valueOf(
@@ -874,7 +855,7 @@ public class PSRxInstallerBot
     * @param message buffer to add validation error messages to.
     */
    private void readDeleteExistingInstallation(final Properties properties,
-         final StringBuffer message)
+         final StringBuilder message)
    {
       validateBooleanProperty(
             properties, DELETE_EXISTING_INSTALLATION_PROP, message);
@@ -894,7 +875,7 @@ public class PSRxInstallerBot
     * @param properties the configuration parameters
     * @param message buffer to add validation error messages to.
     */
-   private void readTimeoutProperty(Properties properties, StringBuffer message)
+   private void readTimeoutProperty(Properties properties, StringBuilder message)
    {
       final String value =
             properties.getProperty(INSTALLER_TIMEOUT_IN_SEC_PROP);
@@ -920,7 +901,7 @@ public class PSRxInstallerBot
     * @param message buffer to add validation error messages to.
     */
    private void readInstallationTypeProperty(final Properties properties,
-         final StringBuffer message)
+         final StringBuilder message)
    {
       final String str = properties.getProperty(INSTALLATION_TYPE); 
       if (!str.equals(INSTALLATION_TYPE_NEW)
@@ -942,7 +923,7 @@ public class PSRxInstallerBot
     * @param message buffer to add validation error messages to.
     */
    private void readInstallationDirectoryProperty(final Properties properties,
-         final StringBuffer message)
+         final StringBuilder message)
    {
       final String dirStr = properties.getProperty(INSTALLATION_DIR_PROP); 
       final File dir = new File(dirStr);
@@ -965,7 +946,7 @@ public class PSRxInstallerBot
     * @param message buffer to add validation error messages to.
     */
    private void propertyMustNotBeBlank(final Properties properties,
-         final StringBuffer message, final String propertyName)
+         final StringBuilder message, final String propertyName)
    {
       if (StringUtils.isBlank(properties.getProperty(propertyName)))
       {
@@ -982,7 +963,7 @@ public class PSRxInstallerBot
     * @param properties the configuration parameters
     * @param message buffer to add validation error messages to.
     */
-   private void checkForMissingKeys(Properties properties, StringBuffer message)
+   private void checkForMissingKeys(Properties properties, StringBuilder message)
    {
       final Set<String> missingKeys =
             new HashSet<String>(CONFIGURATION_PROPERTY_NAMES);
@@ -1004,7 +985,7 @@ public class PSRxInstallerBot
     */
    @SuppressWarnings("unchecked")
    private void checkForUnrecognizedKeys(final Properties properties,
-         StringBuffer message)
+         StringBuilder message)
    {
       final Set<String> unrecognizedKeys = new HashSet(properties.keySet());
       unrecognizedKeys.removeAll(CONFIGURATION_PROPERTY_NAMES);
@@ -1059,7 +1040,7 @@ public class PSRxInstallerBot
     */
    private String getInstallationSuffix(final Date date)
    {
-      final DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+      final FastDateFormat format = FastDateFormat.getInstance("yyyy-MM-dd HH:mm");
       return " " + format.format(date) + " - " + getDbDriver();
    }
 

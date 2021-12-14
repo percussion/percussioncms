@@ -17,15 +17,12 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.assetmanagement.web.service;
-
-import static java.util.Arrays.asList;
-import static org.apache.commons.lang.Validate.notNull;
 
 import com.percussion.assetmanagement.data.PSAsset;
 import com.percussion.assetmanagement.data.PSAssetDropCriteria;
@@ -37,8 +34,12 @@ import com.percussion.assetmanagement.data.PSContentEditCriteria;
 import com.percussion.assetmanagement.forms.data.PSFormSummary;
 import com.percussion.share.data.PSNoContent;
 import com.percussion.share.test.PSDataServiceRestClient;
+
 import java.util.Collection;
 import java.util.List;
+
+import static java.util.Arrays.asList;
+import static org.apache.commons.lang.Validate.notNull;
 
 public class PSAssetServiceRestClient extends PSDataServiceRestClient<PSAsset>
 {

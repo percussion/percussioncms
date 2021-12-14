@@ -17,21 +17,21 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.services.assembly.impl;
 
 import com.percussion.data.PSStylesheetCleanupFilter;
-
-import java.io.File;
-
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.util.PSResourceUtils;
 import com.percussion.utils.testing.UnitTest;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
+
+import java.io.File;
 
 import static org.junit.Assert.assertEquals;
 
@@ -74,8 +74,7 @@ public class PSNamespaceCleanupTest
     * Test cleanup
     */
    @Test
-   public void testNSCleanup()
-   {
+   public void testNSCleanup() throws PSNotFoundException {
       PSNamespaceCleanup cleanup = new PSNamespaceCleanup(null);
       String result = (String) cleanup.translate(ms_input);
       assertEquals(ms_result, result);

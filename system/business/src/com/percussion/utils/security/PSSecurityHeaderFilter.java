@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -102,7 +102,7 @@ public class PSSecurityHeaderFilter implements Filter {
                     policy=securityUtil.getContentSecurityPolicy();
                     psDeliveryInfoService= (PSDeliveryInfoService) PSDeliveryInfoServiceLocator.getDeliveryInfoService();
                     psDeliveryInfoServiceList = psDeliveryInfoService.findAll();
-                    policy= editContentSecurityPolicy(psDeliveryInfoServiceList,policy);
+                    policy= PSContentSecurityPolicyUtils.editContentSecurityPolicy(psDeliveryInfoServiceList,policy);
                 }
 
                 httpResp.addHeader(PSSecurityUtility.HEADER_CONTENTSECURITY_POLICY, policy);
@@ -139,32 +139,5 @@ public class PSSecurityHeaderFilter implements Filter {
 
     }
 
-    public static String editContentSecurityPolicy( List<PSDeliveryInfo> psDeliveryInfoList,String contentSecurityString ) {
 
-
-        StringBuffer serverString=new StringBuffer();
-
-        for(PSDeliveryInfo psDeliveryInfo : psDeliveryInfoList)
-        {
-            serverString.append(psDeliveryInfo.getUrl()+"/");
-            serverString.append(" ");
-            serverString.append(psDeliveryInfo.getUrl()+"/*");
-            serverString.append(" ");
-        }
-        if(contentSecurityString.contains("frame-src")) {
-
-            contentSecurityString=contentSecurityString.replaceAll("frame-src", "frame-src "+" "+serverString.toString());
-
-        }else {
-            if(contentSecurityString.endsWith(";")) {
-                contentSecurityString=contentSecurityString+" frame-src 'self' "+" "+serverString+";";
-            }else {
-                contentSecurityString=contentSecurityString+"; frame-src 'self' "+" "+serverString+";";
-
-            }
-
-        }
-
-        return contentSecurityString;
-    }
 }

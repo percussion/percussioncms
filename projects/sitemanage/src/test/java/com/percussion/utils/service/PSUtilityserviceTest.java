@@ -17,25 +17,23 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.utils.service;
 
-import static org.junit.Assert.assertEquals;
-
-import com.percussion.share.dao.impl.PSLegacyExceptionUtils;
-import com.percussion.utils.security.PSEncryptor;
-import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
+import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
+import com.percussion.security.PSEncryptor;
 import com.percussion.utils.service.impl.PSUtilityService;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
+
+import static org.junit.Assert.assertEquals;
 
 public class PSUtilityserviceTest
 {
@@ -47,7 +45,7 @@ public class PSUtilityserviceTest
 
     @Before
     public void setup(){
-        rxdeploydir = System.getProperty("rxdeploydir");
+        this.rxdeploydir = System.getProperty("rxdeploydir");
         System.setProperty("rxdeploydir",temporaryFolder.getRoot().getAbsolutePath());
     }
 
@@ -62,7 +60,9 @@ public class PSUtilityserviceTest
     @Test
     public void encryptDecryptStringTest()
     {
-        String defaultKey = PSLegacyEncrypter.DEFAULT_KEY();
+        String defaultKey = PSLegacyEncrypter.getInstance(
+                temporaryFolder.getRoot().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+        ).DEFAULT_KEY();
 
         String stringTobeEncrypted = "http://www.yahoo.com";
 

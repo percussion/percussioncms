@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -70,10 +70,12 @@ public class PSMaintenanceManagerRestService
     public Response getServerStatus()
     {
         Status status;
-        if (maintMgr.isWorkInProgress())
+        if (maintMgr.isWorkInProgress()) {
             status = Status.CONFLICT;
-        else
+        }
+        else {
             status = Status.OK;
+        }
         
         return Response.status(status).build();
     }
@@ -109,8 +111,9 @@ public class PSMaintenanceManagerRestService
                 maintMgr.clearFailures();
             }
         }
-        else
+        else {
             status = Status.OK;
+        }
         
         return Response.status(status).build();
     }

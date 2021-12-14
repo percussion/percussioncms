@@ -17,28 +17,26 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.services.security;
 
 
-import com.percussion.utils.security.IPSTypedPrincipal;
-import com.percussion.utils.security.IPSTypedPrincipal.PrincipalTypes;
+import com.percussion.security.IPSTypedPrincipal;
+import com.percussion.security.IPSTypedPrincipal.PrincipalTypes;
+import org.apache.commons.lang.StringUtils;
 
+import javax.security.auth.Subject;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
 import java.security.Principal;
 import java.security.acl.Group;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Iterator;
-
-import javax.security.auth.Subject;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
-
-import org.apache.commons.lang.StringUtils;
 
 
 
@@ -169,7 +167,7 @@ public class PSServletRequestWrapper extends HttpServletRequestWrapper
    {
       if (m_roles == null)
       {
-         m_roles = new HashSet<String>();
+         m_roles = new HashSet<>();
          Group roles = PSJaasUtils.findOrCreateGroup(m_subject.getPrincipals(),
             PSJaasUtils.ROLE_GROUP_NAME);
          Enumeration<? extends Principal> renum = roles.members();

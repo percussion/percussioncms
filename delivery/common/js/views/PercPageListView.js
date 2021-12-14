@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -40,47 +40,15 @@
         updateRSSLinks: updateRSSLinks
     };
     /**
-     * Finds all the rss feed links by class perc-rss-icon and adds the tenantid, version, and hostname to the url.
+     * Finds all the rss feed links by class perc-rss-icon and adds the version, and hostname to the url.
      */
     function updateRSSLinks() {
-        var tenantId = $.isFunction($.getCm1License) ? $.getCm1License() : "";
-        var version = $.isFunction($.getCm1Version) ? $.getCm1Version() : "";
+        var version = typeof($.getCMSVersion)=== "function" ? $.getCMSVersion() : "";
         var hostname = window.location.host;
 
         $(".perc-rss-icon").each(function() {
             var feedUrl = $(this).attr("href");
             feedUrl = feedUrl+hostname+"/";
-            /*if (0 < feedUrl.length) {
-                if (feedUrl.indexOf("?") === -1) {
-                    if (0 < tenantId.length) {
-                        feedUrl += "?perc-tid=" + tenantId;
-                        if (0 < version.length) {
-                            feedUrl += "&perc-version=" + version;
-                        }
-                    }
-                }else{
-                    if (0 < tenantId.length) {
-                        feedUrl += "&perc-tid=" + tenantId;
-                        if (0 < version.length) {
-                            feedUrl += "&perc-version=" + version;
-                        }
-                    }
-                }
-            }*/
-            /*if (0 < feedUrl.length) {
-                if (feedUrl.indexOf("?") === -1) {
-                    feedUrl += "?hostname=" + hostname;
-                }
-                else {
-                    feedUrl += "&hosthame=" + hostname;
-                }
-                if (0 < tenantId.length) {
-                    feedUrl += "&perc-tid=" + tenantId;
-                    if (0 < version.length) {
-                        feedUrl += "&perc-version=" + version;
-                    }
-                }
-            }*/
             $(this).attr("href", feedUrl);
 
         });
@@ -153,7 +121,7 @@
                 // Needs to know about doResultsDisplay.
                 return loadResults(target, navLoc, function(status, result) {
                     doResultsDisplay(status, result, options);
-                    secondCallback(status, result)
+                    secondCallback(status, result);
                 }, options);
             };
 
@@ -186,7 +154,7 @@
 
             this.settings.query.criteria = [];
 
-            $.extend(this.settings, $.parseJSON($(this).attr('data-query')));
+            $.extend(this.settings, JSON.parse($(this).attr('data-query')));
 
             this.settings.query = $.extend(true, {}, this.settings.query); // Prevents overwrite of anything, but initializes it if it doesn't exist already.
 
@@ -234,7 +202,7 @@
                 {
                     try
                     {
-                        var obj = $.parseJSON(urlstring.query);
+                        var obj = JSON.parse(urlstring.query);
                         $.map(obj.criteria, function(n, i){
                             if ($.inArray(n, target.settings.query.criteria) === -1)
                             {

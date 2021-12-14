@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -35,14 +35,13 @@ import com.percussion.utils.guid.IPSGuid;
 import com.percussion.webservices.PSWebserviceUtils;
 import com.percussion.webservices.ui.IPSUiDesignWs;
 import com.percussion.webservices.ui.PSUiWsLocator;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
-
-import org.apache.commons.lang.StringUtils;
 
 /**
  * @author erikserating
@@ -94,9 +93,9 @@ public class PSUiService implements IPSUiService
         sdf.setDescription(df.getDescription());
         sdf.setSortby(df.getSortedColumnName());
         
-        List<PSDisplayFormatColumn> columns = new ArrayList<PSDisplayFormatColumn>();
+        List<PSDisplayFormatColumn> columns = new ArrayList<>();
         Iterator cols = df.getColumns();
-        List<PSDisplayColumn> temp = new ArrayList<PSDisplayColumn>();
+        List<PSDisplayColumn> temp = new ArrayList<>();
         while(cols.hasNext())
         {
             temp.add((PSDisplayColumn)cols.next());

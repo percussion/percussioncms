@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -152,16 +152,16 @@
 
              dialogMarkup.append(
                 $('<div>')
-                    .append('<p class="hint">Ask questions. Get answers. Visit the <a target="_blank" href="https://community.percussion.com" title="Percussion Community">Percussion Community</a> to access Video Tutorials, Forums, and more.</p>')
+                    .append('<p class="hint">Ask questions. Get answers. Visit the <a target="_blank" rel = "noopener noreferrer" href="https://community.percussion.com" title="Percussion Community">Percussion Community</a> to access Video Tutorials, Forums, and more.</p>')
             );
 
             if (config.showVideo === true)
             {
                 //Used a random dummy parameter to avoid cache
                 dialogMarkup.append(
-                    $('<img height="0px" width="0px" src="http://help.percussion.com/Assets/Help/header/images/PercussionSwoosh.png?dummy=' + Math.random() + '">')
-                        .error(handleUnreachableURL)
-                        .load(showVideoIframe)
+                    $('<img height="0px" width="0px" src="https://help.percussion.com/Assets/Help/header/images/PercussionSwoosh.png?dummy=' + Math.random() + '">')
+                        .on("error", handleUnreachableURL)
+                        .on("load", showVideoIframe)
                 );
             }
 
@@ -190,10 +190,10 @@
             var doneButtonDisabled = $('#' + dialogButtons['Done Disabled'].id);
 
             // By default the DONE button is disabled (the enabled version is hidden)
-            var doneButton = $('#' + dialogButtons['Done'].id);
+            var doneButton = $('#' + dialogButtons.Done.id);
             doneButton.hide();
             // Set a custom event for enabling/disabling the DONE button
-            $('#' + CONSTANTS.IDS.MAIN_DIALOG).bind(
+            $('#' + CONSTANTS.IDS.MAIN_DIALOG).on(
                 CONSTANTS.OTHER.EVENTS_ENABLE_DONE_BUTTON,
                 function(event, flag)
                 {
@@ -208,7 +208,7 @@
          */
         function enableDoneButton(flag)
         {
-            var doneButton = $('#' + dialogButtons['Done'].id),
+            var doneButton = $('#' + dialogButtons.Done.id),
                 doneButtonDisabled = $('#' + dialogButtons['Done Disabled'].id);
             if (flag === true)
             {
@@ -233,7 +233,7 @@
             {
                 // If something went wrong during the job creation, show the error status status.
                 // Else, invoke the polling of the job status
-                if (status != $.PercServiceUtils.STATUS_SUCCESS)
+                if (status !== $.PercServiceUtils.STATUS_SUCCESS)
                 {
                     setErrorState();
                 }
@@ -259,7 +259,7 @@
             }
 
             config.pollingProgressCallback(importJobId, function(status, asyncJobStatus) {
-                if (status != $.PercServiceUtils.STATUS_SUCCESS || asyncJobStatus.status < 0)
+                if (status !== $.PercServiceUtils.STATUS_SUCCESS || asyncJobStatus.status < 0)
                 {
                     setErrorState();
                 }
@@ -286,7 +286,7 @@
                         importPercentage = asyncJobStatus.status;
                     }
 
-                    if (asyncJobStatus.status == 100)
+                    if (asyncJobStatus.status === 100)
                     {
                         // The job reached its end successfully, set the corresponding flag to true
                         importFinished = true;

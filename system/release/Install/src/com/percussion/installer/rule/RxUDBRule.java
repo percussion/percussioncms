@@ -47,9 +47,7 @@ public class RxUDBRule extends RxIARule
       Properties repProps = new Properties();
       Properties serverProps = new Properties();
       String strDriver = null;
-      InputStream repIn = null;
-      InputStream serverIn = null;
-      
+
       try
       {
          strRootDir = getInstallValue(RxVariables.INSTALL_DIR);
@@ -63,10 +61,11 @@ public class RxUDBRule extends RxIARule
          File repPropFile = new File(strRepPropFile);
          if (repPropFile.exists())
          {
-            repIn = new FileInputStream(strRepPropFile);
-            repProps.load(repIn);
-            strDriver = repProps.getProperty(
-                  PSJdbcDbmsDef.DB_DRIVER_NAME_PROPERTY, "");
+            try(FileInputStream repIn = new FileInputStream(strRepPropFile)){
+               repProps.load(repIn);
+               strDriver = repProps.getProperty(
+                       PSJdbcDbmsDef.DB_DRIVER_NAME_PROPERTY, "");
+            }
          }
          if (!((strDriver == null) || (strDriver.trim().length() == 0)))
          {
@@ -76,10 +75,11 @@ public class RxUDBRule extends RxIARule
          File serverPropFile = new File(strServerPropFile);
          if (serverPropFile.exists())
          {
-            serverIn = new FileInputStream(strServerPropFile);
-            serverProps.load(serverIn);
-            strDriver = serverProps.getProperty(InstallUtil.DRIVER_PROPERTY,
-                  "");
+            try(FileInputStream serverIn = new FileInputStream(strServerPropFile)) {
+               serverProps.load(serverIn);
+               strDriver = serverProps.getProperty(InstallUtil.DRIVER_PROPERTY,
+                       "");
+            }
          }
          if (!((strDriver == null) || (strDriver.trim().length() == 0)))
          {

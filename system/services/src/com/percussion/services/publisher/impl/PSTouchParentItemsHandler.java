@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -36,19 +36,18 @@ import com.percussion.services.relationship.IPSRelationshipService;
 import com.percussion.services.relationship.PSRelationshipServiceLocator;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.util.PSStopwatch;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
 
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.hibernate.Criteria;
-import org.hibernate.Session;
-import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Restrictions;
 
 /**
  * This handler follows the ancestors of an item that has been updated or
@@ -69,7 +68,7 @@ public class PSTouchParentItemsHandler
    /**
     * Logger for this class
     */
-   static Log ms_log = LogFactory.getLog(PSTouchParentItemsHandler.class);
+    private static final Logger ms_log = LogManager.getLogger(PSTouchParentItemsHandler.class);
 
    /**
     * Load the relationship service on class init
@@ -90,17 +89,17 @@ public class PSTouchParentItemsHandler
    /**
     * Inline slots
     */
-   Set<Long> m_inlineSlots = new HashSet<Long>();
+   Set<Long> m_inlineSlots = new HashSet<>();
 
    /**
     * Templates with slots
     */
-   Set<Long> m_templatesWithSlots = new HashSet<Long>();
+   Set<Long> m_templatesWithSlots = new HashSet<>();
 
    /**
     * Items to be touched.
     */
-   Set<Integer> m_items = new HashSet<Integer>();
+   Set<Integer> m_items = new HashSet<>();
 
    /**
     * Create a handler
@@ -163,7 +162,7 @@ public class PSTouchParentItemsHandler
       try
       {
          List<PSRelationship> rels = getParentRelationships(ids);
-         Set<Integer> parents = new HashSet<Integer>();
+         Set<Integer> parents = new HashSet<>();
          for (PSRelationship rel : rels)
          {
             Integer parentid = rel.getOwner().getId();
@@ -291,7 +290,7 @@ public class PSTouchParentItemsHandler
          return;
       
       // Get the relationships
-      Set<Integer> grandperes = new HashSet<Integer>();
+      Set<Integer> grandperes = new HashSet<>();
       Integer cparent = null;
 
       try

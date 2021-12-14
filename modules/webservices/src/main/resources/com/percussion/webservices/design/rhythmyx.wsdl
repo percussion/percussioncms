@@ -18,12 +18,16 @@
   ~      Burlington, MA 01803, USA
   ~      +01-781-438-9900
   ~      support@percussion.com
-  ~      https://www.percusssion.com
+  ~      https://www.percussion.com
   ~
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   -->
 
-<wsdl:definitions name="rhythmyx" targetNamespace="urn:www.percussion.com/6.0.0/rhythmyx" xmlns:rx="urn:www.percussion.com/6.0.0/rhythmyx" xmlns:com="urn:www.percussion.com/6.0.0/common" xmlns:flt="urn:www.percussion.com/6.0.0/faults" xmlns:asm="urn:www.percussion.com/6.0.0/assembly" xmlns:con="urn:www.percussion.com/6.0.0/content" xmlns:sec="urn:www.percussion.com/6.0.0/security" xmlns:sys="urn:www.percussion.com/6.0.0/system" xmlns:ui="urn:www.percussion.com/6.0.0/ui" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+<wsdl:definitions name="rhythmyx" targetNamespace="urn:www.percussion.com/6.0.0/rhythmyx"
+                  xmlns:asm="urn:www.percussion.com/6.0.0/assembly" xmlns:con="urn:www.percussion.com/6.0.0/content"
+                  xmlns:sec="urn:www.percussion.com/6.0.0/security" xmlns:sys="urn:www.percussion.com/6.0.0/system"
+                  xmlns:ui="urn:www.percussion.com/6.0.0/ui" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
    <wsdl:import namespace="urn:www.percussion.com/6.0.0/assembly" location="assembly/assembly.wsdl">
    </wsdl:import>
    <wsdl:import namespace="urn:www.percussion.com/6.0.0/content" location="content/content.wsdl">

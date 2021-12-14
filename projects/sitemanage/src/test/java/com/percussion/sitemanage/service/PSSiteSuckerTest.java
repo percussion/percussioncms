@@ -17,21 +17,41 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.sitemanage.service;
 
-import static com.percussion.share.spring.PSSpringWebApplicationContextUtils.getWebApplicationContext;
-
+import com.percussion.error.PSExceptionUtils;
+import com.percussion.security.xml.PSSecureXMLUtils;
+import com.percussion.security.xml.PSXmlSecurityOptions;
 import com.percussion.server.PSServer;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.sitemanage.data.PSSite;
+import com.percussion.sitemanage.error.PSSiteImportException;
 import com.percussion.sitemanage.service.impl.PSSiteDataService;
 import com.percussion.test.PSServletTestCase;
 import com.percussion.utils.testing.IntegrationTest;
 import com.percussion.webservices.security.PSSecurityWsLocator;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.junit.experimental.categories.Category;
+import org.springframework.mock.web.MockHttpServletRequest;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.Result;
+import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -45,22 +65,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.Result;
-import javax.xml.transform.Source;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-import javax.xml.transform.stream.StreamSource;
-
-import org.apache.commons.lang.StringUtils;
-import org.junit.experimental.categories.Category;
-import org.springframework.mock.web.MockHttpServletRequest;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
+import static com.percussion.share.spring.PSSpringWebApplicationContextUtils.getWebApplicationContext;
 
 /**
  * Tool to create sites from urls from a file at a known location.
@@ -69,7 +74,9 @@ import org.w3c.dom.Element;
 @Category(IntegrationTest.class)
 public class PSSiteSuckerTest extends PSServletTestCase
 {
-    
+
+    private static final Logger log = LogManager.getLogger(PSSiteSuckerTest.class);
+
     public void testSiteSucker() throws Exception
     {
         PSSecurityWsLocator.getSecurityWebservice().login(request, response, "Admin", "demo", null,
@@ -120,7 +127,16 @@ public class PSSiteSuckerTest extends PSServletTestCase
 
             File xsltFile = new File(ENTRIES_TEMPLATE_FILE);
             
-            DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilderFactory docFactory = PSSecureXMLUtils.getSecuredDocumentBuilderFactory(
+                    new PSXmlSecurityOptions(
+                            true,
+                            true,
+                            true,
+                            false,
+                            true,
+                            false
+                    )
+            );
             DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
             
             // root elements
@@ -169,6 +185,7 @@ public class PSSiteSuckerTest extends PSServletTestCase
             // write the content into xml file
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
+
             DOMSource source = new DOMSource(doc);
             StreamResult result = new StreamResult(new File(ENTRIES_XML_FILE));
          
@@ -182,7 +199,8 @@ public class PSSiteSuckerTest extends PSServletTestCase
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
     }
 
@@ -227,8 +245,7 @@ public class PSSiteSuckerTest extends PSServletTestCase
      * @return The created PSSite object never null, server throws RuntimeException if there is an error creating the site.
      * @throws MalformedURLException if the supplied url is malformed.
      */
-    private PSSite createSiteFromURL(String siteUrl) throws MalformedURLException
-    {
+    private PSSite createSiteFromURL(String siteUrl) throws MalformedURLException, PSSiteImportException, PSValidationException {
         String siteUrlToImport = siteUrl;
         if (!siteUrl.startsWith("http://") && !siteUrl.startsWith("https://"))
         {
@@ -365,7 +382,8 @@ public class PSSiteSuckerTest extends PSServletTestCase
             }
             catch (FileNotFoundException e)
             {
-                e.printStackTrace();
+                log.error(PSExceptionUtils.getMessageForLog(e));
+                log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             }
             return sb.toString();
         }

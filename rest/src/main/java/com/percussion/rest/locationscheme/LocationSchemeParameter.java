@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -25,26 +25,25 @@
 package com.percussion.rest.locationscheme;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "LocationSchemeParameter")
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@ApiModel(description = "Represents a Location Scheme Parameter")
+@Schema(description = "Represents a Location Scheme Parameter")
 public class LocationSchemeParameter {
 
-    @ApiModelProperty(name="name", value="The globally unique name of this parameter")
+    @Schema(name="name", description="The globally unique name of this parameter")
     String name;
 
-    @ApiModelProperty(name = "sequence", value = "The order of this parameter")
+    @Schema(name = "sequence", description = "The order of this parameter")
     Integer sequence;
 
-    @ApiModelProperty(name = "type", value = "The type of this parameter")
+    @Schema(name = "type", description = "The type of this parameter")
     String type;
 
-    @ApiModelProperty(name="value",value="The value for this parameter")
+    @Schema(name="value",description="The value for this parameter")
     String value;
 
     public LocationSchemeParameter(){}

@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -31,6 +31,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+@Deprecated
 public class PSContentTypesContext implements IPSContentTypesContext
 {
   private boolean invokedStandalone = false;
@@ -128,16 +129,16 @@ public class PSContentTypesContext implements IPSContentTypesContext
     {
     }
   }
-  
+
   /**
    * static constant string that represents the qualified table name.
    */
   static private String TABLE_CTC =
      PSConnectionMgr.getQualifiedIdentifier("CONTENTTYPES");
 
-  private static final String QRYSTRING = 
-   "SELECT " + 
-   TABLE_CTC + ".CONTENTTYPENAME," + 
+  private static final String QRYSTRING =
+   "SELECT " +
+   TABLE_CTC + ".CONTENTTYPENAME," +
    TABLE_CTC + ".CONTENTTYPEDESC," +
    TABLE_CTC + ".CONTENTTYPENEWREQUEST," +
    TABLE_CTC + ".CONTENTTYPEQUERYREQUEST," +

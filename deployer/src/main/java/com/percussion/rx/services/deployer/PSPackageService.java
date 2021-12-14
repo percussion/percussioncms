@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -29,6 +29,7 @@ import com.percussion.rx.config.data.PSConfigStatus;
 import com.percussion.rx.config.data.PSConfigStatus.ConfigStatus;
 import com.percussion.rx.services.deployer.PSPkgUiResponse.PSPkgUiResponseType;
 import com.percussion.server.PSServer;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.pkginfo.IPSPkgInfoService;
 import com.percussion.services.pkginfo.PSPkgInfoServiceLocator;
 import com.percussion.services.pkginfo.data.PSPkgElement;
@@ -37,14 +38,17 @@ import com.percussion.services.pkginfo.data.PSPkgInfo.PackageAction;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.types.PSPair;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -65,6 +69,7 @@ public class PSPackageService
 {
    @GET
    @Path("/packages")
+   @Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
    public PSPackages getAllPackages()
    {
       PSPackages packages = new PSPackages();
@@ -94,6 +99,7 @@ public class PSPackageService
 
    @GET
    @Path("/reapplyVisibility")
+   @Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
    public PSPkgUiResponse reapplyVisibility(@QueryParam("packageNames")
    String packageNames)
    {
@@ -122,6 +128,7 @@ public class PSPackageService
    
    @GET
    @Path("/reapplyConfigs")
+   @Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
    public PSPkgUiResponse reapplyConfiguration(@QueryParam("packageNames")
    String packageNames)
    {
@@ -150,6 +157,7 @@ public class PSPackageService
 
    @GET
    @Path("/packageCommunities")
+   @Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
    public PSPackageCommunities getPackageCommunities()
    {
       
@@ -178,7 +186,7 @@ public class PSPackageService
    private Map<IPSGuid, String> getPkgCommsMap(Map<IPSGuid, String> pkgInfomap)
    {
       IPSConfigService srv = PSConfigServiceLocator.getConfigService();
-      Map<IPSGuid, String> result = new HashMap<IPSGuid, String>();
+      Map<IPSGuid, String> result = new HashMap<>();
       for (Map.Entry<IPSGuid, String> pkg : pkgInfomap.entrySet())
       {
          Collection<String> names = srv.loadCommunityVisibility(pkg.getValue());         
@@ -190,6 +198,7 @@ public class PSPackageService
    
    @GET
    @Path("/communityPackages")
+   @Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
    public PSCommunityPackages getCommunityPackages()
    {
       PSCommunityPackages commPkgs = PSPackageServiceHelper.getCommunityPackages();
@@ -199,6 +208,7 @@ public class PSPackageService
    @POST
    @Path("/updatePackageCommunities")
    @Consumes("application/x-www-form-urlencoded")
+   @Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
    public PSPkgUiResponse postUpdatePackageCommunities(
          @QueryParam("packageName")
          String packageName, @QueryParam("selectedComms")
@@ -222,6 +232,7 @@ public class PSPackageService
    @POST
    @Path("/updateCommunityPackages")
    @Consumes("application/x-www-form-urlencoded")
+   @Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
    public PSPkgUiResponse postUpdateCommunityPackages(
          @QueryParam("communityName")
          String communityName, @QueryParam("selectedPkgs")
@@ -244,9 +255,9 @@ public class PSPackageService
    @POST
    @Path("/uninstallPackage")
    @Consumes("application/x-www-form-urlencoded")
+   @Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
    public PSUninstallMessages postUninstallPackage(@QueryParam("packageName")
-   String packageNames)
-   {
+   String packageNames) throws PSNotFoundException {
       PSUninstallMessages msgs = new PSUninstallMessages();
       PSPackageUninstall pkgUninstall = new PSPackageUninstall();
       msgs.setMessages(pkgUninstall.uninstallPackages(packageNames));
@@ -256,10 +267,10 @@ public class PSPackageService
    @POST
    @Path("/checkPackageDependencies")
    @Consumes("application/x-www-form-urlencoded")
+   @Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
    public PSUninstallMessages postCheckPackageDependencies(
          @QueryParam("packageName")
-         String packageName)
-   {
+         String packageName) throws PSNotFoundException {
       PSUninstallMessages msgs = new PSUninstallMessages();
       PSPackageUninstall pkgUninstall = new PSPackageUninstall();
       msgs.setMessages(pkgUninstall.checkPackageDepedencies(packageName));
@@ -268,6 +279,7 @@ public class PSPackageService
 
    @GET
    @Path("/validationResults")
+   @Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
    public PSPkgUiResponse getValidationResults(@QueryParam("packageName")
    String packageName)
    {
@@ -286,6 +298,7 @@ public class PSPackageService
 
    @GET
    @Path("serverTimeout")
+   @Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
    public PSPkgUiResponse getServerTimeout()
    {
       int sto = PSServer.getServerConfiguration().getUserSessionTimeout();
@@ -297,6 +310,7 @@ public class PSPackageService
    @POST
    @Path("/convertPackage")
    @Consumes("application/x-www-form-urlencoded")
+   @Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
    public PSPkgUiResponse postConvertPackage(
          @QueryParam("packageName")
          String packageName)
@@ -342,7 +356,7 @@ public class PSPackageService
          updatePkgComms(pkg, commList, false);
       }
       List<PSPkgInfo> pInfos = getPkgService().findAllPkgInfos();
-      List<IPSGuid> objectGuids = new ArrayList<IPSGuid>();
+      List<IPSGuid> objectGuids = new ArrayList<>();
       for (PSPkgInfo info : pInfos)
       {
          if (pkgs.contains(info.getPackageDescriptorName()))
@@ -390,7 +404,7 @@ public class PSPackageService
     */
    private List<String> getListFromString(String commaList)
    {
-      List<String> nameList = new ArrayList<String>();
+      List<String> nameList = new ArrayList<>();
       if (StringUtils.isNotBlank(commaList))
       {
          String[] commNames = commaList.split(NAME_SEPARATOR);
@@ -487,6 +501,6 @@ public class PSPackageService
   /**
    * The logger for this class.
    */
-  private static Logger ms_logger = Logger.getLogger("PSPackageService");
+  private static final Logger ms_logger = LogManager.getLogger("PSPackageService");
 
 }

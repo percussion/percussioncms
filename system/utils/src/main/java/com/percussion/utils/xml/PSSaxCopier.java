@@ -17,28 +17,28 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.utils.xml;
 
-import static com.percussion.utils.xml.PSSaxHelper.canBeSelfClosedElement;
-
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamWriter;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import com.percussion.security.xml.PSCatalogResolver;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.ext.DefaultHandler2;
+
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
+import static com.percussion.utils.xml.PSSaxHelper.canBeSelfClosedElement;
 
 /**
  * A sax content handler that outputs the input SAX events to a new XML document
@@ -53,7 +53,7 @@ public class PSSaxCopier extends DefaultHandler2
    /**
     * Logger for the sax copier
     */
-   private static Log ms_log = LogFactory.getLog(PSSaxCopier.class);
+   private static final Logger ms_log = LogManager.getLogger(PSSaxCopier.class);
    
    /**
     * The stream writer, initialized in the Ctor and never modified
@@ -289,7 +289,7 @@ public class PSSaxCopier extends DefaultHandler2
    @Override
    public InputSource resolveEntity(String publicId, String systemId) throws IOException, SAXException
    {
-      PSEntityResolver resolver = PSEntityResolver.getInstance();
+      PSCatalogResolver resolver = new PSCatalogResolver();
       return resolver.resolveEntity(publicId, systemId);
    }
 
@@ -412,7 +412,7 @@ public class PSSaxCopier extends DefaultHandler2
    @Override
    public InputSource resolveEntity(String name, String publicId, String baseURI, String systemId) throws SAXException, IOException
    {
-      PSEntityResolver resolver = PSEntityResolver.getInstance();
+      PSCatalogResolver resolver = new PSCatalogResolver();
       return resolver.resolveEntity(publicId, systemId);
    }
 

@@ -17,32 +17,15 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.secure.services;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Hashtable;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import javax.naming.Context;
-import javax.naming.NamingException;
-import javax.naming.AuthenticationException;
-import javax.naming.OperationNotSupportedException;
-import javax.naming.directory.DirContext;
-import javax.naming.directory.SearchControls;
-import javax.naming.ldap.InitialLdapContext;
-
-
-import org.springframework.ldap.core.support.DefaultDirObjectFactory;
-import org.springframework.util.StringUtils;
 import org.springframework.ldap.core.DirContextOperations;
 import org.springframework.ldap.core.DistinguishedName;
+import org.springframework.ldap.core.support.DefaultDirObjectFactory;
 import org.springframework.ldap.support.LdapUtils;
 import org.springframework.security.authentication.AccountExpiredException;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -61,6 +44,21 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.ldap.SpringSecurityLdapTemplate;
 import org.springframework.security.ldap.authentication.AbstractLdapAuthenticationProvider;
 import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
+
+import javax.naming.AuthenticationException;
+import javax.naming.Context;
+import javax.naming.NamingException;
+import javax.naming.OperationNotSupportedException;
+import javax.naming.directory.DirContext;
+import javax.naming.directory.SearchControls;
+import javax.naming.ldap.InitialLdapContext;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Hashtable;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
 * Works to provide authentication for Active Directory users 
@@ -208,7 +206,7 @@ public class PSLdapMembershipAuthProvider extends AbstractLdapAuthenticationProv
            logger.debug("'memberOf' attribute values: " + Arrays.asList(groups));
        }
 
-       ArrayList<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>(groups.length);
+       ArrayList<GrantedAuthority> authorities = new ArrayList<>(groups.length);
 
        for (String group : groups) {
            authorities.add(new SimpleGrantedAuthority(new DistinguishedName(group).removeLast().getValue()));
@@ -222,7 +220,7 @@ public class PSLdapMembershipAuthProvider extends AbstractLdapAuthenticationProv
        final String bindUrl = url;
        DirContext dirContext = null;
 
-       Hashtable<String,String> env = new Hashtable<String,String>();
+       Hashtable<String,String> env = new Hashtable<>();
        env.put(Context.SECURITY_AUTHENTICATION, "simple");
        String bindPrincipal = createBindPrincipal(username);
        env.put(Context.SECURITY_PRINCIPAL, bindPrincipal);

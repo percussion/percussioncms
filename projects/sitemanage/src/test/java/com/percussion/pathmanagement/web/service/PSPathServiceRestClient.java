@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -28,16 +28,15 @@ import com.percussion.pathmanagement.data.PSDeleteFolderCriteria;
 import com.percussion.pathmanagement.data.PSFolderProperties;
 import com.percussion.pathmanagement.data.PSItemByWfStateRequest;
 import com.percussion.pathmanagement.data.PSMoveFolderItem;
-import com.percussion.share.data.PSPagedItemList;
 import com.percussion.pathmanagement.data.PSPathItem;
 import com.percussion.pathmanagement.data.PSRenameFolderItem;
 import com.percussion.share.data.PSItemProperties;
 import com.percussion.share.data.PSNoContent;
+import com.percussion.share.data.PSPagedItemList;
 import com.percussion.share.test.PSDataServiceRestClient;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.List;
-
-import org.apache.commons.lang.StringUtils;
 
 public class PSPathServiceRestClient extends PSDataServiceRestClient<PSPathItem>
 {

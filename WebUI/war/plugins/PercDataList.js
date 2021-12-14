@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -59,9 +59,9 @@
             selectedItem: function(){},
             truncateEntries:false,
             truncateEntriesCount:5
-         }   
+         };
     var currentItemList = [];
-    var currentItemIds = new Object();
+    var currentItemIds = {};
     var currentItemSelected = "";
         
     function init(container, config) {
@@ -69,7 +69,7 @@
         container.data('options', options);
         var head = $('<div class="perc-item-list-label" />')
                    .html(options.title);
-        container.append(head)                   
+        container.append(head);
         //At the top we could show a add or delete button
         if (options.enableDelete)
             container.find('.perc-item-list-label').append($('<div class="perc-item-delete-button" />').attr('title', options.deleteTitle));
@@ -81,10 +81,10 @@
         
         var list = $('<div class="perc-itemname-list" />').append($("<ul/>"));
         container.append(list);
-        updateList(container, [])
+        updateList(container, []);
         
         //bind create event
-        container.find(".perc-item-add-button").unbind().click(function(){
+        container.find(".perc-item-add-button").off("click").on("click",function(){
             var options = container.data('options');
             if (typeof(options.createItem) == 'function') {                
                 options.createItem();
@@ -92,14 +92,14 @@
         });        
         //bind collapsible event
 
-        container.find("#perc-wf-min-max").unbind().click(function() {
+        container.find("#perc-wf-min-max").off("click").on("click",function() {
             $(this).toggleClass('perc-items-minimizer').toggleClass('perc-items-maximizer');
            container.find('.perc-itemname-list').slideToggle("fast");
         
         });
         
         //bind the delete event for each element         
-        container.find(".perc-item-delete-button").unbind().click(function(event) {
+        container.find(".perc-item-delete-button").off("click").on("click",function(event) {
             var options = container.data('options');
             event.stopPropagation(); // stop event because it is nested inside an element that is already bound
             if (typeof(options.deleteItem) == 'function')
@@ -133,12 +133,12 @@
                     
                 }
                 ulRoot.append(htmlLi);
-                if(options.truncateEntries && i==options.truncateEntriesCount)
+                if(options.truncateEntries && i===options.truncateEntriesCount)
                 {
                     ulRoot.append('<li class="perc-moreLink perc-visible" style = "display:block" title = "more">more</li>');                
                 }
                 
-                if(options.truncateEntries && i==itemList.length-1)
+                if(options.truncateEntries && i===itemList.length-1)
                 {
                     ulRoot.append('<li class="perc-lessLink perc-hidden" style = "display:none" title = "less">less</li>');         
                 }                
@@ -147,7 +147,7 @@
         activateMoreLessLink(container);
                 
         //bind select event on each element
-        ulRoot.find(".perc-itemname").unbind().click(function(event){
+        ulRoot.find(".perc-itemname").off("click").on("click",function(event){
             var item = $(this).data('item');
             dirtyController.confirmIfDirty(function(){
                 if (typeof(options.selectedItem) == 'function')
@@ -158,7 +158,7 @@
     
     // Bind the click event to more/less link. Toggle the display of 'truncated entries', 'more link' and 'less link' on click.
     function activateMoreLessLink(container) {
-           $(container).find(".perc-moreLink, .perc-lessLink").click(function(){
+           $(container).find(".perc-moreLink, .perc-lessLink").on("click",function(){
             $(container).find('.perc-more-list, .perc-moreLink, .perc-lessLink').toggle().toggleClass('perc-visible perc-hidden');
         });
     }
@@ -194,8 +194,8 @@
         var options = container.data('options');
         if (options.enableAdd){
             container.find(".perc-item-add-button")
-                .unbind()
-                .click(function(){
+                .off("click")
+                .on("click",function(){
                     if (typeof(options.createItem) == 'function')
                         options.createItem();
                 })
@@ -208,8 +208,8 @@
         var options = container.data('options');
         if (options.enableDelete){
             container.find(".perc-item-delete-button")
-                .unbind()
-                .click(function(event){
+                .off("click")
+                .on("click",function(event){
                     event.stopPropagation(); // stop event because it is nested inside an element that is already bound
                     if (typeof(options.deleteItem) == 'function')
                             options.deleteItem(currentItemSelected);
@@ -228,7 +228,7 @@
         var options = container.data('options');
         if (options.enableAdd){
             container.find(".perc-item-add-button")
-                .unbind()
+                .off()
                 .addClass("perc-item-disabled")
                 .removeClass("perc-item-enabled");
         }
@@ -238,7 +238,7 @@
         var options = container.data('options');
         if (options.enableDelete){
             container.find(".perc-item-delete-button")
-                .unbind()
+                .off()
                 .removeClass("perc-item-enabled")
                 .addClass("perc-item-disabled");
         }

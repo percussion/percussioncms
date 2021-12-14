@@ -17,13 +17,11 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.sitemanage.servlet;
-
-import static java.util.Arrays.asList;
 
 import com.percussion.assetmanagement.data.PSAsset;
 import com.percussion.assetmanagement.service.IPSAssetService;
@@ -35,20 +33,22 @@ import com.percussion.pagemanagement.service.IPSPageService;
 import com.percussion.pagemanagement.service.PSSiteDataServletTestCaseFixture;
 import com.percussion.server.PSServer;
 import com.percussion.share.service.IPSIdMapper;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.spring.PSSpringWebApplicationContextUtils;
 import com.percussion.test.PSServletTestCase;
 import com.percussion.utils.testing.IntegrationTest;
 import com.percussion.webservices.content.IPSContentWs;
 import com.percussion.webservices.system.IPSSystemWs;
-
-import java.net.URL;
-
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.UsernamePasswordCredentials;
 import org.apache.commons.httpclient.auth.AuthScope;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.junit.Assert;
 import org.junit.experimental.categories.Category;
+
+import java.net.URL;
+
+import static java.util.Arrays.asList;
 
 //@Ignore("If you want to run these unit tests, adjust the SERVER_URL constant and start your CMS " + "server.")
 @Category(IntegrationTest.class)
@@ -238,8 +238,7 @@ public class PSPreviewItemContentTest extends PSServletTestCase
      * @return the id of the created page, never blank.
      */
     private String createPage(String name, String title, String templateId, String folderPath, String linkTitle,
-            String url, String noindex, String description)
-    {
+            String url, String noindex, String description) throws PSDataServiceException {
         PSPage page = new PSPage();
         page.setFolderPath(folderPath);
         page.setName(name);

@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -84,7 +84,7 @@
         			{
                         var myrules = ss[i].cssRules ? ss[i].cssRules : ss[i].rules;
         				var cssRulesSize = myrules.length;
-                        if(cssRulesSize == 0)
+                        if(cssRulesSize === 0)
                         {
                             cssError = I18N.message("perc.ui.layout.error.dialog@File Not found") + ss[i].href;
             				percCssErrors.push(cssError);
@@ -117,13 +117,13 @@
                         listWrapper += '<li class = "perc-import-error-list-item perc-css-errors" title = "'+ percCssErrors[errors] +'">' + cssIndex + '. ' + percCssErrors[errors] + '</li>';
                     }     
                 }
-                if (percCssErrors.length == 0 && percJSErrors.length == 0) {
+                if (percCssErrors.length === 0 && percJSErrors.length === 0) {
                     listWrapper += '<li class = "perc-no-errors"> No errors found.</li>';
                 }
                 listWrapper += '</ul>';
 
                 var wrapper = $("<div id='perc-error-wrapper' />").append(listWrapper);
-                return $("<div id='perc-layout-error-table' style='max-height: 300px;' />").append(wrapper)
+                return $("<div id='perc-layout-error-table' style='max-height: 300px;' />").append(wrapper);
             }
 
             
@@ -136,6 +136,6 @@
             }            
         }
         return percLayoutErrorDialogApi;
-    }
+    };
     
 })(jQuery);

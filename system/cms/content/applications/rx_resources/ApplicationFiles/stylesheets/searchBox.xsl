@@ -1,13 +1,15 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!DOCTYPE xsl:stylesheet [
-	<!ENTITY % HTMLlat1 SYSTEM "/Rhythmyx/DTD/HTMLlat1x.ent">
-		%HTMLlat1;
-	<!ENTITY % HTMLsymbol SYSTEM "/Rhythmyx/DTD/HTMLsymbolx.ent">
-		%HTMLsymbol;
-	<!ENTITY % HTMLspecial SYSTEM "/Rhythmyx/DTD/HTMLspecialx.ent">
-		%HTMLspecial;
+        <!ENTITY % HTMLlat1 PUBLIC "-//W3C//ENTITIES_Latin_1_for_XHTML//EN" "https://www.percussion.com/DTD/HTMLlat1x.ent">
+        %HTMLlat1;
+        <!ENTITY % HTMLsymbol PUBLIC "-//W3C//ENTITIES_Symbols_for_XHTML//EN" "https://www.percussion.com/DTD/HTMLsymbolx.ent">
+        %HTMLsymbol;
+        <!ENTITY % HTMLspecial PUBLIC "-//W3C//ENTITIES_Special_for_XHTML//EN" "https://www.percussion.com/DTD/HTMLspecialx.ent">
+        %HTMLspecial;
 ]>
-<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" exclude-result-prefixes="psxi18n" xmlns:psxi18n="urn:www.percussion.com/i18n" > 
+<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns="http://www.w3.org/1999/xhtml"
+                extension-element-prefixes="psxi18n" exclude-result-prefixes="psxi18n">
 <xsl:template name="searchBox"> 
 <form name="Admin_SearchResults" action="Admin_SearchResults.html" method="post">
   <table width="150" height="100%" cellspacing="0" cellpadding="4" border="0">
@@ -44,7 +46,7 @@
                   <td class="outerboxcell"> 
                     <input type="text" name="enddate" size="4" class="datadisplay" />
                     &#160; <a href="javascript:onmousedown=getMonth_and_Date(document.Admin_SearchResults,'enddate');putcal(document.Admin_SearchResults,'enddate')"> 
-                    <img height="20" alt="Calendar Pop-up" src="../rx_resources/images/cal.gif" width="20" border="0" /></a> 
+                    <img height="20" alt="Calendar Pop-up" src="/rx_resources/images/cal.gif" width="20" border="0" /></a>
                   </td>
                 </tr>
                 <tr> 
@@ -52,7 +54,7 @@
                   <td class="outerboxcell"> 
                     <input type="text" name="startdate" size="4" class="datadisplay" />
                     &#160; <a href="javascript:onmousedown=getMonth_and_Date(document.Admin_SearchResults,'startdate');putcal(document.Admin_SearchResults,'startdate')"> 
-                    <img height="20" alt="Calendar Pop-up" src="../rx_resources/images/cal.gif" width="20" border="0" /></a> 
+                    <img height="20" alt="Calendar Pop-up" src="/rx_resources/images/cal.gif" width="20" border="0" /></a>
                   </td>
                 </tr>
                 <tr class="datacell2"> 

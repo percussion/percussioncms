@@ -17,16 +17,18 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.tools.simple;
 
-import com.percussion.utils.security.PSEncryptor;
-import com.percussion.utils.security.deprecated.PSCryptographer;
-import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
+import com.percussion.legacy.security.deprecated.PSCryptographer;
+import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
+import com.percussion.security.PSEncryptor;
+import com.percussion.security.xml.PSSecureXMLUtils;
+import com.percussion.security.xml.PSXmlSecurityOptions;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -73,7 +75,16 @@ public class PSPrepForConvert
 
      try
       {
-         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+         DocumentBuilderFactory factory = PSSecureXMLUtils.getSecuredDocumentBuilderFactory(
+                 new PSXmlSecurityOptions(
+                         true,
+                         true,
+                         true,
+                         false,
+                         true,
+                         false
+                 )
+         );
          factory.setIgnoringElementContentWhitespace(true);
          m_docBuilder =
             factory.newDocumentBuilder();
@@ -186,37 +197,38 @@ public class PSPrepForConvert
                 props.getProperty(USERID_PROP_KEY)));
           rxprops.setProperty("UID", props.getProperty(USERID_PROP_KEY));
 
-          FileOutputStream fout = null;
-          try
+
+          try(FileOutputStream fout =new FileOutputStream(file))
           {
-             fout = new FileOutputStream(file);
              rxprops.store(fout, null);
           }
-          finally
-          {
-             if(fout != null)
-                fout.close();
-          }
-
 
        }
 
     }
 
+   /***
+    * @deprecated
+    * @param pwd
+    * @param uid
+    * @return
+    */
     @Deprecated
     private String decrypt(String pwd, String uid)
     {
        String ret;
 
        try {
-          ret = PSEncryptor.getInstance().decrypt(pwd);
+          ret = PSEncryptor.decryptString(m_serverBase.getPath(),pwd);
        }catch(Exception ex){
           ret = PSCryptographer.decrypt(
-                  PSLegacyEncrypter.OLD_SECURITY_KEY(),
+                  PSLegacyEncrypter.getInstance(
+                          m_serverBase.getPath().concat(PSEncryptor.SECURE_DIR)
+                  ).OLD_SECURITY_KEY(),
                   uid,
                   pwd);
        }
-       return pwd;
+       return ret;
     }
 
    /**

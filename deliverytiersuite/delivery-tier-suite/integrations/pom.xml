@@ -18,7 +18,7 @@
   ~      Burlington, MA 01803, USA
   ~      +01-781-438-9900
   ~      support@percussion.com
-  ~      https://www.percusssion.com
+  ~      https://www.percussion.com
   ~
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   -->
@@ -29,7 +29,7 @@
     <parent>
         <groupId>com.percussion.deliverytier</groupId>
         <artifactId>delivery-tier-suite</artifactId>
-        <version>8.0.2.10</version>
+        <version>8.0.3</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -307,7 +307,7 @@
             <plugin>
                 <groupId>axis</groupId>
                 <artifactId>wsdl2java-maven-plugin</artifactId>
-                <version>${axis.version}</version>
+                <version>1.4.1</version>
             </plugin>
 
             <plugin>

@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -26,13 +26,22 @@ package com.percussion.converters.variantconverter;
 import com.percussion.cms.objectstore.PSItemDefinition;
 import com.percussion.cms.objectstore.client.PSRemoteAgent;
 import com.percussion.cms.objectstore.client.PSRemoteException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.inlinelinkconverter.PSInlineLinkConverter;
-import com.percussion.tablefactory.install.RxLogTables;
 import com.percussion.tablefactory.PSJdbcDbmsDef;
+import com.percussion.tablefactory.install.RxLogTables;
 import com.percussion.util.PSRemoteRequester;
 import com.percussion.util.PSSqlHelper;
 import com.percussion.util.PSStringOperation;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -52,13 +61,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import org.apache.commons.lang.ArrayUtils;
-import org.apache.commons.lang.StringUtils;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
-
 /**
  * This is a converter tool class for converting variant ids from old to new in
  * the inline content and in relationships. This is intended for clients moving
@@ -71,6 +73,8 @@ import org.xml.sax.SAXException;
  */
 public class PSVariantConverter
 {
+
+   private static final Logger log = LogManager.getLogger(PSVariantConverter.class);
 
    /**
     * Updates the regular slot relationships by replacing the old variant id
@@ -132,7 +136,8 @@ public class PSVariantConverter
       }
       catch (Exception e)
       {
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
       finally
       {
@@ -249,7 +254,8 @@ public class PSVariantConverter
       }
       catch (IOException e)
       {
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
       System.exit(-1);
    }
@@ -392,18 +398,21 @@ public class PSVariantConverter
       }
       catch (FileNotFoundException e)
       {
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          exitProgram("Unable to locate file: " + DEFAULT_PROPERTIES_FILE);
       }
       catch (IOException e)
       {
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          exitProgram("Error loading properties from file ("
                + DEFAULT_PROPERTIES_FILE + "): " + e.toString());
       }
       catch (PSRemoteException e)
       {
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          exitProgram("Error loading the content type for the given " +
                 "property contentType");
       }
@@ -430,18 +439,21 @@ public class PSVariantConverter
       }
       catch (FileNotFoundException e)
       {
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          exitProgram("Unable to locate file: " + VARIANTS_CONVERTER_XSL);
       }
       catch (IOException e)
       {
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          exitProgram("Error loading xsl file (" + VARIANTS_CONVERTER_XSL
                + "): " + e.toString());
       }
       catch (SAXException e)
       {
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          exitProgram("Error parsing xsl file (" + VARIANTS_CONVERTER_XSL
                + "): " + e.toString());
       }
@@ -479,7 +491,8 @@ public class PSVariantConverter
          }
          catch (Exception e)
          {
-            e.printStackTrace();
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             exitProgram("Error - caught unknown exception: " + e.getMessage());
          }
          
@@ -594,7 +607,8 @@ public class PSVariantConverter
       }
       catch (Exception e)
       {
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
    }
    
@@ -628,7 +642,8 @@ public class PSVariantConverter
       }
       catch (Exception e)
       {
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
       finally
       {

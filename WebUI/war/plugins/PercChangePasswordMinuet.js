@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -35,12 +35,12 @@
 
     function submitNewPassword() {
         validateNewPassword();
-        if(validPassword == true) {
+        if(validPassword === true) {
             startProcessRunningAlert();
             userInfo.password = $('#percNewPassword').val();
             payload = {};
             payload.User = userInfo;
-            $j.PercUserService.changePassword(payload, submitNewPasswordCallback);
+            $.PercUserService.changePassword(payload, submitNewPasswordCallback);
         }
         else {
             $('.perc-change-password-error > span').fadeOut('fast', function() {
@@ -56,7 +56,7 @@
             response = {};
             response.result = {};
             response.source = I18N.message("perc.ui.common.label@Change Password");
-            if( status == 'success' ) {
+            if( status === 'success' ) {
                 response.result.status = I18N.message("perc.ui.common.label@Change Password Success") + ' ' + result.User.name;
                 togglePassword();
             }
@@ -80,7 +80,7 @@
             oldPasswordErrorText = '\xa0';
         }
 
-        if( $('#percNewPassword').val() != $('#percConfirmNewPassword').val() ) {
+        if( $('#percNewPassword').val() !== $('#percConfirmNewPassword').val() ) {
             validPassword = false;
             passwordErrorText = I18N.message("perc.ui.common.label@Password Match");
         }
@@ -93,7 +93,7 @@
             passwordErrorText = '\xa0';
         }
 
-        if(  passwordErrorText != oldPasswordErrorText ) {
+        if(  passwordErrorText !== oldPasswordErrorText ) {
             $('.perc-change-password-error > span').fadeOut('fast', function() {
                 $('.perc-change-password-error > span').text(passwordErrorText);
             });
@@ -116,7 +116,7 @@
                 navigationEscapeListener(true);
                 $('#percNavigationBody').modal('_enforceFocus');
                 $('#percPasswordDialogTarget').hide();
-                $('.perc-toggle-password').focus();
+                $('.perc-toggle-password').trigger('focus');
             });
         }
 
@@ -125,10 +125,10 @@
     function getUserInfo() {
         userInfo = {};
         passwordDialog = {};
-        userInfo.name = $j.PercNavigationManager.getUserName();
-        $j.PercUserService.findUser(userInfo.name, function (status, response) {
-            if (status !== $j.PercUserService.STATUS_ERROR) {
-                userInfo.roles = $j.perc_utils.convertCXFArray(response.User.roles);
+        userInfo.name = $.PercNavigationManager.getUserName();
+        $.PercUserService.findUser(userInfo.name, function (status, response) {
+            if (status !== $.PercUserService.STATUS_ERROR) {
+                userInfo.roles = $.perc_utils.convertCXFArray(response.User.roles);
                 userInfo.email = response.User.email;
                 if (response.User.providerType !== 'INTERNAL') {
                     // Hide the change password option if we are an external user

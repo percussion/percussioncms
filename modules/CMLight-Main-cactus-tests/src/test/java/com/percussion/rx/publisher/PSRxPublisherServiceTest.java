@@ -17,27 +17,11 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.rx.publisher;
-
-import com.percussion.design.objectstore.PSLocator;
-import com.percussion.rx.publisher.IPSPublisherJobStatus.State;
-import com.percussion.rx.publisher.data.PSDemandWork;
-import com.percussion.services.catalog.PSTypeEnum;
-import com.percussion.services.error.PSNotFoundException;
-import com.percussion.services.guidmgr.IPSGuidManager;
-import com.percussion.services.guidmgr.PSGuidManagerLocator;
-import com.percussion.services.guidmgr.data.PSGuid;
-import com.percussion.services.publisher.IPSPubItemStatus;
-import com.percussion.services.publisher.IPSPublisherService;
-import com.percussion.services.publisher.PSPublisherServiceLocator;
-import com.percussion.utils.guid.IPSGuid;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import com.percussion.utils.testing.IntegrationTest;
 import org.apache.cactus.ServletTestCase;

@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -28,16 +28,15 @@ import com.percussion.i18n.tmxdom.PSTmxDocument;
 import com.percussion.util.PSFileFilter;
 import com.percussion.util.PSFilteredFileList;
 import com.percussion.utils.tools.PSPatternMatcher;
-import com.percussion.utils.*;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 /**
  * This class is to generate a single TMX Document out of all TMX resource
@@ -114,11 +113,13 @@ public class PSExtensionResourcesSectionHandler extends PSIdleDotter
                file = (File)listFiles.get(i);
                PSCommandLineProcessor.logMessage("processingFile",
                   file.getCanonicalPath());
-               doc = PSXmlDocumentBuilder.createXmlDocument(
-                  new InputStreamReader(
-                     new FileInputStream(file), "UTF8"), false);
-               tmxDocTemp = new PSTmxDocument(doc);
-               tmxDoc.merge(tmxDocTemp);
+               try(InputStreamReader ir = new InputStreamReader(
+                       new FileInputStream(file), StandardCharsets.UTF_8) ) {
+                  doc = PSXmlDocumentBuilder.createXmlDocument(ir
+                          , false);
+                  tmxDocTemp = new PSTmxDocument(doc);
+                  tmxDoc.merge(tmxDocTemp);
+               }
             }
             catch(Exception e)
             {

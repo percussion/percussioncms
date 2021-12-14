@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -17,18 +17,17 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.rx.delivery.impl;
 
-import static org.apache.commons.lang.StringUtils.isBlank;
-import static org.apache.commons.lang.Validate.notNull;
-
 import com.percussion.rx.delivery.IPSDeliveryItem;
 import com.percussion.rx.delivery.IPSDeliveryResult;
 import com.percussion.rx.delivery.IPSDeliveryResult.Outcome;
+import com.percussion.security.xml.PSSecureXMLUtils;
+import com.percussion.security.xml.PSXmlSecurityOptions;
 import com.percussion.services.pubserver.IPSDatabasePubServerFilesService;
 import com.percussion.services.pubserver.IPSPubServer;
 import com.percussion.services.pubserver.IPSPubServerDao;
@@ -42,11 +41,28 @@ import com.percussion.tablefactory.PSJdbcTableFactory;
 import com.percussion.utils.jdbc.PSJdbcUtils;
 import com.percussion.utils.xml.PSSaxCopier;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.xml.sax.Attributes;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
 
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+import javax.xml.stream.XMLOutputFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.io.StringWriter;
+import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -54,24 +70,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
-import javax.xml.stream.XMLOutputFactory;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamWriter;
-
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.xml.sax.Attributes;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-import org.xml.sax.helpers.DefaultHandler;
+import static org.apache.commons.lang.StringUtils.isBlank;
+import static org.apache.commons.lang.Validate.notNull;
 
 /**
  * The database delivery handler delivers content to a database. The database
@@ -375,14 +375,14 @@ public class PSDatabaseDeliveryHandler extends PSBaseDeliveryHandler
        * and the resulting connection.
        */
       private Map<DbmsInfo, DbmsConnection> m_connections =
-            new HashMap<DbmsInfo, DbmsConnection>();
+            new HashMap<>();
 
       /**
        * Maintain the connections for the different jobs. Connections are
        * established and cleared when the job commits.
        */
       private static Map<Long, Connections> ms_jobConnections
-            = new HashMap<Long, Connections>();
+            = new HashMap<>();
 
       /**
        * Obtain information for a given {@link DbmsInfo}.
@@ -490,7 +490,7 @@ public class PSDatabaseDeliveryHandler extends PSBaseDeliveryHandler
        * table schema is copied. The value is a set of primary key column names.
        */
       Map<String, Set<String>> m_primaryKeys =
-            new HashMap<String, Set<String>>();
+            new HashMap<>();
 
       /**
        * The current primary keys. This field is set during the data copying
@@ -553,7 +553,7 @@ public class PSDatabaseDeliveryHandler extends PSBaseDeliveryHandler
             Set<String> keys = m_primaryKeys.get(m_currentTableDef);
             if (keys == null)
             {
-               keys = new HashSet<String>();
+               keys = new HashSet<>();
                m_primaryKeys.put(m_currentTableDef, keys);
             }
             keys.add(m_nameCapture.toString().trim());
@@ -653,25 +653,36 @@ public class PSDatabaseDeliveryHandler extends PSBaseDeliveryHandler
          @SuppressWarnings("unused") String path)
          throws Exception
    {
-      InputStream is = new FileInputStream(result.getResultFile());
-      InputSource src = new InputSource(is);
-      XMLOutputFactory ofact = XMLOutputFactory.newInstance();
-      StringWriter writer = new StringWriter();
-      XMLStreamWriter formatter = ofact.createXMLStreamWriter(writer);
+      try(InputStream is = new FileInputStream(result.getResultFile())) {
+         InputSource src = new InputSource(is);
+         XMLOutputFactory ofact = XMLOutputFactory.newInstance();
+         try(StringWriter writer = new StringWriter()) {
+            XMLStreamWriter formatter = ofact.createXMLStreamWriter(writer);
 
-      SAXParserFactory f = SAXParserFactory.newInstance();
-      SAXParser parser = f.newSAXParser();
-      DefaultHandler dh =
-            new PSDatabaseDeliveryHandler.UnpublishingContentHandler(
-                  formatter, null);
-      formatter.writeStartDocument();
-      formatter.writeCharacters("\n");
-      parser.parse(src, dh);
-      formatter.writeEndDocument();
-      formatter.close();
-      String temp = writer.toString();
-      temp = StringUtils.replace(temp, PSSaxCopier.RX_FILLER, "");
-      return temp.getBytes("UTF8");
+            SAXParserFactory f = PSSecureXMLUtils.getSecuredSaxParserFactory(new PSXmlSecurityOptions(
+                    true,
+                    true,
+                    true,
+                    false,
+                    true,
+                    false
+            ));
+
+            SAXParser parser = f.newSAXParser();
+
+            DefaultHandler dh =
+                    new PSDatabaseDeliveryHandler.UnpublishingContentHandler(
+                            formatter, null);
+            formatter.writeStartDocument();
+            formatter.writeCharacters("\n");
+            parser.parse(src, dh);
+            formatter.writeEndDocument();
+            formatter.close();
+            String temp = writer.toString();
+            temp = StringUtils.replace(temp, PSSaxCopier.RX_FILLER, "");
+            return temp.getBytes(StandardCharsets.UTF_8);
+         }
+      }
    }
 
    @Override
@@ -701,78 +712,86 @@ public class PSDatabaseDeliveryHandler extends PSBaseDeliveryHandler
     */
    protected IPSDeliveryResult perform(Item item, long jobId)
    {
-      if (item == null)
-      {
-         throw new IllegalArgumentException("item may not be null");
-      }
-      InputStream is = null;
-      try
-      {         
-         if (item.getFile() != null)
-            is = new FileInputStream(item.getFile());
-         else
-            is = item.getResultStream();
-         Document doc = PSXmlDocumentBuilder.createXmlDocument(
-               new InputSource(is), false);
-
-         DbmsInfo dbmsInfo = new DbmsInfo(doc);
-         setDbmsInfoFromPubServer(dbmsInfo, item, jobId);
-         DbmsConnection dbmsConn = Connections.getConnection(jobId, dbmsInfo);
-
-         boolean logDebug = ms_log.isDebugEnabled();
-         
-         if (logDebug)
+         if (item == null)
          {
-            ms_log.debug("Published Item id=" + item.getId().toString()
-                  + ", filePath = " + item.getFile().getAbsolutePath());
+            throw new IllegalArgumentException("item may not be null");
          }
-         
 
-         boolean transactionSupport = true;
-         final StringBuilder error_builder = new StringBuilder();
-         final StringBuilder message_builder = new StringBuilder();
+         if (item.getFile() != null) {
+            try(InputStream is = new FileInputStream(item.getFile())){
+               return performAction(item, jobId, is);
+            } catch(Exception e) {
+               return getItemResult(Outcome.FAILED, item, jobId, "Database item publishing failed. The error was:" + e.toString());
+            }finally {
+               item.release();
+            }
+         } else {
+            try(InputStream is = item.getResultStream()) {
+               return performAction(item, jobId, is);
+            } catch(Exception e){
+               return getItemResult(Outcome.FAILED, item, jobId, "Database item publishing failed. The error was:" + e.toString());
+            }finally{
+               item.release();
+            }
+         }
+   }
 
+   private IPSDeliveryResult performAction(Item item, long jobId,InputStream is) throws Exception {
+      Document doc = PSXmlDocumentBuilder.createXmlDocument(
+              new InputSource(is), false);
+
+      DbmsInfo dbmsInfo = new DbmsInfo(doc);
+
+      setDbmsInfoFromPubServer(dbmsInfo, item, jobId);
+      DbmsConnection dbmsConn = Connections.getConnection(jobId, dbmsInfo);
+
+      boolean logDebug = ms_log.isDebugEnabled();
+
+      if (logDebug)
+      {
+         ms_log.debug("Published Item id=" + item.getId().toString()
+                 + ", filePath = " + item.getFile().getAbsolutePath());
+      }
+
+
+      boolean transactionSupport = true;
+      final StringBuilder error_builder = new StringBuilder();
+      final StringBuilder message_builder = new StringBuilder();
+      try( PrintStream ps =  new PrintStream(System.out)
+      {
+         @Override
+         public void println(String msg)
+         {
+            if (StringUtils.isBlank(msg))
+               return;
+
+            if (msg.indexOf("Error") >= 0)
+               error_builder.append(msg);
+            else
+               message_builder.append(msg);
+            char c = msg.charAt(msg.length()-1);
+            if (c != '\r' && c != '\n')
+               message_builder.append('\n');
+         }
+      }){
          PSJdbcTableFactory.processTables(dbmsConn.m_conn, dbmsConn.m_dbmsDef,
-               dbmsConn.m_tableMetaMap, null, doc,
-               new PrintStream(System.out)
-               {
-                  @Override
-                  public void println(String msg)
-                  {
-                     if (StringUtils.isBlank(msg))
-                        return;
+                 dbmsConn.m_tableMetaMap, null, doc,ps
+                 , logDebug, transactionSupport);
 
-                     if (msg.indexOf("Error") >= 0)
-                        error_builder.append(msg);
-                     else
-                        message_builder.append(msg);
-                     char c = msg.charAt(msg.length()-1);
-                     if (c != '\r' && c != '\n')
-                        message_builder.append('\n');
-                  }
-               }, logDebug, transactionSupport);
-         
          if (error_builder.length() > 0)
          {
             return getItemResult(Outcome.FAILED, item, jobId,
-                  error_builder.toString());
+                    error_builder.toString());
          }
          else
          {
             return getItemResult(Outcome.DELIVERED, item, jobId,
-                  message_builder.toString());
+                    message_builder.toString());
          }
       }
-      catch (Exception e)
-      {
-         return getItemResult(Outcome.FAILED, item, jobId, "Database item publishing failed. The error was:" + e.toString());
-      }
-      finally
-      {
-         IOUtils.closeQuietly(is);
-         
-         item.release();
-      }
+
+
+
    }
 
    /**
@@ -891,5 +910,5 @@ public class PSDatabaseDeliveryHandler extends PSBaseDeliveryHandler
    /**
     * Logger.
     */
-   private static Log ms_log = LogFactory.getLog(PSDatabaseDeliveryHandler.class);
+   private static final Logger ms_log = LogManager.getLogger(PSDatabaseDeliveryHandler.class);
 }

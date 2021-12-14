@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -26,15 +26,14 @@ package com.percussion.services.contentmgr.impl.jsrdata;
 
 import com.percussion.services.contentmgr.data.PSContentNode;
 import com.percussion.utils.jsr170.PSProperty;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
 
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.Property;
 import javax.jcr.PropertyIterator;
 import javax.jcr.RepositoryException;
-
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 
 public class PSJSR170NodeTest extends TestCase
 {

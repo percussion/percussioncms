@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -26,19 +26,21 @@ package com.percussion.sitemanage.importer;
 import com.percussion.pagemanagement.dao.IPSPageDao;
 import com.percussion.pagemanagement.data.PSPage;
 import com.percussion.pagemanagement.service.IPSPageCatalogService;
-import com.percussion.share.dao.IPSGenericDao.LoadException;
+import com.percussion.pagemanagement.service.IPSPageService;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.sitemanage.data.PSPageContent;
 import com.percussion.sitemanage.data.PSSite;
 import com.percussion.sitemanage.data.PSSiteImportCtx;
 import com.percussion.sitemanage.error.PSSiteImportException;
+import com.percussion.sitemanage.error.PSTemplateImportException;
 import com.percussion.sitemanage.importer.IPSSiteImportLogger.PSLogEntryType;
 import com.percussion.sitemanage.importer.IPSSiteImportLogger.PSLogObjectType;
 import com.percussion.sitemanage.importer.dao.IPSImportLogDao;
 import com.percussion.sitemanage.importer.helpers.impl.PSImportHelper;
 import com.percussion.sitemanage.service.IPSSiteImportService;
 import com.percussion.sitesummaryservice.service.IPSSiteImportSummaryService;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
@@ -51,7 +53,7 @@ import static com.percussion.share.spring.PSSpringWebApplicationContextUtils.get
 @Lazy
 public class PSSiteImportService implements IPSSiteImportService
 {
-    private static final Log log = LogFactory.getLog(PSSiteImportService.class);
+    private static final Logger log = LogManager.getLogger(PSSiteImportService.class);
     
     private List<PSImportHelper> mandatoryHelpers;
 
@@ -84,14 +86,14 @@ public class PSSiteImportService implements IPSSiteImportService
             PSPageContent importedPageContent = PSSiteImporter.getPageContentFromSite(siteImportCtx);
 
             // List to keep the executed helpers in case and rollback is needed.
-            executedHelpers = new ArrayList<PSImportHelper>();
+            executedHelpers = new ArrayList<>();
             
             // Run Helpers.
             runHelpers(siteImportCtx, importedPageContent);
             
             return siteImportCtx;
         }
-        catch (IOException e)
+        catch (IOException | PSDataServiceException e)
         {
             throw new PSSiteImportException("The URL is invalid or unreachable.", e);
         }
@@ -143,14 +145,14 @@ public class PSSiteImportService implements IPSSiteImportService
             PSPageContent importedPageContent = PSSiteImporter.getPageContentFromSite(context);
             
             // List to keep the executed helpers in case and rollback is needed.
-            executedHelpers = new ArrayList<PSImportHelper>();
+            executedHelpers = new ArrayList<>();
             
             // Run Helpers.
             runHelpers(context, importedPageContent);
 
             return context;
         }
-        catch (LoadException e)
+        catch (PSDataServiceException e)
         {
             throw new PSSiteImportException("The page doesn't exist in the system.");
         }
@@ -220,8 +222,7 @@ public class PSSiteImportService implements IPSSiteImportService
      * @param siteImportCtx
      * @param importedPageContent
      */
-    private void runHelpers(PSSiteImportCtx siteImportCtx, PSPageContent importedPageContent)
-    {   
+    private void runHelpers(PSSiteImportCtx siteImportCtx, PSPageContent importedPageContent) throws PSDataServiceException, PSSiteImportException {
         // Run helpers
         for (PSImportHelper mandatoryHelper : mandatoryHelpers)
         {
@@ -230,7 +231,7 @@ public class PSSiteImportService implements IPSSiteImportService
                 executedHelpers.add(mandatoryHelper);
                 mandatoryHelper.process(importedPageContent, siteImportCtx);
             }
-            catch (PSSiteImportException e)
+            catch (PSSiteImportException | PSTemplateImportException | IPSPageService.PSPageException e)
             {
                 for (int i = executedHelpers.size() - 1; i < 0; i--)
                 {

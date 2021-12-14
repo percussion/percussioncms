@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -29,6 +29,7 @@ import com.percussion.rx.design.IPSDesignModelFactory;
 import com.percussion.rx.design.PSDesignModelFactoryLocator;
 import com.percussion.services.assembly.IPSAssemblyTemplate;
 import com.percussion.services.catalog.PSTypeEnum;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.utils.testing.IntegrationTest;
 import org.junit.experimental.categories.Category;
@@ -135,8 +136,7 @@ public class PSSiteTemplateVisibilitySetterTest extends PSConfigurationTest
     * @return <code>true</code> if the Site/Template association contains the
     * given template.
     */
-   private boolean siteAssociateTemplate(String siteName, String templateName)
-   {
+   private boolean siteAssociateTemplate(String siteName, String templateName) throws PSNotFoundException {
       IPSDesignModel model = getSiteModel();
       IPSSite site = (IPSSite) model.load(siteName);
       for (IPSAssemblyTemplate t : site.getAssociatedTemplates())

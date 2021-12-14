@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -29,6 +29,12 @@ import com.percussion.services.notification.PSNotificationHelper;
 import com.percussion.services.security.data.PSAccessLevelImpl;
 import com.percussion.services.security.data.PSAclEntryImpl;
 import com.percussion.utils.guid.IPSGuid;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.hibernate.EmptyInterceptor;
+import org.hibernate.Transaction;
+import org.hibernate.resource.transaction.spi.TransactionStatus;
+import org.hibernate.type.Type;
 
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
@@ -37,13 +43,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.Stack;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.hibernate.EmptyInterceptor;
-import org.hibernate.Transaction;
-import org.hibernate.resource.transaction.spi.TransactionStatus;
-import org.hibernate.type.Type;
 
 /**
  * Handle update events that should notify the memory subsystem to evict
@@ -63,7 +62,7 @@ public class PSHibernateInterceptor extends EmptyInterceptor
    /**
     * Logger for this class
     */
-   private static Log ms_log = LogFactory.getLog(PSHibernateInterceptor.class);
+   private static final Logger ms_log = LogManager.getLogger(PSHibernateInterceptor.class);
 
    /**
     * Initialized in ctor, <code>true</code> if loads should be reported
@@ -88,7 +87,7 @@ public class PSHibernateInterceptor extends EmptyInterceptor
     * use thread local storage because transactions are bound to threads.
     */
    private static ThreadLocal<Stack<Set<IPSGuid>>> ms_pendingChanges = 
-      new ThreadLocal<Stack<Set<IPSGuid>>>();
+      new ThreadLocal<>();
 
    /**
     * Empty array of classes for method lookup
@@ -210,10 +209,10 @@ public class PSHibernateInterceptor extends EmptyInterceptor
       Stack<Set<IPSGuid>> stack = ms_pendingChanges.get();
       if (stack == null)
       {
-         stack = new Stack<Set<IPSGuid>>();
+         stack = new Stack<>();
          ms_pendingChanges.set(stack);
       }
-      stack.push(new HashSet<IPSGuid>());
+      stack.push(new HashSet<>());
    }
 
    @Override

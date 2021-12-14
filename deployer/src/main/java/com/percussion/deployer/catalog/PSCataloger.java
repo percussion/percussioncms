@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -29,10 +29,13 @@ import com.percussion.deployer.client.PSDeploymentServerConnection;
 import com.percussion.deployer.error.IPSDeploymentErrors;
 import com.percussion.deployer.error.PSDeployException;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.security.PSAuthenticationFailedException;
 import com.percussion.security.PSAuthorizationException;
 import com.percussion.server.PSServerLockException;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -65,6 +68,9 @@ import java.util.Properties;
 */
 public class PSCataloger
 {
+
+   private static final Logger log = LogManager.getLogger(PSCataloger.class);
+
    /**
     * Creates a cataloger that wil be connected to the server specified by the 
     * connection to serve the catalog requests.
@@ -176,7 +182,9 @@ public class PSCataloger
       }
       catch (PSServerLockException e) 
       {
-         throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR, 
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+         throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR,
             e.getLocalizedMessage());
       }
       
@@ -188,7 +196,8 @@ public class PSCataloger
       {
          //we should not get here as this document is constructed by server
          //from catalog result set object.
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          Object[] args = {reqDoc.getDocumentElement().getTagName(), 
             respDoc.getDocumentElement().getTagName(), e.getLocalizedMessage()};
          throw new PSDeployException(

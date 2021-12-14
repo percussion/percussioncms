@@ -16,12 +16,11 @@
 
 package com.ibm.cadf.model;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import com.ibm.cadf.exception.CADFException;
 import org.apache.commons.lang3.StringUtils;
 
-import com.ibm.cadf.exception.CADFException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Metric extends CADFType
 {
@@ -78,7 +77,7 @@ public class Metric extends CADFType
     {
         if (this.annotations == null)
         {
-            this.annotations = new HashMap<String, String>();
+            this.annotations = new HashMap<>();
         }
         this.annotations.put(key, value);
     }

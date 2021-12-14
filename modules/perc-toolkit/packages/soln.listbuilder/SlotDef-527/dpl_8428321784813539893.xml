@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>  <template-slot id="1">
+    <guid>0-5-527</guid>
+    <description/>
+    <finder-arguments/>
+    <finder-name>Java/global/percussion/slotcontentfinder/sys_RelationshipContentFinder</finder-name>
+    <label>soln_list_ManualSlot</label>
+    <name>soln_list_ManualSlot</name>
+    <relationship-name>ActiveAssembly</relationship-name>
+    <slot-type-associations/>
+    <slottype>0</slottype>
+    <system-slot>false</system-slot>
+    <version>2</version>
+  </template-slot>

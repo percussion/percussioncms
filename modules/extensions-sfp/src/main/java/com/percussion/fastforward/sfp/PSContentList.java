@@ -17,16 +17,21 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.fastforward.sfp;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.util.PSUrlUtils;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -36,10 +41,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.log4j.Logger;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 /**
  * Represents a publishing content list.
@@ -211,7 +212,8 @@ public class PSContentList
          catch (MalformedURLException e)
          {
             // this exception should never be thrown
-            e.printStackTrace();
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             log.error(getClass().getName(), e);
          }
       }
@@ -233,8 +235,9 @@ public class PSContentList
          catch (MalformedURLException e)
          {
             // this exception should never be thrown
-            e.printStackTrace();
             log.error(getClass().getName(), e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          }
       }
       // todo: generate index page links
@@ -324,8 +327,5 @@ public class PSContentList
    private static final String RPL_XML_FIELDNAME_NEXT = "PSXNextPage";
    private static final String RPL_XML_FIELDNAME_INDEXED = "PSXIndexPage";
 
-   /**
-    * Reference to Log4j singleton object used to log any errors or debug info.
-    */
-   private Logger log = Logger.getLogger(getClass());
+   private static final Logger log = LogManager.getLogger(PSContentList.class);
 }

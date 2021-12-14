@@ -17,25 +17,12 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.pagemanagement.service.impl;
-
-import static com.percussion.share.service.exception.PSParameterValidationUtils.rejectIfBlank;
-import static com.percussion.share.service.exception.PSParameterValidationUtils.validateParameters;
-import static com.percussion.share.spring.PSSpringWebApplicationContextUtils.getWebApplicationContext;
-
-import static org.apache.commons.lang.StringUtils.equalsIgnoreCase;
-import static org.apache.commons.lang.StringUtils.isBlank;
-import static org.apache.commons.lang.StringUtils.isNotBlank;
-import static org.apache.commons.lang.StringUtils.substringAfterLast;
-import static org.apache.commons.lang.Validate.noNullElements;
-import static org.apache.commons.lang.Validate.notEmpty;
-import static org.apache.commons.lang.Validate.notNull;
-import static org.apache.commons.lang.math.NumberUtils.toInt;
 
 import com.percussion.assetmanagement.service.IPSWidgetAssetRelationshipService;
 import com.percussion.itemmanagement.service.IPSWorkflowHelper;
@@ -61,19 +48,30 @@ import com.percussion.pagemanagement.parser.PSParsedRegionTree;
 import com.percussion.pagemanagement.parser.PSTemplateRegionParser;
 import com.percussion.pagemanagement.service.IPSTemplateService;
 import com.percussion.pagemanagement.service.IPSWidgetService;
+import com.percussion.pathmanagement.service.IPSPathService;
 import com.percussion.services.assembly.IPSAssemblyService;
 import com.percussion.services.assembly.IPSAssemblyTemplate;
 import com.percussion.services.assembly.PSAssemblyException;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.share.dao.IPSGenericDao.LoadException;
 import com.percussion.share.dao.PSSerializerUtils;
 import com.percussion.share.service.IPSIdMapper;
 import com.percussion.share.service.exception.PSBeanValidationException;
 import com.percussion.share.service.exception.PSBeanValidationUtils;
+import com.percussion.share.service.exception.PSDataServiceException;
+import com.percussion.share.service.exception.PSSpringValidationException;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.share.validation.PSValidationErrors;
 import com.percussion.share.validation.PSValidationErrorsBuilder;
 import com.percussion.sitemanage.service.IPSSiteSectionService;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.types.PSPair;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.Collator;
 import java.util.ArrayList;
@@ -86,12 +84,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
+import static com.percussion.share.service.exception.PSParameterValidationUtils.rejectIfBlank;
+import static com.percussion.share.service.exception.PSParameterValidationUtils.validateParameters;
+import static com.percussion.share.spring.PSSpringWebApplicationContextUtils.getWebApplicationContext;
+import static org.apache.commons.lang.StringUtils.equalsIgnoreCase;
+import static org.apache.commons.lang.StringUtils.isBlank;
+import static org.apache.commons.lang.StringUtils.isNotBlank;
+import static org.apache.commons.lang.StringUtils.substringAfterLast;
+import static org.apache.commons.lang.Validate.noNullElements;
+import static org.apache.commons.lang.Validate.notEmpty;
+import static org.apache.commons.lang.Validate.notNull;
+import static org.apache.commons.lang.math.NumberUtils.toInt;
 
 /**
  * 
@@ -162,16 +165,14 @@ public class PSTemplateService implements IPSTemplateService
     }
 
     @Deprecated
-    public PSTemplateSummary createTemplate(String name, String srcId)
-    {
+    public PSTemplateSummary createTemplate(String name, String srcId) throws PSDataServiceException {
         return createTemplate(name, srcId, null);
     }
     /*
      * (non-Javadoc)
      * @see com.percussion.pagemanagement.service.IPSTemplateService#createTemplate(java.lang.String, java.lang.String, java.lang.String)
      */
-    public PSTemplateSummary createTemplate(String name, String srcId, String siteId)
-    {
+    public PSTemplateSummary createTemplate(String name, String srcId, String siteId) throws PSDataServiceException {
         return createTemplate(name, srcId, siteId, null);        
     }
     /*
@@ -179,8 +180,7 @@ public class PSTemplateService implements IPSTemplateService
      * @see com.percussion.pagemanagement.service.IPSTemplateService#createTemplate(java.lang.String, java.lang.String, java.lang.String,
      *  com.percussion.pagemanagement.data.PSTemplate.PSTemplateTypeEnum)
      */
-    public PSTemplateSummary createTemplate(String name, String srcId, String siteId, PSTemplateTypeEnum type)
-    {
+    public PSTemplateSummary createTemplate(String name, String srcId, String siteId, PSTemplateTypeEnum type) throws PSDataServiceException {
         validateParameters("createTemplate").rejectIfBlank("name", name).rejectIfBlank("sourceTemplateId", srcId).throwIfInvalid();
         PSTemplate template = templateDao.createTemplate(name, srcId);
         validate(template);
@@ -200,34 +200,23 @@ public class PSTemplateService implements IPSTemplateService
         return template;        
     }
 
-    public void delete(String id)
-    {
+    public void delete(String id) throws PSDataServiceException, PSNotFoundException {
         validateParameters("delete").rejectIfBlank("id", id).throwIfInvalid();
         delete(id, false);
     }
     
-    public void delete(String id, boolean force)
-    {
+    public void delete(String id, boolean force) throws PSDataServiceException, PSNotFoundException {
         PSValidationErrorsBuilder builder = validateParameters("delete")
             .rejectIfBlank("id", id)
             .throwIfInvalid();
         PSTemplate template = null;
-        try
-        {
-            template = load(id);
-        }
-        catch(LoadException e)
-        {
-            log.error(e);
-            builder.reject("template.failedToLoad", "Cannot delete the selected template as it is not found in the system.");
-            builder.throwIfInvalid();
-        }
+        template = load(id);
         if (!force)
         {
             String errorMsg = "Template '" +  template.getName() + "' cannot be deleted because it is being used by ";
             if (isAssociatedToPages(id)) {
                 errorMsg += "one or more pages.";
-                log.error(errorMsg + " Template id: " + id);
+                log.debug( "{} Template id: {}" ,errorMsg, id);
                 if (isValidatingDeleteTemplate()) {
                     builder.reject("template.inUse", errorMsg);
                     builder.throwIfInvalid();
@@ -236,7 +225,7 @@ public class PSTemplateService implements IPSTemplateService
             else if(isAssociatedToBlogs(id))
             {
                 errorMsg += "a blog.";
-                log.error( errorMsg + " Template id: " + id);
+                log.debug( "{} Template id: {}" ,errorMsg, id);
                 if (isValidatingDeleteTemplate()) {
                     builder.reject("template.inUse", errorMsg);
                     builder.throwIfInvalid();
@@ -257,8 +246,7 @@ public class PSTemplateService implements IPSTemplateService
      * @param templateId assumed to be a valid string of guid representation of template id.
      * @return <code>true</code> if it is being used by a blog, otherwise <code>false</code>.
      */
-    private boolean isAssociatedToBlogs(String templateId)
-    {
+    private boolean isAssociatedToBlogs(String templateId) throws PSDataServiceException, PSNotFoundException {
         boolean isUsed = false;
         List<String> blogTemplates = getSiteSectionService().findAllTemplatesUsedByBlogs(null);
         for(String blogTemplate : blogTemplates)
@@ -273,8 +261,7 @@ public class PSTemplateService implements IPSTemplateService
     }
 
 
-    public PSTemplateSummary find(String id)
-    {
+    public PSTemplateSummary find(String id) throws PSDataServiceException {
         rejectIfBlank("find", "id", id);
         PSTemplate t = templateDao.find(id);
         return fullToSum(t);
@@ -283,8 +270,7 @@ public class PSTemplateService implements IPSTemplateService
     /**
      * @deprecated This is used by unit test only. It cannot be used by production code
      */
-    public PSTemplateSummary findUserTemplateByName_UsedByUnitTestOnly(String name)
-    {
+    public PSTemplateSummary findUserTemplateByName_UsedByUnitTestOnly(String name) throws PSDataServiceException {
         rejectIfBlank("findUserTemplateByName", "name", name);
         PSTemplate t = templateDao.findUserTemplateByName_UsedByUnitTestOnly(name);
         if (t == null)
@@ -293,8 +279,7 @@ public class PSTemplateService implements IPSTemplateService
         return fullToSum(t);
     }
     
-    public IPSGuid findUserTemplateIdByName(String templateName, String siteName)
-    {
+    public IPSGuid findUserTemplateIdByName(String templateName, String siteName) throws PSValidationException, DataServiceLoadException {
         rejectIfBlank("findUserTemplateByNameAndSite", "templateName", templateName);
         rejectIfBlank("findUserTemplateByNameAndSite", "siteName", siteName);
         
@@ -314,23 +299,19 @@ public class PSTemplateService implements IPSTemplateService
         return ts;
     }
 
-    public List<PSTemplateSummary> findAll()
-    {
+    public List<PSTemplateSummary> findAll() throws LoadException, PSTemplateException {
         return sort(templateDao.findAllSummaries());
     }
     
-    public List<PSTemplateSummary> findAll(String siteName)
-    {
+    public List<PSTemplateSummary> findAll(String siteName) throws LoadException, PSTemplateException {
         return sort(templateDao.findAllSummaries(siteName));
     }
 
-    public List<PSTemplateSummary> findAllUserTemplates()
-    {
+    public List<PSTemplateSummary> findAllUserTemplates() throws PSTemplateException {
         return sort(templateDao.findAllUserTemplateSummariesByType(PSTemplateTypeEnum.NORMAL));
     }
 
-    public List<PSTemplateSummary> loadUserTemplateSummaries(List<String> ids, String siteName)
-    {
+    public List<PSTemplateSummary> loadUserTemplateSummaries(List<String> ids, String siteName) throws PSTemplateException {
        return sort(templateDao.loadUserTemplateSummaries(ids, siteName));
     }
     
@@ -344,8 +325,7 @@ public class PSTemplateService implements IPSTemplateService
     }
     
 
-    public PSTemplate load(String id)
-    {
+    public PSTemplate load(String id) throws PSDataServiceException {
         rejectIfBlank("load", "id", id);
         return templateDao.find(id);
     }
@@ -358,23 +338,17 @@ public class PSTemplateService implements IPSTemplateService
        return templateDao.getTemplateThumbPath(summary, siteName);
     }
     
-    public PSTemplate save(PSTemplate object) throws PSBeanValidationException,
-    com.percussion.share.service.IPSDataService.DataServiceSaveException
-    {
+    public PSTemplate save(PSTemplate object) throws PSDataServiceException {
         return save(object, null);
     }
 
-    public PSTemplate save(PSTemplate object, String siteId) throws PSBeanValidationException,
-            com.percussion.share.service.IPSDataService.DataServiceSaveException
-    {
+    public PSTemplate save(PSTemplate object, String siteId) throws PSDataServiceException {
         return save(object, siteId, null);
     }
     
 
     @Override
-    public PSTemplate save(PSTemplate object, String siteId, String pageId) throws PSBeanValidationException,
-            com.percussion.share.service.IPSDataService.DataServiceSaveException
-    {
+    public PSTemplate save(PSTemplate object, String siteId, String pageId) throws PSDataServiceException {
         log.debug("Saving template");
         validate(object);
         
@@ -477,7 +451,7 @@ public class PSTemplateService implements IPSTemplateService
      */
     private Map<String, PSPair<String, String>> getWidgetNamesChanged(PSTemplate template, PSTemplate savedTemplate)
     {
-        Map<String, PSPair<String, String>> changedWidgets = new HashMap<String, PSPair<String, String>>();
+        Map<String, PSPair<String, String>> changedWidgets = new HashMap<>();
 
         if (template.getWidgets() == null)
         {
@@ -499,7 +473,7 @@ public class PSTemplateService implements IPSTemplateService
 
             if (!(isBlank(newName) && isBlank(oldName)) && !equalsIgnoreCase(oldName, newName))
             {
-                changedWidgets.put(oldId, new PSPair<String, String>(oldName, newName));
+                changedWidgets.put(oldId, new PSPair<>(oldName, newName));
             }
         }
         return changedWidgets;
@@ -517,7 +491,7 @@ public class PSTemplateService implements IPSTemplateService
      */
     private Map<String, String> getWidgetIdsToNameMap(List<PSWidgetItem> list)
     {
-        Map<String, String> map = new HashMap<String, String>();
+        Map<String, String> map = new HashMap<>();
         for (PSWidgetItem widgetItem : list)
         {
             map.put(widgetItem.getId(), widgetItem.getName());
@@ -536,7 +510,7 @@ public class PSTemplateService implements IPSTemplateService
      */
     private void checkDuplicatedNames(PSRegionTree region) throws DataServiceSaveException
     {
-        List<String> widgetNames = new ArrayList<String>();
+        List<String> widgetNames = new ArrayList<>();
         for(PSRegionWidgets regionWidget : region.getRegionWidgetAssociations())
         {
             for(PSWidgetItem widgetItem : regionWidget.getWidgetItems())
@@ -559,7 +533,7 @@ public class PSTemplateService implements IPSTemplateService
     /**
      * Update object with Metadata
      */
-    private void updateMetaData(PSTemplate object) {
+    private void updateMetaData(PSTemplate object) throws PSDataServiceException {
         PSHtmlMetadata metadata = loadHtmlMetadata(object.getId());
         if (object.getAdditionalHeadContent() == null)
         {
@@ -587,11 +561,15 @@ public class PSTemplateService implements IPSTemplateService
         }
     }
     
-    public boolean isAssociatedToPages(String templateId)
-    {
+    public boolean isAssociatedToPages(String templateId) throws PSValidationException {
         rejectIfBlank("isAssociatedToPages", "templateId", templateId);
 
         return !pageDaoHelper.findPageIdsByTemplateInRecentRevision(templateId).isEmpty();
+
+    }
+
+    public Collection<Integer> getPageIdsForTemplate(String templateId){
+        return pageDaoHelper.findPageIdsByTemplateInRecentRevision(templateId);
     }
     
     private void updateBodyMarkupOrRegionTree(PSTemplate object) {
@@ -605,7 +583,7 @@ public class PSTemplateService implements IPSTemplateService
              * Then lets create the tree from the markup.
              */
             log.debug("Creating the region tree from markup.");
-            Map<String, PSRegion> regions = new HashMap<String, PSRegion>();
+            Map<String, PSRegion> regions = new HashMap<>();
 
             PSTemplateRegionParser parser = new PSTemplateRegionParser(regions);
             PSParsedRegionTree<PSRegion, PSRegionCode> pt = parser.parse(object.getBodyMarkup());
@@ -637,8 +615,7 @@ public class PSTemplateService implements IPSTemplateService
     /*
      * see base interface method for details
      */
-    public PSHtmlMetadata loadHtmlMetadata(String id)
-    {
+    public PSHtmlMetadata loadHtmlMetadata(String id) throws PSDataServiceException {
         PSHtmlMetadata metadata = new PSHtmlMetadata();
         PSTemplate t = load(id);
         metadata.setId(id);
@@ -650,15 +627,13 @@ public class PSTemplateService implements IPSTemplateService
     /*
      * see base interface method for details
      */
-    public void saveHtmlMetadata(PSHtmlMetadata metadata)
-    {
+    public void saveHtmlMetadata(PSHtmlMetadata metadata) throws PSDataServiceException {
         PSTemplate t = load(metadata.getId());
         PSHtmlMetadataUtils.copy(metadata, t);
         save(t);
     }
     
-    public PSValidationErrors validate(PSTemplate object)
-    {
+    public PSValidationErrors validate(PSTemplate object) throws PSSpringValidationException, DataServiceSaveException {
         PSBeanValidationException e = PSBeanValidationUtils.validate(object);
         regionWidgetAssocationsValidator.validate(object, e);
         e.throwIfInvalid();
@@ -743,7 +718,7 @@ public class PSTemplateService implements IPSTemplateService
         public <T extends PSTemplateSummary> List<T> sort(List<T> items) {
             notNull(items);
             noNullElements(items);
-            ArrayList<T> sorted = new ArrayList<T>(items);
+            ArrayList<T> sorted = new ArrayList<>(items);
             Collections.sort(sorted, this);
             return sorted;
         }
@@ -794,7 +769,7 @@ public class PSTemplateService implements IPSTemplateService
     * Export the selected template
     * 
     */
-    public PSTemplate exportTemplate(String id, String name) {
+    public PSTemplate exportTemplate(String id, String name) throws PSValidationException, PSTemplateException {
         rejectIfBlank("exportTemplate", "id", id);
         //Create the template to return
         PSTemplate templateSelected = templateDao.generateTemplateToExport(id, name);
@@ -807,8 +782,7 @@ public class PSTemplateService implements IPSTemplateService
      * 
      */
     public PSTemplate importTemplate(PSTemplate template, String siteId)
-            throws PSBeanValidationException,
-            com.percussion.share.service.IPSDataService.DataServiceSaveException {
+            throws PSDataServiceException, IPSPathService.PSPathNotFoundServiceException {
         notNull(template, "template");
         rejectIfBlank("importTemplate", "siteId", siteId);
         
@@ -829,16 +803,16 @@ public class PSTemplateService implements IPSTemplateService
         return savedTemplate;
     }
     
-    private Set<PSRegionWidgets> cleanRegionWidgets(PSTemplate template) {
+    private Set<PSRegionWidgets> cleanRegionWidgets(PSTemplate template) throws PSDataServiceException {
         PSRegionTree tree = template.getRegionTree();
         Collection<PSRegionWidgets> regionWidgetsToValidate = tree.getRegionWidgetAssociations();
-        Set<PSRegionWidgets> sets = new HashSet<PSRegionWidgets>();
-        if (regionWidgetsToValidate == null) return null;
+        Set<PSRegionWidgets> sets = new HashSet<>();
+        if (regionWidgetsToValidate == null) return new HashSet<>();
         //Get the list of widgets in the system
         List<PSWidgetDefinition> fulls = widgetDao.findAll();
         //Validate the widgets included in the template and just consider the valid widgets
         for(PSRegionWidgets w: regionWidgetsToValidate) {
-            List<PSWidgetItem> widgetValidItems = new ArrayList<PSWidgetItem>();
+            List<PSWidgetItem> widgetValidItems = new ArrayList<>();
             List<PSWidgetItem> widgetItems = w.getWidgetItems();
             if (widgetItems != null) {
                  for(PSWidgetItem item : widgetItems) {
@@ -849,7 +823,7 @@ public class PSTemplateService implements IPSTemplateService
                      }
                  }
             }
-            if (widgetValidItems.size()>0){
+            if (!widgetValidItems.isEmpty()){
                 w.setWidgetItems(widgetValidItems);
                 sets.add(w);
             }
@@ -874,13 +848,10 @@ public class PSTemplateService implements IPSTemplateService
      * 
      */
     public PSTemplateSummary createNewTemplate(String baseTemplateName, String templateName, String siteId)
-            throws PSAssemblyException
-    {
+            throws PSAssemblyException, PSDataServiceException {
         IPSAssemblyTemplate baseTemplate = assemblyService.findTemplateByName(baseTemplateName);
-        PSTemplateSummary templateSummary = this.createTemplate(templateName,
+        return this.createTemplate(templateName,
                 idMapper.getString(baseTemplate.getGUID()), siteId);
-
-        return templateSummary;
     }
     
     
@@ -888,7 +859,7 @@ public class PSTemplateService implements IPSTemplateService
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log log = LogFactory.getLog(PSTemplateService.class);
+    private static final Logger log = LogManager.getLogger(PSTemplateService.class);
 
 
 }

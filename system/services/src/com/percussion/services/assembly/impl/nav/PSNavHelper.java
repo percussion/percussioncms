@@ -17,13 +17,11 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.services.assembly.impl.nav;
-
-import static org.apache.commons.lang.Validate.notNull;
 
 import com.percussion.cms.PSCmsException;
 import com.percussion.cms.objectstore.PSComponentSummary;
@@ -34,6 +32,7 @@ import com.percussion.design.objectstore.PSLocator;
 import com.percussion.design.objectstore.PSRelationship;
 import com.percussion.design.objectstore.PSRelationshipConfig;
 import com.percussion.design.objectstore.PSRelationshipSet;
+import com.percussion.server.cache.IPSFolderRelationshipCache;
 import com.percussion.server.cache.PSFolderRelationshipCache;
 import com.percussion.services.assembly.IPSAssemblyItem;
 import com.percussion.services.assembly.IPSAssemblyService;
@@ -48,6 +47,7 @@ import com.percussion.services.contentmgr.PSContentMgrConfig;
 import com.percussion.services.contentmgr.PSContentMgrLocator;
 import com.percussion.services.contentmgr.PSContentMgrOption;
 import com.percussion.services.contentmgr.data.PSContentNode;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.filter.IPSFilterItem;
 import com.percussion.services.filter.PSFilterException;
 import com.percussion.services.filter.data.PSFilterItem;
@@ -65,7 +65,21 @@ import com.percussion.utils.jexl.IPSScript;
 import com.percussion.utils.jexl.PSJexlEvaluator;
 import com.percussion.utils.jsr170.PSProperty;
 import com.percussion.utils.timing.PSStopwatchStack;
+import org.apache.commons.collections.MultiMap;
+import org.apache.commons.collections.map.MultiValueMap;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.NumberUtils;
+import org.apache.commons.net.nntp.NNTPConnectionClosedException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
+import javax.jcr.AccessDeniedException;
+import javax.jcr.ItemNotFoundException;
+import javax.jcr.Node;
+import javax.jcr.NodeIterator;
+import javax.jcr.Property;
+import javax.jcr.RepositoryException;
+import javax.jcr.ValueFormatException;
 import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -79,21 +93,7 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import javax.jcr.AccessDeniedException;
-import javax.jcr.ItemNotFoundException;
-import javax.jcr.Node;
-import javax.jcr.NodeIterator;
-import javax.jcr.Property;
-import javax.jcr.RepositoryException;
-import javax.jcr.ValueFormatException;
-
-import org.apache.commons.collections.MultiMap;
-import org.apache.commons.collections.map.MultiValueMap;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.math.NumberUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.commons.net.nntp.NNTPConnectionClosedException;
+import static org.apache.commons.lang.Validate.notNull;
 
 
 
@@ -122,7 +122,7 @@ public class PSNavHelper
    /**
     * Logger for this class
     */
-   private static Log ms_log = LogFactory.getLog(PSNavHelper.class);
+   private static final Logger ms_log = LogManager.getLogger(PSNavHelper.class);
 
    /**
     * Static configuration used for loading navon nodes
@@ -184,13 +184,13 @@ public class PSNavHelper
     * Holds onto nav nodes already found. Used to reconstruct children
     * information. The map goes from contentid to a node that's been loaded.
     */
-   private Map<Integer, Node> m_foundProxies = new HashMap<Integer, Node>();
+   private Map<Integer, Node> m_foundProxies = new HashMap<>();
 
    /**
     * Store the template information for landing pages as the pages are loaded.
     * This maps from a content guid to a template guid.
     */
-   private Map<IPSGuid, IPSGuid> m_cidToTemplate = new HashMap<IPSGuid, IPSGuid>();
+   private Map<IPSGuid, IPSGuid> m_cidToTemplate = new HashMap<>();
 
    /**
     * Original assembly item, used when creating landing pages. Never
@@ -231,7 +231,7 @@ public class PSNavHelper
    
    public static Map<String,String> getParams(IPSAssemblyItem assemblyItem)
    {
-      Map<String,String> params = new HashMap<String, String>();
+      Map<String,String> params = new HashMap<>();
       for (String name : assemblyItem.getParameters().keySet())
       {
          String value = assemblyItem.getParameterValue(name, null);
@@ -271,12 +271,12 @@ public class PSNavHelper
 
            
             
-            m_navCtypes = new ArrayList<Long>();
+            m_navCtypes = new ArrayList<>();
             m_navCtypes.add(m_navConfig.getNavonType().longValue());
             m_navCtypes.add(m_navConfig.getNavTreeType().longValue());
             
       IPSAssemblyService asm = PSAssemblyServiceLocator.getAssemblyService();
-      List<String> slotnames = new ArrayList<String>();
+      List<String> slotnames = new ArrayList<>();
       String lpslot = m_navConfig.getLandingPageRelationship();
       String islot = m_navConfig.getNavImageRelationship();
       String subslot = m_navConfig.getSubmenuRelationship();
@@ -286,7 +286,7 @@ public class PSNavHelper
       try
       {
          List<IPSTemplateSlot> slots = asm.findSlotsByNames(slotnames);
-         Map<String, IPSTemplateSlot> smap = new HashMap<String, IPSTemplateSlot>();
+         Map<String, IPSTemplateSlot> smap = new HashMap<>();
          for (IPSTemplateSlot s : slots)
          {
             smap.put(s.getName(), s);
@@ -452,7 +452,7 @@ public class PSNavHelper
       Node root = getRoot(self);
 
       // Calculate base
-      Map<String, Object> navmap = new HashMap<String, Object>();
+      Map<String, Object> navmap = new HashMap<>();
       Property basevar = ms_utils.findProperty(self, m_navConfig
             .getNavonVarName());
       if (basevar == null || StringUtils.isBlank(basevar.getString()))
@@ -514,7 +514,7 @@ public class PSNavHelper
    {
       init();
       
-      PSFolderRelationshipCache folderCache = PSFolderRelationshipCache
+      IPSFolderRelationshipCache folderCache = PSFolderRelationshipCache
             .getInstance();
       
       
@@ -528,9 +528,9 @@ public class PSNavHelper
          throw new IllegalArgumentException("FolderCache is not initialized check for previous errors in startup");
       }
       List<PSLocator> folders = folderCache.getOwnerLocators(self, PSRelationshipConfig.TYPE_FOLDER_CONTENT);
-      List<IPSFilterItem> filterset = new ArrayList<IPSFilterItem>();
-      List<IPSGuid> guids = new ArrayList<IPSGuid>();
-      Map<Integer,IPSGuid> mapToGuid = new HashMap<Integer,IPSGuid>();
+      List<IPSFilterItem> filterset = new ArrayList<>();
+      List<IPSGuid> guids = new ArrayList<>();
+      Map<Integer,IPSGuid> mapToGuid = new HashMap<>();
       IPSGuid siteid = m_assemblyItem.getSiteId();
       boolean found = false;
       for (int i = folders.size() - 1; i >= 0; i--)
@@ -652,9 +652,9 @@ public class PSNavHelper
       if (guids.isEmpty())
          return guids;
 
-      Collection<Integer> ids = new ArrayList<Integer>();
+      Collection<Integer> ids = new ArrayList<>();
       IPSGuid siteid = m_assemblyItem.getSiteId();
-      Map<Integer, IPSGuid> mapToGuid = new HashMap<Integer, IPSGuid>();
+      Map<Integer, IPSGuid> mapToGuid = new HashMap<>();
       for (IPSGuid g : guids)
       {
          PSLegacyGuid lg = (PSLegacyGuid) g;
@@ -668,7 +668,7 @@ public class PSNavHelper
       filter.setCommunityFiltering(false);
       filter.setName(PSRelationshipFilter.FILTER_NAME_FOLDER_CONTENT);
       PSRelationshipSet relSet = m_relProc.getRelationships(filter);
-      List<IPSFilterItem> filterset = new ArrayList<IPSFilterItem>();
+      List<IPSFilterItem> filterset = new ArrayList<>();
       for (int i = 0; i < relSet.size(); i++)
       {
          PSRelationship rel = (PSRelationship) relSet.get(i);
@@ -682,14 +682,14 @@ public class PSNavHelper
 
       // Create return list
       Map<Integer,PSLegacyGuid> filteredItemToId = 
-         new HashMap<Integer,PSLegacyGuid>();
+         new HashMap<>();
       for (IPSFilterItem fitem : filteredset)
       {
          PSLegacyGuid lg = (PSLegacyGuid) fitem.getItemId();
          filteredItemToId.put(lg.getContentId(), lg);
       }
       Iterator<IPSGuid> giter = guids.iterator();
-      List<IPSGuid> rval = new ArrayList<IPSGuid>();
+      List<IPSGuid> rval = new ArrayList<>();
       while (giter.hasNext())
       {
          PSLegacyGuid itemid = (PSLegacyGuid) giter.next();
@@ -769,7 +769,7 @@ public class PSNavHelper
                   // Now loop through all relstionships and keep only the
                   // site descendent rel
                   PSLocator siteLoc = new PSLocator(siteid);
-                  Set<PSRelationship> rels = new HashSet<PSRelationship>();
+                  Set<PSRelationship> rels = new HashSet<>();
                   for (int i = 0; i < relationships.size(); i++)
                   {
                      boolean isdesc = m_relProc.isDescendent(
@@ -805,7 +805,7 @@ public class PSNavHelper
                // Now we have the filtered relationships.
                // Create a folder summaries and return alphabatically first
                // folder
-               List<Integer> folderids = new ArrayList<Integer>();
+               List<Integer> folderids = new ArrayList<>();
                for (int i = 0; i < relationships.size(); i++)
                {
                   PSRelationship rel = (PSRelationship) relationships.get(i);
@@ -826,7 +826,7 @@ public class PSNavHelper
             }
          }
       }
-      catch (PSCmsException e)
+      catch (PSNotFoundException | PSCmsException e)
       {
          ms_log.error("problem finding the parent folder", e);
       }
@@ -834,6 +834,7 @@ public class PSNavHelper
       {
          ms_log.error("problem finding the parent folder", e);
       }
+
       return folderid;
    }
 
@@ -878,18 +879,16 @@ public class PSNavHelper
             filter1.setName(PSRelationshipFilter.FILTER_NAME_FOLDER_CONTENT);
             filter1.setCommunityFiltering(false);
             relSet = m_relProc.getRelationships(filter1);
-
             //The PSRelationshipSet relset above was returning two rows one for the folder associated with page and the other for folder associated to recycler.
             //Thus failing returning null and breaking the navon on the page.
             //Removed the recycled association from the PSRelationshipSet for the folder thus giving correct parent folder and single result.
             //This preserves the folder in recycle bin avoiding the need to delete the duplicate relation in PSX_OBJECTRELATIONSHIP table.
             for(int i = 0; i<relSet.size();i++){
-                PSRelationship r = (PSRelationship) relSet.get(i);
-                if(r.getConfig().getName()!=null && r.getConfig().getName().equalsIgnoreCase(PSRelationshipConfig.TYPE_RECYCLED_CONTENT)){
-                    relSet.remove(i);
-                }
+               PSRelationship r = (PSRelationship) relSet.get(i);
+               if(r.getConfig().getName()!=null && r.getConfig().getName().equalsIgnoreCase(PSRelationshipConfig.TYPE_RECYCLED_CONTENT)){
+                  relSet.remove(i);
+               }
             }
-
             if (relSet.isEmpty() || relSet.size() > 1)
             {
                ms_log.debug("Invalid folder structure."
@@ -958,11 +957,11 @@ public class PSNavHelper
       PSRelationshipSet dependents = m_relProc.getRelationships(filter);
       // Create sorted sets to keep the children in the right order
       PSRelationshipSortOrderComparator c = new PSRelationshipSortOrderComparator();
-      Set<PSRelationship> sortedNavImages = new TreeSet<PSRelationship>(c);
-      Set<PSRelationship> sortedSubMenues = new TreeSet<PSRelationship>(c);
+      Set<PSRelationship> sortedNavImages = new TreeSet<>(c);
+      Set<PSRelationship> sortedSubMenues = new TreeSet<>(c);
 
-      List<IPSGuid> nguids = new ArrayList<IPSGuid>();
-      List<IPSGuid> iguids = new ArrayList<IPSGuid>();
+      List<IPSGuid> nguids = new ArrayList<>();
+      List<IPSGuid> iguids = new ArrayList<>();
 
       for (PSRelationship r : ((Collection<PSRelationship>) dependents))
       {
@@ -982,7 +981,7 @@ public class PSNavHelper
       // Filter
       nguids = filterNavons(nguids);
       iguids = filterFolderContent(parentNode, iguids);
-      List<IPSGuid> guids = new ArrayList<IPSGuid>();
+      List<IPSGuid> guids = new ArrayList<>();
       guids.addAll(nguids);
       guids.addAll(iguids);
 
@@ -999,7 +998,7 @@ public class PSNavHelper
       List<Node> nodes = m_contentMgr.findItemsByGUID(guids, ms_config);
 
       // Put them all in a Map so they can be pulled out in order
-      Map<Integer, Node> nodeMap = new HashMap<Integer, Node>();
+      Map<Integer, Node> nodeMap = new HashMap<>();
       for (Node n : nodes)
       {
          IPSNode cn = (IPSNode) n;
@@ -1091,16 +1090,17 @@ public class PSNavHelper
     */
    private PSLocator getParentFolder(PSLocator psLocator) throws PSCmsException
    {
-      PSFolderRelationshipCache folderCache = PSFolderRelationshipCache
+      IPSFolderRelationshipCache folderCache = PSFolderRelationshipCache
             .getInstance();
       
       List<PSLocator> parents = folderCache.getParentLocators(psLocator);
       if (parents.isEmpty())
-         ms_log.warn("Navon with id "+psLocator.getId()+" is not in any folder");
+         ms_log.warn("Navon with id {} is not in any folder", psLocator.getId());
       else if (parents.size()>1)
-         ms_log.warn("Navon with id "+psLocator.getId()+" is in multiple folders "+parents.toString());
+         ms_log.warn("Navon with id {} is in multiple folders {}", psLocator.getId(),
+                 parents);
       
-      return parents.size()>0 ? parents.get(0): null;
+      return !parents.isEmpty() ? parents.get(0): null;
    }
 
    /**
@@ -1111,7 +1111,7 @@ public class PSNavHelper
     */
    private List<PSLocator> getChildFolders(PSLocator locator) throws PSCmsException
    {
-      PSFolderRelationshipCache folderCache = PSFolderRelationshipCache
+      IPSFolderRelationshipCache folderCache =  PSFolderRelationshipCache
             .getInstance();
       
       return folderCache.getChildLocators(locator);
@@ -1170,14 +1170,14 @@ public class PSNavHelper
       IPSGuid folderId = new PSLegacyGuid(rel.getOwner());
       IPSGuid siteId = m_assemblyItem.getSiteId();
 
-      List<IPSFilterItem> items = new ArrayList<IPSFilterItem>();
+      List<IPSFilterItem> items = new ArrayList<>();
       for (IPSGuid item : iguids)
       {
          items.add(new PSFilterItem(item, folderId, siteId));
       }
       List<IPSFilterItem> filtereditems = m_assemblyItem.getFilter().filter(
             items, m_params);
-      List<IPSGuid> filteredids = new ArrayList<IPSGuid>();
+      List<IPSGuid> filteredids = new ArrayList<>();
       for (IPSFilterItem fitem : filtereditems)
       {
          filteredids.add(fitem.getItemId());
@@ -1217,7 +1217,7 @@ public class PSNavHelper
       
       if (dependents.size() > 0)
       {
-         List<IPSFilterItem> items = new ArrayList<IPSFilterItem>();
+         List<IPSFilterItem> items = new ArrayList<>();
          for (int i = 0; i < dependents.size(); i++)
          {
             PSRelationship dep = (PSRelationship) dependents.get(i);
@@ -1484,7 +1484,7 @@ public class PSNavHelper
 
       try {
          int id = ((PSLegacyGuid)m_gmgr.makeGuid(guid)).getContentId();
-         Collection<Integer> ids = new ArrayList<Integer>();
+         Collection<Integer> ids = new ArrayList<>();
          ids.add(id);
 
          PSRelationshipFilter filter = new PSRelationshipFilter();

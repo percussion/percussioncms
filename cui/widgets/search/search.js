@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -41,7 +41,7 @@ define (
         $.widGEL.baseWidget.injectCssFile('widgets.search', requirejs.toUrl('widgets/search/search.css'));
 
         // $.widGEL.baseWidget.injectCssFile('jquery', requirejs.toUrl('css/jquery-ui-1.10.4.custom.css')); //  since this file does not exist.
-        $.widGEL.baseWidget.injectCssFile('font.awesome', requirejs.toUrl('fontAwesome'));
+        $.widGEL.baseWidget.injectCssFile('font.awesome', requirejs.toUrl('fontawesome-css'));
 		$.widGEL.baseWidget.injectCssFile('perc.css', requirejs.toUrl('perc-css'));
         
         $.widget(widgetName, $.widGEL.baseWidget, {

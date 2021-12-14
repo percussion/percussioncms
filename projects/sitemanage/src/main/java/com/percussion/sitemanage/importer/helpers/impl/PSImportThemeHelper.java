@@ -17,15 +17,11 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.sitemanage.importer.helpers.impl;
-
-import static com.percussion.share.spring.PSSpringWebApplicationContextUtils.getWebApplicationContext;
-
-import static org.apache.commons.lang.Validate.notNull;
 
 import com.percussion.sitemanage.data.PSPageContent;
 import com.percussion.sitemanage.data.PSSiteImportCtx;
@@ -36,6 +32,14 @@ import com.percussion.sitemanage.importer.theme.PSHTMLHeaderImporter;
 import com.percussion.sitesummaryservice.service.IPSSiteImportSummaryService;
 import com.percussion.theme.service.IPSThemeService;
 import com.percussion.utils.types.PSPair;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.util.HashMap;
@@ -44,14 +48,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Component;
+import static com.percussion.share.spring.PSSpringWebApplicationContextUtils.getWebApplicationContext;
+import static org.apache.commons.lang.Validate.notNull;
 
 /**
  * Helper class that will handle the import of the site theme files.
@@ -66,7 +64,7 @@ public class PSImportThemeHelper extends PSImportHelper
 
     private IPSThemeService themeService;
     
-    private static Log log = LogFactory.getLog(PSImportThemeHelper.class);
+    private static final Logger log = LogManager.getLogger(PSImportThemeHelper.class);
     
     private PSHTMLHeaderImporter headerImporter;
     
@@ -100,12 +98,12 @@ public class PSImportThemeHelper extends PSImportHelper
         IPSSiteImportSummaryService summaryService = (IPSSiteImportSummaryService) getWebApplicationContext().getBean("siteImportSummaryService");
         context.setSummaryService(summaryService);
         
-        Map<String, String> linkPaths = new HashMap<String, String>();
-        Map<String, String> scriptPaths = new HashMap<String, String>();
-        Map<String, String> resources = new HashMap<String, String>();
-        Map<String, String> assets = new HashMap<String, String>();
+        Map<String, String> linkPaths = new HashMap<>();
+        Map<String, String> scriptPaths = new HashMap<>();
+        Map<String, String> resources = new HashMap<>();
+        Map<String, String> assets = new HashMap<>();
         Map<IPSSiteImportSummaryService.SiteImportSummaryTypeEnum, Integer> summaryStats = 
-                new HashMap<IPSSiteImportSummaryService.SiteImportSummaryTypeEnum, Integer>();
+                new HashMap<>();
         
         IPSFileDownloader fileDownloader = new PSFileDownloader();
         
@@ -267,7 +265,7 @@ public class PSImportThemeHelper extends PSImportHelper
      */
     private void removeIfExists(Map<String, String> linkPaths)
     {
-        Set<String> cssURLs = new HashSet<String>(linkPaths.keySet());
+        Set<String> cssURLs = new HashSet<>(linkPaths.keySet());
         for (String cssURL : cssURLs)
         {
             String cssFile = linkPaths.get(cssURL);

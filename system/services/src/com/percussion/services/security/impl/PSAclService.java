@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -25,6 +25,8 @@
 package com.percussion.services.security.impl;
 
 import com.percussion.data.PSInternalRequestCallException;
+import com.percussion.security.IPSTypedPrincipal;
+import com.percussion.security.IPSTypedPrincipal.PrincipalTypes;
 import com.percussion.security.PSUserEntry;
 import com.percussion.server.PSRequest;
 import com.percussion.server.PSServer;
@@ -32,7 +34,13 @@ import com.percussion.server.PSUserSession;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.guidmgr.IPSGuidManager;
 import com.percussion.services.guidmgr.PSGuidManagerLocator;
-import com.percussion.services.security.*;
+import com.percussion.services.security.IPSAcl;
+import com.percussion.services.security.IPSAclEntry;
+import com.percussion.services.security.IPSAclService;
+import com.percussion.services.security.IPSSecurityErrors;
+import com.percussion.services.security.PSPermissions;
+import com.percussion.services.security.PSSecurityException;
+import com.percussion.services.security.PSTypedPrincipal;
 import com.percussion.services.security.data.PSAccessLevelImpl;
 import com.percussion.services.security.data.PSAclEntryImpl;
 import com.percussion.services.security.data.PSAclImpl;
@@ -40,8 +48,6 @@ import com.percussion.services.security.data.PSUserAccessLevel;
 import com.percussion.util.PSBaseBean;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.request.PSRequestInfo;
-import com.percussion.utils.security.IPSTypedPrincipal;
-import com.percussion.utils.security.IPSTypedPrincipal.PrincipalTypes;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Criteria;
@@ -54,7 +60,15 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.security.acl.Permission;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -451,7 +465,7 @@ public class PSAclService implements IPSAclService
             .add( Restrictions.eq("permission", (int)PSPermissions.RUNTIME_VISIBLE.getOrdinal()))
             .setCacheable(true).list();
 
-      Collection<IPSTypedPrincipal> principals = new ArrayList<IPSTypedPrincipal>();
+      Collection<IPSTypedPrincipal> principals = new ArrayList<>();
       for (String comm : communityNames)
       {
          principals
@@ -695,7 +709,7 @@ public class PSAclService implements IPSAclService
     * Logger for this class.
     */
 
-   private static Logger ms_logger = LogManager.getLogger(PSAclService.class);
+   private static final Logger ms_logger = LogManager.getLogger(PSAclService.class);
 
    @Override
    public Collection<IPSGuid> filterByCommunities(List<IPSGuid> objectIds, List<String> communityNames)

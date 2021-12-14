@@ -45,7 +45,7 @@
                      <DefaultValue>
                         <DataLocator>
                            <PSXTextLiteral id="0">
-                              <text>Configured Local Pages</text>
+                              <text>Configured-Local-Pages</text>
                            </PSXTextLiteral>
                         </DataLocator>
                      </DefaultValue>

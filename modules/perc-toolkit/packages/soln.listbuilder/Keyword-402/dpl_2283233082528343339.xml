@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>  <null id="1">
+    <choices>
+      <choice id="2">
+        <description/>
+        <label>//Sites</label>
+        <sequence>1</sequence>
+        <value>//Sites</value>
+      </choice>
+      <choice id="3">
+        <description/>
+        <label>//Folders</label>
+        <sequence>0</sequence>
+        <value>//Folders</value>
+      </choice>
+    </choices>
+    <guid>0-14-402</guid>
+    <description/>
+    <id>402</id>
+    <keyword-type>1</keyword-type>
+    <label>soln_list_FolderPaths</label>
+    <name>soln_list_FolderPaths</name>
+    <sequence>0</sequence>
+    <type>KEYWORD_DEF</type>
+    <value>402</value>
+  </null>

@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -57,12 +57,17 @@ import com.percussion.design.objectstore.PSAclEntry;
 import com.percussion.design.objectstore.PSFeatureSet;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
 import com.percussion.error.PSException;
+import com.percussion.error.PSExceptionUtils;
+import com.percussion.legacy.security.deprecated.PSCryptographer;
+import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
 import com.percussion.rx.config.data.PSDescriptorSummaryReport;
 import com.percussion.rx.config.impl.PSConfigDefGenerator;
 import com.percussion.rx.config.impl.PSDefaultConfigGenerator;
 import com.percussion.security.IPSSecurityErrors;
 import com.percussion.security.PSAuthenticationFailedException;
 import com.percussion.security.PSAuthorizationException;
+import com.percussion.security.PSEncryptionException;
+import com.percussion.security.PSEncryptor;
 import com.percussion.security.PSUserEntry;
 import com.percussion.server.IPSCgiVariables;
 import com.percussion.server.IPSLoadableRequestHandler;
@@ -74,6 +79,7 @@ import com.percussion.server.PSServer;
 import com.percussion.server.PSServerBrand;
 import com.percussion.server.PSUserSessionManager;
 import com.percussion.services.catalog.PSTypeEnum;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.IPSGuidManager;
 import com.percussion.services.guidmgr.PSGuidManagerLocator;
 import com.percussion.services.guidmgr.data.PSGuid;
@@ -88,37 +94,33 @@ import com.percussion.services.pkginfo.utils.PSIdNameHelper;
 import com.percussion.servlets.PSSecurityFilter;
 import com.percussion.util.IOTools;
 import com.percussion.util.IPSBrandCodeConstants;
-import com.percussion.utils.security.PSEncryptionException;
-import com.percussion.utils.security.PSEncryptor;
-import com.percussion.utils.security.deprecated.PSCryptographer;
 import com.percussion.util.PSFormatVersion;
-import com.percussion.util.PSPurgableTempFile;
 import com.percussion.util.PSXMLDomUtil;
 import com.percussion.utils.codec.PSXmlDecoder;
 import com.percussion.utils.collections.PSMultiValueHashMap;
 import com.percussion.utils.guid.IPSGuid;
-import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
+import com.percussion.utils.io.PathUtils;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
 import com.percussion.xml.PSXmlValidator;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 import javax.security.auth.login.LoginException;
-import javax.servlet.ServletException;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Constructor;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -128,6 +130,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import static java.io.File.createTempFile;
 
 /**
  * Class to handle all requests from Deployment client. Loosely implements the
@@ -139,7 +143,7 @@ import java.util.Set;
 public class PSDeploymentHandler implements IPSLoadableRequestHandler
 {
 
-   private final static Logger ms_log = Logger.getLogger(PSDeploymentHandler.class);
+   private  static final Logger ms_log = LogManager.getLogger(PSDeploymentHandler.class);
    
    /**
     * Parameterless ctor used by server to construct this loadable handler.
@@ -196,7 +200,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
          PSServerException, PSDeployException, IOException
    {
       if (req == null)
-         throw new IllegalArgumentException("req may not be null");
+         throw new IllegalArgumentException(NULL_REQUEST_ERROR);
 
       String sessionId = null;
 
@@ -209,7 +213,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
       // get the credentials
       Element root = doc.getDocumentElement();
       String uid = root.getAttribute("userId");
-      String pwd = decryptPwd(uid, root.getAttribute("password"));
+      String pwd = root.getAttribute("password");
       String lock = root.getAttribute("overrideLock");
       boolean overrideLock = "yes".equalsIgnoreCase(lock);
 
@@ -257,11 +261,6 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
       {
          throw new PSAuthenticationFailedException(
                IPSSecurityErrors.GENERIC_AUTHENTICATION_FAILED, null);
-      }
-      catch (ServletException e)
-      {
-         throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR, e
-               .getLocalizedMessage());
       }
 
       PSServer.checkAccessLevel(req, PSAclEntry.SACE_ADMINISTER_SERVER);
@@ -312,10 +311,9 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
     * @throws PSDeployException if there are any errors.
     */
    public Document getDeployableElements(PSRequest req)
-         throws PSDeployException
-   {
+           throws PSDeployException, PSNotFoundException {
       if (req == null)
-         throw new IllegalArgumentException("req may not be null");
+         throw new IllegalArgumentException(NULL_REQUEST_ERROR);
 
       Document doc = req.getInputDocument();
       if (doc == null)
@@ -334,7 +332,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
                IPSObjectStoreErrors.XML_ELEMENT_INVALID_ATTR, msgArgs);
 
          Object[] args =
-         {root.getTagName(), une.getLocalizedMessage()};
+         {root.getTagName(), PSExceptionUtils.getMessageForLog(une)};
          throw new PSDeployException(
                IPSDeploymentErrors.SERVER_REQUEST_MALFORMED, args);
       }
@@ -389,7 +387,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
    public Document getDependencies(PSRequest req) throws PSDeployException
    {
       if (req == null)
-         throw new IllegalArgumentException("req may not be null");
+         throw new IllegalArgumentException(NULL_REQUEST_ERROR);
 
       // get the inputs
       String type = getRequiredAttrFromRequest(req, "type");
@@ -452,10 +450,9 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
     * @throws PSDeployException if the descriptor cannot be located or there are
     *             any errors.
     */
-   public Document getExportDescriptor(PSRequest req) throws PSDeployException
-   {
+   public Document getExportDescriptor(PSRequest req) throws PSDeployException, PSNotFoundException {
       if (req == null)
-         throw new IllegalArgumentException("req may not be null");
+         throw new IllegalArgumentException(NULL_REQUEST_ERROR);
 
       // get the root of the doc in request
       Document doc = req.getInputDocument();
@@ -465,7 +462,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
 
       String name = null;
       int logId = -1;
-      name = root.getAttribute("descName");
+      name = root.getAttribute(DESC_NAME);
       if (name == null || name.trim().length() == 0)
       {
          name = null;
@@ -547,7 +544,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
    public Document getValidationResults(PSRequest req) throws PSDeployException
    {
       if (req == null)
-         throw new IllegalArgumentException("req may not be null");
+         throw new IllegalArgumentException(NULL_REQUEST_ERROR);
 
       String name = getRequiredAttrFromRequest(req, "archiveRef");
 
@@ -566,8 +563,8 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
       }
       catch (PSUnknownNodeTypeException une)
       {
-         throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR, une
-               .getLocalizedMessage());
+         throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR,
+                 PSExceptionUtils.getMessageForLog(une));
       }
 
       Document respDoc = PSXmlDocumentBuilder.createXmlDocument();
@@ -606,10 +603,9 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
     *             <code>null</code>.
     * @throws PSDeployException if there are any errors.
     */
-   public Document getIdTypes(PSRequest req) throws PSDeployException
-   {
+   public Document getIdTypes(PSRequest req) throws PSDeployException, PSNotFoundException {
       if (req == null)
-         throw new IllegalArgumentException("req may not be null");
+         throw new IllegalArgumentException(NULL_REQUEST_ERROR);
 
       Document doc = req.getInputDocument();
       if (doc == null)
@@ -631,7 +627,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
          catch (PSUnknownNodeTypeException une)
          {
             Object[] args =
-            {depEl.getTagName(), une.getLocalizedMessage()};
+            {depEl.getTagName(), PSExceptionUtils.getMessageForLog(une)};
             throw new PSDeployException(
                   IPSDeploymentErrors.SERVER_REQUEST_MALFORMED, args);
          }
@@ -689,7 +685,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
    public Document saveIdTypes(PSRequest req) throws PSDeployException
    {
       if (req == null)
-         throw new IllegalArgumentException("req may not be null");
+         throw new IllegalArgumentException(NULL_REQUEST_ERROR);
 
       Document doc = req.getInputDocument();
       if (doc == null)
@@ -710,7 +706,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
                IPSObjectStoreErrors.XML_ELEMENT_NULL, msgArgs);
 
          Object[] args =
-         {doc.getDocumentElement().getTagName(), une.getLocalizedMessage()};
+         {doc.getDocumentElement().getTagName(), PSExceptionUtils.getMessageForLog(une)};
          throw new PSDeployException(
                IPSDeploymentErrors.SERVER_REQUEST_MALFORMED, args);
       }
@@ -772,7 +768,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
    public Document validateLocalConfig(PSRequest req) throws PSDeployException
    {
       if (req == null)
-         throw new IllegalArgumentException("req may not be null");
+         throw new IllegalArgumentException(NULL_REQUEST_ERROR);
       Document doc = req.getInputDocument();
       if (doc == null)
       {
@@ -781,21 +777,26 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
       PSXmlDecoder decoder = new PSXmlDecoder();
       PSXmlTreeWalker tree = new PSXmlTreeWalker(req.getInputDocument());
       Element xmlContent = tree.getNextElement("xmlContent");
-
-      File tempFile = null;
-      FileWriter fw = null;
-      try
+      File tempFile=null;
+      
+      try {
+         tempFile = createTempFile("PSX", null);
+         tempFile.deleteOnExit();
+      } catch (IOException e) {
+         throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR, PSExceptionUtils.getMessageForLog(e));
+      }
+      
+      try(FileWriter fw =new FileWriter(tempFile) )
       {
          String content = (String) decoder.encode(PSXmlTreeWalker
                .getElementData(xmlContent));
-         tempFile = PSPurgableTempFile.createTempFile("PSX", null);
-         fw = new FileWriter(tempFile);
+         
          fw.write(content);
          fw.flush();
 
          File xsdFile = new File(PSServer.getRxDir(),
                IPSDeployConstants.DEPLOYMENT_ROOT + "/schema/localConfig.xsd");
-         List<Exception> errors = new ArrayList<Exception>();
+         List<Exception> errors = new ArrayList<>();
          boolean isValid = PSXmlValidator.validateXmlAgainstSchema(tempFile,
                xsdFile, errors);
 
@@ -812,20 +813,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
       }
       catch (Exception e)
       {
-         throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR, e
-               .toString());
-      }
-      finally
-      {
-         if (fw != null)
-            try
-            {
-               fw.close();
-            }
-            catch (IOException ignore)
-            {
-            }
-         tempFile.delete();
+         throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR, PSExceptionUtils.getMessageForLog(e));
       }
    }
 
@@ -862,7 +850,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
    public Document validateArchive(PSRequest req) throws PSDeployException
    {
       if (req == null)
-         throw new IllegalArgumentException("req may not be null");
+         throw new IllegalArgumentException(NULL_REQUEST_ERROR);
 
       Document doc = req.getInputDocument();
       if (doc == null)
@@ -895,7 +883,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
                   IPSObjectStoreErrors.XML_ELEMENT_NULL, msgArgs);
 
             Object[] args =
-            {doc.getDocumentElement().getTagName(), une.getLocalizedMessage()};
+            {doc.getDocumentElement().getTagName(), PSExceptionUtils.getMessageForLog(une)};
             throw new PSDeployException(IPSDeploymentErrors.SERVER_REQUEST_MALFORMED, args);
          }
          PSArchiveInfo info = new PSArchiveInfo(infoEl);
@@ -908,8 +896,8 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
             createRoot(respDoc, XML_AV_ROOT_NAME);
          
          
-         List<String> errorList = new ArrayList<String>();
-         List<String> warningList = new ArrayList<String>();
+         List<String> errorList = new ArrayList<>();
+         List<String> warningList = new ArrayList<>();
          errorList.addAll(validationMap.get(IPSDeployConstants.ERROR_KEY));
          warningList.addAll(validationMap.get(IPSDeployConstants.WARNING_KEY));
          
@@ -941,7 +929,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
       {
          Object[] args =
          {req.getInputDocument().getDocumentElement().getTagName(),
-               une.getLocalizedMessage()};
+               PSExceptionUtils.getMessageForLog(une)};
          throw new PSDeployException(
                IPSDeploymentErrors.SERVER_REQUEST_MALFORMED, args);
       }
@@ -983,7 +971,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
     {
          Validate.notNull(info);
         
-         PSMultiValueHashMap<String, String> validationMap = new PSMultiValueHashMap<String, String>();
+         PSMultiValueHashMap<String, String> validationMap = new PSMultiValueHashMap<>();
          String message = "";
     
          // Checks if the package is already installed and if version is greater
@@ -1020,9 +1008,9 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
                 String[] v2Split = pkgInfo.getPackageVersion().split("\\.");
                 boolean isLowerVersion = true;
                 
-                ms_log.debug("Package is: " + pkgInfo.getPackageDescriptorName());
-                ms_log.debug("New pkg version: " + Arrays.toString(v1Split));
-                ms_log.debug("Installed pkg version: " + Arrays.toString(v2Split));
+                ms_log.debug("Package is: {}" ,pkgInfo.getPackageDescriptorName());
+                ms_log.debug("New pkg version: {}" , Arrays.toString(v1Split));
+                ms_log.debug("Installed pkg version: {}" , Arrays.toString(v2Split));
                 
                 if (expDesc.getVersion().equals(pkgInfo.getPackageVersion())
                         || Integer.parseInt(v1Split[0]) > Integer.parseInt(v2Split[0])
@@ -1106,8 +1094,8 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
             .getPkgInfoService();
 
       List<Map<String, String>> pkgDepList = expDesc.getPkgDepList();
-      ArrayList<String> pkgNotInstalled = new ArrayList<String>();
-      ArrayList<String> pkgVersionMismatch = new ArrayList<String>();
+      ArrayList<String> pkgNotInstalled = new ArrayList<>();
+      ArrayList<String> pkgVersionMismatch = new ArrayList<>();
 
       // Loop through all dependency packages
       for (Map<String, String> pkgDep : pkgDepList)
@@ -1194,7 +1182,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
    public Document getDbmsMap(PSRequest req) throws PSDeployException
    {
       if (req == null)
-         throw new IllegalArgumentException("req may not be null");
+         throw new IllegalArgumentException(NULL_REQUEST_ERROR);
 
       String server = getRequiredAttrFromRequest(req, "server");
 
@@ -1235,7 +1223,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
    public Document saveDbmsMap(PSRequest req) throws PSDeployException
    {
       if (req == null)
-         throw new IllegalArgumentException("req may not be null");
+         throw new IllegalArgumentException(NULL_REQUEST_ERROR);
 
       PSDbmsMap map = (PSDbmsMap) getRequiredComponentFromRequest(req,
             PSDbmsMap.class, PSDbmsMap.XML_NODE_NAME);
@@ -1275,7 +1263,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
    public Document getIdMap(PSRequest req) throws PSDeployException
    {
       if (req == null)
-         throw new IllegalArgumentException("req may not be null");
+         throw new IllegalArgumentException(NULL_REQUEST_ERROR);
 
       String sourceServer = getRequiredAttrFromRequest(req, "sourceServer");
 
@@ -1317,7 +1305,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
    public Document saveIdMap(PSRequest req) throws PSDeployException
    {
       if (req == null)
-         throw new IllegalArgumentException("req may not be null");
+         throw new IllegalArgumentException(NULL_REQUEST_ERROR);
 
       PSIdMap idmap = (PSIdMap) getRequiredComponentFromRequest(req,
             PSIdMap.class, PSIdMap.XML_NODE_NAME);
@@ -1364,7 +1352,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
                IPSObjectStoreErrors.XML_ELEMENT_INVALID_ATTR, msgArgs);
 
          Object[] args =
-         {root.getTagName(), une.getLocalizedMessage()};
+         {root.getTagName(), PSExceptionUtils.getMessageForLog(une)};
          throw new PSDeployException(
                IPSDeploymentErrors.SERVER_REQUEST_MALFORMED, args);
       }
@@ -1400,7 +1388,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
    public Document getArchiveSummary(PSRequest req) throws PSDeployException
    {
       if (req == null)
-         throw new IllegalArgumentException("req may not be null");
+         throw new IllegalArgumentException(NULL_REQUEST_ERROR);
 
       // get the root of the doc in request
       Document doc = req.getInputDocument();
@@ -1472,7 +1460,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
    public Document getArchiveInfo(PSRequest req) throws PSDeployException
    {
       if (req == null)
-         throw new IllegalArgumentException("req may not be null");
+         throw new IllegalArgumentException(NULL_REQUEST_ERROR);
 
       int logId = getAttrNumberFromRequest(req, "archiveLogId");
       PSArchiveSummary sum = getArchiveSummary(logId);
@@ -1595,7 +1583,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
                IPSObjectStoreErrors.XML_ELEMENT_INVALID_ATTR, msgArgs);
 
          Object[] args =
-         {root.getTagName(), une.getLocalizedMessage()};
+         {root.getTagName(), PSExceptionUtils.getMessageForLog(une)};
          throw new PSDeployException(
                IPSDeploymentErrors.SERVER_REQUEST_MALFORMED, args);
       }
@@ -1631,7 +1619,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
    public Document getLogSummary(PSRequest req) throws PSDeployException
    {
       if (req == null)
-         throw new IllegalArgumentException("req may not be null");
+         throw new IllegalArgumentException(NULL_REQUEST_ERROR);
 
       int logId = getAttrNumberFromRequest(req, "logId");
       PSLogSummary logSummary = m_logHandler.getLogSummary(logId);
@@ -1708,10 +1696,10 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
       IPSPkgInfoService pkgInfoSvc = 
          PSPkgInfoServiceLocator.getPkgInfoService();
       List<PSPkgInfo> pkgInfos = pkgInfoSvc.findAllPkgInfos();
-      List<String[]> index = new ArrayList<String[]>();
+      List<String[]> index = new ArrayList<>();
       for(PSPkgInfo info : pkgInfos)
       {
-        if(PackageAction.UNINSTALL.equals(info.getType()))
+        if(PackageAction.UNINSTALL.name().equalsIgnoreCase(info.getType().name()))
            continue;
         // Get elements
         List<PSPkgElement> pkgEls = pkgInfoSvc.findPkgElements(info.getGuid());
@@ -1794,7 +1782,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
    public Document deleteArchive(PSRequest req) throws PSDeployException
    {
       if (req == null)
-         throw new IllegalArgumentException("req may not be null");
+         throw new IllegalArgumentException(NULL_REQUEST_ERROR);
 
       Document doc = req.getInputDocument();
       if (doc == null)
@@ -1849,10 +1837,9 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
     *             <code>null</code>.g
     * @throws PSDeployException if there are any other errors.
     */
-   public Document saveExportDescriptor(PSRequest req) throws PSDeployException
-   {
+   public Document saveExportDescriptor(PSRequest req) throws PSDeployException, PSNotFoundException {
       if (req == null)
-         throw new IllegalArgumentException("req may not be null");
+         throw new IllegalArgumentException(NULL_REQUEST_ERROR);
 
       PSExportDescriptor desc = (PSExportDescriptor) getRequiredComponentFromRequest(
             req, PSExportDescriptor.class, PSExportDescriptor.XML_NODE_NAME);
@@ -1930,7 +1917,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
                IPSObjectStoreErrors.XML_ELEMENT_NULL, msgArgs);
 
          Object[] args =
-         {doc.getDocumentElement().getTagName(), une.getLocalizedMessage()};
+         {doc.getDocumentElement().getTagName(), PSExceptionUtils.getMessageForLog(une)};
          throw new PSDeployException(
                IPSDeploymentErrors.SERVER_REQUEST_MALFORMED, args);
       }
@@ -1953,8 +1940,8 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
                   IPSDeploymentErrors.SERVER_REQUEST_MALFORMED, args);
          }
          else
-            throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR, e
-                  .getLocalizedMessage());
+            throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR,
+                    PSExceptionUtils.getMessageForLog(e));
       }
 
       return comp;
@@ -1986,10 +1973,10 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
          throws PSDeployException
    {
       if (req == null)
-         throw new IllegalArgumentException("req may not be null");
+         throw new IllegalArgumentException(NULL_REQUEST_ERROR);
 
       // get the descriptor name
-      String name = getRequiredAttrFromRequest(req, "descName");
+      String name = getRequiredAttrFromRequest(req, DESC_NAME);
       // delete the descriptor
       File descFile = new File(EXPORT_DESC_DIR, name + ".xml");
       if (!descFile.exists())
@@ -2037,7 +2024,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
    public Document getAppPolicySettings(PSRequest req) throws PSDeployException
    {
       if (req == null)
-         throw new IllegalArgumentException("req may not be null");
+         throw new IllegalArgumentException(NULL_REQUEST_ERROR);
 
       // load the descriptor
       Document respDoc = PSXmlDocumentBuilder.createXmlDocument();
@@ -2068,8 +2055,8 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
          }
          catch (PSUnknownNodeTypeException e)
          {
-            throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR, e
-                  .getLocalizedMessage());
+            throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR,
+                    PSExceptionUtils.getMessageForLog(e));
          }
       }
       else
@@ -2104,7 +2091,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
          throws PSDeployException
    {
       if (req == null)
-         throw new IllegalArgumentException("req may not be null");
+         throw new IllegalArgumentException(NULL_REQUEST_ERROR);
 
       PSAppPolicySettings policySettings = (PSAppPolicySettings) getRequiredComponentFromRequest(
             req, PSAppPolicySettings.class, PSAppPolicySettings.XML_NODE_NAME);
@@ -2133,31 +2120,18 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
    private void saveComponentToFile(File compFile, File parentDir,
          IPSDeployComponent comp) throws PSDeployException
    {
-      FileOutputStream out = null;
-      try
+      try(FileOutputStream out = new FileOutputStream(compFile))
       {
          Document doc = PSXmlDocumentBuilder.createXmlDocument();
          Element compEl = comp.toXml(doc);
          PSXmlDocumentBuilder.replaceRoot(doc, compEl);
          parentDir.mkdirs();
-         out = new FileOutputStream(compFile);
          PSXmlDocumentBuilder.write(doc, out);
       }
       catch (Exception e)
       {
-         throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR, e
-               .getLocalizedMessage());
-      }
-      finally
-      {
-         if (out != null)
-            try
-            {
-               out.close();
-            }
-            catch (IOException ex)
-            {
-            }
+         throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR, 
+                 PSExceptionUtils.getMessageForLog(e));
       }
    }
 
@@ -2210,7 +2184,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
                else
                {
                   String timeleft = String.valueOf((remainder) / oneMinute);
-                  Object args[] = new Object[]
+                  Object[] args = new Object[]
                   {m_lockedUser, timeleft};
                   throw new PSLockedException(
                         IPSDeploymentErrors.LOCK_ALREADY_HELD, args);
@@ -2297,7 +2271,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
          PSServerException, PSDeployException
    {
       if (req == null)
-         throw new IllegalArgumentException("req may not be null");
+         throw new IllegalArgumentException(NULL_REQUEST_ERROR);
 
       Document doc = req.getInputDocument();
       String sessionId = req.getUserSessionId();
@@ -2402,7 +2376,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
          PSServerException, PSDeployException
    {
       if (req == null)
-         throw new IllegalArgumentException("req may not be null");
+         throw new IllegalArgumentException(NULL_REQUEST_ERROR);
 
       String sessionId = null;
 
@@ -2458,10 +2432,9 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
     * 
     * @throws PSDeployException if there are any errors.
     */
-   public Document loadDependencies(PSRequest req) throws PSDeployException
-   {
+   public Document loadDependencies(PSRequest req) throws PSDeployException, PSNotFoundException {
       if (req == null)
-         throw new IllegalArgumentException("req may not be null");
+         throw new IllegalArgumentException(NULL_REQUEST_ERROR);
 
       Document doc = req.getInputDocument();
       if (doc == null)
@@ -2512,10 +2485,9 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
     * 
     * @throws PSDeployException if there are any errors.
     */
-   public Document loadAncestors(PSRequest req) throws PSDeployException
-   {
+   public Document loadAncestors(PSRequest req) throws PSDeployException, PSNotFoundException {
       if (req == null)
-         throw new IllegalArgumentException("req may not be null");
+         throw new IllegalArgumentException(NULL_REQUEST_ERROR);
 
       Document doc = req.getInputDocument();
       if (doc == null)
@@ -2565,7 +2537,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
    public Document saveUserDependency(PSRequest req) throws PSDeployException
    {
       if (req == null)
-         throw new IllegalArgumentException("req may not be null");
+         throw new IllegalArgumentException(NULL_REQUEST_ERROR);
 
       PSUserDependency dep = (PSUserDependency) getRequiredComponentFromRequest(
             req, PSUserDependency.class, PSUserDependency.XML_NODE_NAME);
@@ -2603,7 +2575,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
    public Document deleteUserDependency(PSRequest req) throws PSDeployException
    {
       if (req == null)
-         throw new IllegalArgumentException("req may not be null");
+         throw new IllegalArgumentException(NULL_REQUEST_ERROR);
 
       PSUserDependency dep = (PSUserDependency) getRequiredComponentFromRequest(
             req, PSUserDependency.class, PSUserDependency.XML_NODE_NAME);
@@ -2642,41 +2614,27 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
    public Document getArchiveFile(PSRequest req) throws PSDeployException
    {
       if (req == null)
-         throw new IllegalArgumentException("req may not be null");
+         throw new IllegalArgumentException(NULL_REQUEST_ERROR);
 
       // get the descriptor name
-      String name = getRequiredAttrFromRequest(req, "descName");
+      String name = getRequiredAttrFromRequest(req, DESC_NAME);
 
       // use descriptor name as archive ref
       File archiveFile = getExportArchiveFile(name);
-      FileInputStream in = null;
-      try
+
+      try(FileInputStream in = new FileInputStream(archiveFile))
       {
-         in = new FileInputStream(archiveFile);
          req.getResponse().setContent(in, archiveFile.length(),
                "application/octet-stream");
-         in = null;
 
       }
-      catch (FileNotFoundException e)
+      catch (IOException e)
       {
          Object[] args =
          {"Archive File", name};
          throw new PSDeployException(
                IPSDeploymentErrors.SERVER_OBJECT_NOT_FOUND, args);
       }
-      finally
-      {
-         if (in != null)
-            try
-            {
-               in.close();
-            }
-            catch (IOException ex)
-            {
-            }
-      }
-
       return null;
    }
    
@@ -2704,40 +2662,26 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
    public Document createConfigDef(PSRequest req) throws PSDeployException
    {
       if (req == null)
-         throw new IllegalArgumentException("req may not be null");
+         throw new IllegalArgumentException(NULL_REQUEST_ERROR);
 
       // get the descriptor name
-      String name = getRequiredAttrFromRequest(req, "descName");
+      String name = getRequiredAttrFromRequest(req, DESC_NAME);
       PSExportDescriptor exportDesc = getDescriptor(name);
       
-      ByteArrayInputStream in = null;
       String def = PSConfigDefGenerator.getInstance().generate(exportDesc);
-      try
+      try(ByteArrayInputStream in = new ByteArrayInputStream(def.getBytes(StandardCharsets.UTF_8)))
       {
-         in = new ByteArrayInputStream(def.getBytes("utf8"));
          req.getResponse().setContent(in, def.length(),
                "application/octet-stream");
-         in = null;
-
       }
       catch (Exception e)
       {
          Object[] args =
-         {e.getLocalizedMessage()};
+         {PSExceptionUtils.getMessageForLog(e)};
          throw new PSDeployException(
                IPSDeploymentErrors.UNEXPECTED_ERROR, args);
       }
-      finally
-      {
-         if (in != null)
-            try
-            {
-               in.close();
-            }
-            catch (IOException ex)
-            {
-            }
-      }
+
       return null;
       
    }
@@ -2766,10 +2710,10 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
    public Document createDefaultConfig(PSRequest req) throws PSDeployException
    {
       if (req == null)
-         throw new IllegalArgumentException("req may not be null");
+         throw new IllegalArgumentException(NULL_REQUEST_ERROR);
 
       // get the descriptor name
-      String name = getRequiredAttrFromRequest(req, "descName");
+      String name = getRequiredAttrFromRequest(req, DESC_NAME);
       PSExportDescriptor exportDesc = getDescriptor(name);
       
       // Get info from descriptor
@@ -2779,37 +2723,24 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
       String solutionName = StringUtils.substringAfter(
             exportDesc.getName(), ".");
       
-      String configDefPath = TEMP_CONFIG_DIR + "/" + exportDesc.getName() + "_configDef.xml";
+      String configDefPath = TEMP_CONFIG_DIR + File.separatorChar + exportDesc.getName() + "_configDef.xml";
       
-      ByteArrayInputStream in = null;
+
       String defCon = PSDefaultConfigGenerator.getInstance().generateDefaultConfig(
             publisherName, publisherPrefix, solutionName, configDefPath);
-      try
+      try(ByteArrayInputStream in =  new ByteArrayInputStream(defCon.getBytes(StandardCharsets.UTF_8)))
       {
-         in = new ByteArrayInputStream(defCon.getBytes("utf8"));
          req.getResponse().setContent(in, defCon.length(),
                "application/octet-stream");
-         in = null;
-
       }
       catch (Exception e)
       {
          Object[] args =
-         {e.getLocalizedMessage()};
+         {PSExceptionUtils.getMessageForLog(e)};
          throw new PSDeployException(
                IPSDeploymentErrors.UNEXPECTED_ERROR, args);
       }
-      finally
-      {
-         if (in != null)
-            try
-            {
-               in.close();
-            }
-            catch (IOException ex)
-            {
-            }
-      } 
+
       return null;
       
    }
@@ -2838,42 +2769,23 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
    public Document createDescriptorSummary(PSRequest req) throws PSDeployException
    {
       if (req == null)
-         throw new IllegalArgumentException("req may not be null");
+         throw new IllegalArgumentException(NULL_REQUEST_ERROR);
 
       // get the descriptor name
-      String name = getRequiredAttrFromRequest(req, "descName");
+      String name = getRequiredAttrFromRequest(req, DESC_NAME);
       PSExportDescriptor exportDesc = getDescriptor(name);
-      
-      
-      
-      ByteArrayInputStream in = null;
       PSDescriptorSummaryReport summary = new PSDescriptorSummaryReport();
       String report = summary.getReport(exportDesc);
-      try
-      {
-         in = new ByteArrayInputStream(report.getBytes("utf8"));
+      try(ByteArrayInputStream in = new ByteArrayInputStream(report.getBytes(StandardCharsets.UTF_8)) ){
          req.getResponse().setContent(in, report.length(),
                "application/octet-stream");
-         in = null;
-
       }
       catch (Exception e)
       {
          Object[] args =
-         {e.getLocalizedMessage()};
+         {PSExceptionUtils.getMessageForLog(e)};
          throw new PSDeployException(
                IPSDeploymentErrors.UNEXPECTED_ERROR, args);
-      }
-      finally
-      {
-         if (in != null)
-            try
-            {
-               in.close();
-            }
-            catch (IOException ex)
-            {
-            }
       }
       return null;
       
@@ -2888,8 +2800,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
     * not be <code>null</code> or empty.
     * @return results of the uninstallation.
     */
-   public List<IPSUninstallResult> uninstallPackages(List<String> packageNames)
-   {
+   public List<IPSUninstallResult> uninstallPackages(List<String> packageNames) throws PSNotFoundException {
       return uninstallPackages(packageNames, false);
    }
    
@@ -2902,8 +2813,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
     * @param isRevertEntry <code>true</code> if the package has been marked for REVERT
     * @return results of the uninstallation.
     */
-   public List<IPSUninstallResult> uninstallPackages(List<String> packageNames, boolean isRevertEntry)
-   {
+   public List<IPSUninstallResult> uninstallPackages(List<String> packageNames, boolean isRevertEntry) throws PSNotFoundException {
       if (packageNames == null || packageNames.isEmpty())
          throw new IllegalArgumentException(
                "packageNames must not be null or empty");
@@ -2936,7 +2846,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
    public Document saveArchiveFile(PSRequest req) throws PSDeployException
    {
       if (req == null)
-         throw new IllegalArgumentException("req may not be null");
+         throw new IllegalArgumentException(NULL_REQUEST_ERROR);
 
       // get the file to save
       Iterator params = req.getParametersIterator();
@@ -2960,40 +2870,20 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
             inFile = (File) val;
          }
       }
-
-      FileInputStream in = null;
-      FileOutputStream out = null;
-      try
+      
+      File archiveFile = getImportArchiveFile(archiveRef);
+      archiveFile.getParentFile().mkdirs();
+      
+      try(FileInputStream in = new FileInputStream(inFile))
       {
-         File archiveFile = getImportArchiveFile(archiveRef);
-         archiveFile.getParentFile().mkdirs();
-         out = new FileOutputStream(archiveFile);
-         in = new FileInputStream(inFile);
-         IOTools.copyStream(in, out);
+         try(FileOutputStream out = new FileOutputStream(archiveFile)) {
+            IOTools.copyStream(in, out);
+         }
       }
       catch (IOException e)
       {
-         throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR, e
-               .getLocalizedMessage());
-      }
-      finally
-      {
-         if (in != null)
-            try
-            {
-               in.close();
-            }
-            catch (IOException ex)
-            {
-            }
-         if (out != null)
-            try
-            {
-               out.close();
-            }
-            catch (IOException ex)
-            {
-            }
+         throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR, 
+                 PSExceptionUtils.getMessageForLog(e));
       }
 
       Document respDoc = PSXmlDocumentBuilder.createXmlDocument();
@@ -3028,7 +2918,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
    public Document saveConfigFile(PSRequest req) throws PSDeployException
    {
       if (req == null)
-         throw new IllegalArgumentException("req may not be null");
+         throw new IllegalArgumentException(NULL_REQUEST_ERROR);
 
       // get the file to save
       Iterator params = req.getParametersIterator();
@@ -3053,44 +2943,24 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
          }
       }
 
-      FileInputStream in = null;
-      FileOutputStream out = null;
-      try
+      File configFile = getConfigTempFile(configRef);
+      configFile.getParentFile().mkdirs();
+      
+      try(FileInputStream in = new FileInputStream(inFile))
       {
-         File configFile = getConfigTempFile(configRef);
-         configFile.getParentFile().mkdirs();
-         out = new FileOutputStream(configFile);
-         in = new FileInputStream(inFile);
-         IOTools.copyStream(in, out);
+         try(FileOutputStream out =new FileOutputStream(configFile)) {
+            IOTools.copyStream(in, out);
+         }
       }
       catch (IOException e)
       {
-         throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR, e
-               .getLocalizedMessage());
-      }
-      finally
-      {
-         if (in != null)
-            try
-            {
-               in.close();
-            }
-            catch (IOException ex)
-            {
-            }
-         if (out != null)
-            try
-            {
-               out.close();
-            }
-            catch (IOException ex)
-            {
-            }
+         throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR,
+                 PSExceptionUtils.getMessageForLog(e));
       }
 
       Document respDoc = PSXmlDocumentBuilder.createXmlDocument();
       PSXmlDocumentBuilder.createRoot(respDoc,
-            "PSXDeploySaveCOnfigFileResponse");
+              SAVE_CFG_FILE_RESPONSE);
 
       return respDoc;
    }
@@ -3120,7 +2990,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
    public Document getFeatureSet(PSRequest req) throws PSDeployException
    {
       if (req == null)
-         throw new IllegalArgumentException("req may not be null");
+         throw new IllegalArgumentException(NULL_REQUEST_ERROR);
 
       Document doc = req.getInputDocument();
       if (doc == null)
@@ -3131,7 +3001,6 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
       // build the response doc
       File fsFile = new File(CFG_DIR, PSFeatureSet.FEATURE_SET_FILE);
 
-      FileInputStream fIn = null;
       Document respDoc = null;
 
       try
@@ -3148,12 +3017,13 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
           */
          if (fsFile.exists())
          {
-            fIn = new FileInputStream(fsFile);
-            Document featureDoc = PSXmlDocumentBuilder.createXmlDocument(fIn,
-                  false);
-            Node importNode = respDoc.importNode(featureDoc
-                  .getDocumentElement(), true);
-            respRoot.appendChild(importNode);
+            try(FileInputStream fIn = new FileInputStream(fsFile)) {
+               Document featureDoc = PSXmlDocumentBuilder.createXmlDocument(fIn,
+                       false);
+               Node importNode = respDoc.importNode(featureDoc
+                       .getDocumentElement(), true);
+               respRoot.appendChild(importNode);
+            }
          }
          else
          {
@@ -3165,22 +3035,10 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
       {
          // wrap exception
          Object[] args =
-         {e.getLocalizedMessage()};
+         {PSExceptionUtils.getMessageForLog(e)};
          PSServerException se = new PSServerException(
                IPSObjectStoreErrors.FEATURE_SET_LOAD_EXCEPTION, args);
-         PSDeployException de = new PSDeployException(se);
-         throw de;
-      }
-      finally
-      {
-         if (fIn != null)
-            try
-            {
-               fIn.close();
-            }
-            catch (Exception e)
-            { /* ignore */
-            }
+         throw new PSDeployException(se);
       }
 
       return respDoc;
@@ -3217,7 +3075,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
    public Document getParentTypes(PSRequest req) throws PSDeployException
    {
       if (req == null)
-         throw new IllegalArgumentException("req may not be null");
+         throw new IllegalArgumentException(NULL_REQUEST_ERROR);
 
       Document doc = req.getInputDocument();
       if (doc == null)
@@ -3371,7 +3229,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
       catch (PSDeployException e)
       {
          Object[] args =
-         {getName(), e.getLocalizedMessage()};
+         {getName(), PSExceptionUtils.getMessageForLog(e)};
          throw new PSServerException(
                IPSServerErrors.LOADABLE_HANDLER_UNEXPECTED_EXCEPTION, args);
       }
@@ -3541,12 +3399,11 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
       catch (Exception e)
       {
     	  String msg="An unexpected error occurred while processing the Request.";
-    	  if(respDoc != null){
     		  try{
     			  msg = msg + " Request Source is: " + PSXMLDomUtil.toString(respDoc.getDocumentElement());
-    		  }catch(Exception ex){}
-    	  }
-    	  
+    		  }catch(Exception ex){
+    		     ms_log.error(PSExceptionUtils.getMessageForLog(e));
+              }
     	  ms_log.warn(msg);
           
     	  try{
@@ -3584,8 +3441,8 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
 	            de = new PSDeployException((PSException) e);
 	         else
 	         {
-	            de = new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR, e
-	                  .getLocalizedMessage());
+	            de = new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR,
+                        PSExceptionUtils.getMessageForLog(e));
 	         }
 	
 	         respDoc = PSXmlDocumentBuilder.createXmlDocument();
@@ -3627,11 +3484,20 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
       if (pwd == null || pwd.trim().length() == 0)
          return "";
 
-      String key = uid == null || uid.trim().length() == 0
-            ? PSLegacyEncrypter.INVALID_DRIVER()
-            : uid;
+      String key = uid == null || uid.trim().length() == 0 ? PSLegacyEncrypter.getInstance(null).INVALID_DRIVER() :
+              uid;
 
-      return decryptPwd(pwd, PSLegacyEncrypter.INVALID_CRED(), key);
+      try {
+         return PSEncryptor.decryptString(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),pwd);
+      } catch (PSEncryptionException e) {
+         try {
+            return PSCryptographer.decrypt(PSLegacyEncrypter.getInstance(null).INVALID_CRED(), key, pwd);
+         }catch (Exception ex){
+            ms_log.error("Error: Pwd Decryption Failed: {}" ,
+                    PSExceptionUtils.getMessageForLog(ex));
+            return "";
+         }
+      }
    }
 
    /**
@@ -3655,7 +3521,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
          return "";
 
       try{
-         ret = PSEncryptor.getInstance().decrypt(pwd);
+         ret = PSEncryptor.decryptString(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),pwd);
       } catch (PSEncryptionException e) {
         ret = PSCryptographer.decrypt(key1, key2, pwd);
       }
@@ -3692,30 +3558,16 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
          throw new PSDeployException(
                IPSDeploymentErrors.SERVER_OBJECT_NOT_FOUND, args);
       }
-
-      FileInputStream in = null;
-      try
+      
+      try(FileInputStream in = new FileInputStream(docFile))
       {
-         in = new FileInputStream(docFile);
          return PSXmlDocumentBuilder.createXmlDocument(in, false);
       }
       catch (Exception e)
       {
-         throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR, e
-               .getLocalizedMessage());
+         throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR, 
+                 PSExceptionUtils.getMessageForLog(e));
       }
-      finally
-      {
-         if (in != null)
-            try
-            {
-               in.close();
-            }
-            catch (IOException ex)
-            {
-            }
-      }
-
    }
 
    /**
@@ -3799,7 +3651,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
          catch (PSUnknownNodeTypeException e)
          {
             Object[] args =
-            {doc.getDocumentElement().getTagName(), e.getLocalizedMessage()};
+            {doc.getDocumentElement().getTagName(), PSExceptionUtils.getMessageForLog(e)};
             throw new PSDeployException(
                   IPSDeploymentErrors.SERVER_REQUEST_MALFORMED, args);
          }
@@ -3815,7 +3667,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
                IPSObjectStoreErrors.XML_ELEMENT_WRONG_TYPE, msgArgs);
 
          Object[] args =
-         {doc.getDocumentElement().getTagName(), une.getLocalizedMessage()};
+         {doc.getDocumentElement().getTagName(), PSExceptionUtils.getMessageForLog(une)};
          throw new PSDeployException(
                IPSDeploymentErrors.SERVER_REQUEST_MALFORMED, args);
       }
@@ -3849,7 +3701,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
          catch (PSUnknownNodeTypeException une)
          {
             Object[] args =
-            {exportDescEl.getTagName(), une.getLocalizedMessage()};
+            {exportDescEl.getTagName(), PSExceptionUtils.getMessageForLog(une)};
             throw new PSDeployException(
                   IPSDeploymentErrors.SERVER_REQUEST_MALFORMED, args);
          }
@@ -3944,8 +3796,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
     * 
     */
    private void updateCreatePackageInfoService(PSExportDescriptor desc,
-         String installerName)
-   {
+         String installerName) throws PSNotFoundException {
 
       IPSPkgInfoService pkgInfoService = PSPkgInfoServiceLocator
             .getPkgInfoService();
@@ -3983,12 +3834,12 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
 
       // Create and save all elements
       // N.B. - these 'packages' are the old MSM concept, not the new concept
-      Set<IPSGuid> savedObjs = new HashSet<IPSGuid>();
+      Set<IPSGuid> savedObjs = new HashSet<>();
       Iterator<PSDeployableElement> it = desc.getPackages();
       while (it.hasNext())
       {
          PSDeployableElement elem = it.next();
-         Collection<PSDependency> deps = new ArrayList<PSDependency>();
+         Collection<PSDependency> deps = new ArrayList<>();
          getIncludedDependencies(elem.getDependencies(), deps);
          for (PSDependency d : deps)
          {
@@ -4014,8 +3865,8 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
       }
       
       List<Map<String, String>> pkgDeps = desc.getPkgDepList();
-      Map<String, IPSGuid> pkgNameToGuid = new HashMap<String, IPSGuid>();
-      if (pkgDeps.size() > 0)
+      Map<String, IPSGuid> pkgNameToGuid = new HashMap<>();
+      if (!pkgDeps.isEmpty())
          pkgNameToGuid = getPkgNameToGuidMap();
       for (Map<String, String> pkgDep : pkgDeps)
       {
@@ -4046,7 +3897,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
       IPSPkgInfoService svc = PSPkgInfoServiceLocator
          .getPkgInfoService();
       List<PSPkgInfo> infos = svc.findAllPkgInfos();
-      Map<String, IPSGuid> results = new HashMap<String, IPSGuid>();
+      Map<String, IPSGuid> results = new HashMap<>();
       for (PSPkgInfo info : infos)
       {
          results.put(info.getPackageDescriptorName(), info.getGuid());
@@ -4158,7 +4009,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
     * Mutex preventing concurrent access to a critical section by having threads
     * synchronize on it. Never modified.
     */
-   private Object m_mutexObject = new Object();
+   private final Object m_mutexObject = new Object();
 
    /**
     * Duration for which lock is held in milliseconds, currently 30 minutes.
@@ -4263,4 +4114,11 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
     */
    PSLogHandler m_logHandler;
 
+   public static final String DESC_NAME = "descName";
+   public static final String ARCHIVE_LOG_ID = "archiveLogId";
+   public static final String ARCHIVE_REF = "archiveRef";
+   public static final String NULL_REQUEST_ERROR = "Request may not be null";
+   public static final String TYPE_ATTR = "type";
+   public static final String SAVE_CFG_FILE_RESPONSE = "PSXDeploySaveConfigFileResponse";
+   
 }

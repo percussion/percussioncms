@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Extensions>
+   <Extension categorystring="jexl" context="global/percussion/user/" deprecated="no" handler="Java" name="soln_rss" restoreRequestParamsOnError="no">
+      <initParam name="com.percussion.user.description">Creates ROME RSS feeds</initParam>
+      <initParam name="com.percussion.extension.version">1</initParam>
+      <initParam name="className">com.percussion.soln.rss.RssJexl</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <interface name="com.percussion.extension.IPSJexlExpression"/>
+      <suppliedResources/>
+   </Extension>
+</Extensions>

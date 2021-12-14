@@ -18,14 +18,14 @@
   ~      Burlington, MA 01803, USA
   ~      +01-781-438-9900
   ~      support@percussion.com
-  ~      https://www.percusssion.com
+  ~      https://www.percussion.com
   ~
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   -->
 
 <!--
 This configuration file is used to merge the server TMX resource bundle with
-that generated from the CMS by the Rhythmyx Language Tool (RXLT). This merging is
+that generated from the CMS by the Percussion Language Tool (RXLT). This merging is
 required to preserve the existing translations before giving the generated TMX
 resource bundle for translation service. This configuration file will generate
 only the keys that are present in the bundle generated from CMS and missing in the

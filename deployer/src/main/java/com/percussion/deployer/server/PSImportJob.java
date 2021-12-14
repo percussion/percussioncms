@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -39,6 +39,7 @@ import com.percussion.deployer.objectstore.PSImportDescriptor;
 import com.percussion.deployer.objectstore.PSImportPackage;
 import com.percussion.deployer.objectstore.PSTransactionSummary;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.rx.config.IPSConfigRegistrationMgr;
 import com.percussion.rx.config.IPSConfigService;
 import com.percussion.rx.config.PSConfigServiceLocator;
@@ -52,6 +53,7 @@ import com.percussion.server.PSServerLockResult;
 import com.percussion.server.cache.PSCacheManager;
 import com.percussion.server.job.IPSJobErrors;
 import com.percussion.server.job.PSJobException;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.data.PSGuid;
 import com.percussion.services.pkginfo.IPSPkgInfoService;
 import com.percussion.services.pkginfo.PSPkgInfoServiceLocator;
@@ -66,8 +68,8 @@ import com.percussion.xml.PSXmlDocumentBuilder;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -89,7 +91,7 @@ import java.util.ResourceBundle;
  */
 public class PSImportJob extends PSDeployJob
 {
-   private static Log log = LogFactory.getLog(PSImportJob.class);
+   private static final Logger log = LogManager.getLogger(PSImportJob.class);
     
    /**
     * Restores the import descriptor from the supplied document, and validates
@@ -142,7 +144,7 @@ public class PSImportJob extends PSDeployJob
 
     private void initDepCount()
     {
-        List<PSDeployableElement> pkgList = new ArrayList<PSDeployableElement>();
+        List<PSDeployableElement> pkgList = new ArrayList<>();
          Iterator importPkgs = m_descriptor.getImportPackageList().iterator();
          while (importPkgs.hasNext())
          {
@@ -265,10 +267,11 @@ public class PSImportJob extends PSDeployJob
          setStatusMessage("error: " + ex.getLocalizedMessage());
          ctx.setCurrentDependency(null);
          setStatus(-1);
-         LogFactory.getLog(getClass()).error(
-               "Error installing Deployer " + "package", ex);
-         if (storeException)
-             runException = ex;
+         log.error("Error installing Deployer package, Error: {}", ex.getMessage());
+         log.debug(ex.getMessage(), ex);
+         if (storeException) {
+            runException = ex;
+         }
       }
       finally
       {
@@ -442,12 +445,12 @@ public class PSImportJob extends PSDeployJob
             if (restoreEx != null)
                throw restoreEx;
          }
-         
+
+         ah.close();
       }
       // install the configure files if there is any. 
       installConfigFiles(archive, expDesc);
-      if(hasPkgs)
-         ah.close();
+
    }
    
    /**
@@ -459,12 +462,10 @@ public class PSImportJob extends PSDeployJob
     * <code>null</code>.
     */
    private void postInstallPackage(PSPkgInfo pkgInfo,
-         PSExportDescriptor expDesc)
-   {
+         PSExportDescriptor expDesc) throws PSNotFoundException {
       if (isCancelled())
          return;
-      
-      ResourceBundle bundle = PSDeploymentManager.getBundle();
+
       IPSPkgInfoService pkgService = PSPkgInfoServiceLocator
             .getPkgInfoService();
 
@@ -622,12 +623,10 @@ public class PSImportJob extends PSDeployJob
          PSPkgInfo depPkgInfo = pkgService.findPkgInfo(pkgName);
          if (depPkgInfo == null)
          {
-            LogFactory.getLog(getClass()).info(
-                  "Skipping package dependency " + "entry for package "
-                        + pkgInfo.getPackageDescriptorName()
-                        + " with dependent " + pkgName
-                        + ", due to failure to find the "
-                        + "package info object with that name.");
+            log.info("Skipping package dependency entry for package {} with dependent {}, " +
+                        "due to failure to find the package info object with that name.",
+                        pkgInfo.getPackageDescriptorName(), pkgName);
+
             continue;
          }
          PSPkgDependency pkgDep = pkgService.createPkgDependency();
@@ -719,6 +718,7 @@ public class PSImportJob extends PSDeployJob
       }
       catch (PSDeployException e)
       {
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
    }
 

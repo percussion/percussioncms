@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -25,11 +25,9 @@
 package com.percussion.rest;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.xml.bind.annotation.XmlRootElement;
-
 
 
 /**
@@ -38,16 +36,16 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@ApiModel(value="Status")
+@Schema(description="Status")
 public class Status
 {
     /**
      * 
      */
-    @ApiModelProperty(name="message", value="The message for the Status response")
+    @Schema(name="message", description="The message for the Status response")
     private String message;
 
-    @ApiModelProperty(name="statusCode", value="The numeric code for the Status message")
+    @Schema(name="statusCode", description="The numeric code for the Status message")
     private int statusCode;
 
     public int getStatusCode() {

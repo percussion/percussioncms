@@ -17,26 +17,25 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.services.assembly.impl;
 
+import com.percussion.security.SecureStringUtils;
 import com.percussion.utils.jsr170.IPSPropertyInterceptor;
 import com.percussion.utils.xml.PSSaxCopier;
 import com.percussion.utils.xml.PSSaxHelper;
+import org.apache.commons.lang.StringUtils;
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
 
+import javax.xml.stream.XMLStreamWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Stack;
-
-import javax.xml.stream.XMLStreamWriter;
-
-import org.apache.commons.lang.StringUtils;
-import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
 
 /**
  * Cleanup unwanted div tags in the final assembled output. Div tags whose
@@ -54,7 +53,9 @@ public class PSDivTagCleanup implements IPSPropertyInterceptor
       if (originalValue instanceof String)
       {
          String oValue = (String)originalValue;
-         if (StringUtils.isBlank(oValue) || oValue.indexOf("<div") == -1)
+         if (StringUtils.isBlank(oValue) ||
+         !(SecureStringUtils.isXML((String)originalValue)
+                 ||SecureStringUtils.isHTML((String)originalValue)))
          {
             return originalValue;
          }
@@ -101,7 +102,7 @@ public class PSDivTagCleanup implements IPSPropertyInterceptor
        */
       public ContentHandler(XMLStreamWriter writer) 
       {
-         super(writer, new HashMap<String, String>(), true);
+         super(writer, new HashMap<>(), true);
       }
 
       /*
@@ -162,7 +163,7 @@ public class PSDivTagCleanup implements IPSPropertyInterceptor
        * A stack to keep track of the current tag nesting posistion.
        * Never <code>null</code>, may be empty.
        */
-      private Stack<State> m_stack = new Stack<State>();
+      private Stack<State> m_stack = new Stack<>();
       
       /**
        * A simple enumeration to track the write state for the tags
@@ -186,7 +187,7 @@ public class PSDivTagCleanup implements IPSPropertyInterceptor
     * the div should be removed.
     */
    static final List<String> ms_skipClassList = 
-      new ArrayList<String>(2);
+      new ArrayList<>(2);
    
    static
    {

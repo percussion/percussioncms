@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -25,20 +25,13 @@ package com.percussion.sitemanage.dao.impl;
 
 import com.percussion.auditlog.PSActionOutcome;
 import com.percussion.auditlog.PSAuditLogService;
-import com.percussion.auditlog.PSAuthenticationEvent;
 import com.percussion.auditlog.PSUserManagementEvent;
-import com.percussion.services.security.data.PSSecurityUtils;
 import com.percussion.servlets.PSSecurityFilter;
 import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.sitemanage.dao.IPSUserLoginDao;
 import com.percussion.user.data.PSUserLogin;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import com.percussion.utils.security.PSSecurityUtility;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -48,6 +41,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author DavidBenua
  *
@@ -56,7 +52,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository("userLoginDao")
 public class PSUserLoginDao implements IPSUserLoginDao
 {
-    private static Log log = LogFactory.getLog(PSUserLoginDao.class); 
+    private static final Logger log = LogManager.getLogger(PSUserLoginDao.class);
     
     private SessionFactory sessionFactory;
     private PSAuditLogService psAuditLogService=PSAuditLogService.getInstance();
@@ -145,7 +141,7 @@ public class PSUserLoginDao implements IPSUserLoginDao
     {
         String emsg;
         Session session = getSession(); 
-        List<PSUserLogin> results = new ArrayList<PSUserLogin>(); 
+        List<PSUserLogin> results = new ArrayList<>();
         try
         {
             results = session.createCriteria(PSUserLogin.class).add(Restrictions.ilike("userid", name)).list();
@@ -170,7 +166,7 @@ public class PSUserLoginDao implements IPSUserLoginDao
     {
         String emsg;
         Session session = getSession(); 
-        List<PSUserLogin> results = new ArrayList<PSUserLogin>(); 
+        List<PSUserLogin> results = new ArrayList<>();
         try
         {
             results = session.createCriteria(PSUserLogin.class)

@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2021 Percussion Software, Inc.
+ *     Copyright (C) 1999-2020 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -17,28 +17,35 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.utils.container.adapters;
 
+import com.percussion.error.PSExceptionUtils;
+import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
+import com.percussion.security.PSEncryptionException;
+import com.percussion.security.PSEncryptor;
 import com.percussion.util.PSProperties;
-import com.percussion.utils.container.*;
+import com.percussion.utils.container.DefaultConfigurationContextImpl;
+import com.percussion.utils.container.IPSConfigurationAdapter;
+import com.percussion.utils.container.IPSJdbcJettyDbmsDefConstants;
+import com.percussion.utils.container.IPSJndiDatasource;
+import com.percussion.utils.container.PSJndiDatasourceImpl;
+import com.percussion.utils.container.PSStaticContainerUtils;
 import com.percussion.utils.container.config.ContainerConfig;
 import com.percussion.utils.container.config.model.impl.BaseContainerUtils;
+import com.percussion.utils.io.PathUtils;
 import com.percussion.utils.jdbc.IPSDatasourceResolver;
 import com.percussion.utils.jdbc.PSDatasourceResolver;
-import com.percussion.utils.security.PSEncryptionException;
-import com.percussion.utils.security.PSEncryptor;
-import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -46,12 +53,26 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilderFactory;
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.MessageFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -59,17 +80,16 @@ import java.util.stream.Collectors;
 
 public class JettyDatasourceConfigurationAdapter implements IPSConfigurationAdapter<DefaultConfigurationContextImpl> {
 
-    public static Log ms_log = LogFactory.getLog(JettyDatasourceConfigurationAdapter.class);
+    public static final Logger ms_log = LogManager.getLogger(JettyDatasourceConfigurationAdapter.class);
 
 
     private Path dsPropertiesFile = Paths.get("jetty","base","etc","perc-ds.properties");
     private Path dsXmlFile = Paths.get("jetty","base","etc","perc-ds.xml");
 
     private static String dsTemplate = null;
-    private static int DEFAULT_IDLE_TIMEOUT=30;
+    private static final int DEFAULT_IDLE_TIMEOUT=30;
 
-    static {
-
+     static  {
         try (ByteArrayOutputStream result = new ByteArrayOutputStream(); InputStream is = JettyDatasourceConfigurationAdapter.class.getClassLoader().getResourceAsStream("com/percussion/utils/container/jetty/jetty-ds-template.xml")) {
             byte[] buffer = new byte[1024];
             int length;
@@ -100,7 +120,7 @@ public class JettyDatasourceConfigurationAdapter implements IPSConfigurationAdap
         List<IPSJndiDatasource> dataSources = containerUtils.getDatasources();
 
         loadRxDatasources(rxDir.resolve(dsXmlFile).toFile(), configurationContext.getEncKey(), properties, dataSources);
-        if (dataSources!=null || dataSources.size()<1)
+        if (dataSources!=null && !dataSources.isEmpty())
             containerUtils.setDatasources(dataSources);
         PSDatasourceResolver resolver = getDataSourceResolver(rxDir);
 
@@ -112,7 +132,7 @@ public class JettyDatasourceConfigurationAdapter implements IPSConfigurationAdap
 
 
     @Override
-    public void save(DefaultConfigurationContextImpl configurationContext) {
+    public synchronized void save(DefaultConfigurationContextImpl configurationContext) {
         BaseContainerUtils containerUtils = configurationContext.getConfig();
 
         Path rxDir = configurationContext.getRootDir();
@@ -122,10 +142,8 @@ public class JettyDatasourceConfigurationAdapter implements IPSConfigurationAdap
             saveDatasourceResolver(rxDir,containerUtils.getDatasourceResolver());
 
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (SAXException e) {
-            e.printStackTrace();
+        } catch (IOException | SAXException e) {
+            ms_log.error("Error saving jetty datasource file: {}" , PSExceptionUtils.getMessageForLog(e));
         }
     }
 
@@ -177,9 +195,15 @@ public class JettyDatasourceConfigurationAdapter implements IPSConfigurationAdap
 
                 if (encrypted != null && encrypted.equalsIgnoreCase("Y")) {
                     try {
-                        pwd = PSEncryptor.getInstance().decrypt(pwd);
+                        pwd = PSEncryptor.decryptString(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),pwd);
+
                     }catch(PSEncryptionException | java.lang.IllegalArgumentException e){
-                        pwd = PSLegacyEncrypter.getInstance().decrypt(pwd, PSLegacyEncrypter.getPartOneKey());
+                        pwd = PSLegacyEncrypter.getInstance(
+                                PathUtils.getRxPath().toAbsolutePath().toString().concat(
+                                PSEncryptor.SECURE_DIR)
+                        ).decrypt(pwd, PSLegacyEncrypter.getInstance(
+                                PathUtils.getRxPath().toAbsolutePath().toString().concat(
+                                        PSEncryptor.SECURE_DIR)).getPartOneKey(),null);
                     }
                 } else {
                     needsEncryption = true;
@@ -231,14 +255,6 @@ public class JettyDatasourceConfigurationAdapter implements IPSConfigurationAdap
                 dsList.clear();
                 dsList.addAll(newDSList);
             }
-            /*
-            if (needsEncryption)
-                saveRxDatasources(dsFile, propertyFile, dsList, secretKey);
-
-
-            if (dataSources == null)
-                dataSources = dsList;
-            */
 
         };
     }
@@ -310,8 +326,9 @@ public class JettyDatasourceConfigurationAdapter implements IPSConfigurationAdap
 
                     props.setProperty(prefix + IPSJdbcJettyDbmsDefConstants.JETTY_SERVER_SUFFIX, datasource.getServer());
                     try {
+                        String encPwd = PSEncryptor.encryptProperty(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),propertyFile.toAbsolutePath().toString(),IPSJdbcJettyDbmsDefConstants.JETTY_PWD_SUFFIX,datasource.getPassword());
                         props.setProperty(prefix + IPSJdbcJettyDbmsDefConstants.JETTY_PWD_SUFFIX,
-                                PSEncryptor.getInstance().encrypt(datasource.getPassword()));
+                                encPwd);
                         props.setProperty(prefix + IPSJdbcJettyDbmsDefConstants.JETTY_PWD_ENCRYPTED_SUFFIX, "Y");
                     } catch (PSEncryptionException e) {
                         props.setProperty(prefix + IPSJdbcJettyDbmsDefConstants.JETTY_PWD_SUFFIX,
@@ -332,8 +349,10 @@ public class JettyDatasourceConfigurationAdapter implements IPSConfigurationAdap
 
                 success = true;
             }
-        } catch (IOException e) {
-            ms_log.error("error saving properties file propertyFile", e);
+            } catch (IOException e) {
+                ms_log.error("error saving properties file propertyFile {}",
+                        PSExceptionUtils.getMessageForLog(e));
+            ms_log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
 
         if (success) {
@@ -387,23 +406,23 @@ public class JettyDatasourceConfigurationAdapter implements IPSConfigurationAdap
 
                     for (int i = 0; i < childNodes.getLength(); i++) {
                         Node argNode = childNodes.item(i);
-                        if (argNode.getNodeName() == "Arg") {
+                        if (argNode.getNodeName().equals("Arg")) {
                             if (argCount++ == 1) {
-                                ms_log.debug("Found datasource name arg=" + argNode.getTextContent());
+                                ms_log.debug("Found datasource name arg={}", argNode.getTextContent());
                                 dsValue = StringUtils.substringAfter(argNode.getTextContent(), "java:");
 
                                 if (dsValue != null) {
                                     IPSJndiDatasource ds = idNameMap.get(dsValue);
                                     if (ds == null) {
                                         node.getParentNode().removeChild(node);
-                                        ms_log.debug("Removing ds entry " + dsValue);
+                                        ms_log.debug("Removing ds entry {}", dsValue);
                                         updated = true;
                                     } else {
                                         if (propIndex != ds.getId())
                                             ds.setId(propIndex);
 
                                         idNameMap.remove(dsValue);
-                                        ms_log.debug("Found " + dsValue);
+                                        ms_log.debug("Found {}", dsValue);
                                     }
 
                                 }
@@ -436,7 +455,8 @@ public class JettyDatasourceConfigurationAdapter implements IPSConfigurationAdap
                 Node entryNode = xml.getElementsByTagName("New").item(0);
 
                 PSXmlDocumentBuilder.copyTree(doc, root, entryNode);
-                ms_log.debug("New items " + PSXmlDocumentBuilder.toString(doc));
+                String d = PSXmlDocumentBuilder.toString(doc);
+                ms_log.debug("New items {}", d);
                 idNameMap.get(ds.getName()).setId(maxId);
             }
 
@@ -483,8 +503,9 @@ public class JettyDatasourceConfigurationAdapter implements IPSConfigurationAdap
                 }
                 updated = updateJettyDatasourceXml(datasources, doc);
             } catch (IOException | SAXException e) {
-                ms_log.error("Could not parse or update jetty datasource configuration, so recreating " + file.getAbsolutePath(), e);
-                //Incase File is corrupted, create a new file.
+                ms_log.warn("Could not parse or update jetty datasource configuration, so recreating {} Error: {}", file.getAbsolutePath(),PSExceptionUtils.getMessageForLog(e));
+                ms_log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+                //In case File is corrupted, create a new file.
                 doc = createNewDatasourceXml();
                 updated = updateJettyDatasourceXml(datasources, doc);
             }
@@ -498,7 +519,7 @@ public class JettyDatasourceConfigurationAdapter implements IPSConfigurationAdap
             try (OutputStream out = new FileOutputStream(file)) {
                 PSXmlDocumentBuilder.write(doc, out);
             } catch (IOException e) {
-                ms_log.error("Could not save jetty datasource configuration jetty-ds.xml", e);
+                ms_log.error("Cound not save jetty datasource configuration jetty-ds.xml", e);
                 throw e;
             }
 
@@ -560,7 +581,7 @@ public class JettyDatasourceConfigurationAdapter implements IPSConfigurationAdap
         }
         catch (IOException e)
         {
-            ms_log.error("Unable to save properties file "+ dbPropertiesFile.getAbsolutePath());
+            ms_log.error("Unable to save properties file {}", dbPropertiesFile.getAbsolutePath());
         }
     }
 

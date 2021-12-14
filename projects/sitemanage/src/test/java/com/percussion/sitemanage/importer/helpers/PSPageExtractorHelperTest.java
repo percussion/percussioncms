@@ -17,15 +17,11 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.sitemanage.importer.helpers;
-
-import static com.percussion.share.spring.PSSpringWebApplicationContextUtils.getWebApplicationContext;
-
-import static org.springframework.util.StringUtils.countOccurrencesOf;
 
 import com.percussion.assetmanagement.data.PSAsset;
 import com.percussion.assetmanagement.data.PSAssetSummary;
@@ -42,12 +38,14 @@ import com.percussion.pagemanagement.service.PSSiteDataServletTestCaseFixture;
 import com.percussion.services.assembly.IPSAssemblyService;
 import com.percussion.share.service.IPSIdMapper;
 import com.percussion.share.service.IPSNameGenerator;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.spring.PSSpringWebApplicationContextUtils;
 import com.percussion.sitemanage.dao.IPSiteDao;
 import com.percussion.sitemanage.dao.impl.PSSiteContentDao;
 import com.percussion.sitemanage.data.PSPageContent;
 import com.percussion.sitemanage.data.PSSite;
 import com.percussion.sitemanage.data.PSSiteImportCtx;
+import com.percussion.sitemanage.error.PSSiteImportException;
 import com.percussion.sitemanage.importer.IPSSiteImportLogger;
 import com.percussion.sitemanage.importer.IPSSiteImportLogger.PSLogEntryType;
 import com.percussion.sitemanage.importer.IPSSiteImportLogger.PSLogObjectType;
@@ -63,13 +61,6 @@ import com.percussion.sitesummaryservice.service.IPSSiteImportSummaryService;
 import com.percussion.theme.data.PSThemeSummary;
 import com.percussion.utils.testing.IntegrationTest;
 import com.percussion.webservices.security.IPSSecurityWs;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.Set;
-
 import org.apache.cactus.ServletTestCase;
 import org.apache.commons.io.IOUtils;
 import org.jsoup.Jsoup;
@@ -78,6 +69,15 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runners.MethodSorters;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.Set;
+
+import static com.percussion.share.spring.PSSpringWebApplicationContextUtils.getWebApplicationContext;
+import static org.springframework.util.StringUtils.countOccurrencesOf;
 
 /**
  * @author LucasPiccoli
@@ -105,8 +105,7 @@ public class PSPageExtractorHelperTest extends ServletTestCase
     }
     
     @Test
-    public void test010AddBodyContentToPageWhenImportingSite()
-    {
+    public void test010AddBodyContentToPageWhenImportingSite() throws PSDataServiceException, PSSiteImportException {
         PSSite site = new PSSite();
         site.setBaseUrl(TEST_SITE_URL);
         site.setName(TEST_SITE_NAME);
@@ -412,8 +411,6 @@ public class PSPageExtractorHelperTest extends ServletTestCase
      * <pre>
      * STATUS: Commented out managed jquery reference from &lt;body&gt; element: &lt;script src="jquery.js" type="text/javascript"&gt; &lt;/script&gt; from &lt;body&gt; element.
      * </pre>
-     * 
-     * @param tag {@link String} with the whole tag to build the line. Assumed
      *            not <code>null</code> nor empty.
      * @return {@link String}, never <code>null</code> or empty.
      */

@@ -17,16 +17,16 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.delivery.metadata.data;
 
+import com.percussion.delivery.metadata.impl.utils.PSPair;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import com.percussion.delivery.metadata.impl.utils.PSPair;
 
 /**
  * Represents an object with a category name, the count of pages that are
@@ -53,8 +53,8 @@ public class PSMetadataRestCategory
     {
         super();
         this.category = category;
-        this.count = new PSPair<Integer, Integer>(0, 0);
-        this.children = new ArrayList<PSMetadataRestCategory>();
+        this.count = new PSPair<>(0, 0);
+        this.children = new ArrayList<>();
     }
 
     /**

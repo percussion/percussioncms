@@ -17,13 +17,14 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.xml;
 
+import com.percussion.security.xml.PSCatalogResolver;
 import org.w3c.dom.Node;
 
 import javax.xml.transform.Transformer;
@@ -56,6 +57,10 @@ public class PSXmlUtil {
 
         try {
             Transformer transformer = transformerFactory.newTransformer();
+            PSCatalogResolver cr = new PSCatalogResolver();
+
+            //TODO: This may need moved to perc-system to handle resolving internal XML server requests.
+            transformer.setURIResolver(cr);
 
             DOMSource source = new DOMSource(node);
             StringWriter writer = new StringWriter();

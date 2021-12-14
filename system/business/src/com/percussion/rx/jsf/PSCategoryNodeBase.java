@@ -17,13 +17,15 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.rx.jsf;
 
-import static org.apache.commons.lang.Validate.notNull;
+import com.percussion.services.error.PSNotFoundException;
+import org.apache.commons.lang.StringUtils;
+import org.apache.myfaces.trinidad.model.RowKeyIndex;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -31,8 +33,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.myfaces.trinidad.model.RowKeyIndex;
+import static org.apache.commons.lang.Validate.notNull;
 
 /**
  * The category node base implements the basic behavior needed for category
@@ -131,7 +132,7 @@ public class PSCategoryNodeBase extends PSNodeBase
       notNullNode(node);
       if (m_children == null)
       {
-         m_children = new ArrayList<PSNodeBase>();
+         m_children = new ArrayList<>();
       }
       m_children.add(node);
       node.setParent(this);
@@ -158,8 +159,7 @@ public class PSCategoryNodeBase extends PSNodeBase
    }
 
    @Override
-   public List<? extends PSNodeBase> getChildren()
-   {
+   public List<? extends PSNodeBase> getChildren() throws PSNotFoundException {
       return m_children;
    }
 
@@ -321,8 +321,7 @@ public class PSCategoryNodeBase extends PSNodeBase
     * @return the matching nodes, may be empty. If it is not empty, then
     * there always be one selected node.
     */
-   public List<PSNodeBase> getFilteredNodes()
-   {
+   public List<PSNodeBase> getFilteredNodes() throws PSNotFoundException {
       if (getChildren() == null)
       {
          return Collections.emptyList();
@@ -332,7 +331,7 @@ public class PSCategoryNodeBase extends PSNodeBase
          return Collections.unmodifiableList(m_children);
       }
 
-      List<PSNodeBase> rval = new ArrayList<PSNodeBase>();
+      List<PSNodeBase> rval = new ArrayList<>();
       final String star = "*";
       final String allPattern = ".*";
       String pattern = m_filter.replaceAll("\\*", allPattern);

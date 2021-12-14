@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -25,9 +25,6 @@
 package com.percussion.webservices.rhythmyx;
 
 import com.percussion.utils.testing.IntegrationTest;
-import org.apache.axis.MessageContext;
-import org.apache.axis.transport.http.HTTPConstants;
-
 import com.percussion.webservices.PSTestBase;
 import com.percussion.webservices.security.LoadCommunitiesRequest;
 import com.percussion.webservices.security.LoadRolesRequest;
@@ -38,6 +35,8 @@ import com.percussion.webservices.security.data.PSLogin;
 import com.percussion.webservices.system.LoadWorkflowsRequest;
 import com.percussion.webservices.system.SwitchCommunityRequest;
 import com.percussion.webservices.system.SystemSOAPStub;
+import org.apache.axis.MessageContext;
+import org.apache.axis.transport.http.HTTPConstants;
 import org.junit.experimental.categories.Category;
 
 import static org.junit.Assert.assertTrue;

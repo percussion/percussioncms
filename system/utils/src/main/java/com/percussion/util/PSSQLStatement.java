@@ -17,19 +17,20 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.util;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLWarning;
 import java.sql.Statement;
-
-import org.apache.log4j.Logger;
 
 /**
  * This is a proxy (or wrapper) class to a <code>Statement</code> object. It 
@@ -391,7 +392,7 @@ public class PSSQLStatement implements Statement
    protected void logElapsedTime()
    {
       m_timer.stop();
-      ms_log.debug("SQL[" + m_currSQLExeCount + "]: " + m_timer.toString());
+      log.debug("SQL[{}]:, {} ",m_currSQLExeCount, m_timer.toString());
    }
    
    /**
@@ -406,9 +407,9 @@ public class PSSQLStatement implements Statement
       m_timer.start();
       m_currSQLExeCount = ++ms_sqlExeCount; 
       
-      ms_log.debug("SQL[" + m_currSQLExeCount + "]: \n" + m_sqlStatement);
-      ms_log.debug("\n" + m_additionalLogInfo.toString());
-      m_additionalLogInfo = new StringBuffer(); // flush the buffer
+      log.debug("SQL[{}]: \n,{}",m_currSQLExeCount, m_sqlStatement);
+      log.debug("\n{}", m_additionalLogInfo.toString());
+      m_additionalLogInfo = new StringBuilder(); // flush the buffer
    }
    
    /**
@@ -430,7 +431,7 @@ public class PSSQLStatement implements Statement
     */
    protected static boolean isLogEnabled()
    {
-      return (ms_log != null && ms_log.isDebugEnabled());
+      return (log != null && log.isDebugEnabled());
    }
 
    /**
@@ -443,21 +444,13 @@ public class PSSQLStatement implements Statement
     * derived class <code>PSPreparedStatement<code>. Never <code>null</code>, 
     * may be empty.
     */
-   protected StringBuffer m_additionalLogInfo = new StringBuffer();
+   protected StringBuilder m_additionalLogInfo = new StringBuilder();
    
    /**
     * The logger used for this class, may be <code>null</code> if the log4j
     * has not been configured.
     */
-   private static Logger ms_log = null;
-   
-   static {
-      // set the logger if log4j has been configured
-      if (Logger.getRootLogger().getAllAppenders().hasMoreElements())
-      {
-         ms_log = Logger.getLogger(PSSQLStatement.class);
-      }
-   }
+   private static final Logger log = LogManager.getLogger(PSSQLStatement.class);
 
    /**
     * All methods will be delegated to this object. Initialized by ctor,

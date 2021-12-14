@@ -17,15 +17,16 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.error;
 
-import java.util.Locale;
 import org.apache.commons.lang.StringUtils;
+
+import java.util.Locale;
 
 
 /**
@@ -90,7 +91,7 @@ public class PSException extends java.lang.Exception
    implements IPSException
 {
 
-   private static IPSErrorManager errorManager = new PSErrorManagerDefaultImpl();
+   private static transient IPSErrorManager errorManager = new PSErrorManagerDefaultImpl();
 
    /**
     * 
@@ -104,6 +105,10 @@ public class PSException extends java.lang.Exception
       super();
    }
 
+   public PSException(Throwable cause){
+      super(cause);
+   }
+
    /**
     * Constructor that takes the error message
     * @param msg should not be <code>null</code>
@@ -112,6 +117,8 @@ public class PSException extends java.lang.Exception
    {
       super(msg);
    }
+
+
 
    /**
     * Construct an exception for messages taking only a single argument.
@@ -234,7 +241,7 @@ public class PSException extends java.lang.Exception
     */
    public PSException(int msgCode)
    {
-      this(msgCode, null);
+      this(msgCode, (Object) null);
    }
 
    /**
@@ -344,6 +351,7 @@ public class PSException extends java.lang.Exception
     *
     * @return               the localized detail message
     */
+   @Override
    public java.lang.String getLocalizedMessage()
    {
       if (m_overridingMessage != null)
@@ -362,9 +370,15 @@ public class PSException extends java.lang.Exception
     *
     * @return               the detail message
     */
+   @Override
    public java.lang.String getMessage()
    {
       return getLocalizedMessage();
+   }
+
+   public PSException(int code, Throwable t){
+      super(t);
+      this.m_code = code;
    }
 
    /**
@@ -373,6 +387,7 @@ public class PSException extends java.lang.Exception
     *
     * @return               the description
     */
+   @Override
    public java.lang.String toString()
    {
       return this.getClass().getName() + ": " + getLocalizedMessage();
@@ -509,8 +524,10 @@ public class PSException extends java.lang.Exception
             ? null : overridingMessage;
    }
 
+
+
    protected int        m_code;
-   protected Object[]   m_args;
+   protected transient Object[]   m_args;
    protected String     m_lang;
 
    /**

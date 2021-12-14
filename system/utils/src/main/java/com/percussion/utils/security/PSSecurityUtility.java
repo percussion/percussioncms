@@ -17,12 +17,19 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.utils.security;
+
+import com.percussion.util.PSProperties;
+import com.percussion.utils.io.PathUtils;
+import org.apache.commons.lang.math.NumberUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -30,17 +37,15 @@ import java.io.IOException;
 import java.security.SecureRandom;
 import java.util.Properties;
 
-import com.percussion.utils.io.PathUtils;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.math.NumberUtils;
-
-
-import org.apache.commons.logging.LogFactory;
-import org.apache.commons.logging.Log;
-
-import com.percussion.util.PSProperties;
-
-public class PSSecurityUtility {
+/**
+ * This class currently exposes utility functions for server security options.
+ *
+ * @see com.percussion.security.SecureStringUtils in the perc-security-utils module to find, add, or update string
+ * functions for validation / security.
+ *
+ * Please add any new general security / validation routines there instead of this class.
+ */
+public final class PSSecurityUtility {
     
     
     public static final String REQUIRE_HTTPS="requireHTTPS";
@@ -48,7 +53,7 @@ public class PSSecurityUtility {
     public static final String REQUIRE_CONTENT_SECURITY_POLICY="requireContentSecurityPolicy";
     public static final String REQUIRE_CONTENT_SECURITY_POLICY_DEFAULT = "false";
     public static final String CONTENT_SECURITY_POLICY = "contentSecurityPolicy";
-    public static final String CONTENT_SECURITY_POLICY_DEFAULT="default-src 'self' *.percussion.com *.percussion.marketing *.percussion.services 'unsafe-inline' 'unsafe-eval'; script-src 'self' *.siteimprove.net  'unsafe-inline' 'unsafe-eval'";
+    public static final String CONTENT_SECURITY_POLICY_DEFAULT="default-src * data: https: *.percussion.com *.percussion.marketing *.percussion.services ; img-src * 'self' data: https: 'unsafe-inline' 'unsafe-eval'; font-src * 'unsafe-inline' 'unsafe-eval'; script-src * 'unsafe-inline' 'unsafe-eval' *.siteimprove.net ; style-src * 'unsafe-inline' 'unsafe-eval'; frame-src * 'self' data: https: http: *.percussion.com *.percussion.marketing *.percussion.services 'unsafe-inline' 'unsafe-eval'; frame-ancestors * 'self' ;";
     public static final String REQUIRE_XFRAME_OPTIONS = "requireXFrameOptions";
     public static final String REQUIRE_XFRAME_OPTIONS_DEFAULT = "true";
     public static final String XFRAME_OPTIONS="xFrameOptions";
@@ -83,7 +88,7 @@ public class PSSecurityUtility {
     
     private Boolean isHTTPSRequired = null;
     private Boolean isStrictTransportSecurityRequired = null;
-    private Boolean isContentSecurityPolicyRequired   = null;;
+    private Boolean isContentSecurityPolicyRequired   = null;
     private Boolean isxFrameOptionsRequired = null;
     private Boolean isXXSSProtectionRequired = null;
     private Boolean isXContentTypeOptionsRequired = null;
@@ -95,7 +100,7 @@ public class PSSecurityUtility {
     private String xContentTypeOptions = null; 
     private String cacheControl = null; 
     
-    private static final Log log = LogFactory.getLog(PSSecurityUtility.class);
+    private static final Logger log = LogManager.getLogger("Securityy");
     
     public PSSecurityUtility(){}
     
@@ -107,7 +112,7 @@ public class PSSecurityUtility {
         public boolean httpsRequired()
        {
           if(isHTTPSRequired != null){
-             return isHTTPSRequired.booleanValue();
+             return isHTTPSRequired;
           }
           boolean result = false;
           Properties serverProps = getServerProperties();
@@ -127,7 +132,7 @@ public class PSSecurityUtility {
          public boolean isCacheControlRequired()
            {
                if(cacheControlRequired != null) {
-                   return cacheControlRequired.booleanValue();
+                   return cacheControlRequired;
                }
 
                Properties serverProps = getServerProperties();
@@ -159,7 +164,7 @@ public class PSSecurityUtility {
        public boolean contentSecurityPolicyRequired()
        {
            if(isContentSecurityPolicyRequired != null) {
-               return isContentSecurityPolicyRequired.booleanValue();
+               return isContentSecurityPolicyRequired;
            }
            boolean result = false;
            Properties serverProps = getServerProperties();
@@ -390,56 +395,5 @@ public class PSSecurityUtility {
        public static final String SERVER_DIR = BASE_CONFIG_DIR + "/Server";
        
        private static PSProperties ms_serverProps = new PSProperties();
-
-    /**
-     * Utility to remove parameters from header.
-     * @param str
-     * @return
-     */
-    public static String removeSpecialCharactersFromHeader(String str) {
-           return str.replaceAll("[^a-zA-Z ]", "");
-    }
-
-    /**
-     * Utility to sanitize a string for use in a file system path under a specified path.
-     *
-     * @param str
-     * @return The sanitized string
-     */
-    public static String sanitizeStringForFileUnderPath(String containingPath, String str){
-        //TODO: Implement me!
-        throw new RuntimeException("Not Implemented!");
-    }
-
-    /**
-     * Utility to sanitize a string for use in a file system path
-     *
-     * @param str
-     * @return The sanitized string
-     */
-    public static String sanitizeStringForFileSystem(String str){
-        //TODO: Implement me!
-        throw new RuntimeException("Not Implemented!");
-    }
-
-    /**
-     * Utility to sanitize a string for use in a SQL statement
-     * @param str User provided string
-     * @return The sanitized string
-     */
-    public static String sanitizeStringForSQLStatement(String str){
-        //TODO: Implement me!
-        throw new RuntimeException("Not Implemented!");
-    }
-
-    /**
-     * Sanitizes a user provided string for use in HTML
-     * @param str a user provided string
-     * @return The sanitized string
-     */
-    public static String sanitizeStringForHTML(String str){
-        //TODO: Implement me!
-        throw new RuntimeException("Not Implemented!");
-    }
 
 }

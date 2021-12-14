@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -97,7 +97,6 @@ public class PSIdMapManager
     * @throws PSDeployException if the given <code>PSIdMap</code> object is not
     * in the saved state.
     */
-   @SuppressWarnings("unchecked")
    private void validateSavedIdMap(PSIdMap map) throws PSDeployException
    {
       Iterator mappingList = map.getMappings();
@@ -121,6 +120,6 @@ public class PSIdMapManager
     * {@link #saveIdMap(PSIdMap)}. Never <code>null</code>.
     */
    private Map<String, PSIdMap> m_repToIdMap =
-      new HashMap<String, PSIdMap>();
+      new HashMap<>();
    
 }

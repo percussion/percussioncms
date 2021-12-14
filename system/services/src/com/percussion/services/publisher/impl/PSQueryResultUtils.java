@@ -17,16 +17,14 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.services.publisher.impl;
 
 import com.google.common.collect.Iterators;
-
-import java.util.Iterator;
-import java.util.List;
+import org.apache.jackrabbit.commons.iterator.RowIteratorAdapter;
 
 import javax.help.UnsupportedOperationException;
 import javax.jcr.NodeIterator;
@@ -34,8 +32,8 @@ import javax.jcr.RepositoryException;
 import javax.jcr.query.QueryResult;
 import javax.jcr.query.Row;
 import javax.jcr.query.RowIterator;
-
-import org.apache.jackrabbit.commons.iterator.RowIteratorAdapter;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * JCR 170 Query Results utils similar to 

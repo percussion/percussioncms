@@ -1,0 +1,6 @@
+##
+## Macro to preload css
+##
+#macro(cssPreload)
+    <!-- CSS Preload -->
+#end

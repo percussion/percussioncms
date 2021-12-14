@@ -17,43 +17,36 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.delivery.metadata.rdbms.impl;
 
 import com.percussion.delivery.metadata.IPSMetadataEntry;
-import com.percussion.delivery.metadata.IPSMetadataProperty;
 import com.percussion.delivery.metadata.IPSMetadataQueryService;
 import com.percussion.delivery.metadata.data.PSMetadataQuery;
-import com.percussion.delivery.metadata.data.PSMetadataRestCategory;
 import com.percussion.delivery.metadata.data.impl.PSCriteriaElement;
 import com.percussion.delivery.metadata.error.PSMalformedMetadataQueryException;
-import com.percussion.delivery.metadata.extractor.data.PSMetadataProperty;
 import com.percussion.delivery.metadata.impl.PSMetadataQueryServiceHelper;
 import com.percussion.delivery.metadata.impl.PSPropertyDatatypeMappings;
 import com.percussion.delivery.metadata.impl.utils.PSPair;
 import com.percussion.delivery.metadata.utils.PSHashCalculator;
+import com.percussion.error.PSExceptionUtils;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.HibernateException;
-import org.hibernate.Transaction;
-import org.hibernate.query.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.internal.SessionImpl;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
-import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
-import javax.servlet.ServletException;
 import javax.xml.bind.DatatypeConverter;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -75,9 +68,10 @@ import static org.apache.commons.lang.StringUtils.isNotBlank;
 
 @Repository
 @Scope("singleton")
-public class PSMetadataQueryService implements IPSMetadataQueryService {
+public class PSMetadataQueryService implements IPSMetadataQueryService
+{
     private SessionFactory sessionFactory;
-    private final PSHashCalculator hashCalculator = new PSHashCalculator();
+    private PSHashCalculator hashCalculator = new PSHashCalculator();
 
     @Autowired
     public void setSessionFactory(SessionFactory sessionFactory) {
@@ -93,7 +87,7 @@ public class PSMetadataQueryService implements IPSMetadataQueryService {
      * Property datatype mappings, loaded by Spring.
      */
     protected PSPropertyDatatypeMappings datatypeMappings;
-    private Integer queryLimit = 500;
+    private Integer queryLimit=500;
 
     /**
      * ctor
@@ -101,11 +95,11 @@ public class PSMetadataQueryService implements IPSMetadataQueryService {
      * @param datatypeMappings
      * @param queryLimit
      */
-    public PSMetadataQueryService(PSPropertyDatatypeMappings datatypeMappings, Integer queryLimit) {
+    public PSMetadataQueryService(PSPropertyDatatypeMappings datatypeMappings, Integer queryLimit)
+    {
         this.datatypeMappings = datatypeMappings;
         this.queryLimit = queryLimit;
     }
-
     /**
      * "SELECT DISTINCT COUNT(ENTRY_ID), [name],stringvalue\n" +
      * "FROM PERC_PAGE_METADATA_PROPERTIES WHERE\n" +
@@ -119,8 +113,8 @@ public class PSMetadataQueryService implements IPSMetadataQueryService {
         List<Object[]> cats = new ArrayList<>();
         List<PSCriteriaElement> entryCrit = new ArrayList<>();
         List<PSCriteriaElement> propsCrit = new ArrayList<>();
-        StringBuffer Q3 = null;
-        StringBuffer Q4 = null;
+        StringBuilder Q3 = null;
+        StringBuilder Q4 = null;
 
 
         /**
@@ -135,8 +129,7 @@ public class PSMetadataQueryService implements IPSMetadataQueryService {
          *       AND  e.site = 'Callidus' AND  e.folder LIKE '%/News-Releases/%')
          *
          * Q3 = select p.ENTRY_ID from PERC_PAGE_METADATA_PROPERTIES p where  ((p.name = 'dcterms:title'  and p.stringvalue LIKE '%n%' ) or
-                 (p.name = 'dcterms:source'  and p.stringvalue = 'CaldTemp' )  ) and p.ENTRY_ID in( Q4 )
-
+         (p.name = 'dcterms:source'  and p.stringvalue = 'CaldTemp' )  ) and p.ENTRY_ID in( Q4 )
          * Q2 = select p.ENTRY_ID from PERC_PAGE_METADATA_PROPERTIES p where p.ENTRY_ID in(Q3)
          * Q1 = SELECT count(p4.ENTRY_ID), p4.name ,p4.stringvalue from PERC_PAGE_METADATA_PROPERTIES p4 where p4.ENTRY_ID
          *      in(Q2) AND p4.name = 'perc:category'  GROUP BY p4.name, p4.stringvalue  ORDER BY p4.stringvalue
@@ -159,14 +152,14 @@ public class PSMetadataQueryService implements IPSMetadataQueryService {
         }
 
 
-        StringBuffer Q4WhereClause = null;
+        StringBuilder Q4WhereClause = null;
         String clauseTemplate = " e.{0} {1} :{2}";
         int paramIndex = 0;
         Map<String, Object> paramValues = new HashMap<String, Object>();
         Map<String, PSCriteriaElement.OPERATION_TYPE> paramOps = new HashMap<String, PSCriteriaElement.OPERATION_TYPE>();
         for (PSCriteriaElement ce : entryCrit) {
             if (Q4WhereClause == null) {
-                Q4WhereClause = new StringBuffer(" WHERE ");
+                Q4WhereClause = new StringBuilder(" WHERE ");
             }else{
                 Q4WhereClause.append(" AND ");
             }
@@ -176,17 +169,17 @@ public class PSMetadataQueryService implements IPSMetadataQueryService {
             paramOps.put(replParam, ce.getOperationType());
         }
         if(Q4WhereClause != null) {
-            Q4 = new StringBuffer(" select distinct e.id from PSDbMetadataEntry e ");
+            Q4 = new StringBuilder(" select distinct e.id from PSDbMetadataEntry e ");
             Q4.append(Q4WhereClause);
         }
 
-        StringBuffer Q3WhereCaluse = null;
+        StringBuilder Q3WhereCaluse = null;
         clauseTemplate = " lower(p.name) = lower(:{3}) and p.{0} {1} :{2}";
 
-         for (PSCriteriaElement ce : propsCrit)
+        for (PSCriteriaElement ce : propsCrit)
         {
             if (Q3WhereCaluse == null) {
-                Q3WhereCaluse = new StringBuffer("WHERE ( ");
+                Q3WhereCaluse = new StringBuilder("WHERE ( ");
             } else {
                 Q3WhereCaluse.append(" OR ");
             }
@@ -234,31 +227,31 @@ public class PSMetadataQueryService implements IPSMetadataQueryService {
             paramOps.put(valueParam, ce.getOperationType());
         }
         if(Q3WhereCaluse != null) {
-            Q3 = new StringBuffer(" select distinct p.entry.id from PSDbMetadataProperty p " );
+            Q3 = new StringBuilder(" select distinct p.entry.id from PSDbMetadataProperty p " );
             Q3.append(Q3WhereCaluse).append(" )");
             if(Q4 != null) {
                 Q3.append(" and p.entry.id in( ").append(Q4).append(" ) ");
             }
         }
 
-        StringBuffer Q2 = new StringBuffer("select distinct p2.entry.id from PSDbMetadataProperty p2 where p2.entry.id in( ");
+        StringBuilder Q2 = new StringBuilder("select distinct p2.entry.id from PSDbMetadataProperty p2 where p2.entry.id in( ");
         if(Q3 != null) {
             Q2.append(Q3).append(" )");
         }else if(Q4 != null){
             Q2.append(Q4).append(" )");
         }
 
-        StringBuffer Q1 = new StringBuffer( "SELECT distinct count(p4.entry.id), p4.name ,p4.stringvalue from PSDbMetadataProperty p4" +
+        StringBuilder Q1 = new StringBuilder( "SELECT distinct count(p4.entry.id), p4.name ,p4.stringvalue from PSDbMetadataProperty p4" +
                 " where p4.entry.id in (").append(Q2).append( " )").append("AND p4.name = 'perc:category'  GROUP BY p4.name, p4.stringvalue  ORDER BY p4.stringvalue");
 
 
         String hql = Q1.toString();
-        log.debug(hql.toString());
+        log.debug("{}",hql);
 
         try(Session session = getSession()){
 
             Query hq = session.createQuery(hql);
-            log.debug(hq.toString());
+            log.debug("{}",hq);
             for (String key : paramValues.keySet())
             {
                 Object value = paramValues.get(key);
@@ -280,15 +273,14 @@ public class PSMetadataQueryService implements IPSMetadataQueryService {
             //Returns List of Array with "Count: {} Name {} Cat: {}", c[0], c[1], c[2]
             // Object[2,"perc:category","/Categories/Color/Blue"
             // Object[1,"perc:category","/Categories/Color/Red"
-             cats = hq.getResultList();
+            cats = hq.getResultList();
 
         } catch (Exception e) {
-            log.error("Query Failed : "+ query.toString(),e);
+            log.error("Query Failed : {}, Error: {}", query.toString(),e.getMessage());
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
         return cats;
     }
-
-
 
     /*
      * (non-Javadoc)
@@ -600,13 +592,13 @@ public class PSMetadataQueryService implements IPSMetadataQueryService {
                 queryBuf.append(PSMetadataQueryServiceHelper.getSortingOrder(orderBy));
         }
 
-        log.debug(queryBuf.toString());
+        log.debug("{}",queryBuf);
 
         Query q = sess.createQuery(queryBuf.toString());
         int useLimit=queryLimit;
         //All caller to set a query limit, but they can't allow higher than the server limit.
         if(rawQuery.getTotalMaxResults() > 0 && rawQuery.getTotalMaxResults() < queryLimit){
-            log.debug("Setting max query limit to client provided value :" + rawQuery.getTotalMaxResults());
+            log.debug("Setting max query limit to client provided value :{}", rawQuery.getTotalMaxResults());
             useLimit=rawQuery.getTotalMaxResults();
         }
 
@@ -729,7 +721,8 @@ public class PSMetadataQueryService implements IPSMetadataQueryService {
         }
         catch (SQLException | RuntimeException e)
         {
-            log.error("There was an error getting jdbc driver name", e);
+            log.error("There was an error getting jdbc driver name Error: {}", PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
 
         return jdbcConnectionUrl;

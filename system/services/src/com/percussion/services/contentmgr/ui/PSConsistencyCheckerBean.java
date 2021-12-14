@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -33,6 +33,10 @@ import com.percussion.services.legacy.IPSCmsObjectMgr;
 import com.percussion.services.legacy.PSCmsObjectMgrLocator;
 import com.percussion.utils.guid.IPSGuid;
 
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+import javax.jcr.RepositoryException;
+import javax.naming.NamingException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -41,11 +45,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
-
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
-import javax.jcr.RepositoryException;
-import javax.naming.NamingException;
 
 /**
  * JSF bean for the consistency checker interface. This bean has a session
@@ -305,7 +304,7 @@ public class PSConsistencyCheckerBean
     */
    public PSConsistencyCheckerBean() throws RepositoryException {
       List<IPSNodeDefinition> nodedefs = ms_cmgr.findAllItemNodeDefinitions();
-      List<CTypeEntry> defs = new ArrayList<CTypeEntry>();
+      List<CTypeEntry> defs = new ArrayList<>();
 
       for (IPSNodeDefinition def : nodedefs)
       {
@@ -315,7 +314,7 @@ public class PSConsistencyCheckerBean
       }
 
       m_typeentries = defs;
-      m_problemsFound = new ArrayList<CItemEntry>();
+      m_problemsFound = new ArrayList<>();
    }
 
    /**
@@ -360,8 +359,8 @@ public class PSConsistencyCheckerBean
    public String check()
    {
       m_errorMessage = "";
-      m_problemsFound = new ArrayList<CItemEntry>();
-      Map<Integer, Collection<Problem>> pmap = new HashMap<Integer, Collection<Problem>>();
+      m_problemsFound = new ArrayList<>();
+      Map<Integer, Collection<Problem>> pmap = new HashMap<>();
       try
       {
          PSConsistencyProblemFinder finder = new PSConsistencyProblemFinder();
@@ -377,14 +376,14 @@ public class PSConsistencyCheckerBean
                Collection<Problem> cidproblems = pmap.get(p.getContentid());
                if (cidproblems == null)
                {
-                  cidproblems = new ArrayList<Problem>();
+                  cidproblems = new ArrayList<>();
                   pmap.put(p.getContentid(), cidproblems);
                }
                cidproblems.add(p);
             }
          }
          // Build the UI data structure
-         Set<Integer> sortedids = new TreeSet<Integer>(pmap.keySet());
+         Set<Integer> sortedids = new TreeSet<>(pmap.keySet());
          for (Integer cid : sortedids)
          {
             Collection<Problem> problems = pmap.get(cid);

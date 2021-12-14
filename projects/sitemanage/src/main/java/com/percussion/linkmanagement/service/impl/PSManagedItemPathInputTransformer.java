@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -35,10 +35,9 @@ import com.percussion.server.IPSRequestContext;
 import com.percussion.services.guidmgr.PSGuidManagerLocator;
 import com.percussion.share.spring.PSSpringWebApplicationContextUtils;
 import com.percussion.util.IPSHtmlParameters;
+import org.apache.commons.lang.StringUtils;
 
 import java.io.File;
-
-import org.apache.commons.lang.StringUtils;
 
 /**
  * A field input transformer to process/update an item path. Expects an item path as an input, calls the managedlink service to manage the link, the resulting link id
@@ -74,8 +73,9 @@ public class PSManagedItemPathInputTransformer extends PSDefaultExtension implem
         PSExtensionParams ep = new PSExtensionParams(params);
         String path = ep.getStringParam(0, null, true);
         String linkId = ep.getStringParam(1, null, false);
-        if(StringUtils.isBlank(path))
+        if(StringUtils.isBlank(path)) {
             return "";
+        }
         
         String result = "";
         String cid = request.getParameter(IPSHtmlParameters.SYS_CONTENTID);

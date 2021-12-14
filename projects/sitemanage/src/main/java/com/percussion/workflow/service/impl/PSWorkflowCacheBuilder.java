@@ -17,18 +17,18 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.workflow.service.impl;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.maintenance.service.IPSMaintenanceManager;
 import com.percussion.maintenance.service.IPSMaintenanceProcess;
 import com.percussion.services.workflow.IPSWorkflowService;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * @author JaySeletz
@@ -36,7 +36,7 @@ import org.apache.commons.logging.LogFactory;
  */
 public class PSWorkflowCacheBuilder implements Runnable, IPSMaintenanceProcess
 {
-    public static Log log = LogFactory.getLog(PSWorkflowCacheBuilder.class);
+    private static final Logger log = LogManager.getLogger(PSWorkflowCacheBuilder.class);
     
     static final String MAINT_PROC_NAME = PSWorkflowCacheBuilder.class.getName();
     
@@ -70,7 +70,8 @@ public class PSWorkflowCacheBuilder implements Runnable, IPSMaintenanceProcess
         }
         catch (Exception e)
         {
-            log.error("Failed to build the workflow cache, the cache will be filled on demand", e);
+            log.error("Failed to build the workflow cache, the cache will be filled on demand, Error: {}", PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             maintenanceManager.workFailed(this);
         }
     }

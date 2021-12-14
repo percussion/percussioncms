@@ -17,11 +17,12 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.workflow;
+
 import com.percussion.design.objectstore.PSNotFoundException;
 import com.percussion.extension.IPSExtension;
 import com.percussion.extension.IPSExtensionDef;
@@ -37,13 +38,13 @@ import com.percussion.extension.PSParameterMismatchException;
 import com.percussion.i18n.PSI18nUtils;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.server.PSServer;
+import com.percussion.share.service.exception.PSDataServiceException;
+import org.w3c.dom.Document;
 
 import java.io.File;
-import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
-
-import org.w3c.dom.Document;
+import java.util.concurrent.ConcurrentHashMap;
 /**
  * The PSExecuteWorkflowActions class implements extension handling for the
  * workflow action extensions (Extensions that implement
@@ -58,12 +59,12 @@ public class PSExecuteWorkflowActions implements IPSResultDocumentProcessor
    /**
     * The fully qualified name of this extension.
     */
-   static private String m_fullExtensionName = "";
+   private String m_fullExtensionName = "";
 
    /*
-    * Flag to indicate indicating that this exit has not been initialized yet.
+    * Flag to indicate that this exit has not been initialized yet.
     */
-   static private boolean  m_extensionInitialized = false;
+    private boolean  m_extensionInitialized = false;
 
    /* *************  IPSExtension Interface Implementation ************* */
 
@@ -78,7 +79,7 @@ public class PSExecuteWorkflowActions implements IPSResultDocumentProcessor
       if (!m_extensionInitialized)
       {
        ms_extensionMgr = PSServer.getExtensionManager(null);
-       m_wfActionExtensions = new Hashtable();
+       m_wfActionExtensions = new ConcurrentHashMap<>();
        m_extensionInitialized = true;
        m_fullExtensionName = extensionDef.getRef().toString();
       }
@@ -165,13 +166,6 @@ public class PSExecuteWorkflowActions implements IPSResultDocumentProcessor
           throw new PSParameterMismatchException(lang, size, 0);
        }
 
-       if (null == requestContext)
-       {
-          throw new PSExtensionProcessingException(
-               m_fullExtensionName,
-               new IllegalArgumentException("The request must not be null"));
-       }
-
        List workflowActions = (List)
            requestContext.getPrivateObject
            (IPSWorkflowAction.WORKFLOW_ACTIONS_PRIVATE_OBJECT);
@@ -186,7 +180,7 @@ public class PSExecuteWorkflowActions implements IPSResultDocumentProcessor
        }
 
        // If the workflow action list is empty, it is an error
-       if (0 == workflowActions.size())
+       if (workflowActions.isEmpty())
        {
           String key =
            Integer.toString(IPSExtensionErrors.WKFLOW_ACTIONLIST_EMPTY);
@@ -223,11 +217,7 @@ public class PSExecuteWorkflowActions implements IPSResultDocumentProcessor
           {
              // make stuff into separate method
              wfActionFullName = (String) wfaIter.next();
-             if (null != m_wfActionExtensions.get(wfActionFullName))
-             {
-                continue;
-             }
-             else
+             if (null == m_wfActionExtensions.get(wfActionFullName))
              {
                 PSExtensionRef ref = new PSExtensionRef(wfActionFullName);
                 IPSExtension ext = ms_extensionMgr.prepareExtension(ref, null);
@@ -240,8 +230,7 @@ public class PSExecuteWorkflowActions implements IPSResultDocumentProcessor
                    throw new PSExtensionProcessingException(lang,
                     m_fullExtensionName,  new Exception(msg));
                 }
-                m_wfActionExtensions.put(wfActionFullName,
-                                        (IPSWorkflowAction) ext);
+                m_wfActionExtensions.put(wfActionFullName, ext);
 
              }
           }
@@ -289,9 +278,15 @@ public class PSExecuteWorkflowActions implements IPSResultDocumentProcessor
                m_fullExtensionName,
                new Exception(msg));
          }
-      
-         // Perform the action!!
-         wfActionExtension.performAction(wfContext, requestContext);
+
+         try {
+             // Perform the action!!
+             wfActionExtension.performAction(wfContext, requestContext);
+         } catch (com.percussion.services.error.PSNotFoundException | PSDataServiceException e) {
+             throw new PSExtensionProcessingException(
+                     m_fullExtensionName,
+                     e);
+         }
       }
       
       PSWorkFlowUtils.printWorkflowMessage(
@@ -303,13 +298,13 @@ public class PSExecuteWorkflowActions implements IPSResultDocumentProcessor
    /**
     * The unique system extension manager.
     */
-    private static IPSExtensionManager ms_extensionMgr = null;
+    private IPSExtensionManager ms_extensionMgr = null;
 
    /**
     * The map from the full extension name to the executable extension workflow
     * action extension that implements <CODE>IPSWorkflowAction<\CODE>. Shared
-    * by multiple threads and HashTable is used instead of HashMap.
+    * by multiple threads and ConcurrentHashMap is used instead of HashMap.
     * .
     */
-   private Hashtable m_wfActionExtensions;
+   private ConcurrentHashMap <String, IPSExtension> m_wfActionExtensions;
 }

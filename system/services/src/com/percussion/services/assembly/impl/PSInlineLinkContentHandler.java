@@ -17,12 +17,13 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.services.assembly.impl;
 
+import com.percussion.cms.IPSConstants;
 import com.percussion.cms.PSCmsException;
 import com.percussion.cms.PSInlineLinkField;
 import com.percussion.cms.PSRelationshipData;
@@ -30,6 +31,7 @@ import com.percussion.cms.PSSingleValueBuilder;
 import com.percussion.cms.objectstore.PSComponentSummary;
 import com.percussion.data.PSConversionException;
 import com.percussion.design.objectstore.PSNotFoundException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSExtensionManager;
 import com.percussion.extension.IPSUdfProcessor;
 import com.percussion.extension.PSExtensionException;
@@ -67,8 +69,8 @@ import com.percussion.utils.xml.PSSaxHelper;
 import org.apache.commons.codec.EncoderException;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jdom2.JDOMException;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
@@ -81,6 +83,7 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 import java.io.IOException;
 import java.io.StringReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -121,12 +124,11 @@ public class PSInlineLinkContentHandler extends PSSaxCopier
    /**
     * Logger for this class
     */
-   private static Log ms_log = LogFactory
-         .getLog(PSInlineLinkContentHandler.class);
+   private static final Logger log = LogManager.getLogger(IPSConstants.ASSEMBLY_LOG);
 
    
    
-   private PSInlineLinkContentHandler inlineLinkContentHandler = this;
+   private final PSInlineLinkContentHandler inlineLinkContentHandler = this;
 
    
 
@@ -177,7 +179,7 @@ public class PSInlineLinkContentHandler extends PSSaxCopier
        */
       public State nextState()
       {
-         if (this.equals(SKIP))
+         if (this == SKIP)
          {
             return PASSTHROUGH;
          }
@@ -255,7 +257,7 @@ public class PSInlineLinkContentHandler extends PSSaxCopier
    /**
     * The stack of state and element names
     */
-   private List<ElementState> m_stateStack = new LinkedList<ElementState>();
+   private List<ElementState> m_stateStack = new LinkedList<>();
 
    /**
     * The calling link processor, set in the ctor
@@ -277,16 +279,10 @@ public class PSInlineLinkContentHandler extends PSSaxCopier
     * Ctor
     * @param writer the stax output writer, never <code>null</code>
     * @param proc the parent processor, never <code>null</code>
-    * @throws XMLStreamException
     */
-   public PSInlineLinkContentHandler(XMLStreamWriter writer, 
-         PSInlineLinkProcessor proc)
-         throws XMLStreamException {
+   public PSInlineLinkContentHandler(XMLStreamWriter writer ,
+         PSInlineLinkProcessor proc) {
       super(writer, null, true);
-      if (proc == null)
-      {
-         throw new IllegalArgumentException("proc may not be null");
-      }
       m_processor = proc;
       
       // Clear stack
@@ -303,8 +299,7 @@ public class PSInlineLinkContentHandler extends PSSaxCopier
    private void pushState(String element, State state)
    {
       m_stateStack.add(new ElementState(element, state.nextState()));
-      ms_log.debug("Pushed, now " + m_stateStack.get(m_stateStack.size() - 1) + " depth "
-            + m_stateStack.size());
+      log.debug("Pushed, now {} depth {}", m_stateStack.get(m_stateStack.size() - 1), m_stateStack.size());
    }
 
    /**
@@ -334,9 +329,9 @@ public class PSInlineLinkContentHandler extends PSSaxCopier
       if (getCurrentState().equals(State.PASSTHROUGH))
       {
          super.endElement(uri, localname, qname);
-         ms_log.debug("Write End " + qname + " depth " + m_stateStack.size());
+         log.debug("Write End {} depth {}", qname, m_stateStack.size());
       }
-      ms_log.debug("End " + qname + " state: " + getCurrentState());
+      log.debug("End {} state: {}", qname, getCurrentState());
       popState();
    }
 
@@ -349,8 +344,7 @@ public class PSInlineLinkContentHandler extends PSSaxCopier
       {
          m_stateStack.remove(m_stateStack.size() - 1);
       }
-      ms_log.debug("Popped to " + m_stateStack.get(m_stateStack.size() - 1) + " depth "
-            + m_stateStack.size());
+      log.debug("Popped to {} depth {}", m_stateStack.get(m_stateStack.size() - 1), m_stateStack.size());
    }
 
    /**
@@ -436,7 +430,7 @@ public class PSInlineLinkContentHandler extends PSSaxCopier
             if (lastelement.equalsIgnoreCase("BODY"))
             {
                setCurrentState(State.PASSTHROUGH);
-               ms_log.debug("Change state to passthrough on " + qname);
+               log.debug("Change state to passthrough on {}", qname);
             }
          }
 
@@ -461,7 +455,9 @@ public class PSInlineLinkContentHandler extends PSSaxCopier
                }
                catch(Exception e)
                {
-                  ms_log.error("Error occurred generating the inline link attributes for path " + path);
+                  log.error("Error occurred generating the inline link attributes for path {}. Error: {}",
+                          path,
+                          PSExceptionUtils.getMessageForLog(e));
                }
             }
          }
@@ -510,8 +506,7 @@ public class PSInlineLinkContentHandler extends PSSaxCopier
             if (link.replacementBody == null)
             {
                m_writer.writeStartElement(qname);
-               ms_log
-                     .debug("Write Start " + qname + " depth " + m_stateStack.size());
+               log.debug("Write Start {} depth {}", qname, m_stateStack.size());
                boolean foundClass = false;
                boolean foundAlt = false;
                boolean foundTitle = false;
@@ -677,7 +672,7 @@ public class PSInlineLinkContentHandler extends PSSaxCopier
             }
             else if (StringUtils.isNotBlank(link.replacementBody))
             {
-               ms_log.debug("Replace: " + qname);
+               log.debug("Replace: {}", qname);
                // If we get here we had an inline variant and the state will
                // be set to ignore at the end of this block
                // Flush
@@ -707,7 +702,7 @@ public class PSInlineLinkContentHandler extends PSSaxCopier
            
             
             m_writer.writeStartElement(qname);
-            ms_log.debug("Write Start " + qname + " depth " + m_stateStack.size());
+            log.debug("Write Start {} depth {}", qname, m_stateStack.size());
             for (int i = 0; i < attrs.getLength(); i++)
             {
                String name = attrs.getQName(i);
@@ -727,7 +722,7 @@ public class PSInlineLinkContentHandler extends PSSaxCopier
          }
          else if (currentstate.equals(State.IGNORE))
          {
-            ms_log.debug("Ignore: " + qname);
+            log.debug("Ignore: {}", qname);
          }
       }
       catch (Exception e)
@@ -746,17 +741,25 @@ public class PSInlineLinkContentHandler extends PSSaxCopier
 
    }
 
-   protected State doRxHyperLink(InlineLink link, IPSAssemblyItem target, String jrcPath)
-      throws Exception {
+   protected State doRxHyperLink(InlineLink link, IPSAssemblyItem target, String jrcPath) {
          if (target != null){
             String newHref = link.getLink(target);
             if (StringUtils.isNotBlank(newHref)) {
+               if(link.href != null) {
+                  int anchorindex = link.href.lastIndexOf("#");
+                  if(anchorindex != -1) {
+                     String anchor = link.href.substring(anchorindex+1);
+                     if (!StringUtils.isEmpty(anchor.trim())) {
+                        newHref = newHref + "#" + anchor;
+                     }
+                  }
+               }
                link.overrides.put(PSSingleValueBuilder.HREF, newHref);
                return null;
             }
          }
          //else the link is broken
-         ms_log.debug("Broken Inline link from item " + link.href);
+         log.debug("Broken Inline link from item {}", link.href);
          String overrideValue = AssemblerInfoUtils.getBrokenLinkOverrideValue(jrcPath);
          link.overrides.put(PSSingleValueBuilder.HREF, overrideValue);
          return null;
@@ -790,7 +793,7 @@ public class PSInlineLinkContentHandler extends PSSaxCopier
       
       link.overrides.put("src", link.getLink(target));
       
-      Map<String, String> altAndTitle = new HashMap<String, String>();
+      Map<String, String> altAndTitle = new HashMap<>();
       
       // get alt text and title from actual asset itself
       // only if rtw overrides are not set
@@ -828,7 +831,7 @@ public class PSInlineLinkContentHandler extends PSSaxCopier
          {
             // Suppress the underlying data
             link.replacementBody = new String(result.getResultData(),
-                  "UTF8");                     
+                  StandardCharsets.UTF_8);
          }
       }
       else
@@ -868,7 +871,7 @@ public class PSInlineLinkContentHandler extends PSSaxCopier
          // so that the inline content of the variant from the body field
          // is swallowed
          inlineType = attrs.getValue(PSSingleValueBuilder.INLINE_TYPE);
-         overrides = new HashMap<String, String>();
+         overrides = new HashMap<>();
 
          // Get attributes
          dependentVariantId = 
@@ -905,15 +908,15 @@ public class PSInlineLinkContentHandler extends PSSaxCopier
          }
          
          if (!StringUtils.isBlank(attrs.getValue(PSSingleValueBuilder.DATA_DESCRIPTION_OVERRIDE))) {
-            dataAltOverride = Boolean.valueOf(attrs.getValue(PSSingleValueBuilder.DATA_DESCRIPTION_OVERRIDE));
-            dataTitleOverride = Boolean.valueOf(attrs.getValue(PSSingleValueBuilder.DATA_TITLE_OVERRIDE));
+            dataAltOverride = Boolean.parseBoolean(attrs.getValue(PSSingleValueBuilder.DATA_DESCRIPTION_OVERRIDE));
+            dataTitleOverride = Boolean.parseBoolean(attrs.getValue(PSSingleValueBuilder.DATA_TITLE_OVERRIDE));
             isUpgradeScenario = false;
          }
          else if(inlineType.equals("rximage"))
             isUpgradeScenario = true;
          
          if(!StringUtils.isBlank(attrs.getValue(PSSingleValueBuilder.DATA_DECORATIVE_OVERRIDE)))
-            dataDecorativeOverride = Boolean.valueOf(attrs.getValue(PSSingleValueBuilder.DATA_DECORATIVE_OVERRIDE));
+            dataDecorativeOverride = Boolean.parseBoolean(attrs.getValue(PSSingleValueBuilder.DATA_DECORATIVE_OVERRIDE));
 
          href = attrs.getValue(PSSingleValueBuilder.HREF);
          resourceDefinitionId = attrs.getValue(PSSingleValueBuilder.RESOURCE_DEFINITION_ID);
@@ -924,7 +927,7 @@ public class PSInlineLinkContentHandler extends PSSaxCopier
       {
          super();
          inlineType = type;
-         overrides = new HashMap<String, String>();
+         overrides = new HashMap<>();
          IPSUdfProcessor processor = getManagedLinkConverterUdf();
          if (processor == null)
          {
@@ -941,7 +944,7 @@ public class PSInlineLinkContentHandler extends PSSaxCopier
          dependentId = props.get(IPSHtmlParameters.SYS_DEPENDENTID);
          PSRequest req = PSRequest.getContextForRequest();
          m_context = new PSRequestContext(req);
-         //FB: UR_UNINIT_READ NC 1-17-16
+
          siteId = m_processor.getWorkItem().getParameterValue(IPSHtmlParameters.SYS_SITEID, "");
 
          href = props.get("path");
@@ -974,9 +977,9 @@ public class PSInlineLinkContentHandler extends PSSaxCopier
       }
       
       protected Map<String, String> getAltTextAndTitleFromAsset(IPSAssemblyItem assemblyItem) {
-         Map<String, String> items = new HashMap<String, String>();
+         Map<String, String> items = new HashMap<>();
          IPSGuid guid = assemblyItem.getId();
-         List<IPSGuid> guidList = new ArrayList<IPSGuid>();
+         List<IPSGuid> guidList = new ArrayList<>();
          List<Node> nodeList;
          guidList.add(guid);
          IPSContentMgr mgr = PSContentMgrLocator.getContentMgr();
@@ -994,8 +997,9 @@ public class PSInlineLinkContentHandler extends PSSaxCopier
          }
          catch (RepositoryException e)
          {
-            ms_log.error("Unable to get node for alt and title text with ID: " + assemblyItem.getId() + 
-                    " and error message:" + e);
+            log.error("Unable to get node for alt and title text with ID: {} and error message: {}",
+                    assemblyItem.getId(),PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          }
          
          return items;
@@ -1016,14 +1020,15 @@ public class PSInlineLinkContentHandler extends PSSaxCopier
    private void handleError(Attributes attrs, String replacementbody,
          Exception e) throws SAXException
    {
-      ms_log.error("Problem processing inline link for item "+m_processor.getWorkItem().getId(), e);
+      log.error("Problem processing inline link for item {} Error: {}", m_processor.getWorkItem().getId(),PSExceptionUtils.getMessageForLog(e));
+      log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       PSTrackAssemblyError
          .addProblem("Problem processing inline links", e);
       StringBuilder message = new StringBuilder();
       message.append("Problem while processing inline link for item ");
       message.append(m_processor.getWorkItem().getId());
       message.append(": ");
-      message.append(e.getLocalizedMessage());
+      message.append(PSExceptionUtils.getMessageForLog(e));
       message.append(" See the replacement body in the console log. ");
       message.append("The attributes on the affected link were: ");
       int len = attrs != null ? attrs.getLength() : 0;
@@ -1041,9 +1046,7 @@ public class PSInlineLinkContentHandler extends PSSaxCopier
          message.append("\"");
       }
 
-      ms_log.error(message.toString());
-      ms_log.error("Actual replacement body for error was: "
-            + replacementbody);
+      log.error("Actual replacement body for error was: {}", replacementbody);
       throw new SAXException(message.toString(), e);
    }
 
@@ -1111,7 +1114,7 @@ public class PSInlineLinkContentHandler extends PSSaxCopier
       List<IPSFilterItem> input = Collections.singletonList(item);
       try
       {
-         Map<String, String> params = new HashMap<String, String>();
+         Map<String, String> params = new HashMap<>();
          params.put(IPSHtmlParameters.SYS_SITEID, siteid);
          IPSItemFilter filter = m_processor.getItemFilter();
       
@@ -1128,7 +1131,7 @@ public class PSInlineLinkContentHandler extends PSSaxCopier
       }
       catch (PSFilterException e)
       {
-         ms_log.error("Problem filtering item for inline link", e);
+         log.error("Problem filtering item for inline link", e);
          return null;
       }
 
@@ -1255,14 +1258,14 @@ public class PSInlineLinkContentHandler extends PSSaxCopier
    }
    
     /**
-     * A convenient method that checks a server property called {@link #SERVER_PROPERTY_AUTO_MANAGE_LOCAL_PATHS} is available with a value of <code>true</code>
+     * A convenient method that checks a server property called  is available with a value of <code>true</code>
      * @return <code>true</code> or false based on the property.
      */
    private boolean doManageAll() {
       String autoProp = "true";
       if(PSServer.getServerProps()!=null)
       {
-          autoProp = StringUtils.defaultString(PSServer.getServerProps().getProperty("AUTO_MANAGE_LOCAL_PATHS"));
+          autoProp = StringUtils.defaultString(PSServer.getServerProps().getProperty(IPSConstants.SERVER_PROP_MANAGELINKS));
       }
       return "true".equalsIgnoreCase(autoProp)?true:false;
   }  
@@ -1279,13 +1282,10 @@ public class PSInlineLinkContentHandler extends PSSaxCopier
          m_managedLinkUdf =
             (IPSUdfProcessor) extMgr.prepareExtension(extRef, null);
       }
-      catch (PSNotFoundException e)
+      catch (PSNotFoundException | PSExtensionException e)
       {
-         ms_log.error(this.getClass().getName(), e);
-      }
-      catch (PSExtensionException e)
-      {
-         ms_log.error(this.getClass().getName(), e);
+         log.error("Error initializing sys_manageLinksConverter. Error: {}",
+                 PSExceptionUtils.getMessageForLog(e));
       }
 
    }

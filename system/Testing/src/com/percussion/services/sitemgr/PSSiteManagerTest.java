@@ -17,12 +17,13 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.services.sitemgr;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.services.PSMissingBeanConfigurationException;
 import com.percussion.services.assembly.IPSAssemblyService;
 import com.percussion.services.assembly.IPSAssemblyTemplate;
@@ -41,26 +42,31 @@ import com.percussion.services.sitemgr.data.PSSiteProperty;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.testing.IntegrationTest;
 import com.percussion.utils.types.PSPair;
+import junit.framework.Assert;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
+import org.xml.sax.SAXException;
 
 import java.io.IOException;
+import java.security.SecureRandom;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.Set;
 
-import junit.framework.Assert;
-import junit.framework.TestCase;
-
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.StringUtils;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.xml.sax.SAXException;
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 /**
  * Test site manager crud operations
@@ -70,6 +76,9 @@ import static org.junit.Assert.*;
 @Category(IntegrationTest.class)
 public class PSSiteManagerTest
 {
+
+   private static final Logger log = LogManager.getLogger(PSSiteManagerTest.class);
+
    /**
     * 
     */
@@ -78,7 +87,7 @@ public class PSSiteManagerTest
    /**
     * 
     */
-   static Random ms_random = new Random(System.currentTimeMillis());
+   static SecureRandom ms_random = new SecureRandom();
 
    @Test
    public void testSiteTemplateAssociation() throws Exception
@@ -120,7 +129,8 @@ public class PSSiteManagerTest
       {
          System.out.println("Deserialization exception: "
                + e.getLocalizedMessage());
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
       ((PSSite) dup).setVersion(null);
       ((PSSite) dup).setVersion(ver);
@@ -165,8 +175,7 @@ public class PSSiteManagerTest
     * @throws PSSiteManagerException
     */
    @Test
-   public void testSiteObject()
-   {
+   public void testSiteObject() throws PSNotFoundException {
       IPSSite site = sitemgr.createSite();
       setupDummySiteData(site);
       
@@ -224,8 +233,7 @@ public class PSSiteManagerTest
     * @throws PSSiteManagerException
     */
    @Test
-   public void testLoadSite_readOnly()
-   {
+   public void testLoadSite_readOnly() throws PSNotFoundException {
       IPSGuidManager gmgr = PSGuidManagerLocator.getGuidMgr();
       IPSGuid ei = gmgr.makeGuid(301, PSTypeEnum.SITE);
       IPSSite ei1 = sitemgr.loadSite(ei);
@@ -246,8 +254,7 @@ public class PSSiteManagerTest
     */
    @Test
    public void testModifyTemplateIds() throws PSSiteManagerException,
-         IOException, SAXException
-   {
+           IOException, SAXException, PSNotFoundException {
       IPSSite site = sitemgr.createSite();
       setupDummySiteData(site);
       setupTemplateAssociations(site);
@@ -295,8 +302,7 @@ public class PSSiteManagerTest
     * @throws PSSiteManagerException
     */
    @Test
-   public void testContext()
-   {
+   public void testContext() throws PSNotFoundException {
       IPSPublishingContext ctx = sitemgr.loadContext(GUID_PUBLIC_CONTEXT);
       assertEquals(ctx.getName(), "Publish");
       assertEquals(314, ctx.getDefaultSchemeId().getUUID());
@@ -344,8 +350,7 @@ public class PSSiteManagerTest
     * @throws PSSiteManagerException
     */
    @Test
-   public void testSiteAssociations()
-   {
+   public void testSiteAssociations() throws PSNotFoundException {
       IPSPublishingContext context = sitemgr.loadContext(GUID_SITEFOLDER_CONTEXT);
       IPSSite site = sitemgr.loadSite(new PSGuid(PSTypeEnum.SITE, 301));
       assertTrue(site.getAssociatedTemplates().size() > 0);
@@ -365,8 +370,7 @@ public class PSSiteManagerTest
     * @throws PSSiteManagerException
     */
    @Test
-   public void testSiteProperties()
-   {
+   public void testSiteProperties() throws PSNotFoundException {
       IPSPublishingContext ctx = sitemgr.loadContext(GUID_PUBLIC_CONTEXT);
       IPSPublishingContext previewctx = sitemgr
             .loadContext(GUID_PREVIEW_CONTEXT);
@@ -429,8 +433,7 @@ public class PSSiteManagerTest
 
    private static int DUMMY_SCHEME_ID = 10001;
    
-   private IPSLocationScheme createDummyScheme()
-   {
+   private IPSLocationScheme createDummyScheme() throws PSNotFoundException {
       IPSLocationScheme scheme;
       try
       {
@@ -641,7 +644,7 @@ public class PSSiteManagerTest
    }
    
    /**
-    * Compare the properties of 2 {@link IPSLocationSecheme} objects. Throws 
+    * Compare the properties of 2  objects. Throws
     * assert exception if any property is not equal. It does not compare GUID
     * of the objects.
     * 
@@ -683,8 +686,7 @@ public class PSSiteManagerTest
       site.setAllowedNamespaces("a,b,c");
    }
 
-   private void setupSiteProperties(IPSSite site)
-   {
+   private void setupSiteProperties(IPSSite site) throws PSNotFoundException {
       IPSPublishingContext ctx = sitemgr.loadContext(GUID_PUBLIC_CONTEXT);
       site.setProperty("first", ctx.getGUID(), getRandomString());
       site.setProperty("second", ctx.getGUID(), getRandomString());

@@ -17,25 +17,26 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.design.objectstore;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.Iterator;
-
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 /**
  * Unit test for the {@link PSCloneHandlerConfigSet} and 
@@ -43,6 +44,9 @@ import org.w3c.dom.Element;
  */
 public class PSCloneHandlerConfigTest extends TestCase
 {
+
+   private static final Logger log = LogManager.getLogger(PSCloneHandlerConfigTest.class);
+
    // see base class
    public PSCloneHandlerConfigTest(String name)
    {
@@ -66,7 +70,8 @@ public class PSCloneHandlerConfigTest extends TestCase
       }
       catch (Exception e)
       {
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          assertTrue("PSCloneHandlerConfigSet ctor failed", false);
       }
       
@@ -87,7 +92,8 @@ public class PSCloneHandlerConfigTest extends TestCase
       }
       catch (Exception e)
       {
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          assertTrue("PSCloneHandlerConfigSet toXml failed", false);
       }
    }

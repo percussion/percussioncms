@@ -17,20 +17,19 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.user.service.impl;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.share.dao.PSFileDataRepository;
 import com.percussion.share.dao.PSXmlFileDataRepository;
-import com.percussion.share.service.exception.PSBeanValidationException;
 import com.percussion.share.service.exception.PSBeanValidationUtils;
 import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.user.data.PSLdapConfig;
 import com.percussion.user.data.PSLdapConfig.PSLdapServer;
-import org.apache.commons.io.IOUtils;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
@@ -39,9 +38,14 @@ import org.dom4j.io.XMLWriter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
+import org.xml.sax.SAXException;
 
 import javax.xml.stream.XMLStreamException;
-import java.io.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -105,8 +109,7 @@ public class PSDirectoryServiceConfig
      */
     @Override
     protected LdapConfigData update(Set<PSFileDataRepository.PSFileEntry> files)
-            throws IOException, PSValidationException
-    {
+            throws IOException, PSValidationException, PSXmlFileDataRepositoryException {
         LdapConfigData data = new LdapConfigData();
         if ( ! files.isEmpty() ) {
             PSLdapConfig config = fileToObject(files.iterator().next());
@@ -193,19 +196,18 @@ public class PSDirectoryServiceConfig
      * @throws DocumentException 
      */
     protected synchronized boolean clearPassword(File file) throws XMLStreamException, IOException, DocumentException {
-        
-        FileReader sr = null;
+
         
         if ( ! file.isFile() ) return false;
-        Document doc;
-        try
+        Document doc = null;
+        try(FileReader sr  = new FileReader(file))
         {
             /*
              * We use the SAXON reader as it can handle XML Comments correctly.
              * STAX would be preferred but seems to not handle comments right now.
              */
             SAXReader reader = new SAXReader();
-            sr = new FileReader(file);
+            reader.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
             doc = reader.read(sr);
             List<?> es = doc.getRootElement().elements("LdapServer");
             if (es == null || es.isEmpty()) return false;
@@ -215,17 +217,18 @@ public class PSDirectoryServiceConfig
             e = (Element) es.get(0);
             if ("".equals(e.getText())) return false;
             e.setText("");
+            notNull(doc, "Error parsing configuration file.");
+        } catch (SAXException e) {
+            log.error("Error processing LDAP configuration file: {}", PSExceptionUtils.getMessageForLog(e));
         }
-        finally
-        {
-            IOUtils.closeQuietly(sr);
-        }
-        notNull(doc, "Programming Error");
+
+
 
         try(FileOutputStream stream =new FileOutputStream(file) )
         {
             XMLWriter writer = new XMLWriter(stream);
-            writer.write(doc);
+            if(doc != null)
+                writer.write(doc);
         }
         
         return true;

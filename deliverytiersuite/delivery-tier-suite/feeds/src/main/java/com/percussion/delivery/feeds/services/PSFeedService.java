@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -29,15 +29,19 @@ import com.percussion.delivery.feeds.data.PSFeedDTO;
 import com.percussion.delivery.feeds.data.PSFeedDescriptors;
 import com.percussion.delivery.feeds.data.PSFeedItem;
 import com.percussion.delivery.listeners.IPSServiceDataChangeListener;
-import com.percussion.delivery.multitenant.PSTenantSecurityFilter;
-import com.percussion.delivery.multitenant.PSThreadLocalTenantContext;
 import com.percussion.delivery.services.PSAbstractRestService;
 import com.percussion.delivery.utils.security.PSHttpClient;
-import com.percussion.utils.security.PSEncryptor;
-import com.percussion.utils.security.ToDoVulnerability;
+import com.percussion.error.PSExceptionUtils;
+import com.percussion.security.PSEncryptionException;
+import com.percussion.security.PSEncryptor;
+import com.percussion.security.SecureStringUtils;
+import com.percussion.security.ToDoVulnerability;
+import com.percussion.utils.io.PathUtils;
 import com.rometools.rome.io.FeedException;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
+import org.apache.commons.lang3.time.FastDateFormat;
 import org.apache.commons.validator.routines.InetAddressValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -54,9 +58,12 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.security.RolesAllowed;
 import javax.servlet.ServletContext;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
-import javax.ws.rs.HeaderParam;
+import javax.ws.rs.HEAD;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -80,14 +87,16 @@ import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
 import java.net.URLDecoder;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 import java.util.TimeZone;
+
+import static com.percussion.security.SecureStringUtils.stripNonHttpProtocols;
 
 /**
  * The feed service is responsible for generating RSS/ATOM feeds. The service
@@ -98,23 +107,41 @@ import java.util.TimeZone;
  * @author erikserating
  * 
  */
+@SuppressFBWarnings("URLCONNECTION_SSRF_FD") // It is validated - only http and https urls are allowed.
 @Path("/rss")
 @Component
 @Scope("singleton")
 public class PSFeedService extends PSAbstractRestService implements IPSFeedsRestService
 {
+
     public PSFeedService(){
 
     }
 
+
+    @HEAD
+    @Path("/csrf")
+    public void csrf(@Context HttpServletRequest request, @Context HttpServletResponse response)  {
+        Cookie[] cookies = request.getCookies();
+        if(cookies == null){
+            return;
+        }
+        for(Cookie cookie: cookies){
+            if("XSRF-TOKEN".equals(cookie.getName())){
+                response.setHeader("X-CSRF-HEADER", "X-XSRF-TOKEN");
+                response.setHeader("X-CSRF-TOKEN", cookie.getValue());
+            }
+        }
+    }
+
     private PSHttpClient httpClient;
     private static final Logger log = LogManager.getLogger(PSFeedService.class);
-    private List<IPSServiceDataChangeListener> listeners = new ArrayList<IPSServiceDataChangeListener>();
+    private List<IPSServiceDataChangeListener> listeners = new ArrayList<>();
 
     private final String[] PERC_FEEDS_SERVICE =
     {"feeds"};
-    private final String PERC_FEEDS_PROPERTIES = "/WEB-INF/feeds.properties";
-    private final String FEEDS_IP_DEFAULT="127.0.0.1";
+    private static final String PERC_FEEDS_PROPERTIES = "/WEB-INF/feeds.properties";
+    private static final String FEEDS_IP_DEFAULT="127.0.0.1";
 
     /**
      * The feed data access object, initialized in the ctor. Never
@@ -125,7 +152,7 @@ public class PSFeedService extends PSAbstractRestService implements IPSFeedsRest
     /**
      * 2011-01-21T09:36:05
      */
-    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+    FastDateFormat dateFormat = FastDateFormat.getInstance("yyyy-MM-dd'T'HH:mm:ss");
 
     @Autowired
     public PSFeedService(@Qualifier("feedsDao") IPSFeedDao dao, PSHttpClient httpClient )
@@ -144,6 +171,15 @@ public class PSFeedService extends PSAbstractRestService implements IPSFeedsRest
     public Response getFeed(@PathParam("sitename") String sitename, @PathParam("feedname") String feedname, @PathParam("hostname") String hostname,  @Context HttpServletRequest httpRequest)
     {
 
+        sitename = SecureStringUtils.stripAllLineBreaks(
+                SecureStringUtils.normalize(sitename,false));
+
+        feedname = SecureStringUtils.stripAllLineBreaks(
+                SecureStringUtils.normalize(feedname,false));
+
+        hostname = SecureStringUtils.stripAllLineBreaks(
+                SecureStringUtils.normalize(hostname,false));
+
     	if(StringUtils.isEmpty(sitename)) {
     		log.error("Illegal argument passed to getFeed. Site Name was missing from request.");
     		return Response.status(Status.INTERNAL_SERVER_ERROR).build();
@@ -160,26 +196,29 @@ public class PSFeedService extends PSAbstractRestService implements IPSFeedsRest
     	}
     	
     	if(log.isDebugEnabled()){
-    		log.debug("Searching for feed descriptor with feed name:" + feedname + " with site name:" + sitename + " and hostname: " + hostname);
+    		log.debug(
+    		        String.format(
+    		                "Searching for feed descriptor with feed name: %s with site name: %s and hostname: %s",
+                            feedname,sitename,hostname));
     	}
     	
     	IPSFeedDescriptor desc = feedDao.find(feedname, sitename);
         Response resp;
         if (desc != null)
         {
-        	if(log.isDebugEnabled()){
-        		log.debug("Found feed descriptor:" + desc.toString());
-        	}
+
+        		log.debug("Found feed descriptor: {}",desc);
+
         	
-        	if(log.isDebugEnabled()){
+
         		log.debug("Searching for feed connection information...");
-        	}
+
             IPSConnectionInfo info = feedDao.getConnectionInfo();
             if (info != null)
             {
-            	if(log.isDebugEnabled()){
-            		log.debug("Got connection info for feed: " + info.toString());
-            	}
+
+            		log.debug("Got connection info for feed: {}", info);
+
             	String feed;
                 try
                 {
@@ -190,13 +229,15 @@ public class PSFeedService extends PSAbstractRestService implements IPSFeedsRest
                 }
                 catch (FeedException | IOException e)
                 {
-                	log.error("Unexpected exception generating RSS feed: " + e.getMessage());
+                	log.error("Unexpected exception generating RSS feed: {}",
+                            PSExceptionUtils.getMessageForLog(e));
+                	log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                     return Response.status(Status.INTERNAL_SERVER_ERROR).build();
                 }
                 if (StringUtils.isNotBlank(feed))
                 {
                 	if(log.isDebugEnabled()){
-                		log.debug("Metadata Service returned results for feed:" + feed);
+                		log.debug("Metadata Service returned results for feed: {}" , feed);
                 	}
                 	resp = Response.ok(feed).type(MediaType.TEXT_XML_TYPE).build();
                 }
@@ -217,7 +258,7 @@ public class PSFeedService extends PSAbstractRestService implements IPSFeedsRest
         }
         else
         {
-        	log.error("Unable to locate matching feed for feed name:" + feedname + " and sitename:" + sitename);
+        	log.error("Unable to locate matching feed for feed name: {} and sitename: {} ",feedname, sitename);
             // No feed descriptor found
             resp = Response.status(Status.NOT_FOUND).build();
         }
@@ -232,68 +273,84 @@ public class PSFeedService extends PSAbstractRestService implements IPSFeedsRest
 	@POST
     @Path("/readExternalFeed")
     @Produces(MediaType.APPLICATION_XML)
+    @Consumes(MediaType.APPLICATION_JSON)
     @ToDoVulnerability
-    public String readExternalFeed(PSFeedDTO psFeedDTO, @HeaderParam("perc-tid") String percId)
+    public String readExternalFeed(PSFeedDTO psFeedDTO)
     {
 
         URL url;
         HttpURLConnection con = null;
         String feeds = "";
         String decodedUrl="";
+        if(psFeedDTO == null){
+            return feeds;
+        }
         String feedUrl = psFeedDTO.getFeedsUrl();
-        // For some reason the xdm call may add a "?" to the end of the feed url
-        feedUrl = StringUtils.stripEnd(feedUrl, "?");
-        log.debug("URL is: " + feedUrl);
+
+        log.debug("URL is: {}",feedUrl);
         
         try{
-        	
-            String decryptedUrl = PSEncryptor.getInstance().decrypt(feedUrl);
-            log.debug("Decrypted URL is:" + decryptedUrl);
+            //If Secure File is not Copied to DTS Yet then returning
+
+            String decryptedUrl = PSEncryptor.decryptString(PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR),feedUrl);
+            log.debug("Decrypted URL is: {}" , decryptedUrl);
             decodedUrl = URLDecoder.decode(decryptedUrl, "UTF8");
-            log.debug("Decoded URL is:" + decodedUrl);
+            log.debug("Decoded URL is: {}",  decodedUrl);
             
             //plaintext URL Sent---- Throw not Allowed Error
 	         if(decodedUrl != null && decodedUrl.equals(feedUrl)){
                 log.error("Illegal argument passed to readExternalFeed. External unEncrypted Feed Url Not Allowed.");
-                throw new WebApplicationException(403);
+                throw new WebApplicationException(404);
               }
+
+            decodedUrl = stripNonHttpProtocols(decodedUrl);
+
+            if(StringUtils.isEmpty(decodedUrl)){
+                //this is the case for initial time when RSS Widget is added to the page, thuse returning empty String
+               return feeds;
+            }
+        }catch(PSEncryptionException e){
+            //Means EncryptionKey Not generated yet
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+            return "";
+
         }catch(Exception e){
-        	log.error(e.getMessage(),e);
-        	throw new WebApplicationException(403);
+        	log.error(PSExceptionUtils.getMessageForLog(e));
+        	log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+        	throw new WebApplicationException(404);
         }
         
         if(StringUtils.isEmpty(feedUrl)) {
     		log.error("Illegal argument passed to readExternalFeed. Feed Url was missing from request.");
-    		throw new WebApplicationException(403);
+    		throw new WebApplicationException(404);
         }
-       
 
         try
         {
             url = new URL(decodedUrl);
             // properly encode
             url = new URI(url.getProtocol(), url.getUserInfo(), url.getHost(), url.getPort(), url.getPath(), url.getQuery(), url.getRef()).toURL();
-            
-            if(log.isDebugEnabled()){
-        		log.debug("The Url for external feed : " + url.toString());
-        	}
-            
+
+            log.debug("The Url for external feed : {}" , url);
+
             con = (HttpURLConnection) url.openConnection();
             con.setRequestProperty("Accept-Charset", "utf-8, ISO-8859-1;q=0.7,*;q=0.7");
             con.setRequestMethod("GET");
-            BufferedReader rd = new BufferedReader(new InputStreamReader(con.getInputStream(), "UTF-8"));
+         try(BufferedReader rd = new BufferedReader(new InputStreamReader(con.getInputStream(), StandardCharsets.UTF_8))) {
+             String line = null;
+             StringBuilder bd = new StringBuilder();
+             while ((line = rd.readLine()) != null) {
+                 bd.append(line);
+             }
+             feeds = bd.toString();
+         }
 
-            String line = null;
-            while ((line = rd.readLine()) != null)
-            {
-                feeds += line;
-            }
-
-            rd.close();
         }
         catch (Exception e)
         {
-       		log.error("Exception during reading external feed : " + e.getLocalizedMessage(),e);
+       		log.error("Exception during reading external feed : {}",PSExceptionUtils.getMessageForLog(e));
+       		log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
         finally
         {
@@ -325,14 +382,14 @@ public class PSFeedService extends PSAbstractRestService implements IPSFeedsRest
     		return;
     	}
     	
-        HashSet<String> sites = new HashSet<String>();
+        HashSet<String> sites = new HashSet<>();
         sites.add(descriptors.getSite());
     
         // Save connection info
         feedDao.saveConnectionInfo(descriptors.getServiceUrl(), descriptors.getServiceUser(),
                 descriptors.getServicePass(), descriptors.isServicePassEncrypted());
         // Determine descriptor delete list
-        List<IPSFeedDescriptor> deletes = new ArrayList<IPSFeedDescriptor>();
+        List<IPSFeedDescriptor> deletes = new ArrayList<>();
         List<IPSFeedDescriptor> existing = feedDao.findBySite(descriptors.getSite());
         
        
@@ -351,7 +408,7 @@ public class PSFeedService extends PSAbstractRestService implements IPSFeedsRest
         }
         
         if(log.isDebugEnabled()){
-    		log.debug("Descriptors that will be deleted are : " + deletes.toString());
+    		log.debug("Descriptors that will be deleted are : {} " , deletes.toString());
     	}
         
         feedDao.saveDescriptors(descriptors.getDescriptors());
@@ -381,7 +438,7 @@ public class PSFeedService extends PSAbstractRestService implements IPSFeedsRest
         if(feedsIp==null || feedsIp.isEmpty()){
             feedsIp=FEEDS_IP_DEFAULT;
         }else{
-            feedsIp.trim();
+            feedsIp = feedsIp.trim();
         }
 
         InetAddressValidator ipValidator = new InetAddressValidator();
@@ -420,28 +477,29 @@ public class PSFeedService extends PSAbstractRestService implements IPSFeedsRest
             }
 
             protocol = uri.getScheme() + "://";
-            log.info("The url obtained using the httpRequest.getLocalAddr() ----> " + url);
+            log.info("The url obtained using the httpRequest.getLocalAddr() ----> {} " , url);
         }
         catch (Exception e)
         {
             client = ClientBuilder.newClient();
-            log.error("Exception occurred in creating the SSL Client : " + e.getLocalizedMessage());
+            log.error("Exception occurred in creating the SSL Client : {} " ,
+                    PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
-        
-        PSThreadLocalTenantContext locContext = new PSThreadLocalTenantContext();
+
         WebTarget webTarget = client.target(url + "/perc-metadata-services/metadata/get");
         
         if(log.isDebugEnabled()){
-    		log.debug("WebResource for metadata service : " + webTarget.toString());
+    		log.debug(
+    		        "WebResource for metadata service : {}",webTarget);
     	}
         
         try
         {
-            List<PSFeedItem> items = new ArrayList<PSFeedItem>();
-            String tenantId = StringUtils.defaultString(locContext.getTenantId());
+            List<PSFeedItem> items = new ArrayList<>();
 
-            Invocation.Builder invocationBuilder =  ((WebTarget) webTarget).request(MediaType.APPLICATION_JSON_TYPE);
-            invocationBuilder.header(PSTenantSecurityFilter.TENANTID_PARAM_NAME, tenantId);
+            Invocation.Builder invocationBuilder =  ( webTarget).request(MediaType.APPLICATION_JSON_TYPE);
+
             Response  response = invocationBuilder.post(Entity.entity(desc.getQuery(), MediaType.APPLICATION_JSON));
 
             String jsonString =  response.readEntity(String.class);
@@ -472,21 +530,21 @@ public class PSFeedService extends PSAbstractRestService implements IPSFeedsRest
                     TimeZone tz = TimeZone.getDefault();
                     if(props.has(PROP_CONTENTPOSTDATETZ))
                         tz = TimeZone.getTimeZone(props.getString(PROP_CONTENTPOSTDATETZ));
-                    dateFormat.setTimeZone(tz);
-                    item.setPublishDate(dateFormat.parse(props.getString(PROP_PUBDATE)));
+                    FastDateFormat tzFmt  = FastDateFormat.getInstance(dateFormat.getPattern(),tz);
+                    item.setPublishDate(tzFmt.parse(props.getString(PROP_PUBDATE)));
                 }
                 items.add(item);
             }
             feed = generator.makeFeedContent(desc, host, items);
-            
-            if(log.isDebugEnabled()){
-        		log.debug("The generated feed : " + feed);
-        	}
+
+            log.debug("The generated feed: {}" , feed);
+
         }
         catch (Exception e)
         {
-       		log.error("Exception during feed generation : " + e.getLocalizedMessage());
-            throw new FeedException(e.getLocalizedMessage(), e);
+       		log.error("Exception during feed generation : {}" ,PSExceptionUtils.getMessageForLog(e));
+       		log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+            throw new FeedException(e.getMessage(), e);
         }
 
         return feed;
@@ -526,8 +584,7 @@ public class PSFeedService extends PSAbstractRestService implements IPSFeedsRest
 	public void removeMetadataListener(IPSServiceDataChangeListener listener)
     {
         Validate.notNull(listener, "listener cannot be null.");
-        if (listeners.contains(listener))
-            listeners.remove(listener);
+        listeners.remove(listener);
     }
 
     /**
@@ -536,7 +593,7 @@ public class PSFeedService extends PSAbstractRestService implements IPSFeedsRest
     @SuppressWarnings("unused")
 	private void fireDataChangedEvent(Set<String> sites)
     {
-        if (sites == null || sites.size() == 0)
+        if (sites == null || sites.isEmpty())
         {
             return;
         }
@@ -553,7 +610,7 @@ public class PSFeedService extends PSAbstractRestService implements IPSFeedsRest
     @SuppressWarnings("unused")
 	private void fireDataChangeRequestedEvent(Set<String> sites)
     {
-        if (sites == null || sites.size() == 0)
+        if (sites == null || sites.isEmpty())
         {
             return;
         }
@@ -565,16 +622,23 @@ public class PSFeedService extends PSAbstractRestService implements IPSFeedsRest
     }
 
     @Override
-    public void rotateKey(byte[] key) {
-        PSEncryptor.getInstance().forceReplaceKeyFile(key,false);
+    @PUT
+    @Path("/rotateKey")
+    @RolesAllowed("deliverymanager")
+    @Consumes({MediaType.APPLICATION_JSON,MediaType.TEXT_PLAIN})
+    public void rotateKey(String key) {
+        byte[] backToBytes = Base64.getDecoder().decode(key);
+        PSEncryptor.getInstance("AES",
+                PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+        ).forceReplaceKeyFile(backToBytes,false);
     }
-    
+
     @Override
 	public String getVersion() {
     	
     	String version = super.getVersion();
     	
-    	log.info("getVersion() from PSFeedService..." + version);
+    	log.debug("getVersion() from PSFeedService... {}", version);
     	
     	return version;
     }
@@ -602,12 +666,13 @@ public class PSFeedService extends PSAbstractRestService implements IPSFeedsRest
      */
     @Override
     public Response updateOldSiteEntries(String prevSiteName, String newSiteName) {
-        log.info("Attempting to delete feeds entries for site name: " + prevSiteName);
+        log.info("Attempting to delete feeds entries for site name: {}",  prevSiteName);
         try {
             List<IPSFeedDescriptor> feeds = feedDao.findBySite(prevSiteName);
             feedDao.deleteDescriptors(feeds);
         } catch (Exception e) {
-            log.error("Error updating feed entries for old site: " + prevSiteName, e);
+            log.error("Error updating feed entries for old site: {}, Error: {}",prevSiteName,PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             return Response.status(Status.INTERNAL_SERVER_ERROR).build();
         }
 

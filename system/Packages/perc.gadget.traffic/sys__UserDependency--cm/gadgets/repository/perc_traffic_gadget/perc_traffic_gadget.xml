@@ -18,12 +18,12 @@
   ~      Burlington, MA 01803, USA
   ~      +01-781-438-9900
   ~      support@percussion.com
-  ~      https://www.percusssion.com
+  ~      https://www.percussion.com
   ~
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   -->
 <Module>
-  <ModulePrefs title="Traffic" category="analytics" description="This gadget provides Traffic and Activity graphs." thumbnail="images/gadgetIconTraffic.png" height="320">
+  <ModulePrefs title="Traffic" category="analytics" description="This gadget provides Traffic and Activity graphs." thumbnail="images/gadgetIconTraffic.png" height="350">
        <Require feature="perc_core"/>
        <Require feature="settitle" />
        <Require feature="perc_getDashboardColumn" />
@@ -36,7 +36,7 @@
         <EnumValue value="uniquepageviews"   display_value="Unique page visits"/>
   </UserPref> 
   <UserPref name="a-site" display_name="Site" required="false" datatype="enum">
-        <EnumValue value="@url:/Rhythmyx/services/sitemanage/site/choices"/>
+        <EnumValue value="@url:/services/sitemanage/site/choices"/>
   </UserPref> 
   <UserPref name="b-dateFrom" display_name="Date range from" required="true" datatype="string" default_value="">
   </UserPref>
@@ -68,7 +68,8 @@
         <EnumValue value="25" display_value="25 results"/>
   </UserPref>
   <Content type="html">
-    <![CDATA[ 
+    <![CDATA[
+    <!DOCTYPE html>
     <link rel="stylesheet" type="text/css" href="/cm/themes/smoothness/jquery-ui-1.8.9.custom.css" />
     <link href="/cm/gadgets/repository/common/perc_common_gadget.css" rel="stylesheet" type="text/css" />
     <link href="/cm/gadgets/repository/common/lib/jqplot/jquery.jqplot.css" rel="stylesheet" type="text/css" />
@@ -81,7 +82,7 @@
     <script src="/cm/gadgets/repository/common/lib/jqplot/excanvas.js"></script>
 <![endif]-->
     
-    <script src="/cm/jslib/jquery.dataTables.js" ></script>
+    <script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-datatables/js/jquery.dataTables.js" ></script>
     <script src="/cm/widgets/PercSimpleMenu/PercSimpleMenu.js" ></script>
     <script src="/cm/widgets/PercTooltip/PercTooltip.js" ></script>
     <script src="/cm/widgets/PercActionDataTable/PercActionDataTable.js" ></script>
@@ -150,7 +151,7 @@
         }
 
         #chart1 { margin-left : 7px; }
-        #chart2 { position : absolute; left : 1500; width : 200; height : 200}
+        #chart2 { margin-top : 7px;position : absolute; left : 1500; width : 200; height : 200}
 
         body { overflow : hidden }
         
@@ -265,7 +266,6 @@
         <div id="perc-label-left">Visits</div>
     </div>
     <div id="chart1"></div>
-    <div id="chart2"></div>
     <div id="perc-traffic-show-hide-details" style="display : none">
         Show details
     </div>
@@ -284,7 +284,8 @@
                 </div>
             </div>
         </div>
-    </div>  
+    </div>
+    <div id="chart2" style="margin-top: 4em;"></div>
      ]]>
   </Content> 
 </Module>

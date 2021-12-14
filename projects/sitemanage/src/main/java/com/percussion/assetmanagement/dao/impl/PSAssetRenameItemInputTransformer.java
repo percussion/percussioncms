@@ -17,20 +17,11 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.assetmanagement.dao.impl;
-
-import static com.percussion.share.rx.PSLegacyExtensionUtils.addParameters;
-import static java.text.MessageFormat.format;
-import static org.apache.commons.collections.MapUtils.getInteger;
-import static org.apache.commons.collections.MapUtils.getString;
-import static org.apache.commons.lang.StringUtils.endsWith;
-import static org.apache.commons.lang.StringUtils.isBlank;
-import static org.apache.commons.lang.StringUtils.isNotBlank;
-import static org.apache.commons.lang.Validate.notEmpty;
 
 import com.percussion.cms.PSCmsException;
 import com.percussion.extension.IPSExtensionDef;
@@ -42,6 +33,8 @@ import com.percussion.share.rx.PSLegacyExtensionUtils;
 import com.percussion.share.spring.PSSpringWebApplicationContextUtils;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.util.PSPurgableTempFile;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -49,8 +42,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import static com.percussion.share.rx.PSLegacyExtensionUtils.addParameters;
+import static java.text.MessageFormat.format;
+import static org.apache.commons.collections.MapUtils.getInteger;
+import static org.apache.commons.collections.MapUtils.getString;
+import static org.apache.commons.lang.StringUtils.endsWith;
+import static org.apache.commons.lang.StringUtils.isBlank;
+import static org.apache.commons.lang.StringUtils.isNotBlank;
+import static org.apache.commons.lang.Validate.notEmpty;
 
 /**
  * Renames the asset title if its not unique in the given folder.
@@ -94,12 +93,12 @@ public class PSAssetRenameItemInputTransformer implements IPSItemInputTransforme
      * sys_title validation.
      */
     private static final int MAX_RENAME_TRIES = 1000;
-    private List<String> parameterNames = new ArrayList<String>();
+    private List<String> parameterNames = new ArrayList<>();
     
     @Override
     public void preProcessRequest(Object[] args, IPSRequestContext request)
     {
-        Map<String, String> p = new HashMap<String, String>();
+        Map<String, String> p = new HashMap<>();
         addParameters(p, parameterNames, args);
         addParameters(p, request);
         Integer contentId = getInteger(p, IPSHtmlParameters.SYS_CONTENTID);
@@ -345,7 +344,7 @@ public class PSAssetRenameItemInputTransformer implements IPSItemInputTransforme
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log log = LogFactory.getLog(PSAssetRenameItemInputTransformer.class);
+    private static final Logger log = LogManager.getLogger(PSAssetRenameItemInputTransformer.class);
 
 }
 

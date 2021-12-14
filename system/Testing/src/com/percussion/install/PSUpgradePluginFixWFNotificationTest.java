@@ -17,13 +17,11 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.install;
-
-import static org.junit.Assert.*;
 
 import com.percussion.services.workflow.IPSWorkflowService;
 import com.percussion.services.workflow.PSWorkflowServiceLocator;
@@ -32,11 +30,6 @@ import com.percussion.services.workflow.data.PSNotification;
 import com.percussion.services.workflow.data.PSState;
 import com.percussion.services.workflow.data.PSTransition;
 import com.percussion.services.workflow.data.PSWorkflow;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.List;
-
 import com.percussion.util.PSResourceUtils;
 import com.percussion.utils.testing.IntegrationTest;
 import org.apache.commons.io.FileUtils;
@@ -44,6 +37,13 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.xml.sax.SAXException;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Loads a test workflow from xml and runs the plugin against it to ensure expected

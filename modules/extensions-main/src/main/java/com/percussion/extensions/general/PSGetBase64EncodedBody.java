@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -25,7 +25,6 @@
 package com.percussion.extensions.general;
 
 import com.percussion.HTTPClient.HttpURLConnection;
-
 import com.percussion.util.PSHtmlBodyInputStream;
 
 import java.io.IOException;
@@ -52,7 +51,8 @@ public class PSGetBase64EncodedBody extends PSGetBase64Encoded
    {
       if (conn==null)
          throw new IllegalArgumentException("conn may not be null");
-
-      return new PSHtmlBodyInputStream(conn.getInputStream());
+      try(InputStream in = conn.getInputStream()) {
+         return new PSHtmlBodyInputStream(in);
+      }
    }
 }

@@ -17,21 +17,21 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.rxverify.modules;
 
 import com.percussion.rxverify.data.PSInstallation;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileReader;
 import java.io.IOException;
-
-import org.apache.log4j.Logger;
 
 /**
  * @author dougrand
@@ -66,7 +66,7 @@ public class PSVerifyInstallerLogs implements IPSVerify
          throw new IllegalArgumentException("rxdir must never be null");
       }
       
-      Logger l = Logger.getLogger(getClass());
+      Logger l = LogManager.getLogger(getClass());
       // Check the install log for warnings or errors
       l.info("Checking the installer log for warnings or errors");
       checkLogFile(rxdir);
@@ -111,7 +111,7 @@ public class PSVerifyInstallerLogs implements IPSVerify
     */
    private void checkUpgradeLogs(File rxdir) throws IOException
    {
-      Logger l = Logger.getLogger(getClass());
+      Logger l = LogManager.getLogger(getClass());
       File upgrade = new File(rxdir, "upgrade");
 
       if (upgrade.exists() == false)
@@ -132,7 +132,7 @@ public class PSVerifyInstallerLogs implements IPSVerify
          File logfile = logs[i];
          if (containsError(logfile))
          {
-            l.error("Error in upgrade log " + logfile);
+            l.error("Error in upgrade log {}", logfile);
          }
       }
 
@@ -178,12 +178,12 @@ public class PSVerifyInstallerLogs implements IPSVerify
     */
    private void checkLogFile(File rxdir) throws IOException
    {
-      Logger l = Logger.getLogger(getClass());
+      Logger l = LogManager.getLogger(getClass());
       File installlog = new File(rxdir, "rxconfig/Installer/install.log");
 
       if (installlog.exists() == false)
       {
-         l.error("Installer log is missing: " + installlog);
+         l.error("Installer log is missing: {}", installlog);
          return;
       }
 
@@ -193,15 +193,15 @@ public class PSVerifyInstallerLogs implements IPSVerify
       {
          if (line.startsWith("FATAL"))
          {
-            l.fatal(line);
+            l.fatal("{}",line);
          }
          else if (line.startsWith("ERROR"))
          {
-            l.error(line);
+            l.error("{}",line);
          }
          else if (line.startsWith("WARN"))
          {
-            l.warn(line);
+            l.warn("{}",line);
          }
       }
    }   

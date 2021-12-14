@@ -1,8 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="com.percussion.services.utils.jspel.PSRoleUtilities" %>
 <%@ taglib uri="/WEB-INF/tmxtags.tld" prefix="i18n" %>
+<%@ taglib uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" prefix="csrf" %>
+
 <%@ page import="com.percussion.i18n.PSI18nUtils" %>
 <%@ page import="com.percussion.i18n.ui.PSI18NTranslationKeyValues" %>
+<%@ page import="org.jsecurity.util.StringUtils" %>
+<%@ page import="com.percussion.security.SecureStringUtils" %>
 
 <%--
   ~     Percussion CMS
@@ -23,7 +27,7 @@
   ~      Burlington, MA 01803, USA
   ~      +01-781-438-9900
   ~      support@percussion.com
-  ~      https://www.percusssion.com
+  ~      https://www.percussion.com
   ~
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   --%>
@@ -45,8 +49,12 @@
     String site = request.getParameter("site");
     if (site == null)
         site = "";
+    //Checking for vulnerability
+    if(!SecureStringUtils.isValidString(site)){
+        response.sendError(response.SC_FORBIDDEN, "Invalid Site Name!");
+    }
     Boolean hasSites = (Boolean) request.getAttribute("hasSites");
-    String inlineHelpMsg = hasSites != null && hasSites.booleanValue()
+    String inlineHelpMsg = hasSites != null && hasSites
             ? PSI18nUtils.getString("perc.ui.site.architecture@Work On Navigation", locale)
             : PSI18nUtils.getString("perc.ui.site.architecture@Click Create Site To Create Site", locale);
 %>
@@ -71,10 +79,12 @@
   get into the files used in production.
 --%>
 
-<!-- Themes/skin never should be concatenated or packed -->
-<link rel="stylesheet" type="text/css" href="../themes/smoothness/jquery-ui-1.8.9.custom.css"/>
-<link rel='stylesheet' type='text/css' href='../css/dynatree/skin/ui.dynatree.css'/>
-<script src="/Rhythmyx/tmx/tmx.jsp?mode=js&amp;prefix=perc.ui.&amp;sys_lang=<%=locale%>"></script>
+    <!-- Themes/skin never should be concatenated or packed -->
+    <link rel="stylesheet" type="text/css" href="../themes/smoothness/jquery-ui-1.8.9.custom.css"/>
+    <link rel='stylesheet' type='text/css' href='../css/dynatree/skin/ui.dynatree.css'/>
+    <link rel="stylesheet" type="text/css" href="/cm/jslib/profiles/3x/libraries/fontawesome/css/all.css"/>
+    <script src="/Rhythmyx/tmx/tmx.jsp?mode=js&amp;prefix=perc.ui.&amp;sys_lang=<%=locale%>"></script>
+    <script src="/JavaScriptServlet"></script>
 <% if (isDebug) { %>
 
 <!-- CSS Includes -->
@@ -91,7 +101,6 @@
 <%@include file="includes/common_js.jsp" %>
 <%@include file="includes/finder_js.jsp" %>
 
-<script src="../jslib/jquery.dynatree.js"></script>
 <script src="../services/perc_sectionServiceClient.js"></script>
 <script src="../services/PercSiteService.js"></script>
 <script src="../plugins/PercEditSectionLinksDialog.js"></script>
@@ -113,29 +122,25 @@
 <link rel="stylesheet" type="text/css" href="../css/IE8_styles.css"/><![endif]-->
 <script  >
 
-    $j(document).ready(function () {
+    $(function () {
 
         <% if( site != null && site != ""){ %>
         var siteArchUrl = "<%=site%>";
 
-        $j("#perc_site_map").perc_site_map({
+        $("#perc_site_map").perc_site_map({
             site: siteArchUrl,
             onChange: function () {
-                $j.perc_finder().refresh();
+                $.perc_finder().refresh();
             }
         });
-
-        // TODO
-        // fixBottomHeight();
-
         <%} else { %>
-        $j("#perc_site_map").html("<div style='height: 10px;'></div><div id='perc-site-templates-inline-help'><%=inlineHelpMsg%></div>");
+        $("#perc_site_map").html("<div style='height: 10px;'></div><div id='perc-site-templates-inline-help'><%=inlineHelpMsg%></div>");
         <%}%>
-        $j.Percussion.PercFinderView();
+        $.Percussion.PercFinderView();
     });
 </script>
 </head>
-<body style="overflow : auto" view="PERC_SITE">
+<body view="PERC_SITE" style="overflow:auto">
 <div class="perc-main perc-finder-fix" style="position:fixed">
     <div class="perc-header">
         <jsp:include page="includes/header.jsp" flush="true">

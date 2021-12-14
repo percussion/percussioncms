@@ -1,0 +1,346 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percussion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<CmsComponents>
+	<!-- Conforms schema sys_CmsProcessorConfig.xsd -->
+	<CmsComponent type="PSFolder">
+		<Processors>
+			<Processor type="webservice" className="com.percussion.cms.objectstore.ws.PSWsFolderProcessor"/>
+			<Processor type="remote" className="com.percussion.cms.objectstore.ws.PSRemoteFolderProcessor"/>
+			<Processor type="local" className="com.percussion.server.webservices.PSServerFolderProcessor"/>
+		</Processors>
+	</CmsComponent>
+	<CmsComponent type="Relationship">
+		<Processors>
+			<Processor type="remote" className="com.percussion.cms.objectstore.client.PSRelationshipProcessor"/>
+			<Processor type="local" className="com.percussion.cms.objectstore.server.PSRelationshipProcessor"/>
+		</Processors>
+	</CmsComponent>
+	<CmsComponent type="PSSearchCollection">
+		<Processors>
+			<Processor type="remote" className="com.percussion.cms.objectstore.client.PSRemoteProcessor">
+				<Property name="loadResource">
+					<Value>sys_DisplayFormats/getSearches.xml</Value>
+				</Property>
+				<Property name="saveResource">
+					<Value>sys_DisplayFormats/updateSearches.xml</Value>
+				</Property>
+				<Property name="deleteResource">
+					<Value>sys_DisplayFormats/updateSearches.xml</Value>
+				</Property>
+				<Property name="updateRootElementName">
+					<Value>PSXDbComponentCollection</Value>
+				</Property>
+				<Property name="queryRootElementName">
+					<Value>PSXDbComponentCollection</Value>
+				</Property>
+			</Processor>
+		</Processors>
+	</CmsComponent>
+	<CmsComponent type="PSDisplayFormatCollection">
+		<Processors>
+			<Processor type="remote" className="com.percussion.cms.objectstore.client.PSRemoteProcessor">
+				<Property name="loadResource">
+					<Value>sys_DisplayFormats/getDisplayFormats.html</Value>
+				</Property>
+				<Property name="saveResource">
+					<Value>sys_DisplayFormats/updateDisplayFormats.xml</Value>
+				</Property>
+				<Property name="deleteResource">
+					<Value>sys_DisplayFormats/updateDisplayFormats.xml</Value>
+				</Property>
+				<Property name="updateRootElementName">
+					<Value>PSXDbComponentCollection</Value>
+				</Property>
+				<Property name="queryRootElementName">
+					<Value>PSXDbComponentCollection</Value>
+				</Property>
+			</Processor>
+			<Processor type="local" className="com.percussion.cms.objectstore.server.PSLocalProcessor">
+				<Property name="loadResource">
+					<Value>sys_DisplayFormats/getDisplayFormats.html</Value>
+				</Property>
+				<Property name="saveResource">
+					<Value>sys_DisplayFormats/updateDisplayFormats.xml</Value>
+				</Property>
+				<Property name="deleteResource">
+					<Value>sys_DisplayFormats/updateDisplayFormats.xml</Value>
+				</Property>
+				<Property name="updateRootElementName">
+					<Value>PSXDbComponentCollection</Value>
+				</Property>
+				<Property name="queryRootElementName">
+					<Value>PSXDbComponentCollection</Value>
+				</Property>
+			</Processor>
+		</Processors>
+	</CmsComponent>
+	<CmsComponent type="PSDisplayFormat">
+		<Processors>
+			<Processor type="remote" className="com.percussion.cms.objectstore.client.PSRemoteProcessor">
+				<Property name="loadResource">
+					<Value>sys_DisplayFormats/getDisplayFormats.html</Value>
+				</Property>
+				<Property name="saveResource">
+					<Value>sys_DisplayFormats/updateDisplayFormats.xml</Value>
+				</Property>
+				<Property name="deleteResource">
+					<Value>sys_DisplayFormats/updateDisplayFormats.xml</Value>
+				</Property>
+				<Property name="updateRootElementName">
+					<Value>PSXDbComponentCollection</Value>
+				</Property>
+				<Property name="queryRootElementName">
+					<Value>PSXDbComponentCollection</Value>
+				</Property>
+			</Processor>
+			<Processor type="local" className="com.percussion.cms.objectstore.server.PSLocalProcessor">
+				<Property name="loadResource">
+					<Value>sys_DisplayFormats/getDisplayFormats.html</Value>
+				</Property>
+				<Property name="saveResource">
+					<Value>sys_DisplayFormats/updateDisplayFormats.xml</Value>
+				</Property>
+				<Property name="deleteResource">
+					<Value>sys_DisplayFormats/updateDisplayFormats.xml</Value>
+				</Property>
+				<Property name="updateRootElementName">
+					<Value>PSXDbComponentCollection</Value>
+				</Property>
+				<Property name="queryRootElementName">
+					<Value>PSXDbComponentCollection</Value>
+				</Property>
+			</Processor>
+		</Processors>
+	</CmsComponent>
+	<CmsComponent type="PSSearch">
+		<Processors>
+			<Processor type="remote" className="com.percussion.cms.objectstore.client.PSRemoteProcessor">
+				<Property name="loadResource">
+					<Value>sys_DisplayFormats/getSearches.xml</Value>
+				</Property>
+				<Property name="saveResource">
+					<Value>sys_DisplayFormats/updateSearches.xml</Value>
+				</Property>
+				<Property name="deleteResource">
+					<Value>sys_DisplayFormats/updateSearches.xml</Value>
+				</Property>
+				<Property name="updateRootElementName">
+					<Value>PSXDbComponentCollection</Value>
+				</Property>
+				<Property name="queryRootElementName">
+					<Value>PSXDbComponentCollection</Value>
+				</Property>
+			</Processor>
+			<Processor type="local" className="com.percussion.cms.objectstore.server.PSLocalProcessor">
+				<Property name="loadResource">
+					<Value>sys_DisplayFormats/getSearches.xml</Value>
+				</Property>
+				<Property name="saveResource">
+					<Value>sys_DisplayFormats/updateSearches.xml</Value>
+				</Property>
+				<Property name="deleteResource">
+					<Value>sys_DisplayFormats/updateSearches.xml</Value>
+				</Property>
+				<Property name="updateRootElementName">
+					<Value>PSXDbComponentCollection</Value>
+				</Property>
+				<Property name="queryRootElementName">
+					<Value>PSXDbComponentCollection</Value>
+				</Property>
+			</Processor>
+		</Processors>
+	</CmsComponent>
+	<CmsComponent type="PSAction">
+		<Processors>
+			<Processor type="remote" className="com.percussion.cms.objectstore.client.PSRemoteProcessor">
+				<Property name="loadResource">
+					<Value>sys_psxCms/QueryActions.html</Value>
+				</Property>
+				<Property name="saveResource">
+					<Value>sys_psxCms/UpdateActions.xml</Value>
+				</Property>
+				<Property name="deleteResource">
+					<Value>sys_psxCms/UpdateActions.xml</Value>
+				</Property>
+				<Property name="updateRootElementName">
+					<Value>UpdateActions</Value>
+				</Property>
+				<Property name="queryRootElementName">
+					<Value>Actions</Value>
+				</Property>
+			</Processor>
+			<Processor type="local" className="com.percussion.cms.objectstore.server.PSLocalProcessor">
+				<Property name="loadResource">
+					<Value>sys_psxCms/QueryActions.html</Value>
+				</Property>
+				<Property name="saveResource">
+					<Value>sys_psxCms/UpdateActions.xml</Value>
+				</Property>
+				<Property name="deleteResource">
+					<Value>sys_psxCms/UpdateActions.xml</Value>
+				</Property>
+				<Property name="updateRootElementName">
+					<Value>UpdateActions</Value>
+				</Property>
+				<Property name="queryRootElementName">
+					<Value>Actions</Value>
+				</Property>
+			</Processor>
+		</Processors>
+	</CmsComponent>
+	<CmsComponent type="PSMenuMode">
+		<Processors>
+			<Processor type="remote" className="com.percussion.cms.objectstore.client.PSRemoteProcessor">
+				<Property name="loadResource">
+					<Value>sys_psxCms/menuMode.xml</Value>
+				</Property>
+				<Property name="updateRootElementName">
+					<Value>MenuModes</Value>
+				</Property>
+				<Property name="queryRootElementName">
+					<Value>MenuModes</Value>
+				</Property>
+			</Processor>
+		</Processors>
+		<Processor type="local" className="com.percussion.cms.objectstore.server.PSLocalProcessor">
+			<Property name="loadResource">
+				<Value>sys_psxCms/menuMode.xml</Value>
+			</Property>
+			<Property name="updateRootElementName">
+				<Value>MenuModes</Value>
+			</Property>
+			<Property name="queryRootElementName">
+				<Value>MenuModes</Value>
+			</Property>
+		</Processor>
+	</CmsComponent>
+	<CmsComponent type="PSComponentSummaries">
+		<Processors>
+			<Processor type="remote" className="com.percussion.cms.objectstore.client.PSRemoteProcessor">
+				<Property name="loadResource">
+					<Value>sys_psxCms/ComponentSummaries.xml</Value>
+				</Property>
+				<Property name="queryRootElementName">
+					<Value>PSXComponentSummaries</Value>
+				</Property>
+			</Processor>
+			<Processor type="local" className="com.percussion.cms.objectstore.server.PSLocalProcessor">
+				<Property name="loadResource">
+					<Value>sys_psxCms/ComponentSummaries.xml</Value>
+				</Property>
+				<Property name="queryRootElementName">
+					<Value>PSXComponentSummaries</Value>
+				</Property>
+			</Processor>
+		</Processors>
+	</CmsComponent>
+	<CmsComponent type="PSContentTypeVariantSet">
+		<Processors>
+			<Processor type="remote" className="com.percussion.cms.objectstore.client.PSRemoteProcessor">
+				<Property name="loadResource">
+					<Value>sys_psxCms/PSContentTypeVariantSet.xml</Value>
+				</Property>
+				<Property name="queryRootElementName">
+					<Value>PSXContentTypeVariantSet</Value>
+				</Property>
+			</Processor>
+			<Processor type="local" className="com.percussion.cms.objectstore.server.PSLocalProcessor">
+				<Property name="loadResource">
+					<Value>sys_psxCms/PSContentTypeVariantSet.xml</Value>
+				</Property>
+				<Property name="queryRootElementName">
+					<Value>PSXContentTypeVariantSet</Value>
+				</Property>
+			</Processor>
+		</Processors>
+	</CmsComponent>
+	<CmsComponent type="PSSlotTypeSet">
+		<Processors>
+			<Processor type="remote" className="com.percussion.cms.objectstore.client.PSRemoteProcessor">
+				<Property name="loadResource">
+					<Value>sys_psxCms/PSSlotTypeSet.xml</Value>
+				</Property>
+				<Property name="queryRootElementName">
+					<Value>PSXSlotTypeSet</Value>
+				</Property>
+			</Processor>
+			<Processor type="local" className="com.percussion.cms.objectstore.server.PSLocalProcessor">
+				<Property name="loadResource">
+					<Value>sys_psxCms/PSSlotTypeSet.xml</Value>
+				</Property>
+				<Property name="queryRootElementName">
+					<Value>PSXSlotTypeSet</Value>
+				</Property>
+			</Processor>
+		</Processors>
+	</CmsComponent>
+	<CmsComponent type="PSContentTypeSet">
+		<Processors>
+			<Processor type="remote" className="com.percussion.cms.objectstore.client.PSRemoteProcessor">
+				<Property name="loadResource">
+					<Value>sys_psxCms/PSContentTypeSet.xml</Value>
+				</Property>
+				<Property name="queryRootElementName">
+					<Value>PSXContentTypeSet</Value>
+				</Property>
+			</Processor>
+			<Processor type="local" className="com.percussion.cms.objectstore.server.PSLocalProcessor">
+				<Property name="loadResource">
+					<Value>sys_psxCms/PSContentTypeSet.xml</Value>
+				</Property>
+				<Property name="queryRootElementName">
+					<Value>PSXContentTypeSet</Value>
+				</Property>
+			</Processor>
+		</Processors>
+	</CmsComponent>
+	<CmsComponent type="PSMenuContext">
+		<Processors>
+			<Processor type="remote" className="com.percussion.cms.objectstore.client.PSRemoteProcessor">
+				<Property name="loadResource">
+					<Value>sys_psxCms/menuModeContext.xml</Value>
+				</Property>
+				<Property name="updateRootElementName">
+					<Value>MenuContexts</Value>
+				</Property>
+				<Property name="queryRootElementName">
+					<Value>MenuContexts</Value>
+				</Property>
+			</Processor>
+		</Processors>
+		<Processor type="local" className="com.percussion.cms.objectstore.server.PSLocalProcessor">
+			<Property name="loadResource">
+				<Value>sys_psxCms/menuModeContext.xml</Value>
+			</Property>
+			<Property name="updateRootElementName">
+				<Value>MenuContexts</Value>
+			</Property>
+			<Property name="queryRootElementName">
+				<Value>MenuContexts</Value>
+			</Property>
+		</Processor>
+	</CmsComponent>
+</CmsComponents>

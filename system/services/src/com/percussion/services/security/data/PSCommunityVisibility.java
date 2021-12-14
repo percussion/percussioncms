@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -29,17 +29,16 @@ import com.percussion.services.catalog.data.PSObjectSummary;
 import com.percussion.services.guidmgr.data.PSGuid;
 import com.percussion.services.utils.xml.PSXmlSerializationHelper;
 import com.percussion.utils.guid.IPSGuid;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.xml.sax.SAXException;
 
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.xml.sax.SAXException;
 
 /**
  * This class is a container for all visible design objects for a specific
@@ -62,7 +61,7 @@ public class PSCommunityVisibility implements Serializable, IPSCatalogItem
     * community, never <code>null</code>, may be empty.
     */
    private Set<PSObjectSummary> visibleObjects = 
-      new HashSet<PSObjectSummary>();
+      new HashSet<>();
    
    /**
     * The bean pattern requires an empty constructor, for internal use only.
@@ -102,7 +101,7 @@ public class PSCommunityVisibility implements Serializable, IPSCatalogItem
    public void setVisibleObjects(Set<PSObjectSummary> visibleObjects)
    {
       if (visibleObjects == null)
-         this.visibleObjects = new HashSet<PSObjectSummary>();
+         this.visibleObjects = new HashSet<>();
       else
          this.visibleObjects = visibleObjects;
    }

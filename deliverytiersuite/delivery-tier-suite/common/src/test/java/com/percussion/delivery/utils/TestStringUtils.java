@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -36,10 +36,10 @@ public class TestStringUtils {
 
     @Test
     public void testJoinURL(){
-        String ret = StringUtils.joinURL("https://test.com/","/parttwo?perc-tid=xyz");
+        String ret = StringUtils.joinURL("https://test.com/","/parttwo");
 
      assertNotNull(ret);
-     assertEquals("https://test.com/parttwo?perc-tid=xyz",ret);
+     assertEquals("https://test.com/parttwo",ret);
 
     }
 }

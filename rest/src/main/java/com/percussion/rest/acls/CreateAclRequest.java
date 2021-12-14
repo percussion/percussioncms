@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -25,19 +25,18 @@
 package com.percussion.rest.acls;
 
 import com.percussion.rest.Guid;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name="CreateAclRequest")
-@ApiModel(value="A request to create an acl")
+@Schema(description="A request to create an acl")
 public class CreateAclRequest {
 
-    @ApiModelProperty(required = true, value="A valid object guid.")
+    @Schema(required = true, description="A valid object guid.")
     private Guid objectGuid;
 
-    @ApiModelProperty(required = true, value="A valid Typed Principal")
+    @Schema(required = true, description="A valid Typed Principal")
     private TypedPrincipal owner;
 
     public CreateAclRequest() {

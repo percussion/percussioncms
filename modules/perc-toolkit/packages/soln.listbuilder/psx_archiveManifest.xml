@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PSXArchiveManifest>
+   <PSXDepFilesIdTypes DependencyKey="Keyword-404">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\DOCUME~1\YUBING~1\LOCALS~1\Temp\1\rxtemp.yubingchen\dpl_8142322749093301994.xml</RxFile>
+         <ArchiveFile>Keyword-404\dpl_8142322749093301994.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="SlotDef-525">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\DOCUME~1\YUBING~1\LOCALS~1\Temp\1\rxtemp.yubingchen\dpl_5702322654965554968.xml</RxFile>
+         <ArchiveFile>SlotDef-525\dpl_5702322654965554968.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_vm_soln__list__assembly-vm">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>D:\rx\rx-convervia\Rhythmyx\rx_resources\vm\soln_list_assembly.vm</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_vm_soln__list__assembly-vm\soln_list_assembly.vm</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="Keyword-401">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\DOCUME~1\YUBING~1\LOCALS~1\Temp\1\rxtemp.yubingchen\dpl_9022716933720376919.xml</RxFile>
+         <ArchiveFile>Keyword-401\dpl_9022716933720376919.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="SlotDef-527">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\DOCUME~1\YUBING~1\LOCALS~1\Temp\1\rxtemp.yubingchen\dpl_8428321784813539893.xml</RxFile>
+         <ArchiveFile>SlotDef-527\dpl_8428321784813539893.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="AclDef-7719781162792517842">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\DOCUME~1\YUBING~1\LOCALS~1\Temp\1\rxtemp.yubingchen\dpl_5216891273738004647.xml</RxFile>
+         <ArchiveFile>AclDef-7719781162792517842\dpl_5216891273738004647.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="TemplateDef-749">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\DOCUME~1\YUBING~1\LOCALS~1\Temp\1\rxtemp.yubingchen\dpl_1350409239367321324.xml</RxFile>
+         <ArchiveFile>TemplateDef-749\dpl_1350409239367321324.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--AppServer_server_rx_deploy_rxapp-ear_rxapp-war_WEB--INF_lib_soln--listbuilder--rx-jar">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>D:\rx\rx-convervia\Rhythmyx\AppServer\server\rx\deploy\rxapp.ear\rxapp.war\WEB-INF\lib\soln-listbuilder-rx.jar</RxFile>
+         <ArchiveFile>sys__UserDependency--AppServer_server_rx_deploy_rxapp-ear_rxapp-war_WEB--INF_lib_soln--listbuilder--rx-jar\soln-listbuilder-rx.jar</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="AclDef-7719781162792517844">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\DOCUME~1\YUBING~1\LOCALS~1\Temp\1\rxtemp.yubingchen\dpl_1216793403619944555.xml</RxFile>
+         <ArchiveFile>AclDef-7719781162792517844\dpl_1216793403619944555.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="Keyword-403">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\DOCUME~1\YUBING~1\LOCALS~1\Temp\1\rxtemp.yubingchen\dpl_1306686084638279038.xml</RxFile>
+         <ArchiveFile>Keyword-403\dpl_1306686084638279038.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="Keyword-402">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\DOCUME~1\YUBING~1\LOCALS~1\Temp\1\rxtemp.yubingchen\dpl_2283233082528343339.xml</RxFile>
+         <ArchiveFile>Keyword-402\dpl_2283233082528343339.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="AclDef-7719781162792517845">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\DOCUME~1\YUBING~1\LOCALS~1\Temp\1\rxtemp.yubingchen\dpl_3725880003320326990.xml</RxFile>
+         <ArchiveFile>AclDef-7719781162792517845\dpl_3725880003320326990.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="AclDef-7719781162792517846">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\DOCUME~1\YUBING~1\LOCALS~1\Temp\1\rxtemp.yubingchen\dpl_2965888782346727684.xml</RxFile>
+         <ArchiveFile>AclDef-7719781162792517846\dpl_2965888782346727684.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_stylesheets_controls_soln__list__JavaScript-xsl">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>D:\rx\rx-convervia\Rhythmyx\rx_resources\stylesheets\controls\soln_list_JavaScript.xsl</RxFile>
+         <ArchiveFile>sys__UserDependency--rx__resources_stylesheets_controls_soln__list__JavaScript-xsl\soln_list_JavaScript.xsl</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="TemplateDef-561">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\DOCUME~1\YUBING~1\LOCALS~1\Temp\1\rxtemp.yubingchen\dpl_5245269468049731270.xml</RxFile>
+         <ArchiveFile>TemplateDef-561\dpl_5245269468049731270.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="TemplateDef-565">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\DOCUME~1\YUBING~1\LOCALS~1\Temp\1\rxtemp.yubingchen\dpl_2767723447189530243.xml</RxFile>
+         <ArchiveFile>TemplateDef-565\dpl_2767723447189530243.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="Extension-Java/global/percussion/user/soln_list">
+      <PSXDependencyFile fileType="EXTENSION_DEF_XML">
+         <RxFile>C:\DOCUME~1\YUBING~1\LOCALS~1\Temp\1\rxtemp.yubingchen\dpl_4308989501713074969.xml</RxFile>
+         <ArchiveFile>Extension-Java\global\percussion\user\soln_list\dpl_4308989501713074969.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="AclDef-7719781162792518075">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\DOCUME~1\YUBING~1\LOCALS~1\Temp\1\rxtemp.yubingchen\dpl_4301897411808450229.xml</RxFile>
+         <ArchiveFile>AclDef-7719781162792518075\dpl_4301897411808450229.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="AclDef-7719781162792518113">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\DOCUME~1\YUBING~1\LOCALS~1\Temp\1\rxtemp.yubingchen\dpl_2098916836588608288.xml</RxFile>
+         <ArchiveFile>AclDef-7719781162792518113\dpl_2098916836588608288.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="WorkflowDef-6">
+      <PSXDependencyFile fileType="DBMS_DATA">
+         <RxFile>C:\DOCUME~1\YUBING~1\LOCALS~1\Temp\1\rxtemp.yubingchen\dpl_8853291867595955540.xml</RxFile>
+         <ArchiveFile>WorkflowDef-6\dpl_8853291867595955540.xml</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="DBMS_DATA">
+         <RxFile>C:\DOCUME~1\YUBING~1\LOCALS~1\Temp\1\rxtemp.yubingchen\dpl_5517062963303949068.xml</RxFile>
+         <ArchiveFile>WorkflowDef-6\dpl_5517062963303949068.xml</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="DBMS_DATA">
+         <RxFile>C:\DOCUME~1\YUBING~1\LOCALS~1\Temp\1\rxtemp.yubingchen\dpl_5466055166548623578.xml</RxFile>
+         <ArchiveFile>WorkflowDef-6\dpl_5466055166548623578.xml</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="DBMS_DATA">
+         <RxFile>C:\DOCUME~1\YUBING~1\LOCALS~1\Temp\1\rxtemp.yubingchen\dpl_3222958480095995151.xml</RxFile>
+         <ArchiveFile>WorkflowDef-6\dpl_3222958480095995151.xml</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="DBMS_DATA">
+         <RxFile>C:\DOCUME~1\YUBING~1\LOCALS~1\Temp\1\rxtemp.yubingchen\dpl_2195786551687251518.xml</RxFile>
+         <ArchiveFile>WorkflowDef-6\dpl_2195786551687251518.xml</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="DBMS_DATA">
+         <RxFile>C:\DOCUME~1\YUBING~1\LOCALS~1\Temp\1\rxtemp.yubingchen\dpl_7724191978601276802.xml</RxFile>
+         <ArchiveFile>WorkflowDef-6\dpl_7724191978601276802.xml</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="DBMS_DATA">
+         <RxFile>C:\DOCUME~1\YUBING~1\LOCALS~1\Temp\1\rxtemp.yubingchen\dpl_6155290740752391488.xml</RxFile>
+         <ArchiveFile>WorkflowDef-6\dpl_6155290740752391488.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="TemplateDef-563">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\DOCUME~1\YUBING~1\LOCALS~1\Temp\1\rxtemp.yubingchen\dpl_5101597285682553003.xml</RxFile>
+         <ArchiveFile>TemplateDef-563\dpl_5101597285682553003.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="AclDef-7719781162792518073">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\DOCUME~1\YUBING~1\LOCALS~1\Temp\1\rxtemp.yubingchen\dpl_3879992482016491622.xml</RxFile>
+         <ArchiveFile>AclDef-7719781162792518073\dpl_3879992482016491622.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="TemplateDef-569">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\DOCUME~1\YUBING~1\LOCALS~1\Temp\1\rxtemp.yubingchen\dpl_1105353420076015282.xml</RxFile>
+         <ArchiveFile>TemplateDef-569\dpl_1105353420076015282.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="AclDef-7719781162792518078">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\DOCUME~1\YUBING~1\LOCALS~1\Temp\1\rxtemp.yubingchen\dpl_6158078712133821121.xml</RxFile>
+         <ArchiveFile>AclDef-7719781162792518078\dpl_6158078712133821121.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="TemplateDef-573">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\DOCUME~1\YUBING~1\LOCALS~1\Temp\1\rxtemp.yubingchen\dpl_1395479636559871257.xml</RxFile>
+         <ArchiveFile>TemplateDef-573\dpl_1395479636559871257.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="TemplateDef-567">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\DOCUME~1\YUBING~1\LOCALS~1\Temp\1\rxtemp.yubingchen\dpl_4234386578038479384.xml</RxFile>
+         <ArchiveFile>TemplateDef-567\dpl_4234386578038479384.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="AclDef-7719781162792518076">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\DOCUME~1\YUBING~1\LOCALS~1\Temp\1\rxtemp.yubingchen\dpl_7949056191245046872.xml</RxFile>
+         <ArchiveFile>AclDef-7719781162792518076\dpl_7949056191245046872.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="TemplateDef-571">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\DOCUME~1\YUBING~1\LOCALS~1\Temp\1\rxtemp.yubingchen\dpl_1626038723630048374.xml</RxFile>
+         <ArchiveFile>TemplateDef-571\dpl_1626038723630048374.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="AclDef-7719781162792518095">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\DOCUME~1\YUBING~1\LOCALS~1\Temp\1\rxtemp.yubingchen\dpl_246681303056554188.xml</RxFile>
+         <ArchiveFile>AclDef-7719781162792518095\dpl_246681303056554188.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="AclDef-7719781162792517851">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\DOCUME~1\YUBING~1\LOCALS~1\Temp\1\rxtemp.yubingchen\dpl_7852789686003543796.xml</RxFile>
+         <ArchiveFile>AclDef-7719781162792517851\dpl_7852789686003543796.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="AclDef-7719781162792517850">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\DOCUME~1\YUBING~1\LOCALS~1\Temp\1\rxtemp.yubingchen\dpl_1512982468653490110.xml</RxFile>
+         <ArchiveFile>AclDef-7719781162792517850\dpl_1512982468653490110.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="Keyword-418">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\DOCUME~1\YUBING~1\LOCALS~1\Temp\1\rxtemp.yubingchen\dpl_4044480069905090099.xml</RxFile>
+         <ArchiveFile>Keyword-418\dpl_4044480069905090099.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="Extension-Java/global/percussion/user/soln_rss">
+      <PSXDependencyFile fileType="EXTENSION_DEF_XML">
+         <RxFile>C:\DOCUME~1\YUBING~1\LOCALS~1\Temp\1\rxtemp.yubingchen\dpl_6012183959245909911.xml</RxFile>
+         <ArchiveFile>Extension-Java\global\percussion\user\soln_rss\dpl_6012183959245909911.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="TemplateDef-750">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\DOCUME~1\YUBING~1\LOCALS~1\Temp\1\rxtemp.yubingchen\dpl_6349288991984234266.xml</RxFile>
+         <ArchiveFile>TemplateDef-750\dpl_6349288991984234266.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="AclDef-7719781162792518093">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\DOCUME~1\YUBING~1\LOCALS~1\Temp\1\rxtemp.yubingchen\dpl_6557098690466573431.xml</RxFile>
+         <ArchiveFile>AclDef-7719781162792518093\dpl_6557098690466573431.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="AclDef-7719781162792518083">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\DOCUME~1\YUBING~1\LOCALS~1\Temp\1\rxtemp.yubingchen\dpl_6069222742391908409.xml</RxFile>
+         <ArchiveFile>AclDef-7719781162792518083\dpl_6069222742391908409.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="SupportFile-rx_resources/stylesheets/controls/soln_list_JavaScript.xsl">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>C:\DOCUME~1\YUBING~1\LOCALS~1\Temp\1\rxtemp.yubingchen\dpl_2432521136805429576.tmp</RxFile>
+         <ArchiveFile>SupportFile-rx_resources\stylesheets\controls\soln_list_JavaScript.xsl\dpl_2432521136805429576.tmp</ArchiveFile>
+         <OriginalFile>stylesheets\controls\soln_list_JavaScript.xsl</OriginalFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="TemplateDef-557">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\DOCUME~1\YUBING~1\LOCALS~1\Temp\1\rxtemp.yubingchen\dpl_215145146292117009.xml</RxFile>
+         <ArchiveFile>TemplateDef-557\dpl_215145146292117009.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="TemplateDef-559">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\DOCUME~1\YUBING~1\LOCALS~1\Temp\1\rxtemp.yubingchen\dpl_3911760708108586456.xml</RxFile>
+         <ArchiveFile>TemplateDef-559\dpl_3911760708108586456.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="ImageFile-rx_resources/images/ContentTypeIcons/list.gif">
+      <PSXDependencyFile fileType="SUPPORT_FILE">
+         <RxFile>D:\rx\rx-convervia\Rhythmyx\rx_resources\images\ContentTypeIcons\list.gif</RxFile>
+         <ArchiveFile>ImageFile-rx_resources\images\ContentTypeIcons\list.gif\list.gif</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="AclDef-7719781162792518080">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\DOCUME~1\YUBING~1\LOCALS~1\Temp\1\rxtemp.yubingchen\dpl_9204944930635902566.xml</RxFile>
+         <ArchiveFile>AclDef-7719781162792518080\dpl_9204944930635902566.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="AclDef--4221655086180335305">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\DOCUME~1\YUBING~1\LOCALS~1\Temp\1\rxtemp.yubingchen\dpl_3056776045073478926.xml</RxFile>
+         <ArchiveFile>AclDef--4221655086180335305\dpl_3056776045073478926.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="AclDef--4221655086180335306">
+      <PSXDependencyFile fileType="SERVICEGENERATED_XML">
+         <RxFile>C:\DOCUME~1\YUBING~1\LOCALS~1\Temp\1\rxtemp.yubingchen\dpl_7966494427590877020.xml</RxFile>
+         <ArchiveFile>AclDef--4221655086180335306\dpl_7966494427590877020.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+   <PSXDepFilesIdTypes DependencyKey="ContentType-318">
+      <PSXDependencyFile fileType="ITEM_DEFINITION">
+         <RxFile>C:\DOCUME~1\YUBING~1\LOCALS~1\Temp\1\rxtemp.yubingchen\dpl_3692413191913904176.xml</RxFile>
+         <ArchiveFile>ContentType-318\dpl_3692413191913904176.xml</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="NODE_DEFINITION">
+         <RxFile>C:\DOCUME~1\YUBING~1\LOCALS~1\Temp\1\rxtemp.yubingchen\dpl_8637234301208147792.xml</RxFile>
+         <ArchiveFile>ContentType-318\dpl_8637234301208147792.xml</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="DBMS_SCHEMA">
+         <RxFile>C:\DOCUME~1\YUBING~1\LOCALS~1\Temp\1\rxtemp.yubingchen\dpl_3805690459103158480.xml</RxFile>
+         <ArchiveFile>ContentType-318\dpl_3805690459103158480.xml</ArchiveFile>
+      </PSXDependencyFile>
+      <PSXDependencyFile fileType="DBMS_SCHEMA">
+         <RxFile>C:\DOCUME~1\YUBING~1\LOCALS~1\Temp\1\rxtemp.yubingchen\dpl_1694594542726163647.xml</RxFile>
+         <ArchiveFile>ContentType-318\dpl_1694594542726163647.xml</ArchiveFile>
+      </PSXDependencyFile>
+   </PSXDepFilesIdTypes>
+</PSXArchiveManifest>

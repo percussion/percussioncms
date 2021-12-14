@@ -17,42 +17,41 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.xmldom;
 
 import com.percussion.data.PSCachedStylesheet;
+import com.percussion.data.PSInternalRequestURIResolver;
 import com.percussion.data.PSTransformErrorListener;
-import com.percussion.data.PSUriResolver;
 import com.percussion.extension.IPSRequestPreProcessor;
 import com.percussion.extension.IPSResultDocumentProcessor;
 import com.percussion.extension.PSDefaultExtension;
 import com.percussion.extension.PSExtensionProcessingException;
 import com.percussion.extension.PSParameterMismatchException;
 import com.percussion.security.PSAuthorizationException;
+import com.percussion.security.xml.PSCatalogResolver;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.server.PSRequestValidationException;
 import com.percussion.server.PSServer;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.io.Writer;
-import java.net.URL;
+import com.percussion.xml.PSStylesheetCacheManager;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.xml.sax.SAXException;
 
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-
-import com.percussion.xml.PSStylesheetCacheManager;
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.xml.sax.SAXException;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.io.Writer;
+import java.net.URL;
 
 
 /**
@@ -287,7 +286,9 @@ public class PSXdTransformDomToText extends PSDefaultExtension implements
       {
          Transformer nt = styleCached.getStylesheetTemplate().newTransformer();
          nt.setErrorListener(errorListener);
-         nt.setURIResolver(new PSUriResolver());
+         PSCatalogResolver cr = new PSCatalogResolver();
+         cr.setInternalRequestURIResolver(new PSInternalRequestURIResolver());
+         nt.setURIResolver(cr);
 
          DOMSource src = new DOMSource((Node) xmlDoc);
          StringWriter outString = new StringWriter();
@@ -313,7 +314,7 @@ public class PSXdTransformDomToText extends PSDefaultExtension implements
       catch (TransformerConfigurationException e)
       {
          // there is an error with the XSLT stylesheet
-         StringBuffer errorMsg = new StringBuffer(e.toString());
+         StringBuilder errorMsg = new StringBuilder(e.toString());
          errorMsg.append("\r\n");
          PSStylesheetCacheManager.
             appendErrorMessages(errorMsg, styleCached.getErrorListener());

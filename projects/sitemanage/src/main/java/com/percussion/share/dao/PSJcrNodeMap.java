@@ -17,20 +17,24 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.share.dao;
 
-import static org.apache.commons.lang.Validate.notNull;
-
 import com.percussion.util.PSPurgableTempFile;
 import com.percussion.utils.jsr170.PSMultiProperty;
 import com.percussion.utils.tools.PSCopyStream;
+import org.apache.commons.lang.StringUtils;
 
+import javax.jcr.Node;
+import javax.jcr.Property;
+import javax.jcr.PropertyIterator;
+import javax.jcr.PropertyType;
+import javax.jcr.RepositoryException;
+import javax.jcr.Value;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.AbstractMap;
 import java.util.AbstractSet;
 import java.util.ArrayList;
@@ -40,14 +44,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.jcr.Node;
-import javax.jcr.Property;
-import javax.jcr.PropertyIterator;
-import javax.jcr.PropertyType;
-import javax.jcr.RepositoryException;
-import javax.jcr.Value;
-
-import org.apache.commons.lang.StringUtils;
+import static org.apache.commons.lang.Validate.notNull;
 
 /**
  * 
@@ -64,7 +61,7 @@ public class PSJcrNodeMap extends AbstractMap<String, Object>
 
     private Node node;
 
-    private Map<String, Object> override = new HashMap<String, Object>();
+    private Map<String, Object> override = new HashMap<>();
     
     private boolean allowBinary = false;
 
@@ -138,7 +135,6 @@ public class PSJcrNodeMap extends AbstractMap<String, Object>
     
     private Object getNodePropertyValue(String k) {
         Property p = getNodeProperty(k);
-        FileOutputStream fos = null;
         try
         {
             if (p == null) return null;
@@ -154,15 +150,16 @@ public class PSJcrNodeMap extends AbstractMap<String, Object>
                 else
                 {
                     PSPurgableTempFile ptf = new PSPurgableTempFile("tmp", null, null);
-                    fos = new FileOutputStream(ptf);
-                    PSCopyStream.copyStream(p.getStream(), fos);
+                    try(FileOutputStream fos = new FileOutputStream(ptf)) {
+                        PSCopyStream.copyStream(p.getStream(), fos);
+                    }
 
                     return ptf;
                 }
             }
             if(p instanceof PSMultiProperty)
             {
-               List<String> multiValues = new ArrayList<String>();
+               List<String> multiValues = new ArrayList<>();
                Value[] values = p.getValues();
                for(Value value : values)
                {
@@ -176,20 +173,6 @@ public class PSJcrNodeMap extends AbstractMap<String, Object>
         catch (Exception e)
         {
             throw new RuntimeException(e);
-        }
-        finally
-        {
-            if (fos != null)
-            {
-                try
-                {
-                    fos.close();
-                }
-                catch (IOException e)
-                {
-                    
-                }
-            }
         }
     }
 

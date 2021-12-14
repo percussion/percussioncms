@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -29,13 +29,14 @@ import com.percussion.delivery.metadata.IPSCookieConsentDao;
 import com.percussion.delivery.metadata.IPSCookieConsentService;
 import com.percussion.delivery.metadata.data.PSCookieConsentQuery;
 import com.percussion.delivery.metadata.rdbms.impl.PSDbCookieConsent;
+import com.percussion.error.PSExceptionUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
-
-import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Service for creating and retrieving cookie consent entries in the DB.
@@ -45,13 +46,13 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 public class PSCookieConsentService implements IPSCookieConsentService {
 
-    private static final Logger MS_LOG = Logger.getLogger(PSCookieConsentService.class.getName());
+    private static final Logger log = LogManager.getLogger(PSCookieConsentService.class.getName());
 
-    private IPSCookieConsentDao consentDao;
+    private final IPSCookieConsentDao consentDao;
 
     @Autowired
     public PSCookieConsentService(IPSCookieConsentDao consentDao) {
-        MS_LOG.debug("Initializing consentDao.");
+        log.debug("Initializing consentDao.");
         this.consentDao = consentDao;
     }
 
@@ -103,7 +104,7 @@ public class PSCookieConsentService implements IPSCookieConsentService {
      * Never <code>null</code>, may be empty.
      */
     private Collection<PSDbCookieConsent> convertToDbCookieConsents(Collection<PSCookieConsentQuery> consentQueries) {
-        Collection<PSDbCookieConsent> consents = new ArrayList<PSDbCookieConsent>();
+        Collection<PSDbCookieConsent> consents = new ArrayList<>();
         
         for (PSCookieConsentQuery query : consentQueries) {
             for (String service : query.getServices()) {
@@ -120,7 +121,9 @@ public class PSCookieConsentService implements IPSCookieConsentService {
         try {
             consentDao.updateOldSiteName(oldSiteName, newSiteName);
         } catch (Exception e) {
-            MS_LOG.error("Error updateing site name in cookie consent service for old site: " + oldSiteName, e);
+            log.error("Error updating site name in cookie consent service for old site: {} Error: {}" ,
+                    oldSiteName, PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
     }
 }

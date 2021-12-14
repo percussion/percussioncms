@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -25,15 +25,13 @@ package com.percussion.workflow.service.impl;
 
 import com.percussion.util.PSSiteManageBean;
 import com.percussion.workflow.service.IPSSteppedWorkflowMetadata;
+import org.springframework.context.annotation.Lazy;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Component;
 
 /**
  * @author JaySeletz
@@ -57,13 +55,13 @@ public class PSSteppedWorkflowMetadata implements IPSSteppedWorkflowMetadata
     static String[] excludedWorkflowsArray =
         {"LocalContent", "Standard Workflow", "Simple Workflow"};
     static final Set<String> excludedWorkflows = 
-        new HashSet<String>(Arrays.asList(excludedWorkflowsArray));
+        new HashSet<>(Arrays.asList(excludedWorkflowsArray));
 
     // Steps names to exclude from the list to show
     static String[] excludedStatesArray =
         {"Pending", "Live", "Quick Edit"};
     static final Set<String> excludedStates = 
-        new HashSet<String>(Arrays.asList(excludedStatesArray));
+        new HashSet<>(Arrays.asList(excludedStatesArray));
     
     // Constant for Draft step
     static final String DRAFT_STATE = "Draft";
@@ -104,9 +102,9 @@ public class PSSteppedWorkflowMetadata implements IPSSteppedWorkflowMetadata
     static final String TRANSITION_NAME_SUBMIT = "Submit";
     static final String TRANSITION_NAME_PUBLISH = "Publish";
     static String[] defaultTransitionsValues =
-        {TRANSITION_NAME_SUBMIT, TRANSITION_NAME_REJECT, TRANSITION_NAME_APPROVE, TRANSITION_NAME_PUBLISH};
+        {TRANSITION_NAME_SUBMIT, TRANSITION_NAME_REJECT, TRANSITION_NAME_APPROVE, TRANSITION_NAME_PUBLISH, TRANSITION_NAME_ARCHIVE};
     static List<String> defaultTransitions = 
-        new ArrayList<String>(Arrays.asList(defaultTransitionsValues));
+        new ArrayList<>(Arrays.asList(defaultTransitionsValues));
     
     //Ordered list of transitions names
     static String[] orderedTransitionsValues =
@@ -114,7 +112,7 @@ public class PSSteppedWorkflowMetadata implements IPSSteppedWorkflowMetadata
         TRANSITION_NAME_PUBLISH, TRANSITION_NAME_ARCHIVE};
     
     static List<String> orderedTransitions = 
-        new ArrayList<String>(Arrays.asList(orderedTransitionsValues));
+        new ArrayList<>(Arrays.asList(orderedTransitionsValues));
     
     // Steps names that are locked down to the system
     static String[] systemStatesArray =

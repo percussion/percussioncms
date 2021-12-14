@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -49,7 +49,7 @@
             $.PercServiceUtils.TYPE_GET,
             false,
             function(status, result) {
-                if(status == $.PercServiceUtils.STATUS_SUCCESS) {
+                if(status === $.PercServiceUtils.STATUS_SUCCESS) {
                     callback($.PercServiceUtils.STATUS_SUCCESS, result.data, I18N.message("perc.ui.gadgets.cookieConsent@Success retrieving cookie consent entries"));
                 }
                 else {
@@ -73,7 +73,7 @@
             $.PercServiceUtils.TYPE_GET,
             false,
             function(status, result) {
-                if(status == $.PercServiceUtils.STATUS_SUCCESS) {
+                if(status === $.PercServiceUtils.STATUS_SUCCESS) {
                     callback($.PercServiceUtils.STATUS_SUCCESS, result.data, I18N.message("perc.ui.gadgets.cookieConsent@Success retrieving cookie consent entries"));
                 }
                 else {
@@ -97,7 +97,7 @@
             $.PercServiceUtils.TYPE_GET,
             false,
             function(status, result) {
-                if(status == $.PercServiceUtils.STATUS_SUCCESS) {
+                if(status === $.PercServiceUtils.STATUS_SUCCESS) {
                     result.url = url;
                     callback($.PercServiceUtils.STATUS_SUCCESS, result);
                 }
@@ -105,11 +105,7 @@
                     var defaultMsg = $.PercServiceUtils.extractDefaultErrorMessage(result.request);
                     callback($.PercServiceUtils.STATUS_ERROR, defaultMsg);
                 }
-            }
-            ,""
-            ,"text/csv"
-            ,"text"
-        );
+            },"","text/csv","text");
     }
 
     /**

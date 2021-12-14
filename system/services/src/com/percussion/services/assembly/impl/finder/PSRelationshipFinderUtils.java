@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -47,10 +47,16 @@ import com.percussion.services.notification.PSNotificationEvent.EventType;
 import com.percussion.services.notification.PSNotificationServiceLocator;
 import com.percussion.utils.guid.IPSGuid;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -73,7 +79,7 @@ public abstract class PSRelationshipFinderUtils<T extends Object> extends PSCont
          IPSNotificationListener
 {
    
-   private ConcurrentMap<IPSGuid, IPSGuid> locks = new ConcurrentHashMap<IPSGuid, IPSGuid>();
+   private ConcurrentMap<IPSGuid, IPSGuid> locks = new ConcurrentHashMap<>();
    
    /**
     * Initialize the finder, set up notification for evicting cached
@@ -102,7 +108,7 @@ public abstract class PSRelationshipFinderUtils<T extends Object> extends PSCont
       
       Iterator it = rset.iterator();
       // de-dup owner IDs
-      Set<PSLegacyGuid> ownerIds = new HashSet<PSLegacyGuid>();
+      Set<PSLegacyGuid> ownerIds = new HashSet<>();
       while (it.hasNext())
       {
          PSRelationship rel = (PSRelationship)it.next();
@@ -144,7 +150,7 @@ public abstract class PSRelationshipFinderUtils<T extends Object> extends PSCont
       notNull(sourceItem, "sourcItem may not be null.");
 
       List<PSRelationship> rels = getRelationships(sourceItem.getId());
-      Set<ContentItem> rval = new HashSet<ContentItem>();
+      Set<ContentItem> rval = new HashSet<>();
       
       // Now get the relevant relationships for the particular slot. These
       // will have properties that match the slot id for the given template
@@ -292,7 +298,7 @@ public abstract class PSRelationshipFinderUtils<T extends Object> extends PSCont
             }
             else
             {
-               relationships = new ArrayList<PSRelationship>(rels);
+               relationships = new ArrayList<>(rels);
             }
 
       }
@@ -370,7 +376,7 @@ public abstract class PSRelationshipFinderUtils<T extends Object> extends PSCont
    /**
     * Logger
     */
-   private static Log ms_log = LogFactory.getLog(PSRelationshipFinderUtils.class);
+   private static final Logger ms_log = LogManager.getLogger(PSRelationshipFinderUtils.class);
  
    /**
     * Cache handler

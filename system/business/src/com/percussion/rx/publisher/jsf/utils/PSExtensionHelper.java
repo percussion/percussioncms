@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -29,17 +29,15 @@ import com.percussion.extension.IPSExtensionParamDef;
 import com.percussion.extension.PSExtensionRef;
 import com.percussion.rx.publisher.jsf.data.PSParameter;
 import com.percussion.server.PSServer;
+import org.apache.commons.lang.StringUtils;
 
+import javax.faces.model.SelectItem;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import javax.faces.model.SelectItem;
-
-import org.apache.commons.lang.StringUtils;
 
 /**
  * Helper static methods for use with extensions.
@@ -63,7 +61,7 @@ public class PSExtensionHelper
                "extensionName may not be null or empty");
       }
       IPSExtensionManager emgr = PSServer.getExtensionManager(null);
-      List<PSParameter> rval = new ArrayList<PSParameter>();
+      List<PSParameter> rval = new ArrayList<>();
       PSExtensionRef ref = new PSExtensionRef(extensionName);
       try
       {
@@ -142,7 +140,7 @@ public class PSExtensionHelper
    @SuppressWarnings("unchecked")
    public static List<SelectItem> getTaskExtensionChoices(String interfaceName)
    {
-      List<SelectItem> rval = new ArrayList<SelectItem>();
+      List<SelectItem> rval = new ArrayList<>();
       try
       {
          IPSExtensionManager emgr = PSServer.getExtensionManager(null);
@@ -187,7 +185,7 @@ public class PSExtensionHelper
       if (StringUtils.isBlank(extName))
          return tgtParams;
 
-      Map<String, String> savedData = new HashMap<String, String>();
+      Map<String, String> savedData = new HashMap<>();
       savedData.putAll(srcParams);
 
       PSExtensionHelper.saveParameterData(tgtParams, savedData);

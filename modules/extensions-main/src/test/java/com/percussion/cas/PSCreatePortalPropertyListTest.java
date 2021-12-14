@@ -19,7 +19,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
@@ -29,8 +29,8 @@ package com.percussion.cas;
 import com.percussion.data.PSConversionException;
 import com.percussion.utils.testing.UnitTest;
 import com.percussion.xml.PSXmlDocumentBuilder;
-
-
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.w3c.dom.Document;
@@ -44,6 +44,7 @@ import org.w3c.dom.Document;
 @Category(UnitTest.class)
 public class PSCreatePortalPropertyListTest
 {
+   private static final Logger log = LogManager.getLogger(PSCreatePortalPropertyListTest.class);
    /**
     * Test parameters for the test
     */
@@ -106,7 +107,7 @@ public class PSCreatePortalPropertyListTest
       PSCreatePortalPropertyList test = new PSCreatePortalPropertyList();
 
          Document doc = (Document) test.processUdf(params, null);
-         System.out.println(PSXmlDocumentBuilder.toString(doc));
+         log.info(PSXmlDocumentBuilder.toString(doc));
 
    }
 }

@@ -17,16 +17,15 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.controls.contenteditor.checkboxtree;
 
+import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
-import java.awt.Component;
-import javax.swing.JCheckBox;
-import javax.swing.JLabel;
+import java.awt.*;
 
 /**
  * The tree node as used with the checkbox tree applet control.

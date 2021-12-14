@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -25,14 +25,13 @@ package com.percussion.sitemanage.importer;
 
 import com.percussion.sitemanage.importer.data.PSImportLogEntry;
 import com.percussion.utils.types.PSPair;
+import org.apache.commons.lang.Validate;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
-
-import org.apache.commons.lang.Validate;
 
 /**
  * @author JaySeletz
@@ -42,7 +41,7 @@ public class PSSiteImportLogger implements IPSSiteImportLogger
 {
     private PSLogObjectType objectType;
     
-    private StringBuffer log;
+    private StringBuilder log;
     
 
     /**
@@ -66,7 +65,7 @@ public class PSSiteImportLogger implements IPSSiteImportLogger
     {
         Validate.notNull(objectType);
         this.objectType = objectType;
-        log = new StringBuffer();
+        log = new StringBuilder();
     }
     
     @Override
@@ -85,7 +84,7 @@ public class PSSiteImportLogger implements IPSSiteImportLogger
         
         if (type.equals(PSLogEntryType.ERROR) && errorLogMessages != null)
         {
-            errorLogMessages.add(new PSPair<String, String>(category, message));
+            errorLogMessages.add(new PSPair<>(category, message));
         }
     }
     
@@ -107,7 +106,7 @@ public class PSSiteImportLogger implements IPSSiteImportLogger
     public void logErrors()
     {
 
-        errorLogMessages = new ArrayList<PSPair<String,String>>();
+        errorLogMessages = new ArrayList<>();
     }
     
     @Override
@@ -120,7 +119,7 @@ public class PSSiteImportLogger implements IPSSiteImportLogger
         if (errorLogMessages == null)
             return null;
         
-        List<PSImportLogEntry> result = new ArrayList<PSImportLogEntry>();
+        List<PSImportLogEntry> result = new ArrayList<>();
         for (PSPair<String,String> message : errorLogMessages)
         {
             result.add(new PSImportLogEntry(objectId, type.name(), new Date(), description, message.getFirst(), message.getSecond()));
@@ -161,7 +160,7 @@ public class PSSiteImportLogger implements IPSSiteImportLogger
         }
         catch (InterruptedException e)
         {
-            // stop waiting
+            Thread.currentThread().interrupt();
         }
     }
     

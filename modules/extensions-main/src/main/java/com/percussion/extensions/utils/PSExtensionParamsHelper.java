@@ -17,30 +17,29 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.extensions.utils;
 
-import static org.apache.commons.lang.StringUtils.isBlank;
+import com.percussion.design.objectstore.IPSReplacementValue;
+import com.percussion.extension.IPSExtensionDef;
+import com.percussion.server.IPSRequestContext;
+import com.percussion.services.assembly.IPSSlotContentFinder;
+import org.apache.commons.beanutils.ConversionException;
+import org.apache.commons.beanutils.Converter;
+import org.apache.commons.beanutils.converters.BooleanConverter;
+import org.apache.commons.lang.math.NumberUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.apache.commons.beanutils.ConversionException;
-import org.apache.commons.beanutils.Converter;
-import org.apache.commons.beanutils.converters.BooleanConverter;
-import org.apache.commons.lang.math.NumberUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import com.percussion.design.objectstore.IPSReplacementValue;
-import com.percussion.extension.IPSExtensionDef;
-import com.percussion.server.IPSRequestContext;
-import com.percussion.services.assembly.IPSSlotContentFinder;
+import static org.apache.commons.lang.StringUtils.isBlank;
 
 /**
  * 
@@ -63,13 +62,8 @@ public class PSExtensionParamsHelper {
     /**
      * The log instance to use for this class if one is not provided, never <code>null</code>.
      */
-    private static final Log defaultLog = LogFactory
-            .getLog(PSExtensionParamsHelper.class);
-    
-    /**
-     * The user log instance.
-     */
-    private Log log;
+    private static Logger log = LogManager
+            .getLogger(PSExtensionParamsHelper.class);
     
     /**
      * Constructor
@@ -85,7 +79,7 @@ public class PSExtensionParamsHelper {
      */
     public PSExtensionParamsHelper(IPSExtensionDef def, Object [] params,
             IPSRequestContext request,
-            Log log) {
+            Logger log) {
         this.extensionDef = def;
         this.params = params;
         this.request = request;
@@ -106,7 +100,7 @@ public class PSExtensionParamsHelper {
      * @see #getParameter(String)
      */
     public PSExtensionParamsHelper(Map<String,String> parameters, 
-            IPSRequestContext request, Log log) {
+            IPSRequestContext request, Logger log) {
         this.extensionParameters = parameters;
         this.request = request;
         doLog(log);
@@ -120,7 +114,7 @@ public class PSExtensionParamsHelper {
      * @param log
      */
     public PSExtensionParamsHelper(Map<String,? extends Object> args, 
-            Map<String,Object> selectors, Log log) {
+            Map<String,Object> selectors, Logger log) {
         doLog(log);
         if (args == null)
         {
@@ -297,14 +291,14 @@ public class PSExtensionParamsHelper {
         return this.extensionParameters;
     }
     
-    protected void doLog(Log log) {
-        this.log = log == null ? PSExtensionParamsHelper.defaultLog : log;
+    protected void doLog(Logger log) {
+        this.log = log;
     }
     
     @SuppressWarnings("unchecked")
     protected void doParameters()
     {  
-       extensionParameters = new HashMap<String, String>();
+       extensionParameters = new HashMap<>();
        
        if (params != null)
        {

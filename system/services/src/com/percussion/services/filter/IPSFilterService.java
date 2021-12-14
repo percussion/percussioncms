@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -85,7 +85,7 @@ public interface IPSFilterService extends IPSCataloger
     * @param id id of filter, never <code>null</code>.
     * @return the item filter, may be <code>null</code> if filter not found.
     */
-   IPSItemFilter findFilterByID(IPSGuid id);
+   IPSItemFilter findFilterByID(IPSGuid id) throws PSNotFoundException;
 
    /**
     * Find all filters for the supplied name.

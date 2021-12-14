@@ -17,17 +17,23 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.services.filestorage.data;
 
-import java.io.Serializable;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.NumberUtils;
+import org.apache.commons.lang.time.DateUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.tika.metadata.Metadata;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -41,18 +47,11 @@ import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.persistence.Version;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.math.NumberUtils;
-import org.apache.commons.lang.time.DateUtils;
-import org.apache.log4j.Logger;
-import org.apache.tika.metadata.Metadata;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
+import java.io.Serializable;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Stores base information about each unique binary in the system inclding its
@@ -81,7 +80,7 @@ public class PSBinary implements Serializable
    /**
     * The logger for this class
     */
-   private static Logger ms_logger = Logger.getLogger(PSBinary.class);
+   private static final Logger ms_logger = LogManager.getLogger(PSBinary.class);
 
    /**
     * Unique id for the binary, uses the internal next number table to generate
@@ -112,7 +111,7 @@ public class PSBinary implements Serializable
    @OneToMany(mappedBy = "binary", cascade = CascadeType.ALL)
    @Fetch(FetchMode.SELECT)
    // @JoinColumn( name="BINARY_ID", referencedColumnName="ID", nullable=false)
-   Set<PSBinaryMetaEntry> metaEntries = new HashSet<PSBinaryMetaEntry>();
+   Set<PSBinaryMetaEntry> metaEntries = new HashSet<>();
 
    /**
     * The mimetype for the item.  should not include encoding

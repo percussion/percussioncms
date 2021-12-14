@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -25,19 +25,17 @@
 package com.percussion.category.web.service;
 
 import com.percussion.category.data.PSCategory;
-import com.percussion.category.data.PSCategoryNode;
 import com.percussion.category.marshaller.PSCategoryMarshaller;
 import com.percussion.category.marshaller.PSCategoryUnMarshaller;
+import com.percussion.share.service.exception.PSDataServiceException;
+import com.percussion.utils.testing.IntegrationTest;
+import junit.framework.TestCase;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import com.percussion.utils.testing.IntegrationTest;
-import org.junit.BeforeClass;
-import org.junit.Test;
-
-import junit.framework.TestCase;
-import org.junit.experimental.categories.Category;
 
 @Category(IntegrationTest.class)
 public class PSJerseyRestClientTest extends TestCase {
@@ -52,7 +50,7 @@ public class PSJerseyRestClientTest extends TestCase {
     }
 	
 	@Test
-	public void testGetCategries() {
+	public void testGetCategries() throws PSDataServiceException {
 		PSCategory result = client.getCategoryList("xyz");
 		
 		assertNotNull(result);
@@ -61,7 +59,7 @@ public class PSJerseyRestClientTest extends TestCase {
 	}
 	
 	@Test
-	public void testUpdateCategries() {
+	public void testUpdateCategries() throws PSDataServiceException {
 		PSCategory resultcat = client.getCategoryList("xyz");
 		String result = PSCategoryMarshaller.marshalToJson(resultcat);
 		assertNotNull(result);

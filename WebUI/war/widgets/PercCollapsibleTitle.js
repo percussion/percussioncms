@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -53,7 +53,7 @@
         var secondLine;
         var isToggleVisible = config.isToggleVisible;
 
-        if(title != undefined && content != undefined) {
+        if(typeof title !== 'undefined' && typeof content !== 'undefined') {
             firstLine = $("<div>");
             firstLine.append(title);
             firstLine.attr("title", title);
@@ -101,8 +101,12 @@
                 .css("left", "15px");
             firstLine.prepend(collapseControl);
             if(toggable) {
-                firstLine.click(handleCollapse);
-                collapseControl.click(handleCollapse);
+                firstLine.on("click",function(evt){
+                    handleCollapse(evt);
+                });
+                collapseControl.on("click",function(evt){
+                    handleCollapse(evt);
+                });
             }
             
             if(isCollapsed) {
@@ -143,7 +147,7 @@
                 .css("width",parentWidth);
         }
         */
-    }
+    };
     
     function handleCollapse(event) {
         var target = $(event.target);

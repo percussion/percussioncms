@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -30,56 +30,28 @@
         //they do not have spurious interactions with draggables outside the
         //iframe
         $.perc_iframe_scope = 'perc-iframe-scope';
-    
+        $.dragDelay = 10;
         var dragging = false;
 
-        /*
-              function update_height() {
-                 var h = 0, w = 0;
-                 if( $.browser.msie ) {
-                    var contentWindow = frame[0].contentWindow;
-                    var documentElement = contentWindow.document.documentElement;
-                    documentElement.scrollTop = 1000000000;
-                    documentElement.scrollLeft = 1000000000;
-                    h = documentElement.scrollTop;
-                    w = documentElement.scrollLeft;
-                 }
-                 else if( $.browser.mozilla ){
-                    h = frame[0].contentWindow.scrollMaxY;
-                    w = frame[0].contentWindow.scrollMaxX;
-        
-                 }
-                 else {
-                    frame[0].contentWindow.scrollTo( 10000000, 1000000 );
-                    h = frame[0].contentWindow.scrollY;
-                    w = frame[0].contentWindow.scrollX;
-                 }
-                 var oldHeight = frame.css('height') || frame.innerHeight();
-                 frame.attr('height', parseInt( oldHeight, 10 ) + h + 'px' );
-                 var oldWidth = frame.css('width') || frame.innerWidth();
-                 frame.attr('width', parseInt( oldWidth, 10 ) + w + 'px' );
-              }
-        
-              setInterval( update_height, 200);
-         */
+
 
         //Create an invisible div to put over the iframe
         var overlay = $("<div class=\"perc-iframe-overlay-dnd-container\"/>");
         $('body').append( overlay );
-        
+
         overlay
             .height( frame.height() )
             .width( frame.width() )
             .addClass('ui-layout-ignore')
             .css(
-            {
-                overflow: 'hidden',
-                position: 'absolute', 
-                left: '-10000px',
-                top: '0px',
-                zIndex: 1000
-            });
-            
+                {
+                    overflow: 'hidden',
+                    position: 'absolute',
+                    left: '-10000px',
+                    top: '0px',
+                    zIndex: 1000
+                });
+
         addDragSupportDroppable();
 
         //Move the div over the iframe
@@ -100,12 +72,13 @@
         //droppables inside the iframe
         function liftDroppables( )
         {
-            var droppables = frame.contents().find( ':data(droppable)' );
+            var droppables = frame.contents().find( ':data(ui-droppable)' );
 
             droppables.each( function()
             {
                 var orig = $(this);
-                var orig_drop = $.data( this, 'droppable' );
+                var orig_drop = $.data( this, 'ui-droppable' );
+                orig_drop.options.disabled=true;
                 var clone = $("<div/>").addClass("allDroppablesHelpers").addClass("perc-iframe-dnd-overlay-droppable").attr("for", orig.attr("id")).width( orig.outerWidth() ).height( orig.outerHeight() );
                 overlay.append( clone );
                 var iframeLeft, iframeTop;
@@ -137,16 +110,33 @@
                 //Make the clone droppable, with event functions which
                 //call through to the original droppable's events
                 clone.droppable(
-                { 
-                    greedy: orig_drop.options.greedy,
-                    tolerance: orig_drop.options.tolerance,
-                    accept: orig_drop.options.accept,
-                    over: function(evt){ orig_drop._over.call(orig_drop, evt); },
-                    activate: function(evt){ orig_drop._activate.call(orig_drop, evt); },
-                    deactivate: function(evt){ orig_drop._deactivate.call(orig_drop, evt); },
-                    out: function(evt){ orig_drop._out.call(orig_drop, evt); },
-                    drop: function(evt){ orig_drop._drop.call( orig_drop, evt); }
-                });
+                    {
+                        greedy: orig_drop.options.greedy,
+                        tolerance: orig_drop.options.tolerance,
+                        accept: orig_drop.options.accept,
+                        iframeFix: true,
+                        scope: orig_drop.options.scope,
+                        over: function(evt,ui){
+                            evt.preventDefault();
+                            orig_drop._over.call(orig_drop, [evt,ui]);
+                        },
+                        activate: function(evt,ui){
+                            evt.preventDefault();
+                            orig_drop._activate.call(orig_drop, [evt,ui]);
+                        },
+                        deactivate: function(evt,ui){
+                            evt.preventDefault();
+                            orig_drop._deactivate.call(orig_drop, [evt,ui]);
+                        },
+                        out: function(evt,ui){
+                            evt.preventDefault();
+                            orig_drop._out.call(orig_drop, [evt,ui]);
+                        },
+                        drop: function(evt,ui){
+                            evt.preventDefault();
+                            orig_drop._drop.call( orig_drop,[evt,ui]);
+                        }
+                    });
             });
         }
 
@@ -154,9 +144,16 @@
         function removeDroppables()
         {
             overlay.empty();
+            var droppables = frame.contents().find( ':data(ui-droppable)' );
+
+            droppables.each( function() {
+                var orig = $(this);
+                var orig_drop = $.data(this, 'ui-droppable');
+                orig_drop.options.disabled = false;
+            });
         }
 
-        function startDrag()
+        function onDragStart()
         {
             if( !dragging )
             {
@@ -166,7 +163,7 @@
             }
         }
 
-        function stopDrag()
+        function onDragStop()
         {
             removeOverlay();
             removeDroppables();
@@ -176,18 +173,21 @@
         function addDragSupportDroppable()
         {
             var d = $("<div/>")
-	            .addClass('ui-layout-ignore')
-	            .droppable({
+                .addClass('ui-layout-ignore')
+                .droppable({
                     addClasses: false,
-	                activate: function(event,ui)
-	                {
-	                    startDrag(ui.draggable);
-	                }, 
-	                deactivate: function()
-	                {
-	                    setTimeout( stopDrag, 100 );
-	                }
-	            });
+                    scope: $.perc_iframe_scope,
+                    tolerance : 'pointer',
+                    iframeFix: true,
+                    activate: function(event,ui)
+                    {
+                        onDragStart(ui.draggable);
+                    },
+                    deactivate: function(event,ui)
+                    {
+                        setTimeout( onDragStop, 100 );
+                    }
+                });
             //.css({'position':'absolute', 'left':-1000});
             $('body').append(d);
         }
@@ -195,11 +195,6 @@
         //If a draggable needs to drag onto the iframe, it must call
         //startDrag() when dragging starts, end stopDrag() when dragging
         //stops
-		/*
-		   $.perc_iframe_drag = {
-		      start: startDrag,
-		      stop: stopDrag
-		   };
-		*/
-	}
+
+    };
 })(jQuery);

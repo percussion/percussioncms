@@ -17,19 +17,19 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.share.dao.impl;
 
-import static org.apache.commons.lang.Validate.*;
+import com.percussion.share.data.IPSContentItem;
+import com.percussion.share.data.PSDataItemSummary;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import com.percussion.share.data.IPSContentItem;
-import com.percussion.share.data.PSDataItemSummary;
+import static org.apache.commons.lang.Validate.notNull;
 
 /**
  * A Generic Low level representation of an item in the system backed
@@ -43,7 +43,7 @@ public class PSContentItem extends PSDataItemSummary implements IPSContentItem
     /**
      * never <code>null</code>.
      */
-    private Map<String, Object> fields = new HashMap<String, Object>();
+    private Map<String, Object> fields = new HashMap<>();
     
 
     /**

@@ -212,7 +212,7 @@ public class RxComponentModel extends RxIAModel
     */
    public List<String> getSelectedComponentNames()
    {
-      ArrayList<String> names = new ArrayList<String>();
+      ArrayList<String> names = new ArrayList<>();
       for (String name : getComponentNames())
       {
          RxComponent component = getComponent(name);
@@ -300,7 +300,7 @@ public class RxComponentModel extends RxIAModel
     * Map containing available Rhythmyx name/component pairs.
     */
    protected SortedMap<String, RxComponent> m_componentsMap = 
-      new TreeMap<String, RxComponent>();
+      new TreeMap<>();
    
    /**
     * See {@link #getParent()}, {@link #setParent(String)}.

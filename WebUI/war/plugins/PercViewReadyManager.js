@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -36,10 +36,9 @@
             var self = this;
             //If any of the component in the wrappertoset is not finished rendering then return false
             $(wrappertoset.components).each(function(index, value){
-                var compName = value;
-                if(self.getWrapper(compName)!=null){
+                if(self.getWrapper(value)!==null){
                     alreadyInUse = true;
-                    return;
+
                 }
             });
             if(alreadyInUse) {
@@ -59,7 +58,7 @@
             $(this.wrappers).each(function(){
                 if(this.isComponentInWrapper(componentname, true)){
                     wrapper = this;
-                    return;
+
                 }
             });
             return wrapper;
@@ -72,7 +71,8 @@
         handleWrapperComplete:function(wrapperName){
             this.wrappers.splice($.inArray(wrapperName,this.wrappers),1);
             this.logMessage("Removed wrapper '" + wrapperName + "' from manager");
-            if(this.wrappers.length == 0){
+
+            if(this.wrappers.length === 0){
                 $("#perc-ui-view-indicator").removeClass("perc-ui-view-processing").addClass("perc-ui-view-ready");
                 this.logMessage("The view is ready.");
             }
@@ -86,37 +86,39 @@
         }
     };
     $.PercComponentWrapper = function(name, componentArray){
-        var wrapperApi = {
+        return {
             wrapperName : name,
             wrapperStatus : "initialized",
             processedComponents : [],
             components : componentArray,
             isWrapperComplete : function(){
-                return this.wrapperStatus == "processed";
+                return this.wrapperStatus === "processed";
             },
             isComponentInWrapper : function(componentName, processedFlag){
-                return processedFlag?$.inArray(componentName, this.components)!=-1 && $.inArray(componentName, this.processedComponents) == -1 : $.inArray(componentName, this.components) != -1;;
+                return processedFlag?$.inArray(componentName, this.components)!==-1 && $.inArray(componentName, this.processedComponents) === -1 : $.inArray(componentName, this.components) !== -1;
             },
             handleComponentProgress:function(compName, progress){
-                if($.inArray(compName, this.components) == -1){
+                if($.inArray(compName, this.components) === -1){
                     $.PercViewReadyManager.logMessage("The component '" + compName + "' doesn't exist in the wrapper." + this.wrapperName);
                     return;
                 }
-                if(progress == "complete"){
+                let compWrapper;
+                let component;
+                if(progress === "complete"){
                     this.processedComponents.push(compName);
-                    var compWrapper = $("#" + compName);
+                    compWrapper = $("#" + compName);
                     compWrapper.remove();
-                    var component = $("[perc-ui-component='" + compName + "']");
+                    component = $("[perc-ui-component='" + compName + "']");
                     component.addClass("perc-ui-component-ready").removeClass("perc-ui-component-processing");
-                    if(this.components.length == this.processedComponents.length){
+                    if(this.components.length === this.processedComponents.length){
                         this.wrapperStatus = "processed";
                         $.PercViewReadyManager.handleWrapperComplete(this.wrapperName);
                     }
                 }
                 else{
                     $(".perc-ui-component-overlay").each(function(){
-                        var compWrapper = $(this);
-                        var component = $("[perc-ui-component='" + compWrapper.attr("id") + "']");
+                         compWrapper = $(this);
+                         component = $("[perc-ui-component='" + compWrapper.attr("id") + "']");
                         var compPos = component.position();
                         if(compPos == null)
                             return;
@@ -140,6 +142,5 @@
 
             }
         };
-        return wrapperApi;
-    }
+    };
 })(jQuery);

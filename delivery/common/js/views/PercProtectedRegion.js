@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -62,7 +62,7 @@
     function handleProtectContent(elem)
     {
         //Parse the region protection object.
-        var protectObj = $.parseJSON(elem.attr('data'));
+        var protectObj = JSON.parse(elem.attr('data'));
         if("undefined" !== typeof (protectObj)){
             //Get the id of the region to protect.
             if ("undefined" !== typeof (protectObj.protectedRegion) && "" !== protectObj.protectedRegion)

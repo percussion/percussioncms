@@ -17,30 +17,34 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.controls.contenteditor.checkboxtree;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
+import com.percussion.error.PSExceptionUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.w3c.dom.Document;
 
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeModel;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-
-import org.w3c.dom.Document;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 
 /**
  * Tree model with extensions for loading the model data from an xml document.
  */
 public class PSCheckboxTreeModel extends DefaultTreeModel implements TreeModel
 {
+
+   private static final Logger log = LogManager.getLogger(PSCheckboxTreeModel.class);
+
    /**
     * Construct and populate the tree model.
     * 
@@ -76,33 +80,26 @@ public class PSCheckboxTreeModel extends DefaultTreeModel implements TreeModel
             "docUrlStr cannot be null or empty");
 
       Document doc = null;
-      InputStream is = null;
+
 
       try
       {
          URL docUrl = new URL(baseURL, docUrlStr);
          docUrl = appendPsSessionId(docUrl);
-         //System.out.println("docUrl: " + docUrl.toString());
-         
+
          URLConnection conn = docUrl.openConnection();
-         is = conn.getInputStream();
-         
-         DocumentBuilder builder = 
-            DocumentBuilderFactory.newInstance().newDocumentBuilder();
-         doc = builder.parse(is);
-         PSCheckboxTreeRootNode rootNode = (PSCheckboxTreeRootNode) getRoot();
-         rootNode.loadDocument(doc);
+         try(InputStream is = conn.getInputStream()) {
+
+            DocumentBuilder builder =
+                    DocumentBuilderFactory.newInstance().newDocumentBuilder();
+            doc = builder.parse(is);
+            PSCheckboxTreeRootNode rootNode = (PSCheckboxTreeRootNode) getRoot();
+            rootNode.loadDocument(doc);
+         }
       }
       catch (Exception e)
       {
          throw new RuntimeException(e);
-      }
-      finally
-      {
-         if (is != null)
-         {
-            try { is.close(); } catch (IOException e) { /* ignore */ }
-         }
       }
    }
 
@@ -150,7 +147,8 @@ public class PSCheckboxTreeModel extends DefaultTreeModel implements TreeModel
       }
       catch (MalformedURLException e)
       {
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          throw new RuntimeException(e);
       }
    }
@@ -219,30 +217,21 @@ public class PSCheckboxTreeModel extends DefaultTreeModel implements TreeModel
     */
    private String getResponse(URL url)
    {
-      InputStream is = null;
+
 
       try
       {
          URLConnection conn = url.openConnection();
-         is = conn.getInputStream();
-         byte[] buffer = new byte[1000];
-         int byteRead = is.read(buffer);
-         String response = new String(buffer, 0, byteRead);
-         
-         //System.out.println("response: " + response);
-         
-         return response;
+         try(InputStream is = conn.getInputStream()) {
+            byte[] buffer = new byte[1000];
+            int byteRead = is.read(buffer);
+            String response = new String(buffer, 0, byteRead);
+            return response;
+         }
       }
       catch (Exception e)
       {
          throw new RuntimeException(e);
-      }
-      finally
-      {
-         if (is != null)
-         {
-            try { is.close(); } catch (IOException e) { /* ignore */ }
-         }
       }
    }
    
@@ -255,7 +244,7 @@ public class PSCheckboxTreeModel extends DefaultTreeModel implements TreeModel
    /**
     * The URL used to retrieve the PS Session ID from server.
     */
-   private static String GET_SESSIONID_URL = "../util/getPSSessionID.jsp";
+   private static String GET_SESSIONID_URL = "/util/getPSSessionID.jsp";
    
 
    /**

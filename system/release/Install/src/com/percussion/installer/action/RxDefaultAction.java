@@ -46,9 +46,7 @@ public class RxDefaultAction extends RxIAAction
 
    private void createDefaultFiles(URL stringUrl, File defaultFile)
    {
-      try
-      {
-         InputStream stringInputStream = stringUrl.openStream();
+      try( InputStream stringInputStream = stringUrl.openStream()){
          IOTools.copyStreamToFile(stringInputStream, defaultFile);
          stringInputStream.close();
       }

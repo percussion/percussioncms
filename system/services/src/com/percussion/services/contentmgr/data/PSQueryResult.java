@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -29,16 +29,15 @@ import com.percussion.services.contentmgr.impl.jsrdata.PSRowIterator;
 import com.percussion.services.guidmgr.data.PSLegacyGuid;
 import com.percussion.utils.guid.IPSGuid;
 
+import javax.jcr.NodeIterator;
+import javax.jcr.RepositoryException;
+import javax.jcr.query.QueryResult;
+import javax.jcr.query.RowIterator;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
-
-import javax.jcr.NodeIterator;
-import javax.jcr.RepositoryException;
-import javax.jcr.query.QueryResult;
-import javax.jcr.query.RowIterator;
 
 /**
  * Implementation of query result for JSR-170 queries
@@ -76,7 +75,7 @@ public class PSQueryResult implements QueryResult
          throw new IllegalArgumentException("comparator may not be null");
       }
       m_columnNames = columnNames;
-      m_rows = new TreeSet<PSRow>(comparator);
+      m_rows = new TreeSet<>(comparator);
    }
 
    /**
@@ -106,7 +105,7 @@ public class PSQueryResult implements QueryResult
     */
    public NodeIterator getNodes() throws RepositoryException
    {
-      List<IPSGuid> guids = new ArrayList<IPSGuid>();
+      List<IPSGuid> guids = new ArrayList<>();
       for (PSRow row : m_rows)
       {
          long cid = row.getRawValue(

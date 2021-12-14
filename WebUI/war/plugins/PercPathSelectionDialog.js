@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -72,14 +72,14 @@
         var selectedItem = null;
         var dialog = null;
         var dialogHTML = createDialog(settings);
-        var buttons = { }
+        var buttons = { };
         var buttonSaveOk = {
                  /*
                  * selectedItem.type is used instead of selectableTypes when typechecking (defaults overwritten).
                  * The valid types are determined in the file(s) that call this method. 
                  */
                  click: function(){
-                    if(settings.selectedItemValidator && $.isFunction(settings.selectedItemValidator))
+                    if(settings.selectedItemValidator && typeof settings.selectedItemValidator === "function")
                     {
                         var errMsg = settings.selectedItemValidator(selectedItem);
                         if(errMsg != null){
@@ -91,14 +91,14 @@
                     settings.okCallback(selectedItem);
                  },
                  id: "perc-path-selection-dialog-save"
-            }
+            };
         var buttonCancel = {
                    click: function(){
                         dialog.remove();
                         settings.cancelCallback();
                     },
                     id: "perc-path-selection-dialog-cancel"
-                }
+                };
         buttons.Ok = buttonSaveOk;
         buttons.Cancel = buttonCancel;
                 
@@ -120,9 +120,9 @@
                 var successCallback = function(pathItem){
                     dialog.remove();
                     settings.okCallback(pathItem);
-                }
+                };
                 var cancelCallback = function(){};
-                container.find(".perc-create-new-button").show().click(function() {
+                container.find(".perc-create-new-button").show().on("click",function() {
                     
                     if(!endsWith($('#perc_selected_path').text(),"/")) {
                         //TODO: I18N TESTME
@@ -135,11 +135,11 @@
                             $('#perc_selected_path').text(),
                             true,
                             function( status, result ) {
-                                var error = status == $.PercFolderHelper().PERMISSION_ERROR,
-                                    onlyWrite = result == $.PercFolderHelper().PERMISSION_READ;
+                                var error = status === $.PercFolderHelper().PERMISSION_ERROR,
+                                    onlyWrite = result === $.PercFolderHelper().PERMISSION_READ;
                                 if ( error || onlyWrite ) {
                                     $.perc_utils.alert_dialog({title: I18N.message("perc.ui.newassetdialog.title@New Asset"), content: I18N.message("perc.ui.page.path.selection.dialog@Not Authorized to Create")});
-                                    return;
+
                                 }
                                 else {
                                     checkUserWorkflowPermission();
@@ -151,12 +151,12 @@
                             null,
                             -1,
                             function( status, result) {
-                                var error = status == $.PercServiceUtils.STATUS_ERROR,
-                                    accessRead = result == $.PercUserService.ACCESS_READ,
-                                    accessNone = result == $.PercUserService.ACCESS_NONE;
+                                var error = status === $.PercServiceUtils.STATUS_ERROR,
+                                    accessRead = result === $.PercUserService.ACCESS_READ,
+                                    accessNone = result === $.PercUserService.ACCESS_NONE;
                                 if (  error || accessRead || accessNone ) {
                                     $.perc_utils.alert_dialog({title: I18N.message("perc.ui.newassetdialog.title@New Asset"), content: I18N.message("perc.ui.page.path.selection.dialog@Not Authorized to Create")});
-                                    return;
+
                                 }
                                 else {
                                     settings.createNew.onclick(successCallback, cancelCallback);
@@ -183,14 +183,14 @@
                     onClick:function(pathItem){
                         selectedItem = pathItem;
                         $("#perc_selected_path").html(pathItem.path);
-                        if($.inArray(pathItem.category,settings.selectableTypes)!=-1)
+                        if($.inArray(pathItem.category,settings.selectableTypes)!==-1)
                             dialogHTML.find("label[for='perc-select-blog-location-tree']").hide();
 
                     }
                 });
             container.append(finderTree); 
             container.append('<div style="margin-top:10px;"><span style="color:gray; font-weight:bold">Selected item path:</span> <span id="perc_selected_path">' + 
-                                inpath + '</span></div>')
+                                inpath + '</span></div>');
             container.append('<label for="perc-path-location" class="perc_field_error" style="display: none;"></label>');
             return container;
         }

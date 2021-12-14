@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -38,9 +38,9 @@ function countProperties(obj) {
     P.widgetPropertiesDialog = function( setWidgetProperty, widgetProperties, widgetDefinitionId, postCallback, propertyType, getWidgetByName ) {
         $.perc_widget_definition_client.restGetWidgetDefinition(widgetDefinitionId, propertyType, function(widgetDef) {
             if (widgetProperties){
-                if (typeof(widgetProperties.sys_perc_name) != "undefined" && typeof(widgetProperties.sys_perc_description) != "undefined" ){
-                    widgetDef.userPrefDef["sys_perc_name"] = (new $.perc_sys_pref("perc_sys_name","","Name","sys_perc_name"));
-                    widgetDef.userPrefDef["sys_perc_description"] = (new $.perc_sys_pref("perc_sys_description","","Description","sys_perc_description"));
+                if (typeof(widgetProperties['sys_perc_name']) != "undefined" && typeof(widgetProperties['sys_perc_description']) != "undefined" ){
+                    widgetDef.userPrefDef['sys_perc_name'] = (new $.perc_sys_pref("perc_sys_name","","Name","sys_perc_name"));
+                    widgetDef.userPrefDef['sys_perc_description'] = (new $.perc_sys_pref("perc_sys_description","","Description","sys_perc_description"));
                 }
                 widgetDef.setValuesFromWidgetProperties( widgetProperties );
             }
@@ -61,30 +61,37 @@ function countProperties(obj) {
             var dlgHeight = "auto";
             if (numOfFields > 10)
                 dlgHeight = "700";
-            if ($('#perc_edit_widget_properties > #perc-section-system-container').size() == 0)
-                dialogOptions["height"] = dlgHeight;
+            if ($('#perc_edit_widget_properties > #perc-section-system-container').length === 0)
+                dialogOptions.height = dlgHeight;
             $("<div/>").append( widgetDef.render() ).perc_dialog(dialogOptions);
             _addFieldGroups();
         });
 
         function saveProperties(){
 
-            requiredFieldsValid = _checkRequiredFields(this);
+            var requiredFieldsValid = _checkRequiredFields(this);
 
             // Only process the form if all required fields are entered
-            if(requiredFieldsValid == true) {
+            if(requiredFieldsValid === true) {
                 //Check the uniqueness of the widget name.
                 var widget = $(this).find('[name=sys_perc_name]');
-                var widgetName = $.trim(widget.val()).toUpperCase();
-                var originalName = $.trim(widget.attr('originalValue')).toUpperCase();
-                if (typeof(widgetName) != "undefined" && widgetName != "" && widgetName != originalName && getWidgetByName(widgetName) != null ){
+                var widgetName = widget.val();
+
+                if(typeof widgetName !== "undefined")
+                    widgetName = widgetName.trim().toUpperCase();
+
+                var originalName = widget.attr('data-perc-original-value');
+                if(typeof originalName !== "undefined")
+                    originalName = originalName.trim().toUpperCase();
+
+                if (typeof(widgetName) !== "undefined" && widgetName !== "" && widgetName !== originalName && getWidgetByName(widgetName) !== null ){
                     $.perc_utils.alert_dialog({title: I18N.message("perc.ui.publish.title@Error"), content: I18N.message("perc.ui.widget.properties.dialog@Widget Name") + widgetName + I18N.message("perc.ui.widget.properties.dialog@Widget Name Already Used")});
                     return;
                 }
 
                 $(this).find('input').each( function(){
-                    var value = $.trim($(this).val());
-                    if($(this).attr('type')=='checkbox')
+                    var value = $(this).val().trim();
+                    if($(this).attr('type')==='checkbox')
                     {
                         value = $(this).is(':checked')?'true':'false';
                     }
@@ -124,35 +131,37 @@ function countProperties(obj) {
             var dialog = $('#perc_edit_widget_properties');
 
             //Identify is we will use grouping style or not.
-            if (dialog.find('#perc-section-system-container').size() > 0)
+            if (dialog.find('#perc-section-system-container').length > 0)
                 dialog.find('.ui-dialog-content.ui-widget-content').addClass('group-style');
 
             var fieldGroups = [
-                { groupName : "perc-section-system-container", groupLabel : I18N.message("perc.ui.widget.properties.dialog@Widget Summary")}
-                , { groupName : "perc-section-properties-container", groupLabel : I18N.message("perc.ui.widget.properties.dialog@Properties")}
+                { groupName : "perc-section-system-container", groupLabel : I18N.message("perc.ui.widget.properties.dialog@Widget Summary")},
+                { groupName : "perc-section-properties-container", groupLabel : I18N.message("perc.ui.widget.properties.dialog@Properties")}
             ];
             $.each(fieldGroups, function(index) {
                 // Create HTML markup with the groupName minimizer/maximizer and
                 // insert it before the 1st field in each group
-                var minmaxClass = (index == 0) ? "perc-items-minimizer" : "perc-items-maximizer";
+                var minmaxClass = (index === 0) ? "perc-items-minimizer" : "perc-items-maximizer";
                 var groupHtml =
                     "<div class='perc-section-header'>" +
-                    "<div class='perc-section-label' groupName='" + this.groupName + "'>" +
+                    "<div class='perc-section-label' data-perc-group-name='" + this.groupName + "'>" +
                     "<span  class='perc-min-max " + minmaxClass + "' ></span>" + this.groupLabel +
                     "</div>" +
                     "</div>";
                 dialog.find('#' + this.groupName).before(groupHtml);
                 // The first group will be the only one expanded (hide all others)
-                index != 0 && dialog.find('#' + this.groupName).hide();
+                if(index !== 0){
+                    dialog.find('#' + this.groupName).hide();
+                }
             });
 
             // Bind collapsible event
-            dialog.find(".perc-section-label").unbind().click(function() {
+            dialog.find(".perc-section-label").off("click").on("click",function() {
                 var self = $(this);
                 self.find(".perc-min-max")
                     .toggleClass('perc-items-minimizer')
                     .toggleClass('perc-items-maximizer');
-                dialog.find('#' + self.attr('groupName')).toggle();
+                dialog.find('#' + self.attr('data-perc-group-name')).toggle();
             });
         }
     };
@@ -170,7 +179,7 @@ function countProperties(obj) {
 
         this.setValuesFromWidgetProperties = function(widgetProperties)
         {
-            for(p in this.userPrefDef)
+            for(let p in this.userPrefDef)
             {
                 var propertyName = this.userPrefDef[p].name;
                 this.userPrefDef[p].realValue = widgetProperties[propertyName];
@@ -194,10 +203,10 @@ function countProperties(obj) {
             // get all the User Pref elements
             var $userPreferences = $widgetDefinitionXml.find(propertyType);
             //Initialice userPref Object
-            this.userPrefDef = new Object();
+            this.userPrefDef = {};
 
             //finish if we dont have userPref to process
-            if($userPreferences.length == 0)
+            if($userPreferences.length === 0)
                 return;
 
             // iterate over all the User Pref elements
@@ -212,13 +221,13 @@ function countProperties(obj) {
                 var enumValues = null;
 
                 // if its enum get the Enum Values
-                if(datatype == '' || datatype == null)
+                if(datatype === '' || datatype == null)
                 {
                     datatype = 'string';
                 }
-                else if(datatype == 'enum')
+                else if(datatype === 'enum')
                 {
-                    enumValues = new Object();
+                    enumValues = {};
                     // iterate over all the Enum Values
                     $(this).find('EnumValue').each(function()
                     {
@@ -249,23 +258,23 @@ function countProperties(obj) {
             var html = $("<div/>");
             var systemContainer = $("<div id='perc-section-system-container' />");
             var propertiesContainer = $("<div id='perc-section-properties-container' />");
-            var sysProperties = ""
+            var sysProperties = "";
             var properties = "";
-            for(u in this.userPrefDef)
+            for(let u in this.userPrefDef)
             {
-                if((this.userPrefDef[u].name == "sys_perc_name" || this.userPrefDef[u].name == "sys_perc_description") &&
-                    (this.userPrefDef[u].datatype == "perc_sys_name" || this.userPrefDef[u].datatype == "perc_sys_description"))
+                if((this.userPrefDef[u].name === "sys_perc_name" || this.userPrefDef[u].name === "sys_perc_description") &&
+                    (this.userPrefDef[u].datatype === "perc_sys_name" || this.userPrefDef[u].datatype === "perc_sys_description"))
                     sysProperties += "\t"+this.userPrefDef[u].render();
                 else
                     properties += "\t"+this.userPrefDef[u].render();
-            };
-            if (sysProperties != "" && properties != ""){
-                systemContainer.append($(sysProperties))
+            }
+            if (sysProperties !== "" && properties !== ""){
+                systemContainer.append($(sysProperties));
                 html.append($("<div class='fieldGroup' />").append(systemContainer));
                 propertiesContainer.append($(properties));
                 html.append($("<div class='fieldGroup' />").append(propertiesContainer));
             }
-            else if (properties == "")
+            else if (properties === "")
                 html.append($(sysProperties));
             else
                 html.append($(properties));
@@ -283,7 +292,6 @@ function countProperties(obj) {
             return html;
         };
     };
-
     /**
      *  Widget Definition Client
      *  Retrieves widget definition from REST Service and creates a widget definition model
@@ -292,49 +300,50 @@ function countProperties(obj) {
     $.perc_widget_definition_client = new function()
     {
         this.restGetWidgetDefinition = function(widgetDefinitionId, propertyType, callback)
-        {
-            $.ajax(
+    {
+        $.ajax(
+            {
+                headers: {
+                    'Accept': 'application/xml',
+                    'Content-Type': 'application/xml'
+                },
+                url: $.perc_paths.WIDGET_FULL + "/" + widgetDefinitionId,
+                type: "GET",
+                success: function(xml, textstatus)
                 {
-                    headers: {
-                        'Accept': 'application/xml',
-                        'Content-Type': 'application/xml'
-                    },
-                    url: $.perc_paths.WIDGET_FULL + "/" + widgetDefinitionId,
-                    type: "GET",
-                    success: function(xml, textstatus)
-                    {
-                        var model = new $.perc_widget_definition_model(xml);
-                        model.init(xml, propertyType);
-                        callback(model);
-                    },
-                    error : function()
-                    {
-                        alert(I18N.message("perc.ui.widget.properties.dialog@Unable To Retrieve Widget Definition") + widgetDefinitionId);
-                    }
-                });
-        };
+                    var model = new $.perc_widget_definition_model(xml);
+                    model.init(xml, propertyType);
+                    callback(model);
+                },
+                error : function()
+                {
+                    alert(I18N.message("perc.ui.widget.properties.dialog@Unable To Retrieve Widget Definition") + widgetDefinitionId);
+                }
+            });
+    };
+
         this.restGetWidgetPrefs = function(widgetDefinitionId, callback)
-        {
-            $.ajax(
+    {
+        $.ajax(
+            {
+                headers: {
+                    'Accept': 'application/xml',
+                    'Content-Type': 'application/xml'
+                },
+                url: $.perc_paths.WIDGET_FULL + "/" + widgetDefinitionId,
+                type: "GET",
+                success: function(xml, textstatus)
                 {
-                    headers: {
-                        'Accept': 'application/xml',
-                        'Content-Type': 'application/xml'
-                    },
-                    url: $.perc_paths.WIDGET_FULL + "/" + widgetDefinitionId,
-                    type: "GET",
-                    success: function(xml, textstatus)
-                    {
-                        var $widgetDefinitionXml = $(xml);
-                        var $widgetPrefs = $widgetDefinitionXml.find("WidgetPrefs");
-                        callback($widgetPrefs);
-                    },
-                    error : function()
-                    {
-                        alert(I18N.message("perc.ui.widget.properties.dialog@Unable To Retrieve Widget Definition") + widgetDefinitionId);
-                    }
-                });
-        };
+                    var $widgetDefinitionXml = $(xml);
+                    var $widgetPrefs = $widgetDefinitionXml.find("WidgetPrefs");
+                    callback($widgetPrefs);
+                },
+                error : function()
+                {
+                    alert(I18N.message("perc.ui.widget.properties.dialog@Unable To Retrieve Widget Definition") + widgetDefinitionId);
+                }
+            });
+    };
     };
 
     $.perc_sys_pref = function(datatype, default_value, display_name, name, required_field)
@@ -349,27 +358,27 @@ function countProperties(obj) {
         this.render = function()
         {
             var buff = "";
-            if(datatype == 'perc_sys_name'){
+            if(datatype === 'perc_sys_name'){
                 var value = (typeof(this.realValue) != "undefined") ? this.realValue : this.default_value;
                 buff =  '<tr>\n';
                 buff += '   <td><label for="' + this.name + '">' + this.display_name+'</label>: </td>\n'+ '</tr>\n';
-                buff += '   <td><input class="perc-widget-property" name="'+this.name+'" type="text" value="'+value+'" originalValue="'+value+'" maxlength="30"></td>\n'+ '</tr>\n';
+                buff += '   <td><input class="perc-widget-property" name="'+this.name+'" type="text" value="'+value+'" data-perc-original-value="'+value+'" maxlength="30"></td>\n'+ '</tr>\n';
                 buff += '</tr>\n';
                 return buff;
             }
 
-            if(datatype == 'perc_sys_description'){
-                var value = (typeof(this.realValue) != "undefined") ? this.realValue : this.default_value;
+            if(datatype === 'perc_sys_description'){
+                let value2 = (typeof(this.realValue) != "undefined") ? this.realValue : this.default_value;
                 buff =  '<tr>\n';
                 buff += '   <td><label for="' + this.name + '">' + this.display_name+'</label>: </td>\n'+ '</tr>\n';
-                buff += '   <td><textarea style="resize: none; border: 1px inset #F0F0F0; padding: 2px; height: 40px" class="perc-widget-property" name="'+this.name+'" type="text" maxlength="100">' + value + '</textarea></td>\n'+ '</tr>\n';
+                buff += '   <td><textarea style="resize: none; border: 1px inset #F0F0F0; padding: 2px; height: 40px" class="perc-widget-property" name="'+this.name+'" type="text" maxlength="100">' + value2 + '</textarea></td>\n'+ '</tr>\n';
                 buff += '</tr>\n';
                 return buff;
             }
 
             return buff;
-        }
-    }
+        };
+    };
 
     $.perc_user_pref = function(datatype,default_value,display_name,name,required_field,enumValues)
     {
@@ -398,64 +407,63 @@ function countProperties(obj) {
         {
 
             var buff = '<tr>\n';
-            var datatype = this.datatype;
-            var value = undefined;
+            let datatype2 = this.datatype;
+            let value2;
 
             if(typeof(this.realValue)!== 'boolean')
             {
                 if(this.realValue === undefined)
                 {
-                    value = this.default_value;
+                    value2 = this.default_value;
                 } else
                 {
-                    value = (this.realValue === "0") ? this.default_value : this.realValue;
+                    value2 = (this.realValue === "0") ? this.default_value : this.realValue;
                 }
             } else
             {
                 if(this.realValue === undefined)
                 {
-                    value = this.default_value;
+                    value2 = this.default_value;
                 } else
                 {
-                    value = this.realValue;
+                    value2 = this.realValue;
                 }
             }
 
-            if (value === undefined)
-                value = "";
+            if (value2 === undefined)
+                value2 = "";
 
-            if(datatype == 'string' || datatype == 'number' )
+            if(datatype2 === 'string' || datatype2 === 'number' )
             {
                 buff += '   <td><label' + this.required_class + 'for="' + this.name + '">' + this.display_name+'</label>: </td>\n'+ '</tr>\n';
-                buff += '   <td><input class="perc-widget-property" name="'+this.name+'" type="text" value="'+value+'"' + this.required_attr +'></td>\n'+ '</tr>\n';
+                buff += '   <td><input class="perc-widget-property" name="'+this.name+'" type="text" value="'+value2+'"' + this.required_attr +'></td>\n'+ '</tr>\n';
             }
-            else if(datatype == 'bool' )
+            else if(datatype2 === 'bool' )
             {
-                var checked = (value==true || value=='true'||value=='on')?'CHECKED':'';
-                buff += '   <td class = "checkbox-size"><input class="perc-widget-property" name="'+this.name+'" type="checkbox" '+checked+ " " + this.required_attr+'> <label for="' + this.name + '">' + this.display_name+'</label></td>\n'+ '</tr>\n';
+                var checked = (value2 === true || value2 === 'true' || value2 === 'on')?'CHECKED ':'';
+                buff += '   <td class = "checkbox-size"><input class="perc-widget-property" name="'+this.name+'" type="checkbox" '+ checked +this.required_attr+'> <label for="' + this.name + '">' + this.display_name+'</label></td>\n'+ '</tr>\n';
 
             }
-            else if(datatype == 'enum')
+            else if(datatype2 === 'enum')
             {
                 buff += '   <td><label' + this.required_class + 'for="' + this.name + '">' + this.display_name+'</label>: </td>\n'+ '</tr>\n';
                 buff += '   <td>\n';
-                buff += '   <select class="perc-widget-property" name="'+this.name+'" value="'+value+'"'+this.required_attr+'>\n';
-                for(v in enumValues)
+                buff += '   <select class="perc-widget-property" name="'+this.name+'" value2="'+value2+'"'+this.required_attr+'>\n';
+                for(let v in enumValues)
                 {
-                    var selected = (v == value) ? 'SELECTED' : '';
+                    var selected = (v === value2) ? 'SELECTED' : '';
                     buff += '       <option value="'+v+'" '+selected+'> '+enumValues[v]+'   </option>\n' ;
                 }
                 buff += '   </select>\n';
                 buff += '</td>\n'+ '</tr>\n';
             }
-            else if(datatype == 'list')
+            else if(datatype2 === 'list')
             {
-                //  var values = JSON.parse(value); // not sure why this does not work
-                var values = eval(value);
+                var values = JSON.parse(value);
 
                 buff += '   <td><label' + this.required_class + 'for="' + this.name + '">' + this.display_name+'</label>: </td>\n'+ '</tr>\n';
                 buff += '   <td><textarea class="perc-widget-property" name="'+this.name+'">\n';
-                for(v in values)
+                for(let v in values)
                 {
                     buff += values[v]+'\n';
                 }

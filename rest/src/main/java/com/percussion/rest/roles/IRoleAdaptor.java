@@ -17,25 +17,27 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.rest.roles;
 
+import com.percussion.rest.errors.BackendException;
+
 import java.net.URI;
 import java.util.List;
 
 public interface IRoleAdaptor {
 	
-	public Role getRole(URI baseURI, String roleName);
+	public Role getRole(URI baseURI, String roleName) throws BackendException;
 
     public Role updateRole(URI baseURI, Role role);
-    public Role createRole(URI baseURI, Role role);
+    public Role createRole(URI baseURI, Role role) throws BackendException;
 
-    public void deleteRole(URI baseURI, String roleName);
+    public void deleteRole(URI baseURI, String roleName) throws BackendException;
     
-    public List<Role> findRoles(URI baseURI, String pattern);
+    public List<Role> findRoles(URI baseURI, String pattern) throws BackendException;
 
 }

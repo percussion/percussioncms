@@ -60,7 +60,7 @@ return this.each(function() {
         var hideCheckbox = node.attr('selectable') == 'no' ? true : false;
         var select = $.inArray(key,selected) != -1;
         var children = node.children();
-        var resultItem = { id : id, title: title, select: select, hideCheckbox: hideCheckbox, expand:true, key: key}
+        var resultItem = { id : id, title: title, select: select, hideCheckbox: hideCheckbox, expand:true, key: key};
         if (readonly)
             resultItem.unselectable = true;
         if (children.length) {
@@ -113,10 +113,12 @@ return this.each(function() {
     	  $(node.span).parent('li')
     	    .attr('aria-labelledby', idHandle);
 		*/
-    	};
+    	}
     	
     function displayTree(data) {
-        $this.dynatree("destroy");
+        if($this.dynatree.initialized){
+            $this.dynatree("destroy");
+        }
         $this.dynatree({
           imagePath: '../web_resources/cm/css/dynatree/skin',
           checkbox: true,
@@ -130,14 +132,14 @@ return this.each(function() {
                  return node.data.key;
             });
             $('#' + inputId)[0].value = selKeys.join(separator);
-            updateNodeAria(dtnode)
+            updateNodeAria(dtnode);
           },
           onClick: function(dtnode, event) {
             // We should not toggle, if target was "checkbox", because this
             // would result in double-toggle (i.e. no toggle)
-            if( dtnode.getEventTargetType(event) == "id" )
+            if( dtnode.getEventTargetType(event) === "id" )
               dtnode.toggleSelect();
-            updateNodeAria(dtnode)
+            updateNodeAria(dtnode);
           },
           onFocus : function (dtnode) {
               updateNodeAria(dtnode);
@@ -156,7 +158,7 @@ return this.each(function() {
               event.target.setAttribute('tabindex', '0');
               
         	  // 13 is enter, 32 is spacebar
-              if (event.keyCode == 32) {
+              if (event.keyCode === 32) {
               dtnode.toggleSelect();
               updateNodeAria(dtnode);
               return false;
@@ -201,10 +203,14 @@ return this.each(function() {
             rootItem.children = children;
         var tree = [rootItem];
         _testTree = tree;
-        displayTree(tree);
+        if(tree[0].children.length > 0){
+            displayTree(tree);
+        }else{
+            $("#page_categories_tree-tree").html("").css({"text-align" : "center", "font-size" : "large"});
+        }
     });
 
-})};
+});};
 
 /*
  * Below is for testing and debuging.
@@ -231,7 +237,7 @@ var _treeData = [
     }
   ]
 },
-{title: "Documnent with some children (expanded on init)", key: "id4", expand: true,
+{title: "Document with some children (expanded on init)", key: "id4", expand: true,
   children: [
     {title: "Sub-item 4.1 (active on init)", activate: true,
       children: [

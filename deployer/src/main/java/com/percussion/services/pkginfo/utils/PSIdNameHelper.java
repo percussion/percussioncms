@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -164,7 +164,7 @@ public class PSIdNameHelper
    /**
     * See {@link #isSupported(PSTypeEnum)}.  Never <code>null</code>.
     */
-   private static Set<PSTypeEnum> ms_supportedTypes = new HashSet<PSTypeEnum>(); 
+   private static Set<PSTypeEnum> ms_supportedTypes = new HashSet<>();
    
    /**
     * The id-name service, may be <code>null</code>.

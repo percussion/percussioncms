@@ -17,20 +17,19 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.sitemanage.task;
 
+import net.sf.oval.constraint.NotEmpty;
+import net.sf.oval.constraint.NotNull;
+import org.apache.tools.ant.BuildListener;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import net.sf.oval.constraint.NotEmpty;
-import net.sf.oval.constraint.NotNull;
-
-import org.apache.tools.ant.BuildListener;
 
 /**
  * 
@@ -72,7 +71,7 @@ public interface IPSAntService
         private boolean blocking = true;
         
         @NotNull
-        private Map<String, String> properties = new HashMap<String, String>();
+        private Map<String, String> properties = new HashMap<>();
         
         /**
          * The file name of the script.

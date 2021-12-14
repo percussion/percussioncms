@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -27,9 +27,9 @@ import com.percussion.delivery.services.PSAbstractRestService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import javax.inject.Inject;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -45,7 +45,6 @@ import javax.ws.rs.core.Response;
  */
 @Path("/likes")
 @Component
-@Scope("singleton")
 public class PSLikesRestService extends PSAbstractRestService
 {
 
@@ -56,6 +55,7 @@ public class PSLikesRestService extends PSAbstractRestService
     private IPSLikesService likesService;
     private static final Logger log = LogManager.getLogger(PSLikesRestService.class);
 
+    @Inject
     @Autowired
     public PSLikesRestService(IPSLikesService service)
     {
@@ -64,10 +64,7 @@ public class PSLikesRestService extends PSAbstractRestService
 
     /**
      * Tally of how many users have Liked a page, a comment.
-     * 
-     * @param site. Must not be <code>null</null>.
-     * @param likeId. Must not be <code>null</null>.
-     * @param type. Must not be <code>null</null>.
+     *
      * @return int, never <code>null</code> may be empty.
      */
     @POST
@@ -88,10 +85,7 @@ public class PSLikesRestService extends PSAbstractRestService
 
     /**
      * To Like a page, a comment.
-     * 
-     * @param site. Must not be <code>null</null>.
-     * @param likeId. Must not be <code>null</null>.
-     * @param type. Must not be <code>null</null>.
+     *
      * @return int, never <code>null</code> may be empty.
      */
     @POST
@@ -112,10 +106,7 @@ public class PSLikesRestService extends PSAbstractRestService
     
     /**
      * To UnLike a page, a comment.
-     * 
-     * @param site. Must not be <code>null</null>.
-     * @param likeId. Must not be <code>null</null>.
-     * @param type. Must not be <code>null</null>.
+     *
      * @return int, never <code>null</code> may be empty.
      */
     @POST
@@ -135,7 +126,7 @@ public class PSLikesRestService extends PSAbstractRestService
 
     @Override
     public Response updateOldSiteEntries(String prevSiteName, String newSiteName) {
-        log.info("Attempting to update likes service with site name: " + prevSiteName);
+        log.info("Attempting to update likes service with site name: {}" , prevSiteName);
         likesService.updateLikesForSiteAfterRename(prevSiteName, newSiteName);
         return Response.status(Response.Status.NO_CONTENT).build();
     }

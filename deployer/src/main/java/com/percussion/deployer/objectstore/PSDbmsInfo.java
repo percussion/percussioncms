@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -27,18 +27,20 @@ package com.percussion.deployer.objectstore;
 import com.percussion.deployer.server.PSDbmsHelper;
 import com.percussion.design.objectstore.IPSObjectStoreErrors;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
-import com.percussion.utils.security.PSEncryptionException;
-import com.percussion.utils.security.PSEncryptor;
-import com.percussion.utils.security.deprecated.PSCryptographer;
+import com.percussion.error.PSExceptionUtils;
+import com.percussion.legacy.security.deprecated.PSCryptographer;
+import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
+import com.percussion.security.PSEncryptionException;
+import com.percussion.security.PSEncryptor;
+import com.percussion.utils.io.PathUtils;
 import com.percussion.utils.jdbc.IPSConnectionInfo;
-import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
 import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.LogManager;
 
 import java.util.Objects;
 
@@ -229,10 +231,10 @@ public class PSDbmsInfo implements IPSDeployComponent
          pwd = decryptPwd(m_uid, pwd);
       }else if(encrypted && !passwordEncrypted){
          try {
-            pwd = PSEncryptor.getInstance().encrypt(m_pw);
+            pwd = PSEncryptor.encryptString(PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR),m_pw);
          } catch (PSEncryptionException e) {
-            logger.warn("Error encrypting datasource password:" + e.getMessage());
-            logger.debug(e.getMessage(),e);
+            logger.warn("Error encrypting datasource password: {}",PSExceptionUtils.getMessageForLog(e));
+            logger.debug(e);
          }
       }
 
@@ -574,8 +576,10 @@ public class PSDbmsInfo implements IPSDeployComponent
          return "";
 
       try {
-         return PSEncryptor.getInstance().encrypt(pwd);
+         return PSEncryptor.encryptString(PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR),pwd);
       } catch (PSEncryptionException e) {
+         logger.error("Error encrypting string: {}", PSExceptionUtils.getMessageForLog(e));
+         logger.debug(e);
          return "";
       }
    }
@@ -597,13 +601,18 @@ public class PSDbmsInfo implements IPSDeployComponent
          return "";
 
       String key = uid == null || uid.trim().length() == 0
-            ? PSLegacyEncrypter.INVALID_DRIVER()
+            ? PSLegacyEncrypter.getInstance(
+              PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+      ).INVALID_DRIVER()
             : uid;
 
       try {
-         return PSEncryptor.getInstance().decrypt(pwd);
+         return PSEncryptor.decryptString(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),pwd);
       } catch (PSEncryptionException e) {
-         return PSCryptographer.decrypt(PSLegacyEncrypter.INVALID_CRED(), key, pwd);
+         return PSCryptographer.decrypt(
+                 PSLegacyEncrypter.getInstance(
+                         PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+                 ).INVALID_CRED(), key, pwd);
       }
 
    }

@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -31,8 +31,8 @@ import com.percussion.deployer.objectstore.PSUserDependency;
 import com.percussion.utils.collections.PSMultiValueHashMap;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.WordUtils;
+import org.apache.commons.lang3.time.FastDateFormat;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -69,7 +69,7 @@ public class PSDescriptorSummaryReport
     {
        sb.append(SEPARATOR);
        sb.append("Package Descriptor Summary -- ");
-       SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
+       FastDateFormat formatter = FastDateFormat.getInstance("yyyy/MM/dd");
        sb.append(formatter.format(new Date()));
        sb.append(NEWLINE);
        sb.append(SEPARATOR);
@@ -242,7 +242,7 @@ public class PSDescriptorSummaryReport
           List<String> obs = map.get(cat);
           if(!obs.isEmpty())
           {
-             Set<String> sorted = new TreeSet<String>(obs);
+             Set<String> sorted = new TreeSet<>(obs);
              buff.append(cat);
              buff.append(NEWLINE);
              for(String o : sorted)
@@ -286,10 +286,10 @@ public class PSDescriptorSummaryReport
     
     private void handleElements(PSExportDescriptor desc)
     {
-       m_designObjects =  new PSMultiValueHashMap<String, String>();
-       m_dependsMap = new PSMultiValueHashMap<String, String>();
-       m_assocMap = new PSMultiValueHashMap<String, String>();
-       m_cats = new TreeSet<String>();
+       m_designObjects =  new PSMultiValueHashMap<>();
+       m_dependsMap = new PSMultiValueHashMap<>();
+       m_assocMap = new PSMultiValueHashMap<>();
+       m_cats = new TreeSet<>();
        
        Iterator<? extends PSDependency> elements = desc.getPackages();
        while(elements.hasNext())

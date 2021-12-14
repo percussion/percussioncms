@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -25,24 +25,22 @@
 package com.percussion.services.security;
 
 import com.percussion.security.IPSDirectoryCataloger;
+import com.percussion.security.IPSPrincipalAttribute;
+import com.percussion.security.IPSPrincipalAttribute.PrincipalAttributes;
+import com.percussion.security.IPSRoleCataloger;
+import com.percussion.security.IPSSubjectCataloger;
+import com.percussion.security.IPSTypedPrincipal;
+import com.percussion.security.PSSecurityCatalogException;
 import com.percussion.services.security.data.PSCatalogerConfig;
-import com.percussion.utils.security.IPSPrincipalAttribute;
-import com.percussion.utils.security.IPSRoleCataloger;
-import com.percussion.utils.security.IPSSubjectCataloger;
-import com.percussion.utils.security.IPSTypedPrincipal;
-import com.percussion.utils.security.PSSecurityCatalogException;
-import com.percussion.utils.security.IPSPrincipalAttribute.PrincipalAttributes;
 import com.percussion.utils.xml.PSInvalidXmlException;
+import org.xml.sax.SAXException;
 
+import javax.security.auth.Subject;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
-
-import javax.security.auth.Subject;
-
-import org.xml.sax.SAXException;
 
 /**
  * Provides cataloging services for roles and subjects defined by both internal 
@@ -136,7 +134,7 @@ public interface IPSRoleMgr
     * @return A set of members, never <code>null</code>, may be empty if no
     * matching role is found or if the role has no members. Principles returned
     * with {@link 
-    * com.percussion.utils.security.IPSTypedPrincipal.PrincipalTypes#UNDEFINED} 
+    * IPSTypedPrincipal.PrincipalTypes#UNDEFINED}
     * are ignored.
     * 
     * @throws PSSecurityCatalogException if there are any errors.
@@ -151,12 +149,12 @@ public interface IPSRoleMgr
     * empty.
     * @param type The type of principal to return, may not be <code>null</code>
     * and may not be {@link 
-    * com.percussion.utils.security.IPSTypedPrincipal.PrincipalTypes#UNDEFINED}.
+    * IPSTypedPrincipal.PrincipalTypes#UNDEFINED}.
     * 
     * @return A set of members, never <code>null</code>, may be empty if no
     * matching role is found or if the role has no members. Principles returned
     * with {@link 
-    * com.percussion.utils.security.IPSTypedPrincipal.PrincipalTypes#UNDEFINED} 
+    * IPSTypedPrincipal.PrincipalTypes#UNDEFINED}
     * are ignored.
     * 
     * @throws PSSecurityCatalogException if there are any errors.

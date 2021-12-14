@@ -18,7 +18,7 @@
   ~      Burlington, MA 01803, USA
   ~      +01-781-438-9900
   ~      support@percussion.com
-  ~      https://www.percusssion.com
+  ~      https://www.percussion.com
   ~
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   -->
@@ -32,7 +32,7 @@
   </ModulePrefs>
   <UserPref name="site" display_name="Site" required="false" datatype="enum" default_value="@all">
         <EnumValue value="@all" display_value="All Sites"/>
-        <EnumValue value="@url:/Rhythmyx/services/sitemanage/site/choices"/>
+        <EnumValue value="@url:/services/sitemanage/site/choices"/>
   </UserPref> 
   <UserPref name="duration_type" display_name="Duration" required="true" datatype="enum" default_value="days">
         <EnumValue value="days" display_value="Days"/>
@@ -50,7 +50,7 @@
   <UserPref name="duration_value" display_name="How many" required="true" datatype="string" default_value="5"/>
   <Content type="html">
      <![CDATA[
-     
+     <!DOCTYPE html>
     <link rel="stylesheet" type="text/css" href="/cm/themes/smoothness/jquery-ui-1.8.9.custom.css" />
     <link href="/cm/gadgets/repository/common/perc_common_gadget.css" rel="stylesheet" type="text/css" />
 
@@ -74,14 +74,17 @@
     <link href="/cm/widgets/PercDataTable/PercDataTable.css" rel="stylesheet" type="text/css" />
     <link href="/cm/widgets/PercPageDataTable/PercPageDataTable.css" rel="stylesheet" type="text/css" />
     <link href="/cm/widgets/PercSimpleMenu/PercSimpleMenu.css" rel="stylesheet" type="text/css" />
-    
-    <script src="/cm/jslib/jquery.dataTables.js" ></script>
-    <script src="/cm/widgets/PercSimpleMenu/PercSimpleMenu.js" ></script>
+     <script src="/cm/jslib/profiles/3x/libraries/bowser/es5.js"</script>
+    <script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-jeditable/jquery.jeditable.js"></script>
+    <script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-percutils/jquery.percutils.js"</script>
     <script src="/cm/widgets/PercActionDataTable/PercActionDataTable.js" ></script>
     <script src="/cm/widgets/PercPageDataTable/PercPageDataTable.js" ></script>
     <script src="/cm/widgets/PercDataTable/PercDataTable.js" ></script>
+    <script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-datatables/js/jquery.dataTables.js" ></script>
+    <script src="/cm/widgets/PercSimpleMenu/PercSimpleMenu.js" ></script>
+
     
-    <script src="/cm/jslib/jquery.text-overflow.js" ></script>
+    <script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.text-overflow.js" ></script>
     <script src="/cm/gadgets/repository/perc_activity_gadget/perc_activity_gadget.js" ></script>
     
     <script >

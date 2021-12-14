@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -27,11 +27,19 @@ package com.percussion.services.menus;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.*;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.*;
+import javax.persistence.Transient;
+import javax.persistence.Version;
 import java.io.Serializable;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -80,12 +88,12 @@ public class PSActionMenu implements Serializable {
     @OneToMany(mappedBy = "menu", fetch = FetchType.EAGER)
     @Fetch(value = FetchMode.SUBSELECT)
     @Cascade({org.hibernate.annotations.CascadeType.ALL})
-    private Set<PSActionMenuProperty> properties = new  LinkedHashSet<PSActionMenuProperty>();
+    private Set<PSActionMenuProperty> properties = new  LinkedHashSet<>();
 
     @OneToMany(mappedBy = "menu",fetch = FetchType.EAGER)
     @Fetch(value = FetchMode.SUBSELECT)
     @Cascade({org.hibernate.annotations.CascadeType.ALL})
-    private Set<PSActionMenuVisibility> visibility = new  LinkedHashSet<PSActionMenuVisibility>();
+    private Set<PSActionMenuVisibility> visibility = new  LinkedHashSet<>();
 
 
     /***

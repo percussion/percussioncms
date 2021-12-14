@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -27,25 +27,23 @@ import com.percussion.share.dao.PSSerializerUtils;
 import com.percussion.share.validation.PSErrorCause;
 import com.percussion.share.validation.PSErrors;
 import com.percussion.share.validation.PSValidationErrors;
-
-import java.io.StringReader;
-import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.dom4j.Document;
+import org.dom4j.Element;
+import org.dom4j.io.STAXEventReader;
 
 import javax.xml.bind.JAXB;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.stream.XMLStreamException;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.dom4j.Document;
-import org.dom4j.Element;
-import org.dom4j.io.STAXEventReader;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 
@@ -313,7 +311,7 @@ public class PSObjectRestClient extends PSRestClient
             /**
              * The log instance to use for this class, never <code>null</code>.
              */
-            private static final Log log = LogFactory.getLog(DataValidationRestClientException.class);
+            private static final Logger log = LogManager.getLogger(DataValidationRestClientException.class);
         }
     
     public static class DataRestClientException extends RestClientException {
@@ -405,7 +403,7 @@ public class PSObjectRestClient extends PSRestClient
         /**
          * The log instance to use for this class, never <code>null</code>.
          */
-        private static final Log log = LogFactory.getLog(DataRestClientException.class);
+        private static final Logger log = LogManager.getLogger(DataRestClientException.class);
         
     }
     

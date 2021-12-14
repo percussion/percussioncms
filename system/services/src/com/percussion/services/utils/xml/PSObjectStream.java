@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -28,7 +28,16 @@ import com.google.common.io.Closeables;
 import com.percussion.util.PSPurgableTempFile;
 import org.apache.commons.io.IOUtils;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.Closeable;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Reader;
+import java.io.Writer;
 import java.util.Iterator;
 import java.util.Vector;
 import java.util.concurrent.atomic.AtomicLong;
@@ -56,7 +65,7 @@ public abstract class PSObjectStream<T> implements Iterable<T>, Closeable
    private State m_state = State.INIT;
    private long m_size = 0;
    private PSObjectStream<?> self = this; 
-   private Vector<It<?>> openIterators = new Vector<PSObjectStream<T>.It<?>>();
+   private Vector<It<?>> openIterators = new Vector<>();
    
    /**
     * State that the class can be in.
@@ -167,7 +176,7 @@ public abstract class PSObjectStream<T> implements Iterable<T>, Closeable
    public Iterator<T> iterator() 
    {
       isTrue(m_state == State.WRITTEN);
-      return new It<T>();
+      return new It<>();
    }
    
    /**

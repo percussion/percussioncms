@@ -17,26 +17,20 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.pagemanagement.assembler.impl;
 
-import static java.util.Arrays.asList;
-import static java.util.Collections.emptyList;
-import static org.apache.commons.lang.StringUtils.isNotBlank;
-import static org.apache.commons.lang.Validate.isTrue;
-import static org.apache.commons.lang.Validate.notEmpty;
-import static org.apache.commons.lang.Validate.notNull;
-
 import com.percussion.cms.objectstore.PSInvalidContentTypeException;
 import com.percussion.cms.objectstore.server.PSItemDefManager;
 import com.percussion.design.objectstore.PSLocator;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSExtensionDef;
-import com.percussion.pagemanagement.data.PSResourceLocation;
 import com.percussion.pagemanagement.data.PSResourceDefinitionGroup.PSAssetResource;
 import com.percussion.pagemanagement.data.PSResourceDefinitionGroup.PSResourceDefinition;
+import com.percussion.pagemanagement.data.PSResourceLocation;
 import com.percussion.pagemanagement.service.IPSPageService;
 import com.percussion.pagemanagement.service.IPSResourceDefinitionService;
 import com.percussion.services.assembly.IPSTemplateService;
@@ -44,17 +38,23 @@ import com.percussion.services.assembly.PSAssemblyException;
 import com.percussion.services.guidmgr.IPSGuidManager;
 import com.percussion.services.publisher.IPSTemplateExpander;
 import com.percussion.services.publisher.data.PSContentListItem;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.spring.PSSpringWebApplicationContextUtils;
 import com.percussion.utils.guid.IPSGuid;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import static java.util.Arrays.asList;
+import static java.util.Collections.emptyList;
+import static org.apache.commons.lang.StringUtils.isNotBlank;
+import static org.apache.commons.lang.Validate.notEmpty;
+import static org.apache.commons.lang.Validate.notNull;
 
 /**
  * This template expander expands content items so that they are associated
@@ -71,18 +71,18 @@ public class PSResourceTemplateExpander extends PSAbstractTemplateExpanderAdapte
     private IPSTemplateService templateService;
     private PSItemDefManager itemDefManager;
     private IPSGuidManager guidManager;
-    private List<String> excludedContentTypes = new ArrayList<String>();
+    private List<String> excludedContentTypes = new ArrayList<>();
     private IPSResourceDefinitionService resourceDefinitionService;
     private PSAssemblyItemBridge assemblyItemBridge;
     
     @Override
-    protected List<PSContentListItem> expandContentListItem(PSContentListItem contentListItem, Map<String, String> parameters)
-    {
+    protected List<PSContentListItem> expandContentListItem(PSContentListItem contentListItem, Map<String, String> parameters) throws PSDataServiceException {
         notNull(contentListItem, "contentListItem");
         String contentTypeName = getContentTypeName(contentListItem);
 
-        if(log.isTraceEnabled())
+        if(log.isTraceEnabled()) {
             log.trace("Trying to expand: " + contentTypeName + " item: " + contentListItem);
+        }
         if (isPageType(contentTypeName)) {
             log.debug("Expanding page");
             if (contentListItem.getFolderId() == null) {
@@ -106,12 +106,12 @@ public class PSResourceTemplateExpander extends PSAbstractTemplateExpanderAdapte
                         " as it has no affiliated folder.");
                 return emptyList();
             }
-            log.debug("Expanding shared asset: " + contentTypeName);
+            log.debug("Expanding shared asset: {} " , contentTypeName);
             setLocation(contentListItem, parameters);
             return asList(contentListItem);
         }
         if(log.isDebugEnabled()) {
-            log.debug("Could not expand: " + contentTypeName);
+            log.debug("Could not expand: {} " , contentTypeName);
         }
         return emptyList();
         
@@ -131,8 +131,13 @@ public class PSResourceTemplateExpander extends PSAbstractTemplateExpanderAdapte
     
     private void setLocation(PSContentListItem contentListItem, Map<String, String> parameters)
     {
-        PSResourceLocation loc = assemblyItemBridge.getResourceLocation(contentListItem, getResourceId(parameters));
-        contentListItem.setLocation(loc.getFilePath());
+        try{
+            PSResourceLocation loc = assemblyItemBridge.getResourceLocation(contentListItem, getResourceId(parameters));
+            contentListItem.setLocation(loc.getFilePath());
+        } catch (Exception e) {
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+        }
     }
     
     @Override
@@ -146,8 +151,9 @@ public class PSResourceTemplateExpander extends PSAbstractTemplateExpanderAdapte
             setResourceAssemblyTemplate(template);
         }
         String[] ctypes = StringUtils.split(excludedContentTypesProperty, ",");
-        if (ctypes != null)
+        if (ctypes != null) {
             setExcludedContentTypes(asList(ctypes));
+        }
     }
     
     protected boolean isPageType(String contentTypeName) {
@@ -157,38 +163,34 @@ public class PSResourceTemplateExpander extends PSAbstractTemplateExpanderAdapte
     protected boolean isTemplateType(String contentTypeName) {
         return com.percussion.pagemanagement.service.IPSTemplateService.TPL_CONTENT_TYPE.equals(contentTypeName);
     }
-    protected boolean isContentTypePublishable(String contentTypeName) 
-    {
+    protected boolean isContentTypePublishable(String contentTypeName) throws PSDataServiceException {
         boolean exclude = ! getExcludedContentTypes().contains(contentTypeName);
-        if (exclude == false) return false;
+        if (!exclude) {
+            return false;
+        }
         List<PSAssetResource> assetResources = 
             resourceDefinitionService.findAssetResourcesForType(contentTypeName);
         return ! assetResources.isEmpty();
     }
 
     @Override
-    protected IPSGuid getTemplateId(Map<String, String> parameters, TemplateCache cache)
-    {
-        if (cache.templateId != null)
+    protected IPSGuid getTemplateId(Map<String, String> parameters, TemplateCache cache) throws PSDataServiceException, PSAssemblyException {
+        if (cache.templateId != null) {
             return cache.templateId;
+        }
         
         String templateName = getResourceAssemblyTemplate();
         String resourceid = getResourceId(parameters);
         if (resourceid != null)
         {
             PSResourceDefinition resource = resourceDefinitionService.findResource(resourceid);
-            if (resource instanceof PSAssetResource)
-                templateName = ((PSAssetResource)resource).getLegacyTemplate();
+            if (resource instanceof PSAssetResource) {
+                templateName = ((PSAssetResource) resource).getLegacyTemplate();
+            }
         }
         notEmpty(templateName, "resourceAssemblyTemplate");
-        try
-        {
-            cache.templateId = getTemplateService().findTemplateByName(templateName).getGUID();
-        }
-        catch (PSAssemblyException e)
-        {
-            throw new RuntimeException("Failed to find resourceAssemblyTemplate for assembly template: " + templateName, e);
-        }
+
+        cache.templateId = getTemplateService().findTemplateByName(templateName).getGUID();
 
         return cache.templateId;
     }
@@ -309,7 +311,7 @@ public class PSResourceTemplateExpander extends PSAbstractTemplateExpanderAdapte
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log log = LogFactory.getLog(PSResourceTemplateExpander.class);
+    private static final Logger log = LogManager.getLogger(PSResourceTemplateExpander.class);
     
 
 }

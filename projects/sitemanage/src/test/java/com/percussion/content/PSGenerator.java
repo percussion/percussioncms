@@ -17,22 +17,22 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.content;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 public abstract class PSGenerator<CLIENT_TYPE>
 {
     private CLIENT_TYPE restClient;
-    protected Log log = null;
+    protected static final Logger log = LogManager.getLogger(PSGenerator.class);
 
     /**
      * See this {@link #PSGenerator(Class, String, String, String) ctor} for param
@@ -59,13 +59,7 @@ public abstract class PSGenerator<CLIENT_TYPE>
             restClient = ctor.newInstance(baseUrl);
             Method m = cl.getMethod("login", String.class, String.class);
             m.invoke(restClient, uid, pw);
-            
-            //FB: WL_USING_GETCLASS_RATHER_THAN_CLASS_LITERAL NC 1-16-16
-            synchronized (PSGenerator.class)
-            {
-                if (log == null)
-                    log = LogFactory.getLog(getClass());
-            }
+
         }
         catch (Exception e)
         {

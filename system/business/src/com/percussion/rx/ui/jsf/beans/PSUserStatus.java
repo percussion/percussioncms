@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -28,11 +28,9 @@ import com.percussion.i18n.PSLocaleManager;
 import com.percussion.server.PSRequest;
 import com.percussion.services.utils.jspel.PSRoleUtilities;
 import com.percussion.utils.request.PSRequestInfo;
-
-import javax.faces.context.FacesContext;
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.lang.StringUtils;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * The user status, used only for the status tag.

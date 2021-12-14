@@ -18,7 +18,7 @@
   ~      Burlington, MA 01803, USA
   ~      +01-781-438-9900
   ~      support@percussion.com
-  ~      https://www.percusssion.com
+  ~      https://www.percussion.com
   ~
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   -->
@@ -32,11 +32,11 @@
     /cm/gadgets/repository/PercFormTrackerGadget/PercFormTrackerGadget.js
     /cm/gadgets/repository/common/perc_common_gadget.css
     /cm/gadgets/repository/common/PercDataTable.css
-    /cm/jslib/jquery.dataTables.js
+    /cm/jslib/profiles/3x/jquery/plugins/jquery-datatables/js/jquery.dataTables.js
     /cm/widgets/PercCollapsibleMore.js
     /cm/widgets/PercCollapsibleTitle.js
     /cm/widgets/PercSimpleMenu.js
-    /cm/widgets/PercDataTable.js
+    /cm/widgets/PercDataTables/PercDataTable.js
     /cm/plugins/PercNavigationManager.js/openAsset()
     /cm/services/PercFormService.js
     /cm/services/PercPathService.js/getPathItemById()
@@ -50,7 +50,7 @@
         <Require feature="perc_jquery_ui"/>
     </ModulePrefs>
     <UserPref name="site" display_name="Site" required="true" datatype="enum" default_value="">
-        <EnumValue value="@url:/Rhythmyx/services/sitemanage/site/choices"/>
+        <EnumValue value="@url:/services/sitemanage/site/choices"/>
     </UserPref>
     <UserPref name="zrows" display_name="Display height" required="false" datatype="enum" default_value="5">
         <EnumValue value="5" display_value="5 results"/>
@@ -61,7 +61,7 @@
     </UserPref>
     <Content type="html">
     <![CDATA[
-    
+    <!DOCTYPE html>
 <link rel="stylesheet" type="text/css" href="/cm/themes/smoothness/jquery-ui-1.8.9.custom.css" />
 <link rel="stylesheet" type="text/css" href="/cm/css/perc_default.css" />
 <link href="/cm/gadgets/repository/common/perc_common_gadget.css" rel="stylesheet" type="text/css" />
@@ -72,16 +72,21 @@
 <link href="/cm/widgets/PercPageDataTable/PercPageDataTable.css" rel="stylesheet" type="text/css" />
 
 <script  src="/Rhythmyx/tmx/tmx.jsp?mode=js&amp;prefix=perc.ui.&amp;"></script>
-  
-<script  src="/cm/jslib/jquery.dataTables.js"></script>
+<script src="/cm/jslib/profiles/3x/libraries/bowser/es5.js"</script>
+<script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-percutils/jquery.percutils.js"</script>
+<script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-jeditable/jquery.jeditable.js"></script>
+<script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/tools.scrollable-1.1.2.js" ></script>
+<script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/tools.scrollable.mousewheel-1.0.1.js" ></script>
+<script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.text-overflow.js" ></script>
+<script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-dynatree/jquery.dynatree.js" ></script>
 <script  src="/cm/widgets/PercCollapsibleMore.js"></script>
 <script  src="/cm/widgets/PercCollapsibleTitle.js"></script>
 
-<script  src="/cm/widgets/PercSimpleMenu/PercSimpleMenu.js"></script>
-<script  src="/cm/jslib/jquery.dataTables.js"></script>
-<script  src="/cm/widgets/PercActionDataTable/PercActionDataTable.js"></script>
-<script  src="/cm/widgets/PercDataTable/PercDataTable.js"></script>
 
+<script  src="/cm/jslib/profiles/3x/jquery/plugins/jquery-datatables/js/jquery.dataTables.js"></script>
+<script  src="/cm/widgets/PercDataTable/PercDataTable.js"></script>
+<script  src="/cm/widgets/PercActionDataTable/PercActionDataTable.js"></script>
+<script  src="/cm/widgets/PercSimpleMenu/PercSimpleMenu.js"></script>
 <script  src="/cm/gadgets/repository/PercFormTrackerGadget/PercFormTrackerGadget.js"></script>
 
 <style>
@@ -101,7 +106,7 @@
 </script>    
     
 <script>
-     $(document).ready(function() {
+     $(function() {
             var prefs    = new gadgets.Prefs();
             var rows     = parseInt(prefs.getString("zrows"));
              var site = prefs.getString("site");
@@ -115,7 +120,7 @@
         $("#perc-formtracker-gadget").PercFormTrackerGadget(site,rows);
     });
 </script>
-<div id="perc-formtracker-gadget">
+<div id="perc-formtracker-gadget" style="overflow-y: auto; max-height: 300px; min-height: 300px;">
 </div>
      ]]>
   </Content> 

@@ -69,7 +69,7 @@
 			markSelectedOption(container);
 		}
 
-		containerSelect.change(function() {
+		containerSelect.on("change",function() {
 
 			removeSubSelects(0);
 			selectedContainer = "first";

@@ -17,18 +17,18 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.utils;
 
+import org.apache.commons.lang.Validate;
+
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
-
-import org.apache.commons.lang.Validate;
 
 /**
  * Manages a map of named locks, so that locks can be acquired based on a name, also simplifies some of the semantics.
@@ -50,7 +50,7 @@ public class PSNamedLockManager
     public PSNamedLockManager(long waitMillis)
     {
         this.waitMillis = waitMillis;
-        lockMap = new ConcurrentHashMap<String, ReentrantLock>();        
+        lockMap = new ConcurrentHashMap<>();
     }
     
     /**
@@ -75,8 +75,9 @@ public class PSNamedLockManager
         {
                 current = lockMap.putIfAbsent(name, lock);
         }
-        if (current != null)
+        if (current != null) {
             lock = current;
+        }
         
         boolean didLock = false;
         
@@ -86,7 +87,7 @@ public class PSNamedLockManager
         }
         catch (InterruptedException e)
         {
-            // didn't get it, fall through
+            Thread.currentThread().interrupt();
         }
         
         return didLock;

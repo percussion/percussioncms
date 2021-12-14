@@ -17,12 +17,13 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.rx.config.test;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.PSExtensionException;
 import com.percussion.extension.PSExtensionManager;
 import com.percussion.extension.PSExtensionRef;
@@ -34,6 +35,8 @@ import com.percussion.services.sitemgr.IPSLocationScheme;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.testing.IntegrationTest;
 import com.percussion.utils.types.PSPair;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.experimental.categories.Category;
 
 import java.util.HashMap;
@@ -44,6 +47,9 @@ import java.util.Map;
 @Category(IntegrationTest.class)
 public class PSLocationSchemeSetterTest extends PSConfigurationTest
 {
+
+   private static final Logger log = LogManager.getLogger(PSLocationSchemeSetterTest.class);
+
    public void testGenerator() throws Exception
    {
       PSExtensionRef exit = getExtensionRef("sys_casGenericAssemblyLocation");
@@ -76,7 +82,8 @@ public class PSLocationSchemeSetterTest extends PSConfigurationTest
       }
       catch (PSExtensionException e)
       {
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
       return null;
    }

@@ -17,20 +17,19 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.utils.jndi;
 
-import java.util.Iterator;
-import java.util.Map;
+import org.apache.commons.lang.StringUtils;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
-
-import org.apache.commons.lang.StringUtils;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * Takes a set of property values and binds them into the jndi context to allow

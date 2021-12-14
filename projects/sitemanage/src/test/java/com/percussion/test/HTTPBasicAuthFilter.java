@@ -17,19 +17,19 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.test;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 
 import javax.ws.rs.client.ClientRequestContext;
 import javax.ws.rs.client.ClientRequestFilter;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.xml.bind.DatatypeConverter;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 public class HTTPBasicAuthFilter implements ClientRequestFilter {
 
@@ -50,10 +50,6 @@ public class HTTPBasicAuthFilter implements ClientRequestFilter {
 
         private String getBasicAuthentication() {
             String token = this.user + ":" + this.password;
-            try {
-                return "BASIC " + DatatypeConverter.printBase64Binary(token.getBytes("UTF-8"));
-            } catch (UnsupportedEncodingException ex) {
-                throw new IllegalStateException("Cannot encode with UTF-8", ex);
-            }
+                return "BASIC " + DatatypeConverter.printBase64Binary(token.getBytes(StandardCharsets.UTF_8));
         }
     }

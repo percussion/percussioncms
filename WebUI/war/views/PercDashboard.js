@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -44,7 +44,7 @@
     var dragDelay = ($.PercNavigationManager.isAutoTest() ? 0 : 250);
 
     // fix text overflow when window resizes
-    $(window).bind('resize', function()
+    $(window).on('resize', function()
     {
         getWidthOfCol();
         $(".perc-ellipsis").each(function()
@@ -119,7 +119,7 @@
                     var key = dashboardConfigMetaKey + ".mid." + instanceId + ".";
                     $.PercMetadataService.deleteEntryByPrefix(key, function(status, msg)
                     {
-                        if (status == jQuery.PercServiceUtils.STATUS_ERROR)
+                        if (status === jQuery.PercServiceUtils.STATUS_ERROR)
                         {
                             //Maybe log here when we have a good way to log
                         }
@@ -221,7 +221,7 @@
         });
         $.PercMetadataService.save(dashboardConfigMetaKey, config, function(status, result)
         {
-            if (status == $.PercServiceUtils.STATUS_SUCCESS)
+            if (status === $.PercServiceUtils.STATUS_SUCCESS)
             {
 
                 if (typeof(callback) == 'function') callback($.PercServiceUtils.STATUS_SUCCESS);
@@ -250,11 +250,11 @@
                 {
                     $.PercMetadataService.deleteEntry(dashboardConfigMetaKey, function(status, result)
                     {
-                        if (status == $.PercServiceUtils.STATUS_SUCCESS)
+                        if (status === $.PercServiceUtils.STATUS_SUCCESS)
                         {
                             $.PercMetadataService.deleteEntryByPrefix(dashboardConfigMetaKey + ".", function(status, result)
                             {
-                                if (status == $.PercServiceUtils.STATUS_SUCCESS)
+                                if (status === $.PercServiceUtils.STATUS_SUCCESS)
                                 {
                                     window.location.reload();
                                 }
@@ -293,7 +293,7 @@
     function makeLocalUrl(path)
     {
 
-        if(nonSslPort == -1){
+        if(nonSslPort === -1){
             return hostScheme + "://" + hostAddress + path;
         }else{
             return hostScheme + "://" + hostAddress + ":" + nonSslPort + path;
@@ -315,7 +315,7 @@
     {
         $.PercMetadataService.find(dashboardConfigMetaKey, function(status, result)
         {
-            if (status == $.PercServiceUtils.STATUS_SUCCESS)
+            if (status === $.PercServiceUtils.STATUS_SUCCESS)
             {
                 if (result == null) result = {};
                 var obj = result.metadata;
@@ -339,7 +339,7 @@
                     for (i = (config.DashboardConfig.gadgets.length - 1); i >= 0; i--)
                     {
                         var current = config.DashboardConfig.gadgets[i];
-                        if ($.inArray(current.url, adminOnlyGadgets) != -1)
+                        if ($.inArray(current.url, adminOnlyGadgets) !== -1)
                         {
                             config.DashboardConfig.gadgets.splice(i, 1);
                         }
@@ -374,7 +374,7 @@
     {
         $.PercDashboardService.getTrayGadgets($('.perc-gadget-type').val(), function(status, data)
         {
-            if (status == $.PercServiceUtils.STATUS_SUCCESS)
+            if (status === $.PercServiceUtils.STATUS_SUCCESS)
             {
                 gadgetList = data.Gadget;
             }
@@ -397,7 +397,7 @@
 
     function _resize(newSize)
     {
-        if (newSize != westSize)
+        if (newSize !== westSize)
         {
             westSize = newSize;
         }
@@ -419,7 +419,7 @@
             {
                 getUserDashboardConfig(function(status, results)
                 {
-                    if (status == $.PercServiceUtils.STATUS_SUCCESS)
+                    if (status === $.PercServiceUtils.STATUS_SUCCESS)
                     {
                         westSize = 500;
                         if (layout)
@@ -429,7 +429,7 @@
                         gadgetArray = new Array(results.DashboardConfig.gadgets.length);
                         gadgets.container.addSetTitleListener(_afterSetTitle);
                         renderGadgets(results.DashboardConfig.gadgets);
-                        $("#perc-dashboard-restore-menu").unbind().click(function()
+                        $("#perc-dashboard-restore-menu").off().on('click',function()
                         {
                             restore();
                         });
@@ -457,10 +457,10 @@
             $.perc_pathmanager.open_path( "/Sites/?startIndex=1&maxResults=1", true,
                 function(folder_spec){
                     var calculatedHeight = 639;
-                    if (navigator.userAgent.indexOf('MSIE') != -1) {
+                    if (navigator.userAgent.indexOf('MSIE') !== -1) {
                         calculatedHeight = 656;
                     }
-                    if (folder_spec.PagedItemList.childrenCount == 0){
+                    if (folder_spec.PagedItemList.childrenCount === 0){
                         $.perc_utils.confirm_dialog({
                             id: "perc-splashscreen",
                             type: "CANCEL_START",
@@ -472,11 +472,10 @@
                             dontShowAgainAction: function(){},
                             success: function()
                             {
-                                $('#perc-finder-new-site').click();
+                                $('#perc-finder-new-site').trigger('click');
                             }
                         });
-                        //Chrome have some issue recalculating the heigth
-                        $("#perc-splashscreen").find(".ui-dialog-content").css("overflow", "hidden");
+
                     }
                 }, function(){}, true );
         }
@@ -486,10 +485,9 @@
      */
     function renderGadgets(jsonGadgets)
     {
-        var i = 0;
         var chromeIds = Array();
         gadgets.container.clearGadgetInstanceIds();
-        for (var i = 0; i < jsonGadgets.length; i++)
+        for (let i = 0; i < jsonGadgets.length; i++)
         {
             if (jsonGadgets[i].url) createGadget(jsonGadgets[i]);
         }
@@ -516,45 +514,43 @@
      */
     function createGadget(jsonGadget)
     {
-        var args = {
-            specUrl: makeLocalUrl(jsonGadget.url),
-            instanceId: jsonGadget.instanceId
-        };
-        var gadgetObj = gadgets.container.createGadget(args);
-        gadgets.container.addGadget(gadgetObj);
-        jsonGadget.instanceId = gadgetObj.id;
-        createGadgetHTML(jsonGadget);
-        getGadgetMeta([{
-                "url": makeLocalUrl(jsonGadget.url),
-                "moduleId": gadgetObj.id
-            }], [gadgets.container.userPrefStore.getPrefs(gadgetObj)], function(data)
-            {
-                var meta = data.gadgets[0];
-                var prefs = meta["userPrefs"];
-                var prefCount = 0;
-                for (c in prefs)
-                {
-                    prefCount++;
-                } // Check if user prefs has values
-                gadgetObj["title"] = meta["title"];
-                $("#gid_" + gadgetObj.id).attr("name", meta["title"]);
-                gadgetObj["height"] = meta["height"];
-                gadgetObj["width"] = meta["width"];
-                gadgetObj["hasPrefs"] = prefCount > 0;
-                gadgetObj["metaKey"] = dashboardConfigMetaKey + ".mid." + gadgetObj.id + ".";
+        if(!jsonGadget.url.includes("perc_optimizer_keywords")) {
+            var args = {
+                specUrl: makeLocalUrl(jsonGadget.url),
+                instanceId: jsonGadget.instanceId
+            };
+            var gadgetObj = gadgets.container.createGadget(args);
+            gadgets.container.addGadget(gadgetObj);
+            jsonGadget.instanceId = gadgetObj.id;
+            createGadgetHTML(jsonGadget);
+            getGadgetMeta([{
+                    "url": makeLocalUrl(jsonGadget.url),
+                    "moduleId": gadgetObj.id
+                }], [gadgets.container.userPrefStore.getPrefs(gadgetObj)], function (data) {
+                    var meta = data.gadgets[0];
+                    var prefs = meta.userPrefs;
+                    var prefCount = 0;
+                    for (let c in prefs) {
+                        prefCount++;
+                    } // Check if user prefs has values
+                    gadgetObj.title = meta.title;
+                    $("#gid_" + gadgetObj.id).attr("name", meta.title);
+                    gadgetObj.height = meta.height;
+                    gadgetObj.width = meta.width;
+                    gadgetObj.hasPrefs = prefCount > 0;
+                    gadgetObj.metaKey = dashboardConfigMetaKey + ".mid." + gadgetObj.id + ".";
 
-                gadgets.container.layoutManager.addGadgetChromeId(gadgetObj.id, "gid_" + gadgetObj.id);
-                gadgets.container.renderGadget(gadgetObj);
-                addMenu($("#gid_" + gadgetObj.id));
-                if (!jsonGadget.expanded)
-                {
-                    minimizeGadget($("#gid_" + gadgetObj.id));
+                    gadgets.container.layoutManager.addGadgetChromeId(gadgetObj.id, "gid_" + gadgetObj.id);
+                    gadgets.container.renderGadget(gadgetObj);
+                    addMenu($("#gid_" + gadgetObj.id));
+                    if (!jsonGadget.expanded) {
+                        minimizeGadget($("#gid_" + gadgetObj.id));
+                    }
+                    makeDashboardGadgetsDraggable($("#gid_" + gadgetObj.id));
                 }
-                makeDashboardGadgetsDraggable($("#gid_" + gadgetObj.id));
-            }
-
-        );
-        return gadgetObj.id;
+            );
+            return gadgetObj.id;
+        }
     }
 
     /**
@@ -588,11 +584,13 @@
         var title = $gadget.find(".gadgets-gadget-title");
         var titleButtons = $gadget.find(".gadgets-gadget-title-button-bar");
         titleButtons.css("float", "right");
-        var gadgetMenuButton = $("<img src='../images/images/gadgetMenuButton.png' class='perc-gadget-menu-button' style='cursor:pointer' title='Click to show the Gadget Menu' alt='Gadget menu icon'/>").click(function(event)
+        var gadgetMenuButton = $("<img src='../images/images/gadgetMenuButton.png' class='perc-gadget-menu-button' style='cursor:pointer' title='Click to show the Gadget Menu' alt='Gadget menu icon'/>").on('click',function(event)
         {
             event.stopPropagation();
-            showMenu(self, titleBar, event);
+            showMenu(self, titleBar,event);
         });
+
+
         titleButtons.append(gadgetMenuButton);
 
         // fixf the width of columns
@@ -605,7 +603,7 @@
         });
     }
 
-    function showMenu(gadget, titleBar)
+    function showMenu(gadget,titleBar, evt)
     {
         // grab all the elements we need
         menu = $("#perc-gadget-menu");
@@ -613,41 +611,47 @@
         menuExpand = $("#perc-gadget-menu-expand");
         menuConfig = $("#perc-gadget-menu-config");
         menuRemove = $("#perc-gadget-menu-remove");
+        menuButton = $("#perc-gadget-menu-button");
         var instanceId = gadget.attr("instanceId");
         var gInstance = gadgets.container.getGadget(instanceId);
         var hasPrefs = gInstance.hasPrefs;
         // move the menu to the current gadget so that it shows right under the gadget's titlebar
-        var top = titleBar.position().top + $(".perc-dashboard-container").scrollTop();
+        var top = titleBar.position().top;
         var left = titleBar.position().left;
-        var menuX = left + titleBar.outerWidth() - menu.width();
+        var menuX = titleBar[0].getBoundingClientRect().left + titleBar[0].getBoundingClientRect().width - menu.outerWidth(true);
         var menuY = top + titleBar.outerHeight();
-        menu.css("top", menuY).css("left", menuX).css("display", "block");
+        // hide the menu if you hover away from it
+        menu.on({
+            mouseenter: function() { },
+            mouseleave: function() {  menu.hide(); }
+        })
 
+        menu.css("top", menuY).css("left", menuX).css("display", "block");
         // update the menu items based on the current state of the gadget
         updateMinimizeExpandMenuItem(gadget);
         // handle maximize menu item
-        menuMinimize.unbind().click(function()
+        menuMinimize.off().on('click',function(evt)
         {
             minimizeGadget(gadget);
             menu.hide();
         });
 
         // handle remove menu item
-        menuRemove.unbind().click(function()
+        menuRemove.off().on('click',function(evt)
         {
             var instanceId = gadget.attr("instanceId");
             removeGadget(instanceId);
         });
 
         // handle expand menu item
-        menuExpand.unbind().click(function()
+        menuExpand.off().on('click',function(evt)
         {
             expandGadget(gadget);
             menu.hide();
         });
 
         // handle edit settings
-        menuConfig.unbind().click(function()
+        menuConfig.off().on('click',function(evt)
         {
             handlePrefs(instanceId);
         });
@@ -661,17 +665,12 @@
         }
 
         // hide the menu if you are about to resize the finder
-        $(".ui-resizable-handle").hover(function()
-        {
-            menu.hide();
-        });
+        $(".ui-resizable-handle").on({
+            mouseenter: function() { },
+            mouseleave: function() {  menu.hide(); }
+        })
 
-        // hide the menu if you hover away from it
-        menu.unbind().hover(function()
-        {}, function()
-        {
-            menu.hide();
-        });
+
     }
 
     // check display attribute of gadget content
@@ -764,7 +763,7 @@
     {
         var content = gadget.find(".gadgets-gadget-content");
         var display = content.css("display");
-        if (display == "block") return true;
+        if (display === "block") return true;
         return false;
     }
 
@@ -789,11 +788,10 @@
         var workflowSelect = $('[name="m_' + gadgetId + '_up_ssworkflow"]');
         if (workflowSelect.length > 0)
         {
-            workflowSelect.change(function()
+            workflowSelect.on("change",function()
             {
                 updateStatusOptions(gadgetId);
             });
-            //updateStatusOptions(gadgetId, workflowSelect.val());
         }
     }
 
@@ -805,12 +803,12 @@
         var workflowSelect = $('[name="m_' + gadgetId + '_up_ssworkflow"]');
         $.PercWorkflowService().getStatusByWorkflow(workflowSelect.val(), function(status, result)
         {
-            if (status == $.PercServiceUtils.STATUS_SUCCESS)
+            if (status === $.PercServiceUtils.STATUS_SUCCESS)
             {
                 var statusSelect = $('[name="m_' + gadgetId + '_up_status"]');
                 statusSelect.find('option').remove();
                 var statusList = $.perc_utils.convertCXFArray(result.data.EnumVals.entries);
-                for (s in statusList)
+                for (let s in statusList)
                 {
                     var value = statusList[s].value;
                     statusSelect.append($('<option/>').val(value).html(value));
@@ -826,7 +824,7 @@
      */
     function checkDateFromEmpty(dateText, inst)
     {
-        if (dateText == "")
+        if (dateText === "")
         {
             var months3Back = new Date();
             months3Back.setMonth(months3Back.getMonth() - 3);
@@ -841,7 +839,7 @@
      */
     function checkDateToEmpty(dateText, inst)
     {
-        if (dateText == "")
+        if (dateText === "")
         {
             var today = new Date();
             $(this).datepicker('setDate', today);
@@ -867,7 +865,7 @@
                 onClose: checkDateToEmpty
             });
 
-        if (dateFromInput.val() == "")
+        if (dateFromInput.val() === "")
         {
             var today = new Date();
             var months3Back = new Date();
@@ -917,7 +915,7 @@
     {
         var $column = $("#col-" + col);
         var $existing = $column.children(".perc-gadget:eq(" + row + ")");
-        if ($existing.length == 0)
+        if ($existing.length === 0)
         {
             $column.append(gadgetHTML);
         }
@@ -951,7 +949,7 @@
         var gContentDiv = "gadget-content-" + i;
         var div = document.getElementById(gContentDiv);
         var tog = $("#tog-" + i);
-        if (div.style.display == 'none')
+        if (div.style.display === 'none')
         {
             tog.removeClass("ui-icon-circle-triangle-n").addClass("ui-icon-circle-triangle-s");
             div.style.display = 'block';
@@ -996,7 +994,7 @@
 
         $.PercServiceUtils.makeJsonRequest("/cm/gadgets/metadata", $.PercServiceUtils.TYPE_POST, false, function(status, result)
         {
-            if (status == $.PercServiceUtils.STATUS_SUCCESS)
+            if (status === $.PercServiceUtils.STATUS_SUCCESS)
             {
                 callback(result.data);
             }
@@ -1045,7 +1043,7 @@
         dashboardContainer = $(".perc-dashboard-container");
 
         expandGadgetTray();
-        $('.perc-gadget-type').unbind().change(function()
+        $('.perc-gadget-type').off().on('change',function()
         {
             loadGadgetListing(function()
             {
@@ -1055,14 +1053,14 @@
                 });
             });
         });
-        $('.perc-gadget-category').unbind().change(filterGadgetLibrary);
+        $('.perc-gadget-category').off().on('change',filterGadgetLibrary);
         populateTrayGadgets(function()
         {
             collapseGadgetTray();
             fixBottomHeight();
         });
 
-        gadgetTrayExpander.click(function()
+        gadgetTrayExpander.on('click',function()
         {
             toggleGadgetTray();
             fixBottomHeight();
@@ -1114,14 +1112,14 @@
             if (typeof($(gadget).data('gadget').type) != "undefined")
             {
                 var type = $(gadget).data('gadget').type;
-                if (type.toLowerCase() == "custom")
+                if (type.toLowerCase() === "custom")
                 {
                     var category = $(gadget).data('gadget').category;
                     if (typeof(category) != "undefined")
                     {
                         $.each(category.split(","), function(index, value)
                         {
-                            if (value != "" && $.inArray(value, customCategories) == -1)
+                            if (value !== "" && $.inArray(value, customCategories) === -1)
                             {
                                 customCategories.push(value);
                             }
@@ -1137,7 +1135,7 @@
 
         //Determine the options for the category filter
         $('.perc-gadget-category-custom').remove();
-        if (typeSelected == "all")
+        if (typeSelected === "all")
         {
             $('.perc-gadget-category-predefined').show();
             if (customCategories.length > 0)
@@ -1145,11 +1143,11 @@
                 categoryFilter.append($('<option />').addClass('perc-gadget-category-custom').val('other').text('Other'));
             }
         }
-        if (typeSelected == "percussion" || typeSelected == "community")
+        if (typeSelected === "percussion" || typeSelected === "community")
         {
             $('.perc-gadget-category-predefined').show();
         }
-        if (typeSelected == "custom")
+        if (typeSelected === "custom")
         {
             $('.perc-gadget-category-predefined').hide();
             $.each(customCategories, function(index, value)
@@ -1162,7 +1160,7 @@
     /**
      * Filter the gadget library by category
      */
-    function filterGadgetLibrary()
+    function filterGadgetLibrary(event)
     {
         $.each($('.perc-tray-item'), function()
         {
@@ -1178,14 +1176,14 @@
     {
         var selectedCategory = $('.perc-gadget-category').val();
         var predefinedCategories = [];
-        if (selectedCategory == "all")
+        if (selectedCategory === "all")
         {
             return true;
         }
-        if (selectedCategory == "other")
+        if (selectedCategory === "other")
         {
             var type = $(gadget).data('gadget').type;
-            return (type.toLowerCase() == "custom");
+            return (type.toLowerCase() === "custom");
         }
         if (typeof($(gadget).data('gadget').category) == 'undefined')
         {
@@ -1197,7 +1195,7 @@
         {
             predefinedCategories[i] = text.toLowerCase();
         });
-        return ($.inArray(selectedCategory, category) != -1);
+        return ($.inArray(selectedCategory, category) !== -1);
     }
 
     /**
@@ -1322,11 +1320,11 @@
         {
             var dashboardColumn = $(this);
             var columnGadgets = dashboardColumn.find(".perc-gadget");
-            if (columnGadgets.length == 0)
+            if (columnGadgets.length === 0)
             {
-                var dashboardColumnPosition = dashboardColumn.position();
-                var dashboardContainPosition = dashboardContainer.position();
-                addGadgetDropArea(null, columnIndex, 0, dashboardColumnPosition.left, dashboardContainPosition.top, dashboardColumn.width() - DASHBOARD_GADGET_MARGIN, dashboardContainer.height());
+                var dashboardColumnPosition = dashboardColumn.parent().position();
+                var dashboardContainPosition = dashboardContainer.scrollTop;
+                addGadgetDropArea(null, columnIndex, 0, dashboardColumnPosition.left, dashboardContainPosition, dashboardColumn.width() - DASHBOARD_GADGET_MARGIN, dashboardContainer.height());
             }
             columnIndex++;
         });
@@ -1363,27 +1361,27 @@
     function addGadgetDropArea(dashboardGadget, columnIndex, rowIndex, left, top, width, height)
     {
         // you have to at least give me the dashboardGadget or the sizes
-        if (dashboardGadget == undefined && (width == undefined || height == undefined)) throw "Exception in PercDashboard.addGadgetDropArea(): Unable to calculate Gadget Drop Area size. " + "At least a Dashboard Gadget or sizes are needed to add a gadget drop area. " + "Neither have been provided";
+        if ((dashboardGadget === null || typeof dashboardGadget === "undefined") && (width === undefined || height === undefined)) throw "Exception in PercDashboard.addGadgetDropArea(): Unable to calculate Gadget Drop Area size. " + "At least a Dashboard Gadget or sizes are needed to add a gadget drop area. " + "Neither have been provided";
 
         // if you dont give me a dashboardGadget, then you have to give me position
-        if (dashboardGadget == undefined && (left == undefined || top == undefined || columnIndex == undefined || rowIndex == undefined)) throw "Exception in PercDashboard.addGadgetDropArea(): Unable to calculate Gadget Drop Area location. " + "At least a Dashboard Gadget or a location is needed to add a gadget drop area. " + "Neither have been provided";
+        if ((dashboardGadget === null || typeof dashboardGadget === "undefined") && (left === undefined || top === undefined || columnIndex === undefined || rowIndex === undefined)) throw "Exception in PercDashboard.addGadgetDropArea(): Unable to calculate Gadget Drop Area location. " + "At least a Dashboard Gadget or a location is needed to add a gadget drop area. " + "Neither have been provided";
 
         // if I do have a dashboardGadget, try to infer position and size from it,
         // but honor position and size parameters passed in explicitly
-        if (dashboardGadget != undefined)
+        if (dashboardGadget!==  null && typeof dashboardGadget !== "undefined")
         {
-            var dashboardGadgetPosition = dashboardGadget.position();
+            var dashboardGadgetPosition = dashboardGadget.parent().parent().position();
 
             var gadgetParentColumnId = dashboardGadget.parent(".perc-gadget-column").attr("id");
             var columnIndexString = gadgetParentColumnId.replace("col-", "");
 
             // if passed in honor the parameters otherwise get from dashboard gadget
-            top = top == undefined ? dashboardGadgetPosition.top : top;
-            left = left == undefined ? dashboardGadgetPosition.left : left;
-            columnIndex = columnIndex == undefined ? parseInt(columnIndexString) : columnIndex;
-            rowIndex = rowIndex == undefined ? dashboardGadget.prevAll().length : rowIndex;
-            width = width == undefined ? dashboardGadget.width() : width;
-            height = height == undefined ? dashboardGadget.height() : height;
+            top = top === undefined ? dashboardGadget.position().top : top;
+            left = left === undefined ? dashboardGadgetPosition.left : left;
+            columnIndex = columnIndex === undefined ? parseInt(columnIndexString) : columnIndex;
+            rowIndex = rowIndex === undefined ? dashboardGadget.prevAll().length : rowIndex;
+            width = width === undefined ? dashboardGadget.width() : width;
+            height = height === undefined ? dashboardGadget.height() : height;
         }
 
         var gadgetDropArea = gadgetDrop.clone();
@@ -1394,7 +1392,7 @@
         gadgetDropArea.data("columnIndex", columnIndex);
         gadgetDropArea.data("rowIndex", rowIndex);
 
-        if (rowIndex == 0 && dashboardContainer.scrollTop() == 0)
+        if (rowIndex === 0 && dashboardContainer.scrollTop() === 0)
         {
             $("body").append(gadgetDropArea);
             top = dashboardContainer.position().top;
@@ -1428,7 +1426,7 @@
                     {
                         var instanceid = ui.draggable.attr("instanceid");
                         var origPos = ui.helper.data("origPos");
-                        if (origPos && origPos.col == columnIndex && origPos.row == rowIndex) return false;
+                        if (origPos && origPos.col === columnIndex && origPos.row === rowIndex) return false;
                         moveGadget(instanceid, columnIndex, rowIndex);
                     }
                     else if (ui.helper.hasClass("perc-tray-item"))
@@ -1478,7 +1476,7 @@
 
     function isFirstGadget(dashboardGadget)
     {
-        return dashboardGadget.prevAll(".perc-gadget[perc-helper!=true]").length == 0;
+        return dashboardGadget.prevAll(".perc-gadget[perc-helper!=true]").length === 0;
     }
 
     /**
@@ -1487,7 +1485,7 @@
      */
     function isLastGadget(dashboardGadget)
     {
-        return dashboardGadget.nextAll(".perc-gadget[perc-helper!=true]").length == 0;
+        return dashboardGadget.nextAll(".perc-gadget[perc-helper!=true]").length === 0;
     }
 
     /**
@@ -1500,7 +1498,7 @@
      */
     function addGadgetToDashboard(gadgetName, gadgetUrl, columnIndex, rowIndex, feedback)
     {
-        if (isFeedbackVisible(feedback, rowIndex)) addGadget(gadgetUrl, columnIndex, rowIndex);
+            if (isFeedbackVisible(feedback, rowIndex)) addGadget(gadgetUrl, columnIndex, rowIndex);
     }
 
     /**
@@ -1510,7 +1508,7 @@
      */
     function isFeedbackVisible(feedback, rowIndex)
     {
-        if (rowIndex == 0) if (dashboardContainer.scrollTop() == 0) return true;
+        if (rowIndex === 0) if (dashboardContainer.scrollTop() === 0) return true;
         else return false;
         var dashboardContainerPosition = dashboardContainer.position();
         var feedbackPosition = feedback.offset();
@@ -1596,17 +1594,7 @@
      */
     function handleOverflowHeader(element)
     {
-        var title = element.attr("title");
-        if (title == '')
-        {
-            return true;
-        }
-        if ($.browser.msie) {
-            var width = element.parents().width() - 40;
-            element.css("width", width);
-        }
-        /*Uncomment the following statement to have ellipsis work in Firefox browser on window resize event*/
-        //element.text(title).textOverflow("...", false);
+        return element.attr("title") === '';
     }
 
 })(jQuery);

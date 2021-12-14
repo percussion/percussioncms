@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -53,11 +53,13 @@ public class PSSiteCopyProcessMonitor
 
     private static void updateStatusMessage(String stepName, String stepNum)
     {
-        if (monitor == null)
+        if (monitor == null) {
             return;
+        }
         
-        if (siteName == null)
+        if (siteName == null) {
             monitor.setMessage(IDLE_MSG);
+        }
         else
         {
             monitor.setMessage(MessageFormat.format(COPY_MSG, siteName, stepName, stepNum));

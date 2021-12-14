@@ -1,6 +1,6 @@
 <!--
   ~     Percussion CMS
-  ~     Copyright (C) 1999-2021 Percussion Software, Inc.
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
   ~
   ~     This program is free software: you can redistribute it and/or modify
   ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -17,7 +17,7 @@
   ~      Burlington, MA 01803, USA
   ~      +01-781-438-9900
   ~      support@percussion.com
-  ~      https://www.percusssion.com
+  ~      https://www.percussion.com
   ~
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   -->
@@ -27,7 +27,7 @@
     <parent>
         <groupId>com.percussion</groupId>
         <artifactId>core</artifactId>
-        <version>8.0.2.10</version>
+        <version>8.0.3</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
   <artifactId>perc-jetty-logging</artifactId>
@@ -107,15 +107,35 @@
                 <artifactId>log4j-slf4j-impl</artifactId>
                 <scope>compile</scope>
             </dependency>
-              <dependency>
-                  <groupId>org.slf4j</groupId>
-                  <artifactId>slf4j-api</artifactId>
-                  <scope>compile</scope>
-              </dependency>
-             <dependency>
+          <dependency>
+              <groupId>org.apache.logging.log4j</groupId>
+              <artifactId>log4j-iostreams</artifactId>
+              <scope>compile</scope>
+          </dependency>
+          <dependency>
                 <groupId>com.lmax</groupId>
                 <artifactId>disruptor</artifactId>
                  <scope>compile</scope>
             </dependency>
+          <dependency>
+              <groupId>org.slf4j</groupId>
+              <artifactId>slf4j-simple</artifactId>
+              <scope>provided</scope>
+          </dependency>
+          <dependency>
+              <groupId>org.slf4j</groupId>
+              <artifactId>slf4j-api</artifactId>
+              <scope>compile</scope>
+          </dependency>
+      <dependency>
+          <groupId>org.slf4j</groupId>
+          <artifactId>jul-to-slf4j</artifactId>
+          <scope>compile</scope>
+      </dependency>
+      <dependency>
+          <groupId>org.slf4j</groupId>
+          <artifactId>jcl-over-slf4j</artifactId>
+          <scope>compile</scope>
+      </dependency>
   </dependencies>
 </project>

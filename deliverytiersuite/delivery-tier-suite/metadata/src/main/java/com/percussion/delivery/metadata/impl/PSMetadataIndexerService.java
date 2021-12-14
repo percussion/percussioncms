@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -27,15 +27,14 @@ import com.percussion.delivery.listeners.IPSServiceDataChangeListener;
 import com.percussion.delivery.metadata.IPSMetadataDao;
 import com.percussion.delivery.metadata.IPSMetadataEntry;
 import com.percussion.delivery.metadata.IPSMetadataIndexerService;
+import org.apache.commons.lang.Validate;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import org.apache.commons.lang.Validate;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Hibernate-based implementation of {@link IPSMetadataIndexerService}.
@@ -50,7 +49,7 @@ public class PSMetadataIndexerService implements IPSMetadataIndexerService
     
     /* Connector to be notified of data change events */
     private IPSServiceDataChangeListener connector;
-    private List<IPSServiceDataChangeListener> listeners = new ArrayList<IPSServiceDataChangeListener>();
+    private List<IPSServiceDataChangeListener> listeners = new ArrayList<>();
     private final String[] PERC_METADATA_SERVICES = {"perc-metadata-services"};
     
     @Autowired
@@ -86,7 +85,7 @@ public class PSMetadataIndexerService implements IPSMetadataIndexerService
             return;
 
         // array of sites for data changed event
-        HashSet<String> siteNames = new HashSet<String>(entries.size());
+        HashSet<String> siteNames = new HashSet<>(entries.size());
         for (IPSMetadataEntry entry : entries)
         {
             siteNames.add(entry.getSite());
@@ -119,7 +118,7 @@ public class PSMetadataIndexerService implements IPSMetadataIndexerService
     {
         Validate.notEmpty(pagepath, "pagepath cannot be null or empty.");
 
-        HashSet<String> siteNames = new HashSet<String>();
+        HashSet<String> siteNames = new HashSet<>();
         String site = getSiteNameFromPagePath(pagepath);
         siteNames.add(site);
 
@@ -161,7 +160,7 @@ public class PSMetadataIndexerService implements IPSMetadataIndexerService
         Validate.notNull(pagepaths, "pagepaths cannot be null.");
 
                 
-        HashSet<String> siteNames = new HashSet<String>(pagepaths.size());
+        HashSet<String> siteNames = new HashSet<>(pagepaths.size());
         for(String path : pagepaths)
         {
             String site = getSiteNameFromPagePath(path);
@@ -206,7 +205,7 @@ public class PSMetadataIndexerService implements IPSMetadataIndexerService
     public void deleteAllMetadataEntries()
     {
         List<String> sites = dao.getAllSites();
-        HashSet<String> siteSet = new HashSet<String>(sites);
+        HashSet<String> siteSet = new HashSet<>(sites);
         fireDataChangeRequestedEvent(siteSet);
         dao.deleteAllMetadataEntries();
         fireDataChangedEvent(siteSet);

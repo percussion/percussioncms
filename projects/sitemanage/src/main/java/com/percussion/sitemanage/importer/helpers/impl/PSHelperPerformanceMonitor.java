@@ -17,16 +17,17 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.sitemanage.importer.helpers.impl;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.util.concurrent.ConcurrentHashMap;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 class PerformanceStats
 {
@@ -58,9 +59,9 @@ public class PSHelperPerformanceMonitor
 
     private static long methodWarningThreshold = 3000;
 
-    private static ConcurrentHashMap<String, PerformanceStats> performanceStats = new ConcurrentHashMap<String, PerformanceStats>();
+    private static ConcurrentHashMap<String, PerformanceStats> performanceStats = new ConcurrentHashMap<>();
 
-    private static final Log log = LogFactory.getLog(PSHelperPerformanceMonitor.class);
+    private static final Logger log = LogManager.getLogger(PSHelperPerformanceMonitor.class);
 
     public static void updateStats(String identifier, long elapsedTime)
     {

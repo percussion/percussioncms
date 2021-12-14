@@ -17,14 +17,12 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.pagemanagement.service;
-
-import static java.util.Arrays.asList;
 
 import com.percussion.assetmanagement.data.PSAsset;
 import com.percussion.assetmanagement.data.PSAssetWidgetRelationship;
@@ -38,24 +36,25 @@ import com.percussion.pagemanagement.data.PSPage;
 import com.percussion.pagemanagement.data.PSRegion;
 import com.percussion.pagemanagement.data.PSRegionTree;
 import com.percussion.pagemanagement.data.PSTemplate;
+import com.percussion.pagemanagement.data.PSTemplate.PSTemplateTypeEnum;
 import com.percussion.pagemanagement.data.PSTemplateSummary;
 import com.percussion.pagemanagement.data.PSWidgetItem;
-import com.percussion.pagemanagement.data.PSTemplate.PSTemplateTypeEnum;
 import com.percussion.share.service.IPSDataService.DataServiceSaveException;
 import com.percussion.share.service.IPSIdMapper;
-import com.percussion.share.service.exception.PSBeanValidationException;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.spring.PSSpringWebApplicationContextUtils;
 import com.percussion.test.PSServletTestCase;
 import com.percussion.utils.testing.IntegrationTest;
 import com.percussion.webservices.content.IPSContentDesignWs;
 import com.percussion.webservices.system.IPSSystemWs;
+import org.apache.commons.lang.StringUtils;
+import org.junit.experimental.categories.Category;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
-import org.junit.experimental.categories.Category;
+import static java.util.Arrays.asList;
 
 @Category(IntegrationTest.class)
 public class PSTemplateServiceTest extends PSServletTestCase
@@ -551,8 +550,7 @@ public class PSTemplateServiceTest extends PSServletTestCase
         }
     }
 
-    private PSPage createPage(PSTemplateSummary sum1, String name)
-    {
+    private PSPage createPage(PSTemplateSummary sum1, String name) throws PSDataServiceException {
         PSPage page = new PSPage();
         page.setFolderPath(fixture.site1.getFolderPath());
         page.setName(name);

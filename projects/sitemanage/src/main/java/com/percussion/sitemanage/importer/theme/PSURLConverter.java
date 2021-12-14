@@ -17,30 +17,30 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.sitemanage.importer.theme;
 
-import static org.apache.commons.lang.StringUtils.isBlank;
-import static org.apache.commons.lang.Validate.notNull;
-import static org.springframework.util.StringUtils.endsWithIgnoreCase;
-
 import com.percussion.services.assembly.impl.PSReplacementFilter;
 import com.percussion.sitemanage.importer.IPSSiteImportLogger;
 import com.percussion.sitemanage.importer.helpers.impl.PSImportThemeHelper.LogCategory;
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.lang.StringUtils;
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.lang.StringUtils;
+import static org.apache.commons.lang.StringUtils.isBlank;
+import static org.apache.commons.lang.Validate.notNull;
+import static org.springframework.util.StringUtils.endsWithIgnoreCase;
 
 /**
  * Given an Url we can calculate his fully qualified URL, convert it to a theme
@@ -155,7 +155,7 @@ public class PSURLConverter
         
         String[] linkAndParameters = convertedLink.split("\\?");
         
-        Set<String> suffixes = new HashSet<String>();
+        Set<String> suffixes = new HashSet<>();
         suffixes.add(FileSuffixes.Css.getSuffix());
         suffixes.add(FileSuffixes.CssGz.getSuffix());
         
@@ -191,7 +191,7 @@ public class PSURLConverter
     {
         String fullThemePath = getConvertedFileSystemPath(remoteUrl, true);
         
-        Set<String> suffixes = new HashSet<String>();
+        Set<String> suffixes = new HashSet<>();
         suffixes.add(FileSuffixes.Css.getSuffix());
         suffixes.add(FileSuffixes.CssGz.getSuffix());
         
@@ -406,7 +406,7 @@ public class PSURLConverter
             try
             {
                 //Given the permutations... the quickest path is to just Base64 the query string.
-                alteredQueryString = new String(Base64.encodeBase64(alteredQueryString.getBytes("UTF-8"))); 
+                alteredQueryString = new String(Base64.encodeBase64(alteredQueryString.getBytes(StandardCharsets.UTF_8)));
                 returnString=returnString.substring(0, returnString.lastIndexOf("/") + 1) + alteredQueryString;
             }
             catch (Exception e)

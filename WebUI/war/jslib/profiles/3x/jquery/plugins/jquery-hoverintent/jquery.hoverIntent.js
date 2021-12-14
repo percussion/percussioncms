@@ -94,10 +94,10 @@
         var cfg = $.extend({}, _cfg);
         if ( $.isPlainObject(handlerIn) ) {
             cfg = $.extend(cfg, handlerIn);
-            if ( !$.isFunction(cfg.out) ) {
+            if ( !typeof cfg.out === "function" ) {
                 cfg.out = cfg.over;
             }
-        } else if ( $.isFunction(handlerOut) ) {
+        } else if ( typeof handlerOut === "function" ) {
             cfg = $.extend(cfg, { over: handlerIn, out: handlerOut, selector: selector } );
         } else {
             cfg = $.extend(cfg, { over: handlerIn, out: handlerIn, selector: handlerOut } );

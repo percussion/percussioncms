@@ -18,7 +18,7 @@
   ~      Burlington, MA 01803, USA
   ~      +01-781-438-9900
   ~      support@percussion.com
-  ~      https://www.percusssion.com
+  ~      https://www.percussion.com
   ~
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   -->
@@ -30,11 +30,12 @@
     </ModulePrefs>
     <Content type="html">
         <![CDATA[
+        <!DOCTYPE html>
 	   <link href="/cm/gadgets/repository/common/perc_common_gadget.css" rel="stylesheet" type="text/css" />
      <link href="/cm/css/percWorkflow.css" rel="stylesheet" type="text/css" />
      <link href="/cm/cui/components/twitter-bootstrap-3.0.0/dist/css/bootstrap.css" rel="stylesheet" type="text/css" />
      <link href="/cm/gadgets/repository/perc_site_improve_gadget/site_improve.css" rel="stylesheet" type="text/css" />
-	   <link rel="stylesheet" href="https://use.fontawesome.com/b5599b836a.css" />
+	 <link rel="stylesheet" type="text/css" href="/cm/jslib/profiles/3x/libraries/fontawesome/css/all.css"/>
 
      <script src="/Rhythmyx/tmx/tmx.jsp?mode=js&amp;prefix=perc.ui.&amp;"></script>
      <script  src="/cm/services/PercSiteService.js"></script>
@@ -109,7 +110,7 @@
 						If you wish to try out Siteimprove, click this link:
 					</p>
 					<div>
-						<a href="https://www.percussion.com/partners/siteimprove/" target="_blank">Try out Siteimprove!</a>
+						<a href="https://www.percussion.com/partners/siteimprove/" target="_blank" rel="noopener noreferrer">Try out Siteimprove!</a>
 					</div>
 				</div>
 				<br/>

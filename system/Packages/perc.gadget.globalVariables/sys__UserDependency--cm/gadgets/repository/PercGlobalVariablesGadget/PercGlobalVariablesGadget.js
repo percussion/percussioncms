@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -35,7 +35,7 @@
     var perc_filters     = percJQuery.perc_textFilters;
     
     var isLargeColumn = true;       // if gadget is on the right side (large column)
-    var statusTable = undefined;
+    var statusTable;
     var tableDiv;
     var globalVarData = null;
     // API for this library
@@ -46,12 +46,12 @@
         // resize gadget to fit the rows
         itemsPerPage = rows;
         tableDiv = $("#perc-global-variables-table");
-        $("#perc-add-variable-button").click(function(){
+        $("#perc-add-variable-button").on("click", function(){
             _editVariable();
         });
         _renderGlobalVariablesTable(data);
 
-    }
+    };
 
     /**
      * Edit variable method called on either double click of the row or edit menu.
@@ -108,13 +108,13 @@
      */
     function _saveVariable(origName, varName, varValue, dialog)
     {
-        if(percJQuery.trim(varName) == "")
+        if(varName.trim() == "")
         {
             displayErrorMessage(dialog, "Name must not be blank.", "#perc_variable_name");
             return;
         }
         
-        if(percJQuery.trim(varValue) == "")
+        if(varValue.trim() == "")
         {
             displayErrorMessage(dialog, "Value must not be blank.", "#perc_variable_value");
             return;
@@ -128,8 +128,8 @@
         else
         {
             var varDataStr = globalVarData.metadata.data;
-            varData = $.parseJSON(varDataStr);
-            if(origName == "")
+            varData = JSON.parse(varDataStr);
+            if(origName === "")
             {
                 if(varData[varName])
                 {
@@ -170,10 +170,10 @@
             cancel:function(){},
             success:function(){
                     var varDataStr = globalVarData.metadata.data;
-                    var varData = $.parseJSON(varDataStr);
+                    var varData = JSON.parse(varDataStr);
                     delete varData[rowData.varName];
                     mdService.saveGlobalVariables("percglobalvariables", varData, function(status, result){
-                        if(status == PercServiceUtils.STATUS_SUCCESS)
+                        if(status === PercServiceUtils.STATUS_SUCCESS)
                         {
                             _expandNotify();
                         }
@@ -202,7 +202,7 @@
         if(data)
         {
             var varDataStr = data.metadata.data;
-            var varData = $.parseJSON(varDataStr);
+            var varData = JSON.parse(varDataStr);
             $.each(varData, function(name, value){
                 var dataRow = [];
                 dataRow.push([{content : name, title : name}]);

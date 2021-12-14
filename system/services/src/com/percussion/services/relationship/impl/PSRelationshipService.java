@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -38,14 +38,22 @@ import com.percussion.services.relationship.IPSRelationshipService;
 import com.percussion.services.relationship.data.PSRelationshipConfigName;
 import com.percussion.services.relationship.data.PSRelationshipData;
 import com.percussion.util.PSSiteManageBean;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * This is the Hibernate implementation of the <code>IPSRelationshipService</code>.
@@ -99,8 +107,8 @@ public class PSRelationshipService
          return findPersistedRids(testedIds);
 
       // otherwise, process the IDs in groups
-      List<Integer> returnIds = new ArrayList<Integer>();
-      List<Integer> groupIds = new ArrayList<Integer>();
+      List<Integer> returnIds = new ArrayList<>();
+      List<Integer> groupIds = new ArrayList<>();
       for (Integer rid : testedIds)
       {
          groupIds.add(rid);
@@ -185,9 +193,9 @@ public class PSRelationshipService
          return Collections.singletonList(filter);
       }
 
-      List<PSRelationshipFilter> filters = new ArrayList<PSRelationshipFilter>();
+      List<PSRelationshipFilter> filters = new ArrayList<>();
       PSRelationshipFilter f;
-      Set<PSLocator> deps = new HashSet<PSLocator>();
+      Set<PSLocator> deps = new HashSet<>();
       for(PSLocator loc : dependents)
       {
          deps.add(loc);
@@ -197,7 +205,7 @@ public class PSRelationshipService
             f.setDependents(null); // force to reset the dependents
             f.setDependents(deps);
             filters.add(f);
-            deps = new HashSet<PSLocator>();
+            deps = new HashSet<>();
          }
       }
       if (!deps.isEmpty())
@@ -231,7 +239,7 @@ public class PSRelationshipService
    private List<PSRelationship> postProcessResultList(
            List<PSRelationshipData> relsData, IPSQueryHelper qryHelper)
    {
-      List<PSRelationship> rels = new ArrayList<PSRelationship>(relsData
+      List<PSRelationship> rels = new ArrayList<>(relsData
               .size());
       boolean filterOwnerRev = qryHelper.mayFilterOwnerRev();
       boolean filterDepedentRev = qryHelper.mayFilterDependentRev();
@@ -539,7 +547,7 @@ public class PSRelationshipService
       int count;
 
 
-      StringBuffer sqlBuffer = new StringBuffer();
+      StringBuilder sqlBuffer = new StringBuilder();
 
       // delete from {@link IPSConstants#PSX_RELATIONSHIPPROPERTIES}
       sqlBuffer.append("delete from PSRelationshipPropertyData p where p.m_rid = :rid");
@@ -548,7 +556,7 @@ public class PSRelationshipService
       sql.executeUpdate();
 
       // delete from IPSConstants#PSX_RELATIONSHIPS
-      sqlBuffer = new StringBuffer();
+      sqlBuffer = new StringBuilder();
       sqlBuffer.append("delete from PSRelationshipData r where r.rid = :rid");
       sql = sess.createQuery(sqlBuffer.toString());
       sql.setParameter("rid", new Integer(rid));
@@ -584,8 +592,8 @@ public class PSRelationshipService
       PSRelationshipCommandHandler.loadConfigs();
 
       // initialize the m_configMap
-      configMap = new HashMap<Integer, PSRelationshipConfig>();
-      nameMapToId = new HashMap<String, Integer>();
+      configMap = new HashMap<>();
+      nameMapToId = new HashMap<>();
 
       IPSCmsObjectMgr objMgr = PSCmsObjectMgrLocator.getObjectManager();
       Collection<PSRelationshipConfigName> configNames = objMgr
@@ -639,7 +647,7 @@ public class PSRelationshipService
       Collection<PSRelationshipPropertyData> rels = null;
       Session sess = sessionFactory.getCurrentSession();
 
-      StringBuffer qryBuffer = new StringBuffer();
+      StringBuilder qryBuffer = new StringBuilder();
       qryBuffer.append("select r from PSRelationshipPropertyData r where ")
               .append("r.m_rid = :rid");
 
@@ -824,7 +832,7 @@ public class PSRelationshipService
    /**
     * The logger for this class.
     */
-   private static Logger ms_logger = Logger.getLogger("RelationshipService");
+   private static final Logger ms_logger = LogManager.getLogger("RelationshipService");
 
    /*
    @SuppressWarnings("unchecked")

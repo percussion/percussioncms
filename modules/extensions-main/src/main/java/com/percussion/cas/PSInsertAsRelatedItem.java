@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -31,11 +31,10 @@ import com.percussion.extension.PSParameterMismatchException;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.server.PSConsole;
 import com.percussion.util.IPSHtmlParameters;
+import org.w3c.dom.Document;
 
 import java.io.File;
 import java.net.URLEncoder;
-
-import org.w3c.dom.Document;
 
 /**
  * This exit inserts the newly created item as the related item of the parent

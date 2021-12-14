@@ -17,21 +17,11 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.services.filter.impl;
-
-import static org.apache.commons.lang.StringUtils.isBlank;
-import static org.apache.commons.lang.Validate.noNullElements;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import com.percussion.cms.objectstore.PSComponentSummary;
 import com.percussion.design.objectstore.PSLocator;
@@ -43,6 +33,15 @@ import com.percussion.services.legacy.IPSCmsObjectMgr;
 import com.percussion.services.legacy.PSCmsObjectMgrLocator;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.webservices.PSWebserviceUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import static org.apache.commons.lang.StringUtils.isBlank;
+import static org.apache.commons.lang.Validate.noNullElements;
 
 /**
  * This filter adjusts the ids to select the edit revision or current revision
@@ -64,7 +63,7 @@ public class PSPreviewFilter extends PSBaseFilter
       noNullElements(items, "items");
       IPSCmsObjectMgr cms = PSCmsObjectMgrLocator.getObjectManager();
       IPSGuidManager gm = PSGuidManagerLocator.getGuidMgr();
-      List<IPSFilterItem> rval = new ArrayList<IPSFilterItem>();
+      List<IPSFilterItem> rval = new ArrayList<>();
       
       String user = getUserName(params);
       
@@ -126,6 +125,6 @@ public class PSPreviewFilter extends PSBaseFilter
    /**
     * The log instance to use for this class, never <code>null</code>.
     */
-   private static final Log ms_log = LogFactory.getLog(PSPreviewFilter.class);
+   private static final Logger ms_log = LogManager.getLogger(PSPreviewFilter.class);
 
 }

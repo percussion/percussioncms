@@ -17,19 +17,18 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.delivery.services;
 
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.Response;
-
 import com.percussion.delivery.utils.PSVersionHelper;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Response;
 
 /**
  * Provides a base class for Delivery REST services to extend from 
@@ -49,7 +48,7 @@ public abstract class PSAbstractRestService implements IPSRestService {
 	public String getVersion() {
 		try
 	      {
-			log.info("Version from PSAbstractRestService.class : " + PSVersionHelper.getVersion(this.getClass()));
+			log.info("Version from PSAbstractRestService.class : {}" , PSVersionHelper.getVersion(this.getClass()));
 			
 			return PSVersionHelper.getVersion(this.getClass());
 			

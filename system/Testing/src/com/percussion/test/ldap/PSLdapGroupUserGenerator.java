@@ -17,22 +17,22 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.test.ldap;
 
+import org.apache.commons.lang.StringUtils;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.StringTokenizer;
-
-import org.apache.commons.lang.StringUtils;
 
 /**
  * This class was created to generate an LDIF file containing a set of groups
@@ -209,7 +209,7 @@ public class PSLdapGroupUserGenerator
       final int MAX_USERS_IN_GROUP = 200;
       final int actualMaxUsersInGroup = 
          MAX_USERS_IN_GROUP < userCount-1 ? MAX_USERS_IN_GROUP : userCount-1;
-      Random r = new Random();
+      SecureRandom r = new SecureRandom();
       for (; groupIdx < idDistribution.length; groupIdx++)
       {
          idDistribution[groupIdx] = r.nextInt(actualMaxUsersInGroup);

@@ -17,30 +17,37 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.HTTPClient;
 
+import com.percussion.cms.IPSConstants;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.testing.PSClientTestCase;
 import com.percussion.utils.testing.IntegrationTest;
 import com.percussion.xml.PSXmlDocumentBuilder;
-
-import java.io.IOException;
-import java.util.Properties;
-
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
+import java.io.IOException;
+import java.util.Properties;
+
 import static org.junit.Assert.assertTrue;
 
 @Deprecated
 @Category(IntegrationTest.class)
+@SuppressFBWarnings("INFORMATION_EXPOSURE_THROUGH_AN_ERROR_MESSAGE")
 public class HTTPClientTest extends PSClientTestCase
 {
+   private static final Logger log = LogManager.getLogger(IPSConstants.TEST_LOG);
+
    /**
     * Ctor.
     * @param name - test name.
@@ -111,7 +118,7 @@ public class HTTPClientTest extends PSClientTestCase
             "'/Rhythmyx/rxwebdav/Sites/CorporateInvestments/Files' response doesn't have:" +
             " 'D:multistatus' ", nl.getLength() > 0);
 
-      System.out.println(respData);
+      log.info(respData);
 
    }
 
@@ -124,7 +131,7 @@ public class HTTPClientTest extends PSClientTestCase
       }
       catch (Exception e)
       {
-         System.err.println(e.toString());
+        log.error(PSExceptionUtils.getMessageForLog(e));
       }
    }
 }

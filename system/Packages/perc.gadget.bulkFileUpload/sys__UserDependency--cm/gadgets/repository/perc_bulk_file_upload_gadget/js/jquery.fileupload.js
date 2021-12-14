@@ -1,31 +1,7 @@
-/*
- *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
- *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
- *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
- *
- *     Mailing Address:
- *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percusssion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
- */
-
 /* jshint nomen:false */
 /* global define, require, window, document, location, Blob, FormData */
 
-;(function (factory) {
+(function (factory) {
     'use strict';
     if (typeof define === 'function' && define.amd) {
         // Register as an anonymous AMD module:
@@ -338,7 +314,7 @@
             if ($.type(options.formData) === 'function') {
                 return options.formData(options.form);
             }
-            if ($.isArray(options.formData)) {
+            if (Array.isArray(options.formData)) {
                 return options.formData;
             }
             if ($.type(options.formData) === 'object') {
@@ -436,7 +412,7 @@
             // Accesss to the native XHR object is required to add event listeners
             // for the upload progress event:
             if (xhr.upload) {
-                $(xhr.upload).bind('progress', function (e) {
+                $(xhr.upload).on('progress', function (e) {
                     var oe = e.originalEvent;
                     // Make sure the progress event properties get copied over:
                     e.lengthComputable = oe.lengthComputable;
@@ -453,7 +429,7 @@
         _deinitProgressListener: function (options) {
             var xhr = options.xhr ? options.xhr() : $.ajaxSettings.xhr();
             if (xhr.upload) {
-                $(xhr.upload).unbind('progress');
+                $(xhr.upload).off('progress');
             }
         },
 
@@ -589,7 +565,7 @@
                 if (!paramName.length) {
                     paramName = [fileInput.prop('name') || 'files[]'];
                 }
-            } else if (!$.isArray(paramName)) {
+            } else if (!Array.isArray(paramName)) {
                 paramName = [paramName];
             }
             return paramName;
@@ -1090,10 +1066,10 @@
             // If the fileInput had focus before it was detached,
             // restore focus to the inputClone.
             if (restoreFocus) {
-                inputClone.focus();
+                inputClone.trigger('focus');
             }
             // Avoid memory leaks with the detached file input:
-            $.cleanData(input.unbind('remove'));
+            $.cleanData(input.off('remove'));
             // Replace the original file input element in the fileInput
             // elements set with the clone, which has been copied including
             // event handlers:

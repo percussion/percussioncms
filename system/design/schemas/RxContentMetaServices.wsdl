@@ -17,12 +17,16 @@
   ~      Burlington, MA 01803, USA
   ~      +01-781-438-9900
   ~      support@percussion.com
-  ~      https://www.percusssion.com
+  ~      https://www.percussion.com
   ~
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   -->
 
-<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="urn:www.percussion.com/webservices/contentmeta/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns="http://www.w3.org/2001/XMLSchema" xmlns:hdr="urn:www.percussion.com/webservices/header" xmlns:cmp="urn:www.percussion.com/webservices/contentmeta" targetNamespace="urn:www.percussion.com/webservices/contentmeta/wsdl">
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="urn:www.percussion.com/webservices/contentmeta/wsdl"
+             xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+             xmlns:hdr="urn:www.percussion.com/webservices/header"
+             xmlns:cmp="urn:www.percussion.com/webservices/contentmeta"
+             targetNamespace="urn:www.percussion.com/webservices/contentmeta/wsdl">
 	<import location="sys_Header.xsd" namespace="urn:www.percussion.com/webservices/header"/>
 	<import location="sys_ContentMetaParameters.xsd" namespace="urn:www.percussion.com/webservices/contentmeta"/>
 	<message name="header-request">

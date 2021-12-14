@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -34,12 +34,11 @@ import com.percussion.server.PSConsole;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.util.PSHtmlParameters;
 import com.percussion.workflow.PSWorkFlowUtils;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 /**
  * Checks out a slot a item before expanding it. If the item is already

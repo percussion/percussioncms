@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -29,7 +29,6 @@ import com.percussion.delivery.forms.data.IPSFormData;
 import com.percussion.delivery.forms.data.PSFormData;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
-import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 import org.springframework.transaction.annotation.Isolation;
@@ -117,7 +116,7 @@ public class PSFormDao extends HibernateDaoSupport implements IPSFormDao
             // because of limitations in JDBC/hibernate, we have to keep IN
             // clauses less than 1k elements
             String query = "update PSFormData set isExported = 'y' where id in (:ids)";
-            Collection<Long> values = new ArrayList<Long>();
+            Collection<Long> values = new ArrayList<>();
             for (IPSFormData form : forms)
             {
                 values.add(Long.valueOf(form.getId()));
@@ -194,7 +193,7 @@ public class PSFormDao extends HibernateDaoSupport implements IPSFormDao
     @SuppressWarnings("unchecked")
     public List<String> findDistinctFormNames()
     {
-        List<String> lowerNames = new ArrayList<String>();
+        List<String> lowerNames = new ArrayList<>();
         List<String> distinctNames = (List<String>) getHibernateTemplate().find(
                 "select distinct name from PSFormData order by name asc");
         Iterator<String> iter = distinctNames.iterator();

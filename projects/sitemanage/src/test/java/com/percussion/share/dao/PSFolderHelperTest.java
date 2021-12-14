@@ -17,28 +17,27 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.share.dao;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.percussion.utils.testing.IntegrationTest;
-import org.apache.cactus.ServletTestCase;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.junit.Before;
-import org.junit.Test;
-
-import com.percussion.cms.IPSConstants;
+import com.percussion.security.SecureStringUtils;
 import com.percussion.share.dao.impl.PSFolderHelper;
 import com.percussion.share.data.IPSItemSummary;
 import com.percussion.share.spring.PSSpringWebApplicationContextUtils;
+import com.percussion.utils.testing.IntegrationTest;
 import com.percussion.webservices.security.IPSSecurityWs;
+import org.apache.cactus.ServletTestCase;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.junit.Before;
+import org.junit.Test;
 import org.junit.experimental.categories.Category;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Category(IntegrationTest.class)
 public class PSFolderHelperTest extends ServletTestCase
@@ -224,12 +223,12 @@ public class PSFolderHelperTest extends ServletTestCase
             
             // previous middle folder name should be generated (from invalid name)
             String name5 = folderHelper.getUniqueFolderName("//Sites",
-                    folderName + IPSConstants.INVALID_ITEM_NAME_CHARACTERS);
+                    folderName + SecureStringUtils.INVALID_ITEM_NAME_CHARACTERS);
             assertTrue(name5.equals(name2));
             
             // invalid name that doesn't exist
             String name6 = folderHelper.getUniqueFolderName("//Sites",
-                    "Invalid" + IPSConstants.INVALID_ITEM_NAME_CHARACTERS + "FolderName");
+                    "Invalid" + SecureStringUtils.INVALID_ITEM_NAME_CHARACTERS + "FolderName");
             assertTrue(name6.equals("InvalidFolderName"));
         }
         finally
@@ -267,6 +266,6 @@ public class PSFolderHelperTest extends ServletTestCase
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log log = LogFactory.getLog(PSFolderHelperTest.class);
+    private static final Logger log = LogManager.getLogger(PSFolderHelperTest.class);
 
 }

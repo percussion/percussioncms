@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -29,29 +29,14 @@ import com.percussion.comments.data.PSCommentModeration;
 import com.percussion.comments.data.PSSiteComments;
 import com.percussion.comments.service.IPSCommentsService;
 import com.percussion.comments.service.impl.PSCommentsService;
-import com.percussion.delivery.data.PSDeliveryInfo;
 import com.percussion.delivery.data.DeliveryServicesContent.CommentService;
 import com.percussion.delivery.data.DeliveryServicesContent.CommentService.Comments.Comment;
+import com.percussion.delivery.data.PSDeliveryInfo;
 import com.percussion.delivery.service.IPSDeliveryInfoService;
 import com.percussion.pagemanagement.service.IPSPageService;
-import com.percussion.pubserver.IPSPubServerService;
 import com.percussion.share.dao.IPSFolderHelper;
 import com.percussion.sitemanage.dao.IPSiteDao;
-
-import java.io.FileNotFoundException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import javax.ws.rs.WebApplicationException;
-
 import com.percussion.utils.testing.IntegrationTest;
-import junit.framework.JUnit4TestAdapter;
-import junit.framework.TestCase;
-
 import org.apache.commons.lang.StringUtils;
 import org.jmock.Mockery;
 import org.jmock.integration.junit4.JMock;
@@ -61,6 +46,15 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
+
+import javax.ws.rs.WebApplicationException;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;

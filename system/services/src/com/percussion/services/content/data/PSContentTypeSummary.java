@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -25,16 +25,15 @@ package com.percussion.services.content.data;
 
 import com.percussion.services.utils.xml.PSXmlSerializationHelper;
 import com.percussion.utils.guid.IPSGuid;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.xml.sax.SAXException;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This object represents a single content type summary.
@@ -63,14 +62,14 @@ public class PSContentTypeSummary
     * be empty.
     */
    private List<PSFieldDescription> fields = 
-      new ArrayList<PSFieldDescription>();
+      new ArrayList<>();
    
    /**
     * A list of fields for this content type, never <code>null</code>, may
     * be empty.
     */
    private List<PSContentTypeSummaryChild> children = 
-      new ArrayList<PSContentTypeSummaryChild>();
+      new ArrayList<>();
    
    /**
     * Get the content type name.
@@ -138,7 +137,7 @@ public class PSContentTypeSummary
    public void setFields(List<PSFieldDescription> fields)
    {
       if (fields == null)
-         this.fields = new ArrayList<PSFieldDescription>();
+         this.fields = new ArrayList<>();
       else
          this.fields = fields;
    }
@@ -176,7 +175,7 @@ public class PSContentTypeSummary
    public void setChildren(List<PSContentTypeSummaryChild> children)
    {
       if (children == null)
-         this.children = new ArrayList<PSContentTypeSummaryChild>();
+         this.children = new ArrayList<>();
       else
          this.children = children;
    }

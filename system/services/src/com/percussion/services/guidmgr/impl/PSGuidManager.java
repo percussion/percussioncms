@@ -17,30 +17,11 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.services.guidmgr.impl;
-
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.security.SecureRandom;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
-
-import com.percussion.util.PSBaseBean;
-import org.apache.commons.lang.StringUtils;
-import org.hibernate.HibernateException;
-import org.hibernate.LockMode;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.percussion.design.objectstore.PSLocator;
 import com.percussion.services.catalog.PSTypeEnum;
@@ -50,8 +31,26 @@ import com.percussion.services.guidmgr.data.PSGuid;
 import com.percussion.services.guidmgr.data.PSGuidGeneratorData;
 import com.percussion.services.guidmgr.data.PSLegacyGuid;
 import com.percussion.services.guidmgr.data.PSNextNumber;
+import com.percussion.util.PSBaseBean;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.types.PSConversions;
+import org.apache.commons.lang.StringUtils;
+import org.hibernate.HibernateException;
+import org.hibernate.LockMode;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.security.SecureRandom;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Guid manager implementation. Allocates new ids in groups, updating the
@@ -125,7 +124,7 @@ public class PSGuidManager implements IPSGuidManager
     * <li>The string name of the next number column to use
     * </ul>
     */
-   static ConcurrentHashMap<Object, Allocation> ms_allocation = new ConcurrentHashMap<Object, Allocation>(8, 0.9f, 1);
+   static ConcurrentHashMap<Object, Allocation> ms_allocation = new ConcurrentHashMap<>(8, 0.9f, 1);
 
 
    static Object allocationCreationLock = new Object();
@@ -240,7 +239,7 @@ public class PSGuidManager implements IPSGuidManager
 
    public List<IPSGuid> createGuids(byte repositoryId, PSTypeEnum type, int count)
    {
-      List<IPSGuid> rval = new ArrayList<IPSGuid>();
+      List<IPSGuid> rval = new ArrayList<>();
       for (int i = 0; i < count; i++)
       {
          rval.add(createGuid(repositoryId, type));
@@ -668,7 +667,7 @@ public class PSGuidManager implements IPSGuidManager
       }
       else
       {
-         List<Integer> rval = new ArrayList<Integer>();
+         List<Integer> rval = new ArrayList<>();
          for (IPSGuid g : guids)
          {
             PSLegacyGuid lg = (PSLegacyGuid) g;

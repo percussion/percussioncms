@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -26,11 +26,11 @@ package com.percussion.share.dao.impl;
 import com.percussion.cms.objectstore.PSInvalidContentTypeException;
 import com.percussion.cms.objectstore.server.PSItemDefManager;
 import com.percussion.design.objectstore.PSLocator;
-import com.percussion.design.objectstore.PSRelationship;
 import com.percussion.design.objectstore.PSRelationshipConfig;
 import com.percussion.fastforward.managednav.IPSManagedNavService;
 import com.percussion.pagemanagement.service.IPSPageService;
 import com.percussion.pathmanagement.service.impl.PSAssetPathItemService;
+import com.percussion.recycle.service.impl.PSRecycleService;
 import com.percussion.services.content.data.PSItemSummary;
 import com.percussion.services.content.data.PSItemSummary.ObjectTypeEnum;
 import com.percussion.services.guidmgr.data.PSLegacyGuid;
@@ -49,10 +49,9 @@ import com.percussion.utils.thread.PSThreadUtils;
 import com.percussion.webservices.PSErrorException;
 import com.percussion.webservices.content.IPSContentWs;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -64,6 +63,7 @@ import static java.util.Arrays.asList;
 import static org.apache.commons.lang.Validate.isTrue;
 import static org.apache.commons.lang.Validate.notEmpty;
 
+
 @PSSiteManageBean("itemSummaryService")
 public class PSItemSummaryService implements IPSItemSummaryFactoryService, IPSDataItemSummaryService
 {
@@ -74,14 +74,16 @@ public class PSItemSummaryService implements IPSItemSummaryFactoryService, IPSDa
     private static final String PAGE_ICON_PATH = ICON_BASE_PATH + "sys_resources/images/finderPage.png";
     private static final String LANDING_PAGE_ICON_PATH = ICON_BASE_PATH + "sys_resources/images/finderLandingPage.png";
     
-    private IPSContentWs contentWs;
-    private PSItemDefManager itemDefManager;
-    private IPSIdMapper idMapper;
-    private IPSManagedNavService navService;
+    private final IPSContentWs contentWs;
+    private final PSItemDefManager itemDefManager;
+    private final IPSIdMapper idMapper;
+    private final IPSManagedNavService navService;
     
     private static final String ASSET_ROOT = PSAssetPathItemService.ASSET_ROOT;
 
     private static final String FOLDER_RELATE_TYPE = PSRelationshipConfig.TYPE_FOLDER_CONTENT;
+    private static final String RECYCLED_TYPE = PSRelationshipConfig.TYPE_RECYCLED_CONTENT;
+    private static final String RECYCLING_ROOT = PSRecycleService.RECYCLING_ROOT;
 
     /**
      * Folders created by the system.
@@ -101,20 +103,29 @@ public class PSItemSummaryService implements IPSItemSummaryFactoryService, IPSDa
     }
 
     @Override
-    public String pathToId(String path)
-    {
-        return pathToId(path, FOLDER_RELATE_TYPE);
+    public String pathToId(String path) throws DataServiceNotFoundException {
+        String pathToId = null;
+        if(path==null){
+            throw new IllegalArgumentException("path may not be null or empty");
+        }
+        if(path.contains(RECYCLING_ROOT)){
+            //CMS-8526 : The id was being returned null as for recycle bin the relationship type should be RecycledContent and others FolderContent.
+            //Null value led to other display properties not getting populated thus the relevant data in column was not showing up in list view of Recycle bin.
+            pathToId = pathToId(path, RECYCLED_TYPE);
+        }else{
+            pathToId = pathToId(path, FOLDER_RELATE_TYPE);
+        }
+        return pathToId;
     }
 
     @Override
-    public String pathToId(String path, String relationshipTypeName)
-    {
+    public String pathToId(String path, String relationshipTypeName) throws DataServiceNotFoundException {
         notEmpty(path, "Path cannot be null or empty");
         try
         {
             String normalizedPath = StringUtils.removeEnd(path, "/");
             if(log.isTraceEnabled())
-                log.trace("Getting id for path: " + path + " normalized: " + normalizedPath);
+                log.trace("Getting id for path: {} normalized: {}",path , normalizedPath);
             IPSGuid guid = contentWs.getIdByPath(normalizedPath, relationshipTypeName);
             String id = guid == null ? null : idMapper.getString(guid);
             if(log.isTraceEnabled())
@@ -143,8 +154,7 @@ public class PSItemSummaryService implements IPSItemSummaryFactoryService, IPSDa
     }
     
     @Override
-    public List<PSDataItemSummary> findChildFolders(String id)
-    {
+    public List<PSDataItemSummary> findChildFolders(String id) throws DataServiceLoadException {
         notEmpty(id, "id");
         try
         {
@@ -155,8 +165,7 @@ public class PSItemSummaryService implements IPSItemSummaryFactoryService, IPSDa
         }
         catch (Exception e)
         {
-            String err = "Failed to load: " + id;
-            log.error(err, e);
+            log.error("Failed to load: {}" ,id);
             throw new DataServiceLoadException(e);
         }
     }
@@ -178,14 +187,13 @@ public class PSItemSummaryService implements IPSItemSummaryFactoryService, IPSDa
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    public static final Log log = LogFactory.getLog(PSItemSummaryService.class);
+    public static final Logger log = LogManager.getLogger(PSItemSummaryService.class);
 
 
     
     private <F extends IPSItemSummary> List<F> convert(IPSCatalogItemFactory<F, String> factory,
-            List<PSItemSummary> sums, int landingPageId, String relationshipTypeName) throws PSErrorException, PSInvalidContentTypeException
-    {
-        List<F> items = new ArrayList<F>();
+            List<PSItemSummary> sums, int landingPageId, String relationshipTypeName) throws PSErrorException, PSInvalidContentTypeException, DataServiceLoadException {
+        List<F> items = new ArrayList<>();
         for(PSItemSummary sum : sums) 
         {
             PSThreadUtils.checkForInterrupt();
@@ -225,8 +233,8 @@ public class PSItemSummaryService implements IPSItemSummaryFactoryService, IPSDa
         IPSGuid childNavId = navService.findNavigationIdFromFolder(item.getGUID(), relationshipTypeName);
         if(childNavId != null)
         {
-        	Map<String, String> map = navService.getNavonProperties(childNavId,Collections.singletonList(navService.NAVON_FIELD_TYPE));
-        	navType = map.get(navService.NAVON_FIELD_TYPE);
+        	Map<String, String> map = navService.getNavonProperties(childNavId,Collections.singletonList(IPSManagedNavService.NAVON_FIELD_TYPE));
+        	navType = map.get(IPSManagedNavService.NAVON_FIELD_TYPE);
         }
         return navType; 
     }
@@ -264,7 +272,7 @@ public class PSItemSummaryService implements IPSItemSummaryFactoryService, IPSDa
      * Gets the category for the given item.
      * 
      * @param itemSummary the item in question, assumed not <code>null</code>.
-     * @param isNavFolder <code>true</code> if the category is for a
+     * @param navType <code>true</code> if the category is for a
      * navigation folder.
      * @param isLandingPage <code>true</code> if the category is for a landing
      * page.
@@ -357,7 +365,7 @@ public class PSItemSummaryService implements IPSItemSummaryFactoryService, IPSDa
      * @param item the item in question, not <code>null</code>.
      * @param isLandingPage <code>true</code> if the item is a landing page;
      * otherwise it is <code>false</code>.
-     * @param isNavFolder <code>true</code> if the item is a navigation folder. 
+     * @param navType <code>true</code> if the item is a navigation folder.
      * 
      * @return the icon path, never blank.
      */
@@ -397,8 +405,8 @@ public class PSItemSummaryService implements IPSItemSummaryFactoryService, IPSDa
             IPSGuid guid = idMapper.getGuid(id);
             List<PSItemSummary> sums = contentWs.findFolderChildren(guid, false);
             int landingPageId = getLandingPageId(sums);
-            List<F> items = convert(factory, sums, landingPageId, PSRelationshipConfig.TYPE_FOLDER_CONTENT);
-            return items;
+            return convert(factory, sums, landingPageId, PSRelationshipConfig.TYPE_FOLDER_CONTENT);
+         
         }
         catch (Exception e)
         {
@@ -439,7 +447,7 @@ public class PSItemSummaryService implements IPSItemSummaryFactoryService, IPSDa
         try
         {
             IPSGuid guid = idMapper.getGuid(id);
-            List<PSItemSummary> sums = contentWs.findItems(asList(guid), false);
+            List<PSItemSummary> sums = contentWs.findItems(Collections.singletonList(guid), false);
             // get the landing page
             if (sums.isEmpty()) return null;
 
@@ -468,9 +476,8 @@ public class PSItemSummaryService implements IPSItemSummaryFactoryService, IPSDa
     
     protected String getIconFromSystem(String id) {
         PSLocator locator = idMapper.getLocator(id);
-        Map<PSLocator, String> paths = itemDefManager.getContentTypeIconPaths(asList(locator));
-        String path = paths.get(locator);
-        return path;
+        Map<PSLocator, String> paths = itemDefManager.getContentTypeIconPaths(Collections.singletonList(locator));
+        return paths.get(locator);
     }
     
     
@@ -479,8 +486,6 @@ public class PSItemSummaryService implements IPSItemSummaryFactoryService, IPSDa
             IPSCatalogItemFactory<F, String> factory)
             throws DataServiceLoadException, DataServiceNotFoundException
     {
-        // TODO Auto-generated method stub
-        //return null;
         throw new UnsupportedOperationException("findAll is not yet supported");
     }
 

@@ -17,25 +17,26 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.content;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.share.dao.PSSerializerUtils;
-
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
-import java.lang.reflect.Constructor;
+import org.apache.commons.lang.Validate;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.xml.bind.UnmarshalException;
-
-import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 
 /**
  * Abstract root class for all generators. It provides methods to validate input
@@ -55,7 +56,7 @@ import org.apache.commons.logging.LogFactory;
  */
 public abstract class PSGenericContentGenerator<T>
 {
-    protected Log log = LogFactory.getLog(getClass());
+    protected static Logger log = LogManager.getLogger(PSGenericContentGenerator.class);
     
     /**
      * The remote server URL.
@@ -218,21 +219,22 @@ public abstract class PSGenericContentGenerator<T>
         
         Validate.notEmpty(url, "Server URL must be specified");
         Validate.notEmpty(defFileName, "XML file name must be specified");
-        
-        Constructor<K> ctor;
-        try
-        {
+
+        Constructor<K> ctor = null;
+        try {
             ctor = generatorClass.getConstructor(String.class, InputStream.class, String.class, String.class);
-            PSGenericContentGenerator contentGenerator =
-                ctor.newInstance(url, new FileInputStream(defFileName), uid, pw);
-            
-            contentGenerator.cleanup();
-            contentGenerator.generateContent();
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-            throw new RuntimeException(e);
+
+            try(FileInputStream fs = new FileInputStream(defFileName)){
+                PSGenericContentGenerator contentGenerator =
+                    ctor.newInstance(url,fs , uid, pw);
+
+                contentGenerator.cleanup();
+                contentGenerator.generateContent();
+            }
+
+        } catch (IOException | IllegalAccessException | InstantiationException | InvocationTargetException | NoSuchMethodException e) {
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
     }
     
@@ -273,16 +275,19 @@ public abstract class PSGenericContentGenerator<T>
         {
             ctor = generatorClass.getConstructor(String.class, String.class, Boolean.class, InputStream.class,
                     String.class, String.class);
-            PSGenericContentGenerator contentGenerator = ctor.newInstance(url, secureUrl,
-                    allowSelfSignedCertificate.booleanValue(), new FileInputStream(xmlDefFileName), adminUser,
-                    adminPassword);
+            try(FileInputStream fi = new FileInputStream(xmlDefFileName)) {
+                PSGenericContentGenerator contentGenerator = ctor.newInstance(url, secureUrl,
+                        allowSelfSignedCertificate.booleanValue(), fi, adminUser,
+                        adminPassword);
 
-            contentGenerator.cleanup();
-            contentGenerator.generateContent();
+                contentGenerator.cleanup();
+                contentGenerator.generateContent();
+            }
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new RuntimeException(e);
         }
     }    

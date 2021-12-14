@@ -17,30 +17,30 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.maintenance.service.impl;
 
+import com.percussion.cms.IPSConstants;
 import com.percussion.maintenance.service.IPSMaintenanceManager;
 import com.percussion.maintenance.service.IPSMaintenanceProcess;
+import org.apache.commons.lang.Validate;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 
 public class PSMaintenanceManager implements IPSMaintenanceManager
 {
 
-    private ConcurrentMap<String, IPSMaintenanceProcess> workingProcesses = new ConcurrentHashMap<String, IPSMaintenanceProcess>();
+    private ConcurrentMap<String, IPSMaintenanceProcess> workingProcesses = new ConcurrentHashMap<>();
     private AtomicBoolean hasErrors = new AtomicBoolean(false);
-    private static final Log log = LogFactory.getLog(PSMaintenanceManager.class);
+    private static final Logger log = LogManager.getLogger(IPSConstants.SERVER_LOG);
     
     @Override
     public void startingWork(IPSMaintenanceProcess process)
@@ -54,7 +54,7 @@ public class PSMaintenanceManager implements IPSMaintenanceManager
             throw new IllegalStateException("A process with that ID is already running: " + process.getProcessId());            
         }
         
-        log.info("Process starting work: " + process.getProcessId());
+        log.info("Process starting work: {}" , process.getProcessId());
     }
 
     @Override
@@ -67,7 +67,7 @@ public class PSMaintenanceManager implements IPSMaintenanceManager
     public void workCompleted(IPSMaintenanceProcess process)
     {
         removeRunningProcess(process);
-        log.info("Process completed work: " + process.getProcessId());
+        log.info("Process completed work: {}" , process.getProcessId());
     }
 
     @Override
@@ -82,7 +82,9 @@ public class PSMaintenanceManager implements IPSMaintenanceManager
     {
         hasErrors.set(true);
         removeRunningProcess(process);
-        log.info("Process completed work with failures: " + process.getProcessId());
+        log.error("==============================================================================");
+        log.error("Process completed work with failures: {}. Putting server in maintenance mode. Users will not be able to login until this startup issue is resolved." , process.getProcessId());
+        log.error("==============================================================================");
     }
     
     

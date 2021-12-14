@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -17,32 +17,11 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.itemmanagement.service.impl;
-
-import static java.text.MessageFormat.format;
-import static java.util.Arrays.asList;
-import static java.util.Collections.singletonList;
-
-import static org.apache.commons.lang.StringUtils.isBlank;
-import static org.apache.commons.lang.Validate.notNull;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.commons.lang.builder.ToStringStyle;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import com.percussion.assetmanagement.service.IPSWidgetAssetRelationshipService;
 import com.percussion.cms.objectstore.PSComponentSummary;
@@ -60,8 +39,6 @@ import com.percussion.pagemanagement.service.IPSPageService;
 import com.percussion.pubserver.IPSPubServerService;
 import com.percussion.rx.publisher.IPSEditionTaskStatusCallback;
 import com.percussion.services.contentchange.IPSContentChangeService;
-import com.percussion.services.contentchange.PSContentChangeServiceLocator;
-import com.percussion.services.contentchange.data.PSContentChangeEvent;
 import com.percussion.services.contentchange.data.PSContentChangeType;
 import com.percussion.services.guidmgr.IPSGuidManager;
 import com.percussion.services.legacy.IPSCmsObjectMgr;
@@ -73,13 +50,34 @@ import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.services.workflow.data.PSState;
 import com.percussion.services.workflow.data.PSWorkflow;
 import com.percussion.share.dao.IPSFolderHelper;
+import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.IPSIdMapper;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.share.spring.PSSpringWebApplicationContextUtils;
 import com.percussion.sitemanage.task.impl.PSWorkflowEditionTask;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.webservices.PSWebserviceUtils;
 import com.percussion.webservices.publishing.IPSPublishingWs;
 import com.percussion.webservices.system.IPSSystemWs;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import static java.text.MessageFormat.format;
+import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
+import static org.apache.commons.lang.StringUtils.isBlank;
+import static org.apache.commons.lang.Validate.notNull;
 
 /**
  * 
@@ -164,7 +162,7 @@ public abstract class PSAbstractWorkflowExtension implements IPSExtension
         }
         
         public static enum AssetType {
-            PAGE,RESOURCE,LOCAL,SHARED;
+            PAGE,RESOURCE,LOCAL,SHARED
         }
         
         /**
@@ -194,8 +192,9 @@ public abstract class PSAbstractWorkflowExtension implements IPSExtension
         
         public static boolean passedStartPublishDate(PSComponentSummary summary)
         {
-            if (summary.getContentStartDate() == null)
+            if (summary.getContentStartDate() == null) {
                 return true;
+            }
             
             Date currentDate = new Date();
             return (summary.getContentStartDate().getTime() <= currentDate.getTime());
@@ -216,12 +215,12 @@ public abstract class PSAbstractWorkflowExtension implements IPSExtension
     {
         private Map<String, String> params;
         // used to keep track of template ids that have already been searched for shared assets
-        private final HashSet<String> seenIds = new HashSet<String>();
+        private final HashSet<String> seenIds = new HashSet<>();
         
         /**
          * @see #isAlreadyWorkflowed(WorkflowItem)
          */
-        private Set<IPSGuid> successfullyWorkflowedIds = new HashSet<IPSGuid>();
+        private Set<IPSGuid> successfullyWorkflowedIds = new HashSet<>();
         
         public void processItem(IPSPubItemStatus item)
         {
@@ -238,8 +237,9 @@ public abstract class PSAbstractWorkflowExtension implements IPSExtension
             boolean skipped = false;
             Status s = item.getStatus();
             Operation o = item.getOperation();
-            if (log.isDebugEnabled())
+            if (log.isDebugEnabled()) {
                 log.debug(format("Item id: {2}, Operation:{0}, Status:{1}", o, s, item.getContentId()));
+            }
             if (o == Operation.PUBLISH && s == Status.SUCCESS)
             {
                 skipped = workflowItemIfPossible(item, site, isDefaultPubServer);
@@ -247,12 +247,14 @@ public abstract class PSAbstractWorkflowExtension implements IPSExtension
             else
             {
                     // Only set on debug confusing warning to user otherwise.
-                    if (s != Status.SUCCESS)
-                        log.warn(format("Not workflowing item:{0} because Message:{3} Operation:{1}, Status{2}", 
-                            item.getContentId(), o,s, item.getMessage()));
-                    else
-                        log.debug(format("Not workflowing item:{0} because Message:{3} Operation:{1}, Status{2}", 
-                            item.getContentId(), o,s, item.getMessage()));
+                    if (s != Status.SUCCESS) {
+                        log.warn(format("Not workflowing item:{0} because Message:{3} Operation:{1}, Status{2}",
+                                item.getContentId(), o, s, item.getMessage()));
+                    }
+                    else {
+                        log.debug(format("Not workflowing item:{0} because Message:{3} Operation:{1}, Status{2}",
+                                item.getContentId(), o, s, item.getMessage()));
+                    }
             }
             
             return skipped;
@@ -264,8 +266,7 @@ public abstract class PSAbstractWorkflowExtension implements IPSExtension
          * Called from a workflow action.
          * @param workflowContext never <code>null</code>.
          */
-        public void processItem(IPSWorkFlowContext workflowContext)
-        {
+        public void processItem(IPSWorkFlowContext workflowContext) throws IPSWidgetAssetRelationshipService.PSWidgetAssetRelationshipServiceException {
             notNull(workflowContext, "workflowContext cannot be null");
             IPSGuid guid = getId(workflowContext.getContentID(), null);
             WorkflowItem wfItem = getWorkflowItem(guid);
@@ -301,15 +302,17 @@ public abstract class PSAbstractWorkflowExtension implements IPSExtension
                 
                 //Skip the workflow transition if the item published does not match the current revision to cover scheduled publish case.
                 if(item.getRevisionId() != wfItem.itemSummary.getCurrentLocator().getRevision()){
-                    if (log.isDebugEnabled())
+                    if (log.isDebugEnabled()) {
                         log.debug("Item is most likely scheduled for a future publish: " + wfItem);
+                    }
                     wfItem.status = ItemStatus.IGNORED;
                     return true;
                 }
                 
                 if (isAlreadyWorkflowed(wfItem)) { 
-                    if (log.isDebugEnabled())
+                    if (log.isDebugEnabled()) {
                         log.debug("Item is already workflowed: " + wfItem);
+                    }
                     wfItem.status = ItemStatus.IGNORED;
                     return true;
                 }
@@ -345,8 +348,9 @@ public abstract class PSAbstractWorkflowExtension implements IPSExtension
                     addToSuccessfulItems(wfItem);
                     wfItem.status = ItemStatus.PROCESSED;
                 }
-                else
+                else {
                     wfItem.status = ItemStatus.FAILED;
+                }
             }
             catch (Exception e)
             {
@@ -420,8 +424,9 @@ public abstract class PSAbstractWorkflowExtension implements IPSExtension
                 {
                     if (isAlreadyWorkflowed(wfItem)) {
                         wfItem.status = ItemStatus.IGNORED;
-                        if (log.isDebugEnabled())
+                        if (log.isDebugEnabled()) {
                             log.debug("Did not workflow item: " + wfItem + " because its already been workflowed.");
+                        }
                         return success;
                     }
                     
@@ -430,14 +435,16 @@ public abstract class PSAbstractWorkflowExtension implements IPSExtension
                         if (pageWfItem != null && !isAllowedSitePublishable(wfItem, pageWfItem))
                         {
                             wfItem.status = ItemStatus.IGNORED;
-                            if (log.isDebugEnabled())
+                            if (log.isDebugEnabled()) {
                                 log.debug("Did not workflow item: " + wfItem + " because its not allowed for the current site.");
+                            }
                             
                         }
                         else
                         {
-                            if (log.isDebugEnabled())
+                            if (log.isDebugEnabled()) {
                                 log.debug("Attempting to transition item: " + wfItem);
+                            }
                             transition(wfItem);
                             addToSuccessfulItems(wfItem);
                         }
@@ -581,8 +588,9 @@ public abstract class PSAbstractWorkflowExtension implements IPSExtension
             	result = workflowHelper.isItemInStagingState(summary.getContentId());
             }
             else{
-            	if (summary.getPublicRevision() != -1)
-            		return true;
+            	if (summary.getPublicRevision() != -1) {
+                    return true;
+                }
             	result = workflowHelper.isItemInApproveState(summary.getContentId());
             }
 
@@ -594,7 +602,7 @@ public abstract class PSAbstractWorkflowExtension implements IPSExtension
          * @param page never <code>null</code>.
          * @return never <code>null</code>.
          */
-        protected List<WorkflowItem> getLocalAssetWorkflowItems(WorkflowItem page) {
+        protected List<WorkflowItem> getLocalAssetWorkflowItems(WorkflowItem page) throws IPSWidgetAssetRelationshipService.PSWidgetAssetRelationshipServiceException {
             IPSGuid guid = page.guid;
             String newId = idMapper.getString(guid);
             Set<String> ids =  widgetAssetRelationshipService.getLocalAssets(newId);
@@ -616,7 +624,7 @@ public abstract class PSAbstractWorkflowExtension implements IPSExtension
         }
         
         private List<WorkflowItem> loadWorkflowItems(Collection<String> ids, AssetType assetType) {
-            List<WorkflowItem> items = new ArrayList<WorkflowItem>();
+            List<WorkflowItem> items = new ArrayList<>();
             for (String id : ids) {
                 IPSGuid guid = getIdMapper().getGuid(id);
                 WorkflowItem item = getWorkflowItem(guid);
@@ -631,7 +639,7 @@ public abstract class PSAbstractWorkflowExtension implements IPSExtension
          * @param page never <code>null</code>.
          * @return never <code>null</code>.
          */
-        protected List<WorkflowItem> getSharedAssetWorkflowItems(WorkflowItem page) {
+        protected List<WorkflowItem> getSharedAssetWorkflowItems(WorkflowItem page) throws IPSDataService.DataServiceLoadException, IPSDataService.DataServiceNotFoundException, IPSWidgetAssetRelationshipService.PSWidgetAssetRelationshipServiceException, PSValidationException {
             IPSGuid guid = page.guid;
             String newId = getIdMapper().getString(guid);
             Set<String> ids =  getWidgetAssetRelationshipService().getSharedAssets(newId);
@@ -838,7 +846,7 @@ public abstract class PSAbstractWorkflowExtension implements IPSExtension
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    protected final Log log = LogFactory.getLog(getClass());
+    protected final Logger log = LogManager.getLogger(getClass());
 
 }
 

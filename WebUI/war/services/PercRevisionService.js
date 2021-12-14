@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -43,7 +43,7 @@
     function getRevisionDetails(itemId, callback)
     {
         var url = $.perc_paths.ITEM_REVISIONS + "/" + itemId;
-        $.PercServiceUtils.makeJsonRequest(url,$.PercServiceUtils.TYPE_GET,true,callback);
+        $.PercServiceUtils.makeJsonRequest(url,$.PercServiceUtils.TYPE_GET,false,callback);
         /* Test Data****
         var result = [{revId:1,lastModifiedDate:"Jul 21, 2010 1:33:13 PM",lastModifier:"Admin", status:"Live"},
                       {revId:2,lastModifiedDate:"Jul 22, 2010 1:33:13 PM",lastModifier:"Editor", status:"Pending"},

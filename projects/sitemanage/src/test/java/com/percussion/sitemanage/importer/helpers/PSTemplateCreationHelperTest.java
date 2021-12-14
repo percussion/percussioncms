@@ -17,12 +17,13 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.sitemanage.importer.helpers;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.pagemanagement.dao.IPSPageDao;
 import com.percussion.pagemanagement.data.PSPage;
 import com.percussion.pagemanagement.data.PSTemplateSummary;
@@ -34,24 +35,26 @@ import com.percussion.services.assembly.PSAssemblyException;
 import com.percussion.share.IPSSitemanageConstants;
 import com.percussion.share.service.IPSDataService.DataServiceLoadException;
 import com.percussion.share.service.IPSIdMapper;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.spring.PSSpringWebApplicationContextUtils;
 import com.percussion.sitemanage.dao.IPSiteDao;
 import com.percussion.sitemanage.data.PSSite;
 import com.percussion.sitemanage.data.PSSiteImportCtx;
-import com.percussion.sitemanage.error.PSSiteImportException;
+import com.percussion.sitemanage.error.PSTemplateImportException;
 import com.percussion.sitemanage.importer.IPSSiteImportLogger.PSLogObjectType;
 import com.percussion.sitemanage.importer.PSSiteImportLogger;
 import com.percussion.sitemanage.importer.helpers.impl.PSTemplateCreationHelper;
 import com.percussion.sitemanage.service.IPSSiteTemplateService;
 import com.percussion.utils.testing.IntegrationTest;
 import com.percussion.webservices.security.IPSSecurityWs;
+import org.apache.cactus.ServletTestCase;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.junit.experimental.categories.Category;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.cactus.ServletTestCase;
-import org.apache.commons.lang.StringUtils;
-import org.junit.experimental.categories.Category;
 
 /**
  * @author LucasPiccoli
@@ -60,6 +63,8 @@ import org.junit.experimental.categories.Category;
 @Category(IntegrationTest.class)
 public class PSTemplateCreationHelperTest extends ServletTestCase
 {
+
+    private static final Logger log = LogManager.getLogger(PSTemplateCreationHelperTest.class);
 
     @Override
     protected void setUp() throws Exception
@@ -152,8 +157,7 @@ public class PSTemplateCreationHelperTest extends ServletTestCase
      * Tests if template and page creation methods work. Checks that the created
      * page uses the template.
      */
-    public void testTemplateAndPageCreation()
-    {
+    public void testTemplateAndPageCreation() throws PSDataServiceException {
         // Create a site
         PSSite siteData = initSiteData();
         siteData = siteDao.save(siteData);
@@ -179,8 +183,7 @@ public class PSTemplateCreationHelperTest extends ServletTestCase
      * generation has to avoid all possible naming collisions with existing
      * templates and pages.
      */
-    public void testPageNameGeneration()
-    {
+    public void testPageNameGeneration() throws PSDataServiceException {
         // Create a site
         PSSite siteData = initSiteData();
         siteData = siteDao.save(siteData);
@@ -289,14 +292,18 @@ public class PSTemplateCreationHelperTest extends ServletTestCase
             {
                 //Test passes, since findPage method throws an exception when not able to resolve the path.
             }
-        }
-        catch (PSSiteImportException e)
+        } catch (RuntimeException e)
         {
             fail();
-        }
-        catch (RuntimeException e)
-        {
-            fail();
+        } catch (IPSPageService.PSPageException e) {
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+        } catch (PSTemplateImportException e) {
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+        } catch (PSDataServiceException e) {
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
     }
     

@@ -17,12 +17,16 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.auditlog.util;
+
+import com.percussion.error.PSExceptionUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -31,13 +35,20 @@ import java.util.Properties;
 
 public class AuditPropertyLoader {
 
+    private static final Logger log = LogManager.getLogger(AuditPropertyLoader.class);
+
+    private AuditPropertyLoader(){
+        //Don't allow new instances
+    }
+
     public static Properties loadProperties(String filePath){
         Properties prop = new Properties();
         try (InputStream input = new FileInputStream(filePath)) {
             prop.load(input);
 
         } catch (IOException ex) {
-            ex.printStackTrace();
+            log.warn("Unable to load Audit Log properties file: {}", PSExceptionUtils.getMessageForLog(ex));
+            log.debug(ex);
         }
 
         return prop;

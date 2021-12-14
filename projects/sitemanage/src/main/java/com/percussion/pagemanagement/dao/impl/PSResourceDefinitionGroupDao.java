@@ -17,19 +17,20 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.pagemanagement.dao.impl;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.pagemanagement.dao.IPSResourceDefinitionGroupDao;
 import com.percussion.pagemanagement.data.PSResourceDefinitionGroup;
 import com.percussion.pagemanagement.data.PSResourceDefinitionGroup.PSAssetResource;
 import com.percussion.pagemanagement.data.PSResourceDefinitionGroup.PSResourceDefinition;
-import com.percussion.pagemanagement.service.IPSResourceDefinitionService.PSResourceDefinitionNotFoundException;
 import com.percussion.share.dao.PSFileDataRepository;
 import com.percussion.share.dao.PSXmlFileDataRepository;
+import com.percussion.share.service.exception.PSDataServiceException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -67,12 +68,19 @@ public class PSResourceDefinitionGroupDao
             try
             {
                 PSResourceDefinitionGroup group = fileToObject(fe);
-                group.setId(fe.getId());
-                data.add(group);
+                if(group!=null) {
+                    group.setId(fe.getId());
+                    data.add(group);
+                }else{
+                    log.debug("Null group detected.");
+                }
             }
             catch (Exception e)
             {
-                log.error("Failed to parse resource definition: " + fe.getFileName(), e);
+                log.error("Failed to parse resource definition: {} Error: {}" ,
+                        fe.getFileName(),
+                        PSExceptionUtils.getMessageForLog(e));
+                log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             }
         }
         
@@ -81,50 +89,46 @@ public class PSResourceDefinitionGroupDao
 
 
 
-    public PSResourceDefinitionGroup find(String id) throws com.percussion.share.dao.IPSGenericDao.LoadException
+    public PSResourceDefinitionGroup find(String id) throws PSDataServiceException
     {
         PSResourceDefinitionData data =  getData();
         return data.getResourceDefinitionGroups().get(id);
     }
 
-    public List<PSResourceDefinitionGroup> findAll() throws com.percussion.share.dao.IPSGenericDao.LoadException
+    public List<PSResourceDefinitionGroup> findAll() throws PSDataServiceException
     {
-        return new ArrayList<PSResourceDefinitionGroup>(getData().getResourceDefinitionGroups().values());
+        return new ArrayList<>(getData().getResourceDefinitionGroups().values());
     }
     
     @Override
-    public List<PSResourceDefinition> findAllResources()
-    {
-        return new ArrayList<PSResourceDefinition>(getData().getResourceDefinitions().values());
+    public List<PSResourceDefinition> findAllResources() throws PSDataServiceException {
+        return new ArrayList<>(getData().getResourceDefinitions().values());
     }
 
-    public PSResourceDefinition findResource(String uniqueId) throws PSResourceDefinitionNotFoundException
-    {
+    public PSResourceDefinition findResource(String uniqueId) throws PSDataServiceException {
         PSResourceDefinitionUniqueId uid = new PSResourceDefinitionUniqueId(uniqueId);
         return getData().getResourceDefinitions().get(uid);
     }
 
-    public PSAssetResource findAssetResourceForType(String contentType) throws PSResourceDefinitionNotFoundException {
+    public PSAssetResource findAssetResourceForType(String contentType) throws PSDataServiceException {
         notEmpty(contentType, "contentType");
         return getData().getPrimaryAssetResources().get(contentType);
     }
     
     @Override
-    public List<PSAssetResource> findAssetResourcesForType(String contentType)
-    {
+    public List<PSAssetResource> findAssetResourcesForType(String contentType) throws PSDataServiceException {
         notEmpty(contentType, "contentType");
         Set<PSAssetResource> rvalue = getData().getContentTypeAssetResources().get(contentType);
-        if(rvalue == null) return emptyList();
-        return new ArrayList<PSAssetResource>(rvalue);
+        if(rvalue == null) {return emptyList();}
+        return new ArrayList<>(rvalue);
     }
 
     @Override
-    public List<PSAssetResource> findAssetResourcesForLegacyTemplate(String template)
-    {
+    public List<PSAssetResource> findAssetResourcesForLegacyTemplate(String template) throws PSDataServiceException {
         notEmpty(template, "template");
         Set<PSAssetResource> rvalue = getData().getLegacyTemplateAssetResources().get(template);
-        if(rvalue == null) return emptyList();
-        return new ArrayList<PSAssetResource>(rvalue);
+        if(rvalue == null){ return emptyList();}
+        return new ArrayList<>(rvalue);
     }
 
     public void delete(@SuppressWarnings("unused") String id) throws com.percussion.share.dao.IPSGenericDao.DeleteException

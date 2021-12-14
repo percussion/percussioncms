@@ -17,26 +17,24 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.design.objectstore;
 
+import com.percussion.error.PSIllegalStateException;
+import com.percussion.xml.PSXmlDocumentBuilder;
+import com.percussion.xml.PSXmlTreeWalker;
+import junit.framework.TestCase;
+import org.w3c.dom.Document;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.security.SecureRandom;
 import java.util.Arrays;
-import java.util.Random;
-
-import junit.framework.TestCase;
-
-import org.w3c.dom.Document;
-
-import com.percussion.error.PSIllegalStateException;
-import com.percussion.xml.PSXmlDocumentBuilder;
-import com.percussion.xml.PSXmlTreeWalker;
 
 /**
  *   Unit tests for the PSApplicationFile class
@@ -159,7 +157,7 @@ public class PSApplicationFileTest extends TestCase
       tempFile.deleteOnExit();
 
       final byte[] bytes = new byte[8192];
-      Random rand = new Random();
+      SecureRandom rand = new SecureRandom();
       rand.nextBytes(bytes);
       {
          FileOutputStream fOut = new FileOutputStream(tempFile);

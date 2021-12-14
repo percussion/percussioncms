@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -27,14 +27,13 @@ package com.percussion.services.filestorage.impl;
 import com.percussion.services.filestorage.IPSHashedFieldCatalogerDAO;
 import com.percussion.services.filestorage.data.PSHashedColumn;
 import com.percussion.services.filestorage.data.PSHashedColumn.HashedColumnsPK;
-
-import java.util.HashSet;
-import java.util.Set;
-
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.CriteriaSpecification;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class PSHashedFieldCatalogerDAO implements IPSHashedFieldCatalogerDAO
 {
@@ -71,7 +70,7 @@ public class PSHashedFieldCatalogerDAO implements IPSHashedFieldCatalogerDAO
    {
       Criteria crit = getSession().createCriteria(PSHashedColumn.class);
       crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
-      return new HashSet<PSHashedColumn>(crit.list());
+      return new HashSet<>(crit.list());
 
    }
 

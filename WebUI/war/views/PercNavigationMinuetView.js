@@ -17,13 +17,13 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 var timerid;
-var navMgr = $j.PercNavigationManager;
+var navMgr = $.PercNavigationManager;
 var currentView = '<%=mainNavTab%>';
 var views = {
     home: 'VIEW_HOME',
@@ -44,39 +44,39 @@ $(document).ready(function() {
 function bindNavigationEvents() {
 
     $('.perc-nav-item').on('click keypress', function(event) {
-        if(event.type == 'click' || event.which == 13) {
+        if(event.type === 'click' || event.which === 13) {
             processNavigationRequest(this);
         }
     });
 
-    $('#percToggleNavigation').click(function() {
+    $('#percToggleNavigation').on("click", function() {
         toggleNavigation();
     });
 
-    $('.perc-toggle-about').click(function() {
+    $('.perc-toggle-about').on("click", function() {
         toggleAbout();
     });
 
-    $('.perc-toggle-password').click(function() {
+    $('.perc-toggle-password').on("click", function() {
         password.togglePassword();
         password.clearPasswordFields();
     });
 
-    $('.perc-change-password-field').keyup(function() {
+    $('.perc-change-password-field').on("keyup", function() {
         password.validateNewPassword();
-    })
+    });
 
-    $('.perc-submit-password-change').click(function() {
+    $('.perc-submit-password-change').on("click", function() {
         password.submitNewPassword();
-    })
+    });
 
 }
 
 function updateNavLocation(newSiteName, newPath) {
     updateQueryStringParam('site', newSiteName);
-    $j.PercNavigationManager.setSiteName(newSiteName);
+    $.PercNavigationManager.setSiteName(newSiteName);
     updateQueryStringParam('path', encodeURIComponent(newPath));
-    $j.PercNavigationManager.setPath(newPath);
+    $.PercNavigationManager.setPath(newPath);
 }
 
 function processNavigationRequest(eventObj) {
@@ -99,12 +99,12 @@ function toggleNavigation() {
         $('#percNavigationBody').modal('_enforceFocus');
         navigationEscapeListener(true);
         $('#percNavigationBody').animateCss('slideInDown faster');
-        $('#percNavigationBody').focus();
+        $('#percNavigationBody').trigger("focus");
     }
     else {
         $('#percNavigationBody').animateCss('slideOutUp faster', function() {
             resetNavigation();
-            $('#percToggleNavigation').focus();
+            $('#percToggleNavigation').trigger("focus");
         });
     }
 }
@@ -115,7 +115,7 @@ function toggleNavigation() {
 *   while other overalays are open on top of the nav
 */
 function navigationEscapeListener(action) {
-    if(action == true) {
+    if(action === true) {
         $('#percNavigationBody').on('keydown', function(event) {
             if(event.key === 'Escape') {
                 $('#percToggleNavigation').trigger('click');
@@ -123,7 +123,7 @@ function navigationEscapeListener(action) {
         });
     }
     else {
-        $('#percNavigationBody').off('keydown')
+        $('#percNavigationBody').off('keydown');
     }
 }
 
@@ -139,7 +139,7 @@ function toggleAbout() {
             $('#percAbout').hide();
             $('#percNavigationBody').modal('_enforceFocus');
             navigationEscapeListener(true);
-            $('.perc-toggle-about').focus();
+            $('.perc-toggle-about').trigger("focus");
         });
     }
 }

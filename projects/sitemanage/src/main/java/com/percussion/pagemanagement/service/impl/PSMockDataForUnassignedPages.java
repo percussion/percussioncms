@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -31,12 +31,11 @@ import com.percussion.share.data.PSUnassignedResults.ItemStatus;
 import com.percussion.share.data.PSUnassignedResults.UnassignedItem;
 import com.percussion.share.data.PSUnassignedResults.UnassignedItemList;
 import com.percussion.utils.types.PSPair;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
  * Mock data factory for unassigned pages.
@@ -53,7 +52,7 @@ public class PSMockDataForUnassignedPages
     private int importedCount;
     private int totalCount;
     private int tryCount;
-    private static Log log = LogFactory.getLog(PSMockDataForUnassignedPages.class);
+    private static final Logger log = LogManager.getLogger(PSMockDataForUnassignedPages.class);
             
     public PSMockDataForUnassignedPages()
     {
@@ -115,7 +114,7 @@ public class PSMockDataForUnassignedPages
         PSPagedObjectList<PSPair<Integer, ItemStatus>> pageGroup = null;
         pageGroup = PSPagedObjectList.getPage(itemList, startIndex, maxResults);
         
-        List<UnassignedItem> items = new ArrayList<UnassignedItem>();
+        List<UnassignedItem> items = new ArrayList<>();
         for (PSPair<Integer, ItemStatus> p : pageGroup.getChildrenInPage())
         {
             UnassignedItem item = getUnassignedItem(p.getFirst(), p.getSecond());
@@ -146,7 +145,7 @@ public class PSMockDataForUnassignedPages
     
     private List<PSPair<Integer, ItemStatus>> createItemList()
     {
-        List<PSPair<Integer, ItemStatus>> result = new ArrayList<PSPair<Integer, ItemStatus>>();
+        List<PSPair<Integer, ItemStatus>> result = new ArrayList<>();
         
         for (int i = 0; i < totalCount; i++)
         {
@@ -158,7 +157,7 @@ public class PSMockDataForUnassignedPages
                 else if (i == importedCount)
                     status = ItemStatus.Importing;
             }
-            PSPair<Integer, ItemStatus> item = new PSPair<Integer, ItemStatus>(i, status);
+            PSPair<Integer, ItemStatus> item = new PSPair<>(i, status);
             result.add(item);
         }
         

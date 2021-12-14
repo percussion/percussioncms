@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -26,6 +26,16 @@ package com.percussion.delivery.metadata.any23;
 
 import com.percussion.delivery.metadata.PSMetadataExtractorService;
 import com.percussion.delivery.metadata.extractor.data.PSMetadataProperty;
+import com.percussion.error.PSExceptionUtils;
+import org.apache.any23.extractor.ExtractionContext;
+import org.apache.any23.writer.TripleHandler;
+import org.apache.any23.writer.TripleHandlerException;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Resource;
+import org.eclipse.rdf4j.model.Value;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -33,16 +43,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.any23.extractor.ExtractionContext;
-import org.apache.any23.writer.TripleHandler;
-import org.apache.any23.writer.TripleHandlerException;
-
-
-import org.eclipse.rdf4j.model.IRI;
-import org.eclipse.rdf4j.model.Resource;
-import org.eclipse.rdf4j.model.Value;
 
 
 /**
@@ -53,6 +53,9 @@ import org.eclipse.rdf4j.model.Value;
  */
 public class PSTripleHandler implements TripleHandler
 {
+
+    private static final Logger log = LogManager.getLogger(PSTripleHandler.class);
+
     /**
      * Accidental RDFa that will not be included as a metadata property.
      */
@@ -71,13 +74,13 @@ public class PSTripleHandler implements TripleHandler
      * 'http://purl.org/dc/terms/': 'dcterms' }. It used to replace the URL by
      * the declared name when filling PSMetadataProperty.name field.
      */
-    private Map<String, String> namespacesByUrl = new HashMap<String, String>();
+    private Map<String, String> namespacesByUrl = new HashMap<>();
 
     /**
      * All the PSMetadataProperty objects that were created from the metadata
      * properties extracted from the page being processed.
      */
-    private Set<PSMetadataProperty> properties = new HashSet<PSMetadataProperty>();
+    private Set<PSMetadataProperty> properties = new HashSet<>();
 
     /**
      * The linktext of the PSMetadataEntry.
@@ -299,7 +302,8 @@ public class PSTripleHandler implements TripleHandler
 
             return new PropertyURLProcessingResult(plainPropertyName, propertyName);
         }catch(IllegalStateException e){
-            e.printStackTrace();
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
         return new PropertyURLProcessingResult(completePropertyUrl, completePropertyUrl);
     }

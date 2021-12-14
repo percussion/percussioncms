@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -41,18 +41,14 @@ import com.percussion.webservices.assemblydesign.SaveSlotsRequest;
 import com.percussion.webservices.common.PSObjectSummary;
 import com.percussion.webservices.rhythmyx.AssemblyLocator;
 import com.percussion.webservices.rhythmyxdesign.AssemblyDesignLocator;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.xml.rpc.ServiceException;
-
 import junit.framework.AssertionFailedError;
-
 import org.apache.commons.lang.StringUtils;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.BeforeClass;
+
+import javax.xml.rpc.ServiceException;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.assertNotNull;
 

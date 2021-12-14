@@ -17,16 +17,19 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.workflow;
 
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.services.legacy.IPSCmsObjectMgr;
 import com.percussion.services.legacy.PSCmsObjectMgrLocator;
 import com.percussion.utils.testing.IntegrationTest;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.experimental.categories.Category;
 
 import java.sql.Connection;
@@ -41,6 +44,9 @@ import java.util.Calendar;
 @Category(IntegrationTest.class)
 public class PSContentStatusHistoryContextTest extends PSAbstractWorkflowTest 
 {
+
+   private static final Logger log = LogManager.getLogger(PSContentStatusHistoryContextTest.class);
+
    /**
     * Constructor specifying command line arguments
     *
@@ -56,8 +62,7 @@ public class PSContentStatusHistoryContextTest extends PSAbstractWorkflowTest
       public void ExecuteTest(Connection connection)
       throws PSWorkflowTestException
    {
-      System.out.println(
-         "\nExecuting test of PSContentStatusHistoryContext\n");
+      log.info("\nExecuting test of PSContentStatusHistoryContext\n");
       Exception except = null;
       String exceptionMessage = "";
       int workflowID = 1;
@@ -75,26 +80,24 @@ public class PSContentStatusHistoryContextTest extends PSAbstractWorkflowTest
       String  stateAssignedRole = "TestProgram";
       try 
       {
-         System.out.println("Test read of PSContentStatusHistoryContext");
+         log.info("Test read of PSContentStatusHistoryContext");
          
-         System.out.println("contentID = " + contentID);
+         log.info("contentID = {}", contentID);
          cshc = new PSContentStatusHistoryContext(workflowID,
                                                   connection,
                                                   contentID);
          cshc.close(); //release the JDBC resources
-         System.out.println(cshc.toString());
+         log.info(cshc.toString());
 
-         System.out.println("Test creation of PSContentStatusHistoryContext");
+         log.info("Test creation of PSContentStatusHistoryContext");
          csc = new PSContentStatusContext(connection, contentID);
-         System.out.println("csc = " + csc);
+         log.info("csc = {}", csc);
          contentLastModifiedDate = csc.getContentLastModifiedDate();
 
          calender.setTime(contentLastModifiedDate);
            
-         System.out.println("StatusContext contentLastModifiedDate = " +
-                            DateString(contentLastModifiedDate));
-         System.out.println("StatusContext contentLastModifiedDate = " +
-                            contentLastModifiedDate);           
+         log.info("StatusContext contentLastModifiedDate = {}", DateString(contentLastModifiedDate));
+         log.info("StatusContext contentLastModifiedDate = {}", contentLastModifiedDate);
          csc.close(); //release the JDBC resources
 
          int nWorkFlowAppID = csc.getWorkflowID();
@@ -115,7 +118,9 @@ public class PSContentStatusHistoryContextTest extends PSAbstractWorkflowTest
             }
             catch(PSEntryNotFoundException e)
             {
-               System.out.println("Transition context not found.");
+               log.error(PSExceptionUtils.getMessageForLog(e));
+               log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+               log.info("Transition context not found.");
                throw  e;
             }
          }
@@ -123,7 +128,7 @@ public class PSContentStatusHistoryContextTest extends PSAbstractWorkflowTest
          Integer temp = getNextNumber("CONTENTSTATUSHISTORY",
                                       connection);
          int contentstatushistoryid = temp.intValue();
-         System.out.println("contentstatushistoryid = " + contentstatushistoryid);
+         log.info("contentstatushistoryid = {}", contentstatushistoryid);
          cshc= null;
         
          try 
@@ -141,28 +146,30 @@ public class PSContentStatusHistoryContextTest extends PSAbstractWorkflowTest
                                                     sessionID,
                                                     stateAssignedRole,
                                                     baseRevisionNum);
-            System.out.println("cshc = " + cshc);
+            log.info("cshc = {}", cshc);
            
-            System.out.println("cshc = " + cshc.toString());
+            log.info("cshc = {}", cshc.toString());
          } catch (IllegalArgumentException e) 
          {
-            System.out.println("error creating PSContentStatusHistoryContext");
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+            log.info("error creating PSContentStatusHistoryContext");
             throw  e;
          }      
         
          contentLastModifiedDate = cshc.getContentLastModifiedDate();
         
-         System.out.println("HistoryContext contentLastModifiedDate = " +
-                            DateString(contentLastModifiedDate));
+         log.info("HistoryContext contentLastModifiedDate = {}", DateString(contentLastModifiedDate));
         
          
          eventTime = cshc.getEventTime();
 
-         System.out.println("HistoryContext eventTime = " +
-                            eventTime);
+         log.info("HistoryContext eventTime = {}", eventTime);
         
       } catch (SQLException e) 
       {
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          exceptionMessage = "SQL exception: ";
          except = e;
       }
@@ -173,7 +180,7 @@ public class PSContentStatusHistoryContextTest extends PSAbstractWorkflowTest
       }
       finally 
       {
-         System.out.println("\nEnd test of PSContentStatusHistoryContext\n");
+         log.info("\nEnd test of PSContentStatusHistoryContext\n");
          if (null != except) 
          {
             throw new PSWorkflowTestException(exceptionMessage,

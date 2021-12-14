@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -29,15 +29,16 @@ import com.percussion.extension.IPSResultDocumentProcessor;
 import com.percussion.extension.PSExtensionException;
 import com.percussion.extension.PSExtensionProcessingException;
 import com.percussion.extension.PSParameterMismatchException;
-import com.percussion.i18n.ui.PSI18NTranslationKeyValues;
 import com.percussion.i18n.PSI18nUtils;
 import com.percussion.i18n.PSLocale;
 import com.percussion.i18n.PSTmxUnit;
+import com.percussion.i18n.ui.PSI18NTranslationKeyValues;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.services.legacy.IPSCmsObjectMgr;
 import com.percussion.services.legacy.PSCmsObjectMgrLocator;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.w3c.dom.Document;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -46,8 +47,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import org.w3c.dom.Document;
 
 /**
  * See {@link #processResultDocument(Object[], IPSRequestContext, Document)
@@ -79,7 +78,7 @@ public class PSTranslationKeyValueAccessor implements IPSResultDocumentProcessor
 
       Object ps[] = request.getParameterList("sys_package");
       String packages[] = null;
-      if (ps != null)
+      if (ps != null && ps.length >0)
       {
          packages = new String[ps.length];
          System.arraycopy(ps, 0, packages, 0, ps.length);
@@ -177,7 +176,7 @@ public class PSTranslationKeyValueAccessor implements IPSResultDocumentProcessor
    private String getActiveLocale(String lang)
    {
       IPSCmsObjectMgr mgr = PSCmsObjectMgrLocator.getObjectManager();
-      List<String> langs = new ArrayList<String>();
+      List<String> langs = new ArrayList<>();
       List<PSLocale> locales = 
          mgr.findLocaleByStatus(PSLocale.STATUS_ACTIVE);
       for(PSLocale locale : locales)

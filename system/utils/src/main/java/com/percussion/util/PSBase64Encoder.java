@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -166,14 +166,14 @@ public class PSBase64Encoder
          throw new IllegalArgumentException("output stream may not be null");
 
       // read stream into byte[]
-      ByteArrayOutputStream bout = new ByteArrayOutputStream(4096);
-      PSCopyStream.copyStream(in, bout);
-
-      byte[] encoded = encode(bout.toByteArray());
-      ByteArrayInputStream bin = new ByteArrayInputStream(encoded);
-      PSCopyStream.copyStream(bin, out);
-
-      return encoded.length;
+      try(ByteArrayOutputStream bout = new ByteArrayOutputStream(4096)) {
+         PSCopyStream.copyStream(in, bout);
+         byte[] encoded = encode(bout.toByteArray());
+         try (ByteArrayInputStream bin = new ByteArrayInputStream(encoded)) {
+            PSCopyStream.copyStream(bin, out);
+            return encoded.length;
+         }
+      }
    }
 
    /**

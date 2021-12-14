@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -29,6 +29,12 @@ import com.percussion.metadata.service.IPSMetadataService;
 import com.percussion.server.IPSStartupProcess;
 import com.percussion.server.IPSStartupProcessManager;
 import com.percussion.server.PSServer;
+import com.percussion.share.dao.IPSGenericDao;
+import com.percussion.util.PSSiteManageBean;
+import org.apache.commons.io.FileUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;
 import java.io.IOException;
@@ -39,16 +45,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Properties;
 
-import com.percussion.util.PSSiteManageBean;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-
 @PSSiteManageBean(value = "simpleStartupProcessor")
 public class PSSimpleStartupProcessor implements IPSStartupProcess
 {
-    private static final Log log = LogFactory.getLog(PSSimpleStartupProcessor.class);
+    private static final Logger log = LogManager.getLogger(PSSimpleStartupProcessor.class);
 
     @Autowired
     private IPSMetadataService metadataService;
@@ -59,8 +59,7 @@ public class PSSimpleStartupProcessor implements IPSStartupProcess
         createDefaultGlobalVariablesJs();
     }
 
-    private void createDefaultGlobalVariablesJs()
-    {
+    private void createDefaultGlobalVariablesJs() throws IPSGenericDao.LoadException {
         //We always want to create the default file if it doesn't exist.
 
 

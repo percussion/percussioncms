@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -29,12 +29,11 @@ import com.percussion.services.assembly.PSAssemblyServiceLocator;
 import com.percussion.services.publisher.IPSPublisherServiceErrors;
 import com.percussion.services.publisher.PSPublisherException;
 import com.percussion.utils.guid.IPSGuid;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.commons.lang.StringUtils;
 
 /**
  * The list template expander takes a list of templates as a parameter and
@@ -58,7 +57,7 @@ public class PSListTemplateExpander extends PSBaseTemplateExpander
       
       IPSAssemblyService asm = PSAssemblyServiceLocator.getAssemblyService();
 
-      List<IPSGuid> rval = new ArrayList<IPSGuid>();
+      List<IPSGuid> rval = new ArrayList<>();
       for (String name : names)
       {
          try

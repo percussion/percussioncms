@@ -17,34 +17,32 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.utils.servlet;
 
-import static com.percussion.util.PSResourceUtils.getResourcePath;
-import static com.percussion.utils.servlet.PSInputValidatorFilter.RESPONSE_ERROR_STATUS;
-import static com.percussion.utils.servlet.PSInputValidatorFilter.VALIDATOR_CONFIG_RESOURCE_PROP_NAME;
-import static com.percussion.utils.servlet.PSInputValidatorFilter.VALIDATOR_ENABLE_PROP_NAME;
-
-import java.io.File;
-import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-
 import com.percussion.utils.testing.IntegrationTest;
 import junit.framework.TestCase;
-
 import org.junit.experimental.categories.Category;
 import org.springframework.mock.web.MockFilterChain;
 import org.springframework.mock.web.MockFilterConfig;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockServletContext;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
+
+import static com.percussion.util.PSResourceUtils.getResourcePath;
+import static com.percussion.utils.servlet.PSInputValidatorFilter.RESPONSE_ERROR_STATUS;
+import static com.percussion.utils.servlet.PSInputValidatorFilter.VALIDATOR_CONFIG_RESOURCE_PROP_NAME;
+import static com.percussion.utils.servlet.PSInputValidatorFilter.VALIDATOR_ENABLE_PROP_NAME;
 
 
 /**

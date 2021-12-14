@@ -17,16 +17,13 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.secure.services;
 
-import org.glassfish.jersey.server.ContainerRequest;
-import org.glassfish.jersey.server.internal.InternalServerProperties;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -36,7 +33,6 @@ import org.springframework.security.web.authentication.AbstractAuthenticationPro
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.core.Form;
 import java.io.IOException;
 
 public class AuthFormProcessingFilter  extends AbstractAuthenticationProcessingFilter {

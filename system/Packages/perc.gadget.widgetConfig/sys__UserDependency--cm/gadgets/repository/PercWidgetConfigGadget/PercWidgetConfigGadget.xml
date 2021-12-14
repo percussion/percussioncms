@@ -18,7 +18,7 @@
   ~      Burlington, MA 01803, USA
   ~      +01-781-438-9900
   ~      support@percussion.com
-  ~      https://www.percusssion.com
+  ~      https://www.percussion.com
   ~
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   -->
@@ -32,7 +32,7 @@
     </ModulePrefs>
     <Content type="html">
         <![CDATA[
-
+<!DOCTYPE html>
     <link rel="stylesheet" type="text/css" href="/cm/themes/smoothness/jquery-ui-1.8.9.custom.css" />
     <link href="/cm/gadgets/repository/common/perc_common_gadget.css" rel="stylesheet" type="text/css" />
     <style>
@@ -80,7 +80,7 @@
     <script >
         var loadingMsg = null;
         var miniMsg = null;
-        $(document).ready(function() {
+        $(function() {
             miniMsg = new gadgets.MiniMessage(__MODULE_ID__);
             loadingMsg = miniMsg.createStaticMessage("Loading...");
             var widgetArray = [];
@@ -102,8 +102,14 @@
 
                         return;
                     }
-                    disabledWidgets = data?data.metadata.data:[];
-                    disabledWidgets = $.parseJSON(disabledWidgets);
+
+                    if(typeof data === 'undefined'){
+                        disabledWidgets = [];
+                    }else if(typeof data === 'string'){
+                        disabledWidgets = JSON.parse(data).metadata.data;
+                    }else{
+                        disabledWidgets = data.metadata.data;
+                    }
                     renderWidgets();
                 });
             }
@@ -118,7 +124,7 @@
                 renderRows(percWidgets, disabledWidgets, "perc-widget-config-table-perc");
                 renderRows(custWidgets, disabledWidgets, "perc-widget-config-table-cust");
                 miniMsg.dismissMessage(loadingMsg);
-                $("input.perc-widget-chkbox").click(function(){
+                $("input.perc-widget-chkbox").on("click",function(){
 
                 });
             }
@@ -131,8 +137,12 @@
             {
                 var wdgSum = widgetsList[i-1];
                 var checkedAttr = " checked=\"checked\" ";
-                if($.inArray(wdgSum.id, disabledWidgets) != -1)
+
+                if(disabledWidgets.indexOf(wdgSum.id) !== -1){
                     checkedAttr = "";
+                    console.debug("Disabling widget: " + wdgSum.id);
+                }
+
                 var toolTip = wdgSum.description;
                 if(wdgSum.name)
                     toolTip += " (" + wdgSum.name + ")";
@@ -147,14 +157,14 @@
             $("#" + tableId + " .perc-widget-config-col1").append(col1Html);
             $("#" + tableId + " .perc-widget-config-col2").append(col2Html);
             $("#" + tableId + " .perc-widget-config-col3").append(col3Html);
-            $(".perc-widget-chkbox").unbind().click(function(){
+            $(".perc-widget-chkbox").off("click").on("click", function(){
                 percJQuery.PercBlockUI(percJQuery.PercBlockUIMode.CURSORONLY);
                 var values = $('input:checkbox:not(:checked).perc-widget-chkbox').map(function () {
                   return this.name;
                 }).get();
                 percJQuery.PercMetadataService.save("percwidgetconfiguration", values, function(status, data){
                     percJQuery.unblockUI();
-                    if(status == percJQuery.PercServiceUtils.STATUS_ERROR){
+                    if(status === percJQuery.PercServiceUtils.STATUS_ERROR){
                         return;
                     }
 

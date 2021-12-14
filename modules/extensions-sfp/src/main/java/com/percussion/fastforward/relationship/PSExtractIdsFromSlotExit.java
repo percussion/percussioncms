@@ -17,18 +17,11 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.fastforward.relationship;
-
-import java.util.List;
-import java.util.Map;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import com.percussion.cms.PSCmsException;
 import com.percussion.cms.objectstore.server.PSRelationshipProcessor;
@@ -38,6 +31,12 @@ import com.percussion.extension.PSDefaultExtension;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.services.assembly.PSAssemblyException;
 import com.percussion.util.IPSHtmlParameters;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * This class is intended to be used as a FieldOutputTranslation within a
@@ -125,6 +124,6 @@ public class PSExtractIdsFromSlotExit extends PSDefaultExtension implements
    /**
     * The log instance to use for this class, never <code>null</code>.
     */
-   private static Log ms_log = LogFactory
-      .getLog(PSExtractIdsFromSlotExit.class);
+   private static final Logger ms_log = LogManager
+      .getLogger(PSExtractIdsFromSlotExit.class);
 }

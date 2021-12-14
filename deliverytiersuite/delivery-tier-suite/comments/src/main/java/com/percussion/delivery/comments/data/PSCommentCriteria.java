@@ -17,21 +17,18 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.delivery.comments.data;
 
-import java.io.IOException;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import com.fasterxml.jackson.core.JsonGenerationException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import com.percussion.delivery.comments.data.IPSComment.APPROVAL_STATE;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.io.IOException;
 
 /**
  * A small data class representing comment criteria to find comments
@@ -41,7 +38,7 @@ import com.percussion.delivery.comments.data.IPSComment.APPROVAL_STATE;
  */
 public class PSCommentCriteria
 {
-	private static Log log = LogFactory.getLog(PSCommentCriteria.class);
+	private static final Logger log = LogManager.getLogger(PSCommentCriteria.class);
 			
    private String sortby;
     private String ascending;

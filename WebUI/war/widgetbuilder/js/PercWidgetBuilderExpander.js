@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -29,22 +29,23 @@
 (function($)
 {
     var percDefsExpandedState = "perc-defs-expanded-state";
-    $(document).ready(function(){
+    $(function(){
         handleDefsCollapseExpander();
     });
 
     function handleDefsCollapseExpander(){
         // dim the ui when the user is not in the finder
-        $('.perc-wb-defs-outer').hover(function highligh_actions () {
+        $('.perc-wb-defs-outer').on("mouseenter",function highligh_actions () {
             $(this).removeClass('ui-disabled');
-        }, function dim_actions () {
+        })
+        .on('mouseleave',function dim_actions () {
             $(this).addClass('ui-disabled');
         });
-        $("#perc-wb-defs-expander").click(function(){
+        $("#perc-wb-defs-expander").on("click",function(){
             expandCollapseDefs(!$("#perc-wb-defs-container").is(":visible"));
         });
         var state = getDefsExpandedStateFromCookie();
-        expandCollapseDefs(state != 'collapsed');
+        expandCollapseDefs(state !== 'collapsed');
     }
     
     function expandCollapseDefs (expand) {
@@ -72,7 +73,11 @@
     }
     function setDefsExpandedStateInCookie (isExpanded) {
         var state = isExpanded ? 'expanded' : 'collapsed';
-        $.cookie(percDefsExpandedState, state);
+        var options = {"sameSite": "Strict"};
+        if (window.isSecureContext) {
+            options.secure = true;
+        }
+        $.cookie(percDefsExpandedState, state, options);
     }
     function getDefsExpandedStateFromCookie () {
         return ('' + $.cookie(percDefsExpandedState));

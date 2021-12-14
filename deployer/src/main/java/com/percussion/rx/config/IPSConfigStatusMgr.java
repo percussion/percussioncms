@@ -17,13 +17,14 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.rx.config;
 
 import com.percussion.rx.config.data.PSConfigStatus;
+import com.percussion.services.error.PSNotFoundException;
 
 import java.util.List;
 
@@ -54,7 +55,7 @@ public interface IPSConfigStatusMgr
     * @param statusID Loads the config status object of the supplied id.
     * @return The config status object never <code>null</code>.
     */
-   public PSConfigStatus loadConfigStatus(long statusID);
+   public PSConfigStatus loadConfigStatus(long statusID) throws PSNotFoundException;
 
    /**
     * Loads the modifiable config status object.
@@ -62,7 +63,7 @@ public interface IPSConfigStatusMgr
     * @param statusID Loads the config status object of the supplied id.
     * @return The config status object never <code>null</code>.
     */
-   public PSConfigStatus loadConfigStatusModifiable(long statusID);
+   public PSConfigStatus loadConfigStatusModifiable(long statusID) throws PSNotFoundException;
 
    /**
     * Find the objects whose name matches the supplied name, case-insensitive.
@@ -98,7 +99,7 @@ public interface IPSConfigStatusMgr
     * 
     * @param statusID The status id whos entry needs to be deleted.
     */
-   public void deleteConfigStatus(long statusID);
+   public void deleteConfigStatus(long statusID) throws PSNotFoundException;
 
    /**
     * Deletes all the status entries that matches the given name filter.

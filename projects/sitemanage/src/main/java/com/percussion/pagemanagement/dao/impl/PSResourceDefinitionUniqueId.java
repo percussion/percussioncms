@@ -17,19 +17,21 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.pagemanagement.dao.impl;
 
-import static org.apache.commons.lang.StringUtils.*;
-
+import com.percussion.pagemanagement.service.IPSResourceDefinitionService;
+import com.percussion.pagemanagement.service.IPSResourceDefinitionService.PSResourceDefinitionInvalidIdException;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
-import com.percussion.pagemanagement.service.IPSResourceDefinitionService;
-import com.percussion.pagemanagement.service.IPSResourceDefinitionService.PSResourceDefinitionInvalidIdException;
+import static org.apache.commons.lang.StringUtils.contains;
+import static org.apache.commons.lang.StringUtils.isBlank;
+import static org.apache.commons.lang.StringUtils.isNotBlank;
+import static org.apache.commons.lang.StringUtils.split;
 
 public class PSResourceDefinitionUniqueId {
     
@@ -37,17 +39,15 @@ public class PSResourceDefinitionUniqueId {
     private String localId;
     
     
-    public PSResourceDefinitionUniqueId(String uniqueId)
-    {
+    public PSResourceDefinitionUniqueId(String uniqueId) throws PSResourceDefinitionInvalidIdException {
         super();
         init(uniqueId);
     }
-    public PSResourceDefinitionUniqueId(String groupId, String localId)
-    {
+    public PSResourceDefinitionUniqueId(String groupId, String localId) throws PSResourceDefinitionInvalidIdException {
         super();
         init(groupId, localId);
     }
-    public void init(String groupId, String localId) {
+    public void init(String groupId, String localId) throws PSResourceDefinitionInvalidIdException {
         setGroupId(groupId);
         setLocalId(localId);
         
@@ -56,8 +56,7 @@ public class PSResourceDefinitionUniqueId {
     {
         return groupId;
     }
-    public void setGroupId(String groupId)
-    {
+    public void setGroupId(String groupId) throws PSResourceDefinitionInvalidIdException {
         validateId("groupId", groupId);
         this.groupId = groupId;
     }
@@ -65,8 +64,7 @@ public class PSResourceDefinitionUniqueId {
     {
         return localId;
     }
-    public void setLocalId(String localId)
-    {
+    public void setLocalId(String localId) throws PSResourceDefinitionInvalidIdException {
         validateId("localId", localId);
         this.localId = localId;
     }
@@ -88,7 +86,7 @@ public class PSResourceDefinitionUniqueId {
         return groupId + IPSResourceDefinitionService.NAMESPACE_SEPARATOR + localId;
     }
     
-    public void init(String uniqueId) {
+    public void init(String uniqueId) throws PSResourceDefinitionInvalidIdException {
         if (isBlank(uniqueId)) {
             throw new PSResourceDefinitionInvalidIdException("PSResourceDefinitionUniqueId cannot be blank");
         }
@@ -105,9 +103,10 @@ public class PSResourceDefinitionUniqueId {
     }
     
     
-    public static void validateId(String name, String id) {
-        if (isBlank(id))
+    public static void validateId(String name, String id) throws PSResourceDefinitionInvalidIdException {
+        if (isBlank(id)) {
             throw new PSResourceDefinitionInvalidIdException(name + " cannot be blank");
+        }
         if( contains(id, ".") ) {
             throw new PSResourceDefinitionInvalidIdException(name 
                     + " cannot contain " 

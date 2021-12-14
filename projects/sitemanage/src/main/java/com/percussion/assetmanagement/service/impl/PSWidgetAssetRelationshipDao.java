@@ -17,32 +17,33 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.assetmanagement.service.impl;
 
-import static com.percussion.util.PSSqlHelper.qualifyTableName;
-
-import static org.apache.commons.lang.StringUtils.isBlank;
-
 import com.percussion.cms.IPSConstants;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.pagemanagement.service.IPSWidgetAssetRelationshipDao;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.error.PSRuntimeException;
 import com.percussion.services.guidmgr.PSGuidHelper;
-
-import java.sql.SQLException;
-
-import org.apache.log4j.Logger;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.sql.SQLException;
+
+import static com.percussion.util.PSSqlHelper.qualifyTableName;
+import static org.apache.commons.lang.StringUtils.isBlank;
 
 /**
  * The service used to update Page & Asset relationships.
@@ -56,6 +57,7 @@ public class PSWidgetAssetRelationshipDao implements IPSWidgetAssetRelationshipD
    
     private SessionFactory sessionFactory;
 
+    @SuppressFBWarnings("SQL_INJECTION_HIBERNATE")
     @Transactional
     public int updateWidgetNameForRelatedPages(String templateId, String widgetName, long widgetId)
     {
@@ -65,26 +67,31 @@ public class PSWidgetAssetRelationshipDao implements IPSWidgetAssetRelationshipD
         int sortRank = PSGuidHelper.generateNext(PSTypeEnum.SORT_RANK).getUUID();
         
         Session sess = sessionFactory.getCurrentSession();
-        
-        // update PSX_OBJECTRELATIONSHIP set WIDGET_NAME='XXX', SORT_RANK=### where SLOT_ID = ? and WIDGET_NAME IS NULL and OWNER_ID in (select ...)
+
         try
         {
-            String sql = "update " + qualifyTableName(IPSConstants.PSX_RELATIONSHIPS) + " set WIDGET_NAME='"
-                    + widgetName + "', SORT_RANK=" + sortRank + " where SLOT_ID = " + widgetId 
+            String sql = "update " + qualifyTableName(IPSConstants.PSX_RELATIONSHIPS) +
+                    " set WIDGET_NAME= :name, SORT_RANK=:sortrank where SLOT_ID = :slotid"
                     + " and WIDGET_NAME IS NULL and OWNER_ID in (select CONTENTID from "
-                    + qualifyTableName("CT_PAGE") + " where TEMPLATEID = '" + templateId + "')";
-            
+                    + qualifyTableName("CT_PAGE") + " where TEMPLATEID = :template)";
+
             SQLQuery query = sess.createSQLQuery(sql);
+            query.setString("name",widgetName );
+            query.setLong("slotid",widgetId);
+            query.setInteger("sortrank",sortRank);
+            query.setString("template",templateId);
+
             int result = query.executeUpdate();
             
-            ms_logger.debug("Updated " + result + " rows in " + IPSConstants.PSX_RELATIONSHIPS + " table.");
+            logger.debug("Updated {} rows in {} table.",result,IPSConstants.PSX_RELATIONSHIPS );
+
             return result;
         }
         catch (SQLException e)
         {
-            String error = "Failed to update relationship table";
-            ms_logger.error(error, e);
-            throw new PSRuntimeException(error, e);
+            logger.error("Failed to update relationship table: {}", PSExceptionUtils.getMessageForLog(e));
+            logger.debug(e);
+            throw new PSRuntimeException(e);
         }
       
     }
@@ -100,9 +107,5 @@ public class PSWidgetAssetRelationshipDao implements IPSWidgetAssetRelationshipD
         return sessionFactory;
     }
 
-
-
-    
-    
-    private static Logger ms_logger = Logger.getLogger(PSWidgetAssetRelationshipDao.class);
+    private static final Logger logger = LogManager.getLogger(PSWidgetAssetRelationshipDao.class);
 }

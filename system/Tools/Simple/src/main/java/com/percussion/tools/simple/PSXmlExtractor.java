@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -27,6 +27,14 @@ package com.percussion.tools.simple;
 import com.percussion.utils.xml.PSSaxParseException;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -43,13 +51,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
-import org.xml.sax.SAXParseException;
-
 /**
  * This class is used to extract an element from an XML file and write it to
  * a new file.  A DTD may optionally be specified, and if so it is used to
@@ -58,6 +59,9 @@ import org.xml.sax.SAXParseException;
  */
 public class PSXmlExtractor
 {
+
+   private static final Logger log = LogManager.getLogger(PSXmlExtractor.class);
+
    /**
     * Uses the specified Element to extract xml from the source file and write
     * it to the target file.  If a dtd is supplied, that is used to validate the
@@ -123,12 +127,7 @@ public class PSXmlExtractor
             "The dtd must be specified to add the DOCTYPE to the target");
 
       String result = null;
-      FileInputStream in = null;
-      FileOutputStream out = null;
-      try
-      {
-         // load source doc
-         in = new FileInputStream(source);
+      try(FileInputStream in = new FileInputStream(source)) {
          Document doc = PSXmlDocumentBuilder.createXmlDocument(in, false);
 
          // open target
@@ -138,64 +137,48 @@ public class PSXmlExtractor
          targetDir.mkdirs();
          if (target.exists())
             target.delete();
-         out = new FileOutputStream(target);
+         try (FileOutputStream out = new FileOutputStream(target)) {
 
-         // Extract element and write it out
-         PSXmlTreeWalker tree = new PSXmlTreeWalker(doc);
-         tree.setCurrent(doc.getDocumentElement());
-         String rootElementName = tree.getCurrentNodeName();
-         
-         Element el = tree.getNextElement(element);
-         if (el == null)
-            throw new IllegalArgumentException(
-               "element not found in source doc");
+            // Extract element and write it out
+            PSXmlTreeWalker tree = new PSXmlTreeWalker(doc);
+            tree.setCurrent(doc.getDocumentElement());
+            String rootElementName = tree.getCurrentNodeName();
 
-         Document newDoc = 
-            PSXmlDocumentBuilder.createXmlDocument(rootElementName, dtd, null);
-         PSXmlDocumentBuilder.replaceRoot(newDoc, el);
-         if (excludeList != null)
-         {
-            Iterator i = excludeList.iterator();
-            while (i.hasNext())
-            {
-               String exclude = (String)i.next();
-               removeElement(newDoc, exclude);
+            Element el = tree.getNextElement(element);
+            if (el == null)
+               throw new IllegalArgumentException(
+                       "element not found in source doc");
+
+            Document newDoc =
+                    PSXmlDocumentBuilder.createXmlDocument(rootElementName, dtd, null);
+            PSXmlDocumentBuilder.replaceRoot(newDoc, el);
+            if (excludeList != null) {
+               Iterator i = excludeList.iterator();
+               while (i.hasNext()) {
+                  String exclude = (String) i.next();
+                  removeElement(newDoc, exclude);
+               }
             }
-         }
 
-         if(addList != null)
-         {
-            Iterator i  = addList.entrySet().iterator();
-            while(i.hasNext())
-            {
-               Map.Entry entry = (Map.Entry)i.next();
-               String parentElement = (String)entry.getKey();
-               Element child = (Element)entry.getValue();
-               addElement(newDoc, parentElement, child);
+            if (addList != null) {
+               Iterator i = addList.entrySet().iterator();
+               while (i.hasNext()) {
+                  Map.Entry entry = (Map.Entry) i.next();
+                  String parentElement = (String) entry.getKey();
+                  Element child = (Element) entry.getValue();
+                  addElement(newDoc, parentElement, child);
+               }
             }
-         }
 
-         // validate with dtd if supplied
-         if (dtd != null)
-         {
-            // Validating the document will write it out
-            result = validate(newDoc, dtd);
-         }
+            // validate with dtd if supplied
+            if (dtd != null) {
+               // Validating the document will write it out
+               result = validate(newDoc, dtd);
+            }
 
-         PSXmlTreeWalker walker = new PSXmlTreeWalker(newDoc);
-         walker.write(out);
-         return result;
-      }
-      finally
-      {
-         if (in != null)
-         {
-            try {in.close();} catch (Exception e){}
-         }
-
-         if (out != null)
-         {
-            try {out.close();} catch (Exception e){}
+            PSXmlTreeWalker walker = new PSXmlTreeWalker(newDoc);
+            walker.write(out);
+            return result;
          }
       }
    }
@@ -492,7 +475,8 @@ public class PSXmlExtractor
       {
          System.out.println("Extraction of " + element + " from " + source +
             " failed:");
-         t.printStackTrace();
+         log.error(t.getMessage());
+         log.debug(t.getMessage(), t);
       }
    }
 

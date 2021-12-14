@@ -17,14 +17,20 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.services.assembly.data;
 
 import com.percussion.cms.objectstore.server.PSContentTypeVariantsMgr;
-import com.percussion.services.assembly.*;
+import com.percussion.error.PSExceptionUtils;
+import com.percussion.services.assembly.IPSAssemblyService;
+import com.percussion.services.assembly.IPSAssemblyTemplate;
+import com.percussion.services.assembly.IPSTemplateBinding;
+import com.percussion.services.assembly.IPSTemplateSlot;
+import com.percussion.services.assembly.PSAssemblyException;
+import com.percussion.services.assembly.PSAssemblyServiceLocator;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.guidmgr.data.PSGuid;
 import com.percussion.utils.guid.IPSGuid;
@@ -34,11 +40,20 @@ import com.percussion.utils.types.PSPair;
 import junit.framework.JUnit4TestAdapter;
 import org.apache.cactus.ServletTestCase;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.SessionFactory;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.FutureTask;
 
@@ -52,6 +67,9 @@ import static com.percussion.extension.IPSExtension.LEGACY_ASSEMBLER;
 @Category(IntegrationTest.class)
 public class PSAssemblyTemplateTest extends ServletTestCase
 {
+
+   private static final Logger log = LogManager.getLogger(PSAssemblyTemplateTest.class);
+
    /**
     * Name of created template
     */
@@ -168,7 +186,8 @@ public class PSAssemblyTemplateTest extends ServletTestCase
             }
             catch (Exception e)
             {
-               e.printStackTrace();
+               log.error(PSExceptionUtils.getMessageForLog(e));
+               log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             }
          }
       }

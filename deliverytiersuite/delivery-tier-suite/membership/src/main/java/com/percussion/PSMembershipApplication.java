@@ -17,15 +17,18 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion;
 
-import com.percussion.membership.services.impl.PSMembershipRestService;
+import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
+import com.percussion.delivery.exceptions.PSJsonMappingErrorResponse;
+import com.percussion.delivery.exceptions.PSUncaughtError;
 import com.percussion.generickey.utils.services.impl.PSGenericKeyRestService;
+import com.percussion.membership.services.impl.PSMembershipRestService;
 import org.glassfish.jersey.logging.LoggingFeature;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.filter.RolesAllowedDynamicFeature;
@@ -49,6 +52,9 @@ import javax.ws.rs.ApplicationPath;
             register(LoggingFeature.class);
             register(RolesAllowedDynamicFeature.class);
             register(PSGenericKeyRestService.class);
+            register(PSJsonMappingErrorResponse.class);
+            register(PSUncaughtError.class);
+            register(JacksonJaxbJsonProvider.class);
         }
 
     }

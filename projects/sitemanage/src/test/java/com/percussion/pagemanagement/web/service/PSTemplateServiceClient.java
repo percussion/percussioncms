@@ -17,22 +17,22 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.pagemanagement.web.service;
 
-import static org.apache.commons.lang.Validate.*;
-
-import java.util.List;
-
-import com.percussion.pagemanagement.data.PSTemplate;
 import com.percussion.pagemanagement.data.PSHtmlMetadata;
+import com.percussion.pagemanagement.data.PSTemplate;
 import com.percussion.pagemanagement.data.PSTemplateSummary;
 import com.percussion.share.IPSSitemanageConstants;
 import com.percussion.share.test.PSObjectRestClient;
+
+import java.util.List;
+
+import static org.apache.commons.lang.Validate.notEmpty;
 
 /**
  * The class used for unit test on REST layer.

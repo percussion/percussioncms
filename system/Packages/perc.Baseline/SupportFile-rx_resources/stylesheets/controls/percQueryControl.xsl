@@ -1,37 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!--
-  ~     Percussion CMS
-  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
-  ~
-  ~     This program is free software: you can redistribute it and/or modify
-  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
-  ~
-  ~     This program is distributed in the hope that it will be useful,
-  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
-  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  ~     GNU Affero General Public License for more details.
-  ~
-  ~     Mailing Address:
-  ~
-  ~      Percussion Software, Inc.
-  ~      PO Box 767
-  ~      Burlington, MA 01803, USA
-  ~      +01-781-438-9900
-  ~      support@percussion.com
-  ~      https://www.percusssion.com
-  ~
-  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
-  -->
-
 <!DOCTYPE xsl:stylesheet [
-		<!ENTITY % HTMLlat1 SYSTEM "/Rhythmyx/DTD/HTMLlat1x.ent">
+		<!ENTITY % HTMLlat1 PUBLIC "-//W3C//ENTITIES_Latin_1_for_XHTML//EN" "https://www.percussion.com/DTD/HTMLlat1x.ent">
 		%HTMLlat1;
-		<!ENTITY % HTMLsymbol SYSTEM "/Rhythmyx/DTD/HTMLsymbolx.ent">
+		<!ENTITY % HTMLsymbol PUBLIC "-//W3C//ENTITIES_Symbols_for_XHTML//EN" "https://www.percussion.com/DTD/HTMLsymbolx.ent">
 		%HTMLsymbol;
-		<!ENTITY % HTMLspecial SYSTEM "/Rhythmyx/DTD/HTMLspecialx.ent">
+		<!ENTITY % HTMLspecial PUBLIC "-//W3C//ENTITIES_Special_for_XHTML//EN" "https://www.percussion.com/DTD/HTMLspecialx.ent">
 		%HTMLspecial;
+		<!ENTITY % w3centities-f PUBLIC
+				"-//W3C//ENTITIES Combined Set//EN//XML"
+				"http://www.w3.org/2003/entities/2007/w3centities-f.ent"
+				>
+		%w3centities-f;
 		]>
-<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:psxctl="URN:percussion.com/control" xmlns="http://www.w3.org/1999/xhtml" exclude-result-prefixes="psxi18n" xmlns:psxi18n="urn:www.percussion.com/i18n" >
+<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns:psxctl="urn:percussion.com/control"
+                xmlns="http://www.w3.org/1999/xhtml"
+                extension-element-prefixes="psxi18n" exclude-result-prefixes="psxi18n">
 	<xsl:template match="/" />
 	<!--
          percQueryControl
@@ -54,96 +38,96 @@
 		<!-- CSS perc_webmgt.packed.css contains all css for jquery datepicker and Site/Save As control-->
 		<psxctl:AssociatedFileList>
 			<psxctl:FileDescriptor name="perc_webmgt.packed.css" type="css" mimetype="text/css">
-				<psxctl:FileLocation>../../cm/css/dynatree/skin/ui.dynatree.css</psxctl:FileLocation>
+				<psxctl:FileLocation>/cm/css/dynatree/skin/ui.dynatree.css</psxctl:FileLocation>
 				<psxctl:Timestamp/>
 			</psxctl:FileDescriptor>
 			<psxctl:FileDescriptor name="percQueryControl.css" type="css" mimetype="text/css">
-				<psxctl:FileLocation>../rx_resources/controls/percQueryControl/css/percQueryControl.css</psxctl:FileLocation>
+				<psxctl:FileLocation>/rx_resources/controls/percQueryControl/css/percQueryControl.css</psxctl:FileLocation>
 				<psxctl:Timestamp/>
 			</psxctl:FileDescriptor>
 
 			<!-- JavaScript -->
 			<psxctl:FileDescriptor name="jquery-ui.js" type="script" mimetype="text/javascript">
-				<psxctl:FileLocation>../../cm/jslib/jquery-ui.js</psxctl:FileLocation>
+				<psxctl:FileLocation>/cm/jslib/profiles/3x/jquery/libraries/jquery-ui/jquery-ui.js</psxctl:FileLocation>
 				<psxctl:Timestamp/>
 			</psxctl:FileDescriptor>
-			<psxctl:FileDescriptor name="PSJSUtils.js" type="script" mimetype="text/javascript">
-				<psxctl:FileLocation>../../cm/jslib/PSJSUtils.js</psxctl:FileLocation>
+			<psxctl:FileDescriptor name="jquery.percutils.js" type="script" mimetype="text/javascript">
+				<psxctl:FileLocation>/cm/jslib/profiles/3x/jquery/plugins/jquery-percutils/jquery.percutils.js</psxctl:FileLocation>
 				<psxctl:Timestamp/>
 			</psxctl:FileDescriptor>
 			<psxctl:FileDescriptor name="perc_path_constants.js" type="script" mimetype="text/javascript">
-				<psxctl:FileLocation>../../cm/plugins/perc_path_constants.js</psxctl:FileLocation>
+				<psxctl:FileLocation>/cm/plugins/perc_path_constants.js</psxctl:FileLocation>
 				<psxctl:Timestamp/>
 			</psxctl:FileDescriptor>
 			<psxctl:FileDescriptor name="perc_utils.js" type="script" mimetype="text/javascript">
-				<psxctl:FileLocation>../../cm/plugins/perc_utils.js</psxctl:FileLocation>
+				<psxctl:FileLocation>/cm/plugins/perc_utils.js</psxctl:FileLocation>
 				<psxctl:Timestamp/>
 			</psxctl:FileDescriptor>
 			<psxctl:FileDescriptor name="jquery.layout.js" type="script" mimetype="text/javascript">
-				<psxctl:FileLocation>../../cm/jslib/jquery.layout.js</psxctl:FileLocation>
+				<psxctl:FileLocation>/cm/jslib/profiles/3x/jquery/plugins/jquery-layout/jquery.layout_and_plugins.js</psxctl:FileLocation>
 				<psxctl:Timestamp/>
 			</psxctl:FileDescriptor>
 			<psxctl:FileDescriptor name="jquery.metadata.js" type="script" mimetype="text/javascript">
-				<psxctl:FileLocation>../../cm/jslib/jquery.metadata.js</psxctl:FileLocation>
+				<psxctl:FileLocation>/cm/jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.metadata.js</psxctl:FileLocation>
 				<psxctl:Timestamp/>
 			</psxctl:FileDescriptor>
 			<psxctl:FileDescriptor name="tools.scrollable-1.1.2.js" type="script" mimetype="text/javascript">
-				<psxctl:FileLocation>../../cm/jslib/tools.scrollable-1.1.2.js</psxctl:FileLocation>
+				<psxctl:FileLocation>/cm/jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/tools.scrollable-1.1.2.js</psxctl:FileLocation>
 				<psxctl:Timestamp/>
 			</psxctl:FileDescriptor>
 			<psxctl:FileDescriptor name="tools.scrollable.mousewheel-1.0.1.js" type="script" mimetype="text/javascript">
-				<psxctl:FileLocation>../../cm/jslib/tools.scrollable.mousewheel-1.0.1.js</psxctl:FileLocation>
+				<psxctl:FileLocation>/cm/jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/tools.scrollable.mousewheel-1.0.1.js</psxctl:FileLocation>
 				<psxctl:Timestamp/>
 			</psxctl:FileDescriptor>
 			<psxctl:FileDescriptor name="jquery.validate.js" type="script" mimetype="text/javascript">
-				<psxctl:FileLocation>../../cm/jslib/jquery.validate.js</psxctl:FileLocation>
+				<psxctl:FileLocation>/cm/jslib/profiles/3x/jquery/plugins/jquery-validation/jquery.validate.js</psxctl:FileLocation>
 				<psxctl:Timestamp/>
 			</psxctl:FileDescriptor>
 			<!-- SimpleDateFormat JS-->
 			<psxctl:FileDescriptor name="date.js" type="script" mimetype="text/javascript">
-				<psxctl:FileLocation>../../cm/jslib/date.js</psxctl:FileLocation>
+				<psxctl:FileLocation>/cm/jslib/profiles/3x/libraries/perc-retiredjs/date.js</psxctl:FileLocation>
 				<psxctl:Timestamp/>
 			</psxctl:FileDescriptor>
 			<psxctl:FileDescriptor name="perc_extend_jQueryValidate.js" type="script" mimetype="text/javascript">
-				<psxctl:FileLocation>../../cm/plugins/perc_extend_jQueryValidate.js</psxctl:FileLocation>
+				<psxctl:FileLocation>/cm/plugins/perc_extend_jQueryValidate.js</psxctl:FileLocation>
 				<psxctl:Timestamp/>
 			</psxctl:FileDescriptor>
 			<!-- Site Picker Control JS-->
 			<psxctl:FileDescriptor name="perc_path_manager.js" type="script" mimetype="text/javascript">
-				<psxctl:FileLocation>../../cm/plugins/perc_path_manager.js</psxctl:FileLocation>
+				<psxctl:FileLocation>/cm/plugins/perc_path_manager.js</psxctl:FileLocation>
+				<psxctl:Timestamp/>
+			</psxctl:FileDescriptor>
+			<psxctl:FileDescriptor name="jquery.dynatree.js" type="script" mimetype="text/javascript">
+				<psxctl:FileLocation>/cm/jslib/profiles/3x/jquery/plugins/jquery-dynatree/jquery.dynatree.js</psxctl:FileLocation>
+				<psxctl:Timestamp/>
+			</psxctl:FileDescriptor>
+			<psxctl:FileDescriptor name="jquery.text-overflow.js" type="script" mimetype="text/javascript">
+				<psxctl:FileLocation>/cm/jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.text-overflow.js</psxctl:FileLocation>
+				<psxctl:Timestamp/>
+			</psxctl:FileDescriptor>
+			<psxctl:FileDescriptor name="jquery.jeditable.js" type="script" mimetype="text/javascript">
+				<psxctl:FileLocation>/cm/jslib/profiles/3x/jquery/plugins/jquery-jeditable/jquery.jeditable.js</psxctl:FileLocation>
 				<psxctl:Timestamp/>
 			</psxctl:FileDescriptor>
 			<psxctl:FileDescriptor name="PercContentBrowserWidget.js" type="script" mimetype="text/javascript">
-				<psxctl:FileLocation>../../cm/jslib/jquery.dynatree.js</psxctl:FileLocation>
+				<psxctl:FileLocation>/cm/services/PercServiceUtils.js</psxctl:FileLocation>
 				<psxctl:Timestamp/>
 			</psxctl:FileDescriptor>
 			<psxctl:FileDescriptor name="PercContentBrowserWidget.js" type="script" mimetype="text/javascript">
-				<psxctl:FileLocation>../../cm/jslib/jquery.text-overflow.js</psxctl:FileLocation>
+				<psxctl:FileLocation>/cm/widgets/PercFinderTree.js</psxctl:FileLocation>
 				<psxctl:Timestamp/>
 			</psxctl:FileDescriptor>
 			<psxctl:FileDescriptor name="PercContentBrowserWidget.js" type="script" mimetype="text/javascript">
-				<psxctl:FileLocation>../../cm/jslib/Jeditable.js</psxctl:FileLocation>
-				<psxctl:Timestamp/>
-			</psxctl:FileDescriptor>
-			<psxctl:FileDescriptor name="PercContentBrowserWidget.js" type="script" mimetype="text/javascript">
-				<psxctl:FileLocation>../../cm/services/PercServiceUtils.js</psxctl:FileLocation>
-				<psxctl:Timestamp/>
-			</psxctl:FileDescriptor>
-			<psxctl:FileDescriptor name="PercContentBrowserWidget.js" type="script" mimetype="text/javascript">
-				<psxctl:FileLocation>../../cm/widgets/PercFinderTree.js</psxctl:FileLocation>
-				<psxctl:Timestamp/>
-			</psxctl:FileDescriptor>
-			<psxctl:FileDescriptor name="PercContentBrowserWidget.js" type="script" mimetype="text/javascript">
-				<psxctl:FileLocation>../../cm/plugins/PercExtendUiDialog.js</psxctl:FileLocation>
+				<psxctl:FileLocation>/cm/plugins/PercExtendUiDialog.js</psxctl:FileLocation>
 				<psxctl:Timestamp/>
 			</psxctl:FileDescriptor>
 			<!-- Query List Control JS-->
 			<psxctl:FileDescriptor name="percQueryControl" type="script" mimetype="text/javascript">
-				<psxctl:FileLocation>../rx_resources/controls/percQueryControl/js/percQueryControl.js</psxctl:FileLocation>
+				<psxctl:FileLocation>/rx_resources/controls/percQueryControl/js/percQueryControl.js</psxctl:FileLocation>
 				<psxctl:Timestamp/>
 			</psxctl:FileDescriptor>
 			<psxctl:FileDescriptor name="perc_save_as.js" type="script" mimetype="text/javascript">
-				<psxctl:FileLocation>../../cm/widgets/perc_save_as.js</psxctl:FileLocation>
+				<psxctl:FileLocation>/cm/widgets/perc_save_as.js</psxctl:FileLocation>
 				<psxctl:Timestamp/>
 			</psxctl:FileDescriptor>
 		</psxctl:AssociatedFileList>
@@ -152,10 +136,7 @@
 	<xsl:template match="Control[@name='percQueryControl']" mode="psxcontrol">
 
 		<script >
-
-			$=$j;
-
-			$(document).ready(function() {
+			$(function() {
 			$(".hasDatepicker").addClass('datadisplay');
 			$('#display_query_published_after').attr("autocomplete","off");
 			$('#display_query_published_before').attr("autocomplete","off");
@@ -165,7 +146,7 @@
 			// *********************************************************************
 			//This will be set from the widget config $date_format (set by velocity)
 			// *********************************************************************
-			$(this).focus();
+			$(this).trigger("focus");
 			var p_query_published_after = new Date(value);
 			var p_query_published_before = new Date($('[name="query_published_before"]').val());
 			<xsl:text disable-output-escaping="yes">
@@ -190,19 +171,19 @@
 			// mark the asset as dirty
 			$.topFrameJQuery.PercDirtyController.setDirty(true, "asset");
 			},
-			showOn: 'button', buttonImage: '../rx_resources/controls/percQueryControl/images/calendar.gif', buttonImageOnly: true, altFormat: 'yy-mm-dd', buttonText: ''
+			showOn: 'button', buttonImage: '/rx_resources/controls/percQueryControl/images/calendar.gif', buttonImageOnly: true, altFormat: 'yy-mm-dd', buttonText: ''
 			});
 
 			$('#display_query_published_before').datepicker({
 			onSelect:
 			function(value, date) {
-			$(this).focus();
+			$(this).trigger('focus');
 			var p_query_published_after = new Date($('[name="query_published_after"]').val());
 			var p_query_published_before = new Date(value);
 			<xsl:text disable-output-escaping="yes">
 				if(p_query_published_after >= p_query_published_before)
                 {
-                    $j.perc_utils.alert_dialog({title:"Error", content:"First published before date must be greater than First published on or after date.", okCallBack:function(){
+                    $.perc_utils.alert_dialog({title:"Error", content:"First published before date must be greater than First published on or after date.", okCallBack:function(){
                         setDisplayDate($('[name="query_published_before"]').val(),"display_query_published_before");
                         return false;
                     }});
@@ -219,7 +200,7 @@
 			// mark the asset as dirty
 			$.topFrameJQuery.PercDirtyController.setDirty(true, "asset");
 			},
-			showOn: 'button', buttonImage: '../rx_resources/controls/percQueryControl/images/calendar.gif', buttonImageOnly: true, altFormat: 'yy-mm-dd', buttonText: ''
+			showOn: 'button', buttonImage: '/rx_resources/controls/percQueryControl/images/calendar.gif', buttonImageOnly: true, altFormat: 'yy-mm-dd', buttonText: ''
 			});
 
 			$('#perc-content-form').queryListControl({});
@@ -229,10 +210,10 @@
 		</script>
 
 		<script >
-			$j(document).ready(function(){
-				$j("#querylist-title").click(function () {
-					$j("#criteria_for_list").toggle();
-					$j("#querylist-title").toggleClass("querylist-expand-image querylist-close-image");
+			$(document).ready(function(){
+				$("#querylist-title").on("click",function () {
+					$("#criteria_for_list").toggle();
+					$("#querylist-title").toggleClass("querylist-expand-image querylist-close-image");
 				});
 			});
 		</script>
@@ -295,40 +276,41 @@
 
 	</xsl:template>
 	<xsl:template match="Control[@name='percQueryControl' and @isReadOnly='yes']" priority='10' mode="psxcontrol">
-		<script >
+	<xsl:text disable-output-escaping="yes">
 	<![CDATA[
-			$j(document).ready(function(){
+	<script >
+			$(function(){
 
-				$j(".hasDatepicker").addClass('datadisplay');
+				$(".hasDatepicker").addClass('datadisplay');
 
-				$j("#querylist-title").click(function () {
-					$j("#criteria_for_list").toggle();
-					$j("#querylist-title").toggleClass("querylist-expand-image querylist-close-image");
+				$("#querylist-title").on("click",function () {
+					$("#criteria_for_list").toggle();
+					$("#querylist-title").toggleClass("querylist-expand-image querylist-close-image");
 				});
 
 				// Put site value in website location field
-				var sitepath = $j("#perc_site_path").val().substring(8);
+				var sitepath = $("#perc_site_path").val().substring(8);
 				var splitPath = sitepath.split("/");
 
 
 
-				$j("#perc_display_site_path").text(sitepath);
+				$("#perc_display_site_path").text(sitepath);
 
 				// Fill templates field
 
-				if (splitPath[0] != undefined && splitPath[0] != "")
+				if (typeof splitPath[0] !== "undefined" && splitPath[0] != "")
 				{
-					$j.PercServiceUtils.makeJsonRequest(
-							$j.perc_paths.TEMPLATES_BY_SITE + "/" + splitPath[0],
-							$j.PercServiceUtils.TYPE_GET,
+					$.PercServiceUtils.makeJsonRequest(
+							$.perc_paths.TEMPLATES_BY_SITE + "/" + splitPath[0],
+							$.PercServiceUtils.TYPE_GET,
 							false,
 							function(status, result){
-								if(status == $j.PercServiceUtils.STATUS_SUCCESS)
+								if(status == $.PercServiceUtils.STATUS_SUCCESS)
 								{
 									var summaries = result.data.TemplateSummary;
 									var temps = {};
 									var tempsArray = [];
-									var tempIds = ($j("#perc_template_list").val() != "") ? $j("#perc_template_list").val().split(',') : "";
+									var tempIds = ($("#perc_template_list").val() != "") ? $("#perc_template_list").val().split(',') : "";
 									for(i = 0; i < summaries.length; i++)
 									{
 										temps[summaries[i].id] = summaries[i].name;
@@ -345,20 +327,21 @@
 											buff += "<br/>";
 										buff += tempsArray[i];
 									}
-									$j("#perc_display_template_list").append(buff);
+									$("#perc_display_template_list").append(buff);
 								}
 								else
 								{
 									var defaultMsg =
-											$j.PercServiceUtils.extractDefaultErrorMessage(result.request);
-									$j.perc_utils.alert_dialog({title: 'Error', content: defaultMsg});
+											$.PercServiceUtils.extractDefaultErrorMessage(result.request);
+									$.perc_utils.alert_dialog({title: 'Error', content: defaultMsg});
 								}
 							}
 					);
 				}
 			});
+			</script>
 			]]>
-                </script>
+		</xsl:text>
 		<div id = "perc-querylist-wrapper">
 			<div id = "querylist-title-wrapper">
 				<div id = "querylist-title" class = "querylist-close-image">Archive Criteria</div>

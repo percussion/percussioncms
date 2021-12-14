@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -29,14 +29,13 @@ import com.percussion.extension.PSExtensionException;
 import com.percussion.services.filter.IPSFilterItem;
 import com.percussion.services.filter.IPSItemFilterRule;
 import com.percussion.services.filter.PSFilterException;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
  * Base class for all percussion written item filters
@@ -48,7 +47,7 @@ public abstract class PSBaseFilter implements IPSExtension, IPSItemFilterRule
    /**
     * Logger for the base filter
     */
-   Log ms_log = LogFactory.getLog(PSBaseFilter.class);
+   private static final Logger ms_log = LogManager.getLogger(PSBaseFilter.class);
 
    /**
     * Priority for this rule, set via the init parameters

@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -52,7 +52,7 @@ public class PSRevisions
       
       m_sum = sum;
       
-      m_revisions = new ArrayList<PSContentStatusHistory>();
+      m_revisions = new ArrayList<>();
       if (history != null && history.size() > 0)
       {
          int curRev = -1;
@@ -77,7 +77,7 @@ public class PSRevisions
     */
    public List<PSContentStatusHistory> getRevisions()
    {
-      return new ArrayList<PSContentStatusHistory>(m_revisions);
+      return new ArrayList<>(m_revisions);
    }
    
    /**

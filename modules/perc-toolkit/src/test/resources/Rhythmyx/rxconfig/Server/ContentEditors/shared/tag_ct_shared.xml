@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PSXContentEditorSharedDef>
+   <PSXSharedFieldGroup filename="demo_ct_shared.xml" name="sharedtag">
+      <PSXContainerLocator>
+         <PSXTableSet>
+            <PSXTableLocator>
+               <PSXBackEndCredential id="275">
+                  <alias>contentCredential</alias>
+                  <comment/>
+                  <datasource/>
+               </PSXBackEndCredential>
+            </PSXTableLocator>
+            <PSXTableRef alias="SHARED_TAG_SET" name="SHARED_TAG_SET"/>
+         </PSXTableSet>
+      </PSXContainerLocator>
+      <PSXFieldSet name="sharedtag" repeatability="oneOrMore" supportsSequencing="no" type="simpleChild" userSearchable="yes">
+         <PSXField forceBinary="no" mimetype="text/plain" modificationType="user" name="tag" showInPreview="yes" showInSummary="yes" type="shared">
+            <DataLocator>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>SHARED_TAG_SET</tableAlias>
+                  <column>TAG</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+            </DataLocator>
+            <DataType>text</DataType>
+            <DataFormat>50</DataFormat>
+            <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+            <PSXPropertySet>
+               <PSXProperty locked="no" name="allowActiveTags">
+                  <Value type="Boolean">no</Value>
+               </PSXProperty>
+               <PSXProperty locked="yes" name="cleanupBrokenInlineLinks">
+                  <Value type="Boolean">no</Value>
+               </PSXProperty>
+               <PSXProperty locked="no" name="cleanupNamespaces">
+                  <Value type="Boolean">no</Value>
+               </PSXProperty>
+               <PSXProperty locked="no" name="mayContainIDs">
+                  <Value type="Boolean">no</Value>
+               </PSXProperty>
+               <PSXProperty locked="yes" name="mayHaveInlineLinks">
+                  <Value type="Boolean">no</Value>
+               </PSXProperty>
+            </PSXPropertySet>
+            <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+         </PSXField>
+      </PSXFieldSet>
+      <PSXUIDefinition>
+         <PSXDisplayMapper fieldSetRef="sharedtag" id="0">
+            <PSXDisplayMapping>
+               <FieldRef>sharedtag</FieldRef>
+               <PSXUISet>
+                  <Label>
+                     <PSXDisplayText>Tags:</PSXDisplayText>
+                  </Label>
+                  <PSXControlRef id="10022" name="sys_CheckBoxGroup"/>
+                  <ErrorLabel>
+                     <PSXDisplayText>Tags:</PSXDisplayText>
+                  </ErrorLabel>
+                  <PSXChoices sortOrder="ascending" type="global">
+                     <Key>356</Key>
+                  </PSXChoices>
+               </PSXUISet>
+               <PSXDisplayMapper fieldSetRef="sharedtag" id="65">
+                  <PSXDisplayMapping>
+                     <FieldRef>tag</FieldRef>
+                     <PSXUISet/>
+                  </PSXDisplayMapping>
+               </PSXDisplayMapper>
+            </PSXDisplayMapping>
+         </PSXDisplayMapper>
+      </PSXUIDefinition>
+      <PSXValidationRules maxErrorsToStop="10"/>
+      <PSXInputTranslations/>
+      <PSXOutputTranslations/>
+   </PSXSharedFieldGroup>
+</PSXContentEditorSharedDef>

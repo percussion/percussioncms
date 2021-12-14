@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -32,20 +32,19 @@ import com.percussion.server.PSRequest;
 import com.percussion.server.PSServer;
 import com.percussion.services.assembly.IPSAssemblyItem;
 import com.percussion.services.assembly.IPSAssemblyResult;
-import com.percussion.services.assembly.IPSAssemblyTemplate;
 import com.percussion.services.assembly.IPSAssemblyResult.Status;
+import com.percussion.services.assembly.IPSAssemblyTemplate;
 import com.percussion.services.filter.PSFilterException;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.utils.request.PSRequestInfo;
 import com.percussion.xml.PSXmlDocumentBuilder;
-
-import java.io.ByteArrayOutputStream;
-import java.util.HashMap;
-import java.util.Map;
-
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.w3c.dom.Document;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * The legacy assembler is responsible for invoking existing assembler requests
@@ -63,7 +62,7 @@ public class PSLegacyAssembler extends PSAssemblerBase
    {
       IPSAssemblyTemplate template = item.getTemplate();
       String path = template.getAssemblyUrl();
-      Map<String, Object> requestparams = new HashMap<String, Object>();
+      Map<String, Object> requestparams = new HashMap<>();
       for (String name : item.getParameters().keySet())
       {
          //Legacy assembler needs to pass empty parameters values
@@ -131,27 +130,22 @@ public class PSLegacyAssembler extends PSAssemblerBase
       }
       if (!ireq.isBinary(req))
       {
-         ByteArrayOutputStream stream = null;
-         try
-         {
-            stream = ireq.getMergedResult();
+         try(ByteArrayOutputStream stream = ireq.getMergedResult()){
             String mimeType = ireq.computeMimeType();
             if (StringUtils.isNotBlank(mimeType))
                item.setMimeType(mimeType);
             else
                item.setMimeType("text/html");
+
             item.setResultData(stream.toByteArray());
             item.setStatus(Status.SUCCESS);
             return (IPSAssemblyResult) item;
          }
-         catch (PSInternalRequestCallException e)
+         catch (PSInternalRequestCallException | IOException e)
          {
             return getFailureResult(item, e.getLocalizedMessage());
          }
-         finally
-         {
-            IOUtils.closeQuietly(stream);   
-         }
+
       }
       else
       {

@@ -17,13 +17,23 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.membership.services;
 
-import java.util.List;
+import com.percussion.delivery.services.IPSRestService;
+import com.percussion.membership.data.PSAccountSummary;
+import com.percussion.membership.data.PSGetUserResult;
+import com.percussion.membership.data.PSLoginRequest;
+import com.percussion.membership.data.PSLoginResult;
+import com.percussion.membership.data.PSMembershipAccount;
+import com.percussion.membership.data.PSMembershipResult;
+import com.percussion.membership.data.PSResetRequest;
+import com.percussion.membership.data.PSUserGroup;
+import com.percussion.membership.data.PSUserSession;
+import com.percussion.membership.data.PSUserSummary;
 
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -35,9 +45,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
-
-import com.percussion.delivery.services.IPSRestService;
-import com.percussion.membership.data.*;
+import java.util.List;
 
 /**
  * @author natechadwick

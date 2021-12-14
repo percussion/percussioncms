@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -25,11 +25,10 @@ package com.percussion.pagemanagement.dao.impl;
 
 import com.percussion.pagemanagement.data.PSMetadataDocType;
 import com.percussion.pagemanagement.data.PSMetadataDocTypeOptions;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.commons.lang.StringUtils;
 
 /**
  * Provides utilities to convert the doc type value stored in DB, and to convert
@@ -85,7 +84,7 @@ public class PSMetadataDocTypeUtils
         String docTypeName = XHTML;
         boolean customValue = false;
         PSMetadataDocType metaDocType = new PSMetadataDocType();
-        List<PSMetadataDocTypeOptions> optionsList = new ArrayList<PSMetadataDocTypeOptions>();
+        List<PSMetadataDocTypeOptions> optionsList = new ArrayList<>();
         optionsList.add(new PSMetadataDocTypeOptions(XHTML, PERC_XHTML_DOC_TYPE));
         optionsList.add(new PSMetadataDocTypeOptions(HTML5, PERC_HTML5_DOC_TYPE));
 

@@ -17,19 +17,19 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.rest.errors;
 
-import java.util.ResourceBundle;
-
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response.Status;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.ResourceBundle;
 @XmlRootElement(name = "Error")
-public class RestExceptionBase extends RuntimeException
+public class RestExceptionBase extends WebApplicationException
 {
     private RestErrorCode errorCode;
 
@@ -124,5 +124,9 @@ public class RestExceptionBase extends RuntimeException
     public void setStatus(Status status)
     {
         this.status = status;
+    }
+
+    public RestExceptionBase(Throwable cause){
+        super(cause);
     }
 }

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>  <assembly-template id="1">
+    <bindings/>
+    <template-slot-ids>
+      <template-slot-id>527</template-slot-id>
+      <template-slot-id>525</template-slot-id>
+    </template-slot-ids>
+    <guid>0-4-557</guid>
+    <active-assembly-type>Normal</active-assembly-type>
+    <assembler>Java/global/percussion/assembly/velocityAssembler</assembler>
+    <assembly-url>../assembler/render</assembly-url>
+    <charset>UTF-8</charset>
+    <description/>
+    <global-template/>
+    <global-template-usage>None</global-template-usage>
+    <label>S - Bulleted List</label>
+    <location-prefix/>
+    <location-suffix/>
+    <mime-type>text/html</mime-type>
+    <name>soln_list_BulletedSnip</name>
+    <output-format>Snippet</output-format>
+    <publish-when>Never</publish-when>
+    <style-sheet-path/>
+    <template>&lt;html&gt;
+	&lt;head&gt;
+		&lt;title&gt;$sys.assemblyItem.template.label&lt;/title&gt;
+	&lt;/head&gt;
+&lt;body&gt;
+#soln_list_slot("&lt;ul&gt;" "&lt;li&gt;" "&lt;/li&gt;" "&lt;/ul&gt;")
+&lt;/body&gt;
+&lt;/html&gt;</template>
+    <template-type>Shared</template-type>
+    <type>TEMPLATE</type>
+    <variant>false</variant>
+  </assembly-template>

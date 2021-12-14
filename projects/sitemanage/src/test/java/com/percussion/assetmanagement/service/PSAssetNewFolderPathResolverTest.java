@@ -17,26 +17,12 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.assetmanagement.service;
-
-import static java.util.Arrays.asList;
-import static org.junit.Assert.*;
-
-import java.util.List;
-
-import org.jmock.Expectations;
-import org.jmock.Mockery;
-import org.jmock.integration.junit4.JMock;
-import org.jmock.integration.junit4.JUnit4Mockery;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import com.percussion.assetmanagement.service.impl.PSAssetNewFolderPathResolver;
 import com.percussion.assetmanagement.service.impl.PSAssetNewFolderPathResolver.PSResolvedFolderPath;
@@ -45,8 +31,23 @@ import com.percussion.pagemanagement.data.PSPage;
 import com.percussion.pagemanagement.service.IPSPageService;
 import com.percussion.pagemanagement.service.IPSTemplateService;
 import com.percussion.share.data.IPSItemSummary;
+import com.percussion.share.service.IPSDataService;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.sitemanage.data.PSSiteSummary;
 import com.percussion.sitemanage.service.IPSSiteTemplateService;
+import org.jmock.Expectations;
+import org.jmock.Mockery;
+import org.jmock.integration.junit4.JMock;
+import org.jmock.integration.junit4.JUnit4Mockery;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
+import java.util.List;
+
+import static java.util.Arrays.asList;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 //import static java.util.Arrays.*;
 //import static org.hamcrest.CoreMatchers.*;
@@ -100,8 +101,7 @@ public class PSAssetNewFolderPathResolverTest
     }
 
     @Test
-    public void shouldResolveForPageUsingAssetsPath()
-    {
+    public void shouldResolveForPageUsingAssetsPath() throws IPSDataService.DataServiceLoadException, PSValidationException, IPSDataService.DataServiceNotFoundException {
 
         owner = pageItem;
         context.checking(new Expectations()
@@ -121,8 +121,7 @@ public class PSAssetNewFolderPathResolverTest
     }
     
     @Test
-    public void shouldResolveForPageUsingSitePath()
-    {
+    public void shouldResolveForPageUsingSitePath() throws IPSDataService.DataServiceLoadException, PSValidationException, IPSDataService.DataServiceNotFoundException {
 
         pageItem = createItemSummary("blah", IPSPageService.PAGE_CONTENT_TYPE, asList("//SITE/blah"));
         owner = pageItem;
@@ -145,8 +144,7 @@ public class PSAssetNewFolderPathResolverTest
     
 
     @Test
-    public void shouldResolveForTemplateUsingAssetsPath()
-    {
+    public void shouldResolveForTemplateUsingAssetsPath() throws IPSDataService.DataServiceLoadException, PSValidationException, IPSDataService.DataServiceNotFoundException {
 
         owner = template;
         context.checking(new Expectations()
@@ -164,8 +162,7 @@ public class PSAssetNewFolderPathResolverTest
     }
 
     @Test
-    public void shouldResolveForTemplateUsingSitePath()
-    {
+    public void shouldResolveForTemplateUsingSitePath() throws IPSDataService.DataServiceLoadException, PSValidationException, IPSDataService.DataServiceNotFoundException {
 
         owner = template;
         siteSummary.setFolderPath("//SITE");

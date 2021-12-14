@@ -17,15 +17,18 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.workflow;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSExtensionErrors;
 import com.percussion.util.PSPreparedStatement;
 import com.percussion.util.PSSqlHelper;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -41,9 +44,11 @@ import java.util.Map;
  * PSContentAdhocUsersContext class is a wrapper class providing access to the
  * records and fields of the backend table 'CONTENTADHOCUSERS'.
  */
-@SuppressWarnings("unchecked")
+@Deprecated
 public class PSContentAdhocUsersContext implements IPSContentAdhocUsersContext
 {
+
+   private static final Logger log = LogManager.getLogger(PSContentAdhocUsersContext.class);
 
    /**
     * Constructor specifying content ID, used to create a context with no
@@ -79,6 +84,7 @@ public class PSContentAdhocUsersContext implements IPSContentAdhocUsersContext
     *         CONTENTADHOCUSERS for this content item
     * @throws IllegalArgumentException if the connection is <CODE>null</CODE>
     */
+   @Deprecated // TODO: This class needs refactored to use spring  hibernate
    public PSContentAdhocUsersContext(int contentID,
                                      Connection connection)
       throws  PSRoleException, SQLException
@@ -282,7 +288,8 @@ public class PSContentAdhocUsersContext implements IPSContentAdhocUsersContext
       }
       catch (NullPointerException  e)
       {
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          throw e;
       }
 
@@ -407,7 +414,8 @@ public class PSContentAdhocUsersContext implements IPSContentAdhocUsersContext
       }
       catch (NullPointerException  e)
       {
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          throw e;
       }
       finally
@@ -593,7 +601,7 @@ public class PSContentAdhocUsersContext implements IPSContentAdhocUsersContext
     */
    public String toString()
    {
-       StringBuffer buf = new StringBuffer();
+       StringBuilder buf = new StringBuilder();
        buf.append("\nPSContentAdhocUsersContext:");
        if (!m_userNameToAdhocNormalRoleIDMap.isEmpty())
        {

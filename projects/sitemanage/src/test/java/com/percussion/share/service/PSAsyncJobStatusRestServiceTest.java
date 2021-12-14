@@ -17,26 +17,31 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.share.service;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertEquals;
-
+import com.percussion.error.PSExceptionUtils;
+import com.percussion.share.async.PSAsyncJobStatus;
+import com.percussion.share.test.PSRestTestCase;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.percussion.share.async.PSAsyncJobStatus;
-import com.percussion.share.test.PSRestTestCase;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 public class PSAsyncJobStatusRestServiceTest extends PSRestTestCase<PSAsyncJobStatusRestClient>
 {
+
+    private static final Logger log = LogManager.getLogger(PSAsyncJobStatusRestServiceTest.class);
+
     @Override
     protected PSAsyncJobStatusRestClient getRestClient(@SuppressWarnings("unused")
     String baseUrl)
@@ -66,7 +71,9 @@ public class PSAsyncJobStatusRestServiceTest extends PSRestTestCase<PSAsyncJobSt
           }
           catch (InterruptedException e)
           {
-              e.printStackTrace();
+              log.error(PSExceptionUtils.getMessageForLog(e));
+              log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+              Thread.currentThread().interrupt();
           }
       }
       assertEquals(100, jobStatus.getStatus().intValue());

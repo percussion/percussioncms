@@ -17,13 +17,18 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.content;
 
-import static java.util.Arrays.asList;
+import com.percussion.assetmanagement.data.PSAsset;
+import com.percussion.assetmanagement.web.service.PSAssetServiceRestClient;
+import com.percussion.content.data.AssetDef;
+import com.percussion.content.data.AssetDef.Field;
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.io.IOUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -31,13 +36,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Map;
 
-import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.io.IOUtils;
-
-import com.percussion.assetmanagement.data.PSAsset;
-import com.percussion.assetmanagement.web.service.PSAssetServiceRestClient;
-import com.percussion.content.data.AssetDef;
-import com.percussion.content.data.AssetDef.Field;
+import static java.util.Arrays.asList;
 
 
 public class PSAssetGenerator extends PSItemGenerator<PSAssetServiceRestClient>

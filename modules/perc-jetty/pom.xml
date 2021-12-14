@@ -17,7 +17,7 @@
   ~      Burlington, MA 01803, USA
   ~      +01-781-438-9900
   ~      support@percussion.com
-  ~      https://www.percusssion.com
+  ~      https://www.percussion.com
   ~
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   -->
@@ -27,7 +27,7 @@
   <parent>
     <groupId>com.percussion</groupId>
     <artifactId>core</artifactId>
-    <version>8.0.2.10</version>
+    <version>8.0.3</version>
     <relativePath>../../pom.xml</relativePath>
   </parent>
   <artifactId>perc-jetty</artifactId>
@@ -44,6 +44,13 @@
   <build>
 
        <plugins>
+           <plugin>
+           <groupId>com.github.spotbugs</groupId>
+           <artifactId>spotbugs-maven-plugin</artifactId>
+               <configuration>
+                   <skip>true</skip>
+               </configuration>
+           </plugin>
       <!--
       Copies the additional distribution content over the unpacked jetty-home
       artifact contents, after the antrun execution that initially populates
@@ -118,7 +125,7 @@
 
           <execution>
             <id>unpack-perc-war</id>
-            <phase>process-resources</phase>
+            <phase>package</phase>
             <goals>
               <goal>unpack</goal>
             </goals>
@@ -189,7 +196,7 @@
                         <artifactItem>
                             <groupId>com.oracle</groupId>
                             <artifactId>ojdbc6</artifactId>
-                            <version>${orale.version}</version>
+                            <version>${oracle.version}</version>
                             <type>jar</type>
                             <overWrite>true</overWrite>
                             <outputDirectory>${assembly-directory}/base/lib/jdbc</outputDirectory>
@@ -356,29 +363,35 @@
           <groupId>org.apache.derby</groupId>
           <artifactId>derbyclient</artifactId>
           <version>${derby.version}</version>
+          <scope>provided</scope>
       </dependency>
       <!-- https://mvnrepository.com/artifact/org.apache.derby/derbyclient -->
       <dependency>
           <groupId>org.apache.derby</groupId>
           <artifactId>derbynet</artifactId>
           <version>${derby.version}</version>
+          <scope>provided</scope>
       </dependency>
       <dependency>
           <groupId>org.apache.derby</groupId>
           <artifactId>derby</artifactId>
           <version>${derby.version}</version>
+          <scope>provided</scope>
       </dependency>
       <dependency>
           <groupId>net.sourceforge.jtds</groupId>
           <artifactId>jtds</artifactId>
+          <scope>provided</scope>
       </dependency>
       <dependency>
           <groupId>com.microsoft.sqlserver</groupId>
           <artifactId>mssql-jdbc</artifactId>
+          <scope>provided</scope>
       </dependency>
       <dependency>
           <groupId>com.oracle</groupId>
           <artifactId>ojdbc6</artifactId>
+          <scope>provided</scope>
       </dependency>
       <dependency>
         <groupId>com.percussion</groupId>

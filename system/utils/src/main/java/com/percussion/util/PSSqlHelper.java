@@ -17,30 +17,45 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.util;
 
-import com.percussion.utils.jdbc.IPSDatasourceManager;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.utils.jdbc.PSConnectionDetail;
 import com.percussion.utils.jdbc.PSConnectionHelper;
 import com.percussion.utils.jdbc.PSJdbcUtils;
 import com.percussion.utils.tools.IPSUtilsConstants;
-
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.naming.NamingException;
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.sql.*;
-
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Time;
+import java.sql.Timestamp;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Properties;
 
@@ -284,7 +299,7 @@ public class PSSqlHelper
     *    the empty string is returned.
     */
    public static String parseTableName( String driver, String tableName,
-         StringBuffer originBuf, StringBuffer catalogBuf )
+         StringBuilder originBuf, StringBuilder catalogBuf )
    {
       if ( null == tableName || tableName.trim().length() == 0 )
          return "";
@@ -771,7 +786,8 @@ public class PSSqlHelper
          }
         catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | ClassNotFoundException e)
       {
-            ms_log.debug("reflection to call "+JBOSS_WRAPPED_CLASS+".getUnderlyingStatement() failed assuming not an Jboss wrapped oracle prepared statment",e);
+            log.error("reflection to call {}.getUnderlyingStatement() failed assuming not an Jboss wrapped oracle prepared statment, Error: {}", JBOSS_WRAPPED_CLASS,PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
 
    }
@@ -1638,7 +1654,22 @@ public class PSSqlHelper
     */
    public static boolean isMysql(String driverName)
    {
-      return (driverName.toUpperCase().indexOf("MYSQL") > -1);
+      return (driverName.toUpperCase().contains("MYSQL"));
+   }
+
+   public static boolean isMsSql(String driverName)
+   {
+      return (driverName.toUpperCase().contains("MSSQL") || driverName.toUpperCase().contains("SQLSERVER") || driverName.toUpperCase().contains("JTDS"));
+   }
+
+   public static boolean isDB2(String driverName)
+   {
+      return (driverName.toUpperCase().contains("DB2"));
+   }
+
+   public static boolean isDerby(String driverName)
+   {
+      return (driverName.toUpperCase().contains("DERBY"));
    }
 
    /**
@@ -1687,7 +1718,7 @@ public class PSSqlHelper
     *  special case listed above for parameter <code>indexNameBuf</code> where 
     *  its value may change if method returns false.
     */
-   public static boolean handleBackingIndex(StringBuffer indexNameBuf, 
+   public static boolean handleBackingIndex(StringBuilder indexNameBuf,
          DatabaseMetaData md) throws SQLException
    {
       String indexName = indexNameBuf.toString();
@@ -1879,7 +1910,7 @@ public class PSSqlHelper
       PreparedStatement st = null;
       try
       {
-         StringBuffer buf = new StringBuffer();
+         StringBuilder buf = new StringBuilder();
          for (char ch = 0x21; ch < 0x017F; ch += 15)
          {
             st = PSPreparedStatement.getPreparedStatement(conn, delete);
@@ -2107,10 +2138,7 @@ public class PSSqlHelper
     * @return <code>true</code> if it is a Oracle database; otherwise return
     * <code>false</code>. 
     * 
-    * @throws RuntimeException if 
-    * {@link #createInstance(IPSDatasourceManager)} has not been called.
-    * {@link #createInstance(IPSDatasourceManager)} method is called by 
-    * spring wiring process.
+    * @throws RuntimeException if
     */
    public static boolean isOracle()
    {
@@ -2123,20 +2151,22 @@ public class PSSqlHelper
          ms_isOracle = PSSqlHelper.isOracle(connDetail.getDriver());
          
          if (ms_isOracle)
-            ms_log.debug("The repository is an Oracle database, driver is " + connDetail.getDriver());
+            log.debug("The repository is an Oracle database, driver is {}", connDetail.getDriver());
          else
-            ms_log.debug("The repository is not an Oracle database, driver is " + connDetail.getDriver());
+            log.debug("The repository is not an Oracle database, driver is {}", connDetail.getDriver());
          
          return ms_isOracle;
       }
       catch (Exception e)
       {
-         ms_log.error("Failed to determine database type", e);
+         log.error("Failed to determine database type, Error: {}",
+                 PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          throw new RuntimeException("Failed to determine database type", e);
       }
    }
 
-   private static ArrayList<String> existingCMStables = new ArrayList<String>();
+   private static ArrayList<String> existingCMStables = new ArrayList<>();
 
    /**
     * Utility method that can be used go validate if a table name exists on the database.  Intended
@@ -2148,11 +2178,11 @@ public class PSSqlHelper
     * @param refresh When true, the list of valid tables is refreshed from the database.
     * @return true if the table is valid and exists, false if not.
     */
-   public static boolean isExistingCMSTableName(String t, boolean refresh) {
+   public static boolean isExistingCMSTableName(Connection conn, String t, boolean refresh) {
       boolean ret = false;
 
       if (existingCMStables.size() == 0 || refresh) {
-         try (Connection conn = PSConnectionHelper.getDbConnection()) {
+         try{
             existingCMStables.clear();
             String types[] = {"TABLE", "VIEW"};
             try(ResultSet rs = conn.getMetaData().getTables(conn.getCatalog(), conn.getSchema(), "%", types)) {
@@ -2160,8 +2190,9 @@ public class PSSqlHelper
                   existingCMStables.add(rs.getString("TABLE_NAME").toLowerCase());
                }
             }
-         } catch (SQLException | NamingException e) {
-            ms_log.warn("Error listing database tables: " + e.getMessage());
+         } catch (SQLException e) {
+            log.warn("Error listing database tables: {}",PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          }
       }
 
@@ -2184,7 +2215,7 @@ public class PSSqlHelper
    /**
     * Logger for PSConnectionHelper.
     */
-   private static Log ms_log = LogFactory.getLog("PSSqlHelper");
+   private static final Logger log = LogManager.getLogger("PSSqlHelper");
    
    /**
     * SQL State for sql exceptions which violate integrity constraints. A SQL

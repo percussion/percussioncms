@@ -17,22 +17,23 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.share.web.service;
 
+import com.percussion.cms.IPSConstants;
 import com.percussion.error.PSExceptionUtils;
 import com.percussion.share.service.exception.IPSValidationException;
 import com.percussion.share.service.exception.PSErrorUtils;
 import com.percussion.share.validation.PSErrors;
 import com.percussion.share.validation.PSValidationErrors;
 import com.percussion.util.PSSiteManageBean;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.stereotype.Component;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
+import javax.inject.Singleton;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response.Status;
@@ -53,7 +54,7 @@ import javax.ws.rs.ext.Provider;
  *
  */
 @Provider
-@Component
+@Singleton
 @Produces(MediaType.APPLICATION_JSON)
 @PSSiteManageBean("runtimeExceptionMapper")
 public class PSRuntimeExceptionMapper extends PSAbstractExceptionMapper<RuntimeException> implements ExceptionMapper<RuntimeException> {
@@ -73,14 +74,13 @@ public class PSRuntimeExceptionMapper extends PSAbstractExceptionMapper<RuntimeE
         }
         else {
 
-            log.error(ERROR_MESSAGE + PSExceptionUtils.getMessageForLog(exception));
+            log.error("{} {}",ERROR_MESSAGE,PSExceptionUtils.getMessageForLog( exception));
 
-            log.debug(exception);
+            log.debug(PSExceptionUtils.getDebugMessageForLog(exception));
         }
         
-        PSErrors errors = PSErrorUtils.createErrorsFromException(exception);
-        
-        return errors;
+        return PSErrorUtils.createErrorsFromException(exception);
+
     }
     
     
@@ -99,5 +99,5 @@ public class PSRuntimeExceptionMapper extends PSAbstractExceptionMapper<RuntimeE
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log log = LogFactory.getLog(PSRuntimeExceptionMapper.class);
+    private static final Logger log = LogManager.getLogger(IPSConstants.SERVER_LOG);
 }

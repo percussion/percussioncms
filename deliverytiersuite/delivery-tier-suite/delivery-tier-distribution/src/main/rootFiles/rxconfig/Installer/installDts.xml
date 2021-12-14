@@ -1,27 +1,3 @@
-<!--
-  ~     Percussion CMS
-  ~     Copyright (C) 1999-2021 Percussion Software, Inc.
-  ~
-  ~     This program is free software: you can redistribute it and/or modify
-  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
-  ~
-  ~     This program is distributed in the hope that it will be useful,
-  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
-  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  ~     GNU Affero General Public License for more details.
-  ~
-  ~     Mailing Address:
-  ~
-  ~      Percussion Software, Inc.
-  ~      PO Box 767
-  ~      Burlington, MA 01803, USA
-  ~      +01-781-438-9900
-  ~      support@percussion.com
-  ~      https://www.percusssion.com
-  ~
-  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
-  -->
-
 <project name="install" default="install" >
 
     <property name="install.dir" value="C:\DevEnv\Installs\dev"/>
@@ -34,9 +10,15 @@
     <property name="perc.dts.backup" value="${install.dir}/PreInstall/Backups" />
 
     <echo>Setting up TaskDefs</echo>
-    <path id="ant.deps">
+    <path id="ant.deps" cache="true">
         <fileset dir="${basedir}">
             <include name="perc-ant-${perc.version}.jar" />
+        </fileset>
+        <fileset dir="${install.src}/Deployment/Server/perc-lib" erroronmissingdir="false">
+            <include name="**/*.jar" />
+        </fileset>
+        <fileset dir="${install.src}/Deployment/Server/common/lib" erroronmissingdir="false">
+            <include name="**/*.jar" />
         </fileset>
         <fileset dir="${install.src}/Deployment/Server/perc-lib" erroronmissingdir="false">
             <include name="**/*.jar" />
@@ -49,7 +31,6 @@
     <classloader classpathref="ant.deps" parentfirst="false" name="ant.loader.ant.deps"/>
     <taskdef resource="com/percussion/ant/antlib.xml" classpathref="ant.deps" loaderref="ant.loader.ant.deps"/>
     <taskdef resource="net/sf/antcontrib/antlib.xml" classpathref="ant.deps" loaderref="ant.loader.ant.deps"/>
-
 
     <condition property="isWindows" else="false">
         <os family="windows" />
@@ -126,7 +107,7 @@
         </if>
 
         <if>
-             <isfalse value="${install.prod.dts}"/>
+            <isfalse value="${install.prod.dts}"/>
             <then>
                 <echo>Installing stage dts </echo>
                 <install-dts type="Staging" upgrade="${stage.dts.upgrade}"/>
@@ -147,36 +128,60 @@
         <copy file="${install.src}/Version.properties" tofile="${install.dir}/Version.properties" overwrite="true" failonerror="false" force="true"/>
 
         <if>
-            <available file="${install.dir}" type="dir"/>
-            <then>
-                <echo>Fixing line endings in ${install.dir}...</echo>
-                <fixcrlf srcdir="${install.dir}"  preservelastmodified="true">
-                    <patternset refid="text.files"/>
-                </fixcrlf>
-            </then>
-        </if>
-
-
-        <echo>Fixing executable file permissions...</echo>
-        <chmod failonerror="false" verbose="true" perm="ugo+rx">
-            <fileset dir="${install.dir}">
-                <include name="**/*.sh"/>
-                <include name="**/*.bin"/>
-            </fileset>
-        </chmod>
-
-        <if>
             <istrue value="${install.prod.dts}"/>
             <then>
+                <echo>Fixing line endings in ${install.dir}...</echo>
+                <fixcrlf srcdir="${install.dir}/Deployment"  preservelastmodified="true">
+                    <patternset refid="text.files"/>
+                </fixcrlf>
+                <fixcrlf srcdir="${install.dir}" includes="TomcatStartup.sh" preservelastmodified="true"  />
+                <fixcrlf srcdir="${install.dir}" includes="TomcatShutdown.sh" preservelastmodified="true" />
+                <echo>Fixing executable file permissions...</echo>
+                <chmod failonerror="false" verbose="true" perm="ugo+rx">
+                    <fileset dir="${install.dir}/Deployment">
+                        <include name="**/*.sh"/>
+                        <include name="**/*.bin"/>
+                    </fileset>
+                </chmod>
+                <chmod failonerror="false" verbose="true" perm="ugo+rx">
+                    <fileset dir="${install.dir}">
+                        <include name="TomcatStartup.sh"/>
+                        <include name="TomcatShutdown.sh"/>
+                    </fileset>
+                </chmod>
+                <echo>Deleting Logging files...</echo>
                 <delete file="${install.dir}/Deployment/Server/conf/logging.properties" failonerror="false" verbose="true" quiet="false"/>
                 <delete dir="${install.dir}/Deployment/Server/webapps/manager" failonerror="false" verbose="true" quiet="false"/>
                 <delete dir="${install.dir}/Deployment/Server/webapps/host-manager" failonerror="false" verbose="true" quiet="false"/>
+                <delete file="${install.dir}/Deployment/Server/webapps/perc-caching.war" failonerror="false" verbose="true" quiet="false"/>
+                <delete dir="${install.dir}/Deployment/Server/webapps/perc-caching" failonerror="false" verbose="true" quiet="false"/>
                 <delete dir="${install.dir}/Deployment/Server/WEB-INF" failonerror="false"/>
             </then>
             <else>
+                <fixcrlf srcdir="${install.dir}/Staging/Deployment"  preservelastmodified="true">
+                    <patternset refid="text.files"/>
+                </fixcrlf>
+                <fixcrlf srcdir="${install.dir}/Staging" includes="TomcatStartup.sh" preservelastmodified="true"  />
+                <fixcrlf srcdir="${install.dir}/Staging" includes="TomcatShutdown.sh" preservelastmodified="true" />
+                <echo>Fixing executable file permissions for Staging...</echo>
+                <chmod failonerror="false" verbose="true" perm="ugo+rx">
+                    <fileset dir="${install.dir}/Staging/Deployment">
+                        <include name="**/*.sh"/>
+                        <include name="**/*.bin"/>
+                    </fileset>
+                </chmod>
+                <chmod failonerror="false" verbose="true" perm="ugo+rx">
+                    <fileset dir="${install.dir}/Staging">
+                        <include name="TomcatStartup.sh"/>
+                        <include name="TomcatShutdown.sh"/>
+                    </fileset>
+                </chmod>
                 <delete file="${install.dir}/Staging/Deployment/Server/conf/logging.properties" failonerror="false" verbose="true" quiet="false"/>
                 <delete dir="${install.dir}/Staging/Deployment/Server/webapps/manager" failonerror="false" verbose="true" quiet="false"/>
                 <delete dir="${install.dir}/Staging/Deployment/Server/webapps/host-manager" failonerror="false" verbose="true" quiet="false"/>
+                <delete file="${install.dir}/Staging/Deployment/Server/webapps/perc-caching.war" failonerror="false" verbose="true" quiet="false"/>
+                <delete dir="${install.dir}/Staging/Deployment/Server/webapps/perc-caching" failonerror="false" verbose="true" quiet="false"/>
+
                 <!-- TODO: Figure out why this directory is being generated in 1st place and remove this step -->
                 <delete dir="${install.dir}/Staging/Deployment/Server/WEB-INF" failonerror="false"/>
             </else>
@@ -197,6 +202,12 @@
                           sql="drop table PERC_PAGE_METADATA_PROPERTIES"/>
         <PSExecDTSSQLStmt silenceErrors="false" failonerror="false" rootDir="${install.dir}" printExceptionStackTrace="true" qualifyTableNames=""
                           qualifyViewNames="" sql="drop table PERC_PAGE_METADATA"/>
+        <PSExecDTSSQLStmt silenceErrors="false" failonerror="false" rootDir="${install.dir}" printExceptionStackTrace="true" qualifyTableNames=""
+                          qualifyViewNames="" preSql="select COUNT(*) from BLOG_POST_VISIT" preSqlValue="0"
+                          sql="drop table BLOG_POST_VISIT"/>
+        <PSExecDTSSQLStmt silenceErrors="false" failonerror="false" rootDir="${install.dir}" printExceptionStackTrace="true" qualifyTableNames=""
+                          qualifyViewNames="" preSql="select COUNT(*) from PERC_COOKIE_CONSENT" preSqlValue="0"
+                          sql="drop table PERC_COOKIE_CONSENT"/>
     </target>
 
 
@@ -206,8 +217,15 @@
                                  qualifyViewNames="" sql="drop table PERC_PAGE_METADATA_PROPERTIES"/>
         <PSExecStagingDTSSQLStmt silenceErrors="false" failonerror="false" rootDir="${install.dir}" printExceptionStackTrace="true" qualifyTableNames=""
                                  qualifyViewNames="" sql="drop table PERC_PAGE_METADATA"/>
+        <PSExecStagingDTSSQLStmt silenceErrors="false" failonerror="false" rootDir="${install.dir}" printExceptionStackTrace="true" qualifyTableNames=""
+                          qualifyViewNames="" preSql="select COUNT(*) from BLOG_POST_VISIT" preSqlValue="0"
+                          sql="drop table BLOG_POST_VISIT"/>
+        <PSExecStagingDTSSQLStmt silenceErrors="false" failonerror="false" rootDir="${install.dir}" printExceptionStackTrace="true" qualifyTableNames=""
+                          qualifyViewNames="" preSql="select COUNT(*) from PERC_COOKIE_CONSENT" preSqlValue="0"
+                          sql="drop table PERC_COOKIE_CONSENT"/>
 
     </target>
+
     <macrodef name="install-dts">
         <attribute name="type" default="Production"/>
         <attribute name="upgrade" default="false" />
@@ -253,26 +271,29 @@
                 </fileset>
             </copy>
 
-
             <if>
                 <and>
+                    <!-- Figure out if upgrading from 5.3 or from later versions based on that create new Server.xml -->
                     <available file="${install.dir}${staging.dir}/Deployment/Server/conf/server.xml"/>
                     <not>
                         <available file="${install.dir}${staging.dir}/Deployment/Server/conf/server.xml.5.3"/>
+                    </not>
+                    <not>
+                        <resourcecontains resource="${install.dir}${staging.dir}/Deployment/Server/conf/server.xml" substring="${http.SSLEnabled}" />
                     </not>
                     <equals arg1="@{upgrade}" arg2="true"/>
                 </and>
                 <then>
                     <echo>RENAMING SERVER XML to 5.3..</echo>
                     <copy file="${install.dir}${staging.dir}/Deployment/Server/conf/server.xml" tofile="${install.dir}${staging.dir}/Deployment/Server/conf/server.xml.5.3" overwrite="false" />
+                    <echo>Create New SERVER XML</echo>
+                    <copy verbose="true" todir="${install.dir}${staging.dir}/Deployment/Server/conf">
+                        <fileset dir="${install.src}/Deployment/Server/conf/">
+                            <include name="server.xml"/>
+                        </fileset>
+                    </copy>
                 </then>
             </if>
-
-            <copy verbose="true" todir="${install.dir}${staging.dir}/Deployment/Server/conf">
-                <fileset dir="${install.src}/Deployment/Server/conf/">
-                    <include name="server.xml"/>
-                </fileset>
-            </copy>
 
             <delete failonerror="false" file="${install.dir}${staging.dir}/Deployment/Server/conf/Catalina/localhost/perc-caching.xml"/>
             <delete failonerror="false" file="${install.dir}${staging.dir}/Deployment/Server/conf/Catalina/localhost/perc-comments-services.xml"/>
@@ -281,18 +302,46 @@
             <delete failonerror="false" file="${install.dir}${staging.dir}/Deployment/Server/conf/Catalina/localhost/perc-metadata-services.xml"/>
             <delete failonerror="false" file="${install.dir}${staging.dir}/Deployment/Server/conf/Catalina/localhost/perc-polls-services.xml"/>
             <delete failonerror="false" file="${install.dir}${staging.dir}/Deployment/Server/conf/Catalina/localhost/feeds.xml"/>
+            <delete failonerror="false" file="${install.dir}${staging.dir}/Deployment/Server/webapps/perc-caching.war" />
+            <delete failonerror="false" file="${install.dir}${staging.dir}/Deployment/Server/webapps/perc-caching" />
 
+            <mkdir dir="${install.dir}${staging.dir}/Deployment/Server/conf/perc/"/>
+            <if>
+                <not>
+                    <available file="${install.dir}${staging.dir}/Deployment/Server/conf/perc/perc-security.properties"/>
+                </not>
+                <then>
+                    <copy file="${install.src}/Deployment/Server/conf/perc/perc-security.properties" tofile="${install.dir}${staging.dir}/Deployment/Server/conf/perc/perc-security.properties" failonerror="false" verbose="true" overwrite="false" force="true"/>
+                    <touch file="${install.dir}${staging.dir}/Deployment/Server/conf/perc/perc-security.properties" verbose="true"/>
+                </then>
+            </if>
+            <propertyfile file="${install.dir}${staging.dir}/Deployment/Server/conf/perc/perc-security.properties">
+                <entry key="encryption.type" default="ENC" />
+                <entry key="contentSecurityPolicy" default="default-src * ; img-src * 'self' 'unsafe-inline' 'unsafe-eval';object-src * 'self' 'unsafe-inline' 'unsafe-eval'; font-src * 'unsafe-inline' 'unsafe-eval' ; script-src * 'unsafe-inline' 'unsafe-eval' ; style-src * 'unsafe-inline' 'unsafe-eval' ; frame-src * 'self' 'unsafe-inline' 'unsafe-eval'; frame-ancestors * 'self';" />
+                <entry key="cspReportOnly" default="false" />
+                <entry key="csrfCookieHttpOnly" default="false" />
+                <entry key="xframeOptionsPolicy" default="SAMEORIGIN" />
+                <entry key="xssProtection" default="true" />
+                <entry key="accessControlAllowedOrigins" default="*" />
+                <entry key="hstsIncludeSubDomains" default="true" />
+                <entry key="hstsMaxAgeSeconds" default="31536000" />
+                <entry key="xframeOptionsPolicy" default="SAMEORIGIN" />
+                <entry key="disableCSRFProtection" default="false" />
+                <entry key="referrerPolicy" default="strict-origin-when-cross-origin" />
+                <!-- Entries to remove -->
+                <entry key="Access-Control-Allow-Origin" operation="del" />
+                <entry key="ContentSecurityPolicy" operation="del" />
+                <entry key="cacheControlMaxAgeValue" default="60" />
+                <entry key="cacheControlMaxAgeUnit" default="SECONDS" />
+            </propertyfile>
             <if>
                 <isfalse value="@{upgrade}"/>
                 <then>
-
-
                     <copy todir="${install.dir}${staging.dir}" verbose="true">
                         <fileset dir="${install.src}">
                             <include name="Deployment/**" />
                         </fileset>
                     </copy>
-
 
                     <copy todir="${install.dir}${staging.dir}/" verbose="true">
                         <fileset dir="${install.src}">
@@ -386,6 +435,13 @@
                             <exclude name="Deployment/Server/conf/server.xml"/>
                         </fileset>
                     </copy>
+                    <!--Copy New Keystore to dir, will be used for certificate upgrade-->
+                    <if>
+                        <available file="${install.dir}${staging.dir}/Deployment/Server/conf/.keystore" />
+                        <then>
+                            <copy file="${install.src}/Deployment/Server/conf/.keystore" tofile="${install.dir}${staging.dir}/Deployment/Server/conf/.keystoreNew" failonerror="false" verbose="true" overwrite="true" force="true"/>
+                        </then>
+                    </if>
 
                     <copy todir="${install.dir}${staging.dir}/Deployment/Server" overwrite="true" verbose="true">
                         <fileset dir="${install.src}">
@@ -410,6 +466,39 @@
                         </fileset>
                     </copy>
 
+                    <echo>Restore Server.xml... if perc_catalina is already created</echo>
+                    <if>
+                        <available file="${new.backup.dir}${staging.dir}/Server/conf/perc/perc-catalina.properties"/>
+                        <then>
+                            <copy todir="${install.dir}${staging.dir}/Deployment/Server/conf" overwrite="true" verbose="true" failonerror="false">
+                                <fileset dir="${new.backup.dir}${staging.dir}/Server/conf">
+                                    <include name="server.xml"/>
+                                </fileset>
+                            </copy>
+                            <if>
+                                <not>
+                                    <resourcecontains resource="${install.dir}${staging.dir}/Deployment/Server/conf/server.xml" substring="org.apache.catalina.valves.ErrorReportValve" />
+                                </not>
+                                <then>
+                                    <echo>Adding Error Codes to Server.xml</echo>
+                                    <replace file="${install.dir}${staging.dir}/Deployment/Server/conf/server.xml" summary="yes">
+                                        <replacetoken><![CDATA[ pattern="%h %l %u %t &quot;%r&quot; %s %b" />]]></replacetoken>
+                                        <replacevalue><![CDATA[pattern="%h %l %u %t &quot;%r&quot; %s %b" />
+                                        <Valve className="org.apache.catalina.valves.ErrorReportValve"
+                                        errorCode.404="webapps/ROOT/error.html"
+                                        errorCode.414="webapps/ROOT/error.html"
+                                        errorCode.415="webapps/ROOT/error.html"
+                                        errorCode.501="webapps/ROOT/error.html"
+                                        errorCode.500="webapps/ROOT/error.html"
+                                        errorCode.502="webapps/ROOT/error.html"
+                                        showReport="false"
+                                        showServerInfo="false"/>]]></replacevalue>
+                                    </replace>
+                                </then>
+                            </if>
+                        </then>
+                    </if>
+
                     <!-- Adding hibernate Cache Region Factory class as part of Hibernate 5 upgrade -->
                     <if>
                         <available file="${install.dir}${staging.dir}/Deployment/Server/conf/perc/perc-datasources.xml"/>
@@ -427,6 +516,7 @@
                             </if>
                         </then>
                     </if>
+
 
                     <!-- Restore mysql-connector if present -->
 
@@ -482,6 +572,7 @@
                                 <then>
 
                                     <PSUpgradeDerby targetVersion="10.14.2.0"
+                                                    rootDir="${install.dir}${staging.dir}"
                                                     databasePath="${install.dir}${staging.dir}/Deployment/Server/derbydata/percmetadata"
                                                     username="APP"
                                                     password="test"
@@ -495,6 +586,7 @@
                                 <available file="${install.dir}${staging.dir}/Deployment/Server/derbydata/perccomments" type="dir"/>
                                 <then>
                                     <PSUpgradeDerby targetVersion="10.14.2.0"
+                                                    rootDir="${install.dir}${staging.dir}"
                                                     databasePath="${install.dir}${staging.dir}/Deployment/Server/derbydata/perccomments"
                                                     backupDirectory="${install.dir}${staging.dir}/backups"
                                                     username="APP"
@@ -508,6 +600,7 @@
                                 <available file="${install.dir}${staging.dir}/Deployment/Server/derbydata/percfeeds" type="dir"/>
                                 <then>
                                     <PSUpgradeDerby targetVersion="10.14.2.0"
+                                                    rootDir="${install.dir}${staging.dir}"
                                                     databasePath="${install.dir}${staging.dir}/Deployment/Server/derbydata/percfeeds"
                                                     backupDirectory="${install.dir}${staging.dir}/backups"
                                                     username="APP"
@@ -522,6 +615,7 @@
                                 <available file="${install.dir}${staging.dir}/Deployment/Server/derbydata/percforms" type="dir"/>
                                 <then>
                                     <PSUpgradeDerby targetVersion="10.14.2.0"
+                                                    rootDir="${install.dir}${staging.dir}"
                                                     databasePath="${install.dir}${staging.dir}/Deployment/Server/derbydata/percforms"
                                                     backupDirectory="${install.dir}${staging.dir}/backups"
                                                     username="APP"
@@ -535,6 +629,7 @@
                                 <available file="${install.dir}${staging.dir}/Deployment/Server/derbydata/percmembership" type="dir"/>
                                 <then>
                                     <PSUpgradeDerby targetVersion="10.14.2.0"
+                                                    rootDir="${install.dir}${staging.dir}"
                                                     databasePath="${install.dir}${staging.dir}/Deployment/Server/derbydata/percmembership"
                                                     backupDirectory="${install.dir}${staging.dir}/backups"
                                                     username="APP"
@@ -548,6 +643,7 @@
                                 <available file="${install.dir}${staging.dir}/Deployment/Server/derbydata/percpolls" type="dir"/>
                                 <then>
                                     <PSUpgradeDerby targetVersion="10.14.2.0"
+                                                    rootDir="${install.dir}${staging.dir}"
                                                     databasePath="${install.dir}${staging.dir}/Deployment/Server/derbydata/percpolls"
                                                     backupDirectory="${install.dir}${staging.dir}/backups"
                                                     username="APP"
@@ -561,6 +657,7 @@
                                 <available file="${install.dir}${staging.dir}/Deployment/Server/derbydata/percakamaiqueuedata" type="dir"/>
                                 <then>
                                     <PSUpgradeDerby targetVersion="10.14.2.0"
+                                                    rootDir="${install.dir}${staging.dir}"
                                                     databasePath="${install.dir}${staging.dir}/Deployment/Server/derbydata/percakamaiqueuedata"
                                                     backupDirectory="${install.dir}${staging.dir}/backups"
                                                     username="APP"
@@ -605,12 +702,14 @@
                     <echo>Scanning existing configuration...</echo>
                     <PSUpdateDTSConfiguration rootDir="${install.dir}" />
                     <PSUpgradeRemoveTomcatAJP rootDir="${install.dir}" />
+                    <PSUpdateDTSCertificate rootDir="${install.dir}" />
 
                     <echo>Removing obsolete Tomcat listeners...</echo>
                     <replace file="${install.dir}${staging.dir}/Deployment/Server/conf/server.xml" summary="yes">
                         <replacetoken><![CDATA[<Listener className="org.apache.catalina.core.JasperListener"/>]]></replacetoken>
                         <replacevalue><![CDATA[]]></replacevalue>
                     </replace>
+
 
                     <if>
                         <and>
@@ -626,6 +725,38 @@
 
                 </else>
             </if>
+            <!-- Updating hibernate.dialect for MySql -->
+            <echo>Updating hibernate.dialect </echo>
+            <if>
+                <available file="${install.dir}${staging.dir}/Deployment/Server/conf/perc/perc-datasources.properties"/>
+                <then>
+                    <if>
+                        <resourcecontains resource="${install.dir}${staging.dir}/Deployment/Server/conf/perc/perc-datasources.properties" substring="org.hibernate.dialect.MySQLInnoDBDialect" />
+                        <then>
+                            <echo>Updating hibernate.dialect</echo>
+                            <replace file="${install.dir}${staging.dir}/Deployment/Server/conf/perc/perc-datasources.properties" summary="yes">
+                                <replacetoken><![CDATA[org.hibernate.dialect.MySQLInnoDBDialect]]></replacetoken>
+                                <replacevalue><![CDATA[org.hibernate.dialect.MySQL5InnoDBDialect]]></replacevalue>
+                            </replace>
+                        </then>
+                    </if>
+                </then>
+            </if>
+
+            <echo>Adding Ciphers to connector...</echo>
+            <if>
+                <not>
+                    <resourcecontains resource="${install.dir}${staging.dir}/Deployment/Server/conf/server.xml" substring="ciphers=" />
+                </not>
+                <then>
+                    <replace file="${install.dir}${staging.dir}/Deployment/Server/conf/server.xml" summary="yes">
+                        <replacetoken><![CDATA[sslImplementationName="org.apache.tomcat.util.net.jsse.JSSEImplementation"]]></replacetoken>
+                        <replacevalue><![CDATA[ciphers="${https.ciphers}"
+                        sslImplementationName="org.apache.tomcat.util.net.jsse.JSSEImplementation"]]>
+                        </replacevalue>
+                    </replace>
+                </then>
+            </if>
 
             <replace file="${install.dir}${staging.dir}/Deployment/Server/bin/setenv.sh" summary="yes"
                      token="@JAVA_OPTS@" value="-Drxdeploydir=${install.dir}">
@@ -634,6 +765,70 @@
             <replace file="${install.dir}${staging.dir}/Deployment/Server/bin/setenv.bat" summary="yes"
                      token="@JAVA_OPTS@" value="-Drxdeploydir=${install.dir}">
             </replace>
+
+            <echo>Registering current TLS ciphers...</echo>
+            <echo>NOTE: Ciphers supported will depend on the JRE version and make (OpenJRE-8 vs OracleJRE-8) for the JRE registered in ${install.dir}/JRE...</echo>
+
+            <propertyfile file="${install.dir}${staging.dir}/Deployment/Server/conf/perc/perc-catalina.properties">
+                <entry key="https.ciphers" value="TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256,TLS_AES_128_GCM_SHA256,TLS_AES_256_GCM_SHA384,TLS_DHE_RSA_WITH_CHACHA20_POLY1305_SHA256,TLS_CHACHA20_POLY1305_SHA256,TLS_DH_RSA_WITH_AES_128_GCM_SHA256,TLS_DHE_RSA_WITH_AES_128_GCM_SHA256,TLS_DHE_RSA_WITH_AES_256_GCM_SHA384,TLS_RSA_WITH_AES_128_GCM_SHA256,TLS_RSA_WITH_AES_256_GCM_SHA384"/>
+            </propertyfile>
+
+            <if>
+                <and>
+                    <equals arg1="@{type}" arg2="Production"/>
+                    <available file="${install.dir}/Deployment/Server/conf/server.xml" type="file"/>
+                </and>
+                <then>
+                    <echo>Fixing line endings in ${install.dir}...for Production</echo>
+                    <fixcrlf srcdir="${install.dir}/Deployment"  preservelastmodified="true">
+                        <patternset refid="text.files"/>
+                    </fixcrlf>
+                    <fixcrlf srcdir="${install.dir}" includes="TomcatStartup.sh" preservelastmodified="true"  />
+                    <fixcrlf srcdir="${install.dir}" includes="TomcatShutdown.sh" preservelastmodified="true" />
+                    <echo>Fixing executable file permissions...</echo>
+                    <chmod failonerror="false" verbose="true" perm="ugo+rx">
+                        <fileset dir="${install.dir}/Deployment">
+                            <include name="**/*.sh"/>
+                            <include name="**/*.bin"/>
+                        </fileset>
+                    </chmod>
+                    <chmod failonerror="false" verbose="true" perm="ugo+rx">
+                        <fileset dir="${install.dir}">
+                            <include name="TomcatStartup.sh"/>
+                            <include name="TomcatShutdown.sh"/>
+                        </fileset>
+                    </chmod>
+                </then>
+            </if>
+
+            <if>
+                <and>
+                    <equals arg1="@{type}" arg2="Staging"/>
+                    <available file="${install.dir}/Staging/Deployment/Server/conf/server.xml" type="file"/>
+                </and>
+                <then>
+                    <echo>Fixing line endings in ${install.dir}/Staging...for Staging</echo>
+                    <fixcrlf srcdir="${install.dir}/Staging/Deployment"  preservelastmodified="true">
+                        <patternset refid="text.files"/>
+                    </fixcrlf>
+                    <fixcrlf srcdir="${install.dir}/Staging" includes="TomcatStartup.sh" preservelastmodified="true"  />
+                    <fixcrlf srcdir="${install.dir}/Staging" includes="TomcatShutdown.sh" preservelastmodified="true" />
+                    <echo>Fixing executable file permissions for Staging...</echo>
+                    <chmod failonerror="false" verbose="true" perm="ugo+rx">
+                        <fileset dir="${install.dir}/Staging/Deployment">
+                            <include name="**/*.sh"/>
+                            <include name="**/*.bin"/>
+                        </fileset>
+                    </chmod>
+                    <chmod failonerror="false" verbose="true" perm="ugo+rx">
+                        <fileset dir="${install.dir}/Staging">
+                            <include name="TomcatStartup.sh"/>
+                            <include name="TomcatShutdown.sh"/>
+                        </fileset>
+                    </chmod>
+                </then>
+            </if>
+
 
         </sequential>
     </macrodef>

@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -57,7 +57,7 @@ public class PSConvertToSourceDialog extends Dialog
       setWidth(DIALOG_WIDTH);
       setIsModal(true);
       setCanDragResize(true);
-      setResizeFrom(IPSConstants.DIALOG_RESIZE_OPTIONS);
+      setResizeFrom(PSConstants.getDialogResizeOptions());
       setCanDragReposition(true);
       setAutoCenter(true);
       setShowToolbar(true);
@@ -117,7 +117,7 @@ public class PSConvertToSourceDialog extends Dialog
          }
 
       });
-      btnStack.setMembersMargin(IPSConstants.MEMBERS_MARGIN);
+      btnStack.setMembersMargin(PSConstants.getMembersMargin());
       btnStack.setAlign(Alignment.RIGHT);
       btnStack.setHeight(m_oKBtn.getHeight());
       return btnStack;

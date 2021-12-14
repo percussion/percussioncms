@@ -34,54 +34,50 @@ public class RxCheckForUnicode extends RxIAAction
    @Override
    public void execute()
    {
-      FileInputStream in = null;
-      Connection conn = null;
-      
+
       try
       {
          String strRootDir = getInstallValue(RxVariables.INSTALL_DIR);
          RxFileManager rxfm = new RxFileManager(strRootDir);
          File propFile = new File(rxfm.getRepositoryFile());
-         if (propFile.exists())
-         {
-            in = new FileInputStream(propFile);
-            Properties props = new Properties();
-            props.load(in);
-            props.setProperty(PSJdbcDbmsDef.PWD_ENCRYPTED_PROPERTY, "Y");
-            
-            PSJdbcDbmsDef dbmsDef = new PSJdbcDbmsDef(props);
-            conn = RxLogTables.createConnection(props);
-            
-            if (conn != null)
-            {
-               String database = dbmsDef.getDataBase();
-               String schema = dbmsDef.getSchema();
-               String driver = dbmsDef.getDriver();
-               
-               ms_bSupportsUnicode = InstallUtil.checkForUnicode(conn,
-                     driver, database, schema);
-               
-               if (!ms_bSupportsUnicode)
-               {
-                  String serverLbl = "Server:\t\t\t";
-                  
-                  m_nonUnicodeWarningMsg = 
-                     RxInstallerProperties.getResources().getString(
-                     "nonUnicodeRxRepositoryError");
-                  m_nonUnicodeWarningMsg += "\n\n-- Database Information --\n"
-                     + serverLbl + dbmsDef.getServer()
-                     + "\nSchema/Owner:\t\t" + schema;
-                  
-                  if (database.trim().length() > 0)
-                     m_nonUnicodeWarningMsg +=
-                        "\nName:\t\t\t" + database;
-                  
-                  setInstallValue(RxVariables.RX_NON_UNICODE_DB, "true");
-                  setInstallValue(RxVariables.RX_NON_UNICODE_MSG, 
-                        m_nonUnicodeWarningMsg);
+         if (propFile.exists()) {
+            try (FileInputStream in = new FileInputStream(propFile)) {
+               Properties props = new Properties();
+               props.load(in);
+               props.setProperty(PSJdbcDbmsDef.PWD_ENCRYPTED_PROPERTY, "Y");
+
+               PSJdbcDbmsDef dbmsDef = new PSJdbcDbmsDef(props);
+               try (Connection conn = RxLogTables.createConnection(props)) {
+
+                  if (conn != null) {
+                     String database = dbmsDef.getDataBase();
+                     String schema = dbmsDef.getSchema();
+                     String driver = dbmsDef.getDriver();
+
+                     ms_bSupportsUnicode = InstallUtil.checkForUnicode(conn,
+                             driver, database, schema);
+
+                     if (!ms_bSupportsUnicode) {
+                        String serverLbl = "Server:\t\t\t";
+
+                        m_nonUnicodeWarningMsg =
+                                RxInstallerProperties.getResources().getString(
+                                        "nonUnicodeRxRepositoryError");
+                        m_nonUnicodeWarningMsg += "\n\n-- Database Information --\n"
+                                + serverLbl + dbmsDef.getServer()
+                                + "\nSchema/Owner:\t\t" + schema;
+
+                        if (database.trim().length() > 0)
+                           m_nonUnicodeWarningMsg +=
+                                   "\nName:\t\t\t" + database;
+
+                        setInstallValue(RxVariables.RX_NON_UNICODE_DB, "true");
+                        setInstallValue(RxVariables.RX_NON_UNICODE_MSG,
+                                m_nonUnicodeWarningMsg);
+                     } else
+                        setInstallValue(RxVariables.RX_NON_UNICODE_DB, "false");
+                  }
                }
-               else
-                  setInstallValue(RxVariables.RX_NON_UNICODE_DB, "false");
             }
          }
       }
@@ -89,29 +85,6 @@ public class RxCheckForUnicode extends RxIAAction
       {
          RxLogger.logError("RxCheckForUnicode#execute: The following error " +
                "occurred: " + e.getMessage());
-      }
-      finally
-      {
-         if (in != null)
-         {
-            try
-            {
-               in.close();
-            }
-            catch (Exception e)
-            {
-            }
-         }
-         if (conn != null)
-         {
-            try
-            {
-               conn.close();
-            }
-            catch (SQLException e)
-            {
-            }
-         }
       }
    }
    

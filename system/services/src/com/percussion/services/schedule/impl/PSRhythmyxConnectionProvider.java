@@ -17,22 +17,20 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.services.schedule.impl;
 
 import com.percussion.utils.jdbc.IPSDatasourceManager;
-
-import java.sql.Connection;
-import java.sql.SQLException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.quartz.utils.ConnectionProvider;
 
 import javax.naming.NamingException;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.quartz.utils.ConnectionProvider;
+import java.sql.Connection;
+import java.sql.SQLException;
 
 /**
  * Provides Rhythmyx database connection to Quartz.
@@ -44,7 +42,7 @@ import org.quartz.utils.ConnectionProvider;
  */
 public class PSRhythmyxConnectionProvider implements ConnectionProvider
 {
-   private static Log ms_log = LogFactory.getLog(PSRhythmyxConnectionProvider.class);
+   private static final Logger ms_log = LogManager.getLogger(PSRhythmyxConnectionProvider.class);
    
    /**
     * Returns Rhythmyx connection.

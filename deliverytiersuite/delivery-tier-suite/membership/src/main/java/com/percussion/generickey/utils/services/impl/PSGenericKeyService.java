@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -26,15 +26,13 @@ package com.percussion.generickey.utils.services.impl;
 import com.percussion.generickey.data.IPSGenericKey;
 import com.percussion.generickey.services.IPSGenericKeyDao;
 import com.percussion.generickey.services.IPSGenericKeyService;
-import com.percussion.generickey.utils.data.rdbms.impl.PSGenericKey;
+import org.apache.commons.lang.Validate;
+import org.apache.commons.lang.time.DateUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
-
-import org.apache.commons.lang.Validate;
-import org.apache.commons.lang.time.DateUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Provides services to create, validate and delete generic keys to be used

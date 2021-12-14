@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -27,8 +27,8 @@ import com.percussion.extension.IPSJexlMethod;
 import com.percussion.extension.IPSJexlParam;
 import com.percussion.extension.PSJexlUtilBase;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONStringer;
@@ -85,7 +85,7 @@ public class PSStringUtils extends PSJexlUtilBase
       if (StringUtils.isBlank(enc))
          throw new IllegalArgumentException("enc may not be null or empty.");
       
-      Map<String, String> rval = new HashMap<String, String>();
+      Map<String, String> rval = new HashMap<>();
       if (paramstring == null)
       {
          return rval;
@@ -233,19 +233,19 @@ public class PSStringUtils extends PSJexlUtilBase
       {})
    public ArrayList<Object> getArrayList()
    {
-      return new ArrayList<Object>();
+      return new ArrayList<>();
    }
    
    @IPSJexlMethod(description = "Return a new HashMap instance", params =
       {})
    public Map<Object,Object> getHashMap()
    {
-      return new HashMap<Object,Object>();
+      return new HashMap<>();
    }
    
    /**
     * Logger.
     */
-   private static Log ms_log = LogFactory.getLog(PSStringUtils.class);
+   private static final Logger ms_log = LogManager.getLogger(PSStringUtils.class);
    
 }

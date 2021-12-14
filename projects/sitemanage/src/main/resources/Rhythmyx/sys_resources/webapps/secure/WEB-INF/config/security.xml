@@ -18,7 +18,7 @@
   ~      Burlington, MA 01803, USA
   ~      +01-781-438-9900
   ~      support@percussion.com
-  ~      https://www.percusssion.com
+  ~      https://www.percussion.com
   ~
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   -->
@@ -37,7 +37,7 @@
 
         <security:csrf disabled="true"/>
         <security:headers >
-            <security:content-security-policy policy-directives="${ContentSecurityPolicy}" />
+            <security:content-security-policy policy-directives="${contentSecurityPolicy}" />
         </security:headers>
         <security:cors configuration-source-ref="corsSource" />
         <security:http-basic/>
@@ -49,7 +49,6 @@
                     <beans:bean class="org.springframework.web.cors.CorsConfiguration">
                         <beans:property name="allowedHeaders">
                             <beans:list>
-                                <beans:value>perc-tid</beans:value>
                                 <beans:value>perc-version</beans:value>
                                 <beans:value>Content-Type</beans:value>
                                 <beans:value>Origin</beans:value>
@@ -66,19 +65,20 @@
                                 <beans:value>GET</beans:value>
                                 <beans:value>PUT</beans:value>
                                 <beans:value>DELETE</beans:value>
-                                <beans:value>OPTIONS</beans:value>
                             </beans:list>
                         </beans:property>
                         <beans:property name="allowedOrigins">
                             <beans:bean class="org.springframework.util.StringUtils" factory-method="commaDelimitedListToSet">
-                                <beans:constructor-arg type="java.lang.String" value="${Access-Control-Allow-Origin}"/>
+                                <beans:constructor-arg type="java.lang.String" value="${accessControlAllowedOrigins}"/>
                             </beans:bean>
                         </beans:property>
                         <beans:property name="exposedHeaders">
                             <beans:list>
-                                <beans:value>perc-tid</beans:value>
-                                <beans:value>perc-version</beans:value>
+                                <beans:value>perc-version,X-CSRF-HEADER,X-CSRF-TOKEN</beans:value>
                             </beans:list>
+                        </beans:property>
+                        <beans:property name="allowCredentials">
+                            <beans:value>true</beans:value>
                         </beans:property>
                     </beans:bean>
                 </beans:entry>

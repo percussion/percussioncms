@@ -33,7 +33,7 @@ public class RxComponentConsole extends RxIAConsole
       clearComponents();
       addComponents();
             
-      Vector<String> choices = new Vector<String>(m_choiceSet);
+      Vector<String> choices = new Vector<>(m_choiceSet);
       int[] currentSelections = getSelections(choices);
             
       int[] newSelections = 
@@ -109,7 +109,7 @@ public class RxComponentConsole extends RxIAConsole
     */
    private int[] getSelections(Vector<String> choices)
    {
-      Set<Integer> selectedSet = new TreeSet<Integer>();
+      Set<Integer> selectedSet = new TreeSet<>();
       for (int i = 0; i < choices.size(); i++)
       {
          String name = choices.elementAt(i);
@@ -186,12 +186,12 @@ public class RxComponentConsole extends RxIAConsole
     * Will maintain the set of currently available components to be displayed
     * for selection.
     */
-   private Set<String> m_choiceSet = new TreeSet<String>();
+   private Set<String> m_choiceSet = new TreeSet<>();
    
    /**
     * Will maintain the set of currently selected components.
     */
-   private Set<String> m_selectedSet = new TreeSet<String>();
+   private Set<String> m_selectedSet = new TreeSet<>();
    
    /**
     * Maintains the component model for this console, never <code>null</code>

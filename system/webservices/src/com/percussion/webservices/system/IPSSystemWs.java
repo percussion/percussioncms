@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -29,11 +29,11 @@ import com.percussion.design.objectstore.PSRelationshipConfig;
 import com.percussion.services.system.data.PSContentStatusHistory;
 import com.percussion.services.workflow.data.PSWorkflow;
 import com.percussion.utils.guid.IPSGuid;
-import com.percussion.webservices.content.IPSContentWs;
 import com.percussion.webservices.PSErrorException;
 import com.percussion.webservices.PSErrorsException;
 import com.percussion.webservices.PSInvalidLocaleException;
 import com.percussion.webservices.PSUserNotMemberOfCommunityException;
+import com.percussion.webservices.content.IPSContentWs;
 
 import java.util.List;
 import java.util.Map;

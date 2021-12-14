@@ -17,15 +17,17 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.xml.serialization.junit;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.services.utils.xml.PSXmlSerializationHelper;
 import com.percussion.xml.serialization.PSObjectSerializer;
-import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Ignore;
@@ -49,6 +51,9 @@ import static org.junit.Assert.assertTrue;
 @Ignore
 public class PSObjectSerializerTest
 {
+
+   private static final Logger log = LogManager.getLogger(PSObjectSerializerTest.class);
+
    static public class PersonList 
    {
       private final List<Person> mi_people = new ArrayList<>();
@@ -167,8 +172,8 @@ public class PSObjectSerializerTest
       }
       catch (IOException | SAXException | IntrospectionException e)
       {
-         // XXX Auto-generated catch block
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
    }
 

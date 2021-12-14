@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -27,9 +27,12 @@ import com.percussion.deployer.objectstore.PSDependency;
 import com.percussion.deployer.objectstore.PSExportDescriptor;
 import com.percussion.deployer.server.PSDependencyManager;
 import com.percussion.deployer.server.PSDeploymentHandler;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.utils.tools.PSParseFragments;
 import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -46,6 +49,7 @@ import java.util.Map;
 public class PSConfigDefGenerator
 {
 
+   private static final Logger log = LogManager.getLogger(PSConfigDefGenerator.class);
    /**
     * Private ctor to inhibit instantiation.
     */
@@ -136,8 +140,8 @@ public class PSConfigDefGenerator
       }
       catch (IOException e)
       {
-         // FIXME Auto-generated catch block
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
    }
    

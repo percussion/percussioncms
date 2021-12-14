@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -27,25 +27,23 @@ import com.percussion.cms.PSCmsException;
 import com.percussion.server.PSRequestParsingException;
 import com.percussion.services.assembly.IPSAssemblyItem;
 import com.percussion.services.assembly.IPSAssemblyResult;
+import com.percussion.services.assembly.IPSAssemblyResult.Status;
 import com.percussion.services.assembly.IPSAssemblyService;
 import com.percussion.services.assembly.PSAssemblyException;
 import com.percussion.services.assembly.PSAssemblyServiceLocator;
 import com.percussion.services.assembly.PSTemplateNotImplementedException;
-import com.percussion.services.assembly.IPSAssemblyResult.Status;
 import com.percussion.services.filter.PSFilterException;
 import com.percussion.util.PSParseUrlQueryString;
+import org.apache.commons.lang.StringUtils;
 
+import javax.jcr.ItemNotFoundException;
+import javax.jcr.RepositoryException;
 import java.io.UnsupportedEncodingException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import javax.jcr.ItemNotFoundException;
-import javax.jcr.RepositoryException;
-
-import org.apache.commons.lang.StringUtils;
 
 /**
  * Various methods to allow easy direct calling of the assembly service

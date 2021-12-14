@@ -17,12 +17,13 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.workflow;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSExtensionDef;
 import com.percussion.extension.IPSRequestPreProcessor;
 import com.percussion.extension.PSExtensionException;
@@ -41,17 +42,15 @@ import com.percussion.services.guidmgr.PSGuidManagerLocator;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.webservices.content.IPSContentDesignWs;
 import com.percussion.webservices.content.PSContentWsLocator;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
+import javax.jcr.RepositoryException;
 import java.io.File;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.jcr.RepositoryException;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
  * Pre exit to delete the workflow associations with the content types when a
@@ -77,7 +76,7 @@ public class PSExitDeleteWfCtypeAssociations implements IPSRequestPreProcessor
          String msg = "workflowid parameter is missing, skipping "
                + "the deletion of workflow content type associations.";
          request.printTraceMessage(msg);
-         ms_log.warn(msg);
+         log.warn(msg);
          return;
       }
       IPSGuidManager gmgr = PSGuidManagerLocator.getGuidMgr();
@@ -94,7 +93,9 @@ public class PSExitDeleteWfCtypeAssociations implements IPSRequestPreProcessor
          String msg = "Failed to delete the workflow({0}) "
                + "association with the content types.";
          Object[] args = { wfGuid.toString() };
-         ms_log.warn(MessageFormat.format(msg, args), e);
+         log.warn(MessageFormat.format(msg, args), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
 
    }
@@ -118,7 +119,7 @@ public class PSExitDeleteWfCtypeAssociations implements IPSRequestPreProcessor
          try
          {
             ctwfs = cdws.loadAssociatedWorkflows(ctGuid, true, false);
-            List<IPSGuid> wfguids = new ArrayList<IPSGuid>();
+            List<IPSGuid> wfguids = new ArrayList<>();
             for (PSContentTypeWorkflow ctwf : ctwfs)
             {
                if (!ctwf.getWorkflowId().equals(wfGuid))
@@ -128,11 +129,12 @@ public class PSExitDeleteWfCtypeAssociations implements IPSRequestPreProcessor
          }
          catch (Exception e)
          {
-            e.printStackTrace();
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             String msg = "Failed to delete the workflow({0}) "
                   + "association with the content type ({1}).";
             Object[] args = { wfGuid.toString(), ctGuid.toString() };
-            ms_log.warn(MessageFormat.format(msg, args), e);
+            log.warn(MessageFormat.format(msg, args), e);
          }
       }
 
@@ -151,7 +153,6 @@ public class PSExitDeleteWfCtypeAssociations implements IPSRequestPreProcessor
    /**
     * Reference to log for this class
     */
-   private final static Log ms_log = LogFactory
-         .getLog(PSExitDeleteWfCtypeAssociations.class);
+   private final static Logger log = LogManager.getLogger(PSExitDeleteWfCtypeAssociations.class);
 
 }

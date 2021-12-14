@@ -17,22 +17,11 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.sitemanage.web.service;
-
-import static java.util.Arrays.asList;
-import static org.junit.Assert.assertNotNull;
-
-import java.util.List;
-
-import com.percussion.utils.testing.IntegrationTest;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.junit.Before;
-import org.junit.Test;
 
 import com.percussion.share.test.PSRestTestCase;
 import com.percussion.sitemanage.data.PSSitePublishItem;
@@ -40,7 +29,17 @@ import com.percussion.sitemanage.data.PSSitePublishJob;
 import com.percussion.sitemanage.data.PSSitePublishLogDetailsRequest;
 import com.percussion.sitemanage.data.PSSitePublishLogRequest;
 import com.percussion.sitemanage.data.PSSitePublishPurgeRequest;
+import com.percussion.utils.testing.IntegrationTest;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.junit.Before;
+import org.junit.Test;
 import org.junit.experimental.categories.Category;
+
+import java.util.List;
+
+import static java.util.Arrays.asList;
+import static org.junit.Assert.assertNotNull;
 
 @Category(IntegrationTest.class)
 public class PSSitePublishStatusServiceTest
@@ -99,7 +98,7 @@ public class PSSitePublishStatusServiceTest
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log log = LogFactory.getLog(PSSitePublishStatusServiceTest.class);
+    private static final Logger log = LogManager.getLogger(PSSitePublishStatusServiceTest.class);
 
 
 }

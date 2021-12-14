@@ -17,20 +17,22 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.pathmanagement.service;
 
-import static org.junit.Assert.*;
-
-import org.junit.Before;
-import org.junit.Test;
-
 import com.percussion.pathmanagement.service.IPSPathService.PSPathNotFoundServiceException;
 import com.percussion.pathmanagement.service.impl.PSSitePathItemService;
 import com.percussion.pathmanagement.service.impl.PSSitePathItemService.SiteIdAndFolderPath;
+import org.junit.Before;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 public class PSSitePathItemServicePathParseTest
 {
@@ -81,8 +83,7 @@ public class PSSitePathItemServicePathParseTest
         
     }
     
-    public void assertExtraction(String path, String expectedSiteId, String expectedFolderPath)
-    {
+    public void assertExtraction(String path, String expectedSiteId, String expectedFolderPath) throws PSPathNotFoundServiceException {
         SiteIdAndFolderPath sfp = ps.getSiteIdAndFolderPath(path);
         assertEquals("Site Id", expectedSiteId,sfp.getSiteId());
         assertEquals("Folder path", expectedFolderPath, sfp.getFullFolderPath(siteFolderPath));
@@ -95,8 +96,7 @@ public class PSSitePathItemServicePathParseTest
         }
 
         @Override
-        public SiteIdAndFolderPath getSiteIdAndFolderPath(String path)
-        {
+        public SiteIdAndFolderPath getSiteIdAndFolderPath(String path) throws PSPathNotFoundServiceException {
             return super.getSiteIdAndFolderPath(path);
         }
         

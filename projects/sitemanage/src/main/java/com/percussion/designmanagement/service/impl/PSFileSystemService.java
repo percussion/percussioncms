@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -78,7 +78,7 @@ public class PSFileSystemService implements IPSFileSystemService
      * Max length allowed for folder names.
      */
     public static final Integer FOLDER_NAME_MAX_LENGTH = 255;
-
+    
     /**
      * The maximum allowed size for a file. It is configurable via spring.
      */
@@ -110,7 +110,7 @@ public class PSFileSystemService implements IPSFileSystemService
      * A list of includes file names. This is only applied to the root directory, not sub directories.
      * Only these ones are visible when getting the children of the root directory.
      */
-    protected List<String> includes = new ArrayList<String>();
+    protected List<String> includes = new ArrayList<>();
     
     public PSFileSystemService(String rootFolderPath)
     {
@@ -158,9 +158,10 @@ public class PSFileSystemService implements IPSFileSystemService
      */
     private File getRootDirectory()
     {
-        if (rootDirectory == null)
+        if (rootDirectory == null) {
             rootDirectory = new File(rootFolderPath);
-        
+        }
+
         return rootDirectory;
     }
     
@@ -173,22 +174,25 @@ public class PSFileSystemService implements IPSFileSystemService
         File root = getRootDirectory();
         File pathFile = new File(root, path);
         
-        if (!pathFile.exists())
+        if (!pathFile.exists()) {
             throw new FileNotFoundException("The path doesn't exist: " + path);
-        
+        }
+
         File[] children = pathFile.listFiles();
         
         // Filter only for root path
-        if (includes.isEmpty() || !StringUtils.equals(path, "/"))
+        if (includes.isEmpty() || !StringUtils.equals(path, "/")) {
             return Arrays.asList(children);
-        
-        List<File> result = new ArrayList<File>();
+        }
+
+        List<File> result = new ArrayList<>();
         //FB: NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE NC 1-17-16
         if(children!= null){
 	        for (File child : children)
 	        {
-	            if (includes.contains(child.getName()))
-	                result.add(child);
+	            if (includes.contains(child.getName())) {
+                    result.add(child);
+                }
 	        }
         }
         return result;
@@ -225,10 +229,11 @@ public class PSFileSystemService implements IPSFileSystemService
         
         // build the new file
         File newFolder = new File(folderPath.getAbsolutePath(), newName);
-        
+
         Files.createDirectory(newFolder.toPath());
         File parent = folderPath.getParentFile();
         setParentFolderPermissionsToChild(parent,newFolder);
+        
         return newFolder;
     }
     
@@ -374,7 +379,7 @@ public class PSFileSystemService implements IPSFileSystemService
     public void deleteFile(String filePath) throws PSFileOperationException
     {
         Validate.notNull(filePath, "path cannot be null");
-        
+
         File fileToDelete = getFile(filePath);
         if (fileToDelete.exists())
         {
@@ -397,9 +402,10 @@ public class PSFileSystemService implements IPSFileSystemService
         
         String name = file.getName();
         
-        if (StringUtils.isBlank(name))
+        if (StringUtils.isBlank(name)) {
             name = file.getParentFile().getName();
-        
+        }
+
         return name;
     }
     
@@ -506,8 +512,12 @@ public class PSFileSystemService implements IPSFileSystemService
     @Override
     public void fileUpload(String path, InputStream pageContent) throws PSFileOperationException {
         try (BufferedInputStream in = new BufferedInputStream(pageContent)) {
-
-            validateFileUpload(path);
+            try {
+                validateFileUpload(path);
+            }catch(PSFileAlreadyExistsException fae){
+                //We are already checking for this validation and getting confirmation from client.
+                //so, it can eb ignored
+            }
             File file = getFile(path);
             File parent = file.getParentFile();
 
@@ -517,6 +527,7 @@ public class PSFileSystemService implements IPSFileSystemService
 
                 int bytesCopied = IOUtils.copy(in, out);
                 out.flush();
+
                 // validate the file length
                 if (fileSizeExceeded(bytesCopied)) {
                     FileUtils.deleteQuietly(file);
@@ -534,6 +545,9 @@ public class PSFileSystemService implements IPSFileSystemService
         //set parent owner/permissions to newly created file as parents'.
         PosixFileAttributeView posixViewParent = Files.getFileAttributeView(parent.toPath(),
                 PosixFileAttributeView.class);
+        if(posixViewParent == null){
+            return;
+        }
         PosixFileAttributes parentAttribs = posixViewParent.readAttributes();
         GroupPrincipal group = parentAttribs.group();
         UserPrincipal owner = parentAttribs.owner();
@@ -544,15 +558,14 @@ public class PSFileSystemService implements IPSFileSystemService
         posixViewFile.setGroup(group);
         posixViewFile.setOwner(owner);
     }
-
-        /*
+    /*
      * (non-Javadoc)
      * @see com.percussion.designmanagement.service.IPSFileSystemService#fileSizeExceeded(java.io.InputStream)
      */
     private boolean fileSizeExceeded(int fileSize)
     {
         long maxSizeInBytes = Float.valueOf(maxFileSize * 1024).longValue() * 1024;
-        
+
         // fileSize < 0 is necessary as that means the copied bytes are more
         // than Integer.MAX_VALUE
         return fileSize > maxSizeInBytes || fileSize < 0;

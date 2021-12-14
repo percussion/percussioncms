@@ -17,24 +17,23 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.rx.publisher;
 
-import java.io.IOException;
-import java.util.Collection;
-import java.util.List;
-import java.util.concurrent.ConcurrentLinkedQueue;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.xml.stream.XMLStreamException;
-
 import com.percussion.rx.publisher.impl.PSPublishingJob;
 import com.percussion.services.assembly.IPSAssemblyItem;
 import com.percussion.services.utils.general.PSServiceConfigurationBean;
 import com.percussion.utils.guid.IPSGuid;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.xml.stream.XMLStreamException;
+import java.io.IOException;
+import java.util.Collection;
+import java.util.List;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * The publisher business service that contains public and non-public API.

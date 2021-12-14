@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -401,15 +401,16 @@
                 $("#perc-role-delete-confirm")
                     .find("#perc-confirm-generic-yes")
                     .css({"background-color": "#133c55", "border-color": "#133c55","color": "#ffffff"})
-                    .unbind('mouseenter mouseleave')
-                    .hover(
+                    .off('mouseenter mouseleave')
+                    .on('mouseenter',
                         function() {
                             $(this).css({"background-color": "#d22f12","border-color": "#d22f12","color": "#ffffff"});
-                        },
+                        })
+                    .on('mouseleave',
                         function() {
                             $(this).css({"background-color": "#133c55", "border-color": "#133c55","color": "#ffffff"});
                         }
-                    )
+                    );
             }
             else
             {
@@ -448,15 +449,15 @@
                 $("#perc-roles-removeusers-confirm")
                 .find("#perc-confirm-generic-yes")
                 .css({"background-color": "#133c55", "border-color": "#133c55","color": "#ffffff"})
-                .unbind('mouseenter mouseleave')
-                .hover(
+                .off('mouseenter mouseleave')
+                .on('mouseenter',
                     function() {
                         $(this).css({"background-color": "#d22f12","border-color": "#d22f12","color": "#ffffff"});
-                    },
-                    function() {
+                    })
+                    .on('mouseleave',   function() {
                         $(this).css({"background-color": "#133c55", "border-color": "#133c55","color": "#ffffff"});
                     }
-                )
+                );
             }
         });
 

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:urlencoder="java.net.URLEncoder" exclude-result-prefixes="urlencoder" xmlns:psxi18n="urn:www.percussion.com/i18n" >
+<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" exclude-result-prefixes="urlencoder"
+                extension-element-prefixes="psxi18n">
 	<!-- main template -->
 	<xsl:output method="xml"/>
 	<xsl:variable name="chkoutuser" select="translate(//BasicInfo/@CheckOutUserName, 'abcdefghijklmnopqrstuvwxyz' , 'ABCDEFGHIJKLMNOPQRSTUVWXYZ')"/>

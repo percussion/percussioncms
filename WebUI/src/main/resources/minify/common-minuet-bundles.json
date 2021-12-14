@@ -1,0 +1,72 @@
+{
+  "bundles": [
+    {
+      "type": "js",
+      "name": "shared-common-minuet.js",
+      "files": [
+        "jslib/profiles/3x/jquery/jquery-3.6.0.js",
+        "jslib/profiles/3x/libraries/bowser/es5.js",
+        "jslib/profiles/3x/jquery/libraries/jquery-ui/jquery-ui.js",
+        "jslib/profiles/3x/libraries/popper/popper.js",
+        "jslib/profiles/3x/libraries/bootstrap/js/bootstrap.js",
+        "jslib/profiles/3x/libraries/perc-retiredjs/json2.js",
+        "jslib/profiles/3x/jquery/plugins/jquery-form/jquery.form.js",
+        "jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.blockUI.js",
+        "jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.caret.js",
+        "jslib/profiles/3x/jquery/plugins/jquery-datatables/js/jquery.dataTables.js",
+        "plugins/PercViewReadyManager.js",
+        "jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/tools.scrollable-1.1.2.js",
+        "jslib/profiles/3x/jquery/plugins/jquery-percutils/jquery.percutils.js",
+        "jslib/profiles/3x/jquery/plugins/jquery-dropdown/jquery.dropdown.js",
+        "jslib/profiles/3x/jquery/plugins/jquery-ui-multiselect-widget/jquery.multiselect.js",
+        "jslib/profiles/3x/jquery/plugins/jquery-ui-multiselect-widget/jquery.multiselect.filter.js",
+        "jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.text-overflow.js",
+        "jslib/profiles/3x/jquery/plugins/jquery-layout/jquery.layout_and_plugins.js",
+        "jslib/profiles/3x/jquery/plugins/jquery-layout/jquery.layout_customresizer.js",
+        "jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.metadata.js",
+        "jslib/profiles/3x/jquery/plugins/jquery-jeditable/jquery.jeditable.js",
+        "jslib/profiles/3x/jquery/plugins/jquery-validation/jquery.validate.js",
+        "jslib/profiles/3x/jquery/plugins/jquery-validation/additional-methods.js",
+        "jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.bbq.js",
+        "jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.cookie.js",
+        "jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.tooltip.js",
+        "jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.autocomplete.js",
+        "jslib/profiles/3x/jquery/plugins/jquery-superfish/js/superfish.js",
+        "jslib/profiles/3x/libraries/handlebars/handlebars-v4.0.12.js",
+        "jslib/profiles/3x/libraries/momentjs/moment-with-locales.js",
+        "jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/timepicker.js",
+        "plugins/perc_path_constants.js",
+        "plugins/perc_errors.js",
+        "plugins/perc_sessionTimeout.js",
+        "plugins/perc_utils.js",
+        "services/PercServiceUtils.js",
+        "plugins/perc_extend_jQueryValidate.js",
+        "controllers/PercDirtyController.js",
+        "plugins/PercNavigationManager.js",
+        "plugins/PercFolderHelper.js",
+        "widgets/PercFinderTree.js",
+        "plugins/PercListEditorWidget.js",
+        "widgets/PercDropdown.js",
+        "services/PercRecentListService.js",
+        "plugins/PercRedirectHandler.js",
+        "plugins/PercExtendUiDialog.js",
+        "plugins/PercPathSelectionDialog.js",
+        "plugins/PercPathSelectionDialog.js",
+        "views/PercCreateNewAssetDialog.js",
+        "plugins/PercFolderPropertiesDialog.js",
+        "views/PercCommonMinuetView.js"
+      ]
+    },
+    {
+      "type": "css",
+      "name": "shared-common-minuet.css",
+      "files": [
+        "css/minuet/perc_fonts_minuet.css",
+        "jslib/profiles/3x/libraries/bootstrap/css/bootstrap.css",
+        "jslib/profiles/3x/libraries/animate.css/animate.css",
+        "css/minuet/perc_common_minuet.css"
+
+      ]
+    }
+  ]
+}

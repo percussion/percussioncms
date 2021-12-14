@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~     Percussion CMS
-  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~     Copyright (C) 1999-2021 Percussion Software, Inc.
   ~
   ~     This program is free software: you can redistribute it and/or modify
   ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -18,7 +18,7 @@
   ~      Burlington, MA 01803, USA
   ~      +01-781-438-9900
   ~      support@percussion.com
-  ~      https://www.percusssion.com
+  ~      https://www.percussion.com
   ~
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   -->
@@ -38,9 +38,9 @@
       <PSXExportDescriptor archiveType="normal">
          <PSXDescriptor id="-4200511048081463536" name="perc.widget.calendar">
             <Description>A widget based on Full Calendar (https://fullcalendar.io/).  This widget includes Calendar 1.0 which contains basic calendar support and Calendar 2.0 which adds support for Google Calendar, and iCal support.</Description>
-            <Publisher name="Percussion Software" url="http://www.percussion.com"/>
+            <Publisher name="Percussion Software" url="https://www.percussion.com"/>
             <CmsVersion max="9.0.0" min="2.5.0"/>
-            <Version>2.4.1</Version>
+            <Version>2.4.7</Version>
             <ImplConfigFile/>
             <LocalConfigFile/>
             <PKGDependencies>
@@ -548,25 +548,9 @@
                            <RequiredClasses/>
                         </PSXDeployableObject>
                      </PSXUserDependency>
-                     <PSXUserDependency parentId="sys_UserDependency" parentKey="Custom-sys_UserDependency" parentType="Custom" path="web_resources/widgets/calendarTwo/js/jquery-ui.custom.min.js">
-                        <PSXDeployableObject>
-                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="web_resources/widgets/calendarTwo/js/jquery-ui.custom.min.js" dependencyType="User" displayName="jquery-ui.custom.min.js" isAssociation="no" isIncluded="yes" objectType="sys_UserDependency" objectTypeName="User Dependency" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
-                              <Dependencies/>
-                           </PSXDependency>
-                           <RequiredClasses/>
-                        </PSXDeployableObject>
-                     </PSXUserDependency>
                      <PSXUserDependency parentId="sys_UserDependency" parentKey="Custom-sys_UserDependency" parentType="Custom" path="web_resources/widgets/calendarTwo/css/jquery-ui.min.css">
                         <PSXDeployableObject>
                            <PSXDependency autoDep="no" autoExpand="yes" dependencyId="web_resources/widgets/calendarTwo/css/jquery-ui.min.css" dependencyType="User" displayName="jquery-ui.min.css" isAssociation="no" isIncluded="yes" objectType="sys_UserDependency" objectTypeName="User Dependency" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
-                              <Dependencies/>
-                           </PSXDependency>
-                           <RequiredClasses/>
-                        </PSXDeployableObject>
-                     </PSXUserDependency>
-                     <PSXUserDependency parentId="sys_UserDependency" parentKey="Custom-sys_UserDependency" parentType="Custom" path="web_resources/widgets/calendarTwo/js/jquery.min.js">
-                        <PSXDeployableObject>
-                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="web_resources/widgets/calendarTwo/js/jquery.min.js" dependencyType="User" displayName="jquery.min.js" isAssociation="no" isIncluded="yes" objectType="sys_UserDependency" objectTypeName="User Dependency" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
                               <Dependencies/>
                            </PSXDependency>
                            <RequiredClasses/>

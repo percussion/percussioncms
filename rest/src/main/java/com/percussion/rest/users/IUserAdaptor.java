@@ -17,30 +17,31 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.rest.users;
 
-import java.net.URI;
-import java.util.List;
-
 import com.percussion.data.PSInternalRequestCallException;
 import com.percussion.rest.Status;
+import com.percussion.rest.errors.BackendException;
 import com.percussion.webservices.PSErrorResultsException;
+
+import java.net.URI;
+import java.util.List;
 
 
 public interface IUserAdaptor {
 	
-	 	public User getUser(URI baseURI, String userName) throws PSErrorResultsException, PSInternalRequestCallException;
+	 	public User getUser(URI baseURI, String userName) throws PSErrorResultsException, PSInternalRequestCallException, BackendException;
 
-	    public User updateOrCreateUser(URI baseURI, User user);
+	    public User updateOrCreateUser(URI baseURI, User user) throws BackendException;
 
-	    public void deleteUser(URI baseURI, String userName);
+	    public void deleteUser(URI baseURI, String userName) throws BackendException;
 	    
-	    public List<String> findUsers(URI baseURI, String pattern);
+	    public List<String> findUsers(URI baseURI, String pattern) throws BackendException;
 	    
 	    public Status checkDirectoryStatus();
 	    

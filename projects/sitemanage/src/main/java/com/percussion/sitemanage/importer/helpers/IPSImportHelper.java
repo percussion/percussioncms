@@ -17,12 +17,13 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.sitemanage.importer.helpers;
 
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.sitemanage.data.PSPageContent;
 import com.percussion.sitemanage.data.PSSiteImportCtx;
 import com.percussion.sitemanage.error.PSSiteImportException;
@@ -52,7 +53,7 @@ public interface IPSImportHelper
      * @throws PSSiteImportException When any kind of unexpected error occurs
      *             processing the pageContent through the helper.
      */
-    public void process(PSPageContent pageContent, PSSiteImportCtx context) throws PSSiteImportException;
+    public void process(PSPageContent pageContent, PSSiteImportCtx context) throws PSSiteImportException, PSDataServiceException;
 
     /**
      * Call this method to undo all the operations done by the helper in its
@@ -65,7 +66,7 @@ public interface IPSImportHelper
      * @param context The context object containing logger, site data and common
      *            information to be shared among all helpers.
      */
-    public void rollback(PSPageContent pageContent, PSSiteImportCtx context);
+    public void rollback(PSPageContent pageContent, PSSiteImportCtx context) throws PSDataServiceException;
     
     /**
      * This method gets import status message from the helper implementing this

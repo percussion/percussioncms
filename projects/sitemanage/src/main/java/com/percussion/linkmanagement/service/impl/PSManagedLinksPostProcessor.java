@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -36,11 +36,10 @@ import com.percussion.server.IPSRequestContext;
 import com.percussion.services.guidmgr.PSGuidManagerLocator;
 import com.percussion.share.spring.PSSpringWebApplicationContextUtils;
 import com.percussion.util.IPSHtmlParameters;
-
-import java.io.File;
-
 import org.apache.commons.lang.StringUtils;
 import org.w3c.dom.Document;
+
+import java.io.File;
 
 /**
  * Managed link post processor, the input transformer creates new links on item creation and sets a request private object.
@@ -52,7 +51,7 @@ public class PSManagedLinksPostProcessor extends PSDefaultExtension implements I
 {
 
     private IPSManagedLinkService service;
-    public static String PERC_UPDATE_NEW_MANAGED_LINKS = "perc_updateNewManagedLinks";
+    public static final String PERC_UPDATE_NEW_MANAGED_LINKS = "perc_updateNewManagedLinks";
 
     
     /* (non-Javadoc)

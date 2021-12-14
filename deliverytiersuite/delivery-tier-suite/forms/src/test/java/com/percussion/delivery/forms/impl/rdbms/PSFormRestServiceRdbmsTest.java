@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -30,13 +30,17 @@ import com.percussion.delivery.forms.data.PSFormSummary;
 import com.percussion.delivery.forms.impl.PSBaseFormServiceTest;
 import com.percussion.delivery.forms.impl.PSFormRestServiceBaseTest;
 import com.percussion.delivery.forms.impl.PSMockEmailHelper;
-import com.percussion.utils.security.ToDoVulnerability;
-import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
+import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
+import com.percussion.security.PSEncryptor;
 import org.apache.commons.lang.StringUtils;
 import org.glassfish.jersey.internal.PropertiesDelegate;
 import org.glassfish.jersey.server.ContainerRequest;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Ignore;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpServletRequest;
@@ -86,6 +90,24 @@ public class PSFormRestServiceRdbmsTest extends PSBaseFormServiceTest
 {
     @Autowired
     private IPSFormRestService formRestService;
+
+
+    @Rule
+    public TemporaryFolder temporaryFolder = new TemporaryFolder();
+    private String rxdeploydir;
+
+    @Before
+    public void setup() throws IOException {
+
+        rxdeploydir = System.getProperty("rxdeploydir");
+        System.setProperty("rxdeploydir", temporaryFolder.getRoot().getAbsolutePath());
+    }
+
+    @After
+    public void teardown(){
+        if(rxdeploydir != null)
+            System.setProperty("rxdeploydir",rxdeploydir);
+    }
 
     @Test
     @Ignore("TODO: FixMe!")
@@ -228,8 +250,17 @@ public class PSFormRestServiceRdbmsTest extends PSBaseFormServiceTest
         params.put("perc_formName", Arrays.asList(formName));
         if (subject != null && toList != null)
         {
-            params.put("perc_emnt", Arrays.asList(PSLegacyEncrypter.getInstance().encrypt(toList, PSLegacyEncrypter.DEFAULT_KEY())));
-            params.put("perc_emns", Arrays.asList(PSLegacyEncrypter.getInstance().encrypt(subject, PSLegacyEncrypter.DEFAULT_KEY())));
+            params.put("perc_emnt", Arrays.asList(PSLegacyEncrypter.getInstance(
+                    temporaryFolder.getRoot().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+            ).encrypt(toList, PSLegacyEncrypter.getInstance(
+                    temporaryFolder.getRoot().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+            ).DEFAULT_KEY())));
+            params.put("perc_emns", Arrays.asList(PSLegacyEncrypter.getInstance(
+                    temporaryFolder.getRoot().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+            )
+                    .encrypt(subject, PSLegacyEncrypter.getInstance(
+                            temporaryFolder.getRoot().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+                    ).DEFAULT_KEY())));
         }
 
         params.put(fieldValue1[0], Arrays.asList(fieldValue1[1]));

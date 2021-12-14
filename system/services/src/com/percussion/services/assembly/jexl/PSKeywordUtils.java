@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -37,14 +37,13 @@ import com.percussion.services.content.IPSContentService;
 import com.percussion.services.content.PSContentServiceLocator;
 import com.percussion.services.content.data.PSKeyword;
 import com.percussion.services.content.data.PSKeywordChoice;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
  * Methods that enable the use of keywords when building assembly output.
@@ -56,7 +55,7 @@ public class PSKeywordUtils extends PSJexlUtilBase
    /**
     * Logger for this class
     */
-   private static Log ms_log = LogFactory.getLog(PSKeywordUtils.class);
+   private static final Logger ms_log = LogManager.getLogger(PSKeywordUtils.class);
 
    /**
     * Retrieve the named keyword and output the available choices as html
@@ -114,7 +113,7 @@ public class PSKeywordUtils extends PSJexlUtilBase
          + "keyword choice, the second is the value of the keyword choice.")
    public List<String[]> keywordChoices(String keywordname)
    {
-      List<String[]> rval = new ArrayList<String[]>();
+      List<String[]> rval = new ArrayList<>();
       IPSContentService csvc = PSContentServiceLocator.getContentService();
       List<PSKeyword> keywords = csvc.findKeywordsByLabel(keywordname, "sequence");
       if (keywords == null || keywords.size() == 0)

@@ -17,17 +17,19 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.workflow;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.utils.testing.IntegrationTest;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.experimental.categories.Category;
 
 import java.sql.Connection;
-import java.sql.SQLException;
 
 /**
  * The PSTransitionNotificationsContextTestclass is a test class for the class
@@ -37,6 +39,9 @@ import java.sql.SQLException;
 public class PSTransitionNotificationsContextTest
    extends PSAbstractWorkflowTest 
 {
+
+   private static final Logger log = LogManager.getLogger(PSTransitionNotificationsContextTest.class);
+
    /**
     * Constructor specifying command line arguments
     *
@@ -53,7 +58,7 @@ public class PSTransitionNotificationsContextTest
    public void ExecuteTest(Connection connection)
       throws PSWorkflowTestException
    {
-      System.out.println("\nExecuting test of PSTransitionNotificationsContext"
+      log.info("\nExecuting test of PSTransitionNotificationsContext"
                          + "\n");
       Exception except = null;
       String exceptionMessage = "";
@@ -70,37 +75,36 @@ public class PSTransitionNotificationsContextTest
                new PSTransitionNotificationsContext(m_nWorkflowID,
                                                     m_nTransitionID,
                                                     connection);
-         System.out.println(
-            "Notification count for TransitionID " + m_nWorkflowID +
-            ", workflowID " + m_nTransitionID + " is " + context.getCount()
+         log.info(
+            "Notification count for TransitionID {}, workflowID {} is {}", m_nWorkflowID, m_nTransitionID, context.getCount()
             + "\n");
          
          do
          {
             notificationID = context.getNotificationID();
-            System.out.println("notificationID = " + notificationID);
+            log.info("notificationID = {}", notificationID);
          
             stateRoleRecipientTypes = context.getStateRoleRecipientTypes();
-            System.out.println("   stateRoleRecipientTypes = " +
-                               stateRoleRecipientTypes);
+            log.info("   stateRoleRecipientTypes = {}", stateRoleRecipientTypes);
          
             additionalRecipientList = context.getAdditionalRecipientList();
-            System.out.println("   additionalRecipientList = " +
-                               additionalRecipientList);
+            log.info("   additionalRecipientList = {}", additionalRecipientList);
          
             CCList = context.getCCList();
-            System.out.println("   CCList = " + CCList + "\n");
+            log.info("   CCList = {} \n", CCList);
          }
          while (context.moveNext());
       }
       catch (Exception e) 
       {
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          exceptionMessage = "Exception: ";
          except = e;
       }
       finally 
       {
-      System.out.println("\nEnd test of PSTransitionNotificationsContext"
+      log.info("\nEnd test of PSTransitionNotificationsContext"
                          + "\n");
          if (null != except) 
          {
@@ -126,7 +130,7 @@ public class PSTransitionNotificationsContextTest
    
    public String HelpMessage()
    {
-      StringBuffer buf = new StringBuffer();
+      StringBuilder buf = new StringBuilder();
       buf.append("Options are:\n");
       buf.append("   -w, -workflowid        workflow ID\n");
       buf.append("   -t, -transitionid      transition ID\n");

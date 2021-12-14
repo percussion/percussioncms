@@ -17,19 +17,19 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.pagemanagement.service.impl;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
-
 import com.percussion.pagemanagement.data.PSRegion;
 import com.percussion.share.service.exception.PSBeanValidationException;
 import com.percussion.share.validation.PSAbstractBeanValidator;
+
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
 /**
  * Validates Regions for duplicate ids.
@@ -56,7 +56,7 @@ public abstract class PSRegionsValidator<BEAN> extends PSAbstractBeanValidator<B
     
     
     protected void doRegions(Iterator<PSRegion>  it, PSBeanValidationException e) {
-        Set<String> ids = new HashSet<String>();
+        Set<String> ids = new HashSet<>();
         
         while(it.hasNext()) {
             PSRegion region = it.next();

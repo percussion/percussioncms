@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -27,6 +27,7 @@ import com.percussion.rx.config.IPSConfigService;
 import com.percussion.rx.config.PSConfigServiceLocator;
 import com.percussion.rx.config.PSConfigValidation;
 import com.percussion.rx.services.deployer.PSPkgUiResponse.PSPkgUiResponseType;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.pkginfo.IPSPkgInfoService;
 import com.percussion.services.pkginfo.PSPkgInfoServiceLocator;
 import com.percussion.services.pkginfo.data.PSPkgInfo;
@@ -35,7 +36,8 @@ import com.percussion.services.pkginfo.utils.PSPkgHelper;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.types.PSPair;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -59,8 +61,7 @@ public class PSPackageServiceHelper
     * @param pkgName The name of the package that needs to be validated.
     * @return Either failure or success {@link PSPkgUiResponse} object.
     */
-   public static PSPkgUiResponse getValidationResults(String pkgName)
-   {
+   public static PSPkgUiResponse getValidationResults(String pkgName) throws PSNotFoundException {
       IPSPkgInfoService pkgService = PSPkgInfoServiceLocator
             .getPkgInfoService();
       PSPkgInfo pkgInfo = pkgService.findPkgInfo(pkgName);
@@ -125,9 +126,8 @@ public class PSPackageServiceHelper
     * may be empty.
     * 
     */
-   private static List<String> getMissingPackages(PSPkgInfo pkgInfo)
-   {
-      List<String> missingPkgs = new ArrayList<String>();
+   private static List<String> getMissingPackages(PSPkgInfo pkgInfo) throws PSNotFoundException {
+      List<String> missingPkgs = new ArrayList<>();
       IPSPkgInfoService pkgService = PSPkgInfoServiceLocator
             .getPkgInfoService();
       List<IPSGuid> depGuids = pkgService.findDependentPkgGuids(pkgInfo
@@ -167,7 +167,7 @@ public class PSPackageServiceHelper
                + pkgname + ". Skipping reapplying of the package visibility");
       }
       List<PSPkgInfo> pkgInfos = pkgsPair.getFirst();
-      List<String> errorPkgs = new ArrayList<String>();
+      List<String> errorPkgs = new ArrayList<>();
       PSPackageVisibility pkgVis = new PSPackageVisibility();
       for (PSPkgInfo pinfo : pkgInfos)
       {
@@ -218,7 +218,7 @@ public class PSPackageServiceHelper
                + pkgname + ". Skipping reapplying of the package visibility");
       }
       List<PSPkgInfo> pkgInfos = pkgsPair.getFirst();
-      List<String> validPkgs = new ArrayList<String>();
+      List<String> validPkgs = new ArrayList<>();
       for (PSPkgInfo pinfo : pkgInfos)
       {
          validPkgs.add(pinfo.getPackageDescriptorName());
@@ -257,9 +257,9 @@ public class PSPackageServiceHelper
    {
       IPSPkgInfoService pkgService = PSPkgInfoServiceLocator
             .getPkgInfoService();
-      List<PSPkgInfo> pkgInfos = new ArrayList<PSPkgInfo>();
-      List<String> invalidPkgs = new ArrayList<String>();
-      PSPair<List<PSPkgInfo>, List<String>> result = new PSPair<List<PSPkgInfo>, List<String>>(
+      List<PSPkgInfo> pkgInfos = new ArrayList<>();
+      List<String> invalidPkgs = new ArrayList<>();
+      PSPair<List<PSPkgInfo>, List<String>> result = new PSPair<>(
             pkgInfos, invalidPkgs);
       for (String pkgname : pkgNames)
       {
@@ -294,13 +294,13 @@ public class PSPackageServiceHelper
       IPSConfigService srv = PSConfigServiceLocator.getConfigService();
 
       Map<IPSGuid, String> pkgInfomap = getPkgGuidNameMap();
-      Map<String, Collection<String>> pkgCommsMap = new HashMap<String, Collection<String>>();
+      Map<String, Collection<String>> pkgCommsMap = new HashMap<>();
       for (String pkg : pkgInfomap.values())
       {
          Collection<String> comms = srv.loadCommunityVisibility(pkg);
          pkgCommsMap.put(pkg, comms);
       }
-      Map<String, List<String>> commPkgsMap = new HashMap<String, List<String>>();
+      Map<String, List<String>> commPkgsMap = new HashMap<>();
 
       for (String pkgName : pkgCommsMap.keySet())
       {
@@ -312,7 +312,7 @@ public class PSPackageServiceHelper
             List<String> pkgs = commPkgsMap.get(comm);
             if (pkgs == null)
             {
-               pkgs = new ArrayList<String>();
+               pkgs = new ArrayList<>();
                commPkgsMap.put(comm, pkgs);
             }
             pkgs.add(pkgName);
@@ -344,7 +344,7 @@ public class PSPackageServiceHelper
    public static Map<IPSGuid, String> getPkgGuidNameMap()
    {
       List<PSPkgInfo> pInfos = getPkgService().findAllPkgInfos();
-      Map<IPSGuid, String> pkgInfomap = new HashMap<IPSGuid, String>();
+      Map<IPSGuid, String> pkgInfomap = new HashMap<>();
       for (PSPkgInfo pinfo : pInfos)
       {
          if (pinfo.isSuccessfullyInstalled()
@@ -368,7 +368,7 @@ public class PSPackageServiceHelper
       if (strList == null || strList.isEmpty())
          return "";
 
-      StringBuffer result = new StringBuffer();
+      StringBuilder result = new StringBuilder();
       for (String str : strList)
       {
          if (result.length() > 0)
@@ -426,7 +426,7 @@ public class PSPackageServiceHelper
    /**
     * The logger for this class.
     */
-   private static Logger ms_logger = Logger
+   private static final Logger ms_logger = LogManager
          .getLogger("PSPackageServiceHelper");
 
 }

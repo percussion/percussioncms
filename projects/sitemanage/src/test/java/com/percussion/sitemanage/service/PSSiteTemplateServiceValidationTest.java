@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -31,11 +31,11 @@ import com.percussion.pagemanagement.service.IPSPageTemplateService;
 import com.percussion.pagemanagement.service.IPSTemplateService;
 import com.percussion.services.sitemgr.IPSSiteManager;
 import com.percussion.share.async.IPSAsyncJobService;
+import com.percussion.share.dao.IPSFolderHelper;
 import com.percussion.share.service.exception.PSBeanValidationException;
 import com.percussion.sitemanage.dao.IPSiteDao;
 import com.percussion.sitemanage.service.PSSiteTemplates.CreateTemplate;
 import com.percussion.sitemanage.service.impl.PSSiteTemplateService;
-
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.integration.junit4.JMock;
@@ -71,6 +71,7 @@ public class PSSiteTemplateServiceValidationTest
     IPSItemWorkflowService itemWorkflowService; 
     IPSWidgetAssetRelationshipService widgetAssetRelationshipService;
     IPSPageTemplateService pageTemplateService;
+    IPSFolderHelper folderHelper;
     
     @Before
     public void setUp() throws Exception
@@ -84,16 +85,18 @@ public class PSSiteTemplateServiceValidationTest
         itemWorkflowService = context.mock(IPSItemWorkflowService.class);
         widgetAssetRelationshipService = context.mock(IPSWidgetAssetRelationshipService.class);
         pageTemplateService = context.mock(IPSPageTemplateService.class);
+        siteMgr = context.mock(IPSSiteManager.class);
+        folderHelper = context.mock(IPSFolderHelper.class);
+
         
         
         sut = new PSSiteTemplateService(siteDao, siteSectionMetaDataService, templateService, asyncJobService, 
-                pageService, assetService, itemWorkflowService, widgetAssetRelationshipService, pageTemplateService);
+                pageService, assetService, itemWorkflowService, widgetAssetRelationshipService, pageTemplateService, siteMgr, folderHelper);
     }
     
     
     @Test
-    public void shouldValidateSiteTemplatesAndNOTFailForEmptySiteTemplates()
-    {
+    public void shouldValidateSiteTemplatesAndNOTFailForEmptySiteTemplates() throws PSBeanValidationException {
         /*
          * Given: empty site templates.
          */
@@ -117,8 +120,7 @@ public class PSSiteTemplateServiceValidationTest
     }
     
     @Test(expected=PSBeanValidationException.class)
-    public void shouldValidateCreateTemplatesAndFailIfNoSourceTemplateId()
-    {
+    public void shouldValidateCreateTemplatesAndFailIfNoSourceTemplateId() throws PSBeanValidationException {
         /*
          * Given: Site templates with a bad create template.
          */
@@ -146,8 +148,7 @@ public class PSSiteTemplateServiceValidationTest
     }
     
     
-    public void shouldValidateCreateTemplates()
-    {
+    public void shouldValidateCreateTemplates() throws PSBeanValidationException {
         /*
          * Given: Site templates with a valid create template.
          */

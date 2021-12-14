@@ -17,14 +17,12 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.sitemanage.service.impl;
-
-import static com.percussion.itemmanagement.service.impl.PSAbstractWorkflowExtension.WorkflowItem.passedStartPublishDate;
 
 import com.percussion.cms.objectstore.PSComponentSummary;
 import com.percussion.extension.IPSExtensionDef;
@@ -40,6 +38,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static com.percussion.itemmanagement.service.impl.PSAbstractWorkflowExtension.WorkflowItem.passedStartPublishDate;
+
 
 /**
  * 
@@ -53,7 +53,7 @@ public class PSStartDateFilterRule implements IPSItemFilterRule
     @Override
     public List<IPSFilterItem> filter(List<IPSFilterItem> items, Map<String, String> params) throws PSFilterException
     {
-        List<IPSFilterItem> allowedStartDateItems = new ArrayList<IPSFilterItem>();
+        List<IPSFilterItem> allowedStartDateItems = new ArrayList<>();
         IPSCmsObjectMgr cmMgr = PSCmsObjectMgrLocator.getObjectManager();;
         for(IPSFilterItem item : items)
         {

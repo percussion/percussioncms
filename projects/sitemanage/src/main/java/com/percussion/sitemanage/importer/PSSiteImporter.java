@@ -17,13 +17,14 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.sitemanage.importer;
 
 import com.percussion.server.IPSHttpErrors;
+import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.share.service.IPSSystemProperties;
 import com.percussion.sitemanage.data.PSPageContent;
 import com.percussion.sitemanage.data.PSSiteImportCtx;
@@ -34,8 +35,8 @@ import com.percussion.sitemanage.importer.data.PSImportLogEntry;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 import org.apache.commons.lang.math.NumberUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jsoup.Connection;
 import org.jsoup.Connection.Response;
 import org.jsoup.Jsoup;
@@ -46,7 +47,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
-import javax.net.ssl.*;
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Date;
@@ -62,7 +69,7 @@ public class PSSiteImporter
 {
     public static final String REDIRECTED_FROM_URL = "Redirect the original URL from  '{originalUrl}' to '{newUrl}'";
 
-    private static final Log log = LogFactory.getLog(PSSiteImporter.class);
+    private static final Logger log = LogManager.getLogger(PSSiteImporter.class);
     private static final String SITE_IMPORTER = "Site Importer";
     private static final String HTML = "html";
     private static final String HEAD = "head";
@@ -133,7 +140,7 @@ public class PSSiteImporter
         addHeadElems.addAll(docHead.select("link"));
         addHeadElems.addAll(docHead.select("script"));
 
-        StringBuffer additionalHeadContent = new StringBuffer();
+        StringBuilder additionalHeadContent = new StringBuilder();
         for (Element element : addHeadElems)
         {
             additionalHeadContent.append(element.outerHtml());
@@ -330,13 +337,12 @@ public class PSSiteImporter
      * 
      * @param objectId The object id to use, not empty
      * @param logger the logger to use, not <code>null</code>.
-     * @param The log dao, not <code>null</code>.
+     * @param logDao log dao, not <code>null</code>.
      * @param siteId The id of the site being imported into, if <code>null</code> empty, no additional error logging
      * is performed.
      * @param desc The description of the object being imported, not <code>null<code/> or empty.
      */
-    public static void saveImportLog(String objectId, IPSSiteImportLogger logger, IPSImportLogDao logDao, String siteId, String desc)
-    {
+    public static void saveImportLog(String objectId, IPSSiteImportLogger logger, IPSImportLogDao logDao, String siteId, String desc) throws IPSGenericDao.SaveException {
         Validate.notEmpty(objectId);
         Validate.notNull(logger);
         Validate.notNull(logDao);
@@ -404,7 +410,7 @@ public class PSSiteImporter
 
         // Install the all-trusting trust manager
         try {
-            SSLContext sc = SSLContext.getInstance("SSL");
+            SSLContext sc = SSLContext.getInstance("TLS");
             sc.init(null, trustAllCerts, new java.security.SecureRandom());
             
             URLConnectionProperties connectionData = new URLConnectionProperties();

@@ -18,17 +18,18 @@
   ~      Burlington, MA 01803, USA
   ~      +01-781-438-9900
   ~      support@percussion.com
-  ~      https://www.percusssion.com
+  ~      https://www.percussion.com
   ~
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   -->
 <Module>
-    <ModulePrefs title="Google Setup" category="analytics" description="This gadget allows an administrator to configure Google Analytics to use the correct account and profile for each site managed by CMS." thumbnail="images/gadgetConfigGoogle.png" height="448" adminOnly="true">
+    <ModulePrefs title="Google Setup" category="analytics" description="This gadget allows an administrator to configure Google Analytics to use the correct account and profile for each site managed by CMS." thumbnail="images/gadgetConfigGoogle.png" height="465" adminOnly="true">
         <Require feature="perc_core"/>
         <Require feature="perc_jquery_ui"/>
     </ModulePrefs>
     <Content type="html">
         <![CDATA[
+        <!DOCTYPE html>
         <style type="text/css">
 
            .perc-ga-config-gadget {
@@ -183,6 +184,13 @@
               font-family: 'Open Sans', sans-serif;
            }
         </style>
+        <script src="/cm/jslib/profiles/3x/libraries/bowser/es5.js"</script>
+<script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-percutils/jquery.percutils.js"</script>
+<script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-jeditable/jquery.jeditable.js"></script>
+<script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/tools.scrollable-1.1.2.js" ></script>
+<script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/tools.scrollable.mousewheel-1.0.1.js" ></script>
+<script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.text-overflow.js" ></script>
+<script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-dynatree/jquery.dynatree.js" ></script>
         <script  src="/cm/plugins/perc_utils.js"></script>
         <script  src="/cm/plugins/perc_path_constants.js"></script>
         <script  src="/cm/services/PercServiceUtils.js"></script>
@@ -239,7 +247,7 @@
                  {
                      if(status == $.PercServiceUtils.STATUS_SUCCESS)
                      {
-                         if(result.data && typeof(result.data.providerConfig) == 'object')
+                         if(result.data && typeof(result.data.providerConfig) === 'object')
                          {
                             _storedConfig = result.data.providerConfig;
                             _hasStoredPwd = true;
@@ -310,7 +318,7 @@
                          retSt = false;
                          retMsg = $.PercServiceUtils.extractDefaultErrorMessage(result.request);
                      }
-                     if($.isFunction(callback)){
+                     if(typeof callback === "function"){
                          callback(retSt, retMsg);
                      }
                  }
@@ -425,7 +433,7 @@
                             content:"Connection to Google Analytics was successful.", "id": "perc-ga-test-connect-success"});
 
 	   if(typeof(callback) == 'function')
-                        callback(status);
+                        callback($.PercServiceUtils.STATUS_SUCCESS);
                      percJQuery.unblockUI();
 	},
         error: function(request,status, error){
@@ -473,7 +481,9 @@
                  {
                      if(status == $.PercServiceUtils.STATUS_SUCCESS)
                      {
-                         _profileList = $.perc_utils.convertCXFArray(result.data.psmap.entries.entry);
+                            if(typeof (result.data.psmap.entries)!=='undefined'){
+                                _profileList = $.perc_utils.convertCXFArray(result.data.psmap.entries.entry);
+                            }
                      }
                      else
                      {
@@ -553,7 +563,7 @@
                  }
                  // Add select change event bindings
                  sitesContainer.find(".perc-ga-profile-list").each(function(){
-                    $(this).bind("change.sitelists", function(){
+                    $(this).on("change.sitelists", function(){
                         var site = $(this).attr('id').substr(21);
                        $(this).children("option").each(function(){
                           var self = $(this);
@@ -563,7 +573,7 @@
                              if(self.val() == "none")
                                 $("input[id='perc_ga_apikey_" + site + "']").css("color", "#CCCCCC").val("Enter API Key for this Google Analytics Profile").attr("disabled", "disabled");
                              else
-                                $("input[id='perc_ga_apikey_" + site + "']").removeAttr("disabled");
+                                 $("input[id='perc_ga_apikey_" + site + "']").prop("disabled",false);
                           }
                           else
                           {
@@ -574,7 +584,9 @@
                  });
 
                  sitesContainer.find(".perc-ga-apikey-field").each(function(){
-                    $(this).focus(apiKeyFocus).blur(apiKeyBlur)
+                    $(this).on("focus",apiKeyFocus).on("blur",function(e){
+                        apiKeyBlur(e,$(this));
+                        });
                 })
               }
               else
@@ -589,8 +601,8 @@
                    self.css("color", "black").val("");
            }
 
-           function apiKeyBlur(){
-              var self = $(this)
+           function apiKeyBlur(event,inst){
+              var self = inst;
               if(self.val() == "")
                   self.css("color", "#CCCCCC").val("Enter API Key for this Google Analytics Profile");
            }
@@ -633,7 +645,7 @@
                    var selectedClass = (hasSelection && temp['key'] == selectedProfileId) ? ' perc-selected' : '';
                    var selected = (hasSelection && temp['key'] == selectedProfileId) ? ' selected="selected"' : '';
                    if (selected != ""){
-                      $("input[id='perc_ga_apikey_" + site + "']").removeAttr("disabled");
+                      $("input[id='perc_ga_apikey_" + site + "']").prop("disabled",false);
                    }
                    opt = '<option title="' + temp['value'] + '" class="perc-ga-profile-list-option'
                       + selectedClass + '" value="' + temp['key'] + '"' + selected + '>' + temp['value'] + '</option>';
@@ -655,10 +667,18 @@
               var $save = $("#perc-ga-save");
               var $delete = $("#perc-ga-delete");
 
-              $connect.unbind().bind('click', _onConnect);
-              $cancel.unbind().bind('click', _onCancel);
-              $save.unbind().bind('click', _onSave);
-              $delete.unbind().bind('click', _onDelete);
+              $connect.off('click').on('click', function(e){
+                _onConnect(e,$connect);
+              });
+              $cancel.off('click').on('click', function(e){
+                _onCancel(e,$cancel);
+                });
+              $save.off('click').on('click', function(e){
+                _onSave(e,$save);
+                });
+              $delete.off('click').on('click', function(e){
+                _onDelete(e,$delete);
+                });
 
 
            }
@@ -684,15 +704,18 @@
 
               }
 
-              $user.unbind().bind('blur', _handleButtonState).bind('keyup',
-                 function(){
+              $user.off().on('blur', function(e){
+                _handleButtonState(e);
+              }).on('keyup',
+                 function(e){
                     _validCreds = false;
                     $pwd.val("");
                     _hasStoredPwd = false;
                     _handleButtonState();
-
                  });
-              $pwd.unbind().bind('blur', _handleButtonState).bind('change',
+              $pwd.off().on('blur', function(e){
+                _handleButtonState(e);
+                }).on('change',
                  function(){
                     _hasStoredPwd = false;
                     _validCreds = false;
@@ -706,8 +729,8 @@
             * creds against the google provider and if successful loads profiles and
             * updates the UI.
             */
-           function _onConnect(){
-              if(!$(this).hasClass("perc-inactive"))
+           function _onConnect(event,inst){
+              if(!inst.hasClass("perc-inactive"))
               {
                 var thePwd = _hasStoredPwd ? "null" : $("#perc-ga-pwd").val();
                 var uid = $("#perc-ga-user").val();
@@ -743,7 +766,7 @@
             * Action called when the cancel button is clicked. Reverts the UI back
             * to the persisted state.
             */
-           function _onCancel(){
+           function _onCancel(event,inst){
               _storedConfig = _originalValues['config'];
               _hasStoredPwd = _originalValues['hasStoredPwd'];
               _profileList = _originalValues['profileList'];
@@ -757,8 +780,8 @@
             * Action called when the save button is clicked. Persists config and
             * profiles to the server.
             */
-           function _onSave(){
-              if(!$(this).hasClass("perc-inactive"))
+           function _onSave(event,inst){
+              if(!inst.hasClass("perc-inactive"))
               {
                 percJQuery.PercBlockUI();
                 _saveConfig(_savePersistedProfiles);
@@ -768,8 +791,8 @@
            /**
             * Action called when the clear credentials is clicked. Deletes the config.
             */
-           function _onDelete(){
-              if(!$(this).hasClass("perc-inactive"))
+           function _onDelete(event,inst){
+              if(!inst.hasClass("perc-inactive"))
               {
                     percJQuery.perc_utils.confirm_dialog({
                        id: "confirmDelete",
@@ -799,7 +822,7 @@
            /**
             * Helper function to set the appropriate enable/disable state for the buttons.
             */
-           function _handleButtonState(){
+           function _handleButtonState(event){
               var $user = $("#perc-ga-user");
               var $pwd = $("#perc-ga-pwd");
               var hasUser = $user.val().length > 0;

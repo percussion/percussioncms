@@ -17,34 +17,30 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.pagemanagement.assembler;
-
-import static com.percussion.share.test.PSMatchers.validUrl;
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import com.percussion.assetmanagement.data.PSAsset;
 import com.percussion.pagemanagement.data.PSRenderLinkContext;
 import com.percussion.pagemanagement.data.PSResourceInstance;
 import com.percussion.pagemanagement.data.PSResourceLinkAndLocation;
 import com.percussion.pagemanagement.service.impl.PSLinkableAsset;
-import com.percussion.share.data.IPSLinkableContentItem;
-import com.percussion.share.data.IPSItemSummary.Category;
 import com.percussion.sitemanage.data.PSSiteSummary;
-
 import org.hamcrest.core.CombinableMatcher;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import static com.percussion.share.test.PSMatchers.validUrl;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 
 public class PSResourceLinkAndLocationUtilsTest
 {

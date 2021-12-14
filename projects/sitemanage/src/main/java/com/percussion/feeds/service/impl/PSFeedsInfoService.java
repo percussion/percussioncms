@@ -17,13 +17,11 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.feeds.service.impl;
-
-import static org.apache.commons.lang.Validate.notNull;
 
 import com.percussion.cms.objectstore.PSInvalidContentTypeException;
 import com.percussion.cms.objectstore.PSRelationshipFilter;
@@ -50,9 +48,26 @@ import com.percussion.services.pubserver.data.PSPubServer;
 import com.percussion.services.relationship.IPSRelationshipService;
 import com.percussion.services.relationship.PSRelationshipServiceLocator;
 import com.percussion.services.sitemgr.IPSSite;
+import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.webservices.PSWebserviceUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.codehaus.jettison.json.JSONArray;
+import org.codehaus.jettison.json.JSONException;
+import org.codehaus.jettison.json.JSONObject;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.jcr.RepositoryException;
+import javax.jcr.Value;
+import javax.jcr.query.InvalidQueryException;
+import javax.jcr.query.Query;
+import javax.jcr.query.QueryResult;
+import javax.jcr.query.Row;
+import javax.jcr.query.RowIterator;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -63,23 +78,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import javax.jcr.RepositoryException;
-import javax.jcr.Value;
-import javax.jcr.query.InvalidQueryException;
-import javax.jcr.query.Query;
-import javax.jcr.query.QueryResult;
-import javax.jcr.query.Row;
-import javax.jcr.query.RowIterator;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.codehaus.jettison.json.JSONArray;
-import org.codehaus.jettison.json.JSONException;
-import org.codehaus.jettison.json.JSONObject;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.springframework.beans.factory.annotation.Autowired;
+import static org.apache.commons.lang.Validate.notNull;
 
 
 /**
@@ -104,12 +103,12 @@ public class PSFeedsInfoService implements IPSFeedsInfoService
      * queued. We want to avoid sending empty lists for no reason, but we need to do it
      * at least once so that the feed service removes feeds that no longer exist.
      */
-    private Set<Long> emptyFeedSetSent = new HashSet<Long>();
+    private Set<Long> emptyFeedSetSent = new HashSet<>();
 
     /**
      * Logger for this service.
      */
-    public static Log log = LogFactory.getLog(PSFeedsInfoService.class);
+    public static final Logger log = LogManager.getLogger(PSFeedsInfoService.class);
 
 
     @Autowired
@@ -125,8 +124,9 @@ public class PSFeedsInfoService implements IPSFeedsInfoService
      */
     public void setContentTypeIds()
     {
-        if(contentTypePage != -1)
+        if(contentTypePage != -1) {
             return;
+        }
         try
         {
             contentTypePage = (int)iDefMgr.contentTypeNameToId(CONTENT_TYPE_PAGE);
@@ -171,26 +171,28 @@ public class PSFeedsInfoService implements IPSFeedsInfoService
         Collection<PSFeedInfo> feeds = getFeeds(server.getServerId());
         if (feeds.isEmpty() && emptyFeedSetSent.contains(site.getSiteId()))
         {
-            log.info("No feeds found to push to feeds service for site or server is selected none" + site.getName());
+            log.info("No feeds found to push to feeds service for site or server is selected none {}" , site.getName());
             return;
         }
 
         if(server.getPropertyValue("publishServer")!=null && server.getPropertyValue("publishServer").equalsIgnoreCase(IPSPubServerService.DEFAULT_DTS)){
-            log.info("server is selected none" + site.getName());
+            log.info("server is selected none {}", site.getName());
             return;
         }
         try
         {
 
             String descriptors = createDescriptorsJson(site, feeds, server.getServerType(),server.getPropertyValue("publishServer"));
-            log.info("Queuing " + feeds.size() + " feeds for site " + site.getName());
+            log.info("Queuing " + feeds.size() + " feeds for site {}" , site.getName());
             queue.queueDescriptors(site.getName(), descriptors, server.getServerType());
-            if(feeds.isEmpty())
+            if(feeds.isEmpty()) {
                 emptyFeedSetSent.add(site.getSiteId());
-            else if(emptyFeedSetSent.contains(site.getSiteId()))
+            }
+            else if(emptyFeedSetSent.contains(site.getSiteId())) {
                 emptyFeedSetSent.remove(site.getSiteId());
+            }
         }
-        catch (JSONException e)
+        catch (JSONException | IPSGenericDao.LoadException | IPSGenericDao.SaveException e)
         {
             throw new PSFeedInfoServiceException("Error occurred while trying to create descriptors.", e);
         }
@@ -222,9 +224,11 @@ public class PSFeedsInfoService implements IPSFeedsInfoService
             URI uri = new URI(deliveryUrl);
             host = uri.getHost();
             int port = uri.getPort();
-            if (port != -1)
+            if (port != -1) {
                 host += ":" + port;
+            }
             host = uri.getScheme() + "://" + host;
+
         }
         catch (URISyntaxException e)
         {
@@ -260,12 +264,13 @@ public class PSFeedsInfoService implements IPSFeedsInfoService
      */
     private Collection<String> getFeedContentTypes()
     {
-        Collection<String> cts = new ArrayList<String>();
+        Collection<String> cts = new ArrayList<>();
         try
         {
             String[] results = iDefMgr.getContentTypesUsingSharedFieldGroup("rssfeeds");
-            for(String ct : results)
+            for(String ct : results) {
                 cts.add(ct);
+            }
         }
         catch (PSInvalidContentTypeException e)
         {
@@ -284,7 +289,7 @@ public class PSFeedsInfoService implements IPSFeedsInfoService
      */
     private Collection<PSFeedInfo> getFeedEnabledContentItems(Collection<String> contentTypes) throws InvalidQueryException, RepositoryException
     {
-        Collection<PSFeedInfo> feeds = new ArrayList<PSFeedInfo>();
+        Collection<PSFeedInfo> feeds = new ArrayList<>();
         for(String ct : contentTypes)
         {
             String queryString =
@@ -319,8 +324,9 @@ public class PSFeedsInfoService implements IPSFeedsInfoService
      */
     private void addParentItems(Collection<PSFeedInfo> feeds) throws PSException, InvalidQueryException, RepositoryException
     {
-        if (feeds.isEmpty())
+        if (feeds.isEmpty()) {
             return;
+        }
 
         PSRelationshipFilter pFilter = new PSRelationshipFilter();
         PSRelationshipFilter tFilter = new PSRelationshipFilter();
@@ -369,19 +375,20 @@ public class PSFeedsInfoService implements IPSFeedsInfoService
      */
     private void filterFeeds(Collection<PSFeedInfo> feeds, long serverId)
     {
-        if (feeds.isEmpty())
+        if (feeds.isEmpty()) {
             return;
+        }
 
-        Map<Integer, IPSSiteItem> sItems = new HashMap<Integer, IPSSiteItem>();
+        Map<Integer, IPSSiteItem> sItems = new HashMap<>();
         IPSGuid sGuid = PSGuidUtils.makeGuid(serverId, PSTypeEnum.PUBLISHING_SERVER);
-        Collection<PSFeedInfo> removeFeeds = new ArrayList<PSFeedInfo>();
+        Collection<PSFeedInfo> removeFeeds = new ArrayList<>();
         for(IPSSiteItem si : pubService.findSiteItemsByPubServer(sGuid, DELIVERY_CONTEXT))
         {
             sItems.put(si.getContentId(), si);
         }
         for(PSFeedInfo feed : feeds)
         {
-            Collection<Integer> remove = new ArrayList<Integer>();
+            Collection<Integer> remove = new ArrayList<>();
             Integer ownerPage = null;
             long pageDate = -1;
             for(Integer p : feed.getPages())
@@ -401,8 +408,9 @@ public class PSFeedsInfoService implements IPSFeedsInfoService
                 }
             }
             //Remove pages not published
-            for(Integer rmv : remove)
+            for(Integer rmv : remove) {
                 feed.getPages().remove(rmv);
+            }
 
             //Use earliest published page as feed page parent and for site info
             if(ownerPage != null)
@@ -420,8 +428,9 @@ public class PSFeedsInfoService implements IPSFeedsInfoService
 
         }
         //Remove feeds without pages
-        for(PSFeedInfo rmv : removeFeeds)
+        for(PSFeedInfo rmv : removeFeeds) {
             feeds.remove(rmv);
+        }
     }
 
     /**
@@ -431,8 +440,9 @@ public class PSFeedsInfoService implements IPSFeedsInfoService
      */
     private void addQueries(Collection<PSFeedInfo> feeds)
     {
-        if (feeds.isEmpty())
+        if (feeds.isEmpty()) {
             return;
+        }
 
         Iterator<PSFeedInfo> it = feeds.iterator();
 
@@ -453,11 +463,13 @@ public class PSFeedsInfoService implements IPSFeedsInfoService
                 data = div.attr("data-query");
             }
 
-            if (data!=null)
+            if (data!=null) {
                 feed.setQuery(data);
-            else
+            }
+            else {
                 // Remove item
                 it.remove();
+            }
         }
     }
 

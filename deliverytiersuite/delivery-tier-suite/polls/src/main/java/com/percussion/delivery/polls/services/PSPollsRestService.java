@@ -17,19 +17,30 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.delivery.polls.services;
 
-import java.util.HashMap;
-import java.util.Map;
+import com.percussion.delivery.polls.data.IPSPoll;
+import com.percussion.delivery.polls.data.IPSPollAnswer;
+import com.percussion.delivery.polls.data.PSPollsResponse;
+import com.percussion.delivery.polls.data.PSPollsResponse.PollResponseStatus;
+import com.percussion.delivery.polls.data.PSRestPoll;
+import com.percussion.delivery.services.PSAbstractRestService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.ws.rs.GET;
+import javax.ws.rs.HEAD;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -38,36 +49,45 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-
-import com.percussion.delivery.polls.data.IPSPoll;
-import com.percussion.delivery.polls.data.IPSPollAnswer;
-import com.percussion.delivery.polls.data.PSPollsResponse;
-import com.percussion.delivery.polls.data.PSPollsResponse.PollResponseStatus;
-import com.percussion.delivery.polls.data.PSRestPoll;
-import com.percussion.delivery.services.PSAbstractRestService;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * REST service for polls feature implementation.
  */
 @Path("/polls")
 @Component
-@Scope("singleton")
+
 public class PSPollsRestService extends PSAbstractRestService implements IPSPollsRestService
 {
     private static final String SERVER_ERROR_MESSAGE = "Failed to process you request due to an unexpected error.";
-    private final static Logger log = LogManager.getLogger(PSPollsRestService.class);
+    private  static final Logger log = LogManager.getLogger(PSPollsRestService.class);
     private IPSPollsService pollsService;
+
+    public PSPollsRestService(){
+
+    }
 
     @Autowired
     public PSPollsRestService(IPSPollsService pollsService)
     {
         this.pollsService = pollsService;
+    }
+
+
+    @HEAD
+    @Path("/csrf")
+    public void csrf(@Context HttpServletRequest request, @Context HttpServletResponse response)  {
+        Cookie[] cookies = request.getCookies();
+        if(cookies == null){
+            return;
+        }
+        for(Cookie cookie: cookies){
+            if("XSRF-TOKEN".equals(cookie.getName())){
+                response.setHeader("X-CSRF-HEADER", "X-XSRF-TOKEN");
+                response.setHeader("X-CSRF-TOKEN", cookie.getValue());
+            }
+        }
     }
 
     /* (non-Javadoc)
@@ -93,9 +113,10 @@ public class PSPollsRestService extends PSAbstractRestService implements IPSPoll
                 pollResponse = new PSPollsResponse(PollResponseStatus.SUCCESS, restPoll);
             }
         }
-        catch(Throwable t)
+        catch(Exception t)
         {
-            log.error("Error occurred while getting poll by name : " + t.getLocalizedMessage());
+            log.error("Error occurred while getting poll by name : {}, Error: {}", t.getLocalizedMessage(), t.getMessage());
+            log.debug(t.getMessage(), t);
             pollResponse = new PSPollsResponse(PollResponseStatus.ERROR, SERVER_ERROR_MESSAGE);
         }
         return pollResponse;
@@ -112,7 +133,7 @@ public class PSPollsRestService extends PSAbstractRestService implements IPSPoll
     public PSPollsResponse getPollByQuestion(@PathParam("pollQuestion") String pollQuestion)
     {
         if(log.isDebugEnabled()){
-            log.debug("Poll question is :" + pollQuestion);
+            log.debug("Poll question is : {}", pollQuestion);
         }
         PSPollsResponse pollResponse = null;
         try
@@ -128,9 +149,10 @@ public class PSPollsRestService extends PSAbstractRestService implements IPSPoll
                 pollResponse = new PSPollsResponse(PollResponseStatus.SUCCESS, restPoll);
             }
         }
-        catch(Throwable t)
+        catch(Exception t)
         {
-            log.error("Error occurred while getting poll by question : " + t.getLocalizedMessage());
+            log.error("Error occurred while getting poll by question : {}, Error: {}", t.getLocalizedMessage(), t.getMessage());
+            log.debug(t.getMessage(), t);
             pollResponse = new PSPollsResponse(PollResponseStatus.ERROR, SERVER_ERROR_MESSAGE);
         }
         return pollResponse;
@@ -146,7 +168,7 @@ public class PSPollsRestService extends PSAbstractRestService implements IPSPoll
     public PSPollsResponse savePoll(PSRestPoll restPoll, @Context HttpServletRequest req)
     {
         if(log.isDebugEnabled()){
-            log.debug("Context path in http servlet request is : " + req.getContextPath());
+            log.debug("Context path in http servlet request is : {}", req.getContextPath());
         }
         PSPollsResponse pollResponse = null;
         try
@@ -162,9 +184,10 @@ public class PSPollsRestService extends PSAbstractRestService implements IPSPoll
             pollResponse = new PSPollsResponse(PollResponseStatus.SUCCESS, restPoll);
 
         }
-        catch(Throwable t)
+        catch(Exception t)
         {
-            log.error("Error occurred while saving a poll(" + restPoll.getPollName() + ") : " + t.getLocalizedMessage());
+            log.error("Error occurred while saving a poll(" + restPoll.getPollName() + ") : {}, Error: {}", t.getLocalizedMessage(), t.getMessage());
+            log.debug(t.getMessage(), t);
             pollResponse = new PSPollsResponse(PollResponseStatus.ERROR, SERVER_ERROR_MESSAGE);
         }
         return pollResponse;
@@ -180,7 +203,7 @@ public class PSPollsRestService extends PSAbstractRestService implements IPSPoll
     public String canUserVote(@PathParam("pollQuestion") String pollQuestion, @Context HttpServletRequest req)
     {
         if(log.isDebugEnabled()){
-            log.debug("Context path in http servlet request is : " + req.getContextPath());
+            log.debug("Context path in http servlet request is : {}", req.getContextPath());
         }
         HttpSession session= req.getSession(true);
         Object sessVar = session.getAttribute(pollQuestion);
@@ -197,7 +220,7 @@ public class PSPollsRestService extends PSAbstractRestService implements IPSPoll
         PSRestPoll restPoll = new PSRestPoll();
         restPoll.setPollName(poll.getPollName());
         restPoll.setPollQuestion(poll.getPollQuestion());
-        Map<String, Integer> results = new HashMap<String, Integer>();
+        Map<String, Integer> results = new HashMap<>();
         int totalVotes = 0;
         for (IPSPollAnswer pollAnswer : poll.getPollAnswers())
         {
@@ -213,7 +236,7 @@ public class PSPollsRestService extends PSAbstractRestService implements IPSPoll
 
         String version = super.getVersion();
 
-        log.info("getVersion() from PSPollsRestService ..." + version);
+        log.info("getVersion() from PSPollsRestService ...{}", version);
 
         return version;
     }
@@ -223,7 +246,7 @@ public class PSPollsRestService extends PSAbstractRestService implements IPSPoll
      */
     @Override
     public Response updateOldSiteEntries(String prevSiteName, String newSiteName) {
-        log.debug("Polls service for site rename. Nothing to do for site: " + prevSiteName);
+        log.debug("Polls service for site rename. Nothing to do for site: {}", prevSiteName);
         return Response.status(Status.NO_CONTENT).build();
     }
 }

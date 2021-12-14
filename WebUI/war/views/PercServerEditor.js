@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -78,13 +78,22 @@
             });
         });
         //Bind click event secureFtp checkbox
-        $("#perc-servers-container").on('click', '#perc-define-secure-ftp-input', secureFtp);
+        $("#perc-servers-container").on('click', '#perc-define-secure-ftp-input',
+            function(evt){
+                secureFtp(evt);
+            });
         
         //Bind click event on Password Radio buttons        
-        $("#perc-servers-container").on('click', '#perc-ftp-password-rb, #perc-ftp-private-file-key-rb', setPassPrivKey);
+        $("#perc-servers-container").on('click', '#perc-ftp-password-rb, #perc-ftp-private-file-key-rb',
+            function(evt){
+                setPassPrivKey(evt);
+            });
         
         //Bind click event on Folder location Radio buttons
-        $("#perc-servers-container").on('click', '#perc-defaultServer, #perc-ownServer', updateFolderLocation);
+        $("#perc-servers-container").on('click', '#perc-defaultServer, #perc-ownServer',
+            function(evt){
+                updateFolderLocation(evt);
+            });
     });
     
     function loadLocalFolderPath(siteId){
@@ -177,7 +186,7 @@
             isDefaultInput.attr('disabled', true);
         }
         var serverProperties = [];
-        if (!$.isArray(propObj.serverInfo.properties)) 
+        if (!Array.isArray(propObj.serverInfo.properties))
         {
             serverProperties.push(propObj.serverInfo.properties);
         }
@@ -219,7 +228,7 @@
     {
         var propertyMap = [];
         var serverProperties = [];
-        if (!$.isArray(properties)) 
+        if (!Array.isArray(properties))
         {
             serverProperties.push(properties);
         }
@@ -254,7 +263,7 @@
     {
         var propContainer = $("#perc-editor-prop");
         var serverProperties = [];
-        if (!$.isArray(propObj.serverInfo.properties)) 
+        if (!Array.isArray(propObj.serverInfo.properties))
         {
             serverProperties.push(propObj.serverInfo.properties);
         }
@@ -305,7 +314,7 @@
      */
     function loadPrivateFileKey(selectedOption)
     {
-        var utilService = $j.PercUtilService;
+        var utilService = $.PercUtilService;
         var privateKeys = utilService.getPrivateKeys(function(status, result)
         {
             if (status == $.PercServiceUtils.STATUS_SUCCESS) 
@@ -366,7 +375,7 @@
             {
                 if (status) 
                 {
-                    availableRegions = $.parseJSON(result[0]);
+                    availableRegions = JSON.parse(result[0]);
                     $.each(availableRegions, function(region, value)
                     {
                         if (!(value)) 
@@ -392,7 +401,7 @@
             {
                 if (status) 
                 {
-                    availabelDrivers = $.parseJSON(result[0]);
+                    availabelDrivers = JSON.parse(result[0]);
                     $.each(availabelDrivers, function(driver, value)
                     {
                         if (!(value)) 
@@ -410,7 +419,7 @@
         }
     }
     //Helper function to update the UI behavior based on Secure FTP checkbox value
-    function secureFtp()
+    function secureFtp(event)
     {
         var secureFTPchecked = $("#perc-define-secure-ftp-input").is(':checked');
         if (secureFTPchecked) 
@@ -427,7 +436,7 @@
     }
     
     // Helper function to enable and disable password and private key
-    function setPassPrivKey()
+    function setPassPrivKey(event)
     {
         var passRadio = $("#perc-ftp-password-rb").is(':checked');
         if (passRadio) 
@@ -443,11 +452,11 @@
     }
     
     //Helper function to display the folder location field based on radio button fields
-    function updateFolderLocation()
+    function updateFolderLocation(event)
     {
     
         var defaultServer = $("#perc-defaultServer").is(':checked');
-        if (defaultServer && pubServerType == "PRODUCTION") 
+        if (defaultServer && pubServerType === "PRODUCTION")
         {
             $("#perc-local-own-location").hide();
             $("#perc-local-default-location").show().val(defaultFolderLocation);

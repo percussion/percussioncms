@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -30,13 +30,13 @@
 
 package com.percussion.proxyconfig.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import java.util.ArrayList;
+import java.util.List;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder =
@@ -65,10 +65,10 @@ public class ProxyConfigurations
    {
       if (proxyConfigs == null)
       {
-         proxyConfigs = new ArrayList<ProxyConfig>();
+         proxyConfigs = new ArrayList<>();
       }
 
-      List<ProxyConfig> copy = new ArrayList<ProxyConfig>(proxyConfigs.size());
+      List<ProxyConfig> copy = new ArrayList<>(proxyConfigs.size());
 
       for (ProxyConfig config : proxyConfigs)
       {
@@ -79,7 +79,7 @@ public class ProxyConfigurations
 
    public void setConfigs(List<ProxyConfig> configurations)
    {
-      proxyConfigs = new ArrayList<ProxyConfig>();
+      proxyConfigs = new ArrayList<>();
 
       for (ProxyConfig config : configurations)
       {

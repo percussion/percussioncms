@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -38,22 +38,25 @@ import com.percussion.deployer.error.PSLockedException;
 import com.percussion.deployer.objectstore.PSDbmsInfo;
 import com.percussion.deployer.objectstore.PSDeploymentServerConnectionInfo;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
+import com.percussion.error.PSExceptionUtils;
+import com.percussion.legacy.security.deprecated.PSCryptographer;
+import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
 import com.percussion.security.PSAuthenticationFailedException;
 import com.percussion.security.PSAuthenticationRequiredException;
 import com.percussion.security.PSAuthorizationException;
+import com.percussion.security.PSEncryptionException;
+import com.percussion.security.PSEncryptor;
 import com.percussion.server.IPSCgiVariables;
 import com.percussion.server.PSServerLockException;
 import com.percussion.server.job.PSJobException;
 import com.percussion.util.PSCharSetsConstants;
-import com.percussion.utils.security.PSEncryptionException;
-import com.percussion.utils.security.PSEncryptor;
-import com.percussion.utils.security.deprecated.PSCryptographer;
 import com.percussion.util.PSFormatVersion;
 import com.percussion.util.PSPurgableTempFile;
-import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
+import com.percussion.utils.io.PathUtils;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -223,19 +226,6 @@ public class PSDeploymentServerConnection
             IPSDeploymentErrors.SERVER_RESPONSE_ELEMENT_INVALID, args);
       }
 
-      // The client's deployment version must be greater than or equal to the
-      // server's.  This allows forward compatiblity to be handled by the
-      // server.
-	  
-	  //This will have to be reworked once we allow remote install of the package manager for cougar.
-	  // It will need to know the difference of cougar and rhythmyx
-      //if (deployInterface >= DEPLOYMENT_INTERFACE_VERSION)
-      //{
-      //   m_isConnected = false;
-      //   throw new PSDeployException(IPSDeploymentErrors.SERVER_VERSION_INVALID,
-      //      m_version.getVersionString());
-      //}
-      
       String licensed = root.getAttribute("licensed");
       if ((licensed != null) && (licensed.trim().length() > 0))
          m_bLicensed = "yes".equalsIgnoreCase(licensed.trim());
@@ -306,7 +296,7 @@ public class PSDeploymentServerConnection
                }
             }
             catch (InterruptedException e)
-            {/*do nothing*/}
+            {Thread.currentThread().interrupt();}
             catch(PSDeployException e)
             {/*do nothing*/}
          }
@@ -543,7 +533,9 @@ public class PSDeploymentServerConnection
       }
       catch ( IOException ioe)
       {
-         System.out.println("3. IOException occurred, rePOSTing: " + 
+         log.error(ioe.getMessage());
+         log.debug(ioe.getMessage(), ioe);
+         System.out.println("3. IOException occurred, rePOSTing: " +
             ioe.getLocalizedMessage());
          try
          {
@@ -553,19 +545,21 @@ public class PSDeploymentServerConnection
          }
          catch (Exception e)
          {
-            ms_log.error(e);
-            if (data != null && ms_log.isDebugEnabled())
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+            if (data != null && log.isDebugEnabled())
             {
                try
                {
                   // log the request data to make debugging easier
-                  ms_log.debug(getParams(params));
+                  log.debug(getParams(params));
                   String request = new String(data, "ISO-8859-1");
-                  ms_log.debug(request);
+                  log.debug(request);
                }
                catch (UnsupportedEncodingException uee)
                {
-                  ms_log.error(uee);
+                  log.error(uee.getMessage());
+                  log.debug(uee.getMessage(), uee);
                }
             }
             throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR,
@@ -574,19 +568,21 @@ public class PSDeploymentServerConnection
       }
       catch (Exception e)
       {
-         ms_log.error(e);
-         if (data != null && ms_log.isDebugEnabled())
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+         if (data != null && log.isDebugEnabled())
          {
             try
             {
                // log the request data to make debugging easier
-               ms_log.debug(getParams(params));
+               log.debug(getParams(params));
                String request = new String(data, "ISO-8859-1");
-               ms_log.debug(request);
+               log.debug(request);
             }
             catch (UnsupportedEncodingException uee)
             {
-               ms_log.error(uee);
+               log.error(uee.getMessage());
+               log.debug(uee.getMessage(), uee);
             }
          }
 
@@ -709,7 +705,6 @@ public class PSDeploymentServerConnection
       // make request
       byte[] respData = null;
       Document respDoc = null;
-      HttpOutputStream out = null;
       int status = -1;
       // add reqtype header after first header (will get set with
       // content-type header automatically by the formDataEncode call)
@@ -718,8 +713,6 @@ public class PSDeploymentServerConnection
       HTTPResponse resp = null;
       boolean doRepost = false;
 
-      try
-      {
          // add the params
          NVPair[] opts = getParams(params);
 
@@ -728,54 +721,57 @@ public class PSDeploymentServerConnection
          file[0] = new NVPair(body.getName(), body.getPath());
 
          hdrs[1] = new NVPair(IPSCgiVariables.CGI_PS_REQUEST_TYPE, type);
+      try {
          byte[] data = Codecs.mpFormDataEncode(opts, file, hdrs);
 
          // keep alive connection header
          hdrs[2] = new NVPair("Connection", "Keep-Alive");
          // send the request to the Rx server
-         out = new HttpOutputStream(data.length);
 
-         synchronized(m_mutexObject)
-         {
-            resp= m_conn.Post(requestPage, out, hdrs);
-         }
-         ByteArrayInputStream bIn = new ByteArrayInputStream(data);
-         PSInputStreamCounter counter = new PSInputStreamCounter(bIn);
-         controller.setStream(counter, data.length);
-
-         // copy the data
-         copyStream(counter, out, controller);
-         // get the response code
-         status = resp.getStatusCode();
-         respData = resp.getData();
-      }
-      catch ( IOException ioe)
-      {
-         if (repost)
-         {
-            System.out.println("6. IOException occurred rePOSTing: " + 
-               ioe.getLocalizedMessage());
-            doRepost = true;
-         }
-         else
-         {
-            ms_log.error(ioe);
+         try (HttpOutputStream out = new HttpOutputStream(data.length)) {
+            synchronized (m_mutexObject) {
+               resp = m_conn.Post(requestPage, out, hdrs);
+            }
+            try (ByteArrayInputStream bIn = new ByteArrayInputStream(data)) {
+               try (PSInputStreamCounter counter = new PSInputStreamCounter(bIn)) {
+                  controller.setStream(counter, data.length);
+               // copy the data
+               copyStream(counter, out, controller);
+               }
+               // get the response code
+               status = resp.getStatusCode();
+               respData = resp.getData();
+            }
+         } catch (IOException ioe) {
+            if (repost) {
+               log.error("6. IOException occurred rePOSTing: {}", ioe.getLocalizedMessage());
+               log.debug(ioe.getMessage(), ioe);
+               doRepost = true;
+            } else {
+               log.error(ioe.getMessage());
+               log.debug(ioe.getMessage(), ioe);
+               throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR,
+                       ioe.getLocalizedMessage());
+            }
+         } catch (Exception e) {
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR,
-               ioe.getLocalizedMessage());
+                    e.getLocalizedMessage());
+         }
+      } catch (IOException e) {
+         if (repost) {
+            log.error("6. IOException occurred rePOSTing: {} ",PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+            doRepost = true;
+         } else {
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+            throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR,
+                    e.getMessage());
          }
       }
-      catch (Exception e)
-      {
-         e.printStackTrace();
-         throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR,
-            e.getLocalizedMessage());
-      }
-      finally
-      {
-         if (out != null)
-            try{ out.close();} catch(IOException e){}
-      }
-      
+
       if (repost)
       {
          return execute(type, params, body, controller, reconnect, false);
@@ -888,14 +884,13 @@ public class PSDeploymentServerConnection
       byte[] respData = null;
       InputStream in = null;
       int status = -1;
-      PSPurgableTempFile reqFile = null;
-      try
-      {
+
+
          // no options
          NVPair[] opts = null;
 
          // add the request doc as an attachment
-         reqFile = createAttachmentFile(req);
+         try(PSPurgableTempFile reqFile = createAttachmentFile(req)){
 
          NVPair[] file = new NVPair[1];
          file[0] = new NVPair(reqFile.getName(), reqFile.getPath());
@@ -931,7 +926,8 @@ public class PSDeploymentServerConnection
       }
       catch (Exception e)
       {
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR,
             e.getLocalizedMessage());
       }
@@ -941,8 +937,6 @@ public class PSDeploymentServerConnection
             try{ in.close();} catch(IOException e){}
          if (out != null)
             try {out.close();} catch(IOException e){}
-         if (reqFile != null)
-            reqFile.release();
       }
 
       if (status != 200 || respData != null)
@@ -1095,13 +1089,17 @@ public class PSDeploymentServerConnection
       if (pwd == null || pwd.trim().length() == 0)
          return "";
 
-      String key = uid == null || uid.trim().length() == 0 ? PSLegacyEncrypter.INVALID_DRIVER() :
+      String key = uid == null || uid.trim().length() == 0 ? PSLegacyEncrypter.getInstance(
+              PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR
+              )).INVALID_DRIVER() :
          uid;
 
       try {
-         return PSEncryptor.getInstance().encrypt(pwd);
+         return PSEncryptor.encryptString(PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR),pwd);
+
       } catch (PSEncryptionException e) {
-         ms_log.error("Error encrypting password: " + e.getMessage(),e);
+         log.error("Error encrypting password: {}",PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          return "";
       }
 
@@ -1122,13 +1120,17 @@ public class PSDeploymentServerConnection
       if (pwd == null || pwd.trim().length() == 0)
          return "";
 
-      String key = uid == null || uid.trim().length() == 0 ? PSLegacyEncrypter.INVALID_DRIVER() :
+      String key = uid == null || uid.trim().length() == 0 ? PSLegacyEncrypter.getInstance(
+              PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+      ).INVALID_DRIVER() :
          uid;
 
       try {
-         return PSEncryptor.getInstance().decrypt(pwd);
+         return PSEncryptor.decryptString(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),pwd);
       } catch (PSEncryptionException e) {
-         return PSCryptographer.decrypt(PSLegacyEncrypter.INVALID_CRED(), key, pwd);
+         return PSCryptographer.decrypt(PSLegacyEncrypter.getInstance(
+                 PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+         ).INVALID_CRED(), key, pwd);
       }
 
    }
@@ -1189,22 +1191,14 @@ public class PSDeploymentServerConnection
     *
     * @throws IOException If there are any errors.
     */
-   private PSPurgableTempFile createAttachmentFile(Document doc)
-      throws IOException
-   {
-      FileOutputStream out = null;
-      try
-      {
-         PSPurgableTempFile reqFile = new PSPurgableTempFile("dpl_", ".xml",
-            null);
-         out = new FileOutputStream(reqFile);
-         PSXmlDocumentBuilder.write(doc, out);
-         return reqFile;
-      }
-      finally
-      {
-         if (out != null)
-            try {out.close();} catch (IOException ex){}
+   private PSPurgableTempFile createAttachmentFile(Document doc) throws Exception {
+
+      try(PSPurgableTempFile reqFile = new PSPurgableTempFile("dpl_", ".xml",
+            null)){
+         try( FileOutputStream out = new FileOutputStream(reqFile)) {
+            PSXmlDocumentBuilder.write(doc, out);
+            return reqFile;
+         }
       }
 
    }
@@ -1276,10 +1270,8 @@ public class PSDeploymentServerConnection
       }
 
       // try to parse the response as XML
-      ByteArrayInputStream bIn = null;
-      try
-      {
-         bIn = new ByteArrayInputStream(response);
+
+      try(ByteArrayInputStream bIn = new ByteArrayInputStream(response)){
          respDoc = PSXmlDocumentBuilder.createXmlDocument(bIn, false);
       }
       catch (Exception e)
@@ -1291,13 +1283,6 @@ public class PSDeploymentServerConnection
             Object[] args = {type, e.getLocalizedMessage()};
             throw new PSDeployException(
                IPSDeploymentErrors.SERVER_RESPONSE_PARSE_ERROR, args);
-         }
-      }
-      finally
-      {
-         if (bIn != null)
-         {
-            try { bIn.close(); } catch (IOException e) {}
          }
       }
 
@@ -1540,7 +1525,7 @@ public class PSDeploymentServerConnection
    /**
     * Reference to Log4j singleton object used to log any errors or debug info.
     */
-   private static Logger ms_log = Logger.getLogger(PSDeploymentServerConnection.class);
+   private static final Logger log = LogManager.getLogger(PSDeploymentServerConnection.class);
 
    /**
     * Constant for the page to use when executing deployment requests against

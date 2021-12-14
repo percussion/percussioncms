@@ -18,7 +18,7 @@
   ~      Burlington, MA 01803, USA
   ~      +01-781-438-9900
   ~      support@percussion.com
-  ~      https://www.percusssion.com
+  ~      https://www.percussion.com
   ~
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   -->
@@ -28,7 +28,7 @@
     <parent>
         <groupId>com.percussion</groupId>
         <artifactId>core</artifactId>
-        <version>8.0.2.10</version>
+        <version>8.0.3</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
     <groupId>com.percussion.deliverytier</groupId>
@@ -36,7 +36,7 @@
     <packaging>pom</packaging>
     <properties>
         <timestamp>${maven.build.timestamp}</timestamp>
-        <!-- Used to locate the profile specific configuration file. -->
+        <maven.source.jar.plugin.version>3.2.0</maven.source.jar.plugin.version>
         <build.profile.id>dev</build.profile.id>
         <jacoco.it.execution.data.file>${project.build.directory}/coverage-reports/jacoco-it.exec</jacoco.it.execution.data.file>
         <jacoco.ut.execution.data.file>${project.build.directory}/coverage-reports/jacoco-ut.exec</jacoco.ut.execution.data.file>
@@ -55,7 +55,6 @@
         <gwt.maven.plugin.version>2.8.2</gwt.maven.plugin.version>
         <build.helper.maven.plugin.version>3.0.0</build.helper.maven.plugin.version>
         <maven.install.plugin.version>3.0.0-M1</maven.install.plugin.version>
-        <spotbugs.plugin.version>4.0.0-SNAPSHOT</spotbugs.plugin.version>
         <maven.checkstyle.plugin.version>3.1.1</maven.checkstyle.plugin.version>
         <maven.site.plugin.version>3.8.2</maven.site.plugin.version>
         <maven.jar.plugin.version>3.2.0</maven.jar.plugin.version>
@@ -84,16 +83,17 @@
         <!-- <myfaces.version>2.2.12</myfaces.version> -->
         <myfaces.version>1.1.5</myfaces.version>
         <poi.version>3.17</poi.version>
-        <esapi.version>2.2.0.0-RC2</esapi.version>
-        <esapi.encoder.version>1.2.2</esapi.encoder.version>
+        <esapi.version>2.2.3.1</esapi.version>
+        <esapi.encoder.version>1.2.3</esapi.encoder.version>
         <ant.version>1.10.6</ant.version>
         <shindig.version>1.1-BETA5-incubating</shindig.version>
         <any23.version>2.2</any23.version>
         <owl.version>5.1.3</owl.version>
         <awssdk.version>1.11.731</awssdk.version>
         <bc.version>1.64</bc.version>
+        <spotbugs.plugin.version>4.2.0</spotbugs.plugin.version>
         <jackson.version>2.12.1</jackson.version>
-        <jsoup.version>1.11.3</jsoup.version>
+        <jsoup.version>1.14.2</jsoup.version>
         <json.version>20201115</json.version>
         <junit.version>4.12</junit.version>
         <cactus.version>13-1.7.1</cactus.version>
@@ -105,16 +105,17 @@
         <oracle.version>12.1.0.1</oracle.version>
         <jrds.version>1.3.1</jrds.version>
         <install.jre.version>8.222.10.1</install.jre.version>
-        <axiscore.version>1.4.2</axiscore.version>
         <axis.version>1.4.1</axis.version>
+        <axiscore.version>1.4.2</axiscore.version>
         <httpcomponents.version>4.5.8</httpcomponents.version>
-        <log4j2.version>2.13.2</log4j2.version>
+        <log4j2.version>2.16.0</log4j2.version>
         <tika.version>1.17</tika.version>
         <xmpbox.version>2.0.17</xmpbox.version>
         <jbig2.version>3.0.2</jbig2.version>
         <pdfbox.version>2.0.17</pdfbox.version>
         <sqlite.version>3.28.0</sqlite.version>
-        <swagger.version>1.5.23</swagger.version>
+        <swagger.version>2.1.10</swagger.version>
+        <swagger.ui.version>3.51.2</swagger.ui.version>
 		 <commons.validator.version>1.7</commons.validator.version>
         <commons.compress.version>1.18</commons.compress.version>
         <solr.version>8.3.0</solr.version>
@@ -123,15 +124,15 @@
         <tinymce.version>4.9.10</tinymce.version>
         <jfx.version>11.0.2</jfx.version>
         <eclipse-manifest-location>META-INF</eclipse-manifest-location>
-        <tomcat.version>9.0.40</tomcat.version>
+        <tomcat.version>9.0.50</tomcat.version>
         <install.jre.version>8.222.10.1</install.jre.version>
         <derby.version>10.14.2.0</derby.version>
         <jtds.version>1.3.1</jtds.version>
         <mariadb.version>2.6.0</mariadb.version>
         <oracle.version>12.1.0.1</oracle.version>
-        <sqlserver.version>8.2.1.jre8</sqlserver.version>
+        <sqlserver.version>9.2.1.jre8</sqlserver.version>
         <slf4j.version>1.7.29</slf4j.version>
-        <hikaricp.version>4.0.2</hikaricp.version>
+        <hikaricp.version>4.0.3</hikaricp.version>
         <jersey.version>2.33</jersey.version>
         <jaxrs.version>2.1.1</jaxrs.version>
        <junit.version>4.12</junit.version>
@@ -139,13 +140,13 @@
         <rome.version>1.15.0</rome.version>
         <javax.annotation.version>1.3.2</javax.annotation.version>
         <commons.logging.version>1.2</commons.logging.version>
-        <commons.io.version>2.7</commons.io.version>
+        <commons.io.version>2.8.0</commons.io.version>
         <commons.lang.version>2.6</commons.lang.version>
         <commons.lang3.version>3.11</commons.lang3.version>
         <jaxb.api.version>2.3.1</jaxb.api.version>
         <xml.apis.version>1.4.01</xml.apis.version>
-        <xerces.version>2.12.0</xerces.version>
-        <guava.version>24.1.1-jre</guava.version>
+        <xerces.version>2.12.1</xerces.version>
+        <guava.version>29.0-jre</guava.version>
         <bc.version>1.64</bc.version>
         <servlet.api.version>3.1.0</servlet.api.version>
     </properties>
@@ -180,7 +181,6 @@
         <module>DTS-shared-dependencies</module>
         <module>tomcat-common</module>
         <module>common</module>
-        <module>caching</module>
         <module>comments</module>
         <module>feeds</module>
         <module>forms</module>
@@ -194,6 +194,16 @@
 
 
     <repositories>
+<!--        <repository>
+            <id>github</id>
+            <releases>  <enabled>true</enabled>  </releases>
+            <snapshots> <enabled>true</enabled>
+                <updatePolicy>never</updatePolicy>
+            </snapshots>
+            <name>GitHub Percussion Apache Maven Packages</name>
+            <url>https://maven.pkg.github.com/percussion/percussioncms</url>
+        </repository>
+        -->
         <repository>
             <id>perc-release-repo</id>
             <url>https://mvn.percussion.com/repositories/releases/</url>
@@ -224,6 +234,11 @@
 
 <build>
     <plugins>
+        <plugin>
+            <groupId>com.github.spotbugs</groupId>
+            <artifactId>spotbugs-maven-plugin</artifactId>
+            <version>${spotbugs.plugin.version}</version>
+        </plugin>
         <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-enforcer-plugin</artifactId>
@@ -389,9 +404,6 @@
                         <goal>verify</goal>
                     </goals>
                     <configuration>
-                        <!-- Sets the VM argument line used when integration tests are run. -->
-                        <argLine>${failsafeArgLine}</argLine>
-
                         <!--
                             Skips integration tests if the value of skip.integration.tests property
                             is true
@@ -405,9 +417,66 @@
     </plugins>
     <pluginManagement>
         <plugins>
+            <plugin>
+                <groupId>com.github.spotbugs</groupId>
+                <artifactId>spotbugs-maven-plugin</artifactId>
+                <version>${spotbugs.plugin.version}</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.percussion</groupId>
+                        <artifactId>build-tools</artifactId>
+                        <version>${project.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>com.percussion</groupId>
+                        <artifactId>perc-security-utils</artifactId>
+                        <version>${project.version}</version>
+                    </dependency>
+
+                    <dependency>
+                        <groupId>com.h3xstream.findsecbugs</groupId>
+                        <artifactId>findsecbugs-plugin</artifactId>
+                        <version>LATEST</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>com.mebigfatguy.fb-contrib</groupId>
+                        <artifactId>fb-contrib</artifactId>
+                        <version>7.4.7</version>
+                    </dependency>
+                </dependencies>
+                <configuration>
+                    <fork>false</fork>
+                    <spotbugsXmlOutputDirectory>target/site</spotbugsXmlOutputDirectory>
+                    <skipEmptyReport>false</skipEmptyReport>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                    <includeTests>true</includeTests>
+                    <classFilesDirectory>${project.build.outputDirectory}</classFilesDirectory>
+                    <xmlOutput>true</xmlOutput>
+                    <effort>Max</effort>
+                    <threshold>Low</threshold>
+                    <failOnError>false</failOnError>
+                    <plugins>
+                        <plugin>
+                            <groupId>com.h3xstream.findsecbugs</groupId>
+                            <artifactId>findsecbugs-plugin</artifactId>
+                            <version>LATEST</version>
+                        </plugin>
+                    </plugins>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>scan</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         <plugin>
             <groupId>org.liquibase</groupId>
             <artifactId>liquibase-maven-plugin</artifactId>
+            <version>4.0.0</version>
             <configuration>
                 <propertyFile>src/main/resources/diff-liquibase-changelog.properties</propertyFile>
             </configuration>
@@ -571,7 +640,7 @@
                     <dependency>
                         <groupId>com.percussion</groupId>
                         <artifactId>build-tools</artifactId>
-                        <version>8.0.2.10</version>
+                        <version>8.0.3</version>
                     </dependency>
                 </dependencies>
             </plugin>
@@ -591,38 +660,14 @@
                     <dependency>
                         <groupId>com.percussion</groupId>
                         <artifactId>build-tools</artifactId>
-                        <version>8.0.2.10</version>
+                        <version>8.0.3</version>
                     </dependency>
                 </dependencies>
             </plugin>
-            <plugin>
-                <groupId>com.github.spotbugs</groupId>
-                <artifactId>spotbugs-maven-plugin</artifactId>
-                <version>${spotbugs.plugin.version}</version>
-                <dependencies>
-                    <dependency>
-                        <groupId>com.percussion</groupId>
-                        <artifactId>build-tools</artifactId>
-                        <version>8.0.2.10</version>
-                    </dependency>
-                </dependencies>
-            </plugin>
-
             <plugin>
                 <groupId>org.basepom.maven</groupId>
                 <artifactId>duplicate-finder-maven-plugin</artifactId>
                 <version>1.3.0</version>
-                <!--
-                <executions>
-                    <execution>
-                        <id>default</id>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                -->
                 <configuration>
                     <printEqualFiles>false</printEqualFiles>
                     <failBuildInCaseOfDifferentContentConflict>false</failBuildInCaseOfDifferentContentConflict>
@@ -669,6 +714,16 @@
 </build>
 
     <pluginRepositories>
+       <!-- <pluginRepository>
+            <id>github</id>
+            <releases>  <enabled>true</enabled>  </releases>
+            <snapshots> <enabled>true</enabled>
+                <updatePolicy>never</updatePolicy>
+            </snapshots>
+            <name>GitHub Percussion Apache Maven Packages</name>
+            <url>https://maven.pkg.github.com/percussion/percussioncms</url>
+        </pluginRepository>
+        -->
         <pluginRepository>
             <id>perc-releases-repo</id>
             <name>Perc Plugin Repository</name>
@@ -688,6 +743,7 @@
             <layout>default</layout>
             <snapshots>
                 <enabled>true</enabled>
+                <updatePolicy>never</updatePolicy>
             </snapshots>
             <releases>
                 <updatePolicy>never</updatePolicy>
@@ -697,6 +753,23 @@
 
     <reporting>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jxr-plugin</artifactId>
+                <version>${maven.jxr.plugin.version}</version>
+                <configuration>
+                    <outputDirectory>${project.reporting.outputDirectory}/xref</outputDirectory>
+                </configuration>
+                <reportSets>
+                    <reportSet>
+                        <id>aggregate</id>
+                        <reports>
+                            <report>aggregate</report>
+                            <report>test-aggregate</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
+            </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>cobertura-maven-plugin</artifactId>
@@ -720,4 +793,14 @@
             </plugin>
         </plugins>
     </reporting>
+    <distributionManagement>
+        <snapshotRepository>
+            <id>percussion.s3.repo</id>
+            <url>s3://percussion-maven-repo/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>percussion.s3.repo</id>
+            <url>s3://percussion-maven-repo/repositories/releases/</url>
+        </repository>
+    </distributionManagement>
 </project>

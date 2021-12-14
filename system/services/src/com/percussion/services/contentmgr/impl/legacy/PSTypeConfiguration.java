@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -39,7 +39,21 @@ import com.percussion.services.contentmgr.impl.PSContentUtils;
 import com.percussion.utils.jsr170.PSPropertyDefinition;
 import com.percussion.utils.string.PSStringUtils;
 import com.percussion.utils.types.PSPair;
+import net.sf.cglib.beans.BeanGenerator;
+import net.sf.cglib.core.DefaultNamingPolicy;
+import net.sf.cglib.core.NamingPolicy;
+import net.sf.cglib.core.Predicate;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
+import javax.jcr.PropertyType;
+import javax.jcr.Value;
+import javax.jcr.nodetype.NodeDefinition;
+import javax.jcr.nodetype.NodeType;
+import javax.jcr.nodetype.PropertyDefinition;
 import java.io.Serializable;
 import java.sql.Blob;
 import java.sql.Clob;
@@ -53,23 +67,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import javax.jcr.PropertyType;
-import javax.jcr.Value;
-import javax.jcr.nodetype.NodeDefinition;
-import javax.jcr.nodetype.NodeType;
-import javax.jcr.nodetype.PropertyDefinition;
-
-import net.sf.cglib.beans.BeanGenerator;
-import net.sf.cglib.core.DefaultNamingPolicy;
-import net.sf.cglib.core.NamingPolicy;
-import net.sf.cglib.core.Predicate;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
  * The type configuration is the heart of the legacy content repository. This is
@@ -119,7 +116,7 @@ public class PSTypeConfiguration implements NodeType, Serializable
    /**
     * A static logger
     */
-   private static Log ms_logger = LogFactory.getLog("PSTypeConfiguration");
+   private static final Logger ms_logger = LogManager.getLogger("PSTypeConfiguration");
 
    /**
     * Generate class names for classes generated that map tables using hibernate
@@ -371,24 +368,24 @@ public class PSTypeConfiguration implements NodeType, Serializable
    /**
     * The list of configurations for children of a parent node
     */
-   private List<PSTypeConfiguration> m_children = new ArrayList<PSTypeConfiguration>();
+   private List<PSTypeConfiguration> m_children = new ArrayList<>();
 
    /**
     * The map of simple children for this type. Each map key is the name of a
     * simple child. The value is a pair of the table and value column
     */
    private Map<String, PSPair<String, String>> m_simpleChildProperties = 
-      new HashMap<String, PSPair<String, String>>();
+      new HashMap<>();
 
    /**
     * The simple children's types are stored here
     */
-   private Map<String, String> m_simpleChildTypes = new HashMap<String, String>();
+   private Map<String, String> m_simpleChildTypes = new HashMap<>();
 
    /**
     * A set of tables used for any simple children
     */
-   private Set<String> m_simpleChildTables = new HashSet<String>();
+   private Set<String> m_simpleChildTables = new HashSet<>();
 
    /**
     * Each configuration is based on at least one implementing class. A content
@@ -400,20 +397,20 @@ public class PSTypeConfiguration implements NodeType, Serializable
     * implementing class.
     */
    private List<ImplementingClass> m_implementingClasses = 
-      new ArrayList<ImplementingClass>();
+      new ArrayList<>();
 
    /**
     * Each class maps to a list of properties, the properties are used to create
     * properties elements in the content node when loading an item.
     */
    private Map<Class, List<String>> m_properties = 
-      new HashMap<Class, List<String>>();
+      new HashMap<>();
 
    /**
     * Tracks the loading mechanism used for each class
     */
    private Map<Class, IDType> m_loadpolicy = 
-      new HashMap<Class, IDType>();
+      new HashMap<>();
 
    /**
     * Some properties represent item bodies, which means that they require a
@@ -421,13 +418,13 @@ public class PSTypeConfiguration implements NodeType, Serializable
     * body on access. The expansion calls the assembly manager to expand inline
     * templates and links.
     */
-   private Set<String> m_bodyProperties = new HashSet<String>();
+   private Set<String> m_bodyProperties = new HashSet<>();
 
    /**
     * Some properties are not loaded until first accessed. These are recorded in
     * this set and used when creating the properties.
     */
-   private Set<String> m_lazyLoadProperties = new HashSet<String>();
+   private Set<String> m_lazyLoadProperties = new HashSet<>();
 
    /**
     * The name of the type that this configuration represents, never
@@ -488,7 +485,7 @@ public class PSTypeConfiguration implements NodeType, Serializable
     * mechanism.
     */
    private static Map<String,Class> ms_hibernateTypeMap = 
-      new HashMap<String,Class>();
+      new HashMap<>();
    /**
     * Initialize type map
     */
@@ -519,11 +516,11 @@ public class PSTypeConfiguration implements NodeType, Serializable
          boolean isDerbyDatabase) 
    {
       Iterator<PSField> fiter;
-      Map<String, List<String>> fieldsByTable = new HashMap<String, List<String>>();
-      Map<String, String> fieldToColumnName = new HashMap<String, String>();
-      m_fieldToType = new HashMap<String, Class>();
-      m_fieldToField = new HashMap<String, PSField>();
-      m_tableNames = new HashSet<String>();
+      Map<String, List<String>> fieldsByTable = new HashMap<>();
+      Map<String, String> fieldToColumnName = new HashMap<>();
+      m_fieldToType = new HashMap<>();
+      m_fieldToField = new HashMap<>();
+      m_tableNames = new HashSet<>();
       m_sortedChild = false;
       boolean isComplexChild = child != null;
       if (!isComplexChild)
@@ -729,7 +726,7 @@ public class PSTypeConfiguration implements NodeType, Serializable
             PSField childField = (PSField) childfields.next();
             String parts[] = getFieldColumns(childField);
             String prop = childField.getSubmitName();
-            m_simpleChildProperties.put(prop, new PSPair<String, String>(
+            m_simpleChildProperties.put(prop, new PSPair<>(
                   parts[0], parts[1]));
             m_simpleChildTypes.put(prop, getHibernateMappingType(childField));
             m_simpleChildTables.add(parts[0]);
@@ -754,7 +751,7 @@ public class PSTypeConfiguration implements NodeType, Serializable
          List<String> fields = fieldsByTable.get(table);
          if (fields == null)
          {
-            fields = new ArrayList<String>();
+            fields = new ArrayList<>();
             fieldsByTable.put(table, fields);
          }
          fields.add(field.getSubmitName());
@@ -973,7 +970,7 @@ public class PSTypeConfiguration implements NodeType, Serializable
          boolean isDerbyDatabase)
    {
       IDType load;
-      List<String> props = new ArrayList<String>();
+      List<String> props = new ArrayList<>();
       StringBuilder hibProps = new StringBuilder(512);
       StringBuilder hibId = new StringBuilder(128);
       StringBuilder hibJoin = new StringBuilder(128);
@@ -1538,7 +1535,7 @@ public class PSTypeConfiguration implements NodeType, Serializable
     */
    public Set<String> getAllJSR170Properties()
    {
-      Set<String> props = new HashSet<String>();
+      Set<String> props = new HashSet<>();
 
       for (ImplementingClass cr : m_implementingClasses)
       {
@@ -1731,7 +1728,7 @@ public class PSTypeConfiguration implements NodeType, Serializable
    {
       if (m_propertyDefinitions != null)
          return;
-      m_propertyDefinitions = new HashMap<String,PSPropertyDefinition>();
+      m_propertyDefinitions = new HashMap<>();
       Collection<String> props = m_fieldToField.keySet();
       for(String prop : props)
       {

@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -26,12 +26,14 @@ package com.percussion.cas;
 import com.percussion.data.PSConversionException;
 import com.percussion.data.PSInternalRequestCallException;
 import com.percussion.design.objectstore.PSNotFoundException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSExtensionDef;
 import com.percussion.extension.IPSUdfProcessor;
 import com.percussion.fastforward.utils.PSUtils;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.util.IPSHtmlParameters;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 
@@ -78,8 +80,7 @@ public class PSGetSiteBaseUrl implements IPSUdfProcessor
       if (siteid == null || siteid.length() < 1)
       {
          //Site is not supplied return empty string.
-         m_log.warn("siteid is not supplied and not available in the request "
-               + "context. Returning empty string");
+         log.warn("siteid is not supplied and not available in the request context. Returning empty string");
          return "";
       }
       boolean modifyUrl = false;
@@ -115,12 +116,16 @@ public class PSGetSiteBaseUrl implements IPSUdfProcessor
       }
       catch (PSInternalRequestCallException e)
       {
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          request.printTraceMessage(e.getMessage());
          throw new PSConversionException(e.getErrorCode(), e
                .getErrorArguments());
       }
       catch (PSNotFoundException e)
       {
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          request.printTraceMessage(e.getMessage());
          throw new PSConversionException(e.getErrorCode(), e
                .getErrorArguments());
@@ -143,5 +148,6 @@ public class PSGetSiteBaseUrl implements IPSUdfProcessor
    /**
     * Reference to Log4j singleton object used to log any errors or debug info.
     */
-   Logger m_log = Logger.getLogger(this.getClass());
+   private static final Logger log = LogManager.getLogger(PSGetSiteBaseUrl.class);
+
 }

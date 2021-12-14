@@ -17,18 +17,17 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.sitemanage.importer;
 
 import com.percussion.sitemanage.importer.dao.IPSImportLogDao;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.concurrent.Executors;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
  * Saves log in separate thread, waits for {@link IPSSiteImportLogger#waitForThreads(long)} to return
@@ -39,7 +38,7 @@ import org.apache.commons.logging.LogFactory;
  */
 public class PSDeferredLogWriter implements Runnable
 {
-    private static final Log log = LogFactory.getLog(PSDeferredLogWriter.class);
+    private static final Logger log = LogManager.getLogger(PSDeferredLogWriter.class);
             
     private String siteId;
     private String desc;

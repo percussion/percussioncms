@@ -17,23 +17,23 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.widgets.image.web.impl;
-      
-      import java.io.PrintWriter;
-      import java.util.Iterator;
-      import java.util.Map;
-      import java.util.Set;
-      import javax.servlet.http.HttpServletRequest;
-      import javax.servlet.http.HttpServletResponse;
+
       import net.sf.json.JSON;
       import org.springframework.web.servlet.View;
       import org.springframework.web.servlet.view.AbstractView;
       import org.springframework.web.util.WebUtils;
+
+      import javax.servlet.http.HttpServletRequest;
+      import javax.servlet.http.HttpServletResponse;
+      import java.io.PrintWriter;
+      import java.util.Iterator;
+      import java.util.Map;
       
       public class JSONView extends AbstractView
         implements View

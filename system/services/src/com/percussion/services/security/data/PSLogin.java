@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -26,17 +26,16 @@ package com.percussion.services.security.data;
 import com.percussion.design.objectstore.PSRole;
 import com.percussion.i18n.PSLocale;
 import com.percussion.services.utils.xml.PSXmlSerializationHelper;
-
-import java.io.IOException;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.xml.sax.SAXException;
+
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PSLogin implements Serializable 
 {
@@ -72,19 +71,19 @@ public class PSLogin implements Serializable
     * A list with all communities to which the logged in user is a member,
     * never <code>null</code>, may be empty.
     */
-   private List<PSCommunity> communities = new ArrayList<PSCommunity>();
+   private List<PSCommunity> communities = new ArrayList<>();
    
    /**
     * A list with all roles to which the logged in user is a member, never
     * <code>null</code>, may be empty.
     */
-   private List<PSRole> roles = new ArrayList<PSRole>();
+   private List<PSRole> roles = new ArrayList<>();
    
    /**
     * A list of enabled locales for the logged in user, never <code>null</code>,
     * may be empty.
     */
-   private List<PSLocale> locales = new ArrayList<PSLocale>();
+   private List<PSLocale> locales = new ArrayList<>();
 
    /**
     * Default constructor.
@@ -222,7 +221,7 @@ public class PSLogin implements Serializable
    public void setCommunities(List<PSCommunity> communities)
    {
       if (communities == null)
-         this.communities = new ArrayList<PSCommunity>();
+         this.communities = new ArrayList<>();
       else
          this.communities = communities;
    }
@@ -261,7 +260,7 @@ public class PSLogin implements Serializable
    public void setRoles(List<PSRole> roles)
    {
       if (roles == null)
-         this.roles = new ArrayList<PSRole>();
+         this.roles = new ArrayList<>();
       else
          this.roles = roles;
    }
@@ -300,7 +299,7 @@ public class PSLogin implements Serializable
    public void setLocales(List<PSLocale> locales)
    {
       if (locales == null)
-         this.locales = new ArrayList<PSLocale>();
+         this.locales = new ArrayList<>();
       else
          this.locales = locales;
    }

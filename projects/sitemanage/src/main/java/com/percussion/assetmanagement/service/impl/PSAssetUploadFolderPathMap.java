@@ -17,27 +17,26 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.assetmanagement.service.impl;
-
-import static org.apache.commons.lang.Validate.notEmpty;
-import static org.apache.commons.lang.Validate.notNull;
-
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import com.percussion.assetmanagement.data.PSAssetSummary;
 import com.percussion.assetmanagement.service.IPSAssetService;
 import com.percussion.assetmanagement.service.IPSAssetService.PSAssetServiceException;
 import com.percussion.pathmanagement.service.impl.PSAssetPathItemService;
 import com.percussion.share.dao.IPSFolderHelper;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.apache.commons.lang.Validate.notEmpty;
+import static org.apache.commons.lang.Validate.notNull;
 
 /**
  * 
@@ -63,7 +62,7 @@ public class PSAssetUploadFolderPathMap
      */
     private static final String UPLOADS_FOLDER_NAME = "uploads";
     private IPSFolderHelper folderHelper;
-    private Map<String, String> typeToFolderPathMap = new HashMap<String, String>();
+    private Map<String, String> typeToFolderPathMap = new HashMap<>();
     private static String ASSET_ROOT = PSAssetPathItemService.ASSET_ROOT;
     
     public PSAssetUploadFolderPathMap(IPSFolderHelper folderHelper)
@@ -82,7 +81,7 @@ public class PSAssetUploadFolderPathMap
      * @param asset never <code>null</code>.
      * @return never <code>null</code>.
      */
-    public Number getLegacyFolderIdForAsset(PSAssetSummary asset) {
+    public Number getLegacyFolderIdForAsset(PSAssetSummary asset) throws PSAssetServiceException {
         notNull(asset, "asset");
         Map<String, Number> folderIds = getFolderIdsForPaths(asset.getFolderPaths());
         if ( ! folderIds.isEmpty() )
@@ -92,7 +91,7 @@ public class PSAssetUploadFolderPathMap
     }
     
     private Map<String,Number> getFolderIdsForPaths(Collection<String> paths) {
-        Map<String, Number> pathToFolderId = new HashMap<String, Number>();
+        Map<String, Number> pathToFolderId = new HashMap<>();
         if (paths == null) return pathToFolderId;
         for(String p : paths) {
             try
@@ -220,7 +219,7 @@ public class PSAssetUploadFolderPathMap
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log log = LogFactory.getLog(PSAssetUploadFolderPathMap.class);
+    private static final Logger log = LogManager.getLogger(PSAssetUploadFolderPathMap.class);
     
     
 }

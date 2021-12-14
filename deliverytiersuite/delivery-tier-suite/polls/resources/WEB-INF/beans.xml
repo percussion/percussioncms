@@ -20,20 +20,15 @@
   ~      Burlington, MA 01803, USA
   ~      +01-781-438-9900
   ~      support@percussion.com
-  ~      https://www.percusssion.com
+  ~      https://www.percussion.com
   ~
   ~     You should have received a copy of the GNU General Public License
   ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
   -->
 
 <beans xmlns="http://www.springframework.org/schema/beans"
-   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-   xmlns:tx="http://www.springframework.org/schema/tx"
-   xmlns:context="http://www.springframework.org/schema/context"
-   xsi:schemaLocation="
-      http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-      http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
-      http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
    <bean id="propertyPlaceholderProps"
          class="com.percussion.delivery.utils.spring.PSPropertiesFactoryBean">
@@ -80,7 +75,7 @@
              <!-- default properties for encryption -->
             <prop key="encryption.type">ENC</prop>
              <!-- default properties for Spring Security -->
-             <prop key="ContentSecurityPolicy">default-src 'self' *;</prop>
+             <prop key="contentSecurityPolicy">default-src 'self' *;</prop>
          </props>
       </property>
    </bean>
@@ -125,11 +120,5 @@
          class="com.percussion.delivery.polls.services.PSPollsRestService">
       <constructor-arg ref="pollsService" />
    </bean>
-      
-  <bean id="tenantAuthorizationFilter" class="com.percussion.delivery.multitenant.PSTenantSecurityFilter">
-   	<constructor-arg index="0"><null/></constructor-arg>
-   	<constructor-arg index="1"><null/></constructor-arg>
-   </bean>
-
    
 </beans>

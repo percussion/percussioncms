@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -25,7 +25,7 @@
 package com.percussion.rest;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import io.swagger.annotations.ApiModel;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
@@ -33,7 +33,7 @@ import java.util.Collection;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @XmlRootElement(name = "GuidList")
-@ApiModel(description = "A list of Guids, commonly used for bulk operations")
+@Schema(description = "A list of Guids, commonly used for bulk operations")
 public class GuidList extends ArrayList<Guid> {
     public GuidList(Collection<? extends Guid> c) {
         super(c);
@@ -42,7 +42,7 @@ public class GuidList extends ArrayList<Guid> {
 
     @Override
     public String toString(){
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         forEach(guid->sb.append(" ").append(guid.getStringValue()));
         return sb.toString();
     }

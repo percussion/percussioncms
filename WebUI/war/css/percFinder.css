@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -99,7 +99,7 @@
 }
 
 .perc-dropshadow {
-    min-width:975px;
+    min-width: 100%;
     margin:0;
     padding-bottom: 2px;
     background: transparent url(../images/images/finderShadowBg.gif) repeat-x scroll center bottom;
@@ -114,7 +114,7 @@
 
     margin-left:auto;
     margin-right:auto;
-    min-width:1000px;
+    min-width:100%;
 }
 
 .perc-finder-header td {
@@ -134,7 +134,7 @@
     display: block;
     position: absolute;
     top: 1px;
-    left: 1px;
+    left: 60px;
 }
 .perc-finder-view-options {
     width: 145px;
@@ -207,7 +207,7 @@
 /*********min size for the iframe should be same as main are set by perc-main above ************/
 #frame
 {
-    min-width:1000px;
+    min-width:100%;
 }
 
 .perc-about
@@ -233,7 +233,7 @@
 
 .perc-required-legend
 {
-    float:right;
+    float:left;
     padding-right:9px;
     margin-top:-25px;
     position:relative;
@@ -252,6 +252,8 @@
 
 #perc_sa_container {
     margin-top: 8px;
+    width: 100%;
+    padding-bottom: 0;
 }
 
 /* Main help icon related styles */
@@ -823,4 +825,9 @@ div#perc-finder-selected-label
 .perc-fixedtableheader .perc-datatable-head-column:last-child,
 #perc-finder-listview .perc-datatable-head-column:last-child {
     border-right: none !important;
+}
+
+/*CMS-8525 : If you delete any site listed in list view the table comes to the bottom*/
+#perc-finder-table-top .mcol-direc {
+    vertical-align : top !important;
 }

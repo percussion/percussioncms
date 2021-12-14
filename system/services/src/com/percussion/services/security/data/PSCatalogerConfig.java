@@ -17,30 +17,31 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.services.security.data;
 
+import com.percussion.security.IPSRoleCataloger;
+import com.percussion.security.IPSSubjectCataloger;
 import com.percussion.utils.spring.IPSBeanConfig;
 import com.percussion.utils.spring.PSSpringBeanUtils;
 import com.percussion.utils.xml.PSInvalidXmlException;
-
-import java.util.HashMap;
-import java.util.Map;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Object representation of the Spring bean configuration of an 
- * {@link com.percussion.utils.security.IPSSubjectCataloger} or an
- * {@link com.percussion.utils.security.IPSRoleCataloger}.
+ * {@link IPSSubjectCataloger} or an
+ * {@link IPSRoleCataloger}.
  */
 public class PSCatalogerConfig implements IPSBeanConfig, Cloneable
 {
@@ -166,7 +167,7 @@ public class PSCatalogerConfig implements IPSBeanConfig, Cloneable
       m_description = PSSpringBeanUtils.getBeanPropertyValue(propEl, false);
       
       // now get any user defined properties that remain
-      m_props = new HashMap<String, String>();
+      m_props = new HashMap<>();
       propEl = PSSpringBeanUtils.getNextPropertyElement(source, propEl);
       while (propEl != null)
       {
@@ -287,7 +288,7 @@ public class PSCatalogerConfig implements IPSBeanConfig, Cloneable
    {
       // need to manually deep clone the props Map
       PSCatalogerConfig clone = (PSCatalogerConfig) super.clone();
-      Map<String, String> cloneProps = new HashMap<String, String>();
+      Map<String, String> cloneProps = new HashMap<>();
       for (Map.Entry<String, String> entry : m_props.entrySet())
       {
          cloneProps.put(entry.getKey(), entry.getValue());

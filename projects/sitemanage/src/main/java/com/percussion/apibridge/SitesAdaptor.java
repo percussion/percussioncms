@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -30,12 +30,15 @@ import com.percussion.rest.sites.Site;
 import com.percussion.rest.sites.SiteList;
 import com.percussion.util.PSSiteManageBean;
 import com.percussion.webservices.publishing.IPSPublishingWs;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 
 @PSSiteManageBean
 @Lazy
 public class SitesAdaptor implements ISiteAdaptor {
+    private static final Logger log = LogManager.getLogger(SitesAdaptor.class);
 
 
     @Autowired

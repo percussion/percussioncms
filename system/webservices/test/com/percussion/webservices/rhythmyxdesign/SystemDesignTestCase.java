@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -26,13 +26,13 @@ package com.percussion.webservices.rhythmyxdesign;
 
 import com.percussion.content.IPSMimeContentTypes;
 import com.percussion.design.objectstore.PSAclEntry;
+import com.percussion.security.IPSTypedPrincipal.PrincipalTypes;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.guidmgr.data.PSDesignGuid;
 import com.percussion.services.security.PSPermissions;
 import com.percussion.services.system.data.PSConfigurationTypes;
 import com.percussion.util.PSBase64Decoder;
 import com.percussion.util.PSBase64Encoder;
-import com.percussion.utils.security.IPSTypedPrincipal.PrincipalTypes;
 import com.percussion.utils.testing.IntegrationTest;
 import com.percussion.webservices.IPSWebserviceErrors;
 import com.percussion.webservices.PSAssemblyTestBase;
@@ -72,6 +72,9 @@ import com.percussion.webservices.systemdesign.SaveAclsRequest;
 import com.percussion.webservices.systemdesign.SaveConfigurationRequest;
 import com.percussion.webservices.systemdesign.SaveRelationshipTypesRequest;
 import com.percussion.webservices.systemdesign.SystemDesignSOAPStub;
+import junit.framework.AssertionFailedError;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -86,11 +89,10 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
-import junit.framework.AssertionFailedError;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Test system design web service functionality.

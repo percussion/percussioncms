@@ -17,12 +17,13 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.xmldom;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.PSExtensionProcessingException;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.server.PSServer;
@@ -33,9 +34,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.io.Writer;
 import java.util.Properties;
 
 
@@ -191,13 +189,8 @@ public class PSXmlDomContext
       IPSRhythmyxInfo rxInfo = PSRhythmyxInfoLocator.getRhythmyxInfo();
       String rxRootDir = (String) rxInfo
             .getProperty(IPSRhythmyxInfo.Key.ROOT_DIRECTORY);
-      InputStream in = null;
-      try {
-         in = new FileInputStream(rxRootDir + File.separator + FileName);
+      try(InputStream in = new FileInputStream(rxRootDir + File.separator + FileName)){
          m_tidyProperties.load(in);
-      } finally {
-         if (in!=null) 
-            try { in.close();} catch (Exception e) {/*ignore*/ }
       }
    }
 
@@ -321,17 +314,7 @@ public class PSXmlDomContext
    public void handleException(Exception e, boolean throwException)
          throws PSExtensionProcessingException
    {
-      StringBuffer estr = new StringBuffer("Unexpected exception in ");
-      estr.append(m_function).append("\n");
-      estr.append(e.toString()).append("\n");
-      estr.append(e.getMessage().toString()).append("\n");
-
-      //print the stack trace into the tracing log.
-      StringWriter stackWriter = new StringWriter();
-      e.printStackTrace(new PrintWriter((Writer) stackWriter, true));
-      estr.append(stackWriter.toString());
-
-      printTraceMessage(estr.toString());
+      printTraceMessage(PSExceptionUtils.getMessageForLog(e));
 
       if (throwException)
          throw new PSExtensionProcessingException(m_function, e);

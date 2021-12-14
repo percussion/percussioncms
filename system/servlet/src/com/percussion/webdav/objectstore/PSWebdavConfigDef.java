@@ -17,11 +17,23 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.webdav.objectstore;
+
+import com.percussion.design.objectstore.PSUnknownNodeTypeException;
+import com.percussion.util.PSXMLDomUtil;
+import com.percussion.webdav.error.IPSWebdavErrors;
+import com.percussion.webdav.error.PSWebdavException;
+import com.percussion.xml.PSXmlDocumentBuilder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -34,22 +46,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-
-import com.percussion.design.objectstore.PSUnknownNodeTypeException;
-import com.percussion.util.PSXMLDomUtil;
-import com.percussion.webdav.error.IPSWebdavErrors;
-import com.percussion.webdav.error.PSWebdavException;
-import com.percussion.xml.PSXmlDocumentBuilder;
-
 /**
  * Represents the WebDav XML configuration file
  */
 public class PSWebdavConfigDef extends PSWebdavComponent
 {
+
+   private static final Logger log = LogManager.getLogger(PSWebdavConfigDef.class);
 
    /**
     * Constructs a <code>PSWebdavConfigDef</code> object from the supplied  
@@ -108,22 +111,22 @@ public class PSWebdavConfigDef extends PSWebdavComponent
          throw new PSWebdavException(IPSWebdavErrors.FILE_DOES_NOT_EXIST,
                xmlfile.getAbsolutePath());
 
-      try
-      {
-         FileInputStream in = new FileInputStream(xmlfile);
+      try( FileInputStream in = new FileInputStream(xmlfile)){
          Document doc = PSXmlDocumentBuilder.createXmlDocument(new InputSource(
                in), false);
          fromXml(doc.getDocumentElement());
       }
       catch (IOException ie)
       {
-         ie.printStackTrace();
+         log.error(ie.getMessage());
+         log.debug(ie.getMessage(), ie);
          throw new PSWebdavException(IPSWebdavErrors.IO_EXCEPTION_OCCURED, ie
                .getMessage());
       }
       catch (SAXException se)
       {
-         se.printStackTrace();
+         log.error(se.getMessage());
+         log.debug(se.getMessage(), se);
          throw new PSWebdavException(IPSWebdavErrors.SAX_EXCEPTION_OCCURED, se
                .getMessage());
       }
@@ -184,13 +187,15 @@ public class PSWebdavConfigDef extends PSWebdavComponent
       }
       catch (IOException ie)
       {
-         ie.printStackTrace();
+         log.error(ie.getMessage());
+         log.debug(ie.getMessage(), ie);
          throw new PSWebdavException(IPSWebdavErrors.IO_EXCEPTION_OCCURED, ie
                .getMessage());
       }
       catch (SAXException se)
       {
-         se.printStackTrace();
+         log.error(se.getMessage());
+         log.debug(se.getMessage(), se);
          throw new PSWebdavException(IPSWebdavErrors.SAX_EXCEPTION_OCCURED, se
                .getMessage());
       }

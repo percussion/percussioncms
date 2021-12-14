@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -17,26 +17,16 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.services.system.impl;
 
-import static com.percussion.services.utils.orm.PSDataCollectionHelper.MAX_IDS;
-import static com.percussion.services.utils.orm.PSDataCollectionHelper.clearIdSet;
-import static com.percussion.services.utils.orm.PSDataCollectionHelper.createIdSet;
-import static com.percussion.services.utils.orm.PSDataCollectionHelper.executeQuery;
-import static com.percussion.webservices.PSWebserviceUtils.getUserCommunityId;
-import static com.percussion.webservices.PSWebserviceUtils.getUserName;
-import static com.percussion.webservices.PSWebserviceUtils.getUserRoles;
-
-import static org.apache.commons.lang.Validate.notEmpty;
-import static org.apache.commons.lang.Validate.notNull;
-
 import com.percussion.cms.objectstore.PSComponentSummary;
 import com.percussion.content.IPSMimeContentTypes;
 import com.percussion.design.objectstore.PSSubject;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.security.PSRoleManager;
 import com.percussion.server.PSServer;
 import com.percussion.services.catalog.PSTypeEnum;
@@ -70,12 +60,23 @@ import com.percussion.util.IOTools;
 import com.percussion.util.PSBaseBean;
 import com.percussion.util.PSCharSetsConstants;
 import com.percussion.util.PSSqlHelper;
-import com.percussion.utils.container.PSContainerUtilsFactory;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.io.PathUtils;
 import com.percussion.utils.jdbc.IPSDatasourceManager;
 import com.percussion.utils.jdbc.PSConnectionDetail;
 import com.percussion.workflow.mail.IPSMailMessageContext;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.time.FastDateFormat;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.hibernate.Criteria;
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -87,7 +88,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Paths;
 import java.text.MessageFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -97,17 +97,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.hibernate.Criteria;
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Restrictions;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
+import static com.percussion.services.utils.orm.PSDataCollectionHelper.MAX_IDS;
+import static com.percussion.services.utils.orm.PSDataCollectionHelper.clearIdSet;
+import static com.percussion.services.utils.orm.PSDataCollectionHelper.createIdSet;
+import static com.percussion.services.utils.orm.PSDataCollectionHelper.executeQuery;
+import static com.percussion.webservices.PSWebserviceUtils.getUserCommunityId;
+import static com.percussion.webservices.PSWebserviceUtils.getUserName;
+import static com.percussion.webservices.PSWebserviceUtils.getUserRoles;
+import static org.apache.commons.lang.Validate.notEmpty;
+import static org.apache.commons.lang.Validate.notNull;
 
 /**
  * Implements all services defined with the <code>IPSSystemService</code>
@@ -120,6 +118,7 @@ public class PSSystemService
 {
 
    private SessionFactory sessionFactory;
+
 
    public SessionFactory getSessionFactory() {
       return sessionFactory;
@@ -155,10 +154,10 @@ public class PSSystemService
          criteria.add(Restrictions.like("name", name));
          criteria.addOrder(Order.asc("name"));
 
-         Set<PSSharedProperty> properties = new HashSet<PSSharedProperty>(
+         Set<PSSharedProperty> properties = new HashSet<>(
             criteria.list());
 
-         return new ArrayList<PSSharedProperty>(properties);
+         return new ArrayList<>(properties);
 
    }
 
@@ -240,7 +239,7 @@ public class PSSystemService
       if (ids == null)
          throw new IllegalArgumentException("ids may not be null");
 
-      List<PSDependency> results = new ArrayList<PSDependency>(ids.size());
+      List<PSDependency> results = new ArrayList<>(ids.size());
 
       PSDependencyHelper depHelper = new PSDependencyHelper();
       depHelper.enableCache();
@@ -279,7 +278,7 @@ public class PSSystemService
       if (ids == null)
          throw new IllegalArgumentException("ids may not be null");
 
-      List<PSDependency> results = new ArrayList<PSDependency>(ids.size());
+      List<PSDependency> results = new ArrayList<>(ids.size());
 
       PSDependencyHelper depHelper = new PSDependencyHelper();
       depHelper.enableCache();
@@ -769,7 +768,7 @@ public class PSSystemService
 
          List<Integer> countList = (idset != 0) ? (List)executeQuery(q) : q.list();
          
-         List<Long> convertList = new ArrayList<Long>();
+         List<Long> convertList = new ArrayList<>();
          for(int val:countList)
          {
             convertList.add(new Long(val));
@@ -844,7 +843,7 @@ public class PSSystemService
       if (m_mimeContentMap != null)
          return;
 
-      m_mimeContentMap = new HashMap<PSConfigurationTypes, PSMimeContentDescriptor>();
+      m_mimeContentMap = new HashMap<>();
 
       m_mimeContentMap.put(PSConfigurationTypes.SERVER_PAGE_TAGS,
          new PSMimeContentDescriptor(new PSGuid(PSTypeEnum.CONFIGURATION,
@@ -979,7 +978,7 @@ public class PSSystemService
       }
       PSAssignmentTypeHelper helper = new PSAssignmentTypeHelper( 
             user, roles, community);
-      List<PSAssignmentTypeEnum> rval = new ArrayList<PSAssignmentTypeEnum>();
+      List<PSAssignmentTypeEnum> rval = new ArrayList<>();
       for (int i = 0; i < ids.size(); i++)
       {
          rval.add(helper.getAssignmentType(ids.get(i)));
@@ -1009,7 +1008,7 @@ public class PSSystemService
       if (transitionId == null)
          throw new IllegalArgumentException("transitionId may not be null");
       
-      List<String> results = new ArrayList<String>();
+      List<String> results = new ArrayList<>();
       
       // get the component summary
       PSComponentSummary sum = getComponentSummary(contentId);
@@ -1024,7 +1023,7 @@ public class PSSystemService
       // start by adding adhoc normal roles only, but if we come across 
       // anonymous, then just add all roles on the system
       List<PSAssignedRole> assignedRoles = toState.getAssignedRoles();
-      List<IPSGuid> roleIds = new ArrayList<IPSGuid>();
+      List<IPSGuid> roleIds = new ArrayList<>();
       boolean anonymous = false;
       for (PSAssignedRole role : assignedRoles)
       {
@@ -1074,7 +1073,7 @@ public class PSSystemService
          throw new IllegalArgumentException(
             "roleName may not be null or empty");
       
-      List<String> results = new ArrayList<String>();
+      List<String> results = new ArrayList<>();
       
       // get the component summary
       PSComponentSummary sum = getComponentSummary(contentId);
@@ -1087,7 +1086,7 @@ public class PSSystemService
          return results;
       
       // see if normal adhoc role or anonymous
-      List<IPSGuid> roleIds = new ArrayList<IPSGuid>();
+      List<IPSGuid> roleIds = new ArrayList<>();
       boolean anonymous = false;
       for (PSAssignedRole role : toState.getAssignedRoles())
       {
@@ -1222,7 +1221,7 @@ public class PSSystemService
     */
    private String getDateString(Date date)
    {
-      SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+      FastDateFormat format = FastDateFormat.getInstance("yyyy-MM-dd HH:mm:ss");
       String dateString = "'" + format.format(date) + "'";
 
       if (isOracle())
@@ -1236,35 +1235,113 @@ public class PSSystemService
     * 
     * @return It is <code>true</code> if the repository is an oracle database.
     */
-   private boolean isOracle()
+   @Override
+   public boolean isOracle()
    {
       if (m_isOracle != null)
-         return m_isOracle.booleanValue();
+         return m_isOracle;
       
       try
       {
          PSConnectionDetail connDetail = m_dsMgr.getConnectionDetail(null);
          m_isOracle = PSSqlHelper.isOracle(connDetail.getDriver()) ? Boolean.TRUE : Boolean.FALSE;
-         return m_isOracle.booleanValue();
+         return m_isOracle;
       }
       catch (Exception e)
       {
-         ms_logger.error("Failed to determine database type", e);
+         ms_logger.error("Failed to determine database type {}", PSExceptionUtils.getMessageForLog(e));
       }
       return false;
    }
 
+   @Override
+   public boolean isMySQL() {
+      if (mysql != null)
+         return mysql;
+
+      try
+      {
+         PSConnectionDetail connDetail = m_dsMgr.getConnectionDetail(null);
+         mysql = PSSqlHelper.isMysql(connDetail.getDriver()) ? Boolean.TRUE : Boolean.FALSE;
+         return mysql;
+      }
+      catch (Exception e)
+      {
+         ms_logger.error("Failed to determine database type {}", PSExceptionUtils.getMessageForLog(e));
+      }
+      return false;
+   }
+
+   @Override
+   public boolean isMsSQL() {
+      if (mssql != null)
+         return mssql;
+
+      try
+      {
+         PSConnectionDetail connDetail = m_dsMgr.getConnectionDetail(null);
+         mssql = PSSqlHelper.isMsSql(connDetail.getDriver()) ? Boolean.TRUE : Boolean.FALSE;
+         return mssql;
+      }
+      catch (Exception e)
+      {
+         ms_logger.error("Failed to determine database type {}", PSExceptionUtils.getMessageForLog(e));
+      }
+      return false;
+   }
+
+   @Override
+   public boolean isDB2() {
+      if (db2 != null)
+         return db2;
+
+      try
+      {
+         PSConnectionDetail connDetail = m_dsMgr.getConnectionDetail(null);
+         db2 = PSSqlHelper.isDB2(connDetail.getDriver()) ? Boolean.TRUE : Boolean.FALSE;
+         return db2;
+      }
+      catch (Exception e)
+      {
+         ms_logger.error("Failed to determine database type {}", PSExceptionUtils.getMessageForLog(e));
+      }
+      return false;
+   }
+
+   @Override
+   public boolean isDerby(){
+      if (derby != null)
+         return derby;
+
+      try
+      {
+         PSConnectionDetail connDetail = m_dsMgr.getConnectionDetail(null);
+         derby = PSSqlHelper.isDerby(connDetail.getDriver()) ? Boolean.TRUE : Boolean.FALSE;
+         return derby;
+      }
+      catch (Exception e)
+      {
+         ms_logger.error("Failed to determine database type {}", PSExceptionUtils.getMessageForLog(e));
+      }
+      return false;
+   }
    /**
     * Determines if the repository is an oracle database or not.
     * It is <code>true</code> if the repository is an oracle database.
     * Initialized to <code>null</code> and it is lazily set by {@link #isOracle()}.
     */
    private static Boolean m_isOracle = null;
-   
+
+   private  Boolean mysql = null;
+
+   private  Boolean mssql = null;
+
+   private  Boolean db2 = null;
+
+   private Boolean derby = null;
+
    /**
-    * The datasource manager to use to override the new configuration,
-    * initalized by the first call to
-    * {@link #setDatasourceManager(IPSDatasourceManager)}, never
+    * The datasource manager to use to override the new configuration.
     * <code>null</code> after that.
     */
    private IPSDatasourceManager m_dsMgr;
@@ -1272,7 +1349,7 @@ public class PSSystemService
    /**
     * Logger to use, never <code>null</code>.
     */
-   private static Log ms_logger = LogFactory.getLog(
+   private static final Logger ms_logger = LogManager.getLogger(
       PSSystemService.class);
 
    /**

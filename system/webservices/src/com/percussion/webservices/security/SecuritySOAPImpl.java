@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -36,15 +36,13 @@ import com.percussion.webservices.faults.PSNotAuthenticatedFault;
 import com.percussion.webservices.faults.PSNotAuthorizedFault;
 import com.percussion.webservices.security.data.PSCommunity;
 import com.percussion.webservices.security.data.PSRole;
-
-import java.io.IOException;
-import java.rmi.RemoteException;
-import java.util.List;
+import org.apache.commons.lang.exception.ExceptionUtils;
 
 import javax.security.auth.login.LoginException;
 import javax.servlet.ServletException;
-
-import org.apache.commons.lang.exception.ExceptionUtils;
+import java.io.IOException;
+import java.rmi.RemoteException;
+import java.util.List;
 
 /**
  * Server side implementations for web services defined in

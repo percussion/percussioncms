@@ -17,19 +17,19 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.services.workflow.data;
 
-import static org.apache.commons.lang.Validate.notNull;
+import com.percussion.services.workflow.data.PSTransitionHib.TransitionType;
 
-import java.util.ArrayList; 
+import java.util.ArrayList;
 import java.util.List;
 
-import com.percussion.services.workflow.data.PSTransitionHib.TransitionType;
+import static org.apache.commons.lang.Validate.notNull;
 
 /**
  * The utility class used to manage persisted and non-persisted transition objects.
@@ -81,7 +81,7 @@ class PSTransformTransitionUtils
     */
    static List<? extends PSTransitionBase> convertTransitions(List<PSTransitionHib> transitionHibs, TransitionType type)
    {
-      List<PSTransitionBase> result = new ArrayList<PSTransitionBase>();
+      List<PSTransitionBase> result = new ArrayList<>();
       for (PSTransitionHib hib : transitionHibs)
       {
          if (type == hib.getTransitionType())
@@ -175,7 +175,7 @@ class PSTransformTransitionUtils
    private static List<PSTransitionHib> getTransitionHibs(List<? extends PSTransitionBase> transitions, TransitionType transitionType)
    {
       PSTransitionHib hib;
-      List<PSTransitionHib> hibs = new ArrayList<PSTransitionHib>();
+      List<PSTransitionHib> hibs = new ArrayList<>();
       for (PSTransitionBase trans : transitions)
       {
          if (transitionType == TransitionType.TRANSITION)

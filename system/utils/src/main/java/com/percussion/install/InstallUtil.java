@@ -17,13 +17,14 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.install;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.util.IOTools;
 import com.percussion.util.PSOsTool;
 import com.percussion.util.PSProperties;
@@ -31,9 +32,12 @@ import com.percussion.util.PSSqlHelper;
 import com.percussion.utils.jdbc.PSDriverHelper;
 import com.percussion.utils.jdbc.PSJdbcUtils;
 import com.percussion.utils.string.PSStringUtils;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.commons.io.IOCase;
 import org.apache.commons.io.filefilter.PrefixFileFilter;
 import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -41,6 +45,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
 
+import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
@@ -59,7 +64,11 @@ import java.net.URI;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.nio.channels.FileChannel;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.Driver;
@@ -72,12 +81,16 @@ import java.util.List;
 import java.util.Properties;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+import java.util.stream.Collectors;
 
 /**
  * The InstallUtil class contains some utility methods for the installer.
  */
+@SuppressFBWarnings("PATH_TRAVERSAL_IN")
 public class InstallUtil
 {
+
+   private static final Logger log = LogManager.getLogger(InstallUtil.class);
 
    private static final String JETTY_PERC_LIB="jetty/defaults/lib/perc/";
    private static final String JETTY_PERC_LOGGING="jetty/defaults/lib/perc-logging/";
@@ -104,6 +117,8 @@ public class InstallUtil
          PSLogger.logError(e.getMessage());
       }
 
+
+      // ClassLoader loader = (ClassLoader) AccessController.doPrivileged(
       return new URLClassLoader(urlList,ClassLoader.getSystemClassLoader());
    }
 
@@ -111,7 +126,7 @@ public class InstallUtil
     * Find and replace text in the tutorial. If either <code>strFind</code> or
     * <code>strReplace</code> is null, or if <code>strFind</code> is an empty
     * string, then nothing will happen.
-    * 
+    *
     * @param strFind the text to be found
     * @param strReplace the text to replace <code>strFind</code>
     * @param strFile the path name of a file containing the text to be found and
@@ -122,15 +137,14 @@ public class InstallUtil
       if ((strFind == null) || (strReplace == null) || (strFind.length() == 0))
          return;
 
-      try
+      if (strFind.equals(strReplace))
+         return;
+
+      System.out.println("find: + " + strFind + " replace: " + strReplace);
+      File file = new File(strFile);
+
+      try(FileInputStream in = new FileInputStream(file))
       {
-         if (strFind.equals(strReplace))
-            return;
-
-         System.out.println("find: + " + strFind + " replace: " + strReplace);
-         File file = new File(strFile);
-         FileInputStream in = new FileInputStream(file);
-
          String strReadData = "";
          String strWriteData = "";
          int iAvail = in.available();
@@ -138,7 +152,7 @@ public class InstallUtil
          in.read(bData, 0, iAvail);
          strReadData = new String(bData);
 
-         StringBuffer buffer = new StringBuffer(strReadData);
+         StringBuilder buffer = new StringBuilder(strReadData);
          int replace = buffer.toString().indexOf(strFind);
          while (replace != -1)
          {
@@ -147,16 +161,11 @@ public class InstallUtil
          }
 
          strWriteData = buffer.toString();
-         in.close();
-         FileWriter writer = new FileWriter(strFile);
-         writer.write(strWriteData, 0, strWriteData.length());
-         writer.close();
-      }
-      catch (java.io.FileNotFoundException e)
-      {
-         PSLogger.logError(e.getMessage());
-      }
-      catch (java.io.IOException e)
+
+         try(FileWriter writer = new FileWriter(strFile)) {
+            writer.write(strWriteData, 0, strWriteData.length());
+         }
+      } catch (IOException e)
       {
          PSLogger.logError(e.getMessage());
       }
@@ -165,7 +174,7 @@ public class InstallUtil
    /**
     * Convert a <code>project</code> file. Same as calling
     * <code>convertProject(project, null, null)</code>.
-    * 
+    *
     * @param project the path name of a file (not <code>null</code>)
     * @throws IOException if an error occurs converting the project
     */
@@ -182,7 +191,7 @@ public class InstallUtil
     * not <code>null</code>, the Docs\E2\Help\V2.0\ directory will be replaced
     * with the directory of <code>strDocDir</code>. Otherwise, this final step
     * will be ignored. The result is stored in <code>project</code>.
-    * 
+    *
     * @param project the path name of a file (not <code>null</code>)
     * @param strCurDir the current directory, if <code>null</code>, then the
     *           current user directory is assumed
@@ -224,7 +233,7 @@ public class InstallUtil
 
    /**
     * Get the possible drivers, such as "M", "N", "S", etc.
-    * 
+    *
     * @return a string array contains the driver strings
     */
    public static String[] getPossibleDrives()
@@ -248,13 +257,13 @@ public class InstallUtil
 
    /**
     * Add a back slash after each back slash in <code>str</code>.
-    * 
+    *
     * @param str the input string (not <code>null</code>)
     * @return a new string with back slash being added into
     */
    public static String addSlashes(String str)
    {
-      StringBuffer retval = new StringBuffer();
+      StringBuilder retval = new StringBuilder();
       for (int i = 0; i < str.length(); i++)
       {
          switch (str.charAt(i))
@@ -275,21 +284,21 @@ public class InstallUtil
     * temporary table in the database and calling
     * {@link PSSqlHelper#supportsUnicode(Connection, String, String)} on this
     * table.
-    * 
+    *
     * @param conn The database connection object. May not be <code>null</code>.
     * @param driver The driver used for this connection. May not be
     *           <code>null</code>.
     * @param database The name of the database. May not be <code>null</code>.
     * @param schema The schema for this connection. May not be <code>null</code>
     *           .
-    * 
+    *
     * @return <code>true</code> if the database is setup for unicode,
     *         <code>false</code> otherwise.
-    * 
+    *
     * @throws SQLException
     */
    public static boolean checkForUnicode(Connection conn, String driver, String database, String schema)
-         throws SQLException
+           throws SQLException
    {
       if (conn == null)
          throw new IllegalArgumentException("conn may not be null");
@@ -344,19 +353,19 @@ public class InstallUtil
    /**
     * Checks if the specified table exists for the specified database and
     * schema.
-    * 
+    *
     * @param table the table to look for, may not be <code>null<code>
     * @param conn the connection to the database, may not be <code>null<code>
     * @param database the name of the database, may not be <code>null<code>
     * @param schema the schema for this connection, may not be <code>null<code>
-    * 
+    *
     * @return <code>true</code> if the database contains the table,
     *         <code>false</code> otherwise.
-    * 
+    *
     * @throws SQLException
     */
    public static boolean checkTableExists(String table, Connection conn, String database, String schema)
-         throws SQLException
+           throws SQLException
    {
       if (table == null)
          throw new IllegalArgumentException("table may not be null");
@@ -383,7 +392,7 @@ public class InstallUtil
 
             DatabaseMetaData dbmd = conn.getMetaData();
             rs = dbmd.getTables(db, schema, table, new String[]
-            {"TABLE"});
+                    {"TABLE"});
             if ((rs != null) && (rs.next()))
                exists = true;
          }
@@ -400,35 +409,34 @@ public class InstallUtil
 
    /**
     * Executes the given SQL statement on the given connection.
-    * 
+    *
     * @param conn connection to the database, may not be <code>null</code>
     * @param statement specifies the action to be taken, may not be
     *           <code>null</code>
-    * 
+    *
     * @throws SQLException
     */
    public static void executeStatement(Connection conn, String statement) throws SQLException
    {
-      Statement st = null;
 
-      st = conn.createStatement();
-      st.execute(statement);
-      st.close();
+      try(Statement st = conn.createStatement()) {
+         st.execute(statement);
+      }
    }
 
    /**
     * Helper function that returns the first DOM child Element of the supplied
     * node.
-    * 
+    *
     * @param node - parent node that can only be of Document ot Element type,
     *           can be <code>null</code>.
-    * 
+    *
     * @param sElemName - the element tag name, can be <code>null</code>.
-    * 
+    *
     * @return - First DOM element with the supplied name, may be
     *         <code>null</code>. <code>null</code> if the parent node element
     *         name tag is <code>null</code>
-    * 
+    *
     */
    static public Element getElement(Node node, String sElemName)
    {
@@ -459,16 +467,16 @@ public class InstallUtil
    /**
     * Helper function that returns the value of the first child DOM Element of
     * the supplied DOM node.
-    * 
+    *
     * @param node - DOM node can be either Document or Element type, can not be
     *           <code>null</code>. If <code>null</code> or other type, the
     *           return value shall be empty string.
-    * 
+    *
     * @param sElemName - the element tag name, can not be <code>null</code>. If
     *           <code>null</code>, the return value shall be empty string.
-    * 
+    *
     * @return String - the value of the element, can be empty string.
-    * 
+    *
     */
    static public String getElemValue(Node node, String sElemName)
    {
@@ -506,13 +514,13 @@ public class InstallUtil
 
    /**
     * Helper function that returns the value of the given DOM Element.
-    * 
+    *
     * @param elem - DOM Element, can not be <code>null</code>. If
     *           <code>null</code>, the return value shall be empty string.
-    * 
-    * 
+    *
+    *
     * @return String - the value of the element, can be empty string.
-    * 
+    *
     */
    static public String getElemValue(Element elem)
    {
@@ -529,16 +537,16 @@ public class InstallUtil
    /**
     * Helper function that returns the ArrayList of values of the given child
     * element of a given node.
-    * 
+    *
     * @param node - DOM node can be either Document or Element type, can not be
     *           <code>null</code>. If <code>null</code> or other type, the
     *           return value shall be empty arraylist.
-    * 
+    *
     * @param childElemName - the element tag name, can not be <code>null</code>.
     *           If <code>null</code>, the return value shall be empty arraylist.
-    * 
+    *
     * @return - a list of element values, never <code>null</code>.
-    * 
+    *
     */
 
    static public ArrayList getValueList(Node node, String childElemName)
@@ -584,10 +592,10 @@ public class InstallUtil
     * plugins will run. This method will copy PreviousVersion.properties into
     * version.properties then remove PreviousVersion.properties. This will at
     * least maintain the state of the tree prior to the failed upgrade.
-    * 
+    *
     * @param root The Rhythmyx root directory, may not be <code>null</code> or
     *           empty.
-    * 
+    *
     * @throws IOException if an error occurs during copy.
     * @throws FileNotFoundException if an error occurs during copy.
     */
@@ -608,10 +616,10 @@ public class InstallUtil
    /**
     * Method to backup rxrepository.properties as
     * {@link #ORIG_REPOSITORY_PROPS_FILE}.
-    * 
+    *
     * @param root The Rhythmyx root directory, may not be <code>null</code> or
     *           empty.
-    * 
+    *
     * @throws IOException if an error occurs during copy.
     * @throws FileNotFoundException if an error occurs during copy.
     */
@@ -637,10 +645,10 @@ public class InstallUtil
     * re-encrypting the database password using the 6.x encryption scheme. This
     * will ensure that the server starts in the event of a failed compatibility
     * scan.
-    * 
+    *
     * @param root The Rhythmyx root directory, may not be <code>null</code> or
     *           empty.
-    * 
+    *
     * @throws IOException if an error occurs during copy.
     * @throws FileNotFoundException if an error occurs during copy.
     */
@@ -660,14 +668,14 @@ public class InstallUtil
 
    /**
     * Utility method to copy infile to outfile
-    * 
+    *
     * @param in : input file, may not be <code>null</code>.
     * @param out : output file, may not be <code>null</code>.
-    * 
+    *
     * @throws IOException if an error occurs during copy.
     * @throws FileNotFoundException if either of the files cannot be found.
     */
-   public static void copyFiles(File in, File out) throws IOException, FileNotFoundException
+   public static void copyFiles(File in, File out) throws IOException
    {
       if (in == null)
          throw new IllegalArgumentException("in may not be null or empty");
@@ -675,12 +683,11 @@ public class InstallUtil
       if (out == null)
          throw new IllegalArgumentException("out may not be null or empty");
 
-      FileChannel sourceChannel = new FileInputStream(in).getChannel();
-      FileChannel destinationChannel = new FileOutputStream(out).getChannel();
-      sourceChannel.transferTo(0, sourceChannel.size(), destinationChannel);
-
-      sourceChannel.close();
-      destinationChannel.close();
+      try(FileChannel sourceChannel = new FileInputStream(in).getChannel()) {
+         try(FileChannel destinationChannel = new FileOutputStream(out).getChannel()) {
+            sourceChannel.transferTo(0, sourceChannel.size(), destinationChannel);
+         }
+      }
    }
 
    /**
@@ -691,7 +698,7 @@ public class InstallUtil
     * <li>Calls {@link #convertSpaceToUnderscore(String)} to replace spaces with
     * underscores.</li>
     * </ol>
-    * 
+    *
     * @param oldName old name to modify, may be <code>null</code> or empty.
     * @return new name after modifying as described above, may be
     *         <code>null</code> or empty if supplied one <code>null</code> or
@@ -712,7 +719,7 @@ public class InstallUtil
     * <li>Replace all " " with "_"</li>
     * <li>Collapse continuous "_"s into one "_"</li>
     * </ol>
-    * 
+    *
     * @param str string to modify, may be <code>null</code> or empty.
     * @return new string after modifying as described above, may be
     *         <code>null</code> or empty if supplied one <code>null</code> or
@@ -732,7 +739,7 @@ public class InstallUtil
    /**
     * Helper function adds xml processing instruction and DOCTYPE to the given
     * xml string.
-    * 
+    *
     * @param str xml string to be modified, may not be <code>null</code>
     * @param root element to which the DOCTYPE will be applied, may not be
     *           <code>null</code> or empty
@@ -779,7 +786,7 @@ public class InstallUtil
    /**
     * If the installation or upgrade is to a directory that already has the
     * server installed.
-    * 
+    *
     * @param instDir the directory this installation is performed never
     *           <code>null</code> or empty
     * @return <code>true</code> if the installation location specified already
@@ -808,7 +815,7 @@ public class InstallUtil
    /**
     * Helper method for validation to advise if the server is still running.
     * First checks if <code>dirName</code> is a valid server installation.
-    * 
+    *
     * @param dirName the install location specified either for upgrade or new
     *           install, never <code>null</code> or empty.
     * @return <code>true</code> if the server is running, <code>false</code>
@@ -826,7 +833,7 @@ public class InstallUtil
 
    /**
     * Helper method for validation to advise if the server is still running.
-    * 
+    *
     * @param dirName the install location specified either for upgrade or new
     *           install, never <code>null</code> or empty.
     * @return <code>true</code> if the server is running, <code>false</code>
@@ -846,7 +853,7 @@ public class InstallUtil
          // check
          // if the port is active
          prop.load(new FileInputStream(dirName + File.separator + "rxconfig" + File.separator + "server"
-               + File.separator + "server.properties"));
+                 + File.separator + "server.properties"));
          String bindPort = prop.getProperty("bindPort");
          if (bindPort == null || bindPort.isEmpty())
          {
@@ -866,28 +873,19 @@ public class InstallUtil
       return isRunning;
    }
 
-    /**
-     * THis is a utility method to shutdown Derby Server.
-     * CMS-5932
-     */
+   /**
+    * THis is a utility method to shutdown Derby Server.
+    * CMS-5932
+    */
    public static void shutDownDerby(){
-       Connection cn = null;
-       try {
-           cn = DriverManager.getConnection("jdbc:derby:;shutdown=true");
-       } catch (SQLException e) {
-           if ("XJ015".equals(e.getSQLState())) {
-               PSLogger.logInfo( "Derby shutdown succeeded. SQLState=" + e.getSQLState() );
-               return;
-           }
-       } finally {
-           if (cn != null) {
-               try {
-                   cn.close();
-               } catch (Exception e) {
-                   PSLogger.logWarn("Database closing error :" +  e.getLocalizedMessage());
-               }
-           }
-       }
+
+      try (Connection cn = DriverManager.getConnection("jdbc:derby:;shutdown=true")){
+      } catch (SQLException e) {
+         if ("XJ015".equals(e.getSQLState())) {
+            PSLogger.logInfo( "Derby shutdown succeeded. SQLState=" + e.getSQLState() );
+            return;
+         }
+      }
    }
 
    public static boolean isDerbyRunning(String dirName)
@@ -896,11 +894,14 @@ public class InstallUtil
 
       // Derby Check
       String pathToRsDx = dirName + File.separator + "AppServer" + File.separator + "server" + File.separator + "rx"
-            + File.separator + "deploy" + File.separator + "rx-ds.xml";
+              + File.separator + "deploy" + File.separator + "rx-ds.xml";
       DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
       DocumentBuilder docBuilder;
       try
       {
+         docBuilderFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING,true);
+         docBuilderFactory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", false);
+
          docBuilder = docBuilderFactory.newDocumentBuilder();
          Document doc = docBuilder.parse(new File(pathToRsDx));
          NodeList driverList = doc.getElementsByTagName("driver-class");
@@ -933,43 +934,20 @@ public class InstallUtil
    /**
     * Checks to see if a specific port is available. From Apache Camel, removed
     * max / min port arguments
-    * 
+    *
     * @param port the port to check for availability
     */
+   @SuppressFBWarnings("UNENCRYPTED_SERVER_SOCKET") //Is just a port check no TLS required
    public static boolean portAvailable(int port)
    {
-
-      ServerSocket ss = null;
-      DatagramSocket ds = null;
-      try
-      {
-         ss = new ServerSocket(port);
+      try (ServerSocket ss = new ServerSocket(port)) {
          ss.setReuseAddress(true);
-         ds = new DatagramSocket(port);
-         ds.setReuseAddress(true);
+         try (DatagramSocket ds = new DatagramSocket(port)) {
+            ds.setReuseAddress(true);
+         }
          return true;
-      }
-      catch (IOException e)
-      {
-      }
-      finally
-      {
-         if (ds != null)
-         {
-            ds.close();
-         }
-
-         if (ss != null)
-         {
-            try
-            {
-               ss.close();
-            }
-            catch (IOException e)
-            {
-               /* should not be thrown */
-            }
-         }
+      } catch (IOException e) {
+         logError("Port Availability Check Failed." + e.getMessage());
       }
 
       return false;
@@ -979,7 +957,7 @@ public class InstallUtil
    {
       boolean isRunning = false;
       String pathToServerConf = dirName + File.separator + "Deployment" + File.separator + "Server" + File.separator
-            + "conf" + File.separator + "server.xml";
+              + "conf" + File.separator + "server.xml";
       if (dirName == null || dirName.length() == 0)
          throw new IllegalArgumentException("install location may not be " + "null or empty");
 
@@ -987,6 +965,8 @@ public class InstallUtil
       DocumentBuilder docBuilder;
       try
       {
+         docBuilderFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING,true);
+         docBuilderFactory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", false);
          docBuilder = docBuilderFactory.newDocumentBuilder();
          Document doc = docBuilder.parse(new File(pathToServerConf));
          NodeList connectorList = doc.getElementsByTagName("Connector");
@@ -1003,7 +983,7 @@ public class InstallUtil
                }
             }
             i++;
-         } 
+         }
       }
       catch (Exception ex)
       {
@@ -1019,7 +999,7 @@ public class InstallUtil
     * RxServices/WEB-INF/lib/rxclient.jar 3)
     * rxapp.ear/rxapp.war/WEB-INF/lib/rxserver.jar 4)
     * RxServices.war/WEB-INF/lib/rxclient.jar 5) RxServices.war
-    * 
+    *
     * @param strRootDir The Rhythmyx root installation directory, may not be
     *           <code>null</code> or empty.
     */
@@ -1028,109 +1008,78 @@ public class InstallUtil
       if (strRootDir == null || strRootDir.trim().length() == 0)
          throw new IllegalArgumentException("strRootDir may not be null or " + "empty");
 
-      InputStream in = null;
-      FileOutputStream out = null;
       File rxclientFile = null;
-       String jettyJar = null;
-       File checkDir =  new File(RxFileManager.JETTY_VERSION_JAR_FILE_DIR);
-       if (checkDir.exists()) {
-            File[] files = checkDir.listFiles((FileFilter) new PrefixFileFilter("perc-ant-", IOCase.SENSITIVE));
-            if (files.length>1)
-            {
-                logError("Found multiple perc-ant jar files in "+checkDir.getAbsolutePath());
-            }
-            if (files.length==1)
-                jettyJar = files[0].getAbsolutePath();
-        }
+      String jettyJar = null;
+      File checkDir =  new File(RxFileManager.JETTY_VERSION_JAR_FILE_DIR);
+      if (checkDir.exists()) {
+         File[] files = checkDir.listFiles((FileFilter) new PrefixFileFilter("perc-ant-", IOCase.SENSITIVE));
+         if (files.length>1)
+         {
+            PSLogger.logError("Found multiple perc-ant jar files in "+checkDir.getAbsolutePath());
+         }
+         if (files.length==1)
+            jettyJar = files[0].getAbsolutePath();
+      }
 
       String[] jarCheckList = new String[]{ jettyJar,
               RxFileManager.VERSION_JAR_FILE_PUB,RxFileManager.VERSION_JAR_FILE_6X,RxFileManager.VERSION_JAR_FILE_PUB_6X,RxFileManager.RXSERVICES_WAR};
-      try
-      {
-          JarFile jar = null;
-          JarEntry jarEntry = null;
-          for (String checkFile : jarCheckList) {
-              if (checkFile==null)
-                  continue;
-              // Look in lib/rxserver.jar
-              File jarFile = new File(strRootDir + File.separator + checkFile);
+      try {
+         JarFile jar = null;
+         JarEntry jarEntry = null;
+         for (String checkFile : jarCheckList) {
+            if (checkFile == null)
+               continue;
+            // Look in lib/rxserver.jar
+            File jarFile = new File(strRootDir + File.separator + checkFile);
 
-              PSLogger.logInfo("Attempting to locate Version.properties in " + jarFile.getPath());
-
-
-              if (jarFile.exists()) {
-                  jar = new JarFile(jarFile);
-                  jarEntry = jar.getJarEntry(RxFileManager.VERSION_FILE);
-                  break;
-              }
-          }
+            PSLogger.logInfo("Attempting to locate Version.properties in " + jarFile.getPath());
 
 
-
-         if (jarEntry != null)
-         {
-            PSLogger.logInfo("Located Version.properties");
-
-            in = jar.getInputStream(jarEntry);
-            Properties verProp = new Properties();
-            verProp.load(in);
-            out = new FileOutputStream(
-                  new File(strRootDir + File.separator + RxFileManager.PREVIOUS_VERSION_PROPS_FILE));
-            verProp.store(out, "Written by installer for upgrade purpose");
-
-            try
-            {
-               // Set the major version for this installation
-               ms_majorVersion = Integer.parseInt(verProp.getProperty("majorVersion",
-                     String.valueOf(InstallUtil.ms_majorVersion)));
-            }
-            catch (NumberFormatException nfe)
-            {
-               PSLogger.logError("Error parsing majorVersion");
+            if (jarFile.exists()) {
+               jar = new JarFile(jarFile);
+               jarEntry = jar.getJarEntry(RxFileManager.VERSION_FILE);
+               break;
             }
          }
-         else
+
+         if (jarEntry != null) {
+            PSLogger.logInfo("Located Version.properties");
+
+            try (InputStream in = jar.getInputStream(jarEntry)) {
+               Properties verProp = new Properties();
+               verProp.load(in);
+               try (FileOutputStream out = new FileOutputStream(
+                       new File(strRootDir + File.separator + RxFileManager.PREVIOUS_VERSION_PROPS_FILE))) {
+                  verProp.store(out, "Written by installer for upgrade purpose");
+
+
+                  try {
+                     // Set the major version for this installation
+                     ms_majorVersion = Integer.parseInt(verProp.getProperty("majorVersion",
+                             String.valueOf(InstallUtil.ms_majorVersion)));
+
+                  } catch (NumberFormatException nfe) {
+                     PSLogger.logError("Error parsing majorVersion");
+                  }
+
+               }
+
+            }
+         }else{
             PSLogger.logInfo("Could not locate Version.properties");
+         }
       }
       catch (IOException e)
       {
          PSLogger.logInfo("ERROR : " + e.getMessage());
          PSLogger.logInfo(e);
       }
-      finally
-      {
-         if (in != null)
-         {
-            try
-            {
-               in.close();
-            }
-            catch (IOException e)
-            {
-               PSLogger.logInfo("ERROR : " + e.getMessage());
-               PSLogger.logInfo(e);
-            }
-         }
-
-         if (out != null)
-         {
-            try
-            {
-               out.close();
-            }
-            catch (IOException e)
-            {
-               PSLogger.logInfo("ERROR : " + e.getMessage());
-               PSLogger.logInfo(e);
-            }
-         }
-      }
    }
 
    /**
     * Returns the brand code, never <code>null</code> since the installation
     * cannot proceed unless a valid brand code is provided by the user.
-    * 
+    *
     * @param rootDir the Rhythmyx root directory, never <code>null</code> or
     *           empty.
     * @return the brand code.
@@ -1171,7 +1120,7 @@ public class InstallUtil
    /**
     * Obtains connection using the connection information supplied. The caller
     * of this function is responsible for closing the connection.
-    * 
+    *
     * @param strDriver the database driver to connect with, may not be
     *           <code>null</code>.
     * @param strServer the server to connect to, may not be <code>null</code>.
@@ -1179,7 +1128,7 @@ public class InstallUtil
     *           <code>null</code>.
     * @param strPassword the password for the user, may not be <code>null</code>
     *           .
-    * 
+    *
     * @return the database connection, may be <code>null</code> if database
     *         connection failed.
     */
@@ -1218,7 +1167,7 @@ public class InstallUtil
       else
          System.out.println(msg);
    }
-   
+
    private static void logInfo(String msg)
    {
       if (ms_isSilentInstall)
@@ -1229,7 +1178,7 @@ public class InstallUtil
 
    /**
     * Adds the jar file URL to the internal list of jdbc driver URLs.
-    * 
+    *
     * @param driverLocation the absolute path of the jar file URL to be added to
     *           the internal list of jdbc driver URLs, may not be blank.
     */
@@ -1244,7 +1193,6 @@ public class InstallUtil
       String strUrl = "jar:file:";
       strUrl += jarFilePath;
       strUrl += "!/";
-
       try
       {
          if (m_jarUrls == null)
@@ -1275,332 +1223,173 @@ public class InstallUtil
     */
 
    public static Connection createLoadedConnection(String driver, String server, String db, String uid, String pw)
-         throws SQLException
+           throws SQLException
    {
       String className = null;
       Class driverClass = null;
       className = RxInstallerProperties.getResources().getString(driver);
-
       if (className == null)
          throw new SQLException("Driver " + driver + " is not supported by the current installer.");
-      try
-      {
-         if (driver.equalsIgnoreCase(PSJdbcUtils.MYSQL))
-         {
-            if (m_extDriver == null)
-            {
-               if (m_jarUrls == null || m_jarUrls.isEmpty())
-               {
+      try {
+         if (driver.equalsIgnoreCase(PSJdbcUtils.MYSQL)) {
+            if (m_extDriver == null) {
+               if (m_jarUrls == null || m_jarUrls.isEmpty()) {
                   // Likely an upgrade, set default driver
                   //CMS location
                   File extDriver = new File(m_rootDir + PSJdbcUtils.MYSQL_DRIVER_LOCATION);
 
                   //DTS Location
-                  if(!extDriver.exists()){
+                  if (!extDriver.exists()) {
                      extDriver = new File(m_rootDir + PSJdbcUtils.MYSQL_DTS_DRIVER_LOCATION);
-                   }
+                  }
 
                   //Staging DTS location
-                  if(!extDriver.exists()){
+                  if (!extDriver.exists()) {
                      extDriver = new File(m_rootDir + PSJdbcUtils.MYSQL_STAGING_DTS_DRIVER_LOCATION);
                   }
 
                   String extDriverLocation = extDriver.getAbsolutePath();
-                  if (!extDriver.exists())
-                  {
+                  if (!extDriver.exists()) {
                      logError("Cannot find MySQL driver at " + extDriverLocation);
-                  }
-                  else
-                  {
-                     try
-                     {
+                  } else {
+                     try {
                         PSDriverHelper.getDriver(className, extDriverLocation);
                         addJarFileUrl(extDriverLocation);
-                     }
-                     catch (ClassNotFoundException e)
-                     {
+                     } catch (ClassNotFoundException e) {
                         logError("Cannot find MySQL driver at " + extDriverLocation);
                      }
                   }
                }
 
-               if (m_jarUrls != null)
-               {
-                  try
-                  {
+               if (m_jarUrls != null) {
+                  try {
                      int size = m_jarUrls.size();
                      URL urlList[] = new URL[size];
-                     for (int i = 0; i < size; i++)
-                        urlList[i] = m_jarUrls.get(i);
-                     ClassLoader loader = new URLClassLoader(urlList);
+                     for (int i = 0; i < size; i++) {
+                        InstallUtil.logInfo("Loading " + m_jarUrls.get(i));
+                        urlList[i] = (URL) m_jarUrls.get(i);
+                     }
+
+                     ClassLoader loader = (ClassLoader) AccessController.doPrivileged(new PrivilegedAction() {
+                        @Override
+                        public Object run() {
+                           return new URLClassLoader(urlList);
+                        }
+                     });
+
                      driverClass = Class.forName(className, true, loader);
-                     if (driverClass != null)
-                     {
+                     InstallUtil.logInfo("Loaded " + className);
+                     if (driverClass != null) {
                         Object objDriver = driverClass.newInstance();
-                        if (objDriver != null)
-                        {
+                        if (objDriver != null) {
                            if (objDriver instanceof Driver)
                               m_extDriver = (Driver) objDriver;
                         }
                      }
-                  }
-                  catch (InstantiationException ie)
-                  {
+                  } catch (InstantiationException ie) {
                      logError("InstantiationException : " + ie.getMessage());
                      driverClass = null;
-                  }
-                  catch (IllegalAccessException iae)
-                  {
+                  } catch (IllegalAccessException iae) {
                      logError("IllegalAccessException : " + iae.getMessage());
                      driverClass = null;
-                  }
-                  catch (NoSuchFieldError err)
-                  {
+                  } catch (NoSuchFieldError err) {
                      logError("NoSuchFieldError : " + err.getMessage());
                      driverClass = null;
-                  }
-                  catch (Exception e)
-                  {
+                  } catch (Exception e) {
                      logError("Exception : " + e.getMessage());
                      driverClass = null;
                   }
                }
 
             }
-         }
-         if ((!(driver.equalsIgnoreCase(PSJdbcUtils.MYSQL))) || (m_extDriver == null))
-         {
-            Class.forName(className);
+         } else {
+            if (m_extDriver == null) {
+               Path dir = Paths.get(m_rootDir, PSJdbcUtils.DEFAULT_JDBC_DRIVER_LOCATION);
+               if (Files.exists(dir)) {
+
+               } else if (Files.exists(Paths.get(m_rootDir, PSJdbcUtils.DEFAULT_DTS_DRIVER_LOCATION))) {
+                  dir = Paths.get(m_rootDir, PSJdbcUtils.DEFAULT_DTS_DRIVER_LOCATION);
+               } else if (Files.exists(Paths.get(m_rootDir, PSJdbcUtils.DEFAULT_STAGING_DTS_DRIVER_LOCATION))) {
+                  dir = Paths.get(m_rootDir, PSJdbcUtils.DEFAULT_STAGING_DTS_DRIVER_LOCATION);
+               }
+
+               try {
+                  List<File> files = Files.list(dir).map(Path::toFile)
+                          .collect(Collectors.toList());
+
+                  URL[] urlList = new URL[files.size()];
+                  int i = 0;
+                  for (File f : files) {
+                     urlList[i] = f.toURI().toURL();
+                     i++;
+                  }
+                  ClassLoader loader = (ClassLoader) AccessController.doPrivileged(new PrivilegedAction() {
+                     @Override
+                     public Object run() {
+                        return new URLClassLoader(urlList);
+                     }
+                  });
+
+                  System.setProperty("jdbc.drivers", className);
+                  driverClass = Class.forName(className, true, loader);
+                  Object objDriver = driverClass.newInstance();
+                  logInfo("Successfully loaded driver " + className);
+                  if (objDriver instanceof Driver) {
+                     m_extDriver = (Driver) objDriver;
+                      DriverManager.registerDriver((Driver) objDriver);
+                   } else {
+                     logError(objDriver.getClass().getName() + " is not a valid Driver!");
+                  }
+
+               } catch (InstantiationException ie) {
+                  logError("InstantiationException : " + ie.getMessage());
+                  log.error(ie.getMessage());
+                  log.debug(ie.getMessage(), ie);
+               } catch (IllegalAccessException iae) {
+                  logError("IllegalAccessException : " + iae.getMessage());
+                  log.error(iae.getMessage());
+                  log.debug(iae.getMessage(), iae);
+               } catch (NoSuchFieldError err) {
+                  logError("NoSuchFieldError : " + err.getMessage());
+                  log.error(err.getMessage());
+                  log.debug(err.getMessage(), err);
+               } catch (IOException e) {
+                  log.error(PSExceptionUtils.getMessageForLog(e));
+                  log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+                  logError(e.getMessage());
+               }
+            }
          }
       }
       catch (ClassNotFoundException cls)
       {
+         log.error(cls.getMessage());
+         log.debug(cls.getMessage(), cls);
          logError("Could not find the driver class : " + className);
          logError("Exception : " + cls.getMessage());
          throw new SQLException("JDBC driver class not found. " + cls.toString());
       }
       catch (LinkageError link)
       {
+         log.error(link.getMessage());
+         log.debug(link.getMessage(), link);
          logError("linkage error");
          logError("Exception : " + link.getMessage());
          throw new SQLException("JDBC driver could not be loaded. " + link.toString());
       }
       catch (Exception e)
       {
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          logError("Exception : " + e.getMessage());
          throw new SQLException("Exception. " + e.toString());
       }
       String dbUrl = PSJdbcUtils.getJdbcUrl(driver, server);
       Properties props = PSSqlHelper.makeConnectProperties(dbUrl, db, uid, pw);
-
-      logInfo("Connecting to: " + dbUrl);
-
-      Connection conn = null;
-      try
-      {
-         if (driver.equalsIgnoreCase(PSJdbcUtils.MYSQL))
-         {
-            try
-            {
-               if (m_extDriver != null)
-                  conn = m_extDriver.connect(dbUrl, props);
-            }
-            catch (Exception e)
-            {
-               conn = null;
-               logError("Exception : " + e.getMessage());
-            }
-         }
-         if (conn == null)
-            conn = DriverManager.getConnection(dbUrl, props);
-      }
-      catch (SQLException e)
-      {
-         logError("Connection failed : " + e.getMessage());
-         conn = null;
-      }
-      return conn;
-   }
-
-   /**
-    * Create a new database connection for the provided driver type. Use the
-    * given server configuration to get the driver class. Determines if drive is
-    * a supplied driver or a driver that we have to load. The caller of this
-    * function is responsible for closing the connection.
-    * 
-    * @param driver the db driver type, may not be <code>null</code>.
-    * @param server the database server, may not be <code>null</code>.
-    * @param db the database to be used, may be <code>null</code>.
-    * @param uid the user Id, may not be <code>null</code>.
-    * @param pw the user password, may not be <code>null</code>.
-    * 
-    * @return the created connection, may be <code>null</code>.
-    * @throws SQLException if any database related error occurred
-    */
-   public static Connection createConnection(String driver, String server, String db, String uid, String pw)
-         throws SQLException
-   {
-      Connection conn = null;
-
-      if(driver.equalsIgnoreCase(PSJdbcUtils.DERBY_DRIVER)){
-          /** Note: Apparently in the 5.4 version an arbitrary decision was made to switch to the
-           * embedded Derby jdbc driver as the default.  This of course breaks on upgrade as the
-           * previous version deployed Derby in networked mode by default.  So we will switch to the
-           * embedded defaults in this case.
-           */
-
-           if(!server.equalsIgnoreCase(RxInstallerProperties.getString("embedded.db_server_name"))) {
-               logInfo("Switching Apache Derby configuration to embedded mode for upgrade...");
-               server = RxInstallerProperties.getString("embedded.db_server_name");
-               db = "";
-               uid =  RxInstallerProperties.getString("embedded.user_id");
-               pw =   RxInstallerProperties.getString("embedded.pwd");
-               String derbyHome = Paths.get(InstallUtil.m_rootDir + File.separator + "Repository").toAbsolutePath().toString();
-               logInfo("Setting Derby home to: " + derbyHome);
-               System.setProperty("derby.system.home", derbyHome);
-           }
-      }
-
-      if (driver.equalsIgnoreCase(PSJdbcUtils.MYSQL))
-      {
-         conn = createLoadedConnection(driver, server, db, uid, pw);
-      }
-      else
-      {
-         conn = createStandardConnection(driver, server, db, uid, pw);
-      }
-
-      return conn;
-   }
-
-   /**
-    * Create a new database connection for the provided driver type. Use the
-    * given server configuration to get the driver class. The caller of this
-    * function is responsible for closing the connection.
-    * 
-    * @param driver the db driver type, may not be <code>null</code>.
-    * @param server the database server, may not be <code>null</code>.
-    * @param db the database to be used, may be <code>null</code>.
-    * @param uid the user Id, may not be <code>null</code>.
-    * @param pw the user password, may not be <code>null</code>.
-    * 
-    * @return the created connection, may be <code>null</code>.
-    * @throws SQLException if any database related error occurred
-    */
-   public static Connection createStandardConnection(String driver, String server, String db, String uid, String pw)
-         throws SQLException
-   {
-      if (driver == null)
-         throw new IllegalArgumentException("driver may not be null");
-
-      if (server == null)
-         throw new IllegalArgumentException("server may not be null");
-
-      if (uid == null)
-         throw new IllegalArgumentException("uid may not be null");
-
-      if (pw == null)
-         throw new IllegalArgumentException("pw may not be null");
-
-      String className;
-      Class driverClass;
-
-      String strJTdsSqlServerDesc = RxInstallerProperties.getResources().getString("jtdssqlserverdesc");
-
-      if (driver.equals(PSJdbcUtils.ORACLE))
-         className = RxInstallerProperties.getResources().getString("oracle");
-      else if (driver.equals(strJTdsSqlServerDesc))
-         className = RxInstallerProperties.getResources().getString("jtds");
-      else
-         className = RxInstallerProperties.getResources().getString(driver);
-
-      if (className == null) {
-         throw new SQLException("Cannot load driver of " + driver + " className is not defined.");
-      }
-
-      try
-      {
-         Class.forName(className);
-      }
-      catch (ClassNotFoundException cls)
-      {
-         logError("Could not find the driver class : " + className);
-         logError("Exception : " + cls.getMessage());
-         throw new SQLException("JDBC driver class not found. " + cls.toString());
-      }
-      catch (LinkageError link)
-      {
-         logError("linkage error");
-         logError("Exception : " + link.getMessage());
-         throw new SQLException("JDBC driver could not be loaded. " + link.toString());
-      }
-      catch (Exception e)
-      {
-         logError("Exception : " + e.getMessage());
-         throw new SQLException("Exception. " + e.toString());
-      }
-
-      ClassLoader cl = ClassLoader.getSystemClassLoader();
-
-      URL[] urls = ((URLClassLoader)cl).getURLs();
-
-      logInfo("System class path:");
-      for(URL url: urls){
-         logInfo(url.getFile());
-      }
-
-      ClassLoader clExt = expandClasspath();
-       urls = ((URLClassLoader)clExt).getURLs();
-
-       logInfo("Extended class path:");
-      for(URL url: urls){
-         logInfo(url.getFile());
-      }
-
-      String dbUrl = PSSqlHelper.getJdbcUrl(driver, server);
-      Properties props = PSSqlHelper.makeConnectProperties(dbUrl, db, uid, pw);
-
-      logInfo("Connecting to: " + dbUrl);
-
-      //Set the jdbc driver classname property to include the driver in case it is not a type 4 driver.
-      System.setProperty("jdbc.drivers",className);
-      if(m_extDriver == null ) {
-         try {
-            driverClass = Class.forName(className, true, clExt);
-
-            if (driverClass != null) {
-               Object objDriver = driverClass.newInstance();
-               if (objDriver != null) {
-                  logInfo("Successfully loaded driver " + className);
-                  if (objDriver instanceof Driver) {
-                     m_extDriver = (Driver) objDriver;
-                     logInfo(objDriver.getClass().getName() + " is a valid driver.");
-
-                     DriverManager.registerDriver((Driver) objDriver);
-                     logInfo("Registered driver: " + className);
-
-                  } else {
-                     logError(objDriver.getClass().getName() + " is not a valid Driver!");
-                  }
-               } else {
-                  logError("Unable to instantiate driver: " + objDriver.getClass().getName());
-               }
-
-            } else {
-               logError("Unable to load configured driver class:" + className + " from classpath.");
-            }
-         } catch (IllegalAccessException e) {
-            logError(e.getMessage());
-         } catch (InstantiationException e) {
-            logError(e.getMessage());
-         } catch (ClassNotFoundException e) {
-            logError(e.getMessage());
-         }
-      }
-
+      logInfo("Connecting to: URL= " + dbUrl + " UID =" + uid );
       Connection conn;
       if(m_extDriver == null) {
-          conn = DriverManager.getConnection(dbUrl, props);
+         conn = DriverManager.getConnection(dbUrl, props);
       }else{
          logInfo("Connecting with direct driver.");
          conn = m_extDriver.connect(dbUrl,props);
@@ -1614,16 +1403,59 @@ public class InstallUtil
       }
 
       return conn;
+
+
+   }
+
+   /**
+    * Create a new database connection for the provided driver type. Use the
+    * given server configuration to get the driver class. Determines if drive is
+    * a supplied driver or a driver that we have to load. The caller of this
+    * function is responsible for closing the connection.
+    *
+    * @param driver the db driver type, may not be <code>null</code>.
+    * @param server the database server, may not be <code>null</code>.
+    * @param db the database to be used, may be <code>null</code>.
+    * @param uid the user Id, may not be <code>null</code>.
+    * @param pw the user password, may not be <code>null</code>.
+    *
+    * @return the created connection, may be <code>null</code>.
+    * @throws SQLException if any database related error occurred
+    */
+   public static Connection createConnection(String driver, String server, String db, String uid, String pw)
+           throws SQLException
+   {
+
+      if(driver.equalsIgnoreCase(PSJdbcUtils.DERBY_DRIVER)){
+         /** Note: Apparently in the 5.4 version an arbitrary decision was made to switch to the
+          * embedded Derby jdbc driver as the default.  This of course breaks on upgrade as the
+          * previous version deployed Derby in networked mode by default.  So we will switch to the
+          * embedded defaults in this case.
+          */
+
+         if(!server.equalsIgnoreCase(RxInstallerProperties.getString("embedded.db_server_name"))) {
+            logInfo("Switching Apache Derby configuration to embedded mode for upgrade...");
+            server = RxInstallerProperties.getString("embedded.db_server_name");
+            db = "";
+            uid =  RxInstallerProperties.getString("embedded.user_id");
+            pw =   RxInstallerProperties.getString("embedded.pwd");
+            String derbyHome = Paths.get(InstallUtil.m_rootDir + File.separator + "Repository").toAbsolutePath().toString();
+            logInfo("Setting Derby home to: " + derbyHome);
+            System.setProperty("derby.system.home", derbyHome);
+         }
+      }
+
+      return createLoadedConnection(driver, server, db, uid, pw);
    }
 
    /**
     * Converts a variable name to the InstallAnywhere format, which is:
     * $VARIABLE$. This value may then be resolved to find the value of the
     * variable.
-    * 
+    *
     * @param var name of the InstallAnywhere variable, may not be
     *           <code>null</code> or empty.
-    * 
+    *
     * @return the InstallAnywhere variable ready for resolution, never
     *         <code>null</code> or empty.
     */
@@ -1640,11 +1472,11 @@ public class InstallUtil
    /**
     * Creates an InstallAnywhere variable name for an Rx custom code
     * implementation class.
-    * 
+    *
     * @param classname the name of the custom code class, may not be
     *           <code>null</code> or empty.
     * @param var the variable name, may not be <code>null</code> or empty.
-    * 
+    *
     * @return an InstallAnywhere variable in the form CLASS_VARIABLE, never
     *         <code>null</code> or empty.
     */
@@ -1670,52 +1502,32 @@ public class InstallUtil
 
    /**
     * Determines if a given port is valid and bindable.
-    * 
+    *
     * @param port may be <code>null</code> or <code>empty</code>.
     * @return <code>true</code> if server socket was successfully bound to a
     *         given port, <code>false</code> otherwise.
     */
+   @SuppressFBWarnings("UNENCRYPTED_SERVER_SOCKET") //Is just a port check no TLS required
    public static boolean isBindableTcpPort(String port)
    {
       if (port == null || port.trim().length() == 0)
          return false;
 
-      ServerSocket s = null;
-      try
-      {
-         s = new ServerSocket(Integer.parseInt(port));
+      try(ServerSocket  s = new ServerSocket(Integer.parseInt(port))){
 
          return s.isBound();
-      }
-      catch (NumberFormatException e)
+      } catch (IOException e) {
+         PSLogger.logError("Given Port is in use: "+ e.getMessage() + port );
+      } catch (NumberFormatException e)
       {
-         System.out.println("Given Invalid port: " + port);
+         PSLogger.logError("Given Invalid port: " + e.getMessage() + port );
       }
-      catch (IOException e)
-      {
-         System.out.println("Given Port is in use: " + port);
-      }
-      finally
-      {
-         if (s != null)
-         {
-            try
-            {
-               s.close();
-            }
-            catch (IOException e1)
-            {
-               e1.printStackTrace(); // should never happen
-            }
-         }
-      }
-
       return false;
    }
 
    /**
     * Returns machine host name.
-    * 
+    *
     * @return machine host name, never <code>null</code>, never
     *         <code>empty</code>. Defaults to "localhost".
     */
@@ -1729,7 +1541,7 @@ public class InstallUtil
       {
          String msg = "Failed to get machine host name. " + e.getLocalizedMessage();
 
-         System.out.println(msg);
+         PSLogger.logError(msg);
       }
 
       return "localhost";
@@ -1737,7 +1549,7 @@ public class InstallUtil
 
    /**
     * Gets the fully qualified domain name for this IP address.
-    * 
+    *
     * @return machine domain name, never <code>null</code>, may be
     *         <code>empty</code>.
     */
@@ -1756,7 +1568,7 @@ public class InstallUtil
       {
          String msg = "Failed to get a domain name. " + e.getLocalizedMessage();
 
-         System.out.println(msg);
+         PSLogger.logError(msg);
       }
 
       return "";
@@ -1766,7 +1578,7 @@ public class InstallUtil
 
    /**
     * Performs branding of the Rhythmyx installation found at rootDir.
-    * 
+    *
     * @param strRootDir may not be <code>null</code> or <code>empty</code>.
     */
    public static void brandProduct(String strRootDir)
@@ -1791,31 +1603,31 @@ public class InstallUtil
    }
 
    /**
-     * This one is used if table not exist and we are performing operation on it So that this will bypass the operation.
-     *  
-     */
-    public static boolean tableNotExists() {
-       return tableNotExists();
-    }
+    * This one is used if table not exist and we are performing operation on it So that this will bypass the operation.
+    *
+    */
+   public static boolean tableNotExists() {
+      return false;
+   }
 
    /**
-     * This one is used if table not exist and we are performing operation on it So that this will bypass the operation.
-     *
-     * @param e the SQLException
-     */
-    public static boolean tableNotExists(SQLException e) {
-        boolean notExists;
-        if(e.getSQLState().equals("42Y55") || e.getSQLState().equals("42X65") || e.getSQLState().equals("42X86") || e.getSQLState().equals("X0Y32") || e.getSQLState().equals("X0X05")) {
-           notExists = true;
-        } else {
-           notExists = false;
-        }
-        return notExists;
-    }
+    * This one is used if table not exist and we are performing operation on it So that this will bypass the operation.
+    *
+    * @param e the SQLException
+    */
+   public static boolean tableNotExists(SQLException e) {
+      boolean notExists;
+      if(e.getSQLState().equals("42Y55") || e.getSQLState().equals("42X65") || e.getSQLState().equals("42X86") || e.getSQLState().equals("X0Y32") || e.getSQLState().equals("X0X05")) {
+         notExists = true;
+      } else {
+         notExists = false;
+      }
+      return notExists;
+   }
 
-    /**
+   /**
     * Set internal path to driver to use
-    * 
+    *
     * @param rootDir
     */
    public static void setRootDir(String rootDir)
@@ -1827,21 +1639,21 @@ public class InstallUtil
             m_rootDir = test;
       }
    }
-   
+
    /**
     * Set if the calling code is performing a silent installation to enable additional
     * error logging.
-    * 
+    *
     * @param isSilent <code>true</code> if performing a silent install, <code>false</code> if not.
     */
    public static void setIsSilentInstall(boolean isSilent)
    {
       ms_isSilentInstall = isSilent;
    }
-   
+
    /**
     * Determine if additional error logging is enabled for silent install
-    * 
+    *
     * @return <code>true</code> if performing a silent install, <code>false</code> if not.
     */
    public static boolean isSilentInstall()
@@ -1921,18 +1733,11 @@ public class InstallUtil
     */
    public final static String SCHEMA_PROPERTY = "schemaName";
 
-   /**
-    * the list of jar file URLs for jdbc drivers, initially <code>null</code>
-    */
-   private static List<URL> m_jarUrls = null;
-
-   /**
-    * External driver object
-    */
-   private static Driver m_extDriver = null;
-   
    private static String m_rootDir = ".";
-   
+
    private static boolean ms_isSilentInstall = false;
+   private static Driver m_extDriver = null;
+   private static List m_jarUrls = null;
+
 
 }

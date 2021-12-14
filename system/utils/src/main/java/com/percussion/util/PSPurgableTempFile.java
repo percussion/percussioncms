@@ -17,20 +17,22 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.util;
 
+import com.percussion.error.PSExceptionUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 
 /**
@@ -44,6 +46,12 @@ import org.apache.commons.logging.LogFactory;
  */
 public class PSPurgableTempFile extends File implements AutoCloseable
 {
+
+   /**
+    * logger
+    */
+   private static final Logger log = LogManager.getLogger(PSPurgableTempFile.class);
+
    /**
     * Convenience constructor that calls {@link #PSPurgableTempFile(String, 
     * String, File, String, String, String) PSPurgableTempFile(prefix, 
@@ -136,6 +144,8 @@ public class PSPurgableTempFile extends File implements AutoCloseable
                tempFile = createTempFile(prefix, suffix, dir);
             } catch (IOException ex)
             {
+               log.error(ex.getMessage());
+               log.debug(ex.getMessage(), ex);
                throw new IllegalArgumentException("Cannot create tempfile in dir "+dir.getCanonicalPath(), ex);
             }
          }
@@ -219,11 +229,13 @@ public class PSPurgableTempFile extends File implements AutoCloseable
             try {
                m_isDeleted = delete();
                if(!m_isDeleted)
-                  ms_log.debug("Could not delete tempfile "+this.getAbsolutePath(),new Throwable("STACKTRACE"));
+                  log.debug("Could not delete tempfile {}", this.getAbsolutePath(),new Throwable("STACKTRACE"));
                
             } catch (Exception e)
             {
-               ms_log.debug("Could not release temp file "+this.getAbsolutePath(),e);
+               log.error(PSExceptionUtils.getMessageForLog(e));
+               log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+               log.debug("Could not release temp file {} ", this.getAbsolutePath(),e);
             }
       }
    }
@@ -282,22 +294,19 @@ public class PSPurgableTempFile extends File implements AutoCloseable
          
          // Clear all files in temp directory
          File tempfiles[] = ms_psxTempDirectory.listFiles();
-         for(int i = 0; i < tempfiles.length; i++)
-         {
-            tempfiles[i].delete();
+         for (File tempfile : tempfiles) {
+            tempfile.delete();
          }
       }
       catch (IOException e)
       {
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }      
    }
    
 
-   /**
-    * logger
-    */
-   private static Log ms_log = LogFactory.getLog(PSPurgableTempFile.class);
+
    
    
    private static Object makeTempLock = new Object();

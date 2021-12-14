@@ -17,32 +17,27 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.monitor.service;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
-
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 
 
 @XmlRootElement
 public class PSMonitorList
 {
 	@XmlElement
-	public List<PSMonitor> monitor = new ArrayList<PSMonitor>();
+	public List<PSMonitor> monitor = new ArrayList<>();
 	
 	public void addEntriesToList(Map<String, PSMonitor> monitors)
 	{
@@ -55,8 +50,9 @@ public class PSMonitorList
             {
                 String name1 = o1.getStats().getEntries().get("name");
                 String name2 = o2.getStats().getEntries().get("name");
-                if (name1 == null)
-                    return -1;
+                if (name1 == null) {
+					return -1;
+				}
                 
                 return name1.compareToIgnoreCase(name2);
             }           

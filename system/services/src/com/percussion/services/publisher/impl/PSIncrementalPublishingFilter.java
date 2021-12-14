@@ -17,13 +17,11 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.services.publisher.impl;
-
-import static org.apache.commons.lang.Validate.notNull;
 
 import com.percussion.services.assembly.IPSAssemblyService;
 import com.percussion.services.assembly.IPSAssemblyTemplate;
@@ -51,7 +49,12 @@ import com.percussion.services.sitemgr.PSSiteManagerLocator;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.timing.PSTimer;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
+import javax.jcr.RepositoryException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -60,12 +63,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.jcr.RepositoryException;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import static org.apache.commons.lang.Validate.notNull;
 
 /**
  * Filter a content list for incremental publishing
@@ -77,8 +75,7 @@ public class PSIncrementalPublishingFilter
    /**
     * Log
     */
-   private static Log ms_log = LogFactory
-         .getLog(PSIncrementalPublishingFilter.class);
+   private static final Logger ms_log = LogManager.getLogger(PSIncrementalPublishingFilter.class);
 
    /**
     * Each site item needs to be recorded under a key that allows us to lookup
@@ -307,7 +304,7 @@ public class PSIncrementalPublishingFilter
    private Collection<Integer> getContentIds(List<IPSFilterItem> items,
          Collection<Integer> movedIds, Collection<Integer> alwaysPublishIds)
    {
-      List<Integer> contentIds = new ArrayList<Integer>();
+      List<Integer> contentIds = new ArrayList<>();
       for (IPSFilterItem item : items)
       {
          int id = ((PSLegacyGuid)item.getItemId()).getContentId();
@@ -332,7 +329,7 @@ public class PSIncrementalPublishingFilter
    private Set<IPSGuid> findComputedContentTypes(IPSAssemblyService asm,
          IPSContentMgr cmgr, IPSSite site) throws RepositoryException
    {
-      Set<IPSGuid> computedCTSet = new HashSet<IPSGuid>();
+      Set<IPSGuid> computedCTSet = new HashSet<>();
       String finder = null;
 
       for (IPSAssemblyTemplate t : site.getAssociatedTemplates())

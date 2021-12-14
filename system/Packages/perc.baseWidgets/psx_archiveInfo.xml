@@ -18,7 +18,7 @@
   ~      Burlington, MA 01803, USA
   ~      +01-781-438-9900
   ~      support@percussion.com
-  ~      https://www.percusssion.com
+  ~      https://www.percussion.com
   ~
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   -->
@@ -40,7 +40,7 @@
             <Description>The base widgets plugin for Percussion CM.</Description>
             <Publisher name="Percussion Software Inc." url="http://www.percussion.com"/>
             <CmsVersion max="9.0.0" min="1.0.0"/>
-            <Version>1.1.6</Version>
+            <Version>1.1.8</Version>
             <ImplConfigFile/>
             <LocalConfigFile/>
             <PKGDependencies/>
@@ -2337,34 +2337,6 @@
                           </PSXDeployableObject>
                       </PSXUserDependency>
 
-                      <PSXUserDependency parentId="sys_UserDependency" parentKey="Custom-sys_UserDependency" parentType="Custom" path="web_resources/cm/jslib/jquery.js">
-                          <PSXDeployableObject>
-                              <PSXDependency autoDep="no" autoExpand="yes" dependencyId="web_resources/cm/jslib/jquery.js" dependencyType="User" displayName="jquery.js" isAssociation="no" isIncluded="yes" objectType="sys_UserDependency" objectTypeName="User Dependency" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
-                                  <Dependencies/>
-                              </PSXDependency>
-                              <RequiredClasses/>
-                          </PSXDeployableObject>
-                      </PSXUserDependency>
-
-
-                     <PSXUserDependency parentId="sys_UserDependency" parentKey="Custom-sys_UserDependency" parentType="Custom" path="web_resources/cm/jslib/jquery-ui.1.12.1.js">
-                        <PSXDeployableObject>
-                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="web_resources/cm/jslib/jquery-ui.1.12.1.js" dependencyType="User" displayName="jquery-ui.1.12.1.js" isAssociation="no" isIncluded="yes" objectType="sys_UserDependency" objectTypeName="User Dependency" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
-                              <Dependencies/>
-                           </PSXDependency>
-                           <RequiredClasses/>
-                        </PSXDeployableObject>
-                     </PSXUserDependency>
-
-
-                      <PSXUserDependency parentId="sys_UserDependency" parentKey="Custom-sys_UserDependency" parentType="Custom" path="web_resources/cm/jslib/jquery-ui.js">
-                          <PSXDeployableObject>
-                              <PSXDependency autoDep="no" autoExpand="yes" dependencyId="web_resources/cm/jslib/jquery-ui.js" dependencyType="User" displayName="jquery-ui.js" isAssociation="no" isIncluded="yes" objectType="sys_UserDependency" objectTypeName="User Dependency" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
-                                  <Dependencies/>
-                              </PSXDependency>
-                              <RequiredClasses/>
-                          </PSXDeployableObject>
-                      </PSXUserDependency>
                      <PSXUserDependency parentId="sys_UserDependency" parentKey="Custom-sys_UserDependency" parentType="Custom" path="rx_resources/widgets/PSWidget_RawHtml/images/widgetHtmSampleBackground.png">
                         <PSXDeployableObject>
                            <PSXDependency autoDep="no" autoExpand="yes" dependencyId="rx_resources/widgets/PSWidget_RawHtml/images/widgetHtmSampleBackground.png" dependencyType="User" displayName="widgetHtmSampleBackground.png" isAssociation="no" isIncluded="yes" objectType="sys_UserDependency" objectTypeName="User Dependency" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">

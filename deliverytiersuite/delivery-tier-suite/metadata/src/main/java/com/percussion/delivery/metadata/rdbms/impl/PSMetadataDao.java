@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -29,23 +29,21 @@ import com.percussion.delivery.metadata.IPSMetadataDao;
 import com.percussion.delivery.metadata.IPSMetadataEntry;
 import com.percussion.delivery.metadata.IPSMetadataProperty;
 import com.percussion.delivery.metadata.utils.PSHashCalculator;
+import com.percussion.error.PSExceptionUtils;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.FlushMode;
-import org.hibernate.HibernateException;
-import org.hibernate.query.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Projections;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaDelete;
@@ -62,6 +60,7 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@SuppressFBWarnings("UNSAFE_HASH_EQUALS")
 @Repository
 @Scope("singleton")
 public class PSMetadataDao implements IPSMetadataDao
@@ -77,15 +76,14 @@ public class PSMetadataDao implements IPSMetadataDao
     /**
      * Logger for this class.
      */
-    private static final Log log = LogFactory.getLog(PSMetadataDao.class);
+    private static final Logger log = LogManager.getLogger(PSMetadataDao.class);
 
 
-    private static PSHashCalculator hashCalculator = new PSHashCalculator();
+    private static final PSHashCalculator hashCalculator = new PSHashCalculator();
 
     private final Pattern patternToGetDirectoryFromPagepath = Pattern.compile("(.+)/[^/]+");
 
 
-   // @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.REPEATABLE_READ)
 
     public void delete(Collection<String> pagepaths)
     {
@@ -106,7 +104,8 @@ public class PSMetadataDao implements IPSMetadataDao
             if(tx != null && tx.isActive()) {
                 tx.rollback();
             }
-            log.error(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
     }
 
@@ -129,7 +128,8 @@ public class PSMetadataDao implements IPSMetadataDao
                 if(tx !=null && tx.isActive()){
                     tx.rollback();
                 }
-                log.error(e.getMessage(),e);
+                log.error(PSExceptionUtils.getMessageForLog(e));
+                log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             }
         }
         return false;
@@ -141,7 +141,7 @@ public class PSMetadataDao implements IPSMetadataDao
         Validate.notEmpty(prevSiteName, "prevSiteName cannot be null or empty.");
         Validate.notEmpty(newSiteName, "newSiteName cannot be null or empty.");
 
-        log.debug("Removing entries for site: " + prevSiteName);
+        log.debug("Removing entries for site: {}", prevSiteName);
 
 
         Transaction tx = null;
@@ -157,7 +157,7 @@ public class PSMetadataDao implements IPSMetadataDao
             if(tx !=null && tx.isActive()){
                 tx.rollback();
             }
-            log.error(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
         }
     }
 
@@ -184,7 +184,7 @@ public class PSMetadataDao implements IPSMetadataDao
             if(tx !=null && tx.isActive()){
                 tx.rollback();
             }
-            log.error(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
         }
     }
 
@@ -214,7 +214,7 @@ public class PSMetadataDao implements IPSMetadataDao
             CriteriaQuery<PSDbMetadataEntry> criteriaQuery = criteriaBuilder.createQuery(PSDbMetadataEntry.class);
             Root<PSDbMetadataEntry> root = criteriaQuery.from(PSDbMetadataEntry.class);
             List<PSDbMetadataEntry> result = session.createQuery(criteriaQuery).getResultList();
-            List<IPSMetadataEntry> entries = new ArrayList<IPSMetadataEntry>();
+            List<IPSMetadataEntry> entries = new ArrayList<>();
             if (result != null) {
                 for (PSDbMetadataEntry e : result)
                     entries.add(e);
@@ -229,9 +229,9 @@ public class PSMetadataDao implements IPSMetadataDao
     {
         Validate.notNull(entries, "entries cannot be null");
 
-        if (entries.size() == 0)
+        if (entries.isEmpty())
             return;
-        ;
+
 
         Transaction tx = null;
         try(Session session = getSession()) {
@@ -253,7 +253,7 @@ public class PSMetadataDao implements IPSMetadataDao
             if(tx !=null && tx.isActive()){
                 tx.rollback();
             }
-            log.error(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
         }
 
     }
@@ -301,7 +301,7 @@ public class PSMetadataDao implements IPSMetadataDao
             // the Derby built-in regular expression functionality if this is too
             // slow.
             Matcher matcher;
-            Set<String> indexedDirectories = new HashSet<String>();
+            Set<String> indexedDirectories = new HashSet<>();
 
             for (String dataEntry : resultList) {
                 matcher = patternToGetDirectoryFromPagepath.matcher(dataEntry);
@@ -328,7 +328,7 @@ public class PSMetadataDao implements IPSMetadataDao
 
     private Collection<String> getPagepathHashes(Collection<String> pagepaths)
     {
-        List<String> pagepathHashes = new ArrayList<String>();
+        List<String> pagepathHashes = new ArrayList<>();
 
         for (String pp : pagepaths)
         {
@@ -360,7 +360,7 @@ public class PSMetadataDao implements IPSMetadataDao
         Set<IPSMetadataProperty> props1 = existing.getProperties();
         Set<IPSMetadataProperty> props2 = entry.getProperties();
 
-        Map<Object, IPSMetadataProperty> propMap = new HashMap<Object, IPSMetadataProperty>();
+        Map<Object, IPSMetadataProperty> propMap = new HashMap<>();
         for(IPSMetadataProperty p : props2)
             propMap.put(((PSDbMetadataProperty)p).getId(), p);
         for(IPSMetadataProperty prop : props1)
@@ -391,7 +391,7 @@ public class PSMetadataDao implements IPSMetadataDao
     private Collection<PSDbMetadataEntry> convertRestEntriesToDb(Collection<IPSMetadataEntry> entries)
     {
         Validate.notNull(entries, "list of metadata entries cannot be null");
-        Collection<PSDbMetadataEntry> result = new ArrayList<PSDbMetadataEntry>();
+        Collection<PSDbMetadataEntry> result = new ArrayList<>();
 
         for (IPSMetadataEntry metadataEntry : entries)
         {
@@ -467,7 +467,8 @@ public class PSMetadataDao implements IPSMetadataDao
             if(tx !=null && tx.isActive()){
                 tx.rollback();
             }
-            log.error(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
         return updatedRows;
     }

@@ -17,12 +17,13 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.rx.publisher.jsf.nodes;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.rx.jsf.PSCategoryNodeBase;
 import com.percussion.rx.jsf.PSNavigation;
 import com.percussion.services.assembly.IPSAssemblyService;
@@ -41,8 +42,14 @@ import com.percussion.services.sitemgr.IPSPublishingContext;
 import com.percussion.services.sitemgr.IPSSiteManager;
 import com.percussion.services.sitemgr.PSSiteManagerLocator;
 import com.percussion.services.sitemgr.data.PSLocationScheme;
+import com.percussion.services.sitemgr.data.PSPublishingContext;
 import com.percussion.utils.guid.IPSGuid;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
+import javax.faces.model.SelectItem;
+import javax.jcr.RepositoryException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -52,13 +59,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import javax.faces.model.SelectItem;
-import javax.jcr.RepositoryException;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
  * This node represents a single context design object.
@@ -109,7 +109,7 @@ public class PSContextNode extends PSDesignNode
    }
    
    /**
-    * See {@link IPSPublishingContext#setDescription()}.
+    * See {@link IPSPublishingContext#setDescription(String)} ()}.
     * 
     * @param desc May be <code>null</code> or empty.
     * @see #getDescription()
@@ -130,7 +130,7 @@ public class PSContextNode extends PSDesignNode
    }
    
    /**
-    * See {@link IPSPublishingContext#setName()}.
+    * See {@link IPSPublishingContext#getName()}.
     * 
     * @param name Never <code>null</code> or empty. It should be unique among
     * objects of this type, but that is not validated by this method.
@@ -161,7 +161,13 @@ public class PSContextNode extends PSDesignNode
       if (m_context == null)
       {
          IPSSiteManager smgr = PSSiteManagerLocator.getSiteManager();
-         m_context = smgr.loadContextModifiable(getGUID());
+         try {
+            m_context = smgr.loadContextModifiable(getGUID());
+         } catch (PSNotFoundException e) {
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+            m_context = new PSPublishingContext();
+         }
       }
       return m_context;
    }
@@ -192,7 +198,7 @@ public class PSContextNode extends PSDesignNode
     */
    public SelectItem[] getDefaultSchemeChoices()
    {
-      List<SelectItem> schemeNames = new ArrayList<SelectItem>();
+      List<SelectItem> schemeNames = new ArrayList<>();
       for (PSLocationSchemeWrapper s : getLocationSchemes())
       {
          schemeNames.add(new SelectItem(s.getName()));
@@ -288,8 +294,7 @@ public class PSContextNode extends PSDesignNode
    }
 
    @Override
-   public String copy()
-   {
+   public String copy() throws PSNotFoundException {
       IPSSiteManager siteMgr = PSSiteManagerLocator.getSiteManager();
       IPSPublishingContext copiedContext = siteMgr.createContext();
       copiedContext.copy(getContext());
@@ -300,7 +305,7 @@ public class PSContextNode extends PSDesignNode
       copiedContext.setDefaultSchemeId(null);
       IPSGuid defSchemeId = getContext().getDefaultSchemeId();
       
-      List<IPSLocationScheme> schemes = new ArrayList<IPSLocationScheme>();
+      List<IPSLocationScheme> schemes = new ArrayList<>();
       for (PSLocationSchemeWrapper wrapper : getLocationSchemes())
       {         
          IPSLocationScheme copiedScheme = copyScheme(wrapper.getScheme(),
@@ -330,8 +335,7 @@ public class PSContextNode extends PSDesignNode
     * @return the cloned Location Scheme, never <code>null</code>.
     */
    private IPSLocationScheme copyScheme(IPSLocationScheme scheme, 
-         IPSPublishingContext parent)
-   {
+         IPSPublishingContext parent) throws PSNotFoundException {
       IPSGuidManager guidMgr = PSGuidManagerLocator.getGuidMgr();
 
       // todo ph: there should be a copy method on the service that clones
@@ -395,7 +399,7 @@ public class PSContextNode extends PSDesignNode
       if (m_ctypeLabels != null)
          return m_ctypeLabels;
       
-      Map<IPSGuid, String> results = new HashMap<IPSGuid, String>();
+      Map<IPSGuid, String> results = new HashMap<>();
       try
       {
          IPSContentMgr mgr = PSContentMgrLocator.getContentMgr();
@@ -410,8 +414,9 @@ public class PSContextNode extends PSDesignNode
       }
       catch (RepositoryException e)
       {
-         ms_log.error(
-               "Failed while cataloging content types for context node.", e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+         log.error("Failed while cataloging content types for context node. {}",PSExceptionUtils.getMessageForLog(e));
       }
       return results;
    }
@@ -429,7 +434,7 @@ public class PSContextNode extends PSDesignNode
       if (m_templateLabels != null)
          return m_templateLabels;
       
-      Map<IPSGuid, String> results = new HashMap<IPSGuid, String>();
+      Map<IPSGuid, String> results = new HashMap<>();
       try
       {
          IPSAssemblyService svc = PSAssemblyServiceLocator.getAssemblyService();
@@ -442,8 +447,9 @@ public class PSContextNode extends PSDesignNode
       }
       catch (PSAssemblyException e)
       {
-         ms_log.error(
-               "Failed while cataloging templates for context node.", e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+         log.error("Failed while cataloging templates for context node. {}",PSExceptionUtils.getMessageForLog(e));
       }
       return results;
    }
@@ -527,7 +533,7 @@ public class PSContextNode extends PSDesignNode
          List<IPSLocationScheme> schemes, boolean isNew)
    {
       List<PSLocationSchemeWrapper> wrappedSchemes = 
-         new ArrayList<PSLocationSchemeWrapper>();
+         new ArrayList<>();
       for (IPSLocationScheme scheme : schemes)
          wrappedSchemes.add(new PSLocationSchemeWrapper(scheme, isNew));
       Collections.sort(wrappedSchemes, new Comparator<PSLocationSchemeWrapper>()
@@ -549,8 +555,7 @@ public class PSContextNode extends PSDesignNode
     * 
     * @return the outcome of the Location Scheme editor.
     */
-   public String createScheme()
-   {
+   public String createScheme() throws PSNotFoundException {
       PSLocationSchemeWrapper scheme = createLocationScheme(false);
       m_editedScheme = new PSLocationSchemeEditor(this, scheme, true);
 
@@ -565,8 +570,7 @@ public class PSContextNode extends PSDesignNode
     * 
     * @return the outcome of the Legacy Location Scheme editor.
     */
-   public String createLegacyScheme()
-   {
+   public String createLegacyScheme() throws PSNotFoundException {
       PSLocationSchemeWrapper scheme = createLocationScheme(true);
       m_editedScheme = new PSLocationSchemeEditor(this, scheme, true);
 
@@ -580,8 +584,7 @@ public class PSContextNode extends PSDesignNode
     *  
     * @return the created Location Scheme, never <code>null</code>.
     */
-   private PSLocationSchemeWrapper createLocationScheme(boolean isLegacy)
-   {
+   private PSLocationSchemeWrapper createLocationScheme(boolean isLegacy) throws PSNotFoundException {
       final IPSSiteManager smgr = PSSiteManagerLocator.getSiteManager();
       IPSLocationScheme scheme = smgr.createScheme();
 
@@ -622,7 +625,7 @@ public class PSContextNode extends PSDesignNode
     */
    private List<String> getSchemeNames()
    {
-      List<String> names = new ArrayList<String>();
+      List<String> names = new ArrayList<>();
       for (PSLocationSchemeWrapper wrapper : m_schemes)
       {
          names.add(wrapper.getName());
@@ -648,7 +651,8 @@ public class PSContextNode extends PSDesignNode
       }
       catch (RepositoryException e)
       {
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          return null;
       }
       if (cts.size() == 0)
@@ -690,7 +694,9 @@ public class PSContextNode extends PSDesignNode
       }
       catch (Exception e)
       {
-         ms_log.error("Failure saving context or location scheme: ", e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+         log.error("Failure saving context or location scheme: {} ",PSExceptionUtils.getMessageForLog(e));
          return false;
       }
 
@@ -746,8 +752,7 @@ public class PSContextNode extends PSDesignNode
     * Action to copy a selected Location Scheme, then edit the copied one
     * @return the outcome to navigate to Location Scheme Editor.
     */
-   public String copyScheme()
-   {
+   public String copyScheme() throws PSNotFoundException {
       for(PSLocationSchemeWrapper wrapper : m_schemes)
       {
          if (wrapper.isSelected())
@@ -814,7 +819,9 @@ public class PSContextNode extends PSDesignNode
       }
       catch (PSNotFoundException e)
       {
-         ms_log.error("Failure loading Location Scheme: ", e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+         log.error("Failure loading Location Scheme: {}",PSExceptionUtils.getMessageForLog(e));
          return false;
       }
       return true;
@@ -1085,7 +1092,7 @@ public class PSContextNode extends PSDesignNode
    /**
     * The class log.
     */
-   private final static Log ms_log = LogFactory.getLog(PSContextNode.class);
+   private final static Logger log = LogManager.getLogger(PSContextNode.class);
    
    /**
     * The data object that this node represents. Lazily loaded by
@@ -1116,7 +1123,7 @@ public class PSContextNode extends PSDesignNode
     * persisted when the context is saved. Never <code>null</code>.
     */
    private Collection<IPSLocationScheme> m_deletedSchemes = 
-      new ArrayList<IPSLocationScheme>();
+      new ArrayList<>();
 
    /**
     * Lazily set by {@link #catalogContentTypes()}, then never modified. See

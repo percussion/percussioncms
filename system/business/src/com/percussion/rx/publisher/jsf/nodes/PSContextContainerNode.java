@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -29,10 +29,11 @@ import com.percussion.services.catalog.IPSCatalogSummary;
 import com.percussion.services.catalog.PSCatalogException;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.error.PSNotFoundException;
-import com.percussion.services.sitemgr.IPSLocationScheme;
 import com.percussion.services.sitemgr.IPSPublishingContext;
 import com.percussion.services.sitemgr.IPSSiteManager;
 import com.percussion.services.sitemgr.PSSiteManagerLocator;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -40,9 +41,6 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 public class PSContextContainerNode extends PSEditableNodeContainer
 {
@@ -54,8 +52,7 @@ public class PSContextContainerNode extends PSEditableNodeContainer
    
    /**
     * Ctor.
-    * 
-    * @param title The text to render for the node in the tree.
+    *
     */
    public PSContextContainerNode() 
    {
@@ -63,8 +60,7 @@ public class PSContextContainerNode extends PSEditableNodeContainer
    }
 
    @Override
-   synchronized public List<? extends PSNodeBase> getChildren()
-   {
+   synchronized public List<? extends PSNodeBase> getChildren() throws PSNotFoundException {
       // synchronize this operation to prevent loading children more than once
       // from multiple requests/threads. This may happen when browser user
       // quickly clicking the same link more than once. 
@@ -92,13 +88,12 @@ public class PSContextContainerNode extends PSEditableNodeContainer
     * 
     * @return the outcome for the node, which will navigate to the editor.
     */
-   public String createContext()
-   {
+   public String createContext() throws PSNotFoundException {
       IPSSiteManager smgr = PSSiteManagerLocator.getSiteManager();
       IPSPublishingContext ctx = smgr.createContext();
       ctx.setName(getUniqueName("Context", false));
       PSContextNode node = 
-         new PSContextNode(ctx, new ArrayList<IPSLocationScheme>());
+         new PSContextNode(ctx, new ArrayList<>());
       return node.handleNewContext(this);
    }
 
@@ -122,7 +117,7 @@ public class PSContextContainerNode extends PSEditableNodeContainer
    @Override
    public Set<Object> getAllNames()
    {
-      final Set<Object> names = new HashSet<Object>();
+      final Set<Object> names = new HashSet<>();
       
       try
       {
@@ -134,7 +129,7 @@ public class PSContextContainerNode extends PSEditableNodeContainer
             names.add(summary.getName());
          }
       }
-      catch (PSCatalogException e)
+      catch (PSCatalogException | PSNotFoundException e)
       {
          ms_log.error("Problem obtaining site names", e);
       }
@@ -162,6 +157,6 @@ public class PSContextContainerNode extends PSEditableNodeContainer
    /**
     * The logger for the site container node.
     */
-   private static final Log ms_log =
-         LogFactory.getLog(PSContextContainerNode.class);
+   private static final Logger ms_log =
+         LogManager.getLogger(PSContextContainerNode.class);
 }

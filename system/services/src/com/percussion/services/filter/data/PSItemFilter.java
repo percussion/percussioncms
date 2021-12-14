@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -26,7 +26,14 @@ package com.percussion.services.filter.data;
 import com.percussion.services.catalog.IPSCatalogSummary;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.data.IPSCloneTuner;
-import com.percussion.services.filter.*;
+import com.percussion.services.error.PSNotFoundException;
+import com.percussion.services.filter.IPSFilterItem;
+import com.percussion.services.filter.IPSFilterService;
+import com.percussion.services.filter.IPSFilterServiceErrors;
+import com.percussion.services.filter.IPSItemFilter;
+import com.percussion.services.filter.IPSItemFilterRuleDef;
+import com.percussion.services.filter.PSFilterException;
+import com.percussion.services.filter.PSFilterServiceLocator;
 import com.percussion.services.guidmgr.PSGuidHelper;
 import com.percussion.services.guidmgr.PSGuidUtils;
 import com.percussion.services.utils.xml.PSXmlSerializationHelper;
@@ -34,17 +41,40 @@ import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.xml.IPSXmlSerialization;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.hibernate.annotations.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.NaturalId;
+import org.hibernate.annotations.NaturalIdCache;
+import org.hibernate.annotations.SelectBeforeUpdate;
 import org.xml.sax.SAXException;
 
-import javax.persistence.*;
+import javax.persistence.Basic;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Version;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 /**
  * Implementation for an item filter, this is a pure mapping object to bring
@@ -60,6 +90,8 @@ import java.util.*;
 public class PSItemFilter implements IPSItemFilter, IPSCatalogSummary,
    IPSCloneTuner, Serializable
 {
+   private static final Logger log = LogManager.getLogger(PSItemFilter.class);
+
    /**
     * 
     */
@@ -113,7 +145,7 @@ public class PSItemFilter implements IPSItemFilter, IPSCatalogSummary,
    {CascadeType.ALL,CascadeType.MERGE}, fetch = FetchType.EAGER, mappedBy = "filter", orphanRemoval = true)
    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE, region = "PSItemFilter_Rules")
    @Fetch(FetchMode.SUBSELECT)
-   private Set<IPSItemFilterRuleDef> rules = new HashSet<IPSItemFilterRuleDef>();
+   private Set<IPSItemFilterRuleDef> rules = new HashSet<>();
 
    /**
     * Item filters can be changed, this member points to the parent filter,
@@ -225,10 +257,14 @@ public class PSItemFilter implements IPSItemFilter, IPSCatalogSummary,
       else
       {
          IPSFilterService svc = PSFilterServiceLocator.getFilterService();
-         List<IPSGuid> ids = new ArrayList<IPSGuid>();
+         List<IPSGuid> ids = new ArrayList<>();
          ids.add(parentId);
-         List<IPSItemFilter> filters = svc.loadFilter(ids);
-         parentFilter = filters.get(0);
+         try {
+            List<IPSItemFilter> filters = svc.loadFilter(ids);
+            parentFilter = filters.get(0);
+         } catch (PSNotFoundException e) {
+            log.warn("Unable to load parent Item Filter: {} Error: {}",parentId,e.getMessage());
+         }
       }
    }
 
@@ -401,7 +437,7 @@ public class PSItemFilter implements IPSItemFilter, IPSCatalogSummary,
    public List<IPSFilterItem> filter(List<IPSFilterItem> items,
          Map<String, String> params) throws PSFilterException
    {
-      SortedSet<IPSItemFilterRuleDef> sortedDefs = new TreeSet<IPSItemFilterRuleDef>();
+      SortedSet<IPSItemFilterRuleDef> sortedDefs = new TreeSet<>();
       sortedDefs.addAll(rules);
 
       // Add any parent rules, stop after 100 cycles to avoid tracing a cycle
@@ -422,7 +458,7 @@ public class PSItemFilter implements IPSItemFilter, IPSCatalogSummary,
 
       // Run the sorted definitions one at a time, stopping if we run out
       // of items
-      Map<String, String> ruleparams = new HashMap<String, String>();
+      Map<String, String> ruleparams = new HashMap<>();
       for (IPSItemFilterRuleDef def : sortedDefs)
       {
          if (items.size() == 0)
@@ -482,9 +518,9 @@ public class PSItemFilter implements IPSItemFilter, IPSCatalogSummary,
          throw new IllegalArgumentException("src may not be null");
       }
       
-      Set<String> sourceRuleNames = new HashSet<String>();
+      Set<String> sourceRuleNames = new HashSet<>();
       Map<String,IPSItemFilterRuleDef> oldRuleNameMap = 
-         new HashMap<String,IPSItemFilterRuleDef>();
+         new HashMap<>();
       
       for(IPSItemFilterRuleDef def : src.getRuleDefs())
       {

@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -126,7 +126,7 @@ public class ObjectFactory {
      */
     @XmlElementDecl(namespace = "", name = "description")
     public JAXBElement<String> createDescription(String value) {
-        return new JAXBElement<String>(_Description_QNAME, String.class, null, value);
+        return new JAXBElement<>(_Description_QNAME, String.class, null, value);
     }
 
     /**
@@ -135,7 +135,7 @@ public class ObjectFactory {
      */
     @XmlElementDecl(namespace = "", name = "pvalue")
     public JAXBElement<String> createPvalue(String value) {
-        return new JAXBElement<String>(_Pvalue_QNAME, String.class, null, value);
+        return new JAXBElement<>(_Pvalue_QNAME, String.class, null, value);
     }
 
 }

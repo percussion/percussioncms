@@ -17,22 +17,22 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.proxyconfig.service.impl;
 
-import static org.apache.commons.lang.Validate.notNull;
-import static com.percussion.share.dao.PSSerializerUtils.unmarshalWithValidation;
-import static com.percussion.share.dao.PSSerializerUtils.marshal;
-import static org.apache.commons.lang.StringUtils.isNotBlank;
-
+import com.percussion.error.PSExceptionUtils;
+import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
 import com.percussion.proxyconfig.data.PSProxyConfig;
 import com.percussion.proxyconfig.service.impl.ProxyConfig.Password;
-import com.percussion.utils.security.PSEncryptionException;
-import com.percussion.utils.security.PSEncryptor;
-import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
+import com.percussion.security.PSEncryptionException;
+import com.percussion.security.PSEncryptor;
+import com.percussion.utils.io.PathUtils;
+import org.apache.commons.io.IOUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -40,13 +40,13 @@ import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import static com.percussion.share.dao.PSSerializerUtils.marshal;
+import static com.percussion.share.dao.PSSerializerUtils.unmarshalWithValidation;
+import static org.apache.commons.lang.StringUtils.isNotBlank;
+import static org.apache.commons.lang.Validate.notNull;
 
 /**
  * @author LucasPiccoli
@@ -57,7 +57,7 @@ public class PSProxyConfigLoader
    /**
     * Logger for this class
     */
-   public static Log log = LogFactory.getLog(PSProxyConfigLoader.class);
+    public static final Logger log = LogManager.getLogger(PSProxyConfigLoader.class);
    
    /**
     * List of all proxy configurations loaded from the file
@@ -68,7 +68,7 @@ public class PSProxyConfigLoader
    {
        notNull(configFile);
        
-       proxyConfigurations = new ArrayList<PSProxyConfig>();
+       proxyConfigurations = new ArrayList<>();
        
        if (configFile.exists())
           readAndEncryptConfigFile(configFile);
@@ -92,7 +92,7 @@ public class PSProxyConfigLoader
    {
       ProxyConfigurations config = getProxyConfig(configFile);
        PSProxyConfig proxyConfig;
-       String encrypterKey = PSLegacyEncrypter.getPartOneKey();
+       String encrypterKey = PSLegacyEncrypter.getInstance(PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)).getPartOneKey();
        boolean configChanged = false;
        
        for (ProxyConfig s : config.getConfigs())
@@ -102,7 +102,7 @@ public class PSProxyConfigLoader
            proxyConfig = new PSProxyConfig(s);
            proxyConfigurations.add(proxyConfig);
            
-           configChanged = processPassword(s.getPassword(), proxyConfig, encrypterKey);
+           configChanged = processPassword(s.getPassword(), configFile,proxyConfig, encrypterKey);
        }
 
        if (configChanged)
@@ -118,7 +118,7 @@ public class PSProxyConfigLoader
     * @param encrypterKey 
     * @return true if the password was encrypted by the process. false if it was already encrypted.
     */
-   private boolean processPassword(Password pwd, PSProxyConfig proxyConfig, String encrypterKey)
+   private boolean processPassword(Password pwd,File configFile, PSProxyConfig proxyConfig, String encrypterKey)
    {
       if (pwd == null)
          return false;
@@ -127,30 +127,37 @@ public class PSProxyConfigLoader
        if (pwd.isEncrypted())
       {
           try {
-            decryptedPassword = PSEncryptor.getInstance().decrypt(pwdVal);
-          }catch (PSEncryptionException e){
-              decryptedPassword = PSLegacyEncrypter.getInstance().decrypt(pwdVal, encrypterKey);
+            decryptedPassword = PSEncryptor.decryptProperty(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),configFile.getAbsolutePath(),null,pwdVal);
+          }catch (PSEncryptionException e) {
+              try {
+                  decryptedPassword = PSEncryptor.decryptWithOldKey(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR), pwdVal);
+
+              } catch (PSEncryptionException pe) {
+                  decryptedPassword = PSLegacyEncrypter.getInstance(PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+                  ).decrypt(pwdVal, encrypterKey, null);
+
+              }
+              String enc = null;
+              try {
+                  enc = PSEncryptor.encryptProperty(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR), configFile.getAbsolutePath(), null, pwdVal);
+              } catch (PSEncryptionException e2) {
+                  log.error("Error encrypting password:{} " + e2.getMessage(), e2);
+                  enc = "";
+              }
+              pwd.setValue(enc);
+              pwd.setEncrypted(Boolean.TRUE);
               proxyConfig.setPassword(decryptedPassword);
+              return true;
           }
+          proxyConfig.setPassword(decryptedPassword);
           return false;
       }
-
-       String enc = null;
-       try {
-           enc = PSEncryptor.getInstance().encrypt(pwdVal);
-       } catch (PSEncryptionException e) {
-           log.error("Error encrypting password: " + e.getMessage(), e);
-           enc = "";
-       }
-       pwd.setValue(enc);
-       pwd.setEncrypted(Boolean.TRUE);
-      
-      return true;
+       return false;
    }
 
    /**
-    * @param configFile
-    * @param config
+    * @param configFile configuration file
+    * @param config valid configuration
     */
    private void updateConfigFile(File configFile, ProxyConfigurations config)
    {
@@ -166,7 +173,7 @@ public class PSProxyConfigLoader
       catch (IOException e)
       {
           log.error("Error writing the proxy configuration file: " +
-                  e.getMessage());
+                  PSExceptionUtils.getMessageForLog(e));
       }
       finally
       {
@@ -184,12 +191,9 @@ public class PSProxyConfigLoader
     */
    private ProxyConfigurations getProxyConfig(File configFile)
    {
-       InputStream in = null;
-       try
+       try(InputStream in = new FileInputStream(configFile))
        {
-           in = new FileInputStream(configFile);
-           ProxyConfigurations config = unmarshalWithValidation(in, ProxyConfigurations.class);
-           return config;
+           return unmarshalWithValidation(in, ProxyConfigurations.class);
        }
        catch (Exception e)
        {
@@ -205,10 +209,6 @@ public class PSProxyConfigLoader
           }
           log.error("Error getting proxy server configurations from file: " +  msg);
           return new ProxyConfigurations();
-       }
-       finally
-       {
-           IOUtils.closeQuietly(in);
        }
    }
 

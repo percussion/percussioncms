@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -25,7 +25,8 @@
 package com.percussion.rest.communities;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import io.swagger.annotations.ApiModel;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
@@ -34,7 +35,8 @@ import java.util.Collection;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @XmlRootElement(name = "CommunityVisibilityList")
-@ApiModel(description = "A List of CommunityVisibility instances with their visible objects")
+@ArraySchema(schema = @Schema(implementation=CommunityVisibility.class,
+        description = "A List of CommunityVisibility instances with their visible objects"))
 public class CommunityVisibilityList extends ArrayList<CommunityVisibility> {
     public CommunityVisibilityList(Collection<? extends CommunityVisibility> c) {
         super(c);

@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -17,48 +17,11 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.itemmanagement.service.impl;
-
-import static com.percussion.share.service.exception.PSParameterValidationUtils.rejectIfBlank;
-import static com.percussion.share.service.exception.PSParameterValidationUtils.rejectIfNull;
-import static com.percussion.webservices.PSWebserviceUtils.getItemSummary;
-import static com.percussion.webservices.PSWebserviceUtils.getUserName;
-import static com.percussion.webservices.PSWebserviceUtils.getUserRoles;
-import static com.percussion.webservices.PSWebserviceUtils.getWorkflow;
-import static com.percussion.webservices.PSWebserviceUtils.isItemCheckedOutToUser;
-import static com.percussion.webservices.PSWebserviceUtils.transitionItem;
-
-import static java.util.Arrays.asList;
-
-import static org.apache.commons.lang.StringUtils.isEmpty;
-import static org.apache.commons.lang.Validate.notEmpty;
-import static org.apache.commons.lang.Validate.notNull;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
-
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.QueryParam;
-
-import com.percussion.recycle.service.IPSRecycleService;
-import com.percussion.util.PSSiteManageBean;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import com.percussion.assetmanagement.dao.IPSAssetDao;
 import com.percussion.assetmanagement.data.PSAsset;
@@ -68,6 +31,8 @@ import com.percussion.cms.objectstore.PSComponentSummary;
 import com.percussion.cms.objectstore.PSRelationshipFilter;
 import com.percussion.design.objectstore.PSLocator;
 import com.percussion.design.objectstore.PSRelationship;
+import com.percussion.error.PSExceptionUtils;
+import com.percussion.foldermanagement.service.IPSFolderService;
 import com.percussion.itemmanagement.data.PSApprovableItems;
 import com.percussion.itemmanagement.data.PSBulkApprovalJobStatus;
 import com.percussion.itemmanagement.data.PSItemStateTransition;
@@ -79,10 +44,12 @@ import com.percussion.pagemanagement.dao.IPSPageDao;
 import com.percussion.pagemanagement.data.PSPage;
 import com.percussion.pagemanagement.service.IPSPageService;
 import com.percussion.pathmanagement.data.PSFolderPermission;
+import com.percussion.recycle.service.IPSRecycleService;
 import com.percussion.security.PSThreadRequestUtils;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.services.catalog.data.PSObjectSummary;
 import com.percussion.services.content.data.PSItemStatus;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.data.PSLegacyGuid;
 import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.services.sitemgr.IPSSiteManager;
@@ -98,13 +65,16 @@ import com.percussion.share.async.IPSAsyncJob;
 import com.percussion.share.async.IPSAsyncJobService;
 import com.percussion.share.async.PSAsyncJobStatus;
 import com.percussion.share.dao.IPSFolderHelper;
+import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.share.data.PSDataItemSummary;
 import com.percussion.share.data.PSNoContent;
 import com.percussion.share.service.IPSDataItemSummaryService;
-import com.percussion.share.service.IPSDataService.DataServiceNotFoundException;
 import com.percussion.share.service.IPSIdMapper;
+import com.percussion.share.service.exception.PSDataServiceException;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.sitemanage.dao.IPSiteDao;
 import com.percussion.sitemanage.data.PSSiteSummary;
+import com.percussion.util.PSSiteManageBean;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.request.PSRequestInfo;
 import com.percussion.webservices.PSErrorException;
@@ -113,27 +83,21 @@ import com.percussion.webservices.PSWebserviceUtils;
 import com.percussion.webservices.content.IPSContentWs;
 import com.percussion.webservices.security.IPSSecurityWs;
 import com.percussion.webservices.system.IPSSystemWs;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.http.MediaType;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
-
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
+import javax.ws.rs.WebApplicationException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -144,16 +108,19 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-import javax.ws.rs.*;
+import static com.percussion.share.service.exception.PSParameterValidationUtils.rejectIfBlank;
+import static com.percussion.share.service.exception.PSParameterValidationUtils.rejectIfNull;
+import static com.percussion.webservices.PSWebserviceUtils.getItemSummary;
+import static com.percussion.webservices.PSWebserviceUtils.getUserName;
+import static com.percussion.webservices.PSWebserviceUtils.getUserRoles;
+import static com.percussion.webservices.PSWebserviceUtils.getWorkflow;
+import static com.percussion.webservices.PSWebserviceUtils.isItemCheckedOutToUser;
+import static com.percussion.webservices.PSWebserviceUtils.transitionItem;
+import static java.util.Arrays.asList;
+import static org.apache.commons.lang.StringUtils.isEmpty;
+import static org.apache.commons.lang.Validate.notEmpty;
+import static org.apache.commons.lang.Validate.notNull;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.http.MediaType;
-import org.springframework.stereotype.Component;
-import com.percussion.share.service.exception.PSValidationException;
 /**
  * @author peterfrontiero
  *
@@ -214,9 +181,15 @@ public class PSItemWorkflowService implements IPSItemWorkflowService
     @Path("checkIn/{id}")
     public PSNoContent checkIn(@PathParam("id") String id)
     {
-        rejectIfBlank("checkIn", "id", id);
-        
-        return checkIn(id, false);
+        try {
+            rejectIfBlank("checkIn", "id", id);
+
+            return checkIn(id, false);
+        } catch (PSItemWorkflowServiceException | PSDataServiceException e) {
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+            throw new WebApplicationException(e.getMessage());
+        }
     }
 
     /**
@@ -227,38 +200,37 @@ public class PSItemWorkflowService implements IPSItemWorkflowService
      * @param ignoreRevisionCheck flag to ignore revisions while checking in or not.
      * @return PSNoContent
      */
-    public PSNoContent checkIn(String id, boolean ignoreRevisionCheck)
-    {
-        List<String> ids = new ArrayList<String>();
-        ids.add(id);
+    public PSNoContent checkIn(String id, boolean ignoreRevisionCheck) throws PSItemWorkflowServiceException, PSDataServiceException {
+            List<String> ids = new ArrayList<>();
+            ids.add(id);
 
-        PSDataItemSummary sum = dataItemSummaryService.find(id);
-        if (sum == null)
-            return new PSNoContent("checkIn");
-            
-        if (sum.getType().equals(IPSPageService.PAGE_CONTENT_TYPE))
-        {
-            ids.addAll(getLocalAssetIdsForCheckin(id));
-        }
-        
-        try
-        {
-            contentWs.checkinItems(idMapper.getGuids(ids), null, ignoreRevisionCheck);
-            return new PSNoContent("checkIn");
-        }
-        catch (PSErrorsException e)
-        {
-            PSErrorException ex = (PSErrorException) e.getErrors().get(
-                    ids.get(0));
-            throw new PSItemWorkflowServiceException("Failed to check-in item: " + sum != null ? sum.getName() : "no summary " + "id= " + id + " , Error: " + ex.getErrorMessage(), ex);
-        }
+            PSDataItemSummary sum = dataItemSummaryService.find(id);
+            if (sum == null) {
+                return new PSNoContent("checkIn");
+            }
+
+            if (sum.getType().equals(IPSPageService.PAGE_CONTENT_TYPE)) {
+                ids.addAll(getLocalAssetIdsForCheckin(id));
+            }
+
+            try {
+                contentWs.checkinItems(idMapper.getGuids(ids), null, ignoreRevisionCheck);
+                return new PSNoContent("checkIn");
+            } catch (PSErrorsException e) {
+                PSErrorException ex = (PSErrorException) e.getErrors().get(
+                        ids.get(0));
+                log.error(PSExceptionUtils.getMessageForLog(e));
+                log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+                throw new PSItemWorkflowServiceException("Failed to check-in item: " + sum != null ? sum.getName() : "no summary " + "id= " + id + " , Error: " + ex.getErrorMessage(), ex);
+            }
+
     }
     
    
 
     private List<String> getLocalAssetIdsForCheckin(String pageId)
     {
-        List<String> ids = new ArrayList<String>();
+        List<String> ids = new ArrayList<>();
         
         List<PSRelationship> rels = widgetAssetRelationshipService.getLocalAssetRelationships(pageId, null, null);
         for (PSRelationship rel : rels)
@@ -268,7 +240,7 @@ public class PSItemWorkflowService implements IPSItemWorkflowService
             int tipRev = summary.getTipLocator().getRevision();
             String currentUser = (String)PSRequestInfo.getRequestInfo(PSRequestInfo.KEY_USER);
             
-            if (StringUtils.isNotEmpty(summary.getCheckoutUserName())
+            if (currentUser != null && StringUtils.isNotEmpty(summary.getCheckoutUserName())
                     && !currentUser.equals(summary.getCheckoutUserName())) {
                 forceCheckInLocalContent(dep, currentUser);
             }
@@ -288,8 +260,7 @@ public class PSItemWorkflowService implements IPSItemWorkflowService
     
     private void forceCheckInLocalContent(PSLocator dep, String currentUser) {
         try {
-            log.debug("Attempting to force checkin for local content with content id: " + dep.getId()
-                    + " and current user: " + currentUser);
+            log.debug("Attempting to force checkin for local content with content id: {} and current user: {}",dep.getId(), currentUser);
             PSThreadRequestUtils.changeToInternalRequest(true);
             IPSGuid guid = idMapper.getGuid(dep);
             contentWs.checkinItems(Collections.singletonList(guid), null, true);
@@ -297,7 +268,8 @@ public class PSItemWorkflowService implements IPSItemWorkflowService
         catch (PSErrorsException e) {
             PSErrorException ex = (PSErrorException) e.getErrors().get(
                     dep.getId());
-            log.error("Error checking in local content with id: " + dep.getId() + " and error: " + ex.getErrorMessage(), e);
+            log.error("Error checking in local content with id: {} and error: {}", dep.getId(), ex.getErrorMessage());
+            log.debug(ex.getMessage(), ex);
         }
         finally {
             PSThreadRequestUtils.restoreOriginalRequest();
@@ -309,41 +281,45 @@ public class PSItemWorkflowService implements IPSItemWorkflowService
     @Path("getTransitions/{id}")
     public PSItemStateTransition getTransitions(@PathParam("id") String id)
     {
-        rejectIfBlank("getTransitions", "id", id);
-        
-        PSComponentSummary sum = workflowHelper.getComponentSummary(id);
-        int wfId = sum.getWorkflowAppId();
-        
-        List<String> userRoles = getUserRoles();
-        PSWorkflow wf = getWorkflow(wfId);
-        Set<Integer> userRoleIds = wf.getRoleIds(userRoles);
+        try {
+            rejectIfBlank("getTransitions", "id", id);
 
-        int stateId = sum.getContentStateId();
-        List<String> triggers = new ArrayList<String>();
-        String defTrigger = null;
-        PSState state = workflowHelper.getState(id);
-        for (PSTransition t : state.getTransitions())
-        {
-            if (isAllowedTransition(t, userRoleIds))
-            {
-                if(t.isDefaultTransition())
-                	defTrigger = t.getTrigger();
-                else
-            	triggers.add(t.getTrigger());
+            PSComponentSummary sum = workflowHelper.getComponentSummary(id);
+            int wfId = sum.getWorkflowAppId();
+
+            List<String> userRoles = getUserRoles();
+            PSWorkflow wf = getWorkflow(wfId);
+            Set<Integer> userRoleIds = wf.getRoleIds(userRoles);
+
+            int stateId = sum.getContentStateId();
+            List<String> triggers = new ArrayList<>();
+            String defTrigger = null;
+            PSState state = workflowHelper.getState(id);
+            for (PSTransition t : state.getTransitions()) {
+                if (isAllowedTransition(t, userRoleIds)) {
+                    if (t.isDefaultTransition()) {
+                        defTrigger = t.getTrigger();
+                    } else {
+                        triggers.add(t.getTrigger());
+                    }
+                }
             }
+            if (defTrigger != null) {
+                triggers.add(0, defTrigger);
+            }
+            PSItemStateTransition trans = new PSItemStateTransition();
+            trans.setItemId(id);
+            trans.setStateId("" + stateId);
+            trans.setStateName(state.getName());
+            trans.setWorkflowId("" + wfId);
+            trans.setTransitionTriggers(triggers);
+
+            return trans;
+        } catch (PSValidationException e) {
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+            throw new WebApplicationException(e.getMessage());
         }
-        if(defTrigger!=null)
-        {
-        	triggers.add(0,defTrigger);
-        }
-        PSItemStateTransition trans = new PSItemStateTransition();
-        trans.setItemId(id);
-        trans.setStateId("" + stateId);
-        trans.setStateName(state.getName());
-        trans.setWorkflowId("" + wfId);
-        trans.setTransitionTriggers(triggers);
-        
-        return trans;
     }
 
     /**
@@ -390,23 +366,26 @@ public class PSItemWorkflowService implements IPSItemWorkflowService
     @Path("transitionWithComments/{id}/{trigger}")
     public PSItemTransitionResults transitionWithComments(@PathParam("id") String id, @PathParam("trigger") String trigger, @QueryParam("comment") String comment)
     {
-        rejectIfBlank("transition", "id", id);
-        PSItemTransitionResults results = new PSItemTransitionResults();
-        //Make sure user has permission for publish transition while he is approving the content
-        //When the scheduled date is on
-        if(trigger.equalsIgnoreCase(TRANSITION_TRIGGER_APPROVE)) 
-        {
-        	results = performApproveTransition(id, true, comment);
+        try {
+            rejectIfBlank("transition", "id", id);
+            PSItemTransitionResults results = new PSItemTransitionResults();
+            //Make sure user has permission for publish transition while he is approving the content
+            //When the scheduled date is on
+            if (trigger.equalsIgnoreCase(TRANSITION_TRIGGER_APPROVE)) {
+                results = performApproveTransition(id, true, comment);
+            } else {
+                IPSGuid guid = idMapper.getGuid(id);
+                // transition the item
+                checkIn(id);
+                transitionItem(((PSLegacyGuid) guid).getContentId(), trigger, comment, null);
+                results.setItemId(id);
+            }
+            return results;
+        } catch (PSItemWorkflowServiceException | PSDataServiceException | PSNotFoundException e) {
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+            throw new WebApplicationException(e.getMessage());
         }
-        else
-        {
-        	IPSGuid guid = idMapper.getGuid(id);
-        	// transition the item
-        	checkIn(id);
-        	transitionItem(((PSLegacyGuid) guid).getContentId(), trigger, comment, null);
-            results.setItemId(id);
-        }
-        return results;
     }
     
     /**
@@ -418,25 +397,33 @@ public class PSItemWorkflowService implements IPSItemWorkflowService
      * @param id - the ID of the page to check the information. Never <code> null </code>
      * @return true if no assets or managed links are found that are unallowed for the current site, false otherwise.
      */
-    private boolean isPublishablePage(String id)
-    {
+    private boolean isPublishablePage(String id) throws PSDataServiceException, PSNotFoundException {
         rejectIfBlank("isPublishablePage", "id", id);
-        
-        PSPage page = pageDao.find(id);
-        if (page == null)
+
+        try{
+            PSPage page = pageDao.find(id);
+            if (page == null) {
+                return true;
+            }
+        }catch (IPSGenericDao.LoadException e){
+            //Returning true as earlier the find was returning null if the content types did not match but now LoadException is being thrown.
+            //Based on null it was returning true so returning true if LoadException is caught. CMS-7973
             return true;
+        }
+
         IPSGuid guid = idMapper.getGuid(id);
         List<IPSSite> sites = siteMgr.getItemSites(guid);
-        if (sites == null || sites.size() == 0)
+        if (sites == null || sites.size() == 0) {
             return true;
+        }
         Long siteId = sites.get(0).getSiteId();
         
         // Create a set with shared and linked assets
         Set<String> sharedAssets = widgetAssetRelationshipService.getSharedAssets(id);
-        log.debug("The shared assets to check for approval are: " + sharedAssets);
+        log.debug("The shared assets to check for approval are: {}", sharedAssets);
         Set<String> linkedAssets = widgetAssetRelationshipService.getLinkedAssets(id);
-        log.debug("The linked assets to check for approval are: " + linkedAssets);
-        Set<String> allAssets = new TreeSet<String>(sharedAssets);
+        log.debug("The linked assets to check for approval are: {}", linkedAssets);
+        Set<String> allAssets = new TreeSet<>(sharedAssets);
         allAssets.addAll(linkedAssets);
 
         //Iterate over the shared and linked assets
@@ -444,9 +431,9 @@ public class PSItemWorkflowService implements IPSItemWorkflowService
         while (assetsIterator.hasNext())
         {
             String currentAssetId = assetsIterator.next();
-            log.debug("The asset being transitioned is: " + currentAssetId);
+            log.debug("The asset being transitioned is: {}", currentAssetId);
             String rootLevelFolderAllowedSites = folderHelper.getRootLevelFolderAllowedSitesPropertyValue(currentAssetId);
-            log.debug("The root level folder being checked is: " + rootLevelFolderAllowedSites);
+            log.debug("The root level folder being checked is: {}", rootLevelFolderAllowedSites);
             if (rootLevelFolderAllowedSites != null)
             {
                 if (!rootLevelFolderAllowedSites.contains(String.valueOf(siteId)))
@@ -463,8 +450,7 @@ public class PSItemWorkflowService implements IPSItemWorkflowService
      * (non-Javadoc)
      * @see com.percussion.itemmanagement.service.IPSItemWorkflowService#performApproveTransition(java.lang.String, boolean)
      */
-    public PSItemTransitionResults performApproveTransition(String id, boolean preventIfStartDate, String comment)
-    {
+    public PSItemTransitionResults performApproveTransition(String id, boolean preventIfStartDate, String comment) throws PSItemWorkflowServiceException, PSDataServiceException, PSNotFoundException {
         rejectIfBlank("transition", "id", id);
         
         //Make sure user has permission for publish transition while he is approving the content
@@ -485,7 +471,7 @@ public class PSItemWorkflowService implements IPSItemWorkflowService
         }
         
         //Transition shared assets if the trigger is approve, collect all the assets that are not transitionable.
-        List<PSDataItemSummary> failedAssets = new ArrayList<PSDataItemSummary>();
+        List<PSDataItemSummary> failedAssets = new ArrayList<>();
        	failedAssets = approveSharedAssets(id);
         
         //If there are any failed assets then don't transition the page prepare PSItemTransitionResults and send it back. 
@@ -512,56 +498,56 @@ public class PSItemWorkflowService implements IPSItemWorkflowService
     @Path("checkOut/{id}")
     public PSItemUserInfo checkOut(@PathParam("id") String id)
     {
-        rejectIfBlank("checkOut", "id", id);
-        
-        IPSGuid guid = idMapper.getGuid(id);
-        
-        try
-        {
-           //Check out the item only if the user has assignee access or admin access.
-           if(isModifiableByUser(id))
-           {
-               PSComponentSummary summ = workflowHelper.getComponentSummary(id);
-               PSLocator loc = idMapper.getLocator(guid);
-               String currentUser = (String)PSRequestInfo.getRequestInfo(PSRequestInfo.KEY_USER);
-               
-               if (StringUtils.isNotEmpty(summ.getCheckoutUserName())
-                       && !summ.getCheckoutUserName().equals(currentUser)
-                       && isLocalContent(id)) {
-                   // need to force check in here. CMS-773.
-                   forceCheckInLocalContent(loc, currentUser);
-               }
-               
-               PSItemStatus status = contentWs.prepareForEdit(guid);
-               if (status.isDidCheckout())
-               {
-                   //Need to update the parent relationship's dependent revision for the asset
-                   widgetAssetRelationshipService.updateLocalRelationshipAsset(id);  
-               }
-           }
-        }
-        catch (PSErrorException e)
-        {
-            PSDataItemSummary sum = dataItemSummaryService.find(id);
-            
-            //It's ok if the check-out failed.  The check-out user name of the returned item user info will be different
-            //than the current user, which will indicate that the current user cannot check the item out.
-            log.warn("Failed to check-out item: " + sum.getName(), e);
-        }
-        
-        IPSRequestContext ctx = securityWs.getRequestContext();
-        if (ctx == null)
-        {
-            throw new PSItemWorkflowServiceException("Invalid request context for current user thread");
-        }
+        try {
+            rejectIfBlank("checkOut", "id", id);
 
-        
-        String currentUser = getUserName();
-        int contentId = ((PSLegacyGuid) guid).getContentId();
-        PSComponentSummary summary = getItemSummary(contentId);
-        
-        return new PSItemUserInfo(summary.getName(), summary.getCheckoutUserName(), currentUser, 
-                getAssignmentType(id).getLabel());
+            IPSGuid guid = idMapper.getGuid(id);
+
+            try {
+                //Check out the item only if the user has assignee access or admin access.
+                if (isModifiableByUser(id)) {
+                    PSComponentSummary summ = workflowHelper.getComponentSummary(id);
+                    PSLocator loc = idMapper.getLocator(guid);
+                    String currentUser = (String) PSRequestInfo.getRequestInfo(PSRequestInfo.KEY_USER);
+
+                    if (StringUtils.isNotEmpty(summ.getCheckoutUserName())
+                            && !summ.getCheckoutUserName().equals(currentUser)
+                            && isLocalContent(id)) {
+                        // need to force check in here. CMS-773.
+                        forceCheckInLocalContent(loc, currentUser);
+                    }
+
+                    PSItemStatus status = contentWs.prepareForEdit(guid);
+                    if (status.isDidCheckout()) {
+                        //Need to update the parent relationship's dependent revision for the asset
+                        widgetAssetRelationshipService.updateLocalRelationshipAsset(id);
+                    }
+                }
+            } catch (PSErrorException e) {
+                PSDataItemSummary sum = dataItemSummaryService.find(id);
+
+                //It's ok if the check-out failed.  The check-out user name of the returned item user info will be different
+                //than the current user, which will indicate that the current user cannot check the item out.
+                log.warn("Failed to check-out item: {}", sum.getName(), e);
+            }
+
+            IPSRequestContext ctx = securityWs.getRequestContext();
+            if (ctx == null) {
+                throw new PSItemWorkflowServiceException("Invalid request context for current user thread");
+            }
+
+
+            String currentUser = getUserName();
+            int contentId = ((PSLegacyGuid) guid).getContentId();
+            PSComponentSummary summary = getItemSummary(contentId);
+
+            return new PSItemUserInfo(summary.getName(), summary.getCheckoutUserName(), currentUser,
+                    getAssignmentType(id).getLabel());
+        } catch (PSItemWorkflowServiceException | PSDataServiceException e) {
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+            throw new WebApplicationException(e.getMessage());
+        }
     }
     
     @Override
@@ -569,15 +555,18 @@ public class PSItemWorkflowService implements IPSItemWorkflowService
     @Path("forceCheckOut/{id}")
     public PSItemUserInfo forceCheckOut(@PathParam("id") String id)
     {
-        rejectIfBlank("forceCheckOut", "id", id);
-        
-        checkIn(id, true);
-        return checkOut(id);
+        try {
+            rejectIfBlank("forceCheckOut", "id", id);
+
+            checkIn(id, true);
+            return checkOut(id);
+        } catch (PSItemWorkflowServiceException | PSDataServiceException e) {
+            throw new WebApplicationException(e.getMessage());
+        }
     }
     
     @Override
-    public boolean isModifiableByUser(String id)
-    {
+    public boolean isModifiableByUser(String id) throws PSValidationException, PSItemWorkflowServiceException {
         rejectIfBlank("isModifiableByUser", "id", id);
         
         PSAssignmentTypeEnum asmtType = getAssignmentType(id);
@@ -585,16 +574,14 @@ public class PSItemWorkflowService implements IPSItemWorkflowService
     }
     
     @Override
-    public Set<String> getApprovedPages(String id)
-    {
+    public Set<String> getApprovedPages(String id) throws PSValidationException, PSNotFoundException {
         rejectIfBlank("getApprovedPages", "id", id);
         
         return getApprovedPages(id, null);
     }
     
     @Override
-    public Set<String> getApprovedPages(String id, String folderPath)
-    {
+    public Set<String> getApprovedPages(String id, String folderPath) throws PSValidationException, PSNotFoundException {
         rejectIfBlank("getApprovedPages", "id", id);
         
         PSSiteSummary resourceSiteSum = null;
@@ -609,7 +596,7 @@ public class PSItemWorkflowService implements IPSItemWorkflowService
             }
         }
         
-        Set<String> pages = new HashSet<String>();
+        Set<String> pages = new HashSet<>();
         Set<String> owners = widgetAssetRelationshipService.getRelationshipOwners(id);
         for (String owner : owners)
         {
@@ -619,25 +606,20 @@ public class PSItemWorkflowService implements IPSItemWorkflowService
                 {
                     if (folderPath != null)
                     {
-                        PSPage page = pageDao.find(owner);
+                        try {
+                            PSPage page = pageDao.find(owner);
 
-                        // check to see if the page is in the same site as the resource
-                        try
-                        {
+                            // check to see if the page is in the same site as the resource
                             PSSiteSummary pageSiteSum = siteDao.findByPath(page.getFolderPath());
-                            if (pageSiteSum.equals(resourceSiteSum))
-                            {
+                            if (pageSiteSum.equals(resourceSiteSum)) {
                                 pages.add(owner);
                             }
+                        } catch (PSDataServiceException e) {
+                            log.error(PSExceptionUtils.getMessageForLog(e));
+                            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+                            //continue loop so one bad entry doesn't stop all processing
                         }
-                        catch (DataServiceNotFoundException e)
-                        {
-                            // page is not under a site, should never happen
-                            if (log.isDebugEnabled())
-                            {
-                                log.debug("Page: " + page.getName() + " could not be found under a site", e);
-                            }
-                        }
+
                     }
                     else
                     {
@@ -659,41 +641,44 @@ public class PSItemWorkflowService implements IPSItemWorkflowService
     @Produces(MediaType.TEXT_PLAIN_VALUE)
     public boolean isCheckedOutToCurrentUser(@PathParam("id") String id)
     {
-       rejectIfBlank("isCheckedOutToCurrentUser", "id", id);
-       
-       return workflowHelper.isCheckedOutToCurrentUser(id);
+        try {
+            rejectIfBlank("isCheckedOutToCurrentUser", "id", id);
+
+            return workflowHelper.isCheckedOutToCurrentUser(id);
+        } catch (PSValidationException e) {
+            throw new WebApplicationException(e.getMessage());
+        }
     }
     
     @GET
     @Path("isApproveAvailableToCurrentUser/{path:.*}")
     public boolean isApproveAvailableToCurrentUser(@PathParam("path") String path)
     {
-        int workflowId;
-        if (StringUtils.isEmpty(path))
-            workflowId = getWorkflowId(workflowService.getDefaultWorkflowName());
-        else
-        {
-            if (!StringUtils.startsWith(path, "/"))
-                path = "/" + path;
-            try
-            {
-                String folderPath = folderHelper.getFolderPath(path);
-                workflowId = folderHelper.getValidWorkflowId(folderHelper.findFolderProperties(folderHelper.findFolder(folderPath).getId()));
+        try {
+            int workflowId;
+            if (StringUtils.isEmpty(path)) {
+                workflowId = getWorkflowId(workflowService.getDefaultWorkflowName());
             }
-            catch (PSErrorException e)
-            {
-                throw new PSItemWorkflowServiceException("Cannot determine worfklow for folder: " + path, e);
+            else {
+                if (!StringUtils.startsWith(path, "/")) {
+                    path = "/" + path;
+                }
+                try {
+                    String folderPath = folderHelper.getFolderPath(path);
+                    workflowId = folderHelper.getValidWorkflowId(folderHelper.findFolderProperties(folderHelper.findFolder(folderPath).getId()));
+                } catch (Exception e) {
+                    log.error(PSExceptionUtils.getMessageForLog(e));
+                    log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+                    throw new PSItemWorkflowServiceException("Cannot determine workflow for folder: " + path, e);
+                }
             }
-            catch (Exception e)
-            {
-                throw new PSItemWorkflowServiceException("Cannot determine worfklow for folder: " + path, e);
-            }
+            return workflowHelper.isApproveAvailableToCurrentUser(workflowId);
+        } catch (PSItemWorkflowServiceException | PSValidationException e) {
+            throw new WebApplicationException(e.getMessage());
         }
-        return workflowHelper.isApproveAvailableToCurrentUser(workflowId);
     }
     
-    public int getWorkflowId(String workflowName) throws PSItemWorkflowServiceException
-    {
+    public int getWorkflowId(String workflowName) throws PSItemWorkflowServiceException, PSValidationException {
         rejectIfNull("getWorkflowId", "workflowName", workflowName);
         
         PSWorkflow workflow = getWorkflowFromName(workflowName);
@@ -710,7 +695,7 @@ public class PSItemWorkflowService implements IPSItemWorkflowService
         PSWorkflow workflow = getWorkflowFromName(workflowName);
         if (workflow == null)
         {
-            throw new PSItemWorkflowServiceException("Invalid workflow: " + workflowName);
+            throw new PSItemWorkflowServiceException("Invalid workflow:" + workflowName);
         }
         
         long stateId = -1;
@@ -729,8 +714,7 @@ public class PSItemWorkflowService implements IPSItemWorkflowService
         return (int) stateId;
     }
     
-    public boolean isTriggerAvailable(String id, String trigger)
-    {
+    public boolean isTriggerAvailable(String id, String trigger) throws PSValidationException {
         rejectIfBlank("isTriggerAvailable", "id", id);
         rejectIfBlank("isTriggerAvailable", "trigger", trigger);
         
@@ -738,15 +722,15 @@ public class PSItemWorkflowService implements IPSItemWorkflowService
     }
     
     @Override
-    public int getLocalContentWorkflowId()
-    {
-        if(localContentWorkflowId > 0)
+    public int getLocalContentWorkflowId() throws PSItemWorkflowServiceException {
+        if(localContentWorkflowId > 0) {
             return localContentWorkflowId;
+        }
         
         List<PSObjectSummary> wfs = workflowService.findWorkflowSummariesByName("LocalContent");
         if (wfs.isEmpty())
         {
-            throw new RuntimeException("Failed to find the workflow with name LocalContent");
+            throw new PSItemWorkflowServiceException("Failed to find the workflow with name LocalContent");
         }
         return (int) wfs.get(0).getGUID().longValue();
      }
@@ -755,8 +739,7 @@ public class PSItemWorkflowService implements IPSItemWorkflowService
      * @see com.percussion.itemmanagement.service.IPSWorkflowHelper#isModifyAllowed(java.lang.String)
      */
     @Override
-    public boolean isModifyAllowed(String id)
-    {
+    public boolean isModifyAllowed(String id) throws PSValidationException, PSItemWorkflowServiceException {
         notNull(id);    
 
         PSComponentSummary sum = workflowHelper.getComponentSummary(id);
@@ -773,8 +756,7 @@ public class PSItemWorkflowService implements IPSItemWorkflowService
      * @see com.percussion.itemmanagement.service.IPSItemWorkflowService#isCheckedOutToSomeoneElse(java.lang.String)
      */
     @Override
-    public boolean isCheckedOutToSomeoneElse(String id)
-    {
+    public boolean isCheckedOutToSomeoneElse(String id) throws PSValidationException {
         rejectIfBlank("isCheckedOutToSomeoneElse", "id", id);
         
         return workflowHelper.isCheckedOutToSomeoneElse(id);
@@ -807,8 +789,7 @@ public class PSItemWorkflowService implements IPSItemWorkflowService
      * 
      * @return the assignment type value, never <code>null</code>.
      */
-    private PSAssignmentTypeEnum getAssignmentType(String id)
-    {
+    private PSAssignmentTypeEnum getAssignmentType(String id) throws PSItemWorkflowServiceException {
         PSAssignmentTypeEnum psAssignmentTypeEnum = null;
         try
         {
@@ -820,7 +801,8 @@ public class PSItemWorkflowService implements IPSItemWorkflowService
         catch (PSSystemException e)
         {
             String msg = "Failed to get assignment type for item id = " + id;
-            log.error(msg, e);
+            log.error("{}, Error: {}", msg,PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new PSItemWorkflowServiceException(msg, e);
         }
         return psAssignmentTypeEnum;
@@ -834,18 +816,19 @@ public class PSItemWorkflowService implements IPSItemWorkflowService
     private boolean isLocalContent(String id)
     {
         try {
-            log.debug("Determing if item is local content with id: " + id);
+            log.debug("Determing if item is local content with id: {}", id);
             PSRelationshipFilter filter = new PSRelationshipFilter();
             filter.setName(PSWidgetAssetRelationshipService.LOCAL_ASSET_WIDGET_REL_FILTER);
             filter.limitToOwnerRevision(true);
             filter.setDependentId( (new PSLegacyGuid(id)).getContentId());
             List<PSRelationship> rels = systemWs.loadRelationships(filter);
-            return rels.size() > 0 ? true : false;
+            return !rels.isEmpty();
         }
         catch (PSErrorException e) {
             // if there is an error determining if content is local, we return false
             // and fall back to previous behavior prior to force checking in local content.
-            log.error("Error checking if content with id: " + id + " is local content.", e);
+            log.error("Error checking if content with id: {} is local content. Error: {}",id,PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             return false;
         }
     }
@@ -858,13 +841,12 @@ public class PSItemWorkflowService implements IPSItemWorkflowService
      * @return list of {@link PSAsset} objects representing assets which could not be transitioned either due to an
      * error or if the items are checked out to a different user.  Never <code>null</code>, may be empty.
      */
-    private List<PSDataItemSummary> approveSharedAssets(String id)
-    {
-        Set<String> sharedAssetIds = new HashSet<String>();
+    private List<PSDataItemSummary> approveSharedAssets(String id) throws PSDataServiceException, PSNotFoundException {
+        Set<String> sharedAssetIds = new HashSet<>();
         sharedAssetIds.addAll(widgetAssetRelationshipService.getSharedAssets(id));
         sharedAssetIds.addAll(widgetAssetRelationshipService.getLinkedAssets(id));
         // build a list of assets which could not be transitioned
-        List<PSDataItemSummary> failedAssets = new ArrayList<PSDataItemSummary>();
+        List<PSDataItemSummary> failedAssets = new ArrayList<>();
         Map<String, List<String>> wfStatesMap = getApprovalWorkflowStates();
         
         // transition the shared items
@@ -874,8 +856,10 @@ public class PSItemWorkflowService implements IPSItemWorkflowService
             PSComponentSummary sum = workflowHelper.getComponentSummary(tid);
             List<String> stateIds = wfStatesMap.get(sum.getWorkflowAppId()+"");
             //Skip the assets that don't have approve transition from the state they are in.
-            if (!stateIds.contains(sum.getContentStateId() + ""))
-            	continue;
+            if (!stateIds.contains(sum.getContentStateId() + "")) {
+                continue;
+            }
+
              if(recycleService.isInRecycler(tid)){
                  continue;
              }
@@ -915,26 +899,28 @@ public class PSItemWorkflowService implements IPSItemWorkflowService
      * @param id the ID of the asset, assumed not blank
      * @return <code>false</code> if it can be transitioned.
      */
-    private boolean isAssetTransitionable(String id)
-    {
+    private boolean isAssetTransitionable(String id) throws PSValidationException {
         // does current user have at least WRITE access to its parent folder?
         IPSGuid folderId = folderHelper.getParentFolderId(idMapper.getGuid(id), false);
         if (folderId != null)
         {
             PSFolderPermission.Access access = folderHelper.getFolderAccessLevel(idMapper.getString(folderId));
-            if (access == PSFolderPermission.Access.READ)
+            if (access == PSFolderPermission.Access.READ) {
                 return false;
+            }
         }
         
         PSComponentSummary sum = workflowHelper.getComponentSummary(id);
 
         //Check whether the user through his roles has permission to approve the asset
-        if (!isTriggerAvailable(id, IPSItemWorkflowService.TRANSITION_TRIGGER_APPROVE))
-        	return false;
+        if (!isTriggerAvailable(id, IPSItemWorkflowService.TRANSITION_TRIGGER_APPROVE)) {
+            return false;
+        }
         	
         // is the item checked out?
-        if (isEmpty(sum.getCheckoutUserName()))
+        if (isEmpty(sum.getCheckoutUserName())) {
             return true;
+        }
         
         // check in the item before transition (next call) if item is checked out by current user
         if (isItemCheckedOutToUser(sum))
@@ -946,7 +932,7 @@ public class PSItemWorkflowService implements IPSItemWorkflowService
             }
             catch (Exception e)
             {
-                log.warn("Cannot checkin item "+id);
+                log.warn("Cannot checkin item {}", id);
             }
         }
         // the item must be checked out by other user or failed to checkin
@@ -959,11 +945,11 @@ public class PSItemWorkflowService implements IPSItemWorkflowService
      */
     private Map<String, List<String>> getApprovalWorkflowStates()
     {
-    	Map<String, List<String>> wfMap = new HashMap<String, List<String>>();
+    	Map<String, List<String>> wfMap = new HashMap<>();
     	List<PSWorkflow> workflows = workflowService.findWorkflowsByName("");
         for (PSWorkflow psWorkflow : workflows) 
     	{
-			List<String> statesList = new ArrayList<String>();
+			List<String> statesList = new ArrayList<>();
 			wfMap.put(psWorkflow.getGUID().getUUID() + "", statesList);
 			for (PSState psState : psWorkflow.getStates()) 
 			{
@@ -985,7 +971,7 @@ public class PSItemWorkflowService implements IPSItemWorkflowService
     /**
      * Logger for this service.
      */
-    public static Log log = LogFactory.getLog(PSItemWorkflowService.class);
+    public static final Logger log = LogManager.getLogger(PSItemWorkflowService.class);
     
     /**
      * Member variable that stores the local content workflow id initialized in the first call to method getLocalContentWorkflowId. 
@@ -999,9 +985,15 @@ public class PSItemWorkflowService implements IPSItemWorkflowService
     @Path("/bulkApprove")
     public String bulkApprove(PSApprovableItems items)
     {
-        // Execute import job
-        long jobId = asyncJobService.startJob(BULK_APPROVAL_JOB_BEAN, items);
-        return "" + jobId;
+        try {
+            // Execute import job
+            long jobId = asyncJobService.startJob(BULK_APPROVAL_JOB_BEAN, items);
+            return "" + jobId;
+        } catch (IPSFolderService.PSWorkflowNotFoundException e) {
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+            throw new WebApplicationException(e.getMessage());
+        }
     }
 
     @Override
@@ -1034,9 +1026,10 @@ public class PSItemWorkflowService implements IPSItemWorkflowService
     public PSBulkApprovalJobStatus getBulkApproveStatus(String jobId, boolean isFull)
     {
         PSBulkApprovalJobStatus approvalJob = new PSBulkApprovalJobStatus();
-        if(!StringUtils.isNumeric(jobId))
+        if(!StringUtils.isNumeric(jobId)) {
             throw new IllegalArgumentException("jobId must be a number.");
-        Long job = Long.parseLong(jobId);
+        }
+        long job = Long.parseLong(jobId);
         approvalJob.setJobId(job);  
         
         PSAsyncJobStatus jobStatus = asyncJobService.getJobStatus(job);
@@ -1050,10 +1043,12 @@ public class PSItemWorkflowService implements IPSItemWorkflowService
             
             PSApprovableItems items = new PSApprovableItems();
             
-            if(isFull)
+            if(isFull) {
                 items.setApprovableItems(jobResult.getApprovableItems());
-            else
+            }
+            else {
                 items.setProcessedItems(jobResult.getProcessedItems());
+            }
             
             items.setErrors(jobResult.getErrors());
             
@@ -1078,8 +1073,7 @@ public class PSItemWorkflowService implements IPSItemWorkflowService
 
     
     @Override
-    public boolean isStagingOptionAvailable(String id) 
-    {
+    public boolean isStagingOptionAvailable(String id) throws PSValidationException, IPSGenericDao.LoadException {
         boolean result = false;
         PSComponentSummary sum = workflowHelper.getComponentSummary(id);
         if(workflowHelper.isItemInStagingState(sum.getContentId()))
@@ -1094,8 +1088,7 @@ public class PSItemWorkflowService implements IPSItemWorkflowService
     }
     
     @Override
-    public boolean isRemoveFromStagingOptionAvailable(String id) 
-    {
+    public boolean isRemoveFromStagingOptionAvailable(String id) throws PSValidationException, IPSGenericDao.LoadException {
         boolean result = false;
         PSComponentSummary sum = workflowHelper.getComponentSummary(id);
         if(workflowHelper.isArchived(id))
@@ -1127,5 +1120,4 @@ public class PSItemWorkflowService implements IPSItemWorkflowService
 
         return isQuickEditTriggerAvailableForPendingOrLivePage;
     }
-    
 }

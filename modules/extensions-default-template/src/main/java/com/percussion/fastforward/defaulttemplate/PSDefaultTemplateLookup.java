@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -32,9 +32,9 @@ import com.percussion.services.assembly.IPSAssemblyService;
 import com.percussion.services.assembly.IPSAssemblyTemplate;
 import com.percussion.services.assembly.PSAssemblyException;
 import com.percussion.services.assembly.PSAssemblyServiceLocator;
-import com.percussion.services.assembly.data.PSAssemblyWorkItem;
 import com.percussion.services.assembly.jexl.PSLocationUtils;
 import com.percussion.services.catalog.PSTypeEnum;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.data.PSGuid;
 import com.percussion.services.guidmgr.data.PSLegacyGuid;
 import com.percussion.services.legacy.IPSCmsObjectMgr;
@@ -43,12 +43,12 @@ import com.percussion.services.sitemgr.IPSSiteManager;
 import com.percussion.services.sitemgr.PSSiteManagerLocator;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.utils.guid.IPSGuid;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-
-import org.apache.log4j.Logger;
 
 /**
  * @author adamgent
@@ -75,7 +75,7 @@ public class PSDefaultTemplateLookup extends PSJexlUtilBase {
 			description = "The item to find the default variant too.") })
 	public String lookup(IPSAssemblyItem item) {
 		List<IPSAssemblyTemplate> l = this.lookupDefaults(item);
-		if (l.size() > 0){
+		if (!l.isEmpty()){
 			if (l.size() > 1){
 				log.warn("More than one default variant arbitrarily selecting one");
 			}
@@ -126,7 +126,7 @@ public class PSDefaultTemplateLookup extends PSJexlUtilBase {
 				log.error("No Templates Associated with the site.");
 			}
 			List<IPSAssemblyTemplate> defaults = 
-				new ArrayList <IPSAssemblyTemplate> ();
+				new ArrayList <> ();
 			
 			for (IPSAssemblyTemplate c_t : ct_templates) {
 				
@@ -136,7 +136,7 @@ public class PSDefaultTemplateLookup extends PSJexlUtilBase {
 			}
 			return defaults;
 		} 
-		catch (PSAssemblyException e)
+		catch (PSAssemblyException | PSNotFoundException e)
 		{
 			throw new RuntimeException(e);
 		}
@@ -161,5 +161,5 @@ public class PSDefaultTemplateLookup extends PSJexlUtilBase {
 		return template.getPublishWhen() == IPSAssemblyTemplate.PublishWhen.Default;
 	}
 
-	Logger log = Logger.getLogger(this.getClass());
+	private static final Logger log = LogManager.getLogger(PSDefaultTemplateLookup.class);
 }

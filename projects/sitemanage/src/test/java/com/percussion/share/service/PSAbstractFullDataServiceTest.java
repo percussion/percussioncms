@@ -17,14 +17,17 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.share.service;
 
-import java.util.List;
-
+import com.percussion.share.dao.IPSGenericDao;
+import com.percussion.share.data.IPSItemSummary;
+import com.percussion.share.service.exception.PSDataServiceException;
+import com.percussion.share.service.exception.PSParametersValidationException;
+import com.percussion.share.service.exception.PSValidationException;
 import org.jmock.Mockery;
 import org.jmock.integration.junit4.JMock;
 import org.jmock.integration.junit4.JUnit4Mockery;
@@ -32,9 +35,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import com.percussion.share.dao.IPSGenericDao;
-import com.percussion.share.data.IPSItemSummary;
-import com.percussion.share.service.exception.PSParametersValidationException;
+import java.util.List;
 
 //import static java.util.Arrays.*;
 //import static org.hamcrest.CoreMatchers.*;
@@ -68,22 +69,19 @@ public class PSAbstractFullDataServiceTest
     }
     
     @Test(expected=PSParametersValidationException.class)
-    public void shouldThrowValidationExceptionOnInvalidFindParameter()
-    {
+    public void shouldThrowValidationExceptionOnInvalidFindParameter() throws PSDataServiceException {
         sut.find(null);
     }
     
     @SuppressWarnings("unchecked")
     @Test(expected=PSParametersValidationException.class)
-    public void shouldThrowValidationExceptionOnInvalidLoadParameter()
-    {
+    public void shouldThrowValidationExceptionOnInvalidLoadParameter() throws IPSDataService.DataServiceLoadException, PSValidationException, IPSDataService.DataServiceNotFoundException {
         sut.load(null);
     }
     
     @SuppressWarnings("unchecked")
     @Test(expected=PSParametersValidationException.class)
-    public void shouldThrowValidationExceptionOnInvalidDeleteParameter()
-    {
+    public void shouldThrowValidationExceptionOnInvalidDeleteParameter() throws PSDataServiceException {
         sut.delete(null);
     }
     

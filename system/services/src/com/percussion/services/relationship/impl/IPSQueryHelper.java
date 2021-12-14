@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -27,11 +27,10 @@ package com.percussion.services.relationship.impl;
 import com.percussion.cms.objectstore.PSRelationshipFilter;
 import com.percussion.design.objectstore.PSRelationshipPropertyData;
 import com.percussion.services.relationship.data.PSRelationshipData;
+import org.hibernate.Session;
 
 import java.util.Collection;
 import java.util.List;
-
-import org.hibernate.Session;
 
 /**
  * A helper class used for building HQL from a given relationship filter.

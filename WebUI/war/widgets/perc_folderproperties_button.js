@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -36,8 +36,8 @@
     $.perc_build_folderproperties_button = function (finder, contentViewer)
     {
         var btn = $('<a id="perc-finder-folderproperties" href="#" title="Folder properties">Folder properties</a>');
-        var selectedItem = undefined;
-        var pathItemSpec = undefined;
+        var selectedItem;
+        var pathItemSpec;
 
         /**
          * Listener function that is added to the finder listeners, this method gets called whenever a path change
@@ -67,7 +67,7 @@
                 // Element selected in list mode: if the selectedItem is not a Folder, make
                 // selectedItem undefined, so the menu entry will not be enabled
                 pathItemSpec = selectedItem.data("percRowData");
-                if (pathItemSpec.type != 'Folder' && pathItemSpec.type != 'FSFolder') {
+                if (pathItemSpec.type !== 'Folder' && pathItemSpec.type !== 'FSFolder') {
                     selectedItem = undefined;
                 }
             }
@@ -113,10 +113,13 @@
         function enableButton(flag)
         {
             if (flag) {
-                btn.removeClass('ui-disabled').addClass('ui-enabled').unbind('click').click( clickHandler );
+                btn.removeClass('ui-disabled').addClass('ui-enabled').off('click').on("click",
+                    function(evt){
+                        clickHandler(evt);
+                    } );
             }
             else {
-                btn.addClass('ui-disabled').removeClass('ui-enabled').unbind('click');
+                btn.addClass('ui-disabled').removeClass('ui-enabled').off('click');
             }
             btn.trigger('actions-change-enabled-state');
         }
@@ -124,25 +127,25 @@
         /**
          * Handler function invoked when clicking the Folder properties option in the actions menu.
          */
-        function clickHandler()
+        function clickHandler(evt)
         {
             // We must perform some checks before opening the dialog
-            if(pathItemSpec.category == "SYSTEM") {
+            if(pathItemSpec.category === "SYSTEM") {
                 $.perc_utils.alert_dialog({
                     title: I18N.message("perc.ui.page.general@Warning"),
                     content: I18N.message("perc.ui.folder.properties.button@Path Nonvalid String")
                 });
                 return;
             }
-            else if(pathItemSpec.accessLevel != $.PercFolderHelper().PERMISSION_ADMIN) {
-                var type = pathItemSpec.category == "SECTION_FOLDER" ? "section" : "folder";
+            else if(pathItemSpec.accessLevel !== $.PercFolderHelper().PERMISSION_ADMIN) {
+                var type = pathItemSpec.category === "SECTION_FOLDER" ? "section" : "folder";
                 $.perc_utils.alert_dialog({
                     title: I18N.message("perc.ui.page.general@Warning"),
                     content: I18N.message("perc.ui.folder.properties.button@Permissions Error") + type + "."
                 });
                 return;
             }
-            else if(pathItemSpec.category == "SECTION_FOLDER") {
+            else if(pathItemSpec.category === "SECTION_FOLDER") {
                 $.perc_utils.alert_dialog({
                     title: I18N.message("perc.ui.page.general@Warning"),
                     content: I18N.message("perc.ui.folder.properties.button@Use Navigation Editor")

@@ -17,19 +17,18 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.xml.serialization.junit;
 
-import com.percussion.server.PSServer;
 import com.percussion.services.assembly.IPSAssemblyService;
-import com.percussion.services.assembly.PSAssemblyServiceLocator;
 import com.percussion.services.assembly.IPSAssemblyTemplate.AAType;
 import com.percussion.services.assembly.IPSAssemblyTemplate.GlobalTemplateUsage;
 import com.percussion.services.assembly.IPSAssemblyTemplate.OutputFormat;
 import com.percussion.services.assembly.IPSAssemblyTemplate.PublishWhen;
+import com.percussion.services.assembly.PSAssemblyServiceLocator;
 import com.percussion.services.assembly.data.PSAssemblyTemplate;
 import com.percussion.services.assembly.data.PSTemplateBinding;
 import com.percussion.services.catalog.PSTypeEnum;
@@ -37,8 +36,6 @@ import com.percussion.services.guidmgr.data.PSGuid;
 import com.percussion.services.utils.xml.PSXmlSerializationHelper;
 import com.percussion.utils.testing.IntegrationTest;
 import com.percussion.xml.serialization.PSObjectSerializer;
-
-import junit.framework.TestCase;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 

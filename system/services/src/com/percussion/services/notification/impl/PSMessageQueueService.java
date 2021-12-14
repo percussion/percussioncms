@@ -17,31 +17,29 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.services.notification.impl;
-
-import static org.apache.commons.lang.Validate.notNull;
 
 import com.percussion.server.PSRequest;
 import com.percussion.services.jms.IPSQueueSender;
 import com.percussion.services.notification.IPSMessageQueueListener;
 import com.percussion.services.notification.IPSMessageQueueService;
 import com.percussion.utils.request.PSRequestInfo;
-
-import java.io.Serializable;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageListener;
 import javax.jms.ObjectMessage;
+import java.io.Serializable;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import static org.apache.commons.lang.Validate.notNull;
 
 /**
  * 
@@ -57,11 +55,11 @@ public final class PSMessageQueueService implements MessageListener, IPSMessageQ
    /**
     * Logger to use, never <code>null</code>.
     */
-   private static Log ms_logger = LogFactory.getLog(
+   private static final Logger ms_logger = LogManager.getLogger(
          PSMessageQueueService.class);
    
    private IPSQueueSender m_queueSender;
-   private ConcurrentHashMap<String, IPSMessageQueueListener<?>> queueMap = new ConcurrentHashMap<String, IPSMessageQueueListener<?>>();
+   private ConcurrentHashMap<String, IPSMessageQueueListener<?>> queueMap = new ConcurrentHashMap<>();
    
    /**
     * Associates a Class with a single listener replacing any existing listener bound for that message

@@ -17,11 +17,14 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.services.notification;
+
+import com.percussion.services.error.PSNotFoundException;
+import com.percussion.share.service.exception.PSDataServiceException;
 
 /**
  * A notification listener is informed of a change that has been reported to the
@@ -44,5 +47,5 @@ public interface IPSNotificationListener
     * 
     * @param notification the notification event, never <code>null</code>
     */
-   void notifyEvent(PSNotificationEvent notification);
+   void notifyEvent(PSNotificationEvent notification) throws PSDataServiceException, PSNotFoundException;
 }

@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -44,6 +44,7 @@ public interface IPSUtilsConstants
     * characters are representable.This is the Java name for 
     * {@link #RX_STANDARD_ENC}.
     */
-   public static final String RX_JAVA_ENC = "UTF8";
+   public static final String RX_JAVA_ENC = "UTF-8";
+   public static final String SERVER_LOG = "Server";
 }
 

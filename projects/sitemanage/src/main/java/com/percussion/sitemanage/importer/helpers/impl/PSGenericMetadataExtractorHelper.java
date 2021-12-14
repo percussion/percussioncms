@@ -17,26 +17,27 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.sitemanage.importer.helpers.impl;
 
-import static org.apache.commons.lang.StringUtils.isBlank;
-import static org.apache.commons.lang.Validate.notNull;
-
+import com.percussion.itemmanagement.service.IPSItemWorkflowService;
 import com.percussion.pagemanagement.data.IPSHtmlMetadata;
 import com.percussion.pagemanagement.service.IPSTemplateService;
 import com.percussion.pagemanagement.service.impl.PSPageManagementUtils;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.sitemanage.data.PSPageContent;
 import com.percussion.sitemanage.data.PSSiteImportCtx;
 import com.percussion.sitemanage.error.PSSiteImportException;
 import com.percussion.sitemanage.importer.IPSSiteImportLogger;
 import com.percussion.sitemanage.importer.IPSSiteImportLogger.PSLogEntryType;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import static org.apache.commons.lang.StringUtils.isBlank;
+import static org.apache.commons.lang.Validate.notNull;
 
 /**
  * @author Santiago M. Murchio
@@ -45,7 +46,7 @@ import org.apache.commons.logging.LogFactory;
 public abstract class PSGenericMetadataExtractorHelper extends PSImportHelper
 {
 
-    public static Log log = LogFactory.getLog(PSGenericMetadataExtractorHelper.class);
+    public static final Logger log = LogManager.getLogger(PSGenericMetadataExtractorHelper.class);
     
     protected static final String ADD_HTML_WIDGET = "Add HTML Widget to Template";
 
@@ -118,18 +119,18 @@ public abstract class PSGenericMetadataExtractorHelper extends PSImportHelper
     /**
      * @param targetItem
      */
-    protected abstract void saveTargetItem(IPSHtmlMetadata targetItem);
+    protected abstract void saveTargetItem(IPSHtmlMetadata targetItem) throws PSDataServiceException, IPSItemWorkflowService.PSItemWorkflowServiceException;
 
     /**
      * @param context
      */
-    protected abstract void addHtmlWidgetToTemplate(PSSiteImportCtx context);
+    protected abstract void addHtmlWidgetToTemplate(PSSiteImportCtx context) throws PSDataServiceException, PSSiteImportException;
 
     /**
      * @param context
      * @return
      */
-    protected abstract IPSHtmlMetadata getTargetItem(PSSiteImportCtx context);
+    protected abstract IPSHtmlMetadata getTargetItem(PSSiteImportCtx context) throws PSDataServiceException;
 
 
     /**

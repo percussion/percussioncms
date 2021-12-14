@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -25,6 +25,7 @@ package com.percussion.deployer.install;
 
 import com.percussion.design.objectstore.PSRelationshipConfig;
 import com.percussion.design.objectstore.PSRelationshipConfigSet;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.install.IPSUpgradeModule;
 import com.percussion.install.IPSUpgradePlugin;
 import com.percussion.install.PSPluginResponse;
@@ -38,6 +39,8 @@ import com.percussion.services.pkginfo.utils.PSIdNameHelper;
 import com.percussion.util.IOTools;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -51,6 +54,9 @@ import java.sql.SQLException;
  */
 public class PSUpgradePluginRelationshipVersions implements IPSUpgradePlugin
 {
+
+   private static final Logger log = LogManager.getLogger(PSUpgradePluginRelationshipVersions.class);
+
    /**
     * Perform updates.
     */
@@ -117,7 +123,10 @@ public class PSUpgradePluginRelationshipVersions implements IPSUpgradePlugin
       {
          respType = PSPluginResponse.EXCEPTION;
          respMsg = e.getMessage();
-         e.printStackTrace(logger);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+         log.debug(logger);
+         log.error(logger);
       }
       finally
       {
@@ -129,7 +138,10 @@ public class PSUpgradePluginRelationshipVersions implements IPSUpgradePlugin
             }
             catch (SQLException e)
             {
-               e.printStackTrace(logger);
+               log.error(PSExceptionUtils.getMessageForLog(e));
+               log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+               log.debug(logger);
+               log.error(logger);
             }
          }
       }

@@ -17,20 +17,19 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.services.security;
 
-import com.percussion.utils.security.IPSPrincipalAttribute;
-
-import java.io.Serializable;
-import java.util.List;
-
+import com.percussion.security.IPSPrincipalAttribute;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
+
+import java.io.Serializable;
+import java.util.List;
 
 /**
  * Simple implementation of the {@link IPSPrincipalAttribute} interface.
@@ -68,7 +67,7 @@ public class PSPrincipalAttribute implements IPSPrincipalAttribute, Serializable
    }
    
    /* (non-Javadoc)
-    * @see com.percussion.utils.security.IPSPrincipalAttribute#getValues()
+    * @see com.percussion.security.IPSPrincipalAttribute#getValues()
     */
    public List<String> getValues()
    {
@@ -76,7 +75,7 @@ public class PSPrincipalAttribute implements IPSPrincipalAttribute, Serializable
    }
 
    /* (non-Javadoc)
-    * @see com.percussion.utils.security.IPSPrincipalAttribute#getAttributeType()
+    * @see com.percussion.security.IPSPrincipalAttribute#getAttributeType()
     */
    public PrincipalAttributes getAttributeType()
    {

@@ -1,10 +1,10 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!DOCTYPE xsl:stylesheet [
-	<!ENTITY % HTMLlat1 SYSTEM "/Rhythmyx/DTD/HTMLlat1x.ent">
+<!ENTITY % HTMLlat1 PUBLIC "-//W3C//ENTITIES_Latin_1_for_XHTML//EN" "https://www.percussion.com/DTD/HTMLlat1x.ent">
 		%HTMLlat1;
-	<!ENTITY % HTMLsymbol SYSTEM "/Rhythmyx/DTD/HTMLsymbolx.ent">
+	<!ENTITY % HTMLsymbol PUBLIC "-//W3C//ENTITIES_Symbols_for_XHTML//EN" "https://www.percussion.com/DTD/HTMLsymbolx.ent">
 		%HTMLsymbol;
-	<!ENTITY % HTMLspecial SYSTEM "/Rhythmyx/DTD/HTMLspecialx.ent">
+	<!ENTITY % HTMLspecial PUBLIC "-//W3C//ENTITIES_Special_for_XHTML//EN" "https://www.percussion.com/DTD/HTMLspecialx.ent">
 		%HTMLspecial;
 ]>
 
@@ -17,9 +17,9 @@
      <meta name="generator" content="Percussion XSpLit Version 3.0"/>
      <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
      <title>Rhythmyx - Content Editor - Related Content Search</title>
-     <link rel="stylesheet" type="text/css" href="../sys_resources/css/templates.css"/>        
+     <link rel="stylesheet" type="text/css" href="/sys_resources/css/templates.css"/>
    </head>
-   <script language="javascript">
+   <script>
    function onClickCancel()
    {
       if(window.opener)
@@ -204,7 +204,7 @@
   <a>
   <xsl:attribute name="href">javascript:{}</xsl:attribute>
   <xsl:attribute name="onclick">javascript:window.open(&quot;<xsl:value-of select="previewurl"/>&quot;,&quot;preview&quot;, &quot;toolbar=0,location=0,directories=0,status=0,menubar=0,scrollbars=1,resizable=1,width=400,height=300,z-lock=1&quot;)</xsl:attribute>
-  <img src="../sys_resources/images/preview.gif" alt="Preview" align="top" border="0" /></a></td>
+  <img src="/sys_resources/images/preview.gif" alt="Preview" align="top" border="0" /></a></td>
 </tr>
 </xsl:template> 
 </xsl:stylesheet>

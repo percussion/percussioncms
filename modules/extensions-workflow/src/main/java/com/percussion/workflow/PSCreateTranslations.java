@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -29,7 +29,6 @@ import com.percussion.cms.handlers.PSRelationshipCommandHandler;
 import com.percussion.cms.objectstore.IPSRelationshipProcessor;
 import com.percussion.cms.objectstore.PSComponentSummary;
 import com.percussion.cms.objectstore.PSRelationshipFilter;
-import com.percussion.cms.objectstore.PSRelationshipProcessorProxy;
 import com.percussion.cms.objectstore.server.PSRelationshipProcessor;
 import com.percussion.design.objectstore.PSLocator;
 import com.percussion.design.objectstore.PSNotFoundException;
@@ -50,6 +49,11 @@ import com.percussion.services.legacy.IPSCmsObjectMgr;
 import com.percussion.services.legacy.PSCmsObjectMgrLocator;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.util.PSCms;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.Text;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -60,15 +64,10 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.StringTokenizer;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.w3c.dom.Text;
 
 /**
  * This workflow action translates the current item to ALL untranslated 
@@ -192,7 +191,7 @@ public class PSCreateTranslations implements IPSWorkflowAction
          PSRelationshipSet dependents = relProxy.getRelationships(filter);
          if (dependents != null && !dependents.isEmpty())
          {
-            Set<Integer> ids = new HashSet<Integer>(dependents.size());
+            Set<Integer> ids = new HashSet<>(dependents.size());
             Iterator iter = dependents.iterator();
             int i = 0;
             while (iter.hasNext())
@@ -261,7 +260,7 @@ public class PSCreateTranslations implements IPSWorkflowAction
       paramMap.put(IPSHtmlParameters.SYS_CONTENTID, "" + locator.getId());
       paramMap.put(IPSHtmlParameters.SYS_REVISION, "" + locator.getRevision());
 
-      HashMap originalMap = request.getParameters();
+      Map<String,Object> originalMap = request.getParameters();
       IPSInternalRequest ir = null;
       try
       {
@@ -397,13 +396,14 @@ public class PSCreateTranslations implements IPSWorkflowAction
    {
       try
       {
-         ms_props.load(
-            new FileInputStream(
-               "rxconfig"
-                  + File.separator
-                  + "I18n"
-                  + File.separator
-                  + CONFIG_FILE_NAME));
+         try(FileInputStream fis = new FileInputStream(
+                 "rxconfig"
+                         + File.separator
+                         + "I18n"
+                         + File.separator
+                         + CONFIG_FILE_NAME)) {
+            ms_props.load(fis);
+         }
       }
       catch (FileNotFoundException e)
       {

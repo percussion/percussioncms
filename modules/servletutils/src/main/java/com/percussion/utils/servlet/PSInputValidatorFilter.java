@@ -17,28 +17,16 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.utils.servlet;
 
-import static org.apache.commons.lang.StringUtils.isBlank;
-import static org.apache.commons.lang.Validate.notNull;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.StringReader;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.logging.Level;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.regex.PatternSyntaxException;
+import com.percussion.error.PSExceptionUtils;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -48,8 +36,21 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringReader;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
-import java.util.logging.Logger;
+import static org.apache.commons.lang.StringUtils.isBlank;
+import static org.apache.commons.lang.Validate.notNull;
 
 /**
  * The input validator filter "intercepts" a pre-defined set of input parameters
@@ -92,15 +93,14 @@ public class PSInputValidatorFilter implements Filter
      * log to use, never <code>null</code>.
      */
 
-
-    static Logger log = Logger.getLogger(PSInputValidatorFilter.class.getName());
+    private static final Logger log = LogManager.getLogger(PSInputValidatorFilter.class.getName());
 
 
     /**
      * Map of params that need to be validated. The key is the parameter name
      * the value is the restriction type to validate against.
      */
-    private static final Map<String, String[]> restrictionProps = new HashMap<String, String[]>();
+    private static final Map<String, String[]> restrictionProps = new HashMap<>();
     
     /**
      * Restriction type enumeration. Defines types that a parameter should be
@@ -109,14 +109,12 @@ public class PSInputValidatorFilter implements Filter
     private enum RestrictType
     {
         // Only allow true, false, yes, or no
-        BOOLEAN(Pattern.compile("yes|no|true|false", Pattern.CASE_INSENSITIVE)), 
-        // Only allow valid guid/uuid values, so either 334 or 2-10-334
-        GUID(Pattern.compile("^([-]?\\d+[-]{1}\\d+[-]{1}\\d+)|(\\d+)$")), 
+        BOOLEAN(Pattern.compile("yes|no|true|false", Pattern.CASE_INSENSITIVE)),
         NOCONTROLCODE(Pattern.compile("[^\\x00\\x0a\\x0d]*")), // Do not allow control codes x00, x0a, or x0d
         NOLTGT(Pattern.compile("[^<>]*")), // Do not allow less than(<) or greater than (>)
         NOQUOTES(Pattern.compile("[^\"']*")), // Do not allow quotes or apostrophes
         // Only allow a numeric, i.e. 10 or 4.5
-        NUMERIC(Pattern.compile("(((-|\\+)?[0-9]+(\\.[0-9]+)?)+|[.]?[0-9]+)")); 
+        NUMERIC(Pattern.compile("\\d+.\\d+"));
         
         private Pattern pattern;
 
@@ -135,6 +133,7 @@ public class PSInputValidatorFilter implements Filter
 
     public PSInputValidatorFilter()
     {
+        //ctor
     }
     
     /**
@@ -154,9 +153,11 @@ public class PSInputValidatorFilter implements Filter
        }
        else
        {
-          log.warning("IP: " + request.getRemoteAddr() + " Bad Parameter \"" + badParam.getParameterName() + 
-                "\" with value: " + badParam.getParameterValue() + " isIllegalParameterName: " 
-                + badParam.isIllegalParameterName());
+          log.warn("IP: {}  Bad Parameter {} with value: {} isIllegalParameterName: {}",  request.getRemoteAddr(),
+                  badParam.getParameterName() ,
+                  badParam.getParameterValue(),
+                  badParam.isIllegalParameterName());
+
           modifyResponse(response, badParam);
           return false;
        }      
@@ -167,14 +168,14 @@ public class PSInputValidatorFilter implements Filter
     {
        try
        {
-          String pname = badParam.isIllegalParameterName() ? "" : badParam.getParameterName();
-          response.sendError(RESPONSE_ERROR_STATUS, "Unprocessable value for parameter \"" + pname + "\"");
+          response.sendError(RESPONSE_ERROR_STATUS, "Unprocessable value for parameter.");
        }
        catch (IOException e)
        {
           // We're already stopping the request, the error response is just a formality.
           // It doesn't matter if we can't print to a client.
-          log.log(Level.SEVERE,e.getLocalizedMessage(), e);
+          log.error("Bad Parameter: {} Error: {}",badParam,e.getMessage());
+          log.debug(PSExceptionUtils.getDebugMessageForLog(e));
        }
     }
 
@@ -185,9 +186,9 @@ public class PSInputValidatorFilter implements Filter
      */
     private static class ParamError
     {
-        private String parameterName;
+        private final String parameterName;
 
-        private String parameterValue;
+        private final String parameterValue;
 
         private boolean illegalParameterName;
 
@@ -246,34 +247,33 @@ public class PSInputValidatorFilter implements Filter
 
         }
         return null;
-    }    
-   
+    }
+
+    @SuppressFBWarnings("URLCONNECTION_SSRF_FD")
     private void doLoadCustomProps(String propsFilePath)
     {
         // Load custom restrictions file
         if (isBlank(propsFilePath))
         {
-            log.log(Level.CONFIG,"Custom properties file not specified.");
+            log.info("Custom properties file not specified.");
             return;
         }
-        try
-        {
+        try {
             URL url = new URL(propsFilePath);
-            log.info("Loading custom properties: " + url.toString());
-            InputStream is = url.openStream();
-            this.doLoadProperties(is); // It will be closed by loadProperties.
-        }
-        catch (IOException e)
-        {
+            log.info("Loading custom properties: {}" , url);
+            try (InputStream is = url.openStream()) {
+                this.doLoadProperties(is); // It will be closed by loadProperties.
+            }
+        }catch (IOException e) {
             String message = "Properties file could not be found for: " + propsFilePath;
-            log.log(Level.SEVERE,message, e);
+            log.error( message, e);
         }
 
     }
     /**
      * Load the properties for the input filter that contains field restrictions. Properties will overwrite
      * any existing properties at the time of this call.
-     * @param props the inputstream to the properties file, there is
+     * @param is the inputstream to the properties file, there is
      * no need to close the stream as this method will handle that. Cannot be <code>null</code>.
      */
     private void doLoadProperties(InputStream is)
@@ -292,7 +292,7 @@ public class PSInputValidatorFilter implements Filter
         }
         catch (Exception e)
         {
-            log.log(Level.SEVERE,"Error loading properties", e);
+            log.error("Error loading properties", e);
         }
         finally
         {
@@ -341,7 +341,7 @@ public class PSInputValidatorFilter implements Filter
     {
         if(val == null)
             return new String[]{};
-        List<String> list = new ArrayList<String>();
+        List<String> list = new ArrayList<>();
         StringReader sr = new StringReader(val);
         int current = -1;
         StringBuilder buff = new StringBuilder();
@@ -370,7 +370,7 @@ public class PSInputValidatorFilter implements Filter
         }
         catch (IOException e)
         {
-             log.log(Level.SEVERE,e.getLocalizedMessage(), e); // Highly doubtful this would ever get hit for a string reader
+             log.error(e.getLocalizedMessage(), e); // Highly doubtful this would ever get hit for a string reader
         }
         return list.toArray(new String[]
         {});
@@ -410,7 +410,7 @@ public class PSInputValidatorFilter implements Filter
                     if (pattern == null)
                     {
                         String err = "Missing regex pattern for restriction type: " + restrict;
-                        log.log(Level.SEVERE,err);
+                        log.error(err);
                         throw new RuntimeException(err);
                     }
                 }
@@ -428,13 +428,13 @@ public class PSInputValidatorFilter implements Filter
                         }
                         catch (PatternSyntaxException e)
                         {
-                            log.log(Level.SEVERE,"Invalid Regular Expression, skipping restriction: " + ptn);
+                            log.error("Invalid Regular Expression, skipping restriction: {}" , ptn);
                             continue;
                         }
                     }
                     else
                     {
-                       log.log(Level.SEVERE,"Expression not properly enclosed in quotes. Skipping.");
+                       log.error("Expression not properly enclosed in quotes. Skipping.");
                        continue;
                     }
                 }
@@ -528,10 +528,14 @@ public class PSInputValidatorFilter implements Filter
 
         if ("true".equals(isEnabledString))
             isEnabled = true;
-        InputStream is = this.getClass().getResourceAsStream(getClass().getSimpleName() + ".properties");
-        notNull(is, "properties file should not be missing");
-        doLoadProperties(is);
-        doLoadCustomProps(propsFilePath);
+        try(InputStream is = this.getClass().getResourceAsStream(getClass().getSimpleName() + ".properties")) {
+            notNull(is, "properties file should not be missing");
+            doLoadProperties(is);
+            doLoadCustomProps(propsFilePath);
+        } catch (IOException e) {
+            log.error(PSExceptionUtils.getMessageForLog(e));
+        }
+
         if (isEnabled)
             log.info("Request Validation is enabled");
     }

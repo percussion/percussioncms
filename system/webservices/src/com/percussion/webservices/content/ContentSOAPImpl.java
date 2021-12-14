@@ -17,15 +17,13 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.webservices.content;
 
 import com.percussion.cms.PSCmsException;
-import com.percussion.cms.objectstore.server.PSBinaryFileValue;
-import com.percussion.cms.objectstore.server.PSPurgableFileValue;
 import com.percussion.cms.objectstore.PSBinaryValue;
 import com.percussion.cms.objectstore.PSComponentSummary;
 import com.percussion.cms.objectstore.PSCoreItem;
@@ -35,8 +33,10 @@ import com.percussion.cms.objectstore.PSItemField;
 import com.percussion.cms.objectstore.PSItemFieldMeta;
 import com.percussion.cms.objectstore.PSRelationshipFilter;
 import com.percussion.cms.objectstore.PSRelationshipProcessorProxy;
+import com.percussion.cms.objectstore.server.PSPurgableFileValue;
 import com.percussion.cms.objectstore.server.PSRelationshipProcessor;
 import com.percussion.design.objectstore.PSRelationshipConfig;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.search.objectstore.PSWSSearchRequest;
 import com.percussion.services.assembly.IPSAssemblyTemplate;
 import com.percussion.services.assembly.IPSTemplateSlot;
@@ -71,28 +71,25 @@ import com.percussion.webservices.faults.PSInvalidSessionFault;
 import com.percussion.webservices.faults.PSNotAuthorizedFault;
 import com.percussion.webservices.faults.PSUnknownChildFault;
 import com.percussion.webservices.faults.PSUnknownContentTypeFault;
+import org.apache.axis.Message;
+import org.apache.axis.MessageContext;
+import org.apache.axis.attachments.AttachmentPart;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.exception.ExceptionUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
+import javax.activation.DataHandler;
+import javax.activation.FileDataSource;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
-
-import javax.activation.DataHandler;
-import javax.activation.FileDataSource;
-
-import org.apache.axis.Message;
-import org.apache.axis.MessageContext;
-import org.apache.axis.attachments.AttachmentPart;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.exception.ExceptionUtils;
 
 /**
  * Server side implementations for web services defined in
@@ -101,6 +98,8 @@ import org.apache.commons.lang.exception.ExceptionUtils;
  */
 public class ContentSOAPImpl extends PSBaseSOAPImpl implements Content
 {
+
+   private static final Logger log = LogManager.getLogger(ContentSOAPImpl.class);
    /* (non-Javadoc)
     * @see Content#loadTranslationSettings()
     */
@@ -260,7 +259,7 @@ public class ContentSOAPImpl extends PSBaseSOAPImpl implements Content
       }
       catch (PSErrorException e)
       {
-         throw new RemoteException(e.getLocalizedMessage());
+         throw new RemoteException(PSExceptionUtils.getMessageForLog(e));
       }
 
       return null;
@@ -304,7 +303,7 @@ public class ContentSOAPImpl extends PSBaseSOAPImpl implements Content
       }
       catch (PSErrorException e)
       {
-         throw new RemoteException(e.getLocalizedMessage());
+         throw new RemoteException(PSExceptionUtils.getMessageForLog(e));
       }
 
       return null;
@@ -368,7 +367,7 @@ public class ContentSOAPImpl extends PSBaseSOAPImpl implements Content
       }
       catch (PSErrorException e)
       {
-         throw new RemoteException(e.getLocalizedMessage());
+         throw new RemoteException(PSExceptionUtils.getMessageForLog(e));
       }
    }
 
@@ -413,7 +412,7 @@ public class ContentSOAPImpl extends PSBaseSOAPImpl implements Content
       }      
       catch (PSErrorException e)
       {
-         throw new RemoteException(e.getLocalizedMessage());
+         throw new RemoteException(PSExceptionUtils.getMessageForLog(e));
       }
 
       return null;
@@ -510,8 +509,9 @@ public class ContentSOAPImpl extends PSBaseSOAPImpl implements Content
       }
       catch (PSErrorException e)
       {
-         e.printStackTrace();
-         throw new RemoteException(e.getLocalizedMessage());         
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+         throw new RemoteException(PSExceptionUtils.getMessageForLog(e));         
       }
       
       return null;
@@ -559,8 +559,9 @@ public class ContentSOAPImpl extends PSBaseSOAPImpl implements Content
       }
       catch (PSErrorException e)
       {
-         e.printStackTrace();
-         throw new RemoteException(e.getLocalizedMessage());
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+         throw new RemoteException(PSExceptionUtils.getMessageForLog(e));
       }
    }
    
@@ -742,8 +743,9 @@ public class ContentSOAPImpl extends PSBaseSOAPImpl implements Content
       }
       catch (PSErrorException e)
       {
-         e.printStackTrace();
-         throw new RemoteException(e.getLocalizedMessage());
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+         throw new RemoteException(PSExceptionUtils.getMessageForLog(e));
       }
    }
 
@@ -777,8 +779,9 @@ public class ContentSOAPImpl extends PSBaseSOAPImpl implements Content
       }
       catch (PSErrorException e)
       {
-         e.printStackTrace();
-         throw new RemoteException(e.getLocalizedMessage());
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+         throw new RemoteException(PSExceptionUtils.getMessageForLog(e));
       }
    }
 
@@ -865,8 +868,9 @@ public class ContentSOAPImpl extends PSBaseSOAPImpl implements Content
       }
       catch (PSErrorException e)
       {
-         e.printStackTrace();
-         throw new RemoteException(e.getLocalizedMessage());
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+         throw new RemoteException(PSExceptionUtils.getMessageForLog(e));
       }
    }
 
@@ -912,8 +916,9 @@ public class ContentSOAPImpl extends PSBaseSOAPImpl implements Content
       }
       catch (Exception e)
       {
-         e.printStackTrace();
-         throw new RemoteException(e.getLocalizedMessage());
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+         throw new RemoteException(PSExceptionUtils.getMessageForLog(e));
       }
 
       return null;
@@ -954,7 +959,7 @@ public class ContentSOAPImpl extends PSBaseSOAPImpl implements Content
       }
       catch (PSErrorException e)
       {
-         throw new RemoteException(e.getLocalizedMessage());
+         throw new RemoteException(PSExceptionUtils.getMessageForLog(e));
       }
 
       return null;
@@ -997,7 +1002,7 @@ public class ContentSOAPImpl extends PSBaseSOAPImpl implements Content
       }
       catch (PSErrorException e)
       {
-         throw new RemoteException(e.getLocalizedMessage());
+         throw new RemoteException(PSExceptionUtils.getMessageForLog(e));
       }      
       return null;
    }
@@ -1034,8 +1039,9 @@ public class ContentSOAPImpl extends PSBaseSOAPImpl implements Content
       }
       catch (PSErrorException e)
       {
-         e.printStackTrace();
-         throw new RemoteException(e.getLocalizedMessage());
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+         throw new RemoteException(PSExceptionUtils.getMessageForLog(e));
       }
    }
 
@@ -1069,8 +1075,9 @@ public class ContentSOAPImpl extends PSBaseSOAPImpl implements Content
       }
       catch (Exception e)
       {
-         e.printStackTrace();
-         throw new RemoteException(e.getLocalizedMessage());
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+         throw new RemoteException(PSExceptionUtils.getMessageForLog(e));
       }
 
       return null;
@@ -1100,7 +1107,7 @@ public class ContentSOAPImpl extends PSBaseSOAPImpl implements Content
       }
       catch (PSErrorException e)
       {
-         throw new RemoteException(e.getLocalizedMessage());
+         throw new RemoteException(PSExceptionUtils.getMessageForLog(e));
       }      
       return null;
    }
@@ -1164,7 +1171,7 @@ public class ContentSOAPImpl extends PSBaseSOAPImpl implements Content
       }
       catch (PSErrorException e)
       {
-         throw new RemoteException(e.getLocalizedMessage());
+         throw new RemoteException(PSExceptionUtils.getMessageForLog(e));
       }
       
       return null;
@@ -1201,7 +1208,7 @@ public class ContentSOAPImpl extends PSBaseSOAPImpl implements Content
       }
       catch (PSErrorException e)
       {
-         throw new RemoteException(e.getLocalizedMessage());
+         throw new RemoteException(PSExceptionUtils.getMessageForLog(e));
       }      
 
       return null;
@@ -1255,8 +1262,9 @@ public class ContentSOAPImpl extends PSBaseSOAPImpl implements Content
       }
       catch (PSErrorException e)
       {
-         e.printStackTrace();
-         throw new RemoteException(e.getLocalizedMessage());
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+         throw new RemoteException(PSExceptionUtils.getMessageForLog(e));
       }
       
       return null;
@@ -1295,8 +1303,9 @@ public class ContentSOAPImpl extends PSBaseSOAPImpl implements Content
       }
       catch (Exception e)
       {
-         e.printStackTrace();
-         throw new RemoteException(e.getLocalizedMessage());
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+         throw new RemoteException(PSExceptionUtils.getMessageForLog(e));
       }
 
       return null;
@@ -1384,7 +1393,8 @@ public class ContentSOAPImpl extends PSBaseSOAPImpl implements Content
          }
          catch (PSCmsException e)
          {
-            e.printStackTrace();
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new IllegalArgumentException(e);
          }
       }
@@ -1559,7 +1569,7 @@ public class ContentSOAPImpl extends PSBaseSOAPImpl implements Content
       }
       catch (PSErrorException e)
       {
-         throw new RemoteException(e.getLocalizedMessage());
+         throw new RemoteException(PSExceptionUtils.getMessageForLog(e));
       }   
    }
 
@@ -1607,8 +1617,9 @@ public class ContentSOAPImpl extends PSBaseSOAPImpl implements Content
       }
       catch (PSErrorException e)
       {
-         e.printStackTrace();
-         throw new RemoteException(e.getLocalizedMessage());
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+         throw new RemoteException(PSExceptionUtils.getMessageForLog(e));
       }
       
       return null;
@@ -1682,8 +1693,9 @@ public class ContentSOAPImpl extends PSBaseSOAPImpl implements Content
       }
       catch (PSErrorException e)
       {
-         e.printStackTrace();
-         throw new RemoteException(e.getLocalizedMessage());
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+         throw new RemoteException(PSExceptionUtils.getMessageForLog(e));
       }
       
       return null;
@@ -1736,8 +1748,9 @@ public class ContentSOAPImpl extends PSBaseSOAPImpl implements Content
       }
       catch (PSErrorException e)
       {
-         e.printStackTrace();
-         throw new RemoteException(e.getLocalizedMessage());
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+         throw new RemoteException(PSExceptionUtils.getMessageForLog(e));
       }
       
       return null;
@@ -1810,8 +1823,9 @@ public class ContentSOAPImpl extends PSBaseSOAPImpl implements Content
       }
       catch (PSErrorException e)
       {
-         e.printStackTrace();
-         throw new RemoteException(e.getLocalizedMessage());
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+         throw new RemoteException(PSExceptionUtils.getMessageForLog(e));
       }
    }
 
@@ -1890,7 +1904,7 @@ public class ContentSOAPImpl extends PSBaseSOAPImpl implements Content
       }
       catch (PSErrorException e)
       {
-         throw new RemoteException(e.getLocalizedMessage());
+         throw new RemoteException(PSExceptionUtils.getMessageForLog(e));
       }
    }
 
@@ -1940,8 +1954,9 @@ public class ContentSOAPImpl extends PSBaseSOAPImpl implements Content
       }
       catch (PSErrorException e)
       {
-         e.printStackTrace();
-         throw new RemoteException(e.getLocalizedMessage());
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+         throw new RemoteException(PSExceptionUtils.getMessageForLog(e));
       }
    }
 
@@ -1975,7 +1990,7 @@ public class ContentSOAPImpl extends PSBaseSOAPImpl implements Content
       }
       catch (PSErrorException e)
       {
-         throw new RemoteException(e.getLocalizedMessage());
+         throw new RemoteException(PSExceptionUtils.getMessageForLog(e));
       }
    }
 
@@ -2023,8 +2038,9 @@ public class ContentSOAPImpl extends PSBaseSOAPImpl implements Content
       }
       catch (PSErrorException e)
       {
-         e.printStackTrace();
-         throw new RemoteException(e.getLocalizedMessage());
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+         throw new RemoteException(PSExceptionUtils.getMessageForLog(e));
       }
    }
 
@@ -2061,8 +2077,9 @@ public class ContentSOAPImpl extends PSBaseSOAPImpl implements Content
       }      
       catch (Exception e)
       {
-         e.printStackTrace();
-         throw new RemoteException(e.getLocalizedMessage());
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+         throw new RemoteException(PSExceptionUtils.getMessageForLog(e));
       }
    }
    
@@ -2224,7 +2241,7 @@ public class ContentSOAPImpl extends PSBaseSOAPImpl implements Content
       catch (IOException e)
       {
          // this should never happen
-         throw new RemoteException(e.getLocalizedMessage());
+         throw new RemoteException(PSExceptionUtils.getMessageForLog(e));
       }
    }
    
@@ -2265,22 +2282,12 @@ public class ContentSOAPImpl extends PSBaseSOAPImpl implements Content
             
             PSPurgableTempFile tempFile = new PSPurgableTempFile("psx", 
                                                                  ".bin", null);
-            InputStream stream = null;
-            
-            try
-            {
-               stream = attachment.getActivationDataHandler().getInputStream();
+
+            try(InputStream stream = attachment.getActivationDataHandler().getInputStream()){
                IOTools.copyStreamToFile(stream, tempFile);
                tempFiles.add(tempFile);
             }
-            finally
-            {
-               if(stream != null)
-               {
-                  stream.close();
-               }
-            }
-            
+
             PSBinaryValue value = new PSPurgableFileValue(tempFile);
             field.addValue(value);
             return true;
@@ -2291,7 +2298,7 @@ public class ContentSOAPImpl extends PSBaseSOAPImpl implements Content
       catch (IOException e)
       {
          // this should never happen
-         throw new RemoteException(e.getLocalizedMessage());
+         throw new RemoteException(PSExceptionUtils.getMessageForLog(e));
       }
    }
    

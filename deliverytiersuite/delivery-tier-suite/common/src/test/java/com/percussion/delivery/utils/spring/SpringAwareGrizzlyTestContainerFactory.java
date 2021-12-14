@@ -17,13 +17,15 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.delivery.utils.spring;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.client.ClientConfig;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
@@ -38,7 +40,6 @@ import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.UriBuilder;
 import java.io.IOException;
 import java.net.URI;
-import java.util.logging.Logger;
 
 public class SpringAwareGrizzlyTestContainerFactory implements TestContainerFactory {
 
@@ -51,7 +52,7 @@ public class SpringAwareGrizzlyTestContainerFactory implements TestContainerFact
 
     private static class SpringAwareGrizzlyWebTestContainer implements TestContainer {
 
-        private static final Logger log = Logger.getLogger(SpringAwareGrizzlyWebTestContainer.class.getName());
+        private static final Logger log = LogManager.getLogger(SpringAwareGrizzlyWebTestContainer.class.getName());
         private URI baseUri;
         private HttpServer webServer;
         private Object springTarget;

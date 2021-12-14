@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -174,7 +174,7 @@ public class PSPublicAssetItemFilterRule extends PSAbstractWorkflowExtension imp
         		if (historyItem.getStateName().equals(LIVE_STATE))
         		{	
         			oldRevision = historyItem.getRevision();
-        			log.info("Publishing previous Item Revision: "+oldRevision+" Name:"+wfItem.itemSummary.getName());
+        			log.debug("Publishing previous Item Revision: "+oldRevision+" Name:"+wfItem.itemSummary.getName());
         			break;
         		}
         	}
@@ -192,7 +192,6 @@ public class PSPublicAssetItemFilterRule extends PSAbstractWorkflowExtension imp
             /*
              * This is the same logic as the public item filter.
              */
-            if (log.isDebugEnabled())
                 log.debug("Keeping page or shared asset: " + wfItem);
 
 
@@ -207,8 +206,7 @@ public class PSPublicAssetItemFilterRule extends PSAbstractWorkflowExtension imp
             /*
              * The item should be removed
              */
-            if (log.isDebugEnabled())
-                log.debug("Removing item: " + wfItem);
+            log.debug("Removing item: " + wfItem);
             rvalue = null;
         }
         return rvalue;

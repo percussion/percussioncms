@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="/WEB-INF/tmxtags.tld" prefix="i18n" %>
+<%@ taglib uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" prefix="csrf" %>
 <%@ page import=" com.percussion.utils.PSSpringBeanProvider" %>
 <%@ page import="com.percussion.assetmanagement.data.PSAsset" %>
 <%@ page import="com.percussion.assetmanagement.service.impl.PSAssetService" %>
@@ -23,7 +24,7 @@
   ~      Burlington, MA 01803, USA
   ~      +01-781-438-9900
   ~      support@percussion.com
-  ~      https://www.percusssion.com
+  ~      https://www.percussion.com
   ~
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   --%>
@@ -45,7 +46,7 @@
     if (debug == null)
         debug = "false";
     String ua = request.getHeader("User-Agent");
-    boolean isMSIE = (ua != null && ua.indexOf("MSIE") != -1);
+    boolean isMSIE = (ua != null && ua.contains("MSIE"));
     char msiever = '0';
     if (isMSIE) {
         int msieverind = ua.indexOf("MSIE ");
@@ -79,7 +80,9 @@
     --%>
     <!-- Themes never should be concatenated or packed -->
     <link rel="stylesheet" type="text/css" href="../themes/smoothness/jquery-ui-1.8.9.custom.css">
+    <link rel="stylesheet" type="text/css" href="/cm/jslib/profiles/3x/libraries/fontawesome/css/all.css"/>
     <script src="/Rhythmyx/tmx/tmx.jsp?mode=js&amp;prefix=perc.ui.&amp;sys_lang=<%=locale%>"></script>
+    <script src="/JavaScriptServlet"></script>
     <% if (isDebug) { %>
     <!-- CSS Includes -->
     <%@include file="includes/common_css.jsp" %>
@@ -130,7 +133,7 @@
             UI related JavaScript files
     --%>
     <%-- --%>
-    <script src="../jslib/jquery.xmldom-1.0.js"></script>
+    <script src="../jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.xmldom-1.0.js"></script>
 
     <script src="../plugins/perc_page_schema.js"></script>
     <script src="../plugins/perc_template_manager.js"></script>
@@ -146,7 +149,7 @@
     <script src="../plugins/perc_content_viewer.js"></script>
     <script src="../plugins/perc_contentEditDecorate.js"></script>
 
-    <script src="../jslib/jquery.jmodal.js"></script>
+    <script src="../jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.jmodal.js"></script>
     <script src="../classes/perc_page_class.js"></script>
     <script src="../classes/perc_template_layout_class.js"></script>
     <script src="../plugins/perc_template_layout_helper.js"></script>
@@ -175,7 +178,6 @@
     <script src="../plugins/PercRevisionDialog.js"></script>
     <script src="../plugins/PercPublishingHistoryDialog.js"></script>
     <script src="../views/PercSiteImpactView.js"></script>
-    <script src="../jslib/timepicker.js"></script>
     <script src="../plugins/PercScheduleDialog.js"></script>
     <script src="../plugins/perc_ChangePwDialog.js"></script>
     <% } else { %>
@@ -195,9 +197,8 @@
 
     <script  >
         gDebug = <%= debug %>;
-        $j(document).ready(function () {
-            //$j("#template_layout_root").template_layout();
-            $j.Percussion.PercFinderView();
+        $(document).ready(function () {
+            $.Percussion.PercFinderView();
 
         });
 
@@ -205,7 +206,7 @@
         // this method is bound to body's onbeforeunload event
         // if method returns string, it's used to display message and confirmation to navigate away
         // if method returns nothing, navigation is allowed
-        var dirtyController = $j.PercDirtyController;
+        var dirtyController = $.PercDirtyController;
         function navigationEvent() {
             // if template is not dirty, return nothing and allow navigation
             // otherwise return alert message and display confirmantion box
@@ -241,15 +242,15 @@
             <%}%>
             <div id="perc-dropdown-publish-now" style="float : left">
             </div>
-            <div id="perc-dropdown-page-workflow" style="float : right" class="jq-dropdown jq-dropdown-tip" role="menu">
+            <div id="perc-dropdown-page-workflow" style="float : right" role="menu">
             </div>
         </div>
         <div id="perc-pageEditor-toolbar-content" class="ui-helper-clearfix"></div>
-        <div id="bottom"></div>
     </div>
-</div>
+
 <div id="bottom"></div>
 <iframe id="frame" name="frame" style="width: 100%" class="perc-ui-component-ready" frameborder="0"></iframe>
+</div>
 <%@include file='includes/siteimprove_integration.html'%>
 </body>
 </html>

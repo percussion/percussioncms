@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -28,17 +28,21 @@ import com.percussion.rx.jsf.PSNodeBase;
 import com.percussion.rx.publisher.PSPublisherUtils;
 import com.percussion.rx.publisher.jsf.beans.PSDesignNavigation;
 import com.percussion.services.catalog.PSTypeEnum;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.notification.IPSNotificationListener;
 import com.percussion.services.notification.IPSNotificationService;
 import com.percussion.services.notification.PSNotificationEvent;
-import com.percussion.services.notification.PSNotificationServiceLocator;
 import com.percussion.services.notification.PSNotificationEvent.EventType;
+import com.percussion.services.notification.PSNotificationServiceLocator;
 import com.percussion.services.publisher.IPSContentList;
 import com.percussion.services.publisher.IPSPublisherService;
 import com.percussion.services.publisher.PSPublisherException;
 import com.percussion.services.publisher.PSPublisherServiceLocator;
 import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.utils.guid.IPSGuid;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -46,10 +50,6 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
  * This node displays a collection of content lists that are not associated with
@@ -65,8 +65,8 @@ public class PSContentListViewNode extends PSEditableNodeContainer
    /**
     * The logger for the site container node.
     */
-   private static final Log ms_log =
-         LogFactory.getLog(PSContentListViewNode.class);
+   private static final Logger ms_log =
+         LogManager.getLogger(PSContentListViewNode.class);
 
    /**
     * The type of view node.
@@ -127,8 +127,7 @@ public class PSContentListViewNode extends PSEditableNodeContainer
    }
 
    @Override
-   public List<? extends PSNodeBase> getChildren()
-   {
+   public List<? extends PSNodeBase> getChildren() throws PSNotFoundException {
       if (m_children == null)
       {
          m_children = new ArrayList<PSNodeBase>();
@@ -143,7 +142,7 @@ public class PSContentListViewNode extends PSEditableNodeContainer
             {
                return o1.getName().compareToIgnoreCase(o2.getName());
             }});
-         Set<IPSGuid> clistshown = new HashSet<IPSGuid>();
+         Set<IPSGuid> clistshown = new HashSet<>();
          for (IPSContentList c : clists)
          {
             if (clistshown.contains(c.getGUID()))
@@ -163,8 +162,7 @@ public class PSContentListViewNode extends PSEditableNodeContainer
     * @return the outcome, <code>null</code> in this case.
     * @throws PSPublisherException
     */
-   public String createContentList() throws PSPublisherException
-   {
+   public String createContentList() throws PSPublisherException, PSNotFoundException {
       PSContentListNode newcln = create();
       IPSContentList cl = newcln.getContentList();
       cl.setUrl(PSPublisherUtils.SERVLET_URL_PATH + "?sys_deliverytype=filesystem"
@@ -194,8 +192,7 @@ public class PSContentListViewNode extends PSEditableNodeContainer
     * @return the outcome, <code>null</code> in this case.
     * @throws PSPublisherException
     */
-   public String createLegacyContentList() throws PSPublisherException
-   {
+   public String createLegacyContentList() throws PSPublisherException, PSNotFoundException {
       PSContentListNode newcln = create();
       IPSContentList cl = newcln.getContentList();
       cl.setUrl("/Rhythmyx/<yourapplication>/<yourresource>?"
@@ -209,10 +206,8 @@ public class PSContentListViewNode extends PSEditableNodeContainer
     * Create a new content list and persist it.
     * 
     * @return the content list node, never <code>null</code>.
-    * @throws PSPublisherException
     */
-   protected PSContentListNode create()
-   {
+   protected PSContentListNode create() throws PSNotFoundException {
       IPSContentList newcl = getPublisherService().createContentList("new");
       newcl.setName(getUniqueName("ContentList", false));
       return new PSContentListNode(newcl);
@@ -220,8 +215,7 @@ public class PSContentListViewNode extends PSEditableNodeContainer
 
    // see base
    @Override
-   protected boolean findObjectByName(String name)
-   {
+   protected boolean findObjectByName(String name) throws PSNotFoundException {
       IPSPublisherService pub = PSPublisherServiceLocator.getPublisherService();
       return pub.findContentListByName(name) != null;
    }
@@ -253,7 +247,7 @@ public class PSContentListViewNode extends PSEditableNodeContainer
    @Override
    public Set<Object> getAllNames()
    {
-      final Set<Object> names = new HashSet<Object>();
+      final Set<Object> names = new HashSet<>();
       try
       {
          for (final IPSContentList contentList :

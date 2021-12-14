@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -25,13 +25,12 @@ package com.percussion.analytics.data.impl;
 
 import com.percussion.analytics.data.IPSAnalyticsQueryResult;
 import com.percussion.analytics.error.PSAnalyticsQueryResultException;
+import org.apache.commons.lang.StringUtils;
 
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.Map;
 import java.util.Set;
-
-import org.apache.commons.lang.StringUtils;
 
 /**
  * @author erikserating
@@ -247,12 +246,12 @@ public class PSAnalyticsQueryResult implements IPSAnalyticsQueryResult
    /**
     * Value map for this query result. Never <code>null</code>, may be empty.
     */
-   private Map<String, Object> values = new java.util.HashMap<String, Object>();
+   private Map<String, Object> values = new java.util.HashMap<>();
    
    /**
     * Type map for this query result. Never <code>null</code>, may be empty.
     */
    private Map<String, DataType> types = 
-      new java.util.HashMap<String, DataType>();
+      new java.util.HashMap<>();
 
 }

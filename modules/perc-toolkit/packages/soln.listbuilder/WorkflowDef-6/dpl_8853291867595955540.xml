@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PSXDependencyData>
+   <table allowSchemaChanges="n" alter="n" create="y" delolddata="n" isView="n" name="TRANSITIONNOTIFICATIONS">
+      <row>
+         <column action="c" limitSizeForIndex="n" name="TRANSITIONNOTIFICATIONID">
+            <jdbctype>INTEGER</jdbctype>
+            <allowsnull>no</allowsnull>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="TRANSITIONID">
+            <jdbctype>INTEGER</jdbctype>
+            <allowsnull>no</allowsnull>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="NOTIFICATIONID">
+            <jdbctype>INTEGER</jdbctype>
+            <allowsnull>no</allowsnull>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="STATEROLERECIPIENTTYPES">
+            <jdbctype>INTEGER</jdbctype>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="ADDITIONALRECIPIENTLIST">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>255</size>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="CCLIST">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>255</size>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="WORKFLOWAPPID">
+            <jdbctype>INTEGER</jdbctype>
+            <allowsnull>no</allowsnull>
+         </column>
+      </row>
+      <primarykey action="c">
+         <name>WORKFLOWAPPID</name>
+         <name>TRANSITIONNOTIFICATIONID</name>
+      </primarykey>
+      <indexdefinitions>
+         <index action="c" isUnique="n" name="IX_TNTIF_WID_TID">
+            <name>WORKFLOWAPPID</name>
+            <name>TRANSITIONID</name>
+         </index>
+      </indexdefinitions>
+   </table>
+   <table name="TRANSITIONNOTIFICATIONS" onCreateOnly="yes">
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="TRANSITIONNOTIFICATIONID">1</column>
+         <column encoding="text" name="TRANSITIONID">10</column>
+         <column encoding="text" name="NOTIFICATIONID">1</column>
+         <column encoding="text" name="STATEROLERECIPIENTTYPES">1</column>
+         <column encoding="text" name="ADDITIONALRECIPIENTLIST"/>
+         <column encoding="text" name="CCLIST"/>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="TRANSITIONNOTIFICATIONID">2</column>
+         <column encoding="text" name="TRANSITIONID">7</column>
+         <column encoding="text" name="NOTIFICATIONID">2</column>
+         <column encoding="text" name="STATEROLERECIPIENTTYPES">1</column>
+         <column encoding="text" name="ADDITIONALRECIPIENTLIST"/>
+         <column encoding="text" name="CCLIST"/>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="TRANSITIONNOTIFICATIONID">3</column>
+         <column encoding="text" name="TRANSITIONID">8</column>
+         <column encoding="text" name="NOTIFICATIONID">2</column>
+         <column encoding="text" name="STATEROLERECIPIENTTYPES">1</column>
+         <column encoding="text" name="ADDITIONALRECIPIENTLIST"/>
+         <column encoding="text" name="CCLIST"/>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+      </row>
+   </table>
+</PSXDependencyData>

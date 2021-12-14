@@ -17,13 +17,11 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.activity.service.impl;
-
-import static org.apache.commons.lang.Validate.notNull;
 
 import com.percussion.activity.data.PSContentActivity;
 import com.percussion.activity.data.PSEffectiveness;
@@ -32,14 +30,16 @@ import com.percussion.activity.service.IPSEffectivenessService;
 import com.percussion.share.service.impl.PSXmlDataHandler;
 import com.percussion.share.service.impl.jaxb.Pair;
 import com.percussion.share.service.impl.jaxb.Property;
+import com.percussion.share.service.impl.jaxb.Property.Pvalues;
 import com.percussion.share.service.impl.jaxb.Response;
 import com.percussion.share.service.impl.jaxb.Result;
-import com.percussion.share.service.impl.jaxb.Property.Pvalues;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static org.apache.commons.lang.Validate.notNull;
 
 /**
  * This handler which provides sample effectiveness data from an xml file.
@@ -54,9 +54,9 @@ public class PSEffectivenessDataHandler extends PSXmlDataHandler implements IPSE
         notNull(request);
         notNull(activity);
         
-        List<PSEffectiveness> eList = new ArrayList<PSEffectiveness>();
+        List<PSEffectiveness> eList = new ArrayList<>();
                 
-        Map<String, Object> props = new HashMap<String, Object>();
+        Map<String, Object> props = new HashMap<>();
         props.put("duration", request.getDuration());
         props.put("durationType", request.getDurationType());
         props.put("path", request.getPath());

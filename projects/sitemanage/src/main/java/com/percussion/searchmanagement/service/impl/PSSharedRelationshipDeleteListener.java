@@ -17,15 +17,12 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.searchmanagement.service.impl;
-
-import static org.apache.commons.lang.Validate.isTrue;
-import static org.apache.commons.lang.Validate.notNull;
 
 import com.percussion.assetmanagement.service.impl.PSWidgetAssetRelationshipService;
 import com.percussion.cms.PSRelationshipChangeEvent;
@@ -35,12 +32,16 @@ import com.percussion.services.notification.IPSNotificationListener;
 import com.percussion.services.notification.IPSNotificationService;
 import com.percussion.services.notification.PSNotificationEvent;
 import com.percussion.services.notification.PSNotificationEvent.EventType;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.util.PSSiteManageBean;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+
+import static org.apache.commons.lang.Validate.isTrue;
+import static org.apache.commons.lang.Validate.notNull;
 
 /**
  * This class is notified on relationship changes.  It is used to re-index pages which are affected by the deletion of
@@ -66,9 +67,7 @@ public class PSSharedRelationshipDeleteListener implements IPSNotificationListen
         this.indexService = indexService;
     }
 
-    @SuppressWarnings("unchecked")
-    public void notifyEvent(PSNotificationEvent event)
-    {
+    public void notifyEvent(PSNotificationEvent event) throws PSValidationException {
         notNull(event, "event");
         isTrue(EventType.RELATIONSHIP_CHANGED == event.getType(), 
                 "Should only be registered for relationship changes.");
@@ -81,7 +80,7 @@ public class PSSharedRelationshipDeleteListener implements IPSNotificationListen
         }
         
         // filter out all relationships except shared
-        Set<Integer> sharedOwnerIds = new HashSet<Integer>();
+        Set<Integer> sharedOwnerIds = new HashSet<>();
         
         Iterator iter = relEvent.getRelationships().iterator();
         while (iter.hasNext())

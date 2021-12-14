@@ -17,20 +17,12 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.rxfix.dbfixes;
-
-import java.sql.SQLException;
-import java.util.List;
-
-import javax.naming.NamingException;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
 
 import com.percussion.rxfix.IPSFix;
 import com.percussion.rxfix.PSFixResult.Status;
@@ -41,6 +33,13 @@ import com.percussion.webservices.PSErrorException;
 import com.percussion.webservices.PSErrorsException;
 import com.percussion.webservices.content.IPSContentWs;
 import com.percussion.webservices.content.PSContentWsLocator;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import javax.naming.NamingException;
+import java.sql.SQLException;
+import java.util.List;
 
 /**
  * 
@@ -49,7 +48,7 @@ import com.percussion.webservices.content.PSContentWsLocator;
  */
 public class PSFixPageCatalog extends PSFixDBBase implements IPSFix
 {
-   private static final Logger log = Logger.getLogger(PSFixPageCatalog.class.getName());
+   private static final Logger log = LogManager.getLogger(PSFixPageCatalog.class.getName());
 
    public PSFixPageCatalog() throws NamingException, SQLException
    {

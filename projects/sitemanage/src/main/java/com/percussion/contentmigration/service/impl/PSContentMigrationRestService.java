@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -27,15 +27,17 @@ package com.percussion.contentmigration.service.impl;
 import com.percussion.contentmigration.service.IPSContentMigrationService;
 import com.percussion.contentmigration.service.PSContentMigrationException;
 import com.percussion.contentmigration.service.impl.PSMigrateContentResponse.PSMigrateResponseStatus;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import javax.ws.rs.Consumes;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import java.util.ArrayList;
+import java.util.List;
 
 @Path("/contentmigration")
 @Component("contentMigrationRestService")
@@ -73,7 +75,7 @@ public class PSContentMigrationRestService
             }
             else
             {
-                pageIds = new ArrayList<String>();
+                pageIds = new ArrayList<>();
                 pageIds.add(pageId);
             }
             response = migrateContent("SAMETEMPLATE", templateId, null, pageIds, null);

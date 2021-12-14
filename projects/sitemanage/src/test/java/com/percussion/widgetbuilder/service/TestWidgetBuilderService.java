@@ -17,13 +17,14 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.widgetbuilder.service;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.servlets.PSSecurityFilter;
 import com.percussion.share.spring.PSSpringWebApplicationContextUtils;
 import com.percussion.utils.request.PSRequestInfo;
@@ -35,19 +36,23 @@ import com.percussion.widgetbuilder.data.PSWidgetBuilderResourceListData;
 import com.percussion.widgetbuilder.data.PSWidgetBuilderSummaryData;
 import com.percussion.widgetbuilder.data.PSWidgetBuilderValidationResults;
 import com.percussion.widgetbuilder.utils.xform.PSContentTypeFileTransformerTest;
+import org.apache.cactus.ServletTestCase;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.cactus.ServletTestCase;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-
 @Category(IntegrationTest.class)
 public class TestWidgetBuilderService extends ServletTestCase
 {
+
+    private static final Logger log = LogManager.getLogger(TestWidgetBuilderService.class);
+
     IPSWidgetBuilderService service;
     
     public void setService(IPSWidgetBuilderService service)
@@ -201,7 +206,8 @@ public class TestWidgetBuilderService extends ServletTestCase
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             fail("Exception: " + e.getLocalizedMessage());
         }
         finally

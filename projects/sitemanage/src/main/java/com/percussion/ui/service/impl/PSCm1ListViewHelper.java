@@ -17,14 +17,11 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.ui.service.impl;
-
-import static com.percussion.webservices.PSWebserviceUtils.getStateById;
-import static com.percussion.webservices.PSWebserviceUtils.getWorkflow;
 
 import com.percussion.design.objectstore.PSLocator;
 import com.percussion.pathmanagement.data.PSPathItem;
@@ -45,15 +42,16 @@ import com.percussion.ui.data.PSDisplayPropertiesCriteria;
 import com.percussion.ui.service.IPSListViewHelper;
 import com.percussion.util.PSSiteManageBean;
 import com.percussion.utils.types.PSPair;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Component;
+import static com.percussion.webservices.PSWebserviceUtils.getStateById;
+import static com.percussion.webservices.PSWebserviceUtils.getWorkflow;
 
 
 /**
@@ -71,15 +69,15 @@ public class PSCm1ListViewHelper extends PSBaseListViewHelper
     public static final String PAGE_CONTENTTYPE = "Page";
     public static final String ASSET_CONTENTTYPE = "Asset";
     
-    private IPSDataItemSummaryService dataItemSummaryService;
+    private final IPSDataItemSummaryService dataItemSummaryService;
     
-    private IPSCmsObjectMgr cmsObjectMgr;
+    private final IPSCmsObjectMgr cmsObjectMgr;
     
-    private IPSIdMapper idMapper;
+    private final IPSIdMapper idMapper;
     
-    private IPSFolderHelper folderHelper;
+    private final IPSFolderHelper folderHelper;
     
-    private static Map<String, String> contentIdMap = new HashMap<String, String>();
+    private static Map<String, String> contentIdMap = new HashMap<>();
     
     /*
      * Initialization of content type map values
@@ -118,7 +116,7 @@ public class PSCm1ListViewHelper extends PSBaseListViewHelper
     }
 
     /**
-     * @param criteria
+     * @param pathItem
      * @return
      */
     private Integer getContentId(PSPathItem pathItem)
@@ -146,7 +144,7 @@ public class PSCm1ListViewHelper extends PSBaseListViewHelper
         }
         catch (Exception e)
         {
-            log.error("Error in getting the content id for path item: " + pathItem.getPath());
+            log.error("Error in getting the content id for path item: {}" , pathItem.getPath());
             return null;
         }
     }
@@ -168,7 +166,7 @@ public class PSCm1ListViewHelper extends PSBaseListViewHelper
     @Override
     protected Map<String, String> getDisplayProperties(PSPathItem pathItem)
     {
-        Map<String, String> displayProperties = new HashMap<String, String>();
+        Map<String, String> displayProperties = new HashMap<>();
         
         IPSItemEntry itemEntry = null;
         Object relatedObject = getRelatedObject(pathItem);
@@ -178,7 +176,13 @@ public class PSCm1ListViewHelper extends PSBaseListViewHelper
             itemEntry = (IPSItemEntry) relatedObject;
         else
         {
-            itemEntry = cmsObjectMgr.findItemEntry(getContentId(pathItem));
+            Integer cid = getContentId(pathItem);
+            if(cid != null) {
+                itemEntry = cmsObjectMgr.findItemEntry(cid);
+            }else{
+                log.warn("Unable to locate a content record for {}", pathItem);
+                return null;
+            }
         }
         
         if (StringUtils.isNotBlank(itemEntry.getName()))

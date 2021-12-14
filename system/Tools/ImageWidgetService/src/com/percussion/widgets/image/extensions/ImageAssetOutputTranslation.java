@@ -17,13 +17,13 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.widgets.image.extensions;
-      
+
       import com.percussion.design.objectstore.PSLocator;
       import com.percussion.extension.IPSExtensionDef;
       import com.percussion.extension.IPSItemOutputTransformer;
@@ -42,26 +42,26 @@ package com.percussion.widgets.image.extensions;
       import com.percussion.widgets.image.data.ImageData;
       import com.percussion.widgets.image.services.ImageCacheManager;
       import com.percussion.widgets.image.services.ImageCacheManagerLocator;
+      import org.apache.commons.lang.StringUtils;
+      import org.apache.logging.log4j.LogManager;
+      import org.apache.logging.log4j.Logger;
+      import org.w3c.dom.Document;
+
+      import javax.jcr.Node;
+      import javax.jcr.PathNotFoundException;
+      import javax.jcr.RepositoryException;
+      import javax.jcr.ValueFormatException;
       import java.io.ByteArrayOutputStream;
       import java.io.File;
       import java.io.IOException;
       import java.io.InputStream;
       import java.util.Collections;
       import java.util.List;
-      import javax.jcr.Node;
-      import javax.jcr.PathNotFoundException;
-      import javax.jcr.Property;
-      import javax.jcr.RepositoryException;
-      import javax.jcr.ValueFormatException;
-      import org.apache.commons.lang.StringUtils;
-      import org.apache.commons.logging.Log;
-      import org.apache.commons.logging.LogFactory;
-      import org.w3c.dom.Document;
       
       public class ImageAssetOutputTranslation extends PSDefaultExtension
         implements IPSItemOutputTransformer
       {
-    	  private static Log log = LogFactory.getLog(ImageAssetOutputTranslation.class);
+    	  private static final Logger log = LogManager.getLogger(ImageAssetOutputTranslation.class);
       
     	  private IPSGuidManager gmgr = null;
     	  private IPSContentMgr cmgr = null;
@@ -155,21 +155,23 @@ package com.percussion.widgets.image.extensions;
         		return null;
           }
         	iData.setSize(size.intValue());
-        	InputStream is = node.getProperty(base).getStream();
-        	ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        	PSCopyStream.copyStream(is, baos);
-        	iData.setBinary(baos.toByteArray());
-        	iData.setExt(node.getProperty(base + "_ext").getString());
-        	iData.setFilename(node.getProperty(base + "_filename").getString());
-       		iData.setMimeType(node.getProperty(base + "_type").getString());
-       		Long height = Long.valueOf(node.getProperty(base + "_height").getLong());
-       		iData.setHeight(height.intValue());
-       		Long width = Long.valueOf(node.getProperty(base + "_width").getLong());
-       		iData.setWidth(width.intValue());
-      
-       		String imageKey = this.cacheManager.addImage(iData);
-      
-       		return imageKey;
+        	try(InputStream is = node.getProperty(base).getStream()) {
+                try(ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+                    PSCopyStream.copyStream(is, baos);
+                    iData.setBinary(baos.toByteArray());
+                    iData.setExt(node.getProperty(base + "_ext").getString());
+                    iData.setFilename(node.getProperty(base + "_filename").getString());
+                    iData.setMimeType(node.getProperty(base + "_type").getString());
+                    Long height = Long.valueOf(node.getProperty(base + "_height").getLong());
+                    iData.setHeight(height.intValue());
+                    Long width = Long.valueOf(node.getProperty(base + "_width").getLong());
+                    iData.setWidth(width.intValue());
+
+                    String imageKey = this.cacheManager.addImage(iData);
+
+                    return imageKey;
+                }
+            }
         }
       
         protected void setGmgr(IPSGuidManager gmgr)

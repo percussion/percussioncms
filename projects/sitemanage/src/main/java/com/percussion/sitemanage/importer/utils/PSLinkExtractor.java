@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -30,16 +30,15 @@ import com.percussion.sitemanage.importer.IPSSiteImportLogger;
 import com.percussion.sitemanage.importer.IPSSiteImportLogger.PSLogEntryType;
 import com.percussion.sitemanage.importer.PSLink;
 import com.percussion.sitemanage.importer.PSSiteImporter;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
 public final class PSLinkExtractor
 {
@@ -115,7 +114,7 @@ public final class PSLinkExtractor
             PSSiteQueue siteQueue, String siteUrl)
     {
 
-        final ArrayList<PSLink> outList = new ArrayList<PSLink>();
+        final ArrayList<PSLink> outList = new ArrayList<>();
 
         final Elements links = doc.select(A_HREF);
         for (Element link : links)
@@ -176,7 +175,7 @@ public final class PSLinkExtractor
      */
     public static List<PSLink> getImagesForDocument(final Document doc, final IPSSiteImportLogger log)
     {
-        final ArrayList<PSLink> outList = new ArrayList<PSLink>();
+        final ArrayList<PSLink> outList = new ArrayList<>();
 
         final Elements images = doc.select(IMG_SOURCE);
 

@@ -17,22 +17,21 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.utils;
 
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.Locale;
-
-import javax.jcr.Value;
-import javax.jcr.ValueFormatException;
-
 import com.percussion.utils.jsr170.PSValueComparator;
 import com.percussion.utils.jsr170.PSValueFactory;
 import junit.framework.TestCase;
+
+import javax.jcr.Value;
+import javax.jcr.ValueFormatException;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.Locale;
 
 public class PSValueComparatorTest extends TestCase
 {

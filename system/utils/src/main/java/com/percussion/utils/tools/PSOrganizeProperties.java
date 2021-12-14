@@ -17,11 +17,15 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.utils.tools;
+
+import com.percussion.error.PSExceptionUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -31,6 +35,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -46,6 +51,7 @@ import java.util.TreeMap;
 public class PSOrganizeProperties
 {
 
+   private static final Logger log = LogManager.getLogger(PSOrganizeProperties.class);
    public static final String HEADER_COMMENTS = "HEADER_COMMENTS";
 
    /**
@@ -81,7 +87,7 @@ public class PSOrganizeProperties
    /**
     * Load the specified properties file
     * @param file cannot be <code>null</code>.
-    * @param m_comments
+    * @param comments_list
     * @return the Properties, never <code>null</code>.
     * @throws IOException upon error
     */
@@ -96,25 +102,13 @@ public class PSOrganizeProperties
 
       String headerComments = getHeaderComments(file);
       parseComments(file, comments_list);
-      InputStream is = new FileInputStream(file);
-      try
+
+      try(InputStream is = new FileInputStream(file))
       {
          props.load(is);
          props.setProperty(HEADER_COMMENTS,headerComments);
          return props;
       }
-      finally
-      {
-         if(is != null)
-         {
-            try
-            {
-               is.close();
-            }
-            catch(IOException ignore){}
-         }
-      }
-      
    }
    
    /**
@@ -125,8 +119,7 @@ public class PSOrganizeProperties
     */
    private static String getHeaderComments(File file) throws IOException
    {
-      BufferedReader reader = new BufferedReader(new FileReader(file));
-      try
+      try(BufferedReader reader = new BufferedReader(new FileReader(file)))
       {
          String line = null;
          StringBuilder sb = new StringBuilder();
@@ -147,33 +140,22 @@ public class PSOrganizeProperties
          }
          return sb.toString();
       }
-      finally
-      {
-         try
-         {
-            if(reader != null)
-               reader.close();
-         }
-         catch(IOException ignore){}
-      }
    }
    
    /**
     * Parses out all comments except the header comments and adds them
     * to the comments map using the following entry as the key.
     * @param file
-    * @param headerComments
     * @param comments_list
     * @throws IOException
     */
    private static void parseComments(File file, Map<String, List<String>> comments_list)  throws IOException
    {
-      BufferedReader reader = new BufferedReader(new FileReader(file));
-      try
+      try(BufferedReader reader = new BufferedReader(new FileReader(file)))
       {
          String line = null;
          boolean okToParse = false;
-         List<String> comments = new ArrayList<String>();
+         List<String> comments = new ArrayList<>();
          while((line = reader.readLine()) != null)
          {
             String trimmedLine = line.trim();            
@@ -200,20 +182,11 @@ public class PSOrganizeProperties
                {
                   String[] splitLine = trimmedLine.split("=");
                   comments_list.put(splitLine[0], comments);
-                  comments = new ArrayList();
+                  comments = new ArrayList<>();
                }
             }
          }
          
-      }
-      finally
-      {
-         try
-         {
-            if(reader != null)
-               reader.close();
-         }
-         catch(IOException ignore){}
       }
    }
    
@@ -265,23 +238,12 @@ public class PSOrganizeProperties
          sb.append("\n");
          
       }
-      FileOutputStream fo = new FileOutputStream(file);
-      try
+
+      try(FileOutputStream fo = new FileOutputStream(file))
       {
-         fo.write(sb.toString().getBytes("utf8"));
+         fo.write(sb.toString().getBytes(StandardCharsets.UTF_8));
       }
-      finally
-      {
-         if(fo != null)
-         {
-            try
-            {
-               fo.close();
-            }
-            catch(IOException ignore){}
-         }
-      }
-      
+
    }
    
    /**
@@ -366,8 +328,8 @@ public class PSOrganizeProperties
       }
       catch (IOException e)
       {
-         // TODO Auto-generated catch block
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
       return sb.toString();
    }
@@ -387,16 +349,15 @@ public class PSOrganizeProperties
    {
       if(args.length > 0)
       {
-         PSOrganizeProperties op = new PSOrganizeProperties();
          File file = new File(args[0]);
          if(!file.getName().toLowerCase().trim().endsWith(".properties"))
          {
-            System.out.println("Not a properties file. Nothing to do.");
+            log.info("Not a properties file. Nothing to do.");
          }
          else
          {
-            op.execute(file);
-            System.out.println("Properties file has been organized.");
+            PSOrganizeProperties.execute(file);
+            log.info("Properties file has been organized.");
          }      
       }
    }

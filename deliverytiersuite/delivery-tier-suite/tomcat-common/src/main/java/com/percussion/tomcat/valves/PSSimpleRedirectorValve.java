@@ -19,20 +19,12 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 package com.percussion.tomcat.valves;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.StringTokenizer;
-
-import javax.servlet.ServletException;
 
 import org.apache.catalina.Lifecycle;
 import org.apache.catalina.LifecycleException;
@@ -40,10 +32,17 @@ import org.apache.catalina.LifecycleState;
 import org.apache.catalina.connector.Request;
 import org.apache.catalina.connector.Response;
 import org.apache.catalina.valves.ValveBase;
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tomcat.util.buf.CharChunk;
 import org.apache.tomcat.util.buf.MessageBytes;
+
+import javax.servlet.ServletException;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.StringTokenizer;
 
 /**
  * This class is a very simple redirector, based on the same technique used by
@@ -72,7 +71,7 @@ import org.apache.tomcat.util.buf.MessageBytes;
  */
 public class PSSimpleRedirectorValve extends ValveBase implements Lifecycle
 {
-    private static Log log = LogFactory.getLog(PSSimpleRedirectorValve.class);
+    private static final Logger log = LogManager.getLogger(PSSimpleRedirectorValve.class);
 
     /**
      * See class description.
@@ -174,7 +173,7 @@ public class PSSimpleRedirectorValve extends ValveBase implements Lifecycle
         }
 
         StringTokenizer toker = new StringTokenizer(serviceNames, ",");
-        Collection<String> urls = new ArrayList<String>();
+        Collection<String> urls = new ArrayList<>();
         while (toker.hasMoreTokens())
         {
             String s = toker.nextToken().trim();

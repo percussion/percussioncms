@@ -17,12 +17,13 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.rx.design.impl;
 
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.filter.IPSFilterService;
 import com.percussion.services.filter.IPSItemFilter;
 import com.percussion.utils.guid.IPSGuid;
@@ -30,8 +31,7 @@ import com.percussion.utils.guid.IPSGuid;
 public class PSItemFilterModel extends PSDesignModel
 {
    @Override
-   public Object load(IPSGuid guid)
-   {
+   public Object load(IPSGuid guid) throws PSNotFoundException {
       if (guid == null || !isValidGuid(guid))
          throw new IllegalArgumentException("guid is not valid for this model");
       IPSFilterService service = (IPSFilterService) getService();
@@ -39,8 +39,7 @@ public class PSItemFilterModel extends PSDesignModel
    }
    
    @Override
-   public Object loadModifiable(IPSGuid guid)
-   {
+   public Object loadModifiable(IPSGuid guid) throws PSNotFoundException {
       if (guid == null || !isValidGuid(guid))
          throw new IllegalArgumentException("guid is not valid for this model");
       IPSFilterService service = (IPSFilterService) getService();
@@ -48,8 +47,7 @@ public class PSItemFilterModel extends PSDesignModel
    }
    
    @Override
-   public void delete(IPSGuid guid)
-   {
+   public void delete(IPSGuid guid) throws PSNotFoundException {
       if (guid == null || !isValidGuid(guid))
          throw new IllegalArgumentException("guid is not valid for this model");
       IPSItemFilter filter = (IPSItemFilter) load(guid);

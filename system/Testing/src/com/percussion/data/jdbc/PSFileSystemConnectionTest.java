@@ -17,12 +17,21 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.data.jdbc;
+
+import com.percussion.cms.IPSConstants;
+import com.percussion.error.PSExceptionUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 
 import java.io.File;
 import java.io.IOException;
@@ -30,16 +39,13 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.Properties;
 
-import junit.framework.TestCase;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
-
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class PSFileSystemConnectionTest
 {
+   private static final Logger log = LogManager.getLogger(IPSConstants.TEST_LOG);
+
    // the root dir for the tests
    private File m_rootDir;
 
@@ -62,7 +68,7 @@ public class PSFileSystemConnectionTest
       }
       catch (IOException e)
       {
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getDebugMessageForLog(e));
       }
    }
 
@@ -75,7 +81,7 @@ public class PSFileSystemConnectionTest
       Connection fileConn = DriverManager.getConnection("jdbc:psfilesystem",
             m_connProperties);
 
-      assertTrue("Connection initially open", !fileConn.isClosed());
+      assertFalse("Connection initially open", fileConn.isClosed());
 
       fileConn.close();
 

@@ -17,13 +17,11 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.fastforward.managednav;
-
-import static com.percussion.fastforward.managednav.PSNavFolderUtils.*;
 
 import com.percussion.cms.objectstore.PSComponentSummary;
 import com.percussion.design.objectstore.PSLocator;
@@ -44,15 +42,14 @@ import com.percussion.services.contentmgr.PSContentMgrOption;
 import com.percussion.services.guidmgr.PSGuidUtils;
 import com.percussion.services.guidmgr.data.PSLegacyGuid;
 
+import javax.jcr.Node;
+import javax.jcr.Property;
+import javax.jcr.RepositoryException;
 import java.io.File;
 import java.text.MessageFormat;
 import java.util.List;
 
-import javax.jcr.Node;
-import javax.jcr.Property;
-import javax.jcr.RepositoryException;
-
-import org.apache.log4j.Logger;
+import static com.percussion.fastforward.managednav.PSNavFolderUtils.addNavonToChildFolder;
 
 /**
  * A relationship effect for managing folders and navons. This effect is
@@ -93,7 +90,6 @@ public class PSNavFolderEffect extends PSNavAbstractEffect implements IPSEffect
          throws PSExtensionException
    {
       super.init(arg0, arg1);
-      m_log = Logger.getLogger(this.getClass());
    }
 
    /**

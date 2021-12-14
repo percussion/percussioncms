@@ -17,13 +17,14 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.fastforward.sfp;
 
 import com.percussion.design.objectstore.PSServerConfiguration;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSExtensionDef;
 import com.percussion.extension.IPSExtensionErrors;
 import com.percussion.extension.IPSResultDocumentProcessor;
@@ -35,6 +36,8 @@ import com.percussion.server.IPSRequestContext;
 import com.percussion.server.PSServer;
 import com.percussion.server.cache.PSExitFlushCache;
 import com.percussion.util.IPSHtmlParameters;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 
 import java.io.File;
@@ -48,6 +51,9 @@ import java.util.StringTokenizer;
 public abstract class PSSiteFolderContentListBaseExit implements
       IPSResultDocumentProcessor
 {
+
+   private static final Logger log = LogManager.getLogger(PSSiteFolderContentListBaseExit.class);
+
    /**
     * Implementation of the method from the interface.
     * @return always <code>false</code>.
@@ -184,12 +190,14 @@ public abstract class PSSiteFolderContentListBaseExit implements
       }
       catch (RuntimeException rune)
       {
-         rune.printStackTrace();
+         log.error(rune.getMessage());
+         log.debug(rune.getMessage(), rune);
          throw rune;
       }
       catch (Exception e)
       {
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          throw new PSExtensionProcessingException(
             "PSSiteFolderContentListExit",
             e);

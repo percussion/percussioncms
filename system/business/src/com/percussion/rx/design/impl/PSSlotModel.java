@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -25,9 +25,9 @@ package com.percussion.rx.design.impl;
 
 import com.percussion.design.objectstore.PSContentTypeHelper;
 import com.percussion.rx.design.IPSAssociationSet;
-import com.percussion.rx.design.PSDesignModelUtils;
 import com.percussion.rx.design.IPSAssociationSet.AssociationAction;
 import com.percussion.rx.design.IPSAssociationSet.AssociationType;
+import com.percussion.rx.design.PSDesignModelUtils;
 import com.percussion.services.assembly.IPSAssemblyService;
 import com.percussion.services.assembly.IPSAssemblyTemplate;
 import com.percussion.services.assembly.IPSTemplateService;
@@ -37,6 +37,8 @@ import com.percussion.services.assembly.PSAssemblyServiceLocator;
 import com.percussion.services.contentmgr.IPSNodeDefinition;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.types.PSPair;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -44,8 +46,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.log4j.Logger;
 
 public class PSSlotModel extends PSDesignModel
 {
@@ -226,7 +226,7 @@ public class PSSlotModel extends PSDesignModel
          for (IPSGuid id : nodeDef.getVariantGuids())
          {
             if (id.equals(template.getGUID()))
-               return new PSPair<IPSGuid, IPSGuid>(nodeDef.getGUID(), template
+               return new PSPair<>(nodeDef.getGUID(), template
                      .getGUID());
          }
          
@@ -251,7 +251,7 @@ public class PSSlotModel extends PSDesignModel
    @Override
    public List<IPSAssociationSet> getAssociationSets()
    {
-      List<IPSAssociationSet> asets = new ArrayList<IPSAssociationSet>();
+      List<IPSAssociationSet> asets = new ArrayList<>();
       
       // create 2 associations as the place-holder, one for DELETE, one for MERGE
       IPSAssociationSet assoc = new PSAssociationSet(AssociationType.SLOT_CONTENTTYPE_TEMPLATE);
@@ -312,7 +312,7 @@ public class PSSlotModel extends PSDesignModel
       IPSAssemblyService service = PSAssemblyServiceLocator
             .getAssemblyService();
       Map<IPSGuid, IPSAssemblyTemplate> templateMap = 
-         new HashMap<IPSGuid, IPSAssemblyTemplate>();
+         new HashMap<>();
       List<IPSAssemblyTemplate> templates = service.findTemplatesBySlot(slot);
       for (IPSAssemblyTemplate template : templates)
       {
@@ -336,6 +336,6 @@ public class PSSlotModel extends PSDesignModel
    /**
     * The logger for this class.
     */
-   private static Logger ms_logger = Logger.getLogger("PSSlotModel");
+   private static final Logger ms_logger = LogManager.getLogger("PSSlotModel");
 
 }

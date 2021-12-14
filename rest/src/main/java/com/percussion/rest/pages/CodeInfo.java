@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -25,24 +25,22 @@
 package com.percussion.rest.pages;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 @XmlRootElement(name = "CodeInfo")
-@ApiModel(value="CodeInfo",description="Represents code information.")
+@Schema(name="CodeInfo",description="Represents code information.")
 public class CodeInfo
 {
-    @ApiModelProperty(value="head", required=false,notes="Head of the code.")
+    @Schema(name="head", required=false,description="Head of the code.")
     private String head="";
 
-    @ApiModelProperty(value="afterStart", required=false,notes="After start of code.")
+    @Schema(name="afterStart", required=false,description="After start of code.")
     private String afterStart="";
 
-    @ApiModelProperty(value="beforeClose", required=false,notes="Before close of code.")
+    @Schema(name="beforeClose", required=false,description="Before close of code.")
     private String beforeClose="";
 
     public String getHead()

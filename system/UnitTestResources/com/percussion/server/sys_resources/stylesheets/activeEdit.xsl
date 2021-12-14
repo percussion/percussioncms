@@ -18,21 +18,28 @@
   ~      Burlington, MA 01803, USA
   ~      +01-781-438-9900
   ~      support@percussion.com
-  ~      https://www.percusssion.com
+  ~      https://www.percussion.com
   ~
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   -->
 
 <!DOCTYPE xsl:stylesheet [
-	<!ENTITY % HTMLlat1 SYSTEM "/Rhythmyx/DTD/HTMLlat1x.ent">
-	%HTMLlat1;
-	<!ENTITY % HTMLsymbol SYSTEM "/Rhythmyx/DTD/HTMLsymbolx.ent">
-	%HTMLsymbol;
-	<!ENTITY % HTMLspecial SYSTEM "/Rhythmyx/DTD/HTMLspecialx.ent">
-	%HTMLspecial;
-]>
+		<!ENTITY % HTMLlat1 PUBLIC "-//W3C//ENTITIES_Latin_1_for_XHTML//EN" "https://www.percussion.com/DTD/HTMLlat1x.ent">
+		%HTMLlat1;
+		<!ENTITY % HTMLsymbol PUBLIC "-//W3C//ENTITIES_Symbols_for_XHTML//EN" "https://www.percussion.com/DTD/HTMLsymbolx.ent">
+		%HTMLsymbol;
+		<!ENTITY % HTMLspecial PUBLIC "-//W3C//ENTITIES_Special_for_XHTML//EN" "https://www.percussion.com/DTD/HTMLspecialx.ent">
+		%HTMLspecial;
+		<!ENTITY % w3centities-f PUBLIC
+				"-//W3C//ENTITIES Combined Set//EN//XML"
+				"http://www.w3.org/2003/entities/2007/w3centities-f.ent"
+				>
+		%w3centities-f;
+		]>
 <!-- $ Id: $ -->
-<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:psxctl="URN:percussion.com/control" xmlns="http://www.w3.org/1999/xhtml" xmlns:psxi18n="urn:www.percussion.com/i18n" exclude-result-prefixes="psxi18n">
+<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:psxctl="urn:percussion.com/control"
+                xmlns="http://www.w3.org/1999/xhtml" xmlns:psxi18n="com.percussion.i18n"
+                extension-element-prefixes="psxi18n" exclude-result-prefixes="psxi18n">
 	<xsl:import href="file:sys_resources/stylesheets/sys_I18nUtils.xsl"/>
 	<xsl:import href="file:sys_resources/stylesheets/sys_Templates.xsl"/>
 	<xsl:import href="file:sys_resources/stylesheets/customControlImports.xsl"/>
@@ -67,7 +74,8 @@
 		<html>
 			<head>
 			<script language="javascript" src="../tmx/tmx.jsp?sys_lang={$lang}">;</script>
-				<script language="javascript" src="../../cm/jslib/jquery.js">;</script>
+				<script src="/cm/jslib/profiles/3x/jquery/jquery-3.0.6.js"></script>
+				<script src="/cm/jslib/profiles/3x/jquery/jquery-migrate-3.3.2.js"></script>
 				<script src="../sys_resources/js/browser.js">;</script>
 				<script src="../sys_resources/js/href.js">;</script>
 			   <script language="javascript" src="../sys_resources/js/globalErrorMessages.js">;</script>
@@ -91,11 +99,11 @@
 			   <xsl:call-template name="createControlStyleTags">
 			   	<xsl:with-param name="styletags" select="$styletags"/>
 			   </xsl:call-template>
-			   <script language="Javascript">
+			   <script>
       		  var hasEditLiveControls = false;
         		</script>
             <xsl:if test="$hasEditLive or $hasEditLiveDynamic">
-				<script language="Javascript"><![CDATA[
+				<script><![CDATA[
       		  hasEditLiveControls = true;
          		]]></script>
             </xsl:if>
@@ -106,7 +114,7 @@
 		  <xsl:with-param name="with" select='"\&#39;"' />
 	       </xsl:call-template>
 	    </xsl:variable>
-		<script language="Javascript"><![CDATA[
+		<script><![CDATA[
 			var contentEditor = "yes";
 			var canSubmit = true;
 			if(window.opener != null)
@@ -236,9 +244,9 @@
 						<xsl:with-param name="lang" select="$lang"/>
 					</xsl:call-template>
 				</title>
-				<link rel="stylesheet" type="text/css" href="../sys_resources/css/templates.css"/>
-				<link rel="stylesheet" type="text/css" href="../rx_resources/css/templates.css"/>
-				<link rel="stylesheet" type="text/css" href="{concat('../rx_resources/css/',$lang,'/templates.css')}"/>
+				<link rel="stylesheet" type="text/css" href="/sys_resources/css/templates.css"/>
+				<link rel="stylesheet" type="text/css" href="/rx_resources/css/templates.css"/>
+				<link rel="stylesheet" type="text/css" href="{concat('/rx_resources/css/',$lang,'/templates.css')}"/>
 				<!-- @@REP WITH WEP I18N FUNC@@ -->
 			</head>
 			<body class="datacell1" topmargin="5" leftmargin="5">
@@ -470,7 +478,7 @@
 					</tr>
 				</table>
 			<!--This code changes the update buttons label-->
-				<script language="javascript"><![CDATA[
+				<script><![CDATA[
 					if(isOpenerActiveAssembly())
 					{
 						var relcDiv = document.getElementById("psRelatedContent");

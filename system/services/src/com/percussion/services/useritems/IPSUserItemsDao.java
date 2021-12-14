@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -25,6 +25,7 @@
 package com.percussion.services.useritems;
 
 import com.percussion.services.useritems.data.PSUserItem;
+import com.percussion.share.dao.IPSGenericDao;
 
 import java.util.List;
 /**
@@ -37,7 +38,7 @@ public interface IPSUserItemsDao
     * Saves userItem object.
     * @param userItem must not be <code>null</code>
     */
-   void save(PSUserItem userItem);
+   void save(PSUserItem userItem) throws IPSGenericDao.SaveException;
    
    /**
     * Finds user item by given user name and item id.

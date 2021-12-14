@@ -17,22 +17,23 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.utils.container;
 
+import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
+import com.percussion.security.PSEncryptor;
 import com.percussion.utils.container.adapters.JBossConnectorConfigurationAdapter;
 import com.percussion.utils.container.adapters.JBossDatasourceConfigurationAdapter;
 import com.percussion.utils.container.adapters.JettyDatasourceConfigurationAdapter;
 import com.percussion.utils.container.adapters.JettyInstallationPropertiesConfigurationAdapter;
 import com.percussion.utils.container.config.model.impl.BaseContainerUtils;
 import com.percussion.utils.io.PathUtils;
-import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -49,7 +50,7 @@ public class PSContainerUtilsFactory {
     /**
      * Logger
      */
-    private static Log ms_log = LogFactory.getLog(PSContainerUtilsFactory.class);
+    private static final Logger ms_log = LogManager.getLogger(PSContainerUtilsFactory.class);
 
     static {
 
@@ -63,7 +64,7 @@ public class PSContainerUtilsFactory {
     }
 
     public static DefaultConfigurationContextImpl getConfigurationContextInstance(Path path) {
-        DefaultConfigurationContextImpl value = factoryInstances.computeIfAbsent(path.normalize().toAbsolutePath().toString(), k-> addNew(k, PSLegacyEncrypter.getPartOneKey()));
+        DefaultConfigurationContextImpl value = factoryInstances.computeIfAbsent(path.normalize().toAbsolutePath().toString(), k-> addNew(k, PSLegacyEncrypter.getInstance(PathUtils.getRxPath().toAbsolutePath().toString().concat(PSEncryptor.SECURE_DIR)).getPartOneKey()));
         return value;
     }
 

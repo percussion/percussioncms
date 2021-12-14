@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -26,10 +26,10 @@ package com.percussion.services.schedule.impl;
 import com.percussion.extension.IPSExtensionDef;
 import com.percussion.extension.PSExtensionException;
 import com.percussion.rx.publisher.IPSPublisherJobStatus;
+import com.percussion.rx.publisher.IPSPublisherJobStatus.State;
 import com.percussion.rx.publisher.IPSPublishingJobStatusCallback;
 import com.percussion.rx.publisher.IPSRxPublisherService;
 import com.percussion.rx.publisher.PSRxPublisherServiceLocator;
-import com.percussion.rx.publisher.IPSPublisherJobStatus.State;
 import com.percussion.server.PSServer;
 import com.percussion.services.publisher.IPSEdition;
 import com.percussion.services.publisher.IPSPublisherService;
@@ -45,15 +45,14 @@ import com.percussion.services.sitemgr.PSSiteManagerException;
 import com.percussion.services.sitemgr.PSSiteManagerLocator;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.utils.guid.IPSGuid;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
  * This is used to publishing a specified Edition. The name of the Edition
@@ -171,7 +170,7 @@ public class PSRunEdition implements IPSTask, IPSPublishingJobStatusCallback
       String errMsg = edition == null ? cause.getLocalizedMessage() 
          : getErrorMessage(edition, cause, null);
       
-      Map<String, Object> vars = new HashMap<String, Object>();
+      Map<String, Object> vars = new HashMap<>();
       vars.put("$sys.editionName", edition == null 
          ? "Unknown" : edition.getName());
       vars.put("$sys.siteName", edition == null 
@@ -197,7 +196,7 @@ public class PSRunEdition implements IPSTask, IPSPublishingJobStatusCallback
       if (m_status == null)
          throw new IllegalStateException("m_status must not be null.");
       
-      Map<String, Object> vars = new HashMap<String, Object>();
+      Map<String, Object> vars = new HashMap<>();
       vars.put("$sys.editionName", edition.getName());
       vars.put("$sys.siteName", getSiteName(edition.getSiteId()));
       vars.put("$sys.failureCount", m_status.countFailedItems());
@@ -363,7 +362,7 @@ public class PSRunEdition implements IPSTask, IPSPublishingJobStatusCallback
       
       synchronized (this)
       {
-         notify();
+         notifyAll();
       }
    }
    
@@ -379,5 +378,5 @@ public class PSRunEdition implements IPSTask, IPSPublishingJobStatusCallback
    /**
     * Logger.
     */
-   private static Log ms_log = LogFactory.getLog(PSRunEdition.class);
+   private static final Logger ms_log = LogManager.getLogger(PSRunEdition.class);
 }

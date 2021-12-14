@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -131,7 +131,7 @@ public class PSPrepareInClause implements IPSRequestPreProcessor
       if (params[1] != null && params[1].toString().trim().length() > 0)
       {
          // build the "IN" string
-         StringBuffer buf = new StringBuffer();
+         StringBuilder buf = new StringBuilder();
          Collection coll;
          Object obj = params[1];
          if (obj instanceof Collection)

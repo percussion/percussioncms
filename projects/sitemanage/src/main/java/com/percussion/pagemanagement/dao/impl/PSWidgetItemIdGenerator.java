@@ -17,29 +17,30 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.pagemanagement.dao.impl;
 
-import static org.apache.commons.lang.StringUtils.*;
-import static org.apache.commons.lang.Validate.*;
-
-import java.util.HashSet;
-import java.util.Set;
-
-import com.percussion.util.PSSiteManageBean;
-import org.apache.commons.lang.RandomStringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import com.percussion.pagemanagement.dao.IPSWidgetItemIdGenerator;
 import com.percussion.pagemanagement.data.PSRegionWidgetAssociations;
 import com.percussion.pagemanagement.data.PSRegionWidgets;
 import com.percussion.pagemanagement.data.PSWidgetItem;
+import com.percussion.util.PSSiteManageBean;
+import com.percussion.utils.security.PSSecurityUtility;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.owasp.csrfguard.util.RandomGenerator;
 
+import java.util.HashSet;
+import java.util.Set;
 
+import static org.apache.commons.lang.StringUtils.isBlank;
+import static org.apache.commons.lang.StringUtils.isNotBlank;
+import static org.apache.commons.lang.Validate.notNull;
+
+@PSSiteManageBean("widgetItemIdGenerator")
 public class PSWidgetItemIdGenerator implements IPSWidgetItemIdGenerator
 {
 
@@ -48,9 +49,8 @@ public class PSWidgetItemIdGenerator implements IPSWidgetItemIdGenerator
      */
     public Long generateId(PSRegionWidgetAssociations widgets, PSWidgetItem item)
     {
-        Long id = Long.parseLong(RandomStringUtils.randomNumeric(10));
-        if (log.isDebugEnabled())
-            log.debug("Generated widget item id: " + id + " for widget: " + item);
+        Long id = Long.parseLong(RandomGenerator.generateRandomId(PSSecurityUtility.getSecureRandom(),10));
+        log.debug("Generated widget item id: {} for widget: {}",id, item);
         return id;
     }
 
@@ -93,7 +93,7 @@ public class PSWidgetItemIdGenerator implements IPSWidgetItemIdGenerator
      */
     private Set<String> getWidgetIds(PSRegionWidgetAssociations widgets)
     {
-        Set<String> ids = new HashSet<String>();
+        Set<String> ids = new HashSet<>();
         Set<PSRegionWidgets> regionWidgets = widgets.getRegionWidgetAssociations();
         for (PSRegionWidgets ws : regionWidgets)
         {
@@ -103,7 +103,7 @@ public class PSWidgetItemIdGenerator implements IPSWidgetItemIdGenerator
                 {
                     String id = wi.getId();
                     if (ids.contains(id))
-                        log.error("Widget ID (" + id + ") is not unique. The widget is: " + wi.toString());
+                        log.error("Widget ID ({}) is not unique. The widget is: {}" ,id, wi);
                     
                     ids.add(id); 
                 }
@@ -130,6 +130,7 @@ public class PSWidgetItemIdGenerator implements IPSWidgetItemIdGenerator
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log log = LogFactory.getLog(PSWidgetItemIdGenerator.class);
+
+    private static final Logger log = LogManager.getLogger(PSWidgetItemIdGenerator.class);
 
 }

@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -352,11 +352,15 @@ public class PSPathUtils
                 
                 prop1 = getRealDataType(prop1str);
                 prop2 = getRealDataType(prop2str);
-                
-                int compareResult =
-                        new CompareToBuilder()
-                            .append(prop1, prop2)
-                            .toComparison();
+                int compareResult = 1;
+                try {
+                    compareResult =
+                            new CompareToBuilder()
+                                    .append(prop1, prop2)
+                                    .toComparison();
+                }catch (Exception e){
+                    //Some times Prop1 is String and Prop 2 is Date and comparator fails.
+                }
                 
                 return sortOrderNumber * compareResult;
             }

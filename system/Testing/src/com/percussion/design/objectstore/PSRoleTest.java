@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -25,16 +25,14 @@
 package com.percussion.design.objectstore;
 
 import com.percussion.xml.PSXmlDocumentBuilder;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
+import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * Basic role testing, including simple to/from Xml
@@ -192,7 +190,7 @@ public class PSRoleTest extends TestCase
       }
       assertTrue(didThrow);
 
-      StringBuffer name = new StringBuffer();
+      StringBuilder name = new StringBuilder();
       for (int i = 0; i <= PSRole.MAX_ROLE_NAME_LEN; i++)
          name.append('a');
 
@@ -238,7 +236,7 @@ public class PSRoleTest extends TestCase
       }
       assertTrue(didThrow);
 
-      StringBuffer name = new StringBuffer();
+      StringBuilder name = new StringBuilder();
       for (int i = 0; i <= PSRole.MAX_ROLE_NAME_LEN; i++)
          name.append('a');
 

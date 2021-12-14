@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -25,14 +25,14 @@
 package com.percussion.delivery.metadata.any23;
 
 
+import org.apache.any23.source.FileDocumentSource;
+import org.apache.tika.io.IOUtils;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.tika.io.IOUtils;
-import org.apache.any23.source.FileDocumentSource;
 
 /**
  * This is a DocumentSource implementation to use files as a source by
@@ -55,7 +55,7 @@ class PSFileDocumentSource extends FileDocumentSource implements IPSDocumentSour
     {
         super(file);
 
-        openInputStream = new ArrayList<InputStream>();
+        openInputStream = new ArrayList<>();
     }
 
     /*

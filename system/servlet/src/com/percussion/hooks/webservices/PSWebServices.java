@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -32,11 +32,15 @@ import com.percussion.HTTPClient.HTTPResponse;
 import com.percussion.HTTPClient.ModuleException;
 import com.percussion.HTTPClient.NVPair;
 import com.percussion.HTTPClient.ProtocolNotSuppException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.hooks.PSUtils;
+import com.percussion.security.xml.PSSecureXMLUtils;
+import com.percussion.security.xml.PSXmlSecurityOptions;
 import com.percussion.tools.PSHttpRequest;
 import com.percussion.utils.servlet.PSServletUtils;
-import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.soap.Body;
 import org.apache.soap.Constants;
 import org.apache.soap.Envelope;
@@ -62,6 +66,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.StringWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -212,8 +217,8 @@ public class PSWebServices
       }
       catch (Exception e)
       {
-         e.printStackTrace();
-         throw new SOAPException(Constants.FAULT_CODE_CLIENT, "Exception "
+         ms_logger.error(PSExceptionUtils.getMessageForLog(e));
+         throw new SOAPException(Constants.FAULT_CODE_CLIENT, "Exception: "
                + e.getMessage());
       }
       finally
@@ -283,7 +288,16 @@ public class PSWebServices
 
       try
       {
-         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+         DocumentBuilderFactory dbf = PSSecureXMLUtils.getSecuredDocumentBuilderFactory(
+                 new PSXmlSecurityOptions(
+                         true,
+                         true,
+                         true,
+                         false,
+                         true,
+                         false
+                 ));
+
          DocumentBuilder db = dbf.newDocumentBuilder();
          // set up the header
          Document headerDoc = db.newDocument();
@@ -316,19 +330,19 @@ public class PSWebServices
          // set up the body
          Body body = new Body();
          Vector bodyEntries = new Vector();
-
-         Document bodyDoc = db.parse(resp.getInputStream());
-         if (bodyDoc == null)
-         {
-            throw new SOAPException(
-               Constants.FAULT_CODE_CLIENT,
-               "Rythmyx Server Error - null returned");
+         try(InputStream is = resp.getInputStream() ) {
+            Document bodyDoc = db.parse(is);
+            if (bodyDoc == null) {
+               throw new SOAPException(
+                       Constants.FAULT_CODE_CLIENT,
+                       "Rythmyx Server Error - null returned");
+            }
+            Element el = bodyDoc.getDocumentElement();
+            el.setAttribute("xmlns", m_nameSpaceURI);
+            bodyEntries.addElement(el);
+            body.setBodyEntries(bodyEntries);
+            env.setBody(body);
          }
-         Element el = bodyDoc.getDocumentElement();
-         el.setAttribute("xmlns", m_nameSpaceURI);
-         bodyEntries.addElement(el);
-         body.setBodyEntries(bodyEntries);
-         env.setBody(body);
       }
       catch (ParserConfigurationException pce)
       {
@@ -715,11 +729,11 @@ public class PSWebServices
          try
          {
             Properties props = new Properties();
-            FileInputStream in = new FileInputStream(new File(
+            try(FileInputStream in = new FileInputStream(new File(
                PSServletUtils.getServletDirectory(),
-               "WEB-INF/classes/log4j.properties"));
-            try
-            {
+               "WEB-INF/classes/log4j.properties"))){
+
+
                props.load(in);
             }
             catch (Exception e)
@@ -739,7 +753,6 @@ public class PSWebServices
             String oldval = System.getProperty("log4j.defaultInitOverride");
             System.setProperty("log4j.defaultInitOverride", "true");
             PropertyConfigurator.configure(props);
-            ms_logger = Logger.getLogger(PSWebServices.class);
             
             // reset the property
             System.setProperty("log4j.defaultInitOverride", 
@@ -844,5 +857,5 @@ public class PSWebServices
    /**
     * The logger for this class
     */
-   private static Logger ms_logger;
+   private static final Logger ms_logger = LogManager.getLogger(PSWebServices.class);
 }

@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -30,6 +30,7 @@ import com.percussion.design.objectstore.PSContentTypeHelper;
 import com.percussion.design.objectstore.PSView;
 import com.percussion.design.objectstore.PSViewSet;
 import com.percussion.services.catalog.PSTypeEnum;
+import com.percussion.services.content.data.PSItemStatus;
 import com.percussion.services.contentmgr.IPSNodeDefinition;
 import com.percussion.services.contentmgr.data.PSContentTypeWorkflow;
 import com.percussion.services.guidmgr.IPSGuidManager;
@@ -38,16 +39,14 @@ import com.percussion.services.guidmgr.data.PSLegacyGuid;
 import com.percussion.servlets.PSSecurityFilter;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.utils.guid.IPSGuid;
-import com.percussion.services.content.data.PSItemStatus;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import com.percussion.utils.testing.IntegrationTest;
 import org.apache.cactus.ServletTestCase;
 import org.apache.commons.collections.IteratorUtils;
 import org.junit.experimental.categories.Category;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * This class is used for testing the methods that are not exposed through web

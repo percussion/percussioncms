@@ -17,14 +17,19 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.pagemanagement.assembler.impl;
 
 import com.percussion.assetmanagement.data.PSAsset;
-import com.percussion.pagemanagement.data.*;
+import com.percussion.error.PSException;
+import com.percussion.pagemanagement.data.PSEmptyPage;
+import com.percussion.pagemanagement.data.PSInlineLinkRequest;
+import com.percussion.pagemanagement.data.PSInlineRenderLink;
+import com.percussion.pagemanagement.data.PSPage;
+import com.percussion.pagemanagement.data.PSRenderLinkContext;
 import com.percussion.pagemanagement.data.PSResourceDefinitionGroup.PSAssetResource;
 import com.percussion.services.assembly.IPSAssemblyService;
 import com.percussion.services.assembly.IPSAssemblyTemplate;
@@ -34,6 +39,7 @@ import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.services.sitemgr.IPSSiteManager;
 import com.percussion.share.service.IPSIdMapper;
 import com.percussion.share.service.IPSLinkableItem;
+import com.percussion.share.service.exception.PSBeanValidationException;
 import com.percussion.share.service.exception.PSBeanValidationUtils;
 import com.percussion.util.PSSiteManageBean;
 import com.percussion.utils.guid.IPSGuid;
@@ -42,8 +48,8 @@ import com.percussion.webservices.content.IPSContentDesignWs;
 import net.sf.oval.constraint.NotBlank;
 import net.sf.oval.constraint.NotNegative;
 import net.sf.oval.constraint.NotNull;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.jcr.Node;
@@ -91,8 +97,9 @@ public class PSLegacyLinkGenerator
 
     protected PSLocationUtils getLocationUtils()
     {
-        if (locationUtils == null)
+        if (locationUtils == null) {
             locationUtils = new PSLocationUtils();
+        }
         return locationUtils;
     }
 
@@ -102,8 +109,7 @@ public class PSLegacyLinkGenerator
      * @param l never <code>null</code>.
      * @return never <code>null</code> or empty.
      */
-    public String generate(PSLegacyLink l)
-    {
+    public String generate(PSLegacyLink l) throws PSBeanValidationException {
         PSBeanValidationUtils.getValidationErrorsOrFailIfInvalid(l);
         String url = getLocationUtils().generate(l.getLegacyTemplate(), l.getNode(), l.getFolderPath(), l.getFilter(),
                 l.getSiteId(), l.getContext());
@@ -206,13 +212,12 @@ public class PSLegacyLinkGenerator
 
     }
     
-    private Node getNode(IPSLinkableItem item)
-    {
+    private Node getNode(IPSLinkableItem item) throws PSException {
         IPSGuid guid = idMapper.getGuid(item.getId());
         List<Node> nodes = contentDesignWs.findNodesByIds(asList(guid), true);
         if (nodes == null || nodes.isEmpty())
         {
-            throw new RuntimeException("Cannot generate link. Item does not have a node. Item: " + item);
+            throw new PSException("Cannot generate link. Item does not have a node. Item: " + item);
         }
         return nodes.get(0);
     }
@@ -232,8 +237,7 @@ public class PSLegacyLinkGenerator
             PSRenderLinkContext legacyContext, 
             IPSLinkableItem item, 
             PSAssetResource resourceDefinition, 
-            PSLegacyLink link) throws ValidationException
-    {
+            PSLegacyLink link) throws ValidationException, PSException {
         notNull(legacyContext);
         notNull(link);
         notNull(resourceDefinition);
@@ -410,6 +414,7 @@ public class PSLegacyLinkGenerator
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log log = LogFactory.getLog(PSLegacyLinkGenerator.class);
+
+    private static final Logger log = LogManager.getLogger(PSLegacyLinkGenerator.class);
 }
 

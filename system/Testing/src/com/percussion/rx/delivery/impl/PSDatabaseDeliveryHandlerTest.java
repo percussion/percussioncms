@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -17,17 +17,20 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.rx.delivery.impl;
 
-import static org.junit.Assert.assertEquals;
-
-import java.io.IOException;
-import java.io.StringReader;
-import java.io.StringWriter;
+import com.percussion.security.xml.PSSecureXMLUtils;
+import com.percussion.security.xml.PSXmlSecurityOptions;
+import com.percussion.utils.testing.IntegrationTest;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
@@ -35,15 +38,11 @@ import javax.xml.parsers.SAXParserFactory;
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
+import java.io.IOException;
+import java.io.StringReader;
+import java.io.StringWriter;
 
-import com.percussion.utils.testing.IntegrationTest;
-import junit.framework.JUnit4TestAdapter;
-
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-import org.xml.sax.helpers.DefaultHandler;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Test some specific db delivery handler pieces.
@@ -217,7 +216,16 @@ public class PSDatabaseDeliveryHandlerTest
       StringWriter writer = new StringWriter();
       XMLStreamWriter formatter = ofact.createXMLStreamWriter(writer);
 
-      SAXParserFactory f = SAXParserFactory.newInstance();
+      SAXParserFactory f = PSSecureXMLUtils.getSecuredSaxParserFactory(
+              new PSXmlSecurityOptions(
+                      true,
+                      true,
+                      true,
+                      false,
+                      true,
+                      false
+              ));
+
       SAXParser parser = f.newSAXParser();
       DefaultHandler dh = new PSDatabaseDeliveryHandler.UnpublishingContentHandler(
             formatter, null);

@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -41,14 +41,14 @@
     
         function saveCSS(callback){
             var currentView = $.PercNavigationManager.getView();
-            if(currentView == $.PercNavigationManager.VIEW_EDITOR) {
+            if(currentView === $.PercNavigationManager.VIEW_EDITOR) {
                 controller.save(callback);                
             }
-            else if (currentView == $.PercNavigationManager.VIEW_EDIT_TEMPLATE) {
+            else if (currentView === $.PercNavigationManager.VIEW_EDIT_TEMPLATE) {
                 callbackFunc = callback || function (){};
                 controller.setOverrideCSS();
                 controller.save(function (status, data) {
-                    if (status == true) {
+                    if (status === true) {
                         dirtyController.setDirty(false, "template");
                         callbackFunc();
                     }
@@ -76,9 +76,9 @@
              
              // If user types in the text area of the CSS override, mark the style as dirty
              // It is then reset if style is saved or cancelled
-             $("#perc-css-override-editor-area").unbind().change(function() {
+             $("#perc-css-override-editor-area").off("change").on("change", function() {
             	 dirtyController.setDirty(true, "style" , saveCSS);
              });
          }
-     }
+     };
  })(jQuery,jQuery.Percussion);

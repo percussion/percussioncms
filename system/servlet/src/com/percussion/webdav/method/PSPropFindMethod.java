@@ -17,12 +17,13 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.webdav.method;
+
 import com.percussion.cms.PSCmsException;
 import com.percussion.cms.objectstore.PSComponentSummary;
 import com.percussion.cms.objectstore.PSRelationshipProcessorProxy;
@@ -44,7 +45,14 @@ import com.percussion.webdav.objectstore.PSDateProperty;
 import com.percussion.webdav.objectstore.PSPropertyFieldNameMapping;
 import com.percussion.webdav.objectstore.PSWebdavContentType;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -55,14 +63,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 /**
  * This class implements the PROPFIND WebDAV method.
  */
@@ -464,7 +464,7 @@ public class PSPropFindMethod extends PSWebdavMethod
          }
          else
          {
-            Logger logger = Logger.getLogger(getClass());
+            Logger logger = LogManager.getLogger(getClass());
             logger.error("The value of \"mi_valueMap\" for component (contentId, name, cotnentTypeId)=(" 
                   + comp.mi_summary.getName() + ", " 
                   + comp.mi_summary.getContentId() + ", "

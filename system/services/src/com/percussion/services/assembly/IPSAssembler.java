@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -26,11 +26,10 @@ package com.percussion.services.assembly;
 import com.percussion.services.assembly.impl.PSAssemblyJexlEvaluator;
 import com.percussion.services.filter.PSFilterException;
 
-import java.util.List;
-import java.util.Map;
-
 import javax.jcr.ItemNotFoundException;
 import javax.jcr.RepositoryException;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Assembles the given items into results for preview or publishing. The type of

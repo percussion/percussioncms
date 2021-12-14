@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -31,10 +31,21 @@ import com.percussion.extension.IPSWorkflowAction;
 import com.percussion.extension.PSDefaultExtension;
 import com.percussion.extension.PSExtensionException;
 import com.percussion.extension.PSExtensionProcessingException;
+import com.percussion.security.xml.PSSecureXMLUtils;
+import com.percussion.security.xml.PSXmlSecurityOptions;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.util.PSXMLDomUtil;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -49,16 +60,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.apache.log4j.Logger;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
 
 /**
  * This is a workflow action that runs an edition.
@@ -93,6 +94,9 @@ public class PSPublishContent
    extends PSDefaultExtension
    implements IPSWorkflowAction
 {
+
+   private static final Logger log = LogManager.getLogger(PSPublishContent.class);
+
    /**
     * Key to lookup an edition id from a workflow and transition
     */
@@ -154,7 +158,7 @@ public class PSPublishContent
     */
    private static int m_pollingTime = 1500;
 
-   Logger ms_logger = Logger.getLogger(PSPublishContent.class);
+   private static final Logger ms_logger = LogManager.getLogger(PSPublishContent.class);
    
    /**
     * The init method is called when the action is initially loaded.
@@ -314,7 +318,16 @@ public class PSPublishContent
          IOException,
          ParserConfigurationException
    {
-      DocumentBuilderFactory fact = DocumentBuilderFactory.newInstance();
+      DocumentBuilderFactory fact = PSSecureXMLUtils
+      .getSecuredDocumentBuilderFactory( new PSXmlSecurityOptions(
+              true,
+              true,
+              true,
+              false,
+              true,
+              false
+      ));
+
       DocumentBuilder builder = fact.newDocumentBuilder();
       Document configfile = builder.parse(CONFIG_FILE);
       
@@ -331,7 +344,7 @@ public class PSPublishContent
             //ignore exception and keep the default value.
          }
       }
-      Map rval = new HashMap();
+      Map<PSPublishContent.PSPCKey,List<Integer>> rval = new HashMap<>();
 
       // Find child elements
       NodeList elements = configfile.getElementsByTagName(PUBLISH);
@@ -377,7 +390,7 @@ public class PSPublishContent
             key.mi_workflowId =
                Integer.parseInt(PSXMLDomUtil.getElementData(workflow));
          }
-         catch (Throwable th)
+         catch (Exception th)
          {
             throw new PSExtensionException(
                IPSExtensionErrors.BAD_PUBLISH_CONTENT_FILE_DATA,
@@ -388,7 +401,7 @@ public class PSPublishContent
             key.mi_transitionId =
                Integer.parseInt(PSXMLDomUtil.getElementData(transition));
          }
-         catch (Throwable th)
+         catch (Exception th)
          {
             throw new PSExtensionException(
                IPSExtensionErrors.BAD_PUBLISH_CONTENT_FILE_DATA,
@@ -398,7 +411,7 @@ public class PSPublishContent
          {
             editionId = new Integer(PSXMLDomUtil.getElementData(edition));
          }
-         catch (Throwable th)
+         catch (Exception th)
          {
             throw new PSExtensionException(
                IPSExtensionErrors.BAD_PUBLISH_CONTENT_FILE_DATA,
@@ -407,12 +420,12 @@ public class PSPublishContent
          
          if (rval.containsKey(key))
          {
-            List editions = (List) rval.get(key);
+            List<Integer> editions = rval.get(key);
             editions.add(editionId);
          }
          else
          {
-            List editions = new ArrayList();
+            List<Integer> editions = new ArrayList<>();
             editions.add(editionId);
             rval.put(key, editions);
          }
@@ -430,7 +443,7 @@ public class PSPublishContent
    private static URL getPubHandlerUrl(IPSRequestContext req, int editionId)
       throws java.net.MalformedURLException
    {
-      StringBuffer pubUrl = new StringBuffer();
+      StringBuilder pubUrl = new StringBuilder();
       pubUrl.append("http://127.0.0.1:");
       pubUrl.append(req.getServerListenerPort());
       pubUrl.append("/Rhythmyx/sys_pubHandler/publisher.xml");
@@ -492,13 +505,9 @@ public class PSPublishContent
          }
          catch (InterruptedException e)
          {
-            ex = e;
+            Thread.currentThread().interrupt();
          }
-         catch (IOException e)
-         {
-            ex = e;
-         }
-         catch (SAXException e)
+         catch (IOException | SAXException e)
          {
             ex = e;
          }
@@ -541,7 +550,7 @@ public class PSPublishContent
                   (InputStream) obj, false);
                NodeList nl = doc.getElementsByTagName("response");
                code = ((Element) nl.item(0)).getAttribute("code");
-               System.out.println("code = " + code);
+               log.info("code = {}", code);
             }
             while (code.equalsIgnoreCase("inprogress"));
       }

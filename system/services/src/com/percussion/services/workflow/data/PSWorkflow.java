@@ -17,13 +17,11 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.services.workflow.data;
-
-import static org.apache.commons.lang.Validate.notNull;
 
 import com.percussion.services.catalog.IPSCatalogItem;
 import com.percussion.services.catalog.IPSCatalogSummary;
@@ -32,14 +30,13 @@ import com.percussion.services.guidmgr.data.PSGuid;
 import com.percussion.services.utils.xml.PSXmlSerializationHelper;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.xml.IPSXmlSerialization;
-
-import java.io.IOException;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.xml.sax.SAXException;
 
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -50,15 +47,15 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-import org.xml.sax.SAXException;
+import static org.apache.commons.lang.Validate.notNull;
 
 /**
  * Represents a workflow
@@ -104,18 +101,18 @@ public class PSWorkflow
    @OneToMany(targetEntity = PSState.class, fetch = FetchType.LAZY, cascade =
    {CascadeType.ALL}, orphanRemoval = true)
    @JoinColumn(name = "WORKFLOWAPPID", insertable = false, updatable = false)
-   private List<PSState> states = new ArrayList<PSState>();
+   private List<PSState> states = new ArrayList<>();
 
    @OneToMany(targetEntity = PSWorkflowRole.class, fetch = FetchType.EAGER, cascade =
    {CascadeType.ALL}, orphanRemoval = true)
    @JoinColumn(name = "WORKFLOWAPPID", insertable = false, updatable = false)
    @Fetch(FetchMode. SUBSELECT)
-   private List<PSWorkflowRole> roles = new ArrayList<PSWorkflowRole>();
+   private List<PSWorkflowRole> roles = new ArrayList<>();
 
    @OneToMany(targetEntity = PSNotificationDef.class, fetch = FetchType.LAZY, cascade =
    {CascadeType.ALL}, orphanRemoval = true)
    @JoinColumn(name = "WORKFLOWAPPID", insertable = false, updatable = false)
-   private List<PSNotificationDef> notificationDefs = new ArrayList<PSNotificationDef>();
+   private List<PSNotificationDef> notificationDefs = new ArrayList<>();
 
    /*
     * (non-Javadoc)
@@ -339,7 +336,7 @@ public class PSWorkflow
    public void setStates(List<PSState> stateList)
    {
       if (stateList == null)
-         stateList = new ArrayList<PSState>();
+         stateList = new ArrayList<>();
 
       states = stateList;
    }
@@ -386,7 +383,7 @@ public class PSWorkflow
    public void setRoles(List<PSWorkflowRole> wfroles)
    {
       if (wfroles == null)
-         wfroles = new ArrayList<PSWorkflowRole>();
+         wfroles = new ArrayList<>();
 
       this.roles = wfroles;
    }
@@ -424,7 +421,7 @@ public class PSWorkflow
    public void setNotificationDefs(List<PSNotificationDef> notificationList)
    {
       if (notificationList == null)
-         notificationList = new ArrayList<PSNotificationDef>();
+         notificationList = new ArrayList<>();
 
       notificationDefs = notificationList;
    }
@@ -480,7 +477,7 @@ public class PSWorkflow
       if (userRoles == null)
          throw new IllegalArgumentException("userRoles may not be null");
       
-      Set<Integer> rids = new HashSet<Integer>();
+      Set<Integer> rids = new HashSet<>();
 
       for (PSWorkflowRole role : roles)
       {
@@ -507,7 +504,7 @@ public class PSWorkflow
       if (roleids == null)
          throw new IllegalArgumentException("roleids may not be null");
       
-      Set<String> names = new HashSet<String>();
+      Set<String> names = new HashSet<>();
       
       for (PSWorkflowRole role : roles)
       {

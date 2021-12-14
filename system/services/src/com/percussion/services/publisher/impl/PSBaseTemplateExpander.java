@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -39,20 +39,18 @@ import com.percussion.services.publisher.PSPublisherException;
 import com.percussion.services.publisher.data.PSContentListItem;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.utils.guid.IPSGuid;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import org.apache.commons.lang.StringUtils;
 
 import javax.jcr.RepositoryException;
 import javax.jcr.Value;
 import javax.jcr.query.QueryResult;
 import javax.jcr.query.Row;
 import javax.jcr.query.RowIterator;
-
-import org.apache.commons.lang.StringUtils;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * The base template expander services as a base class for writing template
@@ -101,7 +99,7 @@ public abstract class PSBaseTemplateExpander implements IPSTemplateExpander
          siteg = new PSGuid(PSTypeEnum.SITE, siteid);
       }
 
-      List<PSContentListItem> clist = new ArrayList<PSContentListItem>();
+      List<PSContentListItem> clist = new ArrayList<>();
 
       String ctx = parameters.get(IPSHtmlParameters.SYS_CONTEXT);
       String deliveryctx = parameters
@@ -120,7 +118,7 @@ public abstract class PSBaseTemplateExpander implements IPSTemplateExpander
          if (candidates.isEmpty())
             return clist;
          RowIterator riter = results.getRows();
-         Map<IPSGuid, List<IPSGuid>> cache = new HashMap<IPSGuid, List<IPSGuid>>();
+         Map<IPSGuid, List<IPSGuid>> cache = new HashMap<>();
          while (riter.hasNext())
          {
             Row r = riter.nextRow();
@@ -210,7 +208,7 @@ public abstract class PSBaseTemplateExpander implements IPSTemplateExpander
          rval = cache.get(ctype);
          if (rval == null)
          {
-            rval = new ArrayList<IPSGuid>();
+            rval = new ArrayList<>();
             IPSAssemblyService asm = PSAssemblyServiceLocator
                   .getAssemblyService();
             for (IPSAssemblyTemplate t : asm.findTemplatesByContentType(ctype))

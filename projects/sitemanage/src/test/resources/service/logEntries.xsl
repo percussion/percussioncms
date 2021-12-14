@@ -20,7 +20,7 @@
   ~      Burlington, MA 01803, USA
   ~      +01-781-438-9900
   ~      support@percussion.com
-  ~      https://www.percusssion.com
+  ~      https://www.percussion.com
   ~
   ~     You should have received a copy of the GNU General Public License
   ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
@@ -42,16 +42,16 @@
           <xsl:for-each select="entries/entry">
             <tr>
               <td>
-                <a href="{siteUrl}" target="_blank"><xsl:value-of select="siteUrl"/></a>
+                <a href="{siteUrl}" target="_blank" rel = "noopener noreferrer"><xsl:value-of select="siteUrl"/></a>
               </td>
               <td>
                 <xsl:value-of select="importError" />
               </td>
               <td>
-                <a href="{logUrl}" target="_blank">Download</a>
+                <a href="{logUrl}" target="_blank" rel = "noopener noreferrer">Download</a>
               </td>
               <td>
-	             <a href="{previewPageUrl}" target="_blank"><xsl:value-of select="importedSiteName"/></a>
+	             <a href="{previewPageUrl}" target="_blank" rel = "noopener noreferrer"><xsl:value-of select="importedSiteName"/></a>
               </td>
               <td>
                 <xsl:value-of select="remarks" />

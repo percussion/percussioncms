@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -82,7 +82,7 @@
             if(!fromCache || !pathItem)
             {
                $.PercPathService.getPathItemForPath(path, function(status, result){
-                   if(status==$.PercServiceUtils.STATUS_ERROR)
+                   if(status===$.PercServiceUtils.STATUS_ERROR)
                    {
                        callback(folderHelperConstants.PERMISSION_ERROR, result);
                        return;
@@ -102,7 +102,7 @@
             if(!fromCache || !pathItem)
             {
                 $.PercPathService.getPathItemById(objectId, function(status, result, errorCode){
-                    if(status==$.PercServiceUtils.STATUS_ERROR)
+                    if(status===$.PercServiceUtils.STATUS_ERROR)
                     {
                         callback(folderHelperConstants.PERMISSION_ERROR, result, errorCode);
                         return;
@@ -115,6 +115,6 @@
                 callback(folderHelperConstants.PERMISSION_SUCCESS,pathItem.accessLevel);
             }
         }
-    }
+    };
     
 })(jQuery);

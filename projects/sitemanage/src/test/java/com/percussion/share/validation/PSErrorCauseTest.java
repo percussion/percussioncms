@@ -17,21 +17,20 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.share.validation;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.junit.Test;
-
 import com.percussion.share.dao.PSSerializerUtils;
 import com.percussion.share.validation.PSErrors.PSObjectError;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class PSErrorCauseTest
 {
@@ -63,13 +62,12 @@ public class PSErrorCauseTest
         System.out.println(xml);
         PSErrors e = PSSerializerUtils.unmarshal(xml, PSErrors.class);
         log.debug(e.getGlobalError().getCause());
-        log.debug(e);
         
     }
 
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log log = LogFactory.getLog(PSErrorCauseTest.class);
+    private static final Logger log = LogManager.getLogger(PSErrorCauseTest.class);
 
 }

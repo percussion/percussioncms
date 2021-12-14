@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -26,6 +26,7 @@ package com.percussion.sitemanage.importer;
 import com.percussion.search.PSSearchIndexEventQueue;
 import com.percussion.share.async.IPSAsyncJob;
 import com.percussion.share.async.impl.PSAsyncJob;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.sitemanage.data.PSPageContent;
 import com.percussion.sitemanage.data.PSSiteImportCtx;
 import com.percussion.sitemanage.error.PSSiteImportException;
@@ -34,22 +35,21 @@ import com.percussion.sitemanage.importer.IPSSiteImportLogger.PSLogObjectType;
 import com.percussion.sitemanage.importer.dao.IPSImportLogDao;
 import com.percussion.sitemanage.importer.helpers.impl.PSImportHelper;
 import com.percussion.sitesummaryservice.service.IPSSiteImportSummaryService;
+import org.apache.commons.lang.Validate;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Component;
-
 @Component("siteImportJob")
 @Lazy
 public class PSImportFromUrlJob extends PSAsyncJob
 {
-    private static final Log log = LogFactory.getLog(PSImportFromUrlJob.class);
+    private static final Logger log = LogManager.getLogger(PSImportFromUrlJob.class);
 
     private List<PSImportHelper> mandatoryHelpers;
 
@@ -109,7 +109,7 @@ public class PSImportFromUrlJob extends PSAsyncJob
 
             // List to keep the executed helpers in case and rollback is
             // needed.
-            executedHelpers = new ArrayList<PSImportHelper>();
+            executedHelpers = new ArrayList<>();
 
             // Run helpers
             for (PSImportHelper mandatoryHelper : mandatoryHelpers)
@@ -155,7 +155,7 @@ public class PSImportFromUrlJob extends PSAsyncJob
 
             setResult(importContext);
         }
-        catch (IOException e)
+        catch (IOException | PSDataServiceException | PSSiteImportException e)
         {
             setStatus(IPSAsyncJob.ABORT_STATUS);
             setStatusMessage("The URL is invalid or unreachable.");

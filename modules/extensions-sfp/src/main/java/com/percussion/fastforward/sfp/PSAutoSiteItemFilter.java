@@ -17,39 +17,36 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.fastforward.sfp;
 
+import com.percussion.cms.PSCmsException;
+import com.percussion.cms.objectstore.PSDbComponent;
+import com.percussion.cms.objectstore.PSFolder;
+import com.percussion.cms.objectstore.server.PSRelationshipProcessor;
+import com.percussion.data.PSInternalRequestCallException;
+import com.percussion.design.objectstore.PSLocator;
+import com.percussion.design.objectstore.PSRelationshipConfig;
 import com.percussion.extension.IPSResultDocumentProcessor;
 import com.percussion.extension.PSDefaultExtension;
-import com.percussion.server.IPSRequestContext;
-import com.percussion.extension.PSParameterMismatchException;
 import com.percussion.extension.PSExtensionProcessingException;
-import com.percussion.cms.objectstore.PSRelationshipProcessorProxy;
-import com.percussion.cms.objectstore.server.PSRelationshipProcessor;
-import com.percussion.xml.PSXmlTreeWalker;
-import com.percussion.cms.objectstore.PSProcessorProxy;
-import com.percussion.cms.PSCmsException;
-import com.percussion.design.objectstore.PSLocator;
-import com.percussion.cms.objectstore.PSFolder;
-import com.percussion.cms.objectstore.PSDbComponent;
-import com.percussion.design.objectstore.PSRelationshipConfig;
-import com.percussion.util.IPSHtmlParameters;
+import com.percussion.extension.PSParameterMismatchException;
 import com.percussion.server.IPSInternalRequest;
-import com.percussion.data.PSInternalRequestCallException;
+import com.percussion.server.IPSRequestContext;
+import com.percussion.util.IPSHtmlParameters;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import com.percussion.xml.PSXmlTreeWalker;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.HashMap;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 
 /**
  * This exit filters out the items in the auto index that are not a part of the

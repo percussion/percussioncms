@@ -17,13 +17,14 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.deployer.server;
 
 import com.percussion.deployer.error.PSDeployException;
+import com.percussion.services.error.PSNotFoundException;
 
 import java.io.File;
 
@@ -40,7 +41,7 @@ public interface IPSPackageInstaller
      * 
      * @throws PSDeployException If there are any errors
      */
-    void installPackage(File packageFile) throws PSDeployException;
+    void installPackage(File packageFile) throws PSDeployException, PSNotFoundException;
     
     /**
      * Install a package file.
@@ -51,5 +52,5 @@ public interface IPSPackageInstaller
      * 
      * @throws PSDeployException If there are any errors
      */
-    void installPackage(File packageFile, boolean shouldValidateVersion) throws PSDeployException;
+    void installPackage(File packageFile, boolean shouldValidateVersion) throws PSDeployException, PSNotFoundException;
 }

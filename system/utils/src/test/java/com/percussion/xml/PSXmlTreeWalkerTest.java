@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -386,7 +386,7 @@ public class PSXmlTreeWalkerTest extends TestCase
 
       public String toXmlString()
       {
-         StringBuffer buf = new StringBuffer("<Book>\n\t<title>");
+         StringBuilder buf = new StringBuilder("<Book>\n\t<title>");
          buf.append(m_title);
          buf.append("</title>\n");
          buf.append("\t<isbn>");

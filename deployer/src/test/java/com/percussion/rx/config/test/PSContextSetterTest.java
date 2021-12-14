@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -27,6 +27,7 @@ import com.percussion.rx.config.impl.PSConfigUtils;
 import com.percussion.rx.config.impl.PSContextSetter;
 import com.percussion.rx.design.IPSDesignModel;
 import com.percussion.rx.design.impl.PSLocationSchemeModel;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.sitemgr.IPSLocationScheme;
 import com.percussion.services.sitemgr.IPSPublishingContext;
 import com.percussion.utils.guid.IPSGuid;
@@ -88,8 +89,7 @@ public class PSContextSetterTest extends PSConfigurationTest
     * @param ctxName the Context name, assumed not <code>null</code> or empty.
     * @return the default Location Scheme name.
     */
-   private String getDefaultScheme(String ctxName)
-   {
+   private String getDefaultScheme(String ctxName) throws PSNotFoundException {
       IPSDesignModel ctxModel = PSConfigUtils.getContextModel();
       IPSPublishingContext ctx = (IPSPublishingContext) ctxModel.load(ctxName);
       IPSGuid schemeId = ctx.getDefaultSchemeId();

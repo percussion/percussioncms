@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -71,23 +71,41 @@
     }
 
 
-    $(document).ready(function(){
+    $(function(){
         //Change the form action url to point to the right server
-        deliveryServicesURL = getDeliveryServicesDomain(".perc-comments-view");
-        var tenantId = $.isFunction($.getCm1License)?$.getCm1License():"";
-        var version = $.isFunction($.getCm1Version)?$.getCm1Version():"";
-        var url =  joinURL(deliveryServicesURL, "/perc-comments-services/comment?perc-tid=" + tenantId + "&perc-version=" + version);
-        $("form[name = 'commentForm']").attr("action", url);
+        deliveryServicesURL =  typeof($.getDeliveryServiceBase)==="function"?$.getDeliveryServiceBase():"";
+
+        var version = typeof($.getCMSVersion) === "function" ?$.getCMSVersion():"";
+        var url =  joinURL(deliveryServicesURL, "/perc-comments-services/comment/addcomment");
+        var commentForm =  $("form[name = 'commentForm']");
+        commentForm.attr("action", url);
+        var tokenHeader;
+        var token;
+       if( $.isEditMode === "true" || commentForm.length === 0 || jQuery("input[type = 'submit']").attr('disabled') ===  'disabled'){
+           return;
+       }
+        $.PercServiceUtils.csrfGetToken($.PercServiceUtils.joinURL(deliveryServicesURL,"/perc-comments-services/comment/csrf"),function (response) {
+            if (typeof response !== 'undefined' && response != null)
+                tokenHeader = response.getResponseHeader("X-CSRF-HEADER");
+            if (typeof tokenHeader !== "undefined" && tokenHeader != null){
+                token = response.getResponseHeader("X-CSRF-TOKEN");
+                if(typeof token !== "undefined" && token != null) {
+                    url = url + ((url.indexOf('?')!==-1)?"&":"?") + "_csrf=" + token;
+                    commentForm.attr( "action", url);
+                }
+            }
+        });
+
     });
 
     var globals = {
         dateFormatter: null 
-    }; 
-    
+    };
+
     var settings = {
         serviceurl: null, // The comments service url. Expects no query string.
         site: null, // The sitename
-        pagepath: null, 
+        pagepath: null,
         tag: null,
         username: null,
         state: 'APPROVED', // either APPROVED or REJECTED
@@ -159,7 +177,7 @@
                 }
                 else
                 {
-                    console.error('Error retrieveing comments from DTS service.');
+                    console.error('Error retrieving comments from DTS service.');
                 }
                 var lastComment = $('.perc-comment-highlight');
                 if (lastComment.position()) {
@@ -189,23 +207,11 @@
     */
     function getComments(callback)
     {
-        /*$.jsonp({
-            url: getUrl(),
-            data: '',
-            success: function(data, status){
-                callback(true, data);
-            },
-            error: function(xOptions, error)
-            {
-                callback(false);
-            }
-        });
-*/
         var fullLink =  getUrl();
         var splittedLink = fullLink.split("?");
-        var href = splittedLink[0];
-        var qs = splittedLink[1];
-        var splittedQs = qs.split('&');
+        var href = splittedLink[0] + "/list";
+        var commentsQueryString = splittedLink[1];
+        var splittedQs = commentsQueryString.split('&');
         var body = {};
 
         for(var key in splittedQs) {
@@ -213,11 +219,14 @@
             body[t[0]] = t[1];
         }
 
-        $.ajax({
+        var init = {
             type: 'POST',
             data: JSON.stringify(body),
             crossDomain: true,
             headers: {  'Access-Control-Allow-Origin': '*' },
+            xhrFields: {
+                withCredentials: true
+            },
             contentType: "application/json; charset=utf-8",
             url: href,
             success: function(data, status){
@@ -227,8 +236,11 @@
             {
                 callback(false);
             }
-        });
+        };
+
+        $.PercServiceUtils.makeAjaxRequest(init);
     }
+
     
    /**
     * Create the url from the specified settings.
@@ -237,11 +249,10 @@
     */
     function getUrl()
     {
-        var tenantId = $.isFunction($.getCm1License)?$.getCm1License():"";
-        var version = $.isFunction($.getCm1Version)?$.getCm1Version():"";
+        var version = typeof($.getCMSVersion) === "function"?$.getCMSVersion():"";
         
         //Build a valid service URL based on the value stored in the delivery
-        var url = deliveryServicesURL + "/perc-comments-services/comment/jsonp";
+        var url = deliveryServicesURL + "/perc-comments-services/comment";
 
         url += "?site=" + settings.site;
         if(!isBlank(settings.pagepath))
@@ -322,7 +333,7 @@
                     )
                 }
             }
-            if($.isArray(settings.fields[0]))
+            if(Array.isArray(settings.fields[0]))
             {
                 // Use comment containers
                 for(z = 0; z < settings.fields.length; z++)
@@ -436,7 +447,7 @@
                 {
                     var tmp = obj.finderpath.split("/");
                     obj.site = tmp[2];
-                    obj.pagepath = "/" + tmp.slice(3).join("/");  
+                    obj.pagepath = "/" + tmp.slice(3).join("/");
                 }
                 $el.PercCommentsView(obj);
                 $el.PercCommentsView('show');

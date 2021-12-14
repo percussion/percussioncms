@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -25,8 +25,11 @@ package com.percussion.delivery.utils.spring;
 
 
 import com.percussion.delivery.utils.security.PSSecureProperty;
+import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
+import org.springframework.util.StringValueResolver;
 
-import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
+import javax.annotation.Nonnull;
 
 /**
  * @author erikserating
@@ -34,7 +37,7 @@ import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
  */
 public class PSPropertyPlaceholderConfigurer
       extends
-         PropertyPlaceholderConfigurer
+        PropertySourcesPlaceholderConfigurer
 {
 
    protected String key = null;
@@ -43,11 +46,26 @@ public class PSPropertyPlaceholderConfigurer
     * @see org.springframework.beans.factory.config.PropertyResourceConfigurer#convertPropertyValue(java.lang.String)
     */
    @Override
-   protected String convertPropertyValue(String originalValue)
+   @Nonnull
+   protected String convertPropertyValue(@Nonnull String originalValue)
    {
       if(PSSecureProperty.isValueClouded(originalValue))
          return PSSecureProperty.getValue(originalValue, key);
       return originalValue;
+   }
+
+   //Workaround for bug spring-framework/issues/13568
+   protected void doProcessProperties(ConfigurableListableBeanFactory beanFactoryToProcess,
+                                      final StringValueResolver valueResolver) {
+
+      super.doProcessProperties(beanFactoryToProcess,
+              new StringValueResolver() {
+                 @Override
+                 public String resolveStringValue(String strVal) {
+                    return convertPropertyValue(valueResolver.resolveStringValue(strVal));
+                 }
+              }
+      );
    }
 
    /**

@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -97,7 +97,7 @@ public class PSTomcatUtils
       int nextFlag = PSXmlTreeWalker.GET_NEXT_ALLOW_SIBLINGS | 
          PSXmlTreeWalker.GET_NEXT_RESET_CURRENT; 
 
-      List<IPSConnector> connList = new ArrayList<IPSConnector>();
+      List<IPSConnector> connList = new ArrayList<>();
       Element connEl = tree.getNextElement(
          PSTomcatConnector.CONNECTOR_NODE_NAME, firstFlag);
       while (connEl != null)

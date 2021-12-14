@@ -17,22 +17,12 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.webdav.method;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 import com.percussion.cms.PSCmsException;
 import com.percussion.cms.objectstore.IPSDbComponent;
@@ -54,6 +44,14 @@ import com.percussion.webdav.PSWebdavServlet;
 import com.percussion.webdav.PSWebdavStatus;
 import com.percussion.webdav.error.PSWebdavException;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -194,7 +192,7 @@ public class PSMoveMethod
       PSRelationshipProcessorProxy proxy = getFolderProxy();
       String srcParentPath = PSWebdavUtils.getParentPath(m_sourcePath);
       PSComponentSummary srcParent = getComponentByPathRqd(srcParentPath);
-      List<PSLocator> sourceList = new ArrayList<PSLocator>();
+      List<PSLocator> sourceList = new ArrayList<>();
       sourceList.add(m_sourceSummary.getCurrentLocator());
       proxy.move(
             PSRelationshipConfig.TYPE_FOLDER_CONTENT,

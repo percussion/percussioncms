@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -25,15 +25,21 @@ package com.percussion.pubserver.impl;
 
 import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
+import com.percussion.error.PSExceptionUtils;
+import com.percussion.legacy.security.deprecated.PSAesCBC;
 import com.percussion.pubserver.IPSPubServerService;
 import com.percussion.pubserver.data.PSPublishServerInfo;
 import com.percussion.pubserver.data.PSPublishServerProperty;
 import com.percussion.rx.delivery.impl.PSBaseDeliveryHandler;
 import com.percussion.rx.publisher.IPSRxPublisherService;
+import com.percussion.security.PSEncryptionException;
+import com.percussion.security.PSEncryptor;
+import com.percussion.server.PSServer;
 import com.percussion.services.PSBaseServiceLocator;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.contentchange.IPSContentChangeService;
 import com.percussion.services.contentchange.data.PSContentChangeType;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.IPSGuidManager;
 import com.percussion.services.publisher.IPSDeliveryType;
 import com.percussion.services.publisher.IPSEdition;
@@ -51,6 +57,7 @@ import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.services.sitemgr.IPSSiteManager;
 import com.percussion.share.data.PSEnumVals;
 import com.percussion.share.service.exception.PSDataServiceException;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.share.validation.PSValidationErrorsBuilder;
 import com.percussion.sitemanage.dao.impl.PSSitePublishDao;
 import com.percussion.sitemanage.data.PSPubInfo;
@@ -62,16 +69,16 @@ import com.percussion.sitemanage.service.IPSSiteDataService;
 import com.percussion.sitemanage.service.IPSSiteDataService.PublishType;
 import com.percussion.sitemanage.service.IPSSitePublishService.PubType;
 import com.percussion.sitemanage.service.IPSSitePublishStatusService;
-import com.percussion.tools.Base64;
 import com.percussion.utils.PSNamedLockManager;
 import com.percussion.utils.guid.IPSGuid;
-import com.percussion.utils.security.deprecated.PSAesCBC;
+import com.percussion.utils.io.PathUtils;
 import com.percussion.utils.service.IPSUtilityService;
 import com.percussion.webservices.publishing.IPSPublishingWs;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
@@ -82,11 +89,14 @@ import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -117,22 +127,24 @@ public class PSPubServerService implements IPSPubServerService
     //Our Placeholder for the FTP password
     public static final String PASSWORD_ENTRY = "passwordEntry";
 
-    private static Log log = LogFactory.getLog(PSPubServerService.class);
+    private static final Logger log = LogManager.getLogger(PSPubServerService.class);
+    private static final String SITEID_NOT_BLANK = "Site id cannot be blank.";
 
-    private IPSPubServerDao pubServerDao;
-    private IPSSiteManager siteMgr;
-    private IPSDatabasePubServerFilesService serverFileService;
-    private IPSSiteDataService siteDataService;
-    private IPSSitePublishStatusService statusService;
-    private IPSGuidManager guidMgr;
-    private IPSRxPublisherService rxPubService;
-    private PSNamedLockManager lockMgr;
-    private PSSitePublishDao sitePublishDao;
-    private IPSPublisherService publisherService;
-    private IPSContentChangeService contentChangeService;
-    private IPSUtilityService utilityService;
+    private final IPSPubServerDao pubServerDao;
+    private final IPSSiteManager siteMgr;
+    private final IPSDatabasePubServerFilesService serverFileService;
+    private final IPSSiteDataService siteDataService;
+    private final IPSSitePublishStatusService statusService;
+    private final IPSGuidManager guidMgr;
+    private final IPSRxPublisherService rxPubService;
+    private final PSNamedLockManager lockMgr;
+    private final PSSitePublishDao sitePublishDao;
+    private final IPSPublisherService publisherService;
+    private final IPSContentChangeService contentChangeService;
+    private final IPSUtilityService utilityService;
     private static Boolean isEC2Instance = null;
     private IPSPublishingWs pubWs;
+    private SecureKeyRotationListener secureKeyRotationListener;
 
 
 
@@ -143,8 +155,7 @@ public class PSPubServerService implements IPSPubServerService
                               @Qualifier("sys_dbPubServerFileService") IPSDatabasePubServerFilesService serverFileService, IPSSiteDataService siteDataService,
                               IPSSitePublishStatusService statusService, IPSGuidManager guidMgr, IPSRxPublisherService rxPubService,
                               PSSitePublishDao sitePublishDao, IPSPublisherService publisherService, IPSContentChangeService contentChangeService,
-                              IPSUtilityService utilityService)
-    {
+                              IPSUtilityService utilityService) throws PSNotFoundException {
         this.pubServerDao = pubServerDao;
         this.siteMgr = siteMgr;
         this.serverFileService = serverFileService;
@@ -157,12 +168,16 @@ public class PSPubServerService implements IPSPubServerService
         this.contentChangeService = contentChangeService;
         this.utilityService = utilityService;
         //Create map of handler types to handle checking of pubserver configuration.
-        this.handlerMap = new HashMap<String, Object>();
+        handlerMap = new HashMap<>();
         handlerMap.putAll(generatePubServerHandlerMap());
 
-
-
         lockMgr = new PSNamedLockManager(5000);
+
+        //Adding Secure Key Rotation Listener, such that Encrypted Pwds can be reencrypted
+        // on rotation of secure key.
+        secureKeyRotationListener = new SecureKeyRotationListener();
+        PSEncryptor encryptor = PSEncryptor.getInstance("AES", PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR));
+        encryptor.addPropertyChangeListener(secureKeyRotationListener);
     }
 
     /**
@@ -170,11 +185,11 @@ public class PSPubServerService implements IPSPubServerService
      * the _only tagged pubservers represent non-default pubservers
      * @return Map of all the pub server handlers
      */
-    private Map<String, Object> generatePubServerHandlerMap(){
+    private Map<String, Object> generatePubServerHandlerMap() throws PSNotFoundException {
 
         IPSPublisherService pubsvc = PSPublisherServiceLocator.getPublisherService();
 
-        Map<String, Object> handlerMap = new HashMap<String, Object>();
+        Map<String, Object> handlerMap = new HashMap<>();
 
         IPSDeliveryType tmp = pubsvc.loadDeliveryType("ftp");
         handlerMap.put("ftp",
@@ -224,12 +239,13 @@ public class PSPubServerService implements IPSPubServerService
     }
 
     @Override
-    public PSPublishServerInfo getPubServer(String siteId, String serverId)
-    {
-        if (isBlank(siteId))
-            throw new IllegalArgumentException("Site id cannot be blank.");
-        if (isBlank(serverId))
+    public PSPublishServerInfo getPubServer(String siteId, String serverId) throws PSPubServerServiceException {
+        if (isBlank(siteId)) {
+            throw new IllegalArgumentException(SITEID_NOT_BLANK);
+        }
+        if (isBlank(serverId)) {
             throw new IllegalArgumentException("Server id cannot be blank.");
+        }
 
         PSPublishServerInfo serverInfo = null;
         PSPubServer pubServer = null;
@@ -258,25 +274,19 @@ public class PSPubServerService implements IPSPubServerService
         }
         catch (Exception e)
         {
-            throw new PSPubServerServiceException(e.getMessage(), e);
+            throw new PSPubServerServiceException(PSExceptionUtils.getMessageForLog(e), e);
         }
 
         return serverInfo;
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * com.percussion.pubserver.IPSPubServerService#getPubServerList()
-     */
-    @Override
-    public List<PSPublishServerInfo> getPubServerList(String siteId) throws PSPubServerServiceException
+    private List<PSPublishServerInfo> getPubServerList(String siteId,boolean loadProperties) throws PSPubServerServiceException
     {
-        if (isBlank(siteId))
-            throw new IllegalArgumentException("Site id cannot be blank.");
+        if (isBlank(siteId)) {
+            throw new IllegalArgumentException(SITEID_NOT_BLANK);
+        }
 
-        List<PSPublishServerInfo> serversList = new ArrayList<PSPublishServerInfo>();
+        List<PSPublishServerInfo> serversList = new ArrayList<>();
         try
         {
             IPSSite site = siteMgr.findSite(getSiteGuid(siteId));
@@ -290,19 +300,31 @@ public class PSPubServerService implements IPSPubServerService
             {
                 for (PSPubServer server : servers)
                 {
-                    PSPublishServerInfo serverInfo = new PSPublishServerInfo();
-                    serverInfo = toPSPublishServerInfo(server, site, false);
-                    serversList.add(serverInfo);
+                    serversList.add(toPSPublishServerInfo(server, site, false));
                 }
             }
         }
         catch (Exception ex)
         {
             String msg = "Failed to get the list of publish servers";
-            log.error(msg, ex);
+            log.error("{} Error: {}", msg,
+                    PSExceptionUtils.getMessageForLog(ex));
+            log.debug(ex);
             throw new PSPubServerServiceException(msg, ex);
         }
         return serversList;
+    }
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * com.percussion.pubserver.IPSPubServerService#getPubServerList()
+     */
+    @Override
+    public List<PSPublishServerInfo> getPubServerList(String siteId) throws PSPubServerServiceException
+    {
+        return getPubServerList(siteId,false);
     }
 
     private boolean isDatabaseType(String type)
@@ -312,10 +334,10 @@ public class PSPubServerService implements IPSPubServerService
 
     @Override
     public synchronized PSPublishServerInfo createPubServer(String siteId, String serverName, PSPublishServerInfo pubServerInfo)
-            throws PSPubServerServiceException
-    {
-        if (isBlank(siteId))
-            throw new IllegalArgumentException("Site id cannot be blank.");
+            throws PSPubServerServiceException, PSValidationException, PSNotFoundException {
+        if (isBlank(siteId)) {
+            throw new IllegalArgumentException(SITEID_NOT_BLANK);
+        }
 
         convertPasswordFromBase64(pubServerInfo);
 
@@ -353,8 +375,8 @@ public class PSPubServerService implements IPSPubServerService
             server.setDescription(pubServerInfo.getDescription());
             server.setServerType(pubServerInfo.getServerType());
 
-            boolean isDefaultServer = pubServerInfo.getIsDefault() ? true: false;
-            boolean isXmlSet = Boolean.valueOf(pubServerInfo.findProperty(XML_FLAG)) ? true : false;
+            boolean isDefaultServer = pubServerInfo.getIsDefault();
+            boolean isXmlSet = Boolean.parseBoolean(pubServerInfo.findProperty(XML_FLAG));
             String formatValue = isXmlSet ? XML_FLAG : HTML_FLAG;
 
             setPublishType(server, pubServerInfo.getType(), pubServerInfo.findProperty(IPSPubServerDao.PUBLISH_DRIVER_PROPERTY), pubServerInfo.findProperty(IPSPubServerDao.PUBLISH_SECURE_FTP_PROPERTY), isDefaultServer, formatValue);
@@ -379,12 +401,14 @@ public class PSPubServerService implements IPSPubServerService
              *
              */
             boolean clearIncrementalQueue = false;
-            if(currentDefaultServer != null)
+            if(currentDefaultServer != null) {
                 clearIncrementalQueue = updatePreviousDefaultPubServer(currentDefaultServer, server, site, isDefaultServer);
+            }
 
             pubServerDao.savePubServer(server);
-            if (dbPubServer != null)
+            if (dbPubServer != null) {
                 serverFileService.saveDatabasePubServer(dbPubServer);
+            }
 
             //Create staging ondemand editions
             if(PSPubServer.STAGING.equalsIgnoreCase( server.getServerType()))
@@ -400,7 +424,8 @@ public class PSPubServerService implements IPSPubServerService
         }
         catch (Exception ex)
         {
-            log.error(ex.getMessage());
+            log.error(PSExceptionUtils.getMessageForLog(ex));
+            log.debug(ex);
             throw new PSPubServerServiceException(ex.getMessage(), ex);
         }
 
@@ -408,12 +433,13 @@ public class PSPubServerService implements IPSPubServerService
     }
 
     @Override
-    public PSPublishServerInfo updatePubServer(String siteId, String serverId, PSPublishServerInfo pubServerInfo) throws PSPubServerServiceException
-    {
-        if (isBlank(siteId))
-            throw new IllegalArgumentException("Site id cannot be blank.");
-        if (isBlank(serverId))
+    public PSPublishServerInfo updatePubServer(String siteId, String serverId, PSPublishServerInfo pubServerInfo) throws PSPubServerServiceException, PSDataServiceException, PSNotFoundException {
+        if (isBlank(siteId)) {
+            throw new IllegalArgumentException(SITEID_NOT_BLANK);
+        }
+        if (isBlank(serverId)) {
             throw new IllegalArgumentException("Server id cannot be blank.");
+        }
 
         boolean locked = tryToLockSite(siteId);
 
@@ -448,15 +474,16 @@ public class PSPubServerService implements IPSPubServerService
 
             server.setName(newServerName);
 
-            if (pubServerInfo.getDescription() != null)
+            if (pubServerInfo.getDescription() != null) {
                 server.setDescription(pubServerInfo.getDescription().trim());
+            }
 
             String oldType = server.getPublishType();
-            boolean isDefaultServer = pubServerInfo.getIsDefault() ? true: false;
+            boolean isDefaultServer = pubServerInfo.getIsDefault();
 
             if (pubServerInfo.getType() != null)
             {
-                boolean isXmlSet = Boolean.valueOf(pubServerInfo.findProperty(XML_FLAG)) ? true : false;
+                boolean isXmlSet = Boolean.parseBoolean(pubServerInfo.findProperty(XML_FLAG));
                 String formatValue = isXmlSet ? XML_FLAG : HTML_FLAG;
                 setPublishType(server, pubServerInfo.getType(), pubServerInfo.findProperty(IPSPubServerDao.PUBLISH_DRIVER_PROPERTY), pubServerInfo.findProperty(IPSPubServerDao.PUBLISH_SECURE_FTP_PROPERTY), isDefaultServer, formatValue);
                 updatePublishTypeForStaging(server);
@@ -483,13 +510,15 @@ public class PSPubServerService implements IPSPubServerService
             if (!server.isSamePublish(oldServer))
             {
                 server.setHasFullPublisehd(false);
-                if (isDefaultServer)
+                if (isDefaultServer) {
                     clearIncrementalQueue = true;
+                }
             }
 
             String error = updateDBConfigFiles(site, oldType, currentServerName, newServerName, pubServerInfo);
-            if (error != null)
+            if (error != null) {
                 throw new PSPubServerServiceException(error);
+            }
 
             pubServerDao.savePubServer(server);
 
@@ -499,7 +528,8 @@ public class PSPubServerService implements IPSPubServerService
             }
             catch (IOException e)
             {
-                log.error("Failed to update site configure cache file", e);
+                log.error("Failed to update site configure cache . Error: {}",
+                        PSExceptionUtils.getMessageForLog(e));
             }
 
             if (clearIncrementalQueue)
@@ -535,28 +565,28 @@ public class PSPubServerService implements IPSPubServerService
         }
         catch (Exception e)
         {
-            log.error("Failed to clear the incremental queue for site: " + site.getName(), e);
+            log.error("Failed to clear the incremental queue for site: {}, Error: {}" , site.getName(), PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
     }
 
     /**
      * Gets the publish server name and validate the name.
-     * @param pubServerInfo the info contains the publish server name in question, assumed not <code>null</code>.
+     * @param serverName the info contains the publish server name in question, assumed not <code>null</code>.
      * @return the publish server name. It may be <code>null</code> or empty if the info does not contain the name.
      */
-    private String getPubServerName(String serverName)
-    {
+    private String getPubServerName(String serverName) throws PSPubServerServiceException {
         serverName = StringUtils.trim(serverName);
 
-        if (StringUtils.isBlank(serverName))
+        if (StringUtils.isBlank(serverName)) {
             throw new PSPubServerServiceException("The server name cannot be empty.");
+        }
 
         return serverName;
     }
 
     @Override
-    public List<PSPublishServerInfo> deleteServer(String siteId, String serverId) throws PSPubServerServiceException
-    {
+    public List<PSPublishServerInfo> deleteServer(String siteId, String serverId) throws PSPubServerServiceException, PSDataServiceException, PSNotFoundException {
         boolean locked = tryToLockSite(siteId);
 
         try
@@ -564,21 +594,25 @@ public class PSPubServerService implements IPSPubServerService
             IPSSite site = siteMgr.findSite(getSiteGuid(siteId));
             PSPubServer pubServer = pubServerDao.findPubServer(getPubServerGuid(serverId));
 
-            if (pubServer == null)
+            if (pubServer == null) {
                 throw new PSPubServerServiceException("The Server you have selected doesn't exist in the system. Please refresh and try again.");
+            }
 
-            if (site == null)
+            if (site == null) {
                 throw new PSPubServerServiceException("The Site you have selected doesn't exist in the system. Please refresh and try again.");
+            }
 
 
-            if (site.getDefaultPubServer() == pubServer.getServerId())
+            if (site.getDefaultPubServer() == pubServer.getServerId()) {
                 throw new PSPubServerServiceException("The server cannot be deleted because it is the default server.");
+            }
 
             List<PSSitePublishJob> jobs = statusService.getCurrentJobsBySite(siteId);
             for (PSSitePublishJob job : jobs)
             {
-                if (pubServer.getServerId() == job.getPubServerId())
+                if (pubServer.getServerId() == job.getPubServerId()) {
                     throw new PSPubServerServiceException("The server is being used by other user and cannot be deleted.");
+                }
             }
             if(PSPubServer.STAGING.equalsIgnoreCase( pubServer.getServerType()))
             {
@@ -590,8 +624,9 @@ public class PSPubServerService implements IPSPubServerService
         }
         finally
         {
-            if (locked)
+            if (locked) {
                 tryToUnlockSite(siteId);
+            }
         }
     }
 
@@ -604,12 +639,19 @@ public class PSPubServerService implements IPSPubServerService
         notNull(siteId);
 
         List<PSPubServer> pubServers = pubServerDao.findPubServersBySite(siteId);
-        if (pubServers == null)
+        if (pubServers == null) {
             return;
+        }
 
         for (PSPubServer pubServer : pubServers)
         {
-            deletePubServer(pubServer);
+            try {
+                deletePubServer(pubServer);
+            } catch (PSPubServerServiceException | PSNotFoundException e) {
+                log.error("Error deleting publishing server: {} Error:{}",
+                        pubServer.getName(),PSExceptionUtils.getMessageForLog(e));
+                log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+            }
         }
     }
 
@@ -631,8 +673,9 @@ public class PSPubServerService implements IPSPubServerService
     @Override
     public Boolean isDefaultServerModified(String siteId)
     {
-        if (isBlank(siteId))
-            throw new IllegalArgumentException("Site id cannot be blank.");
+        if (isBlank(siteId)) {
+            throw new IllegalArgumentException(SITEID_NOT_BLANK);
+        }
 
         IPSSite site = siteMgr.findSite(getSiteGuid(siteId));
 
@@ -661,7 +704,8 @@ public class PSPubServerService implements IPSPubServerService
         }
         catch(Exception e)
         {
-            log.error("The site " + siteId + "does not exist.");
+            log.error("The site {} does not exist. Error: {}" , siteId, PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
 
         if (publishType.equalsIgnoreCase(PUBLISH_FILE_TYPE) && driver.equalsIgnoreCase(DRIVER_LOCAL))
@@ -685,8 +729,9 @@ public class PSPubServerService implements IPSPubServerService
         if (site != null && type != null)
         {
             defaultFolderLocation = siteDataService.getDefaultPublishingRoot(site, type, "");
-            if( isStaging )
-                defaultFolderLocation = defaultFolderLocation.replace("Deployment","Staging/Deployment");
+            if( isStaging ) {
+                defaultFolderLocation = defaultFolderLocation.replace("Deployment", "Staging/Deployment");
+            }
         }
 
         return normalizePath(defaultFolderLocation);
@@ -699,13 +744,12 @@ public class PSPubServerService implements IPSPubServerService
      * com.percussion.pubserver.IPSPubServerService#getDefaultPubServer()
      */
     @Override
-    public PSPubServer getDefaultPubServer(IPSGuid siteId)
-    {
+    public PSPubServer getDefaultPubServer(IPSGuid siteId) throws PSNotFoundException {
         return PSSitePublishDaoHelper.getDefaultPubServer(siteId);
     }
 
     @Override
-    public PSPubServer getStagingPubServer(IPSGuid siteId) {
+    public PSPubServer getStagingPubServer(IPSGuid siteId) throws PSNotFoundException {
         return PSSitePublishDaoHelper.getStagingPubServer(siteId);
     }
 
@@ -724,7 +768,8 @@ public class PSPubServerService implements IPSPubServerService
         }
         catch (Exception ex)
         {
-            log.error(ex.getMessage());
+            log.error(PSExceptionUtils.getMessageForLog(ex));
+            log.debug(ex);
             throw new PSPubServerServiceException(ex.getMessage(), ex);
         }
 
@@ -737,13 +782,18 @@ public class PSPubServerService implements IPSPubServerService
             throw new PSPubServerServiceException("");
         }
         PSPubServer server = pubServerDao.createServer(site);
-        if(server.getProperties() != null)
+        if(server.getProperties() != null) {
             server.getProperties().clear();
+        }
         server.setPublishType(PublishType.amazon_s3.toString());
         PSPublisherInfo pubInfo = siteConfig.getSiteConfig().getPublisherInfo();
         server.addProperty(IPSPubServerDao.PUBLISH_AS3_BUCKET_PROPERTY, pubInfo.getBucketName());
-        server.addProperty(IPSPubServerDao.PUBLISH_AS3_ACCESSKEY_PROPERTY, encrypt(pubInfo.getAccessKey()));
-        server.addProperty(IPSPubServerDao.PUBLISH_AS3_SECURITYKEY_PROPERTY, encrypt(pubInfo.getSecretKey()));
+        String accessKey = PSEncryptor.encryptString(PSServer.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),pubInfo.getAccessKey());
+        server.addProperty(IPSPubServerDao.PUBLISH_AS3_ACCESSKEY_PROPERTY, accessKey);
+        String secretKey = PSEncryptor.encryptString(PSServer.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),pubInfo.getSecretKey());
+        server.addProperty(IPSPubServerDao.PUBLISH_AS3_SECURITYKEY_PROPERTY, secretKey);
+        server.addProperty(IPSPubServerDao.PUBLISH_AS3_ARN_ROLE, pubInfo.getArnRole());
+        server.addProperty(IPSPubServerDao.PUBLISH_AS3_USE_ASSUME_ROLE, (pubInfo.getUseAssumeRole() == null ? "false" :pubInfo.getUseAssumeRole()));
         server.addProperty(IPSPubServerDao.PUBLISH_DRIVER_PROPERTY, DRIVER_AMAZONS3);
         server.addProperty(IPSPubServerDao.PUBLISH_FOLDER_PROPERTY, "");
         server.addProperty(IPSPubServerDao.PUBLISH_OWN_SERVER_PROPERTY, "false");
@@ -815,11 +865,12 @@ public class PSPubServerService implements IPSPubServerService
                 {
                     serverRoot = root;
                 }
-                didChange = didChange | setFolderProperty(pubServer, site, serverRoot, false, null, true);
+                didChange = didChange || setFolderProperty(pubServer, site, serverRoot, false, null, true);
 
                 // if this has been changed, we need to require a new full publish
-                if (didChange)
+                if (didChange) {
                     pubServer.setHasFullPublisehd(false);
+                }
 
                 pubServerDao.savePubServer(pubServer);
             }
@@ -829,13 +880,15 @@ public class PSPubServerService implements IPSPubServerService
     }
 
     private PSDatabasePubServer createDatabasePubServer(String siteName, String serverName, PSPublishServerInfo pubServerInfo,
-                                                        IPSSite site)
-    {
+                                                        IPSSite site) throws PSValidationException {
         PSDatabasePubServer dbPubServer = generateDBPubServer(site.getSiteId(), siteName, serverName, pubServerInfo);
         String error = serverFileService.testDatabasePubServer(dbPubServer);
         if (error != null)
         {
-            throw new PSDataServiceException("Failed to connect to '" + serverName + "', the underlying error is: " + error);
+            String errorMsg = "Failed to connect to '" + serverName + "', the underlying error is: " + error;
+            PSValidationErrorsBuilder builder = validateParameters("createDatabasePubServer").reject("Database Connection Test",errorMsg);
+            builder.throwIfInvalid();
+
         }
         return dbPubServer;
     }
@@ -844,29 +897,28 @@ public class PSPubServerService implements IPSPubServerService
      * Deletes the specified publish-server.
      * @param pubServer the publish-server, assumed not <code>null</code>.
      */
-    private void deletePubServer(PSPubServer pubServer)
-    {
+    private void deletePubServer(PSPubServer pubServer) throws PSPubServerServiceException, PSNotFoundException {
         siteDataService.deletePublishingItemsByPubServer(pubServer);
 
         pubServerDao.deletePubServer(pubServer);
 
-        if (!equalsIgnoreCase(pubServer.getPublishType(), PublishType.database.name()))
+        if (!equalsIgnoreCase(pubServer.getPublishType(), PublishType.database.name())) {
             return;
+        }
 
         try
         {
             PSDatabasePubServer dbServer = new PSDatabasePubServer(pubServer);
             serverFileService.deleteDatabasePubServer(dbServer);
         }
-        catch (Throwable e)
+        catch (Exception e)
         {
             throw new PSPubServerServiceException("Error removing datasource for server " + pubServer.getName() + " from site: " + pubServer.getSiteId(), e);
         }
     }
 
     private String updateDBConfigFiles(IPSSite site, String oldType, String currentServerName, String newServerName,
-                                       PSPublishServerInfo pubServerInfo)
-    {
+                                       PSPublishServerInfo pubServerInfo) throws PSDataServiceException {
         if (isDatabaseType(pubServerInfo.getType()))
         {
             PSDatabasePubServer dbPubServer = generateDBPubServer(site.getSiteId(), site.getName(), currentServerName, pubServerInfo);
@@ -912,17 +964,18 @@ public class PSPubServerService implements IPSPubServerService
     }
 
     /**
-     * Add the properties to the server
      *
-     * @param pubServer the wrapper object supplied as parameter
+     * @param server
+     * @param pubServerInfo
+     * @param site
      */
-    private void setProperties(PSPubServer server, PSPublishServerInfo pubServerInfo, IPSSite site)
-    {
+    private void setProperties(PSPubServer server, PSPublishServerInfo pubServerInfo, IPSSite site) throws PSPubServerServiceException {
         //Grab old password for FTP in case we need it
         PSPubServerProperty oldPasswordProperty = server.getProperty(IPSPubServerDao.PUBLISH_PASSWORD_PROPERTY);
 
-        if (server.getProperties() != null)
+        if (server.getProperties() != null) {
             server.getProperties().clear();
+        }
 
         setPasswordProperty(server, pubServerInfo, oldPasswordProperty);
 
@@ -941,11 +994,11 @@ public class PSPubServerService implements IPSPubServerService
                 {
                     try
                     {
-                        value = encrypt(value);
+                        value = PSEncryptor.encryptString(PSServer.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),value);
                     }
                     catch (Exception e)
                     {
-                        throw new PSPubServerServiceException("Error occurred while encrypting the server properties", e);
+                        throw new PSPubServerServiceException("Error occurred while encrypting the server properties.", e);
                     }
                 }
                 server.addProperty(property.getKey(),  value);
@@ -957,7 +1010,7 @@ public class PSPubServerService implements IPSPubServerService
      * Helper method to set the properties related to folder and own server settings
      *
      * @param server the server to be updated
-     * @param pubServer the wrapper object supplied as parameter
+     * @param pubServerInfo the wrapper object supplied as parameter
      * @param site the site associated with the server
      *
      */
@@ -968,8 +1021,8 @@ public class PSPubServerService implements IPSPubServerService
         String publishFolderVal = pubServerInfo.findProperty(IPSPubServerDao.PUBLISH_FOLDER_PROPERTY);
         String ownServerVal = pubServerInfo.findProperty(IPSPubServerDao.PUBLISH_OWN_SERVER_PROPERTY);
 
-        Boolean isOwnServerSet = Boolean.valueOf(ownServerFlagVal) ? true : false;
-        Boolean isDefaultServerSet = Boolean.valueOf(defaultServerVal) ? true : false;
+        Boolean isOwnServerSet = Boolean.parseBoolean(ownServerFlagVal);
+        Boolean isDefaultServerSet = Boolean.parseBoolean(defaultServerVal);
 
         setFolderProperty(server, site, publishFolderVal, isOwnServerSet, ownServerVal, isDefaultServerSet);
     }
@@ -1049,13 +1102,12 @@ public class PSPubServerService implements IPSPubServerService
     }
 
     /**
-     * Helper method to set the properties related to password
      *
-     * @param server the server to be updated
-     * @param pubServer the wrapper object supplied as parameter
-     * @param oldPasswordProperty. The old password which we will keep if the password was unchanged.
-     *
+     * @param server
+     * @param pubServerInfo
+     * @param oldPasswordProperty
      */
+    @SuppressFBWarnings("HARD_CODE_PASSWORD")
     private void setPasswordProperty(PSPubServer server, PSPublishServerInfo pubServerInfo, PSPubServerProperty oldPasswordProperty)
     {
         Boolean isPasswordSet = Boolean.valueOf(pubServerInfo.findProperty(PASSWORD_FLAG)) ? true : false;
@@ -1097,13 +1149,13 @@ public class PSPubServerService implements IPSPubServerService
      * Helper method to set the properties related to format
      *
      * @param server the server to be updated
-     * @param pubServer the wrapper object supplied as parameter
+     * @param pubServerInfo the wrapper object supplied as parameter
      * @param site the site associated with the server
      *
      */
     private void setFormatProperty(PSPubServer server, PSPublishServerInfo pubServerInfo, IPSSite site)
     {
-        Boolean isXmlSet = Boolean.valueOf(pubServerInfo.findProperty(XML_FLAG)) ? true : false;
+        boolean isXmlSet = Boolean.parseBoolean(pubServerInfo.findProperty(XML_FLAG));
         String propertyValue = isXmlSet ? XML_FLAG : HTML_FLAG;
 
         server.addProperty(IPSPubServerDao.PUBLISH_FORMAT_PROPERTY, propertyValue);
@@ -1113,11 +1165,10 @@ public class PSPubServerService implements IPSPubServerService
      * Converts a <code>PSPubServer</code> object to <code>PSPublishServerInfo</code>
      * @param pubServer
      * @param site
-     * @param inludeProperties
+     * @param includeProperties
      * @return a <code>PSPublishServer</code> object
      */
-    private PSPublishServerInfo toPSPublishServerInfo(IPSPubServer pubServer, IPSSite site, boolean includeProperties)
-    {
+    private PSPublishServerInfo toPSPublishServerInfo(IPSPubServer pubServer, IPSSite site, boolean includeProperties) throws PSPubServerServiceException {
         PSPublishServerInfo serverInfo = new PSPublishServerInfo();
 
         Set<PSPubServerProperty> properties = pubServer.getProperties();
@@ -1218,8 +1269,9 @@ public class PSPubServerService implements IPSPubServerService
     {
         for (PSPubServerProperty property : properties)
         {
-            if (property.getName().equalsIgnoreCase(key))
+            if (property.getName().equalsIgnoreCase(key)) {
                 return property.getValue();
+            }
         }
         return null;
     }
@@ -1227,8 +1279,9 @@ public class PSPubServerService implements IPSPubServerService
     {
         for (PSPublishServerProperty property : properties)
         {
-            if (property.getKey().equalsIgnoreCase(key))
+            if (property.getKey().equalsIgnoreCase(key)) {
                 property.setValue(value);
+            }
         }
 
     }
@@ -1238,27 +1291,31 @@ public class PSPubServerService implements IPSPubServerService
         IPSEdition fullEdition = sitePublishDao.findEdition(pubServer.getGUID(), PubType.FULL);
         IPSPubStatus fullPubStatus = publisherService.findLastPubStatusByEdition(fullEdition.getGUID());
 
-        if (fullPubStatus != null)
+        if (fullPubStatus != null) {
             serverInfo.setLastFullPublishDate(fullPubStatus.getStartDate());
+        }
 
         // don't add incremental date if full pub required
-        if (!pubServer.hasFullPublished())
+        if (!pubServer.hasFullPublished()) {
             return;
+        }
 
         IPSEdition incrEdition = sitePublishDao.findEdition(pubServer.getGUID(), PubType.INCREMENTAL);
-        if (incrEdition == null)
+        if (incrEdition == null) {
             return;
+        }
 
         IPSPubStatus incrPubStatus = publisherService.findLastPubStatusByEdition(incrEdition.getGUID());
-        if (incrPubStatus != null)
+        if (incrPubStatus != null) {
             serverInfo.setLastIncrementalPublishDate(incrPubStatus.getStartDate());
+        }
     }
 
     /**
      * Helper method to set the flag properties related to password
      *
-     * @param serverInfo the wrapper object to be updated
-     * @param pubServerProperty the server property to be handled
+     * @param pubServer the wrapper object to be updated
+     * @param serverInfo the server info to be handled
      *
      */
     private void setPasswordFlags(IPSPubServer pubServer, PSPublishServerInfo serverInfo)
@@ -1348,7 +1405,7 @@ public class PSPubServerService implements IPSPubServerService
      */
     private void setFolderFlags(IPSPubServer pubServer, IPSSite site, PSPublishServerInfo serverInfo)
     {
-        Boolean isOwnServer = Boolean.valueOf(pubServer.getProperty(IPSPubServerDao.PUBLISH_OWN_SERVER_PROPERTY)
+        Boolean isOwnServer = Boolean.parseBoolean(pubServer.getProperty(IPSPubServerDao.PUBLISH_OWN_SERVER_PROPERTY)
                 .getValue()) ? true : false;
         String folderValue = pubServer.getProperty(IPSPubServerDao.PUBLISH_FOLDER_PROPERTY).getValue();
         String publishType = pubServer.getPublishType();
@@ -1437,12 +1494,9 @@ public class PSPubServerService implements IPSPubServerService
     }
 
     /**
-     * Helper method to set the flag properties related to the publishing format
      *
-     * @param pubServer the publishing server
-     * @param site the site associated to the server
-     * @param serverInfo the wrapper object to be updated
-     *
+     * @param pubServer
+     * @param serverInfo
      */
     private void setFormatFlags(IPSPubServer pubServer, PSPublishServerInfo serverInfo)
     {
@@ -1487,7 +1541,7 @@ public class PSPubServerService implements IPSPubServerService
         // Check for file type and FTP driver
         if (type.equalsIgnoreCase(PUBLISH_FILE_TYPE) && driver.equalsIgnoreCase(DRIVER_FTP))
         {
-            boolean isSecureFtp = secure != null && secure.equalsIgnoreCase("true") ? true : false;
+            boolean isSecureFtp = secure != null && secure.equalsIgnoreCase("true");
             String publishTypeValue = isDefaultServer ? PublishType.ftp.toString() : PublishType.ftp_only.toString();
             if (isSecureFtp)
             {
@@ -1522,7 +1576,11 @@ public class PSPubServerService implements IPSPubServerService
         // Check for file type and FTPS driver
         if (type.equalsIgnoreCase(PUBLISH_FILE_TYPE) && driver.equalsIgnoreCase(DRIVER_FTPS))
         {
-            server.setPublishType(PublishType.ftps_only.toString());
+            if(isDefaultServer && !format.equalsIgnoreCase(XML_FLAG)) {
+                server.setPublishType(PublishType.ftps.toString());
+            }else{
+                server.setPublishType(PublishType.ftps_only.toString());
+            }
             return;
         }
         if(type.equalsIgnoreCase(PUBLISH_FILE_TYPE) && driver.equalsIgnoreCase(DRIVER_AMAZONS3)){
@@ -1538,7 +1596,6 @@ public class PSPubServerService implements IPSPubServerService
         if (isDatabaseType(type))
         {
             server.setPublishType(PublishType.database.toString());
-            return;
         }
     }
 
@@ -1558,30 +1615,27 @@ public class PSPubServerService implements IPSPubServerService
     }
 
     /**
-     * Validate the server name. Cannot be empty, must be unique and only contain valid characters
-     * a-z, -, _ and <space>, strip leading and trailing spaces.
      *
-     * @param servername the name for the new server, may not <code>null</code>
+     * @param serverName
      * @param previousServername
-     * @param siteName
+     * @param siteId
+     * @throws PSPubServerServiceException
+     * @throws PSValidationException
      */
-    private void validateServerName(String serverName, String previousServername, String siteId)
-    {
+    private void validateServerName(String serverName, String previousServername, String siteId) throws PSPubServerServiceException, PSValidationException {
         PSValidationErrorsBuilder builder = validateParameters("validateServerName").rejectIfNull("SERVER_NAME_FIELD",
                 serverName).throwIfInvalid();
 
         // Make sure server name is not blank
         if (isBlank(serverName))
         {
-            builder.rejectField(SERVER_NAME_FIELD, SERVER_NAME_IS_EMPTY, serverName);
-            builder.throwIfInvalid();
+            builder.rejectField(SERVER_NAME_FIELD, SERVER_NAME_IS_EMPTY, serverName).throwIfInvalid();
         }
 
         // Too long server name
         if (serverName.length() > NAME_MAX_LENGHT)
         {
-            builder.rejectField(SERVER_NAME_FIELD, SERVER_NAME_IS_TOO_LONG, serverName);
-            builder.throwIfInvalid();
+            builder.rejectField(SERVER_NAME_FIELD, SERVER_NAME_IS_TOO_LONG, serverName).throwIfInvalid();
         }
 
         // Validate characters
@@ -1589,8 +1643,7 @@ public class PSPubServerService implements IPSPubServerService
         Matcher matcher = pattern.matcher(serverName);
         if (!matcher.matches())
         {
-            builder.rejectField(SERVER_NAME_FIELD, SERVER_NAME_IS_INVALID, serverName);
-            builder.throwIfInvalid();
+            builder.rejectField(SERVER_NAME_FIELD, SERVER_NAME_IS_INVALID, serverName).throwIfInvalid();
         }
 
         // Unique server names
@@ -1598,8 +1651,9 @@ public class PSPubServerService implements IPSPubServerService
         for (PSPublishServerInfo server : servers)
         {
             // If is an update and the name did not change, ignore it.
-            if (serverName.equalsIgnoreCase(previousServername) && server.getServerName().equalsIgnoreCase(serverName))
+            if (serverName.equalsIgnoreCase(previousServername) && server.getServerName().equalsIgnoreCase(serverName)) {
                 return;
+            }
 
             if(server.getServerName().equalsIgnoreCase(serverName))
             {
@@ -1623,8 +1677,7 @@ public class PSPubServerService implements IPSPubServerService
      *
      * @param port the port value, may not <code>null</code>
      */
-    private void validatePort(String port)
-    {
+    private void validatePort(String port) throws PSValidationException {
         PSValidationErrorsBuilder builder = validateParameters("validatePort").rejectIfNull("PORT_FIELD", port)
                 .throwIfInvalid();
 
@@ -1651,8 +1704,9 @@ public class PSPubServerService implements IPSPubServerService
         List<PSPubServer> servers = pubServerDao.findPubServersBySite(siteGuid);
         for (PSPubServer server : servers)
         {
-            if(server.getServerId() == pubServer.getServerId())
+            if(server.getServerId() == pubServer.getServerId()) {
                 return true;
+            }
         }
         return false;
     }
@@ -1663,8 +1717,7 @@ public class PSPubServerService implements IPSPubServerService
      *
      * @param pubServerInfo
      */
-    private void validateProperties(PSPublishServerInfo pubServerInfo, String siteId, boolean isNew)
-    {
+    private void validateProperties(PSPublishServerInfo pubServerInfo, String siteId, boolean isNew) throws PSValidationException, PSPubServerServiceException {
         String driver = pubServerInfo.findProperty(IPSPubServerDao.PUBLISH_DRIVER_PROPERTY);
         String type = pubServerInfo.getType();
         String serverType = pubServerInfo.getServerType();
@@ -1684,7 +1737,9 @@ public class PSPubServerService implements IPSPubServerService
             List<PSPublishServerInfo> pubSrvs =  getPubServerList(siteId);
             for (PSPublishServerInfo srvInfo : pubSrvs) {
                 if(PSPubServer.STAGING.equalsIgnoreCase( srvInfo.getServerType())){
-                    throw new PSPubServerServiceException("Only one staging server is allowed per site.");
+                    String opName = "validateServer";
+                    PSValidationErrorsBuilder builder = validateParameters(opName).reject("Server Save","Only one staging server is allowed per site.");
+                    builder.throwIfInvalid();
                 }
             }
         }
@@ -1699,18 +1754,18 @@ public class PSPubServerService implements IPSPubServerService
                 if (ownProperty.equalsIgnoreCase(Boolean.TRUE.toString()))
                 {
                     String ownServer = pubServerInfo.findProperty(IPSPubServerDao.PUBLISH_OWN_SERVER_PROPERTY);
-                    if (isBlank(ownServer))
+                    if (isBlank(ownServer)){
                         validateParameters("validateProperties").rejectField(IPSPubServerDao.PUBLISH_OWN_SERVER_PROPERTY.toString(),
-                                PROPERTY_FIELD_REQUIRED, ownServer).throwIfInvalid();
+                                PROPERTY_FIELD_REQUIRED, ownServer).throwIfInvalid();}
                 }
 
                 String defaultProperty = StringUtils.defaultString(pubServerInfo.findProperty(DEFAULT_SERVER_FLAG));
                 if (defaultProperty.equalsIgnoreCase(Boolean.TRUE.toString()))
                 {
                     String defaultServer = pubServerInfo.findProperty(IPSPubServerDao.PUBLISH_DEFAULT_SERVER_PROPERTY);
-                    if (isBlank(defaultServer))
+                    if (isBlank(defaultServer)){
                         validateParameters("validateProperties").rejectField(IPSPubServerDao.PUBLISH_DEFAULT_SERVER_PROPERTY.toString(),
-                                PROPERTY_FIELD_REQUIRED, defaultServer).throwIfInvalid();
+                                PROPERTY_FIELD_REQUIRED, defaultServer).throwIfInvalid();}
                 }
             }
             else if(driver.equalsIgnoreCase(DRIVER_FTP) || driver.equalsIgnoreCase(DRIVER_FTPS) || driver.equalsIgnoreCase(DRIVER_SFTP)  )
@@ -1757,45 +1812,44 @@ public class PSPubServerService implements IPSPubServerService
      * @param pubServerInfo
      * @param requieredProperties
      */
-    private void validatePropertiesByDriver(PSPublishServerInfo pubServerInfo, String[] requieredProperties)
-    {
+    private void validatePropertiesByDriver(PSPublishServerInfo pubServerInfo, String[] requieredProperties) throws PSValidationException {
         PSValidationErrorsBuilder builder = validateParameters("validatePropertiesByDriver");
+        String val = pubServerInfo.findProperty(IPSPubServerDao.PUBLISH_AS3_USE_ASSUME_ROLE);
+        boolean useAssumeRole = false;
+        if(val != null){
+            useAssumeRole = Boolean.valueOf(val);
+        }
         for (String property : requieredProperties)
         {
-            if (isBlank(pubServerInfo.findProperty(property)))
-            {
-                if(IPSPubServerDao.PUBLISH_AS3_ACCESSKEY_PROPERTY.equals(property)){
-                    if(!isEC2Instance()){
-                        builder.rejectField(property, PROPERTY_FIELD_REQUIRED, property);
-                    }
-                }else if(IPSPubServerDao.PUBLISH_AS3_SECURITYKEY_PROPERTY.equals(property)){
-                    if(!isEC2Instance()){
-                        builder.rejectField(property, PROPERTY_FIELD_REQUIRED, property);
-                    }
+            String value = pubServerInfo.findProperty(property);
+            if(IPSPubServerDao.PUBLISH_AS3_BUCKET_PROPERTY.equals(property)){
+                  builder.rejectIfBlank(property, value).throwIfInvalid();
+            }else if(IPSPubServerDao.PUBLISH_AS3_ACCESSKEY_PROPERTY.equals(property)){
+                if(!isEC2Instance()){
+                    builder.rejectIfBlank(property, value).throwIfInvalid();
                 }
-
+            }else if(IPSPubServerDao.PUBLISH_AS3_SECURITYKEY_PROPERTY.equals(property)){
+                if(!isEC2Instance()){
+                    builder.rejectIfBlank(property,  value).throwIfInvalid();
+                }
+            }else if(IPSPubServerDao.PUBLISH_AS3_ARN_ROLE.equals(property)){
+                if(useAssumeRole) {
+                    builder.rejectIfBlank(property, value).throwIfInvalid();
+                }
             }
         }
-        builder.throwIfInvalid();
     }
 
     /**
-     * If needed update the previous default server defined in the system to
-     * change the publishing type, and update the content list editions
-     * associated to the server properly.
      *
-     * @param previousDefaultServer the publishing server set as the default.
-     *            Can be the same that the current one being edited
-     * @param currentServer the publishing server being updated
-     * @param siteName the site name to find the server associated to.
-     * @param isDefaultServer boolean flag that indicates if the new current server is the default one
-     *
-     * @return <code>true</code> if the default server is changed, <code>false</code> if it is still the same
-     * server.
+     * @param previousDefaultServer
+     * @param currentServer
+     * @param site
+     * @param isDefaultServer
+     * @return
      */
     private boolean updatePreviousDefaultPubServer(PSPubServer previousDefaultServer, PSPubServer currentServer,
-                                                   IPSSite site, boolean isDefaultServer)
-    {
+                                                   IPSSite site, boolean isDefaultServer) throws PSNotFoundException {
         if ((previousDefaultServer.getServerId() != currentServer.getServerId()) && isDefaultServer)
         {
             String currentPublishingType = previousDefaultServer.getPublishType();
@@ -1803,16 +1857,20 @@ public class PSPubServerService implements IPSPubServerService
 
             PSPubServer oldDefaultServer = pubServerDao.loadPubServerModifiable(previousDefaultServer.getGUID());
 
-            if (currentPublishingType.equalsIgnoreCase(PublishType.filesystem.toString()))
+            if (currentPublishingType.equalsIgnoreCase(PublishType.filesystem.toString())) {
                 newPublishingType = PublishType.filesystem_only.toString();
+            }
 
-            if (currentPublishingType.equalsIgnoreCase(PublishType.ftp.toString()))
+            if (currentPublishingType.equalsIgnoreCase(PublishType.ftp.toString())) {
                 newPublishingType = PublishType.ftp_only.toString();
-            if (currentPublishingType.equalsIgnoreCase(PublishType.ftps.toString()))
+            }
+            if (currentPublishingType.equalsIgnoreCase(PublishType.ftps.toString())) {
                 newPublishingType = PublishType.ftps_only.toString();
+            }
 
-            if (currentPublishingType.equalsIgnoreCase(PublishType.sftp.toString()))
+            if (currentPublishingType.equalsIgnoreCase(PublishType.sftp.toString())) {
                 newPublishingType = PublishType.sftp_only.toString();
+            }
 
             previousDefaultServer.setPublishType(newPublishingType);
 
@@ -1835,9 +1893,7 @@ public class PSPubServerService implements IPSPubServerService
      */
     private String normalizePath(String path)
     {
-        String result = path.replaceAll("\\\\{1,}", "/");
-
-        return result;
+        return path.replaceAll("\\\\{1,}", "/");
     }
 
     /**
@@ -1864,13 +1920,14 @@ public class PSPubServerService implements IPSPubServerService
 
     private boolean tryToLockSite(String siteId)
     {
-        if (StringUtils.isBlank(siteId))
+        if (StringUtils.isBlank(siteId)) {
             return false;
+        }
 
         boolean locked = lockMgr.getLock(siteId);
         if (!locked)
         {
-            log.error("Timeout attempting to lock publishing server for modification : " + siteId);
+            log.error("Timeout attempting to lock publishing server for modification : {} " , siteId);
             throw new RuntimeException("Timeout attempting to lock publishing server for modification, please try again later.");
         }
         return locked;
@@ -1881,7 +1938,7 @@ public class PSPubServerService implements IPSPubServerService
         boolean unlocked = lockMgr.releaseLock(siteId);
         if (!unlocked)
         {
-            log.warn("Unabled to release lock for site: " + siteId);
+            log.warn("Unable to release lock for site: {}" , siteId);
         }
     }
 
@@ -1900,33 +1957,33 @@ public class PSPubServerService implements IPSPubServerService
     private static final String SERVER_NAME_IS_TOO_LONG = "Server name cannot have more than " + NAME_MAX_LENGHT + " characters.";
 
     // Server creating error messages
-    private static String SERVER_NAME_CREATE_IS_NOT_UNIQUE = "Cannot create server ''{0}'' because a server named ''{1}'' already exists.";
+    private static final String SERVER_NAME_CREATE_IS_NOT_UNIQUE = "Cannot create server ''{0}'' because a server named ''{1}'' already exists.";
 
     // Server updating error messages
-    private static String SERVER_NAME_UPDATE_IS_NOT_UNIQUE = "Cannot rename server ''{0}'' to ''{1}'' because a server named ''{2}'' already exists.";
+    private static final String SERVER_NAME_UPDATE_IS_NOT_UNIQUE = "Cannot rename server ''{0}'' to ''{1}'' because a server named ''{2}'' already exists.";
 
     // Port error message
     private static final String PORT_VALUE_IS_INVALID = "Invalid character in port field. Characters allowed are: 0-9.";
 
-    private static String PUBLISH_FILE_TYPE = "File";
-    private static String PUBLISH_DB_TYPE = "Database";
-    private static String DRIVER_LOCAL = "Local";
-    private static String DRIVER_FTP = "FTP";
-    private static String DRIVER_SFTP = "SFTP";
-    private static String DRIVER_FTPS = "FTPS";
-    private static String DRIVER_AMAZONS3 = "AMAZONS3";
-    private static String DRIVER_ORACLE = "Oracle";
-    private static String DRIVER_MSSQL = "MSSQL";
-    private static String PASSWORD_FLAG = "passwordFlag";
-    private static String PRIVATE_KEY_FLAG = "privateKeyFlag";
-    private static String OWN_SERVER_FLAG = "ownServerFlag";
-    private static String PUBLISH_SECURE_SITE_CONF = "publishSecureSiteConfigOnExactPath";
+    private static final String PUBLISH_FILE_TYPE = "File";
+    private static final String PUBLISH_DB_TYPE = "Database";
+    private static final String DRIVER_LOCAL = "Local";
+    private static final String DRIVER_FTP = "FTP";
+    private static final String DRIVER_SFTP = "SFTP";
+    private static final String DRIVER_FTPS = "FTPS";
+    private static final String DRIVER_AMAZONS3 = "AMAZONS3";
+    private static final String DRIVER_ORACLE = "Oracle";
+    private static final String DRIVER_MSSQL = "MSSQL";
+    private static final String PASSWORD_FLAG = "passwordFlag";
+    private static final String PRIVATE_KEY_FLAG = "privateKeyFlag";
+    private static final String OWN_SERVER_FLAG = "ownServerFlag";
+    private static final String PUBLISH_SECURE_SITE_CONF = "publishSecureSiteConfigOnExactPath";
 
-    private static String DEFAULT_SERVER_FLAG = "defaultServerFlag";
-    private static String XML_FLAG = "XML";
-    private static String HTML_FLAG = "HTML";
+    private static final String DEFAULT_SERVER_FLAG = "defaultServerFlag";
+    private static final String XML_FLAG = "XML";
+    private static final String HTML_FLAG = "HTML";
 
-    private static String PROPERTY_FIELD_REQUIRED = "This is a required field.";
+    private static final String PROPERTY_FIELD_REQUIRED = "This is a required field.";
 
     // File system Properties names that should exist in the object
     private String[] FILESYSTEM_PROPERTIES =
@@ -1982,7 +2039,7 @@ public class PSPubServerService implements IPSPubServerService
     private String[] AMAZON_S3_PROPERTIES =
             {IPSPubServerDao.PUBLISH_DRIVER_PROPERTY, IPSPubServerDao.PUBLISH_AS3_ACCESSKEY_PROPERTY,
                     IPSPubServerDao.PUBLISH_AS3_BUCKET_PROPERTY, IPSPubServerDao.PUBLISH_AS3_SECURITYKEY_PROPERTY,
-                    IPSPubServerDao.PUBLISH_EC2_REGION};
+                    IPSPubServerDao.PUBLISH_EC2_REGION,IPSPubServerDao.PUBLISH_AS3_ARN_ROLE,IPSPubServerDao.PUBLISH_AS3_USE_ASSUME_ROLE};
 
 
     private static String[] specialCasesValues =
@@ -1991,21 +2048,34 @@ public class PSPubServerService implements IPSPubServerService
                     IPSPubServerDao.PUBLISH_OWN_SERVER_PROPERTY, IPSPubServerDao.PUBLISH_FOLDER_PROPERTY,
                     IPSPubServerDao.PUBLISH_FORMAT_PROPERTY, XML_FLAG, HTML_FLAG};
 
-    private List<String> excludedManagedProperties = new ArrayList<String>(Arrays.asList(specialCasesValues));
+    private List<String> excludedManagedProperties = new ArrayList<>(Arrays.asList(specialCasesValues));
 
 
     public static final String[] encryptableProperties =
             {IPSPubServerDao.PUBLISH_AS3_SECURITYKEY_PROPERTY, IPSPubServerDao.PUBLISH_AS3_ACCESSKEY_PROPERTY};
 
-    private String encrypt(String estr) throws Exception
-    {
-        PSAesCBC aes = new PSAesCBC();
-        return aes.encrypt(estr, IPSPubServerDao.encryptionKey);
-    }
-    private String decrypt(String dstr) throws Exception
-    {
-        PSAesCBC aes = new PSAesCBC();
-        return aes.decrypt(dstr, IPSPubServerDao.encryptionKey);
+    /**
+     * Decrypt the string.  Will attempt to decrypt using legacy algorithms to handle upgrade scenario.
+     * @param dstr base64 encoded encrypted string
+     * @return clear text version of the string.
+     */
+    private String decrypt(String dstr) {
+
+        try {
+            return PSEncryptor.decryptString(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),dstr);
+
+        } catch (PSEncryptionException | IllegalArgumentException e) {
+            log.warn("Decryption failed: {}. Attempting to decrypt with legacy algorithm",PSExceptionUtils.getMessageForLog(e));
+            try {
+                PSAesCBC aes = new PSAesCBC();
+                return aes.decrypt(dstr, IPSPubServerDao.encryptionKey);
+            } catch (PSEncryptionException psEncryptionException) {
+                log.error("Unable to decrypt string. Error: {}",
+                        PSExceptionUtils.getMessageForLog(e));
+                log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+                return dstr;
+            }
+        }
     }
 
     /**
@@ -2025,7 +2095,7 @@ public class PSPubServerService implements IPSPubServerService
             //After upgrade or for older unit tests, the password may not be encoded.
             String decodedPassword = null;
             try{
-                decodedPassword = new String(Base64.decode(encodedPassword));
+                decodedPassword = new String(Base64.getDecoder().decode(encodedPassword));
             }catch(Exception e){
                 log.warn("Unable to decode stored Publishing Server password, proceeding as if it is clear text.  Try editing the Publishing server to clear this Warning.");
                 decodedPassword = encodedPassword;
@@ -2046,17 +2116,20 @@ public class PSPubServerService implements IPSPubServerService
         String publishType = pubServer.getPublishType();
         PSBaseDeliveryHandler handler = null;
         boolean result = true;
-        if(this.handlerMap.containsKey(publishType))
+        if(this.handlerMap.containsKey(publishType)) {
             handler = (PSBaseDeliveryHandler) this.handlerMap.get(publishType);
-        if(handler != null)
+        }
+        if(handler != null) {
             result = handler.checkConnection(pubServer, site);
+        }
         return result;
     }
 
     @Override
-    public PSPubInfo getS3PubInfo(IPSGuid siteId) throws Exception {
-        if (siteId == null)
+    public PSPubInfo getS3PubInfo(IPSGuid siteId) throws PSPubServerServiceException, PSNotFoundException {
+        if (siteId == null) {
             throw new IllegalArgumentException("siteId must not be null");
+        }
         PSPubInfo pubInfo = null;
 
         IPSPubServer pubServer = getDefaultPubServer(siteId);
@@ -2074,24 +2147,47 @@ public class PSPubServerService implements IPSPubServerService
         String accessKey = null;
         if (accessKeyProp != null) {
             accessKey = accessKeyProp.getValue();
-            if (accessKey != null)
-                accessKey = decrypt(accessKey);
+
+            try {
+                if (accessKey != null) {
+                    accessKey = decrypt(accessKey);
+                }
+            } catch (Exception e) {
+                throw new PSPubServerServiceException(e);
+            }
         }
 
         String securityKey = null;
         PSPubServerProperty securityKeyProp = pubServer.getProperty(IPSPubServerDao.PUBLISH_AS3_SECURITYKEY_PROPERTY);
         if (securityKeyProp != null) {
             securityKey = securityKeyProp.getValue();
-            securityKey = decrypt(securityKey);
+            try {
+                securityKey = decrypt(securityKey);
+            } catch (Exception e) {
+                throw new PSPubServerServiceException(e);
+            }
         }
         String region = null;
         PSPubServerProperty regioProp = pubServer.getProperty(IPSPubServerDao.PUBLISH_EC2_REGION);
         if (regioProp != null){
             region = regioProp.getValue();
         }
+        String useAssumeRole = "false";
+        PSPubServerProperty useAssumeRoleProp = pubServer.getProperty(IPSPubServerDao.PUBLISH_AS3_USE_ASSUME_ROLE);
+        if (useAssumeRoleProp != null && useAssumeRoleProp.getValue() != null ){
+            useAssumeRole = useAssumeRoleProp.getValue();
+        }
+
+        String arnRole = null;
+        PSPubServerProperty arnRoleProp = pubServer.getProperty(IPSPubServerDao.PUBLISH_AS3_ARN_ROLE);
+        if (arnRoleProp != null){
+            arnRole = arnRoleProp.getValue();
+        }
         if(equalsIgnoreCase(pubType, PublishType.amazon_s3.toString())
                 || equalsIgnoreCase(pubType, PublishType.amazon_s3_only.toString())){
             pubInfo = new PSPubInfo(bucketProperty,accessKey,securityKey,region);
+            pubInfo.setUseAssumeRole(useAssumeRole);
+            pubInfo.setArnRole(arnRole);
         }else{
             //In some cases the S3 publisher may not be the default - loop through pubservers to see if any are pointed at s3
             List<PSPublishServerInfo> pubservers = getPubServerList(siteId.toString());
@@ -2100,6 +2196,8 @@ public class PSPubServerService implements IPSPubServerService
                 if(equalsIgnoreCase(driver, PublishType.amazon_s3.toString())
                         || equalsIgnoreCase(pubType, PublishType.amazon_s3_only.toString())){
                     pubInfo = new PSPubInfo(bucketProperty,accessKey,securityKey,region);
+                    pubInfo.setUseAssumeRole(useAssumeRole);
+                    pubInfo.setArnRole(arnRole);
                     break;
                 }
             }
@@ -2117,13 +2215,15 @@ public class PSPubServerService implements IPSPubServerService
         }
         catch(Exception e)
         {
-            log.error("Error finding the pub server for the supplied id: " + serverId, e);
+            log.error("Error finding the pub server for the supplied id: {}, Error: {}" , serverId, PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+
         }
         return server;
     }
 
     @Override
-    public String getDefaultAdminURL(String siteName) throws PSPubServerServiceException {
+    public String getDefaultAdminURL(String siteName) throws PSPubServerServiceException, PSNotFoundException {
 
         IPSSite site = siteMgr.findSite(siteName);
         if(site == null){
@@ -2141,6 +2241,38 @@ public class PSPubServerService implements IPSPubServerService
             PSPubServer currentDefaultServer = getDefaultPubServer(site.getGUID());
             String adminUrl = currentDefaultServer.getPropertyValue("publishServer");
             return adminUrl;
+        }
+    }
+
+    public class SecureKeyRotationListener implements PropertyChangeListener{
+
+        @Override
+        public void propertyChange(PropertyChangeEvent evt) {
+            //find all sites and update Encrypetd Properties
+            List<IPSSite> sites = siteMgr.findAllSites();
+            String secureDir = PSServer.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR);
+            if(sites == null || sites.isEmpty()){
+                return;
+            }
+            for(IPSSite site: sites){
+                String siteId = site.getSiteId().toString();
+                try {
+                    List<PSPublishServerInfo> pubServerInfo = getPubServerList(siteId,true);
+                    if(pubServerInfo == null || pubServerInfo.isEmpty()){
+                        continue;
+                    }
+                    for (PSPublishServerInfo pubInfo:pubServerInfo){
+                        try {
+                            updatePubServer(siteId, pubInfo.getServerName(), pubInfo);
+                        } catch (PSDataServiceException | PSNotFoundException e) {
+                            log.error("Secure Key Rotation Failed to update Encryption for site {} Server : {} ERROR: {}", siteId, pubInfo.getServerName(), PSExceptionUtils.getMessageForLog(e));
+                        }
+                    }
+
+                } catch (PSPubServerServiceException e) {
+                    log.error("Secure Key Rotation Failed to update Encryption for site {}. ERROR: {}",siteId,PSExceptionUtils.getMessageForLog(e));
+                }
+            }
         }
     }
 

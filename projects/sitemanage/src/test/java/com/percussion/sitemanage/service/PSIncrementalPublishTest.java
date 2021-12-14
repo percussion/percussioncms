@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -38,7 +38,9 @@ import com.percussion.pathmanagement.service.impl.PSAssetPathItemService;
 import com.percussion.pathmanagement.service.impl.PSPathUtils;
 import com.percussion.services.contentchange.IPSContentChangeService;
 import com.percussion.services.contentchange.PSContentChangeServiceLocator;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.share.data.PSPagedItemList;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.spring.PSSpringWebApplicationContextUtils;
 import com.percussion.share.test.PSTestDataCleaner;
 import com.percussion.test.PSServletTestCase;
@@ -46,16 +48,15 @@ import com.percussion.ui.service.IPSListViewHelper;
 import com.percussion.utils.testing.IntegrationTest;
 import com.percussion.webservices.content.IPSContentWs;
 import com.percussion.webservices.security.IPSSecurityWs;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
+import org.junit.experimental.categories.Category;
 
 import java.io.InputStream;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.StringUtils;
-import org.junit.experimental.categories.Category;
 
 /**
  * @author JaySeletz
@@ -223,8 +224,7 @@ public class PSIncrementalPublishTest extends PSServletTestCase
     }
 
 
-    private PSAsset createAndApproveAsset(String name)
-    {
+    private PSAsset createAndApproveAsset(String name) throws PSDataServiceException, PSNotFoundException, IPSItemWorkflowService.PSItemWorkflowServiceException {
         InputStream in = IOUtils.toInputStream("This is my file content");
         PSAbstractAssetRequest ar = new PSBinaryAssetRequest("/Assets/Test", AssetType.FILE, "test.txt", "text/plain", in);
         PSAsset resource = assetService.createAsset(ar);
@@ -234,8 +234,7 @@ public class PSIncrementalPublishTest extends PSServletTestCase
         return resource;
     }
 
-    private PSPage createAndApprovePage(String name)
-    {
+    private PSPage createAndApprovePage(String name) throws PSDataServiceException, PSNotFoundException, IPSItemWorkflowService.PSItemWorkflowServiceException {
         PSPage page = createPage(name, fixture.template1.getId());
         String pageId = pageService.save(page).getId();
         pageCleaner.add(pageId);

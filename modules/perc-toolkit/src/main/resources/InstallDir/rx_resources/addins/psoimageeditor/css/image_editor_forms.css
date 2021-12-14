@@ -1,0 +1,62 @@
+/**
+ * General forms tag specifications.
+*/
+
+body
+{
+   color: #0000a0; 
+   font-size: medium;
+}
+input, textarea
+{
+   color: #0000a0; 
+   background-color: #FFFFFF;
+   
+}
+
+div.imageBox
+{
+	margin: 5px;
+	padding: 5px;
+	float: left;
+}
+
+div.imageContainer
+{
+ 	margin: 2px;
+	padding: 2px;	
+}
+
+.imageInput 
+{
+   border: none;
+   
+}
+
+.clear
+{
+   clear: both;
+}
+input.hbutton
+{
+   background-color: #000060;
+   color: #FFFFFF;
+   
+   font-weight: bold;
+   border: none;   
+}
+input.fbutton
+{
+   background-color: #000030;
+   color: #A5A5A5; 
+   
+   font-weight: normal;
+   border:none; 
+}
+
+input.plaintext
+{
+	color: black;
+	background: none;
+	border:none;
+}

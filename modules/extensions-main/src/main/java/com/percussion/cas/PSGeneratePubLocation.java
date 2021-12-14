@@ -17,13 +17,11 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.cas;
-
-import static com.percussion.util.IPSHtmlParameters.SYS_OVERWRITE_PREVIEW_URL_GEN;
 
 import com.percussion.cms.objectstore.PSComponentSummary;
 import com.percussion.data.PSConversionException;
@@ -32,6 +30,7 @@ import com.percussion.data.PSInternalRequestCallException;
 import com.percussion.design.objectstore.PSExtensionParamValue;
 import com.percussion.design.objectstore.PSNotFoundException;
 import com.percussion.design.objectstore.PSTextLiteral;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSAssemblyLocation;
 import com.percussion.extension.IPSExtension;
 import com.percussion.extension.IPSExtensionDef;
@@ -42,6 +41,7 @@ import com.percussion.extension.PSExtensionException;
 import com.percussion.extension.PSExtensionParams;
 import com.percussion.extension.PSExtensionRef;
 import com.percussion.extension.PSSimpleJavaUdfExtension;
+import com.percussion.security.SecureStringUtils;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.server.PSServer;
 import com.percussion.services.assembly.IPSAssemblyService;
@@ -70,10 +70,13 @@ import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.jdbc.PSConnectionDetail;
 import com.percussion.utils.jdbc.PSConnectionHelper;
 import com.percussion.utils.timing.PSStopwatchStack;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
+import javax.naming.NamingException;
 import java.io.File;
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -85,11 +88,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.naming.NamingException;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import static com.percussion.util.IPSHtmlParameters.SYS_OVERWRITE_PREVIEW_URL_GEN;
 
 /**
  * This generic UDF generates public locations for all contexts. The preview
@@ -101,7 +100,7 @@ public class PSGeneratePubLocation extends PSSimpleJavaUdfExtension
    /**
     * Commons logging logger for this class
     */
-   private static Log ms_log = LogFactory.getLog(PSGeneratePubLocation.class);
+   private static final Logger log = LogManager.getLogger(PSGeneratePubLocation.class);
 
    /**
     * Overwrite the base class to save the extension definition used to report
@@ -341,13 +340,12 @@ public class PSGeneratePubLocation extends PSSimpleJavaUdfExtension
       }
       catch (PSExtensionException e)
       {
-         ms_log.error("Problem while generating a publishing "
-               + "location for template " + variantid + " and contentid "
-               + contentid, e);
+         log.error("Problem while generating a publishing, location for template {} and contentid {} Error: {}",variantid, contentid,PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
-      catch (Throwable e)
+      catch (Exception e)
       {
-         ms_log.error("Problem while generating a publishing "
+         log.error("Problem while generating a publishing "
                + "location for template " + variantid + " and contentid "
                + contentid, PSExceptionHelper.findRootCause(e, true));
       }
@@ -417,7 +415,7 @@ public class PSGeneratePubLocation extends PSSimpleJavaUdfExtension
       sws.start("PSGeneratePubLocation#generatePreviewLocation");
       try
       {
-         Map<String, String> paramMap = new HashMap<String, String>(5);
+         Map<String, String> paramMap = new HashMap<>(5);
          paramMap.put(IPSHtmlParameters.SYS_CONTENTID, contentid.toString());
          paramMap.put(IPSHtmlParameters.SYS_REVISION, revision.toString());
          paramMap.put(IPSHtmlParameters.SYS_VARIANTID, variantid.toString());
@@ -481,7 +479,7 @@ public class PSGeneratePubLocation extends PSSimpleJavaUdfExtension
     * The custom preview URL generator map, which maps the name of the generator to its UDF instance. 
     * It is default to empty and lazily loaded UDF extension as needed.
     */
-    Map<String, PSExtensionWrapper> m_previewUrlGeneratorMap = new HashMap<String, PSExtensionWrapper>();
+    Map<String, PSExtensionWrapper> m_previewUrlGeneratorMap = new HashMap<>();
 
    /**
     * Generates the preview URL from a specified UDF extension.
@@ -580,7 +578,7 @@ public class PSGeneratePubLocation extends PSSimpleJavaUdfExtension
             PSExtensionException extExc = new PSExtensionException(
                   IPSExtensionErrors.SCHEME_CANT_BE_FOUND, sme, args);
             
-            ms_log.error(extExc.getLocalizedMessage(), sme);
+            log.error(extExc.getLocalizedMessage(), sme);
             
             throw extExc;
          }
@@ -798,7 +796,7 @@ public class PSGeneratePubLocation extends PSSimpleJavaUdfExtension
             }
             catch (SQLException e)
             {
-               ms_log.error(e);
+               log.error(e);
             }
          }
       }
@@ -824,6 +822,12 @@ public class PSGeneratePubLocation extends PSSimpleJavaUdfExtension
       // get the unqualified table name
       int sep = table.lastIndexOf('.');
       String unqualTable = sep == -1 ? table : table.substring(sep + 1);
+
+      if(!SecureStringUtils.isValidTableOrColumnName(column))
+         throw new IllegalArgumentException("Invalid column name.");
+
+      if(!SecureStringUtils.isValidTableOrColumnName(unqualTable))
+         throw new IllegalArgumentException("Invalid table name.");
 
       boolean useRevision = !unqualTable.equalsIgnoreCase("CONTENTSTATUS");
       String query = "SELECT " + column + " FROM " + table

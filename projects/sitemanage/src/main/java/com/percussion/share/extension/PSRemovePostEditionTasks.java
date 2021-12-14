@@ -17,21 +17,12 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.share.extension;
-
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.List;
-import java.util.Properties;
-
-import org.apache.log4j.Logger;
 
 import com.percussion.server.IPSStartupProcess;
 import com.percussion.server.IPSStartupProcessManager;
@@ -44,6 +35,15 @@ import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.services.sitemgr.IPSSiteManager;
 import com.percussion.services.sitemgr.PSSiteManagerLocator;
 import com.percussion.utils.guid.IPSGuid;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.List;
+import java.util.Properties;
 
 /**
  * Startup process to remove the following post-edition tasks from publish on
@@ -61,7 +61,7 @@ import com.percussion.utils.guid.IPSGuid;
  */
 public class PSRemovePostEditionTasks implements IPSStartupProcess {
 
-    private static final Logger log = Logger
+    private static final Logger log = LogManager
             .getLogger(PSRemovePostEditionTasks.class.getName());
 
     private static final String BASE_DIR = PSServer.getBaseConfigDir();

@@ -1,27 +1,4 @@
-<!--
-  ~     Percussion CMS
-  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
-  ~
-  ~     This program is free software: you can redistribute it and/or modify
-  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
-  ~
-  ~     This program is distributed in the hope that it will be useful,
-  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
-  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  ~     GNU Affero General Public License for more details.
-  ~
-  ~     Mailing Address:
-  ~
-  ~      Percussion Software, Inc.
-  ~      PO Box 767
-  ~      Burlington, MA 01803, USA
-  ~      +01-781-438-9900
-  ~      support@percussion.com
-  ~      https://www.percusssion.com
-  ~
-  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
-  -->
-
+<?xml version="1.0" encoding="UTF-8" ?>
 <!-- Build file for Rhythmyx repository install -->
 <project name="install" default="install" basedir="..\..\..">
 
@@ -86,15 +63,40 @@
             </fileset>
         </copy>
 
+        <copy todir="${assembly-directory}">
+            <fileset dir="{basedir}/../../perc-xml-security/src/main/resources/">
+                <include name="PercussionXMLCatalog.xml"/>
+            </fileset>
+        </copy>
+
+        <mkdir dir="${assembly-directory}/var/config"/>
+        <copy todir="${assembly-directory}/var/config">
+            <fileset dir="{basedir}/../../perc-xml-security/src/main/resources/">
+                <include name="CustomXMLCatalog.xml"/>
+            </fileset>
+        </copy>
         <copy todir="${assembly-directory}/sys_resources">
             <fileset dir="${basedir}/../../system/cms/content/applications/sys_resources/ApplicationFiles">
             </fileset>
         </copy>
 
-        <copy todir="${assembly-directory}/rx_resources">
+        <copy todir="${assembly-directory}/rx_resources" overwrite="true" verbose="true">
             <fileset dir="${basedir}/../../system/cms/content/applications/rx_resources/ApplicationFiles">
             </fileset>
         </copy>
+
+        <!-- TinyMCE config -->
+        <copy todir="${assembly-directory}/rx_resources" overwrite="true" verbose="true">
+            <fileset dir="${basedir}/../perc-tinymce/target/classes/META-INF/resources/rx_resources">
+            </fileset>
+        </copy>
+
+        <!-- TinyMCE config -->
+        <copy todir="${assembly-directory}/sys_resources" overwrite="true" verbose="true" force="true">
+            <fileset dir="${basedir}/../perc-tinymce/target/classes/META-INF/resources/sys_resources">
+            </fileset>
+        </copy>
+
         <copy todir="${assembly-directory}/rx_resources">
             <fileset dir="${basedir}/../../system/cms/content/applications/rx_resources/ApplicationFiles">
             </fileset>
@@ -141,6 +143,17 @@
             </fileset>
         </copy>
 
+        <mkdir dir="${assembly-directory}/rxconfig/esapi"/>
+        <copy todir="${assembly-directory}/rxconfig/esapi">
+            <fileset dir="${basedir}/../perc-security-utils/src/main/resources/esapi" includes="**/*"/>
+        </copy>
+
+        <!-- Install Velocity Configuration Files -->
+        <mkdir dir="${assembly-directory}/rxconfig/velocity"/>
+        <copy todir="${assembly-directory}/rxconfig/velocity">
+            <fileset dir="${basedir}/../../system/Tools/velocity" includes="**/*" />
+        </copy>
+
         <mkdir dir="${assembly-directory}/rxconfig/secure"/>
 
         <copy todir="${assembly-directory}/rxconfig/secure">
@@ -154,12 +167,26 @@
         </copy>
 
 
-
+        <mkdir dir="${assembly-directory}/DTD"/>
         <copy todir="${assembly-directory}/DTD">
             <!--<fileset dir="${basedir}/../../system/cms/dbpublisher/dtd" includes="sys_DatabasePublisher.dtd, aliasmap.dtd" />-->
             <fileset dir="${basedir}/../../system/Tools/TableFactory/src/main/resources/dtd" includes="sys_Tabledata.dtd, sys_Tabledef.dtd" />
+            <fileset dir="${basedir}/../../system/DTD" includes="**"/>
         </copy>
 
+        <!-- Force copy of UI files - they weren't getting refreshed on upgrade without this -->
+        <copy todir="${assembly-directory}/jetty/base/webapps/Rhythmyx/" overwrite="true" verbose="true" filtering="true">
+            <fileset dir="../../WebUI/target/perc-web-ui-${project.version}">
+                <include name="cm/**"/>
+                <include name="dce/**"/>
+                <include name="test/**"/>
+                <include name="tmx/**"/>
+                <include name="ui/**"/>
+                <include name="util/**"/>
+                <include name="*.jsp"/>
+                <include name="favicon.ico"/>
+            </fileset>
+        </copy>
         <!--<copy todir="${assembly-directory}/cm">
             <fileset dir="${assembly-directory}/jetty/base/webapps/Rhythmyx/cm">
             </fileset>
@@ -198,28 +225,59 @@
 
         <copy tofile="${assembly-directory}/web_resources/cm/common/js/perc_common_ui_slim.js" file="${assembly-directory}/jetty/base/webapps/Rhythmyx/cm/common/js/perc_common_ui_slim.js"/>
 
-        <!-- Copy Java Script that is "Global" but not really global. -->
-        <!-- jQuery.cookie-->
-        <copy tofile="${assembly-directory}/web_resources/cm/jslib/jquery.cookie.js" file="${assembly-directory}/jetty/base/webapps/Rhythmyx/cm/jslib/jquery.cookie.js"/>
-        <copy tofile="${assembly-directory}/web_resources/cm/jslib/jquery.cookie.min.js" file="${assembly-directory}/jetty/base/webapps/Rhythmyx/cm/jslib/jquery.cookie.min.js"/>
+        <!-- Copy Java Script -->
+        <!-- jquery for gadgets -->
+        <copy tofile="${assembly-directory}/jetty/base/webapps/Rhythmyx/WEB-INF/classes/features/perc/jquery/jquery-3.6.0.js"
+              file="${basedir}/../../WebUI/war/jslib/profiles/3x/jquery/jquery-3.6.0.js"/>
+        <copy tofile="${assembly-directory}/jetty/base/webapps/Rhythmyx/WEB-INF/classes/features/perc/jquery/jquery-migrate-3.3.2.js"
+              file="${basedir}/../../WebUI/war/jslib/profiles/3x/jquery/jquery-migrate-3.3.2.js"/>
+        <copy tofile="${assembly-directory}/jetty/base/webapps/Rhythmyx/WEB-INF/classes/features/perc/core/es5.js"
+              file="${basedir}/../../WebUI/war/jslib/profiles/3x/libraries/bowser/es5.js"/>
+        <!-- jquery for published site -->
+        <copy tofile="${assembly-directory}/web_resources/cm/jslib/jquery.js"
+              file="${basedir}/../../WebUI/war/jslib/profiles/3x/jquery/jquery-3.6.0.js"/>
 
+        <!-- jquery-ui for published site -->
+        <copy tofile="${assembly-directory}/web_resources/cm/jslib/jquery-ui.js"
+              file="${basedir}/../../WebUI/war/jslib/profiles/3x/jquery/libraries/jquery-ui/jquery-ui.js"/>
+        <!-- jquery migrate for published site -->
+        <copy tofile="${assembly-directory}/web_resources/cm/jslib/jquery-migrate.js"
+              file="${basedir}/../../WebUI/war/jslib/profiles/3x/jquery/jquery-migrate-3.3.2.js"/>
+
+        <!-- jquery ui -->
+        <copy tofile="${assembly-directory}/jetty/base/webapps/Rhythmyx/WEB-INF/classes/features/perc/jqueryUi/jquery-ui.js"
+              file="${basedir}/../../WebUI/war/jslib/profiles/3x/jquery/libraries/jquery-ui/jquery-ui.js"/>
+        <!-- collapser -->
+        <copy tofile="${assembly-directory}/jetty/base/webapps/Rhythmyx/WEB-INF/classes/features/perc/collapser/jquery.collapser.js"
+              file="${basedir}/../../WebUI/war/jslib/profiles/3x/jquery/plugins/jquery-collapser/jquery.collapser.js"/>
+
+        <!-- uploadify -->
+        <copy tofile="${assembly-directory}/jetty/base/webapps/Rhythmyx/WEB-INF/classes/features/perc/uploadify/swfobject.js"
+              file="${basedir}/../../WebUI/war/jslib/profiles/3x/jquery/plugins/jquery-uploadify/swfobject.js"/>
+        <copy tofile="${assembly-directory}/jetty/base/webapps/Rhythmyx/WEB-INF/classes/features/perc/uploadify/jquery.uploadify.v2.1.0.min.js"
+              file="${basedir}/../../WebUI/war/jslib/profiles/3x/jquery/plugins/jquery-uploadify/jquery.uploadify.v2.1.0.min.js"/>
+
+        <!-- jQuery.cookie-->
+        <copy tofile="${assembly-directory}/web_resources/cm/jslib/jquery.cookie.js" file="${assembly-directory}/jetty/base/webapps/Rhythmyx/cm/jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.cookie.js"/>
+        <copy tofile="${assembly-directory}/web_resources/cm/jslib/jquery.cookie.min.js" file="${assembly-directory}/jetty/base/webapps/Rhythmyx/cm/jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.cookie.js"/>
         <!-- jQuery.dynatree -->
-        <copy tofile="${assembly-directory}/web_resources/cm/jslib/jquery.dynatree.js" file="${assembly-directory}/jetty/base/webapps/Rhythmyx/cm/jslib/jquery.dynatree.js"/>
-        <copy tofile="${assembly-directory}/web_resources/cm/jslib/jquery.dynatree.min.js" file="${assembly-directory}/jetty/base/webapps/Rhythmyx/cm/jslib/jquery.dynatree.min.js"/>
+        <copy tofile="${assembly-directory}/web_resources/cm/jslib/jquery.dynatree.js" file="${assembly-directory}/jetty/base/webapps/Rhythmyx/cm/jslib/profiles/3x/jquery/plugins/jquery-dynatree/jquery.dynatree.js"/>
         <copy tofile="${assembly-directory}/web_resources/cm/css/dynatree/skin/ui.dynatree.css" file="${assembly-directory}/jetty/base/webapps/Rhythmyx/cm/css/dynatree/skin/ui.dynatree.css"/>
         <copy tofile="${assembly-directory}/web_resources/cm/css/dynatree/skin/vline.gif" file="${assembly-directory}/jetty/base/webapps/Rhythmyx/cm/css/dynatree/skin/vline.gif"/>
         <copy tofile="${assembly-directory}/web_resources/cm/css/dynatree/skin/loading.gif" file="${assembly-directory}/jetty/base/webapps/Rhythmyx/cm/css/dynatree/skin/loading.gif"/>
         <copy tofile="${assembly-directory}/web_resources/cm/css/dynatree/skin/icons2.gif" file="${assembly-directory}/jetty/base/webapps/Rhythmyx/cm/css/dynatree/skin/icons2.gif"/>
         <copy tofile="${assembly-directory}/web_resources/cm/css/dynatree/skin/icons.gif" file="${assembly-directory}/jetty/base/webapps/Rhythmyx/cm/css/dynatree/skin/icons.gif"/>
-        <copy tofile="${assembly-directory}/web_resources/cm/jslib/jquery-migrate-3.0.1.js" file="${assembly-directory}/jetty/base/webapps/Rhythmyx/cm/jslib/profiles/3x/jquery/jquery-migrate-3.0.1.js"/>
         <!-- jQuery Validate -->
-        <copy tofile="${assembly-directory}/web_resources/cm/jslib/jquery.validate.js" file="${assembly-directory}/jetty/base/webapps/Rhythmyx/cm/jslib/jquery.validate.js"/>
+        <copy tofile="${assembly-directory}/web_resources/cm/jslib/jquery.validate.js" file="${assembly-directory}/jetty/base/webapps/Rhythmyx/cm/jslib/profiles/3x/jquery/plugins/jquery-validation/jquery.validate.js"/>
 
         <!-- Copy Font Awesome -->
         <copy todir="${assembly-directory}/web_resources/cm/css/fontawesome">
-            <fileset dir="${assembly-directory}/jetty/base/webapps/Rhythmyx/cm/jslib/profiles/1x/libraries/fontawesome" includes="**/*" />
+            <fileset dir="${assembly-directory}/jetty/base/webapps/Rhythmyx/cm/jslib/profiles/3x/libraries/fontawesome/css" includes="**/*" />
         </copy>
 
+        <copy todir="${assembly-directory}/web_resources/cm/css/fontawesome">
+            <fileset dir="${assembly-directory}/jetty/base/webapps/Rhythmyx/cm/jslib/profiles/3x/libraries/fontawesome" includes="**/*" />
+        </copy>
         <!-- Global Variables -->
 
         <!-- Install the workflow properties file -->
@@ -270,7 +328,7 @@
 
         <!-- Upgrade Files -->
         <PSCopy todir="${assembly-directory}/upgrade">
-            <fileset dir="${rxbase}/release/src/com/percussion/rxupgrade" />
+            <fileset dir="${rxbase}/src/main/resources/com/percussion/rxupgrade" />
         </PSCopy>
         <!-- Upgrade DTD Files -->
         <mkdir dir="${assembly-directory}/upgrade" />
@@ -305,24 +363,6 @@
         <mkdir dir="${install.config}/LDAP" />
         <PSCopy todir="${install.config}/LDAP" file="${configdir}/LDAP/ldapserver.xml" replaceType="never" />
 
-        <!-- Package Installer config -->
-        <!--  <if>
-              <isset property="DEVELOPMENT" />
-              <then>
-                  <PSCopy tofile="${install.config}/Installer/InstallPackages.xml" file="${configdir}/PackageInstaller/InstallPackages.dev.xml" />
-              </then>
-              <elseif>
-                  <equals arg1="${install.type}" arg2="new" />
-                  <then>
-                  -->
-       <!-- <PSCopy tofile="${install.config}/Installer/InstallPackages.xml" file="${configdir}/PackageInstaller/InstallPackages.new.xml" />
-    -->    <!-- </then>
-     </elseif>
-     <else>
-         <PSCopy tofile="${install.config}/Installer/InstallPackages.xml" file="${configdir}/PackageInstaller/InstallPackages.upgrade.xml" />
-     </else>
- </if>
--->
         <if>
             <and>
                 <isset property="delivery.target" />
@@ -465,7 +505,7 @@
         </copy>
 
         <copy todir="${assembly-directory}/sys_resources/ant/lib" overwrite="true">
-            <fileset file="${rxbase}/../system/Tools/Ant/lib/**">
+            <fileset file="${rxbase}/../modules/perc-ant/lib/**">
             </fileset>
         </copy>
 

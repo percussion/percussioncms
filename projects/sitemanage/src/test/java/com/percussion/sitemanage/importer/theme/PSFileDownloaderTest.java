@@ -17,14 +17,11 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.sitemanage.importer.theme;
-
-import static org.apache.commons.io.FileUtils.forceDelete;
-import static org.apache.commons.io.FileUtils.forceMkdir;
 
 import com.percussion.server.PSServer;
 import com.percussion.sitemanage.data.PSSiteImportCtx;
@@ -33,6 +30,12 @@ import com.percussion.sitemanage.importer.IPSSiteImportLogger.PSLogObjectType;
 import com.percussion.sitemanage.importer.PSSiteImportLogger;
 import com.percussion.utils.testing.IntegrationTest;
 import com.percussion.utils.types.PSPair;
+import org.apache.cactus.ServletTestCase;
+import org.apache.commons.io.FileUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.junit.Ignore;
+import org.junit.experimental.categories.Category;
 
 import java.io.File;
 import java.io.IOException;
@@ -42,10 +45,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.cactus.ServletTestCase;
-import org.apache.commons.io.FileUtils;
-import org.junit.Ignore;
-import org.junit.experimental.categories.Category;
+import static org.apache.commons.io.FileUtils.forceDelete;
+import static org.apache.commons.io.FileUtils.forceMkdir;
 
 /**
  * @author Santiago M. Murchio
@@ -55,6 +56,9 @@ import org.junit.experimental.categories.Category;
 @Ignore("TODO: Test is incorrectly getting picked up as a unit test.  Ignoring until that is fixed.")
 public class PSFileDownloaderTest extends ServletTestCase
 {
+
+    private static final Logger log = LogManager.getLogger(PSFileDownloaderTest.class);
+
     PSSiteImportCtx context;
     IPSSiteImportLogger logger = new PSSiteImportLogger(PSLogObjectType.SITE);
     IPSFileDownloader fileDownloader = new PSFileDownloader();
@@ -72,7 +76,8 @@ public class PSFileDownloaderTest extends ServletTestCase
         catch (Exception e1)
         {
             // FIXME Auto-generated catch block
-            e1.printStackTrace();
+            log.error(e1.getMessage());
+            log.debug(e1.getMessage(), e1);
         }
         
         if(!tempDir.exists())

@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -45,13 +45,13 @@ function processTemplate(dataObject, templateName, destination, callback) {
 
 function createDialogObject() {
     dialogObject = {};
-    dialogObject.leftButton = {}
+    dialogObject.leftButton = {};
     dialogObject.rightButton = {};
     return dialogObject;
 }
 
 function bindFooterAlertEvents() {
-    $('#percDismissFooterAlert').click(function() {
+    $('#percDismissFooterAlert').on("click",function() {
         hideSection('#percFooterAlertTarget', 'fadeOutDown');
     });
 }
@@ -123,7 +123,7 @@ function getArrayProperty(array, keyNeedle, keyName) {
 
     $(array).each(function() {
         if(this[keyNeedle]) {
-            if(this[keyNeedle] == keyName) {
+            if(this[keyNeedle] === keyName) {
                 targetObject = this;
             }
         }
@@ -141,7 +141,7 @@ function requestResultsParser(source, status, result) {
     response = {};
     response.source = source;
     response.status = status;
-    if($.isArray(result)) {
+    if(Array.isArray(result)) {
         resultJSON = JSON.parse(result[0]);
         response.result = resultJSON.SitePublishResponse;
         if(response.result.warningMessage) {
@@ -188,7 +188,7 @@ var updateQueryStringParam = function (key, value) {
         updateRegex = new RegExp('([\?&])' + key + '[^&]*');
         removeRegex = new RegExp('([\?&])' + key + '=[^&;]+[&;]?');
 
-        if( typeof value == 'undefined' || value == null || value == '' ) { // Remove param if value is empty
+        if( typeof value === 'undefined' || value === null || value === '' ) { // Remove param if value is empty
 
             params = urlQueryString.replace(removeRegex, "$1");
             params = params.replace( /[&;]$/, "" );
@@ -237,7 +237,7 @@ $.fn.extend({
 // Handlebars Helpers Section
 
 Handlebars.registerHelper('enableIncremental', function(canIncrementalPublish, isFullPublishRequired) {
-    if (isFullPublishRequired == true || canIncrementalPublish == false) {
+    if (isFullPublishRequired === true || canIncrementalPublish === false) {
         return false;
     } else {
         return true;
@@ -245,7 +245,7 @@ Handlebars.registerHelper('enableIncremental', function(canIncrementalPublish, i
 });
 
 Handlebars.registerHelper('validatePropertyValue', function(propertyName, propertyValue) {
-    if (propertyName == propertyValue) {
+    if (propertyName === propertyValue) {
         return true;
     } else {
         return false;
@@ -255,11 +255,11 @@ Handlebars.registerHelper('validatePropertyValue', function(propertyName, proper
 Handlebars.registerHelper('filterByValue', function(array, keyName, keyValue) {
     var i, result = '';
     for (i = 0; i < array.length; i++) {
-        if (array[i][keyName] == keyValue) {
+        if (array[i][keyName] === keyValue) {
             // String true/false needs to be converted to Boolean
-            if (array[i].value == 'false') {
+            if (array[i].value === 'false') {
                 result = false;
-            } else if (array[i].value == 'true') {
+            } else if (array[i].value === 'true') {
                 result = true;
             } else {
                 result = array[i].value;
@@ -274,7 +274,7 @@ Handlebars.registerHelper('checkCurrentPrivateKey', function(keyName) {
     if(selectedServerData.serverInfo) {
         if(getArrayProperty(selectedServerData.serverInfo.properties, 'key', 'privateKey')) {
             storedKey = getArrayProperty(selectedServerData.serverInfo.properties, 'key', 'privateKey').value;
-            if(keyName == storedKey) {
+            if(keyName === storedKey) {
                 return true;
             }
         }

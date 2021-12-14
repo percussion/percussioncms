@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -263,7 +263,7 @@ public abstract class PSDependency implements IPSDeployComponent, Comparable
 
       if (m_dependencies != null)
       {
-         List<PSDependency> results = new ArrayList<PSDependency>();
+         List<PSDependency> results = new ArrayList<>();
 
          Iterator<PSDependency> i = m_dependencies.iterator();
          while (i.hasNext())
@@ -294,7 +294,7 @@ public abstract class PSDependency implements IPSDeployComponent, Comparable
       if (objectType == null || objectType.trim().length() == 0)
          throw new IllegalArgumentException(" may not be null or empty");
       
-      List<PSDependency> result = new ArrayList<PSDependency>();
+      List<PSDependency> result = new ArrayList<>();
       if (m_dependencies != null)
       {
          Iterator<PSDependency> deps = m_dependencies.iterator();
@@ -415,7 +415,7 @@ public abstract class PSDependency implements IPSDeployComponent, Comparable
          m_ancestors = null;
       else
       {
-         m_ancestors = new TreeSet<PSDependency>();
+         m_ancestors = new TreeSet<>();
          while (ancestors.hasNext())
             m_ancestors.add(ancestors.next());
       }
@@ -461,7 +461,7 @@ public abstract class PSDependency implements IPSDeployComponent, Comparable
     */
    public String printDependencyTree()
    {
-      StringBuffer buf = new StringBuffer();
+      StringBuilder buf = new StringBuilder();
       
       printDependencyTree(buf, new ArrayList(), "");
       
@@ -479,7 +479,7 @@ public abstract class PSDependency implements IPSDeployComponent, Comparable
     * @param prefix Used to indent for each level of the tree, assumed not 
     * <code>null</code>, may be empty.
     */
-   private void printDependencyTree(StringBuffer buf, List processed, 
+   private void printDependencyTree(StringBuilder buf, List processed,
       String prefix)
    {
       Iterator checkedDeps = processed.iterator();
@@ -1597,7 +1597,7 @@ public abstract class PSDependency implements IPSDeployComponent, Comparable
          copy.m_ancestors = null;
       else
       {
-         copy.m_ancestors = new TreeSet<PSDependency>();
+         copy.m_ancestors = new TreeSet<>();
          Iterator<PSDependency> ancestors = m_ancestors.iterator();
          while (ancestors.hasNext())
             copy.m_ancestors.add((PSDependency)ancestors.next().clone());
@@ -1606,7 +1606,7 @@ public abstract class PSDependency implements IPSDeployComponent, Comparable
          copy.m_dependencies = null;
       else
       {
-         copy.m_dependencies = new TreeSet<PSDependency>();
+         copy.m_dependencies = new TreeSet<>();
          Iterator<PSDependency> dependencies = m_dependencies.iterator();
          while (dependencies.hasNext())
          {

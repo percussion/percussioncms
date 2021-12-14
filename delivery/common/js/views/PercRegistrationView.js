@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -29,7 +29,7 @@
  * View for RegistrationWidget. Contains functionality to handle the registration and redirect behaviors
  * (*) Dependencies
  * /jslib/jquery.cookie.js
- * /jslib/jquery.validate.js
+ * /jslib/profiles/3x/jquery/plugins/jquery-validation/jquery.validate.js
  */
 (function($)
 {
@@ -106,7 +106,7 @@
             
             // If data property does not exists, create it and add the paramUrlRedirect element
             if (self.parent(".percRegistration").attr("data") !== undefined) {
-                options = $.parseJSON(self.parent(".percRegistration").attr("data"));
+                options = JSON.parse(self.parent(".percRegistration").attr("data"));
             }
             else {
                 options = {};
@@ -117,7 +117,7 @@
                 options.verReq = true;
             }
             self.data("options", options);
-            self.submit(handleSubmitForm);
+            self.on("submit", handleSubmitForm);
         });
         
         // Bind the submit button of password reset request form        
@@ -210,7 +210,7 @@
           var self = $(this);
           if (self.validate().form()) {
               // Retrieve widget and form options
-              var widgetOptions = $.parseJSON(self.parent().parent(".percRegistration").attr("data"));
+              var widgetOptions = JSON.parse(self.parent().parent(".percRegistration").attr("data"));
               var options = self.data("options");
               
               var registerObj = {
@@ -227,7 +227,7 @@
                   var urlstring = $.deparam.querystring();
                   var redirectURL = "";
                   if ("undefined" !== typeof (urlstring.registrationRedirect)){
-                      redirectURL = urlstring.registrationRedirect
+                      redirectURL = urlstring.registrationRedirect;
                   }
                   var confirmation_page = self.find("#perc-confirmation-page").val();
                   
@@ -255,12 +255,12 @@
                                       window.location = redirectURL + params;
                                   }
                                   else {
-                                      window.location = redirectURL
+                                      window.location = redirectURL;
                                   }
                               }
                               // Redirect to the confirmation page and pass all the current URL parameters
                               else {
-                                  var params = '';
+                                  let params = '';
                                   if ($.param.querystring()) {
                                       params = '?' + $.param.querystring(); 
                                   }

@@ -17,31 +17,30 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.rest.pages;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Date;
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlRootElement;
-
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 @XmlRootElement(name = "CalendarInfo")
-@ApiModel(value="CalendarInfo",description="Represents Calendar information.")
+@Schema(name="CalendarInfo",description="Represents Calendar information.")
 public class CalendarInfo
 {
-    @ApiModelProperty(value="startDate", required=false,notes="Starting Date.",dataType="Date")
+    @Schema(name="startDate", required=false,description="Starting Date.")
     private Date startDate;
 
-    @ApiModelProperty(value="endDate", required=false,notes="Ending Date.",dataType="Date")
+    @Schema(name="endDate", required=false,description="Ending Date.")
     private Date endDate;
 
-    @ApiModelProperty(value="calendars", required=false,notes="List of calendars.")
+    @Schema(name="calendars", required=false,description="List of calendars.")
     private List<String> calendars;
 
     public Date getStartDate()

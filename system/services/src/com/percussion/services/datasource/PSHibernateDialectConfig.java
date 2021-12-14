@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -28,13 +28,12 @@ import com.percussion.utils.container.IPSHibernateDialectConfig;
 import com.percussion.utils.spring.IPSBeanConfig;
 import com.percussion.utils.spring.PSSpringBeanUtils;
 import com.percussion.utils.xml.PSInvalidXmlException;
-
-import java.util.HashMap;
-import java.util.Map;
-
 import org.apache.commons.lang.StringUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Object representation of the hibernate dialect map configuration.  This 
@@ -93,7 +92,7 @@ public class PSHibernateDialectConfig implements IPSBeanConfig, IPSHibernateDial
     */
    public Map<String, String> getDialects()
    {
-      return new HashMap<String, String>(m_sqlDialects);
+      return new HashMap<>(m_sqlDialects);
    }
 
    /**
@@ -154,7 +153,7 @@ public class PSHibernateDialectConfig implements IPSBeanConfig, IPSHibernateDial
     * Map of jdbc driver name to hibernate sql dialect, never <code>null</code>,
     * may be empty. Modified by calls to {@link #setDialects(Map)}.
     */
-   private Map<String, String> m_sqlDialects = new HashMap<String, String>();
+   private Map<String, String> m_sqlDialects = new HashMap<>();
    
    /** 
     * Dialect property name

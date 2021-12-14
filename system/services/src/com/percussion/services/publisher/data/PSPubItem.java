@@ -17,13 +17,19 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.services.publisher.data;
 
-import java.util.Date;
+import com.percussion.services.publisher.IPSPubItemStatus;
+import com.percussion.services.publisher.IPSSiteItem.Operation;
+import com.percussion.services.publisher.IPSSiteItem.Status;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.NamedQueries;
+import org.hibernate.annotations.NamedQuery;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -32,15 +38,7 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.Table;
-
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.NamedQueries;
-import org.hibernate.annotations.NamedQuery;
-
-import com.percussion.services.publisher.IPSPubItemStatus;
-import com.percussion.services.publisher.IPSSiteItem.Operation;
-import com.percussion.services.publisher.IPSSiteItem.Status;
+import java.util.Date;
 
 /**
  * This class represents a single publishing event. It may contain messages
@@ -90,7 +88,7 @@ import com.percussion.services.publisher.IPSSiteItem.Status;
         @NamedQuery(name = "getPostDate", query =
                 "select min(item.date) from PSPubItem item "
                         + "where item.contentId = :contentId ")
-
+            
 })
 public class PSPubItem implements java.io.Serializable, IPSPubItemStatus
 {

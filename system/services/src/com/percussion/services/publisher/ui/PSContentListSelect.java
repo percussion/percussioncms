@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -26,6 +26,7 @@ package com.percussion.services.publisher.ui;
 import com.percussion.i18n.PSI18nUtils;
 import com.percussion.rx.publisher.jsf.data.PSParameter;
 import com.percussion.services.catalog.PSTypeEnum;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.filter.IPSFilterService;
 import com.percussion.services.filter.IPSItemFilter;
 import com.percussion.services.filter.PSFilterException;
@@ -41,14 +42,10 @@ import com.percussion.util.IPSHtmlParameters;
 import com.percussion.util.PSUrlUtils;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.types.PSPair;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -56,11 +53,13 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 import javax.faces.validator.ValidatorException;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * JSF managed bean to handle the content list views. This model holds state
@@ -189,7 +188,7 @@ public class PSContentListSelect
       {
          IPSPublisherService pub = PSPublisherServiceLocator
                .getPublisherService();
-         List<IPSGuid> ids = new ArrayList<IPSGuid>();
+         List<IPSGuid> ids = new ArrayList<>();
          ids.add(new PSGuid(PSTypeEnum.CONTENT_LIST, mi_id));
          List<IPSContentList> list = pub.loadContentLists(ids);
          pub.deleteContentLists(list);
@@ -206,7 +205,7 @@ public class PSContentListSelect
       {
          IPSPublisherService pub = PSPublisherServiceLocator
                .getPublisherService();
-         List<IPSGuid> ids = new ArrayList<IPSGuid>();
+         List<IPSGuid> ids = new ArrayList<>();
          ids.add(new PSGuid(PSTypeEnum.CONTENT_LIST, mi_id));
          setCurrent(pub.loadContentLists(ids).get(0));
          return "edit";
@@ -282,7 +281,7 @@ public class PSContentListSelect
     */
    public List<Entry> getEntries()
    {
-      List<Entry> rval = new ArrayList<Entry>();
+      List<Entry> rval = new ArrayList<>();
       IPSPublisherService pub = PSPublisherServiceLocator.getPublisherService();
       List<IPSContentList> lists = pub.findAllContentLists(m_namefilter);
       for (IPSContentList list : lists)
@@ -351,7 +350,7 @@ public class PSContentListSelect
    {
       m_current = current;
 
-      m_currentGenParams = new ArrayList<PSParameter>();
+      m_currentGenParams = new ArrayList<>();
       if (m_current != null)
       {
          Map<String, String> args = m_current.getGeneratorParams();
@@ -366,7 +365,7 @@ public class PSContentListSelect
             }
          }
       }
-      m_currentExpParams = new ArrayList<PSParameter>();
+      m_currentExpParams = new ArrayList<>();
       if (m_current != null)
       {
          Map<String, String> args = m_current.getExpanderParams();
@@ -615,7 +614,7 @@ public class PSContentListSelect
       }
 
       // Store the old data
-      Map<String, String> pdata = new HashMap<String, String>();
+      Map<String, String> pdata = new HashMap<>();
       for (PSParameter i : params)
       {
          if (i.getValue() == null)
@@ -652,7 +651,7 @@ public class PSContentListSelect
          // Adjust the list of parameters
          if (m_currentGenParams == null)
          {
-            m_currentGenParams = new ArrayList<PSParameter>();
+            m_currentGenParams = new ArrayList<>();
          }
          m_currentGenParams = adjustParameters(m_generator, m_currentGenParams);
          m_resetGenParams = false;
@@ -688,7 +687,7 @@ public class PSContentListSelect
          // Adjust the list of parameters
          if (m_currentExpParams == null)
          {
-            m_currentExpParams = new ArrayList<PSParameter>();
+            m_currentExpParams = new ArrayList<>();
          }
          m_currentExpParams = adjustParameters(m_expander, m_currentExpParams);
          m_resetExpParams = false;
@@ -852,7 +851,7 @@ public class PSContentListSelect
 
       if (m_current != null)
       {
-         List<IPSContentList> lists = new ArrayList<IPSContentList>();
+         List<IPSContentList> lists = new ArrayList<>();
          lists.add(m_current);
          // Copy expander and generator params back to the original object
          copyParams();
@@ -869,8 +868,7 @@ public class PSContentListSelect
     * @return the name of the outcome
     * @throws PSPublisherException
     */
-   public String copy()
-   {
+   public String copy() throws PSNotFoundException {
       IPSPublisherService pub = PSPublisherServiceLocator.getPublisherService();
 
       if (m_copyItemName != null)
@@ -897,7 +895,7 @@ public class PSContentListSelect
                   IPSHtmlParameters.SYS_CONTENTLIST, m_copyItemNewName);
             clist.setUrl(url);
          }
-         List<IPSContentList> tosave = new ArrayList<IPSContentList>();
+         List<IPSContentList> tosave = new ArrayList<>();
          tosave.add(clist);
          pub.saveContentLists(tosave);
       }
@@ -964,7 +962,7 @@ public class PSContentListSelect
     */
    private Set<String> extractKeys(List<PSParameter> currentParams)
    {
-      Set<String> rval = new HashSet<String>();
+      Set<String> rval = new HashSet<>();
 
       for (PSParameter i : currentParams)
       {

@@ -17,17 +17,22 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.rxfix;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.services.PSBaseServiceLocator;
 import com.percussion.util.PSStringTemplate;
 import com.percussion.utils.jdbc.PSJdbcUtils;
 import com.percussion.utils.tools.PSParseArguments;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.mock.jndi.SimpleNamingContextBuilder;
 
+import javax.naming.spi.NamingManager;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.Writer;
@@ -35,10 +40,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.naming.spi.NamingManager;
-
-import org.springframework.mock.jndi.SimpleNamingContextBuilder;
 
 /**
  * Command for running rxfix from the command line (or from ant using the java
@@ -48,6 +49,9 @@ import org.springframework.mock.jndi.SimpleNamingContextBuilder;
  */
 public class PSRxFixCmd
 {
+
+   private static final Logger log = LogManager.getLogger(PSRxFixCmd.class);
+
    /**
     * Template to create install xml beans file
     */
@@ -397,9 +401,10 @@ public class PSRxFixCmd
       }
       catch (Exception e)
       {
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          logAndSaveError("Problem creating install beans: "
-               + e.getLocalizedMessage());
+               + PSExceptionUtils.getMessageForLog(e) );
       }
 
       if (installbeans != null)

@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -34,14 +34,24 @@ import com.percussion.delivery.comments.data.PSPageSummaries;
 import com.percussion.delivery.comments.data.PSPageSummary;
 import com.percussion.delivery.comments.service.rdbms.PSComment;
 import com.percussion.delivery.listeners.IPSServiceDataChangeListener;
+import com.percussion.error.PSExceptionUtils;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author erikserating
@@ -52,11 +62,11 @@ public class PSCommentsService implements IPSCommentsService
     /**
      * Logger for this class
      */
-    public static Log log = LogFactory.getLog(PSCommentsService.class);
+    public static final Logger log = LogManager.getLogger(PSCommentsService.class);
     
     private IPSCommentsDao dao;
 
-    private List<IPSServiceDataChangeListener> listeners = new ArrayList<IPSServiceDataChangeListener>();
+    private List<IPSServiceDataChangeListener> listeners = new ArrayList<>();
     private final String[] PERC_COMMENTS_SERVICES = {"perc-comments-services"};
     
     
@@ -95,7 +105,7 @@ public class PSCommentsService implements IPSCommentsService
     public IPSComment addComment(IPSComment comment)
     {
         String siteName = comment.getSite();
-        HashSet<String> siteSet = new HashSet<String>(1);
+        HashSet<String> siteSet = new HashSet<>(1);
         siteSet.add(siteName);
         this.fireDataChangeRequestedEvent(siteSet);
         
@@ -141,7 +151,9 @@ public class PSCommentsService implements IPSCommentsService
         }
         catch (Exception ex)
         {
-            log.error("Error in adding a new comment: " + ex.getMessage());
+            log.error("Error in adding a new comment: {}" ,
+                    PSExceptionUtils.getMessageForLog(ex));
+            log.debug(ex);
             throw new RuntimeException(ex);
         }
         finally
@@ -176,7 +188,7 @@ public class PSCommentsService implements IPSCommentsService
         if (commentIds.isEmpty())
             return;
 
-        log.info("Approving comments with the following IDs: " + commentIds.toString());
+        log.info("Approving comments with the following IDs: {}" , commentIds);
         moderateComments(commentIds, APPROVAL_STATE.APPROVED);
     }
 
@@ -194,7 +206,7 @@ public class PSCommentsService implements IPSCommentsService
         if (commentIds.isEmpty())
             return;
 
-        log.info("Rejecting comments with the following IDs: " + commentIds.toString());
+        log.info("Rejecting comments with the following IDs: {}" , commentIds);
         moderateComments(commentIds, APPROVAL_STATE.REJECTED);
     }
 
@@ -207,7 +219,7 @@ public class PSCommentsService implements IPSCommentsService
      */
     private void moderateComments(Collection<String> commentIds, APPROVAL_STATE newApprovalState)
     {
-        Set<String> siteNames = new HashSet<String>();
+        Set<String> siteNames = new HashSet<>();
         try
         {
         	siteNames = dao.findSitesForCommentIds(commentIds);
@@ -216,7 +228,8 @@ public class PSCommentsService implements IPSCommentsService
         }
         catch (Exception ex)
         {
-            log.error("Error in moderating comments: " + ex.getMessage());
+            log.error("Error in moderating comments: {}",PSExceptionUtils.getMessageForLog(ex));
+            log.debug(ex);
             throw new RuntimeException(ex);
         }
         finally
@@ -244,9 +257,9 @@ public class PSCommentsService implements IPSCommentsService
         
         
 
-        log.info("Deleting comments with the following IDs: " + commentIds.toString());
+        log.info("Deleting comments with the following IDs: {}" , commentIds);
 
-        Set<String> siteNames = new HashSet<String>();
+        Set<String> siteNames = new HashSet<>();
         try
         {
         	siteNames = dao.findSitesForCommentIds(commentIds);
@@ -255,7 +268,8 @@ public class PSCommentsService implements IPSCommentsService
         }
         catch (Exception ex)
         {
-            log.error("Error in deleting comments: " + ex.getMessage());
+            log.error("Error in deleting comments: {}" , PSExceptionUtils.getMessageForLog(ex));
+            log.debug(ex);
             throw new RuntimeException(ex);
         }
         finally
@@ -275,7 +289,7 @@ public class PSCommentsService implements IPSCommentsService
     {
         log.info("Getting all comments according to the given criteria object");
 
-        List<IPSComment> comments = new ArrayList<IPSComment>();
+        List<IPSComment> comments = new ArrayList<>();
 
        
         try
@@ -322,7 +336,8 @@ public class PSCommentsService implements IPSCommentsService
         }
         catch (Exception ex)
         {
-            log.error("Error in getting comments by criteria: " + ex.getMessage());
+            log.error("Error in getting comments by criteria: {}" ,
+                    PSExceptionUtils.getMessageForLog(ex));
             throw new RuntimeException(ex);
         }        
 
@@ -361,7 +376,7 @@ public class PSCommentsService implements IPSCommentsService
 
         log.info("Getting all pages with comments");
 
-        List<PSPageSummary> pageSummaries = new ArrayList<PSPageSummary>();
+        List<PSPageSummary> pageSummaries = new ArrayList<>();
 
         
         try
@@ -383,7 +398,9 @@ public class PSCommentsService implements IPSCommentsService
         }
         catch (Exception ex)
         {
-            log.error("Error in getting pages with comments: " + ex.getMessage());
+            log.error("Error in getting pages with comments: {}" , 
+                    PSExceptionUtils.getMessageForLog(ex));
+            log.debug(ex);
             throw new RuntimeException(ex);
         }        
 
@@ -408,7 +425,7 @@ public class PSCommentsService implements IPSCommentsService
         }
         catch (Exception ex)
         {
-            log.error("Error getting default moderation state: " + ex.getMessage());
+            log.error("Error getting default moderation state: {}" , PSExceptionUtils.getMessageForLog(ex));
             throw new RuntimeException(ex);
         }
         
@@ -431,7 +448,8 @@ public class PSCommentsService implements IPSCommentsService
         }
         catch (Exception ex)
         {
-            log.error("Error setting default moderation state: " + ex.getMessage());
+            log.error("Error setting default moderation state: {}" , PSExceptionUtils.getMessageForLog(ex));
+            log.debug(ex);
             throw new RuntimeException(ex);
         }       
 
@@ -446,14 +464,14 @@ public class PSCommentsService implements IPSCommentsService
      */
     private List<PSPageSummary> createPageSummaries(List<PSPageInfo> pagePathSummaryQuery)
     {
-        List<PSPageSummary> pageSummaries = new ArrayList<PSPageSummary>();
+        List<PSPageSummary> pageSummaries = new ArrayList<>();
 
         // Create a Map with the pagepath as key, and a Long array with the
         // approved
         // comments count in the first position, and unapproved ones in the
         // second
         // position.
-        Map<String, CommentCount> pagepathAndCommentsCountMap = new HashMap<String, CommentCount>();
+        Map<String, CommentCount> pagepathAndCommentsCountMap = new HashMap<>();
         CommentCount pagepathWithCommentCount;
 
         for (PSPageInfo tmp : pagePathSummaryQuery)
@@ -605,13 +623,17 @@ public class PSCommentsService implements IPSCommentsService
                 try {
                     dao.save(comment);
                 } catch (Exception e) {
-                    log.error("Error updating comment with id: "
-                            + comment.getId()
-                            + " An administrator should attempty to update the comment manually.");
+                    log.error("Error updating comment with id: {} An administrator should attempt to update the comment manually. Error: {}",
+                            comment.getId(),
+                            PSExceptionUtils.getMessageForLog(e));
+                    log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                 }
             }
         } catch (Exception e) {
-            log.error("Error finding comments for site: " + prevSiteName, e);
+            log.error("Error finding comments for site: {} Error: {}",
+                    prevSiteName,
+                    PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             return false;
         }
         return true;

@@ -17,28 +17,25 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.assetmanagement.service.impl;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Graphics2D;
-import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.OutputStream;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import java.awt.*;
+import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.OutputStream;
 
 /**
  * Servlet responsible for converting supplied text to an image and serve it as
@@ -64,7 +61,7 @@ public class PSTextToImageServlet extends HttpServlet
 
         // Find the height and width of the image
         Font font = new Font("Verdana", Font.PLAIN, 11);
-        @SuppressWarnings("serial")
+
         FontMetrics metrics = new FontMetrics(font)
         {
         };
@@ -81,16 +78,16 @@ public class PSTextToImageServlet extends HttpServlet
 
         // Write the image to response
         response.setContentType("image/png");
-        OutputStream os = response.getOutputStream();
-        ImageIO.setUseCache(false);
-        ImageIO.write(buffer, "png", os);
-        os.close();
+        try(OutputStream os = response.getOutputStream()) {
+            ImageIO.setUseCache(false);
+            ImageIO.write(buffer, "png", os);
+        }
     }
 
     /**
      * The logger
      */
-    private static Logger ms_logger = Logger.getLogger(PSTextToImageServlet.class);
+    private static final Logger ms_logger = LogManager.getLogger(PSTextToImageServlet.class);
 
     private static final String DEFAULT_IMAGE_TEXT = "";
 

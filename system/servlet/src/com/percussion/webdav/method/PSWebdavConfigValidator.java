@@ -17,13 +17,39 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.webdav.method;
 
+import com.percussion.cms.objectstore.PSComponentSummary;
+import com.percussion.cms.objectstore.PSItemDefinition;
+import com.percussion.cms.objectstore.PSRelationshipProcessorProxy;
+import com.percussion.cms.objectstore.client.PSRemoteAgent;
+import com.percussion.cms.objectstore.client.PSRemoteException;
+import com.percussion.cms.objectstore.ws.PSClientItem;
+import com.percussion.design.objectstore.PSEntry;
+import com.percussion.design.objectstore.PSField;
+import com.percussion.design.objectstore.PSFieldValidationRules;
+import com.percussion.design.objectstore.PSRelationshipConfig;
+import com.percussion.error.PSExceptionUtils;
+import com.percussion.util.IPSRemoteRequester;
+import com.percussion.util.PSIteratorUtils;
+import com.percussion.webdav.IPSWebdavConstants;
+import com.percussion.webdav.error.PSWebdavException;
+import com.percussion.webdav.objectstore.IPSRxWebDavDTD;
+import com.percussion.webdav.objectstore.PSPropertyFieldNameMapping;
+import com.percussion.webdav.objectstore.PSWebdavConfigDef;
+import com.percussion.webdav.objectstore.PSWebdavContentType;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
@@ -36,47 +62,26 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.util.Set;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import org.apache.commons.lang.StringUtils;
-
-import com.percussion.cms.objectstore.PSComponentSummary;
-import com.percussion.cms.objectstore.PSItemDefinition;
-import com.percussion.cms.objectstore.PSRelationshipProcessorProxy;
-import com.percussion.cms.objectstore.client.PSRemoteAgent;
-import com.percussion.cms.objectstore.client.PSRemoteException;
-import com.percussion.cms.objectstore.ws.PSClientItem;
-import com.percussion.design.objectstore.PSEntry;
-import com.percussion.design.objectstore.PSField;
-import com.percussion.design.objectstore.PSFieldValidationRules;
-import com.percussion.design.objectstore.PSRelationshipConfig;
-import com.percussion.util.IPSRemoteRequester;
-import com.percussion.util.PSIteratorUtils;
-import com.percussion.webdav.IPSWebdavConstants;
-import com.percussion.webdav.error.PSWebdavException;
-import com.percussion.webdav.objectstore.IPSRxWebDavDTD;
-import com.percussion.webdav.objectstore.PSPropertyFieldNameMapping;
-import com.percussion.webdav.objectstore.PSWebdavConfigDef;
-import com.percussion.webdav.objectstore.PSWebdavContentType;
-
 /**
  * This class validates a WebDav configuration file, returning a report of all
  * errors. It is used in the context of the webdav servlet.
  */
 public class PSWebdavConfigValidator
 {
+
+   private static final Logger log = LogManager.getLogger(PSWebdavConfigValidator.class);
+
    /**
     * List of String exception msgs generated during the 
     * validation routines
     */
-   List<String> m_exceptionsList = new ArrayList<String>();
+   List<String> m_exceptionsList = new ArrayList<>();
 
    /**
     * List of String warning msgs generated during the 
     * validation routines
     */
-   List<String> m_warningsList = new ArrayList<String>();
+   List<String> m_warningsList = new ArrayList<>();
 
    /**
     * Constructs a new WebDav configuration validator
@@ -228,13 +233,15 @@ public class PSWebdavConfigValidator
       }
       catch (PSWebdavException e)
       {
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          m_out.write("<h4>" + getResourceString("msg.errors.found") + "</h4>");
          writeError(e.getMessage(), ERROR);
       }
       catch (Exception e)
       {
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          throw new ServletException(e.getMessage());
       }
 
@@ -482,7 +489,7 @@ public class PSWebdavConfigValidator
       // get the excluded field names, which include the value of the fields
       // are set by WebDAV or the Backend server.
       String fieldName;
-      List<String> excludeFieldNames = new ArrayList<String>();
+      List<String> excludeFieldNames = new ArrayList<>();
       fieldName = ctType.getFieldName(IPSWebdavConstants.P_DISPLAYNAME);
       if (fieldName != null)
          excludeFieldNames.add(fieldName);

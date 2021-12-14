@@ -17,13 +17,11 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.sitemanage.importer.theme;
-
-import static com.percussion.share.spring.PSSpringWebApplicationContextUtils.getWebApplicationContext;
 
 import com.percussion.assetmanagement.data.PSAbstractAssetRequest;
 import com.percussion.assetmanagement.data.PSAbstractAssetRequest.AssetType;
@@ -35,6 +33,11 @@ import com.percussion.content.PSContentFactory;
 import com.percussion.itemmanagement.service.IPSItemWorkflowService;
 import com.percussion.pathmanagement.service.impl.PSPathUtils;
 import com.percussion.share.service.exception.PSExtractHTMLException;
+import com.percussion.share.service.exception.PSValidationException;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
@@ -42,9 +45,7 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import static com.percussion.share.spring.PSSpringWebApplicationContextUtils.getWebApplicationContext;
 
 /**
  * @author Ignacio Erro
@@ -56,13 +57,13 @@ public class PSAssetCreator
 
     private IPSItemWorkflowService itemWorkflowService;
 
-    private Logger logger = Logger.getLogger("PSAssetCreator");
+    private static final Logger logger = LogManager.getLogger("PSAssetCreator");
         
     /**
      * Mapping of asset type string name to the AssetType.
      */
     private static Map<String, AssetType> ms_assetTypeMap = 
-       new HashMap<String, AssetType>();
+       new HashMap<>();
 
     public IPSAssetService getAssetService()
     {
@@ -104,8 +105,7 @@ public class PSAssetCreator
      */
     public PSAsset createAsset(String folderpath, AssetType type, InputStream fileInput, String fileName,
             String selector, boolean includeOuterHtml, boolean approveOnUpload) throws IOException,
-            PSExtractHTMLException
-    {
+            PSExtractHTMLException, IPSItemWorkflowService.PSItemWorkflowServiceException, IPSAssetService.PSAssetServiceException, PSValidationException {
         try
         {
             PSAbstractAssetRequest ar;
@@ -162,8 +162,7 @@ public class PSAssetCreator
      * @throws IOException
      */
     public PSAsset createAssetIfNeeded(InputStream fileInput, String destinationPath) throws PSExtractHTMLException,
-            IOException
-    {
+            IOException, IPSAssetService.PSAssetServiceException, PSValidationException, IPSItemWorkflowService.PSItemWorkflowServiceException {
         File destination = new File(destinationPath);
         if (!isAsset(destinationPath))
             return null;
@@ -218,7 +217,7 @@ public class PSAssetCreator
      * Helper method to guess the string asset type based on the MIME type of
      * the file. Default asset type is <b>file</b>".
      * 
-     * @param filename the filename including extension. Assumed not
+     * @param fileName the filename including extension. Assumed not
      *            <code>null</code> or empty.
      * @return the appropriate string asset type. By default is <b>file</b>, never
      *         <code>null</code>.

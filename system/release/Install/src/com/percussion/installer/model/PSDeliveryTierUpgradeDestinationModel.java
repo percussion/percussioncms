@@ -232,7 +232,7 @@ public class PSDeliveryTierUpgradeDestinationModel extends RxIAModel
    private void createDirs(String dirName)
    throws IOException
    {
-      Stack<String> parents = new Stack<String>();
+      Stack<String> parents = new Stack<>();
       String parent = dirName;
       while (parent != null)
       {
@@ -257,7 +257,7 @@ public class PSDeliveryTierUpgradeDestinationModel extends RxIAModel
          return;
       }
       
-      Vector<String> created = new Vector<String>();
+      Vector<String> created = new Vector<>();
       while (!parents.isEmpty())
       {
          parent = parents.pop();

@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -26,12 +26,10 @@ package com.percussion.delivery.likes.service.rdbms;
 
 import com.percussion.delivery.likes.data.IPSLikes;
 import com.percussion.delivery.likes.services.IPSLikesDao;
-import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
-import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
@@ -40,7 +38,6 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaDelete;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.CriteriaUpdate;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -61,7 +58,7 @@ public class PSLikesDao implements IPSLikesDao {
 
     public void delete(Collection<String> ids) throws Exception
 	{
-		Collection<Long> longIds = new ArrayList<Long>(ids.size());
+		Collection<Long> longIds = new ArrayList<>(ids.size());
     	for(String s : ids)
     		longIds.add(Long.valueOf(s));
     	Session session = getSession();

@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2021 Percussion Software, Inc.
+ *     Copyright (C) 1999-2020 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -17,30 +17,36 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.utils.container;
 
+import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
+import com.percussion.security.PSEncryptionException;
+import com.percussion.security.PSEncryptor;
+import com.percussion.utils.io.PathUtils;
 import com.percussion.utils.jdbc.PSJdbcUtils;
-import com.percussion.utils.security.PSEncryptionException;
-import com.percussion.utils.security.PSEncryptor;
-import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
 import com.percussion.utils.tools.SortedProperties;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.util.Properties;
 
 public class PSStaticContainerUtils
 {
-   private static final Logger ms_log = Logger.getLogger(PSStaticContainerUtils.class);
+   private static final Logger ms_log = LogManager.getLogger(PSStaticContainerUtils.class);
 
    public static Properties getProperties(File f)
    {
@@ -68,9 +74,14 @@ public class PSStaticContainerUtils
       if (StringUtils.equalsIgnoreCase(encrypted, "Y"))
       {
          try{
-            str = PSEncryptor.getInstance().decrypt(str);
+            str = PSEncryptor.decryptString(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),str);
          } catch (PSEncryptionException e) {
-            str = PSLegacyEncrypter.getInstance().decrypt(str, PSLegacyEncrypter.getPartOneKey());
+            str = PSLegacyEncrypter.getInstance(
+                    PathUtils.getRxPath().toAbsolutePath().toString().concat(
+                    PSEncryptor.SECURE_DIR)
+            ).decrypt(str, PSLegacyEncrypter.getInstance(
+                    PathUtils.getRxPath().toAbsolutePath().toString().concat(
+                    PSEncryptor.SECURE_DIR)).getPartOneKey(),null);
          }
 
       }

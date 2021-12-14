@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -33,9 +33,9 @@ import com.percussion.rx.publisher.jsf.beans.PSRuntimeNavigation;
 import com.percussion.rx.publisher.jsf.data.PSStatusLogEntry;
 import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.publisher.IPSEdition;
+import com.percussion.services.publisher.IPSPubStatus.EndingState;
 import com.percussion.services.publisher.IPSPublisherService;
 import com.percussion.services.publisher.PSPublisherServiceLocator;
-import com.percussion.services.publisher.IPSPubStatus.EndingState;
 import com.percussion.services.publisher.data.PSEdition;
 import com.percussion.utils.guid.IPSGuid;
 
@@ -179,7 +179,7 @@ public class PSRuntimeStatusNode extends PSNodeBase
          siteId = ((PSRuntimeSiteNode)m_runtimeNav.getCurrentNode()).getSiteID();
       }
       
-      List<Map<String, Object>> reval = new ArrayList<Map<String, Object>>();
+      List<Map<String, Object>> reval = new ArrayList<>();
       for (Long jobId : rxpub.getActiveJobIds())
       {
          IPSPublisherJobStatus stat = rxpub.getPublishingJobStatus(jobId);

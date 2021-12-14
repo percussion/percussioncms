@@ -17,12 +17,13 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.rx.config.impl;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.PSExtensionException;
 import com.percussion.extension.PSExtensionManager;
 import com.percussion.extension.PSExtensionRef;
@@ -31,11 +32,12 @@ import com.percussion.rx.config.PSConfigException;
 import com.percussion.rx.design.IPSAssociationSet;
 import com.percussion.rx.publisher.jsf.nodes.PSLocationSchemeEditor;
 import com.percussion.server.PSServer;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.sitemgr.IPSLocationScheme;
 import com.percussion.utils.types.PSPair;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -156,8 +158,7 @@ public class PSLocationSchemeSetter extends PSSimplePropertySetter
     * //see base class method for details
     */
    @Override
-   protected Object getPropertyValue(Object obj, String propName)
-   {
+   protected Object getPropertyValue(Object obj, String propName) throws PSNotFoundException {
       if (!(obj instanceof IPSLocationScheme))
          throw new PSConfigException("obj must be an instance of IPSLocationScheme.");
 
@@ -168,11 +169,11 @@ public class PSLocationSchemeSetter extends PSSimplePropertySetter
       }
       else if (GENERATOR_PARAMS.equals(propName))
       {
-         List<PSPair<String, String>> params = new ArrayList<PSPair<String, String>>();
+         List<PSPair<String, String>> params = new ArrayList<>();
          for (String n : scheme.getParameterNames())
          {
             String value = scheme.getParameterValue(n);
-            params.add(new PSPair<String, String>(n, value));
+            params.add(new PSPair<>(n, value));
          }
          return params;
       }
@@ -209,7 +210,7 @@ public class PSLocationSchemeSetter extends PSSimplePropertySetter
             .getGenerator(), propValue);
 
       // cleanup existing parameters
-      List<String> pnames = new ArrayList<String>();
+      List<String> pnames = new ArrayList<>();
       pnames.addAll(scheme.getParameterNames());
       for (String n : pnames)
          scheme.removeParameter(n);
@@ -242,16 +243,14 @@ public class PSLocationSchemeSetter extends PSSimplePropertySetter
                + "\" property must be defined by pvalues, as a list of pairs.");
 
       List<PSPair<String, String>> props = (List<PSPair<String, String>>) propValue;
-      List<PSPair<String, String>> params = new ArrayList<PSPair<String, String>>();
+      List<PSPair<String, String>> params = new ArrayList<>();
       List<String> names = PSConfigUtils.getExtensionParameterNames(extFQN);
       for (PSPair<String, String> p : props)
       {
          if (!names.contains(p.getFirst()))
          {
             PSExtensionRef ref = new PSExtensionRef(extFQN);
-            ms_log.warn("Skip finder argument \"" + p.getFirst()
-                  + "\" since it is not a parameter defined by generator \""
-                  + ref.getExtensionName() + "\".");
+            log.warn("Skip finder argument \" {} \" since it is not a parameter defined by generator \" {}\".", p.getFirst(), ref.getExtensionName());
             continue;
          }
          params.add(p);
@@ -287,7 +286,8 @@ public class PSLocationSchemeSetter extends PSSimplePropertySetter
       }
       catch (PSExtensionException e)
       {
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
       return null;
    }
@@ -295,7 +295,7 @@ public class PSLocationSchemeSetter extends PSSimplePropertySetter
    /**
     * The logger for this class
     */
-   static Log ms_log = LogFactory.getLog("PSLocationSchemeSetter");
+   private static final Logger log = LogManager.getLogger(PSLocationSchemeSetter.class);
 
    /**
     * The Jexl expression property name.

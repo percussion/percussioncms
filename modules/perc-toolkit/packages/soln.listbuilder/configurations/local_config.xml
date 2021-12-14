@@ -1,0 +1,43 @@
+<SolutionConfigurations publisherPrefix="soln" publisherName="Percussion Software, Inc."  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="localConfig.xsd">
+	<SolutionConfig name="listbuilder">
+		<property name="list.AllowedTemplates">
+			<pvalues>
+				<pvalue>soln_list_BulletedSnip</pvalue>
+				<pvalue>soln_list_NumberedSnip</pvalue>
+				<pvalue>soln_list_NoDecorationSnip</pvalue>
+			</pvalues>
+		</property>
+		<property name="list.DefaultWorkflowName" value="soln_list_workflow" />
+		<property name="list.AllowedWorkflows">
+			<pvalues>
+				<pvalue>soln_list_workflow</pvalue>
+			</pvalues>
+		</property>
+		<property name="auto.ContentTypes">
+			 <pvalues>
+				<pair value1="Landing Page" value2="soln_LandingPage_ct" />
+				<pair value1="List" value2="soln_list_List_ct" />
+			 </pvalues>
+		</property>
+		<property name="auto.FolderPaths">
+			 <pvalues>
+				<pair value1="//Folders" value2="//Folders" />
+				<pair value1="//Sites" value2="//Sites" />
+			 </pvalues>
+		</property>
+		<property name="auto.Snippets">
+			 <pvalues>
+				<pair value1="Title Only Links" value2="soln_list_ItemTitleLinkDispatch" />
+				<pair value1="Callout Only" value2="soln_list_ItemCalloutDispatch" />
+				<pair value1="Title and Callout" value2="soln_list_ItemTitleCalloutDispatch" />
+			 </pvalues>
+		</property>
+		<property name="manual.Allowed">
+			 <pvalues>
+				<!--
+				<pair value1="soln_LandingPage_ct" value2="soln_list_ItemCalloutDefaultSnip" />
+				-->
+			 </pvalues>
+		</property>
+	</SolutionConfig>
+</SolutionConfigurations>

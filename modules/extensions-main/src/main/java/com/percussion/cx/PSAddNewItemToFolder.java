@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -17,18 +17,14 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.cx;
 
-import com.percussion.cms.objectstore.PSDbComponent;
-import com.percussion.cms.objectstore.PSFolder;
-import com.percussion.cms.objectstore.PSRelationshipProcessorProxy;
 import com.percussion.design.objectstore.PSLocator;
-import com.percussion.design.objectstore.PSRelationshipConfig;
 import com.percussion.extension.IPSExtensionDef;
 import com.percussion.extension.IPSResultDocumentProcessor;
 import com.percussion.extension.PSExtensionException;
@@ -38,13 +34,12 @@ import com.percussion.server.IPSRequestContext;
 import com.percussion.server.PSConsole;
 import com.percussion.server.webservices.PSServerFolderProcessor;
 import com.percussion.util.IPSHtmlParameters;
+import org.w3c.dom.Document;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-
-import org.w3c.dom.Document;
+import java.util.Map;
 
 /**
  * Exit to add a newly created item to a specified folder. This typically used
@@ -71,7 +66,6 @@ public class PSAddNewItemToFolder implements IPSResultDocumentProcessor
    }
 
 /* Implementation of the method from the interface <code>IPSResultDocumentProcessor</code> */
-   @SuppressWarnings("unchecked")
    public Document processResultDocument(Object[] params,
       IPSRequestContext request, Document resultDoc)
          throws PSParameterMismatchException, PSExtensionProcessingException
@@ -80,7 +74,7 @@ public class PSAddNewItemToFolder implements IPSResultDocumentProcessor
       if(request == null) //never happens
          return resultDoc;
 
-      HashMap htmlParams = request.getParameters();
+      Map<String,Object> htmlParams = request.getParameters();
       if(htmlParams == null)
       {
          handleException(new Exception(
@@ -149,7 +143,7 @@ public class PSAddNewItemToFolder implements IPSResultDocumentProcessor
          PSServerFolderProcessor proxy = PSServerFolderProcessor.getInstance();
 
          PSLocator locatorParent = new PSLocator(folderid, "1");
-         List<PSLocator> locatorList = new ArrayList<PSLocator>();
+         List<PSLocator> locatorList = new ArrayList<>();
          locatorList.add(new PSLocator(contentid, "1"));
          proxy.addChildren(
             locatorList, locatorParent);
@@ -201,15 +195,15 @@ public class PSAddNewItemToFolder implements IPSResultDocumentProcessor
     * The fully qualified name of this extension. Nerver <code>null</code> or
     * <code>empty</code> after initialization.
     */
-   static private String ms_fullExtensionName = "";
+  private String ms_fullExtensionName = "";
 
    /**
     * HTML parameter representing sysid for the item.
     */
-   static private final String PARAM_SYS_FOLDERID = "sys_folderid";
+   private static final String PARAM_SYS_FOLDERID = "sys_folderid";
 
    /**
     * HTML parameter representing sysid for the item.
     */
-   static private final String PARAM_SYS_CONTENTID = "sys_contentid";
+   private static  final String PARAM_SYS_CONTENTID = "sys_contentid";
 }

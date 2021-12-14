@@ -17,19 +17,18 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.services.security;
 
-import com.percussion.utils.security.IPSTypedPrincipal;
-
-import java.io.Serializable;
-
+import com.percussion.security.IPSTypedPrincipal;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
+
+import java.io.Serializable;
 
 /**
  * Simple implementation of the {@link IPSTypedPrincipal} interface.
@@ -107,7 +106,7 @@ public class PSTypedPrincipal implements IPSTypedPrincipal, Serializable
    /*
     * (non-Javadoc)
     * 
-    * @see com.percussion.utils.security.IPSTypedPrincipal#getPrincipalType()
+    * @see com.percussion.security.IPSTypedPrincipal#getPrincipalType()
     */
    public PrincipalTypes getPrincipalType()
    {
@@ -142,7 +141,7 @@ public class PSTypedPrincipal implements IPSTypedPrincipal, Serializable
    /*
     * (non-Javadoc)
     * 
-    * @see com.percussion.utils.security.IPSTypedPrincipal#isType(com.percussion.utils.security.IPSTypedPrincipal.PrincipalTypes)
+    * @see com.percussion.security.IPSTypedPrincipal#isType(com.percussion.security.IPSTypedPrincipal.PrincipalTypes)
     */
    public boolean isType(PrincipalTypes principalType)
    {
@@ -152,7 +151,7 @@ public class PSTypedPrincipal implements IPSTypedPrincipal, Serializable
    /*
     * (non-Javadoc)
     * 
-    * @see com.percussion.utils.security.IPSTypedPrincipal#isCommunity()
+    * @see com.percussion.security.IPSTypedPrincipal#isCommunity()
     */
    public boolean isCommunity()
    {
@@ -162,7 +161,7 @@ public class PSTypedPrincipal implements IPSTypedPrincipal, Serializable
    /*
     * (non-Javadoc)
     * 
-    * @see com.percussion.utils.security.IPSTypedPrincipal#isRole()
+    * @see com.percussion.security.IPSTypedPrincipal#isRole()
     */
    public boolean isRole()
    {
@@ -172,7 +171,7 @@ public class PSTypedPrincipal implements IPSTypedPrincipal, Serializable
    /*
     * (non-Javadoc)
     * 
-    * @see com.percussion.utils.security.IPSTypedPrincipal#isUser()
+    * @see com.percussion.security.IPSTypedPrincipal#isUser()
     */
    public boolean isUser()
    {
@@ -182,7 +181,7 @@ public class PSTypedPrincipal implements IPSTypedPrincipal, Serializable
    /*
     * (non-Javadoc)
     * 
-    * @see com.percussion.utils.security.IPSTypedPrincipal#isGroup()
+    * @see com.percussion.security.IPSTypedPrincipal#isGroup()
     */
    public boolean isGroup()
    {
@@ -192,7 +191,7 @@ public class PSTypedPrincipal implements IPSTypedPrincipal, Serializable
    /*
     * (non-Javadoc)
     * 
-    * @see com.percussion.utils.security.IPSTypedPrincipal#isSubject()
+    * @see com.percussion.security.IPSTypedPrincipal#isSubject()
     */
    public boolean isSubject()
    {
@@ -202,7 +201,7 @@ public class PSTypedPrincipal implements IPSTypedPrincipal, Serializable
    /*
     * (non-Javadoc)
     * 
-    * @see com.percussion.utils.security.IPSTypedPrincipal#isSystemEntry()
+    * @see com.percussion.security.IPSTypedPrincipal#isSystemEntry()
     */
    public boolean isSystemEntry()
    {
@@ -213,7 +212,7 @@ public class PSTypedPrincipal implements IPSTypedPrincipal, Serializable
    /*
     * (non-Javadoc)
     * 
-    * @see com.percussion.utils.security.IPSTypedPrincipal#isSystemCommunity()
+    * @see com.percussion.security.IPSTypedPrincipal#isSystemCommunity()
     */
    public boolean isSystemCommunity()
    {

@@ -17,16 +17,12 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.services.filestorage.impl;
 
-import static org.apache.commons.lang.Validate.notEmpty;
-import static org.apache.commons.lang.Validate.notNull;
-
-import com.percussion.design.objectstore.PSFile;
 import com.percussion.server.PSServer;
 import com.percussion.services.filestorage.IPSFileDigestService;
 import com.percussion.services.filestorage.IPSFileStorageService;
@@ -40,12 +36,31 @@ import com.percussion.services.filestorage.data.PSHashedColumn;
 import com.percussion.services.filestorage.data.PSMeta;
 import com.percussion.services.filestorage.error.PSFileStorageException;
 import com.percussion.util.PSPurgableTempFile;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.time.DateUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.tika.Tika;
+import org.apache.tika.config.TikaConfig;
+import org.apache.tika.exception.TikaException;
+import org.apache.tika.io.TikaInputStream;
+import org.apache.tika.metadata.Metadata;
+import org.apache.tika.mime.MediaType;
+import org.apache.tika.mime.MimeTypeException;
+import org.apache.tika.parser.AutoDetectParser;
+import org.apache.tika.parser.ParseContext;
+import org.apache.tika.parser.Parser;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.transaction.annotation.Transactional;
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
@@ -59,28 +74,8 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.time.DateUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.pdfbox.pdmodel.font.PDFont;
-import org.apache.tika.Tika;
-import org.apache.tika.config.TikaConfig;
-import org.apache.tika.exception.TikaException;
-import org.apache.tika.io.TikaInputStream;
-import org.apache.tika.metadata.Metadata;
-import org.apache.tika.mime.MediaType;
-import org.apache.tika.mime.MimeTypeException;
-import org.apache.tika.parser.AutoDetectParser;
-import org.apache.tika.parser.ParseContext;
-import org.apache.tika.parser.Parser;
-import org.hibernate.Hibernate;
-import org.springframework.beans.factory.InitializingBean;
-import org.springframework.transaction.annotation.Transactional;
-import org.xml.sax.SAXException;
-import org.xml.sax.helpers.DefaultHandler;
+import static org.apache.commons.lang.Validate.notEmpty;
+import static org.apache.commons.lang.Validate.notNull;
 
 /**
  * @author stephenbolton
@@ -116,7 +111,7 @@ public class PSDbStorageService implements IPSFileStorageService, InitializingBe
    /**
     * Logger for this class
     */
-   private static final Log log = LogFactory.getLog(PSDbStorageService.class);
+   private static final Logger log = LogManager.getLogger(PSDbStorageService.class);
 
    private static String REPARSE_THREAD_NAME = "MetadataReparseThread";
 
@@ -355,7 +350,6 @@ public class PSDbStorageService implements IPSFileStorageService, InitializingBe
     * encoding as well as the original file name.
     * 
     * @param file
-    * @param meta
     * @return
     */
    private PSMeta populateTempFileMeta(File file)
@@ -583,7 +577,7 @@ public class PSDbStorageService implements IPSFileStorageService, InitializingBe
    /**
     * Extracts the text from the specified input stream and updates the
     * specified tika metadata accordingly. The stream is closed by this method.
-    * If an error occurs, a {@link #PARSE_ERROR} property will be added to the
+    * If an error occurs, a  property will be added to the
     * metadata with a value which contains the error.
     * 
     * @param input stream.
@@ -691,7 +685,7 @@ public class PSDbStorageService implements IPSFileStorageService, InitializingBe
    @Transactional
    public List<String> getMetaKeys()
    {
-      List<String> keys = new ArrayList<String>();
+      List<String> keys = new ArrayList<>();
       for (PSBinaryMetaKey key : this.hashDao.getMetaKeys())
       {
          if (key.isEnabled())
@@ -751,7 +745,7 @@ public class PSDbStorageService implements IPSFileStorageService, InitializingBe
    @Transactional
    public List<String> getDisabledMetaKeys()
    {
-      List<String> keys = new ArrayList<String>();
+      List<String> keys = new ArrayList<>();
       for (PSBinaryMetaKey key : this.hashDao.getMetaKeys())
       {
          if (!key.isEnabled())
@@ -889,18 +883,18 @@ public class PSDbStorageService implements IPSFileStorageService, InitializingBe
             int batchCount = PSDbStorageService.this.reparseBatch(BATCH_SIZE);
             count += batchCount;
             moreItems = batchCount == BATCH_SIZE;
-            log.debug("Reparsed " + batchCount + " Binary Items. Total " + count);
+            log.debug("Re-parsed {} Binary Items. Total {}" ,batchCount, count);
             try
             {
                sleep(10);
             }
             catch (InterruptedException e)
             {
-               throw new RuntimeException(e);
+               Thread.currentThread().interrupt();
             }
          }
 
-         log.debug("Finished reparsing metadata for binaries.  Shutting down thread");
+         log.debug("Finished re-parsing metadata for binaries.  Shutting down thread");
       }
    }
 
@@ -939,7 +933,7 @@ public class PSDbStorageService implements IPSFileStorageService, InitializingBe
          }
          catch (InterruptedException e)
          {
-            // TODO Auto-generated catch block
+            Thread.currentThread().interrupt();
          }
          if (m_isImport)
          {
@@ -1168,7 +1162,6 @@ public class PSDbStorageService implements IPSFileStorageService, InitializingBe
       /**
        * Loads in a file containing an sha1 hash and return the hash value
        * @param testfile
-       * @param sha1FileString
        * @return
        * @throws IOException 
        */
@@ -1258,7 +1251,7 @@ public class PSDbStorageService implements IPSFileStorageService, InitializingBe
       String prop = PSServer.getProperty(AUTO_ENABLE_BINARY_METADATA_KEYS);
       boolean autoEnable = (prop!=null && prop.equalsIgnoreCase("false"))? false: true;  
       
-      Set<PSBinaryMetaEntry> entries = new HashSet<PSBinaryMetaEntry>();
+      Set<PSBinaryMetaEntry> entries = new HashSet<>();
 
       for (Entry<String, String> entry : meta.entrySet())
       {
@@ -1346,12 +1339,12 @@ public class PSDbStorageService implements IPSFileStorageService, InitializingBe
    public Set<PSBinaryMetaEntry> getDbMeta(String hash)
    {
       notEmpty(hash);
-      Set<PSBinaryMetaEntry> dbmeta = new HashSet<PSBinaryMetaEntry>();
+      Set<PSBinaryMetaEntry> dbmeta = new HashSet<>();
       PSBinary binary = hashDao.getBinary(hash);
       if (binary != null)
       {
          dbmeta = binary.getMetaEntries();
-         Set<PSBinaryMetaEntry> filteredDbmeta = new HashSet<PSBinaryMetaEntry>();
+         Set<PSBinaryMetaEntry> filteredDbmeta = new HashSet<>();
          for (PSBinaryMetaEntry meta : dbmeta)
          {
             if (meta.getKey().isEnabled())
@@ -1398,7 +1391,7 @@ public class PSDbStorageService implements IPSFileStorageService, InitializingBe
    {
 
       List<String> hashesToTouch = hashDao.getAllHashes(columns);
-      List<String> hashesToTouchBatch = new ArrayList<String>();
+      List<String> hashesToTouchBatch = new ArrayList<>();
       for (Object result : hashesToTouch)
       {
          String hash = (String) result;

@@ -17,13 +17,15 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.share.extension;
 
+import com.percussion.cms.IPSConstants;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.rxfix.PSFixResult;
 import com.percussion.rxfix.PSRxFix;
 import com.percussion.rxfix.PSRxFix.Entry;
@@ -31,23 +33,18 @@ import com.percussion.server.IPSStartupProcess;
 import com.percussion.server.IPSStartupProcessManager;
 import com.percussion.server.cache.PSCacheManager;
 import com.percussion.server.cache.PSCacheProxy;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 public class PSRxFixStartupProcess implements IPSStartupProcess
 {
-    private static final Log log = LogFactory.getLog(PSRxFixStartupProcess.class);
+    private static final Logger log = LogManager.getLogger(IPSConstants.SERVER_LOG);
 
     @Override
     public void doStartupWork(Properties startupProps) throws Exception
@@ -70,13 +67,13 @@ public class PSRxFixStartupProcess implements IPSStartupProcess
         // Print out results
         for (PSRxFix.Entry e : entries)
         {
-            log.info("Running RxFix Fix: " + e.getFixname());
+            log.info("Running RxFix Fix: {}" ,e.getFixname());
             List<PSFixResult> result = e.getResults();
             if (result != null)
             {
                 for (PSFixResult r : result)
                 {
-                    log.info(r.toString());
+                    log.info(r);
                 }
             }
         }
@@ -89,12 +86,11 @@ public class PSRxFixStartupProcess implements IPSStartupProcess
             }
         }
         catch (Exception e) {
-            log.error("Error flushing folder cache.", e);
+            log.error("Error flushing folder cache. Error: {}",
+                    PSExceptionUtils.getMessageForLog(e));
         }
 
-        // remove fixes
-        // startupProps.setProperty(propName, "");
-        log.info("Finished running RxFix files");
+        log.info("Finished running data updates.");
     }
 
     private PSRxFix getFixer(List<String> fixes) throws Exception

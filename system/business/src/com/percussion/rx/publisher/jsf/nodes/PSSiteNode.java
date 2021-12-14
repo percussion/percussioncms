@@ -17,23 +17,21 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.rx.publisher.jsf.nodes;
 
-import static org.apache.commons.lang.StringUtils.isBlank;
-
 import com.percussion.cms.PSCmsException;
 import com.percussion.design.objectstore.PSLocator;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.rx.jsf.PSCategoryNodeBase;
 import com.percussion.rx.jsf.PSEditableNodeContainer;
 import com.percussion.rx.jsf.PSNavigation;
 import com.percussion.rx.jsf.PSNodeBase;
 import com.percussion.rx.publisher.jsf.beans.PSDesignNavigation;
 import com.percussion.rx.ui.jsf.beans.PSHelpTopicMapping;
-import com.percussion.server.PSRequest;
 import com.percussion.server.PSServer;
 import com.percussion.server.webservices.PSServerFolderProcessor;
 import com.percussion.services.assembly.IPSAssemblyService;
@@ -59,8 +57,15 @@ import com.percussion.services.sitemgr.data.PSSite;
 import com.percussion.services.sitemgr.data.PSSiteProperty;
 import com.percussion.services.utils.jsf.validators.PSPathExists;
 import com.percussion.utils.guid.IPSGuid;
-import com.percussion.utils.request.PSRequestInfo;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
+import javax.faces.application.FacesMessage;
+import javax.faces.component.EditableValueHolder;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.model.SelectItem;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
@@ -73,15 +78,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.faces.application.FacesMessage;
-import javax.faces.component.EditableValueHolder;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.model.SelectItem;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import static org.apache.commons.lang.StringUtils.isBlank;
 
 /**
  * Implements the needed facade for editing a site design element. Note that
@@ -100,7 +97,7 @@ public class PSSiteNode extends PSDesignNode
    /**
     * The class log.
     */
-   private final static Log ms_log = LogFactory.getLog(PSSiteNode.class);
+   private  static final Logger log = LogManager.getLogger(PSSiteNode.class);
    
    /**
     * Simple static tuple to hold site properties for viewing and editing.
@@ -317,8 +314,13 @@ public class PSSiteNode extends PSDesignNode
       {
          mi_contextName = contextName;
          IPSSiteManager smgr = PSSiteManagerLocator.getSiteManager();
-         IPSPublishingContext cxt = smgr.loadContext(contextName);
-         mi_contextId = cxt.getGUID();
+         try {
+            IPSPublishingContext cxt = smgr.loadContext(contextName);
+            mi_contextId = cxt.getGUID();
+         } catch (PSNotFoundException e) {
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+         }
       }
       
       /**
@@ -413,9 +415,9 @@ public class PSSiteNode extends PSDesignNode
       }
       catch (Exception e)
       {
-         e.printStackTrace();
-         ms_log.error("Failed to get folder id from path: " + path
-               + ", due to error: " + e.getMessage());
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+         log.error("Failed to get folder id from path: {} , due to error: {}", path,PSExceptionUtils.getMessageForLog(e));
          return -1;
       }
    }
@@ -440,8 +442,8 @@ public class PSSiteNode extends PSDesignNode
     * Sites have child category nodes with special catalogers for editions and
     * content lists. This collection holds those category nodes.
     */
-   final protected List<PSCategoryNodeBase> m_children =
-         new ArrayList<PSCategoryNodeBase>();
+    protected final List<PSCategoryNodeBase> m_children =
+         new ArrayList<>();
 
    /**
     * The current index into the collection. <code>-1</code> indicates that no
@@ -512,7 +514,12 @@ public class PSSiteNode extends PSDesignNode
       if (m_site == null)
       {
          IPSSiteManager smgr = PSSiteManagerLocator.getSiteManager();
-         m_site = smgr.loadSiteModifiable(getGUID());
+         try {
+            m_site = smgr.loadSiteModifiable(getGUID());
+         } catch (PSNotFoundException e) {
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+         }
       }
    }
 
@@ -521,8 +528,7 @@ public class PSSiteNode extends PSDesignNode
     * @see com.percussion.rx.jsf.PSNodeBase#performOnTreeNode()
     */
    @Override
-   public String performOnTreeNode()
-   {
+   public String performOnTreeNode() throws PSNotFoundException {
       super.setNavigatorToCurrentNode();
       // reset Item GUID to void frozen other tree nodes.
       getModel().getNavigator().setCurrentItemGuid(null);
@@ -662,7 +668,7 @@ public class PSSiteNode extends PSDesignNode
    public SelectItem[] getGlobalTemplates() throws MalformedURLException,
          PSCmsException, PSAssemblyException
    {
-      final List<SelectItem> selectItems = new ArrayList<SelectItem>();
+      final List<SelectItem> selectItems = new ArrayList<>();
       addGlobalTemplates(selectItems);
       add57GlobalTemplates(selectItems);
       sortByLabel(selectItems);
@@ -681,7 +687,7 @@ public class PSSiteNode extends PSDesignNode
    {
       final IPSAssemblyService asm =
             PSAssemblyServiceLocator.getAssemblyService();
-      final Set<IPSAssemblyTemplate> globals = new HashSet<IPSAssemblyTemplate>(
+      final Set<IPSAssemblyTemplate> globals = new HashSet<>(
             asm.findAllGlobalTemplates());
       for (IPSAssemblyTemplate t : globals)
       {
@@ -728,8 +734,7 @@ public class PSSiteNode extends PSDesignNode
     * 
     * @return list of context names, never null, may be empty.
     */
-   public List<SelectItem> getContexts()
-   {
+   public List<SelectItem> getContexts() throws PSNotFoundException {
       return getSelectionFromContainer(PSContextContainerNode.NODE_TITLE);
    }
 
@@ -891,7 +896,7 @@ public class PSSiteNode extends PSDesignNode
 
    public SelectItem[] getPrivateKeys()
    {
-      final List<SelectItem> selectItems = new ArrayList<SelectItem>();
+      final List<SelectItem> selectItems = new ArrayList<>();
       selectItems.add(new SelectItem());
       
       File folder = new File(PSServer.getBaseConfigDir(), "ssh-keys");
@@ -991,7 +996,7 @@ public class PSSiteNode extends PSDesignNode
       IPSSiteManager siteManager =
          PSSiteManagerLocator.getSiteManager();
 
-      List<SiteProperty> rval = new ArrayList<SiteProperty>();
+      List<SiteProperty> rval = new ArrayList<>();
       Map<Integer, String> nameMap = siteManager.getContextNameMap();
       for (final IPSSite site : siteManager.findAllSites())
       {
@@ -1020,7 +1025,7 @@ public class PSSiteNode extends PSDesignNode
       assureLoaded();
       if (m_siteproperties == null)
       {
-         m_siteproperties = new ArrayList<SiteProperty>();
+         m_siteproperties = new ArrayList<>();
          
          PSSite s = (PSSite) m_site;
          SiteProperty sp;
@@ -1054,9 +1059,16 @@ public class PSSiteNode extends PSDesignNode
          throw new IllegalArgumentException("properties may not be null");
       }
       IPSSiteManager smgr = PSSiteManagerLocator.getSiteManager();
-      List<IPSPublishingContext> contexts = smgr.findAllContexts();
+      List<IPSPublishingContext> contexts=new ArrayList<>();
+
+      try {
+        contexts = smgr.findAllContexts();
+      } catch (PSNotFoundException e) {
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+      }
       final Map<IPSGuid, IPSPublishingContext> cmap =
-            new HashMap<IPSGuid, IPSPublishingContext>();
+            new HashMap<>();
       for (IPSPublishingContext c : contexts)
       {
          cmap.put(c.getGUID(), c);
@@ -1100,9 +1112,16 @@ public class PSSiteNode extends PSDesignNode
          throw new IllegalStateException("Cannot save site before loading");
       }
       IPSSiteManager smgr = PSSiteManagerLocator.getSiteManager();
-      List<IPSPublishingContext> contexts = smgr.findAllContexts();
+      List<IPSPublishingContext> contexts=null;
+
+      try {
+         contexts = smgr.findAllContexts();
+      } catch (PSNotFoundException e) {
+       log.error(PSExceptionUtils.getMessageForLog(e));
+       log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+      }
       final Map<IPSGuid, IPSPublishingContext> idToContext =
-            new HashMap<IPSGuid, IPSPublishingContext>();
+            new HashMap<>();
       for (IPSPublishingContext cx : contexts)
       {
          idToContext.put(cx.getGUID(), cx);
@@ -1119,8 +1138,14 @@ public class PSSiteNode extends PSDesignNode
       smgr.saveSite(m_site);
       calculateProperties(m_site);
       setTitle(m_site.getName());
-      // Make sure cancel gets the current object
-      m_site = smgr.loadSiteModifiable(m_site.getGUID());
+
+      try {
+         // Make sure cancel gets the current object
+         m_site = smgr.loadSiteModifiable(m_site.getGUID());
+      } catch (PSNotFoundException e) {
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+      }
       return cancel();
    }
 
@@ -1370,8 +1395,7 @@ public class PSSiteNode extends PSDesignNode
     * @return the outcome, may be <code>null</code> if no node is selected
     */
    @Override
-   public String copy()
-   {
+   public String copy() throws PSNotFoundException {
       assureLoaded();
       IPSSite site = getSite();
       if (site != null)
@@ -1391,7 +1415,7 @@ public class PSSiteNode extends PSDesignNode
     * 
     * @param containerNode the parent container, assumed never
     *            <code>null</code>,
-    * @param newsite the new site object, assumed never <code>null</code>.
+    * @param node the new site object, assumed never <code>null</code>.
     * 
     * @return the outcome, <code>null</code> if there's an error
     */
@@ -1409,8 +1433,7 @@ public class PSSiteNode extends PSDesignNode
     * 
     * @return the outcome, never <code>null</code> or empty.
     */
-   public String addContextVariable()
-   {
+   public String addContextVariable() throws PSNotFoundException {
       m_currCxtVariable = new SiteProperty();
       m_currCxtVariable.setName("Enter_name");
       m_currCxtVariable.setValue("Enter value");
@@ -1506,7 +1529,7 @@ public class PSSiteNode extends PSDesignNode
          }
          catch (PSNotFoundException e)
          {
-            ms_log.error("Failure to find context", e);
+            log.error("Failure to find context", e);
             return null;
          }
          PSSiteProperty p = m_site.setProperty(m_currCxtVariable.getName(),

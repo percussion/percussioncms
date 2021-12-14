@@ -641,8 +641,6 @@ public class RxIAModel extends RxModel
       
       //check to see if this file exists in the resources
       URL source = null;
-      InputStream in = null;
-      FileOutputStream out = null;
       try
       {
          String rsrcPropFile = getResourcePropertyFile();
@@ -653,21 +651,17 @@ public class RxIAModel extends RxModel
                   
             if (source != null)
             {
-               in = source.openStream();
-               if (in != null)
-               {
-                  //read from the in and write to the out
-                  out = new FileOutputStream(propFile);
-                  byte[] buffer = new byte[1024];
-                  int bytesRead;
-                  
-                  while ((bytesRead = in.read(buffer)) != -1)
-                     out.write(buffer, 0, bytesRead);
-                  
-                  out.close();
-                  in.close();
-                  out = null;
-                  in = null;
+               try(InputStream in = source.openStream()) {
+                  if (in != null) {
+                     //read from the in and write to the out
+                     try(FileOutputStream out = new FileOutputStream(propFile)) {
+                        byte[] buffer = new byte[1024];
+                        int bytesRead;
+
+                        while ((bytesRead = in.read(buffer)) != -1)
+                           out.write(buffer, 0, bytesRead);
+                     }
+                  }
                }
             }
          }
@@ -675,21 +669,6 @@ public class RxIAModel extends RxModel
       catch (IOException io)
       {
          logEvent(RxIAUtils.WARNING, io.getMessage());
-      }
-      finally
-      {
-         try
-         {
-            if (in != null)
-               in.close();
-            
-            if (out != null)
-               out.close();
-         }
-         catch (IOException io)
-         {
-            logEvent(RxIAUtils.WARNING, io.getMessage(), io);
-         }
       }
    }
    
@@ -845,7 +824,7 @@ public class RxIAModel extends RxModel
       fieldName = fieldName.substring(0, 1).toUpperCase() +
       fieldName.substring(1);
       
-      StringBuffer readableName = new StringBuffer();
+      StringBuilder readableName = new StringBuilder();
       for (int i = 0; i < fieldName.length(); i++)
       {
          char ch = fieldName.charAt(i);

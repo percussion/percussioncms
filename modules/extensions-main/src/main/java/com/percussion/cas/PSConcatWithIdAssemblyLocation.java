@@ -17,12 +17,14 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.cas;
 
+import com.percussion.cms.IPSConstants;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSAssemblyLocation;
 import com.percussion.extension.IPSExtensionDef;
 import com.percussion.extension.IPSExtensionErrors;
@@ -30,10 +32,10 @@ import com.percussion.extension.PSExtensionException;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.util.PSHtmlParameters;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 
 /**
  * This assembly location generator concatenates all provided parameters and
@@ -59,17 +61,19 @@ public class PSConcatWithIdAssemblyLocation implements IPSAssemblyLocation
     * parameters provided with backslashes will be transformed to forward 
     * slashes.
     *
-    * @param params[0] a string or an object convertable to a string using
+    * @param params [0] a string or an object convertable to a string using
     *    the toString method. This string parsed as an integer must return
     *    a valid integer.
-    * @param params[1..n] all parameters to concatenated together to produce 
+    *    params [1..n] all parameters to concatenated together to produce
     *    the location string.
+    * @param request The request context for the request
     */
    public String createLocation(Object[] params, IPSRequestContext request)
       throws PSExtensionException
    {
       String exitName = getClass().getName();
       request.printTraceMessage("Entering " + exitName + ".createLocation");
+      logger.debug("Entering {}.createLocation", exitName );
 
       String location = "";
       try
@@ -122,18 +126,15 @@ public class PSConcatWithIdAssemblyLocation implements IPSAssemblyLocation
          
          request.printTraceMessage("Location= " + location);
       }
-      catch (Throwable e)
+      catch (Exception e)
       {
-         StringWriter writer = new StringWriter();
-         PrintWriter printer = new PrintWriter(writer, true);
-         e.printStackTrace(printer);
-         request.printTraceMessage("Error: " + writer.toString());
+         request.printTraceMessage("Error: " + PSExceptionUtils.getMessageForLog(e));
       }
       finally
       {
          request.printTraceMessage("Leaving " + exitName + ".createLocation");
-         return location;
       }
+      return location;
    }
    
    /**
@@ -146,4 +147,6 @@ public class PSConcatWithIdAssemblyLocation implements IPSAssemblyLocation
     * The number of expected parameters.
     */
    private static final int EXPECTED_NUMBER_OF_PARAMS = 2;
+
+   private static Logger logger = LogManager.getLogger(IPSConstants.ASSEMBLY_LOG);
 }

@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -35,8 +35,8 @@ import com.percussion.server.PSUserSession;
 import com.percussion.services.legacy.IPSCmsObjectMgr;
 import com.percussion.servlets.PSSecurityFilter;
 import com.percussion.util.PSSiteManageBean;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.ws.rs.NotFoundException;
@@ -45,7 +45,7 @@ import java.util.List;
 @PSSiteManageBean
 public class PreferencesAdaptor implements IPreferenceAdaptor {
 
-    private final static Logger log = LoggerFactory.getLogger(PreferencesAdaptor.class);
+    private static final Logger log = LogManager.getLogger(PreferencesAdaptor.class);
 
     @Autowired
     IPSCmsObjectMgr objectMgr;

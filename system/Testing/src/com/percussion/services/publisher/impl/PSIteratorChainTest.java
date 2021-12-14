@@ -17,26 +17,24 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.services.publisher.impl;
 
-import static java.util.Arrays.asList;
-
 import com.google.common.collect.Lists;
+import junit.framework.TestCase;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-import junit.framework.TestCase;
-
-import org.junit.Before;
-import org.junit.Test;
+import static java.util.Arrays.asList;
 
 public class PSIteratorChainTest extends TestCase
 {

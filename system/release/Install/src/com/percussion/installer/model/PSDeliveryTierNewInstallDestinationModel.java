@@ -225,9 +225,7 @@ public class PSDeliveryTierNewInstallDestinationModel extends RxIAModel
                if (RxStandAloneFlag.isStandalone() &&
                      InstallUtil.isServerRunning(dirName))
                {
-                  String errorText = "A Percussion Server is running in the "
-                     + "specified directory. Please stop the running server "
-                     + "and proceed with the installation";
+                  String errorText = "A Percussion Server is running in the specified directory. Please stop the running server and proceed with the installation";
                   setError(errorText); 
                   validationError("", errorText, "");
                   return false;
@@ -401,7 +399,7 @@ public class PSDeliveryTierNewInstallDestinationModel extends RxIAModel
    private void createDirs(String dirName)
    throws IOException
    {
-      Stack<String> parents = new Stack<String>();
+      Stack<String> parents = new Stack<>();
       String parent = dirName;
       while (parent != null)
       {
@@ -426,7 +424,7 @@ public class PSDeliveryTierNewInstallDestinationModel extends RxIAModel
          return;
       }
       
-      Vector<String> created = new Vector<String>();
+      Vector<String> created = new Vector<>();
       while (!parents.isEmpty())
       {
          parent = parents.pop();
@@ -478,7 +476,7 @@ public class PSDeliveryTierNewInstallDestinationModel extends RxIAModel
    /**
     * Set of directories which are considered special for windows.  See {@link #isSpecialWinDir(String)}.
     */
-   private static Set<String> ms_specialWinDirs = new HashSet<String>();
+   private static Set<String> ms_specialWinDirs = new HashSet<>();
    
    /**
     * The destination or installation directory.

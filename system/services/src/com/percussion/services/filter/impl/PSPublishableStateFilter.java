@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -29,12 +29,11 @@ import com.percussion.services.filter.PSFilterException;
 import com.percussion.services.legacy.IPSCmsObjectMgr;
 import com.percussion.services.legacy.PSCmsObjectMgrLocator;
 import com.percussion.utils.exceptions.PSORMException;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.commons.lang.StringUtils;
 
 /**
  * Filter content by the publishable state of the workflow state
@@ -55,7 +54,7 @@ public class PSPublishableStateFilter extends PSBaseFilter
          throw new PSFilterException(IPSFilterServiceErrors.ARGUMENT_MISSING, 
                null, "sys_flagValues", "sys_filterByFolderPaths");
       }
-      List<String> flags = new ArrayList<String>();
+      List<String> flags = new ArrayList<>();
       
       for(String f : flagstr.split(","))
       {

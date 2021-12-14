@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -142,7 +142,7 @@
             
             // Tags
             $('.perc-blog-post-tag-container').find('a').each(function(){
-                var tag = ($.trim($(this).html())).replace(",", "");
+                var tag = ($(this).html().trim()).replace(",", "");
                 var jsonQuery = {'criteria':["perc:tags LIKE '" + tag + "'"]};
                 var encodedQuery = "&query=" + encodeURIComponent(JSON.stringify(jsonQuery));
                 $(this).attr("href", blogIndexPage + "?filter="+ tag + encodedQuery);
@@ -151,7 +151,7 @@
             // Categories
             $('.perc-blog-post-category-container').find('a').each(function(){
                 var categoryPath = $(this).attr('data-categories');
-                var category = ($.trim($(this).html())).replace(",", "");
+                var category = ($(this).html().trim()).replace(",", "");
                 var jsonQuery = {'criteria':["perc:category LIKE '" + categoryPath + "'"]};
                 var encodedQuery = "&query=" + encodeURIComponent(JSON.stringify(jsonQuery));
                 $(this).attr("href", blogIndexPage + "?filter="+ category + encodedQuery);
@@ -172,7 +172,8 @@
             }
             var blogPostFullPath = queryString.blogPostFullPath;
             var deliveryUrl = queryString.deliveryurl || "";
-            $.PercMostReadBlogPostsService.trackBlogPost(blogPostFullPath, deliveryUrl, $.noop);
+            if(queryString.isEditMode !== "true")
+                $.PercMostReadBlogPostsService.trackBlogPost(blogPostFullPath, deliveryUrl, $.noop);
         });
     }
 })(jQuery);

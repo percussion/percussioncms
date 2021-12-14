@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -25,17 +25,16 @@
 package com.percussion.pathmanagement.service;
 
 
-import static com.percussion.pagemanagement.service.impl.PSMockDataForUnassignedPages.INC_COUNT;
-import static com.percussion.pagemanagement.service.impl.PSMockDataForUnassignedPages.MAX_COUNT;
-import static com.percussion.pagemanagement.service.impl.PSMockDataForUnassignedPages.TRY_COUNT;
-import static org.junit.Assert.*;
-
 import com.percussion.pagemanagement.service.impl.PSMockDataForUnassignedPages;
 import com.percussion.share.data.PSUnassignedResults;
 import com.percussion.share.data.PSUnassignedResults.ImportStatus;
 import com.percussion.share.data.PSUnassignedResults.UnassignedItemList;
-
 import org.junit.Test;
+
+import static com.percussion.pagemanagement.service.impl.PSMockDataForUnassignedPages.INC_COUNT;
+import static com.percussion.pagemanagement.service.impl.PSMockDataForUnassignedPages.MAX_COUNT;
+import static com.percussion.pagemanagement.service.impl.PSMockDataForUnassignedPages.TRY_COUNT;
+import static org.junit.Assert.assertTrue;
 
 public class PSMockDataForUnassignedPagesTest
 {

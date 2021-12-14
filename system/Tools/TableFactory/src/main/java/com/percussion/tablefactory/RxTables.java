@@ -17,15 +17,15 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.tablefactory;
 
-import java.util.Vector;
-
 import org.w3c.dom.Element;
+
+import java.util.Vector;
 
 /**
  *  This class is used to define a table and it's columns.

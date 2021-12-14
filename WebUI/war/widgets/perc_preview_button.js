@@ -17,33 +17,33 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 /**
- * Handles the copy page action. 
+ * Handles the copy page action.
  */
 (function ($) {
     $.perc_build_preview_button = function (mcol, content) {
-        
-        var btn = $("<a id='perc-finder-preview' class='perc-font-icon icon-eye-open' href='#' title='" +I18N.message("perc.ui.preview.button@Launch Preview") + "'></a>")
-            .perc_button().click(function (event) {
+
+        var btn = $("<a id='perc-finder-preview' class='perc-font-icon icon-eye-open fas fa-eye' href='#' title='" +I18N.message("perc.ui.preview.button@Launch Preview") + "'></a>")
+            .perc_button().on("click",function (event) {
                 launchPreview();
-        });        
-      
-        function launchPreview()
+            });
+
+        function launchPreview(event)
         {
-            if ($("#perc-finder-listview .perc-datatable-row-highlighted").size() > 0)
+            if ($("#perc-finder-listview .perc-datatable-row-highlighted").length > 0)
             {
                 var listSelectedRowData = $("#perc-finder-listview .perc-datatable-row-highlighted").data("percRowData");
-                
-                if (listSelectedRowData.category == "LANDING_PAGE" || listSelectedRowData.category == "PAGE")
+
+                if (listSelectedRowData.category === "LANDING_PAGE" || listSelectedRowData.category === "PAGE")
                 {
-                    mcol.launchPagePreview(listSelectedRowData.id);                    
+                    mcol.launchPagePreview(listSelectedRowData.id);
                 }
-                else if (listSelectedRowData.category == "ASSET")
+                else if (listSelectedRowData.category === "ASSET")
                 {
                     mcol.launchAssetPreview(listSelectedRowData.id);
                 }
@@ -52,44 +52,44 @@
             {
                 var selectedPage = $(".mcol-opened.perc-listing-type-percPage");
                 var selectedAsset = $(".mcol-opened.perc-listing-category-ASSET");
-                
-                if (selectedPage.size() > 0)
+
+                if (selectedPage.length > 0)
                 {
                     mcol.launchPagePreview(selectedPage.data("spec").id);
                 }
-                else if (selectedAsset.size() > 0)
+                else if (selectedAsset.length > 0)
                 {
-                    mcol.launchAssetPreview(selectedAsset.data("spec").id);                
+                    mcol.launchAssetPreview(selectedAsset.data("spec").id);
                 }
             }
         }
-    
+
         function update_launch_preview_btn(path)
         {
             var selectedPageColumn = $(".mcol-opened.perc-listing-type-percPage");
             var selectedAssetColumn = $(".mcol-opened.perc-listing-category-ASSET");
-            var selectedItemList = $("#perc-finder-listview .perc-datatable-row-highlighted")
-            
-            if (path[1] == "Sites" && path.length < 4)
+            var selectedItemList = $("#perc-finder-listview .perc-datatable-row-highlighted");
+
+            if (path[1] === "Sites" && path.length < 4)
             {
                 enableButtonLaunchPreview(false);
             }
-            else if(path[1]=="Recycling"){
+            else if(path[1]==="Recycling"){
                 enableButtonLaunchPreview(false);
             }
-            else if (selectedItemList.size() > 0)
+            else if (selectedItemList.length > 0)
             {
                 listSelectedRowData = selectedItemList.data("percRowData");
                 if (listSelectedRowData.category == "LANDING_PAGE" || listSelectedRowData.category == "PAGE" || listSelectedRowData.category == "ASSET")
                 {
-                    enableButtonLaunchPreview(true);                 
+                    enableButtonLaunchPreview(true);
                 }
                 else
                 {
                     enableButtonLaunchPreview(false);
-                }                
+                }
             }
-            else if (selectedPageColumn.size() > 0) 
+            else if (selectedPageColumn.length > 0)
             {
                 var last_path = selectedPageColumn.data("spec").path.split("/");
                 if (last_path.length == path.length && $(last_path).last()[0] == $(path).last()[0])
@@ -101,23 +101,23 @@
                     enableButtonLaunchPreview(false);
                 }
             }
-            else if (selectedAssetColumn.size() > 0) {
-                if (selectedAssetColumn.data("spec") != undefined) {
+            else if (selectedAssetColumn.length > 0) {
+                if (selectedAssetColumn.data("spec") !== undefined) {
 
-                var last_path = selectedAssetColumn.data("spec").path.split("/");
-                if (last_path.length == path.length && $(last_path).last()[0] == $(path).last()[0]) {
-                    enableButtonLaunchPreview(true);
-                } else {
-                    enableButtonLaunchPreview(false);
+                    last_path = selectedAssetColumn.data("spec").path.split("/");
+                    if (last_path.length === path.length && $(last_path).last()[0] === $(path).last()[0]) {
+                        enableButtonLaunchPreview(true);
+                    } else {
+                        enableButtonLaunchPreview(false);
+                    }
                 }
-            }
             }
             else
             {
                 enableButtonLaunchPreview(false);
             }
         }
-        
+
         /**
          * Helper function to enable or disable the new folder button on finder.
          * @param flag(boolean) if <code>true</code> the button is enabled, otherwise the button is disabled.
@@ -126,14 +126,18 @@
         {
             if(flag)
             {
-                $( "#perc-finder-preview" ).removeClass('ui-disabled').addClass('ui-enabled').unbind('click').click( launchPreview );
+                $( "#perc-finder-preview" ).removeClass('ui-disabled').addClass('ui-enabled').off('click').on("click",
+                    function(evt){
+                        launchPreview(evt);
+                    } );
+
             }
             else
             {
-                $( "#perc-finder-preview" ).addClass('ui-disabled').removeClass('ui-enabled').unbind('click');
+                $( "#perc-finder-preview" ).addClass('ui-disabled').removeClass('ui-enabled').off('click');
             }
         }
-        
+
         mcol.addPathChangedListener( update_launch_preview_btn );
         return btn;
     };

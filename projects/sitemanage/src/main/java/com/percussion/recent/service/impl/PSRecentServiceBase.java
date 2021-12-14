@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -62,7 +62,7 @@ public class PSRecentServiceBase implements IPSRecentServiceBase
     {
         List<PSRecent> returnRecents = recentDao.find(user, siteName, type);
         
-        List<String> returnValues = new ArrayList<String>();
+        List<String> returnValues = new ArrayList<>();
 
         if (returnRecents != null)
         {
@@ -84,14 +84,15 @@ public class PSRecentServiceBase implements IPSRecentServiceBase
 
         // If the most recent is the same as value do not have to update
         // anything.
-        if (existingRecents.size() > 0 && existingRecents.get(0).getValue().equals(value))
+        if (existingRecents.size() > 0 && existingRecents.get(0).getValue().equals(value)) {
             return;
+        }
 
         existingRecents = deleteExtraRecents(type, existingRecents, value, true);
 
         // Add new item with index 0;
         PSRecent newRecent = new PSRecent(user, siteName, type, 0, value);
-        List<PSRecent> updatedRecents = new ArrayList<PSRecent>();
+        List<PSRecent> updatedRecents = new ArrayList<>();
         updatedRecents.add(newRecent);
 
         // update index of existing values
@@ -112,8 +113,9 @@ public class PSRecentServiceBase implements IPSRecentServiceBase
     {
         List<PSRecent> existingRecents = recentDao.find(user, siteName, type);
 
-        if (CollectionUtils.isNotEmpty(existingRecents))
+        if (CollectionUtils.isNotEmpty(existingRecents)) {
             recentDao.deleteAll(existingRecents);
+        }
     }
 
     /**
@@ -129,7 +131,7 @@ public class PSRecentServiceBase implements IPSRecentServiceBase
     private List<PSRecent> deleteExtraRecents(RecentType type, List<PSRecent> recents, String value, boolean forAdd)
     {
         int numOfElementsToKeep = forAdd ? type.MaxSize() - 1 : type.MaxSize();
-        List<PSRecent> toDelete = new ArrayList<PSRecent>();
+        List<PSRecent> toDelete = new ArrayList<>();
         // remove other entries of
         Iterator<PSRecent> it = recents.iterator();
         if (value != null)
@@ -149,8 +151,9 @@ public class PSRecentServiceBase implements IPSRecentServiceBase
             toDelete.addAll(recents.subList(numOfElementsToKeep, recents.size()));
             recents = recents.subList(0, numOfElementsToKeep);
         }
-        if (!toDelete.isEmpty())
+        if (!toDelete.isEmpty()) {
             recentDao.deleteAll(toDelete);
+        }
         return recents;
     }
 
@@ -161,8 +164,9 @@ public class PSRecentServiceBase implements IPSRecentServiceBase
         Iterator<PSRecent> iterator = existingRecents.iterator();
         while (iterator.hasNext())
         {
-            if (!toDelete.contains(iterator.next().getValue()))
+            if (!toDelete.contains(iterator.next().getValue())) {
                 iterator.remove();
+            }
         }
         recentDao.deleteAll(existingRecents);
     }

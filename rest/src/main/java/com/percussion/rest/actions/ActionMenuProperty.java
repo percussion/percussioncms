@@ -17,30 +17,29 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.rest.actions;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "ActionMenuProperty")
-@ApiModel(description = "Represents an Action Menu property")
+@Schema(description = "Represents an Action Menu property")
 public class ActionMenuProperty {
 
-    @ApiModelProperty(notes="The action to which this property belongs.")
+    @Schema(description="The action to which this property belongs.")
     private int actionId;
 
-    @ApiModelProperty(notes="The name of the property")
+    @Schema(description="The name of the property")
     private String name;
-    @ApiModelProperty(notes="The value of the property")
+    @Schema(description="The value of the property")
     private String value;
-    @ApiModelProperty(notes="The description of the property")
+    @Schema(description="The description of the property")
     private String description;
 
     public ActionMenuProperty(){}

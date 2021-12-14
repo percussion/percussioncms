@@ -17,25 +17,24 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.services.contentmgr.impl.legacy;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.services.contentmgr.impl.IPSContentRepository;
 import com.percussion.services.contentmgr.impl.PSContentInternalLocator;
 import com.percussion.utils.beans.IPSPropertyLoader;
-
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.jcr.Node;
 import javax.jcr.RepositoryException;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Load the body object for the content repository
@@ -53,7 +52,7 @@ public class PSContentPropertyLoader implements IPSPropertyLoader, Serializable
    /**
     * Logger for property loader
     */
-   private static Log ms_log = LogFactory.getLog(PSContentPropertyLoader.class);
+   private static final Logger ms_log = LogManager.getLogger(PSContentPropertyLoader.class);
    
    /**
     * Contained data reference. Set on first reference or set is called.
@@ -90,16 +89,13 @@ public class PSContentPropertyLoader implements IPSPropertyLoader, Serializable
                .getLegacyRepository();
          try
          {
-            List<Node> nodes = new ArrayList<Node>();
+            List<Node> nodes = new ArrayList<>();
             nodes.add(m_node);
             rep.loadBodies(nodes);
          }
          catch (RepositoryException e)
          {
-            ms_log.error("Error while trying to load a body field", e);
-         }
-         catch (Exception e){
-            e.printStackTrace();
+            ms_log.error("Error while trying to load a body field. Error: {}", PSExceptionUtils.getMessageForLog(e));
          }
       }
       return m_data;

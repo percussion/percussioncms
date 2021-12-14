@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -31,19 +31,20 @@ import com.percussion.design.objectstore.PSField;
 import com.percussion.design.objectstore.PSFieldValidationRules;
 import com.percussion.design.objectstore.PSRule;
 import com.percussion.design.objectstore.PSSingleHtmlParameter;
-import com.percussion.design.objectstore.PSValidationException;
+import com.percussion.design.objectstore.PSSystemValidationException;
 import com.percussion.extension.IPSExtensionManager;
 import com.percussion.extension.PSExtensionException;
 import com.percussion.extension.PSExtensionRef;
 import com.percussion.server.PSServer;
 import com.percussion.util.PSCollection;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.StringUtils;
 
 /**
  * The utility class used to modify properties for Content Type related
@@ -56,6 +57,8 @@ import org.apache.commons.lang.StringUtils;
  */
 public class PSContentTypeUtils
 {
+
+   private static final Logger log = LogManager.getLogger(PSContentTypeUtils.class);
    
    /**
     * Checks whether the supplied rules has a required rule are not. Walks
@@ -177,7 +180,7 @@ public class PSContentTypeUtils
    public static boolean hasRequiredRule(PSField field)
    {
       PSFieldValidationRules valrules = field.getValidationRules();
-      List<PSRule> rules = new ArrayList<PSRule>();
+      List<PSRule> rules = new ArrayList<>();
       if(valrules != null)
       {
          CollectionUtils.addAll(rules,valrules.getRules());
@@ -201,7 +204,7 @@ public class PSContentTypeUtils
          List<PSExtensionRef> fvExits)
    {
       PSFieldValidationRules valrules = field.getValidationRules();
-      List<PSRule> rules = new ArrayList<PSRule>();
+      List<PSRule> rules = new ArrayList<>();
       PSApplyWhen applyWhen = null;
       if(valrules != null)
       {
@@ -247,11 +250,12 @@ public class PSContentTypeUtils
          field.clearOccurrenceSettings();
          field.setOccurrenceDimension(occur, null);
       }
-      catch (PSValidationException ve)
+      catch (PSSystemValidationException ve)
       {
          // We can safely ignore this as we are setting a valid value
          // here.
-         ve.printStackTrace();
+         log.error(ve.getMessage());
+         log.debug(ve.getMessage(), ve);
       }
    }
 
@@ -274,7 +278,7 @@ public class PSContentTypeUtils
       IPSExtensionManager mgr = PSServer.getExtensionManager(null);
       Iterator it = mgr.getExtensionNames(null, null,
             com.percussion.extension.IPSFieldValidator.class.getName(), null);
-      List<PSExtensionRef> extensions = new ArrayList<PSExtensionRef>();
+      List<PSExtensionRef> extensions = new ArrayList<>();
       CollectionUtils.addAll(extensions, it);
       
       // set the property

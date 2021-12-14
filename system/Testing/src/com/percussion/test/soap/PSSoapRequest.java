@@ -17,34 +17,19 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.test.soap;
 
-import com.percussion.util.PSCharSets; 
+import com.percussion.util.PSCharSets;
 import com.percussion.xml.PSXmlDocumentBuilder;
-
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;   
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.net.URL; 
-import java.net.MalformedURLException;
-import java.util.Map;
-import java.util.Iterator;
-
-import javax.xml.parsers.DocumentBuilder;
-
 import org.apache.soap.Body;
 import org.apache.soap.Constants;
 import org.apache.soap.Envelope;
 import org.apache.soap.Fault;
 import org.apache.soap.Header;
-
 import org.apache.soap.SOAPException;
 import org.apache.soap.encoding.SOAPMappingRegistry;
 import org.apache.soap.messaging.Message;
@@ -55,6 +40,17 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+
+import javax.xml.parsers.DocumentBuilder;
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStreamWriter;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Iterator;
 
 /**
  * Generic wrapper class to make soap requests and process its response.

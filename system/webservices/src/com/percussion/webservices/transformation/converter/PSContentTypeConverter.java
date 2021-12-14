@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -29,15 +29,14 @@ import com.percussion.design.objectstore.PSContentEditor;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.guidmgr.data.PSDesignGuid;
 import com.percussion.services.guidmgr.data.PSGuid;
+import com.percussion.webservices.common.ObjectType;
 import com.percussion.webservices.content.PSContentType;
 import com.percussion.xml.PSXmlDocumentBuilder;
-import com.percussion.webservices.common.ObjectType;
-
-import java.io.StringReader;
-
 import org.apache.commons.beanutils.BeanUtilsBean;
 import org.apache.commons.beanutils.ConversionException;
 import org.w3c.dom.Document;
+
+import java.io.StringReader;
 
 /**
  * Converts between {@link com.percussion.cms.objectstore.PSItemDefinition} and 

@@ -17,18 +17,31 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.wrapper;
 
-import java.io.*;
+import com.percussion.error.PSExceptionUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.PrintStream;
 import java.net.URISyntaxException;
 import java.util.Properties;
 
 public class JettyStartUtils {
+
+    private static final Logger log = LogManager.getLogger(JettyStartUtils.class);
 
     public static final String USAGE_RESOURCE_PATH = "usage.txt";
     private static final String JAVA_PROPS_PATH = "java.properties";
@@ -78,28 +91,29 @@ public class JettyStartUtils {
             // process the response
             String line = "";
             String errorLine = "";
-            try (BufferedReader error = new BufferedReader(new InputStreamReader(proc.getErrorStream()));
-                 BufferedReader input = new BufferedReader(new InputStreamReader(proc.getInputStream()))) {
-
-                while ((errorLine = error.readLine()) != null) {
-                    debug("get pid error line=%s", errorLine);
-                }
-                while ((line = input.readLine()) != null) {
-                    String idString = line;
-                    if (idString.startsWith("java.exe")) {
-                        idString = line.split("java.exe")[1];
+            try (BufferedReader error = new BufferedReader(new InputStreamReader(proc.getErrorStream()))){
+                 try(BufferedReader input = new BufferedReader(new InputStreamReader(proc.getInputStream()))){
+                        while ((errorLine = error.readLine()) != null) {
+                            debug("get pid error line=%s", errorLine);
+                        }
+                        while ((line = input.readLine()) != null) {
+                            String idString = line;
+                            if (idString.startsWith("java.exe")) {
+                                idString = line.split("java.exe")[1];
+                            }
+                            try {
+                                pid = Integer.parseInt(idString.trim());
+                                break;
+                            } catch (NumberFormatException | NullPointerException e) {
+                                continue;
+                            }
+                        }
                     }
-                    try {
-                        pid = Integer.parseInt(idString.trim());
-                        break;
-                    } catch (NumberFormatException | NullPointerException e) {
-                        continue;
-                    }
                 }
+            } catch (IOException e) {
+                log.error(PSExceptionUtils.getMessageForLog(e));
+                log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
         return pid;
     }
@@ -128,7 +142,8 @@ public class JettyStartUtils {
         try (InputStream input = new FileInputStream(file)) {
             prop.load(input);
         } catch (IOException ex) {
-            ex.printStackTrace();
+            log.error(ex.getMessage());
+            log.debug(ex.getMessage(), ex);
             System.exit(1);
         }
         return prop;
@@ -168,7 +183,8 @@ public class JettyStartUtils {
             final File f = new File(PSServiceWrapper.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
             return locateRxDir(f);
         } catch (URISyntaxException e) {
-            e.printStackTrace();
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             System.exit(1);
         }
         return null;
@@ -216,7 +232,8 @@ public class JettyStartUtils {
     public static void debug(String s, Throwable t, Object... args) {
         if (debugEnabled) {
             logOut.println(String.format(s, args));
-            t.printStackTrace(logErr);
+            log.error(logErr);
+            log.debug(logErr);
         }
     }
 
@@ -226,7 +243,8 @@ public class JettyStartUtils {
 
     public static void error(String s, Throwable t, Object... args) {
         logErr.println(String.format(s, args));
-        t.printStackTrace(logErr);
+        log.error(logErr);
+        log.debug(logErr);
     }
 
     public static void info(String s, Object... args) {

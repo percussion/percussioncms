@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -25,12 +25,12 @@ package com.percussion.data;
 
 import com.percussion.utils.testing.IntegrationTest;
 import com.percussion.xml.PSXmlDocumentBuilder;
-
-import java.io.ByteArrayInputStream;
-
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.w3c.dom.Document;
+
+import java.io.ByteArrayInputStream;
+import java.nio.charset.StandardCharsets;
 
 import static org.junit.Assert.assertEquals;
 
@@ -51,22 +51,15 @@ public class PSStylesheetCleanupUtilsTest
    @Test
    public void testNamespaceCleanup() throws Exception
    {
-      ByteArrayInputStream bis = null;
-      try
+      try(ByteArrayInputStream bis = new ByteArrayInputStream(FILTER_XML.getBytes(StandardCharsets.UTF_8)))
       {
-         bis = new ByteArrayInputStream(FILTER_XML.getBytes("utf8"));
          Document doc = PSXmlDocumentBuilder.createXmlDocument(bis, false);
          PSStylesheetCleanupFilter filter = 
             PSStylesheetCleanupFilter.getInstance();
          filter.fromXml(doc.getDocumentElement());
          String actualResults = 
             PSStylesheetCleanupUtils.namespaceCleanup(SOURCE, filter);
-         assertEquals(actualResults, RESULT);
-      }
-      finally
-      {
-         if(bis != null)
-            bis.close();
+         assertEquals(RESULT, actualResults);
       }
    }
 

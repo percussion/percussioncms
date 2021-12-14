@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -25,12 +25,10 @@
 package com.percussion.extensions.general;
 
 import com.percussion.HTTPClient.HttpURLConnection;
-
 import com.percussion.data.PSConversionException;
 import com.percussion.extension.PSSimpleJavaUdfExtension;
 import com.percussion.server.IPSRequestContext;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
@@ -141,27 +139,25 @@ public class PSGetFileSize extends PSSimpleJavaUdfExtension
    {
       PSMakeIntLink link = new PSMakeIntLink();
       String fileLength = "0";
-      InputStream is = null;
       HttpURLConnection conn = null;
-      try
-      {
+      try{
          URL url = new URL(link.processUdf(params, request).toString());
 
          conn = new HttpURLConnection(url);
          conn.connect();
-         is = conn.getInputStream();
-         int len = 0;
-         byte[] buf = new byte[1024];
-         while (true)
-         {
-            int read = is.read(buf);
-            if (read == -1)
-               break;
+         try(InputStream is = conn.getInputStream()) {
+            int len = 0;
+            byte[] buf = new byte[1024];
+            while (true) {
+               int read = is.read(buf);
+               if (read == -1)
+                  break;
 
-            len += read;
+               len += read;
+            }
+
+            fileLength = Integer.toString(len);
          }
-
-         fileLength = Integer.toString(len);
       }
       catch (Throwable t)
       {
@@ -171,9 +167,6 @@ public class PSGetFileSize extends PSSimpleJavaUdfExtension
       {
          if (conn != null)
             conn.disconnect();
-
-         if (is != null)
-            try { is.close(); } catch (IOException e) { /* no-op */ }
       }
       return fileLength;
    }

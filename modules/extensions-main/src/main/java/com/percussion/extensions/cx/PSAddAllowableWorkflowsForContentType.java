@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -27,6 +27,7 @@ import com.percussion.cms.objectstore.PSInvalidContentTypeException;
 import com.percussion.cms.objectstore.server.PSItemDefManager;
 import com.percussion.design.objectstore.PSContentEditor;
 import com.percussion.design.objectstore.PSWorkflowInfo;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSRequestPreProcessor;
 import com.percussion.extension.IPSResultDocumentProcessor;
 import com.percussion.extension.PSDefaultExtension;
@@ -34,18 +35,19 @@ import com.percussion.extension.PSExtensionProcessingException;
 import com.percussion.extension.PSParameterMismatchException;
 import com.percussion.server.IPSInternalRequest;
 import com.percussion.server.IPSRequestContext;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.w3c.dom.Text;
 
 /**
  * This extension adds the allowable workflows for the content type.
@@ -75,6 +77,8 @@ import org.w3c.dom.Text;
 public class PSAddAllowableWorkflowsForContentType extends PSDefaultExtension
       implements IPSResultDocumentProcessor, IPSRequestPreProcessor
 {
+
+   private static final Logger log = LogManager.getLogger(PSAddAllowableWorkflowsForContentType.class);
 
    /**
     * Required by the interface. This exit never modifies the stylesheet.
@@ -205,8 +209,10 @@ public class PSAddAllowableWorkflowsForContentType extends PSDefaultExtension
          }
          catch(Exception e)
          {
-            if(request.isTraceEnabled())
-               e.printStackTrace();
+            if(request.isTraceEnabled()){
+               log.error(PSExceptionUtils.getMessageForLog(e));
+               log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+            }
             continue;
          }
       }

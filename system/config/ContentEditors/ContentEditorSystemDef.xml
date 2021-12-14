@@ -1694,7 +1694,7 @@
       <PSXParam name="com.percussion.rowDeleteImage">
          <DataLocator>
             <PSXTextLiteral id="271">
-               <text>../sys_resources/images/delete.gif</text>
+               <text>/sys_resources/images/delete.gif</text>
             </PSXTextLiteral>
          </DataLocator>
       </PSXParam>
@@ -1746,7 +1746,7 @@
       <PSXParam name="com.percussion.rowDeleteImage">
          <DataLocator>
             <PSXTextLiteral id="271">
-               <text>../sys_resources/images/delete.gif</text>
+               <text>/sys_resources/images/delete.gif</text>
             </PSXTextLiteral>
          </DataLocator>
       </PSXParam>

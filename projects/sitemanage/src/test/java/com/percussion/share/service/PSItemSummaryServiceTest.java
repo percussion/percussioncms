@@ -17,15 +17,17 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.share.service;
 
-import static org.junit.Assert.*;
-
-import org.jmock.Expectations;
+import com.percussion.fastforward.managednav.IPSManagedNavService;
+import com.percussion.share.dao.impl.PSItemSummaryService;
+import com.percussion.utils.guid.IPSGuid;
+import com.percussion.webservices.content.IPSContentDesignWs;
+import com.percussion.webservices.content.IPSContentWs;
 import org.jmock.Mockery;
 import org.jmock.integration.junit4.JMock;
 import org.jmock.integration.junit4.JUnit4Mockery;
@@ -33,11 +35,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import com.percussion.fastforward.managednav.IPSManagedNavService;
-import com.percussion.share.dao.impl.PSItemSummaryService;
-import com.percussion.utils.guid.IPSGuid;
-import com.percussion.webservices.content.IPSContentDesignWs;
-import com.percussion.webservices.content.IPSContentWs;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 
 /**

@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -39,7 +39,7 @@
                 return "";
             }
         }
-    }
+    };
     
     /**
      * Converts pagedItemList data to $.PercDataTable consumable percData object.
@@ -51,10 +51,10 @@
         if(pagedItemList.PagedItemList.childrenCount < 1)
             return percData;
         var rows = pagedItemList.PagedItemList.childrenInPage;
-        if(!$.isArray(rows)){
+        if(!Array.isArray(rows)){
             rows = [pagedItemList.PagedItemList.childrenInPage];
         }
-        for(i=0; i<rows.length; i++){
+        for(let i=0; i<rows.length; i++){
             var row = rows[i];
             var cols = row.columnData.column;
             for(j=0;j<cols.length;j++){
@@ -63,9 +63,9 @@
             }
             var dataRow = [];
             for(k=0;k<colsInfo.length;k++){
-                var name = colsInfo[k].name;
-                var dataUpdater = colsInfo[k].dataUpdater;
-                dataRow.push($.isFunction(dataUpdater)?dataUpdater(name, row):row[name]);
+                let name = colsInfo[k].name;
+                let dataUpdater = colsInfo[k].dataUpdater;
+                dataRow.push(typeof dataUpdater === "function" ?dataUpdater(name, row):row[name]);
             }
             var percContent = {"rowContent" : dataRow, "rowData" : row };
             percData.push(percContent);
@@ -90,7 +90,7 @@
             var column  = colsInfo[c];
             dtConfig.percColNames.push(column.name);
             dtConfig.percHeaders.push(column.label);
-            dtConfig.percWidths.push((column.width == -1 ? "*" : ($.browser.msie ? column.width - 20 : column.width ) ));
+            dtConfig.percWidths.push((column.width === -1 ? "*" : ($.browser.msie ? column.width - 20 : column.width ) ));
             dtConfig.percTypes.push({"sType" : column.type});
         }
         return dtConfig;
@@ -138,12 +138,12 @@
             if(activePage-i > 0)
                 pages.unshift(activePage-i);
             if(activePage+i <= totalPages)
-                pages.push(activePage+i)
+                pages.push(activePage+i);
         }
         
-        var pagedItems = $("<span/>")
+        var pagedItems = $("<span/>");
         for(i=0; i<pages.length; i++){
-            var clName = activePage == pages[i]?"paginate_active":"perc-paging-number";
+            var clName = activePage === pages[i]?"paginate_active":"perc-paging-number";
             var pageNum = pageSpan.clone().text(pages[i]).addClass(clName).data("startIndex",((pages[i]-1)*pageSize)+1);
             pagedItems.append(pageNum);
             if(i<pages.length-1){
@@ -154,15 +154,15 @@
         
         var pagingBar = $("<div class='perc-paging-bar'/>");
         pagingBar.append(first).append("&nbsp;").append(prev).append("&nbsp;").append(pagedItems).append(next).append("&nbsp;").append(last);
-        pagingBar.find(".paginate_button").click(function(){
+        pagingBar.find(".paginate_button").on("click",function(){
             pagingCallback($(this).data("startIndex"));
         });
         pagingBar.find(".paginate_button").each(function(){
-           if($(this).data("startIndex") == (activePage-1)*pageSize + 1){
-               $(this).addClass("perc-disabled").unbind();
+           if($(this).data("startIndex") === (activePage-1)*pageSize + 1){
+               $(this).addClass("perc-disabled").off();
            }
         });
         
         $(this).append(pagingBar);       
-    }
+    };
 })(jQuery); 

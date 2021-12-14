@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -27,7 +27,6 @@ import com.percussion.auditlog.PSActionOutcome;
 import com.percussion.auditlog.PSAuditLogService;
 import com.percussion.auditlog.PSContentEvent;
 import com.percussion.cms.objectstore.IPSFieldValue;
-import com.percussion.cms.objectstore.PSBinaryValue;
 import com.percussion.cms.objectstore.PSComponentSummary;
 import com.percussion.cms.objectstore.PSCoreItem;
 import com.percussion.cms.objectstore.PSItemField;
@@ -35,7 +34,6 @@ import com.percussion.cms.objectstore.server.PSPurgableFileValue;
 import com.percussion.design.objectstore.PSContentTypeHelper;
 import com.percussion.design.objectstore.PSLocator;
 import com.percussion.design.objectstore.PSRelationshipConfig;
-import com.percussion.server.PSRequest;
 import com.percussion.services.contentmgr.IPSNodeDefinition;
 import com.percussion.services.legacy.IPSCmsObjectMgr;
 import com.percussion.servlets.PSSecurityFilter;
@@ -47,6 +45,7 @@ import com.percussion.share.data.IPSItemSummary;
 import com.percussion.share.data.PSItemSummaryUtils;
 import com.percussion.share.service.IPSDataItemSummaryService;
 import com.percussion.share.service.IPSIdMapper;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.util.PSPurgableTempFile;
 import com.percussion.util.PSSiteManageBean;
 import com.percussion.utils.exceptions.PSORMException;
@@ -55,8 +54,8 @@ import com.percussion.webservices.PSWebserviceUtils;
 import com.percussion.webservices.content.IPSContentDesignWs;
 import com.percussion.webservices.content.IPSContentWs;
 import com.percussion.webservices.system.IPSSystemWs;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.transaction.annotation.Transactional;
@@ -69,6 +68,7 @@ import java.util.List;
 import java.util.Map.Entry;
 
 import static com.percussion.share.dao.impl.PSLegacyExceptionUtils.convertException;
+import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static org.apache.commons.lang.StringUtils.isNotBlank;
 import static org.apache.commons.lang.Validate.isTrue;
@@ -97,6 +97,7 @@ public class PSContentItemDao implements IPSContentItemDao
     private IPSRelationshipCataloger relationshipHelper;
     private IPSSystemWs systemWs;
     private PSAuditLogService psAuditLogService=PSAuditLogService.getInstance();
+    private PSContentEvent psContentEvent;
 
 
     @Autowired
@@ -117,8 +118,7 @@ public class PSContentItemDao implements IPSContentItemDao
     }
     
 
-    public Collection<Integer> findAllItemIdsByType(String name)
-    {
+    public Collection<Integer> findAllItemIdsByType(String name) throws PSDataServiceException {
         List<IPSNodeDefinition> nodes = PSContentTypeHelper.loadNodeDefs(name);
         if (nodes.isEmpty())
             return new ArrayList<>();
@@ -130,12 +130,11 @@ public class PSContentItemDao implements IPSContentItemDao
         }
         catch (PSORMException e)
         {
-            throw new RuntimeException("failed to find item IDs by content type name: " + name, e);
+            throw new PSDataServiceException("failed to find item IDs by content type name: " + name, e);
         }
     }
     
-   public PSContentItem findItemByPath(String name, String folderPath)
-    {
+   public PSContentItem findItemByPath(String name, String folderPath) throws PSDataServiceException {
         notEmpty(name, "name");
         notEmpty(folderPath, "folderPath");
         
@@ -146,12 +145,12 @@ public class PSContentItemDao implements IPSContentItemDao
         }
         catch (Exception e)
         {
-            throw new RuntimeException("find item by path failed", convertException(e));
+            throw new PSDataServiceException("find item by path failed", convertException(e));
         }
     }
     
     
-    public IPSItemSummary addItemToPath(IPSItemSummary item, String folderPath) {
+    public IPSItemSummary addItemToPath(IPSItemSummary item, String folderPath) throws PSDataServiceException {
         try
         {
             folderHelper.addItem(folderPath, item.getId());
@@ -159,12 +158,11 @@ public class PSContentItemDao implements IPSContentItemDao
         }
         catch (Exception e)
         {
-            throw new RuntimeException("Trying to add item to the folder failed", convertException(e));
+            throw new PSDataServiceException("Trying to add item to the folder failed", convertException(e));
         }
     }
     
-    public void removeItemFromPath(IPSItemSummary item, String folderPath)
-    {
+    public void removeItemFromPath(IPSItemSummary item, String folderPath) throws PSDataServiceException {
         notNull(item, "item");
         notNull(folderPath, "folderPath");
         notEmpty(folderPath, "folderPath");
@@ -175,12 +173,11 @@ public class PSContentItemDao implements IPSContentItemDao
         }
         catch (Exception e)
         {
-            throw new RuntimeException("Trying to remove item from the folder failed", convertException(e));
+            throw new PSDataServiceException("Trying to remove item from the folder failed", convertException(e));
         }
     }
     
-    public PSContentItem findItemByPath(String fullPath)
-    {
+    public PSContentItem findItemByPath(String fullPath) throws PSDataServiceException {
         notNull(fullPath, "fullPath");
         try
         {
@@ -192,14 +189,14 @@ public class PSContentItemDao implements IPSContentItemDao
         }
         catch (Exception e)
         {
-            throw new RuntimeException(convertException(e));
+            throw new PSDataServiceException(convertException(e));
         }
     }
 
     public void validateDelete(String id, Errors errors) {
         IPSGuid guid = idMapper.getGuid(id);
         PSComponentSummary compSumry = cmsObjectMgr.loadComponentSummary(guid.getUUID());
-        String userName;
+        String userName = "";
         if (compSumry != null)
         {
             PSLocator locator = compSumry.getEditLocator();
@@ -217,7 +214,7 @@ public class PSContentItemDao implements IPSContentItemDao
         }
     }
     
-    public void revisionControlOn(String id) {
+    public void revisionControlOn(String id) throws LoadException {
         notEmpty(id);
         IPSGuid guid = idMapper.getGuid(id);
         try
@@ -238,7 +235,7 @@ public class PSContentItemDao implements IPSContentItemDao
          * do not update (you can't turn of revisioning right now).
          */
         PSLocator locator = idMapper.getLocator(guid);
-        int contentId = locator.getId();
+        Integer contentId = locator.getId();
         PSComponentSummary sum = cmsObjectMgr.loadComponentSummary(contentId);
         if ( ! sum.isRevisionLock() ) {
             log.debug("Turning revision lock on for item: " + contentId);
@@ -254,7 +251,6 @@ public class PSContentItemDao implements IPSContentItemDao
         String uid=guid.toString();
         String path="";
         String substring="";
-        PSContentEvent psContentEvent;
         try
         {
             try{
@@ -264,35 +260,31 @@ public class PSContentItemDao implements IPSContentItemDao
             catch (Exception e){
                //Just catching exception in case path is not working
             }
-            contentWs.deleteItems(singletonList(guid));
+            contentWs.deleteItems(asList(guid));
 
 
 
              substring = uid.substring(uid.lastIndexOf("-") + 1, id.length());
-            PSRequest req = PSSecurityFilter.getCurrentRequest();
-            if(req != null) {
-                psContentEvent = new PSContentEvent(id, substring, path, PSContentEvent.ContentEventActions.delete, PSSecurityFilter.getCurrentRequest().getServletRequest(), PSActionOutcome.SUCCESS);
-                psAuditLogService.logContentEvent(psContentEvent);
-            }
+            psContentEvent=new PSContentEvent(id, substring,path, PSContentEvent.ContentEventActions.delete, PSSecurityFilter.getCurrentRequest().getServletRequest(), PSActionOutcome.SUCCESS);
+            psAuditLogService.logContentEvent(psContentEvent);
         }
         catch (Exception e)
         {
-            PSRequest req = PSSecurityFilter.getCurrentRequest();
-            if(req != null) {
-                psContentEvent = new PSContentEvent(id, substring, path, PSContentEvent.ContentEventActions.delete, req.getServletRequest(), PSActionOutcome.FAILURE);
-                psAuditLogService.logContentEvent(psContentEvent);
-            }
+            psContentEvent=new PSContentEvent(id,substring,path, PSContentEvent.ContentEventActions.delete, PSSecurityFilter.getCurrentRequest().getServletRequest(), PSActionOutcome.FAILURE);
+            psAuditLogService.logContentEvent(psContentEvent);
             throw new DeleteException(convertException(e));
         }
     }
 
-    public PSContentItem find(String id) throws com.percussion.share.dao.IPSGenericDao.LoadException
-    {
-        return find(id, false);
+    public PSContentItem find(String id) throws com.percussion.share.dao.IPSGenericDao.LoadException{
+        try {
+            return find(id, false);
+        } catch (PSDataServiceException e) {
+            throw new LoadException(e);
+        }
     }
         
-    public PSContentItem find(String id, boolean isSummary) throws com.percussion.share.dao.IPSGenericDao.LoadException
-    {
+    public PSContentItem find(String id, boolean isSummary) throws PSDataServiceException {
         notNull(id, "id");
         IPSItemSummary itemSummary = itemSummaryService.find(id);
         if (itemSummary == null) return null;
@@ -300,11 +292,7 @@ public class PSContentItemDao implements IPSContentItemDao
         List<Node> nodes;
         try
         {
-            nodes = contentDesignWs.findNodesByIds(singletonList(guid), isSummary);
-        }
-        catch (OutOfMemoryError e)
-        {
-            throw new LoadException(e);
+            nodes = contentDesignWs.findNodesByIds(asList(guid), isSummary);
         }
         catch (Exception e)
         {
@@ -333,10 +321,9 @@ public class PSContentItemDao implements IPSContentItemDao
         throw new UnsupportedOperationException("findAll is not yet supported");
     }
 
-    public PSContentItem save(PSContentItem contentItem) throws com.percussion.share.dao.IPSGenericDao.SaveException
-    {
-        if (log.isDebugEnabled())
-            log.debug("Saving object: " + contentItem);
+    public PSContentItem save(PSContentItem contentItem) throws com.percussion.share.dao.IPSGenericDao.SaveException, DeleteException {
+
+        log.debug("Saving object: {}" , contentItem);
         
         boolean isNew = false;
         String id = null;
@@ -352,60 +339,49 @@ public class PSContentItemDao implements IPSContentItemDao
             else {
                 IPSGuid guid = idMapper.getGuid(contentItem.getId());
                 guid = contentDesignWs.getItemGuid(guid);
-                List<PSCoreItem> items = contentWs.loadItems(singletonList(guid),
+                List<PSCoreItem> items = contentWs.loadItems(asList(guid), 
                         true, false, false, true);
                 notEmpty(items);
                 coreItem = items.get(0);
             }
 
-            //coreItem.setFolderPaths(paths);
             for (Entry<String, Object> nvp : contentItem.getFields().entrySet()) {
                 PSItemField f = coreItem.getFieldByName(nvp.getKey());
                 Object value = nvp.getValue();
                 if (f != null) {
-                    if (value == null && !f.getItemFieldMeta().isBinary()) {
-                        f.clearValues();
-                    } else if (value == null && f.getItemFieldMeta().isBinary()){
-                        //Handle case where binary is not included in the edit post
-                        value = f.getValue();
-                    }
-
-                    IPSFieldValue fv;
-                    if ( value instanceof PSPurgableTempFile )
-                    {
-                        fv = new PSPurgableFileValue((PSPurgableTempFile) value);
-                        f.addValue(fv);
-                    }else if(value instanceof PSBinaryValue){
-                        fv =  (PSBinaryValue) value;
-                        f.addValue(fv);
-                    }
-                    else if(value instanceof List)
-                    {
-                        f.clearValues();
-                       List<String> values  = (List<String>) value;
-                       for(String val : values)
-                       {
-                          fv = f.createFieldValue(val);
-                          f.addValue(fv);
-                       }
-                    }
-                    else if (value instanceof Long)
-                    {
-                        fv = f.createFieldValue(Long.toString((Long)value));
-                        f.addValue(fv);
-                    }
-                    else if (value instanceof Integer)
-                    {
-                        fv = f.createFieldValue(Integer.toString((Integer)value));
-                        f.addValue(fv);
-                    }
-                    else
-                    {
-                        if(value!=null) {
-                            fv = f.createFieldValue((String) value);
-                            f.addValue(fv);
+                    //CMS-7974 : For file type asset. The value if null was giving attachment not found validation error.
+                    if (value == null) {
+                        if(f !=null && f.getItemFieldMeta()!=null && f.getItemFieldMeta().isBinary()){
+                            value = f.getValue();
                         }else{
                             f.clearValues();
+                        }
+                    } else {
+                        IPSFieldValue fv;
+                        f.clearValues();
+                        if (value instanceof PSPurgableTempFile) {
+                            fv = new PSPurgableFileValue((PSPurgableTempFile) value);
+                            f.addValue(fv);
+                        } else if (value instanceof List) {
+                            @SuppressWarnings("unchecked")
+                            List<String> values = (List<String>) value;
+                            for (String val : values) {
+                                fv = f.createFieldValue(val);
+                                f.addValue(fv);
+                            }
+                        } else if (value instanceof Long) {
+                            fv = f.createFieldValue(Long.toString((Long) value));
+                            f.addValue(fv);
+                        } else if (value instanceof Integer) {
+                            fv = f.createFieldValue(Integer.toString((Integer) value));
+                            f.addValue(fv);
+                        } else {
+                            if (value != null) {
+                                fv = f.createFieldValue((String) value);
+                                f.addValue(fv);
+                            } else {
+                                f.clearValues();
+                            }
                         }
                     }
                 }
@@ -418,7 +394,7 @@ public class PSContentItemDao implements IPSContentItemDao
             {
                 folderId = contentWs.getIdByPath(paths.get(0));
             }
-
+                        
             IPSGuid guid = contentWs.saveItems(singletonList(coreItem), false, false, folderId).get(0);
             id = idMapper.getString(guid);
             
@@ -466,5 +442,5 @@ public class PSContentItemDao implements IPSContentItemDao
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log log = LogFactory.getLog(PSContentItemDao.class);
+    private static final Logger log = LogManager.getLogger(PSContentItemDao.class);
 }

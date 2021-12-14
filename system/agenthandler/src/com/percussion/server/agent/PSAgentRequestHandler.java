@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -31,26 +31,23 @@ import com.percussion.server.PSRequest;
 import com.percussion.server.PSResponse;
 import com.percussion.server.PSServer;
 import com.percussion.tools.Base64;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.DocumentBuilder;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
-
-import javax.xml.parsers.DocumentBuilder;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 
 /**
  * Class to handle the agent HTTP requests from the clients. Standard
@@ -229,7 +226,7 @@ public class PSAgentRequestHandler implements IPSLoadableRequestHandler
             return;
          }
 
-         HashMap map = request.getParameters();
+         Map<String, Object> map = request.getParameters();
 
          /* This is not exactly right error since the map is NULL. However it
           * is not unreasonable to say editionid is not specified when the map
@@ -346,19 +343,20 @@ public class PSAgentRequestHandler implements IPSLoadableRequestHandler
          )
       {
          URL styleSheetURL = null;
-         try
-         {
+         try {
             //No caching of the style sheet. Can be a future task.
             styleSheetURL = new URL("file:" + handlerResponse.getStyleSheet());
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            new PSXslStyleSheetMerger().merge(
-               request,
-               handlerResponse.getDocument(),
-               out,
-               styleSheetURL,
-               null);
-            request.getResponse().setContent(new ByteArrayInputStream(
-               out.toByteArray()), out.size(), "text/html");
+            try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+               new PSXslStyleSheetMerger().merge(
+                       request,
+                       handlerResponse.getDocument(),
+                       out,
+                       styleSheetURL,
+                       null);
+               try(InputStream io = new ByteArrayInputStream(out.toByteArray())) {
+                  request.getResponse().setContent(io, out.size(), "text/html");
+               }
+            }
          }
          /* Can throw MalformedURLException, PSUnsupportedConversionException
           * or PSConversionException

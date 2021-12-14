@@ -17,18 +17,29 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.util;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import com.percussion.error.PSExceptionUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.util.Map;
+import java.util.Vector;
 
 /**
  * The CommentedProperties class is an extension of java.util.Properties
@@ -41,7 +52,7 @@ import java.util.*;
  */
 public class PSProperties extends java.util.Properties {
 
-    private static final Log log = LogFactory.getLog(PSProperties.class);
+    private static final Logger log = LogManager.getLogger(PSProperties.class);
 
     /**
      * Constant for the name of the config file containing name/value pairs for
@@ -170,14 +181,11 @@ public class PSProperties extends java.util.Properties {
                 file = new File(dir, property);
             }
 
-        }
-        catch(FileNotFoundException e)
+        } catch(IOException e)
         {
-            log.error("Util", e);
-        }
-        catch(IOException e)
-        {
-            log.error("Util", e);
+            log.error("Util, Error: {}",
+                    PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
         return file;
     }
@@ -217,7 +225,7 @@ public class PSProperties extends java.util.Properties {
                 // Try to short-circuit when there is no escape char.
                 int start = pos;
                 boolean needsEscape = line.indexOf('\\', pos) != -1;
-                StringBuffer key = needsEscape ? new StringBuffer() : null;
+                StringBuilder key = needsEscape ? new StringBuilder() : null;
 
                 while (pos < line.length()
                         && !Character.isWhitespace(c = line.charAt(pos++))
@@ -291,7 +299,7 @@ public class PSProperties extends java.util.Properties {
                 }
 
                 // Escape char found so iterate through the rest of the line.
-                StringBuffer element = new StringBuffer(line.length() - pos);
+                StringBuilder element = new StringBuilder(line.length() - pos);
                 while (pos < line.length()) {
                     c = line.charAt(pos++);
                     if (c == '\\') {
@@ -367,7 +375,7 @@ public class PSProperties extends java.util.Properties {
 
         String line;
         String key;
-        StringBuffer s = new StringBuffer ();
+        StringBuilder s = new StringBuilder ();
 
         for (int i=0; i<lineData.size(); i++) {
             line = (String) lineData.get(i);
@@ -389,14 +397,14 @@ public class PSProperties extends java.util.Properties {
 
     /**
      * Need this method from Properties because original code has StringBuilder,
-     * which is an element of Java 1.5, used StringBuffer instead (because
+     * which is an element of Java 1.5, used StringBuilder instead (because
      * this code was written for Java 1.4)
      *
      * @param str	- the string to format
      * @param buffer - buffer to hold the string
      * @param key	- true if str the key is formatted, false if the value is formatted
      */
-    private void formatForOutput(String str, StringBuffer buffer, boolean key)
+    private void formatForOutput(String str, StringBuilder buffer, boolean key)
     {
         if (key) {
             buffer.setLength(0);

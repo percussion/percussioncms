@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -40,7 +40,7 @@
 
 (function($)
 {
-    $(document).ready(function(){
+    $(function(){
         $.PercBlogListView.updatePageLists();
     });
     $.PercBlogListView = {
@@ -82,7 +82,7 @@
 
             this.settings.query.criteria = [];
 
-            $.extend(this.settings, $.parseJSON($(this).attr('data-query')));
+            $.extend(this.settings, JSON.parse($(this).attr('data-query')));
 
             this.settings.query = $.extend(true, {}, this.settings.query); // Prevents overwrite of anything, but initializes it if it doesn't exist already.
 
@@ -155,7 +155,15 @@
         target.settings.query.maxResults = target.settings.maxResults;
         target.settings.query.totalMaxResults = target.settings.totalMaxResults;
         target.settings.query.startIndex = (target.settings.maxResults*(startPage - 1));
-        target.settings.baseURL = window.location.protocol + '//' + window.location.host + window.location.pathname
+        //Set the base URL to create the href for each item then
+        var baseURL = "";
+        if(target.settings.isEditMode === "true" || target.settings.isPreviewMode === "true"){
+            var paths = window.location.pathname.split("/");
+            baseURL = "/" + paths[1] + "/" + paths[2];
+        }else{
+            baseURL = window.location.protocol + '//' + window.location.host;
+        }
+        target.settings.baseURL = baseURL + window.location.pathname;
 
         // Adding the filters from the query
         var urlstring = $.deparam.querystring();
@@ -164,7 +172,7 @@
         {
             try
             {
-                var obj = $.parseJSON(urlstring.query);
+                var obj = JSON.parse(urlstring.query);
                 $.map(obj.criteria, function(n, i){
                     if ($.inArray(n, target.settings.query.criteria) === -1)
                     {
@@ -243,9 +251,9 @@
         {
             try
             {
-                $.parseJSON(urlstring.query);
+                JSON.parse(urlstring.query);
 
-                var objData = $.parseJSON(currentBlogList.attr("data-title"));
+                var objData = JSON.parse(currentBlogList.attr("data-title"));
 
                 currentBlogList.parent().find(".perc-result-divider").remove();
                 currentBlogList.parent().find(".perc-bloglist-result-container").remove();

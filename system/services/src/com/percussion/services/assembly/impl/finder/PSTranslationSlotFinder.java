@@ -17,16 +17,11 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.services.assembly.impl.finder;
-
-import static com.percussion.services.assembly.impl.finder.PSContentFinderUtils.getLocale;
-import static com.percussion.services.assembly.impl.finder.PSContentFinderUtils.getValue;
-import static com.percussion.services.assembly.impl.finder.PSContentFinderUtils.reorderItems;
-import static com.percussion.services.assembly.impl.finder.PSContentFinderUtils.setSiteFolderId;
 
 import com.percussion.cms.PSCmsException;
 import com.percussion.cms.objectstore.PSRelationshipFilter;
@@ -35,24 +30,29 @@ import com.percussion.design.objectstore.PSLocator;
 import com.percussion.design.objectstore.PSRelationship;
 import com.percussion.design.objectstore.PSRelationshipConfig;
 import com.percussion.design.objectstore.PSRelationshipSet;
-import com.percussion.server.PSRequest;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.services.assembly.IPSAssemblyErrors;
 import com.percussion.services.assembly.IPSAssemblyItem;
 import com.percussion.services.assembly.IPSTemplateSlot;
 import com.percussion.services.assembly.PSAssemblyException;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.IPSGuidManager;
 import com.percussion.services.guidmgr.PSGuidManagerLocator;
 import com.percussion.services.guidmgr.data.PSLegacyGuid;
 import com.percussion.services.sitemgr.PSSiteManagerException;
 import com.percussion.utils.guid.IPSGuid;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import static com.percussion.services.assembly.impl.finder.PSContentFinderUtils.getLocale;
+import static com.percussion.services.assembly.impl.finder.PSContentFinderUtils.getValue;
+import static com.percussion.services.assembly.impl.finder.PSContentFinderUtils.reorderItems;
+import static com.percussion.services.assembly.impl.finder.PSContentFinderUtils.setSiteFolderId;
 
 /**
  * Find the items related to the source by a translation relationship
@@ -61,7 +61,7 @@ import org.apache.commons.logging.LogFactory;
  */
 public class PSTranslationSlotFinder extends PSSlotContentFinderBase
 {
-   private static Log ms_log = LogFactory.getLog(PSTranslationSlotFinder.class);
+   private static final Logger ms_log = LogManager.getLogger(PSTranslationSlotFinder.class);
 
    @Override
    protected Set<ContentItem> getContentItems(IPSAssemblyItem sourceItem,
@@ -105,7 +105,7 @@ public class PSTranslationSlotFinder extends PSSlotContentFinderBase
    private Set<ContentItem> assumeChild(IPSAssemblyItem sourceItem)
          throws PSAssemblyException
    {
-      Set<ContentItem> rval = new HashSet<ContentItem>();
+      Set<ContentItem> rval = new HashSet<>();
       IPSGuidManager gmgr = PSGuidManagerLocator.getGuidMgr();
       try
       {
@@ -147,7 +147,7 @@ public class PSTranslationSlotFinder extends PSSlotContentFinderBase
             }
          }
       }
-      catch (PSCmsException e)
+      catch (PSCmsException | PSNotFoundException e)
       {
          ms_log.error("Problem retrieving relationship information", e);
          throw new PSAssemblyException(IPSAssemblyErrors.FINDER_ERROR,
@@ -175,7 +175,7 @@ public class PSTranslationSlotFinder extends PSSlotContentFinderBase
    private Set<ContentItem> assumeParent(IPSAssemblyItem sourceItem)
          throws PSAssemblyException
    {
-      Set<ContentItem> rval = new HashSet<ContentItem>();
+      Set<ContentItem> rval = new HashSet<>();
       IPSGuidManager gmgr = PSGuidManagerLocator.getGuidMgr();
       try
       {
@@ -198,7 +198,13 @@ public class PSTranslationSlotFinder extends PSSlotContentFinderBase
             PSRelationship rel = (PSRelationship) relationships.get(i);
             IPSGuid childguid = gmgr.makeGuid(rel.getDependent());
             ContentItem slotItem = new ContentItem(childguid, null, 0);
-            setSiteFolderId(slotItem, false);
+
+            try {
+               setSiteFolderId(slotItem, false);
+            } catch (PSNotFoundException e) {
+               ms_log.warn(PSExceptionUtils.getMessageForLog(e));
+               //continue processing
+            }
             rval.add(slotItem);
          }
 

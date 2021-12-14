@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -29,14 +29,24 @@ import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.content.IPSContentErrors;
 import com.percussion.services.content.IPSContentService;
 import com.percussion.services.content.PSContentException;
-import com.percussion.services.content.data.*;
+import com.percussion.services.content.data.PSAutoTranslation;
+import com.percussion.services.content.data.PSAutoTranslationPK;
+import com.percussion.services.content.data.PSFolderProperty;
+import com.percussion.services.content.data.PSKeyword;
+import com.percussion.services.content.data.PSKeywordChoice;
 import com.percussion.services.guidmgr.IPSGuidManager;
 import com.percussion.services.guidmgr.PSGuidManagerLocator;
 import com.percussion.services.guidmgr.data.PSGuid;
 import com.percussion.services.utils.xml.PSXmlSerializationHelper;
 import com.percussion.utils.guid.IPSGuid;
 import org.apache.commons.lang.StringUtils;
-import org.hibernate.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.transaction.annotation.Transactional;
@@ -51,6 +61,9 @@ import java.util.List;
 public class PSContentService
    implements IPSContentService
 {
+
+   private static final Logger log = LogManager.getLogger(PSContentService.class);
+
    private SessionFactory sessionFactory;
 
    public SessionFactory getSessionFactory() {
@@ -313,7 +326,7 @@ public class PSContentService
       String sortProperty)
    {
 
-         List<PSKeywordChoice> choiceList = new ArrayList<PSKeywordChoice>();
+         List<PSKeywordChoice> choiceList = new ArrayList<>();
          
          //only look for choices if it is a keyword
          if (keyword.getKeywordType().equals(PSKeyword.KEYWORD_TYPE))
@@ -442,7 +455,7 @@ public class PSContentService
     */
    private List<PSKeyword> filterKeywordExcludes(List<PSKeyword> keywords)
    {
-      List<PSKeyword> filteredKeywords = new ArrayList<PSKeyword>(keywords);
+      List<PSKeyword> filteredKeywords = new ArrayList<>(keywords);
       
       for (PSKeyword keyword : keywords)
       {
@@ -465,7 +478,7 @@ public class PSContentService
     * types.
     */
    private static final List<IPSGuid> ms_keywordExcludes = 
-      new ArrayList<IPSGuid>();
+      new ArrayList<>();
    
    static
    {
@@ -492,8 +505,8 @@ public class PSContentService
    @SuppressWarnings("unchecked")
    public List<PSFolderProperty>  getFolderProperties(String property) {
       Session session = sessionFactory.getCurrentSession();
-      List<PSFolderProperty> pSFolderPropertyList = new ArrayList<PSFolderProperty>();
-      List<Object[]> list = new ArrayList<Object[]>();
+      List<PSFolderProperty> pSFolderPropertyList = new ArrayList<>();
+      List<Object[]> list = new ArrayList<>();
       
       try
       {
@@ -510,7 +523,8 @@ public class PSContentService
         list = result.list();
         
       } catch(HibernateException he){
-         he.printStackTrace();
+         log.error(he.getMessage());
+         log.debug(he.getMessage(), he);
       }
 
       for(Object[] o : list){

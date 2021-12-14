@@ -17,16 +17,16 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.pagemanagement.service.impl;
 
 
-import static com.percussion.share.spring.PSSpringWebApplicationContextUtils.getWebApplicationContext;
-
+import com.percussion.assetmanagement.service.IPSWidgetAssetRelationshipService;
 import com.percussion.assetmanagement.service.impl.PSWidgetAssetRelationshipService;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.itemmanagement.service.IPSItemWorkflowService;
 import com.percussion.itemmanagement.service.impl.PSItemWorkflowService;
 import com.percussion.pagemanagement.data.PSPageChangeEvent;
@@ -37,20 +37,21 @@ import com.percussion.services.legacy.IPSCmsObjectMgrInternal;
 import com.percussion.services.legacy.PSCmsObjectMgrLocator;
 import com.percussion.services.notification.IPSNotificationService;
 import com.percussion.services.notification.PSNotificationEvent;
-import com.percussion.services.notification.PSNotificationServiceLocator;
 import com.percussion.services.notification.PSNotificationEvent.EventType;
+import com.percussion.services.notification.PSNotificationServiceLocator;
 import com.percussion.share.dao.IPSContentItemDao;
 import com.percussion.share.dao.impl.PSContentItem;
-import com.percussion.share.dao.impl.PSContentItemDao;
+import com.percussion.share.service.exception.PSDataServiceException;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import static com.percussion.share.spring.PSSpringWebApplicationContextUtils.getWebApplicationContext;
 
 /**
  * This class implements the {@link IPSPageChangeListener} interface and gets
@@ -61,8 +62,7 @@ import org.apache.commons.logging.LogFactory;
  */
 public class PSPageChangeHandler implements IPSPageChangeListener
 {
-
-    private IPSCmsObjectMgrInternal m_cmsObjectMgr = (IPSCmsObjectMgrInternal) PSCmsObjectMgrLocator.getObjectManager();;
+    private IPSCmsObjectMgrInternal m_cmsObjectMgr = (IPSCmsObjectMgrInternal) PSCmsObjectMgrLocator.getObjectManager();
     public PSPageChangeHandler()
     {
  
@@ -120,7 +120,8 @@ public class PSPageChangeHandler implements IPSPageChangeListener
               	 throw new Exception("Unable to find Asset with id " + itemId);
                }
 	       }catch(Exception e){
-	    	   log.error("Error while finding the Asset with the itemId " + itemId  + " in pageChanged Event Handler.",e);
+	    	   log.error("Error while finding the Asset with the itemId {} in pageChanged Event Handler.  Error: {}",itemId,e.getMessage());
+	    	   log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 	       }
        }
        
@@ -137,9 +138,15 @@ public class PSPageChangeHandler implements IPSPageChangeListener
        if(asset!=null)
           updateAuthor(page, asset);
        updateSummary(page);
-       PSNotificationEvent notifyEvent = new PSNotificationEvent(EventType.PAGE_SAVED, page.getId());
-       IPSNotificationService srv = PSNotificationServiceLocator.getNotificationService();
-       srv.notifyEvent(notifyEvent);
+       if(page.isPage()) {
+           PSNotificationEvent notifyEvent = new PSNotificationEvent(EventType.PAGE_SAVED, page.getId());
+           IPSNotificationService srv = PSNotificationServiceLocator.getNotificationService();
+           srv.notifyEvent(notifyEvent);
+       }else{
+           PSNotificationEvent notifyEvent = new PSNotificationEvent(EventType.TEMPLATE_SAVED, page.getId());
+           IPSNotificationService srv = PSNotificationServiceLocator.getNotificationService();
+           srv.notifyEvent(notifyEvent);
+       }
    }
    
     /**
@@ -150,37 +157,42 @@ public class PSPageChangeHandler implements IPSPageChangeListener
      */
     private void updateBlogPostWidgetTitle(PSContentItem page)
     {
-        // get all the local assets and retrieve them to see their types
-        Set<String> assets = widgetAssetRelationshipService.getLocalAssets(page.getId());
-        IPSItemWorkflowService workFlowService = (PSItemWorkflowService) getWebApplicationContext()
-        .getBean("workflowRestService");
+        try {
+            // get all the local assets and retrieve them to see their types
+            Set<String> assets = widgetAssetRelationshipService.getLocalAssets(page.getId());
+            IPSItemWorkflowService workFlowService = (PSItemWorkflowService) getWebApplicationContext()
+                    .getBean("workflowRestService");
 
-        if(assets != null)
-        {
-            for(String assetId : assets)
-            {
-                PSContentItem asset = contentItemDao.find(assetId);
-                if(BLOG_POST_ASSET_TYPE.equals(asset.getType()))
-                {
-                    Map pageFields = page.getFields();
-                    String pageTitle = (String) pageFields.get(PAGE_LINK_TEXT_FIELD_NAME);
-                    
-                    Map assetFields = asset.getFields();
-                    if(assetFields.containsKey(BLOG_POST_WIDGET_TITLE))
-                    {
-                        assetFields.put(BLOG_POST_WIDGET_TITLE, pageTitle);
-                        
-                        if (!workFlowService.isCheckedOutToCurrentUser(asset.getId()))
-                        {
-                            workFlowService.checkOut(asset.getId());
+            if (assets != null) {
+                for (String assetId : assets) {
+                    try {
+                        PSContentItem asset = contentItemDao.find(assetId);
+                        if (BLOG_POST_ASSET_TYPE.equals(asset.getType())) {
+                            Map<String,Object> pageFields = page.getFields();
+                            String pageTitle = (String) pageFields.get(PAGE_LINK_TEXT_FIELD_NAME);
+
+                            Map<String,Object> assetFields = asset.getFields();
+                            if (assetFields.containsKey(BLOG_POST_WIDGET_TITLE)) {
+                                assetFields.put(BLOG_POST_WIDGET_TITLE, pageTitle);
+
+                                if (!workFlowService.isCheckedOutToCurrentUser(asset.getId())) {
+                                    workFlowService.checkOut(asset.getId());
+                                }
+
+                                contentItemDao.save(asset);
+                            }
+
+                            break;
                         }
-                        
-                        contentItemDao.save(asset);
+                    } catch (PSDataServiceException | IPSItemWorkflowService.PSItemWorkflowServiceException e) {
+                        log.warn("Error updating Linked Title. Error:{}",PSExceptionUtils.getMessageForLog(e));
+                        log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                     }
-                    
-                    break;
                 }
             }
+        } catch (IPSWidgetAssetRelationshipService.PSWidgetAssetRelationshipServiceException e) {
+            log.warn("Error updating Linked Title. Error:{}",PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
     }
 
@@ -192,47 +204,45 @@ public class PSPageChangeHandler implements IPSPageChangeListener
     * @param page
     * @param assetId
     */
-   @SuppressWarnings("unchecked")
    private void updateLinkText(PSContentItem page, PSContentItem assetId)
    {
-       String assetType = assetId.getType();
+       try {
+           String assetType = assetId.getType();
 
-       // Story 353: the blog post asset title and the page title should sync
-       if(assetType.equalsIgnoreCase(BLOG_POST_ASSET_TYPE))
-       {
-           Map assetFields = assetId.getFields();
-           String assetTitle = (String) assetFields.get(BLOG_POST_WIDGET_TITLE);
-           
-           Map pageFields = page.getFields();
-           if(pageFields.containsKey(PAGE_LINK_TEXT_FIELD_NAME))
-           {
-              pageFields.put(PAGE_LINK_TEXT_FIELD_NAME, assetTitle);
-              contentItemDao.save(page);
-           }
-       }
-       else if(assetType.equalsIgnoreCase(TITLE_WIDGET_TYPE))
-       {
-           Map assetFields = assetId.getFields();
-           String syncValue = (String) assetFields.get(TITLE_WIDGET_SYNC_FIELD_NAME);
-           if(syncValue == null || !syncValue.equals(TITLE_WIDGET_SYNC)) 
+           // Story 353: the blog post asset title and the page title should sync
+           if (assetType.equalsIgnoreCase(BLOG_POST_ASSET_TYPE)) {
+               Map<String, Object> assetFields = assetId.getFields();
+               String assetTitle = (String) assetFields.get(BLOG_POST_WIDGET_TITLE);
+
+               Map<String, Object> pageFields = page.getFields();
+               if (pageFields.containsKey(PAGE_LINK_TEXT_FIELD_NAME)) {
+                   pageFields.put(PAGE_LINK_TEXT_FIELD_NAME, assetTitle);
+                   contentItemDao.save(page);
+               }
+           } else if (assetType.equalsIgnoreCase(TITLE_WIDGET_TYPE)) {
+               Map<String, Object> assetFields = assetId.getFields();
+               String syncValue = (String) assetFields.get(TITLE_WIDGET_SYNC_FIELD_NAME);
+               if (syncValue == null || !syncValue.equals(TITLE_WIDGET_SYNC))
+                   return;
+
+               String assetTitle = (String) assetFields.get(TITLE_WIDGET_TITLE_FIELD_NAME);
+               Map<String, Object> pageFields = page.getFields();
+               if (pageFields.containsKey(PAGE_LINK_TEXT_FIELD_NAME)) {
+                   pageFields.put(PAGE_LINK_TEXT_FIELD_NAME, assetTitle);
+                   contentItemDao.save(page);
+                   contentItemDao.delete(assetId.getId());
+               }
+
+               // We could have the case of a title widget together width a blog post widget
+               // so we need to keep the sync between 3 fields
+               updateBlogPostWidgetTitle(page);
+           } else {
+               // just return if this is not a title widget or a blog post widget
                return;
-           
-           String assetTitle = (String) assetFields.get(TITLE_WIDGET_TITLE_FIELD_NAME);
-           Map pageFields = page.getFields();
-           if(pageFields.containsKey(PAGE_LINK_TEXT_FIELD_NAME))
-           {
-               pageFields.put(PAGE_LINK_TEXT_FIELD_NAME, assetTitle);
-               contentItemDao.save(page);
-               contentItemDao.delete(assetId.getId());
            }
-           
-           // We could have the case of a title widget together width a blog post widget
-           // so we need to keep the sync between 3 fields
-           updateBlogPostWidgetTitle(page);
-       }
-       else {
-           // just return if this is not a title widget or a blog post widget
-           return;
+       } catch (PSDataServiceException e) {
+           log.error(PSExceptionUtils.getMessageForLog(e));
+           log.debug(PSExceptionUtils.getDebugMessageForLog(e));
        }
    }
   
@@ -242,23 +252,27 @@ public class PSPageChangeHandler implements IPSPageChangeListener
     */
    private void updateSummary(PSContentItem page)
    {
-      Map pageFields = page.getFields();
-      String autoGen = (String) pageFields.get(PAGE_SUMMARY_GEN_FIELD_NAME);
-      if(autoGen == null || !autoGen.equals(AUTO_GENERATE_SUMMARY))
-         return;
-      String newSummary = generatePageSummary(page.getId());
-      if(pageFields.containsKey(PAGE_SUMMARY_FIELD_NAME))
-      {
-          //Update Content Post Date equals to first publish date in case postdate is set to null
-          Integer intg = (new Guid(page.getId())).getUuid();
-          Date postDate = m_cmsObjectMgr.getFirstPublishDate(intg);
-          if(page.getFields() != null && page.getFields().get("sys_contentpostdate") == null
-                && postDate!= null){
-              page.getFields().put("sys_contentpostdate",postDate.toString());
-          }
-         pageFields.put(PAGE_SUMMARY_FIELD_NAME, newSummary);
-         contentItemDao.save(page);
-      }
+       try {
+           Map<String, Object> pageFields = page.getFields();
+           String autoGen = (String) pageFields.get(PAGE_SUMMARY_GEN_FIELD_NAME);
+           if (autoGen == null || !autoGen.equals(AUTO_GENERATE_SUMMARY))
+               return;
+           String newSummary = generatePageSummary(page.getId());
+           if (pageFields.containsKey(PAGE_SUMMARY_FIELD_NAME)) {
+               //Update Content Post Date equals to first publish date in case postdate is set to null
+               Integer intg = (new Guid(page.getId())).getUuid();
+               Date postDate = m_cmsObjectMgr.getFirstPublishDate(intg);
+               if(page.getFields() != null && page.getFields().get("sys_contentpostdate") == null
+                       && postDate!= null){
+                   page.getFields().put("sys_contentpostdate",postDate.toString());
+               }
+               pageFields.put(PAGE_SUMMARY_FIELD_NAME, newSummary);
+               contentItemDao.save(page);
+           }
+       } catch (PSDataServiceException e) {
+           log.warn("Error update Page summary for Page: {} Error: {}",page.getId(),e.getMessage() );
+           log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+       }
    }
    
    /**
@@ -268,19 +282,22 @@ public class PSPageChangeHandler implements IPSPageChangeListener
     */
    private void updateAuthor(PSContentItem page, PSContentItem asset)
    {
-      String assetType = asset.getType();
-      if(authorSupportedTypes.containsKey(assetType))
-      {
-         Map assetFields = asset.getFields();
-         String authorFieldName = authorSupportedTypes.get(assetType);
-         String author = (String) assetFields.get(authorFieldName);
-         Map pageFields = page.getFields();
-         if(pageFields.containsKey(PAGE_AUTHOR_FIELD_NAME))
-         {
-            pageFields.put(PAGE_AUTHOR_FIELD_NAME, author);
-            contentItemDao.save(page);
-         }
-      }
+       try {
+           String assetType = asset.getType();
+           if (authorSupportedTypes.containsKey(assetType)) {
+               Map<String,Object> assetFields = asset.getFields();
+               String authorFieldName = authorSupportedTypes.get(assetType);
+               String author = (String) assetFields.get(authorFieldName);
+               Map<String,Object> pageFields = page.getFields();
+               if (pageFields.containsKey(PAGE_AUTHOR_FIELD_NAME)) {
+                   pageFields.put(PAGE_AUTHOR_FIELD_NAME, author);
+                   contentItemDao.save(page);
+               }
+           }
+       } catch (PSDataServiceException e) {
+           log.warn("Error update Author for Page: {} Error: {}",page.getId(),e.getMessage());
+           log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+       }
    }
    /**
     * Helper method that generates the page summary. Gets local assets and shared assets of the page and from the first 
@@ -289,26 +306,36 @@ public class PSPageChangeHandler implements IPSPageChangeListener
     */
    private String generatePageSummary(String pageId)
    {
-      String summary = "";
-      Set<String> assetIds = widgetAssetRelationshipService.getLocalAssets(pageId);
-      assetIds.addAll(widgetAssetRelationshipService.getSharedAssets(pageId));
-      for(String assetId : assetIds)
-      {
-         PSContentItem asset = contentItemDao.find(assetId,false);
-         //If the asset exists and its type is a more link supported type then get extract the summary. 
-         if(asset!=null && moreLinkSupportTypes.containsKey(asset.getType()))
-         {
-            Map assetFields = asset.getFields();
-            String text = (String) assetFields.get(moreLinkSupportTypes.get(asset.getType()));
-            int moreIndex = StringUtils.indexOf(text, MORE_LINK_TEXT);
-            if(moreIndex != -1)
-            {
-               summary = text.substring(0,moreIndex + MORE_LINK_TEXT.length()); 
-               break;
-            }
-         }
-      }
-      return summary;
+       String summary = "";
+
+       try {
+
+           Set<String> assetIds = widgetAssetRelationshipService.getLocalAssets(pageId);
+           assetIds.addAll(widgetAssetRelationshipService.getSharedAssets(pageId));
+           for (String assetId : assetIds) {
+               try {
+                   PSContentItem asset = contentItemDao.find(assetId, false);
+                   //If the asset exists and its type is a more link supported type then get extract the summary.
+                   if (asset != null && moreLinkSupportTypes.containsKey(asset.getType())) {
+                       Map<String, Object> assetFields = asset.getFields();
+                       String text = (String) assetFields.get(moreLinkSupportTypes.get(asset.getType()));
+                       int moreIndex = StringUtils.indexOf(text, MORE_LINK_TEXT);
+                       if (moreIndex != -1) {
+                           summary = text.substring(0, moreIndex + MORE_LINK_TEXT.length());
+                           break;
+                       }
+                   }
+               } catch (PSDataServiceException e) {
+                   log.warn(PSExceptionUtils.getMessageForLog(e));
+                   log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+               }
+           }
+       } catch (IPSWidgetAssetRelationshipService.PSWidgetAssetRelationshipServiceException e) {
+          log.warn("Error generating Page summary for Page: {} Error: {}",pageId,e.getMessage());
+          log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+       }
+       return summary;
+
    }
 
    //Initialized on the first call to the #pageChanged() method. 
@@ -338,14 +365,14 @@ public class PSPageChangeHandler implements IPSPageChangeListener
    /**
     * A map of content type name and a more link capable field name.
     */
-   private static Map<String, String> moreLinkSupportTypes = new HashMap<String, String>();
+   private static Map<String, String> moreLinkSupportTypes = new HashMap<>();
    static
    {
       moreLinkSupportTypes.put("percRichTextAsset", "text");
-      moreLinkSupportTypes.put("percBlogPostAsset", "postbody");
+      moreLinkSupportTypes.put(BLOG_POST_ASSET_TYPE, "postbody");
    }
    
-   private static Map<String, String> authorSupportedTypes = new HashMap<String, String>();
+   private static Map<String, String> authorSupportedTypes = new HashMap<>();
    static
    {
       authorSupportedTypes.put("percBlogPostAsset", "authorname");
@@ -353,6 +380,6 @@ public class PSPageChangeHandler implements IPSPageChangeListener
    /**
     * Logger for this class
     */
-   public static Log log = LogFactory.getLog(PSPageChangeHandler.class);
+   public static final Logger log = LogManager.getLogger(PSPageChangeHandler.class);
 
 }

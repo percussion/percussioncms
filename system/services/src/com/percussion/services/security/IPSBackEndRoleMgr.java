@@ -17,24 +17,23 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.services.security;
 
-import com.percussion.services.security.data.PSCommunity;
+import com.percussion.security.IPSPrincipalAttribute;
 import com.percussion.services.security.data.PSBackEndRole;
+import com.percussion.services.security.data.PSCommunity;
 import com.percussion.services.security.data.PSCommunityRoleAssociation;
 import com.percussion.utils.guid.IPSGuid;
-import com.percussion.utils.security.IPSPrincipalAttribute;
 
+import javax.security.auth.Subject;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
-
-import javax.security.auth.Subject;
 
 /**
  * Provides back-end specific catalog operations not supported by the standard

@@ -17,11 +17,13 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.delivery.metadata.data;
+
+import org.apache.commons.lang.ObjectUtils;
 
 import java.text.DateFormatSymbols;
 import java.util.ArrayList;
@@ -29,8 +31,6 @@ import java.util.Calendar;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
-
-import org.apache.commons.lang.ObjectUtils;
 
 /**
  * Represents a year and the list of months with the number of posts for each month.
@@ -60,7 +60,7 @@ public class PSMetadataBlogYear
         Integer currentYear = cal.get(Calendar.YEAR);
         Integer currentMonth = cal.get(Calendar.MONTH);
                 
-        List<PSMetadataBlogMonth> emptyMonths = new ArrayList<PSMetadataBlogMonth>();
+        List<PSMetadataBlogMonth> emptyMonths = new ArrayList<>();
         String[] localeMonths = new DateFormatSymbols(Locale.getDefault()).getMonths();
         Integer indexMonth = localeMonths.length-2;
         if (currentYear.equals(year))

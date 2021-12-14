@@ -17,38 +17,38 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.pagemanagement.service.impl;
 
-import static com.percussion.pagemanagement.service.impl.PSWidgetUtils.coerceProperty;
-import static com.percussion.pagemanagement.service.impl.PSWidgetUtils.getEnums;
-import static com.percussion.pagemanagement.service.impl.PSWidgetUtils.isEnum;
-import static java.util.Collections.sort;
-import static org.apache.commons.lang.Validate.notNull;
+import com.percussion.pagemanagement.data.PSWidgetDefinition;
+import com.percussion.pagemanagement.data.PSWidgetDefinition.AbstractUserPref;
+import com.percussion.pagemanagement.data.PSWidgetDefinition.UserPref;
+import com.percussion.pagemanagement.data.PSWidgetItem;
+import com.percussion.pagemanagement.data.PSWidgetProperties.PSWidgetProperty;
+import com.percussion.pagemanagement.service.IPSWidgetService;
+import com.percussion.pagemanagement.service.impl.PSWidgetUtils.PSWidgetPropertyBlankStringCoercionException;
+import com.percussion.pagemanagement.service.impl.PSWidgetUtils.PSWidgetPropertyCoercionException;
+import com.percussion.share.service.exception.PSBeanValidationUtils;
+import com.percussion.share.service.exception.PSDataServiceException;
+import com.percussion.share.service.exception.PSPropertiesValidationException;
+import com.percussion.share.validation.PSAbstractPropertiesValidator;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.validation.Errors;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.validation.Errors;
-
-import com.percussion.pagemanagement.data.PSWidgetDefinition;
-import com.percussion.pagemanagement.data.PSWidgetItem;
-import com.percussion.pagemanagement.data.PSWidgetDefinition.AbstractUserPref;
-import com.percussion.pagemanagement.data.PSWidgetDefinition.UserPref;
-import com.percussion.pagemanagement.data.PSWidgetProperties.PSWidgetProperty;
-import com.percussion.pagemanagement.service.IPSWidgetService;
-import com.percussion.pagemanagement.service.impl.PSWidgetUtils.PSWidgetPropertyBlankStringCoercionException;
-import com.percussion.pagemanagement.service.impl.PSWidgetUtils.PSWidgetPropertyCoercionException;
-import com.percussion.share.service.exception.PSBeanValidationUtils;
-import com.percussion.share.service.exception.PSPropertiesValidationException;
-import com.percussion.share.validation.PSAbstractPropertiesValidator;
+import static com.percussion.pagemanagement.service.impl.PSWidgetUtils.coerceProperty;
+import static com.percussion.pagemanagement.service.impl.PSWidgetUtils.getEnums;
+import static com.percussion.pagemanagement.service.impl.PSWidgetUtils.isEnum;
+import static java.util.Collections.sort;
+import static org.apache.commons.lang.Validate.notNull;
 
 /**
  * Validates widget properties using the {@link UserPref} 
@@ -89,32 +89,45 @@ public abstract class PSWidgetPropertiesValidator<T extends AbstractUserPref> ex
     @Override
     protected void doValidation(PSWidgetItem widgetItem, PSPropertiesValidationException e)
     {
-        
-        PSWidgetDefinition definition = getDefinition(widgetItem);
-        Map<String,Object> properties = getProperties(widgetItem);
-        e.getProperties().putAll(properties);
-        
-        List<String> names = new ArrayList<String>(properties.keySet());
-        sort(names);
-        
-        Map<String, T> prefs = getPropertyDefinitions(definition);
-        
-        for(String name : names) {
-         
-            Object object = properties.get(name);
+        try {
+            PSWidgetDefinition definition = getDefinition(widgetItem);
+            Map<String, Object> properties = getProperties(widgetItem);
+            e.getProperties().putAll(properties);
 
-            T p = prefs.get(name);
-            if (p == null) {
-                // The widget contains a preference which has been removed from the definition and is no longer used.
-                if (log.isDebugEnabled())
-                {
-                    log.debug("Field '" + name + "' does not exist in widget '" + definition.getId() + "'.");
+            List<String> names = new ArrayList<>(properties.keySet());
+            sort(names);
+
+            Map<String, T> prefs = getPropertyDefinitions(definition);
+
+            for (String name : names) {
+
+                Object object = properties.get(name);
+
+                T p = prefs.get(name);
+                if (p == null) {
+                    // The widget contains a preference which has been removed from the definition and is no longer used.
+                    log.debug("Field '{}' does not exist in widget '{}'.",
+                            name,
+                            definition.getId() );
+
+                } else {
+                    validate(name, object, p, properties, e);
                 }
             }
-            else {
-                validate(name, object, p, properties, e);
-            }
+        } catch (PSDataServiceException dataServiceLoadException) {
+            e.addSuppressed(dataServiceLoadException);
         }
+    }
+
+    private Object fixUpgrdePropertyIssue(String name, Object object, T userPref, Map<String, Object> properties, Errors errors){
+        String propName = "sortby";
+        String wrongValue = "rx:sys_contentpostdate desc";
+        String correctValue = "rx:sys_contentpostdate";
+        if(propName.equalsIgnoreCase(name) && wrongValue.equalsIgnoreCase(object.toString())){
+            properties.put(name,correctValue);
+            return correctValue;
+        }
+        return object;
     }
 
     @Override
@@ -123,7 +136,7 @@ public abstract class PSWidgetPropertiesValidator<T extends AbstractUserPref> ex
         return PSWidgetItem.class;
     }
     
-    private PSWidgetDefinition getDefinition(PSWidgetItem widgetItem) {
+    private PSWidgetDefinition getDefinition(PSWidgetItem widgetItem) throws PSDataServiceException {
         PSBeanValidationUtils.validate(widgetItem).throwIfInvalid();
         return widgetService.load(widgetItem.getDefinitionId());
     }
@@ -162,8 +175,15 @@ public abstract class PSWidgetPropertiesValidator<T extends AbstractUserPref> ex
         boolean valid = validateType(klass, userPref.getDisplayName(), object, errors);
         if (valid &&  isEnum(userPref)) {
             valid = getEnums(userPref).contains(object);
-            if ( ! valid )
-                errors.rejectValue(name, "widgetItem.badEnumValue", "Bad enum value");
+            if ( ! valid ) {
+                //Try to see if Upgraded Property and fix it, else throw error.
+                //Doing it here to not have performance impact on all properties.
+                Object obj = fixUpgrdePropertyIssue(name, object, userPref, properties, errors);
+                valid = getEnums(userPref).contains(obj);
+                if ( ! valid ) {
+                    errors.rejectValue(name, "widgetItem.badEnumValue", "Bad enum value");
+                }
+            }
         }
     }
     
@@ -173,7 +193,7 @@ public abstract class PSWidgetPropertiesValidator<T extends AbstractUserPref> ex
         if ( ! klass.isInstance(data) ) {
             
             errors.rejectValue(name, "widgetItem.invalidDataType", "Data is invalid for the property: " + name);
-            log.debug("Wrong data type is entered for the property : " + name); 
+            log.debug("Wrong data type is entered for the property : {}", name);
             return false;
         }
         return true;
@@ -182,6 +202,6 @@ public abstract class PSWidgetPropertiesValidator<T extends AbstractUserPref> ex
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log log = LogFactory.getLog(PSWidgetPropertiesValidator.class);
+    private static final Logger log = LogManager.getLogger(PSWidgetPropertiesValidator.class);
 
 }

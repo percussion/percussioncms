@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -46,9 +46,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
  * Edition container, contains actions for edition creation.
@@ -84,8 +81,7 @@ public class PSEditionContainerNode extends PSEditableNodeContainer
     * 
     * @return the outcome
     */
-   public String createEdition()
-   {
+   public String createEdition() throws PSNotFoundException {
       IPSEdition ed = getPublisherService().createEdition();
       return createEdition(ed, null, "Edition", false);
    }
@@ -105,8 +101,7 @@ public class PSEditionContainerNode extends PSEditableNodeContainer
     */
    private String createEdition(IPSEdition edition,
          List<PSEditionContentListWrapper> eclists, String baseName,
-         boolean isCopyFrom)
-   {
+         boolean isCopyFrom) throws PSNotFoundException {
       edition.setSiteId(m_siteParent.getGUID());
       edition.setName(getUniqueName(baseName, isCopyFrom)); 
       
@@ -120,8 +115,7 @@ public class PSEditionContainerNode extends PSEditableNodeContainer
     * 
     * @return the outcome
     */
-   public String copyEditionFromOtherSite()
-   {
+   public String copyEditionFromOtherSite() throws PSNotFoundException {
       String slctEditionName = getSelectedEditionName();
       if (slctEditionName == null)
          return null;
@@ -144,8 +138,7 @@ public class PSEditionContainerNode extends PSEditableNodeContainer
     */
    @SuppressWarnings("unchecked")
    private List<PSEditionContentListWrapper> cloneEditionContentList(
-         IPSEdition srcEdition, IPSEdition copiedEdition)
-   {
+         IPSEdition srcEdition, IPSEdition copiedEdition) throws PSNotFoundException {
       if (!m_isDeepClone)
          return null;
       
@@ -155,7 +148,7 @@ public class PSEditionContainerNode extends PSEditableNodeContainer
             .loadEditionContentLists(srcEdition.getGUID());
       
       // deep clone both association and ContentList
-      List<PSEditionContentListWrapper> eclists = new ArrayList<PSEditionContentListWrapper>();
+      List<PSEditionContentListWrapper> eclists = new ArrayList<>();
       PSEditionContentListWrapper ecWrapper;
       for (IPSEditionContentList association : associations)
       {
@@ -173,8 +166,7 @@ public class PSEditionContainerNode extends PSEditableNodeContainer
     * @return the cloned association wrapper, never <code>null</code>.
     */
    private PSEditionContentListWrapper cloneEditionContentList(
-         IPSEditionContentList src, IPSEdition tgtEdition)
-   {
+         IPSEditionContentList src, IPSEdition tgtEdition) throws PSNotFoundException {
       
       IPSContentList tgtClist = cloneContentList(src.getContentListId());
       IPSEditionContentList dest = getPublisherService()
@@ -193,8 +185,7 @@ public class PSEditionContainerNode extends PSEditableNodeContainer
     * @param clistGuid the id of the source Content List.
     * @return the cloned (and persisted) Content List.
     */
-   private IPSContentList cloneContentList(IPSGuid clistGuid)
-   {
+   private IPSContentList cloneContentList(IPSGuid clistGuid) throws PSNotFoundException {
       IPSContentList clist = getPublisherService().loadContentList(clistGuid);
       IPSContentList tgtClist = clist.clone();
       tgtClist.setName(getUniqueContentListName(clist.getName()));
@@ -208,8 +199,7 @@ public class PSEditionContainerNode extends PSEditableNodeContainer
     * @param baseName the base name, assumed not <code>null</code>.
     * @return the unique name, never <code>null</code> or empty.
     */
-   private String getUniqueContentListName(String baseName)
-   {
+   private String getUniqueContentListName(String baseName) throws PSNotFoundException {
       PSContentListViewNode tmpNode = new PSContentListViewNode("dummy",
             PSContentListViewNode.Type.UNUSED, getSiteParent(), "dummyKey");
       
@@ -359,7 +349,7 @@ public class PSEditionContainerNode extends PSEditableNodeContainer
    public CandidateEdition[] getEditionsFromOtherSites()
    {
       int siteId = m_siteParent.getSiteId().intValue();
-      List<CandidateEdition> edList = new ArrayList<CandidateEdition>();
+      List<CandidateEdition> edList = new ArrayList<>();
       List<IPSEdition> edAll = getPublisherService().findAllEditions(
             m_editionListFilter);
       IPSSite site = null;
@@ -428,7 +418,7 @@ public class PSEditionContainerNode extends PSEditableNodeContainer
    {
       final IPSSiteManager siteManager =
             PSSiteManagerLocator.getSiteManager();
-      final Set<Object> names = new HashSet<Object>();
+      final Set<Object> names = new HashSet<>();
 
       for (final IPSSite site : siteManager.findAllSites())
       {

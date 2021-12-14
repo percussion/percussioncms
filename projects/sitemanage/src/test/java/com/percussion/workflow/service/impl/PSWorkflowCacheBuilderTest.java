@@ -17,14 +17,11 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.workflow.service.impl;
-
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import com.percussion.cx.objectstore.PSMenuAction;
 import com.percussion.maintenance.service.IPSMaintenanceManager;
@@ -41,10 +38,13 @@ import com.percussion.services.workflow.data.PSState;
 import com.percussion.services.workflow.data.PSTransition;
 import com.percussion.services.workflow.data.PSWorkflow;
 import com.percussion.utils.guid.IPSGuid;
+import org.hibernate.SessionFactory;
+import org.junit.Test;
 
 import java.util.List;
 
-import org.junit.Test;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 /**
  * @author JaySeletz
@@ -145,8 +145,28 @@ public class PSWorkflowCacheBuilderTest
             didLoadWorkflows = true;
             return null;
         }
-        
-        
+
+
+        /**
+         * Gets the underlying session factory
+         *
+         * @return
+         */
+        @Override
+        public SessionFactory getSessionFactory() {
+            return null;
+        }
+
+        /**
+         * Sets the session factory. Handled via spring auto wiring.
+         *
+         * @param sessionFactory
+         */
+        @Override
+        public void setSessionFactory(SessionFactory sessionFactory) {
+
+        }
+
         /* (non-Javadoc)
          * @see com.percussion.services.workflow.IPSWorkflowService#findWorkflowSummariesByName(java.lang.String)
          */

@@ -18,7 +18,7 @@
   ~      Burlington, MA 01803, USA
   ~      +01-781-438-9900
   ~      support@percussion.com
-  ~      https://www.percusssion.com
+  ~      https://www.percussion.com
   ~
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   -->
@@ -40,7 +40,7 @@
             <Description>Blog gadget for administering blogs.</Description>
             <Publisher name="Percussion Software Inc." url="http://percussion.com/products/cm1/overview/"/>
             <CmsVersion max="9.0.0" min="1.9.0"/>
-            <Version>1.1.2</Version>
+            <Version>1.1.5</Version>
             <ImplConfigFile/>
             <LocalConfigFile/>
             <PKGDependencies/>

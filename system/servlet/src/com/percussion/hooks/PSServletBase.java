@@ -17,26 +17,17 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.hooks;
 
-import com.percussion.hooks.servlet.RhythmyxServlet;
-
-import java.io.FileInputStream;
-import java.util.Locale;
-import java.util.Properties;
-import java.util.ResourceBundle;
-
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
-
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 /**
  * This is the base class for all Rhythmyx specific servlet. It contains 
@@ -93,21 +84,7 @@ public class PSServletBase extends HttpServlet
          // Register the HTTPS protocol handler
          PSUtils.registerSSLProtocolHandler();
          
-         // load the log4j properties if it has not been configured
-         if (!Logger.getRootLogger().getAllAppenders().hasMoreElements())
-         {
-            LogManager.resetConfiguration();
-            
-            Properties logConfig = new Properties();
-            String logLocation = config.getInitParameter("RxLogLocation");
-            if (logLocation == null || logLocation.trim().length() == 0)
-               logConfig.load( RhythmyxServlet.class.getResourceAsStream(
-                  "log4j.properties"));
-            else
-               logConfig.load(new FileInputStream(logLocation));
-               
-            PropertyConfigurator.configure(logConfig);
-         }
+
       }
       catch (Exception e)
       {

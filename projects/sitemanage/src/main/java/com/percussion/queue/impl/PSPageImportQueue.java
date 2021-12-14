@@ -17,15 +17,14 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.queue.impl;
 
-import static com.percussion.share.service.IPSSystemProperties.IMPORT_PAGE_MAX;
-
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.pagemanagement.service.IPSPageCatalogService;
 import com.percussion.queue.IPSPageImportQueue;
 import com.percussion.queue.PSAbstractEventQueue;
@@ -42,30 +41,32 @@ import com.percussion.share.service.IPSIdMapper;
 import com.percussion.share.service.IPSSystemProperties;
 import com.percussion.sitemanage.data.PSSite;
 import com.percussion.sitemanage.data.PSSiteImportCtx;
+import com.percussion.sitemanage.error.PSSiteImportException;
 import com.percussion.sitemanage.service.IPSSiteImportService;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.request.PSRequestInfo;
 import com.percussion.utils.types.PSPair;
+import org.apache.commons.lang.math.NumberUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.apache.commons.lang.math.NumberUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Component;
+import static com.percussion.share.service.IPSSystemProperties.IMPORT_PAGE_MAX;
 
 @Component("pageImportQueue")
 @Lazy
 public class PSPageImportQueue extends PSAbstractEventQueue<PSSiteQueue>
 		implements IPSPageImportQueue, IPSNotificationListener,
 		IPSPerformPageImport {
-	private Map<Long, PSSiteQueue> m_siteCache = new ConcurrentHashMap<Long, PSSiteQueue>();
+	private Map<Long, PSSiteQueue> m_siteCache = new ConcurrentHashMap<>();
 	private PSSiteQueue m_importingSite;
 	private PSSiteImportCtx m_importContext = new PSSiteImportCtx();
 
@@ -79,7 +80,8 @@ public class PSPageImportQueue extends PSAbstractEventQueue<PSSiteQueue>
 	private IPSSiteManager m_siteMgr;
 	private static Object siteQueueLock = new Object();
 	
-	static Log ms_log = LogFactory.getLog(PSPageImportQueue.class);
+
+	private static final Logger log = LogManager.getLogger(PSPageImportQueue.class);
 
 	public PSPageImportQueue(@Qualifier("pageImportService") IPSSiteImportService importService,
 			IPSIdMapper idMapper, IPSNotificationService notifyService,
@@ -111,9 +113,9 @@ public class PSPageImportQueue extends PSAbstractEventQueue<PSSiteQueue>
 
 		sq.addCatalogedIds(ids);
 
-		if (ms_log.isDebugEnabled())
-			ms_log.debug("Site[" + s.getSiteId()
-					+ "][addCatalogedPageIds] ids = " + ids.toString());
+		if (log.isDebugEnabled()) {
+			log.debug("Site[{}][addCatalogedPageIds] ids = {}", s.getSiteId(), ids.toString());
+		}
 
 		// wake up the queue if needed.
 		notifyEventQueue();
@@ -121,8 +123,9 @@ public class PSPageImportQueue extends PSAbstractEventQueue<PSSiteQueue>
 
 	public void removeImportPage(String siteName, String pageId) {
 		IPSSite site = m_siteMgr.findSite(siteName);
-		if (site == null)
+		if (site == null) {
 			return;
+		}
 
 		PSSiteQueue sq = getSiteQueue(site.getSiteId());
 		Integer id = m_idMapper.getContentId(pageId);
@@ -179,8 +182,9 @@ public class PSPageImportQueue extends PSAbstractEventQueue<PSSiteQueue>
     @Autowired
 	public void setSystemProps(IPSSystemProperties systemProps) {
 		this.systemProps = systemProps;
-		if (m_isServerStarted)
+		if (m_isServerStarted) {
 			setMaxImportCountForAllSites();
+		}
 	}
 
 	/**
@@ -230,18 +234,25 @@ public class PSPageImportQueue extends PSAbstractEventQueue<PSSiteQueue>
 			try {
 				nextEvent = getNextQueueEvent(0);
 
-				if (nextEvent == null)
+				if (nextEvent == null) {
 					return true;
+				}
 			} catch (InterruptedException e) {
+
+				Thread.currentThread().interrupt();
+
 				return false;
 			} catch (Throwable t) {
-				if (t instanceof ThreadDeath)
+				if (t instanceof ThreadDeath) {
 					return false;
+				}
 			}
-			if (nextEvent.getFirst() != null)
+			if (nextEvent.getFirst() != null) {
 				importingSite = nextEvent.getFirst();
-			else
+			}
+			else {
 				return true;
+			}
 			List<Integer> ids = importingSite.getImportingIds();
 			if (ids.size() == 0) {
 				// The queue is empty now, nothing is waiting to be processed.
@@ -250,8 +261,9 @@ public class PSPageImportQueue extends PSAbstractEventQueue<PSSiteQueue>
 
 			PSSite site = importingSite.getSite();
 			Integer id = null;
-			if (nextEvent.getSecond() != null)
+			if (nextEvent.getSecond() != null) {
 				id = nextEvent.getSecond();
+			}
 			try {
 				setRequestInfo(importingSite);
 				m_pageImporter.performPageImport(site, id,
@@ -259,13 +271,16 @@ public class PSPageImportQueue extends PSAbstractEventQueue<PSSiteQueue>
 				// check to see if search indexing needs to restart
 				importingSite.checkSearchIndexQueueStatus(false);
 			} catch (InterruptedException e) {
+				Thread.currentThread().interrupt();
 				return false;
 			} catch (Throwable t) {
-				if (t instanceof ThreadDeath)
+				if (t instanceof ThreadDeath) {
 					return false;
+				}
 
-				ms_log.error("Failed to import page id=" + id + ", for site: "
-						+ site.getName(), t);
+				log.error("Failed to import page id={}, for site: {}, Error: {}"
+						, id, site.getName(), t.getMessage());
+				log.debug(t.getMessage(),t);
 				importingSite.removeImportingId(id);
 			}
 
@@ -293,7 +308,7 @@ public class PSPageImportQueue extends PSAbstractEventQueue<PSSiteQueue>
 	 * @throws InterruptedException
 	 */
 	public void performPageImport(PSSite site, Integer id, String userAgent)
-			throws InterruptedException {
+			throws InterruptedException, PSSiteImportException {
 		String pageId = m_idMapper.getString(new PSLegacyGuid(id, -1));
 		PSSiteImportCtx siteImportContext = new PSSiteImportCtx();
 		siteImportContext.setCanceled(this.m_importContext.isCanceled());
@@ -320,11 +335,12 @@ public class PSPageImportQueue extends PSAbstractEventQueue<PSSiteQueue>
 	}
 
 	protected PSPair<PSSiteQueue, Integer> getNextEvent() {
-		PSPair<PSSiteQueue, Integer> pair = new PSPair<PSSiteQueue, Integer>();
+		PSPair<PSSiteQueue, Integer> pair = new PSPair<>();
 		if (m_importingSite == null) {
 			PSSiteQueue sq = getNextWaitingSite();
-			if (sq == null)
+			if (sq == null) {
 				return null;
+			}
 			m_importingSite = sq;
 		}
 
@@ -333,8 +349,9 @@ public class PSPageImportQueue extends PSAbstractEventQueue<PSSiteQueue>
 			m_importingSite = getNextWaitingSite();
 			if (m_importingSite != null) {
 				id = m_importingSite.getNextId();
-				if (id == null)
+				if (id == null) {
 					return null;
+				}
 			}
 		}
 
@@ -358,8 +375,9 @@ public class PSPageImportQueue extends PSAbstractEventQueue<PSSiteQueue>
 
 	private PSSiteQueue getNextWaitingSite() {
 		for (PSSiteQueue sq : m_siteCache.values()) {
-			if (sq.containsPagesForImport())
+			if (sq.containsPagesForImport()) {
 				return sq;
+			}
 		}
 
 		return null;
@@ -388,8 +406,9 @@ public class PSPageImportQueue extends PSAbstractEventQueue<PSSiteQueue>
 	private PSSiteQueue createSiteQueue(Long siteId) {
 		String siteName = getSiteName(siteId);
 		try {
-			if (siteName == null)
+			if (siteName == null) {
 				return new PSSiteQueue();
+			}
 
 			PSSiteQueue siteQueue = new PSSiteQueue();
 
@@ -403,9 +422,10 @@ public class PSPageImportQueue extends PSAbstractEventQueue<PSSiteQueue>
 
 			return siteQueue;
 		} catch (Exception e) {
-			ms_log.error(
-					"An error occurred when getting the imported and cataloged pages for site name: "
-							+ siteName, e);
+			log.error(
+					"An error occurred when getting the imported and cataloged pages for site name: {}, Error: {}"
+							, siteName,PSExceptionUtils.getMessageForLog(e));
+			log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 			return new PSSiteQueue();
 		}
 	}
@@ -430,7 +450,7 @@ public class PSPageImportQueue extends PSAbstractEventQueue<PSSiteQueue>
 	 *         <code>null</code>, but may be empty.
 	 */
 	private List<Integer> getContentIds(List<String> ids) {
-		List<Integer> contentIds = new ArrayList<Integer>();
+		List<Integer> contentIds = new ArrayList<>();
 		for (String id : ids) {
 			contentIds.add(((PSLegacyGuid) m_idMapper.getGuid(id))
 					.getContentId());

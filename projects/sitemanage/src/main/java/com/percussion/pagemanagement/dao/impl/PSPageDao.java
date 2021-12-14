@@ -17,13 +17,15 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.pagemanagement.dao.impl;
 
+import com.percussion.cms.objectstore.PSInvalidContentTypeException;
 import com.percussion.cms.objectstore.server.PSItemDefManager;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.pagemanagement.dao.IPSPageDao;
 import com.percussion.pagemanagement.dao.IPSWidgetItemIdGenerator;
 import com.percussion.pagemanagement.data.PSPage;
@@ -43,11 +45,13 @@ import com.percussion.share.dao.PSJcrNodeFinder;
 import com.percussion.share.dao.PSSerializerUtils;
 import com.percussion.share.dao.impl.PSContentItem;
 import com.percussion.share.service.IPSIdMapper;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.service.exception.PSPropertiesValidationException;
+import com.percussion.share.service.exception.PSSpringValidationException;
 import com.percussion.util.IPSHtmlParameters;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
@@ -75,13 +79,14 @@ public class PSPageDao extends PSAbstractContentItemDao<PSPage> implements
 	/**
 	 * Logger for this service.
 	 */
-	public static Log log = LogFactory.getLog(PSPageDao.class);
 
-	private IPSWidgetItemIdGenerator widgetItemIdGenerator;
+	private static final Logger log = LogManager.getLogger(PSPageDao.class);
 
-	private IPSIdMapper idMapper;
+	private final IPSWidgetItemIdGenerator widgetItemIdGenerator;
 
-	private PSJcrNodeFinder jcrNodeFinder;
+	private final IPSIdMapper idMapper;
+
+	private final PSJcrNodeFinder jcrNodeFinder;
 
 	/**
 	 * The cached page id, which is lazily coded.
@@ -128,75 +133,84 @@ public class PSPageDao extends PSAbstractContentItemDao<PSPage> implements
 	}
 
 	public PSPage findPageByPath(String fullFolderPath) throws PSPageException {
-		PSContentItem contentItem = getContentItemDao().findItemByPath(
-				fullFolderPath);
-		if (contentItem == null)
-			return null;
-		
-		//Do not return content items that aren't Page's!
-		if(contentItem.isPage()){
-			PSPage page = getObjectFromContentItem(contentItem);
-			handleThumbnail(page.getId());
-			return page;
-		}else{
-			return null;
+		try {
+			PSContentItem contentItem = getContentItemDao().findItemByPath(
+					fullFolderPath);
+			if (contentItem == null) {
+				return null;
+			}
+
+			//Do not return content items that aren't Page's!
+			if (contentItem.isPage()) {
+				PSPage page = getObjectFromContentItem(contentItem);
+				handleThumbnail(page.getId());
+				return page;
+			} else {
+				return null;
+			}
+		}catch(Exception e){
+			throw new PSPageException(e.getMessage(),e);
 		}
 	}
 
 	@Override
 	public List<Integer> getPageIdsByFieldNameAndValue(String fieldName,
-			String fieldValue) {
+			String fieldValue) throws PSPageException {
 		notNull(fieldName, "fieldName should not be null");
 		notNull(fieldValue, "fieldValue should not be null");
 
 		long pageTypeId = getPageContentTypeId();
-		List<Integer> pageIds = PSContentMgrLocator.getContentMgr()
+		return PSContentMgrLocator.getContentMgr()
 				.findItemsByLocalFieldValue(pageTypeId, fieldName, fieldValue);
-
-		return pageIds;
 	}
 
 	public PSPage findPage(String name, String folderPath)
-			throws PSPageException {
+			throws PSDataServiceException {
 		PSContentItem contentItem = getContentItemDao().findItemByPath(name,
 				folderPath);
-		if (contentItem == null || !contentItem.isPage())
+		if (contentItem == null || !contentItem.isPage()) {
 			return null;
+		}
 		PSPage page = find(contentItem.getId());
 		handleThumbnail(page.getId());
 		return page;
 	}
 
-	@Override
-	public void delete(String id) {
+
+	public void delete(String id) throws PSDataServiceException {
 		isTrue(isNotBlank(id), "id may not be blank");
 		delete(id, false);
 	}
 
-	public void delete(String id, boolean force) {
+	public void delete(String id, boolean force) throws PSDataServiceException {
 		isTrue(isNotBlank(id), "id may not be blank");
-		// TODO fixme
-		PSPropertiesValidationException pve = new PSPropertiesValidationException(
-				null, "delete");
-		if (!force) {
-			getContentItemDao().validateDelete(id, pve);
-			pve.throwIfInvalid();
-		}
-		super.delete(id);
-		PSNotificationEvent notifyEvent = new PSNotificationEvent(
-				EventType.PAGE_DELETE, id);
-		IPSNotificationService srv = PSNotificationServiceLocator
-				.getNotificationService();
-		srv.notifyEvent(notifyEvent);
+
+			PSPropertiesValidationException pve = new PSPropertiesValidationException(
+					null, "delete");
+			if (!force) {
+				getContentItemDao().validateDelete(id, pve);
+				try {
+					pve.throwIfInvalid();
+				} catch (PSSpringValidationException e) {
+					throw new DeleteException(e.getMessage(),e);
+				}
+			}
+			super.delete(id);
+			PSNotificationEvent notifyEvent = new PSNotificationEvent(
+					EventType.PAGE_DELETE, id);
+			IPSNotificationService srv = PSNotificationServiceLocator
+					.getNotificationService();
+			srv.notifyEvent(notifyEvent);
+
 	}
 
 	public List<PSPage> findPagesBySiteAndTemplate(String path,
-			String templateId) {
+			String templateId) throws PSDataServiceException {
 		isTrue(isNotBlank(templateId), "templateId may not be blank");
 
-		List<PSPage> pages = new ArrayList<PSPage>();
+		List<PSPage> pages = new ArrayList<>();
 
-		Map<String, String> whereFields = new HashMap<String, String>();
+		Map<String, String> whereFields = new HashMap<>();
 		whereFields.put("templateid", templateId);
 		List<IPSNode> nodes = jcrNodeFinder.find(path, whereFields);
 		for (IPSNode node : nodes) {
@@ -208,12 +222,12 @@ public class PSPageDao extends PSAbstractContentItemDao<PSPage> implements
 	}
 
 	public List<PSPageSummary> findPagesBySiteAndWf(String path,
-			int workflowId, int stateId) {
+			int workflowId, int stateId) throws PSDataServiceException {
 		isTrue(isNotBlank(path), "path may not be blank");
 
-		List<PSPageSummary> sums = new ArrayList<PSPageSummary>();
+		List<PSPageSummary> sums = new ArrayList<>();
 
-		Map<String, String> whereFields = new HashMap<String, String>();
+		Map<String, String> whereFields = new HashMap<>();
 		whereFields.put("sys_workflowid", String.valueOf(workflowId));
 		if (stateId != -1) {
 			whereFields.put("sys_contentstateid", String.valueOf(stateId));
@@ -269,8 +283,9 @@ public class PSPageDao extends PSAbstractContentItemDao<PSPage> implements
 		page.setTags(tags);
 		PSHtmlMetadataUtils.fromMap(page, f);
 
-		if (isNumeric(templateContentMigrationVersion))
+		if (isNumeric(templateContentMigrationVersion)) {
 			page.setTemplateContentMigrationVersion(templateContentMigrationVersion);
+		}
 		page.setMigrationEmptyWidgetFlag("yes"
 				.equalsIgnoreCase(migrationEmptyWidgetFlag));
 	}
@@ -303,9 +318,10 @@ public class PSPageDao extends PSAbstractContentItemDao<PSPage> implements
 				page.getTemplateContentMigrationVersion());
 		f.put("migrationemptywidgets",
 				page.isMigrationEmptyWidgetFlag() ? "yes" : "no");
-		if (page.getWorkflowId() != null)
+		if (page.getWorkflowId() != null) {
 			f.put(IPSHtmlParameters.SYS_WORKFLOWID,
 					Integer.toString(page.getWorkflowId()));
+		}
 
 		if (page.getRegionBranches() != null) {
 			widgetItemIdGenerator.generateIds(page.getRegionBranches());
@@ -329,30 +345,30 @@ public class PSPageDao extends PSAbstractContentItemDao<PSPage> implements
 	}
 
 	@Override
-	public long getPageContentTypeId() {
+	public long getPageContentTypeId() throws PSPageException {
 		if (pageContentTypeId == null) {
 			try {
 				PSItemDefManager defMgr = PSItemDefManager.getInstance();
 				pageContentTypeId = defMgr
 						.contentTypeNameToId(IPSPageService.PAGE_CONTENT_TYPE);
-			} catch (Exception e) {
-				String errMsg = "Failed to find page content type id";
-				log.error(errMsg, e);
-				throw new PSPageException(errMsg, e);
+			} catch (PSInvalidContentTypeException e) {
+				log.error(PSExceptionUtils.getMessageForLog(e));
+				log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+				throw new PSPageException(e.getMessage());
 			}
 		}
 
-		return pageContentTypeId.longValue();
+		return pageContentTypeId;
 	}
 
 	@Override
-	public List<PSPage> findAllPagesBySite(String sitePath) {
+	public List<PSPage> findAllPagesBySite(String sitePath) throws PSDataServiceException {
 
 		isTrue(isNotBlank(sitePath), "sitePath may not be blank");
 
-		List<PSPage> pages = new ArrayList<PSPage>();
+		List<PSPage> pages = new ArrayList<>();
 
-		Map<String, String> whereFields = new HashMap<String, String>();
+		Map<String, String> whereFields = new HashMap<>();
 		List<IPSNode> nodes = jcrNodeFinder.find(sitePath, whereFields);
 		for (IPSNode node : nodes) {
 			pages.add(find(idMapper.getString(node.getGuid())));

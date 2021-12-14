@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -37,6 +37,7 @@ import com.percussion.deployer.server.dependencies.PSDependencyUtils;
 import com.percussion.design.objectstore.PSLockedException;
 import com.percussion.design.objectstore.PSNotLockedException;
 import com.percussion.design.objectstore.server.PSServerXmlObjectStore;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.security.PSAuthenticationRequiredException;
 import com.percussion.security.PSAuthorizationException;
 import com.percussion.security.PSSecurityToken;
@@ -62,12 +63,13 @@ import com.percussion.utils.jdbc.PSConnectionDetail;
 import com.percussion.utils.jdbc.PSConnectionHelper;
 import com.percussion.utils.jdbc.PSDatasourceConfig;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 
 import javax.naming.NamingException;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -91,6 +93,9 @@ import java.util.Set;
  */
 public class PSDbmsHelper
 {
+
+   private static final Logger log = LogManager.getLogger(PSDbmsHelper.class);
+
    /**
     * Private ctor to enforce singleton pattern.
     */
@@ -145,7 +150,7 @@ public class PSDbmsHelper
       if (nameCol == null || nameCol.trim().length() == 0)
          throw new IllegalArgumentException("nameCol may not be null or empty");
 
-      List<PSEntrySet> result = new ArrayList<PSEntrySet>();
+      List<PSEntrySet> result = new ArrayList<>();
 
       PSJdbcTableData data = catalogTableData(table, new String[] {idCol,
             nameCol}, filter);
@@ -244,7 +249,8 @@ public class PSDbmsHelper
       }
       catch (PSDeployException e)
       {
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
       
       return new DataSourceInfo(dsSource, dsConfig);
@@ -589,7 +595,7 @@ public class PSDbmsHelper
    public void processTable(PSJdbcTableSchema schema, String tableName,
       PSJdbcRowData rowData) throws PSDeployException
    {
-      List<PSJdbcRowData> rowList = new ArrayList<PSJdbcRowData>();
+      List<PSJdbcRowData> rowList = new ArrayList<>();
       rowList.add(rowData);
       PSJdbcTableData tblData;
       tblData = new PSJdbcTableData(tableName, rowList.iterator(), false);
@@ -904,7 +910,7 @@ public class PSDbmsHelper
        if (schema == null)
           throw new IllegalArgumentException("schema may not be null");
 
-      List<String> cols = new ArrayList<String>();
+      List<String> cols = new ArrayList<>();
       cols.add(colName);
       setUpdateKeyForSchema(cols.iterator(), schema);
    }
@@ -959,7 +965,7 @@ public class PSDbmsHelper
          throw new IllegalArgumentException(
             "colValue may not be null or empty");
 
-      List<PSJdbcColumnData> cols = new ArrayList<PSJdbcColumnData>();
+      List<PSJdbcColumnData> cols = new ArrayList<>();
       PSJdbcColumnData col = new PSJdbcColumnData(colName, colValue);
       cols.add(col);
 
@@ -988,7 +994,7 @@ public class PSDbmsHelper
       if (idCol == null || idCol.trim().length() == 0)
          throw new IllegalArgumentException("idCol may not be null or empty");
          
-      StringBuffer sIds = new StringBuffer(0);
+      StringBuilder sIds = new StringBuilder(0);
       
       while ( ids.hasNext() )
       {
@@ -1028,13 +1034,10 @@ public class PSDbmsHelper
       String filterCol, int filterColValue)
       throws PSDeployException
    {
-      if (table == null || table.trim().length() == 0)
-         throw new IllegalArgumentException("table may not be null or empty");
-      if (idCol != null && idCol.trim().length() == 0)
-         throw new IllegalArgumentException("idCol may not be null or empty");
-      if (filterCol != null && filterCol.trim().length() == 0)
-         throw new IllegalArgumentException(
-            "filterCol may not be empty");
+      if (table == null || table.trim().length() == 0 )
+         throw new IllegalArgumentException("table may not be null, empty, or invalid");
+      if (idCol == null || idCol.trim().length() == 0 )
+         throw new IllegalArgumentException("idCol may not be null, empty, or invalid");
 
       Connection conn = null;
 
@@ -1046,7 +1049,8 @@ public class PSDbmsHelper
       {
          conn = getRepositoryConnection();
 
-         String query = "SELECT MAX(" + idCol + ") FROM " + table;
+         String query = "SELECT MAX(" + idCol
+                 + ") FROM " + table;
 
          if ((filterCol != null) && (filterCol.trim().length() != 0) &&
              (!idCol.equalsIgnoreCase(filterCol)) )
@@ -1283,7 +1287,7 @@ public class PSDbmsHelper
     */
    void enableSchemaCache()
    {
-      m_appSchemaMap = new HashMap<String, PSJdbcTableSchema>();
+      m_appSchemaMap = new HashMap<>();
    }
    
    /**
@@ -1306,7 +1310,7 @@ public class PSDbmsHelper
    {
       if (m_systemTables == null)
       {
-         m_systemTables = new HashSet<String>();
+         m_systemTables = new HashSet<>();
          File schemaFile = new File(PSServer.getRxDir().getAbsolutePath() + "/"
                + PSServer.SERVER_DIR, SYSTEM_TABLE_SCHEMA_FILE);
          Document schemaDoc = getXmlDocumentFromFile(schemaFile);
@@ -1339,7 +1343,7 @@ public class PSDbmsHelper
    {
       if (m_tableTypes == null)
       {
-         m_tableTypes = new HashMap<String, Integer>();
+         m_tableTypes = new HashMap<>();
          ResourceBundle bundle = getBundle();
          Enumeration tables = bundle.getKeys();
          try 
@@ -1409,10 +1413,7 @@ public class PSDbmsHelper
       if (file == null)
          throw new IllegalArgumentException("file may not be null");
       
-      FileInputStream in = null;
-      try 
-      {
-         in = new FileInputStream(file);
+      try(FileInputStream in = new FileInputStream(file)){
          return PSXmlDocumentBuilder.createXmlDocument(in, false);
       }
       catch (Exception e) 
@@ -1420,11 +1421,7 @@ public class PSDbmsHelper
          throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR, 
             e.getLocalizedMessage());
       }
-      finally 
-      {
-         if (in != null)
-            try {in.close();} catch (IOException e) {}
-      }
+
    }
    
    /**
@@ -1580,7 +1577,7 @@ public class PSDbmsHelper
     * It is modified by <code>getNextIdInMemory()</code>, but be cleared by
     * <code>clearNextIdInMemory()</code>
     */
-   private Map<String, Integer> nextNumberMap = new HashMap<String, Integer>();
+   private Map<String, Integer> nextNumberMap = new HashMap<>();
       
    /**
     * Singleton instance of this class, set by first call to
@@ -1637,7 +1634,7 @@ public class PSDbmsHelper
     * empty.  Updated by calls to <code>getTableSchema()</code>.
     */
    private Map<String, PSJdbcTableSchema> m_sysSchemaMap = 
-                                       new HashMap<String, PSJdbcTableSchema>();
+                                       new HashMap<>();
    
    /**
     * Map of non-system table schemas, where key is tablename as a 

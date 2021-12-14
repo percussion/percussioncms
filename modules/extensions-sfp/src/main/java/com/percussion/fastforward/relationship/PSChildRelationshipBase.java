@@ -17,18 +17,11 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.fastforward.relationship;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import com.percussion.cms.PSCmsException;
 import com.percussion.cms.objectstore.IPSRelationshipProcessor;
@@ -43,6 +36,12 @@ import com.percussion.services.assembly.PSAssemblyException;
 import com.percussion.services.assembly.PSAssemblyServiceLocator;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.utils.guid.IPSGuid;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * Base class for querying and updating "category"-style auto relationships.
@@ -178,7 +177,7 @@ public abstract class PSChildRelationshipBase
       // extract owner content ids from the relationship set
       @SuppressWarnings("unchecked")
       Iterator<PSRelationship> iter = relationships.iterator();
-      List<Integer> cids = new ArrayList<Integer>();
+      List<Integer> cids = new ArrayList<>();
       while (iter.hasNext())
       {
          PSRelationship rel = iter.next();
@@ -207,7 +206,7 @@ public abstract class PSChildRelationshipBase
    /**
     * The log instance to use for this class, never <code>null</code>.
     */
-   protected Log m_log = LogFactory.getLog(PSChildRelationshipBase.class);
+   protected static final Logger m_log = LogManager.getLogger(PSChildRelationshipBase.class);
 
    /**
     * Processor for querying and updating relationships. Assigned in ctor, never

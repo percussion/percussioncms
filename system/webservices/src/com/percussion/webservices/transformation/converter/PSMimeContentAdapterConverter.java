@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -31,13 +31,12 @@ import com.percussion.services.system.data.PSMimeContentAdapter;
 import com.percussion.util.PSBase64Decoder;
 import com.percussion.util.PSBase64Encoder;
 import com.percussion.util.PSCharSetsConstants;
+import org.apache.commons.beanutils.BeanUtilsBean;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-
-import org.apache.commons.beanutils.BeanUtilsBean;
 
 /**
  * Converts between {@link PSMimeContentAdapter} and
@@ -93,16 +92,15 @@ public class PSMimeContentAdapterConverter extends PSConverter
             
             // expecting base64 encoded string, so decode it:
             String stringValue = (String) orig.getContent();
-            try
-            {
-               ByteArrayInputStream iBuf = new ByteArrayInputStream(
-                  stringValue.getBytes(dest.getCharacterEncoding()));
+            try(ByteArrayInputStream iBuf = new ByteArrayInputStream(
+                  stringValue.getBytes(dest.getCharacterEncoding()))){
 
-               ByteArrayOutputStream oBuf = new ByteArrayOutputStream();
+               try(ByteArrayOutputStream oBuf = new ByteArrayOutputStream()) {
 
-               PSBase64Decoder.decode(iBuf, oBuf);
+                  PSBase64Decoder.decode(iBuf, oBuf);
 
-               dest.setContent(new ByteArrayInputStream(oBuf.toByteArray()));  
+                  dest.setContent(new ByteArrayInputStream(oBuf.toByteArray()));
+               }
             }
             catch (IOException e)
             {
@@ -129,32 +127,17 @@ public class PSMimeContentAdapterConverter extends PSConverter
          }
          else
          {
-            InputStream in = orig.getContent();
-            
-            try
-            {
-               ByteArrayOutputStream out = new ByteArrayOutputStream();
-               PSBase64Encoder.encode(in, out);
-               dest.setContent(out.toString(PSCharSetsConstants.rxStdEnc()));
-               dest.setCharacterEncoding(PSCharSetsConstants.rxStdEnc());
+            try(InputStream in = orig.getContent()){
+               try(ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+                  PSBase64Encoder.encode(in, out);
+                  dest.setContent(out.toString(PSCharSetsConstants.rxStdEnc()));
+                  dest.setCharacterEncoding(PSCharSetsConstants.rxStdEnc());
+               }
             }
             catch (IOException e)
             {
                throw new RuntimeException("Error converting mime content: " + 
                   e.getLocalizedMessage(), e);
-            }
-            finally
-            {
-               if (in != null)
-               {
-                  try
-                  {
-                     in.close();
-                  }
-                  catch (IOException e)
-                  {
-                  }
-               }               
             }
          }
       }

@@ -17,26 +17,25 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.services.workflow.data;
 
-import static org.apache.commons.lang.Validate.notNull;
-
 import com.percussion.services.utils.xml.PSXmlSerializationHelper;
 import com.percussion.workflow.IPSTransitionsContext;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.xml.sax.SAXException;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.apache.commons.lang.Validate.notNull;
 
 /**
  * Represent a workflow non-aging transition
@@ -58,7 +57,7 @@ public class PSTransition extends PSTransitionBase implements IPSTransition
    private String transitionRoles = 
       IPSTransitionsContext.NO_TRANSITION_ROLE_RESTRICTION;
    
-   private List<PSTransitionRole> roles = new ArrayList<PSTransitionRole>();
+   private List<PSTransitionRole> roles = new ArrayList<>();
    
 
    /*
@@ -180,7 +179,7 @@ public class PSTransition extends PSTransitionBase implements IPSTransition
    public void setTransitionRoles(List<PSTransitionRole> roleList)
    {
       if (roleList == null)
-         roleList = new ArrayList<PSTransitionRole>();
+         roleList = new ArrayList<>();
       
       roles = roleList;
    }

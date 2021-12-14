@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -83,7 +83,7 @@
         //If the type filter is a list, make it into a function which tests
         //for membership in that list. If a function has been passed in,
         //use that directly.
-        if( !$.isFunction( type_filter ) )
+        if( typeof type_filter !== "function" )
         {
             type_filter = function(x)
             {
@@ -104,26 +104,26 @@
         var leaf_selectable = settings.selectable_object == "leaf" || settings.selectable_object == "all";
         var folder_selectable = settings.selectable_object == "folder" || settings.selectable_object == "all";
     
-        var top = jQuery("<div>"
+        var top = jQuery("<div>" +
             //Selection box for the location drop-down, which provides a
             //list of parent directories.
             
             
-            + (settings.new_asset_option?
+             (settings.new_asset_option?
                 "<select name='location' id='perc-asset-browser-location-dropdown'></select>":
-                "<select name='location' id='perc-asset-browser-location-dropdown' ></select>")
-            + (settings.new_asset_option?
-                "<input type='button' id='perc-new-folder-button' value=' + '>":"")
+                "<select name='location' id='perc-asset-browser-location-dropdown' ></select>") +
+             (settings.new_asset_option?
+                "<input type='button' id='perc-new-folder-button' value=' + '>":"")  +
             //Space for the directory navigation.
-            + "<div id='perc-asset-browser-dialog-direc'></div>"
-            + "</div>"
+            "<div id='perc-asset-browser-dialog-direc'></div>" +
+             "</div>"
         );
         
         $("#"+options.placeHolder).append(top);
     
         var root_direc = top.find( '#perc-asset-browser-dialog-direc' );
     
-        var path_select = top.find( '#perc-asset-browser-location-dropdown' ).change(function()
+        var path_select = top.find( '#perc-asset-browser-location-dropdown' ).on("change",function()
         {
             //Navigate to the path selected in the drop-down.
             var new_path = this.value.split('/');
@@ -147,7 +147,7 @@
 //        alert(settings.new_folder_opt);
         if( settings.new_folder_opt )
         {
-            top.parent().find('#perc-new-folder-button').click(function()
+            top.parent().find('#perc-new-folder-button').on("click",function()
             {
                 new_folder_callback();
             });
@@ -193,9 +193,9 @@
 
             function addChildren(folder_spec)
             {
-                $.each( folder_spec['PathItem'], function()
+                $.each( folder_spec.PathItem, function()
                 {
-                    if( type_filter( this['type'] ) )
+                    if( type_filter( this.type ) )
                     {
                         insert_item( root_direc, make_item( this ) );
                     }
@@ -281,11 +281,11 @@
     
         function make_item( spec )
         {
-            var path_end = ut.extract_path_end( spec['path'] );
-            var item_path = ut.extract_path( spec['path'] );
-            var icon = ut.choose_icon( spec['type'], spec['icon'],    item_path  );
+            var path_end = ut.extract_path_end( spec.path );
+            var item_path = ut.extract_path( spe.path );
+            var icon = ut.choose_icon( spec.type, spec.icon,    item_path  );
 			
-			if(settings.siteIcon != "" && spec['type'] == "site")
+			if(settings.siteIcon != "" && spec.type == "site")
 				icon = settings.siteIcon;
 			
             var anchor = $("<a href='#'/>")
@@ -296,12 +296,12 @@
             //    } JGA
                 .attr('id',"perc-saveas-dialog-listing"+ ut.path_id( item_path ))
                 .append($("<img src='"+ icon.src +"' style='float:left' alt='"+ icon.alt + "' title='" + icon.title + "' aria-hidden='" + icon.decorative + "' />" ))
-                .append( spec[ 'name' ] )
+                .append( spec.name )
                 .data( 'name', path_end )
-                .data( 'tag', spec['name'] );
+                .data( 'tag', spec.name );
 
             var sclass = 'perc-saveas-dialog-selected';
-            function selectAnchor()
+            function selectAnchor(evt)
             {
             	// JGA { 1/11/2010
             	// notify registered function of selection
@@ -309,9 +309,9 @@
             	// } JGA
                 anchor.siblings( '.'+sclass ).removeClass( sclass );
                 anchor.addClass( sclass );
-                if( spec['leaf'] )
+                if( spec.leaf )
                 {
-                    asset_name.val( spec['name'] );
+                    asset_name.val( spec.name );
                     current_spec = spec;
                 }
                 else
@@ -319,15 +319,17 @@
                     current_path = ut.acop( item_path );
                 }
             }
-            if( spec['leaf'] )
+            if( spec.leaf )
             {
                 if( leaf_selectable )
                 {
-                    anchor.click( selectAnchor );
-                    anchor.dblclick( function()
+                    anchor.on("click", function(evt){
+                        selectAnchor(evt);
+                    } );
+                    anchor.on("dblclick", function()
                     {
-                        anchor.click();
-                        $("#perc-saveas-dialog-save-button").click();
+                        anchor.trigger("click");
+                        $("#perc-saveas-dialog-save-button").trigger("click");
                     });
                 }
             }
@@ -335,9 +337,11 @@
             {
                 if( folder_selectable )
                 {
-                    anchor.click( selectAnchor );
+                    anchor.trigger("click", function(evt){
+                        selectAnchor(evt);
+                    } );
                 }
-                anchor.dblclick( function()
+                anchor.on("dblclick", function()
                 {
                     set_path( item_path );
                 });

@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -29,8 +29,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
-
-import org.apache.commons.lang.ObjectUtils;
 
 public class PSBlogYear {
 
@@ -53,7 +51,7 @@ public class PSBlogYear {
         Integer currentYear = cal.get(Calendar.YEAR);
         Integer currentMonth = cal.get(Calendar.MONTH);
                 
-        List<PSBlogMonth> emptyMonths = new ArrayList<PSBlogMonth>();
+        List<PSBlogMonth> emptyMonths = new ArrayList<>();
         String[] localeMonths = new DateFormatSymbols(Locale.getDefault()).getMonths();
         Integer indexMonth = localeMonths.length-2;
         if (currentYear.equals(year))

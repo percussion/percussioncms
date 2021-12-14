@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -62,7 +62,7 @@ public class PSGoogleAnalyticsErrorMessageHandler
       return preMsg + errorMsg;
   }
    
-   private static Map<CAUSETYPE, String> messages = new HashMap<CAUSETYPE, String>();
+   private static Map<CAUSETYPE, String> messages = new HashMap<>();
    static
    {
       messages.put(CAUSETYPE.ACCOUNT_DELETED, "The analytics account has been deleted.");

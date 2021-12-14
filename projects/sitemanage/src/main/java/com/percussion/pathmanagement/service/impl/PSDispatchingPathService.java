@@ -17,15 +17,16 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.pathmanagement.service.impl;
 
 import com.percussion.design.objectstore.PSRelationshipConfig;
+import com.percussion.error.PSExceptionUtils;
+import com.percussion.itemmanagement.service.IPSItemWorkflowService;
 import com.percussion.pathmanagement.data.PSDeleteFolderCriteria;
-import com.percussion.pathmanagement.data.PSDeleteFolderCriteria.SkipItemsType;
 import com.percussion.pathmanagement.data.PSItemByWfStateRequest;
 import com.percussion.pathmanagement.data.PSMoveFolderItem;
 import com.percussion.pathmanagement.data.PSPathItem;
@@ -35,7 +36,7 @@ import com.percussion.pathmanagement.service.IPSPathService;
 import com.percussion.pathmanagement.service.impl.PSDispatchingPathService.IPSPathMatcher.PathMatch;
 import com.percussion.recycle.service.IPSRecycleService;
 import com.percussion.recycle.service.impl.PSRecycleService;
-import com.percussion.server.cache.PSFolderRelationshipCache;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.share.dao.IPSFolderHelper;
 import com.percussion.share.dao.impl.PSFolderHelper;
 import com.percussion.share.data.IPSItemSummary.Category;
@@ -43,8 +44,11 @@ import com.percussion.share.data.PSItemProperties;
 import com.percussion.share.data.PSNoContent;
 import com.percussion.share.data.PSPagedItemList;
 import com.percussion.share.data.PSPagedObjectList;
+import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.exception.PSBeanValidationException;
 import com.percussion.share.service.exception.PSBeanValidationUtils;
+import com.percussion.share.service.exception.PSDataServiceException;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.share.validation.PSValidationErrors;
 import com.percussion.ui.data.PSDisplayPropertiesCriteria;
 import com.percussion.ui.data.PSSimpleDisplayFormat;
@@ -56,8 +60,8 @@ import com.percussion.util.PSStopwatch;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -139,7 +143,7 @@ public class PSDispatchingPathService implements IPSPathService, IPSPathRecycleS
      */
     protected PathMatch match(String path) throws PSPathNotFoundServiceException
     {
-        if (path == null) throw new PSPathNotFoundServiceException("Path cannont be null");
+        if (path == null) throw new PSPathNotFoundServiceException("Path cannot be null");
         PathMatch pm = pathMatcher.matchPath(path);
         if (pm == null) throw new PSPathNotFoundServiceException("Path not found: " + path);
         return pm;
@@ -153,8 +157,7 @@ public class PSDispatchingPathService implements IPSPathService, IPSPathRecycleS
     /**
      * {@inheritDoc}
      */
-    public PSPathItem find(String path) throws PSPathNotFoundServiceException, PSPathServiceException
-    {
+    public PSPathItem find(String path) throws PSPathNotFoundServiceException, PSPathServiceException, PSDataServiceException {
         checkRolesAllowed();
         
         PathMatch pm = match(path);
@@ -167,20 +170,22 @@ public class PSDispatchingPathService implements IPSPathService, IPSPathRecycleS
      * <p>
      * This method should be call before each public REST method.
      */
-    private void checkRolesAllowed()
-    {
-        List<String> currentUserRoles = userService.getCurrentUser().getRoles();
-        
-        if (currentUserRoles != null && getRolesAllowed() != null &&
-                !CollectionUtils.containsAny(currentUserRoles, getRolesAllowed()))
-            throw new PSPathServiceException("You are not authorized to access this path");
+    private void checkRolesAllowed() throws PSPathServiceException {
+        try {
+            List<String> currentUserRoles = userService.getCurrentUser().getRoles();
+
+            if (currentUserRoles != null && getRolesAllowed() != null &&
+                    !CollectionUtils.containsAny(currentUserRoles, getRolesAllowed()))
+                throw new PSPathServiceException("You are not authorized to access this path");
+        } catch (PSDataServiceException e) {
+            throw new PSPathServiceException(e);
+        }
     }
 
     /**
      * {@inheritDoc}
      */
-    public PSItemProperties findItemProperties(String path) throws PSPathNotFoundServiceException, PSPathServiceException
-    {
+    public PSItemProperties findItemProperties(String path) throws PSPathServiceException, PSDataServiceException {
         checkRolesAllowed();
         
         PathMatch pm = match(path);
@@ -188,89 +193,76 @@ public class PSDispatchingPathService implements IPSPathService, IPSPathRecycleS
     }
     
 
-    protected PSPathItem find(PathMatch pm) throws PSPathNotFoundServiceException, PSPathServiceException
-    {
+    protected PSPathItem find(PathMatch pm) throws PSPathNotFoundServiceException, PSPathServiceException, PSDataServiceException {
         return pm.find();
     }
 
     /**
      * {@inheritDoc}
      */
-    public List<PSPathItem> findChildren(String path) throws PSPathNotFoundServiceException, PSPathServiceException
-    {
+    public List<PSPathItem> findChildren(String path) throws PSPathNotFoundServiceException, PSPathServiceException, PSDataServiceException {
         checkRolesAllowed();
         
         PathMatch pm = match(path);
         return findChildren(pm);
     }
     
-    protected List<PSPathItem> findChildren(PathMatch pm) throws PSPathNotFoundServiceException, PSPathServiceException
-    {
+    protected List<PSPathItem> findChildren(PathMatch pm) throws PSPathNotFoundServiceException, PSPathServiceException, PSDataServiceException {
         return pm.findChildren();
     }
     
-    public List<PSPathItem> findChildren(String path, Integer displayFormatId, String sortColumn, String sortOrder) throws PSPathNotFoundServiceException, PSPathServiceException
-    {
+    public List<PSPathItem> findChildren(String path, Integer displayFormatId, String sortColumn, String sortOrder) throws PSPathNotFoundServiceException, PSPathServiceException, PSDataServiceException {
         PathMatch pm = match(path);
         return findChildren(pm, displayFormatId, sortColumn, sortOrder);
     }
     
-    protected List<PSPathItem> findChildren(PathMatch pm, Integer displayFormatId, String sortColumn, String sortOrder) throws PSPathNotFoundServiceException, PSPathServiceException
-    {
+    protected List<PSPathItem> findChildren(PathMatch pm, Integer displayFormatId, String sortColumn, String sortOrder) throws PSPathNotFoundServiceException, PSPathServiceException, PSDataServiceException {
         return pm.findChildren(displayFormatId, sortColumn, sortOrder);
     }
     
-    public PSPagedItemList findChildren(String path, Integer startIndex, Integer maxResults, Integer displayFormatId, String sortColumn, String sortOrder, String category, String type) throws PSPathNotFoundServiceException, PSPathServiceException
-    {
+    public PSPagedItemList findChildren(String path, Integer startIndex, Integer maxResults, Integer displayFormatId, String sortColumn, String sortOrder, String category, String type) throws PSPathNotFoundServiceException, PSPathServiceException, PSDataServiceException {
         PathMatch pm = match(path);
         return findChildren(pm, startIndex, maxResults, displayFormatId, sortColumn, sortOrder, category, type);
     }
     
-    protected PSPagedItemList findChildren(PathMatch pm, Integer startIndex, Integer maxResults, Integer displayFormatId, String sortColumn, String sortOrder, String category, String type) throws PSPathNotFoundServiceException, PSPathServiceException
-    {
+    protected PSPagedItemList findChildren(PathMatch pm, Integer startIndex, Integer maxResults, Integer displayFormatId, String sortColumn, String sortOrder, String category, String type) throws PSPathNotFoundServiceException, PSPathServiceException, PSDataServiceException {
         return pm.findChildren(startIndex, maxResults, displayFormatId, sortColumn, sortOrder, category, type);
     }
     
-    public PSPagedItemList findChildren(String path, Integer maxResults, String child, Integer displayFormatId) throws PSPathNotFoundServiceException, PSPathServiceException
-    {
+    public PSPagedItemList findChildren(String path, Integer maxResults, String child, Integer displayFormatId) throws PSPathNotFoundServiceException, PSPathServiceException, PSDataServiceException {
         PathMatch pm = match(path);
         return findChildren(pm, maxResults, child, displayFormatId);
     }
     
-    protected PSPagedItemList findChildren(PathMatch pm, Integer maxResults, String child, Integer displayFormatId) throws PSPathNotFoundServiceException, PSPathServiceException
-    {
+    protected PSPagedItemList findChildren(PathMatch pm, Integer maxResults, String child, Integer displayFormatId) throws PSPathNotFoundServiceException, PSPathServiceException, PSDataServiceException {
         return pm.findChildren(maxResults, child, displayFormatId);
     }
     
     /**
      * {@inheritDoc}
      */
-    public PSPathItem addFolder(String path) throws PSPathNotFoundServiceException, PSPathServiceException
-    {
+    public PSPathItem addFolder(String path) throws PSPathNotFoundServiceException, PSPathServiceException, PSValidationException, IPSDataService.DataServiceNotFoundException, IPSDataService.DataServiceLoadException {
         checkRolesAllowed();
         
         PathMatch pm = match(path);
         return addFolder(pm);
     }    
 
-    protected PSPathItem addFolder(PathMatch pm) throws PSPathNotFoundServiceException, PSPathServiceException
-    {
+    protected PSPathItem addFolder(PathMatch pm) throws PSPathNotFoundServiceException, PSPathServiceException, IPSDataService.DataServiceNotFoundException, PSValidationException, IPSDataService.DataServiceLoadException {
         return pm.addFolder();
     }
     
     /**
      * {@inheritDoc}
      */
-    public PSPathItem addNewFolder(String path) throws PSPathNotFoundServiceException, PSPathServiceException
-    {
+    public PSPathItem addNewFolder(String path) throws PSPathNotFoundServiceException, PSPathServiceException, PSDataServiceException {
         checkRolesAllowed();
         
         PathMatch pm = match(path);
         return addNewFolder(pm);
     }    
 
-    protected PSPathItem addNewFolder(PathMatch pm) throws PSPathNotFoundServiceException, PSPathServiceException
-    {
+    protected PSPathItem addNewFolder(PathMatch pm) throws PSPathNotFoundServiceException, PSPathServiceException, PSDataServiceException {
         return pm.addNewFolder();
     }
     
@@ -278,7 +270,7 @@ public class PSDispatchingPathService implements IPSPathService, IPSPathRecycleS
      * {@inheritDoc}
      */
     public PSPathItem renameFolder(PSRenameFolderItem item) throws PSPathNotFoundServiceException,
-    PSPathServiceException, PSBeanValidationException
+            PSPathServiceException, PSDataServiceException, PSBeanValidationException
     {
         checkRolesAllowed();
         
@@ -287,8 +279,7 @@ public class PSDispatchingPathService implements IPSPathService, IPSPathRecycleS
         return renameFolder(pm, item.getName());
     }    
 
-    public PSNoContent moveItem(PSMoveFolderItem request)
-    {
+    public PSNoContent moveItem(PSMoveFolderItem request) throws PSPathServiceException, PSDataServiceException, IPSItemWorkflowService.PSItemWorkflowServiceException {
         checkRolesAllowed();
         
         PathMatch pm = match(request.getTargetFolderPath());
@@ -296,40 +287,35 @@ public class PSDispatchingPathService implements IPSPathService, IPSPathRecycleS
     }
 
     protected PSPathItem renameFolder(PathMatch pm, String name) throws PSPathNotFoundServiceException,
-    PSPathServiceException
-    {
+            PSPathServiceException, PSDataServiceException, PSBeanValidationException {
         return pm.renameFolder(name);
     }
     
     /**
      * {@inheritDoc}
      */
-    public int deleteFolder(PSDeleteFolderCriteria criteria) throws PSPathServiceException
-    {
+    public int deleteFolder(PSDeleteFolderCriteria criteria) throws PSPathServiceException, PSValidationException, IPSDataService.DataServiceNotFoundException, IPSDataService.DataServiceLoadException, PSNotFoundException {
         checkRolesAllowed();
         
         PathMatch pm = match(criteria.getPath());
         return deleteFolder(pm, criteria);
     }    
 
-    protected int deleteFolder(PathMatch pm, PSDeleteFolderCriteria criteria) throws PSPathServiceException
-    {
+    protected int deleteFolder(PathMatch pm, PSDeleteFolderCriteria criteria) throws PSPathServiceException, IPSDataService.DataServiceNotFoundException, PSValidationException, IPSDataService.DataServiceLoadException, PSNotFoundException {
         return pm.deleteFolder(criteria);
     }
     
     /**
      * {@inheritDoc}
      */
-    public String validateFolderDelete(String path) throws PSPathNotFoundServiceException, PSPathServiceException
-    {
+    public String validateFolderDelete(String path) throws PSPathNotFoundServiceException, PSPathServiceException, PSValidationException, IPSDataService.DataServiceNotFoundException, IPSItemWorkflowService.PSItemWorkflowServiceException, IPSDataService.DataServiceLoadException, PSNotFoundException {
         checkRolesAllowed();
         
         PathMatch pm = match(path);
         return validateFolderDelete(pm);
     }    
 
-    protected String validateFolderDelete(PathMatch pm) throws PSPathNotFoundServiceException, PSPathServiceException
-    {
+    protected String validateFolderDelete(PathMatch pm) throws PSPathNotFoundServiceException, PSPathServiceException, PSValidationException, IPSDataService.DataServiceNotFoundException, IPSItemWorkflowService.PSItemWorkflowServiceException, IPSDataService.DataServiceLoadException, PSNotFoundException {
         return pm.validateFolderDelete();
     }
     
@@ -337,8 +323,7 @@ public class PSDispatchingPathService implements IPSPathService, IPSPathRecycleS
      * {@inheritDoc}
      */
     public List findItemProperties(PSItemByWfStateRequest request)
-    throws PSPathNotFoundServiceException, PSPathServiceException
-    {
+            throws PSPathNotFoundServiceException, PSPathServiceException, PSValidationException, IPSDataService.DataServiceNotFoundException {
         checkRolesAllowed();
         
         PathMatch pm = match(request.getPath());
@@ -346,8 +331,7 @@ public class PSDispatchingPathService implements IPSPathService, IPSPathRecycleS
     }    
 
     protected List findItemProperties(PathMatch pm, String workflowName, String stateName)
-    throws PSPathNotFoundServiceException, PSPathServiceException
-    {
+            throws PSPathNotFoundServiceException, PSPathServiceException, IPSDataService.DataServiceNotFoundException, PSValidationException {
         return pm.findItemProperties(workflowName, stateName);
     }
     
@@ -372,7 +356,7 @@ public class PSDispatchingPathService implements IPSPathService, IPSPathRecycleS
      * @return never <code>null</code>.
      * @see PSRootPathService
      */
-    protected PSPathItem findRoot() {
+    protected PSPathItem findRoot() throws PSPathNotFoundServiceException {
         PSPathItem item = new PSPathItem();
         item.setPath("/");
         item.setName("root");
@@ -385,9 +369,9 @@ public class PSDispatchingPathService implements IPSPathService, IPSPathRecycleS
      * of the {@link IPSPathMatcher}. 
      * @return never <code>null</code>, maybe empty.
      */
-    protected List<PSPathItem> findRootChildren() {
-        List<PSPathItem> items = new ArrayList<PSPathItem>();
-        List<String> paths = new ArrayList<String>( pathMatcher.getPaths());
+    protected List<PSPathItem> findRootChildren() throws PSPathServiceException, PSDataServiceException {
+        List<PSPathItem> items = new ArrayList<>();
+        List<String> paths = new ArrayList<>( pathMatcher.getPaths());
         paths.remove("/");
         
         // Check the current user roles and return only the childs that are
@@ -399,7 +383,7 @@ public class PSDispatchingPathService implements IPSPathService, IPSPathRecycleS
         {
             rolesAllowedByPathService = pathMatcher.getPathService(p).getRolesAllowed();
             
-            if (currentUserRoles != null && rolesAllowedByPathService != null &&
+            if (currentUserRoles != null && rolesAllowedByPathService != null && !rolesAllowedByPathService.isEmpty() &&
                     !CollectionUtils.containsAny(currentUserRoles, rolesAllowedByPathService))
                 continue;
             
@@ -410,13 +394,15 @@ public class PSDispatchingPathService implements IPSPathService, IPSPathRecycleS
         return items;
     }
     
-    public PSValidationErrors validate(PSRenameFolderItem object)
-    {
+    public PSValidationErrors validate(PSRenameFolderItem object) throws PSPathServiceException, PSDataServiceException {
         PSBeanValidationException e = PSBeanValidationUtils.validate(object);
         e.throwIfInvalid();
         
         String path = object.getPath();
-        PSPathItem pathItem = find(path);
+        PSPathItem pathItem;
+
+        pathItem = find(path);
+
         if (pathItem.isLeaf())
         {
             throw new PSPathServiceException("Path: " + path + " is not a valid folder path");
@@ -520,8 +506,7 @@ public class PSDispatchingPathService implements IPSPathService, IPSPathRecycleS
     }
 
     @Override
-    public PSNoContent restoreFolder(String guid)
-    {
+    public PSNoContent restoreFolder(String guid) throws PSPathServiceException {
         boolean hasErrors = false;
         boolean isValidForRecycle = false;
         try {
@@ -530,7 +515,8 @@ public class PSDispatchingPathService implements IPSPathService, IPSPathRecycleS
             String pathToCheck = PSFolderHelper.getOppositePath(folderPath);
             isValidForRecycle = folderHelper.isFolderValidForRecycleOrRestore(pathToCheck, folderPath, FOLDER_TYPE, RECYCLED_TYPE);
         } catch (Exception e) {
-            log.error("Error finding item properties by id when restoring folder: " + guid);
+            log.error("Error finding item properties by id when restoring folder: {}, Error: {}", guid,PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             hasErrors = true;
         }
         if (hasErrors) {
@@ -539,8 +525,7 @@ public class PSDispatchingPathService implements IPSPathService, IPSPathRecycleS
         if (isValidForRecycle) {
             recycleService.restoreFolder(guid);
         } else {
-            throw new PSPathServiceException("Error restoring folder.  Destination may already " +
-                    "contain a folder" + "with the same name.");
+            throw new PSPathServiceException("Error restoring folder.  Destination may already contain a folder with the same name.");
         }
         return new PSNoContent("Successfully restored folder with guid: " + guid);
     }
@@ -571,63 +556,54 @@ public class PSDispatchingPathService implements IPSPathService, IPSPathRecycleS
             return null;
         }
         
-        public PSItemProperties findItemProperties(String path) throws PSPathNotFoundServiceException, PSPathServiceException
-        {
+        public PSItemProperties findItemProperties(String path) throws PSPathNotFoundServiceException, PSPathServiceException, PSDataServiceException {
             validatePath(path); 
             return pathService.findItemProperties(path);
         }
         
-        public List<PSPathItem> findChildren(String path) throws PSPathNotFoundServiceException, PSPathServiceException
-        {
+        public List<PSPathItem> findChildren(String path) throws PSPathNotFoundServiceException, PSPathServiceException, PSDataServiceException {
             validatePath(path);
             return pathService.findRootChildren();
         }
         
-        public PSPathItem addFolder(String path) throws PSPathNotFoundServiceException, PSPathServiceException
-        {
+        public PSPathItem addFolder(String path) throws PSPathNotFoundServiceException, PSPathServiceException, IPSDataService.DataServiceNotFoundException, PSValidationException, IPSDataService.DataServiceLoadException {
             return pathService.addFolder(path);
         }
         
-        public PSPathItem addNewFolder(String path) throws PSPathNotFoundServiceException, PSPathServiceException
-        {
+        public PSPathItem addNewFolder(String path) throws PSPathNotFoundServiceException, PSPathServiceException, PSDataServiceException {
             return pathService.addNewFolder(path);
         }
         
         public PSPathItem renameFolder(PSRenameFolderItem item) throws PSPathNotFoundServiceException,
-        PSPathServiceException, PSBeanValidationException
+                PSPathServiceException, PSDataServiceException
         {
             return pathService.renameFolder(item);
         }
         
-        public PSNoContent moveItem(PSMoveFolderItem request)
-        {
+        public PSNoContent moveItem(PSMoveFolderItem request) throws PSPathServiceException, PSDataServiceException, IPSItemWorkflowService.PSItemWorkflowServiceException {
             return pathService.moveItem(request);
         }
 
         public int deleteFolder(PSDeleteFolderCriteria criteria) throws PSPathNotFoundServiceException,
-        PSPathServiceException
-        {
+                PSPathServiceException, IPSDataService.DataServiceNotFoundException, PSValidationException, IPSDataService.DataServiceLoadException, PSNotFoundException {
             return pathService.deleteFolder(criteria);
         }
         
         public String validateFolderDelete(String path) throws PSPathNotFoundServiceException,
-        PSPathServiceException
-        {
+                PSPathServiceException, PSValidationException, IPSDataService.DataServiceNotFoundException, IPSItemWorkflowService.PSItemWorkflowServiceException, IPSDataService.DataServiceLoadException, PSNotFoundException {
             return pathService.validateFolderDelete(path);
         }
         
         public List findItemProperties(PSItemByWfStateRequest request)
-        throws PSPathNotFoundServiceException, PSPathServiceException
-        {
+                throws PSPathNotFoundServiceException, PSPathServiceException, IPSDataService.DataServiceNotFoundException, PSValidationException {
             return pathService.findItemProperties(request);
         }
         
-        public String findLastExistingPath(String path)
-        {
+        public String findLastExistingPath(String path) throws PSPathServiceException {
             return pathService.findLastExistingPath(path);
         }
 
-        private void validatePath(String path) {
+        private void validatePath(String path) throws PSPathNotFoundServiceException {
             if ( ! "/".equals(path) ) throw new PSPathNotFoundServiceException("Path not found: " + path);
         }
         
@@ -767,8 +743,7 @@ public class PSDispatchingPathService implements IPSPathService, IPSPathRecycleS
              * ({@link #toFullPath(String)}). 
              * @return never <code>null</code>.
              */
-            public List<PSPathItem> findChildren()
-            {
+            public List<PSPathItem> findChildren() throws PSPathServiceException, PSDataServiceException {
                 return findChildren(1, Integer.MAX_VALUE, null, null, null, null, null).getChildrenInPage();
             }
             
@@ -782,8 +757,7 @@ public class PSDispatchingPathService implements IPSPathService, IPSPathRecycleS
              * @return A list of {@link PSPathItem} object with display properties (if
              * 'displayFormatId' is not null and exists).
              */
-            public List<PSPathItem> findChildren(Integer displayFormatId, String sortColumn, String sortOrder)
-            {
+            public List<PSPathItem> findChildren(Integer displayFormatId, String sortColumn, String sortOrder) throws PSPathServiceException, PSDataServiceException {
                 List<PSPathItem> items = findChildren();
                 
                 PSSimpleDisplayFormat format = getDisplayFormat(displayFormatId);
@@ -807,12 +781,11 @@ public class PSDispatchingPathService implements IPSPathService, IPSPathRecycleS
              * @see #findChildren()
              */
             public PSPagedItemList findChildren(Integer startIndex, Integer maxResults, Integer displayFormatId,
-                    String sortColumn, String sortOrder, String category, String type)
-            {
+                    String sortColumn, String sortOrder, String category, String type) throws PSPathServiceException, PSDataServiceException {
                 stopWatch.start();
                 List<PSPathItem> items = pathService.findChildren(relativePath);
                 stopWatch.stop();
-                log.debug("pathService.findChildren: " + stopWatch.toString());
+                log.debug("pathService.findChildren: {}", stopWatch.toString());
                 
                 items = filterByCategoryAndType(items, category, type);
                 
@@ -822,14 +795,14 @@ public class PSDispatchingPathService implements IPSPathService, IPSPathRecycleS
                 stopWatch.start();
                 validateAndSetFullPaths(items);
                 stopWatch.stop();
-                log.debug("validateAndSetFullPaths: " + stopWatch.toString());
+                log.debug("validateAndSetFullPaths: {}", stopWatch.toString());
                 
                 boolean isSortSpecified = PSPathUtils.isSortSpecified(sortColumn, sortOrder);
                 
                 stopWatch.start();
                 PSSimpleDisplayFormat format = getDisplayFormat(displayFormatId);
                 stopWatch.stop();
-                log.debug("getDisplayFormat: " + stopWatch.toString());
+                log.debug("getDisplayFormat: {}", stopWatch.toString());
                 
                 if (isSortSpecified)
                 {
@@ -841,7 +814,7 @@ public class PSDispatchingPathService implements IPSPathService, IPSPathRecycleS
                     stopWatch.start();
                     PSPathUtils.sort(items, sortColumn, sortOrder);
                     stopWatch.stop();
-                    log.debug("PSPathUtils.sort: " + stopWatch.toString());
+                    log.debug("PSPathUtils.sort: {}", stopWatch.toString());
                 }
                 
                 stopWatch.start();
@@ -849,7 +822,7 @@ public class PSDispatchingPathService implements IPSPathService, IPSPathRecycleS
                 List<PSPathItem> itemsInPage = result.getChildrenInPage();
                 Integer resultingStartIndex = result.getStartIndex();
                 stopWatch.stop();
-                log.debug("PSPathUtils.getPage: " + stopWatch.toString());
+                log.debug("PSPathUtils.getPage: {}", stopWatch.toString());
                 
                 // If sort wasn't specified, I need to update items with display properties here
                 if (!isSortSpecified)
@@ -857,7 +830,7 @@ public class PSDispatchingPathService implements IPSPathService, IPSPathRecycleS
                     stopWatch.start();
                     listViewHelper.fillDisplayProperties(new PSDisplayPropertiesCriteria(itemsInPage, format));
                     stopWatch.stop();
-                    log.debug("PSUiHelper.setDisplayFormatInfo (before returning): " + stopWatch.toString());
+                    log.debug("PSUiHelper.setDisplayFormatInfo (before returning): {}", stopWatch.toString());
                 }
                 
                 return new PSPagedItemList(itemsInPage, items.size(), resultingStartIndex);
@@ -876,8 +849,8 @@ public class PSDispatchingPathService implements IPSPathService, IPSPathRecycleS
             private List<PSPathItem> filterByCategoryAndType(List<PSPathItem> items, String category, String type)
             {
                 
-                Set<String> categories = new HashSet<String>();
-                Set<String> types = new HashSet<String>();
+                Set<String> categories = new HashSet<>();
+                Set<String> types = new HashSet<>();
                 
                 boolean hasCat = !StringUtils.isBlank(category);
                 boolean hasType = !StringUtils.isBlank(type);
@@ -897,7 +870,7 @@ public class PSDispatchingPathService implements IPSPathService, IPSPathRecycleS
                 }
 
                 
-                List<PSPathItem> result = new ArrayList<PSPathItem>();
+                List<PSPathItem> result = new ArrayList<>();
                 for (PSPathItem item : items)
                 {
                     Category itemCat = item.getCategory();
@@ -929,8 +902,7 @@ public class PSDispatchingPathService implements IPSPathService, IPSPathRecycleS
              * page is returned. Never <code>null</code>.
              * @see #findChildren()
              */
-            public PSPagedItemList findChildren(Integer maxResults, String child, Integer displayFormatId)
-            {
+            public PSPagedItemList findChildren(Integer maxResults, String child, Integer displayFormatId) throws PSPathServiceException, PSDataServiceException {
                 Validate.notNull(maxResults, "maxResults cannot be null nor lesser than 1");
                 Validate.isTrue(maxResults >= 1, "maxResults cannot be null nor lesser than 1");
                 Validate.notEmpty(child, "child cannot be null nor empty");
@@ -956,8 +928,7 @@ public class PSDispatchingPathService implements IPSPathService, IPSPathRecycleS
              * @param items A list of {@link PSPathItem} objects. May be <code>null</code>,
              * in that case id does nothing.
              */
-            private void validateAndSetFullPaths(List<PSPathItem> items)
-            {
+            private void validateAndSetFullPaths(List<PSPathItem> items) throws PSPathServiceException {
                 if (items == null || items.size() == 0)
                     return;
                 
@@ -972,8 +943,7 @@ public class PSDispatchingPathService implements IPSPathService, IPSPathRecycleS
              * 
              * @return item properties, never <code>null</code>.
              */
-            public PSItemProperties findItemProperties()
-            {
+            public PSItemProperties findItemProperties() throws PSDataServiceException, PSPathServiceException {
                 return pathService.findItemProperties(relativePath);
             }
             
@@ -985,8 +955,7 @@ public class PSDispatchingPathService implements IPSPathService, IPSPathRecycleS
              * 
              * @return list of item properties, never <code>null</code>, may be empty.
              */
-            public List<PSItemProperties> findItemProperties(String workflowName, String stateName)
-            {
+            public List<PSItemProperties> findItemProperties(String workflowName, String stateName) throws PSPathServiceException, PSValidationException, IPSDataService.DataServiceNotFoundException {
                 PSItemByWfStateRequest request = new PSItemByWfStateRequest();
                 request.setPath(relativePath);
                 request.setWorkflow(workflowName);
@@ -1000,8 +969,7 @@ public class PSDispatchingPathService implements IPSPathService, IPSPathRecycleS
              * 
              * @return never <code>null</code>.
              */
-            public PSPathItem find()
-            {
+            public PSPathItem find() throws PSPathServiceException, PSDataServiceException {
                 PSPathItem item = pathService.find(relativePath);
                 validateReturnedPathItem(item);
                 item.setPath(toFullPath(item.getPath()));
@@ -1013,8 +981,7 @@ public class PSDispatchingPathService implements IPSPathService, IPSPathRecycleS
              * 
              * @return never <code>null</code>.
              */
-            public PSPathItem addFolder()
-            {
+            public PSPathItem addFolder() throws PSPathServiceException, PSValidationException, IPSDataService.DataServiceNotFoundException, IPSDataService.DataServiceLoadException {
                 PSPathItem item = pathService.addFolder(relativePath);
                 validateReturnedPathItem(item);
                 item.setPath(toFullPath(item.getPath()));
@@ -1026,8 +993,7 @@ public class PSDispatchingPathService implements IPSPathService, IPSPathRecycleS
              * 
              * @return never <code>null</code>.
              */
-            public PSPathItem addNewFolder()
-            {
+            public PSPathItem addNewFolder() throws PSPathServiceException, PSDataServiceException {
                 PSPathItem item = pathService.addNewFolder(relativePath);
                 if (!find().isLeaf())
                 {
@@ -1045,8 +1011,7 @@ public class PSDispatchingPathService implements IPSPathService, IPSPathRecycleS
              * 
              * @return never <code>null</code>.
              */
-            public PSPathItem renameFolder(String name)
-            {
+            public PSPathItem renameFolder(String name) throws PSPathServiceException, PSDataServiceException, PSBeanValidationException {
                 notEmpty(name, "name may not be null or empty");
                 
                 PSRenameFolderItem folderItem = new PSRenameFolderItem();
@@ -1058,18 +1023,16 @@ public class PSDispatchingPathService implements IPSPathService, IPSPathRecycleS
                 return item;
             }
             
-            public PSNoContent moveItem(PSMoveFolderItem request)
-            {
+            public PSNoContent moveItem(PSMoveFolderItem request) throws PSDataServiceException, PSPathServiceException, IPSItemWorkflowService.PSItemWorkflowServiceException {
                 return pathService.moveItem(request);
             }
             
             /**
              * See {@link #findChildren()}.  Deletes the folder.
-             * @param skipItems 
+             * @param criteria
              * @return number of undeleted items.
              */
-            public int deleteFolder(PSDeleteFolderCriteria criteria)
-            {
+            public int deleteFolder(PSDeleteFolderCriteria criteria) throws PSPathServiceException, PSValidationException, IPSDataService.DataServiceNotFoundException, IPSDataService.DataServiceLoadException, PSNotFoundException {
                 PSDeleteFolderCriteria folderCriteria = new PSDeleteFolderCriteria();
                 folderCriteria.setPath(relativePath);
                 folderCriteria.setSkipItems(criteria.getSkipItems());
@@ -1081,8 +1044,7 @@ public class PSDispatchingPathService implements IPSPathService, IPSPathRecycleS
              * See {@link #findChildren()}.  Validates the folder for deletion.
              * @return never <code>null</code> or empty.
              */
-            public String validateFolderDelete()
-            {
+            public String validateFolderDelete() throws PSPathServiceException, PSValidationException, IPSDataService.DataServiceNotFoundException, IPSItemWorkflowService.PSItemWorkflowServiceException, IPSDataService.DataServiceLoadException, PSNotFoundException {
                 return pathService.validateFolderDelete(relativePath);
             }
             
@@ -1090,13 +1052,11 @@ public class PSDispatchingPathService implements IPSPathService, IPSPathRecycleS
              * See {@link IPSPathService#findLastExistingPath(String)}.
              * @return never <code>null</code>, may be empty.
              */
-            public String findLastExistingPath()
-            {            
+            public String findLastExistingPath() throws PSPathServiceException {
                 return pathService.findLastExistingPath(relativePath);
             }
             
-            protected void validateReturnedPathItem(PSPathItem item)
-            {
+            protected void validateReturnedPathItem(PSPathItem item) throws PSPathServiceException {
                 validateReturnedPathItem(item, true);
             }
             
@@ -1143,7 +1103,7 @@ public class PSDispatchingPathService implements IPSPathService, IPSPathRecycleS
                 rvalue = rvalue.substring(1);
             }
             if (log.isDebugEnabled()) {
-                log.debug(format("Original path: {0}, Normalized path: {1}", path,rvalue));
+                log.debug("Original path: {}, Normalized path: {}", path,rvalue);
             }
             return rvalue;
             
@@ -1176,15 +1136,14 @@ public class PSDispatchingPathService implements IPSPathService, IPSPathRecycleS
         /**
          * {@inheritDoc}
          */
-        public PathMatch matchPath(String path)
-        {
+        public PathMatch matchPath(String path) throws PSPathNotFoundServiceException {
             path = pathNormalizer.normalizePath(path);
             
             Set<String> pathPrefixSet = pathRegistry.keySet();
             IPSPathService pathService;
             IPSListViewHelper listViewHelper;
             
-            List<String> pathPrefixs = new ArrayList<String>(pathPrefixSet);
+            List<String> pathPrefixs = new ArrayList<>(pathPrefixSet);
             Collections.sort(pathPrefixs);
             Collections.reverse(pathPrefixs);
             
@@ -1238,7 +1197,7 @@ public class PSDispatchingPathService implements IPSPathService, IPSPathRecycleS
 
         /**
          * Calls {@link URLDecoder#decode(String, String)} for the given path, using
-         * the encoding {@link PSCharSets.rxJavaEnc}. If that encoding is not
+         * the encoding {@link java.nio.charset.StandardCharsets}. If that encoding is not
          * supported (cannot happen), it calls {@link URLDecoder#decode(String)}
          * (that is deprecated).
          * 
@@ -1262,7 +1221,7 @@ public class PSDispatchingPathService implements IPSPathService, IPSPathRecycleS
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log log = LogFactory.getLog(PSDispatchingPathService.class);
+    private static final Logger log = LogManager.getLogger(PSDispatchingPathService.class);
 
     private static final String RECYCLED_TYPE = PSRelationshipConfig.TYPE_RECYCLED_CONTENT;
 

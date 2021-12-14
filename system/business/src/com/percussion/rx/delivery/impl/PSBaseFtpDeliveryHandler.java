@@ -17,14 +17,13 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.rx.delivery.impl;
 
-import static org.apache.commons.lang.Validate.notNull;
-
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.rx.delivery.IPSDeliveryErrors;
 import com.percussion.rx.delivery.IPSDeliveryResult;
 import com.percussion.rx.delivery.IPSDeliveryResult.Outcome;
@@ -32,6 +31,10 @@ import com.percussion.rx.delivery.PSDeliveryException;
 import com.percussion.services.pubserver.IPSPubServer;
 import com.percussion.services.pubserver.IPSPubServerDao;
 import com.percussion.services.sitemgr.IPSSite;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -39,10 +42,7 @@ import java.io.InputStream;
 import java.util.Collection;
 import java.util.Iterator;
 
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import static org.apache.commons.lang.Validate.notNull;
 
 /**
  * Base ftp delivery handler. This adds retry logic to the <code>login</code>
@@ -54,6 +54,7 @@ import org.apache.commons.logging.LogFactory;
  */
 public abstract class PSBaseFtpDeliveryHandler extends PSBaseDeliveryHandler
 {
+    private static final String NO_MORE_RETRIES = "No more loginRetries left - failed to login.";
     /**
      * See {@link #getMaxRetries()}
      */
@@ -227,12 +228,12 @@ public abstract class PSBaseFtpDeliveryHandler extends PSBaseDeliveryHandler
      * properties set in the publisher-beans.xml
      */
     public void logDebugInformation() {
-        ms_log.debug("Default timeout: " + getTimeout());
-        ms_log.debug("Use passive mode: " + getUsePassiveMode());
-        ms_log.debug("Connect timeout: " + getConnectTimeout());
-        ms_log.debug("Max retries: " + getMaxRetries());
-        ms_log.debug("Active port start: " + getActivePortStart() +
-                ". Active port end: " + getActivePortEnd());
+        ms_log.debug("Default timeout: {}" ,getTimeout());
+        ms_log.debug("Use passive mode: {}" , getUsePassiveMode());
+        ms_log.debug("Connect timeout: {}" , getConnectTimeout());
+        ms_log.debug("Max retries: {}" , getMaxRetries());
+        ms_log.debug("Active port start: {}. Active port end: {}", getActivePortStart()
+                 , getActivePortEnd());
     }
 
    /**
@@ -537,62 +538,40 @@ public abstract class PSBaseFtpDeliveryHandler extends PSBaseDeliveryHandler
          String location)
    {
       boolean isDebugEnabled = ms_log.isDebugEnabled();
-
-      
       RetryItem retryItem =new RetryItem(item);
       IPSDeliveryResult result = null;
-      InputStream inputStream = null;
-
-      try
-      {
-         // if FTP should fail we want to retry
-
+      // if FTP should fail we want to retry
+       try{
          for (int ftpPutRetriesLeft = 5; ftpPutRetriesLeft > 0; ftpPutRetriesLeft--)
          {
-            try
-            {
-               inputStream = retryItem.getContentStream();
-            }
-            catch (Exception e)
-            {
-               return getItemResult(Outcome.FAILED, item, jobId,
-                     e.getLocalizedMessage());
-            }
-            
-            if (isDebugEnabled)
-            {
-               ms_log.debug("About to ftp publish content item"
-                     + " to remoteFilepath: " + location);
-            }
+                 try(InputStream inputStream = retryItem.getContentStream()) {
+                     if (isDebugEnabled) {
+                         ms_log.debug("About to ftp publish content item to remoteFilepath: {}" , location);
+                     }
 
-            result = deliverItem(item, inputStream, jobId, location);
-            if (result.getOutcome() != IPSDeliveryResult.Outcome.FAILED)
-            {
-               // success - there is no need to retry
-               break;
-            }
-            else if (ftpPutRetriesLeft > 1 && retryItem.getRetryPossible())
-            {
-               prepareForRetry(jobId, isDebugEnabled, ftpPutRetriesLeft);
-            }
-            else
-            {
-               logError(retryItem, location, result.getFailureMessage());
-               
-               if(!retryItem.getRetryPossible())
-               {
-                  break;
-               }
-            }
-         }
-      }
-      finally
-      {
-         retryItem.release();
-      }
+                     result = deliverItem(item, inputStream, jobId, location);
+                     if (result.getOutcome() != IPSDeliveryResult.Outcome.FAILED) {
+                         // success - there is no need to retry
+                         break;
+                     } else if (ftpPutRetriesLeft > 1 && retryItem.getRetryPossible()) {
+                         prepareForRetry(jobId, isDebugEnabled, ftpPutRetriesLeft);
+                     } else {
+                         logError(retryItem, location, result.getFailureMessage());
+                         if (!retryItem.getRetryPossible()) {
+                             break;
+                         }
+                     }
+                 }
+             }
+            }catch (Exception e) {
+                  return getItemResult(Outcome.FAILED, item, jobId,
+                          e.getLocalizedMessage());
+         }finally {
+             retryItem.release();
+          }
 
-      return result;
-   }
+          return result;
+       }
 
    /**
     * Puts out error information if we have either exceeded the number of
@@ -627,7 +606,7 @@ public abstract class PSBaseFtpDeliveryHandler extends PSBaseDeliveryHandler
 
       if (StringUtils.isNotBlank(failureMessage))
       {
-         ms_log.debug("Error in doDelivery(): " + failureMessage);
+         ms_log.debug("Error in doDelivery(): {}" , failureMessage);
       }
    }
 
@@ -653,8 +632,8 @@ public abstract class PSBaseFtpDeliveryHandler extends PSBaseDeliveryHandler
       {
          ms_log.debug("Ftp session disconnected, attempting to republish.");
 
-         ms_log.debug("About to relogin, ftpPutRetriesLeft: "
-               + (ftpPutRetriesLeft - 1));
+         ms_log.debug("About to relogin, ftpPutRetriesLeft: {}"
+               , (ftpPutRetriesLeft - 1));
       }
       
       try
@@ -664,6 +643,8 @@ public abstract class PSBaseFtpDeliveryHandler extends PSBaseDeliveryHandler
       }
       catch (InterruptedException intex)
       {
+          ms_log.error(PSExceptionUtils.getMessageForLog(intex));
+          Thread.currentThread().interrupt();
       }
 
       try
@@ -686,6 +667,7 @@ public abstract class PSBaseFtpDeliveryHandler extends PSBaseDeliveryHandler
     * (non-Javadoc)
     * @see com.percussion.rx.delivery.impl.PSBaseDeliveryHandler#prepareForDelivery(long)
     */
+    @Override
    protected Collection<IPSDeliveryResult> prepareForDelivery(long jobId) throws PSDeliveryException
    {
       if (isTransactional())
@@ -698,6 +680,7 @@ public abstract class PSBaseFtpDeliveryHandler extends PSBaseDeliveryHandler
     * (non-Javadoc)
     * @see com.percussion.rx.delivery.impl.PSBaseDeliveryHandler#releaseForDelivery(long)
     */
+    @Override
    protected void releaseForDelivery(long jobId)
    {
       logoff();
@@ -768,11 +751,11 @@ public abstract class PSBaseFtpDeliveryHandler extends PSBaseDeliveryHandler
                   msg = result.getFailureMessage();
                }
 
-               ms_log.warn(msg + ", loginRetriesLeft:" + loginRetriesLeft);
+               ms_log.warn( "{}, loginRetriesLeft: {}" , msg, loginRetriesLeft);
 
                if (loginRetriesLeft <= 1)
                {
-                  ms_log.error("No more loginRetries left - failed to login.");
+                  ms_log.error(NO_MORE_RETRIES);
                   // tried few times, but we still fail - give up
                   break;
                }
@@ -784,6 +767,8 @@ public abstract class PSBaseFtpDeliveryHandler extends PSBaseDeliveryHandler
                }
                catch (InterruptedException intex)
                {
+                   ms_log.error(PSExceptionUtils.getMessageForLog(intex));
+                   Thread.currentThread().interrupt();
                }
             }
          }
@@ -802,7 +787,7 @@ public abstract class PSBaseFtpDeliveryHandler extends PSBaseDeliveryHandler
 
             if (loginRetriesLeft <= 1)
             {
-               ms_log.error("No more loginRetries left - failed to login.");
+               ms_log.error(NO_MORE_RETRIES);
                //tried few times, but we still fail - give up
                throw de;
             }
@@ -812,7 +797,10 @@ public abstract class PSBaseFtpDeliveryHandler extends PSBaseDeliveryHandler
                //first time wait the least, next time wait more, etc.
                Thread.sleep(15000 / loginRetriesLeft);
             }
-            catch(InterruptedException intex){}
+            catch(InterruptedException intex){
+                ms_log.error(PSExceptionUtils.getMessageForLog(intex));
+                Thread.currentThread().interrupt();
+            }
          }
          catch(Exception e)
          {
@@ -829,7 +817,7 @@ public abstract class PSBaseFtpDeliveryHandler extends PSBaseDeliveryHandler
 
             if (loginRetriesLeft <= 1)
             {
-               ms_log.error("No more loginRetries left - failed to login.");
+               ms_log.error(NO_MORE_RETRIES);
                //tried few times, but we still fail - give up
                throw new PSDeliveryException(IPSDeliveryErrors.UNEXPECTED_ERROR, 
                      e.getMessage());
@@ -840,7 +828,10 @@ public abstract class PSBaseFtpDeliveryHandler extends PSBaseDeliveryHandler
                //first time wait the least, next time wait more, etc.
                Thread.sleep(15000 / loginRetriesLeft);
             }
-            catch(InterruptedException intex){}
+            catch(InterruptedException intex){
+                ms_log.error(PSExceptionUtils.getMessageForLog(intex));
+                Thread.currentThread().interrupt();
+            }
          }
       } 
       
@@ -918,7 +909,7 @@ public abstract class PSBaseFtpDeliveryHandler extends PSBaseDeliveryHandler
    /**
     * Logger.
     */
-   private static Log ms_log = LogFactory.getLog(PSBaseFtpDeliveryHandler.class);
+   private static final Logger ms_log = LogManager.getLogger(PSBaseFtpDeliveryHandler.class);
 
 
    @Override

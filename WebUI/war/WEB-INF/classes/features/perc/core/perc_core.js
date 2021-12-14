@@ -1,17 +1,3 @@
-/******************************************************************************
- *
- * [ perc_core.js ]
- *
- * COPYRIGHT (c) 1999 - 2010 by Percussion Software, Inc., Woburn, MA USA.
- * All rights reserved. This material contains unpublished, copyrighted
- * work including confidential and proprietary information of Percussion.
- *
- * A shindig feature that maps thne jQuery variable in the gadget iframe context
- * to the top level jQuery instance which allows access to all the client code
- * in cm1.
- *
- ******************************************************************************/
- 
 // Ensure gadgets.perc namespace exists
 var gadgets = gadgets || {};
 gadgets.perc = gadgets.perc || {};

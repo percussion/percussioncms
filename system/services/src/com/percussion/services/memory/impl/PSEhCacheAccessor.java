@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -39,8 +39,8 @@ import net.sf.ehcache.Element;
 import net.sf.ehcache.constructs.classloader.ClassLoaderAwareCache;
 import net.sf.ehcache.statistics.LiveCacheStatistics;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.Serializable;
@@ -61,7 +61,7 @@ public class PSEhCacheAccessor implements IPSCacheAccess
    /**
     * Logger for this class
     */
-   private static Log ms_log = LogFactory.getLog("PSEhCacheAccessor");
+   private static final Logger log = LogManager.getLogger("PSEhCacheAccessor");
    
    /**
     * Implements the notification service endpoint used to invalidate objects
@@ -204,9 +204,8 @@ public class PSEhCacheAccessor implements IPSCacheAccess
       {
          clear(name);
       }
-      
-      if (ms_log.isDebugEnabled())
-         ms_log.debug("Cleared all EhCache.");
+
+      log.debug("Cleared all EhCache.");
    }
    
    /*
@@ -226,7 +225,7 @@ public class PSEhCacheAccessor implements IPSCacheAccess
       }
       else
       {
-         ms_log.warn("Cannot clear unknown cache: " + name);
+         log.warn("Cannot clear unknown cache: {}" ,name);
       }
    }
 
@@ -272,7 +271,7 @@ public class PSEhCacheAccessor implements IPSCacheAccess
    public List<PSCacheStatisticsSnapshot> getStatistics()
    {
       List<PSCacheStatisticsSnapshot> statList = 
-         new ArrayList<PSCacheStatisticsSnapshot>();
+         new ArrayList<>();
 
       PSCacheStatisticsSnapshot cacheStat;
       for (String name : m_manager.getCacheNames())

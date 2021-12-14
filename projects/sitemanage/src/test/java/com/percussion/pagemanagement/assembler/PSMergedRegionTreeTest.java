@@ -17,16 +17,11 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.pagemanagement.assembler;
-
-import static java.util.Arrays.asList;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 
 import com.percussion.pagemanagement.assembler.PSMergedRegion.PSMergedRegionOwner;
 import com.percussion.pagemanagement.data.PSRegion;
@@ -37,10 +32,7 @@ import com.percussion.pagemanagement.data.PSRegionTree;
 import com.percussion.pagemanagement.data.PSWidgetDefinition;
 import com.percussion.pagemanagement.data.PSWidgetItem;
 import com.percussion.pagemanagement.service.IPSWidgetService;
-
-import java.util.ArrayList;
-import java.util.Collection;
-
+import com.percussion.share.service.exception.PSDataServiceException;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.integration.junit4.JMock;
@@ -48,6 +40,14 @@ import org.jmock.integration.junit4.JUnit4Mockery;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import java.util.ArrayList;
+import java.util.Collection;
+
+import static java.util.Arrays.asList;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 //import static java.util.Arrays.*;
 //import static org.hamcrest.CoreMatchers.*;
@@ -105,8 +105,7 @@ public class PSMergedRegionTreeTest
     }
 
     @Test
-    public void shouldOverrideTemplateRegionsWithPageWidgets()
-    {
+    public void shouldOverrideTemplateRegionsWithPageWidgets() throws PSDataServiceException {
         
         branches.setRegionWidgets("A/c", asList(widgetItem));
 
@@ -125,8 +124,7 @@ public class PSMergedRegionTreeTest
     
     
     @Test
-    public void shouldOverrideTemplateRegionsWithPageRegions()
-    {
+    public void shouldOverrideTemplateRegionsWithPageRegions() throws PSDataServiceException {
         
         mergedTree.merge(tree, branches);
         
@@ -138,8 +136,7 @@ public class PSMergedRegionTreeTest
     
     
     @Test
-    public void shouldOverridePageRegionsWithTemplateWidgets()
-    {
+    public void shouldOverridePageRegionsWithTemplateWidgets() throws PSDataServiceException {
         
         tree.setRegionWidgets("A/c", asList(treeWidgetItem));
         
@@ -157,8 +154,7 @@ public class PSMergedRegionTreeTest
     }
     
     @Test
-    public void shouldOverridePageWidgetsWithTemplateWidgets()
-    {
+    public void shouldOverridePageWidgetsWithTemplateWidgets() throws PSDataServiceException {
         
         tree.setRegionWidgets("A/c", asList(treeWidgetItem));
         branches.setRegionWidgets("A/c", asList(widgetItem));

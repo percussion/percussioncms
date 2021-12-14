@@ -17,23 +17,21 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.monitor.service;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.TreeSet;
-
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.Set;
+import java.util.TreeSet;
 
 @XmlRootElement
 public class PSMonitorDesignators
 {
 	@XmlElement
-	public Set<String> designator = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
+	public Set<String> designator = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
 }

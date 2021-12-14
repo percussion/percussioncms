@@ -32,7 +32,7 @@ ps.UserInfo = new function()
 	 * The full path (no protocol,server or query) to the page that renders the
 	 * user info such as name and role membership.
 	 */
-	this.USER_INFO_PAGE_URL = "/Rhythmyx/ui/activeassembly/UserStatus.jsp";
+	this.USER_INFO_PAGE_URL = "/ui/activeassembly/UserStatus.jsp";
 	
    this.showInfo = function()
    {

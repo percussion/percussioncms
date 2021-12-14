@@ -17,29 +17,26 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.webdav;
 
-import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * This servlet picks out requests that must be handled by the webdav servlet
@@ -53,13 +50,13 @@ public class PSWebDavRequestFilter implements Filter
    /**
     * log to use, never <code>null</code>.
     */
-   static Log ms_log = LogFactory.getLog(PSWebDavRequestFilter.class);
+    private static final Logger ms_log = LogManager.getLogger(PSWebDavRequestFilter.class);
    /**
     * If one of these methods is matched, then the request will be forwarded.
     * Not every webdav method is included because most only make sense once 
     * we're in the tree.
     */
-   private static Set<String> ms_webdavmethods = new HashSet<String>();
+   private static Set<String> ms_webdavmethods = new HashSet<>();
    
    static {
       ms_webdavmethods.add("PROPFIND");

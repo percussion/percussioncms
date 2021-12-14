@@ -17,16 +17,17 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.utils.io;
 
+import com.percussion.utils.tools.IPSUtilsConstants;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
@@ -49,7 +50,7 @@ public class PathUtils {
     /**
      * Logger
      */
-    private static Log log = LogFactory.getLog(PathUtils.class);
+    private static final Logger log = LogManager.getLogger(IPSUtilsConstants.SERVER_LOG);
 
     private static volatile File RX_DIR = null;
 
@@ -59,6 +60,10 @@ public class PathUtils {
      * @see #getRxDir(String)
      */
     public static final String DEPLOY_DIR_PROP = "rxdeploydir";
+
+    public static File getRxDir(){
+        return getRxDir(null);
+    }
 
     /***
      * Provides a container neutral method for detecting the RX install directory.

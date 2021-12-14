@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -25,8 +25,9 @@
 package com.percussion.queue.impl;
 
 import com.percussion.sitemanage.data.PSSite;
+import com.percussion.sitemanage.error.PSSiteImportException;
 
 public interface IPSPerformPageImport
 {
-    void performPageImport(PSSite site, Integer id, String userAgent) throws InterruptedException;
+    void performPageImport(PSSite site, Integer id, String userAgent) throws InterruptedException, PSSiteImportException;
 }

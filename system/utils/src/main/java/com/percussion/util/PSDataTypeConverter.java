@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -25,14 +25,17 @@ package com.percussion.util;
 
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.time.FastDateFormat;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.sql.Timestamp;
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Base64;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+import java.util.StringTokenizer;
 import java.util.stream.IntStream;
 
 /**
@@ -182,12 +185,12 @@ public class PSDataTypeConverter
     * case, <code>null</code> is returned.
     * 
     * @param inputFormat One of the formats as specified by the
-    * {@link SimpleDateFormat} class. If <code>null</code> or blank, the
+    * {@link org.apache.commons.lang3.time.FastDateFormat} class. If <code>null</code> or blank, the
     * formats supported by the {@link #parseStringToDate(String)} method are
     * used.
     * 
     * @param outputFormat One of the formats as specified by the
-    * {@link SimpleDateFormat} class. If <code>null</code> or blank,
+    * {@link org.apache.commons.lang3.time.FastDateFormat} class. If <code>null</code> or blank,
     * <code>yyyy-MM-dd HH:mm:ss.SSS</code> is used if a non-zero time component
     * is present, otherwise, <code>yyyy-MM-dd</code> is used.
     * 
@@ -215,7 +218,7 @@ public class PSDataTypeConverter
       }
       else
       {
-         DateFormat dfmt = new SimpleDateFormat(inputFormat);
+         FastDateFormat dfmt = FastDateFormat.getInstance(inputFormat);
          try
          {
             parsedDate = dfmt.parse(value.toString());
@@ -252,12 +255,12 @@ public class PSDataTypeConverter
          else
             outputFormat = "yyyy-MM-dd HH:mm:ss.SSS";
       }
-      DateFormat dfmt = new SimpleDateFormat(outputFormat);
+      FastDateFormat dfmt = FastDateFormat.getInstance(outputFormat);
       return dfmt.format(parsedDate);
    }
    
    /**
-    * Convenience version of {@link #parseStringToDate(String, StringBuffer)}
+    * Convenience version of {@link #parseStringToDate(String, StringBuilder)}
     * that calls <code>parseStringToDate(myText, null)</code> and returns the
     * result.
     */
@@ -268,26 +271,28 @@ public class PSDataTypeConverter
 
 
    /**
-    * Convenience version of {@link #parseStringToDate(String, StringBuffer,
+    * Convenience version of {@link #parseStringToDate(String, StringBuilder,
     * Locale)} that calls <code>parseStringToDate(myText, patternUsed, null)</code>
     * and returns the result.
     */
-   public static Date parseStringToDate(String myText, StringBuffer patternUsed)
+   public static Date parseStringToDate(String myText, StringBuilder patternUsed)
    {
       return parseStringToDate(myText, patternUsed, null);
    }
+
+
 
    /**
     * Try to parse a given string to a date, using a pre-defined set of formats
     * for a given locale. Tries to parse the string using each one, and returns
     * the Date obtained by the first successful attempt. If all formats fail,
-    * tries to parse the string using {@link SimpleDateFormat} without a pattern
+    * tries to parse the string using {@link FastDateFormat} without a pattern
     * specified.
     * 
     * @param myText a given string to be parsed. May not be <code>null</code>.
     * 
     * @param patternUsed If successfully parsed, the pattern used will be
-    * appended on the supplied StringBuffer. If myText cannot be parsed, the
+    * appended on the supplied StringBuilder. If myText cannot be parsed, the
     * buffer is not modified. May be <code>null</code> if the pattern need not
     * be returned.
     * 
@@ -298,7 +303,7 @@ public class PSDataTypeConverter
     * 
     * @throws IllegalArgumentException if myText is <code>null</code>.
     */
-   public static Date parseStringToDate(String myText, StringBuffer patternUsed,
+   public static Date parseStringToDate(String myText, StringBuilder patternUsed,
       Locale locale)
    {
       if (myText == null || myText.trim().length() < 1)
@@ -308,11 +313,11 @@ public class PSDataTypeConverter
       String[] datePatternArray = isYearFirstPattern(myText)
          ? ms_datePatternArray1 
          : ms_datePatternArray2;
-      SimpleDateFormat dateFormat = null;
+      FastDateFormat dateFormat = null;
       Date day = null;
       for (String aDatePatternArray : datePatternArray) {
          if (locale == null)
-            dateFormat = new SimpleDateFormat(aDatePatternArray);
+            dateFormat = FastDateFormat.getInstance(aDatePatternArray);
          else
             /*
              * Every locale might not be supported, but we do not have choice here
@@ -321,7 +326,7 @@ public class PSDataTypeConverter
              * formatting will be successful. Result may not be desired one.
              * Tested with most popular locales, works fine.
              */
-            dateFormat = new SimpleDateFormat(aDatePatternArray, locale);
+            dateFormat = FastDateFormat.getInstance(aDatePatternArray, locale);
 
          try {
             day = dateFormat.parse(myText);
@@ -335,12 +340,12 @@ public class PSDataTypeConverter
       if (day == null)
       {
          // make one last try using the default pattern and default locale
-         dateFormat = new SimpleDateFormat();
+         dateFormat = FastDateFormat.getInstance();
          try
          {
             day = dateFormat.parse(myText);
             if (patternUsed != null)
-               patternUsed.append(dateFormat.toPattern());
+               patternUsed.append(dateFormat.getPattern());
          }
          catch (ParseException e)
          {
@@ -354,9 +359,9 @@ public class PSDataTypeConverter
 
    /**
     * Get a recognized date format for the supplied String.  Calls {@link
-    * #parseStringToDate(String, StringBuffer)} passing the supplied text and
-    * an empty StringBuffer, and returns the result contained in the
-    * StringBuffer.
+    * #parseStringToDate(String, StringBuilder)} passing the supplied text and
+    * an empty StringBuilder, and returns the result contained in the
+    * StringBuilder.
     *
     * @param text A given string to be parsed.  May not be <code>null</code>.
     *
@@ -368,7 +373,7 @@ public class PSDataTypeConverter
       if (text == null)
          throw new IllegalArgumentException("text may not be null");
 
-      StringBuffer buf = new StringBuffer();
+      StringBuilder buf = new StringBuilder();
       Date date = parseStringToDate(text, buf);
 
       return date == null ? null : buf.toString();

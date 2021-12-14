@@ -2827,7 +2827,7 @@ You may cancel this installation at any time by typing 'quit'.]]></string>
 								<string><![CDATA[Important Information]]></string>
 							</property>
 							<property name="message">
-								<string><![CDATA[Please be sure to review the release notes at http://help.percussion.com/cm1/readme.]]></string>
+								<string><![CDATA[Please be sure to review the release notes at https://help.percussion.com/cm1/readme.]]></string>
 							</property>
 						</object>
 					</method>

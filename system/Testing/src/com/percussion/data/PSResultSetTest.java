@@ -17,18 +17,17 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.data;
 
-import java.util.Random;
-import java.util.Vector;
-
 import junit.framework.TestCase;
-
 import org.apache.commons.lang.RandomStringUtils;
+
+import java.security.SecureRandom;
+import java.util.Vector;
 
 /**
  * Unit tests for the PSResultSet class
@@ -118,7 +117,7 @@ public class PSResultSetTest extends TestCase
       // fill the first column with random longs
       // fill the second column with random strings
       // fill the third column with random doubles
-      Random rand = new Random();
+      SecureRandom rand = new SecureRandom();
       for (int i = 0; i < NUM_ROWS; i++)
       {
          m_columns[0].addElement(new Long(rand.nextLong()));

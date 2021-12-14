@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -26,7 +26,8 @@ package com.percussion.rx.config.impl;
 import com.percussion.rx.config.IPSConfigHandler;
 import com.percussion.utils.types.PSPair;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -92,7 +93,7 @@ public class PSDefaultConfigGenerator
       String defaultConfig = "";
 
       PSImplConfigLoader loader = new PSImplConfigLoader(configDefPath);
-      List<IPSConfigHandler> handlers = new ArrayList<IPSConfigHandler>();
+      List<IPSConfigHandler> handlers = new ArrayList<>();
       for (String bean : loader.getAllBeanNames())
       {
          handlers.add(loader.getBean(bean));
@@ -106,7 +107,7 @@ public class PSDefaultConfigGenerator
       List<String> errors = null;
       if (!propertyDefs.getSecond().isEmpty())
       {
-         errors = new ArrayList<String>();
+         errors = new ArrayList<>();
          ms_logger.error("The following errors occurred while generating the "
                + "default configuration file for package \"" + packageName
                + "\"");
@@ -133,7 +134,7 @@ public class PSDefaultConfigGenerator
    /**
     * The logger for this class.
     */
-   private static Logger ms_logger = Logger.getLogger("PSDefaultConfigGenerator");
+   private static final Logger ms_logger = LogManager.getLogger("PSDefaultConfigGenerator");
    
 
 }

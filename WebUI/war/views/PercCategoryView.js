@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -56,10 +56,10 @@
             moveNodeDown                    : moveNodeDown,
             publishToDTS                    : publishToDTS
             
-        }
+        };
 
         // A snippet to adjust the frame size on resizing the window.
-        $(window).resize(function() {
+        $(window).on("resize",function() {
             fixIframeHeight();
             fixTemplateHeight();
         });
@@ -102,7 +102,7 @@
                  optionsAsString += '<option value="' + siteArray[i] + '"' +selectedString+ '>' + siteArray[i] + '</option>';
              }
              $( selectionid ).html( optionsAsString );
-        };
+        }
         
         function stringToList(string)
         {
@@ -145,15 +145,21 @@
                  addSitesToDropdown("#perc-category-site-dropdown",sitesList,null, true);
                  sitename = $('#perc-category-site-dropdown').find(":selected").val();
                  controller.getCategories(sitename);
-             })
-             
-            
-            $( "#perc-category-site-dropdown" ).change(function() {
+             });
+
+            $( "#perc-category-site-dropdown" ).on("click",function() {
+
+                siteSelection = $('#perc-category-site-dropdown').find(":selected").val();
+            });
+
+            $( "#perc-category-site-dropdown" ).on("change",function() {
 
                 if (editing)
                 {
                         currentlyEditing();
-                        siteSelection.prop("selected",true);
+                    if(typeof siteSelection !== 'undefined'){
+                        $('#perc-category-site-dropdown').val(siteSelection).trigger('chosen:updated');
+                    }
                         return;
                 }
                 sitename = $('#perc-category-site-dropdown').find(":selected").val();
@@ -162,7 +168,7 @@
                 controller.getCategories(this.value);
             });
             
-            $("#perc-categories-add-category-button").unbind().click(function(){
+            $("#perc-categories-add-category-button").off("click").on("click", function(){
                 
                 if (!$.PercNavigationManager.isAdmin()) {
                     alertDialog(I18N.message("perc.ui.category.view@User Admin"), I18N.message("perc.ui.category.view@User Admin Delete"));
@@ -182,7 +188,7 @@
 
             });
 
-            $("#perc-categories-add-child-category-button").unbind().click(function(){
+            $("#perc-categories-add-child-category-button").off("click").on("click", function(){
                 
                 if (!$.PercNavigationManager.isAdmin()) {
                     alertDialog(I18N.message("perc.ui.category.view@User Admin"), I18N.message("perc.ui.category.view@User Admin Delete"));
@@ -202,7 +208,7 @@
 
             });
             
-            $("#perc-categories-delete-category-button").unbind().click(function(){
+            $("#perc-categories-delete-category-button").off("click").on("click", function(){
                 
                 if (!$.PercNavigationManager.isAdmin()) {
                     alertDialog(I18N.message("perc.ui.category.view@User Admin"), I18N.message("perc.ui.category.view@User Admin Delete"));
@@ -215,7 +221,7 @@
                 }
 
                 var tree = container.dynatree("getTree");
-                if(tree.count() == 1)
+                if(tree.count() === 1)
                     alertDialog(I18N.message("perc.ui.category.view@Delete Category"), I18N.message("perc.ui.category.view@Cannot Delete Node"));
                 else {
                     isDelete = true;
@@ -226,7 +232,7 @@
 
             });
             
-            $("#perc-categories-edit-category-button").unbind().click(function(){
+            $("#perc-categories-edit-category-button").off("click").on("click", function(){
                 
                 if (!$.PercNavigationManager.isAdmin()) {
                     alertDialog(I18N.message("perc.ui.category.view@User Admin"), I18N.message("perc.ui.category.view@User Admin Edit"));
@@ -245,7 +251,7 @@
                     
             });
             
-            $("#perc-categories-moveup-button").unbind().click(function(){
+            $("#perc-categories-moveup-button").off("click").on("click", function(){
                 
                 if (editing)
                 {
@@ -263,7 +269,7 @@
                 displayCategoryDetails(container.dynatree("getActiveNode"));
             });
             
-            $("#perc-categories-movedown-button").unbind().click(function(){
+            $("#perc-categories-movedown-button").off("click").on("click", function(){
                 
                 if (editing)
                 {
@@ -282,9 +288,9 @@
             });
             
             //Bind Save event
-            $("#perc-category-save").unbind().click(function(){
+            $("#perc-category-save").off("click").on("click", function(){
                 var node = container.dynatree("getActiveNode");
-                if (node.data.title === "New Category")
+                if (node != null && node.data.title === "New Category")
                 {
                     alertDialog("Error", "You must change the category name.");
                     return;
@@ -292,15 +298,14 @@
                 save();
             });
             //Bind Cancel event
-            $("#perc-category-cancel").unbind().click(function(){
-                //controller.cancel();
+            $("#perc-category-cancel").off("click").on("click", function(){
                 var node = container.dynatree("getActiveNode");
                 editing = false;
                 if (!node.data.saved)
                 {
                     parent = node.parent;
                     parent.activate();
-                    if (!node.parent.childList.length == 0)
+                    if (node.parent.childList.length === 0)
                         node.remove();
                     
                     node = parent;
@@ -313,11 +318,11 @@
                 }
                 displayCategoryDetails(node);
                 try {
-                    node.childList[0].activate()
+                    node.childList[0].activate();
                 }catch(err) {}
             });
             
-            $("#perc-categories-publish-staging").unbind().click(function(){
+            $("#perc-categories-publish-staging").off("click").on("click", function(){
                 if (editing)
                 {
                         currentlyEditing();
@@ -328,7 +333,7 @@
                 publishToDTS(node, "Staging");
             });
             
-            $("#perc-categories-publish-production").unbind().click(function(){
+            $("#perc-categories-publish-production").off("click").on("click", function(){
                 if (editing)
                 {
                         currentlyEditing();
@@ -339,7 +344,7 @@
                 publishToDTS(node, "Production");
             });
             
-            $("#perc-categories-publish-both").unbind().click(function(){
+            $("#perc-categories-publish-both").off("click").on("click", function(){
                 if (editing)
                 {
                         currentlyEditing();
@@ -358,7 +363,7 @@
             
             var categorytree = treedata.topLevelNodes;
             
-            if (categorytree == null || typeof categorytree == "undefined" || categorytree.length == 0)
+            if (categorytree == null || typeof categorytree == "undefined" || categorytree.length === 0)
             {
                 categorytree = [ // Pass an array of nodes.
                 {
@@ -448,7 +453,7 @@
             $("#perc-category-selectable-field").prop("disabled", true);
             $("#perc-category-selectable-field").addClass("perc-category-field-readonly");
             var selectable = node.data.selectable;
-            if(selectable == true || selectable === "true") {
+            if(selectable === true || selectable === "true") {
                 $("#perc-category-selectable-field").prop("checked", true);
             }
             else {
@@ -458,7 +463,7 @@
             $("#perc-category-show-in-page-field").prop("disabled", true);
             $("#perc-category-show-in-page-field").addClass("perc-category-field-readonly");
             var sinpmd = node.data.showInPgMetaData;
-            if(sinpmd === "true" || sinpmd == true) {
+            if(sinpmd === "true" || sinpmd === true) {
                 $("#perc-category-show-in-page-field").prop("checked", true);
             }
             else {
@@ -486,7 +491,7 @@
             $("#perc-category-name-field").on('keyup', function() {
                  var node = container.dynatree("getActiveNode");
                  var text =  $( this ).val();
-                 if (text=="") text="[empty]";
+                 if (text==="") text="[empty]";
                  node.data.title = $( this ).val();
                  node.render();
             });
@@ -505,11 +510,11 @@
                 $('#perc-category-selectable-field option[value="'+sitename+'"]').prop('selected',true);
             });
 
-            $("#perc-category-show-in-page-field").prop("disabled", false);
-            $("#perc-category-show-in-page-field").removeClass("perc-category-field-readonly");
+            $("#perc-category-show-in-page-field").prop("disabled", false)
+                .removeClass("perc-category-field-readonly");
         
             $("#perc-category-save-cancel-block").show();
-            $("#perc-category-name-field").focus();
+            $("#perc-category-name-field").trigger("focus");
         }
         
        
@@ -535,7 +540,6 @@
             var parentNode;
             
                 w = 400;
-
                 $.perc_utils.alert_dialog({
                     title: I18N.message("perc.ui.category.view@Editing Category"),
                     content: I18N.message("perc.ui.category.view@Editing Category Dialog"),
@@ -571,7 +575,7 @@
         function alertDialog(title, message, w) {
             var parentNode;
             
-            if(w == null || w == undefined || w == "" || w < 1)
+            if(w == null || w === undefined || w === "" || w < 1)
                 w = 400;
             $.perc_utils.alert_dialog({
                 title: title,
@@ -592,7 +596,7 @@
         function errorDialog(title, message, w, useCallback) {
             var parentNode;
             
-            if(w == null || w == undefined || w == "" || w < 1)
+            if(w == null || w === undefined || w === "" || w < 1)
                 w = 400;
             $.perc_utils.alert_dialog({
                 title: title,
@@ -627,7 +631,7 @@
             
             var switchtoNode = null;
             if(upTarget != null)
-                switchtoNode = upTarget
+                switchtoNode = upTarget;
             else if (parentNode!=null)
             {
                 switchtoNode = parentNode;
@@ -644,11 +648,11 @@
             
             var destinationNode = null;
             var children =  root.childList;
-            if ( children == null || typeof children == "undefined" || children.length==0)
+            if ( children == null || typeof children == "undefined" || children.length===0)
             {
                 destinationNode = root;
                 child=true;
-            } else if (children.length==1 && children[0].data.title == "New Category")
+            } else if (children.length===1 && children[0].data.title === "New Category")
             {
                 return children[0];
             } else {
@@ -660,7 +664,7 @@
                 } 
             }
 
-            if (child==true)
+            if (child===true)
             {
                 addTo = destinationNode;
             } 
@@ -693,7 +697,7 @@
             var nodeKey = node.data.key;
             var childNode;
             
-            if ($('#perc-allowedsites-field option:not(:checked)').length == 0)
+            if ($('#perc-allowedsites-field option:not(:checked)').length === 0)
             {
                 allowedSites=null;
             } else {
@@ -703,7 +707,7 @@
             }
             
         
-            var categoryname  = $.trim($("#perc-category-name-field").val());
+            var categoryname  = $("#perc-category-name-field").val().trim();
            
             if (originalTitle !== categoryname)
             	node.data.previousCategoryName = originalTitle;
@@ -846,7 +850,7 @@
                     
                     if(parent.data.title == null) {
                         i++;
-                        if(sourceNode.data.id != node.data.id)
+                        if(sourceNode.data.id !== node.data.id)
                             tempNode = node;
                         else {
                             if(i > 1) {
@@ -863,8 +867,8 @@
                 parentNode.visit(function(node) {
                     i++;
                     var p = node.getParent();
-                    if(p.data.id == parentNode.data.id) {
-                        if(sourceNode.data.id != node.data.id)
+                    if(p.data.id === parentNode.data.id) {
+                        if(sourceNode.data.id !== node.data.id)
                             tempNode = node;
                         else {
                             if(i > 1) {
@@ -903,7 +907,7 @@
                     var parent = node.getParent();
                     
                     if(parent.data.title == null) {
-                        if(sourceNode.data.id != node.data.id) {
+                        if(sourceNode.data.id !== node.data.id) {
                             if(i > 0) {
                                 targetNode = node;
                                 return false;
@@ -920,8 +924,8 @@
             } else {
                 parentNode.visit(function(node) {
                     var p = node.getParent();
-                    if(p.data.id == parentNode.data.id) {
-                        if(sourceNode.data.id != node.data.id) {
+                    if(p.data.id === parentNode.data.id) {
+                        if(sourceNode.data.id !== node.data.id) {
                             if(i > 0) {
                                 targetNode = node;
                                 return false;
@@ -947,7 +951,7 @@
         
         function publishToDTS(node, deliveryServer) {
             var catArray = manageDynaProps();
-            if (sitename == null || typeof sitename == "undefined" || sitename=="")
+            if (sitename == null || typeof sitename == "undefined" || sitename==="")
             {
                 alertDialog(I18N.message("perc.ui.category.view@Select A Site"), I18N.message("perc.ui.category.view@Select A Site Content"));
                 return;

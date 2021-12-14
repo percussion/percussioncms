@@ -17,20 +17,23 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.apibridge;
 
+import com.percussion.cms.PSCmsException;
 import com.percussion.cms.objectstore.PSCloningOptions;
 import com.percussion.cms.objectstore.PSComponentSummary;
 import com.percussion.cms.objectstore.PSCoreItem;
 import com.percussion.design.objectstore.PSLocator;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.fastforward.managednav.IPSManagedNavService;
 import com.percussion.fastforward.managednav.PSNavException;
 import com.percussion.itemmanagement.service.IPSItemService;
+import com.percussion.itemmanagement.service.IPSItemWorkflowService;
 import com.percussion.licensemanagement.data.PSModuleLicense;
 import com.percussion.pagemanagement.assembler.IPSRenderAssemblyBridge;
 import com.percussion.pagemanagement.dao.IPSPageDao;
@@ -56,6 +59,7 @@ import com.percussion.redirect.data.PSCreateRedirectRequest;
 import com.percussion.redirect.data.PSRedirectStatus;
 import com.percussion.redirect.service.IPSRedirectService;
 import com.percussion.rest.LinkRef;
+import com.percussion.rest.errors.BackendException;
 import com.percussion.rest.errors.FolderNotFoundException;
 import com.percussion.rest.errors.NotAuthorizedException;
 import com.percussion.rest.folders.Folder;
@@ -67,6 +71,7 @@ import com.percussion.server.webservices.PSServerFolderProcessor;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.catalog.data.PSObjectSummary;
 import com.percussion.services.content.data.PSItemStatus;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.data.PSGuid;
 import com.percussion.services.guidmgr.data.PSLegacyGuid;
 import com.percussion.services.workflow.IPSWorkflowService;
@@ -74,8 +79,11 @@ import com.percussion.services.workflow.PSWorkflowServiceLocator;
 import com.percussion.services.workflow.data.PSWorkflow;
 import com.percussion.share.dao.IPSFolderHelper;
 import com.percussion.share.data.IPSItemSummary;
+import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.IPSIdMapper;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.service.exception.PSParametersValidationException;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.sitemanage.data.PSCreateExternalLinkSection;
 import com.percussion.sitemanage.data.PSCreateSectionFromFolderRequest;
 import com.percussion.sitemanage.data.PSCreateSiteSection;
@@ -90,11 +98,12 @@ import com.percussion.user.service.IPSUserService;
 import com.percussion.util.PSSiteManageBean;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.webservices.PSErrorException;
+import com.percussion.webservices.PSErrorResultsException;
 import com.percussion.webservices.content.IPSContentWs;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
@@ -176,7 +185,7 @@ public class FolderAdaptor implements IFolderAdaptor {
 	/**
 	 * Logger for this service.
 	 */
-	public static Log log = LogFactory.getLog(FolderAdaptor.class);
+	public static final Logger log = LogManager.getLogger(FolderAdaptor.class);
 
 
 	@Autowired
@@ -205,13 +214,17 @@ public class FolderAdaptor implements IFolderAdaptor {
 	}
 
 	@Override
-	public Folder getFolder(URI baseUri, String site, String path, String folderName) {
-		checkAPIPermission();
+	public Folder getFolder(URI baseUri, String site, String path, String folderName) throws BackendException {
+		try {
+			checkAPIPermission();
 
-		return getFolder(baseUri, null, site, path, folderName);
+			return getFolder(baseUri, null, site, path, folderName);
+		} catch (PSDataServiceException e) {
+			throw new BackendException(e);
+		}
 	}
 
-	private Folder getFolder(URI baseUri, String folderGuid, String site, String path, String folderName) {
+	private Folder getFolder(URI baseUri, String folderGuid, String site, String path, String folderName) throws BackendException, PSDataServiceException {
 		PSSectionTypeEnum sectionType = PSSectionTypeEnum.section;
 		PSPathItem pathItem = null;
 		String fullPath = null;
@@ -223,10 +236,12 @@ public class FolderAdaptor implements IFolderAdaptor {
 				PSLocator loc = idMapper.getLocator(folderGuid);
 				loc.setRevision(-1);
 				pathItem = folderHelper.findItemById(idMapper.getString(loc));
-			} catch (PSParametersValidationException e) {
+			} catch (PSParametersValidationException | PSNotFoundException e) {
 				throw new FolderNotFoundException();
-			} catch (PSPathNotFoundServiceException e) {
-				throw new FolderNotFoundException();
+			} catch (PSValidationException | IPSDataService.DataServiceLoadException e) {
+				log.error(PSExceptionUtils.getMessageForLog(e));
+				log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+				throw new BackendException(e);
 			}
 
 			pathUtilsPath = pathItem.getFolderPath();
@@ -266,6 +281,8 @@ public class FolderAdaptor implements IFolderAdaptor {
 				pathUtilsPath = StringUtils.substringAfter(fullPath, "/");
 				folderSections = new UrlParts(site, path, folderName);
 
+			} catch (IPSPathService.PSPathServiceException | PSDataServiceException e) {
+				throw new BackendException(e);
 			}
 		}
 
@@ -278,10 +295,12 @@ public class FolderAdaptor implements IFolderAdaptor {
 		// Get Folder Guid
 		IPSItemSummary folderSummary = null;
 		try {
-			if(folderGuid == null)
+			if(folderGuid == null) {
 				folderSummary = folderHelper.findFolder(pathItem.getFolderPath());
-			else
+			}
+			else {
 				folderSummary = folderHelper.findItemById(folderGuid);
+			}
 
 		} catch (Exception e) {
 			throw new FolderNotFoundException();
@@ -294,7 +313,12 @@ public class FolderAdaptor implements IFolderAdaptor {
 		folder.setId(folderSummary.getId());
 
 		// Folder properties for workflow
-		PSFolderProperties folderProperties = folderHelper.findFolderProperties(folderSummary.getId());
+		PSFolderProperties folderProperties = null;
+		try {
+			folderProperties = folderHelper.findFolderProperties(folderSummary.getId());
+		} catch (PSValidationException e) {
+			throw new BackendException(e);
+		}
 
 		int wfid = folderProperties.getWorkflowId();
 		if (wfid > 0) {
@@ -315,34 +339,41 @@ public class FolderAdaptor implements IFolderAdaptor {
 
 
         // SubSections
-		if (!site.equals("Assets"))
+		if (!site.equals("Assets")) {
 			extractSectionInfo(baseUri, fullPath, folder, sectionType);
+		}
 
+		try{
 		// Sub Pages and Folders
 		if (sectionType.equals(PSSectionTypeEnum.section)) {
 			extractSubPagesFolders(baseUri, pathItem, pathUtilsPath, folder);
 		}
+		} catch (IPSPathService.PSPathServiceException | PSDataServiceException e) {
+			throw new BackendException(e);
+		}
 
-		if (StringUtils.startsWith(folder.getName(), EXTERNAL_SECTION_NAME_PREFIX))
+		if (StringUtils.startsWith(folder.getName(), EXTERNAL_SECTION_NAME_PREFIX)) {
 			folder.setName(StringUtils.substringAfter(folder.getName(), EXTERNAL_SECTION_NAME_PREFIX));
+		}
 
-		folder.setRecentUsers(new ArrayList<String>());
+		folder.setRecentUsers(new ArrayList<>());
 		
 		return folder;
 	}
 
-	private void checkAPIPermission() {
-		if (!userService.isAdminUser(userService.getCurrentUser().getName()))
+	private void checkAPIPermission() throws PSDataServiceException {
+		if (!userService.isAdminUser(userService.getCurrentUser().getName())) {
 			throw new NotAuthorizedException();
+		}
 	}
 
-	private void extractSubPagesFolders(URI baseUri, PSPathItem pathItem, String pathUtilsPath, Folder folder) {
-		List<LinkRef> folderChildren = new ArrayList<LinkRef>();
+	private void extractSubPagesFolders(URI baseUri, PSPathItem pathItem, String pathUtilsPath, Folder folder) throws IPSPathService.PSPathServiceException, PSDataServiceException {
+		List<LinkRef> folderChildren = new ArrayList<>();
 		folder.setSubfolders(folderChildren);
-		List<LinkRef> folderPages = new ArrayList<LinkRef>();
-		List<LinkRef> folderAssets = new ArrayList<LinkRef>();
+		List<LinkRef> folderPages = new ArrayList<>();
+		List<LinkRef> folderAssets = new ArrayList<>();
 
-		List<String> existingFolders = new ArrayList<String>();
+		List<String> existingFolders = new ArrayList<>();
 		if (folder.getSubsections() != null) {
 			for (SectionLinkRef section : folder.getSubsections()) {
 				existingFolders.add(section.getName());
@@ -395,18 +426,19 @@ public class FolderAdaptor implements IFolderAdaptor {
 		}
 	}
 
-	private void extractSecurityInfo(Folder folder, PSFolderProperties folderProperties) {
+	private void extractSecurityInfo(Folder folder, PSFolderProperties folderProperties) throws BackendException {
 		PSFolderPermission permissions = folderProperties.getPermission();
 		Access accessLevel = permissions.getAccessLevel();
 		folder.setAccessLevel(accessLevel.toString());
 
 		if (accessLevel.equals(Access.READ)) {
-			List<String> editUsers = new ArrayList<String>();
+			List<String> editUsers = new ArrayList<>();
 			folder.setEditUsers(editUsers);
 			if (permissions.getWritePrincipals() != null) {
 				for (Principal principal : permissions.getWritePrincipals()) {
-					if (!principal.getType().equals(PrincipalType.USER))
-						throw new RuntimeException("Currently only support User type");
+					if (!principal.getType().equals(PrincipalType.USER)) {
+						throw new BackendException("Currently only support User type");
+					}
 
 					editUsers.add(principal.getName());
 
@@ -415,7 +447,7 @@ public class FolderAdaptor implements IFolderAdaptor {
 		}
 	}
 
-	private void extractSectionInfo(URI baseUri, String fullPath, Folder folder, PSSectionTypeEnum sectionType) {
+	private void extractSectionInfo(URI baseUri, String fullPath, Folder folder, PSSectionTypeEnum sectionType) throws PSDataServiceException {
 		PSComponentSummary navSummary = navSrv.findNavSummary(fullPath);
 		if (navSummary != null) {
 			PSLegacyGuid id = new PSLegacyGuid(navSummary.getCurrentLocator());
@@ -431,7 +463,7 @@ public class FolderAdaptor implements IFolderAdaptor {
 			sectionInfo.setDisplayTitle(section.getTitle());
 
 			if (sectionType == PSSectionTypeEnum.section) {
-				List<SectionLinkRef> sectionChildren = new ArrayList<SectionLinkRef>();
+				List<SectionLinkRef> sectionChildren = new ArrayList<>();
 				folder.setSubsections(sectionChildren);
 				List<PSSiteSection> childSections = sectionService.loadChildSections(section);
 
@@ -496,57 +528,62 @@ public class FolderAdaptor implements IFolderAdaptor {
 	}
 
 	@Override
-	public Folder updateFolder(URI baseUri, Folder folder) {
-		checkAPIPermission();
-
-		Folder existingFolder = null;
-		boolean newFolder = false;
-		boolean byId = StringUtils.isNotEmpty(folder.getId()) && folder.getSiteName() == null
-				&& folder.getPath() == null && folder.getName() == null;
+	public Folder updateFolder(URI baseUri, Folder folder) throws BackendException {
 		try {
-			if (byId) {
+			checkAPIPermission();
 
-				existingFolder = getFolder(baseUri, folder.getId());
-			} else {
-				existingFolder = getFolder(baseUri, folder.getSiteName(), folder.getPath(), folder.getName());
+			Folder existingFolder = null;
+			boolean newFolder = false;
+			boolean byId = StringUtils.isNotEmpty(folder.getId()) && folder.getSiteName() == null
+					&& folder.getPath() == null && folder.getName() == null;
+			try {
+				if (byId) {
+
+					existingFolder = getFolder(baseUri, folder.getId());
+				} else {
+					existingFolder = getFolder(baseUri, folder.getSiteName(), folder.getPath(), folder.getName());
+				}
+			} catch (FolderNotFoundException e) {
+				newFolder = true;
+				if (StringUtils.isEmpty(folder.getPath()) && StringUtils.isEmpty(folder.getName()))
+					throw new BackendException(
+							"Trying to create site root folder.  Create site first : " + folder.getSiteName());
 			}
-		} catch (FolderNotFoundException e) {
-			newFolder = true;
-			if (StringUtils.isEmpty(folder.getPath()) && StringUtils.isEmpty(folder.getName()))
-				throw new RuntimeException(
-						"Trying to create site root folder.  Create site first : " + folder.getSiteName());
-		}
 
-		if (!byId && existingFolder == null && folder.getId() != null) {
-			// If id is passed into update and it looks as if the item does not
-			// already exist, we are probably trying to update a purged item, or
-			// the id is from a different item.
-			throw new FolderNotFoundException();
-		}
+			if (!byId && existingFolder == null && folder.getId() != null) {
+				// If id is passed into update and it looks as if the item does not
+				// already exist, we are probably trying to update a purged item, or
+				// the id is from a different item.
+				throw new FolderNotFoundException();
+			}
 
-		if (existingFolder != null && folder.getId() != null && existingFolder.getId() != null
-				&& !existingFolder.getId().equals(folder.getId()))
-			throw new RuntimeException("Id " + folder.getId()
-					+ " passed into update but Id does not match item referenced by site and path "
-					+ existingFolder.getId());
+			if (existingFolder != null && folder.getId() != null && existingFolder.getId() != null
+					&& !existingFolder.getId().equals(folder.getId()))
+				throw new BackendException("Id " + folder.getId()
+						+ " passed into update but Id does not match item referenced by site and path "
+						+ existingFolder.getId());
 
-		if (newFolder) {
-			String folderId = createNewFolder(baseUri, folder);
-			folder = getFolder(baseUri, folderId);
-			
-			
-		} else {
-			folder = modifyExistingFolder(baseUri, existingFolder, folder);
+			if (newFolder) {
+				String folderId = createNewFolder(baseUri, folder);
+				folder = getFolder(baseUri, folderId);
+
+
+			} else {
+				folder = modifyExistingFolder(baseUri, existingFolder, folder);
+			}
+			return folder;
+		} catch (PSDataServiceException | IPSPathService.PSPathServiceException e) {
+			throw new BackendException(e);
 		}
-		return folder;
 	}
 
-	private Folder modifyExistingFolder(URI baseUri, Folder existingFolder, Folder folder) {
+	private Folder modifyExistingFolder(URI baseUri, Folder existingFolder, Folder folder) throws IPSPathService.PSPathServiceException, PSDataServiceException, BackendException {
 
 		String realName = folder.getName();
 		if (existingFolder.getSectionInfo() != null && existingFolder.getSectionInfo().getType() != null
-				&& existingFolder.getSectionInfo().getType().equalsIgnoreCase(PSSectionTypeEnum.externallink.name()))
+				&& existingFolder.getSectionInfo().getType().equalsIgnoreCase(PSSectionTypeEnum.externallink.name())) {
 			realName = EXTERNAL_SECTION_NAME_PREFIX + realName;
+		}
 
 		PSPathItem pathItem = null;
 		String fullPath = null;
@@ -558,9 +595,9 @@ public class FolderAdaptor implements IFolderAdaptor {
 		loc.setRevision(-1);
 		pathItem = folderHelper.findItemById(idMapper.getString(loc));
 		} catch (PSParametersValidationException e) {
-			throw new FolderNotFoundException();
-		} catch (PSPathNotFoundServiceException e) {
-			throw new FolderNotFoundException();
+			throw new FolderNotFoundException(e);
+		} catch ( IPSDataService.DataServiceLoadException | PSValidationException | PSNotFoundException e) {
+			throw new FolderNotFoundException(e);
 		}
 		pathUtilsPath = pathItem.getFolderPath();
 		if (pathUtilsPath == null && CollectionUtils.isNotEmpty(pathItem.getFolderPaths())) {
@@ -590,8 +627,7 @@ public class FolderAdaptor implements IFolderAdaptor {
 
 			reorderSiteSection(baseUri, existingFolder.getId(), folder, existingFolder);
 		}
-		
-		// PSSiteSectionProperties request = new PSSiteSectionProperties();
+
 		// create patch item so do not need to get everything again.
 		return getFolder(baseUri, existingFolder.getId());
 	}
@@ -617,14 +653,15 @@ public class FolderAdaptor implements IFolderAdaptor {
 						recentService.addRecentSiteFolderByUser(u, "/Sites/" + folderPath);					
 				}
 			}catch(Exception e){
-				log.warn("Error adding " + "/Sites/" + folderPath + " to the Recent list for user" + u );
+				log.warn("Error adding " + "/Sites/{} to the Recent list for user {}",
+						folderPath , u );
 			}
 		}
 		
 	}
 	
 	
-	private void updateLandingPage(Folder folder, Folder existingFolder, String folderPath) {
+	private void updateLandingPage(Folder folder, Folder existingFolder, String folderPath) throws IPSPathService.PSPathServiceException, PSDataServiceException, BackendException {
 		SectionInfo reqSectionInfo = folder.getSectionInfo();
 		SectionInfo currSectionInfo = existingFolder.getSectionInfo();
 
@@ -671,7 +708,7 @@ public class FolderAdaptor implements IFolderAdaptor {
 		}
 	}
 
-	private void updateSectionInfo(Folder folder, String folderUrl, Folder existingFolder) {
+	private void updateSectionInfo(Folder folder, String folderUrl, Folder existingFolder) throws PSDataServiceException {
 		PSComponentSummary navSummary = navSrv.findNavSummary(folderUrl);
 		if (navSummary != null) {
 			PSLegacyGuid id = new PSLegacyGuid(navSummary.getCurrentLocator());
@@ -696,11 +733,13 @@ public class FolderAdaptor implements IFolderAdaptor {
 
 				SectionInfo toSection = folder.getSectionInfo();
 				if (toSection != null) {
-					if (toSection.getDisplayTitle() != null)
+					if (toSection.getDisplayTitle() != null) {
 						req.setTitle(toSection.getDisplayTitle());
+					}
 
-					if (toSection.getNavClass() != null)
+					if (toSection.getNavClass() != null) {
 						req.setCssClassNames(toSection.getNavClass());
+					}
 
 					if (toSection.getTargetWindow() != null) {
 						req.setTarget(PSSectionTargetEnum.valueOf(toSection.getTargetWindow()));
@@ -746,7 +785,7 @@ public class FolderAdaptor implements IFolderAdaptor {
 	}
 
 	private void convertFolderToSection(String folderPath, String folderName, String siteName,
-			SectionInfo sectionInfo) {
+			SectionInfo sectionInfo) throws PSDataServiceException, IPSPathService.PSPathServiceException, BackendException {
 
 		folderPath = folderPath.startsWith("//") ? StringUtils.substring(folderPath, 1) : folderPath;
 		String parentFolderPath = StringUtils.substringBeforeLast(folderPath, "/" + folderName);
@@ -787,20 +826,18 @@ public class FolderAdaptor implements IFolderAdaptor {
 
 	}
 
-	private String getTemplateIdForName(String templateName, String siteName) {
+	private String getTemplateIdForName(String templateName, String siteName) throws BackendException, IPSDataService.DataServiceLoadException, PSValidationException {
 		IPSGuid template = null;
 		if (templateName == null) {
-			throw new RuntimeException("templateName is required");
+			throw new BackendException("templateName is required");
 		}
-		try {
+
 			template = templateService.findUserTemplateIdByName(templateName, siteName);
-		} catch (PSParametersValidationException e) {
-			throw new RuntimeException("Cannot find template " + templateName);
-		}
+
 		return idMapper.getString(template);
 	}
 
-	private boolean checkIfPageExists(String folderPath) {
+	private boolean checkIfPageExists(String folderPath) throws IPSPathService.PSPathServiceException, PSDataServiceException {
 		PSPathItem pathItem = null;
 		try {
 			pathItem = pathService.find(folderPath);
@@ -813,13 +850,13 @@ public class FolderAdaptor implements IFolderAdaptor {
 		return false;
 	}
 
-	private void reorderSiteSection(URI baseUri, String id, Folder folder, Folder existingFolder) {
-		List<String> existingSubSections = new ArrayList<String>();
-		List<String> requestedSubSections = new ArrayList<String>();
+	private void reorderSiteSection(URI baseUri, String id, Folder folder, Folder existingFolder) throws PSDataServiceException, IPSPathService.PSPathServiceException, BackendException {
+		List<String> existingSubSections = new ArrayList<>();
+		List<String> requestedSubSections = new ArrayList<>();
 
 		if (folder.getSubsections() != null) {
 			if (folder.getSectionInfo() == null && existingFolder.getSectionInfo() == null)
-				throw new RuntimeException("non-section folders cannot have subsections");
+				throw new BackendException("non-section folders cannot have subsections");
 			String nameCheck = null;
 			for (SectionLinkRef subsection : folder.getSubsections()) {
 				if (subsection.getType().equals(PSSectionTypeEnum.sectionlink.name()))
@@ -828,7 +865,7 @@ public class FolderAdaptor implements IFolderAdaptor {
 					nameCheck = subsection.getName();
 
 				if (requestedSubSections.contains(nameCheck))
-					throw new RuntimeException(
+					throw new BackendException(
 							"Cannot specify more than one subsection with the same name, other than sectionlinks which must have unique name and href");
 
 				requestedSubSections.add(nameCheck);
@@ -870,7 +907,7 @@ public class FolderAdaptor implements IFolderAdaptor {
 		}
 	}
 
-	private String createNewFolder(URI baseUri, Folder folder) {
+	private String createNewFolder(URI baseUri, Folder folder) throws PSDataServiceException, IPSPathService.PSPathServiceException, BackendException {
 
 		UrlParts fullUrl = new UrlParts(folder.getSiteName(), folder.getPath(), folder.getName());
 		UrlParts parentUrl = new UrlParts(folder.getSiteName(), folder.getPath(), "");
@@ -885,9 +922,6 @@ public class FolderAdaptor implements IFolderAdaptor {
 		{
 
 			// Will create all ancestor folders that do no already exist.
-			// PSPathItem parent =
-			// pathService.find(StringUtils.substringAfter(parentUrl.getUrl(),"/"));
-
 			newFolder = pathService.addFolder(
 							fullUrl.getUrl());
 
@@ -905,7 +939,7 @@ public class FolderAdaptor implements IFolderAdaptor {
 		return newFolder.getId();
 	}
 
-	private void updateFolderProperties(Folder folder, String folderId, Folder existingFolder) {
+	private void updateFolderProperties(Folder folder, String folderId, Folder existingFolder) throws PSValidationException {
 
 		// Folder properties for workflow
 		PSFolderProperties folderProperties = folderHelper.findFolderProperties(folderId);
@@ -917,11 +951,11 @@ public class FolderAdaptor implements IFolderAdaptor {
 			folderHelper.saveFolderProperties(folderProperties);
 	}
 
-	private void createSubSections(URI baseUri, Folder existingFolder, Folder folder) {
+	private void createSubSections(URI baseUri, Folder existingFolder, Folder folder) throws BackendException, PSDataServiceException, IPSPathService.PSPathServiceException {
 
 		if (folder.getSubsections() != null) {
 			if (folder.getSectionInfo() == null)
-				throw new RuntimeException("non-section folders cannot have subsections");
+				throw new BackendException("non-section folders cannot have subsections");
 
 			for (SectionLinkRef subSection : folder.getSubsections()) {
 				String name = subSection.getName();
@@ -932,7 +966,7 @@ public class FolderAdaptor implements IFolderAdaptor {
 	}
 
 	private void createSubSection(URI baseUri, Folder existingFolder, Folder folder, String name, String type,
-			String extUrl) {
+			String extUrl) throws PSDataServiceException, BackendException, IPSPathService.PSPathServiceException {
 		notNull(folder);
 		notNull(existingFolder);
 
@@ -978,7 +1012,7 @@ public class FolderAdaptor implements IFolderAdaptor {
 
 			String toGuid = getNavGuidByPath(path);
 			if (toGuid == null)
-				throw new RuntimeException("Cannot create section link to section that does not yet exist " + path);
+				throw new BackendException("Cannot create section link to section that does not yet exist " + path);
 			UrlParts fromFolder = new UrlParts(folder.getSiteName(), folder.getPath(), folder.getName());
 			String fromGuid = getNavGuidByPath(fromFolder.getUrl());
 			sectionService.createSectionLink(toGuid, fromGuid);
@@ -1001,7 +1035,7 @@ public class FolderAdaptor implements IFolderAdaptor {
 		return guid;
 	}
 
-	private PSPathItem createNewSection(Folder folder, UrlParts parentUrl) {
+	private PSPathItem createNewSection(Folder folder, UrlParts parentUrl) throws BackendException, PSDataServiceException, IPSPathService.PSPathServiceException {
 		PSPathItem newFolder = null;
 
 		String parentFolderUrl = parentUrl.getUrl();
@@ -1011,8 +1045,11 @@ public class FolderAdaptor implements IFolderAdaptor {
 		} catch (PSNavException e) {
 			// Cannot find folder
 		}
-		if (parentSummary == null)
-			throw new RuntimeException("can only create section folders that are child folders of other sections.");
+
+		if (parentSummary == null) {
+			throw new BackendException("can only create section folders that are child folders of other sections.");
+		}
+
 		SectionInfo section = folder.getSectionInfo();
 		PSSiteSection newSection = null;
 		if (section.getType() != null && section.getType().equalsIgnoreCase(PSSectionTypeEnum.externallink.name())) {
@@ -1040,8 +1077,9 @@ public class FolderAdaptor implements IFolderAdaptor {
 				request.setPageName("index.html");
 			}
 			String displayTitle = section.getDisplayTitle();
-			if (displayTitle == null)
+			if (displayTitle == null) {
 				displayTitle = folder.getName();
+			}
 
 			request.setPageLinkTitle(displayTitle);
 			request.setPageTitle(displayTitle);
@@ -1050,12 +1088,12 @@ public class FolderAdaptor implements IFolderAdaptor {
 			IPSGuid template = null;
 
 			if (section.getTemplateName() == null) {
-				throw new RuntimeException("templateName is required for section");
+				throw new BackendException("templateName is required for section");
 			}
 			try {
 				template = templateService.findUserTemplateIdByName(section.getTemplateName(), folder.getSiteName());
-			} catch (PSParametersValidationException e) {
-				throw new RuntimeException("Cannot find template " + section.getTemplateName());
+			} catch (PSParametersValidationException | IPSDataService.DataServiceLoadException e) {
+				throw new BackendException("Cannot find template " + section.getTemplateName());
 			}
 
 			request.setTemplateId(idMapper.getString(template));
@@ -1063,8 +1101,9 @@ public class FolderAdaptor implements IFolderAdaptor {
 			newSection = sectionService.create(request);
 
 		}
-		if (newSection != null)
+		if (newSection != null) {
 			newFolder = pathService.find(StringUtils.substring(newSection.getFolderPath(), 1));
+		}
 		return newFolder;
 	}
 
@@ -1072,12 +1111,14 @@ public class FolderAdaptor implements IFolderAdaptor {
 		String requestWorkflow = folder.getWorkflow();
 		if (requestWorkflow != null) {
 			int wfid;
-			if (requestWorkflow.equalsIgnoreCase("[default]"))
+			if (requestWorkflow.equalsIgnoreCase("[default]")) {
 				// Real strange code, wf is removed by passing this.
 				wfid = Integer.MIN_VALUE;
+			}
 
-			else
+			else {
 				wfid = workflowIdByName(requestWorkflow);
+			}
 
 			if (wfid != folderProperties.getWorkflowId()) {
 				folderProperties.setWorkflowId(wfid);
@@ -1111,8 +1152,9 @@ public class FolderAdaptor implements IFolderAdaptor {
 			// non section is admin. Unknown will be set to correct default
 			String level = folder.getAccessLevel();
 			if (isSection) {
-				if (!(level.equals("READ") || level.equals("WRITE")))
+				if (!(level.equals("READ") || level.equals("WRITE"))) {
 					level = "WRITE";
+				}
 			} else {
 				if (!(level.equals("READ") || level.equals("WRITE") || level.equals("ADMIN")))
 					level = "ADMIN";
@@ -1123,11 +1165,11 @@ public class FolderAdaptor implements IFolderAdaptor {
 
 		List<String> editUsers = folder.getEditUsers();
 		if (editUsers != null) {
-			List<String> serverUsers = new ArrayList<String>();
+			List<String> serverUsers = new ArrayList<>();
 			List<Principal> writePrincipals = permission.getWritePrincipals();
 
 			if (writePrincipals == null)
-				writePrincipals = new ArrayList<Principal>();
+				writePrincipals = new ArrayList<>();
 
 			if (writePrincipals.size() > 0) {
 				for (Principal principal : writePrincipals) {
@@ -1148,7 +1190,7 @@ public class FolderAdaptor implements IFolderAdaptor {
 				permission.setWritePrincipals(writePrincipals);
 				
 				//Clear any Read principals as CM1 doesn't support them in the UI, remove this if that feature is ever enabled.
-				permission.setReadPrincipals(new ArrayList<Principal>());
+				permission.setReadPrincipals(new ArrayList<>());
 			}
 		}
 		folderProperties.setPermission(permission);
@@ -1173,7 +1215,7 @@ public class FolderAdaptor implements IFolderAdaptor {
 		contentService.releaseFromEdit(itemStatus, false);
 	}
 
-	private PSItemStatus prepareForEdit(IPSGuid id, boolean isPage) {
+	private PSItemStatus prepareForEdit(IPSGuid id, boolean isPage) throws BackendException {
 		try {
 			return contentService.prepareForEdit(id);
 		} catch (PSErrorException e) {
@@ -1189,7 +1231,7 @@ public class FolderAdaptor implements IFolderAdaptor {
 						+ "\", please open it to override.";
 			}
 
-			throw new RuntimeException(msg);
+			throw new BackendException(msg);
 		}
 	}
 
@@ -1202,260 +1244,285 @@ public class FolderAdaptor implements IFolderAdaptor {
 	}
 
 	@Override
-	public void deleteFolder(URI baseUri, String siteName, String path, String folderName, boolean includeSubFolders) {
-		checkAPIPermission();
-
-		UrlParts urlParts = new UrlParts(siteName, path, folderName);
-		String folderUrl = urlParts.getUrl();
-
-		//Fix for sites with mismatched sitefolders
-		folderUrl = PSPathUtils.fixSiteFolderPath(siteDataService, folderUrl);
-
-		PSPathItem folderPathItem = null;
+	public void deleteFolder(URI baseUri, String siteName, String path, String folderName, boolean includeSubFolders) throws BackendException {
 		try {
-			folderPathItem = pathService.find(folderUrl);
-		} catch (PSParametersValidationException e) {
-			throw new FolderNotFoundException();
-		} catch (PSPathNotFoundServiceException e) {
-			throw new FolderNotFoundException();
-		}
-		boolean hasChildren = false;
+			checkAPIPermission();
 
-        List<PSPathItem> children = pathService.findChildren(StringUtils.substring(folderUrl, 1));
+			UrlParts urlParts = new UrlParts(siteName, path, folderName);
+			String folderUrl = urlParts.getUrl();
 
-        hasChildren = !CollectionUtils.sizeIsEmpty(children);
+			//Fix for sites with mismatched sitefolders
+			folderUrl = PSPathUtils.fixSiteFolderPath(siteDataService, folderUrl);
 
-		if (hasChildren && !includeSubFolders)
-			throw new RuntimeException(
-					"Folder includes subfolder, use includeSubFolders=true html parameter to delete all");
-		PSDeleteFolderCriteria criteria = new PSDeleteFolderCriteria();
-		criteria.setPath(StringUtils.substring(folderUrl, 1));
-		pathService.deleteFolder(criteria);
-	}
-
-	@Override
-	public Folder getFolder(URI baseUri, String id) {
-		checkAPIPermission();
-
-		return getFolder(baseUri, id, null, null, null);
-	}
-
-	@Override
-	public void moveFolderItem(URI baseURI, String itemPath, String targetFolderPath) {
-		checkAPIPermission();
-
-		itemPath = PSPathUtils.fixSiteFolderPath(siteDataService, itemPath);
-		targetFolderPath = PSPathUtils.fixSiteFolderPath(siteDataService,targetFolderPath);
-
-		PSPathItem folderPathItem = null;
-		try {
-			folderPathItem = pathService.find(itemPath);
-		} catch (PSParametersValidationException e) {
-			throw new FolderNotFoundException();
-		} catch (PSPathNotFoundServiceException e) {
-			throw new FolderNotFoundException();
-		}
-
-		PSMoveFolderItem request = new PSMoveFolderItem();
-		request.setItemPath(itemPath);
-		request.setTargetFolderPath(targetFolderPath);
-
-		getPathService().moveItem(request);
-
-		PSPathItem targetPathItem = null;
-		try {
-			targetPathItem = pathService.find(targetFolderPath + "/" + folderPathItem.getName());
-		} catch (PSParametersValidationException e) {
-			throw new FolderNotFoundException();
-		} catch (PSPathNotFoundServiceException e) {
-			throw new FolderNotFoundException();
-		}
-
-		// Generate a redirect from the old path to the new path.
-		if (redirectService.status().getStatusCode() == PSRedirectStatus.SERVICE_OK) {
+			PSPathItem folderPathItem = null;
 			try {
+				folderPathItem = pathService.find(folderUrl);
+			} catch (PSParametersValidationException e) {
+				throw new FolderNotFoundException();
+			} catch (PSPathNotFoundServiceException e) {
+				throw new FolderNotFoundException();
+			}
+			boolean hasChildren = false;
 
-				PSSiteSummary site = siteDataService.findByPath("/" + targetFolderPath + folderPathItem.getName());
-				site.setPubInfo(siteDataService.getS3PubServerInfo(site.getSiteId()));
+			List<PSPathItem> children = pathService.findChildren(StringUtils.substring(folderUrl, 1));
 
-				PSModuleLicense lic = redirectService.getLicense();
+			hasChildren = !CollectionUtils.sizeIsEmpty(children);
 
-				if (lic != null && site.getPubInfo() != null) {
-					PSCreateRedirectRequest req = new PSCreateRedirectRequest();
-					req.setCategory(IPSRedirectService.REDIRECT_CATEGORY_AUTOGEN);
-					req.setCondition(PSPathUtils.getBaseFolderFromPath(itemPath) + "/" + folderPathItem.getName());
-					req.setEnabled(true);
-					req.setKey(lic.getKey());
-					req.setPermanent(true);
-					req.setRedirectTo(
-							PSPathUtils.getBaseFolderFromPath(targetFolderPath) + "/" + folderPathItem.getName());
-					req.setSite(site.getPubInfo().getBucketName());
-					req.setType(IPSRedirectService.REDIRECT_TYPE_DEFAULT);
-					redirectService.createRedirect(req);
-				}
-			} catch (Exception e) {
-				log.error("An error occurred generating a Redirect while moving Item: " + itemPath, e);
+			if (hasChildren && !includeSubFolders)
+				throw new BackendException(
+						"Folder includes subfolder, use includeSubFolders=true html parameter to delete all");
+			PSDeleteFolderCriteria criteria = new PSDeleteFolderCriteria();
+			criteria.setPath(StringUtils.substring(folderUrl, 1));
+			pathService.deleteFolder(criteria);
+		} catch (PSDataServiceException | PSNotFoundException | IPSPathService.PSPathServiceException e) {
+			throw new BackendException(e);
+		}
+	}
+
+	@Override
+	public Folder getFolder(URI baseUri, String id) throws BackendException {
+		try {
+			checkAPIPermission();
+
+			return getFolder(baseUri, id, null, null, null);
+		} catch (BackendException | PSDataServiceException e) {
+			throw new BackendException(e);
+		}
+	}
+
+	@Override
+	public void moveFolderItem(URI baseURI, String itemPath, String targetFolderPath) throws BackendException {
+		try {
+			checkAPIPermission();
+
+			itemPath = PSPathUtils.fixSiteFolderPath(siteDataService, itemPath);
+			targetFolderPath = PSPathUtils.fixSiteFolderPath(siteDataService, targetFolderPath);
+
+			PSPathItem folderPathItem = null;
+			try {
+				folderPathItem = pathService.find(itemPath);
+			} catch (PSParametersValidationException e) {
+				throw new FolderNotFoundException();
+			} catch (PSPathNotFoundServiceException e) {
+				throw new FolderNotFoundException();
 			}
 
-		}
+			PSMoveFolderItem request = new PSMoveFolderItem();
+			request.setItemPath(itemPath);
+			request.setTargetFolderPath(targetFolderPath);
 
+			getPathService().moveItem(request);
+
+			PSPathItem targetPathItem = null;
+			try {
+				targetPathItem = pathService.find(targetFolderPath + "/" + folderPathItem.getName());
+			} catch (PSParametersValidationException e) {
+				throw new FolderNotFoundException();
+			} catch (PSPathNotFoundServiceException e) {
+				throw new FolderNotFoundException();
+			}
+
+			// Generate a redirect from the old path to the new path.
+			if (redirectService.status().getStatusCode().equals( PSRedirectStatus.SERVICE_OK)) {
+				try {
+
+					PSSiteSummary site = siteDataService.findByPath("/" + targetFolderPath + folderPathItem.getName());
+					site.setPubInfo(siteDataService.getS3PubServerInfo(site.getSiteId()));
+
+					PSModuleLicense lic = redirectService.getLicense();
+
+					if (lic != null && site.getPubInfo() != null) {
+						PSCreateRedirectRequest req = new PSCreateRedirectRequest();
+						req.setCategory(IPSRedirectService.REDIRECT_CATEGORY_AUTOGEN);
+						req.setCondition(PSPathUtils.getBaseFolderFromPath(itemPath) + "/" + folderPathItem.getName());
+						req.setEnabled(true);
+						req.setKey(lic.getKey());
+						req.setPermanent(true);
+						req.setRedirectTo(
+								PSPathUtils.getBaseFolderFromPath(targetFolderPath) + "/" + folderPathItem.getName());
+						req.setSite(site.getPubInfo().getBucketName());
+						req.setType(IPSRedirectService.REDIRECT_TYPE_DEFAULT);
+						redirectService.createRedirect(req);
+					}
+				} catch (Exception e) {
+					log.error("An error occurred generating a Redirect while moving Item: " + itemPath, e);
+				}
+
+			}
+		} catch (IPSPathService.PSPathServiceException | IPSItemWorkflowService.PSItemWorkflowServiceException | PSDataServiceException e) {
+			throw new BackendException(e);
+		}
 	}
 
 	@Override
-	public void moveFolder(URI baseURI, String folderPath, String targetFolderPath) {
-		checkAPIPermission();
-
-		folderPath = PSPathUtils.fixSiteFolderPath(siteDataService, folderPath);
-		targetFolderPath = PSPathUtils.fixSiteFolderPath(siteDataService, targetFolderPath);
-
-		PSPathItem folderPathItem = null;
+	public void moveFolder(URI baseURI, String folderPath, String targetFolderPath) throws BackendException {
 		try {
-			folderPathItem = pathService.find(folderPath);
-		} catch (PSParametersValidationException e) {
-			throw new FolderNotFoundException();
-		} catch (PSPathNotFoundServiceException e) {
-			throw new FolderNotFoundException();
+			checkAPIPermission();
+
+			folderPath = PSPathUtils.fixSiteFolderPath(siteDataService, folderPath);
+			targetFolderPath = PSPathUtils.fixSiteFolderPath(siteDataService, targetFolderPath);
+
+			PSPathItem folderPathItem = null;
+			try {
+				folderPathItem = pathService.find(folderPath);
+			} catch (PSParametersValidationException | PSPathNotFoundServiceException e) {
+				throw new FolderNotFoundException();
+			}
+
+			PSMoveFolderItem request = new PSMoveFolderItem();
+			request.setItemPath(folderPath);
+			request.setTargetFolderPath(targetFolderPath);
+
+			getPathService().moveItem(request);
+		} catch (IPSPathService.PSPathServiceException | IPSItemWorkflowService.PSItemWorkflowServiceException | PSDataServiceException e) {
+			throw new BackendException(e);
 		}
-
-		PSMoveFolderItem request = new PSMoveFolderItem();
-		request.setItemPath(folderPath);
-		request.setTargetFolderPath(targetFolderPath);
-
-		getPathService().moveItem(request);
-
 	}
 
 	@Override
-	public Folder renameFolder(URI baseURI, String site, String path, String folderName, String newName) {
-		checkAPIPermission();
-
-		UrlParts urlParts = new UrlParts(site, path, folderName);
-		String folderUrl = urlParts.getUrl();
-		PSPathItem folderPathItem = null;
+	public Folder renameFolder(URI baseURI, String site, String path, String folderName, String newName) throws BackendException {
 		try {
-			folderPathItem = pathService.find(StringUtils.substring(folderUrl, 1));
-		} catch (PSParametersValidationException e) {
-			throw new FolderNotFoundException();
-		} catch (PSPathNotFoundServiceException e) {
-			throw new FolderNotFoundException();
+			checkAPIPermission();
+
+			UrlParts urlParts = new UrlParts(site, path, folderName);
+			String folderUrl = urlParts.getUrl();
+			PSPathItem folderPathItem = null;
+			try {
+				folderPathItem = pathService.find(StringUtils.substring(folderUrl, 1));
+			} catch (PSParametersValidationException e) {
+				throw new FolderNotFoundException();
+			} catch (PSPathNotFoundServiceException e) {
+				throw new FolderNotFoundException();
+			}
+
+			PSRenameFolderItem request = new PSRenameFolderItem();
+			request.setName(newName);
+			request.setPath(StringUtils.substring(folderUrl, 1));
+
+			PSPathItem ret = pathService.renameFolder(request);
+
+			return getFolder(baseURI, site, path, newName);
+		} catch (IPSPathService.PSPathServiceException | PSDataServiceException | BackendException e) {
+			throw new BackendException(e);
 		}
-
-		PSRenameFolderItem request = new PSRenameFolderItem();
-		request.setName(newName);
-		request.setPath(StringUtils.substring(folderUrl, 1));
-
-		PSPathItem ret = pathService.renameFolder(request);
-
-		return getFolder(baseURI, site, path, newName);
 	}
 
-	private IPSItemSummary getFolderPathItem(String path){
+	private IPSItemSummary getFolderPathItem(String path) throws Exception {
+		return  folderHelper.findFolder(path);
+	}
 
+    @Override
+    public void copyFolderItem(URI baseURI, String itemPath, String targetFolderPath) throws BackendException {
 		try {
-			return  folderHelper.findFolder(path);
-		} catch (PSParametersValidationException e) {
-			throw new FolderNotFoundException();
-		} catch (PSPathNotFoundServiceException e) {
-			throw new FolderNotFoundException();
-		} catch (Exception e) {
-			throw new FolderNotFoundException();
+			checkAPIPermission();
+
+			String correctedItemPath = PSPathUtils.fixSiteFolderPath(siteDataService, itemPath);
+			String correctedTargetPath = PSPathUtils.fixSiteFolderPath(siteDataService, targetFolderPath);
+
+			IPSItemSummary sourceItem = this.folderHelper.findItem(correctedItemPath);
+
+			//If it is a page, treat it special
+			if (sourceItem.isPage()) {
+				pageService.copy(sourceItem.getId(), targetFolderPath, true);
+			} else if (sourceItem.isFolder()) {
+				throw new BackendException("Bad call to copyFolderItem.  copyFolder must be called to copy a folder.");
+			} else {
+				PSLegacyGuid guid = (PSLegacyGuid) idMapper.getGuid(sourceItem.getId());
+
+				List<IPSGuid> guids = new ArrayList<>();
+
+				guids.add(guid);
+
+				List<String> paths = new ArrayList<>();
+
+				paths.add(correctedTargetPath);
+
+				//Copy it like an item
+				List<PSCoreItem> items = contentService.newCopies(guids,
+						paths,
+						"NewCopy",
+						false);
+
+			}
+		} catch (PSErrorResultsException | PSPathNotFoundServiceException | PSDataServiceException e) {
+			throw new BackendException(e);
+		} catch (Exception e) {  //TODO: Figure out what is throwing a generic exception and fix so it throws something named.
+			throw new BackendException(e);
 		}
 	}
 
     @Override
-    public void copyFolderItem(URI baseURI, String itemPath, String targetFolderPath) throws Exception {
-        checkAPIPermission();
+    public void copyFolder(URI baseURI, String folderPath, String targetFolderPath) throws BackendException {
+       try {
+		   checkAPIPermission();
 
-        String correctedItemPath = PSPathUtils.fixSiteFolderPath(siteDataService,itemPath );
-        String correctedTargetPath = PSPathUtils.fixSiteFolderPath(siteDataService,targetFolderPath );
+		   String correctedTarget = PSPathUtils.fixSiteFolderPath(siteDataService, targetFolderPath);
+		   String correctedSource = PSPathUtils.fixSiteFolderPath(siteDataService, PSPathUtils.getFolderPath(folderPath));
+		   String targetFolderName = PSPathUtils.getFolderName(correctedSource);
 
-		IPSItemSummary sourceItem = this.folderHelper.findItem(correctedItemPath);
+		   IPSItemSummary item = getFolderPathItem(correctedSource);
+		   PSLocator sourceLoc = idMapper.getLocator(item.getId());
 
-		//If it is a page, treat it special
-		if(sourceItem.isPage()) {
-			pageService.copy(sourceItem.getId(), targetFolderPath, true);
-		}else if(sourceItem.isFolder()){
-			throw new Exception("Bad call to copyFolderItem.  copyFolder must be called to copy a folder.");
-		}else{
-			PSLegacyGuid guid = (PSLegacyGuid)idMapper.getGuid(sourceItem.getId());
+		   if (item == null) {
+			   throw new NotFoundException("Source Folder " + folderPath + " was not found.  Please check the path and try again.");
+		   }
 
-			List<IPSGuid> guids = new ArrayList<IPSGuid>();
+		   IPSGuid guid = idMapper.getGuid(item.getId());
+		   List<IPSGuid> guids = new ArrayList<>();
 
-			guids.add(guid);
+		   IPSItemSummary targetItem = getFolderPathItem(correctedTarget);
 
-			List<String> paths = new ArrayList<String>();
+		   PSLocator destLoc = null;
+		   String folderName = null;
+		   destLoc = idMapper.getLocator(targetItem.getId());
 
-			paths.add(correctedTargetPath);
+		   IPSGuid targetGuid = idMapper.getGuid(targetItem.getId());
 
-			//Copy it like an item
-			List<PSCoreItem> items = contentService.newCopies(guids,
-					paths,
-					"NewCopy",
-					false);
+		   folderName = folderHelper.getUniqueFolderName(correctedTarget, targetFolderName);
 
+		   PSServerFolderProcessor folderProc = PSServerFolderProcessor.getInstance();
+		   String result = folderProc.copyFolder(sourceLoc, destLoc, new PSCloningOptions(
+				   PSCloningOptions.TYPE_SITE_SUBFOLDER, folderName,
+				   PSCloningOptions.COPY_ALL_CONTENT, PSCloningOptions.COPYCONTENT_AS_NEW_COPY,
+				   null
+		   ));
+
+		   if (result != null) {
+			   throw new BackendException("Failed to copy folder");
+		   }
+		   else {
+			   log.info("Copied folder:" + folderPath + " to " + targetFolderPath);
+		   }
+	   } catch (PSCmsException | PSDataServiceException | PSPathNotFoundServiceException e) {
+		  throw new BackendException(e);
+	   } catch (Exception e) {
+		   throw new BackendException(e);
+	   }
+	}
+
+    @Override
+    public void deleteFolderItem(URI baseURI, String itemPath) throws BackendException {
+		try {
+			checkAPIPermission();
+
+			PSPathItem ps = null;
+			try {
+				ps = pathService.find(itemPath);
+			} catch (Exception e) {
+				throw new NotFoundException(itemPath + " Not Found");
+			}
+
+			if (ps == null) {
+				throw new NotFoundException(itemPath + " Not Found");
+			}
+
+			ArrayList<IPSGuid> guids = new ArrayList<>();
+			guids.add(idMapper.getGuid(ps.getId()));
+
+			this.contentService.deleteItems(guids);
+		} catch (PSDataServiceException e) {
+			throw new BackendException(e);
 		}
 	}
-
-    @Override
-    public void copyFolder(URI baseURI, String folderPath, String targetFolderPath) throws Exception {
-        checkAPIPermission();
-
-        String correctedTarget = PSPathUtils.fixSiteFolderPath(siteDataService,targetFolderPath);
-        String correctedSource = PSPathUtils.fixSiteFolderPath(siteDataService,PSPathUtils.getFolderPath(folderPath));
-        String targetFolderName = PSPathUtils.getFolderName(correctedSource);
-
-		IPSItemSummary item = getFolderPathItem(correctedSource);
-		PSLocator sourceLoc = idMapper.getLocator(item.getId());
-
-		if(item == null)
-		    throw new NotFoundException("Source Folder " + folderPath + " was not found.  Please check the path and try again.");
-
-		IPSGuid guid = idMapper.getGuid(item.getId());
-		List<IPSGuid> guids = new ArrayList<IPSGuid>();
-
-		IPSItemSummary targetItem = getFolderPathItem(correctedTarget);
-
-		PSLocator destLoc = null;
-        String folderName = null;
-        destLoc = idMapper.getLocator(targetItem.getId());
-
-		IPSGuid targetGuid = idMapper.getGuid(targetItem.getId());
-
-        folderName = folderHelper.getUniqueFolderName(correctedTarget,targetFolderName);
-
-		PSServerFolderProcessor folderProc = PSServerFolderProcessor.getInstance();
-		String result = folderProc.copyFolder(sourceLoc,destLoc, new PSCloningOptions(
-				PSCloningOptions.TYPE_SITE_SUBFOLDER, folderName,
-				PSCloningOptions.COPY_ALL_CONTENT, PSCloningOptions.COPYCONTENT_AS_NEW_COPY,
-				null
-		) );
-
-		if(result != null)
-		    throw new Exception("Failed to copy folder");
-        else
-		    log.info("Copied folder:" + folderPath + " to " + targetFolderPath);
-
-	}
-
-    @Override
-    public void deleteFolderItem(URI baseURI, String itemPath) {
-        checkAPIPermission();
-
-        PSPathItem ps=null;
-        try {
-            ps = pathService.find(itemPath);
-        }catch(Exception e){
-            throw new NotFoundException(itemPath + " Not Found");
-        }
-
-        if(ps == null)
-            throw new NotFoundException(itemPath + " Not Found");
-
-        ArrayList<IPSGuid> guids = new ArrayList<>();
-        guids.add(idMapper.getGuid(ps.getId()));
-
-        this.contentService.deleteItems(guids);
-
-    }
 
 }

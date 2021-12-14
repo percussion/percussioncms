@@ -17,12 +17,19 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.assetmanagement.forms.service.impl;
+
+import org.apache.commons.lang.StringUtils;
+import org.supercsv.io.CsvMapReader;
+import org.supercsv.io.CsvMapWriter;
+import org.supercsv.io.ICsvMapReader;
+import org.supercsv.io.ICsvMapWriter;
+import org.supercsv.prefs.CsvPreference;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -34,13 +41,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
-
-import org.apache.commons.lang.StringUtils;
-import org.supercsv.io.CsvMapReader;
-import org.supercsv.io.CsvMapWriter;
-import org.supercsv.io.ICsvMapReader;
-import org.supercsv.io.ICsvMapWriter;
-import org.supercsv.prefs.CsvPreference;
 
 /**
  * Merges the content of 0 or more CSV files, (each with a header and 0 or more rows of data)
@@ -87,7 +87,7 @@ public class PSFormDataJoiner
      */
     private List<CaselessString> prepareHeader(SortedSet<CaselessString> columnsHeader)
     {
-        List<CaselessString> finalHeader = new ArrayList<CaselessString>(columnsHeader);
+        List<CaselessString> finalHeader = new ArrayList<>(columnsHeader);
         
         // Add "form name" and "create date" fields at the beginning
         // of the header list
@@ -108,7 +108,7 @@ public class PSFormDataJoiner
      */
     private Map<CaselessString,String> processCsvRow(Map<String,String> csvRow)
     {
-        Map<CaselessString,String> processedRow = new HashMap<CaselessString, String>();
+        Map<CaselessString,String> processedRow = new HashMap<>();
         
         for (String key : csvRow.keySet())
             processedRow.put(new CaselessString(key), csvRow.get(key));
@@ -126,10 +126,10 @@ public class PSFormDataJoiner
      */
     private ParsingResult parseCSVData(String[] data)
     {
-        SortedSet<CaselessString> finalHeaderSet = new TreeSet<CaselessString>();
+        SortedSet<CaselessString> finalHeaderSet = new TreeSet<>();
         
         // Stores current data in the first for-loop
-        List<Map<CaselessString,String>> currentDataList = new ArrayList<Map<CaselessString,String>>();
+        List<Map<CaselessString,String>> currentDataList = new ArrayList<>();
         Map<String, String> currentCsvData;
         
         ICsvMapReader reader = null;
@@ -173,7 +173,7 @@ public class PSFormDataJoiner
         
         // add every row with all columns
         Map<String,String> aFinalCsvRow;
-        List<Map<String,String>> finalCsvRowList = new ArrayList<Map<String,String>>();
+        List<Map<String,String>> finalCsvRowList = new ArrayList<>();
         
         // Final header is based on 'finalHeaderSet'. It has the "form name" and
         // "create date" at the beginning.
@@ -181,7 +181,7 @@ public class PSFormDataJoiner
         
         for (Map<CaselessString,String> aCsvRow : currentDataList)
         {
-            aFinalCsvRow = new HashMap<String,String>();
+            aFinalCsvRow = new HashMap<>();
             
             for (CaselessString aHeader : finalHeader)
             {

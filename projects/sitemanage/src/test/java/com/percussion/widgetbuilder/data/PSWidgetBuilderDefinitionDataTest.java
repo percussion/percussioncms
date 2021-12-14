@@ -17,22 +17,20 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.widgetbuilder.data;
 
-import static com.percussion.share.test.PSDataObjectTestUtils.assertXmlSerialization;
-
-import static org.junit.Assert.assertEquals;
-
 import com.percussion.share.dao.PSSerializerUtils;
 import com.percussion.share.data.PSDataObjectTestCase;
+import org.junit.Test;
 
 import java.util.List;
 
-import org.junit.Test;
+import static com.percussion.share.test.PSDataObjectTestUtils.assertXmlSerialization;
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author JaySeletz

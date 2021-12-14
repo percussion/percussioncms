@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -33,12 +33,11 @@ import com.percussion.server.PSUserSessionManager;
 import com.percussion.utils.request.PSRequestInfo;
 import com.percussion.webservices.aop.security.IPSWsMethod;
 import com.percussion.webservices.aop.security.IPSWsParameter;
+import org.aopalliance.intercept.MethodInterceptor;
+import org.aopalliance.intercept.MethodInvocation;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-
-import org.aopalliance.intercept.MethodInterceptor;
-import org.aopalliance.intercept.MethodInvocation;
 
 /**
  * Interceptor to verify that the method invoker has design access set for the 

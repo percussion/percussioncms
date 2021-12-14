@@ -17,19 +17,19 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.rx.admin.jsf.nodes;
 
-import static com.percussion.utils.string.PSStringUtils.notBlank;
-import static org.apache.commons.lang.Validate.notNull;
-
 import com.percussion.rx.jsf.PSEditableNode;
 import com.percussion.services.schedule.IPSSchedulingService;
 import com.percussion.services.schedule.PSSchedulingServiceLocator;
 import com.percussion.services.schedule.data.PSNotificationTemplate;
+
+import static com.percussion.utils.string.PSStringUtils.notBlank;
+import static org.apache.commons.lang.Validate.notNull;
 
 /**
  * The backing bean for a task notification template.

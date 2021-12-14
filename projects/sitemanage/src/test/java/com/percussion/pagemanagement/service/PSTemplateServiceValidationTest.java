@@ -17,20 +17,11 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.pagemanagement.service;
-
-import org.jmock.Expectations;
-import org.jmock.Mockery;
-import org.jmock.integration.junit4.JMock;
-import org.jmock.integration.junit4.JUnit4Mockery;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import com.percussion.assetmanagement.service.IPSAssetService;
 import com.percussion.assetmanagement.service.IPSWidgetAssetRelationshipService;
@@ -44,9 +35,19 @@ import com.percussion.pagemanagement.data.PSRegionTree;
 import com.percussion.pagemanagement.data.PSTemplate;
 import com.percussion.pagemanagement.service.impl.PSTemplateService;
 import com.percussion.services.assembly.IPSAssemblyService;
+import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.IPSIdMapper;
 import com.percussion.share.service.exception.PSBeanValidationException;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.sitemanage.service.IPSSiteTemplateService;
+import org.jmock.Expectations;
+import org.jmock.Mockery;
+import org.jmock.integration.junit4.JMock;
+import org.jmock.integration.junit4.JUnit4Mockery;
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
 
 /**
@@ -110,21 +111,18 @@ public class PSTemplateServiceValidationTest
     }
     
     @Test
-    public void shouldNotFail()
-    {
+    public void shouldNotFail() throws IPSDataService.DataServiceSaveException, PSValidationException {
         sut.validate(template);
     }
     
     @Test(expected=PSBeanValidationException.class)
-    public void shouldFailWithBadEmptyName()
-    {
+    public void shouldFailWithBadEmptyName() throws IPSDataService.DataServiceSaveException, PSValidationException {
         template.setName("");
         sut.validate(template);
     }
     
     @Test(expected=PSBeanValidationException.class)
-    public void shouldFailWithBadRegionTree()
-    {
+    public void shouldFailWithBadRegionTree() throws IPSDataService.DataServiceSaveException, PSValidationException {
         template.setRegionTree(new PSRegionTree());
         sut.validate(template);
     }

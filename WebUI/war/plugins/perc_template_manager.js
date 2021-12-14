@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -136,7 +136,7 @@ jQuery.fn.toXML = function () {
 				$templateObject = $(data);
 				$cssTheme = $templateObject.find("Template theme");
 			        
-				if ($cssTheme.length == 0) // There is no CSS override, make one.
+				if ($cssTheme.length === 0) // There is no CSS override, make one.
 				    {
 					$templateObject.append("<theme>"+newCSS+"</theme>");
 				    } 
@@ -311,7 +311,7 @@ jQuery.fn.toXML = function () {
 				// console.log($cssOverride.length);
 				// console.log($cssOverride);
 			        
-				if ($cssOverride.length == 0) // There is no CSS override, make one.
+				if ($cssOverride.length === 0) // There is no CSS override, make one.
 				    {
 					$templateObject.append("<cssOverride>"+newCSS+"</cssOverride>");
 					// console.log($templateObject.toXML());
@@ -424,7 +424,7 @@ jQuery.fn.toXML = function () {
 			// console.log($cssOverride.length);
 			// console.log($cssOverride);
 			
-			if ($cssTheme.length == 0) // There is no CSS override, make one.
+			if ($cssTheme.length === 0) // There is no CSS override, make one.
 			    {
 				$templateObject.append("<theme>"+themeName+"</theme>");
 				// console.log($templateObject.toXML());

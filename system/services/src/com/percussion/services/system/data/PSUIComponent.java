@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -28,7 +28,13 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -66,7 +72,7 @@ public class PSUIComponent
 
    @JoinColumn(name = "COMPONENTID", nullable = false, insertable = false, updatable = false)
    @Fetch(FetchMode. SUBSELECT)
-   Set<PSUIComponentProperty> properties = new HashSet<PSUIComponentProperty>();
+   Set<PSUIComponentProperty> properties = new HashSet<>();
 
    /**
     * Empty ctor

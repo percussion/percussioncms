@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -46,13 +46,13 @@
                 },
                 callback: function(elem){
                      if(widgetDefs[elem.attr('widgetdefid')].hasCssPrefs)
-                        editWidgetCssProperties(elem)
+                        editWidgetCssProperties(elem);
                 },
                 tooltip: I18N.message("perc.ui.css.preview.view@Configure")
          }
         ];
 	  
-	var widgetDecorator = P.decorationController( allWidgets, 'perc-widget-puff', 'perc-region-selected', widgetMenu);
+	var widgetDecorator = P.decorationController( allWidgets, 'perc-widget-puff', 'perc-region-active', widgetMenu);
 
 	initWidgetEditDialog();
 	populateWidgetDefs();
@@ -64,7 +64,7 @@
         $.perc_finder().addActionListener(function(action, data) {
             
             // verify that we are deleting an asset
-            if(action == $.perc_finder().ACTIONS.DELETE && (data.type == 'asset' || data.type == 'page')) {
+            if(action === $.perc_finder().ACTIONS.DELETE && (data.type === 'asset' || data.type === 'page')) {
                 if (typeof(data.isOpen) != 'undefined' && data.isOpen)
                 {
                     // current item is open for edit, no need to refresh as it will be cleared
@@ -73,15 +73,15 @@
                 
                 // find out where we are, what view and what tab within that view
                 var currentView     = $.PercNavigationManager.getView();
-                if(currentView == $.PercNavigationManager.VIEW_DESIGN) {
-                    var currentTabIndex = $("#tabs").tabs('option', 'selected');
-                    if(currentTabIndex == 3) {
+                if(currentView === $.PercNavigationManager.VIEW_DESIGN) {
+                    var currentTabIndex = $("#tabs").tabs('option','active');
+                    if(currentTabIndex === 3) {
                     	dirtyController.setDirty(true, "template", saveCSS); 
                     	initRender();
                     }
-                } else if(currentView == $.PercNavigationManager.VIEW_EDITOR) {
-                    var currentTabIndex = $("#perc-pageEditor-tabs").tabs('option', 'selected');
-                    if(currentTabIndex == 2) {
+                } else if(currentView === $.PercNavigationManager.VIEW_EDITOR) {
+                    var currentTabIndex2 = $("#perc-pageEditor-tabs").tabs('option','active');
+                    if(currentTabIndex2 === 2) {
                         dirtyController.setDirty(true, "page", saveCSS);
                     	initRender();
                     }
@@ -92,14 +92,14 @@
         function saveCSS(callback){
             var currentView = $.PercNavigationManager.getView();
             var cssController = P.cssController( model, $("#frame"), P.CSSPreviewView( $("#frame"), model) );
-            if(currentView == $.PercNavigationManager.VIEW_EDITOR) {
+            if(currentView === $.PercNavigationManager.VIEW_EDITOR) {
                 cssController.save(callback);                
             }
-            else if (currentView == $.PercNavigationManager.VIEW_EDIT_TEMPLATE) {
+            else if (currentView === $.PercNavigationManager.VIEW_EDIT_TEMPLATE) {
                 callbackFunc = callback || function (){};
                 cssController.setOverrideCSS();
                 cssController.save(function (status, data) {
-                    if (status == true) {
+                    if (status === true) {
                         dirtyController.setDirty(false, "template");
                         callbackFunc();
                     }
@@ -112,13 +112,13 @@
          * warns the user. Sets the JavaScriptOff to true or false depending on the current status. Calls the
          * initRender to reinitialize the view.
          */
-        $("#perc-style-menu a.perc-dropdown-option-DisableJavaScript").unbind().click(function() {
+        $("#perc-style-menu a.perc-dropdown-option-DisableJavaScript").off("click").on("click", function() {
             var __this = this;
             var handleScripts = function()
             {
                 var scriptOff = I18N.message( "perc.ui.menu@JavaScript Off" );
                 var scriptOn = I18N.message( "perc.ui.menu@JavaScript On" );
-                if($(__this).text() == scriptOff)
+                if($(__this).text() === scriptOff)
                 {
                     $(__this).text(scriptOn);
                     $(__this).attr("title", I18N.message("perc.ui.content.view@Turns On JavaScript"));
@@ -238,10 +238,10 @@
     
 	    function afterRender() 
 	    {
-	        iframe.contents().find("div").unbind();   // kill the editable events.
+	        iframe.contents().find("div").off();   // kill the editable events.
 	        widgetDecorator.refresh();
                 sanitizeHtml();
-	        iframe.contents().find("body").css("z-index","-1000").unbind().click(function() {
+	        iframe.contents().find("body").css("z-index","-1000").off("click").on("click", function() {
 	            widgetDecorator.unselectAll();
 	        });
 	    }
@@ -290,6 +290,6 @@
                 });
             return iframe.contents().find(".perc-widget");
         }
-    }
+    };
 
 })(jQuery,jQuery.Percussion);

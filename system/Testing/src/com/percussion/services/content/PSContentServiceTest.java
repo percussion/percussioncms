@@ -17,27 +17,32 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.services.content;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.services.content.data.PSAutoTranslation;
 import com.percussion.services.content.data.PSKeyword;
 import com.percussion.services.content.data.PSKeywordChoice;
+import com.percussion.utils.testing.IntegrationTest;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import com.percussion.utils.testing.IntegrationTest;
-
-import org.apache.commons.lang.StringUtils;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 /**
  * Unit test for the {@link IPSContentService} 
@@ -45,6 +50,9 @@ import static org.junit.Assert.*;
 @Category(IntegrationTest.class)
 public class PSContentServiceTest
 {
+
+   private static final Logger log = LogManager.getLogger(PSContentServiceTest.class);
+
    /**
     * UnitTesting MSM Functionality. This is installing the translation settings
     * fresh on to a system that has no such settings.
@@ -185,7 +193,8 @@ public class PSContentServiceTest
          {
             System.out.println("error deleteing auto translations: " + 
                e.getLocalizedMessage());
-            e.printStackTrace();
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          }
       }
    }

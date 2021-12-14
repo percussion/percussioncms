@@ -17,18 +17,20 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.i18n.rxlt;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.i18n.PSI18nUtils;
 import com.percussion.tools.PSCopyStream;
 import com.percussion.util.PSFileFilter;
 import com.percussion.util.PSFilteredFileList;
 import com.percussion.utils.tools.PSPatternMatcher;
-import com.percussion.utils.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -52,6 +54,9 @@ import java.util.StringTokenizer;
 public class PSLocaleRxResourceCopyHandler
    extends PSIdleDotter
 {
+
+   private static final Logger log = LogManager.getLogger(PSLocaleRxResourceCopyHandler.class);
+
    /**
     * Constructor. Needs valid Rhythmyx root directory and the new language
     * string.
@@ -281,46 +286,20 @@ public class PSLocaleRxResourceCopyHandler
             "resourceFileNotbeCreated", tgtFile.getCanonicalPath());
          return;
       }
-      FileInputStream fis = null;
-      FileOutputStream fos = null;
-      try
-      {
-         String[]args = {srcFile.getCanonicalPath(), tgtFile.getCanonicalPath()};
-         PSCommandLineProcessor.logMessage("copyingFileTo", args);
 
-         if(tgtFile.getParentFile() != null)
-            tgtFile.getParentFile().mkdirs();
+      String[]args = {srcFile.getCanonicalPath(), tgtFile.getCanonicalPath()};
+      PSCommandLineProcessor.logMessage("copyingFileTo", args);
 
-         fis = new FileInputStream(srcFile);
-         fos = new FileOutputStream(tgtFile);
-         PSCopyStream.copyStream(fis, fos);
-      }
-      finally
-      {
-         if(fis!=null)
-         {
-            try
-            {
-               fis.close();
-               fis = null;
-            }
-            catch(IOException e)
-            {
-            }
-         }
-         if(fos!=null)
-         {
-            try
-            {
-               fos.flush();
-               fos.close();
-               fos = null;
-            }
-            catch(IOException e)
-            {
-            }
+      if(tgtFile.getParentFile() != null)
+         tgtFile.getParentFile().mkdirs();
+
+      try(FileInputStream fis = new FileInputStream(srcFile)){
+         try(FileOutputStream fos = new FileOutputStream(tgtFile)) {
+            PSCopyStream.copyStream(fis, fos);
+            fos.flush();
          }
       }
+
    }
 
    /**
@@ -349,46 +328,19 @@ public class PSLocaleRxResourceCopyHandler
             "resourceFileNotbeCreated", tgtFile.getCanonicalPath());
          return;
       }
-      FileInputStream fis = null;
-      FileOutputStream fos = null;
-      try
-      {
+
          String[]args = {srcFile.getCanonicalPath(), tgtFile.getCanonicalPath()};
          PSCommandLineProcessor.logMessage("copyingFileTo", args);
 
          if(tgtFile.getParentFile() != null)
             tgtFile.getParentFile().mkdirs();
 
-         fis = new FileInputStream(srcFile);
-         fos = new FileOutputStream(tgtFile);
-         PSCopyStream.copyStream(fis, fos);
-      }
-      finally
-      {
-         if(fis!=null)
-         {
-            try
-            {
-               fis.close();
-               fis = null;
-            }
-            catch(IOException e)
-            {
+         try(FileInputStream fis = new FileInputStream(srcFile)) {
+            try(FileOutputStream fos = new FileOutputStream(tgtFile)) {
+               PSCopyStream.copyStream(fis, fos);
             }
          }
-         if(fos!=null)
-         {
-            try
-            {
-               fos.flush();
-               fos.close();
-               fos = null;
-            }
-            catch(IOException e)
-            {
-            }
-         }
-      }
+
    }
 
    /**
@@ -417,46 +369,19 @@ public class PSLocaleRxResourceCopyHandler
             "resourceFileNotbeCreated", tgtFile.getCanonicalPath());
          return;
       }
-      FileInputStream fis = null;
-      FileOutputStream fos = null;
-      try
-      {
-         String[]args = {srcFile.getCanonicalPath(), tgtFile.getCanonicalPath()};
-         PSCommandLineProcessor.logMessage("copyingFileTo", args);
 
-         if(tgtFile.getParentFile() != null)
-            tgtFile.getParentFile().mkdirs();
+      String[]args = {srcFile.getCanonicalPath(), tgtFile.getCanonicalPath()};
+      PSCommandLineProcessor.logMessage("copyingFileTo", args);
 
-         fis = new FileInputStream(srcFile);
-         fos = new FileOutputStream(tgtFile);
-         PSCopyStream.copyStream(fis, fos);
-      }
-      finally
-      {
-         if(fis!=null)
-         {
-            try
-            {
-               fis.close();
-               fis = null;
-            }
-            catch(IOException e)
-            {
-            }
-         }
-         if(fos!=null)
-         {
-            try
-            {
-               fos.flush();
-               fos.close();
-               fos = null;
-            }
-            catch(IOException e)
-            {
-            }
+      if(tgtFile.getParentFile() != null)
+         tgtFile.getParentFile().mkdirs();
+
+      try(FileInputStream fis = new FileInputStream(srcFile)) {
+         try (FileOutputStream fos = new FileOutputStream(tgtFile)) {
+            PSCopyStream.copyStream(fis, fos);
          }
       }
+
    }
 
    /**
@@ -482,8 +407,6 @@ public class PSLocaleRxResourceCopyHandler
 
       File file = null;
       File newFile = null;
-      FileInputStream fis = null;
-      FileOutputStream fos = null;
       String newPath = "";
       for(int i=0; listFiles!=null && i<listFiles.size(); i++)
       {
@@ -504,9 +427,11 @@ public class PSLocaleRxResourceCopyHandler
             if(newFile.getParentFile() != null)
                newFile.getParentFile().mkdirs();
 
-            fis = new FileInputStream(file);
-            fos = new FileOutputStream(newFile);
-            PSCopyStream.copyStream(fis, fos);
+            try(FileInputStream fis = new FileInputStream(file)) {
+               try (FileOutputStream fos = new FileOutputStream(newFile)) {
+                  PSCopyStream.copyStream(fis, fos);
+               }
+            }
          }
          catch(IOException e)
          {
@@ -514,32 +439,6 @@ public class PSLocaleRxResourceCopyHandler
             PSCommandLineProcessor.logMessage("errorCopyingFileTo", args);
             PSCommandLineProcessor.logMessage("errorMessageException",
                e.getMessage());
-         }
-         finally
-         {
-            if(fis!=null)
-            {
-               try
-               {
-                  fis.close();
-                  fis = null;
-               }
-               catch(IOException e)
-               {
-               }
-            }
-            if(fos!=null)
-            {
-               try
-               {
-                  fos.flush();
-                  fos.close();
-                  fos = null;
-               }
-               catch(IOException e)
-               {
-               }
-            }
          }
       }
    }
@@ -658,7 +557,8 @@ public class PSLocaleRxResourceCopyHandler
       }
       catch(IOException e)
       {
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
    }
 }

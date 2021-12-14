@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -28,15 +28,15 @@ import com.percussion.design.objectstore.PSLocator;
 import com.percussion.server.PSRequest;
 import com.percussion.server.webservices.PSServerFolderProcessor;
 import com.percussion.services.contentmgr.IPSContentPropertyConstants;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.utils.jsr170.PSValueFactory;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.jcr.ItemNotFoundException;
 import javax.jcr.RepositoryException;
 import javax.jcr.Value;
 import javax.jcr.query.Row;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Represents a row. Each row will contain the requested properties (which may
@@ -72,7 +72,7 @@ public class PSRow implements Row
       {
          throw new IllegalArgumentException("data may not be null");
       }
-      m_data = new HashMap<String,Object>();
+      m_data = new HashMap<>();
       
       // Fix the keys, they were probably modified for Hibernate
       for(String key : data.keySet())
@@ -172,7 +172,7 @@ public class PSRow implements Row
                val = null;
             }
          }
-         catch (PSCmsException e)
+         catch (PSCmsException | PSNotFoundException e)
          {
             throw new RepositoryException("Problem getting path", e);
          }

@@ -17,20 +17,19 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.design.objectstore;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
-
+import junit.framework.TestCase;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import junit.framework.TestCase;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.List;
 
 import static com.percussion.testing.PSTestCompare.assertEqualsWithHash;
 
@@ -71,7 +70,7 @@ public class PSFileTest extends TestCase
       }
 
       @Override
-      public void fromXml(Element sourceNode, IPSDocument parentDoc, ArrayList parentComponents) throws PSUnknownNodeTypeException
+      public void fromXml(Element sourceNode, IPSDocument parentDoc, List parentComponents) throws PSUnknownNodeTypeException
       {
          throw new AssertionError();
       }

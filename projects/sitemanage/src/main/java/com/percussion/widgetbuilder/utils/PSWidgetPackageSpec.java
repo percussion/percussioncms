@@ -17,22 +17,21 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.widgetbuilder.utils;
 
 import com.percussion.widgetbuilder.data.PSWidgetBuilderFieldData;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.Validate;
+import org.apache.commons.lang.WordUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.Validate;
-import org.apache.commons.lang.WordUtils;
 
 /**
  * Defines a widget package to create
@@ -58,8 +57,8 @@ public class PSWidgetPackageSpec
 
     private List<PSWidgetBuilderFieldData> fields;
     private String widgetHtml = "";
-    private List<String> cssFiles = new ArrayList<String>();
-    private List<String> jsFiles = new ArrayList<String>();
+    private List<String> cssFiles = new ArrayList<>();
+    private List<String> jsFiles = new ArrayList<>();
    
     /**
      * Ctor
@@ -87,7 +86,7 @@ public class PSWidgetPackageSpec
         this.widgetVersion = widgetVersion;
         this.cm1Version = cm1Version;
         
-        resolverTokenMap = new HashMap<String, String>();
+        resolverTokenMap = new HashMap<>();
         
         generateWidgetName();
     }

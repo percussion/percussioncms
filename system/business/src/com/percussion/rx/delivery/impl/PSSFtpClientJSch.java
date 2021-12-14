@@ -17,13 +17,11 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.rx.delivery.impl;
-
-import static org.apache.commons.lang.Validate.notEmpty;
 
 import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.ConfigRepository;
@@ -33,6 +31,10 @@ import com.jcraft.jsch.OpenSSHConfig;
 import com.jcraft.jsch.Session;
 import com.jcraft.jsch.SftpATTRS;
 import com.jcraft.jsch.SftpException;
+import com.percussion.server.PSServer;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
@@ -40,12 +42,9 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Properties;
 import java.util.Vector;
 
-import com.percussion.server.PSServer;
-import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import static org.apache.commons.lang.Validate.notEmpty;
 
 /**
  * A wrapper for the {@link ChannelSftp} class. This code was integrated from 
@@ -56,7 +55,7 @@ public class PSSFtpClientJSch
    /**
     * The logger of the class.
     */
-   private static Logger ms_log = Logger.getLogger(PSSFtpClientJSch.class);
+   private static final Logger ms_log = LogManager.getLogger(PSSFtpClientJSch.class);
 
     protected static final String JSCH_KEX = "jsch.kex";
 
@@ -391,7 +390,7 @@ public class PSSFtpClientJSch
       if (isAbsolutePath)
       {
  
-         List<String> aList = new ArrayList<String>();
+         List<String> aList = new ArrayList<>();
          aList.add("/");
          aList.addAll(Arrays.asList(pathElements));
          String[] aaList = new String[aList.size()];

@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -33,11 +33,26 @@ import com.percussion.design.objectstore.PSRoleProvider;
 import com.percussion.design.objectstore.PSServerConfiguration;
 import com.percussion.design.objectstore.PSSubject;
 import com.percussion.design.objectstore.PSTextLiteral;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.services.security.PSTypedPrincipal;
-import com.percussion.utils.security.IPSTypedPrincipal;
 import com.percussion.utils.testing.IntegrationTest;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
+import org.apache.cactus.ServletTestCase;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.junit.experimental.categories.Category;
+import org.w3c.dom.Document;
 
+import javax.naming.Binding;
+import javax.naming.Context;
+import javax.naming.NamingEnumeration;
+import javax.naming.NamingException;
+import javax.naming.directory.DirContext;
+import javax.naming.directory.InitialDirContext;
+import javax.naming.directory.SearchControls;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -48,22 +63,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 
-import javax.naming.Binding;
-import javax.naming.Context;
-import javax.naming.NamingEnumeration;
-import javax.naming.NamingException;
-import javax.naming.directory.DirContext;
-import javax.naming.directory.InitialDirContext;
-import javax.naming.directory.SearchControls;
-
-import org.apache.cactus.ServletTestCase;
-import org.junit.experimental.categories.Category;
-import org.w3c.dom.Document;
-
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
 /**
  * Directory object store class testing, including constructors,
  * <code>PSComponent</code> functionality, accessors and XML functionality.
@@ -71,6 +70,9 @@ import junit.framework.TestSuite;
 @Category(IntegrationTest.class)
 public class PSDirectoryServerCatalogerTest extends ServletTestCase
 {
+
+   private static final Logger log = LogManager.getLogger(PSDirectoryServerCatalogerTest.class);
+
    public static final String DEFAULT_CTX_FACTORY = "com.sun.jndi.ldap.LdapCtxFactory";
 
    /**
@@ -352,7 +354,8 @@ public class PSDirectoryServerCatalogerTest extends ServletTestCase
       }
       catch (NamingException e)
       {
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
       finally
       {
@@ -396,7 +399,8 @@ public class PSDirectoryServerCatalogerTest extends ServletTestCase
       }
       catch (NamingException e)
       {
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
       finally
       {

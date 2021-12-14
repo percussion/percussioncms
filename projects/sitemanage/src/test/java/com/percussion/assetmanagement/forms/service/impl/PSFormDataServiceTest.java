@@ -17,28 +17,15 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.assetmanagement.forms.service.impl;
 
-import com.percussion.assetmanagement.forms.data.PSFormSummary;
 import com.percussion.assetmanagement.forms.service.IPSFormDataService;
-import com.percussion.delivery.data.PSDeliveryInfo;
-import com.percussion.delivery.service.IPSDeliveryInfoService;
-import com.percussion.test.PSServletTestCase;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import junit.framework.TestCase;
-
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.NameValuePair;
-import org.apache.commons.httpclient.methods.PostMethod;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -146,7 +133,7 @@ public class PSFormDataServiceTest extends TestCase
     private void submitFormData(String serverUrl, String formName, String[][] keyValues) throws Exception
     {
         HttpClient httpClient = new HttpClient();
-        PostMethod postMethod = new PostMethod(serverUrl + "/perc-form-processor/form/");
+        PostMethod postMethod = new PostMethod(serverUrl + "/perc-form-processor/form/cms");
 
         List<NameValuePair> values = new ArrayList<NameValuePair>();
 

@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -43,7 +43,7 @@ module.exports = function(grunt) {
                 src: [
                 ],
                 options: {
-                    specs: 'C:/DevEnv/dev/cui/test/test.*.js',
+                    specs: './test/test.*.js',
                     template: require('grunt-template-jasmine-requirejs'),
                     templateOptions: {
                         requireConfig: requireJsConfig

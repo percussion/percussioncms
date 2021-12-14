@@ -17,12 +17,13 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.rx.delivery.impl;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.rx.delivery.IPSDeliveryHandler;
 import com.percussion.rx.publisher.IPSPublisherJobStatus;
 import com.percussion.rx.publisher.IPSPublisherJobStatus.State;
@@ -31,6 +32,7 @@ import com.percussion.rx.publisher.PSPublisherUtils;
 import com.percussion.rx.publisher.PSRxPublisherServiceLocator;
 import com.percussion.services.PSBaseServiceLocator;
 import com.percussion.services.PSMissingBeanConfigurationException;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.publisher.IPSContentList;
 import com.percussion.services.publisher.IPSEdition;
 import com.percussion.services.publisher.IPSEditionContentList;
@@ -39,16 +41,17 @@ import com.percussion.services.publisher.PSPublisherServiceLocator;
 import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.services.sitemgr.IPSSiteManager;
 import com.percussion.services.sitemgr.PSSiteManagerLocator;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.List;
-
 import com.percussion.utils.testing.IntegrationTest;
 import org.apache.cactus.ServletTestCase;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.experimental.categories.Category;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
 
 /**
  * 
@@ -64,6 +67,9 @@ import org.junit.experimental.categories.Category;
 @Category(IntegrationTest.class)
 public class PSDeliveryHandlerPublishTest extends ServletTestCase
 {
+
+   private static final Logger log = LogManager.getLogger(PSDeliveryHandlerPublishTest.class);
+
    /**
     * Both testFilePublish() and testFtpPublish() failed from time to time on the build 
     * machine, but always work when manually run on a dev environment.
@@ -75,8 +81,7 @@ public class PSDeliveryHandlerPublishTest extends ServletTestCase
       assertTrue(true);
    }
    
-   public void fixme_testFilePublish()
-   {
+   public void fixme_testFilePublish() throws PSNotFoundException {
       // Delete any existing published files
       deletePublishedFiles();
 
@@ -91,8 +96,7 @@ public class PSDeliveryHandlerPublishTest extends ServletTestCase
    }
     
    public void fixme_testFtpPublish()
-      throws PSMissingBeanConfigurationException, IOException
-   {
+           throws PSMissingBeanConfigurationException, IOException, PSNotFoundException {
       FTPClient ftp = new FTPClient();
 
       logon(ftp, false);
@@ -115,8 +119,7 @@ public class PSDeliveryHandlerPublishTest extends ServletTestCase
    }
 
    @Override
-   protected void setUp()
-   {
+   protected void setUp() throws PSNotFoundException {
       // Make a copy of the eiSite so we can put the properties back
       // after the test.
       IPSSiteManager smgr = PSSiteManagerLocator.getSiteManager();
@@ -167,8 +170,7 @@ public class PSDeliveryHandlerPublishTest extends ServletTestCase
    }
 
    @Override
-   protected void tearDown()
-   {
+   protected void tearDown() throws PSNotFoundException {
       // Restore the original properties of eiSite
       IPSSiteManager smgr = PSSiteManagerLocator.getSiteManager();
 
@@ -319,8 +321,7 @@ public class PSDeliveryHandlerPublishTest extends ServletTestCase
    }
 
    private void ftpPublish(FTPClient ftp, PSFtpDeliveryHandler handler)
-      throws PSMissingBeanConfigurationException, IOException
-   {
+           throws PSMissingBeanConfigurationException, IOException, PSNotFoundException {
       String last = FTP_ROOT.substring(FTP_ROOT.length() - 2);
       //FB: ES_COMPARING_STRINGS_WITH_EQ NC 1-17-16
       assertFalse("FTP_ROOT must not end in \\", last.equals("\\"));
@@ -414,8 +415,7 @@ public class PSDeliveryHandlerPublishTest extends ServletTestCase
    }
 
    private void filePublish(IPSDeliveryHandler handler)
-      throws PSMissingBeanConfigurationException
-   {
+           throws PSMissingBeanConfigurationException, PSNotFoundException {
       IPSSiteManager smgr = PSSiteManagerLocator.getSiteManager();
       IPSSite eiSite = smgr.loadSite(SITE_NAME);
 
@@ -462,7 +462,8 @@ public class PSDeliveryHandlerPublishTest extends ServletTestCase
             }
             catch (InterruptedException e)
             {
-               e.printStackTrace();
+               log.error(PSExceptionUtils.getMessageForLog(e));
+               log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             }
 
             status = PSRxPublisherServiceLocator.getRxPublisherService()
@@ -547,9 +548,9 @@ public class PSDeliveryHandlerPublishTest extends ServletTestCase
 
    private static final String EDITION_NAME = "EI_Full";
 
-   private static final String DELETE_ROOT = "C:\\RhythmyxPublishing\\UnitTest";
+   private static final String DELETE_ROOT = "C:\\RhythmyxPublishing\\\\UnitTest";
 
-   private static final String FILE_ROOT = DELETE_ROOT + "\\File";
+   private static final String FILE_ROOT = DELETE_ROOT + "\\\\File";
 
    private static final String COMPARE_ROOT = FILE_ROOT + "Transactional";
 

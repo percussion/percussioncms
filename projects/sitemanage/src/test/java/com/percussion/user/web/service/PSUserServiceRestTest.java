@@ -17,14 +17,41 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.user.web.service;
 
-import static java.util.Arrays.asList;
+import com.percussion.role.data.PSRole;
+import com.percussion.role.web.service.PSRoleServiceRestClient;
+import com.percussion.services.workflow.data.PSAssignmentTypeEnum;
+import com.percussion.share.data.PSStringWrapper;
+import com.percussion.share.test.PSObjectRestClient.DataRestClientException;
+import com.percussion.share.test.PSObjectRestClient.DataValidationRestClientException;
+import com.percussion.share.test.PSRestTestCase;
+import com.percussion.share.test.PSTestDataCleaner;
+import com.percussion.user.data.PSAccessLevel;
+import com.percussion.user.data.PSAccessLevelRequest;
+import com.percussion.user.data.PSCurrentUser;
+import com.percussion.user.data.PSExternalUser;
+import com.percussion.user.data.PSImportedUser;
+import com.percussion.user.data.PSImportedUser.ImportStatus;
+import com.percussion.user.data.PSRoleList;
+import com.percussion.user.data.PSUser;
+import com.percussion.user.data.PSUserList;
+import com.percussion.user.service.IPSUserService.PSDirectoryServiceStatus;
+import com.percussion.user.service.IPSUserService.PSDirectoryServiceStatus.ServiceStatus;
+import com.percussion.user.service.IPSUserService.PSImportUsers;
+import org.hamcrest.core.CombinableMatcher;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
+import java.util.Collections;
+import java.util.List;
+
+import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.anyOf;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.hasItem;
@@ -39,35 +66,6 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static org.junit.Assume.assumeThat;
-
-import com.percussion.role.data.PSRole;
-import com.percussion.role.web.service.PSRoleServiceRestClient;
-import com.percussion.services.workflow.data.PSAssignmentTypeEnum;
-import com.percussion.share.data.PSStringWrapper;
-import com.percussion.share.test.PSObjectRestClient.DataRestClientException;
-import com.percussion.share.test.PSObjectRestClient.DataValidationRestClientException;
-import com.percussion.share.test.PSRestTestCase;
-import com.percussion.share.test.PSTestDataCleaner;
-import com.percussion.user.data.PSAccessLevel;
-import com.percussion.user.data.PSAccessLevelRequest;
-import com.percussion.user.data.PSCurrentUser;
-import com.percussion.user.data.PSExternalUser;
-import com.percussion.user.data.PSRoleList;
-import com.percussion.user.data.PSUser;
-import com.percussion.user.data.PSUserList;
-import com.percussion.user.service.IPSUserService.PSDirectoryServiceStatus;
-import com.percussion.user.service.IPSUserService.PSDirectoryServiceStatus.ServiceStatus;
-import com.percussion.user.service.IPSUserService.PSImportUsers;
-import com.percussion.user.data.PSImportedUser;
-import com.percussion.user.data.PSImportedUser.ImportStatus;
-
-import java.util.Collections;
-import java.util.List;
-
-import org.hamcrest.core.CombinableMatcher;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
 
 /**
  * Test the user service through rest.

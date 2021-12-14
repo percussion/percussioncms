@@ -17,23 +17,13 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.webdav.method;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLDecoder;
-import java.util.ArrayList;
-import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import org.w3c.dom.Element;
 import com.percussion.cms.PSCmsException;
 import com.percussion.cms.objectstore.IPSDbComponent;
 import com.percussion.cms.objectstore.PSComponentProcessorProxy;
@@ -52,6 +42,17 @@ import com.percussion.webdav.PSWebdavServlet;
 import com.percussion.webdav.PSWebdavStatus;
 import com.percussion.webdav.error.IPSWebdavErrors;
 import com.percussion.webdav.error.PSWebdavException;
+import org.w3c.dom.Element;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLDecoder;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class implements the COPY WebDAV method.
@@ -258,7 +259,7 @@ public class PSCopyMethod extends PSWebdavMethod
       IPSDbComponent[] comps = { targetFolder };
       proxy.save(comps);
       PSRelationshipProcessorProxy rsProxy = getFolderProxy();
-      List<PSLocator> sourceList = new ArrayList<PSLocator>();
+      List<PSLocator> sourceList = new ArrayList<>();
       sourceList.add(m_sourceSummary.getCurrentLocator());
       rsProxy.add(
          PSRelationshipConfig.TYPE_FOLDER_CONTENT,
@@ -275,7 +276,7 @@ public class PSCopyMethod extends PSWebdavMethod
    {
       PSRelationshipProcessorProxy proxy = getFolderProxy();
       
-      List<PSLocator> sourceList = new ArrayList<PSLocator>();
+      List<PSLocator> sourceList = new ArrayList<>();
       PSLocator srcLoc = m_sourceSummary.getCurrentLocator();
       String targetName = PSWebdavUtils.getFileName(m_targetPath);
       PSLocatorWithName locator = new PSLocatorWithName(srcLoc.getId(), 

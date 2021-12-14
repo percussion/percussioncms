@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -59,18 +59,20 @@
         
             
         wrapper.append(toggleControl);
-        toggleControl.click(collapse);
+        toggleControl.on("click",function(evt){
+            collapse(evt);
+        });
 
         collapsible.data("contentHeightOneLine", contentHeightOneLine);
         collapsible.data("contentHeightExpanded", contentHeightExpanded);
         collapsible.data("config", config);
 
         if(contentDoesntFit(collapsible)) {
-            toggleControl.click();
+            toggleControl.trigger("click");
         } else {
             toggleControl.hide();
         }
-    }
+    };
     
     function collapse(event) {
         var target = $(event.target);
@@ -88,12 +90,12 @@
         collapsible
             .height(newHeight)
             .css("overflow", "hidden");
-//        collapsible.wrap("<div class='perc-collapsible-more-collapsed'>");
-        
         toggleControl
             .html(toggleIcon)
-            .unbind()
-            .click(expand);
+            .off()
+            .on("click",function(evt){
+                expand(evt);
+            });
     }
 
     function expand(event) {
@@ -111,8 +113,10 @@
         
         toggleControl
             .html(toggleIcon)
-            .unbind()
-            .click(collapse);
+            .off("click")
+            .on("click",function(evt){
+                collapse(evt);
+            } );
     }
 
     function contentDoesntFit(collapsible) {
@@ -135,7 +139,7 @@
             collapseControl = $(target.parents(".perc-collapse-control")[0]);
         
         var secondLine = collapseControl.parent("div").next("div");
-        var isCollapsed = secondLine.attr("collapsed") == "true";
+        var isCollapsed = secondLine.attr("collapsed") === "true";
 
         var secondLineHeightCollapsed = secondLine.data("secondLineHeightCollapsed");
         var expandIcon = secondLine.data("expandIcon");

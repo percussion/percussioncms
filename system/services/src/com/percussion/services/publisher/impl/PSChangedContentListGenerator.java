@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -25,7 +25,6 @@ package com.percussion.services.publisher.impl;
 
 import com.percussion.cms.PSCmsException;
 import com.percussion.design.objectstore.PSLocator;
-import com.percussion.server.PSRequest;
 import com.percussion.server.webservices.PSServerFolderProcessor;
 import com.percussion.services.contentchange.IPSContentChangeService;
 import com.percussion.services.contentchange.PSContentChangeServiceLocator;
@@ -33,16 +32,14 @@ import com.percussion.services.contentchange.data.PSContentChangeType;
 import com.percussion.services.contentmgr.data.PSQueryResult;
 import com.percussion.services.publisher.PSPublisherException;
 import com.percussion.util.IPSHtmlParameters;
-
-import java.util.List;
-import java.util.Map;
-
-import javax.jcr.query.QueryResult;
-
 import org.apache.commons.lang.Validate;
 import org.apache.commons.lang.math.NumberUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import javax.jcr.query.QueryResult;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Utilizes {@link IPSContentChangeService} to generate a content list of changed content
@@ -55,7 +52,7 @@ import org.apache.commons.logging.LogFactory;
 public class PSChangedContentListGenerator extends PSBaseGenerator
 {
    private IPSContentChangeService changeService = PSContentChangeServiceLocator.getContentChangeService();
-   private static final Log log = LogFactory.getLog(PSChangedContentListGenerator.class);
+   private static final Logger log = LogManager.getLogger(PSChangedContentListGenerator.class);
    
    public QueryResult generate(Map<String, String> parameters) throws PSPublisherException
    {

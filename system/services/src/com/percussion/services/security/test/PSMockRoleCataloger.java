@@ -17,22 +17,21 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.services.security.test;
 
+import com.percussion.security.IPSRoleCataloger;
+import com.percussion.security.IPSTypedPrincipal;
+import com.percussion.security.IPSTypedPrincipal.PrincipalTypes;
+import com.percussion.security.PSSecurityCatalogException;
 import com.percussion.services.security.PSTypedPrincipal;
-import com.percussion.utils.security.IPSRoleCataloger;
-import com.percussion.utils.security.IPSTypedPrincipal;
-import com.percussion.utils.security.IPSTypedPrincipal.PrincipalTypes;
-import com.percussion.utils.security.PSSecurityCatalogException;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.HashSet;
 import java.util.Set;
-
-import org.apache.commons.lang.StringUtils;
 
 /**
  * Mock implementation of the {@link IPSRoleCataloger} for testing purposes.
@@ -107,7 +106,7 @@ public class PSMockRoleCataloger implements IPSRoleCataloger
          throw new IllegalArgumentException(
             "roleName may not be null or empty");
       
-      Set<IPSTypedPrincipal> members = new HashSet<IPSTypedPrincipal>();
+      Set<IPSTypedPrincipal> members = new HashSet<>();
       
       for (int i = 0; i < ROLES.length; i++)
       {
@@ -131,7 +130,7 @@ public class PSMockRoleCataloger implements IPSRoleCataloger
       if (user == null)
          throw new IllegalArgumentException("user may not be null");
       
-      Set<String> roles = new HashSet<String>();
+      Set<String> roles = new HashSet<>();
       
       for (int i = 0; i < ROLEMEMBERS.length; i++)
       {

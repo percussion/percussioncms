@@ -17,24 +17,53 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.wrapper;
 
-import java.io.*;
-import java.net.*;
+import com.percussion.error.PSExceptionUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.LineNumberReader;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.Socket;
+import java.net.SocketException;
+import java.net.SocketTimeoutException;
+import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.*;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardWatchEventKinds;
+import java.nio.file.WatchEvent;
+import java.nio.file.WatchKey;
+import java.nio.file.WatchService;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import static com.percussion.wrapper.JettyStartUtils.*;
+import static com.percussion.wrapper.JettyStartUtils.debug;
+import static com.percussion.wrapper.JettyStartUtils.error;
+import static com.percussion.wrapper.JettyStartUtils.getRunningPid;
+import static com.percussion.wrapper.JettyStartUtils.info;
 
 public abstract class StartWrapper {
+
+    private static final Logger log = LogManager.getLogger(StartWrapper.class);
 
     protected static final String FS = File.separator;
     protected static final String CPS = System.getProperty("path.separator");
@@ -285,15 +314,18 @@ public abstract class StartWrapper {
             try {
                 debug("The commands being used to start the server are: %s", Arrays.toString(startCmd));
                 final Process tomcatProc = Runtime.getRuntime().exec(startCmd, null, currentDirectory);
-
-                new PSStreamGobbler(name, tomcatProc.getInputStream()).start();
-                if (startupCheckString != null) {
-                    new PSStreamGobbler(name, tomcatProc.getErrorStream(), startupCheckString, () -> setState(ProcState.STARTED)).start();
+                try(InputStream is = tomcatProc.getInputStream()) {
+                    new PSStreamGobbler(name,is ).start();
+                    if (startupCheckString != null) {
+                        try(InputStream eis = tomcatProc.getErrorStream() ) {
+                            new PSStreamGobbler(name, eis, startupCheckString, () -> setState(ProcState.STARTED)).start();
+                        }
+                    } else {
+                        try(InputStream eis = tomcatProc.getErrorStream() ) {
+                            new PSStreamGobbler(name, eis).start();
+                        }
+                    }
                 }
-                else {
-                    new PSStreamGobbler(name, tomcatProc.getErrorStream()).start();
-                }
-
                 updatePid();
 
                 Runtime.getRuntime().addShutdownHook(new Thread(() -> {
@@ -374,16 +406,19 @@ public abstract class StartWrapper {
 
                 if (stopTimeout > 0 && stopResponse != null) {
                     info("Waiting for stop response '%s'", stopResponse);
-                    LineNumberReader lin = new LineNumberReader(new InputStreamReader(s.getInputStream()));
-                    String response;
-                    while ((response = lin.readLine()) != null) {
+                    try(InputStreamReader isr = new InputStreamReader(s.getInputStream())) {
+                        try(LineNumberReader lin = new LineNumberReader(isr)) {
+                            String response;
+                            while ((response = lin.readLine()) != null) {
 
-                        // "Stopped" for jetty
-                        if (stopResponse.equals(response)) {
-                            info("Server reports itself as Stopped");
-                            return true;
-                        } else {
-                            debug("Received \"%s\"", response);
+                                // "Stopped" for jetty
+                                if (stopResponse.equals(response)) {
+                                    info("Server reports itself as Stopped");
+                                    return true;
+                                } else {
+                                    debug("Received \"%s\"", response);
+                                }
+                            }
                         }
                     }
                 }
@@ -462,7 +497,8 @@ public abstract class StartWrapper {
                 watcher = myDir.getFileSystem().newWatchService();
                 myDir.register(watcher, StandardWatchEventKinds.ENTRY_CREATE, StandardWatchEventKinds.ENTRY_DELETE, StandardWatchEventKinds.ENTRY_MODIFY);
             } catch (Exception e) {
-                e.printStackTrace();
+                log.error(PSExceptionUtils.getMessageForLog(e));
+                log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             }
         }
 

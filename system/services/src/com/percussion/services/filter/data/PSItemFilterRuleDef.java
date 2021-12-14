@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -45,7 +45,19 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.MapKey;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.persistence.Version;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.HashMap;
@@ -124,7 +136,7 @@ public class PSItemFilterRuleDef implements IPSItemFilterRuleDef,
    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE, 
          region = "PSItemFilterRuleDef_Params")
    @Fetch(FetchMode. SUBSELECT)
-   private Map<String, PSItemFilterRuleParam> params = new HashMap<String, PSItemFilterRuleParam>();
+   private Map<String, PSItemFilterRuleParam> params = new HashMap<>();
 
    /**
     * Default ctor
@@ -390,7 +402,7 @@ public class PSItemFilterRuleDef implements IPSItemFilterRuleDef,
 
    public Map<String, String> getParams()
    {
-      Map<String, String> rval = new HashMap<String, String>();
+      Map<String, String> rval = new HashMap<>();
       for (Map.Entry<String, PSItemFilterRuleParam> e : this.params.entrySet())
       {
          rval.put(e.getKey(), e.getValue().getValue());

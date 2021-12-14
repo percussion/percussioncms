@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -55,7 +55,7 @@
             // Get back each theme entry. data contains a DOM object. 
         
             controller.getThemeList(function(status, data) {
-                if (status == true) {
+                if (status === true) {
                     //////////////////////////////////
                     // Iterate over each theme entry
                     //////////////////////////////////
@@ -70,13 +70,13 @@
                             $("#perc-themes-table-row").append(renderGalleryEntry($name, $thumbUrl, $nameAsEntered));
             
                             // Selecting the theme
-                            $j("#theme-"+$name).click(function() {
+                            $("#theme-"+$name).on("click",function() {
                             	// if user clicks on any theme from the gallery, then set the dirty flag
                             	dirtyController.setDirty(true,"style",saveCSS);
                             	
                                 controller.setTemplateTheme($nameAsEntered, function(success) {
                                    // And finally, reset the save button.
-                                   $j("#perc-css-gallery-edit-save").removeClass("ui-state-disabled");
+                                   $("#perc-css-gallery-edit-save").removeClass("ui-state-disabled");
                                     selectTheme($name);
                                 });
                             });
@@ -100,14 +100,14 @@
 
         function saveCSS(callback){
             var currentView = $.PercNavigationManager.getView();
-            if(currentView == $.PercNavigationManager.VIEW_EDITOR) {
+            if(currentView === $.PercNavigationManager.VIEW_EDITOR) {
                 controller.save(callback);                
             }
-            else if (currentView == $.PercNavigationManager.VIEW_EDIT_TEMPLATE) {
+            else if (currentView === $.PercNavigationManager.VIEW_EDIT_TEMPLATE) {
                 callbackFunc = callback || function (){};
                 controller.setOverrideCSS();
                 controller.save(function (status, data) {
-                    if (status == true) {
+                    if (status === true) {
                         dirtyController.setDirty(false, "template");
                         callbackFunc();
                     }
@@ -138,11 +138,11 @@
             var selector_closeLinks = ".perc-theme-clear";
             var selector_closeLink_selected = "#theme-"+sThemeName+"-clear";
     
-            $j(selector).removeClass("perc-css-gallery-themeHighlighted");
-            $j(selector_closeLinks).css('display','none');
-            $j(selector_selected).addClass("perc-css-gallery-themeHighlighted");
-            $j(selector_closeLink_selected).css('display','inline');
+            $(selector).removeClass("perc-css-gallery-themeHighlighted");
+            $(selector_closeLinks).css('display','none');
+            $(selector_selected).addClass("perc-css-gallery-themeHighlighted");
+            $(selector_closeLink_selected).css('display','inline');
             
         }
-    }
+    };
 })(jQuery,jQuery.Percussion);

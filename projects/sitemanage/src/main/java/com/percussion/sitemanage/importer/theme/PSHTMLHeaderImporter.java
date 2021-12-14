@@ -17,30 +17,29 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.sitemanage.importer.theme;
 
-import static org.apache.commons.lang.StringUtils.containsIgnoreCase;
-import static org.apache.commons.lang.StringUtils.equalsIgnoreCase;
-import static org.apache.commons.lang.StringUtils.isBlank;
-import static org.apache.commons.lang.StringUtils.isNotBlank;
-import static org.apache.commons.lang.Validate.notNull;
-
 import com.percussion.sitemanage.importer.IPSSiteImportLogger;
 import com.percussion.sitemanage.importer.helpers.impl.PSImportThemeHelper.LogCategory;
 import com.percussion.utils.types.PSPair;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import java.net.MalformedURLException;
 import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
+import static org.apache.commons.lang.StringUtils.containsIgnoreCase;
+import static org.apache.commons.lang.StringUtils.equalsIgnoreCase;
+import static org.apache.commons.lang.StringUtils.isBlank;
+import static org.apache.commons.lang.StringUtils.isNotBlank;
+import static org.apache.commons.lang.Validate.notNull;
 
 /**
  * Importer class that will be get the links and scripts from header of a given
@@ -133,7 +132,7 @@ public class PSHTMLHeaderImporter
     {
         Elements links = this.docSource.select("link");
         
-        Map<String, String> linkPaths = new HashMap<String, String>();
+        Map<String, String> linkPaths = new HashMap<>();
 
         appendHeaderImporterMessage("Starting to process CSS links in the document header.");
 
@@ -191,7 +190,7 @@ public class PSHTMLHeaderImporter
         // Get the script elements from Header and Body
         Elements scripts = docSource.select("script");
         
-        Map<String, String> scriptPaths = new HashMap<String, String>();
+        Map<String, String> scriptPaths = new HashMap<>();
 
         appendHeaderImporterMessage("Starting to process script paths in the document.");
         
@@ -235,7 +234,7 @@ public class PSHTMLHeaderImporter
      */
     public Map<String, String> processInlineStyles()
     {
-        Map<String, String> processedInlineImages = new HashMap<String, String>();
+        Map<String, String> processedInlineImages = new HashMap<>();
         
         // Process the URL for images in style tag from Header
         processedInlineImages.putAll(processHeaderInlineStyles());
@@ -288,7 +287,7 @@ public class PSHTMLHeaderImporter
      */
     public Map<String, String> processHeaderAndBodyImages()
     {
-        Map<String, String> imagesMapInline = new HashMap<String, String>();
+        Map<String, String> imagesMapInline = new HashMap<>();
 
         // Get all existing img tag elements in the header and body
         Elements imgElements = docSource.getElementsByTag("img");
@@ -339,7 +338,7 @@ public class PSHTMLHeaderImporter
     {
         Elements flashObjects = docSource.select("object");
         
-        Map<String, String> embedFlashPaths = new HashMap<String, String>();
+        Map<String, String> embedFlashPaths = new HashMap<>();
 
         appendHeaderImporterMessage("Starting to process swf files in <object> tags in the document.");
         
@@ -475,7 +474,7 @@ public class PSHTMLHeaderImporter
     private Map<String, String> processHeaderInlineStyles()
     {
         Elements styleElements = docHeader.select("style");
-        Map<String, String> inlineImagesHeader = new HashMap<String, String>();
+        Map<String, String> inlineImagesHeader = new HashMap<>();
         
         appendHeaderImporterMessage("Processing inline stypes included in document header.");
         
@@ -515,7 +514,7 @@ public class PSHTMLHeaderImporter
     private Map<String, String> processBodyInlineStyles()
     {
         Elements styleElements = docBody.getElementsByTag("style");
-        Map<String, String> imagesMapInline = new HashMap<String, String>();
+        Map<String, String> imagesMapInline = new HashMap<>();
         
         appendHeaderImporterMessage("Processing inline styles included in document body.");
         
@@ -554,7 +553,7 @@ public class PSHTMLHeaderImporter
     private Map<String, String> processBodyStyleAtributes()
     {
         Elements styleElements = docBody.getElementsByAttribute("style");
-        Map<String, String> imagesMapInline = new HashMap<String, String>();
+        Map<String, String> imagesMapInline = new HashMap<>();
         
         appendHeaderImporterMessage("Processing inline styles attributes in document body.");
         
@@ -597,7 +596,7 @@ public class PSHTMLHeaderImporter
     private Map<String, String> processFlashObject(Element flash, String cssQuery, String attribValue, String siteName)
     {
         Elements flashElements = flash.select(cssQuery);
-        Map<String, String> flashPaths = new HashMap<String, String>();
+        Map<String, String> flashPaths = new HashMap<>();
 
         for (Element movie : flashElements)
         {
@@ -633,7 +632,7 @@ public class PSHTMLHeaderImporter
      */
     private Map<String, String> processDataAttribute(Element flash, String siteName)
     {
-        Map<String, String> flashPaths = new HashMap<String, String>();
+        Map<String, String> flashPaths = new HashMap<>();
 
         // Process data attribute for flash object
         if (!isBlank(flash.attr("data")))

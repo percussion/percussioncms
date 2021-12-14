@@ -17,14 +17,17 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.tls;
 
+import com.percussion.error.PSExceptionUtils;
 import org.apache.commons.codec.binary.Base64;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.crypto.Cipher;
 import javax.net.ssl.HttpsURLConnection;
@@ -64,6 +67,8 @@ import java.util.Map;
 import java.util.Set;
 
 public class TLSTester {
+
+    private static final Logger log = LogManager.getLogger(TLSTester.class);
 
     private static String OS = null;
     public static String getOsName()
@@ -231,9 +236,11 @@ public class TLSTester {
            //print_content(con);
 
         } catch (MalformedURLException e) {
-            e.printStackTrace();
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
     }
 
@@ -254,15 +261,21 @@ public class TLSTester {
             System.out.println("adding alias "+alias);
             myTrustStore.setCertificateEntry( alias, cert);
         }
-        myTrustStore.store( new FileOutputStream( store ), KEYSTORE_PASS.toCharArray() );
+        try(FileOutputStream fo = new FileOutputStream( store )) {
+            myTrustStore.store(fo, KEYSTORE_PASS.toCharArray());
+        }
         } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         } catch (KeyStoreException e) {
-            e.printStackTrace();
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         } catch (CertificateException e) {
-            e.printStackTrace();
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
         return;
     }
@@ -270,22 +283,22 @@ public class TLSTester {
     private static void print_content(HttpsURLConnection con){
         if(con!=null){
 
-            try {
+
 
                 System.out.println("****** Content of the URL ********");
-                BufferedReader br =
+                try(BufferedReader br =
                         new BufferedReader(
-                                new InputStreamReader(con.getInputStream()));
+                                new InputStreamReader(con.getInputStream()))){
 
                 String input;
 
                 while ((input = br.readLine()) != null){
                     System.out.println(input);
                 }
-                br.close();
 
             } catch (IOException e) {
-                e.printStackTrace();
+                    log.error(PSExceptionUtils.getMessageForLog(e));
+                    log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             }
 
         }
@@ -314,9 +327,11 @@ public class TLSTester {
                 }
 
             } catch (SSLPeerUnverifiedException e) {
-                e.printStackTrace();
+                log.error(PSExceptionUtils.getMessageForLog(e));
+                log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             } catch (IOException e){
-                e.printStackTrace();
+                log.error(PSExceptionUtils.getMessageForLog(e));
+                log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             }
 
         }
@@ -333,9 +348,9 @@ public class TLSTester {
         SSLSocket csf = (SSLSocket) SSLSocketFactory.getDefault().createSocket();
 
 
-        Set<String> enabledCiphers = new HashSet<String>(Arrays.asList(csf.getEnabledCipherSuites()));
-        Set<String> defaultCiphers =  new HashSet<String>(Arrays.asList(ssf.getDefaultCipherSuites()));
-        Set<String> availableCiphers = new HashSet<String>(Arrays.asList(ssf.getSupportedCipherSuites()));
+        Set<String> enabledCiphers = new HashSet<>(Arrays.asList(csf.getEnabledCipherSuites()));
+        Set<String> defaultCiphers =  new HashSet<>(Arrays.asList(ssf.getDefaultCipherSuites()));
+        Set<String> availableCiphers = new HashSet<>(Arrays.asList(ssf.getSupportedCipherSuites()));
 
 
         System.out.println("Default\tCipher");
@@ -393,7 +408,9 @@ public class TLSTester {
         if (!store.exists()) {
 
             myTrustStore.load(null, null);
-            myTrustStore.store(new FileOutputStream(store), password.toCharArray());
+            try(FileOutputStream fo = new FileOutputStream( store )) {
+                myTrustStore.store(fo, password.toCharArray());
+            }
         }
 
         try (FileInputStream myKeys = new FileInputStream(store)) {

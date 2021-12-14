@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -30,6 +30,7 @@ import com.percussion.data.PSConversionException;
 import com.percussion.deploy.server.PSJexlHelper;
 import com.percussion.design.objectstore.PSLocator;
 import com.percussion.design.objectstore.PSRelationshipConfig;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSJexlMethod;
 import com.percussion.extension.IPSJexlParam;
 import com.percussion.extension.PSJexlUtilBase;
@@ -44,6 +45,7 @@ import com.percussion.services.assembly.PSAssemblyException;
 import com.percussion.services.assembly.PSAssemblyServiceLocator;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.contentmgr.IPSNode;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.data.PSGuid;
 import com.percussion.services.guidmgr.data.PSLegacyGuid;
 import com.percussion.services.legacy.IPSCmsObjectMgr;
@@ -58,22 +60,20 @@ import com.percussion.utils.jexl.IPSScript;
 import com.percussion.utils.jexl.PSJexlEvaluator;
 import com.percussion.utils.request.PSRequestInfo;
 import com.percussion.utils.timing.PSStopwatchStack;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.Predicate;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
+import javax.jcr.Node;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
-
-import javax.jcr.Node;
-
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.Predicate;
-import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
 
 /**
  * Functions for use by jexl to calculate locations in assembly. Note that these
@@ -317,11 +317,18 @@ public class PSLocationUtils extends PSJexlUtilBase
       try
       {
          PSServerFolderProcessor fproc =PSServerFolderProcessor.getInstance();
-         String paths[];
-         if (isFolderPath)
+         String paths[] = null;
+         if (isFolderPath) {
             paths = fproc.getFolderPaths(lg_id.getLocator());
-         else
+         }
+         else {
+            try{
             paths = fproc.getItemPaths(lg_id.getLocator());
+            } catch (PSNotFoundException e) {
+               ms_log.warn(PSExceptionUtils.getMessageForLog(e));
+               ms_log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+            }
+         }
 
          if (paths != null && paths.length >= 1)
          {
@@ -634,21 +641,25 @@ public class PSLocationUtils extends PSJexlUtilBase
        * It would be nice if we could guarentee no duplicate templates but
        * IPSAssemblyTemplate does not have an equals method.
        */
-      Collection<IPSAssemblyTemplate> ct_default_templates = new ArrayList<IPSAssemblyTemplate>();
-      Collection<IPSAssemblyTemplate> site_templates = new ArrayList<IPSAssemblyTemplate>();
+      Collection<IPSAssemblyTemplate> ct_default_templates = new ArrayList<>();
+      Collection<IPSAssemblyTemplate> site_templates = new ArrayList<>();
       Collection<IPSAssemblyTemplate> rvalues = null;
 
       if (siteid != null)
       {
-         site_templates = sitem.loadUnmodifiableSite(siteid)
-            .getAssociatedTemplates();
-         if (site_templates.size() == 0)
+         try {
+            site_templates = sitem.loadUnmodifiableSite(siteid).getAssociatedTemplates();
+         } catch (PSNotFoundException e) {
+            ms_log.error(PSExceptionUtils.getMessageForLog(e));
+            ms_log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+         }
+
+         if (site_templates != null && !site_templates.isEmpty())
          {
             ms_log.debug("No Templates Associated with the site.");
          }
          // Copy collection to avoid modifying the underlying set
-         Set<IPSAssemblyTemplate> copySet = new HashSet<IPSAssemblyTemplate>();
-         copySet.addAll(site_templates);
+         Set<IPSAssemblyTemplate> copySet = new HashSet<>(site_templates);
          site_templates = copySet; // Decouple
       }
 
@@ -728,7 +739,7 @@ public class PSLocationUtils extends PSJexlUtilBase
 
       if (rvalues.size() > 1)
       {
-         List<IPSAssemblyTemplate> sorted_templates = new ArrayList<IPSAssemblyTemplate>(
+         List<IPSAssemblyTemplate> sorted_templates = new ArrayList<>(
                rvalues);
          Comparator cmp = new Comparator()
          {
@@ -755,7 +766,7 @@ public class PSLocationUtils extends PSJexlUtilBase
          Collections.sort(sorted_templates, cmp);
 
          rvalues = sorted_templates;
-         List<String> template_names = new ArrayList<String>();
+         List<String> template_names = new ArrayList<>();
          for (IPSAssemblyTemplate t : rvalues)
          {
             template_names.add(t.getName());
@@ -785,7 +796,7 @@ public class PSLocationUtils extends PSJexlUtilBase
    /**
     * Logger for location utils
     */
-   Logger ms_log = Logger.getLogger(this.getClass());
+   Logger ms_log = LogManager.getLogger(this.getClass());
 
    /**
     * Calculate the base site path by calling the existing UDF

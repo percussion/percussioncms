@@ -17,20 +17,14 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.queue.impl;
 
-import static com.percussion.share.spring.PSSpringWebApplicationContextUtils.getWebApplicationContext;
-
-import static org.apache.commons.lang.Validate.notEmpty;
-import static org.apache.commons.lang.Validate.notNull;
-
 import com.percussion.monitor.process.PSImportProcessMonitor;
-import com.percussion.search.PSSearchIndexEventQueue;
 import com.percussion.server.PSRequest;
 import com.percussion.services.notification.IPSNotificationListener;
 import com.percussion.services.notification.PSNotificationEvent;
@@ -40,6 +34,8 @@ import com.percussion.share.dao.impl.PSIdMapper;
 import com.percussion.sitemanage.data.PSSite;
 import com.percussion.sitemanage.importer.PSLink;
 import com.percussion.utils.request.PSRequestInfo;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -47,22 +43,25 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import static com.percussion.share.spring.PSSpringWebApplicationContextUtils.getWebApplicationContext;
+import static org.apache.commons.lang.Validate.notEmpty;
+import static org.apache.commons.lang.Validate.notNull;
 
 public class PSSiteQueue
 {
     private PSSite m_site = null;
-    private TreeSet<Integer> m_catalogedIds = new TreeSet<Integer>();
-    private TreeSet<Integer> m_importedIds = new TreeSet<Integer>();
-    private HashMap<String, PSLink> m_importedLinks = new HashMap<String, PSLink>();
-    private TreeSet<Integer> m_importingIds = new TreeSet<Integer>();
+    private TreeSet<Integer> m_catalogedIds = new TreeSet<>();
+    private TreeSet<Integer> m_importedIds = new TreeSet<>();
+    private HashMap<String, PSLink> m_importedLinks = new HashMap<>();
+    private TreeSet<Integer> m_importingIds = new TreeSet<>();
     private String m_userAgent = null;
     private int m_maxImportCount = 0;
     private static final String POUND = "#";
     private static final String SLASH = "/";
     
-    static Log ms_log = LogFactory.getLog(PSSiteQueue.class);
+
+    private static final Logger ms_log = LogManager.getLogger(PSSiteQueue.class);
+
     
     /**
      * The actual request that will result in spawning a thread.
@@ -74,8 +73,9 @@ public class PSSiteQueue
     public PSSiteQueue()
     {
     	
-    	if (this.notificationService == null)
-    		notificationService = (PSNotificationService) getWebApplicationContext().getBean("sys_notificationService");
+    	if (this.notificationService == null) {
+            notificationService = (PSNotificationService) getWebApplicationContext().getBean("sys_notificationService");
+        }
     		idService = (PSIdMapper) getWebApplicationContext().getBean("sys_idMapper");
     		
     	 notificationService.addListener(EventType.PAGE_DELETE, new IPSNotificationListener()
@@ -206,8 +206,9 @@ public class PSSiteQueue
      */
     public Map<String, Object> getRequestInfoMap()
     {
-        if (m_requestInfoMap == null)
+        if (m_requestInfoMap == null) {
             throw new IllegalStateException("The request info has not been set yet.");
+        }
         
         return m_requestInfoMap;
     }
@@ -219,11 +220,13 @@ public class PSSiteQueue
      */
     public void setRequestInfoMap()
     {
-        if (m_requestInfoMap != null)
+        if (m_requestInfoMap != null) {
             return;
+        }
         
-        if (!PSRequestInfo.isInited())
+        if (!PSRequestInfo.isInited()) {
             throw new IllegalStateException("The request info has not been initialized.");
+        }
         
         m_requestInfoMap = PSRequestInfo.copyRequestInfoMap();
         PSRequest request = (PSRequest) m_requestInfoMap.get(PSRequestInfo.KEY_PSREQUEST);
@@ -238,7 +241,7 @@ public class PSSiteQueue
     public List<Integer> getImportingIds()
     {
 
-        List<Integer> ids = new ArrayList<Integer>(m_importingIds);
+        List<Integer> ids = new ArrayList<>(m_importingIds);
         return ids;
      
     }
@@ -278,13 +281,13 @@ public class PSSiteQueue
     
     public synchronized List<Integer> getCatalogedIds()
     {
-        List<Integer> ids = new ArrayList<Integer>(m_catalogedIds);
+        List<Integer> ids = new ArrayList<>(m_catalogedIds);
         return ids;
     }
 
     public synchronized List<Integer> getImportedIds()
     {
-        List<Integer> ids = new ArrayList<Integer>(m_importedIds);
+        List<Integer> ids = new ArrayList<>(m_importedIds);
         return ids;
     }
 
@@ -346,24 +349,27 @@ public class PSSiteQueue
     
     private boolean isMaxCountReached()
     {
-        if (m_maxImportCount < 0)
+        if (m_maxImportCount < 0) {
             return false;
+        }
         
         int currentCount = m_importedIds.size();
-        if (m_importingIds.size() != 0)
-            currentCount = currentCount + m_importingIds.size(); 
+        if (m_importingIds.size() != 0) {
+            currentCount = currentCount + m_importingIds.size();
+        }
 
         return currentCount >= m_maxImportCount;
     }
     
     private void logState()
     {
-        if(! ms_log.isDebugEnabled())
+        if(! ms_log.isDebugEnabled()) {
             return;
+        }
         
-        ms_log.debug("[getNextId] m_importingId: " + m_importingIds);
-        ms_log.debug("[getNextId] m_catalogedIds: " + m_catalogedIds.toString());
-        ms_log.debug("[getNextId] m_importedIds: " + m_importedIds.toString());
+        ms_log.debug("[getNextId] m_importingId: {}", m_importingIds);
+        ms_log.debug("[getNextId] m_catalogedIds: {}", m_catalogedIds.toString());
+        ms_log.debug("[getNextId] m_importedIds: {}", m_importedIds.toString());
     }
 
     public void addImportedId(Integer id)

@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -53,19 +53,20 @@
         }
         else{
             var url = $.perc_paths.RECENT_ROOT + type;
-            if(type == $.PercRecentListService.RECENT_TYPE_TEMPLATE || 
-                type == $.PercRecentListService.RECENT_TYPE_SITE_FOLDER)
+            if(type === $.PercRecentListService.RECENT_TYPE_TEMPLATE || 
+                type === $.PercRecentListService.RECENT_TYPE_SITE_FOLDER)
                 url += "/" + site;
             var serviceCallback = function(status, result){
-                    if(status == $.PercServiceUtils.STATUS_SUCCESS){
+                    if(status === $.PercServiceUtils.STATUS_SUCCESS){
                         deferred.resolve(result);
                     } else {
                         var defaultMsg = $.PercServiceUtils.extractDefaultErrorMessage(result.request);
                         $.perc_utils.info(I18N.message("perc.ui.page.optimizer.service@Access CM1 Page Optimizer") + defaultMsg);
                         deferred.reject(defaultMsg);
                     }
-            }
-            $.PercServiceUtils.makeJsonRequest(url,$.PercServiceUtils.TYPE_GET,true,serviceCallback);
+            };
+            //async service call
+            $.PercServiceUtils.makeJsonRequest(url,$.PercServiceUtils.TYPE_GET,false,serviceCallback);
         }
         return deferred.promise();
     }
@@ -82,16 +83,15 @@
         }
         else{
             var url = $.perc_paths.RECENT_ROOT + type;
-            if(type == $.PercRecentListService.RECENT_TYPE_TEMPLATE || 
-                type == $.PercRecentListService.RECENT_TYPE_SITE_FOLDER)
+            if(type === $.PercRecentListService.RECENT_TYPE_TEMPLATE || 
+                type === $.PercRecentListService.RECENT_TYPE_SITE_FOLDER)
                 url += "/" + site;
-            var postdata = {"value":data};
+            var postdata = {};
+            postdata.value=data;
             $.ajax({
                  url: url,
                  type: "POST",
                  data: postdata,
-                 contentType: "application/x-www-form-urlencoded",
-                 dataType: "json"
             }).done(function(){
                 deferred.resolve();
             }).fail(function(jqXHR, textStatus){

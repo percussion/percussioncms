@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -29,14 +29,12 @@ import com.percussion.cms.objectstore.server.PSItemDefManager;
 import com.percussion.pagemanagement.data.PSPage;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.filter.IPSFilterItem;
-import com.percussion.services.filter.PSFilterException;
 import com.percussion.services.filter.data.PSFilterItem;
 import com.percussion.services.guidmgr.IPSGuidManager;
 import com.percussion.services.guidmgr.data.PSGuid;
 import com.percussion.share.dao.IPSFolderHelper;
 import com.percussion.sitemanage.service.impl.PSPublicAssetItemFilterRule;
 import com.percussion.sitemanage.service.impl.PSStartDateFilterRule;
-import com.percussion.utils.exceptions.PSORMException;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.webservices.publishing.IPSPublishingWs;
 

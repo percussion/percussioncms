@@ -17,13 +17,11 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.rx.publisher.impl;
-
-import static java.util.Collections.emptyList;
 
 import com.percussion.deploy.server.PSJexlHelper;
 import com.percussion.services.assembly.IPSAssemblyItem;
@@ -38,13 +36,14 @@ import com.percussion.utils.codec.PSXmlDecoder;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.jexl.IPSScript;
 import com.percussion.utils.jexl.PSJexlEvaluator;
+import org.apache.commons.codec.EncoderException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.codec.EncoderException;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import static java.util.Collections.emptyList;
 
 /**
  * 
@@ -76,7 +75,7 @@ public class PSPaginationAssemblyResultExpander extends PSAbstractAssemblyResult
       // Create work items for the additional pages.
       // NOTE, the original item entry (in the pub log) will be replaced be
       // the 1st cloned item. so the # of added items are "count" -1.  
-      List<IPSAssemblyItem> clonedItems = new ArrayList<IPSAssemblyItem>();
+      List<IPSAssemblyItem> clonedItems = new ArrayList<>();
       IPSAssemblyResult orig = result;
       for(int i = 0; i < count.intValue(); i++)
       {
@@ -158,6 +157,5 @@ public class PSPaginationAssemblyResultExpander extends PSAbstractAssemblyResult
    /**
     * The log instance to use for this class, never <code>null</code>.
     */
-   private static final Log ms_log = LogFactory
-         .getLog(PSPaginationAssemblyResultExpander.class);
+   private static final Logger ms_log = LogManager.getLogger(PSPaginationAssemblyResultExpander.class);
 }

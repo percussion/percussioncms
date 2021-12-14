@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -31,11 +31,13 @@ import com.percussion.services.guidmgr.data.PSGuid;
 import com.percussion.services.utils.xml.PSXmlSerializationHelper;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.xml.IPSXmlSerialization;
-
-import java.io.IOException;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.xml.sax.SAXException;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -44,14 +46,10 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.Version;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.xml.sax.SAXException;
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This object represents a single keyword.
@@ -96,7 +94,7 @@ public class PSKeyword implements Serializable, IPSCatalogSummary,
    private Integer version;
    
    @Transient
-   private List<PSKeywordChoice> m_choices = new ArrayList<PSKeywordChoice>();
+   private List<PSKeywordChoice> m_choices = new ArrayList<>();
    
    /**
     * Constant for all objects of type keyword.
@@ -315,7 +313,7 @@ public class PSKeyword implements Serializable, IPSCatalogSummary,
    public void setChoices(List<PSKeywordChoice> choices)
    {
       if (choices == null)
-         m_choices = new ArrayList<PSKeywordChoice>();
+         m_choices = new ArrayList<>();
       else
          m_choices = choices;
    }
@@ -533,7 +531,7 @@ public class PSKeyword implements Serializable, IPSCatalogSummary,
       description = other.description;
       keywordType = other.keywordType;
       label = other.label;
-      m_choices = new ArrayList<PSKeywordChoice>(other.getChoices());
+      m_choices = new ArrayList<>(other.getChoices());
       sequence = other.sequence;
       value = other.value;
    }

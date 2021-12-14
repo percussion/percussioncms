@@ -17,22 +17,21 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.pathmanagement.data;
 
-import static java.util.Arrays.*;
-
 import com.percussion.share.data.IPSItemSummary;
 import com.percussion.share.data.PSDataItemSummary;
-import com.percussion.pathmanagement.data.PSFolderProperties;
 import com.percussion.share.data.PSDataObjectTestCase;
 import com.percussion.share.test.PSDataObjectTestUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
+
+import static java.util.Arrays.asList;
 
 public class PSPathDataObjectsTests
 {

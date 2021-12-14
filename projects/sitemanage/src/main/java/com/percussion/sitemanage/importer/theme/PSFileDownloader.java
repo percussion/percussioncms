@@ -17,34 +17,18 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.sitemanage.importer.theme;
 
-import static org.apache.commons.io.FileUtils.copyURLToFile;
-import static org.apache.commons.lang.Validate.notNull;
-import static org.springframework.util.CollectionUtils.isEmpty;
-
-import com.percussion.HTTPClient.URI;
-import com.percussion.pathmanagement.service.impl.PSPathUtils;
 import com.percussion.server.PSRequest;
 import com.percussion.sitemanage.data.PSSiteImportCtx;
-import com.percussion.sitemanage.importer.IPSSiteImportLogger;
-import com.percussion.sitemanage.importer.IPSSiteImportLogger.PSLogEntryType;
-import com.percussion.sitemanage.importer.PSSiteImporter;
-import com.percussion.sitemanage.importer.helpers.impl.PSImportThemeHelper.LogCategory;
 import com.percussion.sitemanage.importer.utils.PSAsyncFileDownload;
-import com.percussion.util.PSPurgableTempFile;
 import com.percussion.utils.request.PSRequestInfo;
 import com.percussion.utils.types.PSPair;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -52,8 +36,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang.Validate;
+import static org.apache.commons.lang.Validate.notNull;
 
 /**
  * Downloader class that will be used to get files from an url and create a
@@ -64,7 +47,7 @@ import org.apache.commons.lang.Validate;
  */
 public class PSFileDownloader implements IPSFileDownloader
 {
-    private static HashSet<String> multiThreadSync = new HashSet<String>();
+    private static HashSet<String> multiThreadSync = new HashSet<>();
 
     private enum Operation {
         DELETE, CHECK
@@ -97,7 +80,7 @@ public class PSFileDownloader implements IPSFileDownloader
     public List<PSPair<Boolean, String>> downloadFiles(Map<String, String> urlToPathMap, PSSiteImportCtx context,
             boolean createAsset)
     {
-        List<PSPair<Boolean, String>> downloaded = new ArrayList<PSPair<Boolean, String>>();
+        List<PSPair<Boolean, String>> downloaded = new ArrayList<>();
         if (urlToPathMap.size() > 0)
         {
             notNull(urlToPathMap);
@@ -134,7 +117,7 @@ public class PSFileDownloader implements IPSFileDownloader
     @Override
     public PSPair<Boolean, String> downloadFile(String url, String destination)
     {
-        Map<String, String> downloads = new HashMap<String, String>();
+        Map<String, String> downloads = new HashMap<>();
         downloads.put(url, destination);
         List<PSPair<Boolean, String>> downloaded = downloadFiles(downloads, null, false);
         return downloaded.get(0);

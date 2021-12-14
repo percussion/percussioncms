@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -41,16 +41,26 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.*;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.NaturalId;
+import org.hibernate.annotations.NaturalIdCache;
 import org.xml.sax.SAXException;
 
 import javax.jcr.RepositoryException;
 import javax.jcr.nodetype.NoSuchNodeTypeException;
 import javax.jcr.nodetype.NodeType;
-import javax.persistence.*;
+import javax.persistence.Basic;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Version;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Collections;
@@ -532,7 +542,7 @@ public class PSNodeDefinition implements IPSNodeDefinition
    @IPSXmlSerialization(suppress = true)
    public Set<IPSGuid> getVariantGuids()
    {
-      Set<IPSGuid> guids = new HashSet<IPSGuid>();
+      Set<IPSGuid> guids = new HashSet<>();
       if (m_cvDescriptors != null)
       {
          for (PSContentTemplateDesc desc : m_cvDescriptors)
@@ -553,7 +563,7 @@ public class PSNodeDefinition implements IPSNodeDefinition
    @IPSXmlSerialization(suppress = true)
    public Set<IPSGuid> getWorkflowGuids()
    {
-      Set<IPSGuid> guids = new HashSet<IPSGuid>();
+      Set<IPSGuid> guids = new HashSet<>();
       if (m_ctWfRels != null)
       {
          for (PSContentTypeWorkflow rel : m_ctWfRels)
@@ -575,7 +585,7 @@ public class PSNodeDefinition implements IPSNodeDefinition
       }
       if (m_cvDescriptors == null)
       {
-         m_cvDescriptors = new HashSet<PSContentTemplateDesc>();
+         m_cvDescriptors = new HashSet<>();
       }
       IPSContentMgr cmgr = PSContentMgrLocator.getContentMgr();
       
@@ -721,7 +731,7 @@ public class PSNodeDefinition implements IPSNodeDefinition
     */
    public Set<String> getTemplateIds()
    {
-      Set<String> ids = new HashSet<String>();
+      Set<String> ids = new HashSet<>();
       if (m_cvDescriptors != null && !m_cvDescriptors.isEmpty())
       {
          for (PSContentTemplateDesc desc : m_cvDescriptors)
@@ -737,7 +747,7 @@ public class PSNodeDefinition implements IPSNodeDefinition
     */
    public Set<String> getWorkflowIds()
    {
-      Set<String> ids = new HashSet<String>();
+      Set<String> ids = new HashSet<>();
       if (m_ctWfRels != null && !m_ctWfRels.isEmpty())
       {
          for (PSContentTypeWorkflow ctwf : m_ctWfRels)
@@ -798,7 +808,7 @@ public class PSNodeDefinition implements IPSNodeDefinition
    {
       if (newT.isEmpty())
          return;
-      Set<IPSGuid> newTmps = new HashSet<IPSGuid>();
+      Set<IPSGuid> newTmps = new HashSet<>();
       for (String t : newT)
          newTmps.add(new PSGuid(t));
 
@@ -812,7 +822,7 @@ public class PSNodeDefinition implements IPSNodeDefinition
          return;
       }
       // get all existing tmp guids associated with this site
-      Set<IPSGuid> curTmps = new HashSet<IPSGuid>();
+      Set<IPSGuid> curTmps = new HashSet<>();
       for (PSContentTemplateDesc desc : m_cvDescriptors)
          curTmps.add(desc.getTemplateId());
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
   ~     Percussion CMS
-  ~     Copyright (C) 1999-2021 Percussion Software, Inc.
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
   ~
   ~     This program is free software: you can redistribute it and/or modify
   ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -18,7 +18,7 @@
   ~      Burlington, MA 01803, USA
   ~      +01-781-438-9900
   ~      support@percussion.com
-  ~      https://www.percusssion.com
+  ~      https://www.percussion.com
   ~
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   -->
@@ -27,13 +27,12 @@
     <parent>
         <artifactId>core</artifactId>
         <groupId>com.percussion</groupId>
-        <version>8.0.2.10</version>
+        <version>8.0.3</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>perc-packages</artifactId>
-  <version>8.0.2.10</version>
 
     <properties>
         <assembly-directory>${basedir}/target/distribution</assembly-directory>
@@ -49,7 +48,7 @@
         <db.backend>DERBY</db.backend>
         <db.server>CMDB;create=true</db.server>
         <ds.name>PercussionData</ds.name>
-        <ant.contrib.resource>${basedir}/../../system/Tools/Ant/lib/ant-contrib-0.6.jar</ant.contrib.resource>
+        <ant.contrib.resource>${basedir}/../perc-ant/lib/ant-contrib-0.6.jar</ant.contrib.resource>
         <exts.store>${basedir}/target/distribution/Extensions</exts.store>
         <pkg.tmp.dir>${basedir}/target/distribution/Packages</pkg.tmp.dir>
         <REFRESH_PROP_NAME>REFRESH</REFRESH_PROP_NAME>
@@ -95,6 +94,7 @@
         <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-antrun-plugin</artifactId>
+            <version>${maven.antrun.plugin.version}</version>
             <executions>
                 <execution>
                     <id>populate-perc-distribution-with-packages</id>
@@ -126,6 +126,7 @@
         <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-assembly-plugin</artifactId>
+            <version>${maven.assembly.plugin.version}</version>
             <configuration>
                 <descriptors>
                     <descriptor>src/main/assembly/perc-assembly.xml</descriptor>

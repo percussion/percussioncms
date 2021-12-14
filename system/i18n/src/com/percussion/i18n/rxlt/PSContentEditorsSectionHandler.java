@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -30,10 +30,13 @@ import com.percussion.i18n.tmxdom.IPSTmxTranslationUnit;
 import com.percussion.i18n.tmxdom.PSTmxDocument;
 import com.percussion.util.PSFileFilter;
 import com.percussion.util.PSFilteredFileList;
-import com.percussion.utils.*;
 import com.percussion.utils.tools.PSPatternMatcher;
 import com.percussion.xml.PSXmlDocumentBuilder;
-import org.w3c.dom.*;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.Text;
 import org.xml.sax.SAXException;
 
 import javax.xml.transform.TransformerException;
@@ -41,6 +44,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 /**
@@ -67,11 +71,12 @@ public class PSContentEditorsSectionHandler extends PSIdleDotter
    public PSContentEditorsSectionHandler()
       throws PSSectionProcessingException
    {
-      try
-      {
-         ms_XslDoc = PSXmlDocumentBuilder.createXmlDocument(getClass()
-            .getResourceAsStream(CONTENTEDITORS_TRANSFORM_XSL), false);
+
+      try(InputStream is = getClass()
+              .getResourceAsStream(CONTENTEDITORS_TRANSFORM_XSL)) {
+         ms_XslDoc = PSXmlDocumentBuilder.createXmlDocument(is, false);
       }
+
       catch(Exception e) //IOException, SAXException
       {
          throw new PSSectionProcessingException(e.getMessage());

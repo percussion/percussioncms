@@ -17,12 +17,38 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.rxfix.dbfixes;
 
+import com.percussion.cms.IPSConstants;
+import com.percussion.cms.PSCmsException;
+import com.percussion.cms.objectstore.PSComponentSummary;
+import com.percussion.cms.objectstore.PSInvalidContentTypeException;
+import com.percussion.cms.objectstore.server.PSItemDefManager;
+import com.percussion.design.objectstore.PSLocator;
+import com.percussion.error.PSExceptionUtils;
+import com.percussion.rxfix.IPSFix;
+import com.percussion.security.SecureStringUtils;
+import com.percussion.server.PSServer;
+import com.percussion.server.cache.PSCacheException;
+import com.percussion.server.cache.PSCacheManager;
+import com.percussion.server.cache.PSCacheProxy;
+import com.percussion.server.webservices.PSServerFolderProcessor;
+import com.percussion.services.legacy.IPSCmsObjectMgr;
+import com.percussion.services.legacy.PSCmsObjectMgrLocator;
+import com.percussion.share.dao.PSFolderPathUtils;
+import com.percussion.util.PSPreparedStatement;
+import com.percussion.util.PSStringTemplate;
+import com.percussion.util.PSStringTemplate.PSStringTemplateException;
+import com.percussion.utils.jdbc.PSConnectionHelper;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import javax.naming.NamingException;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -42,31 +68,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import javax.naming.NamingException;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
-
-import com.percussion.cms.IPSConstants;
-import com.percussion.cms.PSCmsException;
-import com.percussion.cms.objectstore.PSComponentSummary;
-import com.percussion.cms.objectstore.PSInvalidContentTypeException;
-import com.percussion.cms.objectstore.server.PSItemDefManager;
-import com.percussion.design.objectstore.PSLocator;
-import com.percussion.rxfix.IPSFix;
-import com.percussion.server.PSServer;
-import com.percussion.server.cache.PSCacheException;
-import com.percussion.server.cache.PSCacheManager;
-import com.percussion.server.cache.PSCacheProxy;
-import com.percussion.server.webservices.PSServerFolderProcessor;
-import com.percussion.services.legacy.IPSCmsObjectMgr;
-import com.percussion.services.legacy.PSCmsObjectMgrLocator;
-import com.percussion.share.dao.PSFolderPathUtils;
-import com.percussion.util.PSPreparedStatement;
-import com.percussion.util.PSStringTemplate;
-import com.percussion.util.PSStringTemplate.PSStringTemplateException;
-import com.percussion.utils.jdbc.PSConnectionHelper;
-
 /**
  * Detect items and folders where the sys title does not match replacement rules
  * 
@@ -79,13 +80,13 @@ public class PSFixInvalidSysTitle extends PSFixDBBase implements IPSFix
 
    private static final String ASSET_ROOT = "/Root/Folders/$System$";
 
-   private static final Set<String> publishableTypeNames = new HashSet<String>(Arrays.asList(new String[]
+   private static final Set<String> publishableTypeNames = new HashSet<>(Arrays.asList(new String[]
    {"percFileAsset", "percImageAsset", "percFlashAsset", "percPage"}));
 
    /**
     * The log4j logger used for this class.
     */
-   private static Logger ms_logger = Logger.getLogger(PSFixInvalidSysTitle.class);
+   private static final Logger log = LogManager.getLogger(PSFixInvalidSysTitle.class);
 
    /**
     * Ctor
@@ -131,10 +132,10 @@ public class PSFixInvalidSysTitle extends PSFixDBBase implements IPSFix
 
       HashMap<Integer, Set<Integer>> folders = getChangeItemFolderGroups(items, proc);
       // Store the list of folder ids (path heierarchy) for each item.
-      Map<Integer, List<PSLocator>> folderPaths = new HashMap<Integer, List<PSLocator>>();
+      Map<Integer, List<PSLocator>> folderPaths = new HashMap<>();
 
       // store the item id with its old and new name.
-      Map<Integer, ChangeItem> itemChangeNameMap = new HashMap<Integer, ChangeItem>();
+      Map<Integer, ChangeItem> itemChangeNameMap = new HashMap<>();
 
       //Create new names based other items in folders
       calculateUniqueItemNames(proc, objMgr, folders, folderPaths, itemChangeNameMap);
@@ -161,12 +162,12 @@ public class PSFixInvalidSysTitle extends PSFixDBBase implements IPSFix
          String newPath = item.newPath;
          if (preview)
          {
-            ms_logger.warn("Preview mode.  Would change invalid filepath " + oldPath + " to " + newPath);
+            log.warn("Preview mode.  Would change invalid filepath " + oldPath + " to " + newPath);
             logInfo(String.valueOf(item.summary.getContentId()), "Would Change path " + oldPath + " to " + newPath);
          }
          else
          {
-            ms_logger.warn("Changing invalid filepath " + oldPath + " to " + newPath);
+            log.warn("Changing invalid filepath " + oldPath + " to " + newPath);
             logInfo(String.valueOf(item.summary.getContentId()), "Changed path " + oldPath + " to " + newPath);
 
          }
@@ -375,7 +376,8 @@ public class PSFixInvalidSysTitle extends PSFixDBBase implements IPSFix
       }
       catch (IOException e)
       {
-         ms_logger.error("Cannot write to csv file " + filename, e);
+         log.error("Cannot write to csv file {}. Error: {}" , filename,
+                 PSExceptionUtils.getMessageForLog(e));
       }
       finally
       {
@@ -405,18 +407,13 @@ public class PSFixInvalidSysTitle extends PSFixDBBase implements IPSFix
     */
    private void addChangeItem(HashMap<String, List<ChangeItem>> siteChangeList, ChangeItem ci, String name)
    {
-      List<ChangeItem> assetChangeList = siteChangeList.get(name);
-      if (assetChangeList == null)
-      {
-         assetChangeList = new ArrayList<ChangeItem>();
-         siteChangeList.put(name, assetChangeList);
-      }
+      List<ChangeItem> assetChangeList = siteChangeList.computeIfAbsent(name, k -> new ArrayList<ChangeItem>());
       assetChangeList.add(ci);
    }
 
    private Set<Long> getPublishableTypeIds()
    {
-      Set<Long> typeIds = new HashSet<Long>();
+      Set<Long> typeIds = new HashSet<>();
       PSItemDefManager defMgr = PSItemDefManager.getInstance();
 
       for (String typeName : publishableTypeNames)
@@ -428,7 +425,9 @@ public class PSFixInvalidSysTitle extends PSFixDBBase implements IPSFix
          }
          catch (PSInvalidContentTypeException e)
          {
-            ms_logger.error("Cannot find get type " + typeName, e);
+            log.error("Cannot find Content Type {}. Error: {}" ,
+                    typeName,
+                    PSExceptionUtils.getMessageForLog(e));
          }
       }
       return typeIds;
@@ -445,7 +444,7 @@ public class PSFixInvalidSysTitle extends PSFixDBBase implements IPSFix
       for (ChangeItem ci : itemChangeNameMap.values())
       {
          PSComponentSummary summary = ci.summary;
-         summary.setName(ci.newName);
+         summary.setName(ci.newName.trim());
          try
          {
             objMgr.saveComponentSummaries(Collections.singletonList(summary));
@@ -453,8 +452,8 @@ public class PSFixInvalidSysTitle extends PSFixDBBase implements IPSFix
          catch (Exception e)
          {
             logFailure(String.valueOf(ci.summary.getContentId()), "Failed to update component summary name");
-            ms_logger.error("Failed to update component summary name for id " + ci.summary.getContentId() + " path "
-                  + ci.summary.getName(), e);
+            log.error("Failed to update component summary name for id {} path {}. Error: {}"
+                  ,ci.summary.getContentId() ,ci.summary.getName(), PSExceptionUtils.getMessageForLog(e));
 
          }
 
@@ -466,7 +465,7 @@ public class PSFixInvalidSysTitle extends PSFixDBBase implements IPSFix
       }
       catch (PSCacheException e)
       {
-         ms_logger.error(
+         log.error(
                "Failed to clear the folder cache after updating invalid characters in titles. Restart Server", e);
       }
    }
@@ -525,7 +524,7 @@ public class PSFixInvalidSysTitle extends PSFixDBBase implements IPSFix
    {
       // Need to make sure changed titles are unique in folders.
       // Group by parent folder
-      HashMap<Integer, Set<Integer>> folders = new HashMap<Integer, Set<Integer>>();
+      HashMap<Integer, Set<Integer>> folders = new HashMap<>();
       for (Integer item : items)
       {
          PSComponentSummary[] folderSummaries = proc.getParentSummaries(new PSLocator(item));
@@ -536,7 +535,7 @@ public class PSFixInvalidSysTitle extends PSFixDBBase implements IPSFix
                Set<Integer> folderItemSet = folders.get(folderSummary.getContentId());
                if (folderItemSet == null)
                {
-                  folderItemSet = new HashSet<Integer>();
+                  folderItemSet = new HashSet<>();
                   folders.put(folderSummary.getContentId(), folderItemSet);
                }
                folderItemSet.add(item);
@@ -547,7 +546,7 @@ public class PSFixInvalidSysTitle extends PSFixDBBase implements IPSFix
             Set<Integer> folderItemSet = folders.get(-1);
             if (folderItemSet == null)
             {
-               folderItemSet = new HashSet<Integer>();
+               folderItemSet = new HashSet<>();
                folders.put(-1, folderItemSet);
 
             }
@@ -569,17 +568,17 @@ public class PSFixInvalidSysTitle extends PSFixDBBase implements IPSFix
    private Set<Integer> getIdsToFix() throws NamingException, SQLException, PSStringTemplateException
    {
       Connection c = PSConnectionHelper.getDbConnection();
-      Set<Integer> items = new HashSet<Integer>();
+      Set<Integer> items = new HashSet<>();
       try
       {
 
          // Find candidate records and fix them for items that should be
          // in public state
 
-         for (int i = 0; i < IPSConstants.INVALID_ITEM_NAME_CHARACTERS.length(); i++)
+         for (int i = 0; i < SecureStringUtils.INVALID_ITEM_NAME_CHARACTERS.length(); i++)
          {
 
-            char testChar = IPSConstants.INVALID_ITEM_NAME_CHARACTERS.charAt(i);
+            char testChar = SecureStringUtils.INVALID_ITEM_NAME_CHARACTERS.charAt(i);
             PreparedStatement st = null;
             ResultSet rs = null;
             try
@@ -594,7 +593,7 @@ public class PSFixInvalidSysTitle extends PSFixDBBase implements IPSFix
                while (rs.next())
                {
                   int contentId = rs.getInt(1);
-                  // String sys_title = rs.getString(2);
+
                   items.add(contentId);
                }
             }
@@ -660,11 +659,11 @@ public class PSFixInvalidSysTitle extends PSFixDBBase implements IPSFix
     * @author stephenbolton
     *
     */
-   class ChangeItem implements Comparable<ChangeItem>
+   static class ChangeItem implements Comparable<ChangeItem>
    {
-      private PSComponentSummary summary;
+      private final PSComponentSummary summary;
 
-      private String newName;
+      private final String newName;
 
       private String oldPath;
 
@@ -685,6 +684,7 @@ public class PSFixInvalidSysTitle extends PSFixDBBase implements IPSFix
          return o1.oldSitePath.compareTo(o2.oldSitePath);
       }
 
+      @Override
       public int compareTo(ChangeItem o)
       {
          return oldSitePath.compareTo(o.oldSitePath);

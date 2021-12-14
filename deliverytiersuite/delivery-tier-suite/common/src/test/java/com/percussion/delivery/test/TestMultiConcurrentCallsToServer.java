@@ -17,24 +17,30 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.delivery.test;
 
+import com.percussion.error.PSExceptionUtils;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Ignore;
-import org.junit.Test;
 
 import javax.ws.rs.core.MediaType;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.*;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 
 /**
@@ -45,6 +51,7 @@ import java.util.concurrent.*;
 @Ignore
 public class TestMultiConcurrentCallsToServer {
 
+    private static final Logger log = LogManager.getLogger(TestMultiConcurrentCallsToServer.class);
     private static String deliveryServerUrl = "http://localhost:9980/perc-metadata-services/metadata/indexedDirectories";
 
         public void makeConcurrentClientRequests(){
@@ -60,10 +67,12 @@ public class TestMultiConcurrentCallsToServer {
             }
             for(Future<String> fut : list){
                 try {
-                    System.out.println(new Date()+ "::"+fut.get());
+                    log.info("{} :: {}", new Date(), fut.get());
                 } catch (InterruptedException | ExecutionException e) {
-                    e.printStackTrace();
+                    log.error(PSExceptionUtils.getMessageForLog(e));
+                    log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                     Assert.assertFalse(true);
+                    Thread.currentThread().interrupt();
                 }
             }
             //shut down the executor service now
@@ -95,7 +104,8 @@ public class TestMultiConcurrentCallsToServer {
             }
             catch (Exception e)
             {
-                e.printStackTrace();
+                log.error(PSExceptionUtils.getMessageForLog(e));
+                log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                 Assert.assertFalse(true);
             }
             return "ERROR";

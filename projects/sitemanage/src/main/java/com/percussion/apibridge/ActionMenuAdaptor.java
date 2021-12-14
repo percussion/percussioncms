@@ -3,7 +3,8 @@
  *     Copyright (C) 1999-2020 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation,
+ *     either version 3 of the License, or (at your option) any later version.
  *
  *     This program is distributed in the hope that it will be useful,
  *     but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -17,9 +18,10 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ *     You should have received a copy of the GNU Affero General Public License along with this program.
+ *     If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.apibridge;
@@ -50,14 +52,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @PSSiteManageBean
 @Lazy
 public class ActionMenuAdaptor implements IActionMenuAdaptor {
 
-
     private IPSUiDesignWs service;
+
 
     @Autowired
     public ActionMenuAdaptor(IPSUiDesignWs service){
@@ -75,7 +78,7 @@ public class ActionMenuAdaptor implements IActionMenuAdaptor {
 
     @Override
     public List<ActionMenu> findAllowedTransitions(Integer[] contentIds, Integer[] assignmentTypeIds) {
-        return null;
+        return Collections.emptyList();
     }
 
     @Override
@@ -93,7 +96,7 @@ public class ActionMenuAdaptor implements IActionMenuAdaptor {
 
     private ActionMenuVisibilityContext[] copyVisibilityContexts(PSActionVisibilityContexts visibilityContexts) {
 
-        ArrayList<ActionMenuVisibilityContext> ctxs = new ArrayList<ActionMenuVisibilityContext>();
+        ArrayList<ActionMenuVisibilityContext> ctxs = new ArrayList<>();
 
         while(visibilityContexts.iterator().hasNext()){
             PSActionVisibilityContext  v = (PSActionVisibilityContext)visibilityContexts.iterator().next();
@@ -112,7 +115,7 @@ public class ActionMenuAdaptor implements IActionMenuAdaptor {
     }
 
     private ActionMenuModeUIContext[] copyUIContexts(PSDbComponentCollection modeUIContexts) {
-        ArrayList<ActionMenuModeUIContext> uictx = new ArrayList<ActionMenuModeUIContext>();
+        ArrayList<ActionMenuModeUIContext> uictx = new ArrayList<>();
 
         while(modeUIContexts.iterator().hasNext()){
             PSMenuModeContextMapping mode = (PSMenuModeContextMapping)modeUIContexts.iterator().next();
@@ -132,7 +135,7 @@ public class ActionMenuAdaptor implements IActionMenuAdaptor {
     }
 
     private ActionMenuParameter[] copyParameters(PSActionParameters parameters) {
-        ArrayList<ActionMenuParameter> ret = new ArrayList<ActionMenuParameter>();
+        ArrayList<ActionMenuParameter> ret = new ArrayList<>();
 
         while(parameters.iterator().hasNext()){
             PSActionParameter  psap = (PSActionParameter)parameters.iterator().next();
@@ -150,7 +153,7 @@ public class ActionMenuAdaptor implements IActionMenuAdaptor {
 
     private ActionMenuProperty[] copyProperties(PSActionProperties properties) {
 
-        ArrayList<ActionMenuProperty> ret = new ArrayList<ActionMenuProperty>();
+        ArrayList<ActionMenuProperty> ret = new ArrayList<>();
 
         while(properties.iterator().hasNext()){
             PSActionProperty p = (PSActionProperty) properties.iterator().next();

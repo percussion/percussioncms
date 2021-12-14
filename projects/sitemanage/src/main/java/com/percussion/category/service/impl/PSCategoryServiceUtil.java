@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -34,10 +34,11 @@ import com.percussion.delivery.client.IPSDeliveryClient.PSDeliveryClientExceptio
 import com.percussion.delivery.client.PSDeliveryClient;
 import com.percussion.delivery.data.PSDeliveryInfo;
 import com.percussion.delivery.service.IPSDeliveryInfoService;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.share.validation.PSValidationErrorsBuilder;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
@@ -55,7 +56,7 @@ import static com.percussion.share.service.exception.PSParameterValidationUtils.
 
 public class PSCategoryServiceUtil {
     public static final String DUMMYROOT = "dummyroot";
-    private static Log log = LogFactory.getLog(PSCategoryServiceUtil.class);
+    private static final Logger log = LogManager.getLogger(PSCategoryServiceUtil.class);
     private static final String CATEGORIES_UPDATE = "perc-metadata-services/metadata/categories/update/";
 
     public static void preserveDeletedNodes(List<PSCategoryNode> newCategories, List<PSCategoryNode> oldCategories, String site, List<String> parentSites) {
@@ -64,40 +65,40 @@ public class PSCategoryServiceUtil {
         // Check for duplicate names,  merge.
 
         //Map id to path
-        HashMap<String, PSCategoryNode> titleMap = new HashMap<String, PSCategoryNode>();
-        HashMap<String, PSCategoryNode> idMap = new HashMap<String, PSCategoryNode>();
+        HashMap<String, PSCategoryNode> titleMap = new HashMap<>();
+        HashMap<String, PSCategoryNode> idMap = new HashMap<>();
 
         for (PSCategoryNode category : oldCategories) {
             titleMap.put(category.getTitle(), category);
             idMap.put(category.getId(), category);
         }
 
-        HashSet<String> newCategoryIds = new HashSet<String>();
+        HashSet<String> newCategoryIds = new HashSet<>();
 
         checkAndMapIds(newCategories, titleMap, idMap, newCategoryIds);
 
-        HashSet<String> processedIds = new HashSet<String>();
-        HashSet<String> processedTitles = new HashSet<String>();
+        HashSet<String> processedIds = new HashSet<>();
+        HashSet<String> processedTitles = new HashSet<>();
 
         Iterator<PSCategoryNode> oldCatIt = oldCategories.iterator();
         Iterator<PSCategoryNode> newCatIt = newCategories.iterator();
 
-        ArrayList<PSCategoryNode> fullCategories = new ArrayList<PSCategoryNode>();
+        ArrayList<PSCategoryNode> fullCategories = new ArrayList<>();
 
         PSCategoryNode nextOld = getNext(oldCatIt);
         PSCategoryNode nextNew = getNext(newCatIt);
-        HashMap<String, PSCategoryNode> oldIdMap = new HashMap<String, PSCategoryNode>();
+        HashMap<String, PSCategoryNode> oldIdMap = new HashMap<>();
 
         while (nextOld != null || nextNew != null) {
             // Skip if category has no id (we have already added these ids to the new Items), if id has already been processed, or we
             // are skipping remaining old items that no longer exist
             if (nextOld != null && (nextOld.getId() == null || processedIds.contains(nextOld.getId()))) {
-                log.debug("Skipping processed nextOld" + nextOld.getTitle());
+                log.debug("Skipping processed nextOld {}" , nextOld.getTitle());
                 nextOld = getNext(oldCatIt);
                 continue;
             }
             if (nextNew != null && processedIds.contains(nextNew.getId())) {
-                log.debug("Skipping processed nextNew" + nextNew.getTitle());
+                log.debug("Skipping processed nextNew {}" , nextNew.getTitle());
                 nextNew = getNext(newCatIt);
                 continue;
             }
@@ -111,21 +112,21 @@ public class PSCategoryServiceUtil {
                 // deleted otherwise we sequentially add
                 if (!nextOld.isDeleted() && (site == null || site.equals("undefined")) || siteList.contains(site)) {
                     // skip and move to next
-                    log.debug("Removing node that has been deleted or removed" + nextOld.getId());
+                    log.debug("Removing node that has been deleted or removed {}" , nextOld.getId());
                     nextOld.setDeleted(true);
 
                 } else {
-                    log.debug("Merging back categories from other sites and deleted" + nextOld.getId());
+                    log.debug("Merging back categories from other sites and deleted {}" , nextOld.getId());
                 }
                 // merge in hidden node from other site
                 processedItem = nextOld;
                 fullCategories.add(nextOld);
                 nextOld = getNext(oldCatIt);
             } else if (nextNew != null) {
-                log.debug("adding sent category: " + nextNew.getId());
+                log.debug("adding sent category: {}" , nextNew.getId());
                 fullCategories.add(nextNew);
                 processedItem = nextNew;
-                if (nextOld != null && nextOld.getId() == nextNew.getId())
+                if (nextOld != null && nextOld.getId().equalsIgnoreCase(nextNew.getId()))
                     nextOld = getNext(oldCatIt);
                 nextNew = getNext(newCatIt);
             }
@@ -183,7 +184,7 @@ public class PSCategoryServiceUtil {
                 newCategory.setId(id);
             }
             if (newCategoryIds.contains(id)) {
-                log.warn("Duplicate id " + id + " passed in category update skipping");
+                log.warn("Duplicate id {} passed in category update skipping", id);
                 newCatIt1.remove();
             } else if (title.equals("Add Top Level Categories")) {
                 newCategoryIds.remove(id);
@@ -206,10 +207,10 @@ public class PSCategoryServiceUtil {
 
     public static Set<String> removeDeletedNodes(List<PSCategoryNode> childNodes, Set<String> nodesToRemove) {
 
-        log.debug("Total nodes for removal : " + childNodes.size());
+        log.debug("Total nodes for removal : {}" , childNodes.size());
 
         Set<String> removedNodes = nodesToRemove;
-        List<PSCategoryNode> tempList = new ArrayList<PSCategoryNode>();
+        List<PSCategoryNode> tempList = new ArrayList<>();
         tempList.addAll(childNodes);
 
         for (PSCategoryNode node : tempList) {
@@ -231,20 +232,19 @@ public class PSCategoryServiceUtil {
 
         categoryJson = PSCategoryMarshaller.marshalToJson(category);
 
-        log.debug("Prepared Category Json is : " + categoryJson);
+        log.debug("Prepared Category Json is : {}" , categoryJson);
 
         return categoryJson;
     }
 
-    public static void publishToDTS(String category, String sitename, String deliveryServer, IPSDeliveryInfoService deliveryService) throws PSDeliveryClientException {
+    public static void publishToDTS(String category, String sitename, String deliveryServer, IPSDeliveryInfoService deliveryService) throws PSValidationException {
 
         PSDeliveryInfo server = deliveryService.findByService(PSDeliveryInfo.SERVICE_INDEXER, deliveryServer.toUpperCase());
-        //PSDeliveryInfo server = deliveryService.findByService(PSDeliveryInfo.SERVICE_INDEXER);
 
         if (server == null)
             throw new PSDeliveryClientException("The " + deliveryServer + " Server is not configured. Cannot perform the category publish. Please select the correct option.");
 
-        log.debug("Server to publish the categories is " + server.getServerType());
+        log.debug("Server to publish the categories is {}" , server.getServerType());
 
         PSDeliveryClient deliveryClient = new PSDeliveryClient();
 
@@ -321,10 +321,8 @@ public class PSCategoryServiceUtil {
                             temp = findModifiedCategories(parent.getChildNodes(), oldPrefix + "/" + parent.getTitle(), oldPrefix + "/" + parent.getTitle(), false);
                     }
 
-                    if (temp != null) {
-                        for (int i = 0; i < temp.length(); i++) {
-                            jsonArray.put(temp.get(i));
-                        }
+                    for (int i = 0; i < temp.length(); i++) {
+                        jsonArray.put(temp.get(i));
                     }
                 }
             }
@@ -338,7 +336,7 @@ public class PSCategoryServiceUtil {
 
 
     private static List<String> getAllowedSitesAsList(List<String> parentSites, PSCategoryNode node) {
-        List<String> nodeAllowedSites = new ArrayList<String>();
+        List<String> nodeAllowedSites = new ArrayList<>();
         if (node.getAllowedSites() != null) {
             for (String string : StringUtils.split(node.getAllowedSites(), ",")) {
                 nodeAllowedSites.add(string.trim());
@@ -400,7 +398,7 @@ public class PSCategoryServiceUtil {
         if (!StringUtils.equals(currentNode.getId(), DUMMYROOT) && pathElement == null && !includeNotSelectable && !currentNode.isSelectable())
             return null;
 
-        List<PSCategoryNode> filteredChildList = new ArrayList<PSCategoryNode>();
+        List<PSCategoryNode> filteredChildList = new ArrayList<>();
         for (PSCategoryNode child : currentNode.getChildNodes()) {
             PSCategoryNode testNode = filterForSite(child, sitename,
                     null, nodeAllowedSites, relativePath, includeDeleted,

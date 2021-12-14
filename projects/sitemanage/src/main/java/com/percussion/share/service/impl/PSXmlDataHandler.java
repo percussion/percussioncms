@@ -17,21 +17,23 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.share.service.impl;
 
-import static org.apache.commons.lang.Validate.notNull;
-
 import com.percussion.share.service.impl.jaxb.Data;
 import com.percussion.share.service.impl.jaxb.Property;
+import com.percussion.share.service.impl.jaxb.Property.Pvalues;
 import com.percussion.share.service.impl.jaxb.Request;
 import com.percussion.share.service.impl.jaxb.Response;
 import com.percussion.share.service.impl.jaxb.Settings;
-import com.percussion.share.service.impl.jaxb.Property.Pvalues;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Unmarshaller;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -40,11 +42,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Unmarshaller;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import static org.apache.commons.lang.Validate.notNull;
 
 /**
  * This handler uses jaxb to load data from a specified xml file.
@@ -75,7 +73,7 @@ public class PSXmlDataHandler
             List<Request> requests = data.getRequest();
             for (Request request : requests)
             {
-                Map<String, Object> reqProps = new HashMap<String, Object>();
+                Map<String, Object> reqProps = new HashMap<>();
                 Settings settings = request.getSettings();
                 List<Property> props = settings.getProperty();
                 for (Property prop : props)
@@ -140,7 +138,7 @@ public class PSXmlDataHandler
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log log = LogFactory.getLog(PSXmlDataHandler.class);
+    private static final Logger log = LogManager.getLogger(PSXmlDataHandler.class);
  
     /**
      * The path to the xml data file.  Initialized in constructor, never <code>null</code> after that.

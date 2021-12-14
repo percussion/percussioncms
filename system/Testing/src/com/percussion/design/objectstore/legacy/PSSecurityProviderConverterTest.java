@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -29,21 +29,26 @@ import com.percussion.design.objectstore.PSProvider;
 import com.percussion.design.objectstore.PSReference;
 import com.percussion.design.objectstore.PSSecurityProviderInstance;
 import com.percussion.design.objectstore.PSServerConfiguration;
+import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
+import com.percussion.security.PSEncryptor;
 import com.percussion.security.PSSecurityProvider;
 import com.percussion.util.PSCollection;
-import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
+import com.percussion.utils.io.PathUtils;
 import com.percussion.utils.testing.IntegrationTest;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
+import org.w3c.dom.Document;
 
 import java.io.FileInputStream;
 import java.util.Iterator;
 import java.util.Properties;
 
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.w3c.dom.Document;
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Test case for the {@link PSSecurityProviderConverter} class.
@@ -72,7 +77,9 @@ public class PSSecurityProviderConverterTest extends PSBaseConverterTest
          initFileLocator(m_legacyFile, m_springFile, m_jndiDSFile, m_loginFile); 
      
       // create the ctx
-      PSConfigurationCtx ctx = new PSConfigurationCtx(locator, PSLegacyEncrypter.OLD_SECURITY_KEY());
+      PSConfigurationCtx ctx = new PSConfigurationCtx(locator,
+              PSLegacyEncrypter.getInstance(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+              ).OLD_SECURITY_KEY());
             
       PSInstRepositoryInfo repInfo = new PSInstRepositoryInfo(m_resourceDir);
       

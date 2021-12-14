@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -77,21 +77,25 @@
 		
         var likeWidget = $(PERC_LIKE_WIDGET);
         var button = likeWidget.find("button");
-        button.blur();
+        button.trigger("blur");
         var totalLikes = likeWidget.find(PERC_LIKE_TOTAL_LIKES);
         if(likeWidgetState === LIKED) {
             likeWidget
                 .removeClass(PERC_UNLIKED)
                 .addClass(PERC_LIKED);
             button
-                .unbind().click(unlike)
-                .attr("title", "Remove");
+                .off('click').on('click',
+                function(evt){
+                    unlike(evt);
+                }).attr("title", "Remove");
         } else {
             likeWidget
                 .removeClass(PERC_LIKED)
                 .addClass(PERC_UNLIKED);
             button
-                .unbind().click(like)
+                .off('click').on('click', function(evt){
+                    like(evt);
+            })
                 .attr("title", "Like");
         }
         if(0 !== likeTotalLikes && "undefined" !== typeof (likeTotalLikes) && null !== likeTotalLikes) {
@@ -110,7 +114,7 @@
         }
     }
     
-    function like() {
+    function like(event) {
         likeWidgetState = LIKED;
         $.PercLikedService.likeThis(function(success, data){
             if(success) {
@@ -127,7 +131,7 @@
         });
     }
     
-    function unlike() {
+    function unlike(event) {
         $.PercLikedService.unlikeThis(function(success, data){
 			if(success){
 				likeWidgetState = UNLIKED;

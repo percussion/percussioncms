@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -29,9 +29,9 @@ import com.percussion.rx.publisher.IPSRxPublisherService;
 import com.percussion.rx.publisher.PSRxPublisherServiceLocator;
 import com.percussion.services.publisher.IPSEdition;
 import com.percussion.services.publisher.IPSPubStatus;
+import com.percussion.services.publisher.IPSPubStatus.EndingState;
 import com.percussion.services.publisher.IPSPublisherService;
 import com.percussion.services.publisher.PSPublisherServiceLocator;
-import com.percussion.services.publisher.IPSPubStatus.EndingState;
 
 import java.util.List;
 
@@ -270,7 +270,9 @@ public class PSRuntimeEditionNode extends PSLogNode
              */
             Thread.sleep(3000);
          }
-         catch (InterruptedException ignore){}
+         catch (InterruptedException ignore){
+            Thread.currentThread().interrupt();
+         }
       }
       
       return null;

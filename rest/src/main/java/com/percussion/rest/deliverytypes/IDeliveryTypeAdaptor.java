@@ -17,12 +17,14 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.rest.deliverytypes;
+
+import com.percussion.rest.errors.BackendException;
 
 import java.net.URI;
 import java.util.List;
@@ -36,7 +38,7 @@ public interface IDeliveryTypeAdaptor {
 	  * @param id
 	  * @return
 	  */
-	 public DeliveryType getDeliveryTypeById(URI baseURI, String id);
+	 public DeliveryType getDeliveryTypeById(URI baseURI, String id) throws BackendException;
 	 
 	 /***
 	  * Creates or updates a delivery type
@@ -44,7 +46,7 @@ public interface IDeliveryTypeAdaptor {
 	  * @param type
 	  * @return
 	  */
-	 public DeliveryType updateDeliveryType(URI baseURI,DeliveryType type);
+	 public DeliveryType updateDeliveryType(URI baseURI,DeliveryType type) throws BackendException;
 	 
 	 /***
 	  * Deletes a delivery type
@@ -52,7 +54,7 @@ public interface IDeliveryTypeAdaptor {
 	  * @param id
 	  * @return
 	  */
-	 public void deleteDeliveryTypeById(URI baseURI,String id);
+	 public void deleteDeliveryTypeById(URI baseURI,String id) throws BackendException;
 	 
 	 /***
 	  * Get the list of DeliveryTypes available on the system.

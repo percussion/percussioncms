@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -26,29 +26,28 @@ package com.percussion.rest.deliverytypes;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.percussion.rest.Guid;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "DeliveryType")
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@ApiModel(description="Represents a Delivery Type.")
+@Schema(description="Represents a Delivery Type.")
 public class DeliveryType {
 
-	   @ApiModelProperty(value="id", required=false,notes="id must match id supplied on url.  Typically not sent to the server.")
+	   @Schema(required=false,description="id must match id supplied on url.  Typically not sent to the server.")
 	   Guid id;
 
-	   @ApiModelProperty(value="name", required=true,notes="The name of the DeliveryType.  Must be unique.")
+	   @Schema(required=true,description="The name of the DeliveryType.  Must be unique.")
 	   String name;
 
-	   @ApiModelProperty(value="description", required=false,notes="A friendly description of this DeliveryType")
+	   @Schema(required=false,description="A friendly description of this DeliveryType")
 	   String description;
 
-	   @ApiModelProperty(value="beanname", required=false,notes="The Spring bean that implements this DeliveryType.  Typically configured in Rhythmyx/WEB-INF/config/user/spring/publisher-beans.xml")		  
+	   @Schema(required=false,description="The Spring bean that implements this DeliveryType.  Typically configured in Rhythmyx/WEB-INF/config/user/spring/publisher-beans.xml")		  
 	   String beanName;
 
-	   @ApiModelProperty(value="unpublishingRequiresAssembly", required=false,notes="When set to true, Assembly will be invoked during Unpublishing operations for this DeliveryType")
+	   @Schema( required=false,description="When set to true, Assembly will be invoked during Unpublishing operations for this DeliveryType")
 	   boolean unpublishingRequiresAssembly;
 
 	   public DeliveryType(){}

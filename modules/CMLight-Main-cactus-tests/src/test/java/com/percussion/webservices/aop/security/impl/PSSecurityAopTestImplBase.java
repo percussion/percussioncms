@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -32,7 +32,12 @@ import com.percussion.services.locking.PSLockException;
 import com.percussion.services.locking.PSObjectLockServiceLocator;
 import com.percussion.services.security.IPSAcl;
 import com.percussion.utils.guid.IPSGuid;
-import com.percussion.webservices.*;
+import com.percussion.webservices.IPSWebserviceErrors;
+import com.percussion.webservices.PSErrorException;
+import com.percussion.webservices.PSErrorResultsException;
+import com.percussion.webservices.PSErrorsException;
+import com.percussion.webservices.PSLockErrorException;
+import com.percussion.webservices.PSWebserviceErrors;
 import com.percussion.webservices.aop.security.PSSecurityAopTest;
 import com.percussion.webservices.aop.security.data.PSMockDesignObject;
 import org.apache.commons.lang.exception.ExceptionUtils;

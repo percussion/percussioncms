@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html [
-	<!ENTITY % HTMLlat1 SYSTEM "./DTD/HTMLlat1x.ent">
+	<!ENTITY % HTMLlat1 SYSTEM "https://www.percussion.com/HTMLlat1x.ent">
 	%HTMLlat1;
-	<!ENTITY % HTMLsymbol SYSTEM "./DTD/HTMLsymbolx.ent">
+	<!ENTITY % HTMLsymbol SYSTEM "https://www.percussion.com/DTD/HTMLsymbolx.ent">
 	%HTMLsymbol;
-	<!ENTITY % HTMLspecial SYSTEM "./DTD/HTMLspecialx.ent">
+	<!ENTITY % HTMLspecial SYSTEM "https://www.percussion.com/DTD/HTMLspecialx.ent">
 	%HTMLspecial;
 ]>
 <!-- 
@@ -57,7 +57,7 @@
 								</Control>
 							</Column>
 							<ActionLinkList>
-								<ActionLink imageHref="../rx_resources/images/delete.gif">
+								<ActionLink imageHref="/rx_resources/images/delete.gif">
 									<DisplayLabel>Del</DisplayLabel>
 									<Param name="sys_command">modify</Param>
 									<Param name="sys_childrowid">3</Param>
@@ -66,7 +66,7 @@
 									<Param name="DBActionType">DELETE</Param>
 									<Param name="sys_view">sys_All</Param>
 								</ActionLink>
-								<ActionLink imageHref="../rx_resources/images/edit.gif">
+								<ActionLink imageHref="/rx_resources/images/edit.gif">
 									<DisplayLabel>Edit</DisplayLabel>
 									<Param name="sys_command">edit</Param>
 									<Param name="sys_childrowid">3</Param>

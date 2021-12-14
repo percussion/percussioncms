@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -26,7 +26,7 @@
  * Depends upon the following:
  * /cm/jslib/jQuery.js
  * /cm/jslib/jQuery.dataTables.js
- * /cm/widgets/PercDataTable.js
+ * /cm/widgets/PercDataTable/PercDataTable.js
  * /cm/plugins/perc_path_constants.js - Ancestral Dependancy of PercCommentsGadgetService.js
  * /cm/services/PercServiceUtils.js - Ancestral Dependancy of PercCommentsGadgetService.js
  * /cm/gadgets/repository/perc_comments_gadget/PercCommentsGadgetService.js
@@ -58,7 +58,9 @@
         itemsPerPage = rows;
 
         defaultModerationLink = $(this).find("#perc-set-default-moderation-link")
-            .click(displayDefaultModerationDialog)
+            .on("click",function(evt){
+                displayDefaultModerationDialog(evt);
+            })
             .attr("site", site);
         
         var tableDiv = $(this);
@@ -237,8 +239,9 @@
      *
      */
     
-    function displayDefaultModerationDialog() {
-        var link = $(this);
+    function displayDefaultModerationDialog(evt) {
+        //CMS-8176 : as event is passed so $(this) returned event instead of link, thus site was undefined and also causing save error.
+        var link = $("#perc-set-default-moderation-link");
         var site = link.attr("site");
         
         $.PercCommentsGadgetService().getDefaultCommentModeration(site,
@@ -307,7 +310,7 @@
             TRUNCATELENGTH = 120;
         if (summary.length < TRUNCATELENGTH)
         {*/
-            if ($.trim(summary).length == 0)
+            if (summary.trim().length === 0)
                 return "&nbsp;";
             else
                 return summary;

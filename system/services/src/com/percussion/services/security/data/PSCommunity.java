@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -32,14 +32,16 @@ import com.percussion.services.guidmgr.data.PSGuid;
 import com.percussion.services.utils.xml.PSXmlSerializationHelper;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.xml.IPSXmlSerialization;
-
-import java.io.IOException;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.xml.sax.SAXException;
 
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -51,13 +53,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.hibernate.annotations.*;
-import org.xml.sax.SAXException;
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
 /**
  * Persist a single community definition including all role 
@@ -113,7 +115,7 @@ public class PSCommunity implements Serializable, IPSCatalogSummary,
    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE, region = "Community_Roles")
    @Fetch(FetchMode.SUBSELECT)
    private Set<PSCommunityRoleAssociation> roleAssociations = 
-      new HashSet<PSCommunityRoleAssociation>();
+      new HashSet<>();
 
    /**
     * Default constructor should only be used for serialization.
@@ -270,9 +272,9 @@ public class PSCommunity implements Serializable, IPSCatalogSummary,
       if (isEquals)
       {
          Set<PSCommunityRoleAssociation> roles = 
-            new HashSet<PSCommunityRoleAssociation>(roleAssociations);
+            new HashSet<>(roleAssociations);
          Set<PSCommunityRoleAssociation> otherRoles = 
-            new HashSet<PSCommunityRoleAssociation>(other.roleAssociations);
+            new HashSet<>(other.roleAssociations);
          isEquals = roles.equals(otherRoles);
       }
       
@@ -362,7 +364,7 @@ public class PSCommunity implements Serializable, IPSCatalogSummary,
     */
    public Collection<IPSGuid> getRoleAssociations()
    {
-      Collection<IPSGuid> associations = new ArrayList<IPSGuid>();
+      Collection<IPSGuid> associations = new ArrayList<>();
 
       for (PSCommunityRoleAssociation a : roleAssociations)
          associations.add(new PSGuid(PSTypeEnum.ROLE, a.getRoleId()));
@@ -419,7 +421,7 @@ public class PSCommunity implements Serializable, IPSCatalogSummary,
    public Collection<Long> getRoles()
    {
       Collection<IPSGuid> ras = getRoleAssociations();
-      Collection<Long> rval = new ArrayList<Long>();
+      Collection<Long> rval = new ArrayList<>();
       for(IPSGuid ra : ras)
       {
          rval.add(ra.longValue());

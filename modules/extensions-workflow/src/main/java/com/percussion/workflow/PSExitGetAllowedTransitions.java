@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -40,12 +40,11 @@ import com.percussion.services.workflow.data.PSAssignmentTypeEnum;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 /**
  * Gets allowed transitions for list of content ids and assignment types based
@@ -126,10 +125,10 @@ public class PSExitGetAllowedTransitions extends PSDefaultExtension
     */
    private List<IPSGuid> getContentIds(IPSRequestContext request) 
    {
-      List<IPSGuid> contentids = new ArrayList<IPSGuid>();
+      List<IPSGuid> contentids = new ArrayList<>();
       IPSGuidManager guidMgr = PSGuidManagerLocator.getGuidMgr();
       Object[] ids = request.getParameterList(IPSHtmlParameters.SYS_CONTENTID);
-      if (ids == null)
+      if (ids == null || ids.length == 0)
          return contentids;
       
       for (Object val : ids)
@@ -160,10 +159,10 @@ public class PSExitGetAllowedTransitions extends PSDefaultExtension
       throws PSSystemException
    {
       List<PSAssignmentTypeEnum> assignmentTypes = 
-         new ArrayList<PSAssignmentTypeEnum>();
+         new ArrayList<>();
       Object[] types = request.getParameterList(
          IPSHtmlParameters.SYS_ASSIGNMENTTYPEID);
-      if (types == null)
+      if (types == null || types.length == 0)
       {
          return calculateAssignmentTypes(request, contentIds);
       }

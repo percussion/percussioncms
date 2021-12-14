@@ -17,20 +17,19 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.services.utils.orm;
 
 import com.percussion.utils.guid.IPSGuid;
+import org.hibernate.Criteria;
+import org.hibernate.Session;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
-import org.hibernate.Criteria;
-import org.hibernate.Session;
 
 /**
  * This class is similar to
@@ -112,7 +111,7 @@ public abstract class PSCriteriaQueryRepeater<E>
       int loops = (totalIds-1)/MAX + 1;
       int j=0;
       Iterator<IPSGuid> idsIter = ids.iterator();
-      List<E> results = new ArrayList<E>();
+      List<E> results = new ArrayList<>();
       for (int i = 0; i < loops; i++)
       {
          Criteria criteria = sess.createCriteria(clazz);
@@ -120,7 +119,7 @@ public abstract class PSCriteriaQueryRepeater<E>
          int currentMax = (i+1)*MAX;
          if (currentMax > totalIds)
             currentMax = totalIds;
-         List<IPSGuid> currentIds = new ArrayList<IPSGuid>();
+         List<IPSGuid> currentIds = new ArrayList<>();
          for (; j < currentMax; j++)
          {
             currentIds.add(idsIter.next());

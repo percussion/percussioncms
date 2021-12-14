@@ -17,16 +17,11 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.services.workflow.data;
-
-import static org.apache.commons.lang.Validate.notNull;
-import static com.percussion.services.workflow.data.PSTransformTransitionUtils.convertTransitions;
-import static com.percussion.services.workflow.data.PSTransformTransitionUtils.copyAgingTransitions;
-import static com.percussion.services.workflow.data.PSTransformTransitionUtils.copyTransitions;
 
 import com.percussion.services.catalog.IPSCatalogItem;
 import com.percussion.services.catalog.IPSCatalogSummary;
@@ -35,11 +30,11 @@ import com.percussion.services.guidmgr.data.PSGuid;
 import com.percussion.services.utils.xml.PSXmlSerializationHelper;
 import com.percussion.services.workflow.data.PSTransitionHib.TransitionType;
 import com.percussion.utils.guid.IPSGuid;
-
-import java.io.IOException;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.xml.sax.SAXException;
 
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -52,13 +47,15 @@ import javax.persistence.JoinColumns;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.hibernate.annotations.Cascade;
-import org.xml.sax.SAXException;
+import static com.percussion.services.workflow.data.PSTransformTransitionUtils.convertTransitions;
+import static com.percussion.services.workflow.data.PSTransformTransitionUtils.copyAgingTransitions;
+import static com.percussion.services.workflow.data.PSTransformTransitionUtils.copyTransitions;
+import static org.apache.commons.lang.Validate.notNull;
 
 /**
  * Represents a workflow state
@@ -100,7 +97,7 @@ public class PSState implements Serializable, IPSCatalogSummary, IPSCatalogItem
    {
          @JoinColumn(name = "WORKFLOWAPPID", referencedColumnName = "WORKFLOWAPPID", insertable = false, updatable = false),
          @JoinColumn(name = "TRANSITIONFROMSTATEID", referencedColumnName = "STATEID", insertable = false, updatable = false)})
-   private List<PSTransitionHib> transitionHibs = new ArrayList<PSTransitionHib>();
+   private List<PSTransitionHib> transitionHibs = new ArrayList<>();
 
    @OneToMany(targetEntity = PSAssignedRole.class, cascade =
    {CascadeType.ALL}, orphanRemoval = true)
@@ -109,7 +106,7 @@ public class PSState implements Serializable, IPSCatalogSummary, IPSCatalogItem
    {
          @JoinColumn(name = "WORKFLOWAPPID", referencedColumnName = "WORKFLOWAPPID", insertable = false, updatable = false),
          @JoinColumn(name = "STATEID", referencedColumnName = "STATEID", insertable = false, updatable = false)})
-   private List<PSAssignedRole> assignedRoles = new ArrayList<PSAssignedRole>();
+   private List<PSAssignedRole> assignedRoles = new ArrayList<>();
 
    /**
     * The list of (non-aging) transitions. It is non-persisted property, used to cache the transformed (from PSTransitionHib) objects.
@@ -352,7 +349,7 @@ public class PSState implements Serializable, IPSCatalogSummary, IPSCatalogItem
    public void setTransitions(List<PSTransition> transitions)
    {
       if (transitions == null)
-         transitions = new ArrayList<PSTransition>();
+         transitions = new ArrayList<>();
 
       copyTransitions(transitions, transitionHibs);
       
@@ -403,7 +400,7 @@ public class PSState implements Serializable, IPSCatalogSummary, IPSCatalogItem
    public void setAgingTransitions(List<PSAgingTransition> transitions)
    {
       if (transitions == null)
-         transitions = new ArrayList<PSAgingTransition>();
+         transitions = new ArrayList<>();
 
       copyAgingTransitions(transitions, transitionHibs);
       // update the cache
@@ -472,7 +469,7 @@ public class PSState implements Serializable, IPSCatalogSummary, IPSCatalogItem
    public void setAssignedRoles(List<PSAssignedRole> roleList)
    {
       if (roleList == null)
-         roleList = new ArrayList<PSAssignedRole>();
+         roleList = new ArrayList<>();
 
       assignedRoles = roleList;
    }

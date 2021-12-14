@@ -16,8 +16,6 @@
 
 package com.ibm.cadf.middleware;
 
-import java.util.Properties;
-
 import com.ibm.cadf.CADFTaxonomy;
 import com.ibm.cadf.CADFTaxonomy.OUTCOME;
 import com.ibm.cadf.EventFactory;
@@ -34,6 +32,8 @@ import com.ibm.cadf.model.Identifier;
 import com.ibm.cadf.model.Resource;
 import com.ibm.cadf.util.Constants;
 import com.ibm.cadf.util.StringUtil;
+
+import java.util.Properties;
 
 public class AuditMiddleware
 {
@@ -138,11 +138,11 @@ String activityType=CADFType.EVENTTYPE.EVENTTYPE_ACTIVITY.name();
             activityType= CADFType.EVENTTYPE.EVENTTYPE_REVOKE.name();
         }
 
-        Event event = EventFactory.getEventInstance(activityType,
+        return EventFactory.getEventInstance(activityType,
                                                     Identifier.generateUniqueId(), actionVal, outcome,
                                                     initiator, null, target, null, observer, null);
 
-        return event;
+
 
     }
 

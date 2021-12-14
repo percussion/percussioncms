@@ -17,14 +17,13 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.services.contentmgr.ui;
 
 import com.percussion.cms.objectstore.PSComponentSummary;
-import com.percussion.design.objectstore.PSLocator;
 import com.percussion.services.contentmgr.IPSNodeDefinition;
 import com.percussion.services.contentmgr.impl.legacy.PSContentRepository;
 import com.percussion.services.contentmgr.impl.legacy.PSTypeConfiguration;
@@ -33,6 +32,8 @@ import com.percussion.services.legacy.PSCmsObjectMgrLocator;
 import com.percussion.utils.exceptions.PSORMException;
 import com.percussion.utils.jdbc.PSConnectionHelper;
 
+import javax.jcr.RepositoryException;
+import javax.naming.NamingException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -44,9 +45,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import javax.jcr.RepositoryException;
-import javax.naming.NamingException;
 
 /**
  * Find problems with a given content type's items. For a given content type,
@@ -102,7 +100,7 @@ public class PSConsistencyProblemFinder extends PSConsistencyBase
          throws RepositoryException, SQLException, NamingException,
          PSORMException
    {
-      List<Problem> problems = new ArrayList<Problem>();
+      List<Problem> problems = new ArrayList<>();
       IPSNodeDefinition def = ms_cmgr.findNodeDefinitionByName(contentTypeName);
       long ctid = def.getGUID().longValue();
       PSTypeConfiguration config = PSContentRepository
@@ -151,8 +149,8 @@ public class PSConsistencyProblemFinder extends PSConsistencyBase
    private Collection<Problem> check(List<PSComponentSummary> sblock,
          PSTypeConfiguration config) throws NamingException, SQLException
    {
-      List<Problem> problems = new ArrayList<Problem>();
-      List<Integer> cids = new ArrayList<Integer>();
+      List<Problem> problems = new ArrayList<>();
+      List<Integer> cids = new ArrayList<>();
       for (PSComponentSummary s : sblock)
       {
          cids.add(s.getContentId());
@@ -185,7 +183,7 @@ public class PSConsistencyProblemFinder extends PSConsistencyBase
    private Collection<Problem> checkTable(List<PSComponentSummary> sblock,
          String table, List<Integer> cids) throws NamingException, SQLException
    {
-      List<Problem> problems = new ArrayList<Problem>();
+      List<Problem> problems = new ArrayList<>();
       if (table.equalsIgnoreCase("CONTENTSTATUS"))
       {
          return problems;
@@ -217,7 +215,7 @@ public class PSConsistencyProblemFinder extends PSConsistencyBase
          PreparedStatement st = c.prepareStatement(query.toString());
 
          ResultSet rs = st.executeQuery();
-         Map<Integer, Set<Integer>> present = new HashMap<Integer, Set<Integer>>();
+         Map<Integer, Set<Integer>> present = new HashMap<>();
          while (rs.next())
          {
             int contentid = rs.getInt(1);
@@ -225,7 +223,7 @@ public class PSConsistencyProblemFinder extends PSConsistencyBase
             Set<Integer> revisions = present.get(contentid);
             if (revisions == null)
             {
-               revisions = new HashSet<Integer>();
+               revisions = new HashSet<>();
                present.put(contentid, revisions);
             }
             revisions.add(revision);

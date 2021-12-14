@@ -262,7 +262,7 @@ public class HttpItemCopier
       try
       {
          // construct the url
-         StringBuffer strUrl = new StringBuffer("/Rhythmyx/");
+         StringBuilder strUrl = new StringBuilder("/Rhythmyx/");
          strUrl.append(appName);
          strUrl.append("/");
          strUrl.append(resourceName);

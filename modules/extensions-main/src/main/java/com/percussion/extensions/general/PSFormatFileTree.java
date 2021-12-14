@@ -17,12 +17,13 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.extensions.general;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSResultDocumentProcessor;
 import com.percussion.extension.PSDefaultExtension;
 import com.percussion.extension.PSExtensionProcessingException;
@@ -30,18 +31,18 @@ import com.percussion.extension.PSParameterMismatchException;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
-
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.util.LinkedList;
-import java.util.StringTokenizer;
-
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
+
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.util.LinkedList;
+import java.util.StringTokenizer;
 
 /**
  * This class is a Rhythmyx ResultDocumentProcessor extension. It is used to
@@ -58,6 +59,8 @@ import org.w3c.dom.Text;
 public class PSFormatFileTree extends PSDefaultExtension
                 implements IPSResultDocumentProcessor
         {
+
+            private static final Logger log = LogManager.getLogger(PSFormatFileTree.class);
 
    /**
     * This function reformats a file list. The file list has the basic format
@@ -369,16 +372,19 @@ public class PSFormatFileTree extends PSDefaultExtension
 
     String XMLFileName = args[0];
     pSFT.invokedStandalone = true;
-    try {
-       Document TestDoc = PSXmlDocumentBuilder.createXmlDocument((InputStream)
-                new FileInputStream(XMLFileName), false);
+    try(FileInputStream fs = new FileInputStream(XMLFileName)){
+       Document TestDoc = PSXmlDocumentBuilder.createXmlDocument(fs, false);
 
        pSFT.ProcessResultDoc(TestDoc, pt);
-
-       PSXmlDocumentBuilder.write(TestDoc,new FileOutputStream(args[1]));
+        try(FileOutputStream fo = new FileOutputStream(args[1])) {
+            PSXmlDocumentBuilder.write(TestDoc, fo);
+        }
 
        }
-    catch (Exception e){e.printStackTrace();};
+    catch (Exception e){
+        log.error(PSExceptionUtils.getMessageForLog(e));
+        log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+    }
 
   }
   private boolean invokedStandalone = false;

@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -29,12 +29,11 @@ import com.percussion.services.guidmgr.data.PSLegacyGuid;
 import com.percussion.webservices.common.ObjectType;
 import com.percussion.webservices.common.Reference;
 import com.percussion.webservices.content.PSItemSummaryOperation;
+import org.apache.commons.beanutils.BeanUtilsBean;
+import org.apache.commons.beanutils.Converter;
 
 import java.util.ArrayList;
 import java.util.Collection;
-
-import org.apache.commons.beanutils.BeanUtilsBean;
-import org.apache.commons.beanutils.Converter;
 
 /**
  * Converts objects between the classes

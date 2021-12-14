@@ -17,12 +17,16 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.tools.simple;
+
+import com.percussion.error.PSExceptionUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -50,6 +54,9 @@ import java.util.zip.ZipFile;
  */
 public class PSDirectoryAnalyzer
 {
+
+   private static final Logger log = LogManager.getLogger(PSDirectoryAnalyzer.class);
+
    /**
     * Performs analysis.
     *
@@ -266,7 +273,8 @@ public class PSDirectoryAnalyzer
       }
       catch (Exception e)
       {
-         e.printStackTrace(ms_pWriter);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
       finally
       {
@@ -404,7 +412,8 @@ public class PSDirectoryAnalyzer
       }
       catch(Throwable t)
       {
-         t.printStackTrace();
+         log.error(t.getMessage());
+         log.debug(t.getMessage(), t);
          System.exit(1);
       }
       finally

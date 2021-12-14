@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -17,24 +17,31 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.delivery.metadata.rdbms.impl;
 
-import java.io.Serializable;
-import java.math.BigInteger;
-import java.util.Date;
-
-import javax.persistence.*;
-
+import com.percussion.delivery.metadata.IPSBlogPostVisit;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import com.percussion.delivery.metadata.IPSBlogPostVisit;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import java.io.Serializable;
+import java.math.BigInteger;
+import java.util.Date;
+import java.util.Optional;
 
 /**
  * Page visit object
@@ -104,11 +111,19 @@ public class PSDbBlogPostVisit implements IPSBlogPostVisit, Serializable
     }
 
     public Date getHitDate() {
-		return hitDate;
+		return Optional
+                .ofNullable(hitDate)
+                .map(Date::getTime)
+                .map(Date::new)
+                .orElse(null);
 	}
 
 	public void setHitDate(Date hitDate) {
-		this.hitDate = hitDate;
+		this.hitDate = Optional
+                .ofNullable(hitDate)
+                .map(Date::getTime)
+                .map(Date::new)
+                .orElse(null);
 	}
 
 	public BigInteger getHitCount() {

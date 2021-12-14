@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -17,13 +17,14 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.services.publisher.impl;
 
 import com.percussion.cms.objectstore.PSComponentSummary;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.rx.publisher.PSPublisherUtils;
 import com.percussion.server.PSServer;
 import com.percussion.services.assembly.IPSAssemblyService;
@@ -46,20 +47,12 @@ import com.percussion.services.publisher.data.PSContentListItem;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.util.PSBaseHttpUtils;
 import com.percussion.util.PSUrlUtils;
-import com.percussion.utils.exceptions.PSExceptionHelper;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.timing.PSStopwatch;
-
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.Serializable;
-import java.io.StringWriter;
-import java.text.MessageFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.time.FastDateFormat;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -67,10 +60,15 @@ import javax.servlet.http.HttpServletResponse;
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.Serializable;
+import java.io.StringWriter;
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Takes parameters and constructs a content list suitable for the publisher. It
@@ -90,12 +88,12 @@ public class PSContentListServlet extends HttpServlet
    /**
     * Logger for content list servlet
     */
-   private static Log ms_log = LogFactory.getLog(PSContentListServlet.class);
+   private static final Logger log = LogManager.getLogger(PSContentListServlet.class);
 
    /**
     * Date format used in content lists
     */
-   private static final SimpleDateFormat ms_datefmt = new SimpleDateFormat(
+   private static final FastDateFormat ms_datefmt =FastDateFormat.getInstance(
          "yyyy-MM-dd HH:mm:ss");
 
    /**
@@ -170,7 +168,7 @@ public class PSContentListServlet extends HttpServlet
          XMLStreamWriter f = beginDocument(delivery, context, writer, ofact);
 
          IPSContentList list = pub.loadContentList(contentlistname);
-         Map<String, String> overrides = new HashMap<String, String>();
+         Map<String, String> overrides = new HashMap<>();
          Map<String, String[]> params = request.getParameterMap();
          for (Map.Entry<String, String[]> e : params.entrySet())
          {
@@ -260,7 +258,7 @@ public class PSContentListServlet extends HttpServlet
          f.flush();
          f.close();
          writer.close();
-         w.print(writer.toString());
+         w.print(writer);
          sw.stop();
          String info = MessageFormat.format(
                "Created content list {0} publication id {3}\n" +
@@ -268,22 +266,21 @@ public class PSContentListServlet extends HttpServlet
                "{5} result items took {6} milliseconds",
                contentlistname, siteid, delivery, publicationid, 
                context, items.size(), sw.elapsed());
-         ms_log.debug(info);
+         log.debug("{}",info);
       }
       catch (Exception e)
       {
-         response.setContentType("text/plain");
-         PrintWriter w;
+
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+
          try
          {
-            Throwable orig = PSExceptionHelper.findRootCause(e, true);
-            ms_log.error("Content list failure", orig);
-            w = response.getWriter();
-            w.println(e.getLocalizedMessage());
+            response.sendError(500);
          }
          catch (IOException e1)
          {
-            throw new RuntimeException(e1);
+            response.setStatus(500);
          }
       }
    }
@@ -365,8 +362,8 @@ public class PSContentListServlet extends HttpServlet
       formatter.writeAttribute("variantid", Long.toString(item.getTemplateId()
             .longValue()));
       formatter.writeCharacters("\n    ");
-      List<Integer> ids = new ArrayList<Integer>();
-      ids.add(new Integer(cid.getContentId()));
+      List<Integer> ids = new ArrayList<>();
+      ids.add(cid.getContentId());
       PSComponentSummary s = cms.loadComponentSummaries(ids).get(0);
       formatter.writeCharacters("\n    ");
       formatter.writeStartElement("title");
@@ -431,7 +428,7 @@ public class PSContentListServlet extends HttpServlet
       XMLStreamWriter f = ofact.createXMLStreamWriter(writer);
       f.writeStartDocument();
       f.writeCharacters("\n");
-      f.writeStartElement("contentlist");
+      f.writeStartElement(ms_region);
       f.writeAttribute("context", context);
       f.writeAttribute("deliverytype", delivery);
       return f;

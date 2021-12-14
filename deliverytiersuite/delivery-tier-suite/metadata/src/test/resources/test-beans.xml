@@ -18,7 +18,7 @@
   ~      Burlington, MA 01803, USA
   ~      +01-781-438-9900
   ~      support@percussion.com
-  ~      https://www.percusssion.com
+  ~      https://www.percussion.com
   ~
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   -->
@@ -122,7 +122,7 @@
              <!-- default properties for encryption -->
              <prop key="encryption.type">ENC</prop>
              <!-- default properties for Spring Security -->
-             <prop key="ContentSecurityPolicy">default-src 'self' *;</prop>
+             <prop key="contentSecurityPolicy">default-src 'self' *;</prop>
 
             <!--  Blog post visit scheduler properties -->
             <!--  setting to 1 second so it runs during test. PSMostReadServiceTest sets

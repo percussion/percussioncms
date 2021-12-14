@@ -17,20 +17,11 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.fastforward.relationship;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import com.percussion.cms.PSCmsException;
 import com.percussion.cms.objectstore.IPSRelationshipProcessor;
@@ -44,6 +35,14 @@ import com.percussion.services.assembly.IPSTemplateSlot;
 import com.percussion.services.assembly.PSAssemblyException;
 import com.percussion.services.legacy.IPSCmsObjectMgr;
 import com.percussion.services.legacy.PSCmsObjectMgrLocator;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * Creates and deletes auto relationships.
@@ -172,7 +171,7 @@ public class PSChildRelationshipBuilder extends PSChildRelationshipBase
     */
    private Collection<PSLocator> buildOwnerLocators(Collection<Integer> ownerIds)
    {
-      Collection<PSLocator> owners = new ArrayList<PSLocator>(ownerIds.size());
+      Collection<PSLocator> owners = new ArrayList<>(ownerIds.size());
       IPSCmsObjectMgr cms = PSCmsObjectMgrLocator.getObjectManager();
       for (Integer contentid : ownerIds)
       {
@@ -224,7 +223,7 @@ public class PSChildRelationshipBuilder extends PSChildRelationshipBase
    protected List<Integer> createComplement(final List<Integer> retain,
          final List<Integer> suppress)
    {
-      List<Integer> complement = new ArrayList<Integer>();
+      List<Integer> complement = new ArrayList<>();
       for (Integer id : retain)
       {
          if (!suppress.contains(id))
@@ -247,9 +246,9 @@ public class PSChildRelationshipBuilder extends PSChildRelationshipBase
    private List<Integer> convert(Object[] ids)
    {
       if (ids == null)
-         return new ArrayList<Integer>();
+         return new ArrayList<>();
 
-      List<Integer> convertedList = new ArrayList<Integer>(ids.length);
+      List<Integer> convertedList = new ArrayList<>(ids.length);
       for (int i = 0; i < ids.length; i++)
       {
          Object id = ids[i];
@@ -278,5 +277,5 @@ public class PSChildRelationshipBuilder extends PSChildRelationshipBase
    /**
     * The log instance to use for this class, never <code>null</code>.
     */
-   protected Log m_log = LogFactory.getLog(PSChildRelationshipBuilder.class);
+   protected static final Logger m_log = LogManager.getLogger(PSChildRelationshipBuilder.class);
 }

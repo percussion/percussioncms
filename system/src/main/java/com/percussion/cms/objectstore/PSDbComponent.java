@@ -1,0 +1,1050 @@
+/*
+ *     Percussion CMS
+ *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU Affero General Public License for more details.
+ *
+ *     Mailing Address:
+ *
+ *      Percussion Software, Inc.
+ *      PO Box 767
+ *      Burlington, MA 01803, USA
+ *      +01-781-438-9900
+ *      support@percussion.com
+ *      https://www.percussion.com
+ *
+ *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ */
+package com.percussion.cms.objectstore;
+
+import com.percussion.cms.IPSCmsErrors;
+import com.percussion.cms.PSCmsException;
+import com.percussion.design.objectstore.IPSObjectStoreErrors;
+import com.percussion.design.objectstore.PSUnknownNodeTypeException;
+import com.percussion.util.PSStringOperation;
+import com.percussion.util.PSXMLDomUtil;
+import com.percussion.xml.PSXmlDocumentBuilder;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
+import javax.persistence.Transient;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
+
+
+/**
+ * Base class for all IPSDbComponents.  Implements some of the methods that
+ * don't vary across all or many of the components that will be implemented in the
+ * CMS layer.  Derived classes should override the abstract methods and clone.
+ */
+public abstract class PSDbComponent implements IPSDbComponent
+{
+   //todo: remove and clean up derived classes; DON'T use this for new classes
+   //      this is only needed for the item stuff, otherwise fail to compile.
+   //      this should be removed after cleanup the item related classes.
+   protected PSDbComponent()
+   {}
+
+
+   /**
+    * We guarantee that a component always has a non-<code>null</code>
+    * locator. This ctor guarantees that. The state of the constructed object
+    * is <code>DBSTATE_NEW</code> if the locator is not persisted, otherwise
+    * the state of the object is <code>DBSTATE_UNMODIFIED</code> if the locator
+    * is persisted.
+    *
+    * @param locator Never <code>null</code>. It does not need to be assigned
+    *    or persisted. Each derived class must know the definition for its
+    *    key parts. Once set, all keys passed to {@link #setLocator(PSKey)
+    *    setLocator} must match the definition of this key.
+    */
+   protected PSDbComponent(PSKey locator)
+   {
+      if ( null == locator )
+         throw new IllegalArgumentException("Key must be provided.");
+
+      //do not use setLocator because there is no key to compare to yet
+      m_key = locator;
+      if (locator.isPersisted())
+         m_state = DBSTATE_UNMODIFIED;
+   }
+
+   /**
+    * Constructs an identical instance from the specified component. It does
+    * a shallow copy of the key and data from the specified object.  
+    * 
+    * @param from the specified object used to construct the new one, must not
+    *    be <code>null</code>.
+    */
+   protected PSDbComponent(PSDbComponent from)
+   {
+      if (from == null)
+         throw new IllegalArgumentException("from object must not be null.");
+      
+      m_key = from.m_key;
+      m_state = from.m_state;
+   }
+
+   /**
+    * For derived classes instantiating from a previously serialized instance.
+    * Recreates the key and state from the object. Derived classes should
+    * NOT change the state while performing their restoration.
+    * <p>See fromXml for more details.
+    *
+    * @param src Never <code>null</code>. Throws IAE if <code>null</code>.
+    */
+   protected PSDbComponent(Element src)
+      throws PSUnknownNodeTypeException
+   {
+      if (null == src)
+         throw new IllegalArgumentException("Source element cannot be null.");
+      fromXml(src);
+   }
+
+   /**
+    * See {@link IPSDbComponent#getComponentType() interface} for complete
+    * details.
+    *
+    * @return The default implementation gets the root of the class name and
+    *    returns that.
+    */
+   public String getComponentType()
+   {
+      return getComponentType(getClass());
+   }
+
+   /**
+    * Just like {@link #getComponentType()}, except it returns the default
+    * component type for a given <code>Class</code>
+    */
+   public static String getComponentType(Class compClass)
+   {
+      String name = compClass.getName();
+      name = name.substring(name.lastIndexOf('.')+1);
+      return name;
+   }
+
+   /**
+    * See {@link IPSDbComponent#toXml(Document) interface} for description.
+    * The document generated by this class conforms to the following dtd (note
+    * that that the entries and values are logical and would need to be
+    * replaced with their correct runtime values to generate a valid dtd):
+    * <pre><code>
+    *    &lt;!ELEMENT getNodeName() (getLocator().getNodeName()...)&gt;
+    *    &lt;!ATTLIST getNodeName()
+    *       state (DBSTATE_xxx) "DBSTATE_NEW"
+    *       &gt;
+    * </code></pre>
+    * <p>Note that since getNodeName() will return the derived classes node
+    * name, the derived class can use this method to generate the element and
+    * just add to it.
+    */
+   public Element toXml(Document doc)
+   {
+      if (doc == null)
+         throw new IllegalArgumentException(
+            "doc may not be null");
+
+      Element root = doc.createElement(getNodeName());
+      root.setAttribute(XML_ATTR_STATE, STATE_LABELS[getState()]);
+
+      Element keyEl = m_key.toXml(doc);
+      root.appendChild(keyEl);
+
+      return root;
+   }
+
+   /**
+    * Checks the current state and returns a flag indicating whether this object
+    * matches what is in the database (at a point in time).
+    *
+    * @return <code>true</code> if this object was serialized from the db
+    *    and has changed or if it is newly created, <code>false</code>
+    *    otherwise. If the object is marked for delete, even though it may
+    *    not have actually changed, <code>true</code> is returned.
+    */
+   public boolean isModified()
+   {
+      return getState() != DBSTATE_UNMODIFIED;
+   }
+
+   /**
+    * See {@link IPSDbComponent#isPersisted()} for description
+    * <p>
+    * Override this method will affect clone(). The derived class should
+    * always return <code>false</code> during call super.clone(), then
+    * set the behavior back afterwards.
+    */
+   public boolean isPersisted()
+   {
+      //don't call getLocator 'cause that clones the key
+      return m_key.isPersisted();
+   }
+
+   // see interface for description
+   public boolean isAssigned()
+   {
+      //don't call getLocator 'cause that clones the key
+      return m_key.isAssigned();
+   }
+
+   /**
+    * See {@link IPSDbComponent#toDbXml(Document,Element,IPSKeyGenerator,PSKey)}
+    * for details. Creates an xml fragment properly formatted for the Rhythmyx 
+    * server that will modify the database to make the db instance of this 
+    * object consistent with this object. A resource designed to handle this 
+    * document must be created by the implementor of the component. This 
+    * document is for use w/ the default processor. This resource name must be 
+    * specified in the processor's configuration data.
+    * <p>To allow multiple updates to be processed by the server, the
+    * document generated by this method will conform to one of the two
+    * following formats (where root is the passed in element):
+    * <p>If requiresActionNode() is <code>true</code> or parent is not
+    * <code>null</code> -
+    * <pre><code>
+    *    &lt;!ELEMENT root (Action+)&gt;
+    *    &lt;!ELEMENT Action (getNodeName())&gt;
+    *    &lt;!ATTLIST Action
+    *       dbAction #REQUIRED (INSERT | UPDATE | DELETE)
+    *       &gt;
+    *    &lt;!ELEMENT getNodeName() (as defined by toXml())&gt;
+    *
+    *    &lt;!-- If the state is DBSTATE_NEW, the Action type is set to INSERT.
+    *       If the state is DBSTATE_MODIFIED, the Action type is set to UPDATE.
+    *       If the state is DBSTATE_MARKEDFORDELETE, the Action type is set to
+    *       DELETE.
+    *       --&gt;
+    * </code></pre>
+    * <p>Otherwise -
+    * <pre><code>
+    *    &lt;!ELEMENT root (getNodeName())&gt;
+    *    &lt;!ATTLIST getNodeName()
+    *       dbAction (INSERT | UPDATE | DELETE) "UPDATE"
+    *       &gt;
+    *    &lt;!ELEMENT getNodeName() (as defined by toXml())&gt;
+    *
+    *    &lt;!-- If the state is DBSTATE_NEW, the Action type is set to INSERT.
+    *       If the state is DBSTATE_MODIFIED, the Action type is set to UPDATE.
+    *       If the state is DBSTATE_MARKEDFORDELETE, the Action type is set to
+    *       DELETE.
+    *       --&gt;
+    * </code></pre>
+    * In most cases, this method will generate the full element. It should
+    * only have to be overridden if the derived class contains any child
+    * IPSDbComponents. In that case, call this method first, then call
+    * this method for all child members, passing the same root.
+    *
+    * @param parent The parent key of this object. It must be <code>null</code>
+    *    if the key of the object does not contain parent key (as its foreign
+    *    key); otherwise it must not be <code>null</code>.
+    *    
+    * @throws PSCmsException If any of the components of the specified type
+    *    have unassigned keys.
+    *
+    */
+   public void toDbXml(Document doc, Element root, IPSKeyGenerator keyGen,
+      PSKey parent)
+      throws PSCmsException
+   {
+      if (null == doc)
+         throw new IllegalArgumentException(
+            "Database modification document must be supplied.");
+
+      if (null == root)
+         throw new IllegalArgumentException(
+            "Action root element must be supplied.");
+
+      if (null == keyGen)
+         throw new IllegalArgumentException(
+            "A key generator must be supplied.");
+
+      Element actionElement = null;
+      if (getState() != DBSTATE_UNMODIFIED)
+      {
+         assignKey(keyGen, parent);
+
+         // create a new action element with the appropriate db action type
+         if (null != parent || requiresActionNode())
+         {
+            actionElement = PSXmlDocumentBuilder.addEmptyElement(doc, root,
+               "Action");
+            actionElement.appendChild(toXml(doc, false));
+         }
+         else
+         {
+            actionElement = toXml(doc, false);
+            root.appendChild(actionElement);
+         }
+         actionElement.setAttribute("dbAction", getActionTypeString());
+      }
+   }
+
+
+   /**
+    * This method must be overridden by classes that update multiple components
+    * in a single resource to return <code>true</code>.
+    *
+    * @return Always <code>false</code>.
+    */
+   protected boolean requiresActionNode()
+   {
+      return false;
+   }
+
+
+   /**
+    * This method is called by the 
+    * {@link #toDbXml(Document,Element,IPSKeyGenerator,PSKey)} method. Derived 
+    * classes without IPSDbComponents as children do not need to override this 
+    * method. If the derived class has children, it must override this method 
+    * and not include those in the generated Xml. 
+    * <p>By default, this method just calls toXml(doc) since this method
+    * doesn't have any IPSDbComponent members.
+    *
+    * @param doc Used to generate the elements, never <code>null</code>.
+    *
+    * @param includeChildComps If <code>true</code>, equivalent to calling
+    *    toXml(doc). If <code>false</code>, all IPSDbComponent members will
+    *    not be serialized. They must be added individually with their own
+    *    Action element at the root level.
+    *
+    * @return An element whose node name is the value returned by getNodeName().
+    *    Never <code>null</code>.
+    */
+   protected Element toXml(Document doc, @SuppressWarnings("unused")
+   boolean includeChildComps)
+   {
+      return toXml(doc);
+   }
+
+
+   /**
+    * Get the text associated with the database action to be performed
+    * by this component.
+    *
+    * @return The database action text, never <code>null</code>, if empty,
+    * this indicates the component has not been altered, and no database
+    * action needs to be performed for this component. The default names
+    * are used: INSERT, UPDATE, DELETE.
+    */
+   private String getActionTypeString()
+   {
+      String action = "";
+
+      switch (getState())
+      {
+         case DBSTATE_NEW:
+            action = "INSERT";
+            break;
+
+         case DBSTATE_MODIFIED:
+            action = "UPDATE";
+            break;
+
+         case DBSTATE_MARKEDFORDELETE:
+            action = "DELETE";
+            break;
+      }
+      return action;
+   }
+
+
+   /**
+    * See {@link IPSDbComponent#fromXml(Element) interface} for description.
+    * The key is regenerated by taking the node name and using that to
+    * derive a class name. An instance of this class is created by passing
+    * the key's element to the ctor.
+    * <p>Each component must have a single argument ctor that takes an
+    * element and calls its fromXml. The derived class' fromXml must call this
+    * method (using super.fromXml) to restore the proper key and db state.
+    * Note that this would not be required when initially constructing from
+    * xml, but it is required if fromXml is called on an already instantiated
+    * object.
+    * <p>This method verifies that the name of the supplied element matches the
+    * name obtained with the {@link #getNodeName()} method. If it doesn't,
+    * a PSUnknownNodeTypeException is thrown.
+    *
+    * @throws PSUnknownNodeTypeException If the element name is incorrect, if
+    *    the key isn't correct (see {@link PSKey#fromXml(Element)}) or the
+    *    state name is not valid.
+    */
+   public void fromXml(Element source)
+      throws PSUnknownNodeTypeException
+   {
+      // Threshold
+      if (null == source)
+         throw new IllegalArgumentException("Source must be provided.");
+
+      // Threshold
+      if (!getNodeName().equalsIgnoreCase(source.getNodeName()))
+      {
+         String [] args = new String []
+         {
+            "PSDbComponent.fromXml node: " + getNodeName()
+         };
+
+         // @todo change exceptions if needed!!
+         throw new PSUnknownNodeTypeException(
+            IPSCmsErrors.INVALID_CONTENT_TYPE_ID, args);
+      }
+
+      // Must restore key first because it has higher priority than state
+      setLocatorInternal( createKey(PSXMLDomUtil.getFirstElementChild(source)));
+
+      // Threshold
+      String strState = PSXMLDomUtil.checkAttribute(source, XML_ATTR_STATE,
+            false);
+      if (strState.length() == 0)
+         setState(DBSTATE_NEW);
+      else
+      {
+         boolean found = false;
+         int i = 0;
+         for (; i < STATE_LABELS.length && !found; i++)
+         {
+            if (STATE_LABELS[i].equalsIgnoreCase(strState))
+               found = true;
+         }
+         if (!found)
+         {
+            String[] args =
+            {
+               getNodeName(),
+               XML_ATTR_STATE,
+               strState
+            };
+            throw new PSUnknownNodeTypeException(
+                  IPSObjectStoreErrors.XML_ELEMENT_INVALID_ATTR, args);
+         }
+         // Handles validation of state.
+         setState(i-1);
+      }
+   }
+
+   /**
+    * Call by fromXml to allow the object to control creation
+    * of it's locator definition. Derived classes may override to
+    * provide custom key behavior. The default behavior here is to
+    * look for PSKey.XML_NODE_NAME, generate a class name from
+    * the node name, search for a single arg ctor that takes a
+    * Element and call it.
+    *
+    * @param el xml node of entire object. Never <code>null</code>
+    *
+    * @return Never <code>null</code>.
+    */
+   protected PSKey createKey(Element el)
+      throws PSUnknownNodeTypeException
+   {
+      if (el == null)
+         throw new IllegalArgumentException("Source element cannot be null.");
+
+      String strNodeName = el.getNodeName();
+      String strClassName = "com.percussion.cms.objectstore.";
+      if (strNodeName.startsWith("PSX"))
+         strClassName += PSStringOperation.replace(strNodeName, "PSX", "PS");
+      else
+         strClassName += strNodeName;
+
+      PSKey key = null;
+
+      try
+      {
+         Class c = Class.forName(strClassName);
+         Constructor ctor = c.getConstructor(
+            new Class[] { Class.forName("org.w3c.dom.Element") });
+
+         key = (PSKey) ctor.newInstance(new Object [] {el});
+      }
+      catch (ClassNotFoundException cnfe)
+      {
+         String[] args =
+         {
+            strClassName,
+            getComponentType(),
+            cnfe.getLocalizedMessage()
+         };
+         throw new PSUnknownNodeTypeException(
+               IPSCmsErrors.COMPONENT_INSTANTIATION_ERROR, args);
+      }
+      catch (InstantiationException ie)
+      {
+         String[] args =
+         {
+            strClassName,
+            getComponentType(),
+            ie.getLocalizedMessage()
+         };
+         throw new PSUnknownNodeTypeException(
+               IPSCmsErrors.COMPONENT_INSTANTIATION_ERROR, args);
+      }
+      catch (IllegalAccessException iae)
+      {
+         String[] args =
+         {
+            strClassName,
+            getComponentType(),
+            iae.getLocalizedMessage()
+         };
+         throw new PSUnknownNodeTypeException(
+               IPSCmsErrors.COMPONENT_INSTANTIATION_ERROR, args);
+      }
+      catch (InvocationTargetException ite)
+      {
+         Throwable origException = ite.getTargetException();
+         String msg = origException.getLocalizedMessage();
+         String[] args =
+         {
+            strClassName,
+            getComponentType(),
+            origException.getClass().getName() + ": " + msg
+         };
+         throw new PSUnknownNodeTypeException(
+               IPSCmsErrors.COMPONENT_INSTANTIATION_ERROR, args);
+      }
+      catch (NoSuchMethodException nsme)
+      {
+         String[] args =
+         {
+            strClassName,
+            getComponentType(),
+            nsme.getLocalizedMessage()
+         };
+         throw new PSUnknownNodeTypeException(
+               IPSCmsErrors.COMPONENT_INSTANTIATION_ERROR, args);
+      }
+      catch (IllegalArgumentException iae)
+      {
+         //this should never happen because we checked ahead of time
+         throw new RuntimeException(
+               "Ctor parameter count changed unexpectedly.");
+      }
+
+      return key;
+   }
+
+   //see interface for description
+   public String getNodeName()
+   {
+      String name = getComponentType();
+      if ( name.startsWith("PS"))
+         name = "PSX" + name.substring(2);
+      return name;
+   }
+
+   /**
+    * See {@link IPSDbComponent#getDescription() interface} for details.
+    * If derived classes support a description, they must override this method.
+    *
+    * @return Always empty string.
+    */
+   public String getDescription()
+   {
+      return "";
+   }
+
+
+   //see interface for description
+   public PSKey getLocator()
+   {
+      return (PSKey) m_key.clone();
+   }
+
+   //see interface for description
+   public void setLocator(PSKey locator)
+   {
+      if (null == locator)
+         throw new IllegalArgumentException("Key must be supplied");
+      setLocatorInternal(locator);
+   }
+
+   /**
+    * Unsafe way of replacing the key for the component. Used only when a
+    * component is cloned and the key must be reset. Use only if you must and
+    * with atmost care.
+    * 
+    * @param key may be <code>null</code> otherwise a clone of the supplied
+    * key is assigned.
+    */
+   void setKey(PSKey key)
+   {
+      if(key!=null)
+         m_key = (PSKey) key.clone();
+      else
+         m_key = null;
+   }
+
+   /**
+    * Clones the key and sets it on this object. Then performs some consistency
+    * checks and modifies the state of this object if necessary. See
+    * {@link #setLocator(PSKey) setLocator} for the allowed values of the
+    * state given the assigned and persisted properties in the key.
+    * <p>If the key is persisted and an illegal combination would result, the
+    * state is set to modified. Otherwise if not persisted and an illegal
+    * state would result, the state is set to new.
+    *
+    * @param locator Assumed not <code>null</code>.
+    */
+   private void setLocatorInternal(PSKey locator)
+   {
+      if ( null != m_key && !m_key.isSameType(locator))
+         throw new IllegalArgumentException("Key type must match existing key.");
+
+      m_key = (PSKey) locator.clone();
+      if (isPersisted())
+      {
+         if (getState() == DBSTATE_NEW || getState() == DBSTATE_MARKEDFORDELETE)
+         {
+            setState(DBSTATE_MODIFIED);
+         }
+      }
+      else
+      {
+         if (getState() == DBSTATE_MODIFIED || getState() == DBSTATE_UNMODIFIED)
+         {
+            setState(DBSTATE_NEW);
+         }
+      }
+   }
+
+
+   /**
+    * Must be called by derived classes whenever their properties change. This
+    * is easier to use than trying to properly manage setState.
+    */
+   protected void setDirty()
+   {
+      if (getState() == DBSTATE_UNMODIFIED)
+         setState(DBSTATE_MODIFIED);
+   }
+
+
+   //see interface for description
+   public void markForDeletion()
+   {
+      if (isPersisted())
+         setState(DBSTATE_MARKEDFORDELETE);
+   }
+
+
+   /**
+    * See {@link IPSDbComponent#setPersisted() interface} for complete
+    * description. This class handles the work for the base object only. If
+    * the derived class contains other PSDbComponents as members, then it
+    * must override this method and call setPersisted on each of its
+    * db component members, finally calling this method to handle this
+    * instance.
+    */
+   public void setPersisted()
+      throws PSCmsException
+   {
+      if ( !isAssigned())
+         throw new PSCmsException(IPSCmsErrors.KEY_NOT_ASSIGNED);
+      if (m_state == DBSTATE_MARKEDFORDELETE)
+      {
+         m_key.clear();
+         setState(DBSTATE_NEW);
+      }
+      else
+      {
+         m_key.setPersisted(true);
+         setState(DBSTATE_UNMODIFIED);
+      }
+   }
+
+
+   /**
+    * The derived class is responsible for serializing and restoring this
+    * attribute of the component. See {@link IPSDbComponent#getState()
+    * interface} for full details.
+    */
+   public int getState()
+   {
+      return m_state;
+   }
+
+
+   /**
+    * Checks if the supplied state is one of the allowed DBSTATE_xxx values.
+    *
+    * @param state The value to check.
+    *
+    * @return <code>true</code> if state is one of the allowed values,
+    *    <code>false</code> otherwise.
+    */
+   public boolean isValidState(int state)
+   {
+      return state > 0 && state < STATE_LABELS.length;
+   }
+
+
+   //see interface for description
+   public void setState(int newState)
+   {
+      if (!isValidState(newState))
+         throw new IllegalArgumentException("Invalid state.");
+
+      if ((isPersisted() && newState == DBSTATE_NEW)
+            || (!isPersisted()
+            && (newState == DBSTATE_UNMODIFIED || newState == DBSTATE_MODIFIED
+            || newState == DBSTATE_MARKEDFORDELETE)))
+      {
+         throw new IllegalStateException(
+               "Attempted to set component to illegal state given the state "
+               + "of the key.");
+      }
+
+      m_state = newState;
+   }
+
+   /**
+    * Creates a new instance that is a deep copy. If derived classes have
+    * non-native, mutable member variables, they must override this method,
+    * call super and deep clone them.
+    *
+    * @return The new object, never <code>null</code>.
+    */
+   @Override
+   public Object clone()
+   {
+      PSDbComponent copy = null;
+      try
+      {
+         copy = (PSDbComponent) super.clone();
+         copy.m_key = getLocator();
+         copy.m_key.clear();
+         copy.setState(DBSTATE_NEW);
+      }
+      catch (CloneNotSupportedException e) {} // cannot happen
+      return copy;
+   }
+
+
+   //see interface for description
+   @Override
+   public boolean equals(Object obj)
+   {
+      if ( null == obj || !getClass().isInstance(obj))
+         return false;
+      if (this == obj)
+         return true;
+
+      PSDbComponent c = (PSDbComponent) obj;
+
+      return m_key.isSameType(c.m_key);
+   }
+
+
+   /**
+    * If the key is set it calculates hashCode from the key.
+    * Otherwise returns 0.
+    */
+   @Override
+   public int hashCode()
+   {
+      //no data currently in this class is considered in equals or hashCode
+      int hash = 0;
+      if (m_key!=null)
+      {
+         String[] defs = m_key.getDefinition();
+         for (int i = 0; i < defs.length; i++)
+            hash += defs[i].hashCode();
+      }
+      return hash;
+   }
+
+   /**
+    * Just like {@link #clone()}, except it doesn't reset the key values or
+    * state.
+    */
+   public Object cloneFull()
+   {
+      PSDbComponent copy = null;
+      try
+      {
+         copy = (PSDbComponent) super.clone();
+         copy.setLocator(getLocator());
+      }
+      catch (CloneNotSupportedException e) {} // cannot happen
+      return copy;
+   }
+
+
+   /**
+    * Just like {@link #equals(Object)}, except it considers the key values and
+    * state. Overriding classes must call this base class method first.
+    */
+   public boolean equalsFull(Object obj)
+   {
+      if ( !equals(obj))
+         return false;
+      PSDbComponent c = (PSDbComponent) obj;
+      //don't call getLocator 'cause that clones the key
+      if ( !m_key.equals(c.m_key))
+         return false;
+      if (getState() != c.getState())
+         return false;
+      return true;
+   }
+
+
+   /**
+    * Just like {@link #hashCode()}, except it considers the key values and
+    * state. Overriding classes must call this base class method first and
+    * integrate the returned value into their hash as defined by the
+    * contract in the <code>IPSDbComponent.hashCode</code> method.
+    */
+   public int hashCodeFull()
+   {
+      return m_key.hashCode() + m_state;
+   }
+
+
+   /**
+    * See {@link IPSDbComponent#assignKey(IPSKeyGenerator,PSKey) interface}
+    * for description. This implementation requires that gen be supplied. If
+    * a derived class assigns key values from component attributes, it must
+    * override getKeyPartValues().
+    */
+   public void assignKey(IPSKeyGenerator gen, PSKey parentKey)
+      throws PSCmsException
+   {
+      if (null == gen)
+         throw new IllegalArgumentException("Key generator must be supplied.");
+      if ((parentKey != null) && (! parentKey.isAssigned()))
+         throw new IllegalArgumentException(
+            "If parentKey is not null, then it must be an assigned key");
+
+      if (isAssigned())
+         return; // key already assigned
+
+      String[] keyParts = m_key.getDefinition();
+      String[] values = new String[keyParts.length];
+
+      String[] compValues = getKeyPartValues(gen);
+      if (compValues.length > values.length)
+      {
+         throw new PSCmsException(IPSCmsErrors.KEY_MISMATCH,
+               getComponentType());
+      }
+
+      System.arraycopy(compValues, 0, values, 0, compValues.length);
+
+      if (null != parentKey && compValues.length == values.length)
+      {
+         throw new PSCmsException(IPSCmsErrors.TOO_MANY_FOREIGN_KEY_PARTS,
+               getComponentType());
+      }
+
+      int j = compValues.length;
+      // get all values from m_key, gen and parentKey if needed
+      for (int i=compValues.length; i < keyParts.length; i++)
+      {
+         if (parentKey.getPart(keyParts[i]).trim().length() > 0)
+            values[j++] = parentKey.getPart(keyParts[i]);
+      }
+
+      if (j < keyParts.length)
+      {
+         throw new PSCmsException(IPSCmsErrors.TOO_FEW_FOREIGN_KEY_PARTS,
+               getComponentType());
+      }
+
+      m_key.assign(values);
+   }
+
+   /**
+    * This method allows derived classes to implement keys that are assigned
+    * from values in the component rather than from a generated id. The
+    * default implementation generates a single id using the supplied
+    * generator.
+    * <p>Any component property used as part of the key must be immutable,
+    * meaning that it must be set in the ctor and then never changed.
+    *
+    * @param gen Never <code>null</code>.
+    *
+    * @return A valid array with 0 or more entries. Each entry must be a non-
+    *    <code>null</code> String (possibly empty). The returned values will
+    *    be assigned to the key in the order they are returned. In other words,
+    *    if keyDef[] contains the key definition, and values[] contains the
+    *    return from this method, for each i, the value for key part keyDef[i]
+    *    is assigned from values[i]. Any additional values in the key def
+    *    are assigned from the foreign (parent) key.
+    */
+   protected String[] getKeyPartValues(IPSKeyGenerator gen)
+      throws PSCmsException
+   {
+      String lookup = getLookupName();
+      if (null == lookup || lookup.trim().length() == 0)
+      {
+         throw new PSCmsException(IPSCmsErrors.MISSING_LOOKUP_KEY,
+               getComponentType());
+      }
+      return new String[] {"" + gen.allocateId(lookup)};
+   }
+
+
+   /**
+    * The name of the 'key' in the next number table that contains the next id
+    * to be used for the component. By default, the name is generated from
+    * the component type by stripping the leading PS, lower-casing it and
+    * adding 'id'.
+    *
+    * @return Never <code>null</code> or empty.
+    */
+   protected String getLookupName()
+   {
+      String key = getComponentType().toLowerCase();
+      if (key.startsWith("ps"))
+         key = key.substring(2);
+      return key + "id";
+   }
+
+   /**
+    * Convenience method to get the hash of an object, handling the case when
+    * the object is <code>null</code>.
+    *
+    * @param objectToHash may be <code>null</code>.
+    *
+    * @return the hashCode of objectToHash, or 0 if it is <code>null</code>.
+    */
+   protected static int hashBuilder(Object objectToHash)
+   {
+      int theHash = 0;
+      if(objectToHash != null)
+         theHash = objectToHash.hashCode();
+
+      return theHash;
+   }
+   
+   /**
+    * Call this method to hash a string safely, without needing to
+    * worry whether the string is <code>null</code> or not
+    * @param strToHash the string to hash, may be <code>null</code>
+    * @return the hashed value of the string converted to lower case, or
+    * <code>0</code> if the string was <code>null</code>
+    */
+   protected static int hashString(String strToHash)
+   {
+      if (strToHash == null)
+         return 0;
+      else
+         return strToHash.toLowerCase().hashCode();
+   }
+
+   /**
+    * Compares objects that implement the <code>equals()</code> method.
+    * <code>String</code>s will be compared with case ignored.
+    * Are they equal?
+    *
+    * @return <code>true</code>if they are, otherwise <code>false</code>.
+    */
+   protected static boolean compare(Object a, Object b)
+   {
+      if(a == null || b == null)
+      {
+         if(a != null || b != null)
+            return false;
+      }
+      else
+      {
+         if(a.getClass().isArray() && b.getClass().isArray())
+            return Arrays.equals((Object[])a, (Object[])b);
+         if(a instanceof String && b instanceof String)
+            return ((String)a).equalsIgnoreCase((String)b);
+         if(!a.equals(b))
+            return false;
+      }
+      return true;
+   }
+
+
+   /**
+    * Stores the state of this instance relative to its serialized form in
+    * the database. Should only be accessed via the 2 xxxState() methods.
+    * Defaults to DBSTATE_NEW. Always a valid DBSTATE_xxx type.
+    */
+   @Transient
+   private int m_state = DBSTATE_NEW;
+
+
+   /**
+    * Uniquely identifies this instance within the db. Set during
+    * construction, then never <code>null</code> after that.
+    */
+   @Transient
+   protected PSKey m_key;
+
+   // public static defines - xml attributes and nodes
+   public static final String XML_ATTR_STATE = "state";
+   public static final String XML_ATTR_DBACTION = "dbAction";
+
+
+   /**
+    * Extracts a part of a key and converts it into simple int.
+    * 
+    * @param keyName the key name, it may be <code>null</code>.
+    * @param defaultVal the default value, which will be returned if the
+    *    key name or the value of the key is <code>null</code>. 
+    * 
+    * @return the value of the specified key. Return the default value
+    *    if the key name is <code>null</code>.
+    */
+   protected int getKeyPartInt(String keyName, int defaultVal)
+   {
+            
+      if (m_key == null)
+         return defaultVal;
+      
+      String keyPartVal = m_key.getPart(keyName);
+   
+      if (keyPartVal == null)
+         return defaultVal;
+      
+      try
+      {
+         return Integer.parseInt(keyPartVal);
+      }
+      catch (NumberFormatException e)
+      {
+         return defaultVal;
+      }
+   }
+   
+   /**
+    * Extracts a part of a key and converts it into simple long.
+    * 
+    * @param keyName The key name, may not be <code>null</code> or empty.
+    * 
+    * @param defaultVal The default value to use if the key is not found.
+    * 
+    * @return The value as a long.
+    */
+   protected long getKeyPartLong(String keyName, long defaultVal)
+   {
+            
+      if (m_key == null)
+         return defaultVal;
+      
+      String keyPartVal = m_key.getPart(keyName);
+   
+      if (keyPartVal == null)
+         return defaultVal;
+      
+      try
+      {
+         return Long.parseLong(keyPartVal);
+      }
+      catch (NumberFormatException e)
+      {
+         return defaultVal;
+      }
+   }   
+}

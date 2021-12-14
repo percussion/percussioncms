@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -27,14 +27,13 @@ import com.percussion.designmanagement.service.IPSFileSystemService;
 import com.percussion.pathmanagement.data.PSPathItem;
 import com.percussion.share.dao.PSDateUtils;
 import com.percussion.ui.service.IPSListViewHelper;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Component;
 
 
 /**
@@ -60,7 +59,7 @@ public class PSFileSystemListViewHelper extends PSBaseListViewHelper
     @Override
     protected Map<String, String> getDisplayProperties(PSPathItem pathItem)
     {
-        Map<String, String> displayProperties = new HashMap<String, String>();
+        Map<String, String> displayProperties = new HashMap<>();
         
         File relatedFile = (File) pathItem.getRelatedObject();
         

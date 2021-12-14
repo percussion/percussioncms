@@ -17,14 +17,11 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.proxyconfig.service.impl;
-
-import static org.apache.commons.lang.StringUtils.equalsIgnoreCase;
-import static org.apache.commons.lang.Validate.notNull;
 
 import com.percussion.proxyconfig.data.PSProxyConfig;
 import com.percussion.proxyconfig.service.IPSProxyConfigService;
@@ -33,6 +30,9 @@ import com.percussion.server.PSServer;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.apache.commons.lang.StringUtils.equalsIgnoreCase;
+import static org.apache.commons.lang.Validate.notNull;
 
 /**
  * @author LucasPiccoli
@@ -48,7 +48,7 @@ public class PSProxyConfigService implements IPSProxyConfigService
    /**
     * A list of configurations specified in the proxy configuration file.
     */
-   private List<PSProxyConfig> proxyConfigurations = new ArrayList<PSProxyConfig>();
+   private List<PSProxyConfig> proxyConfigurations = new ArrayList<>();
 
    public PSProxyConfigService()
    {

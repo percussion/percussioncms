@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -33,16 +33,14 @@ import com.percussion.services.assembly.PSAssemblyServiceLocator;
 import com.percussion.services.assembly.impl.nav.PSNavHelper;
 import com.percussion.services.contentmgr.IPSNode;
 import com.percussion.utils.guid.IPSGuid;
-
-import java.util.HashMap;
-import java.util.Map;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.jcr.Node;
 import javax.jcr.RepositoryException;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * This class provide utility method for navigation finder plugins.
@@ -105,7 +103,7 @@ public class PSNavFinderUtils
       {
          IPSNode internalNode = (IPSNode) navon.getProperty("nav:proxiedNode")
                .getNode();
-         Map<String, IPSGuid> optionalParams = new HashMap<String, IPSGuid>();
+         Map<String, IPSGuid> optionalParams = new HashMap<>();
          IPSGuid templateId = StringUtils.isBlank(templateNameId) ? sourceItem
                .getTemplate().getGUID() : null;
          clone = PSContentFinderBase.getCloneAssemblyItem(sourceItem, asm,
@@ -127,6 +125,6 @@ public class PSNavFinderUtils
    /**
     * Logger for content finder
     */
-   private static Log ms_log = LogFactory.getLog(PSNavFinderUtils.class);
+   private static final Logger ms_log = LogManager.getLogger(PSNavFinderUtils.class);
 
 }

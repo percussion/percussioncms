@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -30,6 +30,8 @@ import au.id.jericho.lib.html.OutputDocument;
 import au.id.jericho.lib.html.Source;
 import au.id.jericho.lib.html.StartTag;
 import au.id.jericho.lib.html.StringOutputSegment;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Iterator;
 import java.util.regex.Matcher;
@@ -46,6 +48,8 @@ import java.util.regex.Pattern;
  */
 public class PSFormEncodeDecodeHelper
 {
+
+   private static final Logger log = LogManager.getLogger(PSFormEncodeDecodeHelper.class);
    /**
     * Looks for form tags and turns them into div tags with a special rxFormTagMarker
     * attribute that indicates the div tag is being used as a form tag placeholder.
@@ -121,7 +125,7 @@ public class PSFormEncodeDecodeHelper
       
       final Source source = new Source(content);
       final OutputDocument outDoc = new OutputDocument(source);
-      StringBuffer buff = new StringBuffer();
+      StringBuilder buff = new StringBuilder();
       StartTag sTag = null;
       EndTag eTag = null;
       int idx = 0;
@@ -201,7 +205,7 @@ public class PSFormEncodeDecodeHelper
    
    private static String toProperCase(String str)
    {
-      StringBuffer buff = new StringBuffer(str.toLowerCase());
+      StringBuilder buff = new StringBuilder(str.toLowerCase());
       if(buff.length() > 0)
       {
          buff.replace(0, 1, buff.substring(0, 1).toUpperCase());
@@ -214,9 +218,9 @@ public class PSFormEncodeDecodeHelper
    {
       String encoded = encode(ms_test_string);
       String decoded = decode(encoded);
-      System.out.println(encoded);
-      System.out.println("\n========================================\n");
-      System.out.println(decoded);
+      log.info(encoded);
+      log.info("\n========================================\n");
+      log.info(decoded);
    }
    
    /**

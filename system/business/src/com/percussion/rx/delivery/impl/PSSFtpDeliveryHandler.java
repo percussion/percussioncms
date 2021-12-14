@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -27,6 +27,7 @@ import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.SftpATTRS;
 import com.jcraft.jsch.SftpException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.rx.delivery.IPSDeliveryResult;
 import com.percussion.rx.delivery.IPSDeliveryResult.Outcome;
 import com.percussion.rx.delivery.PSDeliveryException;
@@ -34,15 +35,15 @@ import com.percussion.rx.delivery.data.PSDeliveryResult;
 import com.percussion.server.PSServer;
 import com.percussion.services.pubserver.IPSPubServer;
 import com.percussion.services.sitemgr.IPSSite;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.Vector;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
  * Deliver files via SFtp, a secure transfer mechanism. This borrows some 
@@ -55,7 +56,7 @@ public class PSSFtpDeliveryHandler extends PSBaseFtpDeliveryHandler
    /**
     * Logger.
     */
-   private static Log ms_log = LogFactory.getLog(PSSFtpDeliveryHandler.class);
+   private static final Logger ms_log = LogManager.getLogger(PSSFtpDeliveryHandler.class);
 
    /**
     * See {@link #getTimeout()}
@@ -71,7 +72,7 @@ public class PSSFtpDeliveryHandler extends PSBaseFtpDeliveryHandler
     * Holds the per thread SFTP client. Initialized in {@link #commit(long)} and
     * used in <code>doDelivery</code> and <code>doRemoval</code>
     */
-   protected ThreadLocal<PSSFtpClientJSch> ms_sftp = new ThreadLocal<PSSFtpClientJSch>();
+   protected ThreadLocal<PSSFtpClientJSch> ms_sftp = new ThreadLocal<>();
 
    /**
     * Sets the socket timeout in milliseconds for the underlying provider.
@@ -173,7 +174,6 @@ public class PSSFtpDeliveryHandler extends PSBaseFtpDeliveryHandler
 
                // Second, try with the site key, if any
                else if (!StringUtils.isBlank(info.privateKey)) {
-                   //String filePath = PSServer.SSH_PRIVATE_KEYS_DIR;
                    String keyFilePath = getSshKeysDir() + info.privateKey;
 
                    return sshLogin(ssh, keyFilePath, false, site, info, jobId, failAll, timeout, retries);
@@ -530,12 +530,12 @@ public class PSSFtpDeliveryHandler extends PSBaseFtpDeliveryHandler
          sftp.cd(path);
          sftp.put(inputStream, file.getName());
          return new PSDeliveryResult(Outcome.DELIVERED, null, item.getId(),
-               jobId, item.getReferenceId(), location.getBytes("UTF8"));
+               jobId, item.getReferenceId(), location.getBytes(StandardCharsets.UTF_8));
       }
       catch (Exception e)
       {
          return getItemResult(
-               Outcome.FAILED, item, jobId, e.getLocalizedMessage());
+               Outcome.FAILED, item, jobId, PSExceptionUtils.getMessageForLog(e));
       }
       finally
       {
@@ -644,7 +644,6 @@ public class PSSFtpDeliveryHandler extends PSBaseFtpDeliveryHandler
        // Second, try with the site key, if any
        else if(!StringUtils.isBlank(info.privateKey))
        {
-          //String filePath = PSServer.SSH_PRIVATE_KEYS_DIR;
           keyFilePath = getSshKeysDir() + info.privateKey;
           sftp.loginKeyExchange(info.ipAddress, info.port, info.userName,
                    keyFilePath, m_timeout, 2);

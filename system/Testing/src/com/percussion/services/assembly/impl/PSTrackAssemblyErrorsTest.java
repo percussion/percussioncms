@@ -17,19 +17,23 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.services.assembly.impl;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.services.assembly.data.PSAssemblyWorkItem;
 import junit.framework.TestCase;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Test tracker.
@@ -39,6 +43,9 @@ import java.io.UnsupportedEncodingException;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class PSTrackAssemblyErrorsTest extends TestCase
 {
+
+   private static final Logger log = LogManager.getLogger(PSTrackAssemblyErrorsTest.class);
+
    /**
     * Dummy result value
     */
@@ -126,7 +133,8 @@ public class PSTrackAssemblyErrorsTest extends TestCase
       }
       catch (UnsupportedEncodingException e)
       {
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
    }
 
@@ -137,15 +145,8 @@ public class PSTrackAssemblyErrorsTest extends TestCase
    private PSAssemblyWorkItem createItem()
    {
       PSAssemblyWorkItem work = new PSAssemblyWorkItem();
-      try
-      {
-         work.setResultData(RESULT.getBytes(UTF8));
-         work.setMimeType("text/xhtml;charset=utf8");
-      }
-      catch (UnsupportedEncodingException e)
-      {
-         e.printStackTrace();
-      }
+      work.setResultData(RESULT.getBytes(StandardCharsets.UTF_8));
+      work.setMimeType("text/xhtml;charset=utf8");
       return work;
    }
 }

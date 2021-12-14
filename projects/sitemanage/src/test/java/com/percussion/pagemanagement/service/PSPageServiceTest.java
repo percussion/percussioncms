@@ -17,23 +17,17 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.pagemanagement.service;
 
-import static com.percussion.assetmanagement.service.impl.PSPreviewPageUtils.getOrphanedAssetsSummaries;
-import static java.util.Arrays.asList;
-import static org.apache.commons.lang.StringUtils.equalsIgnoreCase;
-import static org.apache.commons.lang.StringUtils.isEmpty;
-import static org.apache.commons.lang.Validate.notNull;
-
 import com.percussion.assetmanagement.data.PSAsset;
 import com.percussion.assetmanagement.data.PSAssetWidgetRelationship;
-import com.percussion.assetmanagement.data.PSOrphanedAssetSummary;
 import com.percussion.assetmanagement.data.PSAssetWidgetRelationship.PSAssetResourceType;
+import com.percussion.assetmanagement.data.PSOrphanedAssetSummary;
 import com.percussion.assetmanagement.service.IPSWidgetAssetRelationshipService;
 import com.percussion.assetmanagement.service.impl.PSWidgetAssetRelationshipService;
 import com.percussion.cms.objectstore.PSRelationshipFilter;
@@ -56,6 +50,7 @@ import com.percussion.services.memory.IPSCacheAccess;
 import com.percussion.services.memory.PSCacheAccessLocator;
 import com.percussion.share.service.IPSIdMapper;
 import com.percussion.share.service.exception.PSBeanValidationException;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.spring.PSSpringWebApplicationContextUtils;
 import com.percussion.test.PSServletTestCase;
 import com.percussion.utils.guid.IPSGuid;
@@ -65,12 +60,11 @@ import com.percussion.webservices.PSErrorException;
 import com.percussion.webservices.content.IPSContentWs;
 import com.percussion.webservices.content.PSContentWsLocator;
 import com.percussion.webservices.system.IPSSystemWs;
-
+import org.junit.FixMethodOrder;
 import org.junit.Ignore;
+import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runners.MethodSorters;
-import org.junit.FixMethodOrder;
-import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -78,6 +72,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import static com.percussion.assetmanagement.service.impl.PSPreviewPageUtils.getOrphanedAssetsSummaries;
+import static java.util.Arrays.asList;
+import static org.apache.commons.lang.StringUtils.equalsIgnoreCase;
+import static org.apache.commons.lang.StringUtils.isEmpty;
+import static org.apache.commons.lang.Validate.notNull;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @Category(IntegrationTest.class)
@@ -499,8 +499,7 @@ public class PSPageServiceTest extends PSServletTestCase
     }
     
     @Test
-    public void test170GetUnusedAssets_noUnusedAssets()
-    {
+    public void test170GetUnusedAssets_noUnusedAssets() throws PSDataServiceException {
         PSPage page = createAndSavePage();
         PSTemplate template = fixture.getTemplateService().load(page.getTemplateId());
         
@@ -510,32 +509,27 @@ public class PSPageServiceTest extends PSServletTestCase
     }
     
     @Test
-    public void test180GetUnusedAssets_noMatchingTemplateWidgetUnnamed()
-    {
+    public void test180GetUnusedAssets_noMatchingTemplateWidgetUnnamed() throws PSDataServiceException {
         createTestGetUnusedAsset_noMatchingTemplateWidget(false);
     }
 
     @Test
-    public void test190GetUnusedAssets_noMatchingTemplateWidgetNamed()
-    {
+    public void test190GetUnusedAssets_noMatchingTemplateWidgetNamed() throws PSDataServiceException {
         createTestGetUnusedAsset_noMatchingTemplateWidget(true);
     }
    
     @Test
-    public void test200GetUnusedAssets_assetHiddenByTemplateAssetUnnamedWidgets()
-    {
+    public void test200GetUnusedAssets_assetHiddenByTemplateAssetUnnamedWidgets() throws PSDataServiceException {
         createTestGetUnusedAsset_hiddenByTemplateAssets(false);
     }
     
     @Ignore
-    public void test_fixmeGetUnusedAssets_assetHiddenByTemplateAsset()
-    {
+    public void test_fixmeGetUnusedAssets_assetHiddenByTemplateAsset() throws PSDataServiceException {
         createTestGetUnusedAsset_hiddenByTemplateAssets(true);
     }
 
     @Test
-    public void test210GetUnusedAssets_assetOrphanByWidgetRenaming()
-    {
+    public void test210GetUnusedAssets_assetOrphanByWidgetRenaming() throws PSDataServiceException {
         String richTextName = "Rich Text widget";
         String richTextDescription = "Description for the Rich Text widget";
         String rawHtmlName = "Raw HTMLwidget";
@@ -624,8 +618,7 @@ public class PSPageServiceTest extends PSServletTestCase
      * 
      * @return a {@link String} with the asset id.
      */
-    private String createRawHtmlAsset()
-    {
+    private String createRawHtmlAsset() throws PSDataServiceException {
         String assetId;
         PSAsset asset = new PSAsset();
         asset.getFields().put("sys_title", "LocalAsset" + System.currentTimeMillis());
@@ -650,8 +643,7 @@ public class PSPageServiceTest extends PSServletTestCase
      *         <code>null</code>, contains the widget item in the first place,
      *         and the asset in the second place.
      */
-    private PSPair<PSWidgetItem, PSAsset> createRichTextWidgetItem(String name, String description, String slotid)
-    {
+    private PSPair<PSWidgetItem, PSAsset> createRichTextWidgetItem(String name, String description, String slotid) throws PSDataServiceException {
         PSAsset asset = new PSAsset();
         asset.getFields().put("sys_title", "LocalAsset" + System.currentTimeMillis());
         asset.setType("percRichTextAsset");
@@ -681,8 +673,7 @@ public class PSPageServiceTest extends PSServletTestCase
      *         <code>null</code>, contains the widget item in the first place,
      *         and the asset in the second place.
      */
-    private PSPair<PSWidgetItem, PSAsset> createRawHtmlWidgetItem(String name, String description, String slotid)
-    {
+    private PSPair<PSWidgetItem, PSAsset> createRawHtmlWidgetItem(String name, String description, String slotid) throws PSDataServiceException {
         PSAsset asset = new PSAsset();
         asset.getFields().put("sys_title", "LocalAsset" + System.currentTimeMillis());
         asset.setType("percRawHtmlAsset");
@@ -705,12 +696,10 @@ public class PSPageServiceTest extends PSServletTestCase
      * 
      * @param widgetToRename {@link PSWidgetItem} object, representing the
      *            widget to be renamed. assumed not <code>null</code>.
-     * @param template {@link PStemplate} to get the widget and rename it.
      *            Assumed not <code>null</code>
      * @param newName {@link String} with the new name for the widget.
      */
-    private void renameWidgetOnTemplateAndSave(PSWidgetItem widgetToRename, PSTemplate template, String newName)
-    {
+    private void renameWidgetOnTemplateAndSave(PSWidgetItem widgetToRename, PSTemplate template, String newName) throws PSDataServiceException {
         PSRegionTree regionTree = template.getRegionTree();
         
         Set<PSRegionWidgets> regionWidgets = regionTree.getRegionWidgetAssociations(); 
@@ -782,8 +771,7 @@ public class PSPageServiceTest extends PSServletTestCase
      * @return the modified {@link PSTemplate} object. Never <code>null</code>.
      */
     private PSTemplate removeWidgetFromTemplateAndSave(PSTemplate template,
-            List<PSPair<PSWidgetItem, PSAsset>> widgetAssetPairsToRemove)
-    {
+            List<PSPair<PSWidgetItem, PSAsset>> widgetAssetPairsToRemove) throws PSDataServiceException {
         for (PSPair<PSWidgetItem, PSAsset> pair : widgetAssetPairsToRemove)
         {
             Map<String, List<PSWidgetItem>> regionWidgetsMap = template.getRegionTree().getRegionWidgetsMap();
@@ -815,8 +803,7 @@ public class PSPageServiceTest extends PSServletTestCase
      *         relationships. Never <code>null</code> but may be empty.
      */
     private List<PSAssetWidgetRelationship> addContentToWidgetOnPageOrTemplate(PSPage page, PSTemplate template,
-            List<PSPair<PSWidgetItem, PSAsset>> widgetAssetPairs, boolean addOnTemplate)
-    {
+            List<PSPair<PSWidgetItem, PSAsset>> widgetAssetPairs, boolean addOnTemplate) throws PSDataServiceException {
         List<PSAssetWidgetRelationship> relationships = new ArrayList<PSAssetWidgetRelationship>();
         String ownerId = (addOnTemplate) ? template.getId() : page.getId();
 
@@ -845,8 +832,7 @@ public class PSPageServiceTest extends PSServletTestCase
      * @param widgetAssetPairs {@link List}<{@link PSWidgetItem}> with the
      *            widgets to add. May be empty but not <code>null</code>.
      */
-    private void addWidgetsToTemplateAndSave(PSTemplate template, List<PSPair<PSWidgetItem, PSAsset>> widgetAssetPairs)
-    {
+    private void addWidgetsToTemplateAndSave(PSTemplate template, List<PSPair<PSWidgetItem, PSAsset>> widgetAssetPairs) throws PSDataServiceException {
         notNull(template);
         notNull(widgetAssetPairs);
 
@@ -881,8 +867,7 @@ public class PSPageServiceTest extends PSServletTestCase
      *            with a name. If <code>false</code>, widgets will be created
      *            with no name.
      */
-    private void createTestGetUnusedAsset_noMatchingTemplateWidget(boolean namedWidgets)
-    {
+    private void createTestGetUnusedAsset_noMatchingTemplateWidget(boolean namedWidgets) throws PSDataServiceException {
         String richTextName = (namedWidgets) ? "Rich Text widget" : "";
         String richTextDescription = (namedWidgets) ? "Description for the Rich Text widget" : "";
         String rawHtmlName = (namedWidgets) ? "Raw HTMLwidget" : "";
@@ -921,8 +906,7 @@ public class PSPageServiceTest extends PSServletTestCase
      *            with a name. If <code>false</code>, widgets will be created
      *            with no name.
      */
-    private void createTestGetUnusedAsset_hiddenByTemplateAssets(boolean namedWidgets)
-    {
+    private void createTestGetUnusedAsset_hiddenByTemplateAssets(boolean namedWidgets) throws PSDataServiceException {
         String richTextName = (namedWidgets)? "Rich Text widget" : "";
         String richTextDescription = (namedWidgets)? "Description for the Rich Text widget" : "";
         String rawHtmlName = (namedWidgets)? "Raw HTMLwidget" : "";
@@ -961,8 +945,7 @@ public class PSPageServiceTest extends PSServletTestCase
      * 
      * @return the {@link PSPage} saved object.
      */
-    private PSPage createAndSavePage()
-    {
+    private PSPage createAndSavePage() throws PSDataServiceException {
         String templateId = fixture.template1.getId();
 
         String name = "Page1";
@@ -1027,8 +1010,7 @@ public class PSPageServiceTest extends PSServletTestCase
      * @return the id of the created page, never blank.
      */
     private String createPage(String name, String title, String templateId, String folderPath, String linkTitle,
-            String url, String noindex, String description)
-    {
+            String url, String noindex, String description) throws PSDataServiceException {
         PSPage page = new PSPage();
         page.setFolderPath(folderPath);
         page.setName(name);

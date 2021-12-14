@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -25,6 +25,7 @@
 package com.percussion.services.pubserver;
 
 import com.percussion.services.pubserver.data.PSDatabasePubServer;
+import com.percussion.share.service.exception.PSDataServiceException;
 
 import java.io.File;
 import java.util.List;
@@ -81,14 +82,14 @@ public interface IPSDatabasePubServerFilesService
      * 
      * @param s the specified database publish server, not <code>null</code>.
      */
-    void saveDatabasePubServer(PSDatabasePubServer s);
+    void saveDatabasePubServer(PSDatabasePubServer s) throws PSDataServiceException;
     
     /**
      * Deletes the specified database publish server. 
      * Do nothing if there is no publish server with the matching name. 
      * @param s the to be deleted publish server, not <code>null</code>.
      */
-    void deleteDatabasePubServer(PSDatabasePubServer s);
+    void deleteDatabasePubServer(PSDatabasePubServer s) throws PSDataServiceException;
     
     /**
      * Determines if the specified publish server contains valid information to connect to its target database.

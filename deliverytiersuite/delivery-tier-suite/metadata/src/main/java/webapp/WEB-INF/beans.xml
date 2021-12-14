@@ -18,7 +18,7 @@
   ~      Burlington, MA 01803, USA
   ~      +01-781-438-9900
   ~      support@percussion.com
-  ~      https://www.percusssion.com
+  ~      https://www.percussion.com
   ~
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   -->
@@ -51,6 +51,8 @@
             one defined wins
          -->
          <list>
+            <value>WEB-INF/perc-security.properties</value>
+            <value>WEB-INF/perc-metadata-services.properties</value>
             <value>file:${catalina.home}/conf/perc/perc-encryption.properties</value>
             <value>file:${catalina.home}/conf/perc/perc-datasources.properties</value>
             <value>file:${catalina.home}/conf/perc/perc-metadata-services.properties</value>
@@ -83,7 +85,7 @@
             <!-- default properties for encryption -->
             <prop key="encryption.type">ENC</prop>
              <!-- default properties for Spring Security -->
-             <prop key="ContentSecurityPolicy">default-src 'self' *;</prop>
+             <prop key="contentSecurityPolicy">default-src 'self' *;</prop>
            <!--  Limit for metadata queries DDOS protection -->
             <prop key="query.limit">500</prop>
             <!--  Blog post visit scheduler properties -->
@@ -140,7 +142,7 @@
 
    <bean id="visitService" class="com.percussion.delivery.metadata.impl.PSBlogPostVisitService"
          autowire="constructor">
-         <constructor-arg type="Integer" value="${blogpost.scheduler.interval}" index="2" />
+         <constructor-arg type="java.lang.Integer" value="${blogpost.scheduler.interval}" index="2" />
    </bean>
    
    <bean id="cookieConsentService" class="com.percussion.delivery.metadata.impl.PSCookieConsentService"
@@ -161,7 +163,7 @@
    <!-- Define MetadataQueryServicee Metadata Indexer Service bean -->
    <bean id="metadataQueryService" class="com.percussion.delivery.metadata.rdbms.impl.PSMetadataQueryService"
          autowire="constructor">
-         <constructor-arg type="Integer" value="${query.limit}" index="1" />
+         <constructor-arg type="java.lang.Integer" value="${query.limit}" index="1" />
       <property name="sessionFactory">
          <ref bean="metadataSessionFactory" />
       </property>
@@ -175,15 +177,4 @@
       autowire="constructor">
    </bean>
 
-  <bean id="tenantAuthorizationFilter" class="com.percussion.delivery.multitenant.PSTenantSecurityFilter">
-   	<constructor-arg index="0"><null/></constructor-arg>
-   	<constructor-arg index="1"><null/></constructor-arg>
-   </bean>
-
- <!--  <bean id="metadataLiquibase"
-         class="liquibase.integration.spring.SpringLiquibase">
-      <property name="dataSource" ref="percDataSource" />
-      <property name="changeLog" value="classpath:liquibase-diff-latest.xml" />
-   </bean>
-   -->
 </beans>

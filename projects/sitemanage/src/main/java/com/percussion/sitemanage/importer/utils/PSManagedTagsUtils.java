@@ -17,23 +17,23 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.sitemanage.importer.utils;
+
+import org.jsoup.nodes.Comment;
+import org.jsoup.nodes.Element;
+
+import java.util.List;
+import java.util.regex.Pattern;
 
 import static java.util.Arrays.asList;
 import static org.apache.commons.lang.StringUtils.equalsIgnoreCase;
 import static org.apache.commons.lang.StringUtils.isBlank;
 import static org.apache.commons.lang.StringUtils.isNotBlank;
 import static org.apache.commons.lang.Validate.notNull;
-
-import java.util.List;
-import java.util.regex.Pattern;
-
-import org.jsoup.nodes.Comment;
-import org.jsoup.nodes.Element;
 
 /**
  * @author Santiago M. Murchio
@@ -187,7 +187,7 @@ public class PSManagedTagsUtils
         notNull(docHead);
         notNull(tag);
         
-        Comment commentedTag = new Comment(tag.toString(), "http://");
+        Comment commentedTag = new Comment(tag.toString());
         docHead.appendChild(commentedTag);
         tag.remove();
     }

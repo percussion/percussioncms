@@ -17,12 +17,13 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.share.async.impl;
 
+import com.percussion.foldermanagement.service.IPSFolderService;
 import com.percussion.share.async.IPSAsyncJob;
 import com.percussion.share.async.IPSAsyncJobFactory;
 import com.percussion.share.async.IPSAsyncJobListener;
@@ -42,7 +43,7 @@ public class PSAsyncJobService implements IPSAsyncJobService, IPSAsyncJobListene
 {
     private IPSAsyncJobFactory m_jobFactory;
     
-    private ConcurrentMap<Long, IPSAsyncJob> m_jobMap = new ConcurrentHashMap<Long, IPSAsyncJob>();
+    private ConcurrentMap<Long, IPSAsyncJob> m_jobMap = new ConcurrentHashMap<>();
     
     private final AtomicLong m_jobIdCounter = new AtomicLong();
 
@@ -54,8 +55,7 @@ public class PSAsyncJobService implements IPSAsyncJobService, IPSAsyncJobListene
     }
     
     @Override
-    public long startJob(String jobType, Object config)
-    {
+    public long startJob(String jobType, Object config) throws IPSFolderService.PSWorkflowNotFoundException {
         IPSAsyncJob job = m_jobFactory.getJob(jobType);
         long jobId = m_jobIdCounter.incrementAndGet();
         job.setId(jobId);
@@ -98,8 +98,9 @@ public class PSAsyncJobService implements IPSAsyncJobService, IPSAsyncJobListene
     public void cancelJob(long jobId)
     {
         IPSAsyncJob job = m_jobMap.get(jobId);
-        if (job == null)
+        if (job == null) {
             return;
+        }
         
         // cancel the job
         job.cancelJob();
@@ -114,8 +115,10 @@ public class PSAsyncJobService implements IPSAsyncJobService, IPSAsyncJobListene
            }
            catch (InterruptedException e)
            {
-              if (job.isCompleted())
-                 break;
+               Thread.currentThread().interrupt();
+              if (job.isCompleted()) {
+                  break;
+              }
            }
         }
 
@@ -131,8 +134,9 @@ public class PSAsyncJobService implements IPSAsyncJobService, IPSAsyncJobListene
     public void jobCompleted(long jobId)
     {
         IPSAsyncJob job = m_jobMap.get(jobId);
-        if (job == null)
+        if (job == null) {
             return;
+        }
         
         // remove self as listener
         job.removeJobListener(this);        
@@ -162,8 +166,9 @@ public class PSAsyncJobService implements IPSAsyncJobService, IPSAsyncJobListene
     {
         for (Entry<Long, IPSAsyncJob> entry : m_jobMap.entrySet())
         {
-            if (entry.getValue().isDiscarded())
+            if (entry.getValue().isDiscarded()) {
                 m_jobMap.remove(entry.getKey());
+            }
         }
     }
 

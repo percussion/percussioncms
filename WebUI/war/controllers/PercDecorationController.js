@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -40,7 +40,7 @@
      * applied to allElements in that particular view, e.g., perc-widget-puff, perc-region-puff
      *
      * @param selectionClasses (String) space separated list of CSS classes to be
-     * applied to allElements when a widget or region is selected, e.g., perc-widget-selected, perc-region-selected
+     * applied to allElements when a widget or region is active, e.g., perc-widget-active, perc-region-active
      * 
      * @param menuItems (array of Objects) array of menus that decorate a the top right of a widget or region DIV
      * when you select it. Format is as follows:
@@ -71,11 +71,11 @@
 	var _dblclickItem;
 	$.each( menuItems, function() {
 		var name = this.name;
-		if (name == 'edit' || name == 'configure' || this.tooltip == 'Configure region')
+		if (name === 'edit' || name === 'configure' || this.tooltip === 'Configure region')
 		{
         
 			_dblclickItem = this;
-			return;
+
 		}
 	} );
 
@@ -90,7 +90,7 @@
             setOtherDecorator : setOtherDecorator,
             removeDecorations : removeDecorations,
             addClicks: addClicks
-        }
+        };
 
         function setOtherDecorator(decorator) {
             otherDecorator = decorator;
@@ -113,8 +113,8 @@
 
         function visible( isVisible )
         {
-            if( typeof isVisible == 'boolean') {
-                if( isVisible != _visible ) {
+            if( typeof isVisible === 'boolean') {
+                if( isVisible !== _visible ) {
                     _visible = isVisible;
                 }
             }
@@ -123,7 +123,7 @@
 
         function addClicks() {
             
-            allElements().unbind('click.decorate').bind( 'click.decorate', function(evt) {
+            allElements().off('click.decorate').on( 'click.decorate', function(evt) {
                 
                 // unselect the other decorator if this is selected
                 if(otherDecorator != null)
@@ -153,7 +153,7 @@
                 var checkLock = $(this).hasClass('perc-locked');
                 if(!checkLock)
                 {    
-                    $(this).unbind('dblclick.decorate').bind( 'dblclick.decorate', function(evt) {
+                    $(this).off('dblclick.decorate').on( 'dblclick.decorate', function(evt) {
                        evt.stopPropagation();
                        if ( _dblclickItem )
                        {
@@ -177,7 +177,7 @@
 
         function removeClicks()
         {
-            allElements().unbind( '.decorate' );
+            allElements().off( '.decorate' );
         }
 
         function addDecorations()
@@ -214,7 +214,7 @@
                 $.each( menuItems, function()
                 {
                     //Custom menuItem for widgetType. undefined this.widgetType means all widgets.
-                    if(typeof(this.widgetType) == "undefined" || this.widgetType == elem.attr("widgetdefid"))
+                    if(typeof(this.widgetType) === 'undefined' || this.widgetType === elem.attr("widgetdefid"))
                         addMenuItem( elem, menu, this );
                 });
             }
@@ -231,15 +231,15 @@
 
              //If the img is function then the gets the img src by calling it by passing the elem, otherwise treats it 
              //as the img src.
-             var iconSrc = $.isFunction(item.img)?item.img(elem):item.img;
+             var iconSrc = typeof item.img === "function" ?item.img(elem):item.img;
 
              // if the icon is null then do not add the menu to the item
-             if(iconSrc == null)
+             if(iconSrc === null)
                 return;
              
-             var isInactive = iconSrc.indexOf("Inactive", iconSrc.length - "Inactive".length) !== -1     
+             var isInactive = iconSrc.indexOf("Inactive", iconSrc.length - "Inactive".length) !== -1;     
 
-             var tooltip = $.isFunction(item.tooltip)?item.tooltip(elem):item.tooltip;
+             var tooltip = typeof item.tooltip === "function" ?item.tooltip(elem):item.tooltip;
              var normalImg = iconSrc + ".png"; 
              var overImg = iconSrc + "Over.png"; 
              var icon = $("<img src='"+ normalImg +"'/>")
@@ -248,14 +248,14 @@
                 .attr("title", tooltip); 
              if(isInactive)
                 icon.css("cursor", "default");     
-             icon.click( function()
+             icon.on("click", function()
              {
                  item.callback( elem );
              });
-             icon.bind("mouseenter", function(){
+             icon.on("mouseenter", function(){
                 $(this).attr("src", overImg);
              }).
-                bind("mouseleave", function(){
+                on("mouseleave", function(){
                    $(this).attr("src", normalImg);
                 });
              menu.append( icon );

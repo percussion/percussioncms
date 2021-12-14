@@ -17,18 +17,18 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.utils.jsr170;
 
-import java.io.InputStream;
-import java.util.Calendar;
-
 import javax.jcr.PropertyType;
 import javax.jcr.RepositoryException;
 import javax.jcr.ValueFormatException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Calendar;
 
 /**
  * Represents a long integer value
@@ -76,7 +76,11 @@ public class PSLongValue extends PSBaseValue<Long>
    public InputStream getStream() throws IllegalStateException,
          RepositoryException
    {
-      return PSValueConverter.convertToStream(getString());
+      try(InputStream io = PSValueConverter.convertToStream(getString())) {
+         return io;
+      } catch (IOException e) {
+         throw new IllegalStateException("Error reading getString()");
+      }
    }
 
    public long getLong() throws ValueFormatException, IllegalStateException,

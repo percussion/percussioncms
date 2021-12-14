@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -49,7 +49,7 @@
         }
 
         // A snippet to adjust the frame size on resizing the window.
-        $(window).resize(function() {
+        $(window).on("resize",function() {
             fixIframeHeight();
             fixTemplateHeight();
         });
@@ -76,7 +76,7 @@
 
         function init() {
             resetRoleDetails();
-            $("#perc-roles-edit-role-button").unbind().click(function(){
+            $("#perc-roles-edit-role-button").off("click").on("click", function(evt){
                 editingRole = true;
                 controller.editSelectedRole();
                 disableButtons();
@@ -84,16 +84,23 @@
             });
 
             //Bind Add Users to Role event
-            $(".perc-roles-addusers-button").unbind().click(addUsers);
+            $(".perc-roles-addusers-button").off("click").on("click",
+                function(evt){
+                    addUsers(evt);
+                });
             //Bind remove Users from Role event
-            $(".perc-roles-removeusers-button").unbind().click(removeUsers);
+            $(".perc-roles-removeusers-button").off("click").on("click",
+                function(evt){
+                    removeUsers(evt);
+                });
 
             //Bind Save event
-            $("#perc-roles-save").unbind().click(function(){
+            $("#perc-roles-save").off("click").on("click", function(evt){
                 save();
             });
+
             //Bind Cancel event
-            $("#perc-roles-cancel").unbind().click(function(){
+            $("#perc-roles-cancel").off().on("click", function(evt){
                 controller.cancel();
             });
 
@@ -111,20 +118,20 @@
             $.PercDataList.init(container, config);
         }
 
-        function addUsers(){
-            var assignedUsers = new Array();
+        function addUsers(event){
+            var assignedUsers = [];
             $(".perc-roles-assigned-users-list span").each(function() {
                 assignedUsers.push($(this).html());
             });
             controller.getAvailableUsers(assignedUsers);
         }
 
-        function removeUsers(){
+        function removeUsers(event){
             if (!addingRole){
                 if (!deletingRole) {
                     deletingRole = true;
-                    var remainUsers = new Array();
-                    var selectedUsers = new Array();
+                    var remainUsers = [];
+                    var selectedUsers = [];
                     //Get a list of selected users and the remaining.
                     $(".perc-roles-assigned-users-list li").each(function() {
                         var userRow = $(this);
@@ -172,59 +179,59 @@
         }
 
         function showSelectedRoleEditor() {
-            if (controller.getSelectedRole() != "Admin" && controller.getSelectedRole() != "Designer"){
+            if (controller.getSelectedRole() !== "Admin" && controller.getSelectedRole() !== "Designer"){
                 $("#perc-roles-name-field")
                     .removeClass("perc-roles-field-readonly")
-                    .removeAttr("readonly")
-                    .change(function() {
+                    .prop("readonly",false)
+                    .on("change",function() {
                         dirtyController.setDirty(true, "role");
                     });
             }
 
             $("#perc-roles-description-field")
                 .removeClass("perc-roles-field-readonly")
-                .removeAttr("readonly")
+                .prop("readonly",false)
                 .attr("style", "height: 55px;width: 100%;")
-                .change(function() {
+                .on("change",function() {
                     dirtyController.setDirty(true, "role");
                 });
             $("#perc-roles-description-label").show();
 
             $("#perc-roles-homepage-field")
                 .show()
-                .change(function() {
+                .on("change",function() {
                     dirtyController.setDirty(true, "role");
                 });
             $("#perc-roles-homepage-label").show();
             $("#perc-roles-homepage-field-readonly").hide();
             $("#perc-roles-edit-role-button").hide();
             $("#perc-role-save-cancel-block").show();
-            $("#perc-roles-description-field").focus();
+            $("#perc-roles-description-field").trigger("focus");
         }
 
         function showNewRoleEditor() {
             $("#perc-roles-name-field")
                 .removeClass("perc-roles-field-readonly")
-                .removeAttr("readonly")
+                .prop("readonly",false)
                 .val("")
-                .focus()
-                .change(function() {
+                .trigger("focus")
+                .on("change",function() {
                     dirtyController.setDirty(true, "role");
                 });
             $("#perc-roles-name-label").addClass("perc-required-field");
             $("#perc-roles-description-field")
                 .removeClass("perc-roles-field-readonly")
-                .removeAttr("readonly")
+                .prop("readonly",false)
                 .attr("style", "height: 55px;width: 100%;")
                 .val("")
-                .change(function() {
+                .on("change",function() {
                     dirtyController.setDirty(true, "role");
                 });
             $("#perc-roles-description-label").show();
 
             $("#perc-roles-homepage-field")
                 .show()
-                .change(function() {
+                .on("change",function() {
                     dirtyController.setDirty(true, "role");
                 }).val("Home");
             $("#perc-roles-homepage-label").show();
@@ -275,7 +282,10 @@
                     liUser.find("span").css("color", "#000000");
                 }
                 else{
-                    liUser.click(selectUser);
+                    liUser.on("click",
+                        function(evt){
+                            selectUser.call(this,[evt]);
+                        });
                 }
                 ulUsers.append(liUser);
             }
@@ -366,7 +376,7 @@
             if (editingRole){
                 $(".perc-roles-addusers-button")
                     .addClass("perc-item-disabled")
-                    .unbind();
+                    .off();
                 disableRemoveUsers();
             }
         }
@@ -375,21 +385,25 @@
             $.PercDataList.enableButtons(container);
             $(".perc-roles-addusers-button")
                 .removeClass("perc-item-disabled")
-                .unbind()
-                .click(addUsers);
+                .off("click")
+                .on("click", function(evt){
+                    addUsers(evt);
+                });
         }
 
         function enableRemoveUsers(){
             $(".perc-roles-removeusers-button")
                 .removeClass("perc-item-disabled")
-                .unbind()
-                .click(removeUsers);
+                .off("click")
+                .on("click", function(evt){
+                    removeUsers(evt);
+                });
         }
 
         function disableRemoveUsers(){
             $(".perc-roles-removeusers-button")
                 .addClass("perc-item-disabled")
-                .unbind();
+                .off();
         }
 
         function save() {
@@ -399,8 +413,8 @@
                 assignedUsers.push($(this).html());
             });
 
-            var rolename  = $.trim($("#perc-roles-name-field").val());
-            var origRoleName  = $.trim($("#perc-orig-roles-name-field").val());
+            var rolename  = $("#perc-roles-name-field").val().trim();
+            var origRoleName  = $("#perc-orig-roles-name-field").val().trim();
 
             var description = $("#perc-roles-description-field").val();
             var homepage = $("#perc-roles-homepage-field").val();
@@ -418,7 +432,7 @@
                 {
                     controller.updateListOfRoles(function()
                     {
-                        $("#perc-roles-list [data-id='perc-item-id-0']").click();
+                        $("#perc-roles-list [data-id='perc-item-id-0']").trigger("click");
                     });
                 }
             });

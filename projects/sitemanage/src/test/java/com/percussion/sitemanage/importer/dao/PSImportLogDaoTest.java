@@ -17,23 +17,26 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.sitemanage.importer.dao;
 
+import com.percussion.error.PSExceptionUtils;
+import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.share.spring.PSSpringWebApplicationContextUtils;
 import com.percussion.sitemanage.importer.data.PSImportLogEntry;
+import com.percussion.utils.testing.IntegrationTest;
+import org.apache.cactus.ServletTestCase;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import com.percussion.utils.testing.IntegrationTest;
-import org.apache.cactus.ServletTestCase;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 /**
  * @author JaySeletz
@@ -42,6 +45,8 @@ import org.junit.experimental.categories.Category;
 @Category(IntegrationTest.class)
 public class PSImportLogDaoTest extends ServletTestCase
 {
+
+    private static final Logger log = LogManager.getLogger(PSImportLogDaoTest.class);
     
     @Override
     protected void setUp() throws Exception
@@ -131,8 +136,10 @@ public class PSImportLogDaoTest extends ServletTestCase
             PSImportLogEntry found = dao.findLogEntryById(entry1.getLogEntryId());
             assertNotNull(found);
             assertEquals(entry1.getLogEntryId(), found.getLogEntryId());
-        }
-        finally
+        } catch (IPSGenericDao.SaveException e) {
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+        } finally
         {
             // clean up
             if (allentries != null && !allentries.isEmpty())

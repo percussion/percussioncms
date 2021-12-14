@@ -199,7 +199,7 @@ public abstract class RxModel
     * Map containing persistent properties and their values.  Never
     * <code>null</code>, may be empty.
     */
-   private Map<String, Object> m_properties = new HashMap<String, Object>();
+   private Map<String, Object> m_properties = new HashMap<>();
    
    /**
     * See {@link #getPanel()}, {@link #setPanel(RxIAPanel)}.

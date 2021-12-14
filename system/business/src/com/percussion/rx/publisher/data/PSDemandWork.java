@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -25,10 +25,11 @@ package com.percussion.rx.publisher.data;
 
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.types.PSPair;
+import org.apache.commons.lang.builder.EqualsBuilder;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
-import org.apache.commons.lang.builder.EqualsBuilder;
 
 /**
  * Represents a single unit of work.
@@ -48,7 +49,7 @@ public class PSDemandWork
     * content id.
     */
    private final List<PSPair<IPSGuid, IPSGuid>> m_content =
-         new ArrayList<PSPair<IPSGuid, IPSGuid>>();
+         new ArrayList<>();
 
    /**
     * The request that this work is associated with. Set when the work is
@@ -72,7 +73,7 @@ public class PSDemandWork
       {
          throw new IllegalArgumentException("contentitem may not be null");
       }
-      m_content.add(new PSPair<IPSGuid, IPSGuid>(folderid, contentitem));
+      m_content.add(new PSPair<>(folderid, contentitem));
    }
 
    /**

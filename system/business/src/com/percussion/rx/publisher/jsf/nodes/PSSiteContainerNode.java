@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -32,15 +32,14 @@ import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.services.sitemgr.IPSSiteManager;
 import com.percussion.services.sitemgr.PSSiteManagerLocator;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
  * This node is the primary container of site items for the design view as well
@@ -64,8 +63,8 @@ public class PSSiteContainerNode extends PSEditableNodeContainer
    /**
     * The logger for the site container node.
     */
-   private static final Log ms_log =
-         LogFactory.getLog(PSSiteContainerNode.class);
+   private static final Logger ms_log =
+         LogManager.getLogger(PSSiteContainerNode.class);
 
    /**
     * Ctor.
@@ -80,8 +79,7 @@ public class PSSiteContainerNode extends PSEditableNodeContainer
    }
 
    @Override
-   public List<? extends PSNodeBase> getChildren()
-   {
+   public List<? extends PSNodeBase> getChildren() throws PSNotFoundException {
       // synchronize this operation to prevent loading children more than once
       // from multiple requests/threads. This may happen when browser user
       // quickly clicking the same link more than one. 
@@ -123,7 +121,7 @@ public class PSSiteContainerNode extends PSEditableNodeContainer
                }
             }
          }
-         catch (PSCatalogException e)
+         catch (PSCatalogException | PSNotFoundException e)
          {
             ms_log.error("Problem loading children for sites", e);
          }
@@ -135,8 +133,7 @@ public class PSSiteContainerNode extends PSEditableNodeContainer
     * Gets all child nodes with one selected node.
     * @return the child nodes, may be <code>null</code> or empty.
     */
-   private List<? extends PSNodeBase> getChildrenWithOneSelected()
-   {
+   private List<? extends PSNodeBase> getChildrenWithOneSelected() throws PSNotFoundException {
       List<? extends PSNodeBase> childList = super.getChildren();
       if (childList == null || childList.isEmpty())
          return childList;
@@ -162,8 +159,7 @@ public class PSSiteContainerNode extends PSEditableNodeContainer
     * @return the site summaries. Never <code>null</code>.
     * @throws PSCatalogException if cataloging fails.
     */
-   private List<IPSCatalogSummary> getSiteSummaries() throws PSCatalogException
-   {
+   private List<IPSCatalogSummary> getSiteSummaries() throws PSCatalogException, PSNotFoundException {
       return getSiteManager().getSummaries(PSTypeEnum.SITE);
    }
 
@@ -191,8 +187,7 @@ public class PSSiteContainerNode extends PSEditableNodeContainer
     * @return the perform action for the site node, which will navigate to the
     * editor.
     */
-   public String createSite()
-   {
+   public String createSite() throws PSNotFoundException {
       IPSSiteManager smgr = getSiteManager();
       IPSSite newsite = smgr.createSite();
       newsite.setName(getUniqueName("Site", false));
@@ -220,7 +215,7 @@ public class PSSiteContainerNode extends PSEditableNodeContainer
    @Override
    public Set<Object> getAllNames()
    {
-      final Set<Object> names = new HashSet<Object>();
+      final Set<Object> names = new HashSet<>();
       
       try
       {
@@ -229,7 +224,7 @@ public class PSSiteContainerNode extends PSEditableNodeContainer
             names.add(summary.getName());
          }
       }
-      catch (PSCatalogException e)
+      catch (PSCatalogException | PSNotFoundException e)
       {
          ms_log.error("Problem obtaining site names", e);
       }

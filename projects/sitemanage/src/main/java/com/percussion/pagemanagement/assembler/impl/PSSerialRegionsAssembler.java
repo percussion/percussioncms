@@ -17,18 +17,18 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.pagemanagement.assembler.impl;
-import static com.percussion.util.IPSHtmlParameters.SYS_OVERWRITE_PREVIEW_URL_GEN;
 
 import com.percussion.pagemanagement.assembler.IPSRegionAssembler;
 import com.percussion.pagemanagement.assembler.IPSRegionsAssembler;
 import com.percussion.pagemanagement.assembler.PSMergedRegion;
 import com.percussion.pagemanagement.assembler.PSPageAssemblyContext;
 import com.percussion.pagemanagement.assembler.PSRegionResult;
+import com.percussion.pagemanagement.service.IPSTemplateService;
 import com.percussion.server.PSRequest;
 import com.percussion.services.assembly.IPSAssemblyItem;
 import com.percussion.services.assembly.IPSAssemblyService;
@@ -37,13 +37,13 @@ import com.percussion.services.assembly.PSAssemblyException;
 import com.percussion.services.assembly.PSAssemblyServiceLocator;
 import com.percussion.util.PSSiteManageBean;
 import com.percussion.utils.request.PSRequestInfo;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Collection;
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import static com.percussion.util.IPSHtmlParameters.SYS_OVERWRITE_PREVIEW_URL_GEN;
 
 /**
  * A non-concurrent batch regions assembler.
@@ -60,7 +60,8 @@ public class PSSerialRegionsAssembler implements IPSRegionsAssembler
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log log = LogFactory.getLog(PSSerialRegionsAssembler.class);
+
+    private static final Logger log = LogManager.getLogger(PSSerialRegionsAssembler.class);
 
     public PSSerialRegionsAssembler() {
 
@@ -74,8 +75,7 @@ public class PSSerialRegionsAssembler implements IPSRegionsAssembler
             IPSRegionAssembler regionAssembler, 
             IPSAssemblyItem assemblyItem,
             PSPageAssemblyContext context, 
-            Collection<PSMergedRegion> mergedRegions)
-    {
+            Collection<PSMergedRegion> mergedRegions) throws IPSTemplateService.PSTemplateException, PSAssemblyException {
         // hack pulled in from PSConcurrentRegionsAssembler
         setPreviewUrlGenerator();
         

@@ -17,24 +17,32 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.utils.container.jetty;
 
+import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
+import com.percussion.security.PSEncryptionException;
+import com.percussion.security.PSEncryptor;
 import com.percussion.utils.container.jboss.PSJBossJndiDatasource;
-import com.percussion.utils.security.PSEncryptionException;
-import com.percussion.utils.security.PSEncryptor;
-import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
+import com.percussion.utils.io.PathUtils;
 import com.percussion.utils.xml.PSInvalidXmlException;
+import org.w3c.dom.Element;
 
 import java.util.Properties;
 
-import org.w3c.dom.Element;
-
-import static com.percussion.utils.container.IPSJdbcDbmsDefConstants.*;
+import static com.percussion.utils.container.IPSJdbcDbmsDefConstants.DB_CONNECTION_TEST_QUERY;
+import static com.percussion.utils.container.IPSJdbcDbmsDefConstants.DB_DRIVER_CLASS_NAME_PROPERTY;
+import static com.percussion.utils.container.IPSJdbcDbmsDefConstants.DB_DRIVER_NAME_PROPERTY;
+import static com.percussion.utils.container.IPSJdbcDbmsDefConstants.DB_NAME_PROPERTY;
+import static com.percussion.utils.container.IPSJdbcDbmsDefConstants.DB_RESOURCE_NAME;
+import static com.percussion.utils.container.IPSJdbcDbmsDefConstants.DB_SERVER_PROPERTY;
+import static com.percussion.utils.container.IPSJdbcDbmsDefConstants.PWD_ENCRYPTED_PROPERTY;
+import static com.percussion.utils.container.IPSJdbcDbmsDefConstants.PWD_PROPERTY;
+import static com.percussion.utils.container.IPSJdbcDbmsDefConstants.UID_PROPERTY;
 
 /**
  * Represents a Jetty specific JNDI datasource file.
@@ -74,9 +82,15 @@ public class PSJettyJndiDatasource extends PSJBossJndiDatasource
       {
          this.encrypted = true;
          try{
-            pwd = PSEncryptor.getInstance().decrypt(pwd);
+            pwd = PSEncryptor.decryptString(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),pwd);
          } catch (PSEncryptionException e) {
-            pwd = PSLegacyEncrypter.getInstance().decrypt(pwd, PSLegacyEncrypter.getPartOneKey());
+            pwd = PSLegacyEncrypter.getInstance(
+                    PathUtils.getRxPath().toAbsolutePath().toString().concat(
+                    PSEncryptor.SECURE_DIR)
+            ).decrypt(pwd, PSLegacyEncrypter.getInstance(
+                    PathUtils.getRxPath().toAbsolutePath().toString().concat(
+                            PSEncryptor.SECURE_DIR)
+            ).getPartOneKey(),null);
          }
 
       }

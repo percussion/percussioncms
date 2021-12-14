@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -28,13 +28,13 @@ import com.percussion.extension.IPSResultDocumentProcessor;
 import com.percussion.extension.PSDefaultExtension;
 import com.percussion.extension.PSParameterMismatchException;
 import com.percussion.server.IPSRequestContext;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.w3c.dom.Document;
 
 import java.util.Iterator;
 import java.util.Map;
 import java.util.StringTokenizer;
-
-import org.apache.log4j.Logger;
-import org.w3c.dom.Document;
 
 /**
  * Takes a parameter that contains a delimited string list and
@@ -170,7 +170,7 @@ public class PSParamStringListToMultiParams extends PSDefaultExtension
    /**
     * The logger for this class
     */
-   private static Logger ms_log = Logger.getLogger(
+   private static final Logger ms_log = LogManager.getLogger(
       PSParamStringListToMultiParams.class);
 }
 

@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -29,6 +29,8 @@ import com.percussion.design.objectstore.PSUnknownNodeTypeException;
 import com.percussion.error.PSException;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -51,6 +53,7 @@ import java.util.ResourceBundle;
 public class PSDeployException extends Exception
 {
 
+   private static final Logger log = LogManager.getLogger(PSDeployException.class);
    /**
     * Eclipse was complaining
     */
@@ -179,7 +182,7 @@ public class PSDeployException extends Exception
          m_originalExceptionClass = sTemp;
        
       // get args
-      List<String> argList = new ArrayList<String>();
+      List<String> argList = new ArrayList<>();
       PSXmlTreeWalker tree = new PSXmlTreeWalker(source);
       Element arg = tree.getNextElement(XML_ELEMENT_ARG,
          PSXmlTreeWalker.GET_NEXT_ALLOW_CHILDREN);
@@ -439,7 +442,7 @@ public class PSDeployException extends Exception
       if ( null == e )
          return "";
          
-      StringBuffer errorText   = new StringBuffer();
+      StringBuilder errorText   = new StringBuilder();
 
       int errNo = 1;
       final int maxErrors = 20;

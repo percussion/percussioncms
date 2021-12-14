@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -58,13 +58,14 @@ public class PSSecurityItemsDao implements IPSSecurityItemsDao
     public List<String> getAvailablePrivateKeys()
     {
         List<File> privateKeys;
-        List<String> keyNames = new ArrayList<String>();
+        List<String> keyNames = new ArrayList<>();
 
         try
         {
             privateKeys = fileSystemService.getChildren("/");
-            for (File file : privateKeys)
+            for (File file : privateKeys) {
                 keyNames.add(file.getName());
+            }
         }
         catch (FileNotFoundException e)
         {

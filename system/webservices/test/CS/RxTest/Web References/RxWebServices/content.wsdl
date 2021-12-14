@@ -20,13 +20,16 @@
   ~      Burlington, MA 01803, USA
   ~      +01-781-438-9900
   ~      support@percussion.com
-  ~      https://www.percusssion.com
+  ~      https://www.percussion.com
   ~
   ~     You should have received a copy of the GNU General Public License
   ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
   -->
 
-<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns="urn:www.percussion.com/6.0.0/systemServices" xmlns:flt="urn:www.percussion.com/6.0.0/faults" xmlns:ns3="urn:www.percussion.com/6.0.0/securityServices" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns2="urn:www.percussion.com/6.0.0/assemblyServices" xmlns:con="urn:www.percussion.com/6.0.0/content" xmlns:ns1="urn:www.percussion.com/6.0.0/uiServices" xmlns:com="urn:www.percussion.com/6.0.0/common" name="content" targetNamespace="urn:www.percussion.com/6.0.0/content" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:flt="urn:www.percussion.com/6.0.0/faults"
+                  xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:con="urn:www.percussion.com/6.0.0/content"
+                  xmlns:com="urn:www.percussion.com/6.0.0/common" name="content"
+                  targetNamespace="urn:www.percussion.com/6.0.0/content" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
   <wsdl:types>
     <xsd:schema>
       <xsd:import schemaLocation="../faults.xsd" namespace="urn:www.percussion.com/6.0.0/faults" />

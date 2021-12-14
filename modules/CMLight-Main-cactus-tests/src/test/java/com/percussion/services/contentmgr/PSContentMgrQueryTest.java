@@ -17,11 +17,18 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.services.contentmgr;
+
+import com.percussion.utils.jsr170.PSLongValue;
+import com.percussion.utils.jsr170.PSStringValue;
+import com.percussion.utils.testing.IntegrationTest;
+import org.apache.cactus.ServletTestCase;
+import org.junit.Ignore;
+import org.junit.experimental.categories.Category;
 
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
@@ -29,14 +36,6 @@ import javax.jcr.query.Query;
 import javax.jcr.query.QueryResult;
 import javax.jcr.query.Row;
 import javax.jcr.query.RowIterator;
-
-import com.percussion.utils.testing.IntegrationTest;
-import org.apache.cactus.ServletTestCase;
-import org.junit.Ignore;
-
-import com.percussion.utils.jsr170.PSLongValue;
-import com.percussion.utils.jsr170.PSStringValue;
-import org.junit.experimental.categories.Category;
 
 /**
  * Test jcr query facilities

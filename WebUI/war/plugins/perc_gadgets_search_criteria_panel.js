@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -55,7 +55,7 @@
             $.each(criteriaObj, function(index, value) {
                 var fieldName = value["name"];
                 var fieldValue = value["value"];
-                if (fieldValue != "@all")
+                if (fieldValue !== "@all")
                     panelContent +=     '<span class="perc-search-criteria-panel-content-spans" id="perc-search-criteria-panel-' + index + '">' + labels[index] +' = <span class="perc-search-criteria-panel-values-spans" id="perc-search-criteria-panel-' + index + '-value">' + fieldName + ';</span></span>&nbsp;';
             });
             panelContent += '    </div>';
@@ -63,7 +63,7 @@
 
        panelContent += '</div>';       
 
-       if (previousPanel.length == 0)
+       if (previousPanel.length === 0)
        {
            container.append(panelContent);
        }
@@ -75,19 +75,19 @@
            $(container).find(".perc-search-criteria-panel-content-spans:last .perc-search-criteria-panel-values-spans").html(
                 $(container).find(".perc-search-criteria-panel-content-spans:last .perc-search-criteria-panel-values-spans").html().slice(0,-1));
        
-       container.find("#perc-search-criteria-panel-content-select-filters").click(function()
+       container.find("#perc-search-criteria-panel-content-select-filters").on("click",function()
        {
-            if ($.isFunction(config.selectFiltersCallback))
+            if (typeof config.selectFiltersCallback === "function")
             {
                 config.selectFiltersCallback();
             }
        });
        
-       if ($.isFunction(config.refreshSearchCallback))
+       if (typeof config.refreshSearchCallback === "function")
        {
-           container.find("#perc-search-criteria-panel-content-refresh-search").click(function()
+           container.find("#perc-search-criteria-panel-content-refresh-search").on("click",function()
            {
-                if ($.isFunction(config.refreshSearchCallback))
+                if ( typeof config.refreshSearchCallback === "function")
                 {
                     config.refreshSearchCallback();
                 }
@@ -99,7 +99,7 @@
     {
         var flag = true;
         $.each(criteriaObj, function(index, value) {
-        if (value["value"] != "@all")
+        if (value["value"] !== "@all")
             flag = false;
         });
         

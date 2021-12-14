@@ -17,33 +17,11 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.rx.delivery.impl;
-
-import static org.apache.commons.lang.Validate.notEmpty;
-import static org.apache.commons.lang.Validate.notNull;
-
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.percussion.rx.delivery.IPSDeliveryErrors;
 import com.percussion.rx.delivery.IPSDeliveryHandler;
@@ -55,7 +33,6 @@ import com.percussion.rx.delivery.PSDeliveryException;
 import com.percussion.rx.delivery.data.PSDeliveryResult;
 import com.percussion.rx.publisher.IPSPublisherJobStatus.ItemState;
 import com.percussion.rx.publisher.IPSRxPublisherService;
-import com.percussion.rx.publisher.IPSRxPublisherServiceInternal;
 import com.percussion.rx.publisher.PSRxPubServiceInternalLocator;
 import com.percussion.rx.publisher.PSRxPublisherServiceLocator;
 import com.percussion.rx.publisher.data.PSPubItemStatus;
@@ -74,6 +51,28 @@ import com.percussion.services.sitemgr.PSSiteManagerLocator;
 import com.percussion.util.PSPurgableTempFile;
 import com.percussion.util.PSStopwatch;
 import com.percussion.utils.guid.IPSGuid;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+
+import static org.apache.commons.lang.Validate.notEmpty;
+import static org.apache.commons.lang.Validate.notNull;
 
 /**
  * Base delivery handler. This defines a basic mechanism that enables the
@@ -115,7 +114,7 @@ public abstract class PSBaseDeliveryHandler implements IPSDeliveryHandler
    /**
     * Logger.
     */
-   static Log ms_log = LogFactory.getLog(PSBaseDeliveryHandler.class);
+    protected static final Logger ms_log = LogManager.getLogger(PSBaseDeliveryHandler.class);
    
    @Autowired
    private IPSDeliveryManager ms_deliveryManager;
@@ -135,7 +134,6 @@ public abstract class PSBaseDeliveryHandler implements IPSDeliveryHandler
    {
       /**
        * The file to be written, it may be <code>null</code> if
-       * {@link #mi_resultStream} is not <code>null</code>.
        */
       private final PSPurgableTempFile mi_file;
 
@@ -270,7 +268,7 @@ public abstract class PSBaseDeliveryHandler implements IPSDeliveryHandler
             throw new IllegalArgumentException("overrideItem may not be null.");
 
          if (mi_overrideItems == null)
-            mi_overrideItems = new ArrayList<Item>();
+            mi_overrideItems = new ArrayList<>();
 
          // removed the temp file which is the assembled result.
          overrideItem.getFile().delete();
@@ -445,12 +443,12 @@ public abstract class PSBaseDeliveryHandler implements IPSDeliveryHandler
       /**
        * Each item to be delivered has a location and a temp file stored here.
        */
-      public ConcurrentHashMap<String, Item> m_deliveries = new ConcurrentHashMap<String, Item>(8, 0.9f, 1);
+      public ConcurrentHashMap<String, Item> m_deliveries = new ConcurrentHashMap<>(8, 0.9f, 1);
 
       /**
        * Each item to be removed has a location stored in this map.
        */
-      public ConcurrentHashMap<String, Item> m_removals = new ConcurrentHashMap<String, Item>(8, 0.9f, 1);
+      public ConcurrentHashMap<String, Item> m_removals = new ConcurrentHashMap<>(8, 0.9f, 1);
 
       /**
        * Ctor.
@@ -481,7 +479,7 @@ public abstract class PSBaseDeliveryHandler implements IPSDeliveryHandler
     * This map contains the association from a given job id to the job data for
     * the job. Access to this map requires synchronization.
     */
-   protected Map<Long, JobData> m_jobData = new ConcurrentHashMap<Long, JobData>(8, 0.9f, 1);
+   protected Map<Long, JobData> m_jobData = new ConcurrentHashMap<>(8, 0.9f, 1);
 
    /**
     * Deliver a content item.
@@ -893,7 +891,7 @@ public abstract class PSBaseDeliveryHandler implements IPSDeliveryHandler
       {
          throw new IllegalArgumentException("result may not be null");
       }
-      return path.getBytes("UTF8");
+      return path.getBytes(StandardCharsets.UTF_8);
    }
 
    /**
@@ -1042,7 +1040,7 @@ public abstract class PSBaseDeliveryHandler implements IPSDeliveryHandler
       if (ms_log.isDebugEnabled())
          ms_log.debug("Committing buffered files for job " + jobId + " ...");
 
-      Collection<IPSDeliveryResult> rval = new ArrayList<IPSDeliveryResult>();
+      Collection<IPSDeliveryResult> rval = new ArrayList<>();
 
       JobData perJob = m_jobData.get(jobId);
       if (perJob != null)
@@ -1128,7 +1126,7 @@ public abstract class PSBaseDeliveryHandler implements IPSDeliveryHandler
     */
    private Set<String> getParentDirectories(Set<String> filePaths)
    {
-      Set<String> dirLocations = new HashSet<String>();
+      Set<String> dirLocations = new HashSet<>();
       for (String floc : filePaths)
       {
          File f = new File(floc);
@@ -1165,7 +1163,7 @@ public abstract class PSBaseDeliveryHandler implements IPSDeliveryHandler
    {
       PSPublishingJob job = PSRxPubServiceInternalLocator.getRxPublisherService().getPublishingJob(jobId);
 
-      Collection<IPSDeliveryResult> rval = new ArrayList<IPSDeliveryResult>();
+      Collection<IPSDeliveryResult> rval = new ArrayList<>();
       for (String location : results.keySet())
       {
          if (job.isCanceled())
@@ -1209,7 +1207,7 @@ public abstract class PSBaseDeliveryHandler implements IPSDeliveryHandler
       if (item.getOverrideItems() == null)
          return Collections.singletonList(result);
 
-      List<IPSDeliveryResult> reList = new ArrayList<IPSDeliveryResult>();
+      List<IPSDeliveryResult> reList = new ArrayList<>();
       reList.add(result);
       String message;
       for (Item override : item.getOverrideItems())
@@ -1254,7 +1252,7 @@ public abstract class PSBaseDeliveryHandler implements IPSDeliveryHandler
    protected Collection<IPSDeliveryResult> failAll(long jobId, String message)
    {
       JobData data = m_jobData.get(jobId);
-      Collection<IPSDeliveryResult> results = new ArrayList<IPSDeliveryResult>();
+      Collection<IPSDeliveryResult> results = new ArrayList<>();
       for (Item item : data.m_deliveries.values())
       {
          results.add(getItemResult(Outcome.FAILED, item, jobId, message));
@@ -1346,8 +1344,7 @@ public abstract class PSBaseDeliveryHandler implements IPSDeliveryHandler
       return combineRootAndPath(root, deliveryPath);
    }
 
-   private String getPublishRoot(IPSDeliveryItem result)
-   {
+   private String getPublishRoot(IPSDeliveryItem result) throws PSNotFoundException {
       if (result.getPubServerId() != null)
       {
          try

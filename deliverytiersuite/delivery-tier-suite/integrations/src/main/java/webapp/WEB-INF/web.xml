@@ -18,7 +18,7 @@
   ~      Burlington, MA 01803, USA
   ~      +01-781-438-9900
   ~      support@percussion.com
-  ~      https://www.percusssion.com
+  ~      https://www.percussion.com
   ~
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   -->
@@ -58,22 +58,15 @@
       <url-pattern>/*</url-pattern>
    </filter-mapping>
 
-<filter>
-   <filter-name>ExpiresFilter</filter-name>
-   <filter-class>org.apache.catalina.filters.ExpiresFilter</filter-class>
-   <init-param>
-      <param-name>ExpiresDefault</param-name>
-      <param-value>access plus 5 minutes</param-value>
-   </init-param>
-   <init-param>
-      <param-name>ExpiresExcludedResponseStatusCodes</param-name>
-      <param-value>302, 500, 503</param-value>
-   </init-param>
-</filter>
-<filter-mapping>
-<filter-name>ExpiresFilter</filter-name>
-<url-pattern>/*</url-pattern>
-</filter-mapping>
+    <filter>
+        <filter-name>PSAddResponseHeaderFilter</filter-name>
+        <filter-class>com.percussion.tomcat.filters.PSAddResponseHeaderFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>PSAddResponseHeaderFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
 
    <servlet>
       <servlet-name>Jersey Spring Web Application</servlet-name>
@@ -90,64 +83,8 @@
    </servlet-mapping>
 
    <!-- Security constraints -->
-   <security-constraint>
-      <web-resource-collection>
-         <web-resource-name>Metadata save method</web-resource-name>
-         <url-pattern>/metadata</url-pattern>
-         <http-method>POST</http-method>
-      </web-resource-collection>
-      <auth-constraint>
-         <role-name>deliverymanager</role-name>
-      </auth-constraint>
-      <user-data-constraint>
-         <transport-guarantee>CONFIDENTIAL</transport-guarantee>
-      </user-data-constraint>
-   </security-constraint>
-   <security-constraint>
-      <web-resource-collection>
-         <web-resource-name>Metadata</web-resource-name>
-         <url-pattern>/metadata</url-pattern>
-      </web-resource-collection>
-      <user-data-constraint>
-         <transport-guarantee>NONE</transport-guarantee>
-      </user-data-constraint>
-   </security-constraint>
-   <security-constraint>
-      <web-resource-collection>
-         <web-resource-name>Metadata clean method</web-resource-name>
-         <url-pattern>/metadata/clean</url-pattern>
-      </web-resource-collection>
-      <auth-constraint>
-         <role-name>deliverymanager</role-name>
-      </auth-constraint>
-      <user-data-constraint>
-         <transport-guarantee>CONFIDENTIAL</transport-guarantee>
-      </user-data-constraint>
-   </security-constraint>
-   <security-constraint>
-      <web-resource-collection>
-         <web-resource-name>Metadata delete method</web-resource-name>
-         <url-pattern>/metadata/delete</url-pattern>
-      </web-resource-collection>
-      <auth-constraint>
-         <role-name>deliverymanager</role-name>
-      </auth-constraint>
-      <user-data-constraint>
-         <transport-guarantee>CONFIDENTIAL</transport-guarantee>
-      </user-data-constraint>
-   </security-constraint>
-   <security-constraint>
-      <web-resource-collection>
-         <web-resource-name>Metadata extractor</web-resource-name>
-         <url-pattern>/indexer/*</url-pattern>
-      </web-resource-collection>
-      <auth-constraint>
-         <role-name>deliverymanager</role-name>
-      </auth-constraint>
-      <user-data-constraint>
-         <transport-guarantee>CONFIDENTIAL</transport-guarantee>
-      </user-data-constraint>
-   </security-constraint>
+   <security-constraint/>
+
    <login-config>
       <auth-method>BASIC</auth-method>
       <realm-name>metadata</realm-name>

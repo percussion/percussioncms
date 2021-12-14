@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -39,12 +39,16 @@ import com.percussion.services.workflow.data.PSAssignmentTypeEnum;
 import com.percussion.services.workflow.data.PSContentApproval;
 import com.percussion.services.workflow.data.PSState;
 import com.percussion.services.workflow.data.PSTransition;
+import com.percussion.services.workflow.data.PSTransition.PSWorkflowCommentEnum;
 import com.percussion.services.workflow.data.PSTransitionRole;
 import com.percussion.services.workflow.data.PSWorkflow;
-import com.percussion.services.workflow.data.PSTransition.PSWorkflowCommentEnum;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.workflow.PSWorkFlowUtils;
+import org.apache.commons.collections.ListUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -53,11 +57,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import org.apache.commons.collections.ListUtils;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
  * This class provides help in calculating available workflow actions for one or
@@ -203,7 +202,7 @@ public class PSWorkflowActionsHelper
          }
       }
 
-      List<PSMenuAction> results = new ArrayList<PSMenuAction>();
+      List<PSMenuAction> results = new ArrayList<>();
       if (result != null)
          results.add(result);
       
@@ -300,7 +299,7 @@ public class PSWorkflowActionsHelper
    @SuppressWarnings("unchecked")
    public List<PSMenuAction> getTranstionActions()
    {
-      List<PSMenuAction> results = new ArrayList<PSMenuAction>();
+      List<PSMenuAction> results = new ArrayList<>();
       
       IPSWorkflowService svc = PSWorkflowServiceLocator.getWorkflowService();
       boolean isFirst = true;
@@ -338,7 +337,7 @@ public class PSWorkflowActionsHelper
     */
    private List<PSMenuAction> removeAdhocActions(List<PSMenuAction> actions)
    {
-      List<PSMenuAction> results = new ArrayList<PSMenuAction>();
+      List<PSMenuAction> results = new ArrayList<>();
       
       for (PSMenuAction action : actions)
       {
@@ -365,7 +364,7 @@ public class PSWorkflowActionsHelper
    private List<PSMenuAction> getTransitionActions(IPSWorkflowService svc, 
       PSItemInfo info)
    {
-      List<PSMenuAction> results = new ArrayList<PSMenuAction>();
+      List<PSMenuAction> results = new ArrayList<>();
       
       // no access if 
       if (!info.hasAssigneeAccess())
@@ -523,7 +522,7 @@ public class PSWorkflowActionsHelper
       PSWorkflow wf = svc.loadWorkflow(info.getWorkflowId());
       Set<Integer> roleIds = wf.getRoleIds(m_userRoles);
       List<PSTransitionRole> transRoles = trans.getTransitionRoles();
-      Set<Integer> actingRoles = new HashSet<Integer>();
+      Set<Integer> actingRoles = new HashSet<>();
       
       for (PSTransitionRole transRole : transRoles)
       {
@@ -558,7 +557,7 @@ public class PSWorkflowActionsHelper
     * A list of item information objects representing the items supplied during
     * construction, never <code>null</code> or modified after that.
     */
-   private List<PSItemInfo> m_itemInfoList = new ArrayList<PSItemInfo>();
+   private List<PSItemInfo> m_itemInfoList = new ArrayList<>();
 
    /**
     * The user name supplied during construction, never <code>null</code>, empty 
@@ -778,7 +777,7 @@ public class PSWorkflowActionsHelper
    /**
     * Commons logger, never <code>null</code>.
     */
-   static Log ms_logger = LogFactory.getLog(PSWorkflowActionsHelper.class);   
+    private static final Logger ms_logger = LogManager.getLogger(PSWorkflowActionsHelper.class);
    
    /**
     * Default properties to use for action, never <code>null</code>.

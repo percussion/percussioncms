@@ -17,25 +17,17 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.sitemanage.importer.helpers.impl;
 
-import static com.percussion.share.spring.PSSpringWebApplicationContextUtils.getWebApplicationContext;
-import static com.percussion.sitemanage.importer.utils.PSManagedTagsUtils.commentTag;
-import static com.percussion.sitemanage.importer.utils.PSManagedTagsUtils.isManagedJSReference;
-
-import static java.util.Arrays.asList;
-
-import static org.apache.commons.lang.StringUtils.isBlank;
-import static org.springframework.util.CollectionUtils.isEmpty;
-
 import com.percussion.assetmanagement.data.PSAsset;
 import com.percussion.assetmanagement.data.PSAssetWidgetRelationship;
 import com.percussion.assetmanagement.service.IPSAssetService;
 import com.percussion.design.objectstore.PSRelationship;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.itemmanagement.service.IPSItemWorkflowService;
 import com.percussion.itemmanagement.service.impl.PSWorkflowHelper;
 import com.percussion.pagemanagement.data.IPSHtmlMetadata;
@@ -52,6 +44,7 @@ import com.percussion.server.PSRequest;
 import com.percussion.services.guidmgr.data.PSLegacyGuid;
 import com.percussion.share.service.IPSIdMapper;
 import com.percussion.share.service.IPSNameGenerator;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.sitemanage.data.PSPageContent;
 import com.percussion.sitemanage.data.PSSiteImportCtx;
 import com.percussion.sitemanage.error.PSSiteImportException;
@@ -61,15 +54,10 @@ import com.percussion.util.IPSHtmlParameters;
 import com.percussion.util.PSSiteManageBean;
 import com.percussion.utils.request.PSRequestInfo;
 import com.percussion.utils.types.PSPair;
-
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jsoup.nodes.Attribute;
 import org.jsoup.nodes.Attributes;
 import org.jsoup.nodes.Document;
@@ -78,9 +66,18 @@ import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Component;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static com.percussion.share.spring.PSSpringWebApplicationContextUtils.getWebApplicationContext;
+import static com.percussion.sitemanage.importer.utils.PSManagedTagsUtils.commentTag;
+import static com.percussion.sitemanage.importer.utils.PSManagedTagsUtils.isManagedJSReference;
+import static java.util.Arrays.asList;
+import static org.apache.commons.lang.StringUtils.isBlank;
+import static org.springframework.util.CollectionUtils.isEmpty;
 
 /**
  * @author LucasPiccoli
@@ -88,6 +85,9 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
  */
 
 class PageSaveRunner implements Runnable {
+
+	private static final Logger log = LogManager.getLogger(PageSaveRunner.class);
+
 	private static final String STATUS_MESSAGE = "OUCH:";
 
 	private Map<String, Object> requestInfoMap;
@@ -144,11 +144,8 @@ class PageSaveRunner implements Runnable {
         }
         catch (Exception e)
         {
+			context.getLogger().appendLogMessage(PSLogEntryType.ERROR, STATUS_MESSAGE, PSExceptionUtils.getMessageForLog(e));
             getSiteQueue(siteId).removeImportingId(id);
-            StringWriter sw = new StringWriter();
-            e.printStackTrace(new PrintWriter(sw));
-            String exceptionAsString = sw.toString();
-            context.getLogger().appendLogMessage(PSLogEntryType.ERROR, STATUS_MESSAGE, exceptionAsString);
         }
         finally
         {
@@ -201,7 +198,7 @@ public class PSPageExtractorHelper extends PSGenericMetadataExtractorHelper {
 
 	private IPSItemWorkflowService itemWorkflowService;
 
-	private static HashMap<Long, PSTemplate> unassignedTemplateCache = new HashMap<Long, PSTemplate>();
+	private static HashMap<Long, PSTemplate> unassignedTemplateCache = new HashMap<>();
 
 	@Autowired
 	public PSPageExtractorHelper(IPSPageService pageService,
@@ -252,18 +249,15 @@ public class PSPageExtractorHelper extends PSGenericMetadataExtractorHelper {
 							"The page body was successfully imported into HTML widget.");
 			endTimer();
 		} catch (Exception e) {
-			StringWriter sw = new StringWriter();
-			e.printStackTrace(new PrintWriter(sw));
-			String exceptionAsString = sw.toString();
 			context.getLogger().appendLogMessage(PSLogEntryType.ERROR,
-					STATUS_MESSAGE, exceptionAsString);
+					STATUS_MESSAGE, PSExceptionUtils.getMessageForLog(e));
 		}
 	}
 
 	public void doPageExtraction(PSPageContent pageContent,
 			PSSiteImportCtx context, PSPage targetPage,
 			IPSPageCatalogService pageCatalogService)
-			throws PSSiteImportException {
+			throws PSSiteImportException, PSDataServiceException, IPSItemWorkflowService.PSItemWorkflowServiceException {
 		if (extractMetaData) {
 			doExtractMetaData(pageContent, context);
 		} else {
@@ -287,12 +281,23 @@ public class PSPageExtractorHelper extends PSGenericMetadataExtractorHelper {
 		PSAsset localAsset = createHTMLLocalContent(extractedBodyHtml,
 				itemWorkflowService, assetService, nameGenerator);
 
-		PSPair<PSWidgetItem, PSAsset> widgetAssetPair = new PSPair<PSWidgetItem, PSAsset>(
+		PSPair<PSWidgetItem, PSAsset> widgetAssetPair = new PSPair<>(
 				widgets.get(0), localAsset);
 
-		itemWorkflowService.checkOut(targetPage.getId());
+		try {
+			itemWorkflowService.checkOut(targetPage.getId());
+		} catch (IPSItemWorkflowService.PSItemWorkflowServiceException e) {
+			log.warn(PSExceptionUtils.getMessageForLog(e));
+			log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+		}
 		addContentToWidgetOnPage(targetPage, widgetAssetPair, assetService);
-		itemWorkflowService.checkIn(targetPage.getId());
+
+		try {
+			itemWorkflowService.checkIn(targetPage.getId());
+		} catch (IPSItemWorkflowService.PSItemWorkflowServiceException e) {
+			log.warn(PSExceptionUtils.getMessageForLog(e));
+			log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+		}
 
 		importPageIfNecessary(context, pageCatalogService, pageImport);
 	}
@@ -363,7 +368,7 @@ public class PSPageExtractorHelper extends PSGenericMetadataExtractorHelper {
 
 	public static synchronized void importPageIfNecessary(
 			PSSiteImportCtx context, IPSPageCatalogService pageCatalogService,
-			boolean pageImport) {
+			boolean pageImport) throws PSSiteImportException {
 		// Something in the depths of this is not thread safe. Thus the sync and
 		// static
 		final String STATUS_MESSAGE = "changing page information";
@@ -412,20 +417,14 @@ public class PSPageExtractorHelper extends PSGenericMetadataExtractorHelper {
 	 * {@link PSRelationship} where the owner is the page, and the dependant is
 	 * the given asset, using the widget id (slot id) from the
 	 * {@link PSWidgetItem} object.
-	 * 
-	 * @param page
-	 *            {@link PSPage} the page to use on the relationship. Assumed
-	 *            not <code>null</code>.
-	 * @param widgetAssetPairs
-	 *            {@link List}<{@link PSPair}<{@link PSWidgetItem},
-	 *            {@link PSAsset}>>
+	 *
 	 * @return {@link List}<{@link PSAssetWidgetRelationship}> with the created
 	 *         relationships. Never <code>null</code> but may be empty.
 	 */
 	private static List<PSAssetWidgetRelationship> addContentToWidgetOnPage(
 			PSPage targetPage, PSPair<PSWidgetItem, PSAsset> widgetAssetPair,
-			IPSAssetService assetService) {
-		List<PSAssetWidgetRelationship> relationships = new ArrayList<PSAssetWidgetRelationship>();
+			IPSAssetService assetService) throws PSDataServiceException {
+		List<PSAssetWidgetRelationship> relationships = new ArrayList<>();
 		String ownerId = targetPage.getId();
 
 		PSWidgetItem widget = widgetAssetPair.getFirst();
@@ -441,7 +440,7 @@ public class PSPageExtractorHelper extends PSGenericMetadataExtractorHelper {
 		return relationships;
 	}
 
-	private PSPage getTargetPage(PSSiteImportCtx context) {
+	private PSPage getTargetPage(PSSiteImportCtx context) throws PSDataServiceException {
 		if (isBlank(context.getCatalogedPageId())) {
 			return pageService.findPage(context.getPageName(), context
 					.getSite().getFolderPath());
@@ -518,7 +517,7 @@ public class PSPageExtractorHelper extends PSGenericMetadataExtractorHelper {
 
 	private static PSAsset createHTMLLocalContent(String htmlContent,
 			IPSItemWorkflowService itemWorkflowService,
-			IPSAssetService assetService, IPSNameGenerator nameGenerator) {
+			IPSAssetService assetService, IPSNameGenerator nameGenerator) throws PSDataServiceException, IPSItemWorkflowService.PSItemWorkflowServiceException {
 		PSAsset asset = new PSAsset();
 		String assetName = nameGenerator.generateLocalContentName();
 		asset.setName(assetName);
@@ -541,15 +540,25 @@ public class PSPageExtractorHelper extends PSGenericMetadataExtractorHelper {
 	 * #saveTargetItem(com.percussion.pagemanagement.data.IPSHtmlMetadata)
 	 */
 	@Override
-	protected void saveTargetItem(IPSHtmlMetadata targetItem) {
+	protected void saveTargetItem(IPSHtmlMetadata targetItem) throws PSDataServiceException {
 		PSPage page = (PSPage) targetItem;
 		// the target Item in this case is a PSPage
 
 		long workflowTimer = System.nanoTime();
 
-		itemWorkflowService.checkOut(page.getId());
+		try {
+			itemWorkflowService.checkOut(page.getId());
+		} catch (IPSItemWorkflowService.PSItemWorkflowServiceException e) {
+			log.warn(PSExceptionUtils.getMessageForLog(e));
+			log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+		}
 		pageService.save(page);
-		itemWorkflowService.checkIn(page.getId());
+		try {
+			itemWorkflowService.checkIn(page.getId());
+		}catch (IPSItemWorkflowService.PSItemWorkflowServiceException e) {
+			log.warn(PSExceptionUtils.getMessageForLog(e));
+			log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+		}
 
 		PSHelperPerformanceMonitor.updateStats(
 				"PSPageMetaDataExtractor:PageWorkflow",
@@ -564,7 +573,7 @@ public class PSPageExtractorHelper extends PSGenericMetadataExtractorHelper {
 	 * #addHtmlWidgetToTemplate(com.percussion.sitemanage.data.PSSiteImportCtx)
 	 */
 	@Override
-	protected void addHtmlWidgetToTemplate(PSSiteImportCtx context) {
+	protected void addHtmlWidgetToTemplate(PSSiteImportCtx context) throws PSDataServiceException, PSSiteImportException {
 		PSTemplate template = unassignedTemplateCache.get(context.getSite()
 				.getSiteId());
 
@@ -615,7 +624,7 @@ public class PSPageExtractorHelper extends PSGenericMetadataExtractorHelper {
 	 * #getTargetItem(com.percussion.sitemanage.data.PSSiteImportCtx)
 	 */
 	@Override
-	protected IPSHtmlMetadata getTargetItem(PSSiteImportCtx context) {
+	protected IPSHtmlMetadata getTargetItem(PSSiteImportCtx context) throws PSDataServiceException {
 		return getTargetPage(context);
 	}
 

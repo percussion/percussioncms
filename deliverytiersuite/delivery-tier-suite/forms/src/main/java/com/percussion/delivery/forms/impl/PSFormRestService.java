@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -31,10 +31,11 @@ import com.percussion.delivery.forms.data.PSFormSummaries;
 import com.percussion.delivery.forms.data.PSFormSummary;
 import com.percussion.delivery.services.PSAbstractRestService;
 import com.percussion.delivery.utils.security.PSTlsSocketFactory;
-import com.percussion.utils.security.PSEncryptionException;
-import com.percussion.utils.security.PSEncryptor;
-import com.percussion.utils.security.ToDoVulnerability;
-import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
+import com.percussion.error.PSExceptionUtils;
+import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
+import com.percussion.security.PSEncryptionException;
+import com.percussion.security.PSEncryptor;
+import com.percussion.utils.io.PathUtils;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.httpclient.methods.PostMethod;
@@ -46,16 +47,17 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.glassfish.jersey.server.ContainerRequest;
 import org.glassfish.jersey.server.internal.InternalServerProperties;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import javax.net.ssl.SSLContext;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
+import javax.ws.rs.HEAD;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -84,9 +86,8 @@ import java.util.Map.Entry;
  * @author leonardohildt
  *
  */
-@Path("/form")
+@Path("/forms")
 @Component
-@Scope("singleton")
 public class PSFormRestService extends PSAbstractRestService implements IPSFormRestService
 {
     /**
@@ -120,17 +121,16 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
 
     private static final String FORM_EMAIL_SUBJECT = "perc_emns";
 
-    private final static String FORM_PROCESSORURL = "perc_processorUrl";
+    private  static final String FORM_PROCESSORURL = "perc_processorUrl";
 
-    private final static String FORM_PROCESSORTYPE = "perc_processorType";
+    private  static final String FORM_PROCESSORTYPE = "perc_processorType";
 
     private final String USER_AGENT = "Mozilla/5.0";
 
     /**
      * Logger for this class.
      */
-    //public static Log log = LogFactory.getLog(PSFormRestService.class);
-    private final static Logger log = LogManager.getLogger(PSFormRestService.class);
+    private  static final Logger log = LogManager.getLogger(PSFormRestService.class);
 
 
     public PSFormRestService(){ //NOOP
@@ -144,12 +144,28 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
         this.enabledCiphers = enabledCiphers;
     }
 
+
+    @HEAD
+    @Path("/csrf")
+    public void csrf(@Context HttpServletRequest request, @Context HttpServletResponse response)  {
+        Cookie[] cookies = request.getCookies();
+        if(cookies == null){
+            return;
+        }
+        for(Cookie cookie: cookies){
+            if("XSRF-TOKEN".equals(cookie.getName())){
+                response.setHeader("X-CSRF-HEADER", "X-XSRF-TOKEN");
+                response.setHeader("X-CSRF-TOKEN", cookie.getValue());
+            }
+        }
+    }
+
     /* (non-Javadoc)
      * @see com.percussion.delivery.forms.impl.IPSFormRestService#delete(java.lang.String)
      */
     @Override
     @DELETE
-    @Path("/{formName}")
+    @Path("/form/cms/{formName}")
     public void delete(@PathParam("formName") String formName)
     {
         try
@@ -158,7 +174,8 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
         }
         catch (Exception e)
         {
-            log.error("Exception occurred while deleting form : " + e.getLocalizedMessage());
+            log.error("Exception occurred while deleting form, Error: {}", PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e, Response.serverError().build());
         }
     }
@@ -166,20 +183,19 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
     /* (non-Javadoc)
      * @see com.percussion.delivery.forms.impl.IPSFormRestService#create(javax.ws.rs.core.MultivaluedMap, java.lang.String, javax.ws.rs.core.HttpHeaders, javax.servlet.http.HttpServletResponse)
      */
-    @SuppressWarnings("deprecation")
     @Override
+    @Path("/form/collect")
     @POST
     @Consumes({MediaType.APPLICATION_FORM_URLENCODED,MediaType.APPLICATION_JSON})
     public void create(@Context ContainerRequest containerRequest, @FormParam("action") String action,
                        @Context HttpHeaders header, @Context HttpServletRequest httpServletRequest, @Context HttpServletResponse resp) throws WebApplicationException, IOException
     {
 
-        if(log.isDebugEnabled()){
-            log.debug("Http Header in the service is :" + header.getRequestHeaders());
-        }
 
-        Map<String, String[]> formFields = new HashMap<String, String[]>();
-        Map<String, String[]> percFields = new HashMap<String, String[]>();
+        log.debug("Http Header in the service is : {}", header.getRequestHeaders());
+
+        Map<String, String[]> formFields = new HashMap<>();
+        Map<String, String[]> percFields = new HashMap<>();
 
         boolean encryptExist = false;
         boolean isSpamBot = false;
@@ -200,7 +216,7 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
                 // this form was submitted by a spam bot and has the hidden field populated
                 if(key.equals("topyenoh") && param.getValue().toString().length() > 2) {
                     isSpamBot = true;
-                    log.debug("headers getRequestHeaders: " + header.getRequestHeaders());
+                    log.debug("headers getRequestHeaders: {}", header.getRequestHeaders());
                     continue;
                 }
                 else if (key.equals("topyenoh")) {
@@ -255,7 +271,7 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
             String[] formNameValues = percFields.get(FORM_NAME_KEY);
             if (formNameValues == null || formNameValues[0] == null || formNameValues[0].trim().length() == 0)
             {
-                log.error("Supplied form missing " + FORM_NAME_KEY + " field.");
+                log.error("Supplied form missing {} field.", FORM_NAME_KEY);
                 WebApplicationException webEx = new WebApplicationException(new IllegalArgumentException(
                         "Supplied form missing " + FORM_NAME_KEY + " field."), Response.serverError().build());
                 handleError(header, resp, webEx, hostRedirect, errorRedirect, encryptExist);
@@ -275,10 +291,15 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
             if (emailNotifToVals != null && emailNotifToVals[0] != null && emailNotifToVals[0].trim().length() > 0)
             {
                 try {
-                    emailNotifTo = PSEncryptor.getInstance().decrypt(emailNotifToVals[0]);
+                    emailNotifTo = PSEncryptor.decryptString(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),emailNotifToVals[0]);
                 }catch(PSEncryptionException | java.lang.IllegalArgumentException e){
-                    emailNotifTo = PSLegacyEncrypter.getInstance().decrypt(emailNotifToVals[0],
-                            PSLegacyEncrypter.DEFAULT_KEY());
+                    emailNotifTo = PSLegacyEncrypter.getInstance(
+                            PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+
+                    ).decrypt(emailNotifToVals[0],
+                            PSLegacyEncrypter.getInstance(
+                                    PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+                            ).DEFAULT_KEY(),null);
                 }
             }
 
@@ -295,10 +316,14 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
             if (emailNotifSubjectVals != null && emailNotifSubjectVals[0] != null && emailNotifSubjectVals[0].trim().length() > 0 && !isFormEmail)
             {
                 try {
-                    emailNotifSubject = PSEncryptor.getInstance().decrypt(emailNotifSubjectVals[0]);
+                    emailNotifSubject = PSEncryptor.decryptString(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),emailNotifSubjectVals[0]);
                 }catch(PSEncryptionException | java.lang.IllegalArgumentException e){
-                    emailNotifSubject = PSLegacyEncrypter.getInstance().decrypt(emailNotifSubjectVals[0],
-                            PSLegacyEncrypter.DEFAULT_KEY());
+                    emailNotifSubject = PSLegacyEncrypter.getInstance(
+                            PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+                    ).decrypt(emailNotifSubjectVals[0],
+                            PSLegacyEncrypter.getInstance(
+                                    PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+                            ).DEFAULT_KEY(),null);
                 }
             } else if(isFormEmail) {
                 emailNotifSubject = emailNotifSubjectVals[0];
@@ -308,9 +333,9 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
             if(isFormEmail){
 
                 if(emailNotifSubject==null)
-                    log.error("Form " + formName + " is configured as an email form but is missing email-subject field");
+                    log.error("Form  is configured as an email form but is missing email-subject field {}",formName);
                 if(emailNotifToVals==null)
-                    log.error("Form " + formName + " is configured as an email form but is missing perc_EmailFormTo field to send email to.");
+                    log.error("Form {} is configured as an email form but is missing perc_EmailFormTo field to send email to.", formName);
 
                 if(emailNotifSubject==null || emailNotifToVals==null){
                     log.error("Skipping form email for this form as it is not configured correctly.");
@@ -341,7 +366,7 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
 
 
             if(isSpamBot) {
-                log.error("Blocking post from " + httpServletRequest.getRemoteAddr() + ", was detected as a SPAM bot.  Consider blocking this IP in firewall rules.");
+                log.error("Blocking post from {}, was detected as a SPAM bot.  Consider blocking this IP in firewall rules.", httpServletRequest.getRemoteAddr());
                 WebApplicationException webEx = new WebApplicationException(new IllegalArgumentException(
                         "Post detected as a Bot.  Form submission rejected."), Response.serverError().build());
                 handleError(header, resp, webEx, hostRedirect, errorRedirect, encryptExist);
@@ -366,7 +391,7 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
 
                     HttpClient client = new HttpClient( );
                     PostMethod post = new PostMethod(processorUrl);
-                    List<NameValuePair> data = new ArrayList<NameValuePair>();
+                    List<NameValuePair> data = new ArrayList<>();
                     String urlParameters = "";
                     //Loop through form parameters and set up for re-posting
                     for(String key : params.keySet()){
@@ -381,13 +406,13 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
                     client.executeMethod( post );
                     String body = post.getResponseBodyAsString( );
 
-                    log.debug("Response Body:" + body);
+                    log.debug("Response Body: {}", body);
 
 
                     if(post.getStatusCode() >=200 &&  post.getStatusCode()  <=399){
                         success = true;
                     }else{
-                        log.error("Post to remote form service: " + processorUrl + " failed with error code:" + post.getStatusCode() + " and a response body of: " + body);
+                        log.error("Post to remote form service: {} failed with error code: {} and a response body of: {}",processorUrl, post.getStatusCode(), body);
                         log.error("Redirecting to error page...");
                     }
 
@@ -402,7 +427,7 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
 
 
                 }else{
-                    this.log.error(FORM_PROCESSORURL + " was not specified but Form is configured to POST to a remote service.");
+                    log.error("{} was not specified but Form is configured to POST to a remote service.", FORM_PROCESSORURL);
                     WebApplicationException webEx = new WebApplicationException(new IllegalArgumentException(
                             "Invalid form submitted"), Response.serverError().build());
                     handleError(header, resp, webEx, hostRedirect, errorRedirect, encryptExist);
@@ -416,7 +441,8 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
                     try{
                         sendFormDataEmail(emailNotifTo, emailNotifSubject, form);
                     }catch(Exception e){
-                        log.error("Error sending form email for form: " + formName,e);
+                        log.error("Error sending form email for form: {}, Error: {}", formName,e.getMessage());
+                        log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                     }
 
                     handleRedirect(successRedirect, encryptExist, hostRedirect, resp);
@@ -426,7 +452,8 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
                 try {
                     formService.save(form);
                 } catch (IllegalArgumentException e) {
-                    log.error("Exception occurred while saving a form : " + e.getLocalizedMessage());
+                    log.error("Exception occurred while saving a form, Error: {}", PSExceptionUtils.getMessageForLog(e));
+                    log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 
                     WebApplicationException webEx = new WebApplicationException(new IllegalArgumentException(
                             "Invalid form submitted"), Response.serverError().build());
@@ -438,7 +465,8 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
                     try{
                         sendFormDataEmail(emailNotifTo, emailNotifSubject, form);
                     }catch(Exception e){
-                        log.error("An error occurred sending the form notification email to:" + emailNotifTo + " for form " + formName,e );
+                        log.error("An error occurred sending the form notification email to: {} for form {}, Error: {}",emailNotifTo, formName,e.getMessage() );
+                        log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                     }
                 }
 
@@ -447,7 +475,8 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
         }
         catch (Exception ex)
         {
-            log.error("Exception occurred during form creation : " + ex.getMessage(),ex);
+            log.error("Exception occurred during form creation, Error: {}", ex.getMessage());
+            log.debug(ex.getMessage(), ex);
             WebApplicationException webEx = new WebApplicationException(ex, Response.serverError().build());
             handleError(header, resp, webEx, hostRedirect, errorRedirect, encryptExist);
         }
@@ -465,10 +494,14 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
         {
                 if(encryptExist) {
                     try {
-                        successRedirect = PSEncryptor.getInstance().decrypt(successRedirect);
+                        successRedirect = PSEncryptor.decryptString(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),successRedirect);
                     } catch (PSEncryptionException e) {
-                        successRedirect = PSLegacyEncrypter.getInstance().decrypt(
-                                successRedirect, PSLegacyEncrypter.DEFAULT_KEY());
+                        successRedirect = PSLegacyEncrypter.getInstance(
+                                PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+                        ).decrypt(
+                                successRedirect, PSLegacyEncrypter.getInstance(
+                                        PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+                                ).DEFAULT_KEY(),null);
                     }
                 }
 
@@ -498,7 +531,8 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
         }
         catch (Exception e)
         {
-            log.error("Cannot email form data, unexpected error: " + e.getMessage(),e);
+            log.error("Cannot email form data, unexpected error, Error: {}", PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
     }
 
@@ -507,7 +541,7 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
      */
     @Override
     @GET
-    @Path("/{formName}")
+    @Path("/form/cms/{formName}")
     @Produces(
             {MediaType.APPLICATION_JSON})
     public PSFormSummaries get(@PathParam("formName") String formName)
@@ -519,7 +553,7 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
         }
         try
         {
-            List<String> formNames = new ArrayList<String>();
+            List<String> formNames = new ArrayList<>();
             if (formName != null)
             {
                 formNames.add(formName);
@@ -545,7 +579,8 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
         }
         catch (Exception e)
         {
-            log.error("Exception occurred while getting form summaries : " + e.getLocalizedMessage());
+            log.error("Exception occurred while getting form summaries, Error: {}", PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e, Response.serverError().build());
         }
     }
@@ -555,13 +590,14 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
      */
     @Override
     @GET
+    @Path("/form/cms/list")
     @Produces(
             {MediaType.APPLICATION_JSON})
     public PSFormSummaries get()
     {
         try
         {
-            List<String> formNames = new ArrayList<String>();
+            List<String> formNames = new ArrayList<>();
             formNames.addAll(formService.findDistinctFormNames());
 
             PSFormSummaries formResult = new PSFormSummaries();
@@ -580,7 +616,8 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
         }
         catch (Exception e)
         {
-            log.error("Exception occurred while getting all form summaries : " + e.getLocalizedMessage());
+            log.error("Exception occurred while getting all form summaries, Error: {}", PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e, Response.serverError().build());
         }
     }
@@ -590,7 +627,7 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
      */
     @Override
     @GET
-    @Path("/{formName}/{csvFile}")
+    @Path("/form/cms/{formName}/{csvFile}")
     @Produces(
             {"text/csv"})
     public Response export(@PathParam("formName") String formName, @PathParam("csvFile") String csvFile)
@@ -602,12 +639,13 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
         }
         try
         {
-            List<IPSFormData> forms = new ArrayList<IPSFormData>();
+            List<IPSFormData> forms = new ArrayList<>();
             forms = formService.findFormsByName(formName);
 
             if(log.isDebugEnabled()){
-                log.debug("Forms by name(" + formName + ") : " + forms.toString());
+                log.debug("Forms by name({}) : {}", formName, forms.toString());
             }
+            
 
             formService.markAsExported(forms);
 
@@ -617,7 +655,8 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
         }
         catch (Exception e)
         {
-            log.error("Exception occurred while exporting the form : " + e.getLocalizedMessage());
+            log.error("Exception occurred while exporting the form, Error: {}", PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e, Response.serverError().build());
         }
     }
@@ -642,9 +681,13 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
         {
             if(isEncrypted) {
                 try {
-                    urlErrorPage = PSEncryptor.getInstance().decrypt(redirect);
+                    urlErrorPage = PSEncryptor.decryptString(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),redirect);
                 } catch (PSEncryptionException e) {
-                    urlErrorPage = PSLegacyEncrypter.getInstance().decrypt(redirect, PSLegacyEncrypter.DEFAULT_KEY());
+                    urlErrorPage = PSLegacyEncrypter.getInstance(
+                            PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+                    ).decrypt(redirect, PSLegacyEncrypter.getInstance(
+                            PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+                    ).DEFAULT_KEY(),null);
                 }
             }
 
@@ -662,7 +705,7 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
 
         String version = super.getVersion();
 
-        log.info("getVersion() from PSFormRestService ..." + version);
+        log.info("getVersion() from PSFormRestService ...{}", version);
 
         return version;
     }
@@ -673,7 +716,7 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
      */
     @Override
     public Response updateOldSiteEntries(String prevSiteName, String newSiteName) {
-        log.debug("Nothing to do in forms service for site: " + prevSiteName);
+        log.debug("Nothing to do in forms service for site: {}", prevSiteName);
         return Response.status(Response.Status.NO_CONTENT).build();
     }
 }

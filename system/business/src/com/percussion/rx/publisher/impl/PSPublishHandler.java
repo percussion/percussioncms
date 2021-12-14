@@ -17,12 +17,14 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.rx.publisher.impl;
 
+import com.percussion.cms.IPSConstants;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.rx.delivery.IPSDeliveryHandler;
 import com.percussion.rx.delivery.IPSDeliveryManager;
 import com.percussion.rx.delivery.IPSDeliveryResult;
@@ -39,8 +41,13 @@ import com.percussion.rx.publisher.data.PSPubItemStatus;
 import com.percussion.security.PSSecurityProvider;
 import com.percussion.server.PSRequest;
 import com.percussion.services.PSBaseServiceLocator;
-import com.percussion.services.assembly.*;
+import com.percussion.services.assembly.IPSAssemblyItem;
+import com.percussion.services.assembly.IPSAssemblyResult;
 import com.percussion.services.assembly.IPSAssemblyResult.Status;
+import com.percussion.services.assembly.IPSAssemblyService;
+import com.percussion.services.assembly.PSAssemblyException;
+import com.percussion.services.assembly.PSAssemblyServiceLocator;
+import com.percussion.services.assembly.PSTemplateNotImplementedException;
 import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.filter.PSFilterException;
 import com.percussion.services.publisher.IPSDeliveryType;
@@ -55,24 +62,29 @@ import com.percussion.util.IPSHtmlParameters;
 import com.percussion.util.PSBaseBean;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.request.PSRequestInfo;
+import com.percussion.utils.request.PSRequestInfoBase;
 import com.percussion.utils.timing.PSStopwatch;
 import com.percussion.webservices.PSWebserviceUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.exception.ExceptionUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import javax.jcr.RepositoryException;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageListener;
 import javax.jms.ObjectMessage;
-import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.EnumMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -102,7 +114,7 @@ public class PSPublishHandler implements MessageListener
    /**
     * Logger used for publishing handler service.
     */
-   private static Log ms_log = LogFactory.getLog(PSPublishHandler.class);
+   private static final Logger log = LogManager.getLogger(IPSConstants.PUBLISHING_LOG);
    
    
    /**
@@ -110,7 +122,7 @@ public class PSPublishHandler implements MessageListener
     */
    public static final Map<Outcome, ItemState> OUTCOME_STATE;
    static {
-      final Map<Outcome, ItemState> m = new HashMap<Outcome, ItemState>();
+      final EnumMap<Outcome, ItemState> m = new EnumMap<>(Outcome.class);
       m.put(Outcome.DELIVERED, ItemState.DELIVERED);
       m.put(Outcome.FAILED, ItemState.FAILED);
       m.put(Outcome.PREPARED_FOR_DELIVERY, ItemState.PREPARED_FOR_DELIVERY);
@@ -124,14 +136,14 @@ public class PSPublishHandler implements MessageListener
     * is received and old messages have expired.
     */
    private static List<PSCancelPublishingMessage> ms_cancellations 
-      = new CopyOnWriteArrayList<PSCancelPublishingMessage>();
+      = new CopyOnWriteArrayList<>();
 
    /**
     * Map whose key is a delivery type name and value is a flag which indicates
     * whether or not empty delivery locations are allowed. 
     */
    private static Map<String, Boolean> ms_deliveryTypeToAllowsEmptyLocation
-      = new ConcurrentHashMap<String, Boolean>();
+      = new ConcurrentHashMap<>();
    
    /**
     * The delivery manager to actually deliver the content. Set via spring.
@@ -211,7 +223,7 @@ public class PSPublishHandler implements MessageListener
             }
             catch (JMSException e)
             {
-               ms_log.error("Problem getting message", e);
+               log.error("Problem getting message", e);
                return;
             }
    
@@ -233,8 +245,10 @@ public class PSPublishHandler implements MessageListener
       }
       catch (Exception e)
       {
-         ms_log.error(
-               "Uncaught exception while handling message " + message, e);
+         log.error(
+               "Uncaught exception while handling message {}. Error: {}" ,
+                 message,
+                 PSExceptionUtils.getMessageForLog(e));
       }
       finally
       {
@@ -244,7 +258,9 @@ public class PSPublishHandler implements MessageListener
          }
          catch (JMSException e)
          {
-            ms_log.error("Problem acknowledging message");
+            log.error("Problem acknowledging message. Error: {}",
+                    PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          }
       }
    }
@@ -273,17 +289,15 @@ public class PSPublishHandler implements MessageListener
       boolean active = m_rxPubService.isJobActive(jobId);
       if ( ! active )
       {
-         ms_log.debug("Ignore item: " + work.getId() 
-               + " for job: " + work.getJobId() 
-               + " because its not an active job for this server.");
+         log.debug("Ignore item: {} for job: {} because its not an active job for this server.",work.getId(), work.getJobId() );
          return;
       }
       try
       {
          PSRequest req = PSRequest.getContextForRequest();
-         PSRequestInfo.initRequestInfo((Map<String,Object>) null);
+         PSRequestInfoBase.initRequestInfo(null);
          req.setParameter("allowBinary","true");
-         PSRequestInfo.setRequestInfo(PSRequestInfo.KEY_PSREQUEST, req);
+         PSRequestInfoBase.setRequestInfo(PSRequestInfoBase.KEY_PSREQUEST, req);
          /*
           * TODO username set for web services calls!!!!!!!!!!!!!!!!!!
           * There are some web services called like IPContentWs.getItemGuid
@@ -317,7 +331,7 @@ public class PSPublishHandler implements MessageListener
                .getPublisherService();
          IPSRxPublisherServiceInternal rxpsvc = 
                PSRxPubServiceInternalLocator.getRxPublisherService();
-         List<IPSAssemblyResult> results = Collections.EMPTY_LIST;
+         List<IPSAssemblyResult> results = Collections.emptyList();
          try
          {
           
@@ -331,7 +345,7 @@ public class PSPublishHandler implements MessageListener
                   {
                      if (work.getJobId() == cp.getJobId())
                      {
-                        ms_log.info("Discarding cancelled item: " + work.getId());
+                        log.info("Discarding cancelled item: {}" , work.getId());
                         // ignore/discard
                         return;
                      }
@@ -343,7 +357,9 @@ public class PSPublishHandler implements MessageListener
             PSPublishingJob job = rxpsvc.getPublishingJob(work.getJobId());
             if (job == null)
             {
-               ms_log.info("Discarding process item "+ work.getId()+" for old or cancelled job: " +work.getJobId() );
+               log.info("Discarding process item {} for old or cancelled job: {}",
+                       work.getId(),
+                       work.getJobId() );
                // ignore/discard
                return;
             }
@@ -375,20 +391,16 @@ public class PSPublishHandler implements MessageListener
                }
                catch (Exception e)
                {
-                  ms_log.error("Error expanding assembly result id: " 
-                        + result.getId(), e);
+                  log.error("Error expanding assembly result id: {} Error: {}"
+                        , result.getId(), PSExceptionUtils.getMessageForLog(e));
+                  log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                   result.setStatus(Status.FAILURE);
                   result.setMimeType("text/plain");
-                  String message = "Error expanding assembly result: " + 
-                     ExceptionUtils.getFullStackTrace(e);
-                  try
-                  {
-                     result.setResultData(message.getBytes("UTF8"));
-                  }
-                  catch (UnsupportedEncodingException u)
-                  {
-                     throw new RuntimeException(u); // not possible
-                  }
+                  String message = "Error expanding assembly result: " +
+                          PSExceptionUtils.getMessageForLog(e);
+
+                     result.setResultData(message.getBytes(StandardCharsets.UTF_8));
+
                }
             }
             if (result.getTemplate() == null && work.isPublish())
@@ -406,21 +418,16 @@ public class PSPublishHandler implements MessageListener
             }
          }
       }
-      catch (Throwable th)
+      catch (Exception th)
       {
          String msg = "Problem while handling assembly: ";
          setEncodedResultData(work, msg + th.getMessage()); 
          
-         try
-         {
+
             handleFailedResult((IPSAssemblyResult) work);
-         }
-         catch (UnsupportedEncodingException e)
-         {
-            // should never happen
-         }
+
          
-         ms_log.error(msg, th);
+         log.error(msg, th);
       }
    }
 
@@ -428,18 +435,14 @@ public class PSPublishHandler implements MessageListener
     * Handle a given failed result.
     * 
     * @param result the failed result, assumed not <code>null</code>.
-    *
-    * @throws UnsupportedEncodingException if failed to convert string to
-    *    UTF-8 character-set.
     */
    private void handleFailedResult(IPSAssemblyResult result)
-      throws UnsupportedEncodingException
    {
       ItemState state = IPSPublisherJobStatus.ItemState.FAILED;
       long pubServerId = result.getPubServerId() == null ? -1 : result.getPubServerId();
       if (result.getPubServerId()==null)
       {
-         ms_log.error("PubServerId not passed in IPSAssemblyItem" + result);
+         log.error("PubServerId not passed in IPSAssemblyItem: {}" , result);
       }
       
       PSPubItemStatus status = new PSPubItemStatus(result.getReferenceId(),
@@ -449,7 +452,7 @@ public class PSPublishHandler implements MessageListener
       // On failure, the result data is the message
       if (result.getResultData() != null)
       {
-         status.addMessage(new String(result.getResultData(), "UTF8"));
+         status.addMessage(new String(result.getResultData(), StandardCharsets.UTF_8));
       }
       else
       {
@@ -476,7 +479,7 @@ public class PSPublishHandler implements MessageListener
       results = expander.expand(result);
       notNull(results, "results should not be null");
       noNullElements(results);
-      List<IPSAssemblyItem> addedItems = new ArrayList<IPSAssemblyItem>(results);
+      List<IPSAssemblyItem> addedItems = new ArrayList<>(results);
       Iterator<IPSAssemblyItem> iter = addedItems.iterator();
       /*
        * Filter out the original item.
@@ -527,8 +530,7 @@ public class PSPublishHandler implements MessageListener
     * <code>null</code>, but may be empty. Assumed the 1st element is the 1st 
     * page of the item.
     */
-   private void handleChangedLocations(List<IPSAssemblyItem> pagedItems)
-   {
+   private void handleChangedLocations(List<IPSAssemblyItem> pagedItems) throws PSNotFoundException {
       if (pagedItems.isEmpty())
          return;
       
@@ -547,20 +549,12 @@ public class PSPublishHandler implements MessageListener
       
       Collection<IPSAssemblyItem> unpubItems = job.getUnpublishPaginatedItems(pagedItems);
       
-      if (unpubItems.size()>0)
+      if (!unpubItems.isEmpty())
       {
-          ms_log.debug("Unpublish list size = "+unpubItems.size()+ " path="+unpubItems.iterator().next().getDeliveryPath());
+          log.debug("Unpublished list size = {} path={}",
+                  unpubItems.size(),
+                  unpubItems.iterator().next().getDeliveryPath());
       }
-     
-      // Need to set item status as queued
-      //m_rxPubService.addWorksForJob(item1.getJobId(), new ArrayList<IPSAssemblyItem>(unpubItems));
-      
-      // Do the actual un-publish operation
-     /* for (IPSAssemblyItem item : unpubItems)
-      {
-         processWorkItem(item);
-      }
-      */      
    }
    
    /**
@@ -605,7 +599,10 @@ public class PSPublishHandler implements MessageListener
          }
          catch (PSNotFoundException e)
          {
-            ms_log.error("Could not load site " + siteguid.toString());
+            log.error("Could not load site {}.  Error: {}",
+                    siteguid,
+                    PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          }
       } 
       else // jc.getType() == END
@@ -637,7 +634,10 @@ public class PSPublishHandler implements MessageListener
          }
          catch (Exception e)
          {
-            ms_log.error("Failed to commit publishing Job id=" + jc.getJobId(), e);
+            log.error("Failed to commit publishing Job id={} Error: {}" ,
+                    jc.getJobId(),
+                    PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             isCommitWithError = true;
          }
        
@@ -683,7 +683,7 @@ public class PSPublishHandler implements MessageListener
       }
       catch (PSDeliveryException e)
       {
-         ms_log.error("Failed to abort delivery manager", e);
+         log.error("Failed to abort delivery manager", e);
       }
    }
    
@@ -716,26 +716,26 @@ public class PSPublishHandler implements MessageListener
          throws RepositoryException,
          PSTemplateNotImplementedException, PSAssemblyException,
          PSFilterException
-   {
+   {try {
       List<IPSAssemblyResult> results;
       boolean doassemble = true;
-      if (!work.isPublish())
-      {
+      if (!work.isPublish()) {
          // Before assembling, check the delivery
          String location = work.getDeliveryType();
+
          IPSDeliveryType dloc = psvc.loadDeliveryType(location);
          doassemble = dloc.isUnpublishingRequiresAssembly();
       }
 
-      if (doassemble)
-      {
+      if (doassemble) {
          results = asm.assemble(Collections.singletonList(work));
-      }
-      else
-      {
+      } else {
          results = Collections.singletonList((IPSAssemblyResult) work);
       }
       return results;
+   } catch (PSNotFoundException e) {
+      throw new RepositoryException(e);
+   }
    }
 
    /**
@@ -765,15 +765,8 @@ public class PSPublishHandler implements MessageListener
     */
    private void setEncodedResultData(IPSAssemblyItem work, String msg)
    {
-      try
-      {
-         work.setResultData(msg.getBytes("UTF8"));
+         work.setResultData(msg.getBytes(StandardCharsets.UTF_8));
          work.setMimeType("text/plain; charset=utf8");
-      }
-      catch (UnsupportedEncodingException e1)
-      {
-         ms_log.error("Impossible, utf8 is not known");
-      }                  
    }
    
    /**
@@ -820,7 +813,7 @@ public class PSPublishHandler implements MessageListener
       }
       catch (Exception e)
       {
-         ms_log.error("Problem in delivery ", e);
+         log.error("Problem in delivery ", e);
          state = IPSPublisherJobStatus.ItemState.FAILED;
          PSPubItemStatus status = new PSPubItemStatus(work.getReferenceId(),
                work.getJobId(), work.getPubServerId(), work.getDeliveryContext(), state);
@@ -830,7 +823,7 @@ public class PSPublishHandler implements MessageListener
       finally
       {
          sw.stop();
-         ms_log.debug("Delivered item " + sw);
+         log.debug("Delivered item: {} " , sw);
          // we're done with the item, clear
          work.clearResults();
       }
@@ -854,11 +847,14 @@ public class PSPublishHandler implements MessageListener
       // logged.
       // The item should also be marked as a failure for future
       // processing
-      ms_log.error("Problems assembly item, content guid: " + item.getId().toString(), e);
+      log.error("Problems assembly item, content guid:{} Error: {}" , item.getId(),
+              PSExceptionUtils.getMessageForLog(e));
+      log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+
       if (work.getStatus() == null || work.getStatus().equals(Status.SUCCESS))
       {
          work.setStatus(Status.FAILURE);
-         setEncodedResultData(work, e.getLocalizedMessage());
+         setEncodedResultData(work, PSExceptionUtils.getMessageForLog(e));
       }
       return Collections.singletonList(work);
    }
@@ -876,8 +872,7 @@ public class PSPublishHandler implements MessageListener
     * @throws IllegalAccessException if an error occurs.
     */
    private boolean isEmptyLocationAllowed(IPSPublisherService psvc, String deliveryType)
-         throws InvocationTargetException, IllegalAccessException
-   {
+           throws InvocationTargetException, IllegalAccessException, PSNotFoundException {
       if (ms_deliveryTypeToAllowsEmptyLocation.containsKey(deliveryType))
       {
          return ms_deliveryTypeToAllowsEmptyLocation.get(deliveryType);

@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -270,7 +270,7 @@ public abstract class PSDescriptor  implements IPSDeployComponent
 
       while( pkgDepElem != null )
       {
-         Map<String,String> pkgDepMap = new HashMap<String,String>();
+         Map<String,String> pkgDepMap = new HashMap<>();
          pkgDepMap.put(XML_PKG_DEP_NAME, 
                pkgDepElem.getAttribute(XML_PKG_DEP_NAME));
          pkgDepMap.put(XML_PKG_DEP_VERSION, 
@@ -456,7 +456,7 @@ public abstract class PSDescriptor  implements IPSDeployComponent
    public void setPkgDep(
          String pkgName, String pkgVersion, boolean pkgImplied)
    {
-      Map<String,String> pkgDepMap = new HashMap<String,String>();
+      Map<String,String> pkgDepMap = new HashMap<>();
       pkgDepMap.put(PSDescriptor.XML_PKG_DEP_NAME, pkgName);
       pkgDepMap.put(PSDescriptor.XML_PKG_DEP_VERSION, StringUtils.defaultString(
             formatVersion(pkgVersion, false, false), DEFAULT_VERSION));      
@@ -714,7 +714,7 @@ public abstract class PSDescriptor  implements IPSDeployComponent
     * May be empty, never <code>null</code>.
     */
    private List<Map<String, String>> m_pkgDepList = 
-      new ArrayList<Map<String, String>>();
+      new ArrayList<>();
    
    /**
     * The default descriptor version value.

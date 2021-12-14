@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -49,6 +49,9 @@ import com.percussion.sitemanage.data.PSSite;
 import com.percussion.sitemanage.data.PSSiteSummary;
 import com.percussion.sitemanage.web.service.PSSiteRestClient;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -63,10 +66,6 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Random;
 import java.util.Set;
-
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
 
 /**
  * This class takes an xml file that conforms to the CM1DataDef schema and
@@ -96,7 +95,7 @@ import javax.xml.bind.Unmarshaller;
  */
 public class PSContentGenerator
 {
-    //private static final Log log = LogFactory.getLog(PSContentGenerator.class);
+    //private static final Logger log = LogManager.getLogger(PSContentGenerator.class);
 
     /* Connection info for cm1 server. Url should be of the form http://server:port */
     private String url;

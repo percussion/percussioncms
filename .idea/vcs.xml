@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="GitSharedSettings">
+    <option name="FORCE_PUSH_PROHIBITED_PATTERNS">
+      <list>
+        <option value="release, staging, development" />
+      </list>
+    </option>
+  </component>
   <component name="GithubSharedProjectSettings">
     <option name="branchProtectionPatterns">
       <list>
         <option value="development" />
         <option value="staging" />
-        <option value="master" />
+        <option value="release" />
       </list>
     </option>
   </component>

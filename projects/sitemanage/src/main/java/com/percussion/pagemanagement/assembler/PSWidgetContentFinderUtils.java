@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -29,16 +29,19 @@ import com.percussion.cms.objectstore.server.PSRelationshipProcessor;
 import com.percussion.design.objectstore.PSRelationship;
 import com.percussion.design.objectstore.PSRelationshipConfig;
 import com.percussion.design.objectstore.PSRelationshipSet;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.pagemanagement.assembler.impl.finder.PSRelationshipWidgetContentFinder;
 import com.percussion.pagemanagement.assembler.impl.finder.PSRelationshipWidgetContentFinder.WidgetCriteria;
 import com.percussion.pagemanagement.data.PSWidgetDefinition;
 import com.percussion.pagemanagement.data.PSWidgetItem;
 import com.percussion.pagemanagement.service.IPSWidgetService;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.share.service.IPSIdMapper;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.utils.guid.IPSGuid;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -118,10 +121,11 @@ public class PSWidgetContentFinderUtils
         IPSGuid guid = getIdMapper().getItemGuid(id);
         
         List<PSRelationship> rels = getFinder().findRelationshipByOwner(guid);
-        if (relationshipName == null)
+        if (relationshipName == null) {
             return rels;
+        }
         
-        Set<PSRelationship> sortSet = new HashSet<PSRelationship>();
+        Set<PSRelationship> sortSet = new HashSet<>();
         for (PSRelationship r : rels)
         {
             String name = r.getConfig().getName();
@@ -131,7 +135,7 @@ public class PSWidgetContentFinderUtils
             }
         }
         
-        return new ArrayList<PSRelationship>(sortSet);
+        return new ArrayList<>(sortSet);
     }
     
     /**
@@ -145,12 +149,13 @@ public class PSWidgetContentFinderUtils
      */
     public static Collection<PSRelationship> getMatchRelationships(Collection<PSRelationship> srcRels, Collection<PSWidgetItem> widgets)
     {
-        List<PSRelationship> result = new ArrayList<PSRelationship>();
+        List<PSRelationship> result = new ArrayList<>();
         for (PSWidgetItem w : widgets)
         {
             PSRelationship r = getMatchRelationship(srcRels, w);
-            if (r != null)
+            if (r != null) {
                 result.add(r);
+            }
         }
         
         return result;
@@ -166,42 +171,50 @@ public class PSWidgetContentFinderUtils
      */
     public static PSRelationship getMatchRelationship(Collection<PSRelationship> srcRels, PSWidgetItem widget)
     {
-        PSWidgetInstance wi = new PSWidgetInstance();
-        wi.setItem(widget);
-        String widgetDefId = widget.getDefinitionId();
-        PSWidgetDefinition widgetDef = getWidgetService().load(widgetDefId);
-        wi.setDefinition(widgetDef);
-        WidgetCriteria criteria = new WidgetCriteria(wi);
-        
-        TreeSet<PSRelationship> rels = new TreeSet<PSRelationship>(new RelationshipOrder(criteria));
-        for (PSRelationship r : srcRels)
-        {
-            if (getFinder().isMatchRelationship(r, criteria, null)) {
-                if (StringUtils.isNotBlank(widget.getId()) 
-                        && StringUtils.isNotBlank(r.getProperty("sys_slotid"))
-                        && !r.getProperty("sys_slotid").equals(widget.getId())) {
-                    PSRelationshipSet relationships = new PSRelationshipSet();
-                    r.setProperty("sys_slotid", widget.getId());
-                    relationships.add(r);
-                    try {
-                        PSRelationshipProcessor.getInstance().save(relationships);
-                    } catch (PSCmsException e) {
-                        log.error("Error saving relationship when matching content relationships.", e);
+        try {
+            PSWidgetInstance wi = new PSWidgetInstance();
+            wi.setItem(widget);
+            String widgetDefId = widget.getDefinitionId();
+            PSWidgetDefinition widgetDef = getWidgetService().load(widgetDefId);
+            wi.setDefinition(widgetDef);
+            WidgetCriteria criteria = new WidgetCriteria(wi);
+
+            TreeSet<PSRelationship> rels = new TreeSet<>(new RelationshipOrder(criteria));
+            for (PSRelationship r : srcRels) {
+                if (getFinder().isMatchRelationship(r, criteria, null)) {
+                    if (StringUtils.isNotBlank(widget.getId())
+                            && StringUtils.isNotBlank(r.getProperty("sys_slotid"))
+                            && !r.getProperty("sys_slotid").equals(widget.getId())) {
+                        PSRelationshipSet relationships = new PSRelationshipSet();
+                        r.setProperty("sys_slotid", widget.getId());
+                        relationships.add(r);
+                        try {
+                            PSRelationshipProcessor.getInstance().save(relationships);
+                        } catch (PSCmsException e) {
+                            log.error("Error saving relationship when matching content relationships.", e);
+                        }
                     }
+                    rels.add(r);
                 }
-                rels.add(r);
             }
+            if (rels.isEmpty()) {
+                return null;
+            }
+
+            return rels.first();
+        } catch (PSDataServiceException | PSNotFoundException e) {
+            log.error("Error getting Widget Definition for: {} Error: {}",widget.getDefinitionId(),e.getMessage());
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
-        if (rels.size() == 0)
-            return null;
-        
-        return rels.first();
+
+        return null;
     }
     
     private static IPSIdMapper getIdMapper()
     {
-        if (idMapper == null)
+        if (idMapper == null) {
             idMapper = (IPSIdMapper) getWebApplicationContext().getBean("sys_idMapper");
+        }
         return idMapper;
     }
     
@@ -209,8 +222,9 @@ public class PSWidgetContentFinderUtils
     
     private static IPSWidgetService getWidgetService()
     {
-        if (widgetService == null)
+        if (widgetService == null) {
             widgetService = (IPSWidgetService) getWebApplicationContext().getBean("widgetService");
+        }
         return widgetService;
     }
     private static IPSWidgetService widgetService = null;    
@@ -242,16 +256,19 @@ public class PSWidgetContentFinderUtils
           notNull(r1);
           notNull(r2);
 
-          if (isBlank(m_criteria.getWidgetName()))
+          if (isBlank(m_criteria.getWidgetName())) {
               return compareUnnamed(r1, r2);
+          }
 
           String wname1 = r1.getProperty(PSRelationshipConfig.PDU_WIDGET_NAME);
           String wname2 = r2.getProperty(PSRelationshipConfig.PDU_WIDGET_NAME);
-          if (isBlank(wname1) && isNotBlank(wname2))
+          if (isBlank(wname1) && isNotBlank(wname2)) {
               return 1;
+          }
 
-          if (isNotBlank(wname1) && isBlank(wname2))
+          if (isNotBlank(wname1) && isBlank(wname2)) {
               return -1;
+          }
           
           return compareUnnamed(r1, r2);
        }
@@ -268,8 +285,9 @@ public class PSWidgetContentFinderUtils
            int sortRank1 = getSortRank(r1);
            int sortRank2 = getSortRank(r2);
            
-           if (sortRank1 != sortRank2)
+           if (sortRank1 != sortRank2) {
                return sortRank1 - sortRank2;
+           }
                
           /*
            * If this comparator returns zero, a set based on this comparator
@@ -288,8 +306,9 @@ public class PSWidgetContentFinderUtils
        private int getSortRank(PSRelationship rel)
        {
            String sort = rel.getProperty(PSRelationshipConfig.PDU_SORTRANK);
-           if (isBlank(sort))
+           if (isBlank(sort)) {
                return 0;
+           }
            try
            {
                return Integer.parseInt(sort);
@@ -304,8 +323,9 @@ public class PSWidgetContentFinderUtils
     
     private static PSRelationshipWidgetContentFinder getFinder()
     {
-        if (ms_finder == null)
+        if (ms_finder == null) {
             ms_finder = (PSRelationshipWidgetContentFinder) PSPageUtils.getWidgetContentFinder(null);
+        }
 
         return ms_finder;
     }
@@ -315,6 +335,6 @@ public class PSWidgetContentFinderUtils
     /**
      * Logger for this class
      */
-    private static Log log = LogFactory.getLog(PSWidgetContentFinderUtils.class);
+    private static final Logger log = LogManager.getLogger(PSWidgetContentFinderUtils.class);
 
 }

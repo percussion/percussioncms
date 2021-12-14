@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -27,40 +27,50 @@
  */
 package com.percussion.widgetbuilder.service;
 
+import com.percussion.cms.IPSConstants;
 import com.percussion.deployer.server.PSLocalDeployerClient;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.server.PSServer;
 import com.percussion.services.notification.IPSNotificationService;
 import com.percussion.services.widgetbuilder.IPSWidgetBuilderDefinitionDao;
 import com.percussion.services.widgetbuilder.PSWidgetBuilderDefinition;
 import com.percussion.share.service.IPSSystemProperties;
-import com.percussion.widgetbuilder.data.*;
+import com.percussion.widgetbuilder.data.PSWidgetBuilderDefinitionData;
+import com.percussion.widgetbuilder.data.PSWidgetBuilderDefinitionDataList;
+import com.percussion.widgetbuilder.data.PSWidgetBuilderFieldsListData;
+import com.percussion.widgetbuilder.data.PSWidgetBuilderResourceListData;
+import com.percussion.widgetbuilder.data.PSWidgetBuilderSummaryData;
+import com.percussion.widgetbuilder.data.PSWidgetBuilderSummaryDataList;
+import com.percussion.widgetbuilder.data.PSWidgetBuilderValidationResults;
 import com.percussion.widgetbuilder.utils.PSWidgetPackageBuilder;
 import com.percussion.widgetbuilder.utils.PSWidgetPackageSpec;
 import com.percussion.widgetbuilder.utils.validate.PSWidgetBuilderDefinitionValidator;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.filefilter.FileFilterUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.jsoup.helper.Validate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Component;
 
-import java.awt.image.BufferedImage;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 import java.io.File;
 import java.io.FileFilter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.imageio.ImageIO;
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
-
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.filefilter.FileFilterUtils;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.log4j.Logger;
-import org.jsoup.helper.Validate;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Component;
-
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import static com.percussion.cms.IPSConstants.SAAS_FLAG;
 
 /**
  * @author matthewernewein
@@ -71,16 +81,15 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 @Lazy
 public class PSWidgetBuilderService implements IPSWidgetBuilderService
 {
-    private transient IPSWidgetBuilderDefinitionDao dao = null;
+    private IPSWidgetBuilderDefinitionDao dao = null;
 
     private IPSSystemProperties systemProps;
 
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log log = LogFactory.getLog(PSWidgetBuilderService.class);
-    
-    private static final String SAAS_FLAG = "doSAAS";
+
+    private static final Logger log = LogManager.getLogger(IPSConstants.WIDGET_BUILDER_LOG);
 
     @Autowired
     public PSWidgetBuilderService(final IPSWidgetBuilderDefinitionDao dao, IPSNotificationService notificationService)
@@ -181,7 +190,7 @@ public class PSWidgetBuilderService implements IPSWidgetBuilderService
         try
         {
             List<PSWidgetBuilderDefinition> definitions = dao.getAll();
-            List<PSWidgetBuilderDefinitionData> returnResults = new ArrayList<PSWidgetBuilderDefinitionData>();
+            List<PSWidgetBuilderDefinitionData> returnResults = new ArrayList<>();
             if (definitions != null)
             {
                 for (PSWidgetBuilderDefinition definition : definitions)
@@ -193,7 +202,8 @@ public class PSWidgetBuilderService implements IPSWidgetBuilderService
         }
         catch (Exception e)
         {
-            log.debug("Failed to load widget definitions",e);
+            log.error("Failed to load widget definitions. Error: {}",PSExceptionUtils.getMessageForLog( e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new RuntimeException("Failed to load widget definitions",e);
         }
     }
@@ -207,7 +217,7 @@ public class PSWidgetBuilderService implements IPSWidgetBuilderService
         try
         {
             List<PSWidgetBuilderDefinition> definitions = dao.getAll();
-            List<PSWidgetBuilderSummaryData> returnResults = new ArrayList<PSWidgetBuilderSummaryData>();
+            List<PSWidgetBuilderSummaryData> returnResults = new ArrayList<>();
             if (definitions != null)
             {
                 for (PSWidgetBuilderDefinition definition : definitions)
@@ -219,7 +229,8 @@ public class PSWidgetBuilderService implements IPSWidgetBuilderService
         }
         catch (Exception e)
         {
-            log.debug("Failed to load widget definitions",e);
+            log.error("Failed to load widget definitions. Error: {}", PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new RuntimeException("Failed to load widget definitions",e);
         }
     }
@@ -266,8 +277,9 @@ public class PSWidgetBuilderService implements IPSWidgetBuilderService
         {
             // first validate
             PSWidgetBuilderValidationResults results = validate(definition);
-            if (!results.getResults().isEmpty())
+            if (!results.getResults().isEmpty()) {
                 return results;
+            }
             // modify the path for image icon if present for make it OS compatible
             if(StringUtils.isNotBlank(definition.getWidgetTrayCustomizedIconPath())){
                 definition.setWidgetTrayCustomizedIconPath(definition.getWidgetTrayCustomizedIconPath().replaceAll("\\\\","/"));
@@ -275,12 +287,12 @@ public class PSWidgetBuilderService implements IPSWidgetBuilderService
                 File imagePath = new File(PSServer.getRxDir(), definition.getWidgetTrayCustomizedIconPath());
                 if (!imagePath.exists())
                 {
-                    log.debug("No Valid Path found" +imagePath);
+                    log.warn("No valid path found for widget tray icon: {}" , imagePath);
                     definition.setWidgetTrayCustomizedIconPath("");//reset it
                 }
             }
             if(StringUtils.isNotBlank(definition.getDescription())){
-                definition.setDescription(definition.getDescription().replaceAll("\"","'"));
+                definition.setDescription(definition.getDescription().replace("\"","'"));
             }
 
             PSWidgetBuilderDefinitionData returnData = null;
@@ -290,8 +302,7 @@ public class PSWidgetBuilderService implements IPSWidgetBuilderService
             {
                 returnData = new PSWidgetBuilderDefinitionData(daoObject);
             }
-            
-            //FB: NP_NULL_ON_SOME_PATH NC 1-16-16
+
             if(returnData != null){
             	results.setDefinitionId(Long.parseLong(returnData.getId()));
             }
@@ -300,7 +311,8 @@ public class PSWidgetBuilderService implements IPSWidgetBuilderService
         }
         catch (Exception e)
         {
-            log.error("Error saving Widget Builder Widget Definition: " + e.getLocalizedMessage(), e);
+            log.error("Error saving Widget Builder Widget Definition. Error: {}", PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new RuntimeException("Failed to save widget definition");
         }
     }
@@ -338,8 +350,8 @@ public class PSWidgetBuilderService implements IPSWidgetBuilderService
         	try {
 				tgtDir.mkdirs();
 			} catch (Exception e) {
-				log.error("Unable to create target widget directory: " + tgtDir.getAbsolutePath());
-				throw new RuntimeException("Unable to create target widget directory: " + tgtDir.getAbsoluteFile());
+				log.error("Unable to create target widget directory: {}" , tgtDir.getAbsolutePath());
+				throw new RuntimeException("Unable to create target widget directory: " + tgtDir.getAbsoluteFile(),e);
 			}
         }
         
@@ -348,8 +360,8 @@ public class PSWidgetBuilderService implements IPSWidgetBuilderService
         	try {
         		tmpDir.mkdirs();
 			} catch (Exception e) {
-				log.error("Unable to create temp widget directory: " + tmpDir.getAbsolutePath());
-				throw new RuntimeException("Unable to create temp widget directory: " + tmpDir.getAbsoluteFile());
+				log.error("Unable to create temp widget directory: {}" , tmpDir.getAbsolutePath());
+				throw new RuntimeException("Unable to create temp widget directory: " + tmpDir.getAbsoluteFile(), e);
 			}
         }
         
@@ -363,18 +375,23 @@ public class PSWidgetBuilderService implements IPSWidgetBuilderService
             PSWidgetPackageSpec spec = new PSWidgetPackageSpec(definition.getPrefix(), definition.getPublisherUrl(),
                     definition.getLabel(), definition.getDescription(), definition.getVersion(), PSServer.getVersion());
             spec.setResponsive(definition.isResponsive());
-            if (!StringUtils.isBlank(definition.getWidgetTrayCustomizedIconPath()))
+            if (!StringUtils.isBlank(definition.getWidgetTrayCustomizedIconPath())) {
                 spec.setWidgetTrayCustomizedIconPath(definition.getWidgetTrayCustomizedIconPath());
-            if (!StringUtils.isBlank(definition.getToolTipMessage()))
+            }
+            if (!StringUtils.isBlank(definition.getToolTipMessage())) {
                 spec.setTooTipMessage(definition.getToolTipMessage());
-            if (!StringUtils.isBlank(definition.getFields()))
+            }
+            if (!StringUtils.isBlank(definition.getFields())) {
                 spec.setFields(PSWidgetBuilderFieldsListData.fromXml(definition.getFields()).getFields());
+            }
             
-            if (!StringUtils.isBlank(definition.getCssFiles()))
+            if (!StringUtils.isBlank(definition.getCssFiles())) {
                 spec.setCssFiles(PSWidgetBuilderResourceListData.fromXml(definition.getCssFiles()).getResourceList());
+            }
             
-            if (!StringUtils.isBlank(definition.getJsFiles()))
+            if (!StringUtils.isBlank(definition.getJsFiles())) {
                 spec.setJsFiles(PSWidgetBuilderResourceListData.fromXml(definition.getJsFiles()).getResourceList());
+            }
             
             spec.setWidgetHtml(definition.getWidgetHtml());
             
@@ -390,8 +407,9 @@ public class PSWidgetBuilderService implements IPSWidgetBuilderService
                 }
                 catch (Exception e)
                 {
-                	log.error(e);
-                	throw new RuntimeException("Failed to install package: " + e);
+                	log.error(PSExceptionUtils.getMessageForLog(e));
+                    log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+                	throw new RuntimeException("Failed to install package.", e);
                 }
             }
             else
@@ -401,7 +419,9 @@ public class PSWidgetBuilderService implements IPSWidgetBuilderService
         }
         catch (Exception e)
         {
-            log.error("WidgetBuilder Error",e);
+            log.error("WidgetBuilder Error: {}",PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+
             if (e instanceof RuntimeException)
             {
             	throw (RuntimeException) e;
@@ -419,7 +439,7 @@ public class PSWidgetBuilderService implements IPSWidgetBuilderService
     private void copyWidgetMutables(File ppkg) {
         //Only copy the mutables if this is a SAAS install 
         if(PSServer.getServerProps() != null 
-        		&& StringUtils.equals(PSServer.getServerProps().getProperty(SAAS_FLAG), "true")) {
+        		&& StringUtils.equalsIgnoreCase(PSServer.getServerProps().getProperty(SAAS_FLAG), "true")) {
 	        File mutableDir = new File(PSServer.getRxDir(), "var");
 	        File mutableWidgetDir = new File(mutableDir, "widgets_generated");
 	        File objectStoreDir = new File(PSServer.getRxDir(), "ObjectStore");
@@ -429,8 +449,10 @@ public class PSWidgetBuilderService implements IPSWidgetBuilderService
 	        	try {
 	        		mutableWidgetDir.mkdirs();
 				} catch (Exception e) {
-					log.error("Unable to create mutable widget directory: " + mutableWidgetDir.getAbsolutePath());
-					throw new RuntimeException("Unable to create mutable widget directory: " + mutableWidgetDir.getAbsoluteFile());
+					log.error("Unable to create mutable widget directory: {}, Error: {} ", mutableWidgetDir.getAbsolutePath(),
+                            PSExceptionUtils.getMessageForLog(e));
+                    log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+					throw new RuntimeException("Unable to create mutable widget directory: " + mutableWidgetDir.getAbsoluteFile(),e);
 				}
 	        }
 	        
@@ -438,8 +460,10 @@ public class PSWidgetBuilderService implements IPSWidgetBuilderService
 	        	try {
 	        		mutableObjectStoreDir.mkdirs();
 				} catch (Exception e) {
-					log.error("Unable to create mutable object store directory: " + mutableObjectStoreDir.getAbsolutePath());
-					throw new RuntimeException("Unable to create mutable object store directory: " + mutableObjectStoreDir.getAbsoluteFile());
+					log.error("Unable to create mutable object store directory: {}. Error: {} ", mutableObjectStoreDir.getAbsolutePath(), PSExceptionUtils.getMessageForLog(
+                            e));
+                    log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+					throw new RuntimeException("Unable to create mutable object store directory: " + mutableObjectStoreDir.getAbsoluteFile(),e);
 				}
 	        }
 	        
@@ -454,11 +478,13 @@ public class PSWidgetBuilderService implements IPSWidgetBuilderService
 			    FileUtils.copyDirectory(objectStoreDir, mutableObjectStoreDir, ceFilter);
 	        }
 		    catch (Exception e) {
-	            log.error("An unexpected Exception occurred while saving the widget definition.",e);
+	            log.error("An unexpected Exception occurred while saving the widget definition. Error: {}",
+                        PSExceptionUtils.getMessageForLog(e));
+                log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 	            if (e instanceof RuntimeException) {
 	            	throw (RuntimeException) e;
 	            }
-	            throw new RuntimeException("Failed to copy widget package mutables");
+	            throw new RuntimeException("Failed to copy widget package mutables.", e);
 	        }
         }
     }

@@ -17,12 +17,13 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.extensions.cms;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSExtensionDef;
 import com.percussion.extension.IPSResultDocumentProcessor;
 import com.percussion.extension.PSExtensionException;
@@ -33,19 +34,18 @@ import com.percussion.services.assembly.IPSAssemblyService;
 import com.percussion.services.assembly.IPSSlotContentFinder;
 import com.percussion.services.assembly.PSAssemblyException;
 import com.percussion.services.assembly.PSAssemblyServiceLocator;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 import java.io.File;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 
 /**
  * Filter the set of slots returned by contentvariantslotlist
@@ -54,7 +54,7 @@ import org.w3c.dom.NodeList;
  */
 public class PSSelectAASlots implements IPSResultDocumentProcessor
 {
-   private static Log ms_log = LogFactory.getLog(PSSelectAASlots.class);
+   private static final Logger log = LogManager.getLogger(PSSelectAASlots.class);
 
    public boolean canModifyStyleSheet()
    {
@@ -78,10 +78,10 @@ public class PSSelectAASlots implements IPSResultDocumentProcessor
       // Walk the slot elements, removing those whose finder is not null and
       // not in the list of AA finder
       IPSAssemblyService asm = PSAssemblyServiceLocator.getAssemblyService();
-      Map<String, Boolean> aafinder = new HashMap<String, Boolean>();
+      Map<String, Boolean> aafinder = new HashMap<>();
 
       NodeList children = resultDoc.getDocumentElement().getChildNodes();
-      Set<Element> nodesToRemove = new HashSet<Element>();
+      Set<Element> nodesToRemove = new HashSet<>();
       int count = children.getLength();
       try
       {
@@ -102,7 +102,9 @@ public class PSSelectAASlots implements IPSResultDocumentProcessor
                   }
                   catch (PSAssemblyException e)
                   {
-                     ms_log.error("Problem loading finder", e);
+                     log.error("Problem loading finder, Error: {}",
+                             PSExceptionUtils.getMessageForLog(e));
+                     log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                   }
                }
                if (!good)
@@ -127,7 +129,9 @@ public class PSSelectAASlots implements IPSResultDocumentProcessor
       }
       catch (Exception e)
       {
-         ms_log.error("Problem while filtering slots", e);
+         log.error("Problem while filtering slots, Error: {}", e);
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+
       }
 
       return resultDoc;

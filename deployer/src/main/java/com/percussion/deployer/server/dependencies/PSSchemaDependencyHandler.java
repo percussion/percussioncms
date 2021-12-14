@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -37,6 +37,7 @@ import com.percussion.deployer.server.PSDependencyDef;
 import com.percussion.deployer.server.PSDependencyMap;
 import com.percussion.deployer.server.PSImportCtx;
 import com.percussion.security.PSSecurityToken;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.tablefactory.IPSJdbcTableChangeListener;
 import com.percussion.tablefactory.PSJdbcDataTypeMap;
 import com.percussion.tablefactory.PSJdbcTableChangeEvent;
@@ -45,7 +46,8 @@ import com.percussion.tablefactory.PSJdbcTableSchema;
 import com.percussion.util.PSIteratorUtils;
 import com.percussion.utils.jdbc.PSConnectionDetail;
 import com.percussion.xml.PSXmlDocumentBuilder;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 
 import java.io.File;
@@ -106,7 +108,7 @@ public class PSSchemaDependencyHandler extends PSDataObjectDependencyHandler
          
       
       // catalog the table names
-      List<String> tableList = new ArrayList<String>();            
+      List<String> tableList = new ArrayList<>();
       String filterAll = "%";
       String db = dbmsInfo.getDatabase();
       if (db.trim().length() == 0)
@@ -151,7 +153,7 @@ public class PSSchemaDependencyHandler extends PSDataObjectDependencyHandler
       excludeTables.add("PSLOGDATA");
       
       // create dependency objects from the table names
-      List<PSDependency> deps = new ArrayList<PSDependency>();
+      List<PSDependency> deps = new ArrayList<>();
       for (String tablename : tableList)
       {
          if (excludeTables.contains(tablename) || 
@@ -259,8 +261,7 @@ public class PSSchemaDependencyHandler extends PSDataObjectDependencyHandler
    // see base class
    public void installDependencyFiles(PSSecurityToken tok,
       PSArchiveHandler archive, PSDependency dep, PSImportCtx ctx)
-         throws PSDeployException
-   {
+           throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
 
@@ -397,7 +398,7 @@ public class PSSchemaDependencyHandler extends PSDataObjectDependencyHandler
    /**
     * Reference to Log4j singleton object used to log any errors or debug info.
     */
-   private static Logger ms_log = Logger.getLogger(
+   private static final Logger ms_log = LogManager.getLogger(
          "com.percussion.deployer.server.dependencies.PSSchemaDependencyHandler");
    
    /**

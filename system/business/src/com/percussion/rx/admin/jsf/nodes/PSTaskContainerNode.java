@@ -17,29 +17,29 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.rx.admin.jsf.nodes;
 
-import static org.apache.commons.lang.Validate.notNull;
-
 import com.percussion.rx.jsf.PSEditableNodeContainer;
 import com.percussion.rx.jsf.PSNodeBase;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.schedule.IPSSchedulingService;
 import com.percussion.services.schedule.PSSchedulingException;
 import com.percussion.services.schedule.PSSchedulingServiceLocator;
 import com.percussion.services.schedule.data.PSScheduledTask;
 import com.percussion.services.schedule.data.PSScheduledTask.ByLabelComparator;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import static org.apache.commons.lang.Validate.notNull;
 
 /**
  * The backing beans for the container of scheduled tasks.
@@ -51,8 +51,8 @@ public class PSTaskContainerNode extends PSEditableNodeContainer
    /**
     * The logger for the site container node.
     */
-   private static final Log ms_log =
-         LogFactory.getLog(PSTaskContainerNode.class);
+   private static final Logger ms_log =
+         LogManager.getLogger(PSTaskContainerNode.class);
 
    /**
     * Constructor.
@@ -84,8 +84,7 @@ public class PSTaskContainerNode extends PSEditableNodeContainer
     * @return the perform action for the site node, which will navigate to the
     * editor.
     */
-   public String createEvent()
-   {
+   public String createEvent() throws PSNotFoundException {
       final PSScheduledTask event = getSchedulingService().createSchedule();
       event.setName(getUniqueName("TimedEvent", false));
       return initNewEvent(event);
@@ -118,8 +117,7 @@ public class PSTaskContainerNode extends PSEditableNodeContainer
    }
 
    @Override
-   public List<? extends PSNodeBase> getChildren()
-   {
+   public List<? extends PSNodeBase> getChildren() throws PSNotFoundException {
       if (m_children == null)
       {
          initChildrenNodes();
@@ -135,7 +133,7 @@ public class PSTaskContainerNode extends PSEditableNodeContainer
       List<PSScheduledTask> notifications;
       try
       {
-         notifications = new ArrayList<PSScheduledTask>(
+         notifications = new ArrayList<>(
                getSchedulingService().findAllSchedules());
       }
       catch (PSSchedulingException e)

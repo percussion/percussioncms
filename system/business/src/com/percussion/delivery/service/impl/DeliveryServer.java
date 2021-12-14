@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -30,16 +30,17 @@
 
 
 package com.percussion.delivery.service.impl;
+
 import com.percussion.share.data.PSAbstractDataObject;
 
-import java.util.ArrayList;
-import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.XmlValue;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -282,7 +283,7 @@ public class DeliveryServer
      */
     public List<DeliveryServer.AvailableServices> getAvailableServices() {
         if (availableServices == null) {
-            availableServices = new ArrayList<DeliveryServer.AvailableServices>();
+            availableServices = new ArrayList<>();
         }
         return this.availableServices;
     }
@@ -339,7 +340,7 @@ public class DeliveryServer
          */
         public List<String> getService() {
             if (service == null) {
-                service = new ArrayList<String>();
+                service = new ArrayList<>();
             }
             return this.service;
         }

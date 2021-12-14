@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -31,11 +31,10 @@ import com.percussion.security.PSAuthorizationException;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.server.PSRequestValidationException;
 import com.percussion.util.PSPurgableTempFile;
+import org.w3c.dom.Document;
 
 import java.io.File;
 import java.io.FileOutputStream;
-
-import org.w3c.dom.Document;
 
 /**
  * A Rhythmyx extension that copies a temporary XML document into an attached
@@ -129,38 +128,28 @@ public class PSXdDomToFile extends PSDefaultExtension
          return;
       }
 
-      FileOutputStream tfstream = null;
       try
       {
          String resultText = PSXmlDomUtils.copyTextFromDocument(contxt,sourceDoc,
             sourceNodeName);
+         try(PSPurgableTempFile tempfile = new PSPurgableTempFile("xml","xml",null)) {
+            try (FileOutputStream tfstream = new FileOutputStream((File) tempfile)) {
+               if (encoding.trim().length() == 0) {
+                  //no encoding specified, use platform default
+                  tfstream.write(resultText.getBytes());
+               } else {
+                  tfstream.write(resultText.getBytes(encoding));
+               }
+            }
 
-         PSPurgableTempFile tempfile = new PSPurgableTempFile("xml","xml",null);
-         tfstream = new FileOutputStream((File)tempfile);
-         if(encoding.trim().length() == 0)
-         {
-            //no encoding specified, use platform default
-            tfstream.write(resultText.getBytes());
+            request.setParameter(destName, tempfile);
          }
-         else
-         {
-            tfstream.write(resultText.getBytes(encoding));
-         }
-
-         request.setParameter(destName, tempfile);
       }
       catch(Exception e)
       {
          contxt.handleException(e);
       }
-      finally
-      {
-         if (tfstream != null)
-         {
-            try { tfstream.close(); }
-            catch (Exception eio) {}  // ignore any error
-         }
-      }
+
    }
 
   /**

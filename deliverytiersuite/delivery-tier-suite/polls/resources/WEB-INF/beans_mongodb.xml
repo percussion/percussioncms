@@ -19,20 +19,15 @@
   ~      Burlington, MA 01803, USA
   ~      +01-781-438-9900
   ~      support@percussion.com
-  ~      https://www.percusssion.com
+  ~      https://www.percussion.com
   ~
   ~     You should have received a copy of the GNU General Public License
   ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
   -->
 
 <beans xmlns="http://www.springframework.org/schema/beans"
-   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
-   xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
-   xsi:schemaLocation="
-      http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
-      http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
-      http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
-      http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
    <bean id="propertyPlaceholderProps"
          class="com.percussion.delivery.utils.spring.PSPropertiesFactoryBean">
@@ -76,7 +71,7 @@
             <!-- default properties for encryption -->
             <prop key="encryption.type">ENC</prop>
              <!-- default properties for Spring Security -->
-             <prop key="ContentSecurityPolicy">default-src 'self' *;</prop>
+             <prop key="contentSecurityPolicy">default-src 'self' *;</prop>
             <prop key="tenant.cache.ttl">1440</prop>
 	        <prop key="tenant.cache.reauth">true</prop>
 	        <prop key="metrics.server">metrics.cloud.percussion.com</prop>
@@ -136,12 +131,6 @@
    	<property name="MaxTTL" value="${tenant.cache.ttl}"/>
     <property name="AuthorizationProvider" ref="authProvider" />
     <property name="AuthorizeExpiredTTL" value="${tenant.cache.reauth}" />
-   </bean>
-   
-   <!--  Filters all requests to ensure tenants are authorized and that the tenant ID is added to the request context -->
-   <bean id="tenantAuthorizationFilter" class="com.percussion.delivery.multitenant.PSTenantSecurityFilter">
-   	<constructor-arg index="0" ref="authProvider" />
-   	<constructor-arg index="1" ref="authCache" />
    </bean>
    
    

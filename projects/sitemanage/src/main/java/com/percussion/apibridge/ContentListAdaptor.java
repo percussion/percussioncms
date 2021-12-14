@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -29,6 +29,7 @@ import com.percussion.rest.contentlists.IContentListsAdaptor;
 import com.percussion.rest.extensions.Extension;
 import com.percussion.util.PSSiteManageBean;
 
+import java.util.Collections;
 import java.util.List;
 
 @PSSiteManageBean
@@ -44,7 +45,7 @@ public class ContentListAdaptor implements IContentListsAdaptor {
      */
     @Override
     public List<Extension> getContentListGenerators() {
-        return null;
+        return Collections.emptyList();
     }
 
     /***
@@ -53,7 +54,7 @@ public class ContentListAdaptor implements IContentListsAdaptor {
      */
     @Override
     public List<Extension> getTemplateExpanders() {
-        return null;
+        return Collections.emptyList();
     }
 
     /***
@@ -63,7 +64,7 @@ public class ContentListAdaptor implements IContentListsAdaptor {
      */
     @Override
     public List<ContentList> getContentListsByEditionId(long editionId) {
-        return null;
+        return Collections.emptyList();
     }
 
     /***
@@ -73,7 +74,7 @@ public class ContentListAdaptor implements IContentListsAdaptor {
      */
     @Override
     public List<ContentList> getUnusedContentLists(long siteId) {
-        return null;
+        return Collections.emptyList();
     }
 
     /***

@@ -17,17 +17,18 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.metadata.dao.impl;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.metadata.data.PSMetadata;
 import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.util.PSSiteManageBean;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -47,7 +48,8 @@ import java.util.Collection;
 @Transactional
 public class PSMetadataDao
 {
-   private static Log log = LogFactory.getLog(PSMetadataDao.class);
+
+    private static final Logger log = LogManager.getLogger(PSMetadataDao.class);
 
     private SessionFactory sessionFactory;
 
@@ -82,14 +84,13 @@ public class PSMetadataDao
           }
           catch (Exception e) 
           {
-        	  log.error("Error releasing session in create: " + e.getMessage());
+        	  log.error("Error releasing session in create: {}", PSExceptionUtils.getMessageForLog(e));
           }
       }
       return data;      
    }
    
-   public void delete(String key) throws IPSGenericDao.DeleteException
-   {      
+   public void delete(String key) throws IPSGenericDao.DeleteException, IPSGenericDao.LoadException {
       PSMetadata data = find(key);
       if (data == null)
       {
@@ -122,7 +123,7 @@ public class PSMetadataDao
          }
          catch (Exception e) 
          {
-        	 log.error("Error releasing session in delete: " + e.getMessage());
+        	 log.error("Error releasing session in delete: {} " ,PSExceptionUtils.getMessageForLog(e));
          }
          
       }      
@@ -161,13 +162,13 @@ public class PSMetadataDao
     	  }
     	  catch(Exception e) 
     	  {
-    		  log.error("Error releasing session in save: " + e.getMessage());
+    		  log.error("Error releasing session in save: {}",PSExceptionUtils.getMessageForLog(e));
     	  } 
       }
       return data;
    }
    
-   public PSMetadata find(String key){
+   public PSMetadata find(String key) throws IPSGenericDao.LoadException {
       Session session = sessionFactory.getCurrentSession();
       
       try
@@ -186,10 +187,10 @@ public class PSMetadataDao
    
    @SuppressWarnings("unchecked")
    @Transactional
-   public Collection<PSMetadata> findByPrefix(String prefix){
+   public Collection<PSMetadata> findByPrefix(String prefix) throws IPSGenericDao.LoadException {
       String emsg;
       Session session = sessionFactory.getCurrentSession();
-      Collection<PSMetadata> results = new ArrayList<PSMetadata>(); 
+      Collection<PSMetadata> results = new ArrayList<>();
       try
       {
           results = session.createCriteria(PSMetadata.class)

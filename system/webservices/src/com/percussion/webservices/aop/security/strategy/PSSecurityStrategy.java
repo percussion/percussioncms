@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -38,6 +38,11 @@ import com.percussion.webservices.PSErrorsException;
 import com.percussion.webservices.PSWebserviceErrors;
 import com.percussion.webservices.aop.security.IPSWsPermission;
 import com.percussion.webservices.aop.security.IPSWsStrategy;
+import org.aopalliance.intercept.MethodInvocation;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.exception.ExceptionUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -49,12 +54,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import org.aopalliance.intercept.MethodInvocation;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.exception.ExceptionUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
  * Base class for all classes implementing a specific security stragegy for 
@@ -145,7 +144,7 @@ public abstract class PSSecurityStrategy
          {
             // a bug
             String msg = "Failed to create security strategy";
-            LogFactory.getLog(PSSecurityStrategy.class).error(msg, e);
+            LogManager.getLogger(PSSecurityStrategy.class).error(msg, e);
             throw new RuntimeException(msg, e);
          }
          
@@ -874,7 +873,7 @@ public abstract class PSSecurityStrategy
    /**
     * Logger to use, never <code>null</code>.
     */
-   protected Log m_log = LogFactory.getLog(PSSecurityStrategy.class);
+   protected static final Logger m_log = LogManager.getLogger(PSSecurityStrategy.class);
    
    /**
     * List of defined strategy classes, never <code>null</code>, may be empty.

@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -51,7 +51,7 @@ public class PSPublicFilter extends PSBaseFilter
          Map<String, String> params) throws PSFilterException
    {
       IPSCmsObjectMgr cms = PSCmsObjectMgrLocator.getObjectManager();
-      List<IPSFilterItem> rval = new ArrayList<IPSFilterItem>();
+      List<IPSFilterItem> rval = new ArrayList<>();
       for(IPSFilterItem item : items)
       {
          PSLegacyGuid guid = (PSLegacyGuid) item.getItemId();

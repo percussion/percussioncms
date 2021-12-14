@@ -17,12 +17,13 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.rx.config.impl;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.rx.config.IPSConfigChangeListener;
 import com.percussion.rx.config.IPSConfigHandler;
 import com.percussion.rx.config.IPSConfigRegistrationMgr;
@@ -33,14 +34,15 @@ import com.percussion.rx.config.PSConfigValidation;
 import com.percussion.rx.config.data.PSConfigStatus;
 import com.percussion.rx.config.data.PSConfigStatus.ConfigStatus;
 import com.percussion.server.PSServer;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.util.IOTools;
 import com.percussion.util.PSPurgableTempFile;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.types.PSPair;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.xml.bind.JAXBException;
 import java.io.ByteArrayInputStream;
@@ -49,7 +51,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -73,7 +75,7 @@ public class PSConfigService implements IPSConfigService
    {
       if (configNames == null)
          throw new IllegalArgumentException("configNames must not be null");
-      List<PSPair<String, Exception>> results = new ArrayList<PSPair<String, Exception>>();
+      List<PSPair<String, Exception>> results = new ArrayList<>();
       for (String cfg : configNames)
       {
          if (!isValidConfiguartion(cfg))
@@ -81,7 +83,7 @@ public class PSConfigService implements IPSConfigService
             String msg = "Missing one or more configuration files for "
                   + "configuration {0}. Skipping configuration.";
             Object[] args = { cfg };
-            PSPair<String, Exception> error = new PSPair<String, Exception>(
+            PSPair<String, Exception> error = new PSPair<>(
                   cfg, new PSConfigException(MessageFormat.format(msg, args)));
             results.add(error);
             continue;
@@ -93,7 +95,7 @@ public class PSConfigService implements IPSConfigService
          }
          catch (Exception e)
          {
-            PSPair<String, Exception> error = new PSPair<String, Exception>(
+            PSPair<String, Exception> error = new PSPair<>(
                   cfg, e);
             results.add(error);
          }
@@ -111,7 +113,7 @@ public class PSConfigService implements IPSConfigService
       if (StringUtils.isBlank(configName))
          throw new IllegalArgumentException("configName must not be null or empty.");
       
-      Map<File, Exception> undelMap = new HashMap<File, Exception>();
+      Map<File, Exception> undelMap = new HashMap<>();
 
       m_configRegMgr.unregister(configName);
       deleteConfigFile(configName, ConfigTypes.CONFIG_DEF, undelMap);
@@ -137,7 +139,7 @@ public class PSConfigService implements IPSConfigService
          String configDef) throws IOException
    {
       PSPurgableTempFile cfgFile = new PSPurgableTempFile(cfgName, "xml", null);
-      FileUtils.writeStringToFile(cfgFile, configDef, "UTF8");
+      FileUtils.writeStringToFile(cfgFile, configDef, StandardCharsets.UTF_8);
       return cfgFile;
    }
 
@@ -151,7 +153,7 @@ public class PSConfigService implements IPSConfigService
       if (StringUtils.isBlank(configName))
          throw new IllegalArgumentException("configName must not be empty");
       List<PSConfigValidation> validationErrors = 
-         new ArrayList<PSConfigValidation>();
+         new ArrayList<>();
       try
       {
          validationErrors = validateConfig(configName);
@@ -258,7 +260,7 @@ public class PSConfigService implements IPSConfigService
     * configure file after merging the properties.
     * 
     * @param localConfigFile local configure file, must not be <code>null</code>.
-    * @param changeOnly <code>true</code> if the delta is empty, then do
+    * @param changesOnly <code>true</code> if the delta is empty, then do
     * nothing otherwise always apply all configured properties.
     */
    public void applyLocalConfiguration(File localConfigFile,
@@ -272,7 +274,7 @@ public class PSConfigService implements IPSConfigService
             .indexOf(LOCAL_CONFIG_FILE_SUFFIX));
       PSPair<String, Map<String, Object>> prevCfg = getLastSuccessConfig(configName);
       Map<String, Object> prevProps = prevCfg != null ? prevCfg.getSecond()
-            : new HashMap<String, Object>();
+            : new HashMap<>();
 
       applyLocalConfiguration(localConfigFile, prevProps, changesOnly);
    }
@@ -284,7 +286,7 @@ public class PSConfigService implements IPSConfigService
     * @param localConfigFile local configure file, must not be <code>null</code>.
     * @param prevProps the previously applied properties, not <code>null</code>,
     * may be empty.
-    * @param changeOnly <code>true</code> if the delta of the local and
+    * @param changesOnly <code>true</code> if the delta of the local and
     * previous properties is empty, then do nothing; otherwise always apply all
     * configured properties.
     */
@@ -303,12 +305,12 @@ public class PSConfigService implements IPSConfigService
             .indexOf(LOCAL_CONFIG_FILE_SUFFIX));
       
       ConfigStatus status = ConfigStatus.FAILURE;
-      InputStream defConfIs = null;
-      try
+
+      try(InputStream defConfIs = new FileInputStream(getConfigFile(
+              ConfigTypes.DEFAULT_CONFIG, configName)))
       {
          PSConfigNormalizer normalizer = new PSConfigNormalizer();
-         defConfIs = new FileInputStream(getConfigFile(
-               ConfigTypes.DEFAULT_CONFIG, configName));
+
          Map<String, Object> defaultProps = normalizer
                .getNormalizedMap(defConfIs);
          Map<String, Object> newProps = getNewProps(localConfigFile,
@@ -320,12 +322,7 @@ public class PSConfigService implements IPSConfigService
             propsToProcess = df.getConfigDelta(newProps, prevProps);
             if (propsToProcess.isEmpty())
             {
-               String msg = "Skipped applying configuration for package ({0}) " +
-                     "as no changes found from the last successful " +
-                     "configuration\"";
-               Object[] args = {configName};
-               ms_logger.info(MessageFormat.format(msg, args)
-                     + "\"...\n");
+               ms_logger.info("Skipped applying configuration for package ({}) as no changes found from the last successful configuration",configName);
                return; // there is no change, do nothing
             }
          }
@@ -333,8 +330,7 @@ public class PSConfigService implements IPSConfigService
          {
             propsToProcess = newProps;
          }
-         ms_logger.info("Applying config for package \"" + configName
-               + "\"...\n");
+         ms_logger.info("Applying configuration for package {}..." , configName);
 
          // validate package to flag modified elements
          notifyPreConfig(configName);
@@ -370,20 +366,14 @@ public class PSConfigService implements IPSConfigService
             saveConfigStatus(configName, status);
          }
 
-         ms_logger.info("Finished applying config for package \"" + configName
-               + "\".\n");
+         ms_logger.info("Finished applying configuration for package {}", configName);
       }
       catch (Exception e)
       {
-         String errorMsg = "Failed to apply config for package \""
-               + configName + "\".";
-         ms_logger.error(errorMsg, e);
+         ms_logger.error("Failed to apply config for package {} Error: {}", configName,
+                 PSExceptionUtils.getMessageForLog(e));
          saveConfigStatus(configName, status);
-         throw new PSConfigException(errorMsg, e);
-      }
-      finally
-      {
-         IOUtils.closeQuietly(defConfIs);
+         throw new PSConfigException(e);
       }
    }
 
@@ -406,39 +396,36 @@ public class PSConfigService implements IPSConfigService
          throw new IllegalArgumentException(
                "Configure name must not be blank.");
 
-      FileInputStream defIS = null;
-      FileInputStream localIS = null;
-      try
+      File defaultFile = getConfigFile(ConfigTypes.DEFAULT_CONFIG, cfgName);
+      File localFile = getConfigFile(ConfigTypes.LOCAL_CONFIG, cfgName);
+      File cfgDefFile = getConfigFile(ConfigTypes.CONFIG_DEF, cfgName);
+
+      try(FileInputStream defIS = new FileInputStream(defaultFile))
       {
-         File defaultFile = getConfigFile(ConfigTypes.DEFAULT_CONFIG, cfgName);
-         File localFile = getConfigFile(ConfigTypes.LOCAL_CONFIG, cfgName);
-         File cfgDefFile = getConfigFile(ConfigTypes.CONFIG_DEF, cfgName);
-         
-         if (!(defaultFile.exists() && localFile.exists() && cfgDefFile
-               .exists()))
-            return Collections.emptyList();
-         
-         PSConfigNormalizer normalizer = new PSConfigNormalizer();
-         defIS = new FileInputStream(defaultFile);
-         localIS = new FileInputStream(localFile);
+         try(FileInputStream localIS= new FileInputStream(localFile)) {
 
-         Map<String, Object> defaultProps = normalizer.getNormalizedMap(defIS);
-         Map<String, Object> localProps = normalizer.getNormalizedMap(localIS);
-         Map<String, Object> curProps = applyDefaultProps(localProps,
-               defaultProps);
-         Map<String, Object> emptyProps = Collections.emptyMap();
+            if (!(defaultFile.exists() && localFile.exists() && cfgDefFile
+                    .exists()))
+               return Collections.emptyList();
 
-         PSConfigMapper mapper = new PSConfigMapper();
-         List<IPSConfigHandler> cfgHandlers = mapper.getResolvedHandlers(
-               cfgDefFile.getAbsolutePath(), curProps, curProps, emptyProps);
+            PSConfigNormalizer normalizer = new PSConfigNormalizer();
 
-         return validateHandlers(cfgName, cfgHandlers);
+            Map<String, Object> defaultProps = normalizer.getNormalizedMap(defIS);
+            Map<String, Object> localProps = normalizer.getNormalizedMap(localIS);
+            Map<String, Object> curProps = applyDefaultProps(localProps,
+                    defaultProps);
+            Map<String, Object> emptyProps = Collections.emptyMap();
+
+            PSConfigMapper mapper = new PSConfigMapper();
+            List<IPSConfigHandler> cfgHandlers = mapper.getResolvedHandlers(
+                    cfgDefFile.getAbsolutePath(), curProps, curProps, emptyProps);
+
+            return validateHandlers(cfgName, cfgHandlers);
+         }
+      } catch (IOException e) {
+         ms_logger.error(PSExceptionUtils.getMessageForLog(e));
       }
-      finally
-      {
-         IOUtils.closeQuietly(defIS);
-         IOUtils.closeQuietly(localIS);
-      }
+      return Collections.emptyList();
    }
 
    /**
@@ -482,7 +469,7 @@ public class PSConfigService implements IPSConfigService
    private List<PSConfigValidation> validateHandlers(String pkgName,
          List<IPSConfigHandler> hdls)
    {
-      List<PSConfigValidation> result = new ArrayList<PSConfigValidation>();
+      List<PSConfigValidation> result = new ArrayList<>();
       IPSConfigStatusMgr mgr = getConfigStatusManager();
       for (PSConfigStatus status : mgr.findLatestConfigStatus("%"))
       {
@@ -555,30 +542,22 @@ public class PSConfigService implements IPSConfigService
       Map<String, Object> props = cfg.getSecond();
       if (cfgDef == null || props.isEmpty())
          return Collections.emptyList();
-      
-      PSPurgableTempFile cfgDefFile = null;
-      try
+
+      try(PSPurgableTempFile cfgDefFile = getTempConfigDefFile(configName, cfgDef))
       {
          Map<String, Object> emptyProps = Collections.emptyMap();
-         cfgDefFile = getTempConfigDefFile(configName, cfgDef);
 
-         List<IPSConfigHandler> cfgHandlers = mapper.getResolvedHandlers(
+         return mapper.getResolvedHandlers(
                cfgDefFile.getAbsolutePath(), props, props, emptyProps);
-
-         return cfgHandlers;
       }
       catch (Exception e)
       {
          ms_logger.error(
-               "Failed to get handlers from last success configuration of package \""
-                     + configName + "\"", e);
-         return Collections.emptyList();
+               "Failed to get handlers from last success configuration of package {} Error: {}"
+                     , configName,
+                 PSExceptionUtils.getMessageForLog(e));
       }
-      finally
-      {
-         if (cfgDefFile != null)
-            cfgDefFile.release();
-      }
+      return Collections.emptyList();
    }
 
    /*
@@ -589,7 +568,7 @@ public class PSConfigService implements IPSConfigService
       if (StringUtils.isBlank(cfgName))
          throw new IllegalArgumentException("cfgName must not be null");
       
-      ms_logger.debug("de-apply config for configuration \"" + cfgName + "\".");
+      ms_logger.info("Reverting configuration file: {}", cfgName);
       
       IPSConfigStatusMgr mgr = getConfigStatusManager();
       PSConfigStatus cfgStatus = mgr.findLastSuccessfulConfigStatus(cfgName);
@@ -599,25 +578,18 @@ public class PSConfigService implements IPSConfigService
       
       String defaultCfg = cfgStatus.getDefaultConfig();
       String localCfg = cfgStatus.getLocalConfig();
-      PSPurgableTempFile cfgFile = null;
-      try
+
+      try(PSPurgableTempFile cfgFile =getTempConfigDefFile(cfgName, configDef) )
       {
-         cfgFile = getTempConfigDefFile(cfgName, configDef);
          deApplyConfiguration(cfgName, cfgFile.getAbsolutePath(),
-               new ByteArrayInputStream(defaultCfg.getBytes("UTF8")),
-               new ByteArrayInputStream(localCfg.getBytes("UTF8")));
+               new ByteArrayInputStream(defaultCfg.getBytes(StandardCharsets.UTF_8)),
+               new ByteArrayInputStream(localCfg.getBytes(StandardCharsets.UTF_8)));
       }
       catch (Exception e)
       {
-         ms_logger.error("Failed to de-apply configuration \"" + cfgName
-               + "\".", e);
+         ms_logger.error("Failed to revert configuration in file: {} Error: {}", cfgName,
+                 PSExceptionUtils.getMessageForLog(e));
       }
-      finally
-      {
-         if (cfgFile != null)
-            cfgFile.release();
-      }
-      return;
    }
 
    /**
@@ -634,8 +606,7 @@ public class PSConfigService implements IPSConfigService
     * The caller is responsible to close this input stream.
     */
    public void deApplyConfiguration(String configName, String configDefPath,
-         InputStream defaultCfg, InputStream localCfg)
-   {
+         InputStream defaultCfg, InputStream localCfg) throws PSNotFoundException {
       if (defaultCfg == null)
          throw new IllegalArgumentException("defaultCfg must not be null");
       if (localCfg == null)
@@ -689,17 +660,16 @@ public class PSConfigService implements IPSConfigService
          }
             
 
-         ms_logger.info("Finished de-applying config for package \""
-               + configName + "\".\n");
+         ms_logger.info("Finished reverting config for package {}",
+               configName);
          
       }
       catch (Exception e)
       {
-         String errorMsg = "Failed to de-apply config for package \""
-               + configName + "\".";
-         ms_logger.error(errorMsg, e);
+         ms_logger.error("Failed to revert config for package {}. Error: {}", configName,
+                 PSExceptionUtils.getMessageForLog(e));
          saveConfigStatus(configName, status);
-         throw new PSConfigException(errorMsg, e);
+         throw new PSConfigException(e);
       }
    }
 
@@ -711,8 +681,7 @@ public class PSConfigService implements IPSConfigService
     * @param status the status of the configuration, never <code>null</code>.
     */
    private void notifyConfigChanges(Collection<IPSGuid> ids,
-         ConfigStatus status)
-   {
+         ConfigStatus status) throws PSNotFoundException {
       for (IPSConfigChangeListener ls : m_configChangeListeners)
       {
          ls.configChanged(ids, status);
@@ -725,8 +694,7 @@ public class PSConfigService implements IPSConfigService
     * @param name The name of the package to be configured, assumed not
     * <code>null</code>.
     */
-   private void notifyPreConfig(String name)
-   {
+   private void notifyPreConfig(String name) throws PSNotFoundException {
       for (IPSConfigChangeListener ls : m_configChangeListeners)
       {
          ls.preConfiguration(name);
@@ -747,7 +715,7 @@ public class PSConfigService implements IPSConfigService
    private Map<String, Object> applyDefaultProps(
          Map<String, Object> localConfig, Map<String, Object> defaultConfig)
    {
-      Map<String, Object> nm = new HashMap<String, Object>();
+      Map<String, Object> nm = new HashMap<>();
       nm.putAll(defaultConfig);
       nm.putAll(localConfig);
       return nm;
@@ -766,26 +734,17 @@ public class PSConfigService implements IPSConfigService
          Map<String, Object> defaultProps)
    {
 
-      InputStream locConfigIs = null;
-      try
+      try(InputStream locConfigIs = new FileInputStream(localConfigFile))
       {
          PSConfigNormalizer normalizer = new PSConfigNormalizer();
-         locConfigIs = new FileInputStream(localConfigFile);
+
          Map<String, Object> localProps = normalizer
                .getNormalizedMap(locConfigIs);
          return applyDefaultProps(localProps, defaultProps);
       }
-      catch (FileNotFoundException e)
+      catch (IOException | JAXBException e)
       {
          throw new PSConfigException(e);
-      }
-      catch (JAXBException e)
-      {
-         throw new PSConfigException(e);
-      }
-      finally
-      {
-         IOUtils.closeQuietly(locConfigIs);
       }
    }
 
@@ -813,7 +772,7 @@ public class PSConfigService implements IPSConfigService
                   .getLocalConfig()), normalizeConfig(sucCfg
                   .getDefaultConfig()));
             
-            return new PSPair<String, Map<String, Object>>(sucCfg
+            return new PSPair<>(sucCfg
                   .getConfigDef(), results);
          }
       }
@@ -835,20 +794,17 @@ public class PSConfigService implements IPSConfigService
     * 
     * @return the normalized configuration, never <code>null</code>, may be
     * empty.
-    * 
-    * @throws UnsupportedEncodingException this should never happen since this
-    * uses UTF8.
+    *
     * @throws JAXBException if failed to parse the configure content.
     */
    private Map<String, Object> normalizeConfig(String config)
-      throws UnsupportedEncodingException, JAXBException
+      throws JAXBException
    {
       if (StringUtils.isBlank(config))
-         return new HashMap<String, Object>();
+         return new HashMap<>();
 
       PSConfigNormalizer normalizer = new PSConfigNormalizer();
-      return normalizer.getNormalizedMap(new ByteArrayInputStream(config
-            .getBytes("UTF8")));
+      return normalizer.getNormalizedMap(new ByteArrayInputStream(config.getBytes(StandardCharsets.UTF_8)));
    }
 
    /**
@@ -1045,7 +1001,7 @@ public class PSConfigService implements IPSConfigService
          String pkgName, boolean isReplace)
    {
       File f = getConfigFile(ConfigTypes.VISIBILITY, pkgName);
-      Set<String> commSet = new HashSet<String>(communities);
+      Set<String> commSet = new HashSet<>(communities);
       if (!isReplace)
       {
          // merge the specified communities into the existing ones
@@ -1073,7 +1029,7 @@ public class PSConfigService implements IPSConfigService
    /**
     * The logger for this class.
     */
-   private static Logger ms_logger = Logger.getLogger("PSConfigService");
+   private static final Logger ms_logger = LogManager.getLogger("PSConfigService");
 
    /**
     * Object of configuration registration manager.
@@ -1088,5 +1044,5 @@ public class PSConfigService implements IPSConfigService
    /**
     * Configuration change listeners.
     */
-   private List<IPSConfigChangeListener> m_configChangeListeners = new ArrayList<IPSConfigChangeListener>();
+   private List<IPSConfigChangeListener> m_configChangeListeners = new ArrayList<>();
 }

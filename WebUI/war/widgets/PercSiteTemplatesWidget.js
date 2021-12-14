@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -72,7 +72,7 @@
         {
             var self = this;
 
-            self.firstPagesArray = new Object();
+            self.firstPagesArray = {};
 
             this.controller = $.PercSiteTemplatesController(false);
 
@@ -83,7 +83,7 @@
             });
 
             // bind the Update button to local dispatcher
-            $('#perc-template-name-button').click(function()
+            $('#perc-template-name-button').on("click",function()
             {
                 self._renameTemplate();
             });
@@ -100,7 +100,7 @@
 
                 // Change the view here, after the items are loaded
                 var memento;
-                memento = $j.PercNavigationManager.getMemento();
+                memento = $.PercNavigationManager.getMemento();
 
                 if(memento.view != null)
                 {
@@ -171,11 +171,11 @@
                 }
                 else
                 {
-                    var selectedItem = $("#perc-assigned-templates .perc-selected");
-                    var selectedItemTop = selectedItem.offset().top;
+                    var selectedItem1 = $("#perc-assigned-templates .perc-selected");
+                    var selectedItemTop = selectedItem1.offset().top;
                     $(".perc-templates-layout").animate(
                         {
-                            scrollTop: selectedItemTop - selectedItem.height()
+                            scrollTop: selectedItemTop - selectedItem1.height()
                         }, 500);
                 }
             }
@@ -192,13 +192,13 @@
         {
             var self = this;
 
-            $('#perc-site-filter').change(function(event, ui)
+            $('#perc-site-filter').on("change",function(event, ui)
             {
                 self._updateSiteTemplates();
             });
 
             // Create a custom event that binds the auto-scroll
-            $('#perc-activated-templates-scrollable').bind('autoscroll', function()
+            $('#perc-activated-templates-scrollable').on('autoscroll', function()
             {
                 self.autoscrollToSelected();
             });
@@ -295,12 +295,12 @@
                 buffer += '    <div class="perc-apply" id="' + template.getTemplateId() + '-apply" title="' +I18N.message("perc.ui.site.templates.widget@Match Content To Template Layout") + '">' + '</div>';
                 buffer += '    <div class="perc-edit" id="' + template.getTemplateId() + '-edit" title="' +I18N.message("perc.ui.site.templates.widget@Edit Template") + '">' + '</div>';
                 buffer += '    <div class="perc-delete" id="' + template.getTemplateId() + '-delete" title="' +I18N.message("perc.ui.admin.packed@Delete Template") + '">' + '</div>';
-                buffer += '    <div class="perc-template-label" title="' + originalName + '" alt="' + originalName + '" id="' + template.getTemplateId() + '-name">' + originalName + '</div>';
-                buffer += '    <div percBaseTemplateName="' + template.getBaseTemplateName() + '" id="' + template.getTemplateId() + 'id" class="perc-template-thumbnail-container perc-template-background">';
+                buffer += '    <div class="perc-template-label" title="' + originalName + '" id="' + template.getTemplateId() + '-name">' + originalName + '</div>';
+                buffer += '    <div data-base-template="' + template.getBaseTemplateName() + '" id="' + template.getTemplateId() + 'id" class="perc-template-thumbnail-container perc-template-background">';
                 buffer += '         <img height = "122px" width="174px" src = "' + template.getImageUrl() + '" alt="' + I18N.message("perc.ui.new.site.dialog@Basic Template") + '" />';
                 buffer += '    </div>';
                 buffer += ' <div class="perc-template-paging-container"' + hideInThumbnail + '>';
-                buffer += '    <ul class="perc-template-pages" templateVersion ="'+ template.getContentMigrationVersion() + '"templateId="' + template.getTemplateId() + '">';
+                buffer += '    <ul class="perc-template-pages" data-perc-template-version ="'+ template.getContentMigrationVersion() + ' "templateId="' + template.getTemplateId() + '">';
                 buffer += '         <li class="perc-template-pages-items" ></li>';
                 buffer += '         <li class="perc-template-pages-items" ></li>';
                 buffer += '         <li class="perc-template-pages-items" ></li>';
@@ -326,7 +326,7 @@
                 carouselContainerDiv.find("div#" + template.getTemplateId()).data("positionInCarousel", t);
 
                 // make the template labels editable
-                $("#" + template.getTemplateId() + " li").click(function(event)
+                $("#" + template.getTemplateId() + " li").on("click", function(event)
                 {
                     if($(this).attr("title") == null || $(this).attr("title") == "") return;
                     $('.perc-template-item .perc-template-paging-container li').removeClass('perc-template-page-highlighted-color');
@@ -405,7 +405,7 @@
                                     });
                             }
                             loadTemplatePages(templateId, 1);
-                            if(ui.helper.dropCallback && $.isFunction(ui.helper.dropCallback))
+                            if(ui.helper.dropCallback && typeof ui.helper.dropCallback === "function")
                             {
                                 ui.helper.dropCallback();
                             }
@@ -449,7 +449,7 @@
                 assignedTemplatesDiv.parents("#perc-activated-templates-scrollable").append($('<div class="resetPaging">'));
 
                 // Automatically resize the scrolling items having into acount the visible portion of screen
-                $(window).resize(function()
+                $(window).on("resize",function()
                 {
                     self.updateTemplatesPagingSize();
                 });
@@ -470,7 +470,7 @@
             });
 
             // Pagination controls - Next button - Click
-            $('#perc-activated-templates .perc-template-pages-controls .next').click(function()
+            $('#perc-activated-templates .perc-template-pages-controls .next').on("click", function()
             {
                 //Get the template container that each button belongs to.
                 var templateContainer = $(this).parents(".perc-template-item");
@@ -490,10 +490,10 @@
                 }
             });
 
-            $('.resetPaging').click(function(event)
+            $('.resetPaging').on("click", function(event)
             {
 
-                if(typeof event.deletedPageId !== 'undefined' && event.deletedPageId == self.selectedPageId)
+                if(typeof event.deletedPageId !== 'undefined' && event.deletedPageId === self.selectedPageId)
                 {
                     var firstPageId = self.firstPagesArray[self.selectedPageIdOriginalTemplateId];
                     self.selectedPageId = firstPageId;
@@ -504,7 +504,7 @@
             });
 
             // Pagination controls - Previous button
-            $('#perc-activated-templates .perc-template-pages-controls .previous').click(function()
+            $('#perc-activated-templates .perc-template-pages-controls .previous').on("click", function(evt)
             {
                 var templateContainer = $(this).parents(".perc-template-item");
                 var templateId = $(templateContainer).attr('id');
@@ -523,14 +523,14 @@
             });
 
             // Pagination controls - Text input for page selector
-            $('#perc-activated-templates .perc-template-pages-controls').submit(function()
+            $('#perc-activated-templates .perc-template-pages-controls').on("submit",function()
             {
                 var templateId = $(this).parents(".perc-template-item").attr('id');
                 var totalPages = getTotalPagesByTemplateId(templateId);
                 var jumpInput = $(this).find('.perc-jump');
 
                 //If there are no pages, always go to page 1.
-                if(totalPages == 0)
+                if(totalPages === 0)
                 {
                     jumpInput.val(1);
                     return false;
@@ -593,7 +593,7 @@
             {
                 var memento;
                 var pageId;
-                memento = $j.PercNavigationManager.getMemento();
+                memento = $.PercNavigationManager.getMemento();
                 if(memento.templateId && memento.pageId && templateId == memento.templateId)
                 {
                     pageId = memento.pageId;
@@ -610,7 +610,7 @@
                         {
                             data.childrenInPage = $.perc_utils.convertCXFArray(data.childrenInPage);
                             var listElements = $('#' + templateId + ' .perc-template-pages li.perc-template-pages-items');
-                            var templateVersion = $('#' + templateId + ' .perc-template-pages' ).attr('templateVersion');
+                            var templateVersion = $('#' + templateId + ' .perc-template-pages' ).attr('data-perc-template-version');
                             listElements.removeClass("perc-template-page-highlighted-color");
                             // Clear the list of pages and their previous title attribute
                             if(data.firstItemId != null)
@@ -624,12 +624,12 @@
                             }
 
 
-                            // Appeand each of the pages returned by the service
-                            for(var i = 0; i < data.childrenInPage.length; i++) {
+                            // Append each of the pages returned by the service
+                            for(var j = 0; j < data.childrenInPage.length; j++) {
                                 // Remove the "/Sites" string from the path and set it as the title for the li element
-                                var pagePath = data.childrenInPage[i].path.replace('\/\/' + $.perc_paths.SITES_ROOT_NO_SLASH, '');
-                                var curPageId = data.childrenInPage[i].id;
-                                var curPageElem = listElements.eq(i);
+                                var pagePath = data.childrenInPage[j].path.replace('\/\/' + $.perc_paths.SITES_ROOT_NO_SLASH, '');
+                                var curPageId = data.childrenInPage[j].id;
+                                var curPageElem = listElements.eq(j);
                                 var recycledPage = false;
                                 if(pagePath == "" || pagePath == undefined || pagePath == null){
                                     recycledPage = true;
@@ -646,29 +646,29 @@
                                     self.selectedPageIdOriginalTemplateId = memento.templateId;
                                 }
 
-                                var typeProps = getTypePropertyMap(data.childrenInPage[i].typeProperties.entries);
+                                var typeProps = getTypePropertyMap(data.childrenInPage[j].typeProperties.entries);
 
                                 var dropDownElement = '<span class="perc-template-pages-items-dropdown"></span>';
                                 var migrationEmptyWidgetIndicator = typeProps["migrationEmptyWidgetFlag"] == "yes" ?
                                     "<span><img src='../images/images/errorIcon.gif' title='Content migration did not populate all widgets on the page. The original content can be accessed in the Unused Asset tray.'/></span>" : "";
                                 var html = '<span class="perc-template-pages-items-thumbnail"><img src="../images/images/inspectButton.png" alt="perc.ui.extend.ui.dialog@Inspect Button"/></span><div class="perc-template-page-title">' +
-                                    data.childrenInPage[i].name + '</div>' + migrationEmptyWidgetIndicator + dropDownElement;
+                                    data.childrenInPage[j].name + '</div>' + migrationEmptyWidgetIndicator + dropDownElement;
                                 //because if pagePath is empty, then page is in recycle
                                 //don't add drop down and change icon to broken
                                 if (recycledPage) {
                                     html = '<span class="perc-template-pages-items-thumbnail"><img src="../images/images/brokenlink.png" alt="perc.ui.recycledPage@RecycledPage"/></span><div class="perc-template-page-title">' +
-                                        data.childrenInPage[i].name + '</div>' + migrationEmptyWidgetIndicator + dropDownElement;
+                                        data.childrenInPage[j].name + '</div>' + migrationEmptyWidgetIndicator + dropDownElement;
                                     curPageElem.attr('title', I18N.message("perc.ui.recycledPage@RecycledPage")).attr('id', curPageId)
-                                        .data("pageInfo", data.childrenInPage[i])
+                                        .data("pageInfo", data.childrenInPage[j])
                                         .html(html);
                                 }else{
                                     curPageElem.attr('title', pagePath).attr('id', curPageId)
-                                        .data("pageInfo", data.childrenInPage[i])
+                                        .data("pageInfo", data.childrenInPage[j])
                                         .html(html);
                                 }
                                 if (!recycledPage)
-                                    curPageElem.find(".perc-template-pages-items-thumbnail img").attr("data", JSON.stringify(data.childrenInPage[i]));
-                                if (typeProps["contentMigrationVersion"] != templateVersion) {
+                                    curPageElem.find(".perc-template-pages-items-thumbnail img").attr("data", JSON.stringify(data.childrenInPage[j]));
+                                if (typeProps["contentMigrationVersion"] !== templateVersion) {
                                     curPageElem.find(".perc-template-pages-items-thumbnail img").addClass('perc-require-migration');
                                 }
                                 var dropDownConfig = {
@@ -683,7 +683,7 @@
                                         pageId: curPageId,
                                         templateId: templateId
                                     }, {pageId: curPageId, templateId: templateId}]
-                                }
+                                };
                                 if (recycledPage) {
 
                                     dropDownConfig = {
@@ -697,7 +697,7 @@
 
                                         ],
                                         percDropdownCallbackData: ['', {pageId: curPageId, templateId: templateId},{pageId: curPageId, templateId: templateId},{pageId: curPageId, templateId: templateId}]
-                                    }
+                                    };
                                 }
                                 curPageElem.find(".perc-template-pages-items-dropdown").PercDropdown(dropDownConfig);
                             }
@@ -730,19 +730,19 @@
             }
 
             function _changeTemplate(callbackData) {
-                var templateId = callbackData.templateId;
-                var pageId = callbackData.pageId;
-                $.PercChangeTemplateDialog().openDialog(pageId, templateId, $j.PercNavigationManager.getSiteName(), function() {  window.location.reload(); });
+                var templateId = callbackData.data.templateId;
+                var pageId = callbackData.data.pageId;
+                $.PercChangeTemplateDialog().openDialog(pageId, templateId, $.PercNavigationManager.getSiteName(), function() {  window.location.reload(); });
             }
 
             function _openThisPage(callbackData) {
-                _openPage(callbackData.pageId);
+                _openPage(callbackData.data.pageId);
             }
 
             function _purgePage(callbackData) {
-                var templateId = callbackData.templateId;
+                var templateId = callbackData.data.templateId;
                 $.PercRecycleService.purgeItem(
-                    callbackData.pageId,
+                    callbackData.data.pageId,
                     $.perc_paths.PAGE_FORCE_PURGE,
                     function(status, data) {
                         if (status === $.PercServiceUtils.STATUS_ERROR) {
@@ -755,17 +755,17 @@
             }
 
             function _restorePage(callbackData) {
-                var templateId = callbackData.templateId;
-                var pageId = callbackData.pageId;
-            $.PercRecycleService.restoreItem(pageId,  $.perc_paths.PAGE_RESTORE, function(status, data) {
-                if (status === $.PercServiceUtils.STATUS_ERROR) {
-                    $.perc_utils.alert_dialog({title: I18N.message("perc.ui.publish.title@Error"), content: data});
-                } else {
-                    window.location.reload();
-                }
-            });
+                var templateId = callbackData.data.templateId;
+                var pageId = callbackData.data.pageId;
+                $.PercRecycleService.restoreItem(pageId,  $.perc_paths.PAGE_RESTORE, function(status, data) {
+                    if (status === $.PercServiceUtils.STATUS_ERROR) {
+                        $.perc_utils.alert_dialog({title: I18N.message("perc.ui.publish.title@Error"), content: data});
+                    } else {
+                        window.location.reload();
+                    }
+                });
 
-        }
+            }
 
             /**
              * Update pagination indicators after loading paging groups.
@@ -906,8 +906,8 @@
 
                 var view = $.Percussion.getCurrentTemplatesView();
 
-                var querystring = $j.deparam.querystring();
-                var currentTemplateName = $("#" + templateId).find('.perc-template-thumbnail-container').attr('percbasetemplatename');
+                var querystring = $.deparam.querystring();
+                var currentTemplateName = $("#" + templateId).find('.perc-template-thumbnail-container').attr('data-base-template');
                 var memento = {
                     'templateName': currentTemplateName,
                     'templateId': templateId,
@@ -916,8 +916,8 @@
                     'tabId': "perc-tab-layout"
                 };
                 // Use the PercNavigationManager to switch to the template editor
-                $j.PercNavigationManager.goToLocation(
-                    $j.PercNavigationManager.VIEW_EDIT_TEMPLATE, querystring.site, null, null, null, querystring.path, null, memento);
+                $.PercNavigationManager.goToLocation(
+                    $.PercNavigationManager.VIEW_EDIT_TEMPLATE, querystring.site, null, null, null, querystring.path, null, memento);
             }
 
             // Adds a filter for non valid characters
@@ -933,7 +933,7 @@
 
             // bind each template to click event to select it
             var self = this;
-            $('.perc-template-thumbnail-container').parent().click(function(event)
+            $('.perc-template-thumbnail-container').parent().on("click",function(event)
             {
                 //if ($(event.target).parent().hasClass("perc-template-pages-items-thumbnail"))
                 //    loadPageThumbnail(event.target);
@@ -948,7 +948,7 @@
                 else self._selectTemplate($(this).attr('id'), true);
             });
 
-            $('.perc-template-pages-items').dblclick(function(event)
+            $('.perc-template-pages-items').on("dblclick", function(event)
             {
                 var templateId = $(event.target).parents(".perc-template-item").attr('id');
                 var pageId = $(event.target).attr('id');
@@ -977,10 +977,10 @@
             function _openPage(pageId) {
                 $.PercPathService.getPathItemById(pageId, function(status, data){
                     if(status == $.PercServiceUtils.STATUS_SUCCESS) {
-                        var querystring = $j.deparam.querystring();
+                        var querystring = $.deparam.querystring();
                         var isEditMode = true;
                         var folderPath = "";
-                        if($.isArray(data.PathItem.folderPaths)){
+                        if(Array.isArray(data.PathItem.folderPaths)){
                             folderPath = data.PathItem.folderPaths[0];
                         }else{
                             folderPath = data.PathItem.folderPaths;
@@ -995,14 +995,14 @@
             }
 
             // bind each template thumbnail to double click event to edit it
-            $('.perc-template-thumbnail-container').dblclick(function()
+            $('.perc-template-thumbnail-container').on("dblclick",function()
             {
                 var templateId = $(this).parent().attr('id');
                 editTemplate(templateId);
             });
 
             // bind copy button to controller copyTemplate event
-            $('.perc-copy').click(function()
+            $('.perc-copy').on("click",function()
             {
                 var templateId = $(this).parent().attr('id');
                 self.controller.copyTemplate(templateId, null);
@@ -1010,10 +1010,10 @@
             });
 
             // bind edit button to template edition.
-            $('.perc-edit').click(function()
+            $('.perc-edit').on("click",function()
             {
                 var templateId = $(this).parent().attr('id');
-                if(templateId != self.selectedTemplateId || typeof self.selectedPageId == 'undefined' || self.selectedPageId == null || $(this).closest(".perc-template-item").find("#" + self.selectedPageId).length==0)
+                if(templateId !== self.selectedTemplateId || typeof self.selectedPageId === 'undefined' || self.selectedPageId == null || $(this).closest(".perc-template-item").find("#" + self.selectedPageId).length==0)
                 {
                     self._selectTemplate(templateId, true);
                 }
@@ -1021,7 +1021,7 @@
             });
 
             // bind delete button to controller deleteTemplate event
-            $('.perc-delete').click(function()
+            $('.perc-delete').on("click",function()
             {
                 var templateId = $(this).parent().attr('id');
                 var options = {
@@ -1056,7 +1056,7 @@
             if(tempName == null) return "";
             else
             {
-                jQuery("div[title ='" + tempName + "']").click();
+                jQuery("div[title ='" + tempName + "']").trigger("click");
                 $.cookie("templateImport", null);
             }
         },
@@ -1099,7 +1099,9 @@
         {
             // unselect/unhighlight other templates
             $('.perc-template-item').removeClass('perc-template-page-highlighted-color').removeClass('perc-template-highlighted-color-border').removeClass('perc-selected');
-
+            if(typeof templateId === 'undefined'){
+                return;
+            }
             if(doCleanSelectedPage)
             {
                 // unselect / unhighlight other pages selection
@@ -1127,6 +1129,10 @@
 
             // get the current template name to update text field
             var template = this.controller.getTemplateById(templateId);
+            //Incase Template gets deleted, we want to check.
+            if(template === null || typeof template === 'undefined' ){
+                return;
+            }
             var currentTemplateName = template.getTemplateName();
             $("#perc-template-name-field").attr("value", currentTemplateName);
 
@@ -1220,7 +1226,7 @@
                                     var checkValue = $("#perc-import-template-frame").contents().find(".perc-template-import-field").val();
 
                                     // Show error message if user clicks Import without selecting any file.
-                                    if(checkValue == "")
+                                    if(checkValue === "")
                                     {
                                         $("#perc-import-template-frame").css('height', '67px');
                                         $("#perc-import-template-frame").contents().find(".perc-import-error").show();
@@ -1228,7 +1234,7 @@
                                     }
                                     $("#perc-import-template-frame").contents().find("#perc-import-template-form").attr("action", actionUrl);
                                     $("#perc-import-template-frame").contents().find("#perc-import-template-form").submit();
-                                    $("#perc-import-template-frame").load(function()
+                                    $("#perc-import-template-frame").on("load", function()
                                     {
                                         closeDialogOnSuccess();
                                     });
@@ -1298,7 +1304,7 @@
     function getTypePropertyMap(typePropertyEntries)
     {
         var tempArray = [];
-        if(!$.isArray(typePropertyEntries.entry))
+        if(!Array.isArray(typePropertyEntries.entry))
             tempArray.push(typePropertyEntries.entry);
         else
             tempArray = typePropertyEntries.entry;
@@ -1313,7 +1319,7 @@
     function _exportTemplate(callbackData)
     {
         var templateId = $("#perc-activated-templates").find('.perc-selected').attr('id');
-        var templateName = $("#" + templateId).find('.perc-template-thumbnail-container').attr('percbasetemplatename');
+        var templateName = $("#" + templateId).find('.perc-template-thumbnail-container').attr('data-base-template');
         $.PercTemplateService().exportTemplate(templateId, templateName, function(status, result)
         {
             if(status)

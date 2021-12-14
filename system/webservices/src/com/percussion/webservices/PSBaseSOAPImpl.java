@@ -17,12 +17,13 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.webservices;
 
+import com.percussion.cms.IPSConstants;
 import com.percussion.security.PSAuthorizationException;
 import com.percussion.services.security.PSServletRequestWrapper;
 import com.percussion.servlets.PSSecurityFilter;
@@ -34,9 +35,16 @@ import com.percussion.webservices.faults.PSLockFault;
 import com.percussion.webservices.faults.PSNotAuthorizedFault;
 import com.percussion.webservices.system.RelationshipCategory;
 import com.percussion.webservices.transformation.impl.PSTransformerFactory;
-
-import java.rmi.RemoteException;
-import java.util.Iterator;
+import org.apache.axis.AxisFault;
+import org.apache.axis.Message;
+import org.apache.axis.MessageContext;
+import org.apache.axis.attachments.AttachmentPart;
+import org.apache.axis.attachments.Attachments;
+import org.apache.axis.transport.http.HTTPConstants;
+import org.apache.commons.beanutils.Converter;
+import org.apache.commons.lang.exception.ExceptionUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.security.auth.login.LoginException;
 import javax.servlet.http.HttpServletRequest;
@@ -46,16 +54,8 @@ import javax.xml.soap.SOAPConstants;
 import javax.xml.soap.SOAPElement;
 import javax.xml.soap.SOAPException;
 import javax.xml.soap.SOAPHeader;
-
-import org.apache.axis.AxisFault;
-import org.apache.axis.Message;
-import org.apache.axis.MessageContext;
-import org.apache.axis.attachments.AttachmentPart;
-import org.apache.axis.attachments.Attachments;
-import org.apache.axis.transport.http.HTTPConstants;
-import org.apache.commons.beanutils.Converter;
-import org.apache.commons.lang.exception.ExceptionUtils;
-import org.apache.log4j.Logger;
+import java.rmi.RemoteException;
+import java.util.Iterator;
 
 /**
  * This base class implements generic functionality available with every
@@ -68,7 +68,7 @@ public class PSBaseSOAPImpl
     /**
      * The logger for this class.
      */
-    private static Logger ms_logger = Logger.getLogger(PSBaseSOAPImpl.class);
+    protected static final Logger logger = LogManager.getLogger(IPSConstants.WEBSERVICES_LOG);
 
 
     /**
@@ -197,7 +197,7 @@ public class PSBaseSOAPImpl
       catch (LoginException e)
       {
          int code = IPSWebserviceErrors.INVALID_SESSION;
-         ms_logger.error("Authenication Error",e);
+         logger.error("Authenication Error",e);
          throw new PSInvalidSessionFault(code, 
             PSWebserviceErrors.createErrorMessage(code, e.toString()), 
             ExceptionUtils.getFullStackTrace(e));
@@ -205,7 +205,7 @@ public class PSBaseSOAPImpl
       catch (SOAPException e)
       {
          int code = IPSWebserviceErrors.MISSING_SESSION;
-         ms_logger.error("Authenication Error",e);
+         logger.error("Authenication Error",e);
          throw new PSInvalidSessionFault(code, 
             PSWebserviceErrors.createErrorMessage(code, e.toString()), 
             ExceptionUtils.getFullStackTrace(e));
@@ -280,7 +280,7 @@ public class PSBaseSOAPImpl
       
       int code = IPSWebserviceErrors.INVALID_CONTRACT;
 
-      ms_logger.error("SOAP Invalid Contract for service "+serviceName,e);
+      logger.error("SOAP Invalid Contract for service "+serviceName,e);
 
       throw new PSContractViolationFault(code,
             PSWebserviceErrors.createErrorMessage(code, serviceName, e.toString()), ExceptionUtils.getFullStackTrace(e));
@@ -312,7 +312,7 @@ public class PSBaseSOAPImpl
 
       if (e.getCause() instanceof PSAuthorizationException)
       {
-          ms_logger.debug("SOAP PSAuthorizationException for service "+serviceName,e);
+          logger.debug("SOAP PSAuthorizationException for service "+serviceName,e);
          int code = IPSWebserviceErrors.NOT_AUTHORIZED;
          throw new PSNotAuthorizedFault(code,
             PSWebserviceErrors.createErrorMessage(code, getRemoteUser(), 
@@ -320,7 +320,7 @@ public class PSBaseSOAPImpl
                ExceptionUtils.getFullStackTrace(e));
       }
       else
-          ms_logger.error("SOAP RuntimeException for service "+serviceName,e);
+          logger.error("SOAP RuntimeException for service "+serviceName,e);
       
       throw new RemoteException(e.toString(), e);
    }
@@ -342,7 +342,7 @@ public class PSBaseSOAPImpl
       if (serviceName == null)
          throw new IllegalArgumentException("serviceName may not be null.");
 
-      ms_logger.debug("SOAP PSErrorResultsException for service "+serviceName,e);
+      logger.debug("SOAP PSErrorResultsException for service "+serviceName,e);
       PSErrorResultsFault fault = (PSErrorResultsFault) convert(
          PSErrorResultsFault.class, e);
       fault.setService(serviceName);
@@ -367,7 +367,7 @@ public class PSBaseSOAPImpl
       if (serviceName == null)
          throw new IllegalArgumentException("serviceName may not be null.");
 
-      ms_logger.debug("SOAP PSErrorsException for service "+serviceName,e);
+      logger.debug("SOAP PSErrorsException for service "+serviceName,e);
       PSErrorsFault fault = (PSErrorsFault) convert(
          PSErrorsFault.class, e);
       fault.setService(serviceName);
@@ -387,7 +387,7 @@ public class PSBaseSOAPImpl
    protected void handleLockError(PSLockErrorException e) 
       throws PSLockFault, RemoteException
    {
-       ms_logger.debug("SOAP PSLockErrorException",e);
+       logger.debug("SOAP PSLockErrorException",e);
       PSLockFault fault = (PSLockFault) convert(
          PSLockFault.class, e);
       

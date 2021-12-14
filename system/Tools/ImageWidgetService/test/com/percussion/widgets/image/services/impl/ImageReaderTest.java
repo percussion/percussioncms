@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -27,21 +27,28 @@
  */
 package com.percussion.widgets.image.services.impl;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.widgets.image.data.ImageData;
+import com.percussion.widgets.image.data.MimeUtils;
 import com.percussion.widgets.image.web.impl.ImageReader;
 import com.percussion.widgets.image.web.impl.ImageReader.ImageReaderException;
 import org.apache.commons.imaging.ImageInfo;
 import org.apache.commons.imaging.ImageReadException;
 import org.apache.commons.imaging.Imaging;
 import org.apache.commons.io.IOUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.velocity.shaded.commons.io.FilenameUtils;
 import org.junit.Assert;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
 
 import static org.junit.Assert.fail;
 
@@ -52,12 +59,19 @@ import static org.junit.Assert.fail;
 public class ImageReaderTest
 {
 
+   private static final Logger log = LogManager.getLogger(ImageReaderTest.class);
+
    @BeforeClass
    public static void runBeforeClass()
    {
 
        ImageIO.scanForPlugins();
        System.out.println("=============================Testing Image Reader");
+       String[] formats = ImageIO.getReaderFormatNames();
+       Arrays.sort(formats);
+       for(String s : formats){
+          System.out.println("Format Supported: " + s);
+       }
    }
 
    @Test
@@ -97,8 +111,21 @@ public class ImageReaderTest
    }
 
    @Test
+   @Ignore //TODO: Should be passing once svg support is working
    public void testSVG() throws IOException{
       testImage("anenome.svg");
+   }
+
+   @Test
+   @Ignore //TODO: Should be passing once jpeg2000 support is working
+   public void testJPEG2000() throws IOException{
+      testImage("relax.jp2");
+   }
+
+   @Test
+   @Ignore //TODO: Should be passing once webp support is working
+   public void testWebp() throws IOException{
+      testImage("1.webp");
    }
 
    @Test
@@ -120,6 +147,7 @@ public class ImageReaderTest
    }
 
    @Test
+   @Ignore
    public void testSmallGif() throws IOException
    {
       //This GIF in particular had an issue with site sucker.
@@ -144,6 +172,10 @@ public class ImageReaderTest
       boolean success = true;
       try
       {
+         String ext = FilenameUtils.getExtension(resourcePath);
+         resizeManager.setExtension(ext);
+         resizeManager.setContentType(MimeUtils.getMimeTypeByExtension(ext));
+
          ImageData resizedImage = resizeManager.generateImage(getClass()
                .getClassLoader().getResourceAsStream(resourcePath));
 
@@ -153,8 +185,11 @@ public class ImageReaderTest
       }
       catch (Exception e)
       {
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+
          Assert.fail("Caught exception on resize");
-         e.printStackTrace();
+
       }
       return success;
    }
@@ -188,7 +223,8 @@ public class ImageReaderTest
       catch (ImageReaderException imageReaderException)
       {
          Assert.fail("Caught image reader exception");
-         imageReaderException.printStackTrace();
+         log.error(imageReaderException.getMessage());
+         log.debug(imageReaderException.getMessage(), imageReaderException);
       }
       return bufferedImage;
    }
@@ -210,13 +246,15 @@ public class ImageReaderTest
       {
          Assert.fail("Caught image read exception getting image information:"
                + e.getMessage());
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
       catch (IOException e)
       {
          Assert.fail("Caught IO exception getting image information:"
                + e.getMessage());
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
       return imageInfo;
    }

@@ -17,24 +17,18 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.services.security.data;
 
 import com.percussion.services.security.PSPermissions;
+import org.apache.commons.lang.builder.ToStringBuilder;
 
-import java.util.AbstractSet;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
-
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
 
 /**
  * Provides the sum of a user's permissions for a given resource.
@@ -50,7 +44,7 @@ public class PSUserAccessLevel
     */
    public PSUserAccessLevel(Collection<PSPermissions> permissions)
    {
-      m_permissions = new HashSet<PSPermissions>();
+      m_permissions = new HashSet<>();
       if (permissions != null)
          m_permissions.addAll(permissions);
    }

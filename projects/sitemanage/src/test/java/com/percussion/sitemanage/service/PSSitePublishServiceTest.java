@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -51,8 +51,6 @@ import com.percussion.share.spring.PSSpringWebApplicationContextUtils;
 import com.percussion.sitemanage.dao.IPSiteDao;
 import com.percussion.sitemanage.data.PSPublishingAction;
 import com.percussion.sitemanage.data.PSSite;
-import com.percussion.sitemanage.data.PSSitePublishJob;
-import com.percussion.sitemanage.data.PSSitePublishLogRequest;
 import com.percussion.sitemanage.data.PSSitePublishResponse;
 import com.percussion.sitemanage.service.IPSSitePublishService.PubType;
 import com.percussion.test.PSServletTestCase;
@@ -62,15 +60,14 @@ import com.percussion.webservices.content.IPSContentWs;
 import com.percussion.webservices.security.IPSSecurityWs;
 import com.percussion.webservices.security.PSSecurityWsLocator;
 import com.percussion.webservices.system.IPSSystemWs;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.junit.Ignore;
+import org.junit.experimental.categories.Category;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.junit.Ignore;
-import org.junit.experimental.categories.Category;
 
 /**
  * Test the publishing service.
@@ -421,6 +418,7 @@ public class PSSitePublishServiceTest extends PSServletTestCase
         {
            log.error("Iterrupted while waiting for pub status",e);
            fail();
+           Thread.currentThread().interrupt();
         }
         if (jobStatus.getState()==State.COMPLETED_W_FAILURE)
         {
@@ -564,7 +562,7 @@ public class PSSitePublishServiceTest extends PSServletTestCase
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log log = LogFactory.getLog(PSSitePublishServiceTest.class);
+    private static final Logger log = LogManager.getLogger(PSSitePublishServiceTest.class);
 
     public void setPubServerService(IPSPubServerService pubServerService)
     {

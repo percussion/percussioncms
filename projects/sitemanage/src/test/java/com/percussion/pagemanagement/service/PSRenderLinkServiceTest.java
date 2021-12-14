@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -29,11 +29,11 @@ import com.percussion.pagemanagement.assembler.PSAbstractAssemblyContext.EditTyp
 import com.percussion.pagemanagement.assembler.impl.PSAssemblyRenderLinkContext;
 import com.percussion.pagemanagement.data.PSRenderLink;
 import com.percussion.pagemanagement.data.PSTemplate;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.spring.PSSpringWebApplicationContextUtils;
 import com.percussion.test.PSServletTestCase;
 import com.percussion.theme.data.PSThemeSummary;
 import com.percussion.theme.service.impl.PSThemeService;
-
 import com.percussion.utils.testing.IntegrationTest;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
@@ -76,8 +76,7 @@ public class PSRenderLinkServiceTest extends PSServletTestCase
         }
     }
     
-    public void testRenderLinkRegionCSS() throws IOException
-    {
+    public void testRenderLinkRegionCSS() throws IOException, PSDataServiceException {
         PSTemplate template = fixture.getTemplateService().load(fixture.template1.getId());
         String themeName = template.getTheme();
         PSPublicLinkContext context = new PSPublicLinkContext(fixture.site1);

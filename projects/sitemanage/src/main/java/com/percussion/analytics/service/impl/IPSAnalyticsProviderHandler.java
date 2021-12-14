@@ -17,13 +17,14 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.analytics.service.impl;
 
 import com.percussion.analytics.error.PSAnalyticsProviderException;
+import com.percussion.share.service.exception.PSValidationException;
 
 import java.util.Map;
 
@@ -42,7 +43,7 @@ public interface IPSAnalyticsProviderHandler
     * profile display value. Never <code>null</code>, may be empty.
     * @throws <code>PSAnalyticsProviderException</code>, upon any error.
     */
-   public Map<String, String> getProfiles(String uid, String password) throws PSAnalyticsProviderException;
+   public Map<String, String> getProfiles(String uid, String password) throws PSAnalyticsProviderException, PSValidationException;
    
    /**
     * Tests a connection to the provider using the specified credentials.
@@ -50,5 +51,5 @@ public interface IPSAnalyticsProviderHandler
     * @param password the password for access to the provider. Cannot be <code>null</code> or empty.
     * @throws PSAnalyticsProviderException if failed to connect.
     */
-   public void testConnection(String uid, String password) throws PSAnalyticsProviderException;
+   public void testConnection(String uid, String password) throws PSAnalyticsProviderException, PSValidationException;
 }

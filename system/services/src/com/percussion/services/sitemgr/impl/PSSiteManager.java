@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -29,6 +29,7 @@ import com.percussion.auditlog.PSContentEvent;
 import com.percussion.cms.PSCmsException;
 import com.percussion.cms.objectstore.PSFolder;
 import com.percussion.design.objectstore.PSLocator;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.server.PSRequest;
 import com.percussion.server.webservices.PSServerFolderProcessor;
 import com.percussion.services.assembly.IPSAssemblyService;
@@ -69,11 +70,10 @@ import com.percussion.util.PSSqlHelper;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.request.PSRequestInfo;
 import com.percussion.utils.types.PSPair;
-import com.percussion.webservices.assembly.impl.PSAssemblyBaseWs;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -214,7 +214,7 @@ public class PSSiteManager
    /**
     * Logger for the site manager
     */
-   static Log ms_log = LogFactory.getLog("PSSiteManager");
+   private static final Logger log = LogManager.getLogger("PSSiteManager");
 
    /**
     * Cache service, used to invalidate site information
@@ -277,17 +277,16 @@ public class PSSiteManager
       if (rval == null)
          throw new PSNotFoundException(siteid);
       
-      if (ms_log.isDebugEnabled())
+      if (log.isDebugEnabled())
       {
-         ms_log.debug("Load un-cached site (id=" + siteid.toString()
+         log.debug("Load un-cached site (id=" + siteid.toString()
                + ", name=\"" + rval.getName() + "\".");
       }
 
       return rval;
    }
 
-   public IPSSite loadSiteModifiable(String siteName)
-   {
+   public IPSSite loadSiteModifiable(String siteName) throws PSNotFoundException {
       IPSSite site = findSite(siteName);
       if (site==null)
          throw new PSNotFoundException(siteName, PSTypeEnum.SITE);
@@ -325,9 +324,9 @@ public class PSSiteManager
 
 
 
-      if (ms_log.isDebugEnabled())
+      if (log.isDebugEnabled())
       {
-         ms_log.debug("Load cached site (id=" + siteid.toString()
+         log.debug("Load cached site (id=" + siteid.toString()
                + ", name=\"" + rval.getName() + "\".");
       }
 
@@ -346,9 +345,9 @@ public class PSSiteManager
       if (site == null)
          throw new PSNotFoundException(siteid);
 
-      if (ms_log.isDebugEnabled())
+      if (log.isDebugEnabled())
       {
-         ms_log.debug("Load cached site (id=" + siteid.toString()
+         log.debug("Load cached site (id=" + siteid.toString()
                + ", name=\"" + site.getName() + "\".");
       }
 
@@ -565,8 +564,6 @@ public class PSSiteManager
       // prevent lock on read with double checked locking
       if (rval == null)
       {
-         synchronized (locationSchemeMap)
-         {
             rval = locationSchemeMap.get(key);
             if (rval==null)
             {   
@@ -580,7 +577,6 @@ public class PSSiteManager
                   rval = c.list();
                   locationSchemeMap.put(key, rval);
 
-            }
          }
       }
       return rval;
@@ -600,7 +596,7 @@ public class PSSiteManager
             .get(LOCATION_MAP_KEY, IPSCacheAccess.IN_MEMORY_STORE);
       if (locationSchemeMap == null)
       {
-         locationSchemeMap = new ConcurrentHashMap<LocationSchemeKey, List<IPSLocationScheme>>(8, 0.9f, 1);
+         locationSchemeMap = new ConcurrentHashMap<>(8, 0.9f, 1);
          m_cache.save(LOCATION_MAP_KEY, locationSchemeMap,
                IPSCacheAccess.IN_MEMORY_STORE);
       }
@@ -693,8 +689,7 @@ public class PSSiteManager
     * Context if it has one.
     * @param ctx the Context object in question, assumed not <code>null</code>.
     */
-   private void loadDefaultSchemeIfNeeded(IPSPublishingContext ctx)
-   {
+   private void loadDefaultSchemeIfNeeded(IPSPublishingContext ctx) throws PSNotFoundException {
       if (ctx.getDefaultSchemeId() == null)
          return;
 
@@ -753,9 +748,8 @@ public class PSSiteManager
     * @see com.percussion.services.catalog.IPSCataloger#getSummaries(com.percussion.services.catalog.PSTypeEnum)
     */
    @SuppressWarnings("unchecked")
-   public List<IPSCatalogSummary> getSummaries(PSTypeEnum type)
-   {
-      List<IPSCatalogSummary> rval = new ArrayList<IPSCatalogSummary>();
+   public List<IPSCatalogSummary> getSummaries(PSTypeEnum type) throws PSNotFoundException {
+      List<IPSCatalogSummary> rval = new ArrayList<>();
 
       Session s = sessionFactory.getCurrentSession();
 
@@ -863,9 +857,8 @@ public class PSSiteManager
     * @see com.percussion.services.sitemgr.IPSSiteManager#getPublishPath(com.percussion.utils.guid.IPSGuid,
     *      com.percussion.utils.guid.IPSGuid)
     */
-   public String getPublishPath(IPSGuid siteId, IPSGuid folderId) 
-      throws PSSiteManagerException
-   {
+   public String getPublishPath(IPSGuid siteId, IPSGuid folderId)
+           throws PSSiteManagerException, PSNotFoundException {
       if (siteId == null)
          throw new IllegalArgumentException("siteId must not be null.");
       if (!(folderId instanceof PSLegacyGuid))
@@ -890,7 +883,7 @@ public class PSSiteManager
             (PSLegacyGuid) folderId, rootId, site, processor);
 
       // get the publishing path from 'siteFolderPath'
-      StringBuffer pathBuff = new StringBuffer();
+      StringBuilder pathBuff = new StringBuilder();
       String publishName;
       for (PSLocator f : siteFolderPath)
       {
@@ -900,7 +893,8 @@ public class PSSiteManager
          }
          catch (PSCmsException e)
          {
-            e.printStackTrace();
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             // this should never happen in a properly configured environment
             throw new PSSiteManagerException(
                   IPSSiteManagerErrors.UNEXPECTED_ERROR, e
@@ -938,7 +932,8 @@ public class PSSiteManager
       }
       catch (PSCmsException e)
       {
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          throw new PSSiteManagerException(
                IPSSiteManagerErrors.FAILED_FIND_ROOT_FOLDER_ID, site.getGUID(),
                site.getFolderRoot(), e.getLocalizedMessage());
@@ -974,7 +969,8 @@ public class PSSiteManager
       }
       catch (PSCmsException e)
       {
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          throw new PSSiteManagerException(
                IPSSiteManagerErrors.FAILED_GET_FOLDER_PATH, folderId, e
                      .getLocalizedMessage());
@@ -982,7 +978,7 @@ public class PSSiteManager
 
       // get the locator path from the specified folder to the site's root
       // folder
-      List<PSLocator> siteFolderPath = new ArrayList<PSLocator>(pathToRoot
+      List<PSLocator> siteFolderPath = new ArrayList<>(pathToRoot
             .size());
       boolean foundRoot = false;
       for (int i = 0; i < pathToRoot.size(); i++)
@@ -1007,8 +1003,7 @@ public class PSSiteManager
     *      com.percussion.utils.guid.IPSGuid)
     */
    public IPSGuid getSiteFolderId(IPSGuid siteId, IPSGuid contentId)
-         throws PSSiteManagerException
-   {
+           throws PSSiteManagerException, PSNotFoundException {
       if (siteId == null)
       {
          throw new IllegalArgumentException("siteId may not be null");
@@ -1072,7 +1067,7 @@ public class PSSiteManager
       {
          throw new IllegalArgumentException("contentId must be a legacy guid");
       }
-      List<IPSSite> matchingSites = new ArrayList<IPSSite>();
+      List<IPSSite> matchingSites = new ArrayList<>();
       PSLegacyGuid lg = (PSLegacyGuid) contentId;
       PSRequest request = PSRequest.getContextForRequest();
       PSServerFolderProcessor fproc = PSServerFolderProcessor.getInstance();
@@ -1104,7 +1099,9 @@ public class PSSiteManager
       catch (PSCmsException e)
       {
          String errMsg = "Failed to get sites for item id=" + contentId.toString();
-         ms_log.error(errMsg);
+         log.error(errMsg);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          throw new RuntimeException(errMsg, e);
       }
       
@@ -1123,8 +1120,7 @@ public class PSSiteManager
    
    // implements method from IPSSiteManager interface
    public boolean isContentTypePublishableToSite(IPSGuid contentTypeId,
-         IPSGuid siteId) throws PSSiteManagerException
-   {
+         IPSGuid siteId) throws PSSiteManagerException, PSNotFoundException {
       if (contentTypeId == null)
       {
          throw new IllegalArgumentException("contentTypeId must not be null");
@@ -1151,11 +1147,11 @@ public class PSSiteManager
       }
       else
       {
-         sites = new ArrayList<IPSSite>();
+         sites = new ArrayList<>();
          sites.add(loadUnmodifiableSite(siteId));
       }
       // get templates publishable to all the sites
-      Set<IPSAssemblyTemplate> siteTemplates = new HashSet<IPSAssemblyTemplate>();
+      Set<IPSAssemblyTemplate> siteTemplates = new HashSet<>();
       for (int i = 0; i < sites.size(); i++)
       {
          IPSSite site = sites.get(i);
@@ -1217,8 +1213,7 @@ public class PSSiteManager
    }
 
    @SuppressWarnings("unchecked")
-   public List<IPSPublishingContext> findAllContexts()
-   {
+   public List<IPSPublishingContext> findAllContexts() throws PSNotFoundException {
       return findAllContexts(true);
    }
 
@@ -1229,8 +1224,7 @@ public class PSSiteManager
     * @return the loaded Context, never <code>null</code>, may be empty.
     */
    @SuppressWarnings("unchecked")
-   private List<IPSPublishingContext> findAllContexts(boolean includeChildren)
-   {
+   private List<IPSPublishingContext> findAllContexts(boolean includeChildren) throws PSNotFoundException {
       List<IPSPublishingContext> result = sessionFactory.getCurrentSession()
               .createCriteria(PSPublishingContext.class).list();
 
@@ -1310,7 +1304,7 @@ public class PSSiteManager
    {
       List<Object[]> values = sessionFactory.getCurrentSession()
          .createQuery("select id, name from PSPublishingContext").list();
-      Map<Integer, String> rval = new HashMap<Integer, String>();
+      Map<Integer, String> rval = new HashMap<>();
       for(Object[] row : values)
       {
          rval.put(((Long) row[0]).intValue(), (String) row[1]);
@@ -1321,8 +1315,7 @@ public class PSSiteManager
    /**
     * Finds the Site and Templates associations. This is not exposed in
     * {@link IPSSiteManager} because the map key is not consistent with map
-    * value, but we need the ID/Name pair in
-    * {@link PSAssemblyBaseWs#getTemplateWs}.
+    * value, but we need the ID/Name pair in.
     * 
     * @TODO enhance {@link #getSummaries(PSTypeEnum)} to use projection to load
     * the object so that it can be used to result ID/Name mapping.
@@ -1346,7 +1339,7 @@ public class PSSiteManager
    private void logSiteTemplateAssoc(
          Map<PSPair<IPSGuid, String>, Collection<IPSGuid>> assoc)
    {
-      if (!ms_log.isDebugEnabled())
+      if (!log.isDebugEnabled())
          return;
       
       String pattern = "Site (id={0}, name=\"{1}\") associate with Templates, IDs={2}.";
@@ -1354,7 +1347,7 @@ public class PSSiteManager
          assoc.entrySet())
       {
          PSPair<IPSGuid, String> k = entry.getKey();
-         StringBuffer buffer = new StringBuffer();
+         StringBuilder buffer = new StringBuilder();
          for (IPSGuid g : entry.getValue())
          {
             buffer.append(String.valueOf(g.getUUID()) + ", ");
@@ -1363,7 +1356,7 @@ public class PSSiteManager
                k.getSecond(), buffer.toString() };
          MessageFormat form = new MessageFormat(pattern);
          String message = form.format(args);
-         ms_log.debug(message);
+         log.debug(message);
       }
    }
    
@@ -1377,7 +1370,7 @@ public class PSSiteManager
    private Map<PSPair<IPSGuid, String>, Collection<IPSGuid>> getSiteTemplateAssociation(
          Session sess)
    {
-      Map<PSPair<IPSGuid, String>, Collection<IPSGuid>> siteToTemplateIds = new HashMap<PSPair<IPSGuid, String>, Collection<IPSGuid>>();
+      Map<PSPair<IPSGuid, String>, Collection<IPSGuid>> siteToTemplateIds = new HashMap<>();
 
       String sql = null;
       try {
@@ -1398,7 +1391,7 @@ public class PSSiteManager
       {
          // collect the data
          IPSGuid siteId = new PSGuid(PSTypeEnum.SITE, (Long)row[0]);
-         PSPair<IPSGuid, String> site = new PSPair<IPSGuid, String>(siteId,
+         PSPair<IPSGuid, String> site = new PSPair<>(siteId,
                (String)row[1]);
 
          // This is a result of left outer join, so 3nd value may be null
@@ -1410,14 +1403,14 @@ public class PSSiteManager
          Collection<IPSGuid> ids = siteToTemplateIds.get(site);
          if (ids == null)
          {
-            ids = new ArrayList<IPSGuid>();
+            ids = new ArrayList<>();
             siteToTemplateIds.put(site, ids);
          }
          if (tempId != null)
             ids.add(tempId); 
       }
       
-      if (ms_log.isDebugEnabled())
+      if (log.isDebugEnabled())
          logSiteTemplateAssoc(siteToTemplateIds);
 
       return siteToTemplateIds;

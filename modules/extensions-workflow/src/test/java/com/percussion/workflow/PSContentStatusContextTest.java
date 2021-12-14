@@ -17,13 +17,16 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.workflow;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.utils.testing.IntegrationTest;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.experimental.categories.Category;
 
 import java.sql.Connection;
@@ -38,6 +41,8 @@ import java.util.Calendar;
 @Category(IntegrationTest.class)
 public class PSContentStatusContextTest extends PSAbstractWorkflowTest 
 {
+
+   private static final Logger log = LogManager.getLogger(PSContentStatusContextTest.class);
 
    /**
     * Constructor specifying command line arguments
@@ -55,17 +60,17 @@ public class PSContentStatusContextTest extends PSAbstractWorkflowTest
    public void ExecuteTest(Connection connection)
       throws PSWorkflowTestException
    {
-      System.out.println("Entering Method ExecuteTest");
+      log.info("Entering Method ExecuteTest");
       Exception except = null;
       String exceptionMessage = "";
       PSContentStatusContext context = null;
       
       try
       {
-         System.out.println("contentID = " + m_nContentID);
+         log.info("contentID = {}", m_nContentID);
          PSContentStatusContext
                csc = new PSContentStatusContext(connection, m_nContentID);
-         System.out.println(csc.toString(true));
+         log.info(csc.toString(true));
          csc.setContentStateID(m_nStateID);
          csc.setContentCheckedOutUserName("");
          csc.setEditRevision(-1);
@@ -93,29 +98,32 @@ public class PSContentStatusContextTest extends PSAbstractWorkflowTest
          csc.setExpiryDate(now);      
 
          csc.commit(connection);
-         
-         // System.out.println(csc.toString(true));     
+
          csc.close(); //release the JDBC resources
          csc = null;
          csc = new PSContentStatusContext(connection, m_nContentID);
          
          csc.close(); //release the JDBC resources
          
-         System.out.println(csc.toString(true));   
+         log.info(csc.toString(true));
       }
       catch (SQLException e) 
       {
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          exceptionMessage = "SQL exception: ";
          except = e;
       }
       catch (PSEntryNotFoundException e) 
       {
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          exceptionMessage = "Entry not found";
          except = e;
       }
       finally 
       {
-         System.out.println("Exiting Method ExecuteTest");
+         log.info("Exiting Method ExecuteTest");
          if (null != except) 
          {
             throw new PSWorkflowTestException(exceptionMessage,
@@ -174,7 +182,7 @@ public class PSContentStatusContextTest extends PSAbstractWorkflowTest
 
    public String HelpMessage()
    {
-      StringBuffer buf = new StringBuffer();
+      StringBuilder buf = new StringBuilder();
       buf.append("Options are:");
       buf.append("   -w, -workflowid        workflow ID");
       buf.append("   -c, -contentid         content ID");

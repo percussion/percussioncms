@@ -17,20 +17,22 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.rx.jsf;
 
-import static org.apache.commons.lang.Validate.notNull;
-
 import com.percussion.rx.publisher.jsf.nodes.PSSiteContainerNode;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.utils.guid.IPSGuid;
-import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.apache.myfaces.trinidad.model.RowKeySet;
 import org.apache.myfaces.trinidad.model.RowKeySetImpl;
+
+import java.util.List;
+
+import static org.apache.commons.lang.Validate.notNull;
 
 /**
  * The navigation bean controls the design or runtime tree control in the
@@ -219,8 +221,7 @@ public class PSNavigation
     *            <code>null</code> or empty.
     * @return the filtered list, never <code>null</code>.
     */
-   public List<PSNodeBase> getFilteredNodeList(String key)
-   {
+   public List<PSNodeBase> getFilteredNodeList(String key) throws PSNotFoundException {
       return getCategoryNode(key).getFilteredNodes();
    }
 
@@ -258,8 +259,7 @@ public class PSNavigation
     * 
     * @return the site nodes, never <code>null</code>.
     */
-   public List<PSNodeBase> getList()
-   {
+   public List<PSNodeBase> getList() throws PSNotFoundException {
       return getFilteredNodeList(m_currentCategoryKey);
    }
 

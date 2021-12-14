@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -30,15 +30,13 @@ import com.percussion.rx.delivery.impl.PSBaseDeliveryHandler.Item;
 import com.percussion.services.guidmgr.data.PSGuid;
 import com.percussion.util.PSPurgableTempFile;
 import com.percussion.utils.guid.IPSGuid;
-
-import java.io.IOException;
-
 import junit.framework.TestCase;
-
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.io.IOException;
 
 public class PSMetadataDeliveryHandlerTest extends TestCase
 {

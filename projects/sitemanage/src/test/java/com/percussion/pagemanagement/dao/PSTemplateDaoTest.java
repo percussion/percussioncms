@@ -17,23 +17,24 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.pagemanagement.dao;
 
-import java.util.List;
-
 import com.percussion.pagemanagement.dao.impl.PSMetadataDocTypeUtils;
 import com.percussion.pagemanagement.data.PSTemplate;
 import com.percussion.pagemanagement.data.PSTemplate.PSTemplateTypeEnum;
 import com.percussion.pagemanagement.service.PSSiteDataServletTestCaseFixture;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.spring.PSSpringWebApplicationContextUtils;
 import com.percussion.test.PSServletTestCase;
 import com.percussion.utils.testing.IntegrationTest;
 import org.junit.experimental.categories.Category;
+
+import java.util.List;
 
 /**
  * Tests the template dao functionality.
@@ -61,8 +62,7 @@ public class PSTemplateDaoTest extends PSServletTestCase
     /**
      * Saves the template with type property null and retrieves it back to test
      */
-    public void testSaveTypePropertyNull()
-    {
+    public void testSaveTypePropertyNull() throws PSDataServiceException {
         String templateName = "Template1";        
         PSTemplate template = createTemplate(templateName);
         
@@ -76,8 +76,7 @@ public class PSTemplateDaoTest extends PSServletTestCase
     /**
      * Saves the template with type property (not null value) and retrieves it back to test
      */
-    public void testSaveTypeProperty()
-    {
+    public void testSaveTypeProperty() throws PSDataServiceException {
         String templateName = "Template1";
         String templateNormalName = "TemplateNormal";
         
@@ -99,8 +98,7 @@ public class PSTemplateDaoTest extends PSServletTestCase
     /**
      * Tests the retrieving of templates using the findTemplatesByType dao method.
      */    
-    public void testFindTemplatesByType()
-    {
+    public void testFindTemplatesByType() throws PSDataServiceException {
         
         String templateName = "Template1";
         String template2Name = "Template2";
@@ -142,8 +140,7 @@ public class PSTemplateDaoTest extends PSServletTestCase
         
     }
     
-    public void testContentMigrationVersion()
-    {
+    public void testContentMigrationVersion() throws PSDataServiceException {
         PSTemplate template = createTemplate("Template1", PSTemplateTypeEnum.NORMAL.getLabel());
         template = templateDao.save(template, fixture.site1.getId());
         
@@ -172,8 +169,7 @@ public class PSTemplateDaoTest extends PSServletTestCase
      * @param name - the name of the new template. Never <code>null</code>
      * @return PSTemplate - the template object created. Never <code>null</code>
      */
-    private PSTemplate createTemplate(String name)
-    {
+    private PSTemplate createTemplate(String name) throws PSDataServiceException {
         return createTemplate(name, null);
     }
 
@@ -183,8 +179,7 @@ public class PSTemplateDaoTest extends PSServletTestCase
      * @param type - the type of template. Eg: NORMAL, UNASSIGNED
      * @return PSTemplate - the template object created. Never <code>null</code>
      */
-    private PSTemplate createTemplate(String name, String type)
-    {
+    private PSTemplate createTemplate(String name, String type) throws PSDataServiceException {
         PSTemplate fixtureTemplate = templateDao.find(fixture.template1.getId());
         
         PSTemplate template = new PSTemplate();

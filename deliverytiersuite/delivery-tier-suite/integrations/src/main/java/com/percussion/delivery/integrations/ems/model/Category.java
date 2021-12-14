@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -17,25 +17,24 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.delivery.integrations.ems.model;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import com.percussion.delivery.integrations.ems.IPSEMSEventService;
+import com.percussion.error.PSExceptionUtils;
+import org.apache.commons.lang3.time.FastDateFormat;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import com.percussion.delivery.integrations.ems.IPSEMSEventService;
+import java.text.ParseException;
+import java.util.Date;
 
 /**
  * <Data>
@@ -58,7 +57,7 @@ import com.percussion.delivery.integrations.ems.IPSEMSEventService;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Category {
 	
-	private static Log log = LogFactory.getLog(Category.class);
+	private static final Logger log = LogManager.getLogger(Category.class);
 	private Integer categoryID;
 	private String categoryDesc;
 	private boolean useCutOff;
@@ -93,9 +92,10 @@ public class Category {
 	}
 	public void setCustoffTime(String custoffTime) {
 		try {
-			this.custoffTime = new SimpleDateFormat(IPSEMSEventService.TIME_FORMAT_STRING).parse(custoffTime.replace("T", " " ));
+			this.custoffTime = FastDateFormat.getInstance(IPSEMSEventService.TIME_FORMAT_STRING).parse(custoffTime.replace("T", " " ));
 		} catch (ParseException e) {
-			log.error("Error setting CustoffTime with value " + custoffTime + " and format: " + IPSEMSEventService.TIME_FORMAT_STRING,e);
+			log.error("Error setting CustoffTime with value {} and format: {}, Error: {}",custoffTime, IPSEMSEventService.TIME_FORMAT_STRING,e.getMessage());
+			log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 		}
 	}
 	public Integer getCutOffDays() {

@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -28,7 +28,7 @@
      * Renders the process monitor status. This is a common code for both gadget and popup dialog.
      */
     $.renderProcessMonitor = function(percJQuery, isGadget){
-        $("head").append(" <link href=\"/cm/css/FontAwesome/css/font-awesome.min.css\" rel=\"stylesheet\" type=\"text/css\" />").append("<link href=\"/cm/gadgets/repository/PercProcessorMonitorGadget/PercProcessorMonitorGadget.css\" rel=\"stylesheet\" type=\"text/css\" />");
+        $("head").append(" <link href=\"/cm/jslib/profiles/3x/libraries/fontawesome/css/all.css\" rel=\"stylesheet\" type=\"text/css\" />").append("<link href=\"/cm/gadgets/repository/PercProcessorMonitorGadget/PercProcessorMonitorGadget.css\" rel=\"stylesheet\" type=\"text/css\" />");
         $("body").empty();
         var initialHtml = "<div id=\"perc-process-monitor-gadget\">" +
             "<div id=\"perc-process-monitor-actions\"><span id=\"perc-process-monitor-status-refresh\" title=\"" + I18N.message("perc.ui.gadgets.processmonitor@Refresh Background Process") + "\">&nbsp;</span><span id=\"perc-process-monitor-popout\"><i " + "class=\"icon-external-link\"></i></span></div>" +
@@ -46,7 +46,7 @@
 
         //If it is gadget add the event to the popout icon, if not hide the popout icon
         if(isGadget){
-            $("#perc-process-monitor-popout").click(function(){
+            $("#perc-process-monitor-popout").on("click",function(){
                 var winwidth = 800, winheight=400;
                 var leftpos = (screen.width - winwidth) / 2;
                 var toppos = (screen.height - winheight) / 3;
@@ -59,7 +59,7 @@
         }
 
         //Disable refresh button as we will be loading the data
-        $("#perc-process-monitor-status-refresh").addClass("perc-disabled").click(function(){
+        $("#perc-process-monitor-status-refresh").addClass("perc-disabled").on("click",function(){
             renderStatusRows();
         });
 
@@ -100,9 +100,9 @@
                     var name = "";
                     var message = "";
                     $.each(entries, function(){
-                        if(this.key == "name")
+                        if(this.key === "name")
                             name =  I18N.message("perc.ui.gadgets.processmonitor@"+this.value);
-                        if(this.key == "message")
+                        if(this.key === "message")
                             message = I18N.message("perc.ui.gadgets.processmonitor@"+this.value);
                     });
                     statusRows += rowTempl.replace(/@@NAME@@/g, name).replace("@@STATUS@@",message);

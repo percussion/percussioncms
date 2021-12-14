@@ -36,51 +36,44 @@ public class RxCheckDBState extends RxIAAction
    @Override
    public void execute()
    {
-      FileInputStream in = null;
-      Connection conn = null;
 
       try
       {
          String strRootDir = getInstallValue(RxVariables.INSTALL_DIR);
          RxFileManager rxfm = new RxFileManager(strRootDir);
          File propFile = new File(rxfm.getRepositoryFile());
-         if (propFile.exists())
-         {
-            in = new FileInputStream(propFile);
-            Properties props = new Properties();
-            props.load(in);
-            props.setProperty(PSJdbcDbmsDef.PWD_ENCRYPTED_PROPERTY, "Y");
+         if (propFile.exists()) {
+            try (FileInputStream in = new FileInputStream(propFile)) {
+               Properties props = new Properties();
+               props.load(in);
+               props.setProperty(PSJdbcDbmsDef.PWD_ENCRYPTED_PROPERTY, "Y");
 
-            PSJdbcDbmsDef dbmsDef = new PSJdbcDbmsDef(props);
-            String database = dbmsDef.getDataBase();
-            String schema = dbmsDef.getSchema();
-            String driver = dbmsDef.getDriver();
+               PSJdbcDbmsDef dbmsDef = new PSJdbcDbmsDef(props);
+               String database = dbmsDef.getDataBase();
+               String schema = dbmsDef.getSchema();
+               String driver = dbmsDef.getDriver();
 
-            // Currently only need to connect to mssql
-            // do not connect to derby, it is not set up yet
-            if (driver.equals(PSJdbcUtils.JTDS_DRIVER))
-               conn = RxLogTables.createConnection(props);
+               // Currently only need to connect to mssql
+               // do not connect to derby, it is not set up yet
+               if (driver.equals(PSJdbcUtils.JTDS_DRIVER))
+                  try(Connection conn = RxLogTables.createConnection(props)) {
 
-            if (conn != null)
-            {
+                     if (conn != null) {
 
-               if (!checkMSSqlForSnapshotIsolation(conn, driver, database))
-               {
-                  try
-                  {
-                     autoSetMSSqlSnapshotIsolation(conn, database);
+                        if (!checkMSSqlForSnapshotIsolation(conn, driver, database)) {
+                           try {
+                              autoSetMSSqlSnapshotIsolation(conn, database);
+                           } catch (SQLException e) {
+                              setInstallValue(RxVariables.CHECK_DB_ERROR, "true");
+                              setInstallValue(RxVariables.CHECK_DB_MESSAGE, "sqlServerNotSnapshotIsolation");
+                           }
+                        }
+
+                        if (!m_dbStatusError) {
+                           RxLogger.logInfo("DB Status OK");
+                        }
+                     }
                   }
-                  catch (SQLException e)
-                  {
-                     setInstallValue(RxVariables.CHECK_DB_ERROR, "true");
-                     setInstallValue(RxVariables.CHECK_DB_MESSAGE, "sqlServerNotSnapshotIsolation");
-                  }
-               }
-
-               if (!m_dbStatusError)
-               {
-                  RxLogger.logInfo("DB Status OK");
-               }
             }
          }
       }
@@ -90,29 +83,6 @@ public class RxCheckDBState extends RxIAAction
          setInstallValue(RxVariables.CHECK_DB_ERROR, "true");
          setInstallValue(RxVariables.CHECK_DB_MESSAGE, "checkDBError");
          RxLogger.logError(msg);
-      }
-      finally
-      {
-         if (in != null)
-         {
-            try
-            {
-               in.close();
-            }
-            catch (Exception e)
-            {
-            }
-         }
-         if (conn != null)
-         {
-            try
-            {
-               conn.close();
-            }
-            catch (SQLException e)
-            {
-            }
-         }
       }
    }
 

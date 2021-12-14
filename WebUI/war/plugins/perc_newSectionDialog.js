@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -39,71 +39,71 @@ $.perc_newSectionDialog = function() {
 
     var dialog;
     
-    dialog = $("<div>"
-               + "<p class='perc-field-error' id='perc-save-error'></p><br/>"
-               + "<span style='position: relative; float: right; margin-top: -44px; margin-right: -2px;'><label>" +I18N.message("perc.ui.general@Denotes Required Field") + "</label></span>"
-               + "<form action='' method='GET'> "
-               + "<label class='perc-required-field' for='perc-section-type'>" + I18N.message("perc.ui.newSectionDialog.label@Type") + ":</label> <br>"
-               + "<select id='perc-section-type' name='perc-section-type'>"
-               +     "<option value='section'>" + I18N.message("perc.ui.newSectionDialog.label@Section & landing page") + "</option>"
-               +     "<option value='sectionlink'>" + I18N.message("perc.ui.newSectionDialog.label@Section link") + "</option>"
-               +     "<option value='externallink'>" + I18N.message("perc.ui.newSectionDialog.label@External link") + "</option>"
-               +     "<option value='convertfolder'>" + I18N.message("perc.ui.newSectionDialog.label@Convert folder") + "</option>"
-               + "</select> <br>"
-               + "<div id='perc-section-container'>"
-               + "<label for='perc-select-template'>"+ I18N.message( "perc.ui.newSectionDialog.label@Select a template" ) + ": </label><br/>"
-               + "<a class='prevPage browse left'></a>"
-               + "<div class='perc-scrollable'><input type='hidden' id='perc-select-template' name='template'/>"
-               + "<div class='perc-items'>"
-             + "</div></div>"
-               + "<a class='nextPage browse right' ></a>"
-               + "<div style='float:left;'>"
-               + "<fieldset>"
-               + "<label for='perc-section-name' class='perc-required-field'>" + I18N.message( "perc.ui.newSectionDialog.label@Section name" ) + ":</label> <br/> "
-               + "<input type='text' class='required' tabindex='" + taborder + "' id='perc-section-name' name='section_name' maxlength='512'/> <br/>"              
-               + "<label for='perc-section-url' class='perc-required-field'>" + I18N.message( "perc.ui.newSectionDialog.label@URL" ) + ":</label> <br/> "
-               + "<input type='text' class='required' tabindex='" + taborder + "' id='perc-section-url' name='page_url' maxlength='100'/><br/> "
-               + "</fieldset>"
-               + "</div>"
-               + "</div>"
-               + "<div id='perc-external-link-container' style='display:none'>"
-               + "<fieldset>"
-               + "<label for='perc-external-link-text' class='perc-required-field'>" + I18N.message( "perc.ui.newSectionDialog.label@External link text" ) + ":</label> <br/> "
-               + "<input type='text' class='required' tabindex='" + taborder + "' id='perc-external-link-text' name='perc-external-link-text' maxlength='100'/> <br/>"               
-               + "<label class='perc-required-field' for='perc-external-link-url'>" + I18N.message( "perc.ui.newSectionDialog.label@External link URL" ) + ":</label> <br/> "
-               + "<input type='text' class='required' tabindex='" + taborder + "' id='perc-external-link-url' name='perc-external-link-url' maxlength='512'/><br/> "
-               + "</fieldset>"
-               + "</div>"
-               + "<div id='perc-section-link-container' style='display:none'>"
-               + "<fieldset>"
-               + "<label for='perc-section-link-target' class='perc-required-field'>" + I18N.message( "perc.ui.newSectionDialog.label@Target section" ) + ":</label> <br/> "
-               + "<div><input type='text' class='required' readonly='true' name='perc-section-link-target' id='perc-section-link-target'/><img id='perc-section-link-targetid-button' src='../images/images/buttonEllipse.png' class='perc-button-ellipse'/></div>"
-               + "<input type='hidden' name='perc-section-link-targetid' id='perc-section-link-targetid'/>"
-               + "</fieldset>"
-               + "</div>"
-               + "<div id='perc-convert-folder-container' style='display:none'>"
-               + "<fieldset>"
-               + "<label for='perc-convert-folder-path' class='perc-required-field'>" + I18N.message( "perc.ui.newSectionDialog.label@Target folder" ) + ":</label> <br/> "
-               + "<div><input type='text' class='required' readonly='true' name='perc-convert-folder-path' id='perc-convert-folder-path'/><img id='perc-convert-folder-path-button' src='../images/images/buttonEllipse.png' class='perc-button-ellipse'/></div>"
-               + "<label class='perc-required-field' for='perc-landing-page'>" + I18N.message("perc.ui.newSectionDialog.label@Select landing page") + ":</label> <br>"
-               + "<select id='perc-landing-page' name='perc-landing-page' class='required'>"
-               +     "<option value='perc-empty-landing-page'>" + I18N.message("perc.ui.newSectionDialog.label@Select a folder to see landing pages") + "</option>"
-               + "</select> "
-               + "<span id='pageErrorSpan' style='display : none' class='perc-field-error'>Please create page under target folder.</span>"
-               + "<br>"
-               + "</fieldset>"
-               + "</div>"
-               + "<div class='ui-layout-south'>" 
-               + "<div id='perc_buttons' style='z-index: 100;'></div>"
-               +  "</div>"
-               + "</form> </div>").perc_dialog( {
+    dialog = $("<div>" +
+                "<p class='perc-field-error' id='perc-save-error'></p><br/>" +
+                "<span style='position: relative; float: right; margin-top: -44px; margin-right: -2px;'><label>" +I18N.message("perc.ui.general@Denotes Required Field") + "</label></span>" +
+                "<form action='' method='GET'> " +
+                "<label class='perc-required-field' for='perc-section-type'>" + I18N.message("perc.ui.newSectionDialog.label@Type") + ":</label> <br>" +
+                "<select id='perc-section-type' name='perc-section-type'>" +
+                    "<option value='section'>" + I18N.message("perc.ui.newSectionDialog.label@Section & landing page") + "</option>" +
+                    "<option value='sectionlink'>" + I18N.message("perc.ui.newSectionDialog.label@Section link") + "</option>" +
+                    "<option value='externallink'>" + I18N.message("perc.ui.newSectionDialog.label@External link") + "</option>" +
+                    "<option value='convertfolder'>" + I18N.message("perc.ui.newSectionDialog.label@Convert folder") + "</option>" +
+                "</select> <br>" +
+                "<div id='perc-section-container'>" +
+                "<label for='perc-select-template'>"+ I18N.message( "perc.ui.newSectionDialog.label@Select a template" ) + ": </label><br/>" +
+                "<a class='prevPage browse left'></a>" +
+                "<div class='perc-scrollable'><input type='hidden' id='perc-select-template' name='template'/>" +
+                "<div class='perc-items'>" +
+              "</div></div>" +
+                "<a class='nextPage browse right' ></a>" +
+                "<div style='float:left;'>" +
+                "<fieldset>" +
+                "<label for='perc-section-name' class='perc-required-field'>" + I18N.message( "perc.ui.newSectionDialog.label@Section name" ) + ":</label> <br/> " +
+                "<input type='text' class='required' tabindex='" + taborder + "' id='perc-section-name' name='section_name' maxlength='512'/> <br/>" +
+                "<label for='perc-section-url' class='perc-required-field'>" + I18N.message( "perc.ui.newSectionDialog.label@URL" ) + ":</label> <br/> " +
+                "<input type='text' class='required' tabindex='" + taborder + "' id='perc-section-url' name='page_url' maxlength='100'/><br/> " +
+                "</fieldset>" +
+                "</div>" +
+                "</div>" +
+                "<div id='perc-external-link-container' style='display:none'>" +
+                "<fieldset>" +
+                "<label for='perc-external-link-text' class='perc-required-field'>" + I18N.message( "perc.ui.newSectionDialog.label@External link text" ) + ":</label> <br/> " +
+                "<input type='text' class='required' tabindex='" + taborder + "' id='perc-external-link-text' name='perc-external-link-text' maxlength='100'/> <br/>" +
+                "<label class='perc-required-field' for='perc-external-link-url'>" + I18N.message( "perc.ui.newSectionDialog.label@External link URL" ) + ":</label> <br/> " +
+                "<input type='text' class='required' tabindex='" + taborder + "' id='perc-external-link-url' name='perc-external-link-url' maxlength='512'/><br/> " +
+                "</fieldset>" +
+                "</div>" +
+                "<div id='perc-section-link-container' style='display:none'>" +
+                "<fieldset>" +
+                "<label for='perc-section-link-target' class='perc-required-field'>" + I18N.message( "perc.ui.newSectionDialog.label@Target section" ) + ":</label> <br/> " +
+                "<div><input type='text' class='required' readonly='true' name='perc-section-link-target' id='perc-section-link-target'/><img id='perc-section-link-targetid-button' src='../images/images/buttonEllipse.png' class='perc-button-ellipse'/></div>" +
+                "<input type='hidden' name='perc-section-link-targetid' id='perc-section-link-targetid'/>" +
+                "</fieldset>" +
+                "</div>" +
+                "<div id='perc-convert-folder-container' style='display:none'>" +
+                "<fieldset>" +
+                "<label for='perc-convert-folder-path' class='perc-required-field'>" + I18N.message( "perc.ui.newSectionDialog.label@Target folder" ) + ":</label> <br/> " +
+                "<div><input type='text' class='required' readonly='true' name='perc-convert-folder-path' id='perc-convert-folder-path'/><img id='perc-convert-folder-path-button' src='../images/images/buttonEllipse.png' class='perc-button-ellipse'/></div>" +
+                "<label class='perc-required-field' for='perc-landing-page'>" + I18N.message("perc.ui.newSectionDialog.label@Select landing page") + ":</label> <br>" +
+                "<select id='perc-landing-page' name='perc-landing-page' class='required'>" +
+                    "<option value='perc-empty-landing-page'>" + I18N.message("perc.ui.newSectionDialog.label@Select a folder to see landing pages") + "</option>" +
+                "</select> " +
+                "<span id='pageErrorSpan' style='display : none' class='perc-field-error'>Please create page under target folder.</span>" +
+                "<br>" +
+                "</fieldset>" +
+                "</div>" +
+                "<div class='ui-layout-south'>" +
+                "<div id='perc_buttons' style='z-index: 100;'></div>" +
+                 "</div>" +
+                "</form> </div>").perc_dialog( {
              title: I18N.message( "perc.ui.newSectionDialog.title@New Section" ),
              modal: true,
              percButtons:   {
                 "Save":     {
                     click: function()   {
                        var sectionName = dialog.find('form').find('#perc-section-url');
-                       var sectionNameValue = $.perc_textFilters.WINDOWS_FILE_NAME($.trim(sectionName.val()));
+                       var sectionNameValue = $.perc_textFilters.WINDOWS_FILE_NAME(sectionName.val().trim());
                        sectionName.val(sectionNameValue);               
                         _submit();
                     },
@@ -120,7 +120,7 @@ $.perc_newSectionDialog = function() {
             width: 800
         });
     //Add onchange event to the type select box
-    dialog.find("#perc-section-type").change(function(){
+    dialog.find("#perc-section-type").on("change",function(){
         $("#perc-section-container").hide();
         $("#perc-section-link-container").hide();
         $("#perc-external-link-container").hide();
@@ -142,7 +142,7 @@ $.perc_newSectionDialog = function() {
         }
     });
     //Add click handler to the select section eliipse button.
-    dialog.find("#perc-section-link-targetid-button").click(function(){
+    dialog.find("#perc-section-link-targetid-button").on("click",function(){
         var dlgTitle = I18N.message("perc.ui.newSectionDialog.label@Target Section");
         var treeLabel = I18N.message("perc.ui.newSectionDialog.label@Select target section");
         $.PercSectionTreeDialog.open(site, null, treeLabel, dlgTitle, "Select", function(targetId,path){
@@ -151,7 +151,7 @@ $.perc_newSectionDialog = function() {
         });
     });
     //Add click handler to the select target folder ellipse button.
-    dialog.find("#perc-convert-folder-path-button").click(function(){
+    dialog.find("#perc-convert-folder-path-button").on("click",function(){
         var dlgTitle = I18N.message("perc.ui.newSectionDialog.label@Target Folder");
         var treeLabel = I18N.message("perc.ui.newSectionDialog.label@Select target folder");
         var updateTargetFolderPath = function(pathItem){
@@ -173,26 +173,26 @@ $.perc_newSectionDialog = function() {
                     return;
                 }
                 var optionStr = "";
-                var pages = $.isArray(data.psobj)?data.psobj:[data.isobj];
+                var pages = Array.isArray(data.psobj)?data.psobj:[data.isobj];
                 $.each(pages, function(){
                     optionStr += "<option value=\"" + this.name + "\">" + this.name + "</option>"; 
-                })
+                });
                 selectElem.append(optionStr);
-            }
+            };
             $.PercFolderService.getFolderPagesById(pathItem.id, refreshPages);
-        }
+        };
         var validator = function(pathItem){
             var errMsg = null;
             if(!pathItem)
                 errMsg = I18N.message("perc.ui.new.section.dialog@Select folder");
-            else if(pathItem.category == "SECTION_FOLDER")
+            else if(pathItem.category === "SECTION_FOLDER")
                 errMsg = I18N.message("perc.ui.new.section.dialog@Section Not Folder");
-            else if(pathItem.path=="/Sites/")
+            else if(pathItem.path==="/Sites/")
                 errMsg = I18N.message("perc.ui.new.section.dialog@Sites Root Not Folder");
-            else if(pathItem.type=="site")
+            else if(pathItem.type==="site")
                 errMsg = I18N.message("perc.ui.new.section.dialog@Site Not Folder");
             return errMsg;
-        }        
+        };
         var pathSelectionOptions = {
             okCallback: updateTargetFolderPath,
             dialogTitle: dlgTitle,
@@ -219,7 +219,7 @@ $.perc_newSectionDialog = function() {
         callback("cancel");
     }
     function _submit()  {
-        dialog.find('form').submit();
+        dialog.find('form').trigger("submit");
         $("#pageErrorSpan").hide();
         if($( "#perc-landing-page" ).hasClass( "perc-field-error" )){
             $("#pageErrorSpan").show();
@@ -231,13 +231,13 @@ $.perc_newSectionDialog = function() {
                     validClass: "perc-field-success",
                     wrapper: "p",
                     validateHiddenFields: false,
-                    debug: true,
+                    debug: false,
             submitHandler: function(form) {
                dialog.remove();
                callback("ok", $(form).serializeArray());
             },
             errorPlacement: function(error, element) {
-             if (element.attr("name") == "perc-section-link-target") 
+             if (element.attr("name") === "perc-section-link-target")
               error.insertAfter("#perc-section-link-targetid-button");
              else
               error.insertAfter(element);
@@ -249,7 +249,7 @@ $.perc_newSectionDialog = function() {
    
     $.getJSON( queryPath, function( spec ) {
         //Load template selector
-        $.each( spec['TemplateSummary'], function() {
+        $.each( spec.TemplateSummary, function() {
             itemContainer.append(createTemplateEntry(this));
             $("div.perc-scrollable").scrollable({
                 items: ".perc-items",
@@ -258,7 +258,7 @@ $.perc_newSectionDialog = function() {
             });
             $(".perc-items .item .item-id").hide();
             // bind click event to each item to handle selection
-            $(".perc-items .item").bind('click', function(){
+            $(".perc-items .item").on('click', function(){
                 var itemId = $(this).find(".item-id").text(); 
                 $("#perc-select-template").val(itemId);
                 $(".perc-items .item").removeClass("perc-selected-item");
@@ -292,18 +292,18 @@ $.perc_newSectionDialog = function() {
     }
     
     function createTemplateEntry(data){
-        var temp = "<div class=\"item\">"
-            + "<div class=\"item-id\">@ITEM_ID@</div>"
-            + "     <table>"
-            + "         <tr><td align='left'>"
-            + "             <img style='border:1px solid #E6E6E9' height = '86px' width = '122px' src=\"@IMG_SRC@\"/>" 
-            + "         </td></tr>"
-            + "         <tr><td>"
-            + "            <div class='perc-text-overflow-container' style='text-overflow:ellipsis;width:122px;overflow:hidden;white-space:nowrap'>"
-            + "                <div class='perc-text-overflow' style='float:none' title='@ITEM_TT@' alt='@ITEM_TT@'>@ITEM_LABEL@</div>"
-            + "         </td></tr>"
-            + "     </table>"        
-            + "</div>";
+        var temp = "<div class=\"item\">" +
+             "<div class=\"item-id\">@ITEM_ID@</div>" +
+             "     <table>" +
+             "         <tr><td align='left'>" +
+             "             <img style='border:1px solid #E6E6E9' height = '86px' width = '122px' src=\"@IMG_SRC@\"/>" +
+             "         </td></tr>" +
+             "         <tr><td>" +
+             "            <div class='perc-text-overflow-container' style='text-overflow:ellipsis;width:122px;overflow:hidden;white-space:nowrap'>" +
+             "                <div class='perc-text-overflow' style='float:none' title='@ITEM_TT@' alt='@ITEM_TT@'>@ITEM_LABEL@</div>" +
+             "         </td></tr>" +
+             "     </table>" +
+             "</div>";
         return temp.replace(/@IMG_SRC@/, data.imageThumbPath)
             .replace(/@ITEM_ID@/, data.id)
             .replace(/@ITEM_LABEL@/, data.name)

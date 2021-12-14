@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -25,13 +25,12 @@ package com.percussion.monitor.process;
 
 import com.percussion.monitor.service.PSMonitor;
 import com.percussion.monitor.service.PSMonitorService;
-
-import java.util.List;
-import java.util.Set;
-
 import com.percussion.utils.testing.IntegrationTest;
 import org.apache.cactus.ServletTestCase;
 import org.junit.experimental.categories.Category;
+
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author JaySeletz

@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -27,15 +27,13 @@ import com.percussion.server.PSRequest;
 import com.percussion.services.assembly.IPSAssemblyItem;
 import com.percussion.services.assembly.IPSAssemblyResult;
 import com.percussion.services.assembly.IPSAssemblyResult.Status;
-
-import java.io.InputStream;
-import java.util.Map;
+import com.percussion.utils.request.PSRequestInfo;
+import org.apache.poi.util.IOUtils;
 
 import javax.jcr.Property;
 import javax.jcr.Value;
-
-import com.percussion.utils.request.PSRequestInfo;
-import org.apache.poi.util.IOUtils;
+import java.io.InputStream;
+import java.util.Map;
 
 /**
  * This assembler produces a binary output (base64 encoded) from the input
@@ -98,9 +96,9 @@ public class PSBinaryAssembler extends PSAssemblerBase
             PSRequest req = (PSRequest) PSRequestInfo
                     .getRequestInfo(PSRequestInfo.KEY_PSREQUEST);
             req.setParameter("allowBinary","true");
-            InputStream s = ((Property) data).getStream();
-            item.setResultStream(s);
-            IOUtils.closeQuietly(s);
+            try(InputStream s = ((Property) data).getStream()) {
+               item.setResultStream(s);
+            }
          }
          else if (data instanceof Value)
          {

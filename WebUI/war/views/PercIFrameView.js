@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -45,7 +45,7 @@
        // get the frame at the bottom
        frame = $("#frame");
        frame.contents().remove(); 
-       frame.unbind( ".reload" );
+       frame.off( ".reload" );
        assetPath = path;
        newAsset = isNewAsset;
        workflowId = wfId;
@@ -64,9 +64,9 @@
         $.PercContentPreSubmitHandlers.clearHandlers();
    
        // after whole form has loaded, override the workflowid, add url filter to name field
-       frame.load(function()
+       frame.on("load",function(evt)
        {
-           if(initialized == false){
+           if(initialized === false){
                initialized = true;
                onIntialFrameLoad();
            }
@@ -81,32 +81,36 @@
         // render the save button
        if(newAsset)
        {
-           var menuId = $("#perc-layout-menu").length > 0 
-              ? '#perc-layout-menu' 
+           var menuId = $("#perc-layout-menu").length > 0 ?
+               '#perc-layout-menu'
               : '#perc-content-menu';
            $(menuId).html("");
-           $('<button name="perc_wizard_save" class="btn btn-primary" id="perc-save-content" style="float:right; background-color: #00a8df; border-color: #00a3d9; color: #ffffff; border-radius: 4px; display:inline-block; cursor:pointer; padding-top: 6px; padding-bottom: 6px; padding-left: 12px; padding-right: 12px; text-align: center; font: 13.333px Arial !important; font-weight: normal; white-space: normal; vertical-align: middle; margin-top:11.5px; borer-style:outset; border-width:2px;">' +I18N.message("perc.ui.common.label@Save")+' </button>')
+           $('<button name="perc_wizard_save" class="btn btn-primary" id="perc-save-content" style="float:right; background-color: #00a8df; border-color: #00a3d9; color: #ffffff; border-radius: 4px; display:inline-block; cursor:pointer; padding-top: 6px; padding-bottom: 6px; padding-left: 12px; padding-right: 12px; text-align: center; font: 13.333px Arial !important; font-weight: normal; white-space: normal; vertical-align: middle; margin-top:11.5px; border-style:outset; border-width:2px;">' +I18N.message("perc.ui.common.label@Save")+' </button>')
                .appendTo(menuId);
    
            // render cancel button
-           $('<button class="btn btn-primary" id="perc-cancel-content"style="float:right; background-color: #00a8df; border-color: #00a3d9; color: #ffffff; border-radius: 4px; display:inline-block; cursor:pointer; padding-top: 6px; padding-bottom: 6px; padding-left: 12px; padding-right: 12px; text-align: center; font: 13.333px Arial !important; font-weight: normal; white-space: normal; vertical-align: middle;margin-top:11.5px; borer-style:outset; border-width:2px ">' +I18N.message("perc.ui.change.pw@Close") +  '</button>')
+           $('<button class="btn btn-primary" id="perc-cancel-content" style="float:right; background-color: #00a8df; border-color: #00a3d9; color: #ffffff; border-radius: 4px; display:inline-block; cursor:pointer; padding-top: 6px; padding-bottom: 6px; padding-left: 12px; padding-right: 12px; text-align: center; font: 13.333px Arial !important; font-weight: normal; white-space: normal; vertical-align: middle;margin-top:11.5px; border-style:outset; border-width:2px ">' +I18N.message("perc.ui.change.pw@Close") +  '</button>')
                .appendTo(menuId);
    
            // submit the form when save button is clicked
-           $("#perc-save-content").unbind('click').click(function() { saveContent(true); });
+           $("#perc-save-content").off('click').on("click",function() { saveContent(true); });
    
            // reset the form when cancel button is clicked
-           $("#perc-cancel-content").unbind('click').click(function() { cancel(); });
+           $("#perc-cancel-content").off('click').on("click",function() { cancel(); });
    
-           // cancel and clear content of form
-           function cancel() {
-               $.PercNavigationManager.goToDashboard();
-           }
+
        }
+
+
    }
+
+    // cancel and clear content of form
+    function cancel() {
+        $.PercNavigationManager.goToDashboard();
+    }
    function onLaterFrameLoads(){
        //Make sure there are no errors.
-       if(frame.contents().find("#perc-content-edit-errors").length == 0)
+       if(frame.contents().find("#perc-content-edit-errors").length === 0)
        {
           if(newAsset)
           {
@@ -117,7 +121,7 @@
           {
              $.PercPathService.getPathItemById($.PercNavigationManager.getId(), 
                 function(status, result){
-                   if(status == $.PercServiceUtils.STATUS_SUCCESS)
+                   if(status === $.PercServiceUtils.STATUS_SUCCESS)
                    {
                       var name = result.PathItem.name;
                       $.PercNavigationManager.setReopenAllowed(true);
@@ -166,10 +170,10 @@
     * Saves the asset content by submitting the form of the iframe. If it is new asset then gets the content id from 
     * the during the iframe reload and adds it to the folder. Then reloads the browser by calling the navigation manager
     * with new path.
-    * @param newAsset(boolean) If true the asset is saved and added to the folder and the browser is reloaded. Otherwise 
+    * @param isNew(boolean) If true the asset is saved and added to the folder and the browser is reloaded. Otherwise
     * the asset is saved.
     */
-   function saveContent(newAsset)
+   function saveContent(isNew)
    {
        dirtyController.setDirty(false, "asset");
        $.PercBlockUI();
@@ -200,7 +204,7 @@
        // the form submits to containing document, i.e., submits to itself and frame is reloaded
        $(window).removeData();
        frame.removeData();
-       frame.contents().find("#perc-content-form").submit();
+       frame.contents().find("#perc-content-form").trigger("submit");
     }
     
     /**
@@ -235,17 +239,16 @@
             form.attr("action", oldUrl);
       }
       var nameField = form.find("[name=sys_title]");
-      var nameField = form.find("[name=sys_title]");
       if(nameField.length > 0)
       {
          $.perc_filterField(nameField, $.perc_textFilters.URL);
       }
  
-      form.find("[type=text]").keypress(function(event) {
-         if(event.keyCode == 13)
+      form.find("[type=text]").on("keypress",function(event) {
+         if(event.keyCode === 13)
          {
             return false;
-         };
+         }
       });
     }
 
@@ -259,15 +262,15 @@
     {
       // a hidden field contains the content id, retrieve it
       var assetContentId = frame.contents().find("[name=sys_contentid]").val();
-      if(assetContentId == "")
+      if(assetContentId === "")
       {
          $.perc_utils.alert_dialog({title: I18N.message("perc.ui.publish.title@Error"), content: I18N.message("perc.ui.iframe.view@Unable To Create Asset")});
          return;
       }
        
       // put the asset in the current folder
-      var assetContentId = "-1-101-" + assetContentId;
-      path = "//Folders/$System$/Assets" + assetPath;
+      assetContentId = "-1-101-" + assetContentId;
+      let path = "//Folders/$System$/Assets" + assetPath;
       $.PercAssetController.putAssetInFolder(assetContentId, path, function(status, res)
       {
          // after putting the asset in the folder, open the finder

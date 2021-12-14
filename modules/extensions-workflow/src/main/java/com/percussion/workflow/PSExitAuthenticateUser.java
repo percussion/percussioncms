@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -55,6 +55,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 @SuppressWarnings("unchecked")
 public class PSExitAuthenticateUser implements IPSRequestPreProcessor
@@ -137,10 +138,10 @@ public class PSExitAuthenticateUser implements IPSRequestPreProcessor
                m_fullExtensionName,
                new IllegalArgumentException("The request must not be null"));
          }
-         HashMap htmlParams = request.getParameters();
+         Map<String,Object> htmlParams = request.getParameters();
          if (null == htmlParams)
          {
-            htmlParams = new HashMap();
+            htmlParams = new HashMap<>();
             request.setParameters(htmlParams);
          }
 
@@ -239,7 +240,7 @@ public class PSExitAuthenticateUser implements IPSRequestPreProcessor
                try
                {
                   requiredAccessLevel =
-                     new Integer(params[4].toString()).intValue();
+                          new Integer(params[4].toString());
                }
                catch (Exception e)
                {
@@ -286,7 +287,7 @@ public class PSExitAuthenticateUser implements IPSRequestPreProcessor
                }
             }
          }
-         catch (PSInvalidNumberOfParametersException ne)
+         catch (PSInvalidNumberOfParametersException | PSInvalidParameterTypeException ne)
          {
             String language = ne.getLanguageString();
             if (language == null)
@@ -295,16 +296,6 @@ public class PSExitAuthenticateUser implements IPSRequestPreProcessor
                language,
                m_fullExtensionName,
                ne);
-         }
-         catch (PSInvalidParameterTypeException te)
-         {
-            String language = te.getLanguageString();
-            if (language == null)
-               language = PSI18nUtils.DEFAULT_LANG;
-            throw new PSExtensionProcessingException(
-               language,
-               m_fullExtensionName,
-               te);
          }
 
          /*
@@ -381,7 +372,6 @@ public class PSExitAuthenticateUser implements IPSRequestPreProcessor
             request,
             "Authenticate User : exit preProcessRequest ");
       }
-      return;
    }
 
    /**
@@ -421,13 +411,11 @@ public class PSExitAuthenticateUser implements IPSRequestPreProcessor
       String lang,
       Connection connection,
       AuthParams localParams)
-      throws
-         SQLException,
-         PSAuthorizationException,
-         PSEntryNotFoundException,
-         PSRoleException,
-         Exception
-   {
+           throws
+           SQLException,
+           PSAuthorizationException,
+           PSEntryNotFoundException,
+           PSRoleException, PSCmsException {
       PSWorkFlowUtils.printWorkflowMessage(
          localParams.m_request,
          "  Entering authenticateUser");
@@ -714,7 +702,6 @@ public class PSExitAuthenticateUser implements IPSRequestPreProcessor
       PSWorkFlowUtils.printWorkflowMessage(
          localParams.m_request,
          "  Exiting authenticateUser");
-      return;
    }
 
    /**
@@ -762,7 +749,7 @@ public class PSExitAuthenticateUser implements IPSRequestPreProcessor
          cms.loadWorkflowAppContext(localParams.m_workflowAppID);
 
       // build list of roles that can access the doc in the initial state
-      List stateRoleList = new ArrayList();
+      List stateRoleList = new ArrayList<>();
       PSStateRolesContext src = null;
 
       src =

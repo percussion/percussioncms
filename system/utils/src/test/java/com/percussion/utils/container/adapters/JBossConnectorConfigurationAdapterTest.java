@@ -17,17 +17,18 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.utils.container.adapters;
 
+import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
 import com.percussion.utils.container.DefaultConfigurationContextImpl;
+import com.percussion.utils.container.IPSJndiDatasource;
 import com.percussion.utils.container.PSJettyConnectorsTest;
 import com.percussion.utils.container.config.model.impl.BaseContainerUtils;
-import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -39,7 +40,10 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import static junit.framework.TestCase.assertEquals;
 
 public class JBossConnectorConfigurationAdapterTest {
 
@@ -90,11 +94,8 @@ public class JBossConnectorConfigurationAdapterTest {
         Files.copy(srcJbossRxDsXml,root.resolve("AppServer/server/rx/deploy/rx-ds.xml"));
         Files.copy(srcJbossServerBeans,root.resolve("AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/config/spring/server-beans.xml"));
 
-
-
-
-        DefaultConfigurationContextImpl fromCtx = new DefaultConfigurationContextImpl(root, PSLegacyEncrypter.getPartTwoKey());
-        DefaultConfigurationContextImpl toCtx = new DefaultConfigurationContextImpl(root, PSLegacyEncrypter.getPartTwoKey());
+        DefaultConfigurationContextImpl fromCtx = new DefaultConfigurationContextImpl(root, PSLegacyEncrypter.getInstance(null).getPartTwoKey());
+        DefaultConfigurationContextImpl toCtx = new DefaultConfigurationContextImpl(root, PSLegacyEncrypter.getInstance(null).getPartTwoKey());
 
         JBossConnectorConfigurationAdapter adapter = new JBossConnectorConfigurationAdapter();
 
@@ -117,8 +118,16 @@ public class JBossConnectorConfigurationAdapterTest {
         jettyAdapter.save(toCtx);
         adapter.save(toCtx);
 
+        List<IPSJndiDatasource> datasources =  fromConfig.getDatasources();
+        assert(datasources.size()==2);
+        IPSJndiDatasource repConnection = datasources.get(0);
+        assertEquals("support",repConnection.getPassword());
+        IPSJndiDatasource repConnection2 = datasources.get(1);
+        assertEquals("support",repConnection2.getPassword());
         // @TODO:  Should be testing if the expected values are loaded and saved after load and save
-
+        // @TODO:  <!-- <security-domain>rx.datasource.jdbc_database_-_300</security-domain> -->
+        //  uncommenting this in rs-ds.xml throws Exception this needs to be looked at:-
+        //javax.crypto.BadPaddingException: Given final block not properly padded. Such issues can arise if a bad key is used during decryption.
     }
 
 }

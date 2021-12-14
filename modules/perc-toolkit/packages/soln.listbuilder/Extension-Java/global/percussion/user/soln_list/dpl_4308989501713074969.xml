@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Extensions>
+   <Extension categorystring="jexl" context="global/percussion/user/" deprecated="no" handler="Java" name="soln_list" restoreRequestParamsOnError="no">
+      <initParam name="com.percussion.user.description">Creates a JCR Query from a Node</initParam>
+      <initParam name="com.percussion.extension.version">5</initParam>
+      <initParam name="className">com.percussion.soln.listbuilder.ListBuilderJexl</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <interface name="com.percussion.extension.IPSJexlExpression"/>
+      <suppliedResources/>
+      <Methods>
+         <PSExtensionMethod description="Creates a Query Builder from a List builder" name="getQueryBuilder" returntype="com.percussion.soln.listbuilder.JCRQueryBuilder">
+            <Parameters>
+               <PSExtensionMethodParam description="getListBuilderItem($sys.item)" name="lbn" type="com.percussion.soln.listbuilder.ListBuilderItem"/>
+            </Parameters>
+         </PSExtensionMethod>
+         <PSExtensionMethod description="Creates slot parameters from a list builder" name="getSlotParameters" returntype="java.util.Map">
+            <Parameters>
+               <PSExtensionMethodParam description="getListBuilderItem($sys.item)" name="lbn" type="com.percussion.soln.listbuilder.ListBuilderItem"/>
+            </Parameters>
+         </PSExtensionMethod>
+         <PSExtensionMethod description="Creates a Query Builder from a Node" name="getListBuilderItem" returntype="com.percussion.soln.listbuilder.ListBuilderItem">
+            <Parameters>
+               <PSExtensionMethodParam description="$sys.assemblyItem" name="node" type="com.percussion.services.assembly.IPSAssemblyItem"/>
+            </Parameters>
+         </PSExtensionMethod>
+      </Methods>
+   </Extension>
+</Extensions>

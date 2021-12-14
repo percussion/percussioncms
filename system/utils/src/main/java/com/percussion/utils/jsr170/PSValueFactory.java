@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -25,7 +25,14 @@ package com.percussion.utils.jsr170;
 
 import com.percussion.utils.io.PSReaderInputStream;
 
+import javax.jcr.Node;
+import javax.jcr.PropertyType;
+import javax.jcr.RepositoryException;
+import javax.jcr.Value;
+import javax.jcr.ValueFactory;
+import javax.jcr.ValueFormatException;
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Blob;
 import java.sql.Clob;
@@ -33,13 +40,6 @@ import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-
-import javax.jcr.Node;
-import javax.jcr.PropertyType;
-import javax.jcr.RepositoryException;
-import javax.jcr.Value;
-import javax.jcr.ValueFactory;
-import javax.jcr.ValueFormatException;
 
 /**
  * Factory to create value objects
@@ -90,26 +90,23 @@ public class PSValueFactory implements ValueFactory
       }
       else if (data instanceof Blob)
       {
-         try
-         {
-            return new PSInputStreamValue(((Blob) data).getBinaryStream());
+         try(InputStream io = ((Blob) data).getBinaryStream()) {
+
+            return new PSInputStreamValue(io);
          }
-         catch (SQLException e)
+         catch (SQLException | IOException e)
          {
             throw new ValueFormatException("Couldn't extract data", e);
          }
       }
       else if (data instanceof Clob)
       {
-         try
-         {
-            return new PSInputStreamValue(
-                  new PSReaderInputStream(((Clob) data).getCharacterStream()));
-         }
-         catch (SQLException e)
-         {
-            throw new ValueFormatException("Couldn't extract data", e);
-         }
+            try (InputStream io = new PSReaderInputStream(((Clob) data).getCharacterStream())) {
+               return new PSInputStreamValue(io);
+            } catch (SQLException | IOException e) {
+               throw new ValueFormatException("Couldn't extract data", e);
+            }
+
       }      
       else if (data instanceof Date)
       {
@@ -123,30 +120,32 @@ public class PSValueFactory implements ValueFactory
       }
       else if (data instanceof byte[])
       {
-         InputStream stream = new ByteArrayInputStream((byte[]) data);
-         return ms_fact.createValue(stream);
+         try(InputStream stream = new ByteArrayInputStream((byte[]) data)) {
+            return ms_fact.createValue(stream);
+         } catch (IOException e) {
+            throw new ValueFormatException("Couldn't extract data", e);
+         }
       }
       else if (data instanceof Clob)
       {
-         try
-         {
-            InputStream stream = 
-               new PSReaderInputStream(((Clob) data).getCharacterStream());
+
+         try(InputStream stream =
+            new PSReaderInputStream(((Clob) data).getCharacterStream())) {
             return ms_fact.createValue(stream);
          }
-         catch (SQLException e)
+
+         catch (SQLException | IOException e)
          {
             throw new ValueFormatException("Problem creating stream value", e);
          }
       }
       else if (data instanceof Blob)
       {
-         try
-         {
-            InputStream stream = ((Blob) data).getBinaryStream();
+
+         try( InputStream stream = ((Blob) data).getBinaryStream()){
             return ms_fact.createValue(stream);
          }
-         catch (SQLException e)
+         catch (SQLException | IOException e)
          {
             throw new ValueFormatException("Problem creating stream value", e);
          }

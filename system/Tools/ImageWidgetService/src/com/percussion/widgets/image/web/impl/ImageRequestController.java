@@ -17,31 +17,32 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.widgets.image.web.impl;
-      
+
       import com.percussion.widgets.image.data.CachedImageMetaData;
       import com.percussion.widgets.image.data.ImageData;
       import com.percussion.widgets.image.services.ImageCacheManager;
-      import javax.servlet.http.HttpServletRequest;
-      import javax.servlet.http.HttpServletResponse;
       import net.sf.json.JSON;
       import net.sf.json.JSONSerializer;
       import org.apache.commons.lang.StringUtils;
-      import org.apache.commons.logging.Log;
-      import org.apache.commons.logging.LogFactory;
+      import org.apache.logging.log4j.LogManager;
+      import org.apache.logging.log4j.Logger;
       import org.springframework.web.servlet.ModelAndView;
       import org.springframework.web.servlet.mvc.Controller;
       import org.springframework.web.servlet.mvc.ParameterizableViewController;
+
+      import javax.servlet.http.HttpServletRequest;
+      import javax.servlet.http.HttpServletResponse;
       
       public class ImageRequestController extends ParameterizableViewController
         implements Controller
       {
-    	  private static Log log = LogFactory.getLog(ImageRequestController.class);
+    	  private static final Logger log = LogManager.getLogger(ImageRequestController.class);
     	  private String modelObjectName = "results";
     	  private ImageCacheManager imageCacheManager = null;
       
@@ -58,7 +59,7 @@ package com.percussion.widgets.image.web.impl;
         		response.sendError(400, emsg);
         		return null;
           }
-        	log.debug("Image key is " + imageKey);
+        	log.debug("Image key is {}", imageKey);
         	if (!this.imageCacheManager.hasImage(imageKey))
           {
         		String emsg = "The image was not found";

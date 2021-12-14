@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -37,14 +37,13 @@ import com.percussion.services.publisher.IPSPubItemStatus;
 import com.percussion.services.pubserver.data.PSPubServer;
 import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.share.spring.PSSpringWebApplicationContextUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.Map;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
  * This is a post edition task assumed to be get added to all staging editions to perform certain tasks
@@ -131,5 +130,5 @@ public class PSStagingPostEditionTask implements IPSEditionTask {
 	{
 		this.pubServerService = pubServerService;
 	}
-    protected final Log log = LogFactory.getLog(getClass());	
+    protected final Logger log = LogManager.getLogger(getClass());
 }

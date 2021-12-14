@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -40,13 +40,16 @@ import com.percussion.deployer.server.PSImportCtx;
 import com.percussion.design.objectstore.PSApplication;
 import com.percussion.design.objectstore.PSExtensionCall;
 import com.percussion.design.objectstore.PSExtensionParamValue;
+import com.percussion.design.objectstore.PSLockedException;
 import com.percussion.design.objectstore.PSNotFoundException;
+import com.percussion.design.objectstore.PSNotLockedException;
 import com.percussion.design.objectstore.PSTextLiteral;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
 import com.percussion.design.objectstore.PSUrlRequest;
 import com.percussion.design.objectstore.server.PSServerXmlObjectStore;
 import com.percussion.design.objectstore.server.PSXmlObjectStoreLockerId;
 import com.percussion.extension.PSExtensionRef;
+import com.percussion.security.PSAuthorizationException;
 import com.percussion.security.PSSecurityToken;
 import com.percussion.server.PSCustomControlManager;
 import com.percussion.tablefactory.PSJdbcTableSchema;
@@ -58,7 +61,6 @@ import org.w3c.dom.NodeList;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -148,8 +150,7 @@ public abstract class PSAppObjectDependencyHandler
     * dependencies.
     */
    protected void addApplicationDependencies(PSSecurityToken tok, Set childDeps, 
-      Element srcNode) throws PSDeployException
-   {
+      Element srcNode) throws PSDeployException, com.percussion.services.error.PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
       
@@ -177,8 +178,7 @@ public abstract class PSAppObjectDependencyHandler
     * @throws PSDeployException if there are any errors.
     */
    protected List getExtensionDependencies(PSSecurityToken tok, 
-      Element srcNode)  throws PSDeployException
-   {
+      Element srcNode) throws PSDeployException, com.percussion.services.error.PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
       
@@ -269,8 +269,7 @@ public abstract class PSAppObjectDependencyHandler
     * @throws PSDeployException if there are any errors.
     */
    protected List getUrlDependencies(PSSecurityToken tok, 
-      Element srcNode)  throws PSDeployException
-   {
+      Element srcNode) throws PSDeployException, com.percussion.services.error.PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
       
@@ -327,8 +326,7 @@ public abstract class PSAppObjectDependencyHandler
     * @throws PSDeployException if there are any errors.
     */
    protected List getLiteralPathDependencies(PSSecurityToken tok, 
-      Element srcNode)  throws PSDeployException
-   {
+      Element srcNode) throws PSDeployException, com.percussion.services.error.PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
       
@@ -433,7 +431,7 @@ public abstract class PSAppObjectDependencyHandler
                   deps.add(dep);
                }
             }
-            catch (MalformedURLException e)
+            catch (MalformedURLException | com.percussion.services.error.PSNotFoundException e)
             {
                // not something we can deal with
             }
@@ -456,8 +454,7 @@ public abstract class PSAppObjectDependencyHandler
     * @throws PSDeployException if there are any errors.
     */
    protected PSDependency getDepFromPath(PSSecurityToken tok, String path)
-      throws PSDeployException 
-   {
+           throws PSDeployException, com.percussion.services.error.PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
          
@@ -593,8 +590,7 @@ public abstract class PSAppObjectDependencyHandler
          throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR,
             "Cannot get appname from path: " + dep.getDependencyId());
       }
-      try{
-      
+
          PSXmlObjectStoreLockerId lockId = null;
          boolean exists = false;
          try {
@@ -607,11 +603,20 @@ public abstract class PSAppObjectDependencyHandler
 
             os.saveApplicationFile(appName, origFile,
                     archive.getFileData(depFile), true, lockId, tok);
-         }finally {
-            os.releaseApplicationLock(lockId,appName + "-" + origFile.getName());
+         } catch (PSLockedException | PSNotFoundException | PSAuthorizationException | PSServerException | PSNotLockedException e) {
+
+            throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR,
+                    "Cannot save application from path: " + dep.getDependencyId() + "Error: " + e.getMessage());
+         } finally {
+            try {
+               os.releaseApplicationLock(lockId,appName + "-" + origFile.getName());
+            } catch (PSServerException e) {
+               throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR,
+                       "Cannot release Application lock  " + dep.getDependencyId() + "Error: " + e.getMessage());
+            }
          }
 
-         
+
          PSDependency parentDep = dep.getParentDependency();
          if (parentDep != null && 
                parentDep.getObjectType().equals(PSControlDependencyHandler.
@@ -626,12 +631,6 @@ public abstract class PSAppObjectDependencyHandler
             transAction = PSTransactionSummary.ACTION_MODIFIED;
          addTransactionLogEntry(dep, ctx, origFile.getPath(), 
             PSTransactionSummary.TYPE_FILE, transAction);
-      }
-      catch (Exception e) 
-      {
-         throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR, 
-            e.getLocalizedMessage());
-      }
 
    }
    
@@ -746,19 +745,14 @@ public abstract class PSAppObjectDependencyHandler
          
       if (appFile == null)
          throw new IllegalArgumentException("appFile may not be null");
-      
-      // write app file out to a temp file
-      PSPurgableTempFile tmpFile = null;
-      FileOutputStream out = null;
-      try 
-      {
-         tmpFile = new PSPurgableTempFile("dpl_", ".tmp", 
-            null);
+
+      try (PSPurgableTempFile tmpFile = new PSPurgableTempFile("dpl_", ".tmp",
+            null)) {
          PSServerXmlObjectStore os = PSServerXmlObjectStore.getInstance();
-         out = new FileOutputStream(tmpFile);
-         IOTools.copyStream(os.getApplicationFile(appName, 
-            normalizePathSep(appFile), tok), out);
-            
+         try (FileOutputStream out = new FileOutputStream(tmpFile)) {
+            IOTools.copyStream(os.getApplicationFile(appName,
+                    normalizePathSep(appFile), tok), out);
+         }
          return tmpFile;
       }
       catch (Exception e) 
@@ -766,11 +760,7 @@ public abstract class PSAppObjectDependencyHandler
          throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR, 
             e.getLocalizedMessage());
       }
-      finally
-      {
-         if (out != null)
-            try {out.close();} catch (IOException e) {}
-      }
+
    }
    
    

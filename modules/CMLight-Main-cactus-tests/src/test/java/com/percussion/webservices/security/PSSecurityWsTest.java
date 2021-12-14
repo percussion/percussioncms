@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -29,16 +29,14 @@ import com.percussion.server.PSRequest;
 import com.percussion.services.security.PSJaasUtils;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.utils.request.PSRequestInfo;
-
-import java.security.Principal;
-
-import javax.security.auth.Subject;
-
 import com.percussion.utils.testing.IntegrationTest;
 import org.apache.cactus.ServletTestCase;
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
+
+import javax.security.auth.Subject;
+import java.security.Principal;
 
 /**
  * Test for methods of the {@link IPSSecurityWs} class that are not exposed via

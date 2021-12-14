@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -29,7 +29,7 @@
     function createRedirect(fromPath, toPath, type)
     {
         var deferred = $.Deferred();
-        if(fromPath == toPath){
+        if(fromPath === toPath){
             deferred.resolve(I18N.message("perc.ui.redirect.handler@To and From Same"));
         }
         else if(!gIsSaaSEnvironment ){
@@ -71,7 +71,7 @@
             false,
             function(status, result)
             {
-                if(status == $.PercServiceUtils.STATUS_SUCCESS)
+                if(status === $.PercServiceUtils.STATUS_SUCCESS)
                 {
                     deferred.resolve(result.data);
                 }
@@ -106,22 +106,22 @@
 
             siteProperties = result.SiteProperties;
             
-            if(fromPathArray[fromFileNamePosition] == siteProperties.defaultDocument && siteProperties.canonicalDist == 'sections') {
+            if(fromPathArray[fromFileNamePosition] === siteProperties.defaultDocument && siteProperties.canonicalDist === 'sections') {
                 fromPath = makeSectionLink(fromPathArray, siteProperties.defaultDocument);
             }
             
-            if(toPathArray[toFileNamePosition] == siteProperties.defaultDocument && siteProperties.canonicalDist == 'sections') {
+            if(toPathArray[toFileNamePosition] === siteProperties.defaultDocument && siteProperties.canonicalDist === 'sections') {
                 toPath = makeSectionLink(toPathArray, siteProperties.defaultDocument);
             }
 
 
-            if(resData.response.status == "Error"){
+            if(resData.response.status === "Error"){
                 deferred.reject(resData.response.errorMessage);
             }
-            if(resData.response.status == "NotApplicable"){
+            if(resData.response.status === "NotApplicable"){
                 deferred.resolve(I18N.message("perc.ui.redirect.handler@Redirects Not Applicable"));
             }
-            else if(resData.response.status == "Published"){
+            else if(resData.response.status === "Published"){
                 showRedirectDialog(fromPath, toPath, resData)
                 .done(function(msg){
                     deferred.resolve(msg);
@@ -200,7 +200,7 @@
     }
 
     function getSitePropertiesCallback(status, result) {
-        if(status == 'success') {
+        if(status === 'success') {
             sitePropertiesDeferred.resolve(result);
         }
         else {
@@ -222,7 +222,7 @@
              percButtons:   {},
             id: "perc-redirect-dialog",
             width: 700
-        }
+        };
 
         percDialogObject.percButtons["Yes"] = {
                     click: function()   {
@@ -279,13 +279,13 @@
         return dialogHtml;
     }
     function addBrowseHandler(dialog){
-        dialog.find("#perc-redirect-to-path-button").click(function(){
+        dialog.find("#perc-redirect-to-path-button").on("click",function(){
             var dlgTitle = I18N.message("perc.ui.redirect.handler@Select Path");
             var treeLabel = I18N.message("perc.ui.redirect.handler@To Path");
             var updateToPath = function(pathItem){
                 var path = pathItem.path;
                 //Add double slash if path doesn't start with //
-                if(path.substring(0, 1) === "/" && !(path.substring(0, 2) === "//"))
+                if(path.substring(0, 1) === "/" && (path.substring(0, 2) === "//"))
                     path = "/" + path;
 
                 //Some of the services from server are not setting the path on PathItem, if not defined get it from folderPaths
@@ -294,17 +294,17 @@
                 }
                 path = getRelativePath(path);
                 dialog.find("#perc-redirect-to-path").val(path).attr("title",path);
-            }
+            };
             var validator = function(pathItem){
                 var errMsg = null;
                 if(!pathItem)
                     errMsg = I18N.message("perc.ui.redirect.handler@Select Folder or Page");
-                else if(pathItem.path=="/Sites/")
+                else if(pathItem.path==="/Sites/")
                     errMsg = I18N.message("perc.ui.redirect.handler@Current Selection Sites Root");
-                else if(pathItem.type=="site")
+                else if(pathItem.type==="site")
                     errMsg = I18N.message("perc.ui.redirect.handler@Current Selection Site");
                 return errMsg;
-            }
+            };
             var pathSelectionOptions = {
                 okCallback: updateToPath,
                 dialogTitle: dlgTitle,
@@ -320,7 +320,7 @@
         path = path.replace("//Sites/","");
         path = path.replace("/Sites/","");
         path = path.substring(path.indexOf("/"));
-        if(path.charAt(path.length-1) == "/")
+        if(path.charAt(path.length-1) === "/")
         {
             path = path.substr(0, path.length - 1);
         }

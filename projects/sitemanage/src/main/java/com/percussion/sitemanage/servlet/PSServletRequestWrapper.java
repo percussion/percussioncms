@@ -17,27 +17,26 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.sitemanage.servlet;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.LinkedHashMap;
 import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
 
 /**
  * A mutable http servlet request.
  */
 public class PSServletRequestWrapper extends HttpServletRequestWrapper
 {
-    private Map<String, String[]> wrappedparams = new LinkedHashMap<String, String[]>();
+    private Map<String, String[]> wrappedparams = new LinkedHashMap<>();
 
     /**
      * @param request
@@ -114,7 +113,7 @@ public class PSServletRequestWrapper extends HttpServletRequestWrapper
      */
     private Map<String, String[]> getMergedParameters()
     {
-        Map<String, String[]> mergedparams = new LinkedHashMap<String, String[]>(super.getParameterMap());
+        Map<String, String[]> mergedparams = new LinkedHashMap<>(super.getParameterMap());
         mergedparams.putAll(wrappedparams);
         return mergedparams;
     }

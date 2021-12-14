@@ -17,19 +17,12 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.pagemanagement.web.service;
-
-import static java.util.Arrays.asList;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import com.percussion.assetmanagement.data.PSAssetWidgetRelationship;
 import com.percussion.assetmanagement.data.PSAssetWidgetRelationship.PSAssetResourceType;
@@ -41,27 +34,32 @@ import com.percussion.pagemanagement.data.PSNonSEOPagesRequest;
 import com.percussion.pagemanagement.data.PSPage;
 import com.percussion.pagemanagement.data.PSRegion;
 import com.percussion.pagemanagement.data.PSRegionBranches;
-import com.percussion.pagemanagement.data.PSSEOStatistics;
-import com.percussion.pagemanagement.data.PSWidgetItem;
 import com.percussion.pagemanagement.data.PSRegionNode.PSRegionOwnerType;
+import com.percussion.pagemanagement.data.PSSEOStatistics;
 import com.percussion.pagemanagement.data.PSSEOStatistics.SEO_ISSUE;
 import com.percussion.pagemanagement.data.PSSEOStatistics.SEO_SEVERITY;
+import com.percussion.pagemanagement.data.PSWidgetItem;
+import com.percussion.share.test.PSRestClient.RestClientException;
 import com.percussion.share.test.PSRestTestCase;
 import com.percussion.share.test.PSTestDataCleaner;
-import com.percussion.share.test.PSRestClient.RestClientException;
-
-import java.util.List;
-
 import com.percussion.utils.testing.IntegrationTest;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.Ignore;
 import org.junit.experimental.categories.Category;
+
+import java.util.List;
+
+import static java.util.Arrays.asList;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 /**
  * Saves a page with the rest service.
@@ -772,5 +770,5 @@ public class PSPageRestServiceTest extends PSRestTestCase<PSPageRestClient>
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log log = LogFactory.getLog(PSPageRestServiceTest.class);
+    private static final Logger log = LogManager.getLogger(PSPageRestServiceTest.class);
 }

@@ -17,12 +17,13 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.services.error;
 
+import com.percussion.error.PSException;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.utils.guid.IPSGuid;
 
@@ -33,7 +34,7 @@ import com.percussion.utils.guid.IPSGuid;
  *
  * @author Yu-Bing Chen
  */
-public class PSNotFoundException extends PSRuntimeException
+public class PSNotFoundException extends PSException
 {
    /**
     * Create an instance for cannot find object by ID.
@@ -46,7 +47,11 @@ public class PSNotFoundException extends PSRuntimeException
             
       Object[] args = { id.longValue(),
             PSTypeEnum.valueOf(id.getType()).getDisplayName() };
-      setMsgKeyAndArgs("service.exception@ObjectNotFound", args);
+   }
+
+   public PSNotFoundException(int id)
+   {
+      Object[] args = { id};
    }
    
    /**
@@ -60,7 +65,6 @@ public class PSNotFoundException extends PSRuntimeException
          throw new IllegalArgumentException("type may not be null.");
       
       Object[] args = { name, type.getDisplayName() };
-      setMsgKeyAndArgs("service.exception@ObjectNotFoundByName", args);      
    }
    
    /**

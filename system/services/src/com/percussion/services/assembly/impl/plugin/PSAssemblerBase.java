@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -26,14 +26,22 @@ package com.percussion.services.assembly.impl.plugin;
 import com.percussion.cms.objectstore.PSComponentSummary;
 import com.percussion.cms.objectstore.PSFolder;
 import com.percussion.design.objectstore.PSLocator;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSExtension;
 import com.percussion.extension.IPSExtensionDef;
 import com.percussion.extension.PSExtensionException;
 import com.percussion.server.PSRequest;
 import com.percussion.server.webservices.PSServerFolderProcessor;
-import com.percussion.services.assembly.*;
+import com.percussion.services.assembly.IPSAssembler;
+import com.percussion.services.assembly.IPSAssemblyItem;
+import com.percussion.services.assembly.IPSAssemblyResult;
 import com.percussion.services.assembly.IPSAssemblyResult.Status;
+import com.percussion.services.assembly.IPSAssemblyService;
+import com.percussion.services.assembly.IPSAssemblyTemplate;
 import com.percussion.services.assembly.IPSAssemblyTemplate.GlobalTemplateUsage;
+import com.percussion.services.assembly.PSAssemblyException;
+import com.percussion.services.assembly.PSAssemblyServiceLocator;
+import com.percussion.services.assembly.PSTemplateNotImplementedException;
 import com.percussion.services.assembly.data.PSAssemblyWorkItem;
 import com.percussion.services.assembly.impl.PSAssemblyJexlEvaluator;
 import com.percussion.services.assembly.impl.PSTrackAssemblyError;
@@ -45,15 +53,15 @@ import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.jexl.IPSScript;
 import com.percussion.utils.jexl.PSJexlEvaluator;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.jcr.ItemNotFoundException;
 import javax.jcr.RepositoryException;
 import javax.jcr.UnsupportedRepositoryOperationException;
 import java.io.File;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -70,7 +78,7 @@ public abstract class PSAssemblerBase implements IPSAssembler, IPSExtension
    /**
     * Commons logger
     */
-   static Log ms_log = LogFactory.getLog(PSAssemblerBase.class);
+    protected static final Logger ms_log = LogManager.getLogger(PSAssemblerBase.class);
 
    /**
     * Assembly service
@@ -114,10 +122,12 @@ public abstract class PSAssemblerBase implements IPSAssembler, IPSExtension
             ms_asm.setCurrentAssemblyItem(mi_item);
             return mi_assembler.doAssembleSingle(mi_item);
          }
-         catch (Throwable e)
+         catch (Exception e)
          {
             Throwable orig = PSExceptionHelper.findRootCause(e, true);
-            ms_log.error("Problem during assembly", orig);
+            ms_log.error("Problem during assembly: Error: {}",
+                    PSExceptionUtils.getMessageForLog(e));
+            ms_log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             return mi_assembler.getFailureResult(mi_item, orig.toString());
          }
          finally
@@ -159,7 +169,7 @@ public abstract class PSAssemblerBase implements IPSAssembler, IPSExtension
     */
    public List<IPSAssemblyResult> assemble(List<IPSAssemblyItem> items)
    {
-      List<IPSAssemblyResult> results = new ArrayList<IPSAssemblyResult>();
+      List<IPSAssemblyResult> results = new ArrayList<>();
 
       // Spawn futures if needed
       for (IPSAssemblyItem item : items)
@@ -193,13 +203,13 @@ public abstract class PSAssemblerBase implements IPSAssembler, IPSExtension
       throws Exception
    {
       if (item.hasNode())
-         ms_log.debug("Assemble item " + item.getNode().getUUID());
+         ms_log.debug("Assemble item {}" , item.getNode().getUUID());
       else
-         ms_log.debug("Assemble item "
-               + item.getParameterValue(IPSHtmlParameters.SYS_CONTENTID,
+         ms_log.debug("Assemble item: {}",
+                 item.getParameterValue(IPSHtmlParameters.SYS_CONTENTID,
                      "unknown"));
       IPSAssemblyResult rval = assembleSingle(item);
-      ms_log.debug("Result is of type " + rval.getMimeType());
+      ms_log.debug("Result is of type: {}" , rval.getMimeType());
       // Now handle any global template
       GlobalTemplateUsage gu = item.getTemplate().getGlobalTemplateUsage();
       IPSGuid gtid = null;
@@ -212,9 +222,7 @@ public abstract class PSAssemblerBase implements IPSAssembler, IPSExtension
          if (gtid == null)
          {
             // No global template available, log an error
-            ms_log.warn("No global template available for template "
-                  + item.getTemplate().getName()
-                  + " with usage set to defined");
+            ms_log.warn("No global template available for template {} with usage set to defined", item.getTemplate().getName());
          }
          else
          {
@@ -236,11 +244,11 @@ public abstract class PSAssemblerBase implements IPSAssembler, IPSExtension
                int folderid = Integer.parseInt(folderidstr);
                PSRequest req = PSRequest.getContextForRequest();
                PSServerFolderProcessor proc = PSServerFolderProcessor.getInstance();
-               PSLocator folderLocators[] = { new PSLocator(folderid) };
+               PSLocator[] folderLocators = { new PSLocator(folderid) };
 
                do
                {
-                  PSFolder folders[] = proc.openFolder(folderLocators);
+                  PSFolder[] folders = proc.openFolder(folderLocators);
                   if (folders.length != 0)
                   {
                      PSFolder folder = folders[0];
@@ -254,19 +262,18 @@ public abstract class PSAssemblerBase implements IPSAssembler, IPSExtension
                         }
                         catch (PSAssemblyException ae)
                         {
-                           ms_log.warn("Global template " + gt
-                                 + " is not a global template");
+                           ms_log.warn("The configured global template {} is not a global template", gt);
                         }
                      }
                      PSLocator folderl = new PSLocator(folder.getLocator()
                            .getPartAsInt());
-                     PSComponentSummary parents[] = proc
+                     PSComponentSummary[] parents = proc
                            .getParentSummaries(folderl);
                      if (parents.length == 0)
                         break;
                      // Must be only one parent per folder
                      PSComponentSummary parent = parents[0];
-                     String paths[] = proc.getItemPaths(parent
+                     String[] paths = proc.getItemPaths(parent
                            .getCurrentLocator());
                      if (paths.length == 0)
                         break;
@@ -287,8 +294,8 @@ public abstract class PSAssemblerBase implements IPSAssembler, IPSExtension
             }
             catch (NumberFormatException ee)
             {
-               ms_log.warn("Found illegal folder id, not searching folders "
-                     + "for global template: " + folderidstr);
+               ms_log.warn("Found illegal folder id, not searching folders for global template: {} Error: {}" , folderidstr,
+                       PSExceptionUtils.getMessageForLog(ee));
             }
          }
          if (global == null)
@@ -302,8 +309,7 @@ public abstract class PSAssemblerBase implements IPSAssembler, IPSExtension
                }
                catch (PSAssemblyException ae)
                {
-                  ms_log.warn("Found invalid global template specified for "
-                        + "the site " + gt);
+                  ms_log.warn("Found invalid global template specified for the site {} Error: {}" ,gt, ae);
                }
             }
          }
@@ -336,13 +342,11 @@ public abstract class PSAssemblerBase implements IPSAssembler, IPSExtension
     * @throws IllegalStateException
     * @throws PSFilterException
     */
-   @SuppressWarnings("unchecked")
    private IPSAssemblyResult processGlobalTemplate(IPSAssemblyItem item,
          IPSAssemblyResult rval, IPSAssemblyService asm,
          IPSAssemblyTemplate global)
-      throws ItemNotFoundException, RepositoryException,
-      PSTemplateNotImplementedException, PSAssemblyException,
-      UnsupportedRepositoryOperationException, IllegalStateException,
+      throws  RepositoryException,
+      PSTemplateNotImplementedException, PSAssemblyException, IllegalStateException,
       IOException, PSFilterException
    {
       // First check that this is a valid result for a global template
@@ -355,14 +359,14 @@ public abstract class PSAssemblerBase implements IPSAssembler, IPSExtension
 
          PSJexlEvaluator e = new PSJexlEvaluator(globalitem.getBindings());
          e.bind("$sys.innercontent", ms_docutils.extractBody(rval));
-         List<IPSAssemblyItem> singleitemlist = new ArrayList<IPSAssemblyItem>();
+         List<IPSAssemblyItem> singleitemlist = new ArrayList<>();
          List<IPSAssemblyResult> singleitemresult;
 
          globalitem.setTemplate(global);
          globalitem.setBindings(e.getVars());
          singleitemlist.add(globalitem);
          singleitemresult = asm.assemble(singleitemlist);
-         if (singleitemresult != null && singleitemresult.size() > 0)
+         if (singleitemresult != null && !singleitemresult.isEmpty())
          {
             rval = singleitemresult.get(0);
             // Put the original template where the servlet can grab it. This
@@ -370,24 +374,22 @@ public abstract class PSAssemblerBase implements IPSAssembler, IPSExtension
             // requires AA handling
             PSJexlEvaluator eval = new PSJexlEvaluator(rval.getBindings());
             eval.bind("$sys.innertemplate", item.getTemplate());
-            if (singleitemresult.size() > 1)
+            if (!singleitemresult.isEmpty())
             {
                ms_log
-                     .warn("Ignoring excess results from global template for item "
-                           + item.getNode().getUUID());
+                     .warn("Ignoring excess results from global template for item {}",
+                             item.getNode().getUUID());
             }
          }
          else
          {
-            ms_log.error("No result when assembly global template for item "
-                  + item.getNode().getUUID());
+            ms_log.error("No result when assembly global template for item: {} ",item.getNode().getUUID());
          }
       }
       else
       {
-         ms_log.warn("Did not invoke global template on result that had "
-               + " a mimetype of " + rval.getMimeType() + ". Either the "
-               + "mimetype was not textual or there was not result data.");
+         ms_log.warn("Did not invoke global template on result that had a mimetype of {}. Either the mimetype was not textual or there was not result data.",
+                 rval.getMimeType());
       }
       return rval;
    }
@@ -441,7 +443,7 @@ public abstract class PSAssemblerBase implements IPSAssembler, IPSExtension
     * @param item the assembly item, never <code>null</code>
     * @return an assembled item, never <code>null</code>
     */
-   public abstract IPSAssemblyResult assembleSingle(IPSAssemblyItem item);
+   public abstract IPSAssemblyResult assembleSingle(IPSAssemblyItem item) throws PSAssemblyException;
 
    /**
     * Get a failure result for the given assembly item. Note, the derived class
@@ -469,11 +471,12 @@ public abstract class PSAssemblerBase implements IPSAssembler, IPSExtension
     * 
     * @deprecated use {@link #getFailureResult(IPSAssemblyItem, String)} instead
     */
+   @Deprecated
    protected void doFailure(PSAssemblyWorkItem work, String message)
    {
       work.setStatus(Status.FAILURE);
       work.setMimeType("text/plain");
-      work.setResultData(message.getBytes());
+      work.setResultData(message.getBytes(StandardCharsets.UTF_8));
    }
    
    /**
@@ -492,15 +495,10 @@ public abstract class PSAssemblerBase implements IPSAssembler, IPSExtension
    {
       work.setStatus(status);
       work.setMimeType("text/plain");
-      try
-      {
-         work.setResultData(message.getBytes("UTF8"));
-         return (IPSAssemblyResult) work;
-      }
-      catch (UnsupportedEncodingException e)
-      {
-         throw new RuntimeException(e); // not possible
-      }
+
+      work.setResultData(message.getBytes(StandardCharsets.UTF_8));
+      return (IPSAssemblyResult) work;
+
    }
 
 

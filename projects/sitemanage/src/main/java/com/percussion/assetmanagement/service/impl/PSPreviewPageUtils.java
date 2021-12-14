@@ -17,17 +17,11 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.assetmanagement.service.impl;
-
-import static com.percussion.pagemanagement.assembler.PSWidgetContentFinderUtils.getLocalSharedAssetRelationships;
-import static com.percussion.pagemanagement.assembler.PSWidgetContentFinderUtils.getMatchRelationship;
-import static com.percussion.pagemanagement.data.PSRegionTreeUtils.getEmptyWidgetRegions;
-import static com.percussion.share.spring.PSSpringWebApplicationContextUtils.getWebApplicationContext;
-import static org.apache.commons.lang.Validate.notNull;
 
 import com.percussion.assetmanagement.data.PSOrphanedAssetSummary;
 import com.percussion.design.objectstore.PSRelationship;
@@ -45,6 +39,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import static com.percussion.pagemanagement.assembler.PSWidgetContentFinderUtils.getLocalSharedAssetRelationships;
+import static com.percussion.pagemanagement.assembler.PSWidgetContentFinderUtils.getMatchRelationship;
+import static com.percussion.pagemanagement.data.PSRegionTreeUtils.getEmptyWidgetRegions;
+import static com.percussion.share.spring.PSSpringWebApplicationContextUtils.getWebApplicationContext;
+import static org.apache.commons.lang.Validate.notNull;
 
 /**
  * @author Santiago M. Murchio
@@ -65,7 +65,7 @@ public class PSPreviewPageUtils
     {
         notNull(template);
 
-        Set<PSWidgetItem> emptyTemplateWidgets = new HashSet<PSWidgetItem>();
+        Set<PSWidgetItem> emptyTemplateWidgets = new HashSet<>();
 
         // Get a list of asset/template relationships, templateAssets
         Collection<PSRelationship> templateAssets = getLocalSharedAssetRelationships(template.getId());
@@ -98,7 +98,7 @@ public class PSPreviewPageUtils
         notNull(page);
         notNull(template);
 
-        Set<PSWidgetItem> pageWidgets = new HashSet<PSWidgetItem>();
+        Set<PSWidgetItem> pageWidgets = new HashSet<>();
 
         if (template.getRegionTree() != null)
         {
@@ -150,7 +150,7 @@ public class PSPreviewPageUtils
      */
     public static Map<String, PSRelationship> getUsedPageAssets(PSPage page, PSTemplate template)
     {
-        Map<String, PSRelationship> widgetToAsset = new HashMap<String, PSRelationship>();
+        Map<String, PSRelationship> widgetToAsset = new HashMap<>();
         getPageAssets(page, template, widgetToAsset);
         return widgetToAsset;
     }
@@ -178,7 +178,7 @@ public class PSPreviewPageUtils
         {
             // for getting orphaned assets, then we have to clone the original list, 
             // to avoid modify original list object, which is cached
-            orphanAssets = new ArrayList<PSRelationship>(pageAssets);
+            orphanAssets = new ArrayList<>(pageAssets);
         }
 
         // For each widget in pageWidgets use widgetFinderUtils to find the
@@ -219,7 +219,7 @@ public class PSPreviewPageUtils
         notNull(page);
         notNull(template);
 
-        Set<PSOrphanedAssetSummary> unusedAssets = new HashSet<PSOrphanedAssetSummary>();
+        Set<PSOrphanedAssetSummary> unusedAssets = new HashSet<>();
         Collection<PSRelationship> orphanAssets = getOrphanedPageAssets(page, template);
         for (PSRelationship relationship : orphanAssets)
         {
@@ -238,7 +238,7 @@ public class PSPreviewPageUtils
      */
     private static Map<String, PSRelationship> getSlotIdToRelationshipMap(Collection<PSRelationship> templateAssets)
     {
-        Map<String, PSRelationship> map = new HashMap<String, PSRelationship>();
+        Map<String, PSRelationship> map = new HashMap<>();
         for (PSRelationship relationship : templateAssets)
         {
             map.put(relationship.getProperty(PSRelationshipConfig.PDU_SLOTID), relationship);

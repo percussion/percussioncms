@@ -17,20 +17,19 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.pagemanagement.parser;
 
+import com.percussion.pagemanagement.data.PSRegion;
+import com.percussion.pagemanagement.data.PSRegionCode;
+import com.percussion.pagemanagement.data.PSRegionTree;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
-import com.percussion.pagemanagement.data.PSRegion;
-import com.percussion.pagemanagement.data.PSRegionCode;
-import com.percussion.pagemanagement.data.PSRegionNode;
-import com.percussion.pagemanagement.data.PSRegionTree;
 
 public class PSTemplateRegionParser extends PSRegionParserAdapter<PSRegion, PSRegionCode>
 {
@@ -49,7 +48,7 @@ public class PSTemplateRegionParser extends PSRegionParserAdapter<PSRegion, PSRe
     {
         PSRegion region = regions.get(regionId);
         if(region != null) {
-            region.setChildren(new ArrayList<PSRegionNode>());
+            region.setChildren(new ArrayList<>());
         }
         else {
             region = new PSRegion();
@@ -69,7 +68,7 @@ public class PSTemplateRegionParser extends PSRegionParserAdapter<PSRegion, PSRe
     }
     
     public static PSParsedRegionTree<PSRegion, PSRegionCode> parse(Map<String, PSRegion> regions, String html) {
-        regions = regions == null ? new HashMap<String, PSRegion>() : regions;
+        regions = regions == null ? new HashMap<>() : regions;
         PSTemplateRegionParser parser = new PSTemplateRegionParser(regions);
         PSParsedRegionTree<PSRegion, PSRegionCode> pt = parser.parse(html);
         return pt;

@@ -17,11 +17,16 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.services.security.loginmods.data;
+
+import org.apache.commons.collections.iterators.IteratorEnumeration;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 
 import java.io.Serializable;
 import java.security.Principal;
@@ -29,11 +34,6 @@ import java.security.acl.Group;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Set;
-
-import org.apache.commons.collections.iterators.IteratorEnumeration;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
 
 /**
  * Implements a security group
@@ -55,7 +55,7 @@ public class PSGroup implements Group, Serializable
    /**
     * Set of principals, never <code>null</code> may be empty.
     */
-   private Set<Principal> mi_principals = new HashSet<Principal>();
+   private Set<Principal> mi_principals = new HashSet<>();
 
    /**
     * Construct a group

@@ -17,12 +17,13 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.sitemanage.importer;
 
+import com.percussion.foldermanagement.service.IPSFolderService;
 import com.percussion.pagemanagement.service.IPSPageService;
 import com.percussion.pagemanagement.service.PSSiteDataServletTestCaseFixture;
 import com.percussion.share.async.IPSAsyncJob;
@@ -36,7 +37,6 @@ import com.percussion.sitemanage.importer.helpers.PSHelperTestUtils;
 import com.percussion.sitemanage.importer.helpers.impl.PSSiteCreationHelper;
 import com.percussion.utils.testing.IntegrationTest;
 import com.percussion.webservices.security.IPSSecurityWs;
-
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -132,7 +132,7 @@ public class PSImportFromUrlJobTest extends PSSiteImportTestBase
             // teardown.
             siteCreated = true;
         }
-        catch (RuntimeException e)
+        catch (RuntimeException | IPSFolderService.PSWorkflowNotFoundException e)
         {
             fail();
         }

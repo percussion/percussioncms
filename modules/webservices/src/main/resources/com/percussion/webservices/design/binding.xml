@@ -18,20 +18,17 @@
   ~      Burlington, MA 01803, USA
   ~      +01-781-438-9900
   ~      support@percussion.com
-  ~      https://www.percusssion.com
+  ~      https://www.percussion.com
   ~
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   -->
 
-<jaxws:bindings version="2.1" wsdlLocation="rhythmyx.wsdl" xmlns:jxb="http://java.sun.com/xml/ns/jaxb"
+<jaxws:bindings version="2.1" wsdlLocation="rhythmyx.wsdl"
                 xmlns:jaxws="http://java.sun.com/xml/ns/jaxws"
-                xmlns:xsd="http://www.w3.org/2001/XMLSchema"
                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
                 xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
-                xsi:schemaLocation="http://java.sun.com/xml/ns/jaxb http://java.sun.com/xml/ns/jaxb/bindingschema_2_0.xsd
-          	http://java.sun.com/xml/ns/jaxws http://java.sun.com/xml/ns/jaxws/wsdl_customizationschema_2_0.xsd"
-               >
+                xsi:schemaLocation="http://java.sun.com/xml/ns/jaxws http://java.sun.com/xml/ns/jaxws/wsdl_customizationschema_2_0.xsd"
+>
 
     <jaxws:enableWrapperStyle>true</jaxws:enableWrapperStyle>
 

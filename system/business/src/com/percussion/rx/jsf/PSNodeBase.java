@@ -17,21 +17,20 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.rx.jsf;
 
-import com.percussion.rx.jsf.PSTreeModel;
 import com.percussion.rx.ui.jsf.beans.PSHelpTopicMapping;
+import com.percussion.services.error.PSNotFoundException;
+import org.apache.commons.lang.StringUtils;
+import org.apache.myfaces.trinidad.model.RowKeyIndex;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.myfaces.trinidad.model.RowKeyIndex;
 
 /**
  * The base node in the tree model. The tree model references a hierarchy of
@@ -169,8 +168,7 @@ public class PSNodeBase implements RowKeyIndex
     * 
     * @return the registered outcome, may be <code>null</code>.
     */
-   public String performOnTreeNode()
-   {
+   public String performOnTreeNode() throws PSNotFoundException {
       return perform();
    }
    
@@ -231,8 +229,7 @@ public class PSNodeBase implements RowKeyIndex
     *    for non-containers or a container does not have any children.
     */
    @SuppressWarnings("unchecked")
-   public List<? extends PSNodeBase> getChildren()
-   {
+   public List<? extends PSNodeBase> getChildren() throws PSNotFoundException {
       return Collections.EMPTY_LIST;
    }
 

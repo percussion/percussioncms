@@ -17,17 +17,11 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.pagemanagement.web.service;
-
-import static com.percussion.share.test.PSRestTestCase.baseUrl;
-import static com.percussion.share.test.PSRestTestCase.setupClient;
-import static java.util.Arrays.asList;
-import static org.apache.commons.lang.Validate.notEmpty;
-import static junit.framework.Assert.assertEquals;
 
 import com.percussion.assetmanagement.data.PSAsset;
 import com.percussion.assetmanagement.web.service.PSAssetServiceRestClient;
@@ -42,20 +36,25 @@ import com.percussion.sitemanage.data.PSCreateSiteSection;
 import com.percussion.sitemanage.data.PSSite;
 import com.percussion.sitemanage.data.PSSiteSection;
 import com.percussion.sitemanage.data.PSUpdateSectionLink;
-import com.percussion.sitemanage.service.PSSiteTemplates;
 import com.percussion.sitemanage.service.AssignTemplate;
+import com.percussion.sitemanage.service.PSSiteTemplates;
 import com.percussion.sitemanage.service.PSSiteTemplates.CreateTemplate;
 import com.percussion.sitemanage.web.service.PSSiteRestClient;
 import com.percussion.sitemanage.web.service.PSSiteSectionRestClient;
 import com.percussion.sitemanage.web.service.PSSiteTemplateRestClient;
+import org.apache.commons.lang.ObjectUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.apache.commons.lang.ObjectUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import static com.percussion.share.test.PSRestTestCase.baseUrl;
+import static com.percussion.share.test.PSRestTestCase.setupClient;
+import static java.util.Arrays.asList;
+import static junit.framework.Assert.assertEquals;
+import static org.apache.commons.lang.Validate.notEmpty;
 
 /**
  * 
@@ -465,7 +464,7 @@ public class PSTestSiteData
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log log = LogFactory.getLog(PSTestSiteData.class);
+    private static final Logger log = LogManager.getLogger(PSTestSiteData.class);
 
     /**
      * Updates a section link and returns the result of the update.

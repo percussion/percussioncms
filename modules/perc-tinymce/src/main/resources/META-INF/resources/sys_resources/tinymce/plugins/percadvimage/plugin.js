@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -433,7 +433,7 @@ tinymce.PluginManager.add('percadvimage', function(editor) {
                 }
 
                 setSrcAndSize();
-                if(topFrJQ.isFunction(callback)) {
+                if(typeof callback === "function") {
                     callback(renderLink.url, renderLink.thumbUrl, renderLink.title);
                 }
             });
@@ -582,7 +582,7 @@ tinymce.PluginManager.add('percadvimage', function(editor) {
                 validator = function (pathItem) {
                     return pathItem && pathItem.type === 'percImageAsset' ? null : 'Please select an image.';
                 };
-                jQuery('[aria-label=\'Edit image\']').find('.mce-btn.mce-open').click(function() {
+                jQuery('[aria-label=\'Edit image\']').find('.mce-btn.mce-open').on("click",function() {
                     var pathSelectionOptions = {
                         okCallback: updateLinkData,
                         dialogTitle: 'Select an image',
@@ -738,7 +738,8 @@ tinymce.PluginManager.add('percadvimage', function(editor) {
                     data.alt = tempAltValue;
                 }
 
-                var imgPath = topFrJQ.trim(data.src),imgPathLower = imgPath.toLowerCase();
+                var dataSrc = data.src;
+                var imgPath = dataSrc.trim(),imgPathLower = imgPath.toLowerCase();
                 //Resolve manually entered internal links
                 if(imgPathLower.match('^//sites/') || imgPathLower.match('^//assets/') || imgPathLower.match('^/sites/') || imgPathLower.match('^/assets/') || imgPathLower.match('^sites/') || imgPathLower.match('^assets/')) {
                     if(imgPathLower.match('^sites/') || imgPathLower.match('^assets/')) {

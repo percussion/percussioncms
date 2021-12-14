@@ -17,14 +17,15 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.rest.pages;
 
-import com.percussion.rest.errors.ContentMigrationException;
+import com.percussion.rest.errors.BackendException;
+import com.percussion.share.service.exception.PSDataServiceException;
 
 import java.net.URI;
 import java.util.List;
@@ -32,24 +33,24 @@ import java.util.List;
 public interface IPageAdaptor
 {
 
-    public Page getPage(URI baseURI, String siteName, String path, String pageName);
+    public Page getPage(URI baseURI, String siteName, String path, String pageName) throws BackendException, PSDataServiceException;
 
-    public Page updatePage(URI baseURI, Page page);
+    public Page updatePage(URI baseURI, Page page) throws BackendException, PSDataServiceException;
 
-    public void deletePage(URI baseURI, String siteName, String path, String pageName);
+    public void deletePage(URI baseURI, String siteName, String path, String pageName) throws BackendException;
 
-    public Page getPage(URI baseURI, String id);
+    public Page getPage(URI baseURI, String id) throws BackendException;
     
-    public Page renamePage(URI baseURI, String siteName, String path, String pageName, String newName);
+    public Page renamePage(URI baseURI, String siteName, String path, String pageName, String newName) throws BackendException, PSDataServiceException;
   
-    public int approveAllPages(URI baseURI, String folderPath);
+    public int approveAllPages(URI baseURI, String folderPath) throws BackendException;
     
-    public int archiveAllPages(URI baseUri, String folderPath);
+    public int archiveAllPages(URI baseUri, String folderPath) throws BackendException;
     
-    public int submitForReviewAllPages(URI baseUri, String folderPath);
+    public int submitForReviewAllPages(URI baseUri, String folderPath) throws BackendException;
 
-	public Page changePageTemplate(URI baseUri, Page p) throws ContentMigrationException;
+	public Page changePageTemplate(URI baseUri, Page p) throws BackendException;
 	
-	public List<String> allPagesReport(URI baseUri, String siteFolderPath); 
+	public List<String> allPagesReport(URI baseUri, String siteFolderPath) throws BackendException;
 	
 }

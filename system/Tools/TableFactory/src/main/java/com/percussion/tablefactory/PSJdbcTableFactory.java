@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -17,30 +17,48 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.tablefactory;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.tablefactory.tools.PSCatalogTableData;
-import com.percussion.util.*;
+import com.percussion.util.PSBase64Encoder;
+import com.percussion.util.PSLogger;
+import com.percussion.util.PSProperties;
+import com.percussion.util.PSSQLStatement;
+import com.percussion.util.PSSqlHelper;
 import com.percussion.utils.jdbc.PSJdbcUtils;
 import com.percussion.utils.xml.PSXmlNormalizingReader;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
+import javax.xml.XMLConstants;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMResult;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamSource;
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
@@ -55,25 +73,14 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
 
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMResult;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamSource;
-import java.io.*;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.sql.*;
-import java.util.*;
-
 /**
 *  This class is used to install and upgrade tables via Jdbc.
 */
 public class PSJdbcTableFactory
 {
-   
+
+   private static final Logger log = LogManager.getLogger(PSJdbcTableFactory.class);
+
    /**
     * Queries the backend and returns a table schema object with the info
     * about the table.  May also retrieve the current data if requested.
@@ -168,7 +175,7 @@ public class PSJdbcTableFactory
                   tmd.getPrimaryKeyName(), pkeys,
                   PSJdbcTableComponent.ACTION_CREATE));
 
-            List<PSJdbcForeignKey> fKeys = new ArrayList<PSJdbcForeignKey>();
+            List<PSJdbcForeignKey> fKeys = new ArrayList<>();
             tableSchema.setForeignKeys(fKeys);
             
             for (Entry<String, List<String[]>> fKeysEntry : tmd.getForeignKeys().entrySet()) {
@@ -206,7 +213,8 @@ public class PSJdbcTableFactory
       {
          Object[] args = {tableName,
             PSJdbcTableFactoryException.formatSqlException(e)};
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 
          throw new PSJdbcTableFactoryException(
             IPSTableFactoryErrors.SQL_CATALOG_TABLE_FAILED, args, e);
@@ -479,8 +487,8 @@ public class PSJdbcTableFactory
    }
 
    /**
-    * Convenient method, calls {@link processTable(Connection, PSJdbcDbmsDef,
-    * null, PSJdbcTableSchema, PrintStream, boolean)}.
+    * Convenient method, calls processTable(Connection, PSJdbcDbmsDef,
+    * null, PSJdbcTableSchema, PrintStream, boolean).
     */
    public static void processTable(Connection conn, PSJdbcDbmsDef dbmsDef,
       PSJdbcTableSchema tableSchema, PrintStream logOut, boolean logDebug)
@@ -561,8 +569,8 @@ public class PSJdbcTableFactory
    }
 
    /**
-    * Convenient method, calls {@link processTables(Connection,PSJdbcDbmsDef,
-    * null,PSJdbcTableSchemaCollection,PrintStream,boolean)}.
+    * Convenient method, calls processTables(Connection,PSJdbcDbmsDef,
+    * null,PSJdbcTableSchemaCollection,PrintStream,boolean).
     */
    public static void processTables(Connection conn, PSJdbcDbmsDef dbmsDef,
       PSJdbcTableSchemaCollection tables, PrintStream logOut, boolean logDebug)
@@ -1068,7 +1076,7 @@ public class PSJdbcTableFactory
                }
                else
                {
-                  System.out.println("Invalid argument: " + args[i]);
+                  log.error("Invalid argument: " + args[i]);
                   showUsage();
                   System.exit(1);
                }
@@ -1087,11 +1095,11 @@ public class PSJdbcTableFactory
          String tableDefXmlPath = tableDefXml.getAbsolutePath();
          if (!tableDefXml.isFile())
          {
-            System.out.println("invalid table definition xml : " + tableDefXmlPath);
+            log.error("invalid table definition xml : {}" , tableDefXmlPath);
             return;
          }
 
-         System.out.println("parsing table definition xml : " + tableDefXmlPath);
+         log.info("parsing table definition xml : {}" , tableDefXmlPath);
          Document def = PSXmlDocumentBuilder.createXmlDocument(
             new FileInputStream(args[2]), false);
 
@@ -1115,12 +1123,15 @@ public class PSJdbcTableFactory
       }
       catch (Exception e)
       {
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
       finally
       {
          if (out != null)
-            try {out.close();} catch (Exception e){}
+            try {out.close();} catch (Exception e){
+               log.error(PSExceptionUtils.getMessageForLog(e));
+               log.debug(PSExceptionUtils.getDebugMessageForLog(e));}
       }
    }
 
@@ -1177,13 +1188,15 @@ public class PSJdbcTableFactory
                    in = new BufferedReader(new PSXmlNormalizingReader(inputXml));
                    Document tableData = PSXmlDocumentBuilder.createXmlDocument(in, false);
                    in.close();
-                   System.out.println("Started processing: " + tableName);
+                   log.info("Started processing: " + tableName);
                    processTables(dbmsDef, null, tableDef, tableData, null, false);
-                   System.out.println("Finished processing: " + tableName);
+                   log.info("Finished processing: " + tableName);
                 }
                 catch (Exception e) {
-                   System.out.println("Error occurred while importing table data : " + tableName);
-                   e.printStackTrace();
+                   log.error("Error occurred while importing table data : {} Error: {}",
+                           tableName,
+                           PSExceptionUtils.getMessageForLog(e));
+                   log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                 }finally{
                    if(inputXml!=null)
                       inputXml.close();
@@ -1203,7 +1216,8 @@ public class PSJdbcTableFactory
          System.exit(0);
       }
       catch (Exception e) {
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }finally{
          if(in != null)
             try
@@ -1470,12 +1484,15 @@ public class PSJdbcTableFactory
       }
       catch (Exception e)
       {
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
       finally
       {
          if (out != null)
-            try {out.close();} catch (Exception e){}
+            try {out.close();} catch (Exception e){
+               log.error(PSExceptionUtils.getMessageForLog(e));
+               log.debug(PSExceptionUtils.getDebugMessageForLog(e));}
       }
    }
 
@@ -1490,7 +1507,7 @@ public class PSJdbcTableFactory
     * @return <code>true</code> if the table has rows, <code>false</code> if
     * not.
     *
-    * @throws IllegalArgumentExcpetion if conn, dbmsDef, or tableSchema is
+    * @throws IllegalArgumentException if conn, dbmsDef, or tableSchema is
     * <code>null</code>.
     * @throws PSJdbcTableFactoryException if the table does not exist or any
     * other errors occur.
@@ -1613,13 +1630,13 @@ public class PSJdbcTableFactory
       {
          step.execute(conn);
          // walk result and for each row, build a row of column data
-         List rowList = new ArrayList();
+         List<PSJdbcRowData> rowList = new ArrayList<>();
          PSJdbcRowData row = step.next();
          long count=0;
          while (row != null)
          {
              count++;
-             System.out.println("Processing row " + count);
+             log.debug("Processing row {}" , count);
             rowList.add(row);
             row = step.next();
          }
@@ -1630,7 +1647,7 @@ public class PSJdbcTableFactory
       }
       catch (SQLException e)
       {
-         Object args[] = {tableSchema.getName(),
+         Object[] args = {tableSchema.getName(),
             PSJdbcTableFactoryException.formatSqlException(e)};
          throw new PSJdbcTableFactoryException(
             IPSTableFactoryErrors.SQL_CATALOG_DATA, args, e);
@@ -1782,7 +1799,7 @@ public class PSJdbcTableFactory
             }
             catch(IOException e)
             {
-               throw new RuntimeException(e.getLocalizedMessage());
+               throw new RuntimeException(e);
             }
             finally
             {
@@ -1848,17 +1865,17 @@ public class PSJdbcTableFactory
       MessageDigest md=null;
       try
       {
-         md = MessageDigest.getInstance("MD5");
+         md = MessageDigest.getInstance("SHA-256");
          }
          catch (NoSuchAlgorithmException e)
          {
-            e.printStackTrace();
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          }
-         
-         FileOutputStream outputStream = null;
-         try
+
+         try(FileOutputStream outputStream = new FileOutputStream(temp))
          {
-            outputStream = new FileOutputStream(temp);
+
             byte[] dataBytes = new byte[4096];
   
             int nread = 0;
@@ -1868,18 +1885,12 @@ public class PSJdbcTableFactory
                 
             }
             byte[] mdbytes = md.digest();
-            StringBuffer sb = new StringBuffer();
-            for (int i = 0; i < mdbytes.length; i++) {
-                sb.append(Integer.toString((mdbytes[i] & 0xff) + 0x100, 16).substring(1));
+            StringBuilder sb = new StringBuilder();
+            for (byte mdbyte : mdbytes) {
+               sb.append(Integer.toString((mdbyte & 0xff) + 0x100, 16).substring(1));
             }
             hash = sb.toString();
             outputStream.flush();
-         }
-         finally
-         {
-            if (outputStream != null) {
-               outputStream.close();
-            }
          }
   
        File newName = new File(getBinaryDataFolder(dbmsDef) +"/" + hash);
@@ -2058,6 +2069,7 @@ public class PSJdbcTableFactory
       try
       {
          TransformerFactory factory = TransformerFactory.newInstance();
+         factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
          Transformer transformer = factory.newTransformer(
             new StreamSource(xslUrl.toString()));
 

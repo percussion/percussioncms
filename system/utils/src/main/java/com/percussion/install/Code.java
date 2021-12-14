@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -26,6 +26,10 @@ package com.percussion.install;
 
 import com.percussion.util.IPSBrandCodeConstants.EvalTypes;
 import com.percussion.util.IPSBrandCodeConstants.ServerTypes;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -47,9 +51,6 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.jar.JarOutputStream;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-
 /**
  * The Code class handles Rhythmyx Installer's brand code issue. This class
  * should not use any com.percussion classes in order to avoid circular
@@ -59,6 +60,9 @@ import org.w3c.dom.Element;
 @SuppressWarnings("unchecked")
 public class Code
 {
+
+   private static final Logger log = LogManager.getLogger(Code.class);
+
    /**
     * Construct a Code object. This constructor should only be used by the
     * code generator tool (com.percussion.CodeGenerator.CodeGenerator class).
@@ -717,7 +721,8 @@ public class Code
       }
       catch(MissingResourceException mre)
       {
-         mre.printStackTrace();
+         log.error(mre.getMessage());
+         log.debug(mre.getMessage(), mre);
       }
       return ms_res;
    }

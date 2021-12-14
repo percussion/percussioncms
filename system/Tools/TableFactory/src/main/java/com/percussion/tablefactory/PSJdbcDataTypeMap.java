@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -26,6 +26,9 @@ package com.percussion.tablefactory;
 import com.percussion.util.PSStringOperation;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.xml.sax.SAXException;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -35,10 +38,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.xml.sax.SAXException;
 
 /**
  * This class is used to map a set of Jdbc data types to a set of Native dbms
@@ -276,15 +275,16 @@ public class PSJdbcDataTypeMap
          throw new IllegalArgumentException(
             "either dbAlias or driver must not be null or empty");
 
-      InputStream stream = PSJdbcDataTypeMap.class.getResourceAsStream(
-         DEFAULT_MAP_FILE_NAME);
-      // fix Rx-02-01-0003 by checking for null result
-      if (null == stream)
-         throw new IOException("Could not load default mapping XML document");
+      try(InputStream stream = PSJdbcDataTypeMap.class.getResourceAsStream(
+         DEFAULT_MAP_FILE_NAME)) {
+         // fix Rx-02-01-0003 by checking for null result
+         if (null == stream)
+            throw new IOException("Could not load default mapping XML document");
 
-      m_driver = driver;
-      Document doc = PSXmlDocumentBuilder.createXmlDocument( stream, false);
-      initData(doc, dbAlias, driver, os);
+         m_driver = driver;
+         Document doc = PSXmlDocumentBuilder.createXmlDocument(stream, false);
+         initData(doc, dbAlias, driver, os);
+      }
    }
 
    /**

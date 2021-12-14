@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -17,34 +17,31 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.fastforward.calendar;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
-
-import javax.jcr.Node;
-import javax.jcr.Property;
-import javax.jcr.RepositoryException;
-
-import org.apache.commons.collections.MultiHashMap;
-import org.apache.commons.collections.MultiMap;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import com.percussion.extension.IPSJexlMethod;
 import com.percussion.extension.IPSJexlParam;
 import com.percussion.extension.PSJexlUtilBase;
 import com.percussion.services.assembly.IPSAssemblyResult;
+import org.apache.commons.collections.MultiHashMap;
+import org.apache.commons.collections.MultiMap;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.time.FastDateFormat;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import javax.jcr.Node;
+import javax.jcr.Property;
+import javax.jcr.RepositoryException;
+import java.text.ParseException;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Supports templates rendering a monthly calendar by providing details about the
@@ -94,7 +91,7 @@ public class PSCalendarMonthModel extends PSJexlUtilBase
          throw new IllegalArgumentException("date may not be null or empty");
 
       PSCalendarMonthModel model = getModel();
-      DateFormat df = new SimpleDateFormat(format);
+      FastDateFormat df = FastDateFormat.getInstance(format);
       try
       {
          model.m_eventsByDay = null;
@@ -307,12 +304,12 @@ public class PSCalendarMonthModel extends PSJexlUtilBase
     * Used for formatting the start and end date strings, never
     * <code>null</code>
     */
-   private DateFormat m_formatter = new SimpleDateFormat("yyyy-MM-dd");
+   private FastDateFormat m_formatter = FastDateFormat.getInstance("yyyy-MM-dd");
 
    /**
     * The log instance to use for this class, never <code>null</code>.
     */
-   private static Log ms_log = LogFactory.getLog(PSCalendarMonthModel.class);
+   private static final Logger ms_log = LogManager.getLogger(PSCalendarMonthModel.class);
 
    /**
     * A mapping of events, keyed by day of the month (Integer), returning a

@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -37,7 +37,8 @@ import com.percussion.services.pkginfo.PSPkgInfoServiceLocator;
 import com.percussion.services.pkginfo.data.PSPkgInfo;
 import com.percussion.services.pkginfo.data.PSPkgInfo.PackageAction;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -150,7 +151,7 @@ public class PSConfigRegistrationMgr implements IPSConfigRegistrationMgr,
       IPSConfigService cfgSrvs = PSConfigServiceLocator.getConfigService();
       IPSPkgInfoService pkgServ = PSPkgInfoServiceLocator.getPkgInfoService();
       List<PSPkgInfo> pkgList = pkgServ.findAllPkgInfos();
-      Map<String, Boolean> pkgs = new HashMap<String, Boolean>();
+      Map<String, Boolean> pkgs = new HashMap<>();
       for (PSPkgInfo info : pkgList)
       {
          // We need not to configure or monitor the packages that have been
@@ -164,7 +165,7 @@ public class PSConfigRegistrationMgr implements IPSConfigRegistrationMgr,
                .isSuccessfullyInstalled());
       }
       Iterator<String> iter = pkgs.keySet().iterator();
-      List<String> sPkgs = new ArrayList<String>();
+      List<String> sPkgs = new ArrayList<>();
       while (iter.hasNext())
       {
          String pkgName = iter.next();
@@ -225,12 +226,12 @@ public class PSConfigRegistrationMgr implements IPSConfigRegistrationMgr,
    /**
     * List of the files this class monitors.
     */
-   private List<File> m_fileList = new ArrayList<File>();
+   private List<File> m_fileList = new ArrayList<>();
 
    /**
     * The logger for this class.
     */
-   private static Logger ms_logger = Logger
+   private static final Logger ms_logger = LogManager
          .getLogger("PSConfigRegistrationMgr");
 
 }

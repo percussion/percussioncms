@@ -17,19 +17,17 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.monitor.service;
 
-import static org.junit.Assert.*;
-
-import com.percussion.assetmanagement.web.service.PSAssetServiceRestClient;
 import com.percussion.share.test.PSRestTestCase;
-
 import org.junit.Test;
+
+import static org.junit.Assert.assertTrue;
 
 public class PSMonitorServiceRestTest extends PSRestTestCase<PSMonitorServiceRestClient> {
 

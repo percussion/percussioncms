@@ -17,13 +17,16 @@
   ~      Burlington, MA 01803, USA
   ~      +01-781-438-9900
   ~      support@percussion.com
-  ~      https://www.percusssion.com
+  ~      https://www.percussion.com
   ~
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   -->
 
 <!-- edited with XMLSPY v5 rel. 4 U (http://www.xmlspy.com) by Melissa Morin (Percussion Software) -->
-<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="urn:www.percussion.com/webservices/folder/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns="http://www.w3.org/2001/XMLSchema" xmlns:hdr="urn:www.percussion.com/webservices/header" xmlns:fp="urn:www.percussion.com/webservices/folder" xmlns:ns1="urn:www.percussion.com/webservices/common" targetNamespace="urn:www.percussion.com/webservices/folder/wsdl">
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="urn:www.percussion.com/webservices/folder/wsdl"
+             xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+             xmlns:hdr="urn:www.percussion.com/webservices/header" xmlns:fp="urn:www.percussion.com/webservices/folder"
+             targetNamespace="urn:www.percussion.com/webservices/folder/wsdl">
    <import namespace="urn:www.percussion.com/webservices/header" location="sys_Header.xsd"/>
    <import namespace="urn:www.percussion.com/webservices/folder" location="sys_FolderParameters.xsd"/>
    <message name="header-request">

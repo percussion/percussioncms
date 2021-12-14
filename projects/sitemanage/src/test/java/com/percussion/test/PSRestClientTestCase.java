@@ -17,29 +17,32 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.test;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.share.test.PSRestTestCase;
 import com.percussion.util.IPSHtmlParameters;
-
-import java.io.InputStream;
-import java.util.Properties;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Invocation.Builder;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
-
-import junit.framework.TestCase;
+import java.io.InputStream;
+import java.util.Properties;
 
 public class PSRestClientTestCase
 {
+
+    private static final Logger log = LogManager.getLogger(PSRestClientTestCase.class);
+
     protected static final Client c;
     //private static final DefaultApacheHttpClientConfig cc = new DefaultApacheHttpClientConfig();
 
@@ -68,7 +71,8 @@ public class PSRestClientTestCase
             }
             } catch (Exception e)
             {
-                e.printStackTrace();
+                log.error(PSExceptionUtils.getMessageForLog(e));
+                log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             }
        
         

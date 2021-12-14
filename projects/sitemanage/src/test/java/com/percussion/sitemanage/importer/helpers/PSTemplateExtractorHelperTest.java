@@ -17,27 +17,25 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.sitemanage.importer.helpers;
-
-import static com.percussion.share.spring.PSSpringWebApplicationContextUtils.getWebApplicationContext;
-
-import static org.springframework.util.StringUtils.countOccurrencesOf;
 
 import com.percussion.pagemanagement.data.PSPage;
 import com.percussion.pagemanagement.data.PSTemplate;
 import com.percussion.pagemanagement.data.PSWidgetItem;
 import com.percussion.pagemanagement.service.IPSPageService;
 import com.percussion.pagemanagement.service.IPSTemplateService;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.spring.PSSpringWebApplicationContextUtils;
 import com.percussion.sitemanage.dao.IPSiteDao;
 import com.percussion.sitemanage.dao.impl.PSSiteContentDao;
 import com.percussion.sitemanage.data.PSPageContent;
 import com.percussion.sitemanage.data.PSSite;
 import com.percussion.sitemanage.data.PSSiteImportCtx;
+import com.percussion.sitemanage.error.PSSiteImportException;
 import com.percussion.sitemanage.importer.IPSSiteImportLogger;
 import com.percussion.sitemanage.importer.IPSSiteImportLogger.PSLogEntryType;
 import com.percussion.sitemanage.importer.IPSSiteImportLogger.PSLogObjectType;
@@ -50,13 +48,6 @@ import com.percussion.sitesummaryservice.service.IPSSiteImportSummaryService;
 import com.percussion.theme.data.PSThemeSummary;
 import com.percussion.utils.testing.IntegrationTest;
 import com.percussion.webservices.security.IPSSecurityWs;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.List;
-
 import org.apache.cactus.ServletTestCase;
 import org.apache.commons.io.IOUtils;
 import org.jsoup.Jsoup;
@@ -65,6 +56,15 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runners.MethodSorters;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.List;
+
+import static com.percussion.share.spring.PSSpringWebApplicationContextUtils.getWebApplicationContext;
+import static org.springframework.util.StringUtils.countOccurrencesOf;
 
 /**
  * @author LucasPiccoli
@@ -132,8 +132,7 @@ public class PSTemplateExtractorHelperTest extends ServletTestCase
         return tempConfigFile;
     }
     
-    private void createSite()
-    {
+    private void createSite() throws PSSiteImportException {
         siteCreationHelper.process(pageContent, importContext);
     }
 
@@ -144,8 +143,7 @@ public class PSTemplateExtractorHelperTest extends ServletTestCase
     
     // Test if metadata was extracted correctly
     @Test
-    public void test010ExtractMetadata()
-    {
+    public void test010ExtractMetadata() throws PSSiteImportException, PSDataServiceException {
         templateExtractorHelper.process(pageContent, importContext);
 
         PSPage homePage = pageService
@@ -187,8 +185,7 @@ public class PSTemplateExtractorHelperTest extends ServletTestCase
     }
     
     @Test
-    public void test020AddHTMLWidgetToTemplate()
-    {
+    public void test020AddHTMLWidgetToTemplate() throws PSDataServiceException, PSSiteImportException {
         templateExtractorHelper.process(pageContent, importContext);
 
         PSPage homePage = pageService
@@ -335,7 +332,7 @@ public class PSTemplateExtractorHelperTest extends ServletTestCase
      * STATUS: Commented out managed jquery reference from &lt;body&gt; element: &lt;script src="jquery.js" type="text/javascript"&gt; &lt;/script&gt; from &lt;body&gt; element.
      * </pre>
      * 
-     * @param tag {@link String} with the whole tag to build the line. Assumed
+     * @param percussionTag {@link String} with the whole tag to build the line. Assumed
      *            not <code>null</code> nor empty.
      * @return {@link String}, never <code>null</code> or empty.
      */

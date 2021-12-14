@@ -17,16 +17,19 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.utils.testing;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 
+@SuppressFBWarnings("UNENCRYPTED_SERVER_SOCKET")
 public class PSTestNetUtils {
 
     /**
@@ -39,6 +42,7 @@ public class PSTestNetUtils {
      * @return a free port number on localhost
      * @throws IllegalStateException if unable to find a free port
      */
+    @SuppressFBWarnings("UNENCRYPTED_SERVER_SOCKET") //Is just a port check no TLS required
     public static int findFreePort() {
         ServerSocket socket = null;
         try {

@@ -17,16 +17,11 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.pagemanagement.parser;
-
-import static com.percussion.pagemanagement.data.PSRegionTreeUtils.getChildRegions;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 import com.percussion.pagemanagement.data.PSAbstractRegion;
 import com.percussion.pagemanagement.data.PSRegion;
@@ -35,16 +30,20 @@ import com.percussion.pagemanagement.data.PSRegionNode;
 import com.percussion.pagemanagement.data.PSRegionTreeWriter;
 import com.percussion.pagemanagement.parser.IPSRegionParser.IPSRegionParserRegionFactory;
 import com.percussion.share.test.PSTestUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.io.StringWriter;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.junit.Before;
-import org.junit.Test;
+import static com.percussion.pagemanagement.data.PSRegionTreeUtils.getChildRegions;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 public class PSRegionParserTest
 {
@@ -179,6 +178,6 @@ public class PSRegionParserTest
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log log = LogFactory.getLog(PSRegionParserTest.class);
+    private static final Logger log = LogManager.getLogger(PSRegionParserTest.class);
 
 }

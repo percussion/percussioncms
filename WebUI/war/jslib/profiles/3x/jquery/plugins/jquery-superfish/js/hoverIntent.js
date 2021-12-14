@@ -40,7 +40,7 @@
 
         if ( typeof handlerIn === "object" ) {
             cfg = $.extend(cfg, handlerIn );
-        } else if ($.isFunction(handlerOut)) {
+        } else if (typeof handlerOut === "function") {
             cfg = $.extend(cfg, { over: handlerIn, out: handlerOut, selector: selector } );
         } else {
             cfg = $.extend(cfg, { over: handlerIn, out: handlerIn, selector: handlerOut } );

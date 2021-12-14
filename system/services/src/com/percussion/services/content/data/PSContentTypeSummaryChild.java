@@ -17,23 +17,22 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.services.content.data;
 
 import com.percussion.services.utils.xml.PSXmlSerializationHelper;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.xml.sax.SAXException;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This object represents a single content type summary child.
@@ -50,7 +49,7 @@ public class PSContentTypeSummaryChild
     * <code>null</code>, may be empty.
     */
    private List<PSFieldDescription> childFields = 
-      new ArrayList<PSFieldDescription>();
+      new ArrayList<>();
    
    /**
     * Default constructor.
@@ -112,7 +111,7 @@ public class PSContentTypeSummaryChild
    public void setChildFields(List<PSFieldDescription> childFields)
    {
       if (childFields == null)
-         this.childFields = new ArrayList<PSFieldDescription>();
+         this.childFields = new ArrayList<>();
       else
          this.childFields = childFields;
    }

@@ -17,21 +17,12 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.services.siterename.impl;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.percussion.delivery.client.IPSDeliveryClient.HttpMethodType;
 import com.percussion.delivery.client.IPSDeliveryClient.PSDeliveryActionOptions;
@@ -44,6 +35,13 @@ import com.percussion.services.notification.PSNotificationEvent;
 import com.percussion.services.notification.PSNotificationEvent.EventType;
 import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.services.siterename.IPSSiteRenameService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Iterates through all DTS micro services found in PSDeliveryServiceInfo. Calls
@@ -63,7 +61,7 @@ public class PSSiteRenameListener implements IPSSiteRenameService, IPSNotificati
     /**
      * Logger.
      */
-    private static final Logger log = Logger.getLogger(PSSiteRenameListener.class.getName());
+    private static final Logger log = LogManager.getLogger(PSSiteRenameListener.class.getName());
 
     /**
      * The delivery info service.
@@ -79,14 +77,14 @@ public class PSSiteRenameListener implements IPSSiteRenameService, IPSNotificati
     private static final Map<String, String[]> ENDPOINTS;
 
     static {
-        Map<String, String[]> services = new HashMap<String, String[]>(6);
+        Map<String, String[]> services = new HashMap<>(6);
         services.put("perc-form-processor", new String[]{"form"});
         services.put("feeds", new String[]{"rss"});
         services.put("perc-metadata-services", new String[]{"metadata"});
         services.put("perc-comments-services", new String[]{"comment", "likes"});
         services.put("perc-membership-services", new String[]{"membership"});
         services.put("perc-polls-services", new String[]{"polls"});
-        ENDPOINTS = new HashMap<String, String[]>(services);
+        ENDPOINTS = new HashMap<>(services);
     }
 
     @Autowired

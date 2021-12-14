@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -25,7 +25,6 @@ package com.percussion.monitor.process;
 
 import com.percussion.monitor.service.IPSMonitor;
 import com.percussion.monitor.service.PSMonitorService;
-import com.percussion.search.PSSearchIndexEventQueue;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -52,13 +51,15 @@ public class PSImportProcessMonitor
     
     public static void setCatalogCount(int count)
     {
-        if (monitor == null)
+        if (monitor == null) {
             return;
+        }
         
         curCount = count;
         String msg = NO_CATALOG_PAGE_MSG;
-        if (count > 0)
+        if (count > 0) {
             msg = count == 1 ? CATALOG_PAGE_MSG : count + CATALOG_PAGES_MSG;
+        }
         
         monitor.setMessage(msg);
     }

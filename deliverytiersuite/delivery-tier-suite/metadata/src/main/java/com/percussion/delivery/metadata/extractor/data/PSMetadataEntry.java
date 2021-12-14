@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -57,7 +57,7 @@ public class PSMetadataEntry implements Serializable, IPSMetadataEntry
     
     @XmlElementWrapper(name="property")
     @XmlElement(type=PSMetadataProperty.class)
-    private Set<IPSMetadataProperty> properties = new HashSet<IPSMetadataProperty>();
+    private Set<IPSMetadataProperty> properties = new HashSet<>();
 
     public PSMetadataEntry()
     {
@@ -207,7 +207,7 @@ public class PSMetadataEntry implements Serializable, IPSMetadataEntry
     public void addProperty(IPSMetadataProperty prop)
     {
        if(properties == null)
-           properties = new HashSet<IPSMetadataProperty>();
+           properties = new HashSet<>();
        properties.add(prop);        
     }
     

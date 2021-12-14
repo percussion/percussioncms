@@ -17,12 +17,13 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.rx.publisher.jsf.beans;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.rx.jsf.PSCategoryNodeBase;
 import com.percussion.rx.jsf.PSNavigation;
 import com.percussion.rx.jsf.PSNodeBase;
@@ -36,6 +37,7 @@ import com.percussion.rx.publisher.jsf.nodes.PSRuntimeStatusNode;
 import com.percussion.rx.publisher.jsf.nodes.PSSiteContainerNode;
 import com.percussion.rx.ui.jsf.beans.PSHelpTopicMapping;
 import com.percussion.server.PSRequest;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.publisher.IPSEdition;
 import com.percussion.services.publisher.IPSEditionTaskDef;
 import com.percussion.services.publisher.IPSEditionTaskLog;
@@ -45,17 +47,17 @@ import com.percussion.services.publisher.PSPublisherServiceLocator;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.request.PSRequestInfo;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.myfaces.trinidad.event.RangeChangeEvent;
 
+import javax.servlet.http.HttpServletRequest;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.myfaces.trinidad.event.RangeChangeEvent;
 
 /**
  * The runtime execution tree for publishing.
@@ -64,6 +66,8 @@ import org.apache.myfaces.trinidad.event.RangeChangeEvent;
  */
 public class PSRuntimeNavigation extends PSNavigation
 {
+   private static final Logger log = LogManager.getLogger(PSRuntimeNavigation.class);
+
    /**
     * The pub log, created on first access.
     */
@@ -192,21 +196,29 @@ public class PSRuntimeNavigation extends PSNavigation
        */
       public List<Map<String, Object>> getTasks()
       {
-         List<Map<String, Object>> rval = new ArrayList<Map<String,Object>>();
+         List<Map<String, Object>> rval = new ArrayList<>();
          IPSPublisherService pubsvc = PSPublisherServiceLocator.
             getPublisherService();
          List<IPSEditionTaskLog> entries =
             pubsvc.findEditionTaskLogEntriesByJobId(getJobId());
          for(IPSEditionTaskLog entry : entries)
          {
-            Map<String,Object> rec = new HashMap<String, Object>();
+            Map<String,Object> rec = new HashMap<>();
             rec.put("statusid", entry.getJobId());
             double elapsed = entry.getElapsed() / 1000.0;
             rec.put("elapsed", elapsed + "s");
             rec.put("referenceid", entry.getReferenceId());
             
-            IPSEditionTaskDef task = pubsvc
-                  .findEditionTaskById(entry.getTaskId());
+            IPSEditionTaskDef task=null;
+
+            try {
+               task = pubsvc
+                       .findEditionTaskById(entry.getTaskId());
+            } catch (PSNotFoundException e) {
+               log.error(PSExceptionUtils.getMessageForLog(e));
+               log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+            }
+
             if (task != null)
                rec.put("taskname", task.getExtensionName());
             else
@@ -312,12 +324,17 @@ public class PSRuntimeNavigation extends PSNavigation
       DateFormat fmt = DateFormat.getDateTimeInstance();
       IPSPublisherService pubsvc = PSPublisherServiceLocator.
          getPublisherService();
-      Map<String,Object> rval = new HashMap<String, Object>();
+      Map<String,Object> rval = new HashMap<>();
       IPSGuid edid = pubsvc.findEditionIdForJob(getJobId());
       if (edid != null)
       {
-         IPSEdition edition = pubsvc.loadEdition(edid);
-         rval.put("name", edition.getDisplayTitle());
+         try {
+            IPSEdition edition = pubsvc.loadEdition(edid);
+            rval.put("name", edition.getDisplayTitle());
+         } catch (PSNotFoundException e) {
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+         }
       }
       IPSPubStatus stat = pubsvc.findPubStatusForJob(getJobId());
       if (stat != null)
@@ -405,9 +422,8 @@ public class PSRuntimeNavigation extends PSNavigation
     * @return the mapping, maps Edition ID to names, never <code>null</code>,
     *    but may be empty if there is no Edition defined.
     */
-   public Map<Long, EditionSiteName> getEditionIdNameMap()
-   {
-      Map<Long, EditionSiteName> map = new HashMap<Long, EditionSiteName>();
+   public Map<Long, EditionSiteName> getEditionIdNameMap() throws PSNotFoundException {
+      Map<Long, EditionSiteName> map = new HashMap<>();
       for (PSNodeBase node : m_sites.getChildren())
       {
          PSRuntimeSiteNode snode = (PSRuntimeSiteNode) node;

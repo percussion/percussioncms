@@ -100,7 +100,7 @@ public class RxProductModel extends RxComponentModel
     * See {@link #getProductsMap()}.
     */
    private static final SortedMap<String, RxComponent> ms_productsMap =
-      new TreeMap<String, RxComponent>();
+      new TreeMap<>();
    
    /**
     * Initializes the product map.

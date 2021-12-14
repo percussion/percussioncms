@@ -17,13 +17,11 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.services.utils.orm;
-
-import static org.apache.commons.lang.Validate.notNull;
 
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.guidmgr.IPSGuidManager;
@@ -32,18 +30,19 @@ import com.percussion.services.legacy.IPSCmsObjectMgr;
 import com.percussion.services.utils.orm.data.PSTempId;
 import com.percussion.services.utils.orm.data.PSTempIdPK;
 import com.percussion.utils.timing.PSTimer;
-
-import java.util.Collection;
-import java.util.List;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.StatelessSession;
 import org.hibernate.Transaction;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
+
+import static org.apache.commons.lang.Validate.notNull;
 
 /**
  * This class manages id sets in a temporary table in the database. It is
@@ -129,7 +128,7 @@ public class PSDataCollectionHelper
    /**
     * The logger for this class.
     */
-   private static Log ms_logger = LogFactory.getLog("PSDataCollectionHelper");
+   private static final Logger ms_logger = LogManager.getLogger("PSDataCollectionHelper");
    
    /**
     * If there are more ids than this in a query, use the data service to store

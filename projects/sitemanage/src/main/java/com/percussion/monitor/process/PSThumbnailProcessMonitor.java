@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -50,12 +50,14 @@ public class PSThumbnailProcessMonitor
 
     private static void setThumbnailCount(int count)
     {
-        if (monitor == null)
-            return; 
+        if (monitor == null) {
+            return;
+        }
         
         String msg = NO_THUMBNAIL_MSG;
-        if (count > 0)
+        if (count > 0) {
             msg = count == 1 ? THUMBNAIL_MSG : count + THUMBNAILS_MSG;
+        }
         
         monitor.setMessage(msg);
     }

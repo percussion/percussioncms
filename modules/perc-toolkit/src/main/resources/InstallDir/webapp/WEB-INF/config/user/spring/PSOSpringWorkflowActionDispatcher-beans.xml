@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-4.2.xsd">
+
+    <bean id="psoWFActionService" class="com.percussion.pso.workflow.PSOWFActionService"
+      init-method="init">
+      <!--  <property name="transitionActions">
+          <map>
+              <entry key="workflow1">
+                  <map>
+                     <entry key="transition1">
+                         <list>
+                            <value>action1</value>
+                            <value>action2</value>
+                         </list>
+                     </entry> 
+                  </map>
+              </entry>
+          </map>          
+       </property>  -->
+    </bean>
+</beans>

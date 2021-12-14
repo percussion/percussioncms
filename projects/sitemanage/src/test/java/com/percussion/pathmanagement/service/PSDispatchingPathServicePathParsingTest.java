@@ -17,14 +17,11 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.pathmanagement.service;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
 
 import com.percussion.pathmanagement.data.PSDeleteFolderCriteria;
 import com.percussion.pathmanagement.data.PSItemByWfStateRequest;
@@ -37,15 +34,16 @@ import com.percussion.share.data.PSItemProperties;
 import com.percussion.share.data.PSNoContent;
 import com.percussion.share.service.exception.PSBeanValidationException;
 import com.percussion.ui.service.IPSListViewHelper;
-
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
 
 public class PSDispatchingPathServicePathParsingTest
 {
@@ -57,7 +55,7 @@ public class PSDispatchingPathServicePathParsingTest
     
     @Before
     public void setup () {
-        pathRegistry = new HashMap<String, IPSPathService>();
+        pathRegistry = new HashMap<>();
         pathNormalizer = new PSDispatchingPathService.PathNormalizer();
         pathMatcher = new PSDispatchingPathService.PathMatcher(pathNormalizer, pathRegistry, null, null);
         pathServiceA = new TestPathService();
@@ -118,13 +116,11 @@ public class PSDispatchingPathServicePathParsingTest
         assertPathMatch("b/c/", "/b/c/", "/c/", pathServiceB);
     }
     
-    public void assertPathMatch(String fullPath, String relativePath, IPSPathService pathService)
-    {
+    public void assertPathMatch(String fullPath, String relativePath, IPSPathService pathService) throws IPSPathService.PSPathNotFoundServiceException {
         assertPathMatch(fullPath, fullPath, relativePath, pathService);
     }
     
-    public void assertPathMatch(String fullPath, String properFullPath, String relativePath, IPSPathService pathService) 
-    {
+    public void assertPathMatch(String fullPath, String properFullPath, String relativePath, IPSPathService pathService) throws IPSPathService.PSPathNotFoundServiceException {
         PathMatch pm = pathMatcher.matchPath(fullPath);
         assertEquals("Full path: ", properFullPath, pm.fullPath);
         assertEquals("Relative path: ", relativePath, pm.relativePath);

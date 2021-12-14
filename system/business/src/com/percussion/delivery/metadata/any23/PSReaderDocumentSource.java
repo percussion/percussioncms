@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -25,15 +25,15 @@
 package com.percussion.delivery.metadata.any23;
 
 
+import org.apache.any23.source.ByteArrayDocumentSource;
+import org.apache.any23.util.ReaderInputStream;
+import org.apache.tika.io.IOUtils;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
 import java.util.List;
 import java.util.Vector;
-
-import org.apache.tika.io.IOUtils;
-import org.apache.any23.source.ByteArrayDocumentSource;
-import org.apache.any23.util.ReaderInputStream;
 
 /**
  * This is a DocumentSource implementation to use Reader object as the
@@ -48,7 +48,7 @@ public class PSReaderDocumentSource extends ByteArrayDocumentSource implements I
     /**
      * All InputStream object returned by the openInputStream() method.
      */
-    private List<InputStream> openInputStream = new Vector<InputStream>();
+    private List<InputStream> openInputStream = new Vector<>();
 
     public PSReaderDocumentSource(Reader reader, String mimeType) throws IOException
     {
