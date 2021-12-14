@@ -62,6 +62,7 @@ import com.percussion.server.cache.PSItemSummaryCache;
 import com.percussion.server.webservices.crosssite.PSCrossSiteFolderActionProcessor;
 import com.percussion.server.webservices.crosssite.PSCrossSiteFolderMoveActionProcessor;
 import com.percussion.server.webservices.crosssite.PSCrossSiteFolderRemoveActionProcessor;
+import com.percussion.services.assembly.impl.ModifyRelatedContentUtils;
 import com.percussion.services.assembly.impl.nav.PSNavConfig;
 import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.data.PSLegacyGuid;
@@ -5006,10 +5007,13 @@ public class PSServerFolderProcessor extends PSProcessorCommon implements
             setSummariesWithNewName(childSummaries, children);
 
             Map<PSLocator, PSLocator> copiedContent = new HashMap<PSLocator, PSLocator>();
+            Map<PSLocator,PSRelationshipSet> navSections = new HashMap<>();
             cloneSiteFolderChildren(request, context, childSummaries, target,
-               options, copiedContent,assemblyTemplate);
+               options, copiedContent,navSections,assemblyTemplate);
 
             createRelatedContent(request, options);
+
+            connectNavMenus(copiedContent,navSections,assemblyTemplate);
 
             // update site definition home page url
             if (options.isCloneSite())
@@ -5041,10 +5045,7 @@ public class PSServerFolderProcessor extends PSProcessorCommon implements
             request
                .removeParameter(IPSHtmlParameters.RXS_DISABLE_NAV_FOLDER_EFFECT);
             PSFolderSecurityManager.setCheckFolderPermissions(true);
-            //if (request!=null)
-            //   PSThreadRequestUtils.restoreOriginalRequest();
-            // enable permission checking
-         
+
          }
       }
       finally
@@ -5057,6 +5058,65 @@ public class PSServerFolderProcessor extends PSProcessorCommon implements
          m_log.set(null);
       }      
    }
+
+
+   /**
+    * Connect the navigation for copy site subfolder actions. This is required
+    * if any navigation content was copied and connects the navigation item of
+    * the copied subfolder with the navigation item of the target folder.
+    * @param copiedContent the locator of the copied subfolder, assumed not
+    * <code>null</code>.
+    * @param navSections the target sections into which the copy was created, assumed
+    * not <code>null</code>.
+    * @param assemblyTemplate
+    * @throws PSCmsException for any error.
+    */
+
+   private void connectNavMenus(Map<PSLocator,PSLocator> copiedContent, Map<PSLocator,PSRelationshipSet> navSections,String assemblyTemplate)  {
+
+      Iterator navSecItr = navSections.entrySet().iterator();
+      PSNavConfig navConfig = PSNavConfig.getInstance();
+      while (navSecItr.hasNext()) {
+         Map.Entry mapElement = (Map.Entry)navSecItr.next();
+         PSRelationshipSet rels = (PSRelationshipSet) mapElement.getValue();
+
+         for (int i=0; i<rels.size(); i++)
+         {
+            PSRelationship relationship = (PSRelationship) rels.get(i);
+            String slotid = relationship.getProperty(PSRelationshipConfig.PDU_SLOTID);
+            PSLocator oldOwner = relationship.getOwner();
+            PSLocator newOwner = copiedContent.get(oldOwner);
+            PSLocator oldChild = relationship.getDependent();
+            if(oldChild.getRevision() == -1)
+               oldChild.setRevision(1);
+            PSLocator newChild = copiedContent.get(oldChild);
+            int idx = 0;
+            if(newChild != null && newOwner != null) {
+               IPSGuid parentId = new PSLegacyGuid(newOwner.getId(), newOwner.getRevision());
+               IPSGuid childId = new PSLegacyGuid(newChild.getId(), newChild.getRevision());
+               IPSGuid landingPage = PSManagedNavServiceLocator.getContentWebservice().getLandingPageFromNavnode(parentId);
+               PSSlotType slotType = null;
+               try {
+                   slotType = ModifyRelatedContentUtils.getSlotType(slotid, null);
+               }catch (PSCmsException e) {
+                  e.printStackTrace();
+               }
+               if (landingPage == null && slotType != null && navConfig.getLandingPageRelationship().equals(slotType.getSlotName())) {
+                  PSManagedNavServiceLocator.getContentWebservice().addLandingPageToNavnode(childId,
+                          parentId, assemblyTemplate);
+               } else if(slotType != null){
+                  List chlrn = PSManagedNavServiceLocator.getContentWebservice().findDescendantNavonIds(parentId);
+                  if(chlrn == null || !chlrn.contains(childId)) {
+                     PSManagedNavServiceLocator.getContentWebservice().addNavonToParentNavon(new PSLegacyGuid(newChild.getId(), newChild.getRevision()), new PSLegacyGuid(newOwner.getId(), newOwner.getRevision()), idx);
+                     idx++;
+                  }
+               }
+            }
+
+         }
+      }
+   }
+
    // see IPSFolderProcessor, additionally this method will throw
    // a PSCmsException if the current user does not have Admin access
    // to the target folder 
@@ -5103,7 +5163,7 @@ public class PSServerFolderProcessor extends PSProcessorCommon implements
                   IPSCmsObjectMgr cms = PSCmsObjectMgrLocator.getObjectManager();
                   PSComponentSummary ldpg = cms.loadComponentSummary(dep.getId());
                   if(ldpg != null){
-                     if(ldpg.getContentTypeId() == 1001){
+                     if(ldpg.getContentTypeId() != PSFolderEntry.FOLDER_CONTENT_TYPE_ID){
                         return ldpg;
                      }
                   }
@@ -5123,6 +5183,7 @@ public class PSServerFolderProcessor extends PSProcessorCommon implements
 
 
    }
+
    
    /**
     * Convert the supplied home page url to the new copied site, folder and
@@ -5295,7 +5356,7 @@ public class PSServerFolderProcessor extends PSProcessorCommon implements
     */
    @SuppressWarnings("unchecked")
    private void cloneSiteFolderChildren(PSRequest request, IPSRequestContext context, PSComponentSummaries children,
-         PSLocator target, PSCloningOptions options, Map<PSLocator, PSLocator> copiedContent,String assemblyTemplate) throws PSException
+         PSLocator target, PSCloningOptions options, Map<PSLocator, PSLocator> copiedContent,Map<PSLocator, PSRelationshipSet> navSections,String assemblyTemplate) throws PSException
    {
       try
       {
@@ -5348,18 +5409,23 @@ public class PSServerFolderProcessor extends PSProcessorCommon implements
             while (objects.hasNext())
             {
                PSComponentSummary summary = (PSComponentSummary) objects.next();
-               if (isNavItem(summary))
+               if (isNavItem(summary)) {
                   navigationSummaries.add(summary);
+                  PSRelationshipSet subMenu = getChildNavons(summary);
+                  if (subMenu != null){
+                     navSections.put(summary.getCurrentLocator(),subMenu);
+                  }
+               }
             }
-
-            objects = navigationSummaries.iterator();
-            while (objects.hasNext())
-               children.remove((PSComponentSummary) objects.next());
          }
+
+         Iterator navs = navigationSummaries.iterator();
+         while (navs.hasNext())
+            children.remove((PSComponentSummary) navs.next());
 
          // clone all navigation items as new copy
          boolean isAsNewCopy = true;
-         cloneNavItems(request, navigationSummaries, options,target, isAsNewCopy, options.getCommunityMappings(), copiedContent,
+         cloneNavItems(request, navigationSummaries, options,target, isAsNewCopy, options.getCommunityMappings(), copiedContent,navSections,
                options.useSrcItemWorkflow(),assemblyTemplate);
 
          // clone all content but navigation
@@ -5429,14 +5495,20 @@ public class PSServerFolderProcessor extends PSProcessorCommon implements
                      PSComponentSummary summary = (PSComponentSummary) objects.next();
                      if (summary.isItem())
                         processSummaries.add(summary);
+                     if (isNavItem(summary)) {
+                       // navigationSummaries.add(summary);
+                        processSummaries.add(summary);
+                        PSRelationshipSet subMenu = getChildNavons(summary);
+                        if (subMenu != null){
+                           navSections.put(summary.getCurrentLocator(),subMenu);
+                        }
+                     }
                   }
                }
                // copy all folders
-               Iterator folders = grandChildSummaries.getComponentList(PSComponentSummary.TYPE_FOLDER).iterator();
-               while (folders.hasNext())
-                  processSummaries.add((PSComponentSummary) folders.next());
-
-               cloneSiteFolderChildren(request, context, processSummaries, newLocator, options, copiedContent,assemblyTemplate);
+               List folders = grandChildSummaries.getComponentList(PSComponentSummary.TYPE_FOLDER);
+               processSummaries.addAll(folders);
+               cloneSiteFolderChildren(request, context, processSummaries, newLocator, options, copiedContent,navSections,assemblyTemplate);
             }
          }
       }
@@ -5458,6 +5530,16 @@ public class PSServerFolderProcessor extends PSProcessorCommon implements
                   + copiedContent.values(), ex);
          }
       }
+   }
+
+   private PSRelationshipSet getChildNavons(PSComponentSummary navTree) throws PSCmsException {
+
+      PSRelationshipProcessor processor = PSRelationshipProcessor.getInstance();
+
+      PSRelationshipSet grandChildren = processor.getDependents(PSRelationshipConfig.TYPE_ACTIVE_ASSEMBLY, navTree.getCurrentLocator());
+
+      return grandChildren;
+
    }
 
    /**
@@ -5485,8 +5567,9 @@ public class PSServerFolderProcessor extends PSProcessorCommon implements
    @SuppressWarnings("unchecked")
    private void cloneNavItems(PSRequest request, PSComponentSummaries children,PSCloningOptions options,
       PSLocator target, boolean isAsNewCopy, Map communityMappings,
-      Map<PSLocator, PSLocator> copiedContent, boolean useSrcWorfklow,String assemblyTemplate) throws PSException
+      Map<PSLocator, PSLocator> copiedContent,Map<PSLocator,PSRelationshipSet> navSections,  boolean useSrcWorfklow,String assemblyTemplate) throws PSException
    {
+
       List<PSLocator> childItems = null;
       if (isAsNewCopy)
       {
@@ -5499,23 +5582,11 @@ public class PSServerFolderProcessor extends PSProcessorCommon implements
          {
             //Adding Nav Folder
             PSComponentSummary summary = (PSComponentSummary) summaries.next();
-            PSLocator newLocator = copiedContent.get(
-               summary.getCurrentLocator());
-            if (newLocator == null)
+            PSLocator newLocator = copiedContent.get(summary.getCurrentLocator());
+            if (newLocator == null) {
                newChildren.add(summary);
-            else
+            }else if(!existingChildren.contains(newLocator)){
                existingChildren.add(newLocator);
-
-            //Adding Landing Page
-            PSComponentSummary landingPage = getSectionLandingPage(summary.getCurrentLocator());
-            if(landingPage != null){
-
-            PSLocator newIndexLocator = copiedContent.get(landingPage.getCurrentLocator());
-            if (newIndexLocator == null)
-               newChildren.add(landingPage);
-            else
-               existingChildren.add(newIndexLocator);
-
             }
          }
 
@@ -5533,22 +5604,6 @@ public class PSServerFolderProcessor extends PSProcessorCommon implements
             copiedContent.put(originalLocator, newLocator);
 
          }
-
-         if(childItems.size() == 2) {
-            PSLocator sectionFolder = (PSLocator) childItems.get(0);
-            //Creating Section Page Link
-            PSLocator indexPage = (PSLocator) childItems.get(1);
-            if (sectionFolder != null && indexPage != null) {
-               PSRelationshipProcessor relation = PSRelationshipProcessor.getInstance();
-               PSNavConfig navConfig = PSNavConfig.getInstance();
-               String lpSlotName = navConfig.getLandingPageRelationship();
-               PSManagedNavServiceLocator.getContentWebservice().addLandingPageToNavnode(new PSLegacyGuid(indexPage.getId(), indexPage.getRevision()),
-                       new PSLegacyGuid(sectionFolder.getId(), sectionFolder.getRevision()), assemblyTemplate);
-
-            }
-         }
-
-
          // just link children which were copied earlier
          if (!existingChildren.isEmpty())
             addChildren(existingChildren, target);
