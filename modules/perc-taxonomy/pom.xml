@@ -31,13 +31,13 @@
     <parent>
         <artifactId>core</artifactId>
         <groupId>com.percussion</groupId>
-        <version>8.0.3-SNAPSHOT</version>
+        <version>8.0.3</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <artifactId>perc-taxonomy</artifactId>
     <packaging>jar</packaging>
-    <version>8.0.3-SNAPSHOT</version>
+    <version>8.0.3</version>
     <name>perc-taxonomy</name>
     <build>
         <resources>
@@ -57,7 +57,7 @@
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>perc-system</artifactId>
-            <version>8.0.3-SNAPSHOT</version>
+            <version>8.0.3</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -142,13 +142,13 @@
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>rxutils</artifactId>
-            <version>8.0.3-SNAPSHOT</version>
+            <version>8.0.3</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>rxutils</artifactId>
-            <version>8.0.3-SNAPSHOT</version>
+            <version>8.0.3</version>
             <type>test-jar</type>
             <scope>test</scope>
         </dependency>
