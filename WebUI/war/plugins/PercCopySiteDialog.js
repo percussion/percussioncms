@@ -245,8 +245,8 @@
                         {
                             $.perc_utils.alert_dialog({title: 'Error', content: result});
                         }else{
-                            if ($('#perc-site-map-copy'))
-                                $('#perc-site-map-copy').removeClass("perc-site-map-action-item-disabled");
+                            //if ($('#perc-site-map-copy'))
+                               // $('#perc-site-map-copy').removeClass("perc-site-map-action-item-disabled");
                         }
                     });
                 },
