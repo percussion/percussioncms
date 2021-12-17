@@ -5099,7 +5099,7 @@ public class PSServerFolderProcessor extends PSProcessorCommon implements
                try {
                    slotType = ModifyRelatedContentUtils.getSlotType(slotid, null);
                }catch (PSCmsException e) {
-                  e.printStackTrace();
+                  log.error("SlotType not found for id: {}",slotid,e);
                }
                if (landingPage == null && slotType != null && navConfig.getLandingPageRelationship().equals(slotType.getSlotName())) {
                   PSManagedNavServiceLocator.getContentWebservice().addLandingPageToNavnode(childId,

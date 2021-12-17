@@ -518,7 +518,7 @@
                         .attr("id", "perc-site-map-copy")
                         .text(I18N.message("perc.ui.site.map@Copy Site"))
                         .on("click", function(evt){
-                            self.onCopySiteDialog();
+                           // self.onCopySiteDialog();
                         });
                     $menu.append($copy);
                 }
@@ -630,7 +630,7 @@
                             $('#perc-site-map-copy').addClass("perc-site-map-action-item-disabled").removeClass("perc-site-map-action-item-enabled");
                         }
                         else{
-                            $('#perc-site-map-copy').removeClass("perc-site-map-action-item-disabled").addClass("perc-site-map-action-item-enabled").attr("for", self.options.site);
+                            //$('#perc-site-map-copy').removeClass("perc-site-map-action-item-disabled").addClass("perc-site-map-action-item-enabled").attr("for", self.options.site);
                         }
                     }
                     else{
