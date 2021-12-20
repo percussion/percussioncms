@@ -287,7 +287,7 @@
         String secure = "";
         if (request.isSecure())
             secure = " Secure;";
-        response.addHeader("Set-Cookie", cookieName + "=" + cookieValue + "; SameSite=Strict;" + secure);
+        response.addHeader("Set-Cookie", cookieName + "=" + cookieValue + "; SameSite=Lax;" + secure);
     }
 
 
