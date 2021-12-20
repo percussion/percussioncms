@@ -1723,7 +1723,7 @@ public class PSSecurityFilter implements Filter
       response.addHeader("Set-Cookie",IPSHtmlParameters.SYS_SESSIONID +
               "=" + initRequest(request, response).getUserSessionId() +";"+
               "Path=/;" + secure + " HttpOnly; SameSite=" +
-              PSServer.getProperty("sameSiteCookieMode","Strict"));
+              PSServer.getProperty("sameSiteCookieMode","Lax"));
 
       return request;
    }
