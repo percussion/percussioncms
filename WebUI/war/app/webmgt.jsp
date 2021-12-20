@@ -400,9 +400,12 @@
         </div>
     </div>
     <div id="bottom"></div>
+	</div>
+
+
     <iframe id="frame" name="frame" title="<i18n:message key='perc.ui.navMenu.webmgt@Editor' />" style="width: 100%; border:0;" perc-ui-component="perc-ui-component-editor-frame"
             class="perc-ui-component-processing"></iframe>
-</div>
+
 <%@include file='includes/siteimprove_integration.html'%>
 
 

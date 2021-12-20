@@ -1552,7 +1552,14 @@ var layoutModel;
                         delay:$.dragDelay,
                         containment: "window",
                         scope : $.perc_iframe_scope,
-                        scroll: true
+                        scroll: true,
+                        start: function(){
+                            currentDragOverRegion = null;
+                            hideRegionOverflow();
+                        },
+                        stop: function() {
+                            restoreRegionOverflow();
+                        }
 
                     })
                     .data( 'widget', w ));
