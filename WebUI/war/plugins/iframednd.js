@@ -32,6 +32,8 @@
         $.perc_iframe_scope = 'perc-iframe-scope';
         $.dragDelay = 10;
         var dragging = false;
+        var iframeposTop = frame[0].offsetTop;
+		var iframeposLeft = frame[0].offsetLeft;
 
 
 
@@ -40,8 +42,8 @@
         $('body').append( overlay );
 
         overlay
-            .height( frame.height() )
-            .width( frame.width() )
+            .height( frame[0].height )
+            .width( frame[0].width )
             .addClass('ui-layout-ignore')
             .css(
                 {
@@ -52,20 +54,47 @@
                     zIndex: 1000
                 });
 
+			var clicked = false;
+
+			var curYPos = 0,curXPos = 0;
+			overlay.on({
+			'mousemove': function(e) {
+
+				clicked && updateScrollPos(e);
+			},
+			'mousedown': function(e) {
+
+				curYPos = e.clientY;
+			}
+		});
+
+		var updateScrollPos = function(e) {
+			curYPos =   iframeposTop;
+
+			var x = iframeposLeft + ( e.clientX - curXPos);
+			//var z = e.clientY;
+			var y = (e.pageY - curYPos)
+			frame[0].contentWindow.scrollTo(x,y );
+		}
+
         addDragSupportDroppable();
 
         //Move the div over the iframe
-        function addOverlay()
+        function addOverlay(event)
         {
-            overlay.css({ left: frame.position().left, top: frame.position().top  });
-            overlay.height( frame.height() );
-            overlay.width( frame.width() );
+            overlay.css({ left: frame[0].offsetLeft, top: frame[0].offsetTop  });
+            overlay.height( frame[0].height  );
+            overlay.width( frame[0].width );
+            clicked = true;
+			iframeposTop = frame[0].offsetTop;
+		    iframeposLeft = frame[0].offsetLeft;
         }
 
         //Move the div back offscreen
         function removeOverlay()
         {
             overlay.css({ left: '-10000px', top: '0px' });
+			clicked = false;
         }
 
         //Add droppable targets to the overlay div - this allows draggables outside the iframe to communicate with
@@ -153,12 +182,12 @@
             });
         }
 
-        function onDragStart()
+        function onDragStart(event)
         {
             if( !dragging )
             {
                 dragging = true;
-                addOverlay();
+                addOverlay(event);
                 liftDroppables();
             }
         }
@@ -181,14 +210,13 @@
                     iframeFix: true,
                     activate: function(event,ui)
                     {
-                        onDragStart(ui.draggable);
+                        onDragStart(ui.draggable,event);
                     },
                     deactivate: function(event,ui)
                     {
                         setTimeout( onDragStop, 100 );
                     }
                 });
-            //.css({'position':'absolute', 'left':-1000});
             $('body').append(d);
         }
 
