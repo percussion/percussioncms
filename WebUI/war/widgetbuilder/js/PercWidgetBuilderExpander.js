@@ -73,7 +73,7 @@
     }
     function setDefsExpandedStateInCookie (isExpanded) {
         var state = isExpanded ? 'expanded' : 'collapsed';
-        var options = {"sameSite": "Strict"};
+        var options = {"sameSite": "Lax"};
         if (window.isSecureContext) {
             options.secure = true;
         }
