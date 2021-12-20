@@ -39,7 +39,7 @@
         // remove all scrollbars from the document in the templates view
         // they will be added back in the content, layout and style tabs
         // and then removed again when selecting the templates view
-        $("body").css("overflow","hidden");
+      //  $("body").css("overflow","hidden");
 
         // singleton to keep track of dirty state across various types of resources such as pages, templates and assets
         var dirtyController = $.PercDirtyController;
@@ -112,7 +112,7 @@
             if (index === TEMPLATE_CONTENT)
             {
                 // put back scrollbars in the content view as needed
-                $("body").css("overflow","auto");
+               // $("body").css("overflow","auto");
                 //  Add Action dropdown menu under Content Tab (Template Editor)
 
                 var percTemplateActions = $("#perc-dropdown-actions");
@@ -170,7 +170,7 @@
             if (index === TEMPLATE_LAYOUT)
             {
                 // put back scrollbars in the layout view as needed
-                $("body").css("overflow","auto");
+               // $("body").css("overflow","auto");
                 //  Add Action dropdown menu under Layout Tab (Template Editor)
                 var layoutTemplateActions = $("#perc-dropdown-actions-layout");
                 layoutTemplateActions.html("");
@@ -231,7 +231,7 @@
             {
 
                 // put back scrollbars in the style view as needed
-                $("body").css("overflow","auto");
+              //  $("body").css("overflow","auto");
 
                 //  Add Action dropdown menu under Style Tab (Template Editor)
                 var styleTemplateActions = $("#perc-dropdown-actions-style");
@@ -405,12 +405,13 @@
         });
 
         function setupContent() {
-            fixIframeHeight();
+
             if($.PercNavigationManager.isJavascriptOff())
                 model.setJavaScriptOff(true);
             P.contentView( $("#frame"), model);
             _updateLabelAndName(model);
             prepareForEditRegionCSS();
+			 fixIframeHeight();
         }
 
         function setupLayout() {
@@ -435,7 +436,7 @@
             P.layoutView( $("#frame"), model, layoutController, null, function(isDirty){
                 setDirty(isDirty);
             });
-            fixIframeHeight();
+
             if($.PercNavigationManager.isJavascriptOff())
                 model.setJavaScriptOff(true);
 
@@ -452,6 +453,7 @@
             $("#w1").data("widget", {definitionId: 'widgetType' } ).draggable({});
             _updateLabelAndName(model);
             prepareForEditRegionCSS();
+			 fixIframeHeight();
         }
         function setDirty(isDirty) {
             dirtyController.setDirty(isDirty, "template");
