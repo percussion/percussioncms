@@ -109,6 +109,9 @@
     }
 
     function csrfGetToken(url,callback){
+        if(callback.callcount > 1){
+            return;
+        }
         let csrfToken;
         if(typeof url != "undefined" && url != null){
             if(!url.endsWith("/csrf")){
@@ -141,7 +144,20 @@
             redirect: 'follow', // manual, *follow, error
             referrerPolicy: 'origin-when-cross-origin',
             success: function(data, textstatus,response){
-                               callback(response);
+                if (typeof response !== 'undefined' && response != null) {
+                    var tokenHeader = response.getResponseHeader("X-CSRF-HEADER");
+                    if (typeof tokenHeader === "undefined" || tokenHeader === null) {
+                        if (typeof callback.callcount !== 'undefined' && callback.callcount === 1) {
+                            callback.callcount = 2;
+                        }else{
+                            callback.callcount = 1;
+                        }
+                        csrfGetToken(url,callback);
+                        return;
+                    }else{
+                        callback(response);
+                    }
+                }
             },
             error: function(request, textstatus, error){
                 console.debug(textstatus + ":" + error);
@@ -277,22 +293,21 @@
             if (u != null) {
                 csrfGetToken(u, function (response) {
                     if (typeof response !== 'undefined' && response != null)
-                        var tokenHeader = response.getResponseHeader(CSRF_HEADER);
-                    if (typeof tokenHeader !== "undefined" && tokenHeader != null) {
-                        var token = response.getResponseHeader("X-CSRF-TOKEN");
-                        if (tokenHeader != null && token != null) {
-                            args.headers[tokenHeader] = token;
+                            var tokenHeader = response.getResponseHeader(CSRF_HEADER);
+                        if (typeof tokenHeader !== "undefined" && tokenHeader != null) {
+                            var token = response.getResponseHeader("X-CSRF-TOKEN");
+                             if (tokenHeader != null && token != null) {
+                                args.headers[tokenHeader] = token;
+                            }
                         }
-                    }
-                    $.ajax(args);
-                });
+                        $.ajax(args);
+                     });
             } else {
                 $.ajax(args);
             }
         }else{
             $.ajax(args);
         }
-
     }
 
     /**
