@@ -54,8 +54,8 @@
             wh = document.documentElement.clientHeight - 4;
             ww = document.documentElement.clientWidth;
         }        
-        frame[0].height =  wh - bot + 60 ;
-        frame[0].width = ww;
+        frame.height( wh - bot);
+        frame.width(ww);    
     };
     
     fixTemplateHeight = function(){
@@ -107,7 +107,7 @@
                 wh = document.documentElement.clientHeight - 4;
                 ww = document.documentElement.clientWidth;    
             }
-            bottomContentDiv.height(wh - bottomVerticalOffset  );
+            bottomContentDiv.height(wh - bottomVerticalOffset);
         }
     
     };
