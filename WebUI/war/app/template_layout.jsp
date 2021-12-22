@@ -80,13 +80,11 @@
                     <div id='region-tool-disabled' style = 'display:none' aria-hidden="true">
                         <img src='../images/images/iconAddCellGray.png' alt="<i18n:message key = "perc.ui.template.layout@Drag and drop disabled"/>" title ="<i18n:message key = "perc.ui.template.layout@Drag and drop"/>" />
                     </div>
-                    <div id='perc-region-tool-inspector' title = "<i18n:message key = 'perc.ui.template.layout@Design Inspector'/>">
-					</div>
+                    <div id='perc-region-tool-inspector' title = "<i18n:message key = "perc.ui.template.layout@Design Inspector"/>"></div>
                     <div id = 'perc-region-tool-menu' style="float:left;"></div>
-                    <div id='perc-undo-tool' title = "<i18n:message key = 'perc.ui.template.layout@Undo'/>" style = 'display:none'>
+                    <div id='perc-undo-tool' title = "<i18n:message key = "perc.ui.template.layout@Undo"/>" style = 'display:none'>
                     </div>
-                    <div id='perc-undo-tool-disabled' title = "<i18n:message key = 'perc.ui.template.layout@Undo'/>" style = 'display:none'>
-					</div>
+                    <div id='perc-undo-tool-disabled' title = "<i18n:message key = "perc.ui.template.layout@Undo"/>" style = 'display:none'></div>
                 </div>
             </td>
             <td style = 'width:43%'>

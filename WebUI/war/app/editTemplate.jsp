@@ -193,7 +193,7 @@
         </jsp:include>
     </div>
 
-    <div class="ui-layout-north" style="padding: 0px 0px;">
+    <div class="ui-layout-north" style="padding: 0px 0px; overflow:visible">
         <jsp:include page="includes/finder.jsp" flush="true">
             <jsp:param name="openedObject" value="PERC_SITE" />
         </jsp:include>
@@ -222,8 +222,9 @@
         </div>
     </div>
     <div id="bottom"></div>
-	</div>
     <iframe id="frame" name="frame"  title="<i18n:message key='perc.ui.design.title@Edit Template'/>" style="width: 100%; border: 0;" width="100%" class="perc-ui-component-ready"></iframe>
+</div>
+
 <%@include file='includes/siteimprove_integration.html'%>
 </body>
 </html>
