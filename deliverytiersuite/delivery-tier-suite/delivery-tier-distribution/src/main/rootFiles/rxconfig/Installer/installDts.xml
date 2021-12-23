@@ -428,14 +428,14 @@
                         <istrue value="${isWindows}"/>
                         <then>
                             <echo>is windows -- ${isWindows}</echo>
-                            <exec executable="cmd">
+                            <exec executable="cmd" dir="${install.dir}/rxconfig/Installer/">
                                 <arg value="/c"/>
                                 <arg value="${install.dir}/rxconfig/Installer/removeOldLog4gJars.bat"/>
                             </exec>
                         </then>
                         <else>
                             <echo>OS not windows</echo>
-                            <exec executable="/bin/bash">
+                            <exec executable="/bin/bash" dir="${install.dir}/rxconfig/Installer/">
                                 <arg value="-c"/>
                                 <arg value="${install.dir}/rxconfig/Installer/removeOldLog4jJars.sh"/>
                             </exec>
