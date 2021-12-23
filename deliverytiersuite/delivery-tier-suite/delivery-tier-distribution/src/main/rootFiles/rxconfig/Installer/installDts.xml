@@ -414,6 +414,34 @@
                         <fileset dir="${install.dir}/JRE" includes="**/*" followsymlinks="true"/>
                     </copy>
 
+                    <if>
+                        <istrue value="${isWindows}"/>
+                        <then>
+                            <copy file="${install.configdir.src}/removeOldLog4gJars.bat" todir="${install.dir}/rxconfig/Installer/" overwrite="true"/>
+                        </then>
+                        <else>
+                            <copy file="${install.configdir.src}/removeOldLog4gJars.sh" todir="${install.dir}/rxconfig/Installer/" overwrite="true"/>
+                        </else>
+                    </if>
+
+                    <if>
+                        <istrue value="${isWindows}"/>
+                        <then>
+                            <echo>is windows -- ${isWindows}</echo>
+                            <exec executable="cmd">
+                                <arg value="/c"/>
+                                <arg value="${install.dir}/rxconfig/Installer/removeOldLog4gJars.bat"/>
+                            </exec>
+                        </then>
+                        <else>
+                            <echo>OS not windows</echo>
+                            <exec executable="/bin/bash">
+                                <arg value="-c"/>
+                                <arg value="${install.dir}/rxconfig/Installer/removeOldLog4jJars.sh"/>
+                            </exec>
+                        </else>
+                    </if>
+
                     <!-- Remove previous versions to avoid having to deal with individual files -->
                     <echo>Removing previous DTS version files...</echo>
                     <delete quiet="false" verbose="true" failonerror="true" dir="${install.dir}${staging.dir}/Deployment/Server/webapps"/>
