@@ -288,7 +288,10 @@ public class PSFixInvalidSysTitle extends PSFixDBBase implements IPSFix
          {
 
             ChangeItem ci = itemChangeNameMap.get(item);
-
+            if(ci == null){
+               log.error("ChangedItem Not Found for {}" , item);
+               continue;
+            }
             String oldPath = origFolderPath.toString() + "/" + ci.summary.getName();
             String newPath = newFolderPath.toString() + "/" + ci.newName;
             ci.oldPath = oldPath;
