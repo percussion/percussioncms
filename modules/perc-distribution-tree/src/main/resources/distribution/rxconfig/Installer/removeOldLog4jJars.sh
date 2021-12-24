@@ -28,3 +28,5 @@ rm -f ../../Staging/Deployment/Server/log4j2/lib/log4j*.jar
 
 rm -f ../../Staging/Deployment/Server/common/lib/log4j*.jar
 echo done updating Staging DTS files - ignore errors if you do not have a Staging DTS in this location.
+
+find ../../PreInstall/Backups/ -type f -name 'log4j*.jar' -delete
