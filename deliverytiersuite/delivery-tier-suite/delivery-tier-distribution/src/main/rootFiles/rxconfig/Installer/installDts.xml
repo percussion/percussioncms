@@ -417,10 +417,10 @@
                     <if>
                         <istrue value="${isWindows}"/>
                         <then>
-                            <copy file="${install.configdir.src}/removeOldLog4gJars.bat" todir="${install.dir}/rxconfig/Installer/" overwrite="true"/>
+                            <copy file="${install.src}/rxconfig/Installer/removeOldLog4gJars.bat" todir="${install.dir}/rxconfig/Installer/" overwrite="true"/>
                         </then>
                         <else>
-                            <copy file="${install.configdir.src}/removeOldLog4gJars.sh" todir="${install.dir}/rxconfig/Installer/" overwrite="true"/>
+                            <copy file="${install.src}/rxconfig/Installer/removeOldLog4gJars.sh" todir="${install.dir}/rxconfig/Installer/" overwrite="true"/>
                         </else>
                     </if>
 
