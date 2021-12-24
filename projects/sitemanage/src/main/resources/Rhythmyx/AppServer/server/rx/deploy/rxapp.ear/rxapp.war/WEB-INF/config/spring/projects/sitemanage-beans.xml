@@ -1829,10 +1829,9 @@ http://cxf.apache.org/schemas/jaxrs.xsd">
         <property name="startupProcessManager" ref="sys_startupProcessManager"/>
     </bean>
 
-    <!--
     <bean id="rxFixStartupProcess" class="com.percussion.share.extension.PSRxFixStartupProcess">
         <property name="startupProcessManager" ref="sys_startupProcessManager"/>
-    </bean> -->
+    </bean>
 
 
 </beans>
