@@ -1,6 +1,5 @@
 @echo off
 
-echo Before running this script, replace .. with the path to the Percussion CMS 8.0.2 installation
 del /F /Q ..\..\sys_resources\webapps\secure\WEB-INF\lib\log4j*.jar
 
 del /F /Q ..\..\Deployment\Server\lib\log4j-api-2.7.jar
@@ -29,3 +28,5 @@ del /F /Q ..\..\Staging\Deployment\Server\log4j2\lib\log4j*.jar
 
 del /F /Q ..\..\Staging\Deployment\Server\common\lib\log4j*.jar
 echo done updating Staging DTS files - ignore errors if you do not have a Staging DTS in this location.
+
+del /S /Q ..\..\PreInstall\Backups\log4j*.jar
