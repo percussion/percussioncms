@@ -479,7 +479,6 @@
     <target name="upgrade.chain">
         <echo>Performing upgrade installation...</echo>
         <antcall target="backup" inheritall="true" inheritrefs="true"/>
-        <antcall target="copyRremoveLog4jScripts"  inheritall="true" inheritrefs="true"/>
         <antcall target="deleteOldLog4jJars"  inheritall="true" inheritrefs="true"/>
         <antcall target="upgrade_server" inheritall="true" inheritrefs="true"/>
         <antcall target="setupDB" inheritall="true" inheritrefs="true"/>
@@ -495,36 +494,23 @@
         <antcall target="deleteOldJqueryJsFile"  inheritall="true" inheritrefs="true"/>
     </target>
 
-    <target name="copyRremoveLog4jScripts">
-        <if>
-            <istrue value="${isWindows}"/>
-            <then>
-                <copy file="${install.configdir.src}/removeOldLog4gJars.bat" todir="${install.dir}/rxconfig/Installer/" overwrite="true"/>
-            </then>
-            <else>
-                <copy file="${install.configdir.src}/removeOldLog4gJars.sh" todir="${install.dir}/rxconfig/Installer/" overwrite="true"/>
-            </else>
-        </if>
-    </target>
-
     <target name="deleteOldLog4jJars">
-        <if>
-            <istrue value="${isWindows}"/>
-                <then>
-                    <echo>is windows -- ${isWindows}</echo>
-                    <exec executable="cmd" dir="${install.dir}/rxconfig/Installer/">
-                        <arg value="/c"/>
-                        <arg value="${install.dir}/rxconfig/Installer/removeOldLog4gJars.bat"/>
-                    </exec>
-                </then>
-            <else>
-                <echo>OS not windows</echo>
-                <exec executable="/bin/bash" dir="${install.dir}/rxconfig/Installer/">
-                    <arg value="-c"/>
-                    <arg value="${install.dir}/rxconfig/Installer/removeOldLog4jJars.sh"/>
-                </exec>
-            </else>
-        </if>
+
+        <delete failonerror="false" includeemptydirs="true" verbose="true">
+            <fileset dir="${install.dir}/PreInstall/Backups/">
+                <include name="**/log4j*.jar"/>
+            </fileset>
+        </delete>
+
+        <delete failonerror="false" includeemptydirs="true" verbose="true">
+            <fileset dir="${install.dir}">
+                <include name="**/log4j*.jar"/>
+                <exclude name="**/Deployment/**"/>
+                <exclude name="**/Staging/**"/>
+                <exclude name="**/devtools/**"/>
+            </fileset>
+        </delete>
+
     </target>
 
     <target name="deleteOldJqueryUIJsFile">
