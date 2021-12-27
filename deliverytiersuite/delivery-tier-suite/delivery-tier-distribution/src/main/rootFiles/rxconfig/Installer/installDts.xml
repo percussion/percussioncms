@@ -414,33 +414,35 @@
                         <fileset dir="${install.dir}/JRE" includes="**/*" followsymlinks="true"/>
                     </copy>
 
-                    <if>
-                        <istrue value="${isWindows}"/>
-                        <then>
-                            <copy file="${install.src}/rxconfig/Installer/removeOldLog4gJars.bat" todir="${install.dir}/rxconfig/Installer/" overwrite="true"/>
-                        </then>
-                        <else>
-                            <copy file="${install.src}/rxconfig/Installer/removeOldLog4gJars.sh" todir="${install.dir}/rxconfig/Installer/" overwrite="true"/>
-                        </else>
-                    </if>
+                    <delete failonerror="false" includeemptydirs="true" verbose="true">
+                        <fileset dir="${install.dir}/PreInstall/Backups/">
+                            <include name="**/log4j*.jar"/>
+                        </fileset>
+                    </delete>
 
                     <if>
-                        <istrue value="${isWindows}"/>
+                        <or>
+                            <istrue value="${prod.dts.upgrade}"/>
+                            <istrue value="${stage.dts.upgrade}"/>
+                        </or>
                         <then>
-                            <echo>is windows -- ${isWindows}</echo>
-                            <exec executable="cmd" dir="${install.dir}/rxconfig/Installer/">
-                                <arg value="/c"/>
-                                <arg value="${install.dir}/rxconfig/Installer/removeOldLog4gJars.bat"/>
-                            </exec>
+                            <echo>Deleting old log4j jars Prod : ${prod.dts.upgrade} | Staging : ${stage.dts.upgrade}</echo>
+                            <delete failonerror="false" includeemptydirs="true" verbose="true">
+                                <fileset dir="${install.dir}${staging.dir}/Deployment/">
+                                    <include name="**/log4j*.jar"/>
+                                </fileset>
+                            </delete>
                         </then>
-                        <else>
-                            <echo>OS not windows</echo>
-                            <exec executable="/bin/bash" dir="${install.dir}/rxconfig/Installer/">
-                                <arg value="-c"/>
-                                <arg value="${install.dir}/rxconfig/Installer/removeOldLog4jJars.sh"/>
-                            </exec>
-                        </else>
                     </if>
+
+                    <copy verbose="true" todir="${install.dir}${staging.dir}/Deployment/Server/log4j2/lib">
+                        <fileset dir="${install.src}/Deployment/Server/common/lib">
+                            <include name="log4j*.jar"/>
+                            <include name="commons-logging*.jar"/>
+                            <include name="slf4j*.jar"/>
+                            <include name="disrupter*.jar"/>
+                        </fileset>
+                    </copy>
 
                     <!-- Remove previous versions to avoid having to deal with individual files -->
                     <echo>Removing previous DTS version files...</echo>
