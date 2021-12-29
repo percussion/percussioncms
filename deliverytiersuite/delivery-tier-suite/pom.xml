@@ -108,7 +108,7 @@
         <axis.version>1.4.1</axis.version>
         <axiscore.version>1.4.2</axiscore.version>
         <httpcomponents.version>4.5.8</httpcomponents.version>
-        <log4j2.version>2.17.0</log4j2.version>
+        <log4j2.version>2.17.1</log4j2.version>
         <tika.version>1.17</tika.version>
         <xmpbox.version>2.0.17</xmpbox.version>
         <jbig2.version>3.0.2</jbig2.version>
