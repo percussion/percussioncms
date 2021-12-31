@@ -617,7 +617,7 @@
 
         // Object that will store the preferences values once the Apply button is clicked
         var preferencesAfterOnApply = {};
-        $('#perc-field-prefs-apply').on('click', function() {
+        $('#perc-field-prefs-apply').off('click').on('click', function() {
 
             var isValid = true;
             for(i = 0; i < preferences.length; i++)
