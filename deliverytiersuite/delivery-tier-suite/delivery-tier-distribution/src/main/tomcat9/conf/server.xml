@@ -208,6 +208,7 @@
                        prefix="localhost_access_log" suffix=".txt"
                        pattern="%h %l %u %t &quot;%r&quot; %s %b" />
                 <Valve className="org.apache.catalina.valves.ErrorReportValve"
+                       errorCode.403="webapps/ROOT/error.html"
                        errorCode.404="webapps/ROOT/error.html"
                        errorCode.414="webapps/ROOT/error.html"
                        errorCode.415="webapps/ROOT/error.html"
