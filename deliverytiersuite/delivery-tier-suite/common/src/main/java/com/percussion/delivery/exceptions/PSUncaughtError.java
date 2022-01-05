@@ -52,9 +52,7 @@ public class PSUncaughtError extends Throwable implements ExceptionMapper<Throwa
     public Response toResponse(Throwable exception)
     {
         try {
-            log.warn("Page redirecting to error {} : ", request.getHeader("referer"));
-            log.warn("Error code {} : ", response.getStatus());
-            log.warn("Error message {} : ", exception.getLocalizedMessage());
+            log.warn("Page redirecting to error {} : . Error code {} : . Error message {} : ", request.getHeader("referer"), response.getStatus(), exception.getLocalizedMessage());
             String referer = request.getHeader("referer");
             URL url = new URL(referer);
             String hostRedirect = url.getHost();
