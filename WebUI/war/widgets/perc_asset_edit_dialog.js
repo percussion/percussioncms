@@ -250,9 +250,9 @@
                           width: $(window).width()-15,
                           
                    }, 200,  function() {
-                           $('#edit-widget-content').height($(this).parent().height()-120); 
+                           $('#edit-widget-content').height($(this).height()-120);
                            $('#edit-widget-content').width($(this).parent().width()); 
-                           $('#edit-widget-content-frame').height($(this).parent().height()-120); 
+                           $('#edit-widget-content-frame').height($(this).height()-120);
                            $('#edit-widget-content-frame').width($(this).parent().width()-5); 
                              $(this).find(".fa-expand").addClass("fas fa-compress").removeClass('fa-expand');
                          

@@ -208,7 +208,3 @@ span.ui-button-text {
 #create-new-asset-content-dlg {
     overflow-y : hidden !important;
 }
-
-#edit-widget-content{
-    min-height :450px !important;
-}
