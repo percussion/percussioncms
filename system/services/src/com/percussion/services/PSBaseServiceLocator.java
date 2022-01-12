@@ -23,11 +23,8 @@
  */
 package com.percussion.services;
 
-import com.percussion.server.PSServer;
 import com.percussion.util.PSOsTool;
-import com.percussion.util.PSResourceUtils;
 import com.percussion.utils.container.PSContainerUtilsFactory;
-import com.percussion.utils.container.PSStaticContainerUtils;
 import com.percussion.utils.servlet.PSServletUtils;
 import com.percussion.utils.spring.PSFileSystemXmlApplicationContext;
 import org.apache.commons.lang.StringUtils;
@@ -43,7 +40,6 @@ import javax.naming.NamingException;
 import javax.naming.spi.NamingManager;
 import javax.servlet.ServletContext;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -341,7 +337,7 @@ public class PSBaseServiceLocator
     * Destroy the configuration for the server context as well as any parent 
     * context. This should be called as part of server shutdown.
     */
-   public static void destroy()
+   public static synchronized void destroy()
    {
       ms_logger.info("Destroying Base Service Locator");
       for(int i=ms_ctxList.size()-1; i>0; i--) 
@@ -353,7 +349,10 @@ public class PSBaseServiceLocator
                (ConfigurableApplicationContext) ctx.getParent();
             if ( pCtx!= null && pCtx.isActive())
                pCtx.close();
-            ctx.close();
+
+             if(ctx.isActive()) {
+                 ctx.close();
+             }
          }
       }
       ms_ctxList.clear();

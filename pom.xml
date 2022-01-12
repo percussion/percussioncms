@@ -218,6 +218,7 @@
        <velocity.tools.version>3.1</velocity.tools.version>
        <saxon.version>6.5.3</saxon.version>
        <owasp.csrfguard.version>4.0.0</owasp.csrfguard.version>
+       <sitemap4j.version>1.1.2</sitemap4j.version>
        <eclipse-manifest-location>META-INF</eclipse-manifest-location>
     </properties>
 
@@ -2742,6 +2743,13 @@
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-email</artifactId>
                 <version>${commons-email.version}</version>
+            </dependency>
+
+            <!-- https://mvnrepository.com/artifact/com.github.dfabulich/sitemapgen4j -->
+            <dependency>
+                <groupId>com.github.dfabulich</groupId>
+                <artifactId>sitemapgen4j</artifactId>
+                <version>${sitemap4j.version}</version>
             </dependency>
 
 

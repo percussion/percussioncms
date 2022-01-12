@@ -25,10 +25,32 @@
 package com.percussion.apibridge;
 
 import com.google.gdata.data.DateTime;
-import com.percussion.rest.*;
-import com.percussion.rest.acls.*;
-import com.percussion.rest.actions.*;
-import com.percussion.rest.communities.*;
+import com.percussion.rest.Guid;
+import com.percussion.rest.GuidList;
+import com.percussion.rest.ObjectLockSummary;
+import com.percussion.rest.ObjectSummary;
+import com.percussion.rest.ObjectSummaryList;
+import com.percussion.rest.ObjectTypeEnum;
+import com.percussion.rest.PermissionList;
+import com.percussion.rest.Permissions;
+import com.percussion.rest.acls.Acl;
+import com.percussion.rest.acls.AclEntry;
+import com.percussion.rest.acls.AclEntryList;
+import com.percussion.rest.acls.AclList;
+import com.percussion.rest.acls.TypedPrincipal;
+import com.percussion.rest.acls.UserAccessLevel;
+import com.percussion.rest.acls.UserAccessLevelList;
+import com.percussion.rest.actions.ActionMenu;
+import com.percussion.rest.actions.ActionMenuParameter;
+import com.percussion.rest.actions.ActionMenuProperty;
+import com.percussion.rest.actions.ActionMenuVisibilityContext;
+import com.percussion.rest.actions.UIContext;
+import com.percussion.rest.communities.Community;
+import com.percussion.rest.communities.CommunityList;
+import com.percussion.rest.communities.CommunityRole;
+import com.percussion.rest.communities.CommunityRoleList;
+import com.percussion.rest.communities.CommunityVisibility;
+import com.percussion.rest.communities.CommunityVisibilityList;
 import com.percussion.rest.contenttypes.ContentType;
 import com.percussion.rest.locationscheme.LocationScheme;
 import com.percussion.rest.locationscheme.LocationSchemeParameter;
@@ -36,7 +58,10 @@ import com.percussion.rest.locationscheme.LocationSchemeParameterList;
 import com.percussion.rest.preferences.UserPreference;
 import com.percussion.rest.preferences.UserPreferenceList;
 import com.percussion.rest.roles.Role;
+import com.percussion.rest.sites.Site;
+import com.percussion.rest.sites.SiteList;
 import com.percussion.role.data.PSRole;
+import com.percussion.security.IPSTypedPrincipal;
 import com.percussion.server.PSPersistentProperty;
 import com.percussion.server.PSPersistentPropertyManager;
 import com.percussion.server.PSPersistentPropertyMeta;
@@ -46,18 +71,32 @@ import com.percussion.services.catalog.data.PSObjectSummary;
 import com.percussion.services.guidmgr.PSGuidManagerLocator;
 import com.percussion.services.guidmgr.data.PSGuid;
 import com.percussion.services.locking.data.PSObjectLockSummary;
-import com.percussion.services.menus.*;
+import com.percussion.services.menus.PSActionMenu;
+import com.percussion.services.menus.PSActionMenuParam;
+import com.percussion.services.menus.PSActionMenuProperty;
+import com.percussion.services.menus.PSActionMenuVisibility;
+import com.percussion.services.menus.PSUiContext;
 import com.percussion.services.security.IPSAcl;
 import com.percussion.services.security.IPSAclEntry;
 import com.percussion.services.security.PSPermissions;
 import com.percussion.services.security.PSTypedPrincipal;
-import com.percussion.services.security.data.*;
+import com.percussion.services.security.data.PSAccessLevelImpl;
+import com.percussion.services.security.data.PSAclEntryImpl;
+import com.percussion.services.security.data.PSAclImpl;
+import com.percussion.services.security.data.PSCommunity;
+import com.percussion.services.security.data.PSCommunityRoleAssociation;
+import com.percussion.services.security.data.PSCommunityVisibility;
+import com.percussion.services.security.data.PSUserAccessLevel;
 import com.percussion.services.sitemgr.IPSLocationScheme;
+import com.percussion.sitemanage.data.PSSiteSummary;
 import com.percussion.utils.guid.IPSGuid;
-import com.percussion.security.IPSTypedPrincipal;
 
 import java.security.Principal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
 
 public class ApiUtils {
 
@@ -695,6 +734,34 @@ public class ApiUtils {
         ret.setDescription(s.getDescription());
         ret.setLabel(s.getLabel());
         ret.setGuid(convertGuid(s.getGUID()));
+        return ret;
+    }
+
+    public static SiteList convertSiteSummaryList(List<PSSiteSummary> list){
+        SiteList ret = new SiteList();
+
+        for(PSSiteSummary s : list){
+            Site newSite = new Site();
+            newSite.setBaseUrl(s.getBaseUrl());
+            newSite.setCanonical(s.isCanonical());
+            newSite.setCanonicalDist(s.getCanonicalDist());
+            newSite.setCanonicalReplace(s.isCanonicalReplace());
+            newSite.setDefaultDocument(s.getDefaultDocument());
+            newSite.setDefaultFileExtention(s.getDefaultFileExtention());
+            newSite.setDescription(s.getDescription());
+            newSite.setGuid(convertGuid(new PSGuid(s.getGuid())));
+            newSite.setName(s.getName());
+            newSite.setOverrideSystemFoundation(s.getOverrideSystemFoundation());
+            newSite.setOverrideSystemJQuery(s.getOverrideSystemJQuery());
+            newSite.setOverrideSystemJQueryUI(s.getOverrideSystemJQueryUI());
+            newSite.setPageBasedSite(s.isCM1Site());
+            newSite.setSiteAdditionalHeadContent(s.getSiteAdditionalHeadContent());
+            newSite.setSiteAfterBodyOpenContent(s.getSiteAfterBodyOpenContent());
+            newSite.setSiteBeforeBodyCloseContent(s.getSiteBeforeBodyCloseContent());
+            newSite.setSiteProtocol(s.getSiteProtocol());
+
+            ret.add(newSite);
+        }
         return ret;
     }
 }

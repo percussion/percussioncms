@@ -1580,13 +1580,12 @@ public class PSSiteSectionService implements IPSSiteSectionService
                     siteName
             );
 
-            log.error("{}", ne.getLocalizedMessage());
+            log.error("{}", PSExceptionUtils.getMessageForLog(ne));
             log.warn("Removing invalid site definition: {}", siteName);
             siteMgr.deleteSite(site);
         }
 
-        PSSiteSection root = loadSiteSection(navTreeId, null, site.getFolderRoot(), true, false, null);
-        return root;
+        return loadSiteSection(navTreeId, null, site.getFolderRoot(), true, false, null);
     }
 
     /*

@@ -24,6 +24,8 @@
 
 package com.percussion.rest.sites;
 
+import com.percussion.error.PSException;
+
 public interface ISiteAdaptor {
 
 
@@ -64,5 +66,12 @@ public interface ISiteAdaptor {
      * @return
      */
     Site createSite();
+
+    /**
+     * Returns a sitemap with the specified options.
+     * @param options Options to configure the sitemap
+     * @return
+     */
+    String getSiteMap(String siteName, SiteMapOptions options) throws PSException;
 
 }

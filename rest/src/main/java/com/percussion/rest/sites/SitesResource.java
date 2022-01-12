@@ -25,13 +25,21 @@
 package com.percussion.rest.sites;
 
 
+import com.percussion.cms.IPSConstants;
+import com.percussion.error.PSException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.util.PSSiteManageBean;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.WebApplicationException;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -47,13 +55,29 @@ public class SitesResource {
     @Autowired
     ISiteAdaptor adaptor;
 
-    public SitesResource(){};
+    private static final Logger log = LogManager.getLogger(IPSConstants.API_LOG);
+
+    public SitesResource(){
+        //NOOP
+    }
 
     @GET
-    // TODO: Implement Me
+    @Path("/")
     public SiteList listSites(){
-        SiteList ret = null;
+        return adaptor.findAllSites();
+    }
 
+    @POST
+    @Path("{siteName}/sitemap")
+    public String getSiteMap(@PathParam("siteName") String siteName, SiteMapOptions options){
+        String ret ="";
+        try {
+            ret = adaptor.getSiteMap(siteName,options);
+        } catch (PSException e) {
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+            throw new WebApplicationException(e);
+        }
         return ret;
     }
 }
