@@ -716,6 +716,10 @@
           <scope>compile</scope>
       </dependency>
       <dependency>
+        <groupId>com.github.dfabulich</groupId>
+          <artifactId>sitemapgen4j</artifactId>
+      </dependency>
+      <dependency>
           <groupId>com.percussion</groupId>
           <artifactId>perc-exceptions-spring</artifactId>
           <version>${project.parent.version}</version>

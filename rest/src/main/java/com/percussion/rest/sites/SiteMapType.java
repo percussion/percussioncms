@@ -1,2 +1,7 @@
-package com.percussion.rest.sites;public enum SiteMapType {
+package com.percussion.rest.sites;
+
+public enum SiteMapType {
+    STANDARD,
+    INDEXED,
+
 }
