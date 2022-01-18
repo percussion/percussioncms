@@ -31,6 +31,7 @@ import com.percussion.rxfix.dbfixes.PSFixBrokenRelationships;
 import com.percussion.rxfix.dbfixes.PSFixCommunityVisibilityForViews;
 import com.percussion.rxfix.dbfixes.PSFixContentStatusHistory;
 import com.percussion.rxfix.dbfixes.PSFixDanglingAssociations;
+import com.percussion.rxfix.dbfixes.PSFixFormUrl;
 import com.percussion.rxfix.dbfixes.PSFixInvalidFolderRelationships;
 import com.percussion.rxfix.dbfixes.PSFixInvalidFolders;
 import com.percussion.rxfix.dbfixes.PSFixInvalidSysTitle;
@@ -189,7 +190,8 @@ public class PSRxFix
       PSFixOrphanedManagedLinks.class,
       PSFixStaleDataForContentTypes.class,
       PSFixPageCatalog.class,
-           PSFixAcls.class
+           PSFixAcls.class,
+           PSFixFormUrl.class
    };
 
    /**
