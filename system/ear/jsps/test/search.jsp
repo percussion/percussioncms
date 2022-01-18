@@ -68,7 +68,9 @@
 
    }
 
-   String lastquery = SecureStringUtils.sanitizeStringForSQLStatement(sanitizeForHtml(request.getParameter("querybody")));
+   String lastquery = null;
+    if(request.getParameter("querybody") != null)
+      lastquery = SecureStringUtils.sanitizeStringForSQLStatement(sanitizeForHtml(request.getParameter("querybody")));
    if (lastquery == null || lastquery.trim().length() == 0)
    {
       lastquery = "select rx:sys_contentid, rx:sys_title, jcr:path from rx:percPage";
