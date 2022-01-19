@@ -6,6 +6,7 @@
 
    <!-- anonymous requests -->
    <path authType="anonymous">/rxlogin.jsp</path>
+   <path authType="anonymous">/alocale.jsp</path>
    <path authType="anonymous">/rxlogout.jsp</path>
    <path authType="anonymous">/sys_deploymentHandler</path>
    <path authType="anonymous">/login</path>
