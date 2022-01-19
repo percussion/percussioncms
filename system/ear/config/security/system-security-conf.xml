@@ -22,6 +22,7 @@
    <path authType="anonymous">/tmx/tmx.jsp</path>
    <path authType="anonymous">/cm/cui/components/*</path>
    <path authType="anonymous">/rxlogin.jsp</path>
+   <path authType="anonymous">/locale.jsp</path>
    <path authType="anonymous">/sessionstatus.jsp</path>
    <path authType="anonymous">/rxlogin.jsp</path>
    <path authType="anonymous">/rxlogout.jsp</path>
