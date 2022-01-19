@@ -279,7 +279,7 @@
     } else {
       // If URL was passed in, parse params from URL string, otherwise parse
       // params from window.location.
-      result = get_func( url !== undefined ? url : loc[ str_href ] );
+      result = get_func( url !== undefined ? url : loc[ sanitizeKey(str_href) ] );
     }
     
     return result;
@@ -351,7 +351,7 @@
         if ( coerce ) {
           val = val && !isNaN(val)            ? +val              // number
             : val === 'undefined'             ? undefined         // undefined
-            : coerce_types[val] !== undefined ? coerce_types[val] // true, false, null
+            : coerce_types[sanitizeKey(val)] !== undefined ? coerce_types[sanitizeKey(val)] // true, false, null
             : val;                                                // string
         }
         
@@ -367,8 +367,8 @@
           // * Rinse & repeat.
           for ( ; i <= keys_last; i++ ) {
             key = keys[i] === '' ? cur.length : keys[i];
-            cur = cur[key] = i < keys_last
-              ? cur[key] || ( keys[i+1] && isNaN( keys[i+1] ) ? {} : [] )
+            cur = cur[sanitizeKey(key)] = i < keys_last
+              ? cur[sanitizeKey(key)] || ( keys[i+1] && isNaN( keys[i+1] ) ? {} : [] )
               : val;
           }
           
@@ -376,24 +376,24 @@
           // Simple key, even simpler rules, since only scalars and shallow
           // arrays are allowed.
           
-          if ( Array.isArray( obj[key] ) ) {
+          if ( Array.isArray( obj[sanitizeKey(key)] ) ) {
             // val is already an array, so push on the next value.
-            obj[key].push( val );
+            obj[sanitizeKey(key)].push( val );
             
-          } else if ( obj[key] !== undefined ) {
+          } else if ( obj[sanitizeKey(key)] !== undefined ) {
             // val isn't an array, but since a second value has been specified,
             // convert val into an array.
-            obj[key] = [ obj[key], val ];
+            obj[sanitizeKey(key)] = [ obj[sanitizeKey(key)], val ];
             
           } else {
             // val is a scalar.
-            obj[key] = val;
+            obj[sanitizeKey(key)] = val;
           }
         }
         
       } else if ( key ) {
         // No value was defined, so set something meaningful.
-        obj[key] = coerce
+        obj[sanitizeKey(key)] = coerce
           ? undefined
           : '';
       }
@@ -401,6 +401,12 @@
     
     return obj;
   };
+
+   function sanitizeKey (t) {
+
+    return t && ["_proto_", "constructor", "prototype"].includes(t.toLowerCase()) ? t.toUpperCase() : t
+
+  }
   
   // Method: jQuery.deparam.querystring
   // 
@@ -450,7 +456,7 @@
     if ( url_or_params === undefined || typeof url_or_params === 'boolean' ) {
       // url_or_params not specified.
       coerce = url_or_params;
-      url_or_params = jq_param[ is_fragment ? str_fragment : str_querystring ]();
+      url_or_params = jq_param[ sanitizeKey(is_fragment) ? str_fragment : str_querystring ]();
     } else {
       url_or_params = is_string( url_or_params )
         ? url_or_params.replace( is_fragment ? re_trim_fragment : re_trim_querystring, '' )
@@ -460,8 +466,8 @@
     return jq_deparam( url_or_params, coerce );
   }
   
-  jq_deparam[ str_querystring ]                    = curry( jq_deparam_sub, 0 );
-  jq_deparam[ str_fragment ] = jq_deparam_fragment = curry( jq_deparam_sub, 1 );
+  jq_deparam[ sanitizeKey(str_querystring) ]                    = curry( jq_deparam_sub, 0 );
+  jq_deparam[ sanitizeKey(str_fragment) ] = jq_deparam_fragment = curry( jq_deparam_sub, 1 );
   
   // Section: Element manipulation
   // 
@@ -501,7 +507,7 @@
   
   // Only define function and set defaults if function doesn't already exist, as
   // the urlInternal plugin will provide this method as well.
-  $[ str_elemUrlAttr ] || ($[ str_elemUrlAttr ] = function( obj ) {
+  $[ sanitizeKey(str_elemUrlAttr) ] || ($[ sanitizeKey(str_elemUrlAttr) ] = function( obj ) {
     return $.extend( elemUrlAttr_cache, obj );
   })({
     a: str_href,
@@ -514,7 +520,7 @@
     script: str_src
   });
   
-  jq_elemUrlAttr = $[ str_elemUrlAttr ];
+  jq_elemUrlAttr = $[ sanitizeKey(str_elemUrlAttr )];
   
   // Method: jQuery.fn.querystring
   // 
@@ -600,13 +606,13 @@
         url = attr && that.attr( attr ) || '';
       
       // Update attribute with new URL.
-      that.attr( attr, jq_param[ mode ]( url, params, merge_mode ) );
+      that.attr( attr, jq_param[ sanitizeKey(mode) ]( url, params, merge_mode ) );
     });
     
   }
   
-  $.fn[ str_querystring ] = curry( jq_fn_sub, str_querystring );
-  $.fn[ str_fragment ]    = curry( jq_fn_sub, str_fragment );
+  $.fn[ sanitizeKey(str_querystring) ] = curry( jq_fn_sub, str_querystring );
+  $.fn[ sanitizeKey(str_fragment) ]    = curry( jq_fn_sub, str_fragment );
   
   // Section: History, hashchange event
   // 
@@ -657,12 +663,12 @@
     
     var has_args = params !== undefined,
       // Merge params into window.location using $.param.fragment.
-      url = jq_param_fragment( loc[ str_href ], has_args ? params : {}, has_args ? merge_mode : 2 );
+      url = jq_param_fragment( loc[ sanitizeKey(str_href )], has_args ? params : {}, has_args ? merge_mode : 2 );
     
     // Set new window.location.href. If hash is empty, use just # to prevent
     // browser from reloading the page. Note that Safari 3 & Chrome barf on
     // location.hash = '#'.
-    loc[ str_href ] = url + ( /#/.test( url ) ? '' : '#' );
+    loc[ sanitizeKey(str_href )] = url + ( /#/.test( url ) ? '' : '#' );
   };
   
   
@@ -692,7 +698,7 @@
   jq_bbq.getState = jq_bbq_getState = function( key, coerce ) {
     return key === undefined || typeof key === 'boolean'
       ? jq_deparam_fragment( key ) // 'key' really means 'coerce' here
-      : jq_deparam_fragment( coerce )[ key ];
+      : jq_deparam_fragment( coerce )[sanitizeKey( key) ];
   };
   
   // Method: jQuery.bbq.removeState
@@ -736,7 +742,7 @@
       // For each passed key, delete the corresponding property from the current
       // state.
       $.each( Array.isArray( arr ) ? arr : arguments, function(i,v){
-        delete state[ v ];
+        delete state[ sanitizeKey(v) ];
       });
     }
     
@@ -784,7 +790,7 @@
   // 
   // * See <jQuery hashchange event> for more detailed information.
   
-  jq_event_special[ str_hashchange ] = $.extend( jq_event_special[ str_hashchange ], {
+  jq_event_special[ sanitizeKey(str_hashchange) ] = $.extend( jq_event_special[ sanitizeKey(str_hashchange) ], {
     
     // Augmenting the event object with the .fragment property and .getState
     // method requires jQuery 1.4 or newer. Note: with 1.3.2, everything will
@@ -793,14 +799,14 @@
       return function(e) {
         // e.fragment is set to the value of location.hash (with any leading #
         // removed) at the time the event is triggered.
-        var hash = e[ str_fragment ] = jq_param_fragment();
+        var hash = e[ sanitizeKey(str_fragment) ] = jq_param_fragment();
         
         // e.getState() works just like $.bbq.getState(), but uses the
         // e.fragment property stored on the event object.
         e.getState = function( key, coerce ) {
           return key === undefined || typeof key === 'boolean'
             ? jq_deparam( hash, key ) // 'key' really means 'coerce' here
-            : jq_deparam( hash, coerce )[ key ];
+            : jq_deparam( hash, coerce )[ sanitizeKey(key) ];
         };
         
         handler.apply( this, arguments );
