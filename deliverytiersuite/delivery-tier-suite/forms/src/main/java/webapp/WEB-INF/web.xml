@@ -65,11 +65,13 @@
     <security-constraint>
       <web-resource-collection>
          <web-resource-name>NoSecure</web-resource-name>
-         <url-pattern>/forms/collect/*</url-pattern>
+         <url-pattern>/forms/form/collect/*</url-pattern>
+          <http-method>POST</http-method>
       </web-resource-collection>
         <web-resource-collection>
             <web-resource-name>NoSecure</web-resource-name>
             <url-pattern>/forms/csrf</url-pattern>
+            <http-method>HEAD</http-method>
         </web-resource-collection>
       <user-data-constraint>
          <transport-guarantee>NONE</transport-guarantee>

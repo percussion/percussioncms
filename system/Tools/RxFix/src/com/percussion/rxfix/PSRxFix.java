@@ -44,6 +44,8 @@ import com.percussion.rxfix.dbfixes.PSFixPageCatalog;
 import com.percussion.rxfix.dbfixes.PSFixStaleDataForContentTypes;
 import com.percussion.rxfix.dbfixes.PSFixTranslationRelationships;
 import com.percussion.rxfix.dbfixes.PSFixZerosInRelationshipProperties;
+import com.percussion.server.IPSStartupProcessManager;
+import com.percussion.server.PSStartupProcessManager;
 import com.percussion.server.cache.PSCacheManager;
 import com.percussion.server.cache.PSCacheProxy;
 import org.apache.logging.log4j.LogManager;
@@ -356,7 +358,11 @@ public class PSRxFix
     * @throws Exception if there is a problem setting up to perform the fixes
     * 
     */
-   public void doFix(boolean preview) throws Exception
+   public void doFix(boolean preview) throws Exception{
+      doFix(preview,null);
+   }
+
+   public void doFix(boolean preview, IPSStartupProcessManager startupProcessManager) throws Exception
    {
       for (Entry e : m_entries)
       {
@@ -367,6 +373,10 @@ public class PSRxFix
          IPSFix f = null;
          f = (IPSFix) e.getFix().newInstance();
          f.fix(preview);
+
+         if(startupProcessManager instanceof PSStartupProcessManager && f.removeStartupOnSuccess()){
+            ((PSStartupProcessManager)startupProcessManager).removeStartupProcess(f.getClass().getSimpleName());
+         }
 
          // Get results
          e.setResults(f.getResults());

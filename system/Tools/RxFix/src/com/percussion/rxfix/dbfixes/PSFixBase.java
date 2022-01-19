@@ -136,4 +136,8 @@ public abstract class PSFixBase implements IPSFix
    {
       return m_results;
    }
+
+   public boolean removeStartupOnSuccess(){
+      return false;
+   }
 }
