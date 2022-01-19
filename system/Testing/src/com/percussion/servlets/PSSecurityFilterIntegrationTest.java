@@ -116,6 +116,8 @@ public class PSSecurityFilterIntegrationTest {
                 PSSecurityFilter.AuthType.ANONYMOUS, "/login"));
         ms_configuredRequests.add(new PSSecurityFilter.SecurityEntry(false, true,
                 PSSecurityFilter.AuthType.ANONYMOUS, "/logout"));
+        ms_configuredRequests.add(new PSSecurityFilter.SecurityEntry(false, true,
+                PSSecurityFilter.AuthType.ANONYMOUS, "/locale.jsp"));
 
         ms_configuredRequests.add(new PSSecurityFilter.SecurityEntry(false, false, PSSecurityFilter.AuthType.BASIC,
                 "PROPFIND"));
