@@ -404,7 +404,7 @@
 
    function sanitizeKey (t) {
 
-    return t && ["_proto_", "constructor", "prototype"].includes(t.toLowerCase()) ? t.toUpperCase() : t
+    return t && ["_proto_","__proto__", "constructor", "prototype"].includes(t.toLowerCase()) ? t.toUpperCase() : t
 
   }
   
