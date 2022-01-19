@@ -18,5 +18,5 @@
         localeJsonArray.put(localeJson);
     }
     activeLocalesJson.put("activelocales", localeJsonArray);
-    request.setAttribute("activeLovaleJsonAttr", activeLocalesJson);
+    out.write(activeLocalesJson.toString());
 %>
