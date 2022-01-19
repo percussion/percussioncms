@@ -25,6 +25,7 @@
 package com.percussion.rxfix.dbfixes;
 
 import com.percussion.rxfix.IPSFix;
+import com.percussion.rxfix.PSFixResult;
 import com.percussion.util.PSPreparedStatement;
 import com.percussion.util.PSStringTemplate;
 import com.percussion.utils.jdbc.PSConnectionHelper;
@@ -36,6 +37,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class PSFixFormUrl extends PSFixDBBase implements IPSFix {
+
+    private boolean fixSuccess = false;
     /**
      * Ctor for the class
      *
@@ -71,7 +74,6 @@ public class PSFixFormUrl extends PSFixDBBase implements IPSFix {
                     ms_allForms.expand(m_defDict))) {
 
                 ResultSet results = st.executeQuery();
-                boolean updated = false;
                 while (results.next()) {
                     int contentid = results.getInt("CONTENTID");
                     int revisionid = results.getInt("REVISIONID");
@@ -106,13 +108,15 @@ public class PSFixFormUrl extends PSFixDBBase implements IPSFix {
                     ps2.setInt(2, contentid);
                     ps2.setInt(3, revisionid);
                     ps2.executeUpdate();
-                    updated = true;
                 }
-            } catch (PSStringTemplate.PSStringTemplateException e) {
-                logFailure(null, "Update form url failed with error : " + e.getLocalizedMessage());
             }
+            log(PSFixResult.Status.SUCCESS,null,"Forms Urls Fixed");
+            fixSuccess=true;
         }
 
+    }
+    public boolean removeStartupOnSuccess(){
+        return fixSuccess;
     }
 
     @Override
