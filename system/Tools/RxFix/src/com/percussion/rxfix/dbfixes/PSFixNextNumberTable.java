@@ -27,7 +27,6 @@ import com.percussion.cms.IPSConstants;
 import com.percussion.rxfix.IPSFix;
 import com.percussion.services.guidmgr.IPSGuidManager;
 import com.percussion.services.guidmgr.PSGuidManagerLocator;
-import com.percussion.services.guidmgr.impl.PSGuidManager;
 import com.percussion.util.PSPreparedStatement;
 import com.percussion.util.PSStringTemplate;
 import com.percussion.utils.jdbc.PSConnectionDetail;
@@ -150,9 +149,15 @@ public class PSFixNextNumberTable extends PSFixDBBase implements IPSFix {
             innext = PSPreparedStatement
                     .getPreparedStatement(c, ms_insertTemplate.expand(m_defDict));
 
+            String schema = details.getOrigin();
+            //THis is the case of MySql 8
+            if(schema == null || "".equals(schema)){
+                schema = details.getDatabase();
+            }
+
             for (int i = 0; i < ms_nextNumberInfo.length; i += 3) {
                 String keycol = ms_nextNumberInfo[i];
-                table = details.getOrigin() + "." + ms_nextNumberInfo[i + 1];
+                table = schema + "." + ms_nextNumberInfo[i + 1];
                 String nnkey = ms_nextNumberInfo[i + 2];
 
                 logDebug(null, "Checking next number key " + nnkey);
