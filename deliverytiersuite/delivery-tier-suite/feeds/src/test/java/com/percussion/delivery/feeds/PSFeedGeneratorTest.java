@@ -26,15 +26,12 @@ package com.percussion.delivery.feeds;
 import com.percussion.delivery.feeds.data.IPSFeedDescriptor;
 import com.percussion.delivery.feeds.data.PSFeedItem;
 import junit.framework.TestCase;
-import org.apache.commons.validator.routines.InetAddressValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Properties;
 
 /**
  * @author erikserating
@@ -208,6 +205,7 @@ public class PSFeedGeneratorTest extends TestCase
         
     }
 
+    //TODO: This test doesn't actually validate ip4 vs ipv6
     public void testGenerateFeedHandlingIPV4IPV6() throws Exception{
         TestDescriptor desc = new TestDescriptor();
         desc.setName("Test Feed");
@@ -249,37 +247,8 @@ public class PSFeedGeneratorTest extends TestCase
 
 
 
-        Properties props1 = new Properties();
-        String path = System.getProperty("user.dir");
-
-        try(InputStream in =  PSFeedGeneratorTest.class.getResourceAsStream(PERC_FEEDS_PROPERTIES)) {
-            props1.load(in);
-        }
-
-        String feedsIp = props1.getProperty("rss.feeds.ip");
-        if(feedsIp==null || feedsIp.isEmpty()){
-            feedsIp=FEEDS_IP_DEFAULT;
-        }else{
-            feedsIp = feedsIp.trim();
-        }
-
-        InetAddressValidator ipValidator = new InetAddressValidator();
-        boolean isValidIp = ipValidator.isValid(feedsIp);
-        boolean isIPV4Address = false;
-        boolean isIPV6Address = false;
-        if(isValidIp){
-            if(ipValidator.isValidInet4Address(feedsIp)){
-                isIPV4Address = true;
-            }else if(ipValidator.isValidInet6Address(feedsIp)){
-                isIPV6Address = true;
-            }else{
-                feedsIp = FEEDS_IP_DEFAULT;
-            }
-        }else{
-            feedsIp = FEEDS_IP_DEFAULT;
-        }
-
         PSFeedGenerator generator = new PSFeedGenerator();
+
         String feed = null;
         feed= generator.makeFeedContent(desc,"www.google.com",items);
 
