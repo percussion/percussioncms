@@ -128,6 +128,7 @@
             {
                 var pubEntry = pubHistory[i];
                 var pubDate = new Date(pubEntry.publishedDate);
+                var timeStamp = new Date(pubEntry.publishedDate).getTime(); //This timestamp will be used to set the data-order attribute of datatable to sort it as date on basis of timestamp
                 var pubDateParts = $.perc_utils.splitDateTime(pubDate);
                 var pubDateDate = pubDateParts.date;
                 var pubDateTime = pubDateParts.time;
@@ -141,7 +142,7 @@
                     "<td style='vertical-align: middle;'><div class='data-cell perc-ellipsis perc-tooltip-container'>" + pubEntry.server + "<div class='perc-tooltip'>" + pubEntry.server + "</div></div></td>" +
                     "<td style='vertical-align: middle;'><div class='data-cell perc-ellipsis perc-tooltip-container'>" + pubEntry.location + "<div class='perc-tooltip'>" + pubEntry.location + "</div></div></td>" +
                     "<td style='vertical-align: middle;'><div class='data-cell perc-ellipsis'>" + pubEntry.revisionId + "</div></td>" +
-                    "<td style='vertical-align: middle;'><div class='data-cell perc-ellipsis'>" + pubDateDate + " " + pubDateTime + "</div></td>" +
+                    "<td data-order ='"+timeStamp+"' style='vertical-align: middle;'><div class='data-cell perc-ellipsis'>" + pubDateDate + " " + pubDateTime + "</div></td>" +
                     "<td style='vertical-align: middle;'><div class='data-cell perc-ellipsis'>" + pubEntry.operation + "</div></td>" +
                     "<td style='vertical-align: middle;'><div class='data-cell perc-ellipsis' title='" + errorMsg + "'>" + pubEntry.status + "</div></td>" +
                     "</tr>");
