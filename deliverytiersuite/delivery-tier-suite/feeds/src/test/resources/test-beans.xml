@@ -47,7 +47,6 @@
             one defined wins -->
          <list>
             <value>perc-datasources.properties</value>
-            <value>feeds.properties</value>
          </list>
       </property>
       <!-- Local properties to default to if no file exists or the properties 
@@ -110,10 +109,6 @@
       <property name="sessionFactory">
          <ref bean="feedsSessionFactory" />
       </property>
-   </bean>
-
-   <bean id="feedsService" class="com.percussion.delivery.feeds.services.PSFeedService" lazy-init="true">
-      <property name="rssFeedsIP" value="${rss.feeds.ip}" />
    </bean>
 
    <bean id="httpClient"
