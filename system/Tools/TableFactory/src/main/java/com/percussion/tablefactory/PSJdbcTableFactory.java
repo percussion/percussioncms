@@ -476,7 +476,7 @@ public class PSJdbcTableFactory
             PSJdbcTableFactoryException.formatSqlException(e)};
          PSJdbcTableFactoryException ex = new PSJdbcTableFactoryException(
             errorCode, args, e);
-         logger.logMessage(ex.getLocalizedMessage());
+         logger.logMessage(PSExceptionUtils.getMessageForLog(ex));
          throw ex;
       }
       finally

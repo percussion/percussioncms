@@ -23,6 +23,7 @@
  */
 package com.percussion.rx.delivery.impl;
 
+import com.percussion.cms.IPSConstants;
 import com.percussion.error.PSExceptionUtils;
 import com.percussion.rx.delivery.IPSDeliveryResult;
 import com.percussion.rx.delivery.IPSDeliveryResult.Outcome;
@@ -56,7 +57,7 @@ public class PSFtpDeliveryHandler extends PSBaseFtpDeliveryHandler
    /**
     * Logger.
     */
-   private static final Logger ms_log = LogManager.getLogger(PSFtpDeliveryHandler.class);
+   private static final Logger ms_log = LogManager.getLogger(IPSConstants.PUBLISHING_LOG);
 
    /**
     * Holds the per thread ftp client. Initialized in {@link #commit(long)} and

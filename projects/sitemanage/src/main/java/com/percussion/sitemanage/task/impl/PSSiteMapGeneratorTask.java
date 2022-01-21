@@ -1,14 +1,26 @@
 package com.percussion.sitemanage.task.impl;
 
+import com.percussion.cms.IPSConstants;
 import com.percussion.extension.IPSExtensionDef;
 import com.percussion.extension.PSExtensionException;
+import com.percussion.pubserver.IPSPubServerService;
 import com.percussion.rx.publisher.IPSEditionTask;
 import com.percussion.rx.publisher.IPSEditionTaskStatusCallback;
+import com.percussion.services.publisher.IPSContentList;
 import com.percussion.services.publisher.IPSEdition;
+import com.percussion.services.publisher.IPSEditionContentList;
+import com.percussion.services.publisher.IPSPubItemStatus;
+import com.percussion.services.publisher.IPSPublisherService;
+import com.percussion.services.publisher.IPSSiteItem;
+import com.percussion.services.publisher.data.PSEditionType;
 import com.percussion.services.sitemgr.IPSSite;
+import com.percussion.share.spring.PSSpringWebApplicationContextUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -16,6 +28,10 @@ import java.util.Map;
  */
 public class PSSiteMapGeneratorTask implements IPSEditionTask {
 
+    private static final Logger log = LogManager.getLogger(IPSConstants.PUBLISHING_LOG);
+
+    IPSPublisherService publisherService;
+    IPSPubServerService pubServerService;
 
     /**
      * Perform the task, either before or after the edition is run, depending on
@@ -59,6 +75,45 @@ public class PSSiteMapGeneratorTask implements IPSEditionTask {
     @Override
     public void perform(IPSEdition edition, IPSSite site, Date startTime, Date endTime, long jobId, long duration, boolean success, Map<String, String> params, IPSEditionTaskStatusCallback status) throws Exception {
 
+        List<IPSEditionContentList> contentLists = publisherService.loadEditionContentLists(edition.getGUID());
+
+        if(!success){
+            log.warn("Skipping sitemap generation for failed job: {}", jobId);
+            return;
+        }
+
+        //Detect if this is a "normal" edition - publish now, auto publish, and incremental should always be skipped.
+        if(contentLists != null && ! contentLists.isEmpty()){
+            for(IPSEditionContentList ecl : contentLists){
+                IPSContentList cl = publisherService.loadContentList(ecl.getContentListId());
+                if(cl.getType() == IPSContentList.Type.INCREMENTAL){
+                    //If this is an incremental edition we want to skip generation
+                    log.warn("Skipping sitemap generation for incremental edition. ");
+                    return;
+                }
+                if(cl.getEditionType().equals(PSEditionType.AUTOMATIC)){
+                    log.warn("Skipping sitemap generation for automatic edition.");
+                    return;
+                }
+                if(cl.getGenerator().equalsIgnoreCase("Java/global/percussion/system/sys_SelectedItemsGenerator")){
+                    log.warn("Skipping sitemap generation for Publish Now edition.");
+                    return;
+                }
+            }
+        }
+
+        //Get the list of published items.
+        Iterable<IPSPubItemStatus> it =  publisherService.findPubItemStatusForJobIterable(jobId);
+
+        while(it.iterator().hasNext()){
+            IPSPubItemStatus s = it.iterator().next();
+
+            if(s.getStatus().equals(IPSSiteItem.Status.SUCCESS)){
+                s.getOperation()
+            }else{
+
+            }
+        }
     }
 
     /**
@@ -93,6 +148,6 @@ public class PSSiteMapGeneratorTask implements IPSEditionTask {
      */
     @Override
     public void init(IPSExtensionDef def, File codeRoot) throws PSExtensionException {
-
+        PSSpringWebApplicationContextUtils.injectDependencies(this);
     }
 }
