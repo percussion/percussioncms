@@ -6933,7 +6933,27 @@ The result doc has the following DTD:
 		</PSXExtensionParamDef>
 		<suppliedResources/>
 	</Extension>
-	<Extension name="perc_PushFeedDescriptorTask" context="global/percussion/task" handler="Java" categorystring="editiontask" deprecated="no">
+   <Extension name="perc_SitemapGeneratorTask" context="global/percussion/task" handler="Java" categorystring="editiontask" deprecated="no">
+      <initParam name="com.percussion.user.description">
+         Generates a Sitemap based on parameters
+      </initParam>
+      <initParam name="com.percussion.extension.version">1</initParam>
+      <initParam name="className">com.percussion.sitemanage.task.impl.PSSiteMapGeneratorTask</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <interface name="com.percussion.rx.publisher.IPSEditionTask"/>
+      <PSXExtensionParamDef id="0">
+         <name>generateIndex</name>
+         <dataType>java.lang.String</dataType>
+         <description>Should a sitemap index be generated? Useful for large sites.</description>
+      </PSXExtensionParamDef>
+      <PSXExtensionParamDef id="0">
+         <name>compress</name>
+         <dataType>java.lang.Boolean</dataType>
+         <description>Should the sitemap be compressed?</description>
+      </PSXExtensionParamDef>
+      <suppliedResources/>
+   </Extension>
+   <Extension name="perc_PushFeedDescriptorTask" context="global/percussion/task" handler="Java" categorystring="editiontask" deprecated="no">
       <initParam name="com.percussion.user.description">
       Pushes feed descriptors to the feed service on the delivery tier.
       </initParam>

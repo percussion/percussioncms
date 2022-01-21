@@ -23,8 +23,6 @@
  */
 package com.percussion.rx.delivery.impl;
 
-import static org.apache.commons.lang.Validate.notEmpty;
-
 import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.ConfigRepository;
 import com.jcraft.jsch.JSch;
@@ -33,6 +31,10 @@ import com.jcraft.jsch.OpenSSHConfig;
 import com.jcraft.jsch.Session;
 import com.jcraft.jsch.SftpATTRS;
 import com.jcraft.jsch.SftpException;
+import com.percussion.server.PSServer;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
@@ -40,13 +42,9 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Properties;
 import java.util.Vector;
 
-import com.percussion.server.PSServer;
-import org.apache.commons.lang.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import static org.apache.commons.lang.Validate.notEmpty;
 
 /**
  * A wrapper for the {@link ChannelSftp} class. This code was integrated from 

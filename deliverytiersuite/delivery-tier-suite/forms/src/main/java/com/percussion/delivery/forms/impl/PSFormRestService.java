@@ -24,6 +24,7 @@
 package com.percussion.delivery.forms.impl;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.percussion.delivery.forms.IPSFormRestService;
 import com.percussion.delivery.forms.IPSFormService;
 import com.percussion.delivery.forms.data.IPSFormData;
@@ -718,6 +719,19 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
     public Response updateOldSiteEntries(String prevSiteName, String newSiteName) {
         log.debug("Nothing to do in forms service for site: {}", prevSiteName);
         return Response.status(Response.Status.NO_CONTENT).build();
+    }
+
+    private void test(){
+        // create object mapper instance
+        ObjectMapper mapper = new ObjectMapper();
+
+        // convert JSON file to map
+        Map<?, ?> map = mapper.readValue("https://apiurl"), Map.class);
+
+        // print map entries
+        for (Map.Entry<?, ?> entry : map.entrySet()) {
+            System.out.println(entry.getKey() + "=" + entry.getValue());
+        }
     }
 }
 
