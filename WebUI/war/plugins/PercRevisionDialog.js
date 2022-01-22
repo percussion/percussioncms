@@ -137,6 +137,7 @@
             {
                 var revdata = revisions[i];
                 var lastModifiedDate = new Date(revdata.lastModifiedDate);
+                var timeStamp = new Date(revdata.lastModifiedDate).getTime(); //This timestamp will be used to set the data-order attribute of datatable to sort it as date on basis of timestamp
                 var lastModifiedDateParts = $.perc_utils.splitDateTime(revdata.lastModifiedDate);
                 var lastModifiedDateDate = lastModifiedDateParts.date;
                 var lastModifiedDateTime = lastModifiedDateParts.time;
@@ -155,7 +156,7 @@
                     "<tr>" +
                     "<td style='vertical-align: middle'><div class='data-cell perc-ellipsis'>" + revdata.revId + "</div></td>" +
                     "<td style='vertical-align: middle'><div for='" + revdata.status + "' class='data-cell perc-ellipsis'>" + revdata.status + "</div></td>" +
-                    "<td style='vertical-align: middle''><div class='data-cell perc-ellipsis'>" + lastModifiedDateDate + " " + lastModifiedDateTime + "</div></td>" +
+                    "<td data-order ='"+timeStamp+"' style='vertical-align: middle''><div class='data-cell perc-ellipsis'>" + lastModifiedDateDate + " " + lastModifiedDateTime + "</div></td>" +
                     "<td style='vertical-align: middle'><div class='data-cell perc-ellipsis'>" + revdata.lastModifier + "</div></td>" +
                     "<td style='vertical-align: middle'><div class='data-cell perc-ellipsis'>" + lastCol + "</div></td>" +
                     "</tr>");

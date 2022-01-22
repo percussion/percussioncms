@@ -361,9 +361,15 @@ public class PSStringTemplate
       else
       {
          Object val = dict.lookup(var);
-         if (val != null)
+         if (val != null && !"".equals(val))
          {
             rval.append(val.toString());
+            //For MySql 8 "schema" is null or "" so use db instead.
+         }else if("schema".equals(var) && (val == null || "".equals(val))){
+            val = dict.lookup("db");
+            if(val != null){
+               rval.append(val.toString());
+            }
          }
       }
       return end + m_endSequence.length();

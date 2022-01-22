@@ -127,7 +127,7 @@
                            $('#edit-widget-content').width($(this).parent().width()); 
                            $('#edit-widget-content-frame').height($(this).parent().height()-120); 
                            $('#edit-widget-content-frame').width($(this).parent().width()-3); 
-                           maximize = $( '<a id="ui-dialog-titlebar-resize" class="ui-dialog-titlebar-resize ui-corner-all" role="button" aria-label="full screen" href="#"><i class="icon-resize-full"/></a>');
+                           maximize = $( '<a id="ui-dialog-titlebar-resize" class="ui-dialog-titlebar-resize ui-corner-all" role="button" aria-label="full screen" href="#"><i class="fas fa-expand"/></a>');
                            maximized=false;
                            $(this).parent().find('.ui-dialog-title').after(maximize)
                            
@@ -227,7 +227,7 @@
                            $('#edit-widget-content').width(saved_width); 
                            $('#edit-widget-content-frame').height(saved_height-120); 
                            $('#edit-widget-content-frame').width(saved_width-3); 
-                             $(this).find(".icon-resize-small").addClass("icon-resize-full").removeClass('icon-resize-small');
+                             $(this).find(".fa-compress").addClass("fas fa-expand").removeClass('fa-compress');
                             $(this).find(".ui-dialog-titlebar-resize").attr('aria-label',"exit full screen");
                             dialog.dialog("option","draggable", true );
                              dialog.dialog("option","resizable", true );
@@ -250,11 +250,11 @@
                           width: $(window).width()-15,
                           
                    }, 200,  function() {
-                           $('#edit-widget-content').height($(this).parent().height()-120); 
+                           $('#edit-widget-content').height($(this).height()-120);
                            $('#edit-widget-content').width($(this).parent().width()); 
-                           $('#edit-widget-content-frame').height($(this).parent().height()-120); 
+                           $('#edit-widget-content-frame').height($(this).height()-120);
                            $('#edit-widget-content-frame').width($(this).parent().width()-5); 
-                             $(this).find(".icon-resize-full").addClass("icon-resize-small").removeClass('icon-resize-full');
+                             $(this).find(".fa-expand").addClass("fas fa-compress").removeClass('fa-expand');
                          
                             $(this).find(".ui-dialog-titlebar-resize").attr('aria-label',"full screen");
                             dialog.dialog("option","draggable", false );

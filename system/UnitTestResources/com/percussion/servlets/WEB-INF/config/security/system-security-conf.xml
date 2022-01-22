@@ -10,7 +10,8 @@
    <path authType="anonymous">/sys_deploymentHandler</path>
    <path authType="anonymous">/login</path>
    <path authType="anonymous">/logout</path>
-   
+   <path authType="anonymous">/locale.jsp</path>
+
    <method authType="basic">PROPFIND</method>
    <method authType="anonymous">PROPPATCH</method>   
 </securityConfiguration>

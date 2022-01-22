@@ -134,9 +134,8 @@ public class PSCataloger
       if (conn == null)
          throw new IllegalArgumentException("conn obj null");
 
-      synchronized (m_conn) {
          m_conn = conn;
-      }
+
    }
 
    /**
