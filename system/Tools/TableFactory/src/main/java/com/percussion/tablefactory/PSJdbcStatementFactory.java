@@ -887,9 +887,11 @@ public class PSJdbcStatementFactory
       do {
          File binaryFile = new File(bucket, hash);
          if (binaryFile.exists()) {
-            try(FileInputStream is = new FileInputStream(binaryFile)) {
-               return new PSJdbcBinaryColumnValue(is, binaryFile.length());
-            }
+            //Do not wrap this in a try with resources statement
+            //the JDBC driver needs the stream open in order to process blob insert/update
+            FileInputStream is = new FileInputStream(binaryFile);
+            return new PSJdbcBinaryColumnValue(is, binaryFile.length());
+
          }
 
          bucket = new File(dbmsDef.getBinaryStorageLocation(), PSJdbcImportExportHelper.BINARY_DATA_BUCKET + "_" + count++);

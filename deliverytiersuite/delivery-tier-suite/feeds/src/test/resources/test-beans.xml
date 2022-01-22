@@ -28,11 +28,8 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:tx="http://www.springframework.org/schema/tx"
-       xmlns:context="http://www.springframework.org/schema/context"
-       xsi:schemaLocation="
-      http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-      http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
-      http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+      http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
 
 
    <bean id="propertyPlaceholderProps"
@@ -50,7 +47,6 @@
             one defined wins -->
          <list>
             <value>perc-datasources.properties</value>
-            <value>feeds.properties</value>
          </list>
       </property>
       <!-- Local properties to default to if no file exists or the properties 
@@ -74,6 +70,7 @@
             <prop key="hibernate.query.substitutions">true 'T', false 'F'</prop>
             <prop key="tenant.cache.ttl">1440</prop>
             <prop key="tenant.cache.reauth">true</prop>
+            <prop key="rss.feeds.ip">127.0.0.1</prop>
          </props>
       </property>
    </bean>

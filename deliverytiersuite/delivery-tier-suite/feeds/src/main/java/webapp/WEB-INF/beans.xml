@@ -77,6 +77,7 @@
                 <prop key="encryption.type">ENC</prop>
                 <!-- default properties for Spring Security -->
                 <prop key="contentSecurityPolicy">default-src 'self' *;</prop>
+                <prop key="rss.feeds.ip">127.0.0.1</prop>
             </props>
         </property>
     </bean>
@@ -113,7 +114,8 @@
         </property>
     </bean>
 
-    <bean id="FeedsService" class="com.percussion.delivery.feeds.services.PSFeedService" lazy-init="true">
+    <bean id="feedsService" class="com.percussion.delivery.feeds.services.PSFeedService" lazy-init="true">
+        <property name="rssFeedsIP" value="${rss.feeds.ip}" />
     </bean>
 
     <bean id="feedsDao" class="com.percussion.delivery.feeds.services.rdbms.PSFeedDao"

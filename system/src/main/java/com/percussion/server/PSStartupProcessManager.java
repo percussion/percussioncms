@@ -28,6 +28,7 @@ import com.percussion.services.notification.IPSNotificationService;
 import com.percussion.services.notification.PSNotificationEvent;
 import com.percussion.services.notification.PSNotificationEvent.EventType;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -106,6 +107,15 @@ public class PSStartupProcessManager implements IPSNotificationListener, IPSStar
       }
    }
 
+   public void removeStartupProcess(String process){
+      Properties startupProps = getStartupProperties();
+      if(startupProps != null && !StringUtils.isEmpty(process)){
+         String rxFix = startupProps.getProperty("RXFIX");
+         rxFix = rxFix.replace(process,"");
+         startupProps.put("RXFIX",rxFix);
+         saveStartupProperties(startupProps);
+      }
+   }
 
    private void saveStartupProperties(Properties startupProps)
    {

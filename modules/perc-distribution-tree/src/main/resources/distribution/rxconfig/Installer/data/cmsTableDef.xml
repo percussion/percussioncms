@@ -1522,13 +1522,11 @@
                 <allowsnull>yes</allowsnull>
             </column>
             <column name="BASEURL" >
-                <jdbctype>VARCHAR</jdbctype>
-                <size>2100</size>
+                <jdbctype>CLOB</jdbctype>
                 <allowsnull>yes</allowsnull>
             </column>
             <column name="ROOT">
-                <jdbctype>VARCHAR</jdbctype>
-                <size>2100</size>
+                <jdbctype>CLOB</jdbctype>
                 <allowsnull>yes</allowsnull>
             </column>
             <column name="UNPUBLISH_FLAGS">
@@ -1592,28 +1590,23 @@
                 <allowsnull>yes</allowsnull>
             </column>
             <column name="LOGIN_PAGE">
-                <jdbctype>VARCHAR</jdbctype>
-                <size>2100</size>
+                <jdbctype>CLOB</jdbctype>
                 <allowsnull>yes</allowsnull>
             </column>
             <column name="REGISTRATION_PAGE">
-                <jdbctype>VARCHAR</jdbctype>
-                <size>2100</size>
+                <jdbctype>CLOB</jdbctype>
                 <allowsnull>yes</allowsnull>
             </column>
             <column name="REGISTRATION_CONFIRMATION_PAGE">
-                <jdbctype>VARCHAR</jdbctype>
-                <size>2100</size>
+                <jdbctype>CLOB</jdbctype>
                 <allowsnull>yes</allowsnull>
             </column>
             <column name="RESET_PAGE">
-                <jdbctype>VARCHAR</jdbctype>
-                <size>2100</size>
+                <jdbctype>CLOB</jdbctype>
                 <allowsnull>yes</allowsnull>
             </column>
             <column name="RESET_REQUEST_PASSWORD_PAGE">
-                <jdbctype>VARCHAR</jdbctype>
-                <size>2100</size>
+                <jdbctype>CLOB</jdbctype>
                 <allowsnull>yes</allowsnull>
             </column>
             <column name="DEFAULT_PUBSERVERID">

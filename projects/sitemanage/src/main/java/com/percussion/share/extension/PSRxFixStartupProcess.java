@@ -46,6 +46,8 @@ public class PSRxFixStartupProcess implements IPSStartupProcess
 {
     private static final Logger log = LogManager.getLogger(IPSConstants.SERVER_LOG);
 
+    IPSStartupProcessManager startupProcessManager;
+
     @Override
     public void doStartupWork(Properties startupProps) throws Exception
     {
@@ -60,7 +62,8 @@ public class PSRxFixStartupProcess implements IPSStartupProcess
 
         PSRxFix fixer = getFixer(fixes);
 
-        fixer.doFix(false);
+        fixer.doFix(false,startupProcessManager);
+
 
         List<PSRxFix.Entry> entries = fixer.getEntries();
 
@@ -130,7 +133,11 @@ public class PSRxFixStartupProcess implements IPSStartupProcess
     @Override
     public void setStartupProcessManager(IPSStartupProcessManager mgr)
     {
-        mgr.addStartupProcess(this);
+        if(mgr != null ){
+            startupProcessManager = mgr;
+            mgr.addStartupProcess(this);
+        }
+
     }
 
 }
