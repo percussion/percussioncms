@@ -57,7 +57,6 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.security.RolesAllowed;
-import javax.servlet.ServletContext;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -80,8 +79,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URI;
@@ -92,7 +89,6 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Properties;
 import java.util.Set;
 import java.util.TimeZone;
 
@@ -118,6 +114,15 @@ public class PSFeedService extends PSAbstractRestService implements IPSFeedsRest
 
     }
 
+    public String getRssFeedsIP() {
+        return rssFeedsIP;
+    }
+
+    public void setRssFeedsIP(String rssFeedsIP) {
+        this.rssFeedsIP = rssFeedsIP;
+    }
+
+    private String rssFeedsIP;
 
     @HEAD
     @Path("/csrf")
@@ -140,7 +145,7 @@ public class PSFeedService extends PSAbstractRestService implements IPSFeedsRest
 
     private final String[] PERC_FEEDS_SERVICE =
     {"feeds"};
-    private static final String PERC_FEEDS_PROPERTIES = "/WEB-INF/feeds.properties";
+
     private static final String FEEDS_IP_DEFAULT="127.0.0.1";
 
     /**
@@ -227,7 +232,7 @@ public class PSFeedService extends PSAbstractRestService implements IPSFeedsRest
                 	}
                 	feed = generateFeed(desc, hostname, httpRequest);
                 }
-                catch (FeedException | IOException e)
+                catch (FeedException e)
                 {
                 	log.error("Unexpected exception generating RSS feed: {}",
                             PSExceptionUtils.getMessageForLog(e));
@@ -306,7 +311,7 @@ public class PSFeedService extends PSAbstractRestService implements IPSFeedsRest
             decodedUrl = stripNonHttpProtocols(decodedUrl);
 
             if(StringUtils.isEmpty(decodedUrl)){
-                //this is the case for initial time when RSS Widget is added to the page, thuse returning empty String
+                //this is the case for initial time when RSS Widget is added to the page, thus returning empty String
                return feeds;
             }
         }catch(PSEncryptionException e){
@@ -408,7 +413,7 @@ public class PSFeedService extends PSAbstractRestService implements IPSFeedsRest
         }
         
         if(log.isDebugEnabled()){
-    		log.debug("Descriptors that will be deleted are : {} " , deletes.toString());
+    		log.debug("Descriptors that will be deleted are : {} " , deletes);
     	}
         
         feedDao.saveDescriptors(descriptors.getDescriptors());
@@ -429,32 +434,28 @@ public class PSFeedService extends PSAbstractRestService implements IPSFeedsRest
      * @return the feed xml, may be <code>null</code>.
      * @throws FeedException if any error occurs while generating the feed.
      */
-    private String generateFeed(IPSFeedDescriptor desc, String hostName, HttpServletRequest httpRequest) throws FeedException, IOException {
-        Properties props1 = new Properties();
-        ServletContext contextPath = httpRequest.getServletContext();
-        InputStream in = contextPath.getResourceAsStream(PERC_FEEDS_PROPERTIES);
-        props1.load(in);
-        String feedsIp = props1.getProperty("rss.feeds.ip");
-        if(feedsIp==null || feedsIp.isEmpty()){
-            feedsIp=FEEDS_IP_DEFAULT;
+    private String generateFeed(IPSFeedDescriptor desc, String hostName, HttpServletRequest httpRequest) throws FeedException {
+
+        if(rssFeedsIP==null || rssFeedsIP.isEmpty()){
+            rssFeedsIP=FEEDS_IP_DEFAULT;
         }else{
-            feedsIp = feedsIp.trim();
+            rssFeedsIP = rssFeedsIP.trim();
         }
 
         InetAddressValidator ipValidator = new InetAddressValidator();
-        boolean isValidIp = ipValidator.isValid(feedsIp);
+        boolean isValidIp = ipValidator.isValid(rssFeedsIP);
         boolean isIPV4Address = false;
         boolean isIPV6Address = false;
         if(isValidIp){
-            if(ipValidator.isValidInet4Address(feedsIp)){
+            if(ipValidator.isValidInet4Address(rssFeedsIP)){
                 isIPV4Address = true;
-            }else if(ipValidator.isValidInet6Address(feedsIp)){
+            }else if(ipValidator.isValidInet6Address(rssFeedsIP)){
                 isIPV6Address = true;
             }else{
-                feedsIp = FEEDS_IP_DEFAULT;
+                rssFeedsIP = FEEDS_IP_DEFAULT;
             }
         }else{
-            feedsIp = FEEDS_IP_DEFAULT;
+            rssFeedsIP = FEEDS_IP_DEFAULT;
         }
         // Call the metadata service with the query to get page listing
         PSFeedGenerator generator = new PSFeedGenerator();
@@ -469,11 +470,11 @@ public class PSFeedService extends PSAbstractRestService implements IPSFeedsRest
             client = httpClient.getSSLClient();
             uri = new URI(desc.getLink());
             if(isIPV4Address){
-                url = httpRequest.getScheme()+"://"+feedsIp+":"+httpRequest.getLocalPort();
+                url = httpRequest.getScheme()+"://"+rssFeedsIP+":"+httpRequest.getLocalPort();
             }else if(isIPV6Address){
-                url = httpRequest.getScheme()+"://["+feedsIp+"]:"+httpRequest.getLocalPort();
+                url = httpRequest.getScheme()+"://["+rssFeedsIP+"]:"+httpRequest.getLocalPort();
             }else{
-                url = httpRequest.getScheme()+"://"+feedsIp+":"+httpRequest.getLocalPort();
+                url = httpRequest.getScheme()+"://"+rssFeedsIP+":"+httpRequest.getLocalPort();
             }
 
             protocol = uri.getScheme() + "://";
