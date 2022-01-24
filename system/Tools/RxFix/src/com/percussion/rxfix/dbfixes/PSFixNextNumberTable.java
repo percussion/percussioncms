@@ -151,7 +151,7 @@ public class PSFixNextNumberTable extends PSFixDBBase implements IPSFix {
 
             String schema = details.getOrigin();
             //THis is the case of MySql 8
-            if(schema == null || "".equals(schema)){
+            if("mysql".equalsIgnoreCase(details.getDriver()) && (schema == null || "".equals(schema))){
                 schema = details.getDatabase();
             }
 

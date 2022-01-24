@@ -45,7 +45,6 @@ import com.percussion.server.PSResponse;
 import com.percussion.server.PSServer;
 import com.percussion.server.PSUserSession;
 import com.percussion.util.IPSHtmlParameters;
-import com.percussion.util.PSBase64Decoder;
 import com.percussion.util.PSCharSets;
 import com.percussion.utils.io.PathUtils;
 import com.percussion.utils.request.PSRequestInfo;
@@ -171,8 +170,6 @@ public class PSDesignerConnectionHandler implements IPSRequestHandler
 
 
       }
-      else
-         loginPw = PSBase64Decoder.decode(loginPw);
 
       Map<String, Object> params = request.getParameters();
       if (params == null) {
