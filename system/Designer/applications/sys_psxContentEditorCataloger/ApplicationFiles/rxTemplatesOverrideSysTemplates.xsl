@@ -1,6 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:psxctl="urn:percussion.com/control"
                 xmlns="http://www.w3.org/1999/xhtml" xmlns:exslt="http://exslt.org/common">
+   <xsl:output method="xml" indent="yes" version="1.0" encoding="UTF-8" standalone="yes"/>
    <xsl:variable name="rxroot" select="/"/>
    <xsl:variable name="systemp" select="document('file:sys_resources/stylesheets/sys_Templates.xsl')/*"/>
    <xsl:template match="/">
