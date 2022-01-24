@@ -522,6 +522,7 @@
     <servlet-mapping>
         <servlet-name>RhythmyxServlet</servlet-name>
         <url-pattern>/Rhythmyx/*</url-pattern>
+        <url-pattern>/Designer/*</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>

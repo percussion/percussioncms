@@ -365,7 +365,7 @@ public class PSStringTemplate
          {
             rval.append(val.toString());
             //For MySql 8 "schema" is null or "" so use db instead.
-         }else if("schema".equals(var) && (val == null || "".equals(val))){
+         }else if("mysql".equalsIgnoreCase(dict.lookup("driver")) && "schema".equals(var) && (val == null || "".equals(val))){
             val = dict.lookup("db");
             if(val != null){
                rval.append(val.toString());

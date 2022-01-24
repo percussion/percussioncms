@@ -392,28 +392,14 @@ public class PSDesignerConnection
       Element root = PSXmlDocumentBuilder.createRoot(reqDoc, "PSXDesignOpen");
 
       PSXmlDocumentBuilder.addElement(reqDoc, root, "loginid", m_loginId);
-
-      // fix bug #Rx-99-12-0016
-      if (!m_loginPwIsEncrypted)
-      {
-         String encPw = makeLasagna(m_loginPw);
-         if (encPw != null)
-         {
-            m_loginPw = encPw;
-            m_loginPwIsEncrypted = true;
-         }
-         else
-            m_loginPw = "";
-      }
-
       PSXmlDocumentBuilder.addElement(reqDoc, root, "loginpw", m_loginPw);
-      PSXmlDocumentBuilder.addElement(reqDoc, root, "encrypted", "yes");
       PSXmlDocumentBuilder.addElement(reqDoc, root, PROPERTY_LOCALE, m_locale);
 
       // this means we are reconnecting, so reuse the session id we have
       if (isConnected())
          PSXmlDocumentBuilder.addElement(reqDoc, root, "sessid", m_sessId);
 
+      // if it's not an error, we should now have our username
       // and send it through the processor
       Document respDoc = makeRequest(reqDoc);
 
@@ -753,314 +739,282 @@ public class PSDesignerConnection
          m_requestLine = "POST " + url;
       }
 
-      Socket sock = null;
-      OutputStream out = null;
-      InputStream in = null;
-      PSInputStreamReader reader = null;
+      try(Socket sock = createSocket(m_host, m_port, m_useSSL)) {
 
-      try {
+            try (OutputStream out = sock.getOutputStream()) {
+               try (InputStream in = sock.getInputStream()) {
 
-         sock = createSocket(m_host, m_port, m_useSSL);
+                  // the request line and headers must be in US-ASCII format
+                  // The legal US-ASCII characters in URLs are also a subset of
+                  // UTF-8, and there are proposals to make URLs UTF-8, so
+                  // we will use UTF-8 instead of US-ASCII
 
-         out = sock.getOutputStream();
-         in  = sock.getInputStream();
+                  // first send the request-line
+                  out.write(m_requestLine.getBytes("US-ASCII"));
 
-         // the request line and headers must be in US-ASCII format
-         // The legal US-ASCII characters in URLs are also a subset of
-         // UTF-8, and there are proposals to make URLs UTF-8, so
-         // we will use UTF-8 instead of US-ASCII
+                  // get the names for our standard encoding
+                  final String stdEnc = PSCharSets.rxStdEnc();
+                  final String javaEnc = PSCharSets.rxJavaEnc();
 
-         // first send the request-line
-         out.write(m_requestLine.getBytes("US-ASCII"));
+                  // now send the Content-Type header
+                  writeHeaderLine(out, "Content-Type",
+                          IPSMimeContentTypes.MIME_TYPE_TEXT_XML + ";charset=" + stdEnc);
 
-         // get the names for our standard encoding
-         final String stdEnc = PSCharSets.rxStdEnc();
-         final String javaEnc = PSCharSets.rxJavaEnc();
+                  // now send the Content-Length header
 
-         // now send the Content-Type header
-         writeHeaderLine(out, "Content-Type",
-            IPSMimeContentTypes.MIME_TYPE_TEXT_XML + ";charset=" + stdEnc);
-
-         // now send the Content-Length header
-
-         // to get the content length, we must write the data to our
-         // count writer class
-         PSCountWriter cw = new PSCountWriter(javaEnc);
-         try {
-            PSXmlDocumentBuilder.write(req, cw, javaEnc);
-            writeHeaderLine(out, "Content-Length", String.valueOf(cw.getLength()));
-         } finally {
-            if (cw!=null) try {cw.close();} catch (Exception e) { /*Ignore*/ };
-         }
-         // now write the rest of the headers
-         if (m_reqType != null)
-            writeHeaderLine(out, "PS-Request-Type", m_reqType);
-         if (m_reqVersion != null)
-            writeHeaderLine(out, "PS-Request-Version", m_reqVersion);
-         if (m_reqApplication != null)
-            writeHeaderLine(out, "PS-Application", m_reqApplication);
-         if (m_reqDataSet != null)
-            writeHeaderLine(out, "PS-DataSet", m_reqDataSet);
-
-         if (m_sessId != null) {
-            writeHeaderLine(out, "Cookie",
-            com.percussion.server.PSUserSession.SESSION_COOKIE + "=" + m_sessId);
-         }
-
-         if (m_jsessId != null) 
-         {
-            writeHeaderLine(out, "Cookie", JSESSION_COOKIE + "=" + m_jsessId);
-         }
-
-         writeHeaderLine(out, "User-Agent", "Rhythmyx Designer 1.0");
-         writeHeaderLine(out, "Host", m_host);
-
-         if ( null != m_httpAuthorization )
-            writeHeaderLine(out, HTTP_AUTHORIZATION_HEADER, m_httpAuthorization);
-
-         // must terminate headers with one blank line
-         out.write(("\r\n").getBytes("US-ASCII"));
-
-         // write the XML document using the default encoding for the platform
-         Writer writer = new OutputStreamWriter(out, javaEnc);
-         PSXmlDocumentBuilder.write(req, writer, javaEnc);
-
-         Document retDoc = null;
-         reader = new PSInputStreamReader(in);
-         HashMap headers = new HashMap();
-
-         /* the first line is the status-line. it's format is:
-          *
-          *   HTTP-Version Status-Code Reason-Phrase, e.g., HTTP/1.0 200 OK
-          */
-         String line = reader.readLine("US-ASCII");
-         if (line == null)
-         {
-            throw new PSServerException(IPSConnectionErrors.SERVER_NOT_RESPONDING, url);
-         }
-
-         String statusCode = "200";
-         String reason = "";
-
-         int pos = line.indexOf(' ');
-         if (pos != -1) {
-            statusCode = line.substring(pos).trim();
-            pos = statusCode.indexOf(' ');
-            if (pos != -1) {
-               reason = statusCode.substring(pos).trim();
-               statusCode = statusCode.substring(0, pos).trim();
-            }
-         }
-
-         while ((line = reader.readLine("US-ASCII")) != null)
-         {
-            line = line.trim();
-            // the first empty line means no more headers
-            if (line.length() == 0)
-               break;
-
-            pos = line.indexOf(':');
-            if (pos == -1) {
-               // System.out.println("DEBUG: INHDR( " + line + ":)");
-               headers.put(line, "");
-            }
-            else {
-               String headerName = line.substring(0, pos).trim().toLowerCase();
-               String headerVal = line.substring(pos+1).trim();
-               headers.put(headerName, headerVal);
-            }
-         }
-
-         /* did we get data as an XML document? */
-         HashMap contentParams = new HashMap();
-         String contentType = (String)headers.get("content-type");
-         String mediaType = null;
-
-         try
-         {
-            mediaType = PSBaseHttpUtils.parseContentType(contentType, contentParams);
-         }
-         catch (IllegalArgumentException e)
-         {
-            // malformed Content-Type header
-            throw new IOException(e.getLocalizedMessage());
-         }
-
-         if (mediaType == null)
-            mediaType = "";
-
-         // get the character set of the HTTP content
-         String charSet = (String)contentParams.get("charset");
-         if (charSet == null)
-            charSet = "ISO-8859-1";
-
-         charSet = PSCharSets.getJavaName(charSet);
-
-         // now that we know the character set, build the correct
-         // reader around the socket
-         BufferedReader contentReader = new BufferedReader(
-            new InputStreamReader(reader, charSet));
-
-         if (mediaType.equalsIgnoreCase(IPSMimeContentTypes.MIME_TYPE_TEXT_XML))
-         {
-            retDoc = PSXmlDocumentBuilder.createXmlDocument(contentReader, false);
-            // DBG>
-            //PSXmlDocumentBuilder.write(retDoc, System.out);
-            // <DBG
-            Element root = retDoc.getDocumentElement();
-            if ("PSXError".equalsIgnoreCase(root.getTagName()))
-            {
-               String eClass, eMessage;
-
-               PSXmlTreeWalker w = new PSXmlTreeWalker(retDoc);
-               eClass = w.getElementData("exceptionClass");
-               if (eClass == null)
-                  eClass = "";
-
-               eMessage = w.getElementData("message");
-               if (eMessage == null)
-                  eMessage = "";
-
-               Object[] args = { eClass, eMessage };
-               int errorCode = IPSConnectionErrors.SERVER_GENERATED_EXCEPTION;
-
-               // if it's one of ours, we may be able to get more data
-               if (eClass.startsWith("com.percussion.")) {
+                  // to get the content length, we must write the data to our
+                  // count writer class
+                  PSCountWriter cw = new PSCountWriter(javaEnc);
                   try {
-                     String sTemp = w.getElementData("errorCode");
-                     int rc = Integer.parseInt(sTemp);
+                     PSXmlDocumentBuilder.write(req, cw, javaEnc);
+                     writeHeaderLine(out, "Content-Length", String.valueOf(cw.getLength()));
+                  } finally {
+                     if (cw!=null) try {cw.close();} catch (Exception e) { /*Ignore*/ };
+                  }
+                  // now write the rest of the headers
+                  if (m_reqType != null)
+                     writeHeaderLine(out, "PS-Request-Type", m_reqType);
+                  if (m_reqVersion != null)
+                     writeHeaderLine(out, "PS-Request-Version", m_reqVersion);
+                  if (m_reqApplication != null)
+                     writeHeaderLine(out, "PS-Application", m_reqApplication);
+                  if (m_reqDataSet != null)
+                     writeHeaderLine(out, "PS-DataSet", m_reqDataSet);
 
-                     // one pass to count args
-                     org.w3c.dom.Node cur = w.getCurrent();
-                     int argCount = 0;
-                     while (w.getNextElement("arg", true, false) != null)
-                        argCount++;
-                     w.setCurrent(cur);
+                  if (m_sessId != null) {
+                     writeHeaderLine(out, "Cookie",
+                             com.percussion.server.PSUserSession.SESSION_COOKIE + "=" + m_sessId);
+                  }
 
-                     Object[] newArgs = new Object[argCount];
+                  if (m_jsessId != null) {
+                     writeHeaderLine(out, "Cookie", JSESSION_COOKIE + "=" + m_jsessId);
+                  }
 
-                     // second pass to load them
-                     for (int i = 0;
-                        w.getNextElement("arg", true, false) != null;
-                        i++)
-                     {
-                        newArgs[i] = w.getElementData(".", false);
+                  writeHeaderLine(out, "User-Agent", "Rhythmyx Designer 1.0");
+                  writeHeaderLine(out, "Host", m_host);
+
+                  if (null != m_httpAuthorization)
+                     writeHeaderLine(out, HTTP_AUTHORIZATION_HEADER, m_httpAuthorization);
+
+                  // must terminate headers with one blank line
+                  out.write(("\r\n").getBytes("US-ASCII"));
+
+                  // write the XML document using the default encoding for the platform
+                  Writer writer = new OutputStreamWriter(out, javaEnc);
+                  PSXmlDocumentBuilder.write(req, writer, javaEnc);
+                  Document retDoc = null;
+                  try(PSInputStreamReader reader = new PSInputStreamReader(in)) {
+                     HashMap headers = new HashMap();
+
+                     /* the first line is the status-line. it's format is:
+                      *
+                      *   HTTP-Version Status-Code Reason-Phrase, e.g., HTTP/1.0 200 OK
+                      */
+                     String line = reader.readLine("US-ASCII");
+                     if (line == null) {
+                        throw new PSServerException(IPSConnectionErrors.SERVER_NOT_RESPONDING, url);
                      }
 
-                     args = newArgs;
-                     errorCode = rc;
-                  } catch (Exception e) {
-                     // ignore these, treat them like normal exceptions
-                     eClass = null; // signifies we can't rebuild it
-                  }
-               }
+                     String statusCode = "200";
+                     String reason = "";
 
-               if (eClass != null) {
-                  if ("com.percussion.security.PSAuthorizationException".equals(eClass))
-                  {
-                     final PSAuthorizationException e = new PSAuthorizationException(errorCode, args);
-                     e.setOverridingMessage(eMessage);
-                     throw e;
+                     int pos = line.indexOf(' ');
+                     if (pos != -1) {
+                        statusCode = line.substring(pos).trim();
+                        pos = statusCode.indexOf(' ');
+                        if (pos != -1) {
+                           reason = statusCode.substring(pos).trim();
+                           statusCode = statusCode.substring(0, pos).trim();
+                        }
+                     }
+
+                     while ((line = reader.readLine("US-ASCII")) != null) {
+                        line = line.trim();
+                        // the first empty line means no more headers
+                        if (line.length() == 0)
+                           break;
+
+                        pos = line.indexOf(':');
+                        if (pos == -1) {
+                           // System.out.println("DEBUG: INHDR( " + line + ":)");
+                           headers.put(line, "");
+                        } else {
+                           String headerName = line.substring(0, pos).trim().toLowerCase();
+                           String headerVal = line.substring(pos + 1).trim();
+                           headers.put(headerName, headerVal);
+                        }
+                     }
+
+                     /* did we get data as an XML document? */
+                     HashMap contentParams = new HashMap();
+                     String contentType = (String) headers.get("content-type");
+                     String mediaType = null;
+
+                     try {
+                        mediaType = PSBaseHttpUtils.parseContentType(contentType, contentParams);
+                     } catch (IllegalArgumentException e) {
+                        // malformed Content-Type header
+                        throw new IOException(e.getLocalizedMessage());
+                     }
+
+                     if (mediaType == null)
+                        mediaType = "";
+
+                     // get the character set of the HTTP content
+                     String charSet = (String) contentParams.get("charset");
+                     if (charSet == null)
+                        charSet = "ISO-8859-1";
+
+                     charSet = PSCharSets.getJavaName(charSet);
+
+                     // now that we know the character set, build the correct
+                     // reader around the socket
+                     try (BufferedReader contentReader = new BufferedReader(
+                             new InputStreamReader(reader, charSet))) {
+
+                        if (mediaType.equalsIgnoreCase(IPSMimeContentTypes.MIME_TYPE_TEXT_XML)) {
+                           retDoc = PSXmlDocumentBuilder.createXmlDocument(contentReader, false);
+                           // DBG>
+                           //PSXmlDocumentBuilder.write(retDoc, System.out);
+                           // <DBG
+                           Element root = retDoc.getDocumentElement();
+                           if ("PSXError".equalsIgnoreCase(root.getTagName())) {
+                              String eClass, eMessage;
+
+                              PSXmlTreeWalker w = new PSXmlTreeWalker(retDoc);
+                              eClass = w.getElementData("exceptionClass");
+                              if (eClass == null)
+                                 eClass = "";
+
+                              eMessage = w.getElementData("message");
+                              if (eMessage == null)
+                                 eMessage = "";
+
+                              Object[] args = {eClass, eMessage};
+                              int errorCode = IPSConnectionErrors.SERVER_GENERATED_EXCEPTION;
+
+                              // if it's one of ours, we may be able to get more data
+                              if (eClass.startsWith("com.percussion.")) {
+                                 try {
+                                    String sTemp = w.getElementData("errorCode");
+                                    int rc = Integer.parseInt(sTemp);
+
+                                    // one pass to count args
+                                    org.w3c.dom.Node cur = w.getCurrent();
+                                    int argCount = 0;
+                                    while (w.getNextElement("arg", true, false) != null)
+                                       argCount++;
+                                    w.setCurrent(cur);
+
+                                    Object[] newArgs = new Object[argCount];
+
+                                    // second pass to load them
+                                    for (int i = 0;
+                                         w.getNextElement("arg", true, false) != null;
+                                         i++) {
+                                       newArgs[i] = w.getElementData(".", false);
+                                    }
+
+                                    args = newArgs;
+                                    errorCode = rc;
+                                 } catch (Exception e) {
+                                    // ignore these, treat them like normal exceptions
+                                    eClass = null; // signifies we can't rebuild it
+                                 }
+                              }
+
+                              if (eClass != null) {
+                                 if ("com.percussion.security.PSAuthorizationException".equals(eClass)) {
+                                    final PSAuthorizationException e = new PSAuthorizationException(errorCode, args);
+                                    e.setOverridingMessage(eMessage);
+                                    throw e;
+                                 } else if ("com.percussion.security.PSAuthenticationRequiredException".equals(eClass)) {
+                                    final PSAuthenticationRequiredException e = new PSAuthenticationRequiredException(errorCode, args);
+                                    e.setOverridingMessage(eMessage);
+                                    throw e;
+                                 } else if ("com.percussion.security.PSAuthenticationFailedException".equals(eClass)
+                                         || "com.percussion.security.PSAuthenticationFailedExException".equals(eClass)) {
+                                    final PSAuthenticationFailedException e = new PSAuthenticationFailedException(errorCode, args);
+                                    e.setOverridingMessage(eMessage);
+                                    throw e;
+                                 } else {
+                                    final PSServerException e = new PSServerException(eClass, errorCode, args);
+                                    e.setOverridingMessage(eMessage);
+                                    throw e;
+                                 }
+                              } else {
+                                 final PSServerException e = new PSServerException(errorCode, args);
+                                 e.setOverridingMessage(eMessage);
+                                 throw e;
+                              }
+                           } else if (!"200".equals(statusCode)) {
+                              PSXmlTreeWalker w = new PSXmlTreeWalker(retDoc);
+                              String param = w.getElementData("description");
+                              if (param == null)
+                                 param = "";
+
+                              throw new PSServerException(IPSServerErrors.RAW_DUMP, param);
+                           }
+
+                           return retDoc;
+                        } else if (!"200".equals(statusCode)) {
+                           // we've converted this to an HTML error for some reason!
+                           int len = 0;
+                           try {
+                              String contentLen = (String) headers.get("content-length");
+                              if (contentLen != null) {
+                                 Integer.parseInt(contentLen.trim());
+                              }
+                           } catch (NumberFormatException e) { /* ignore this */ }
+
+                           if (len > 0) { // if we have data, use that as the error text
+                              char[] buf = new char[len];
+                              int iRead = 0;
+                              while (iRead < len) {
+                                 int cur = contentReader.read(buf, iRead, len - iRead);
+                                 if (cur == -1)
+                                    break;
+                                 iRead += cur;
+                              }
+
+                              reason = new String(buf, 0, iRead);
+                           } else if (reason == null) {
+                              // guess there wasn't a reason
+                              reason = statusCode;
+                           }
+                           throw new PSServerException(
+                                   IPSConnectionErrors.UNKNOWN_SERVER_EXCEPTION,
+                                   reason);
+                        } else {
+                           Object[] args =
+                                   {IPSMimeContentTypes.MIME_TYPE_TEXT_XML, contentType};
+                           throw new PSServerException(
+                                   IPSConnectionErrors.RESPONSE_INVALID_MIME_TYPE, args);
+                        }
+                     } catch (SAXParseException e) {
+                        Object args[] =
+                                {e.getMessage(), String.valueOf(e.getLineNumber()),
+                                        String.valueOf(e.getColumnNumber())};
+                        throw new PSServerException(
+                                IPSConnectionErrors.RESPONSE_PARSE_EXCEPTION, args);
+                     } catch (SAXException e) {
+                        Object args[] = {e.getMessage()};
+                        throw new PSServerException(
+                                IPSConnectionErrors.RESPONSE_PARSE_EXCEPTION_NOLINEINFO, args);
+                     } catch (java.io.FileNotFoundException e) {
+                        throw new PSServerException(
+                                IPSConnectionErrors.SERVER_NOT_RESPONDING,
+                                m_requestLine);
+                     } catch (Exception e) {
+                        throw new PSServerException(
+                                IPSConnectionErrors.SERVER_NOT_RESPONDING,
+                                m_requestLine);
+                     }
                   }
-                  else if ("com.percussion.security.PSAuthenticationRequiredException".equals(eClass))
-                  {
-                     final PSAuthenticationRequiredException e = new PSAuthenticationRequiredException(errorCode, args);
-                     e.setOverridingMessage(eMessage);
-                     throw e;
-                  }
-                  else if ("com.percussion.security.PSAuthenticationFailedException".equals(eClass)
-                     || "com.percussion.security.PSAuthenticationFailedExException".equals(eClass))
-                  {
-                     final PSAuthenticationFailedException e = new PSAuthenticationFailedException(errorCode, args);
-                     e.setOverridingMessage(eMessage);
-                     throw e;
-                  }
-                  else
-                  {
-                     final PSServerException e = new PSServerException(eClass, errorCode, args);
-                     e.setOverridingMessage(eMessage);
-                     throw e;
-                  }
-               }
-               else
-               {
-                  final PSServerException e = new PSServerException(errorCode, args);
-                  e.setOverridingMessage(eMessage);
-                  throw e;
                }
             }
-            else if (!"200".equals(statusCode))
-            {
-               PSXmlTreeWalker w = new PSXmlTreeWalker(retDoc);
-               String param = w.getElementData("description");
-               if (param == null)
-                  param = "";
-
-               throw new PSServerException( IPSServerErrors.RAW_DUMP, param );
-            }
-
-            return retDoc;
          }
-         else if (!"200".equals(statusCode)) {
-            // we've converted this to an HTML error for some reason!
-            int len = 0;
-            try {
-               String contentLen = (String)headers.get("content-length");
-               if (contentLen != null) {
-                  Integer.parseInt(contentLen.trim());
-               }
-            } catch (NumberFormatException e) { /* ignore this */ }
 
-            if (len > 0) { // if we have data, use that as the error text
-               char[] buf = new char[len];
-               int iRead = 0;
-               while (iRead < len)
-               {
-                  int cur = contentReader.read(buf, iRead, len - iRead);
-                  if (cur == -1)
-                     break;
-                  iRead += cur;
-               }
-
-               reason = new String(buf, 0, iRead);
-            }
-            else if (reason == null) {
-               // guess there wasn't a reason
-               reason = statusCode;
-            }
-
-            throw new PSServerException(
-               IPSConnectionErrors.UNKNOWN_SERVER_EXCEPTION,
-               reason);
-         }
-         else {
-            Object[] args =
-               { IPSMimeContentTypes.MIME_TYPE_TEXT_XML, contentType };
-            throw new PSServerException(
-               IPSConnectionErrors.RESPONSE_INVALID_MIME_TYPE, args);
-         }
-      } catch (SAXParseException e) {
-         Object args[] =
-            { e.getMessage(), String.valueOf(e.getLineNumber()),
-               String.valueOf(e.getColumnNumber()) };
-         throw new PSServerException(
-            IPSConnectionErrors.RESPONSE_PARSE_EXCEPTION, args);
-      } catch (SAXException e) {
-         Object args[] = { e.getMessage() };
-         throw new PSServerException(
-            IPSConnectionErrors.RESPONSE_PARSE_EXCEPTION_NOLINEINFO, args);
-      } catch (java.io.FileNotFoundException e) {
-         throw new PSServerException(
-            IPSConnectionErrors.SERVER_NOT_RESPONDING,
-            m_requestLine);
-      } finally {
-         if (in != null) // once "in" is closed, reader.close() is not needed
-            try { in.close(); } catch (IOException e) { /* we're done anyway */ }
-         if (out != null)
-            try { out.close(); } catch (IOException e) { /* we're done anyway */ }
-         if (sock != null)
-            try { sock.close(); } catch (IOException e) { /* we're done anyway */ }
-      }
    }
 
    /**
@@ -1116,8 +1070,7 @@ public class PSDesignerConnection
 
          /* did we get data as an XML document? */
          String contentType = conn.getContentType();
-         if (IPSMimeContentTypes.MIME_TYPE_TEXT_XML.equalsIgnoreCase(
-            contentType))
+         if (contentType != null && contentType.startsWith(IPSMimeContentTypes.MIME_TYPE_TEXT_XML))
          {
             retDoc = PSXmlDocumentBuilder.createXmlDocument(in, false);
             Element root = retDoc.getDocumentElement();
@@ -1283,9 +1236,7 @@ public class PSDesignerConnection
       )
       throws IOException
    {
-// DBG>
-// System.out.println("DEBUG: OUTHDR( " + name + ": " + value + ")");
-// <DBG
+
       StringBuilder buf = new StringBuilder(
          name.length() + 4 + (value == null ? 0 : value.length()));
 
