@@ -37,6 +37,7 @@ import com.percussion.services.legacy.PSCmsObjectMgrLocator;
 import com.percussion.services.security.IPSBackEndRoleMgr;
 import com.percussion.services.security.PSRoleMgrLocator;
 import com.percussion.services.security.PSSecurityException;
+import com.percussion.services.security.PSServletRequestWrapper;
 import com.percussion.services.security.data.PSCommunity;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.util.PSCharSets;
@@ -92,6 +93,14 @@ public class PSUserSession
       m_id = sessId;      
       determineOriginalHostPortProtocol(request);
       
+   }
+
+   PSUserSession( PSServletRequestWrapper request, String sessId,boolean designerReq)
+   {
+      m_isDesignerSession = designerReq;
+      m_id = sessId;
+      determineOriginalHostPortProtocol(request);
+
    }
    
    /**
@@ -1306,6 +1315,36 @@ public class PSUserSession
       
    }
 
+   private void determineOriginalHostPortProtocol(PSServletRequestWrapper request)
+   {
+      try
+      {
+         String redirect = request.getParameter(IPSHtmlParameters.SYS_REDIRECT);
+         if (StringUtils.isNotBlank(redirect))
+         {
+            URL rUrl = new URL(redirect);
+            m_originalHost = rUrl.getHost();
+            m_originalPort = rUrl.getPort();
+            m_originalProtocol = rUrl.getProtocol();
+            if(m_originalPort == -1)
+               m_originalPort = m_originalProtocol.equals(PROTOCOL_HTTPS) ? 443 : 80;
+         }
+      }
+      catch(MalformedURLException ignore){/* This should not happen */}
+      finally
+      {
+         if(StringUtils.isBlank(m_originalHost))
+         {
+            m_originalHost = request.getServerName();
+            m_originalPort = request.getServerPort();
+            if (request.isSecure())
+            {
+               m_originalProtocol = PROTOCOL_HTTPS;
+            }
+         }
+      }
+
+   }
    /**
     * Returns the next session number, and increments the "next number"
     * static field.
