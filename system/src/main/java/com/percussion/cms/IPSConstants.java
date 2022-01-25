@@ -586,5 +586,6 @@ public interface IPSConstants
    public static final String SERVER_PROP_REQUEST_BEHIND_PROXY= "requestBehindProxy";
 
 
+    public static final String EXTENSIONS_LOG = "Extensions";
 }
 
