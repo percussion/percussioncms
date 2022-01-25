@@ -15,9 +15,9 @@
    <xsl:variable name="langlist" select="document(//@langurl)/*/lang"/>
    <xsl:variable name="lang">
       <xsl:choose>
-         <xsl:when test="//@xml:lang='' or not(//@xml:lang = $langlist/langstring)">en-us</xsl:when>
+         <xsl:when test="//@lang='' or not(//@lang = $langlist/langstring)">en-us</xsl:when>
          <xsl:otherwise>
-            <xsl:value-of select="//@xml:lang"/>
+            <xsl:value-of select="//@lang"/>
          </xsl:otherwise>
       </xsl:choose>
    </xsl:variable>

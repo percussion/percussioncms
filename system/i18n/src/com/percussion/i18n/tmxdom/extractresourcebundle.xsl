@@ -55,7 +55,7 @@
    </xsl:template>
    <xsl:template match="tu" mode="copy">
     <xsl:choose>
-         <xsl:when test=".//node()[@xml:lang=$reqlang]">
+         <xsl:when test=".//node()[@lang=$reqlang]">
           <xsl:copy>
              <xsl:apply-templates select="@*" mode="copy"/>
              <xsl:apply-templates  mode="copy1"/>
@@ -65,7 +65,7 @@
    </xsl:template>
    <xsl:template match="tuv | note | prop" mode="copy">
       <xsl:choose>
-         <xsl:when test="@xml:lang=$reqlang">
+         <xsl:when test="@lang=$reqlang">
             <xsl:copy>
                <xsl:apply-templates select="@*" mode="copy"/>
                <xsl:apply-templates mode="copy"/>

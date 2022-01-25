@@ -50,7 +50,7 @@
    <xsl:variable name="userLibrary" select="'file:rx_resources/stylesheets/rx_Templates.xsl'"/>
 	<xsl:variable name="userLibraryDoc" select="document($userLibrary)"/>
    <xsl:variable name="customControlImportsDoc" select="document('file:sys_resources/stylesheets/customControlImports.xsl')"/>
-   <xsl:variable name="lang" select="/*/UserStatus/@xml:lang"/>
+   <xsl:variable name="lang" select="/*/UserStatus/@lang"/>
    <xsl:variable name="hasWebImageFx" select="//ControlNameSet[ControlName='sys_webImageFX']"/>
    <xsl:variable name="isEditLive" select="/ContentEditor/ItemContent/DisplayField[@displayType='sys_normal']/Control[@name='sys_EditLive']"/>
    <xsl:variable name="isEditLiveDynamic" select="/ContentEditor/ItemContent/DisplayField[@displayType='sys_normal']/Control[@name='sys_EditLiveDynamic']"/>

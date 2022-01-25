@@ -29,7 +29,7 @@
                 xmlns:psxi18n="com.percussion.i18n" extension-element-prefixes="psxi18n"  exclude-result-prefixes="psxi18n">
 	<xsl:import href="file:sys_resources/stylesheets/sys_I18nUtils.xsl"/>
 	<xsl:output method="html" indent="yes" encoding="UTF-8"/>
-	<xsl:variable name="lang" select="/*/@xml:lang"/>
+	<xsl:variable name="lang" select="/*/@lang"/>
 	<!--
       Depending on the selection mode, all items are rendered as checkboxes 
       for selection mode 'multiple' and radion buttons for selection mode
