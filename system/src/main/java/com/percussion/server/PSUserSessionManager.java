@@ -31,6 +31,7 @@ import com.percussion.security.PSAuthorizationException;
 import com.percussion.server.cache.PSCacheManager;
 import com.percussion.services.legacy.IPSCmsObjectMgr;
 import com.percussion.services.legacy.PSCmsObjectMgrLocator;
+import com.percussion.services.security.PSServletRequestWrapper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
@@ -414,6 +415,22 @@ public class PSUserSessionManager extends Thread
    }
 
 
+
+   public static synchronized PSUserSession getSessionIfDesignerRequest(PSServletRequestWrapper request,String sessionId)
+   {
+      if (request != null)
+      {
+          String path = request.getPathInfo();
+          if( sessionId != null && path != null && path.contains("/systemDesignSOAP")) {
+            PSUserSession sess = new PSUserSession(request, sessionId,true);
+            ms_Sessions.put(sessionId, sess);
+            return sess;
+         }
+      }
+      return null;
+   }
+
+
    /**
     * Is the provided request an attmept to connect from the designer
     * connection?
@@ -484,7 +501,7 @@ public class PSUserSessionManager extends Thread
     * @return                 the session object or <code>null</code> if
     *                         the requested session does not exist
     */
-   public static PSUserSession getUserSession(String sessId)
+   public static synchronized PSUserSession getUserSession(String sessId)
    {
       isTrue( ! ms_stopped , "Cannot get user session because session manager has been stopped");
       if (sessId == null)
