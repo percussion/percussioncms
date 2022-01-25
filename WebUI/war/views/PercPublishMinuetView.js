@@ -102,7 +102,7 @@ function getAllRegions() {
 
 }
 
-function getAllPublishingServer(serverType) {
+function getAllPublishingServer(serverType,serverObj) {
 
 
     // Start by retrieving a list of regions
@@ -119,9 +119,20 @@ function getAllPublishingServer(serverType) {
         for(var i in publishingServerList) {
             $('#publishServer').append(new Option(publishingServerList[i], publishingServerList[i]));
         }
+        var selectedserver;
+	    if(publishingServerList.length > 1){
+			selectedserver = publishingServerList[0];
+		}
+
+	    if(typeof serverObj !== 'undefined' && typeof serverObj.serverInfo !== 'undefined'){
+		    var selectedserverProp = getArrayProperty(serverObj.serverInfo.properties, "key", "publishServer");
+            //Selecting Second Record as default because first one is us gov.
+            if( typeof selectedserverProp !== 'undefined' && selectedserverProp !== null && typeof selectedserverProp.value !== 'undefined'){
+                selectedserver = selectedserverProp.value;
+            }
+	    }
+        $('#publishServer').val(selectedserver);
     });
-
-
 }
 
 function getDefaultFolder() {
@@ -773,31 +784,13 @@ function addRegionOptions(serverObj){
 }
 
 function addPublishingServerOptions(serverObj){
-    getAllPublishingServer(serverObj.serverInfo.serverType);
-    $("#publishServer").empty();
-    for (var i in publishingServerList) {
-        $('#publishServer').append(new Option(publishingServerList[i], publishingServerList[i]));
-    }
+    getAllPublishingServer(serverObj.serverInfo.serverType,serverObj);
 
-    var selectedserver = getArrayProperty(serverObj.serverInfo.properties, "key", "publishServer");
-
-    //Selecting Second Record as default because first one is us gov.
-    if(selectedserver != null){
-        selectedserver = selectedserver.value;
-    }
-    if(selectedserver == null && publishingServerList.length > 1){
-        selectedserver = publishingServerList[0];
-    }
-
-
-    $('#publishServer').val(selectedserver);
 }
 
 function getPublishingServerBasedOnServerType(){
     serverType=$('#percServerType').val();
-
     getAllPublishingServer(serverType);
-
 }
 
 
