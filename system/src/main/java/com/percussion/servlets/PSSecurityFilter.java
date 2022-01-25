@@ -1775,8 +1775,15 @@ public class PSSecurityFilter implements Filter
          throw new IllegalArgumentException("sessionId cannot be null or empty");
 
       PSUserSession rxSession = PSUserSessionManager.getUserSession(sessionId);
-      if (rxSession == null)
-         throw new LoginException("The supplied rhythmyx session is invalid.");
+      if (rxSession == null) {
+         //Designer Needs to use existing session to keep edits saved, thus get sessionId from request and validate.
+         if(request instanceof PSServletRequestWrapper ) {
+            rxSession = PSUserSessionManager.getSessionIfDesignerRequest((PSServletRequestWrapper) request,sessionId);
+         }
+         if(rxSession == null) {
+            throw new LoginException("The supplied rhythmyx session is invalid.");
+         }
+      }
       
       updateHttpSession(request, rxSession);
       
