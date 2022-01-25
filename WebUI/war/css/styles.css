@@ -2703,13 +2703,13 @@ li.ui-tabs-active #perc-tab-style,#perc-tab-style:hover,#ui-state-active
 .dataTables_wrapper .dataTables_info
 {
     position:absolute;
-    bottom:14px;
+    bottom:0px;
 }
 
 .dataTables_wrapper .dataTables_paginate
 {
     position:absolute;
-    bottom:14px;
+    bottom:0px;
     right:30px;
 }
 
@@ -3793,4 +3793,12 @@ select[name*="_up_"] { font-family: 'Open Sans',sans-serif !important; }
 #perc-gadget-comments-viewComments-frame-container {
     min-height : 500px !important;
     overflow-y : unset !important;
+}
+
+table.dataTable {
+    width: 100%;
+    margin: 0 auto;
+    clear: both;
+    border-collapse: collapse;
+    border-spacing: 0;
 }
