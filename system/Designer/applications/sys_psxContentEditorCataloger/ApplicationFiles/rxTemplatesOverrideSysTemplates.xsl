@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:psxctl="urn:percussion.com/control"
-                xmlns="http://www.w3.org/1999/xhtml" xmlns:exslt="http://exslt.org/common">
+                xmlns="http://www.w3.org/1999/xhtml" xmlns:exslt="http://exslt.org/common" extension-element-prefixes="exslt" exclude-result-prefixes="exslt">
    <xsl:output method="xml" indent="yes" version="1.0" encoding="UTF-8" standalone="yes"/>
    <xsl:variable name="rxroot" select="/"/>
-   <xsl:variable name="systemp" select="document('file:sys_resources/stylesheets/sys_Templates.xsl')/*"/>
+   <xsl:variable name="systemp" select="document('file:sys_resources/stylesheets/sys_Templates.xsl')"/>
    <xsl:template match="/">
       <xsl:variable name="controls">
          <!-- copy all psxctl:ControlMeta nodes from rx_Templates.xsl into controls variable -->
@@ -14,7 +14,8 @@
       </xsl:variable>
       <!-- copy and sort a merged set of psxctl:ControlMeta nodes into the final XML document -->
       <Controls>
-         <xsl:apply-templates select="exslt:node-set($controls)/*" mode="copysorted">
+         <xsl:copy-of select="$systemp//psxctl:ControlMeta" />
+         <xsl:apply-templates select="exslt:node-set($controls)//*" mode="copysorted">
             <xsl:sort select="@name"/>
          </xsl:apply-templates>
       </Controls>
