@@ -152,7 +152,7 @@
             }
 
             var table = $("#pubHistoryTable").DataTable({
-                "order": [[ 1, "desc" ]],
+                "order": [[ 3, "desc" ]],
                 "bFilter" : false,
                 "bDestroy":true,
                 "autoWidth" : true,
