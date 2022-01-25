@@ -4,7 +4,7 @@
                 exclude-result-prefixes="psxi18n">
 	<xsl:import href="file:sys_resources/stylesheets/sys_I18nUtils.xsl"/>
 	<xsl:output method="xml" version="1.0" encoding="UTF-8" indent="yes"/>
-	<xsl:variable name="lang" select="//@xml:lang"/>
+	<xsl:variable name="lang" select="//@lang"/>
 	<xsl:template match="/">
 		<NewMenu>
 			<xsl:if test="//@uicontext='SystemFolder' or //@uicontext='SystemSite' or //@uicontext='Folder' or //@uicontext='SiteSubfolder' or //@uicontext='Site'">

@@ -313,7 +313,7 @@
       </xsl:copy>
       <xsl:element name="xsl:variable">
          <xsl:attribute name="name">lang</xsl:attribute>
-         <xsl:attribute name="select">/*/@xml:lang</xsl:attribute>
+         <xsl:attribute name="select">/*/@lang</xsl:attribute>
       </xsl:element>
    </xsl:template>
    <!-- add references to the popupmenu javascript and stylesheet files -->

@@ -55,7 +55,7 @@
 	<xsl:variable name="userLibrary" select="'file:rx_resources/stylesheets/rx_Templates.xsl'"/>
 	<xsl:variable name="userLibraryDoc" select="document($userLibrary)"/>
 	<xsl:variable name="customControlImportsDoc" select="document('file:sys_resources/stylesheets/customControlImports.xsl')"/>
-   <xsl:variable name="lang" select="/*/UserStatus/@xml:lang"/>
+   <xsl:variable name="lang" select="/*/UserStatus/@lang"/>
    <xsl:variable name="EditLiveDynamicName" select="'PSEditLiveDynamic'"/>
 	<xsl:template match="/">
 		<xsl:apply-templates select="ContentEditor"/>

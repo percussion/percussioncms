@@ -16,7 +16,7 @@
                 xmlns:psxi18n="com.percussion.i18n" extension-element-prefixes="psxi18n"
                 exclude-result-prefixes="psxi18n">
 	<xsl:import href="file:sys_resources/stylesheets/sys_I18nUtils.xsl"/>
-	<xsl:variable name="lang" select="//@xml:lang"/>
+	<xsl:variable name="lang" select="//@lang"/>
 	<xsl:variable name="lefttopurl" select="concat(//itemurl,'&amp;sys_contentid=',//sys_contentid1,'&amp;sys_revision=',//sys_revision1,'&amp;sys_variantid=',//sys_variantid1,'&amp;itemnumber=',1)"/>
 	<xsl:variable name="leftbottomurl" select="concat(//itemurl,'&amp;sys_contentid=',//sys_contentid2,'&amp;sys_revision=',//sys_revision2,'&amp;sys_variantid=',//sys_variantid2,'&amp;itemnumber=',2)"/>
 	<xsl:variable name="selectrevurl" select="//selectrevurl"/>

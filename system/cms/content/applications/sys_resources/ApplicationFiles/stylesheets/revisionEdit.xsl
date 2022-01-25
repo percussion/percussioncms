@@ -16,7 +16,7 @@
                 xmlns:psxi18n="com.percussion.i18n" extension-element-prefixes="psxi18n"
                 exclude-result-prefixes="psxi18n">
 	<xsl:import href="file:sys_resources/stylesheets/sys_I18nUtils.xsl"/>
-	<xsl:variable name="lang" select="/*/UserStatus/@xml:lang"/>
+	<xsl:variable name="lang" select="/*/UserStatus/@lang"/>
 	<xsl:variable name="syscontentid" select="//Workflow/@contentId"/>
 	<xsl:variable name="sysrevision" select="//Workflow/BasicInfo/HiddenFormParams/Param[@name='sys_revision']"/>
 	<xsl:include href="file:sys_resources/stylesheets/assemblers/sys_popmenu.xsl"/>

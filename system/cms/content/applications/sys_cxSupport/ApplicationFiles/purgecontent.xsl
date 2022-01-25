@@ -18,7 +18,7 @@
 	<xsl:import href="file:sys_resources/stylesheets/sys_I18nUtils.xsl"/>
 	<xsl:variable name="lang">
 		<xsl:choose>
-			<xsl:when test="//@xml:lang"><xsl:value-of select="//@xml:lang"/></xsl:when>
+			<xsl:when test="//@lang"><xsl:value-of select="//@lang"/></xsl:when>
 			<xsl:otherwise><xsl:text>en-us</xsl:text></xsl:otherwise>
 		</xsl:choose>
 	</xsl:variable>

@@ -28,7 +28,7 @@
 	<xsl:import href="file:sys_searchSupport/sys_searchTemplates.xsl"/>
 	<xsl:import href="file:sys_searchSupport/sys_searchJSGenerator.xsl"/>
 	<xsl:output method="html" indent="yes" encoding="UTF-8"/>
-	<xsl:variable name="lang" select="//@xml:lang"/>
+	<xsl:variable name="lang" select="//@lang"/>
 	<xsl:variable name="isFullTextSearch" select="/*/FullTextSearchSettings"/>
    <xsl:variable name="generationMode" select="/*/ExtraSettings/DisplayField/Control[@paramName='genMode']/Value"/>
 	<xsl:variable name="isSimpleSearch">
