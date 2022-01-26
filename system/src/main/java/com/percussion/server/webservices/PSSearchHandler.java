@@ -1570,7 +1570,7 @@ public class PSSearchHandler extends PSWebServicesBaseHandler
       {
          throw new PSConversionException(
                IPSServerErrors.UNEXPECTED_EXCEPTION_CONSOLE, new Object[]
-               {e.getLocalizedMessage()});
+               {e.getMessage()});
       }
       catch (TransformerException e)
       {
