@@ -89,9 +89,8 @@ public class PSObjectLockSummary
     */
    public void setRemainingTime(long remainingTime)
    {
-      if (remainingTime <= 0) {
-         this.remainingTime = 1;
-      }
+      if (remainingTime <= 0)
+         throw new IllegalArgumentException("remainingTime must be > 0");
 
       this.remainingTime = remainingTime;
    }
