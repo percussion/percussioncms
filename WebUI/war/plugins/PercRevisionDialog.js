@@ -88,6 +88,8 @@
 
             var dialogHTML = createRevisionTable();
             dialog = $(dialogHTML).perc_dialog(percDialogObject);
+            $("#perc-revisions-container").css( "min-height", "350px" );
+            $("#revisionsTable_paginate").css( "right", "-25px" );
 
         }
 
