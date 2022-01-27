@@ -389,6 +389,8 @@ public class PSRoleService implements IPSRoleService
      */
     protected void doValidation(PSRole role, boolean isCreateRole) throws PSValidationException
     {
+        log.debug("validating role " + role);
+        role.setCreateUser(isCreateRole);
         PSRoleValidator validator = new PSRoleValidator(isCreateRole);
 
         validator.validate(role).throwIfInvalid();
