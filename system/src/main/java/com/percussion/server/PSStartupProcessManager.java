@@ -23,6 +23,7 @@
  */
 package com.percussion.server;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.services.notification.IPSNotificationListener;
 import com.percussion.services.notification.IPSNotificationService;
 import com.percussion.services.notification.PSNotificationEvent;
@@ -100,8 +101,9 @@ public class PSStartupProcessManager implements IPSNotificationListener, IPSStar
          catch (Exception e)
          {
             // log it, and throw a runtime exception to halt the server init
-            String msg = "Error running startup process: " + proc.getClass().getName() + ", : " + e.getLocalizedMessage();
-            log.error(msg, e);
+            String msg = "Error running startup process: " + proc.getClass().getName() + ": ";
+            log.error(msg, PSExceptionUtils.getMessageForLog(e));
+            log.debug(msg, e);
             throw new RuntimeException(msg);
          }
       }

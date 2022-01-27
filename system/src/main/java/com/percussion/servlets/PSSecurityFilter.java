@@ -114,7 +114,7 @@ import static org.apache.commons.lang.StringUtils.isNotBlank;
  * Requests that arrive from external servers are examined for the correct
  * headers that pass user and role information into Rhythmyx. These headers are
  * taken at face value.
- * 
+ *
  * @author dougrand
  */
 public class PSSecurityFilter implements Filter
@@ -141,7 +141,7 @@ public class PSSecurityFilter implements Filter
    /**
     * Represent the kind of authentication to use
     */
-   enum AuthType 
+   enum AuthType
    {
       /**
        * Unauthenticated
@@ -156,12 +156,12 @@ public class PSSecurityFilter implements Filter
        */
       FORM
    }
-   
+
    /**
-    * Represent a single entry from the security configuration files. 
+    * Represent a single entry from the security configuration files.
     */
    static class SecurityEntry
-   {      
+   {
       /**
        * If <code>true</code>, this entry is a user entry, otherwise a system
        * entry.
@@ -181,10 +181,10 @@ public class PSSecurityFilter implements Filter
        * The pattern, never <code>null</code> or empty after ctor.
        */
       private String mi_pattern;
-      
+
       /**
        * Ctor
-       * 
+       *
        * @param userEntry <code>true</code> if this is a user entry
        * @param isPath <code>true</code> if this represents a path, otherwise
        *           it represents an HTTP method.
@@ -192,8 +192,8 @@ public class PSSecurityFilter implements Filter
        * @param pattern the pattern to match upon, never <code>null</code> or
        *           empty.
        */
-      public SecurityEntry(boolean userEntry, boolean isPath, AuthType type, 
-            String pattern)
+      public SecurityEntry(boolean userEntry, boolean isPath, AuthType type,
+                           String pattern)
       {
          if (type == null)
          {
@@ -208,7 +208,7 @@ public class PSSecurityFilter implements Filter
          mi_type = type;
          mi_pattern = pattern;
       }
-      
+
       /**
        * @return the isPath
        */
@@ -240,11 +240,11 @@ public class PSSecurityFilter implements Filter
       {
          return mi_userEntry;
       }
-      
+
       /**
        * Match the given string
        * @param string the string, never <code>null</code> or empty.
-       * @param isSys the call is matching a system resource, so if 
+       * @param isSys the call is matching a system resource, so if
        * <code>true</code> then user entries are ignored
        * @return <code>true</code> if this matches the pattern.
        */
@@ -252,29 +252,29 @@ public class PSSecurityFilter implements Filter
       {
          // Never match a system path or method if we're a user entry
          if (isSys && mi_userEntry) return false;
-         
+
          if (string == null)
          {
             throw new IllegalArgumentException("string may not be null");
          }
          return ms_matcher.doesMatchPattern(mi_pattern, string);
       }
-      
+
       @Override
       public String toString()
       {
-         return "{" + (isPath() ? "path " : "method ") 
-            + (isUserEntry() ? "user " : "system ")
-            + getType().toString() + " pattern='"
-            + getPattern() + "'}\n";
+         return "{" + (isPath() ? "path " : "method ")
+                 + (isUserEntry() ? "user " : "system ")
+                 + getType().toString() + " pattern='"
+                 + getPattern() + "'}\n";
       }
-      
+
       @Override
       public boolean equals(Object b)
       {
          return EqualsBuilder.reflectionEquals(this, b);
       }
-      
+
       @Override
       public int hashCode()
       {
@@ -285,7 +285,7 @@ public class PSSecurityFilter implements Filter
    /**
     * log to use, never <code>null</code>.
     */
-    private static final Logger ms_log = LogManager.getLogger(PSSecurityFilter.class);
+   private static final Logger ms_log = LogManager.getLogger(PSSecurityFilter.class);
 
    /**
     * Identify the configured login policy. This can be overridden by the filter
@@ -295,8 +295,8 @@ public class PSSecurityFilter implements Filter
 
    /**
     * The login form to use for form based authentication. May be overridden by
-    * the filter configuration. May be initialized during 
-    * {@link #init(FilterConfig)}, may be <code>null</code> until first call to 
+    * the filter configuration. May be initialized during
+    * {@link #init(FilterConfig)}, may be <code>null</code> until first call to
     * {@link #getLoginUrl(HttpServletRequest)}
     */
    private static String ms_loginForm = null;
@@ -320,11 +320,11 @@ public class PSSecurityFilter implements Filter
    public static final String SUBJECT = "RX_AUTHENTICATED_SUBJECT";
 
    /**
-    * These entries are created from the system and user security 
+    * These entries are created from the system and user security
     * configurations.
     */
    private List<SecurityEntry> m_configuredEntries = null;
-   
+
    /**
     * Determines if redirection to the login servlet should use https.
     */
@@ -336,17 +336,17 @@ public class PSSecurityFilter implements Filter
     * succeeds rather.
     */
    private static List<String> ms_loginRequests = new ArrayList<>();
-   
+
    /**
     * Matcher for use in this class
     */
    static PSPatternMatcher ms_matcher = new PSPatternMatcher('?', '*', null);
-   
+
    static
    {
       ms_loginRequests.add("/sys_login");
    }
-   
+
    /**
     * This is a string which matches CMS-API requests
     */
@@ -382,7 +382,7 @@ public class PSSecurityFilter implements Filter
     * {@link #loadConfigs()} is called.
     */
    private long m_userConfigLastModified = 0;
-   
+
    /**
     * STORY-403 An exception IP address to allow through if SSL is on.
     */
@@ -394,9 +394,9 @@ public class PSSecurityFilter implements Filter
    private String m_nonSecureHttpBindAddressHeader = null;
 
    private Boolean isHTTPSRequired = null;
-   
+
    /**
-    * 
+    *
     */
    public PSSecurityFilter() {
       super();
@@ -404,14 +404,14 @@ public class PSSecurityFilter implements Filter
 
    /*
     * (non-Javadoc)
-    * 
+    *
     * @see javax.servlet.Filter#init(javax.servlet.FilterConfig)
     */
    public void init(FilterConfig config) throws ServletException
    {
       String p = config.getInitParameter("policy");
       String l = config.getInitParameter("loginform");
-      
+
       m_nonSecureHttpBindAddress = System.getProperty(NON_SECURE_HTTP_BIND_ADDRESS);
       m_nonSecureHttpBindAddressHeader = System.getProperty(NON_SECURE_HTTP_BIND_HEADER);
 
@@ -419,7 +419,7 @@ public class PSSecurityFilter implements Filter
          ms_policy = p;
       if (!StringUtils.isEmpty(l))
          ms_loginForm = l;
-      
+
 
       String asso = config.getInitParameter("allowSSO");
       if (!StringUtils.isEmpty(asso))
@@ -436,32 +436,32 @@ public class PSSecurityFilter implements Filter
    /**
     * Initializes the security configuration file references and loads the
     * configs. Method has package access for unit testing only.
-    * 
+    *
     * @param rootDir The path to the root servlet directory, assumed not
     *           <code>null</code> or empty.
-    * 
+    *
     * @throws ServletException If there is an error.
     */
    void initSecurityConfiguration(String rootDir) throws ServletException
    {
       // locate config files
       File configDir = new File(new File(rootDir, PSServletUtils.WEB_INF),
-            PSServletUtils.SYS_CONFIG_DIR);
+              PSServletUtils.SYS_CONFIG_DIR);
       File userConfigDir = new File(configDir, PSServletUtils.USER_CONFIG_DIR);
       m_systemSecurityConfig = new File(configDir,
-            "security/system-security-conf.xml");
+              "security/system-security-conf.xml");
       m_userSecurityConfig = new File(userConfigDir,
-            "security/user-security-conf.xml");
+              "security/user-security-conf.xml");
       if (!m_userSecurityConfig.exists())
          ms_log.info("User security config file not found: {}",
-                m_userSecurityConfig);
+                 m_userSecurityConfig);
       loadConfigs();
    }
 
    /**
     * Loads the configurations if they've never been loaded or if they've been
     * modified since the last time they were loaded.
-    * 
+    *
     * @throws ServletException If the system security config is not found or a
     *            config cannot be loaded.
     */
@@ -469,7 +469,7 @@ public class PSSecurityFilter implements Filter
    {
       if (!m_systemSecurityConfig.exists())
          throw new ServletException("System security config file not found: "
-               + m_systemSecurityConfig);
+                 + m_systemSecurityConfig);
 
       boolean doLoadSystem = false;
       if (m_systemSecurityConfig.lastModified() != m_systemConfigLastModified)
@@ -480,18 +480,18 @@ public class PSSecurityFilter implements Filter
 
       boolean doLoadUser = (m_userSecurityConfig.exists());
       if (doLoadUser
-            && m_userSecurityConfig.lastModified() != m_userConfigLastModified)
+              && m_userSecurityConfig.lastModified() != m_userConfigLastModified)
       {
          doLoadUser = true;
          m_userConfigLastModified = m_userSecurityConfig.lastModified();
       }
-      
+
       if (doLoadSystem || doLoadUser)
       {
          m_configuredEntries = new CopyOnWriteArrayList<>();
          loadConfig(m_systemSecurityConfig, false, m_configuredEntries);
-         m_forceSecureLogin = loadConfig(m_userSecurityConfig, true, 
-               m_configuredEntries);
+         m_forceSecureLogin = loadConfig(m_userSecurityConfig, true,
+                 m_configuredEntries);
       }
    }
 
@@ -500,19 +500,19 @@ public class PSSecurityFilter implements Filter
     * strings to the list of configured requests {@link #m_configuredEntries},
     * which must be initialized outside of this method. Method has package
     * access for unit testing only.
-    * 
+    *
     * @param securityConfig The config file, assumed not <code>null</code> and
     *           to exist.
-    * @param isUser <code>true</code> if we're loading the user configuration. 
+    * @param isUser <code>true</code> if we're loading the user configuration.
     * @param configs The configured entries, assumed never <code>null</code>.
     * @return <code>true</code> if the config specifies forceSecureLogin,
     *         <code>false</code> otherwise.
-    * 
+    *
     * @throws ServletException if there are any errors.
     */
-   static boolean loadConfig(File securityConfig, boolean isUser, 
-         List<SecurityEntry> configs)
-         throws ServletException {
+   static boolean loadConfig(File securityConfig, boolean isUser,
+                             List<SecurityEntry> configs)
+           throws ServletException {
 
       try (InputStream in = new FileInputStream(securityConfig)) {
          Document doc = PSXmlDocumentBuilder.createXmlDocument(in, false);
@@ -551,7 +551,7 @@ public class PSSecurityFilter implements Filter
     * Filter the request, looking for authentication information to be present.
     * If it is not present, redirect to the login form or present basic
     * authentication (configured based on the request).
-    * 
+    *
     * @param request servlet request, never <code>null</code>
     * @param response servlet response, never <code>null</code>
     * @param chain the next request in the chain, never <code>null</code>
@@ -559,7 +559,7 @@ public class PSSecurityFilter implements Filter
     * @throws ServletException
     */
    public void doFilter(ServletRequest request, ServletResponse response,
-         FilterChain chain) throws IOException, ServletException
+                        FilterChain chain) throws IOException, ServletException
    {
       if (request == null)
       {
@@ -579,7 +579,7 @@ public class PSSecurityFilter implements Filter
       try
       {
          PSRequest psReq = null;
-         
+
          // as long as this is an HTTP request, filter the request (we don't
          // wrap the response object)
          if (request instanceof HttpServletRequest)
@@ -599,7 +599,7 @@ public class PSSecurityFilter implements Filter
                return;
             }
             //If the request is not secure, check whether http is allowed or not before we proceed.
-             if(!httpReq.isSecure() && !isHttpAllowed(httpReq) ){
+            if(!httpReq.isSecure() && !isHttpAllowed(httpReq) ){
                String oldPath = httpReq.getRequestURL().toString();
                oldPath += httpReq.getQueryString() == null? "" : "?" + httpReq.getQueryString();
                URL oldUrl = new URL(oldPath);
@@ -609,7 +609,7 @@ public class PSSecurityFilter implements Filter
                return;
             }
             updateSessionTimeout(httpReq);
-            
+
             if (! PSRequestInfoBase.isInited())
             {
                PSRequestInfo.initRequestInfo(httpReq);
@@ -624,13 +624,13 @@ public class PSSecurityFilter implements Filter
                return;
             }
             httpReq = newreq;
-      request = httpReq;
+            request = httpReq;
 
-      // ensure we've got a request
-      psReq = initRequest(httpReq, httpResp);
-      if (httpReq.getServletPath().equals("/__validateSession__"))
-         ssorequest = true;
-   }
+            // ensure we've got a request
+            psReq = initRequest(httpReq, httpResp);
+            if (httpReq.getServletPath().equals("/__validateSession__"))
+               ssorequest = true;
+         }
          if (!ssorequest) {
             chain.doFilter(request, response);
          }
@@ -638,7 +638,7 @@ public class PSSecurityFilter implements Filter
          if (psReq != null && psReq.getUserSession() != null) {
             psReq.getUserSession().requestFinished();
          }
-}
+      }
       finally
       {
          if (needsReset)
@@ -650,7 +650,7 @@ public class PSSecurityFilter implements Filter
     * This method returns false only if the following conditions satisfy.
     * server properties exist and the
     * sHTTPSRequired property is set to true (determined by either true or yes value) and
-    * the request url exists and 
+    * the request url exists and
     * then if the url doesn't start with http://127.0.0.1 or http://localhost.
     * @param request assumed not <code>null</code>
     * @return <code>true</code> if http is allowed otherwise <code>false</code>.
@@ -718,18 +718,18 @@ public class PSSecurityFilter implements Filter
    protected final boolean isNonSecureHttpRequestAllowed(HttpServletRequest httpReq)
    {
       boolean allow = true;
-      if ( ! httpReq.isSecure() && isNotBlank(m_nonSecureHttpBindAddress)) 
+      if ( ! httpReq.isSecure() && isNotBlank(m_nonSecureHttpBindAddress))
       {
          String addr;
-         if (isNotBlank(m_nonSecureHttpBindAddressHeader)) 
+         if (isNotBlank(m_nonSecureHttpBindAddressHeader))
          {
             addr = httpReq.getHeader(m_nonSecureHttpBindAddressHeader);
          }
-         else 
+         else
          {
             addr = httpReq.getRemoteAddr();
          }
-         if (! m_nonSecureHttpBindAddress.equals(addr)) 
+         if (! m_nonSecureHttpBindAddress.equals(addr))
          {
             allow = false;
          }
@@ -738,9 +738,9 @@ public class PSSecurityFilter implements Filter
    }
 
    /**
-    * Sets the http session timeout to match what's defined for rx user 
+    * Sets the http session timeout to match what's defined for rx user
     * sessions.
-    * 
+    *
     * @param httpReq The current request, assumed not <code>null</code>.
     */
    private void updateSessionTimeout(HttpServletRequest httpReq)
@@ -748,7 +748,7 @@ public class PSSecurityFilter implements Filter
       int sessionTimeOut = PSServerConfiguration.DEFAULT_SESSION_TIMEOUT;
 
       try {
-        sessionTimeOut =  PSServer.getServerConfiguration().getUserSessionTimeout();
+         sessionTimeOut =  PSServer.getServerConfiguration().getUserSessionTimeout();
       }catch(Exception e){
          //Ignore any exceptions and return the default value.
       }
@@ -760,7 +760,7 @@ public class PSSecurityFilter implements Filter
     * Handle authorization by either redirecting to the login form, sending back
     * a basic auth, or using the information that has already been made
     * available
-    * 
+    *
     * @param request the request, assumed never <code>null</code>
     * @param response the response, assumed never <code>null</code>
     * @return a new request if the user is authenticated, the existing request
@@ -770,67 +770,67 @@ public class PSSecurityFilter implements Filter
     * @throws ServletException If there are any other errors.
     */
    private HttpServletRequest authorize(HttpServletRequest request,
-         HttpServletResponse response) throws IOException, ServletException
+                                        HttpServletResponse response) throws IOException, ServletException
    {
       ms_log.debug("enter authorize on thread {}"
-            , Thread.currentThread().getName());
+              , Thread.currentThread().getName());
       HttpSession sess = request.getSession();
-      
+
       Object mutex = WebUtils.getSessionMutex(sess);
 
       synchronized (mutex)
-      {         
-         /* 
+      {
+         /*
           * 1. Check http request against Referer header...
-          * 2. Check https request against Origin header... 
-          */ 
+          * 2. Check https request against Origin header...
+          */
          Subject sub = (Subject) sess.getAttribute(SUBJECT);
          boolean isBehindProxy = PSServer.isRequestBehindProxy(request);
          if (PSServer.getServerProps().getProperty("disableCrossSiteRequestForgeryCheck", "false").equalsIgnoreCase("true")
-               || !checkForCrossSiteRequestForgery(request)  || isBehindProxy)
+                 || !checkForCrossSiteRequestForgery(request)  || isBehindProxy)
          {
-        
+
             if (handleSessionCheck(request, response))
                return null;
-            
+
             // anonymous access could have created an empty subject, so check for
             // that as well
-            
+
             if (isAuthenticated(sub))
             {
                return handleAuthenticatedSubject(request, response, sub);
             }
-          
+
             String sessId = getSessionIdFromRequest(request);
             if (!StringUtils.isBlank(sessId))
             {
-               HttpServletRequest authReq = handleExistingUserSession(request, 
-                  response, sessId);
+               HttpServletRequest authReq = handleExistingUserSession(request,
+                       response, sessId);
                if (authReq == null)
                   sendAuthenticationError(request, response);
-            
+
                return authReq;
-             }
+            }
 
          }
          // reload configs if they've changed
          loadConfigs();
 
          AuthType authType = calculateAuthType(request);
-         
+
          // check for anonymous
          if (authType.equals(AuthType.ANONYMOUS))
          {
             // Create empty subject and return the wrapper
             if (sub == null)
                sess.setAttribute(SUBJECT, new Subject());
-            
-            
+
+
             updateUserSession(request, response, false);
-            
+
             return new PSServletRequestWrapper(request, sub);
          }
-        
+
          /*
           * see if request uses basic auth, or if header is supplied to
           * indicate basic auth
@@ -849,7 +849,7 @@ public class PSSecurityFilter implements Filter
             {
                // not supported
                sendAuthenticationError(request, response);
-               return null;               
+               return null;
             }
 
             handleFormAuth(request, response);
@@ -857,9 +857,9 @@ public class PSSecurityFilter implements Filter
          }
       }
    }
-   
+
    /**
-    * Get sessionid from request parameter first 
+    * Get sessionid from request parameter first
     * if empty then try request attribute
     * @return
     */
@@ -880,11 +880,11 @@ public class PSSecurityFilter implements Filter
    }
 
    /**
-    * Returns a json response containing the remaining miliseconds until session timeout.  
+    * Returns a json response containing the remaining miliseconds until session timeout.
     * This Will also turn on the NOSESSIONTOUCH request property that will prevent the session time
-    * being updated during the request.  This method must be called early enough that no other calls to 
+    * being updated during the request.  This method must be called early enough that no other calls to
     * getUserSession have been made that would cause the touch before this.
-    * 
+    *
     * @param request
     * @param response
     * @return
@@ -892,8 +892,8 @@ public class PSSecurityFilter implements Filter
     */
    private boolean handleSessionCheck(HttpServletRequest request, HttpServletResponse response) throws IOException
    {
-      // Check for client session timeout.  
-      // Invalidate sessions if time expired,  
+      // Check for client session timeout.
+      // Invalidate sessions if time expired,
       // update client timeout if not check request.
       // /sessionstatus.js
 
@@ -904,9 +904,9 @@ public class PSSecurityFilter implements Filter
          checkString=request.getServletPath();
 
       boolean statusRequest = ms_matcher.doesMatchPattern("/sessioncheck", checkString);
-      
+
       boolean statusSupportFiles = ms_matcher.doesMatchPattern("/cm/themes/*", checkString);
-     
+
       if (statusRequest || statusSupportFiles) {
          // Force session not to be updated during request.
          PSRequest psrequest = initRequest(request, response);
@@ -915,14 +915,14 @@ public class PSSecurityFilter implements Filter
                  SecureStringUtils.stripAllLineBreaks(
                          request.getParameter("lastActivity")), -1);
 
-            PSRequestInfoBase.setRequestInfo(PSRequestInfoBase.KEY_NOSESSIONTOUCH, Boolean.TRUE);
+         PSRequestInfoBase.setRequestInfo(PSRequestInfoBase.KEY_NOSESSIONTOUCH, Boolean.TRUE);
 
          if (statusRequest)
          {
-           
+
             response.setContentType("application/json;charset=UTF-8");
             response.setHeader("Cache-Control", "no-cache,must-revalidate");
-        
+
             // Careful not to touch session during request which would extend
             PSUserSession userSession = psrequest.getUserSession();
 
@@ -931,7 +931,7 @@ public class PSSecurityFilter implements Filter
 
 
             long remaining = 0L;
-            
+
             if (userSession != null && userSession.hasAuthenticatedUserEntries())
             {
                long idleSince = userSession.getIdleSince();
@@ -945,30 +945,30 @@ public class PSSecurityFilter implements Filter
                PSUserSessionManager.releaseUserSession(userSession);
                remaining = 0;
             }
-             if(remaining<500){
-                PSAuthenticationEvent psAuthenticationEvent = new PSAuthenticationEvent(PSActionOutcome.SUCCESS.name(), PSAuthenticationEvent.AuthenticationEventActions.revoke, request, request.getRemoteUser());
-                 psAuthenticationEvent.setActivity("revoke");
-                 psAuditLogService.logAuthenticationEvent(psAuthenticationEvent);
-             }
-          
+            if(remaining<500){
+               PSAuthenticationEvent psAuthenticationEvent = new PSAuthenticationEvent(PSActionOutcome.SUCCESS.name(), PSAuthenticationEvent.AuthenticationEventActions.revoke, request, request.getRemoteUser());
+               psAuthenticationEvent.setActivity("revoke");
+               psAuditLogService.logAuthenticationEvent(psAuthenticationEvent);
+            }
+
             int warning_s = PSServer.getServerConfiguration().getUserSessionWarning();
             long warning = warning_s > 0 ?  PSServer.getServerConfiguration().getUserSessionWarning()*1000L
-                  : -1;
-            
+                    : -1;
+
             String json ="{\"expiry\":"+remaining+",\"warning\":"+warning+"}";
-            
+
             try {
                response.getWriter().write(json);
                return true;
-             } catch (IOException e) {
-                ms_log.error("Invalid json object for sessioncheck. Error: {}", PSExceptionUtils.getMessageForLog(e));
-                sendAuthenticationError(request, response);
-                return true;
-             }    
-            
+            } catch (IOException e) {
+               ms_log.error("Invalid json object for sessioncheck. Error: {}", PSExceptionUtils.getMessageForLog(e));
+               sendAuthenticationError(request, response);
+               return true;
+            }
+
          }
       }
-   
+
       return false;
    }
 
@@ -993,10 +993,10 @@ public class PSSecurityFilter implements Filter
 
       if (reqURI.getPath().equals(request.getContextPath() + "/login"))
          return false;
-      
+
       // requested login from the CMS-API
       if (!(reqURI.getPath().equals(request.getContextPath() + "/v8/security/session"))
-            && request.getServletPath().startsWith(ms_externalApiRequests.get(0)))
+              && request.getServletPath().startsWith(ms_externalApiRequests.get(0)))
          return false;
 
       // If Referer exists and does not match request then go to login.
@@ -1006,10 +1006,10 @@ public class PSSecurityFilter implements Filter
       // If Origin exists and does not match request then go to login.
       return !requestHeaderMatchesRequest(reqURI, request.getHeader("Origin"));
    }
-   
+
    /**
-    * Match request header scheme, host, and port with request URI.  
-    * 
+    * Match request header scheme, host, and port with request URI.
+    *
     * @param requestURI The current request <code>null</code>.
     * @param reqHeader The header to mtch against the request <code>null</code>.
     * @return true if request matches header or header is missing. false if header does not match request.
@@ -1017,11 +1017,11 @@ public class PSSecurityFilter implements Filter
    private boolean requestHeaderMatchesRequest(URI requestURI, String reqHeader)
    {
       if (reqHeader == null)
-          reqHeader = "";
-      
+         reqHeader = "";
+
       if (!reqHeader.isEmpty() && StringUtils.isNotBlank(reqHeader))
       {
-            URI headerURI = URI.create(SecureStringUtils.stripUrlParams(reqHeader));
+         URI headerURI = URI.create(SecureStringUtils.stripUrlParams(reqHeader));
          return requestURI.getScheme().equals(headerURI.getScheme()) &&
                  requestURI.getHost().equals(headerURI.getHost()) &&
                  (requestURI.getPort() == headerURI.getPort());
@@ -1031,15 +1031,15 @@ public class PSSecurityFilter implements Filter
 
    /**
     * Calculate the right auth type based on the request and the configured
-    * overrides from the system and user. Made package visible to allow unit 
+    * overrides from the system and user. Made package visible to allow unit
     * testing.
-    * 
+    *
     * @param request the servlet request, assumed never <code>null</code>.
     * @return the auth type, never <code>null</code>.
     * @throws ServletException Exception
     */
-   AuthType calculateAuthType(HttpServletRequest request) 
-   throws ServletException
+   AuthType calculateAuthType(HttpServletRequest request)
+           throws ServletException
    {
       // see if a login request
       if (isLoginRequest(request))
@@ -1048,20 +1048,20 @@ public class PSSecurityFilter implements Filter
       // see if header specifies it
       if (request.getHeader(IPSHtmlParameters.SYS_USE_BASIC_AUTH) != null)
          return AuthType.BASIC;
-      
+
       // see if shindig request
       boolean isShindigRequestor = request.getHeader("x-shindig-dos") != null;
       if (isShindigRequestor)
          return AuthType.ANONYMOUS;
-      
+
       // Now check each entry in the configuration for a match. The matcher
       // will skip user entries if the request is for a system resource
       String url = request.getServletPath();
       if (request.getPathInfo()!=null)
          url = url+request.getPathInfo();
       if (url.startsWith("/Rhythmyx"))
-          url = StringUtils.substringAfter(url,"/Rhythmyx");
-      
+         url = StringUtils.substringAfter(url,"/Rhythmyx");
+
       String method = request.getMethod();
       boolean isSys = isSystemRequest(url);
       for(SecurityEntry entry : m_configuredEntries)
@@ -1072,30 +1072,30 @@ public class PSSecurityFilter implements Filter
             return entry.getType();
          }
       }
-      
+
       return AuthType.FORM;
    }
-   
-   
+
+
    /**
-    * Authenticates the user if the supplied session id denotes a valid rx user 
-    * session.  
-    * 
+    * Authenticates the user if the supplied session id denotes a valid rx user
+    * session.
+    *
     * @param request The current request, assumed not <code>null</code>.
     * @param response The current response, assumed not <code>null</code>.
-    * @param sessId The rx user session id, assumed not <code>null</code> or 
+    * @param sessId The rx user session id, assumed not <code>null</code> or
     * empty.
-    * 
+    *
     * @return The wrapped authenticated request if the user is authenticated, or
     * <code>null</code> if not.
     */
    private HttpServletRequest handleExistingUserSession(
-      HttpServletRequest request, HttpServletResponse response, String sessId) 
+           HttpServletRequest request, HttpServletResponse response, String sessId)
    {
       ms_log.debug("{}{} found user session id specified by html param: {}" ,
               THREAD , Thread.currentThread().getName(),
               sessId);
-      
+
       initRequest(request, response);
       try
       {
@@ -1109,11 +1109,11 @@ public class PSSecurityFilter implements Filter
                  sessId);
          return null;
       }
-      
+
       Subject sub = (Subject) request.getSession().getAttribute(SUBJECT);
       HttpServletRequest newReq = new PSServletRequestWrapper(request, sub);
       updateUserSession(newReq, response, false);
-      
+
       return newReq;
    }
 
@@ -1121,43 +1121,43 @@ public class PSSecurityFilter implements Filter
    /**
     * Sends a response that specifies a redirect to a url that returns an error
     * code 500 and displays an authentication error.
-    * 
+    *
     * @param request The current request, assumed not <code>null</code>.
     * @param response The current response, assumed not <code>null</code>.
-    * 
+    *
     * @throws IOException If there is an error sending the response.
     */
-   private void sendAuthenticationError(HttpServletRequest request, 
-      HttpServletResponse response) throws IOException
+   private void sendAuthenticationError(HttpServletRequest request,
+                                        HttpServletResponse response) throws IOException
    {
       String errorType = "Not Authenticated";
       int errorCode = 500;
-      String[] errorMessages = 
-         new String[] {
-            "This request requires authentication, but the current " +
-            "session is not authenticated.  The user session may " +
-            "have expired or the server may have been restarted.  " +
-            "You must log back into Rhythmyx to continue."};               
-      redirectToErrorPage(request, response, errorCode, errorType, 
-         errorMessages);
+      String[] errorMessages =
+              new String[] {
+                      "This request requires authentication, but the current " +
+                              "session is not authenticated.  The user session may " +
+                              "have expired or the server may have been restarted.  " +
+                              "You must log back into Rhythmyx to continue."};
+      redirectToErrorPage(request, response, errorCode, errorType,
+              errorMessages);
    }
-   
+
    /**
-    * Sends a redirect to the default error page with the specified error 
+    * Sends a redirect to the default error page with the specified error
     * details
-    * 
-    * @param request The current request, may not be <code>null</code>. 
+    *
+    * @param request The current request, may not be <code>null</code>.
     * @param response The current response, may not be <code>null</code>.
     * @param errorCode The HTTP error code to reutrn.
     * @param errorType The error type, may not be <code>null</code> or empty.
-    * @param errorMessages An array of messages, may not be <code>null</code> or 
+    * @param errorMessages An array of messages, may not be <code>null</code> or
     * empty.
-    * 
+    *
     * @throws IOException If the redirect fails.
     */
-   public static void redirectToErrorPage(HttpServletRequest request, 
-      HttpServletResponse response, int errorCode, String errorType, 
-      String[] errorMessages) throws IOException
+   public static void redirectToErrorPage(HttpServletRequest request,
+                                          HttpServletResponse response, int errorCode, String errorType,
+                                          String[] errorMessages) throws IOException
    {
       if (request == null)
          throw new IllegalArgumentException(ERROR_REQUEST_NULL);
@@ -1165,10 +1165,10 @@ public class PSSecurityFilter implements Filter
          throw new IllegalArgumentException(ERROR_RESPONSE_NULL);
       if (StringUtils.isBlank(errorType))
          throw new IllegalArgumentException(
-            "errorType may not be null or empty");
+                 "errorType may not be null or empty");
       if (errorMessages == null || errorMessages.length == 0)
          throw new IllegalArgumentException("errorMessages may not be null");
-      
+
       HttpSession sess = request.getSession();
       sess.setAttribute("errorCode", errorCode);
       sess.setAttribute("errorType", errorType);
@@ -1187,22 +1187,22 @@ public class PSSecurityFilter implements Filter
     * or password. If it fails, returns a 401. Should only be called if
     * {@link #isExternallyAuthenticated(HttpServletRequest)} returns
     * <code>true</code>.
-    * 
+    *
     * @param request The current request, assumed not <code>null</code>.
     * @param response The current response, assumed not <code>null</code>.
-    * 
+    *
     * @return The updated request, or <code>null</code> if the response has
     *         been handled by this method.
-    * 
+    *
     * @throws IOException If there are any IO errors.
     */
    private HttpServletRequest handleExternalAuth(HttpServletRequest request,
-         HttpServletResponse response) throws IOException
+                                                 HttpServletResponse response) throws IOException
    {
       try
       {
          HttpServletRequest authReq = authenticate(request, response, null,
-               null);
+                 null);
          ms_log.debug("Successfully authenticated subject on thread {} using external authentication information",
                  Thread.currentThread().getName());
          return authReq;
@@ -1210,16 +1210,16 @@ public class PSSecurityFilter implements Filter
       catch (LoginException e)
       {
          response.sendError(401, "Authentication Failed: "
-               + e.getLocalizedMessage());
+                 + e.getLocalizedMessage());
          return null;
       }
    }
 
    /**
     * Determines if the current request has been externally authenticated
-    * 
+    *
     * @param request The current request, assumed not <code>null</code>.
-    * 
+    *
     * @return <code>true</code> if it is determined to have been externally
     *         authenticated, <code>false</code> if not.
     */
@@ -1232,73 +1232,73 @@ public class PSSecurityFilter implements Filter
          String name = e.nextElement();
          headers.put(name, request.getHeader(name));
       }
-      
+
       return !StringUtils.isBlank(getCertAuth(headers)) || !StringUtils.isBlank(
-         getAuthType(headers));
+              getAuthType(headers));
    }
-   
+
    /**
     * Get the header value specifying the authentication type.
-    * 
+    *
     * @param headers The headers to check, not <code>null</code>, key is the
     * header name, value is the header value.
-    * 
+    *
     * @return The value or <code>null</code> if not specified.
     */
    public static String getAuthType(Map<String, String> headers)
    {
       if (headers == null)
          throw new IllegalArgumentException(ERROR_HEADER_NULL);
-      
+
       return getNormalizedHeader(IPSCgiVariables.CGI_AUTH_TYPE, headers);
    }
 
    /**
     * Get the header value specifying certificate authentication.
-    * 
+    *
     * @param headers The headers to check, not <code>null</code>, key is the
     * header name, value is the header value.
-    * 
+    *
     * @return The value or <code>null</code> if not specified.
     */
    public static String getCertAuth(Map<String, String> headers)
    {
       if (headers == null)
          throw new IllegalArgumentException(ERROR_HEADER_NULL);
-      
+
       return getNormalizedHeader(IPSCgiVariables.CGI_CERT_SUBJECT, headers);
    }
-   
+
    /**
     * Get the header value specifying the certificate issuer.
-    * 
+    *
     * @param headers The headers to check, not <code>null</code>, key is the
     * header name, value is the header value.
-    * 
+    *
     * @return The value or <code>null</code> if not specified.
     */
    public static String getCertIssuer(Map<String, String> headers)
    {
       if (headers == null)
          throw new IllegalArgumentException(ERROR_HEADER_NULL);
-      
+
       return getNormalizedHeader(IPSCgiVariables.CGI_CERT_ISSUER, headers);
-   }   
+   }
 
    /**
     * Return the value of the specified header, comparing the header name to
-    * those in the supplied map normalized using 
+    * those in the supplied map normalized using
     * {@link #normalizeHeaderName(String)}.
-    * 
+    *
     * @param name The header name, assumed not <code>null</code> or empty.
-    * @param headers The map of header names to header values, may not be 
+    * @param headers The map of header names to header values, may not be
     * <code>null</code>, may be empty.
-    * 
-    * @return The value from the map if a match is found, or <code>null</code> 
+    *
+    * @return The value from the map if a match is found, or <code>null</code>
     * otherwise.
     */
-   public static String getNormalizedHeader(String name, Map<String, 
-      String> headers)
+   public static String getNormalizedHeader(String name, Map<String,
+           String> headers)
    {
       // walk the headers
       String normalizedName = normalizeHeaderName(name);
@@ -1307,16 +1307,16 @@ public class PSSecurityFilter implements Filter
          if (normalizedName.equals(normalizeHeaderName(header.getKey())))
             return header.getValue();
       }
-      
-      return null;      
+
+      return null;
    }
 
    /**
-    * Convert header name to uppercase and replace all hyphens with 
+    * Convert header name to uppercase and replace all hyphens with
     * underscores in order to support headernames used prior to v6.0.
-    * 
+    *
     * @param name The name to normalize, assumed not <code>null</code> or empty.
-    * 
+    *
     * @return The normalized name, not <code>null</code> or empty.
     */
    private static String normalizeHeaderName(String name)
@@ -1327,17 +1327,17 @@ public class PSSecurityFilter implements Filter
    /**
     * Handles case where we already have an authenticated subject in the http
     * session.
-    * 
+    *
     * @param request The current request, assumed not <code>null</code>.
     * @param response The current response, assumed not <code>null</code>.
     * @param sub The authenticated subject, assumed not <code>null</code>.
-    * 
+    *
     * @return The wrapped request, never <code>null</code>.
     */
    private HttpServletRequest handleAuthenticatedSubject(
-         HttpServletRequest request, HttpServletResponse response, Subject sub)
+           HttpServletRequest request, HttpServletResponse response, Subject sub)
    {
-      if (ms_log.isDebugEnabled()) 
+      if (ms_log.isDebugEnabled())
       {
          ms_log.debug("{}{} found 'public credentials': {}" ,
                  THREAD , Thread.currentThread().getName(), sub.getPublicCredentials());
@@ -1348,11 +1348,11 @@ public class PSSecurityFilter implements Filter
    }
 
    /**
-    * Determine if the session of the specified request contains authenticated 
+    * Determine if the session of the specified request contains authenticated
     * subject.
-    * 
+    *
     * @param request the request in question, not <code>null</code>.
-    * 
+    *
     * @return <code>true</code> if the subject is not <code>null</code> and
     *         has a non-empty set of principals, <code>false</code> otherwise.
     */
@@ -1360,17 +1360,17 @@ public class PSSecurityFilter implements Filter
    {
       if (request == null)
          throw new IllegalArgumentException("request may not be null.");
-      
+
       HttpSession sess = request.getSession();
       Subject sub = (Subject) sess.getAttribute(SUBJECT);
       return isAuthenticated(sub);
    }
-   
+
    /**
     * Determine if the supplied subject has been authenticated.
-    * 
+    *
     * @param sub The subject to check, may be <code>null</code>.
-    * 
+    *
     * @return <code>true</code> if the subject is not <code>null</code> and
     *         has a non-empty set of principals, <code>false</code> otherwise.
     */
@@ -1381,18 +1381,18 @@ public class PSSecurityFilter implements Filter
 
    /**
     * Handles form based authentication.
-    * 
+    *
     * @param request The current request, assumed not <code>null</code> and to
     *           contain a session.
     * @param response The current response, assumed not <code>null</code>.
-    * 
+    *
     * @throws IOException If there are any IO errors.
     */
    private void handleFormAuth(HttpServletRequest request,
-         HttpServletResponse response) throws IOException
+                               HttpServletResponse response) throws IOException
    {
 
-      HttpSession sess = request.getSession();      
+      HttpSession sess = request.getSession();
       try
       {
          String loginUrl = getLoginUrl(request);
@@ -1408,7 +1408,7 @@ public class PSSecurityFilter implements Filter
          }
 
          ms_log.debug("Redirected authentication to login servlet on thread {}"
-               , Thread.currentThread().getName());
+                 , Thread.currentThread().getName());
       }
       catch (IllegalStateException e)
       {
@@ -1424,53 +1424,53 @@ public class PSSecurityFilter implements Filter
 
    /**
     * Determine if this is an explicit login request.
-    * 
+    *
     * @param request The current request, assumed not <code>null</code>.
-    * 
+    *
     * @return <code>true</code> if it is a login request, <code>false</code>
     *         otherwise.
-    * 
+    *
     * @throws ServletException If the security configuration is not properly
     *            initialized.
     */
    private boolean isLoginRequest(HttpServletRequest request)
-         throws ServletException
+           throws ServletException
    {
       return matching(request.getServletPath(), ms_loginRequests);
    }
-   
+
    /**
     * Determine if this is an explicit API request.
-    * 
+    *
     * @param request The current request, assumed not <code>null</code>.
-    * 
+    *
     * @return <code>true</code> if it is a CMS-API request with path /v8 <code>false</code>
     *         if otherwise and it is not a CMS-API login request (which should be anonymous).
-    * 
+    *
     * @throws ServletException If the security configuration is not properly
     *            initialized.
     */
    private boolean isExternalApiRequest(HttpServletRequest request)
-         throws ServletException
+           throws ServletException
    {
       return (matching(request.getServletPath(), ms_externalApiRequests) && !request.getRequestURI().equals("/v8/security/session"));
    }
 
    /**
     * Determines if the supplied request contains a Rhythmyx role.
-    * 
+    *
     * @param request The request as a {@link PSServletRequestWrapper} object,
     * assumed not <code>null</code>.
-    * 
+    *
     * @return <code>true</code> if the request contains at least one Rhythmyx
     * role, <code>false</code> otherwise.
     */
    private static boolean hasRhythmyxRole(PSServletRequestWrapper request)
    {
       Collection<String> reqRoles = request.getRoles();
-      List<String> rxRoles = 
-         PSRoleMgrLocator.getBackEndRoleManager().getRhythmyxRoles();
-      
+      List<String> rxRoles =
+              PSRoleMgrLocator.getBackEndRoleManager().getRhythmyxRoles();
+
       for (String role : reqRoles)
       {
          if (rxRoles.contains(role))
@@ -1478,25 +1478,25 @@ public class PSSecurityFilter implements Filter
             return true;
          }
       }
-   
+
       return false;
    }
-      
+
    /**
     * Handles basic authentication.
-    * 
+    *
     * @param request The current request, assumed not <code>null</code>.
     * @param response The current response, assumed not <code>null</code>.
-    * 
+    *
     * @return The updated request, or <code>null</code> if the response has
     *         been handled by this method.
-    * 
+    *
     * @throws IOException If there are any IO errors.
     * @throws ServletException If the security configuration is not properly
     *            initialized.
     */
    private HttpServletRequest handleBasicAuth(HttpServletRequest request,
-         HttpServletResponse response) throws IOException, ServletException
+                                              HttpServletResponse response) throws IOException, ServletException
    {
       // Check for authorization and send basic request
       // if missing
@@ -1516,7 +1516,7 @@ public class PSSecurityFilter implements Filter
             byte[] decoded = Base64.decodeBase64(auth.getBytes(StandardCharsets.UTF_8));
             String decodedAuth = new String(decoded);
             int colonIndex = decodedAuth.indexOf(":");
-            
+
             if (colonIndex>0)
             {
                HttpServletRequest authReq;
@@ -1535,12 +1535,12 @@ public class PSSecurityFilter implements Filter
                {
                   response.setStatus(200);
                   ms_log.debug("Doing Basic.Return 200 response on thread {}"
-                        , Thread.currentThread().getName() );
+                          , Thread.currentThread().getName() );
                   return null;
                }
-               
+
                ms_log.debug("Doing Basic: Successfully authenticated subject on thread {}"
-                     , Thread.currentThread().getName() );
+                       , Thread.currentThread().getName() );
                return authReq;
             }
          }
@@ -1554,15 +1554,15 @@ public class PSSecurityFilter implements Filter
 
    /**
     * Returns the "WWW-Authenticate" header and a 401 response code.
-    * 
+    *
     * @param response The response to use, assumed not <code>null</code>.
-    * 
+    *
     * @throws IOException If there is a problem sending the error response.
     */
-   private void sendMustAuthenticateError(HttpServletResponse response) 
-      throws IOException
+   private void sendMustAuthenticateError(HttpServletResponse response)
+           throws IOException
    {
-      // Has to use EMPTY realm here; otherwise it will break current 
+      // Has to use EMPTY realm here; otherwise it will break current
       // HTTPClient API which is used by Workbench, ECC and MSM
       response.addHeader(PSBaseResponse.RHDR_WWW_AUTH, "Basic realm=\"\"");
       response.sendError(401, "Must authenticate");
@@ -1572,9 +1572,9 @@ public class PSSecurityFilter implements Filter
 
    /**
     * Gets the redirect path based on the current setting for secure login
-    * 
+    *
     * @param request The current request, assumed not <code>null</code>.
-    * 
+    *
     * @return The new login page, never <code>null</code> or empty.
     */
    private String getLoginUrl(HttpServletRequest request)
@@ -1583,7 +1583,7 @@ public class PSSecurityFilter implements Filter
       {
          ms_loginForm = request.getContextPath() + "/login";
       }
-      
+
       String loginPage = ms_loginForm;
       if (m_forceSecureLogin)
       {
@@ -1603,7 +1603,7 @@ public class PSSecurityFilter implements Filter
                   if (sslPort != 0)
                   {
                      URL newUrl = new URL(secureProtocol, url.getHost(),
-                           sslPort, ms_loginForm);
+                             sslPort, ms_loginForm);
                      ms_secureloginForm = newUrl.toExternalForm();
                   }
                }
@@ -1620,7 +1620,7 @@ public class PSSecurityFilter implements Filter
             loginPage = ms_secureloginForm;
          }
       }
-      
+
       loginPage = PSLoginServlet.addRedirect(request, loginPage);
 
       return loginPage;
@@ -1628,16 +1628,16 @@ public class PSSecurityFilter implements Filter
 
    /**
     * Determine if the supplied path specifies a system resource.
-    * 
+    *
     * @param url The servlet path to check, assumed not <code>null</code>.
-    * 
+    *
     * @return <code>true</code> if it is a system resource, <code>false</code>
     *         if not.
     */
    private boolean isSystemRequest(String url)
    {
       boolean isSystemApp = true;
-      
+
       if (url.startsWith("/user"))
       {
          isSystemApp = false;
@@ -1655,8 +1655,8 @@ public class PSSecurityFilter implements Filter
          {
             String appName = ah.getName();
             if (!(appName.startsWith("/sys_")
-                  || appName.startsWith("/administration")
-                  || appName.startsWith("/docs") || appName.startsWith("/dtd")))
+                    || appName.startsWith("/administration")
+                    || appName.startsWith("/docs") || appName.startsWith("/dtd")))
             {
                isSystemApp = false;
             }
@@ -1668,13 +1668,13 @@ public class PSSecurityFilter implements Filter
 
    /**
     * Handle authentication and wraps the request
-    * 
+    *
     * @param request the request, may not be <code>null</code>, may be
     *           wrapped on return.
     * @param response the response, may not be <code>null</code>.
     * @param userId The user id to use, may be <code>null</code> or empty.
     * @param password The password to use, may be <code>null</code> or empty.
-    * 
+    *
     * @return a new request, never <code>null</code>.
     *
     * @throws LoginException If authentication does not succeed or if the user
@@ -1682,8 +1682,8 @@ public class PSSecurityFilter implements Filter
     */
    @SuppressWarnings("unused")
    public static HttpServletRequest authenticate(HttpServletRequest request,
-         HttpServletResponse response, String userId, String password)
-         throws LoginException
+                                                 HttpServletResponse response, String userId, String password)
+           throws LoginException
    {
       if (request == null)
          throw new IllegalArgumentException(ERROR_REQUEST_NULL);
@@ -1691,26 +1691,26 @@ public class PSSecurityFilter implements Filter
          throw new IllegalArgumentException(ERROR_RESPONSE_NULL);
 
       Subject sub;
-      
+
       // trim any whitespace from supplied user id
       if (userId != null)
          userId = userId.trim();
-      
+
       LoginContext lc = authenticate(request, userId, password);
       sub = lc.getSubject();
       PSServletRequestWrapper tmpReq = new PSServletRequestWrapper(request,
-            sub);
+              sub);
       if (!hasRhythmyxRole(tmpReq))
       {
          String msg = "Authorization failed.  User \"" + userId + "\" is not a "
-               + "member of a valid role.";
+                 + "member of a valid role.";
          ms_log.info(msg);
          throw new PSMissingRoleException(msg);
       }
-      
+
       request.getSession().setAttribute(SUBJECT, sub);
       request = tmpReq;
-             
+
       updateUserSession(request, response, true);
 
       String secure = "";
@@ -1730,15 +1730,15 @@ public class PSSecurityFilter implements Filter
 
    /**
     * Authenticate the rhythmyx session supplied with the request.
-    * 
+    *
     * @param request the request, may not be <code>null</code>, may be
     *    wrapped on return.
     * @param response the response, may not be <code>null</code>.
-    * @throws LoginException if the supplied request does not contain a valid 
+    * @throws LoginException if the supplied request does not contain a valid
     *    rhythmyx session.
     */
-   public static void authenticate(HttpServletRequest request, 
-      HttpServletResponse response) throws LoginException
+   public static void authenticate(HttpServletRequest request,
+                                   HttpServletResponse response) throws LoginException
    {
       if (request == null)
          throw new IllegalArgumentException(ERROR_REQUEST_NULL);
@@ -1750,60 +1750,53 @@ public class PSSecurityFilter implements Filter
       PSUserSession rxSession = rxRequest.getUserSession();
       if (rxSession == null)
          throw new LoginException(
-            "The supplied request does not contain a valid rhythmyx session.");
-      
+                 "The supplied request does not contain a valid rhythmyx session.");
+
       updateHttpSession(request, rxSession);
    }
-   
+
    /**
     * Authenticate against the supplied rhythmyx session id and update the
     * requests HTTP session if the rhythmyx session id was valid.
-    * 
-    * @param request the request to update the HTTP session for if the 
+    *
+    * @param request the request to update the HTTP session for if the
     *    supplied rhythmyx session is valid, not <code>null</code>.
-    * @param sessionId the rhythmyx session id to authenticate against, not 
+    * @param sessionId the rhythmyx session id to authenticate against, not
     *    <code>null</code> or empty.
     * @throws LoginException if the supplied rhythmyx session is invalid.
     */
-   public static void authenticate(HttpServletRequest request, 
-      String sessionId) throws LoginException
+   public static void authenticate(HttpServletRequest request,
+                                   String sessionId) throws LoginException
    {
       if (request == null)
          throw new IllegalArgumentException(ERROR_REQUEST_NULL);
-      
+
       if (StringUtils.isBlank(sessionId))
          throw new IllegalArgumentException("sessionId cannot be null or empty");
 
       PSUserSession rxSession = PSUserSessionManager.getUserSession(sessionId);
-      if (rxSession == null) {
-         //Designer Needs to use existing session to keep edits saved, thus get sessionId from request and validate.
-         if(request instanceof PSServletRequestWrapper ) {
-            rxSession = PSUserSessionManager.getSessionIfDesignerRequest((PSServletRequestWrapper) request,sessionId);
-         }
-         if(rxSession == null) {
-            throw new LoginException("The supplied rhythmyx session is invalid.");
-         }
-      }
-      
+      if (rxSession == null)
+         throw new LoginException("The supplied rhythmyx session is invalid.");
+
       updateHttpSession(request, rxSession);
-      
+
       // now update the request
       PSRequest rxReq = getCurrentRequest();
       if (rxReq == null)
          throw new IllegalStateException("Rx request must be initialized");
-      
+
       // this will update the requests user session for us
       rxReq.refreshUserSession();
       updateRequestInfo(rxReq);
    }
-   
+
    /**
     * Logout the user for the supplied rhythmyx session. This releases the
-    * rhythmyx user session if found and invalidates the HTTP session 
+    * rhythmyx user session if found and invalidates the HTTP session
     * supplied with the request.
-    * 
+    *
     * @param request the request to invalidate the HTTP session for, not
-    *    <code>null</code>. 
+    *    <code>null</code>.
     * @param sessionId the id of the rhythmyx session to be released, may be
     *    <code>null</code> or empty.
     */
@@ -1815,19 +1808,19 @@ public class PSSecurityFilter implements Filter
       PSUserSession rxSession = PSUserSessionManager.getUserSession(sessionId);
       if (rxSession != null)
          PSUserSessionManager.releaseUserSession(rxSession);
-      
+
       request.getSession().invalidate();
    }
-   
+
    /**
     * Updates the http session from the supplied request with the information
     * from the supplied user session.
-    * 
+    *
     * @param req The request to update, may not be <code>null</code>.
     * @param sess The user session to use, may not be <code>null</code>.
     */
    public static void updateHttpSession(HttpServletRequest req,
-         PSUserSession sess)
+                                        PSUserSession sess)
    {
       if (req == null)
          throw new IllegalArgumentException(ERROR_REQUEST_NULL);
@@ -1842,26 +1835,26 @@ public class PSSecurityFilter implements Filter
          subject = PSJaasUtils.userEntryToSubject(userEntries[0], null);
          httpSession.setAttribute(SUBJECT, subject);
       }
-      
+
       // update the wrappers subject
       if (req instanceof PSServletRequestWrapper)
          ((PSServletRequestWrapper) req).setSubject(subject);
-      
+
       if (PSRequestInfoBase.isInited())
          PSRequestInfoBase.setRequestInfo(PSRequestInfoBase.SUBJECT, subject);
-      
+
       httpSession.setAttribute(IPSHtmlParameters.SYS_SESSIONID, sess.getId());
    }
-   
+
    /**
     * Connect the specified user session to the current thread and initialize
-    * the request context.  It is a noop if the supplied token 
-    * already references the current session and <code>true</code> is 
+    * the request context.  It is a noop if the supplied token
+    * already references the current session and <code>true</code> is
     * returned.
-    * 
-    * @param token The security token representing the session to connect, may 
+    *
+    * @param token The security token representing the session to connect, may
     * not be <code>null</code>.
-    * 
+    *
     * @return <code>true</code> if the specified session is connected,
     * <code>false</code> if the specified session is not valid.
     */
@@ -1869,44 +1862,44 @@ public class PSSecurityFilter implements Filter
    {
       if (token == null)
          throw new IllegalArgumentException("token may not be null");
-      
+
       PSUserSession sess = PSUserSessionManager.getUserSession(
-         token.getUserSessionId());
-      
+              token.getUserSessionId());
+
       if (sess == null)
          return false;
-      
+
       if (!PSRequestInfoBase.isInited())
          PSRequestInfoBase.initRequestInfo(new HashMap<>());
-      
+
       PSRequest psreq = getCurrentRequest();
-      if (psreq != null && psreq.hasUserSession() && 
-         psreq.getUserSessionId().equals(sess.getId()))
+      if (psreq != null && psreq.hasUserSession() &&
+              psreq.getUserSessionId().equals(sess.getId()))
       {
          // same session already setup on this thread, nothing to do
          return true;
       }
-      
+
       psreq = new PSRequest(token);
       psreq.setServletRequest(new PSServletRequestWrapper(
-         psreq.getServletRequest(), null));
+              psreq.getServletRequest(), null));
       updateHttpSession(psreq.getServletRequest(), sess);
       updateRequestInfo(psreq);
-      
+
       return true;
    }
-   
+
    /**
     * Set this request as the current request.  It is a noop if the supplied
     * request is already the current request.
-    * 
+    *
     * @param req The request to set, may not be <code>null</code>.
     */
    public static void setRequest(PSRequest req)
    {
       if (req == null)
          throw new IllegalArgumentException("req may not be null");
-      
+
       PSRequest curReq = (PSRequest) PSRequestInfoBase.getRequestInfo(
               PSRequestInfoBase.KEY_PSREQUEST);
       if (req == curReq)
@@ -1915,7 +1908,7 @@ public class PSSecurityFilter implements Filter
       PSRequestInfoBase.resetRequestInfo();
       PSRequestInfo.initRequestInfo(req.getServletRequest());
       updateRequestInfo(req);
-      
+
       HttpSession httpSession = req.getServletRequest().getSession(true);
       Subject s = (Subject) httpSession.getAttribute(PSSecurityFilter.SUBJECT);
       PSRequestInfoBase.setRequestInfo(PSRequestInfoBase.SUBJECT, s);
@@ -1928,14 +1921,14 @@ public class PSSecurityFilter implements Filter
     * {@link PSRequest#getServletRequest()} returns the same instance as the
     * supplied <code>req</code>, the method returns the already created
     * request.
-    * 
+    *
     * @param req The request, not <code>null</code>.
     * @param res The response, not <code>null</code>.
-    * 
+    *
     * @return The request, never <code>null</code>.
     */
    public static PSRequest initRequest(HttpServletRequest req,
-         HttpServletResponse res)
+                                       HttpServletResponse res)
    {
       if (req == null)
          throw new IllegalArgumentException("req may not be null");
@@ -1964,7 +1957,7 @@ public class PSSecurityFilter implements Filter
 
    /**
     * Get the request for the current thread.
-    * 
+    *
     * @return The request, may be <code>null</code> if the request has not
     * been initialized for the current thread.
     */
@@ -1972,33 +1965,33 @@ public class PSSecurityFilter implements Filter
    {
       if (!PSRequestInfoBase.isInited())
          return null;
-      
+
       return  (PSRequest) PSRequestInfoBase.getRequestInfo(
               PSRequestInfoBase.KEY_PSREQUEST);
    }
-   
+
    /**
     * Determine if two requests are the same, handling the fact the one or both
     * of the requests may have been wrapped one or more times.
-    * 
+    *
     * @param req The request to check, assumed not <code>null</code>.
     * @param other The request to compare with, assumed not <code>null</code>.
-    * 
+    *
     * @return <code>true</code> if they are the same instance or wrap the same
     * instance, <code>false</code> otherwise.
     */
-   private static boolean isSameRequest(HttpServletRequest req, 
-      HttpServletRequest other)
+   private static boolean isSameRequest(HttpServletRequest req,
+                                        HttpServletRequest other)
    {
       return getNestedRequest(req) == getNestedRequest(other);
    }
-   
+
    /**
-    * Get the original request if the supplied request is an instance of 
+    * Get the original request if the supplied request is an instance of
     * {@link ServletRequestWrapper}. Handles multiple levels of wrapping.
-    * 
+    *
     * @param req The request to unwrap, assumed not <code>null</code>.
-    * 
+    *
     * @return The original request, never <code>null</code>.
     */
    private static ServletRequest getNestedRequest(ServletRequest req)
@@ -2007,14 +2000,14 @@ public class PSSecurityFilter implements Filter
       {
          req = ((ServletRequestWrapper)req).getRequest();
       }
-      
+
       return req;
    }
 
    /**
     * Calls {@link #initRequest(HttpServletRequest, HttpServletResponse)} and
     * then updates the rx user session from the current subject.
-    * 
+    *
     * @param req The request, assumed not <code>null</code>.
     * @param res The response, assumed not <code>null</code>.
     * @param replace <code>true</code> if any current user entries in the rx
@@ -2023,18 +2016,18 @@ public class PSSecurityFilter implements Filter
     *           entries should be left as is.
     */
    private static void updateUserSession(HttpServletRequest req,
-         HttpServletResponse res, boolean replace)
+                                         HttpServletResponse res, boolean replace)
    {
       HttpSession httpSession = req.getSession(true);
       Subject s = (Subject) httpSession.getAttribute(PSSecurityFilter.SUBJECT);
       String locale = (String) httpSession.getAttribute(PSI18nUtils.USER_SESSION_OBJECT_SYS_LANG);
 
       PSRequestInfoBase.setRequestInfo(PSRequestInfoBase.SUBJECT, s);
-      
+
       if(locale!=null)
          PSRequestInfoBase.setRequestInfo(PSRequestInfoBase.KEY_LOCALE, locale);
-       
-      
+
+
       PSRequest psreq = initRequest(req, res);
 
       updateRequestInfo(psreq);
@@ -2045,39 +2038,39 @@ public class PSSecurityFilter implements Filter
       {
          sess.clearAuthenticatedUserEntries();
          String username = req.getRemoteUser();
-         
+
          if (!StringUtils.isBlank(username))
          {
-            PSUserEntry entry = PSJaasUtils.subjectToUserEntry(s, username, 
-               null);
+            PSUserEntry entry = PSJaasUtils.subjectToUserEntry(s, username,
+                    null);
             sess.addAuthenticatedUserEntry(entry);
          }
       }
    }
-   
+
    /**
     * Updates the {@link PSRequestInfo} object with the supplied request.
-    * 
+    *
     * @param req The request, assumed not <code>null</code>.
     */
    private static void updateRequestInfo(PSRequest req)
    {
       PSRequestInfoBase.setRequestInfo(PSRequestInfoBase.KEY_PSREQUEST, req);
-      
+
       if (req.hasUserSession())
       {
          PSUserSession sess = req.getUserSession();
          String locale = (String) sess.getPrivateObject(
-            PSI18nUtils.USER_SESSION_OBJECT_SYS_LANG);
-         
+                 PSI18nUtils.USER_SESSION_OBJECT_SYS_LANG);
+
          String httpSessionLocale = (String)req.getServletRequest().getSession().getAttribute(PSI18nUtils.USER_SESSION_OBJECT_SYS_LANG);
          if (httpSessionLocale != null && (locale == null || !locale.equals(httpSessionLocale))){
             //Check to see if the locale is on the underlying HTTP session in the event that this is a new User session
-          locale = httpSessionLocale;
-          sess.setPrivateObject(
-                PSI18nUtils.USER_SESSION_OBJECT_SYS_LANG,locale);
+            locale = httpSessionLocale;
+            sess.setPrivateObject(
+                    PSI18nUtils.USER_SESSION_OBJECT_SYS_LANG,locale);
          }
-         
+
          if(locale!= null){
             PSRequestInfoBase.setRequestInfo(PSRequestInfoBase.KEY_LOCALE, locale);
          }
@@ -2089,7 +2082,7 @@ public class PSSecurityFilter implements Filter
 
    /**
     * Authenticate a user and password against the configured login provider
-    * 
+    *
     * @param req The requset, assumed not <code>null</code>.
     * @param user the username, may be <code>null</code> or empty
     * @param pass the password, may be <code>null</code> or empty
@@ -2097,7 +2090,7 @@ public class PSSecurityFilter implements Filter
     * @throws LoginException if the login does not succeed
     */
    private static LoginContext authenticate(final HttpServletRequest req,
-         final String user, final String pass) throws LoginException
+                                            final String user, final String pass) throws LoginException
    {
       // don't allow authentication using internal user name
       if (PSSecurityProvider.INTERNAL_USER_NAME.equals(user))
@@ -2149,20 +2142,20 @@ public class PSSecurityFilter implements Filter
     * Check to see if the request url has a pattern match on any of the request
     * strings passed into the method. Method has package access for unit testing
     * only.
-    * 
+    *
     * @param url The request url, assumed not <code>null</code> or empty.
     * @param patterns the list of possible request patterns, assumed not empty
     *           or <code>null</code>. A <code>*</code> is the only
     *           supported wildcard.
-    * 
+    *
     * @return <code>true</code> if a match is found, <code>false</code>
     *         otherwise
-    * 
+    *
     * @throws ServletException if the supplied string array is <code>null</code>
     *            as this indicates that the configuration is invalid.
     */
    static boolean matching(String url, List<String> patterns)
-         throws ServletException
+           throws ServletException
    {
       if (patterns == null)
          throw new ServletException("Invalid security configuration");
@@ -2177,7 +2170,7 @@ public class PSSecurityFilter implements Filter
    }
    /**
     * Accessor for unit testing.
-    * 
+    *
     * @return <code>true</code> if secure login is required,
     *         <code>false</code> if not.
     */
@@ -2188,17 +2181,17 @@ public class PSSecurityFilter implements Filter
 
    /*
     * (non-Javadoc)
-    * 
+    *
     * @see javax.servlet.Filter#destroy()
     */
    public void destroy()
    {
-       // Nothing to do here but can be overridden
+      // Nothing to do here but can be overridden
    }
 
    /**
     * Get the configured entries from the system and user configuration files.
-    * 
+    *
     * @return the configuredEntries, never <code>null</code>, and not normally
     * empty.
     */
@@ -2223,7 +2216,7 @@ public class PSSecurityFilter implements Filter
       if( hosts.isEmpty() || allowedOrigins.isEmpty()) {
          ret = true; //no Host header so is valid
       }
-     else{
+      else{
          for(String h : hosts){
             if(allowedOrigins.contains(h)) {
                ret = true;

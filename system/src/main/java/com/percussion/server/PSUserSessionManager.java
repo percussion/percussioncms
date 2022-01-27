@@ -31,7 +31,6 @@ import com.percussion.security.PSAuthorizationException;
 import com.percussion.server.cache.PSCacheManager;
 import com.percussion.services.legacy.IPSCmsObjectMgr;
 import com.percussion.services.legacy.PSCmsObjectMgrLocator;
-import com.percussion.services.security.PSServletRequestWrapper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
@@ -58,7 +57,7 @@ import static org.apache.commons.lang.Validate.isTrue;
  * @since      1.0
  */
 public class PSUserSessionManager extends Thread
-   implements IPSServerConfigurationListener
+        implements IPSServerConfigurationListener
 {
    /**
     * Not for external construction.
@@ -68,7 +67,7 @@ public class PSUserSessionManager extends Thread
       this.setName("User Session Manager");
       this.setDaemon(true);
    }
-   
+
    private static IPSCmsObjectMgr objMgr = null;
 
    /**
@@ -79,11 +78,11 @@ public class PSUserSessionManager extends Thread
     */
    public static synchronized void init(PSServerConfiguration config,
                                         IPSObjectStoreHandler os)
-         throws PSAuthorizationException
+           throws PSAuthorizationException
    {
       if (ms_SessionManager != null)
          throw new IllegalStateException(
-               "This object can only be instantiated once.");
+                 "This object can only be instantiated once.");
 
       // create and initialize the one and only object
       ms_SessionManager = new PSUserSessionManager();
@@ -127,136 +126,136 @@ public class PSUserSessionManager extends Thread
       long idledTimeMS = 0;      // in milliseconds
 
       /*
-      * The minimum sleep time of this thread. This is to make sure we are
-      * not run every millisecond or so. A 1 second resolution of this
-      * functionality seems to be appropriate.
-      */
+       * The minimum sleep time of this thread. This is to make sure we are
+       * not run every millisecond or so. A 1 second resolution of this
+       * functionality seems to be appropriate.
+       */
       long minimumSleep = 1000;
       long sleepTimeMS = ms_userTimeout;
       long shortestSleep = 0;
 
       try
       {
-            HashMap<String,PSUserSession> usersToCleanup = new HashMap<String,PSUserSession>();
-          
-            
-             
-            long requestTimeout = ms_userTimeout;
-            shortestSleep = requestTimeout;
+         HashMap<String,PSUserSession> usersToCleanup = new HashMap<String,PSUserSession>();
 
-            Iterator sessionIter = ms_Sessions.values().iterator();
-            boolean collectReleases =
-                  ms_Sessions.size() > ms_maxOpenUserSessions;
 
-            TreeMap anonymous = null;
-            TreeMap authenticated = null;
-         
-            if (collectReleases)
-            {
-               // only need these objects if we will be collecting idle sessions
-               anonymous = new TreeMap();
-               authenticated = new TreeMap();
-            }
-           
-            HashSet<String> userPreserveSet = new HashSet<String>();
-            while (sessionIter.hasNext())
-            {
-               PSUserSession sess = (PSUserSession) sessionIter.next();
-               String user = sess.getRealAuthenticatedUserEntry();
-               
-               long idledAt = sess.getIdleSince();
 
-            
-               idledTimeMS = System.currentTimeMillis() - idledAt;
+         long requestTimeout = ms_userTimeout;
+         shortestSleep = requestTimeout;
 
-               if ((idledTimeMS > DESIGNER_TIMEOUT
+         Iterator sessionIter = ms_Sessions.values().iterator();
+         boolean collectReleases =
+                 ms_Sessions.size() > ms_maxOpenUserSessions;
+
+         TreeMap anonymous = null;
+         TreeMap authenticated = null;
+
+         if (collectReleases)
+         {
+            // only need these objects if we will be collecting idle sessions
+            anonymous = new TreeMap();
+            authenticated = new TreeMap();
+         }
+
+         HashSet<String> userPreserveSet = new HashSet<String>();
+         while (sessionIter.hasNext())
+         {
+            PSUserSession sess = (PSUserSession) sessionIter.next();
+            String user = sess.getRealAuthenticatedUserEntry();
+
+            long idledAt = sess.getIdleSince();
+
+
+            idledTimeMS = System.currentTimeMillis() - idledAt;
+
+            if ((idledTimeMS > DESIGNER_TIMEOUT
                     && sess.isDesignerSession()) ||
-                   (idledTimeMS > requestTimeout &&
-                    !sess.isDesignerSession()))
-               {
-                     
-                  sessionIter.remove();
-                  usersToCleanup.put(user,sess);
-                  cleanUpSession(sess);
+                    (idledTimeMS > requestTimeout &&
+                            !sess.isDesignerSession()))
+            {
 
-               }
-               else
-               {
-                  // User still has other sessions open so prevent force checkin
-                  // Does not matter if user session was added and is picked up here before our
-                  // poll operation.  Just means user has a new session so we can skip the checkin
-                  if (user!=null)
-                     userPreserveSet.add(user);
-                  
-                  sleepTimeMS = shortestSleep - idledTimeMS;
-                 
-                  if (sleepTimeMS < shortestSleep)
-                     shortestSleep = sleepTimeMS;
+               sessionIter.remove();
+               usersToCleanup.put(user,sess);
+               cleanUpSession(sess);
 
-                  if (collectReleases)
+            }
+            else
+            {
+               // User still has other sessions open so prevent force checkin
+               // Does not matter if user session was added and is picked up here before our
+               // poll operation.  Just means user has a new session so we can skip the checkin
+               if (user!=null)
+                  userPreserveSet.add(user);
+
+               sleepTimeMS = shortestSleep - idledTimeMS;
+
+               if (sleepTimeMS < shortestSleep)
+                  shortestSleep = sleepTimeMS;
+
+               if (collectReleases)
+               {
+                  if (sess.hasAuthenticatedUserEntries())
                   {
-                     if (sess.hasAuthenticatedUserEntries())
-                     {
-                        if (!sess.isDesignerSession())
-                           authenticated.put(idledAt, sess);
-                     }
-                     else
-                        anonymous.put(idledAt, sess);
+                     if (!sess.isDesignerSession())
+                        authenticated.put(idledAt, sess);
                   }
-               }
-               
-            }   // end of while
-
-           
-            if (collectReleases)
-            {
-               // first remove anonymous sessions, then authenticated sessions
-               // to get the number of open sessions below the threshold
-               int maxSessions = ms_maxOpenUserSessions - ms_releaseOffset;
-               while (!anonymous.isEmpty() && ms_Sessions.size() > maxSessions)
-               {
-                  log.warn("Too many open sessions releasing unauthenticated");
-                  releaseUserSession((PSUserSession) anonymous.remove(
-                        anonymous.firstKey()));
-               }
-
-               while (!authenticated.isEmpty() &&
-                      ms_Sessions.size() > maxSessions)
-               {
-                  log.warn("Too many open sessions releasing authenticated");
-                  releaseUserSession((PSUserSession) authenticated.remove(
-                        authenticated.firstKey()));
+                  else
+                     anonymous.put(idledAt, sess);
                }
             }
 
-            if (shortestSleep < minimumSleep)
-               shortestSleep = minimumSleep;
+         }   // end of while
 
-            if (shortestSleep > ms_maximumSleep)
-               shortestSleep = ms_maximumSleep;
-            
-            // Add sessions removed by log out last to use these session ids instead of an expired sessionid for force checkin
-            PSUserSession ruser = null;
-            
-            // pull released users from queue.
-            while ( (ruser = releasedUsers.poll()) != null) 
-               usersToCleanup.put(ruser.getRealAuthenticatedUserEntry(), ruser);
-            
-            // After we have calculated user sessions that may be removed.  We save any users that have remaining active sessions
-            for (String user : userPreserveSet)
+
+         if (collectReleases)
+         {
+            // first remove anonymous sessions, then authenticated sessions
+            // to get the number of open sessions below the threshold
+            int maxSessions = ms_maxOpenUserSessions - ms_releaseOffset;
+            while (!anonymous.isEmpty() && ms_Sessions.size() > maxSessions)
             {
-               usersToCleanup.remove(user);
+               log.warn("Too many open sessions releasing unauthenticated");
+               releaseUserSession((PSUserSession) anonymous.remove(
+                       anonymous.firstKey()));
             }
-        
-            forceCheckinUserContent(usersToCleanup);
-         
+
+            while (!authenticated.isEmpty() &&
+                    ms_Sessions.size() > maxSessions)
+            {
+               log.warn("Too many open sessions releasing authenticated");
+               releaseUserSession((PSUserSession) authenticated.remove(
+                       authenticated.firstKey()));
+            }
+         }
+
+         if (shortestSleep < minimumSleep)
+            shortestSleep = minimumSleep;
+
+         if (shortestSleep > ms_maximumSleep)
+            shortestSleep = ms_maximumSleep;
+
+         // Add sessions removed by log out last to use these session ids instead of an expired sessionid for force checkin
+         PSUserSession ruser = null;
+
+         // pull released users from queue.
+         while ( (ruser = releasedUsers.poll()) != null)
+            usersToCleanup.put(ruser.getRealAuthenticatedUserEntry(), ruser);
+
+         // After we have calculated user sessions that may be removed.  We save any users that have remaining active sessions
+         for (String user : userPreserveSet)
+         {
+            usersToCleanup.remove(user);
+         }
+
+         forceCheckinUserContent(usersToCleanup);
+
       }
       catch (Throwable t)
       {
          // make sure this never dies unexpectedly
          PSConsole.printMsg("UserSessionManager", t);
       }
-      
+
       try {
          Thread.sleep(shortestSleep);
       }
@@ -264,14 +263,14 @@ public class PSUserSessionManager extends Thread
       {
          Thread.currentThread().interrupt();
       }
-    
+
    }
 
 
    private void forceCheckinUserContent(HashMap<String, PSUserSession> usersToCleanUp)
    {
-     
-      
+
+
       log.debug("Checking in content for logged out users "+usersToCleanUp);
       if (usersToCleanUp.size()>0)
       {
@@ -279,7 +278,7 @@ public class PSUserSessionManager extends Thread
             objMgr = PSCmsObjectMgrLocator.getObjectManager();
          objMgr.forceCheckinUsers(usersToCleanUp);
       }
-         
+
    }
 
 
@@ -311,20 +310,20 @@ public class PSUserSessionManager extends Thread
 
       String sessId = PSUserSession.getIdFromRequest(request);
 
-         if (sessId != null)
-            sess = getUserSession(sessId);
+      if (sessId != null)
+         sess = getUserSession(sessId);
 
-         if (sess == null)
-         {
-            if(request.m_reqPage != null && request.m_reqPage.contains("/cm/gadgets")){
-               return sess;
-            }
-            /* we always create a new ID if we have to create a new session unless
-            * a designer client is trying to connect and has a session id -
-            * then we reuse the supplied id so they can still use their locks.
-            */
-            if ((sessId == null) || (!isDesignerRequest(request)))
-               sessId = PSUserSession.createSessionId(request);
+      if (sess == null)
+      {
+         if(request.m_reqPage != null && request.m_reqPage.contains("/cm/gadgets")){
+            return sess;
+         }
+         /* we always create a new ID if we have to create a new session unless
+          * a designer client is trying to connect and has a session id -
+          * then we reuse the supplied id so they can still use their locks.
+          */
+         if ((sessId == null) || (!isDesignerRequest(request)))
+            sessId = PSUserSession.createSessionId(request);
 
          /*
             we always create a session, but if there is no real session info
@@ -332,23 +331,23 @@ public class PSUserSessionManager extends Thread
             our persistent list.
             we always add it to this list if its a designer connection.
          */
-            sess = new PSUserSession(request, sessId);
+         sess = new PSUserSession(request, sessId);
 
-            if ((sessId != null) &&
-                (areSessionsEnabled() || isDesignerRequest(request)))
-               ms_Sessions.put(sessId, sess);
-         }
-     
-  
-         sess.touchIdle();
- 
-     
+         if ((sessId != null) &&
+                 (areSessionsEnabled() || isDesignerRequest(request)))
+            ms_Sessions.put(sessId, sess);
+      }
+
+
+      sess.touchIdle();
+
+
       return sess;
    }
 
    /**
     * Get the user session timeout.
-    * 
+    *
     * @return the time after which a user session expires in milli seconds.
     */
    public static long getUserSessionTimeout()
@@ -401,7 +400,7 @@ public class PSUserSessionManager extends Thread
       if (request != null)
       {
          String type =
-               request.getCgiVariable(IPSCgiVariables.CGI_PS_REQUEST_TYPE);
+                 request.getCgiVariable(IPSCgiVariables.CGI_PS_REQUEST_TYPE);
          if (type != null)
          {
             type = type.toLowerCase();
@@ -412,22 +411,6 @@ public class PSUserSessionManager extends Thread
       }
 
       return false;
-   }
-
-
-
-   public static synchronized PSUserSession getSessionIfDesignerRequest(PSServletRequestWrapper request,String sessionId)
-   {
-      if (request != null)
-      {
-          String path = request.getPathInfo();
-          if( sessionId != null && path != null && path.contains("/systemDesignSOAP")) {
-            PSUserSession sess = new PSUserSession(request, sessionId,true);
-            ms_Sessions.put(sessionId, sess);
-            return sess;
-         }
-      }
-      return null;
    }
 
 
@@ -445,7 +428,7 @@ public class PSUserSessionManager extends Thread
       if (request != null)
       {
          String type =
-               request.getCgiVariable(IPSCgiVariables.CGI_PS_REQUEST_TYPE);
+                 request.getCgiVariable(IPSCgiVariables.CGI_PS_REQUEST_TYPE);
          if (type != null)
          {
             if (type.equalsIgnoreCase("design-open"))
@@ -508,8 +491,8 @@ public class PSUserSessionManager extends Thread
          return null;
 
       PSUserSession sess = (PSUserSession) ms_Sessions.get(sessId);
-         if (sess != null)
-            sess.touchIdle();
+      if (sess != null)
+         sess.touchIdle();
       return sess;
    }
 
@@ -524,7 +507,7 @@ public class PSUserSessionManager extends Thread
    {
       if (sess != null)
       {
-         // need to call cleanup before removing the session in case anyone 
+         // need to call cleanup before removing the session in case anyone
          // needs to be able to get the actual session object.
          cleanUpSession(sess);
          String user = sess.getRealAuthenticatedUserEntry();
@@ -536,7 +519,7 @@ public class PSUserSessionManager extends Thread
    }
 
    /**
-    * Does any necessary cleanup to close down a user session.  Assumes that the 
+    * Does any necessary cleanup to close down a user session.  Assumes that the
     * session has not yet been removed from the cache.
     *
     * @param sess The user session to close down; assumed non-<code>null</code>
@@ -567,13 +550,13 @@ public class PSUserSessionManager extends Thread
          else
             ms_flags = F_NONE;
 
-            // ms_userTimeout is measured in milliseconds
-            ms_userTimeout = 1000 * config.getUserSessionTimeout();
-            ms_maxOpenUserSessions = config.getMaxOpenUserSessions();
-            ms_releaseOffset = ms_maxOpenUserSessions / 4;
-            ms_maximumSleep =
-               ms_maxOpenUserSessions /
-                  PSServerConfiguration.MINIMAL_REQUIRED_OPEN_SESSIONS * 1000;
+         // ms_userTimeout is measured in milliseconds
+         ms_userTimeout = 1000 * config.getUserSessionTimeout();
+         ms_maxOpenUserSessions = config.getMaxOpenUserSessions();
+         ms_releaseOffset = ms_maxOpenUserSessions / 4;
+         ms_maximumSleep =
+                 ms_maxOpenUserSessions /
+                         PSServerConfiguration.MINIMAL_REQUIRED_OPEN_SESSIONS * 1000;
       }
    }
 
@@ -593,7 +576,7 @@ public class PSUserSessionManager extends Thread
       }
    }
 
-   
+
    /**
     * Get the user session manager status. This includes information about the
     * session manager thread as well as about all open sessions at the time
@@ -648,7 +631,7 @@ public class PSUserSessionManager extends Thread
          }
       }
       sessionCount = new Integer(ms_Sessions.size());
-      
+
       anonymous.setAttribute("count", Integer.toString(anonymousCount));
       authenticated.setAttribute("count", Integer.toString(authenticatedCount));
       designer.setAttribute("count", Integer.toString(designerCount));
@@ -661,11 +644,11 @@ public class PSUserSessionManager extends Thread
 
       Element manager = doc.createElement("UserSessionManager");
       manager.setAttribute("isAlive",
-         ms_SessionManager.isAlive() ? "yes" : "no");
+              ms_SessionManager.isAlive() ? "yes" : "no");
       manager.setAttribute("enabled", areSessionsEnabled() ? "yes" : "no");
       manager.setAttribute("sessionTimeout", ms_userTimeout + "ms");
       manager.setAttribute("maximalOpenUserSessions",
-         new Integer(ms_maxOpenUserSessions).toString());
+              new Integer(ms_maxOpenUserSessions).toString());
       manager.appendChild(sessions);
 
       return manager;
@@ -686,13 +669,13 @@ public class PSUserSessionManager extends Thread
     * m_sessionMonitor</code>
     */
    private static ConcurrentHashMap<String, PSUserSession> ms_Sessions = new ConcurrentHashMap<String, PSUserSession>();
-   
+
    private static ConcurrentLinkedQueue<PSUserSession> releasedUsers = new ConcurrentLinkedQueue<PSUserSession>();
-   
+
    private static final ReentrantReadWriteLock readWriteLock = new ReentrantReadWriteLock();
    private static final Lock readLock = readWriteLock.readLock();
    private static final Lock writeLock = readWriteLock.writeLock();
-   
+
    private static volatile int ms_flags = F_NONE;
    private static volatile long ms_userTimeout = 0;
    /**
@@ -709,7 +692,7 @@ public class PSUserSessionManager extends Thread
     * from this algorithm.
     */
    private static volatile int ms_maxOpenUserSessions =
-      PSServerConfiguration.DEFAULT_OPEN_SESSIONS;
+           PSServerConfiguration.DEFAULT_OPEN_SESSIONS;
    /**
     * Releasing user sessions is an expensive process. Therefor we release more
     * than just the number above the maximal open user sessions. This number
@@ -728,7 +711,7 @@ public class PSUserSessionManager extends Thread
     * seconds.
     */
    private static volatile long ms_maximumSleep =
-      ms_maxOpenUserSessions / MAX_REQUESTS_PER_SECOND * 1000;
+           ms_maxOpenUserSessions / MAX_REQUESTS_PER_SECOND * 1000;
 
    /**  #################################################################
     # The property to define Maximum no of users that can login in CMS at the same time.

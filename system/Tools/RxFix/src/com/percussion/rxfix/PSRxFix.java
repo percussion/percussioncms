@@ -324,7 +324,7 @@ public class PSRxFix
       }
       catch (Exception e)
       {
-         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.error("PSRXFix Failed: " ,PSExceptionUtils.getMessageForLog(e));
          log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
       return "admin-rxfix-preview";
