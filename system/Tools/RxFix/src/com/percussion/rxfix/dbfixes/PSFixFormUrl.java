@@ -80,7 +80,7 @@ public class PSFixFormUrl extends PSFixDBBase implements IPSFix {
                     String name = results.getString("NAME");
                     String renderedForm = results.getString("RENDEREDFORM");
 
-                    logInfo(null, "Rendered form: " + renderedForm);
+                    logInfo(null, "Rendered form: " + name);
 
                     // Change all "/perc-form-processor/forms" to
                     // "/perc-form-processor/form/"
@@ -92,14 +92,14 @@ public class PSFixFormUrl extends PSFixDBBase implements IPSFix {
                             "action=\"/perc-form-processor/form/\"",
                             "action=\"/perc-form-processor/forms/form/\"");
 
-                    logInfo(null, "updating 'RENDEREDFORM' column in 'CT_PERCFORMASSET' for contentid = "
+                    logInfo(null, "updating 'RENDEREDFORM' column in for contentid = "
                             + contentid
                             + " and revision = "
                             + revisionid
                             + " and name = "
                             + name);
 
-                    logInfo(null, "Rendered form after upgrade: " + renderedForm);
+                    logInfo(null, "Rendered form after upgrade: " + name);
 
                     PSStringTemplate ms_updateForms = new PSStringTemplate("UPDATE  {schema}.CT_PERCFORMASSET  SET RENDEREDFORM = ?"
                             + " WHERE CONTENTID = ?" + " and REVISIONID = ?");
