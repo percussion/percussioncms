@@ -66,7 +66,7 @@ public class PSContentTypeVariantsMgr
       catch (PSAssemblyException e)
       {
          throw new PSCmsException(IPSServerErrors.UNEXPECTED_EXCEPTION_CONSOLE,
-               e.getLocalizedMessage());
+               e.getMessage());
       }
       return new PSContentTypeVariantSet(templates);
    }
