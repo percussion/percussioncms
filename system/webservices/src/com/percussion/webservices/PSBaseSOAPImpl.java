@@ -200,8 +200,7 @@ public class PSBaseSOAPImpl
             if(ex instanceof  SOAPException){
                code = IPSWebserviceErrors.MISSING_SESSION;
             }
-            logger.error("Authenication Error Code:" + code, ExceptionUtils.getMessage(ex));
-            logger.debug("Authenication Error Code:" + code, ex);
+            logger.debug("Authentication Error Code:" + code, ex);
             throw new PSInvalidSessionFault(code,
                     PSWebserviceErrors.createErrorMessage(code, ex.toString()),
                     ExceptionUtils.getFullStackTrace(ex));
