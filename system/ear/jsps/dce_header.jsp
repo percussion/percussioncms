@@ -10,7 +10,7 @@
     <title>Desktop Content Explorer Header</title>
     <link rel="stylesheet" type="text/css" href="<%=root%>/sys_resources/css/templates.css"/>
     <link rel="stylesheet" type="text/css" href="<%=root%>/rx_resources/css/templates.css"/>
-    <link rel="stylesheet" type="text/css" href="{concat('<%=root%>/rx_resources/css/',$lang,'/templates.css')}"/>
+    <link rel="stylesheet" type="text/css" href="<%=root%>/rx_resources/css/<%=locale%>/templates.css"/>
 </head>
 <body>
 <div id="RhythmyxBanner"><!--Background image from templates.css-->

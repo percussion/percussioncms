@@ -1876,6 +1876,9 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
    public void saveExportDescToFileSystem(PSExportDescriptor desc) throws PSDeployException
    {
       String name = desc.getName();
+      //Create export directory if it doesn't exist
+      EXPORT_DESC_DIR.mkdirs();
+
       File descFile = new File(EXPORT_DESC_DIR, name + ".xml");
 
       saveComponentToFile(descFile, EXPORT_DESC_DIR, desc);
