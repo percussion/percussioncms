@@ -122,11 +122,27 @@ public class PSRole extends PSAbstractNamedObject
         this.users = users;
     }
 
+    public boolean isCreateRole() {
+        return isCreateRole;
+    }
+
+    public void setCreateUser(boolean createRole) {
+        isCreateRole = createRole;
+    }
+
+    private boolean isCreateRole;
+
     @Override
     protected boolean isValidName(String name)
     {
+
         Pattern regex = Pattern.compile("[$&+,:;=\\\\?@#|/'<>.^*()%!\\s-]");
-        return !regex.matcher(name).find()  && super.isValidName(name);
+        if(isCreateRole()){
+            return !regex.matcher(name).find()  && super.isValidName(name);
+        }else{
+            return super.isValidName(name);
+        }
+
     }
     
     /**
