@@ -851,7 +851,7 @@ public class PSBackEndRoleMgr implements IPSBackEndRoleMgr {
         }
 
         Criteria criteria = session.createCriteria(PSBackEndRole.class);
-        criteria.add(Restrictions.ilike("name", name));
+        criteria.add(Restrictions.eq("name", name));
         criteria.addOrder(Order.asc("name"));
 
         return (List<PSBackEndRole>) criteria.list();
