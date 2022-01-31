@@ -34,6 +34,7 @@ import com.amazonaws.services.s3.transfer.MultipleFileUpload;
 import com.amazonaws.services.s3.transfer.TransferManager;
 import com.amazonaws.services.s3.transfer.TransferManagerBuilder;
 import com.amazonaws.util.IOUtils;
+import com.percussion.cms.IPSConstants;
 import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSExtensionDef;
 import com.percussion.extension.PSExtensionException;
@@ -84,7 +85,7 @@ public class PSAmazonS3EditionTask implements IPSEditionTask
    private IPSPubServerDao pubServerDao;
     private String targetRegion = Regions.DEFAULT_REGION.getName();
 
-   private static final Logger log = LogManager.getLogger(PSAmazonS3EditionTask.class.getName());
+   private static final Logger log = LogManager.getLogger(IPSConstants.PUBLISHING_LOG);
 
    @SuppressFBWarnings("PATH_TRAVERSAL_IN")
    @SuppressWarnings("unused")
@@ -122,6 +123,7 @@ public class PSAmazonS3EditionTask implements IPSEditionTask
          // Upload modified files
          MultipleFileUpload mfUpload = tm.uploadFileList(bucketName, WEB_RESOURCES, webResFolder, fileList.getFirst());
          mfUpload.waitForCompletion();
+
       }
       catch (Exception e)
       {

@@ -392,8 +392,9 @@ public class PSSitePublishDao
         String deliveryServerPath = getWebServerFileSystemRoot();
         notEmpty(deliveryServerPath, "webServerFileSystemRoot");
         String port = getWebServerPort();
-        port = "80".equals(port) ? "" : ":" + port;
-        site.setBaseUrl("http://" + siteName + port + '/');
+
+        port = "80".equals(port) || "443".equals(port) || "".equals(port) ? "" : ":" + port;
+        site.setBaseUrl(site.getSiteProtocol()+ "://" + siteName + port + '/');
 
         // default to local server publishing
         String root = getLocalPublishingRoot(siteName);
