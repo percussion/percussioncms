@@ -3458,6 +3458,17 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
     </tuv>
 </tu>
 
+<tu tuid="perc.ui.editSiteSectionDialog.label@Generate sitemap">
+    <prop type="sectionname" xml:lang="en-us">Generate sitemap</prop>
+    <note xml:lang="en-us"></note>
+    <tuv xml:lang="en-us">
+        <seg>Generate sitemap on full publish</seg>
+    </tuv>
+    <tuv xml:lang="es">
+        <seg>Generar mapa del sitio</seg>
+    </tuv>
+</tu>
+
 <tu tuid="perc.ui.editSiteSectionDialog.label@Sections">
     <prop type="sectionname" xml:lang="en-us">Sections</prop>
     <note xml:lang="en-us"></note>

@@ -662,11 +662,13 @@ public class PSAntEditionTask implements IPSEditionTask
         {
             if (event.getTask() != null)
             {
-                log.debug("Finished Task '" + event.getTask().getTaskName() + "' for edition '" + editionName + "'.");
+                log.info("Finished Task '{}' for edition '{}'.",
+                        event.getTask().getTaskName(),
+                        editionName );
             }
             else
             {
-                log.debug("Finished Task for edition '" + editionName + "'.");
+                log.info("Finished Task for edition '" + editionName + "'.");
             }
         }
 
@@ -675,13 +677,14 @@ public class PSAntEditionTask implements IPSEditionTask
         {
             if (event.getTask() != null)
             {
-                log.debug("Started Task '" + event.getTask().getTaskName() + "' for edition '" + editionName + "'.");
+                log.info("Started Task '" + event.getTask().getTaskName() + "' for edition '" + editionName + "'.");
             }
             else
             {
-                log.debug("Started Task for edition '" + editionName + "'.");
+                log.info("Started Task for edition '" + editionName + "'.");
             }
         }
+
 
     }
 }

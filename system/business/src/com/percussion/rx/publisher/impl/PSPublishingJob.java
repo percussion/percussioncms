@@ -1260,7 +1260,7 @@ public class PSPublishingJob implements Runnable
    private void handleFailure(IPSAssemblyItem item, String msg, Exception e)
    {
       log.warn(msg, e);
-      recordFailureStatus(item, e != null ? e.getLocalizedMessage() : msg);
+      recordFailureStatus(item, e != null ? e.getMessage() : msg);
    }
 
    /**
@@ -2495,7 +2495,7 @@ public class PSPublishingJob implements Runnable
          previousState = previousStateRef.getAndSet(curState);
             
       }
-         log.trace("updating state for refId "+refId);
+         log.trace("updating state for refId {}",refId);
          updateJobStatus(previousState, curState);
    }
 

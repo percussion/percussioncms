@@ -529,6 +529,14 @@ public class PSSiteProperties extends PSAbstractPersistantObject
         this.siteAfterBodyOpenContent = siteAfterBodyOpenContent;
     }
 
+    public boolean isGenerateSiteMap() {
+        return generateSiteMap;
+    }
+
+    public void setGenerateSiteMap(boolean generateSiteMap) {
+        this.generateSiteMap = generateSiteMap;
+    }
+
     /**
      * The relative path to the sitewide loggin page information.
      */
@@ -648,6 +656,11 @@ public class PSSiteProperties extends PSAbstractPersistantObject
      * Indicates if the mobile preview control is rendered on preview.
      */
     private boolean mobilePreviewEnabled;
+
+    /**
+     * Indicates if a sitemap should be generated on full publish.
+     */
+    private boolean generateSiteMap;
 
     /***
      * Indicates head content that is global to all templates and pages on a site.

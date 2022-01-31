@@ -25,8 +25,11 @@
 package com.percussion.rest.sites;
 
 
+import com.percussion.cms.IPSConstants;
 import com.percussion.util.PSSiteManageBean;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 
@@ -47,13 +50,16 @@ public class SitesResource {
     @Autowired
     ISiteAdaptor adaptor;
 
-    public SitesResource(){};
+    private static final Logger log = LogManager.getLogger(IPSConstants.API_LOG);
+
+    public SitesResource(){
+        //NOOP
+    }
 
     @GET
-    // TODO: Implement Me
+    @Path("/")
     public SiteList listSites(){
-        SiteList ret = null;
-
-        return ret;
+        return adaptor.findAllSites();
     }
+
 }
