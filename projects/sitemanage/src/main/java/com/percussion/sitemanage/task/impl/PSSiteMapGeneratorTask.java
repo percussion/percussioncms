@@ -97,7 +97,8 @@ public class PSSiteMapGeneratorTask implements IPSEditionTask {
                     return;
                 }
 
-                if(cl.getGenerator().equalsIgnoreCase("Java/global/percussion/system/sys_SelectedItemsGenerator")){
+                String generator = cl.getGenerator();
+                if(generator != null && generator.equalsIgnoreCase("Java/global/percussion/system/sys_SelectedItemsGenerator")){
                     log.warn("Skipping sitemap generation for Publish Now edition.");
                     return;
                 }
@@ -129,7 +130,7 @@ public class PSSiteMapGeneratorTask implements IPSEditionTask {
      */
     @Override
     public TaskType getType() {
-        return null;
+        return TaskType.POSTEDITION;
     }
 
     /**
