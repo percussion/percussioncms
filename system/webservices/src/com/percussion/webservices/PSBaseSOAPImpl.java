@@ -191,26 +191,21 @@ public class PSBaseSOAPImpl
       {
          String sessionId = getRhythmyxSession();
          PSSecurityFilter.authenticate(getServletRequest(),sessionId);
-         
+
          return sessionId;
       }
-      catch (LoginException e)
+      catch (LoginException | SOAPException ex)
       {
-         int code = IPSWebserviceErrors.INVALID_SESSION;
-         logger.error("Authenication Error",e);
-         throw new PSInvalidSessionFault(code, 
-            PSWebserviceErrors.createErrorMessage(code, e.toString()), 
-            ExceptionUtils.getFullStackTrace(e));
-      }
-      catch (SOAPException e)
-      {
-         int code = IPSWebserviceErrors.MISSING_SESSION;
-         logger.error("Authenication Error",e);
-         throw new PSInvalidSessionFault(code, 
-            PSWebserviceErrors.createErrorMessage(code, e.toString()), 
-            ExceptionUtils.getFullStackTrace(e));
-      }
-   }
+            int code = IPSWebserviceErrors.INVALID_SESSION;
+            if(ex instanceof  SOAPException){
+               code = IPSWebserviceErrors.MISSING_SESSION;
+            }
+            logger.debug("Authentication Error Code:" + code, ex);
+            throw new PSInvalidSessionFault(code,
+                    PSWebserviceErrors.createErrorMessage(code, ex.toString()),
+                    ExceptionUtils.getFullStackTrace(ex));
+         }
+    }
    
    /**
     * Get the remote user.

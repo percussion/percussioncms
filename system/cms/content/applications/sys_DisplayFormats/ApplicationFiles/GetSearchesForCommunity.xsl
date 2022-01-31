@@ -3,7 +3,7 @@
                 xmlns:psxi18n="com.percussion.i18n" extension-element-prefixes="psxi18n"
                 exclude-result-prefixes="psxi18n">
    <xsl:import href="file:sys_resources/stylesheets/sys_I18nUtils.xsl"/>
-   <xsl:variable name="lang" select="//@xml:lang"/>
+   <xsl:variable name="lang" select="//@lang"/>
    <xsl:output method="xml" version="1.0" encoding="UTF-8" indent="yes"/>
    <xsl:template match="/">
       <Node>

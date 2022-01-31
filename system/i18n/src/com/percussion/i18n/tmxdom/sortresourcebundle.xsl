@@ -28,7 +28,7 @@ This style is used to sort the TMX resource document just before saving to
 the disk. Idea is to make it easier for sombody to locate a required translation
 key.
 -->
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	<xsl:template match="/">
 		<xsl:apply-templates select="." mode="copy"/>
 	</xsl:template>
@@ -66,7 +66,7 @@ unit key -->
 			<xsl:apply-templates select="prop" mode="copy"/>
 			<xsl:apply-templates select="note" mode="copy"/>
 			<xsl:apply-templates select="tuv" mode="copy">
-				<xsl:sort select="@xml:lang"/>
+				<xsl:sort select="@lang"/>
 			</xsl:apply-templates>
 		</xsl:copy>
 	</xsl:template>

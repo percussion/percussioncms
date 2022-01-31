@@ -252,7 +252,7 @@ public class PSExportJob extends PSDeployJob
          
          setCompleted();
             
-         if (archive != null)
+         if (archive != null && !archive.isClosed() )
             archive.close();
       }
       

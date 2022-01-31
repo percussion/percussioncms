@@ -29,12 +29,20 @@ import com.percussion.i18n.PSI18nUtils;
 import com.percussion.i18n.PSLocale;
 import com.percussion.security.PSSecurityToken;
 import com.percussion.security.PSThreadRequestUtils;
-import com.percussion.server.*;
+import com.percussion.server.IPSRequestContext;
+import com.percussion.server.PSRequest;
+import com.percussion.server.PSRequestContext;
+import com.percussion.server.PSUserSession;
+import com.percussion.server.PSUserSessionManager;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.guidmgr.data.PSGuid;
 import com.percussion.services.legacy.IPSCmsObjectMgr;
 import com.percussion.services.legacy.PSCmsObjectMgrLocator;
-import com.percussion.services.security.*;
+import com.percussion.services.security.IPSAclService;
+import com.percussion.services.security.IPSBackEndRoleMgr;
+import com.percussion.services.security.PSAclServiceLocator;
+import com.percussion.services.security.PSAclUtils;
+import com.percussion.services.security.PSRoleMgrLocator;
 import com.percussion.services.security.data.PSCommunity;
 import com.percussion.services.security.data.PSLogin;
 import com.percussion.servlets.PSSecurityFilter;
@@ -134,9 +142,17 @@ public class PSSecurityWs extends PSSecurityBaseWs implements IPSSecurityWs
       PSUserSession rxSession = PSUserSessionManager.getUserSession(sessionId);
       login.setSessionTimeout(PSUserSessionManager.getUserSessionTimeout());
 
-      // store the client id to the rhythmyx session if they provided one
-      if (!StringUtils.isBlank(clientId))
-         rxSession.setPrivateObject(PSUserSession.CLIENTID, clientId);
+      if(rxSession != null) {
+         // store the client id to the rhythmyx session if they provided one
+         if (!StringUtils.isBlank(clientId))
+            rxSession.setPrivateObject(PSUserSession.CLIENTID, clientId);
+
+         // store the locale in the session if one was provided
+         if(!StringUtils.isBlank(localeCode)){
+            rxSession.setPrivateObject(PSI18nUtils.USER_SESSION_OBJECT_SYS_LANG,
+                    localeCode);
+         }
+      }
 
       // switch community and locale if specified
       boolean success = false;
@@ -155,7 +171,7 @@ public class PSSecurityWs extends PSSecurityBaseWs implements IPSSecurityWs
       }
       catch (PSInvalidLocaleException e)
       {
-         throw new IllegalArgumentException(e.getLocalizedMessage(), e);
+         throw new IllegalArgumentException(e.getMessage(), e);
       }
       finally
       {
@@ -174,9 +190,11 @@ public class PSSecurityWs extends PSSecurityBaseWs implements IPSSecurityWs
       }
 
       // get the current rhythmyx community - we'll translate to a name below
-      String communityId = (String) rxSession
-         .getPrivateObject(IPSHtmlParameters.SYS_COMMUNITY);
-
+      String communityId = "";
+      if(rxSession != null) {
+         communityId = (String) rxSession
+                 .getPrivateObject(IPSHtmlParameters.SYS_COMMUNITY);
+      }
       // get the current rhythmyx locale
       String locale = (String) rxSession
          .getPrivateObject(IPSHtmlParameters.SYS_LANG);

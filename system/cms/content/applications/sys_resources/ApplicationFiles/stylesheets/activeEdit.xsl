@@ -30,8 +30,15 @@
 	<xsl:variable name="systemLibraryDoc" select="document($systemLibrary)"/>
 	<xsl:variable name="userLibrary" select="'file:rx_resources/stylesheets/rx_Templates.xsl'"/>
 	<xsl:variable name="userLibraryDoc" select="document($userLibrary)"/>
-	<xsl:variable name="customControlImportsDoc" select="document('../sys_resources/stylesheets/customControlImports.xsl')"/>
-   <xsl:variable name="lang" select="/*/UserStatus/@xml:lang"/>
+	<xsl:variable name="customControlImportsDoc" select="document('file:sys_resources/stylesheets/customControlImports.xsl')"/>
+	<xsl:variable name="lang">
+		<xsl:choose>
+			<xsl:when test="/*/UserStatus/@lang">
+				<xsl:value-of select="/*/UserStatus/@lang"/>
+			</xsl:when>
+			<xsl:otherwise>en-us</xsl:otherwise>
+		</xsl:choose>
+	</xsl:variable>
    <xsl:variable name="EditLiveDynamicName" select="'PSEditLiveDynamic'"/>
 	<xsl:template match="/">
 		<xsl:apply-templates select="ContentEditor"/>
@@ -49,9 +56,10 @@
       <xsl:variable name="hasEditLiveDynamic" select="//ControlNameSet[ControlName='sys_EditLiveDynamic']"/>
 		<html>
 			<head>
-			<script language="javascript" src="../tmx/tmx.jsp?sys_lang={$lang}">;</script>
-				<script src="/cm/jslib/profiles/3x/jquery/jquery-3.6.0.js"></script>
-				<script src="/cm/jslib/profiles/3x/jquery/jquery-migrate-3.3.2.js"></script>
+				<!-- <xsl:copy-of select="/*/UserStatus"/> -->
+			<script src="../tmx/tmx.jsp?sys_lang={$lang}">;</script>
+				<script src="/cm/jslib/profiles/3x/jquery/jquery-3.6.0.js">;</script>
+				<script src="/cm/jslib/profiles/3x/jquery/jquery-migrate-3.3.2.js">;</script>
 				<script src="../sys_resources/js/browser.js">;</script>
 				<script src="../sys_resources/js/href.js">;</script>
 			   <script language="javascript" src="../sys_resources/js/globalErrorMessages.js">;</script>

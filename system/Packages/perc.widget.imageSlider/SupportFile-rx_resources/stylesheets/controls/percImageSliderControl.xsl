@@ -97,7 +97,7 @@
 
 	</psxctl:ControlMeta>
 	<xsl:template match="Control[@name='percImageSliderControl']" mode="psxcontrol">
-		<xsl:variable name="lang" select="//@xml:lang"/>
+		<xsl:variable name="lang" select="//@lang"/>
 		<input type="hidden" name="{@paramName}" id="perc-content-edit-{@paramName}" value="{Value}"/>
 		<label for="perc-image-slider-setup-toggle"></label>
 		<div class="perc-image-slider" id="{@paramName}">

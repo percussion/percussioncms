@@ -12952,10 +12952,10 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
 	    <prop type="sectionname" xml:lang="en-us">Role Controller</prop>
 	    <note xml:lang="en-us"></note>
 	    <tuv xml:lang="en-us">
-	        <seg>The Role name contains an invalid character. The valid characters of a role name are 'a' to 'z', 'A' to 'Z','0' to '9', _ and no space</seg>
+	        <seg>The Role name contains an invalid character. The valid characters of a role name are 'a' to 'z', 'A' to 'Z','0' to '9', _, - and no space</seg>
 	    </tuv>
 	     <tuv xml:lang="es">
-	        <seg>El nombre del rol contiene un carácter no válido. Los caracteres válidos de un nombre de rol son 'a' a 'z', 'A' a 'Z', '0' a '9', _ y sin espacio</seg>
+	        <seg>El nombre del rol contiene un carácter no válido. Los caracteres válidos de un nombre de rol son 'a' a 'z', 'A' a 'Z', '0' a '9', _, - y sin espacio</seg>
 	    </tuv>
 	 </tu>
 	 <tu tuid="perc.ui.role.controller@Role name already exist">

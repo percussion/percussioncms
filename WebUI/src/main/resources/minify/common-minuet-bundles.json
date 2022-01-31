@@ -64,6 +64,7 @@
         "css/minuet/perc_fonts_minuet.css",
         "jslib/profiles/3x/libraries/bootstrap/css/bootstrap.css",
         "jslib/profiles/3x/libraries/animate.css/animate.css",
+        "jslib/profiles/3x/jquery/plugins/jquery-datatables/css/jquery.dataTables.css",
         "css/minuet/perc_common_minuet.css"
 
       ]
