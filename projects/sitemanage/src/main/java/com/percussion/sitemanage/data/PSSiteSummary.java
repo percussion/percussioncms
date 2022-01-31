@@ -82,6 +82,40 @@ public class PSSiteSummary extends PSDataItemSummarySingleFolderPath implements 
     
     private boolean isCanonicalReplace = true;
 
+    private boolean isGenerateSitemap = false;
+
+    public boolean isOverrideSystemJQuery() {
+        return overrideSystemJQuery;
+    }
+
+    public void setOverrideSystemJQuery(boolean overrideSystemJQuery) {
+        this.overrideSystemJQuery = overrideSystemJQuery;
+    }
+
+    public boolean isOverrideSystemFoundation() {
+        return overrideSystemFoundation;
+    }
+
+    public void setOverrideSystemFoundation(boolean overrideSystemFoundation) {
+        this.overrideSystemFoundation = overrideSystemFoundation;
+    }
+
+    public boolean isOverrideSystemJQueryUI() {
+        return overrideSystemJQueryUI;
+    }
+
+    public void setOverrideSystemJQueryUI(boolean overrideSystemJQueryUI) {
+        this.overrideSystemJQueryUI = overrideSystemJQueryUI;
+    }
+
+    public boolean isGenerateSitemap() {
+        return isGenerateSitemap;
+    }
+
+    public void setGenerateSitemap(boolean generateSitemap) {
+        isGenerateSitemap = generateSitemap;
+    }
+
     private PSPubInfo pubInfo;
     
     private boolean isCM1Site = false;

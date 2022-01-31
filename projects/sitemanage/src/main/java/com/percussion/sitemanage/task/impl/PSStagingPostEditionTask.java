@@ -24,6 +24,7 @@
 
 package com.percussion.sitemanage.task.impl;
 
+import com.percussion.cms.IPSConstants;
 import com.percussion.extension.IPSExtensionDef;
 import com.percussion.extension.PSExtensionException;
 import com.percussion.pubserver.IPSPubServerService;
@@ -37,14 +38,13 @@ import com.percussion.services.publisher.IPSPubItemStatus;
 import com.percussion.services.pubserver.data.PSPubServer;
 import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.share.spring.PSSpringWebApplicationContextUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.Map;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 /**
  * This is a post edition task assumed to be get added to all staging editions to perform certain tasks
@@ -131,5 +131,5 @@ public class PSStagingPostEditionTask implements IPSEditionTask {
 	{
 		this.pubServerService = pubServerService;
 	}
-    protected final Logger log = LogManager.getLogger(getClass());
+    protected final Logger log = LogManager.getLogger(IPSConstants.PUBLISHING_LOG);
 }

@@ -285,12 +285,20 @@ public class PSUserService implements IPSUserService
                     log.info("Finished creating Percussion User");
                 }
                 log.info("Replacing legacy 'demo' password for generated users...");
+                log.info("Generated passwords can be found in the {}{}var{}config{}generated{}passwords file.",
+                        PSServer.getRxDir().getAbsolutePath(),
+                        File.separatorChar,
+                        File.separatorChar,
+                        File.separatorChar,
+                        File.separatorChar
+                        );
                 updateLegacyPasswordsForUser(ADMIN_NAME);
                 updateLegacyPasswordsForUser(EDITOR_NAME);
                 updateLegacyPasswordsForUser(CONTRIBUTOR_NAME);
                 updateLegacyPasswordsForUser(RXSERVER_NAME);
                 updateLegacyPasswordsForUser(ADMIN1_NAME);
                 updateLegacyPasswordsForUser(ADMIN2_NAME);
+                updateLegacyPasswordsForUser(PERCUSSION_ADMIN_NAME);
                 log.info("Done generating new password for generated users.");
 
             } catch (InterruptedException e) {

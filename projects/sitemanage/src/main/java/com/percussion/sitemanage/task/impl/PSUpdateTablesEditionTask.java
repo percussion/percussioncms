@@ -23,6 +23,7 @@
  */
 package com.percussion.sitemanage.task.impl;
 
+import com.percussion.cms.IPSConstants;
 import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSExtensionDef;
 import com.percussion.extension.PSExtensionException;
@@ -103,7 +104,9 @@ public class PSUpdateTablesEditionTask implements IPSEditionTask
         }
         catch (PSAssemblyException e)
         {
-            log.error("Skip update tables because cannot find template: \"" + templateName + "\"", e);
+            log.error("Skip update tables because cannot find template: {} Error: {}",
+                    templateName,
+                    PSExceptionUtils.getMessageForLog(e));
         }
         return template;
     }
@@ -227,5 +230,5 @@ public class PSUpdateTablesEditionTask implements IPSEditionTask
     
     private IPSPubServerDao pubServerDao = null;
     
-    private static final Logger log = LogManager.getLogger(PSUpdateTablesEditionTask.class);
+    private static final Logger log = LogManager.getLogger(IPSConstants.PUBLISHING_LOG);
 }

@@ -32,7 +32,12 @@ import com.percussion.rx.publisher.IPSEditionTask;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.data.PSGuid;
-import com.percussion.services.publisher.*;
+import com.percussion.services.publisher.IPSContentList;
+import com.percussion.services.publisher.IPSEdition;
+import com.percussion.services.publisher.IPSEditionContentList;
+import com.percussion.services.publisher.IPSEditionTaskDef;
+import com.percussion.services.publisher.IPSPubStatus;
+import com.percussion.services.publisher.IPSPublisherService;
 import com.percussion.services.publisher.data.PSEditionContentList;
 import com.percussion.services.publisher.data.PSEditionContentListPK;
 import com.percussion.services.publisher.data.PSEditionType;
@@ -51,6 +56,7 @@ import com.percussion.sitemanage.impl.PSSitePublishDaoHelper;
 import com.percussion.sitemanage.service.IPSSiteDataService.PublishType;
 import com.percussion.sitemanage.service.IPSSitePublishService.PubType;
 import com.percussion.sitemanage.service.IPSSiteSectionMetaDataService;
+import com.percussion.sitemanage.task.impl.PSSiteMapGeneratorTask;
 import com.percussion.sitemanage.task.impl.PSUpdateTablesEditionTask;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.util.PSPathUtil;
@@ -62,9 +68,9 @@ import com.percussion.webservices.PSErrorException;
 import com.percussion.webservices.publishing.IPSPublishingWs;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
+import org.apache.derby.database.Database;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.derby.database.Database;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
@@ -74,7 +80,12 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import static com.percussion.share.spring.PSSpringWebApplicationContextUtils.getWebApplicationContext;
 import static com.percussion.utils.service.impl.PSSiteConfigUtils.removeServerEntry;
@@ -317,7 +328,7 @@ public class PSSitePublishDao
             tmpSite = siteMgr.loadSiteModifiable(siteName);            
         }
         tmpSite.setDescription(site.getDescription());
-        tmpSite.setDefaultFileExtention(site.getDefaultFileExtention());
+        tmpSite.setDefaultFileExtension(site.getDefaultFileExtention());
         tmpSite.setCanonical(site.isCanonical());
         tmpSite.setSiteProtocol(site.getSiteProtocol());
         tmpSite.setDefaultDocument(site.getDefaultDocument());
@@ -541,7 +552,8 @@ public class PSSitePublishDao
         summary.setDescription(site.getDescription());
         summary.setBaseUrl(site.getBaseUrl());
         summary.setSiteId(site.getSiteId());
-        summary.setDefaultFileExtention(site.getDefaultFileExtention());
+        summary.setDefaultFileExtention(site.getDefaultFileExtension());
+        summary.setGenerateSitemap(site.isGenerateSitemap());
         summary.setCanonical(site.isCanonical());
         summary.setSiteProtocol(site.getSiteProtocol());
         summary.setDefaultDocument(site.getDefaultDocument());
@@ -904,7 +916,7 @@ public class PSSitePublishDao
                     publishWs.deleteEditionTask(taskDef);
                 }
                 
-                addTaskDefsToPubServerEdition(edition, pubServer, isDefaultServer);
+                addTaskDefsToPubServerEdition(edition, pubServer, isDefaultServer, site);
 
                 updateContentListForOnDemandEditionsByPubServer(edition, pubServer);
             }
@@ -1133,7 +1145,7 @@ public class PSSitePublishDao
         {
             publishWs.deleteEditionTask(taskDef);
         }
-        addTaskDefsToPubServerEdition(tgtEdition, server, isDefaultServer);
+        addTaskDefsToPubServerEdition(tgtEdition, server, isDefaultServer,site);
                 
         updateServerContentListForEditionIncremental(tgtEdition, server, site);
     }
@@ -1166,7 +1178,7 @@ public class PSSitePublishDao
         {
             publishWs.deleteEditionTask(taskDef);
         }
-        addTaskDefsToPubServerEdition(tgtEdition, server, isDefaultServer);
+        addTaskDefsToPubServerEdition(tgtEdition, server, isDefaultServer, site);
                 
         updateServerContentListForEditionFull(tgtEdition, oldServer, server, site);
     }
@@ -1176,9 +1188,11 @@ public class PSSitePublishDao
      * 
      * @param tgtEdition the edition, assumed not <code>null</code>.
      * @param pubServer the publishing server, assumed not <code>null</code>.
+     * @param isDefaultServer when true this is the default publishing server
+     * @param site the site that is being published
      */
     private void addTaskDefsToPubServerEdition(IPSEdition tgtEdition, PSPubServer pubServer,
-            boolean isDefaultServer)
+            boolean isDefaultServer, IPSSite site)
     {
         IPSGuid editionGuid = tgtEdition.getGUID();
 
@@ -1285,6 +1299,13 @@ public class PSSitePublishDao
         
         if((isDefaultServer || isStagingServer(pubServer)) && !isOnDemandEdition(tgtEdition))
         {
+            IPSEditionTaskDef sitemapTask = publishWs.createEditionTask();
+            sitemapTask.setContinueOnFailure(true);
+            sitemapTask.setEditionId(editionGuid);
+            sitemapTask.setSequence(0);
+            sitemapTask.setExtensionName(PSSiteMapGeneratorTask.EXTENSION_NAME);
+            publishWs.saveEditionTask(sitemapTask);
+
             /*
              * Add the push feeds edition task
              */
