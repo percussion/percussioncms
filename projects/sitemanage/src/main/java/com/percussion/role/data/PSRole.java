@@ -125,8 +125,11 @@ public class PSRole extends PSAbstractNamedObject
     @Override
     protected boolean isValidName(String name)
     {
-        Pattern regex = Pattern.compile("[$&+,:;=\\\\?@#|/'<>.^*()%!\\s-]");
+
+        Pattern regex = Pattern.compile("[$&+,:;=\\\\?@#|/'<>.^*()%!\\s]");
         return !regex.matcher(name).find()  && super.isValidName(name);
+
+
     }
     
     /**
