@@ -362,9 +362,9 @@
      */
     function updateRole(roleObj){
         userService.updateRole(roleObj, function(status, roleJson) {
-            if(status != $.PercServiceUtils.STATUS_SUCCESS) {
+            if(status !== $.PercServiceUtils.STATUS_SUCCESS) {
                 //Show proper user friendly error message if invalid character found in role name
-                if(roleJson=="invalid_character"){
+                if(roleJson==="invalid_character"){
                     view.alertDialog(I18N.message("perc.ui.role.controller@Error"), I18N.message("perc.ui.role.controller@Role Contains Invalid Character Sequence"));
                 }
                 return;
