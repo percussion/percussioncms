@@ -2,7 +2,7 @@
 <xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" extension-element-prefixes="psxi18n"
                 exclude-result-prefixes="psxi18n">
    <xsl:import href="file:sys_resources/stylesheets/sys_I18nUtils.xsl"/>
-   <xsl:variable name="lang" select="//@xml:lang"/>
+   <xsl:variable name="lang" select="//@lang"/>
 	<xsl:template match="/">
 		<html xmlns="http://www.w3.org/1999/xhtml">
 			<head>

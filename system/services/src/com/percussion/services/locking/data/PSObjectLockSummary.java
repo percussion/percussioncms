@@ -24,8 +24,6 @@
 package com.percussion.services.locking.data;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 import java.util.Objects;
@@ -93,7 +91,7 @@ public class PSObjectLockSummary
    {
       if (remainingTime <= 0)
          throw new IllegalArgumentException("remainingTime must be > 0");
-      
+
       this.remainingTime = remainingTime;
    }
    /**

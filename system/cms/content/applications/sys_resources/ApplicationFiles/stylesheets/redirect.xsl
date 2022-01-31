@@ -18,7 +18,7 @@
 	<xsl:output method="html" omit-xml-declaration="yes"/>
 	<xsl:variable name="lang1">
 		<xsl:choose>
-			<xsl:when test="//@xml:lang"><xsl:value-of select="//@xml:lang"/></xsl:when>
+			<xsl:when test="//@lang"><xsl:value-of select="//@lang"/></xsl:when>
 			<xsl:otherwise><xsl:text>en-us</xsl:text></xsl:otherwise> <!-- default value -->
 		</xsl:choose>
 	</xsl:variable>

@@ -17,7 +17,7 @@
 	<xsl:variable name="actionlist">
 		<xsl:value-of select="//@actionlisturl"/>&amp;sys_contentid=<xsl:value-of select="$contentid"/>&amp;sys_assignmenttype=<xsl:value-of select="$assignmentType"/>
 	</xsl:variable>
-	<xsl:variable name="lang" select="//@xml:lang"/>
+	<xsl:variable name="lang" select="//@lang"/>
 	<xsl:variable name="itemactions" select="document($actionlist)/*"/>
 	<xsl:variable name="currentrevision" select="//@currentrevision"/>
 	<xsl:variable name="tiprevision" select="//@tiprevision"/>

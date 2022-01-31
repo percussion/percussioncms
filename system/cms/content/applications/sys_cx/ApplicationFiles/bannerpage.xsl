@@ -16,7 +16,7 @@
                 xmlns:psxi18n="com.percussion.i18n" extension-element-prefixes="psxi18n" exclude-result-prefixes="psxi18n">
    <xsl:import href="file:sys_resources/stylesheets/sys_I18nUtils.xsl"/>
    <xsl:output method= "html" indent= "yes" doctype-public= "-//W3C//DTD XHTML 1.0 Strict//EN" doctype-system = "DTD/xhtml1-strict.dtd" />
-   <xsl:variable name="lang" select="//@xml:lang"/>
+   <xsl:variable name="lang" select="//@lang"/>
    <xsl:template match="/">
       <html lang="{$lang}">
          <head>
@@ -29,7 +29,7 @@
             </title>
             <link rel="stylesheet" type="text/css" href="/sys_resources/css/templates.css"/>
             <link rel="stylesheet" type="text/css" href="/rx_resources/css/templates.css"/>
-    <!--        <link rel="stylesheet" type="text/css" href="{concat('/rx_resources/css/',$lang,'/templates.css')}"/> -->
+            <link rel="stylesheet" type="text/css" href="{concat('/rx_resources/css/',$lang,'/templates.css')}"/>
             <link rel="stylesheet" type="text/css" href="/sys_resources/css/tabs.css"/>
          </head>
          <body>

@@ -67,7 +67,7 @@
 			<Param name="SHOW_SPLASH" value="true"/>
 		</AppletParams>
 	</xsl:variable>
-	<xsl:variable name="lang" select="//@xml:lang"/>
+	<xsl:variable name="lang" select="//@lang"/>
 	<xsl:variable name="useragent" select="//@useragent"/>
 	<xsl:template match="/">
 		<xsl:choose>

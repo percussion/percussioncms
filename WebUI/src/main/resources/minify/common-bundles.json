@@ -121,6 +121,7 @@
         "jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.tooltip.css",
         "jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.autocomplete.css",
         "jslib/profiles/3x/jquery/plugins/jquery-dropdown/jquery.dropdown.css",
+        "jslib/profiles/3x/jquery/plugins/jquery-datatables/css/jquery.dataTables.css",
         "jslib/profiles/3x/jquery/plugins/jquery-superfish/css/superfish.css",
         "jslib/profiles/3x/jquery/plugins/jquery-superfish/css/superfish-navbar.css",
         "jslib/profiles/3x/jquery/plugins/jquery-superfish/css/superfish-vertical.css",
