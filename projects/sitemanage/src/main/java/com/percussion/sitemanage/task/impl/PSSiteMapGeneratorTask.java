@@ -110,17 +110,27 @@ public class PSSiteMapGeneratorTask implements IPSEditionTask {
 
         for (IPSPubItemStatus s : status.getIterableJobStatus()) {
             if (s.getStatus().equals(IPSSiteItem.Status.SUCCESS)) {
-                String locURL = s.getLocation();
+                String locURL =getCanonicalLocation(site, s.getLocation());
                 if (locURL.startsWith("/"))
                     locURL = locURL.substring(1);
                 wsg.addUrl(site.getBaseUrl() + locURL);
             } else {
+                //TODO: Handle case where previous version of resource is live - we don't want to skip those items that fail but have a prior version live
                 log.debug("Not including failed item {} in sitemap", s.getLocation());
             }
         }
 
         wsg.write();
         wsg.writeSitemapsWithIndex();
+    }
+
+    protected static String getCanonicalLocation(IPSSite site, String location){
+        if(site.isCanonical() &&
+                site.getCanonicalDist().equalsIgnoreCase("sections") &&
+                location.endsWith(site.getDefaultDocument())) {
+                return location.substring(0, location.lastIndexOf(site.getDefaultDocument()));
+        }
+        return location;
     }
 
     /**
