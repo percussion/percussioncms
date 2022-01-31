@@ -85,4 +85,5 @@ public class SitesTestAdaptor implements ISiteAdaptor {
     public Site createSite() {
         return null;
     }
+
 }

@@ -24,10 +24,6 @@
 package com.percussion.services.sitemgr.data;
 
 
-import static com.percussion.util.PSBase64Decoder.decode;
-import static com.percussion.util.PSBase64Encoder.encode;
-import static org.apache.commons.lang.StringUtils.isBlank;
-
 import com.percussion.services.assembly.IPSAssemblyService;
 import com.percussion.services.assembly.IPSAssemblyTemplate;
 import com.percussion.services.assembly.PSAssemblyException;
@@ -44,13 +40,19 @@ import com.percussion.util.PSXMLDomUtil;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.xml.IPSXmlSerialization;
 import com.percussion.xml.PSXmlDocumentBuilder;
-
-import java.io.IOException;
-import java.io.StringReader;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.NaturalId;
+import org.hibernate.annotations.NaturalIdCache;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -64,17 +66,16 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
+import java.io.IOException;
+import java.io.StringReader;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.hibernate.annotations.*;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
+import static com.percussion.util.PSBase64Decoder.decode;
+import static com.percussion.util.PSBase64Encoder.encode;
+import static org.apache.commons.lang.StringUtils.isBlank;
 
 /**
  * A site represents a logical (and currently physical) place to publish
@@ -124,6 +125,7 @@ public class PSSite implements IPSSite, IPSCatalogItem
       defaultDocument = site.defaultDocument;
       canonicalDist = site.canonicalDist;
       is_canonical_replace = site.is_canonical_replace;
+      generateSiteMap = site.generateSiteMap;
 
       //deal w/ collections
       templates = new HashSet<>();
@@ -319,6 +321,10 @@ public class PSSite implements IPSSite, IPSCatalogItem
    @Basic
    @Column(name="BEFORE_BODY_CLOSE", nullable = true)
    String beforeBodyCloseContent;
+
+   @Basic
+   @Column(name="GENERATE_SITEMAP", nullable = true)
+   String generateSiteMap;
 
    @OneToMany(targetEntity = PSSiteProperty.class, cascade =
    {CascadeType.ALL}, fetch = FetchType.EAGER, orphanRemoval = true)
@@ -703,11 +709,11 @@ public class PSSite implements IPSSite, IPSCatalogItem
    }
 
    /**
-    * @param defaultFileExtention the default file extension used when creating a new page.
+    * @param defaultFileExtension the default file extension used when creating a new page.
     */
-   public void setDefaultFileExtention(String defaultFileExtention)
+   public void setDefaultFileExtension(String defaultFileExtension)
    {
-       this.defaultFileExtention = defaultFileExtention;
+       this.defaultFileExtention = defaultFileExtension;
    }
 
    /**
@@ -715,7 +721,7 @@ public class PSSite implements IPSSite, IPSCatalogItem
     *
     * @return the default file extension used when creating a new page.
     */
-   public String getDefaultFileExtention()
+   public String getDefaultFileExtension()
    {
        return defaultFileExtention;
    }
@@ -1180,6 +1186,27 @@ public class PSSite implements IPSSite, IPSCatalogItem
    public void setDefaultDocument(String defaultDocument)
    {
        this.defaultDocument = defaultDocument;
+   }
+
+   /**
+    * When true, the system should try to generate and publish a sitemap for the site
+    *
+    * @param generateSitemap
+    */
+   @Override
+   public void setGenerateSitemap(boolean generateSitemap) {
+      this.generateSiteMap = generateSitemap ? "T" : null;;
+   }
+
+   /**
+    * Is sitemap generation enabled for this site.
+    *
+    * @return when true, a sitemap should be generated if possible for the site.
+    */
+   @Override
+   public boolean isGenerateSitemap() {
+
+      return "T".equalsIgnoreCase(this.generateSiteMap);
    }
 
    /**

@@ -352,7 +352,7 @@ import static org.apache.commons.lang.Validate.notNull;
         props.setResetPage(site.getResetPage());
         props.setResetRequestPasswordPage(site.getResetRequestPasswordPage());
         props.setSecure(site.isSecure());
-        props.setDefaultFileExtention(site.getDefaultFileExtention());
+        props.setDefaultFileExtention(site.getDefaultFileExtension());
         props.setCanonical(site.isCanonical());
         props.setSiteProtocol(site.getSiteProtocol());
         props.setDefaultDocument(site.getDefaultDocument());
@@ -365,6 +365,7 @@ import static org.apache.commons.lang.Validate.notNull;
         props.setSiteAfterBodyOpenContent(site.getSiteAfterBodyOpenContent());
         props.setSiteBeforeBodyCloseContent(site.getSiteBeforeBodyCloseContent());
         props.setMobilePreviewEnabled(site.isMobilePreviewEnabled());
+        props.setGenerateSiteMap(site.isGenerateSitemap());
     }
 
     public PSSitePublishProperties getSitePublishProperties(String siteName) throws PSValidationException, PSNotFoundException {
@@ -455,7 +456,7 @@ import static org.apache.commons.lang.Validate.notNull;
         site.setResetPage(props.getResetPage());
         site.setResetRequestPasswordPage(props.getResetRequestPasswordPage());
         site.setSecure(props.isSecure());
-        site.setDefaultFileExtention(props.getDefaultFileExtention());
+        site.setDefaultFileExtension(props.getDefaultFileExtention());
         site.setCanonical(props.isCanonical());
         site.setSiteProtocol(props.getSiteProtocol());
         site.setDefaultDocument(props.getDefaultDocument());
@@ -468,6 +469,7 @@ import static org.apache.commons.lang.Validate.notNull;
         site.setSiteAfterBodyOpenContent(props.getSiteAfterBodyOpenContent());
         site.setSiteBeforeBodyCloseContent(props.getSiteBeforeBodyCloseContent());
         site.setMobilePreviewEnabled(props.isMobilePreviewEnabled());
+        site.setGenerateSitemap(props.isGenerateSiteMap());
     }
 
     private void updatePSRecentEntries(IPSSite site, PSSiteProperties props) {

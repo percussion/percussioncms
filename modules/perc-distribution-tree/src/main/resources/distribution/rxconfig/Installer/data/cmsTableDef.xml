@@ -1588,6 +1588,7 @@
                 <jdbctype>CHAR</jdbctype>
                 <size>1</size>
                 <allowsnull>yes</allowsnull>
+                <defaultvalue>F</defaultvalue>
             </column>
             <column name="LOGIN_PAGE">
                 <jdbctype>CLOB</jdbctype>
@@ -1617,6 +1618,7 @@
                 <jdbctype>VARCHAR</jdbctype>
                 <size>30</size>
                 <allowsnull>yes</allowsnull>
+                <defaultvalue>html</defaultvalue>
             </column>
             <column name="IS_CANONICAL">
                 <jdbctype>CHAR</jdbctype>
@@ -1686,6 +1688,12 @@
                 <jdbctype>CLOB</jdbctype>
                 <allowsnull>yes</allowsnull>
                 <defaultvalue/>
+            </column>
+            <column action="c" limitSizeForIndex="n" name="GENERATE_SITEMAP">
+                <jdbctype>CHAR</jdbctype>
+                <size>1</size>
+                <allowsnull>yes</allowsnull>
+                <defaultvalue>F</defaultvalue>
             </column>
         </row>
         <primarykey>

@@ -6943,13 +6943,13 @@ The result doc has the following DTD:
       <interface name="com.percussion.rx.publisher.IPSEditionTask"/>
       <PSXExtensionParamDef id="0">
          <name>generateIndex</name>
-         <dataType>java.lang.String</dataType>
-         <description>Should a sitemap index be generated? Useful for large sites.</description>
+         <dataType>java.lang.Boolean</dataType>
+         <description>Should a sitemap index be generated? Useful for large sites. (true/false)</description>
       </PSXExtensionParamDef>
       <PSXExtensionParamDef id="0">
          <name>compress</name>
          <dataType>java.lang.Boolean</dataType>
-         <description>Should the sitemap be compressed?</description>
+         <description>Should the sitemap be compressed? (true/false)</description>
       </PSXExtensionParamDef>
       <suppliedResources/>
    </Extension>

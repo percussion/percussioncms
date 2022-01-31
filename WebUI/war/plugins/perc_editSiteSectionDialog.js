@@ -69,15 +69,19 @@
                 '<input type="checkbox" id="perc-replace-canonical-tags" name="perc-replace-canonical-tags" style="width:20px" disabled tabindex="' + taborder + '"/>' +
                 '<label for="perc-replace-canonical-tags" id="perc-replace-canonical-tags-label">' + I18N.message("perc.ui.editSiteSectionDialog.label@Replace existing Canonical Tags if present") + '</label> <br/>' +
 
+                "<input type='checkbox' style=\"width:20px\" tabindex='" + taborder + "' id='perc-site-gen-sitemap' name='perc-site-gen-sitemap'/>" +
+                "<label for='perc-site-gen-sitemap' id='perc-site-gen-sitemap-label'>" + I18N.message( "perc.ui.editSiteSectionDialog.label@Generate sitemap") + "</label> <br/> " +
+
                 "<label id='perc-site-protocol-label' for='perc-site-protocol'>" + I18N.message( "perc.ui.editSiteSectionDialog.label@Protocol" ) + ":</label> <br/> " +
                 // refactored from radio buttons to drop downs
                 "<select name='perc-site-protocol' id='perc-site-protocol'>" +
                 "     <option id='perc-site-protocol-http' value='http'>http</option>" +
                 "     <option id='perc-site-protocol-https' value='https' selected>https</option>" +
                 "</select> <br/> " +
-
                 "<label for='perc-site-default-document' id='perc-site-default-document-label'>" + I18N.message( "perc.ui.editSiteSectionDialog.label@Default document") + ":</label> <br/> " +
                 "<input type='text' tabindex='" + taborder + "' id='perc-site-default-document' maxlength='255' name='perc-site-default-document' value='index.html'/> <br/>" +
+
+
                 '</div>' +
                 '</div>' +
 
@@ -420,6 +424,12 @@
                     $.perc_filterField($('#perc-site-default-document'), $.perc_textFilters.URL);
                     if (props.defaultDocument) $("#perc-site-default-document").val(props.defaultDocument);
 
+                    //Generate sitemap
+                    if(props.generateSitemap){
+                        $("#perc-site-gen-sitemap").prop("checked", true);
+                    }else{
+                        $("#perc-site-gen-sitemap").prop("checked", false);
+                    }
                     // Set Canonical dist option
                     if (props.canonicalDist) $("[name='perc-canonical-url-dist'][value='" + props.canonicalDist + "']").prop("checked",true);
 
