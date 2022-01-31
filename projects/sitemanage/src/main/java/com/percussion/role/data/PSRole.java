@@ -126,7 +126,7 @@ public class PSRole extends PSAbstractNamedObject
         return isCreateRole;
     }
 
-    public void setCreateUser(boolean createRole) {
+    public void setCreateRole(boolean createRole) {
         isCreateRole = createRole;
     }
 
