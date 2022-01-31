@@ -25,12 +25,12 @@
 package com.percussion.services.sitemgr;
 
 
-import java.util.Set;
-
 import com.percussion.services.assembly.IPSAssemblyTemplate;
 import com.percussion.services.catalog.IPSCatalogSummary;
 import com.percussion.services.sitemgr.data.PSSiteProperty;
 import com.percussion.utils.guid.IPSGuid;
+
+import java.util.Set;
 
 /**
  * Represents a publishing site. Sites are primarily cataloged through
@@ -123,7 +123,7 @@ public interface IPSSite extends IPSCatalogSummary
    void setName(String name);
 
     /**
-     * @param name The previous name of the site to set, may be <code>null</code> or empty
+     * @param previousName The previous name of the site to set, may be <code>null</code> or empty
      */
     void setPreviousName(String previousName);
 
@@ -506,16 +506,16 @@ public interface IPSSite extends IPSCatalogSummary
    void setDefaultPubServer(Long defaultPubServer);
    
    /**
-    * @param the default file extension used when creating a new page.
+    * @param defaultFileExtension the default file extension used when creating a new page.
     */
-   public void setDefaultFileExtention(String defaultFileExtention);
+   public void setDefaultFileExtension(String defaultFileExtension);
    
    /**
     * Gets the default file extension.
     * 
     * @return the default file extension used when creating a new page.
     */
-   public String getDefaultFileExtention();
+   public String getDefaultFileExtension();
    
    /**
     * Determines if canonical tags should be rendered or not during the publishing.
@@ -526,13 +526,13 @@ public interface IPSSite extends IPSCatalogSummary
    /**
     * Enable or disable canonical tags rendering.
     * 
-    * @param setCanonical <code>true</code> if enable rendering of canonical tags; otherwise
+    * @param isCanonical <code>true</code> if enable rendering of canonical tags; otherwise
     *           disable rendering for the site.
     */
    public void setCanonical(boolean isCanonical);
 
    /**
-    * @param the URLs' protocol ("http" or "https") used when rendering canonical tags.
+    * @param siteProtocol the URLs' protocol ("http" or "https") used when rendering canonical tags.
     */
    public void setSiteProtocol(String siteProtocol);
 
@@ -544,9 +544,21 @@ public interface IPSSite extends IPSCatalogSummary
    public String getSiteProtocol();
 
    /**
-    * @param the site's default document (like "index.html") used when rendering canonical tags.
+    * @param defaultDocument the site's default document (like "index.html") used when rendering canonical tags.
     */
    public void setDefaultDocument(String defaultDocument);
+
+    /**
+     * When true, the system should try to generate and publish a sitemap for the site
+     * @param generateSitemap
+     */
+   public void setGenerateSitemap(boolean generateSitemap);
+
+    /**
+     * Is sitemap generation enabled for this site.
+     * @return when true, a sitemap should be generated if possible for the site.
+     */
+   public boolean isGenerateSitemap();
 
    /**
     * Gets the site's default document (like "index.html").
@@ -556,7 +568,7 @@ public interface IPSSite extends IPSCatalogSummary
    public String getDefaultDocument();
    
    /**
-    * @param the URLs' destination ("sections" or "pages") used when rendering canonical tags.
+    * @param canonicalDist the URLs' destination ("sections" or "pages") used when rendering canonical tags.
     */
    public void setCanonicalDist(String canonicalDist);
 
@@ -576,7 +588,7 @@ public interface IPSSite extends IPSCatalogSummary
    /**
     * Enable or disable replacing custom canonical tags with rendered.
     * 
-    * @param setCanonical <code>true</code> if enable replacing of custom canonical tags with rendered; otherwise
+    * @param isCanonicalReplace setCanonical <code>true</code> if enable replacing of custom canonical tags with rendered; otherwise
     *           disable replacing for the site.
     */
    public void setCanonicalReplace(boolean isCanonicalReplace);

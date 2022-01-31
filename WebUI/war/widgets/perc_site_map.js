@@ -1092,6 +1092,7 @@
                         var canonicalURLs = (typeof(fields['perc-enable-canonical-url']) != "undefined");
                         var mobilePreviewEnabled = (typeof(fields['perc-enable-mobile-preview']) != "undefined");
                         var canonicalURLsReplace = (typeof(fields['perc-replace-canonical-tags']) != "undefined");
+                        var generateSitemap = (typeof(fields['perc-site-gen-sitemap']) != "undefined");
 
                         var sitePropsObj = {'SiteProperties': {
                                 'id': fields.site_id,
@@ -1113,7 +1114,8 @@
                                 'defaultDocument' : fields['perc-site-default-document'],
                                 'canonicalDist' : fields['perc-canonical-url-dist'],
                                 'isCanonicalReplace' : canonicalURLsReplace,
-                                'mobilePreviewEnabled': mobilePreviewEnabled
+                                'mobilePreviewEnabled': mobilePreviewEnabled,
+                                'generateSiteMap': generateSitemap
                             }};
                         $.PercBlockUI($.PercBlockUIMode.CURSORONLY);
                         $.PercSiteService.updateSiteProperties(sitePropsObj, function(status, results){

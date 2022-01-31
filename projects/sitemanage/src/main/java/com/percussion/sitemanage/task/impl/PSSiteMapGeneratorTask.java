@@ -12,11 +12,12 @@ import com.percussion.services.publisher.IPSEditionContentList;
 import com.percussion.services.publisher.IPSPubItemStatus;
 import com.percussion.services.publisher.IPSPublisherService;
 import com.percussion.services.publisher.IPSSiteItem;
-import com.percussion.services.publisher.data.PSEditionType;
 import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.share.spring.PSSpringWebApplicationContextUtils;
+import com.redfin.sitemapgenerator.WebSitemapGenerator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;
 import java.util.Date;
@@ -29,8 +30,12 @@ import java.util.Map;
 public class PSSiteMapGeneratorTask implements IPSEditionTask {
 
     private static final Logger log = LogManager.getLogger(IPSConstants.PUBLISHING_LOG);
+    public static final String EXTENSION_NAME="Java/global/percussion/task/perc_SitemapGeneratorTask";
 
+    @Autowired
     IPSPublisherService publisherService;
+
+    @Autowired
     IPSPubServerService pubServerService;
 
     /**
@@ -91,10 +96,7 @@ public class PSSiteMapGeneratorTask implements IPSEditionTask {
                     log.warn("Skipping sitemap generation for incremental edition. ");
                     return;
                 }
-                if(cl.getEditionType().equals(PSEditionType.AUTOMATIC)){
-                    log.warn("Skipping sitemap generation for automatic edition.");
-                    return;
-                }
+
                 if(cl.getGenerator().equalsIgnoreCase("Java/global/percussion/system/sys_SelectedItemsGenerator")){
                     log.warn("Skipping sitemap generation for Publish Now edition.");
                     return;
@@ -102,18 +104,22 @@ public class PSSiteMapGeneratorTask implements IPSEditionTask {
             }
         }
 
-        //Get the list of published items.
-        Iterable<IPSPubItemStatus> it =  publisherService.findPubItemStatusForJobIterable(jobId);
+        WebSitemapGenerator wsg = WebSitemapGenerator.builder(site.getBaseUrl(),
+                new File(site.getRoot())).build();
 
-        while(it.iterator().hasNext()){
-            IPSPubItemStatus s = it.iterator().next();
-
-            if(s.getStatus().equals(IPSSiteItem.Status.SUCCESS)){
-                s.getOperation()
-            }else{
-
+        for (IPSPubItemStatus s : status.getIterableJobStatus()) {
+            if (s.getStatus().equals(IPSSiteItem.Status.SUCCESS)) {
+                String locURL = s.getLocation();
+                if (locURL.startsWith("/"))
+                    locURL = locURL.substring(1);
+                wsg.addUrl(site.getBaseUrl() + locURL);
+            } else {
+                log.debug("Not including failed item {} in sitemap", s.getLocation());
             }
         }
+
+        wsg.write();
+        wsg.writeSitemapsWithIndex();
     }
 
     /**
