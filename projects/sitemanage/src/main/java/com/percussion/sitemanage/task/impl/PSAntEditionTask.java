@@ -23,6 +23,7 @@
  */
 package com.percussion.sitemanage.task.impl;
 
+import com.percussion.cms.IPSConstants;
 import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSExtensionDef;
 import com.percussion.rx.delivery.IPSDeliveryManager;
@@ -565,7 +566,7 @@ public class PSAntEditionTask implements IPSEditionTask
         
         private IPSPubServer pubServer;
 
-        private static final Logger log = LogManager.getLogger("AntEditionTaskLogger");
+        private static final Logger log = LogManager.getLogger(IPSConstants.PUBLISHING_LOG);
 
         public AntEditionTaskListener(String sitename, String editionName, String temporaytPath, IPSPubServer pubServer)
         {
@@ -649,11 +650,14 @@ public class PSAntEditionTask implements IPSEditionTask
         {
             if (event.getTarget() != null)
             {
-                log.debug("Started Target '" + event.getTarget().getName() + "' for edition '" + editionName + "'.");
+                log.debug("Started Target '{}' for edition '{}'.",
+                        event.getTarget().getName(),
+                        editionName
+                        );
             }
             else
             {
-                log.debug("Started Target for edition '" + editionName + "'.");
+                log.debug("Started Target for edition '{}'.", editionName);
             }
         }
 
@@ -668,7 +672,7 @@ public class PSAntEditionTask implements IPSEditionTask
             }
             else
             {
-                log.info("Finished Task for edition '" + editionName + "'.");
+                log.info("Finished Task for edition '{}'.", editionName);
             }
         }
 
@@ -677,11 +681,13 @@ public class PSAntEditionTask implements IPSEditionTask
         {
             if (event.getTask() != null)
             {
-                log.info("Started Task '" + event.getTask().getTaskName() + "' for edition '" + editionName + "'.");
+                log.info("Started Task '{}' for edition '{}'.",
+                        event.getTask().getTaskName(),editionName );
             }
             else
             {
-                log.info("Started Task for edition '" + editionName + "'.");
+                log.info("Started Task for edition '{}'.",
+                        editionName );
             }
         }
 

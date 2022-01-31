@@ -23,6 +23,7 @@
  */
 package com.percussion.rx.delivery.impl;
 
+import com.percussion.cms.IPSConstants;
 import com.percussion.rx.delivery.IPSDeliveryErrors;
 import com.percussion.rx.delivery.IPSDeliveryHandler;
 import com.percussion.rx.delivery.IPSDeliveryItem;
@@ -114,7 +115,7 @@ public abstract class PSBaseDeliveryHandler implements IPSDeliveryHandler
    /**
     * Logger.
     */
-    protected static final Logger ms_log = LogManager.getLogger(PSBaseDeliveryHandler.class);
+    protected static final Logger ms_log = LogManager.getLogger(IPSConstants.PUBLISHING_LOG);
    
    @Autowired
    private IPSDeliveryManager ms_deliveryManager;
@@ -862,8 +863,8 @@ public abstract class PSBaseDeliveryHandler implements IPSDeliveryHandler
 
          if (ri != null)
          {
-            ms_log.debug("delivery of item at location " + location
-                  + " that is already set for a removal - skipping removal");
+            ms_log.debug("delivery of item at location {} that is already set for a removal - skipping removal",
+                    location);
             item.addOverride(ri);
          }
       }

@@ -470,6 +470,7 @@ import static org.apache.commons.lang.Validate.notNull;
         site.setSiteBeforeBodyCloseContent(props.getSiteBeforeBodyCloseContent());
         site.setMobilePreviewEnabled(props.isMobilePreviewEnabled());
         site.setGenerateSitemap(props.isGenerateSiteMap());
+        site.setBaseUrl(props.getSiteProtocol() + "://" + site.getName());
     }
 
     private void updatePSRecentEntries(IPSSite site, PSSiteProperties props) {
