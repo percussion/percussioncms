@@ -393,8 +393,13 @@ public class PSSitePublishDao
         notEmpty(deliveryServerPath, "webServerFileSystemRoot");
         String port = getWebServerPort();
 
+        String protocol = site.getSiteProtocol();
+
+        if(protocol == null || StringUtils.isBlank(protocol))
+            protocol = "https";
+
         port = "80".equals(port) || "443".equals(port) || "".equals(port) ? "" : ":" + port;
-        site.setBaseUrl(site.getSiteProtocol()+ "://" + siteName + port + '/');
+        site.setBaseUrl(protocol + "://" + siteName + port + '/');
 
         // default to local server publishing
         String root = getLocalPublishingRoot(siteName);
