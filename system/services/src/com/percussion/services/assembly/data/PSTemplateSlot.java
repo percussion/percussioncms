@@ -416,10 +416,13 @@ public class PSTemplateSlot
     @SuppressWarnings("unchecked")
     public void setSlotAssociations(
             Collection<PSPair<IPSGuid, IPSGuid>> newassociations) {
-        slotAssociations = Objects.requireNonNull(newassociations)
+        this.slotAssociations.clear();
+        Set<PSTemplateTypeSlotAssociation> coll =
+        Objects.requireNonNull(newassociations)
                 .stream()
                 .map(p -> new PSTemplateTypeSlotAssociation(p.getFirst(), p.getSecond(), this.id))
                 .collect(toSet());
+        this.slotAssociations.addAll(coll);
 
     }
 
@@ -440,7 +443,8 @@ public class PSTemplateSlot
     @SuppressWarnings("unchecked")
     public void setSlotTypeAssociations(
             PSTemplateTypeSlotAssociation associations[]) {
-        slotAssociations = Arrays.stream(associations).collect(toSet());
+        this.slotAssociations.clear();
+        this.slotAssociations.addAll(Arrays.stream(associations).collect(toSet()));
     }
 
     /**

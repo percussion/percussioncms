@@ -6136,6 +6136,8 @@ public class PSXmlObjectStoreHandler extends PSObjectFactory
          {
             sum.setMajorMinorVersion(hist.getLatestMajorVersion(),
                                      hist.getLatestMinorVersion());
+         }else{
+            sum.setMajorMinorVersion(1,0);
          }
       }
    }

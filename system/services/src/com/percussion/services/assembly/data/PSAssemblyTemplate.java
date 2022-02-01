@@ -846,7 +846,8 @@ public class PSAssemblyTemplate
     */
    public void setSlots(Set<IPSTemplateSlot> s)
    {
-      slots = s;
+      slots.clear();
+      slots.addAll(s);
    }
 
    /*
