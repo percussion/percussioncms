@@ -360,6 +360,10 @@ public class PSSteppedWorkflowService implements IPSSteppedWorkflowService, IPSN
                     {
                         psTransitionRole.setWorkflowId(wfId);
                     }
+                    //CMS-8752 : Clear transition roles list from the transition
+                    psTransition.getTransitionRoles().clear();
+                    //CMS-8752 : Add back after the new workflow id to force update the updated transition roles list to avoid duplicate while saving using hibernate session
+                    psTransition.setTransitionRoles(transRoles);
                 }
                 // Assign the list of modified transitions for the current state 
                 // This is important to avoid issues when saving
