@@ -4,8 +4,15 @@ import com.percussion.cms.IPSConstants;
 import com.percussion.extension.IPSExtensionDef;
 import com.percussion.extension.PSExtensionException;
 import com.percussion.pubserver.IPSPubServerService;
+import com.percussion.rx.delivery.impl.PSLocalDeliveryManager;
 import com.percussion.rx.publisher.IPSEditionTask;
 import com.percussion.rx.publisher.IPSEditionTaskStatusCallback;
+import com.percussion.server.PSServer;
+import com.percussion.services.catalog.PSTypeEnum;
+import com.percussion.services.content.data.PSRevisions;
+import com.percussion.services.guidmgr.IPSGuidManager;
+import com.percussion.services.guidmgr.PSGuidManagerLocator;
+import com.percussion.services.guidmgr.data.PSLegacyGuid;
 import com.percussion.services.publisher.IPSContentList;
 import com.percussion.services.publisher.IPSEdition;
 import com.percussion.services.publisher.IPSEditionContentList;
@@ -13,13 +20,22 @@ import com.percussion.services.publisher.IPSPubItemStatus;
 import com.percussion.services.publisher.IPSPublisherService;
 import com.percussion.services.publisher.IPSSiteItem;
 import com.percussion.services.sitemgr.IPSSite;
+import com.percussion.services.system.data.PSContentStatusHistory;
+import com.percussion.services.workflow.IPSWorkflowService;
+import com.percussion.services.workflow.PSWorkflowServiceLocator;
+import com.percussion.services.workflow.data.PSState;
 import com.percussion.share.spring.PSSpringWebApplicationContextUtils;
+import com.percussion.utils.guid.IPSGuid;
+import com.percussion.webservices.content.IPSContentWs;
+import com.percussion.webservices.content.PSContentWsLocator;
 import com.redfin.sitemapgenerator.WebSitemapGenerator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -82,11 +98,6 @@ public class PSSiteMapGeneratorTask implements IPSEditionTask {
 
         List<IPSEditionContentList> contentLists = publisherService.loadEditionContentLists(edition.getGUID());
 
-        if(!success){
-            log.warn("Skipping sitemap generation for failed job: {}", jobId);
-            return;
-        }
-
         //Detect if this is a "normal" edition - publish now, auto publish, and incremental should always be skipped.
         if(contentLists != null && ! contentLists.isEmpty()){
             for(IPSEditionContentList ecl : contentLists){
@@ -105,23 +116,36 @@ public class PSSiteMapGeneratorTask implements IPSEditionTask {
             }
         }
 
+        File siteMapDir = new File(getSiteMapDirForJob(jobId));
+        siteMapDir.mkdirs();
         WebSitemapGenerator wsg = WebSitemapGenerator.builder(site.getBaseUrl(),
-                new File(site.getRoot())).build();
+                siteMapDir).build();
 
         for (IPSPubItemStatus s : status.getIterableJobStatus()) {
             if (s.getStatus().equals(IPSSiteItem.Status.SUCCESS)) {
-                String locURL =getCanonicalLocation(site, s.getLocation());
-                if (locURL.startsWith("/"))
-                    locURL = locURL.substring(1);
-                wsg.addUrl(site.getBaseUrl() + locURL);
+                addToSiteMap(wsg, site, s);
             } else {
-                //TODO: Handle case where previous version of resource is live - we don't want to skip those items that fail but have a prior version live
+                if(isPriorVersionLive(s)){
+                   //a previous version was live - so even tho this one failed we should include it in the sitemap
+                    addToSiteMap(wsg, site, s);
+                }
                 log.debug("Not including failed item {} in sitemap", s.getLocation());
             }
         }
 
         wsg.write();
         wsg.writeSitemapsWithIndex();
+    }
+
+    public static String getSiteMapDirForJob(long jobId){
+        return PSServer.getRxDir() + File.separator + PSLocalDeliveryManager.DEFAULT_TMP_DIR + File.separator + jobId +
+                File.separator + "sitemaps";
+    }
+    protected static void addToSiteMap(WebSitemapGenerator wsg, IPSSite site, IPSPubItemStatus s){
+        String locURL =getCanonicalLocation(site, s.getLocation());
+        if (locURL.startsWith("/"))
+            locURL = locURL.substring(1);
+        wsg.addUrl(site.getBaseUrl() + locURL);
     }
 
     protected static String getCanonicalLocation(IPSSite site, String location){
@@ -133,6 +157,41 @@ public class PSSiteMapGeneratorTask implements IPSEditionTask {
         return location;
     }
 
+    protected static boolean isPriorVersionLive(IPSPubItemStatus status){
+
+        IPSGuidManager guidMgr = PSGuidManagerLocator.getGuidMgr();
+        IPSContentWs ws = PSContentWsLocator.getContentWebservice();
+        List<PSRevisions> revs = ws.findRevisions(Collections.singletonList(new PSLegacyGuid(status.getContentId(), status.getRevisionId())));
+        if(revs != null && !revs.isEmpty()) {
+            PSRevisions r = revs.get(0);
+            List<PSContentStatusHistory> history = r.getRevisions();
+            if(history!=null && !history.isEmpty()) {
+                history.sort(Comparator.comparing(PSContentStatusHistory::getRevision).reversed());
+
+                for (PSContentStatusHistory csh : history) {
+
+                    IPSWorkflowService wfsvc = PSWorkflowServiceLocator.getWorkflowService();
+                    IPSGuid wfGuid = guidMgr.makeGuid(csh.getWorkflowId(), PSTypeEnum.WORKFLOW);
+                    IPSGuid stateGuid = guidMgr.makeGuid(csh.getStateId(), PSTypeEnum.WORKFLOW_STATE);
+
+                    PSState state = wfsvc.loadWorkflowState(stateGuid, wfGuid);
+                    //Archive state
+                    if(state.getContentValidValue().equalsIgnoreCase("u")){
+                        return false;
+                    }
+                    if(state.isPublishable() &&
+                        (state.getName().equalsIgnoreCase("live")
+                                ||
+                                state.getName().equalsIgnoreCase("public")
+                            ||
+                                state.getName().equalsIgnoreCase("publish"))){
+                        return true;
+                        }
+                    }
+            }
+        }
+        return false;
+    }
     /**
      * Discover when the extension can be used.
      *
