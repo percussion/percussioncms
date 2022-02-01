@@ -43,7 +43,6 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -73,12 +72,10 @@ public class PSStagingPostEditionTask implements IPSEditionTask {
 		{
 			log.info("Clearing published items from staging incremenatl queue");
 			//get all the items and delete the incremental events
-			Iterator<IPSPubItemStatus> itemIter = statusService.getIterableJobStatus().iterator();
-			while (itemIter.hasNext()) 
-			{
-				IPSPubItemStatus item = itemIter.next();
-				contentChangeService.deleteChangeEvents(site.getSiteId(),item.getContentId(),PSContentChangeType.PENDING_STAGED);
-				log.debug("Cleared the item with id " + item.getContentId() + "from staging incremenatl queue");
+			for (IPSPubItemStatus item : statusService.getIterableJobStatus()) {
+				contentChangeService.deleteChangeEvents(site.getSiteId(), item.getContentId(), PSContentChangeType.PENDING_STAGED);
+				log.debug("Cleared the item with id {} from staging incremenatl queue",
+						item.getContentId());
 			}
 		}
 		else

@@ -24,6 +24,7 @@
 package com.percussion.sitemanage.task.impl;
 
 
+import com.percussion.cms.IPSConstants;
 import com.percussion.sitemanage.task.IPSAntService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -39,7 +40,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
-import static org.apache.commons.lang.Validate.*;
+import static org.apache.commons.lang.Validate.noNullElements;
+import static org.apache.commons.lang.Validate.notEmpty;
+import static org.apache.commons.lang.Validate.notNull;
 import static org.springframework.util.CollectionUtils.isEmpty;
 
 /**
@@ -54,7 +57,7 @@ public class PSAntService implements IPSAntService {
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    public static final Logger log = LogManager.getLogger(PSAntService.class);
+    public static final Logger log = LogManager.getLogger(IPSConstants.PUBLISHING_LOG);
 
     
     

@@ -23,6 +23,7 @@
  */
 package com.percussion.rx.delivery.impl;
 
+import com.percussion.cms.IPSConstants;
 import com.percussion.error.PSExceptionUtils;
 import com.percussion.rx.delivery.IPSDeliveryErrors;
 import com.percussion.rx.delivery.IPSDeliveryHandler;
@@ -79,7 +80,7 @@ public class PSLocalDeliveryManager implements IPSDeliveryManager
    /**
     * Logger used for delivery manager.
     */
-   private static final Logger log = LogManager.getLogger(PSLocalDeliveryManager.class);
+   private static final Logger log = LogManager.getLogger(IPSConstants.PUBLISHING_LOG);
 
    /**
     * A map joining the job id to a map of activated delivery handlers. Used to
@@ -107,7 +108,7 @@ public class PSLocalDeliveryManager implements IPSDeliveryManager
    /**
     * The default temporary directory relative to the Rhythmyx installation root.
     */
-   private static final String DEFAULT_TMP_DIR = "temp/publish";
+   public static final String DEFAULT_TMP_DIR = "temp/publish";
    
    private final Object tempDirLock = new Object();
 

@@ -279,8 +279,7 @@ public class PSSiteManager
       
       if (log.isDebugEnabled())
       {
-         log.debug("Load un-cached site (id=" + siteid.toString()
-               + ", name=\"" + rval.getName() + "\".");
+         log.debug("Load un-cached site (id={}, name={}).", siteid, rval.getName());
       }
 
       return rval;
