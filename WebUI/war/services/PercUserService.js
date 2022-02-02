@@ -173,8 +173,10 @@
             callback($.PercServiceUtils.STATUS_ERROR, I18N.message("perc.ui.user.service@Null String"));
             return;
         }
-        usernameStartsWith = usernameStartsWith.replace(/%+$/, "");
-        var urlfindExternalUsernamesThatStartwith = $.perc_paths.USER_EXTERNAL_FIND + "/" + encodeURIComponent(usernameStartsWith) + "*";
+        usernameStartsWith = usernameStartsWith.replace("%", "*");
+        if(!usernameStartsWith.endsWith("*"))
+            usernameStartsWith = usernameStartsWith + "*";
+        var urlfindExternalUsernamesThatStartwith = $.perc_paths.USER_EXTERNAL_FIND + "/" + encodeURIComponent(usernameStartsWith);
 
         $.PercServiceUtils.makeJsonRequest(
             urlfindExternalUsernamesThatStartwith,
