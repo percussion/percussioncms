@@ -19,6 +19,8 @@ import com.percussion.services.publisher.IPSEditionContentList;
 import com.percussion.services.publisher.IPSPubItemStatus;
 import com.percussion.services.publisher.IPSPublisherService;
 import com.percussion.services.publisher.IPSSiteItem;
+import com.percussion.services.publisher.PSPublisherServiceLocator;
+import com.percussion.services.publisher.data.PSItemPublishingHistory;
 import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.services.system.data.PSContentStatusHistory;
 import com.percussion.services.workflow.IPSWorkflowService;
@@ -96,45 +98,52 @@ public class PSSiteMapGeneratorTask implements IPSEditionTask {
     @Override
     public void perform(IPSEdition edition, IPSSite site, Date startTime, Date endTime, long jobId, long duration, boolean success, Map<String, String> params, IPSEditionTaskStatusCallback status) throws Exception {
 
-        List<IPSEditionContentList> contentLists = publisherService.loadEditionContentLists(edition.getGUID());
+        if(site.isGenerateSitemap()) {
+            long count = 0;
+            List<IPSEditionContentList> contentLists = publisherService.loadEditionContentLists(edition.getGUID());
 
-        //Detect if this is a "normal" edition - publish now, auto publish, and incremental should always be skipped.
-        if(contentLists != null && ! contentLists.isEmpty()){
-            for(IPSEditionContentList ecl : contentLists){
-                IPSContentList cl = publisherService.loadContentList(ecl.getContentListId());
-                if(cl.getType() == IPSContentList.Type.INCREMENTAL){
-                    //If this is an incremental edition we want to skip generation
-                    log.warn("Skipping sitemap generation for incremental edition. ");
-                    return;
-                }
+            //Detect if this is a "normal" edition - publish now, auto publish, and incremental should always be skipped.
+            if (contentLists != null && !contentLists.isEmpty()) {
+                for (IPSEditionContentList ecl : contentLists) {
+                    IPSContentList cl = publisherService.loadContentList(ecl.getContentListId());
+                    if (cl.getType() == IPSContentList.Type.INCREMENTAL) {
+                        //If this is an incremental edition we want to skip generation
+                        log.warn("Skipping sitemap generation for incremental edition. ");
+                        return;
+                    }
 
-                String generator = cl.getGenerator();
-                if(generator != null && generator.equalsIgnoreCase("Java/global/percussion/system/sys_SelectedItemsGenerator")){
-                    log.warn("Skipping sitemap generation for Publish Now edition.");
-                    return;
+                    String generator = cl.getGenerator();
+                    if (generator != null && generator.equalsIgnoreCase("Java/global/percussion/system/sys_SelectedItemsGenerator")) {
+                        log.warn("Skipping sitemap generation for Publish Now edition.");
+                        return;
+                    }
                 }
             }
-        }
 
-        File siteMapDir = new File(getSiteMapDirForJob(jobId));
-        siteMapDir.mkdirs();
-        WebSitemapGenerator wsg = WebSitemapGenerator.builder(site.getBaseUrl(),
-                siteMapDir).build();
+            File siteMapDir = new File(getSiteMapDirForJob(jobId));
+            siteMapDir.mkdirs();
+            WebSitemapGenerator wsg = WebSitemapGenerator.builder(site.getBaseUrl(),
+                    siteMapDir).build();
 
-        for (IPSPubItemStatus s : status.getIterableJobStatus()) {
-            if (s.getStatus().equals(IPSSiteItem.Status.SUCCESS)) {
-                addToSiteMap(wsg, site, s);
-            } else {
-                if(isPriorVersionLive(s)){
-                   //a previous version was live - so even tho this one failed we should include it in the sitemap
+            for (IPSPubItemStatus s : status.getIterableJobStatus()) {
+                if (s.getStatus().equals(IPSSiteItem.Status.SUCCESS) &&
+                        s.getOperation().equals(IPSSiteItem.Operation.PUBLISH)) {
                     addToSiteMap(wsg, site, s);
+                    count++;
+                } else {
+                    if (isPriorVersionLiveV2(s) && s.getOperation().equals(IPSSiteItem.Operation.PUBLISH)) {
+                        //a previous version was live - so even tho this one failed we should include it in the sitemap
+                        addToSiteMap(wsg, site, s);
+                        count++;
+                    }
+                    log.debug("Not including failed item {} in sitemap", s.getLocation());
                 }
-                log.debug("Not including failed item {} in sitemap", s.getLocation());
             }
-        }
 
-        wsg.write();
-        wsg.writeSitemapsWithIndex();
+            wsg.write();
+            wsg.writeSitemapsWithIndex();
+            log.info("Wrote {} entries to generated sitemap.", count);
+        }
     }
 
     public static String getSiteMapDirForJob(long jobId){
@@ -156,6 +165,33 @@ public class PSSiteMapGeneratorTask implements IPSEditionTask {
         }
         return location;
     }
+
+    protected static boolean isPriorVersionLiveV2(IPSPubItemStatus status){
+
+        IPSPublisherService pubSvc = PSPublisherServiceLocator.getPublisherService();
+
+        List<PSItemPublishingHistory> history = pubSvc.findItemPublishingHistory(new PSLegacyGuid(status.getContentId(), status.getRevisionId()));
+
+        if(history == null || history.isEmpty()) {
+            return false;
+        }
+        history.sort(Comparator.comparing(PSItemPublishingHistory::getPublishedDate).reversed());
+        for(PSItemPublishingHistory h : history){
+            if(h.getStatus().equalsIgnoreCase(IPSSiteItem.Status.SUCCESS.name())
+            && h.getLocation().equalsIgnoreCase(status.getLocation())
+            && h.getOperation().equalsIgnoreCase(IPSSiteItem.Operation.PUBLISH.name())){
+                return  true;
+            }else if(
+                    h.getStatus().equalsIgnoreCase(IPSSiteItem.Status.SUCCESS.name())
+                            && h.getLocation().equalsIgnoreCase(status.getLocation())
+                            && h.getOperation().equalsIgnoreCase(IPSSiteItem.Operation.UNPUBLISH.name())
+            ){
+                return false;
+            }
+        }
+        return true;
+    }
+
 
     protected static boolean isPriorVersionLive(IPSPubItemStatus status){
 
