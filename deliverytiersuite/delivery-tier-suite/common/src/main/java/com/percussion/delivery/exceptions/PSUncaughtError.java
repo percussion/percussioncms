@@ -34,7 +34,6 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
-import java.io.IOException;
 import java.net.URL;
 
 @Provider
@@ -70,14 +69,12 @@ public class PSUncaughtError extends Throwable implements ExceptionMapper<Throwa
             }
         } catch (Exception e) {
             logErrorMessage(exception);
-            log.error("Error in toResponse(Throwable exception) method, Error : {}", PSExceptionUtils.getMessageForLog(e));
-            log.debug("Debug log for Error in toResponse(Throwable exception) method, Error : {}", PSExceptionUtils.getDebugMessageForLog(e));
         }
         return null;
     }
 
     private void logErrorMessage(Throwable exception){
-        String errorMessage  = exception.getLocalizedMessage();
+        String errorMessage  = exception.getMessage();
         if(exception instanceof Exception){
             errorMessage = PSExceptionUtils.getMessageForLog((Exception) exception);
             log.debug(PSExceptionUtils.getDebugMessageForLog((Exception) exception));
