@@ -183,12 +183,22 @@ public class PSJndiUtils
             throw new IllegalArgumentException("key cannot be empty");
 
          Object obj = values.get(key);
-         if (obj instanceof String) {
+         if (obj == null || obj instanceof String) {
             String value = (String)values.get(key);
             appendFilterCond(filter, key, value);
          } else {
             List valList = (List) obj;
-            appendFilterCond(filter, key, null);
+            if (valList.isEmpty())
+               appendFilterCond(filter, key, null);
+            else
+            {
+               filter.append("(|");
+               for (Object o : valList) {
+                  String value = (String) o;
+                  appendFilterCond(filter, key, value);
+               }
+               filter.append(")");
+            }
          }
       }
       filter.append(")");
@@ -259,6 +269,12 @@ public class PSJndiUtils
       env.put(Context.INITIAL_CONTEXT_FACTORY, dir.getFactory());
       
       String encurl = PSJndiUtils.getEncodedProviderUrl(url);
+      if(encurl.startsWith("ldaps"))
+      {
+           env.put(Context.SECURITY_PROTOCOL, "ssl");
+           encurl = encurl.replace("ldaps", "ldap");
+      }
+
       env.put(Context.PROVIDER_URL, encurl);
       // Add connectionPool needs to go after setup of security_protocol
       // to set correct socket factory
@@ -294,18 +310,17 @@ public class PSJndiUtils
          throw new IllegalArgumentException("env cannot be null");
       
       PSServerConfiguration config = PSServer.getServerConfiguration();
-     
-   
-         Properties jndiConnectionPooling = 
-            config.getJndiConnectionPoolingConfig();
-         
+      if (config.isJndiConnectionPoolingEnabled()) {
+         Properties jndiConnectionPooling =
+                 config.getJndiConnectionPoolingConfig();
+
          Enumeration keys = jndiConnectionPooling.keys();
-         while (keys.hasMoreElements())
-         {
+         while (keys.hasMoreElements()) {
             String key = (String) keys.nextElement();
             String value = jndiConnectionPooling.getProperty(key);
             env.put(key, value);
          }
+      }
 
          String url = StringUtils.defaultString((String)env.get(Context.PROVIDER_URL));
 
