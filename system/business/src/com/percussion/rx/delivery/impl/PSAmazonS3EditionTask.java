@@ -60,11 +60,15 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.TreeMap;
 
 /**
@@ -124,6 +128,14 @@ public class PSAmazonS3EditionTask implements IPSEditionTask
          MultipleFileUpload mfUpload = tm.uploadFileList(bucketName, WEB_RESOURCES, webResFolder, fileList.getFirst());
          mfUpload.waitForCompletion();
 
+         String sitemapPath = PSServer.getRxDir().getAbsolutePath() + File.separator + "temp" + File.separator +
+                 "publish" + File.separator + jobId + File.separator + "sitemaps";
+         if(Files.exists(Paths.get(sitemapPath))){
+            File sitemapdir = new File(sitemapPath);
+            mfUpload = tm.uploadFileList(bucketName, "", sitemapdir, Arrays.asList(Objects.requireNonNull(sitemapdir.listFiles())));
+            mfUpload.waitForCompletion();
+         }
+
       }
       catch (Exception e)
       {
@@ -179,25 +191,21 @@ public class PSAmazonS3EditionTask implements IPSEditionTask
          throws FileNotFoundException, IOException
    {
       List<File> modifiedFiles = new ArrayList<>();
-      List<String> delKeys = new ArrayList<>();
       Map<String, PSPair<String, File>> localFilesMap = getLocalWebResFiles();
       Map<String, String> s3FilesMap = getAmazonS3FilesMap(s3Client, bucketName);
       // Prepare files to upload
-      for (String key : localFilesMap.keySet())
-      {
+      for (String key : localFilesMap.keySet()) {
          boolean addFile = true;
-         if (s3FilesMap.keySet().contains(key))
-         {
+         if (s3FilesMap.containsKey(key)) {
             addFile = !(localFilesMap.get(key).getFirst().equals(s3FilesMap.get(key)));
          }
-         if (addFile)
-         {
+         if (addFile) {
             modifiedFiles.add(localFilesMap.get(key).getSecond());
          }
       }
 
       // Prepare deletes
-      delKeys.addAll(s3FilesMap.keySet());
+      List<String> delKeys = new ArrayList<>(s3FilesMap.keySet());
       delKeys.removeAll(localFilesMap.keySet());
 
       return new PSPair<>(modifiedFiles, delKeys);

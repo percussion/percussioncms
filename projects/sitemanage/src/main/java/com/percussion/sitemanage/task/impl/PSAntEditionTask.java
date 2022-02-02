@@ -196,7 +196,9 @@ public class PSAntEditionTask implements IPSEditionTask
             props.put("perc.sys.dir", getRootDirectory());
             props.put("perc.sys.jobId", "" + jobId);
             props.put("perc.site.root", siteRootTemp);
-
+            props.put("perc.sitemap.temp", PSServer.getRxDir().getAbsolutePath() +
+                    File.separator +
+                    "temp" + File.separator + "publish" + File.separator + jobId + File.separator + "sitemaps");
             prepareFtpProperties(props, site, pubServer);
 
             // If the publish server uses an absolute path, the configuration files are
@@ -637,11 +639,14 @@ public class PSAntEditionTask implements IPSEditionTask
         {
             if (event.getTarget() != null)
             {
-                log.debug("Finished Target '" + event.getTarget().getName() + "' for edition '" + editionName + "'.");
+                log.debug("Finished Target '{}' for edition '{}'.",
+                        event.getTarget().getName(),
+                        editionName
+                        );
             }
             else
             {
-                log.debug("Finished Target for edition '" + editionName + "'.");
+                log.debug("Finished Target for edition '{}'.", editionName);
             }
         }
 
@@ -666,13 +671,13 @@ public class PSAntEditionTask implements IPSEditionTask
         {
             if (event.getTask() != null)
             {
-                log.info("Finished Task '{}' for edition '{}'.",
+                log.debug("Finished Task '{}' for edition '{}'.",
                         event.getTask().getTaskName(),
                         editionName );
             }
             else
             {
-                log.info("Finished Task for edition '{}'.", editionName);
+                log.debug("Finished Task for edition '{}'.", editionName);
             }
         }
 
@@ -681,12 +686,12 @@ public class PSAntEditionTask implements IPSEditionTask
         {
             if (event.getTask() != null)
             {
-                log.info("Started Task '{}' for edition '{}'.",
+                log.debug("Started Task '{}' for edition '{}'.",
                         event.getTask().getTaskName(),editionName );
             }
             else
             {
-                log.info("Started Task for edition '{}'.",
+                log.debug("Started Task for edition '{}'.",
                         editionName );
             }
         }
