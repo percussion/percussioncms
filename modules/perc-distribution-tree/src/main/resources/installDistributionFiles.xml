@@ -536,7 +536,7 @@
             </then>
         </if>
 
-        <echo>Fixing Line Feed for sh files...</echo>
+        <echo>Fixing Line Feeds for sh files...</echo>
         <fixcrlf includes="**/*.sh" eol="unix" eof="remove" srcdir="${assembly-directory}"  preservelastmodified="true" />
 
     </target>
