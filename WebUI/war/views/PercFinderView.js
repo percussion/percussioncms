@@ -1155,36 +1155,37 @@
                         var dropdownButtonImageOver = "";
                         results.unshift(results[0]);
 
-                        $.each(results, function(index)
-                        {
+                        $.each(results, function(index) {
+                            if(typeof results[index] !== 'undefined' ){
 
-                            var trName = results[index].name;
-                            var trClass = results[index].cssClass;
-                            var trAlt = results[index].alt;
-                            trClass += " perc-wf-button";
-                            var trNameNormal = trName.toLowerCase().replace(/[^a-zA-Z0-9\/]/g, '_');
-                            var trId = "perc_item_transition_" + trNameNormal;
-                            var baseImageName = "/cm/images/images/splitButtonWf" + trNameNormal;
-                            var imageExt = ".gif";
-                            var regImageFilename = baseImageName + imageExt;
-                            var overImageFilename = baseImageName + "Over" + imageExt;
 
-                            if (index === 0)
-                            {
-                                defaultButtonImage = regImageFilename;
-                                defaultButtonImageOver = overImageFilename;
-                                dropdownButtonImage = '/cm/images/images/splitButtonArrow.gif';
-                                dropdownButtonImageOver = '/cm/images/images/splitButtonArrowOn.gif';
+                                var trName = results[index].name;
+                                var trClass = results[index].cssClass;
+                                var trAlt = results[index].alt;
+                                trClass += " perc-wf-button";
+                                var trNameNormal = trName.toLowerCase().replace(/[^a-zA-Z0-9\/]/g, '_');
+                                var trId = "perc_item_transition_" + trNameNormal;
+                                var baseImageName = "/cm/images/images/splitButtonWf" + trNameNormal;
+                                var imageExt = ".gif";
+                                var regImageFilename = baseImageName + imageExt;
+                                var overImageFilename = baseImageName + "Over" + imageExt;
 
+                                if (index === 0) {
+                                    defaultButtonImage = regImageFilename;
+                                    defaultButtonImageOver = overImageFilename;
+                                    dropdownButtonImage = '/cm/images/images/splitButtonArrow.gif';
+                                    dropdownButtonImageOver = '/cm/images/images/splitButtonArrowOn.gif';
+
+                                }
+                                var param = {
+                                    name: trName,
+                                    contentId: contentId,
+                                    itemType: itemType
+                                };
+                                dropdownParams.push(param);
+                                dropdownLabels.push(trName);
+                                dropdownActions.push(handlePageWorkflowDropdownAction);
                             }
-                            var param = {
-                                name: trName,
-                                contentId: contentId,
-                                itemType: itemType
-                            };
-                            dropdownParams.push(param);
-                            dropdownLabels.push(trName);
-                            dropdownActions.push(handlePageWorkflowDropdownAction);
                         });
 
                         // Add workflow dropdown
