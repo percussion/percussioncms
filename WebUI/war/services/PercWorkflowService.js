@@ -292,14 +292,21 @@
      */
     function createNewWorkflowStep(workflowName,stepName, newStepObj, callback)
     {
-        var Url = $.perc_paths.WORKFLOW_STEPPED +  workflowName + "/steps/" + encodeName(stepName);
-        if((stepName.indexOf("/") !== -1) || 
-            (stepName.indexOf("\\") !== -1) || 
-            (stepName.indexOf(";") !== -1) || 
-            (stepName.indexOf("\"") !== -1))
-        {
-            newStepObj.Workflow.workflowSteps[0].stepName = stepName.replace(/[\\\/;"]/g,'#');
+        if(typeof stepName === 'undefined' || stepName === null || stepName.trim() === "" ){
+            $.perc_utils.alert_dialog(
+                {
+                    "title" : I18N.message("perc.ui.workflow.view@Error Creating Workflow"),
+                    "content" : "Workflow Step name can't be blank"
+                });
+            $.unblockUI();
+            return;
         }
+
+        stepName = stepName.replace(/[\\\/;%"]/g,'#');
+
+        newStepObj.Workflow.workflowSteps[0].stepName = stepName;
+
+        var Url = $.perc_paths.WORKFLOW_STEPPED +  workflowName + "/steps/" + encodeName(stepName);
 
         var serviceCallback = function(status, results){
             if(status === $.PercServiceUtils.STATUS_ERROR)
@@ -411,15 +418,23 @@
 
     function createWorkflow(workflowName, workflowObj, callback)
     {
+        if(typeof workflowName === 'undefined' || workflowName === null || workflowName.trim() === "" ){
+            $.perc_utils.alert_dialog(
+                {
+                    "title" : I18N.message("perc.ui.workflow.view@Error Creating Workflow"),
+                    "content" : "Workflow Name can't be blank"
+                });
+            $.unblockUI();
+            return;
+        }
+
+        workflowName = workflowName.replace(/[\\\/;%"]/g,'#');
+
+        workflowObj.Workflow.workflowName = workflowName;
+
         var Url = $.perc_paths.WORKFLOW_STEPPED + encodeName(workflowName);
 
-        if ((workflowName.indexOf("/") !== -1) || 
-            (workflowName.indexOf("\\") !== -1) || 
-            (workflowName.indexOf(";") !== -1) || 
-            (workflowName.indexOf("\"") !== -1))
-        {
-            workflowObj.Workflow.workflowName = workflowName.replace(/[\\\/;"]/g,'#');
-        }
+
 
         var serviceCallback = function(status, results){
             if(status === $.PercServiceUtils.STATUS_ERROR)
