@@ -343,6 +343,20 @@ public class PSTemplateDao implements IPSTemplateDao, ApplicationContextAware
         }
         validateType(contentItem);
 
+        if (siteId != null)
+        {
+            IPSSite site = siteMgr.findSite(siteId);
+            String folderPath = getSiteTemplateFolderPath(site);
+
+            contentItem.setFolderPaths(asList(folderPath));
+        }
+
+        String templateName = template.getName();
+
+        templateName = processTemplateNameForSpecialCharacters(templateName, contentItem.getFolderPaths().get(0));
+
+        template.setName(templateName);
+
         Map<String, Object> f = contentItem.getFields();
         f.put("sys_title", template.getName());
         f.put("description", template.getDescription());
@@ -368,19 +382,34 @@ public class PSTemplateDao implements IPSTemplateDao, ApplicationContextAware
             f.put("data", data);
         }
 
-        if (siteId != null)
-        {
-            IPSSite site = siteMgr.findSite(siteId);
-            String folderPath = getSiteTemplateFolderPath(site);
-
-            contentItem.setFolderPaths(asList(folderPath));
-        }
-
         contentItem = contentItemDao.save(contentItem);
         PSNotificationEvent notifyEvent = new PSNotificationEvent(EventType.TEMPLATE_SAVED, contentItem.getId());
         IPSNotificationService srv = PSNotificationServiceLocator.getNotificationService();
         srv.notifyEvent(notifyEvent);
         return find(contentItem.getId());
+    }
+
+    private String processTemplateNameForSpecialCharacters(String templateName, String path){
+
+        if (StringUtils.containsAny(templateName, SecureStringUtils.INVALID_ITEM_NAME_CHARACTERS)){
+            for (int i = 0; i < SecureStringUtils.INVALID_ITEM_NAME_CHARACTERS.length(); i++){
+                // Replace any invalid characters present.
+                templateName = StringUtils.replace(templateName, String.valueOf(SecureStringUtils.INVALID_ITEM_NAME_CHARACTERS.charAt(i)), "-");
+            }
+            if(templateName.substring(templateName.length()-1).equalsIgnoreCase("-")){
+                //the base name for copied template
+                templateName = templateName.substring(0, templateName.length()-3);
+            }
+            //Unique name using the base name in template folder for given site path
+            try {
+                templateName = folderHelper.getUniqueNameInFolder(path, templateName, "", 2, false);
+            } catch (IPSPathService.PSPathNotFoundServiceException e) {
+                log.error(PSExceptionUtils.getMessageForLog(e));
+                log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+            }
+        }
+        return templateName;
+
     }
 
     /**
@@ -1035,18 +1064,7 @@ public class PSTemplateDao implements IPSTemplateDao, ApplicationContextAware
             }
         }
 
-        if (StringUtils.containsAny(templateName, SecureStringUtils.INVALID_ITEM_NAME_CHARACTERS)){
-            for (int i = 0; i < SecureStringUtils.INVALID_ITEM_NAME_CHARACTERS.length(); i++){
-                // Replace any invalid characters present.
-                templateName = StringUtils.replace(templateName, String.valueOf(SecureStringUtils.INVALID_ITEM_NAME_CHARACTERS.charAt(i)), "-");
-            }
-            if(templateName.substring(templateName.length()-1).equalsIgnoreCase("-")){
-                //the base name for copied template
-                templateName = templateName.substring(0, templateName.length()-3);
-            }
-            //Unique name using the base name in template folder for given site path
-            templateName = folderHelper.getUniqueNameInFolder(path, templateName, "", 2, false);
-        }
+        templateName = processTemplateNameForSpecialCharacters(templateName,path);
 
         return templateName;
     }
