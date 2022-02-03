@@ -760,7 +760,7 @@
             </then>
         </if>
 
-        <echo>Fixing Line Feed</echo>
+        <echo>Fixing Line Feeds...</echo>
         <fixcrlf srcdir="${install.dir}"  preservelastmodified="true">
             <patternset refid="text.files"/>
             <exclude name="**/Deployment/**"/>
