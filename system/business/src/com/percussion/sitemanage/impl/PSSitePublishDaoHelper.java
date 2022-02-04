@@ -23,12 +23,6 @@
  */
 package com.percussion.sitemanage.impl;
 
-import static org.apache.commons.lang.StringUtils.removeEnd;
-import static org.apache.commons.lang.StringUtils.startsWith;
-import static org.apache.commons.lang.Validate.isTrue;
-import static org.apache.commons.lang.Validate.notEmpty;
-import static org.apache.commons.lang.Validate.notNull;
-
 import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.filter.IPSItemFilter;
 import com.percussion.services.publisher.IPSContentList;
@@ -53,12 +47,17 @@ import com.percussion.utils.guid.IPSGuid;
 import com.percussion.webservices.PSErrorException;
 import com.percussion.webservices.publishing.IPSPublishingWs;
 import com.percussion.webservices.publishing.PSPublishingWsLocator;
+import org.apache.commons.lang.Validate;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang.Validate;
+import static org.apache.commons.lang.StringUtils.removeEnd;
+import static org.apache.commons.lang.StringUtils.startsWith;
+import static org.apache.commons.lang.Validate.isTrue;
+import static org.apache.commons.lang.Validate.notEmpty;
+import static org.apache.commons.lang.Validate.notNull;
 
 /**
  * Helper methods used to create Editions and content lists for CM1 publishing servers.  So far only
@@ -355,6 +354,7 @@ public class PSSitePublishDaoHelper
    
        if (isAmazonEdition(pubServer) && !isNowEdition(suffix)) //CMS-5763
        {
+
            /*
             * Add the ant pre-edition task here.
             */
@@ -432,6 +432,15 @@ public class PSSitePublishDaoHelper
            flushPublicationCacheTask.setExtensionName("Java/global/percussion/task/sys_flushPublicationCache");
            pubWs.saveEditionTask(flushPublicationCacheTask);
        }
+
+       if( !isNowEdition(suffix) && !isIncremental(suffix) ){
+           IPSEditionTaskDef sitemapTask = pubWs.createEditionTask();
+           sitemapTask.setContinueOnFailure(true);
+           sitemapTask.setEditionId(edtnGuid);
+           sitemapTask.setSequence(0);
+           sitemapTask.setExtensionName("Java/global/percussion/task/perc_SitemapGeneratorTask");
+           pubWs.saveEditionTask(sitemapTask);
+       }
        
    }
    
@@ -449,6 +458,10 @@ public class PSSitePublishDaoHelper
       return suffix.equals(PUBLISH_NOW) || suffix.equals(UNPUBLISH_NOW) || suffix.equals(STAGING_PUBLISH_NOW)
             || suffix.equals(STAGING_UNPUBLISH_NOW);
    }
+
+    private static boolean isIncremental(String suffix){
+        return suffix.endsWith(INCREMENTAL);
+    }
    
    public static IPSGuid getPublicItemFilterGuid()
    {

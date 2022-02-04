@@ -237,6 +237,14 @@ public interface IPSPubServerService
      */
      PSPubServer findPubServer(long serverId) throws PSPubServerServiceException;
 
+    /**
+     * Finds the pub server for the supplied guid, returns null if the server does not exist.
+     * @param guid A valid pub server guid
+     * @return the matching pub server or null if the pub server does not exist
+     * @throws PSPubServerServiceException
+     */
+    PSPubServer findPubServer(IPSGuid guid) throws PSPubServerServiceException;
+
      String getDefaultAdminURL(String siteName) throws PSPubServerServiceException, PSNotFoundException;
 
 }

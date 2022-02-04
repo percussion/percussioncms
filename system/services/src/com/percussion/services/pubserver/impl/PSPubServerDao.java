@@ -113,8 +113,8 @@ public class PSPubServerDao
    {
       notNull(serverId);
       
-      PSPubServer pubServer = findServerFromDatabase(serverId);
-      return pubServer;
+      return findServerFromDatabase(serverId);
+
    }
 
    /*
