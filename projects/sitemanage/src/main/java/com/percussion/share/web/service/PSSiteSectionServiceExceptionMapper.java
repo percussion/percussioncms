@@ -24,6 +24,7 @@
 
 package com.percussion.share.web.service;
 
+import com.percussion.cms.IPSConstants;
 import com.percussion.error.PSExceptionUtils;
 import com.percussion.share.service.exception.IPSValidationException;
 import com.percussion.share.service.exception.PSErrorUtils;
@@ -47,7 +48,7 @@ import javax.ws.rs.ext.Provider;
 public class PSSiteSectionServiceExceptionMapper extends PSAbstractExceptionMapper<IPSSiteSectionService.PSSiteSectionException> implements ExceptionMapper<IPSSiteSectionService.PSSiteSectionException> {
 
 
-    private static final String ERROR_MESSAGE = "REST exception mapper mapped exception:";
+    private static final String ERROR_MESSAGE = "PSSiteSectionServiceExceptionMapper exception mapper mapped exception:";
 
     @Override
     @Produces(MediaType.APPLICATION_JSON)
@@ -86,5 +87,5 @@ public class PSSiteSectionServiceExceptionMapper extends PSAbstractExceptionMapp
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Logger log = LogManager.getLogger(PSSiteSectionServiceExceptionMapper.class);
+    private static final Logger log = LogManager.getLogger(IPSConstants.SERVER_LOG);
 }

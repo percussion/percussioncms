@@ -24,15 +24,12 @@
 
 package com.percussion.share.web.service;
 
+import com.percussion.cms.IPSConstants;
 import com.percussion.share.service.exception.PSSpringValidationException;
-import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.share.validation.PSErrors;
 import com.percussion.util.PSSiteManageBean;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.springframework.stereotype.Component;
 
 import javax.inject.Singleton;
 import javax.ws.rs.Produces;
@@ -45,8 +42,8 @@ import javax.ws.rs.ext.Provider;
 @Produces(MediaType.APPLICATION_JSON)
 @PSSiteManageBean("springValidationExceptionMapper")
 public class PSSpringValidationExceptionMapper extends PSAbstractExceptionMapper<PSSpringValidationException> implements ExceptionMapper<PSSpringValidationException> {
-    private static final Logger log = LogManager.getLogger(PSSpringValidationExceptionMapper.class);
-    private static final String ERROR_MESSAGE = "REST exception mapper mapped exception:";
+    private static final Logger log = LogManager.getLogger(IPSConstants.SERVER_LOG);
+    private static final String ERROR_MESSAGE = "PSSpringValidationExceptionMapper exception mapper mapped exception:";
     /**
      * Create a serializable errors object from the given exception.
      *

@@ -24,6 +24,7 @@
 
 package com.percussion.share.web.service;
 
+import com.percussion.cms.IPSConstants;
 import com.percussion.error.PSExceptionUtils;
 import com.percussion.share.service.exception.IPSValidationException;
 import com.percussion.share.service.exception.PSDataServiceException;
@@ -32,7 +33,6 @@ import com.percussion.share.validation.PSErrors;
 import com.percussion.util.PSSiteManageBean;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.stereotype.Component;
 
 import javax.inject.Singleton;
 import javax.ws.rs.Produces;
@@ -48,7 +48,7 @@ import javax.ws.rs.ext.Provider;
 public class PSDataServiceExceptionMapper extends PSAbstractExceptionMapper<PSDataServiceException> implements ExceptionMapper<PSDataServiceException> {
 
 
-    private static final String ERROR_MESSAGE = "REST exception mapper mapped exception:";
+    private static final String ERROR_MESSAGE = "PSDataServiceExceptionMapper exception mapper mapped exception:";
 
     @Override
     @Produces(MediaType.APPLICATION_JSON)
@@ -88,5 +88,5 @@ public class PSDataServiceExceptionMapper extends PSAbstractExceptionMapper<PSDa
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Logger log = LogManager.getLogger(PSDataServiceExceptionMapper.class);
+    private static final Logger log = LogManager.getLogger(IPSConstants.SERVER_LOG);
 }

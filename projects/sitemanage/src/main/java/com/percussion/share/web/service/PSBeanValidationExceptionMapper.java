@@ -24,8 +24,8 @@
 
 package com.percussion.share.web.service;
 
+import com.percussion.cms.IPSConstants;
 import com.percussion.share.service.exception.PSBeanValidationException;
-import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.share.validation.PSErrors;
 import com.percussion.util.PSSiteManageBean;
 import org.apache.logging.log4j.LogManager;
@@ -43,8 +43,8 @@ import javax.ws.rs.ext.Provider;
 @Produces(MediaType.APPLICATION_JSON)
 @PSSiteManageBean("beanValidationExceptionMapper")
 public class PSBeanValidationExceptionMapper extends PSAbstractExceptionMapper<PSBeanValidationException> implements ExceptionMapper<PSBeanValidationException> {
-    private static final Logger log = LogManager.getLogger(PSBeanValidationExceptionMapper.class);
-    private static final String ERROR_MESSAGE = "REST exception mapper mapped exception:";
+    private static final Logger log = LogManager.getLogger(IPSConstants.SERVER_LOG);
+    private static final String ERROR_MESSAGE = "PSBeanValidationExceptionMapper exception mapper mapped exception:";
 
     @Override
     @Produces(MediaType.APPLICATION_JSON)
