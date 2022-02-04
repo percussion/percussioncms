@@ -149,7 +149,6 @@ public class PSScreenCapture {
         {
             copyWebCapResource();
             extractPhantomJs();
-            install = false;
         }
     }
 
@@ -165,7 +164,7 @@ public class PSScreenCapture {
                         instFilename = "phantomjs-win.zip";
                         phantomBinary = "phantomjs.exe";
                     }else if(OS.contains("mac")){
-                        instFilename = "phantomjs-macosx-macosx.zip";
+                        instFilename = "phantomjs-macosx.zip";
                     }else{
                         instFilename = "phantomjs-linux.tar.bz2";
                     }
@@ -185,16 +184,16 @@ public class PSScreenCapture {
                         if(!sourceFile.toFile().exists()){
                             //Try full package path based on OS.
                             if(OS.contains("windows")){
-                                sourceFile = Paths.get(srcDir.resolve("phantomjs-2.1.1-windows" + File.separatorChar + "bin" + File.separatorChar + phantomBinary).toString());
+                                sourceFile = Paths.get(srcDir.resolve("phantomjs-2.1.1-windows" + File.separator + "bin" + File.separator + phantomBinary).toString());
                             }else if(OS.contains("mac")){
-                                sourceFile = Paths.get(srcDir.resolve("phantomjs-2.1.1-macosx" + File.separatorChar  + "bin" + File.separatorChar + phantomBinary).toString());
+                                sourceFile = Paths.get(srcDir.resolve("phantomjs-2.1.1-macosx" + File.separator  + "bin" + File.separator + phantomBinary).toString());
                             }else{
-                                sourceFile = Paths.get(srcDir.resolve("phantomjs-2.1.1-linux-x86_64" + File.separatorChar + "bin" + File.separatorChar + phantomBinary).toString());
+                                sourceFile = Paths.get(srcDir.resolve("phantomjs-2.1.1-linux-x86_64" + File.separator + "bin" + File.separator + phantomBinary).toString());
                             }
                         }
-                        Path targetFile = Paths.get(PathUtils.getRxDir(null).getPath() + File.separatorChar + "bin" + File.separatorChar + phantomBinary);
+                        Path targetFile = Paths.get(PathUtils.getRxDir(null).getPath() + File.separator + "bin" + File.separator + phantomBinary);
 
-                        Path bin = Paths.get(PathUtils.getRxDir(null).getPath() + File.separatorChar + "bin");
+                        Path bin = Paths.get(PathUtils.getRxDir(null).getPath() + File.separator+ "bin");
                         //Create bin folder if it is missing
                         if(Files.notExists(bin)){
                             Files.createDirectory(bin);
@@ -210,13 +209,15 @@ public class PSScreenCapture {
 
                             Files.setPosixFilePermissions(targetFile, permissions);
                         }catch(UnsupportedOperationException e){
+                            install=true;
                             log.warn("Unable to set Posix permissions, not supported on this operating system");
                         }
                     } catch (IOException ex) {
+                        install = true;
                         log.error("Error getting install from resource: {}" , PSExceptionUtils.getMessageForLog(ex));
                         log.debug(ex);
                     }
-
+            install=false;
                 }
             }
     }
