@@ -25,6 +25,7 @@ package com.percussion.sitemanage.dao.impl;
 
 import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.pathmanagement.service.impl.PSAssetPathItemService;
 import com.percussion.pubserver.IPSPubServerService;
 import com.percussion.pubserver.impl.PSPubServerService;
@@ -121,12 +122,11 @@ public class PSSitePublishDao
      * this service directly.
      */
     private IPSPublisherService publisherService;
-    
+    private IPSPubServerService pubServerService;
+
     private IPSIdMapper idMapper;   
     private IPSSiteSectionMetaDataService siteSectionMetaDataService;
     private IPSSiteManager siteMgr;
-    
-    private PSPubServerService pubServerService;
     
     private static final String UPDATE_TABLES_EDITION_TASK_TEMPLATE_PARAM = "template";
     private static final String UPDATE_TABLES_EDITION_TASK_TEMPLATE_VALUE = "perc.pageDatabase";
@@ -598,6 +598,7 @@ public class PSSitePublishDao
         addPublishNow(site);
         
         addUnpublishNow(site);
+
     }
 
     /**
@@ -842,6 +843,14 @@ public class PSSitePublishDao
                 tgtEdition = edition;
 
                 updateContentListForEditionFull(tgtEdition, site, oldSiteName);
+                try {
+                    PSPubServer pubServer= getPubServerService().findPubServer(edition.getPubServerId());
+                    boolean defaultPubServer =pubServer.getServerId()==site.getDefaultPubServer();
+
+                    addTaskDefsToPubServerEdition(edition, pubServer,defaultPubServer,site);
+                } catch (IPSPubServerService.PSPubServerServiceException e) {
+                    log.error("{}", PSExceptionUtils.getMessageForLog(e));
+                }
             }
         }
     }
@@ -984,6 +993,7 @@ public class PSSitePublishDao
         {
             PSSitePublishDaoHelper.createIncrementalEdition(site, pubServer, isDefaultServer);
         }
+
     }
 
     /**
@@ -1200,6 +1210,8 @@ public class PSSitePublishDao
     private void addTaskDefsToPubServerEdition(IPSEdition tgtEdition, PSPubServer pubServer,
             boolean isDefaultServer, IPSSite site)
     {
+        boolean isIncremental = isIncremental(tgtEdition);
+
         IPSGuid editionGuid = tgtEdition.getGUID();
 
         if (pubServer.isDatabaseType() || pubServer.isXmlFormat())
@@ -1303,7 +1315,7 @@ public class PSSitePublishDao
             publishWs.saveEditionTask(stagingPostEdTask);
         }
         
-        if((isDefaultServer || isStagingServer(pubServer)) && !isOnDemandEdition(tgtEdition))
+        if( !isOnDemandEdition(tgtEdition) && !isIncremental )
         {
             IPSEditionTaskDef sitemapTask = publishWs.createEditionTask();
             sitemapTask.setContinueOnFailure(true);
@@ -1743,16 +1755,16 @@ public class PSSitePublishDao
             throw new PSErrorException("Failed to delete all site configuration", e);
         }
     }
-    
+
     /**
      * Lazy loads the publish server service to avoid circular reference.
      * @return the publish server service, never <code>null</code>.
      */
-    private PSPubServerService getPubServerService()
+    private IPSPubServerService getPubServerService()
     {
         if (pubServerService == null)
             pubServerService = (PSPubServerService) getWebApplicationContext().getBean("pubServerService");
-        
+
         return pubServerService;
     }
     
@@ -1865,13 +1877,13 @@ public class PSSitePublishDao
         PSPubServer stagingPubServer = PSSitePublishDaoHelper.getStagingPubServer(site.getGUID());
         if(stagingPubServer == null)
         {
-            log.error("Cannot find staging pub server for site " + site);
+            log.error("Cannot find staging pub server for site {}" , site);
             throw new PSErrorException("Cannot find staging pub server for site " + stagingPubServer);
         }
         List<IPSEdition>  editions = publishWs.findAllEditionsByPubServer(stagingPubServer.getGUID());
         if (editions.isEmpty())
         {
-            log.error("Cannot find Edition for the staging publish server " + stagingPubServer);
+            log.error("Cannot find Edition for the staging publish server {}" , stagingPubServer);
             throw new PSErrorException("Cannot find an edition for staging publish server " + stagingPubServer);
         }
         
@@ -2020,6 +2032,7 @@ public class PSSitePublishDao
         
         updateOnDemandEditionsByPubServer(editions, site, pubServer, oldName, true);
         updateServerIncrementalEdition(editions, pubServer, site, true);
+        updateFullEdition(editions,site,oldName);
     }
     
     /**
@@ -2107,6 +2120,34 @@ public class PSSitePublishDao
         }
     }
 
+    /**
+     * Is the edition an incremental?
+     * @param edition An edition
+     * @return true if the edition is incremental
+     */
+    private boolean isIncremental(IPSEdition edition){
+
+        if(edition== null )
+            return false;
+
+        try {
+            List<IPSEditionContentList> editionContentLists = publishWs.loadEditionContentLists(edition.getGUID());
+            for (IPSEditionContentList editionContentList : editionContentLists) {
+                IPSContentList contentList = publisherService.loadContentList(editionContentList.getContentListId());
+                String contentListName = contentList.getName();
+                if (contentListName.endsWith(PSSitePublishDaoHelper.INCREMENTAL) || contentListName.endsWith(PSSitePublishDaoHelper.STAGING_INCREMENTAL)) {
+                    return true;
+                }
+                if (contentList.getType() == IPSContentList.Type.INCREMENTAL) {
+                    return true;
+                }
+            }
+
+        } catch (PSNotFoundException e) {
+            log.error(PSExceptionUtils.getMessageForLog(e));
+        }
+        return false;
+    }
     /**
      * Constant for the full edition name.
      */

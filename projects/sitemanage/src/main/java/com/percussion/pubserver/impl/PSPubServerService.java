@@ -2222,6 +2222,23 @@ public class PSPubServerService implements IPSPubServerService
         return server;
     }
 
+    /**
+     * Finds the pub server for the supplied guid, returns null if the server does not exist.
+     *
+     * @param guid A valid pub server guid
+     * @return the matching pub server or null if the pub server does not exist
+     * @throws PSPubServerServiceException
+     */
+    @Override
+    public PSPubServer findPubServer(IPSGuid guid) throws PSPubServerServiceException {
+        PSPubServer ret = null;
+
+        if(guid!= null){
+            ret = pubServerDao.findPubServer(guid);
+        }
+        return ret;
+    }
+
     @Override
     public String getDefaultAdminURL(String siteName) throws PSPubServerServiceException, PSNotFoundException {
 

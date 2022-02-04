@@ -425,7 +425,7 @@
                     if (props.defaultDocument) $("#perc-site-default-document").val(props.defaultDocument);
 
                     //Generate sitemap
-                    if(props.generateSitemap){
+                    if(props.generateSiteMap){
                         $("#perc-site-gen-sitemap").prop("checked", true);
                     }else{
                         $("#perc-site-gen-sitemap").prop("checked", false);
