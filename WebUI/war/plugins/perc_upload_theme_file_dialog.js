@@ -178,12 +178,8 @@
         {
             // There are differences with IE, FF and Chrome when getting the value from file input field
             var fileName = dialog.find('input:file').val().replace(/.+[\\\/]/, "");
-                        
-            // manually encode the filename for non-Ascii characters
-            fileName = $.perc_utils.encodeURL(fileName);
-            var encodedPath = $.perc_utils.encodePathArray(path);
             
-            $.PercWebResourcesService.validateFileUpload(encodedPath, fileName, function(status, result)
+            $.PercWebResourcesService.validateFileUpload(path, fileName, function(status, result)
                 {
                     if (status === $.PercServiceUtils.STATUS_SUCCESS)
                     {
