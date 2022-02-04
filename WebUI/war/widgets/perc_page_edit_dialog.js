@@ -143,6 +143,7 @@
                 pageSysName = $("#edit-page-metadata-frame").contents().find("#perc-content-edit-sys_title").val();
             }
             _addFieldGroups();
+            _handleAutoSummary();
             $("#edit-page-metadata-frame").contents().find("#perc-content-edit-metadata-link").show();
         }
 
