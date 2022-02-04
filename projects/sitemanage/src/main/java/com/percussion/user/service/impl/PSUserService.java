@@ -1129,6 +1129,8 @@ public class PSUserService implements IPSUserService
             log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             if(e.getMessage().contains("LDAP: error code 4 - Sizelimit Exceeded")){
                 throw new PSDirectoryServiceException("The returned results exceeded LDAP server limit, please refine your search to get the results.");
+            }else if(e.getMessage().contains("LDAP response read timed out")){
+                throw new PSDirectoryServiceException("The network connection to the remote LDAP server has timed out.  Please check server network connectivity and try again.");
             }
             throw new PSDirectoryServiceException(e);
         }

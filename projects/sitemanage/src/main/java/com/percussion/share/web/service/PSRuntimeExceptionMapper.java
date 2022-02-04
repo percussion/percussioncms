@@ -60,7 +60,7 @@ import javax.ws.rs.ext.Provider;
 public class PSRuntimeExceptionMapper extends PSAbstractExceptionMapper<RuntimeException> implements ExceptionMapper<RuntimeException> {
 
 
-    private static final String ERROR_MESSAGE = "REST exception mapper mapped exception:";
+    private static final String ERROR_MESSAGE = "PSRuntimeExceptionMapper exception mapper mapped exception:";
 
     @Override
     @Produces(MediaType.APPLICATION_JSON)

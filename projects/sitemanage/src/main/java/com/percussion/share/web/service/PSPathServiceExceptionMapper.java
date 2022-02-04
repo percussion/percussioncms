@@ -24,6 +24,7 @@
 
 package com.percussion.share.web.service;
 
+import com.percussion.cms.IPSConstants;
 import com.percussion.pathmanagement.service.IPSPathService;
 import com.percussion.share.validation.PSErrors;
 import com.percussion.util.PSSiteManageBean;
@@ -43,12 +44,12 @@ import javax.ws.rs.ext.Provider;
 @PSSiteManageBean("pathServiceExceptionMapper")
 public class PSPathServiceExceptionMapper extends PSAbstractExceptionMapper<IPSPathService.PSPathServiceException> implements ExceptionMapper<IPSPathService.PSPathServiceException> {
 
-    private static final String ERROR_MESSAGE = "REST exception mapper mapped exception:";
+    private static final String ERROR_MESSAGE = "PSPathServiceExceptionMapper exception mapper mapped exception:";
 
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Logger log = LogManager.getLogger(IPSPathService.PSPathServiceException.class);
+    private static final Logger log = LogManager.getLogger(IPSConstants.SERVER_LOG);
 
     @Override
     @Produces(MediaType.APPLICATION_JSON)
