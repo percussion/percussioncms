@@ -9397,14 +9397,14 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
 	        <seg>Nuevo Paso</seg>
 	    </tuv>
 	 </tu>
-	 <tu tuid="perc.ui.workflow.steps.view@Invalid Character Sequence Quesitonmarks">
+	 <tu tuid="perc.ui.workflow.steps.view@Please enter a valid step name">
 	    <prop type="sectionname" xml:lang="en-us">Error</prop>
 	    <note xml:lang="en-us"></note>
 	    <tuv xml:lang="en-us">
-	        <seg>The step name contains invalid character sequence </seg>
+	        <seg>Please enter a valid step name.  Step names must be 1-50 characters, and can contain letters, numbers, _ or -.</seg>
 	    </tuv>
 	      <tuv xml:lang="es">
-	        <seg>El nombre del paso contiene una secuencia de caracteres no válida </seg>
+	        <seg>Introduzca un nombre de paso válido. Los nombres de los pasos deben tener entre 1 y 50 caracteres y pueden contener letras, números, _ o -.</seg>
 	    </tuv>
 	 </tu>
 	 <tu tuid="perc.ui.workflow.steps.view@Reject">
