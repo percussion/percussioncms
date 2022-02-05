@@ -47,7 +47,7 @@
             var dialog;
             var className = isReservedStep ? 'perc-step-readonly' : 'perc-step-editable';
             var isreadOnly = isReservedStep ? 'readonly = ""' : '';
-            //TODO:I18N Dailog Title Below
+            //TODO:I18N Dialog Title Below
             var dialogTitle = currentStep?I18N.message("perc.ui.workflow.steps.view@Configure Step"):I18N.message("perc.ui.workflow.steps.view@New Step");
             var buttons = {};
             dialog = $(" <div id='perc-workflow-addstep-dialog'>" +
@@ -174,7 +174,7 @@
                     for(var j=0; j<possiblePermissions.length; j++){
                         var roleRowElement = $('<td></td>');
                         var checkbox;
-                        // Check and disabled the Submit, Reject and Approve transistions for Admin and Designer roles
+                        // Check and disabled the Submit, Reject and Approve transitions for Admin and Designer roles
                         if(isReadOnly && j!== possiblePermissions.length - 1 ){
                             checkbox = $('<input type="checkbox" checked disabled />');
                         }else{
@@ -254,7 +254,7 @@
             // Update the permissions (check/uncheck) for each role based on 'notifystatus' value
             function matchPermissions(roleName, notifyStatus, roleTransitions, row) {
                 var isReadOnly = isReadOnlyRole(roleName);
-                $(row).find('td:not(".perc-column-0")').each(function(){
+                $(row).find('td:not(.perc-column-0)').each(function(){
                     var column = this;
                     var className = $(column).attr('class');
                     className = className.replace('perc-','');
@@ -285,10 +285,10 @@
                 });
             }
 
-            // Toggle the Notify checkbox based on other possible(Reject, Submit, Approve, Restore etc.) transistion value
+            // Toggle the Notify checkbox based on other possible(Reject, Submit, Approve, Restore etc.) transitions value
             function updateNotification(clickedCheckbox, row) {
 
-                //Enable Publish transistion if Approve transistion is checked. Disable and uncheck Publish transistion if Approve transistion is uncheck.
+                //Enable Publish transitions if Approve transitions is checked. Disable and uncheck Publish transitions if Approve transitions is uncheck.
                 if(clickedCheckbox.parent().hasClass('perc-approve')) {
                     if(clickedCheckbox.is(':checked')) {
                         $(row).find(".perc-publish input").prop('disabled',false);
@@ -297,7 +297,7 @@
                         $(row).find(".perc-publish input").prop('checked',false).prop('disabled', true);
                     }
                 }
-                if($(row).find("td:not('.perc-notify') input:checked").length > 0){
+                if($(row).find("td:not(.perc-notify) input:checked").length > 0){
                     $(row).find(".perc-notify input").prop('disabled', false);
                 }
                 else
