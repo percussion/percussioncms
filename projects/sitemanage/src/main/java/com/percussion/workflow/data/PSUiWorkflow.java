@@ -24,13 +24,11 @@
 package com.percussion.workflow.data;
 
 import com.percussion.share.data.PSAbstractDataObject;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.apache.commons.lang.StringUtils;
 
 import javax.xml.bind.annotation.XmlRootElement;
-
-import org.apache.commons.lang.StringUtils;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class contains the structure of the object returned by the Rest method
@@ -52,7 +50,7 @@ public class PSUiWorkflow extends PSAbstractDataObject
     
     private String stagingRoleNames = "";
     
-    private Boolean defaultWorkflow = false;
+    private boolean defaultWorkflow = false;
     
     /* 
      * If it is an update takes the workflow name value before the modification 
@@ -164,7 +162,7 @@ public class PSUiWorkflow extends PSAbstractDataObject
     /**
      * @return the value for default workflow
      */
-    public Boolean isDefaultWorkflow()
+    public boolean isDefaultWorkflow()
     {
         return defaultWorkflow;
     }
@@ -172,7 +170,7 @@ public class PSUiWorkflow extends PSAbstractDataObject
     /**
      * @param defaultWorkflow the value for defaultWorkflow that indicates whether it is default workflow or not
      */
-    public void setDefaultWorkflow(Boolean defaultWorkflow)
+    public void setDefaultWorkflow(boolean defaultWorkflow)
     {
         this.defaultWorkflow = defaultWorkflow;
     }
