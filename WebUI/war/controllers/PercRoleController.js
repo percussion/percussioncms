@@ -117,8 +117,8 @@
     function selectRole(rolename) {
         state = STATE_VIEWING_CURRENT_ROLE;
         for(u in rolesArrayCache)
-           if(rolename == rolesArrayCache[u])
-               selectedRoleIndex = u;
+            if(rolename == rolesArrayCache[u])
+                selectedRoleIndex = u;
         selectedRole = rolename;
         updateRoleDetails(rolename);
     }
@@ -141,7 +141,7 @@
         });
     }
 
-     /**
+    /**
      * Handles role edit events
      */
     function editSelectedRole() {
@@ -272,7 +272,7 @@
      * if the context is create Role we get all users.
      * if the context is add Roles to an existing Role, we only show the available users.
      * @assignedUsers current assigned users, used to filter with all users to not show the already assigned users in consecutives add.
-    */
+     */
     function getAvailableUsers(assignedUsers) {
         currentAssignedUsers = assignedUsers;
         if(state == STATE_VIEWING_CURRENT_ROLE) {
@@ -289,7 +289,7 @@
                     $.PercAddItemDialog.open(true, userList, I18N.message("perc.role.controller@Add Users to Role") , addUsers);
                 }
                 else{
-                     view.alertDialog(I18N.message("perc.ui.role.controller@Add Users to Role"), I18N.message("perc.ui.role.controller@No Users Available") + selectedRole + I18N.message("perc.ui.role.controller@Users Already Added"));
+                    view.alertDialog(I18N.message("perc.ui.role.controller@Add Users to Role"), I18N.message("perc.ui.role.controller@No Users Available") + selectedRole + I18N.message("perc.ui.role.controller@Users Already Added"));
                 }
             })
         }
@@ -310,7 +310,7 @@
                     $.PercAddItemDialog.open(false, userList, I18N.message("perc.ui.users@Add Users To Role") , addUsers);
                 }
                 else{
-                     view.alertDialog(I18N.message("perc.ui.users@Add Users To Role"), I18N.message("perc.ui.role.controller@No Users Available") + selectedRole + I18N.message("perc.ui.role.controller@Users Already Added"));
+                    view.alertDialog(I18N.message("perc.ui.users@Add Users To Role"), I18N.message("perc.ui.role.controller@No Users Available") + selectedRole + I18N.message("perc.ui.role.controller@Users Already Added"));
                 }
             })
         }
@@ -348,12 +348,12 @@
         return currentUser;
     }
 
-     /**
-      * Load the user currently logged in from the server
-      * and cache it locally
-      */
+    /**
+     * Load the user currently logged in from the server
+     * and cache it locally
+     */
     function cacheCurrentUser() {
-    	currentUser = $.PercNavigationManager.getUserName();
+        currentUser = $.PercNavigationManager.getUserName();
     }
 
     /**
@@ -383,42 +383,36 @@
      */
     function validateAndDeleteRole(roleObj){
         userService.validateDeleteRole(roleObj, function(status, validationMsg) {
-            if (validationMsg != null || roleObj.Role.users.length > 0)
-            {
-                var htmlQuestion = "<p id='perc-delete-dialog-warning'>" +I18N.message("perc.ui.role.controller@Warning Title") + "</p>" +
-                                   "<p id='perc-warning-red'> " + I18N.message("perc.ui.role.controller@About To Delete Role") + selectedRole + "'.</p> <br/>" +
-                                   (validationMsg!=null?"<strong>" + validationMsg + "</strong><br/><br/>":"") +
-                                   "<p id='perc-delete-warn-msg'>" +I18N.message("perc.ui.role.controller@Are You Sure Delete Role") + "</p>";
-                var settings = {
-                    id: 'perc-role-delete-confirm',
-                    title: I18N.message("perc.ui.role.controller@Delete Role"),
-                    question: htmlQuestion,
-                    success: function() { deleteRole(roleObj.Role.name); },
-                    yes: I18N.message("perc.ui.page.confirmpublish@Continue Anyway"),
-                    type: "YES_NO",
-                    open: function(){alert("open");},
-                    width: 500
-                };
 
-                $.perc_utils.confirm_dialog(settings);
-                $("#perc-role-delete-confirm")
-                    .find("#perc-confirm-generic-yes")
-                    .css({"background-color": "#133c55", "border-color": "#133c55","color": "#ffffff"})
-                    .off('mouseenter mouseleave')
-                    .on('mouseenter',
-                        function() {
-                            $(this).css({"background-color": "#d22f12","border-color": "#d22f12","color": "#ffffff"});
-                        })
-                    .on('mouseleave',
-                        function() {
-                            $(this).css({"background-color": "#133c55", "border-color": "#133c55","color": "#ffffff"});
-                        }
-                    );
-            }
-            else
-            {
-                deleteRole(roleObj.Role.name);
-            }
+            var htmlQuestion = "<p id='perc-delete-dialog-warning'>" +I18N.message("perc.ui.role.controller@Warning Title") + "</p>" +
+                "<p id='perc-warning-red'> " + I18N.message("perc.ui.role.controller@About To Delete Role") + selectedRole + "'.</p> <br/>" +
+                (validationMsg!=null?"<strong>" + validationMsg + "</strong><br/><br/>":"") +
+                "<p id='perc-delete-warn-msg'>" +I18N.message("perc.ui.role.controller@Are You Sure Delete Role") + "</p>";
+            var settings = {
+                id: 'perc-role-delete-confirm',
+                title: I18N.message("perc.ui.role.controller@Delete Role"),
+                question: htmlQuestion,
+                success: function() { deleteRole(roleObj.Role.name); },
+                yes: I18N.message("perc.ui.page.confirmpublish@Continue Anyway"),
+                type: "YES_NO",
+                open: function(){alert("open");},
+                width: 500
+            };
+
+            $.perc_utils.confirm_dialog(settings);
+            $("#perc-role-delete-confirm")
+                .find("#perc-confirm-generic-yes")
+                .css({"background-color": "#133c55", "border-color": "#133c55","color": "#ffffff"})
+                .off('mouseenter mouseleave')
+                .on('mouseenter',
+                    function() {
+                        $(this).css({"background-color": "#d22f12","border-color": "#d22f12","color": "#ffffff"});
+                    })
+                .on('mouseleave',
+                    function() {
+                        $(this).css({"background-color": "#133c55", "border-color": "#133c55","color": "#ffffff"});
+                    }
+                );
         });
     }
 
@@ -437,8 +431,8 @@
             else {
                 var formatedText = usersListToDelete.join(", ");
                 var htmlQuestion = "<p id='perc-delete-dialog-warning'>Warning</p><br/>" +
-                                   "<strong>" + validationMsg + "</strong><br/><br/>" +
-                                   "<p id='perc-delete-warn-msg'>" + I18N.message("perc.ui.role.controller@Are You Sure Remove Users From Role") + selectedRole + "'?</p>";
+                    "<strong>" + validationMsg + "</strong><br/><br/>" +
+                    "<p id='perc-delete-warn-msg'>" + I18N.message("perc.ui.role.controller@Are You Sure Remove Users From Role") + selectedRole + "'?</p>";
                 var settings = {
                     id: 'perc-roles-removeusers-confirm',
                     title: I18N.message("perc.ui.role.controller@Remove Users From Role"),
@@ -450,17 +444,17 @@
                 };
                 $.perc_utils.confirm_dialog(settings);
                 $("#perc-roles-removeusers-confirm")
-                .find("#perc-confirm-generic-yes")
-                .css({"background-color": "#133c55", "border-color": "#133c55","color": "#ffffff"})
-                .off('mouseenter mouseleave')
-                .on('mouseenter',
-                    function() {
-                        $(this).css({"background-color": "#d22f12","border-color": "#d22f12","color": "#ffffff"});
-                    })
+                    .find("#perc-confirm-generic-yes")
+                    .css({"background-color": "#133c55", "border-color": "#133c55","color": "#ffffff"})
+                    .off('mouseenter mouseleave')
+                    .on('mouseenter',
+                        function() {
+                            $(this).css({"background-color": "#d22f12","border-color": "#d22f12","color": "#ffffff"});
+                        })
                     .on('mouseleave',   function() {
-                        $(this).css({"background-color": "#133c55", "border-color": "#133c55","color": "#ffffff"});
-                    }
-                );
+                            $(this).css({"background-color": "#133c55", "border-color": "#133c55","color": "#ffffff"});
+                        }
+                    );
             }
         });
 
