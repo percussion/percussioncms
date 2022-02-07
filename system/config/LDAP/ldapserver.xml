@@ -13,6 +13,8 @@
 		<emailAttributeName>emailaddress</emailAttributeName>
 		<organizationalUnit>CN=Users,DC=org,DC=perc,DC=edu</organizationalUnit>
 		<secure>false</secure>
+		<debug>no</debug>
+		<timeout>59000</timeout>
 	</LdapServer>
 	-->
 	<!-- Example configuration for Sun ONE Directory Server -->
@@ -27,6 +29,8 @@
 		<emailAttributeName>emailaddress</emailAttributeName>
 		<organizationalUnit>ou=Users,dc=percussion.com,dc=com</organizationalUnit>
 		<secure>false</secure>
+		<debug>no</debug>
+		<timeout>59000</timeout>
 	</LdapServer>
 	-->
 </LdapConfig>

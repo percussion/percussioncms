@@ -26,6 +26,7 @@ package com.percussion.design.objectstore;
 import com.percussion.util.PSCollection;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
+import org.apache.commons.lang.StringUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -43,6 +44,12 @@ import java.util.Objects;
  */
 public class PSDirectory extends PSComponent
 {
+
+   /**
+    * The default timeout in milliseconds for the ldap connection
+    */
+   public  static final long TIMEOUT_DEFAULT = 59000;
+
    /**
     * Construct a Java object from its XML representation.
     *
@@ -428,6 +435,13 @@ public class PSDirectory extends PSComponent
          CATALOG_ENUM));
       setDebug(sourceNode.getAttribute(XML_ATTR_DEBUG));
 
+      String to = sourceNode.getAttribute(XML_ATTR_TIMEOUT);
+      if(StringUtils.isBlank(to) || !StringUtils.isNumeric(to)) {
+         setTimeout(TIMEOUT_DEFAULT);
+      }else{
+         setTimeout(Long.parseLong(to));
+      }
+
       setFactory(getRequiredElement(tree, XML_ELEM_FACTORY, false));
 
       Node current = tree.getCurrent();
@@ -509,6 +523,10 @@ public class PSDirectory extends PSComponent
       root.setAttribute(XML_ATTR_CATALOG, m_catalogOption);
       if (isDebug())
          root.setAttribute(XML_ATTR_DEBUG, DEBUG_YES);
+      else
+         root.setAttribute(XML_ATTR_DEBUG, DEBUG_NO);
+
+      root.setAttribute(XML_ATTR_TIMEOUT,Long.toString(getTimeout()));
 
       PSXmlDocumentBuilder.addElement(doc, root, XML_ELEM_FACTORY,
          getFactory());
@@ -584,6 +602,7 @@ public class PSDirectory extends PSComponent
       if (!super.equals(o)) return false;
       PSDirectory that = (PSDirectory) o;
       return m_debug == that.m_debug &&
+              timeout == that.timeout &&
               Objects.equals(m_name, that.m_name) &&
               Objects.equals(m_catalogOption, that.m_catalogOption) &&
               Objects.equals(m_factory, that.m_factory) &&
@@ -595,7 +614,7 @@ public class PSDirectory extends PSComponent
 
    @Override
    public int hashCode() {
-      return Objects.hash(super.hashCode(), m_name, m_catalogOption, m_factory, m_authenticationRef, m_providerUrl, m_attributes, m_groupProviderNames, m_debug);
+      return Objects.hash(super.hashCode(), m_name, m_catalogOption, m_factory, m_authenticationRef, m_providerUrl, m_attributes, m_groupProviderNames, m_debug, timeout);
    }
 
    /** The XML node name */
@@ -646,6 +665,7 @@ public class PSDirectory extends PSComponent
     * enabled.
     */
    public static final String DEBUG_YES = "yes";
+   public static final String DEBUG_NO = "no";
 
    /**
     * Holds the directory name. This name must be unique across all defined
@@ -708,10 +728,21 @@ public class PSDirectory extends PSComponent
     */
    private boolean m_debug = false;
 
+   private long timeout = 59000; //default to 59 seconds - most load balancers timeout at 60 by default
+
+   public long getTimeout() {
+      return timeout;
+   }
+
+   public void setTimeout(long timeout) {
+      this.timeout = timeout;
+   }
+
    // XML element and attribute constants.
    private static final String XML_ATTR_NAME = "name";
    private static final String XML_ATTR_CATALOG = "catalog";
    private static final String XML_ATTR_DEBUG = "debug";
+   private static final String XML_ATTR_TIMEOUT = "timeout";
    private static final String XML_ELEM_FACTORY = "Factory";
    private static final String XML_ELEM_AUTHENTICATION = "Authentication";
    private static final String XML_ELEM_PROVIDER_URL = "ProviderUrl";

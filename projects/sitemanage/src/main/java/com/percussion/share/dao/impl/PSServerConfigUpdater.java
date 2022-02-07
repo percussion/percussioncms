@@ -419,8 +419,18 @@ public class PSServerConfigUpdater implements IPSServerConfigUpdater, IPSNotific
         {
             throw new IllegalArgumentException("serverConfig may not be null");
         }
-        
-        // add security provider
+
+        //Remove any duplicate system generated security provider instances
+       PSCollection providers = serverConfig.getSecurityProviderInstances();
+        for(Object o : providers){
+            PSSecurityProviderInstance spi = (PSSecurityProviderInstance) o;
+            if(spi.getName().equalsIgnoreCase(SECURITY_PROVIDER_NAME) &&
+            spi.getType() == PSSecurityProvider.SP_TYPE_DIRCONN){
+                serverConfig.getSecurityProviderInstances().remove(o);
+            }
+        }
+
+        //Add a new instance
         PSReference dirSetRef = new PSReference(DIRECTORY_SET_NAME, PSDirectorySet.class.getName());
         PSProvider dirProvider = new PSProvider(PSDirectoryServerCataloger.class.getName(), PSProvider.TYPE_DIRECTORY,
                 dirSetRef);
@@ -453,6 +463,20 @@ public class PSServerConfigUpdater implements IPSServerConfigUpdater, IPSNotific
             PSDirectory dir = new PSDirectory(DIRECTORY_NAME_PREFIX + ' ' + i++, catalog.name(),
                     PSDirectory.FACTORY_LDAP, AUTHENTICATION_NAME,
                     (ldapServer.getSecure() ? SECURE_PROVIDER_URL_PREFIX : PROVIDER_URL_PREFIX) + host + ':' + port + '/' + orgUnit, null);
+
+            String debug = ldapServer.getDebug();
+            if(!StringUtils.isBlank(debug) && debug.equalsIgnoreCase(PSDirectory.DEBUG_YES)) {
+                dir.setDebug(PSDirectory.DEBUG_YES);
+            } else {
+                dir.setDebug(PSDirectory.DEBUG_NO);
+            }
+
+            String to = ldapServer.getTimeout();
+            if(StringUtils.isBlank(to) || !StringUtils.isNumeric(to))
+                dir.setTimeout(PSDirectory.TIMEOUT_DEFAULT);
+            else{
+                dir.setTimeout(Long.parseLong(to));
+            }
             serverConfig.addDirectory(dir);
             PSReference dirRef = new PSReference(dir.getName(), PSDirectory.class.getName());
             dirRefs.add(dirRef);
