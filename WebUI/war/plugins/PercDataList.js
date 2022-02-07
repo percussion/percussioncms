@@ -172,8 +172,8 @@
     }
 
     function selectItem(container, itemname) {
-		var originalItemname = itemname;
-		itemname = itemname.replace(/\\/g, "\\\\").replace(/\'/g, "\\'");
+		var originalItemname = String(itemname);
+		itemname = String(itemname).replace(/\\/g, "\\\\").replace(/\'/g, "\\'");
 		var id = container.find(".perc-itemname[title='" + itemname + "']").attr('data-id');
 		currentItemSelected = originalItemname;
         unhighlightAllItems(container);
