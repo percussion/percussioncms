@@ -953,7 +953,9 @@ public class PSWorkflowService
       {
          throw new IllegalArgumentException("workflow may not be null");
       }
+
       sessionFactory.getCurrentSession().saveOrUpdate(workflow);
+
       m_cache.evict(workflow.getGUID(), CACHE_REGION);
    }
 
@@ -1204,8 +1206,18 @@ public class PSWorkflowService
       
       if (StringUtils.isBlank(defaultWorkflowName) || defaultWorkflows.isEmpty())
       {
-         throw new RuntimeException("The workflow in the " + PSWorkFlowUtils.FILE_PROPERTIES + 
-               " workflow property file is empty or not exist.");
+         ms_log.warn("The default workflow with name: {} could not be found.  Changing the default workflow to the 1st defined workflow.", defaultWorkflowName );
+
+         List<PSWorkflow> workflows = loadWorkflows("%");
+
+         if (workflows != null && !workflows.isEmpty()){
+            //Update the default workflow in the properties file to be the 1st workflow found
+            PSWorkFlowUtils.setDefaultWorkflowName(workflows.get(0).getName());
+            return workflows.get(0);
+         }else {
+            throw new RuntimeException("The workflow in the " + PSWorkFlowUtils.FILE_PROPERTIES +
+                    " workflow property file is empty or not exist.");
+         }
       }
       
       return defaultWorkflows.get(0);
@@ -1222,12 +1234,23 @@ public class PSWorkflowService
    public String getDefaultWorkflowName()
    {
       String defaultWorkflowName = PSWorkFlowUtils.getDefaultWorkflowProperty();
-      
+
       if (StringUtils.isBlank(defaultWorkflowName) || 
             findWorkflowsByName(defaultWorkflowName).isEmpty())
       {
-         throw new RuntimeException("The workflow in the " + PSWorkFlowUtils.FILE_PROPERTIES + 
-               " workflow property file is empty or not exist.");
+         ms_log.warn("The default workflow with name: {} could not be found.  Changing the default workflow to the 1st defined workflow.", defaultWorkflowName );
+
+         List<PSWorkflow> workflows = loadWorkflows("%");
+
+         if (workflows != null && !workflows.isEmpty()){
+            //Update the default workflow in the properties file to be the 1st workflow found
+            PSWorkFlowUtils.setDefaultWorkflowName(workflows.get(0).getName());
+            return workflows.get(0).getName();
+         }else {
+
+            throw new RuntimeException("The workflow in the " + PSWorkFlowUtils.FILE_PROPERTIES +
+                    " workflow property file is empty or not exist.");
+         }
       }
       
       return defaultWorkflowName;

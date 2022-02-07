@@ -2281,11 +2281,10 @@ public class PSWorkFlowUtils
     * 
     * @param workflowName the name of the workflow, never empty or <code>null</code>.
     */
-   public static void setDefaultWorkflowName(String workflowName) throws com.percussion.services.error.PSNotFoundException {
+   public static void setDefaultWorkflowName(String workflowName){
       if (StringUtils.isBlank(workflowName))
          throw new IllegalArgumentException("worklfow name may not be null.");
-      
-      loadDefaultWorkflow(workflowName);
+
       setProperty(DEFAULT_WORKFLOW_KEY, workflowName);
    }
 

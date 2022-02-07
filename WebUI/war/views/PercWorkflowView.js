@@ -37,7 +37,7 @@
         var container = $("#perc-workflows-list");
         var selectedWorkflow = "";
         var originalSitesJson, originalAssetsJson, siteJobId, assetJobId;
-        
+
         //map of workflow names to stagingRoleNames to identify permissions for staging Publish Now
         var stagingRoleNames = new Map();
         var api = {
@@ -79,7 +79,7 @@
             }
         }
         function cancelJob(jobId, sync){
-            if (!jobId) 
+            if (!jobId)
                 return;
             $.perc_utils.info(I18N.message("perc.ui.workflow.view@Cancelling Assigned Folders Job") + jobId);
             var callback = function(status, result){
@@ -92,7 +92,7 @@
             };
             $.PercFolderService.cancelAssociatedFoldersJob(jobId, sync, callback);
         }
-        
+
         /**
          *  Disable the Add new workflow, delete workflow and add new step buttons
          */
@@ -106,7 +106,7 @@
          */
         function enableButtons()
         {
-        	//show buttons for updating and creating new workflow
+            //show buttons for updating and creating new workflow
             $("#perc-update-wf-save-cancel-block").show();
             $("#perc-new-wf-save-cancel-block").show();
         }
@@ -133,32 +133,32 @@
          */
         function editWorkflow(evt)
         {
-            $(".perc-wf-default").find('input').prop('checked', false).prop('disabled', false);
+            $(".perc-wf-default").find('input[type="checkbox"]').prop('checked', false).prop('disabled', false);
             $(".perc-step-config-button, .perc-reserved-step-config-bttn, .perc-step-delete-button, .perc-create-new-step").off("click").on("click");
             $(".perc-create-new-step").addClass("perc-step-disable");
             $(".perc-step-delete-button").addClass("perc-step-delete-disable");
             $(".perc-step-config-button").addClass("perc-step-config-disable");
-            $(".perc-reserved-step-config-bttn").addClass("perc-reserved-step-config-disable");            
+            $(".perc-reserved-step-config-bttn").addClass("perc-reserved-step-config-disable");
             hideWorkflowEditButton();
             $("#perc-wf-update-editor").show();
             var workflowName = $("#perc-workflow-steps-container").data("workflowName");
-            
+
             //create the workflow control for publish now to staging permissions
             generateRolesControl("perc-publish-now-roles-control",workflowName);
-            
-            if(defaultWorkflow == workflowName) {
-                $(".perc-wf-default").find('input').attr('checked', 'checked').attr('disabled', true);                
+
+            if(defaultWorkflow === workflowName) {
+                $(".perc-wf-default").find('input[type="checkbox"]').prop('checked', true).prop('disabled', true);
             }
             $("#perc-update-workflow-name").val(workflowName).on("focus change", function(evt)
             {
                 dirtyController.setDirty(true, "workflow");
             });
-            
+
             $(".perc-wf-default").find('input').on("change", function()
             {
                 dirtyController.setDirty(true, "workflow");
             });
-            
+
             $.PercDataList.disableButtons(container);
         }
 
@@ -205,41 +205,41 @@
             if (typeof(previousWorkflowName) == 'undefined')
                 previousWorkflowName =  $(".perc-itemname[title='"+ workflowName+ "']").next().attr('title');
             if (previousWorkflowName == 'more')
-                previousWorkflowName =  $(".perc-moreLink").prev().attr('title');  
+                previousWorkflowName =  $(".perc-moreLink").prev().attr('title');
             var settings = {
-            id: 'perc-wf-delete',
-            title: I18N.message("perc.ui.workflow.view@Confirm Workflow Deletion"),
-            type: 'YES_NO',
-            question: I18N.message("perc.ui.workflow.view@About To Delete Workflow")+ workflowName + "'<br /><br />" + I18N.message("perc.ui.workflow.view@Are You Sure Delete Workflow"),
-            success: function () {
-                     $.PercBlockUI();
-                     $.PercWorkflowService().deleteWorkflow(workflowName, function(status, result){
+                id: 'perc-wf-delete',
+                title: I18N.message("perc.ui.workflow.view@Confirm Workflow Deletion"),
+                type: 'YES_NO',
+                question: I18N.message("perc.ui.workflow.view@About To Delete Workflow")+ workflowName + "'<br /><br />" + I18N.message("perc.ui.workflow.view@Are You Sure Delete Workflow"),
+                success: function () {
+                    $.PercBlockUI();
+                    $.PercWorkflowService().deleteWorkflow(workflowName, function(status, result){
                         if(status) {
                             refreshWorkflowContainer(previousWorkflowName);
-                        }                
+                        }
                         else {
                             var errorMessage = $.PercServiceUtils.extractDefaultErrorMessage(result[0]);
-                                                    $.perc_utils.alert_dialog({"title":I18N.message("perc.ui.workflow.view@Error Deleting Workflow"),"content":errorMessage});
-                                                    
-                        }  
-                        $.unblockUI();              
-                    }); 
-                                 }
-        };                    
+                            $.perc_utils.alert_dialog({"title":I18N.message("perc.ui.workflow.view@Error Deleting Workflow"),"content":errorMessage});
+
+                        }
+                        $.unblockUI();
+                    });
+                }
+            };
             $.perc_utils.confirm_dialog(settings);
-          
+
         }
-        
+
         /**
          *  Expand the workflow list if selected workflow is hidden after creating/updating operation.
-         */        
+         */
         function expandWrokflowList(workflowName)
         {
             var isWfHidden =  container.find(".perc-itemname[title='"+ workflowName+ "']").is('.perc-hidden');
             if($("#perc-wf-min-max").is(".perc-items-maximizer")) {
                 $("#perc-wf-min-max").trigger("click");
-            }    
-            if(isWfHidden) {    
+            }
+            if(isWfHidden) {
                 $("#perc-workflows-list").find('.perc-moreLink').trigger("click");
             }
         }
@@ -259,11 +259,11 @@
             $.PercDataList.selectItem(container, workflowName);
             $.PercWorkflowStepsView.refresh(workflowName);
             $("#perc-wf-edit").removeClass('perc-wf-edit-disable')
-            .off("click")
-            .on("click", function(evt)
-            {
-                editWorkflow();
-            });
+                .off("click")
+                .on("click", function(evt)
+                {
+                    editWorkflow();
+                });
 
             previousWorkflowName =  $(".perc-itemname[title='"+ workflowName+ "']").prev().attr('title');
 
@@ -271,16 +271,16 @@
             {
                 deleteWorkflow(workflowName);
             });
-            
+
             //Un-Bind Edit event if selected workflow is default
             if(workflowName === defaultWorkflow)
-            {   
+            {
                 $(".perc-default-wf-marker").show();
                 container.find(".perc-item-delete-button").off("click");
 
                 container.find('.perc-item-delete-button').addClass('perc-item-disabled');
             }
-            
+
             // Update the Assigned tree/list
             if(!selectingSameWorkflow)
                 updateSitesFolderAssignedSection(workflowName);
@@ -291,52 +291,52 @@
          */
         function saveNewWorkflow()
         {
-            var workflowName = $("#perc-new-workflow-name").val();
-            if(workflowName.indexOf("??") !== -1)
+            var workflowName = $("#perc-new-workflow-name").val().trim();
+            if(!$("#perc-new-workflow-name")[0].checkValidity())
             {
                 var validationError = I18N.message("perc.ui.workflow.view@Workflow Invalid Characters");
                 $.perc_utils.alert_dialog(
-                {
-                    "title" : I18N.message("perc.ui.workflow.view@Workflow Validation Error"),
-                    "content" : validationError
-                });
+                    {
+                        "title" : I18N.message("perc.ui.workflow.view@Workflow Validation Error"),
+                        "content" : validationError
+                    });
                 return;
             }
             var isDefault = $(".perc-wf-default input").is(':checked');
             var workflowObj =
-            {
-                "Workflow" :
                 {
-                    "defaultWorkflow" : isDefault,
-                    "workflowName" : workflowName,
-                    "previousStepName" : "",
-                    "workflowDescription" : "",
-                    "stagingRoleNames" : getPublishNowStagingRoles(),
-                    "previousWorkflowName" : ""
-                }
-            };
+                    "Workflow" :
+                        {
+                            "defaultWorkflow" : isDefault,
+                            "workflowName" : workflowName,
+                            "previousStepName" : "",
+                            "workflowDescription" : "",
+                            "stagingRoleNames" : getPublishNowStagingRoles(),
+                            "previousWorkflowName" : ""
+                        }
+                };
 
             function createWorkflowServiceCall(){
                 $.PercWorkflowService().createWorkflow(workflowName, workflowObj, function(status, result)
                 {
                     if(status)
                     {
-                        
+
                         refreshWorkflowContainer(workflowName.trim());
                     }
                     else
                     {
                         var errorMessage = $.PercServiceUtils.extractDefaultErrorMessage(result[0]);
                         $.perc_utils.alert_dialog(
-                        {
-                           //TODO: I18N TESTME
-                        	"title" : I18N.message("perc.ui.workflow.view@Error Creating Workflow"),
-                            "content" : errorMessage
-                        });
+                            {
+                                //TODO: I18N TESTME
+                                "title" : I18N.message("perc.ui.workflow.view@Error Creating Workflow"),
+                                "content" : errorMessage
+                            });
                     }
                     $.unblockUI();
                 });
-            }            
+            }
             $.PercBlockUI();
             //User is trying to create workflow and set it as default, make sure workflow assignment is not in progress
             if(isDefault){
@@ -355,7 +355,7 @@
                     else{
                         createWorkflowServiceCall();
                     }
-                    
+
                 });
             }
             else{
@@ -371,28 +371,28 @@
             var previousWorkflowName = $("#perc-workflow-steps-container").data("workflowName");
             var newWorkflowName = $("#perc-update-workflow-name").val();
             var isDefault = $(".perc-wf-default input").is(':checked');
-            if(newWorkflowName.indexOf("??") != -1)
+            if(!$("#perc-update-workflow-name")[0].checkValidity())
             {
                 var validationError = I18N.message("perc.ui.workflow.view@Workflow Invalid Characters");
                 $.perc_utils.alert_dialog(
-                {
-                    "title" : I18N.message("perc.ui.workflow.view@Workflow Validation Error"),
-                    "content" : validationError
-                });
+                    {
+                        "title" : I18N.message("perc.ui.workflow.view@Workflow Validation Error"),
+                        "content" : validationError
+                    });
                 return;
             }
             var workflowObj =
-            {
-                "Workflow" :
                 {
-                    "defaultWorkflow" : isDefault,
-                    "workflowName" : newWorkflowName,
-                    "previousStepName" : "",
-                    "workflowDescription" : "",
-                    "stagingRoleNames" : getPublishNowStagingRoles(),
-                    "previousWorkflowName" : previousWorkflowName
-                }
-            };
+                    "Workflow" :
+                        {
+                            "defaultWorkflow" : isDefault,
+                            "workflowName" : newWorkflowName,
+                            "previousStepName" : "",
+                            "workflowDescription" : "",
+                            "stagingRoleNames" : getPublishNowStagingRoles(),
+                            "previousWorkflowName" : previousWorkflowName
+                        }
+                };
             $.PercBlockUI();
             function updateWorkflowServiceCall(){
                 $.PercWorkflowService().updateWorkflow(previousWorkflowName, workflowObj, function(status, result){
@@ -437,8 +437,8 @@
                 updateWorkflowServiceCall();
             }
         }
-        
-        /** 
+
+        /**
          * get roles from the list widget and build
          * a string array of roles seperated by ; to pass to server
          */
@@ -453,7 +453,7 @@
                 serverStringRoles = serverStringRoles.substring(0, serverStringRoles.length - 1);
             return serverStringRoles;
         }
-        
+
         /**
          * create the workflow publish now to staging permissions control
          * in the specified container with the selected workflow
@@ -468,7 +468,7 @@
                     roles = stagingRoleNames.get(workflowName).split(";");
                 }
             }
-            
+
             $.PercUserService.getRoles(function(status, rolesJson) {
                 if(status == $.PercServiceUtils.STATUS_ERROR) {
                     utils.alertDialog(I18N.message("perc.ui.workflow.view@Error Loading Roles"), rolesJson);
@@ -489,7 +489,7 @@
                     "title2" : I18N.message( "perc.ui.rolePropsDialog.title@Role Staging Actions" ),
                     "help" : I18N.message( "perc.ui.rolePropsDialog.title@Enter a role" )
                 });
-           });
+            });
         }
 
         /**
@@ -497,12 +497,12 @@
          */
         function refreshWorkflowContainer(workflowName)
         {
-            getWorkflowList(function(status, result) {            
+            getWorkflowList(function(status, result) {
                 if(status)
                 {
-                    $.PercDataList.updateList(container, result);         
+                    $.PercDataList.updateList(container, result);
                     hideWorkflowEditor();
-                    hideWorkflowUpdateEditor();                    
+                    hideWorkflowUpdateEditor();
                     selectWorflow(workflowName);
                     expandWrokflowList(workflowName);
                 }
@@ -571,7 +571,7 @@
                     var workflows = [];
                     if(!Array.isArray(result[0].Workflow)) {
                         workflows.push(result[0].Workflow);
-                        }
+                    }
                     else
                         workflows = result[0].Workflow;
                     var workflowArray = [];
@@ -591,7 +591,7 @@
                 }
             });
         }
-        
+
         /**
          *   Initialization method
          */
@@ -601,19 +601,19 @@
             // Pass the config data to dataItem plugin to render the list of workflows
             var container = $("#perc-workflows-list");
             var dataListConfig =
-            {
-                listItem : [],
-                title : I18N.message("perc.ui.workflow.view@Workflows"),
-                addTitle : I18N.message("perc.ui.workflow.view@Add New Workflow"),
-                deleteTitle : I18N.message("perc.ui.workflow.view@Delete Workflow"),
-                enableDelete : true,
-                collapsible : true,
-                createItem : addNewWorkflow,
-                deleteItem : deleteWorkflow,
-                selectedItem : selectWorflow,
-                truncateEntries : true,
-                truncateEntriesCount : 5
-            };
+                {
+                    listItem : [],
+                    title : I18N.message("perc.ui.workflow.view@Workflows"),
+                    addTitle : I18N.message("perc.ui.workflow.view@Add New Workflow"),
+                    deleteTitle : I18N.message("perc.ui.workflow.view@Delete Workflow"),
+                    enableDelete : true,
+                    collapsible : true,
+                    createItem : addNewWorkflow,
+                    deleteItem : deleteWorkflow,
+                    selectedItem : selectWorflow,
+                    truncateEntries : true,
+                    truncateEntriesCount : 5
+                };
 
             $.PercDataList.init(container, dataListConfig);
 
@@ -629,11 +629,11 @@
                 {
                     //TODO handle error
                 }
-                    
+
             });
-            
+
             //attach editor events
-            attachWorkflowEditorEvents();              
+            attachWorkflowEditorEvents();
             // Initialize the Assigned list/tree
             initPercDataTree();
         }
@@ -663,7 +663,7 @@
          */
         function updateSitesFolderAssignedSection(workflowName)
         {
-            $(".perc-sa-loading-warning-message-hidden").addClass("perc-sa-loading-warning-message").removeClass("perc-sa-loading-warning-message-hidden");            
+            $(".perc-sa-loading-warning-message-hidden").addClass("perc-sa-loading-warning-message").removeClass("perc-sa-loading-warning-message-hidden");
             if (typeof(workflowName) === 'undefined')
             {
                 workflowName = selectedWorkflow;
@@ -685,7 +685,7 @@
                     cancelJob(siteJobId, false);
                 }
                 siteJobId = result;
-                $.perc_utils.info(I18N.message("perc.ui.workflow.view@Started Associated Folders Jobs For Sites") + siteJobId); 
+                $.perc_utils.info(I18N.message("perc.ui.workflow.view@Started Associated Folders Jobs For Sites") + siteJobId);
                 $.PercFolderService.startAssociatedFoldersJob("Assets", selectedWorkflow, function(status, result) {
                     if(status == $.PercServiceUtils.STATUS_ERROR)
                     {
@@ -695,20 +695,20 @@
                     if(assetJobId){
                         cancelJob(assetJobId, false);
                     }
-                    assetJobId = result;    
-                    $.perc_utils.info(I18N.message("perc.ui.workflow.view@Started Associated Folders Jobs For Assets") + assetJobId); 
+                    assetJobId = result;
+                    $.perc_utils.info(I18N.message("perc.ui.workflow.view@Started Associated Folders Jobs For Assets") + assetJobId);
                     loadSiteFolders();
                     loadAssetFolders();
                 }, false);
-            
+
             }, false);
-            
+
         }
         function loadSiteFolders()
         {
-                if(siteJobId == null)
-                    return;
-                $.PercFolderService.getAssociatedFoldersJobStatus(siteJobId, function(status, result) {
+            if(siteJobId == null)
+                return;
+            $.PercFolderService.getAssociatedFoldersJobStatus(siteJobId, function(status, result) {
                 if(status == $.PercServiceUtils.STATUS_ERROR)
                 {
                     $.perc_utils.alert_dialog({title: I18N.message("perc.ui.publish.title@Error"), content: result});
@@ -721,7 +721,7 @@
                     setTimeout(loadSiteFolders, 2000);
                     return;
                 }
-                $.perc_utils.info(I18N.message("perc.ui.workflow.view@Finished Associated Folders Jobs For Sites") + siteJobId); 
+                $.perc_utils.info(I18N.message("perc.ui.workflow.view@Finished Associated Folders Jobs For Sites") + siteJobId);
                 siteJobId = null;
                 originalSitesJson = {};
                 originalSitesJson.folderItem = result.GetAssginedFoldersJobStatus.folderItems;
@@ -732,7 +732,7 @@
         {
             if(assetJobId == null)
                 return;
-            
+
             $.PercFolderService.getAssociatedFoldersJobStatus(assetJobId, function(status, result) {
                 if(status == $.PercServiceUtils.STATUS_ERROR)
                 {
@@ -746,24 +746,24 @@
                     setTimeout(loadAssetFolders, 2000);
                     return;
                 }
-                $.perc_utils.info(I18N.message("perc.ui.workflow.view@Finished Associated Folders Jobs For Assets") + assetJobId); 
+                $.perc_utils.info(I18N.message("perc.ui.workflow.view@Finished Associated Folders Jobs For Assets") + assetJobId);
                 assetJobId = null;
                 originalAssetsJson = {};
                 originalAssetsJson.folderItem = result.GetAssginedFoldersJobStatus.folderItems;
                 showFolderTrees();
             });
         }
-        
+
         function showFolderTrees()
         {
-            if (originalSitesJson != null && originalAssetsJson != null) 
+            if (originalSitesJson != null && originalAssetsJson != null)
             {
-                $(".perc-sa-loading-warning-message").addClass("perc-sa-loading-warning-message-hidden").removeClass("perc-sa-loading-warning-message");         
+                $(".perc-sa-loading-warning-message").addClass("perc-sa-loading-warning-message-hidden").removeClass("perc-sa-loading-warning-message");
                 $.PercDataTree.updateTree(assign_container, [originalSitesJson, originalAssetsJson], selectedWorkflow);
             }
         }
-    
-    
+
+
         /**
          * Clicking the add button opens a dialog to assign workflows to sites & folders.
          */
@@ -776,7 +776,7 @@
         // Return the public api/interface
         return api;
     };
-    
+
     /**
      *  On document ready
      */
@@ -791,7 +791,7 @@
             else{
                 $.wfViewObject.init();
             }
-            
+
         });
     });
 })(jQuery, jQuery.Percussion);
