@@ -267,7 +267,7 @@ public class PSJndiUtils
 
       // need to set the context factory (provided by user)
       env.put(Context.INITIAL_CONTEXT_FACTORY, dir.getFactory());
-      
+      env.put("com.sun.jndi.ldap.connect.timeout",Long.toString(dir.getTimeout()));
       String encurl = PSJndiUtils.getEncodedProviderUrl(url);
       if(encurl.startsWith("ldaps"))
       {

@@ -78,7 +78,9 @@ public class PSLdapConfig extends PSAbstractDataObject
             "objectAttributeName",
             "emailAttributeName",
             "organizationalUnits",
-            "secure"
+            "secure",
+            "debug",
+            "timeout"
             })
     public static class PSLdapServer extends PSAbstractDataObject {
 
@@ -112,6 +114,34 @@ public class PSLdapConfig extends PSAbstractDataObject
         
         @NotNull
         private CatalogType catalogType;
+
+        private String debug;
+
+        private String timeout;
+
+        public boolean isSecure() {
+            return secure;
+        }
+
+        public void setSecure(boolean secure) {
+            this.secure = secure;
+        }
+
+        public String getDebug() {
+            return debug;
+        }
+
+        public void setDebug(String debug) {
+            this.debug = debug;
+        }
+
+        public String getTimeout() {
+            return timeout;
+        }
+
+        public void setTimeout(String timeout) {
+            this.timeout = timeout;
+        }
 
         public String getHost()
         {
