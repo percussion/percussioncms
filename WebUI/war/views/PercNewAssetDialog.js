@@ -51,23 +51,23 @@
             // selectable items will go in the div with class .perc-items
             // the items are inserted by the controller
             dialog = $("<div>" +
-                 "<p class='perc-field-error' id='perc-save-error'></p>" +
-                 "<form action='' method='GET'> " +
-                 "  <label for='perc-select-template'>"+ I18N.message( "perc.ui.newassetdialog.label@Select Asset Type" ) + ": </label><br/>" +
-                 "  <a class='prevPage browse left' style = 'margin:21px 0px 30px 0px'></a>" +
-                 "  <div class='perc-scrollable' style = 'height:64px'>" +
-                 "    <input type='hidden' id='perc-select-template'   name='template'/>" +
-                 "    <input type='hidden' id='perc-editor-url'        name='url'/>" +
-                 "    <input type='hidden' id='perc-workflow-id'       name='workflowId'/>" +
+                "<p class='perc-field-error' id='perc-save-error'></p>" +
+                "<form action='' method='GET'> " +
+                "  <label for='perc-select-template'>"+ I18N.message( "perc.ui.newassetdialog.label@Select Asset Type" ) + ": </label><br/>" +
+                "  <a class='prevPage browse left' style = 'margin:21px 0px 30px 0px'></a>" +
+                "  <div class='perc-scrollable' style = 'height:64px'>" +
+                "    <input type='hidden' id='perc-select-template'   name='template'/>" +
+                "    <input type='hidden' id='perc-editor-url'        name='url'/>" +
+                "    <input type='hidden' id='perc-workflow-id'       name='workflowId'/>" +
                 // here is where the items will be inserted by the controller
-                 "    <div class='perc-items'>" +
-                 "    </div>" +
-                 "  </div>" +
-                 "  <a class='nextPage browse right' style = 'margin:21px 0px 30px 0px' ></a>" +
-                 "  <div class='ui-layout-south'>" +
-                 "    <div id='perc_buttons' style='z-index: 100;'></div>" +
-                 "  </div>" +
-                 "</form></div>")
+                "    <div class='perc-items'>" +
+                "    </div>" +
+                "  </div>" +
+                "  <a class='nextPage browse right' style = 'margin:21px 0px 30px 0px' ></a>" +
+                "  <div class='ui-layout-south'>" +
+                "    <div id='perc_buttons' style='z-index: 100;'></div>" +
+                "  </div>" +
+                "</form></div>")
                 .perc_dialog(
                     {
                         title: I18N.message( "perc.ui.newassetdialog.title@New Asset" ),
@@ -209,7 +209,7 @@
                         {
                             items: ".perc-items",
                             size: 4,
-                            keyboard: false
+                            keyboard: true
                         });
                     $(".perc-items .item .item-id").hide();
                     $(".perc-items .item .item-editor-url").hide();
@@ -239,6 +239,30 @@
                     $firstItem.addClass("perc-selected-item");
                 }
             });
+
+            //TODO: Expand this to auto scroll item by item with arrow keys and to
+            //jump to the first widget that starts with an a-z key press.
+            $( "#perc-new-page-dialog" ).keyup(function( event ) {
+                var shiftKeyPressed = event.shiftKey;
+                switch(event.code){
+                    case "ArrowRight": {
+                        if(shiftKeyPressed){
+                            $("a.nextPage.browse.right").click();
+                        }else{
+
+                        }
+                        break;
+                    }
+                    case "ArrowLeft": {
+                        if(shiftKeyPressed){
+                            $("a.prevPage.browse.left").click();
+                        }
+                        break;
+                    }
+
+                }
+            });
+
 
             var nm = $('#perc-page-name');
             var ti = $('#perc-page-title');
@@ -358,15 +382,15 @@
         function createAssetEditorEntry(assetEditor)
         {
             var temp =    "<div class='item' for='@ITEM_ID@'>" +
-                 "   <div class='item-id'>@ITEM_ID@</div>" +
-                 "   <div class='item-editor-url'>@ITEM_URL@</div>" +
-                 "   <div class='item-workflow-id'>@ITEM_WORKFLOW_ID@</div>" +
-                 "   <table style='vertical-align:middle'>" +
-                 "       <tr><td align='center' valign='middle'>" +
-                 "           <img src='/Rhythmyx@IMG_SRC@'/>" +
-                 "       </td><td style='vertical-align:middle'><span>@ITEM_LABEL@</span></td></tr>" +
-                 "   </table>";
-                 "</div>";
+                "   <div class='item-id'>@ITEM_ID@</div>" +
+                "   <div class='item-editor-url'>@ITEM_URL@</div>" +
+                "   <div class='item-workflow-id'>@ITEM_WORKFLOW_ID@</div>" +
+                "   <table style='vertical-align:middle'>" +
+                "       <tr><td align='center' valign='middle'>" +
+                "           <img src='/Rhythmyx@IMG_SRC@'/>" +
+                "       </td><td style='vertical-align:middle'><span>@ITEM_LABEL@</span></td></tr>" +
+                "   </table>";
+            "</div>";
             return temp.replace(/@IMG_SRC@/, assetEditor.icon)
                 .replace(/@ITEM_ID@/g, assetEditor.title)
                 .replace(/@ITEM_URL@/, assetEditor.url)
