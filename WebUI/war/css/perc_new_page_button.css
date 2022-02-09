@@ -25,72 +25,92 @@
 /*
     root element for the scrollable. 
     when scrolling occurs this element stays still. 
-*/ 
-div.perc-scrollable { 
- 
-    /* required settings */ 
-    position:relative; 
-    overflow:hidden; 
-    width: 660px; 
+*/
+div.perc-scrollable {
+
+    /* required settings */
+    position:relative;
+    overflow:hidden;
+    width: 660px;
     height: 142px;
-    margin: 10px 0px 0px 0px; 
+    margin: 10px 0px 0px 0px;
     border:1px solid #939ead;
-} 
- 
+}
+
 /* 
     root element for scrollable items. Must be absolutely positioned 
     and it should have a extremely large width to accomodate scrollable items. 
     it's enough that you set width and height for the root element and 
     not for this element. 
-*/ 
-div.perc-scrollable div.perc-items { 
-    /* this cannot be too large */ 
-    width:20000em; 
+*/
+div.perc-scrollable div.perc-items {
+    /* this cannot be too large */
+    width:20000em;
     position:absolute;
-    background-color:#ffffff; 
-} 
- 
+    background-color:#ffffff;
+}
+
 /* 
     a single item. must be floated in horizontal scrolling. 
     typically, this element is the one that *you* will style 
     the most. 
-*/ 
-div.perc-scrollable div.perc-items div { 
-    float:left; 
+*/
+div.perc-scrollable div.perc-items div {
+    float:left;
+}
+
+/*
+    a single item. must be floated in horizontal scrolling.
+    typically, this element is the one that *you* will style
+    the most.
+*/
+div.perc-scrollable div.perc-items button {
+    float:left;
 }
 
 div.perc-scrollable div.perc-items .item{
-   margin: 3px;
-   padding: 10px;
-   color:#758496;
-   display:block;
-   font-family:Verdana;
-   font-size:11px;
-   font-weight:normal;
-   width:128px;
-} 
+    margin: 3px;
+    padding: 10px;
+    color:#758496;
+    display:block;
+    font-family:Verdana;
+    font-size:11px;
+    font-weight:normal;
+    width:128px;
+}
+
+div.perc-scrollable div.perc-items button.perc-selected-item {
+    background-color: #CAF589;
+}
+
+
+div.perc-scrollable div.perc-items button {
+    background-color: #ffffff;
+    border-color: grey;
+}
 
 /* Buttons */
 
 /* this makes it possible to add next button beside scrollable */
 .perc-scrollable {
-	float:left;	
+    float:left;
 }
 
 div.perc-selected-item {
     background-color: #CAF589;
 }
 
+
 /* prev, next, prevPage and nextPage buttons */
 a.browse {
-	
-	display:block;
-	width:21px;
-	height:44px;
-	float:left;
-	margin:62px 10px;
-	cursor:pointer;
-	font-size:11px;
+
+    display:block;
+    width:21px;
+    height:44px;
+    float:left;
+    margin:62px 10px;
+    cursor:pointer;
+    font-size:11px;
 }
 
 /* right */
@@ -98,14 +118,14 @@ a.right 				{ background:url(../images/images/carousel-scroll-right.png) no-repe
 a.right:hover 		{ background:url(../images/images/carousel-scroll-right-over.png) no-repeat; }
 
 /* left */
-a.left				{ background:url(../images/images/carousel-scroll-left.png) no-repeat; clear:right; margin-right: 0px;} 
+a.left				{ background:url(../images/images/carousel-scroll-left.png) no-repeat; clear:right; margin-right: 0px;}
 a.left:hover  		{ background:url(../images/images/carousel-scroll-left-over.png);}
 
 
 
 /* disabled navigational button */
 a.disabled {
-	/* visibility:hidden !important;	*/	
+    /* visibility:hidden !important;	*/
 }
 
 
@@ -113,7 +133,7 @@ a.disabled {
 .perc-items td{
     padding-top:7px;
     padding-left:2px;
-	padding-right:2px;
+    padding-right:2px;
 }
 .perc-items .items{
     min-width:107px;
@@ -143,5 +163,5 @@ a.disabled {
     float:left;
     overflow:hidden;
     text-overflow:ellipsis;
-    white-space:nowrap;    
+    white-space:nowrap;
 }
