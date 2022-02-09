@@ -51,23 +51,25 @@
             // selectable items will go in the div with class .perc-items
             // the items are inserted by the controller
             dialog = $("<div>" +
-                 "<p class='perc-field-error' id='perc-save-error'></p>" +
-                 "<form action='' method='GET'> " +
-                 "  <label for='perc-select-template'>"+ I18N.message( "perc.ui.newassetdialog.label@Select Asset Type" ) + ": </label><br/>" +
-                 "  <a class='prevPage browse left' style = 'margin:21px 0px 30px 0px'></a>" +
-                 "  <div class='perc-scrollable' style = 'height:64px'>" +
-                 "    <input type='hidden' id='perc-select-template'   name='template'/>" +
-                 "    <input type='hidden' id='perc-editor-url'        name='url'/>" +
-                 "    <input type='hidden' id='perc-workflow-id'       name='workflowId'/>" +
+                "<p class='perc-field-error' id='perc-save-error'></p>" +
+                "<form action='' method='GET'> " +
+                "  <label for='perc-select-template'>"+ I18N.message( "perc.ui.newassetdialog.label@Select Asset Type" ) + ": </label>" +
+                "  <input list='perc-items-datalist' id='perc-item-filter' autofocus />" +
+                "  <datalist id='perc-items-datalist'></datalist><br/>" +
+                "  <a class='prevPage browse left' style = 'margin:21px 0px 30px 0px'></a>" +
+                "  <div class='perc-scrollable' style = 'height:70px'>" +
+                "    <input type='hidden' id='perc-select-template'   name='template'/>" +
+                "    <input type='hidden' id='perc-editor-url'        name='url'/>" +
+                "    <input type='hidden' id='perc-workflow-id'       name='workflowId'/>" +
                 // here is where the items will be inserted by the controller
-                 "    <div class='perc-items'>" +
-                 "    </div>" +
-                 "  </div>" +
-                 "  <a class='nextPage browse right' style = 'margin:21px 0px 30px 0px' ></a>" +
-                 "  <div class='ui-layout-south'>" +
-                 "    <div id='perc_buttons' style='z-index: 100;'></div>" +
-                 "  </div>" +
-                 "</form></div>")
+                "    <div class='perc-items'>" +
+                "    </div>" +
+                "  </div>" +
+                "  <a class='nextPage browse right' style = 'margin:21px 0px 30px 0px' ></a>" +
+                "  <div class='ui-layout-south'>" +
+                "    <div id='perc_buttons' style='z-index: 100;'></div>" +
+                "  </div>" +
+                "</form></div>")
                 .perc_dialog(
                     {
                         title: I18N.message( "perc.ui.newassetdialog.title@New Asset" ),
@@ -195,8 +197,9 @@
             {
                 // get the placeholder where to insert the selectable items
                 var itemContainer = dialog.find('div.perc-scrollable div.perc-items');
-
+                var datalistContainer = dialog.find('#perc-items-datalist');
                 // iterate over the editors, create a div for each, and then insert it in div.perc-items
+                let index = 0;
                 for(a in assetEditorLibrary)
                 {
                     // get the datastructure for the editor
@@ -204,24 +207,25 @@
 
                     // create the div and insert it into the place holder
                     itemContainer.append(createAssetEditorEntry(assetEditor));
+                    datalistContainer.append(createAssetEditorListEntry(assetEditor,index))
 
                     $("div.perc-scrollable").scrollable(
                         {
                             items: ".perc-items",
                             size: 4,
-                            keyboard: false
+                            keyboard: true
                         });
-                    $(".perc-items .item .item-id").hide();
-                    $(".perc-items .item .item-editor-url").hide();
-                    $(".perc-items .item .item-workflow-id").hide();
 
                     // bind click event to each item to handle selection
                     // each div has hidden inner divs with data specific to each item
                     // when the user clicks on the selection, get the values in the hidden inner divs
                     // and assign the values to the hidden input fields of the form
                     // the form will be submitted with the selected item's values in the hidden input fields
-                    $(".perc-items .item").on('click', function()
+                    $(".perc-items .item").on('click', function(event)
                     {
+                        event.stopPropagation();
+                        event.stopImmediatePropagation();
+
                         var editorUrl = $(this).find(".item-editor-url").text();
                         var workflowId = $(this).find(".item-workflow-id").text();
                         $("#perc-select-template").val($(this).find(".item-id").text());
@@ -231,14 +235,61 @@
                         $(this).addClass("perc-selected-item");
                     });
 
+                    $(".perc-items .item .item-id").hide();
+                    $(".perc-items .item .item-editor-url").hide();
+                    $(".perc-items .item .item-workflow-id").hide();
+
                     // select first item by default
                     $firstItem = $(".perc-items .item:first");
                     $("#perc-select-template").val($firstItem.find(".item-id").text());
                     $("#perc-editor-url").val($firstItem.find(".item-editor-url").text());
                     $("#perc-workflow-id").val($firstItem.find(".item-workflow-id").text());
                     $firstItem.addClass("perc-selected-item");
+                    index++;
                 }
             });
+
+            $("#perc-item-filter").on("keydown",function(event){
+                event.stopPropagation();
+                event.stopImmediatePropagation();
+
+                if(event.key==="Escape"){
+                    $(this).val("");
+                }
+
+            });
+
+            $("#perc-item-filter").on("change",function(event){
+                let scroll = $("div.perc-scrollable").scrollable();
+                let idx = 0;
+                $('#perc-items-datalist').children('option').each(function () {
+                    if(this.value === event.target.value){
+                        $(".perc-items .item").eq(idx).click();
+                        // scroll.click(idx);
+                        $(this).blur();
+                        $(".perc-items .item").eq(idx).focus();
+                        return;
+                    }
+                    idx++;
+                });
+
+            });
+
+            //TODO: Expand this to auto scroll item by item with arrow keys and to
+            //jump to the first widget that starts with an a-z key press.
+            $( "#perc-new-page-dialog" ).keyup(function( event ) {
+
+                switch(event.code){
+                    case "ArrowRight": {
+                        $("a.nextPage.browse.right").click();
+                        break;
+                    }
+                    case "ArrowLeft":
+                        $("a.prevPage.browse.left").click();
+                        break;
+                }
+            });
+
 
             var nm = $('#perc-page-name');
             var ti = $('#perc-page-title');
@@ -355,18 +406,28 @@
             });
         }
 
+
+        /**
+         * Generates the html for a new datalist entry for the current asset type
+         * @param {*} assetEditor
+         * @param {*} idx The index of the editor in the overall list
+         */
+        function createAssetEditorListEntry(assetEditor, idx){
+            return "<option value='" + assetEditor.title  + "' />";
+        }
+
         function createAssetEditorEntry(assetEditor)
         {
-            var temp =    "<div class='item' for='@ITEM_ID@'>" +
-                 "   <div class='item-id'>@ITEM_ID@</div>" +
-                 "   <div class='item-editor-url'>@ITEM_URL@</div>" +
-                 "   <div class='item-workflow-id'>@ITEM_WORKFLOW_ID@</div>" +
-                 "   <table style='vertical-align:middle'>" +
-                 "       <tr><td align='center' valign='middle'>" +
-                 "           <img src='/Rhythmyx@IMG_SRC@'/>" +
-                 "       </td><td style='vertical-align:middle'><span>@ITEM_LABEL@</span></td></tr>" +
-                 "   </table>";
-                 "</div>";
+            var temp =    "<button type='button' class='item' id='@ITEM_ID@'>" +
+                "   <div class='item-id'>@ITEM_ID@</div>" +
+                "   <div class='item-editor-url'>@ITEM_URL@</div>" +
+                "   <div class='item-workflow-id'>@ITEM_WORKFLOW_ID@</div>" +
+                "   <table style='vertical-align:middle'>" +
+                "       <tr><td align='center' valign='middle'>" +
+                "           <img src='/Rhythmyx@IMG_SRC@'/>" +
+                "       </td><td style='vertical-align:middle'><span>@ITEM_LABEL@</span></td></tr>" +
+                "   </table>";
+            "</button>";
             return temp.replace(/@IMG_SRC@/, assetEditor.icon)
                 .replace(/@ITEM_ID@/g, assetEditor.title)
                 .replace(/@ITEM_URL@/, assetEditor.url)
