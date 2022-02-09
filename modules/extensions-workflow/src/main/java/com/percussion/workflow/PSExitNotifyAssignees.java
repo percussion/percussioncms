@@ -142,7 +142,6 @@ public class PSExitNotifyAssignees implements IPSResultDocumentProcessor
    }
 
    /**************  IPSExtension Interface Implementation ************* */
-   @SuppressWarnings({"deprecation", "unchecked"})
    public Document processResultDocument(Object[] params,
                                          IPSRequestContext request, Document resDoc)
            throws PSParameterMismatchException,
@@ -888,6 +887,7 @@ public class PSExitNotifyAssignees implements IPSResultDocumentProcessor
 
          final List<PSMessagePackage> pkgs = messages;
 
+
           sendMail(pkgs);
 
       } while (tnc.moveNext()); // End Loop over mail notifications
@@ -1143,30 +1143,29 @@ public class PSExitNotifyAssignees implements IPSResultDocumentProcessor
     */
    private static PSJexlEvaluator addEmailBindings(String userName,
                                                    String email, PSJexlEvaluator eval, Map<String, PSSubject> psSubjects) {
-      PSJexlEvaluator evaluator = eval;
 
       PSSubject subject = psSubjects.get(email);
 
       try {
          if (subject != null) {
-            evaluator.bind("$userSubject", subject);
+            eval.bind("$userSubject", subject);
          }
 
-         evaluator.bind("$wfemail", email);
+         eval.bind("$wfemail", email);
 
          Map<String, Object> jexlTools = PSJexlUtils.getToolsMap();
 
          if (jexlTools != null) {
-            evaluator.bind("$tools", jexlTools);
+            eval.bind("$tools", jexlTools);
          }
-         if(evaluator!=null)
-            m_log.debug("The bindings on the e-mail template are: {}" , evaluator.bindingsToString());
+
+         m_log.debug("The bindings on the e-mail template are: {}" , eval);
 
       } catch (IllegalStateException e) {
          m_log.error("There was an error adding e-mail bindings to the template: {}", PSExceptionUtils.getMessageForLog(e));
       }
 
-      return evaluator;
+      return eval;
    }
 
    /**
@@ -1242,15 +1241,10 @@ public class PSExitNotifyAssignees implements IPSResultDocumentProcessor
     */
    private static PSJexlEvaluator parseTokens(Map<String, String> tokenValues,
                                               PSJexlEvaluator eval) {
-      PSJexlEvaluator evaluator = eval;
-
-      Iterator<Map.Entry<String, String>> it = tokenValues.entrySet()
-              .iterator();
-      while (it.hasNext()) {
-         Map.Entry<String, String> item = it.next();
-         evaluator.bind(item.getKey(), item.getValue());
+      for (Map.Entry<String, String> item : tokenValues.entrySet()) {
+         eval.bind(item.getKey(), item.getValue());
       }
-      return evaluator;
+      return eval;
    }
 
    /**
