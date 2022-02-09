@@ -1220,11 +1220,6 @@ public class PSExitNotifyAssignees implements IPSResultDocumentProcessor
                   psSubjects.put(email, subject);
                }
             }
-            else if (StringUtils.isNotEmpty(PSWorkFlowUtils.getProperty("MAIL_DOMAIN"))) {
-               String email = PSWorkFlowUtils.getProperty("MAIL_DOMAIN");
-               psSubjects.put(email, subject);
-            }
-
          }
       }
 
