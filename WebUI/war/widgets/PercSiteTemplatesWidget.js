@@ -143,7 +143,7 @@
                 {
                     if($("#perc-assigned-templates").data("scrollable") != null)
                     {
-                        // Scroll to the begining
+                        // Scroll to the beginning
                         $("#perc-assigned-templates").data("scrollable").begin();
                     }
                 }
@@ -259,6 +259,7 @@
             var carouselContainerDiv;
 
             carouselContainerDiv = $('<div class="perc-items" />');
+            var datalistContainer = $('#perc-template-items-datalist');
             assignedTemplatesDiv.append(carouselContainerDiv);
 
             buffer = "";
@@ -290,11 +291,13 @@
                 var template = this.templates[t];
                 var originalName = template.getTemplateName();
                 var selected = "";
+                datalistContainer.append(createTemplateListEntry(template));
+
                 if(this.selectedTemplateName == template.getTemplateName()) selected = "class='perc-selected'";
-                buffer = '<div class="perc-template-item" id="' + template.getTemplateId() + '" ' + selected + '>';
-                buffer += '    <div class="perc-apply" id="' + template.getTemplateId() + '-apply" title="' +I18N.message("perc.ui.site.templates.widget@Match Content To Template Layout") + '">' + '</div>';
-                buffer += '    <div class="perc-edit" id="' + template.getTemplateId() + '-edit" title="' +I18N.message("perc.ui.site.templates.widget@Edit Template") + '">' + '</div>';
-                buffer += '    <div class="perc-delete" id="' + template.getTemplateId() + '-delete" title="' +I18N.message("perc.ui.admin.packed@Delete Template") + '">' + '</div>';
+                buffer = '<div class="perc-template-item" tabindex="0" id="' + template.getTemplateId() + '" ' + selected + '>';
+                buffer += '    <button class="perc-apply" tabindex="0" id="' + template.getTemplateId() + '-apply" title="' +I18N.message("perc.ui.site.templates.widget@Match Content To Template Layout") + '">' + '</button>';
+                buffer += '    <button class="perc-edit" tabindex="0" id="' + template.getTemplateId() + '-edit" title="' +I18N.message("perc.ui.site.templates.widget@Edit Template") + '">' + '</button>';
+                buffer += '    <button class="perc-delete" id="' + template.getTemplateId() + '-delete" title="' +I18N.message("perc.ui.admin.packed@Delete Template") + '">' + '</button>';
                 buffer += '    <div class="perc-template-label" title="' + originalName + '" id="' + template.getTemplateId() + '-name">' + originalName + '</div>';
                 buffer += '    <div data-base-template="' + template.getBaseTemplateName() + '" id="' + template.getTemplateId() + 'id" class="perc-template-thumbnail-container perc-template-background">';
                 buffer += '         <img height = "122px" width="174px" src = "' + template.getImageUrl() + '" alt="' + I18N.message("perc.ui.new.site.dialog@Basic Template") + '" />';
@@ -372,6 +375,58 @@
                     }
                 );
             }
+
+            $("#perc-template-item-filter").on("keydown",function(event){
+                event.stopPropagation();
+                event.stopImmediatePropagation();
+
+                if(event.key==="Escape"){
+                    $(this).val("");
+                }
+
+            });
+
+            $("#perc-template-item-filter").on("change",function(event){
+                let scroll = $("#perc-activated-templates-scrollable").scrollable();
+                let idx = 0;
+                $('#perc-template-items-datalist').children('option').each(function () {
+                    if(this.value === event.target.value){
+
+                        self._selectTemplate($(".perc-items .perc-template-item").eq(idx).attr("id"),false);
+                        self.autoscrollToSelected();
+                        return;
+                    }
+                    idx++;
+                });
+
+            });
+
+
+            $( "#perc-template-item-filter" ).keyup(function( event ) {
+
+                switch(event.code){
+                    case "ArrowRight": {
+                        $("#perc_next_templates_carousel_arrow").click();
+                        break;
+                    }
+                    case "ArrowLeft":
+                        $("#perc_prev_templates_carousel_arrow").click();
+                        break;
+                }
+            });
+
+            $( "#perc-template-item-filter" ).on("blur",function( event ) {
+                $("#perc-activated-templates").find('.perc-selected').first().focus();
+            });
+
+
+            /**
+             * Generates the html for a new datalist entry for the current asset type
+             * @param {*} template
+             */
+            function createTemplateListEntry(template){
+                return "<option value='" + template.getTemplateName() + "' />";
+            }
             // Make the Template's Page List Container droppable.
             // On drop, call the service to assign the selected template to a dropped page and migrate the page content
 
@@ -442,8 +497,9 @@
                         next: '.nextCarousel',
                         prevPage: '.prevPageCarousel',
                         nextPage: '.nextPageCarousel',
-                        keyboard: false,
-                        clickable: false // TODO: review this
+                        keyboard: true,
+                        clickable: false,
+                        size: 3
                     });
 
                 assignedTemplatesDiv.parents("#perc-activated-templates-scrollable").append($('<div class="resetPaging">'));

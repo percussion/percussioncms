@@ -1033,6 +1033,7 @@ div.perc-scrollable-templates div.perc-items div.perc-template-item.perc-templat
 
 #perc-assigned-templates .perc-apply
 {
+    border-style: none;
     background-image:url("../images/icons/editor/apply.png");
     height:22px;
     position:absolute;
@@ -1044,12 +1045,14 @@ div.perc-scrollable-templates div.perc-items div.perc-template-item.perc-templat
 
 #perc-assigned-templates .perc-apply:hover
 {
+    border-style: none;
     background-image:url("../images/icons/editor/applyHover.png");
     cursor:pointer;
 }
 
 #perc-assigned-templates .perc-edit
 {
+    border-style: none;
     background-image:url("../images/icons/editor/editMiddle.png");
     height:22px;
     position:absolute;
@@ -1060,12 +1063,14 @@ div.perc-scrollable-templates div.perc-items div.perc-template-item.perc-templat
 
 #perc-assigned-templates .perc-edit:hover
 {
+    border-style: none;
     background-image:url("../images/icons/editor/editMiddleOver.png");
     cursor:pointer;
 }
 
 #perc-assigned-templates .perc-delete
 {
+    border-style: none;
     background-image:url("../images/icons/editor/delete.png");
     height:22px;
     position:absolute;
@@ -1076,6 +1081,7 @@ div.perc-scrollable-templates div.perc-items div.perc-template-item.perc-templat
 
 #perc-assigned-templates .perc-delete:hover
 {
+    border-style: none;
     background-image:url("../images/icons/editor/deleteOver.png");
     cursor:pointer;
 }
@@ -2045,7 +2051,6 @@ div.perc-scrollable-templates div.perc-items div.perc-template-item
     float:left;
     position:relative;
     width:248px;
-    margin:0px 10px 0px 10px;
 }
 
 div.perc-scrollable-templates div.perc-items div.perc-template-item:hover
