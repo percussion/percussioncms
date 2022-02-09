@@ -275,8 +275,6 @@
 
             });
 
-            //TODO: Expand this to auto scroll item by item with arrow keys and to
-            //jump to the first widget that starts with an a-z key press.
             $( "#perc-new-page-dialog" ).keyup(function( event ) {
 
                 switch(event.code){
