@@ -25,6 +25,7 @@ package com.percussion.foldermanagement.service.impl;
 
 import com.percussion.cms.objectstore.PSInvalidContentTypeException;
 import com.percussion.cms.objectstore.server.PSItemDefManager;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.foldermanagement.data.PSFolderItem;
 import com.percussion.foldermanagement.data.PSGetAssignedFoldersJobStatus;
 import com.percussion.foldermanagement.data.PSWorkflowAssignment;
@@ -55,16 +56,6 @@ import com.percussion.utils.request.PSRequestInfo;
 import com.percussion.utils.thread.PSThreadUtils;
 import com.percussion.webservices.content.IPSContentWs;
 import com.percussion.workflow.service.IPSSteppedWorkflowMetadata;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 import org.apache.logging.log4j.LogManager;
@@ -72,6 +63,14 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Service class to handle the associations of sites or assets folders and
@@ -408,18 +407,15 @@ public class PSFolderService implements IPSFolderService
                         }
                         
                         PSRequestInfo.initRequestInfo(requestInfoMap);
-                        
-                        Iterator<Map.Entry<Integer,List<Integer>>> it = workflowsMap.entrySet().iterator();
-                        while (it.hasNext()) 
-                        {
-                            Map.Entry<Integer, List<Integer>> pairs = it.next();
+
+                        for (Map.Entry<Integer, List<Integer>> pairs : workflowsMap.entrySet()) {
                             cmsObjectManager.changeWorfklowForItems(pairs.getValue(), pairs.getKey(), systemStateNames);
                         }                        
                     }
                     catch(Exception e)
                     {
                         log.error("There was an error applying the assigned workflow to content in the specified folders. " +
-                                "The underlying error was: " + e.getMessage(), e);
+                                "The underlying error was: {}" , PSExceptionUtils.getMessageForLog(e));
                     }
                     finally
                     {
