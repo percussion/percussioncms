@@ -57,26 +57,11 @@
                 "<p class='perc-field-error' id='perc-save-error'></p><br/>" +
                 "<span style='position: relative; float: right; margin-top: -44px; margin-right: -2px;'><label>* - denotes required field</label></span>" +
                 "<form action='' method='GET'> ";
-            if(!templateId)
-            {
-                dialogHtml = dialogHtml + "<label for='perc-select-template'>" +I18N.message("perc.ui.new.page.dialog@Select A Template") + "</label>" +
-                    "  <input list='perc-items-datalist' id='perc-item-filter' autofocus />" +
-                    "  <datalist id='perc-items-datalist'></datalist><br/>" +
-                    "<a class='prevPage browse left'></a>" +
-                    "<div class='perc-scrollable'><input type='hidden' id='perc-select-template' name='template'/>" +
-                    "<div class='perc-items'>" +
-                    "</div></div>" +
-                    "<a class='nextPage browse right' ></a>";
-            }
-            else
-            {
-                dialogHtml = dialogHtml + "<input type='hidden' id='perc-select-template' name='template' value='" + templateId + "'/>";
 
-            }
-            dialogHtml = dialogHtml + "<div style='float:left;>" +
+            dialogHtml = dialogHtml + "<div style='float:left;'>" +
                 "<fieldset>" +
                 "<label for='perc-page-linktext' class='perc-required-field'>" + (!templateId ? I18N.message( "perc.ui.newpagedialog.label@Page link text" ) : I18N.message( "perc.ui.newblogpostdialog.label@Post title" )) + ":</label> <br/> " +
-                "<input type='text' required class='required' id='perc-page-linktext' name='page_linktext' maxlength='512'/> <br/> ";
+                "<input type='text' required class='required' id='perc-page-linktext' name='page_linktext' maxlength='512' autofocus /> <br/> ";
 
             if(!templateId)
             {
@@ -99,7 +84,26 @@
                 "<label for='perc-page-name' class='perc-required-field'>" + (!templateId ? I18N.message( "perc.ui.newpagedialog.label@Page name" ) : I18N.message( "perc.ui.newblogpostdialog.label@Post name" )) + ":</label> <br/> " +
                 "<input type='text' required  class='required' id='perc-page-name' name='page_name' maxlength='255'/><br/> " +
                 "</fieldset>" +
-                "</div>" +
+                "</div><br/>";
+
+            if(!templateId)
+            {
+                dialogHtml = dialogHtml + "<div style='float:left;'><label for='perc-select-template'>" +I18N.message("perc.ui.new.page.dialog@Select A Template") + "</label>" +
+                    "  <input list='perc-page-items-datalist' id='perc-page-item-filter' />" +
+                    "  <datalist id='perc-page-items-datalist'></datalist><br/>" +
+                    "<a class='prevPage browse left'></a>" +
+                    "<div class='perc-scrollable'><input type='hidden' id='perc-select-template' name='template'/>" +
+                    "<div class='perc-items'>" +
+                    "</div></div>" +
+                    "<a class='nextPage browse right' ></a></div>   ";
+            }
+            else
+            {
+                dialogHtml = dialogHtml + "<input type='hidden' id='perc-select-template' name='template' value='" + templateId + "'/>";
+
+            }
+
+            dialogHtml = dialogHtml +
                 "<div class='ui-layout-south'>" +
                 "<div id='perc_buttons' style='z-index: 100;'></div>" +
                 "</div>" +
@@ -213,7 +217,7 @@
             function scrollableTemplateSelector()
             {
                 var itemContainer = dialog.find('div.perc-scrollable div.perc-items');
-                var datalistContainer = dialog.find('#perc-items-datalist');
+                var datalistContainer = dialog.find('#perc-page-items-datalist');
 
                 var selectLocalStyle = "height: 160px; width: 410px; overflow-x: scroll; overflow-y: hidden;";
                 $('#perc-select-template_perc_is').attr("style", selectLocalStyle);
@@ -265,7 +269,7 @@
                     $.PercTextOverflow($("div.perc-text-overflow"), 122);
                 });
 
-                $("#perc-item-filter").on("keydown",function(event){
+                $("#perc-page-item-filter").on("keydown",function(event){
                     event.stopPropagation();
                     event.stopImmediatePropagation();
 
@@ -275,10 +279,10 @@
 
                 });
 
-                $("#perc-item-filter").on("change",function(event){
+                $("#perc-page-item-filter").on("change",function(event){
                     let scroll = $("div.perc-scrollable").scrollable();
                     let idx = 0;
-                    $('#perc-items-datalist').children('option').each(function () {
+                    $('#perc-page-items-datalist').children('option').each(function () {
                         if(this.value === event.target.value){
                             $(".perc-items .item").eq(idx).click();
                             // scroll.click(idx);
