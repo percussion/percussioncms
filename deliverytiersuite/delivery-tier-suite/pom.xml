@@ -79,7 +79,7 @@
         <spring.security.version>5.3.8.RELEASE</spring.security.version>
         <cxf.version>3.3.5</cxf.version>
         <servlet.spec>3.1.0</servlet.spec>
-        <hibernate.version>5.4.28.Final</hibernate.version>
+        <hibernate.version>5.4.24.Final</hibernate.version>
         <!-- <myfaces.version>2.2.12</myfaces.version> -->
         <myfaces.version>1.1.5</myfaces.version>
         <poi.version>3.17</poi.version>
