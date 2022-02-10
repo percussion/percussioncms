@@ -218,6 +218,7 @@
             {
                 var itemContainer = dialog.find('div.perc-scrollable div.perc-items');
                 var datalistContainer = dialog.find('#perc-page-items-datalist');
+                datalistContainer.empty();
 
                 var selectLocalStyle = "height: 160px; width: 410px; overflow-x: scroll; overflow-y: hidden;";
                 $('#perc-select-template_perc_is').attr("style", selectLocalStyle);

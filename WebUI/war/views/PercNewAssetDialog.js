@@ -198,6 +198,7 @@
                 // get the placeholder where to insert the selectable items
                 var itemContainer = dialog.find('div.perc-scrollable div.perc-items');
                 var datalistContainer = dialog.find('#perc-items-datalist');
+                datalistContainer.empty();
                 // iterate over the editors, create a div for each, and then insert it in div.perc-items
                 let index = 0;
                 for(a in assetEditorLibrary)
@@ -274,6 +275,7 @@
                 });
 
             });
+
 
             $( "#perc-new-page-dialog" ).keyup(function( event ) {
 

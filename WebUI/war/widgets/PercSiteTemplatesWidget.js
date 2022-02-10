@@ -260,6 +260,7 @@
 
             carouselContainerDiv = $('<div class="perc-items" />');
             var datalistContainer = $('#perc-template-items-datalist');
+            datalistContainer.empty();
             assignedTemplatesDiv.append(carouselContainerDiv);
 
             buffer = "";
@@ -291,6 +292,7 @@
                 var template = this.templates[t];
                 var originalName = template.getTemplateName();
                 var selected = "";
+
                 datalistContainer.append(createTemplateListEntry(template));
 
                 if(this.selectedTemplateName == template.getTemplateName()) selected = "class='perc-selected'";
