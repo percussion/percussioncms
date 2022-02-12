@@ -59,7 +59,6 @@ import java.util.Set;
  * This is the Hibernate implementation of the <code>IPSRelationshipService</code>.
  *
  */
-@Transactional
 @PSSiteManageBean("sys_relationshipService")
 public class PSRelationshipService
         implements
@@ -446,6 +445,7 @@ public class PSRelationshipService
    /* (non-Javadoc)
     * @see IPSRelationshipService#saveRelationship(PSRelationship)
     */
+   @Transactional
    public void saveRelationship(PSRelationship rel) throws PSException
    {
       loadConfigs(); // load configs if needed
@@ -499,6 +499,7 @@ public class PSRelationshipService
    /* (non-Javadoc)
     * @see IPSRelationshipService#saveRelationship(Collection<PSRelationship>)
     */
+   @Transactional
    public void saveRelationship(Collection<PSRelationship> rdatas) throws PSException
    {
       if (rdatas == null || rdatas.isEmpty())
@@ -516,6 +517,7 @@ public class PSRelationshipService
    /* (non-Javadoc)
     * @see IPSRelationshipService#deleteRelationship(PSRelationship)
     */
+   @Transactional
    public void deleteRelationship(PSRelationship rdata)
    {
       if (rdata == null)
@@ -527,6 +529,7 @@ public class PSRelationshipService
    /* (non-Javadoc)
     * @see IPSRelationshipService#deleteRelationship(Collection<PSRelationship>)
     */
+   @Transactional
    public void deleteRelationship(Collection<PSRelationship> rdatas)
    {
       if (rdatas == null || rdatas.isEmpty())
@@ -540,6 +543,7 @@ public class PSRelationshipService
    /* (non-Javadoc)
     * @see IPSRelationshipService#deleteRelationshipById(int)
     */
+   @Transactional
    public int deleteRelationshipByRid(int rid)
    {
       //getHibernateTemplate().de.deleteAll(rdatas);
@@ -931,6 +935,7 @@ public class PSRelationshipService
    }
    */
    @Override
+   @Transactional
    public void updateRelationshipData(
            PSRelationshipData rdata)
    {

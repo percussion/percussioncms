@@ -31,7 +31,7 @@
     <constructor-arg index="0" ref="sessionFactory" />
 </bean>
 
-<bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean" >
+<bean id="sessionFactory" class="org.springframework.orm.hibernate5.annotation.AnnotationSessionFactoryBean" >
     <property name="dataSource"  ref="dataSource" /> 
     <property name="hibernateProperties">
         <props>
@@ -52,7 +52,7 @@
    <property name="password"  value="demo" /> 
 </bean>
 
-<bean id="txManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+<bean id="txManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
 	<property name="sessionFactory" ref="sessionFactory" /> 
 </bean> 
 

@@ -56,7 +56,16 @@ public class PSDatasourceManager implements IPSDatasourceManager
 
    private Properties defaultHibernateProperties = null;
    private IPSHibernateDialectConfig m_dialectCfg = null;
-   
+
+   public PSDatasourceManager() {
+      //setup default hibernate properties
+      Properties props = new Properties();
+
+      //backward compatibility
+      props.put("hibernate.allow_update_outside_transaction","true");
+    //  props.put("hibernate.connection.provider_class","com.zaxxer.hikari.hibernate.HikariConnectionProvider");
+   }
+
    public IPSHibernateDialectConfig getDialectCfg()
    {
       return m_dialectCfg;
@@ -274,35 +283,36 @@ public class PSDatasourceManager implements IPSDatasourceManager
       Properties props = new Properties();
       props.putAll(defaultHibernateProperties);
 
-      PSConnectionDetail connDetail = getConnectionDetail(info);
+      if(info != null) {
+         PSConnectionDetail connDetail = getConnectionDetail(info);
 
-      // need to add the prefix to the datasource name
-      String dsName = connDetail.getDatasourceName();
-      String jndiPrefix = PSJndiObjectLocator.getPrefix();
-      if (!StringUtils.isBlank(jndiPrefix))
-         dsName = jndiPrefix + dsName;
-      props.setProperty("hibernate.connection.datasource", dsName);
+         // need to add the prefix to the datasource name
+         String dsName = connDetail.getDatasourceName();
+         String jndiPrefix = PSJndiObjectLocator.getPrefix();
+         if (!StringUtils.isBlank(jndiPrefix))
+            dsName = jndiPrefix + dsName;
+         props.setProperty("hibernate.connection.datasource", dsName);
 
-      String catalog = connDetail.getDatabase();
-      if (!StringUtils.isBlank(catalog))
-         props.setProperty("hibernate.default_catalog", catalog);
+         String catalog = connDetail.getDatabase();
+         if (!StringUtils.isBlank(catalog))
+            props.setProperty("hibernate.default_catalog", catalog);
 
-      String origin = connDetail.getOrigin();
-      if (!StringUtils.isBlank(origin))
-         props.setProperty("hibernate.default_schema", origin);
+         String origin = connDetail.getOrigin();
+         if (!StringUtils.isBlank(origin))
+            props.setProperty("hibernate.default_schema", origin);
 
-      String dialect = m_dialectCfg.getDialectClassName(connDetail.getDriver());
-      if (dialect == null)
-         throw new RuntimeException(
-               "Cannot determine Hibernate SQL dialect for driver: "
-                     + connDetail.getDriver());
-      props.setProperty("hibernate.dialect", dialect);
+         String dialect = m_dialectCfg.getDialectClassName(connDetail.getDriver());
+         if (dialect == null)
+            throw new RuntimeException(
+                    "Cannot determine Hibernate SQL dialect for driver: "
+                            + connDetail.getDriver());
+         props.setProperty("hibernate.dialect", dialect);
 
-      // for DB2, set the transaction isolation level to read uncommitted
-      if (connDetail.getDriver().equalsIgnoreCase(PSJdbcUtils.DB2))
-         props.setProperty("hibernate.connection.isolation",
-               PSJdbcUtils.TRANSACTION_READ_UNCOMMITTED_VALUE);
-
+         // for DB2, set the transaction isolation level to read uncommitted
+         if (connDetail.getDriver().equalsIgnoreCase(PSJdbcUtils.DB2))
+            props.setProperty("hibernate.connection.isolation",
+                    PSJdbcUtils.TRANSACTION_READ_UNCOMMITTED_VALUE);
+      }
       return props;
    }
 

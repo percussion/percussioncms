@@ -43,7 +43,6 @@ import java.util.List;
 
 import static org.apache.commons.lang.Validate.notNull;
 
-@Transactional
 public class PSPubServerDao
       implements
          IPSPubServerDao
@@ -82,6 +81,7 @@ public class PSPubServerDao
     * com.percussion.services.pubservermgr.IPSPubServerManager#createServer(
     * com.percussion.services.sitemgr.IPSSite)
     */
+   @Transactional
    public PSPubServer createServer(IPSSite site)
    {
       PSPubServer pubServer = new PSPubServer();
@@ -200,6 +200,7 @@ public class PSPubServerDao
     * com.percussion.services.pubservermgr.IPSPubServerManager#saveServer(com
     * .percussion.services.pubservermgr.data.PSPubServer)
     */
+   @Transactional
    public void savePubServer(PSPubServer pubServer)
    {
       notNull (pubServer);
@@ -234,6 +235,7 @@ public class PSPubServerDao
     * com.percussion.services.pubservermgr.IPSPubServerManager#deleteServer(
     * com.percussion.services.pubservermgr.data.PSPubServer)
     */
+   @Transactional
    public void deletePubServer(PSPubServer pubServer)
    {
       notNull (pubServer);

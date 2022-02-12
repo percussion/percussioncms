@@ -58,7 +58,6 @@ import static org.apache.commons.lang.Validate.notNull;
  * 
  * @author BillLanglais
  */
-@Transactional
 public class PSSearchIndexQueue  implements IPSSearchIndexQueue
 {
    private static final int MAX_DELAY = 120000;
@@ -78,7 +77,6 @@ public class PSSearchIndexQueue  implements IPSSearchIndexQueue
 
    // see base class method for details
    @SuppressWarnings("unchecked")
-   @Transactional
    public List<PSSearchIndexQueueItem> loadItems(int count)
    {
       Date maxDelayDate = new Date(new Date().getTime() - MAX_DELAY);

@@ -24,11 +24,10 @@
 
 package com.percussion.taxonomy.repository;
 
-import java.util.Collection;
-
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
-
 import com.percussion.taxonomy.domain.Visibility;
+import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
+
+import java.util.Collection;
 
 public class HibernateVisibilityDAO extends HibernateDaoSupport implements VisibilityDAO {
 

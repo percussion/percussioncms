@@ -111,7 +111,6 @@ import static org.apache.commons.lang.Validate.notNull;
  * Implements all services defined with the <code>IPSSystemService</code>
  * interface.
  */
-@Transactional
 @PSBaseBean("sys_systemService")
 public class PSSystemService
    implements IPSSystemService
@@ -189,6 +188,7 @@ public class PSSystemService
    /* (non-Javadoc)
     * @see IPSSystemService#deleteSharedProperty(IPSGuid)
     */
+   @Transactional
    public void deleteSharedProperty(IPSGuid id)
    {
       if (id == null)
@@ -208,6 +208,7 @@ public class PSSystemService
    /* (non-Javadoc)
     * @see IPSSystemService#saveSharedProperty(PSSharedProperty)
     */
+   @Transactional
    public void saveSharedProperty(PSSharedProperty property)
    {
       if (property == null)
@@ -359,6 +360,7 @@ public class PSSystemService
       return content;
    }
 
+   @Transactional
    public void saveConfiguration(PSMimeContentAdapter config) throws IOException
    {
       if (config == null)
@@ -458,6 +460,7 @@ public class PSSystemService
     * 
     * @param entity the to be deleted content history entry, not <code>null</code>
     */
+   @Transactional
    public void deleteContentStatusHistory(PSContentStatusHistory entity)
    {
       notNull(entity);
@@ -470,6 +473,7 @@ public class PSSystemService
     * 
     * @param entity the to be saved content history entry, not <code>null</code>.
     */
+   @Transactional
    public void saveContentStatusHistory(PSContentStatusHistory entity)
    {
       notNull(entity);
@@ -925,6 +929,7 @@ public class PSSystemService
    /* (non-Javadoc)
     * @see com.percussion.services.system.IPSSystemService#sendEmail(com.percussion.workflow.mail.IPSMailMessageContext)
     */
+   @Transactional
    public void sendEmail(IPSMailMessageContext emailContext)
    {
       if (emailContext == null)

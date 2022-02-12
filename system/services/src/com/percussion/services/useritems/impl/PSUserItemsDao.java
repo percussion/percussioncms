@@ -37,7 +37,6 @@ import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.annotations.QueryHints;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,7 +44,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @PSBaseBean("sys_userItemsDao")
-@Transactional
 public class PSUserItemsDao implements IPSUserItemsDao
 {
    private static final Logger log = LogManager.getLogger(PSUserItemsDao.class);
@@ -95,6 +93,7 @@ public class PSUserItemsDao implements IPSUserItemsDao
     * (non-Javadoc)
     * @see com.percussion.services.userpages.IPSUserItemsDao#save(com.percussion.services.userpages.data.PSUserItem)
     */
+   @Transactional
    public void save(PSUserItem userItem) throws IPSGenericDao.SaveException {
       Validate.notNull(userItem);
 
@@ -161,6 +160,7 @@ public class PSUserItemsDao implements IPSUserItemsDao
     * (non-Javadoc)
     * @see com.percussion.services.userpages.IPSUserItemsDao#delete(com.percussion.services.userpages.data.PSUserItem)
     */
+   @Transactional
    public void delete(PSUserItem userItem)
    {
       Validate.notNull(userItem);

@@ -24,6 +24,7 @@
 
 package com.percussion.services.siteimportsummary.impl;
 
+import com.percussion.cms.IPSConstants;
 import com.percussion.services.guidmgr.IPSGuidManager;
 import com.percussion.services.siteimportsummary.IPSSiteImportSummaryDao;
 import com.percussion.services.siteimportsummary.data.PSSiteImportSummary;
@@ -36,17 +37,15 @@ import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.annotations.QueryHints;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @PSBaseBean("sys_siteImportSummaryDao")
-@Transactional
 public class PSSiteImportSummaryDao implements IPSSiteImportSummaryDao
 {
-   private static final Logger log = LogManager.getLogger(PSSiteImportSummaryDao.class);
+   private static final Logger log = LogManager.getLogger(IPSConstants.IMPORT_LOG);
    /**
     * Constant for the key used to generate summary ids.
     */
@@ -65,8 +64,7 @@ public class PSSiteImportSummaryDao implements IPSSiteImportSummaryDao
         this.sessionFactory = sessionFactory;
     }
 
-
-
+    @Transactional
    public void save(PSSiteImportSummary summary) throws IPSGenericDao.SaveException {
       Validate.notNull(summary);
       if (summary.getSummaryId() == -1)
@@ -135,6 +133,7 @@ public class PSSiteImportSummaryDao implements IPSSiteImportSummaryDao
 
    }
 
+   @Transactional
    public void delete(PSSiteImportSummary summary)
    {
       Validate.notNull(summary);

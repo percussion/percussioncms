@@ -23,32 +23,9 @@
  */
 package com.percussion.taxonomy.repository;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.commons.lang.StringUtils;
-import org.hibernate.CacheMode;
-import org.hibernate.HibernateException;
-import org.hibernate.Query;
-import org.hibernate.SQLQuery;
-import org.hibernate.ScrollMode;
-import org.hibernate.ScrollableResults;
-import org.hibernate.Session;
-import org.springframework.orm.hibernate3.HibernateCallback;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.percussion.design.objectstore.PSLocator;
 import com.percussion.services.contentmgr.impl.IPSContentRepository;
 import com.percussion.services.contentmgr.impl.PSContentInternalLocator;
-import com.percussion.services.contentmgr.impl.legacy.PSContentRepository;
-import com.percussion.services.contentmgr.impl.legacy.PSTypeConfiguration;
-import com.percussion.services.guidmgr.IPSGuidManager;
-import com.percussion.services.guidmgr.PSGuidManagerLocator;
 import com.percussion.services.guidmgr.data.PSLegacyGuid;
 import com.percussion.taxonomy.domain.Attribute;
 import com.percussion.taxonomy.domain.Node;
@@ -57,10 +34,26 @@ import com.percussion.taxonomy.domain.Node_status;
 import com.percussion.taxonomy.domain.Related_node;
 import com.percussion.taxonomy.domain.Value;
 import com.percussion.taxonomy.web.AbstractTaxonEditorController;
-import com.percussion.utils.guid.IPSGuid;
+import org.apache.commons.lang.StringUtils;
+import org.hibernate.CacheMode;
+import org.hibernate.HibernateException;
+import org.hibernate.Query;
+import org.hibernate.SQLQuery;
+import org.hibernate.ScrollMode;
+import org.hibernate.ScrollableResults;
+import org.hibernate.Session;
+import org.springframework.orm.hibernate5.HibernateCallback;
+import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 @Transactional
 public class HibernateNodeDAO extends HibernateDaoSupport implements NodeDAO {
@@ -456,26 +449,21 @@ public class HibernateNodeDAO extends HibernateDaoSupport implements NodeDAO {
 
    @SuppressWarnings("unchecked")
    public Collection<Node> findNodesByAttribute(Attribute attribute) {
-      Session session = getSession();
+      Session session = this.currentSession();
       Collection<Node> nodes = null;
-      
-      try {
          Query query = session.getNamedQuery("findNodesByAttribute").setParameter("attribute", attribute);
          nodes = query.list(); 
-      } finally {
-         releaseSession(session);
-      }
+
       return nodes;
    }
    
    public List<PSLocator> findItemsUsingNode(String table, String column, Node node, int maxItems, boolean remove)
    {
-      Session session = getSession();
+      Session session = this.currentSession();
       
      
       List<PSLocator> locators = new ArrayList<PSLocator>();
       String testId = Integer.toString(node.getId());
-      try {
          Query query = session.createSQLQuery("SELECT CONTENTID,REVISIONID,"+column+" from "+table+" where "+column+ " like '%"+testId+"%'");
          if (maxItems>0)
             query.setMaxResults(maxItems);
@@ -518,9 +506,7 @@ public class HibernateNodeDAO extends HibernateDaoSupport implements NodeDAO {
             }
         }
          
-      } finally {
-         releaseSession(session);
-      }
+
       return locators;
       
    }

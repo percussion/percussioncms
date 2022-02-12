@@ -83,14 +83,14 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * The private assembly design webservice implementations.
+ * The assembly design webservice implementations.
  */
-@Transactional
 @PSBaseBean("sys_assemblyDesignWs")
 public class PSAssemblyDesignWs extends PSAssemblyBaseWs implements
    IPSAssemblyDesignWs, IPSNotificationListener
 {
    // @see IPSAssemblyDesignWs#createAssemblyTemplates(List, String, String)
+   @Transactional
    public List<PSAssemblyTemplateWs> createAssemblyTemplates(
       List<String> names, String session, String user)
    {
@@ -146,6 +146,7 @@ public class PSAssemblyDesignWs extends PSAssemblyBaseWs implements
    }
 
    // @see IPSAssemblyDesignWs#createSlots(List<String>, String, String)
+   @Transactional
    public List<IPSTemplateSlot> createSlots(List<String> names, String session,
       String user)
    {
@@ -203,6 +204,7 @@ public class PSAssemblyDesignWs extends PSAssemblyBaseWs implements
     * @see IPSAssemblyDesignWs#deleteAssemblyTemplates(List, boolean, String,
     *    String)
     */
+   @Transactional
    public void deleteAssemblyTemplates(List<IPSGuid> ids,
       boolean ignoreDependencies, String session, String user)
       throws PSErrorsException
@@ -276,6 +278,7 @@ public class PSAssemblyDesignWs extends PSAssemblyBaseWs implements
    }
 
    // @see IPSAssemblyDesignWs#deleteSlots(List, boolean, String, String)
+   @Transactional
    public void deleteSlots(List<IPSGuid> ids, boolean ignoreDependencies,
       String session, String user) throws PSErrorsException
    {
@@ -566,6 +569,7 @@ public class PSAssemblyDesignWs extends PSAssemblyBaseWs implements
     * @see IPSAssemblyDesignWs#saveAssemblyTemplates(List, boolean, String,
     *    String)
     */
+   @Transactional
    public void saveAssemblyTemplates(List<PSAssemblyTemplateWs> templates,
       boolean release, String session, String user) throws PSErrorsException
    {
@@ -898,6 +902,7 @@ public class PSAssemblyDesignWs extends PSAssemblyBaseWs implements
    }
 
    // @see IPSAssemblyDesignWs#saveSlots(List, boolean, String, String)
+   @Transactional
    public void saveSlots(List<IPSTemplateSlot> slots, boolean release,
       String session, String user) throws PSErrorsException
    {

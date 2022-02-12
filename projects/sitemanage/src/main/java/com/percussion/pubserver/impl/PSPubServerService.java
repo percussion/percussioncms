@@ -83,6 +83,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.Invocation;
@@ -122,6 +123,7 @@ import static org.apache.commons.lang.Validate.notNull;
  */
 @Component("pubServerService")
 @Lazy
+@Service
 public class PSPubServerService implements IPSPubServerService
 {
     //Our Placeholder for the FTP password
@@ -167,9 +169,7 @@ public class PSPubServerService implements IPSPubServerService
         this.publisherService = publisherService;
         this.contentChangeService = contentChangeService;
         this.utilityService = utilityService;
-        //Create map of handler types to handle checking of pubserver configuration.
-        handlerMap = new HashMap<>();
-        handlerMap.putAll(generatePubServerHandlerMap());
+
 
         lockMgr = new PSNamedLockManager(5000);
 
@@ -2116,13 +2116,29 @@ public class PSPubServerService implements IPSPubServerService
         String publishType = pubServer.getPublishType();
         PSBaseDeliveryHandler handler = null;
         boolean result = true;
-        if(this.handlerMap.containsKey(publishType)) {
-            handler = (PSBaseDeliveryHandler) this.handlerMap.get(publishType);
+
+        if(this.getHandlerMap().containsKey(publishType)) {
+            handler = (PSBaseDeliveryHandler) this.getHandlerMap().get(publishType);
         }
         if(handler != null) {
             result = handler.checkConnection(pubServer, site);
         }
         return result;
+    }
+
+    public Map<String, Object> getHandlerMap() {
+        if(handlerMap == null || handlerMap.isEmpty())
+            try {
+                handlerMap = generatePubServerHandlerMap();
+            } catch (PSNotFoundException e) {
+                log.error(PSExceptionUtils.getMessageForLog(e));
+                return new HashMap<>();
+            }
+        return handlerMap;
+    }
+
+    public  void setHandlerMap(Map<String, Object> handlerMap) {
+        PSPubServerService.handlerMap = handlerMap;
     }
 
     @Override

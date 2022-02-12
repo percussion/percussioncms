@@ -24,22 +24,22 @@
 
 package com.percussion.taxonomy.routing;
 
-import org.springframework.web.servlet.mvc.multiaction.NoSuchRequestHandlingMethodException;
 import javax.servlet.http.HttpServletRequest;
-import org.springframework.web.servlet.mvc.multiaction.MethodNameResolver;
 
-public class DefaultParameterMethodNameResolver implements MethodNameResolver {
+//@TODO: Update to use anotations
+public class DefaultParameterMethodNameResolver {
 
     private String paramName, defaultMethod;
 
     public String getHandlerMethodName(HttpServletRequest request)
-            throws NoSuchRequestHandlingMethodException {
+             {
         String name = request.getParameter(paramName);
         if (name == null || name.equals("")) {
             name = defaultMethod;
         }
         if (name == null) {
-            throw new NoSuchRequestHandlingMethodException(request);
+            //TODO: fix me
+           // throw new NoSuchRequestHandlingMethodException(request);
         }
         return name;
     }
