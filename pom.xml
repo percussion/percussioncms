@@ -130,7 +130,7 @@
        <cxf.version>3.4.4</cxf.version>
        <servlet.spec>3.1.0</servlet.spec>
        <xmlgraphics.common.version>2.6</xmlgraphics.common.version>
-       <hibernate.version>5.4.24.Final</hibernate.version>
+       <hibernate.version>5.6.5.Final</hibernate.version>
        <commons-logging.version>1.2</commons-logging.version>
        <commons.io.version>2.8.0</commons.io.version>
        <lucene.version>8.7.0</lucene.version>
@@ -1388,6 +1388,11 @@
                         <artifactId>javassist</artifactId>
                     </exclusion>
                 </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-hikaricp</artifactId>
+                <version>${hibernate.version}</version>
             </dependency>
             <dependency>
                 <!-- used in hibernate and swagger-jaxrs -->

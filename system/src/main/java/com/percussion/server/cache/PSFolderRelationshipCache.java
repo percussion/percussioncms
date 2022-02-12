@@ -81,7 +81,6 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  * caches the skeleton of the folder relationship for less memory consumption.
  */
 @PSBaseBean("sys_folderRelationshipCache")
-@Transactional(noRollbackFor = Exception.class)
 @Scope("singleton")
 public class PSFolderRelationshipCache  implements IPSFolderRelationshipCache {
 
@@ -659,6 +658,7 @@ public class PSFolderRelationshipCache  implements IPSFolderRelationshipCache {
     *    <code>null</code>.
     */
    @Override
+   @Transactional(noRollbackFor = Exception.class)
    public void update(PSRelationshipSet relationships)
    {
       if (relationships == null)
@@ -988,6 +988,7 @@ public class PSFolderRelationshipCache  implements IPSFolderRelationshipCache {
     *    <code>null</code>.
     */
    @Override
+   @Transactional(noRollbackFor = Exception.class)
    public void delete(PSRelationshipSet relationships)
    {
       if (relationships == null)
@@ -1387,6 +1388,7 @@ public class PSFolderRelationshipCache  implements IPSFolderRelationshipCache {
    }
 
    @Override
+   @Transactional(noRollbackFor = Exception.class)
    public void deleteOwnerRevisions(int ownerid, Collection<Integer> revisions)
    {
    

@@ -28,18 +28,15 @@ import com.percussion.taxonomy.TaxonomySecurityHelper;
 import com.percussion.taxonomy.domain.Language;
 import com.percussion.taxonomy.domain.Node;
 import com.percussion.taxonomy.domain.Node_editor;
-import com.percussion.taxonomy.domain.Taxonomy;
 import com.percussion.taxonomy.service.TaxonomyService;
+import org.apache.commons.lang.StringUtils;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Collection;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.commons.lang.StringUtils;
-import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
-
-public class AbstractControllerWithSecurityChecks extends MultiActionController {
+//TODO: Update this with annotations
+public class AbstractControllerWithSecurityChecks {
     protected class TaxonParams {
         private int taxID;
         //Default to english

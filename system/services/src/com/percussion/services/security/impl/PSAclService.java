@@ -25,6 +25,8 @@
 package com.percussion.services.security.impl;
 
 import com.percussion.data.PSInternalRequestCallException;
+import com.percussion.security.IPSTypedPrincipal;
+import com.percussion.security.IPSTypedPrincipal.PrincipalTypes;
 import com.percussion.security.PSUserEntry;
 import com.percussion.server.PSRequest;
 import com.percussion.server.PSServer;
@@ -32,7 +34,13 @@ import com.percussion.server.PSUserSession;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.guidmgr.IPSGuidManager;
 import com.percussion.services.guidmgr.PSGuidManagerLocator;
-import com.percussion.services.security.*;
+import com.percussion.services.security.IPSAcl;
+import com.percussion.services.security.IPSAclEntry;
+import com.percussion.services.security.IPSAclService;
+import com.percussion.services.security.IPSSecurityErrors;
+import com.percussion.services.security.PSPermissions;
+import com.percussion.services.security.PSSecurityException;
+import com.percussion.services.security.PSTypedPrincipal;
 import com.percussion.services.security.data.PSAccessLevelImpl;
 import com.percussion.services.security.data.PSAclEntryImpl;
 import com.percussion.services.security.data.PSAclImpl;
@@ -40,8 +48,6 @@ import com.percussion.services.security.data.PSUserAccessLevel;
 import com.percussion.util.PSBaseBean;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.request.PSRequestInfo;
-import com.percussion.security.IPSTypedPrincipal;
-import com.percussion.security.IPSTypedPrincipal.PrincipalTypes;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Criteria;
@@ -54,14 +60,21 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.security.acl.Permission;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Implementation of the interface
  * {@link com.percussion.services.security.IPSAclService}.
  */
-@Transactional()
 @PSBaseBean("sys_aclService")
 public class PSAclService implements IPSAclService
 {
@@ -213,6 +226,7 @@ public class PSAclService implements IPSAclService
       return req;
    }
 
+   @Transactional
    public IPSAcl createAcl(IPSGuid objGuid, IPSTypedPrincipal owner)
    {
       if (objGuid == null)
@@ -562,6 +576,7 @@ public class PSAclService implements IPSAclService
     * 
     * @see com.percussion.security.acl.IPSAclService#saveAcls(java.util.Set)
     */
+   @Transactional
    public List<IPSAcl> saveAcls(List<IPSAcl> aclList) throws PSSecurityException
    {
          List<IPSAcl> result = internalPersist(aclList);
@@ -610,6 +625,7 @@ public class PSAclService implements IPSAclService
       return updatedList;
    }
 
+   @Transactional
    public void deleteAcl(IPSGuid aclGuid) throws PSSecurityException
    {
 

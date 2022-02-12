@@ -45,7 +45,6 @@ import java.util.List;
 /**
  * Implementation of the design object audit service.
  */
-@Transactional
 public class PSDesignObjectAuditService
    implements IPSDesignObjectAuditService
 {
@@ -79,7 +78,8 @@ public class PSDesignObjectAuditService
    {
       return m_config;
    }
-   
+
+   @Transactional
    public PSAuditLogEntry createAuditLogEntry()
    {
       PSAuditLogEntry entry  = new PSAuditLogEntry();
@@ -89,12 +89,13 @@ public class PSDesignObjectAuditService
       return entry;
    }
 
+   @Transactional
    public void saveAuditLogEntry(PSAuditLogEntry entry)
    {
       sessionFactory.getCurrentSession().save(entry);
    }
 
-   @SuppressWarnings("unchecked")
+   @Transactional
    public void deleteAuditLogEntriesByDate(Date beforeDate)
    {
       if (beforeDate == null)
@@ -113,6 +114,7 @@ public class PSDesignObjectAuditService
 
    }
 
+   @Transactional
    public void saveAuditLogEntries(Collection<PSAuditLogEntry> entries)
    {
       Session session = sessionFactory.getCurrentSession();
@@ -125,7 +127,6 @@ public class PSDesignObjectAuditService
 
    }
 
-   @SuppressWarnings("unchecked")
    public Collection<PSAuditLogEntry> findAuditLogEntries()
    {
       Session session = sessionFactory.getCurrentSession();

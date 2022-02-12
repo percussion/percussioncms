@@ -52,7 +52,6 @@ import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.annotations.QueryHints;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
@@ -106,7 +105,6 @@ public class PSContentChangeService implements IPSContentChangeService, IPSEdito
       }      
    }
 
-   @Transactional
    public List<Integer> getChangedContent(long siteId, PSContentChangeType changeType)
    {
       Session session = sessionFactory.getCurrentSession();

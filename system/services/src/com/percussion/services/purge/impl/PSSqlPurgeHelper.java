@@ -102,7 +102,6 @@ import static com.percussion.cms.objectstore.PSFolder.FOLDER_CONTENT_TYPE_ID;
  * This class uses direct SQL calls to purge items and old item revisions. This
  * will bypass any security and will remove all references to items
  */
-@Transactional
 public class PSSqlPurgeHelper implements IPSSqlPurgeHelper
 {
    /**
@@ -976,7 +975,7 @@ public class PSSqlPurgeHelper implements IPSSqlPurgeHelper
     * @param ceh
     * @throws PSException
     */
-   
+   @Transactional
    public Set<Integer> deleteBatch(List<String> tables, Set<Integer> ids, PSContentEditorHandler ceh) throws PSException, PSValidationException {
       if (ids == null || ids.isEmpty())
          return Collections.emptySet();

@@ -29,7 +29,11 @@ import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.content.IPSContentErrors;
 import com.percussion.services.content.IPSContentService;
 import com.percussion.services.content.PSContentException;
-import com.percussion.services.content.data.*;
+import com.percussion.services.content.data.PSAutoTranslation;
+import com.percussion.services.content.data.PSAutoTranslationPK;
+import com.percussion.services.content.data.PSFolderProperty;
+import com.percussion.services.content.data.PSKeyword;
+import com.percussion.services.content.data.PSKeywordChoice;
 import com.percussion.services.guidmgr.IPSGuidManager;
 import com.percussion.services.guidmgr.PSGuidManagerLocator;
 import com.percussion.services.guidmgr.data.PSGuid;
@@ -38,7 +42,11 @@ import com.percussion.utils.guid.IPSGuid;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.*;
+import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.transaction.annotation.Transactional;
@@ -49,7 +57,6 @@ import java.util.List;
 /**
  * Implementations for all content services.
  */
-@Transactional
 public class PSContentService
    implements IPSContentService
 {
@@ -69,6 +76,7 @@ public class PSContentService
    /* (non-Javadoc)
     * @see IPSContentService#createKeyword(String, String)
     */
+   @Transactional
    public PSKeyword createKeyword(String label, String description)
    {
       if (StringUtils.isBlank(label))
@@ -262,6 +270,7 @@ public class PSContentService
    }
 
    // see interface
+   @Transactional
    public void deleteKeyword(IPSGuid id)
    {
       if (id == null)

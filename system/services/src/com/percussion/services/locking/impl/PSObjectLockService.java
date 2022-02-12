@@ -48,13 +48,18 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Implements all services used to manage object locks 
  * represented through the <code>PSObjectLock</code> object type.
  */
-@Transactional
 @PSBaseBean("sys_lockingService")
 public class PSObjectLockService
    implements IPSObjectLockService
@@ -71,6 +76,7 @@ public class PSObjectLockService
    }
 
    //see interface
+   @Transactional
    public synchronized PSObjectLock createLock(IPSGuid id, String session, 
          String locker, Integer version, boolean overrideLock) 
          throws PSLockException
@@ -90,6 +96,7 @@ public class PSObjectLockService
    /* (non-Javadoc)
     * @see IPSObjectLockService#createLocks(List, String, String, List, boolean)
     */
+   @Transactional
    public synchronized List<PSObjectLock> createLocks(List<IPSGuid> ids,
          String session, String locker, List<Integer> versions,
          boolean overrideLock) throws PSLockException
@@ -199,6 +206,7 @@ public class PSObjectLockService
     * @todo - this method should not know about a webservice class, it would be
     * easy to refactor to correct this
     */
+   @Transactional
    public void createLocks(PSErrorResultsException results, String session, 
       String user, boolean overrideLock)
    {
@@ -243,6 +251,7 @@ public class PSObjectLockService
    /* (non-Javadoc)
     * @see IPSObjectLockService#extendLock(IPSGuid, String, String, Integer)
     */
+   @Transactional
    public PSObjectLock extendLock(IPSGuid id, String session, 
       String locker, Integer version) throws PSLockException
    {
@@ -270,6 +279,7 @@ public class PSObjectLockService
     * @see IPSObjectLockService#extendLock(IPSGuid, String, String, Integer, 
     *    long)
     */
+   @Transactional
    public synchronized List<PSObjectLock> extendLocks(List<IPSGuid> ids,
          String session, String locker, List<Integer> versions, long interval)
       throws PSLockException
@@ -475,6 +485,7 @@ public class PSObjectLockService
    /* (non-Javadoc)
     * @see IPSObjectLockService#releaseLock(PSObjectLock)
     */
+   @Transactional
    public void releaseLock(PSObjectLock lock)
    {
       if (lock != null)
@@ -489,6 +500,7 @@ public class PSObjectLockService
    /* (non-Javadoc)
     * @see IPSObjectLockService#releaseLocks(List)
     */
+   @Transactional
    public synchronized void releaseLocks(List<PSObjectLock> locks)
    {
       if (locks != null && !locks.isEmpty())

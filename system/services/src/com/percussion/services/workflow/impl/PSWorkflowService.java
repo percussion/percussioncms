@@ -89,7 +89,6 @@ import static org.apache.commons.lang.Validate.notNull;
  * @author dougrand
  */
 @PSBaseBean("sys_workflowService")
-@Transactional(noRollbackFor = Exception.class)
 public class PSWorkflowService
       implements
          IPSWorkflowService
@@ -258,7 +257,6 @@ public class PSWorkflowService
    
    //see interface
    @SuppressWarnings("unchecked")
-   @Transactional
    public List<PSObjectSummary> findWorkflowSummariesByName(String name)
    {
       String query;
@@ -317,7 +315,6 @@ public class PSWorkflowService
     * 
     * @see com.percussion.services.system.IPSSystemService#loadWorkflow(com.percussion.utils.guid.IPSGuid)
     */
-   @Transactional
    public PSWorkflow loadWorkflowDb(IPSGuid id)
    {
       
@@ -476,6 +473,7 @@ public class PSWorkflowService
       return removeRoleFromWorkflow(roleName, wf);
    }
 
+   @Transactional
    public void copyWorkflowToRole(String fromRole, String toRole) {
       List<PSWorkflow> wfs = loadWorkflows(null);
       for (PSWorkflow wf : wfs) {
@@ -699,7 +697,6 @@ public class PSWorkflowService
     * 
     * @see IPSSystemService#findWorkflowsByName(String)
     */
-   @Transactional
    public List<PSWorkflow> findWorkflowsByName(String name)
    {
       List<PSWorkflow> workflows = new ArrayList<>();
@@ -876,6 +873,7 @@ public class PSWorkflowService
       PSServer.addInitListener(new EvictionListener(m_cache));
    }
 
+   @Transactional
    public void deleteContentAdhocUser(PSContentAdhocUser adhoc)
    {
       if (adhoc == null)
@@ -901,7 +899,6 @@ public class PSWorkflowService
    }
    
    @SuppressWarnings("unchecked")
-   @Transactional
    public List<PSContentAdhocUser> findAdhocInfoByItem(IPSGuid contentId)
    {
       if (contentId == null)
@@ -959,8 +956,6 @@ public class PSWorkflowService
       m_cache.evict(workflow.getGUID(), CACHE_REGION);
    }
 
-   @SuppressWarnings("unchecked")
-   @Transactional
    public List<PSContentWorkflowState> getWorkflowStateForContent(
          List<IPSGuid> contentids)
    {
@@ -1011,8 +1006,6 @@ public class PSWorkflowService
 
    }
 
-   @SuppressWarnings("unchecked")
-   @Transactional
    public List<PSContentApproval> findApprovalsByUser(String username)
    {
       if (username == null || StringUtils.isBlank(username))
@@ -1026,9 +1019,7 @@ public class PSWorkflowService
          return c.list();
 
    }
-   
-   @SuppressWarnings("unchecked")
-   @Transactional
+
    public List<PSContentApproval> findApprovalsByItem(IPSGuid contentid)
    {
       if (contentid == null)
@@ -1053,7 +1044,6 @@ public class PSWorkflowService
       sessionFactory.getCurrentSession().saveOrUpdate(approval);
    }
 
-   @Transactional
    public List<PSMenuAction> getAllWorkflowActions(List<IPSGuid> contentids,
       List<PSAssignmentTypeEnum> assignmentTypes, String userName,
       List<String> userRoles, String locale) throws PSWorkflowException
@@ -1062,7 +1052,7 @@ public class PSWorkflowService
          assignmentTypes, userName, userRoles, locale);
       return helper.getAllWorkflowActions();
    }
-   
+
    @Transactional
    public void updateWorkflowVersion(IPSGuid id)
    {

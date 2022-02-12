@@ -27,7 +27,7 @@ import com.percussion.services.guidmgr.IPSGuidManager;
 import com.percussion.services.guidmgr.PSGuidManagerLocator;
 import org.hibernate.HibernateException;
 import org.hibernate.MappingException;
-import org.hibernate.engine.spi.SessionImplementor;
+import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.id.Configurable;
 import org.hibernate.id.IdentifierGenerator;
 import org.hibernate.id.PersistentIdentifierGenerator;
@@ -49,16 +49,32 @@ public class PSNextNumberHibernateGenerator implements IdentifierGenerator, Conf
     */
    private String tableName;
 
-   public Serializable generate(SessionImplementor arg0, Object arg1) throws HibernateException
-   {
-      IPSGuidManager gmgr = PSGuidManagerLocator.getGuidMgr();
-      int hibid = gmgr.createId("HIB_"+tableName);
-      return hibid;
-   }
-
-
    @Override
    public void configure(Type type, Properties properties, ServiceRegistry serviceRegistry) throws MappingException {
       tableName = properties.getProperty(PersistentIdentifierGenerator.TABLE);
+   }
+
+   /**
+    * Generate a new identifier.
+    *
+    * @param session The session from which the request originates
+    * @param object  the entity or collection (idbag) for which the id is being generated
+    * @return a new identifier
+    * @throws HibernateException Indicates trouble generating the identifier
+    */
+   @Override
+   public Serializable generate(SharedSessionContractImplementor session, Object object) throws HibernateException {
+      IPSGuidManager gmgr = PSGuidManagerLocator.getGuidMgr();
+      return gmgr.createId("HIB_"+tableName);
+   }
+
+   /**
+    * Check if JDBC batch inserts are supported.
+    *
+    * @return JDBC batch inserts are supported.
+    */
+   @Override
+   public boolean supportsJdbcBatchInserts() {
+      return IdentifierGenerator.super.supportsJdbcBatchInserts();
    }
 }

@@ -29,7 +29,11 @@ import com.percussion.share.dao.IPSGenericDao;
 import org.apache.commons.lang.Validate;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.*;
+import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,7 +43,6 @@ import java.util.List;
  * @author matthewernewein
  *
  */
-@Transactional
 public class PSWidgetBuilderDefinitionDao
         implements IPSWidgetBuilderDefinitionDao
 {
@@ -64,9 +67,9 @@ public class PSWidgetBuilderDefinitionDao
     private static final String USER_ITEM_KEY = "PSX_WIDGETBUILDERDEFINITIONID";
     
     private IPSGuidManager m_guidManager;
-    
 
-    @SuppressWarnings("finally")
+
+    @Transactional
     public PSWidgetBuilderDefinition save(PSWidgetBuilderDefinition definition)
     {
         Validate.notNull(definition);
@@ -111,6 +114,7 @@ public class PSWidgetBuilderDefinitionDao
 
     }
 
+    @Transactional
     public void delete(long definitionId)
     {
        

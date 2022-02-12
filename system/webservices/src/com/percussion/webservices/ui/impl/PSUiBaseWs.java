@@ -44,7 +44,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -62,7 +61,6 @@ import java.util.Map;
  * Common implementations used with the public and private ui webservices.
  */
 @PSBaseBean("sys_uiWs")
-@Transactional
 public class PSUiBaseWs
 {
 

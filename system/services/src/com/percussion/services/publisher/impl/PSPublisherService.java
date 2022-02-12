@@ -26,6 +26,7 @@ package com.percussion.services.publisher.impl;
 import com.google.common.base.Function;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
+import com.percussion.cms.IPSConstants;
 import com.percussion.cms.objectstore.PSComponentSummary;
 import com.percussion.cms.objectstore.PSInvalidContentTypeException;
 import com.percussion.cms.objectstore.server.PSItemDefManager;
@@ -128,6 +129,8 @@ import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -171,8 +174,8 @@ import static org.apache.commons.lang.Validate.notNull;
  * 
  * @author dougrand
  */
-@Transactional
 @PSBaseBean("sys_publisherservice")
+@Repository()
 public class PSPublisherService
       implements
          IPSPublisherService
@@ -184,6 +187,7 @@ public class PSPublisherService
    }
 
    @Autowired
+   @Qualifier("sys_sessionFactory")
    public void setSessionFactory(SessionFactory sessionFactory) {
       this.sessionFactory = sessionFactory;
    }
@@ -326,7 +330,7 @@ public class PSPublisherService
    /**
     * Logger used for publisher service.
     */
-   private static final Logger log = LogManager.getLogger(PSPublisherService.class);
+   private static final Logger log = LogManager.getLogger(IPSConstants.PUBLISHING_LOG);
    
    /**
     * These ids are stored by the demand publishing system. These are stored
@@ -365,6 +369,7 @@ public class PSPublisherService
     */
    private static ResourceBundle ms_Res = null;
 
+   @Transactional
    public IPSContentList createContentList(String name)
    {
       if (StringUtils.isBlank(name))
@@ -479,7 +484,6 @@ public class PSPublisherService
 
    }
 
-   @Transactional
    public IPSContentList loadContentList(String name) throws PSNotFoundException
    {
       // @TODO load from cache
@@ -494,7 +498,6 @@ public class PSPublisherService
     * 
     * @see com.percussion.services.publisher.IPSPublisherService#findContentListByName(java.lang.String)
     */
-   @Transactional
    public IPSContentList findContentListByName(String name) throws PSNotFoundException {
       if (StringUtils.isBlank(name))
       {
@@ -530,7 +533,6 @@ public class PSPublisherService
       ((PSContentList)clist).setFilter(filter);
    }
 
-   @Transactional
    public List<IPSContentList> findAllContentLists(String filter)
    {
       if (filter == null)
@@ -559,8 +561,7 @@ public class PSPublisherService
       return results;
 
    }
-   
-   @Transactional
+
    public List<String> findAllContentListNames(String filter)
    {
       if (filter == null)
@@ -587,8 +588,7 @@ public class PSPublisherService
       return nameList;
 
    }
-   
-   @Transactional
+
    public IPSContentList findContentListById(IPSGuid contListID) throws PSNotFoundException {
       if (contListID == null)
       {
@@ -611,7 +611,6 @@ public class PSPublisherService
 
    }
 
-   @Transactional
    public List<IPSDeliveryType> findAllDeliveryTypes()
    {
       return sessionFactory.getCurrentSession().createCriteria(PSDeliveryType.class).list();
@@ -841,6 +840,7 @@ public class PSPublisherService
    }
 
    @Override
+   @Transactional
    public void updatePubLogHidden(PSPubServer psPubServer) {
       // First disconnect records belonging to the given jobId. Then find
       // all records that are disconnected and not in use by the site items
@@ -1291,7 +1291,6 @@ public class PSPublisherService
     * 
     * @see com.percussion.services.catalog.IPSCataloger#getSummaries(com.percussion.services.catalog.PSTypeEnum)
     */
-   @Transactional
    public List<IPSCatalogSummary> getSummaries(PSTypeEnum type)
    {
       List<IPSCatalogSummary> rval = new ArrayList<>();
@@ -1357,6 +1356,7 @@ public class PSPublisherService
     * 
     * @see com.percussion.services.catalog.IPSCataloger#saveByType(com.percussion.utils.guid.IPSGuid)
     */
+   @Transactional
    public String saveByType(IPSGuid id) throws PSCatalogException
    {
       try
@@ -1483,7 +1483,6 @@ public class PSPublisherService
     * @see com.percussion.services.publisher.IPSPublisherService#findSiteItems(com.percussion.utils.guid.IPSGuid,
     *      int)
     */
-   @Transactional
    public Collection<IPSSiteItem> findSiteItems(IPSGuid siteid,
          int deliveryContext)
    {
@@ -1527,7 +1526,6 @@ public class PSPublisherService
     * (non-Javadoc)
     * @see com.percussion.services.publisher.IPSPublisherService#findSiteItemsByIds(com.percussion.utils.guid.IPSGuid, int, java.util.Collection)
     */
-   @Transactional
    public Collection<IPSSiteItem> findSiteItemsByIds(IPSGuid siteid,
          int deliveryContext, Collection<Integer> contentIds)
    {
@@ -1666,7 +1664,6 @@ public class PSPublisherService
     * (non-Javadoc)
     * @see com.percussion.services.publisher.IPSPublisherService#findItemsSinceLastPublish(com.percussion.utils.guid.IPSGuid, int, java.util.Collection)
     */
-   @Transactional
    public Collection<Integer> findItemsSinceLastPublish(
          IPSGuid siteId, int deliveryContext, Collection<Integer> cids)
    {
@@ -1797,7 +1794,6 @@ public class PSPublisherService
       return rval;
    }
 
-   @Transactional
    public Collection<IPSSiteItem> findSiteItemsAtLocation(
          IPSGuid siteid, String location)
    {
@@ -1878,7 +1874,7 @@ public class PSPublisherService
     */
    private final static String GET_REFS_4_FOLDER_IDS_INCLAUSE = "select i.referenceId from PSSiteItem i "
       + "where i.siteId = :siteid and "
-      + "i.status = i.operation and i.folderId in (:folderIds))";
+      + "i.status = i.operation and i.folderId in (:folderIds)";
 
    /**
     * The HQL used to get the reference IDs for the specified folder IDs (from temp-id table)
@@ -2007,7 +2003,6 @@ public class PSPublisherService
     * (non-Javadoc)
     * @see com.percussion.services.publisher.IPSPublisherService#findEditionsBySiteAndContentListGenerator(IPSGuid, String)
     */
-   @Transactional
    public List<IPSGuid> findEditionsBySiteAndContentListGenerator(
          IPSGuid siteId, String clistGenerator) 
       throws PSPublisherException
@@ -2165,7 +2160,6 @@ public class PSPublisherService
    /*
     * //see base class method for details
     */
-   @Transactional
    public Collection<Integer> getContentTypeItems(
          Collection<IPSGuid> ctypeids)
    {
@@ -2216,6 +2210,7 @@ public class PSPublisherService
     * @see com.percussion.services.publisher.IPSPublisherService#executeDemandPublish(java.lang.String[],
     *      String, java.lang.String, boolean)
     */
+   @Transactional
    public boolean executeDemandPublish(String[] ids, String parentFolderId,
          final String edition, boolean wait) throws PSNotFoundException {
       if (ids == null)
@@ -2342,7 +2337,6 @@ public class PSPublisherService
    /*
     * //see base class method for details
     */
-   @Transactional
    public IPSEdition loadEditionModifiable(IPSGuid id)
       throws PSNotFoundException
    {
@@ -2357,15 +2351,15 @@ public class PSPublisherService
       
       return edition;
    }
-   
+
+   @Transactional
    public IPSEditionContentList createEditionContentList()
    {
       IPSGuid id = PSGuidHelper.generateNext(PSTypeEnum.EDITION_CONTENT_LIST);
       IPSEditionContentList eclist = new PSEditionContentList(id);
       return eclist;
    }
-   
-   @Transactional
+
    public List<IPSEditionContentList> loadEditionContentLists(IPSGuid editionId)
    {
       if (editionId == null)
@@ -2390,7 +2384,8 @@ public class PSPublisherService
       }
       getSessionFactory().getCurrentSession().delete(list);
    }
-   
+
+   @Transactional
    public void deleteStatusList(List<IPSPubStatus> statusList)
    {
       if (statusList == null || statusList.size() == 0)
@@ -2418,7 +2413,7 @@ public class PSPublisherService
       getSessionFactory().getCurrentSession().saveOrUpdate(list);
    }
 
-   @Transactional
+
    public IPSDeliveryType loadDeliveryType(String dtypeName)
       throws PSNotFoundException
    {
@@ -2451,7 +2446,6 @@ public class PSPublisherService
       return dtype;
    }
 
-   @Transactional
    public IPSDeliveryType loadDeliveryTypeModifiable(IPSGuid locationid)
       throws PSNotFoundException
    {
@@ -2904,7 +2898,6 @@ public class PSPublisherService
       }
    }
 
-   @Transactional
    public List<IPSContentList> findAllContentListsBySite(IPSGuid siteId) throws PSNotFoundException {
       if (siteId == null)
       {
@@ -2925,7 +2918,6 @@ public class PSPublisherService
       return result;
    }
 
-   @Transactional
    public List<IPSEdition> findAllEditionsBySite(IPSGuid siteId)
    {
       if (siteId == null)
@@ -2950,8 +2942,7 @@ public class PSPublisherService
             "select e from PSEdition e where e.pubserver = :pubServerId").setParameter(
             "pubServerId", pubServerId.longValue()).list();
    }
-   
-   @SuppressWarnings("unchecked")
+
    public IPSEdition findEditionByName(String name)
    {
       if (StringUtils.isBlank(name))
@@ -2972,7 +2963,6 @@ public class PSPublisherService
 
       }
 
-   @Transactional
    public List<IPSEdition> findAllEditions(String filter)
    {
       if (filter == null)
@@ -3016,6 +3006,7 @@ public class PSPublisherService
 
    }
 
+   @Transactional
    public IPSDeliveryType createDeliveryType()
    {
       IPSDeliveryType dt = new PSDeliveryType();
@@ -3023,6 +3014,7 @@ public class PSPublisherService
       return dt;
    }
 
+   @Transactional
    public IPSEditionTaskDef createEditionTask()
    {
       IPSGuidManager gmgr = PSGuidManagerLocator.getGuidMgr();
@@ -3041,7 +3033,6 @@ public class PSPublisherService
       getSessionFactory().getCurrentSession().delete(task);
    }
 
-   @Transactional
    public List<IPSEditionTaskDef> loadEditionTasks(IPSGuid editionid)
    {
       return getSessionFactory().getCurrentSession()
@@ -3051,7 +3042,6 @@ public class PSPublisherService
                "edition", editionid.longValue()).list();
    }
 
-   @Transactional
    public IPSEditionTaskDef findEditionTaskById(IPSGuid id) 
       throws PSNotFoundException
    {
@@ -3083,7 +3073,8 @@ public class PSPublisherService
       
       getSessionFactory().getCurrentSession().saveOrUpdate(task);
    }
-   
+
+   @Transactional
    public IPSEdition createEdition()
    {
       IPSGuidManager gmgr = PSGuidManagerLocator.getGuidMgr();
@@ -3092,6 +3083,7 @@ public class PSPublisherService
       return ed;
    }
 
+   @Transactional
    public IPSEditionTaskLog createEditionTaskLog()
    {
       IPSGuidManager gmgr = PSGuidManagerLocator.getGuidMgr();
@@ -3100,7 +3092,6 @@ public class PSPublisherService
       return log;
    }
 
-   @Transactional
    public List<IPSEditionTaskLog> findEditionTaskLogEntriesByJobId(long jobid)
    {
       Session s = getSessionFactory().getCurrentSession();
@@ -3113,7 +3104,6 @@ public class PSPublisherService
 
       }
 
-   @Transactional
    public List<Long> findExpiredJobs(Date beforeDate)
    {
       notNull(beforeDate);
@@ -3127,7 +3117,6 @@ public class PSPublisherService
 
       }
 
-   @Transactional
    public List<Long> findExpiredAndHiddenJobs(Date beforeDate)
    {
       notNull(beforeDate);
@@ -3141,8 +3130,7 @@ public class PSPublisherService
          return c.list();
 
       }
-   
-   @Transactional
+
    public IPSEditionTaskLog loadEditionTaskLog(long referenceId)
    {
       return (IPSEditionTaskLog) getSessionFactory().getCurrentSession().get(
@@ -3254,7 +3242,7 @@ public class PSPublisherService
    {
       getSessionFactory().getCurrentSession().saveOrUpdate(log);
    }
-   @Transactional
+
    public List<Long> findRefIdForJob(long jobid, List<PSSortCriterion> sort)
    {
       Session session = getSessionFactory().getCurrentSession();
@@ -3285,8 +3273,7 @@ public class PSPublisherService
          return values;
 
       }
-   
-   @Transactional
+
    public List<IPSPubItemStatus> findPubItemStatusForJob(long jobid)
    {
       Session session = getSessionFactory().getCurrentSession();
@@ -3297,8 +3284,7 @@ public class PSPublisherService
          return values;
 
    }
-   
-   @Transactional
+
    public Iterable<IPSPubItemStatus> findPubItemStatusForJobIterable(long jobid)
    {
       Session session = getSessionFactory().getCurrentSession();
@@ -3318,7 +3304,6 @@ public class PSPublisherService
 
    }
 
-   @Transactional
    public List<IPSPubStatus> findPubStatusBySite(IPSGuid siteId)
    {
       List<IPSEdition> editions = findAllEditionsBySite(siteId);
@@ -3334,7 +3319,6 @@ public class PSPublisherService
    }
    
    @Override
-   @Transactional
    public List<IPSPubStatus> findPubStatusBySiteWithFilters(IPSGuid siteId, int numDays, int maxCount)
    {
       List<IPSEdition> editions = findAllEditionsBySite(siteId);
@@ -3371,7 +3355,6 @@ public class PSPublisherService
          return statusList;
    }
 
-   @Transactional
    public List<IPSPubStatus> findPubStatusByEdition(IPSGuid edition)
    {
       if (edition == null)
@@ -3381,15 +3364,13 @@ public class PSPublisherService
       return findPubStatusByEditionList(
             Collections.singletonList(edition.longValue()));
    }
-   
-   @Transactional
+
    public List<IPSPubStatus> findAllPubStatus()
    {
       return findPubStatusByEditionList(Collections.EMPTY_LIST);
    }
    
    @Override
-   @Transactional
    public List<IPSPubStatus> findAllPubStatusWithFilters(int days, int maxCount)
    {
       return findPubStatusByEditionListWithFilters(Collections.EMPTY_LIST, days, maxCount);
@@ -3756,8 +3737,6 @@ public class PSPublisherService
    @Transactional
    public void init() {
       log.info("Initializing Publisher Service");
-       log.info("TODO: Move fixPubStatus to rxFix Job.");
-      //fixPubStatus(false);
    }
 
    /**
@@ -3866,7 +3845,6 @@ public class PSPublisherService
       }
    }
 
-   @Transactional
    public IPSGuid findEditionIdForJob(long jobid)
    {
       IPSGuidManager gmgr = PSGuidManagerLocator.getGuidMgr();
@@ -3884,7 +3862,6 @@ public class PSPublisherService
          return null;
    }
 
-   @Transactional
    public IPSPubStatus findPubStatusForJob(long jobid)
    {
       List results = getSessionFactory().getCurrentSession().createQuery(
@@ -3936,8 +3913,7 @@ public class PSPublisherService
    {
       m_configurationBean = configurationBean;
    }
-   
-   @Transactional
+
    public List<Long> findReferenceIdsToUnpublish(IPSGuid siteId, String flags)
    {
       if (siteId == null)
@@ -4064,7 +4040,6 @@ public class PSPublisherService
 
       }
 
-   @Transactional
    public List<IPSPubItemStatus> findPubItemStatusForReferenceIds(
          List<Long> refs)
    {
@@ -4085,7 +4060,6 @@ public class PSPublisherService
       return rval;
    }
 
-   @Transactional
    public List<PSSiteItem> findSiteItemsForReferenceIds(List<Long> refs)
    {
       List<PSSiteItem> rval = new ArrayList<>();
@@ -4105,7 +4079,6 @@ public class PSPublisherService
       return rval;
    }
 
-   @Transactional
    public Object[] findUnpublishInfoForAssemblyItem(IPSGuid contentId,
          IPSGuid contextId, IPSGuid templateId, IPSGuid siteId, Long serverId,
          String targetPath)
@@ -4182,7 +4155,6 @@ public class PSPublisherService
       m_rxpub = rxpub;
    }
 
-   @Transactional
    public List<IPSContentList> findAllUnusedContentLists()
    {
       return sessionFactory.getCurrentSession().createQuery("select cl from PSContentList cl " +
@@ -4253,7 +4225,6 @@ public class PSPublisherService
    }
 
    @Override
-   @Transactional
    public boolean isSitePublished(IPSGuid siteId)
    {
       List<IPSEdition> editions = findAllEditionsBySite(siteId);

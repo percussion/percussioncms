@@ -48,7 +48,6 @@ import java.util.List;
 /**
  * Implementations for all ui services.
  */
-@Transactional
 @PSBaseBean("sys_uiService")
 public class PSUiService implements IPSUiService
 {
@@ -72,6 +71,7 @@ public class PSUiService implements IPSUiService
     * @see IPSUiService#createHierarchyNode(String, IPSGuid,
     * PSHierarchyNode.NodeType)
     */
+   @Transactional
    public PSHierarchyNode createHierarchyNode(String name, IPSGuid parentId, PSHierarchyNode.NodeType type)
    {
       if (StringUtils.isBlank(name))
@@ -97,6 +97,7 @@ public class PSUiService implements IPSUiService
     * 
     * @see IPSUiService#deleteHierarchyNode(IPSGuid)
     */
+   @Transactional
    public void deleteHierarchyNode(IPSGuid id)
    {
       if (id == null)
@@ -234,7 +235,6 @@ public class PSUiService implements IPSUiService
     * 
     * @see IPSUiService#loadHierarchyNode(IPSGuid)
     */
-   @SuppressWarnings("unchecked")
    public PSHierarchyNode loadHierarchyNode(IPSGuid id) throws PSUiException
    {
       if (id == null)
@@ -256,6 +256,7 @@ public class PSUiService implements IPSUiService
     * 
     * @see IPSUiService#saveHierarchyNode(PSHierarchyNode)
     */
+   @Transactional
    public void saveHierarchyNode(PSHierarchyNode node)
    {
       if (node == null)
@@ -330,6 +331,7 @@ public class PSUiService implements IPSUiService
     * 
     * @see IPSUiService#removeChildren(IPSGuid, List)
     */
+   @Transactional
    public void removeChildren(IPSGuid parentId, List<IPSGuid> ids)
    {
       if (parentId == null)
@@ -352,6 +354,7 @@ public class PSUiService implements IPSUiService
     * 
     * @see IPSUiService#moveChildren(IPSGuid, IPSGuid, List)
     */
+   @Transactional
    public void moveChildren(IPSGuid sourceId, IPSGuid targetId, List<IPSGuid> ids)
    {
       if (sourceId == null)

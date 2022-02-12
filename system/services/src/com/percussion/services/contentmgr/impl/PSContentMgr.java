@@ -88,7 +88,6 @@ import java.util.stream.Collectors;
  * 
  * @author dougrand
  */
-@Transactional
 public class PSContentMgr  implements IPSContentMgr
 {
 
@@ -165,6 +164,7 @@ public class PSContentMgr  implements IPSContentMgr
       return m_repository.loadByGUID(guids, config);
    }
 
+   @Transactional
    public IPSNodeDefinition createNodeDefinition()
    {
       PSNodeDefinition nodeDef = new PSNodeDefinition();
@@ -200,6 +200,7 @@ public class PSContentMgr  implements IPSContentMgr
       }
    }
 
+   @Transactional
    public void saveNodeDefinitions(List<IPSNodeDefinition> defs)
          throws RepositoryException
    {
@@ -214,6 +215,7 @@ public class PSContentMgr  implements IPSContentMgr
       }
    }
 
+   @Transactional
    public void deleteNodeDefinitions(List<IPSNodeDefinition> defs)
          throws RepositoryException
    {
@@ -623,32 +625,36 @@ public class PSContentMgr  implements IPSContentMgr
       }
 
    }
-   
 
+   @Transactional
    public Node copyItem(Node existing)
    {
       // TODO Auto-generated method stub
       return null;
    }
 
+   @Transactional
    public Node createItem(NodeDefinition def)
    {
       // TODO Auto-generated method stub
       return null;
    }
 
+   @Transactional
    public Node createItemRevision(Node existing)
    {
       // TODO Auto-generated method stub
       return null;
    }
 
+   @Transactional
    public void deleteItems(List<IPSGuid> items) throws RepositoryException
    {
       // TODO Auto-generated method stub
       
    }
 
+   @Transactional
    public void saveItems(List<Node> items, PSContentMgrConfig config) throws RepositoryException
    {
       // TODO Auto-generated method stub
@@ -661,7 +667,6 @@ public class PSContentMgr  implements IPSContentMgr
     * @see com.percussion.services.contentmgr.IPSContentMgr#findItemsByLocalFieldValue(
     *      java.long.Long, java.lang.String, java.lang.String)
     */
-   @SuppressWarnings("unchecked")
    public List<Integer> findItemsByLocalFieldValue(long contentTypeId,
          String fieldName, String fieldValue)
    {

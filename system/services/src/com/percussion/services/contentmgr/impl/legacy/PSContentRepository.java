@@ -108,7 +108,6 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyHbmImpl;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.metadata.CollectionMetadata;
 import org.hibernate.transform.Transformers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Propagation;
@@ -166,7 +165,6 @@ import static com.percussion.utils.request.PSRequestInfoBase.getRequestInfo;
  *
  * @author dougrand
  */
-@Transactional
 @PSBaseBean("sys_legacyContentRepository")
 @Singleton
 public class PSContentRepository
@@ -507,6 +505,7 @@ public class PSContentRepository
      *      boolean)
      */
     @SuppressWarnings("unused")
+    @Transactional
     public void save(List<Node> nodes, boolean deep)
     {
         throw new UnsupportedOperationException("Not yet implemented");
@@ -517,6 +516,7 @@ public class PSContentRepository
      *
      * @see com.percussion.services.contentmgr.impl.IPSContentRepository#delete(java.util.List)
      */
+    @Transactional
     public void delete(@SuppressWarnings("unused")
                                List<Node> nodes)
     {
@@ -1622,7 +1622,7 @@ public class PSContentRepository
                 PSNotificationHelper.notifyEvent(EventType.CONTENT_CHANGED,
                         legacyguid);
                 PSComponentSummary s = summarymap.get(legacyguid.getContentId());
-                Set<String> affectedclasses = new HashSet<>();
+                List<Class> affectedclasses = new ArrayList<>();
 
                 // If the component summary is not there, we've never loaded
                 // this item through the repository interface, or the second
@@ -1639,8 +1639,7 @@ public class PSContentRepository
                     {
                         PSLegacyCompositeId id = new PSLegacyCompositeId(legacyguid);
                         fact.getCache().evictEntity(ic.getImplementingClass(), id);
-                        affectedclasses.add(ic.getImplementingClass()
-                                .getCanonicalName());
+                        affectedclasses.add(ic.getImplementingClass());
                     }
                 }
 
@@ -1652,24 +1651,16 @@ public class PSContentRepository
                             .getImplementingClasses())
                     {
 
-                        affectedclasses.add(ic.getImplementingClass()
-                                .getCanonicalName());
+                        affectedclasses.add(ic.getImplementingClass());
 
                     }
                 }
 
                 // Evict any associated collections. Doesn't try to preserve
                 // other possible objects
-                Map<String, CollectionMetadata> colmeta = fact
-                        .getAllCollectionMetadata();
-                for (String cname : colmeta.keySet())
+                for (Class c : affectedclasses)
                 {
-                    int l = cname.lastIndexOf('.');
-                    String base = cname.substring(0, l);
-                    if (affectedclasses.contains(base))
-                    {
-                        fact.getCache().evictCollectionRegion(cname);
-                    }
+                    fact.getCache().evictEntityData(c);
                 }
             }
         }
@@ -2358,6 +2349,7 @@ public class PSContentRepository
             if (ic == null)
                 continue;
             Object data = null;
+            ms_log.info(getSessionFactory().getMetamodel().entity(ic).getAttributes());
             String[] columnNames = getSessionFactory().getClassMetadata(ic).getPropertyNames();
 
             if (cn.getConfiguration().isParent()) {

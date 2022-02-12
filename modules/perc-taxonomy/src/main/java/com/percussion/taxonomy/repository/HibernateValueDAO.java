@@ -34,8 +34,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
-import org.springframework.orm.hibernate3.HibernateCallback;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+import org.springframework.orm.hibernate5.HibernateCallback;
+import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 
 import java.sql.Timestamp;
 import java.util.Collection;
@@ -66,25 +66,16 @@ public class HibernateValueDAO extends HibernateDaoSupport implements ValueDAO {
 
    public Value getValue(int id) {
       Value value = null;
-      Session session = getSession();
-      try {
+      Session session = this.currentSession();
          value = (Value) session.get(Value.class, new Integer(id));
-      } finally{
-         releaseSession(session);
-      }
+
       return value;
    }
 
    @SuppressWarnings("unchecked")
    public Collection<Value> getAllValues() {
-      Collection<Value> values = null;
-      Session session = getSession();
-      try {
-         values = (Collection<Value>) session.createQuery("from Value val").list();
-      } finally {
-         releaseSession(session);
-      }
-      return values;
+      Session session = this.currentSession();
+      return (Collection<Value>) session.createQuery("from Value val").list();
    }
 
    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

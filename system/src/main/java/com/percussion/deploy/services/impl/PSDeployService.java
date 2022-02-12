@@ -63,7 +63,6 @@ import java.util.List;
  * @author vamsinukala
  *
  */
-@Transactional
 @PSSiteManageBean("sys_deployService")
 public class PSDeployService implements IPSDeployService {
     private SessionFactory sessionFactory;
@@ -98,6 +97,7 @@ public class PSDeployService implements IPSDeployService {
      * @throws PSDeployServiceException
      *
      */
+    @Transactional
     public void deserializeAndSaveSite(PSSecurityToken tok,
         PSArchiveHandler archive, PSDependency dep, PSDependencyFile depFile,
         PSImportCtx ctx, PSDependencyHandler depHandler, IPSSite s, Integer ver)
@@ -165,6 +165,7 @@ public class PSDeployService implements IPSDeployService {
      * @throws PSDeployServiceException
      *
      */
+    @Transactional
     public void deserializeAndSaveTemplate(PSSecurityToken tok,
                                            PSArchiveHandler archive, PSDependency dep, PSDependencyFile depFile,
                                            PSImportCtx ctx, PSDependencyHandler depHandler, PSAssemblyTemplate t,
@@ -201,6 +202,7 @@ public class PSDeployService implements IPSDeployService {
      * @throws PSDeployServiceException
      *
      */
+    @Transactional
     public void deserializeAndSaveFilter(PSSecurityToken tok,
         PSArchiveHandler archive, PSDependency dep, PSDependencyFile depFile,
         PSImportCtx ctx, PSDependencyHandler depHandler)
@@ -294,6 +296,7 @@ public class PSDeployService implements IPSDeployService {
      * @throws PSDeployServiceException
      *
      */
+    @Transactional
     public void deserializeAndSaveVariant(PSSecurityToken tok,
                                           PSArchiveHandler archive, PSDependency dep, PSDependencyFile depFile,
                                           PSImportCtx ctx, PSDependencyHandler depHandler, PSAssemblyTemplate t,
@@ -322,6 +325,7 @@ public class PSDeployService implements IPSDeployService {
      * {@link IPSServiceDependencyHandler#doInstallDependencyFiles(
      * PSSecurityToken, PSArchiveHandler, PSDependency, PSImportCtx)}
      */
+    @Transactional
     public void installDependencyFiles(PSSecurityToken tok,
         PSArchiveHandler archive, PSDependency dep, PSImportCtx ctx,
         IPSServiceDependencyHandler service) throws PSDeployServiceException {

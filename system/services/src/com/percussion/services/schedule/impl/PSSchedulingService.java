@@ -74,7 +74,6 @@ import java.util.Set;
  * @author Doug Rand
  * @author Andriy Palamarchuk
  */
-@Transactional
 public class PSSchedulingService
       implements IPSSchedulingService
 {
@@ -89,6 +88,7 @@ public class PSSchedulingService
    }
 
    // see base
+   @Transactional
    public PSScheduledTask createSchedule()
    {
       final PSScheduledTask s = new PSScheduledTask();
@@ -220,6 +220,7 @@ public class PSSchedulingService
    /*
     * //see base class method for details
     */
+   @Transactional
    public void runNow(PSScheduledTask schedule)
    {
       SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
@@ -380,6 +381,7 @@ public class PSSchedulingService
    }
 
    // see base
+   @Transactional
    public PSNotificationTemplate createNotificationTemplate()
    {
       final PSNotificationTemplate t = new PSNotificationTemplate();
@@ -391,7 +393,6 @@ public class PSSchedulingService
    }
 
    // see base
-   @Transactional(readOnly = true, noRollbackFor = Exception.class)
    public PSNotificationTemplate findNotificationTemplateById(IPSGuid id)
    {
       if (id == null)
@@ -405,7 +406,6 @@ public class PSSchedulingService
 
    // see base
    @SuppressWarnings("unchecked")
-   @Transactional(readOnly = true, noRollbackFor = Exception.class)
    public PSNotificationTemplate findNotificationTemplateByName(String name)
    {
       final List<PSNotificationTemplate> results =
@@ -417,14 +417,12 @@ public class PSSchedulingService
 
    // see base
    @SuppressWarnings("unchecked")
-   @Transactional(readOnly = true, noRollbackFor = Exception.class)
    public Collection<PSNotificationTemplate> findAllNotificationTemplates()
    {
       return sessionFactory.getCurrentSession().createCriteria(PSNotificationTemplate.class).list();
    }
 
    // see base
-   @Transactional(readOnly = true, noRollbackFor = Exception.class)
    public Set<String> findAllNotificationTemplatesNames()
    {
       final Set<String> labels = new HashSet<>();
@@ -507,13 +505,13 @@ public class PSSchedulingService
    }
 
    // see base
+   @Transactional
    public IPSGuid createTaskLogId()
    {
       return getGuidManager().createGuid(PSTypeEnum.SCHEDULE_TASK_LOG);
    }
 
    // see base
-   @Transactional(readOnly = true, noRollbackFor = Exception.class)
    public PSScheduledTaskLog findTaskLogById(IPSGuid id)
    {
       if (id == null)
@@ -580,7 +578,6 @@ public class PSSchedulingService
     * //see base class method for details
     */
    @SuppressWarnings({ "cast", "unchecked" })
-   @Transactional(readOnly = true, noRollbackFor = Exception.class)
    public List<PSScheduledTaskLog> findAllTaskLogs(int maxResult)
    {
       Session s = sessionFactory.getCurrentSession();
@@ -618,7 +615,6 @@ public class PSSchedulingService
     * will be <code>null</code> for the returned log entries. It is not 
     * <code>null</code>, but may be empty.
     */
-   @Transactional(readOnly = true, noRollbackFor = Exception.class)
    public PSScheduledTaskLog getScheduledTask(Object[] props)
    {
       Long logId = (Long) props[0];

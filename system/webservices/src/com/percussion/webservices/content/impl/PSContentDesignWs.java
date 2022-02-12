@@ -119,7 +119,6 @@ import static com.percussion.webservices.PSWebserviceUtils.isItemCheckedOutToUse
  * The private content design webservice implementations.
  */
 @Component("sys_contentDesignWs")
-@Transactional
 public class PSContentDesignWs extends PSContentBaseWs implements
    IPSContentDesignWs
 {
@@ -245,6 +244,7 @@ public class PSContentDesignWs extends PSContentBaseWs implements
    }
    
    // @see IPSContentDesignWs#createContentTypes(List<String>, String, String)
+   @Transactional
    public List<PSItemDefinition> createContentTypes(List<String> names,
       String session, String user) throws PSErrorException
    {
@@ -284,6 +284,7 @@ public class PSContentDesignWs extends PSContentBaseWs implements
    }
 
    // @see IPSContentDesignWs#createKeywords(List<String>, String, String)
+   @Transactional
    public List<PSKeyword> createKeywords(List<String> names, String session,
       String user)
    {
@@ -327,6 +328,7 @@ public class PSContentDesignWs extends PSContentBaseWs implements
    }
 
    // @see IPSContentDesignWs#createLocale(String, String)
+   @Transactional
    public List<PSLocale> createLocales(List<String> codes, List<String> names,
       String session, String user) throws PSErrorException
    {
@@ -386,6 +388,7 @@ public class PSContentDesignWs extends PSContentBaseWs implements
    }
 
    // @see IPSContentDesignWs#deleteContentTypes(List, boolean, String, String)
+   @Transactional
    public void deleteContentTypes(List<IPSGuid> ids,
       boolean ignoreDependencies, String session, String user)
       throws PSErrorsException
@@ -464,6 +467,7 @@ public class PSContentDesignWs extends PSContentBaseWs implements
    }
 
    // @see IPSContentDesignWs#deleteKeywords(List, boolean, String, String)
+   @Transactional
    public void deleteKeywords(List<IPSGuid> ids, boolean ignoreDependencies,
       String session, String user) throws PSErrorsException
    {
@@ -522,6 +526,7 @@ public class PSContentDesignWs extends PSContentBaseWs implements
    }
 
    // @see IPSContentDesignWs#deleteLocales(List, boolean)
+   @Transactional
    public void deleteLocales(List<IPSGuid> ids, boolean ignoreDependencies,
       String session, String user) throws PSErrorsException
    {
@@ -1133,6 +1138,7 @@ public class PSContentDesignWs extends PSContentBaseWs implements
     * @see IPSContentDesignWs#saveAssociatedTemplates(IPSGuid, List, boolean, 
     *    String, String)
     */
+   @Transactional
    public void saveAssociatedTemplates(IPSGuid contentTypeId,
       List<IPSGuid> templateIds, boolean release, String session, String user)
       throws PSErrorsException
@@ -1287,6 +1293,7 @@ public class PSContentDesignWs extends PSContentBaseWs implements
    /**
     * @see IPSContentDesignWs#saveAssociatedWorkflows(IPSGuid, List, boolean)
     */
+   @Transactional
    public void saveAssociatedWorkflows(IPSGuid contentTypeId,
       List<IPSGuid> workflowIds, boolean release)
       throws PSErrorsException
@@ -1417,6 +1424,7 @@ public class PSContentDesignWs extends PSContentBaseWs implements
     * @param nodeDefs List of node defs assumed not null.
     * @throws PSInvalidContentTypeException
     */
+   @Transactional
    private void updateContentTypeWorkflowInfo(List<IPSNodeDefinition> nodeDefs)
       throws PSInvalidContentTypeException
    {
@@ -1442,6 +1450,7 @@ public class PSContentDesignWs extends PSContentBaseWs implements
     * @see IPSContentDesignWs#saveContentEditorSharedDef(
     *    PSContentEditorSharedDef, boolean, String, String)
     */
+   @Transactional
    public void saveContentEditorSharedDef(PSContentEditorSharedDef def,
       boolean release, String session, String user)
       throws PSLockErrorException, PSErrorException
@@ -1524,6 +1533,7 @@ public class PSContentDesignWs extends PSContentBaseWs implements
     * @see IPSContentDesignWs#saveContentEditorSystemDef(
     *    PSContentEditorSystemDef, boolean, String, String)
     */
+   @Transactional
    public void saveContentEditorSystemDef(PSContentEditorSystemDef def,
       boolean release, String session, String user)
       throws PSLockErrorException, PSErrorException
@@ -1604,6 +1614,7 @@ public class PSContentDesignWs extends PSContentBaseWs implements
    }
 
    // @see IPSContentDesignWs#saveContentTypes(List, boolean, String, String)
+   @Transactional
    public void saveContentTypes(List<PSItemDefinition> contentTypes,
       boolean release, String session, String user) throws PSErrorsException
    {
@@ -1719,6 +1730,7 @@ public class PSContentDesignWs extends PSContentBaseWs implements
    }
 
    // @see IPSContentDesignWs#saveKeywords(List, boolean, String, String)
+   @Transactional
    public void saveKeywords(List<PSKeyword> keywords, boolean release,
       String session, String user) throws PSErrorsException
    {
@@ -1792,6 +1804,7 @@ public class PSContentDesignWs extends PSContentBaseWs implements
    }
 
    // @see IPSContentDesignWs#saveLocales(List, boolean, String, String)
+   @Transactional
    public void saveLocales(List<PSLocale> locales, boolean release,
       String session, String user) throws PSErrorsException
    {
@@ -1906,7 +1919,8 @@ public class PSContentDesignWs extends PSContentBaseWs implements
          throw results;
    }
 
-   // @see IPSContentDesignWs#saveTranslationSettings(List, boolean)
+   //@see IPSContentDesignWs#saveTranslationSettings(List, boolean)
+   @Transactional
    public void saveTranslationSettings(
       List<PSAutoTranslation> autoTranslations, boolean release,
       String session, String user) throws PSLockErrorException

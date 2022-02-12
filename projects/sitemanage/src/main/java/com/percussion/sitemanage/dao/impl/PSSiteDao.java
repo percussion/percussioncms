@@ -24,6 +24,7 @@
 package com.percussion.sitemanage.dao.impl;
 
 
+import com.percussion.cms.IPSConstants;
 import com.percussion.error.PSException;
 import com.percussion.error.PSExceptionUtils;
 import com.percussion.fastforward.managednav.IPSNavigationErrors;
@@ -52,6 +53,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -148,6 +150,7 @@ public class PSSiteDao implements IPSiteDao
     }
     
 
+    @Transactional
     public void delete(String id) throws DeleteException {
         try
         {
@@ -159,6 +162,7 @@ public class PSSiteDao implements IPSiteDao
         }
     }
 
+    @Transactional
     public PSSite save(PSSite site) throws SaveException {
         try
         {
@@ -206,8 +210,9 @@ public class PSSiteDao implements IPSiteDao
      * 
      * @throws PSErrorsException If an error occurs deleting related items.
      */
+    @Transactional
     protected void deleteSite(String name) throws PSErrorsException, DeleteException {
-    	log.info("Starting delete of site "+name);
+    	log.info("Starting delete of site {}",name);
     	IPSPublishingWs publishWs = PSPublishingWsLocator.getPublishingWebservice();
     	IPSSite site = publishWs.findSite(name);
     	
@@ -230,6 +235,7 @@ public class PSSiteDao implements IPSiteDao
      * 
      * @throws PSErrorException If an error occurs creating related items.
      */
+    @Transactional
     protected void saveSite(PSSite site, PSSite origSite) throws IPSPubServerService.PSPubServerServiceException, PSNotFoundException {
         notNull(site,"site may not be null");
         boolean isNew = sitePublishDao.saveSite(site);
@@ -248,6 +254,7 @@ public class PSSiteDao implements IPSiteDao
     /*
      * //see base interface method for details
      */
+    @Transactional
     public boolean updateSite(IPSSite site, String newName, String newDescrption) throws PSNotFoundException {
         return sitePublishDao.updateSite(site, newName, newDescrption);
     }
@@ -255,6 +262,7 @@ public class PSSiteDao implements IPSiteDao
     /**
      * Details can be found on the base interface
      */
+    @Transactional
     public void updateSitePublishProperties(IPSSite site, PSSitePublishProperties publishProps) throws PSNotFoundException {
         notNull(site, "site may not be null");
         notNull(publishProps, "publishProps may not be null");
@@ -262,12 +270,14 @@ public class PSSiteDao implements IPSiteDao
         sitePublishDao.updateSitePublishProperties(site, publishProps);  
     }
 
+    @Transactional
     public void addPublishNow(IPSSite site) throws PSNotFoundException {
         notNull(site, "site may not be null");
         
         sitePublishDao.addPublishNow(site);
     }
 
+    @Transactional
     public void addUnpublishNow(IPSSite site) throws PSNotFoundException {
         notNull(site, "site may not be null");
         
@@ -280,7 +290,8 @@ public class PSSiteDao implements IPSiteDao
     public String getSiteDeliveryType(IPSSite site) throws PSNotFoundException {
         return sitePublishDao.getSiteDeliveryType(site); 
     }
-    
+
+    @Transactional
     public PSSite createSiteWithContent(String origId, String newName) throws PSDataServiceException, IPSPubServerService.PSPubServerServiceException, PSNotFoundException {
         notEmpty(origId, "origId may not be blank");
         notEmpty(newName, "newName may not be blank");
@@ -439,7 +450,7 @@ public class PSSiteDao implements IPSiteDao
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Logger log = LogManager.getLogger(PSSiteDao.class);
+    private static final Logger log = LogManager.getLogger(IPSConstants.CONTENTREPOSITORY_LOG);
 
 
 }

@@ -163,7 +163,6 @@ import java.util.stream.Collectors;
  * @author dougrand
  */
 @PSBaseBean("sys_assemblyService")
-@Transactional(noRollbackFor = Exception.class)
 public class PSAssemblyService implements IPSAssemblyService
 {
    private SessionFactory sessionFactory;
@@ -1332,7 +1331,6 @@ public class PSAssemblyService implements IPSAssemblyService
       return rval;
    }
 
-   @Transactional
    public void loadByType(PSTypeEnum type, String item) throws PSCatalogException
    {
       Session s = sessionFactory.getCurrentSession();
@@ -1422,6 +1420,7 @@ public class PSAssemblyService implements IPSAssemblyService
 
    }
 
+   @Transactional()
    public String saveByType(IPSGuid id) throws PSCatalogException
    {
       try
@@ -1456,6 +1455,7 @@ public class PSAssemblyService implements IPSAssemblyService
       }
    }
 
+   @Transactional()
    public PSAssemblyTemplate createTemplate()
    {
       IPSGuidManager gmgr = PSGuidManagerLocator.getGuidMgr();
@@ -1464,7 +1464,6 @@ public class PSAssemblyService implements IPSAssemblyService
       return newvar;
    }
 
-   @Transactional
    public PSAssemblyTemplate loadTemplate(String guidstr, boolean loadSlots) throws PSAssemblyException
    {
       IPSGuid guid = new PSGuid(PSTypeEnum.TEMPLATE, guidstr);
@@ -1473,7 +1472,6 @@ public class PSAssemblyService implements IPSAssemblyService
       return template;
    }
 
-   @Transactional
    public PSAssemblyTemplate loadTemplate(IPSGuid id, boolean loadSlots) throws PSAssemblyException
    {
       PSAssemblyTemplate var = findTemplate(id, loadSlots);
@@ -1519,7 +1517,6 @@ public class PSAssemblyService implements IPSAssemblyService
     * @return the Template. It may be <code>null</code> if the Template does not
     *         exist.
     */
-   @Transactional
    public PSAssemblyTemplate findTemplate(IPSGuid id, boolean loadSlots)
    {
       Session session = sessionFactory.getCurrentSession();
@@ -1638,7 +1635,6 @@ public class PSAssemblyService implements IPSAssemblyService
       return template;
    }
 
-   @SuppressWarnings("unchecked")
    public IPSAssemblyTemplate findTemplateByNameAndType(String name, IPSGuid contenttype) throws PSAssemblyException
    {
 
@@ -1653,8 +1649,6 @@ public class PSAssemblyService implements IPSAssemblyService
 
    }
 
-   @Transactional
-   @SuppressWarnings("unchecked")
    public List<IPSAssemblyTemplate> findTemplatesByAssemblyUrl(String url, boolean loadSlot)
    {
       Session session = sessionFactory.getCurrentSession();
@@ -1675,8 +1669,6 @@ public class PSAssemblyService implements IPSAssemblyService
       return templates;
    }
 
-   @Transactional
-   @SuppressWarnings("unchecked")
    public List<IPSAssemblyTemplate> findTemplatesBySlot(IPSTemplateSlot slot) throws PSAssemblyException
    {
       List<IPSAssemblyTemplate> rval;
@@ -1702,8 +1694,6 @@ public class PSAssemblyService implements IPSAssemblyService
       return rval;
    }
 
-   @Transactional
-   @SuppressWarnings("unchecked")
    public List<IPSAssemblyTemplate> findTemplatesByContentType(IPSGuid contenttype) {
       Session sess = sessionFactory.getCurrentSession();
       return sess.get(PSNodeDefinition.class, contenttype.longValue())
@@ -1715,8 +1705,6 @@ public class PSAssemblyService implements IPSAssemblyService
               .collect(Collectors.toList());
    }
 
-   @Transactional
-   @SuppressWarnings("unchecked")
    public List<IPSAssemblyTemplate> findTemplates(String name, String contentType,
          Set<IPSAssemblyTemplate.OutputFormat> outputFormats, IPSAssemblyTemplate.TemplateType type,
          Boolean globalFilter, Boolean legacyFilter, String assembler) throws PSAssemblyException
@@ -1789,8 +1777,6 @@ public class PSAssemblyService implements IPSAssemblyService
 
    }
 
-   @Transactional
-   @SuppressWarnings("unchecked")
    public Set<IPSAssemblyTemplate> findAllTemplates()
    {
       List<IPSAssemblyTemplate> list = sessionFactory.getCurrentSession().createCriteria(PSAssemblyTemplate.class).list();
@@ -1803,13 +1789,11 @@ public class PSAssemblyService implements IPSAssemblyService
     *
     * @return a set of slots, could be empty but never <code>null</code>
     */
-   @SuppressWarnings("unchecked")
    private List<IPSTemplateSlot> findAllSlots()
    {
       return sessionFactory.getCurrentSession().createCriteria(PSTemplateSlot.class).list();
    }
 
-   @Transactional
    @SuppressWarnings("unchecked")
    public Set<IPSAssemblyTemplate> findAllGlobalTemplates()
    {
@@ -1916,6 +1900,7 @@ public class PSAssemblyService implements IPSAssemblyService
       }
    }
 
+   @Transactional()
    public IPSTemplateSlot createSlot()
    {
       IPSGuidManager gmgr = PSGuidManagerLocator.getGuidMgr();
@@ -1924,12 +1909,10 @@ public class PSAssemblyService implements IPSAssemblyService
       return newslot;
    }
 
-   @Transactional
    public IPSTemplateSlot loadSlot(String idstr) throws PSAssemblyException {
       return loadSlot(new PSGuid(PSTypeEnum.SLOT, idstr));
    }
 
-   @Transactional
    public IPSTemplateSlot loadSlot(IPSGuid id) throws PSAssemblyException {
       IPSTemplateSlot slot = findSlot(id);
       if (slot == null)
@@ -1940,7 +1923,6 @@ public class PSAssemblyService implements IPSAssemblyService
       return slot;
    }
 
-   @Transactional
    public IPSTemplateSlot loadSlotModifiable(IPSGuid id) throws PSAssemblyException {
       IPSTemplateSlot slot = getSlotById(id);
       if (slot == null)
@@ -1975,13 +1957,11 @@ public class PSAssemblyService implements IPSAssemblyService
     * @return the slot object, which may be <code>null</code> if the slot does
     *         not exist.
     */
-   @Transactional
    public IPSTemplateSlot getSlotById(IPSGuid id)
    {
       return sessionFactory.getCurrentSession().get(PSTemplateSlot.class, id.longValue());
    }
 
-   @Transactional
    public List<IPSTemplateSlot> loadSlots(List<IPSGuid> ids) throws PSAssemblyException
    {
       List<IPSTemplateSlot> slots = new ArrayList<>();
@@ -2036,7 +2016,6 @@ public class PSAssemblyService implements IPSAssemblyService
       }
    }
 
-   @Transactional
    public IPSTemplateSlot findSlotByName(String name) throws PSAssemblyException
    {
       PSTemplateSlot slot = sessionFactory.getCurrentSession().bySimpleNaturalId(PSTemplateSlot.class).load(name);
@@ -2049,7 +2028,6 @@ public class PSAssemblyService implements IPSAssemblyService
 
    }
 
-   @Transactional
    public List<IPSTemplateSlot> findSlotsByName(String name)
    {
       Session session = sessionFactory.getCurrentSession();
@@ -2072,7 +2050,6 @@ public class PSAssemblyService implements IPSAssemblyService
 
    }
 
-   @Transactional
    public List<IPSTemplateSlot> findSlotsByNames(List<String> names)
    {
       if (names == null)
@@ -2119,8 +2096,6 @@ public class PSAssemblyService implements IPSAssemblyService
       }
    }
 
-   @Transactional
-   @SuppressWarnings("unchecked")
    public String getLandingPageLink(IPSAssemblyItem parentItem, Node landingPage, IPSGuid templateId)
          throws PSAssemblyException
    {
@@ -2271,7 +2246,6 @@ public class PSAssemblyService implements IPSAssemblyService
 
       return url;
    }
-
 
 
    public void setCurrentAssemblyItem(IPSAssemblyItem item)

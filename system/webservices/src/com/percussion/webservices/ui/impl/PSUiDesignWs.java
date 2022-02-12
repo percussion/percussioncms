@@ -88,7 +88,6 @@ import static org.apache.commons.lang.Validate.notEmpty;
 /**
  * The private ui design webservice implementations.
  */
-@Transactional
 public class PSUiDesignWs extends PSUiBaseWs implements IPSUiDesignWs
 {
    // Added to optimize hierarchy nodes
@@ -107,6 +106,7 @@ public class PSUiDesignWs extends PSUiBaseWs implements IPSUiDesignWs
     * 
     * @see IPSUiDesignWs#createActions(List<String>, List<String>)
     */
+   @Transactional
    public List<PSAction> createActions(List<String> names, List<ActionType> types, String session, String user)
          throws PSLockErrorException, PSErrorException
    {
@@ -134,6 +134,7 @@ public class PSUiDesignWs extends PSUiBaseWs implements IPSUiDesignWs
     * 
     * @see IPSUiDesignWs#createDisplayFormats(List<String>)
     */
+   @Transactional
    public List<PSDisplayFormat> createDisplayFormats(List<String> names, String session, String user)
          throws PSLockErrorException, PSErrorException
    {
@@ -158,6 +159,7 @@ public class PSUiDesignWs extends PSUiBaseWs implements IPSUiDesignWs
     * @see IPSUiDesignWs#createHierarchyNodes(List<String>, List<IPSGuid>,
     * List<PSHierarchyNode.NodeType>, List<String>, List<String>)
     */
+   @Transactional
    public List<PSHierarchyNode> createHierarchyNodes(List<String> names, List<IPSGuid> parents,
          List<PSHierarchyNode.NodeType> types, String session, String user)
    {
@@ -218,6 +220,7 @@ public class PSUiDesignWs extends PSUiBaseWs implements IPSUiDesignWs
     * 
     * @see IPSUiDesignWs#createSearches(List<String>, List<String>)
     */
+   @Transactional
    public List<PSSearch> createSearches(List<String> names, List<String> types, String session, String user)
          throws PSLockErrorException, PSErrorException
    {
@@ -245,6 +248,7 @@ public class PSUiDesignWs extends PSUiBaseWs implements IPSUiDesignWs
     * 
     * @see IPSUiDesignWs#createViews(List<String>)
     */
+   @Transactional
    public List<PSSearch> createViews(List<String> names, String session, String user) throws PSLockErrorException,
          PSErrorException
    {
@@ -267,6 +271,7 @@ public class PSUiDesignWs extends PSUiBaseWs implements IPSUiDesignWs
     * 
     * @see IPSUiDesignWs#deleteActions(List, boolean)
     */
+   @Transactional
    public void deleteActions(List<IPSGuid> ids, boolean ignoreDependencies, String session, String user)
          throws PSErrorsException
    {
@@ -281,6 +286,7 @@ public class PSUiDesignWs extends PSUiBaseWs implements IPSUiDesignWs
     * 
     * @see IPSUiDesignWs#deleteDisplayFormats(List, boolean)
     */
+   @Transactional
    public void deleteDisplayFormats(List<IPSGuid> ids, boolean ignoreDependencies, String session, String user)
          throws PSErrorsException
    {
@@ -295,6 +301,7 @@ public class PSUiDesignWs extends PSUiBaseWs implements IPSUiDesignWs
     * 
     * @see IPSUiDesignWs#deleteHierarchyNodes(List, boolean, String, String)
     */
+   @Transactional
    public void deleteHierarchyNodes(List<IPSGuid> ids, boolean ignoreDependencies, String session, String user)
          throws PSErrorsException
    {
@@ -358,6 +365,7 @@ public class PSUiDesignWs extends PSUiBaseWs implements IPSUiDesignWs
     * 
     * @see IPSUiDesignWs#deleteSearches(List, boolean)
     */
+   @Transactional
    public void deleteSearches(List<IPSGuid> ids, boolean ignoreDependencies, String session, String user)
          throws PSErrorsException
    {
@@ -372,6 +380,7 @@ public class PSUiDesignWs extends PSUiBaseWs implements IPSUiDesignWs
     * 
     * @see IPSUiDesignWs#deleteViews(List, boolean)
     */
+   @Transactional
    public void deleteViews(List<IPSGuid> ids, boolean ignoreDependencies, String session, String user)
          throws PSErrorsException
 
@@ -947,6 +956,7 @@ public class PSUiDesignWs extends PSUiBaseWs implements IPSUiDesignWs
     * 
     * @see IPSUiDesignWs#moveChildren(IPSGuid, IPSGuid, List)
     */
+   @Transactional
    public void moveChildren(IPSGuid source, IPSGuid target, List<IPSGuid> ids)
    {
       if (source == null)
@@ -991,6 +1001,7 @@ public class PSUiDesignWs extends PSUiBaseWs implements IPSUiDesignWs
     * 
     * @see IPSUiDesignWs#removeChildren(IPSGuid, List)
     */
+   @Transactional
    public void removeChildren(IPSGuid parent, List<IPSGuid> ids)
    {
       if (parent == null)
@@ -1012,6 +1023,7 @@ public class PSUiDesignWs extends PSUiBaseWs implements IPSUiDesignWs
     * 
     * @see IPSUiDesignWs#saveActions(List, boolean, String, String)
     */
+   @Transactional
    public void saveActions(List<PSAction> actions, boolean release, String session, String user)
          throws PSErrorsException
    {
@@ -1026,6 +1038,7 @@ public class PSUiDesignWs extends PSUiBaseWs implements IPSUiDesignWs
     * 
     * @see IPSUiDesignWs#saveDisplayFormats(List, boolean, String, String)
     */
+   @Transactional
    public void saveDisplayFormats(List<PSDisplayFormat> displayFormats, boolean release, String session, String user)
          throws PSErrorsException
    {
@@ -1041,6 +1054,7 @@ public class PSUiDesignWs extends PSUiBaseWs implements IPSUiDesignWs
     * 
     * @see IPSUiDesignWs#saveHierarchyNodes(List, boolean, String, String)
     */
+   @Transactional
    public void saveHierarchyNodes(List<PSHierarchyNode> nodes, boolean release, String session, String user)
          throws PSErrorsException
    {
@@ -1131,6 +1145,7 @@ public class PSUiDesignWs extends PSUiBaseWs implements IPSUiDesignWs
     * 
     * @see IPSUiDesignWs#saveSearches(List, boolean, String, String)
     */
+   @Transactional
    public void saveSearches(List<PSSearch> searches, boolean release, String session, String user)
          throws PSErrorsException
    {
@@ -1158,7 +1173,8 @@ public class PSUiDesignWs extends PSUiBaseWs implements IPSUiDesignWs
     * (non-Javadoc)
     * 
     * @see IPSUiDesignWs#saveViews(List, boolean, String, String)
-    */
+    */@Transactional
+
    public void saveViews(List<PSSearch> views, boolean release, String session, String user) throws PSErrorsException
    {
       saveSearches(views, release, session, user);
@@ -1191,7 +1207,6 @@ public class PSUiDesignWs extends PSUiBaseWs implements IPSUiDesignWs
     * @see com.percussion.webservices.ui.IPSUiDesignWs#objectIdToPath(IPSGuid
     * guid)
     */
-   @SuppressWarnings("unchecked")
    public String objectIdToPath(IPSGuid guid) throws PSErrorsException
    {
       PSTimer timer = new PSTimer(ms_log);

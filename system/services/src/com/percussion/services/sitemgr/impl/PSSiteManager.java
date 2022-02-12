@@ -105,7 +105,6 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author dougrand
  * 
  */
-@Transactional (noRollbackFor=PSNotFoundException.class)
 public class PSSiteManager
       implements
       IPSSiteManagerInternal
@@ -243,6 +242,7 @@ public class PSSiteManager
    /**
     * @see com.percussion.services.sitemgr.IPSSiteManager#createSite()
     */
+   @Transactional(noRollbackFor=PSNotFoundException.class)
    public IPSSite createSite()
    {
       IPSGuidManager gmgr = PSGuidManagerLocator.getGuidMgr();
@@ -436,6 +436,7 @@ public class PSSiteManager
    /**
     * @see com.percussion.services.sitemgr.IPSSiteManager#saveSite(com.percussion.services.sitemgr.IPSSite)
     */
+   @Transactional(noRollbackFor=PSNotFoundException.class)
    public void saveSite(IPSSite site)
    {
       if (site == null)
@@ -448,6 +449,7 @@ public class PSSiteManager
    /**
     * @see com.percussion.services.sitemgr.IPSSiteManager#deleteSite(com.percussion.services.sitemgr.IPSSite)
     */
+   @Transactional(noRollbackFor=PSNotFoundException.class)
    public void deleteSite(IPSSite site)
    {
       if (site == null)
@@ -464,6 +466,7 @@ public class PSSiteManager
    /**
     * @see com.percussion.services.sitemgr.IPSSiteManager#createScheme()
     */
+   @Transactional(noRollbackFor=PSNotFoundException.class)
    public IPSLocationScheme createScheme()
    {
       IPSGuidManager gmgr = PSGuidManagerLocator.getGuidMgr();
@@ -606,6 +609,7 @@ public class PSSiteManager
    /**
     * @see com.percussion.services.sitemgr.IPSSiteManager#saveScheme(com.percussion.services.sitemgr.IPSLocationScheme)
     */
+   @Transactional(noRollbackFor=PSNotFoundException.class)
    public void saveScheme(IPSLocationScheme scheme)
    {
       // cannot save a cloned Location Scheme object; otherwise the child
@@ -625,6 +629,7 @@ public class PSSiteManager
    /**
     * @see com.percussion.services.sitemgr.IPSSiteManager#deleteScheme(com.percussion.services.sitemgr.IPSLocationScheme)
     */
+   @Transactional(noRollbackFor=PSNotFoundException.class)
    public void deleteScheme(IPSLocationScheme scheme)
    {
       sessionFactory.getCurrentSession().delete(scheme);
@@ -823,6 +828,7 @@ public class PSSiteManager
    /**
     * @see com.percussion.services.catalog.IPSCataloger#saveByType(com.percussion.utils.guid.IPSGuid)
     */
+   @Transactional(noRollbackFor=PSNotFoundException.class)
    public String saveByType(IPSGuid id) throws PSCatalogException
    {
       try
@@ -1252,6 +1258,7 @@ public class PSSiteManager
       return names != null ? names : Collections.EMPTY_LIST;
    }
 
+   @Transactional(noRollbackFor=PSNotFoundException.class)
    public void deleteContext(IPSPublishingContext context)
    {
       if (context == null)
@@ -1281,6 +1288,7 @@ public class PSSiteManager
       }
    }
 
+   @Transactional(noRollbackFor=PSNotFoundException.class)
    public void saveContext(IPSPublishingContext context)
    {
       if (context == null)
@@ -1289,7 +1297,8 @@ public class PSSiteManager
       }
       sessionFactory.getCurrentSession().saveOrUpdate(context);
    }
-   
+
+   @Transactional(noRollbackFor=PSNotFoundException.class)
    public IPSPublishingContext createContext()
    {
       PSPublishingContext ctx = new PSPublishingContext();

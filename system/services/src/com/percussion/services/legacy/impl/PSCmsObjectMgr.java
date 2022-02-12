@@ -24,6 +24,7 @@
 package com.percussion.services.legacy.impl;
 
 import com.percussion.cms.IPSCmsErrors;
+import com.percussion.cms.IPSConstants;
 import com.percussion.cms.PSCmsException;
 import com.percussion.cms.PSEditorChangeEvent;
 import com.percussion.cms.handlers.PSCommandHandler;
@@ -68,7 +69,6 @@ import com.percussion.services.legacy.IPSCmsObjectMgrInternal;
 import com.percussion.services.legacy.IPSItemEntry;
 import com.percussion.services.legacy.PSCmsObjectMgrLocator;
 import com.percussion.services.legacy.data.PSItemEntry;
-import com.percussion.services.memory.IPSCacheAccess;
 import com.percussion.services.memory.PSCacheAccessLocator;
 import com.percussion.services.menus.PSActionMenu;
 import com.percussion.services.menus.PSUIMode;
@@ -97,6 +97,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.Cache;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -105,7 +106,6 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.metadata.ClassMetadata;
-import org.hibernate.metadata.CollectionMetadata;
 import org.hibernate.type.IntegerType;
 import org.hibernate.type.LongType;
 import org.hibernate.type.ShortType;
@@ -145,7 +145,6 @@ import static org.apache.commons.lang.Validate.notNull;
  * 
  * @author dougrand
  */
-@Transactional(noRollbackFor = Exception.class)
 @PSBaseBean("sys_cmsObjectMgr")
 public class PSCmsObjectMgr
       implements
@@ -162,7 +161,7 @@ public class PSCmsObjectMgr
    /**
     * Logger
     */
-   private static final Logger logger = LogManager.getLogger("PSCmsObjectMgr");
+   private static final Logger logger = LogManager.getLogger(IPSConstants.CONTENTREPOSITORY_LOG);
    
    private static final int BATCH_SIZE = 50;
    private static ThreadLocal<Integer> ms_itemCount = new ThreadLocal<>();
@@ -207,6 +206,7 @@ public class PSCmsObjectMgr
     * @see com.percussion.services.legacy.IPSCmsObjectMgr#touchItems(java.util.
     * Collection)
     */
+    @Transactional
    public void touchItems(Collection<Integer> ids)
    {
       Date now = new Date();
@@ -237,6 +237,7 @@ public class PSCmsObjectMgr
     * @see com.percussion.services.legacy.IPSCmsObjectMgr#setPostDate(java.util.
     * Collection)
     */
+   @Transactional
    public void setPostDate(Collection<Integer> ids, Date date)
    {
 
@@ -259,6 +260,7 @@ public class PSCmsObjectMgr
     * @see com.percussion.services.legacy.IPSCmsObjectMgr#setPostDate(java.util.
     * Collection)
     */
+    @Transactional
    public void setPublishDate(List<Integer> ids, Date date)
    {
       updateSummaryDate("m_contentPublishDate",date,ids,true);
@@ -322,6 +324,7 @@ public class PSCmsObjectMgr
     * com.percussion.services.legacy.IPSCmsObjectMgr#clearStartDate(java.util.
     * Collection)
     */
+   @Transactional
    public void clearStartDate(Collection<Integer> ids)
    {
       updateSummaryDate("m_contentStartDate", null, ids, true);
@@ -334,6 +337,7 @@ public class PSCmsObjectMgr
     * com.percussion.services.legacy.IPSCmsObjectMgr#clearExpiryDate(java.util.
     * Collection)
     */
+   @Transactional
    public void clearExpiryDate(Collection<Integer> ids)
    {
       updateSummaryDate("m_contentExpiryDate", null, ids, true);
@@ -344,6 +348,7 @@ public class PSCmsObjectMgr
     * 
     * @see com.percussion.legacy.IPSCmsObjectMgr#createLocale(String, String)
     */
+   @Transactional
    public PSLocale createLocale(String languageString, String displayName)
    {
       PSLocale locale = new PSLocale(languageString, displayName, null, PSLocale.STATUS_INACTIVE);
@@ -487,6 +492,7 @@ public class PSCmsObjectMgr
      * @return
      */
     @Override
+    @Transactional
     public List<PSPersistentPropertyMeta> saveAllPersistentMeta(List<PSPersistentPropertyMeta> list) {
 
         Session s = sessionFactory.getCurrentSession();
@@ -500,6 +506,7 @@ public class PSCmsObjectMgr
      * @param list
      */
     @Override
+    @Transactional
     public void deleteAllPersistentMeta(List<PSPersistentPropertyMeta> list) {
 
         Session s = sessionFactory.getCurrentSession();
@@ -513,6 +520,7 @@ public class PSCmsObjectMgr
      * @return
      */
     @Override
+    @Transactional
     public PSPersistentPropertyMeta savePersistentPropertyMeta(PSPersistentPropertyMeta meta) {
 
 
@@ -597,6 +605,7 @@ public class PSCmsObjectMgr
     * com.percussion.services.legacy.IPSCmsObjectMgr#savePersistentProperty(com.
     * percussion.server.PSPersistentProperty)
     */
+   @Transactional
    public void savePersistentProperty(PSPersistentProperty prop)
    {
       if (prop == null)
@@ -612,6 +621,7 @@ public class PSCmsObjectMgr
     * com.percussion.services.legacy.IPSCmsObjectMgr#deletePersistentProperty(
     * com.percussion.server.PSPersistentProperty)
     */
+   @Transactional
    public void deletePersistentProperty(PSPersistentProperty prop)
    {
       if (prop == null)
@@ -627,6 +637,7 @@ public class PSCmsObjectMgr
     * com.percussion.services.legacy.IPSCmsObjectMgr#updatePersistentProperty(
     * com.percussion.server.PSPersistentProperty)
     */
+   @Transactional
    public void updatePersistentProperty(PSPersistentProperty prop)
    {
       if (prop == null)
@@ -642,6 +653,7 @@ public class PSCmsObjectMgr
     * com.percussion.legacy.IPSCmsObjectMgr#saveOrUpdateLocale(com.percussion.
     * i18n.PSLocale)
     */
+   @Transactional
    public void saveLocale(PSLocale locale)
    {
       sessionFactory.getCurrentSession().saveOrUpdate(locale);
@@ -653,6 +665,7 @@ public class PSCmsObjectMgr
     * @see
     * com.percussion.legacy.IPSCmsObjectMgr#remove(com.percussion.i18n.PSLocale)
     */
+   @Transactional
    public void deleteLocale(PSLocale locale)
    {
       sessionFactory.getCurrentSession().delete(locale);
@@ -782,7 +795,8 @@ public class PSCmsObjectMgr
               .list();
 
    }
-   
+
+    @Transactional
    public void saveComponentSummaries(List<PSComponentSummary> summaries) throws PSORMException
    {
       Session session = sessionFactory.getCurrentSession();
@@ -790,6 +804,7 @@ public class PSCmsObjectMgr
 
    }
 
+    @Transactional
    public void deleteComponentSummaries(List<PSComponentSummary> summaries) throws PSORMException
    {
       Session session = sessionFactory.getCurrentSession();
@@ -801,7 +816,7 @@ public class PSCmsObjectMgr
       SessionFactory fact = getSessionFactory();
       for (Integer id : ids)
       {
-         fact.getCache().evictEntity(PSComponentSummary.class, id);
+         fact.getCache().evictEntityData(PSComponentSummary.class, id);
       }
    }
 
@@ -975,6 +990,7 @@ public class PSCmsObjectMgr
    }
 
    // implement IPSCmsObjectMgr.saveConfig(PSCOnfig)
+   @Transactional
    public void saveConfig(PSConfig config) throws PSCmsException
    {
       Session s = sessionFactory.getCurrentSession();
@@ -1288,31 +1304,17 @@ public class PSCmsObjectMgr
    @SuppressWarnings("unchecked")
    public void flushSecondLevelCache()
    {
-      Session s = sessionFactory.getCurrentSession();
+       Cache cache = sessionFactory.getCache();
 
-         SessionFactory fact = s.getSessionFactory();
+       if (cache != null) {
+           cache.evictAllRegions(); // Evict data from all query regions.
+       }
 
-         fact.getCache().evictQueryRegions();
-         Map<String, ClassMetadata> metamap = fact.getAllClassMetadata();
-         Map<String, CollectionMetadata> collmap = fact.getAllCollectionMetadata();
-         for (String entity : metamap.keySet())
-         {
-            ClassMetadata data = metamap.get(entity);
-            Class pclass = data.getMappedClass();
-            fact.getCache().evictEntityRegion(pclass);
-         }
-         for (String collection : collmap.keySet())
-         {
-            fact.getCache().evictCollectionRegion(collection);
-         }
          if (logger.isDebugEnabled())
             logger.debug("Flushed hibernate 2nd level cache.");
          
          // Clear the Eh cache
-         IPSCacheAccess cache = PSCacheAccessLocator.getCacheAccess();
-         cache.clear();
-
-
+        PSCacheAccessLocator.getCacheAccess().clear();
    }
 
    // Implements IPSRelationshipService.findAllRelationshipConfigNames()
@@ -1764,6 +1766,7 @@ public class PSCmsObjectMgr
         return null;
     }
 
+    @Transactional
    public void changeWorkflowForItem(int itemId, int workflowId, List<String> validStateNames) throws PSORMException
    {
       Validate.notNull(validStateNames);
@@ -1810,6 +1813,7 @@ public class PSCmsObjectMgr
    }
 
    @Override
+   @Transactional
    public void forceCheckinUsers(HashMap<String, PSUserSession> usersMap)
    {
       Session session = sessionFactory.getCurrentSession();
@@ -1881,7 +1885,8 @@ public class PSCmsObjectMgr
       }
          
    }
-   
+
+    @Transactional
    public void changeWorfklowForItems(List<Integer> folderIds, int workflowId, List<String> validStateNames)
          throws PSCmsException, PSORMException
    {
@@ -2241,6 +2246,7 @@ public class PSCmsObjectMgr
 
     }
 
+    @Transactional
     public void updateSummaryDate(String fieldName, Date dateToSet, Collection<Integer> ids, boolean updateExisting)
     {
         synchronized (DATE_UPDATE_SYNC_OBJECT)

@@ -183,14 +183,12 @@ public class PSHashedFieldCataloger implements IPSHashedFieldCataloger
       dao.saveAll(columns);
    }
 
-   @Transactional
    public Set<PSHashedColumn> getStoredColumns()
    {
       return dao.getStoredColumns();
    }
 
    @Override
-   @Transactional
    public Set<PSHashedColumn> validateColumns()
    {
       Set<PSHashedColumn> serverColumns = getServerHashedColumns();

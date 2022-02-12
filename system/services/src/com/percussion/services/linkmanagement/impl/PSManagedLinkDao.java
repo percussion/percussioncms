@@ -23,6 +23,7 @@
  */
 package com.percussion.services.linkmanagement.impl;
 
+import com.percussion.cms.IPSConstants;
 import com.percussion.services.guidmgr.IPSGuidManager;
 import com.percussion.services.linkmanagement.IPSManagedLinkDao;
 import com.percussion.services.linkmanagement.data.PSManagedLink;
@@ -35,7 +36,6 @@ import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.annotations.QueryHints;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -55,10 +55,9 @@ import static org.springframework.util.CollectionUtils.isEmpty;
  *
  */
 @PSSiteManageBean("sys_managedLinkDao")
-@Transactional
 public class PSManagedLinkDao implements IPSManagedLinkDao
 {
-    private static final Logger log = LogManager.getLogger(PSManagedLinkDao.class);
+    private static final Logger log = LogManager.getLogger(IPSConstants.CONTENTREPOSITORY_LOG);
     
     /**
      * Constant for the key used to generate link id's.
@@ -84,6 +83,7 @@ public class PSManagedLinkDao implements IPSManagedLinkDao
         this.sessionFactory = sessionFactory;
     }
 
+    @Transactional
     public PSManagedLink createLink(int parentId, int parentRev, int childId, String anchor)
     {
         PSManagedLink link = new PSManagedLink();
@@ -95,6 +95,7 @@ public class PSManagedLinkDao implements IPSManagedLinkDao
         return link;
     }
 
+    @Transactional
     public void saveLink(PSManagedLink link) throws IPSGenericDao.SaveException {
         Validate.notNull(link);
         if (link.getLinkId() == -1)
@@ -127,6 +128,7 @@ public class PSManagedLinkDao implements IPSManagedLinkDao
 
     }
 
+    @Transactional
     public void deleteLink(PSManagedLink link)
     {
         Validate.notNull(link);
