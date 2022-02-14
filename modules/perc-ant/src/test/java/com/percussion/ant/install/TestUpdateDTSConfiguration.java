@@ -184,6 +184,23 @@ public class TestUpdateDTSConfiguration {
 
         }
 
+        //Now check staging properties
+        try (InputStream input = new FileInputStream(
+                root.resolve("Staging" + File.separator + "Deployment" + File.separator +
+                        "Server" + File.separator + "conf" + File.separator + "perc" + File.separator+ "perc-catalina.properties").toFile())) {
+
+            prodProps.load(input);
+            assertEquals("29970",prodProps.getProperty("http.port"));
+            assertEquals("29443", prodProps.getProperty("https.port"));
+            assertEquals("somepassword",prodProps.getProperty("https.keystorePass"));
+            assertEquals("somepassword",prodProps.getProperty("certificateKeystorePassword"));
+            assertEquals("TLSv1.2,TLSv1.3",prodProps.getProperty("https.sslEnabledProtocols"));
+            assertEquals("TLSv1.2,TLSv1.3",prodProps.getProperty("https.protocols"));
+            assertEquals("conf/A.keystore",prodProps.getProperty("https.keystoreFile"));
+            assertEquals("29443", prodProps.getProperty("http.redirectPort"));
+
+        }
+
 
     }
 }
