@@ -53,7 +53,7 @@
             dialog = $(" <div id='perc-workflow-addstep-dialog'>" +
                 "     <div id='perc-wfconfig-wrapper'>" +
                 "         <span style='position: relative; float: right; margin-top: -28px;'><label>" +I18N.message("perc.ui.general@Denotes Required Field") + "</label></span>" +
-                "         <div class = 'perc-required-field'>" +I18N.message("perc.ui.edit.workflow.step.dialog@Step Name") + "<br/><input maxlength = '50' required pattern='^[a-zA-Z][a-zA-Z0-9-_\\. ]{1,50}$' title='1 to 50 letters,numbers,-, _, or space' name='perc-wfstep-name' id='perc-wfstep-name' class = '" +
+                "         <div class = 'perc-required-field'>" +I18N.message("perc.ui.edit.workflow.step.dialog@Step Name") + "<br/><input maxlength = '50' required pattern='^[a-zA-Z0-9-_\\. ]{1,50}$' title='1 to 50 letters,numbers,-, _, or space' name='perc-wfstep-name' id='perc-wfstep-name' class = '" +
                 className +
                 "' type='text'" +
                 isreadOnly +
