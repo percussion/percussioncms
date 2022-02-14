@@ -82,8 +82,9 @@ public class PSUpdateDTSConfiguration extends PSAction {
     }
     private void updateConfiguration(File prodPath)  {
         File serverXmlFile = new File(prodPath,SERVER_XML);
+        File catalinaPropsFile = new File(prodPath, CATALINA_PROPERTIES);
 
-        if (serverXmlFile.exists())
+        if (serverXmlFile.exists() && ! catalinaPropsFile.exists())
         {
 
             DtsConnectorConfigurationAdapter adapter = new DtsConnectorConfigurationAdapter();

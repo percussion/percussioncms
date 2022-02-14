@@ -176,7 +176,7 @@ public class TestUpdateDTSConfiguration {
             assertEquals("29980",prodProps.getProperty("http.port"));
             assertEquals("28443", prodProps.getProperty("https.port"));
             assertEquals("somepassword",prodProps.getProperty("https.keystorePass"));
-            assertEquals("somepassword",prodProps.getProperty("certificateKeystorePassword"));
+            assertEquals("somepassword",prodProps.getProperty("https.certificateKeystorePassword"));
             assertEquals("TLSv1.2,TLSv1.3",prodProps.getProperty("https.sslEnabledProtocols"));
             assertEquals("TLSv1.2,TLSv1.3",prodProps.getProperty("https.protocols"));
             assertEquals("conf/A.keystore",prodProps.getProperty("https.keystoreFile"));
@@ -193,7 +193,7 @@ public class TestUpdateDTSConfiguration {
             assertEquals("29970",prodProps.getProperty("http.port"));
             assertEquals("29443", prodProps.getProperty("https.port"));
             assertEquals("somepassword",prodProps.getProperty("https.keystorePass"));
-            assertEquals("somepassword",prodProps.getProperty("certificateKeystorePassword"));
+            assertEquals("somepassword",prodProps.getProperty("https.certificateKeystorePassword"));
             assertEquals("TLSv1.2,TLSv1.3",prodProps.getProperty("https.sslEnabledProtocols"));
             assertEquals("TLSv1.2,TLSv1.3",prodProps.getProperty("https.protocols"));
             assertEquals("conf/A.keystore",prodProps.getProperty("https.keystoreFile"));
