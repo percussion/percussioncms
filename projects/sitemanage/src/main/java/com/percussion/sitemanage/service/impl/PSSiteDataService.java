@@ -542,11 +542,13 @@ import static org.apache.commons.lang.Validate.notNull;
      */
     private void updatePubServers(IPSSite site, PSSiteProperties props) {
         log.info("Updating publishing server for site: {}" , site.getName());
-        if (!site.getName().equals(props.getName())) {
             try {
                 PSPubServer pubServer = getPubServerService().getDefaultPubServer(site
                         .getGUID());
-                pubServer.setSiteRenamed(true);
+
+                if (!site.getName().equals(props.getName())) {
+                    pubServer.setSiteRenamed(true);
+                }
 
                 IPSPubServerDao pubServerDao = PSPubServerDaoLocator.getPubServerManager();
                 pubServerDao.savePubServer(pubServer);
@@ -555,7 +557,6 @@ import static org.apache.commons.lang.Validate.notNull;
                         site.getName(),
                         PSExceptionUtils.getMessageForLog(e));
             }
-        }
     }
 
     /**

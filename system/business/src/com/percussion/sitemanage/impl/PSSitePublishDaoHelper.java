@@ -421,16 +421,6 @@ public class PSSitePublishDaoHelper
            pushFeedsTask.setSequence(2);
            pushFeedsTask.setExtensionName("Java/global/percussion/task/perc_PushFeedDescriptorTask");
            pubWs.saveEditionTask(pushFeedsTask);
-   
-           /*
-            * Add the flush publication cache post edition task
-            */
-           IPSEditionTaskDef flushPublicationCacheTask = pubWs.createEditionTask();
-           flushPublicationCacheTask.setContinueOnFailure(false);
-           flushPublicationCacheTask.setEditionId(edtnGuid);
-           flushPublicationCacheTask.setSequence(3);
-           flushPublicationCacheTask.setExtensionName("Java/global/percussion/task/sys_flushPublicationCache");
-           pubWs.saveEditionTask(flushPublicationCacheTask);
        }
 
        if( !isNowEdition(suffix) && !isIncremental(suffix) ){
