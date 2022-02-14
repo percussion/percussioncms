@@ -921,15 +921,6 @@ public class PSSitePublishDao
                 
                 edition.setPubServerId(pubServer.getGUID());
                 publishWs.saveEdition(edition);
-
-                /*
-                 * Handle the edition tasks associated to the edition
-                 */
-                List<IPSEditionTaskDef> taskDefs = publishWs.loadEditionTaskByEdition(edition.getGUID());
-                for(IPSEditionTaskDef taskDef : taskDefs)
-                {
-                    publishWs.deleteEditionTask(taskDef);
-                }
                 
                 addTaskDefsToPubServerEdition(edition, pubServer, isDefaultServer, site);
 
@@ -1212,6 +1203,16 @@ public class PSSitePublishDao
     {
         boolean isIncremental = isIncremental(tgtEdition);
 
+        /*
+         * Handle the edition tasks associated to the edition
+         */
+        List<IPSEditionTaskDef> taskDefs = publishWs.loadEditionTaskByEdition(tgtEdition.getGUID());
+        for(IPSEditionTaskDef taskDef : taskDefs)
+        {
+            //TODO: Update to only remove / update tasks that are added
+            publishWs.deleteEditionTask(taskDef);
+        }
+
         IPSGuid editionGuid = tgtEdition.getGUID();
 
         if (pubServer.isDatabaseType() || pubServer.isXmlFormat())
@@ -1334,15 +1335,6 @@ public class PSSitePublishDao
             pushFeedsTask.setExtensionName("Java/global/percussion/task/perc_PushFeedDescriptorTask");
             publishWs.saveEditionTask(pushFeedsTask);
 
-            /*
-             * Add the flush publication cache post edition task
-             */
-            IPSEditionTaskDef flushPublicationCacheTask = publishWs.createEditionTask();
-            flushPublicationCacheTask.setContinueOnFailure(false);
-            flushPublicationCacheTask.setEditionId(editionGuid);
-            flushPublicationCacheTask.setSequence(3);
-            flushPublicationCacheTask.setExtensionName("Java/global/percussion/task/sys_flushPublicationCache");
-            publishWs.saveEditionTask(flushPublicationCacheTask);
         }
     }
 
