@@ -398,7 +398,7 @@ public class PSTemplateDao implements IPSTemplateDao, ApplicationContextAware
             }
             if(templateName.substring(templateName.length()-1).equalsIgnoreCase("-")){
                 //the base name for copied template
-                templateName = templateName.substring(0, templateName.length()-3);
+                templateName = templateName.substring(0, templateName.length()-1);
             }
             //Unique name using the base name in template folder for given site path
             try {
