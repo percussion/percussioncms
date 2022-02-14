@@ -96,7 +96,7 @@ public class PSUpdateDTSConfiguration extends PSAction {
             than just a production or staging dts */
             Properties properties = new Properties();
             List<IPSConnector> connectors = null;
-            if(prodPath.getAbsolutePath().toString().contains(STAGING_PATH) || prodPath.getAbsolutePath().toString().contains(STAGING_PATH_WIN)){
+            if(prodPath.getAbsolutePath().contains(STAGING_PATH) || prodPath.getAbsolutePath().contains(STAGING_PATH_WIN)){
                 System.out.println("Processing Staging DTS configuration..");
                connectors = config.getConfig().getDtsConfig().getStagingDtsConnectorInfo().getConnectors();
                 File percCatalinaFile = new File(prodPath,CATALINA_PROPERTIES);
