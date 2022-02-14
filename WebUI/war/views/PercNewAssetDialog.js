@@ -201,6 +201,13 @@
                 datalistContainer.empty();
                 // iterate over the editors, create a div for each, and then insert it in div.perc-items
                 let index = 0;
+                $("div.perc-scrollable").scrollable(
+                    {
+                        items: ".perc-items",
+                        size: 3,
+                        keyboard: true
+                    });
+
                 for(a in assetEditorLibrary)
                 {
                     // get the datastructure for the editor
@@ -210,12 +217,17 @@
                     itemContainer.append(createAssetEditorEntry(assetEditor));
                     datalistContainer.append(createAssetEditorListEntry(assetEditor,index))
 
-                    $("div.perc-scrollable").scrollable(
-                        {
-                            items: ".perc-items",
-                            size: 4,
-                            keyboard: true
-                        });
+
+                    //Wire the keypress event
+                    $(".perc-items .item").on("keypress", function(event){
+                        event.stopPropagation();
+                        event.stopImmediatePropagation();
+
+                        if(event.code == "Enter" || event.code == "Space"){
+                            $(this).dblclick();
+                        }
+
+                    });
 
                     // bind click event to each item to handle selection
                     // each div has hidden inner divs with data specific to each item
@@ -234,6 +246,22 @@
                         $("#perc-workflow-id").val(workflowId);
                         $(".perc-items .item").removeClass("perc-selected-item");
                         $(this).addClass("perc-selected-item");
+                    });
+
+                    $(".perc-items .item").on('dblclick', function(event)
+                    {
+                        event.stopPropagation();
+                        event.stopImmediatePropagation();
+
+                        var editorUrl = $(this).find(".item-editor-url").text();
+                        var workflowId = $(this).find(".item-workflow-id").text();
+                        $("#perc-select-template").val($(this).find(".item-id").text());
+                        $("#perc-editor-url").val(editorUrl);
+                        $("#perc-workflow-id").val(workflowId);
+                        $(".perc-items .item").removeClass("perc-selected-item");
+                        $(this).addClass("perc-selected-item");
+                        $("#perc-page-save").click();
+
                     });
 
                     $(".perc-items .item .item-id").hide();
@@ -266,7 +294,6 @@
                 $('#perc-items-datalist').children('option').each(function () {
                     if(this.value === event.target.value){
                         $(".perc-items .item").eq(idx).click();
-                        // scroll.click(idx);
                         $(this).blur();
                         $(".perc-items .item").eq(idx).focus();
                         return;
