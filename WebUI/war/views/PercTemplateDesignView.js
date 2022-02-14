@@ -277,6 +277,9 @@
                 var percJump = $(".perc-unassigned-panel .perc-template-pages-controls .perc-jump");
                  pageNumber = percJump.val()!=""? parseInt(percJump.val()): 1;
             }
+            if(isNaN(pageNumber)){
+                pageNumber = 1;
+            }
             pageNumber = (pageNumber!=0)? pageNumber : 1;
             setPanelPreference(null, pageNumber);
             var startIndex = (((pageNumber-1) * UNASSIGNED_MAX_RESULTS) + 1);
