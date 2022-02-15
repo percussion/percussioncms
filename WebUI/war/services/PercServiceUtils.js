@@ -85,17 +85,17 @@
             href: url
         });
         var path = url;
-        if(path.includes("/perc-metadata-services/"))
+        if(path.indexOf("/perc-metadata-services/") !== -1)
             path = CSRF_METADATA_PATH;
-        else if(path.includes("/perc-form-processor/"))
+        else if(path.indexOf("/perc-form-processor/") !== -1)
             path = CSRF_FORMS_PATH;
-        else if(path.includes("/perc-polls-services"))
+        else if(path.indexOf("/perc-polls-services") !== -1)
             path = CSRF_POLLS_PATH;
-        else if(path.includes("/perc-comments-services/"))
+        else if(path.indexOf("/perc-comments-services/") !== -1)
             path = CSRF_COMMENTS_PATH;
-        else if(path.includes("/perc-membership-services/"))
+        else if(path.indexOf("/perc-membership-services/") !== -1)
             path = CSRF_MEMBERSHIP_PATH;
-        else if(path.includes("/feeds/"))
+        else if(path.indexOf("/feeds/") !== -1)
             path = CSRF_FEEDS_PATH;
         else
             path = null;
@@ -112,7 +112,7 @@
         if(callback.callcount > 1){
             return;
         }
-        let csrfToken;
+        var csrfToken;
         if(typeof url != "undefined" && url != null){
             if(!url.endsWith("/csrf")){
                 url = csrfGetURLFromServiceCall(url);
@@ -126,7 +126,7 @@
                 }
             }
         }
-        let init = {
+        var init = {
             url:url,
             async: "false",
             method: TYPE_HEAD, // *GET, POST, PUT, DELETE, etc.
@@ -212,7 +212,7 @@
      *  be <code>null</code> or empty.
      *  @param type {String} the type of request to be made, one of the following:
      *  (DELETE, GET, POST, PUT).
-     *  @param sync {boolean} flag indicating that a syncronous call should be made
+     *  @param sync {boolean} flag indicating that a synchronous call should be made
      *  if set to <code>true</code>. It is recommended to try to keep this set
      *  to <code>false</code> as synchronous calls will freeze the UI until complete.
      *  @param callback {function} the callback function that will return status and
@@ -233,7 +233,7 @@
      *  @param abortCallback {function} the callback function to which return if error
      *  request status <= 0 (no status recieved from server)
      */
-    function makeJsonRequest(url, type, sync=false, callback, dataObject, abortCallback, timeout) {
+    function makeJsonRequest(url, type, sync, callback, dataObject, abortCallback, timeout) {
         var self = this;
         var version = typeof $.getCMSVersion === "function" ? $.getCMSVersion() : "";
         var ajaxTimeout = $.perc_utils.percParseInt(timeout);
@@ -250,7 +250,7 @@
             url: url,
             headers: {"perc-version": version},
             success: function (data, textstatus) {
-                let result = {
+                var result = {
                     data: data,
                     textstatus: textstatus
                 };
@@ -259,7 +259,7 @@
             error: function (request, textstatus, error) {
                 // look for status 204 which should not be an error
                 if (request.status === 204 || request.status === 1223) {
-                    let result = {
+                    var result = {
                         data: {},
                         textstatus: request.statusText
                     };
@@ -267,7 +267,7 @@
                     return;
                 }
                 else if (request.status > 0) {
-                    let result = {
+                    var result = {
                         request: request,
                         textstatus: textstatus,
                         error: error
@@ -289,7 +289,7 @@
     }
     function makeAjaxRequest(args){
         if(!csrfSafeMethod(args.method)) {
-            let u = csrfGetURLFromServiceCall(args.url);
+            var u = csrfGetURLFromServiceCall(args.url);
             if (u != null) {
                 csrfGetToken(u, function (response) {
                     if (typeof response !== 'undefined' && response != null)
@@ -314,7 +314,7 @@
      *  Makes generic request
      *  TODO: Write the other requests in terms of this one
      */
-    function makeRequest(url, type, sync=false, callback, dataObject, contentType, dataType, noEscape, abortCallback) {
+    function makeRequest(url, type, sync, callback, dataObject, contentType, dataType, noEscape, abortCallback) {
         var self = this;
         var version = typeof $.getCMSVersion === "function" ? $.getCMSVersion() : "";
         if (dataType === null || typeof dataType === "undefined") {
@@ -342,7 +342,7 @@
             url: (noEscape) ? url : escape(url),
             headers: {"perc-version": version},
             success: function (data, textstatus) {
-                let result = {
+                var result = {
                     data: data,
                     textstatus: textstatus
                 };
@@ -351,7 +351,7 @@
             error: function (request, textstatus, error) {
                 // look for status 204 which should not be an error
                 if (request.status === 204 || request.status === 1223) {
-                    let result = {
+                    var result = {
                         data: {},
                         textstatus: request.statusText
                     };
@@ -359,7 +359,7 @@
                     return;
                 }
                 else if (request.status > 0) {
-                    let result = {
+                    var result = {
                         request: request,
                         textstatus: textstatus,
                         error: error
@@ -404,8 +404,8 @@
      * @param dataObject JSON payload object for request, may be null.
      */
     function makeXdmXmlRequest(servicebase, url, type, callback, dataObject) {
-        let self = this;
-        let version = typeof $.getCMSVersion === "function" ? $.getCMSVersion() : "";
+        var self = this;
+        var version = typeof $.getCMSVersion === "function" ? $.getCMSVersion() : "";
 
         if (null === callback || 'undefined' === typeof (callback)) {
             alert("Callback cannot be null or undefined");
@@ -434,7 +434,7 @@
         if (null != dataObject && '' !== dataObject && 'undefined' !== typeof (dataObject)) {
             body = JSON.stringify(dataObject);
         }
-        let init = {
+        var init = {
             url:url,
             async: true,
             dataType: "text",
@@ -457,14 +457,14 @@
             redirect: 'follow', // manual, *follow, error
             referrerPolicy: 'origin-when-cross-origin',
             success: function(data, textstatus){
-                let resp = {
+                var resp = {
                     data: data,
                     status: textstatus
                 };
                 callback(self.STATUS_SUCCESS,resp);
             },
             error: function(request, textstatus, error){
-                let resp = {
+                var resp = {
                     message: error,
                     status: textstatus
                 };
@@ -504,7 +504,7 @@
      * @param dataObject JSON payload object for request, may be null.
      */
      function makeXdmJsonRequest(servicebase, url, type, callback, dataObject) {
-        let self = this;
+        var self = this;
         if(null === callback || 'undefined' === typeof (callback))
         {
             console.error("Callback cannot be null or undefined");
@@ -534,13 +534,13 @@
         if (null !== dataObject && '' !== dataObject && 'undefined' !== typeof (dataObject)) {
             body = JSON.stringify(dataObject);
         }
-        const version = typeof $.getCMSVersion ==="function" ? $.getCMSVersion() : "";
+        var version = typeof $.getCMSVersion ==="function" ? $.getCMSVersion() : "";
         var header =   {
             'Content-Type': 'application/json',
             "Accept": "application/json,text/plain",
             "perc-version": version
         };
-        let init = {
+        var init = {
             url: url,
             dataType: "text",
             contentType: "application/json",
@@ -559,14 +559,14 @@
             redirect: 'follow', // manual, *follow, error
             referrerPolicy: 'origin-when-cross-origin',
             success: function(data, textstatus){
-                let resp = {
+                var resp = {
                     data: data,
                     status: textstatus
                 };
                 callback(self.STATUS_SUCCESS,resp);
             },
             error: function(request, textstatus, error){
-                let resp = {
+                var resp = {
                     message: error,
                     status: textstatus
                 };
@@ -614,7 +614,7 @@
      *  @param abortCallback {function} the callback function to which return if error
      *  request status <= 0 (no status recieved from server)
      */
-    function makeXmlRequest(url, type, sync=false, callback, dataString, abortCallback) {
+    function makeXmlRequest(url, type, sync, callback, dataString, abortCallback) {
         var self = this;
         var version = typeof $.getCMSVersion === "function" ? $.getCMSVersion() : "";
 
@@ -682,7 +682,7 @@
      *  @param abortCallback {function} the callback function to which return if error
      *  request status <= 0 (no status recieved from server)
      */
-    function makeDeleteRequest(url, sync=false, callback, dataString, abortCallback) {
+    function makeDeleteRequest(url, sync, callback, dataString, abortCallback) {
         var self = this;
         var version = typeof $.getCMSVersion === "function" ? $.getCMSVersion() : "";
 

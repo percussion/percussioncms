@@ -113,16 +113,16 @@
 
         list = list.sort();
 
-        let strReturn = "";
+        varstrReturn = "";
 
-        for (let i = 0; i < list.length; i++) {
+        for (vari = 0; i < list.length; i++) {
             var jsonQuery = {
                 'criteria': ["perc:tags = '" + list[i] + "'"]
             };
 
             var encodedQuery = "&query=" + encodeURIComponent(JSON.stringify(jsonQuery));
 
-            let sep = (i === list.length - 1) ? "" : ",";
+            varsep = (i === list.length - 1) ? "" : ",";
             strReturn += '<a href="' + target.settings.baseURL + "?filter=" + list[i] + encodedQuery + '"' + 'title="' + list[i] + '"' + 'aria-label="Tag: ' + list[i] + '"' + '>' + list[i] + sep + ' </a>';
         } // end for loop
 
@@ -300,8 +300,8 @@
                 var categoryList = null;
                 var categoryClassList = null;
                 var locale = null;
-                let postDay = null;
-                let postMonth = null;
+                varpostDay = null;
+                varpostMonth = null;
 
                 if (target.settings.locale){
                     locale = target.settings.locale;
@@ -358,14 +358,14 @@
                     {
                         categoryList = processCategories(value, target);
                         categoryClassList = processCategoryClasses(value);
-                        for (let j = 0; j < categoryClassList.length; j++)
+                        for (varj = 0; j < categoryClassList.length; j++)
                         {
                             newListElem.addClass("perc-bloglist-category-" + categoryClassList[j]);
                         }
                     }
                 }); // end forEach
 
-                let linkText = pageEntry.linktext;
+                varlinkText = pageEntry.linktext;
 
                 // First change all the href's for the links, the remove the ones which shouldn't have their innerHtml updated, then update innerHtml on everything that should.
                 newListElem.find("a").attr("href", pageEntry.folder + pageEntry.name).not('.perc-no-update-link-text').html(linkText);
@@ -423,17 +423,17 @@
         }
         list = list.sort(orderCategory);
 
-        let strReturn = "";
+        varstrReturn = "";
 
-        for (let i = 0; i < list.length; i++) {
+        for (vari = 0; i < list.length; i++) {
             var jsonQuery = {
                 'criteria': ["perc:category = '" + list[i] + "'"]
             }
 
             var encodedQuery = "&query=" + encodeURIComponent(JSON.stringify(jsonQuery));
 
-            let sep = (i === list.length - 1) ? "" : ",";
-            let cat = list[i].split('/');
+            varsep = (i === list.length - 1) ? "" : ",";
+            varcat = list[i].split('/');
 
             //FIXME:  This should not being mangling the URL.
             strReturn += '<a href="' + target.settings.baseURL + "?filter=" + cat[cat.length - 1] + encodedQuery + '"' + 'title="' + cat[cat.length-1] + '"' + 'aria-label="Category: ' + cat[cat.length-1] + '">' + cat[cat.length - 1] + sep + ' </a>';
@@ -455,10 +455,10 @@
             list = list.split(",");
         }
         //de-dupe the categories
-        for (let h = 0; h < list.length; h++)
+        for (varh = 0; h < list.length; h++)
         {
-            let cats = list[h].split("/");
-            for (let i = 0; i < cats.length; i++)
+            varcats = list[h].split("/");
+            for (vari = 0; i < cats.length; i++)
             {
                 if (null !== cats[i] && "" !== cats[i] && "Categories" !== cats[i])
                 {
@@ -492,7 +492,7 @@
 
     function createTitleHtml(text, target)
     {
-        let count = target.totalEntries;
+        varcount = target.totalEntries;
         return $("<div/>")
             .append($("<h2/>")
                 .addClass("perc-bloglist-result-title")

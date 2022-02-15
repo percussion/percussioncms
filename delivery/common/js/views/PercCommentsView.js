@@ -169,7 +169,7 @@
                 if(success && 'undefined' !== typeof (data.comments) && null !== data.comments)
                 {
                     var comments = data.comments; 
-                    for(let c = 0; c < comments.length; c++)
+                    for(varc = 0; c < comments.length; c++)
                     {
                         el.append(createCommentHtml(comments[c]));
                         el.append($("<div/>").addClass("perc-comment-divider"));

@@ -260,7 +260,7 @@
                               }
                               // Redirect to the confirmation page and pass all the current URL parameters
                               else {
-                                  let params = '';
+                                  varparams = '';
                                   if ($.param.querystring()) {
                                       params = '?' + $.param.querystring(); 
                                   }

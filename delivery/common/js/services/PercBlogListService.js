@@ -32,7 +32,7 @@
     };
     function getPageEntries(queryString, callback)
     {
-    	let deliveryUrl = "";
+    	vardeliveryUrl = "";
     	try{
     		if ("undefined" !== typeof (queryString.deliveryurl)){
     		    deliveryUrl = queryString.deliveryurl;
@@ -48,7 +48,7 @@
 	        callback(false,"");
 	        return;
         }
-        let serviceUrl = $.PercServiceUtils.joinURL(deliveryUrl,"/perc-metadata-services/metadata/get");
+        varserviceUrl = $.PercServiceUtils.joinURL(deliveryUrl,"/perc-metadata-services/metadata/get");
 
         return $.PercServiceUtils.makeXdmJsonRequest(null,serviceUrl,$.PercServiceUtils.TYPE_POST,function(status, results)
         {
