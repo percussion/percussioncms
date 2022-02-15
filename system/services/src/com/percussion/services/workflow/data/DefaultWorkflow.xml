@@ -666,19 +666,19 @@
               <transition-role>
                 <guid>0-25-1</guid>
                 <role-id>1</role-id>
-                <transition-id>6</transition-id>
+                <transition-id>21</transition-id>
                 <workflow-id>6</workflow-id>
               </transition-role>
               <transition-role>
                 <guid>0-25-4</guid>
                 <role-id>4</role-id>
-                <transition-id>6</transition-id>
+                <transition-id>21</transition-id>
                 <workflow-id>6</workflow-id>
               </transition-role>
               <transition-role>
                 <guid>0-25-5</guid>
                 <role-id>5</role-id>
-                <transition-id>6</transition-id>
+                <transition-id>21</transition-id>
                 <workflow-id>6</workflow-id>
               </transition-role>
             </transition-roles>
