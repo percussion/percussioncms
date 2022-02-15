@@ -24,9 +24,9 @@
 
 (function($){
 	
-    let likesServiceUrl = "/perc-comments-services/likes/";
+    var likesServiceUrl = "/perc-comments-services/likes/";
 	
-	const constants = {
+	var constants = {
         // Set Constants
         "PERC_TYPE_PAGE"                          : "PAGE",
         "PERC_TYPE_COMMENT"                       : "COMMENT",
@@ -39,10 +39,10 @@
      * Increments the number of times this item has been liked.
      * @param callback (function) function to call with response from server
      */
-    let likeThis = function(callback) {
+    var likeThis = function(callback) {
 		if("undefined" === typeof (callback) || null === callback) {return false};
 		
-		let likePathname = likeId(window.location.pathname);
+		var likePathname = likeId(window.location.pathname);
 
 		like(this.siteName, likePathname, constants.PERC_TYPE_PAGE, callback);
     };
@@ -55,11 +55,11 @@
      * @param callback (function) function to call with response from server
      */
     var like = function(site, id, type, callback) {
-        let likeServiceUrl = likesServiceUrl + "like/" + site + "/" + type + "/" + id;
+        var likeServiceUrl = likesServiceUrl + "like/" + site + "/" + type + "/" + id;
         $.PercServiceUtils.makeXdmJsonRequest(null, likeServiceUrl, $.PercServiceUtils.TYPE_POST, function(status, results)
         {
             if(status === $.PercServiceUtils.STATUS_SUCCESS){
-                let data = {url : site, totalLikes : results.data};
+                var data = {url : site, totalLikes : results.data};
 				setThisLiked(true, data.url);
                 callback(true, data);
             }
@@ -75,7 +75,7 @@
     var unlikeThis = function(callback) {
 		if("undefined" === typeof (callback) || null === callback){ return false};
 	
-		let likePathname = likeId(window.location.pathname);
+		var likePathname = likeId(window.location.pathname);
 		/*if(likePathname[0] == "/")
 		{
 			likePathname = likePathname.substring(1);
@@ -90,12 +90,12 @@
      * @param type (string) type of the item, for now it's only "PAGE", "COMMENTS" and "IMAGE"
      * @param callback (function) function to call with response from server
      */
-	let unlike = function(site, id, type, callback) {
-        let likeServiceUrl = likesServiceUrl + "unlike/" + site + "/" + type + "/" + id;
+	var unlike = function(site, id, type, callback) {
+        var likeServiceUrl = likesServiceUrl + "unlike/" + site + "/" + type + "/" + id;
         $.PercServiceUtils.makeXdmJsonRequest(null, likeServiceUrl, $.PercServiceUtils.TYPE_POST, function(status, results)
         {
             if(status === $.PercServiceUtils.STATUS_SUCCESS){
-                let data = {url : site, totalLikes : results.data};
+                var data = {url : site, totalLikes : results.data};
 				setThisLiked(false, data.url);
                 callback(true, data);
             }
@@ -109,8 +109,8 @@
      * Gets the total number of times this page has been liked.
      * @param callback (function) function to call with response from server
      */
-    let getTotalLikesForThisPage = function(callback) {
-		let likePathname = likeId(window.location.pathname);
+    var getTotalLikesForThisPage = function(callback) {
+		var likePathname = likeId(window.location.pathname);
 
 		getTotalLikes(this.siteName, likePathname, constants.PERC_TYPE_PAGE, callback);
     };
@@ -122,12 +122,12 @@
      * @param type (string) type of the item, for now it's only "PAGE", "COMMENTS" and "IMAGE"
      * @param callback (function) function to call with response from server
      */
-    let getTotalLikes = function(site, id, type, callback) {
+    var getTotalLikes = function(site, id, type, callback) {
         var likeServiceUrl = likesServiceUrl + "total/" + site + "/" + type + "/" + id;
         $.PercServiceUtils.makeXdmJsonRequest(null, likeServiceUrl, $.PercServiceUtils.TYPE_POST, function(status, results)
         {
             if(status === $.PercServiceUtils.STATUS_SUCCESS){
-                let data = {url : site, totalLikes : results.data};
+                var data = {url : site, totalLikes : results.data};
                 callback(true, data);
             }
             else{
@@ -139,9 +139,9 @@
 	 * Returns true or false for whether or not the current page is liked.
 	 * @return isLiked boolean true if liked, boolean false if not liked.
 	 */
-	let isThisLiked = function() {
+	var isThisLiked = function() {
 		
-		let pathname = window.location.pathname;
+		var pathname = window.location.pathname;
 		return isLiked(window.location.protocol + "//" + this.siteName + likeId(pathname));
 	};
 	/**
@@ -149,12 +149,12 @@
 	 * @param url fully qualified URI (not url) of page to query for.
 	 * @return isLiked boolean true if liked, boolean false if not liked.
 	 */
-	let isLiked = function(url) {
+	var isLiked = function(url) {
 		if("undefined" === typeof (url) || null === url) {
             return false;
         }
 		
-		let likedState = $.cookie(url);
+		var likedState = $.cookie(url);
 		if (null === likedState) {
             return false;
         }
@@ -173,8 +173,8 @@
 	 * @param pathname
 	 * @return resolved pathname
 	 */
-	let likeId = function(pathname){
-		let id = "";
+	var likeId = function(pathname){
+		var id = "";
 		if(pathname.lastIndexOf('.') !== -1)
         {
             id = pathname.substring(0, pathname.lastIndexOf('.'));
@@ -186,7 +186,7 @@
         }
         else
         {   
-            let indexValue = pathname.lastIndexOf('index');
+            var indexValue = pathname.lastIndexOf('index');
             if(indexValue !== -1) {
                 id = pathname.substring(0, indexValue);               
             }
@@ -203,7 +203,7 @@
      * @param siteName
 	 * @return success boolean true if setting of liked succeded, boolean false if it failed.
 	 */
-	let setThisLiked = function(liked,siteName) {
+	var setThisLiked = function(liked,siteName) {
 		if("undefined" === typeof (liked) || null === liked) {
             return false;
         }
@@ -222,7 +222,7 @@
 		if("undefined" === typeof (liked) || null === liked) {
 		    return false;
         }
-		let likedString = null;
+		var likedString = null;
 		if(true === liked) {
             likedString = "true";
         }
@@ -233,7 +233,7 @@
 		$.cookie(url,likedString, {"expires" : constants.PERC_ONE_YEAR});
 		
 	};
-    const PercLikedService = {
+    var PercLikedService = {
         "constants" : constants,
         "like" : like,
         "likeThis" : likeThis,
