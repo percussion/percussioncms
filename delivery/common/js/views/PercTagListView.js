@@ -48,7 +48,7 @@
             delete queryString.orderBy;
             //Set the base URL to create the href for each tag then
             //Set the base URL to create the href for each item then
-            varisEditMode = queryString.isEditMode;
+            let isEditMode = queryString.isEditMode;
             var baseURL = "";
             var isPreviewMode = queryString.isPreviewMode;
             if(isEditMode === "true" || isPreviewMode === "true"){

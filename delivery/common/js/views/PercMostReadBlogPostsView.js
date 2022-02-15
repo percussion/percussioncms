@@ -108,7 +108,7 @@
         }
 
         //Page title
-        vartitle = ("undefined" === typeof (entry.linktext)) ? "" : entry.linktext;
+        let title = ("undefined" === typeof (entry.linktext)) ? "" : entry.linktext;
         pageItem.append($("<" + headingElem + "/>")
                         .addClass("perc-most-read-page-title")
                         .text(title)
