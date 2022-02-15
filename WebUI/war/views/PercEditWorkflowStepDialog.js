@@ -266,17 +266,18 @@
                     }
                     for (let i=0; i<roleTransitions.length; i++) {
                         var tempName = roleTransitions[i];
-                        tempName = tempName.transitionPermission.toLowerCase();
-                        if(className === tempName){
-                            $(column).find('input').prop('checked',true);
-                            if(tempName === "publish" && !isReadOnly) {
-                                $(column).find('input').prop('disabled', false);
+						if(typeof tempName !== 'undefined'){
+                            tempName = tempName.transitionPermission.toLowerCase();
+                            if(className === tempName){
+                                $(column).find('input').prop('checked',true);
+                                if(tempName === "publish" && !isReadOnly) {
+                                    $(column).find('input').prop('disabled', false);
+                                }
+                                if(tempName === "approve" && !isReadOnly) {
+                                    $(row).find('td.perc-publish input').prop('disabled', false);
+                                }
                             }
-                            if(tempName === "approve" && !isReadOnly) {
-                                $(row).find('td.perc-publish input').prop('disabled', false);
-                            }
-                        }
-
+						}
                     }
                     var notifyChkBox = $(row).find("td.perc-notify input").prop('disabled', false);
                     if(notifyStatus) {
