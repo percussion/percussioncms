@@ -796,6 +796,10 @@
                                 <todir>conf</todir>
                             </configfile>
                             <configfile>
+                                <file>${project.basedir}/src/main/conf/perc/perc-catalina.properties</file>
+                                <todir>conf/perc</todir>
+                            </configfile>
+                            <configfile>
                                 <file>${project.basedir}/src/main/tomcat9/bin/setenv.bat</file>
                                 <todir>bin</todir>
                             </configfile>
