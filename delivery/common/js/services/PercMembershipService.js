@@ -46,7 +46,7 @@
      */
     function register(registerObj, callback)
     {
-        let serviceUrl = "/perc-membership-services/membership/user";
+        var serviceUrl = "/perc-membership-services/membership/user";
 
         $.PercServiceUtils.makeXdmJsonRequest(null, serviceUrl, $.PercServiceUtils.TYPE_POST, function(status, results)
         {
@@ -54,7 +54,7 @@
                 callback(status,results.data);
             }
             else{
-              let defMsg = $.PercServiceUtils.extractDefaultErrorMessage(results.request);
+              var defMsg = $.PercServiceUtils.extractDefaultErrorMessage(results.request);
               callback(status, defMsg);
             }
             
@@ -68,9 +68,9 @@
      */
     function getUser(sessionId, callback)
     {
-        let serviceUrl = "/perc-membership-services/membership/session";
+        var serviceUrl = "/perc-membership-services/membership/session";
 
-        let sessionIdData = {"sessionId" : sessionId};
+        var sessionIdData = {"sessionId" : sessionId};
                             
         $.PercServiceUtils.makeXdmJsonRequest(null, serviceUrl, $.PercServiceUtils.TYPE_POST, function(status, results)
         {
@@ -80,7 +80,7 @@
             }
             else
             {
-                let defMsg = $.PercServiceUtils.extractDefaultErrorMessage(results.request);
+                var defMsg = $.PercServiceUtils.extractDefaultErrorMessage(results.request);
                 callback(status, defMsg);
             }
         }, sessionIdData);
@@ -94,7 +94,7 @@
      */
     function login(loginObj, callback)
     {
-        let serviceUrl = "/perc-membership-services/membership/login";
+        var serviceUrl = "/perc-membership-services/membership/login";
         
         $.PercServiceUtils.makeXdmJsonRequest(null, serviceUrl, $.PercServiceUtils.TYPE_POST, function(status, results)
         {
@@ -104,7 +104,7 @@
     		}
             else
             {
-            	let defMsg = $.PercServiceUtils.extractDefaultErrorMessage(results.request);
+            	var defMsg = $.PercServiceUtils.extractDefaultErrorMessage(results.request);
                 callback(status, defMsg);
             }
         }, loginObj);
@@ -119,8 +119,8 @@
      */
     function resetPassword(email, newPassword, resetkey, callback)
     {
-        let serviceUrl = "/perc-membership-services/membership/pwd/reset/" + resetkey;
-        let pwResetObj = {"email":email, "password":newPassword};
+        var serviceUrl = "/perc-membership-services/membership/pwd/reset/" + resetkey;
+        var pwResetObj = {"email":email, "password":newPassword};
 
         $.PercServiceUtils.makeXdmJsonRequest(null, serviceUrl, $.PercServiceUtils.TYPE_POST, function(status, results)
         {
@@ -130,7 +130,7 @@
     		}
             else
             {
-            	let defMsg = $.PercServiceUtils.extractDefaultErrorMessage(results.request);
+            	var defMsg = $.PercServiceUtils.extractDefaultErrorMessage(results.request);
                 callback(status, defMsg);
             }
         }, pwResetObj);
@@ -144,11 +144,11 @@
      */
     function resetPwRequest(email, pwResetPageUrl, callback)
     {
-        let serviceUrl = "/perc-membership-services/membership/pwd/requestReset";
+        var serviceUrl = "/perc-membership-services/membership/pwd/requestReset";
         //TODO needs to be fixed...?
         pwResetPageUrl = window.location.protocol + '//' + window.location.host + pwResetPageUrl;
         
-        let pwResetObj = {"email":email, "redirectPage":pwResetPageUrl};
+        var pwResetObj = {"email":email, "redirectPage":pwResetPageUrl};
 
         $.PercServiceUtils.makeXdmJsonRequest(null, serviceUrl, $.PercServiceUtils.TYPE_POST, function(status, results)
         {
@@ -158,7 +158,7 @@
     		}
             else
             {
-            	let defMsg = $.PercServiceUtils.extractDefaultErrorMessage(results.request);
+            	var defMsg = $.PercServiceUtils.extractDefaultErrorMessage(results.request);
                 callback(status, defMsg);
             }
         }, pwResetObj);
@@ -171,7 +171,7 @@
      */
     function validateResetPwKey(key, callback)
     {
-        let serviceUrl = "/perc-membership-services/membership/pwd/validate/" + key;
+        var serviceUrl = "/perc-membership-services/membership/pwd/validate/" + key;
         
         $.PercServiceUtils.makeXdmJsonRequest(null, serviceUrl, $.PercServiceUtils.TYPE_POST, function(status, results)
         {
@@ -181,7 +181,7 @@
     		}
             else
             {
-            	let defMsg = $.PercServiceUtils.extractDefaultErrorMessage(results.request);
+            	var defMsg = $.PercServiceUtils.extractDefaultErrorMessage(results.request);
                 callback(status, defMsg);
                 
             }
@@ -195,7 +195,7 @@
      */
     function confirmRegistration(key, callback)
     {
-        let serviceUrl = "/perc-membership-services/membership/registration/confirm/" + key;
+        var serviceUrl = "/perc-membership-services/membership/registration/confirm/" + key;
         
         $.PercServiceUtils.makeXdmJsonRequest(null, serviceUrl, $.PercServiceUtils.TYPE_POST, function(status, results)
         {
@@ -205,7 +205,7 @@
     		}
             else
             {
-            	let defMsg = $.PercServiceUtils.extractDefaultErrorMessage(results.request);
+            	var defMsg = $.PercServiceUtils.extractDefaultErrorMessage(results.request);
                 callback(status, defMsg);
                 
             }

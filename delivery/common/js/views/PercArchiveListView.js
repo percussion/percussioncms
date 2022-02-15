@@ -97,24 +97,24 @@
 
                         for (var i = 0; i < itemToList; i++) {
                             var row = archiveList.years[i];
-                            let query = "";
-                            let anchorYear="";
-                            let linkYearText="";
-                            let yearParam1 = "";
-                            let yearParam2 = "";
-                            let encodedQuery ="";
-                            let monthsUl ="";
-                            let monthIndex = 0;
-                            let yearLi = "";
-                            let row2="";
-                            let stringMonthParam = "";
-                            let daysInMonth = "";
-                            let dateParam1 = "";
-                            let dateParam2 = "";
-                            let linkText = "";
-                            let a ="";
-                            let li = "";
-                            let href="";
+                            var query = "";
+                            var anchorYear="";
+                            var linkYearText="";
+                            var yearParam1 = "";
+                            var yearParam2 = "";
+                            var encodedQuery ="";
+                            var monthsUl ="";
+                            var monthIndex = 0;
+                            var yearLi = "";
+                            var row2="";
+                            var stringMonthParam = "";
+                            var daysInMonth = "";
+                            var dateParam1 = "";
+                            var dateParam2 = "";
+                            var linkText = "";
+                            var a ="";
+                            var li = "";
+                            var href="";
 
                             // If year don't have any entry - skip the year
                             if(0 < row.yearCount)
@@ -152,7 +152,7 @@
                                     monthIndex = archiveList.years[i].months.length;
                                 }
 
-                                for (let j = 0; j < archiveList.years[i].months.length; j++) {
+                                for (var j = 0; j < archiveList.years[i].months.length; j++) {
                                     row2 = archiveList.years[i].months[j];
 
                                     if(1 > row2.count)
@@ -220,28 +220,28 @@
                         }
 
                         //Set the variable if max entry value is defined
-                        let flatItemToList=0;
+                        var flatItemToList=0;
                         if(typeof(numberEntries) !== "undefined" && numberEntries !== "")
                         {
                              flatItemToList =  numberEntries;
                         }
-                        let listCounter = 0;
-                        let ul = $("<ul>").addClass(".perc-archive-list-wrapper perc-archive-flat");
-                        for (let i = 0; i < archiveList.years.length; i++) {
+                        var listCounter = 0;
+                        var ul = $("<ul>").addClass(".perc-archive-list-wrapper perc-archive-flat");
+                        for (var i = 0; i < archiveList.years.length; i++) {
 
-                            let row = archiveList.years[i];
+                            var row = archiveList.years[i];
                             //JSON object return the list of months in desc order, starting with December
 
-                            let monthIndex = 12;
+                            var monthIndex = 12;
                             if(i === 0)
                             {
                                 monthIndex = archiveList.years[i].months.length;
                             }
 
-                            for (let j = 0; j < archiveList.years[i].months.length; j++)
+                            for (var j = 0; j < archiveList.years[i].months.length; j++)
                             {
 
-                                let row2 = archiveList.years[i].months[j];
+                                var row2 = archiveList.years[i].months[j];
 
 
                                 if(row2.count < 1)
@@ -250,7 +250,7 @@
                                     continue;
                                 }
                                 //Generate the param date to be passed as part of the query criteria
-                                let stringMonthParam = "";
+                                var stringMonthParam = "";
                                 if (monthIndex >= 10)
                                 {
                                     stringMonthParam = monthIndex;
@@ -259,12 +259,12 @@
                                 {
                                     stringMonthParam = "0" + monthIndex;
                                 }
-                                let daysInMonth = new Date(row.year, monthIndex, 0).getDate();
-                                let dateParam1 = row.year + "-"+ stringMonthParam + "-01 00:00:00";
-                                let dateParam2 = row.year + "-"+ stringMonthParam + "-" + daysInMonth + " 00:00:00";
-                                let a = {};
+                                var daysInMonth = new Date(row.year, monthIndex, 0).getDate();
+                                var dateParam1 = row.year + "-"+ stringMonthParam + "-01 00:00:00";
+                                var dateParam2 = row.year + "-"+ stringMonthParam + "-" + daysInMonth + " 00:00:00";
+                                var a = {};
                                 //Generate the link text
-                                let linkText = row2.month + " " + row.year + " (" + row2.count + ")";
+                                var linkText = row2.month + " " + row.year + " (" + row2.count + ")";
 
                                 //Decrease the counter for the monthIndex
                                 if (monthIndex > 0)
@@ -277,17 +277,17 @@
                                     a = $("<a href = '#'>")
                                         .text(linkText);
                                 }else {
-                                    let query = JSON.parse(strJSON );
+                                    var query = JSON.parse(strJSON );
                                     query.criteria.push("dcterms:created >= '" + dateParam1 + "'");
                                     query.criteria.push("dcterms:created <= '" + dateParam2 + "'");
-                                    let encodedQuery = "&query=" + encodeURIComponent(JSON.stringify(query));
-                                    let href = baseURL + pageResult + "?filter="+ encodeURIComponent(row2.month +" "+ row.year) + encodedQuery;
+                                    var encodedQuery = "&query=" + encodeURIComponent(JSON.stringify(query));
+                                    var href = baseURL + pageResult + "?filter="+ encodeURIComponent(row2.month +" "+ row.year) + encodedQuery;
                                     a = $("<a>")
                                         .attr("href", href)
                                         .text(linkText);
                                 }
 
-                                let li = $("<li>")
+                                var li = $("<li>")
                                     .addClass("perc-archive-month")
                                     .append(a);
                                 ul.append(li);
