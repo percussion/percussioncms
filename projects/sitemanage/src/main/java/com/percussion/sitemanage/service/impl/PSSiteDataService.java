@@ -239,6 +239,7 @@ import static org.apache.commons.lang.Validate.notNull;
 
     private IPSRecentService recentService;
 
+
     @Autowired
     public PSSiteDataService(IPSiteDao dao, IPSPublishingWs publishingWs, IPSSiteManager siteMgr,
             IPSManagedNavService navService, IPSIdMapper idMapper, IPSSiteSectionService sectionService,
@@ -417,6 +418,7 @@ import static org.apache.commons.lang.Validate.notNull;
         notNull(props, "Properties cannot be null");
         IPSSite site = siteMgr.loadSiteModifiable(idMapper.getGuid(props.getId()));
         String newSiteName = props.getName();
+        String oldSiteName = site.getName();
         PSSiteCopyUtils.throwCopySiteMessageForUpdateError(site.getName(), newSiteName, "updateSiteProperties");
         validateSiteProperties(site, props);
 
@@ -446,7 +448,26 @@ import static org.apache.commons.lang.Validate.notNull;
         props.setPubServersChanged(pubServersChanged);
 
         sectionService.update(section);
+
+        updateThumbnailCache(oldSiteName, newSiteName);
+
         return props;
+    }
+
+    public static final String PAGE_IMAGE_CACHE_DIR= File.separator + "rx_resources" + File.separator + "images" + File.separator + "TemplateImages";
+
+    private void updateThumbnailCache(String oldSiteName, String newSiteName) {
+        log.info("Updating Page and Template thumbnail cache for site: {} to use new site name: {}...",
+                oldSiteName, newSiteName);
+
+        File sourceCacheDir = new File(PSServer.getRxDir().getAbsolutePath() +  PAGE_IMAGE_CACHE_DIR + File.separator + oldSiteName );
+        File destCacheDir = new File(PSServer.getRxDir().getAbsolutePath() + PAGE_IMAGE_CACHE_DIR + File.separator + newSiteName );
+        if(sourceCacheDir.renameTo(destCacheDir))
+            log.info("Page and Template image cache folder moved to to: {}", destCacheDir.getAbsolutePath());
+        else
+            log.error("Unable to automatically move: {} to {}.  An adminstrator may need to stop the service and rename / move the folder to resolve the issue.",
+                    sourceCacheDir.getAbsolutePath(),
+                    destCacheDir.getAbsolutePath());
     }
 
     private void updateSiteFromProps(IPSSite site, PSSiteProperties props) {
