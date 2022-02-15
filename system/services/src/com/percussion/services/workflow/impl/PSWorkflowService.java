@@ -346,6 +346,7 @@ public class PSWorkflowService
             for(PSTransition tr : transitions){
                if(tr.getName().equals(TRANSITION_NAME_ARCHIVE)){
                   isArchiveTransitionPresent = true;
+                  updateArchiveTransitionRoles(tr);
                   break;
                }
             }
@@ -378,6 +379,20 @@ public class PSWorkflowService
                state.setTransitions(transitions);
                saveWorkflow(rval);
             }
+         }
+      }
+   }
+
+   //Archive Transition Role had wrong TransitionId, thus fix it.
+   private void updateArchiveTransitionRoles(PSTransition archiveTran){
+      List<PSTransitionRole> archiveTransitionRoles = archiveTran.getTransitionRoles();
+      if(archiveTransitionRoles == null){
+         return;
+      }
+      //Fix TransactionId for Archive TransitionRoles
+      for(PSTransitionRole trRole : archiveTransitionRoles) {
+         if (trRole.getTransitionId() != archiveTran.getGUID().getUUID()) {
+            trRole.setTransitionId(archiveTran.getGUID().getUUID());
          }
       }
    }
