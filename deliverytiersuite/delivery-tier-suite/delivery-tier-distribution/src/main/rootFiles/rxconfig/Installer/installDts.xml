@@ -149,7 +149,7 @@
                         <include name="TomcatShutdown.sh"/>
                     </fileset>
                 </chmod>
-                <echo>Deleting Logging files...</echo>
+                <echo>Deleting files...</echo>
                 <delete file="${install.dir}/Deployment/Server/conf/logging.properties" failonerror="false" verbose="true" quiet="false"/>
                 <delete dir="${install.dir}/Deployment/Server/webapps/manager" failonerror="false" verbose="true" quiet="false"/>
                 <delete dir="${install.dir}/Deployment/Server/webapps/host-manager" failonerror="false" verbose="true" quiet="false"/>
@@ -304,6 +304,8 @@
             <delete failonerror="false" file="${install.dir}${staging.dir}/Deployment/Server/conf/Catalina/localhost/feeds.xml"/>
             <delete failonerror="false" file="${install.dir}${staging.dir}/Deployment/Server/webapps/perc-caching.war" />
             <delete failonerror="false" file="${install.dir}${staging.dir}/Deployment/Server/webapps/perc-caching" />
+            <delete failonerror="false" file="${install.dir}${staging.dir}/Deployment/Server/webapps/manager" />
+            <delete failonerror="false" file="${install.dir}${staging.dir}/Deployment/Server/webapps/host-manager" />
 
             <mkdir dir="${install.dir}${staging.dir}/Deployment/Server/conf/perc/"/>
             <if>
