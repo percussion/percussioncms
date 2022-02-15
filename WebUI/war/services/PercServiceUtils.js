@@ -581,7 +581,7 @@
              return true;
          }
         // these HTTP methods do not require CSRF protection
-        return !(['post','put','delete'].includes(method.toLowerCase()));
+        return !(['post','put','delete'].indexOf(method.toLowerCase())!==-1);
     }
 
 
