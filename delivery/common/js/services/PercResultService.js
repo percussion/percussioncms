@@ -29,7 +29,7 @@
     };
     function getPageEntries(queryString, callback)
     {
-    	vardeliveryUrl = "";
+    	let deliveryUrl = "";
 
     	try{
     		if ("undefined" !== typeof (queryString.deliveryurl)){
@@ -40,14 +40,14 @@
         catch (err) {
 		    console.error(err);
 	    }
-        varserviceUrl = $.PercServiceUtils.joinURL(deliveryUrl, "/perc-metadata-services/metadata/get");
+        let serviceUrl = $.PercServiceUtils.joinURL(deliveryUrl, "/perc-metadata-services/metadata/get");
         return $.PercServiceUtils.makeXdmJsonRequest(null,serviceUrl,$.PercServiceUtils.TYPE_POST,function(status, results)
         {
             if(status === $.PercServiceUtils.STATUS_SUCCESS){
                 callback(true,results.data);
             }
             else{
-              vardefMsg = $.PercServiceUtils.extractDefaultErrorMessage(results.request);
+              let defMsg = $.PercServiceUtils.extractDefaultErrorMessage(results.request);
               callback(false, defMsg);
             }
             

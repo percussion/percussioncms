@@ -526,8 +526,8 @@
                             <skipMerge>false</skipMerge>
                             <closureCompilationLevel>${closure.level}</closureCompilationLevel>
                             <closureCreateSourceMap>false</closureCreateSourceMap>
-                            <closureLanguageIn>ECMASCRIPT5</closureLanguageIn>
-                            <closureLanguageOut>ECMASCRIPT5</closureLanguageOut>
+                            <closureLanguageIn>ECMASCRIPT8</closureLanguageIn>
+                            <closureLanguageOut>ECMASCRIPT8</closureLanguageOut>
                             <verbose>true</verbose>
                             <closureWarningLevels>
                                 <nonStandardJsDocs>OFF</nonStandardJsDocs>

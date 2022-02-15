@@ -30,7 +30,7 @@
     function getTagEntries(queryString, orderBy, callback)
     {
         //var paramOrderBy = "?sortTagsBy=" + orderBy;
-    	vardeliveryUrl = "";
+    	let deliveryUrl = "";
     	try{
     		if ("undefined" !== typeof (queryString.deliveryurl)){
     		    deliveryUrl = queryString.deliveryurl;
@@ -47,14 +47,14 @@
             queryString.sortTagsBy = orderBy;
         }
 
-        varserviceUrl = $.PercServiceUtils.joinURL(deliveryUrl ,"/perc-metadata-services/metadata/tags/get");
+        let serviceUrl = $.PercServiceUtils.joinURL(deliveryUrl ,"/perc-metadata-services/metadata/tags/get");
         $.PercServiceUtils.makeXdmJsonRequest(null, serviceUrl,$.PercServiceUtils.TYPE_POST, function(status, results)
         {
             if(status === $.PercServiceUtils.STATUS_SUCCESS){
                 callback(true,results.data);
             }
             else{
-              vardefMsg = $.PercServiceUtils.extractDefaultErrorMessage(results.request);
+              let defMsg = $.PercServiceUtils.extractDefaultErrorMessage(results.request);
               callback(false, defMsg);
             }
             
