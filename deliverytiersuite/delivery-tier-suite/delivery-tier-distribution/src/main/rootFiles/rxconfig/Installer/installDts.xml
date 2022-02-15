@@ -732,6 +732,8 @@
 
                     <echo>Scanning existing configuration...</echo>
                     <PSUpdateDTSConfiguration rootDir="${install.dir}" />
+                    <delete failonerror="false" verbose="true" file="${install.dir}${staging.dir}/Deployment/Server/conf/server.xml.5.3" />
+
                     <PSUpgradeRemoveTomcatAJP rootDir="${install.dir}" />
                     <PSUpdateDTSCertificate rootDir="${install.dir}" />
 

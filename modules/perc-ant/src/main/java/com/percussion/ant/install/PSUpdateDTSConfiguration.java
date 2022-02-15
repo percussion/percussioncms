@@ -28,12 +28,14 @@ import com.percussion.install.PSLogger;
 import com.percussion.utils.container.DefaultConfigurationContextImpl;
 import com.percussion.utils.container.IPSConnector;
 import com.percussion.utils.container.adapters.DtsConnectorConfigurationAdapter;
+import org.apache.commons.lang.StringUtils;
+import org.apache.tools.ant.Project;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
@@ -56,6 +58,7 @@ public class PSUpdateDTSConfiguration extends PSAction {
     @Override
     public void execute()
     {
+
         String rxDir = getRootDir();
 
         File dtsRoot = new File(rxDir,PROD_PATH );
@@ -72,19 +75,19 @@ public class PSUpdateDTSConfiguration extends PSAction {
     private Properties loadPercCatalinaProperties(File percCatalinaFile) throws IOException {
         Properties prop = new Properties();
         try (FileInputStream inputStream = new FileInputStream(percCatalinaFile)) {
-            if (inputStream != null) {
                 prop.load(inputStream);
-            } else {
-                throw new FileNotFoundException("property file '" + CATALINA_PROPERTIES + "' not found in the classpath");
-            }
         }
         return prop;
     }
+
     private void updateConfiguration(File prodPath)  {
         File serverXmlFile = new File(prodPath,SERVER_XML);
         File catalinaPropsFile = new File(prodPath, CATALINA_PROPERTIES);
 
-        if (serverXmlFile.exists() && ! catalinaPropsFile.exists())
+        String version = getVersion(this.getProject());
+        boolean updatefrom53 = version != null && !StringUtils.isBlank(version) && version.equalsIgnoreCase("5.3");
+
+        if (serverXmlFile.exists() && (! catalinaPropsFile.exists()|| updatefrom53) )
         {
 
             DtsConnectorConfigurationAdapter adapter = new DtsConnectorConfigurationAdapter();
@@ -98,7 +101,7 @@ public class PSUpdateDTSConfiguration extends PSAction {
             Properties properties = new Properties();
             List<IPSConnector> connectors = null;
             if(prodPath.getAbsolutePath().contains(STAGING_PATH) || prodPath.getAbsolutePath().contains(STAGING_PATH_WIN)){
-                System.out.println("Processing Staging DTS configuration..");
+                PSLogger.logInfo("Processing Staging DTS configuration..");
                connectors = config.getConfig().getDtsConfig().getStagingDtsConnectorInfo().getConnectors();
                 File percCatalinaFile = new File(prodPath,CATALINA_PROPERTIES);
                 try {
@@ -112,7 +115,7 @@ public class PSUpdateDTSConfiguration extends PSAction {
                 }
 
             }else{
-                System.out.println("Processing Production DTS configuration..");
+                PSLogger.logInfo("Processing Production DTS configuration..");
                 connectors = config.getConfig().getDtsConfig().getDtsConnectorInfo().getConnectors();
                 File percCatalinaFile = new File(prodPath,CATALINA_PROPERTIES);
                 try {
@@ -138,7 +141,7 @@ public class PSUpdateDTSConfiguration extends PSAction {
                             for (String key : oldProps.keySet()) {
                                 if(key.equals("port") || key.equals("redirectPort")) {
                                     properties.put("http." + key, oldProps.get(key));
-                                    System.out.println("Captured property:" + "http." + key + ":=" + oldProps.get(key));
+                                    PSLogger.logInfo("Captured property:" + "http." + key + ":=" + oldProps.get(key));
                                 }
                             }
 
@@ -147,24 +150,24 @@ public class PSUpdateDTSConfiguration extends PSAction {
                             for (String key : oldProps.keySet()) {
                                 if(key.equals("port") ) {
                                     properties.put("https." + key, oldProps.get(key));
-                                    System.out.println("Captured property:" + "https." + key + ":=" + oldProps.get(key));
+                                    PSLogger.logInfo("Captured property:" + "https." + key + ":=" + oldProps.get(key));
                                 }else if(key.equals("keystoreFile")){
                                     properties.put("https.certificateKeystoreFile", oldProps.get(key));
                                     properties.put("https.keystoreFile", oldProps.get(key));
-                                    System.out.println("Captured property:" + "https.certificateKeystoreFile" + ":=" + oldProps.get(key));
-                                    System.out.println("Captured property:" + "https.keystoreFile" + ":=" + oldProps.get(key));
+                                    PSLogger.logInfo("Captured property:" + "https.certificateKeystoreFile" + ":=" + oldProps.get(key));
+                                    PSLogger.logInfo("Captured property:" + "https.keystoreFile" + ":=" + oldProps.get(key));
 
                                 }else if(key.equals("keystorePass") ){
                                     properties.put("https.certificateKeystorePassword" , oldProps.get(key));
                                     properties.put("https.keystorePass" , oldProps.get(key));
-                                    System.out.println("Captured property:" + "https.certificateKeystorePassword" + ":=" + oldProps.get(key));
-                                    System.out.println("Captured property:" + "https.keystorePass" + ":=" + oldProps.get(key));
+                                    PSLogger.logInfo("Captured property:" + "https.certificateKeystorePassword" + ":=" + oldProps.get(key));
+                                    PSLogger.logInfo("Captured property:" + "https.keystorePass" + ":=" + oldProps.get(key));
 
                                 } else if(key.equals("keyAlias")){
                                     properties.put("https.certificateKeyAlias", oldProps.get(key));
                                     properties.put("https.keyAlias", oldProps.get(key));
-                                    System.out.println("Captured property:" + "https.certificateKeyAlias" + ":=" + oldProps.get(key));
-                                    System.out.println("Captured property:" + "https.keyAlias" + ":=" + oldProps.get(key));
+                                    PSLogger.logInfo("Captured property:" + "https.certificateKeyAlias" + ":=" + oldProps.get(key));
+                                    PSLogger.logInfo("Captured property:" + "https.keyAlias" + ":=" + oldProps.get(key));
 
                                 }
 
@@ -181,5 +184,38 @@ public class PSUpdateDTSConfiguration extends PSAction {
             }
 
         }
+    }
+
+    /**
+     * return the previously installed version if possible.
+     * @param p ant project
+     * @return null or the version
+     */
+    private String getVersion(Project p){
+        if(p==null)
+            return null;
+
+        String backupdir = p.getProperty("new.backup.dir");
+
+        if(backupdir == null)
+            return null;
+
+        File versionProps = new File(backupdir + File.separator + "Version.properties");
+        if(!versionProps.exists())
+            return null;
+
+        try(InputStream in = new FileInputStream(versionProps)){
+            Properties props = new Properties();
+            props.load(in);
+            String major = props.getProperty("majorVersion");
+            String minor = props.getProperty("minorVersion");
+            if(major != null && minor != null)
+                return major + "." + minor;
+            else
+                return null;
+        } catch (IOException e) {
+            return null;
+        }
+
     }
 }
