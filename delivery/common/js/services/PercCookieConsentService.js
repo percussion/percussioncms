@@ -33,7 +33,7 @@
     
     function postConsentEntry(opts, deliveryUrl, callback)
     {
-        let serviceUrl = $.PercServiceUtils.joinURL(deliveryUrl, "/perc-metadata-services/metadata/consent/log");
+        varserviceUrl = $.PercServiceUtils.joinURL(deliveryUrl, "/perc-metadata-services/metadata/consent/log");
 
         $.PercServiceUtils.makeXdmJsonRequest(null, serviceUrl, $.PercServiceUtils.TYPE_POST, function(status, results)
         {

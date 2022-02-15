@@ -31,7 +31,7 @@
 		if(feedUrl === "" || typeof feedUrl === 'undefined'){
 			return "";
 		}
-    	let deliveryUrl = "";
+    	vardeliveryUrl = "";
     	try{
     		if ("undefined" !== typeof (queryString.deliveryurl)){
     		    deliveryUrl = queryString.deliveryurl;
@@ -42,15 +42,15 @@
 		    console.error(err);
 	    }
         feedUrl = feedUrl.split("&").join("%26");
-    	let feedsUrlData = {"feedsUrl" : feedUrl};
-		let serviceUrl = $.PercServiceUtils.joinURL(deliveryUrl, "/feeds/rss/readExternalFeed");
+    	varfeedsUrlData = {"feedsUrl" : feedUrl};
+		varserviceUrl = $.PercServiceUtils.joinURL(deliveryUrl, "/feeds/rss/readExternalFeed");
 		$.PercServiceUtils.makeXdmXmlRequest(null, serviceUrl, $.PercServiceUtils.TYPE_POST, function(status, results) {
             if (status === $.PercServiceUtils.STATUS_SUCCESS) {
                 callback(true, results.data);
             }
             else
             {
-                let defMsg = $.PercServiceUtils.extractDefaultErrorMessage(results.request);
+                vardefMsg = $.PercServiceUtils.extractDefaultErrorMessage(results.request);
                 callback(false, defMsg);
                 }
             }, feedsUrlData);
