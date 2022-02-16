@@ -385,9 +385,16 @@ public class PSPageService extends PSAbstractDataService<PSPage, PSPage, String>
             StringBuilder purgeItemPaths = new StringBuilder();
             if (purgeItem) {
                 IPSItemSummary summ = dataItemSummaryService.find(id, RECYCLED_TYPE);
-                purgeItemPaths.append(summ.getFolderPaths().get(0).replaceFirst("//Folders/\\$System\\$", ""));
-                purgeItemPaths.append("/");
-                purgeItemPaths.append(summ.getName());
+                //CMS-9013 : if the site has been deleted and the page is still in recycle bin somehow (might be bad data due to copy site).
+                //folder path is empty so do not process the folderpath. Also the purgeItemPaths variable is only used for logging purpose.
+                if(summ.getFolderPaths() != null && !summ.getFolderPaths().isEmpty()){
+                    purgeItemPaths.append(summ.getFolderPaths().get(0).replaceFirst("//Folders/\\$System\\$", ""));
+                    purgeItemPaths.append("/");
+                    purgeItemPaths.append(summ.getName());
+                }else{
+                    log.info("FolderPath not found for Page: '{}'. Seems Site for Page : '{}' has been deleted. Page being sent for purging by user: {}",
+                            summ.getName(), summ.getName(),  currentUser);
+                }
             }
 
             PSPage page = super.load(id);
