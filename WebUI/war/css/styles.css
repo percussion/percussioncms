@@ -607,7 +607,7 @@ a#perc-page-close.perc-close,#perc-page-edit.perc-edit-button
     white-space:nowrap;
 }
 
-#perc-template-lib div.template:hover
+#perc-template-lib button.template:hover
 {
     background-color:#effcda;
 }
@@ -849,7 +849,7 @@ div.perc-scrollable-templates div.perc-items div.perc-template-item.perc-templat
     border-color:#CAF589;
 }
 
-#perc-template-lib td div
+#perc-template-lib td button
 {
     height:113px;
     width:122px;
@@ -2417,7 +2417,7 @@ div.perc-scrollable-templates div.perc-items div.perc-template-item:hover
     background-color:#E6E6E9;
 }
 
-.perc-part-tab:hover,.perc-min-max,#tabs #perc-temp-lib-expander:hover,#perc-template-lib td div:hover,li.perc-template-pages-items:hover,#perc-styleTabs ul.ui-tabs-nav li a:hover,.perc-revisions-preview-img,.perc-revisions-restore-img,#perc-wid-lib-expander span,#perc-region-library-expander span,#perc_orphan_assets_expander span
+.perc-part-tab:hover,.perc-min-max,#tabs #perc-temp-lib-expander:hover,#perc-template-lib td button:hover,li.perc-template-pages-items:hover,#perc-styleTabs ul.ui-tabs-nav li a:hover,.perc-revisions-preview-img,.perc-revisions-restore-img,#perc-wid-lib-expander span,#perc-region-library-expander span,#perc_orphan_assets_expander span
 {
     cursor:pointer;
 }
