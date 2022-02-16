@@ -169,7 +169,7 @@
 .ui-widget-overlay
 {
     background:none repeat-x scroll 50% 50% #000000;
-    opacity:0.3px;
+    opacity:0.3%;
 }
 
 .perc-dialog .ui-dialog-titlebar #ui-dialog-title-1,.perc-dialog .ui-dialog-titlebar .ui-dialog-title
@@ -3204,7 +3204,7 @@ li.ui-tabs-active #perc-tab-style,#perc-tab-style:hover,#ui-state-active
 {
     background-color: #E6E6E9;
     box-shadow: 4px 4px 4px #bbb;
-    -moz-box-shadow: 4x 4px 4px #bbb;
+    -moz-box-shadow: 4px 4px 4px #bbb;
     -webkit-box-shadow: 4px 4px 4px #bbb;
     filter: progid:DXImageTransform.Microsoft.Shadow(color=#cccccc,direction=135,strength=4);
     height: 10px;
@@ -3424,8 +3424,8 @@ li.ui-tabs-active #perc-tab-style,#perc-tab-style:hover,#ui-state-active
 .perc-site-summary.ui-dialog-content {
     position: relative;
     overflow: inherit;
-    box-shadow: 0px 0px 5px -2px #888 ;
-    border: 1px solid #eee\9;
+    box-shadow: 0px 0px 5px -2px #888;
+    border: 1px solid #eee;
     padding: 0;
     background: white;
     font-family: 'Open Sans', sans-serif;
