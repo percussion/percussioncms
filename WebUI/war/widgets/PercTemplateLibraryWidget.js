@@ -183,12 +183,33 @@
 				// Append the selection behavior to each of the template listings
 				// THIS ENABLES TEMPLATES UNDER THE ADD TEMPLATES DIALOG TO BE SELECTED
 				// TODO: make a more specific selector (the parent should be the base element)
-				var templates = $(".template").on("click",function()
-				{
-					// unselect selected div and then select the new div
-					$("#perc-template-lib .perc-selected").removeClass("perc-selected");
-					$(this).addClass("perc-selected");
+				var templates = $(".template").on({
+					"click": function(event){
+						// unselect selected div and then select the new div
+						$("#perc-template-lib .perc-selected").removeClass("perc-selected");
+						$(this).addClass("perc-selected");
+					},
+					"dblclick": function(event){
+						event.stopPropagation();
+						event.stopImmediatePropagation();
+
+						$(this).click();
+						$("#perc_add_template_dialog_save").trigger("click");
+
+					},
+					"keydown": function(event){
+						event.stopPropagation();
+						event.stopImmediatePropagation();
+
+						if(event.code == "Enter"){
+							$(this).dblclick();
+						}
+					}
 				});
+
+				//wire the double click and enter keys to trigger save
+
+
 
 				// The first element will be the selected one by default (there will always be at least
 				// one element)
