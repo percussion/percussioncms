@@ -392,7 +392,7 @@ public class PSPageService extends PSAbstractDataService<PSPage, PSPage, String>
                     purgeItemPaths.append("/");
                     purgeItemPaths.append(summ.getName());
                 }else{
-                    log.info("FolderPath not found for Page: '{}'. Seems Site for Page : '{}' has been deleted. Page being sent for purging by user: {}",
+                    log.debug("FolderPath not found for Page: '{}'. Seems Site for Page : '{}' has been deleted. Page being sent for purging by user: {}",
                             summ.getName(), summ.getName(),  currentUser);
                 }
             }
