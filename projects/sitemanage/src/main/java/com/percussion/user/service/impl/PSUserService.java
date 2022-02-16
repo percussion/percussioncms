@@ -1123,7 +1123,7 @@ public class PSUserService implements IPSUserService
         {
             subjects = roleMgr.findUsers(asList(query), PSServerConfigUpdater.DIRECTORY_SET_NAME, "directorySet", null, true);
         }
-        catch (PSSecurityCatalogException e)
+        catch (PSSecurityCatalogException | PSSecurityException e)
         {
             log.error("General directory service failure: {}" , PSExceptionUtils.getMessageForLog(e));
             log.debug(PSExceptionUtils.getDebugMessageForLog(e));
@@ -1133,12 +1133,6 @@ public class PSUserService implements IPSUserService
                 throw new PSDirectoryServiceException("The network connection to the remote LDAP server has timed out.  Please check server network connectivity and try again.");
             }
             throw new PSDirectoryServiceException(e);
-        }
-        catch (PSSecurityException e)
-        {
-            log.error("Failed to connect to Directory Server: {}", PSExceptionUtils.getMessageForLog(e));
-            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
-            throw new PSDirectoryServiceConnectionException(e);
         }
         catch (IllegalArgumentException ae)
         {
