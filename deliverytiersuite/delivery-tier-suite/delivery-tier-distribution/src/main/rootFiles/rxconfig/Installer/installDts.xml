@@ -304,8 +304,8 @@
             <delete failonerror="false" file="${install.dir}${staging.dir}/Deployment/Server/conf/Catalina/localhost/feeds.xml"/>
             <delete failonerror="false" file="${install.dir}${staging.dir}/Deployment/Server/webapps/perc-caching.war" />
             <delete failonerror="false" file="${install.dir}${staging.dir}/Deployment/Server/webapps/perc-caching" />
-            <delete failonerror="false" file="${install.dir}${staging.dir}/Deployment/Server/webapps/manager" />
-            <delete failonerror="false" file="${install.dir}${staging.dir}/Deployment/Server/webapps/host-manager" />
+            <delete failonerror="false" dir="${install.dir}${staging.dir}/Deployment/Server/webapps/manager"  verbose="true" quiet="false"/>
+            <delete failonerror="false" dir="${install.dir}${staging.dir}/Deployment/Server/webapps/host-manager"  verbose="true" quiet="false"/>
 
             <mkdir dir="${install.dir}${staging.dir}/Deployment/Server/conf/perc/"/>
             <if>
@@ -593,6 +593,9 @@
 
                         </fileset>
                     </copy>
+
+                    <delete failonerror="false" dir="${install.dir}${staging.dir}/Deployment/Server/webapps/manager"  verbose="true" quiet="false"/>
+                    <delete failonerror="false" dir="${install.dir}${staging.dir}/Deployment/Server/webapps/host-manager"  verbose="true" quiet="false"/>
 
                     <if>
                         <available file="${install.dir}${staging.dir}/Deployment/Server/derbydata" type="dir"/>
