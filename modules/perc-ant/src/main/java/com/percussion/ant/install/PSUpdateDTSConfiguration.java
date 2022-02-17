@@ -29,7 +29,6 @@ import com.percussion.utils.container.DefaultConfigurationContextImpl;
 import com.percussion.utils.container.IPSConnector;
 import com.percussion.utils.container.adapters.DtsConnectorConfigurationAdapter;
 import org.apache.commons.lang.StringUtils;
-import org.apache.tools.ant.Project;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -82,14 +81,11 @@ public class PSUpdateDTSConfiguration extends PSAction {
 
     private void updateConfiguration(File prodPath)  {
         File serverXmlFile = new File(prodPath,SERVER_XML);
-        File catalinaPropsFile = new File(prodPath, CATALINA_PROPERTIES);
-
-        String version = getVersion(this.getProject());
+        String version = getUpgradingFromVersion();
         boolean updatefrom53 = version != null && !StringUtils.isBlank(version) && version.equalsIgnoreCase("5.3");
 
-        if (serverXmlFile.exists() && (! catalinaPropsFile.exists()|| updatefrom53) )
+        if (serverXmlFile.exists() && updatefrom53 )
         {
-
             DtsConnectorConfigurationAdapter adapter = new DtsConnectorConfigurationAdapter();
             DefaultConfigurationContextImpl config = new DefaultConfigurationContextImpl(Paths.get(getRootDir()), "ENC_KEY");
 
@@ -188,34 +184,34 @@ public class PSUpdateDTSConfiguration extends PSAction {
 
     /**
      * return the previously installed version if possible.
-     * @param p ant project
      * @return null or the version
      */
-    private String getVersion(Project p){
-        if(p==null)
+    private String getUpgradingFromVersion() {
+        PSLogger.logInfo("In Get version");
+        File versionProps = new File(getRootDir() + File.separator + "PreviousVersion.properties");
+        if (!versionProps.exists())
             return null;
-
-        String backupdir = p.getProperty("new.backup.dir");
-
-        if(backupdir == null)
-            return null;
-
-        File versionProps = new File(backupdir + File.separator + "Version.properties");
-        if(!versionProps.exists())
-            return null;
-
-        try(InputStream in = new FileInputStream(versionProps)){
+        PSLogger.logInfo("PreviousVersion Prop File Found");
+        try (InputStream in = new FileInputStream(versionProps)) {
             Properties props = new Properties();
             props.load(in);
             String major = props.getProperty("majorVersion");
             String minor = props.getProperty("minorVersion");
-            if(major != null && minor != null)
-                return major + "." + minor;
-            else
-                return null;
+            String version = new String();
+            if (major != null) {
+                PSLogger.logInfo("Major Version:" + major);
+                version = major;
+                if (minor != null) {
+                    version = version + "." + minor;
+                    PSLogger.logInfo("Version:" + version);
+                    return version;
+                }
+            }
+            return null;
         } catch (IOException e) {
             return null;
         }
-
     }
+
+
 }
