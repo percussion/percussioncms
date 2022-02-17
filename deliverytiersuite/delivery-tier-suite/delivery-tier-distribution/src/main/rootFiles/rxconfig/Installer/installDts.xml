@@ -125,6 +125,8 @@
             </then>
         </if>
 
+        <!--Keep Before Upgrade Version File to know upgrade is from what version to what -->
+        <copy file="${install.dir}/Version.properties" tofile="${install.dir}/PreviousVersion.properties" overwrite="true" failonerror="false" force="true"/>
         <copy file="${install.src}/Version.properties" tofile="${install.dir}/Version.properties" overwrite="true" failonerror="false" force="true"/>
 
         <if>
@@ -186,6 +188,8 @@
                 <delete dir="${install.dir}/Staging/Deployment/Server/WEB-INF" failonerror="false"/>
             </else>
         </if>
+        <!-- Delete PreviousVersion.properties file-->
+        <delete file="${install.dir}/PreviousVersion.properties" failonerror="false" verbose="true"/>
     </target>
 
     <target name="updateDTSTableSchema">
@@ -866,9 +870,7 @@
                     </chmod>
                 </then>
             </if>
-
-
-        </sequential>
+       </sequential>
     </macrodef>
 
 </project>
