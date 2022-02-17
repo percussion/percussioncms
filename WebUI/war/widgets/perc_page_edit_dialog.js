@@ -146,7 +146,7 @@
             _addFieldGroups();
 
             //Add timeout to handle race condition with the editor
-            setTimeout(function () { _handleAutoSummary();}, 1000);
+            setTimeout(function () { _handleAutoSummary();}, 4000);
 
             $("#edit-page-metadata-frame").contents().find("#perc-content-edit-metadata-link").show();
         }
