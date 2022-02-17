@@ -80,6 +80,8 @@ public class TestUpdateDTSConfiguration {
         InputStream srcStageDTSXML= DtsConnectorConfigurationAdapterTest.class.getResourceAsStream("/com/percussion/utils/container/Staging/Deployment/Server/conf/server.xml");
         InputStream srcProdDTSXML53= DtsConnectorConfigurationAdapterTest.class.getResourceAsStream("/com/percussion/utils/container/Deployment/Server/conf/server.xml.5.3");
         InputStream srcStageDTSXML53= DtsConnectorConfigurationAdapterTest.class.getResourceAsStream("/com/percussion/utils/container/Staging/Deployment/Server/conf/server.xml.5.3");
+        InputStream srcProdDTSProps= DtsConnectorConfigurationAdapterTest.class.getResourceAsStream("/com/percussion/ant/install/mockinstall/Deployment/Server/conf/perc/perc-catalina.properties");
+        InputStream srcStageDTSProps = DtsConnectorConfigurationAdapterTest.class.getResourceAsStream("/com/percussion/ant/install/mockinstall/Staging/Deployment/Server/conf/perc/perc-catalina.properties");
 
         temporaryFolder.newFolder("jetty","base","etc");
         temporaryFolder.newFolder("Deployment","Server","conf");
@@ -97,31 +99,34 @@ public class TestUpdateDTSConfiguration {
         Files.copy(srcStageDTSXML53,root.resolve("Staging/Deployment/Server/conf/server.xml.5.3"));
         Files.createDirectory(root.resolve("Staging/Deployment/Server/conf/perc"));
         Files.createDirectory(root.resolve("Deployment/Server/conf/perc"));
+        Files.copy(srcProdDTSProps,root.resolve("Deployment/Server/conf/perc/perc-catalina.properties"));
+        Files.copy(srcStageDTSProps,root.resolve("Staging/Deployment/Server/conf/perc/perc-catalina.properties"));
+
 
         PSUpdateDTSConfiguration task = new PSUpdateDTSConfiguration();
         task.setRootDir(root.toAbsolutePath().toString());
 
         task.execute();
 
-        Properties stagingProps = new Properties();
-        try(FileInputStream in = new FileInputStream(root.resolve("Staging/Deployment/Server/conf/perc/perc-catalina.properties").toAbsolutePath().toString())){
-            stagingProps.load(in) ;
 
-            assertEquals("9970", stagingProps.get("http.port"));
-
-            assertEquals("9443", stagingProps.get("https.port"));
-
-        }
 
         Properties prodProps = new Properties();
         try(FileInputStream in = new FileInputStream(root.resolve("Deployment/Server/conf/perc/perc-catalina.properties").toAbsolutePath().toString())){
             prodProps.load(in) ;
 
-            assertEquals("9980", prodProps.get("http.port"));
+            assertEquals("29980", prodProps.get("http.port"));
 
+            assertEquals("28443", prodProps.get("https.port"));
 
-            assertEquals("8443", prodProps.get("https.port"));
+        }
 
+        Properties stagingProps = new Properties();
+        try(FileInputStream in = new FileInputStream(root.resolve("Staging/Deployment/Server/conf/perc/perc-catalina.properties").toAbsolutePath().toString())){
+            stagingProps.load(in) ;
+
+            assertEquals("29970", stagingProps.get("http.port"));
+
+            assertEquals("29443", stagingProps.get("https.port"));
 
         }
 

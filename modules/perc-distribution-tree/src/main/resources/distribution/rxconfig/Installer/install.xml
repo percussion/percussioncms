@@ -311,23 +311,22 @@
     <!-- Deletes includes folders that should be fully replaced by install -->
 
     <patternset id="upgrade.replace.folders">
-        <include name="Administration"/>
-        <include name="InlineLinkConverter"/>
-        <include name="cm"/>
-        <include name="Docs"/>
-        <include name="Exits"/>
-        <include name="ManagedNavExits"/>
-        <include name="SiteFolderPublishinExits"/>
-        <include name="WorkflowExits"/>
-        <include name="Packages/Percussion"/>
-        <include name="jetty/upstream"/>
-        <include name="jetty/defaults"/>
+        <include name="Administration/**"/>
+        <include name="InlineLinkConverter/**"/>
+        <include name="cm/**"/>
+        <include name="Docs/**"/>
+        <include name="Exits/**"/>
+        <include name="ManagedNavExits/**"/>
+        <include name="SiteFolderPublishinExits/**"/>
+        <include name="WorkflowExits/**"/>
+        <include name="Packages/Percussion/**"/>
+        <include name="jetty/upstream/**"/>
+        <include name="jetty/defaults/**"/>
         <include name="rxconfig/Server/requestHandlers/publisherhandler.xml"/>
-        <include name="logs"/>
-        <include name="rxconfig/Installer/data"/>
-        <include name="web_resources/cm"/>
+        <include name="logs/**"/>
+        <include name="rxconfig/Installer/data/**"/>
+        <include name="web_resources/cm/**"/>
     </patternset>
-
 
     <patternset id="upgrade.delete">
         <include name="jetty/base/lib/extra/PSOToolkit*.jar"/>
