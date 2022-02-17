@@ -1121,7 +1121,7 @@ public class PSUserService implements IPSUserService
         List<Subject> subjects;
         try
         {
-            subjects = roleMgr.findUsers(asList(query), PSServerConfigUpdater.DIRECTORY_SET_NAME, "directorySet", null, true);
+            subjects = roleMgr.findUsers(Collections.singletonList(query), PSServerConfigUpdater.DIRECTORY_SET_NAME, "directorySet", null, true);
         }
         catch (PSSecurityCatalogException | PSSecurityException e)
         {
