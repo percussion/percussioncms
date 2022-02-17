@@ -218,8 +218,8 @@
                     datalistContainer.append(createAssetEditorListEntry(assetEditor,index))
 
 
-                    //Wire the keypress event
-                    $(".perc-items .item").on("keypress", function(event){
+                    //Wire the keydown event
+                    $(".perc-items .item").on("keydown", function(event){
                         event.stopPropagation();
                         event.stopImmediatePropagation();
 
