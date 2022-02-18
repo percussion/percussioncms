@@ -29,6 +29,7 @@ import com.percussion.utils.container.DefaultConfigurationContextImpl;
 import com.percussion.utils.container.IPSConnector;
 import com.percussion.utils.container.adapters.DtsConnectorConfigurationAdapter;
 import org.apache.commons.lang.StringUtils;
+import org.apache.tools.ant.Project;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -188,7 +189,15 @@ public class PSUpdateDTSConfiguration extends PSAction {
      */
     private String getUpgradingFromVersion() {
         PSLogger.logInfo("In Get version");
-        File versionProps = new File(getRootDir() + File.separator + "PreviousVersion.properties");
+        Project p = this.getProject();
+        if(p == null)
+            return null;
+        String backupdir = p.getProperty("new.backup.dir");
+
+        if(backupdir == null)
+            return null;
+        PSLogger.logInfo("Backup Dir Found:" + backupdir);
+        File versionProps = new File(backupdir + File.separator + "Version.properties");
         if (!versionProps.exists())
             return null;
         PSLogger.logInfo("PreviousVersion Prop File Found");
