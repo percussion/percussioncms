@@ -207,10 +207,6 @@
 					}
 				});
 
-				//wire the double click and enter keys to trigger save
-
-
-
 				// The first element will be the selected one by default (there will always be at least
 				// one element)
 				$(templates[0]).addClass('perc-selected');
