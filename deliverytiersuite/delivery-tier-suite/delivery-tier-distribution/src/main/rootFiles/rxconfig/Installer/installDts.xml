@@ -124,9 +124,6 @@
                 <install-dts type="Staging" upgrade="${stage.dts.upgrade}"/>
             </then>
         </if>
-
-        <!--Keep Before Upgrade Version File to know upgrade is from what version to what -->
-        <copy file="${install.dir}/Version.properties" tofile="${install.dir}/PreviousVersion.properties" overwrite="true" failonerror="false" force="true"/>
         <copy file="${install.src}/Version.properties" tofile="${install.dir}/Version.properties" overwrite="true" failonerror="false" force="true"/>
 
         <if>
@@ -188,8 +185,7 @@
                 <delete dir="${install.dir}/Staging/Deployment/Server/WEB-INF" failonerror="false"/>
             </else>
         </if>
-        <!-- Delete PreviousVersion.properties file-->
-        <delete file="${install.dir}/PreviousVersion.properties" failonerror="false" verbose="true"/>
+
     </target>
 
     <target name="updateDTSTableSchema">
@@ -411,6 +407,9 @@
                     <property name="new.backup.dir" value="${perc.dts.backup}/${backup.dirname}" />
 
                     <echo>Backing up existing DTS to ${new.backup.dir} ...</echo>
+
+                    <!--Keep Version File to know upgrade is from what version to what -->
+                    <copy file="${install.dir}/Version.properties" tofile="${new.backup.dir}/Version.properties" overwrite="true" failonerror="false" force="true"/>
 
                     <copy todir="${new.backup.dir}${staging.dir}" preservelastmodified="true" overwrite="true" force="true" verbose="true">
                         <fileset dir="${install.dir}${staging.dir}/Deployment" />
