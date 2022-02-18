@@ -869,7 +869,7 @@
             if(isError)
             {
 
-                dialogHTML = "<div id='perc-import-template-wrapper'>" + "<iframe name='perc-import-template-frame' id='perc-import-template-frame' height='83px' FRAMEBORDER='0' width='100%' src='../app/importTemplate.jsp?status=PERC_ERROR&message=The file you attempted to import is not a valid XML file. Choose a valid CM1 template XML file for upload.'></iframe>" + "</div>";
+                dialogHTML = "<div id='perc-import-template-wrapper'>" + "<iframe name='perc-import-template-frame' id='perc-import-template-frame' height='83px' FRAMEBORDER='0' width='100%' src='../app/importTemplate.jsp?status=PERC_ERROR&message=The file you attempted to import is not a valid XML file. Choose a valid Page template XML file for upload.'></iframe>" + "</div>";
             }
 
             // Wrap the iframe inside the dialog
