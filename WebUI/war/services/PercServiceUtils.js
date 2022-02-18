@@ -120,7 +120,7 @@
             if ('function' === typeof (jQuery.getDeliveryServiceBase)) {
                 var servicebase = jQuery.getDeliveryServiceBase();
                 if(servicebase !== null && typeof servicebase !== 'undefined') {
-                    if(!url.startsWith(servicebase) && !url.startsWith("http")){
+                    if(!url.substring(0,servicebase.length-1) === (servicebase) && !url.substring(0,3) === "http"){
                         url = joinURL(servicebase,url);
                     }
                 }
@@ -426,7 +426,7 @@
                 return;
             }
         }
-        if(!url.startsWith(servicebase) && !url.startsWith("http")){
+        if(!url.substring(0,servicebase.length-1) === (servicebase) && !url.substring(0,3) === "http"){
             url = joinURL(servicebase,url);
         }
         var body;
@@ -525,7 +525,7 @@
             }
         }
 
-        if(!url.startsWith(servicebase) && !url.startsWith("http")){
+        if(!url.substring(0,servicebase.length-1) === (servicebase) && !url.substring(0,3) === "http"){
             url = joinURL(servicebase,url);
         }
 
