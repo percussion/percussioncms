@@ -223,17 +223,17 @@ private static final int DEFAULT_BUFFER_SIZE = 20480; // 20KB.
 	      }
 	      catch (Exception e)
 	        {
-	           String msg = "The file you attempted to import is not a CM1 template XML file. Choose a valid CM1 template XML file for upload";
+	           String msg = "The file you attempted to import is not a Page template XML file. Choose a valid CM1 template XML file for upload";
 	           Throwable cause = e.getCause();
 	           if(cause != null && StringUtils.isNotBlank(cause.getLocalizedMessage()))
 	           {
-	              msg = cause.getLocalizedMessage();
+	              msg = cause.getMessage();
 	           }
 	           else if(StringUtils.isNotBlank(e.getLocalizedMessage()))
 	           {
-	              msg = e.getLocalizedMessage();
+	              msg = e.getMessage();
 	           }
-	           log.error("Error getting the content from file: " +  msg);
+	           log.error("Error getting the content from file: {}" ,  msg);
 	           return new PSTemplate();
 	        }
 
