@@ -1033,11 +1033,16 @@ public class PSManagedNavService implements IPSManagedNavService
          result = true;  // shortcut, since can't be a real navon in this case
       else
       {
-         int navonGrandparentPos = navonFolders.size() - 2;
-         int parentFolderPos = parentFolders.size() - 1;
-         PSLocator navonGpFolderLoc = navonFolders.get(navonGrandparentPos);
-         PSLocator parentFolderLoc = parentFolders.get(parentFolderPos);
-         result = navonGpFolderLoc.getId() != parentFolderLoc.getId();
+         try {
+            int navonGrandparentPos = navonFolders.size() - 2;
+            int parentFolderPos = parentFolders.size() - 1;
+
+            PSLocator navonGpFolderLoc = navonFolders.get(navonGrandparentPos);
+            PSLocator parentFolderLoc = parentFolders.get(parentFolderPos);
+            result = navonGpFolderLoc.getId() != parentFolderLoc.getId();
+         }catch(Exception e){
+            log.error("Error processing navigation section link: Error: {}", e.getMessage());
+         }
       }
 
       
