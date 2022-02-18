@@ -682,7 +682,7 @@
                 <workflow-id>6</workflow-id>
               </transition-role>
             </transition-roles>
-            <trigger>Quick Edit</trigger>
+            <trigger>Archive</trigger>
             <workflow-id>6</workflow-id>
           </transition>
         </transitions>
