@@ -85,17 +85,17 @@
             href: url
         });
         var path = url;
-        if(path.includes("/perc-metadata-services/"))
+        if(path.indexOf("/perc-metadata-services/") !== -1)
             path = CSRF_METADATA_PATH;
-        else if(path.includes("/perc-form-processor/"))
+        else if(path.indexOf("/perc-form-processor/") !== -1)
             path = CSRF_FORMS_PATH;
-        else if(path.includes("/perc-polls-services"))
+        else if(path.indexOf("/perc-polls-services") !== -1)
             path = CSRF_POLLS_PATH;
-        else if(path.includes("/perc-comments-services/"))
+        else if(path.indexOf("/perc-comments-services/")!== -1)
             path = CSRF_COMMENTS_PATH;
-        else if(path.includes("/perc-membership-services/"))
+        else if(path.indexOf("/perc-membership-services/") !== -1)
             path = CSRF_MEMBERSHIP_PATH;
-        else if(path.includes("/feeds/"))
+        else if(path.indexOf("/feeds/") !== -1)
             path = CSRF_FEEDS_PATH;
         else
             path = null;

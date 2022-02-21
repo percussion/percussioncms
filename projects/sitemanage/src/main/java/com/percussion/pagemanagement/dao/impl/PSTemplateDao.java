@@ -316,7 +316,7 @@ public class PSTemplateDao implements IPSTemplateDao, ApplicationContextAware
     public PSTemplate save(PSTemplate template, String siteId)
             throws PSDataServiceException {
         if (log.isDebugEnabled()) {
-            log.debug("Saving template: " + template);
+            log.debug("Saving template: {}" , template);
         }
 
         notNull(template, "template");
@@ -1000,7 +1000,7 @@ public class PSTemplateDao implements IPSTemplateDao, ApplicationContextAware
      */
     public PSTemplate generateTemplateFromSource(PSTemplate template, String siteId) throws PSTemplateException, IPSPathService.PSPathNotFoundServiceException {
         if (log.isDebugEnabled()){
-            log.debug("Saving template: " + template);}
+            log.debug("Saving template: {}" , template);}
         notNull(template, "template");
 
         IPSGuid siteGuid = guidMgr.makeGuid(siteId, PSTypeEnum.SITE);
