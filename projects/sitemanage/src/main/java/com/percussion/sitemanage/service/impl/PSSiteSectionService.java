@@ -1799,11 +1799,16 @@ public class PSSiteSectionService implements IPSSiteSectionService
 
             for (String id : section.getChildIds())
             {
-                PSSiteSection cSection = loadSiteSection(idMapper.getGuid(id), sectionGuid, null,
-                        true, true, displayPath);
+                try {
+                    PSSiteSection cSection = loadSiteSection(idMapper.getGuid(id), sectionGuid, null,
+                            true, true, displayPath);
+
                 PSSectionNode cNode = loadSectionTree(cSection);
                 cNode.setFolderPath(cSection.getFolderPath());
                 childNodes.add(cNode);
+                }catch(PSSiteSectionException e){
+                    log.warn("Skipping navigation section for Navigation node {}.  Unable to load section with error: {}", id,e.getMessage());
+                }
             }
         }
         node.setChildNodes(childNodes);
