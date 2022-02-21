@@ -27,7 +27,6 @@ import com.percussion.error.IPSException;
 import com.percussion.share.validation.PSErrorCause;
 import com.percussion.share.validation.PSErrors;
 import com.percussion.share.validation.PSErrors.PSObjectError;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 
 /**
@@ -52,7 +51,18 @@ public class PSErrorUtils
         }else {
             oe.setCode(exception.getClass().getCanonicalName());
         }
-        oe.setDefaultMessage(StringUtils.defaultString(exception.getMessage(),"Server error processing request, see log for details."));
+        String cause = exception.getMessage();
+        if(exception.getCause() != null ){
+            if( exception.getCause().getLocalizedMessage() != null) {
+                cause = exception.getCause().getLocalizedMessage();
+            }else if (exception.getCause().getMessage() != null){
+                cause = exception.getCause().getMessage();
+            }
+        }
+        if(cause == null || cause.isEmpty()){
+            cause = "Server error processing request, see log for details.";
+        }
+        oe.setDefaultMessage(cause);
         oe.setCause(new PSErrorCause(exception));
         errors.setGlobalError(oe);
         return errors;
