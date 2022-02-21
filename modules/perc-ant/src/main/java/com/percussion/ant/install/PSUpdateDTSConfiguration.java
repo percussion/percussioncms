@@ -58,17 +58,18 @@ public class PSUpdateDTSConfiguration extends PSAction {
     @Override
     public void execute()
     {
-
         String rxDir = getRootDir();
-
+        String version = getUpgradingFromVersion();
+        boolean updatefrom53 = version != null && !StringUtils.isBlank(version) && version.equalsIgnoreCase("5.3");
+        PSLogger.logInfo("****Processing Production DTS configuration..");
         File dtsRoot = new File(rxDir,PROD_PATH );
         if(dtsRoot.exists()) {
-            updateConfiguration(dtsRoot);
+            updateConfiguration(dtsRoot,updatefrom53);
         }
-
-        dtsRoot = new File(rxDir,STAGING_PATH);
-        if(dtsRoot.exists()) {
-            updateConfiguration(dtsRoot);
+        PSLogger.logInfo("****Processing Staging DTS configuration..");
+        File dtsStagingRoot = new File(rxDir,STAGING_PATH);
+        if(dtsStagingRoot.exists()) {
+            updateConfiguration(dtsStagingRoot,updatefrom53);
         }
     }
 
@@ -80,13 +81,12 @@ public class PSUpdateDTSConfiguration extends PSAction {
         return prop;
     }
 
-    private void updateConfiguration(File prodPath)  {
+    private void updateConfiguration(File prodPath,boolean updatefrom53)  {
         File serverXmlFile = new File(prodPath,SERVER_XML);
-        String version = getUpgradingFromVersion();
-        boolean updatefrom53 = version != null && !StringUtils.isBlank(version) && version.equalsIgnoreCase("5.3");
-
+        PSLogger.logInfo("****Processing Path:" + prodPath);
         if (serverXmlFile.exists() && updatefrom53 )
         {
+            PSLogger.logInfo("****Processing : " + serverXmlFile.getPath());
             DtsConnectorConfigurationAdapter adapter = new DtsConnectorConfigurationAdapter();
             DefaultConfigurationContextImpl config = new DefaultConfigurationContextImpl(Paths.get(getRootDir()), "ENC_KEY");
 
@@ -103,9 +103,18 @@ public class PSUpdateDTSConfiguration extends PSAction {
                 File percCatalinaFile = new File(prodPath,CATALINA_PROPERTIES);
                 try {
                     if(percCatalinaFile.exists()) {
+                        PSLogger.logInfo("Processing Staging DTS Perc-Catalina Exist..");
                         properties = loadPercCatalinaProperties(percCatalinaFile);
                     }else{
-                        percCatalinaFile.createNewFile();
+                        //Make a copy of Prod Perc-catalina.properties and just update ports specific to staging.
+                        File prodFolder = new File(getRootDir(),PROD_PATH);
+                        File prodCatalina = new File(prodFolder,CATALINA_PROPERTIES);
+                        if(prodCatalina.exists()){
+                            properties = loadPercCatalinaProperties(prodCatalina);
+                        }else {
+                            PSLogger.logInfo("Processing Staging DTS Creating New Perc-Catalina..");
+                            percCatalinaFile.createNewFile();
+                        }
                     }
                 }catch(IOException io){
                     PSLogger.logError("Error loading perc-catalina.properties: " + io.getMessage());

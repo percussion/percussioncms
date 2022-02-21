@@ -284,8 +284,20 @@
                     <equals arg1="@{upgrade}" arg2="true"/>
                 </and>
                 <then>
-                    <echo>RENAMING SERVER XML to 5.3..</echo>
-                    <copy file="${install.dir}${staging.dir}/Deployment/Server/conf/server.xml" tofile="${install.dir}${staging.dir}/Deployment/Server/conf/server.xml.5.3" overwrite="false" />
+                    <echo>RENAMING Production SERVER XML to 5.3..</echo>
+                    <if>
+                        <available file="${install.dir}/Deployment/Server/conf/server.xml"/>
+                        <then>
+                            <copy file="${install.dir}/Deployment/Server/conf/server.xml" tofile="${install.dir}/Deployment/Server/conf/server.xml.5.3" overwrite="false" />
+                        </then>
+                    </if>
+                    <echo>RENAMING Staging SERVER XML to 5.3..as it is required by PSUpdateDTSConfiguration</echo>
+                    <if>
+                        <available file="${install.dir}/Staging/Deployment/Server/conf/server.xml"/>
+                        <then>
+                            <copy file="${install.dir}/Staging/Deployment/Server/conf/server.xml" tofile="${install.dir}/Staging/Deployment/Server/conf/server.xml.5.3" overwrite="false" />
+                        </then>
+                    </if>
                     <echo>Create New SERVER XML</echo>
                     <copy verbose="true" todir="${install.dir}${staging.dir}/Deployment/Server/conf">
                         <fileset dir="${install.src}/Deployment/Server/conf/">
@@ -740,7 +752,8 @@
 
                     <echo>Scanning existing configuration...</echo>
                     <PSUpdateDTSConfiguration rootDir="${install.dir}" />
-                    <delete failonerror="false" verbose="true" file="${install.dir}${staging.dir}/Deployment/Server/conf/server.xml.5.3" />
+                    <delete failonerror="false" verbose="true" file="${install.dir}/Deployment/Server/conf/server.xml.5.3" />
+                    <delete failonerror="false" verbose="true" file="${install.dir}/Staging/Deployment/Server/conf/server.xml.5.3" />
 
                     <PSUpgradeRemoveTomcatAJP rootDir="${install.dir}" />
                     <PSUpdateDTSCertificate rootDir="${install.dir}" />

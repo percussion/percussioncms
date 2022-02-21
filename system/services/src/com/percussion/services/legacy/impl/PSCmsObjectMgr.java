@@ -246,7 +246,7 @@ public class PSCmsObjectMgr
       List<Integer> filteredIds = new ArrayList<>();
        for (Integer id:ids) {
            PSItemEntry itemEntry = (PSItemEntry)cache.getItem(id);
-           if(itemEntry.getPostDate() == null){
+           if(itemEntry != null && itemEntry.getPostDate() == null){
                filteredIds.add(id);
            }
        }
