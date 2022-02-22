@@ -29,15 +29,14 @@ import com.percussion.server.PSRequest;
 import com.percussion.server.PSUserSession;
 import com.percussion.servlets.PSSecurityFilter;
 import com.percussion.utils.request.PSRequestInfo;
+import com.percussion.utils.testing.IntegrationTest;
+import org.apache.cactus.ServletTestCase;
+import org.junit.experimental.categories.Category;
 
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import com.percussion.utils.testing.IntegrationTest;
-import org.apache.cactus.ServletTestCase;
-import org.junit.experimental.categories.Category;
 
 /**
  * Test case for the {@link PSRoleManager}. Requires the mock role and subject
@@ -413,7 +412,7 @@ public class PSRoleManagerTest extends ServletTestCase
    {
       PSRoleManager mgr = PSRoleManager.getInstance();
       Set noMailSet = new HashSet();
-      Set<String> mailSet = new HashSet<String>();
+      Set<PSNotificationEmailAddress> mailSet = new HashSet<>();
       
       mailSet = mgr.getRoleEmailAddresses("Editor", null, null, noMailSet);
       assertTrue(mailSet.contains("subCatUser2_1@test.percussion.com"));

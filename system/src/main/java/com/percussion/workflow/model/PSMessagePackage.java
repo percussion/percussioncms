@@ -24,10 +24,14 @@
 
 package com.percussion.workflow.model;
 
+import com.percussion.security.PSNotificationEmailAddress;
+
+import java.util.List;
+
 /**
  * Light weight class used to contain the following
  * fields for sending to a message queue.  This was implemented
- * to send a  list of unique messages to the {@link #executor} as one
+ * to send a  list of unique messages to the executer as one
  * thread as opposed to creating many threads for each e-mail for each
  * recipient.
  *
@@ -45,6 +49,24 @@ public class PSMessagePackage {
     private String emailToStr;
     private String subj;
     private String emailBody;
+    private List<PSNotificationEmailAddress> sourceEmailTo;
+    private List<PSNotificationEmailAddress> sourceEmailCC;
+
+    public List<PSNotificationEmailAddress> getSourceEmailTo() {
+        return sourceEmailTo;
+    }
+
+    public void setSourceEmailTo(List<PSNotificationEmailAddress> sourceEmailTo) {
+        this.sourceEmailTo = sourceEmailTo;
+    }
+
+    public List<PSNotificationEmailAddress> getSourceEmailCC() {
+        return sourceEmailCC;
+    }
+
+    public void setSourceEmailCC(List<PSNotificationEmailAddress> sourceEmailCC) {
+        this.sourceEmailCC = sourceEmailCC;
+    }
 
     public String getEmailBody() {
         return emailBody;
@@ -77,4 +99,5 @@ public class PSMessagePackage {
     public void setUserEmail(String userEmail) {
         this.userEmail = userEmail;
     }
+
 }
