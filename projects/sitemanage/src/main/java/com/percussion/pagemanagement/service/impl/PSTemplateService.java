@@ -25,6 +25,7 @@
 package com.percussion.pagemanagement.service.impl;
 
 import com.percussion.assetmanagement.service.IPSWidgetAssetRelationshipService;
+import com.percussion.cms.IPSConstants;
 import com.percussion.itemmanagement.service.IPSWorkflowHelper;
 import com.percussion.pagemanagement.dao.IPSPageDao;
 import com.percussion.pagemanagement.dao.IPSPageDaoHelper;
@@ -666,8 +667,8 @@ public class PSTemplateService implements IPSTemplateService
         }
 
         @Override
-        public PSRegionWidgetAssociations getWidgetAssocations(PSTemplate wa,
-                PSBeanValidationException e)
+        public PSRegionWidgetAssociations getWidgetAssociations(PSTemplate wa,
+                                                                PSBeanValidationException e)
         {
             return wa.getRegionTree();
         }
@@ -859,7 +860,7 @@ public class PSTemplateService implements IPSTemplateService
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Logger log = LogManager.getLogger(PSTemplateService.class);
+    private static final Logger log = LogManager.getLogger(IPSConstants.DESIGN_LOG);
 
 
 }
