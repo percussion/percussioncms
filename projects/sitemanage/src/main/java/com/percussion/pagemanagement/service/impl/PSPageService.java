@@ -1074,7 +1074,7 @@ try {
         }
 
         @Override
-        public PSRegionWidgetAssociations getWidgetAssocations(PSPage wa, PSBeanValidationException e)
+        public PSRegionWidgetAssociations getWidgetAssociations(PSPage wa, PSBeanValidationException e)
         {
             return wa.getRegionBranches();
         }

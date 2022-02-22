@@ -587,5 +587,6 @@ public interface IPSConstants
 
 
     public static final String EXTENSIONS_LOG = "Extensions";
+   public static final String DESIGN_LOG = "Design";
 }
 
