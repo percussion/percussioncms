@@ -49,6 +49,11 @@ public class LocalDateDeserializer extends JsonDeserializer<LocalDateTime>
                 date.append(":");
             }
             dateInStringFormat= date.substring(0, date.length()-1).toString()+"."+dateInStringFormat.split("\\.")[1];
+            String time = dateInStringFormat.split("T")[1];
+            String hour = time.split(":")[0];
+            if(hour.length() == 1){
+                dateInStringFormat = dateInStringFormat.replace("T"+hour,"T0"+hour);
+            }
             return LocalDateTime.parse(dateInStringFormat);
         }catch (Exception e){
             log.error("Exception occurred while parsing : "+ dateInStringFormat +" : ", new PSDataServiceException(e.getMessage()));
