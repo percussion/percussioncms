@@ -165,10 +165,7 @@
                 $.ajax( {
                     type: 'GET',
                     success: callback,
-                    error:  function(request, textstatus, error){
-                        if(request.status !== 0)
-                            err(I18N.message("perc.ui.path.manager@No Path")+path_str);
-                    },
+                    error:  err,
                     url: serviceUrl,
                     dataType: 'json',
                     cache: false
@@ -178,10 +175,7 @@
                 $.ajax( {
                     type: 'GET',
                     success: callback,
-                    error:  function(request, textstatus, error){
-                        if(request.status !== 0)
-                            err(I18N.message("perc.ui.path.manager@No Path")+path_str);
-                    },
+                    error:  err,
                     url: $.perc_paths.PATH_ITEM + path_str,
                     dataType: 'json',
                     cache: false

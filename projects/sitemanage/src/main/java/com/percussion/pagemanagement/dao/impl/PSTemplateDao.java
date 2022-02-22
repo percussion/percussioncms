@@ -316,7 +316,7 @@ public class PSTemplateDao implements IPSTemplateDao, ApplicationContextAware
     public PSTemplate save(PSTemplate template, String siteId)
             throws PSDataServiceException {
         if (log.isDebugEnabled()) {
-            log.debug("Saving template: " + template);
+            log.debug("Saving template: {}" , template);
         }
 
         notNull(template, "template");
@@ -398,7 +398,7 @@ public class PSTemplateDao implements IPSTemplateDao, ApplicationContextAware
             }
             if(templateName.substring(templateName.length()-1).equalsIgnoreCase("-")){
                 //the base name for copied template
-                templateName = templateName.substring(0, templateName.length()-3);
+                templateName = templateName.substring(0, templateName.length()-1);
             }
             //Unique name using the base name in template folder for given site path
             try {
@@ -1000,7 +1000,7 @@ public class PSTemplateDao implements IPSTemplateDao, ApplicationContextAware
      */
     public PSTemplate generateTemplateFromSource(PSTemplate template, String siteId) throws PSTemplateException, IPSPathService.PSPathNotFoundServiceException {
         if (log.isDebugEnabled()){
-            log.debug("Saving template: " + template);}
+            log.debug("Saving template: {}" , template);}
         notNull(template, "template");
 
         IPSGuid siteGuid = guidMgr.makeGuid(siteId, PSTypeEnum.SITE);

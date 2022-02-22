@@ -34,6 +34,7 @@ import com.percussion.security.PSAuthenticationFailedException;
 import com.percussion.security.PSAuthorizationException;
 import com.percussion.security.PSEncryptProperties;
 import com.percussion.security.PSEncryptor;
+import com.percussion.security.PSNotificationEmailAddress;
 import com.percussion.server.IPSInternalRequest;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.server.IPSServerErrors;
@@ -58,6 +59,7 @@ import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.io.PathUtils;
 import com.percussion.utils.jdbc.PSConnectionHelper;
 import com.percussion.utils.string.PSStringUtils;
+import com.percussion.workflow.mail.IPSMailMessageContext;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -69,10 +71,12 @@ import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
 
 import javax.naming.NamingException;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -244,7 +248,13 @@ public class PSWorkFlowUtils
 
    public static final String NOTIFICATION_ENABLE = "NOTIFICATION_ENABLE";
 
+   /**
+    * The property that turns on test run mode.
+    */
+   public static final String ENABLE_TEST_RUN_MODE = "ENABLE_TEST_RUN_MODE";
 
+   public static final String TEST_RUN_MODE_LOG_LOCATION = File.separator + "jetty" +
+           File.separator + "base" + File.separator + "logs" + File.separator + "notifications_test_run.log";
    /**
     * Default user name when workflow action is triggered by a server action.
     */
@@ -512,7 +522,6 @@ public class PSWorkFlowUtils
 
       /*
        * Initialize properties used for debugging.
-       * TODO: use get/set methods that don't require restarting the server
        */
       String temp = properties.getProperty("TESTWITHOUTSERVER", "false");
       if (null != temp && temp.trim().equalsIgnoreCase("true"))
@@ -1854,7 +1863,7 @@ public class PSWorkFlowUtils
     * occurance of any item, and discarding <CODE>null</CODE> strings.
     * Returns <CODE>null</CODE> if the original list is null.
     */
-   public static List caseInsensitiveUniqueList(List inputList)
+   public static List<String> caseInsensitiveUniqueList(List<String> inputList)
    {
       HashMap localMap = new HashMap();
       if (null == inputList)
@@ -1892,6 +1901,60 @@ public class PSWorkFlowUtils
       }
 
       return new ArrayList(localMap.values());
+   }
+
+   /**
+    * Create a list that contains only strings from an existing list which are
+    * unique under case-insensitive comparison, retaining the first occurrence
+    * of any item, and discarding <CODE>null</CODE> strings. Leading and
+    * trailing whitespace is trimmed from strings.
+    * to <CODE>null</CODE>.
+    *
+    * @param inputList  list of <CODE>PSNotificationEmailAddress</CODE>
+    * @return           list that contains only strings from the input list
+    * which are unique under case-insensitive comparision, retaining the first
+    * occurance of any item, and discarding <CODE>null</CODE> strings.
+    * Returns <CODE>null</CODE> if the original list is null.
+    */
+   public static List<PSNotificationEmailAddress> caseInsensitiveUniqueEmailList(List<PSNotificationEmailAddress> inputList)
+   {
+      if (null == inputList)
+      {
+         return null;
+      }
+
+      if (inputList.isEmpty())
+      {
+         return inputList;
+      }
+
+      Iterator<PSNotificationEmailAddress> iter = inputList.iterator();
+      Map<String,PSNotificationEmailAddress> localMap = new HashMap<>();
+      String key = null;
+      PSNotificationEmailAddress val = null;
+      String email = null;
+
+      /*
+       * Create a map with the lower cased strings as keys, and the strings as
+       * values. This map collects the unique strings.
+       */
+      while (iter.hasNext())
+      {
+         val = iter.next();
+         email = val.getEmail();
+         if (null != email) {
+
+            email = email.trim();
+            key = email.toLowerCase();
+
+
+            if (!localMap.containsKey(key)) {
+               val.setEmail(email);
+               localMap.put(key, val);
+            }
+         }
+      }
+      return new ArrayList<>(localMap.values());
    }
 
    /**
@@ -1969,13 +2032,13 @@ public class PSWorkFlowUtils
     * @throws IllegalArgumentException if list is <CODE>null</CODE> or
     * empty.
     */
-   public static String listToDelimitedString (List list,
+   public static String listToDelimitedString (List<String> list,
                                                String delimeter,
                                                String stringForNull)
    {
 
       // Null or empty lists are not allowed
-      if ( null == list || list.size() == 0 )
+      if ( null == list || list.isEmpty() )
       {
          throw new IllegalArgumentException(
             "List to be delimited may not be null or empty.");
@@ -1997,9 +2060,54 @@ public class PSWorkFlowUtils
 
       while (iter.hasNext())
       {
-         delimitedStringBuilder.append(delimeter +
+         delimitedStringBuilder.append(delimeter).append(
                                       toStringHandleNull(iter.next(),
                                                          stringForNull));
+      }
+      return delimitedStringBuilder.toString();
+   }
+
+   /**
+    * Create a string by concatenating the string representations of the
+    * elements of an array list, separating the substrings by a delimiter.
+    *
+    * @param  list       the array list from which the string will be created
+    * @param  delimiter  the delimiter used to separate the substrings
+    *                    can be empty ("").
+    * @throws IllegalArgumentException if list is <CODE>null</CODE> or
+    * empty.
+    */
+   public static String emailListToDelimitedString (List<PSNotificationEmailAddress> list,
+                                               String delimiter,
+                                               String stringForNull)
+   {
+
+      // Null or empty lists are not allowed
+      if ( null == list || list.isEmpty() )
+      {
+         throw new IllegalArgumentException(
+                 "List to be delimited may not be null or empty.");
+      }
+
+      // If there is only one element, no delimiter is needed.
+      if (list.size() == 1 )
+      {
+         return list.get(0).getEmail();
+      }
+
+      Iterator<PSNotificationEmailAddress> iter = list.iterator();
+
+
+      // To get delimiters between the substrings, put in the first substring
+      // and thereafter append delimiter + substring.
+      StringBuilder delimitedStringBuilder =
+              new StringBuilder(toStringHandleNull(iter.next().getEmail(), stringForNull));
+
+      while (iter.hasNext())
+      {
+         delimitedStringBuilder.append(delimiter).append(
+                 toStringHandleNull(iter.next().getEmail(),
+                         stringForNull));
       }
       return delimitedStringBuilder.toString();
    }
@@ -2573,9 +2681,72 @@ public class PSWorkFlowUtils
       }
    }
 
+
+   /**
+    * Determine if notifications are in test run mode.  In test run mode notifications are logged
+    * to a file and no email notifications are actually sent. Defaults to off/ no / false
+    * @return
+    */
+   public static boolean isTestRunModeEnabled(){
+      String val = properties.getProperty(ENABLE_TEST_RUN_MODE,"no").trim();
+
+      return val.equalsIgnoreCase("y") || val.equalsIgnoreCase("yes") || val.equalsIgnoreCase("on") || val.equalsIgnoreCase("true");
+   }
+
    /**
     * The logger
     */
    private static final Logger ms_log = LogManager.getLogger(IPSConstants.WORKFLOW_LOG);
+
+   /**
+    * When test run mode is enabled for notifications, writes all notifications
+    * to the test run log.
+    * @param messageContext a message context with prepared email messages to send.
+    */
+   public static synchronized void logTestRunNotifications(IPSMailMessageContext messageContext) {
+      try( BufferedWriter writer = new BufferedWriter(new FileWriter(PSServer.getRxDir().getAbsolutePath() + TEST_RUN_MODE_LOG_LOCATION, true) )) {
+
+         writer.append("==================================================================");
+         writer.newLine();
+         writer.append("To: ").append(messageContext.getTo());
+         writer.newLine();
+         writer.append("CC: ").append(messageContext.getCc());
+         writer.newLine();
+         writer.append("From: ").append(messageContext.getFrom());
+         writer.newLine();
+         writer.append("Subject: ").append(messageContext.getSubject());
+         writer.newLine();
+         writer.append("Body: ").append(messageContext.getBody());
+         writer.newLine();
+         writer.append("Mail Domain:").append(messageContext.getMailDomain());
+         writer.newLine();
+         writer.append("Bounce Address:").append(messageContext.getBounceAddr());
+         writer.newLine();
+         writer.append("SMTP Server:").append(messageContext.getSmtpHost());
+         writer.newLine();
+         writer.append("SMTP Port:").append(messageContext.getPortNumber());
+         writer.newLine();
+         writer.append("TLS Enabled:").append(messageContext.getIsTLSEnabled());
+         writer.newLine();
+         writer.append("User: ").append(messageContext.getUserName());
+         writer.newLine();
+         if(messageContext.getSourceToList()!=null && !messageContext.getSourceToList().isEmpty()){
+            for(PSNotificationEmailAddress nea :messageContext.getSourceToList() ){
+               writer.append("To Email Source:").append(nea.toString());
+               writer.newLine();
+            }
+         }
+         if(messageContext.getSourceCCList()!=null && !messageContext.getSourceCCList().isEmpty()){
+            for(PSNotificationEmailAddress nea :messageContext.getSourceCCList() ){
+               writer.append("CC Email Source:").append(nea.toString());
+               writer.newLine();
+            }
+         }
+         writer.append("==================================================================");
+         writer.newLine();
+      } catch (IOException e) {
+         ms_log.error(PSExceptionUtils.getMessageForLog(e));
+      }
+   }
 }
 

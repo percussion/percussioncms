@@ -1139,14 +1139,14 @@ public class PSRoleManager
     * @return a set of email addresses as <code>String</code> objects in alpha
     * ascending order, never <code>null</code>, may be empty.
     */
-   public Set<String> getRoleEmailAddresses(String roleName, 
+   public Set<PSNotificationEmailAddress> getRoleEmailAddresses(String roleName,
       String emailAttributeName, String community, Set subjectsWithoutEmail)
    {
       if (StringUtils.isBlank(roleName))
          throw new IllegalArgumentException(
             "roleName may not be null or empty");
       
-      Set<String> emailAddrs = new HashSet<>();
+      Set<PSNotificationEmailAddress> emailAddrs = new HashSet<>();
       
       try
       {
@@ -1161,7 +1161,7 @@ public class PSRoleManager
          
          Set<IPSTypedPrincipal> principalsWithoutEmail = 
             new HashSet<>();
-         emailAddrs.addAll(getSubjectEmailAddresses(roleMembers, 
+         emailAddrs.addAll(getSubjectEmailAddresses(roleName, roleMembers,
             emailAttributeName, principalsWithoutEmail));
          
          if (subjectsWithoutEmail != null)
@@ -1197,12 +1197,12 @@ public class PSRoleManager
     * @return The email addresses, never <code>null</code>, will be empty if
     * an empty list of principals is supplied.
     */
-   public Collection<String> getSubjectEmailAddresses(
+   public Collection<PSNotificationEmailAddress> getSubjectEmailAddresses(String roleName,
       Collection<IPSTypedPrincipal> principals, 
       String emailAttributeName, 
       Set<IPSTypedPrincipal> principalsWithoutEmail)
    {
-      Collection<String> addrs = new ArrayList<>();
+      Collection<PSNotificationEmailAddress> addrs = new ArrayList<>();
 
       if (principals.isEmpty())
          return addrs; 
@@ -1239,10 +1239,13 @@ public class PSRoleManager
          for (Subject subject : roleMgr.findUsers(
             new ArrayList<>(usernames.keySet()), null, null, types))
          {
-            String email = processSubjectEmail(emailAttributeName, usernames, 
+            PSNotificationEmailAddress email = processSubjectEmail(emailAttributeName, usernames,
                subject);
-            if (!StringUtils.isBlank(email))
+            if (!StringUtils.isBlank(email.getEmail())) {
+               if(!StringUtils.isBlank(roleName))
+                  email.setSourceRoleOrGroup(roleName);
                addrs.add(email);
+            }
          }
          
          // group attributes can only be defined in the backend
@@ -1255,10 +1258,12 @@ public class PSRoleManager
                for (Subject subject : beRoleMgr.getGlobalSubjectAttributes(
                   groupName, null, true))
                {
-                  String email = processSubjectEmail(emailAttributeName, 
+                  PSNotificationEmailAddress email = processSubjectEmail(emailAttributeName,
                      groupnames, subject);
-                  if (!StringUtils.isBlank(email))
+                  if (!StringUtils.isBlank(email.getEmail())) {
+                     email.setSourceRoleOrGroup(groupName);
                      addrs.add(email);
+                  }
                }
             }
          }
@@ -1296,9 +1301,11 @@ public class PSRoleManager
     * @return The email address of the subject, may be <code>null</code> or 
     * empty if one is not specified.
     */
-   private String processSubjectEmail(String emailAttributeName, 
+   private PSNotificationEmailAddress processSubjectEmail(String emailAttributeName,
       Map<String, IPSTypedPrincipal> names, Subject subject)
    {
+      PSNotificationEmailAddress ret = new PSNotificationEmailAddress();
+
       String email = PSJaasUtils.getSubjectAttributeValue(subject, 
          PrincipalAttributes.EMAIL_ADDRESS);
       if (StringUtils.isBlank(email) && 
@@ -1307,14 +1314,16 @@ public class PSRoleManager
          email = PSJaasUtils.getSubjectAttributeValue(subject, 
             emailAttributeName);
       }
-      
+
+      ret.setEmail(email);
+      ret.setSourceSubject(subject);
       if (!StringUtils.isBlank(email))
       {
          names.remove(
             PSJaasUtils.subjectToPrincipal(subject).getName());
       }
       
-      return email;
+      return ret;
    }
 
 
@@ -1333,10 +1342,10 @@ public class PSRoleManager
     * @return a set of email addresses as <code>String</code> objects, never
     * <code>null</code>, may be empty.
     */
-   public Set getSubjectEmailAddresses(String subjectName, 
+   public Set<PSNotificationEmailAddress> getSubjectEmailAddresses(String subjectName,
       String emailAttributeName, String community)
    {
-      Set<String> addrs = new HashSet<>();
+      Set<PSNotificationEmailAddress> addrs = new HashSet<>();
       try
       {
          IPSRoleMgr roleMgr = PSRoleMgrLocator.getRoleManager();
@@ -1353,6 +1362,7 @@ public class PSRoleManager
          List<Subject> subjects = roleMgr.findUsers(names, null, null, types);
          
          Set<IPSTypedPrincipal> principals = new HashSet<>();
+         String groupName = null;
          if (!subjects.isEmpty())
             principals.add(PSJaasUtils.subjectToPrincipal(subjects.get(0)));
          else
@@ -1364,6 +1374,7 @@ public class PSRoleManager
             {
                principals.add(PSTypedPrincipal.createGroup(
                   groups.get(0).getName()));
+               groupName = groups.get(0).getName();
             }
          }
          
@@ -1371,7 +1382,7 @@ public class PSRoleManager
             principals = filterByCommunity(principals, community, true);
          
          if (!principals.isEmpty())
-            addrs.addAll(getSubjectEmailAddresses(principals, 
+            addrs.addAll(getSubjectEmailAddresses(groupName,principals,
                emailAttributeName, null));         
       }
       catch (PSSecurityCatalogException e)

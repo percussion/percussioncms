@@ -88,7 +88,7 @@
 
             if(!templateId)
             {
-                dialogHtml = dialogHtml + "<div style='float:left;'><label for='perc-select-template'>" +I18N.message("perc.ui.new.page.dialog@Select A Template") + "</label>" +
+                dialogHtml = dialogHtml + "<div style='float:left;'><label for='perc-select-template'>" +I18N.message("perc.ui.new.page.dialog@Select A Template") + "</label><br/>" +
                     "  <input list='perc-page-items-datalist' id='perc-page-item-filter' />" +
                     "  <datalist id='perc-page-items-datalist'></datalist><br/>" +
                     "<a class='prevPage browse left'></a>" +
@@ -248,6 +248,17 @@
 
                         $(".perc-items .item .item-id").hide();
 
+                        //Wire the keydown event
+                        $(".perc-items .item").on("keydown", function(event){
+                            event.stopPropagation();
+                            event.stopImmediatePropagation();
+
+                            if(event.code == "Enter" || event.code == "Space"){
+                                $(this).dblclick();
+                            }
+
+                        });
+
                         // bind click event to each item to handle selection
                         $(".perc-items .item").on('click', function(event){
                             event.stopPropagation();
@@ -257,6 +268,22 @@
                             $("#perc-select-template").val(itemId);
                             $(".perc-items .item").removeClass("perc-selected-item");
                             $(this).addClass("perc-selected-item");
+                        });
+
+                        $(".perc-items .item").on('dblclick', function(event)
+                        {
+                            event.stopPropagation();
+                            event.stopImmediatePropagation();
+
+                            var editorUrl = $(this).find(".item-editor-url").text();
+                            var workflowId = $(this).find(".item-workflow-id").text();
+                            $("#perc-select-template").val($(this).find(".item-id").text());
+                            $("#perc-editor-url").val(editorUrl);
+                            $("#perc-workflow-id").val(workflowId);
+                            $(".perc-items .item").removeClass("perc-selected-item");
+                            $(this).addClass("perc-selected-item");
+                            $("#perc-page-save").click();
+
                         });
 
                         // select first item by default
@@ -286,7 +313,6 @@
                     $('#perc-page-items-datalist').children('option').each(function () {
                         if(this.value === event.target.value){
                             $(".perc-items .item").eq(idx).click();
-                            // scroll.click(idx);
                             $(this).blur();
                             $(".perc-items .item").eq(idx).focus();
                             return;
@@ -323,7 +349,7 @@
                  */
                 function createTemplateEntry(data)
                 {
-                    var temp = "<button class=\"item\">" +
+                    var temp = "<button type='button' class='item'>" +
                         "<div class=\"item-id\">@ITEM_ID@</div>" +
                         "    <table>" +
                         "        <tr><td align='left'>" +

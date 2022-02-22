@@ -277,6 +277,9 @@
                 var percJump = $(".perc-unassigned-panel .perc-template-pages-controls .perc-jump");
                  pageNumber = percJump.val()!=""? parseInt(percJump.val()): 1;
             }
+            if(isNaN(pageNumber)){
+                pageNumber = 1;
+            }
             pageNumber = (pageNumber!=0)? pageNumber : 1;
             setPanelPreference(null, pageNumber);
             var startIndex = (((pageNumber-1) * UNASSIGNED_MAX_RESULTS) + 1);
@@ -477,7 +480,7 @@
         }
         
         function _openThisPage(opts) {
-            $.PercNavigationManager.openPage(opts.pagePath, true);
+            $.PercNavigationManager.openPage(opts.data.pagePath, true);
         }
         
         function _changeTemplate(opts) {
@@ -866,7 +869,7 @@
             if(isError)
             {
 
-                dialogHTML = "<div id='perc-import-template-wrapper'>" + "<iframe name='perc-import-template-frame' id='perc-import-template-frame' height='83px' FRAMEBORDER='0' width='100%' src='../app/importTemplate.jsp?status=PERC_ERROR&message=The file you attempted to import is not a valid XML file. Choose a valid CM1 template XML file for upload.'></iframe>" + "</div>";
+                dialogHTML = "<div id='perc-import-template-wrapper'>" + "<iframe name='perc-import-template-frame' id='perc-import-template-frame' height='83px' FRAMEBORDER='0' width='100%' src='../app/importTemplate.jsp?status=PERC_ERROR&message=The file you attempted to import is not a valid XML file. Choose a valid Page template XML file for upload.'></iframe>" + "</div>";
             }
 
             // Wrap the iframe inside the dialog

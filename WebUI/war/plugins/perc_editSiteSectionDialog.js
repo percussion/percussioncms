@@ -23,7 +23,7 @@
  */
 
 /**
- * Edit Sitei Section Metadata
+ * Edit Site Section Metadata
  */
 (function($){
 

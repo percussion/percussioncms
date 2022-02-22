@@ -43,32 +43,32 @@ var isPreviewMode;
     $.PercCategoryListView = {
         updateCategoryList : updateCategoryList
     };
-    let pageResult;
-    let baseURL;
-    let strJSON;
-    let nRow;
+    var pageResult;
+    var baseURL;
+    var strJSON;
+    var nRow;
     function updateCategoryList()
     {
         $(".perc-category-list").each(function(){
-            let currentCategoryList = $(this);
+            var currentCategoryList = $(this);
             if ("" === currentCategoryList.attr("data-query")) {return;}
-            let queryString = JSON.parse( currentCategoryList.attr("data-query"));
+            var queryString = JSON.parse( currentCategoryList.attr("data-query"));
             //Get the result page to display the pages for each category
             pageResult = queryString.category_page_result;
             delete queryString.category_page_result;
             //Get the display option (Expanded hierarchy = "expanded", Collapsible = "collapsible")
-            let display = queryString.display_option;
+            var display = queryString.display_option;
             delete queryString.display_option;
             //Get the max categories option
             //set the tree pre-expanded level for Collapsible option or the row number to show for the Expanded hierarchy
-            let maxCat = queryString.max_categories;
+            var maxCat = queryString.max_categories;
             delete queryString.max_categories;
             isEditMode = queryString.isEditMode;
             isPreviewMode = queryString.isPreviewMode;
             //Set the base URL to create the href for each item then
             baseURL = "";
             if(isEditMode==="true" || isPreviewMode == "true"){
-                let paths = window.location.pathname.split("/");
+                var paths = window.location.pathname.split("/");
                 baseURL = "/" + paths[1] + "/" + paths[2];
             }else{
                 baseURL = window.location.protocol + '//' + window.location.host;
@@ -178,22 +178,22 @@ var isPreviewMode;
 
     //Create the LI node from a Category.
     function parseNode(node) {
-        let countTotal = node.count.first;
-        let nodeStr = node.category;
+        var countTotal = node.count.first;
+        var nodeStr = node.category;
         if (countTotal > 0)
             nodeStr = node.category + " (" + countTotal + ")";
-        let query = JSON.parse(strJSON );
+        var query = JSON.parse(strJSON );
         query.criteria.push("perc:category LIKE '" + node.path + "%'");
-        let encodedQuery = "&query=" + encodeURIComponent(JSON.stringify(query));
+        var encodedQuery = "&query=" + encodeURIComponent(JSON.stringify(query));
 
-        let href = "#";
+        var href = "#";
         if(isEditMode === "true" || "undefined" === typeof (pageResult) || "" === pageResult ){
             href = "#";
         }else{
             href = baseURL + pageResult + "?filter=" + node.category + encodedQuery;
         }
 
-        let a = $("<a>")
+        var a = $("<a>")
             .attr("href", href)
             .attr("data-count", countTotal)
             .attr("title", nodeStr)

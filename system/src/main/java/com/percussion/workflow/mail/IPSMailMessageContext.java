@@ -23,7 +23,10 @@
  */
 package com.percussion.workflow.mail;
 
+import com.percussion.security.PSNotificationEmailAddress;
+
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * This interface defines methods to access the mail message related data. The
@@ -153,5 +156,32 @@ public interface IPSMailMessageContext extends Serializable
     * <code>null</code> or <code>empty</code>.
     */
    String getBounceAddr();
+
+   /**
+    * Gets the source list of notification email addresses, used in debug / logging.  Source email list
+    * should include information on the source role / subject that the email was pulled from.
+    * @return may be empty.  the list of source to email addresses for this message.
+    */
+   List<PSNotificationEmailAddress> getSourceToList();
+
+   /**
+    * Gets the source list of notification cc email addresses, used in debug / logging.  source email list
+    * should include information on the source role / subject that the email was pulled from.
+    *
+    * @return may be empty.  the list of source cc email addresses for this message.
+    */
+   List<PSNotificationEmailAddress> getSourceCCList();
+
+   /**
+    * Sets the source list of to email addresses.
+    * @param sourceTo the list of to email addresses
+    */
+   void setSourceToList(List<PSNotificationEmailAddress> sourceTo);
+
+   /**
+    * Sets the list of cc source email addresses
+    * @param sourceCC the list of cc addresses
+    */
+   void setSourceCCList(List<PSNotificationEmailAddress> sourceCC);
 
 }

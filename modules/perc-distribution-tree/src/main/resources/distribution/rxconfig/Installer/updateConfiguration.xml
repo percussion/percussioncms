@@ -1,28 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-  ~     Percussion CMS
-  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
-  ~
-  ~     This program is free software: you can redistribute it and/or modify
-  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
-  ~
-  ~     This program is distributed in the hope that it will be useful,
-  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
-  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  ~     GNU Affero General Public License for more details.
-  ~
-  ~     Mailing Address:
-  ~
-  ~      Percussion Software, Inc.
-  ~      PO Box 767
-  ~      Burlington, MA 01803, USA
-  ~      +01-781-438-9900
-  ~      support@percussion.com
-  ~      https://www.percussion.com
-  ~
-  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
-  -->
-
 <project name="updateConfiguration" default="updateConfiguration">
     <target name="updateConfiguration">
         <echo>Updating configuration files...</echo>
@@ -63,6 +39,12 @@
 
         <echo>Updating rxworflow.properties</echo>
         <propertyfile file="${install.dir}/rxconfig/Workflow/rxworkflow.properties">
+            <entry key="NOTIFICATION_ENABLE" default="N"/>
+            <entry key="ENABLE_TEST_RUN_MODE" default="N"/>
+            <entry key="RX_SERVER_HOST_NOTIFICATION" default=""/>
+            <entry key="RX_SERVER_PORT_NOTIFICATION" default=""/>
+            <entry key="RX_SERVER_IS_SSLLINK_NOTIFICATION" default="no"/>
+            <entry key="MAIL_DOMAIN" default=""/>
             <entry key="SMTP_HOST" default=""/>
             <entry key="SMTP_USERNAME" default=""/>
             <entry key="SMTP_PASSWORD" default=""/>
@@ -70,8 +52,29 @@
             <entry key="SMTP_TLSENABLED" default=""/>
             <entry key="SMTP_SSLPORT" default=""/>
             <entry key="SMTP_BOUNCEADDR" default=""/>
-            <entry key="NOTIFICATION_ENABLE" default="Y"/>
-
+            <entry key="SMTP_DEFAULTFROM" default=""/>
+            <entry key="APP_FILE_LIST" default=""/>
+            <entry key="BLOCKNOTIFICATIONSFORNAVONS" default="true"/>
+            <entry key="DATA_TYPE_MAP_FILE" default="../rxwfdatatypemaps.xml"/>
+            <entry key="DB_SCHEMA" default=""/>
+            <entry key="DB_BACKEND" default=""/>
+            <entry key="MSACCESS_CURRENTTIMESTAMP" default="Now"/>
+            <entry key="ORACLE_CURRENTTIMESTAMP" default="SYSDATE"/>
+            <entry key="MSSQL_CURRENTTIMESTAMP" default="getDate()"/>
+            <entry key="DB_SERVER" default=""/>
+            <entry key="HTML_PARAM_USER_FULLNAME" default="htmlParamUserFullName"/>
+            <entry key="HTML_PARAM_USER_ROLELIST" default="htmlParamRoleList"/>
+            <entry key="TABLE_DEF_FILE" default="../rxcmsconfig.xml\"/>
+            <entry key="CUSTOM_MAIL_CLASS" default="com.percussion.workflow.mail.PSSecureMailProgram"/>
+            <entry key="DB_DRIVER_VERSION" default="*"/>
+            <entry key="TABLE_DATA_FILE" default="../rxwftabledata.xml"/>
+            <entry key="DB_DRIVER_CLASS_NAME" default=""/>
+            <entry key="TRIGGER_FORCE_CHECK_IN" default="forcecheckin"/>
+            <entry key="TRIGGER_CHECK_IN" default="checkin"/>
+            <entry key="TRIGGER_CHECK_OUT" default="checkout"/>
+            <entry key="MAIL_NOTIFY_LINK_COMPONENT_NAME" default="item_action_panel"/>
+            <entry key="MAIL_NOTIFY_LINK_GEN_EXIT" default="global/percussion/contentassembler/perc_casGenerateReadOnlyLink"/>
+            <entry key="DEFAULT_WORKFLOW" default="Default Workflow"/>
         </propertyfile>
 
         <echo>Updating server.properties file</echo>

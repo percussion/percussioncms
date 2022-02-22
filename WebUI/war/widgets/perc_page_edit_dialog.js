@@ -142,8 +142,11 @@
             if(!pageSysName){
                 pageSysName = $("#edit-page-metadata-frame").contents().find("#perc-content-edit-sys_title").val();
             }
-            _handleAutoSummary();
+
             _addFieldGroups();
+
+            //Add timeout to handle race condition with the editor
+            setTimeout(function () { _handleAutoSummary();}, 4000);
 
             $("#edit-page-metadata-frame").contents().find("#perc-content-edit-metadata-link").show();
         }

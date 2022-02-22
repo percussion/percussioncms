@@ -23,6 +23,7 @@
  */
 package com.percussion.pagemanagement.dao.impl;
 
+import com.percussion.cms.IPSConstants;
 import com.percussion.pagemanagement.dao.IPSWidgetItemIdGenerator;
 import com.percussion.pagemanagement.data.PSRegionWidgetAssociations;
 import com.percussion.pagemanagement.data.PSRegionWidgets;
@@ -31,7 +32,6 @@ import com.percussion.util.PSSiteManageBean;
 import com.percussion.utils.security.PSSecurityUtility;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.owasp.csrfguard.util.RandomGenerator;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -49,7 +49,7 @@ public class PSWidgetItemIdGenerator implements IPSWidgetItemIdGenerator
      */
     public Long generateId(PSRegionWidgetAssociations widgets, PSWidgetItem item)
     {
-        Long id = Long.parseLong(RandomGenerator.generateRandomId(PSSecurityUtility.getSecureRandom(),10));
+        Long id = PSSecurityUtility.getSecureRandom().nextLong();
         log.debug("Generated widget item id: {} for widget: {}",id, item);
         return id;
     }
@@ -131,6 +131,6 @@ public class PSWidgetItemIdGenerator implements IPSWidgetItemIdGenerator
      * The log instance to use for this class, never <code>null</code>.
      */
 
-    private static final Logger log = LogManager.getLogger(PSWidgetItemIdGenerator.class);
+    private static final Logger log = LogManager.getLogger(IPSConstants.CONTENTREPOSITORY_LOG);
 
 }
