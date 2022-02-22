@@ -469,7 +469,7 @@
                   percSocial[platform]['iconClass'] = 'fa-whatsapp';
                   break;
                 case 'email':
-                  percSocial[platform]['shareLink'] = 'mailto:someone@example.com?subject=' + percEncodedPageTitle + '&body=' + percEncodedPageSummary + ' ' + percEncodedCurrentUrl;
+                  percSocial[platform]['shareLink'] = 'mailto:someone@example.com?subject=' + percEncodedPageTitle + '&body=' + percEncodedPageSummary + ' ' + percEncodedCurrentUrl + "%0D%0A";
                   percSocial[platform]['buttonClass'] = 'perc-email-social-button';
                   percSocial[platform]['iconClass'] = 'fa-envelope';
                   break;
