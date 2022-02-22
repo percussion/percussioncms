@@ -49,6 +49,7 @@ import com.percussion.search.PSWSSearchResponse;
 import com.percussion.security.IPSTypedPrincipal;
 import com.percussion.security.PSAuthenticationFailedException;
 import com.percussion.security.PSAuthorizationException;
+import com.percussion.security.PSNotificationEmailAddress;
 import com.percussion.security.PSRoleManager;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.server.PSRequest;
@@ -96,6 +97,7 @@ import java.net.URL;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -504,25 +506,25 @@ public class PSExitNotifyAssignees implements IPSResultDocumentProcessor
    {
       PSWorkFlowUtils.printWorkflowMessage(request, "  Entering Method sendNotifications");
 
-      List<String> toStateUserList = new ArrayList<>();
-      List<String> fromStateUserList = new ArrayList<>();
-      List<String> emailToList = new ArrayList<>();
+      List<PSNotificationEmailAddress> toStateUserList = new ArrayList<>();
+      List<PSNotificationEmailAddress> fromStateUserList = new ArrayList<>();
+      List<PSNotificationEmailAddress> emailToList = new ArrayList<>();
       Map<String, PSSubject> psSubjects = new HashMap<>();
       String emailToString = "";
-      List<String> CCList = null;
-      List<String> emailAndCcList = new ArrayList<>();
+      List<PSNotificationEmailAddress> CCList = null;
+      List<PSNotificationEmailAddress> emailAndCcList = new ArrayList<>();
       String emailCCString = "";
       PSNotificationsContext nc = null;
       PSTransitionNotificationsContext tnc = null;
       int notificationID = 0;
       String additionalRecipientString = "";
-      List<String> additionalRecipientList = null;
+      List<PSNotificationEmailAddress> additionalRecipientList = null;
       String subject = "";
       String body = "";
-      List<String> fromStateRoleNotificationList = null;
-      List<String> fromStateAdhocActorNotificationList = null;
-      List<String> toStateRoleNotificationList = null;
-      List<String> toStateAdhocActorNotificationList = null;
+      List<String> fromStateRoleNotificationList = null; //List of role names
+      List<String> fromStateAdhocActorNotificationList = null; //list of user names
+      List<String> toStateRoleNotificationList = null; //list of role names
+      List<String> toStateAdhocActorNotificationList = null; //list of usernames
       PSStateRolesContext fromStateRoleContext = null;
       PSStateRolesContext toStateRoleContext = null;
       IPSContentAdhocUsersContext fromStateAdhocContext = wfRoleInfo
@@ -714,9 +716,7 @@ public class PSExitNotifyAssignees implements IPSResultDocumentProcessor
          if (null != additionalRecipientString) {
             additionalRecipientString = additionalRecipientString.trim();
             if (additionalRecipientString.trim().length() > 0) {
-               additionalRecipientList = PSWorkFlowUtils.tokenizeString(
-                       additionalRecipientString,
-                       PSWorkFlowUtils.EMAIL_STRING_DELIMITER);
+               additionalRecipientList = getCommaSeperatedEmails(additionalRecipientString,"Additional Recipients");
             }
          }
 
@@ -725,15 +725,14 @@ public class PSExitNotifyAssignees implements IPSResultDocumentProcessor
          if (null != emailCCString) {
             emailCCString = emailCCString.trim();
             if (emailCCString.trim().length() > 0) {
-               CCList = PSWorkFlowUtils.tokenizeString(emailCCString,
-                       PSWorkFlowUtils.EMAIL_STRING_DELIMITER);
+               CCList = getCommaSeperatedEmails(emailCCString, "CC List");
             }
          }
 
          if (null != CCList && !CCList.isEmpty()) {
-            CCList = PSWorkFlowUtils.caseInsensitiveUniqueList(CCList);
+            CCList = PSWorkFlowUtils.caseInsensitiveUniqueEmailList(CCList);
             if (null != CCList && !CCList.isEmpty()) {
-               emailCCString = PSWorkFlowUtils.listToDelimitedString(
+               emailCCString = PSWorkFlowUtils.emailListToDelimitedString(
                        CCList, PSWorkFlowUtils.EMAIL_STRING_SEPARATOR, "");
             }
          }
@@ -753,9 +752,9 @@ public class PSExitNotifyAssignees implements IPSResultDocumentProcessor
 
          if (!emailToList.isEmpty()) {
             emailToList = PSWorkFlowUtils
-                    .caseInsensitiveUniqueList(emailToList);
+                    .caseInsensitiveUniqueEmailList(emailToList);
             if (!emailToList.isEmpty()) {
-               emailToString = PSWorkFlowUtils.listToDelimitedString(
+               emailToString = PSWorkFlowUtils.emailListToDelimitedString(
                        emailToList,
                        PSWorkFlowUtils.EMAIL_STRING_SEPARATOR, "");
             }
@@ -797,10 +796,10 @@ public class PSExitNotifyAssignees implements IPSResultDocumentProcessor
          }
 
          String userEmailAddress = "";
-         List<String> userEmailAddressList = PSWorkflowRoleInfoStatic
+         List<PSNotificationEmailAddress> userEmailAddressList = PSWorkflowRoleInfoStatic
                  .getSubjectEmailAddresses(userName, request, communityId);
-         if (null != userEmailAddressList && !userEmailAddressList.isEmpty()) {
-            userEmailAddress = userEmailAddressList.get(0);
+         if (!userEmailAddressList.isEmpty()) {
+            userEmailAddress = userEmailAddressList.get(0).getEmail();
             if ((null == userEmailAddress)
                     || userEmailAddress.length() == 0) {
                userEmailAddress = userName;
@@ -859,7 +858,7 @@ public class PSExitNotifyAssignees implements IPSResultDocumentProcessor
 
          List<PSMessagePackage> messages = new ArrayList<>();
          boolean containsWfLink = body.contains(PSWorkFlowUtils.WORKFLOW_LINK_TOKEN);
-         for (String email : emailAndCcList) {
+         for (PSNotificationEmailAddress email : emailAndCcList) {
 
             // need to get the body and subject here again so that each
             // e-mail has a fresh copy of the raw subject and body for Velocity processing.
@@ -867,7 +866,7 @@ public class PSExitNotifyAssignees implements IPSResultDocumentProcessor
             body = nc.getBody();
 
             PSMessagePackage pkg = new PSMessagePackage();
-            eval = addEmailBindings(userName, email, eval, psSubjects);
+            eval = addEmailBindings(userName, email.getEmail(), eval, psSubjects);
             subject = processString(eval, subject);
             body = processString(eval, body);
 
@@ -879,8 +878,9 @@ public class PSExitNotifyAssignees implements IPSResultDocumentProcessor
             pkg.setEmailBody(body);
 
             pkg.setSubj(subject);
-            pkg.setEmailToStr(email);
+            pkg.setEmailToStr(email.getEmail());
             pkg.setUserEmail(userEmailAddress);
+            pkg.setSourceEmailTo(Collections.singletonList(email));
 
             messages.add(pkg);
          }
@@ -1189,10 +1189,10 @@ public class PSExitNotifyAssignees implements IPSResultDocumentProcessor
     *
     * @throws Exception if error occurs.
     */
-   private static List<String> getUserEmails(int contentid, int revisionid,
-                                             String communityId, int workflowId, int stateId,
-                                             Set<IPSTypedPrincipal> nonAddHocUsers,
-                                             Set<IPSTypedPrincipal> addHocUsers, Map<String, PSSubject> psSubjects) throws Exception {
+   private static List<PSNotificationEmailAddress> getUserEmails(int contentid, int revisionid,
+                                                                 String communityId, int workflowId, int stateId,
+                                                                 Set<IPSTypedPrincipal> nonAddHocUsers,
+                                                                 Set<IPSTypedPrincipal> addHocUsers, Map<String, PSSubject> psSubjects) throws Exception {
 
       Set<IPSTypedPrincipal> principals = new HashSet<>();
 
@@ -1362,16 +1362,45 @@ public class PSExitNotifyAssignees implements IPSResultDocumentProcessor
                             smtpPort,
                             smtpSSLPort,
                             smtpBounceAddr);
+            messageContext.setSourceToList(msg.getSourceEmailTo());
+            messageContext.setSourceCCList(msg.getSourceEmailCC());
 
             // Send the message
-            IPSSystemService svc = PSSystemServiceLocator.getSystemService();
-            svc.sendEmail(messageContext);
+            if(PSWorkFlowUtils.isTestRunModeEnabled()){
+             PSWorkFlowUtils.logTestRunNotifications(messageContext);
+            }else {
+               IPSSystemService svc = PSSystemServiceLocator.getSystemService();
+               svc.sendEmail(messageContext);
+            }
          }
       } catch (PSMailException e) {
          m_log.error("Error occurred during mail sending !", e);
       }
    }
 
+   /**
+    * Takes a comma separated string and returns a list of notification emails
+    *
+    * @param tokenizedList
+    * @param roleName The roleName or in the case of a system field like Additional Recipients, the name of the system field.
+    * @return a non null list of email notification addresses, may be empty.
+    */
+   private static List<PSNotificationEmailAddress> getCommaSeperatedEmails(String tokenizedList, String roleName){
+      List<PSNotificationEmailAddress> ret = new ArrayList<>();
+
+      List<String> emails = PSWorkFlowUtils.tokenizeString(
+              tokenizedList,
+              PSWorkFlowUtils.EMAIL_STRING_DELIMITER);
+
+      for(String s : emails){
+         PSNotificationEmailAddress nea = new PSNotificationEmailAddress();
+         nea.setEmail(s);
+         nea.setSourceRoleOrGroup(roleName);
+         ret.add(nea);
+      }
+
+      return ret;
+   }
 
 
    /**************  IPSExtension Interface Implementation ************* */
