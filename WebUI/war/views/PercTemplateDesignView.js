@@ -480,7 +480,7 @@
         }
         
         function _openThisPage(opts) {
-            $.PercNavigationManager.openPage(opts.pagePath, true);
+            $.PercNavigationManager.openPage(opts.data.pagePath, true);
         }
         
         function _changeTemplate(opts) {

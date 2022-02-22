@@ -24,11 +24,11 @@
 
 package com.percussion.utils.container;
 
+import com.percussion.install.PSLogger;
 import com.percussion.utils.container.config.ContainerConfig;
 
-import java.nio.file.Files;
+import java.io.File;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 public class PSDtsConfig implements IPSDtsConfig, ContainerConfig {
 
@@ -37,6 +37,8 @@ public class PSDtsConfig implements IPSDtsConfig, ContainerConfig {
 
     private Path rxDir;
 
+    private static String PROD_PATH = "Deployment";
+    private static String STAGING_PATH = "Staging/Deployment";
     private PSAbstractXmlConnectors dtsConnector;
     private PSAbstractXmlConnectors stagingDtsConnector;
 
@@ -44,15 +46,18 @@ public class PSDtsConfig implements IPSDtsConfig, ContainerConfig {
 
     {
         this.rxDir = rxDir;
-        Path mainPath = rxDir.resolve(Paths.get("Deployment"));
-        Path stagingPath =  rxDir.resolve(Paths.get("Staging/Deployment"));
-        if (Files.exists(mainPath)) {
+        File dtsRoot = new File(rxDir.toAbsolutePath().toString(),PROD_PATH );
+
+        if (dtsRoot.exists()) {
             localDTSEnabled=true;
-            dtsConnector = new PSTomcatConnectors(rxDir, mainPath);
+            PSLogger.logInfo("localDTSEnabled *********: " + dtsRoot.getAbsolutePath());
+            dtsConnector = new PSTomcatConnectors(rxDir, dtsRoot.toPath());
         }
-        if (Files.exists(stagingPath)) {
+       File dtsStagingRoot = new File(rxDir.toAbsolutePath().toString(),STAGING_PATH);
+        if(dtsStagingRoot.exists()) {
             localStagingDTSEnabled=true;
-            stagingDtsConnector = new PSTomcatConnectors(rxDir, stagingPath);
+            PSLogger.logInfo("localStagingDTSEnabled *********: " + dtsStagingRoot.getAbsolutePath());
+            stagingDtsConnector = new PSTomcatConnectors(rxDir, dtsStagingRoot.toPath());
         }
     }
 
