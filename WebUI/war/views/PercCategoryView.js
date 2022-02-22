@@ -305,7 +305,7 @@
                 {
                     parent = node.parent;
                     parent.activate();
-                    if (node.parent.childList.length === 0)
+                    if (node.parent.childList.length !== 0)
                         node.remove();
                     
                     node = parent;
@@ -522,16 +522,9 @@
         function getCurrentDate() {
             
             var d = new Date();
-
-            var month = d.getMonth()+1;
-            var day = d.getDate();
-
-            var output = d.getFullYear() + '-' +
-                (month<10 ? '0' : '') + month + '-' +
-                (day<10 ? '0' : '') + day + 'T' + 
-                d.getHours() + ':' + 
-                d.getMinutes() + ':' + 
-                d.getSeconds() + '.' + d.getMilliseconds();
+            var output = d.toISOString();
+            //As output will be '2022-02-22T13:18:21.942Z', so remove 'Z'
+            output = output.replace('Z','');
             
             return output;
         }
