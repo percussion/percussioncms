@@ -1188,26 +1188,28 @@
                             }
                         });
 
-                        // Add workflow dropdown
-                        var pageWorkflowDropdown = $("#perc-dropdown-page-workflow");
-                        pageWorkflowDropdown.append($('<button />').html(I18N.message("perc.ui.edit.workflow.step.dialog@" + $.perc_textFilters.IDNAMECDATA(dropdownLabels[0]))).css('display', 'inline-block').addClass('btn btn-primary perc-workflow-split-button-left perc-workflow-split-button-' + $.perc_textFilters.IDNAMECDATA(dropdownLabels[0]))).append($('<div />').addClass('perc-workflow').css('display', 'inline-block'));
-                        pageWorkflowDropdown.children('div').eq(0).PercDropdown({
-                            percDropdownRootClass: "perc-workflow",
-                            percDropdownOptionLabels: dropdownLabels,
-                            percDropdownCallbacks: dropdownActions,
-                            percDropdownCallbackData: dropdownParams,
-                            percDropdownTitleImage: dropdownButtonImage,
-                            percDropdownTitleImageOver: dropdownButtonImageOver,
-                            percDropdownShowExpandIcon: false,
-                            autoArrows:false,
-                            cssArrows: false,
-                            percDropdownResizeToElement: "#perc-dropdown-page-workflow"
-                        });
-                        pageWorkflowDropdown.find('.perc-dropdown-title').off('click');
-                        pageWorkflowDropdown.children('a, button').on("click",function()
-                        {
-                            dropdownActions[0](dropdownParams[0]);
-                        });
+						if(dropdownActions.length >0){
+                            // Add workflow dropdown
+                            var pageWorkflowDropdown = $("#perc-dropdown-page-workflow");
+                            pageWorkflowDropdown.append($('<button />').html(I18N.message("perc.ui.edit.workflow.step.dialog@" + $.perc_textFilters.IDNAMECDATA(dropdownLabels[0]))).css('display', 'inline-block').addClass('btn btn-primary perc-workflow-split-button-left perc-workflow-split-button-' + $.perc_textFilters.IDNAMECDATA(dropdownLabels[0]))).append($('<div />').addClass('perc-workflow').css('display', 'inline-block'));
+                            pageWorkflowDropdown.children('div').eq(0).PercDropdown({
+                                percDropdownRootClass: "perc-workflow",
+                                percDropdownOptionLabels: dropdownLabels,
+                                percDropdownCallbacks: dropdownActions,
+                                percDropdownCallbackData: dropdownParams,
+                                percDropdownTitleImage: dropdownButtonImage,
+                                percDropdownTitleImageOver: dropdownButtonImageOver,
+                                percDropdownShowExpandIcon: false,
+                                autoArrows:false,
+                                cssArrows: false,
+                                percDropdownResizeToElement: "#perc-dropdown-page-workflow"
+                            });
+                            pageWorkflowDropdown.find('.perc-dropdown-title').off('click');
+                            pageWorkflowDropdown.children('a, button').on("click",function()
+                            {
+                                dropdownActions[0](dropdownParams[0]);
+                            });
+						}
                         addSaveAndCloseButtons();
                     }
                 });

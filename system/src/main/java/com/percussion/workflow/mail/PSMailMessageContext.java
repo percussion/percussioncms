@@ -24,7 +24,10 @@
 
 package com.percussion.workflow.mail;
 
+import com.percussion.security.PSNotificationEmailAddress;
+
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * This class implements the interface <code>IPSMailMessageContext</code> is the
@@ -53,20 +56,20 @@ public class PSMailMessageContext implements IPSMailMessageContext,
                  "Recipient's address must not be "
                          + "empty or null in message context");
       }
-      m_From = from;
-      m_To = to;
-      m_Cc = cc;
-      m_Subject = subject;
-      m_Body = body;
-      m_Url = url;
-      m_MailDomain = mailDomain;
-      m_SmtpHost = smtpHost;
-      m_SmtpUserName = smtpUserName;
-      m_SmtpPassword = smtpPassword;
-      m_SmtpIsTLSEnabled = smtpIsTLSEnabled;
-      m_SmtpPortNumber = smtpPortNumber;
-      m_SmtpSSLPortNumber = smtpSSLPortNumber;
-      m_SmtpBounceAddr = smtpBounceAddr;
+      this.from = from;
+      this.to = to;
+      this.cc = cc;
+      this.subject = subject;
+      this.body = body;
+      this.url = url;
+      this.mailDomain = mailDomain;
+      this.smtpHost = smtpHost;
+      this.smtpUserName = smtpUserName;
+      this.smtpPassword = smtpPassword;
+      this.smtpIsTLSEnabled = smtpIsTLSEnabled;
+      this.smtpPortNumber = smtpPortNumber;
+      this.smtpSSLPortNumber = smtpSSLPortNumber;
+      this.smtpBounceAddr = smtpBounceAddr;
    }
 
    /*
@@ -74,7 +77,7 @@ public class PSMailMessageContext implements IPSMailMessageContext,
     */
    @Override
    public String getFrom() {
-      return m_From;
+      return from;
    }
 
    /*
@@ -82,7 +85,7 @@ public class PSMailMessageContext implements IPSMailMessageContext,
     */
    @Override
    public String getTo() {
-      return m_To;
+      return to;
    }
 
    /*
@@ -90,7 +93,7 @@ public class PSMailMessageContext implements IPSMailMessageContext,
     */
    @Override
    public String getCc() {
-      return m_Cc;
+      return cc;
    }
 
    /*
@@ -98,7 +101,7 @@ public class PSMailMessageContext implements IPSMailMessageContext,
     */
    @Override
    public String getSubject() {
-      return m_Subject;
+      return subject;
    }
 
    /*
@@ -106,7 +109,7 @@ public class PSMailMessageContext implements IPSMailMessageContext,
     */
    @Override
    public String getBody() {
-      return m_Body;
+      return body;
    }
 
    /*
@@ -114,7 +117,7 @@ public class PSMailMessageContext implements IPSMailMessageContext,
     */
    @Override
    public String getURL() {
-      return m_Url;
+      return url;
    }
 
    /*
@@ -122,7 +125,7 @@ public class PSMailMessageContext implements IPSMailMessageContext,
     */
    @Override
    public String getMailDomain() {
-      return m_MailDomain;
+      return mailDomain;
    }
 
    /*
@@ -130,7 +133,7 @@ public class PSMailMessageContext implements IPSMailMessageContext,
     */
    @Override
    public String getSmtpHost() {
-      return m_SmtpHost;
+      return smtpHost;
    }
 
    /*
@@ -138,7 +141,7 @@ public class PSMailMessageContext implements IPSMailMessageContext,
     */
    @Override
    public String getUserName() {
-      return m_SmtpUserName;
+      return smtpUserName;
    }
 
    /*
@@ -146,7 +149,7 @@ public class PSMailMessageContext implements IPSMailMessageContext,
     */
    @Override
    public String getPassword() {
-      return m_SmtpPassword;
+      return smtpPassword;
    }
 
    /*
@@ -154,7 +157,7 @@ public class PSMailMessageContext implements IPSMailMessageContext,
     */
    @Override
    public String getIsTLSEnabled() {
-      return m_SmtpIsTLSEnabled;
+      return smtpIsTLSEnabled;
    }
 
    /*
@@ -162,7 +165,7 @@ public class PSMailMessageContext implements IPSMailMessageContext,
     */
    @Override
    public String getPortNumber() {
-      return m_SmtpPortNumber;
+      return smtpPortNumber;
    }
 
    /*
@@ -170,7 +173,7 @@ public class PSMailMessageContext implements IPSMailMessageContext,
     */
    @Override
    public String getSSLPortNumber() {
-      return m_SmtpSSLPortNumber;
+      return smtpSSLPortNumber;
    }
 
    /*
@@ -178,76 +181,124 @@ public class PSMailMessageContext implements IPSMailMessageContext,
     */
    @Override
    public String getBounceAddr() {
-      return m_SmtpBounceAddr;
+      return smtpBounceAddr;
+   }
+
+   /**
+    * Gets the source list of notification email addresses, used in debug / logging.  Source email list
+    * should include information on the source role / subject that the email was pulled from.
+    *
+    * @return may be empty.  the list of source to email addresses for this message.
+    */
+   @Override
+   public List<PSNotificationEmailAddress> getSourceToList() {
+      return sourceToList;
+   }
+
+   /**
+    * Gets the source list of notification cc email addresses, used in debug / logging.  source email list
+    * should include information on the source role / subject that the email was pulled from.
+    *
+    * @return may be empty.  the list of source cc email addresses for this message.
+    */
+   @Override
+   public List<PSNotificationEmailAddress> getSourceCCList() {
+      return sourceCCList;
+   }
+
+   /**
+    * Sets the source list of to email addresses.
+    *
+    * @param sourceTo the list of to email addresses
+    */
+   @Override
+   public void setSourceToList(List<PSNotificationEmailAddress> sourceTo) {
+      sourceToList = sourceTo;
+   }
+
+   /**
+    * Sets the list of cc source email addresses
+    *
+    * @param sourceCC the list of cc addresses
+    */
+   @Override
+   public void setSourceCCList(List<PSNotificationEmailAddress> sourceCC) {
+      sourceCCList = sourceCC;
    }
 
    /**
     * Name of the user the mail notification is issued on behalf of.
     */
-   private String m_From = null;
+   private String from = null;
 
    /**
     * Names of the users or roles the mail notification is required to reach.
     */
-   private String m_To = null;
+   private String to = null;
 
    /**
     * CC list users a copy of the mail notification is to be sent.
     */
-   private String m_Cc = null;
+   private String cc = null;
 
    /**
     * Subject of the mail notification.
     */
-   private String m_Subject = null;
+   private String subject = null;
 
    /**
     * The Body of the mail message.
     */
-   private String m_Body = null;
+   private String body = null;
 
    /**
     * Url of the content item to include in the mail notification.
     */
-   private String m_Url = null;
+   private String url = null;
 
    /**
     * Mail Domain of the sender or recipients.
     */
-   private String m_MailDomain = null;
+   private String mailDomain = null;
 
    /**
     * SMTP host name for the mail plugin
     */
-   private String m_SmtpHost = null;
+   private String smtpHost = null;
 
    /**
     * SMTP user name for the mail plugin
     */
-   private String m_SmtpUserName = null;
+   private String smtpUserName = null;
 
    /**
     * SMTP pass word for the mail plugin
     */
-   private String m_SmtpPassword = null;
+   private String smtpPassword = null;
 
    /**
     * State of whether TLS is enabled on the SMTP server or not.
     */
-   private String m_SmtpIsTLSEnabled = null;
+   private String smtpIsTLSEnabled = null;
 
    /**
     * State of whether TLS is enabled on the SMTP server or not.
     */
-   private String m_SmtpPortNumber = null;
+   private String smtpPortNumber = null;
 
    /**
     * State of whether TLS is enabled on the SMTP server or not.
     */
-   private String m_SmtpSSLPortNumber = null;
+   private String smtpSSLPortNumber = null;
 
    /**
     * State of smtp bounce address.
     */
-   private String m_SmtpBounceAddr = null;
+   private String smtpBounceAddr = null;
+
+   private List<PSNotificationEmailAddress> sourceToList;
+
+   private List<PSNotificationEmailAddress> sourceCCList;
+
+
 }

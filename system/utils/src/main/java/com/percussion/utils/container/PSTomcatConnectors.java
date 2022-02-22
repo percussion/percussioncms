@@ -24,6 +24,7 @@
 
 package com.percussion.utils.container;
 
+import com.percussion.install.PSLogger;
 import com.percussion.utils.xml.PSInvalidXmlException;
 import com.percussion.utils.xml.PSXmlUtils;
 import org.w3c.dom.Document;
@@ -55,7 +56,7 @@ public class PSTomcatConnectors extends PSAbstractXmlConnectors {
     public PSTomcatConnectors(Path rxDir, Path dtsRoot)
     {
         super(rxDir.resolve(dtsRoot.resolve("Server")));
-        dtsRoot = rxDir.resolve(dtsRoot);
+       // dtsRoot = rxDir.resolve(dtsRoot);
         rxRootDir = rxDir;
         this.serverFile = dtsRoot.resolve(SERVER_XML_PATH);
 
@@ -66,7 +67,7 @@ public class PSTomcatConnectors extends PSAbstractXmlConnectors {
         }
 
         this.propertiesFile = dtsRoot.resolve("Server/conf/perc/perc-catalina.properties");
-        System.out.println("Perc-Catalina properties file*********" + this.propertiesFile);
+        PSLogger.logInfo("Perc-Catalina properties file*********" + this.propertiesFile);
     }
 
     public String getOperatingSystem() {
@@ -87,7 +88,7 @@ public class PSTomcatConnectors extends PSAbstractXmlConnectors {
     public void load() {
         Map<String,String> props=null;
         if (Files.exists(propertiesFile)) {
-            System.out.println("Perc-Catalina Exists *********" + this.propertiesFile);
+            PSLogger.logInfo("Perc-Catalina Exists *********" + this.propertiesFile);
             props = loadProperties(propertiesFile);
         }
         if(getServerFile().toFile().exists()) {

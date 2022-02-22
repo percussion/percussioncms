@@ -164,7 +164,7 @@
         $('.perc-blog-wrapper').each(function(){
             var currentBlogElem = $(".perc-blog");
             if ("" === currentBlogElem.attr("data-query")){ return;}
-            let queryString = JSON.parse(currentBlogElem.attr("data-query"));
+            var queryString = JSON.parse(currentBlogElem.attr("data-query"));
             // Get the blog index page
             var trackBlogPost = queryString.trackBlogPost;
             if (!trackBlogPost) {

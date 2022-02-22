@@ -32,7 +32,7 @@
      *                     the load and display of the newly selected page.
      * @param callbackOptions An object containing options to be passed to the callback function.
      */
-    let PercResultsPaging = function(loadCallback, callbackOptions)
+    var PercResultsPaging = function(loadCallback, callbackOptions)
     {
         var elem = this.get(0);
         if(null === pagingStructure)
@@ -51,8 +51,8 @@
                 elem.settings.maxResults = 0;
             }
         }
-        elem.settings.query.returnTotalEntries = true; //setting the flag to have server return totalEntries regardles on which page we are
-        let navLoc = getPageFromLocation(); //overiding it with value from URL - befor was just comming as parametr.
+        elem.settings.query.returnTotalEntries = true; //setting the flag to have server return totalEntries regardless on which page we are
+        var navLoc = getPageFromLocation(); //overriding it with value from URL - before it was just passed as parameter.
         quickNav(elem, navLoc, loadCallback, callbackOptions, null);
 
         window.onpopstate = function(e) {
@@ -61,21 +61,21 @@
         return this;
     };
 
-    let updateNav = function(target, navLoc, callback, callbackOptions)
+    var updateNav = function(target, navLoc, callback, callbackOptions)
     {
-        let currDiv = $(target);
+        var currDiv = $(target);
 
-        let totalMaxResults = target.settings.totalMaxResults;
+        var totalMaxResults = target.settings.totalMaxResults;
         if(!totalMaxResults) {
             totalMaxResults = -1;
         }
 
-        let maxPerPage = target.settings.maxResults;
+        var maxPerPage = target.settings.maxResults;
         if(!maxPerPage) {
             maxPerPage = -1;
         }
 
-        let currPaging = currDiv.find('.perc-pagination-container');
+        var currPaging = currDiv.find('.perc-pagination-container');
         if(0 < currPaging.length) {
             currPaging.replaceWith(pagingStructure.clone());
         }
@@ -106,10 +106,10 @@
             navLoc = target.totalPages;
         }
         // Sane defaults
-        let center = 3;
-        let navLocClass = '.perc-third';
-        let navLocPrev = '.perc-second';
-        let navLocNext = '.perc-fourth';
+        var center = 3;
+        var navLocClass = '.perc-third';
+        var navLocPrev = '.perc-second';
+        var navLocNext = '.perc-fourth';
 
         // Do we need multi-paging?  (Scrolls with you as you advance through pages)
         if (4 < target.totalPages)
@@ -286,7 +286,7 @@
      *                        Usually an object containing name-value pairs.
      * @param event Event that triggered this call or null if called during the page loading.
      */
-    let quickNav = function(target, navLoc, callback, callbackOptions, event) {
+    var quickNav = function(target, navLoc, callback, callbackOptions, event) {
 
         function jqXHRsuccess(result, status)
         {
@@ -314,7 +314,7 @@
             }
         }
 
-        let jqXHR = callback(target, navLoc, callbackOptions, jqXHRsuccess);
+        var jqXHR = callback(target, navLoc, callbackOptions, jqXHRsuccess);
     };
 
     /**
@@ -325,18 +325,18 @@
      */
     function getPageFromLocation() {
 
-        let pageNumber = 1;
-        let queryStr = window.location.search;
-        let pageParamName = "page=";
+        var pageNumber = 1;
+        var queryStr = window.location.search;
+        var pageParamName = "page=";
 
         if (queryStr.length > (pageParamName.length + 1) && 0 < queryStr.indexOf(pageParamName)){ //the string has at least "?page=x"
 
-            let queryParams = queryStr.substring(1).split('&');
+            var queryParams = queryStr.substring(1).split('&');
 
-            for (let i = 0; i < queryParams.length; i++) { // reassembling without page param
+            for (var i = 0; i < queryParams.length; i++) { // reassembling without page param
 
                 if (queryParams[i] && queryParams[i].indexOf(pageParamName.length)) {
-                    let paramVal = parseInt(queryParams[i].substring(pageParamName.length));
+                    var paramVal = parseInt(queryParams[i].substring(pageParamName.length));
                     if (paramVal && 0 < paramVal){
                         pageNumber = paramVal; //assigning page number only if we got meaningful value
                     }
@@ -355,8 +355,8 @@
      */
     function genPageUrl(page) {
 
-        let queryStr = window.location.search;
-        let pageParamStr = "page=" + page;
+        var queryStr = window.location.search;
+        var pageParamStr = "page=" + page;
 
         if (queryStr.length > "page=".length && 0 < queryStr.indexOf("page=")){ //the string has at least "?page="
             var queryParams = queryStr.substring(1).split('&');
@@ -387,7 +387,7 @@
         $('head').append($('<link />').attr('href', genPageUrl(1)).attr('rel','prev'));
         $('head').append($('<link />').attr('href', window.location.href + '#z').attr('rel','next'));
 
-        let structure = $('<div />')
+        var structure = $('<div />')
             .addClass('perc-pagination-container')
             .append($('<div />')
                 .addClass('perc-page-count')
@@ -483,7 +483,7 @@
 
     function updateLinkPrevTag(navLocation) {
 
-        let links = $("head").find('link');
+        var links = $("head").find('link');
         $(links).each(function() {
 
             var linkRel = $(this).attr('rel');
@@ -500,10 +500,10 @@
 
     function updateLinkNextTag(navLocation, totalPages) {
 
-        let links = $("head").find('link');
+        var links = $("head").find('link');
         $(links).each(function() {
 
-            let linkRel = $(this).attr('rel');
+            var linkRel = $(this).attr('rel');
 
             if(null !== linkRel && 'next' === linkRel) {
                 if(navLocation === totalPages) {

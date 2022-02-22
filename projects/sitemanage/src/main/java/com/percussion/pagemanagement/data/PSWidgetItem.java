@@ -24,18 +24,16 @@
 
 package com.percussion.pagemanagement.data;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
+import com.percussion.share.data.PSAbstractPersistantObject;
 import net.sf.oval.constraint.MatchPattern;
 import net.sf.oval.constraint.NotBlank;
 import net.sf.oval.constraint.NotNull;
 
-import com.percussion.share.data.PSAbstractPersistantObject;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Widget Item is an instance of a widget.
@@ -46,7 +44,7 @@ public class PSWidgetItem extends PSAbstractPersistantObject
 {
     
     @NotBlank
-    @MatchPattern(pattern = {"[1-9][0-9]*"})
+    @MatchPattern(pattern = {"^-?[1-9][0-9]*"})
     private String id;
     
     private String name;

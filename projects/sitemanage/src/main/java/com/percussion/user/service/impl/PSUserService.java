@@ -1121,24 +1121,18 @@ public class PSUserService implements IPSUserService
         List<Subject> subjects;
         try
         {
-            subjects = roleMgr.findUsers(asList(query), PSServerConfigUpdater.DIRECTORY_SET_NAME, "directorySet", null, true);
+            subjects = roleMgr.findUsers(Collections.singletonList(query), PSServerConfigUpdater.DIRECTORY_SET_NAME, "directorySet", null, true);
         }
-        catch (PSSecurityCatalogException e)
+        catch (PSSecurityCatalogException | PSSecurityException e)
         {
             log.error("General directory service failure: {}" , PSExceptionUtils.getMessageForLog(e));
             log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             if(e.getMessage().contains("LDAP: error code 4 - Sizelimit Exceeded")){
                 throw new PSDirectoryServiceException("The returned results exceeded LDAP server limit, please refine your search to get the results.");
-            }else if(e.getMessage().contains("LDAP response read timed out") || e.getMessage().contains("connect timed out")){
+            }else if(e.getMessage().contains("timed out")){
                 throw new PSDirectoryServiceException("The network connection to the remote LDAP server has timed out.  Please check server network connectivity and try again.");
             }
             throw new PSDirectoryServiceException(e);
-        }
-        catch (PSSecurityException e)
-        {
-            log.error("Failed to connect to Directory Server: {}", PSExceptionUtils.getMessageForLog(e));
-            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
-            throw new PSDirectoryServiceConnectionException(e);
         }
         catch (IllegalArgumentException ae)
         {

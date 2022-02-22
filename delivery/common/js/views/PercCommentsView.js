@@ -52,7 +52,7 @@
 
     function joinURL(firstPart, secondPart){
         if("undefined" !== typeof (firstPart)){
-            if(firstPart.endsWith("/")){
+            if(firstPart.lastIndexOf("/") === firstPart.length-1){
                 firstPart = firstPart.substring(0,firstPart.length-1);
             }
         }else{
@@ -60,7 +60,7 @@
         }
 
         if("undefined" !== typeof (secondPart)){
-            if(secondPart.startsWith("/")){
+            if(secondPart.substr(0,1) === "/"){
                 secondPart = secondPart.substring(1);
             }
         }else{
@@ -169,7 +169,7 @@
                 if(success && 'undefined' !== typeof (data.comments) && null !== data.comments)
                 {
                     var comments = data.comments; 
-                    for(let c = 0; c < comments.length; c++)
+                    for(var c = 0; c < comments.length; c++)
                     {
                         el.append(createCommentHtml(comments[c]));
                         el.append($("<div/>").addClass("perc-comment-divider"));

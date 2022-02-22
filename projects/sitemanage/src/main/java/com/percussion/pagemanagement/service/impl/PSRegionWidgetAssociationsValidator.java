@@ -23,22 +23,20 @@
  */
 package com.percussion.pagemanagement.service.impl;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-
-import com.percussion.share.service.exception.PSPropertiesValidationException;
-import org.springframework.validation.ObjectError;
-
 import com.percussion.pagemanagement.data.PSRegionWidgetAssociations;
 import com.percussion.pagemanagement.data.PSRegionWidgets;
 import com.percussion.pagemanagement.data.PSWidgetItem;
 import com.percussion.pagemanagement.service.IPSWidgetService;
 import com.percussion.share.service.exception.PSBeanValidationException;
+import com.percussion.share.service.exception.PSPropertiesValidationException;
 import com.percussion.share.service.exception.PSSpringValidationException;
 import com.percussion.share.validation.PSAbstractBeanValidator;
+import org.springframework.validation.ObjectError;
+
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Validates Region Widget Assocations.
@@ -61,7 +59,7 @@ public abstract class PSRegionWidgetAssociationsValidator<BEAN> extends PSAbstra
     @Override
     protected void doValidation(BEAN bean, PSBeanValidationException e)
     {
-        PSRegionWidgetAssociations wa = getWidgetAssocations(bean, e);
+        PSRegionWidgetAssociations wa = getWidgetAssociations(bean, e);
         if (wa != null)
             doWidgetAssociations(wa, e);
         
@@ -69,7 +67,7 @@ public abstract class PSRegionWidgetAssociationsValidator<BEAN> extends PSAbstra
     
     public abstract String getField();
     
-    public abstract PSRegionWidgetAssociations getWidgetAssocations(BEAN wa, PSBeanValidationException e);
+    public abstract PSRegionWidgetAssociations getWidgetAssociations(BEAN wa, PSBeanValidationException e);
     
     
     protected void doWidgetAssociations(PSRegionWidgetAssociations a, PSBeanValidationException e) {

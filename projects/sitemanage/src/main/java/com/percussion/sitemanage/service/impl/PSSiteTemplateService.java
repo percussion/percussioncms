@@ -612,7 +612,7 @@ public class PSSiteTemplateService implements IPSSiteTemplateService
         }
     }
     
-    @SuppressWarnings("deprecation")
+
     protected List<AssignTemplate> createTemplates(List<CreateTemplate> createTemplates) throws PSDataServiceException {
         List<AssignTemplate> rvalue = new ArrayList<>();
         for(CreateTemplate t : createTemplates) {

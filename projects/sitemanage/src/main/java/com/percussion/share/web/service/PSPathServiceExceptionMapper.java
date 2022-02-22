@@ -56,7 +56,15 @@ public class PSPathServiceExceptionMapper extends PSAbstractExceptionMapper<IPSP
     protected PSErrors createErrors(IPSPathService.PSPathServiceException exception) {
         log.debug(ERROR_MESSAGE, exception);
         PSErrors.PSObjectError poe = new PSErrors.PSObjectError();
-        poe.setDefaultMessage(exception.getMessage());
+        String cause = exception.getMessage();
+        if(exception.getCause() != null ){
+            if( exception.getCause().getLocalizedMessage() != null) {
+                cause = exception.getCause().getLocalizedMessage();
+            }else if (exception.getCause().getMessage() != null){
+                cause = exception.getCause().getMessage();
+            }
+        }
+        poe.setDefaultMessage(cause);
         PSErrors pe = new PSErrors();
         pe.setGlobalError(poe);
         return pe;

@@ -251,8 +251,14 @@ public class PSSiteDao implements IPSiteDao
         }
     }
 
-    /*
-     * //see base interface method for details
+    /**
+     * Updates the specified site, and its related edition/content-list/pubservers with the
+     * new name and description.
+     *
+     * @param site the existing site, not <code>null</code>.
+     * @param newName the new name of the site, not blank.
+     * @param newDescrption the new description of the site, may be blank.
+     * @return <code>true</code> if a pubserver was modified as a result of the change, <code>false</code> if not.
      */
     @Transactional
     public boolean updateSite(IPSSite site, String newName, String newDescrption) throws PSNotFoundException {

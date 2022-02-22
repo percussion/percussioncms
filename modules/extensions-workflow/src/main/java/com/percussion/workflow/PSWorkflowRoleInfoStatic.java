@@ -29,6 +29,9 @@ import com.percussion.design.objectstore.PSAttributeList;
 import com.percussion.design.objectstore.PSSubject;
 import com.percussion.extension.IPSExtensionErrors;
 import com.percussion.i18n.PSI18nUtils;
+import com.percussion.security.IPSTypedPrincipal;
+import com.percussion.security.IPSTypedPrincipal.PrincipalTypes;
+import com.percussion.security.PSNotificationEmailAddress;
 import com.percussion.security.PSRoleManager;
 import com.percussion.security.PSRunAsUser;
 import com.percussion.server.IPSRequestContext;
@@ -40,8 +43,6 @@ import com.percussion.services.security.PSRoleMgrLocator;
 import com.percussion.services.security.PSTypedPrincipal;
 import com.percussion.services.system.PSAssignmentTypeHelper;
 import com.percussion.util.PSCms;
-import com.percussion.security.IPSTypedPrincipal;
-import com.percussion.security.IPSTypedPrincipal.PrincipalTypes;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -824,10 +825,7 @@ public class PSWorkflowRoleInfoStatic {
    /**
     * Convenience method that constructs a list of all adhoc actors for all
     * state roles that have notification on, validating role membership for
-    * adhoc normal roles. Calls {@link
-    * #getStateAdhocActorNotificationList(PSContentAdhocUsersContext,
-    * PSStateRolesContext, int, IPSRequestContext, boolean)
-    * getStateAdhocActorNotificationList( cauc, src, contentId, request, true )}
+    * adhoc normal roles.
     */
    static List getStateAdhocActorNotificationList(
       IPSContentAdhocUsersContext cauc,
@@ -1535,16 +1533,15 @@ public class PSWorkflowRoleInfoStatic {
     * @param communityId maybe null.
     * @return not null maybe empty.
     */
-   protected static List<String> getRoleEmailAddresses(
+   protected static List<PSNotificationEmailAddress> getRoleEmailAddresses(
          Collection<IPSTypedPrincipal> princes, String communityId)
    {
-      List membersEmail = new ArrayList();
       String emailAttributeName = PSWorkFlowUtils.properties.getProperty(
             PSWorkFlowUtils.USER_EMAIL_ATTRIBUTE_PROPERTY,
             PSWorkFlowUtils.USER_EMAIL_ATTRIBUTE);
 
-      List<String> emails = new ArrayList<>();
-      emails.addAll(PSRoleManager.getInstance().getSubjectEmailAddresses(princes, emailAttributeName, null));
+      List<PSNotificationEmailAddress> emails = new ArrayList<>();
+      emails.addAll(PSRoleManager.getInstance().getSubjectEmailAddresses(null, princes, emailAttributeName, null));
 
       return emails;
    }
@@ -1741,7 +1738,7 @@ public class PSWorkflowRoleInfoStatic {
     * @throws            IllegalArgumentException if any of the input
     *                    parameters is not valid.
     */
-   public static List getSubjectEmailAddresses(String subjectName,
+   public static List<PSNotificationEmailAddress> getSubjectEmailAddresses(String subjectName,
       IPSRequestContext request, String communityId)
    {
       PSWorkFlowUtils.printWorkflowMessage(
@@ -1760,7 +1757,7 @@ public class PSWorkflowRoleInfoStatic {
          throw new IllegalArgumentException(
             "Request context may not be null.");
 
-      List subjectsEmail = new ArrayList();
+      List<PSNotificationEmailAddress> subjectsEmail = new ArrayList();
       String emailAttributeName = PSWorkFlowUtils.properties.getProperty(
          PSWorkFlowUtils.USER_EMAIL_ATTRIBUTE_PROPERTY,
             PSWorkFlowUtils.USER_EMAIL_ATTRIBUTE);
