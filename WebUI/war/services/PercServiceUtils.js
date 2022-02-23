@@ -114,7 +114,7 @@
         }
         var csrfToken;
         if(typeof url != "undefined" && url != null){
-            if(!url.lastIndexOf("/csrf") === url.length-6){
+            if(!(url.lastIndexOf("/csrf") === url.length-6)){
                 url = csrfGetURLFromServiceCall(url);
             }
             if ('function' === typeof (jQuery.getDeliveryServiceBase)) {
@@ -426,7 +426,7 @@
                 return;
             }
         }
-        if(!url.substring(0,servicebase.length-1) === (servicebase) && !url.substring(0,3) === "http"){
+        if(!(url.substring(0,servicebase.length-1) === servicebase) && !(url.substring(0,3) === "http")){
             url = joinURL(servicebase,url);
         }
         var body;
@@ -525,7 +525,7 @@
             }
         }
 
-        if(!url.substring(0,servicebase.length-1) === (servicebase) && !url.substring(0,3) === "http"){
+        if(!(url.substring(0,servicebase.length-1) === servicebase) && !(url.substring(0,3) === "http")){
             url = joinURL(servicebase,url);
         }
 
