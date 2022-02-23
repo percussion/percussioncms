@@ -1,11 +1,12 @@
 package com.percussion.security;
 
 import javax.security.auth.Subject;
+import java.io.Serializable;
 import java.security.Principal;
 import java.util.Objects;
 import java.util.Set;
 
-public class PSNotificationEmailAddress {
+public class PSNotificationEmailAddress implements Serializable {
 
     private String email;
     private String sourceSubject;
