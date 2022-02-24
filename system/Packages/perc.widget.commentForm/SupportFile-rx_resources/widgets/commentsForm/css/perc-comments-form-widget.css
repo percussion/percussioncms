@@ -54,7 +54,7 @@
     font-weight: normal;
 }
 #perc-main-form{
-    padding:10px 0px 10px 50px;
+    padding:10px 0 10px 50px;
     background-color:#E6E6E9;
 
 }
@@ -107,7 +107,7 @@
     font-size: 11px;
     font-weight: normal;
     margin-top: 5px;
-    margin-bottom:0px;
+    margin-bottom:0;
     overflow: hidden;
     line-height:16px;
     padding: 3px 3px 0;
@@ -152,7 +152,7 @@
 }
 .PercFormWidgetReadOnly .form-widget-label{
 
-    margin:10px 0px;
+    margin:10px 0;
 }
 .perc-form-date-datadisplay
 {
@@ -248,7 +248,7 @@
     display:none;
 }
 ul#perc-control-menu-container{
-    padding:0px;
+    padding:0;
     margin-top:-5px;
     width:145px;
 }
@@ -261,7 +261,7 @@ ul#perc-control-menu-container{
     padding-bottom:6px;
     border-bottom:1px solid #99C4D8;
     padding-left:55px;
-    margin:0px;
+    margin:0;
     list-style:none;
 }
 .form-text-label{
@@ -352,7 +352,7 @@ ul#perc-control-menu-container{
     padding-left:15px;
 }
 .perc-shared-asset .perc-form-header {
-    padding-left:0px;
+    padding-left:0;
 }
 
 .ui-state-highlight {
@@ -374,7 +374,7 @@ ul#perc-control-menu-container{
     display:block;
 }
 .delete-icon{
-    margin-right:0px;
+    margin-right:0;
     padding-left: 1px;
     display:block;
 }
@@ -467,7 +467,7 @@ ul#perc-control-menu-container{
 
 #perc-form-metadata-content {
     background-color: #E6E6E9;
-    margin: 0 0 -35px 0px;
+    margin: 0 0 -35px 0;
     padding: 9px 10px 0 35px;
 }
 
@@ -540,12 +540,12 @@ ul#perc-control-menu-container{
 }
 .perc-div-rowOption input[type="radio"]{
 
-    margin: 0px 5px 0px 0px;
+    margin: 0 5px 0 0;
     cursor:default;
 }
 .add-control,
 .perc-div-rowOption .delete-control{
-    margin: 0px 5px;
+    margin: 0 5px;
 }
 
 .perc-div-rowOption .datadisplay {
@@ -553,7 +553,7 @@ ul#perc-control-menu-container{
 }
 .add-control {
     margin:0;
-    padding-top:0px;
+    padding-top:0;
 }
 .delete-control {
     margin-right: 2px;
@@ -567,7 +567,7 @@ ul#perc-control-menu-container{
 .table-layout > div > div{
     display: table-cell;
     position: relative;
-    padding: 5px 0px;
+    padding: 5px 0;
     vertical-align: top;
     white-space:nowrap;
 }
@@ -627,14 +627,14 @@ form input[type="text"]{
 }
 
 .field-editor-basic input[type="button"]{
-    margin: 10px 0px;
+    margin: 10px 0;
 }
 .delete-field{
     float:right;
 }
 .perc-required-form-legend {
     right:10px;
-    top: 0px;
+    top: 0;
     position: absolute;
 }
 
@@ -653,18 +653,18 @@ form input[type="text"]{
     width:63px;
     height:22px;
     text-indent:-10000px;
-    border:0px;
+    border:0;
     display:block;
     position:absolute;
     cursor:pointer;
 }
 #perc-formbuild-success-url-browse{
-    top: 0px;
+    top: 0;
     left: 105%;
 }
 
 #perc-formbuild-error-url-browse{
-    top: 0px;
+    top: 0;
     left: 105%;
 }
 
@@ -724,8 +724,7 @@ form input[type="text"]{
 
 /* IE6 IFRAME FIX (taken from datepicker 1.5.3 */
 .ui-datepicker-cover {
-    display: none; /*sorry for IE5*/
-    display/**/: block; /*sorry for IE5*/
+    display: block; /*sorry for IE5*/
     position: absolute; /*must have*/
     z-index: -1; /*must have*/
     filter: mask(); /*must have*/
@@ -837,7 +836,7 @@ form input[type="text"]{
 .ui-icon { display: block; text-indent: -99999px; overflow: hidden; background-repeat: no-repeat; }
 .perc-prefs-dialog { position: relative; width: 100px; background-color: #3288B0;
     box-shadow: 2px 2px #818181;
-    -webkit-box-shadow: 2px px #818181;
+    -webkit-box-shadow: 2px 2px #818181;
     -moz-box-shadow: 2px 2px #818181;
     filter: progid:DXImageTransform.Microsoft.dropShadow(color=#818181, offX=2, offY=2, positive=true);
 }
@@ -846,8 +845,8 @@ form input[type="text"]{
 .perc-prefs-dialog .ui-dialog-titlebar-close { position: absolute; right: .3em; top: 6px; width: 19px; margin: -5px -10px 0 0; padding: 1px; height: 9px; }
 .perc-prefs-dialog .ui-dialog-titlebar-close span { display: block; margin: 1px; }
 .perc-prefs-dialog .ui-dialog-content { border: 0; background: none; overflow: auto; zoom: 1; }
-.perc-prefs-dialog .ui-dialog-buttonpane { text-align:�left;�border-width:�1px 0 0; background-image:�none; margin:�0px; padding:�0px; height:�46px; }
-.perc-prefs-dialog .ui-dialog-buttonpane div { float:�right; margin:�0.5em -0.5em; cursor:�pointer; padding:�.2em  .6em  .3em;�line-height:�1.4em; width:�auto; overflow:�visible;}
+.perc-prefs-dialog .ui-dialog-buttonpane { text-align:left;border-width:1px 0 0; background-image:none; margin:0; padding:0; height:46px; }
+.perc-prefs-dialog .ui-dialog-buttonpane div { float:right; margin:0.5em -0.5em; cursor:pointer; padding:.2em  .6em  .3em;line-height:1.4em; width:auto; overflow:visible;}
 .ui-resizable-se { width: 14px; height: 14px; right: 3px; bottom: 3px; }
 .ui-draggable .ui-dialog-titlebar { cursor: move; }
 
@@ -875,7 +874,7 @@ form input[type="text"]{
     border: 0;
     width: 50px;
     height: 27px;
-    margin-right: 0px;
+    margin-right: 0;
     margin-left: 245px;
     margin-bottom: 4px;
 }
@@ -914,7 +913,7 @@ form input[type="text"]{
     width:98.5%;
 }
 #perc-formbuild-success-url-readonly, #perc-formbuild-error-url-readonly, #perc-form-meta-readonly-description, #perc-form-metadata-save-to-url-text-readonly{
-    margin-top:0px;
+    margin-top:0;
 }
 body * {
     font-family: 'Open Sans', sans-serif;
