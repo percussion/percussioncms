@@ -114,13 +114,13 @@
         }
         var csrfToken;
         if(typeof url != "undefined" && url != null){
-            if(!(url.lastIndexOf("/csrf") === url.length-6)){
+            if(url.indexOf("/csrf") === -1){
                 url = csrfGetURLFromServiceCall(url);
             }
             if ('function' === typeof (jQuery.getDeliveryServiceBase)) {
                 var servicebase = jQuery.getDeliveryServiceBase();
                 if(servicebase !== null && typeof servicebase !== 'undefined') {
-                    if(!(url.substring(0,servicebase.length-1) === servicebase) && !(url.substring(0,3) === "http")){
+                    if(url.indexOf(servicebase) === -1 ){
                         url = joinURL(servicebase,url);
                     }
                 }
@@ -426,7 +426,7 @@
                 return;
             }
         }
-        if(!(url.substring(0,servicebase.length-1) === servicebase) && !(url.substring(0,3) === "http")){
+         if(url.indexOf(servicebase) === -1 ){
             url = joinURL(servicebase,url);
         }
         var body;
@@ -525,7 +525,7 @@
             }
         }
 
-        if(!(url.substring(0,servicebase.length-1) === servicebase) && !(url.substring(0,3) === "http")){
+        if(url.indexOf(servicebase) === -1 ){
             url = joinURL(servicebase,url);
         }
 
