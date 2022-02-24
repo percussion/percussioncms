@@ -127,9 +127,9 @@
                 if(typeof(vals) == 'object')
                 {
                     /* if(vals['perc-field-max-char-enabled'])
-                     {
-                         checked = " checked='checked'";
-                     }*/
+                      {
+                          checked = " checked='checked'";
+                      }*/
                     if(typeof(vals['perc-field-max-char-value']) != 'undefined')
                     {
                         max = vals['perc-field-max-char-value'];
@@ -244,9 +244,9 @@
                     width = vals['perc-field-width-value'];
                 }
                 /*else if(typeof(defaults) == 'object' && typeof(defaults['perc-field-width-value']) != 'undefined')
-                {
-                    width = defaults['perc-field-width-value'];
-                }*/
+                 {
+                     width = defaults['perc-field-width-value'];
+                 }*/
 
                 if(isNaN(Number(width)))
                 {
@@ -308,9 +308,9 @@
                     height = vals['perc-field-height-value'];
                 }
                 /*else if(typeof(defaults) == 'object' && typeof(defaults['perc-field-height-value']) != 'undefined')
-                {
-                   height = defaults['perc-field-height-value'];
-                }*/
+                 {
+                    height = defaults['perc-field-height-value'];
+                 }*/
                 if(isNaN(Number(height)))
                 {
                     elem.css("height", '');
@@ -1167,12 +1167,12 @@
                     idValue = vals['perc-field-id-value'];
                 }
                 /*
-                else
-                {
-                    idValue = getUniqueGeneratedId()
+                 else
+                 {
+                     idValue = getUniqueGeneratedId()
 
-                }
-                */
+                 }
+                 */
                 // If and ID was set, apply it to the current element
                 elem.attr('id', idValue);
             },
@@ -1183,21 +1183,21 @@
 
     };
     /*
-    function getUniqueGeneratedId()
-    {
-        fieldId = 'id_blank';
+     function getUniqueGeneratedId()
+     {
+         fieldId = 'id_blank';
 
-        var modifiedFieldId = fieldId;
-        while (fieldUniquifierId[modifiedFieldId] == true)
-        {
-            fieldIdUniqueNumber++;
-            modifiedFieldId = fieldId + "_" + fieldIdUniqueNumber;
-        }
-        fieldId = modifiedFieldId;
-        fieldUniquifierId[fieldId] = true;
-        return fieldId;
-    }
-    */
+         var modifiedFieldId = fieldId;
+         while (fieldUniquifierId[modifiedFieldId] == true)
+         {
+             fieldIdUniqueNumber++;
+             modifiedFieldId = fieldId + "_" + fieldIdUniqueNumber;
+         }
+         fieldId = modifiedFieldId;
+         fieldUniquifierId[fieldId] = true;
+         return fieldId;
+     }
+     */
     /**
      * Renders a form editor from a given JSON object and creates the JSON object from the editor.
      * It also creates the rendered HTML from the given JSON Object.
@@ -1345,7 +1345,7 @@
                 "</div>" +
                 "<div>" +
                 "<div style = 'position:relative'><input type='text' class='perc-encrypted-field' id='perc-formbuild-success-url' />" +
-                "<span id='perc-formbuild-success-url-browse'>Browse</span>" +
+                "<button type='button' class='btn btn-primary' id='perc-formbuild-success-url-browse'>Browse</button>" +
                 "<input type='hidden' id='perc-formbuild-success-url-paired-unencrypted' />" +
                 "<input type='hidden' id='perc-formbuild-success-url-paired-encrypted' /></div>" +
                 "</div>" +
@@ -1356,7 +1356,7 @@
                 "</div>" +
                 "<div>" +
                 "<div style = 'position:relative'><input type='text' class='perc-encrypted-field' id='perc-formbuild-error-url' />" +
-                "<span id='perc-formbuild-error-url-browse'>Browse</span>" +
+                "<button type='button' class='btn btn-primary' id='perc-formbuild-error-url-browse'>Browse</button>" +
                 "<input type='hidden' id='perc-formbuild-error-url-paired-unencrypted' />" +
                 "<input type='hidden' id='perc-formbuild-error-url-paired-encrypted' /></div>" +
                 "</div>" +
@@ -1407,16 +1407,18 @@
                 "</div>" +
                 "<div>" +
                 "<div>" +
-                "<input type='checkbox' name='perc-email-form' id='perc-form-metadata-email-form' " +
+                "<label class='form-widget-label' style='vertical-align:middle;display:inline-block;' for='perc-form-metadata-email-form'>" +
+                "<input type='checkbox' style='vertical-align:middle;display:inline-block;' name='perc-email-form' id='perc-form-metadata-email-form' " +
                 "class='perc-form-metaradio'/>" +
-                "<label class='form-widget-label' for='perc-form-metadata-email-form'>Email form</label>" +
+                "Email form</label>" +
                 "</div>" +
                 "</div>" +
                 "<div>" +
                 "<div>" +
-                "<input type='checkbox' name='perc-email-notification' id='perc-form-metadata-email-notification' " +
+                "<label style='vertical-align:middle;display:inline-block;' class='form-widget-label' for='perc-form-metadata-email-notification'>" +
+                "<input style='vertical-align:middle;display:inline-block;' type='checkbox' name='perc-email-notification' id='perc-form-metadata-email-notification' " +
                 "class='perc-form-metaradio'/>" +
-                "<label class='form-widget-label' for='perc-form-metadata-email-notification'>Notify on form submission</label>" +
+                "Notify on form submission</label>" +
                 "</div>" +
                 "</div>" +
                 "<div>" +
@@ -1532,23 +1534,23 @@
          * @return
          */
         /*function browseDialog(element)
-        {
-            $.perc_browser({
-                on_save: function(spec, closer, show_error)
-                {
-                    debugger;
-                    $(element).val();
-                },
-                new_asset_option: false,
-                selectable_object: "leaf",
-                new_folder_opt: false,
-                displayed_containers: "Sites",
-                //selection_types: ['Folder','site','percPage'],
-                asset_name: "Selected Page",
-                title: "Select Page",
-                save_class: 'perc-save'
-            });
-        }*/
+         {
+             $.perc_browser({
+                 on_save: function(spec, closer, show_error)
+                 {
+                     debugger;
+                     $(element).val();
+                 },
+                 new_asset_option: false,
+                 selectable_object: "leaf",
+                 new_folder_opt: false,
+                 displayed_containers: "Sites",
+                 //selection_types: ['Folder','site','percPage'],
+                 asset_name: "Selected Page",
+                 title: "Select Page",
+                 save_class: 'perc-save'
+             });
+         }*/
 
         /**
          * Returns a new form field editor HTML of supplied type finds the control associated with the supplied type
@@ -1728,10 +1730,10 @@
          * they are converted to underscores.  All unallowed characters are dropped.
          */
         /*function generateNameFromLabel(label)
-        {
-            label = sanitizeTextFill(label);
-            return label;
-        }*/
+         {
+             label = sanitizeTextFill(label);
+             return label;
+         }*/
 
 
         /**
@@ -2271,9 +2273,9 @@
         return hiddenControlAPI;
     };
 
-//////////////////////////////////////////////////////////
-//******************** Honeypot Field ********************
-//////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////
+    //******************** Honeypot Field ********************
+    //////////////////////////////////////////////////////////
     /**
      * @See $.PercFieldControlInterface
      * */
@@ -2442,9 +2444,9 @@
         return honeypotControlAPI;
     };
 
-//////////////////////////////////////////////////////////
-//******************** reCaptcha Field ********************
-//////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////
+    //******************** reCaptcha Field ********************
+    //////////////////////////////////////////////////////////
     /**
      * @See $.PercFieldControlInterface
      * */
@@ -2609,9 +2611,9 @@
         return recaptchaControlAPI;
     };
 
-//////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////
     /******************* Textarea Field *********************/
-//////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////
 
     /**
      * @See $.PercFieldControlInterface
@@ -2882,9 +2884,9 @@
         textControlAPI.getRenderedField = function(fieldData)
         {
             /* unlike the other fields, applying the nameValue variable here would not make sense.
-             * this is because the fieldData.name is used to derive the nameValue and the fieldData.name
-             * variable is applied from the label of the field.  The label in the text area, for example,
-             * would be '<p>Text</p>' which does not make sense for the name. */
+              * this is because the fieldData.name is used to derive the nameValue and the fieldData.name
+              * variable is applied from the label of the field.  The label in the text area, for example,
+              * would be '<p>Text</p>' which does not make sense for the name. */
 
             var renderedHtml = $('<div/>').
             addClass($.PercFormConstants.FIELD_ROW_CLASS).
@@ -2914,9 +2916,9 @@
     };
 
 
-/////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////
     /****************** Data Drop Down Field ****************/
-/////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////
 
     /**
      * @See $.PercFieldControlInterface
@@ -3071,10 +3073,10 @@
         {
             return [
                 /* Returning nothing here as the data drop down HTML is all configured/generated via PSPageUtils.java
-                 * None of the prefs ever worked here to begin with.
-                 * In fact, most of the code in the getRenderedField function of the data drop down can be removed.
-                 * Needs tested first.
-                 * */
+                  * None of the prefs ever worked here to begin with.
+                  * In fact, most of the code in the getRenderedField function of the data drop down can be removed.
+                  * Needs tested first.
+                  * */
             ];
         };
         return DataDropDownControlAPI;
@@ -3337,9 +3339,9 @@
         return dropDownControlAPI;
     };
 
-/////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////
     /******************** CheckBox Field ******************/
-/////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////
 
     /**
      * @See $.PercCheckBoxControlInterface
@@ -3468,7 +3470,7 @@
                             var o = divOpt.find('.option-dd');
                             o.val(e.value);
                             if (fieldData.options[i].checked === 'true') {
-                                divOpt.find('input[type=checkbox]').attr('checked','checked');
+                                divOpt.find('input[type=checkbox]').prop('checked',true);
                             }
                             if ((fieldData.options.length > 1)){
                                 divOpt.append(deleteControl);
@@ -3502,13 +3504,13 @@
                         var check = $('<input type="checkbox"/>');
                         // Create and then set any other attributes
                         check.attr('class', 'option-dd');
-                        check.attr('disabled', 'disabled');
+                        check.prop('disabled', true);
                         check.attr('value', e.value);
                         check.attr('name', 'DefaultValue');
                         check.attr('id', e.value);
                         //Check if the checkbox must be checked
                         if (fieldData.options[i].checked === 'true') {
-                            check.attr('checked', 'checked');
+                            check.prop('checked', true);
                         }
                         //Define variable for label
                         var labelRadio = $('<div/>').append( $("<label/>").attr('for', e.value).text(e.value) ).html(); // $('<div/>').append().html() hack to get source.
@@ -3584,7 +3586,7 @@
                 if(option.checked === "true" || option.checked === true) // It can be provided as either a string or a bool :(
                 {
                     // Fix Firefox Bug involving rendering html and defaultValue/value
-                    thisRow.find('input').attr('checked', 'checked').get(0).defaultChecked=true;
+                    thisRow.find('input').prop('checked', true).get(0).defaultChecked=true;
                 }
                 checkBoxesHtml.append(thisRow);
             }
