@@ -175,6 +175,7 @@
     cursor:pointer;
 }
 .control-img-button{
+
     cursor: pointer;
     vertical-align: middle;
     padding-left:5px;
@@ -523,13 +524,27 @@ ul#perc-control-menu-container{
 
 .perc-div-rowOption .datadisplay {
 
+
 }
+
+.block { overflow: hidden; padding:10px; margin-top:10px; height:auto; background-color:#f9f9f9; }
+
 .add-control {
+    background-image: url('../images/form-plus.png');
+    background-repeat:no-repeat;
     margin:0;
     padding-top:0;
+    height: 18px;
+    width: 18px;
+    border-width: 0;
 }
 .delete-control {
+    background-image: url('../images/form-minus.png');
+    background-repeat:no-repeat;
     margin-right: 2px;
+    height: 18px;
+    width: 18px;
+    border-width: 0;
 }
 .table-layout{
     display: table;
