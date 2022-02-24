@@ -80,7 +80,6 @@
         IsRecaptchaEnabled : 0
     };
 
-
     $.PercFormFieldPref = {
         "REQUIRED": {
             "name": "required",
@@ -1291,8 +1290,8 @@
             var formEditorHtml = $("<div class='" + $.PercFormConstants.FORM_CLASS + "'></div>");
             formEditorHtml.append("<div class='" + $.PercFormConstants.FORM_CONFIG_CLASS + "'>" +
                 "<div class = 'perc-form-header'>" +
-                "<label id = 'perc-form-label-field-name' class = 'form-widget-label' >Form title:</label> <br />" +
-                "<input class = 'perc-form-datadisplay' type = 'text' id = 'perc-form-title' maxlength = '255' size = '50'/><br />" +
+                "<label id = 'perc-form-label-field-name' class = 'form-widget-label perc-required-field' >Form title:</label> <br />" +
+                "<input class = 'perc-form-datadisplay perc-required-field' type = 'text' id = 'perc-form-title' maxlength = '255' size = '50'/><br />" +
                 "<label id = 'perc-form-label-description' class = 'form-widget-label perc-required-field'>Form name:</label> <br />" +
                 "<input class = 'perc-form-datadisplay' type = 'text' id = 'perc-form-name' maxlength = '255' size = '50'/><br /></div>" +
                 "<div id = 'perc-form-help-text'>Add form fields by selecting the \"Form controls menu\" button to the right. Fields can be arranged by dragging and dropping them in the order you would like.</div>" +
@@ -3143,56 +3142,15 @@
             {
                 fieldEditorHtml = $("<div type='" + $.PercFormConstants.FIELD_CONTROL_DROPDOWN + "' class=' form-widget-label " + $.PercFormConstants.FIELD_EDITOR_EXT_CLASS + " " + $.PercFormConstants.FIELD_CLASS  + "'></div>").attr('name', $.PercFormController().generateNameFromLabel(fieldData.label));
                 fieldEditorHtml.append( $("<div>").append( $("<input size = '38' class = 'perc-form-datadisplay defaultFocus' type='text' maxlength='255' name='fieldLabel'/>").val(fieldData.label) ) );
-                fieldEditorHtml.append("<div class='form-widget-label' style='color:#E6E6E9;float:left;margin-left:auto;margin-right:auto;padding-right:10px;' " + $.PercFormConstants.FIELD_EDITOR_LABEL_CLASS + " >Def</div>");
+                fieldEditorHtml.append("<div class='form-widget-label' style='color:#E6E6E9;float:left;margin-left:auto;margin-right:auto;padding-right:10px;' " + $.PercFormConstants.FIELD_EDITOR_LABEL_CLASS + " ></div>");
                 fieldEditorHtml.append("<div class='form-widget-label' style='float:left;padding-right:10px;' " + $.PercFormConstants.FIELD_EDITOR_LABEL_CLASS + " >Enter your custom options</div></br>");
                 fieldEditorHtml.append("<br />");
                 //Load variables to be used
                 var newOption = "<div class='perc-div-rowOption'><input type='radio' name='defaultValue' value='' />" +
                     "<input size='33' class='perc-form-datadisplay option-dd' type='text' name='defaultValue' maxlength='255' value='' />" +
                     "</div>";
-                var addControl = "<img src='../rx_resources/widgets/form/images/form-plus.png' class='control-img-button add-control' alt='Add field' title='Add field'/>";
-                var deleteControl = "<img src='../rx_resources/widgets/form/images/form-minus.png' class='control-img-button delete-control' alt='Delete field' title='Delete field'/>";
-
-                // Callbacks for minus and add buttons.
-                var delete_function = function(event){
-                    if ($(this).parent().find(".add-control").is('.add-control')) {
-                        $(this).parent().prev().append(addControl);
-                        $(this).parent().prev().find(".add-control").on("click",function(evt){
-                            add_function(evt);
-                        });
-                        if (!$(this).parent().prev().prev().is("div")) {
-                            $(this).parent().prev().find('.delete-control').remove();
-                        }
-                    }
-                    else{
-                        if (!$(this).parent().prev().is("div") && $(this).parent().next().find(".add-control").is('.add-control')) {
-                            $(this).parent().next().find('.delete-control').remove();
-                        }}
-                    $(this).parent().remove();
-                };
-                var add_function = function(event){
-                    var newRow = $(newOption).append(deleteControl);
-                    newRow.append(addControl);
-                    if (!$(this).parent().prev().is('div')) {
-                        $(this).parent().append(deleteControl);
-                        $(this).parent().find(".delete-control").on("click",function(evt){
-                            delete_function(evt);
-                        });
-                    }
-                    newRow.find(".delete-control").on("click",function(evt){
-                        delete_function(evt);
-                    });
-                    newRow.find(".add-control").on("click",function(evt){
-                        add_function(evt);
-                    });
-                    $(this).parent().parent().find('.fix').before(newRow);
-                    $(this).remove();
-
-                    //Fix the height of the input fields
-                    $("input[type = 'text']").css('height', 'auto');
-
-                };
-
+                var addControl = "<button type='button' class='control-img-button add-control' alt='Add field' title='Add field'></button>";
+                var deleteControl = "<button type='button' class='control-img-button delete-control' alt='Delete field' title='Delete field'></button>";
                 // If there are no options in dropdown, then add just one.
                 if (fieldData.options.length===0){
                     fieldEditorHtml.append($(newOption).append(addControl));
@@ -3216,6 +3174,58 @@
                         }
                     );
                 }
+
+                // Callbacks for minus and add buttons.
+                var delete_function = function (event){
+
+                    var target = $(event.currentTarget);
+                    if (target.parent().find(".add-control").is('.add-control')) {
+                        target.parent().prev().append(addControl);
+                        target.parent().prev().find(".add-control").on("click",
+                            function(evt){
+                                add_function(evt);
+                            });
+                        if (!target.parent().prev().prev().is("div")) {
+                            target.parent().prev().find('.delete-control').remove();
+                        }
+                    }
+                    else{
+                        if (!target.parent().prev().is("div") && target.parent().next().find(".add-control").is('.add-control')) {
+                            target.parent().next().find('.delete-control').remove();
+                        }
+                        target.parent().remove();
+                    }
+                };
+
+                var add_function = function (event){
+                    var target = $(event.currentTarget);
+                    var newRow = $(newOption).append(deleteControl);
+                    newRow.append(addControl);
+                    if (!target.parent().prev().is('div')) {
+                        target.parent().append(deleteControl);
+                        target.parent().find(".delete-control").on("click",
+                            function(evt){
+                                delete_function(evt);
+                            });
+                    }
+                    newRow.find(".delete-control").on("click",
+                        function(evt){
+                            delete_function(evt);
+                        });
+
+                    newRow.find(".add-control").on("click", function(evt){
+                        add_function(evt);
+                    });
+                    target.parent().parent().find('.fix').before(newRow);
+                    target.remove();
+
+                    //Fix the height of the input fields
+                    if($.browser.msie){
+                        $("input[type = 'text']").css('height', '11px');
+                    }else{
+                        $("input[type = 'text']").css('height', 'auto');
+                    }
+                };
                 //Add the final div
                 fieldEditorHtml.append("<div class='fix' style='clear:both;'></div>");
                 // For every button add the corresponding events.
@@ -3348,7 +3358,10 @@
      */
     $.PercCheckBoxControl = function()
     {
+
+
         var checkboxControlAPI = $.extend({},$.PercFieldControlInterface);
+
         checkboxControlAPI.label="Checkboxes field";
         checkboxControlAPI.getFieldData = function($fieldElem)
         {
@@ -3396,8 +3409,12 @@
 
             return fieldData;
         };
+
+
+
         checkboxControlAPI.getFieldEditor = function(fieldData, isExtended)
         {
+
             var fieldEditorHtml = "";
             var fieldEditorHtmlWrapper = $("<div class = 'perc-form-field-wrapper'></div>");
             if(fieldData && isExtended)
@@ -3409,55 +3426,8 @@
                 var newOption = "<div class='perc-div-rowOption'><input type='checkbox' name='defaultValue' value='' />" +
                     "<input size='33' class='perc-form-datadisplay option-dd' type='text' name='defaultValue' maxlength='255' value='' />" +
                     "</div>";
-                var addControl = "<img src='../rx_resources/widgets/form/images/form-plus.png' class='control-img-button add-control' alt='Add field' title='Add field'/>";
-                var deleteControl = "<img src='../rx_resources/widgets/form/images/form-minus.png' class='control-img-button delete-control' alt='Delete field' title='Delete field'/>";
-
-                // Callbacks for minus and add buttons.
-                var delete_function = function(event){
-                    if ($(this).parent().find(".add-control").is('.add-control')) {
-                        $(this).parent().prev().append(addControl);
-                        $(this).parent().prev().find(".add-control").on("click",
-                            function(evt){
-                                add_function(evt);
-                            });
-                        if (!$(this).parent().prev().prev().is("div")) {
-                            $(this).parent().prev().find('.delete-control').remove();
-                        }
-                    }
-                    else{
-                        if (!$(this).parent().prev().is("div") && $(this).parent().next().find(".add-control").is('.add-control')) {
-                            $(this).parent().next().find('.delete-control').remove();
-                        }}
-                    $(this).parent().remove();
-                };
-                var add_function = function(event){
-                    var newRow = $(newOption).append(deleteControl);
-                    newRow.append(addControl);
-                    if (!$(this).parent().prev().is('div')) {
-                        $(this).parent().append(deleteControl);
-                        $(this).parent().find(".delete-control").on("click",
-                            function(evt){
-                                delete_function(evt);
-                            });
-                    }
-                    newRow.find(".delete-control").on("click",
-                        function(evt){
-                            delete_function(evt);
-                        });
-
-                    newRow.find(".add-control").on("click", function(evt){
-                        add_function(evt);
-                    });
-                    $(this).parent().parent().find('.fix').before(newRow);
-                    $(this).remove();
-
-                    //Fix the height of the input fields
-                    if($.browser.msie){
-                        $("input[type = 'text']").css('height', '11px');
-                    }else{
-                        $("input[type = 'text']").css('height', 'auto');
-                    }
-                };
+                var addControl = "<button type='button' class='control-img-button add-control' alt='Add field' title='Add field'></button>";
+                var deleteControl = "<button type='button' class='control-img-button delete-control' alt='Delete field' title='Delete field'></button>";
 
                 // If there are no options in checkbox, then add just one.
                 if (fieldData.options.length===0){
@@ -3482,6 +3452,58 @@
                         }
                     );
                 }
+
+                // Callbacks for minus and add buttons.
+                var delete_function = function (event){
+
+                    var target = $(event.currentTarget);
+                    if (target.parent().find(".add-control").is('.add-control')) {
+                        target.parent().prev().append(addControl);
+                        target.parent().prev().find(".add-control").on("click",
+                            function(evt){
+                                add_function(evt);
+                            });
+                        if (!target.parent().prev().prev().is("div")) {
+                            target.parent().prev().find('.delete-control').remove();
+                        }
+                    }
+                    else{
+                        if (!target.parent().prev().is("div") && target.parent().next().find(".add-control").is('.add-control')) {
+                            target.parent().next().find('.delete-control').remove();
+                        }
+                        target.parent().remove();
+                    }
+                };
+
+                var add_function = function (event){
+                    var target = $(event.currentTarget);
+                    var newRow = $(newOption).append(deleteControl);
+                    newRow.append(addControl);
+                    if (!target.parent().prev().is('div')) {
+                        target.parent().append(deleteControl);
+                        target.parent().find(".delete-control").on("click",
+                            function(evt){
+                                delete_function(evt);
+                            });
+                    }
+                    newRow.find(".delete-control").on("click",
+                        function(evt){
+                            delete_function(evt);
+                        });
+
+                    newRow.find(".add-control").on("click", function(evt){
+                        add_function(evt);
+                    });
+                    target.parent().parent().find('.fix').before(newRow);
+                    target.remove();
+
+                    //Fix the height of the input fields
+                    if($.browser.msie){
+                        $("input[type = 'text']").css('height', '11px');
+                    }else{
+                        $("input[type = 'text']").css('height', 'auto');
+                    }
+                };
                 //Add the final div
                 fieldEditorHtml.append("<div class='fix' style='clear:both;'></div>");
                 // For every button add the corresponding events.
@@ -3701,53 +3723,8 @@
                     "</div>";
                 $(newOption).find('input[type=text]').attr('name', fieldData.defaultName);
                 newOption = $('<div/>').append(newOption).html(); // $('<div/>').append().html() hack to get source.
-                var addControl = "<img src='../rx_resources/widgets/form/images/form-plus.png' class='control-img-button add-control' alt='Add field' title='Add field'/>";
-                var deleteControl = "<img src='../rx_resources/widgets/form/images/form-minus.png' class='control-img-button delete-control' alt='Delete field' title='Delete field'/>";
-
-                // Callbacks for minus and add buttons.
-                var delete_function = function(event){
-                    if ($(this).parent().find(".add-control").is('.add-control')) {
-                        $(this).parent().prev().append(addControl);
-                        $(this).parent().prev().find(".add-control").on("click",
-                            function(evt){
-                                add_function(evt);
-                            });
-                        if (!$(this).parent().prev().prev().is("div")) {
-                            $(this).parent().prev().find('.delete-control').remove();
-                        }
-                    }
-                    else{
-                        if (!$(this).parent().prev().is("div") && $(this).parent().next().find(".add-control").is('.add-control')) {
-                            $(this).parent().next().find('.delete-control').remove();
-                        }}
-                    $(this).parent().remove();
-                };
-                var add_function = function(event){
-                    var newRow = $(newOption).append(deleteControl);
-                    newRow.append(addControl);
-                    if (!$(this).parent().prev().is('div')) {
-                        $(this).parent().append(deleteControl);
-                        $(this).parent().find(".delete-control").on("click",function(evt){
-                            delete_function(evt);
-                        });
-                    }
-                    newRow.find(".delete-control").on("click",function(evt){
-                        delete_function(evt);
-                    });
-                    newRow.find(".add-control").on("click",function(evt){
-                        add_function(evt);
-                    });
-                    $(this).parent().parent().find('.fix').before(newRow);
-                    $(this).remove();
-
-                    //Fix the height of the input fields
-
-                    if($.browser.msie){
-                        $("input[type = 'text']").css('height', '11px');
-                    }else{
-                        $("input[type = 'text']").css('height', 'auto');
-                    }
-                };
+                var addControl = "<button type='button' class='control-img-button add-control' alt='Add field' title='Add field'></button>";
+                var deleteControl = "<button type='button' class='control-img-button delete-control' alt='Delete field' title='Delete field'></button>";
 
                 // If there are no options in dropdown, then add just one.
                 if (fieldData.options.length===0){
@@ -3772,6 +3749,59 @@
                         }
                     );
                 }
+
+                // Callbacks for minus and add buttons.
+                var delete_function = function (event){
+
+                    var target = $(event.currentTarget);
+                    if (target.parent().find(".add-control").is('.add-control')) {
+                        target.parent().prev().append(addControl);
+                        target.parent().prev().find(".add-control").on("click",
+                            function(evt){
+                                add_function(evt);
+                            });
+                        if (!target.parent().prev().prev().is("div")) {
+                            target.parent().prev().find('.delete-control').remove();
+                        }
+                    }
+                    else{
+                        if (!target.parent().prev().is("div") && target.parent().next().find(".add-control").is('.add-control')) {
+                            target.parent().next().find('.delete-control').remove();
+                        }
+                        target.parent().remove();
+                    }
+                };
+
+                var add_function = function (event){
+                    var target = $(event.currentTarget);
+                    var newRow = $(newOption).append(deleteControl);
+                    newRow.append(addControl);
+                    if (!target.parent().prev().is('div')) {
+                        target.parent().append(deleteControl);
+                        target.parent().find(".delete-control").on("click",
+                            function(evt){
+                                delete_function(evt);
+                            });
+                    }
+                    newRow.find(".delete-control").on("click",
+                        function(evt){
+                            delete_function(evt);
+                        });
+
+                    newRow.find(".add-control").on("click", function(evt){
+                        add_function(evt);
+                    });
+                    target.parent().parent().find('.fix').before(newRow);
+                    target.remove();
+
+                    //Fix the height of the input fields
+                    if($.browser.msie){
+                        $("input[type = 'text']").css('height', '11px');
+                    }else{
+                        $("input[type = 'text']").css('height', 'auto');
+                    }
+                };
+
                 //Add the final div
                 fieldEditorHtml.append("<div class='fix' style='clear:both;'></div>");
                 // For every button add the corresponding events.
