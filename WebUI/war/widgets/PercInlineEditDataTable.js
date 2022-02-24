@@ -430,26 +430,31 @@
                 var data = oTable.fnGetData();
                 var value1 = "";
                 var value2 = "";
-                if ($(data[0][0]).length > 0)
-                {
-                    value1 = $(data[0][0]).text().trim();
-                }
-                else
-                {
-                    value1 = data[0][0].trim();
-                }
-                if ($(data[0][1]).length > 0)
-                {
-                    value2 = $(data[0][1]).text().trim();
-                }
-                else
-                {
-                    value2 = data[0][1].trim();
-                }
-                if (data.length > 1 || (data.length === 1 && value1 !== "" && value2 !== ""))
-                {
+                if(data.length === 0){
                     addRow();
                     $(table).find('td input').on('focusout', tableCellFocusOut);
+                }else{
+                    if ($(data[0][0]).length > 0)
+                    {
+                        value1 = $(data[0][0]).text().trim();
+                    }
+                    else
+                    {
+                        value1 = data[0][0].trim();
+                    }
+                    if ($(data[0][1]).length > 0)
+                    {
+                        value2 = $(data[0][1]).text().trim();
+                    }
+                    else
+                    {
+                        value2 = data[0][1].trim();
+                    }
+                    if (data.length > 1 || (data.length === 1 && value1 !== "" && value2 !== ""))
+                    {
+                        addRow();
+                        $(table).find('td input').on('focusout', tableCellFocusOut);
+                    }
                 }
             } );
         }
@@ -568,7 +573,15 @@
             oTable.fnDeleteRow( nRow );
             if (oTable.fnGetData().length === 0)
             {
-                addRow(true);
+                $('#' + config.percAddRowElementId).trigger('click');
+            }else if(oTable.fnGetData().length === 1){
+                var tableid = $(oTable[0])[0].id;
+                var nr = $("#"+tableid).find("tbody tr");
+                var val1 = $($("#"+tableid).find("tbody tr").find('td')[0]).find('span').text();
+                var val2 = $($("#"+tableid).find("tbody tr").find('td')[1]).find('span').text();
+                if(val1.trim() === "" && val2.trim() === ""){
+                    deleteRow(nr);
+                }
             }
         }
         function addPlaceHolder()
