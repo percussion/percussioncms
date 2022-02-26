@@ -1,21 +1,10 @@
-/******************************************************************************
- *
- * [ percussion.css ]
- *
- * COPYRIGHT (c) 1999 - 2016 by Percussion Software, Inc., Woburn, MA USA.
- * All rights reserved. This material contains unpublished, copyrighted
- * work including confidential and proprietary information of Percussion.
- *
- *****************************************************************************/
-
 /* Import css files for all widgets*/
 
-/*Navigation imports*/
+/*Image widget imports*/
+@import "../../widgets/image/lightbox/lightbox.css";
 @import "../../widgets/navBar/css/superfish.css";
 @import "../../widgets/navBar/css/superfish-navbar.css";
 @import "../../widgets/navBar/css/superfish-vertical.css";
-
-/*Image widget imports*/
 @import "../../widgets/image/lightbox/lightbox.css";
 
 /* Import css file ends here*/
@@ -175,7 +164,7 @@ margin-right: 15px;
    width: 100%;
    display: block;
    font-size: 25px;
-   padding: 5px 0px;
+   padding: 5px 0;
 }
 
 .perc-blog-list-calicon {
@@ -197,7 +186,7 @@ margin-right: 15px;
    width: 100%;
    display: block;
    font-size: 25px;
-   padding: 5px 0px;
+   padding: 5px 0;
 }
 
 .perc-list-vertical, .perc-list-vertical li
@@ -223,8 +212,8 @@ margin-right: 15px;
 }
 .perc-list-title
 {
-    font-family: Times New Roman;
-    font-style: regular;
+    font-family: Times New Roman, serif;
+    font-style: normal;
     font-size: 18px;
 }
 
@@ -234,22 +223,22 @@ margin-right: 15px;
 }
 
 .perc-list-main-container {
-    padding-top: 0px;
-    margin-top: 0px;
+    padding-top: 0;
+    margin-top: 0;
     padding-left: 18px;
 }
 
  .perc-tag-list .perc-list-main-container, .perc-tag-list .perc-list-main {
-    padding-top: 0px;
+    padding-top: 0;
     margin-top: 11px;
     padding-left: 18px;
 }
 
 .perc-comma-separated-main-container {
-    padding-top: 0px;
-    margin-top: 0px;
+    padding-top: 0;
+    margin-top: 0;
     list-style: none;
-    padding-left: 0px;
+    padding-left: 0;
 }
 
 .perc-list-first {}
@@ -640,7 +629,7 @@ textarea.form-error-msg {
 .perc-tag-title, .perc-category-title, .perc-archive-title
 {
     font-family: Times New Roman;
-    font-style: regular;
+    font-style: normal;
     font-size: 18px;
 
 }
@@ -648,7 +637,7 @@ textarea.form-error-msg {
 .perc-tag-element, .perc-archive-month, .perc-archive-year
 {
     font-family: Verdana;
-    font-style: regular;
+    font-style: normal;
     font-size: 11px;
     text-align: left;
     margin-top : 5px;
@@ -752,7 +741,7 @@ ul.perc-archive-month-wrapper {
 
 .perc-list-main-inline
 {
-    padding-left: 0px;
+    padding-left: 0;
 }
 
 .perc-list-elemment-inline
@@ -1099,19 +1088,19 @@ ul.dynatree-container li li {
 }
 
 ul.dynatree-container li {
-    padding : 0px;
+    padding : 0;
 }
 
 ul.dynatree-container a {
     color: #0099CC;
-    margin: 0 0 0 0px;
+    margin: 0 0 0 0;
     text-decoration: none;
     vertical-align: top;
 }
 span.dynatree-node a {
     display: inline-block;
-    padding-left: 0px;
-    padding-right: 0px;
+    padding-left: 0;
+    padding-right: 0;
 }
 
 span.dynatree-icon {
@@ -1136,7 +1125,7 @@ span.dynatree-connector {
 
 .perc-category-list-expanded span.dynatree-active a,
 .perc-category-list-collapsible span.dynatree-active a {
-    background-color:none;
+    background-color:unset;
     color:#0099CC;
 }
 
@@ -1149,7 +1138,7 @@ div.perc-category-list-expanded li{
 }
 
 div.perc-category-list-expanded li li {
-    padding: 0 px;
+    padding: 0;
 }
 
 div.perc-category-list-expanded ul {
@@ -1325,7 +1314,7 @@ div.perc-clear-both {
 .perc-feed-item-date {
     font-family: "Verdana";
     font-size: 10px;
-    font-weight: regular;
+    font-weight: normal;
     margin-bottom: 10px;
     margin-left: 10px;
     margin-right: 10px;
@@ -1335,7 +1324,7 @@ div.perc-clear-both {
 .perc-feed-item-description {
     font-family: "Verdana";
     font-size: 11px;
-    font-weight: regular;
+    font-weight: normal;
     margin-bottom: 10px;
     margin-left: 10px;
     margin-right: 10px;
@@ -1403,27 +1392,6 @@ font-weight: normal;
 .ui-helper-clearfix:after { content: "."; display: block; height: 0; clear: both; visibility: hidden; }
 
 * html .ui-helper-clearfix { height:1%; }
-/******************************************************************************
- *
- * [ percussion.css ]
- *
- * COPYRIGHT (c) 1999 - 2016 by Percussion Software, Inc., Woburn, MA USA.
- * All rights reserved. This material contains unpublished, copyrighted
- * work including confidential and proprietary information of Percussion.
- *
- *****************************************************************************/
-
-/* Import css files for all widgets*/
-
-/*Navigation imports*/
-@import "../../widgets/navBar/css/superfish.css";
-@import "../../widgets/navBar/css/superfish-navbar.css";
-@import "../../widgets/navBar/css/superfish-vertical.css";
-
-/*Image widget imports*/
-@import "../../widgets/image/lightbox/lightbox.css";
-
-/* Import css file ends here*/
 
 /* Inline styles for rich text
 ----------------------------------*/
@@ -1580,7 +1548,7 @@ margin-right: 15px;
    width: 100%;
    display: block;
    font-size: 25px;
-   padding: 5px 0px;
+   padding: 5px 0;
 }
 
 .perc-blog-list-calicon {
@@ -1602,7 +1570,7 @@ margin-right: 15px;
    width: 100%;
    display: block;
    font-size: 25px;
-   padding: 5px 0px;
+   padding: 5px 0;
 }
 
 .perc-list-vertical, .perc-list-vertical li
@@ -1629,7 +1597,7 @@ margin-right: 15px;
 .perc-list-title
 {
     font-family: Times New Roman;
-    font-style: regular;
+    font-style: normal;
     font-size: 18px;
 }
 
@@ -1639,22 +1607,22 @@ margin-right: 15px;
 }
 
 .perc-list-main-container {
-    padding-top: 0px;
-    margin-top: 0px;
+    padding-top: 0;
+    margin-top: 0;
     padding-left: 18px;
 }
 
  .perc-tag-list .perc-list-main-container, .perc-tag-list .perc-list-main {
-    padding-top: 0px;
+    padding-top: 0;
     margin-top: 11px;
     padding-left: 18px;
 }
 
 .perc-comma-separated-main-container {
-    padding-top: 0px;
-    margin-top: 0px;
+    padding-top: 0;
+    margin-top: 0;
     list-style: none;
-    padding-left: 0px;
+    padding-left: 0;
 }
 
 .perc-list-first {}
@@ -2045,7 +2013,7 @@ textarea.form-error-msg {
 .perc-tag-title, .perc-category-title, .perc-archive-title
 {
     font-family: Times New Roman;
-    font-style: regular;
+    font-style: normal;
     font-size: 18px;
 
 }
@@ -2053,7 +2021,7 @@ textarea.form-error-msg {
 .perc-tag-element, .perc-archive-month, .perc-archive-year
 {
     font-family: Verdana;
-    font-style: regular;
+    font-style: normal;
     font-size: 11px;
     text-align: left;
     margin-top : 5px;
@@ -2157,7 +2125,7 @@ ul.perc-archive-month-wrapper {
 
 .perc-list-main-inline
 {
-    padding-left: 0px;
+    padding-left: 0;
 }
 
 .perc-list-elemment-inline
@@ -2504,19 +2472,19 @@ ul.dynatree-container li li {
 }
 
 ul.dynatree-container li {
-    padding : 0px;
+    padding : 0;
 }
 
 ul.dynatree-container a {
     color: #0099CC;
-    margin: 0 0 0 0px;
+    margin: 0 0 0 0;
     text-decoration: none;
     vertical-align: top;
 }
 span.dynatree-node a {
     display: inline-block;
-    padding-left: 0px;
-    padding-right: 0px;
+    padding-left: 0;
+    padding-right: 0;
 }
 
 span.dynatree-icon {
@@ -2541,7 +2509,7 @@ span.dynatree-connector {
 
 .perc-category-list-expanded span.dynatree-active a,
 .perc-category-list-collapsible span.dynatree-active a {
-    background-color:none;
+    background-color:transparent;
     color:#0099CC;
 }
 
@@ -2554,7 +2522,7 @@ div.perc-category-list-expanded li{
 }
 
 div.perc-category-list-expanded li li {
-    padding: 0 px;
+    padding: 0;
 }
 
 div.perc-category-list-expanded ul {
@@ -2730,7 +2698,7 @@ div.perc-clear-both {
 .perc-feed-item-date {
     font-family: "Verdana";
     font-size: 10px;
-    font-weight: regular;
+    font-weight: normal;
     margin-bottom: 10px;
     margin-left: 10px;
     margin-right: 10px;
@@ -2740,7 +2708,7 @@ div.perc-clear-both {
 .perc-feed-item-description {
     font-family: "Verdana";
     font-size: 11px;
-    font-weight: regular;
+    font-weight: normal;
     margin-bottom: 10px;
     margin-left: 10px;
     margin-right: 10px;

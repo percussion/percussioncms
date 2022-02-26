@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.percussion</groupId>
     <artifactId>core</artifactId>
-    <version>8.0.3</version>
+    <version>8.1.1-SNAPSHOT</version>
     <packaging>pom</packaging>
     <url>https://www.github.com/percussion/percussioncms</url>
     <licenses>
@@ -709,7 +709,7 @@
 						<dependency>
 							<groupId>com.percussion</groupId>
 							<artifactId>rxutils</artifactId>
-							<version>8.0.3</version>
+							<version>8.1.1-SNAPSHOT</version>
 						</dependency>
 						<dependency>
 							<groupId>xerces</groupId>
@@ -821,7 +821,7 @@
                         <dependency>
                             <groupId>com.percussion</groupId>
                             <artifactId>build-tools</artifactId>
-                            <version>8.0.3</version>
+                            <version>8.1.1-SNAPSHOT</version>
                         </dependency>
                     </dependencies>
                     <executions>
@@ -851,7 +851,7 @@
                         <dependency>
                             <groupId>com.percussion</groupId>
                             <artifactId>build-tools</artifactId>
-                            <version>8.0.3</version>
+                            <version>8.1.1-SNAPSHOT</version>
                         </dependency>
                     </dependencies>
                 </plugin>
@@ -868,7 +868,7 @@
                         <dependency>
                             <groupId>com.percussion</groupId>
                             <artifactId>perc-security-utils</artifactId>
-                            <version>8.0.3</version>
+                            <version>8.1.1-SNAPSHOT</version>
                         </dependency>
                         <dependency>
                             <groupId>com.h3xstream.findsecbugs</groupId>

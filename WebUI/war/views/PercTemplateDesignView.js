@@ -484,7 +484,7 @@
         }
         
         function _changeTemplate(opts) {
-            $.PercChangeTemplateDialog().openDialog(opts.pageId, '', $.PercNavigationManager.getSiteName(), function() { window.location.reload(); });
+            $.PercChangeTemplateDialog().openDialog(opts.data.pageId, '', $.PercNavigationManager.getSiteName(), function() { window.location.reload(); });
         }
         
         /**
