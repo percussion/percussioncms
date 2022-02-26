@@ -80,7 +80,6 @@
         IsRecaptchaEnabled : 0
     };
 
-
     $.PercFormFieldPref = {
         "REQUIRED": {
             "name": "required",
@@ -127,9 +126,9 @@
                 if(typeof(vals) == 'object')
                 {
                     /* if(vals['perc-field-max-char-enabled'])
-                     {
-                         checked = " checked='checked'";
-                     }*/
+                      {
+                          checked = " checked='checked'";
+                      }*/
                     if(typeof(vals['perc-field-max-char-value']) != 'undefined')
                     {
                         max = vals['perc-field-max-char-value'];
@@ -244,9 +243,9 @@
                     width = vals['perc-field-width-value'];
                 }
                 /*else if(typeof(defaults) == 'object' && typeof(defaults['perc-field-width-value']) != 'undefined')
-                {
-                    width = defaults['perc-field-width-value'];
-                }*/
+                 {
+                     width = defaults['perc-field-width-value'];
+                 }*/
 
                 if(isNaN(Number(width)))
                 {
@@ -308,9 +307,9 @@
                     height = vals['perc-field-height-value'];
                 }
                 /*else if(typeof(defaults) == 'object' && typeof(defaults['perc-field-height-value']) != 'undefined')
-                {
-                   height = defaults['perc-field-height-value'];
-                }*/
+                 {
+                    height = defaults['perc-field-height-value'];
+                 }*/
                 if(isNaN(Number(height)))
                 {
                     elem.css("height", '');
@@ -1167,12 +1166,12 @@
                     idValue = vals['perc-field-id-value'];
                 }
                 /*
-                else
-                {
-                    idValue = getUniqueGeneratedId()
+                 else
+                 {
+                     idValue = getUniqueGeneratedId()
 
-                }
-                */
+                 }
+                 */
                 // If and ID was set, apply it to the current element
                 elem.attr('id', idValue);
             },
@@ -1183,21 +1182,21 @@
 
     };
     /*
-    function getUniqueGeneratedId()
-    {
-        fieldId = 'id_blank';
+     function getUniqueGeneratedId()
+     {
+         fieldId = 'id_blank';
 
-        var modifiedFieldId = fieldId;
-        while (fieldUniquifierId[modifiedFieldId] == true)
-        {
-            fieldIdUniqueNumber++;
-            modifiedFieldId = fieldId + "_" + fieldIdUniqueNumber;
-        }
-        fieldId = modifiedFieldId;
-        fieldUniquifierId[fieldId] = true;
-        return fieldId;
-    }
-    */
+         var modifiedFieldId = fieldId;
+         while (fieldUniquifierId[modifiedFieldId] == true)
+         {
+             fieldIdUniqueNumber++;
+             modifiedFieldId = fieldId + "_" + fieldIdUniqueNumber;
+         }
+         fieldId = modifiedFieldId;
+         fieldUniquifierId[fieldId] = true;
+         return fieldId;
+     }
+     */
     /**
      * Renders a form editor from a given JSON object and creates the JSON object from the editor.
      * It also creates the rendered HTML from the given JSON Object.
@@ -1291,8 +1290,8 @@
             var formEditorHtml = $("<div class='" + $.PercFormConstants.FORM_CLASS + "'></div>");
             formEditorHtml.append("<div class='" + $.PercFormConstants.FORM_CONFIG_CLASS + "'>" +
                 "<div class = 'perc-form-header'>" +
-                "<label id = 'perc-form-label-field-name' class = 'form-widget-label' >Form title:</label> <br />" +
-                "<input class = 'perc-form-datadisplay' type = 'text' id = 'perc-form-title' maxlength = '255' size = '50'/><br />" +
+                "<label id = 'perc-form-label-field-name' class = 'form-widget-label perc-required-field' >Form title:</label> <br />" +
+                "<input class = 'perc-form-datadisplay perc-required-field' type = 'text' id = 'perc-form-title' maxlength = '255' size = '50'/><br />" +
                 "<label id = 'perc-form-label-description' class = 'form-widget-label perc-required-field'>Form name:</label> <br />" +
                 "<input class = 'perc-form-datadisplay' type = 'text' id = 'perc-form-name' maxlength = '255' size = '50'/><br /></div>" +
                 "<div id = 'perc-form-help-text'>Add form fields by selecting the \"Form controls menu\" button to the right. Fields can be arranged by dragging and dropping them in the order you would like.</div>" +
@@ -1345,7 +1344,7 @@
                 "</div>" +
                 "<div>" +
                 "<div style = 'position:relative'><input type='text' class='perc-encrypted-field' id='perc-formbuild-success-url' />" +
-                "<span id='perc-formbuild-success-url-browse'>Browse</span>" +
+                "<button type='button' class='btn btn-primary' id='perc-formbuild-success-url-browse'>Browse</button>" +
                 "<input type='hidden' id='perc-formbuild-success-url-paired-unencrypted' />" +
                 "<input type='hidden' id='perc-formbuild-success-url-paired-encrypted' /></div>" +
                 "</div>" +
@@ -1356,7 +1355,7 @@
                 "</div>" +
                 "<div>" +
                 "<div style = 'position:relative'><input type='text' class='perc-encrypted-field' id='perc-formbuild-error-url' />" +
-                "<span id='perc-formbuild-error-url-browse'>Browse</span>" +
+                "<button type='button' class='btn btn-primary' id='perc-formbuild-error-url-browse'>Browse</button>" +
                 "<input type='hidden' id='perc-formbuild-error-url-paired-unencrypted' />" +
                 "<input type='hidden' id='perc-formbuild-error-url-paired-encrypted' /></div>" +
                 "</div>" +
@@ -1407,16 +1406,18 @@
                 "</div>" +
                 "<div>" +
                 "<div>" +
-                "<input type='checkbox' name='perc-email-form' id='perc-form-metadata-email-form' " +
+                "<label class='form-widget-label' style='vertical-align:middle;display:inline-block;' for='perc-form-metadata-email-form'>" +
+                "<input type='checkbox' style='vertical-align:middle;display:inline-block;' name='perc-email-form' id='perc-form-metadata-email-form' " +
                 "class='perc-form-metaradio'/>" +
-                "<label class='form-widget-label' for='perc-form-metadata-email-form'>Email form</label>" +
+                "Email form</label>" +
                 "</div>" +
                 "</div>" +
                 "<div>" +
                 "<div>" +
-                "<input type='checkbox' name='perc-email-notification' id='perc-form-metadata-email-notification' " +
+                "<label style='vertical-align:middle;display:inline-block;' class='form-widget-label' for='perc-form-metadata-email-notification'>" +
+                "<input style='vertical-align:middle;display:inline-block;' type='checkbox' name='perc-email-notification' id='perc-form-metadata-email-notification' " +
                 "class='perc-form-metaradio'/>" +
-                "<label class='form-widget-label' for='perc-form-metadata-email-notification'>Notify on form submission</label>" +
+                "Notify on form submission</label>" +
                 "</div>" +
                 "</div>" +
                 "<div>" +
@@ -1532,23 +1533,23 @@
          * @return
          */
         /*function browseDialog(element)
-        {
-            $.perc_browser({
-                on_save: function(spec, closer, show_error)
-                {
-                    debugger;
-                    $(element).val();
-                },
-                new_asset_option: false,
-                selectable_object: "leaf",
-                new_folder_opt: false,
-                displayed_containers: "Sites",
-                //selection_types: ['Folder','site','percPage'],
-                asset_name: "Selected Page",
-                title: "Select Page",
-                save_class: 'perc-save'
-            });
-        }*/
+         {
+             $.perc_browser({
+                 on_save: function(spec, closer, show_error)
+                 {
+                     debugger;
+                     $(element).val();
+                 },
+                 new_asset_option: false,
+                 selectable_object: "leaf",
+                 new_folder_opt: false,
+                 displayed_containers: "Sites",
+                 //selection_types: ['Folder','site','percPage'],
+                 asset_name: "Selected Page",
+                 title: "Select Page",
+                 save_class: 'perc-save'
+             });
+         }*/
 
         /**
          * Returns a new form field editor HTML of supplied type finds the control associated with the supplied type
@@ -1728,10 +1729,10 @@
          * they are converted to underscores.  All unallowed characters are dropped.
          */
         /*function generateNameFromLabel(label)
-        {
-            label = sanitizeTextFill(label);
-            return label;
-        }*/
+         {
+             label = sanitizeTextFill(label);
+             return label;
+         }*/
 
 
         /**
@@ -2271,9 +2272,9 @@
         return hiddenControlAPI;
     };
 
-//////////////////////////////////////////////////////////
-//******************** Honeypot Field ********************
-//////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////
+    //******************** Honeypot Field ********************
+    //////////////////////////////////////////////////////////
     /**
      * @See $.PercFieldControlInterface
      * */
@@ -2442,9 +2443,9 @@
         return honeypotControlAPI;
     };
 
-//////////////////////////////////////////////////////////
-//******************** reCaptcha Field ********************
-//////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////
+    //******************** reCaptcha Field ********************
+    //////////////////////////////////////////////////////////
     /**
      * @See $.PercFieldControlInterface
      * */
@@ -2609,9 +2610,9 @@
         return recaptchaControlAPI;
     };
 
-//////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////
     /******************* Textarea Field *********************/
-//////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////
 
     /**
      * @See $.PercFieldControlInterface
@@ -2882,9 +2883,9 @@
         textControlAPI.getRenderedField = function(fieldData)
         {
             /* unlike the other fields, applying the nameValue variable here would not make sense.
-             * this is because the fieldData.name is used to derive the nameValue and the fieldData.name
-             * variable is applied from the label of the field.  The label in the text area, for example,
-             * would be '<p>Text</p>' which does not make sense for the name. */
+              * this is because the fieldData.name is used to derive the nameValue and the fieldData.name
+              * variable is applied from the label of the field.  The label in the text area, for example,
+              * would be '<p>Text</p>' which does not make sense for the name. */
 
             var renderedHtml = $('<div/>').
             addClass($.PercFormConstants.FIELD_ROW_CLASS).
@@ -2914,9 +2915,9 @@
     };
 
 
-/////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////
     /****************** Data Drop Down Field ****************/
-/////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////
 
     /**
      * @See $.PercFieldControlInterface
@@ -3071,10 +3072,10 @@
         {
             return [
                 /* Returning nothing here as the data drop down HTML is all configured/generated via PSPageUtils.java
-                 * None of the prefs ever worked here to begin with.
-                 * In fact, most of the code in the getRenderedField function of the data drop down can be removed.
-                 * Needs tested first.
-                 * */
+                  * None of the prefs ever worked here to begin with.
+                  * In fact, most of the code in the getRenderedField function of the data drop down can be removed.
+                  * Needs tested first.
+                  * */
             ];
         };
         return DataDropDownControlAPI;
@@ -3141,56 +3142,15 @@
             {
                 fieldEditorHtml = $("<div type='" + $.PercFormConstants.FIELD_CONTROL_DROPDOWN + "' class=' form-widget-label " + $.PercFormConstants.FIELD_EDITOR_EXT_CLASS + " " + $.PercFormConstants.FIELD_CLASS  + "'></div>").attr('name', $.PercFormController().generateNameFromLabel(fieldData.label));
                 fieldEditorHtml.append( $("<div>").append( $("<input size = '38' class = 'perc-form-datadisplay defaultFocus' type='text' maxlength='255' name='fieldLabel'/>").val(fieldData.label) ) );
-                fieldEditorHtml.append("<div class='form-widget-label' style='color:#E6E6E9;float:left;margin-left:auto;margin-right:auto;padding-right:10px;' " + $.PercFormConstants.FIELD_EDITOR_LABEL_CLASS + " >Def</div>");
+                fieldEditorHtml.append("<div class='form-widget-label' style='color:#E6E6E9;float:left;margin-left:auto;margin-right:auto;padding-right:10px;' " + $.PercFormConstants.FIELD_EDITOR_LABEL_CLASS + " ></div>");
                 fieldEditorHtml.append("<div class='form-widget-label' style='float:left;padding-right:10px;' " + $.PercFormConstants.FIELD_EDITOR_LABEL_CLASS + " >Enter your custom options</div></br>");
                 fieldEditorHtml.append("<br />");
                 //Load variables to be used
                 var newOption = "<div class='perc-div-rowOption'><input type='radio' name='defaultValue' value='' />" +
                     "<input size='33' class='perc-form-datadisplay option-dd' type='text' name='defaultValue' maxlength='255' value='' />" +
                     "</div>";
-                var addControl = "<img src='../rx_resources/widgets/form/images/form-plus.png' class='control-img-button add-control' alt='Add field' title='Add field'/>";
-                var deleteControl = "<img src='../rx_resources/widgets/form/images/form-minus.png' class='control-img-button delete-control' alt='Delete field' title='Delete field'/>";
-
-                // Callbacks for minus and add buttons.
-                var delete_function = function(event){
-                    if ($(this).parent().find(".add-control").is('.add-control')) {
-                        $(this).parent().prev().append(addControl);
-                        $(this).parent().prev().find(".add-control").on("click",function(evt){
-                            add_function(evt);
-                        });
-                        if (!$(this).parent().prev().prev().is("div")) {
-                            $(this).parent().prev().find('.delete-control').remove();
-                        }
-                    }
-                    else{
-                        if (!$(this).parent().prev().is("div") && $(this).parent().next().find(".add-control").is('.add-control')) {
-                            $(this).parent().next().find('.delete-control').remove();
-                        }}
-                    $(this).parent().remove();
-                };
-                var add_function = function(event){
-                    var newRow = $(newOption).append(deleteControl);
-                    newRow.append(addControl);
-                    if (!$(this).parent().prev().is('div')) {
-                        $(this).parent().append(deleteControl);
-                        $(this).parent().find(".delete-control").on("click",function(evt){
-                            delete_function(evt);
-                        });
-                    }
-                    newRow.find(".delete-control").on("click",function(evt){
-                        delete_function(evt);
-                    });
-                    newRow.find(".add-control").on("click",function(evt){
-                        add_function(evt);
-                    });
-                    $(this).parent().parent().find('.fix').before(newRow);
-                    $(this).remove();
-
-                    //Fix the height of the input fields
-                    $("input[type = 'text']").css('height', 'auto');
-
-                };
-
+                var addControl = "<button type='button' class='control-img-button add-control' alt='Add field' title='Add field'></button>";
+                var deleteControl = "<button type='button' class='control-img-button delete-control' alt='Delete field' title='Delete field'></button>";
                 // If there are no options in dropdown, then add just one.
                 if (fieldData.options.length===0){
                     fieldEditorHtml.append($(newOption).append(addControl));
@@ -3214,6 +3174,58 @@
                         }
                     );
                 }
+
+                // Callbacks for minus and add buttons.
+                var delete_function = function (event){
+
+                    var target = $(event.currentTarget);
+                    if (target.parent().find(".add-control").is('.add-control')) {
+                        target.parent().prev().append(addControl);
+                        target.parent().prev().find(".add-control").on("click",
+                            function(evt){
+                                add_function(evt);
+                            });
+                        if (!target.parent().prev().prev().is("div")) {
+                            target.parent().prev().find('.delete-control').remove();
+                        }
+                    }
+                    else{
+                        if (!target.parent().prev().is("div") && target.parent().next().find(".add-control").is('.add-control')) {
+                            target.parent().next().find('.delete-control').remove();
+                        }
+                        target.parent().remove();
+                    }
+                };
+
+                var add_function = function (event){
+                    var target = $(event.currentTarget);
+                    var newRow = $(newOption).append(deleteControl);
+                    newRow.append(addControl);
+                    if (!target.parent().prev().is('div')) {
+                        target.parent().append(deleteControl);
+                        target.parent().find(".delete-control").on("click",
+                            function(evt){
+                                delete_function(evt);
+                            });
+                    }
+                    newRow.find(".delete-control").on("click",
+                        function(evt){
+                            delete_function(evt);
+                        });
+
+                    newRow.find(".add-control").on("click", function(evt){
+                        add_function(evt);
+                    });
+                    target.parent().parent().find('.fix').before(newRow);
+                    target.remove();
+
+                    //Fix the height of the input fields
+                    if($.browser.msie){
+                        $("input[type = 'text']").css('height', '11px');
+                    }else{
+                        $("input[type = 'text']").css('height', 'auto');
+                    }
+                };
                 //Add the final div
                 fieldEditorHtml.append("<div class='fix' style='clear:both;'></div>");
                 // For every button add the corresponding events.
@@ -3337,16 +3349,19 @@
         return dropDownControlAPI;
     };
 
-/////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////
     /******************** CheckBox Field ******************/
-/////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////
 
     /**
      * @See $.PercCheckBoxControlInterface
      */
     $.PercCheckBoxControl = function()
     {
+
+
         var checkboxControlAPI = $.extend({},$.PercFieldControlInterface);
+
         checkboxControlAPI.label="Checkboxes field";
         checkboxControlAPI.getFieldData = function($fieldElem)
         {
@@ -3394,8 +3409,12 @@
 
             return fieldData;
         };
+
+
+
         checkboxControlAPI.getFieldEditor = function(fieldData, isExtended)
         {
+
             var fieldEditorHtml = "";
             var fieldEditorHtmlWrapper = $("<div class = 'perc-form-field-wrapper'></div>");
             if(fieldData && isExtended)
@@ -3407,55 +3426,8 @@
                 var newOption = "<div class='perc-div-rowOption'><input type='checkbox' name='defaultValue' value='' />" +
                     "<input size='33' class='perc-form-datadisplay option-dd' type='text' name='defaultValue' maxlength='255' value='' />" +
                     "</div>";
-                var addControl = "<img src='../rx_resources/widgets/form/images/form-plus.png' class='control-img-button add-control' alt='Add field' title='Add field'/>";
-                var deleteControl = "<img src='../rx_resources/widgets/form/images/form-minus.png' class='control-img-button delete-control' alt='Delete field' title='Delete field'/>";
-
-                // Callbacks for minus and add buttons.
-                var delete_function = function(event){
-                    if ($(this).parent().find(".add-control").is('.add-control')) {
-                        $(this).parent().prev().append(addControl);
-                        $(this).parent().prev().find(".add-control").on("click",
-                            function(evt){
-                                add_function(evt);
-                            });
-                        if (!$(this).parent().prev().prev().is("div")) {
-                            $(this).parent().prev().find('.delete-control').remove();
-                        }
-                    }
-                    else{
-                        if (!$(this).parent().prev().is("div") && $(this).parent().next().find(".add-control").is('.add-control')) {
-                            $(this).parent().next().find('.delete-control').remove();
-                        }}
-                    $(this).parent().remove();
-                };
-                var add_function = function(event){
-                    var newRow = $(newOption).append(deleteControl);
-                    newRow.append(addControl);
-                    if (!$(this).parent().prev().is('div')) {
-                        $(this).parent().append(deleteControl);
-                        $(this).parent().find(".delete-control").on("click",
-                            function(evt){
-                                delete_function(evt);
-                            });
-                    }
-                    newRow.find(".delete-control").on("click",
-                        function(evt){
-                            delete_function(evt);
-                        });
-
-                    newRow.find(".add-control").on("click", function(evt){
-                        add_function(evt);
-                    });
-                    $(this).parent().parent().find('.fix').before(newRow);
-                    $(this).remove();
-
-                    //Fix the height of the input fields
-                    if($.browser.msie){
-                        $("input[type = 'text']").css('height', '11px');
-                    }else{
-                        $("input[type = 'text']").css('height', 'auto');
-                    }
-                };
+                var addControl = "<button type='button' class='control-img-button add-control' alt='Add field' title='Add field'></button>";
+                var deleteControl = "<button type='button' class='control-img-button delete-control' alt='Delete field' title='Delete field'></button>";
 
                 // If there are no options in checkbox, then add just one.
                 if (fieldData.options.length===0){
@@ -3468,7 +3440,7 @@
                             var o = divOpt.find('.option-dd');
                             o.val(e.value);
                             if (fieldData.options[i].checked === 'true') {
-                                divOpt.find('input[type=checkbox]').attr('checked','checked');
+                                divOpt.find('input[type=checkbox]').prop('checked',true);
                             }
                             if ((fieldData.options.length > 1)){
                                 divOpt.append(deleteControl);
@@ -3480,6 +3452,58 @@
                         }
                     );
                 }
+
+                // Callbacks for minus and add buttons.
+                var delete_function = function (event){
+
+                    var target = $(event.currentTarget);
+                    if (target.parent().find(".add-control").is('.add-control')) {
+                        target.parent().prev().append(addControl);
+                        target.parent().prev().find(".add-control").on("click",
+                            function(evt){
+                                add_function(evt);
+                            });
+                        if (!target.parent().prev().prev().is("div")) {
+                            target.parent().prev().find('.delete-control').remove();
+                        }
+                    }
+                    else{
+                        if (!target.parent().prev().is("div") && target.parent().next().find(".add-control").is('.add-control')) {
+                            target.parent().next().find('.delete-control').remove();
+                        }
+                        target.parent().remove();
+                    }
+                };
+
+                var add_function = function (event){
+                    var target = $(event.currentTarget);
+                    var newRow = $(newOption).append(deleteControl);
+                    newRow.append(addControl);
+                    if (!target.parent().prev().is('div')) {
+                        target.parent().append(deleteControl);
+                        target.parent().find(".delete-control").on("click",
+                            function(evt){
+                                delete_function(evt);
+                            });
+                    }
+                    newRow.find(".delete-control").on("click",
+                        function(evt){
+                            delete_function(evt);
+                        });
+
+                    newRow.find(".add-control").on("click", function(evt){
+                        add_function(evt);
+                    });
+                    target.parent().parent().find('.fix').before(newRow);
+                    target.remove();
+
+                    //Fix the height of the input fields
+                    if($.browser.msie){
+                        $("input[type = 'text']").css('height', '11px');
+                    }else{
+                        $("input[type = 'text']").css('height', 'auto');
+                    }
+                };
                 //Add the final div
                 fieldEditorHtml.append("<div class='fix' style='clear:both;'></div>");
                 // For every button add the corresponding events.
@@ -3502,13 +3526,13 @@
                         var check = $('<input type="checkbox"/>');
                         // Create and then set any other attributes
                         check.attr('class', 'option-dd');
-                        check.attr('disabled', 'disabled');
+                        check.prop('disabled', true);
                         check.attr('value', e.value);
                         check.attr('name', 'DefaultValue');
                         check.attr('id', e.value);
                         //Check if the checkbox must be checked
                         if (fieldData.options[i].checked === 'true') {
-                            check.attr('checked', 'checked');
+                            check.prop('checked', true);
                         }
                         //Define variable for label
                         var labelRadio = $('<div/>').append( $("<label/>").attr('for', e.value).text(e.value) ).html(); // $('<div/>').append().html() hack to get source.
@@ -3584,7 +3608,7 @@
                 if(option.checked === "true" || option.checked === true) // It can be provided as either a string or a bool :(
                 {
                     // Fix Firefox Bug involving rendering html and defaultValue/value
-                    thisRow.find('input').attr('checked', 'checked').get(0).defaultChecked=true;
+                    thisRow.find('input').prop('checked', true).get(0).defaultChecked=true;
                 }
                 checkBoxesHtml.append(thisRow);
             }
@@ -3699,53 +3723,8 @@
                     "</div>";
                 $(newOption).find('input[type=text]').attr('name', fieldData.defaultName);
                 newOption = $('<div/>').append(newOption).html(); // $('<div/>').append().html() hack to get source.
-                var addControl = "<img src='../rx_resources/widgets/form/images/form-plus.png' class='control-img-button add-control' alt='Add field' title='Add field'/>";
-                var deleteControl = "<img src='../rx_resources/widgets/form/images/form-minus.png' class='control-img-button delete-control' alt='Delete field' title='Delete field'/>";
-
-                // Callbacks for minus and add buttons.
-                var delete_function = function(event){
-                    if ($(this).parent().find(".add-control").is('.add-control')) {
-                        $(this).parent().prev().append(addControl);
-                        $(this).parent().prev().find(".add-control").on("click",
-                            function(evt){
-                                add_function(evt);
-                            });
-                        if (!$(this).parent().prev().prev().is("div")) {
-                            $(this).parent().prev().find('.delete-control').remove();
-                        }
-                    }
-                    else{
-                        if (!$(this).parent().prev().is("div") && $(this).parent().next().find(".add-control").is('.add-control')) {
-                            $(this).parent().next().find('.delete-control').remove();
-                        }}
-                    $(this).parent().remove();
-                };
-                var add_function = function(event){
-                    var newRow = $(newOption).append(deleteControl);
-                    newRow.append(addControl);
-                    if (!$(this).parent().prev().is('div')) {
-                        $(this).parent().append(deleteControl);
-                        $(this).parent().find(".delete-control").on("click",function(evt){
-                            delete_function(evt);
-                        });
-                    }
-                    newRow.find(".delete-control").on("click",function(evt){
-                        delete_function(evt);
-                    });
-                    newRow.find(".add-control").on("click",function(evt){
-                        add_function(evt);
-                    });
-                    $(this).parent().parent().find('.fix').before(newRow);
-                    $(this).remove();
-
-                    //Fix the height of the input fields
-
-                    if($.browser.msie){
-                        $("input[type = 'text']").css('height', '11px');
-                    }else{
-                        $("input[type = 'text']").css('height', 'auto');
-                    }
-                };
+                var addControl = "<button type='button' class='control-img-button add-control' alt='Add field' title='Add field'></button>";
+                var deleteControl = "<button type='button' class='control-img-button delete-control' alt='Delete field' title='Delete field'></button>";
 
                 // If there are no options in dropdown, then add just one.
                 if (fieldData.options.length===0){
@@ -3770,6 +3749,59 @@
                         }
                     );
                 }
+
+                // Callbacks for minus and add buttons.
+                var delete_function = function (event){
+
+                    var target = $(event.currentTarget);
+                    if (target.parent().find(".add-control").is('.add-control')) {
+                        target.parent().prev().append(addControl);
+                        target.parent().prev().find(".add-control").on("click",
+                            function(evt){
+                                add_function(evt);
+                            });
+                        if (!target.parent().prev().prev().is("div")) {
+                            target.parent().prev().find('.delete-control').remove();
+                        }
+                    }
+                    else{
+                        if (!target.parent().prev().is("div") && target.parent().next().find(".add-control").is('.add-control')) {
+                            target.parent().next().find('.delete-control').remove();
+                        }
+                        target.parent().remove();
+                    }
+                };
+
+                var add_function = function (event){
+                    var target = $(event.currentTarget);
+                    var newRow = $(newOption).append(deleteControl);
+                    newRow.append(addControl);
+                    if (!target.parent().prev().is('div')) {
+                        target.parent().append(deleteControl);
+                        target.parent().find(".delete-control").on("click",
+                            function(evt){
+                                delete_function(evt);
+                            });
+                    }
+                    newRow.find(".delete-control").on("click",
+                        function(evt){
+                            delete_function(evt);
+                        });
+
+                    newRow.find(".add-control").on("click", function(evt){
+                        add_function(evt);
+                    });
+                    target.parent().parent().find('.fix').before(newRow);
+                    target.remove();
+
+                    //Fix the height of the input fields
+                    if($.browser.msie){
+                        $("input[type = 'text']").css('height', '11px');
+                    }else{
+                        $("input[type = 'text']").css('height', 'auto');
+                    }
+                };
+
                 //Add the final div
                 fieldEditorHtml.append("<div class='fix' style='clear:both;'></div>");
                 // For every button add the corresponding events.

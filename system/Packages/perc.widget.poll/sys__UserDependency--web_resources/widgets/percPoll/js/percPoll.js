@@ -67,11 +67,11 @@
                             var s = u.result;
                             e(s);
                         } else {
-                            alert(u.result);
+                            console.error(u.result);
                         }
                     } else {
                         var v = a.PercServiceUtils.extractDefaultErrorMessage(t.request);
-                        alert(v);
+                        console.error(v);
                     }
                 },
                 l
@@ -87,11 +87,11 @@
                         var o = q.result;
                         e(o);
                     } else {
-                        alert(q.result);
+                        console.error(q.result);
                     }
                 } else {
                     var r = a.PercServiceUtils.extractDefaultErrorMessage(p.request);
-                    alert(r);
+                    console.error(r);
                 }
             });
         }

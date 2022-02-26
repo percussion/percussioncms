@@ -183,7 +183,7 @@ function getBaseConfig(parameters) {
             },
             "style_formats_merge": true,
             "style_formats": styleFormats,
-            "autosave_restore_when_empty": true,
+            "autosave_restore_when_empty": false,
             "init_instance_callback": "percTinyMceInitialized",
             "file_browser_callback": $.noop,
             "convert_urls" : false,

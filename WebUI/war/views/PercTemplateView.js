@@ -211,7 +211,7 @@
                     percDropdownRootClass    : "perc-dropdown-help",
                     percDropdownOptionLabels : actionNamesHelp,
                     percDropdownCallbacks    : [function(){}, function(){viewImportLog()},
-                        showVideoTutorialWindow,
+                        function(){openUrl("UIVideo", "https://help.percussion.com/percussion-cm1/overview/introduction-to-the-ui")},
                         function(){openUrl("ImportFAQs", "https://help.percussion.com/in-product/import-faqs")},
                         function(){openUrl("PercussionCommunity", "https://community.percussion.com")},
                         function(){openUrl("MoreHelp", "https://help.percussion.com")}],
@@ -270,7 +270,7 @@
             dialogMarkup.append(
                 $('<div style="height: 400px; overflow:hidden; margin-left: 68px; margin-right: 92px">')
                     .append(
-                        $('<iframe id="perc_iframe_video" src="//help.percussion.com/percussion-cm1/overview/introduction-to-the-ui/" scrolling="yes" marginheight="0" marginwidth="0" frameborder="0" width="480px" height="0px" style="display: block; overflow: hidden">')
+                        $('<iframe id="perc_iframe_video" src="https://help.percussion.com/percussion-cm1/overview/introduction-to-the-ui/" scrolling="yes" marginheight="0" marginwidth="0" frameborder="0" width="480px" height="0px" style="display: block; overflow: hidden">')
                     )
                     .append(
                         $('<img id="perc_notfound_image" src="../images/images/VideoTutorialNotFound.png" width="480px" height="0px">')
@@ -278,7 +278,7 @@
             )
             //Used a random dummy parameter to avoid cache
             dialogMarkup.append(
-                $('<img height="0px" width="0px" src="//help.percussion.com/Assets/Help/header/images/PercussionSwoosh.png?dummy=' + Math.random() + '">')
+                $('<img height="0px" width="0px" src="https://help.percussion.com/Assets/Help/header/images/PercussionSwoosh.png?dummy=' + Math.random() + '">')
                     .on("error", handleUnreachableURL)
                     .on("load", showVideoIframe)
             )
