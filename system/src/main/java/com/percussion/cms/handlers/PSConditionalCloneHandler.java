@@ -79,7 +79,6 @@ import org.apache.logging.log4j.Logger;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -221,8 +220,17 @@ public class PSConditionalCloneHandler extends PSCloneHandler
              *       
              *   Note, we reverted changes for Rx-12522 here.
              */
+            dedupedRels = new Iterator<PSRelationship>() {
+               @Override
+               public boolean hasNext() {
+                  return false;
+               }
 
-            dedupedRels = Collections.EMPTY_LIST.iterator();
+               @Override
+               public PSRelationship next() {
+                  return null;
+               }
+            };
          }
 
          // update the list of handled objects

@@ -58,13 +58,14 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.hibernate.Session;
 import org.springframework.context.annotation.Scope;
 import org.springframework.transaction.annotation.Transactional;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -82,13 +83,14 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  */
 @PSBaseBean("sys_folderRelationshipCache")
 @Scope("singleton")
+@Transactional
 public class PSFolderRelationshipCache  implements IPSFolderRelationshipCache {
 
-   private SessionFactory sessionFactory;
+   @PersistenceContext
+   private EntityManager entityManager;
 
-   @Override
-   public void setSessionFactory(SessionFactory sessionFactory) {
-      this.sessionFactory = sessionFactory;
+   private Session getSession(){
+      return entityManager.unwrap(Session.class);
    }
 
    /**
@@ -196,12 +198,6 @@ public class PSFolderRelationshipCache  implements IPSFolderRelationshipCache {
    {
    }
 
-   @Autowired
-   private PSFolderRelationshipCache(SessionFactory factory)
-   {
-      this.sessionFactory = factory;
-   }
-
    /**
     * Reinitialize the caching operation according to the supplied flag.
     *
@@ -288,7 +284,7 @@ public class PSFolderRelationshipCache  implements IPSFolderRelationshipCache {
          buf.append(PSRelationshipConfig.ID_RECYCLED_CONTENT);
          
          String query = buf.toString();
-         Query sq = sessionFactory.getCurrentSession().createSQLQuery(query);
+         Query sq = getSession().createSQLQuery(query);
          List<Object[]> rows = sq.list();
          // store the list of relationships
          int parent;
@@ -348,7 +344,7 @@ public class PSFolderRelationshipCache  implements IPSFolderRelationshipCache {
          
          String query = buf.toString();
 
-         SQLQuery sq = sessionFactory.getCurrentSession().createSQLQuery(query);
+         SQLQuery sq = getSession().createSQLQuery(query);
 
          // store the list of relationships
          List<Object[]> rows = sq.list();

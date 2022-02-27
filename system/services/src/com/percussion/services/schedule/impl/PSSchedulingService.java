@@ -40,7 +40,6 @@ import org.apache.logging.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.quartz.CronScheduleBuilder;
@@ -56,6 +55,8 @@ import org.quartz.impl.matchers.GroupMatcher;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -74,19 +75,17 @@ import java.util.Set;
  * @author Doug Rand
  * @author Andriy Palamarchuk
  */
+@Transactional
 public class PSSchedulingService
       implements IPSSchedulingService
 {
-   private SessionFactory sessionFactory;
+   @PersistenceContext
+   private EntityManager entityManager;
 
-   public SessionFactory getSessionFactory() {
-      return sessionFactory;
+   private Session getSession(){
+      return entityManager.unwrap(Session.class);
    }
-
-   public void setSessionFactory(SessionFactory sessionFactory) {
-      this.sessionFactory = sessionFactory;
-   }
-
+ 
    // see base
    @Transactional
    public PSScheduledTask createSchedule()
@@ -319,11 +318,9 @@ public class PSSchedulingService
     * @param schedule the schedule to generate trigger for.
     * Assumed not <code>null</code>.
     * @return a trigger generated from the schedule data.
-    * @throws ParseException if the cron expression is invalid.
     */
 
    private Trigger createTrigger(PSScheduledTask schedule)
-         throws ParseException
    {
       SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
       final String id = schedule.getId().toString();
@@ -400,7 +397,7 @@ public class PSSchedulingService
          throw new IllegalArgumentException(
                "Notification template id may not be null");
       }
-      return sessionFactory.getCurrentSession().get(
+      return getSession().get(
             PSNotificationTemplate.class, id.longValue());
    }
 
@@ -409,7 +406,7 @@ public class PSSchedulingService
    public PSNotificationTemplate findNotificationTemplateByName(String name)
    {
       final List<PSNotificationTemplate> results =
-              sessionFactory.getCurrentSession().createQuery(
+              getSession().createQuery(
                   "from PSNotificationTemplate where name = :name").setParameter(
                   "name", name).list();
       return results.isEmpty() ? null : results.get(0); 
@@ -419,7 +416,7 @@ public class PSSchedulingService
    @SuppressWarnings("unchecked")
    public Collection<PSNotificationTemplate> findAllNotificationTemplates()
    {
-      return sessionFactory.getCurrentSession().createCriteria(PSNotificationTemplate.class).list();
+      return getSession().createCriteria(PSNotificationTemplate.class).list();
    }
 
    // see base
@@ -443,7 +440,7 @@ public class PSSchedulingService
          throw new IllegalArgumentException(
                "Notification template may not be null");
       }
-      sessionFactory.getCurrentSession().saveOrUpdate(notificationTemplate);
+      getSession().saveOrUpdate(notificationTemplate);
    }
 
    // see base
@@ -453,11 +450,11 @@ public class PSSchedulingService
       if (templateId == null)
          throw new IllegalArgumentException("templateId may not be null");
 
-      Session sess = sessionFactory.getCurrentSession();
+      Session sess = getSession();
 
          String sql = "delete from PSNotificationTemplate t where t.id = :id";
          Query hql = sess.createQuery(sql);
-         hql.setParameter("id", new Long(templateId.longValue()));
+         hql.setParameter("id", templateId.longValue());
          hql.executeUpdate();
 
    }
@@ -517,10 +514,9 @@ public class PSSchedulingService
       if (id == null)
          throw new IllegalArgumentException("Event log id may not be null");
 
-      PSScheduledTaskLog log = (PSScheduledTaskLog) sessionFactory.getCurrentSession().get(
+      return  getSession().get(
             PSScheduledTaskLog.class, id.longValue());
-      
-      return log;
+
    }
 
    // see base
@@ -530,7 +526,7 @@ public class PSSchedulingService
       if (taskLog == null)
          throw new IllegalArgumentException("taskLog may not be null");
 
-      sessionFactory.getCurrentSession().saveOrUpdate(taskLog);
+      getSession().saveOrUpdate(taskLog);
    }
    
    // see base
@@ -562,13 +558,13 @@ public class PSSchedulingService
    @Transactional(noRollbackFor = Exception.class)
    public void deleteTaskLogEntries(Collection<IPSGuid> ids)
    {
-      Session sess = sessionFactory.getCurrentSession();
+      Session sess = getSession();
 
          String sql = "delete from PSScheduledTaskLog e where e.log_id = :logid";
          Query hql = sess.createQuery(sql);
          for (IPSGuid id : ids)
          {
-            hql.setParameter("logid", new Long(id.longValue()));
+            hql.setParameter("logid", id.longValue());
             hql.executeUpdate();
          }
 
@@ -580,7 +576,7 @@ public class PSSchedulingService
    @SuppressWarnings({ "cast", "unchecked" })
    public List<PSScheduledTaskLog> findAllTaskLogs(int maxResult)
    {
-      Session s = sessionFactory.getCurrentSession();
+      Session s = getSession();
 
          Criteria c = s.createCriteria(PSScheduledTaskLog.class);
          c.setProjection(Projections.projectionList().add(
@@ -618,18 +614,17 @@ public class PSSchedulingService
    public PSScheduledTaskLog getScheduledTask(Object[] props)
    {
       Long logId = (Long) props[0];
-      IPSGuid logGuid = getGuidManager().makeGuid(logId.longValue(),
+      IPSGuid logGuid = getGuidManager().makeGuid(logId,
             PSTypeEnum.SCHEDULE_TASK_LOG);
       Long taskId = (Long) props[1];
-      IPSGuid taskGuid = getGuidManager().makeGuid(taskId.longValue(),
+      IPSGuid taskGuid = getGuidManager().makeGuid(taskId,
             PSTypeEnum.SCHEDULED_TASK);
       Date startTime = (Date) props[2];
       Date endTime = (Date) props[3];
-      boolean isSuccess = ((Character)props[4]) == 'Y' ? true : false;
+      boolean isSuccess = ((Character) props[4]) == 'Y';
       
-      PSScheduledTaskLog logEntry = new PSScheduledTaskLog(logGuid, taskGuid,
+      return new PSScheduledTaskLog(logGuid, taskGuid,
             startTime, endTime, isSuccess);
-      return logEntry;      
    }
    
    /*
@@ -638,7 +633,7 @@ public class PSSchedulingService
    @Transactional(noRollbackFor = Exception.class)
    public void deleteAllTaskLogs()
    {
-      Session sess = sessionFactory.getCurrentSession();
+      Session sess = getSession();
 
          String sql = "delete from PSScheduledTaskLog";
          Query hql = sess.createQuery(sql);
@@ -655,7 +650,7 @@ public class PSSchedulingService
       if (beforeDate == null)
          throw new IllegalArgumentException("beforeDate may not be null");
       
-      Session session = sessionFactory.getCurrentSession();
+      Session session = getSession();
 
          String sql = "delete from PSScheduledTaskLog t where t.end_time < :endTime";
          Query hql = session.createQuery(sql);

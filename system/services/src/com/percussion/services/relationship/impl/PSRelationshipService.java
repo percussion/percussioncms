@@ -42,10 +42,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -60,23 +60,19 @@ import java.util.Set;
  *
  */
 @PSSiteManageBean("sys_relationshipService")
+@Transactional
 public class PSRelationshipService
         implements
         IPSRelationshipService
 {
 
+   @PersistenceContext
+   private EntityManager entityManager;
 
-   private SessionFactory sessionFactory;
-
-   public SessionFactory getSessionFactory() {
-      return sessionFactory;
+   private Session getSession(){
+      return entityManager.unwrap(Session.class);
    }
-
-   @Autowired
-   public void setSessionFactory(SessionFactory sessionFactory) {
-      this.sessionFactory = sessionFactory;
-   }
-
+   
    /* (non-Javadoc)
     * @see IPSRelationshipService#getRelationshipData(int)
     */
@@ -84,8 +80,8 @@ public class PSRelationshipService
    {
       loadConfigs(); // load configs if needed
 
-      PSRelationshipData rdata = (PSRelationshipData) sessionFactory.getCurrentSession()
-              .get(PSRelationshipData.class, new Integer(id));
+      PSRelationshipData rdata = getSession()
+              .get(PSRelationshipData.class, id);
       if (rdata != null && setConfigAddChildProperties(rdata, null, false, false))
          return getRelationship(rdata);
       else
@@ -95,7 +91,6 @@ public class PSRelationshipService
    /* (non-Javadoc)
     * @see IPSRelationshipService#findPersistedRid(Collection<Integer>)
     */
-   @SuppressWarnings("unchecked")
    public List<Integer> findPersistedRid(Collection<Integer> testedIds)
    {
       if (testedIds == null)
@@ -118,7 +113,7 @@ public class PSRelationshipService
          }
       }
       // process whatever left
-      if (groupIds.size() > 0)
+      if (!groupIds.isEmpty())
          returnIds.addAll(findPersistedRids(groupIds));
 
       return returnIds;
@@ -128,20 +123,18 @@ public class PSRelationshipService
     * The same as {@link #findPersistedRid(Collection)}, except the number
     * of the IDs is assumed less or equals to {@link #MAX_NUM_OF_IN_CLAUSE}
     */
-   @SuppressWarnings("unchecked")
    private List<Integer> findPersistedRids(Collection<Integer> testedIds)
    {
       if (testedIds.isEmpty())
-         return Collections.EMPTY_LIST;
+         return Collections.emptyList();
       else
-         return (List<Integer>) sessionFactory.getCurrentSession().createQuery(
+         return getSession().createQuery(
                  "select r.rid from PSRelationshipData as r where r.rid in (:rids)").setParameterList(
                  "rids",
                  testedIds).list();
    }
 
    // Implements IPSRelationshipService.findByFilter()
-   @SuppressWarnings("unchecked")
    public List<PSRelationship> findByFilter(
            PSRelationshipFilter filter) throws PSException
    {
@@ -149,7 +142,7 @@ public class PSRelationshipService
       loadConfigs(); // load configs if needed
 
       // execute the query and load the data
-      Session sess = sessionFactory.getCurrentSession();
+      Session sess = getSession();
 
       IPSQueryHelper qry;
 
@@ -398,11 +391,11 @@ public class PSRelationshipService
            boolean filterOwnerRev, boolean filterDependentRev)
    {
       PSRelationshipConfig config;
-      config = m_configMap.get(new Integer(rdata.getConfigId()));
+      config = m_configMap.get(rdata.getConfigId());
       if (config == null)
       {
-         ms_logger.warn("Cannot find relationship config for "
-                 + rdata.toString());
+         ms_logger.warn("Cannot find relationship config for {}",
+                 rdata);
          return false;
       }
       else
@@ -468,7 +461,7 @@ public class PSRelationshipService
       }
 
       PSRelationshipData rdata = getRelationshipData(rel);
-      Session sess = sessionFactory.getCurrentSession();
+      Session sess = getSession();
 
       // update config id if needed
       if (rdata.getConfigId() == -1)
@@ -480,7 +473,7 @@ public class PSRelationshipService
             throw new IllegalStateException(
                     "Unknown relationship configuration name: "
                             + rdata.getConfig().getName());
-         rdata.setConfigId(configId.intValue());
+         rdata.setConfigId(configId);
       }
 
       // do save
@@ -547,7 +540,7 @@ public class PSRelationshipService
    public int deleteRelationshipByRid(int rid)
    {
       //getHibernateTemplate().de.deleteAll(rdatas);
-      Session sess = sessionFactory.getCurrentSession();
+      Session sess = getSession();
       int count;
 
 
@@ -556,14 +549,14 @@ public class PSRelationshipService
       // delete from {@link IPSConstants#PSX_RELATIONSHIPPROPERTIES}
       sqlBuffer.append("delete from PSRelationshipPropertyData p where p.m_rid = :rid");
       Query sql = sess.createQuery(sqlBuffer.toString());
-      sql.setParameter("rid", new Integer(rid));
+      sql.setParameter("rid", rid);
       sql.executeUpdate();
 
       // delete from IPSConstants#PSX_RELATIONSHIPS
       sqlBuffer = new StringBuilder();
       sqlBuffer.append("delete from PSRelationshipData r where r.rid = :rid");
       sql = sess.createQuery(sqlBuffer.toString());
-      sql.setParameter("rid", new Integer(rid));
+      sql.setParameter("rid", rid);
       count = sql.executeUpdate();
 
 
@@ -609,13 +602,13 @@ public class PSRelationshipService
                  .getName());
          if (config != null)
          {
-            configMap.put(new Integer(cname.getId()), config);
-            nameMapToId.put(cname.getName(), new Integer(cname.getId()));
+            configMap.put(cname.getId(), config);
+            nameMapToId.put(cname.getName(), cname.getId());
          }
          else
          {
-            ms_logger.warn("Cannot find relationship configuration from "
-                    + cname.toString());
+            ms_logger.warn("Cannot find relationship configuration from {}",
+                     cname);
          }
       }
 
@@ -627,12 +620,11 @@ public class PSRelationshipService
 
    @Override
    public List<PSRelationshipData> findByDependentId(int dependentId) {
-      Session session = sessionFactory.getCurrentSession();
+      Session session = getSession();
 
       Query query = session
-              .createQuery("from PSRelationshipData " + " where dependent_id =  " + Integer.toString(dependentId));
-      List<PSRelationshipData> results = query.list();
-      return results;
+              .createQuery("from PSRelationshipData " + " where dependent_id =  " + dependentId);
+      return  query.list();
    }
 
    /**
@@ -648,19 +640,14 @@ public class PSRelationshipService
            int rid)
    {
       // execute the query and load the data
-      Collection<PSRelationshipPropertyData> rels = null;
-      Session sess = sessionFactory.getCurrentSession();
+      Session sess = getSession();
 
-      StringBuilder qryBuffer = new StringBuilder();
-      qryBuffer.append("select r from PSRelationshipPropertyData r where ")
-              .append("r.m_rid = :rid");
+      String qryBuffer = "select r from PSRelationshipPropertyData r where " +
+              "r.m_rid = :rid";
 
-      Query qry = sess.createQuery(qryBuffer.toString());
-      qry.setParameter("rid", new Integer(rid));
-      rels = qry.list();
-
-
-      return rels;
+      Query qry = sess.createQuery(qryBuffer);
+      qry.setParameter("rid", rid);
+      return  qry.list();
    }
 
    /**
@@ -939,17 +926,17 @@ public class PSRelationshipService
    public void updateRelationshipData(
            PSRelationshipData rdata)
    {
-      Session session = sessionFactory.getCurrentSession();
+      Session session = getSession();
       session.update(rdata);
    }
 
    @Override
    public List<PSRelationshipData> findByDependentIdConfigId(int dependentId, int configId) {
-      Session session = sessionFactory.getCurrentSession();
+      Session session = getSession();
 
       Query query = session
-              .createQuery("from PSRelationshipData " + " where dependent_id =  " + Integer.toString(dependentId) +" and config_id = " + Integer.toString(configId));
-      List<PSRelationshipData> results = query.list();
-      return results;
+              .createQuery("from PSRelationshipData " + " where dependent_id =  " + dependentId +" and config_id = " + configId);
+      return query.list();
+
    }
 }

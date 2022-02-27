@@ -33,31 +33,33 @@ import com.percussion.services.guidmgr.PSGuidHelper;
 import com.percussion.share.dao.IPSGenericDao.SaveException;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.ArrayList;
 import java.util.List;
 
+@Transactional
 @Repository("integrityCheckerDao")
 public class PSIntegrityCheckerDao
 {
 
-    private SessionFactory sessionFactory;
+    @PersistenceContext
+    private EntityManager entityManager;
+
+    private Session getSession(){
+        return entityManager.unwrap(Session.class);
+    }
+
 
     public PSIntegrityCheckerDao() {
         super();
     }
 
-
-    public PSIntegrityCheckerDao(SessionFactory sessionFactory)
-    {
-        this.setSessionFactory(sessionFactory);
-    }
 
     @Transactional
     public PSIntegrityStatus find(String token)
@@ -122,15 +124,12 @@ public class PSIntegrityCheckerDao
         }
     }
 
-    private Session getSession() {
-        return sessionFactory.getCurrentSession();
-    }
 
     /**
      * Sets the persisted IDs for the properties of the supplied publish server
      * if needed.
      * 
-     * @param pubServer the publish server in question, assumed not
+     * @param status the publish server in question, assumed not
      *            <code>null</code>.
      */
     private void setValidPersistedIds(PSIntegrityStatus status)
@@ -151,12 +150,5 @@ public class PSIntegrityCheckerDao
     }
 
 
-    public SessionFactory getSessionFactory() {
-        return sessionFactory;
-    }
 
-    @Autowired
-    public void setSessionFactory(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
 }

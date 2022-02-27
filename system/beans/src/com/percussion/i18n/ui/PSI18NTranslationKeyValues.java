@@ -327,7 +327,7 @@ public class PSI18NTranslationKeyValues
     * If this has any values, use them to limit the packages that should
     * be loaded from the server.
     */
-   private List<String> m_packages = Collections.EMPTY_LIST;
+   private List<String> m_packages = Collections.emptyList();
    
    /**
     * Limit the package names to retrieve keys from the server for
@@ -337,7 +337,7 @@ public class PSI18NTranslationKeyValues
    public void setPackages(List<String> packageNames)
    {
       if (packageNames == null)
-         m_packages = Collections.EMPTY_LIST;
+         m_packages = Collections.emptyList();
       else
          m_packages = packageNames;
    }

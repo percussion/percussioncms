@@ -28,6 +28,7 @@ import com.percussion.services.notification.IPSNotificationListener;
 import com.percussion.services.notification.IPSNotificationService;
 import com.percussion.services.notification.PSNotificationEvent;
 import com.percussion.services.notification.PSNotificationEvent.EventType;
+import com.percussion.util.PSBaseBean;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -39,6 +40,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * Synchronized notification service implementation
  */
+@PSBaseBean("sys_notificationService")
 public class PSNotificationService implements IPSNotificationService
 {
    /**

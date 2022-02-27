@@ -38,7 +38,6 @@ import com.percussion.services.workflow.data.PSState;
 import com.percussion.services.workflow.data.PSTransition;
 import com.percussion.services.workflow.data.PSWorkflow;
 import com.percussion.utils.guid.IPSGuid;
-import org.hibernate.SessionFactory;
 import org.junit.Test;
 
 import java.util.List;
@@ -146,26 +145,6 @@ public class PSWorkflowCacheBuilderTest
             return null;
         }
 
-
-        /**
-         * Gets the underlying session factory
-         *
-         * @return
-         */
-        @Override
-        public SessionFactory getSessionFactory() {
-            return null;
-        }
-
-        /**
-         * Sets the session factory. Handled via spring auto wiring.
-         *
-         * @param sessionFactory
-         */
-        @Override
-        public void setSessionFactory(SessionFactory sessionFactory) {
-
-        }
 
         /* (non-Javadoc)
          * @see com.percussion.services.workflow.IPSWorkflowService#findWorkflowSummariesByName(java.lang.String)

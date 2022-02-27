@@ -159,9 +159,6 @@ http://www.springframework.org/schema/tx/spring-tx-4.2.xsd">
    
    	<bean id="sys_schedulingService"
       class="com.percussion.services.schedule.impl.PSSchedulingService">
-      <property name="sessionFactory">
-         <ref bean="sys_sessionFactory"/>
-      </property>
       <property name="scheduler">
          <ref bean="sys_quartzScheduler"/>
       </property>

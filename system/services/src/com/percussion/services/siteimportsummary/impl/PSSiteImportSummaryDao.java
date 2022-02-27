@@ -36,13 +36,17 @@ import org.apache.logging.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @PSBaseBean("sys_siteImportSummaryDao")
+@Transactional
+@Repository
 public class PSSiteImportSummaryDao implements IPSSiteImportSummaryDao
 {
    private static final Logger log = LogManager.getLogger(IPSConstants.IMPORT_LOG);
@@ -53,17 +57,13 @@ public class PSSiteImportSummaryDao implements IPSSiteImportSummaryDao
    
    private IPSGuidManager m_guidMgr;
 
-    private SessionFactory sessionFactory;
+    @PersistenceContext
+    private EntityManager entityManager;
 
-    public SessionFactory getSessionFactory() {
-        return sessionFactory;
+    private Session getSession(){
+        return entityManager.unwrap(Session.class);
     }
-
-    @Autowired
-    public void setSessionFactory(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
-
+    
     @Transactional
    public void save(PSSiteImportSummary summary) throws IPSGenericDao.SaveException {
       Validate.notNull(summary);
@@ -72,7 +72,7 @@ public class PSSiteImportSummaryDao implements IPSSiteImportSummaryDao
           summary.setSummaryId(m_guidMgr.createId(SITE_IMPORT_SUMMARY_KEY));
       }
       
-      Session session = sessionFactory.getCurrentSession();
+      Session session = getSession();
       try
       {
           session.saveOrUpdate(summary);
@@ -93,7 +93,7 @@ public class PSSiteImportSummaryDao implements IPSSiteImportSummaryDao
    public PSSiteImportSummary findBySummaryId(int summaryId)
    {
       PSSiteImportSummary summary = null;
-      Session session = sessionFactory.getCurrentSession();
+      Session session = getSession();
 
           Query query = session.createQuery("from PSSiteImportSummary where summaryId = :summaryId");
           query.setParameter("summaryId", summaryId);
@@ -104,7 +104,7 @@ public class PSSiteImportSummaryDao implements IPSSiteImportSummaryDao
              summary = results.get(0);
               if (results.size() > 1)
               {
-                  log.error("More than one managed link found for linkid: " + summaryId);
+                  log.error("More than one managed link found for linkid: {}", summaryId);
               }
           }
           return summary;
@@ -114,7 +114,7 @@ public class PSSiteImportSummaryDao implements IPSSiteImportSummaryDao
    public PSSiteImportSummary findBySiteId(int siteId)
    {
       PSSiteImportSummary summary = null;
-      Session session = sessionFactory.getCurrentSession();
+      Session session = getSession();
 
           Query query = session.createQuery("from PSSiteImportSummary where siteId = :siteId");
           query.setParameter("siteId", siteId);
@@ -126,7 +126,7 @@ public class PSSiteImportSummaryDao implements IPSSiteImportSummaryDao
              summary = results.get(0);
               if (results.size() > 1)
               {
-                  log.error("More than one managed link found for siteId: " + siteId);
+                  log.error("More than one managed link found for siteId: {}" , siteId);
               }
           }
           return summary;
@@ -137,7 +137,7 @@ public class PSSiteImportSummaryDao implements IPSSiteImportSummaryDao
    public void delete(PSSiteImportSummary summary)
    {
       Validate.notNull(summary);
-      Session session = sessionFactory.getCurrentSession();
+      Session session = getSession();
       try
       {
           session.delete(summary);

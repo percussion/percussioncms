@@ -36,12 +36,12 @@ import com.percussion.utils.guid.IPSGuid;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,21 +49,15 @@ import java.util.List;
  * Implementations for all ui services.
  */
 @PSBaseBean("sys_uiService")
+@Transactional
 public class PSUiService implements IPSUiService
 {
+   @PersistenceContext
+   private EntityManager entityManager;
 
-
-   private SessionFactory sessionFactory;
-
-   public SessionFactory getSessionFactory() {
-      return sessionFactory;
+   private Session getSession(){
+      return entityManager.unwrap(Session.class);
    }
-
-   @Autowired
-   public void setSessionFactory(SessionFactory sessionFactory) {
-      this.sessionFactory = sessionFactory;
-   }
-
 
    /*
     * (non-Javadoc)
@@ -119,7 +113,7 @@ public class PSUiService implements IPSUiService
             deleteHierarchyNodeProperty(property);
 
          // node delete the node
-         sessionFactory.getCurrentSession().delete(node);
+         getSession().delete(node);
       }
       catch (PSUiException e)
       {
@@ -134,7 +128,7 @@ public class PSUiService implements IPSUiService
    public List<PSHierarchyNode> getAllHierarchyNodes()
    {
 
-      Session session = sessionFactory.getCurrentSession();
+      Session session = getSession();
       Criteria criteria = session.createCriteria(PSHierarchyNode.class);
 
       return (List<PSHierarchyNode>) criteria.list();
@@ -147,12 +141,12 @@ public class PSUiService implements IPSUiService
    public List<PSHierarchyNodeProperty> getAllHierarchyNodesGuidProperties()
    {
 
-      Session session = sessionFactory.getCurrentSession();
+      Session session = getSession();
 
       Criteria criteria = session.createCriteria(PSHierarchyNodeProperty.class);
       criteria.add(Restrictions.eq("name", "guid"));
 
-      return (List<PSHierarchyNodeProperty>) criteria.list();
+      return  criteria.list();
    }
 
    /*
@@ -163,7 +157,7 @@ public class PSUiService implements IPSUiService
    @SuppressWarnings("unchecked")
    public List<PSHierarchyNode> findHierarchyNodes(String name, PSHierarchyNode.NodeType type)
    {
-      Session session = sessionFactory.getCurrentSession();
+      Session session = getSession();
 
          if (StringUtils.isBlank(name))
             name = "%";
@@ -171,11 +165,11 @@ public class PSUiService implements IPSUiService
          Criteria criteria = session.createCriteria(PSHierarchyNode.class);
          if (!name.equals("%")) criteria.add(Restrictions.like("name", name));
          if (type != null)
-            criteria.add(Restrictions.eq("type", new Integer(type.getOrdinal())));
+            criteria.add(Restrictions.eq("type", type.getOrdinal()));
          criteria.addOrder(Order.asc("name"));
 
          // find nodes first
-         List<PSHierarchyNode> nodes = (List<PSHierarchyNode>) criteria.list();
+         List<PSHierarchyNode> nodes = criteria.list();
 
          // then load all node properties
          for (PSHierarchyNode node : nodes)
@@ -194,7 +188,7 @@ public class PSUiService implements IPSUiService
    @SuppressWarnings("unchecked")
    public List<PSHierarchyNode> findHierarchyNodes(String name, IPSGuid parentId, PSHierarchyNode.NodeType type)
    {
-      Session session = sessionFactory.getCurrentSession();
+      Session session = getSession();
 
          if (StringUtils.isBlank(name))
             name = "%";
@@ -240,9 +234,9 @@ public class PSUiService implements IPSUiService
       if (id == null)
          throw new IllegalArgumentException("id cannot be null");
 
-      Session session = sessionFactory.getCurrentSession();
+      Session session = getSession();
 
-         PSHierarchyNode node = (PSHierarchyNode) session.get(PSHierarchyNode.class, new Long(id.longValue()));
+         PSHierarchyNode node = session.get(PSHierarchyNode.class, id.longValue());
          if (node == null)
             throw new PSUiException(IPSUiErrors.MISSING_HIERARCHY_NODE, id);
 
@@ -262,7 +256,7 @@ public class PSUiService implements IPSUiService
       if (node == null)
          throw new IllegalArgumentException("node cannot be null");
 
-      Session session = sessionFactory.getCurrentSession();
+      Session session = getSession();
       try
       {
          if (node.getVersion() == null)
@@ -373,7 +367,7 @@ public class PSUiService implements IPSUiService
          if (node != null)
          {
             node.setParentId(targetId);
-            sessionFactory.getCurrentSession().update(node);
+            getSession().update(node);
          }
       }
    }
@@ -411,13 +405,11 @@ public class PSUiService implements IPSUiService
       if (nodeId == null)
          throw new IllegalArgumentException("nodeId cannot be null");
 
-      Session session = sessionFactory.getCurrentSession();
+      Session session = getSession();
 
          Criteria criteria = session.createCriteria(PSHierarchyNodeProperty.class);
          criteria.add(Restrictions.eq("nodeId", nodeId.longValue())).setCacheable(true);
-         List<PSHierarchyNodeProperty> properties = (List<PSHierarchyNodeProperty>) criteria.list();
-
-         return properties;
+         return  criteria.list();
 
       }
 
@@ -448,7 +440,7 @@ public class PSUiService implements IPSUiService
       if (property == null)
          throw new IllegalArgumentException("property cannot be null");
 
-      Session session = sessionFactory.getCurrentSession();
+      Session session = getSession();
 
          if (property.getVersion() == null)
             session.persist(property);
@@ -467,6 +459,6 @@ public class PSUiService implements IPSUiService
       if (property == null)
          throw new IllegalArgumentException("property cannot be null");
 
-      sessionFactory.getCurrentSession().delete(property);
+      getSession().delete(property);
    }
 }

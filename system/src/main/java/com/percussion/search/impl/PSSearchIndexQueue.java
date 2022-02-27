@@ -36,12 +36,12 @@ import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.type.StandardBasicTypes;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessResourceFailureException;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -58,21 +58,18 @@ import static org.apache.commons.lang.Validate.notNull;
  * 
  * @author BillLanglais
  */
+@Transactional
 public class PSSearchIndexQueue  implements IPSSearchIndexQueue
 {
    private static final int MAX_DELAY = 120000;
 
    private static final int POLL_DELAY = 20000;
 
-   private SessionFactory sessionFactory;
+   @PersistenceContext
+   private EntityManager entityManager;
 
-   public SessionFactory getSessionFactory() {
-      return sessionFactory;
-   }
-
-   @Autowired
-   public void setSessionFactory(SessionFactory sessionFactory) {
-      this.sessionFactory = sessionFactory;
+   private Session getSession(){
+      return entityManager.unwrap(Session.class);
    }
 
    // see base class method for details
@@ -82,9 +79,9 @@ public class PSSearchIndexQueue  implements IPSSearchIndexQueue
       Date maxDelayDate = new Date(new Date().getTime() - MAX_DELAY);
       Date minDelayDate = new Date(new Date().getTime() - POLL_DELAY);
 
-      List<PSSearchIndexQueueItem> queueItems = new ArrayList<PSSearchIndexQueueItem>();
+      List<PSSearchIndexQueueItem> queueItems = new ArrayList<>();
       
-      Session sess = sessionFactory.getCurrentSession();
+      Session sess = getSession();
 
 
          //  Don't pull changes that are not yet current revision.  Checked out items that have been public will collect in queue until checked in.
@@ -155,7 +152,7 @@ public class PSSearchIndexQueue  implements IPSSearchIndexQueue
                queueItems.add(item);
             }
            
-            m_logger.debug("Pulling ids from search index queue " + idList + " found " + queueItems.size());
+            m_logger.debug("Pulling ids from search index queue {} found {}", idList,  queueItems.size());
          }
 
          return queueItems;
@@ -167,7 +164,7 @@ public class PSSearchIndexQueue  implements IPSSearchIndexQueue
    {
       notNull(item, "Queue Item must not be null!");
 
-      Session sess = sessionFactory.getCurrentSession();
+      Session sess = getSession();
       try
       {
          item.setQueueId(PSIdGenerator.getNextId(PSSearchIndexEventQueue.QUEUE_THREAD_NAME));
@@ -223,7 +220,7 @@ public class PSSearchIndexQueue  implements IPSSearchIndexQueue
    public void deleteItemsChunk(Collection<Integer> queueIds) throws DataAccessResourceFailureException,
          IllegalStateException, HibernateException
    {
-      Session sess = sessionFactory.getCurrentSession();
+      Session sess = getSession();
 
        Query sql = sess.createQuery("delete from PSSearchIndexQueueItem where m_queueId in (:queueIds)");
          sql.setParameterList("queueIds", queueIds);
@@ -246,7 +243,7 @@ public class PSSearchIndexQueue  implements IPSSearchIndexQueue
    public void deleteIdItems(int id) throws DataAccessResourceFailureException,
          IllegalStateException, HibernateException
    {
-      Session sess = sessionFactory.getCurrentSession();
+      Session sess = getSession();
 
 
          Query sql = sess.createQuery("delete from PSSearchIndexQueueItem where m_contentId = :contentId");
@@ -269,7 +266,7 @@ public class PSSearchIndexQueue  implements IPSSearchIndexQueue
    public void deleteTypeIdItems(long id) throws DataAccessResourceFailureException,
          IllegalStateException, HibernateException
    {
-      Session sess = sessionFactory.getCurrentSession();
+      Session sess = getSession();
 
 
          Query sql = sess.createQuery("delete from PSSearchIndexQueueItem where m_contentTypeId = :typeId");
@@ -283,7 +280,7 @@ public class PSSearchIndexQueue  implements IPSSearchIndexQueue
    @Transactional
    public void deleteAllItems()
    {
-      Session sess = sessionFactory.getCurrentSession();
+      Session sess = getSession();
 
 
          Query sql = sess.createQuery("delete from PSSearchIndexQueueItem");
@@ -295,7 +292,7 @@ public class PSSearchIndexQueue  implements IPSSearchIndexQueue
    public int getEventCount()
    {
       int queueCount = 0;
-      Session sess = sessionFactory.getCurrentSession();
+      Session sess = getSession();
 
          // Chose to do count here as count method was causing performance issues being checked every change request insert
          // caused by event handling for monitor gadget.  This is running on a separate thread

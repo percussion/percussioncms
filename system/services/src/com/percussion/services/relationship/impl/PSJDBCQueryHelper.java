@@ -119,7 +119,7 @@ class PSJDBCQueryHelper implements IPSQueryHelper {
      * <code>null</code>, but may be empty.
      */
     @SuppressWarnings("unchecked")
-    private Collection<Map.Entry<String, String>> m_pduProps = Collections.EMPTY_LIST;
+    private Collection<Map.Entry<String, String>> m_pduProps = Collections.emptyList();
 
     /**
      * A list of customer properties, which exist in the relationship
@@ -127,7 +127,7 @@ class PSJDBCQueryHelper implements IPSQueryHelper {
      * Never <code>null</code>, but may be empty.
      */
     @SuppressWarnings("unchecked")
-    private Collection<Map.Entry<String, String>> m_customProps = Collections.EMPTY_LIST;
+    private Collection<Map.Entry<String, String>> m_customProps = Collections.emptyList();
 
     /**
      * The query string buffer, used to create HQL, never <code>null</code>,

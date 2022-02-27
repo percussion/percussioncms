@@ -2095,7 +2095,7 @@ public class PSUiDesignWs extends PSUiBaseWs implements IPSUiDesignWs
       String tableName, @SuppressWarnings("unused")
       int actionType)
       {
-         return Collections.EMPTY_LIST.iterator();
+         return Collections.emptyList().iterator();
       }
 
       /**

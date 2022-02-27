@@ -43,11 +43,11 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -61,20 +61,17 @@ import java.util.Map;
  * represented through the <code>PSObjectLock</code> object type.
  */
 @PSBaseBean("sys_lockingService")
+@Transactional
 public class PSObjectLockService
    implements IPSObjectLockService
 {
-   private SessionFactory sessionFactory;
+   @PersistenceContext
+   private EntityManager entityManager;
 
-   public SessionFactory getSessionFactory() {
-      return sessionFactory;
+   private Session getSession(){
+      return entityManager.unwrap(Session.class);
    }
-
-   @Autowired
-   public void setSessionFactory(SessionFactory sessionFactory) {
-      this.sessionFactory = sessionFactory;
-   }
-
+   
    //see interface
    @Transactional
    public synchronized PSObjectLock createLock(IPSGuid id, String session, 
@@ -178,7 +175,10 @@ public class PSObjectLockService
          }
       }
 
-      assert(existingLocks.size() + errors.size() + toSave.size() == ids.size());
+      if(existingLocks.size() + errors.size() + toSave.size() != ids.size()){
+         throw new IllegalArgumentException("Lock size mismatch!");
+      }
+
       saveLocks(toSave);
 
       Map<IPSGuid, PSObjectLock> tmp = new HashMap<>();
@@ -218,34 +218,26 @@ public class PSObjectLockService
       
       if (StringUtils.isBlank(user))
          throw new IllegalArgumentException("user cannot be null or empty");
-      
-      Iterator resultIds = results.getResults().keySet().iterator();
-      while (resultIds.hasNext())
-      {
-         IPSGuid id = (IPSGuid) resultIds.next();
+
+      for (IPSGuid id : results.getResults().keySet()) {
          Object value = results.getResults().get(id);
-         try
-         {
+         try {
             Integer version = PSORMUtils.getVersion(value);
-            
+
             createLock(id, session, user, version, overrideLock);
-         }
-         catch (PSLockException e)
-         {
+         } catch (PSLockException e) {
             int code = IPSWebserviceErrors.CREATE_LOCK_FAILED;
-            PSLockErrorException error = new PSLockErrorException(code, 
-               PSWebserviceErrors.createErrorMessage(code, 
-                  value.getClass().getName(), new PSDesignGuid(id).getValue(), 
-                  e.getLocalizedMessage()), 
-                  ExceptionUtils.getFullStackTrace(e), e.getLocker(), 
-                  e.getRemainigTime());
+            PSLockErrorException error = new PSLockErrorException(code,
+                    PSWebserviceErrors.createErrorMessage(code,
+                            value.getClass().getName(), new PSDesignGuid(id).getValue(),
+                            e.getLocalizedMessage()),
+                    ExceptionUtils.getFullStackTrace(e), e.getLocker(),
+                    e.getRemainigTime());
             results.addError(id, error);
          }
       }
-      
-      Iterator errors = results.getErrors().keySet().iterator();
-      while (errors.hasNext())
-         results.removeResult((IPSGuid) errors.next());
+
+      for (IPSGuid ipsGuid : results.getErrors().keySet()) results.removeResult(ipsGuid);
    }
 
    /* (non-Javadoc)
@@ -362,22 +354,19 @@ public class PSObjectLockService
    @SuppressWarnings("unchecked")
    public List<PSObjectLock> findExpiredLocks()
    {
-      Session session = sessionFactory.getCurrentSession();
+      Session session = getSession();
 
          Criteria criteria = session.createCriteria(PSObjectLock.class);
          criteria.add(Restrictions.lt("expirationTime", 
             System.currentTimeMillis()));
          
-         List<PSObjectLock> locks = criteria.list();
-         
-         return locks;
+         return criteria.list();
 
    }
 
    /* (non-Javadoc)
     * @see IPSObjectLockService#findLockByObjectId(IPSGuid)
     */
-   @SuppressWarnings("unchecked")
    public PSObjectLock findLockByObjectId(IPSGuid id)
    {
       return findLockByObjectId(id, null, null);
@@ -386,14 +375,11 @@ public class PSObjectLockService
    /* (non-Javadoc)
     * @see IPSObjectLockService#findLockByObjectId(IPSGuid)
     */
-   @SuppressWarnings("unchecked")
    public PSObjectLock findLockByObjectId(IPSGuid id, String lockSession, 
       String locker)
    {
       if (id == null)
          throw new IllegalArgumentException("id cannot be  null");
-      
-      Session session = sessionFactory.getCurrentSession();
 
          List<PSObjectLock> locks = findLocksByObjectIds(Collections
                .singletonList(id), lockSession, locker);
@@ -401,7 +387,7 @@ public class PSObjectLockService
          // there must only be one lock for a specific object
          if (locks != null && locks.size() > 1)
             throw new IllegalStateException(
-               "Found multiple locks for object with id " + id.toString());
+               "Found multiple locks for object with id " + id);
          
          return (locks == null || locks.isEmpty()) ? 
             null : releaseExpiredLock(locks.get(0));
@@ -419,7 +405,7 @@ public class PSObjectLockService
       if (PSGuidUtils.isBlank(ids))
          throw new IllegalArgumentException("ids cannot be null or empty");
       
-      Session session = sessionFactory.getCurrentSession();
+      Session session = getSession();
 
          PSCriteriaQueryRepeater<PSObjectLock> cr = 
             new PSCriteriaQueryRepeater<PSObjectLock>()
@@ -444,7 +430,6 @@ public class PSObjectLockService
    /* (non-Javadoc)
     * @see IPSObjectLockService#loadLocksByIds(List)
     */
-   @SuppressWarnings("unchecked")
    public List<PSObjectLock> loadLocksByIds(List<IPSGuid> ids)
    {
       return loadLocksByIds(ids, false);
@@ -468,7 +453,7 @@ public class PSObjectLockService
       if (ids.isEmpty())
          throw new IllegalArgumentException("ids cannot be empty");
       
-      Session session = sessionFactory.getCurrentSession();
+      Session session = getSession();
 
          Criteria criteria = session.createCriteria(PSObjectLock.class);
          criteria.add(Restrictions.in("id", PSGuidUtils.toFullLongList(ids)));
@@ -509,8 +494,8 @@ public class PSObjectLockService
          for (PSObjectLock lock : locks)
             ids.add(lock.getGUID());
 
-         Session session = sessionFactory.getCurrentSession();
-         loadLocksByIds(ids, true).forEach(lock -> session.delete(lock));
+         Session session = getSession();
+         loadLocksByIds(ids, true).forEach(session::delete);
       }
    }
    
@@ -561,7 +546,7 @@ public class PSObjectLockService
     */
    private void saveLocks(Collection<PSObjectLock> locks)
    {
-      Session session = sessionFactory.getCurrentSession();
+      Session session = getSession();
       try
       {
          for (PSObjectLock lock : locks)
@@ -605,16 +590,13 @@ public class PSObjectLockService
     */
    private PSObjectLock releaseExpiredLock(PSObjectLock lock)
    {
-      if (lock != null)
+      // release the lock if it is expired
+      if (lock != null && lock.getExpirationTime() < System.currentTimeMillis())
       {
-         // release the lock if it is expired
-         if (lock.getExpirationTime() < System.currentTimeMillis())
-         {
-            releaseLock(lock);
-            lock = null;
-         }
+         releaseLock(lock);
+         lock = null;
       }
-      
+
       return lock;
    }
    
@@ -653,7 +635,7 @@ public class PSObjectLockService
          throw new IllegalArgumentException(
             "locker cannot be null or empty");
       
-      Session session = sessionFactory.getCurrentSession();
+      Session session = getSession();
 
          Criteria criteria = session.createCriteria(PSObjectLock.class);
          criteria.add(Restrictions.eq("lockSession", 

@@ -33,11 +33,12 @@ import org.apache.logging.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -49,11 +50,12 @@ import java.util.Set;
 @Repository("categoryDao")
 public class PSCategoryDao implements IPSCategoryDao {
 
-    /**
-     * The hibernate session factory injected by spring
-     */
-    @Autowired
-    private SessionFactory sessionFactory;
+    @PersistenceContext
+    private EntityManager entityManager;
+
+    private Session getSession(){
+        return entityManager.unwrap(Session.class);
+    }
 
     @Autowired
     private IPSContentRepository contentRepository;
@@ -118,15 +120,5 @@ public class PSCategoryDao implements IPSCategoryDao {
         return pageIds;
     }
 
-    public Session getSession() {
-        return sessionFactory.getCurrentSession();
-    }
 
-    public SessionFactory getSessionFactory() {
-        return sessionFactory;
-    }
-
-    public void setSessionFactory(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
 }

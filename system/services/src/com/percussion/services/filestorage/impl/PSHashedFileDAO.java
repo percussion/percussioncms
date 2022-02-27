@@ -23,6 +23,7 @@
  */
 package com.percussion.services.filestorage.impl;
 
+import com.percussion.cms.IPSConstants;
 import com.percussion.services.filestorage.IPSHashedFileDAO;
 import com.percussion.services.filestorage.data.PSBinary;
 import com.percussion.services.filestorage.data.PSBinaryMetaEntry;
@@ -38,13 +39,14 @@ import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.naming.NamingException;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.io.InputStream;
 import java.sql.Blob;
 import java.sql.Connection;
@@ -61,18 +63,21 @@ import java.util.Set;
  * @author stephenbolton
  *
  */
+@Transactional
 public class PSHashedFileDAO implements IPSHashedFileDAO
 {
 
    /**
     * Logger for this class
     */
-   private static final Logger log = LogManager.getLogger(PSHashedFileDAO.class);
+   private static final Logger log = LogManager.getLogger(IPSConstants.CONTENTREPOSITORY_LOG);
 
-   /**
-    * The hibernate session factory injected by spring
-    */
-   private SessionFactory sessionFactory;
+   @PersistenceContext
+   private EntityManager entityManager;
+
+   private Session getSession(){
+      return entityManager.unwrap(Session.class);
+   }
 
    /**
     * 
@@ -185,11 +190,11 @@ public class PSHashedFileDAO implements IPSHashedFileDAO
             .executeUpdate();
       getSession().flush();
       int deletedEntities =  getSession().createQuery(
-            "delete from PSBinary b where b.lastAccessedDate < :testDate )")
+            "delete from PSBinary b where (b.lastAccessedDate < :testDate )")
             .setDate("testDate", testDate)
             .executeUpdate();
       
-      log.debug("Delete updated " + deletedEntities + " entities");
+      log.debug("Delete updated {} entities",deletedEntities);
 
       return deletedEntities;
    }
@@ -394,20 +399,5 @@ public class PSHashedFileDAO implements IPSHashedFileDAO
    {
       return Hibernate.getLobCreator(getSession()).createBlob(is, l);
    }
-   /**
-    * The hibernate session factory injected by spring
-    * @param sessionFactory
-    */
-   public void setSessionFactory(SessionFactory sessionFactory)
-   {
-      this.sessionFactory = sessionFactory;
-   }
 
-   /**
-    * @return The hibernate session factory injected by spring
-    */
-   public Session getSession()
-   {
-      return sessionFactory.getCurrentSession();
-   }
 }

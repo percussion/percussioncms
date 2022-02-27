@@ -66,13 +66,14 @@ import org.apache.logging.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -89,10 +90,18 @@ import static org.apache.commons.lang.Validate.notNull;
  * @author dougrand
  */
 @PSBaseBean("sys_workflowService")
+@Transactional
 public class PSWorkflowService
       implements
          IPSWorkflowService
 {
+
+   @PersistenceContext
+   private EntityManager entityManager;
+
+   private Session getSession(){
+      return entityManager.unwrap(Session.class);
+   }
 
 
    static final String LIVE_STATE = "Live";
@@ -100,16 +109,7 @@ public class PSWorkflowService
    static final String TRANSITION_NAME_ARCHIVE = "Archive";
    static final String TRANSITION_LIVE_TO_ARCHIVE_DESC = "Archive content from Live State";
 
-   private SessionFactory sessionFactory;
-
-   public SessionFactory getSessionFactory() {
-      return sessionFactory;
-   }
-    @Autowired
-   public void setSessionFactory(SessionFactory sessionFactory) {
-      this.sessionFactory = sessionFactory;
-   }
-
+ 
    /**
     * Commons logger
     */
@@ -264,7 +264,7 @@ public class PSWorkflowService
          query = "%";
       else
          query = name;
-      Session session = sessionFactory.getCurrentSession();
+      Session session = getSession();
       Criteria c = session.createCriteria(PSWorkflow.class);
       c.add(Restrictions.ilike("name", query));
       /* use a projection to avoid loading all the states, if label gets added
@@ -282,7 +282,7 @@ public class PSWorkflowService
          Object[] oa = (Object[]) o;
          //name and id should never be null
          sums.add(new PSObjectSummary(new PSGuid(PSTypeEnum.WORKFLOW,
-               ((Long) oa[2]).longValue()), oa[0].toString(),
+                 (Long) oa[2]), oa[0].toString(),
                oa[0].toString(), oa[1] == null ? "" : oa[1].toString()));
       }
 
@@ -318,7 +318,7 @@ public class PSWorkflowService
    public PSWorkflow loadWorkflowDb(IPSGuid id)
    {
       
-      PSWorkflow rval = (PSWorkflow) sessionFactory.getCurrentSession().get(PSWorkflow.class,
+      PSWorkflow rval =  getSession().get(PSWorkflow.class,
             id.longValue());
 
       // Always force lazy load for these objects since they
@@ -337,7 +337,7 @@ public class PSWorkflowService
       {
          if(state.getName().equals(LIVE_STATE))
          {
-            Boolean isArchiveTransitionPresent = false;
+            boolean isArchiveTransitionPresent = false;
 
             List<PSTransition> transitions = state.getTransitions();
             for(PSTransition tr : transitions){
@@ -702,9 +702,8 @@ public class PSWorkflowService
    {
       if (StringUtils.isBlank(name))
          name = "%";
-      List<PSWorkflow> wfs = sessionFactory.getCurrentSession().createQuery(
+      return getSession().createQuery(
             "from PSWorkflow where name like :name").setParameter("name", name).list();
-      return wfs;
    }
 
    /*
@@ -895,7 +894,7 @@ public class PSWorkflowService
       {
          throw new IllegalArgumentException("adhoc may not be null");
       }
-      sessionFactory.getCurrentSession().delete(adhoc);
+      getSession().delete(adhoc);
    }
 
    @SuppressWarnings("unchecked")
@@ -905,7 +904,7 @@ public class PSWorkflowService
       {
          throw new IllegalArgumentException("username may not be null or empty");
       }
-      Session s = sessionFactory.getCurrentSession();
+      Session s = getSession();
 
          Criteria c = s.createCriteria(PSContentAdhocUser.class);
          c.add(Restrictions.eq("user", username));
@@ -919,7 +918,7 @@ public class PSWorkflowService
       if (contentId == null)
          throw new IllegalArgumentException("contentId may not be null");
       
-      Session s = sessionFactory.getCurrentSession();
+      Session s = getSession();
 
          Criteria c = s.createCriteria(PSContentAdhocUser.class);
          c.add(Restrictions.eq("contentId", contentId.getUUID()));
@@ -935,7 +934,7 @@ public class PSWorkflowService
       {
          throw new IllegalArgumentException("adhoc may not be null");
       }
-      sessionFactory.getCurrentSession().saveOrUpdate(adhoc);
+      getSession().saveOrUpdate(adhoc);
    }
 
    @Transactional
@@ -953,7 +952,7 @@ public class PSWorkflowService
          {
             throw new Exception("The workflow '"+ workflow.getName() + "' cannot be deleted because is the default workflow.");
          }
-         sessionFactory.getCurrentSession().delete(workflow);
+         getSession().delete(workflow);
       }
       m_cache.evict(wfid, CACHE_REGION);
    }
@@ -966,7 +965,7 @@ public class PSWorkflowService
          throw new IllegalArgumentException("workflow may not be null");
       }
 
-      sessionFactory.getCurrentSession().saveOrUpdate(workflow);
+      getSession().saveOrUpdate(workflow);
 
       m_cache.evict(workflow.getGUID(), CACHE_REGION);
    }
@@ -974,7 +973,7 @@ public class PSWorkflowService
    public List<PSContentWorkflowState> getWorkflowStateForContent(
          List<IPSGuid> contentids)
    {
-      Session s = sessionFactory.getCurrentSession();
+      Session s = getSession();
 
          List<PSContentWorkflowState> rval = new ArrayList<>();
          // Extract content ids
@@ -1015,8 +1014,8 @@ public class PSWorkflowService
       List<PSContentApproval> approvals = findApprovalsByItem(contentid);
       if (!approvals.isEmpty())
       {
-         Session session = sessionFactory.getCurrentSession();
-         approvals.forEach(app -> session.delete(app));
+         Session session = getSession();
+         approvals.forEach(session::delete);
       }
 
    }
@@ -1027,7 +1026,7 @@ public class PSWorkflowService
       {
          throw new IllegalArgumentException("username may not be null or empty");
       }
-      Session s = sessionFactory.getCurrentSession();
+      Session s = getSession();
 
          Criteria c = s.createCriteria(PSContentApproval.class);
          c.add(Restrictions.eq("user", username));
@@ -1040,7 +1039,7 @@ public class PSWorkflowService
       if (contentid == null)
          throw new IllegalArgumentException("contentid may not be null");
       
-      Session s = sessionFactory.getCurrentSession();
+      Session s = getSession();
 
          Criteria c = s.createCriteria(PSContentApproval.class);
          c.add(Restrictions.eq("contentId", contentid.getUUID()));
@@ -1056,7 +1055,7 @@ public class PSWorkflowService
       {
          throw new IllegalArgumentException("adhoc may not be null");
       }
-      sessionFactory.getCurrentSession().saveOrUpdate(approval);
+      getSession().saveOrUpdate(approval);
    }
 
    public List<PSMenuAction> getAllWorkflowActions(List<IPSGuid> contentids,
@@ -1086,10 +1085,10 @@ public class PSWorkflowService
       }
       else
       {
-         version = new Integer(0);
+         version = 0;
       }
       
-      Session s = sessionFactory.getCurrentSession();
+      Session s = getSession();
 
          Query q = s.createQuery(
                "update PSWorkflow w set w.version = :version "
@@ -1190,7 +1189,7 @@ public class PSWorkflowService
    @SuppressWarnings("unchecked")
    private List<Integer> getWorkflowVersionForId(long id)
    {
-      return sessionFactory.getCurrentSession().createQuery(
+      return getSession().createQuery(
             "select w.version from PSWorkflow w " +
             "where w.id = :id").setParameter("id", id).list();
    }
