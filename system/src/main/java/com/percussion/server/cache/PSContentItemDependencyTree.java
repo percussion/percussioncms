@@ -694,7 +694,7 @@ public class PSContentItemDependencyTree
          return ids.iterator();
       }
       else
-         return Collections.EMPTY_LIST.iterator();
+         return Collections.emptyList().iterator();
    }
 
    /**

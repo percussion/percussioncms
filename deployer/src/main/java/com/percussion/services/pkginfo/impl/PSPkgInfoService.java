@@ -33,6 +33,7 @@ import com.percussion.services.pkginfo.data.PSPkgDependency;
 import com.percussion.services.pkginfo.data.PSPkgElement;
 import com.percussion.services.pkginfo.data.PSPkgInfo;
 import com.percussion.services.pkginfo.data.PSPkgInfo.PackageAction;
+import com.percussion.util.PSBaseBean;
 import com.percussion.utils.guid.IPSGuid;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -40,13 +41,12 @@ import org.apache.logging.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,23 +57,20 @@ import java.util.List;
  * file @see IPSPkgInfoService
  *
  */
-@Component("sys_pkgInfoService")
+@PSBaseBean("sys_pkgInfoService")
 @Transactional
 public class PSPkgInfoService
 implements IPSPkgInfoService
 {
    private static final Logger log = LogManager.getLogger(PSPkgInfoService.class);
 
-   private SessionFactory sessionFactory;
+   @PersistenceContext
+   private EntityManager entityManager;
 
-   public SessionFactory getSessionFactory() {
-      return sessionFactory;
+   private Session getSession(){
+      return entityManager.unwrap(Session.class);
    }
 
-   @Autowired
-   public void setSessionFactory(SessionFactory sessionFactory) {
-      this.sessionFactory = sessionFactory;
-   }
 
 
    //-------------------------------------------------------------------
@@ -134,7 +131,7 @@ implements IPSPkgInfoService
       if (obj == null)
          throw new IllegalArgumentException("obj may not be null");
       
-       sessionFactory.getCurrentSession().saveOrUpdate(obj);
+       getSession().saveOrUpdate(obj);
    }
 
    /* (non-Javadoc)
@@ -157,10 +154,10 @@ implements IPSPkgInfoService
       if (id == null)
          throw new IllegalArgumentException("id may not be null");
       
-      Session session = sessionFactory.getCurrentSession();
+      Session session = getSession();
 
          Criteria criteria = session.createCriteria(PSPkgInfo.class);
-         criteria.add(Restrictions.eq("guid", new Long(id.longValue())));
+         criteria.add(Restrictions.eq("guid", id.longValue()));
          PSPkgInfo pkgInfo = (PSPkgInfo) criteria.uniqueResult();
          
          if (pkgInfo == null)
@@ -196,13 +193,13 @@ implements IPSPkgInfoService
          return null;
      
       List<PSPkgInfo> pkgInfoList = null;
-      Session session = sessionFactory.getCurrentSession();
+      Session session = getSession();
 
          Criteria criteria = session.createCriteria(PSPkgInfo.class);
          criteria.add(Restrictions.eq("descriptorName", name).ignoreCase());
          pkgInfoList = criteria.list();
 
-      return pkgInfoList.size() == 0 ? null : pkgInfoList.get(0);
+      return pkgInfoList.isEmpty() ? null : pkgInfoList.get(0);
    }
 
    /* (non-Javadoc)
@@ -212,7 +209,7 @@ implements IPSPkgInfoService
    public List<PSPkgInfo> findAllPkgInfos()
    {
       List<PSPkgInfo>  pkgInfoList = null;
-      Session session = sessionFactory.getCurrentSession();
+      Session session = getSession();
 
          Criteria criteria = session.createCriteria(PSPkgInfo.class);
          pkgInfoList = criteria.list();      
@@ -228,9 +225,8 @@ implements IPSPkgInfoService
       if (id == null)
          throw new IllegalArgumentException("id may not be null");
       
-      PSPkgInfo pkgInfo = loadPkgInfoModifiable(id);
-      
-      return pkgInfo;
+      return loadPkgInfoModifiable(id);
+
    }
 
    /* (non-Javadoc)
@@ -240,7 +236,7 @@ implements IPSPkgInfoService
       if (id == null)
          throw new IllegalArgumentException("id may not be null");
       
-      PSPkgInfo pkgInfo = sessionFactory.getCurrentSession().
+      PSPkgInfo pkgInfo = getSession().
          get(PSPkgInfo.class, id.longValue());
 
       if (pkgInfo == null)
@@ -270,9 +266,9 @@ implements IPSPkgInfoService
          if (obj == null)
             throw new IllegalArgumentException("obj may not be null");
 
-         log.debug("Trying to save PackageElement: " + obj.toString());
-         sessionFactory.getCurrentSession().saveOrUpdate(obj);
-         log.debug("PackageElement save completed for: " + obj.toString());
+         log.debug("Trying to save PackageElement: {}" , obj);
+         getSession().saveOrUpdate(obj);
+         log.debug("PackageElement save completed for: {}" , obj);
 
 
    }
@@ -286,7 +282,7 @@ implements IPSPkgInfoService
       if (id == null)
          throw new IllegalArgumentException("id may not be null");
       
-      Session session = sessionFactory.getCurrentSession();
+      Session session = getSession();
 
          Criteria criteria = session.createCriteria(PSPkgElement.class);
          criteria.add(Restrictions.eq("guid", id.longValue()));
@@ -310,14 +306,14 @@ implements IPSPkgInfoService
          throw new IllegalArgumentException("parentPkgInfoId may not be null");
       
       
-      List<Long> longList = new ArrayList<>();
+      List<Long> longList;
       List<IPSGuid> guidList = new ArrayList<>();
-      Session session = sessionFactory.getCurrentSession();
+      Session session = getSession();
 
          Criteria criteria = session.createCriteria(PSPkgElement.class);
          criteria.setProjection( Projections.property("guid"));
          criteria.add(Restrictions.eq("packageGuid",
-               new Long(parentPkgInfoId.longValue())));
+                 parentPkgInfoId.longValue()));
          longList =  criteria.list();
 
 
@@ -341,10 +337,10 @@ implements IPSPkgInfoService
       
       
       PSPkgElement pkgElement = null;
-      Session session = sessionFactory.getCurrentSession();
+      Session session = getSession();
 
          Criteria criteria = session.createCriteria(PSPkgElement.class);
-         criteria.add(Restrictions.eq("guid", new Long(id.longValue())));
+         criteria.add(Restrictions.eq("guid", id.longValue()));
          pkgElement = (PSPkgElement) criteria.uniqueResult();
 
       return pkgElement;
@@ -353,13 +349,12 @@ implements IPSPkgInfoService
    /* (non-Javadoc)
     * @see IPSPkgInfoService#findPkgElementByObject(IPSGuid)
     */
-   @SuppressWarnings("unchecked")
    public PSPkgElement findPkgElementByObject(IPSGuid objId)
    {
       if (objId == null)
          throw new IllegalArgumentException("objId may not be null");
              
-      Session session = sessionFactory.getCurrentSession();
+      Session session = getSession();
 
          /*
           * A query is required to handle the following special case:
@@ -387,7 +382,7 @@ implements IPSPkgInfoService
    public List<PSPkgElement> findPkgElements(IPSGuid parentPkgId)
    {
       List<PSPkgElement>  pkgElementList = null;
-      Session session = sessionFactory.getCurrentSession();
+      Session session = getSession();
 
          Criteria criteria = session.createCriteria(PSPkgElement.class);
          criteria.add(Restrictions.eq("packageGuid", parentPkgId.longValue()));
@@ -408,7 +403,7 @@ implements IPSPkgInfoService
       if (ids == null)
          throw new IllegalArgumentException("ids may not be null");
 
-      if (ids.size() == 0)
+      if (ids.isEmpty())
          throw new IllegalArgumentException("ids may not be empty");
 
       for (IPSGuid id : ids)
@@ -419,12 +414,12 @@ implements IPSPkgInfoService
         }
         else
         {
-           idList.add(new Long(id.longValue()));
+           idList.add(id.longValue());
         }
       }
 
       List<PSPkgElement>  pkgElementList = null;
-      Session session = sessionFactory.getCurrentSession();
+      Session session = getSession();
 
          Criteria criteria = session.createCriteria(PSPkgElement.class);
          criteria.add(Restrictions.in("guid", idList));
@@ -459,9 +454,8 @@ implements IPSPkgInfoService
       
       // todo: Handle caching!
 
-      PSPkgElement pkgElement = loadPkgElementModifiable(id);
+      return  loadPkgElementModifiable(id);
 
-      return pkgElement;
    }
 
    /* (non-Javadoc)
@@ -472,7 +466,7 @@ implements IPSPkgInfoService
          throw new IllegalArgumentException("id may not be null");
       
       PSPkgElement pkgElement = null;
-      Session session = sessionFactory.getCurrentSession();
+      Session session = getSession();
 
          Criteria criteria = session.createCriteria(PSPkgElement.class);
          criteria.add(Restrictions.eq("guid", id.longValue()));
@@ -507,7 +501,7 @@ implements IPSPkgInfoService
          throw new IllegalArgumentException("guid may not be null");
       List<IPSGuid> dPkgGuids = new ArrayList<>();
       List<PSPkgDependency> pkgDeps = new ArrayList<>();
-      Session session = sessionFactory.getCurrentSession();
+      Session session = getSession();
 
          Criteria criteria = session.createCriteria(PSPkgDependency.class);
          criteria.add(Restrictions.eq("ownerPackageGuid", guid.longValue()));
@@ -532,7 +526,7 @@ implements IPSPkgInfoService
          throw new IllegalArgumentException("guid may not be null");
       List<IPSGuid> oPkgGuids = new ArrayList<>();
       List<PSPkgDependency> pkgDeps = new ArrayList<>();
-      Session session = sessionFactory.getCurrentSession();
+      Session session = getSession();
 
          Criteria criteria = session.createCriteria(PSPkgDependency.class);
          criteria.add(Restrictions.eq("dependentPackageGuid", guid.longValue()));
@@ -556,10 +550,9 @@ implements IPSPkgInfoService
       if (guid == null)
          throw new IllegalArgumentException("ownerGuid may not be null");
 
-      List<PSPkgDependency> pkgDeps = loadPkgDependenciesModifiable(guid,
+      return  loadPkgDependenciesModifiable(guid,
             depType);
 
-      return pkgDeps;
    }
 
    /*
@@ -574,7 +567,7 @@ implements IPSPkgInfoService
          throw new IllegalArgumentException("ownerGuid may not be null");
       List<PSPkgDependency> pkgDeps = new ArrayList<>();
       String temp = depType?"ownerPackageGuid":"dependentPackageGuid";
-      Session session = sessionFactory.getCurrentSession();
+      Session session = getSession();
 
          Criteria criteria = session.createCriteria(PSPkgDependency.class);
          criteria.add(Restrictions.eq(temp, guid.longValue()));
@@ -593,7 +586,7 @@ implements IPSPkgInfoService
       if (pkgDependency == null)
          throw new IllegalArgumentException("pkgDependency may not be null");
 
-      sessionFactory.getCurrentSession().saveOrUpdate(pkgDependency);
+      getSession().saveOrUpdate(pkgDependency);
    }
 
    /*
@@ -602,7 +595,7 @@ implements IPSPkgInfoService
     */
    public void deletePkgDependency(long pkgDepId)
    {
-      Session session = sessionFactory.getCurrentSession();
+      Session session = getSession();
 
          Criteria criteria = session.createCriteria(PSPkgDependency.class);
          criteria.add(Restrictions.eq("pkgDependencyId", pkgDepId));

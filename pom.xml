@@ -28,12 +28,12 @@
         <module>modules/perc-exceptions-spring</module>
         <module>modules/shindig-uber</module>
         <module>modules/perc-tinymce</module>
-        <module>system/utils</module>
+        <module>modules/utils</module>
         <module>modules/perc-legacy</module>
         <module>modules/perc-shared-test-resources</module>
         <module>modules/webservices</module>
-        <module>system/Tools/Simple</module>
-        <module>system/Tools/TableFactory</module>
+        <module>modules/Simple</module>
+        <module>modules/TableFactory</module>
         <module>modules/perc-service-wrapper</module>
         <module>rest</module>
         <module>system</module>
@@ -130,12 +130,12 @@
        <cxf.version>3.4.4</cxf.version>
        <servlet.spec>3.1.0</servlet.spec>
        <xmlgraphics.common.version>2.6</xmlgraphics.common.version>
-       <hibernate.version>5.6.5.Final</hibernate.version>
+       <hibernate.version>5.4.24.Final</hibernate.version>
+       <ehcache.version>2.10.6</ehcache.version>
        <commons-logging.version>1.2</commons-logging.version>
        <commons.io.version>2.8.0</commons.io.version>
        <lucene.version>8.7.0</lucene.version>
        <myfaces.version>1.1.5</myfaces.version>
-       <ehcache.version>2.10.5</ehcache.version>
        <simplexml.version>2.7.1</simplexml.version>
        <stax.version>1.0.1</stax.version>
         <poi.version>4.1.2</poi.version>
@@ -1405,12 +1405,6 @@
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-ehcache</artifactId>
                 <version>${hibernate.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>net.sf.ehcache</groupId>
-                        <artifactId>ehcache-core</artifactId>
-                    </exclusion>
-                </exclusions>
             </dependency>
 
             <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-annotations -->

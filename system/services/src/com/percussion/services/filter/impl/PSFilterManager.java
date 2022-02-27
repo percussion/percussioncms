@@ -23,6 +23,7 @@
  */
 package com.percussion.services.filter.impl;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.services.catalog.IPSCatalogErrors;
 import com.percussion.services.catalog.IPSCatalogSummary;
 import com.percussion.services.catalog.PSCatalogException;
@@ -45,14 +46,13 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.xml.sax.SAXException;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -64,21 +64,17 @@ import java.util.Map;
  * @author dougrand
  * 
  */
-@Transactional(noRollbackFor = Exception.class)
+@Transactional()
 @PSBaseBean("sys_filtermanager")
 public class PSFilterManager
       implements
          IPSFilterService
 {
-   private SessionFactory sessionFactory;
+   @PersistenceContext
+   private EntityManager entityManager;
 
-   public SessionFactory getSessionFactory() {
-      return sessionFactory;
-   }
-
-   @Autowired
-   public void setSessionFactory(SessionFactory sessionFactory) {
-      this.sessionFactory = sessionFactory;
+   private Session getSession(){
+      return entityManager.unwrap(Session.class);
    }
 
    /**
@@ -133,7 +129,7 @@ public class PSFilterManager
       {
          throw new IllegalArgumentException("name may not be null or empty");
       }
-      return sessionFactory.getCurrentSession()
+      return getSession()
             .bySimpleNaturalId(PSItemFilter.class).load(name);
    }   
 
@@ -154,7 +150,7 @@ public class PSFilterManager
    @SuppressWarnings("unchecked")
    public List<IPSItemFilter> findAllFilters()
    {
-      Session s = sessionFactory.getCurrentSession();
+      Session s = getSession();
 
          Criteria c = s.createCriteria(PSItemFilter.class);
          return c.list();
@@ -170,17 +166,17 @@ public class PSFilterManager
    public IPSItemFilter findFilterByAuthType(int authtype)
          throws PSFilterException
    {
-      Session s = sessionFactory.getCurrentSession();
+      Session s = getSession();
 
          Criteria c = s.createCriteria(PSItemFilter.class);
          c.add(Restrictions.eq("legacy_authtype", authtype));
-         List results = c.list();
-         if (results.size() == 0)
+         List<PSItemFilter> results = c.list();
+         if (results.isEmpty())
          {
             throw new PSFilterException(
                   IPSFilterServiceErrors.AUTHTYPE_MISSING, authtype);
          }
-         return (IPSItemFilter) results.get(0);
+         return results.get(0);
 
    }
 
@@ -189,7 +185,7 @@ public class PSFilterManager
     * 
     * @see com.percussion.services.filter.IPSFilterService#saveFilter(com.percussion.services.filter.IPSItemFilter)
     */
-   @Transactional(propagation = Propagation.REQUIRES_NEW)
+   @Transactional
    public void saveFilter(IPSItemFilter filter)
    {
       if (filter == null)
@@ -197,7 +193,7 @@ public class PSFilterManager
 
       PSItemFilter f = (PSItemFilter) filter;
 
-      Session session = sessionFactory.getCurrentSession();
+      Session session = getSession();
       try
       {
          if (f.getVersion() == null)
@@ -215,7 +211,9 @@ public class PSFilterManager
             {
               if(e.getErrorCode()!=IPSFilterServiceErrors.FILTER_MISSING)
               {
-                 log.error("Exception finding item filter "+f.getName(),e);
+                 log.error("Exception finding item filter {}. Error: {}",
+                         f.getName(),
+                         PSExceptionUtils.getMessageForLog(e));
               }
             }
             if (current != null)
@@ -229,7 +227,9 @@ public class PSFilterManager
       }
       catch (Exception e)
       {
-         log.error("Problem saving filter: " + filter.getName(), e);
+         log.error("Problem saving filter: {}. Error: {}" ,
+                 filter.getName(),
+                 PSExceptionUtils.getMessageForLog(e));
          throw new RuntimeException(e);
       }
 
@@ -247,7 +247,7 @@ public class PSFilterManager
          throw new IllegalArgumentException("filter may not be null");
       }
 
-      sessionFactory.getCurrentSession().delete(filter);
+      getSession().delete(filter);
    }
 
    /*
@@ -297,7 +297,7 @@ public class PSFilterManager
    {
       List<IPSCatalogSummary> rval = new ArrayList<>();
 
-      Session s = sessionFactory.getCurrentSession();
+      Session s = getSession();
 
          if (type.getOrdinal() == PSTypeEnum.ITEM_FILTER.getOrdinal())
          {
@@ -319,6 +319,7 @@ public class PSFilterManager
     * @see com.percussion.services.catalog.IPSCataloger#loadByType(com.percussion.services.catalog.PSTypeEnum,
     *      java.lang.String)
     */
+   @Transactional
    public void loadByType(PSTypeEnum type, String item)
          throws PSCatalogException
    {
@@ -328,7 +329,7 @@ public class PSFilterManager
          {
             IPSGuid guid = PSXmlSerializationHelper.getIdFromXml(
                   PSTypeEnum.ITEM_FILTER, item);
-            IPSItemFilter temp = null;
+            IPSItemFilter temp;
             List<IPSGuid> guids = new ArrayList<>();
             guids.add(guid);
             temp = loadFilter(guids).get(0);
@@ -372,8 +373,7 @@ public class PSFilterManager
          else
          {
             PSTypeEnum type = PSTypeEnum.valueOf(id.getType());
-            throw new PSCatalogException(IPSCatalogErrors.UNKNOWN_TYPE, type
-                  .toString());
+            throw new PSCatalogException(IPSCatalogErrors.UNKNOWN_TYPE, type);
          }
       }
       catch (IOException | PSNotFoundException e)
@@ -395,7 +395,7 @@ public class PSFilterManager
    public List<IPSItemFilter> findFiltersByName(String name)
    {
       List<IPSItemFilter> filters = new ArrayList<>();
-      Session s = sessionFactory.getCurrentSession();
+      Session s = getSession();
 
       if (!StringUtils.isBlank(name) && !name.equals("%")) {
          try {
@@ -418,9 +418,9 @@ public class PSFilterManager
     */
    public IPSItemFilter loadFilter(IPSGuid id) throws PSNotFoundException
    {
-      Session session = sessionFactory.getCurrentSession();
+      Session session = getSession();
 
-         IPSItemFilter filter = (IPSItemFilter) session.get(PSItemFilter.class,
+         IPSItemFilter filter =  session.get(PSItemFilter.class,
                id.longValue());
          if (filter == null)
             throw new PSNotFoundException(id);

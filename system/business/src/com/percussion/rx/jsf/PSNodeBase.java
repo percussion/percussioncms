@@ -23,16 +23,14 @@
  */
 package com.percussion.rx.jsf;
 
-import com.percussion.rx.jsf.PSTreeModel;
 import com.percussion.rx.ui.jsf.beans.PSHelpTopicMapping;
+import com.percussion.services.error.PSNotFoundException;
+import org.apache.commons.lang.StringUtils;
+import org.apache.myfaces.trinidad.model.RowKeyIndex;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
-
-import com.percussion.services.error.PSNotFoundException;
-import org.apache.commons.lang.StringUtils;
-import org.apache.myfaces.trinidad.model.RowKeyIndex;
 
 /**
  * The base node in the tree model. The tree model references a hierarchy of
@@ -232,7 +230,7 @@ public class PSNodeBase implements RowKeyIndex
     */
    @SuppressWarnings("unchecked")
    public List<? extends PSNodeBase> getChildren() throws PSNotFoundException {
-      return Collections.EMPTY_LIST;
+      return Collections.emptyList();
    }
 
    /**

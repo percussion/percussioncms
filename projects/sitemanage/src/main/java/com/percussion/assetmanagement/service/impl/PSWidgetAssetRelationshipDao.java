@@ -30,16 +30,15 @@ import com.percussion.pagemanagement.service.IPSWidgetAssetRelationshipDao;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.error.PSRuntimeException;
 import com.percussion.services.guidmgr.PSGuidHelper;
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.sql.SQLException;
 
 import static com.percussion.util.PSSqlHelper.qualifyTableName;
@@ -54,10 +53,14 @@ import static org.apache.commons.lang.StringUtils.isBlank;
 @Component("widgetAssetRelationshipDao")
 public class PSWidgetAssetRelationshipDao implements IPSWidgetAssetRelationshipDao
 {
-   
-    private SessionFactory sessionFactory;
+    @PersistenceContext
+    private EntityManager entityManager;
 
-    @SuppressFBWarnings("SQL_INJECTION_HIBERNATE")
+    private Session getSession(){
+        return entityManager.unwrap(Session.class);
+    }
+    
+
     @Transactional
     public int updateWidgetNameForRelatedPages(String templateId, String widgetName, long widgetId)
     {
@@ -66,7 +69,7 @@ public class PSWidgetAssetRelationshipDao implements IPSWidgetAssetRelationshipD
         widgetName = isBlank(widgetName) ? "NULL" : widgetName;
         int sortRank = PSGuidHelper.generateNext(PSTypeEnum.SORT_RANK).getUUID();
         
-        Session sess = sessionFactory.getCurrentSession();
+        Session sess = getSession();
 
         try
         {
@@ -96,16 +99,6 @@ public class PSWidgetAssetRelationshipDao implements IPSWidgetAssetRelationshipD
       
     }
     
-    @Autowired
-    public void setSessionFactory(SessionFactory sessionFactory)
-    {
-        this.sessionFactory = sessionFactory;
-    }
 
-    public SessionFactory getSessionFactory()
-    {
-        return sessionFactory;
-    }
-
-    private static final Logger logger = LogManager.getLogger(PSWidgetAssetRelationshipDao.class);
+    private static final Logger logger = LogManager.getLogger(IPSConstants.CONTENTREPOSITORY_LOG);
 }

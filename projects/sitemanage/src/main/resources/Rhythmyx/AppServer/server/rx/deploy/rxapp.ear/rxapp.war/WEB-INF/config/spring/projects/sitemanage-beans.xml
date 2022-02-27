@@ -1724,9 +1724,6 @@ http://cxf.apache.org/schemas/jaxrs.xsd">
           autowire="constructor"/>
     <bean id="widgetAssetRelationshipDao"
           class="com.percussion.assetmanagement.service.impl.PSWidgetAssetRelationshipDao">
-        <property name="sessionFactory">
-            <ref bean="sys_sessionFactory"/>
-        </property>
     </bean>
 
     <!--  Content Migration Service  -->

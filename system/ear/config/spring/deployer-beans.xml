@@ -32,28 +32,19 @@ http://www.springframework.org/schema/tx/spring-tx-4.2.xsd">
 
 	<tx:annotation-driven transaction-manager="sys_transactionManager"/>
 
-   <bean id="sys_deployerService"
-	  class="com.percussion.deployer.services.impl.PSDeployService">
-	  <property name="sessionFactory">
-	     <ref bean="sys_sessionFactory" />
-      </property>
-   </bean>	
-	
-   <bean id="sys_pkgInfoService" 
-   class="com.percussion.services.pkginfo.impl.PSPkgInfoService">
-      <property name="sessionFactory">
-         <ref bean="sys_sessionFactory" />
+   <bean id="sys_idNameService"
+         class="com.percussion.services.pkginfo.impl.PSIdNameService">
+      <property name="cache">
+         <ref bean="sys_cacheAccessor" />
       </property>
    </bean>
 
-   <bean id="sys_idNameService" 
-   class="com.percussion.services.pkginfo.impl.PSIdNameService">
-      <property name="sessionFactory">
-         <ref bean="sys_sessionFactory" />
-      </property>
-      <property name="cache">
-      	<ref bean="sys_cacheAccessor" />
-      </property>
+   <bean id="sys_pkgInfoService"
+         class="com.percussion.services.pkginfo.impl.PSPkgInfoService">
+   </bean>
+
+   <bean id="sys_deployerService"
+	  class="com.percussion.deployer.services.impl.PSDeployService">
    </bean>
    
    <bean id="sys_configService" 
@@ -68,9 +59,6 @@ http://www.springframework.org/schema/tx/spring-tx-4.2.xsd">
    
    <bean id="sys_configStatusMgr" 
    class="com.percussion.rx.config.impl.PSConfigStatusMgr">
-      <property name="sessionFactory">
-         <ref bean="sys_sessionFactory" />
-      </property>
    </bean>
    
    <bean id="sys_configRegistrationService" class="com.percussion.rx.config.impl.PSConfigRegistrationMgr">

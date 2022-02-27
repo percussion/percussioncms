@@ -76,13 +76,14 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.type.StandardBasicTypes;
 import org.springframework.transaction.annotation.Transactional;
 import org.xml.sax.SAXException;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.io.IOException;
 import java.io.Serializable;
 import java.sql.SQLException;
@@ -105,23 +106,21 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author dougrand
  * 
  */
+@Transactional
 public class PSSiteManager
       implements
       IPSSiteManagerInternal
 {
-
-   private SessionFactory sessionFactory;
+   
     private PSAuditLogService psAuditLogService=PSAuditLogService.getInstance();
     private PSContentEvent psContentEvent;
 
-   public SessionFactory getSessionFactory() {
-      return sessionFactory;
-   }
+   @PersistenceContext
+   private EntityManager entityManager;
 
-   public void setSessionFactory(SessionFactory sessionFactory) {
-      this.sessionFactory = sessionFactory;
+   private Session getSession(){
+      return entityManager.unwrap(Session.class);
    }
-
 
    /**
     * Listener which invalidates locally cached information
@@ -263,7 +262,7 @@ public class PSSiteManager
     */
    public List<IPSSite> loadSitesModifiable()
    {
-      return (List<IPSSite>) sessionFactory.getCurrentSession().createCriteria(PSSite.class).setCacheable(true).list();
+      return (List<IPSSite>) getSession().createCriteria(PSSite.class).setCacheable(true).list();
    }
 
    
@@ -302,7 +301,7 @@ public class PSSiteManager
     */
    public IPSSite findSiteFromDatabase(IPSGuid siteid)
    {
-      return (IPSSite) sessionFactory.getCurrentSession().get(PSSite.class,
+      return getSession().get(PSSite.class,
             siteid.longValue());
    }
    
@@ -325,8 +324,8 @@ public class PSSiteManager
 
       if (log.isDebugEnabled())
       {
-         log.debug("Load cached site (id=" + siteid.toString()
-               + ", name=\"" + rval.getName() + "\".");
+         log.debug("Load cached site (id={}, name={}",
+                 siteid,  rval.getName());
       }
 
 
@@ -373,7 +372,7 @@ public class PSSiteManager
    {
       Map<IPSGuid, String> idNameMap = new HashMap<>();
       
-      Session s = sessionFactory.getCurrentSession();
+      Session s = getSession();
 
          Criteria c = s.createCriteria(PSSite.class);
          c.setProjection(Projections.projectionList().add(
@@ -401,7 +400,7 @@ public class PSSiteManager
                "sitename may not be null or empty.");
 
 
-      return (IPSSite) sessionFactory.getCurrentSession()
+      return (IPSSite) getSession()
               .bySimpleNaturalId(PSSite.class)
               .load(sitename);
    }
@@ -419,7 +418,7 @@ public class PSSiteManager
     * @see com.percussion.services.sitemgr.IPSSiteManager#findSiteByName(java.lang.String)
     * @deprecated use {@link #loadSite(String)} instead.
     */
-   @SuppressWarnings("unchecked")
+   @Deprecated
    public IPSSite findSiteByName(String sitename) throws PSSiteManagerException
    {
       try
@@ -442,7 +441,7 @@ public class PSSiteManager
       if (site == null)
          throw new IllegalArgumentException("site must not be null.");
 
-      sessionFactory.getCurrentSession().merge(site);
+      getSession().merge(site);
 
    }
 
@@ -455,7 +454,7 @@ public class PSSiteManager
       if (site == null)
          throw new IllegalArgumentException("site must not be null.");
 
-      sessionFactory.getCurrentSession().delete(site);
+      getSession().delete(site);
       
       PSNotificationHelper.notifyEvent(EventType.SITE_DELETED, site.getGUID());
       
@@ -495,7 +494,7 @@ public class PSSiteManager
       if (schemeId == null)
          throw new IllegalArgumentException("schemeId may not be null.");
 
-      IPSLocationScheme rval = (IPSLocationScheme) sessionFactory.getCurrentSession().get(
+      IPSLocationScheme rval = (IPSLocationScheme) getSession().get(
             PSLocationScheme.class, schemeId.longValue());
       if (rval == null)
       {
@@ -569,7 +568,7 @@ public class PSSiteManager
             rval = locationSchemeMap.get(key);
             if (rval==null)
             {   
-               Session s = sessionFactory.getCurrentSession();
+               Session s = getSession();
 
                   Criteria c = s.createCriteria(PSLocationScheme.class);
                   c.add(Restrictions.eq("templateId", templateid.longValue()));
@@ -620,7 +619,7 @@ public class PSSiteManager
             throw new IllegalStateException(
                   "Cannot save a cloned Location Scheme object.");
       }
-      sessionFactory.getCurrentSession().saveOrUpdate(scheme);
+      getSession().saveOrUpdate(scheme);
       
       // the object will be evicted by the framework, 
       // see PSEhCacheAccessor.notifyEvent()
@@ -632,7 +631,7 @@ public class PSSiteManager
    @Transactional(noRollbackFor=PSNotFoundException.class)
    public void deleteScheme(IPSLocationScheme scheme)
    {
-      sessionFactory.getCurrentSession().delete(scheme);
+      getSession().delete(scheme);
       
       // the object will be evicted by the framework, 
       // see PSEhCacheAccessor.notifyEvent()
@@ -677,7 +676,7 @@ public class PSSiteManager
    private IPSPublishingContext loadContext(IPSGuid contextid,
          boolean includeChildren) throws PSNotFoundException
    {
-      IPSPublishingContext ctx = (IPSPublishingContext) sessionFactory.getCurrentSession()
+      IPSPublishingContext ctx = (IPSPublishingContext) getSession()
             .get(PSPublishingContext.class, contextid.longValue());
       if (ctx == null)
       {
@@ -711,7 +710,7 @@ public class PSSiteManager
          throw new IllegalArgumentException(
                "contextname may not be null or empty");
 
-      List contexts = sessionFactory.getCurrentSession().createQuery(
+      List contexts = getSession().createQuery(
             "from PSPublishingContext where name = :name").setParameter("name",contextname).list();
       if (contexts.size() < 1)
       {
@@ -755,7 +754,7 @@ public class PSSiteManager
    public List<IPSCatalogSummary> getSummaries(PSTypeEnum type) throws PSNotFoundException {
       List<IPSCatalogSummary> rval = new ArrayList<>();
 
-      Session s = sessionFactory.getCurrentSession();
+      Session s = getSession();
 
          if (type.getOrdinal() == PSTypeEnum.SITE.getOrdinal())
          {
@@ -1157,9 +1156,7 @@ public class PSSiteManager
       }
       // get templates publishable to all the sites
       Set<IPSAssemblyTemplate> siteTemplates = new HashSet<>();
-      for (int i = 0; i < sites.size(); i++)
-      {
-         IPSSite site = sites.get(i);
+      for (IPSSite site : sites) {
          siteTemplates.addAll(site.getAssociatedTemplates());
       }
       // Is there any intersection of these?
@@ -1230,7 +1227,7 @@ public class PSSiteManager
     */
    @SuppressWarnings("unchecked")
    private List<IPSPublishingContext> findAllContexts(boolean includeChildren) throws PSNotFoundException {
-      List<IPSPublishingContext> result = sessionFactory.getCurrentSession()
+      List<IPSPublishingContext> result = getSession()
               .createCriteria(PSPublishingContext.class).list();
 
       if (includeChildren)
@@ -1245,17 +1242,17 @@ public class PSSiteManager
    @SuppressWarnings("unchecked")
    public List<IPSLocationScheme> findAllSchemes()
    {
-      return sessionFactory.getCurrentSession().createCriteria(PSLocationScheme.class).list();
+      return getSession().createCriteria(PSLocationScheme.class).list();
    }
    
    @SuppressWarnings("unchecked")
    public List<String> findDistinctSiteVariableNames()
    {
       List<String> names =
-              sessionFactory.getCurrentSession().createQuery("select distinct name from PSSiteProperty")
+              getSession().createQuery("select distinct name from PSSiteProperty")
               .list();
       
-      return names != null ? names : Collections.EMPTY_LIST;
+      return names != null ? names : Collections.emptyList();
    }
 
    @Transactional(noRollbackFor=PSNotFoundException.class)
@@ -1265,7 +1262,7 @@ public class PSSiteManager
       {
          throw new IllegalArgumentException("context may not be null");
       }
-      sessionFactory.getCurrentSession().delete(context);
+      getSession().delete(context);
       
       // the object will be evicted by the framework, 
       // see PSEhCacheAccessor.notifyEvent()
@@ -1276,7 +1273,7 @@ public class PSSiteManager
    {
       try
       {
-         return sessionFactory.getCurrentSession().createQuery(
+         return getSession().createQuery(
                  "from PSLocationScheme where contextId = :ctxId").setParameter(
                  "ctxId", contextid.longValue()).list();
       }
@@ -1295,7 +1292,7 @@ public class PSSiteManager
       {
          throw new IllegalArgumentException("context may not be null");
       }
-      sessionFactory.getCurrentSession().saveOrUpdate(context);
+      getSession().saveOrUpdate(context);
    }
 
    @Transactional(noRollbackFor=PSNotFoundException.class)
@@ -1310,7 +1307,7 @@ public class PSSiteManager
    @SuppressWarnings("unchecked")
    public Map<Integer, String> getContextNameMap()
    {
-      List<Object[]> values = sessionFactory.getCurrentSession()
+      List<Object[]> values = getSession()
          .createQuery("select id, name from PSPublishingContext").list();
       Map<Integer, String> rval = new HashMap<>();
       for(Object[] row : values)
@@ -1324,8 +1321,8 @@ public class PSSiteManager
     * Finds the Site and Templates associations. This is not exposed in
     * {@link IPSSiteManager} because the map key is not consistent with map
     * value, but we need the ID/Name pair in.
-    * 
-    * @TODO enhance {@link #getSummaries(PSTypeEnum)} to use projection to load
+    *
+    * enhance {@link #getSummaries(PSTypeEnum)} to use projection to load
     * the object so that it can be used to result ID/Name mapping.
     * 
     * @return the association map, where the map key is Site ID/Name, which maps
@@ -1335,7 +1332,7 @@ public class PSSiteManager
     */
    public Map<PSPair<IPSGuid, String>, Collection<IPSGuid>> findSiteTemplatesAssociations()
    {
-      return getSiteTemplateAssociation(sessionFactory.getCurrentSession());
+      return getSiteTemplateAssociation(getSession());
 
    }
 
@@ -1358,7 +1355,7 @@ public class PSSiteManager
          StringBuilder buffer = new StringBuilder();
          for (IPSGuid g : entry.getValue())
          {
-            buffer.append(String.valueOf(g.getUUID()) + ", ");
+            buffer.append(g.getUUID() + ", ");
          }
          Object[] args = new Object[] { k.getFirst().toString(),
                k.getSecond(), buffer.toString() };

@@ -24,6 +24,7 @@
 package com.percussion.services.datasource;
 
 import com.percussion.services.utils.hibernate.PSHibernateInterceptor;
+import com.percussion.util.PSBaseBean;
 import com.percussion.utils.jdbc.IPSConnectionInfo;
 import com.percussion.utils.jdbc.IPSDatasourceManager;
 import com.percussion.utils.jdbc.PSConnectionDetail;
@@ -32,7 +33,9 @@ import com.percussion.utils.jndi.PSJndiObjectLocator;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.HibernateException;
 import org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyHbmImpl;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.naming.NamingException;
 import java.sql.SQLException;
@@ -44,6 +47,9 @@ import java.util.Properties;
  * Extends Spring framework hibernate session factory to dynamically modify the
  * configuration before the session factory is created.
  */
+@Configuration
+@EnableTransactionManagement
+@PSBaseBean("sys_sessionFactory")
 public class PSSessionFactoryBean extends LocalSessionFactoryBean
 {
 

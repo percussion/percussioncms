@@ -26,6 +26,7 @@ package com.percussion.services.widgetbuilder;
 
 import com.percussion.services.guidmgr.IPSGuidManager;
 import com.percussion.share.dao.IPSGenericDao;
+import com.percussion.util.PSBaseBean;
 import org.apache.commons.lang.Validate;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -33,34 +34,33 @@ import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 
 /**
  * @author matthewernewein
  *
  */
+@Transactional
+@Repository
+@PSBaseBean("sys_widgetBuilderDefinitionDao")
 public class PSWidgetBuilderDefinitionDao
         implements IPSWidgetBuilderDefinitionDao
 {
     
     private static final Logger log = LogManager.getLogger(PSWidgetBuilderDefinitionDao.class);
 
+    @PersistenceContext
+    private EntityManager entityManager;
 
-    private SessionFactory sessionFactory;
-
-    public SessionFactory getSessionFactory() {
-        return sessionFactory;
+    private Session getSession(){
+        return entityManager.unwrap(Session.class);
     }
-
-    @Autowired
-    public void setSessionFactory(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
-
+    
     /**
      * Constant for the key used to generate summary ids.
      */
@@ -70,8 +70,7 @@ public class PSWidgetBuilderDefinitionDao
 
 
     @Transactional
-    public PSWidgetBuilderDefinition save(PSWidgetBuilderDefinition definition)
-    {
+    public PSWidgetBuilderDefinition save(PSWidgetBuilderDefinition definition) throws IPSGenericDao.SaveException {
         Validate.notNull(definition);
 
         if (definition.getWidgetBuilderDefinitionId() == -1)
@@ -79,7 +78,7 @@ public class PSWidgetBuilderDefinitionDao
            definition.setWidgetBuilderDefinitionId(m_guidManager.createId(USER_ITEM_KEY));
         }
 
-        Session session = sessionFactory.getCurrentSession();
+        Session session = getSession();
         try
         {
             session.saveOrUpdate(definition);
@@ -93,15 +92,15 @@ public class PSWidgetBuilderDefinitionDao
         finally
         {
             session.flush();
-            return definition;
-        }  
+        }
+        return definition;
         
     }
 
     public PSWidgetBuilderDefinition find(long definitionId)
     {
         PSWidgetBuilderDefinition definition = null;
-        Session session = sessionFactory.getCurrentSession();
+        Session session = getSession();
 
             Query query = session.createQuery("from PSWidgetBuilderDefinition where widgetBuilderDefinitionId = :widgetBuilderDefinitionId");
             query.setParameter("widgetBuilderDefinitionId", definitionId);
@@ -122,7 +121,7 @@ public class PSWidgetBuilderDefinitionDao
         PSWidgetBuilderDefinition definition = find(definitionId);
         Validate.notNull(definition);
               
-        Session session = sessionFactory.getCurrentSession();
+        Session session = getSession();
         try
         {
             session.delete(definition);
@@ -147,7 +146,7 @@ public class PSWidgetBuilderDefinitionDao
    @SuppressWarnings("unchecked")
    public List<PSWidgetBuilderDefinition> getAll()
    {
-      Session session = sessionFactory.getCurrentSession();
+      Session session = getSession();
 
          Criteria criteria = session.createCriteria(PSWidgetBuilderDefinition.class);
          return criteria.list();

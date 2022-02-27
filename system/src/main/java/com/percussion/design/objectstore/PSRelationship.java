@@ -154,7 +154,7 @@ public class PSRelationship extends PSComponent
    {
       if (m_config.getUserProperties().isEmpty())
       {
-         m_userProperties = Collections.EMPTY_LIST;
+         m_userProperties = Collections.emptyList();
       }
       else
       {
@@ -1159,7 +1159,7 @@ public class PSRelationship extends PSComponent
     */
    @SuppressWarnings("unchecked")
    private List<PSRelationshipPropertyData> m_userProperties = 
-      Collections.EMPTY_LIST;
+      Collections.emptyList();
    
    /**
     * The logger for this class.

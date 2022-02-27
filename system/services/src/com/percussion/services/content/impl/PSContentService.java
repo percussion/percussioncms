@@ -24,6 +24,7 @@
 package com.percussion.services.content.impl;
 
 
+import com.percussion.cms.IPSConstants;
 import com.percussion.design.objectstore.PSRelationshipConfig;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.content.IPSContentErrors;
@@ -46,33 +47,32 @@ import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Implementations for all content services.
  */
+@Transactional
 public class PSContentService
    implements IPSContentService
 {
 
-   private static final Logger log = LogManager.getLogger(PSContentService.class);
+   private static final Logger log = LogManager.getLogger(IPSConstants.CONTENTREPOSITORY_LOG);
 
-   private SessionFactory sessionFactory;
+   @PersistenceContext
+   private EntityManager entityManager;
 
-   public SessionFactory getSessionFactory() {
-      return sessionFactory;
+   private Session getSession(){
+      return entityManager.unwrap(Session.class);
    }
-
-   public void setSessionFactory(SessionFactory sessionFactory) {
-      this.sessionFactory = sessionFactory;
-   }
-
+   
    /* (non-Javadoc)
     * @see IPSContentService#createKeyword(String, String)
     */
@@ -103,7 +103,7 @@ public class PSContentService
    @SuppressWarnings("unchecked")
    public List<PSKeyword> findKeywordsByLabel(String label, String sortProperty)
    {
-      Session session = sessionFactory.getCurrentSession();
+      Session session = getSession();
 
          if (StringUtils.isBlank(label))
             label = "%";
@@ -138,7 +138,7 @@ public class PSContentService
       if (StringUtils.isBlank(type))
          throw new IllegalArgumentException("type cannot be null or empty");
       
-      Session session = sessionFactory.getCurrentSession();
+      Session session = getSession();
 
          Criteria criteria = session.createCriteria(PSKeyword.class);
          criteria.add(Restrictions.eq("keywordType", type));
@@ -165,7 +165,7 @@ public class PSContentService
        */
       validateKeywordId(id);
       
-      Session session = sessionFactory.getCurrentSession();
+      Session session = getSession();
 
          Criteria criteria = session.createCriteria(PSKeyword.class);
          criteria.add(Restrictions.eq("id", id.longValue()));
@@ -197,7 +197,7 @@ public class PSContentService
        */
       validateKeywordId(keyword.getGUID());
       
-      Session session = sessionFactory.getCurrentSession();
+      Session session = getSession();
 
          session.saveOrUpdate(keyword);
          
@@ -261,7 +261,7 @@ public class PSContentService
                   + "id: " + id);
          }
 
-         sessionFactory.getCurrentSession().delete(keyword);
+         getSession().delete(keyword);
       }
       catch (PSContentException e)
       {
@@ -298,11 +298,11 @@ public class PSContentService
             List<PSKeyword> choices = findKeywordChoices(
                keyword.getValue(), null);
             for (PSKeyword choice : choices)
-               sessionFactory.getCurrentSession().delete(choice);
+               getSession().delete(choice);
          }
          
          // then delete the keyword
-         sessionFactory.getCurrentSession().delete(keyword);
+         getSession().delete(keyword);
       }
       catch (PSContentException e)
       {
@@ -322,7 +322,6 @@ public class PSContentService
     *    <code>null</code>, may be empty.  Returns an empty list if the supplied
     *    keyword is not of type keyword, see {@link PSKeyword#getKeywordType()}.
     */
-   @SuppressWarnings("unchecked")
    private List<PSKeywordChoice> loadKeywordChoices(PSKeyword keyword, 
       String sortProperty)
    {
@@ -367,7 +366,7 @@ public class PSContentService
    @SuppressWarnings("unchecked")
    public List<PSAutoTranslation> loadAutoTranslations()
    {
-      Session session = sessionFactory.getCurrentSession();
+      Session session = getSession();
 
          Criteria criteria = session.createCriteria(PSAutoTranslation.class);
          return criteria.list();
@@ -384,9 +383,9 @@ public class PSContentService
       
       // for some reason saveOrUpdate() always tries to insert
       if (autoTranslation.getVersion() == null)
-         sessionFactory.getCurrentSession().save(autoTranslation);
+         getSession().save(autoTranslation);
       else
-         sessionFactory.getCurrentSession().update(autoTranslation);
+         getSession().update(autoTranslation);
    }
 
    /* (non-Javadoc)
@@ -401,9 +400,9 @@ public class PSContentService
       if (at != null)
          synchronized (at)
          {
-            sessionFactory.getCurrentSession().delete(at);
-            sessionFactory.getCurrentSession().flush();
-            sessionFactory.getCurrentSession().evict(at);
+            getSession().delete(at);
+            getSession().flush();
+            getSession().evict(at);
          }
    }
 
@@ -421,10 +420,8 @@ public class PSContentService
    {
       if (StringUtils.isBlank(locale))
          throw new IllegalArgumentException("locale may not be null or empty");
-      
-      Session session = sessionFactory.getCurrentSession();
 
-         return (PSAutoTranslation) sessionFactory.getCurrentSession().get(
+         return getSession().get(
             PSAutoTranslation.class, new PSAutoTranslationPK(contentTypeId, 
                locale));
 
@@ -495,7 +492,7 @@ public class PSContentService
     */
    public List<PSAutoTranslation> loadAutoTranslationsByLocale(String loc)
    {
-      return sessionFactory.getCurrentSession().createQuery(
+      return getSession().createQuery(
             "from PSAutoTranslation p where p.locale = :locale").setParameter("locale",loc).list();
    }
    
@@ -505,7 +502,7 @@ public class PSContentService
     */
    @SuppressWarnings("unchecked")
    public List<PSFolderProperty>  getFolderProperties(String property) {
-      Session session = sessionFactory.getCurrentSession();
+      Session session = getSession();
       List<PSFolderProperty> pSFolderPropertyList = new ArrayList<>();
       List<Object[]> list = new ArrayList<>();
       

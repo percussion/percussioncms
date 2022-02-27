@@ -35,11 +35,12 @@ import org.apache.logging.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -55,6 +56,7 @@ import static org.springframework.util.CollectionUtils.isEmpty;
  *
  */
 @PSSiteManageBean("sys_managedLinkDao")
+@Transactional
 public class PSManagedLinkDao implements IPSManagedLinkDao
 {
     private static final Logger log = LogManager.getLogger(IPSConstants.CONTENTREPOSITORY_LOG);
@@ -66,10 +68,11 @@ public class PSManagedLinkDao implements IPSManagedLinkDao
 
     private IPSGuidManager m_guidMgr;
 
-    private SessionFactory sessionFactory;
+    @PersistenceContext
+    private EntityManager entityManager;
 
-    public SessionFactory getSessionFactory() {
-        return sessionFactory;
+    private Session getSession(){
+        return entityManager.unwrap(Session.class);
     }
 
     @Autowired
@@ -77,12 +80,7 @@ public class PSManagedLinkDao implements IPSManagedLinkDao
     {
         m_guidMgr = guidMgr;
     }
-
-    @Autowired
-    public void setSessionFactory(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
-
+    
     @Transactional
     public PSManagedLink createLink(int parentId, int parentRev, int childId, String anchor)
     {
@@ -103,7 +101,7 @@ public class PSManagedLinkDao implements IPSManagedLinkDao
             link.setLinkId(m_guidMgr.createId(MANAGED_LINK_KEY));
         }
         
-        Session session = sessionFactory.getCurrentSession();
+        Session session = getSession();
         try
         {
             session.saveOrUpdate(link);
@@ -122,7 +120,7 @@ public class PSManagedLinkDao implements IPSManagedLinkDao
 
     public PSManagedLink findLinkByLinkId(long linkId)
     {
-        Session session = sessionFactory.getCurrentSession();
+        Session session = getSession();
 
             return session.get(PSManagedLink.class,linkId);
 
@@ -132,7 +130,7 @@ public class PSManagedLinkDao implements IPSManagedLinkDao
     public void deleteLink(PSManagedLink link)
     {
         Validate.notNull(link);
-        Session session = sessionFactory.getCurrentSession();
+        Session session = getSession();
         try
         {
             session.delete(link);
@@ -153,7 +151,7 @@ public class PSManagedLinkDao implements IPSManagedLinkDao
     public void deleteLinksInNewTransaction(Collection<PSManagedLink> links)
     {
         Validate.notNull(links);
-        Session session = sessionFactory.getCurrentSession();
+        Session session = getSession();
         try
         {
             for (PSManagedLink link : links)
@@ -176,7 +174,7 @@ public class PSManagedLinkDao implements IPSManagedLinkDao
     @Transactional(readOnly=false,propagation=Propagation.REQUIRES_NEW)
     public void cleanupOrphanedLinks()
     {
-       Session session = sessionFactory.getCurrentSession();
+       Session session = getSession();
        try
        {
           Query q = session.createQuery("DELETE FROM PSManagedLink ml WHERE ml.childId NOT IN (select m_contentId from PSComponentSummary)");
@@ -199,15 +197,13 @@ public class PSManagedLinkDao implements IPSManagedLinkDao
     @SuppressWarnings("unchecked")
     public List<PSManagedLink> findLinksByParentId(int parentId)
     {
-        Session session = sessionFactory.getCurrentSession();
+        Session session = getSession();
 
             Query query = session.createQuery("from PSManagedLink where parentid = :parentId");
             query.setParameter("parentId", parentId);
             
 
-            List<PSManagedLink> results = query.list(); 
-            return results;
-
+            return query.list();
 
     }
     
@@ -239,7 +235,7 @@ public class PSManagedLinkDao implements IPSManagedLinkDao
    @SuppressWarnings("unchecked")
    private List<PSManagedLink> findLinksByListOfParentIds(List<Integer> parentIds)
    {
-      Session session = sessionFactory.getCurrentSession();
+      Session session = getSession();
 
          Query query = session
                .createQuery("from PSManagedLink where parentid in (" + join(parentIds, ",") + ") ");
@@ -252,7 +248,7 @@ public class PSManagedLinkDao implements IPSManagedLinkDao
    @Override
    public List<PSManagedLink> findLinksByChildId(int childId)
    {
-      Session session = sessionFactory.getCurrentSession();
+      Session session = getSession();
 
      Query query = session
            .createQuery("from PSManagedLink where childid = :childId ");

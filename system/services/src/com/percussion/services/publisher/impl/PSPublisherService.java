@@ -123,13 +123,10 @@ import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
@@ -143,6 +140,8 @@ import javax.jcr.ValueFormatException;
 import javax.jcr.query.QueryResult;
 import javax.jcr.query.Row;
 import javax.jcr.query.RowIterator;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -176,22 +175,19 @@ import static org.apache.commons.lang.Validate.notNull;
  */
 @PSBaseBean("sys_publisherservice")
 @Repository()
+@Transactional
 public class PSPublisherService
       implements
          IPSPublisherService
 {
-   private SessionFactory sessionFactory;
+
+   @PersistenceContext
+   private EntityManager entityManager;
+
+   private Session getSession(){
+      return entityManager.unwrap(Session.class);
+   }
    
-   public SessionFactory getSessionFactory() {
-      return sessionFactory;
-   }
-
-   @Autowired
-   @Qualifier("sys_sessionFactory")
-   public void setSessionFactory(SessionFactory sessionFactory) {
-      this.sessionFactory = sessionFactory;
-   }
-
    public static final int BATCH_SIZE = 50;
    
    /**
@@ -351,6 +347,7 @@ public class PSPublisherService
     * @deprecated only used for deprecated calls in this service. Use the
     * business publisher service instead.
     */
+   @Deprecated
    private Map<Integer, Integer> m_demandfolder =
          new HashMap<>();
 
@@ -390,7 +387,7 @@ public class PSPublisherService
    @Transactional
    public List<IPSContentList> loadContentLists(List<IPSGuid> ids)
    {
-      if (ids == null || ids.size() == 0)
+      if (ids == null || ids.isEmpty())
       {
          throw new IllegalArgumentException("ids may not be null or empty");
       }
@@ -423,7 +420,7 @@ public class PSPublisherService
          throw new IllegalArgumentException("id may not be null");
       }
       
-      IPSContentList clist = (IPSContentList) sessionFactory.getCurrentSession().get(
+      IPSContentList clist = (IPSContentList) getSession().get(
             PSContentList.class, id.longValue());
       if (clist == null)
          throw new PSNotFoundException(id);
@@ -443,7 +440,7 @@ public class PSPublisherService
       {
          throw new IllegalArgumentException("lists may not be null or empty");
       }
-      Session s = sessionFactory.getCurrentSession();
+      Session s = getSession();
 
       for (IPSContentList g : lists)
       {
@@ -459,7 +456,7 @@ public class PSPublisherService
       {
          throw new IllegalArgumentException("clist may not be null");
       }      
-      sessionFactory.getCurrentSession().saveOrUpdate(clist);
+      getSession().saveOrUpdate(clist);
    }
 
 
@@ -475,7 +472,7 @@ public class PSPublisherService
       {
          throw new IllegalArgumentException("lists may not be null or empty");
       }
-      Session s =sessionFactory.getCurrentSession();
+      Session s =getSession();
 
       for (IPSContentList g : lists)
       {
@@ -504,7 +501,7 @@ public class PSPublisherService
          throw new IllegalArgumentException("name may not be null or empty");
       }
       // @TODO load from cache
-      Session s = sessionFactory.getCurrentSession();
+      Session s = getSession();
 
       Criteria c = s.createCriteria(PSContentList.class);
       c.add(Restrictions.eq("name", name));
@@ -540,7 +537,7 @@ public class PSPublisherService
          throw new IllegalArgumentException("filter may not be null");
       }
       // @TODO load from cache
-      Session s = sessionFactory.getCurrentSession();
+      Session s = getSession();
 
       Criteria c = s.createCriteria(PSContentList.class);
       if (!StringUtils.isBlank(filter))
@@ -569,7 +566,7 @@ public class PSPublisherService
          throw new IllegalArgumentException("filter may not be null");
       }
       // @TODO load from cache
-      Session s = sessionFactory.getCurrentSession();
+      Session s = getSession();
 
       Criteria c = s.createCriteria(PSContentList.class);
       if (!StringUtils.isBlank(filter))
@@ -596,7 +593,7 @@ public class PSPublisherService
       }
       
       // @TODO load from cache
-      Session s = getSessionFactory().getCurrentSession();;
+      Session s = getSession();
 
       Criteria c = s.createCriteria(PSContentList.class);
       c.add(Restrictions.eq("contentListId", contListID.longValue()));
@@ -613,7 +610,7 @@ public class PSPublisherService
 
    public List<IPSDeliveryType> findAllDeliveryTypes()
    {
-      return sessionFactory.getCurrentSession().createCriteria(PSDeliveryType.class).list();
+      return getSession().createCriteria(PSDeliveryType.class).list();
    }
 
    /*
@@ -845,7 +842,7 @@ public class PSPublisherService
       // First disconnect records belonging to the given jobId. Then find
       // all records that are disconnected and not in use by the site items
       // table and remove them
-      Session s = getSessionFactory().getCurrentSession();
+      Session s = getSession();
 
       Query q = s.createQuery(
               "update PSPubStatus set hidden = 'Y' where pubServerId = :pubServerId");
@@ -884,9 +881,9 @@ public class PSPublisherService
           PSComponentSummary suma = cidToSum.get(a.getItemId().getUUID());
           PSComponentSummary sumb = cidToSum.get(b.getItemId().getUUID());
          
-          if(suma.getContentTypeId() == pagectId & sumb.getContentTypeId() == pagectId) 
+          if(suma.getContentTypeId() == pagectId && sumb.getContentTypeId() == pagectId)
              return 0;
-          else if(suma.getContentTypeId() != pagectId & sumb.getContentTypeId() == pagectId)
+          else if(suma.getContentTypeId() != pagectId && sumb.getContentTypeId() == pagectId)
              return -1;
           else
              return 1;
@@ -997,7 +994,7 @@ public class PSPublisherService
          PSComponentSummary sum = cidToSum.get(contentId);
          if (sum==null)
          {
-            log.debug("Item "+contentId +" may have been deleted, will filter");
+            log.debug("Item {} may have been deleted, will filter", contentId);
             break;
          }
          PSLegacyGuid itemid = new PSLegacyGuid(contentId, sum
@@ -1230,11 +1227,9 @@ public class PSPublisherService
          Value cid = r.getValue(RX_SYS_CONTENTID);
          PSComponentSummary sum = cidToSum.get((int) cid.getLong());
          Map<String, Object> rowdata = new HashMap<>();
-         for (int i = 0; i < origcnames.length; i++)
-         {
-            String c = origcnames[i];
-            rowdata.put(origcnames[i], r.getValue(c));
-         }
+            for (String c : origcnames) {
+               rowdata.put(c, r.getValue(c));
+            }
          rowdata.put(RX_SYS_CONTENTTYPEID, sum.getContentTypeId());
          IPSFilterItem filtereditem = okitems.get(rowToItem.get(r).getKey());
          if (filtereditem != null)
@@ -1295,7 +1290,7 @@ public class PSPublisherService
    {
       List<IPSCatalogSummary> rval = new ArrayList<>();
 
-      Session s = sessionFactory.getCurrentSession();
+      Session s = getSession();
 
          if (type.getOrdinal() == PSTypeEnum.CONTENT_LIST.getOrdinal())
          {
@@ -1491,7 +1486,7 @@ public class PSPublisherService
          throw new IllegalArgumentException("siteid may not be null");
       }
 
-      Session s = sessionFactory.getCurrentSession();
+      Session s = getSession();
 
       Query q = s.getNamedQuery("pssiteitem_query_joined_items");
       q.setLong("siteid", siteid.longValue());
@@ -1513,7 +1508,7 @@ public class PSPublisherService
          throw new IllegalArgumentException("siteid may not be null");
       }
 
-      Session s = getSessionFactory().getCurrentSession();
+      Session s = getSession();
 
          Query q = s.getNamedQuery("pssiteitem_pubserver_query_joined_items");
          q.setLong("serverid", serverId.longValue());
@@ -1556,7 +1551,7 @@ public class PSPublisherService
       notNull(contentIds);
       notEmpty(contentIds);
 
-      Session s = getSessionFactory().getCurrentSession();
+      Session s = getSession();
       long idset = 0;
 
       try
@@ -1598,7 +1593,7 @@ public class PSPublisherService
       notNull(contentIds);
       notEmpty(contentIds);
 
-      Session s = getSessionFactory().getCurrentSession();
+      Session s = getSession();
       long idset = 0;
 
       try
@@ -1670,7 +1665,7 @@ public class PSPublisherService
       if (cids.isEmpty())
          return new ArrayList<>();
 
-      Session s = getSessionFactory().getCurrentSession();
+      Session s = getSession();
       long idset = 0;
       
       try
@@ -1807,7 +1802,7 @@ public class PSPublisherService
                "location may not be null or empty");
       }
 
-      Session s = getSessionFactory().getCurrentSession();
+      Session s = getSession();
 
          Query q = s.getNamedQuery("pssiteitem_query_at_location");
          q.setLong("siteid", siteid.longValue());
@@ -1838,7 +1833,7 @@ public class PSPublisherService
     */
    private void markFolderIdsForMovedFolders_NonMySQL(IPSGuid siteid, Collection<Integer> folderIds)
    {
-      Session s = getSessionFactory().getCurrentSession();
+      Session s = getSession();
       long idset = 0;
       
       try
@@ -1912,8 +1907,8 @@ public class PSPublisherService
             q.setParameter("idset", idset);
          }
          q.setLong("siteid", siteid.longValue());
-         List<Long> refIds = (idset != 0) ? (List)executeQuery(q) : q.list();
-         return refIds;
+         return (idset != 0) ? (List)executeQuery(q) : q.list();
+         
       }
       finally
       {
@@ -1927,13 +1922,13 @@ public class PSPublisherService
    /**
     * The HQL used to mark (negate) the folder-id for the site item entries with the specified reference IDs (from in-clause)
     */
-   private final static String MARK_FOLDERID_4_SITEITEM_IN_REFS_INCLAUSE = "update PSSiteItem set folderId = folderId * -1 "
+   private static final  String MARK_FOLDERID_4_SITEITEM_IN_REFS_INCLAUSE = "update PSSiteItem set folderId = folderId * -1 "
       + "where referenceId in (:refIds)";
 
    /**
     * The HQL used to mark (negate) the folder-id for the site item entries with the specified reference IDs (from temp-id table)
     */
-   private final static String MARK_FOLDERID_4_SITEITEM_IN_REFS_TEMPID = "update PSSiteItem set folderId = folderId * -1 "
+   private static final  String MARK_FOLDERID_4_SITEITEM_IN_REFS_TEMPID = "update PSSiteItem set folderId = folderId * -1 "
       + "where referenceId in (select t.pk.itemId from PSTempId t where t.pk.id = :idset)";
    
    /**
@@ -1949,7 +1944,7 @@ public class PSPublisherService
     */
    private void markFolderIdsForMovedFolders_MySQL(IPSGuid siteid, Collection<Integer> folderIds)
    {
-      Session s = getSessionFactory().getCurrentSession();
+      Session s = getSession();
       
       long idset = 0;
       
@@ -2035,7 +2030,7 @@ public class PSPublisherService
          + "  AND C.GENERATOR = ?"
          + "  AND (SELECT COUNT(*) FROM {0}.RXEDITIONCLIST EC WHERE E.EDITIONID = EC.EDITIONID) > 1";
 
-      Session sess = sessionFactory.getCurrentSession();
+      Session sess = getSession();
       String tablePrefix;
       Connection conn = null;
 
@@ -2077,7 +2072,7 @@ public class PSPublisherService
    @Transactional
    public void touchContentItems(Collection<Integer> cids)
    {
-      Session session = sessionFactory.getCurrentSession();
+      Session session = getSession();
 
          PSTouchParentItemsHandler handler = new PSTouchParentItemsHandler(
             session);
@@ -2096,7 +2091,7 @@ public class PSPublisherService
    public Collection<Integer> touchActiveAssemblyParents(
          Collection<Integer> cids)
    {
-      Session session = sessionFactory.getCurrentSession();
+      Session session = getSession();
 
          PSTouchParentItemsHandler handler =
                new PSTouchParentItemsHandler(session);
@@ -2110,7 +2105,7 @@ public class PSPublisherService
    public Collection<Integer> touchItemsAndActiveAssemblyParents(
          Collection<Integer> cids)
    {
-      Session session = sessionFactory.getCurrentSession();
+      Session session = getSession();
 
          PSTouchParentItemsHandler handler =
                new PSTouchParentItemsHandler(session);
@@ -2148,7 +2143,7 @@ public class PSPublisherService
    public Collection<Integer> touchContentTypeItems(
          Collection<IPSGuid> ctypeids)
    {
-      Session s = sessionFactory.getCurrentSession();
+      Session s = getSession();
 
          PSTouchParentItemsHandler handler = new PSTouchParentItemsHandler(s);
          addItemsAndParentsToHandler(ctypeids, handler);
@@ -2163,7 +2158,7 @@ public class PSPublisherService
    public Collection<Integer> getContentTypeItems(
          Collection<IPSGuid> ctypeids)
    {
-      Session s = sessionFactory.getCurrentSession();
+      Session s = getSession();
 
 
          PSTouchParentItemsHandler handler = new PSTouchParentItemsHandler(s);
@@ -2343,7 +2338,7 @@ public class PSPublisherService
       if (id == null)
          throw new IllegalArgumentException("id may not be null");
       
-      IPSEdition edition = (IPSEdition) sessionFactory.getCurrentSession().get(
+      IPSEdition edition = (IPSEdition) getSession().get(
             PSEdition.class, id.longValue());
       
       if (edition == null)
@@ -2366,7 +2361,7 @@ public class PSPublisherService
       {
          throw new IllegalArgumentException("editionId may not be null");
       }
-      Session session = sessionFactory.getCurrentSession();
+      Session session = getSession();
       Query query = session.createQuery("select cl " +
            "from PSEditionContentList cl " +
            "where cl.id.editionid = :edition");
@@ -2382,7 +2377,7 @@ public class PSPublisherService
       {
          throw new IllegalArgumentException("list may not be null");
       }
-      getSessionFactory().getCurrentSession().delete(list);
+      getSession().delete(list);
    }
 
    @Transactional
@@ -2392,7 +2387,7 @@ public class PSPublisherService
       {
          throw new IllegalArgumentException("statusList may not be null or empty");
       }
-      Session s = getSessionFactory().getCurrentSession();
+      Session s = getSession();
 
 
          for (IPSPubStatus status : statusList)
@@ -2410,7 +2405,7 @@ public class PSPublisherService
       {
          throw new IllegalArgumentException("list may not be null");
       }
-      getSessionFactory().getCurrentSession().saveOrUpdate(list);
+      getSession().saveOrUpdate(list);
    }
 
 
@@ -2424,7 +2419,7 @@ public class PSPublisherService
          throw new IllegalArgumentException(
                "dtypeName may not be null or empty");
       }
-      Session session = getSessionFactory().getCurrentSession();
+      Session session = getSession();
       List<IPSDeliveryType> results = session.createQuery("select dt " +
               "from PSDeliveryType dt where dt.name = :name").setParameter("name",dtypeName).list();
 
@@ -2452,7 +2447,7 @@ public class PSPublisherService
       if (locationid == null)
          throw new IllegalArgumentException("locationid may not be null");
 
-      IPSDeliveryType dtype = (IPSDeliveryType) getSessionFactory().getCurrentSession()
+      IPSDeliveryType dtype = (IPSDeliveryType) getSession()
          .get(PSDeliveryType.class, locationid.longValue());
       if (dtype == null)
          throw new PSNotFoundException(locationid);
@@ -2467,7 +2462,7 @@ public class PSPublisherService
       {
          throw new IllegalArgumentException("stati may not be null or empty");
       }
-      Session s = getSessionFactory().getCurrentSession();
+      Session s = getSession();
       try
       {
          int count = 0;
@@ -2514,7 +2509,7 @@ public class PSPublisherService
    @Transactional
    public void updateItemPubDateByJob(long jobId, Date date)
    {
-       Session s = getSessionFactory().getCurrentSession();
+       Session s = getSession();
        
        // could iterate on findPubItemStatusForJobIterable(jobId); but only
        // need id this should be quicker.
@@ -2811,7 +2806,7 @@ public class PSPublisherService
       {
          stat.setPubServerId(editionPublishing.getPubServerId().longValue());
       }
-      getSessionFactory().getCurrentSession().save(stat);
+      getSession().save(stat);
    }
 
    public String getServerId()
@@ -2828,20 +2823,20 @@ public class PSPublisherService
       assert endingStatus != null;
       
       PSPubStatus stat = 
-         (PSPubStatus) getSessionFactory().getCurrentSession().get(PSPubStatus.class, statusid);
+         (PSPubStatus) getSession().get(PSPubStatus.class, statusid);
       stat.setEndDate(end);
       stat.setEndingStatus(endingStatus);
       getCountsForPubStatus(stat);
-      getSessionFactory().getCurrentSession().update(stat);
+      getSession().update(stat);
    }
    
    @Transactional
    public IPSPubStatus updateCounts(long statusid) 
    {
       PSPubStatus stat = 
-         (PSPubStatus) getSessionFactory().getCurrentSession().get(PSPubStatus.class, statusid);
+         (PSPubStatus) getSession().get(PSPubStatus.class, statusid);
       getCountsForPubStatus(stat);
-      getSessionFactory().getCurrentSession().update(stat);
+      getSession().update(stat);
       return stat;
    }
 
@@ -2851,7 +2846,7 @@ public class PSPublisherService
       if (deliveryType == null)
          throw new IllegalArgumentException("deliveryType may not be null");
 
-      getSessionFactory().getCurrentSession().delete(deliveryType);
+      getSession().delete(deliveryType);
 
    }
 
@@ -2864,7 +2859,7 @@ public class PSPublisherService
       }
       deleteEditionTasks(edition);
       deleteEditionContentLists(edition);
-      getSessionFactory().getCurrentSession().delete(edition);
+      getSession().delete(edition);
 
    }
 
@@ -2904,7 +2899,7 @@ public class PSPublisherService
          throw new IllegalArgumentException("siteId may not be null");
       }
       
-      List<IPSContentList> result = getSessionFactory().getCurrentSession().createQuery(
+      List<IPSContentList> result = getSession().createQuery(
             "select distinct c " +
             "from PSContentList c, PSEditionContentList ecl, PSEdition e " +
             "where ecl.pk.contentlistid = c.contentListId and " +
@@ -2925,7 +2920,7 @@ public class PSPublisherService
          throw new IllegalArgumentException("siteId may not be null");
       }
       
-      return getSessionFactory().getCurrentSession().createQuery(
+      return getSession().createQuery(
             "select e from PSEdition e where e.destsite = :siteid").setParameter(
             "siteid", siteId.longValue()).list();
    }
@@ -2938,7 +2933,7 @@ public class PSPublisherService
          throw new IllegalArgumentException("pubServerId may not be null");
       }
       
-      return getSessionFactory().getCurrentSession().createQuery(
+      return getSession().createQuery(
             "select e from PSEdition e where e.pubserver = :pubServerId").setParameter(
             "pubServerId", pubServerId.longValue()).list();
    }
@@ -2949,7 +2944,7 @@ public class PSPublisherService
       {
          throw new IllegalArgumentException("name may not be null or empty");
       }
-      Session s = getSessionFactory().getCurrentSession();
+      Session s = getSession();
 
          Criteria c = s.createCriteria(PSEdition.class);
          c.add(Restrictions.eq("displaytitle", name));
@@ -2969,7 +2964,7 @@ public class PSPublisherService
       {
          throw new IllegalArgumentException("filter may not be null");
       }
-      Session s = getSessionFactory().getCurrentSession();
+      Session s = getSession();
 
          Criteria c = s.createCriteria(PSEdition.class);
          if (!StringUtils.isBlank(filter))
@@ -2989,7 +2984,7 @@ public class PSPublisherService
       if (deliveryType == null)
          throw new IllegalArgumentException("deliveryType may not be null");
 
-      getSessionFactory().getCurrentSession().saveOrUpdate(deliveryType);
+      getSession().saveOrUpdate(deliveryType);
 
    }
 
@@ -3002,7 +2997,7 @@ public class PSPublisherService
       if (edition == null)
          throw new IllegalArgumentException("edition may not be null");
       
-      getSessionFactory().getCurrentSession().saveOrUpdate(edition);
+      getSession().saveOrUpdate(edition);
 
    }
 
@@ -3030,12 +3025,12 @@ public class PSPublisherService
       {
          throw new IllegalArgumentException("task may not be null");
       }
-      getSessionFactory().getCurrentSession().delete(task);
+      getSession().delete(task);
    }
 
    public List<IPSEditionTaskDef> loadEditionTasks(IPSGuid editionid)
    {
-      return getSessionFactory().getCurrentSession()
+      return getSession()
          .createQuery(
                "from PSEditionTaskDef where editionId = :edition " +
                "order by sequence asc").setParameter(
@@ -3048,7 +3043,7 @@ public class PSPublisherService
       if (id == null)
          throw new IllegalArgumentException("id may not be null");
       
-      return (IPSEditionTaskDef) getSessionFactory().getCurrentSession()
+      return (IPSEditionTaskDef) getSession()
          .get(PSEditionTaskDef.class, id.longValue());
    }
 
@@ -3071,7 +3066,7 @@ public class PSPublisherService
          }
       }
       
-      getSessionFactory().getCurrentSession().saveOrUpdate(task);
+      getSession().saveOrUpdate(task);
    }
 
    @Transactional
@@ -3094,7 +3089,7 @@ public class PSPublisherService
 
    public List<IPSEditionTaskLog> findEditionTaskLogEntriesByJobId(long jobid)
    {
-      Session s = getSessionFactory().getCurrentSession();
+      Session s = getSession();
 
          Criteria c = s.createCriteria(PSEditionTaskLog.class);
          c.add(Restrictions.eq("jobId", jobid));
@@ -3108,7 +3103,7 @@ public class PSPublisherService
    {
       notNull(beforeDate);
       
-      Session s = getSessionFactory().getCurrentSession();
+      Session s = getSession();
 
          Criteria c = s.createCriteria(PSPubStatus.class);
          c.add(Restrictions.le("endDate", beforeDate));
@@ -3121,7 +3116,7 @@ public class PSPublisherService
    {
       notNull(beforeDate);
       
-      Session s = getSessionFactory().getCurrentSession();
+      Session s = getSession();
 
          Criteria c = s.createCriteria(PSPubStatus.class);
          c.add(Restrictions.or(Restrictions.le("endDate", beforeDate),
@@ -3133,7 +3128,7 @@ public class PSPublisherService
 
    public IPSEditionTaskLog loadEditionTaskLog(long referenceId)
    {
-      return (IPSEditionTaskLog) getSessionFactory().getCurrentSession().get(
+      return (IPSEditionTaskLog) getSession().get(
             PSEditionTaskLog.class, referenceId);
    }
 
@@ -3143,7 +3138,7 @@ public class PSPublisherService
    @Transactional
    public void cancelUnfinishedJobItems(long jobId)
    {
-      Session s = getSessionFactory().getCurrentSession();
+      Session s = getSession();
 
          String sql = "update PSPubItem set status = :statusid " + 
             "where statusId = :job and status <> :success and status <> :failure";
@@ -3162,7 +3157,7 @@ public class PSPublisherService
       // First disconnect records belonging to the given jobId. Then find
       // all records that are disconnected and not in use by the site items
       // table and remove them
-      Session s = getSessionFactory().getCurrentSession();
+      Session s = getSession();
 
          Query q = s.createQuery(
                "update PSPubStatus set hidden = 'Y' where statusId = :jobId");
@@ -3240,12 +3235,12 @@ public class PSPublisherService
    @Transactional
    public void saveEditionTaskLog(IPSEditionTaskLog log)
    {
-      getSessionFactory().getCurrentSession().saveOrUpdate(log);
+      getSession().saveOrUpdate(log);
    }
 
    public List<Long> findRefIdForJob(long jobid, List<PSSortCriterion> sort)
    {
-      Session session = getSessionFactory().getCurrentSession();
+      Session session = getSession();
 
          Criteria c = session.createCriteria(PSPubItem.class);
          
@@ -3276,7 +3271,7 @@ public class PSPublisherService
 
    public List<IPSPubItemStatus> findPubItemStatusForJob(long jobid)
    {
-      Session session = getSessionFactory().getCurrentSession();
+      Session session = getSession();
 
          Criteria c = session.createCriteria(PSPubItem.class);
          c.add(Restrictions.eq("statusId", jobid));
@@ -3287,7 +3282,7 @@ public class PSPublisherService
 
    public Iterable<IPSPubItemStatus> findPubItemStatusForJobIterable(long jobid)
    {
-      Session session = getSessionFactory().getCurrentSession();
+      Session session = getSession();
       try
       {
          Query q =session.createQuery("select p from PSPubItem p where p.statusId = :statusId");
@@ -3309,7 +3304,7 @@ public class PSPublisherService
       List<IPSEdition> editions = findAllEditionsBySite(siteId);
       List<Long> editionIds = new ArrayList<>();
       if (editions.isEmpty())
-         return Collections.EMPTY_LIST;
+         return Collections.emptyList();
       
       for(IPSEdition e : editions)
       {
@@ -3324,7 +3319,7 @@ public class PSPublisherService
       List<IPSEdition> editions = findAllEditionsBySite(siteId);
       List<Long> editionIds = new ArrayList<>();
       if (editions.isEmpty())
-         return Collections.EMPTY_LIST;
+         return Collections.emptyList();
       
       for(IPSEdition e : editions)
       {
@@ -3338,7 +3333,7 @@ public class PSPublisherService
       List<IPSPubStatus> statusList = findAllPubStatusBySiteAndServer(siteId, pubServerId, -1, -1);
       
       if (statusList == null || statusList.isEmpty())
-         return Collections.EMPTY_LIST;
+         return Collections.emptyList();
       else
          return statusList;
    }
@@ -3350,7 +3345,7 @@ public class PSPublisherService
       List<IPSPubStatus> statusList = findAllPubStatusBySiteAndServer(siteId, serverId, numDays, maxCount);
       
       if (statusList == null || statusList.isEmpty())
-         return Collections.EMPTY_LIST;
+         return Collections.emptyList();
       else
          return statusList;
    }
@@ -3367,13 +3362,13 @@ public class PSPublisherService
 
    public List<IPSPubStatus> findAllPubStatus()
    {
-      return findPubStatusByEditionList(Collections.EMPTY_LIST);
+      return findPubStatusByEditionList(Collections.emptyList());
    }
    
    @Override
    public List<IPSPubStatus> findAllPubStatusWithFilters(int days, int maxCount)
    {
-      return findPubStatusByEditionListWithFilters(Collections.EMPTY_LIST, days, maxCount);
+      return findPubStatusByEditionListWithFilters(Collections.emptyList(), days, maxCount);
    }
    
    /**
@@ -3386,7 +3381,7 @@ public class PSPublisherService
     */
    public List<IPSPubStatus> findAllPubStatusBySiteAndServer(IPSGuid siteId, IPSGuid serverId, int days, int maxCount)
    {
-      Session s = getSessionFactory().getCurrentSession();
+      Session s = getSession();
       Calendar cal = Calendar.getInstance();
       List<IPSPubStatus> stati = new ArrayList<>();
       
@@ -3464,7 +3459,7 @@ public class PSPublisherService
 
       // Note: query to pub item or siteitem doesn't matter here as they both
       // will have updated information if the job successful.
-      Session session = getSessionFactory().getCurrentSession();
+      Session session = getSession();
 
       Short publishOp = new Short((short)IPSSiteItem.Operation.PUBLISH.ordinal());
       Short success = new Short ((short)IPSSiteItem.Status.SUCCESS.ordinal());
@@ -3503,7 +3498,7 @@ public class PSPublisherService
          }
          PSLegacyGuid lguid = (PSLegacyGuid) id;
 
-         Session session = getSessionFactory().getCurrentSession();
+         Session session = getSession();
 
             Short publishOp = new Short((short)IPSSiteItem.Operation.PUBLISH.ordinal());
             Short success = new Short ((short)IPSSiteItem.Status.SUCCESS.ordinal());
@@ -3546,7 +3541,7 @@ public class PSPublisherService
       
       PSLegacyGuid lguid = (PSLegacyGuid) id; 
       
-      Session session = getSessionFactory().getCurrentSession();
+      Session session = getSession();
 
          Query q =session.createQuery("select sr.name, p.date, p.operation, p.status, p.message, p.statusId,p.contentId, p.revisionId,p.location from PSPubItem p, PSPubStatus s, PSPubServer sr where p.statusId = s.statusId and s.pubServerId = sr.serverId and p.contentId = :contentId order by p.date desc");
          q.setParameter("contentId", new Integer(lguid.getContentId()));
@@ -3603,7 +3598,7 @@ public class PSPublisherService
     */
    private List<IPSPubStatus> findPubStatusByEditionListWithFilters(List<Long> editionids, int days, int maxCount)
    {
-      Session session = getSessionFactory().getCurrentSession();
+      Session session = getSession();
       Criteria c = session.createCriteria(PSPubStatus.class);
 
       Calendar cal = Calendar.getInstance();
@@ -3639,7 +3634,7 @@ public class PSPublisherService
     */
    private List<IPSPubStatus> findPubStatusByEditionList(List<Long> editionids)
    {
-      Session session = getSessionFactory().getCurrentSession();
+      Session session = getSession();
 
       Criteria c = session.createCriteria(PSPubStatus.class);
       if (editionids.size() == 1)
@@ -3668,7 +3663,7 @@ public class PSPublisherService
     */
    private boolean findIsSitePublished(List<Long> editionids)
    {
-      Session session = getSessionFactory().getCurrentSession();
+      Session session = getSession();
       Criteria c = session.createCriteria(PSPubStatus.class);
       if (editionids.size() == 1)
       {
@@ -3697,7 +3692,7 @@ public class PSPublisherService
     */
    private List<IPSPubStatus> findPubStatusByServer(Long serverId)
    {
-      Session session = getSessionFactory().getCurrentSession();
+      Session session = getSession();
 
          Criteria c = session.createCriteria(PSPubStatus.class);
          c.add(Restrictions.eq("pubServerId", serverId));
@@ -3713,7 +3708,7 @@ public class PSPublisherService
    public IPSPubStatus findLastPubStatusByEdition(IPSGuid editionId)
    {
       Validate.notNull(editionId);
-      Session session = getSessionFactory().getCurrentSession();
+      Session session = getSession();
 
          Criteria c = session.createCriteria(PSPubStatus.class);
          c.add(Restrictions.eq("editionId", editionId.longValue()));
@@ -3753,7 +3748,7 @@ public class PSPublisherService
    public int fixPubStatus(boolean force)
    {
       if (fixed && ! force) return 0;
-      Session session = getSessionFactory().getCurrentSession();
+      Session session = getSession();
       try
       {
          Query q = session.getNamedQuery("unfinishedPubStatusForServer");
@@ -3787,7 +3782,7 @@ public class PSPublisherService
     */
    private void getCountsForPubStatus(PSPubStatus pubstatus)
    {
-      Session session = getSessionFactory().getCurrentSession();
+      Session session = getSession();
 
       Query q = session.getNamedQuery("item_completion");
       setStatusSummaryData(pubstatus, q, IPSSiteItem.Operation.PUBLISH,
@@ -3849,7 +3844,7 @@ public class PSPublisherService
    {
       IPSGuidManager gmgr = PSGuidManagerLocator.getGuidMgr();
       List results = 
-              getSessionFactory().getCurrentSession().createQuery(
+              getSession().createQuery(
                "select s.editionId from PSPubStatus s " +
                "where s.statusId = :statusid").setParameter(
                "statusid", jobid).list();
@@ -3864,7 +3859,7 @@ public class PSPublisherService
 
    public IPSPubStatus findPubStatusForJob(long jobid)
    {
-      List results = getSessionFactory().getCurrentSession().createQuery(
+      List results = getSession().createQuery(
             "select s from PSPubStatus s where s.statusId = :sid").setParameter(
             "sid", jobid).list();
       if (results != null && results.size() > 0)
@@ -3889,7 +3884,7 @@ public class PSPublisherService
          throw new IllegalArgumentException("guid must be of type site");
       }
       long siteid = siteguid.longValue();
-      Session s = getSessionFactory().getCurrentSession();
+      Session s = getSession();
 
          Query q = s.createQuery("delete from PSSiteItem where siteId = :site");
          q.setLong("site", siteid);
@@ -3954,7 +3949,7 @@ public class PSPublisherService
          upflagList.add(flag);
       }
       List<Long> rval = new ArrayList<>();
-      Session s = getSessionFactory().getCurrentSession();
+      Session s = getSession();
 
          // Note that in all cases, we're looking for either successfully 
          // published, or unsuccessfully unpublished items. This means that
@@ -4017,7 +4012,7 @@ public class PSPublisherService
     */
    private List findMovedItems(IPSGuid serverId, boolean isGetReferenceId)
    {
-      Session s = getSessionFactory().getCurrentSession();
+      Session s = getSession();
 
          // Note that in all cases, we're looking for either successfully 
          // published, or unsuccessfully unpublished items. This means that
@@ -4044,7 +4039,7 @@ public class PSPublisherService
          List<Long> refs)
    {
       List<IPSPubItemStatus> rval = new ArrayList<>();
-      Session s = getSessionFactory().getCurrentSession();
+      Session s = getSession();
 
          final int interval = 300;
          for(int i = 0; i < refs.size(); i += interval)
@@ -4063,7 +4058,7 @@ public class PSPublisherService
    public List<PSSiteItem> findSiteItemsForReferenceIds(List<Long> refs)
    {
       List<PSSiteItem> rval = new ArrayList<>();
-      Session s = getSessionFactory().getCurrentSession();
+      Session s = getSession();
 
          final int interval = 300;
          for(int i = 0; i < refs.size(); i += interval)
@@ -4083,7 +4078,7 @@ public class PSPublisherService
          IPSGuid contextId, IPSGuid templateId, IPSGuid siteId, Long serverId,
          String targetPath)
    {
-      Session s = getSessionFactory().getCurrentSession();
+      Session s = getSession();
 
          String queryName = serverId != null ? "site_item_and_doc_with_server_id" : "site_item_and_doc";
          
@@ -4108,7 +4103,7 @@ public class PSPublisherService
       notNull(contentIds);
       
       
-      Session s = sessionFactory.getCurrentSession();
+      Session s = getSession();
       long idset = 0;
       
       try
@@ -4157,7 +4152,7 @@ public class PSPublisherService
 
    public List<IPSContentList> findAllUnusedContentLists()
    {
-      return sessionFactory.getCurrentSession().createQuery("select cl from PSContentList cl " +
+      return getSession().createQuery("select cl from PSContentList cl " +
             "where cl.contentListId not in " +
             "(select el.pk.contentlistid from PSEditionContentList el)").list();
    }

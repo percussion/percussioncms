@@ -24,6 +24,7 @@
 
 package com.percussion.services.security.impl;
 
+import com.percussion.cms.IPSConstants;
 import com.percussion.data.PSInternalRequestCallException;
 import com.percussion.security.IPSTypedPrincipal;
 import com.percussion.security.IPSTypedPrincipal.PrincipalTypes;
@@ -52,13 +53,13 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataAccessException;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.security.acl.Permission;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -86,10 +87,8 @@ public class PSAclService implements IPSAclService
    
    static final long BIT32 = 0xFFFFFFFFL;
 
-   /**
-    * The hibernate session factory injected by spring
-    */
-   private SessionFactory sessionFactory;
+   @PersistenceContext
+   private EntityManager entityManager;
 
    /**
     * Default ctor.
@@ -104,6 +103,7 @@ public class PSAclService implements IPSAclService
     * @see com.percussion.security.acl.IPSAclService#getUserAccessLevel(
     * com.percussion.utils.guid.IPSGuid)
     */
+   @Transactional
    public PSUserAccessLevel getUserAccessLevel(IPSGuid objectGuid)
    {
       if (objectGuid == null)
@@ -114,6 +114,7 @@ public class PSAclService implements IPSAclService
    }
 
    // see interface
+   @Transactional
    public PSUserAccessLevel calculateUserAccessLevel(IPSAcl acl)
    {
       if (acl != null && !(acl instanceof PSAclImpl))
@@ -250,6 +251,10 @@ public class PSAclService implements IPSAclService
       return acl;
    }
 
+   private Session getSession(){
+      return entityManager.unwrap(Session.class);
+   }
+
    private void addToAclCache(PSAclImpl acl)
    {
 
@@ -269,6 +274,7 @@ public class PSAclService implements IPSAclService
 
    }
    // @see IPSAclService#loadModifiableAcls(List)
+   @Transactional
    public List<IPSAcl> loadAclsModifiable(List<IPSGuid> aclGuids) throws PSSecurityException
    {
       List<IPSAcl> results = doLoadModifiableAcls(aclGuids, false);
@@ -282,6 +288,7 @@ public class PSAclService implements IPSAclService
    }
 
    // @see IPSAclService#loadModifiableAclsForObjects(List)
+   @Transactional
    public List<IPSAcl> loadAclsForObjectsModifiable(List<IPSGuid> objectGuids) {
       return doLoadAclsForObjects(objectGuids);
    }
@@ -310,10 +317,10 @@ public class PSAclService implements IPSAclService
          else {
             //ACL is not in cache.
             Session session = getSession();
-            Criteria crit = session.createCriteria(PSAclImpl.class).add(Restrictions.eq("objectId",Long.valueOf(guid.getUUID())));
+            Criteria crit = session.createCriteria(PSAclImpl.class).add(Restrictions.eq("objectId", (long) guid.getUUID()));
             List<PSAclImpl> results = crit.list();
 
-            if(results != null && results.size() >0) {
+            if(results != null && !results.isEmpty()) {
                acls.addAll(results);
 
                //Add to cache
@@ -381,7 +388,6 @@ public class PSAclService implements IPSAclService
     *         <code>null</code>. Although a <code>List</code>, no order is
     *         guaranteed.
     */
-   @SuppressWarnings("unchecked")
    private List<IPSAcl> doLoadModifiableAcls(List<IPSGuid> aclGuids, boolean returnNulls)
    {
       
@@ -407,8 +413,7 @@ public class PSAclService implements IPSAclService
     * 
     * @see com.percussion.security.acl.IPSAclService#loadAcls(java.util.Set)
     */
-   @SuppressWarnings(value =
-   {"unchecked"})
+   @Transactional
    public List<IPSAcl> loadAcls(List<IPSGuid> aclGuids) throws PSSecurityException
    {
       if (aclGuids != null && aclGuids.isEmpty())
@@ -427,13 +432,13 @@ public class PSAclService implements IPSAclService
 
 
    // see IPSAclService
+   @Transactional
    public Collection<IPSGuid> findObjectsVisibleToCommunities(List<String> communityNames, PSTypeEnum type)
    {
       return findObjectsVisibleToCommunities(communityNames, type, null);
    }
 
    // see IPSAclService
-   @SuppressWarnings("unchecked")
    private Collection<IPSGuid> findObjectsVisibleToCommunities(List<String> communityNames, PSTypeEnum type,
          List<IPSGuid> guids)
    {
@@ -524,8 +529,7 @@ public class PSAclService implements IPSAclService
    }
 
    // see IPSAclService
-   @SuppressWarnings(value =
-   {"unchecked"})
+   @Transactional
    public IPSAcl loadAcl(IPSGuid aclGuid) throws PSSecurityException
    {
       List<IPSAcl> result = loadAcls(Collections.singletonList(aclGuid));
@@ -542,8 +546,7 @@ public class PSAclService implements IPSAclService
     * @see com.percussion.security.acl.IPSAclService#loadAclsForObjects(
     * java.util.List)
     */
-   @SuppressWarnings(value =
-   {"unchecked"})
+   @Transactional
    public List<IPSAcl> loadAclsForObjects(List<IPSGuid> objectGuids)
    {
       if (null == objectGuids)
@@ -556,6 +559,7 @@ public class PSAclService implements IPSAclService
    }
 
    // see interface
+   @Transactional
    public IPSAcl loadAclForObject(IPSGuid objectGuid)
    {
        if(objectGuid != null)
@@ -565,6 +569,7 @@ public class PSAclService implements IPSAclService
    }
 
    // see interface
+   @Transactional
    public IPSAcl loadAclForObjectModifiable(IPSGuid objectGuid)
    {
       List<IPSAcl> acls = loadAclsForObjectsModifiable(Collections.singletonList(objectGuid));
@@ -597,24 +602,23 @@ public class PSAclService implements IPSAclService
     * 
     * @see com.percussion.security.acl.IPSAclService#saveAcls(java.util.Set)
     */
+   @Transactional
    public List<IPSAcl> internalPersist(List<IPSAcl> aclList) throws PSSecurityException
    {
-
-
       List<IPSAcl> updatedList = new ArrayList<>();
 
       for (IPSAcl iacl : aclList)
       {
          if(iacl != null) {
             try {
-               ms_logger.debug("Saving ACL:" + iacl.toString());
+               ms_logger.debug("Saving ACL: {}" , iacl);
                updatedList.add((IPSAcl) getSession().merge(iacl));
                 ms_logger.debug("Save complete.");
             } catch (Exception ex) {
                try {
-                  ms_logger.error("Error persisting Acl: " + ((PSAclImpl) iacl).toXML(), ex);
+                  ms_logger.error("Error persisting Acl: {}" , ((PSAclImpl) iacl).toXML(), ex);
                } catch (Exception e) {
-                  ms_logger.error("Error persisting Acl: " + iacl.getId());
+                  ms_logger.error("Error persisting Acl: {} " , iacl.getId());
                }
             }
          }
@@ -685,35 +689,19 @@ public class PSAclService implements IPSAclService
       }
    }
 
-   /**
-    * The hibernate session factory injected by spring
-    * 
-    * @param sessionFactory
-    */
-   @Autowired
-   public void setSessionFactory(SessionFactory sessionFactory)
-   {
-      this.sessionFactory = sessionFactory;
-   }
 
-   /**
-    * @return The hibernate session factory injected by spring
-    */
-   public Session getSession()
-   {
-      return sessionFactory.getCurrentSession();
-   }
 
-   private volatile Map<IPSGuid,IPSGuid>  ms_objectIdToAclIdMap = new ConcurrentHashMap<>();
+   private  Map<IPSGuid,IPSGuid>  ms_objectIdToAclIdMap = new ConcurrentHashMap<>();
 
 
    /**
     * Logger for this class.
     */
 
-   private static final Logger ms_logger = LogManager.getLogger(PSAclService.class);
+   private static final Logger ms_logger = LogManager.getLogger(IPSConstants.CONTENTREPOSITORY_LOG);
 
    @Override
+   @Transactional
    public Collection<IPSGuid> filterByCommunities(List<IPSGuid> objectIds, List<String> communityNames)
    {
       if (communityNames == null)

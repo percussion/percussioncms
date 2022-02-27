@@ -48,10 +48,11 @@ import com.percussion.services.filter.data.PSItemFilter;
 import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.util.PSSiteManageBean;
 import com.percussion.utils.guid.IPSGuid;
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.hibernate.Session;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -64,16 +65,14 @@ import java.util.List;
  *
  */
 @PSSiteManageBean("sys_deployService")
+@Transactional
 public class PSDeployService implements IPSDeployService {
-    private SessionFactory sessionFactory;
 
-    public SessionFactory getSessionFactory() {
-        return sessionFactory;
-    }
+    @PersistenceContext
+    private EntityManager entityManager;
 
-    @Autowired
-    public void setSessionFactory(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
+    private Session getSession(){
+        return entityManager.unwrap(Session.class);
     }
 
     /**

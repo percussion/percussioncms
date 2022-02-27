@@ -27,27 +27,28 @@ package com.percussion.recent.dao.impl;
 import com.percussion.recent.data.PSRecent;
 import com.percussion.recent.data.PSRecent.RecentType;
 import com.percussion.share.dao.IPSGenericDao.SaveException;
-
-import java.util.List;
-
 import org.hibernate.Criteria;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import java.util.List;
 
 @Repository("recentDao")
 public class PSRecentDao
 {
 
-    /**
-     * The hibernate session factory injected by spring
-     */
-    @Autowired
-    private SessionFactory sessionFactory;
-    
+    @PersistenceContext
+    private EntityManager entityManager;
+
+    private Session getSession(){
+        return entityManager.unwrap(Session.class);
+    }
+
+
     PSRecentDao()
     {
         
@@ -109,20 +110,7 @@ public class PSRecentDao
     {
         getSession().saveOrUpdate(recent);
     }
-    
-    public Session getSession() {
-        return sessionFactory.getCurrentSession();
-    }
-    
-    public SessionFactory getSessionFactory()
-    {
-        return sessionFactory;
-    }
 
-    public void setSessionFactory(SessionFactory sessionFactory)
-    {
-        this.sessionFactory = sessionFactory;
-    }
  
 }
 

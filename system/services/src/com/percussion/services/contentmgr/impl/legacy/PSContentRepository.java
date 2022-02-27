@@ -23,6 +23,7 @@
  */
 package com.percussion.services.contentmgr.impl.legacy;
 
+import com.percussion.cms.IPSConstants;
 import com.percussion.cms.IPSEditorChangeListener;
 import com.percussion.cms.PSCmsException;
 import com.percussion.cms.PSEditorChangeEvent;
@@ -109,7 +110,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyHbmImpl;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.transform.Transformers;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -128,6 +128,8 @@ import javax.jcr.query.QueryResult;
 import javax.jcr.query.RowIterator;
 import javax.naming.NamingException;
 import javax.persistence.Column;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -173,22 +175,21 @@ public class PSContentRepository
         IPSHandlerInitListener,
         IPSEditorChangeListener
 {
+    @PersistenceContext
+    private EntityManager entityManager;
 
-    private SessionFactory sessionFactory;
-
-    public SessionFactory getSessionFactory() {
-        return sessionFactory;
+    private Session getSession(){
+        return entityManager.unwrap(Session.class);
     }
 
-    @Autowired
-    public void setSessionFactory(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
+    private SessionFactory getSessionFactory(){
+        return getSession().getSessionFactory();
     }
 
     /**
      * Logger used for the content repository
      */
-    private static final Logger ms_log = LogManager.getLogger("PSContentRepository");
+    private static final Logger ms_log = LogManager.getLogger(IPSConstants.CONTENTREPOSITORY_LOG);
 
     /**
      * Eponymously named
@@ -605,7 +606,7 @@ public class PSContentRepository
         Set<PSContentMgrOption> options = cconfig != null
                 ? cconfig.getOptions()
                 : new HashSet<>();
-        Session session = sessionFactory.getCurrentSession();
+        Session session = getSession();
         List<Node> rval = new ArrayList<>();
         try
         {
@@ -1006,7 +1007,7 @@ public class PSContentRepository
             {
                 query.append(" order by sys_sortrank asc");
             }
-            List children = sessionFactory.getCurrentSession().createQuery(
+            List children = getSession().createQuery(
                     query.toString()).setParameter("cid",content_id).setParameter("rev",revision).list();
             for (Object rep : children)
             {
@@ -1283,8 +1284,8 @@ public class PSContentRepository
         hibConfig.setImplicitNamingStrategy(new ImplicitNamingStrategyLegacyHbmImpl());
         // Note, getSessionFactory().close() does not release resources or
         // the heap memories by the existing session factory
-
-        setSessionFactory(hibConfig.buildSessionFactory());
+        //TODO: Can this be removed? Is this still in use?
+        //getSession().setSessionFactory(hibConfig.buildSessionFactory());
     }
 
     /**
@@ -1638,7 +1639,7 @@ public class PSContentRepository
                     if (!ic.getImplementingClass().equals(PSComponentSummary.class))
                     {
                         PSLegacyCompositeId id = new PSLegacyCompositeId(legacyguid);
-                        fact.getCache().evictEntity(ic.getImplementingClass(), id);
+                        fact.getCache().evictEntityData(ic.getImplementingClass(), id);
                         affectedclasses.add(ic.getImplementingClass());
                     }
                 }
@@ -2225,7 +2226,7 @@ public class PSContentRepository
             rowcomparator.setLocale(new Locale(locale));
         }
         PSQueryResult rval = new PSQueryResult(columns, rowcomparator);
-        Session s = sessionFactory.getCurrentSession();
+        Session s = getSession();
         List<Long> collectionIds = Collections.emptyList();
         try
         {
@@ -2322,7 +2323,7 @@ public class PSContentRepository
      */
     public void loadBodies(List<Node> nodes) throws RepositoryException
     {
-        Session s = sessionFactory.getCurrentSession();
+        Session s = getSession();
         PSRequest req = (PSRequest) getRequestInfo(KEY_PSREQUEST);
         boolean allowBinaryNew = false;
 
@@ -2397,7 +2398,7 @@ public class PSContentRepository
                         " where sys_contentid = :cid " +
                         "and sys_revision = :rev and sys_sysid = :child";
 
-                List children = sessionFactory.getCurrentSession().createQuery(
+                List children = getSession().createQuery(
                                 query).setParameter("cid", pg.getContentId())
                         .setParameter("rev", pg.getRevision())
                         .setParameter("child", lg.getContentId()).list();
