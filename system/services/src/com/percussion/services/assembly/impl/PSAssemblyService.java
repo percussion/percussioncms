@@ -2016,6 +2016,15 @@ public class PSAssemblyService implements IPSAssemblyService
          else {
 
             s.saveOrUpdate( slot );
+            IPSCacheAccess cache = getCache();
+            IPSGuid slotId = slot.getGUID();
+            IPSTemplateSlot rval = (IPSTemplateSlot) cache.get(slotId, IPSCacheAccess.IN_MEMORY_STORE);
+            if (rval != null)
+            {
+               rval = getSlotById(slotId);
+               if (rval != null)
+                  cache.save(slotId, rval, IPSCacheAccess.IN_MEMORY_STORE);
+            }
          }
 
          // the object will be evicted by the framework,
@@ -2093,6 +2102,10 @@ public class PSAssemblyService implements IPSAssemblyService
          IPSTemplateSlot slot = loadSlot(id);
          sessionFactory.getCurrentSession().delete(slot);
          // The deleted object will be (indirectly) evicted by the framework
+         IPSCacheAccess cache = getCache();
+         IPSGuid slotId = slot.getGUID();
+         cache.evict(slotId, IPSCacheAccess.IN_MEMORY_STORE);
+
       }
       catch (DataAccessException e)
       {
