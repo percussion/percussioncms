@@ -31,7 +31,18 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Date;
 import java.util.HashSet;
@@ -42,7 +53,7 @@ import java.util.Set;
       region = "PSIntegrityStatus")
 @Table(name = "PSX_INTEGRITYSTATUS")
 @XmlRootElement(name = "integritystatus")
-public class PSIntegrityStatus extends PSAbstractDataObject
+public class PSIntegrityStatus extends PSAbstractDataObject implements IPSIntegrityStatus
 {
     private static final long serialVersionUID = 1L;
     public static enum Status {
@@ -56,7 +67,7 @@ public class PSIntegrityStatus extends PSAbstractDataObject
     @Basic
     @Column(name = "STATUS")
     @Enumerated(EnumType.STRING)
-    private Status status;
+    private IPSIntegrityStatus.Status status;
 
     @Basic
     @Column(name = "START_TIME")
@@ -70,7 +81,7 @@ public class PSIntegrityStatus extends PSAbstractDataObject
     @JoinColumn(name = "TOKEN", nullable = false, insertable = false, updatable = false)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE, region = "PSIntegrityTask")
     @Fetch(FetchMode. SUBSELECT)
-    private Set<PSIntegrityTask> tasks = new HashSet<>();
+    private Set<IPSIntegrityTask> tasks = new HashSet<>();
     
     @Transient
     private long elapsedTime;
@@ -85,12 +96,12 @@ public class PSIntegrityStatus extends PSAbstractDataObject
         this.token = token;
     }
 
-    public Status getStatus()
+    public IPSIntegrityStatus.Status getStatus()
     {
         return status;
     }
 
-    public void setStatus(Status status)
+    public void setStatus(IPSIntegrityStatus.Status status)
     {
         this.status = status;
     }
@@ -128,12 +139,12 @@ public class PSIntegrityStatus extends PSAbstractDataObject
         return elapsed;
     }
 
-    public Set<PSIntegrityTask> getTasks()
+    public Set<IPSIntegrityTask> getTasks()
     {
         return tasks;
     }
 
-    public void setTasks(Set<PSIntegrityTask> tasks)
+    public void setTasks(Set<IPSIntegrityTask> tasks)
     {
         this.tasks = tasks;
     }

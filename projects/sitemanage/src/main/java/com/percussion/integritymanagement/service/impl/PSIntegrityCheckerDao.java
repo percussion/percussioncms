@@ -24,10 +24,11 @@
 
 package com.percussion.integritymanagement.service.impl;
 
+import com.percussion.integritymanagement.data.IPSIntegrityStatus;
+import com.percussion.integritymanagement.data.IPSIntegrityTask;
 import com.percussion.integritymanagement.data.PSIntegrityStatus;
-import com.percussion.integritymanagement.data.PSIntegrityStatus.Status;
-import com.percussion.integritymanagement.data.PSIntegrityTask;
 import com.percussion.integritymanagement.data.PSIntegrityTaskProperty;
+import com.percussion.integritymanagement.service.IPSIntegrityCheckerDao;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.guidmgr.PSGuidHelper;
 import com.percussion.share.dao.IPSGenericDao.SaveException;
@@ -45,7 +46,7 @@ import java.util.List;
 
 @Transactional
 @Repository("integrityCheckerDao")
-public class PSIntegrityCheckerDao
+public class PSIntegrityCheckerDao implements IPSIntegrityCheckerDao
 {
 
     @PersistenceContext
@@ -62,7 +63,7 @@ public class PSIntegrityCheckerDao
 
 
     @Transactional
-    public PSIntegrityStatus find(String token)
+    public IPSIntegrityStatus find(String token)
     {
         PSIntegrityStatus result = null;
         Session session = getSession();
@@ -80,10 +81,10 @@ public class PSIntegrityCheckerDao
     }
 
     @Transactional
-    public List<PSIntegrityStatus> find(Status status)
+    public List<IPSIntegrityStatus> find(IPSIntegrityStatus.Status status)
     {
         Session session = getSession();
-        List<PSIntegrityStatus> results = new ArrayList<>();
+        List<IPSIntegrityStatus> results = new ArrayList<>();
 
         Criteria crit = session.createCriteria(PSIntegrityStatus.class);
         if (status != null)
@@ -96,7 +97,7 @@ public class PSIntegrityCheckerDao
     }
 
     @Transactional
-    public void delete(PSIntegrityStatus intStatus)
+    public void delete(IPSIntegrityStatus intStatus)
     {
         Session session = getSession();
         try
@@ -110,7 +111,7 @@ public class PSIntegrityCheckerDao
     }
 
     @Transactional
-    public void save(PSIntegrityStatus status) throws SaveException
+    public void save(IPSIntegrityStatus status) throws SaveException
     {
         Session session = getSession();
         try
@@ -132,9 +133,9 @@ public class PSIntegrityCheckerDao
      * @param status the publish server in question, assumed not
      *            <code>null</code>.
      */
-    private void setValidPersistedIds(PSIntegrityStatus status)
+    private void setValidPersistedIds(IPSIntegrityStatus status)
     {
-        for (PSIntegrityTask t : status.getTasks())
+        for (IPSIntegrityTask t : status.getTasks())
         {
             if (t.getTaskId() == -1L)
             {

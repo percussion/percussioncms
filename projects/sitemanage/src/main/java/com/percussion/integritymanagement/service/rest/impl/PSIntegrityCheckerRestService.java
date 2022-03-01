@@ -25,8 +25,9 @@
 package com.percussion.integritymanagement.service.rest.impl;
 
 import com.percussion.error.PSExceptionUtils;
+import com.percussion.integritymanagement.data.IPSIntegrityStatus;
+import com.percussion.integritymanagement.data.IPSIntegrityStatus.Status;
 import com.percussion.integritymanagement.data.PSIntegrityStatus;
-import com.percussion.integritymanagement.data.PSIntegrityStatus.Status;
 import com.percussion.integritymanagement.data.PSIntegrityStatusList;
 import com.percussion.integritymanagement.service.IPSIntegrityCheckerService.IntegrityTaskType;
 import com.percussion.integritymanagement.service.impl.PSIntegrityCheckerService;
@@ -101,7 +102,7 @@ public class PSIntegrityCheckerRestService
     public PSIntegrityStatus status(@PathParam("id") String id)
     {
         try {
-            return integrityCheckerService.getStatus(id);
+            return (PSIntegrityStatus) integrityCheckerService.getStatus(id);
         } catch (PSDataServiceException e) {
             log.error(PSExceptionUtils.getMessageForLog(e));
             log.debug(PSExceptionUtils.getDebugMessageForLog(e));
@@ -119,7 +120,11 @@ public class PSIntegrityCheckerRestService
             Status st = null;
 
                 st = Status.valueOf(StringUtils.defaultString(type));
-            return new PSIntegrityStatusList(integrityCheckerService.getHistory(st));
+            PSIntegrityStatusList ret = new PSIntegrityStatusList();
+            for(IPSIntegrityStatus i : integrityCheckerService.getHistory(st)){
+                ret.add((PSIntegrityStatus) i);
+            }
+            return ret;
         } catch (PSDataServiceException e) {
             log.error(PSExceptionUtils.getMessageForLog(e));
             log.debug(PSExceptionUtils.getDebugMessageForLog(e));

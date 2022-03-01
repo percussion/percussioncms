@@ -24,16 +24,14 @@
 
 package com.percussion.utils;
 
-import com.percussion.integritymanagement.data.PSIntegrityTask.TaskStatus;
+import com.percussion.integritymanagement.data.IPSIntegrityTask;
 import com.percussion.share.spring.PSSpringWebApplicationContextUtils;
 import com.percussion.test.PSServletTestCase;
 import com.percussion.utils.testing.IntegrationTest;
 import com.percussion.utils.types.PSPair;
+import org.junit.experimental.categories.Category;
 
 import java.util.Map;
-
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 @Category(IntegrationTest.class)
 public class PSDTSStatusProviderTest extends PSServletTestCase
@@ -62,14 +60,14 @@ public class PSDTSStatusProviderTest extends PSServletTestCase
    
     public void testGetStatusReport()
     {
-        Map<String, PSPair<TaskStatus, String>> status = getStatsuProvider().getDTSStatusReport();
-        assertEquals(TaskStatus.SUCCESS, status.get("dts").getFirst());
-        assertEquals(TaskStatus.SUCCESS, status.get("feeds").getFirst() );
-        assertEquals(TaskStatus.SUCCESS, status.get("perc-form-processor").getFirst());
-        assertEquals(TaskStatus.SUCCESS, status.get("perc-comments-services").getFirst());
-        assertEquals(TaskStatus.SUCCESS, status.get("perc-metadata-services").getFirst());
-        assertEquals(TaskStatus.SUCCESS, status.get("perc-membership-services").getFirst());
-        assertEquals(TaskStatus.SUCCESS, status.get("perc-polls-services").getFirst());
+        Map<String, PSPair<IPSIntegrityTask.TaskStatus, String>> status = getStatsuProvider().getDTSStatusReport();
+        assertEquals(IPSIntegrityTask.TaskStatus.SUCCESS, status.get("dts").getFirst());
+        assertEquals(IPSIntegrityTask.TaskStatus.SUCCESS, status.get("feeds").getFirst() );
+        assertEquals(IPSIntegrityTask.TaskStatus.SUCCESS, status.get("perc-form-processor").getFirst());
+        assertEquals(IPSIntegrityTask.TaskStatus.SUCCESS, status.get("perc-comments-services").getFirst());
+        assertEquals(IPSIntegrityTask.TaskStatus.SUCCESS, status.get("perc-metadata-services").getFirst());
+        assertEquals(IPSIntegrityTask.TaskStatus.SUCCESS, status.get("perc-membership-services").getFirst());
+        assertEquals(IPSIntegrityTask.TaskStatus.SUCCESS, status.get("perc-polls-services").getFirst());
     }
 
 }

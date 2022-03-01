@@ -77,6 +77,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * {@link com.percussion.services.security.IPSAclService}.
  */
 @PSBaseBean("sys_aclService")
+@Transactional
 public class PSAclService implements IPSAclService
 {
 

@@ -50,6 +50,7 @@ import com.percussion.services.sitemgr.IPSSiteManager;
 import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.share.data.PSDataItemSummary;
 import com.percussion.share.service.IPSIdMapper;
+import com.percussion.sitemanage.dao.IPSSitePublishDao;
 import com.percussion.sitemanage.data.PSSite;
 import com.percussion.sitemanage.data.PSSitePublishProperties;
 import com.percussion.sitemanage.data.PSSiteSummary;
@@ -105,7 +106,7 @@ import static org.apache.commons.lang.Validate.notNull;
 @Component("sitePublishDao")
 @Lazy
 @Transactional(noRollbackFor = Exception.class)
-public class PSSitePublishDao
+public class PSSitePublishDao implements IPSSitePublishDao
 {
 
     /**
@@ -296,7 +297,7 @@ public class PSSitePublishDao
         publishWs.saveSite(site);
     }
     
-    protected boolean saveSite(PSSite site) throws PSErrorException, IPSPubServerService.PSPubServerServiceException, PSNotFoundException {
+    public boolean saveSite(PSSite site) throws PSErrorException, IPSPubServerService.PSPubServerServiceException, PSNotFoundException {
         notNull(site,"site may not be null");
         
 

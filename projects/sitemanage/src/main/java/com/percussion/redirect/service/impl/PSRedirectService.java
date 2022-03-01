@@ -27,6 +27,7 @@ package com.percussion.redirect.service.impl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.percussion.error.PSExceptionUtils;
 import com.percussion.licensemanagement.data.PSModuleLicense;
+import com.percussion.licensemanagement.service.IPSLicenseService;
 import com.percussion.licensemanagement.service.impl.PSLicenseService;
 import com.percussion.redirect.data.PSCreateRedirectRequest;
 import com.percussion.redirect.data.PSRedirectStatus;
@@ -37,21 +38,21 @@ import com.percussion.redirect.data.PSRedirectValidationResponse.RedirectValidat
 import com.percussion.redirect.service.IPSRedirectService;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.guidmgr.IPSGuidManager;
-import com.percussion.share.dao.impl.PSFolderHelper;
+import com.percussion.share.dao.IPSFolderHelper;
 import com.percussion.share.data.PSItemProperties;
 import com.percussion.share.service.IPSDataService.DataServiceLoadException;
 import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.sitemanage.data.PSSiteSummary;
-import com.percussion.sitemanage.service.impl.PSSiteDataService;
-import com.percussion.sitemanage.service.impl.PSSitePublishStatusService;
+import com.percussion.sitemanage.service.IPSSiteDataService;
+import com.percussion.sitemanage.service.IPSSitePublishStatusService;
+import com.percussion.util.PSSiteManageBean;
 import com.percussion.utils.guid.IPSGuid;
-import com.percussion.utils.service.impl.PSUtilityService;
+import com.percussion.utils.service.IPSUtilityService;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.stereotype.Service;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -59,25 +60,25 @@ import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
 
-@Service("pSRedirectService")
+@PSSiteManageBean("pSRedirectService")
 public class PSRedirectService implements IPSRedirectService
 {
     private static final Logger log = LogManager.getLogger(PSRedirectService.class);
 
     @Autowired
-    private PSLicenseService licenseService;
+    private IPSLicenseService licenseService;
 
     @Autowired
-    private PSFolderHelper folderHelper;
+    private IPSFolderHelper folderHelper;
 
     @Autowired
-    private PSSitePublishStatusService pubStatusService;
+    private IPSSitePublishStatusService pubStatusService;
 
     @Autowired
-    private PSUtilityService utilityService;
+    private IPSUtilityService utilityService;
 
     @Autowired
-    private PSSiteDataService siteDataService;
+    private IPSSiteDataService siteDataService;
     
     @Autowired
     private IPSGuidManager guidMgr;

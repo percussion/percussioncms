@@ -32,9 +32,12 @@ import com.percussion.utils.jdbc.PSJdbcUtils;
 import com.percussion.utils.jndi.PSJndiObjectLocator;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.HibernateException;
+import org.hibernate.SessionFactory;
 import org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyHbmImpl;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
+import org.springframework.orm.hibernate5.LocalSessionFactoryBuilder;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.naming.NamingException;
@@ -49,10 +52,30 @@ import java.util.Properties;
  */
 @Configuration
 @EnableTransactionManagement
+@DependsOn("sys_transactionManager")
 @PSBaseBean("sys_sessionFactory")
 public class PSSessionFactoryBean extends LocalSessionFactoryBean
 {
 
+   /**
+    * Subclasses can override this method to perform custom initialization
+    * of the SessionFactory instance, creating it via the given Configuration
+    * object that got prepared by this LocalSessionFactoryBean.
+    * <p>The default implementation invokes LocalSessionFactoryBuilder's buildSessionFactory.
+    * A custom implementation could prepare the instance in a specific way (e.g. applying
+    * a custom ServiceRegistry) or use a custom SessionFactoryImpl subclass.
+    *
+    * @param sfb a LocalSessionFactoryBuilder prepared by this LocalSessionFactoryBean
+    * @return the SessionFactory instance
+    * @see LocalSessionFactoryBuilder#buildSessionFactory
+    */
+   @Override
+   protected SessionFactory buildSessionFactory(LocalSessionFactoryBuilder sfb) {
+
+      //repository.
+      //TODO PSContentRepository - Need to move the content repository session factory code here
+      return super.buildSessionFactory(sfb);
+   }
 
    /**
     * Used to allow content repository to get configured instance. Can't obtain
@@ -82,26 +105,6 @@ public class PSSessionFactoryBean extends LocalSessionFactoryBean
    {
       return ms_instance;
    }
-/*
-   @Override
-   protected Configuration newConfiguration() throws HibernateException
-   {
-      try
-      {
-         Configuration config = super.newConfiguration();
-         config.getProperties().put("hibernate.physical_naming_strategy","com.percussion.services.datasource.PSSessionFactoryBean.UpcasingNamingStrategy");
-         config.setInterceptor(new PSHibernateInterceptor(m_interceptEvents));
-         return config;
-      }
-      catch (Exception e)
-      {
-         // any exception here is fatal
-         throw new RuntimeException(
-               "Failed to initialize the hibernate configuration: "
-                     + e.getLocalizedMessage());
-      }
-   }
-*/
 
    /**
     * Get the hibernate properties for the supplied info object. See
@@ -208,7 +211,7 @@ public class PSSessionFactoryBean extends LocalSessionFactoryBean
          // any exception here is fatal
          throw new RuntimeException(
                "Failed to initialize the hibernate configuration: "
-                     + e.getLocalizedMessage(), e);
+                     + e.getMessage(), e);
       }
    }
 

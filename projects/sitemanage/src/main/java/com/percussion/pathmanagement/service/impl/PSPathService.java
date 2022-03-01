@@ -57,6 +57,7 @@ import com.percussion.share.service.exception.PSBeanValidationException;
 import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.service.exception.PSParametersValidationException;
 import com.percussion.share.service.exception.PSValidationException;
+import com.percussion.ui.service.IPSListViewHelper;
 import com.percussion.ui.service.IPSUiService;
 import com.percussion.ui.service.impl.PSCm1ListViewHelper;
 import com.percussion.user.service.IPSUserService;
@@ -112,7 +113,7 @@ public class PSPathService extends PSDispatchingPathService implements IPSPathSe
     @Autowired
     public PSPathService(IPSFolderHelper folderHelper,
                          IPSPublishingWs publishingWs, IPSIdMapper idMapper, IPSUiService uiService,
-                         IPSUserService userService, @Qualifier("cm1ListViewHelper") PSCm1ListViewHelper listViewHelper,
+                         IPSUserService userService, @Qualifier("cm1ListViewHelper") IPSListViewHelper listViewHelper,
                          IPSRecycleService recycleService)
     {
         super(uiService, userService, listViewHelper, recycleService, folderHelper);

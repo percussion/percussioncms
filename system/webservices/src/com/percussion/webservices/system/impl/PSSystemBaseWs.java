@@ -34,6 +34,7 @@ import com.percussion.webservices.PSWebserviceErrors;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -42,6 +43,7 @@ import javax.persistence.PersistenceContext;
  * Common implementations used with the public and private system 
  * webservices.
  */
+@Transactional
 public class PSSystemBaseWs
 {
 

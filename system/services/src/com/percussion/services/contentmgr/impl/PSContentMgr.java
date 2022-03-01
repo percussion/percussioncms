@@ -47,6 +47,7 @@ import com.percussion.services.guidmgr.IPSGuidManager;
 import com.percussion.services.guidmgr.PSGuidManagerLocator;
 import com.percussion.services.guidmgr.data.PSGuid;
 import com.percussion.services.guidmgr.data.PSLegacyGuid;
+import com.percussion.util.PSBaseBean;
 import com.percussion.util.PSSqlHelper;
 import com.percussion.utils.guid.IPSGuid;
 import org.apache.commons.lang.StringUtils;
@@ -56,6 +57,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.jcr.Node;
@@ -91,6 +93,8 @@ import java.util.stream.Collectors;
  * @author dougrand
  */
 @Transactional
+@Repository
+@PSBaseBean("sys_contentManager")
 public class PSContentMgr  implements IPSContentMgr
 {
 

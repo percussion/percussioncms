@@ -32,7 +32,17 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.HashSet;
 import java.util.Set;
@@ -42,7 +52,7 @@ import java.util.Set;
       region = "PSIntegrityTask")
 @Table(name = "PSX_INTEGRITYTASK")
 @XmlRootElement(name = "task")
-public class PSIntegrityTask  extends PSAbstractDataObject
+public class PSIntegrityTask  extends PSAbstractDataObject implements IPSIntegrityTask
 {
     private static final long serialVersionUID = 1L;
     public static enum TaskStatus {
@@ -68,7 +78,7 @@ public class PSIntegrityTask  extends PSAbstractDataObject
     @Basic
     @Column(name = "STATUS")
     @Enumerated(EnumType.STRING)
-    private TaskStatus status;
+    private IPSIntegrityTask.TaskStatus status;
 
 
     @Basic
@@ -129,13 +139,13 @@ public class PSIntegrityTask  extends PSAbstractDataObject
     }
 
 
-    public TaskStatus getStatus()
+    public IPSIntegrityTask.TaskStatus getStatus()
     {
         return status;
     }
 
 
-    public void setStatus(TaskStatus status)
+    public void setStatus(IPSIntegrityTask.TaskStatus status)
     {
         this.status = status;
     }

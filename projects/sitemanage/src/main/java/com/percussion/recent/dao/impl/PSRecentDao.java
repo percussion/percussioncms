@@ -24,6 +24,7 @@
 
 package com.percussion.recent.dao.impl;
 
+import com.percussion.recent.dao.IPSRecentDao;
 import com.percussion.recent.data.PSRecent;
 import com.percussion.recent.data.PSRecent.RecentType;
 import com.percussion.share.dao.IPSGenericDao.SaveException;
@@ -32,13 +33,15 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Repository("recentDao")
-public class PSRecentDao
+@Transactional
+public class PSRecentDao implements IPSRecentDao
 {
 
     @PersistenceContext

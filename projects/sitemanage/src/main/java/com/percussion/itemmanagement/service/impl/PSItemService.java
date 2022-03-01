@@ -82,15 +82,14 @@ import com.percussion.services.workflow.data.PSAssignmentTypeEnum;
 import com.percussion.services.workflow.data.PSWorkflow;
 import com.percussion.servlets.PSSecurityFilter;
 import com.percussion.share.dao.IPSContentItemDao;
+import com.percussion.share.dao.IPSFolderHelper;
 import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.share.dao.PSDateUtils;
 import com.percussion.share.dao.impl.PSContentItem;
-import com.percussion.share.dao.impl.PSFolderHelper;
 import com.percussion.share.data.IPSItemSummary;
 import com.percussion.share.data.PSItemProperties;
 import com.percussion.share.data.PSItemPropertiesList;
 import com.percussion.share.data.PSNoContent;
-import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.IPSIdMapper;
 import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.service.exception.PSValidationException;
@@ -168,7 +167,7 @@ public class PSItemService implements IPSItemService
     IPSContentWs contentWs;
     IPSWidgetAssetRelationshipService waRelService;
     IPSItemWorkflowService itemWfService;
-    PSFolderHelper folderHelper;
+    IPSFolderHelper folderHelper;
     IPSContentItemDao contentItemDao;
     IPSAssetDao assetDao;
     IPSTemplateService templateService;
@@ -191,7 +190,7 @@ public class PSItemService implements IPSItemService
     @Autowired
     public PSItemService(IPSIdMapper idMapper, IPSSystemService systemService, IPSWorkflowHelper workflowHelper,
                          IPSContentWs contentWs, IPSWidgetAssetRelationshipService waRelService, IPSItemWorkflowService itemWfService,
-                         PSFolderHelper folderHelper, @Qualifier("contentItemDao") IPSContentItemDao contentItemDao, IPSAssetDao assetDao, IPSTemplateService templateService,
+                         IPSFolderHelper folderHelper, @Qualifier("contentItemDao") IPSContentItemDao contentItemDao, IPSAssetDao assetDao, IPSTemplateService templateService,
                          IPSUserItemsDao userItemDao, IPSNotificationService notificationService, IPSPublisherService pubService, IPSManagedLinkDao linkService)
     {
         super();
@@ -1141,8 +1140,11 @@ catch (Exception e){
     public Map<String,String> copyFolder(String srcPath, String destFolder, String name) throws IPSItemWorkflowService.PSItemWorkflowServiceException, PSErrorResultsException, PSDataServiceException {
         Map<String,String> assetMap = new HashMap<>();
 
-        copyFolder(assetMap,srcPath, destFolder, name);
-
+        try {
+            copyFolder(assetMap, srcPath, destFolder, name);
+        }catch (Exception e) {
+           throw new PSDataServiceException(e);
+        }
         return assetMap;
     }
 
@@ -1260,7 +1262,7 @@ catch (Exception e){
      * @param destFolder
      * @param name
      */
-    private void copyFolder(Map<String, String> assetMap, String srcPath, String destFolder, String name) throws PSDataServiceException, IPSItemWorkflowService.PSItemWorkflowServiceException, PSErrorResultsException {
+    private void copyFolder(Map<String, String> assetMap, String srcPath, String destFolder, String name) throws Exception {
         if (StringUtils.isBlank(srcPath))
         {
             throw new IllegalArgumentException("srcPath may not be blank");
@@ -1631,7 +1633,7 @@ catch (Exception e){
                 if (itemProps != null) {
 					items.add(itemProps);
 				}
-            } catch (IPSDataService.DataServiceLoadException | IPSGenericDao.LoadException e) {
+            } catch (Exception e) {
                 log.error(PSExceptionUtils.getMessageForLog(e));
                 log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                 //continue processing
