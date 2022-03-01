@@ -46,6 +46,7 @@ import com.percussion.sitemanage.data.PSSiteSummary;
 import com.percussion.sitemanage.data.PSSiteSummaryList;
 import com.percussion.sitemanage.data.PSValidateCopyFoldersRequest;
 import com.percussion.sitemanage.error.PSSiteImportException;
+import com.percussion.sitemanage.service.IPSSiteDataService;
 import com.percussion.sitemanage.service.IPSSiteSectionService;
 import com.percussion.util.PSSiteManageBean;
 import org.apache.logging.log4j.LogManager;
@@ -83,10 +84,10 @@ public class PSSiteDataRestService
 {
     private static final Logger log = LogManager.getLogger(PSSiteDataRestService.class);
 
-    private final PSSiteDataService siteDataService;
+    private final IPSSiteDataService siteDataService;
     
     @Autowired
-    public PSSiteDataRestService(PSSiteDataService siteDataService)
+    public PSSiteDataRestService(IPSSiteDataService siteDataService)
     {
         this.siteDataService = siteDataService;
     }
@@ -99,7 +100,7 @@ public class PSSiteDataRestService
     {
         try {
             return siteDataService.load(id);
-        } catch (IPSDataService.DataServiceNotFoundException | PSValidationException e) {
+        } catch (PSDataServiceException e) {
             log.error(PSExceptionUtils.getMessageForLog(e));
             log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(404);

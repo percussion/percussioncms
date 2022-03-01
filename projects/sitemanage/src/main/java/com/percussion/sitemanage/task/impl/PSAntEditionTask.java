@@ -41,7 +41,7 @@ import com.percussion.services.pubserver.data.PSPubServerProperty;
 import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.share.service.IPSDataService;
 import com.percussion.share.spring.PSSpringWebApplicationContextUtils;
-import com.percussion.sitemanage.dao.impl.PSSitePublishDao;
+import com.percussion.sitemanage.dao.IPSSitePublishDao;
 import com.percussion.sitemanage.service.IPSSiteDataService.PublishType;
 import com.percussion.sitemanage.service.IPSSiteSectionService;
 import com.percussion.sitemanage.task.IPSAntService;
@@ -97,11 +97,11 @@ public class PSAntEditionTask implements IPSEditionTask
 
     private String rootDirectory;
 
-    private PSSitePublishDao sitePublishDao;
+    private IPSSitePublishDao sitePublishDao;
 
     private IPSPubServerDao pubServerMgr;
 
-    private static final Logger log = LogManager.getLogger(PSAntEditionTask.class);
+    private static final Logger log = LogManager.getLogger(IPSConstants.PUBLISHING_LOG);
 
     @Override
     public TaskType getType()
@@ -527,7 +527,7 @@ public class PSAntEditionTask implements IPSEditionTask
     /**
      * @return the sitePublishDao
      */
-    public PSSitePublishDao getSitePublishDao()
+    public IPSSitePublishDao getSitePublishDao()
     {
         return sitePublishDao;
     }
@@ -535,7 +535,7 @@ public class PSAntEditionTask implements IPSEditionTask
     /**
      * @param sitePublishDao the sitePublishDao to set
      */
-    public void setSitePublishDao(PSSitePublishDao sitePublishDao)
+    public void setSitePublishDao(IPSSitePublishDao sitePublishDao)
     {
         this.sitePublishDao = sitePublishDao;
     }

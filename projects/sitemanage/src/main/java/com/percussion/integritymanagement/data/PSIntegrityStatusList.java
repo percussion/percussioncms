@@ -38,4 +38,8 @@ public class PSIntegrityStatusList extends ArrayList<PSIntegrityStatus> {
     public PSIntegrityStatusList(Collection<? extends PSIntegrityStatus> c) {
         super(c);
     }
+
+    public PSIntegrityStatusList() {
+
+    }
 }

@@ -23,15 +23,12 @@
  */
 package com.percussion.sitemanage.importer;
 
-import static com.percussion.sitemanage.importer.helpers.PSHelperTestUtils.USER_AGENT;
-
 import com.percussion.pagemanagement.dao.IPSPageDao;
 import com.percussion.pagemanagement.data.PSPage;
 import com.percussion.pagemanagement.service.IPSPageCatalogService;
 import com.percussion.pagemanagement.service.IPSPageService;
 import com.percussion.pagemanagement.service.PSSiteDataServletTestCaseFixture;
 import com.percussion.pagemanagement.service.impl.PSPageCatalogService;
-import com.percussion.pathmanagement.service.impl.PSPathUtils;
 import com.percussion.share.dao.IPSFolderHelper;
 import com.percussion.share.dao.PSFolderPathUtils;
 import com.percussion.share.data.IPSItemSummary;
@@ -40,18 +37,19 @@ import com.percussion.sitemanage.dao.IPSiteDao;
 import com.percussion.sitemanage.data.PSSite;
 import com.percussion.sitemanage.data.PSSiteImportCtx;
 import com.percussion.sitemanage.error.PSSiteImportException;
-import com.percussion.sitemanage.importer.helpers.impl.PSImportHelper;
+import com.percussion.sitemanage.importer.helpers.IPSImportHelper;
 import com.percussion.sitemanage.importer.helpers.impl.PSSiteCreationHelper;
 import com.percussion.sitemanage.service.IPSSiteImportService;
 import com.percussion.utils.testing.IntegrationTest;
 import com.percussion.webservices.security.IPSSecurityWs;
+import org.junit.Ignore;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 import java.util.List;
 import java.util.Properties;
 
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
+import static com.percussion.sitemanage.importer.helpers.PSHelperTestUtils.USER_AGENT;
 
 /**
  * @author LucasPiccoli
@@ -106,10 +104,10 @@ public class PSSiteImportServiceTest extends PSSiteImportTestBase
     public void ignore_testHelperAvailability()
     {
         assertNotNull(siteImportService);
-        List<PSImportHelper> mandatoryHelpers = siteImportService.getMandatoryHelpers();
+        List<IPSImportHelper> mandatoryHelpers = siteImportService.getMandatoryHelpers();
         assertNotNull(mandatoryHelpers);
         assertTrue(!mandatoryHelpers.isEmpty());
-        List<PSImportHelper> optionalHelpers = siteImportService.getOptionalHelpers();
+        List<IPSImportHelper> optionalHelpers = siteImportService.getOptionalHelpers();
         assertNotNull(optionalHelpers);
         assertTrue(!optionalHelpers.isEmpty());
     }

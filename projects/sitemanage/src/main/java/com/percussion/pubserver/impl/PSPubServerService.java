@@ -59,7 +59,7 @@ import com.percussion.share.data.PSEnumVals;
 import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.share.validation.PSValidationErrorsBuilder;
-import com.percussion.sitemanage.dao.impl.PSSitePublishDao;
+import com.percussion.sitemanage.dao.IPSSitePublishDao;
 import com.percussion.sitemanage.data.PSPubInfo;
 import com.percussion.sitemanage.data.PSPublisherInfo;
 import com.percussion.sitemanage.data.PSSaasSiteConfig;
@@ -140,7 +140,7 @@ public class PSPubServerService implements IPSPubServerService
     private final IPSGuidManager guidMgr;
     private final IPSRxPublisherService rxPubService;
     private final PSNamedLockManager lockMgr;
-    private final PSSitePublishDao sitePublishDao;
+    private final IPSSitePublishDao sitePublishDao;
     private final IPSPublisherService publisherService;
     private final IPSContentChangeService contentChangeService;
     private final IPSUtilityService utilityService;
@@ -156,7 +156,7 @@ public class PSPubServerService implements IPSPubServerService
     public PSPubServerService(IPSPubServerDao pubServerDao, IPSSiteManager siteMgr,
                               @Qualifier("sys_dbPubServerFileService") IPSDatabasePubServerFilesService serverFileService, IPSSiteDataService siteDataService,
                               IPSSitePublishStatusService statusService, IPSGuidManager guidMgr, IPSRxPublisherService rxPubService,
-                              PSSitePublishDao sitePublishDao, IPSPublisherService publisherService, IPSContentChangeService contentChangeService,
+                              IPSSitePublishDao sitePublishDao, IPSPublisherService publisherService, IPSContentChangeService contentChangeService,
                               IPSUtilityService utilityService) throws PSNotFoundException {
         this.pubServerDao = pubServerDao;
         this.siteMgr = siteMgr;

@@ -24,20 +24,6 @@
 package com.percussion.pagemanagement.assembler.impl;
 
 
-import static com.percussion.pagemanagement.assembler.PSResourceLinkAndLocationUtils.concatPath;
-import static com.percussion.pagemanagement.assembler.PSResourceLinkAndLocationUtils.createDefaultLinkAndLocation;
-import static com.percussion.pagemanagement.assembler.PSResourceLinkAndLocationUtils.validateAsPhysicalPath;
-
-import static java.util.Arrays.asList;
-import static java.util.Collections.emptyList;
-
-import static org.apache.commons.lang.StringUtils.isBlank;
-import static org.apache.commons.lang.StringUtils.isNotBlank;
-import static org.apache.commons.lang.StringUtils.removeStart;
-import static org.apache.commons.lang.StringUtils.startsWith;
-import static org.apache.commons.lang.Validate.notEmpty;
-import static org.apache.commons.lang.Validate.notNull;
-
 import com.percussion.assetmanagement.data.PSAsset;
 import com.percussion.assetmanagement.service.IPSAssetService;
 import com.percussion.pagemanagement.assembler.PSResourceScriptEvaluatorContext;
@@ -67,16 +53,27 @@ import com.percussion.sitemanage.service.IPSSiteTemplateService;
 import com.percussion.util.PSSiteManageBean;
 import com.percussion.utils.jexl.IPSScript;
 import com.percussion.utils.jexl.PSJexlEvaluator;
+import org.apache.commons.lang.Validate;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.Validate;
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.LogManager;
-import org.springframework.beans.factory.annotation.Autowired;
+import static com.percussion.pagemanagement.assembler.PSResourceLinkAndLocationUtils.concatPath;
+import static com.percussion.pagemanagement.assembler.PSResourceLinkAndLocationUtils.createDefaultLinkAndLocation;
+import static com.percussion.pagemanagement.assembler.PSResourceLinkAndLocationUtils.validateAsPhysicalPath;
+import static java.util.Arrays.asList;
+import static java.util.Collections.emptyList;
+import static org.apache.commons.lang.StringUtils.isBlank;
+import static org.apache.commons.lang.StringUtils.isNotBlank;
+import static org.apache.commons.lang.StringUtils.removeStart;
+import static org.apache.commons.lang.StringUtils.startsWith;
+import static org.apache.commons.lang.Validate.notEmpty;
+import static org.apache.commons.lang.Validate.notNull;
 
 /**
  * Helper to process {@link PSResourceInstance}s.
@@ -100,6 +97,10 @@ public class PSResourceInstanceHelper
     private IPSAssetService assetService;
     private IPSAssemblyService assemblyService;
 
+
+    public PSResourceInstanceHelper(){
+        //Default ctor
+    }
 
     @Autowired
     private PSResourceInstanceHelper(IPSAssetService assetService, IPSSiteDataService siteDataService, IPSPageService pageService,
