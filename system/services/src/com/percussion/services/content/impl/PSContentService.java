@@ -72,7 +72,7 @@ public class PSContentService
    private Session getSession(){
       return entityManager.unwrap(Session.class);
    }
-   
+
    /* (non-Javadoc)
     * @see IPSContentService#createKeyword(String, String)
     */
@@ -380,12 +380,7 @@ public class PSContentService
    {
       if (autoTranslation == null)
          throw new IllegalArgumentException("autoTranslation may not be null");
-      
-      // for some reason saveOrUpdate() always tries to insert
-      if (autoTranslation.getVersion() == null)
-         getSession().save(autoTranslation);
-      else
-         getSession().update(autoTranslation);
+         getSession().saveOrUpdate(autoTranslation);
    }
 
    /* (non-Javadoc)
