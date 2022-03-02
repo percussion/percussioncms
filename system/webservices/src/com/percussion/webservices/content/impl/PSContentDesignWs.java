@@ -1961,14 +1961,17 @@ public class PSContentDesignWs extends PSContentBaseWs implements
                PSAutoTranslation cur = curMap.get(at.getKey());
                if (cur != null)
                {
-                  newMap.put(at.getKey(), at);
-
-                  // set the correct version
-                  at.setVersion(cur.getVersion());
+                  // save
+                  cur.setCommunityId(at.getCommunityId());
+                  cur.setWorkflowId(at.getWorkflowId());
+                  cur.setWorkflowName(at.getWorkflowName());
+                  cur.setVersion(at.getVersion());
+                  newMap.put(at.getKey(), cur);
+                  service.saveAutoTranslation(cur);
+               }else{
+                  service.saveAutoTranslation(at);
                }
 
-               // save
-               service.saveAutoTranslation(at);
             }
 
             for (PSAutoTranslation at : curList)

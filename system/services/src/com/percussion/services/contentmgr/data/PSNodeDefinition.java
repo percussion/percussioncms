@@ -41,16 +41,26 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.*;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.NaturalId;
+import org.hibernate.annotations.NaturalIdCache;
 import org.xml.sax.SAXException;
 
 import javax.jcr.RepositoryException;
 import javax.jcr.nodetype.NoSuchNodeTypeException;
 import javax.jcr.nodetype.NodeType;
-import javax.persistence.*;
+import javax.persistence.Basic;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Version;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Collections;
@@ -86,8 +96,8 @@ public class PSNodeDefinition implements IPSNodeDefinition
    @Column(name = "VERSION")
    private Integer m_version = -1;
 
-   @NaturalId
-   @Column(name = "CONTENTTYPENAME")
+   @NaturalId(mutable=true)
+   @Column(name = "CONTENTTYPENAME", unique=true)
    private String m_name;
 
    @Basic
