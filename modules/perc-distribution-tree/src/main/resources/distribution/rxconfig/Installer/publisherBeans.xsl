@@ -24,67 +24,15 @@
 
 <xsl:stylesheet version="2.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                xmlns:bn="http://www.springframework.org/schema/beans"
                 exclude-result-prefixes="bn">
     <xsl:output method="xml" indent="yes" encoding="UTF-8" omit-xml-declaration="yes"/>
-    <xsl:param name="filename"></xsl:param>
+    <xsl:param name="filename"/>
     <xsl:param name="filedir">.</xsl:param>
 
     <xsl:template match="@* | node()">
         <xsl:copy>
             <xsl:apply-templates select="@* | node()"/>
         </xsl:copy>
-    </xsl:template>
-
-    <xsl:template match="/*">
-        <xsl:copy>
-            <xsl:apply-templates select="@* | node()"/>
-            <xsl:if test="not(bn:bean[@id = 'sys_ftpsDeliveryHandler'])">
-            <bean id="sys_ftpsDeliveryHandler"
-                  class="com.percussion.rx.delivery.impl.PSDeliveryHandlerRunner"
-                  xmlns="http://www.springframework.org/schema/beans">
-                  <property name="deliveryHandlers">
-                        <list>
-                            <ref bean="sys_ftps"/>
-                            <ref bean="sys_metadataDeliveryHandler"/>
-                        </list>
-                  </property>
-                 </bean>
-                <bean id="sys_ftps_default"
-                      class="com.percussion.rx.delivery.impl.PSFtpsDeliveryHandler"
-                      xmlns="http://www.springframework.org/schema/beans">
-                         <xsl:comment>
-                            Properties that can be set here:
-                            timeout
-                                (defaults to -1 as not defined.
-                                It is the socket timeout in milliseconds for both when opening a
-                                socket and a currently open connection).
-                            usePassiveMode
-                                (defaults to false.
-                                Determines if using passive or active mode for the FTP client.
-                                Defaults to use active mode. If using passive mode is on, then it
-                                will also disable the remote verification
-                        </xsl:comment>
-                            <property name="usePassiveMode" value="true" />
-                </bean>
-                <bean id="sys_ftps"
-                      class="com.percussion.rx.delivery.impl.PSFtpsDeliveryHandler"
-                      xmlns="http://www.springframework.org/schema/beans">
-                 <xsl:comment> Properties that can be set here:
-                    timeout
-                        (defaults to -1 as not defined.
-                        It is the socket timeout in milliseconds for both when opening a
-                        socket and a currently open connection).
-                    usePassiveMode
-                        (defaults to false.
-                        Determines if using passive or active mode for the FTP client.
-                        Defaults to use active mode. If using passive mode is on, then it
-                        will also disable the remote verification
-                 </xsl:comment>
-                    <property name="usePassiveMode" value="true" />
-                </bean>
-      </xsl:if>
-      </xsl:copy>
     </xsl:template>
 
 </xsl:stylesheet>
