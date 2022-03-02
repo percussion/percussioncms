@@ -33,8 +33,7 @@ import com.percussion.delivery.client.PSDeliveryClient;
 import com.percussion.delivery.data.PSDeliveryInfo;
 import com.percussion.delivery.service.IPSDeliveryInfoService;
 import com.percussion.error.PSExceptionUtils;
-import com.percussion.integritymanagement.data.IPSIntegrityTask;
-import com.percussion.integritymanagement.data.IPSIntegrityTask.TaskStatus;
+import com.percussion.integritymanagement.data.PSIntegrityTask.TaskStatus;
 import com.percussion.utils.types.PSPair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -46,7 +45,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
-
 /**
  * Check and report on the health status of the DTS and all of its services
  * 
@@ -54,7 +52,7 @@ import java.util.Map;
  * 
  */
 @Component("dtsStatusProvider")
-public class PSDTSStatusProvider implements IPSDTSStatusProvider
+public class PSDTSStatusProvider
 {
     //Root of server
     private String serverRoot;
@@ -103,10 +101,10 @@ public class PSDTSStatusProvider implements IPSDTSStatusProvider
         PSPair<Boolean, String> dtsPair = getExternalTomcatServiceStatus(serverRoot);
         if (!dtsPair.getFirst())
         {
-            statusReport.put("dts", new PSPair<>(IPSIntegrityTask.TaskStatus.FAILED, dtsPair.getSecond()));
+            statusReport.put("dts", new PSPair<>(TaskStatus.FAILED, dtsPair.getSecond()));
             return statusReport;
         }
-        statusReport.put("dts", new PSPair<>(IPSIntegrityTask.TaskStatus.SUCCESS, dtsPair.getSecond()));
+        statusReport.put("dts", new PSPair<>(TaskStatus.SUCCESS, dtsPair.getSecond()));
         
         //check the external services and add the status to the report
         for(Map.Entry<String, String> externalService : externalServices.entrySet())

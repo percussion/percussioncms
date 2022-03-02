@@ -110,10 +110,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyHbmImpl;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.transform.Transformers;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.DependsOn;
-import org.springframework.orm.hibernate5.HibernateTransactionManager;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -132,6 +128,8 @@ import javax.jcr.query.QueryResult;
 import javax.jcr.query.RowIterator;
 import javax.naming.NamingException;
 import javax.persistence.Column;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -171,47 +169,21 @@ import static com.percussion.utils.request.PSRequestInfoBase.getRequestInfo;
  */
 @PSBaseBean("sys_legacyContentRepository")
 @Singleton
-@Transactional(transactionManager ="contentTypeTxManager")
-@org.springframework.context.annotation.Configuration
-@EnableTransactionManagement
-@DependsOn("contentTypeTxManager")
 public class PSContentRepository
         implements
         IPSContentRepository,
         IPSHandlerInitListener,
         IPSEditorChangeListener
 {
-
-    private HibernateTransactionManager platformTransactionManager;
-
-    @Bean(name="contentTypeTxManager")
-    public HibernateTransactionManager getTransactionManager() {
-
-        platformTransactionManager = new HibernateTransactionManager();
-        return platformTransactionManager;
-    }
+    @PersistenceContext
+    private EntityManager entityManager;
 
     private Session getSession(){
-        return sessionFactory.getCurrentSession();
+        return entityManager.unwrap(Session.class);
     }
 
-    private PSContentTypeClassLoader contentTypeClassLoader;
-
-    public PSContentTypeClassLoader getContentTypeClassLoader() {
-        return contentTypeClassLoader;
-    }
-
-    public void setContentTypeClassLoader(PSContentTypeClassLoader contentTypeClassLoader) {
-        this.contentTypeClassLoader = contentTypeClassLoader;
-    }
-
-    private SessionFactory sessionFactory;
-    public  SessionFactory getSessionFactory(){
-        return sessionFactory;
-    }
-
-    public void setSessionFactory(SessionFactory factory){
-        this.sessionFactory = factory;
+    private SessionFactory getSessionFactory(){
+        return getSession().getSessionFactory();
     }
 
     /**
@@ -921,7 +893,7 @@ public class PSContentRepository
             List<GeneratedClassBase> results = new ArrayList<>();
             for (PSLegacyCompositeId id : ids)
             {
-                GeneratedClassBase data = (GeneratedClassBase) sessionFactory.getCurrentSession().get(iclass,
+                GeneratedClassBase data = (GeneratedClassBase) session.get(iclass,
                         id);
                 if (data != null)
                     results.add(data);
@@ -1307,19 +1279,13 @@ public class PSContentRepository
         IPSDatasourceManager dsMgr = PSDatasourceMgrLocator.getDatasourceMgr();
         Properties props = new Properties();
         props.putAll(dsMgr.getHibernateProperties(null));
-        props.putAll(sessionFactory.getProperties());
         hibConfig.setProperties(props);
         hibConfig.setPhysicalNamingStrategy(new UpperCaseNamingStrategy());
         hibConfig.setImplicitNamingStrategy(new ImplicitNamingStrategyLegacyHbmImpl());
         // Note, getSessionFactory().close() does not release resources or
         // the heap memories by the existing session factory
-
-        this.sessionFactory = hibConfig.buildSessionFactory();
-
-        HibernateTransactionManager transactionManager
-                = new HibernateTransactionManager();
-        transactionManager.setSessionFactory(sessionFactory);
-        platformTransactionManager = transactionManager;
+        //TODO: Can this be removed? Is this still in use?
+        //getSession().setSessionFactory(hibConfig.buildSessionFactory());
     }
 
     /**

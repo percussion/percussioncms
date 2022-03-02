@@ -76,7 +76,8 @@ import static org.apache.commons.lang.Validate.notNull;
 
 @Component("siteContentDao")
 @Lazy
-public class PSSiteContentDao implements com.percussion.sitemanage.dao.IPSSiteContentDao {
+public class PSSiteContentDao
+{
 
 
     private IPSFolderHelper folderHelper;
@@ -141,7 +142,6 @@ public class PSSiteContentDao implements com.percussion.sitemanage.dao.IPSSiteCo
      * @throws PSErrorException If an error occurs.
      * @throws PSAssemblyException If an error occurs finding the base template.
      */
-    @Override
     public void createRelatedItems(PSSite site)
     {
         if (site == null)
@@ -235,7 +235,6 @@ public class PSSiteContentDao implements com.percussion.sitemanage.dao.IPSSiteCo
      * @param srcSite The source site, may not be <code>null</code>.
      * @param destSite The destination site, may not be <code>null</code>.
      */
-    @Override
     public void copy(PSSite srcSite, PSSite destSite)
     {
         if (srcSite == null)
@@ -334,7 +333,7 @@ public class PSSiteContentDao implements com.percussion.sitemanage.dao.IPSSiteCo
      *
      * @param site The site, may not be <code>null</code>.
      */
-    public void deleteRelatedItems(PSSiteSummary site) throws DeleteException {
+    protected void deleteRelatedItems(PSSiteSummary site) throws DeleteException {
         notNull(site, "site");
         PSSearchIndexEventQueue indexer = PSSearchIndexEventQueue.getInstance();
 
@@ -368,7 +367,6 @@ public class PSSiteContentDao implements com.percussion.sitemanage.dao.IPSSiteCo
      *
      * @throws Exception if an error occurs finding the navigation tree.
      */
-    @Override
     public PSPage getHomePage(PSSiteSummary site) throws PSNavException, PSDataServiceException {
         notNull(site, "site");
 
@@ -398,7 +396,6 @@ public class PSSiteContentDao implements com.percussion.sitemanage.dao.IPSSiteCo
      * @return the nav title, never <code>null</code>, may be empty.
      * @throws Exception if an error occurs finding the navigation tree for the site.
      */
-    @Override
     public String getNavTitle(PSSiteSummary siteSummary) throws PSNavException, PSDataServiceException {
         notNull(siteSummary, "siteSummary");
 
@@ -435,7 +432,6 @@ public class PSSiteContentDao implements com.percussion.sitemanage.dao.IPSSiteCo
         return navTree;
     }
 
-    @Override
     public void loadTemplateInfo(PSSite site) throws PSDataServiceException {
         if (site.getBaseTemplateName() != null) {
             PSTemplateSummary tempSummary = templateService.find(site.getBaseTemplateName());
@@ -491,6 +487,11 @@ public class PSSiteContentDao implements com.percussion.sitemanage.dao.IPSSiteCo
 //        }
 
     }
+
+    /**
+     * The name of the home page item created automatically during site creation.
+     */
+    public static final String HOME_PAGE_NAME = "index.html";
 
     private static final int DELETE_FOLDER_RETRY_COUNT = 2;
     /**

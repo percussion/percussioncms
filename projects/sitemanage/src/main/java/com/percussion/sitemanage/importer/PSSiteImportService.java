@@ -27,6 +27,7 @@ import com.percussion.pagemanagement.dao.IPSPageDao;
 import com.percussion.pagemanagement.data.PSPage;
 import com.percussion.pagemanagement.service.IPSPageCatalogService;
 import com.percussion.pagemanagement.service.IPSPageService;
+import com.percussion.share.dao.IPSGenericDao.LoadException;
 import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.sitemanage.data.PSPageContent;
 import com.percussion.sitemanage.data.PSSite;
@@ -36,7 +37,7 @@ import com.percussion.sitemanage.error.PSTemplateImportException;
 import com.percussion.sitemanage.importer.IPSSiteImportLogger.PSLogEntryType;
 import com.percussion.sitemanage.importer.IPSSiteImportLogger.PSLogObjectType;
 import com.percussion.sitemanage.importer.dao.IPSImportLogDao;
-import com.percussion.sitemanage.importer.helpers.IPSImportHelper;
+import com.percussion.sitemanage.importer.helpers.impl.PSImportHelper;
 import com.percussion.sitemanage.service.IPSSiteImportService;
 import com.percussion.sitesummaryservice.service.IPSSiteImportSummaryService;
 import org.apache.logging.log4j.LogManager;
@@ -55,11 +56,11 @@ public class PSSiteImportService implements IPSSiteImportService
 {
     private static final Logger log = LogManager.getLogger(PSSiteImportService.class);
     
-    private List<IPSImportHelper> mandatoryHelpers;
+    private List<PSImportHelper> mandatoryHelpers;
 
-    private List<IPSImportHelper> optionalHelpers;
+    private List<PSImportHelper> optionalHelpers;
     
-    private List<IPSImportHelper> executedHelpers;
+    private List<PSImportHelper> executedHelpers;
     
     private IPSImportLogDao logDao;
     
@@ -173,7 +174,7 @@ public class PSSiteImportService implements IPSSiteImportService
     /**
      * @return the mandatoryHelpers
      */
-    public List<IPSImportHelper> getMandatoryHelpers()
+    public List<PSImportHelper> getMandatoryHelpers()
     {
         return mandatoryHelpers;
     }
@@ -181,7 +182,7 @@ public class PSSiteImportService implements IPSSiteImportService
     /**
      * @param mandatoryHelpers the mandatoryHelpers to set
      */
-    public void setMandatoryHelpers(List<IPSImportHelper> mandatoryHelpers)
+    public void setMandatoryHelpers(List<PSImportHelper> mandatoryHelpers)
     {
         this.mandatoryHelpers = mandatoryHelpers;
     }
@@ -189,7 +190,7 @@ public class PSSiteImportService implements IPSSiteImportService
     /**
      * @return the optionalHelpers
      */
-    public List<IPSImportHelper> getOptionalHelpers()
+    public List<PSImportHelper> getOptionalHelpers()
     {
         return optionalHelpers;
     }
@@ -197,7 +198,7 @@ public class PSSiteImportService implements IPSSiteImportService
     /**
      * @param optionalHelpers the optionalHelpers to set
      */
-    public void setOptionalHelpers(List<IPSImportHelper> optionalHelpers)
+    public void setOptionalHelpers(List<PSImportHelper> optionalHelpers)
     {
         this.optionalHelpers = optionalHelpers;
     }
@@ -224,7 +225,7 @@ public class PSSiteImportService implements IPSSiteImportService
      */
     private void runHelpers(PSSiteImportCtx siteImportCtx, PSPageContent importedPageContent) throws PSDataServiceException, PSSiteImportException {
         // Run helpers
-        for (IPSImportHelper mandatoryHelper : mandatoryHelpers)
+        for (PSImportHelper mandatoryHelper : mandatoryHelpers)
         {
             try
             {
@@ -243,7 +244,7 @@ public class PSSiteImportService implements IPSSiteImportService
             }
         }
 
-        for (IPSImportHelper optionalHelper : optionalHelpers)
+        for (PSImportHelper optionalHelper : optionalHelpers)
         {
             optionalHelper.process(importedPageContent, siteImportCtx);
         }

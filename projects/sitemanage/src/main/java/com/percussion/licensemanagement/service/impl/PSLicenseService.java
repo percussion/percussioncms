@@ -31,7 +31,6 @@ import com.percussion.licensemanagement.data.PSLicenseStatus;
 import com.percussion.licensemanagement.data.PSModuleLicense;
 import com.percussion.licensemanagement.data.PSModuleLicenses;
 import com.percussion.licensemanagement.error.PSLicenseServiceException;
-import com.percussion.licensemanagement.service.IPSLicenseService;
 import com.percussion.metadata.data.PSMetadata;
 import com.percussion.metadata.service.IPSMetadataService;
 import com.percussion.services.legacy.IPSCmsObjectMgr;
@@ -39,11 +38,11 @@ import com.percussion.services.sitemgr.IPSSiteManager;
 import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.share.data.PSNoContent;
 import com.percussion.share.service.IPSSystemProperties;
-import com.percussion.util.PSSiteManageBean;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -60,8 +59,8 @@ import java.text.MessageFormat;
 import static org.apache.commons.lang.Validate.notNull;
 
 @Path("/license")
-@PSSiteManageBean("licenseService")
-public class PSLicenseService implements IPSLicenseService {
+@Component("licenseService")
+public class PSLicenseService {
     /**
      * Constants for Netsuite response on getLicenseStatus
      */

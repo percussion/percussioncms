@@ -167,7 +167,6 @@ import java.util.stream.Collectors;
  * @author dougrand
  */
 @PSBaseBean("sys_assemblyService")
-@Transactional
 public class PSAssemblyService implements IPSAssemblyService
 {
    @PersistenceContext

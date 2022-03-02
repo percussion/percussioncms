@@ -44,11 +44,12 @@ import com.percussion.pagemanagement.data.PSPage;
 import com.percussion.pagemanagement.data.PSTemplateSummary;
 import com.percussion.pagemanagement.service.IPSPageService;
 import com.percussion.pagemanagement.service.IPSTemplateService;
+import com.percussion.pagemanagement.service.impl.PSPageService;
 import com.percussion.pathmanagement.data.PSDeleteFolderCriteria;
 import com.percussion.pathmanagement.data.PSFolderPermission;
 import com.percussion.pathmanagement.data.PSPathItem;
-import com.percussion.pathmanagement.service.IPSPathService;
 import com.percussion.pathmanagement.service.impl.PSAssetPathItemService;
+import com.percussion.pathmanagement.service.impl.PSPathService;
 import com.percussion.pathmanagement.service.impl.PSPathUtils;
 import com.percussion.pubserver.IPSPubServerService;
 import com.percussion.queue.IPSPageImportQueue;
@@ -85,8 +86,8 @@ import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.share.spring.PSSpringWebApplicationContextUtils;
 import com.percussion.share.validation.PSValidationErrors;
 import com.percussion.share.validation.PSValidationErrorsBuilder;
-import com.percussion.sitemanage.dao.IPSSitePublishDao;
 import com.percussion.sitemanage.dao.IPSiteDao;
+import com.percussion.sitemanage.dao.impl.PSSitePublishDao;
 import com.percussion.sitemanage.data.PSPubInfo;
 import com.percussion.sitemanage.data.PSSaasSiteConfig;
 import com.percussion.sitemanage.data.PSSite;
@@ -179,11 +180,10 @@ import static org.apache.commons.lang.Validate.notNull;
     private IPSSecurityWs securityWs;
 
     @Autowired
-    private IPSPageService psPageService;
+    private PSPageService psPageService;
 
     @Autowired
-    @Qualifier("pathService")
-    private IPSPathService psPathService;
+    private PSPathService psPathService;
 
     private IPSiteDao siteDao;
 
@@ -201,7 +201,7 @@ import static org.apache.commons.lang.Validate.notNull;
 
     private IPSUserService userService;
 
-    private IPSSitePublishDao sitePublishDao;
+    private PSSitePublishDao sitePublishDao;
 
     private IPSSiteTemplateService siteTemplateService;
 
@@ -243,7 +243,7 @@ import static org.apache.commons.lang.Validate.notNull;
     @Autowired
     public PSSiteDataService(IPSiteDao dao, IPSPublishingWs publishingWs, IPSSiteManager siteMgr,
             IPSManagedNavService navService, IPSIdMapper idMapper, IPSSiteSectionService sectionService,
-            IPSContentWs contentWs, IPSUserService userService, IPSSitePublishDao sitePublishDao,
+            IPSContentWs contentWs, IPSUserService userService, PSSitePublishDao sitePublishDao,
             IPSSiteTemplateService siteTemplateService, IPSPageDao pageDao, IPSItemWorkflowService itemWorkflowService,
             IPSWidgetAssetRelationshipService widgetAssetRelationshipService, IPSAssetDao assetDao,
             IPSItemService itemService, IPSFolderHelper folderHelper,@Qualifier("siteImportService") IPSSiteImportService siteImportService,

@@ -23,7 +23,6 @@
  */
 package com.percussion.cms.objectstore.server;
 
-import com.percussion.cms.IPSConstants;
 import com.percussion.cms.PSCmsException;
 import com.percussion.cms.objectstore.IPSCataloger;
 import com.percussion.cms.objectstore.PSCmsObject;
@@ -127,7 +126,7 @@ public class PSItemDefManager
    /**
     * Logger to use, never <code>null</code>.
     */
-   private static final Logger log = LogManager.getLogger(IPSConstants.CONTENTREPOSITORY_LOG);
+   private static final Logger log = LogManager.getLogger(PSItemDefManager.class);
    
    /**
     * This class implements the singleton pattern. The single instance of this

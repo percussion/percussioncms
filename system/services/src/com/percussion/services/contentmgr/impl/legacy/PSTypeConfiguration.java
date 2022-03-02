@@ -39,21 +39,7 @@ import com.percussion.services.contentmgr.impl.PSContentUtils;
 import com.percussion.utils.jsr170.PSPropertyDefinition;
 import com.percussion.utils.string.PSStringUtils;
 import com.percussion.utils.types.PSPair;
-import net.sf.cglib.beans.BeanGenerator;
-import net.sf.cglib.core.DefaultNamingPolicy;
-import net.sf.cglib.core.NamingPolicy;
-import net.sf.cglib.core.Predicate;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
-import javax.jcr.PropertyType;
-import javax.jcr.Value;
-import javax.jcr.nodetype.NodeDefinition;
-import javax.jcr.nodetype.NodeType;
-import javax.jcr.nodetype.PropertyDefinition;
 import java.io.Serializable;
 import java.sql.Blob;
 import java.sql.Clob;
@@ -67,6 +53,23 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import javax.jcr.PropertyType;
+import javax.jcr.Value;
+import javax.jcr.nodetype.NodeDefinition;
+import javax.jcr.nodetype.NodeType;
+import javax.jcr.nodetype.PropertyDefinition;
+
+import net.sf.cglib.beans.BeanGenerator;
+import net.sf.cglib.core.DefaultNamingPolicy;
+import net.sf.cglib.core.NamingPolicy;
+import net.sf.cglib.core.Predicate;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * The type configuration is the heart of the legacy content repository. This is
@@ -110,7 +113,7 @@ public class PSTypeConfiguration implements NodeType, Serializable
       /**
        * The sysid is used, as for child tables
        */
-      CHILDID
+      CHILDID;
    }
 
    /**

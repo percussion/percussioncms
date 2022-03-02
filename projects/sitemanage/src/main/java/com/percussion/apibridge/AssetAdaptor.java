@@ -35,7 +35,6 @@ import com.percussion.assetmanagement.data.PSFileAssetReportLine;
 import com.percussion.assetmanagement.data.PSImageAssetReportLine;
 import com.percussion.assetmanagement.data.PSReportFailedToRunException;
 import com.percussion.assetmanagement.service.IPSAssetService;
-import com.percussion.cms.IPSConstants;
 import com.percussion.cms.objectstore.PSComponentSummary;
 import com.percussion.error.PSExceptionUtils;
 import com.percussion.itemmanagement.data.PSItemUserInfo;
@@ -124,7 +123,7 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
     /**
      * Logger for this service.
      */
-    public static final Logger log = LogManager.getLogger(IPSConstants.API_LOG);
+    public static final Logger log = LogManager.getLogger(AssetAdaptor.class);
 
     @Autowired
     private final IPSAssetDao assetDao;

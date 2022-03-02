@@ -24,10 +24,10 @@
 
 package com.percussion.integritymanagement.service.impl;
 
-import com.percussion.integritymanagement.data.IPSIntegrityStatus;
-import com.percussion.integritymanagement.data.IPSIntegrityStatus.Status;
-import com.percussion.integritymanagement.data.IPSIntegrityTask;
 import com.percussion.integritymanagement.data.PSIntegrityStatus;
+import com.percussion.integritymanagement.data.PSIntegrityStatus.Status;
+import com.percussion.integritymanagement.data.PSIntegrityTask;
+import com.percussion.integritymanagement.data.PSIntegrityTask.TaskStatus;
 import com.percussion.integritymanagement.service.IPSIntegrityCheckerService.IntegrityTaskType;
 import com.percussion.server.PSRequest;
 import com.percussion.share.service.exception.PSDataServiceException;
@@ -38,13 +38,14 @@ import com.percussion.utils.service.IPSUtilityService;
 import com.percussion.utils.testing.IntegrationTest;
 import com.percussion.webservices.security.IPSSecurityWs;
 import com.percussion.webservices.security.PSSecurityWsLocator;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 @Category(IntegrationTest.class)
 public class PSIntegrityCheckerServiceTest  extends PSServletTestCase
@@ -76,13 +77,13 @@ public class PSIntegrityCheckerServiceTest  extends PSServletTestCase
         if (utilityService.isSaaSEnvironment())
         {
             // Check the start and status methods
-            IPSIntegrityStatus status = start();
+            PSIntegrityStatus status = start();
             assertNotNull(status);
             assertTrue(status.getStatus().equals(Status.SUCCESS));
-            Set<IPSIntegrityTask> tasks = status.getTasks();
-            for (IPSIntegrityTask task : tasks)
+            Set<PSIntegrityTask> tasks = status.getTasks();
+            for (PSIntegrityTask task : tasks)
             {
-                assertTrue(task.getStatus().equals(IPSIntegrityTask.TaskStatus.SUCCESS));
+                assertTrue(task.getStatus().equals(TaskStatus.SUCCESS));
             }
             // Check the delete method
             service.delete(status.getToken());
@@ -94,7 +95,7 @@ public class PSIntegrityCheckerServiceTest  extends PSServletTestCase
     public void testIntegrityServiceHistory() throws PSDataServiceException {
         if (utilityService.isSaaSEnvironment())
         {
-            List<IPSIntegrityStatus> statuses = service.getHistory();
+            List<PSIntegrityStatus> statuses = service.getHistory();
             int initialSize = statuses.size();
             start();
             statuses = service.getHistory();
@@ -105,7 +106,7 @@ public class PSIntegrityCheckerServiceTest  extends PSServletTestCase
             curSize = statuses.size();
             assertEquals(curSize, initialSize + 2);
             // Test Delete also
-            for (IPSIntegrityStatus status : statuses)
+            for (PSIntegrityStatus status : statuses)
             {
                 service.delete(status.getToken());
             }
@@ -120,7 +121,7 @@ public class PSIntegrityCheckerServiceTest  extends PSServletTestCase
         boolean processed = false;
         PSIntegrityStatus status = null;
         while(!processed && endTime - startTime < 10000){
-            status = (PSIntegrityStatus) service.getStatus(token);
+            status = service.getStatus(token);
             if(!status.getStatus().equals(Status.RUNNING)){
                 processed = true;
             }
