@@ -27,11 +27,11 @@
        xmlns:tx="http://www.springframework.org/schema/tx"
        xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+http://www.springframework.org/schema/beans/spring-beans.xsd
 http://www.springframework.org/schema/tx
-http://www.springframework.org/schema/tx/spring-tx-4.2.xsd
+http://www.springframework.org/schema/tx/spring-tx.xsd
 http://www.springframework.org/schema/context
-http://www.springframework.org/schema/context/spring-context-4.2.xsd">
+http://www.springframework.org/schema/context/spring-context.xsd">
 
     <tx:annotation-driven transaction-manager="sys_transactionManager"/>
 
@@ -41,31 +41,6 @@ http://www.springframework.org/schema/context/spring-context-4.2.xsd">
                                 expression="com.percussion.utils.annotations.IgnoreInWebAppSpringContext"/>
 
     </context:component-scan>
-    <!--
-       <bean id="sys_guidmanager"
-             class="com.percussion.services.guidmgr.impl.PSGuidManager">
-          <property name="sessionFactory">
-             <ref bean="sys_sessionFactory" />
-          </property>
-       </bean>
-       -->
-    <!--
-       <bean id="sys_cmsObjectMgr"
-             class="com.percussion.services.legacy.impl.PSCmsObjectMgr">
-          <property name="sessionFactory">
-             <ref bean="sys_sessionFactory" />
-          </property>
-       </bean>
-    -->
-    <!--
-    <bean id="sys_aclService"
-          class="com.percussion.services.security.impl.PSAclService">
-       <property name="sessionFactory">
-          <ref bean="sys_sessionFactory" />
-       </property>
-       <property name="grantDefaultCommunityVisibility" value="true"/>
-    </bean>
- -->
 
     <bean id="sys_deployService"
           class="com.percussion.deploy.services.impl.PSDeployService">
@@ -82,35 +57,10 @@ http://www.springframework.org/schema/context/spring-context-4.2.xsd">
 
     <bean id="sys_assemblyService"
           class="com.percussion.services.assembly.impl.PSAssemblyService">
-       <property name="notificationService">
-          <ref bean="sys_notificationService" />
-       </property>
-       <property name="cache">
-          <ref bean="sys_cacheAccessor" />
-       </property>
-       <property name="configurationBean">
-          <ref bean="sys_beanConfiguration" />
-       </property>
+       <property name="notificationService" ref="sys_notificationService"/>
+       <property name="cache" ref="sys_cacheAccessor"/>
+       <property name="configurationBean" ref="sys_beanConfiguration"/>
     </bean>
-    <!--
-    <bean id="sys_assemblyWs"
-          class="com.percussion.webservices.assembly.impl.PSAssemblyWs">
-       <property name="sessionFactory">
-          <ref bean="sys_sessionFactory" />
-       </property>
-    </bean>
- -->
-    <!--
-    <bean id="sys_assemblyDesignWs"
-          class="com.percussion.webservices.assembly.impl.PSAssemblyDesignWs">
-       <property name="sessionFactory">
-          <ref bean="sys_sessionFactory" />
-       </property>
-       <property name="cache">
-          <ref bean="sys_cacheAccessor" />
-       </property>
-    </bean>
- -->
     <bean id="sys_contentService"
           class="com.percussion.services.content.impl.PSContentService">
     </bean>
@@ -125,7 +75,176 @@ http://www.springframework.org/schema/context/spring-context-4.2.xsd">
         <property name="sessionFactory" ref="sys_sessionFactory"/>
         <property name="contentMgr" ref="sys_contentManager"/>
     </bean>
+    <!-- Publishing handler setup for the assembly and status queues -->
+    <bean id="sys_publishMessageHandlerContainerQ"
+          class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+        <property name="concurrentConsumers" value="4"/>
+        <property name="connectionFactory" ref="sys_jmsConnectionFactory" />
+        <property name="destination" ref="sys_publishQueueDestination" />
+        <property name="messageListener" ref="sys_publishQueueListener" />
+        <property name="acceptMessagesWhileStopping" value="true" />
+    </bean>
 
+    <bean id="sys_filesystem"
+          class="com.percussion.rx.delivery.impl.PSFileDeliveryHandler">
+    </bean>
+
+    <bean id="sys_fileDeliveryHandler"
+          class="com.percussion.rx.delivery.impl.PSDeliveryHandlerRunner">
+        <property name="deliveryHandlers">
+            <list>
+                <ref bean="sys_filesystem" />
+                <ref bean="sys_metadataDeliveryHandler" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="sys_amazons3"
+          class="com.percussion.rx.delivery.impl.PSAmazonS3DeliveryHandler">
+        <!--  targetRegion - when configured sets the primary region where the S3
+        bucket is deployed.  Defaults to region of EC2 instance when running on EC2 or
+        the default AWS region if not on EC2.
+        for S3 publishing.    <property name="targetRegion" value="us-east-1"/>
+       -->
+        <property name="targetRegion" value="us-east-1"/>
+    </bean>
+
+    <bean id="sys_amazons3DeliveryHandler"
+          class="com.percussion.rx.delivery.impl.PSDeliveryHandlerRunner">
+        <property name="deliveryHandlers">
+            <list>
+                <ref bean="sys_amazons3" />
+                <ref bean="sys_metadataDeliveryHandler" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="sys_ftp"
+          class="com.percussion.rx.delivery.impl.PSFtpDeliveryHandler">
+        <!-- Properties that can be set here:
+            timeout
+                (defaults to -1 as not defined.
+                It is the socket timeout in milliseconds for both when opening a
+                socket and a currently open connection).
+            usePassiveMode
+                (defaults to false.
+                Determines if using passive or active mode for the FTP client.
+                Defaults to use active mode. If using passive mode is on, then it
+                will also disable the remote verification
+        -->
+        <property name="usePassiveMode" value="true" />
+    </bean>
+
+    <bean id="sys_ftp_default"
+          class="com.percussion.rx.delivery.impl.PSFtpDeliveryHandler">
+        <!-- Properties that can be set here:
+            timeout
+                (defaults to -1 as not defined.
+                It is the socket timeout in milliseconds for both when opening a
+                socket and a currently open connection).
+            usePassiveMode
+                (defaults to false.
+                Determines if using passive or active mode for the FTP client.
+                Defaults to use active mode. If using passive mode is on, then it
+                will also disable the remote verification
+        -->
+        <property name="usePassiveMode" value="true" />
+    </bean>
+
+    <bean id="sys_ftpDeliveryHandler"
+          class="com.percussion.rx.delivery.impl.PSDeliveryHandlerRunner">
+        <property name="deliveryHandlers">
+            <list>
+                <ref bean="sys_ftp_default" />
+                <ref bean="sys_metadataDeliveryHandler" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="sys_databaseDeliveryHandler"
+          class="com.percussion.rx.delivery.impl.PSDatabaseDeliveryHandler">
+    </bean>
+
+    <bean id="sys_sftp"
+          class="com.percussion.rx.delivery.impl.PSSFtpDeliveryHandler">
+        <!-- Properties that can be set here:
+            timeout
+                (defaults to -1 as not defined.
+                It is the socket timeout in milliseconds for the underlying provider)
+            umask
+                (defaults to null as not defined
+                It is a 3-character string of octal digits if defined.
+                if the umask is not defined, then the permissions of the created
+                files and directories are controled by the configuration of the
+                login user ID of the SSH server. If the umask is defined, then
+                the permissions of the created filed and directories will be
+                modified according to the specified umask.
+
+                property name="umask"	value="022"
+                )
+        -->
+    </bean>
+
+    <bean id="sys_sftp_default"
+          class="com.percussion.rx.delivery.impl.PSSFtpDeliveryHandler">
+        <!-- Properties that can be set here:
+            timeout
+                (defaults to -1 as not defined.
+                It is the socket timeout in milliseconds for the underlying provider)
+            umask
+                (defaults to null as not defined
+                It is a 3-character string of octal digits if defined.
+                if the umask is not defined, then the permissions of the created
+                files and directories are controled by the configuration of the
+                login user ID of the SSH server. If the umask is defined, then
+                the permissions of the created filed and directories will be
+                modified according to the specified umask.
+
+                property name="umask"   value="022"
+                )
+        -->
+    </bean>
+
+    <bean id="sys_sftpDeliveryHandler"
+          class="com.percussion.rx.delivery.impl.PSDeliveryHandlerRunner">
+        <property name="deliveryHandlers">
+            <list>
+                <ref bean="sys_sftp_default" />
+                <ref bean="sys_metadataDeliveryHandler" />
+            </list>
+        </property>
+    </bean>
+
+    <!-- Delivery Handler Runner is used to run one or more delivery handlers, so that
+         it can be used to delivery published content to more than one locations -->
+    <bean id="sys_deliveryHandlerRunner"
+          class="com.percussion.rx.delivery.impl.PSDeliveryHandlerRunner">
+        <property name="deliveryHandlers">
+            <list>
+                <ref bean="sys_fileDeliveryHandler" />
+                <ref bean="sys_metadataDeliveryHandler" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="sys_metadataDeliveryHandler"
+          class="com.percussion.rx.delivery.impl.PSMetadataDeliveryHandler">
+        <property name="supportedMimeTypes">
+            <list>
+                <value>text/html</value>
+            </list>
+        </property>
+        <property name="supportedContentTypes">
+            <list>
+                <value>percPage</value>
+            </list>
+        </property>
+        <property name="retryCount" value="3" />
+        <property name="connectionTimeout" value="30000" />
+        <property name="operationTimeout" value="30000" />
+    </bean>
+
+    <bean class="com.percussion.delivery.metadata.PSMetadataExtractorService" id="sys_metadataExtractor"/>
     <bean id="sys_publishingWs"
           class="com.percussion.webservices.publishing.impl.PSPublishingWs">
         <property name="filterSvc" ref="sys_filtermanager"/>
@@ -327,22 +446,7 @@ http://www.springframework.org/schema/context/spring-context-4.2.xsd">
           factory-method="createInstance">
         <constructor-arg ref="sys_datasourceManager"/>
     </bean>
-    <!--
-       <bean id="sys_backEndRoleMgr"
-             class="com.percussion.services.security.impl.PSBackEndRoleMgr">
-          <property name="sessionFactory">
-             <ref bean="sys_sessionFactory" />
-          </property>
-       </bean>
-    -->
-    <!--
-    <bean id="sys_cacheAccessor"
-          class="com.percussion.services.memory.impl.PSEhCacheAccessor">
-       <property name="notificationService">
-          <ref bean="sys_notificationService"/>
-       </property>
-    </bean>
- -->
+
     <bean id="sys_lockingService"
           class="com.percussion.services.locking.impl.PSObjectLockService">
     </bean>
@@ -395,10 +499,6 @@ http://www.springframework.org/schema/context/spring-context-4.2.xsd">
         <constructor-arg ref="sys_sessionFactory"/>
     </bean>
 
-    <!--<bean id="sys_roleMgr"-->
-    <!--class="com.percussion.services.security.impl.PSRoleMgr">-->
-    <!--</bean>-->
-
     <bean id="sys_notificationService"
           class="com.percussion.services.notification.impl.PSNotificationService">
     </bean>
@@ -425,20 +525,11 @@ http://www.springframework.org/schema/context/spring-context-4.2.xsd">
     <bean id="sys_touchItemQL" class="com.percussion.services.touchitem.impl.PSTouchItemQueueListener">
         <property name="messageQueueService" ref="sys_messageQueueService"/>
     </bean>
-    <!--
-       <bean id="sys_publisherservice"
+    <bean id="sys_publisherservice"
              class="com.percussion.services.publisher.impl.PSPublisherService" init-method="init">
-          <property name="sessionFactory">
-             <ref bean="sys_sessionFactory" />
-          </property>
-          <property name="configurationBean">
-             <ref bean="sys_beanConfiguration" />
-          </property>
-          <property name="rxpub">
-             <ref bean="sys_rxpublisherservice" />
-          </property>
-       </bean>
-    -->
+          <property name="configurationBean" ref="sys_beanConfiguration"/>
+          <property name="rxpub" ref="sys_rxpublisherservice"/>
+    </bean>
     <bean id="sys_rxpublisherservice"
           class="com.percussion.rx.publisher.impl.PSRxPublisherService">
         <property name="publishSenderFactory" ref="sys_publishQueueSenderFactory"/>

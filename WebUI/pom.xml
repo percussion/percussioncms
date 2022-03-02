@@ -201,6 +201,14 @@
                                 <exclude>**/hibernate/*</exclude>
                             </excludes>
                         </resource>
+                        <!-- deployer beans file -->
+                        <resource>
+                            <directory>../deployer/src/main/webapp/WEB-INF/config</directory>
+                            <!-- override the destination directory for this resource -->
+                            <targetPath>WEB-INF/config</targetPath>
+                            <!-- enable filtering -->
+                            <filtering>false</filtering>
+                        </resource>
                         <resource>
                             <directory>../system/ear/config/hibernate</directory>
                             <!-- override the destination directory for this resource -->
@@ -1235,8 +1243,6 @@
         <dependency>
             <groupId>org.yaml</groupId>
             <artifactId>snakeyaml</artifactId>
-            <version>1.26</version>
-            <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>org.javassist</groupId>

@@ -8,7 +8,7 @@
     <licenses>
         <license>
             <name>GNU AFFERO GENERAL PUBLIC LICENSE, Version 3 (AGPL-3.0)</name>
-            <url>http://opensource.org/licenses/AGPL-3.0</url>
+            <url>https://opensource.org/licenses/AGPL-3.0</url>
             <distribution />
         </license>
     </licenses>
@@ -177,6 +177,7 @@
        <solr.version>8.11.1</solr.version>
         <nettyall.version>4.1.45.Final</nettyall.version>
        <hikari.version>4.0.3</hikari.version>
+       <snakeyaml.version>1.29</snakeyaml.version>
        <commons-email.version>1.5</commons-email.version>
        <commons.codec.version>1.14</commons.codec.version>
        <tinymce.version>4.9.10</tinymce.version>
@@ -1743,7 +1744,7 @@
             <dependency>
                 <groupId>org.yaml</groupId>
                 <artifactId>snakeyaml</artifactId>
-                <version>1.26</version>
+                <version>${snakeyaml.version}</version>
                 <scope>runtime</scope>
             </dependency>
 
