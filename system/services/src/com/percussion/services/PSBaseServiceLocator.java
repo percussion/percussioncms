@@ -23,6 +23,8 @@
  */
 package com.percussion.services;
 
+import com.percussion.cms.IPSConstants;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.util.PSOsTool;
 import com.percussion.utils.container.PSContainerUtilsFactory;
 import com.percussion.utils.servlet.PSServletUtils;
@@ -70,7 +72,7 @@ public class PSBaseServiceLocator
    /**
     * The logger to use in this class
     */
-   private static final Logger ms_logger = LogManager.getLogger(PSBaseServiceLocator.class);
+   private static final Logger ms_logger = LogManager.getLogger(IPSConstants.SERVER_LOG);
 
    /**
     * The location of the configuration directory in the source tree
@@ -203,8 +205,8 @@ public class PSBaseServiceLocator
       }
       catch (Exception e)
       {
-         ms_logger.error("Error loading child bean configurations: " + 
-            e.getLocalizedMessage());
+         ms_logger.error("Error loading child bean configurations: {}" ,
+                 PSExceptionUtils.getMessageForLog(e));
          return null;
       }
    }
@@ -264,7 +266,7 @@ public class PSBaseServiceLocator
       }
       catch (NamingException e)
       {
-         ms_logger.error("Naming exception", e);
+         ms_logger.error("Naming exception: {}", PSExceptionUtils.getMessageForLog(e));
          throw new RuntimeException(e);
       }
    }
@@ -419,7 +421,7 @@ public class PSBaseServiceLocator
                     if (!System.getProperty("rxdeploydir").isEmpty())
                     {
                           loadFileConfig();
-                                          }
+                    }
                     else
                     {
                        ms_logger.error("Must be initialized via a servlet, or "
