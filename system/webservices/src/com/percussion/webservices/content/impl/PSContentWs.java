@@ -174,7 +174,6 @@ import static org.apache.commons.lang.Validate.notNull;
  * The public content webservice implementations.
  */
 @Component("sys_contentWs")
-@Transactional
 public class PSContentWs extends PSContentBaseWs implements IPSContentWs
 {
    // @see IPSContentWs#loadContentTypes(String)

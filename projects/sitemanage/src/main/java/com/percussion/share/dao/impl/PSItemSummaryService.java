@@ -225,7 +225,7 @@ public class PSItemSummaryService implements IPSItemSummaryFactoryService, IPSDa
      * @return <code>true</code> if the item is a navigation folder; otherwise
      * return <code>false</code>.
      */
-    public String getNavFolderType(PSItemSummary item, String relationshipTypeName)
+    private String getNavFolderType(PSItemSummary item, String relationshipTypeName)
     {
         if (!isFolder(item))
             return null;

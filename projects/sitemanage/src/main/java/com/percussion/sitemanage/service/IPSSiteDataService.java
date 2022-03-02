@@ -24,7 +24,6 @@
 package com.percussion.sitemanage.service;
 
 import com.percussion.foldermanagement.service.IPSFolderService;
-import com.percussion.itemmanagement.service.IPSItemService;
 import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.pubserver.data.PSPubServer;
 import com.percussion.services.sitemgr.IPSSite;
@@ -33,17 +32,16 @@ import com.percussion.share.data.PSEnumVals;
 import com.percussion.share.data.PSMapWrapper;
 import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.exception.PSDataServiceException;
+import com.percussion.share.service.exception.PSSpringValidationException;
 import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.share.validation.PSValidationErrors;
 import com.percussion.sitemanage.data.PSPubInfo;
 import com.percussion.sitemanage.data.PSSaasSiteConfig;
 import com.percussion.sitemanage.data.PSSite;
-import com.percussion.sitemanage.data.PSSiteCopyRequest;
 import com.percussion.sitemanage.data.PSSiteProperties;
 import com.percussion.sitemanage.data.PSSitePublishProperties;
 import com.percussion.sitemanage.data.PSSiteStatisticsSummary;
 import com.percussion.sitemanage.data.PSSiteSummary;
-import com.percussion.sitemanage.data.PSValidateCopyFoldersRequest;
 import com.percussion.sitemanage.error.PSSiteImportException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -58,11 +56,6 @@ import java.util.List;
  *
  */
 public interface IPSSiteDataService extends IPSDataService<PSSite,PSSiteSummary, String> {
-
-    void validateFolders(PSValidateCopyFoldersRequest req) throws PSValidationException;
-
-    PSSite copy(PSSiteCopyRequest req) throws IPSItemService.PSItemServiceException, PSDataServiceException;
-
     /**
      * The publishing type. Used to indicate which mechanism to be used to
      * publish to the live site.
@@ -151,7 +144,7 @@ public interface IPSSiteDataService extends IPSDataService<PSSite,PSSiteSummary,
 
     /***
      * Gets the publishing server info for the supplied siteid
-     * @param siteId
+     * @param sitId
      * @return may be null or a publishing server
      */
     public PSPubInfo getS3PubServerInfo(long siteId);

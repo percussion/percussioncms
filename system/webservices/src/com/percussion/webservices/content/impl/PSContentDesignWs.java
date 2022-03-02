@@ -119,7 +119,6 @@ import static com.percussion.webservices.PSWebserviceUtils.isItemCheckedOutToUse
  * The private content design webservice implementations.
  */
 @Component("sys_contentDesignWs")
-@Transactional
 public class PSContentDesignWs extends PSContentBaseWs implements
    IPSContentDesignWs
 {

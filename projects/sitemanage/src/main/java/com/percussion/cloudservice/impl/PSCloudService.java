@@ -31,7 +31,6 @@ import com.percussion.cloudservice.data.PSCloudServicePageData;
 import com.percussion.error.PSExceptionUtils;
 import com.percussion.licensemanagement.data.PSModuleLicense;
 import com.percussion.licensemanagement.error.PSLicenseServiceException;
-import com.percussion.licensemanagement.service.IPSLicenseService;
 import com.percussion.licensemanagement.service.impl.PSLicenseService;
 import com.percussion.pagemanagement.data.PSPage;
 import com.percussion.pagemanagement.service.IPSPageService;
@@ -69,13 +68,13 @@ public class PSCloudService implements IPSCloudService {
 	protected IPSFolderHelper folderHelper;
 	protected IPSRenderService renderService;
 	protected IPSPageService pageService;
-	protected IPSLicenseService licenseService;
+	protected PSLicenseService licenseService;
 	protected boolean isLogged;
 	protected static Logger log;
 	
 	@Autowired
 	public PSCloudService(IPSFolderHelper folderHelper, IPSRenderService renderService, 
-	        IPSPageService pageService, IPSLicenseService licenseService) {
+	        IPSPageService pageService, PSLicenseService licenseService) {
 		this.folderHelper = folderHelper;
 	    this.renderService = renderService;
 	    this.pageService = pageService;

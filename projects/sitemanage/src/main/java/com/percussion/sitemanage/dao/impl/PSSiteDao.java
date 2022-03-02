@@ -37,8 +37,6 @@ import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.share.dao.PSFolderPathUtils;
 import com.percussion.share.data.PSItemSummaryUtils;
 import com.percussion.share.service.exception.PSDataServiceException;
-import com.percussion.sitemanage.dao.IPSSiteContentDao;
-import com.percussion.sitemanage.dao.IPSSitePublishDao;
 import com.percussion.sitemanage.dao.IPSiteDao;
 import com.percussion.sitemanage.data.PSSite;
 import com.percussion.sitemanage.data.PSSitePublishProperties;
@@ -69,16 +67,15 @@ import static org.apache.commons.lang.Validate.notNull;
  */
 @Component("siteDao")
 @Lazy
-@Transactional
 public class PSSiteDao implements IPSiteDao
 {
 
-    private IPSSiteContentDao siteContentDao;
-    private IPSSitePublishDao sitePublishDao;
+    private PSSiteContentDao siteContentDao;
+    private PSSitePublishDao sitePublishDao;
     
     
     @Autowired
-    public PSSiteDao(IPSSiteContentDao siteContentDao, IPSSitePublishDao sitePublishDao)
+    public PSSiteDao(PSSiteContentDao siteContentDao, PSSitePublishDao sitePublishDao)
     {
         super();
         this.siteContentDao = siteContentDao;

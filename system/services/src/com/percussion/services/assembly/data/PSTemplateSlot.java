@@ -68,11 +68,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-import static java.util.stream.Collectors.groupingBy;
-import static java.util.stream.Collectors.mapping;
-import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toMap;
-import static java.util.stream.Collectors.toSet;
+import static java.util.stream.Collectors.*;
 
 /**
  * This object represents a single slot that is related to a template. Templates
@@ -83,7 +79,7 @@ import static java.util.stream.Collectors.toSet;
 @Entity
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "PSTemplateSlot")
 @Table(name = "RXSLOTTYPE")
-@NaturalIdCache()
+@NaturalIdCache
 @NamedQueries(
         {@NamedQuery(name = "slot.findSlotsByNames",
                 query = "select s from PSTemplateSlot s where lower(s.name) in (:names)")})
