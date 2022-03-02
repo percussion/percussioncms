@@ -94,7 +94,7 @@ function removeServiceFromStartup {
 function removeServiceScript() {
 	echo "Removing files."
 	set -x
-	rm -f "/etc/init.d/${SERVICE_NAME}"
+	rm -f "/etc/systemd/${SERVICE_NAME}"
 	rm -f "/etc/default/${SERVICE_NAME}"
 	{ set +x; } > /dev/null 2>&1
 }
@@ -132,13 +132,13 @@ echo ${EXECUTABLE}
 if [[ $(type -P "service") ]]; then
 	serviceCmd="service ${SERVICE_NAME}"
 else
-	serviceCmd="/etc/init.d/${SERVICE_NAME}"
+	serviceCmd="/etc/systemd/${SERVICE_NAME}"
 fi
 
 echo before uninstall $uninstall
 
 if [ "$uninstall" != "true" ]; then
-	if [ -f "/etc/init.d/${SERVICE_NAME}" ]; then
+	if [ -f "/etc/systemd/${SERVICE_NAME}" ]; then
 		echo "Service $SERVICE_NAME already installed"
 		exit 1
 	fi
@@ -165,11 +165,11 @@ chown -R "${RX_USER}:${RX_GROUP}" "${rxDir}"
 echo "Setting up pid folder /var/run${SERVICE_NAME} setting ownership to user=${RX_USER} group=${RX_GROUP}"
 mkdir -p ${TOMCAT_RUN}
 chown -R "${RX_USER}:${RX_GROUP}" "${TOMCAT_RUN}"
-echo "Copying startup script ${CATALINA_HOME}/bin/catalina.sh /etc/init.d/${SERVICE_NAME}"
-sed -e "s/\${PercussionProductionDTS_service}/$SERVICE_NAME/" ${CATALINA_HOME}/bin/catalina.sh  >> /etc/init.d/${SERVICE_NAME}
-sed -i "3 a CATALINA_HOME=${CATALINA_HOME}" /etc/init.d/${SERVICE_NAME}
-sed -i "4 a JAVA_HOME=${JAVA_HOME}" /etc/init.d/${SERVICE_NAME}
-chmod 755 "/etc/init.d/${SERVICE_NAME}"
+echo "Copying startup script ${CATALINA_HOME}/bin/catalina.sh /etc/systemd/${SERVICE_NAME}"
+sed -e "s/\${PercussionProductionDTS_service}/$SERVICE_NAME/" ${CATALINA_HOME}/bin/catalina.sh  >> /etc/systemd/${SERVICE_NAME}
+sed -i "3 a CATALINA_HOME=${CATALINA_HOME}" /etc/systemd/${SERVICE_NAME}
+sed -i "4 a JAVA_HOME=${JAVA_HOME}" /etc/systemd/${SERVICE_NAME}
+chmod 755 "/etc/systemd/${SERVICE_NAME}"
 
 
 cat <<-EOF > /etc/default/${SERVICE_NAME}
@@ -184,7 +184,7 @@ cat <<-EOF > /etc/default/${SERVICE_NAME}
   chown -R "${RX_USER}:${RX_GROUP}" "${TOMCAT_RUN}"
 EOF
 
-echo "Configuration for service ${SERVICE_NAME} in /etc/init.d/${SERVICE_NAME} must reinstall or update if paths change"
+echo "Configuration for service ${SERVICE_NAME} in /etc/systemd/${SERVICE_NAME} must reinstall or update if paths change"
 
 echo "************"
 cat /etc/default/${SERVICE_NAME}
@@ -203,8 +203,8 @@ elif [[ $(type -P "update-rc.d") ]]; then
 	update-rc.d ${SERVICE_NAME} defaults
 elif [ -d "/etc/rc2.d" ]; then
 	echo "Fall back to symbolic linking  into /etc/rcx.d folders"
-	ln /etc/init.d/${SERVICE_NAME} /etc/rc2.d/S99${SERVICE_NAME}
-	ln /etc/init.d/${SERVICE_NAME} /etc/rc0.d/K99${SERVICE_NAME}
+	ln /etc/systemd/${SERVICE_NAME} /etc/rc2.d/S99${SERVICE_NAME}
+	ln /etc/systemd/${SERVICE_NAME} /etc/rc0.d/K99${SERVICE_NAME}
 else
 	echo "Cannot find  chkconfig or update-rc.d or /etc/rc2.d to run service on startup consult documentation for alternative"
 	echo ${distVersion}
@@ -219,16 +219,16 @@ echo "*************"
 else #Unistall
 checkForProductionDTSService
 
-if [ ! -f "/etc/init.d/${SERVICE_NAME}" ]; then
-	echo "Service $SERVICE_NAME not installed in /etc/init.d/${SERVICE_NAME}"
+if [ ! -f "/etc/systemd/${SERVICE_NAME}" ]; then
+	echo "Service $SERVICE_NAME not installed in /etc/systemd/${SERVICE_NAME}"
 	exit 1
 fi
 
-if cat "/etc/init.d/${SERVICE_NAME}" | grep -q "catalina"; then
-	echo "Found service installed to /etc/init.d/${SERVICE_NAME}"
+if cat "/etc/systemd/${SERVICE_NAME}" | grep -q "catalina"; then
+	echo "Found service installed to /etc/systemd/${SERVICE_NAME}"
 else
-	cat "/etc/init.d/${SERVICE_NAME}" | grep -q "catalina"
-	echo "Service installed to /etc/init.d/${SERVICE_NAME} is not a Percussion Production DTS service"
+	cat "/etc/systemd/${SERVICE_NAME}" | grep -q "catalina"
+	echo "Service installed to /etc/systemd/${SERVICE_NAME} is not a Percussion Production DTS service"
 	exit 1
 fi
 
