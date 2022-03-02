@@ -163,8 +163,18 @@
                 <property name="lead.slash" value=""/>
             </else>
         </if>
-        <replace file="${install.dir}/jetty/defaults/start.d/jvm.ini" token="@@rxdir@@" value="${normalized.install.dir}" />
-        <replace file="${install.dir}/jetty/base/start.d/jvm.ini" token="@@rxdir@@" value="${normalized.install.dir}" />
+        <if>
+            <available file="${install.dir}/jetty/defaults/start.d/jvm.ini"/>
+            <then>
+               <replace file="${install.dir}/jetty/defaults/start.d/jvm.ini" token="@@rxdir@@" value="${normalized.install.dir}" />
+            </then>
+        </if>
+        <if>
+            <available file="${install.dir}/jetty/base/start.d/jvm.ini"/>
+            <then>
+                <replace file="${install.dir}/jetty/base/start.d/jvm.ini" token="@@rxdir@@" value="${normalized.install.dir}" />
+            </then>
+        </if>
         <replace file="${install.dir}/PercussionXMLCatalog.xml" token="@@rxdir@@" value="${lead.slash}${normalized.install.dir}" />
         <replace file="${install.dir}/var/config/CustomXMLCatalog.xml" token="@@rxdir@@" value="${lead.slash}${normalized.install.dir}" />
 
