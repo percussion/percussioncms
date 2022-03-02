@@ -141,6 +141,9 @@ public class PSBaseServiceLocator
                     configFiles.add(sysConfigDir + File.separator + PSServletUtils.DESIGN_BEANS_FILE_NAME);
                     configFiles.add(sysConfigDir + File.separator + PSServletUtils.DEPLOYER_BEANS_FILE_NAME);
                     configFiles.add(sysConfigDir + File.separator + PSServletUtils.BEANS_FILE_NAME);
+                    configFiles.add(sysConfigDir + File.separator + PSServletUtils.IMAGEWIDGET_BEANS_FILE_NAME);
+                    configFiles.add(sysConfigDir + File.separator + PSServletUtils.IMAGEWIDGET_SERVLET_FILE_NAME);
+
                     configFiles.add(sysConfigDir + File.separator + "projects" + File.separator + PSServletUtils.SITEMANAGE_FILE_NAME);
                     configFiles.add(sysConfigDir + File.separator + "projects" + File.separator + PSServletUtils.PACKAGE_BEANS_FILE_NAME);
 

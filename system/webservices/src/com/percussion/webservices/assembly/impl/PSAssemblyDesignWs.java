@@ -47,7 +47,7 @@ import com.percussion.services.notification.IPSNotificationListener;
 import com.percussion.services.notification.PSNotificationEvent;
 import com.percussion.services.notification.PSNotificationEvent.EventType;
 import com.percussion.services.sitemgr.IPSSite;
-import com.percussion.services.sitemgr.IPSSiteManagerInternal;
+import com.percussion.services.sitemgr.IPSSiteManager;
 import com.percussion.services.sitemgr.PSSiteManagerLocator;
 import com.percussion.util.PSBaseBean;
 import com.percussion.utils.guid.IPSGuid;
@@ -671,7 +671,7 @@ public class PSAssemblyDesignWs extends PSAssemblyBaseWs implements
          template = service.loadTemplate(deletedId, true);
 
          // get site / templates associations
-         IPSSiteManagerInternal sitemgr = (IPSSiteManagerInternal) PSSiteManagerLocator
+         IPSSiteManager sitemgr =  PSSiteManagerLocator
                .getSiteManager();
          Map<PSPair<IPSGuid, String>, Collection<IPSGuid>> siteToTemplates = sitemgr
                .findSiteTemplatesAssociations();
@@ -817,7 +817,7 @@ public class PSAssemblyDesignWs extends PSAssemblyBaseWs implements
          service.saveTemplate(template);
 
          // get site / templates associations. Has to cast to 
-         IPSSiteManagerInternal sitemgr = (IPSSiteManagerInternal) PSSiteManagerLocator
+         IPSSiteManager sitemgr =  PSSiteManagerLocator
                .getSiteManager();
          Map<PSPair<IPSGuid, String>, Collection<IPSGuid>> siteToTemplates = sitemgr
                .findSiteTemplatesAssociations();

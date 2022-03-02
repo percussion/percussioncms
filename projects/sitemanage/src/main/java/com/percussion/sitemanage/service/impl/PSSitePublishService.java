@@ -24,12 +24,13 @@
 package com.percussion.sitemanage.service.impl;
 
 import com.percussion.assetmanagement.service.IPSWidgetAssetRelationshipService;
+import com.percussion.cms.IPSConstants;
 import com.percussion.design.objectstore.PSLocator;
 import com.percussion.itemmanagement.data.PSItemDates;
 import com.percussion.itemmanagement.service.IPSItemService;
 import com.percussion.itemmanagement.service.IPSItemWorkflowService;
 import com.percussion.itemmanagement.service.IPSWorkflowHelper;
-import com.percussion.licensemanagement.service.impl.PSLicenseService;
+import com.percussion.licensemanagement.service.IPSLicenseService;
 import com.percussion.monitor.process.PSPublishingProcessMonitor;
 import com.percussion.pagemanagement.data.PSPage;
 import com.percussion.pagemanagement.service.IPSPageService;
@@ -62,8 +63,8 @@ import com.percussion.share.data.PSPagedObjectList;
 import com.percussion.share.service.IPSDataItemSummaryService;
 import com.percussion.share.service.IPSIdMapper;
 import com.percussion.share.service.exception.PSDataServiceException;
+import com.percussion.sitemanage.dao.IPSSitePublishDao;
 import com.percussion.sitemanage.dao.IPSiteDao;
-import com.percussion.sitemanage.dao.impl.PSSitePublishDao;
 import com.percussion.sitemanage.data.PSPublishingAction;
 import com.percussion.sitemanage.data.PSSitePublishResponse;
 import com.percussion.sitemanage.data.PSSiteSummary;
@@ -142,10 +143,10 @@ public class PSSitePublishService implements IPSSitePublishService
     public PSSitePublishService(IPSPublishingWs pubWs, IPSIdMapper idMapper, IPSContentWs contentWs,
             IPSWidgetAssetRelationshipService widgetAssetRelationshipService,
             IPSItemWorkflowService itemWorkflowService, IPSDataItemSummaryService itemSummaryService,
-            IPSiteDao siteDao, IPSPubServerService pubServerService, PSLicenseService licenseService,
+            IPSiteDao siteDao, IPSPubServerService pubServerService, IPSLicenseService licenseService,
             IPSItemService itemService, IPSCmsObjectMgr cmsObjectMgr, IPSContentChangeService contentChangeService,
             @Qualifier("cm1ListViewHelper") IPSListViewHelper listViewHelper, IPSWorkflowHelper workflowHelper, IPSPageService pageService,
-            PSSitePublishDao sitePublishDao, IPSSitePublishServiceHelper sitePublishServiceHelper)
+            IPSSitePublishDao sitePublishDao, IPSSitePublishServiceHelper sitePublishServiceHelper)
     {
         this.pubWs = pubWs;
         this.idMapper = idMapper;
@@ -1052,12 +1053,12 @@ public class PSSitePublishService implements IPSSitePublishService
      */
     private IPSPubServerService pubServerService;
 
-    private PSSitePublishDao sitePublishDao;
+    private IPSSitePublishDao sitePublishDao;
 
     /**
      * Used for checking license status before publishing.
      */
-    private PSLicenseService licenseService;
+    private IPSLicenseService licenseService;
 
     private IPSItemService itemService;
 
@@ -1079,7 +1080,7 @@ public class PSSitePublishService implements IPSSitePublishService
 
     static
     {
-        publishTypeMap.put(PubType.FULL, PSSitePublishDao.FULL);
+        publishTypeMap.put(PubType.FULL, IPSSitePublishDao.FULL);
         publishTypeMap.put(PubType.INCREMENTAL, PSSitePublishDaoHelper.INCREMENTAL);
         publishTypeMap.put(PubType.STAGING_INCREMENTAL, PSSitePublishDaoHelper.STAGING_INCREMENTAL);
         publishTypeMap.put(PubType.PUBLISH_NOW, PSSitePublishDaoHelper.PUBLISH_NOW);
@@ -1088,6 +1089,6 @@ public class PSSitePublishService implements IPSSitePublishService
         publishTypeMap.put(PubType.REMOVE_FROM_STAGING_NOW, PSSitePublishDaoHelper.STAGING_UNPUBLISH_NOW);
     }
 
-    public static final Logger log = LogManager.getLogger(PSSitePublishService.class);
+    public static final Logger log = LogManager.getLogger(IPSConstants.PUBLISHING_LOG);
 
 }

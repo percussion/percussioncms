@@ -28,17 +28,18 @@ import com.percussion.assetmanagement.data.PSAbstractAssetRequest;
 import com.percussion.assetmanagement.data.PSAbstractAssetRequest.AssetType;
 import com.percussion.assetmanagement.data.PSAsset;
 import com.percussion.assetmanagement.data.PSBinaryAssetRequest;
-import com.percussion.assetmanagement.service.impl.PSAssetService;
+import com.percussion.assetmanagement.service.IPSAssetService;
 import com.percussion.error.PSExceptionUtils;
 import com.percussion.integritymanagement.data.PSIntegrityStatus;
 import com.percussion.integritymanagement.data.PSIntegrityStatus.Status;
 import com.percussion.integritymanagement.data.PSIntegrityTask;
 import com.percussion.integritymanagement.data.PSIntegrityTask.TaskStatus;
 import com.percussion.integritymanagement.data.PSIntegrityTaskProperty;
+import com.percussion.integritymanagement.service.IPSIntegrityCheckerDao;
 import com.percussion.integritymanagement.service.IPSIntegrityCheckerService;
-import com.percussion.itemmanagement.service.impl.PSItemWorkflowService;
+import com.percussion.itemmanagement.service.IPSItemWorkflowService;
 import com.percussion.pathmanagement.service.impl.PSAssetPathItemService;
-import com.percussion.pubserver.impl.PSPubServerService;
+import com.percussion.pubserver.IPSPubServerService;
 import com.percussion.rx.delivery.impl.PSAmazonS3DeliveryHandler;
 import com.percussion.server.PSRequest;
 import com.percussion.server.PSServer;
@@ -48,10 +49,10 @@ import com.percussion.services.sitemgr.IPSSiteManager;
 import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.sitemanage.service.IPSSiteDataService.PublishType;
-import com.percussion.user.service.impl.PSUserService;
-import com.percussion.utils.PSDTSStatusProvider;
+import com.percussion.user.service.IPSUserService;
+import com.percussion.utils.IPSDTSStatusProvider;
 import com.percussion.utils.request.PSRequestInfo;
-import com.percussion.utils.service.impl.PSUtilityService;
+import com.percussion.utils.service.IPSUtilityService;
 import com.percussion.utils.types.PSPair;
 import com.percussion.webservices.PSWebserviceUtils;
 import org.apache.logging.log4j.LogManager;
@@ -78,28 +79,28 @@ public class PSIntegrityCheckerService implements IPSIntegrityCheckerService
 {
 
     @Autowired
-    private PSIntegrityCheckerDao integrityDao;
+    private IPSIntegrityCheckerDao integrityDao;
 
     @Autowired
-    private PSDTSStatusProvider dtsStatusProvider;
+    private IPSDTSStatusProvider dtsStatusProvider;
     
     @Autowired 
-    private PSAssetService assetService;
+    private IPSAssetService assetService;
     
     @Autowired 
-    private PSItemWorkflowService itemWorkflowService;
+    private IPSItemWorkflowService itemWorkflowService;
     
     @Autowired
-    private PSUserService userService;
+    private IPSUserService userService;
     
     @Autowired
-    private PSUtilityService utilityService;
+    private IPSUtilityService utilityService;
     
     @Autowired
     private IPSSiteManager siteMgr;
     
     @Autowired
-    private PSPubServerService pubServerService;
+    private IPSPubServerService pubServerService;
     
     @Override
     public synchronized String start(final IntegrityTaskType type) throws PSDataServiceException {

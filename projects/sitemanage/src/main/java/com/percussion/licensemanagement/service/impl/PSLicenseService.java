@@ -31,6 +31,7 @@ import com.percussion.licensemanagement.data.PSLicenseStatus;
 import com.percussion.licensemanagement.data.PSModuleLicense;
 import com.percussion.licensemanagement.data.PSModuleLicenses;
 import com.percussion.licensemanagement.error.PSLicenseServiceException;
+import com.percussion.licensemanagement.service.IPSLicenseService;
 import com.percussion.metadata.data.PSMetadata;
 import com.percussion.metadata.service.IPSMetadataService;
 import com.percussion.services.legacy.IPSCmsObjectMgr;
@@ -60,54 +61,8 @@ import static org.apache.commons.lang.Validate.notNull;
 
 @Path("/license")
 @Component("licenseService")
-public class PSLicenseService {
-    /**
-     * Constants for Netsuite response on getLicenseStatus
-     */
-    public static final String NETSUITE_STATUS_SUCCESS = "SUCCESS";
+public class PSLicenseService implements IPSLicenseService {
 
-    public static final String NETSUITE_STATUS_UNEXPECTED_ERROR = "UNEXPECTED_ERROR";
-
-    public static final String NETSUITE_STATUS_NO_ACCOUNT_EXISTS = "NO_ACCOUNT_EXISTS";
-
-    public static final String NETSUITE_STATUS_REGISTERED = "NOT_ACTIVE";
-
-    public static final String NETSUITE_STATUS_SUSPENDED = "SUSPENDED";
-
-    public static final String NETSUITE_STATUS_EXCEEDED_QUOTA = "EXCEEDED_QUOTA";
-
-    /**
-     * Custom constant to represent Suspended, need refresh state
-     */
-    public static final String CUSTOM_STATUS_SUSPENDED_REFRESH = "SUSPENDED_REFRESH";
-
-    public static final String CUSTOM_STATUS_ACTIVE_OVERLIMIT = "SUCCESS_OVERLIMIT";
-
-    public static final String CLOUD_LICENSES_URL_PROPNAME = "CLOUD_LICENSES_URL";
-
-    /**
-     * Constants for License Status
-     */
-    public static final String LICENSE_STATUS_ACTIVE = "Active";
-
-    public static final String LICENSE_STATUS_ACTIVE_OVERLIMIT = "Active, Overlimit";
-
-    public static final String LICENSE_STATUS_INACTIVE = "Inactive";
-
-    public static final String LICENSE_STATUS_REGISTERED = "Inactive, Registered";
-
-    public static final String LICENSE_STATUS_SUSPENDED_REFRESH = "Suspended, Refresh Required";
-
-    public static final String LICENSE_STATUS_SUSPENDED = "Suspended";
-
-    public static final String MODULE_LICENSE_TYPE_PAGE_OPTIMIZER = "PAGE_OPTIMIZER";
-
-
-    public static final String MODULE_LICENSE_TYPE_REDIRECT = "REDIRECT";
-    /**
-     * Constants for Module Licenses
-     */
-    public static final String MODULE_LICENSE_METADATA_KEY = "perc.license.module.license.data";
 
     /**
      * Logger for this service.
@@ -153,6 +108,7 @@ public class PSLicenseService {
     private static final String SEPARATOR = "||";
 
 
+    @Override
     @POST
     @Path("/module/save")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
@@ -176,6 +132,7 @@ public class PSLicenseService {
         return result;
     }
 
+    @Override
     @DELETE
     @Path("/module/delete")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
@@ -200,6 +157,7 @@ public class PSLicenseService {
     }
 
 
+    @Override
     @GET
     @Path("/module/{name}")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
@@ -241,6 +199,7 @@ public class PSLicenseService {
         }
     }
 
+    @Override
     @GET
     @Path("/module/all")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
@@ -288,6 +247,7 @@ public class PSLicenseService {
      * 
      * @param systemProps the system properties
      */
+    @Override
     @Autowired
     public void setSystemProps(IPSSystemProperties systemProps)
     {
@@ -299,6 +259,7 @@ public class PSLicenseService {
      * 
      * @return The properties
      */
+    @Override
     public IPSSystemProperties getSystemProps()
     {
         return systemProps;

@@ -84,11 +84,9 @@ http://www.springframework.org/schema/context/spring-context.xsd">
         <property name="messageListener" ref="sys_publishQueueListener" />
         <property name="acceptMessagesWhileStopping" value="true" />
     </bean>
-
     <bean id="sys_filesystem"
           class="com.percussion.rx.delivery.impl.PSFileDeliveryHandler">
     </bean>
-
     <bean id="sys_fileDeliveryHandler"
           class="com.percussion.rx.delivery.impl.PSDeliveryHandlerRunner">
         <property name="deliveryHandlers">
@@ -98,7 +96,41 @@ http://www.springframework.org/schema/context/spring-context.xsd">
             </list>
         </property>
     </bean>
-
+    <bean id="sys_ftpsDeliveryHandler" class="com.percussion.rx.delivery.impl.PSDeliveryHandlerRunner">
+        <property name="deliveryHandlers">
+            <list>
+                <ref bean="sys_ftps"/>
+                <ref bean="sys_metadataDeliveryHandler"/>
+            </list>
+        </property>
+    </bean>
+    <bean id="sys_ftps_default" class="com.percussion.rx.delivery.impl.PSFtpsDeliveryHandler"><!--
+                            Properties that can be set here:
+                            timeout
+                                (defaults to -1 as not defined.
+                                It is the socket timeout in milliseconds for both when opening a
+                                socket and a currently open connection).
+                            usePassiveMode
+                                (defaults to false.
+                                Determines if using passive or active mode for the FTP client.
+                                Defaults to use active mode. If using passive mode is on, then it
+                                will also disable the remote verification
+                        -->
+        <property name="usePassiveMode" value="true"/>
+    </bean>
+    <bean id="sys_ftps" class="com.percussion.rx.delivery.impl.PSFtpsDeliveryHandler"><!-- Properties that can be set here:
+                    timeout
+                        (defaults to -1 as not defined.
+                        It is the socket timeout in milliseconds for both when opening a
+                        socket and a currently open connection).
+                    usePassiveMode
+                        (defaults to false.
+                        Determines if using passive or active mode for the FTP client.
+                        Defaults to use active mode. If using passive mode is on, then it
+                        will also disable the remote verification
+                 -->
+        <property name="usePassiveMode" value="true"/>
+    </bean>
     <bean id="sys_amazons3"
           class="com.percussion.rx.delivery.impl.PSAmazonS3DeliveryHandler">
         <!--  targetRegion - when configured sets the primary region where the S3
@@ -108,7 +140,6 @@ http://www.springframework.org/schema/context/spring-context.xsd">
        -->
         <property name="targetRegion" value="us-east-1"/>
     </bean>
-
     <bean id="sys_amazons3DeliveryHandler"
           class="com.percussion.rx.delivery.impl.PSDeliveryHandlerRunner">
         <property name="deliveryHandlers">
@@ -118,7 +149,6 @@ http://www.springframework.org/schema/context/spring-context.xsd">
             </list>
         </property>
     </bean>
-
     <bean id="sys_ftp"
           class="com.percussion.rx.delivery.impl.PSFtpDeliveryHandler">
         <!-- Properties that can be set here:
@@ -134,7 +164,6 @@ http://www.springframework.org/schema/context/spring-context.xsd">
         -->
         <property name="usePassiveMode" value="true" />
     </bean>
-
     <bean id="sys_ftp_default"
           class="com.percussion.rx.delivery.impl.PSFtpDeliveryHandler">
         <!-- Properties that can be set here:
@@ -150,7 +179,6 @@ http://www.springframework.org/schema/context/spring-context.xsd">
         -->
         <property name="usePassiveMode" value="true" />
     </bean>
-
     <bean id="sys_ftpDeliveryHandler"
           class="com.percussion.rx.delivery.impl.PSDeliveryHandlerRunner">
         <property name="deliveryHandlers">
@@ -160,11 +188,9 @@ http://www.springframework.org/schema/context/spring-context.xsd">
             </list>
         </property>
     </bean>
-
     <bean id="sys_databaseDeliveryHandler"
           class="com.percussion.rx.delivery.impl.PSDatabaseDeliveryHandler">
     </bean>
-
     <bean id="sys_sftp"
           class="com.percussion.rx.delivery.impl.PSSFtpDeliveryHandler">
         <!-- Properties that can be set here:
@@ -184,7 +210,6 @@ http://www.springframework.org/schema/context/spring-context.xsd">
                 )
         -->
     </bean>
-
     <bean id="sys_sftp_default"
           class="com.percussion.rx.delivery.impl.PSSFtpDeliveryHandler">
         <!-- Properties that can be set here:
@@ -204,7 +229,6 @@ http://www.springframework.org/schema/context/spring-context.xsd">
                 )
         -->
     </bean>
-
     <bean id="sys_sftpDeliveryHandler"
           class="com.percussion.rx.delivery.impl.PSDeliveryHandlerRunner">
         <property name="deliveryHandlers">
@@ -214,7 +238,6 @@ http://www.springframework.org/schema/context/spring-context.xsd">
             </list>
         </property>
     </bean>
-
     <!-- Delivery Handler Runner is used to run one or more delivery handlers, so that
          it can be used to delivery published content to more than one locations -->
     <bean id="sys_deliveryHandlerRunner"
@@ -226,7 +249,6 @@ http://www.springframework.org/schema/context/spring-context.xsd">
             </list>
         </property>
     </bean>
-
     <bean id="sys_metadataDeliveryHandler"
           class="com.percussion.rx.delivery.impl.PSMetadataDeliveryHandler">
         <property name="supportedMimeTypes">
