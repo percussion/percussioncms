@@ -46,8 +46,7 @@ import java.util.Collection;
  */
 @PSSiteManageBean("metadataDao")
 @Transactional
-public class PSMetadataDao
-{
+public class PSMetadataDao implements com.percussion.metadata.dao.IPSMetadataDao {
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -59,6 +58,7 @@ public class PSMetadataDao
     private static final Logger log = LogManager.getLogger(IPSConstants.CONTENTREPOSITORY_LOG);
 
     
+   @Override
    public PSMetadata create(PSMetadata data)throws IPSGenericDao.SaveException
    {
       Session session = getSession();
@@ -86,6 +86,7 @@ public class PSMetadataDao
       return data;      
    }
    
+   @Override
    public void delete(String key) throws IPSGenericDao.DeleteException, IPSGenericDao.LoadException {
       PSMetadata data = find(key);
       if (data == null)
@@ -96,6 +97,7 @@ public class PSMetadataDao
       delete(data);      
    }
    
+   @Override
    public void delete(PSMetadata data) throws IPSGenericDao.DeleteException
    {      
       Session session = getSession();
@@ -125,6 +127,7 @@ public class PSMetadataDao
       }      
    }
    
+   @Override
    public PSMetadata save(PSMetadata data) throws IPSGenericDao.SaveException
    {
       String emsg; 
@@ -164,6 +167,7 @@ public class PSMetadataDao
       return data;
    }
    
+   @Override
    public PSMetadata find(String key) throws IPSGenericDao.LoadException {
       Session session = getSession();
       
@@ -181,6 +185,7 @@ public class PSMetadataDao
 
    }
    
+   @Override
    @SuppressWarnings("unchecked")
    @Transactional
    public Collection<PSMetadata> findByPrefix(String prefix) throws IPSGenericDao.LoadException {

@@ -669,6 +669,7 @@
                 <present present="srconly" targetdir="${install.dir}/jetty/base/webapps/Rhythmyx/WEB-INF/config/user"/>
             </fileset>
         </copy>
+
         <!-- Always Force replace of image widget xml config files -->
         <delete verbose="true" failonerror="false" file="${install.dir}/jetty/base/webapps/Rhythmyx/WEB-INF/config/user/spring/imageWidget-beans.xml"/>
         <delete verbose="true" failonerror="false" file="${install.dir}/jetty/base/webapps/Rhythmyx/WEB-INF/config/user/spring/imageWidget-servlet.xml"/>

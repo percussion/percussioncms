@@ -35,13 +35,11 @@ import com.percussion.services.publisher.IPSEditionTaskDef;
 import com.percussion.services.publisher.IPSPublisherService;
 import com.percussion.services.publisher.PSPublisherServiceLocator;
 import com.percussion.services.sitemgr.IPSSite;
-import com.percussion.services.sitemgr.IPSSiteManagerInternal;
+import com.percussion.services.sitemgr.IPSSiteManager;
 import com.percussion.services.sitemgr.PSSiteManagerLocator;
-
 import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.util.PSSiteManageBean;
 import net.sf.json.JSONObject;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,7 +55,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -72,7 +69,7 @@ import java.util.Map;
 public class PSSiteimprove {
 
 	private static PSSiteImproveProviderService providerService = new PSSiteImproveProviderService();
-	private static IPSSiteManagerInternal sitemgr = (IPSSiteManagerInternal) PSSiteManagerLocator.getSiteManager();
+	private static IPSSiteManager sitemgr = PSSiteManagerLocator.getSiteManager();
 	private IPSMetadataService metadataService;
 	private static final Logger logger = LogManager.getLogger(PSSiteimprove.class);
 

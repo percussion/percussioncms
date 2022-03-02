@@ -24,15 +24,17 @@
 package com.percussion.webservices.assembly.impl;
 
 import com.percussion.services.assembly.IPSAssemblyTemplate;
-import com.percussion.services.sitemgr.IPSSiteManagerInternal;
+import com.percussion.services.sitemgr.IPSSiteManager;
 import com.percussion.services.sitemgr.PSSiteManagerLocator;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.types.PSPair;
 import com.percussion.webservices.assembly.data.PSAssemblyTemplateWs;
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Common implementations used with the public and private assembly 
@@ -41,16 +43,6 @@ import java.util.*;
 public class PSAssemblyBaseWs
 {
 
-    private SessionFactory sessionFactory;
-
-    public SessionFactory getSessionFactory() {
-        return sessionFactory;
-    }
-
-    @Autowired
-    public void setSessionFactory(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
    /**
     * Gets a list of associated site references with each template in the
     * specified template list.
@@ -67,7 +59,7 @@ public class PSAssemblyBaseWs
 
 
       // get site / templates associations
-      IPSSiteManagerInternal sitemgr = (IPSSiteManagerInternal) PSSiteManagerLocator
+      IPSSiteManager sitemgr = PSSiteManagerLocator
             .getSiteManager();
       Map<PSPair<IPSGuid, String>, Collection<IPSGuid>> siteToTemplates = sitemgr
             .findSiteTemplatesAssociations();

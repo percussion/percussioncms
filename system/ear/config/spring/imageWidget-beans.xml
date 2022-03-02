@@ -35,25 +35,25 @@ http://www.springframework.org/schema/beans/spring-beans-4.2.xsd">
       <property name="imageFormat" value="" />
        <!--DEPRECATED -->
 
-      <!-- set compression value between 0.0 (max compression) 
+      <!-- set compression value between 0.0 (max compression)
            and 1.0 (max quality).  -->
       <property name="compression" value=".85" />
    </bean>
-   
+
   <!-- Cache beans used for image cache -->
    <bean id="imageWidgetDataCacheRegion"
     class="org.springframework.cache.ehcache.EhCacheFactoryBean">
     <property name="cacheManager">
         <ref bean="sys_cacheManager" />
     </property>
-    <property name="cacheName" 
+    <property name="cacheName"
         value="com.percussion.widgets.image.data.ImageData" />
     <property name="eternal" value="no" />
     <property name="diskPersistent" value="yes" />
-    <property name="maxElementsInMemory" value="200" /> 
+    <property name="maxElementsInMemory" value="200" />
     <property name="overflowToDisk" value="yes" />
     <property name="timeToIdle" value="3600" />
-    <property name="timeToLive" value="3600" />  
+    <property name="timeToLive" value="3600" />
     <!--
     Not supported property in updated ehcache
     <property name="diskStorePath" value="user.dir/perc-image-cache" />  -->

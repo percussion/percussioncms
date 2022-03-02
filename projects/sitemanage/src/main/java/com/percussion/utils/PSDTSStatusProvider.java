@@ -52,8 +52,7 @@ import java.util.Map;
  * 
  */
 @Component("dtsStatusProvider")
-public class PSDTSStatusProvider
-{
+public class PSDTSStatusProvider implements IPSDTSStatusProvider {
     //Root of server
     private String serverRoot;
 
@@ -93,6 +92,7 @@ public class PSDTSStatusProvider
      * first element and the response message in the second element. The first
      * element of the PSPair will always represent Status.
      */
+    @Override
     public Map<String, PSPair<TaskStatus, String>> getDTSStatusReport()
     {
         Map<String, PSPair<TaskStatus, String>> statusReport = new HashMap<>();

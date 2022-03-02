@@ -346,7 +346,7 @@ http://www.springframework.org/schema/context/spring-context-4.2.xsd">]]></repla
                 <if>
                     <available file="publisherBeans.xsl" type="file"/>
                     <then>
-                        <xslt force="true" style="publisherBeans.xsl"
+                      <xslt force="true" style="publisherBeans.xsl"
                               in="${install.dir}/jetty/base/webapps/Rhythmyx/WEB-INF/config/user/spring/publisher-beans.xml_copy"
                               out="${install.dir}/jetty/base/webapps/Rhythmyx/WEB-INF/config/user/spring/publisher-beans.xml" />
                     </then>

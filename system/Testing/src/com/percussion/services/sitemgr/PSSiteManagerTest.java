@@ -92,7 +92,7 @@ public class PSSiteManagerTest
    @Test
    public void testSiteTemplateAssociation() throws Exception
    {
-      IPSSiteManagerInternal mgr = (IPSSiteManagerInternal) sitemgr;
+      IPSSiteManager mgr =  sitemgr;
       Map<PSPair<IPSGuid, String>, Collection<IPSGuid>> assoc = mgr
             .findSiteTemplatesAssociations();
       

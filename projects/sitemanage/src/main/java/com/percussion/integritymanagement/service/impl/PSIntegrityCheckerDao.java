@@ -45,8 +45,7 @@ import java.util.List;
 
 @Transactional
 @Repository("integrityCheckerDao")
-public class PSIntegrityCheckerDao
-{
+public class PSIntegrityCheckerDao implements com.percussion.integritymanagement.service.IPSIntegrityCheckerDao {
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -61,6 +60,7 @@ public class PSIntegrityCheckerDao
     }
 
 
+    @Override
     @Transactional
     public PSIntegrityStatus find(String token)
     {
@@ -79,6 +79,7 @@ public class PSIntegrityCheckerDao
         return result;
     }
 
+    @Override
     @Transactional
     public List<PSIntegrityStatus> find(Status status)
     {
@@ -95,6 +96,7 @@ public class PSIntegrityCheckerDao
         return results;
     }
 
+    @Override
     @Transactional
     public void delete(PSIntegrityStatus intStatus)
     {
@@ -109,6 +111,7 @@ public class PSIntegrityCheckerDao
         }
     }
 
+    @Override
     @Transactional
     public void save(PSIntegrityStatus status) throws SaveException
     {
