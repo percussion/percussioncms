@@ -100,7 +100,14 @@ public class PSServletUtils
     * are not modified for a specific implementation.
     */
    public static final String BEANS_FILE_NAME = "beans.xml";
-   
+
+   /**
+    * The name of the Spring configuration file for the sitemanage module.
+    */
+   public static final String SITEMANAGE_FILE_NAME = "sitemanage-beans.xml";
+
+
+   public static final String PACKAGE_BEANS_FILE_NAME="package-beans.xml";
    /**
     * The name of the spring configuration directory, located below the 
     * {@link #SYS_CONFIG_DIR}.

@@ -137,10 +137,13 @@ public class PSBaseServiceLocator
 
                     String sysConfigDir = PSServletUtils.getSpringConfigPath();
                     List<String> configFiles = new ArrayList<>();
-                    configFiles.add(sysConfigDir + "/" + PSServletUtils.SERVER_BEANS_FILE_NAME);
-                    configFiles.add(sysConfigDir + "/" + PSServletUtils.DESIGN_BEANS_FILE_NAME);
-                    configFiles.add(sysConfigDir + "/" + PSServletUtils.DEPLOYER_BEANS_FILE_NAME);
-                    configFiles.add(sysConfigDir + "/" + PSServletUtils.BEANS_FILE_NAME);
+                    configFiles.add(sysConfigDir + File.separator + PSServletUtils.SERVER_BEANS_FILE_NAME);
+                    configFiles.add(sysConfigDir + File.separator + PSServletUtils.DESIGN_BEANS_FILE_NAME);
+                    configFiles.add(sysConfigDir + File.separator + PSServletUtils.DEPLOYER_BEANS_FILE_NAME);
+                    configFiles.add(sysConfigDir + File.separator + PSServletUtils.BEANS_FILE_NAME);
+                    configFiles.add(sysConfigDir + File.separator + "projects" + File.separator + PSServletUtils.SITEMANAGE_FILE_NAME);
+                    configFiles.add(sysConfigDir + File.separator + "projects" + File.separator + PSServletUtils.PACKAGE_BEANS_FILE_NAME);
+
 
                     String[] files = configFiles.toArray(new String[configFiles.size()]);
                     ctx.setConfigLocations(files);
@@ -435,17 +438,20 @@ public class PSBaseServiceLocator
       }
       catch (BeansException e)
       {
-         ms_logger.error("Problem in configuration", e);
+         ms_logger.error("Problem in configuration. Error: {}",
+                 PSExceptionUtils.getMessageForLog(e));
          throw e;
       }
       catch (RuntimeException re)
       {
-         ms_logger.error("Runtime exception", re);
+         ms_logger.error("Runtime exception. Error: {}",
+                 PSExceptionUtils.getMessageForLog(re));
          throw re;
       }
       catch (NamingException e)
       {
-         ms_logger.error("Naming exception", e);
+         ms_logger.error("Naming exception. Error: {}",
+                 PSExceptionUtils.getMessageForLog(e));
          throw new RuntimeException(e);
       }
 
