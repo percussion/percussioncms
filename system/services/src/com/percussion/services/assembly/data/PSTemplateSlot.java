@@ -114,8 +114,8 @@ public class PSTemplateSlot
     @Column(name = "VERSION")
     private Integer version;
     @Basic
-    @NaturalId
-    @Column(name = "SLOTNAME")
+    @NaturalId(mutable=true)
+    @Column(name = "SLOTNAME",unique=true)
     private String name;
     @Basic
     @Column(name = "LABEL")
@@ -438,11 +438,10 @@ public class PSTemplateSlot
     /**
      * Set the slot associations, used by MSM
      *
-     * @param associations
      */
     @SuppressWarnings("unchecked")
     public void setSlotTypeAssociations(
-            PSTemplateTypeSlotAssociation associations[]) {
+            PSTemplateTypeSlotAssociation[] associations) {
         this.slotAssociations.clear();
         this.slotAssociations.addAll(Arrays.stream(associations).collect(toSet()));
     }
