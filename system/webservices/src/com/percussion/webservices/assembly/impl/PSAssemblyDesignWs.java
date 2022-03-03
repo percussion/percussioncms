@@ -926,41 +926,37 @@ public class PSAssemblyDesignWs extends PSAssemblyBaseWs implements
             IPSGuid id = slot.getGUID();
             try
             {
-               if (lockService.isLockedFor(id, session, user))
-               {
-                  if (service.findSlot(id) != null)
+               IPSTemplateSlot dbSlot = service.loadSlot(id);
+               if (dbSlot != null){
+
+                  if (lockService.isLockedFor(id, session, user))
                   {
-                     // after we know it does exist, then load non-cached one
-                     PSTemplateSlot dbslot;
-                     dbslot = (PSTemplateSlot) service.loadSlotModifiable(id);
-                     dbslot.setVersion(null);
-                     dbslot.fromXML(slot.toXML());
-                     slot = dbslot;
-                  }
+                         // set the correct version from the lock
+                        Integer version = lockService.getLockedVersion(id);
+                        dbSlot.fromXML(slot.toXML());
+                        slot = dbSlot;
+                        if (version != null)
+                        {
+                           // Null version again before resetting it from the lock
+                           // manager
+                           ((PSTemplateSlot) slot).setVersion(null);
+                           ((PSTemplateSlot) slot).setVersion(version);
+                        }
+                    }
 
-                  // set the correct version from the lock
-                  Integer version = lockService.getLockedVersion(id);
-                  if (version != null)
-                  {
-                     // Null version again before resetting it from the lock
-                     // manager
-                     ((PSTemplateSlot) slot).setVersion(null);
-                     ((PSTemplateSlot) slot).setVersion(version);
-                  }
+                     // save the object and extend the lock
+                     service.saveSlot(slot);
 
-                  // save the object and extend the lock
-                  service.saveSlot(slot);
+                     // reload the slot to obtain the new version
+                     slot = service.loadSlotModifiable(id);
 
-                  // reload the slot to obtain the new version
-                  slot = service.loadSlotModifiable(id);
+                     if (!release)
+                     {
+                        lockService.extendLock(id, session, user,
+                           ((PSTemplateSlot) slot).getVersion());
+                     }
 
-                  if (!release)
-                  {
-                     lockService.extendLock(id, session, user,
-                        ((PSTemplateSlot) slot).getVersion());
-                  }
-
-                  results.addResult(id);
+                     results.addResult(id);
                }
                else
                {
