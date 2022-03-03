@@ -62,9 +62,9 @@ import com.percussion.design.objectstore.legacy.IPSComponentConverter;
 import com.percussion.design.objectstore.legacy.IPSComponentUpdater;
 import com.percussion.design.objectstore.legacy.IPSConfigFileLocator;
 import com.percussion.design.objectstore.legacy.IPSRepositoryInfo;
-import com.percussion.design.objectstore.legacy.PSAllowAllCtypeWorkflowsUpdater;
 import com.percussion.design.objectstore.legacy.PSBackendTableConverter;
 import com.percussion.design.objectstore.legacy.PSConfigurationCtx;
+import com.percussion.design.objectstore.legacy.PSContentTypeWorkflowsUpdater;
 import com.percussion.design.objectstore.legacy.PSTableLocatorConverter;
 import com.percussion.error.PSErrorManager;
 import com.percussion.error.PSException;
@@ -538,8 +538,8 @@ public class PSXmlObjectStoreHandler extends PSObjectFactory
          new ArrayList<IPSComponentUpdater>();
       
       // CM1RXdiff
-	  // updaters.add(new PSContentTypeWorkflowsUpdater());
-      updaters.add(new PSAllowAllCtypeWorkflowsUpdater());
+	   updaters.add(new PSContentTypeWorkflowsUpdater());
+     // updaters.add(new PSAllowAllCtypeWorkflowsUpdater());
       
       return updaters;
    }

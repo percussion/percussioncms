@@ -95,6 +95,7 @@ public class PSItemFilter implements IPSItemFilter, IPSCatalogSummary,
     */
    @Basic
    @NaturalId(mutable = true)
+   @Column(name = "NAME", unique=true)
    private String name;
 
    /**
