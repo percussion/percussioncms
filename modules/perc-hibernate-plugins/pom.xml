@@ -6,7 +6,7 @@
         <version>8.1.1-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
-    <artifactId>perc-hibernate-plugin</artifactId>
+    <artifactId>perc-hibernate-plugins</artifactId>
     <packaging>jar</packaging>
     <build>
         <plugins>

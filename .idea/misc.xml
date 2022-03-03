@@ -34,6 +34,8 @@
         <option value="$PROJECT_DIR$/modules/perc-ant/pom.xml" />
         <option value="$PROJECT_DIR$/modules/perc-samples/perc-loader-sample-java/pom.xml" />
         <option value="$PROJECT_DIR$/modules/SSLTools/pom.xml" />
+        <option value="$PROJECT_DIR$/modules/perc-hibernate-plugin/pom.xml" />
+        <option value="$PROJECT_DIR$/modules/perc-hibernate-plugins/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">
