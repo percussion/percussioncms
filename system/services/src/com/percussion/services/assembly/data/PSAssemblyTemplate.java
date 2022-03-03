@@ -154,7 +154,8 @@ public class PSAssemblyTemplate
     * The template name
     */
    @Basic
-   @NaturalId
+   @NaturalId(mutable=true)
+   @Column(name = "NAME", unique=true)
    private String name;
 
    /**

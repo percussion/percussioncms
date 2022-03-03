@@ -593,7 +593,7 @@ public class PSXmlSerializationHelper
       try
       {
          BeanUtils.copyProperties(object, restored);
-         return restored;
+         return object;
       }
       catch (Exception e)
       {

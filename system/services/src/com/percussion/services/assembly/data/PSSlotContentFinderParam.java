@@ -24,17 +24,23 @@
 package com.percussion.services.assembly.data;
 
 
-import javax.persistence.*;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
-import org.hibernate.annotations.*;
 import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.NaturalId;
+import org.hibernate.annotations.NaturalIdCache;
 
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Version;
 import java.util.Objects;
 
 /**
@@ -60,7 +66,8 @@ public class PSSlotContentFinderParam
    private Integer version;
    
    @Basic
-   @NaturalId
+   @NaturalId(mutable=true)
+   @Column(name = "NAME", unique=true)
    private String name;
    
    @Basic
