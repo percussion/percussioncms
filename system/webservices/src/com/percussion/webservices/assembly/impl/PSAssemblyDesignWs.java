@@ -918,72 +918,64 @@ public class PSAssemblyDesignWs extends PSAssemblyBaseWs implements
       IPSObjectLockService lockService = PSObjectLockServiceLocator
          .getLockingService();
 
-      synchronized (SYNC_SAVE_DELETE_TEMPLATE_AND_SLOT)
-      {
+      synchronized (SYNC_SAVE_DELETE_TEMPLATE_AND_SLOT) {
          PSErrorsException results = new PSErrorsException();
-         for (IPSTemplateSlot slot : slots)
-         {
+         for (IPSTemplateSlot slot : slots) {
             IPSGuid id = slot.getGUID();
-            try
-            {
-               IPSTemplateSlot dbSlot = service.loadSlot(id);
-               if (dbSlot != null){
-
-                  if (lockService.isLockedFor(id, session, user))
-                  {
-                         // set the correct version from the lock
-                        Integer version = lockService.getLockedVersion(id);
-                        dbSlot.fromXML(slot.toXML());
-                        slot = dbSlot;
-                        if (version != null)
-                        {
-                           // Null version again before resetting it from the lock
-                           // manager
-                           ((PSTemplateSlot) slot).setVersion(null);
-                           ((PSTemplateSlot) slot).setVersion(version);
-                        }
-                    }
-
-                     // save the object and extend the lock
-                     service.saveSlot(slot);
-
-                     // reload the slot to obtain the new version
-                     slot = service.loadSlotModifiable(id);
-
-                     if (!release)
-                     {
-                        lockService.extendLock(id, session, user,
-                           ((PSTemplateSlot) slot).getVersion());
+            try {
+               IPSTemplateSlot dbSlot = null;
+               try{
+                  dbSlot = service.loadSlot(id);
+               }catch (PSAssemblyException e){
+               //Will get this exception if Slot with this id doesn't exist
+               }
+               if (dbSlot != null) {
+                  if (lockService.isLockedFor(id, session, user)) {
+                     // set the correct version from the lock
+                     Integer version = lockService.getLockedVersion(id);
+                     dbSlot.fromXML(slot.toXML());
+                     slot = dbSlot;
+                     if (version != null) {
+                        // Null version again before resetting it from the lock
+                        // manager
+                        ((PSTemplateSlot) slot).setVersion(null);
+                        ((PSTemplateSlot) slot).setVersion(version);
                      }
-
-                     results.addResult(id);
-               }
-               else
-               {
-                  PSObjectLock lock = lockService.findLockByObjectId(id, null,
+                  }else{
+                     PSObjectLock lock = lockService.findLockByObjectId(id, null,
                      null);
-                  if (lock == null)
-                  {
-                     int code = IPSWebserviceErrors.OBJECT_NOT_LOCKED;
-                     PSDesignGuid guid = new PSDesignGuid(id);
-                     PSErrorException error = new PSErrorException(code,
+                     if (lock == null) {
+                        int code = IPSWebserviceErrors.OBJECT_NOT_LOCKED;
+                        PSDesignGuid guid = new PSDesignGuid(id);
+                        PSErrorException error = new PSErrorException(code,
                         PSWebserviceErrors.createErrorMessage(code,
-                           IPSTemplateSlot.class.getName(), guid.getValue()),
+                        IPSTemplateSlot.class.getName(), guid.getValue()),
                         ExceptionUtils.getFullStackTrace(new Exception()));
-                     results.addError(id, error);
-                  }
-                  else
-                  {
-                     int code = IPSWebserviceErrors.OBJECT_NOT_LOCKED_FOR_REQUESTOR;
-                     PSDesignGuid guid = new PSDesignGuid(id);
-                     PSErrorException error = new PSErrorException(code,
+                        results.addError(id, error);
+                     }else {
+                        int code = IPSWebserviceErrors.OBJECT_NOT_LOCKED_FOR_REQUESTOR;
+                        PSDesignGuid guid = new PSDesignGuid(id);
+                        PSErrorException error = new PSErrorException(code,
                         PSWebserviceErrors.createErrorMessage(code,
-                           IPSTemplateSlot.class.getName(), guid.getValue(),
-                           lock.getLocker(), lock.getRemainingTime()),
+                        IPSTemplateSlot.class.getName(), guid.getValue(),
+                        lock.getLocker(), lock.getRemainingTime()),
                         ExceptionUtils.getFullStackTrace(new Exception()));
-                     results.addError(id, error);
+                        results.addError(id, error);
+                     }
                   }
                }
+
+               // save the object and extend the lock
+               service.saveSlot(slot);
+
+               // reload the slot to obtain the new version
+               slot = service.loadSlotModifiable(id);
+
+               if (!release){
+                  lockService.extendLock(id, session, user,
+                  ((PSTemplateSlot) slot).getVersion());
+               }
+               results.addResult(id);
             }
             catch (Exception e)
             {
