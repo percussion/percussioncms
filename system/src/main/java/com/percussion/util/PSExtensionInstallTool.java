@@ -41,6 +41,7 @@ import com.percussion.extension.PSExtensionRef;
 import com.percussion.extension.PSJavaExtensionHandler;
 import com.percussion.extension.PSJavaScriptExtensionHandler;
 import com.percussion.server.PSServer;
+import com.percussion.utils.collections.PSIteratorUtils;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
 import org.apache.logging.log4j.LogManager;

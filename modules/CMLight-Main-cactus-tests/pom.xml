@@ -327,5 +327,11 @@
             </exclusions>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.percussion</groupId>
+            <artifactId>perc-deployer</artifactId>
+            <version>8.1.1-SNAPSHOT</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 </project>

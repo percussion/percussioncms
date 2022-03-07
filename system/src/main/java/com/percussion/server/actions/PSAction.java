@@ -42,7 +42,7 @@ import com.percussion.extension.IPSResultDocumentProcessor;
 import com.percussion.extension.PSExtensionRef;
 import com.percussion.server.IPSServerErrors;
 import com.percussion.util.PSCollection;
-import com.percussion.util.PSIteratorUtils;
+import com.percussion.utils.collections.PSIteratorUtils;
 import com.percussion.xml.PSXmlTreeWalker;
 import org.w3c.dom.Element;
 

@@ -24,16 +24,22 @@
 package com.percussion.deployer.server.dependencies;
 
 import com.percussion.deployer.client.IPSDeployConstants;
-import com.percussion.deployer.error.IPSDeploymentErrors;
-import com.percussion.deployer.error.PSDeployException;
+import com.percussion.deployer.objectstore.PSApplicationIDTypeMapping;
+import com.percussion.deployer.objectstore.PSApplicationIDTypes;
 import com.percussion.deployer.objectstore.PSDependency;
 import com.percussion.deployer.objectstore.PSDependencyFile;
+import com.percussion.deployer.objectstore.PSDeployComponentUtils;
 import com.percussion.deployer.objectstore.PSIdMap;
 import com.percussion.deployer.objectstore.PSIdMapping;
+import com.percussion.deployer.server.IPSIdTypeHandler;
+import com.percussion.deployer.server.PSAppTransformer;
 import com.percussion.deployer.server.PSArchiveHandler;
 import com.percussion.deployer.server.PSDependencyDef;
 import com.percussion.deployer.server.PSDependencyMap;
 import com.percussion.deployer.server.PSImportCtx;
+import com.percussion.design.objectstore.PSParam;
+import com.percussion.error.IPSDeploymentErrors;
+import com.percussion.error.PSDeployException;
 import com.percussion.extension.IPSExtension;
 import com.percussion.security.PSSecurityToken;
 import com.percussion.services.assembly.IPSAssemblyService;
@@ -56,6 +62,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -66,6 +73,8 @@ import java.util.Map;
  */
 
 public class PSSlotDefDependencyHandler extends PSDependencyHandler
+      implements
+        IPSIdTypeHandler
 {
    
    /**
@@ -260,6 +269,7 @@ public class PSSlotDefDependencyHandler extends PSDependencyHandler
       handler = getDependencyHandler(PSExitDefDependencyHandler.DEPENDENCY_TYPE);
       if (StringUtils.isNotBlank(finder))
       {
+         finder = SLOT_CONTENT_FINDER_PREFIX+finder;
          PSDependency childDep = handler.getDependency(tok, finder);
          if (childDep != null)
          {
@@ -270,9 +280,62 @@ public class PSSlotDefDependencyHandler extends PSDependencyHandler
             childDeps.add(childDep);
          }
       }
+
+      // Dont forget the idTypes...
+      childDeps.addAll(PSIdTypeDependencyHandler.getIdTypeDependencies(tok,
+            dep, this));
       return childDeps.iterator();
    }
    
+   // see base class
+   public PSApplicationIDTypes getIdTypes(PSSecurityToken tok, PSDependency dep)
+         throws PSDeployException
+   {
+      if (tok == null)
+         throw new IllegalArgumentException("tok may not be null");
+      if (dep == null)
+         throw new IllegalArgumentException("dep may not be null");
+      if (!dep.getObjectType().equals(getType()))
+         throw new IllegalArgumentException("dep wrong type");
+
+      PSApplicationIDTypes idTypes = new PSApplicationIDTypes(dep);
+      IPSTemplateSlot slot = findSlotByDependencyID(dep.getDependencyId());
+
+      if (slot == null)
+         throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR,
+               "Could not find a slot with id: " + dep.getDependencyId());
+
+      if ( isLegacySlot(slot))
+         return idTypes;
+
+
+      // add any finder params that are id-mapped
+      Map<String, String> paramMap = slot.getFinderArguments();
+      List mappings = new ArrayList();
+      // check each param for idtypes
+      Iterator entries = paramMap.entrySet().iterator();
+      while (entries.hasNext())
+      {
+         Map.Entry entry = (Map.Entry)entries.next();
+
+         // convert to PSParam to leverage existing transformer code
+         Iterator params = PSDeployComponentUtils.convertToParams(
+            entry).iterator();
+         while (params.hasNext())
+         {
+            PSParam param = (PSParam)params.next();
+            PSAppTransformer.checkParam(mappings, param, null);
+         }
+      }
+
+      idTypes.addMappings(SLOT_FINDER_ARGS,
+         IPSDeployConstants.ID_TYPE_ELEMENT_SLOT_FINDER_PARAMS,
+            mappings.iterator());
+
+      return idTypes;
+   }
+
+
    // see base class
    // Load all the templates and return dependencies
    @Override
@@ -388,7 +451,8 @@ public class PSSlotDefDependencyHandler extends PSDependencyHandler
             
       boolean isNew = (slot == null) ? true : false;
       Integer ver = null;
-
+      HashMap<PSTemplateTypeSlotAssociation, Integer> bVer =
+         new HashMap<PSTemplateTypeSlotAssociation, Integer>();
       if (!isNew)
       {
          IPSGuid slotGuid = slot.getGUID();
@@ -396,10 +460,34 @@ public class PSSlotDefDependencyHandler extends PSDependencyHandler
 
          slot.setSlotAssociations(new ArrayList<>());
          ver = slot.getVersion();
+         slot.setVersion(null);
+         PSTemplateTypeSlotAssociation assoc[] = slot.getSlotTypeAssociations();
+         for (PSTemplateTypeSlotAssociation a : assoc)
+         {
+            PSPair<IPSGuid, IPSGuid> p = new PSPair<IPSGuid, IPSGuid>(
+                  new PSGuid(PSTypeEnum.NODEDEF, a.getContentTypeId()),
+                  new PSGuid(PSTypeEnum.TEMPLATE, a.getTemplateId()));
+            slot.removeSlotAssociation(p);
+         }
+
+         saveSlot(slot, ver);
+         slot = (PSTemplateSlot) m_assemblySvc.loadSlotModifiable(slotGuid);
+
+         // deserialize on the existing template
+         ver = slot.getVersion();
+         slot.setVersion(null);
       }
       
       slot = (PSTemplateSlot)generateSlotFromFile(archive, depFile, slot);
-
+      //restore versions, before doing transforms, else the primary key
+      // will be different
+      PSTemplateTypeSlotAssociation assoc[] = slot
+            .getSlotTypeAssociations();
+      for (PSTemplateTypeSlotAssociation a : assoc)
+      {
+         if (bVer.get(a) != null)
+            a.setVersion(bVer.get(a));
+      }
       doTransforms(tok, archive, dep, ctx, slot);
       saveSlot(slot, ver);
       //    add transaction log
@@ -538,12 +626,24 @@ public class PSSlotDefDependencyHandler extends PSDependencyHandler
          String ctId = String.valueOf(a.getContentTypeId());
          if (!ceHandler.doesDependencyExist(tok, ctId))
          {
+            m_log
+              .warn("Removing Slot <==>Template/ContentType relationship{Slot:"
+                        + slot.getGUID()
+                        + ",ContentType:"
+                        + ctId
+                        + "}, because ContentType is not found.");
             continue;
          }
          
          String tmpId = String.valueOf(a.getTemplateId());
          if (!tmpHandler.doesDependencyExist(tok, tmpId))
          {
+            m_log
+               .warn("Removing Slot <==>Template/ContentType relationship{Slot:"
+                        + slot.getGUID()
+                        + ",Template:"
+                        + tmpId
+                        + "}, because Template is not found.");
             continue;
          }
          addList.add(a);
@@ -652,6 +752,8 @@ public class PSSlotDefDependencyHandler extends PSDependencyHandler
          Map<String, String> paramMap = slot.getFinderArguments();
          if (!paramMap.isEmpty())
          {
+            // tranform params using idtypes
+            transformIds(paramMap, ctx.getIdTypes(), idMap);
             ((PSTemplateSlot) slot).setFinderArguments(paramMap);
          }
       }
@@ -755,6 +857,83 @@ public class PSSlotDefDependencyHandler extends PSDependencyHandler
       PSDependencyUtils.reserveNewId(dep, idMap, getType());
    }
    
+   // see base class
+   @SuppressWarnings("unchecked")
+   public void transformIds(Object object, PSApplicationIDTypes idTypes,
+         PSIdMap idMap) throws PSDeployException
+   {
+      if (object == null)
+         throw new IllegalArgumentException("object may not be null");
+
+      if (idTypes == null)
+         throw new IllegalArgumentException("idTypes may not be null");
+
+      if (idMap == null)
+         throw new IllegalArgumentException("idMap may not be null");
+
+      if (!(object instanceof Map))
+         throw new IllegalArgumentException("invalid object type");
+
+      Map paramMap = (Map)object;
+      // walk id types and perform any transforms
+      Iterator resources = idTypes.getResourceList(false);
+      while (resources.hasNext())
+      {
+         String resource = (String)resources.next();
+         Iterator elements = idTypes.getElementList(resource, false);
+         while (elements.hasNext())
+         {
+            String element = (String)elements.next();
+            Iterator mappings = idTypes.getIdTypeMappings(
+                  resource, element, false);
+            while (mappings.hasNext())
+            {
+
+               PSApplicationIDTypeMapping mapping =
+                  (PSApplicationIDTypeMapping)mappings.next();
+
+               if (mapping.getType().equals(
+                  PSApplicationIDTypeMapping.TYPE_NONE))
+               {
+                  continue;
+               }
+
+               if (element.equals(
+                  IPSDeployConstants.ID_TYPE_ELEMENT_SLOT_FINDER_PARAMS))
+               {
+                  // transform the params
+                  Iterator entries = paramMap.entrySet().iterator();
+                  while (entries.hasNext())
+                  {
+                     // convert to PSParam(s) to leverage existing code
+                     List<String> valList = new ArrayList<String>();
+                     Map.Entry entry = (Map.Entry)entries.next();
+                     List paramList = PSDeployComponentUtils.convertToParams(
+                        entry);
+                     Iterator params = paramList.iterator();
+                     while (params.hasNext())
+                     {
+                        PSParam param = (PSParam) params.next();
+
+                        // transform
+                        PSAppTransformer.transformParam(param, mapping, idMap);
+                        valList.add(param.getValue().getValueText());
+                     }
+                     Object newVal;
+                     if (valList.size() > 1)
+                        newVal = valList;
+                     else
+                        newVal = valList.get(0);
+
+                     entry.setValue(newVal);
+                  }
+               }
+            }
+         }
+      }
+
+   }
+
    // see base class
    @Override
    public Iterator getChildTypes()

@@ -29,8 +29,6 @@ import com.percussion.cms.objectstore.PSComponentSummaries;
 import com.percussion.cms.objectstore.PSComponentSummary;
 import com.percussion.cms.objectstore.PSRelationshipFilter;
 import com.percussion.cms.objectstore.server.PSRelationshipProcessor;
-import com.percussion.deployer.error.IPSDeploymentErrors;
-import com.percussion.deployer.error.PSDeployException;
 import com.percussion.deployer.objectstore.PSDependency;
 import com.percussion.deployer.objectstore.PSTransactionSummary;
 import com.percussion.deployer.server.PSArchiveHandler;
@@ -39,9 +37,11 @@ import com.percussion.deployer.server.PSDependencyMap;
 import com.percussion.deployer.server.PSImportCtx;
 import com.percussion.design.objectstore.PSLocator;
 import com.percussion.design.objectstore.PSRelationshipSet;
+import com.percussion.error.IPSDeploymentErrors;
+import com.percussion.error.PSDeployException;
 import com.percussion.security.PSSecurityToken;
 import com.percussion.services.error.PSNotFoundException;
-import com.percussion.util.PSIteratorUtils;
+import com.percussion.utils.collections.PSIteratorUtils;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -97,7 +97,34 @@ public class PSFolderTranslationsDependencyHandler
       String[] parsedId = parseDependencyId(dep.getDependencyId());
       String path = parsedId[0];
       String relType = parsedId[1];
-      
+      if (pathSpecifiesParent(path))
+      {
+         PSRelationshipProcessor proc = getRelationshipProcessor(tok);
+         PSComponentSummary sum = getFolderSummary(proc, path);
+         if (sum != null)
+         {
+            PSComponentSummaries summ = getTranslatedFolderSummaries(proc, sum,
+               relType);
+            if (summ.size() > 0)
+            {
+               PSDependencyHandler handler = getDependencyHandler(
+                  PSFolderDefDependencyHandler.DEPENDENCY_TYPE);
+               Iterator transFolders = summ.iterator();
+               while (transFolders.hasNext())
+               {
+                  PSComponentSummary trans =
+                     (PSComponentSummary)transFolders.next();
+                  // get the path of the translated folder path
+                  String transFolderPath = getFolderPath(proc, trans);
+                  PSDependency childDep =
+                     handler.getDependency(tok, transFolderPath);
+                  childDep.setDependencyType(dep.getDependencyType());
+                  childDeps.add(childDep);
+               }
+            }
+         }
+      }
+
       // get relationship config dep
       PSDependencyHandler relHandler = getDependencyHandler(
          PSRelationshipDependencyHandler.DEPENDENCY_TYPE);
@@ -216,7 +243,15 @@ public class PSFolderTranslationsDependencyHandler
          while (it.hasNext())
          {
             PSDependency childDep = (PSDependency)it.next();
-            
+            String childType = childDep.getObjectType();
+            if (!(childType.equals(
+               PSFolderTreeDefDependencyHandler.DEPENDENCY_TYPE) ||
+               childType.equals(
+                  PSFolderDefDependencyHandler.DEPENDENCY_TYPE)))
+            {
+               continue;
+            }
+
             String childFolderPath = childDep.getDependencyId();
             PSComponentSummary childFolder =
                getFolderSummary(proc, childFolderPath);
@@ -428,6 +463,7 @@ public class PSFolderTranslationsDependencyHandler
 
    static
    {
+      ms_childTypes.add(PSFolderDefDependencyHandler.DEPENDENCY_TYPE);
       ms_childTypes.add(PSRelationshipDependencyHandler.DEPENDENCY_TYPE);
    }
 

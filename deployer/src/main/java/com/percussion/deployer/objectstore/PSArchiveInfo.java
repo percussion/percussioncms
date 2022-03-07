@@ -26,6 +26,7 @@ package com.percussion.deployer.objectstore;
 
 import com.percussion.design.objectstore.IPSObjectStoreErrors;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
+import com.percussion.error.PSDeployException;
 import com.percussion.util.PSFormatVersion;
 import com.percussion.xml.PSXmlTreeWalker;
 import org.w3c.dom.Document;
@@ -37,6 +38,7 @@ import java.util.Objects;
 /**
  * Contains all high level info describing an archive file.
  */
+//TODO: reconcile differences with system/src/main/java/com/percussion/deploy/objectstore/PSArchiveInfo.java
 public class PSArchiveInfo implements IPSDeployComponent
 {
 
@@ -49,8 +51,7 @@ public class PSArchiveInfo implements IPSDeployComponent
     * @throws IllegalArgumentException if <code>src</code> is <code>null</code>.
     * @throws PSUnknownNodeTypeException if <code>src</code> is malformed.
     */
-   public PSArchiveInfo(Element src) throws PSUnknownNodeTypeException
-   {
+   public PSArchiveInfo(Element src) throws PSUnknownNodeTypeException, PSDeployException {
       if (src == null)
          throw new IllegalArgumentException("src may not be null");
       fromXml(src);
@@ -314,8 +315,7 @@ public class PSArchiveInfo implements IPSDeployComponent
     * {@link IPSDeployComponent#fromXml(Element)} for more info on method
     * signature.
     */
-   public void fromXml(Element sourceNode) throws PSUnknownNodeTypeException
-   {
+   public void fromXml(Element sourceNode) throws PSUnknownNodeTypeException, PSDeployException {
       if (sourceNode == null)
          throw new IllegalArgumentException("sourceNode may not be null");
 

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans.xsd
+http://www.springframework.org/schema/tx
+http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+	<tx:annotation-driven transaction-manager="sys_transactionManager"/>
+
+
+
+   <bean id="sys_deployerService"
+	  class="com.percussion.deployer.services.impl.PSDeployService">
+	  <property name="sessionFactory">
+	     <ref bean="sys_sessionFactory" />
+      </property>
+   </bean>	
+	
+   <bean id="sys_pkgInfoService" 
+   class="com.percussion.services.pkginfo.impl.PSPkgInfoService">
+      <property name="sessionFactory">
+         <ref bean="sys_sessionFactory" />
+      </property>
+   </bean>
+
+   <bean id="sys_idNameService" 
+   class="com.percussion.services.pkginfo.impl.PSIdNameService">
+      <property name="sessionFactory">
+         <ref bean="sys_sessionFactory" />
+      </property>
+      <property name="cache">
+      	<ref bean="sys_cacheAccessor" />
+      </property>
+   </bean>
+   
+   <bean id="sys_configService" 
+   class="com.percussion.rx.config.impl.PSConfigService">
+      <property name="configRegistrationService">
+         <ref bean="sys_configRegistrationService" />
+      </property>
+      <property name="configStatusManager">
+         <ref bean="sys_configStatusMgr" />
+      </property>
+   </bean>
+   
+   <bean id="sys_configStatusMgr" 
+   class="com.percussion.rx.config.impl.PSConfigStatusMgr">
+      <property name="sessionFactory">
+         <ref bean="sys_sessionFactory" />
+      </property>
+   </bean>
+   
+   <bean id="sys_configRegistrationService" class="com.percussion.rx.config.impl.PSConfigRegistrationMgr">
+      <property name="fileMonitorService">
+         <ref bean="sys_fileMonitorService" />
+      </property>
+      <property name="notificationService">
+      	<ref bean="sys_notificationService" />
+      </property>
+   </bean>
+
+   <bean id="sys_beanProperties" class="com.percussion.rx.config.impl.spring.PSBeanProperties"/>
+
+   <bean id="sys_pkgElemVersionUpdater" class="com.percussion.services.pkginfo.impl.PSPkgElemVersionUpdater">
+     <property name="configService">
+      	<ref bean="sys_configService" />
+      </property>
+   </bean>
+</beans>

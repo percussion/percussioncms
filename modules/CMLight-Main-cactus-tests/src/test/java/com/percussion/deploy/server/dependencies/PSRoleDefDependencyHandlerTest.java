@@ -23,21 +23,22 @@
  */
 package com.percussion.deploy.server.dependencies;
 
-import com.percussion.deploy.objectstore.PSDependency;
-import com.percussion.deploy.server.PSDependencyManager;
+import com.percussion.deployer.objectstore.PSDependency;
+import com.percussion.deployer.server.PSDependencyManager;
+import com.percussion.deployer.server.dependencies.PSDependencyHandler;
+import com.percussion.deployer.server.dependencies.PSRoleDefDependencyHandler;
 import com.percussion.security.PSSecurityToken;
 import com.percussion.services.security.IPSBackEndRoleMgr;
 import com.percussion.services.security.PSRoleMgrLocator;
+import com.percussion.utils.testing.IntegrationTest;
+import junit.framework.TestCase;
+import org.apache.cactus.ServletTestCase;
+import org.junit.experimental.categories.Category;
 
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-
-import com.percussion.utils.testing.IntegrationTest;
-import junit.framework.TestCase;
-import org.apache.cactus.ServletTestCase;
-import org.junit.experimental.categories.Category;
 
 /**
  * Test case for the {@link PSRoleDefDependencyHandler}.
@@ -59,7 +60,7 @@ public class PSRoleDefDependencyHandlerTest extends ServletTestCase
       // test does dependency exist
       String role = roles.get(0);
             
-      PSDependencyHandler hdlr = 
+      PSDependencyHandler hdlr =
          PSDependencyManager.getInstance().getDependencyHandler(
                PSRoleDefDependencyHandler.DEPENDENCY_TYPE);
             

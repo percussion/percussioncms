@@ -36,7 +36,7 @@ import com.percussion.design.objectstore.PSFieldValidationRules;
 import com.percussion.design.objectstore.PSRelationshipConfig;
 import com.percussion.error.PSExceptionUtils;
 import com.percussion.util.IPSRemoteRequester;
-import com.percussion.util.PSIteratorUtils;
+import com.percussion.utils.collections.PSIteratorUtils;
 import com.percussion.webdav.IPSWebdavConstants;
 import com.percussion.webdav.error.PSWebdavException;
 import com.percussion.webdav.objectstore.IPSRxWebDavDTD;

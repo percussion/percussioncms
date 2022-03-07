@@ -24,7 +24,6 @@
 package com.percussion.deployer.server.dependencies;
 
 
-
 import com.percussion.deployer.server.PSDependencyDef;
 import com.percussion.deployer.server.PSDependencyMap;
 
@@ -84,11 +83,11 @@ public class PSWorkflowDependencyHandler extends PSElementDependencyHandler
 
    // see base class
    @Override
-   protected PSDependencyHandler getChildHandler()
+   protected com.percussion.deployer.server.dependencies.PSDependencyHandler getChildHandler()
    {
       if (m_wdHandler == null)
          m_wdHandler = getDependencyHandler(
-            PSWorkflowDefDependencyHandler.DEPENDENCY_TYPE);
+            com.percussion.deployer.server.dependencies.PSWorkflowDefDependencyHandler.DEPENDENCY_TYPE);
 
       return m_wdHandler;
    }
@@ -113,6 +112,7 @@ public class PSWorkflowDependencyHandler extends PSElementDependencyHandler
    static
    {
       ms_childTypes.add(PSWorkflowDefDependencyHandler.DEPENDENCY_TYPE);
+      ms_childTypes.add(PSRoleDefDependencyHandler.DEPENDENCY_TYPE);
    }
 
 }

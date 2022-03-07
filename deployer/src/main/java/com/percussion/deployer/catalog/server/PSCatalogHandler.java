@@ -29,8 +29,6 @@ import com.percussion.deployer.catalog.PSCatalogResultSet;
 import com.percussion.deployer.catalog.PSCataloger;
 import com.percussion.deployer.client.IPSDeployConstants;
 import com.percussion.deployer.client.PSDeploymentManager;
-import com.percussion.deployer.error.IPSDeploymentErrors;
-import com.percussion.deployer.error.PSDeployException;
 import com.percussion.deployer.objectstore.PSArchiveInfo;
 import com.percussion.deployer.objectstore.PSArchiveSummary;
 import com.percussion.deployer.objectstore.PSDependency;
@@ -41,6 +39,8 @@ import com.percussion.deployer.server.PSDependencyManager;
 import com.percussion.deployer.server.PSDeploymentHandler;
 import com.percussion.deployer.server.PSLogHandler;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
+import com.percussion.error.IPSDeploymentErrors;
+import com.percussion.error.PSDeployException;
 import com.percussion.security.PSSecurityToken;
 import com.percussion.server.PSRequest;
 import com.percussion.server.PSServer;
@@ -65,7 +65,7 @@ import java.util.ResourceBundle;
  * com.percussion.deployer.catalog.PSCataloger PSCataloger} for description of
  * supported request types and results.
  */
-public class PSCatalogHandler 
+public class PSCatalogHandler
 {
    /**
     * Processes the catalog request. This uses the XML document sent as the
@@ -294,7 +294,7 @@ public class PSCatalogHandler
    private static PSCatalogResultSet catalogCustomElementTypes(Properties props)
       throws PSDeployException    
    {
-      PSDependencyManager mgr = ms_depHandler.getDependencyManager();
+      PSDependencyManager mgr = (PSDependencyManager) ms_depHandler.getDependencyManager();
       Iterator customTypes = mgr.getCustomElementTypes();
       PSCatalogResultSet customElemTypes = new PSCatalogResultSet();
       while(customTypes.hasNext())
@@ -324,7 +324,7 @@ public class PSCatalogHandler
       Properties props)
       throws PSDeployException       
    {
-      PSDependencyManager mgr = ms_depHandler.getDependencyManager();
+      PSDependencyManager mgr = (PSDependencyManager) ms_depHandler.getDependencyManager();
       Iterator elemTypes = mgr.getElementTypes();
       PSCatalogResultSet deplElemTypes = new PSCatalogResultSet();
       while(elemTypes.hasNext())
@@ -440,7 +440,7 @@ public class PSCatalogHandler
    private static PSCatalogResultSet catalogLiteralIDTypes(Properties props)
       throws PSDeployException    
    {
-      PSDependencyManager mgr = ms_depHandler.getDependencyManager();
+      PSDependencyManager mgr = (PSDependencyManager) ms_depHandler.getDependencyManager();
       Iterator idTypes = mgr.getObjectTypes();
       PSCatalogResultSet literalIDTypes = new PSCatalogResultSet();
       while(idTypes.hasNext())
@@ -478,9 +478,9 @@ public class PSCatalogHandler
             IPSDeploymentErrors.CATALOG_REQD_PROP_NOT_SPECIFIED, "type");
                         
       String type = (String)props.getProperty("type");
-      PSCatalogResultSet typeObjects = new PSCatalogResultSet();      
-      Iterator objects = 
-         ms_depHandler.getDependencyManager().getDependencies(tok, type); 
+      PSCatalogResultSet typeObjects = new PSCatalogResultSet();
+      PSDependencyManager mgr = (PSDependencyManager) ms_depHandler.getDependencyManager();
+      Iterator objects = mgr.getDependencies(tok, type);
       while(objects.hasNext())
       {
          PSDependency object = (PSDependency)objects.next();

@@ -31,13 +31,10 @@ import com.percussion.cms.objectstore.PSKey;
 import com.percussion.cms.objectstore.PSRelationshipFilter;
 import com.percussion.cms.objectstore.PSSearch;
 import com.percussion.cms.objectstore.PSSearchField;
-import com.percussion.deploy.error.PSDeployException;
-import com.percussion.deploy.objectstore.PSDependency;
-import com.percussion.deploy.server.PSDependencyManager;
-import com.percussion.deploy.server.PSDeploymentHandler;
 import com.percussion.design.objectstore.PSRelationship;
 import com.percussion.design.objectstore.server.PSApplicationSummary;
 import com.percussion.design.objectstore.server.PSServerXmlObjectStore;
+import com.percussion.error.PSDeployException;
 import com.percussion.error.PSException;
 import com.percussion.i18n.PSLocale;
 import com.percussion.search.IPSExecutableSearch;
@@ -65,9 +62,15 @@ import com.percussion.services.publisher.IPSPublisherService;
 import com.percussion.services.publisher.PSPublisherServiceLocator;
 import com.percussion.services.relationship.IPSRelationshipService;
 import com.percussion.services.relationship.PSRelationshipServiceLocator;
+import com.percussion.services.system.IPSDependencyBaseline;
+import com.percussion.services.system.IPSDependencyManagerBaseline;
+import com.percussion.services.system.IPSDeploymentHandler;
 import com.percussion.services.system.data.PSDependent;
 import com.percussion.util.IPSHtmlParameters;
+import com.percussion.util.PSBaseBean;
 import com.percussion.utils.guid.IPSGuid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.w3c.dom.Element;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -78,27 +81,29 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.w3c.dom.Element;
-
 /**
  * Provides utility methods for locating dependencies and converting between
  * guid types and MSM dependency types.
  */
+@PSBaseBean
 public class PSDependencyHelper
 {
+
+   @Autowired
+   IPSDeploymentHandler deploymentHandler;
+
    /**
     * Construct a dependency helper.
     */
    public PSDependencyHelper()
    {
-      PSDeploymentHandler depHandler = PSDeploymentHandler.getInstance();
-      if (depHandler == null)
+      if (deploymentHandler == null)
          throw new IllegalStateException(
             "Deployment Handler must be initialized");
-      m_depMgr = depHandler.getDependencyManager();
+      m_depMgr = deploymentHandler.getDependencyManager();
 
       // todo: restore once we need to support apps via MSM
-//      m_guidConverters.put(PSTypeEnum.LEGACY_APPLICATION, 
+//      m_guidConverters.put(PSTypeEnum.LEGACY_APPLICATION,
 //         new PSAppGuidConverter());
       m_guidConverters.put(PSTypeEnum.LOCALE, 
          new PSLocaleGuidConverter());
@@ -278,7 +283,7 @@ public class PSDependencyHelper
                   guid.toString());
             }  
          }
-         PSDependency dep = m_depMgr.findDependency(tok, depType, depId);
+         IPSDependencyBaseline dep = m_depMgr.findDependency(tok, depType, depId);
          if (dep == null)
          {
             continue;
@@ -289,7 +294,7 @@ public class PSDependencyHelper
          Iterator deps = m_depMgr.getAncestors(tok, dep);
          while (deps.hasNext())
          {
-            PSDependency child = (PSDependency) deps.next();
+            IPSDependencyBaseline child = (IPSDependencyBaseline) deps.next();
             PSTypeEnum childType = m_depMgr.getGuidType(child.getObjectType());
             
             try
@@ -757,7 +762,7 @@ public class PSDependencyHelper
     * The dependency manager to use to obtain dependency information from MSM,
     * not <code>null</code> after consruction.
     */
-   private PSDependencyManager m_depMgr;
+   private IPSDependencyManagerBaseline m_depMgr;
    
    /**
     * Simple interface for guid converters

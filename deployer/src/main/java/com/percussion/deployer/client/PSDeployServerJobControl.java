@@ -24,7 +24,7 @@
 
 package com.percussion.deployer.client;
 
-import com.percussion.deployer.error.PSDeployException;
+import com.percussion.error.PSDeployException;
 
 /**
  * The job controller that represents a job started on the server. Provides 
