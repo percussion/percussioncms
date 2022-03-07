@@ -24,8 +24,6 @@
 
 package com.percussion.deployer.server.dependencies;
 
-import com.percussion.deployer.error.IPSDeploymentErrors;
-import com.percussion.deployer.error.PSDeployException;
 import com.percussion.deployer.objectstore.PSDependency;
 import com.percussion.deployer.objectstore.PSDependencyFile;
 import com.percussion.deployer.objectstore.PSIdMap;
@@ -39,6 +37,8 @@ import com.percussion.deployer.server.PSImportCtx;
 import com.percussion.deployer.services.IPSDeployService;
 import com.percussion.deployer.services.PSDeployServiceException;
 import com.percussion.deployer.services.PSDeployServiceLocator;
+import com.percussion.error.IPSDeploymentErrors;
+import com.percussion.error.PSDeployException;
 import com.percussion.security.PSSecurityToken;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.content.IPSContentService;
@@ -586,7 +586,7 @@ public class PSKeywordDependencyHandler extends PSDataObjectDependencyHandler
    /**
     * Constant for this handler's supported type
     */
-   final static String DEPENDENCY_TYPE = "Keyword";
+   public static final String DEPENDENCY_TYPE = "Keyword";
    
    /**
     * Constant for LOOKUPTYPE column value that defines a lookup type.

@@ -24,10 +24,10 @@
 
 package com.percussion.deployer.server;
 
-import com.percussion.deployer.error.IPSDeploymentErrors;
-import com.percussion.deployer.error.PSDeployException;
 import com.percussion.deployer.server.dependencies.PSCustomDependencyHandler;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
+import com.percussion.error.IPSDeploymentErrors;
+import com.percussion.error.PSDeployException;
 import com.percussion.util.PSXMLDomUtil;
 import org.apache.commons.lang.StringUtils;
 import org.w3c.dom.Element;

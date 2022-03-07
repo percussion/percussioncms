@@ -26,6 +26,7 @@ package com.percussion.deployer.objectstore;
 
 import com.percussion.design.objectstore.IPSObjectStoreErrors;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
+import com.percussion.error.PSDeployException;
 import com.percussion.xml.PSXmlTreeWalker;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -50,8 +51,7 @@ public class PSImportDescriptor extends PSDescriptor
     * @throws IllegalArgumentException if <code>src</code> is <code>null</code>.
     * @throws PSUnknownNodeTypeException if <code>src</code> is malformed.
     */
-   public PSImportDescriptor(Element src) throws PSUnknownNodeTypeException
-   {
+   public PSImportDescriptor(Element src) throws PSUnknownNodeTypeException, PSDeployException {
       if (src == null)
          throw new IllegalArgumentException("src may not be null");
          
@@ -213,8 +213,7 @@ public class PSImportDescriptor extends PSDescriptor
     * signature.
     */
    @Override
-   public void fromXml(Element sourceNode) throws PSUnknownNodeTypeException
-   {
+   public void fromXml(Element sourceNode) throws PSUnknownNodeTypeException, PSDeployException {
       if (sourceNode == null)
          throw new IllegalArgumentException("sourceNode may not be null");
          
@@ -344,7 +343,6 @@ public class PSImportDescriptor extends PSDescriptor
    /**
     * Root node name of this object's XML representation.
     */
-   @SuppressWarnings("hiding")
    public static final String XML_NODE_NAME = "PSXImportDescriptor";
 
    /**
@@ -367,6 +365,7 @@ public class PSImportDescriptor extends PSDescriptor
     * <code>true</code>, modified by calls to 
     * {@link #setAncestorValidationEnabled(boolean)}.
     */
+   // TODO: for msm the default was true. boolean m_validateAncestors = true;
    boolean m_validateAncestors = false;
    
    // xml constants

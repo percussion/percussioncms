@@ -92,7 +92,7 @@ public class PSSiteDependencyHandler extends PSElementDependencyHandler
    /**
     * Constant for this handler's supported type
     */
-   final static String DEPENDENCY_TYPE = "Site";
+   public final static String DEPENDENCY_TYPE = "Site";
 
    /**
     * The site definition handler, initialized by <code>getChildHandler()</code>

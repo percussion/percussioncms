@@ -6,13 +6,13 @@
             <InitParam name="role" value="admin"/>
          </InitParams>
          <Jobs>
-            <Job jobType="export" className="com.percussion.deploy.server.PSExportJob">
+            <Job jobType="export" className="com.percussion.deployer.msm.server.server.PSExportJob">
                <InitParams/>
             </Job>
-            <Job jobType="import" className="com.percussion.deploy.server.PSImportJob">
+            <Job jobType="import" className="com.percussion.deployer.msm.server.server.PSImportJob">
                <InitParams/>
             </Job>
-            <Job jobType="validation" className="com.percussion.deploy.server.PSValidationJob">
+            <Job jobType="validation" className="com.percussion.deployer.msm.server.server.PSValidationJob">
                <InitParams/>
             </Job>
          </Jobs>

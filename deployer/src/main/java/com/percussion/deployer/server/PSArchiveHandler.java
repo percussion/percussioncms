@@ -24,8 +24,6 @@
 
 package com.percussion.deployer.server;
 
-import com.percussion.deployer.error.IPSDeploymentErrors;
-import com.percussion.deployer.error.PSDeployException;
 import com.percussion.deployer.objectstore.PSApplicationIDTypes;
 import com.percussion.deployer.objectstore.PSArchive;
 import com.percussion.deployer.objectstore.PSArchiveManifest;
@@ -35,6 +33,8 @@ import com.percussion.deployer.objectstore.PSDeployComponentUtils;
 import com.percussion.deployer.server.dependencies.PSAclDefDependencyHandler;
 import com.percussion.deployer.server.dependencies.PSContentTypeDependencyHandler;
 import com.percussion.deployer.server.dependencies.PSSupportFileDependencyHandler;
+import com.percussion.error.IPSDeploymentErrors;
+import com.percussion.error.PSDeployException;
 import com.percussion.util.IOTools;
 
 import java.io.File;

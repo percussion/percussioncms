@@ -23,8 +23,6 @@
  */
 package com.percussion.deployer.server.dependencies;
 
-import com.percussion.deployer.error.IPSDeploymentErrors;
-import com.percussion.deployer.error.PSDeployException;
 import com.percussion.deployer.objectstore.PSDependency;
 import com.percussion.deployer.objectstore.PSDependencyFile;
 import com.percussion.deployer.objectstore.PSDeployComponentUtils;
@@ -43,6 +41,8 @@ import com.percussion.design.objectstore.PSDataSet;
 import com.percussion.design.objectstore.PSSharedFieldGroup;
 import com.percussion.design.objectstore.PSTableRef;
 import com.percussion.design.objectstore.PSTableSet;
+import com.percussion.error.IPSDeploymentErrors;
+import com.percussion.error.PSDeployException;
 import com.percussion.security.PSSecurityToken;
 import com.percussion.server.PSServer;
 import com.percussion.services.assembly.data.PSAssemblyTemplate;

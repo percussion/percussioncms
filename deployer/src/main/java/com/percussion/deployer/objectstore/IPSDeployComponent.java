@@ -25,6 +25,7 @@
 package com.percussion.deployer.objectstore;
 
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
+import com.percussion.error.PSDeployException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -60,7 +61,7 @@ public interface IPSDeployComponent extends Cloneable
     * @throws PSUnknownNodeTypeException if the XML element node does not 
     * represent a type supported by the class.
     */
-   public void fromXml(Element sourceNode) throws PSUnknownNodeTypeException;
+   public void fromXml(Element sourceNode) throws PSUnknownNodeTypeException, PSDeployException;
    
    /**
     * Creates a new instance of this object, performing a shallow copy of all 

@@ -24,8 +24,6 @@
 package com.percussion.deployer.server.dependencies;
 
 
-import com.percussion.deployer.error.IPSDeploymentErrors;
-import com.percussion.deployer.error.PSDeployException;
 import com.percussion.deployer.objectstore.PSDependency;
 import com.percussion.deployer.objectstore.PSDependencyFile;
 import com.percussion.deployer.objectstore.PSIdMap;
@@ -38,9 +36,13 @@ import com.percussion.deployer.server.PSImportCtx;
 import com.percussion.deployer.services.IPSDeployService;
 import com.percussion.deployer.services.PSDeployServiceException;
 import com.percussion.deployer.services.PSDeployServiceLocator;
+import com.percussion.error.IPSDeploymentErrors;
+import com.percussion.error.PSDeployException;
 import com.percussion.security.PSSecurityToken;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.error.PSNotFoundException;
+import com.percussion.services.guidmgr.PSGuidUtils;
+import com.percussion.services.sitemgr.IPSLocationScheme;
 import com.percussion.services.sitemgr.IPSPublishingContext;
 import com.percussion.services.sitemgr.IPSSiteManager;
 import com.percussion.services.sitemgr.PSSiteManagerLocator;
@@ -78,8 +80,7 @@ public class PSContextDefDependencyHandler extends PSDataObjectDependencyHandler
    // see base class
    @Override
    public Iterator<PSDependency> getChildDependencies(PSSecurityToken tok, PSDependency dep)
-      throws PSDeployException
-   {
+           throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
       if (dep == null)
@@ -87,12 +88,7 @@ public class PSContextDefDependencyHandler extends PSDataObjectDependencyHandler
       if (! dep.getObjectType().equals(DEPENDENCY_TYPE))
          throw new IllegalArgumentException("dep wrong type");
 
-      // The only dependencies for Context Definitions are Locations Schemes.
-      // Locations schemes are not being packaged along the the Context Def,
-      // thus, this method is only here as a placeholder (a required 
-      // implementation of abstract method in PSDependencyHandler class )
-      // It returns an empty list.
-      List<PSDependency> childDeps = new ArrayList<>();
+      List<PSDependency> childDeps = getLocationSchemeDependencies(tok, dep);
 
       return childDeps.iterator();         
     }
@@ -146,7 +142,6 @@ public class PSContextDefDependencyHandler extends PSDataObjectDependencyHandler
     * empty entries.
     */
    @Override
-   @SuppressWarnings("unchecked")
    public Iterator getChildTypes()
    {
       return ms_childTypes.iterator();
@@ -178,7 +173,6 @@ public class PSContextDefDependencyHandler extends PSDataObjectDependencyHandler
 
    // see base class
    @Override
-   @SuppressWarnings("unchecked")
    public Iterator getDependencyFiles(
       @SuppressWarnings("unused") PSSecurityToken tok, PSDependency dep)
            throws PSDeployException, PSNotFoundException {
@@ -223,20 +217,28 @@ public class PSContextDefDependencyHandler extends PSDataObjectDependencyHandler
          PSPublishingContext context, PSImportCtx ctx) 
    throws PSDeployException
    {
-      // Transform the ids for Default Location Scheme and the Context
-      
-      // Since Location Schemes are no longer packaged with the Context,
-      // there can be no default Location Scheme.
-      context.setDefaultSchemeId(null);
-      
-      
-      // Transform the ids for the Context
+      // xform the ids for CONTEXT, DEFAULTSCHEME
+      IPSGuid schId = context.getDefaultSchemeId();
+      if (schId != null)
+      {
+         PSIdMapping schemeMap = getIdMapping(ctx,
+                 String.valueOf(schId.longValue()),
+                 PSLocSchemeDefDependencyHandler.DEPENDENCY_TYPE);
+
+         if (schemeMap != null)
+         {
+            context.setDefaultSchemeId(PSGuidUtils.makeGuid(
+                    schemeMap.getTargetId(),
+                    PSTypeEnum.LOCATION_SCHEME));
+         }
+      }
+
       IPSGuid ctxId = context.getGUID();
       if (ctxId != null)
       {
-         PSIdMapping ctxMapping = getIdMapping(ctx, 
-               String.valueOf(ctxId.longValue()),
-               DEPENDENCY_TYPE);
+         PSIdMapping ctxMapping = getIdMapping(ctx,
+                 String.valueOf(ctxId.longValue()),
+                 DEPENDENCY_TYPE);
 
          if (ctxMapping != null)
             context.setId(new Integer(ctxMapping.getTargetId()));
@@ -246,7 +248,6 @@ public class PSContextDefDependencyHandler extends PSDataObjectDependencyHandler
    
    // see base class
    @Override
-   @SuppressWarnings("unchecked")
    public void installDependencyFiles(
       @SuppressWarnings("unused") PSSecurityToken tok, PSArchiveHandler archive, 
       PSDependency dep, PSImportCtx ctx) throws PSDeployException
@@ -280,7 +281,6 @@ public class PSContextDefDependencyHandler extends PSDataObjectDependencyHandler
     * PSSecurityToken, PSArchiveHandler, PSDependency, PSImportCtx)} for
     * details.
     */
-   @SuppressWarnings("unchecked")
    public void doInstallDependencyFiles(PSSecurityToken tok,
          PSArchiveHandler archive, PSDependency dep, PSImportCtx ctx)
            throws PSDeployException, PSNotFoundException {
@@ -310,10 +310,9 @@ public class PSContextDefDependencyHandler extends PSDataObjectDependencyHandler
       Integer ver = null;
       if (!isNew)
       {
-         // If the Context Definition already exists on the system,
-         // do not replace it. Just add transaction log entry and return.
-         addTransactionLogEntryByGuidType(dep, ctx, PSTypeEnum.CONTEXT, isNew);
-         return;
+         context = m_siteMgr.loadContextModifiable(context.getGUID());
+         ver = ((PSPublishingContext) context).getVersion();
+         ((PSPublishingContext) context).setVersion(null);
       }
       else
       {
@@ -330,6 +329,9 @@ public class PSContextDefDependencyHandler extends PSDataObjectDependencyHandler
          transferIdsInContext(tok, dep, ctxt, ctx);
          ctxt.setVersion(null);
                            
+         if (!isNew)
+            ctxt.setVersion(ver);
+
          m_siteMgr.saveContext(ctxt);
          
          //add transaction log
@@ -343,7 +345,52 @@ public class PSContextDefDependencyHandler extends PSDataObjectDependencyHandler
       }
    }  
    
-   
+   /**
+    * Package the location scheme dependencies
+    * @param tok the security token, assumed not <code>null</code>
+    * @param dep the dependency for which child dependencies are returned,
+    * assumed not <code>null</code>
+    * @return the location scheme child dependencies, never <code>null</code>
+    * may be empty
+    * @throws PSDeployException
+    */
+   private List<PSDependency> getLocationSchemeDependencies(
+         PSSecurityToken tok, PSDependency dep) throws PSDeployException, PSNotFoundException {
+      List<PSDependency> childDeps = new ArrayList<>();
+      List<String> ids = new ArrayList<>();
+
+      IPSPublishingContext context = findPublishingContext(
+            dep.getDependencyId());
+      if (context == null)
+      {
+         Object[] args = {dep.getDependencyId(), dep.getObjectTypeName(),
+               dep.getDisplayName()};
+         throw new PSDeployException(IPSDeploymentErrors.DEP_OBJECT_NOT_FOUND,
+               args);
+      }
+
+      List<IPSLocationScheme> schemes = m_siteMgr.findSchemesByContextId(
+            context.getGUID());
+      for (IPSLocationScheme scheme : schemes)
+         ids.add(String.valueOf(scheme.getGUID().longValue()));
+
+      Iterator<String> it = ids.iterator();
+      PSDependencyHandler lsHandler =
+         getDependencyHandler(
+               PSLocSchemeDefDependencyHandler.DEPENDENCY_TYPE);
+
+      PSDependency tmpDep = null;
+      while (it.hasNext())
+      {
+         String depId = it.next();
+         tmpDep = lsHandler.getDependency(tok, depId);
+         if ( tmpDep != null )
+            childDeps.add(tmpDep);
+      }
+
+      return childDeps;
+   }
+
    /**
     * Creates a dependency file from a given dependency data object.
     * 

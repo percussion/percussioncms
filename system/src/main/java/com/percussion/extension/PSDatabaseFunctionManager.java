@@ -25,7 +25,7 @@ package com.percussion.extension;
 
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
 import com.percussion.server.PSServer;
-import com.percussion.util.PSIteratorUtils;
+import com.percussion.utils.collections.PSIteratorUtils;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;

@@ -25,7 +25,6 @@
 package com.percussion.deployer.server;
 
 import com.percussion.deployer.client.PSDeploymentManager;
-import com.percussion.deployer.error.PSDeployException;
 import com.percussion.deployer.objectstore.PSDependency;
 import com.percussion.deployer.objectstore.PSDependencyContext;
 import com.percussion.deployer.objectstore.PSDependencyTreeContext;
@@ -35,6 +34,7 @@ import com.percussion.deployer.objectstore.PSValidationResult;
 import com.percussion.deployer.objectstore.PSValidationResults;
 import com.percussion.deployer.server.dependencies.PSAclDefDependencyHandler;
 import com.percussion.deployer.server.dependencies.PSDependencyHandler;
+import com.percussion.error.PSDeployException;
 import com.percussion.rx.config.IPSConfigService;
 import com.percussion.rx.config.PSConfigServiceLocator;
 import com.percussion.security.PSSecurityToken;
