@@ -24,8 +24,6 @@
 
 package com.percussion.deployer.server.dependencies;
 
-import com.percussion.deployer.error.IPSDeploymentErrors;
-import com.percussion.deployer.error.PSDeployException;
 import com.percussion.deployer.objectstore.PSDependency;
 import com.percussion.deployer.objectstore.PSDeployableElement;
 import com.percussion.deployer.objectstore.PSDeployableObject;
@@ -37,6 +35,8 @@ import com.percussion.deployer.server.PSDependencyDef;
 import com.percussion.deployer.server.PSDependencyMap;
 import com.percussion.deployer.server.PSImportCtx;
 import com.percussion.deployer.server.PSLogHandler;
+import com.percussion.error.IPSDeploymentErrors;
+import com.percussion.error.PSDeployException;
 import com.percussion.security.PSSecurityToken;
 import com.percussion.services.assembly.PSAssemblyException;
 import com.percussion.services.catalog.PSTypeEnum;
@@ -45,8 +45,8 @@ import com.percussion.services.guidmgr.data.PSGuid;
 import com.percussion.services.security.IPSAclService;
 import com.percussion.services.security.PSAclServiceLocator;
 import com.percussion.services.security.data.PSAclImpl;
-import com.percussion.util.PSIteratorUtils;
 import com.percussion.util.PSPurgableTempFile;
+import com.percussion.utils.collections.PSIteratorUtils;
 import com.percussion.utils.tools.IPSUtilsConstants;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import org.w3c.dom.Document;
@@ -70,8 +70,7 @@ import java.util.Map;
  * handler for an instance of a <code>PSDependencyDef</code> representing a
  * particular dependency type.
  */
-public abstract class PSDependencyHandler
-{
+public abstract class PSDependencyHandler implements IPSDependencyHandler {
    /**
     * Construct a dependency handler.
     *
@@ -156,7 +155,7 @@ public abstract class PSDependencyHandler
       {
          Throwable origException = ite.getTargetException();
          String msg = origException.getLocalizedMessage();
-         Object[] args = {className, origException.getClass().getName() + ": " + 
+         Object[] args = {className, origException.getClass().getName() + ": " +
             msg};
          throw new PSDeployException(
             IPSDeploymentErrors.DEPENDENCY_HANDLER_INIT, args);
@@ -187,6 +186,7 @@ public abstract class PSDependencyHandler
     * @throws IllegalArgumentException if <code>child</code> is
     * <code>null</code>.
     */
+   @Override
    public boolean isChildTypeSupported(PSDependency child)
    {
       if (child == null)
@@ -217,7 +217,7 @@ public abstract class PSDependencyHandler
     * @param dep A dependency of the type defined by this handler, may not be
     * <code>null</code>.
     *
-    * @return iterator over zero or more <code>PSDependency</code> objects, 
+    * @return iterator over zero or more <code>PSDependency</code> objects,
     * never <code>null</code>, may be empty.
     *
     * @throws IllegalArgumentException if dep is invalid.
@@ -242,6 +242,7 @@ public abstract class PSDependencyHandler
     * @throws IllegalArgumentException if dep is invalid.
     * @throws PSDeployException if there are any errors.
     */
+   @Override
    public Iterator getDependencyFiles(PSSecurityToken tok, PSDependency dep)
            throws PSDeployException, PSNotFoundException {
       if (tok == null)
@@ -275,8 +276,9 @@ public abstract class PSDependencyHandler
     * @throws UnsupportedOperationException if not overriden by a derived class.
     * @throws PSDeployException if there are any errors.
     */
+   @Override
    public void installDependencyFiles(PSSecurityToken tok,
-      PSArchiveHandler archive, PSDependency dep, PSImportCtx ctx)
+                                      PSArchiveHandler archive, PSDependency dep, PSImportCtx ctx)
            throws PSDeployException, PSAssemblyException, PSNotFoundException {
       throw new UnsupportedOperationException("method not supported");
    }
@@ -294,7 +296,7 @@ public abstract class PSDependencyHandler
     */
    public abstract Iterator<PSDependency> getDependencies(PSSecurityToken tok)
            throws PSDeployException, PSNotFoundException;
-      
+
    /**
     * Gets all dependencies of this type that exist on the Rhythmyx server with
     * the specified parent id.
@@ -315,8 +317,9 @@ public abstract class PSDependencyHandler
     * parent ids but has not overriden this method.
     * @throws PSDeployException if there are any errors.
     */
-   public Iterator getDependencies(PSSecurityToken tok, String parentType, 
-      String parentId) throws PSDeployException
+   @Override
+   public Iterator getDependencies(PSSecurityToken tok, String parentType,
+                                   String parentId) throws PSDeployException
    {
       if (!m_def.supportsParentId())
       {
@@ -344,6 +347,7 @@ public abstract class PSDependencyHandler
     * support parent ids and has not overridden this method.
     * @throws PSDeployException if there are any errors.
     */
+   @Override
    public PSDependency getDependency(PSSecurityToken tok, String id)
            throws PSDeployException, PSNotFoundException {
       if (m_def.supportsParentId())
@@ -377,8 +381,9 @@ public abstract class PSDependencyHandler
     * parent ids but has not overriden this method.
     * @throws PSDeployException if there are any errors.
     */
-   public PSDependency getDependency(PSSecurityToken tok, String id, 
-      String parentType, String parentId)
+   @Override
+   public PSDependency getDependency(PSSecurityToken tok, String id,
+                                     String parentType, String parentId)
          throws PSDeployException
    {
       if (!m_def.supportsParentId())
@@ -411,8 +416,9 @@ public abstract class PSDependencyHandler
     * @param childDeps a collection to which an acl dependency must be added
     * @throws PSDeployException
     */
+   @Override
    public void addAclDependency(PSSecurityToken tok, PSTypeEnum key,
-         PSDependency dep, Collection<PSDependency> childDeps)
+                                PSDependency dep, Collection<PSDependency> childDeps)
            throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
@@ -468,6 +474,7 @@ public abstract class PSDependencyHandler
     * @throws UnsupportedOperationException if the derived handler supports 
     * parent ids but has not overriden this method.
     */
+   @Override
    public String getParentType()
    {
       if (!m_def.supportsParentId())
@@ -498,6 +505,7 @@ public abstract class PSDependencyHandler
     * support parent ids and has not overriden this method.
     * @throws PSDeployException if there are any errors.
     */
+   @Override
    public boolean doesDependencyExist(PSSecurityToken tok, String id)
            throws PSDeployException, PSNotFoundException {
       if (m_def.supportsParentId())
@@ -530,8 +538,9 @@ public abstract class PSDependencyHandler
     * parent ids but has not overriden this method.
     * @throws PSDeployException if there are any errors.
     */
-   public boolean doesDependencyExist(PSSecurityToken tok, String id, 
-      String parentId) throws PSDeployException
+   @Override
+   public boolean doesDependencyExist(PSSecurityToken tok, String id,
+                                      String parentId) throws PSDeployException
    {
       if (!m_def.supportsParentId())
       {
@@ -559,6 +568,7 @@ public abstract class PSDependencyHandler
     * method has not been overriden by the derived class.
     * @throws PSDeployException if there are any errors.
     */
+   @Override
    public void reserveNewId(PSDependency dep, PSIdMap idMap)
       throws PSDeployException
    {
@@ -591,6 +601,7 @@ public abstract class PSDependencyHandler
     * default, derived classes should override if they need to return
     * <code>true</code>.
     */
+   @Override
    public boolean shouldDeferInstallation()
    {
       return false;
@@ -608,6 +619,7 @@ public abstract class PSDependencyHandler
     * handler, <code>false</code> otherwise.  Base class always returns
     * <code>false</code>.
     */
+   @Override
    public boolean delegatesIdMapping()
    {
       return false;
@@ -627,6 +639,7 @@ public abstract class PSDependencyHandler
     * @throws IllegalStateException if this method is not overriden and the
     * handler's type does not support id mapping.
     */
+   @Override
    public String getIdMappingType()
    {
       if (!m_def.supportsIdMapping())
@@ -644,6 +657,7 @@ public abstract class PSDependencyHandler
     * @throws IllegalStateException if this method is not overriden and the
     * handler's type does not support id mapping or parent ids.
     */
+   @Override
    public String getParentIdMappingType()
    {
       if (!m_def.supportsIdMapping())
@@ -666,6 +680,7 @@ public abstract class PSDependencyHandler
     * method if an unincluded child of the specified type should not be 
     * considered "missing" during installation.
     */
+   @Override
    public boolean isRequiredChild(String type)
    {
       if (type == null || type.trim().length() == 0)
@@ -684,6 +699,7 @@ public abstract class PSDependencyHandler
     * 
     * @return <code>true</code> always.
     */
+   @Override
    public boolean overwritesOnInstall()
    {
       return true;
@@ -725,6 +741,7 @@ public abstract class PSDependencyHandler
     * 
     * @throws PSDeployException if there are any errors.
     */
+   @Override
    public String getTargetId(PSIdMapping mapping, String id)
       throws PSDeployException
    {
@@ -764,6 +781,7 @@ public abstract class PSDependencyHandler
     * @throws IllegalArgumentException if any param is invalid.
     * @throws PSDeployException if there are any errors.
     */
+   @Override
    public List getExternalDbmsInfoList(PSSecurityToken tok, PSDependency dep)
       throws PSDeployException
    {
@@ -942,25 +960,19 @@ public abstract class PSDependencyHandler
    {
       if (doc == null)
          throw new IllegalArgumentException("doc may not be null");
+try {
+   PSPurgableTempFile xmlFile = new PSPurgableTempFile("dpl_", ".xml",
+           null);
 
-      FileOutputStream out = null;
-      try
-      {
-         PSPurgableTempFile xmlFile = new PSPurgableTempFile("dpl_", ".xml",
-            null);
-         out = new FileOutputStream(xmlFile);
-         PSXmlDocumentBuilder.write(doc, out);
-         return xmlFile;
-      }
-      catch (IOException e)
+   try (FileOutputStream out = new FileOutputStream(xmlFile)) {
+
+      PSXmlDocumentBuilder.write(doc, out);
+      return xmlFile;
+   }
+} catch (IOException e)
       {
          throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR,
-            e.getLocalizedMessage());
-      }
-      finally
-      {
-         if (out != null)
-            try {out.close();} catch (IOException ex){}
+            e.getMessage());
       }
 
    }
@@ -984,12 +996,11 @@ public abstract class PSDependencyHandler
       if (org.apache.commons.lang.StringUtils.isBlank(str))
          throw new IllegalArgumentException("doc may not be empty or null");
 
-      FileOutputStream out = null;
       try
       {
          PSPurgableTempFile xmlFile = new PSPurgableTempFile("dpl_", ".xml",
             null);
-         out = new FileOutputStream(xmlFile);
+         try(FileOutputStream out = new FileOutputStream(xmlFile)) {
          
          // add xml header if necessary
          String tmpStr = str;
@@ -999,15 +1010,11 @@ public abstract class PSDependencyHandler
          out.write(tmpStr.getBytes(IPSUtilsConstants.RX_JAVA_ENC));
          return xmlFile;
       }
+      }
       catch (IOException e)
       {
          throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR,
-            e.getLocalizedMessage());
-      }
-      finally
-      {
-         if (out != null)
-            try {out.close();} catch (IOException ex){}
+            e.getMessage());
       }
    }
 
@@ -1183,8 +1190,9 @@ public abstract class PSDependencyHandler
     * @throws PSDeployException If no mapping for the specified dependency is 
     * found.
     */
-   public PSIdMapping getIdMapping(PSIdMap idMap, String id, String type, 
-      String parentId, String parentType)
+   @Override
+   public PSIdMapping getIdMapping(PSIdMap idMap, String id, String type,
+                                   String parentId, String parentType)
          throws PSDeployException
    {
       if (idMap == null)
@@ -1535,8 +1543,9 @@ public abstract class PSDependencyHandler
     * @param isNew <code>true</code>, if it does not exist on the target system
     * @throws PSDeployException 
     */
+   @Override
    public void addTransactionLogEntryByGuidType(PSDependency dep,
-      PSImportCtx ctx, PSTypeEnum type, boolean isNew) throws PSDeployException
+                                                PSImportCtx ctx, PSTypeEnum type, boolean isNew) throws PSDeployException
    {
       if (dep == null)
          throw new IllegalArgumentException("dep may not be null");
@@ -1577,8 +1586,9 @@ public abstract class PSDependencyHandler
     * @throws IllegalArgumentException if there is any invalid parameters.
     * @throws PSDeployException if any other error occurs.
     */
+   @Override
    public void addTransactionLogEntry(PSDependency dep, PSImportCtx ctx,
-      String elementName, String elementType, int action) 
+                                      String elementName, String elementType, int action)
       throws PSDeployException
    {
       if (dep == null)

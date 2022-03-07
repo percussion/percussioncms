@@ -140,6 +140,35 @@ public class PSValidationResults  implements IPSDeployComponent
    }
 
    /**
+    * Get a list of dependency objects.
+    *
+    * @return List of zero or more <code>PSDependency</code> objects. It will
+    * never be <code>null</code>, but may be empty.
+    */
+   public Iterator getAbsentAncestors()
+   {
+      return m_absentAncestors.iterator();
+   }
+
+  /**
+   * Adds an dependency into the absent ancestor list if the dependency has
+   * not already been added.
+   *
+   * @param    dep The dependency object to be added. It may not be
+   * <code>null</code>
+   *
+   * @throws IllegalArgumentException if <code>dep</code> is <code>null</code>.
+   */
+   public void addAbsentAncestor(PSDependency dep)
+   {
+      if (dep == null)
+         throw new IllegalArgumentException("dep may not be null");
+
+      if (!m_absentAncestors.contains(dep))
+         m_absentAncestors.add(dep);
+   }
+
+   /**
     * Serializes this object's state to its XML representation.  The format is:
     * <pre><code>
     * &lt;!ELEMENT PSXValidationResults
@@ -161,6 +190,15 @@ public class PSValidationResults  implements IPSDeployComponent
       {
          Element vrEl = vr.toXml(doc);
          root.appendChild(vrEl);
+      }
+
+      // Add the (PSXDeployableObject | PSXDeployableElement) elements
+      Iterator depList = m_absentAncestors.iterator();
+      while (depList.hasNext())
+      {
+         PSDependency dep = (PSDependency) depList.next();
+         Element depEl = dep.toXml(doc);
+         root.appendChild(depEl);
       }
 
       return root;
@@ -192,6 +230,9 @@ public class PSValidationResults  implements IPSDeployComponent
 
       m_validateResults.clear();
       childEl = getValidateResults(childEl, tree);
+
+      m_absentAncestors.clear();
+      getAbsentAncestors(childEl, tree);
    }
 
    /**
@@ -221,6 +262,44 @@ public class PSValidationResults  implements IPSDeployComponent
       return childEl;
    }
 
+   /**
+    * Get a list of dependency objects from the given parameters if the XML
+    * contains any of them.
+    *
+    * @param childEl The current element in the <code>tree</code>, which will
+    * be retrieved from. It may be <code>null</code>.
+    * @param tree The XML tree, assume not <code>null</code>. The Tree will be
+    * left on a <code>null</code> element, or the next element that is not a
+    * dependency element.
+    *
+    * @throws PSUnknownNodeTypeException if the XML is malformed.
+    */
+   private void getAbsentAncestors(Element childEl, PSXmlTreeWalker tree)
+      throws PSUnknownNodeTypeException
+   {
+      while ( childEl != null &&
+         ((childEl.getNodeName().equals(PSDeployableElement.XML_NODE_NAME)) ||
+         (childEl.getNodeName().equals(PSDeployableObject.XML_NODE_NAME)) ||
+         (childEl.getNodeName().equals(PSUserDependency.XML_NODE_NAME)) ) )
+      {
+         if ( childEl.getNodeName().equals(PSDeployableElement.XML_NODE_NAME) )
+         {
+            m_absentAncestors.add(new PSDeployableElement(childEl));
+         }
+         else if (
+            childEl.getNodeName().equals(PSDeployableObject.XML_NODE_NAME) )
+         {
+            m_absentAncestors.add(new PSDeployableObject(childEl));
+         }
+         else
+         {
+            m_absentAncestors.add(new PSUserDependency(childEl));
+         }
+
+         childEl = tree.getNextElement(NEXT_FLAGS);
+      }
+   }
+
    // see IPSDeployComponent interface
    public void copyFrom(IPSDeployComponent obj)
    {
@@ -233,6 +312,8 @@ public class PSValidationResults  implements IPSDeployComponent
 
       PSValidationResults obj2 = (PSValidationResults) obj;
 
+      m_absentAncestors.clear();
+      m_absentAncestors.addAll(obj2.m_absentAncestors);
       m_validateResults.clear();
       m_validateResults.addAll(obj2.m_validateResults);
    }
@@ -241,7 +322,7 @@ public class PSValidationResults  implements IPSDeployComponent
    @Override
    public int hashCode()
    {
-      return m_validateResults.hashCode();
+      return m_absentAncestors.hashCode() + m_validateResults.hashCode();
    }
 
    // see IPSDeployComponent interface
@@ -253,7 +334,8 @@ public class PSValidationResults  implements IPSDeployComponent
       if ((obj instanceof PSValidationResults))
       {
          PSValidationResults obj2 = (PSValidationResults) obj;
-         isEqual = m_validateResults.equals(obj2.m_validateResults);
+         isEqual = m_absentAncestors.equals(obj2.m_absentAncestors) &&
+            m_validateResults.equals(obj2.m_validateResults);
       }
       return isEqual;
    }
@@ -263,6 +345,11 @@ public class PSValidationResults  implements IPSDeployComponent
     */
    public static final String XML_NODE_NAME = "PSXValidationResults";
 
+   /**
+    * A list of Absent Ancestors (as <code>PSDependency</code> object).
+    * It will never be <code>null</code>, but may be empty.
+    */
+   private List m_absentAncestors = new ArrayList();
    /**
     * A list of <code>PSValidationResult</code> objects. It will never be
     * <code>null</code>, but may be empty.

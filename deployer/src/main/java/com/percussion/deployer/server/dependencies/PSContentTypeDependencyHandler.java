@@ -26,16 +26,19 @@ package com.percussion.deployer.server.dependencies;
 
 import com.percussion.cms.objectstore.PSCmsObject;
 import com.percussion.cms.objectstore.PSComponentSummary;
+import com.percussion.cms.objectstore.PSContentType;
 import com.percussion.cms.objectstore.PSItemDefinition;
 import com.percussion.cms.objectstore.server.PSItemDefManager;
 import com.percussion.deployer.client.IPSDeployConstants;
-import com.percussion.deployer.error.IPSDeploymentErrors;
-import com.percussion.deployer.error.PSDeployException;
+import com.percussion.deployer.objectstore.PSApplicationIDTypeMapping;
+import com.percussion.deployer.objectstore.PSApplicationIDTypes;
 import com.percussion.deployer.objectstore.PSDependency;
 import com.percussion.deployer.objectstore.PSDependencyFile;
 import com.percussion.deployer.objectstore.PSDeployableObject;
 import com.percussion.deployer.objectstore.PSIdMap;
 import com.percussion.deployer.objectstore.PSIdMapping;
+import com.percussion.deployer.server.IPSIdTypeHandler;
+import com.percussion.deployer.server.PSAppTransformer;
 import com.percussion.deployer.server.PSArchiveHandler;
 import com.percussion.deployer.server.PSDbmsHelper;
 import com.percussion.deployer.server.PSDependencyDef;
@@ -43,14 +46,23 @@ import com.percussion.deployer.server.PSDependencyManager;
 import com.percussion.deployer.server.PSDependencyMap;
 import com.percussion.deployer.server.PSImportCtx;
 import com.percussion.design.objectstore.PSApplication;
+import com.percussion.design.objectstore.PSApplicationFlow;
+import com.percussion.design.objectstore.PSCommandHandlerStylesheets;
 import com.percussion.design.objectstore.PSContentEditor;
 import com.percussion.design.objectstore.PSContentEditorMapper;
 import com.percussion.design.objectstore.PSContentEditorPipe;
 import com.percussion.design.objectstore.PSContentTypeHelper;
 import com.percussion.design.objectstore.PSDataSet;
+import com.percussion.design.objectstore.PSFieldSet;
+import com.percussion.design.objectstore.PSRequestor;
 import com.percussion.design.objectstore.PSUIDefinition;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
+import com.percussion.design.objectstore.PSUrlRequest;
 import com.percussion.design.objectstore.PSWorkflowInfo;
+import com.percussion.design.objectstore.server.PSServerXmlObjectStore;
+import com.percussion.error.IPSDeploymentErrors;
+import com.percussion.error.PSDeployException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.security.PSSecurityToken;
 import com.percussion.server.PSServer;
 import com.percussion.services.assembly.IPSAssemblyService;
@@ -96,7 +108,7 @@ import java.util.Set;
  */
 public class PSContentTypeDependencyHandler
       extends
-         PSContentEditorObjectDependencyHandler
+         PSContentEditorObjectDependencyHandler implements IPSIdTypeHandler
 {
 
    /**
@@ -124,7 +136,6 @@ public class PSContentTypeDependencyHandler
     * @return an iterator for CE dependencies from the DataSet
     * @throws PSDeployException
     */
-   @SuppressWarnings("unchecked")
    private List<PSDependency> getCEChildDependencies(PSSecurityToken tok,
          String name) throws PSDeployException, PSNotFoundException {
       List<PSDependency> childDeps = new ArrayList<>();
@@ -161,6 +172,14 @@ public class PSContentTypeDependencyHandler
             if (ds instanceof PSContentEditor)
             {
                PSContentEditor ce = (PSContentEditor) ds;
+               // add system def if haven't already
+               PSDependencyHandler sysDefHandler = getDependencyHandler(
+                     PSSystemDefDependencyHandler.DEPENDENCY_TYPE);
+               Iterator<PSDependency> sysdefDeps = sysDefHandler
+                     .getDependencies(tok);
+               // should return a single dep
+               if (sysdefDeps.hasNext())
+                  childDeps.add(sysdefDeps.next());
 
                int wfId = ce.getWorkflowId();
                PSDependency wfDep = wfHandler.getDependency(tok, String
@@ -177,8 +196,14 @@ public class PSContentTypeDependencyHandler
                   Iterator ids = wfInfo.getValues();
                   while (ids.hasNext())
                   {
-                     PSDependency childDep = wfHandler.getDependency(tok, ids
-                           .next().toString());
+                     PSDependency childDep = null;
+                     try {
+                         childDep = wfHandler.getDependency(tok, ids
+                                .next().toString());
+                     }catch (PSNotFoundException e) {
+                        log.warn(PSExceptionUtils.getMessageForLog(e));
+                        log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+                     }
                      if (childDep != null)
                         childDeps.add(childDep);
                   }
@@ -188,7 +213,9 @@ public class PSContentTypeDependencyHandler
 
                // Do not add tables as child dependencies here. 
                // All local tables are handled by getDependencyFiles() directly.
-
+               //added in merge
+               childDeps.addAll(checkLocatorTables(tok, cePipe.getLocator()));
+               
                PSContentEditorMapper ceMapper = cePipe.getMapper();
                PSUIDefinition uiDef = ceMapper.getUIDefinition();
                childDeps.addAll(checkUIDef(tok, uiDef));
@@ -240,6 +267,8 @@ public class PSContentTypeDependencyHandler
             PSVariantDefDependencyHandler.DEPENDENCY_TYPE);
       PSDependencyHandler tmpPkgHandler = getDependencyHandler(
             PSTemplateDependencyHandler.DEPENDENCY_TYPE);
+      PSDependencyHandler tmpDefHandler = getDependencyHandler(
+            PSTemplateDefDependencyHandler.DEPENDENCY_TYPE);
       IPSNodeDefinition node = findNodeDefByDependencyID(dep.getDependencyId());
       if (node == null)
          return childDeps;
@@ -272,6 +301,11 @@ public class PSContentTypeDependencyHandler
           */
          if (t.isVariant())
             childDep = varHandler.getDependency(tok, guidStr);
+         else if (t.getTemplateType().equals(IPSAssemblyTemplate.TemplateType.Local))
+         {
+            childDep = tmpDefHandler.getDependency(tok, guidStr);
+            childDep.setDependencyType(PSDependency.TYPE_LOCAL);
+         }
          else
          {
             // get the template package
@@ -284,7 +318,6 @@ public class PSContentTypeDependencyHandler
    }
    
    // see base class
-   @SuppressWarnings("unchecked")
    @Override
    public Iterator getChildDependencies(PSSecurityToken tok, PSDependency dep)
            throws PSDeployException, PSNotFoundException {
@@ -411,7 +444,6 @@ public class PSContentTypeDependencyHandler
     * @throws PSDeployException if there is no dependency file in the archive
     *            for the specified dependency object, or any other error occurs.
     */
-   @SuppressWarnings("unchecked")
    protected static Iterator getItemDefFilesFromArchive(
          PSArchiveHandler archive, PSDependency dep) throws PSDeployException
    {
@@ -435,7 +467,6 @@ public class PSContentTypeDependencyHandler
    }
 
    // see base class
-   @SuppressWarnings("unchecked")
    @Override
    public Iterator getDependencyFiles(PSSecurityToken tok, PSDependency dep)
            throws PSDeployException, PSNotFoundException {
@@ -666,6 +697,7 @@ public class PSContentTypeDependencyHandler
       PSIdMap idMap = ctx.getCurrentIdMap();
 
       // translate id's using idTypes and idMap
+      transformIds(item, ctx.getIdTypes(), idMap);
       transformWorkflowIds(item, ctx);
 
       // transform UI Defs
@@ -754,7 +786,6 @@ public class PSContentTypeDependencyHandler
     * @return the set of template relationships: cvDescriptors
     * @throws PSDeployException
     */
-   @SuppressWarnings("unchecked")
    private Set<PSContentTemplateDesc> getTemplateRelationships(
          PSArchiveHandler archive, PSDependency dep, PSImportCtx ctx)
          throws PSDeployException
@@ -861,7 +892,7 @@ public class PSContentTypeDependencyHandler
              * removeTemplateAssociations(PSSecurityToken, PSDependency,
              * PSImportCtx, Set)}, so this code may not be necessary.
              */
-            m_log.warn("Removing Content <==>Template relationship{"
+            log.warn("Removing Content <==>Template relationship{"
                   + desc.getContentTypeId().toString() + ","
                   + desc.getTemplateId().toString()
                   + "}, because one of the mapping element is not deployed.");
@@ -886,7 +917,6 @@ public class PSContentTypeDependencyHandler
 
    // see base class
    @Override
-   @SuppressWarnings("unchecked")
    public void installDependencyFiles(PSSecurityToken tok,
          PSArchiveHandler archive, PSDependency dep, PSImportCtx ctx)
          throws PSDeployException
@@ -910,7 +940,7 @@ public class PSContentTypeDependencyHandler
            isNew = itemVer.getSecond() == -1;
        } catch (PSDeployException e)
        {
-           m_log.error("There was an error with existing type, will try and fix", e);
+           log.error("There was an error with existing type, will try and fix", e);
        }
 
 
@@ -1014,7 +1044,7 @@ public class PSContentTypeDependencyHandler
          try {
             item = findContentTypeByNodeDef(node);
          } catch (PSDeployException e){
-            m_log.error("Content Type exists but problem with ObjectStore Node definition:",e);
+            log.error("Content Type exists but problem with ObjectStore Node definition:",e);
          }
       }
       return new PSPair(item, curVer);
@@ -1146,11 +1176,19 @@ public class PSContentTypeDependencyHandler
       catch (Exception e)
       {
          String msg = "\n Error was: " + e.getLocalizedMessage();
-         m_log.error(msg,e);
+         log.error(msg,e);
          throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR,
                "Error occurred while installing content type:"
                      + itemDef.getAppName() + msg);
       }
+
+      // make sure mapping is reset after update
+      PSIdMapping mapping = getIdMapping(ctx, dep);
+      if (mapping != null)
+         mapping.setIsNewObject(false);
+
+      // add txn log entry
+      addTransactionLogEntryByGuidType(dep, ctx, PSTypeEnum.SLOT, isNew);
    }
    
    /**
@@ -1323,7 +1361,6 @@ public class PSContentTypeDependencyHandler
     *         objects, never <code>null</code>, does not contain
     *         <code>null</code> or empty entries.
     */
-   @SuppressWarnings("unchecked")
    @Override
    public Iterator getChildTypes()
    {
@@ -1366,6 +1403,285 @@ public class PSContentTypeDependencyHandler
       PSDependencyUtils.reserveNewId(dep, idMap, getType());
    }
 
+   public PSApplicationIDTypes getIdTypes(PSSecurityToken tok, PSDependency dep)
+         throws PSDeployException
+   {
+      PSApplicationIDTypes idTypes = new PSApplicationIDTypes(dep);
+      try
+      {
+         PSApplication app = getCEAppFromDependencyID(tok, dep
+               .getDependencyId());
+
+         if (app == null)
+            return idTypes;
+         PSCollection dataSetColl = app.getDataSets();
+
+         if (dataSetColl == null)
+            return idTypes;
+
+         Iterator datasets = dataSetColl.iterator();
+         while (datasets.hasNext())
+         {
+            List mappings = new ArrayList();
+            PSDataSet ds = (PSDataSet) datasets.next();
+            String reqName = PSApplicationDependencyHandler.getResourceName(ds);
+
+            // check page selection/validation properties
+            PSRequestor requestor = ds.getRequestor();
+            mappings.clear();
+            PSAppTransformer.checkConditionals(mappings, requestor
+                  .getSelectionCriteria().iterator(), null);
+            idTypes.addMappings(reqName,
+                  IPSDeployConstants.ID_TYPE_ELEMENT_REQUEST_PROPERTIES,
+                  mappings.iterator());
+
+            mappings.clear();
+            PSAppTransformer.checkConditionals(mappings, requestor
+                  .getValidationRules().iterator(), null);
+            idTypes.addMappings(reqName,
+                  IPSDeployConstants.ID_TYPE_ELEMENT_REQUEST_VALIDATIONS,
+                  mappings.iterator());
+
+            if (ds instanceof PSContentEditor)
+            {
+               PSContentEditor ce = (PSContentEditor) ds;
+
+               // get the pipe
+               PSContentEditorPipe cePipe = (PSContentEditorPipe) ce.getPipe();
+               PSContentEditorMapper ceMapper = cePipe.getMapper();
+
+               // check fields
+               PSFieldSet fs = ceMapper.getFieldSet();
+               mappings.clear();
+               PSAppTransformer.checkFieldSet(mappings, fs, null);
+               idTypes.addMappings(reqName,
+                     IPSDeployConstants.ID_TYPE_ELEMENT_CE_FIELD, mappings
+                           .iterator());
+
+               // check uidef default ui's uiset
+               mappings.clear();
+               PSAppTransformer.checkUIDef(mappings,
+                     ceMapper.getUIDefinition(), null);
+               idTypes.addMappings(reqName,
+                     IPSDeployConstants.ID_TYPE_ELEMENT_CE_UI_DEF, mappings
+                           .iterator());
+
+               // walk all other possiblities
+               PSApplicationFlow appFlow = ce.getApplicationFlow();
+               if (appFlow != null)
+               {
+                  mappings.clear();
+                  PSAppTransformer.checkAppFlow(mappings, appFlow, null);
+                  idTypes.addMappings(reqName,
+                        IPSDeployConstants.ID_TYPE_ELEMENT_CE_APP_FLOW,
+                        mappings.iterator());
+               }
+
+               mappings.clear();
+               PSAppTransformer.checkCustomActionGroups(mappings, ce
+                     .getCustomActionGroups(), null);
+               idTypes.addMappings(reqName,
+                     IPSDeployConstants.ID_TYPE_ELEMENT_CE_CUSTOM_ACTIONS,
+                     mappings.iterator());
+
+               mappings.clear();
+               PSAppTransformer.checkConditionalExits(mappings, ce
+                     .getInputTranslations(), null);
+               idTypes.addMappings(reqName,
+                     IPSDeployConstants.ID_TYPE_ELEMENT_CE_INPUT_TRANSLATIONS,
+                     mappings.iterator());
+
+               mappings.clear();
+               PSAppTransformer.checkConditionalExits(mappings, ce
+                     .getOutputTranslations(), null);
+               idTypes.addMappings(reqName,
+                     IPSDeployConstants.ID_TYPE_ELEMENT_CE_OUTPUT_TRANSLATIONS,
+                     mappings.iterator());
+
+               mappings.clear();
+               Iterator links = ce.getSectionLinkList();
+               while (links.hasNext())
+               {
+                  PSAppTransformer.checkUrlRequest(mappings,
+                        (PSUrlRequest) links.next(), null);
+               }
+               idTypes.addMappings(reqName,
+                     IPSDeployConstants.ID_TYPE_ELEMENT_CE_SECTION_LINK_LIST,
+                     mappings.iterator());
+
+               mappings.clear();
+               PSAppTransformer.checkStylesheetSet(mappings, ce
+                     .getStylesheetSet(), null);
+               idTypes
+                     .addMappings(
+                           reqName,
+                           IPSDeployConstants.ID_TYPE_ELEMENT_CE_COMMAND_HANDLER_STYLESHEETS,
+                           mappings.iterator());
+
+               mappings.clear();
+               PSAppTransformer.checkConditionalExits(mappings, ce
+                     .getValidationRules(), null);
+               idTypes.addMappings(reqName,
+                     IPSDeployConstants.ID_TYPE_ELEMENT_CE_VALIDATION_RULES,
+                     mappings.iterator());
+            }
+         }
+      }
+      catch (Exception e)
+      {
+         throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR, e
+               .getLocalizedMessage());
+      }
+      return idTypes;
+   }
+
+   /**
+    * From a dependency figure out the CE Application name
+    * 
+    * @param tok The security token to use if objectstore access is required,
+    *           may not be <code>null</code>.
+    * @param id the dependency id as a string never <code>null</code>
+    * @return the application may be <code>null</code>
+    * @throws PSDeployException
+    */
+   private PSApplication getCEAppFromDependencyID(PSSecurityToken tok, 
+         String id) throws PSDeployException
+   {
+      if (tok == null)
+         throw new IllegalArgumentException(" security token may not be null");
+      if (id == null || id.trim().length() == 0)
+         throw new IllegalArgumentException("id may not be null or empty");
+
+      PSServerXmlObjectStore os = PSServerXmlObjectStore.getInstance();
+      PSApplication app = null;
+
+      IPSNodeDefinition node = findNodeDefByDependencyID(id);
+
+      // unfortunately relying on the new request . . .
+      String appName = PSContentType
+            .getAppNameFromRequestUrl(((PSNodeDefinition) node).getNewRequest());
+      if (appName != null)
+         try
+         {
+            app = os.getApplicationObject(appName, tok);
+         }
+         catch (Exception e)
+         {
+            String msg = "\n Error was:" + e.getLocalizedMessage();
+            throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR,
+                  "Could not locate CE application:" + appName + msg);
+         }
+      return app;
+   }
+
+   public void transformIds(Object obj, PSApplicationIDTypes idTypes,
+         PSIdMap idMap) throws PSDeployException
+   {
+      if (obj == null)
+         throw new IllegalArgumentException("item definition may not be null");
+
+      if (idTypes == null)
+         throw new IllegalArgumentException("idTypes may not be null");
+
+      if (idMap == null)
+         throw new IllegalArgumentException("idMap may not be null");
+
+      // walk id types and perform any transforms
+      PSItemDefinition item = null;
+      if (!(obj instanceof PSItemDefinition))
+         return;
+      item = (PSItemDefinition) obj;
+
+      Iterator resources = idTypes.getResourceList(false);
+      while (resources.hasNext())
+      {
+         String resource = (String) resources.next();
+         PSContentEditor ce = item.getContentEditor();
+         Iterator elements = idTypes.getElementList(resource, false);
+         while (elements.hasNext())
+         {
+            String element = (String) elements.next();
+            Iterator mappings = idTypes.getIdTypeMappings(resource, element,
+                  false);
+            while (mappings.hasNext())
+            {
+               PSApplicationIDTypeMapping mapping =
+                  (PSApplicationIDTypeMapping) mappings.next();
+
+               if (mapping.getType().equals(
+                     PSApplicationIDTypeMapping.TYPE_NONE))
+               {
+                  continue;
+               }
+               PSContentEditorPipe cePipe = (PSContentEditorPipe) ce.getPipe();
+               PSContentEditorMapper ceMapper = cePipe.getMapper();
+
+               if (element
+                     .equals(IPSDeployConstants.ID_TYPE_ELEMENT_CE_APP_FLOW))
+               {
+                  PSApplicationFlow appFlow = ce.getApplicationFlow();
+                  if (appFlow != null)
+                     PSAppTransformer.transformAppFlow(appFlow, mapping, idMap);
+               }
+               else if (element
+                     .equals(IPSDeployConstants.ID_TYPE_ELEMENT_CE_COMMAND_HANDLER_STYLESHEETS))
+               {
+                  PSCommandHandlerStylesheets sheets = ce.getStylesheetSet();
+                  if (sheets != null)
+                     PSAppTransformer.transformStylesheetSet(sheets, mapping,
+                           idMap);
+               }
+               else if (element
+                     .equals(IPSDeployConstants.ID_TYPE_ELEMENT_CE_CUSTOM_ACTIONS))
+               {
+                  PSAppTransformer.transformCustomActionGroups(ce
+                        .getCustomActionGroups(), mapping, idMap);
+               }
+               else if (element
+                     .equals(IPSDeployConstants.ID_TYPE_ELEMENT_CE_FIELD))
+               {
+                  PSAppTransformer.transformFieldSet(ceMapper.getFieldSet(),
+                        mapping, idMap);
+               }
+               else if (element
+                     .equals(IPSDeployConstants.ID_TYPE_ELEMENT_CE_INPUT_TRANSLATIONS))
+               {
+                  PSAppTransformer.transformConditionalExits(ce
+                        .getInputTranslations(), mapping, idMap);
+               }
+               else if (element
+                     .equals(IPSDeployConstants.ID_TYPE_ELEMENT_CE_OUTPUT_TRANSLATIONS))
+               {
+                  PSAppTransformer.transformConditionalExits(ce
+                        .getOutputTranslations(), mapping, idMap);
+               }
+               else if (element
+                     .equals(IPSDeployConstants.ID_TYPE_ELEMENT_CE_SECTION_LINK_LIST))
+               {
+                  Iterator links = ce.getSectionLinkList();
+                  while (links.hasNext())
+                  {
+                     PSAppTransformer.transformUrlRequest((PSUrlRequest) links
+                           .next(), mapping, idMap);
+                  }
+               }
+               else if (element
+                     .equals(IPSDeployConstants.ID_TYPE_ELEMENT_CE_UI_DEF))
+               {
+                  PSAppTransformer.transformUIDef(ceMapper.getUIDefinition(),
+                        mapping, idMap);
+               }
+               else if (element
+                     .equals(IPSDeployConstants.ID_TYPE_ELEMENT_CE_VALIDATION_RULES))
+               {
+                  PSAppTransformer.transformConditionalExits(ce
+                        .getValidationRules(), mapping, idMap);
+               }
+            } // mappings.hasNext()
+         } // elements.hasNext()
+      } // resources.hasNext()
+   }
+
    /**
     * helper method to transform workflow ids
     * 
@@ -1373,7 +1689,6 @@ public class PSContentTypeDependencyHandler
     * @param ctx the import context never <code>null</code>
     * @throws PSDeployException
     */
-   @SuppressWarnings("unchecked")
    private void transformWorkflowIds(PSItemDefinition item, PSImportCtx ctx)
          throws PSDeployException
    {
@@ -1559,7 +1874,7 @@ public class PSContentTypeDependencyHandler
    /**
     * logger 
     */
-   private Logger m_log = LogManager.getLogger(this.getClass());
+   private static final Logger log = LogManager.getLogger(PSContentTypeDependencyHandler.class);
 
    
    /**

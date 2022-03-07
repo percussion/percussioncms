@@ -266,7 +266,7 @@ public class PSInlineLinkProcessor
          
          /*
           * Indicate that the following update is for inline link data update 
-          * and therfore inline links don't need to be processed again.
+          * and therefore inline links don't need to be processed again.
           */
          try
          {

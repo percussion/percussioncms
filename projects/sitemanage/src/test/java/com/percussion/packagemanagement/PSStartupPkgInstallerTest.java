@@ -23,14 +23,18 @@
  */
 package com.percussion.packagemanagement;
 
-import static org.junit.Assert.*;
-
-import com.percussion.deployer.error.PSDeployException;
 import com.percussion.deployer.server.IPSPackageInstaller;
-import com.percussion.rx.services.deployer.IPSPackageUninstaller;
+import com.percussion.error.PSDeployException;
 import com.percussion.maintenance.service.IPSMaintenanceManager;
 import com.percussion.maintenance.service.impl.PSMaintenanceManager;
 import com.percussion.packagemanagement.PSPackageFileEntry.PackageFileStatus;
+import com.percussion.rx.services.deployer.IPSPackageUninstaller;
+import com.percussion.rx.services.deployer.PSUninstallMessage;
+import com.percussion.utils.testing.IntegrationTest;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -39,13 +43,10 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
-import com.percussion.rx.services.deployer.PSUninstallMessage;
-
-import com.percussion.utils.testing.IntegrationTest;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author JaySeletz

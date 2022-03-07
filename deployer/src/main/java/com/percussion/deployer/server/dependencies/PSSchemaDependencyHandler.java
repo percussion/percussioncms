@@ -25,8 +25,6 @@ package com.percussion.deployer.server.dependencies;
 
 import com.percussion.data.PSDatabaseMetaData;
 import com.percussion.data.PSMetaDataCache;
-import com.percussion.deployer.error.IPSDeploymentErrors;
-import com.percussion.deployer.error.PSDeployException;
 import com.percussion.deployer.objectstore.PSDbmsInfo;
 import com.percussion.deployer.objectstore.PSDependency;
 import com.percussion.deployer.objectstore.PSDependencyFile;
@@ -36,6 +34,8 @@ import com.percussion.deployer.server.PSDbmsHelper;
 import com.percussion.deployer.server.PSDependencyDef;
 import com.percussion.deployer.server.PSDependencyMap;
 import com.percussion.deployer.server.PSImportCtx;
+import com.percussion.error.IPSDeploymentErrors;
+import com.percussion.error.PSDeployException;
 import com.percussion.security.PSSecurityToken;
 import com.percussion.services.error.PSNotFoundException;
 import com.percussion.tablefactory.IPSJdbcTableChangeListener;
@@ -43,7 +43,7 @@ import com.percussion.tablefactory.PSJdbcDataTypeMap;
 import com.percussion.tablefactory.PSJdbcTableChangeEvent;
 import com.percussion.tablefactory.PSJdbcTableFactoryException;
 import com.percussion.tablefactory.PSJdbcTableSchema;
-import com.percussion.util.PSIteratorUtils;
+import com.percussion.utils.collections.PSIteratorUtils;
 import com.percussion.utils.jdbc.PSConnectionDetail;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import org.apache.logging.log4j.LogManager;
@@ -334,11 +334,11 @@ public class PSSchemaDependencyHandler extends PSDataObjectDependencyHandler
             throw new PSDeployException(
                IPSDeploymentErrors.UNEXPECTED_ERROR, e.getLocalizedMessage());
       }
+
       // handle flushing the dbmd cache on schema change
       addTableChangeHandler(schema);
       
       return schema;
-      
    }
    
    /**

@@ -493,7 +493,7 @@ public class PSPackageUninstaller
    private boolean canIgnoreForUninstall(IPSGuid guid)
    {
       PSDeploymentHandler dh = PSDeploymentHandler.getInstance();
-      PSDependencyManager dm = dh.getDependencyManager();
+      PSDependencyManager dm = (PSDependencyManager) dh.getDependencyManager();
       List<String> ignoreTypes = dm.getUninstallIgnoreTypes();
       PSTypeEnum type = PSTypeEnum.valueOf(guid.getType());
       return type == null || ignoreTypes.contains(type.name());

@@ -68,7 +68,7 @@ http://www.springframework.org/schema/context/spring-context-4.2.xsd">
  -->
 
     <bean id="sys_deployService"
-          class="com.percussion.deploy.services.impl.PSDeployService">
+          class="com.percussion.deployer.msm.server.services.impl.PSDeployService">
         <property name="sessionFactory" ref="sys_sessionFactory"/>
     </bean>
 

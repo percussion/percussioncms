@@ -26,6 +26,7 @@ package com.percussion.util;
 import com.percussion.design.objectstore.PSServerConfiguration;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.server.PSServer;
+import com.percussion.utils.collections.PSIteratorUtils;
 import org.apache.commons.lang.StringUtils;
 
 import java.net.MalformedURLException;

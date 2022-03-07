@@ -27,6 +27,7 @@ package com.percussion.deployer.objectstore;
 import com.percussion.deployer.server.PSDbmsHelper;
 import com.percussion.design.objectstore.IPSObjectStoreErrors;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
+import com.percussion.error.PSDeployException;
 import com.percussion.error.PSExceptionUtils;
 import com.percussion.legacy.security.deprecated.PSCryptographer;
 import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
@@ -48,6 +49,7 @@ import java.util.Objects;
  * Class to encapsulate information regarding a database connection including
  * server information and user credentials.
  */
+//todo: reconcile differences with  system/src/main/java/com/percussion/deploy/objectstore/PSDbmsInfo.java and merge
 public class PSDbmsInfo implements IPSDeployComponent
 {
    private static final Logger logger = LogManager.getLogger(PSDbmsInfo.class);
@@ -115,6 +117,7 @@ public class PSDbmsInfo implements IPSDeployComponent
       setServer(server);
       setOrigin(origin);
       setDatabase(database);
+      passwordEncrypted = isPwdEncrypted;
       setUserNamePwd(uid, pwd, isPwdEncrypted);
    }
 
@@ -130,7 +133,7 @@ public class PSDbmsInfo implements IPSDeployComponent
     * @throws PSUnknownNodeTypeException if the XML element node does not
     *            represent a type supported by the class.
     */
-   public PSDbmsInfo(Element src) throws PSUnknownNodeTypeException {
+   public PSDbmsInfo(Element src) throws PSUnknownNodeTypeException, PSDeployException {
       fromXml(src);
    }
 
@@ -435,8 +438,7 @@ public class PSDbmsInfo implements IPSDeployComponent
     * {@link IPSDeployComponent#fromXml(Element)} for more info on method
     * signature.
     */
-   public void fromXml(Element sourceNode) throws PSUnknownNodeTypeException
-   {
+   public void fromXml(Element sourceNode) throws PSUnknownNodeTypeException, PSDeployException {
       if (sourceNode == null)
          throw new IllegalArgumentException("sourceNode may not be null");
 
@@ -625,9 +627,27 @@ public class PSDbmsInfo implements IPSDeployComponent
       this.passwordEncrypted = passwordEncrypted;
    }
 
+    @Override
+    public PSDbmsInfo clone() throws CloneNotSupportedException {
+        return (PSDbmsInfo) super.clone();
+    }
+
    public class PSDbmsConnectionInfo implements IPSConnectionInfo
    {
       private String m_datasource = null;
+
+       @Override
+       public boolean equals(Object o) {
+           if (this == o) return true;
+           if (!(o instanceof PSDbmsConnectionInfo)) return false;
+           PSDbmsConnectionInfo that = (PSDbmsConnectionInfo) o;
+           return Objects.equals(m_datasource, that.m_datasource);
+       }
+
+       @Override
+       public int hashCode() {
+           return Objects.hash(m_datasource);
+       }
 
       public PSDbmsConnectionInfo(String dataSrc) {
          m_datasource = dataSrc;

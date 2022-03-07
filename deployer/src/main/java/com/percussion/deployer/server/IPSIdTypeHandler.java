@@ -24,11 +24,12 @@
 
 package com.percussion.deployer.server;
 
-import com.percussion.deployer.error.PSDeployException;
 import com.percussion.deployer.objectstore.PSApplicationIDTypes;
 import com.percussion.deployer.objectstore.PSDependency;
 import com.percussion.deployer.objectstore.PSIdMap;
+import com.percussion.error.PSDeployException;
 import com.percussion.security.PSSecurityToken;
+import com.percussion.services.error.PSNotFoundException;
 
 /**
  * Interface for classes that can discover and transform literal identifiers in
@@ -52,7 +53,7 @@ public interface IPSIdTypeHandler
     * @throws PSDeployException if there are any errors.
     */
    public PSApplicationIDTypes getIdTypes(PSSecurityToken tok, PSDependency dep)
-      throws PSDeployException;
+           throws PSDeployException, PSNotFoundException;
    
    /**
     * Transforms literal Ids in the supplied object as specified by the supplied 

@@ -25,6 +25,8 @@
 package com.percussion.deployer.error;
 
 import com.percussion.conn.PSServerException;
+import com.percussion.error.PSDeployException;
+import com.percussion.error.PSDeployNonUniqueException;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -95,7 +97,7 @@ public class PSDeployExceptionTest extends TestCase
    public void testNonUnique() throws Exception
    {
       Object[] args1 = {"a", "b", "c"}; 
-      PSDeployNonUniqueException ex1 = new PSDeployNonUniqueException(555, 
+      PSDeployNonUniqueException ex1 = new PSDeployNonUniqueException(555,
          args1);
       Document doc = PSXmlDocumentBuilder.createXmlDocument();
       Element el1 = ex1.toXml(doc);

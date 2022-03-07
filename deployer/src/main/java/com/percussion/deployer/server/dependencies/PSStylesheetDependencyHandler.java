@@ -24,15 +24,15 @@
 
 package com.percussion.deployer.server.dependencies;
 
-import com.percussion.deployer.error.PSDeployException;
 import com.percussion.deployer.objectstore.PSDependency;
 import com.percussion.deployer.server.PSArchiveHandler;
 import com.percussion.deployer.server.PSDependencyDef;
 import com.percussion.deployer.server.PSDependencyMap;
 import com.percussion.deployer.server.PSImportCtx;
+import com.percussion.error.PSDeployException;
 import com.percussion.security.PSSecurityToken;
 import com.percussion.services.error.PSNotFoundException;
-import com.percussion.util.PSIteratorUtils;
+import com.percussion.utils.collections.PSIteratorUtils;
 import org.w3c.dom.Document;
 
 import java.io.File;
@@ -94,8 +94,6 @@ public class PSStylesheetDependencyHandler
    // see base class
    public Iterator getDependencies(PSSecurityToken tok) throws PSDeployException
    {
-      List deps = new ArrayList();
-
       return PSIteratorUtils.emptyIterator();
    }
    

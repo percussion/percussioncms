@@ -24,9 +24,9 @@
 package com.percussion.security;
 
 import com.percussion.design.objectstore.PSConditional;
-import com.percussion.util.PSIteratorUtils;
 import com.percussion.util.PSPreparedStatement;
 import com.percussion.util.PSSqlHelper;
+import com.percussion.utils.collections.PSIteratorUtils;
 import com.percussion.utils.jdbc.PSConnectionDetail;
 import com.percussion.utils.jdbc.PSConnectionHelper;
 import com.percussion.utils.jdbc.PSConnectionInfo;
