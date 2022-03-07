@@ -24,7 +24,7 @@
 
 package com.percussion.deployer.objectstore;
 
-import com.percussion.util.PSIteratorUtils;
+import com.percussion.utils.collections.PSIteratorUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;

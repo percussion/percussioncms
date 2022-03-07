@@ -26,6 +26,7 @@ package com.percussion.deployer.objectstore;
 
 import com.percussion.design.objectstore.IPSObjectStoreErrors;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
+import com.percussion.error.PSDeployException;
 import com.percussion.xml.PSXmlTreeWalker;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -68,8 +69,7 @@ public class PSLogSummary  implements IPSDeployComponent
     * <code>null</code>.
     * @throws PSUnknownNodeTypeException <code>source</code> is malformed.
     */
-   public PSLogSummary(Element source) throws PSUnknownNodeTypeException
-   {
+   public PSLogSummary(Element source) throws PSUnknownNodeTypeException, PSDeployException {
       if (source == null)
          throw new IllegalArgumentException("source may not be null");
 
@@ -201,8 +201,7 @@ public class PSLogSummary  implements IPSDeployComponent
    }
 
    // see IPSDeployComponent interface
-   public void fromXml(Element sourceNode) throws PSUnknownNodeTypeException
-   {
+   public void fromXml(Element sourceNode) throws PSUnknownNodeTypeException, PSDeployException {
       if (sourceNode == null)
          throw new IllegalArgumentException("sourceNode should not be null");
 

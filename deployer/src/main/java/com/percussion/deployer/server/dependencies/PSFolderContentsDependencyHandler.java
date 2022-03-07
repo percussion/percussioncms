@@ -29,10 +29,9 @@ import com.percussion.cms.PSCmsException;
 import com.percussion.cms.objectstore.PSComponentSummary;
 import com.percussion.cms.objectstore.server.PSRelationshipProcessor;
 import com.percussion.deployer.client.IPSDeployConstants;
-import com.percussion.deployer.error.IPSDeploymentErrors;
-import com.percussion.deployer.error.PSDeployException;
 import com.percussion.deployer.objectstore.PSDependency;
 import com.percussion.deployer.objectstore.PSDependencyFile;
+import com.percussion.deployer.objectstore.PSIdMapping;
 import com.percussion.deployer.objectstore.PSTransactionSummary;
 import com.percussion.deployer.server.PSArchiveHandler;
 import com.percussion.deployer.server.PSDependencyDef;
@@ -41,9 +40,15 @@ import com.percussion.deployer.server.PSImportCtx;
 import com.percussion.design.objectstore.PSLocator;
 import com.percussion.design.objectstore.PSRelationshipConfig;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
+import com.percussion.error.IPSDeploymentErrors;
+import com.percussion.error.PSDeployException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.security.PSSecurityToken;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.util.IPSHtmlParameters;
-import com.percussion.util.PSIteratorUtils;
+import com.percussion.utils.collections.PSIteratorUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Element;
 
 import java.util.ArrayList;
@@ -59,6 +64,8 @@ import java.util.Map;
 public class PSFolderContentsDependencyHandler
    extends PSFolderObjectDependencyHandler
 {
+
+   private static final Logger log = LogManager.getLogger(PSFolderContentsDependencyHandler.class);
 
    /**
     * Construct a dependency handler.
@@ -92,6 +99,34 @@ public class PSFolderContentsDependencyHandler
          throw new IllegalArgumentException("dep wrong type");
 
       List childDeps = new ArrayList();
+
+      PSComponentSummary sum = getFolderSummary(getRelationshipProcessor(tok),
+         dep.getDependencyId());
+      if (sum != null)
+      {
+         PSDependencyHandler handler = getDependencyHandler(
+            PSContentDefDependencyHandler.DEPENDENCY_TYPE);
+         Iterator sums = getChildItemSummaries(getRelationshipProcessor(tok),
+            sum.getCurrentLocator());
+         while (sums.hasNext())
+         {
+            PSComponentSummary itemSum = (PSComponentSummary)sums.next();
+            PSDependency itemDep=null;
+            try {
+                itemDep = handler.getDependency(tok, String.valueOf(
+                       itemSum.getCurrentLocator().getId()));
+            } catch (PSNotFoundException e) {
+               log.warn(PSExceptionUtils.getMessageForLog(e));
+               log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+            }
+
+            if (itemDep != null)
+            {
+               itemDep.setDependencyType(PSDependency.TYPE_LOCAL);
+               childDeps.add(itemDep);
+            }
+         }
+      }
 
       return childDeps.iterator();
     }
@@ -252,6 +287,27 @@ public class PSFolderContentsDependencyHandler
                PSComponentSummary srcSum = new PSComponentSummary(root);
                PSLocator srcLoc = srcSum.getCurrentLocator();
                int childId = srcLoc.getId();
+               PSIdMapping mapping = getIdMapping(ctx, String.valueOf(childId),
+                  PSContentDefDependencyHandler.DEPENDENCY_TYPE);
+               if (mapping != null)
+               {
+                  try
+                  {
+                     childId = Integer.parseInt(mapping.getTargetId());
+                  }
+                  catch (NumberFormatException e)
+                  {
+                     Object[] args =
+                     {
+                        PSContentDefDependencyHandler.DEPENDENCY_TYPE,
+                        String.valueOf(childId),
+                        ctx.getCurrentIdMap().getSourceServer(),
+                        mapping.getTargetId()
+                     };
+                     throw new PSDeployException(
+                        IPSDeploymentErrors.INVALID_ID_MAPPING_TARGET, args);
+                  }
+               }
                adds.add(new PSLocator(childId, srcLoc.getRevision()));
             }
 
@@ -297,6 +353,11 @@ public class PSFolderContentsDependencyHandler
     * <code>null</code> or empty.
     */
    private static List ms_childTypes = new ArrayList();
+
+   static
+   {
+      ms_childTypes.add(PSContentDefDependencyHandler.DEPENDENCY_TYPE);
+   }
 
 
 }

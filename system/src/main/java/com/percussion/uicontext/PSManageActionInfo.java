@@ -28,9 +28,8 @@ import com.percussion.cms.objectstore.PSAction;
 import com.percussion.cms.objectstore.PSActionVisibilityContexts;
 import com.percussion.cms.objectstore.PSComponentProcessorProxy;
 import com.percussion.cms.objectstore.PSKey;
-import com.percussion.deploy.error.PSDeployException;
+import com.percussion.error.PSDeployException;
 import com.percussion.error.PSException;
-import com.percussion.security.PSSecurityToken;
 import com.percussion.server.IPSRequestContext;
 import org.w3c.dom.Element;
 
@@ -201,7 +200,7 @@ public class PSManageActionInfo
    /**
     * Loads the specified actions from the repository.
     * @param proc The processor to use, may not be <code>null</code>.
-    * @param id An array of action ids, may not be <code>null</code> or empty.
+    * @param ids An array of action ids, may not be <code>null</code> or empty.
     *           Additionally, no element may be empty.
     * @return The actions, may be empty, but never null. Specific elements may
     *         be <code>null</code> if the corresponding action isn't found or
@@ -263,8 +262,7 @@ public class PSManageActionInfo
 
    /**
     * Gets the local component processor shared by all dependency handlers. Sets
-    * the context using the supplied request. See
-    * {@link #getProcessor(PSSecurityToken)}for more information.
+    * the context using the supplied request.
     * 
     * @param req The request context to use to set the context, assumed not
     *           <code>null</code>.

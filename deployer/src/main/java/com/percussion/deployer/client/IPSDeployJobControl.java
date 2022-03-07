@@ -24,7 +24,7 @@
 
 package com.percussion.deployer.client;
 
-import com.percussion.deployer.error.PSDeployException;
+import com.percussion.error.PSDeployException;
 
 /**
  * Interface returned when a deployment job is started. Provides ability to 

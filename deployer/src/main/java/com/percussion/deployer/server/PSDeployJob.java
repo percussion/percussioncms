@@ -73,6 +73,7 @@ public abstract class PSDeployJob extends PSJobRunner implements IPSJobHandle
       m_id = id;
       
       // must have server admin access, and be in Admin role
+      m_securityToken = req.getSecurityToken();
       PSServer.checkAccessLevel(req, PSAclEntry.SACE_ADMINISTER_SERVER);
       
       // check authorization if a role is defined
@@ -143,7 +144,10 @@ public abstract class PSDeployJob extends PSJobRunner implements IPSJobHandle
     */
    protected void initDepCount(Iterator pkgs)
    {
-     initDepCount(pkgs, true);         
+      if (pkgs == null || !pkgs.hasNext())
+         throw new IllegalArgumentException("pkgs may not be null or empty");
+
+     initDepCount(pkgs, true);
    }
    
    /**
@@ -158,6 +162,9 @@ public abstract class PSDeployJob extends PSJobRunner implements IPSJobHandle
     */
    protected void initDepCount(Iterator pkgs, boolean includedOnly)
    {         
+      if (pkgs == null || !pkgs.hasNext())
+         throw new IllegalArgumentException("pkgs may not be null or empty");
+
       int count = 0;
       while (pkgs.hasNext())
       {

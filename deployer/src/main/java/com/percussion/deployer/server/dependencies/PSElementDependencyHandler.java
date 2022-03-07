@@ -24,11 +24,11 @@
 package com.percussion.deployer.server.dependencies;
 
 
-import com.percussion.deployer.error.PSDeployException;
 import com.percussion.deployer.objectstore.PSDependency;
 import com.percussion.deployer.objectstore.PSDeployableElement;
 import com.percussion.deployer.server.PSDependencyDef;
 import com.percussion.deployer.server.PSDependencyMap;
+import com.percussion.error.PSDeployException;
 import com.percussion.security.PSSecurityToken;
 import com.percussion.services.error.PSNotFoundException;
 
@@ -76,7 +76,6 @@ public abstract class PSElementDependencyHandler extends PSDependencyHandler
    protected abstract PSDependencyHandler getChildHandler();
    
    // see base class
-   @SuppressWarnings("unchecked")
    public Iterator getChildDependencies(PSSecurityToken tok,
       PSDependency dep) throws PSDeployException, PSNotFoundException {
       if (tok == null)
@@ -102,7 +101,6 @@ public abstract class PSElementDependencyHandler extends PSDependencyHandler
    }
 
    // see base class
-   @SuppressWarnings("unchecked")
    public Iterator getDependencies(PSSecurityToken tok)
            throws PSDeployException, PSNotFoundException {
       if (tok == null)
@@ -132,7 +130,6 @@ public abstract class PSElementDependencyHandler extends PSDependencyHandler
 
 
    // see base class
-   @SuppressWarnings("unchecked")
    public PSDependency getDependency(PSSecurityToken tok, String id)
            throws PSDeployException, PSNotFoundException {
       if (tok == null)

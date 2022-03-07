@@ -211,7 +211,7 @@ public enum PSTypeEnum {
          "PSX_SCH_NOTIF_TEMPLATE"),
 
    /**
-    * A locale object, i.e. {@link com.percussion.i18n.PSLocale}.
+    * A locale object
     */
    LOCALE(100, "Locale", "localeid"),
 
@@ -450,8 +450,7 @@ public enum PSTypeEnum {
    TEMP_IDS(147, "Temporary Ids", "PSX_TEMPIDS"),
 
    /**
-    * Used for the ID of
-    * {@link com.percussion.services.workflow.data.PSNotification}
+    * Used for the ID
     */
    WORKFLOW_TRANS_NOTIFICATION(150, null, "TRANSITIONNOTIFICATIONS"),
 

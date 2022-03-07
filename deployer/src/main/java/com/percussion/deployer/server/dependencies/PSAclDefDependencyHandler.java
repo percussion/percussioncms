@@ -24,8 +24,6 @@
 package com.percussion.deployer.server.dependencies;
 
 import com.percussion.deployer.client.IPSDeployConstants;
-import com.percussion.deployer.error.IPSDeploymentErrors;
-import com.percussion.deployer.error.PSDeployException;
 import com.percussion.deployer.objectstore.PSDependency;
 import com.percussion.deployer.objectstore.PSDependencyFile;
 import com.percussion.deployer.objectstore.PSIdMap;
@@ -36,6 +34,10 @@ import com.percussion.deployer.server.PSDependencyMap;
 import com.percussion.deployer.server.PSDeploymentHandler;
 import com.percussion.deployer.server.PSImportCtx;
 import com.percussion.design.objectstore.PSAclEntry;
+import com.percussion.error.IPSDeploymentErrors;
+import com.percussion.error.PSDeployException;
+import com.percussion.security.IPSTypedPrincipal;
+import com.percussion.security.IPSTypedPrincipal.PrincipalTypes;
 import com.percussion.security.PSSecurityToken;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.error.PSNotFoundException;
@@ -53,8 +55,6 @@ import com.percussion.services.security.data.PSAclEntryImpl;
 import com.percussion.services.security.data.PSAclImpl;
 import com.percussion.services.security.data.PSCommunity;
 import com.percussion.utils.guid.IPSGuid;
-import com.percussion.security.IPSTypedPrincipal;
-import com.percussion.security.IPSTypedPrincipal.PrincipalTypes;
 
 import java.security.acl.NotOwnerException;
 import java.util.ArrayList;
@@ -123,6 +123,8 @@ public class PSAclDefDependencyHandler extends PSDependencyHandler
          Iterator<IPSAclEntry> it = acl.getEntries().iterator();
          PSDependencyHandler ch = 
             getDependencyHandler(PSCommunityDependencyHandler.DEPENDENCY_TYPE);
+         PSDependencyHandler rh =
+            getDependencyHandler(PSRoleDefDependencyHandler.DEPENDENCY_TYPE);
          while (it.hasNext())
          {
             PSDependency d = null;
@@ -324,7 +326,6 @@ public class PSAclDefDependencyHandler extends PSDependencyHandler
     * @throws PSDeployException if there is no dependency file in the archive
     *            for the specified dependency object, or any other error occurs.
     */
-   @SuppressWarnings("unchecked")
    protected static Iterator getAclDependencyFilesFromArchive(
          PSArchiveHandler archive, PSDependency dep) throws PSDeployException
    {
@@ -452,7 +453,6 @@ public class PSAclDefDependencyHandler extends PSDependencyHandler
    
    
    // see base class
-   @SuppressWarnings("unchecked")
    @Override
    public void installDependencyFiles(PSSecurityToken tok,
          PSArchiveHandler archive, PSDependency dep, PSImportCtx ctx)
@@ -495,11 +495,8 @@ public class PSAclDefDependencyHandler extends PSDependencyHandler
 
             }
 
-
-            // only map community permissions ignore all other user access permissions ,  following from rx
-             //requireSave |= updateCommunityPermissions(tmp, acl);
-            //  Should make type safe.  original for CMS
-             updateBackEndRoles((PSAclImpl)acl);
+            // only map community permissions ignore all other user access permissions
+            requireSave |= updateCommunityPermissions(tmp, acl);
 
 
             if (requireSave)
@@ -509,21 +506,12 @@ public class PSAclDefDependencyHandler extends PSDependencyHandler
             }
 
          }
-         catch (PSSecurityException e)
+         catch (NotOwnerException |PSSecurityException e)
          {
             throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR,
                   "Could not install the ACL: " + tmp.getName());
 
          }
-         /*  Only required when calling updateCommunityPermissions
-            catch (NotOwnerException e)
-         {
-            throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR, e,
-                    "Could not install the ACL: " + tmp.getName() + " for object "+tmp.getObjectGuid().toString() + " acl owner not correct");
-
-         }
-
-          */
       }
    }
 
@@ -573,14 +561,11 @@ public class PSAclDefDependencyHandler extends PSDependencyHandler
                   changed |= true;
                   existingEntry.addPermission(PSPermissions.RUNTIME_VISIBLE);
                }
-            }
-            /*  Don't remove existing permissions
-            else if (existingEntry!=null)
+            } else if (existingEntry!=null)
             {
                changed |= true;
                acl.removeEntry(owner,existingEntry);
             }
-            */
          }
       }
       return changed;
@@ -633,6 +618,7 @@ public class PSAclDefDependencyHandler extends PSDependencyHandler
 
    static
    {
+      ms_childTypes.add(PSRoleDefDependencyHandler.DEPENDENCY_TYPE);
       ms_childTypes.add(PSCommunityDependencyHandler.DEPENDENCY_TYPE);
    }
 

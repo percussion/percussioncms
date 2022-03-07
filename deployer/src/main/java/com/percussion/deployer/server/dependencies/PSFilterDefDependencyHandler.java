@@ -23,11 +23,15 @@
  */
 package com.percussion.deployer.server.dependencies;
 
-import com.percussion.deployer.error.IPSDeploymentErrors;
-import com.percussion.deployer.error.PSDeployException;
+import com.percussion.deployer.client.IPSDeployConstants;
+import com.percussion.deployer.objectstore.PSApplicationIDTypeMapping;
+import com.percussion.deployer.objectstore.PSApplicationIDTypes;
 import com.percussion.deployer.objectstore.PSDependency;
 import com.percussion.deployer.objectstore.PSDependencyFile;
+import com.percussion.deployer.objectstore.PSDeployComponentUtils;
 import com.percussion.deployer.objectstore.PSIdMap;
+import com.percussion.deployer.server.IPSIdTypeHandler;
+import com.percussion.deployer.server.PSAppTransformer;
 import com.percussion.deployer.server.PSArchiveHandler;
 import com.percussion.deployer.server.PSDependencyDef;
 import com.percussion.deployer.server.PSDependencyMap;
@@ -35,6 +39,9 @@ import com.percussion.deployer.server.PSImportCtx;
 import com.percussion.deployer.services.IPSDeployService;
 import com.percussion.deployer.services.PSDeployServiceException;
 import com.percussion.deployer.services.PSDeployServiceLocator;
+import com.percussion.design.objectstore.PSParam;
+import com.percussion.error.IPSDeploymentErrors;
+import com.percussion.error.PSDeployException;
 import com.percussion.extension.PSExtensionRef;
 import com.percussion.security.PSSecurityToken;
 import com.percussion.services.catalog.PSTypeEnum;
@@ -45,9 +52,12 @@ import com.percussion.services.filter.IPSItemFilterRuleDef;
 import com.percussion.services.filter.PSFilterException;
 import com.percussion.services.filter.PSFilterServiceLocator;
 import com.percussion.services.filter.data.PSItemFilter;
+import com.percussion.services.filter.data.PSItemFilterRuleDef;
 import com.percussion.services.guidmgr.data.PSGuid;
 import com.percussion.utils.guid.IPSGuid;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -63,6 +73,8 @@ import java.util.Set;
  */
 
 public class PSFilterDefDependencyHandler extends PSDependencyHandler
+      implements
+        IPSIdTypeHandler
 {
    /**
     * Construct the dependency handler.
@@ -320,9 +332,13 @@ public class PSFilterDefDependencyHandler extends PSDependencyHandler
     * @param ver the version of filter
     * @throws PSDeployException
     */
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
    public void saveFilter(IPSItemFilter f, Integer ver)
          throws PSDeployException
    {
+      // nullify and set it to the passed version of the Filter, can be null
+      ((PSItemFilter) f).setVersion(null);
+      ((PSItemFilter) f).setVersion(ver);
       try
       {
          m_filterSvc.saveFilter(f);
@@ -374,7 +390,16 @@ public class PSFilterDefDependencyHandler extends PSDependencyHandler
       
       try
       {
+         // clear the rule defs :-), later on after deserialization and
+         // before save, make sure to wipe out the version info, since
+         // new RULE Defs i.e. with new IDs are being generated
+         filter.setRuleDefs(null);
          filter.fromXML(tmpStr);
+
+         // nullify the versioning on ruledefs
+         Set<IPSItemFilterRuleDef> rules = filter.getRuleDefs();
+         for (IPSItemFilterRuleDef def : rules)
+            ((PSItemFilterRuleDef)def).setVersion(null);
       }
       catch (Exception e)
       {
@@ -460,6 +485,61 @@ public class PSFilterDefDependencyHandler extends PSDependencyHandler
       return f;
    }
 
+   // see base class
+   public PSApplicationIDTypes getIdTypes(PSSecurityToken tok, PSDependency dep)
+         throws PSDeployException
+   {
+      if (tok == null)
+         throw new IllegalArgumentException("tok may not be null");
+      if (dep == null)
+         throw new IllegalArgumentException("dep may not be null");
+      if (!dep.getObjectType().equals(getType()))
+         throw new IllegalArgumentException("dep wrong type");
+      IPSItemFilter f = findFilterByDependencyID(dep.getDependencyId());
+      PSApplicationIDTypes idTypes = new PSApplicationIDTypes(dep);
+      try
+      {
+         if ( f != null )
+         {
+            // ADD ANY RULES's params that need mapping
+            Set<IPSItemFilterRuleDef> ruleDefSet = f.getRuleDefs();
+            Iterator<IPSItemFilterRuleDef> iter = ruleDefSet.iterator();
+            while (iter.hasNext())
+            {
+               IPSItemFilterRuleDef ruleDef = iter.next();
+               Map<String, String> paramMap = ruleDef.getParams();
+
+               List mappings = new ArrayList();
+               // check each param for idtypes
+               Iterator entries = paramMap.entrySet().iterator();
+               while (entries.hasNext())
+               {
+                  Map.Entry entry = (Map.Entry)entries.next();
+
+                  // convert to PSParam to leverage existing transformer code
+                  Iterator params = PSDeployComponentUtils.convertToParams(
+                     entry).iterator();
+                  while (params.hasNext())
+                  {
+                     PSParam param = (PSParam)params.next();
+                     PSAppTransformer.checkParam(mappings, param, null);
+                  }
+               }
+               idTypes.addMappings(""+ RULEDEF_ARGS +":" + ruleDef.getRuleName(),
+                  IPSDeployConstants.ID_TYPE_ELEMENT_RULEDEF_PARAMS,
+                     mappings.iterator());
+            }
+         }
+      }
+      catch(PSFilterException e)
+      {
+        throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR,
+              "while looking for ID types, ruleDef did not provide a proper name");
+      }
+      return idTypes;
+   }
+
+
    private void addTransformedParams(IPSItemFilterRuleDef ruleDef,
          Map<String, String> params)
    {
@@ -518,10 +598,84 @@ public class PSFilterDefDependencyHandler extends PSDependencyHandler
          IPSItemFilterRuleDef rule = it.next();
          Map<String, String> params = rule.getParams();
          Map<String, String> xformedParams = PSDependencyUtils.cloneMap(params);
+         transformIds(xformedParams, ctx.getIdTypes(), idMap);
          //rule.getParams().clear();
          addTransformedParams(rule, xformedParams);
       }
       return filter;
+   }
+   // see base class
+   @SuppressWarnings("unchecked")
+   public void transformIds(Object object, PSApplicationIDTypes idTypes,
+         PSIdMap idMap) throws PSDeployException
+   {
+      if (object == null)
+         throw new IllegalArgumentException("object may not be null");
+
+      if (idTypes == null)
+         throw new IllegalArgumentException("idTypes may not be null");
+
+      if (idMap == null)
+         throw new IllegalArgumentException("idMap may not be null");
+      if (!(object instanceof Map))
+      {
+         throw new IllegalArgumentException("invalid object type");
+      }
+
+      Map paramMap = (Map)object;
+      // walk id types and perform any transforms
+      Iterator resources = idTypes.getResourceList(false);
+      while (resources.hasNext())
+      {
+         String resource = (String)resources.next();
+         Iterator elements = idTypes.getElementList(resource, false);
+         while (elements.hasNext())
+         {
+            String element = (String)elements.next();
+            Iterator mappings = idTypes.getIdTypeMappings(
+                  resource, element, false);
+            while (mappings.hasNext())
+            {
+               PSApplicationIDTypeMapping mapping =
+                  (PSApplicationIDTypeMapping)mappings.next();
+
+               if (mapping.getType().equals(
+                  PSApplicationIDTypeMapping.TYPE_NONE))
+                  continue;
+
+               if (element
+                     .equals(IPSDeployConstants.ID_TYPE_ELEMENT_RULEDEF_PARAMS))
+               {
+                  // transform the params
+                  Iterator entries = paramMap.entrySet().iterator();
+                  while (entries.hasNext())
+                  {
+                     // convert to PSParam(s) to leverage existing code
+                     List<String> valList = new ArrayList<>();
+                     Map.Entry entry = (Map.Entry)entries.next();
+                     List paramList = PSDeployComponentUtils.convertToParams(
+                        entry);
+                     Iterator params = paramList.iterator();
+                     while (params.hasNext())
+                     {
+                        PSParam param = (PSParam) params.next();
+
+                        // transform
+                        PSAppTransformer.transformParam(param, mapping, idMap);
+                        valList.add(param.getValue().getValueText());
+                     }
+                     Object newVal;
+                     if (valList.size() > 1)
+                        newVal = valList;
+                     else
+                        newVal = valList.get(0);
+                     entry.setValue(newVal);
+                  }
+               }
+            }
+         }
+      }
+
    }
 
    // see base class

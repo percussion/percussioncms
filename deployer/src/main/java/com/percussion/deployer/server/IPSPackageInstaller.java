@@ -23,7 +23,7 @@
  */
 package com.percussion.deployer.server;
 
-import com.percussion.deployer.error.PSDeployException;
+import com.percussion.error.PSDeployException;
 import com.percussion.services.error.PSNotFoundException;
 
 import java.io.File;

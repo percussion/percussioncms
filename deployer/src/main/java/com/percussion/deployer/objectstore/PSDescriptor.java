@@ -26,6 +26,7 @@ package com.percussion.deployer.objectstore;
 
 import com.percussion.design.objectstore.IPSObjectStoreErrors;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
+import com.percussion.error.PSDeployException;
 import com.percussion.rx.config.IPSConfigService;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
@@ -71,8 +72,7 @@ public abstract class PSDescriptor  implements IPSDeployComponent
     * @throws IllegalArgumentException if <code>src</code> is <code>null</code>.
     * @throws PSUnknownNodeTypeException if <code>src</code> is malformed.
     */
-   protected PSDescriptor(Element src) throws PSUnknownNodeTypeException
-   {
+   protected PSDescriptor(Element src) throws PSUnknownNodeTypeException, PSDeployException {
       if (src == null)
          throw new IllegalArgumentException("src may not be null");
          
@@ -114,7 +114,7 @@ public abstract class PSDescriptor  implements IPSDeployComponent
    /** 
     * Sets the description for this object.
     * 
-    * @param desc The description, may not be <code>null</code>.
+    * @param description The description, may not be <code>null</code>.
     * 
     * @throws IllegalArgumentException if <code>desc</code> is invalid.
     */
@@ -223,8 +223,7 @@ public abstract class PSDescriptor  implements IPSDeployComponent
     * {@link IPSDeployComponent#fromXml(Element)} for more info on method
     * signature.
     */
-   public void fromXml(Element sourceNode) throws PSUnknownNodeTypeException
-   {
+   public void fromXml(Element sourceNode) throws PSUnknownNodeTypeException, PSDeployException {
       if (sourceNode == null)
          throw new IllegalArgumentException("sourceNode may not be null");
          
@@ -397,7 +396,6 @@ public abstract class PSDescriptor  implements IPSDeployComponent
     * @param version the version to set, defaults to
     * 1.0.0 if value passed in is <code>null</code>, empty.
     * This value will be formatted
-    * by {@link #formatVersion(String, boolean)}. 
     */
    public void setVersion(String version)
    {
@@ -418,7 +416,6 @@ public abstract class PSDescriptor  implements IPSDeployComponent
     * @param cmsMinVersion the cmsMinVersion to set, defaults to
     * 6.0.0 if value passed in is <code>null</code>, empty.
     * This value will be formatted
-    * by {@link #formatVersion(String, boolean)}.
     */
    public void setCmsMinVersion(String cmsMinVersion)
    {
@@ -438,7 +435,6 @@ public abstract class PSDescriptor  implements IPSDeployComponent
 
    /**
     * @param cmsMaxVersion the cmsMaxVersion to set. This value will be formatted
-    * by {@link #formatVersion(String, boolean)}.
     */
    public void setCmsMaxVersion(String cmsMaxVersion)
    {

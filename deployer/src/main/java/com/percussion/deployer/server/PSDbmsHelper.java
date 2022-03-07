@@ -27,9 +27,6 @@ package com.percussion.deployer.server;
 
 import com.percussion.conn.PSServerException;
 import com.percussion.data.PSIdGenerator;
-import com.percussion.deploy.server.PSServerJdbcDbmsDef;
-import com.percussion.deployer.error.IPSDeploymentErrors;
-import com.percussion.deployer.error.PSDeployException;
 import com.percussion.deployer.objectstore.PSDbmsInfo;
 import com.percussion.deployer.objectstore.PSDependency;
 import com.percussion.deployer.objectstore.PSDeployComponentUtils;
@@ -37,6 +34,8 @@ import com.percussion.deployer.server.dependencies.PSDependencyUtils;
 import com.percussion.design.objectstore.PSLockedException;
 import com.percussion.design.objectstore.PSNotLockedException;
 import com.percussion.design.objectstore.server.PSServerXmlObjectStore;
+import com.percussion.error.IPSDeploymentErrors;
+import com.percussion.error.PSDeployException;
 import com.percussion.error.PSExceptionUtils;
 import com.percussion.security.PSAuthenticationRequiredException;
 import com.percussion.security.PSAuthorizationException;
@@ -58,10 +57,12 @@ import com.percussion.util.PSEntrySet;
 import com.percussion.util.PSPreparedStatement;
 import com.percussion.utils.container.IPSJndiDatasource;
 import com.percussion.utils.jdbc.IPSConnectionInfo;
+import com.percussion.utils.jdbc.IPSDatasourceConfig;
 import com.percussion.utils.jdbc.IPSDatasourceResolver;
 import com.percussion.utils.jdbc.PSConnectionDetail;
 import com.percussion.utils.jdbc.PSConnectionHelper;
 import com.percussion.utils.jdbc.PSDatasourceConfig;
+import com.percussion.utils.jndi.PSServerJdbcDbmsDef;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -204,7 +205,7 @@ public class PSDbmsHelper
                   "Could not resolve datasource");
          
          IPSJndiDatasource dsSource   = ds.getDataSource();
-         PSDatasourceConfig dsConfig = ds.getDataSourceConfig();
+         IPSDatasourceConfig dsConfig = ds.getDataSourceConfig();
          
          m_repositoryInfo = new PSDbmsInfo(dsConfig.getName(), 
                dsSource.getDriverName(), dsSource.getServer(), 
@@ -219,7 +220,7 @@ public class PSDbmsHelper
     * Util method to retrieve the datasource name
     * @return the datasource name
     */
-   public String findADataSource()
+   public String findADataSource() throws PSDeployException
    {
       return getDataSourceInfo().getDataSource().getName();
    }
@@ -227,24 +228,23 @@ public class PSDbmsHelper
     * A convenience routine to fetch the datasource
     * @return the datasource cannot be <code>null</code>
     */
-   private DataSourceInfo getDataSourceInfo()
-   {
+	private DataSourceInfo getDataSourceInfo() {
       IPSJndiDatasource dsSource   = null;
-      PSDatasourceConfig dsConfig = null;
-      try
-      {
-         List<IPSJndiDatasource> jndiDSList = getJndiDataSourceList(); 
-         
-         IPSDatasourceResolver dsResolver   = getDataSourceConfigs();
+      IPSDatasourceConfig dsConfig = null;
+
+      try {
+         List<IPSJndiDatasource> jndiDSList = getJndiDataSourceList();
+
+         IPSDatasourceResolver dsResolver = getDataSourceConfigs();
          dsConfig = (PSDatasourceConfig) dsResolver
-               .resolveDatasource((IPSConnectionInfo) null);
-         
+                 .resolveDatasource((IPSConnectionInfo) null);
+
          String dataSourceName = dsConfig.getDataSource();
-         for (Iterator iter = jndiDSList.iterator(); iter.hasNext();)
-         {
-            dsSource = (IPSJndiDatasource) iter.next();
-            if ( dsSource.getName().equalsIgnoreCase(dataSourceName) )
+         for (IPSJndiDatasource jndiDataSource : jndiDSList) {
+            if (jndiDataSource.getName().equalsIgnoreCase(dataSourceName)) {
+               dsSource = jndiDataSource;
                break;
+            }
          }
       }
       catch (PSDeployException e)
@@ -1035,9 +1035,12 @@ public class PSDbmsHelper
       throws PSDeployException
    {
       if (table == null || table.trim().length() == 0 )
-         throw new IllegalArgumentException("table may not be null, empty, or invalid");
-      if (idCol == null || idCol.trim().length() == 0 )
-         throw new IllegalArgumentException("idCol may not be null, empty, or invalid");
+         throw new IllegalArgumentException("table may not be null or empty");
+      if (idCol == null && idCol.trim().length() == 0)
+         throw new IllegalArgumentException("idCol may not be null or empty");
+      if (filterCol == null && filterCol.trim().length() == 0)
+         throw new IllegalArgumentException(
+            "filterCol may not be empty");
 
       Connection conn = null;
 
@@ -1262,7 +1265,7 @@ public class PSDbmsHelper
       
       if (objType != null)
       {
-         type = objType.intValue();
+         type = objType;
       }
       else if (isSystemTable(tableName))
       {
@@ -1511,6 +1514,13 @@ public class PSDbmsHelper
             }
          }
          
+         if ( schema == null ) // table does not exist
+         {
+            Object[] args = {tableName};
+            throw new PSDeployException(IPSDeploymentErrors.UNABLE_FIND_TABLE,
+               args);
+         }
+
          if (canCache)
          {
             if (isSystemTable)
@@ -1529,13 +1539,13 @@ public class PSDbmsHelper
    private class DataSourceInfo 
    {
       IPSJndiDatasource m_dataSource;
-      PSDatasourceConfig m_dsConfig;
+      IPSDatasourceConfig m_dsConfig;
       
       /** CTOR
        * @param ds the jndi datasource never <code>null</code>
        * @param cfg the datasource config never <code>null</code>
        */
-      public DataSourceInfo(IPSJndiDatasource ds, PSDatasourceConfig cfg)
+      public DataSourceInfo(IPSJndiDatasource ds, IPSDatasourceConfig cfg)
       {
          if ( ds == null )
             throw new IllegalArgumentException("datasource may not be null");         
@@ -1559,7 +1569,7 @@ public class PSDbmsHelper
        * getter for datasource config
        * @return datasource config
        */
-      public PSDatasourceConfig getDataSourceConfig()
+      public IPSDatasourceConfig getDataSourceConfig()
       {
          return m_dsConfig;
       }

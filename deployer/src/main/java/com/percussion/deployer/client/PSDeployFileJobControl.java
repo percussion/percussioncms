@@ -24,8 +24,8 @@
 
 package com.percussion.deployer.client;
 
-import com.percussion.deployer.error.IPSDeploymentErrors;
-import com.percussion.deployer.error.PSDeployException;
+import com.percussion.error.IPSDeploymentErrors;
+import com.percussion.error.PSDeployException;
 
 import java.text.MessageFormat;
 import java.util.MissingResourceException;
@@ -146,7 +146,7 @@ public class PSDeployFileJobControl implements IPSDeployJobControl
    * 
    * @throws IllegalArgumentException if either param is invalid.
    */
-   void setStream(IPSStreamCounter streamCounter, int totalBytes)
+   public void setStream(IPSStreamCounter streamCounter, int totalBytes)
    {
       if (streamCounter == null)
          throw new IllegalArgumentException("streamCounter may not be null");
@@ -167,7 +167,7 @@ public class PSDeployFileJobControl implements IPSDeployJobControl
     * @throws IllegalArgumentException if <code>msg</code> is <code>null</code> 
     * or empty.
     */
-   void setErrorMessage(String msg)
+   public void setErrorMessage(String msg)
    {
       if (msg == null || msg.trim().length() == 0)
          throw new IllegalArgumentException("error message may not be null or empty");
@@ -183,7 +183,7 @@ public class PSDeployFileJobControl implements IPSDeployJobControl
     * Marks the job as completed unless it has already been cancelled or 
     * aborted.  
     */
-   void setCompleted()
+   public void setCompleted()
    {
       synchronized (m_cancelledStatusMonitor)
       {
@@ -202,7 +202,7 @@ public class PSDeployFileJobControl implements IPSDeployJobControl
     * if the job is still executing.  See {@link #cancelDeployJob()} for more
     * information.
     */
-   int getCancelledStatus()
+   public int getCancelledStatus()
    {
       return m_cancelledStatus;
    }
@@ -287,7 +287,7 @@ public class PSDeployFileJobControl implements IPSDeployJobControl
     * String bundle used for message formats.  <code>null</code> until loaded
     * by a call to {@link #getBundle()}, never <code>null</code> after that.
     */
-   private static ResourceBundle ms_bundle = null;
+   private volatile static ResourceBundle ms_bundle = null;
    
    /**
     * Status of the job after it is cancelled.  <code>-1</code> until call to
