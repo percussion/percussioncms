@@ -34,6 +34,8 @@ import com.percussion.services.guidmgr.data.PSDesignGuid;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.webservices.system.PSFilterRule;
 import com.percussion.webservices.system.PSFilterRuleParam;
+import org.apache.commons.beanutils.BeanUtilsBean;
+import org.apache.commons.beanutils.ConversionException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,9 +44,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import org.apache.commons.beanutils.BeanUtilsBean;
-import org.apache.commons.beanutils.ConversionException;
 
 /**
  * Converts objects between the classes
@@ -90,7 +89,7 @@ public class PSItemFilterConverter extends PSConverter
             PSItemFilter dest = (PSItemFilter) result;
 
             // convert id
-            dest.setGUID(new PSDesignGuid(orig.getId()));
+             dest.setGUID(new PSDesignGuid(orig.getId()));
 
             // convert parent filter
             long parentId = orig.getParentFilterId();

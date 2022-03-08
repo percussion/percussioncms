@@ -106,6 +106,13 @@ public class PSItemFilterRuleDef implements IPSItemFilterRuleDef,
    private transient IPSItemFilterRule m_rule = null;
 
    /**
+    * The rule loaded from the extensions manager is cached in this transient
+    * member.
+    */
+   @Transient
+   private transient boolean isClientSide = false;
+
+   /**
     * The rule belongs to a specific item filter, this is the pointer to the
     * containing filter for the given rule. 
     */
@@ -133,6 +140,15 @@ public class PSItemFilterRuleDef implements IPSItemFilterRuleDef,
    {
       filter_rule_id = PSGuidHelper.generateNext(
             PSTypeEnum.ITEM_FILTER_RULE_DEF).longValue();
+   }
+   public PSItemFilterRuleDef(boolean forClient)
+   {
+      if(!forClient) {
+         filter_rule_id = PSGuidHelper.generateNext(
+                 PSTypeEnum.ITEM_FILTER_RULE_DEF).longValue();
+      }else{
+         isClientSide = true;
+      }
    }
 
    
@@ -318,7 +334,7 @@ public class PSItemFilterRuleDef implements IPSItemFilterRuleDef,
       PSItemFilterRuleParam param = this.params.get(parameterName);
       if (param == null)
       {
-         param = new PSItemFilterRuleParam();
+         param = new PSItemFilterRuleParam(isClientSide);
          param.setRuleDef(this);
          param.setName(parameterName);
          param.setValue(value);
