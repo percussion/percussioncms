@@ -19,7 +19,7 @@
   <PSXDependencyDef
       objectType="AuthType"
       objectTypeName="Auth Type"
-      handlerClass="com.percussion.deploy.server.dependencies.PSAuthTypeDependencyHandler"
+      handlerClass="com.percussion.deployer.server.dependencies.PSAuthTypeDependencyHandler"
       isDeployableElement="no"
       supportsIdTypes="no"
       supportsIdMapping="no"
@@ -27,7 +27,7 @@
    <PSXDependencyDef
        objectType="Community"
        objectTypeName="Community"
-       handlerClass="com.percussion.deploy.server.dependencies.PSCommunityDependencyHandler"
+       handlerClass="com.percussion.deployer.server.dependencies.PSCommunityDependencyHandler"
        isDeployableElement="yes"
        supportsIdTypes="no"
        supportsIdMapping="no"
@@ -45,7 +45,7 @@
    <PSXDependencyDef
        objectType="Component"
        objectTypeName="Component"
-       handlerClass="com.percussion.deploy.server.dependencies.PSComponentDependencyHandler"
+       handlerClass="com.percussion.deployer.server.dependencies.PSComponentDependencyHandler"
        isDeployableElement="yes"
        supportsIdTypes="no"
        supportsIdMapping="no"
@@ -53,7 +53,7 @@
    <PSXDependencyDef
        objectType="ComponentDef"
        objectTypeName="Component Definition"
-       handlerClass="com.percussion.deploy.server.dependencies.PSComponentDefDependencyHandler"
+       handlerClass="com.percussion.deployer.server.dependencies.PSComponentDefDependencyHandler"
        isDeployableElement="no"
        supportsIdTypes="no"
        supportsIdMapping="yes"
@@ -61,7 +61,7 @@
    <PSXDependencyDef
        objectType="ComponentSlot"
        objectTypeName="Component Slot"
-       handlerClass="com.percussion.deploy.server.dependencies.PSComponentSlotDependencyHandler"
+       handlerClass="com.percussion.deployer.server.dependencies.PSComponentSlotDependencyHandler"
        isDeployableElement="no"
        supportsIdTypes="no"
        supportsIdMapping="no"
@@ -69,7 +69,7 @@
    <PSXDependencyDef
        objectType="ConfigFile"
        objectTypeName="Configuration File"
-       handlerClass="com.percussion.deploy.server.dependencies.PSConfigFileDependencyHandler"
+       handlerClass="com.percussion.deployer.server.dependencies.PSConfigFileDependencyHandler"
        isDeployableElement="no"
        supportsIdTypes="no"
        supportsIdMapping="no"
@@ -93,7 +93,7 @@
    <PSXDependencyDef      
        objectType="ContentAssembler"      
        objectTypeName="Content Assembler"      
-       handlerClass="com.percussion.deploy.server.dependencies.PSContentAssemblerDependencyHandler"      
+       handlerClass="com.percussion.deployer.server.dependencies.PSContentAssemblerDependencyHandler"      
        isDeployableElement="yes"      
        supportsIdTypes="no"      
        supportsIdMapping="no"      
@@ -101,7 +101,7 @@
   <PSXDependencyDef
       objectType="ContentEditor"
       objectTypeName="Content Type"
-      handlerClass="com.percussion.deploy.server.dependencies.PSCEDependencyHandler"
+      handlerClass="com.percussion.deployer.server.dependencies.PSCEDependencyHandler"
       isDeployableElement="yes"
       supportsIdTypes="no"
       supportsIdMapping="no"
@@ -120,7 +120,7 @@
   <PSXDependencyDef
       objectType="ContentList"
       objectTypeName="Content List"
-      handlerClass="com.percussion.deploy.server.dependencies.PSContentListDependencyHandler"
+      handlerClass="com.percussion.deployer.server.dependencies.PSContentListDependencyHandler"
       isDeployableElement="yes"
       supportsIdTypes="no"
       supportsIdMapping="no"
@@ -157,7 +157,7 @@
   <PSXDependencyDef 
 	  objectType="ContentTypeTemplateDef" 
 	  objectTypeName="ContentType Template Definition"
-	  handlerClass="com.percussion.deploy.server.dependencies.PSContentTypeTemplateDefDependencyHandler" 
+	  handlerClass="com.percussion.deployer.server.dependencies.PSContentTypeTemplateDefDependencyHandler" 
 	  isDeployableElement="no" 
 	  supportsIdTypes="no" 
 	  supportsIdMapping="no" 
@@ -165,7 +165,7 @@
   <PSXDependencyDef
       objectType="Context"
       objectTypeName="Context"
-      handlerClass="com.percussion.deploy.server.dependencies.PSContextDependencyHandler"
+      handlerClass="com.percussion.deployer.server.dependencies.PSContextDependencyHandler"
       isDeployableElement="yes"
       supportsIdTypes="no"
       supportsIdMapping="no"
@@ -198,7 +198,7 @@
    <PSXDependencyDef      
        objectType="Data"      
        objectTypeName="Table Data"      
-       handlerClass="com.percussion.deploy.server.dependencies.PSDataDependencyHandler"      
+       handlerClass="com.percussion.deployer.server.dependencies.PSDataDependencyHandler"      
        isDeployableElement="no"      
        supportsIdTypes="no"      
        supportsIdMapping="no"      
@@ -616,7 +616,7 @@
   <PSXDependencyDef
       objectType="View"
       objectTypeName="Content View"
-      handlerClass="com.percussion.deploy.server.dependencies.PSViewDependencyHandler"
+      handlerClass="com.percussion.deployer.server.dependencies.PSViewDependencyHandler"
       isDeployableElement="yes"
       supportsIdTypes="no"
       supportsIdMapping="no"
@@ -634,7 +634,7 @@
   <PSXDependencyDef
       objectType="Workflow"
       objectTypeName="Workflow"
-      handlerClass="com.percussion.deploy.server.dependencies.PSWorkflowDependencyHandler"
+      handlerClass="com.percussion.deployer.server.dependencies.PSWorkflowDependencyHandler"
       isDeployableElement="yes"
       supportsIdTypes="no"
       supportsIdMapping="no"
