@@ -90,7 +90,7 @@ import java.util.Set;
  * Class to handle packaging and deploying a content relation definition.
  */
 public class PSContentRelationDependencyHandler
-   extends PSIdTypeDependencyHandler implements IPSIdTypeHandler
+   extends PSIdTypeDependencyHandler  implements IPSIdTypeHandler
 {
 
    /**

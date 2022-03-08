@@ -97,8 +97,7 @@ public class PSCommunityDefDependencyHandler
       m_commRLSchema = dbmsHelper.catalogTable(COMM_RL_TABLE, false);
       // initialize m_childTypes
       m_childTypes = new ArrayList<>();
-      m_childTypes.add(PSRoleDefDependencyHandler.DEPENDENCY_TYPE);
-      m_childTypes.add(PSComponentDependencyHandler.DEPENDENCY_TYPE);
+
    }
 
    // see base class

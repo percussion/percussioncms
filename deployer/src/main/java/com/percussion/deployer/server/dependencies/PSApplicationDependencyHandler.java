@@ -160,7 +160,7 @@ public class PSApplicationDependencyHandler
       }
 
       // get roles
-      PSDependencyHandler roleHandler = getDependencyHandler(
+     /* PSDependencyHandler roleHandler = getDependencyHandler(
          PSRoleDefDependencyHandler.DEPENDENCY_TYPE);
       Iterator aclEntries = app.getAcl().getEntries().iterator();
       while (aclEntries.hasNext())
@@ -174,6 +174,7 @@ public class PSApplicationDependencyHandler
                childDeps.add(roleDep);
          }
       }
+      */
 
 
       // walk each dataset
@@ -566,7 +567,7 @@ public class PSApplicationDependencyHandler
       catch (Exception e)
       {
          throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR,
-            e.getLocalizedMessage());
+            e.getMessage());
       }
       finally
       {
@@ -989,8 +990,11 @@ public class PSApplicationDependencyHandler
    {
       PSIdMap idMap = ctx.getCurrentIdMap();
 
+
       // translate id's using idTypes and idMap
-      transformIds(app, ctx.getIdTypes(), idMap);
+      if(isIdTypeMappingEnabled()) {
+         transformIds(app, ctx.getIdTypes(), idMap);
+      }
 
       // translate dbms credentials using the dbms map
       transformDbms(app, ctx);
@@ -1285,13 +1289,10 @@ public class PSApplicationDependencyHandler
       ms_childTypes.add(PSControlDependencyHandler.DEPENDENCY_TYPE);
       ms_childTypes.add(PSExitDefDependencyHandler.DEPENDENCY_TYPE);
       ms_childTypes.add(PSKeywordDependencyHandler.DEPENDENCY_TYPE);
-      ms_childTypes.add(PSRoleDefDependencyHandler.DEPENDENCY_TYPE);
       ms_childTypes.add(PSSchemaDependencyHandler.DEPENDENCY_TYPE);
       ms_childTypes.add(PSSharedGroupDependencyHandler.DEPENDENCY_TYPE);
       ms_childTypes.add(PSStylesheetDependencyHandler.DEPENDENCY_TYPE);
       ms_childTypes.add(PSSupportFileDependencyHandler.DEPENDENCY_TYPE);
-      ms_childTypes.add(PSSystemDefDependencyHandler.DEPENDENCY_TYPE);
-      ms_childTypes.add(PSSystemDefElementDependencyHandler.DEPENDENCY_TYPE);
       ms_childTypes.add(PSWorkflowDependencyHandler.DEPENDENCY_TYPE);
    }
 

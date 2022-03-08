@@ -231,8 +231,6 @@ public class PSCustomDependencyHandler extends PSDependencyHandler
       ms_childTypes.add(PSExitDefDependencyHandler.DEPENDENCY_TYPE);
       ms_childTypes.add(PSSchemaDependencyHandler.DEPENDENCY_TYPE);
       ms_childTypes.add(PSSharedGroupDependencyHandler.DEPENDENCY_TYPE);
-      ms_childTypes.add(PSSystemDefDependencyHandler.DEPENDENCY_TYPE);
-      ms_childTypes.add(PSSystemDefElementDependencyHandler.DEPENDENCY_TYPE);
       ms_childTypes.add(PSUserDependencyHandler.DEPENDENCY_TYPE);
    }
    

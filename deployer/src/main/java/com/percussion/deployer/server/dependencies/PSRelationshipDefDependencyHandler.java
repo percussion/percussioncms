@@ -293,10 +293,12 @@ public class PSRelationshipDefDependencyHandler
          // update the target config with source data
          tgtCfg.copyFrom(srcCfg);
 
-         // tranform id type ids
-         PSIdMap idMap = ctx.getCurrentIdMap();
-         if (idMap != null)
-            transformIds(tgtCfg, ctx.getIdTypes(), idMap);
+         if(isIdTypeMappingEnabled()) {
+            // transform id type ids
+            PSIdMap idMap = ctx.getCurrentIdMap();
+            if (idMap != null)
+               transformIds(tgtCfg, ctx.getIdTypes(), idMap);
+         }
 
          // save the new one
          PSWebserviceUtils.saveRelationshipConfigSet(cfgSet,

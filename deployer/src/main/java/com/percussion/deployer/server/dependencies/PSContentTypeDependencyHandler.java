@@ -108,7 +108,7 @@ import java.util.Set;
  */
 public class PSContentTypeDependencyHandler
       extends
-         PSContentEditorObjectDependencyHandler implements IPSIdTypeHandler
+         PSContentEditorObjectDependencyHandler  implements IPSIdTypeHandler
 {
 
    /**
@@ -697,7 +697,10 @@ public class PSContentTypeDependencyHandler
       PSIdMap idMap = ctx.getCurrentIdMap();
 
       // translate id's using idTypes and idMap
-      transformIds(item, ctx.getIdTypes(), idMap);
+      if(isIdTypeMappingEnabled()) {
+         transformIds(item, ctx.getIdTypes(), idMap);
+      }
+
       transformWorkflowIds(item, ctx);
 
       // transform UI Defs

@@ -32,7 +32,6 @@ import com.percussion.deployer.objectstore.PSIdMap;
 import com.percussion.deployer.objectstore.PSIdMapping;
 import com.percussion.deployer.objectstore.idtypes.PSJexlBinding;
 import com.percussion.deployer.objectstore.idtypes.PSJexlBindings;
-import com.percussion.deployer.server.IPSIdTypeHandler;
 import com.percussion.deployer.server.PSAppTransformer;
 import com.percussion.deployer.server.PSArchiveHandler;
 import com.percussion.deployer.server.PSDependencyDef;
@@ -79,8 +78,6 @@ import java.util.Set;
  */
 
 public class PSTemplateDefDependencyHandler extends PSDependencyHandler
-        implements
-        IPSIdTypeHandler
 {
    /**
     * Construct the dependency handler.
@@ -939,8 +936,11 @@ public class PSTemplateDefDependencyHandler extends PSDependencyHandler
       
       if (!bindings.getBindings().isEmpty())
       {
-            // tranform params using idtypes
+         if(isIdTypeMappingEnabled()) {
+            // transform params using idtypes
             transformIds(bindings, ctx.getIdTypes(), idMap);
+         }
+
          for (PSJexlBinding new_b : bindings.getBindings()) {
             PSJexlBinding orig_b = origBindings.getByIndex(new_b.getIndex());
             if (StringUtils.isNotBlank(new_b.getExpression()) &&

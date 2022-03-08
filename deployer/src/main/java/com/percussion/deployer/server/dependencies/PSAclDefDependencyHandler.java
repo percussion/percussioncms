@@ -123,8 +123,7 @@ public class PSAclDefDependencyHandler extends PSDependencyHandler
          Iterator<IPSAclEntry> it = acl.getEntries().iterator();
          PSDependencyHandler ch = 
             getDependencyHandler(PSCommunityDependencyHandler.DEPENDENCY_TYPE);
-         PSDependencyHandler rh =
-            getDependencyHandler(PSRoleDefDependencyHandler.DEPENDENCY_TYPE);
+
          while (it.hasNext())
          {
             PSDependency d = null;
@@ -618,7 +617,6 @@ public class PSAclDefDependencyHandler extends PSDependencyHandler
 
    static
    {
-      ms_childTypes.add(PSRoleDefDependencyHandler.DEPENDENCY_TYPE);
       ms_childTypes.add(PSCommunityDependencyHandler.DEPENDENCY_TYPE);
    }
 

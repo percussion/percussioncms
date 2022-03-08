@@ -71,9 +71,7 @@ import java.util.Set;
  * Class to handle packaging and deploying a ContentList definition.
  * @author vamsinukala
  */
-public class PSContentListDefDependencyHandler extends PSDependencyHandler
-      implements
-        IPSIdTypeHandler
+public class PSContentListDefDependencyHandler extends PSDependencyHandler implements IPSIdTypeHandler
 {
    /**
     * Construct the dependency handler.

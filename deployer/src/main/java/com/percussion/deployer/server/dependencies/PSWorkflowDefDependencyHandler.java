@@ -117,9 +117,6 @@ public class PSWorkflowDefDependencyHandler
       String workflowId = dep.getDependencyId();
       Set<PSDependency> childDeps = new HashSet<>();
 
-      // Acl deps
-      addAclDependency(tok, PSTypeEnum.WORKFLOW, dep, childDeps);
-
       // get LOCAL state child dependencies
       Iterator childIDs = getChildPairIdsFromTable(STATES_TABLE, STATE_ID,
          WORKFLOW_ID, workflowId);
@@ -138,14 +135,6 @@ public class PSWorkflowDefDependencyHandler
             childDeps.add(childDep);
          }
       }
-
-      // get SYSTEM role child dependencies, which will be created as
-      // a default by the PSRoleDefDependencyHandler itself.
-      Iterator roleIds = getChildIdsFromTable(ROLES_TABLE, ROLE_NAME,
-         WORKFLOW_ID, workflowId);
-      List<PSDependency> roleDeps = getDepsFromIds(roleIds,
-         PSRoleDefDependencyHandler.DEPENDENCY_TYPE, tok, -1);
-      childDeps.addAll(roleDeps);
 
       addAclDependency(tok, PSTypeEnum.WORKFLOW, dep, childDeps);
 
@@ -1205,7 +1194,6 @@ public class PSWorkflowDefDependencyHandler
    static
    {
       ms_childTypes.add(PSStateDefDependencyHandler.DEPENDENCY_TYPE);
-      ms_childTypes.add(PSRoleDefDependencyHandler.DEPENDENCY_TYPE);
       ms_childTypes.add(PSAclDefDependencyHandler.DEPENDENCY_TYPE);
    }
 

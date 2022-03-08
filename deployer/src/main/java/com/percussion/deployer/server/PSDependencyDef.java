@@ -31,7 +31,7 @@ import org.apache.commons.lang.StringUtils;
 import org.w3c.dom.Element;
 
 /**
- * Represents the defintion of a dependency type.  Each dependency instance 
+ * Represents the definition of a dependency type.  Each dependency instance
  * represents one of the types defined by this class.
  */
 public class PSDependencyDef

@@ -38,7 +38,7 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * Base class to provide common functionality to handlers impelementing the 
+ * Base class to provide common functionality to handlers implementing the
  * {@link com.percussion.deployer.server.IPSIdTypeHandler IPSIdTypeHandler}
  * interface.
  */
@@ -141,5 +141,9 @@ public abstract class PSIdTypeDependencyHandler extends PSDependencyHandler
       }
       
       return deps;
+   }
+
+   public static boolean isIdTypeMappingEnabled(){
+      return false; //TODO: drive this off of the operating mode
    }
 }

@@ -21,6 +21,7 @@ import java.util.Iterator;
 import java.util.List;
 
 public interface IPSDependencyHandler {
+
     /**
      * Gets a handler instance using the supplied def
      *
@@ -190,4 +191,6 @@ public interface IPSDependencyHandler {
     void addTransactionLogEntry(PSDependency dep, PSImportCtx ctx,
                                 String elementName, String elementType, int action)
             throws PSDeployException;
+
+
 }

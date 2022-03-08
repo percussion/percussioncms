@@ -72,8 +72,7 @@ import java.util.Set;
  * @author vamsinukala
  */
 
-public class PSFilterDefDependencyHandler extends PSDependencyHandler
-      implements
+public class PSFilterDefDependencyHandler extends PSDependencyHandler implements
         IPSIdTypeHandler
 {
    /**
@@ -140,7 +139,6 @@ public class PSFilterDefDependencyHandler extends PSDependencyHandler
 
    //see base class
    @Override
-   @SuppressWarnings("unchecked")
    public Iterator getChildDependencies(PSSecurityToken tok, PSDependency dep)
            throws PSDeployException, PSNotFoundException {
       if (tok == null)
@@ -180,31 +178,23 @@ public class PSFilterDefDependencyHandler extends PSDependencyHandler
       
       // Add any exits from Item Filters
       Set<IPSItemFilterRuleDef> rules =  filter.getRuleDefs();
-      Iterator<IPSItemFilterRuleDef> it = rules.iterator(); 
-      while(it.hasNext())
-      {
-         IPSItemFilterRuleDef rule = it.next();
-         try
-         {
-             PSExtensionRef eRef = PSPublisherServiceHelper
-                  .getItemFilterRuleExtensionRef(rule.getRuleName());
-             if ( eRef == null )
-                continue;
-             PSDependency ruleDep  = handler.getDependency(tok, eRef.toString());
-             if ( ruleDep != null && !childDeps.contains(ruleDep) )
-             {
-                if (ruleDep.getDependencyType() == PSDependency.TYPE_SHARED)
-                {
-                   ruleDep.setIsAssociation(false);
-                }
-                childDeps.add(ruleDep);
-             }
-         }
-         catch (PSFilterException e)
-         {
+      for (IPSItemFilterRuleDef rule : rules) {
+         try {
+            PSExtensionRef eRef = PSPublisherServiceHelper
+                    .getItemFilterRuleExtensionRef(rule.getRuleName());
+            if (eRef == null)
+               continue;
+            PSDependency ruleDep = handler.getDependency(tok, eRef.toString());
+            if (ruleDep != null && !childDeps.contains(ruleDep)) {
+               if (ruleDep.getDependencyType() == PSDependency.TYPE_SHARED) {
+                  ruleDep.setIsAssociation(false);
+               }
+               childDeps.add(ruleDep);
+            }
+         } catch (PSFilterException e) {
             throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR,
-                  "While creating the Filter dependency, " +
-                  "a FilterException occurred: " + e.getLocalizedMessage() );
+                    "While creating the Filter dependency, " +
+                            "a FilterException occurred: " + e.getLocalizedMessage());
          }
       }
       
@@ -503,31 +493,26 @@ public class PSFilterDefDependencyHandler extends PSDependencyHandler
          {
             // ADD ANY RULES's params that need mapping
             Set<IPSItemFilterRuleDef> ruleDefSet = f.getRuleDefs();
-            Iterator<IPSItemFilterRuleDef> iter = ruleDefSet.iterator();
-            while (iter.hasNext())
-            {
-               IPSItemFilterRuleDef ruleDef = iter.next();
+            for (IPSItemFilterRuleDef ruleDef : ruleDefSet) {
                Map<String, String> paramMap = ruleDef.getParams();
 
-               List mappings = new ArrayList();
+               List mappings = new ArrayList<>();
                // check each param for idtypes
                Iterator entries = paramMap.entrySet().iterator();
-               while (entries.hasNext())
-               {
-                  Map.Entry entry = (Map.Entry)entries.next();
+               while (entries.hasNext()) {
+                  Map.Entry entry = (Map.Entry) entries.next();
 
                   // convert to PSParam to leverage existing transformer code
                   Iterator params = PSDeployComponentUtils.convertToParams(
-                     entry).iterator();
-                  while (params.hasNext())
-                  {
-                     PSParam param = (PSParam)params.next();
+                          entry).iterator();
+                  while (params.hasNext()) {
+                     PSParam param = (PSParam) params.next();
                      PSAppTransformer.checkParam(mappings, param, null);
                   }
                }
-               idTypes.addMappings(""+ RULEDEF_ARGS +":" + ruleDef.getRuleName(),
-                  IPSDeployConstants.ID_TYPE_ELEMENT_RULEDEF_PARAMS,
-                     mappings.iterator());
+               idTypes.addMappings("" + RULEDEF_ARGS + ":" + ruleDef.getRuleName(),
+                       IPSDeployConstants.ID_TYPE_ELEMENT_RULEDEF_PARAMS,
+                       mappings.iterator());
             }
          }
       }
@@ -598,14 +583,16 @@ public class PSFilterDefDependencyHandler extends PSDependencyHandler
          IPSItemFilterRuleDef rule = it.next();
          Map<String, String> params = rule.getParams();
          Map<String, String> xformedParams = PSDependencyUtils.cloneMap(params);
-         transformIds(xformedParams, ctx.getIdTypes(), idMap);
+
+         if(isIdTypeMappingEnabled()) {
+            transformIds(xformedParams, ctx.getIdTypes(), idMap);
+         }
          //rule.getParams().clear();
          addTransformedParams(rule, xformedParams);
       }
       return filter;
    }
    // see base class
-   @SuppressWarnings("unchecked")
    public void transformIds(Object object, PSApplicationIDTypes idTypes,
          PSIdMap idMap) throws PSDeployException
    {
@@ -655,10 +642,8 @@ public class PSFilterDefDependencyHandler extends PSDependencyHandler
                      Map.Entry entry = (Map.Entry)entries.next();
                      List paramList = PSDeployComponentUtils.convertToParams(
                         entry);
-                     Iterator params = paramList.iterator();
-                     while (params.hasNext())
-                     {
-                        PSParam param = (PSParam) params.next();
+                     for (Object o : paramList) {
+                        PSParam param = (PSParam) o;
 
                         // transform
                         PSAppTransformer.transformParam(param, mapping, idMap);

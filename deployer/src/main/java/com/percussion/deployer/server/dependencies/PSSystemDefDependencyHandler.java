@@ -33,7 +33,6 @@ import com.percussion.deployer.objectstore.PSIdMap;
 import com.percussion.deployer.objectstore.PSTransactionSummary;
 import com.percussion.deployer.objectstore.idtypes.PSAppNamedItemIdContext;
 import com.percussion.deployer.objectstore.idtypes.PSApplicationIdContext;
-import com.percussion.deployer.server.IPSIdTypeHandler;
 import com.percussion.deployer.server.PSAppTransformer;
 import com.percussion.deployer.server.PSArchiveHandler;
 import com.percussion.deployer.server.PSDependencyDef;
@@ -67,7 +66,7 @@ import java.util.Set;
  * Class to handle packaging and deploying a system def
  */
 public class PSSystemDefDependencyHandler 
-   extends PSContentEditorObjectDependencyHandler implements IPSIdTypeHandler
+   extends PSContentEditorObjectDependencyHandler
 {
    /**
     * Construct a dependency handler.
