@@ -91,6 +91,12 @@ public class PSItemFilterRuleParam implements Serializable
    {
       id = PSGuidHelper.generateNextLong(PSTypeEnum.INTERNAL);
    }
+
+   public PSItemFilterRuleParam(boolean clientSide)
+   {
+      if(!clientSide)
+         id = PSGuidHelper.generateNextLong(PSTypeEnum.INTERNAL);
+   }
    
    /**
     * @return Returns the id.
