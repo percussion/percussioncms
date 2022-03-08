@@ -292,14 +292,19 @@ public class PSUserService implements IPSUserService
                         File.separatorChar,
                         File.separatorChar
                         );
-                updateLegacyPasswordsForUser(ADMIN_NAME);
-                updateLegacyPasswordsForUser(EDITOR_NAME);
-                updateLegacyPasswordsForUser(CONTRIBUTOR_NAME);
-                updateLegacyPasswordsForUser(RXSERVER_NAME);
-                updateLegacyPasswordsForUser(ADMIN1_NAME);
-                updateLegacyPasswordsForUser(ADMIN2_NAME);
-                updateLegacyPasswordsForUser(PERCUSSION_ADMIN_NAME);
-                log.info("Done generating new password for generated users.");
+                int count=0;
+                count+=updateLegacyPasswordsForUser(ADMIN_NAME);
+                count+=updateLegacyPasswordsForUser(EDITOR_NAME);
+                count+=updateLegacyPasswordsForUser(CONTRIBUTOR_NAME);
+                count+=updateLegacyPasswordsForUser(RXSERVER_NAME);
+                count+=updateLegacyPasswordsForUser(ADMIN1_NAME);
+                count+=updateLegacyPasswordsForUser(ADMIN2_NAME);
+                count+=updateLegacyPasswordsForUser(PERCUSSION_ADMIN_NAME);
+
+                if(count > 0) {
+                    log.info("Done generating {} new password(s) for generated users.", count);
+                }
+
 
             } catch (InterruptedException e) {
                 log.warn("Shutting down user update thread...");
@@ -360,13 +365,15 @@ public class PSUserService implements IPSUserService
     }
 
 
-    /***
+    /**
      * generates a new password for any built-in / generated users
      * that have "demo" as their password.
-     */
-    private void updateLegacyPasswordsForUser(String userName){
+     * @return a count of user passwords that have been changed - 0 or 1
+     **/
+    private int updateLegacyPasswordsForUser(String userName){
 
         boolean found = false;
+        int ret = 0;
         PSUserLogin u=null;
         try {
 
@@ -398,6 +405,7 @@ public class PSUserService implements IPSUserService
                         log.info("Generating new temporary password: {} for {}", pw, userName);
                         log.info("This temporary password will be stored in: {}", PSServer.getRxDir().getAbsolutePath() + File.separatorChar + PWD_CONFIG_PATH + File.separatorChar + PWD_FILE);
                         log.info("Please change this temporary password using the Change Password feature after installation / upgrade.");
+                        ret = 1;
                     } catch (PSDataServiceException e) {
                         log.error("An unexpected error resetting legacy passwords: {}",
                                 PSExceptionUtils.getMessageForLog(e));
@@ -408,6 +416,7 @@ public class PSUserService implements IPSUserService
                 log.error(PSExceptionUtils.getMessageForLog(e));
             }
         }
+        return ret;
     }
 
     /**
