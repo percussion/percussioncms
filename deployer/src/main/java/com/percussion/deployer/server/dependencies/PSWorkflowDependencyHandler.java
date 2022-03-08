@@ -112,7 +112,6 @@ public class PSWorkflowDependencyHandler extends PSElementDependencyHandler
    static
    {
       ms_childTypes.add(PSWorkflowDefDependencyHandler.DEPENDENCY_TYPE);
-      ms_childTypes.add(PSRoleDefDependencyHandler.DEPENDENCY_TYPE);
    }
 
 }

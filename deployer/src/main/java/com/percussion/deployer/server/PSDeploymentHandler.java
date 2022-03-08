@@ -3342,7 +3342,7 @@ public class PSDeploymentHandler implements IPSDeploymentHandler, IPSLoadableReq
 
       try
       {
-         m_depMgr = new PSDependencyManager();
+         m_depMgr = PSDependencyManager.INSTANCE;
          m_idmapMgr = new PSIdMapManager();
          m_logHandler = new PSLogHandler();
       }

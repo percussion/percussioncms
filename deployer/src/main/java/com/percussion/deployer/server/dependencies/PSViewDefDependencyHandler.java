@@ -28,7 +28,6 @@ import com.percussion.cms.objectstore.PSSearch;
 import com.percussion.deployer.objectstore.PSApplicationIDTypes;
 import com.percussion.deployer.objectstore.PSDependency;
 import com.percussion.deployer.objectstore.PSIdMap;
-import com.percussion.deployer.server.IPSIdTypeHandler;
 import com.percussion.deployer.server.PSDependencyDef;
 import com.percussion.deployer.server.PSDependencyMap;
 import com.percussion.error.PSDeployException;
@@ -38,7 +37,6 @@ import com.percussion.security.PSSecurityToken;
  * Class to handle packaging and deploying a view definition.
  */
 public class PSViewDefDependencyHandler extends PSSearchObjectDependencyHandler
-   implements IPSIdTypeHandler
 {
    /**
     * Construct a dependency handler.

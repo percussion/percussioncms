@@ -71,6 +71,10 @@ import java.util.Map;
  * particular dependency type.
  */
 public abstract class PSDependencyHandler implements IPSDependencyHandler {
+
+   public static boolean isIdTypeMappingEnabled(){
+      return false; //TODO: drive this off of the operating mode
+   }
    /**
     * Construct a dependency handler.
     *

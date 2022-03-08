@@ -402,7 +402,8 @@ public class PSContentDefDependencyHandler
                newContentId);
             if (ctx.getCurrentIdMap() != null)
             {
-               PSItemData itemData = new PSItemData(itemDef, newData); 
+               PSItemData itemData = new PSItemData(itemDef, newData);
+
                transformIds(itemData, ctx.getIdTypes(), ctx.getCurrentIdMap());
                newData = itemData.getTgtTableData();
             }

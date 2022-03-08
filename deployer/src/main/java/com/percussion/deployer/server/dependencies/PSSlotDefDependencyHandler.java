@@ -72,9 +72,7 @@ import java.util.Map;
  * @author vamsinukala
  */
 
-public class PSSlotDefDependencyHandler extends PSDependencyHandler
-      implements
-        IPSIdTypeHandler
+public class PSSlotDefDependencyHandler extends PSDependencyHandler  implements IPSIdTypeHandler
 {
    
    /**

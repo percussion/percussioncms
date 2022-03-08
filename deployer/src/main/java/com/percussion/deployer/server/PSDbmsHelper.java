@@ -1036,11 +1036,9 @@ public class PSDbmsHelper
    {
       if (table == null || table.trim().length() == 0 )
          throw new IllegalArgumentException("table may not be null or empty");
-      if (idCol == null && idCol.trim().length() == 0)
+      if (idCol == null || idCol.trim().length() == 0)
          throw new IllegalArgumentException("idCol may not be null or empty");
-      if (filterCol == null && filterCol.trim().length() == 0)
-         throw new IllegalArgumentException(
-            "filterCol may not be empty");
+
 
       Connection conn = null;
 
@@ -1482,46 +1480,29 @@ public class PSDbmsHelper
       if (isSystemTable)
       {
          canCache = true;
-         schema = (PSJdbcTableSchema)m_sysSchemaMap.get(tableName);
+         schema = m_sysSchemaMap.get(tableName);
       }
       else if (m_appSchemaMap != null)
       {
          // caching non-system schema
          canCache = true;
-         schema = (PSJdbcTableSchema)m_appSchemaMap.get(tableName);
+         schema = m_appSchemaMap.get(tableName);
       }
       
       if (schema == null)
       {
-         Connection conn = null;
-         try
-         {
-            conn = getRepositoryConnection();
-            schema = PSJdbcTableFactory.catalogTable(conn,
-               getDbmsDef(), getDataTypeMap(), tableName, false);
-         }
-         catch (PSJdbcTableFactoryException e)
-         {
-            throw new PSDeployException(
-               IPSDeploymentErrors.REPOSITORY_READ_WRITE_ERROR,
-                  e.getLocalizedMessage());
-         }
-         finally
-         {
-            if (conn != null)
-            {
-               try {conn.close();} catch (SQLException e) {}
+         try {
+            try (Connection conn = getRepositoryConnection()) {
+               schema = PSJdbcTableFactory.catalogTable(conn,
+                       getDbmsDef(), getDataTypeMap(), tableName, false);
             }
-         }
-         
-         if ( schema == null ) // table does not exist
-         {
-            Object[] args = {tableName};
-            throw new PSDeployException(IPSDeploymentErrors.UNABLE_FIND_TABLE,
-               args);
+         }catch (PSJdbcTableFactoryException | SQLException e){
+            throw new PSDeployException(
+                    IPSDeploymentErrors.REPOSITORY_READ_WRITE_ERROR,
+                    e.getLocalizedMessage());
          }
 
-         if (canCache)
+         if (canCache && schema != null)
          {
             if (isSystemTable)
                m_sysSchemaMap.put(tableName, schema);

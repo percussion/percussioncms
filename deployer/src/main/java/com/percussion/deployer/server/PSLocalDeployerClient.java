@@ -185,7 +185,7 @@ public class PSLocalDeployerClient implements IPSPackageInstaller
         }
         catch (PSJobException e)
         {
-            throw new PSDeployException(new PSException(e.getLocalizedMessage(), e));
+            throw new PSDeployException(new PSException(e));
         }
         
     }

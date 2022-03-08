@@ -44,6 +44,7 @@ import com.percussion.search.PSWSSearchResponse;
 import com.percussion.security.PSSecurityToken;
 import com.percussion.server.PSRequest;
 import com.percussion.server.webservices.PSServerFolderProcessor;
+import com.percussion.services.PSBaseServiceLocator;
 import com.percussion.services.assembly.IPSAssemblyService;
 import com.percussion.services.assembly.IPSAssemblyTemplate;
 import com.percussion.services.assembly.PSAssemblyException;
@@ -67,9 +68,7 @@ import com.percussion.services.system.IPSDependencyManagerBaseline;
 import com.percussion.services.system.IPSDeploymentHandler;
 import com.percussion.services.system.data.PSDependent;
 import com.percussion.util.IPSHtmlParameters;
-import com.percussion.util.PSBaseBean;
 import com.percussion.utils.guid.IPSGuid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.w3c.dom.Element;
 
 import java.util.ArrayList;
@@ -85,11 +84,8 @@ import java.util.Set;
  * Provides utility methods for locating dependencies and converting between
  * guid types and MSM dependency types.
  */
-@PSBaseBean
 public class PSDependencyHelper
 {
-
-   @Autowired
    IPSDeploymentHandler deploymentHandler;
 
    /**
@@ -97,9 +93,12 @@ public class PSDependencyHelper
     */
    public PSDependencyHelper()
    {
+      deploymentHandler = (IPSDeploymentHandler) PSBaseServiceLocator.getBean("sys_deploymentHandler");
       if (deploymentHandler == null)
          throw new IllegalStateException(
             "Deployment Handler must be initialized");
+
+
       m_depMgr = deploymentHandler.getDependencyManager();
 
       // todo: restore once we need to support apps via MSM

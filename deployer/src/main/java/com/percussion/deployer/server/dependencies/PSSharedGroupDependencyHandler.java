@@ -631,8 +631,10 @@ public class PSSharedGroupDependencyHandler
       // transform ui def
       transformUIDef(ctx.getCurrentIdMap(), group.getUIDefinition());
 
-      // transform idTypes
-      transformIds(group, ctx.getIdTypes(), ctx.getCurrentIdMap());
+      if(isIdTypeMappingEnabled()) {
+         // transform idTypes
+         transformIds(group, ctx.getIdTypes(), ctx.getCurrentIdMap());
+      }
    }
    
    /**

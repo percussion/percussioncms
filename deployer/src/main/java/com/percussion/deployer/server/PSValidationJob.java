@@ -201,9 +201,9 @@ public class PSValidationJob extends PSDeployJob
           PSValidationCtx valCtx = new PSValidationCtx(jobHandle, descriptor,
              idMap);
           valCtx.setValidateAncestors(
-                  m_descriptor.isAncestorValidationEnabled());
+                  descriptor.isAncestorValidationEnabled());
 
-         Iterator pkgs = m_descriptor.getImportPackageList().iterator();
+         Iterator pkgs = descriptor.getImportPackageList().iterator();
           while (pkgs.hasNext() && !isCancelled())
           {
              PSImportPackage pkg = (PSImportPackage)pkgs.next();
@@ -221,7 +221,7 @@ public class PSValidationJob extends PSDeployJob
          {
             // write out the desciptor with the results using the archive ref
             Document doc = PSXmlDocumentBuilder.createXmlDocument();
-            PSXmlDocumentBuilder.replaceRoot(doc, m_descriptor.toXml(doc));
+            PSXmlDocumentBuilder.replaceRoot(doc, descriptor.toXml(doc));
 
             File resultsFile = new File(
                PSDeploymentHandler.VALIDATION_RESULTS_DIR, info.getArchiveRef()
@@ -243,7 +243,7 @@ public class PSValidationJob extends PSDeployJob
          // getLocalizedMessage often returns empty string
          setStatusMessage("error: " + ex.toString());
          setStatus(-1);
-         LogManager.getLogger(getClass()).error("Error validating MSM archive",
+         LogManager.getLogger(getClass()).error("Error validating archive",
             ex);
        }
        finally

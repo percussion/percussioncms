@@ -70,7 +70,7 @@ import java.util.Set;
  * Base class to handle packaging and deploying search objects.
  */
 public abstract class PSSearchObjectDependencyHandler
-   extends PSCmsObjectDependencyHandler implements IPSIdTypeHandler
+   extends PSCmsObjectDependencyHandler  implements IPSIdTypeHandler
 {
    /**
     * Construct a dependency handler.
