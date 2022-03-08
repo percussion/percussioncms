@@ -58,7 +58,7 @@
       </RequestRoots>
    </RequestHandlerDef>
    <RequestHandlerDef handlerName="deploymenthandler" 
-      className="com.percussion.deployer.msm.server.server.PSDeploymentHandler">
+      className="com.percussion.deployer.server.PSDeploymentHandler">
       <RequestRoots>
          <RequestRoot baseName="sys_deploymentHandler">
             <RequestType>POST</RequestType>
