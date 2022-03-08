@@ -9,30 +9,25 @@ http://www.springframework.org/schema/tx/spring-tx.xsd">
 
 	<tx:annotation-driven transaction-manager="sys_transactionManager"/>
 
-
+   <bean id="sys_deployService"
+         class="com.percussion.deployer.services.impl.PSDeployService">
+      <property name="sessionFactory" ref="sys_sessionFactory"/>
+   </bean>
 
    <bean id="sys_deployerService"
 	  class="com.percussion.deployer.services.impl.PSDeployService">
-	  <property name="sessionFactory">
-	     <ref bean="sys_sessionFactory" />
-      </property>
+	  <property name="sessionFactory" ref="sys_sessionFactory"/>
    </bean>	
 	
    <bean id="sys_pkgInfoService" 
    class="com.percussion.services.pkginfo.impl.PSPkgInfoService">
-      <property name="sessionFactory">
-         <ref bean="sys_sessionFactory" />
-      </property>
+      <property name="sessionFactory" ref="sys_sessionFactory"/>
    </bean>
 
    <bean id="sys_idNameService" 
    class="com.percussion.services.pkginfo.impl.PSIdNameService">
-      <property name="sessionFactory">
-         <ref bean="sys_sessionFactory" />
-      </property>
-      <property name="cache">
-      	<ref bean="sys_cacheAccessor" />
-      </property>
+      <property name="sessionFactory" ref="sys_sessionFactory"/>
+      <property name="cache" ref="sys_cacheAccessor"/>
    </bean>
    
    <bean id="sys_configService" 
