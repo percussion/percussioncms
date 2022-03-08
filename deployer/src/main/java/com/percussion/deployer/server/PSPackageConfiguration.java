@@ -108,7 +108,11 @@ public class PSPackageConfiguration
       Element orderEl = PSXMLDomUtil.getNextElementSibling(depMapEl);
       parseDeployOrder(orderEl);
       Element ignoreEl = PSXMLDomUtil.getNextElementSibling(orderEl);
-      parseUninstallIgnoreTypes(ignoreEl);
+      if(ignoreEl != null) {
+         parseUninstallIgnoreTypes(ignoreEl);
+      }else{
+         throw new PSDeployException(IPSDeploymentErrors.INVALID_NUM_CHILD_DEFS);
+      }
    }
 
    /**
@@ -228,7 +232,8 @@ public class PSPackageConfiguration
                         PSCustomDependencyHandler.DEPENDENCY_TYPE });
          }
 
-         Set<String> cTypes = mi_nonDepEls.get(parentType);
+         //TODO: Is this validation needed?
+      /*   Set<String> cTypes = mi_nonDepEls.get(parentType);
          if (cTypes.size() != PSCustomDependencyHandler.getChildTypeList()
                .size())
          {
@@ -236,7 +241,10 @@ public class PSPackageConfiguration
                   IPSDeploymentErrors.INVALID_NUM_CHILD_DEFS,
                   PSCustomDependencyHandler.DEPENDENCY_TYPE);
          }
+     */
       }
+
+
    }
 
    /**
