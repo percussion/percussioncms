@@ -138,7 +138,7 @@
        <ehcache.version>2.10.5</ehcache.version>
        <simplexml.version>2.7.1</simplexml.version>
        <stax.version>1.0.1</stax.version>
-        <poi.version>4.1.2</poi.version>
+        <poi.version>5.2.1</poi.version>
         <esapi.version>2.2.3.1</esapi.version>
         <esapi.encoder.version>1.2.3</esapi.encoder.version>
         <ant.version>1.10.11</ant.version>
