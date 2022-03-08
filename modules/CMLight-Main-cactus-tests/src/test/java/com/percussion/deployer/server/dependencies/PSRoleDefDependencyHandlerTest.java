@@ -21,12 +21,10 @@
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
-package com.percussion.deploy.server.dependencies;
+package com.percussion.deployer.server.dependencies;
 
 import com.percussion.deployer.objectstore.PSDependency;
 import com.percussion.deployer.server.PSDependencyManager;
-import com.percussion.deployer.server.dependencies.PSDependencyHandler;
-import com.percussion.deployer.server.dependencies.PSRoleDefDependencyHandler;
 import com.percussion.security.PSSecurityToken;
 import com.percussion.services.security.IPSBackEndRoleMgr;
 import com.percussion.services.security.PSRoleMgrLocator;

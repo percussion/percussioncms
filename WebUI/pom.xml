@@ -190,7 +190,7 @@
                             </excludes>
                         </resource>
                          <resource>
-                            <directory>../deployer/src/main/webapp/WEB_INF/config</directory>
+                            <directory>../deployer/src/main/webapp/WEB-INF/config</directory>
                             <!-- override the destination directory for this resource -->
                             <targetPath>WEB-INF/config</targetPath>
                             <!-- enable filtering -->
