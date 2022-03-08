@@ -65,7 +65,7 @@ if(locale==null){
                         <div  id="perc-wf-new-editor" class="perc-wf-editor" style="display: none;">
                             <span class="perc-required-label"><label><i18n:message key = "perc.ui.general@Denotes Required Field"/></label></span>
                              <div id="perc-new-wf-name-label" class = "perc-required-field"><label class="perc-name-label"><i18n:message key = "perc.ui.workflow@Name"/><br></label>
-                                <input maxlength = '50' required pattern='^[a-zA-Z][a-zA-Z0-9-_\. ]{1,50}$' title='1 to 50 letters,numbers,-, _, or space' id="perc-new-workflow-name">
+                                <input maxlength = '50' required pattern='^[a-zA-Z0-9-_\. ]{1,50}$' title='1 to 50 letters,numbers,-, _, or space' id="perc-new-workflow-name">
                             </div>
                             <div class = "perc-wf-default"><input type = "checkbox" /> <span><i18n:message key = "perc.ui.workflow@Make Default"/></span></div>
                             <!-- control gets generated here in percWorkflowView -->
@@ -80,7 +80,7 @@ if(locale==null){
                         <div  id="perc-wf-update-editor"  class="perc-wf-editor" style="display: none;">
                             <span class="perc-required-label"><label><i18n:message key = "perc.ui.general@Denotes Required Field"/></label></span>
                              <div id="perc-update-wf-name-label" class = "perc-required-field" ><label class="perc-name-label"><i18n:message key = "perc.ui.workflow@Name"/><br></label>
-                                <input maxlength = '50' required pattern='^[a-zA-Z][a-zA-Z0-9-_\. ]{1,50}$' title='1 to 50 letters,numbers,-, _, or space' id="perc-update-workflow-name">
+                                <input maxlength = '50' required pattern='^[a-zA-Z0-9-_\. ]{1,50}$' title='1 to 50 letters,numbers,-, _, or space' id="perc-update-workflow-name">
                             </div>
                              <div class = "perc-wf-default"><input type = "checkbox" /> <span><i18n:message key = "perc.ui.workflow@Make Default"/></span></div>
                              <!-- control gets generated here in percWorkflowView -->
