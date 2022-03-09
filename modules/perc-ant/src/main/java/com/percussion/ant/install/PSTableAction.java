@@ -140,13 +140,13 @@ public class PSTableAction extends PSAction
                ).decrypt(pw,
                        PSJdbcDbmsDef.getPartOneKey(), null);
             }
-            try {
-               //Try to encrypt password with new key, if fails set decoded password
-               props.setProperty("PWD", PSEncryptor.encryptProperty(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),getRepositoryLocation(), "PWD", pw));
-            } catch (PSEncryptionException psEncryptionException) {
-               props.setProperty("PWD", pw);
-            }
-            props.store(new FileOutputStream(getRepositoryLocation()), null);
+//            try {
+//               //Try to encrypt password with new key, if fails set decoded password
+//               props.setProperty("PWD", PSEncryptor.encryptProperty(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),getRepositoryLocation(), "PWD", pw));
+//            } catch (PSEncryptionException psEncryptionException) {
+//               props.setProperty("PWD", pw);
+//            }
+//            props.store(new FileOutputStream(getRepositoryLocation()), null);
          }
          //get table def files
          String[] tableDef = getTableDef();
