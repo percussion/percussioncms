@@ -24,8 +24,8 @@
 package com.percussion.deployer.server.dependencies;
 
 
-import com.percussion.deployer.error.IPSDeploymentErrors;
-import com.percussion.deployer.error.PSDeployException;
+import com.percussion.error.IPSDeploymentErrors;
+import com.percussion.error.PSDeployException;
 
 /**
  * Helper class to handle format the parent and child id combination for

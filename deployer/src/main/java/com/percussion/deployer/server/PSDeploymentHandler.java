@@ -28,10 +28,6 @@ import com.percussion.conn.PSServerException;
 import com.percussion.deployer.catalog.server.PSCatalogHandler;
 import com.percussion.deployer.client.IPSDeployConstants;
 import com.percussion.deployer.client.PSDeploymentServerConnection;
-import com.percussion.deployer.error.IPSDeploymentErrors;
-import com.percussion.deployer.error.PSDeployException;
-import com.percussion.deployer.error.PSDeployNonUniqueException;
-import com.percussion.deployer.error.PSLockedException;
 import com.percussion.deployer.objectstore.IPSDeployComponent;
 import com.percussion.deployer.objectstore.PSAppPolicySettings;
 import com.percussion.deployer.objectstore.PSApplicationIDTypes;
@@ -56,8 +52,12 @@ import com.percussion.design.objectstore.IPSObjectStoreErrors;
 import com.percussion.design.objectstore.PSAclEntry;
 import com.percussion.design.objectstore.PSFeatureSet;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
+import com.percussion.error.IPSDeploymentErrors;
+import com.percussion.error.PSDeployException;
+import com.percussion.error.PSDeployNonUniqueException;
 import com.percussion.error.PSException;
 import com.percussion.error.PSExceptionUtils;
+import com.percussion.error.PSLockedException;
 import com.percussion.legacy.security.deprecated.PSCryptographer;
 import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
 import com.percussion.rx.config.data.PSDescriptorSummaryReport;
@@ -91,9 +91,12 @@ import com.percussion.services.pkginfo.data.PSPkgInfo;
 import com.percussion.services.pkginfo.data.PSPkgInfo.PackageAction;
 import com.percussion.services.pkginfo.data.PSPkgInfo.PackageActionStatus;
 import com.percussion.services.pkginfo.utils.PSIdNameHelper;
+import com.percussion.services.system.IPSDependencyManagerBaseline;
+import com.percussion.services.system.IPSDeploymentHandler;
 import com.percussion.servlets.PSSecurityFilter;
 import com.percussion.util.IOTools;
 import com.percussion.util.IPSBrandCodeConstants;
+import com.percussion.util.PSBaseBean;
 import com.percussion.util.PSFormatVersion;
 import com.percussion.util.PSXMLDomUtil;
 import com.percussion.utils.codec.PSXmlDecoder;
@@ -139,7 +142,8 @@ import static java.io.File.createTempFile;
  * due to the fact that this is a loadable handler, the pattern is not enforced
  * with a private ctor.
  */
-public class PSDeploymentHandler implements IPSLoadableRequestHandler
+@PSBaseBean("sys_deploymentHandler")
+public class PSDeploymentHandler implements IPSDeploymentHandler, IPSLoadableRequestHandler
 {
 
    private  static final Logger ms_log = LogManager.getLogger(PSDeploymentHandler.class);
@@ -1693,7 +1697,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
    public Document getDependencyToPackageNameIndex()
    {
       PSDeploymentHandler dh = PSDeploymentHandler.getInstance();
-      PSDependencyManager dm = dh.getDependencyManager();
+      PSDependencyManager dm = (PSDependencyManager) dh.getDependencyManager();
 
       Document respDoc = PSXmlDocumentBuilder.createXmlDocument();
       Element root = PSXmlDocumentBuilder.createRoot(respDoc,
@@ -3258,9 +3262,9 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
     *
     * @return The dependency manager, never <code>null</code>.
     */
-   public PSDependencyManager getDependencyManager()
+   public IPSDependencyManagerBaseline getDependencyManager()
    {
-      return m_depMgr;
+      return (IPSDependencyManagerBaseline) m_depMgr;
    }
 
    /**
@@ -3333,12 +3337,12 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
    public void init(Collection requestRoots, InputStream cfgFileIn)
            throws PSServerException
    {
-      PSConsole.printMsg(DEPLOY_SUBSYSTEM, "Initializing Deployment Handler");
+      PSConsole.printMsg(activeSubsystem.name(), "Initializing Deployment Handler");
       m_requestRoots = requestRoots;
 
       try
       {
-         m_depMgr = new PSDependencyManager();
+         m_depMgr = PSDependencyManager.INSTANCE;
          m_idmapMgr = new PSIdMapManager();
          m_logHandler = new PSLogHandler();
       }
@@ -3367,7 +3371,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
     */
    public String getName()
    {
-      return DEPLOY_SUBSYSTEM;
+      return activeSubsystem.name();
    }
 
    /**
@@ -4058,10 +4062,19 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
       }
    }
 
-   /**
-    * Constant for deployment subsystem to use for console and logging messages.
-    */
-   public static final String DEPLOY_SUBSYSTEM = "Deployer";
+   public enum PSDeployerSubsystem{
+      MultiServerMgr,
+      Deployer
+   }
+   private static PSDeployerSubsystem activeSubsystem = PSDeployerSubsystem.Deployer;
+   public static PSDeployerSubsystem getActiveSubsystem(){
+      return activeSubsystem;
+   }
+
+   public static void setActiveSubsystem(PSDeployerSubsystem system){
+      activeSubsystem = system;
+   }
+
 
    /**
     * Directory below the server directory containing all objectstore files.

@@ -68,7 +68,11 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-import static java.util.stream.Collectors.*;
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.mapping;
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toMap;
+import static java.util.stream.Collectors.toSet;
 
 /**
  * This object represents a single slot that is related to a template. Templates
@@ -114,8 +118,8 @@ public class PSTemplateSlot
     @Column(name = "VERSION")
     private Integer version;
     @Basic
-    @NaturalId
-    @Column(name = "SLOTNAME")
+    @NaturalId(mutable=true)
+    @Column(name = "SLOTNAME",unique=true)
     private String name;
     @Basic
     @Column(name = "LABEL")
@@ -438,11 +442,10 @@ public class PSTemplateSlot
     /**
      * Set the slot associations, used by MSM
      *
-     * @param associations
      */
     @SuppressWarnings("unchecked")
     public void setSlotTypeAssociations(
-            PSTemplateTypeSlotAssociation associations[]) {
+            PSTemplateTypeSlotAssociation[] associations) {
         this.slotAssociations.clear();
         this.slotAssociations.addAll(Arrays.stream(associations).collect(toSet()));
     }

@@ -23,22 +23,26 @@
  */
 package com.percussion.deployer.server.dependencies;
 
-import com.percussion.deployer.error.IPSDeploymentErrors;
-import com.percussion.deployer.error.PSDeployException;
+import com.percussion.deployer.client.IPSDeployConstants;
+import com.percussion.deployer.objectstore.PSApplicationIDTypeMapping;
+import com.percussion.deployer.objectstore.PSApplicationIDTypes;
 import com.percussion.deployer.objectstore.PSDependency;
 import com.percussion.deployer.objectstore.PSDependencyFile;
 import com.percussion.deployer.objectstore.PSIdMap;
 import com.percussion.deployer.objectstore.PSIdMapping;
 import com.percussion.deployer.objectstore.idtypes.PSJexlBinding;
 import com.percussion.deployer.objectstore.idtypes.PSJexlBindings;
+import com.percussion.deployer.server.PSAppTransformer;
 import com.percussion.deployer.server.PSArchiveHandler;
 import com.percussion.deployer.server.PSDependencyDef;
 import com.percussion.deployer.server.PSDependencyMap;
 import com.percussion.deployer.server.PSImportCtx;
-import com.percussion.deployer.server.PSJexlHelper;
 import com.percussion.deployer.services.IPSDeployService;
 import com.percussion.deployer.services.PSDeployServiceException;
 import com.percussion.deployer.services.PSDeployServiceLocator;
+import com.percussion.error.IPSDeploymentErrors;
+import com.percussion.error.PSDeployException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.PSExtensionException;
 import com.percussion.extension.PSExtensionRef;
 import com.percussion.security.PSSecurityToken;
@@ -51,11 +55,14 @@ import com.percussion.services.assembly.PSAssemblyException;
 import com.percussion.services.assembly.PSAssemblyServiceLocator;
 import com.percussion.services.assembly.data.PSAssemblyTemplate;
 import com.percussion.services.assembly.data.PSTemplateBinding;
+import com.percussion.services.assembly.jexl.PSJexlHelper;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.data.PSGuid;
 import com.percussion.utils.guid.IPSGuid;
 import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -90,6 +97,10 @@ public class PSTemplateDefDependencyHandler extends PSDependencyHandler
       super(def, dependencyMap);
    }
 
+    private static Long apply(PSTemplateBinding b) {
+        return b.getId();
+    }
+
    /**
     * Helper method to init PSAssemblyServerHelper 
     */
@@ -119,8 +130,11 @@ public class PSTemplateDefDependencyHandler extends PSDependencyHandler
       {
          tmp = m_assemblySvc.loadTemplate(depId, loadSlots);
       }
-      catch (PSAssemblyException ignored)
-      { }
+        catch (PSAssemblyException e)
+        {
+            log.warn(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+        }
       
       return tmp;
    }
@@ -214,8 +228,15 @@ public class PSTemplateDefDependencyHandler extends PSDependencyHandler
       for (IPSTemplateSlot slot : slots) {
          IPSGuid slotGuid = slot.getGUID();
          String id = String.valueOf(slotGuid.longValue());
-         PSDependency childDep = handler.getDependency(tok, id);
-         if (childDep != null) {
+
+         PSDependency childDep = null;
+         try {
+            childDep = handler.getDependency(tok, id);
+         }catch (PSNotFoundException e) {
+         log.warn(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+          }
+            if (childDep != null) {
             if (childDep.getDependencyType() == PSDependency.TYPE_SHARED) {
                childDep.setIsAssociation(false);
             }
@@ -382,7 +403,7 @@ public class PSTemplateDefDependencyHandler extends PSDependencyHandler
     * @throws PSDeployException 
     */
    @Deprecated
-   protected static  void deleteTemplate(PSAssemblyTemplate t) throws PSDeployException
+   protected static  void deleteTemplate(IPSAssemblyTemplate t) throws PSDeployException
    {
       Iterator<PSTemplateBinding> bindingsIt= t.getBindings().iterator();
       
@@ -435,7 +456,7 @@ public class PSTemplateDefDependencyHandler extends PSDependencyHandler
       PSJexlHelper jHelper = new PSJexlHelper();
       while ( bindingsIt.hasNext() )
       {
-         PSTemplateBinding b = bindingsIt.next();
+         IPSTemplateBinding b = bindingsIt.next();
          if  ( b == null )
             continue;
          String exp = b.getExpression();
@@ -824,7 +845,7 @@ public class PSTemplateDefDependencyHandler extends PSDependencyHandler
     * @return do the transforms on the passed in template and return it back
     * @throws PSDeployException
     */
-   public PSAssemblyTemplate doTransforms(PSAssemblyTemplate t,
+   public IPSAssemblyTemplate doTransforms(PSAssemblyTemplate t,
                                            PSImportCtx ctx, PSDependency dep)
          throws PSDeployException
    {    
@@ -890,8 +911,8 @@ public class PSTemplateDefDependencyHandler extends PSDependencyHandler
     * @param ctx the import context never <code>null</code>
     * @return the template never <code>null</code>
     */
-   private PSAssemblyTemplate transformBindings(PSAssemblyTemplate t,
-                                                PSImportCtx ctx) {
+   private IPSAssemblyTemplate transformBindings(PSAssemblyTemplate t,
+                                                PSImportCtx ctx) throws PSDeployException {
       if (t == null)
          throw new IllegalArgumentException("template may not be null");
       if ( ctx == null )
@@ -915,6 +936,11 @@ public class PSTemplateDefDependencyHandler extends PSDependencyHandler
       
       if (!bindings.getBindings().isEmpty())
       {
+         if(isIdTypeMappingEnabled()) {
+            // transform params using idtypes
+            transformIds(bindings, ctx.getIdTypes(), idMap);
+         }
+
          for (PSJexlBinding new_b : bindings.getBindings()) {
             PSJexlBinding orig_b = origBindings.getByIndex(new_b.getIndex());
             if (StringUtils.isNotBlank(new_b.getExpression()) &&
@@ -925,6 +951,57 @@ public class PSTemplateDefDependencyHandler extends PSDependencyHandler
       }
       return t;
    }
+
+
+
+    // see base class
+    @SuppressWarnings("unchecked")
+    public void transformIds(Object object, PSApplicationIDTypes idTypes,
+                             PSIdMap idMap) throws PSDeployException
+    {
+        if (object == null)
+            throw new IllegalArgumentException("object may not be null");
+
+        if (idTypes == null)
+            throw new IllegalArgumentException("idTypes may not be null");
+
+        if (idMap == null)
+            throw new IllegalArgumentException("idMap may not be null");
+
+        //the binding map: bindingIX, <name,value>
+        PSJexlBindings bindings = (PSJexlBindings) object;
+
+
+        // walk id types and perform any transforms
+        Iterator resources = idTypes.getResourceList(false);
+        while (resources.hasNext())
+        {
+            String resource = (String) resources.next();
+            Iterator elements = idTypes.getElementList(resource, false);
+            while (elements.hasNext())
+            {
+                String element = (String) elements.next();
+                Iterator<PSApplicationIDTypeMapping> mappings =
+                        idTypes.getIdTypeMappings(resource, element, false);
+
+                // iterate on ID mappings that are template bindings only
+                while (mappings.hasNext())
+                {
+                    PSApplicationIDTypeMapping mapping = mappings.next();
+
+                    if (mapping.getType().equals(
+                            PSApplicationIDTypeMapping.TYPE_NONE))
+                        continue;
+
+                    PSAppTransformer.transformJexlBinding(mapping, idMap, bindings);
+
+                }
+            }
+        }
+    }
+
+
+
 
    /**
     * Util method to generate bindings
@@ -950,7 +1027,36 @@ public class PSTemplateDefDependencyHandler extends PSDependencyHandler
       return bindings;
    }
     
-   
+    @SuppressWarnings("unchecked")
+    public PSApplicationIDTypes getIdTypes(PSSecurityToken tok, PSDependency dep)
+            throws PSDeployException
+    {
+        if (tok == null)
+            throw new IllegalArgumentException("tok may not be null");
+        if (dep == null)
+            throw new IllegalArgumentException("dep may not be null");
+        if (!dep.getObjectType().equals(getType()))
+            throw new IllegalArgumentException("dep wrong type");
+
+        IPSAssemblyTemplate tmp =
+                findTemplateByDependencyID(dep.getDependencyId(), true);
+        PSApplicationIDTypes idTypes = new PSApplicationIDTypes(dep);
+
+        // ADD ANY BINDING PARAMS THAT ARE ID-TYPED
+        List<PSApplicationIDTypeMapping> mappings
+                = new ArrayList<>();
+        // check all the bindings for idTypes
+        PSAppTransformer.checkJexlBinding(mappings, getBindingsForIDTypes(tmp)
+                .getBindings());
+
+        idTypes.addMappings(TEMPLATE_BINDINGS,
+                IPSDeployConstants.ID_TYPE_ELEMENT_TEMPLATE_BINDINGS,
+                mappings.iterator());
+
+        return idTypes;
+    }
+
+
    /**
     * A util header for templates. IPSAssemblyTemplate upon serialization will
     * not have this header. Just prepend it.
@@ -997,6 +1103,7 @@ public class PSTemplateDefDependencyHandler extends PSDependencyHandler
     */
    private static final String TEMPLATE_BINDINGS  = "TemplateBinding";
    
+    private static final Logger log = LogManager.getLogger(PSTemplateDependencyHandler.class);
    static
    {
       ms_childTypes.add(PSCEDependencyHandler.DEPENDENCY_TYPE);

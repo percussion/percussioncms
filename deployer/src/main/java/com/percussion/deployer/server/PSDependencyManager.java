@@ -26,8 +26,6 @@ package com.percussion.deployer.server;
 
 import com.percussion.deployer.client.IPSDeployConstants;
 import com.percussion.deployer.client.PSDeploymentManager;
-import com.percussion.deployer.error.IPSDeploymentErrors;
-import com.percussion.deployer.error.PSDeployException;
 import com.percussion.deployer.objectstore.PSApplicationIDTypes;
 import com.percussion.deployer.objectstore.PSArchiveDetail;
 import com.percussion.deployer.objectstore.PSArchiveInfo;
@@ -48,6 +46,9 @@ import com.percussion.deployer.server.dependencies.PSAclDefDependencyHandler;
 import com.percussion.deployer.server.dependencies.PSCustomDependencyHandler;
 import com.percussion.deployer.server.dependencies.PSDependencyHandler;
 import com.percussion.deployer.server.dependencies.PSUserDependencyHandler;
+import com.percussion.error.IPSDeploymentErrors;
+import com.percussion.error.PSDeployException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.security.PSSecurityToken;
 import com.percussion.server.PSServer;
 import com.percussion.services.assembly.PSAssemblyException;
@@ -58,7 +59,9 @@ import com.percussion.services.pkginfo.IPSPkgInfoService;
 import com.percussion.services.pkginfo.PSPkgInfoServiceLocator;
 import com.percussion.services.pkginfo.data.PSPkgElement;
 import com.percussion.services.pkginfo.utils.PSIdNameHelper;
-import com.percussion.util.PSIteratorUtils;
+import com.percussion.services.system.IPSDependencyBaseline;
+import com.percussion.services.system.IPSDependencyManagerBaseline;
+import com.percussion.utils.collections.PSIteratorUtils;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import org.apache.commons.lang.StringUtils;
@@ -85,9 +88,15 @@ import java.util.StringTokenizer;
  * creates and holds an instance when initialized. All other classes should call
  * {@link #getInstance()} to obtain an instance of this class.
  */
-@SuppressWarnings(value = { "unchecked" })
-public class PSDependencyManager
+public class PSDependencyManager implements IPSDependencyManagerBaseline
 {
+   /**
+    * Singleton instance of this class. Intialized when first instance of the
+    * class is constructed, never <code>null</code> or modified after that.
+    */
+   public static final PSDependencyManager INSTANCE = new PSDependencyManager();
+
+
    /**
     * Loads the <code>PSDependencyMap</code> using the XML document found in
     * the <code>server/cfg</code> directory below the deployment root.
@@ -99,10 +108,8 @@ public class PSDependencyManager
     * initialized. All other classes should call {@link #getInstance()} to
     * obtain an instance of this class.
     */
-   PSDependencyManager() throws PSDeployException
+   private PSDependencyManager()
    {
-      if (ms_instance != null)
-         throw new IllegalStateException("Instance has already been created");
 
       String configDir = ms_configDir;
       boolean buildDepMaps = false;
@@ -117,9 +124,9 @@ public class PSDependencyManager
       }
       catch (Exception e)
       {
-         ms_log.error("Failed to load configure file from " + configDir, e);
-         throw new PSDeployException(IPSDeploymentErrors.DEPENDENCY_MGR_INIT,
-               e.toString());
+         log.error("Failed to load configure file from {}. Error: {}" ,
+                 configDir,
+                 PSExceptionUtils.getDebugMessageForLog(e));
       }
    }
 
@@ -156,7 +163,6 @@ public class PSDependencyManager
             m_uninstallIgnoreTypes = config.getUninstallIgnoreTypes();
             m_depMap = config.getDependencyMap();
             createTypeMappings();
-            ms_instance = this;
       }
       catch (Exception e)
       {
@@ -223,7 +229,7 @@ public class PSDependencyManager
     * @throws IllegalArgumentException if any param is invalid.
     * @throws PSDeployException for any other errors.
     */
-   public Iterator getAncestors(PSSecurityToken tok, PSDependency dep)
+   public Iterator getAncestors(PSSecurityToken tok, IPSDependencyBaseline dep)
            throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
@@ -234,7 +240,7 @@ public class PSDependencyManager
       if (dep.getDependencyType() == PSDependency.TYPE_USER)
          return PSIteratorUtils.emptyIterator();
 
-      return getParentDependencies(tok, dep);
+      return getParentDependencies(tok, (PSDependency) dep);
    }
 
    /**
@@ -478,17 +484,17 @@ public class PSDependencyManager
    private void logPackageElementOrder(List<PSImportPackage> elements,
          boolean isOriginal) throws PSDeployException
    {
-      if (!ms_log.isDebugEnabled())
+      if (!log.isDebugEnabled())
          return;
 
       if (isOriginal)
-         ms_log.debug("Original package element order:");
+         log.debug("Original package element order:");
       else
-         ms_log.debug("New package element order:");
+         log.debug("New package element order:");
 
       for (PSImportPackage elem : elements)
       {
-         ms_log.debug("\t objectType=\"" + getObjectType(elem)
+         log.debug("\t objectType=\"" + getObjectType(elem)
                + "\", displayName=\"" + elem.getPackage().getDisplayName()
                + "\".");
       }
@@ -774,14 +780,14 @@ public class PSDependencyManager
             catch (PSDeployException e)
             {
                // log the specific dependency that failed, to aid debugging
-               ms_log.error("failure while processing: "
+               log.error("failure while processing: "
                      + formatDependencyString(dependency));
                throw e;
             }
             catch (PSRuntimeException | PSAssemblyException | PSNotFoundException e)
             {
                // log the specific dependency that failed, to aid debugging
-               ms_log.error("failure while processing: "
+               log.error("failure while processing: "
                      + formatDependencyString(dependency));
                throw e;
             }
@@ -972,7 +978,7 @@ public class PSDependencyManager
     */
    public static PSDependencyManager getInstance()
    {
-      return ms_instance;
+      return INSTANCE;
    }
 
    /**
@@ -2255,11 +2261,6 @@ public class PSDependencyManager
          .getAbsolutePath()
          + "/" + PSDeploymentHandler.OBJECTSTORE_DIR, "UserDependencies");
 
-   /**
-    * Singleton instance of this class. Intialized when first instance of the
-    * class is constructed, never <code>null</code> or modified after that.
-    */
-   private static PSDependencyManager ms_instance = null;
 
    /**
     * Constant for the name of the configure file used to construct the
@@ -2305,7 +2306,7 @@ public class PSDependencyManager
    /**
     * Reference to Log4j singleton object used to log any errors or debug info.
     */
-   private static final Logger ms_log = LogManager
+   private static final Logger log = LogManager
          .getLogger("com.percussion.deployer.server.PSDependencyManager");
 
    /**

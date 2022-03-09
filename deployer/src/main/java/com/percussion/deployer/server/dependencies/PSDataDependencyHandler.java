@@ -24,8 +24,6 @@
 package com.percussion.deployer.server.dependencies;
 
 
-import com.percussion.deployer.error.IPSDeploymentErrors;
-import com.percussion.deployer.error.PSDeployException;
 import com.percussion.deployer.objectstore.PSDependency;
 import com.percussion.deployer.objectstore.PSDependencyFile;
 import com.percussion.deployer.objectstore.PSTransactionSummary;
@@ -34,6 +32,8 @@ import com.percussion.deployer.server.PSDbmsHelper;
 import com.percussion.deployer.server.PSDependencyDef;
 import com.percussion.deployer.server.PSDependencyMap;
 import com.percussion.deployer.server.PSImportCtx;
+import com.percussion.error.IPSDeploymentErrors;
+import com.percussion.error.PSDeployException;
 import com.percussion.security.PSSecurityToken;
 import com.percussion.services.error.PSNotFoundException;
 import com.percussion.tablefactory.PSJdbcDataTypeMap;
@@ -41,7 +41,7 @@ import com.percussion.tablefactory.PSJdbcRowData;
 import com.percussion.tablefactory.PSJdbcTableData;
 import com.percussion.tablefactory.PSJdbcTableFactoryException;
 import com.percussion.tablefactory.PSJdbcTableSchema;
-import com.percussion.util.PSIteratorUtils;
+import com.percussion.utils.collections.PSIteratorUtils;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import org.w3c.dom.Document;
 

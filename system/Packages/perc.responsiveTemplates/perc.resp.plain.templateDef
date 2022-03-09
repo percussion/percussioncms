@@ -9,7 +9,7 @@
     <description>Plain responsive template with a row and a column.</description>
     <global-template/>
     <global-template-usage>Default</global-template-usage>
-    <label>perc.resp.plain</label>
+    <label>Plain</label>
     <location-prefix/>
     <location-suffix/>
     <mime-type>text/html</mime-type>

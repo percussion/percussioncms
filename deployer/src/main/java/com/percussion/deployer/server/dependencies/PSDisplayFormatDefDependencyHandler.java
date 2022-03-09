@@ -27,11 +27,10 @@ package com.percussion.deployer.server.dependencies;
 import com.percussion.cms.PSCmsException;
 import com.percussion.cms.objectstore.IPSDbComponent;
 import com.percussion.cms.objectstore.PSComponentProcessorProxy;
+import com.percussion.cms.objectstore.PSDFMultiProperty;
 import com.percussion.cms.objectstore.PSDbComponentCollection;
 import com.percussion.cms.objectstore.PSDisplayFormat;
 import com.percussion.cms.objectstore.PSKey;
-import com.percussion.deployer.error.IPSDeploymentErrors;
-import com.percussion.deployer.error.PSDeployException;
 import com.percussion.deployer.objectstore.PSDependency;
 import com.percussion.deployer.objectstore.PSDependencyFile;
 import com.percussion.deployer.objectstore.PSIdMap;
@@ -42,6 +41,8 @@ import com.percussion.deployer.server.PSDependencyDef;
 import com.percussion.deployer.server.PSDependencyMap;
 import com.percussion.deployer.server.PSImportCtx;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
+import com.percussion.error.IPSDeploymentErrors;
+import com.percussion.error.PSDeployException;
 import com.percussion.security.PSSecurityToken;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.error.PSNotFoundException;
@@ -99,8 +100,21 @@ public class PSDisplayFormatDefDependencyHandler
             args);
       }
 
+      PSDependencyHandler commHandler = getDependencyHandler(
+         PSCommunityDependencyHandler.DEPENDENCY_TYPE);
+      PSDFMultiProperty commProp = getCommunityProperty(df);
+      if (commProp != null)
+         childDeps.addAll(getDepsFromMultiValuedProperty(tok, commProp,
+            commHandler));
+
       //Acl deps
-      addAclDependency(tok, PSTypeEnum.DISPLAY_FORMAT, dep, childDeps);
+      // Acl dep uses ids, but display formats are referenced by names, so get
+      // the display format id, set it on the dependency and reset it back to
+      // display format name and do this on a clone in case ... of exceptions
+      PSDependency d = (PSDependency) dep.clone();
+      d.setDependencyId(String.valueOf(df.getDisplayId()));
+      addAclDependency(tok, PSTypeEnum.DISPLAY_FORMAT, d, childDeps);
+      d.setDependencyId(df.getDisplayName());
   
       return childDeps.iterator();
     }
@@ -240,11 +254,23 @@ public class PSDisplayFormatDefDependencyHandler
          // delete so we can "replace" it with the source version
          if (tgtDispFormat != null)
          {
+            // first set key value of format we will save using the existing
+            // target format's id.
+            newDispFormat.setLocator(PSDisplayFormat.createKey(
+               new String[]{getIdFromKey(tgtDispFormat,
+                  tgtDispFormat.getInternalName())}));
+
             tgtDispFormat.markForDeletion();
             dbCompList.add(tgtDispFormat);
             
             // keep target version
             newDispFormat.setVersion(tgtDispFormat.getVersion());
+         }
+
+         // translate ids in the new version as necessary
+         if (ctx.getCurrentIdMap() != null)
+         {
+            transformIds(ctx, newDispFormat);
          }
 
          newDispFormat.setLocator(PSDisplayFormat.createKey(
@@ -381,6 +407,26 @@ public class PSDisplayFormatDefDependencyHandler
 //   }
    
    /**
+    * Transforms the child ids in the supplied display format.
+    *
+    * @param ctx The context to use to get id mappings, assumed not
+    * <code>null</code>.
+    * @param df The display format to transform, assumed not <code>null</code>.
+    *
+    * @throws PSDeployException if there are any errors
+    */
+   private void transformIds(PSImportCtx ctx, PSDisplayFormat df)
+      throws PSDeployException
+   {
+      // transform community ids
+      PSDFMultiProperty commProp = getCommunityProperty(df);
+      if (commProp != null)
+         transformMultiValuedProperty(commProp, ctx,
+            PSCommunityDependencyHandler.DEPENDENCY_TYPE);
+   }
+
+
+   /**
     * Loads all display formats.
     *
     * @param proc The processor to use, assumed not <code>null</code>.
@@ -411,6 +457,36 @@ public class PSDisplayFormatDefDependencyHandler
          throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR,
             e.getLocalizedMessage());
       }
+   }
+   /**
+    * Gets the property containing defined communities, unless the property
+    * specifies "all" communities.
+    *
+    * @param df The format object to get the property from, assumed not
+    * <code>null</code>.
+    *
+    * @return The property, or <code>null</code> if "all" is defined or the
+    * property does not exist.
+    */
+   private PSDFMultiProperty getCommunityProperty(PSDisplayFormat df)
+   {
+      PSDFMultiProperty result = null;
+
+      // get community dependencies unless "all" is specified
+      if (!df.doesPropertyHaveValue(PSDisplayFormat.PROP_COMMUNITY,
+              PSDisplayFormat.PROP_COMMUNITY_ALL))
+      {
+         // find the community property
+         Iterator props = df.getProperties();
+         while (props.hasNext() && result == null)
+         {
+            PSDFMultiProperty prop = (PSDFMultiProperty)props.next();
+            if (PSDisplayFormat.PROP_COMMUNITY.equals(prop.getName()))
+               result = prop;
+         }
+      }
+
+      return result;
    }
 
    @Override

@@ -26,19 +26,29 @@ package com.percussion.deployer.server.dependencies;
 
 
 import com.percussion.cms.handlers.PSRelationshipCommandHandler;
-import com.percussion.deployer.error.IPSDeploymentErrors;
-import com.percussion.deployer.error.PSDeployException;
+import com.percussion.deployer.client.IPSDeployConstants;
+import com.percussion.deployer.objectstore.PSApplicationIDTypeMapping;
+import com.percussion.deployer.objectstore.PSApplicationIDTypes;
 import com.percussion.deployer.objectstore.PSDependency;
 import com.percussion.deployer.objectstore.PSDependencyFile;
+import com.percussion.deployer.objectstore.PSIdMap;
 import com.percussion.deployer.objectstore.PSTransactionSummary;
+import com.percussion.deployer.server.IPSIdTypeHandler;
+import com.percussion.deployer.server.PSAppTransformer;
 import com.percussion.deployer.server.PSArchiveHandler;
 import com.percussion.deployer.server.PSDependencyDef;
 import com.percussion.deployer.server.PSDependencyMap;
+import com.percussion.deployer.server.PSDeploymentHandler;
 import com.percussion.deployer.server.PSImportCtx;
+import com.percussion.design.objectstore.PSCloneOverrideFieldList;
+import com.percussion.design.objectstore.PSConfigurationFactory;
 import com.percussion.design.objectstore.PSRelationshipConfig;
 import com.percussion.design.objectstore.PSRelationshipConfigSet;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
+import com.percussion.error.IPSDeploymentErrors;
+import com.percussion.error.PSDeployException;
 import com.percussion.security.PSSecurityToken;
+import com.percussion.server.config.PSConfigManager;
 import com.percussion.services.error.PSNotFoundException;
 import com.percussion.webservices.IPSWebserviceErrors;
 import com.percussion.webservices.PSErrorException;
@@ -58,7 +68,7 @@ import java.util.Set;
  * Class to handle packaging and deploying a Relationship defintion.
  */
 public class PSRelationshipDefDependencyHandler 
-   extends PSAppObjectDependencyHandler
+   extends PSAppObjectDependencyHandler implements IPSIdTypeHandler
 {
    /**
     * Construct a dependency handler.
@@ -282,7 +292,14 @@ public class PSRelationshipDefDependencyHandler
          
          // update the target config with source data
          tgtCfg.copyFrom(srcCfg);
-         
+
+         if(isIdTypeMappingEnabled()) {
+            // transform id type ids
+            PSIdMap idMap = ctx.getCurrentIdMap();
+            if (idMap != null)
+               transformIds(tgtCfg, ctx.getIdTypes(), idMap);
+         }
+
          // save the new one
          PSWebserviceUtils.saveRelationshipConfigSet(cfgSet,
                IPSWebserviceErrors.SAVE_FAILED);
@@ -316,6 +333,179 @@ public class PSRelationshipDefDependencyHandler
          throw new IllegalArgumentException("id may not be null or empty");
 
       return getDependency(tok, id) != null;
+   }
+
+   //see IPSIdTypeHandler interface
+   public PSApplicationIDTypes getIdTypes(PSSecurityToken tok, PSDependency dep)
+      throws PSDeployException
+   {
+      if (tok == null)
+         throw new IllegalArgumentException("tok may not be null");
+
+      if (dep == null)
+         throw new IllegalArgumentException("dep may not be null");
+
+      if (!dep.getObjectType().equals(DEPENDENCY_TYPE))
+         throw new IllegalArgumentException("dep wrong type");
+
+      PSRelationshipConfigSet cfgSet = getRelationshipConfigSet(false);
+      PSRelationshipConfig cfg = cfgSet.getConfig(dep.getDependencyId());
+      if (cfg == null)
+      {
+         Object[] args = {dep.getDependencyId(), dep.getObjectTypeName(),
+            dep.getDisplayName()};
+         throw new PSDeployException(IPSDeploymentErrors.DEP_OBJECT_NOT_FOUND,
+            args);
+      }
+
+      PSApplicationIDTypes idTypes = new PSApplicationIDTypes(dep);
+
+      // exit and effect params, user properties,
+      List mappings = new ArrayList();
+      String reqName = dep.getDisplayName();
+
+      mappings.clear();
+      idTypes.addMappings(reqName,
+         IPSDeployConstants.ID_TYPE_ELEMENT_EXTENSIONS, mappings.iterator());
+
+      mappings.clear();
+      PSAppTransformer.checkConditionalEffects(mappings, cfg.getEffects(),
+         null);
+      idTypes.addMappings(reqName,
+         IPSDeployConstants.ID_TYPE_ELEMENT_EFFECTS, mappings.iterator());
+
+      mappings.clear();
+      PSAppTransformer.checkProperties(mappings, cfg.getUserDefProperties(),
+         null);
+      idTypes.addMappings(reqName,
+         IPSDeployConstants.ID_TYPE_ELEMENT_USER_PROPERTIES,
+         mappings.iterator());
+
+      mappings.clear();
+      PSAppTransformer.checkProcessChecks(mappings, cfg.getProcessChecks(),
+         null);
+      idTypes.addMappings(reqName,
+         IPSDeployConstants.ID_TYPE_ELEMENT_PROCESS_CHECKS,
+         mappings.iterator());
+
+
+      PSCloneOverrideFieldList overrideList = cfg.getCloneOverrideFieldList();
+      if (overrideList != null)
+      {
+         mappings.clear();
+         PSAppTransformer.checkCloneFieldOverrides(mappings, overrideList,
+            null);
+         idTypes.addMappings(reqName,
+            IPSDeployConstants.ID_TYPE_ELEMENT_CLONE_FIELD_OVERRIDES,
+            mappings.iterator());
+      }
+
+      return idTypes;
+   }
+
+   //see IPSIdTypeHandler interface
+   public void transformIds(Object object, PSApplicationIDTypes idTypes,
+      PSIdMap idMap) throws PSDeployException
+   {
+      if (object == null)
+         throw new IllegalArgumentException("object may not be null");
+
+      if (idTypes == null)
+         throw new IllegalArgumentException("idTypes may not be null");
+
+      if (idMap == null)
+         throw new IllegalArgumentException("idMap may not be null");
+
+      if (!(object instanceof PSRelationshipConfig))
+      {
+         throw new IllegalArgumentException("invalid object type");
+      }
+
+      PSRelationshipConfig cfg = (PSRelationshipConfig)object;
+
+      // walk id types and perform any transforms
+      Iterator resources = idTypes.getResourceList(false);
+      while (resources.hasNext())
+      {
+         String resource = (String)resources.next();
+         Iterator elements = idTypes.getElementList(resource, false);
+         while (elements.hasNext())
+         {
+            String element = (String)elements.next();
+            Iterator mappings = idTypes.getIdTypeMappings(
+                  resource, element, false);
+            while (mappings.hasNext())
+            {
+
+               PSApplicationIDTypeMapping mapping =
+                  (PSApplicationIDTypeMapping)mappings.next();
+
+               if (mapping.getType().equals(
+                  PSApplicationIDTypeMapping.TYPE_NONE))
+               {
+                  continue;
+               }
+
+               if (element.equals(
+                  IPSDeployConstants.ID_TYPE_ELEMENT_EFFECTS))
+               {
+                  PSAppTransformer.transformConditionalEffects(cfg.getEffects(),
+                     mapping, idMap);
+               }
+               else if (element.equals(
+                  IPSDeployConstants.ID_TYPE_ELEMENT_USER_PROPERTIES))
+               {
+                  PSAppTransformer.transformProperties(
+                     cfg.getUserDefProperties(), mapping, idMap);
+               }
+               else if (element.equals(
+                  IPSDeployConstants.ID_TYPE_ELEMENT_PROCESS_CHECKS))
+               {
+                  PSAppTransformer.transformProcessChecks(
+                     cfg.getProcessChecks(), mapping, idMap);
+               }
+               else if (element.equals(
+                  IPSDeployConstants.ID_TYPE_ELEMENT_CLONE_FIELD_OVERRIDES))
+               {
+                  PSAppTransformer.transformCloneFieldOverrides(
+                     cfg.getCloneOverrideFieldList(), mapping, idMap);
+               }
+            }
+         }
+      }
+   }
+
+   /**
+    * Load the relationship config set containing all relationship
+    * configurations.
+    *
+    * @param edit <code>true</code> to lock for editing, <code>false</code> for
+    * read only.  If <code>true</code>, any existing locks on the config will
+    * be overriden.
+    * @return the relationshipconfiguration set
+    *
+    * @throws PSDeployException if there are any errors.
+    */
+   private PSRelationshipConfigSet getRelationshipConfigSet(boolean edit)
+      throws PSDeployException
+   {
+      try
+      {
+         PSConfigManager cfgMgr = PSConfigManager.getInstance();
+         Document cfgDoc = cfgMgr.getRxConfiguration(
+            PSConfigurationFactory.RELATIONSHIPS_CFG, edit, true, true,
+            PSDeploymentHandler.getActiveSubsystem().name());
+         PSRelationshipConfigSet cfgSet =
+            (PSRelationshipConfigSet)PSConfigurationFactory.getConfiguration(
+               PSConfigurationFactory.RELATIONSHIPS_CFG, cfgDoc);
+
+         return cfgSet;
+      }
+      catch (Exception e)
+      {
+         throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR,
+            e.getLocalizedMessage());
+      }
    }
 
    /**

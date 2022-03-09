@@ -560,6 +560,8 @@ public interface IPSConstants
    /**
     * Logger Categories
     */
+   public static final String PACKAGING_LOG="Package Management";
+   public static final String MSM_LOG="Multi-Server Management";
    public static final String NAVIGATION_LOG="Managed Navigation";
    public static final String TEST_LOG="Testing";
    public static final String ASSEMBLY_LOG="Assembly";

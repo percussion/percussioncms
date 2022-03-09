@@ -25,8 +25,6 @@
  
 package com.percussion.deployer.server;
 
-import com.percussion.deployer.error.IPSDeploymentErrors;
-import com.percussion.deployer.error.PSDeployException;
 import com.percussion.deployer.objectstore.PSApplicationIDTypeMapping;
 import com.percussion.deployer.objectstore.PSApplicationIDTypes;
 import com.percussion.deployer.objectstore.PSDependency;
@@ -34,6 +32,8 @@ import com.percussion.deployer.objectstore.idtypes.PSAppExtensionCallIdContext;
 import com.percussion.deployer.objectstore.idtypes.PSAppExtensionParamIdContext;
 import com.percussion.deployer.objectstore.idtypes.PSApplicationIdContext;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
+import com.percussion.error.IPSDeploymentErrors;
+import com.percussion.error.PSDeployException;
 import com.percussion.extension.IPSExtensionDef;
 import com.percussion.extension.PSExtensionDef;
 import com.percussion.extension.PSExtensionRef;
@@ -286,18 +286,41 @@ public class PSIdTypeManager
     * application is incomplete.
     */
    public static Iterator getIdTypeDependencies(PSSecurityToken tok,
-      PSDependency dep) 
-      throws PSDeployException
-   {
+      PSDependency dep)
+           throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
       
       if (dep == null)
          throw new IllegalArgumentException("dep may not be null");
          
-      // TODO - Always returns an empty list since we do not want to do 
-      // ID typing.  We should remove all references to ID Typing.
+      if (!dep.supportsIdTypes())
+         throw new IllegalArgumentException("dep must support id types");
+
       List mappingList = new ArrayList();         
+      PSApplicationIDTypes idTypes = loadIdTypes(tok, dep);
+      Iterator resources = idTypes.getResourceList(false);
+      while (resources.hasNext())
+      {
+         String resource = (String)resources.next();
+         Iterator elements = idTypes.getElementList(resource,
+            false);
+         while (elements.hasNext())
+         {
+            String element = (String)elements.next();
+            Iterator mappings = idTypes.getIdTypeMappings(resource, element,
+               false);
+            while (mappings.hasNext())
+            {
+               PSApplicationIDTypeMapping mapping =
+                  (PSApplicationIDTypeMapping)mappings.next();
+
+               // add deps if the mapping specifies an id
+               if (mapping.isComplete() && mapping.isIdType())
+                  mappingList.add(mapping);
+            }
+         }
+      }
 
       return mappingList.iterator();
    }
@@ -408,7 +431,7 @@ public class PSIdTypeManager
          if (typeList == null)
          {
             // not cached, look it up
-            typeList = new ArrayList();
+            typeList = new ArrayList<>();
             Iterator types = depMgr.getPossibleIdTypes(tok, id);
             while (types.hasNext())
             {

@@ -24,6 +24,7 @@
 package com.percussion.deployer.server;
 
 import com.percussion.deployer.objectstore.PSDependency;
+import com.percussion.deployer.objectstore.PSDependencyContext;
 import com.percussion.deployer.objectstore.PSDependencyTreeContext;
 import com.percussion.deployer.objectstore.PSDeployableElement;
 import com.percussion.deployer.objectstore.PSIdMap;
@@ -31,9 +32,12 @@ import com.percussion.deployer.objectstore.PSImportDescriptor;
 import com.percussion.deployer.objectstore.PSImportPackage;
 import com.percussion.deployer.objectstore.PSValidationResult;
 import com.percussion.deployer.objectstore.PSValidationResults;
+import com.percussion.utils.collections.PSIteratorUtils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -119,6 +123,17 @@ public class PSValidationCtx
    }
    
    /**
+    * Set whether ancestor validation should be performed.
+    *
+    * @param doValidate <code>true</code> to perform ancestor validation,
+    * <code>false</code> to skip it.
+    */
+   public void setValidateAncestors(boolean doValidate)
+   {
+      m_validateAncestors = doValidate;
+   }
+
+   /**
     * Get the job handle to use to report job status.
     * 
     * @return The job handle, never <code>null</code>.
@@ -151,6 +166,17 @@ public class PSValidationCtx
    }
    
    /**
+    * Determine if ancestor validation should be performed.
+    *
+    * @return <code>true</code> if it should, <code>false</code> if it should
+    * be skipped.
+    */
+   public boolean getValidateAncestors()
+   {
+      return m_validateAncestors;
+   }
+
+   /**
     * Adds a package to this context so that previous packages validation 
     * results may retrieved by calls to 
     * {@link #getValidationResult(PSDependency)}.
@@ -166,6 +192,29 @@ public class PSValidationCtx
       m_pkgMap.put(de.getKey(), pkg);      
    }   
    
+
+   /**
+    * Determine if the supplied dependency is included in any package within the
+    * import descriptor being validated.
+    *
+    * @param dep The depednecy to check, may not be <code>null</code>.
+    *
+    * @return <code>true</code> if the archive includes the dependency,
+    * <code>false</code> if not.
+    */
+   public boolean archiveIncludesDependency(PSDependency dep)
+   {
+      if (dep == null)
+         throw new IllegalArgumentException("dep may not be null");
+
+      boolean found = false;
+
+      PSDependencyContext ctx = m_fullTreeCtx.getDependencyCtx(dep.getKey());
+      if (ctx != null)
+         found = ctx.isIncluded();
+
+      return found;
+   }
 
    /**
     * Get any previously added validation result for the supplied dependency.
@@ -192,6 +241,48 @@ public class PSValidationCtx
    }
    
    /**
+    * Add an absent ancestor to this context.  See
+    * {@link #getAbsentAncestors(PSDependency)} for more info.
+    *
+    * @param dep The dependency for which an absent ancestor is supplied, may
+    * not be <code>null</code>.
+    * @param anc The absent ancestor, may not be <code>null</code>.
+    */
+   public void addAbsentAncestor(PSDependency dep, PSDependency anc)
+   {
+      List ancList = (List)m_absentAncs.get(dep.getKey());
+      if (ancList == null)
+      {
+         ancList = new ArrayList();
+         m_absentAncs.put(dep.getKey(), ancList);
+      }
+      ancList.add(anc);
+   }
+
+   /**
+    * Get any absent ancestors added for the specified dependency.  Absent
+    * ancestors are ancestors of the dependency on the target server that are
+    * not included in the dependency's package.
+    *
+    * @param dep The dep for which ancestors may have been added, may not be
+    * <code>null</code>.
+    *
+    * @return An iterator over zero or more ancestors, never <code>null</code>,
+    * may be empty.
+    */
+   public Iterator getAbsentAncestors(PSDependency dep)
+   {
+      Iterator ancs;
+      List ancList = (List)m_absentAncs.get(dep.getKey());
+      if (ancList == null)
+         ancs = PSIteratorUtils.emptyIterator();
+      else
+         ancs = ancList.iterator();
+
+      return ancs;
+   }
+
+   /**
     * The jobhandle supplied during construction, never <code>null</code> or 
     * modified after that.
     */
@@ -211,6 +302,13 @@ public class PSValidationCtx
    private PSIdMap m_idMap;
    
    /**
+    * Flag to indicate if ancestors should be validated.  Initially
+    * <code>false</code>, modified by calls to
+    * {@link #setValidateAncestors(boolean)}.
+    */
+   private boolean m_validateAncestors = false;
+
+   /**
     * Map of import packages.  Key is the dependency key of the root element of
     * the package as a <code>String</code>, value is the corresponding 
     * {@link PSImportPackage}. Never <code>null</code> after construction.  
@@ -225,4 +323,13 @@ public class PSValidationCtx
     * {@link #addValidatedDependency(PSDependency)}.
     */
    private Map m_validatedDeps = new HashMap();   
+
+   /**
+    * Map of absent ancestors.  Key is the dependency key of the dependency for
+    * which the ancestors were added as a <code>String</code>, value is a
+    * <code>List</code> of {@link PSDependency} objects.  Never
+    * <code>null</code>, values are added by calls to
+    * {@link #addAbsentAncestor(PSDependency, PSDependency)}
+    */
+   private Map m_absentAncs = new HashMap();
 }

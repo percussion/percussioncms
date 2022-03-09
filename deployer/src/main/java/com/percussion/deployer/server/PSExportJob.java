@@ -35,6 +35,7 @@ import com.percussion.deployer.objectstore.PSDeployableElement;
 import com.percussion.deployer.objectstore.PSDescriptor;
 import com.percussion.deployer.objectstore.PSExportDescriptor;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
+import com.percussion.error.PSDeployException;
 import com.percussion.rx.config.IPSConfigService;
 import com.percussion.security.PSAuthenticationFailedException;
 import com.percussion.security.PSAuthorizationException;
@@ -93,12 +94,12 @@ public class PSExportJob extends PSDeployJob
          }
          
       }
-      catch (PSUnknownNodeTypeException e) 
+      catch (PSDeployException | PSUnknownNodeTypeException e)
       {
          throw new PSJobException(IPSJobErrors.INVALID_JOB_DESCRIPTOR, 
-            e.getLocalizedMessage());
+            e.getMessage());
       }
-      
+
       m_serverVersion = new PSFormatVersion("com.percussion.util");
    }
    
@@ -125,7 +126,7 @@ public class PSExportJob extends PSDeployJob
          
          // make sure all dependencies are in the descriptor
          PSDeploymentHandler dh = PSDeploymentHandler.getInstance();
-         dm = dh.getDependencyManager();
+         dm = (PSDependencyManager) dh.getDependencyManager();
          
          // enable cache for dependencies
          dm.setIsDependencyCacheEnabled(true);
@@ -261,6 +262,7 @@ public class PSExportJob extends PSDeployJob
    // see base class
    protected String getJobType()
    {
+      //   return "Create Archive Job";
       return "Create Package Job";
    }
  

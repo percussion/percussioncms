@@ -37,7 +37,7 @@ import com.percussion.design.objectstore.PSNumericLiteral;
 import com.percussion.design.objectstore.PSSortedColumn;
 import com.percussion.design.objectstore.PSTextLiteral;
 import com.percussion.design.objectstore.PSWhereClause;
-import com.percussion.util.PSIteratorUtils;
+import com.percussion.utils.collections.PSIteratorUtils;
 
 import java.sql.SQLException;
 import java.sql.Types;

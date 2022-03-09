@@ -45,7 +45,19 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.MapKey;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.persistence.Version;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.HashMap;
@@ -106,6 +118,13 @@ public class PSItemFilterRuleDef implements IPSItemFilterRuleDef,
    private transient IPSItemFilterRule m_rule = null;
 
    /**
+    * The rule loaded from the extensions manager is cached in this transient
+    * member.
+    */
+   @Transient
+   private transient boolean isClientSide = false;
+
+   /**
     * The rule belongs to a specific item filter, this is the pointer to the
     * containing filter for the given rule. 
     */
@@ -133,6 +152,15 @@ public class PSItemFilterRuleDef implements IPSItemFilterRuleDef,
    {
       filter_rule_id = PSGuidHelper.generateNext(
             PSTypeEnum.ITEM_FILTER_RULE_DEF).longValue();
+   }
+   public PSItemFilterRuleDef(boolean forClient)
+   {
+      if(!forClient) {
+         filter_rule_id = PSGuidHelper.generateNext(
+                 PSTypeEnum.ITEM_FILTER_RULE_DEF).longValue();
+      }else{
+         isClientSide = true;
+      }
    }
 
    
@@ -318,7 +346,7 @@ public class PSItemFilterRuleDef implements IPSItemFilterRuleDef,
       PSItemFilterRuleParam param = this.params.get(parameterName);
       if (param == null)
       {
-         param = new PSItemFilterRuleParam();
+         param = new PSItemFilterRuleParam(isClientSide);
          param.setRuleDef(this);
          param.setName(parameterName);
          param.setValue(value);

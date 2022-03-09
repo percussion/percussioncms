@@ -100,7 +100,7 @@
             </RequestHandlerDef>
          </xsl:if>
          <xsl:if test="not($sysdeploymentHandler)">
-            <RequestHandlerDef handlerName="deploymenthandler" className="com.percussion.deploy.server.PSDeploymentHandler">
+            <RequestHandlerDef handlerName="deploymenthandler" className="com.percussion.deployer.server.PSDeploymentHandler">
                <RequestRoots>
                   <RequestRoot baseName="sys_deploymentHandler">
                      <RequestType>POST</RequestType>

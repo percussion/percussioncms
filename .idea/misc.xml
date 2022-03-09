@@ -41,6 +41,7 @@
     <option name="ignoredFiles">
       <set>
         <option value="$PROJECT_DIR$/deliverytiersuite/delivery-tier-suite/caching/pom.xml" />
+        <option value="$PROJECT_DIR$/deployer-msm-server/pom.xml" />
       </set>
     </option>
   </component>

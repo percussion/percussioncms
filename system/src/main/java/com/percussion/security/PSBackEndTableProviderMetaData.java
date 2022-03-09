@@ -29,8 +29,8 @@ import com.percussion.data.PSSqlException;
 import com.percussion.data.jdbc.PSOdbcDriverMetaData;
 import com.percussion.log.PSLogManager;
 import com.percussion.log.PSLogServerWarning;
-import com.percussion.util.PSIteratorUtils;
 import com.percussion.util.PSSQLStatement;
+import com.percussion.utils.collections.PSIteratorUtils;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
