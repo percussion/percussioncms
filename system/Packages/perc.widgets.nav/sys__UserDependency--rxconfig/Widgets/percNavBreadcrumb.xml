@@ -22,6 +22,10 @@
               display_name="Separator"
               default_value=" &gt; "
               datatype="string" />
+    <UserPref name="ariaLabel"
+              display_name="Aria Label"
+              default_value=""
+              datatype="string" />
     <CssPref name="rootclass"
              display_name="CSS root class"
              datatype="string" />

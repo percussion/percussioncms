@@ -25,7 +25,6 @@
 package com.percussion.deployer.server;
 
 import com.percussion.deployer.client.PSDeploymentManager;
-import com.percussion.deployer.error.PSDeployException;
 import com.percussion.deployer.objectstore.PSArchiveInfo;
 import com.percussion.deployer.objectstore.PSDbmsInfo;
 import com.percussion.deployer.objectstore.PSDeployableElement;
@@ -33,6 +32,7 @@ import com.percussion.deployer.objectstore.PSIdMap;
 import com.percussion.deployer.objectstore.PSImportDescriptor;
 import com.percussion.deployer.objectstore.PSImportPackage;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
+import com.percussion.error.PSDeployException;
 import com.percussion.security.PSAuthenticationFailedException;
 import com.percussion.security.PSAuthorizationException;
 import com.percussion.security.PSSecurityToken;
@@ -94,7 +94,7 @@ public class PSValidationJob extends PSDeployJob
          }
          initDepCount(pkgList.iterator(), false);
       }
-      catch (PSUnknownNodeTypeException e) 
+      catch (PSUnknownNodeTypeException | PSDeployException e)
       {
          throw new PSJobException(IPSJobErrors.INVALID_JOB_DESCRIPTOR, 
             e.getLocalizedMessage());
@@ -178,7 +178,7 @@ public class PSValidationJob extends PSDeployJob
           
           // walk the packages and validate
           PSDeploymentHandler dh = PSDeploymentHandler.getInstance();
-          dm = dh.getDependencyManager();
+          dm = (PSDependencyManager) dh.getDependencyManager();
           
           // enable dependency cache
           dm.setIsDependencyCacheEnabled(true);
@@ -200,7 +200,10 @@ public class PSValidationJob extends PSDeployJob
           
           PSValidationCtx valCtx = new PSValidationCtx(jobHandle, descriptor,
              idMap);
-          Iterator pkgs = importList.iterator();
+          valCtx.setValidateAncestors(
+                  descriptor.isAncestorValidationEnabled());
+
+         Iterator pkgs = descriptor.getImportPackageList().iterator();
           while (pkgs.hasNext() && !isCancelled())
           {
              PSImportPackage pkg = (PSImportPackage)pkgs.next();
@@ -214,6 +217,34 @@ public class PSValidationJob extends PSDeployJob
              pkg.setValidationResults(dv.validate());            
           }
 
+         if (!isCancelled())
+         {
+            // write out the desciptor with the results using the archive ref
+            Document doc = PSXmlDocumentBuilder.createXmlDocument();
+            PSXmlDocumentBuilder.replaceRoot(doc, descriptor.toXml(doc));
+
+            File resultsFile = new File(
+               PSDeploymentHandler.VALIDATION_RESULTS_DIR, info.getArchiveRef()
+               + ".xml");
+            resultsFile.getParentFile().mkdirs();
+            resultsFile.deleteOnExit();
+
+            try (FileOutputStream out = new FileOutputStream(resultsFile))
+            {
+               PSXmlDocumentBuilder.write(doc, out);
+            }
+
+            setStatus(100);
+            setStatusMessage(bundle.getString("completed"));
+         }
+      }
+      catch (Exception ex)
+      {
+         // getLocalizedMessage often returns empty string
+         setStatusMessage("error: " + ex.toString());
+         setStatus(-1);
+         LogManager.getLogger(getClass()).error("Error validating archive",
+            ex);
        }
        finally
        {
@@ -224,6 +255,8 @@ public class PSValidationJob extends PSDeployJob
           // disable dependency cache before releasing job lock
           if (dm != null)
              dm.setIsDependencyCacheEnabled(false);
+
+         setCompleted();
        }
    }
    

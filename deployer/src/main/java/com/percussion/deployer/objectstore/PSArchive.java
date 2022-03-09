@@ -24,8 +24,8 @@
 
 package com.percussion.deployer.objectstore;
 
-import com.percussion.deployer.error.IPSDeploymentErrors;
-import com.percussion.deployer.error.PSDeployException;
+import com.percussion.error.IPSDeploymentErrors;
+import com.percussion.error.PSDeployException;
 import com.percussion.error.PSExceptionUtils;
 import com.percussion.util.PSArchiveFiles;
 import com.percussion.util.PSPurgableTempFile;

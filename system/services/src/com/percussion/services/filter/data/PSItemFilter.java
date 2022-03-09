@@ -27,26 +27,54 @@ import com.percussion.services.catalog.IPSCatalogSummary;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.data.IPSCloneTuner;
 import com.percussion.services.error.PSNotFoundException;
-import com.percussion.services.filter.*;
+import com.percussion.services.filter.IPSFilterItem;
+import com.percussion.services.filter.IPSFilterService;
+import com.percussion.services.filter.IPSFilterServiceErrors;
+import com.percussion.services.filter.IPSItemFilter;
+import com.percussion.services.filter.IPSItemFilterRuleDef;
+import com.percussion.services.filter.PSFilterException;
+import com.percussion.services.filter.PSFilterServiceLocator;
 import com.percussion.services.guidmgr.PSGuidHelper;
-import com.percussion.services.guidmgr.PSGuidUtils;
+import com.percussion.services.guidmgr.data.PSGuid;
 import com.percussion.services.utils.xml.PSXmlSerializationHelper;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.xml.IPSXmlSerialization;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.hibernate.annotations.*;
-import org.hibernate.annotations.Cache;
-import org.xml.sax.SAXException;
-import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
-import javax.persistence.*;
+import org.apache.logging.log4j.Logger;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.NaturalId;
+import org.hibernate.annotations.NaturalIdCache;
+import org.hibernate.annotations.SelectBeforeUpdate;
+import org.xml.sax.SAXException;
+
+import javax.persistence.Basic;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Version;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 /**
  * Implementation for an item filter, this is a pure mapping object to bring
@@ -95,6 +123,7 @@ public class PSItemFilter implements IPSItemFilter, IPSCatalogSummary,
     */
    @Basic
    @NaturalId(mutable = true)
+   @Column(name = "NAME", unique=true)
    private String name;
 
    /**
@@ -137,19 +166,33 @@ public class PSItemFilter implements IPSItemFilter, IPSCatalogSummary,
 
    /**
     * Ctor allocates a new id for the new item filter
-    * 
+    *
     * @param name name of the filter, never <code>null</code> or empty
     * @param description the description, optional
     */
-   public PSItemFilter(String name, String description) {
+   public PSItemFilter(String name, String description,IPSGuid ipsGuid) {
       if (StringUtils.isBlank(name))
       {
          throw new IllegalArgumentException("name may not be null or empty");
       }
       this.name = name;
       this.description = description;
-      this.filter_id = PSGuidHelper.generateNext(PSTypeEnum.ITEM_FILTER)
-            .longValue();
+      if(ipsGuid == null) {
+         this.filter_id = PSGuidHelper.generateNext(PSTypeEnum.ITEM_FILTER)
+                 .longValue();
+      }else{
+         this.filter_id = ipsGuid.longValue();
+      }
+   }
+
+   /**
+    * Ctor allocates a new id for the new item filter
+    * 
+    * @param name name of the filter, never <code>null</code> or empty
+    * @param description the description, optional
+    */
+   public PSItemFilter(String name, String description) {
+      this(name,description,null);
    }
    
    /**
@@ -328,7 +371,7 @@ public class PSItemFilter implements IPSItemFilter, IPSCatalogSummary,
     */
    public IPSGuid getGUID()
    {
-      return PSGuidUtils.makeGuid(filter_id, PSTypeEnum.ITEM_FILTER);
+      return new PSGuid(PSTypeEnum.ITEM_FILTER,filter_id);
    }
    
    /**

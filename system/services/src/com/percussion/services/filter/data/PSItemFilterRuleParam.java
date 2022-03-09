@@ -29,7 +29,14 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Version;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -90,6 +97,12 @@ public class PSItemFilterRuleParam implements Serializable
    public PSItemFilterRuleParam()
    {
       id = PSGuidHelper.generateNextLong(PSTypeEnum.INTERNAL);
+   }
+
+   public PSItemFilterRuleParam(boolean clientSide)
+   {
+      if(!clientSide)
+         id = PSGuidHelper.generateNextLong(PSTypeEnum.INTERNAL);
    }
    
    /**

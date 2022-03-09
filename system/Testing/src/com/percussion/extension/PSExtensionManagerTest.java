@@ -25,11 +25,15 @@ package com.percussion.extension;
 
 import com.percussion.content.PSMimeContentAdapter;
 import com.percussion.design.objectstore.PSNotFoundException;
-import com.percussion.server.PSRequest;
 import com.percussion.testing.IPSServerBasedJunitTest;
-import com.percussion.util.PSIteratorUtils;
+import com.percussion.utils.collections.PSIteratorUtils;
 import com.percussion.utils.testing.IntegrationTest;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.junit.AfterClass;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -43,13 +47,6 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.Properties;
-
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;

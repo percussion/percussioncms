@@ -26,8 +26,6 @@
 package com.percussion.deployer.server;
 
 import com.percussion.cms.IPSConstants;
-import com.percussion.deployer.error.IPSDeploymentErrors;
-import com.percussion.deployer.error.PSDeployException;
 import com.percussion.deployer.jexl.PSDeployJexlUtils;
 import com.percussion.deployer.objectstore.PSApplicationIDTypeMapping;
 import com.percussion.deployer.objectstore.PSDeployComponentUtils;
@@ -94,6 +92,8 @@ import com.percussion.design.objectstore.PSUIDefinition;
 import com.percussion.design.objectstore.PSUISet;
 import com.percussion.design.objectstore.PSUrlRequest;
 import com.percussion.design.objectstore.PSVisibilityRules;
+import com.percussion.error.IPSDeploymentErrors;
+import com.percussion.error.PSDeployException;
 import com.percussion.tablefactory.PSJdbcColumnData;
 import com.percussion.tablefactory.PSJdbcRowData;
 import com.percussion.util.PSCollection;
@@ -2666,7 +2666,10 @@ public class PSAppTransformer
       
       if (bindings == null)
          throw new IllegalArgumentException("bindings may not be null");
-      
+
+      // TODO: msm - Removed visitor changed to jexl3
+      // return;
+
       Iterator<PSJexlBinding> entries = bindings.iterator();
       while (entries.hasNext())
       {
@@ -2680,7 +2683,7 @@ public class PSAppTransformer
             PSDeployJexlUtils.getIdsFromBinding(entry.getExpression());
          
          // no ids in this binding? go to the next one
-         if (ids.size() == 0)
+         if (ids.isEmpty())
             continue;
          
          List<PSParam> paramList = new ArrayList<>(ids.size());
@@ -2744,7 +2747,6 @@ public class PSAppTransformer
  *        expression $rx.db.getFoo("301", "356, "301") . . . 
  * @param bCtx the binding context never <code>null</code>
  */
-   @SuppressWarnings("unchecked")
    public static void checkJexlBindingParam(
          List<PSApplicationIDTypeMapping> mappings, PSParam param, int paramIx,
          int occur, PSBindingIdContext bCtx)

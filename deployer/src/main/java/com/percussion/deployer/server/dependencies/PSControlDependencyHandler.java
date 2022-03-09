@@ -24,8 +24,6 @@
  
 package com.percussion.deployer.server.dependencies;
 
-import com.percussion.deployer.error.IPSDeploymentErrors;
-import com.percussion.deployer.error.PSDeployException;
 import com.percussion.deployer.objectstore.PSDependency;
 import com.percussion.deployer.server.PSArchiveHandler;
 import com.percussion.deployer.server.PSDependencyDef;
@@ -37,6 +35,8 @@ import com.percussion.design.objectstore.PSControlParameter;
 import com.percussion.design.objectstore.PSExtensionCall;
 import com.percussion.design.objectstore.PSFileDescriptor;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
+import com.percussion.error.IPSDeploymentErrors;
+import com.percussion.error.PSDeployException;
 import com.percussion.security.PSSecurityToken;
 import com.percussion.server.PSCustomControlManager;
 import com.percussion.services.error.PSNotFoundException;
@@ -100,10 +100,10 @@ public class PSControlDependencyHandler extends PSAppObjectDependencyHandler
             id = PSCustomControlManager.CUSTOM_CONTROLS_DIR + '/'
                   + ctrlFile.getName();
          }
-         else
+
+         if (id == null)
          {
-            throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR,
-                  "Missing control file for dependency " + depId);
+            id = USER_CONTROL_PATH;
          }
       }
          
@@ -133,6 +133,10 @@ public class PSControlDependencyHandler extends PSAppObjectDependencyHandler
       else
       {
          meta = ms_ctrlMgr.getControl(depId);
+         if (meta == null)
+         {
+            meta = getRxControl(tok, depId);
+         }
       }
       
       if (meta != null)
@@ -346,6 +350,9 @@ public class PSControlDependencyHandler extends PSAppObjectDependencyHandler
       else
       {
          controls = ms_ctrlMgr.getAllControls();
+
+         // add rx controls
+         controls.addAll(getControls(getRxControlsDoc(tok)));
       }
                
       for (PSControlMeta meta : controls)
@@ -579,6 +586,11 @@ public class PSControlDependencyHandler extends PSAppObjectDependencyHandler
     */
    private static final File SYS_CONTROL_FILE = new File("/stylesheets",
          "sys_Templates.xsl");
+   /**
+    * Constant for app file reference to user control library stylesheet
+    */
+   private static final String USER_CONTROL_PATH =
+         USER_CONTROL_APP + "/stylesheets/rx_Templates.xsl";
 
    /**
     * Constant for app file reference to system control library stylesheet

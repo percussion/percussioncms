@@ -28,7 +28,7 @@ import com.percussion.data.PSMetaDataCache;
 import com.percussion.extension.PSDatabaseFunctionDef;
 import com.percussion.extension.PSDatabaseFunctionManager;
 import com.percussion.server.PSConsole;
-import com.percussion.util.PSIteratorUtils;
+import com.percussion.utils.collections.PSIteratorUtils;
 import com.percussion.utils.jdbc.PSConnectionHelper;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;

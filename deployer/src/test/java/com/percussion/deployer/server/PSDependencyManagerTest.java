@@ -79,7 +79,7 @@ public class PSDependencyManagerTest
       
       PSDependencyManager.setConfigDir(RESOURCE_D0C_DIR);
       
-      PSDependencyManager depMgr = new PSDependencyManager();
+      PSDependencyManager depMgr =  PSDependencyManager.INSTANCE;
       depMgr = PSDependencyManager.getInstance();
 
       return depMgr;

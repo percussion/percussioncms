@@ -26,9 +26,9 @@ package com.percussion.deployer.catalog;
 
 import com.percussion.conn.PSServerException;
 import com.percussion.deployer.client.PSDeploymentServerConnection;
-import com.percussion.deployer.error.IPSDeploymentErrors;
-import com.percussion.deployer.error.PSDeployException;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
+import com.percussion.error.IPSDeploymentErrors;
+import com.percussion.error.PSDeployException;
 import com.percussion.error.PSExceptionUtils;
 import com.percussion.security.PSAuthenticationFailedException;
 import com.percussion.security.PSAuthorizationException;

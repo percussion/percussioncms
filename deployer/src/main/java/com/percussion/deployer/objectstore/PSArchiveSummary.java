@@ -26,6 +26,7 @@ package com.percussion.deployer.objectstore;
 
 import com.percussion.design.objectstore.IPSObjectStoreErrors;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
+import com.percussion.error.PSDeployException;
 import com.percussion.util.PSDateFormatISO8601;
 import com.percussion.xml.PSXmlTreeWalker;
 import org.w3c.dom.Document;
@@ -80,15 +81,14 @@ public class PSArchiveSummary  implements IPSDeployComponent
    /**
     * Create this object from its XML representation
     *
-    * @param source The source element.  See {@link #toXml(Document)} for
+    * @param src The source element.  See {@link #toXml(Document)} for
     * the expected format.  May not be <code>null</code>.
     *
     * @throws IllegalArgumentException If <code>source</code> is
     * <code>null</code>.
     * @throws PSUnknownNodeTypeException <code>source</code> is malformed.
     */
-   public PSArchiveSummary(Element src) throws PSUnknownNodeTypeException
-   {
+   public PSArchiveSummary(Element src) throws PSUnknownNodeTypeException, PSDeployException {
       if (src == null)
          throw new IllegalArgumentException("src may not be null");
 
@@ -254,8 +254,7 @@ public class PSArchiveSummary  implements IPSDeployComponent
     * {@link IPSDeployComponent#fromXml(Element)} for more info on method
     * signature.
     */
-   public void fromXml(Element sourceNode) throws PSUnknownNodeTypeException
-   {
+   public void fromXml(Element sourceNode) throws PSUnknownNodeTypeException, PSDeployException {
       if (sourceNode == null)
          throw new IllegalArgumentException("sourceNode should not be null");
 

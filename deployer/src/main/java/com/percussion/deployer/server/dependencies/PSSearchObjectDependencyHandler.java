@@ -33,20 +33,25 @@ import com.percussion.cms.objectstore.PSKey;
 import com.percussion.cms.objectstore.PSSearch;
 import com.percussion.cms.objectstore.PSSearchField;
 import com.percussion.cms.objectstore.PSSearchMultiProperty;
-import com.percussion.deployer.error.IPSDeploymentErrors;
-import com.percussion.deployer.error.PSDeployException;
+import com.percussion.deployer.client.IPSDeployConstants;
+import com.percussion.deployer.objectstore.PSApplicationIDTypeMapping;
+import com.percussion.deployer.objectstore.PSApplicationIDTypes;
 import com.percussion.deployer.objectstore.PSDependency;
 import com.percussion.deployer.objectstore.PSDependencyFile;
 import com.percussion.deployer.objectstore.PSDeployComponentUtils;
 import com.percussion.deployer.objectstore.PSIdMap;
 import com.percussion.deployer.objectstore.PSIdMapping;
 import com.percussion.deployer.objectstore.PSTransactionSummary;
+import com.percussion.deployer.server.IPSIdTypeHandler;
+import com.percussion.deployer.server.PSAppTransformer;
 import com.percussion.deployer.server.PSArchiveHandler;
 import com.percussion.deployer.server.PSDependencyDef;
 import com.percussion.deployer.server.PSDependencyMap;
 import com.percussion.deployer.server.PSImportCtx;
 import com.percussion.design.objectstore.PSProperty;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
+import com.percussion.error.IPSDeploymentErrors;
+import com.percussion.error.PSDeployException;
 import com.percussion.security.PSSecurityToken;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.error.PSNotFoundException;
@@ -65,7 +70,7 @@ import java.util.Set;
  * Base class to handle packaging and deploying search objects.
  */
 public abstract class PSSearchObjectDependencyHandler
-   extends PSCmsObjectDependencyHandler
+   extends PSCmsObjectDependencyHandler  implements IPSIdTypeHandler
 {
    /**
     * Construct a dependency handler.
@@ -94,85 +99,84 @@ public abstract class PSSearchObjectDependencyHandler
       if (dep == null)
          throw new IllegalArgumentException("dep may not be null");
 
-      if (! dep.getObjectType().equals(getType()))
+      if (!dep.getObjectType().equals(getType()))
          throw new IllegalArgumentException("dep wrong type");
 
       Set<PSDependency> childDeps = new HashSet<>();
       PSComponentProcessorProxy proc = getComponentProcessor(tok);
       PSSearch search = loadSearch(proc, dep.getDependencyId());
-      if (search == null)
-      {
+      if (search == null) {
          Object[] args = {dep.getDependencyId(), dep.getObjectTypeName(),
-            dep.getDisplayName()};
+                 dep.getDisplayName()};
          throw new PSDeployException(IPSDeploymentErrors.DEP_OBJECT_NOT_FOUND,
-            args);
+                 args);
       }
 
       // get default display format
-      try
-      {
+      try {
          Element[] dfEls = proc.load(PSDisplayFormat.getComponentType(
-            PSDisplayFormat.class), new PSKey[] {PSDisplayFormat.createKey(
-               new String[] {search.getDisplayFormatId()})});
+                 PSDisplayFormat.class), new PSKey[]{PSDisplayFormat.createKey(
+                 new String[]{search.getDisplayFormatId()})});
 
-         if (dfEls.length > 0)
-         {
+         if (dfEls.length > 0) {
             PSDisplayFormat df = new PSDisplayFormat(dfEls[0]);
             PSDependencyHandler dfHandler = getDependencyHandler(
-               PSDisplayFormatDependencyHandler.DEPENDENCY_TYPE);
+                    PSDisplayFormatDependencyHandler.DEPENDENCY_TYPE);
             PSDependency dfDep = dfHandler.getDependency(tok,
-               getIdFromKey(df, df.getInternalName()));
+                    getIdFromKey(df, df.getInternalName()));
             if (dfDep != null)
                childDeps.add(dfDep);
          }
-      }
-      catch (PSCmsException e)
-      {
+      } catch (PSCmsException e) {
          throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR,
-            e.getLocalizedMessage());
-      }
-      catch (PSUnknownNodeTypeException e)
-      {
+                 e.getLocalizedMessage());
+      } catch (PSUnknownNodeTypeException e) {
          throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR,
-            e.getLocalizedMessage());
+                 e.getLocalizedMessage());
       }
 
 
       // get app
       String url = search.getUrl();
-      if (url != null && url.trim().length() > 0)
-      {
+      if (url != null && url.trim().length() > 0) {
          String appName = PSDeployComponentUtils.getAppName(url);
-         if (appName != null && appName.trim().length() > 0)
-         {
+         if (appName != null && appName.trim().length() > 0) {
             PSDependencyHandler appHandler = getDependencyHandler(
-               PSApplicationDependencyHandler.DEPENDENCY_TYPE);
+                    PSApplicationDependencyHandler.DEPENDENCY_TYPE);
             PSDependency appDep = appHandler.getDependency(tok, appName);
-            if (appDep != null)
-            {
-               if (appDep.getDependencyType() == PSDependency.TYPE_SHARED)
-               {
+            if (appDep != null) {
+               if (appDep.getDependencyType() == PSDependency.TYPE_SHARED) {
                   appDep.setIsAssociation(false);
                }
-               childDeps.add(appDep);               
+               childDeps.add(appDep);
             }
+
          }
+
       }
+         // get allowed communities
+         PSDependencyHandler commHandler = getDependencyHandler(
+                 PSCommunityDependencyHandler.DEPENDENCY_TYPE);
+         PSSearchMultiProperty commProp = getCommunityProperty(search);
+         if (commProp != null)
+            childDeps.addAll(getDepsFromMultiValuedProperty(tok, commProp,
+                    commHandler));
 
-      // Acl deps
-      if ( getType().compareTo(PSViewDefDependencyHandler.DEPENDENCY_TYPE) == 0)
-         addAclDependency(tok, PSTypeEnum.VIEW_DEF, dep, childDeps);
-      else
-         addAclDependency(tok, PSTypeEnum.SEARCH_DEF, dep, childDeps);
-      
-      // get system field value dependencies
-      childDeps.addAll(getSystemFieldDeps(tok, search));
+         // Acl deps
+         if (getType().compareTo(PSViewDefDependencyHandler.DEPENDENCY_TYPE) == 0)
+            addAclDependency(tok, PSTypeEnum.VIEW_DEF, dep, childDeps);
+         else
+            addAclDependency(tok, PSTypeEnum.SEARCH_DEF, dep, childDeps);
 
-      // get id type dependencies from url params
-      childDeps.addAll(getIdTypeDependencies(tok, dep));
+         // get system field value dependencies
+         childDeps.addAll(getSystemFieldDeps(tok, search));
 
-      return childDeps.iterator();
-    }
+         // get id type dependencies from url params
+         childDeps.addAll(getIdTypeDependencies(tok, dep));
+
+         return childDeps.iterator();
+
+   }
 
    // see base class
    public Iterator<PSDependency> getDependencies(PSSecurityToken tok)
@@ -390,7 +394,137 @@ public abstract class PSSearchObjectDependencyHandler
          throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR,
             e.getLocalizedMessage());
       }
-       
+   }
+
+   //see IPSIdTypeHandler interface
+   @SuppressWarnings({"unchecked","static-access"})
+   public PSApplicationIDTypes getIdTypes(PSSecurityToken tok, PSDependency dep)
+      throws PSDeployException
+   {
+      if (tok == null)
+         throw new IllegalArgumentException("tok may not be null");
+
+      if (dep == null)
+         throw new IllegalArgumentException("dep may not be null");
+
+      if (!dep.getObjectType().equals(getType()))
+         throw new IllegalArgumentException("dep wrong type");
+
+      PSApplicationIDTypes idTypes = new PSApplicationIDTypes(dep);
+
+      PSSearch search = loadSearch(getComponentProcessor(tok), dep.getDependencyId());
+      if (search == null)
+      {
+         Object[] args = {dep.getDependencyId(), dep.getObjectTypeName(),
+            dep.getDisplayName()};
+         throw new PSDeployException(IPSDeploymentErrors.DEP_OBJECT_NOT_FOUND,
+            args);
+      }
+
+
+      // convert to PSProperties so we can use an existing app transformer
+      // method
+      String url = search.getUrl();
+      if (url != null && url.trim().length() > 0)
+      {
+         List mappings = new ArrayList();
+         String reqName = dep.getDisplayName();
+         List propList = mapToProps(PSSearch.parseParameters(url, null));
+
+         PSAppTransformer.checkProperties(mappings, propList.iterator(), null);
+
+         idTypes.addMappings(reqName,
+            IPSDeployConstants.ID_TYPE_ELEMENT_USER_PROPERTIES,
+               mappings.iterator());
+      }
+
+      return idTypes;
+   }
+
+   //see IPSIdTypeHandler interface
+   @SuppressWarnings("unchecked")
+   public void transformIds(Object object, PSApplicationIDTypes idTypes,
+      PSIdMap idMap) throws PSDeployException
+   {
+      if (object == null)
+         throw new IllegalArgumentException("object may not be null");
+
+      if (idTypes == null)
+         throw new IllegalArgumentException("idTypes may not be null");
+
+      if (idMap == null)
+         throw new IllegalArgumentException("idMap may not be null");
+
+      if (!(object instanceof PSSearch))
+      {
+         throw new IllegalArgumentException("invalid object type");
+      }
+
+      PSSearch search = (PSSearch)object;
+
+      // walk id types and perform any transforms
+      Iterator resources = idTypes.getResourceList(false);
+      while (resources.hasNext())
+      {
+         String resource = (String)resources.next();
+         Iterator elements = idTypes.getElementList(resource, false);
+         while (elements.hasNext())
+         {
+            String element = (String)elements.next();
+            Iterator mappings = idTypes.getIdTypeMappings(
+                  resource, element, false);
+            while (mappings.hasNext())
+            {
+
+               PSApplicationIDTypeMapping mapping =
+                  (PSApplicationIDTypeMapping)mappings.next();
+
+               if (mapping.getType().equals(
+                  PSApplicationIDTypeMapping.TYPE_NONE))
+               {
+                  continue;
+               }
+
+               if (element.equals(
+                  IPSDeployConstants.ID_TYPE_ELEMENT_USER_PROPERTIES))
+               {
+                  String url = search.getUrl();
+                  if (url == null || url.trim().length() == 0)
+                     continue;
+
+                  // convert to PSProperties so we can use an existing app
+                  // transformer method
+                  List propList = mapToProps(PSSearch.parseParameters(
+                     search.getUrl(), null));
+
+                  if (propList.isEmpty())
+                     continue;
+
+                  // make any transformations required
+                  PSAppTransformer.transformProperties(propList.iterator(),
+                     mapping, idMap);
+
+                  // now replace the url with transformed properties
+                  int paramsPos = url.indexOf('?');
+                  if (paramsPos != -1)
+                     url = url.substring(0, paramsPos);
+
+                  char sep = '?';
+                  Iterator props = propList.iterator();
+                  while (props.hasNext())
+                  {
+                     PSProperty prop = (PSProperty)props.next();
+                     url += (sep + prop.getName() + '=' + prop.getValue());
+
+                     if (sep == '?')
+                        sep = '&';
+                  }
+
+                  search.setUrl(url);
+               }
+            }
+         }
+      }
 }
 
    /**
@@ -889,6 +1023,9 @@ public abstract class PSSearchObjectDependencyHandler
          PSCommunityDependencyHandler.DEPENDENCY_TYPE);
       ms_sysTransformDepFieldTypes.put(IPSHtmlParameters.SYS_COMMUNITYID,
          PSCommunityDependencyHandler.DEPENDENCY_TYPE);
+
+      ms_sysChildDepFieldTypes.put(IPSHtmlParameters.SYS_LANG,
+         PSLocaleDefDependencyHandler.DEPENDENCY_TYPE);
 
       ms_sysChildDepFieldTypes.put(IPSHtmlParameters.SYS_WORKFLOWID,
          PSWorkflowDependencyHandler.DEPENDENCY_TYPE);

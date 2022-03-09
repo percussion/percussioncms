@@ -24,13 +24,13 @@
 package com.percussion.deployer.server;
 
 import com.percussion.cms.objectstore.PSItemDefinition;
-import com.percussion.deployer.error.IPSDeploymentErrors;
-import com.percussion.deployer.error.PSDeployException;
 import com.percussion.design.objectstore.PSContentEditorMapper;
 import com.percussion.design.objectstore.PSContentEditorPipe;
 import com.percussion.design.objectstore.PSFieldSet;
 import com.percussion.design.objectstore.PSTableRef;
 import com.percussion.design.objectstore.PSTableSet;
+import com.percussion.error.IPSDeploymentErrors;
+import com.percussion.error.PSDeployException;
 import com.percussion.tablefactory.PSJdbcTableData;
 import com.percussion.tablefactory.PSJdbcTableFactoryException;
 import com.percussion.xml.PSXmlDocumentBuilder;

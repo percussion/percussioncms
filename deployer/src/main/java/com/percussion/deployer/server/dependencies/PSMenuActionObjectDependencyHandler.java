@@ -26,17 +26,26 @@ package com.percussion.deployer.server.dependencies;
 
 import com.percussion.cms.PSCmsException;
 import com.percussion.cms.objectstore.PSAction;
+import com.percussion.cms.objectstore.PSActionParameter;
+import com.percussion.cms.objectstore.PSActionVisibilityContext;
+import com.percussion.cms.objectstore.PSActionVisibilityContexts;
 import com.percussion.cms.objectstore.PSComponentProcessorProxy;
 import com.percussion.cms.objectstore.PSKey;
 import com.percussion.cms.objectstore.PSMenuChild;
-import com.percussion.deployer.error.IPSDeploymentErrors;
-import com.percussion.deployer.error.PSDeployException;
+import com.percussion.deployer.client.IPSDeployConstants;
+import com.percussion.deployer.objectstore.PSApplicationIDTypeMapping;
+import com.percussion.deployer.objectstore.PSApplicationIDTypes;
 import com.percussion.deployer.objectstore.PSDependency;
 import com.percussion.deployer.objectstore.PSDeployComponentUtils;
 import com.percussion.deployer.objectstore.PSIdMap;
+import com.percussion.deployer.server.PSAppTransformer;
 import com.percussion.deployer.server.PSDependencyDef;
 import com.percussion.deployer.server.PSDependencyMap;
+import com.percussion.design.objectstore.PSParam;
+import com.percussion.design.objectstore.PSTextLiteral;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
+import com.percussion.error.IPSDeploymentErrors;
+import com.percussion.error.PSDeployException;
 import com.percussion.security.PSSecurityToken;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.error.PSNotFoundException;
@@ -83,7 +92,7 @@ public abstract class PSMenuActionObjectDependencyHandler
       if (dep == null)
          throw new IllegalArgumentException("dep may not be null");
 
-      if (! dep.getObjectType().equals(getType()))
+      if (!dep.getObjectType().equals(getType()))
          throw new IllegalArgumentException("dep wrong type");
 
       Set<PSDependency> childDeps = new HashSet<>();
@@ -96,92 +105,106 @@ public abstract class PSMenuActionObjectDependencyHandler
 
       // get all parent actions and add them as dependencies
       Iterator<PSAction> actions = loadActions(proc, false, actionId);
-      while (actions.hasNext())
-      {
+      while (actions.hasNext()) {
          PSAction parent = actions.next();
          String name = parent.getName();
          String childType =
-            PSMenuActionCategoryDependencyHandler.DEPENDENCY_TYPE;
+                 PSMenuActionCategoryDependencyHandler.DEPENDENCY_TYPE;
 
          PSDependencyDef def;
-         if (getType().equals(childType))
-         {
-            def = m_def;           
-         }
-         else
-         {
+         if (getType().equals(childType)) {
+            def = m_def;
+         } else {
             PSDependencyHandler childHandler = getDependencyHandler(
-               childType);
+                    childType);
             // this is okay since we are the base class for this handler
             def = childHandler.m_def;
          }
-         
+
          PSDependency childDep = createDependency(def, getIdFromKey(parent,
-            name), name);
+                 name), name);
          childDep.setDependencyType(PSDependency.TYPE_LOCAL);
          childDeps.add(childDep);
 
-     }
+      }
 
       // now get action's dependencies
 
       // first, get the application dependencies
       PSDependencyHandler appDepHandler = getDependencyHandler(
-         PSApplicationDependencyHandler.DEPENDENCY_TYPE);
+              PSApplicationDependencyHandler.DEPENDENCY_TYPE);
       String url = action.getURL();
       String appName = null;
       if (url.trim().length() > 0)
          appName = PSDeployComponentUtils.getAppName(url);
-      if (appName != null)
-      {
+      if (appName != null) {
          PSDependency appDep = appDepHandler.getDependency(tok,
-            appName);
-         if (appDep != null)
-         {
-            if (appDep.getDependencyType() == PSDependency.TYPE_SHARED)
-            {
+                 appName);
+         if (appDep != null) {
+            if (appDep.getDependencyType() == PSDependency.TYPE_SHARED) {
                appDep.setIsAssociation(false);
             }
-            childDeps.add(appDep);            
-         }
-      }
-
-      // get icon url dep
-      String iconPath = action.getProperties().getProperty(
-         action.PROP_SMALL_ICON);
-      if (iconPath != null && iconPath.trim().length() > 0)
-      {
-         PSDependency iconDep = null;
-
-         // first try as file dep
-         PSDependencyHandler fileHandler = getDependencyHandler(
-            PSSupportFileDependencyHandler.DEPENDENCY_TYPE);
-         iconDep = fileHandler.getDependency(tok, iconPath);
-         if (iconDep == null)
-         {
-            String iconAppName = PSDeployComponentUtils.getAppName(iconPath);
-            if (iconAppName != null)
-               iconDep = appDepHandler.getDependency(tok, iconAppName);
+            childDeps.add(appDep);
          }
 
-         if (iconDep != null)
-         {
-            if (iconDep.getDependencyType() == PSDependency.TYPE_SHARED)
-            {
-               iconDep.setIsAssociation(false);
+         // check community and content type contexts for dependencies
+         PSActionVisibilityContexts visContexts = action.getVisibilityContexts();
+         PSActionVisibilityContext comCtx = visContexts.getContext(
+                 PSActionVisibilityContext.VIS_CONTEXT_COMMUNITY);
+         if (comCtx != null) {
+            childDeps.addAll(
+                    getDepsFromMultiValuedProperty(tok, comCtx, getDependencyHandler(
+                            PSCommunityDependencyHandler.DEPENDENCY_TYPE)));
+         }
+
+         PSActionVisibilityContext ctCtx = visContexts.getContext(
+                 PSActionVisibilityContext.VIS_CONTEXT_CONTENT_TYPE);
+         if (ctCtx != null) {
+            childDeps.addAll(
+                    getDepsFromMultiValuedProperty(tok, ctCtx, getDependencyHandler(
+                            PSCEDependencyHandler.DEPENDENCY_TYPE)));
+         }
+
+         PSActionVisibilityContext wfCtx = visContexts.getContext(
+                 PSActionVisibilityContext.VIS_CONTEXT_WORKFLOWS_TYPE);
+         if (wfCtx != null) {
+            childDeps.addAll(
+                    getDepsFromMultiValuedProperty(tok, wfCtx, getDependencyHandler(
+                            PSWorkflowDependencyHandler.DEPENDENCY_TYPE)));
+         }
+
+         // get icon url dep
+         String iconPath = action.getProperties().getProperty(
+                 action.PROP_SMALL_ICON);
+         if (iconPath != null && iconPath.trim().length() > 0) {
+            PSDependency iconDep = null;
+
+            // first try as file dep
+            PSDependencyHandler fileHandler = getDependencyHandler(
+                    PSSupportFileDependencyHandler.DEPENDENCY_TYPE);
+            iconDep = fileHandler.getDependency(tok, iconPath);
+            if (iconDep == null) {
+               String iconAppName = PSDeployComponentUtils.getAppName(iconPath);
+               if (iconAppName != null)
+                  iconDep = appDepHandler.getDependency(tok, iconAppName);
             }
-            childDeps.add(iconDep);            
+
+            if (iconDep != null) {
+               if (iconDep.getDependencyType() == PSDependency.TYPE_SHARED) {
+                  iconDep.setIsAssociation(false);
+               }
+               childDeps.add(iconDep);
+            }
          }
       }
+         // add idtype dependencies
+         childDeps.addAll(getIdTypeDependencies(tok, dep));
 
-      // add idtype dependencies
-      childDeps.addAll(getIdTypeDependencies(tok, dep));
+         // Add ACL dependency
+         addAclDependency(tok, PSTypeEnum.ACTION, dep, childDeps);
 
-      // Add ACL dependency 
-      addAclDependency(tok, PSTypeEnum.ACTION, dep, childDeps);         
-      
-      return childDeps.iterator();
-    }
+         return childDeps.iterator();
+      }
 
    // see base class
    @Override
@@ -263,6 +286,111 @@ public abstract class PSMenuActionObjectDependencyHandler
       // create a dummy object
       PSAction action = new PSAction("dummy", "dummy");
       reserveNewId(dep, idMap, action);
+   }
+
+   //see IPSIdTypeHandler interface
+   public PSApplicationIDTypes getIdTypes(PSSecurityToken tok, PSDependency dep)
+      throws PSDeployException
+   {
+      if (tok == null)
+         throw new IllegalArgumentException("tok may not be null");
+
+      if (dep == null)
+         throw new IllegalArgumentException("dep may not be null");
+
+      if (!dep.getObjectType().equals(getType()))
+         throw new IllegalArgumentException("dep wrong type");
+
+      PSApplicationIDTypes idTypes = new PSApplicationIDTypes(dep);
+
+      PSAction action = loadAction(getComponentProcessor(tok), dep, isLeaf());
+
+      List mappings = new ArrayList();
+      String reqName = "URL";
+
+      // User parameters
+      Iterator actionParams = action.getParameters().iterator();
+      // convert to PSParam to leverage existing code - don't worry about
+      // automatic params, as the value won't be a number
+      while (actionParams.hasNext())
+      {
+         PSActionParameter actionParam = (PSActionParameter)actionParams.next();
+         PSParam param = new PSParam(actionParam.getName(), new PSTextLiteral(
+            actionParam.getValue()));
+
+         PSAppTransformer.checkParam(mappings, param, null);
+      }
+
+      idTypes.addMappings(reqName,
+         IPSDeployConstants.ID_TYPE_ELEMENT_URL_PARAMS,
+            mappings.iterator());
+
+      return idTypes;
+   }
+
+   //see IPSIdTypeHandler interface
+   public void transformIds(Object object, PSApplicationIDTypes idTypes,
+      PSIdMap idMap) throws PSDeployException
+   {
+      if (object == null)
+         throw new IllegalArgumentException("object may not be null");
+
+      if (idTypes == null)
+         throw new IllegalArgumentException("idTypes may not be null");
+
+      if (idMap == null)
+         throw new IllegalArgumentException("idMap may not be null");
+
+      if (!(object instanceof PSAction))
+      {
+         throw new IllegalArgumentException("invalid object type");
+      }
+
+      PSAction action = (PSAction)object;
+
+      // walk id types and perform any transforms
+      Iterator resources = idTypes.getResourceList(false);
+      while (resources.hasNext())
+      {
+         String resource = (String)resources.next();
+         Iterator elements = idTypes.getElementList(resource, false);
+         while (elements.hasNext())
+         {
+            String element = (String)elements.next();
+            Iterator mappings = idTypes.getIdTypeMappings(
+                  resource, element, false);
+            while (mappings.hasNext())
+            {
+
+               PSApplicationIDTypeMapping mapping =
+                  (PSApplicationIDTypeMapping)mappings.next();
+
+               if (mapping.getType().equals(
+                  PSApplicationIDTypeMapping.TYPE_NONE))
+               {
+                  continue;
+               }
+
+               if (element.equals(
+                  IPSDeployConstants.ID_TYPE_ELEMENT_URL_PARAMS))
+               {
+                  // walk action params, build PSParam, call transform, then set
+                  // resulting value back on the action param
+                  Iterator actionParams = action.getParameters().iterator();
+                  while (actionParams.hasNext())
+                  {
+                     PSActionParameter actionParam =
+                        (PSActionParameter)actionParams.next();
+                     PSParam param = new PSParam(actionParam.getName(),
+                        new PSTextLiteral(actionParam.getValue()));
+
+                     PSAppTransformer.transformParam(param, mapping, idMap);
+                     actionParam.setValue(param.getValue().getValueText());
+                  }
+               }
+            }
+         }
+      }
    }
 
    /**

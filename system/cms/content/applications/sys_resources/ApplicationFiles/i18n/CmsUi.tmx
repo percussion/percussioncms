@@ -8039,10 +8039,10 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
 	    <prop type="sectionname" xml:lang="en-us">Warning</prop>
 	    <note xml:lang="en-us"></note>
 	    <tuv xml:lang="en-us">
-	        <seg>Are you sure you want to delete the \'</seg>
+	        <seg>Are you sure you want to remove the \'</seg>
 	    </tuv>
 	      <tuv xml:lang="es">
-	        <seg>¿Está seguro de que desea eliminar el \'</seg>
+	        <seg>¿Estás segura de que quieres eliminar el \'</seg>
 	    </tuv>
 	 </tu>
 	 <tu tuid="perc.ui.dashboard@Gadget">

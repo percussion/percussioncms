@@ -120,6 +120,15 @@
         template.setPersisted(false);
     }
 
+    function properCase(something){
+        const arr = something.split(" ");
+
+        for (var i = 0; i < arr.length; i++) {
+            arr[i] = arr[i].charAt(0).toUpperCase() + arr[i].slice(1);
+        }
+        return arr.join(" ");
+    }
+
     function copyTemplate(sourceTemplateId, siteId)
     {
         sourceTemplateId = sourceTemplateId.replace('perc-template-', '');
@@ -129,7 +138,8 @@
         clonedTemplate.setTemplateId(_createPseudoId());
         // strip out perc.base
         var newName = sourceTemplate.getTemplateName().replace("perc.base.", "");
-        newName = newName.replace("perc.resp.", "");
+        newName = properCase(newName.replace("perc.resp.", ""));
+
         clonedTemplate.setTemplateName(_createCopyOfName(newName, siteId));
         if(siteId != null)
         {

@@ -48,7 +48,7 @@ import com.percussion.server.PSRequest;
 import com.percussion.server.PSRequestStatistics;
 import com.percussion.server.PSResponse;
 import com.percussion.util.PSCollection;
-import com.percussion.util.PSIteratorUtils;
+import com.percussion.utils.collections.PSIteratorUtils;
 import com.percussion.xml.PSDtdAttribute;
 import com.percussion.xml.PSDtdDataElement;
 import com.percussion.xml.PSDtdElement;

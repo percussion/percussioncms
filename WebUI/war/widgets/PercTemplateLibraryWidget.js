@@ -145,6 +145,15 @@
 				return defer.promise();
 			}
 
+			function properCase(something){
+				const arr = something.split(" ");
+
+				for (var i = 0; i < arr.length; i++) {
+					arr[i] = arr[i].charAt(0).toUpperCase() + arr[i].slice(1);
+				}
+				return arr.join(" ");
+			}
+
 			function displayTemplates(loadTemplatesContext) {
 
 				loadTemplatesContext.templates.sort(function(x, y)
@@ -170,7 +179,7 @@
 					buff += '<td><button type="button" data-base-template="' + template.getTemplateName() + '" id="perc-template-' + template.getTemplateId() + '" class="template" style="display:table-cell; ">\n';
 					buff += '<img style="border:1px solid #E6E6E9" src="' + template.getImageUrl() + '" class="perc-template-thumbnail"/>\n';
 					var theName = template.getTemplateName().replace("perc.base.", "");
-					theName = theName.replace("perc.resp.", "");
+					theName = properCase(theName.replace("perc.resp.", ""));
 					buff += '<span title="' + theName + '">';
 					buff += $.PercTruncateText(theName, 22) + '</span>\n';
 					buff += '</button></td>\n';
