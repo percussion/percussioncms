@@ -203,7 +203,7 @@ public class PSSqlHelper
       }
 
       if (driver.equals(PSJdbcUtils.ODBC) ||
-               driver.equals(PSJdbcUtils.SPRINTA) ||
+               driver.equals(PSJdbcUtils.SPRINTA) || driver.equals(PSJdbcUtils.MICROSOFT_DRIVER) ||
                driver.equals(PSJdbcUtils.JTDS_DRIVER))
       {
          // SQL appears to freak out if we supply the db name
@@ -1459,13 +1459,15 @@ public class PSSqlHelper
       if ((indexName == null) || (indexName.length() == 0))
          throw new IllegalArgumentException(
             "indexName may not be null or empty");
+
+      log.info("DropIndexStatement Driver : " + driver);
             
       String sql = "DROP INDEX ";
 
       if ((owner != null) && (owner.trim().length() > 0))
          sql += owner + ".";
-      if (driver.equals(PSJdbcUtils.SPRINTA) || 
-          driver.equals(PSJdbcUtils.JTDS_DRIVER))
+     if (driver.equals(PSJdbcUtils.SPRINTA) || driver.equals(PSJdbcUtils.MICROSOFT_DRIVER) ||
+      driver.equals(PSJdbcUtils.JTDS_DRIVER))
          sql += table + ".";
       
       sql += indexName.trim();
@@ -1481,6 +1483,8 @@ public class PSSqlHelper
             sql = "ALTER TABLE " + table + " DROP INDEX " + indexName;
          }
       }
+
+      log.info("DropIndexStatement sql : " + sql);
       
       return sql;
    }

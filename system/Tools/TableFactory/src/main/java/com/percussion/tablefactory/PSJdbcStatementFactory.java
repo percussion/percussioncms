@@ -1250,7 +1250,7 @@ public class PSJdbcStatementFactory
     * Assumed not <code>null</code>.
     *
     * @param schema
-    * @param tableSchema The table possibly containing the foreign key.
+    * @param schema The table possibly containing the foreign key.
     * Assumed not <code>null</code>.
     *
     * @return The foreign key definition, or <code>null</code> if the
