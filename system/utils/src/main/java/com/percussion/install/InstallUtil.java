@@ -317,7 +317,7 @@ public class InstallUtil
       // use appropriate datatype according to backend
       String datatype = "varchar";
 
-      if (driver.equals(PSJdbcUtils.JTDS_DRIVER) || driver.equals(PSJdbcUtils.SPRINTA))
+      if (driver.equals(PSJdbcUtils.JTDS_DRIVER) || driver.equals(PSJdbcUtils.SPRINTA) || driver.equals(PSJdbcUtils.MICROSOFT_DRIVER))
          datatype = "nvarchar";
 
       String uniqueTable = "RXDUAL";
