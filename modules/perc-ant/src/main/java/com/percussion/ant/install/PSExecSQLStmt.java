@@ -27,13 +27,9 @@ package com.percussion.ant.install;
 import com.percussion.error.PSExceptionUtils;
 import com.percussion.install.InstallUtil;
 import com.percussion.install.PSLogger;
-import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
-import com.percussion.security.PSEncryptionException;
-import com.percussion.security.PSEncryptor;
 import com.percussion.tablefactory.PSJdbcDbmsDef;
 import com.percussion.tablefactory.PSJdbcTableFactoryException;
 import com.percussion.util.PSSqlHelper;
-import com.percussion.utils.io.PathUtils;
 import com.percussion.utils.jdbc.PSJdbcUtils;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.logging.log4j.LogManager;
@@ -43,7 +39,6 @@ import org.apache.tools.ant.BuildException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.Statement;
@@ -118,37 +113,16 @@ public class PSExecSQLStmt extends PSAction
       try (FileInputStream in = new FileInputStream(f)) {
          Properties props = new Properties();
          props.load(in);
-         props.setProperty(PSJdbcDbmsDef.PWD_ENCRYPTED_PROPERTY, "Y");
          PSJdbcDbmsDef dbmsDef = new PSJdbcDbmsDef(props);
          if (getRootDir() != null && !"".equals(getRootDir())) {
             InstallUtil.setRootDir(getRootDir());
          }
-         String pw = props.getProperty("PWD");
-         try {
-            pw = PSEncryptor.decryptProperty(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),f.getAbsolutePath(), "PWD", pw);
-         }catch (PSEncryptionException ps){
-            try{
-               pw = PSEncryptor.decryptWithOldKey(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),pw);
-            } catch (PSEncryptionException | java.lang.IllegalArgumentException e) {
-               pw = PSLegacyEncrypter.getInstance(
-                       PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
-               ).decrypt(pw,
-                       PSJdbcDbmsDef.getPartOneKey(), null);
-            }
-            try {
-               //Try to encrypt password with new key, if fails set decoded password
-               props.setProperty("PWD", PSEncryptor.encryptProperty(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),f.getAbsolutePath(), "PWD", pw));
-            } catch (PSEncryptionException psEncryptionException) {
-               props.setProperty("PWD", pw);
-            }
-            props.store(new FileOutputStream(f), null);
-         }
+         String pw = dbmsDef.getPassword();
          driver = dbmsDef.getDriver();
-         PSLogger.logInfo("PSExecSQLStmt got DB driver: " + driver);
-         try (Connection conn = InstallUtil.createConnection(props.getProperty("DB_DRIVER_NAME"),
-                 props.getProperty("DB_SERVER"),
-                 props.getProperty("DB_NAME"),
-                 props.getProperty("UID"),
+         try (Connection conn = InstallUtil.createConnection(dbmsDef.getDriver(),
+                 dbmsDef.getServer(),
+                 dbmsDef.getDataBase(),
+                 dbmsDef.getUserId(),
                  pw
          )) {
 

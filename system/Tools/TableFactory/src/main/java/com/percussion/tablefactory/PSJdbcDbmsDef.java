@@ -176,18 +176,20 @@ public class PSJdbcDbmsDef implements IPSJdbcDbmsDefConstants
 
       // handle possible encryption of password
       String isEncrypted = serverProps.getProperty(PWD_ENCRYPTED_PROPERTY);
-      if (isEncrypted != null && isEncrypted.equalsIgnoreCase("Y"))
-         try{
-
-            m_pw = PSEncryptor.decryptString(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),m_pw);
+      if (isEncrypted != null && isEncrypted.equalsIgnoreCase("Y")) {
+         try {
+            m_pw = PSEncryptor.decryptString(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR), m_pw);
          } catch (PSEncryptionException e) {
-            m_pw = PSLegacyEncrypter.getInstance(
-                    PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
-            ).decrypt(m_pw, PSLegacyEncrypter.getInstance(
-                    PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
-            ).getPartOneKey(),null);
+            try {
+               m_pw = PSEncryptor.decryptWithOldKey(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR), m_pw);
+            } catch (PSEncryptionException | java.lang.IllegalArgumentException ex) {
+               m_pw = PSLegacyEncrypter.getInstance(
+                       PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+               ).decrypt(m_pw,
+                       PSJdbcDbmsDef.getPartOneKey(), null);
+            }
          }
-
+      }
    }
 
    /**
