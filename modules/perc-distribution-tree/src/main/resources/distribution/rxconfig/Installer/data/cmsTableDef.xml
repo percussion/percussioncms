@@ -7432,6 +7432,11 @@
                 <size>50</size>
                 <allowsnull>yes</allowsnull>
             </column>
+            <column name="ITEM_FILE_ATTACHMENT_HASH">
+                <jdbctype>VARCHAR</jdbctype>
+                <size>256</size>
+                <allowsnull>yes</allowsnull>
+            </column>
         </row>
         <primarykey>
             <name>CONTENTID</name>
@@ -7487,6 +7492,11 @@
                 <allowsnull>yes</allowsnull>
                 <scale>0</scale>
             </column>
+            <column name="IMG1_HASH">
+                <jdbctype>VARCHAR</jdbctype>
+                <size>256</size>
+                <allowsnull>yes</allowsnull>
+            </column>
             <column name="IMG_ALT">
                 <jdbctype>VARCHAR</jdbctype>
                 <size>512</size>
@@ -7528,6 +7538,11 @@
                 <size>10</size>
                 <allowsnull>yes</allowsnull>
                 <scale>0</scale>
+            </column>
+            <column name="IMG2_HASH">
+                <jdbctype>VARCHAR</jdbctype>
+                <size>256</size>
+                <allowsnull>yes</allowsnull>
             </column>
         </row>
         <primarykey>
@@ -7683,7 +7698,7 @@
         <name>REVISIONID</name>
     </primarykey>
     </table>
-    <table allowSchemaChanges="y" alter="n" create="y" delolddata="n" isView="n" name="RXS_CT_NAVIGATIONIMAGETRIPLE">
+    <table allowSchemaChanges="y" alter="y" create="y" delolddata="n" isView="n" name="RXS_CT_NAVIGATIONIMAGETRIPLE">
         <row>
             <column action="c" limitSizeForIndex="n" name="CONTENTID">
                 <jdbctype>INTEGER</jdbctype>
@@ -7823,6 +7838,21 @@
                 <size>50</size>
                 <allowsnull>yes</allowsnull>
                 <defaultvalue/>
+            </column>
+            <column action="c" limitSizeForIndex="n" name="ACTIVEIMG_HASH">
+                <jdbctype>VARCHAR</jdbctype>
+                <size>50</size>
+                <allowsnull>yes</allowsnull>
+            </column>
+            <column action="c" limitSizeForIndex="n" name="INACTIVEIMG_HASH">
+                <jdbctype>VARCHAR</jdbctype>
+                <size>50</size>
+                <allowsnull>yes</allowsnull>
+            </column>
+            <column action="c" limitSizeForIndex="n" name="ROLLOVERIMG_HASH">
+                <jdbctype>VARCHAR</jdbctype>
+                <size>50</size>
+                <allowsnull>yes</allowsnull>
             </column>
         </row>
         <primarykey action="c">

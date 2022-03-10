@@ -104,12 +104,16 @@ public class PSMakeLasagna extends Task
          String propFilePath = m_root + File.separator +
                  "rxconfig/Installer/rxrepository.properties";
          PSProperties props = new PSProperties(propFilePath);
-         String encryptedPWDProp = props.getProperty(
-               PSJdbcDbmsDef.PWD_ENCRYPTED_PROPERTY,"N");
+         String encryptedPWDProp = props.getProperty(PSJdbcDbmsDef.PWD_ENCRYPTED_PROPERTY);
          String pwd = props.getProperty(PSJdbcDbmsDef.PWD_PROPERTY);
-         if (!StringUtils.isEmpty(pwd) && encryptedPWDProp.equalsIgnoreCase("Y"))
+         if(StringUtils.isEmpty(pwd)){
+            return;
+         }
+         String decryptPwd = "";
+         //Considering that password is encrypted in case PWD_ENCRYPTED flag is not set
+         //If user gives a plain password then PWD_ENCRYPTED needs to be set to "N"
+         if (encryptedPWDProp == null || encryptedPWDProp.equalsIgnoreCase("Y"))
          {
-            String decryptPwd = "";
              try {
                 decryptPwd = PSEncryptor.decryptProperty(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),propFilePath, PSJdbcDbmsDef.PWD_PROPERTY, pwd);
              }catch (PSEncryptionException pe) {
@@ -122,13 +126,16 @@ public class PSMakeLasagna extends Task
                 }
              }
          }
+         if(!StringUtils.isEmpty(decryptPwd)){
+            pwd = decryptPwd;
+         }
+         //Encrypt the password with new key and save.
          pwd = PSEncryptor.encryptProperty(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),propFilePath,PSJdbcDbmsDef.PWD_PROPERTY,pwd );
          props.setProperty(PSJdbcDbmsDef.PWD_PROPERTY, pwd);
          props.setProperty(PSJdbcDbmsDef.PWD_ENCRYPTED_PROPERTY, "Y");
          out = new FileOutputStream(m_root + File.separator +
          "rxconfig/Installer/rxrepository.properties");
          props.store(out, null);
-
       }
       catch (Exception e)
       {

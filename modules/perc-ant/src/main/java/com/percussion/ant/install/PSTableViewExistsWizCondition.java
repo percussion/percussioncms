@@ -26,20 +26,15 @@ package com.percussion.ant.install;
 
 import com.percussion.install.InstallUtil;
 import com.percussion.install.PSLogger;
-import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
-import com.percussion.security.PSEncryptionException;
-import com.percussion.security.PSEncryptor;
 import com.percussion.tablefactory.PSJdbcDataTypeMap;
 import com.percussion.tablefactory.PSJdbcDbmsDef;
 import com.percussion.tablefactory.PSJdbcTableFactory;
 import com.percussion.tablefactory.PSJdbcTableSchema;
-import com.percussion.utils.io.PathUtils;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.tools.ant.taskdefs.condition.Condition;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.sql.Connection;
 import java.util.Properties;
 
@@ -122,37 +117,17 @@ public class PSTableViewExistsWizCondition extends PSAction implements Condition
          try(FileInputStream in = new FileInputStream(propFile)) {
             Properties props = new Properties();
             props.load(in);
-            props.setProperty(PSJdbcDbmsDef.PWD_ENCRYPTED_PROPERTY, "Y");
             PSJdbcDbmsDef dbmsDef = new PSJdbcDbmsDef(props);
             PSJdbcDataTypeMap dataTypeMap = new PSJdbcDataTypeMap(
-                    props.getProperty("DB_BACKEND"),
-                    props.getProperty("DB_DRIVER_NAME"), null);
+                    dbmsDef.getBackEndDB(),
+                    dbmsDef.getDriver(), null);
 
-            String pw = props.getProperty("PWD");
-            try {
-               pw = PSEncryptor.decryptProperty(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),propFile.getAbsolutePath(), "PWD", pw);
-            }catch (PSEncryptionException pe) {
-               try {
-                  pw = PSEncryptor.decryptWithOldKey(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),pw);
-               } catch (PSEncryptionException | java.lang.IllegalArgumentException e) {
-                  pw = PSLegacyEncrypter.getInstance(
-                          PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
-                  ).decrypt(pw,
-                          PSJdbcDbmsDef.getPartOneKey(), null);
+            String pw = dbmsDef.getPassword();
 
-               }
-               try {
-                  //Try to encrypt password with new key, if fails set decoded password
-                  props.setProperty("PWD",PSEncryptor.encryptProperty(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),propFile.getAbsolutePath(),"PWD",pw));
-               } catch (PSEncryptionException psEncryptionException) {
-                  props.setProperty("PWD",pw);
-               }
-               props.store(new FileOutputStream(propFile.getAbsolutePath()), null);
-            }
-            try(Connection conn = InstallUtil.createConnection(props.getProperty("DB_DRIVER_NAME"),
-                    props.getProperty("DB_SERVER"),
-                    props.getProperty("DB_NAME"),
-                    props.getProperty("UID"),
+            try(Connection conn = InstallUtil.createConnection(dbmsDef.getDriver(),
+                    dbmsDef.getServer(),
+                    dbmsDef.getDataBase(),
+                    dbmsDef.getUserId(),
                     pw)) {
 
                PSJdbcTableSchema objectSchema = PSJdbcTableFactory.catalogTable(
