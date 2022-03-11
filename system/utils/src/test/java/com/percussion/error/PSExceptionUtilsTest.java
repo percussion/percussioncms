@@ -24,6 +24,7 @@
 
 package com.percussion.error;
 
+import com.percussion.utils.tools.IPSUtilsConstants;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.Test;
@@ -32,14 +33,34 @@ import static org.junit.Assert.assertNotNull;
 
 public class PSExceptionUtilsTest {
 
-    private static final Logger log = LogManager.getLogger(PSExceptionUtilsTest.class);
+    private static final Logger log = LogManager.getLogger(IPSUtilsConstants.UNIT_TEST_LOG);
 
+    public class PSInnerClass{
+
+        public void throwinnerexception() throws Exception {
+            throw new Exception("Inner Test Root Cause");
+        }
+    }
+
+    @Test
+    public void testGetMessage(){
+        try{
+            try {
+                new PSInnerClass().throwinnerexception();
+            }catch(Exception e){
+                throw new Exception(e);
+            }
+        }catch(Exception e) {
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            assertNotNull(PSExceptionUtils.getMessageForLog(e));
+        }
+    }
     @Test
     public void testGetDebugMessage(){
         try{
             throw new Exception("test",new Exception("Test Chain"));
         }catch(Exception e) {
-            log.info(PSExceptionUtils.getDebugMessageForLog(e));
+            log.error(PSExceptionUtils.getDebugMessageForLog(e));
             assertNotNull(PSExceptionUtils.getDebugMessageForLog(e));
         }
     }
