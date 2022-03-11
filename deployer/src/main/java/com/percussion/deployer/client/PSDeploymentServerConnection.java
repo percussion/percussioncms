@@ -183,8 +183,6 @@ public class PSDeploymentServerConnection
       m_uid = userid;
       operatingMode = mode;
       m_password = password == null ? "" : password;
-      if (!isPwdEncrypted)
-         m_password = encryptPwd(m_uid, m_password);
 
       // create the connection object
       try
@@ -193,7 +191,7 @@ public class PSDeploymentServerConnection
          m_conn.setContext(this);  // associate cookies with this instance
          m_conn.setAllowUserInteraction(false);
          m_conn.setTimeout(0);  // no timeout
-         m_conn.addBasicAuthorization("", m_uid, getPassword(false));
+         m_conn.addBasicAuthorization("", m_uid, m_password);
       }
       catch (ProtocolNotSuppException e)
       {
@@ -1188,13 +1186,12 @@ public class PSDeploymentServerConnection
     */
    private PSPurgableTempFile createAttachmentFile(Document doc) throws Exception {
 
-      try(PSPurgableTempFile reqFile = new PSPurgableTempFile("dpl_", ".xml",
-            null)){
+      PSPurgableTempFile reqFile = new PSPurgableTempFile("dpl_", ".xml",
+            null);
          try( FileOutputStream out = new FileOutputStream(reqFile)) {
             PSXmlDocumentBuilder.write(doc, out);
-            return reqFile;
          }
-      }
+         return reqFile;
 
    }
 
