@@ -62,6 +62,13 @@ public class PSExceptionUtils {
 
         message = message + " C:" + c + ":L:" + line;
 
+        //Add cause if there is one
+        if (exception.getCause() != null) {
+            String cause = exception.getCause().getMessage();
+            line = exception.getCause().getStackTrace()[0].getLineNumber();
+            c = exception.getCause().getStackTrace()[0].getClassName();
+            message += " Cause:" + cause + " C:" + c + ":L:" + line;
+        }
         return message;
 
     }
