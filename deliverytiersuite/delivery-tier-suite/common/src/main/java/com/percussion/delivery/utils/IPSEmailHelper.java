@@ -23,9 +23,9 @@
  */
 package com.percussion.delivery.utils;
 
-import org.apache.commons.mail.EmailException;
-
 import com.percussion.delivery.email.data.IPSEmailRequest;
+import com.percussion.delivery.exceptions.PSEmailException;
+import org.apache.commons.mail.EmailException;
 
 /**
  * A common helper class to send emails.
@@ -42,6 +42,6 @@ public interface IPSEmailHelper
      * @throws PSEmailServiceNotInitializedException When there is an error
      *             while initializing the email client.
      */
-    public String sendMail(IPSEmailRequest emailRequest) throws PSEmailServiceNotInitializedException, EmailException;
+    public String sendMail(IPSEmailRequest emailRequest) throws PSEmailServiceNotInitializedException, PSEmailException;
 
 }

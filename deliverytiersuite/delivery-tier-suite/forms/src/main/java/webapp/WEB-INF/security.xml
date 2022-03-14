@@ -33,7 +33,7 @@
 
     <beans:bean id="requestMatcher" class="com.percussion.delivery.spring.PSCsrfSecurityRequestMatcher">
         <beans:constructor-arg value="^(GET|HEAD|TRACE|OPTIONS)$" />
-        <beans:constructor-arg value="/forms/csrf,/forms/form/cms"/>
+        <beans:constructor-arg value="/forms/csrf,/forms/form/collect,/forms/form/cms"/>
         <beans:constructor-arg value="true"/>
     </beans:bean>
 

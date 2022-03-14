@@ -23,17 +23,15 @@
  */
 package com.percussion.delivery.utils;
 
+import com.percussion.delivery.email.data.PSEmailRequest;
+import com.percussion.delivery.exceptions.PSEmailException;
 import junit.framework.Assert;
 import junit.framework.TestCase;
-
-import org.apache.commons.mail.EmailException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import com.percussion.delivery.email.data.PSEmailRequest;
 
 /**
  * @author natechadwick
@@ -70,8 +68,8 @@ PSEmailRequest r = new PSEmailRequest();
 		
 		try{
 			this.emailHelper.sendMail(r);
-		} catch (EmailException e) {
+		} catch (PSEmailException e) {
 			Assert.assertTrue("Google Send Should Have Failed",e.getMessage().contains("smtp.gmail.com"));					
-		}finally{}
+		}
 	}
 }
