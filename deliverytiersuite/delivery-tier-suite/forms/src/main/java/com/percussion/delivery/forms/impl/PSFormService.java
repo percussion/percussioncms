@@ -26,19 +26,18 @@ package com.percussion.delivery.forms.impl;
 
 import com.percussion.delivery.email.data.IPSEmailRequest;
 import com.percussion.delivery.email.data.PSEmailRequest;
+import com.percussion.delivery.exceptions.PSEmailException;
 import com.percussion.delivery.forms.IPSFormDao;
 import com.percussion.delivery.forms.IPSFormService;
 import com.percussion.delivery.forms.data.IPSFormData;
 import com.percussion.delivery.utils.IPSEmailHelper;
 import com.percussion.delivery.utils.PSEmailServiceNotInitializedException;
+import org.apache.commons.lang.Validate;
 
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.commons.lang.Validate;
-import org.apache.commons.mail.EmailException;
 
 
 public class PSFormService implements IPSFormService
@@ -203,8 +202,7 @@ public class PSFormService implements IPSFormService
         return false;
     }
 
-    public void emailFormData(String toList, String subject, IPSFormData formData) throws PSEmailServiceNotInitializedException, EmailException
-    {
+    public void emailFormData(String toList, String subject, IPSFormData formData) throws PSEmailServiceNotInitializedException, PSEmailException {
         Validate.notEmpty(toList);
         Validate.notEmpty(subject);
         Validate.notNull(formData);
