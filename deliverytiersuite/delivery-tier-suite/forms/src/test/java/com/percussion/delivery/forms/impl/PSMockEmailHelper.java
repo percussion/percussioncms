@@ -24,14 +24,13 @@
 package com.percussion.delivery.forms.impl;
 
 import com.percussion.delivery.email.data.IPSEmailRequest;
+import com.percussion.delivery.exceptions.PSEmailException;
 import com.percussion.delivery.utils.IPSEmailHelper;
 import com.percussion.delivery.utils.PSEmailServiceNotInitializedException;
+import org.apache.commons.lang.Validate;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.commons.lang.Validate;
-import org.apache.commons.mail.EmailException;
 
 /**
  * Mock email helper for testing services that send email.  Should be wired into services in the test/beans.xml.
@@ -49,7 +48,7 @@ public class PSMockEmailHelper implements IPSEmailHelper
     private static String error = null;
 
     @Override
-    public String sendMail(IPSEmailRequest emailRequest) throws PSEmailServiceNotInitializedException, EmailException
+    public String sendMail(IPSEmailRequest emailRequest) throws PSEmailServiceNotInitializedException, PSEmailException
     {
         Validate.notNull(emailRequest);
         
@@ -57,7 +56,7 @@ public class PSMockEmailHelper implements IPSEmailHelper
         {
             String errorMsg = error;
             error = null;
-            throw new EmailException(errorMsg);
+            throw new PSEmailException(errorMsg);
         }
         
         if (!configured)

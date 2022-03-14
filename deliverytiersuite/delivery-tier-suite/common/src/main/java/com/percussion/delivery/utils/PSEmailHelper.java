@@ -24,15 +24,15 @@
 package com.percussion.delivery.utils;
 
 import com.percussion.delivery.email.data.IPSEmailRequest;
-
-import java.util.Properties;
-
+import com.percussion.delivery.exceptions.PSEmailException;
 import org.apache.commons.lang.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.apache.commons.mail.DefaultAuthenticator;
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.MultiPartEmail;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.util.Properties;
 
 public class PSEmailHelper implements IPSEmailHelper
 {
@@ -59,8 +59,7 @@ public class PSEmailHelper implements IPSEmailHelper
      * delivery.email.data.IPSEmailRequest)
      */
     @Override
-    public String sendMail(IPSEmailRequest emailRequest) throws PSEmailServiceNotInitializedException, EmailException
-    {
+    public String sendMail(IPSEmailRequest emailRequest) throws PSEmailServiceNotInitializedException, PSEmailException {
         MultiPartEmail commonsMultiPartEmail = createMultiPartEmail();
         if (commonsMultiPartEmail == null)
             throw new PSEmailServiceNotInitializedException();
@@ -69,7 +68,13 @@ public class PSEmailHelper implements IPSEmailHelper
             String[] emails = emailRequest.getToList().split(",");
             for (String email : emails)
             {
-                commonsMultiPartEmail.addTo(email);
+                try {
+                    commonsMultiPartEmail.addTo(email);
+                } catch (EmailException e) {
+                    log.error("Error adding address: {} to To: for email message. Error: {}",
+                            email,
+                            e.getMessage());
+                }
             }
         }
         if (StringUtils.isNotBlank(emailRequest.getCCList()))
@@ -77,7 +82,13 @@ public class PSEmailHelper implements IPSEmailHelper
             String[] emails = emailRequest.getCCList().split(",");
             for (String email : emails)
             {
-                commonsMultiPartEmail.addCc(email);
+                try {
+                    commonsMultiPartEmail.addCc(email);
+                } catch (EmailException e) {
+                    log.error("Error adding address: {} to CC: for email message. Error: {}",
+                            email,
+                            e.getMessage());
+                }
             }
         }
         if (StringUtils.isNotBlank(emailRequest.getBCCList()))
@@ -85,12 +96,37 @@ public class PSEmailHelper implements IPSEmailHelper
             String[] emails = emailRequest.getBCCList().split(",");
             for (String email : emails)
             {
-                commonsMultiPartEmail.addBcc(email);
+                try {
+                    commonsMultiPartEmail.addBcc(email);
+                } catch (EmailException e) {
+                    log.error("Error adding address: {} to BCC: for email message. Error: {}",
+                            email,
+                            e.getMessage());
+                }
             }
         }
-        commonsMultiPartEmail.setMsg(emailRequest.getBody());
+
+        try {
+            commonsMultiPartEmail.setMsg(emailRequest.getBody());
+        } catch (EmailException e) {
+            log.error("Error setting the body: {} for email message. Error: {}",
+                    emailRequest.getBody(),
+                    e.getMessage());
+            //with no body we shouldn't proceeed.
+            throw new PSEmailException(e);
+        }
+
         commonsMultiPartEmail.setSubject(emailRequest.getSubject());
-        return commonsMultiPartEmail.send();
+
+        try {
+            return commonsMultiPartEmail.send();
+        } catch (EmailException e) {
+            log.error("Error sending email message. Error: {} Cause: {}",
+                    e.getMessage(),
+                    e.getCause().getMessage());
+            //send failed so we shouldn't proceed.
+            throw new PSEmailException(e);
+        }
     }
 
     private MultiPartEmail createMultiPartEmail()
