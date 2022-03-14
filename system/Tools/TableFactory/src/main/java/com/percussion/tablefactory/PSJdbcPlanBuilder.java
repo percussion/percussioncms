@@ -1498,10 +1498,6 @@ public class PSJdbcPlanBuilder
       }
       
       diffTableSchema.setForeignKeys(updateKeys);
-      
-      
-      
- 
 
       // check indexes for changes
       Iterator newIndexes = null;
@@ -1567,7 +1563,7 @@ public class PSJdbcPlanBuilder
          {
             // if this index is unique check if it is same as the primary
             // key
-            boolean deletedIndex = true;
+            boolean deletedIndex = false;
             if (oldIndex.getType() == PSJdbcIndex.TYPE_UNIQUE)
             {
                PSJdbcPrimaryKey newPrimKey = newSchema.getPrimaryKey();
@@ -1577,23 +1573,24 @@ public class PSJdbcPlanBuilder
                      newPrimKey.getName(), newPrimKey.getColumnNames(),
                      oldIndex.getAction(), oldIndex.getType());
                   int comp = primKeyIndex.compare(oldIndex, flags);
-                  if (comp >= PSJdbcTableComponent.IS_EXACT_MATCH)
-                     deletedIndex = false;
+                  if (comp < PSJdbcTableComponent.IS_EXACT_MATCH) {
+                     deletedIndex = true;
+                  }
                }
             }
 
             if (deletedIndex)
             {
+               Logger.getLogger().log("DELETING INDEXE****" + oldIndex.getName());
                // not in new schema, so we need to delete it
                indexAction = PSJdbcTableComponent.ACTION_DELETE;
                buffer.append("Deleted index: " + NEWLINE);
                buffer.append(oldIndex);
+               PSJdbcIndex difIndex = new PSJdbcIndex(oldIndex.getName(),
+                       oldIndex.getColumnNames(), indexAction, oldIndex.getType());
+               diffTableSchema.setIndex(difIndex);
             }
          }
-
-         PSJdbcIndex difIndex = new PSJdbcIndex(oldIndex.getName(),
-            oldIndex.getColumnNames(), indexAction, oldIndex.getType());
-         diffTableSchema.setIndex(difIndex);
       }
 
       // check for an update key
