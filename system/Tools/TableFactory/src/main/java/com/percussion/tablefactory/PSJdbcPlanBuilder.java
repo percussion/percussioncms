@@ -1500,94 +1500,61 @@ public class PSJdbcPlanBuilder
       diffTableSchema.setForeignKeys(updateKeys);
 
       // check indexes for changes
-      Iterator newIndexes = null;
-      Iterator oldIndexes = null;
 
-      newIndexes = newSchema.getIndexes(
+      //Get New Indexes from New Schema
+      Iterator<PSJdbcIndex> newIndexes = newSchema.getIndexes(
          PSJdbcIndex.TYPE_UNIQUE | PSJdbcIndex.TYPE_NON_UNIQUE);
-      while (newIndexes.hasNext())
-      {
-         PSJdbcIndex newIndex = (PSJdbcIndex)newIndexes.next();
-         oldIndexes = oldSchema.getIndexes(
-            PSJdbcIndex.TYPE_UNIQUE | PSJdbcIndex.TYPE_NON_UNIQUE);
 
-         int match = PSJdbcTableComponent.IS_GENERIC_MISMATCH;
+      //Get Old Indexes from existing schema
+      Iterator<PSJdbcIndex> oldIndexes = oldSchema.getIndexes(
+              PSJdbcIndex.TYPE_UNIQUE | PSJdbcIndex.TYPE_NON_UNIQUE);
 
-         while (oldIndexes.hasNext())
-         {
-            PSJdbcIndex oldIndex = (PSJdbcIndex)oldIndexes.next();
-            int compare = oldIndex.compare(newIndex, flags);
-            if (compare >= PSJdbcTableComponent.IS_EXACT_MATCH)
-            {
-               match = compare;
-               break;
-            }
+      //Keeps a record of all indexes that are in new schema as well
+      List processedOldIdx = new ArrayList();
+
+      //Traverse over all new Indexes and see if old Index with same name exists, then replace that index with new one
+      while (newIndexes.hasNext()){
+         PSJdbcIndex newIndex = (PSJdbcIndex) newIndexes.next();
+         PSJdbcIndex oldIdx = oldSchema.getIndex(newIndex.getName());
+         if(oldIdx != null) {
+            buffer.append("Deleting Found Index: ");
+            buffer.append(oldIdx.getName());
+            processedOldIdx.add(oldIdx.getName());
+            int indexAction = PSJdbcTableComponent.ACTION_REPLACE;
+            PSJdbcIndex difIndex = new PSJdbcIndex(newIndex.getName(),
+                    newIndex.getColumnNames(), indexAction, newIndex.getType());
+            diffTableSchema.setIndex(difIndex);
          }
-         int indexAction = PSJdbcTableComponent.ACTION_NONE;
-         if (match < PSJdbcTableComponent.IS_EXACT_MATCH)
-         {
-            // doesn't exist, so it's an add
-            indexAction = PSJdbcTableComponent.ACTION_CREATE;
-            buffer.append("New index: " + NEWLINE);
-            buffer.append(newIndex);
-         }
-
-         PSJdbcIndex difIndex = new PSJdbcIndex(newIndex.getName(),
-            newIndex.getColumnNames(), indexAction, newIndex.getType());
-         diffTableSchema.setIndex(difIndex);
       }
 
-      // Now go through old indexes and see if any need to be removed
-      oldIndexes = oldSchema.getIndexes(
-         PSJdbcIndex.TYPE_UNIQUE | PSJdbcIndex.TYPE_NON_UNIQUE);
-      while (oldIndexes.hasNext())
-      {
-         PSJdbcIndex oldIndex = (PSJdbcIndex)oldIndexes.next();
-         newIndexes = newSchema.getIndexes(
-            PSJdbcIndex.TYPE_UNIQUE | PSJdbcIndex.TYPE_NON_UNIQUE);
-
-         int match = PSJdbcTableComponent.IS_GENERIC_MISMATCH;
-
-         while (newIndexes.hasNext())
-         {
-            PSJdbcIndex newIndex = (PSJdbcIndex)newIndexes.next();
-            int compare = oldIndex.compare(newIndex, flags);
-            if (compare >= PSJdbcTableComponent.IS_EXACT_MATCH)
-            {
-               match = compare;
-               break;
-            }
-         }
-         int indexAction = PSJdbcTableComponent.ACTION_NONE;
-         if (match < PSJdbcTableComponent.IS_EXACT_MATCH)
-         {
-            // if this index is unique check if it is same as the primary
-            // key
-            boolean deletedIndex = false;
-            if (oldIndex.getType() == PSJdbcIndex.TYPE_UNIQUE)
-            {
-               PSJdbcPrimaryKey newPrimKey = newSchema.getPrimaryKey();
-               if (newPrimKey != null)
-               {
-                  PSJdbcIndex primKeyIndex = new PSJdbcIndex(
-                     newPrimKey.getName(), newPrimKey.getColumnNames(),
-                     oldIndex.getAction(), oldIndex.getType());
-                  int comp = primKeyIndex.compare(oldIndex, flags);
-                  if (comp < PSJdbcTableComponent.IS_EXACT_MATCH) {
-                     deletedIndex = true;
-                  }
+      //Check old indexes that are not in new schema, and validate them, if are having valid column names, else delete them
+      while (oldIndexes.hasNext()){
+         PSJdbcIndex oldIdx = (PSJdbcIndex) oldIndexes.next();
+         if(processedOldIdx.contains(oldIdx.getName())){
+            continue;
+         }else{
+            Iterator<String> colNames = oldIdx.getColumnNames();
+            boolean valid = true;
+            for (Iterator<String> it = colNames; it.hasNext(); ) {
+               String colName = it.next();
+               if(diffTableSchema.getColumn(colName) == null){
+                  valid = false;
+                  buffer.append("Deleting Index as column not found: ");
+                  buffer.append(oldIdx.getName());
+                  int indexAction = PSJdbcTableComponent.ACTION_DELETE;
+                  PSJdbcIndex difIndex = new PSJdbcIndex(oldIdx.getName(),
+                          oldIdx.getColumnNames(), indexAction, oldIdx.getType());
+                  diffTableSchema.setIndex(difIndex);
+                  break;
                }
             }
-
-            if (deletedIndex)
-            {
-               Logger.getLogger().log("DELETING INDEXE****" + oldIndex.getName());
-               // not in new schema, so we need to delete it
-               indexAction = PSJdbcTableComponent.ACTION_DELETE;
-               buffer.append("Deleted index: " + NEWLINE);
-               buffer.append(oldIndex);
-               PSJdbcIndex difIndex = new PSJdbcIndex(oldIndex.getName(),
-                       oldIndex.getColumnNames(), indexAction, oldIndex.getType());
+            //Add valid custom index from old schema
+            if(valid){
+               buffer.append("Adding Old Index : ");
+               buffer.append(oldIdx.getName());
+               int indexAction = PSJdbcTableComponent.ACTION_CREATE;
+               PSJdbcIndex difIndex = new PSJdbcIndex(oldIdx.getName(),
+                       oldIdx.getColumnNames(), indexAction, oldIdx.getType());
                diffTableSchema.setIndex(difIndex);
             }
          }
@@ -1669,7 +1636,7 @@ public class PSJdbcPlanBuilder
       }
       resultSchema.setForeignKeys(changedFKeys);
       // process index changes
-      Iterator indexes = newSchema.getIndexes(
+      Iterator indexes= newSchema.getIndexes(
          PSJdbcIndex.TYPE_UNIQUE | PSJdbcIndex.TYPE_NON_UNIQUE);
       while (indexes.hasNext())
       {
@@ -1679,6 +1646,7 @@ public class PSJdbcPlanBuilder
             resultSchema.removeIndex(newIndex.getName());
          else if (action != PSJdbcTableComponent.ACTION_NONE)
             resultSchema.setIndex(newIndex);
+
       }
 
       // process update key - if defined in newSchema, use it
@@ -1783,5 +1751,6 @@ public class PSJdbcPlanBuilder
    public static final String NEWLINE =
       System.getProperty("line.separator", "\n");
  }
+
 
 
