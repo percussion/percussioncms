@@ -91,9 +91,6 @@ public class PSJdbcTableSchema implements Comparable<PSJdbcTableSchema>
     * <code>false</code>, {@link #isAlter()} = false.
     *
     * @param name The name of this table, may not be <code>null</code> or empty.
-    * @param columns An Iterator over one or more non-<code>null</code>
-    * PSJdbcColumnDef objects.  May not be <code>null</code> or empty, or
-    * contain columns with the same name.
     */
    public PSJdbcTableSchema(String name)
       throws PSJdbcTableFactoryException
@@ -163,18 +160,17 @@ public class PSJdbcTableSchema implements Comparable<PSJdbcTableSchema>
          m_schemaHandlerCollection.addAll(source.m_schemaHandlerCollection);
       }
 
-      try
-      {
+      try {
          PSJdbcPrimaryKey pk = source.getPrimaryKey();
          if (pk != null)
             m_primaryKey = new PSJdbcPrimaryKey(pk.getColumnNames(),
-               pk.getAction());
+                    pk.getAction());
          List<PSJdbcForeignKey> fks = source.getForeignKeys();
          if (fks != null) {
             List<PSJdbcForeignKey> newKeys = new ArrayList<PSJdbcForeignKey>();
             for (PSJdbcForeignKey fk : fks) {
                newKeys.add(new PSJdbcForeignKey(fk.getColumns(),
-                     fk.getAction()));
+                       fk.getAction()));
             }
             m_foreignKeys = newKeys;
          }
@@ -186,16 +182,17 @@ public class PSJdbcTableSchema implements Comparable<PSJdbcTableSchema>
 
          Iterator cols = source.getColumns();
          while (cols.hasNext())
-            m_columns.add(new PSJdbcColumnDef((PSJdbcColumnDef)cols.next()));
+            m_columns.add(new PSJdbcColumnDef((PSJdbcColumnDef) cols.next()));
 
          Iterator indexes = source.getIndexes(
-            PSJdbcIndex.TYPE_UNIQUE | PSJdbcIndex.TYPE_NON_UNIQUE);
-         while (indexes.hasNext())
-         {
+                 PSJdbcIndex.TYPE_UNIQUE | PSJdbcIndex.TYPE_NON_UNIQUE);
+
+         while (indexes.hasNext()) {
             PSJdbcIndex index = (PSJdbcIndex)indexes.next();
-            m_indexes.add(new PSJdbcIndex(index.getName(),
-               index.getColumnNames(), index.getAction(), index.getType()));
+            m_indexes.put(index.getName(), new PSJdbcIndex(index.getName(),
+                    index.getColumnNames(), index.getAction(), index.getType()));
          }
+
       }
       catch (PSJdbcTableFactoryException e)
       {
@@ -408,16 +405,8 @@ public class PSJdbcTableSchema implements Comparable<PSJdbcTableSchema>
       if (index == null)
          throw new IllegalArgumentException("index may not be null");
 
-      PSJdbcIndex oldIndex = null;
-      int i = getIndexIndex(index.getName());
-      if (i > -1)
-      {
-         oldIndex = (PSJdbcIndex)m_indexes.get(i);
-         m_indexes.set(i, index);
-      }
-      else
-         m_indexes.add(index);
-
+      PSJdbcIndex oldIndex = m_indexes.get(index.getName());
+      m_indexes.put(index.getName(),index);
       validateSchema();
       return oldIndex;
    }
@@ -436,13 +425,8 @@ public class PSJdbcTableSchema implements Comparable<PSJdbcTableSchema>
       if (name == null || name.trim().length() == 0)
          throw new IllegalArgumentException("name may not be null or empty");
 
-      PSJdbcIndex index = null;
+      return m_indexes.get(name);
 
-      int i = getIndexIndex(name);
-      if (i > -1)
-         index = (PSJdbcIndex)m_indexes.get(i);
-
-      return index;
    }
 
    /**
@@ -467,15 +451,15 @@ public class PSJdbcTableSchema implements Comparable<PSJdbcTableSchema>
     */
    public Iterator getIndexes(int type)
    {
-      List indexes = new ArrayList();
-      Iterator it = m_indexes.iterator();
+      Map<String,PSJdbcIndex> indexes = new HashMap<>();
+      Iterator it = m_indexes.values().iterator();
       while (it.hasNext())
       {
          PSJdbcIndex index = (PSJdbcIndex)it.next();
          if (index.isOfType(type))
-            indexes.add(index);
+            indexes.put(index.getName(),index);
       }
-      return indexes.iterator();
+      return indexes.values().iterator();
    }
 
    /**
@@ -491,12 +475,8 @@ public class PSJdbcTableSchema implements Comparable<PSJdbcTableSchema>
       if (name == null || name.trim().length() == 0)
          throw new IllegalArgumentException("name may not be null or empty");
 
-      PSJdbcIndex oldIndex = null;
-      int index = getIndexIndex(name);
-      if (index > -1)
-         oldIndex = (PSJdbcIndex)m_indexes.remove(index);
-
-      return oldIndex;
+      PSJdbcIndex oldIndex = m_indexes.remove(name);
+       return oldIndex;
    }
 
    /**
@@ -609,7 +589,7 @@ public class PSJdbcTableSchema implements Comparable<PSJdbcTableSchema>
          Element indexdefs = PSXmlDocumentBuilder.addEmptyElement(doc, root,
             INDEX_DEF_EL);
          for (int i = 0; i < m_indexes.size(); i++)
-            indexdefs.appendChild(((PSJdbcIndex)m_indexes.get(i)).toXml(doc));
+            indexdefs.appendChild(((PSJdbcIndex)m_indexes.values().iterator().next()).toXml(doc));
       }
 
       return root;
@@ -799,7 +779,7 @@ public class PSJdbcTableSchema implements Comparable<PSJdbcTableSchema>
          while (index != null)
          {
             PSJdbcIndex indexDef = new PSJdbcIndex(index);
-            m_indexes.add(indexDef);
+            m_indexes.put(indexDef.getName(),indexDef);
             index = walker.getNextElement(PSJdbcIndex.NODE_NAME, nextFlags);
          }
       }
@@ -830,7 +810,7 @@ public class PSJdbcTableSchema implements Comparable<PSJdbcTableSchema>
     * Checks if there is an index with a set of columns that are same or a
     * subset of foreign key columns
     * 
-    * @param foreignKey The foreign key definition. Cannot be <code>null</code>
+    * @param foreignKeys The foreign key definition. Cannot be <code>null</code>
     * 
     * @return <code>true<code> if there is an index with same set of columns as foreign
     *         key
@@ -840,7 +820,7 @@ public class PSJdbcTableSchema implements Comparable<PSJdbcTableSchema>
    {        
       for (PSJdbcForeignKey foreignKey : foreignKeys ) {
       List<String> foreignKeyColumnNames = foreignKey.getForeignKeyColumnNames();
-      Iterator<?> indexIterator = m_indexes.iterator();
+      Iterator<?> indexIterator = m_indexes.values().iterator();
       boolean found=false;
       while(indexIterator.hasNext())
       {
@@ -866,22 +846,8 @@ public class PSJdbcTableSchema implements Comparable<PSJdbcTableSchema>
     */
    boolean doesIndexNameExists(String indexName)
    {
-      Iterator<?> indexit1 = getIndexes(PSJdbcIndex.TYPE_UNIQUE);
-      Iterator<?> indexit2 = getIndexes(PSJdbcIndex.TYPE_NON_UNIQUE);
-      List<String> indexNameList = new ArrayList<String>();
-      while (indexit1.hasNext())
-      {
-         PSJdbcIndex index1 = (PSJdbcIndex) indexit1.next();
-         indexNameList.add(index1.getName());
-      }
-      while (indexit2.hasNext())
-      {
-         PSJdbcIndex index2 = (PSJdbcIndex) indexit2.next();
-         indexNameList.add(index2.getName());
-      }
-
-      if (indexNameList.contains(indexName))
-      {
+      PSJdbcIndex index = this.getIndex(indexName);
+      if(index == null){
          return false;
       }
       return true;
@@ -923,7 +889,7 @@ public class PSJdbcTableSchema implements Comparable<PSJdbcTableSchema>
    /**
     * Constructs a new index name and facilitates the creation of indexes.
     * 
-    * @param foreignKey The foreign key. Assume not <code>null<code>
+    * @param foreignKeys The foreign key. Assume not <code>null<code>
     * 
     * @throws PSJdbcTableFactoryException if error occurs
     */
@@ -1221,7 +1187,7 @@ public class PSJdbcTableSchema implements Comparable<PSJdbcTableSchema>
          }
       }
 
-      Iterator indexes = m_indexes.iterator();
+      Iterator indexes = m_indexes.values().iterator();
       while (indexes.hasNext())
       {
          PSJdbcIndex index = (PSJdbcIndex)indexes.next();
@@ -1487,7 +1453,7 @@ public class PSJdbcTableSchema implements Comparable<PSJdbcTableSchema>
          return false;
       }
 
-      Iterator indexes = m_indexes.iterator();
+      Iterator indexes = m_indexes.values().iterator();
       while (indexes.hasNext())
       {
          PSJdbcIndex index = (PSJdbcIndex)indexes.next();
@@ -1772,7 +1738,7 @@ public class PSJdbcTableSchema implements Comparable<PSJdbcTableSchema>
    /**
     * This table's index definitions.  Never <code>null</code>, may be empty.
     */
-   private List m_indexes = new ArrayList();
+   private Map<String,PSJdbcIndex> m_indexes = new HashMap<>();
 
    /**
     * This table's update key defintion.  Used when updating rows as the key
