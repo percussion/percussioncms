@@ -28,7 +28,7 @@ package com.percussion.deployer.objectstore;
 import com.percussion.deployer.objectstore.idtypes.PSAppCEItemIdContext;
 import com.percussion.deployer.objectstore.idtypes.PSApplicationIdContext;
 import com.percussion.server.PSServer;
-import com.percussion.util.PSIteratorUtils;
+import com.percussion.utils.collections.PSIteratorUtils;
 import com.percussion.utils.testing.IntegrationTest;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import org.junit.Test;

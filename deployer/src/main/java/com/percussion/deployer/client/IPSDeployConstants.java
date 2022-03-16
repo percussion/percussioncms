@@ -41,6 +41,12 @@ public interface IPSDeployConstants
     * The root directory for all deployment files stored under the Rhythmyx root
     */
    public static final String DEPLOYMENT_ROOT = "sys_Packager";
+   public static final String MSM_DEPLOYMENT_ROOT = "sys_MultiServerManager";
+
+    enum OperatingMode{
+      MultiServerManager,
+      Packager
+   }
 
    /**
     * Directory below the deployment root containing all server files, relative
@@ -59,6 +65,8 @@ public interface IPSDeployConstants
     * value.
     */
    public static final String ARCHIVE_EXTENSION = ".ppkg";
+
+   public static final String MSM_ARCHIVE_EXTENSION = ".pda";
 
    /**
     * Constant for the Request properties ID type element.
@@ -393,7 +401,7 @@ public interface IPSDeployConstants
    /**
     * The constant for default max child dependencies value, currently 200
     */
-   public static final int MAX_DEPS = 200;
+   public static final int MAX_DEPS = 2000;
 
    /**
     * Constant to indicate 'Community' element type.

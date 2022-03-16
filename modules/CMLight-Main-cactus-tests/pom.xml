@@ -28,7 +28,7 @@
     <parent>
         <groupId>com.percussion</groupId>
         <artifactId>core</artifactId>
-        <version>8.0.3</version>
+        <version>8.1.1-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
     <artifactId>perc-system-cactus-tests</artifactId>
@@ -325,6 +325,12 @@
                     <artifactId>gcpg-jdk15on</artifactId>
                 </exclusion>
             </exclusions>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.percussion</groupId>
+            <artifactId>perc-deployer</artifactId>
+            <version>8.1.1-SNAPSHOT</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

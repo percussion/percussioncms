@@ -24,20 +24,25 @@
 
 package com.percussion.deployer.server.dependencies;
 
-import com.percussion.deployer.error.IPSDeploymentErrors;
-import com.percussion.deployer.error.PSDeployException;
 import com.percussion.deployer.objectstore.PSDependency;
 import com.percussion.deployer.objectstore.PSIdMap;
 import com.percussion.deployer.server.PSDependencyDef;
 import com.percussion.deployer.server.PSDependencyMap;
 import com.percussion.design.objectstore.PSChoiceTableInfo;
 import com.percussion.design.objectstore.PSChoices;
+import com.percussion.design.objectstore.PSContainerLocator;
+import com.percussion.design.objectstore.PSContentEditorSharedDef;
 import com.percussion.design.objectstore.PSControlRef;
 import com.percussion.design.objectstore.PSDisplayMapper;
 import com.percussion.design.objectstore.PSDisplayMapping;
+import com.percussion.design.objectstore.PSTableRef;
+import com.percussion.design.objectstore.PSTableSet;
 import com.percussion.design.objectstore.PSUIDefinition;
 import com.percussion.design.objectstore.PSUISet;
+import com.percussion.error.IPSDeploymentErrors;
+import com.percussion.error.PSDeployException;
 import com.percussion.security.PSSecurityToken;
+import com.percussion.server.PSServer;
 import com.percussion.services.error.PSNotFoundException;
 
 import java.util.ArrayList;
@@ -364,4 +369,91 @@ public abstract class PSContentEditorObjectDependencyHandler
       }
    }
 
+   /**
+    * Get the shared def.
+    *
+    * @return The def, never <code>null</code>.
+    *
+    * @throws PSDeployException if the def cannot be loaded.
+    */
+   protected PSContentEditorSharedDef getSharedDef() throws PSDeployException
+   {
+      PSContentEditorSharedDef sharedDef = PSServer.getContentEditorSharedDef();
+      if (sharedDef == null)
+      {
+         // result of shared def not loading, server will have already logged
+         // an error for this.
+         Object[] args = {"Cannot load shared def"};
+         throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR,
+            args);
+      }
+      return sharedDef;
+   }
+
+   /**
+    * Get all tables from the supplied container locator
+    *
+    * @param locator The locator to check, may not be <code>null</code>.
+    *
+    * @return Iterator over zero or more table names as <code>String</code>
+    * objects, never <code>null</code>, may be empty.
+    */
+   public static Iterator getLocatorTables(PSContainerLocator locator)
+   {
+      if (locator == null)
+         throw new IllegalArgumentException("locator may not be null");
+
+      List<String> tables = new ArrayList<>();
+
+      Iterator tableSets = locator.getTableSets();
+      while (tableSets.hasNext())
+      {
+         PSTableSet tableSet = (PSTableSet)tableSets.next();
+         Iterator refs = tableSet.getTableRefs();
+         while (refs.hasNext())
+         {
+            PSTableRef ref = (PSTableRef)refs.next();
+            tables.add(ref.getName());
+         }
+      }
+
+      return tables.iterator();
+   }
+
+
+   /**
+    * Get dependencies for all tables from the supplied container locator
+    *
+    * @param tok The security token to use, may not be <code>null</code>.
+    * @param locator The locator to check, may not be <code>null</code>.
+    *
+    * @return list of dependencies, never <code>null</code>, may be empty.
+    *
+    * @throws PSDeployException if there are any errors.
+    */
+   protected List<PSDependency> checkLocatorTables(PSSecurityToken tok,
+      PSContainerLocator locator)
+           throws PSDeployException, PSNotFoundException {
+      if (tok == null)
+         throw new IllegalArgumentException("tok may not be null");
+
+      if (locator == null)
+         throw new IllegalArgumentException("locator may not be null");
+
+      PSDependencyHandler schemaHandler = getDependencyHandler(
+         PSSchemaDependencyHandler.DEPENDENCY_TYPE);
+
+      List<PSDependency> childDeps = new ArrayList<>();
+      Iterator tables = getLocatorTables(locator);
+      while (tables.hasNext())
+      {
+         String tableName = (String)tables.next();
+         PSDependency schemaDep =
+            schemaHandler.getDependency(tok, tableName);
+         if (schemaDep != null)
+            childDeps.add(schemaDep);
+      }
+
+      return childDeps;
+   }
 }

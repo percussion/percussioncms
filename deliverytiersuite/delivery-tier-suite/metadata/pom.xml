@@ -29,7 +29,7 @@
     <parent>
         <groupId>com.percussion.deliverytier</groupId>
         <artifactId>delivery-tier-suite</artifactId>
-        <version>8.0.3</version>
+        <version>8.1.1-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -49,7 +49,7 @@
         <dependency>
             <groupId>org.liquibase</groupId>
             <artifactId>liquibase-core</artifactId>
-            <version>4.0.0</version>
+            <version>4.8.0</version>
             <exclusions>
                 <exclusion>
                     <groupId>javax.xml.bind</groupId>

@@ -55,7 +55,7 @@ public class RxCheckDBState extends RxIAAction
 
                // Currently only need to connect to mssql
                // do not connect to derby, it is not set up yet
-               if (driver.equals(PSJdbcUtils.JTDS_DRIVER))
+               if (driver.equals(PSJdbcUtils.JTDS_DRIVER) || driver.equals(PSJdbcUtils.MICROSOFT_DRIVER))
                   try(Connection conn = RxLogTables.createConnection(props)) {
 
                      if (conn != null) {
@@ -100,7 +100,7 @@ public class RxCheckDBState extends RxIAAction
    public static boolean checkMSSqlForSnapshotIsolation(Connection conn, String driver, String database)
          throws SQLException
    {
-      if (driver.equals(PSJdbcUtils.JTDS_DRIVER))
+      if (driver.equals(PSJdbcUtils.JTDS_DRIVER) || driver.equals(PSJdbcUtils.MICROSOFT_DRIVER))
       {
          PreparedStatement stmnt = null;
          ResultSet resultSet = null;

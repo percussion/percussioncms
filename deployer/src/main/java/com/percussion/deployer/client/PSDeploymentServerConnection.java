@@ -31,14 +31,14 @@ import com.percussion.HTTPClient.HttpOutputStream;
 import com.percussion.HTTPClient.NVPair;
 import com.percussion.HTTPClient.ProtocolNotSuppException;
 import com.percussion.conn.PSServerException;
-import com.percussion.deployer.error.IPSDeploymentErrors;
-import com.percussion.deployer.error.PSDeployException;
-import com.percussion.deployer.error.PSDeployNonUniqueException;
-import com.percussion.deployer.error.PSLockedException;
 import com.percussion.deployer.objectstore.PSDbmsInfo;
 import com.percussion.deployer.objectstore.PSDeploymentServerConnectionInfo;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
+import com.percussion.error.IPSDeploymentErrors;
+import com.percussion.error.PSDeployException;
+import com.percussion.error.PSDeployNonUniqueException;
 import com.percussion.error.PSExceptionUtils;
+import com.percussion.error.PSLockedException;
 import com.percussion.legacy.security.deprecated.PSCryptographer;
 import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
 import com.percussion.security.PSAuthenticationFailedException;
@@ -80,10 +80,7 @@ public class PSDeploymentServerConnection
 {
    /**
     * Constructs a connection using the http protocol. Calls
-    * {@link #PSDeploymentServerConnection(String, String, int, String, String,
-    * boolean, boolean) this("http", info.getServer(), info.getPort(),
-    * info.getUserid(), info .getPassword(), info.isPwdEncrypted(),
-    * overrideLock)}
+    *
     * 
     * @param info contains the connection details, assumed not <code>null</code>
     * @param overrideLock If <code>true</code>, then the lock is acquired by
@@ -98,17 +95,15 @@ public class PSDeploymentServerConnection
     * @throws PSDeployException For any other errors.
     */
    public PSDeploymentServerConnection(PSDeploymentServerConnectionInfo info,
-         boolean overrideLock) throws PSAuthenticationFailedException,
+         boolean overrideLock,IPSDeployConstants.OperatingMode mode) throws PSAuthenticationFailedException,
          PSAuthorizationException, PSServerException, PSDeployException {
       this("http", info.getServer(), info.getPort(), info.getUserid(), info
-            .getPassword(), info.isPwdEncrypted(), overrideLock);
+            .getPassword(), info.isPwdEncrypted(), overrideLock, mode);
    }
    
    /**
     * Construct a connection using the http protocol. Calls
-    * {@link #PSDeploymentServerConnection(String, String, int, String, String,
-    * boolean, boolean) this("http", server, port, userid, password,
-    * isPwdEncrypted, overrideLock)}
+    *
     * 
     * @param server
     * @param port
@@ -123,12 +118,12 @@ public class PSDeploymentServerConnection
     */
    public PSDeploymentServerConnection(String server, int port,
       String userid, String password, boolean isPwdEncrypted,
-      boolean overrideLock) throws
+      boolean overrideLock,IPSDeployConstants.OperatingMode mode) throws
          PSAuthenticationFailedException, PSAuthorizationException,
          PSServerException, PSDeployException
    {
       this("http", server, port, userid, password, isPwdEncrypted,
-         overrideLock);
+         overrideLock, mode);
    }
 
    /**
@@ -165,8 +160,8 @@ public class PSDeploymentServerConnection
     * @throws PSDeployException For any other errors.
     */
    public PSDeploymentServerConnection(String protocol, String server, int port,
-      String userid, String password, boolean isPwdEncrypted,
-      boolean overrideLock) throws
+                                       String userid, String password, boolean isPwdEncrypted,
+                                       boolean overrideLock, IPSDeployConstants.OperatingMode mode) throws
          PSAuthenticationFailedException, PSAuthorizationException,
          PSServerException, PSDeployException
    {
@@ -186,9 +181,8 @@ public class PSDeploymentServerConnection
       m_server = server;
       m_port  = port;
       m_uid = userid;
+      operatingMode = mode;
       m_password = password == null ? "" : password;
-      if (!isPwdEncrypted)
-         m_password = encryptPwd(m_uid, m_password);
 
       // create the connection object
       try
@@ -197,7 +191,7 @@ public class PSDeploymentServerConnection
          m_conn.setContext(this);  // associate cookies with this instance
          m_conn.setAllowUserInteraction(false);
          m_conn.setTimeout(0);  // no timeout
-         m_conn.addBasicAuthorization("", m_uid, getPassword(false));
+         m_conn.addBasicAuthorization("", m_uid, m_password);
       }
       catch (ProtocolNotSuppException e)
       {
@@ -226,6 +220,16 @@ public class PSDeploymentServerConnection
             IPSDeploymentErrors.SERVER_RESPONSE_ELEMENT_INVALID, args);
       }
 
+      // The client's deployment version must be greater than or equal to the
+      // server's.  This allows forward compatiblity to be handled by the
+      // server.
+      if (deployInterface > DEPLOYMENT_INTERFACE_VERSION)
+      {
+         m_isConnected = false;
+         throw new PSDeployException(IPSDeploymentErrors.SERVER_VERSION_INVALID,
+            m_version.getVersionString());
+      }
+
       String licensed = root.getAttribute("licensed");
       if ((licensed != null) && (licensed.trim().length() > 0))
          m_bLicensed = "yes".equalsIgnoreCase(licensed.trim());
@@ -250,12 +254,13 @@ public class PSDeploymentServerConnection
       //This will have to be reworked once we allow remote install of the package manager for cougar.
 	  // It will need to know the difference of cougar and rhythmyx
       // currently versions prior to 6.0 are not supported
-      //if (m_version.getMajorVersion() < 6)
-      //{
-      //   m_isConnected = false;
-      //   throw new PSDeployException(IPSDeploymentErrors.SERVER_VERSION_INVALID,
-      //      m_version.getVersionString());
-      //}      
+      //TODO: Fix me so the version checking is real
+      if (m_version.getMajorVersion() < 6)
+      {
+         m_isConnected = false;
+         throw new PSDeployException(IPSDeploymentErrors.SERVER_VERSION_INVALID,
+            m_version.getVersionString());
+      }
 
       Element repositoryEl = tree.getNextElement(PSDbmsInfo.XML_NODE_NAME,
          PSXmlTreeWalker.GET_NEXT_ALLOW_SIBLINGS);
@@ -389,19 +394,7 @@ public class PSDeploymentServerConnection
          PSXmlDocumentBuilder.createRoot(reqDoc,"PSXDeployExtendLockRequest");
          execute(DEPLOY_REQUEST + "extendlock", reqDoc);
       }
-      catch(PSAuthorizationException e)
-      {
-         throw new PSDeployException(e);
-      }
-      catch(PSServerException e)
-      {
-         throw new PSDeployException(e);
-      }
-      catch(PSAuthenticationFailedException e)
-      {
-         throw new PSDeployException(e);
-      }
-      catch(PSServerLockException e)
+      catch(PSAuthorizationException | PSServerException | PSAuthenticationFailedException | PSServerLockException e)
       {
          throw new PSDeployException(e);
       }
@@ -1193,13 +1186,12 @@ public class PSDeploymentServerConnection
     */
    private PSPurgableTempFile createAttachmentFile(Document doc) throws Exception {
 
-      try(PSPurgableTempFile reqFile = new PSPurgableTempFile("dpl_", ".xml",
-            null)){
+      PSPurgableTempFile reqFile = new PSPurgableTempFile("dpl_", ".xml",
+            null);
          try( FileOutputStream out = new FileOutputStream(reqFile)) {
             PSXmlDocumentBuilder.write(doc, out);
-            return reqFile;
          }
-      }
+         return reqFile;
 
    }
 
@@ -1209,7 +1201,7 @@ public class PSDeploymentServerConnection
     * such that it is no longer compatible with older clients, this
     * value should be incremented.
     */
-   public static final int DEPLOYMENT_INTERFACE_VERSION = 0;
+   public static final int DEPLOYMENT_INTERFACE_VERSION = 8;
 
    /**
     * Constant for prefix when making deployment handler requests.
@@ -1534,6 +1526,9 @@ public class PSDeploymentServerConnection
    private static final String DEPLOY_REQUEST_PAGE =
       "/sys_deployerHandler";
 
+   private static final String MSM_DEPLOY_REQUEST_PAGE =
+           "/sys_deploymentHandler";
+
    /**
     * Constant for the page to use when executing job requests against
     * the server.
@@ -1630,6 +1625,16 @@ public class PSDeploymentServerConnection
     * <code>connect()</code> method, never modified after that.
     */
    private boolean m_bLicensed = true;
+
+   private IPSDeployConstants.OperatingMode operatingMode = IPSDeployConstants.OperatingMode.Packager;
+
+   public IPSDeployConstants.OperatingMode getOperatingMode() {
+      return operatingMode;
+   }
+
+   public void setOperatingMode(IPSDeployConstants.OperatingMode operatingMode) {
+      this.operatingMode = operatingMode;
+   }
 }
 
 

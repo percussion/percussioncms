@@ -24,8 +24,6 @@
 package com.percussion.deployer.server.dependencies;
 
 
-import com.percussion.deployer.error.IPSDeploymentErrors;
-import com.percussion.deployer.error.PSDeployException;
 import com.percussion.deployer.objectstore.PSDependency;
 import com.percussion.deployer.objectstore.PSDependencyData;
 import com.percussion.deployer.objectstore.PSDependencyFile;
@@ -38,6 +36,8 @@ import com.percussion.deployer.server.PSDbmsHelper;
 import com.percussion.deployer.server.PSDependencyDef;
 import com.percussion.deployer.server.PSDependencyMap;
 import com.percussion.deployer.server.PSImportCtx;
+import com.percussion.error.IPSDeploymentErrors;
+import com.percussion.error.PSDeployException;
 import com.percussion.security.PSSecurityToken;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.error.PSNotFoundException;
@@ -136,7 +136,6 @@ public class PSWorkflowDefDependencyHandler
          }
       }
 
-      // Acl deps
       addAclDependency(tok, PSTypeEnum.WORKFLOW, dep, childDeps);
 
       return childDeps.iterator();
@@ -232,7 +231,7 @@ public class PSWorkflowDefDependencyHandler
       if (!dep.getObjectType().equals(DEPENDENCY_TYPE))
          throw new IllegalArgumentException("dep wrong type");
 
-      List<PSDependencyFile> files = new ArrayList<>();
+      List<PSDependencyFile> files = new ArrayList<PSDependencyFile>();
 
       // retrieve data from all tables, add to the list if not empty
       for (int i=0; i < TABLE_ENUM.length; i++)
@@ -1149,7 +1148,7 @@ public class PSWorkflowDefDependencyHandler
    /**
     * Constant for this handler's supported type
     */
-   final static String DEPENDENCY_TYPE = "WorkflowDef";
+   public static final String DEPENDENCY_TYPE = "WorkflowDef";
 
    // Constants for table containing workflow
    private static final String WORKFLOW_TABLE = "WORKFLOWAPPS";

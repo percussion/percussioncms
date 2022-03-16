@@ -32,7 +32,6 @@ import com.percussion.data.PSMetaDataCache;
 import com.percussion.data.jdbc.PSFileSystemDriver;
 import com.percussion.data.vfs.IPSVirtualDirectory;
 import com.percussion.data.vfs.PSVirtualApplicationDirectory;
-import com.percussion.deploy.server.PSServerJdbcDbmsDef;
 import com.percussion.design.objectstore.IPSObjectStoreErrors;
 import com.percussion.design.objectstore.PSAcl;
 import com.percussion.design.objectstore.PSAclEntry;
@@ -62,9 +61,9 @@ import com.percussion.design.objectstore.legacy.IPSComponentConverter;
 import com.percussion.design.objectstore.legacy.IPSComponentUpdater;
 import com.percussion.design.objectstore.legacy.IPSConfigFileLocator;
 import com.percussion.design.objectstore.legacy.IPSRepositoryInfo;
-import com.percussion.design.objectstore.legacy.PSAllowAllCtypeWorkflowsUpdater;
 import com.percussion.design.objectstore.legacy.PSBackendTableConverter;
 import com.percussion.design.objectstore.legacy.PSConfigurationCtx;
+import com.percussion.design.objectstore.legacy.PSContentTypeWorkflowsUpdater;
 import com.percussion.design.objectstore.legacy.PSTableLocatorConverter;
 import com.percussion.error.PSErrorManager;
 import com.percussion.error.PSException;
@@ -114,6 +113,7 @@ import com.percussion.utils.jdbc.IPSDatasourceResolver;
 import com.percussion.utils.jdbc.PSConnectionDetail;
 import com.percussion.utils.jdbc.PSConnectionHelper;
 import com.percussion.utils.jdbc.PSConnectionInfo;
+import com.percussion.utils.jndi.PSServerJdbcDbmsDef;
 import com.percussion.utils.servlet.PSServletUtils;
 import com.percussion.utils.spring.IPSBeanConfig;
 import com.percussion.xml.PSXmlDocumentBuilder;
@@ -538,8 +538,8 @@ public class PSXmlObjectStoreHandler extends PSObjectFactory
          new ArrayList<IPSComponentUpdater>();
       
       // CM1RXdiff
-	  // updaters.add(new PSContentTypeWorkflowsUpdater());
-      updaters.add(new PSAllowAllCtypeWorkflowsUpdater());
+	   updaters.add(new PSContentTypeWorkflowsUpdater());
+     // updaters.add(new PSAllowAllCtypeWorkflowsUpdater());
       
       return updaters;
    }

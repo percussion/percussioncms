@@ -25,10 +25,11 @@
 package com.percussion.deployer.server.dependencies;
 
 import com.percussion.conn.PSServerException;
-import com.percussion.deployer.error.IPSDeploymentErrors;
-import com.percussion.deployer.error.PSDeployException;
+import com.percussion.deployer.client.IPSDeployConstants;
 import com.percussion.deployer.objectstore.PSAppEnabledPolicySetting;
 import com.percussion.deployer.objectstore.PSAppPolicySettings;
+import com.percussion.deployer.objectstore.PSApplicationIDTypeMapping;
+import com.percussion.deployer.objectstore.PSApplicationIDTypes;
 import com.percussion.deployer.objectstore.PSDatasourceMap;
 import com.percussion.deployer.objectstore.PSDbmsInfo;
 import com.percussion.deployer.objectstore.PSDbmsMap;
@@ -40,6 +41,8 @@ import com.percussion.deployer.objectstore.PSIdMap;
 import com.percussion.deployer.objectstore.PSLogPolicySetting;
 import com.percussion.deployer.objectstore.PSTracePolicySetting;
 import com.percussion.deployer.objectstore.PSTransactionSummary;
+import com.percussion.deployer.server.IPSIdTypeHandler;
+import com.percussion.deployer.server.PSAppTransformer;
 import com.percussion.deployer.server.PSArchiveHandler;
 import com.percussion.deployer.server.PSDbmsHelper;
 import com.percussion.deployer.server.PSDependencyDef;
@@ -52,16 +55,23 @@ import com.percussion.design.objectstore.PSApplication;
 import com.percussion.design.objectstore.PSApplicationType;
 import com.percussion.design.objectstore.PSBackEndDataTank;
 import com.percussion.design.objectstore.PSBackEndTable;
+import com.percussion.design.objectstore.PSDataMapper;
 import com.percussion.design.objectstore.PSDataSelector;
 import com.percussion.design.objectstore.PSDataSet;
+import com.percussion.design.objectstore.PSExtensionCallSet;
 import com.percussion.design.objectstore.PSFunctionCall;
 import com.percussion.design.objectstore.PSLogger;
 import com.percussion.design.objectstore.PSPipe;
 import com.percussion.design.objectstore.PSQueryPipe;
+import com.percussion.design.objectstore.PSRequestor;
+import com.percussion.design.objectstore.PSResultPage;
+import com.percussion.design.objectstore.PSResultPageSet;
 import com.percussion.design.objectstore.PSWhereClause;
 import com.percussion.design.objectstore.server.PSApplicationSummary;
 import com.percussion.design.objectstore.server.PSServerXmlObjectStore;
 import com.percussion.design.objectstore.server.PSXmlObjectStoreLockerId;
+import com.percussion.error.IPSDeploymentErrors;
+import com.percussion.error.PSDeployException;
 import com.percussion.security.PSSecurityToken;
 import com.percussion.server.PSServer;
 import com.percussion.services.error.PSNotFoundException;
@@ -83,7 +93,7 @@ import java.util.Set;
  * Class to handle packaging and deploying an application.
  */
 public class PSApplicationDependencyHandler
-   extends PSContentEditorObjectDependencyHandler
+   extends PSContentEditorObjectDependencyHandler implements IPSIdTypeHandler
 {
 
    /**
@@ -149,10 +159,27 @@ public class PSApplicationDependencyHandler
             childDeps.add(appDep);
       }
 
+      // get roles
+     /* PSDependencyHandler roleHandler = getDependencyHandler(
+         PSRoleDefDependencyHandler.DEPENDENCY_TYPE);
+      Iterator aclEntries = app.getAcl().getEntries().iterator();
+      while (aclEntries.hasNext())
+      {
+         PSAclEntry aclEntry = (PSAclEntry)aclEntries.next();
+         if (aclEntry.isRole())
+         {
+            PSDependency roleDep = roleHandler.getDependency(tok,
+               aclEntry.getName());
+            if (roleDep != null)
+               childDeps.add(roleDep);
+         }
+      }
+      */
+
 
       // walk each dataset
-//      PSDependencyHandler wfHandler = getDependencyHandler(
-//         PSWorkflowDependencyHandler.DEPENDENCY_TYPE);
+      PSDependencyHandler wfHandler = getDependencyHandler(
+         PSWorkflowDependencyHandler.DEPENDENCY_TYPE);
       PSDependencyHandler schemaHandler = getDependencyHandler(
          PSSchemaDependencyHandler.DEPENDENCY_TYPE);
       boolean gotCE = false;
@@ -540,7 +567,7 @@ public class PSApplicationDependencyHandler
       catch (Exception e)
       {
          throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR,
-            e.getLocalizedMessage());
+            e.getMessage());
       }
       finally
       {
@@ -672,6 +699,257 @@ public class PSApplicationDependencyHandler
       return true;
    }
 
+   // see IPSIdTypeHandler interface
+   public PSApplicationIDTypes getIdTypes(PSSecurityToken tok, PSDependency dep)
+      throws PSDeployException
+   {
+      if (tok == null)
+         throw new IllegalArgumentException("tok may not be null");
+
+      if (dep == null)
+         throw new IllegalArgumentException("dep may not be null");
+
+      if (!dep.getObjectType().equals(DEPENDENCY_TYPE))
+         throw new IllegalArgumentException("dep wrong type");
+
+      PSApplicationIDTypes idTypes = new PSApplicationIDTypes(dep);
+      try
+      {
+         PSServerXmlObjectStore os = PSServerXmlObjectStore.getInstance();
+         PSApplication app = os.getApplicationObject(dep.getDependencyId(),
+            tok);
+
+         PSCollection dataSetColl = app.getDataSets();
+         if (dataSetColl == null)
+            return idTypes;
+
+         Iterator datasets = dataSetColl.iterator();
+         while (datasets.hasNext())
+         {
+            List mappings = new ArrayList();
+            PSDataSet ds = (PSDataSet)datasets.next();
+            String reqName = getResourceName(ds);
+
+            // check page selection/validation properties
+            PSRequestor requestor =  ds.getRequestor();
+            mappings.clear();
+            PSAppTransformer.checkConditionals(mappings,
+               requestor.getSelectionCriteria().iterator(), null);
+            idTypes.addMappings(reqName,
+               IPSDeployConstants.ID_TYPE_ELEMENT_REQUEST_PROPERTIES,
+               mappings.iterator());
+
+            mappings.clear();
+            PSAppTransformer.checkConditionals(mappings,
+               requestor.getValidationRules().iterator(), null);
+            idTypes.addMappings(reqName,
+               IPSDeployConstants.ID_TYPE_ELEMENT_REQUEST_VALIDATIONS,
+               mappings.iterator());
+
+               PSPipe dsPipe = ds.getPipe();
+            if (dsPipe instanceof PSQueryPipe)
+            {
+               PSQueryPipe queryPipe = (PSQueryPipe) dsPipe;
+               PSDataSelector selector = queryPipe.getDataSelector();
+               mappings.clear();
+               PSAppTransformer.checkConditionals(mappings, selector
+                     .getWhereClauses().iterator(), null);
+               idTypes.addMappings(reqName,
+                     IPSDeployConstants.ID_TYPE_ELEMENT_SELECTOR, mappings
+                           .iterator());
+
+               PSResultPageSet pageSet = ds.getOutputResultPages();
+               if (pageSet != null)
+               {
+                  PSCollection pageColl = pageSet.getResultPages();
+                  if (pageColl != null)
+                  {
+                     mappings.clear();
+                     Iterator pages = pageColl.iterator();
+                     while (pages.hasNext())
+                     {
+                        PSAppTransformer.checkResultPage(mappings,
+                              (PSResultPage) pages.next(), null);
+                     }
+
+                     idTypes.addMappings(reqName,
+                           IPSDeployConstants.ID_TYPE_ELEMENT_RESULT_PAGES,
+                           mappings.iterator());
+                  }
+               }
+            }
+
+            // the mapper
+            PSDataMapper dataMapper = dsPipe.getDataMapper();
+            if (dataMapper != null)
+            {
+               mappings.clear();
+               PSAppTransformer.checkDataMapper(mappings, dataMapper, null);
+               idTypes.addMappings(reqName,
+                     IPSDeployConstants.ID_TYPE_ELEMENT_DATA_MAPPER, mappings
+                           .iterator());
+            }
+
+
+            // plus regular dataset pre/post exits
+            PSExtensionCallSet inputCallSet =
+               ds.getPipe().getInputDataExtensions();
+            if (inputCallSet != null)
+            {
+               mappings.clear();
+               PSAppTransformer.checkExtensionCalls(mappings,
+                  inputCallSet.iterator(), null);
+               idTypes.addMappings(reqName,
+                  IPSDeployConstants.ID_TYPE_ELEMENT_INPUT_DATA_EXITS,
+                  mappings.iterator());
+            }
+
+            PSExtensionCallSet resultCallSet =
+               ds.getPipe().getResultDataExtensions();
+            if (resultCallSet != null)
+            {
+               mappings.clear();
+               PSAppTransformer.checkExtensionCalls(mappings,
+                  resultCallSet.iterator(), null);
+               idTypes.addMappings(reqName,
+                  IPSDeployConstants.ID_TYPE_ELEMENT_RESULT_DATA_EXITS,
+                  mappings.iterator());
+            }
+         }
+      }
+      catch (Exception e)
+      {
+         throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR,
+            e.getLocalizedMessage());
+      }
+
+      return idTypes;
+   }
+
+   // see IPSIdTypeHandler interface
+   public void transformIds(Object object, PSApplicationIDTypes idTypes,
+      PSIdMap idMap) throws PSDeployException
+   {
+      if (object == null)
+         throw new IllegalArgumentException("object may not be null");
+
+      if (idTypes == null)
+         throw new IllegalArgumentException("idTypes may not be null");
+
+      if (idMap == null)
+         throw new IllegalArgumentException("idMap may not be null");
+
+      if (!(object instanceof PSApplication))
+      {
+         throw new IllegalArgumentException("invalid object type");
+      }
+
+      PSApplication app = (PSApplication)object;
+
+      // walk id types and perform any transforms
+      Iterator resources = idTypes.getResourceList(false);
+      while (resources.hasNext())
+      {
+         String resource = (String)resources.next();
+         PSDataSet ds = getResource(app, resource);
+         if (ds == null)
+            continue;
+
+         Iterator elements = idTypes.getElementList(resource, false);
+         while (elements.hasNext())
+         {
+            String element = (String)elements.next();
+            Iterator mappings = idTypes.getIdTypeMappings(
+                  resource, element, false);
+            while (mappings.hasNext())
+            {
+               PSApplicationIDTypeMapping mapping =
+                  (PSApplicationIDTypeMapping)mappings.next();
+
+               if (mapping.getType().equals(
+                  PSApplicationIDTypeMapping.TYPE_NONE))
+               {
+                  continue;
+               }
+               else if (element.equals(
+                  IPSDeployConstants.ID_TYPE_ELEMENT_INPUT_DATA_EXITS))
+               {
+                  PSExtensionCallSet inputCallSet =
+                     ds.getPipe().getInputDataExtensions();
+                  if (inputCallSet != null)
+                     PSAppTransformer.transformExtensionCalls(
+                        inputCallSet.iterator(), mapping, idMap);
+               }
+               else if (element.equals(
+                  IPSDeployConstants.ID_TYPE_ELEMENT_REQUEST_PROPERTIES))
+               {
+                  PSAppTransformer.transformConditionals(
+                     ds.getRequestor().getSelectionCriteria().iterator(),
+                     mapping, idMap);
+               }
+               else if (element.equals(
+                  IPSDeployConstants.ID_TYPE_ELEMENT_REQUEST_VALIDATIONS))
+               {
+                  PSAppTransformer.transformConditionals(
+                     ds.getRequestor().getValidationRules().iterator(),
+                     mapping, idMap);
+               }
+               else if (element.equals(
+                  IPSDeployConstants.ID_TYPE_ELEMENT_RESULT_DATA_EXITS))
+               {
+                  PSExtensionCallSet resultCallSet =
+                     ds.getPipe().getResultDataExtensions();
+                  if (resultCallSet != null)
+                     PSAppTransformer.transformExtensionCalls(
+                        resultCallSet.iterator(), mapping, idMap);
+               }
+               else
+               {
+                  PSPipe dsPipe = ds.getPipe();
+
+                  if (element.equals(
+                     IPSDeployConstants.ID_TYPE_ELEMENT_DATA_MAPPER))
+                  {
+                     PSAppTransformer.transformDataMapper(
+                        dsPipe.getDataMapper(), mapping, idMap);
+                  }
+                  else if (dsPipe instanceof PSQueryPipe)
+                  {
+
+                     if (element.equals(
+                        IPSDeployConstants.ID_TYPE_ELEMENT_RESULT_PAGES))
+                     {
+                        PSResultPageSet pageSet = ds.getOutputResultPages();
+                        if (pageSet != null)
+                        {
+                           PSCollection pageColl = pageSet.getResultPages();
+                           if (pageColl != null)
+                           {
+                              Iterator pages = pageColl.iterator();
+                              while (pages.hasNext())
+                              {
+                                 PSAppTransformer.transformResultPage(
+                                    (PSResultPage)pages.next(), mapping, idMap);
+                              }
+                           }
+                        }
+                     }
+                     else if (element.equals(
+                        IPSDeployConstants.ID_TYPE_ELEMENT_SELECTOR))
+                     {
+                        PSQueryPipe queryPipe = (PSQueryPipe)dsPipe;
+                        PSDataSelector selector = queryPipe.getDataSelector();
+                        PSAppTransformer.transformConditionals(
+                           selector.getWhereClauses().iterator(), mapping,
+                           idMap);
+                     }
+                  }
+               }
+            }
+         }
+      }
+   }
+
    /**
     * Get the current application id for the specified application.
     *
@@ -711,6 +989,12 @@ public class PSApplicationDependencyHandler
       throws PSDeployException
    {
       PSIdMap idMap = ctx.getCurrentIdMap();
+
+
+      // translate id's using idTypes and idMap
+      if(isIdTypeMappingEnabled()) {
+         transformIds(app, ctx.getIdTypes(), idMap);
+      }
 
       // translate dbms credentials using the dbms map
       transformDbms(app, ctx);
@@ -872,8 +1156,7 @@ public class PSApplicationDependencyHandler
     * @throws PSDeployException if there are any errors.
     */
    private List<PSDependency> getStyleSheetDependencies(PSSecurityToken tok, PSDependency dep)
-      throws PSDeployException
-   {
+           throws PSDeployException, PSNotFoundException {
       List<PSDependency> deps = new ArrayList<>();
 
       String appName = dep.getDependencyId();

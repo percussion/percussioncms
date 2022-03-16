@@ -27,7 +27,7 @@
     <parent>
         <artifactId>core</artifactId>
         <groupId>com.percussion</groupId>
-        <version>8.0.3</version>
+        <version>8.1.1-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -140,6 +140,12 @@
            <groupId>xml-resolver</groupId>
            <artifactId>xml-resolver</artifactId>
            <scope>provided</scope>
+       </dependency>
+       <dependency>
+           <groupId>com.percussion</groupId>
+           <artifactId>perc-deployer</artifactId>
+           <version>8.1.1-SNAPSHOT</version>
+           <scope>compile</scope>
        </dependency>
 
 

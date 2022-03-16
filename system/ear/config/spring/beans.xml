@@ -1,37 +1,13 @@
-<!--
-  ~     Percussion CMS
-  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
-  ~
-  ~     This program is free software: you can redistribute it and/or modify
-  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
-  ~
-  ~     This program is distributed in the hope that it will be useful,
-  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
-  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  ~     GNU Affero General Public License for more details.
-  ~
-  ~     Mailing Address:
-  ~
-  ~      Percussion Software, Inc.
-  ~      PO Box 767
-  ~      Burlington, MA 01803, USA
-  ~      +01-781-438-9900
-  ~      support@percussion.com
-  ~      https://www.percussion.com
-  ~
-  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
-  -->
-
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:tx="http://www.springframework.org/schema/tx"
        xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+http://www.springframework.org/schema/beans/spring-beans.xsd
 http://www.springframework.org/schema/tx
-http://www.springframework.org/schema/tx/spring-tx-4.2.xsd
+http://www.springframework.org/schema/tx/spring-tx.xsd
 http://www.springframework.org/schema/context
-http://www.springframework.org/schema/context/spring-context-4.2.xsd">
+http://www.springframework.org/schema/context/spring-context.xsd">
 
     <tx:annotation-driven transaction-manager="sys_transactionManager"/>
 
@@ -41,36 +17,6 @@ http://www.springframework.org/schema/context/spring-context-4.2.xsd">
                                 expression="com.percussion.utils.annotations.IgnoreInWebAppSpringContext"/>
 
     </context:component-scan>
-    <!--
-       <bean id="sys_guidmanager"
-             class="com.percussion.services.guidmgr.impl.PSGuidManager">
-          <property name="sessionFactory">
-             <ref bean="sys_sessionFactory" />
-          </property>
-       </bean>
-       -->
-    <!--
-       <bean id="sys_cmsObjectMgr"
-             class="com.percussion.services.legacy.impl.PSCmsObjectMgr">
-          <property name="sessionFactory">
-             <ref bean="sys_sessionFactory" />
-          </property>
-       </bean>
-    -->
-    <!--
-    <bean id="sys_aclService"
-          class="com.percussion.services.security.impl.PSAclService">
-       <property name="sessionFactory">
-          <ref bean="sys_sessionFactory" />
-       </property>
-       <property name="grantDefaultCommunityVisibility" value="true"/>
-    </bean>
- -->
-
-    <bean id="sys_deployService"
-          class="com.percussion.deploy.services.impl.PSDeployService">
-        <property name="sessionFactory" ref="sys_sessionFactory"/>
-    </bean>
 
     <bean id="sys_loginMgr"
           class="com.percussion.services.security.loginmods.impl.PSLoginMgr">
@@ -82,42 +28,6 @@ http://www.springframework.org/schema/context/spring-context-4.2.xsd">
         <property name="repository" ref="sys_legacyContentRepository"/>
     </bean>
 
-    <!--
-    <bean id="sys_assemblyService"
-          class="com.percussion.services.assembly.impl.PSAssemblyService">
-       <property name="sessionFactory">
-          <ref bean="sys_sessionFactory" />
-       </property>
-       <property name="notificationService">
-          <ref bean="sys_notificationService" />
-       </property>
-       <property name="cache">
-          <ref bean="sys_cacheAccessor" />
-       </property>
-       <property name="configurationBean">
-          <ref bean="sys_beanConfiguration" />
-       </property>
-    </bean>
- -->
-    <!--
-    <bean id="sys_assemblyWs"
-          class="com.percussion.webservices.assembly.impl.PSAssemblyWs">
-       <property name="sessionFactory">
-          <ref bean="sys_sessionFactory" />
-       </property>
-    </bean>
- -->
-    <!--
-    <bean id="sys_assemblyDesignWs"
-          class="com.percussion.webservices.assembly.impl.PSAssemblyDesignWs">
-       <property name="sessionFactory">
-          <ref bean="sys_sessionFactory" />
-       </property>
-       <property name="cache">
-          <ref bean="sys_cacheAccessor" />
-       </property>
-    </bean>
- -->
     <bean id="sys_contentService"
           class="com.percussion.services.content.impl.PSContentService">
         <property name="sessionFactory" ref="sys_sessionFactory"/>
@@ -347,22 +257,6 @@ http://www.springframework.org/schema/context/spring-context-4.2.xsd">
           factory-method="createInstance">
         <constructor-arg ref="sys_datasourceManager"/>
     </bean>
-    <!--
-       <bean id="sys_backEndRoleMgr"
-             class="com.percussion.services.security.impl.PSBackEndRoleMgr">
-          <property name="sessionFactory">
-             <ref bean="sys_sessionFactory" />
-          </property>
-       </bean>
-    -->
-    <!--
-    <bean id="sys_cacheAccessor"
-          class="com.percussion.services.memory.impl.PSEhCacheAccessor">
-       <property name="notificationService">
-          <ref bean="sys_notificationService"/>
-       </property>
-    </bean>
- -->
     <bean id="sys_lockingService"
           class="com.percussion.services.locking.impl.PSObjectLockService">
         <property name="sessionFactory" ref="sys_sessionFactory"/>
@@ -416,10 +310,6 @@ http://www.springframework.org/schema/context/spring-context-4.2.xsd">
         <constructor-arg ref="sys_sessionFactory"/>
     </bean>
 
-    <!--<bean id="sys_roleMgr"-->
-    <!--class="com.percussion.services.security.impl.PSRoleMgr">-->
-    <!--</bean>-->
-
     <bean id="sys_notificationService"
           class="com.percussion.services.notification.impl.PSNotificationService">
     </bean>
@@ -446,20 +336,7 @@ http://www.springframework.org/schema/context/spring-context-4.2.xsd">
     <bean id="sys_touchItemQL" class="com.percussion.services.touchitem.impl.PSTouchItemQueueListener">
         <property name="messageQueueService" ref="sys_messageQueueService"/>
     </bean>
-    <!--
-       <bean id="sys_publisherservice"
-             class="com.percussion.services.publisher.impl.PSPublisherService" init-method="init">
-          <property name="sessionFactory">
-             <ref bean="sys_sessionFactory" />
-          </property>
-          <property name="configurationBean">
-             <ref bean="sys_beanConfiguration" />
-          </property>
-          <property name="rxpub">
-             <ref bean="sys_rxpublisherservice" />
-          </property>
-       </bean>
-    -->
+
     <bean id="sys_rxpublisherservice"
           class="com.percussion.rx.publisher.impl.PSRxPublisherService">
         <property name="publishSenderFactory" ref="sys_publishQueueSenderFactory"/>

@@ -24,7 +24,7 @@
 package com.percussion.design.objectstore;
 
 import com.percussion.extension.PSExtensionRef;
-import com.percussion.util.PSIteratorUtils;
+import com.percussion.utils.collections.PSIteratorUtils;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
 import org.w3c.dom.Document;

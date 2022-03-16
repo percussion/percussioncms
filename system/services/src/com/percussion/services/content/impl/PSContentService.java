@@ -372,12 +372,7 @@ public class PSContentService
    {
       if (autoTranslation == null)
          throw new IllegalArgumentException("autoTranslation may not be null");
-      
-      // for some reason saveOrUpdate() always tries to insert
-      if (autoTranslation.getVersion() == null)
-         sessionFactory.getCurrentSession().save(autoTranslation);
-      else
-         sessionFactory.getCurrentSession().update(autoTranslation);
+         sessionFactory.getCurrentSession().saveOrUpdate(autoTranslation);
    }
 
    /* (non-Javadoc)

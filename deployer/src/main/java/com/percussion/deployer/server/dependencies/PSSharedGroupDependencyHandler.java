@@ -24,26 +24,30 @@
 
 package com.percussion.deployer.server.dependencies;
 
-import com.percussion.deployer.error.IPSDeploymentErrors;
-import com.percussion.deployer.error.PSDeployException;
+import com.percussion.deployer.client.IPSDeployConstants;
+import com.percussion.deployer.objectstore.PSApplicationIDTypeMapping;
+import com.percussion.deployer.objectstore.PSApplicationIDTypes;
 import com.percussion.deployer.objectstore.PSDependency;
 import com.percussion.deployer.objectstore.PSDependencyFile;
 import com.percussion.deployer.objectstore.PSIdMap;
 import com.percussion.deployer.objectstore.PSTransactionSummary;
+import com.percussion.deployer.server.IPSIdTypeHandler;
+import com.percussion.deployer.server.PSAppTransformer;
 import com.percussion.deployer.server.PSArchiveHandler;
 import com.percussion.deployer.server.PSDependencyDef;
 import com.percussion.deployer.server.PSDependencyMap;
 import com.percussion.deployer.server.PSImportCtx;
-import com.percussion.design.objectstore.PSContainerLocator;
 import com.percussion.design.objectstore.PSContentEditorSharedDef;
 import com.percussion.design.objectstore.PSSharedFieldGroup;
 import com.percussion.design.objectstore.PSUIDefinition;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
 import com.percussion.design.objectstore.server.PSServerXmlObjectStore;
+import com.percussion.error.IPSDeploymentErrors;
+import com.percussion.error.PSDeployException;
 import com.percussion.security.PSSecurityToken;
 import com.percussion.services.error.PSNotFoundException;
 import com.percussion.util.PSCollection;
-import com.percussion.util.PSIteratorUtils;
+import com.percussion.utils.collections.PSIteratorUtils;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import org.w3c.dom.Document;
 
@@ -59,7 +63,7 @@ import java.util.Set;
  * Class to handle packaging and deploying a shared group
  */
 public class PSSharedGroupDependencyHandler 
-   extends PSContentEditorObjectDependencyHandler
+   extends PSContentEditorObjectDependencyHandler implements IPSIdTypeHandler
 {
    /**
     * Construct a dependency handler.
@@ -192,43 +196,6 @@ public class PSSharedGroupDependencyHandler
       addApplicationDependencies(tok, childDeps, group.toXml(doc));
       
       return childDeps.iterator();      
-   }
-   
-   /**
-    * Get dependencies for all tables from the supplied container locator
-    *
-    * @param tok The security token to use, may not be <code>null</code>.
-    * @param locator The locator to check, may not be <code>null</code>.
-    *
-    * @return list of dependencies, never <code>null</code>, may be empty.
-    *
-    * @throws PSDeployException if there are any errors.
-    */
-   @SuppressWarnings("unchecked")
-   private List<PSDependency> checkLocatorTables(PSSecurityToken tok,
-      PSContainerLocator locator)
-           throws PSDeployException, PSNotFoundException {
-      if (tok == null)
-         throw new IllegalArgumentException("tok may not be null");
-
-      if (locator == null)
-         throw new IllegalArgumentException("locator may not be null");
-
-      PSDependencyHandler schemaHandler = getDependencyHandler(
-         PSSchemaDependencyHandler.DEPENDENCY_TYPE);
-
-      List<PSDependency> childDeps = new ArrayList<>();
-      for (String tableName : PSDependencyUtils.getLocatorTables(locator))
-      {
-         PSDependency schemaDep =
-            schemaHandler.getDependency(tok, tableName);
-         if (schemaDep != null)
-         {
-            childDeps.add(schemaDep);
-         }
-      }
-
-      return childDeps;
    }
    
    // see base class
@@ -444,6 +411,7 @@ public class PSSharedGroupDependencyHandler
          else
          {
             // we have the file with the existing group
+            String fileName = defFile.getName();
             defCol = new PSCollection(tgtDef.getFieldGroups());
             for (int i = 0; i < defCol.size(); i++) 
             {
@@ -468,6 +436,166 @@ public class PSSharedGroupDependencyHandler
       {
          throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR, 
             e.toString());
+      }
+   }
+
+   // see IPSIdTypeHandler interface
+   public PSApplicationIDTypes getIdTypes(PSSecurityToken tok, PSDependency dep)
+      throws PSDeployException
+   {
+      if (tok == null)
+         throw new IllegalArgumentException("tok may not be null");
+
+      if (dep == null)
+         throw new IllegalArgumentException("dep may not be null");
+
+      if (!dep.getObjectType().equals(DEPENDENCY_TYPE))
+         throw new IllegalArgumentException("dep wrong type");
+
+      PSApplicationIDTypes idTypes = new PSApplicationIDTypes(dep);
+      try
+      {
+         PSServerXmlObjectStore os = PSServerXmlObjectStore.getInstance();
+         PSContentEditorSharedDef sharedDef = os.getContentEditorSharedDef();
+
+         List mappings = new ArrayList();
+         String groupName = dep.getDependencyId();
+         PSSharedFieldGroup sharedGroup = null;
+         Iterator groups = sharedDef.getFieldGroups();
+         while (groups.hasNext() && sharedGroup == null)
+         {
+            PSSharedFieldGroup test = (PSSharedFieldGroup)groups.next();
+            if (test.getName().equals(groupName))
+               sharedGroup = test;
+         }
+
+         // this should never happen
+         if (sharedGroup == null)
+         {
+            Object[] args = {dep.getKey(), "Group not found"};
+            throw new PSDeployException(IPSDeploymentErrors.ID_TYPE_MAP_LOAD,
+               args);
+         }
+
+         mappings.clear();
+         PSAppTransformer.checkFieldSet(mappings, sharedGroup.getFieldSet(),
+            null);
+         idTypes.addMappings(groupName,
+            IPSDeployConstants.ID_TYPE_ELEMENT_CE_FIELD, mappings.iterator());
+
+         mappings.clear();
+         PSAppTransformer.checkUIDef(mappings, sharedGroup.getUIDefinition(),
+            null);
+         idTypes.addMappings(groupName,
+            IPSDeployConstants.ID_TYPE_ELEMENT_CE_UI_DEF, mappings.iterator());
+
+         mappings.clear();
+         PSAppTransformer.checkConditionalExits(mappings,
+            sharedGroup.getInputTranslations(), null);
+         idTypes.addMappings(groupName,
+            IPSDeployConstants.ID_TYPE_ELEMENT_CE_INPUT_TRANSLATIONS,
+               mappings.iterator());
+
+         mappings.clear();
+         PSAppTransformer.checkConditionalExits(mappings,
+            sharedGroup.getOutputTranslations(), null);
+         idTypes.addMappings(groupName,
+            IPSDeployConstants.ID_TYPE_ELEMENT_CE_OUTPUT_TRANSLATIONS,
+               mappings.iterator());
+
+         mappings.clear();
+         PSAppTransformer.checkConditionalExits(mappings,
+            sharedGroup.getValidationRules(), null);
+         idTypes.addMappings(groupName,
+            IPSDeployConstants.ID_TYPE_ELEMENT_CE_VALIDATION_RULES,
+               mappings.iterator());
+
+      }
+      catch (Exception e)
+      {
+         throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR,
+            e.getLocalizedMessage());
+      }
+
+      return idTypes;
+   }
+
+   // see IPSIdTypeHandler interface
+   public void transformIds(Object object, PSApplicationIDTypes idTypes,
+      PSIdMap idMap) throws PSDeployException
+   {
+      if (object == null)
+         throw new IllegalArgumentException("object may not be null");
+
+      if (idTypes == null)
+         throw new IllegalArgumentException("idTypes may not be null");
+
+      if (idMap == null)
+         throw new IllegalArgumentException("idMap may not be null");
+
+      if (!(object instanceof PSSharedFieldGroup))
+         throw new IllegalArgumentException("invalid object type");
+
+      PSSharedFieldGroup group = (PSSharedFieldGroup)object;
+
+      String groupName = group.getName();
+      Iterator resources = idTypes.getResourceList(false);
+      while (resources.hasNext())
+      {
+         String resource = (String)resources.next();
+         if (!groupName.equals(resource))
+            continue;
+
+         Iterator elements = idTypes.getElementList(resource, false);
+         while (elements.hasNext())
+         {
+            String element = (String)elements.next();
+            Iterator mappings = idTypes.getIdTypeMappings(
+                  resource, element, false);
+            while (mappings.hasNext())
+            {
+
+               PSApplicationIDTypeMapping mapping =
+                  (PSApplicationIDTypeMapping)mappings.next();
+
+               if (mapping.getType().equals(
+                  PSApplicationIDTypeMapping.TYPE_NONE))
+               {
+                  continue;
+               }
+
+               if (element.equals(
+                  IPSDeployConstants.ID_TYPE_ELEMENT_CE_FIELD))
+               {
+                  PSAppTransformer.transformFieldSet(group.getFieldSet(),
+                     mapping, idMap);
+               }
+               else if (element.equals(
+                  IPSDeployConstants.ID_TYPE_ELEMENT_CE_UI_DEF))
+               {
+                  PSAppTransformer.transformUIDef(group.getUIDefinition(),
+                     mapping, idMap);
+               }
+               else if (element.equals(
+                  IPSDeployConstants.ID_TYPE_ELEMENT_CE_INPUT_TRANSLATIONS))
+               {
+                  PSAppTransformer.transformConditionalExits(
+                     group.getInputTranslations(), mapping, idMap);
+               }
+               else if (element.equals(
+                  IPSDeployConstants.ID_TYPE_ELEMENT_CE_OUTPUT_TRANSLATIONS))
+               {
+                  PSAppTransformer.transformConditionalExits(
+                     group.getOutputTranslations(), mapping, idMap);
+               }
+               else if (element.equals(
+                  IPSDeployConstants.ID_TYPE_ELEMENT_CE_VALIDATION_RULES))
+               {
+                  PSAppTransformer.transformConditionalExits(
+                     group.getValidationRules(), mapping, idMap);
+               }
+            }
+         }
       }
    }
 
@@ -502,6 +630,11 @@ public class PSSharedGroupDependencyHandler
    {
       // transform ui def
       transformUIDef(ctx.getCurrentIdMap(), group.getUIDefinition());
+
+      if(isIdTypeMappingEnabled()) {
+         // transform idTypes
+         transformIds(group, ctx.getIdTypes(), ctx.getCurrentIdMap());
+      }
    }
    
    /**

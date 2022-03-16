@@ -287,6 +287,7 @@ public class PSJdbcStatementFactory
       }
       //add indexes as unique constraints
       Iterator indexes = tableSchema.getIndexes(PSJdbcIndex.TYPE_UNIQUE);
+
       while (indexes.hasNext())
       {
          PSJdbcIndex index = (PSJdbcIndex)indexes.next();
@@ -1250,7 +1251,7 @@ public class PSJdbcStatementFactory
     * Assumed not <code>null</code>.
     *
     * @param schema
-    * @param tableSchema The table possibly containing the foreign key.
+    * @param schema The table possibly containing the foreign key.
     * Assumed not <code>null</code>.
     *
     * @return The foreign key definition, or <code>null</code> if the
@@ -1392,23 +1393,21 @@ public class PSJdbcStatementFactory
    private static String getUniqueConstraints(PSJdbcDbmsDef dbmsDef,
       PSJdbcTableSchema tableSchema)
    {
+
+      Iterator indexes =tableSchema.getIndexes(PSJdbcIndex.TYPE_UNIQUE);
       StringBuilder buf = null;
-
-      Iterator indexes = tableSchema.getIndexes(PSJdbcIndex.TYPE_UNIQUE);
-      if (indexes.hasNext())
-         buf = new StringBuilder();
-
-      boolean firstTime = true;
       while (indexes.hasNext())
       {
          PSJdbcIndex index = (PSJdbcIndex)indexes.next();
-         if (firstTime)
-            firstTime = false;
+         if (buf == null)
+            buf = new StringBuilder();
          else
             buf.append(", ");
 
          buf.append(getUniqueConstraint(dbmsDef, tableSchema, index));
       }
+
+
 
       return buf == null ? null : buf.toString();
    }
@@ -1625,7 +1624,7 @@ public class PSJdbcStatementFactory
          throw new IllegalArgumentException("tableSchema may not be null");
 
       PSJdbcExecutionBlock block = new PSJdbcExecutionBlock();
-      Iterator it = tableSchema.getIndexes(PSJdbcIndex.TYPE_NON_UNIQUE);
+      Iterator it =  tableSchema.getIndexes(PSJdbcIndex.TYPE_NON_UNIQUE);
       while (it.hasNext())
       {
          PSJdbcIndex index = (PSJdbcIndex)it.next();

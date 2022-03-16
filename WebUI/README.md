@@ -1,11 +1,10 @@
 # WebUI
-This module contains the support for the User Interface for CMS. 
-
-* Support for resolving gadgets involving user forms.
-* Support for resolving i189.
-* Support for minification as well as bundling of Javascript files.
-* Support for resources used to render the User Interface.
-* JSP files, image files, CSS resources and other relevant resources to render the User Interface.
+This module contains the support for the User Interface for CMS.
 
 ## Building
   mvn clean install 
+
+## Layout
+Most ui elements are located under the war folder. When deployed they are placed into the main application war file under the cm folder. 
+
+war/

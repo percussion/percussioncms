@@ -25,8 +25,6 @@
 package com.percussion.deployer.server.dependencies;
 
 
-import com.percussion.deployer.error.IPSDeploymentErrors;
-import com.percussion.deployer.error.PSDeployException;
 import com.percussion.deployer.objectstore.PSDependency;
 import com.percussion.deployer.objectstore.PSDependencyData;
 import com.percussion.deployer.objectstore.PSDependencyFile;
@@ -38,8 +36,11 @@ import com.percussion.deployer.server.PSDbmsHelper;
 import com.percussion.deployer.server.PSDependencyDef;
 import com.percussion.deployer.server.PSDependencyMap;
 import com.percussion.deployer.server.PSImportCtx;
+import com.percussion.error.IPSDeploymentErrors;
+import com.percussion.error.PSDeployException;
 import com.percussion.security.PSSecurityToken;
 import com.percussion.services.catalog.PSTypeEnum;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.PSGuidUtils;
 import com.percussion.services.security.IPSBackEndRoleMgr;
 import com.percussion.services.security.PSRoleMgrLocator;
@@ -96,13 +97,12 @@ public class PSCommunityDefDependencyHandler
       m_commRLSchema = dbmsHelper.catalogTable(COMM_RL_TABLE, false);
       // initialize m_childTypes
       m_childTypes = new ArrayList<>();
+
    }
 
    // see base class
-   @Override
    public Iterator getChildDependencies(PSSecurityToken tok, PSDependency dep)
-      throws PSDeployException
-   {
+           throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
       if (dep == null)
@@ -110,12 +110,52 @@ public class PSCommunityDefDependencyHandler
       if (! dep.getObjectType().equals(DEPENDENCY_TYPE))
          throw new IllegalArgumentException("dep wrong type");
 
-      // No child dependencies, just create the List for the return value.
-      List<PSDependency> childDeps = new ArrayList<>();
+      String parentId = dep.getDependencyId();
+
+      // get Component child dependencies
+      List<PSDependency> childDeps = getChildDepsFromParentID(COMM_CP_TABLE,
+         COMM_CP_ID, COMMUNITY_ID, parentId,
+         PSComponentDependencyHandler.DEPENDENCY_TYPE, tok);
+
+
+      // get the roles child dependencies
+      List<PSDependency> roleDeps = getRoleChildDeps(tok, parentId);
+      childDeps.addAll(roleDeps);
 
       return childDeps.iterator();
    }
 
+   /**
+    * Get role dependencies from a parent / community id.
+    *
+    * @param tok The security token, assume not <code>null</code>.
+    * @param parentId The parent id, assume not <code>null</code>.
+    *
+    * @return An interator over zero or more dependency objects.
+    * @throws PSDeployException
+    */
+   private List<PSDependency> getRoleChildDeps(PSSecurityToken tok, String parentId)
+           throws PSDeployException, PSNotFoundException {
+      List<PSDependency> roleDeps = new ArrayList<>();
+
+      Iterator ids = getChildIdsFromTable(COMM_RL_TABLE, COMM_RL_ID,
+         COMMUNITY_ID, parentId);
+      if (ids.hasNext())
+      {
+         PSDbmsHelper dbmsHelper = PSDbmsHelper.getInstance();
+         PSJdbcSelectFilter filter;
+         filter = dbmsHelper.getFilterInFromIds(ids, ROLE_ID);
+         PSJdbcTableData idData;
+         idData = dbmsHelper.catalogTableData(ROLE_TABLE, null, filter);
+
+         Iterator names = getIdsFromTableData(idData, ROLE_TABLE, ROLE_NAME);
+
+         roleDeps = getDepsFromIds(names,
+            PSRoleDefDependencyHandler.DEPENDENCY_TYPE, tok, -1);
+      }
+
+      return roleDeps;
+   }
 
    // see base class
    public Iterator<PSDependency> getDependencies(PSSecurityToken tok)
@@ -202,6 +242,12 @@ public class PSCommunityDefDependencyHandler
       // get the first dep data for the content object of itself
       depData = getDepDataFromTable(dep, COMMUNITY_TABLE, COMMUNITY_ID, true);
       files.add(getDepFileFromDepData(depData));
+
+      // get the component relationship data
+      depData = getDepDataFromTable(dep, COMM_CP_TABLE, COMMUNITY_ID, false);
+      if (depData != null)
+         files.add(getDepFileFromDepData(depData));
+
 
       // get the Role relationship data
       depData = getDepDataFromTable(dep, COMM_RL_TABLE, COMMUNITY_ID, false);
@@ -581,6 +627,11 @@ public class PSCommunityDefDependencyHandler
                if (commMapping != null)
                   col.setValue(commMapping.getTargetId());
             }
+            else if (colName.equalsIgnoreCase(COMM_CP_ID))
+            {
+               mapChildIdForColumnNullable(col, dep,
+                  PSComponentDependencyHandler.DEPENDENCY_TYPE, ctx);
+            }
             tgtColList.add(col);
          }
 
@@ -589,10 +640,9 @@ public class PSCommunityDefDependencyHandler
          tgtRowList.add(tgtRow);
       }
 
-      PSJdbcTableData newData = new PSJdbcTableData(data.getName(),
+      return  new PSJdbcTableData(data.getName(),
          tgtRowList.iterator());
 
-      return newData;
    }
 
    /**

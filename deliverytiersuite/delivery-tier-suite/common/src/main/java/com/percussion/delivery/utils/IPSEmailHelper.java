@@ -54,5 +54,4 @@ public interface IPSEmailHelper
     public static final String EMAIL_PROPS_FROMNAME = "email.fromName";
     public static final String EMAIL_PROPS_SSLPORT = "email.sslPort";
 
-
 }

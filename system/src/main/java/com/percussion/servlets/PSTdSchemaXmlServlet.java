@@ -23,7 +23,6 @@
  */
 package com.percussion.servlets;
 
-import com.percussion.deploy.server.PSServerJdbcDbmsDef;
 import com.percussion.security.SecureStringUtils;
 import com.percussion.tablefactory.PSJdbcDataTypeMap;
 import com.percussion.tablefactory.PSJdbcDbmsDef;
@@ -33,6 +32,7 @@ import com.percussion.util.PSSqlHelper;
 import com.percussion.util.PSXMLDomUtil;
 import com.percussion.utils.jdbc.PSConnectionHelper;
 import com.percussion.utils.jdbc.PSConnectionInfo;
+import com.percussion.utils.jndi.PSServerJdbcDbmsDef;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
 import org.apache.commons.lang.StringUtils;

@@ -25,8 +25,6 @@ package com.percussion.deployer.server.dependencies;
 
 import com.percussion.cms.IPSConstants;
 import com.percussion.cms.PSChoiceBuilder;
-import com.percussion.deployer.error.IPSDeploymentErrors;
-import com.percussion.deployer.error.PSDeployException;
 import com.percussion.deployer.objectstore.PSDependency;
 import com.percussion.deployer.objectstore.PSDeployComponentUtils;
 import com.percussion.deployer.server.PSArchiveHandler;
@@ -34,12 +32,14 @@ import com.percussion.deployer.server.PSDependencyDef;
 import com.percussion.deployer.server.PSDependencyMap;
 import com.percussion.deployer.server.PSImportCtx;
 import com.percussion.design.objectstore.PSEntry;
+import com.percussion.error.IPSDeploymentErrors;
+import com.percussion.error.PSDeployException;
 import com.percussion.error.PSException;
 import com.percussion.security.PSSecurityToken;
 import com.percussion.server.PSRequest;
 import com.percussion.server.PSServer;
 import com.percussion.services.error.PSNotFoundException;
-import com.percussion.util.PSIteratorUtils;
+import com.percussion.utils.collections.PSIteratorUtils;
 
 import java.io.FileInputStream;
 import java.io.IOException;

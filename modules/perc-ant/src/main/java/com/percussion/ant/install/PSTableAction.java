@@ -28,9 +28,6 @@ import com.percussion.error.PSExceptionUtils;
 import com.percussion.install.InstallUtil;
 import com.percussion.install.PSLogger;
 import com.percussion.install.RxInstallerProperties;
-import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
-import com.percussion.security.PSEncryptionException;
-import com.percussion.security.PSEncryptor;
 import com.percussion.tablefactory.PSJdbcDataTypeMap;
 import com.percussion.tablefactory.PSJdbcDbmsDef;
 import com.percussion.tablefactory.PSJdbcTableData;
@@ -39,7 +36,6 @@ import com.percussion.tablefactory.PSJdbcTableFactory;
 import com.percussion.tablefactory.PSJdbcTableSchema;
 import com.percussion.tablefactory.PSJdbcTableSchemaCollection;
 import com.percussion.util.PSProperties;
-import com.percussion.utils.io.PathUtils;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.tools.ant.BuildException;
@@ -109,8 +105,6 @@ public class PSTableAction extends PSAction
          PSJdbcTableDataCollection dataColl = null;
          PSJdbcTableSchema schema = null;
          PSJdbcTableData data = null;
-         PSProperties props = null;
-         PSJdbcDbmsDef dbmsDef = null;
          PSJdbcDataTypeMap dataTypeMap = null;
 
          //log the tablefactory output to tablefactory.log
@@ -118,36 +112,15 @@ public class PSTableAction extends PSAction
          PSLogger.logInfo("tablefactory log file : " + strLogFile);
          ps = new PrintStream(new FileOutputStream(strLogFile, true));
 
-         props = new PSProperties(getRepositoryLocation());
-         props.setProperty(PSJdbcDbmsDef.PWD_ENCRYPTED_PROPERTY, "Y");
+         PSProperties props = new PSProperties(getRepositoryLocation());
 
-         dbmsDef = new PSJdbcDbmsDef(props);
-         dataTypeMap = new PSJdbcDataTypeMap(
-               props.getProperty("DB_BACKEND"),
-               props.getProperty("DB_DRIVER_NAME"), null);
+         PSJdbcDbmsDef dbmsDef = new PSJdbcDbmsDef(props);
 
+
+         dataTypeMap = new PSJdbcDataTypeMap(dbmsDef.getBackEndDB(),
+                 dbmsDef.getDriver(), null);
          InstallUtil.setRootDir(getRootDir());
-
-         String pw = props.getProperty("PWD");
-         try{
-            pw = PSEncryptor.decryptProperty(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),getRepositoryLocation(),"PWD",pw);
-         }catch(PSEncryptionException ee) {
-            try {
-               pw = PSEncryptor.decryptWithOldKey(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),pw);
-            } catch (PSEncryptionException | java.lang.IllegalArgumentException e) {
-               pw = PSLegacyEncrypter.getInstance(
-                       PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
-               ).decrypt(pw,
-                       PSJdbcDbmsDef.getPartOneKey(), null);
-            }
-            try {
-               //Try to encrypt password with new key, if fails set decoded password
-               props.setProperty("PWD", PSEncryptor.encryptProperty(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),getRepositoryLocation(), "PWD", pw));
-            } catch (PSEncryptionException psEncryptionException) {
-               props.setProperty("PWD", pw);
-            }
-            props.store(new FileOutputStream(getRepositoryLocation()), null);
-         }
+         String pw = dbmsDef.getPassword();
          //get table def files
          String[] tableDef = getTableDef();
          for (int i = 0; i < tableDef.length; i++)
@@ -166,10 +139,10 @@ public class PSTableAction extends PSAction
                      dataTypeMap));
 
          }
-         try(Connection conn = InstallUtil.createConnection(props.getProperty("DB_DRIVER_NAME"),
-                 props.getProperty("DB_SERVER"),
-                 props.getProperty("DB_NAME"),
-                 props.getProperty("UID"),
+         try(Connection conn = InstallUtil.createConnection(dbmsDef.getDriver(),
+                 dbmsDef.getServer(),
+                 dbmsDef.getDataBase(),
+                 dbmsDef.getUserId(),
                  pw)) {
             //get table data files
             String[] tableData = getTableData();

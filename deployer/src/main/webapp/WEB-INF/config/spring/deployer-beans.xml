@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans.xsd
+http://www.springframework.org/schema/tx
+http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+	<tx:annotation-driven transaction-manager="sys_transactionManager"/>
+
+   <bean id="sys_deployerService"
+         class="com.percussion.deployer.services.impl.PSDeployService">
+      <property name="sessionFactory" ref="sys_sessionFactory"/>
+   </bean>
+
+   <bean id="sys_pkgInfoService" 
+   class="com.percussion.services.pkginfo.impl.PSPkgInfoService">
+      <property name="sessionFactory" ref="sys_sessionFactory"/>
+   </bean>
+
+   <bean id="sys_idNameService" 
+   class="com.percussion.services.pkginfo.impl.PSIdNameService">
+      <property name="sessionFactory" ref="sys_sessionFactory"/>
+      <property name="cache" ref="sys_cacheAccessor"/>
+   </bean>
+   
+   <bean id="sys_configService" 
+   class="com.percussion.rx.config.impl.PSConfigService">
+      <property name="configRegistrationService" ref="sys_configRegistrationService"/>
+      <property name="configStatusManager" ref="sys_configStatusMgr"/>
+   </bean>
+   
+   <bean id="sys_configStatusMgr" 
+   class="com.percussion.rx.config.impl.PSConfigStatusMgr">
+      <property name="sessionFactory" ref="sys_sessionFactory"/>
+   </bean>
+   
+   <bean id="sys_configRegistrationService" class="com.percussion.rx.config.impl.PSConfigRegistrationMgr">
+      <property name="fileMonitorService" ref="sys_fileMonitorService"/>
+      <property name="notificationService" ref="sys_notificationService"/>
+   </bean>
+
+   <bean id="sys_beanProperties" class="com.percussion.rx.config.impl.spring.PSBeanProperties"/>
+
+   <bean id="sys_pkgElemVersionUpdater" class="com.percussion.services.pkginfo.impl.PSPkgElemVersionUpdater">
+     <property name="configService" ref="sys_configService"/>
+   </bean>
+
+</beans>

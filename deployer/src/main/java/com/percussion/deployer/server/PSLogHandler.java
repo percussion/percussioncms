@@ -25,8 +25,6 @@
 package com.percussion.deployer.server;
 
 
-import com.percussion.deployer.error.IPSDeploymentErrors;
-import com.percussion.deployer.error.PSDeployException;
 import com.percussion.deployer.objectstore.IPSDeployComponent;
 import com.percussion.deployer.objectstore.PSArchiveInfo;
 import com.percussion.deployer.objectstore.PSArchiveManifest;
@@ -42,6 +40,8 @@ import com.percussion.deployer.objectstore.PSLogSummary;
 import com.percussion.deployer.objectstore.PSTransactionLogSummary;
 import com.percussion.deployer.objectstore.PSTransactionSummary;
 import com.percussion.deployer.objectstore.PSValidationResults;
+import com.percussion.error.IPSDeploymentErrors;
+import com.percussion.error.PSDeployException;
 import com.percussion.server.PSServer;
 import com.percussion.tablefactory.PSJdbcColumnData;
 import com.percussion.tablefactory.PSJdbcFilterContainer;

@@ -26,6 +26,7 @@ package com.percussion.deployer.objectstore;
 
 import com.percussion.design.objectstore.IPSObjectStoreErrors;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
+import com.percussion.services.system.IPSDependencyBaseline;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
 import org.w3c.dom.Document;
@@ -43,7 +44,7 @@ import java.util.TreeSet;
  * functionality.  A dependency represents any deployable Rhythmyx server
  * element, e.g. a content type, variant definiton, application, exit, etc.
  */
-public abstract class PSDependency implements IPSDeployComponent, Comparable
+public abstract class PSDependency implements IPSDependencyBaseline, IPSDeployComponent, Comparable
 {
    /**
     * Construct a dependency with all required parameters.
@@ -175,6 +176,9 @@ public abstract class PSDependency implements IPSDeployComponent, Comparable
     */
    public void setIsIncluded(boolean isIncluded, boolean force)
    {
+      if (!canBeIncludedExcluded())
+         throw new IllegalStateException("This value cannot be set");
+
       m_isIncluded = isIncluded;
    }
    

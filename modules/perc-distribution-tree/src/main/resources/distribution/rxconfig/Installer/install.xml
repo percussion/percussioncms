@@ -244,10 +244,14 @@
 
         <echo>Configuring Datasource...</echo>
         <touch mkdirs="true" file="${install.dir}/jetty/base/etc/perc-ds.xml"/>
+        <if>
+            <!-- don't try to migrate configuration if it has already been done -->
+            <available file="${install.dir}/AppServer/server/rx/deploy/jboss-web.deployer/server.xml" />
+        <then>
         <PSUpdateJettyConfigFromJBoss rootDir="${install.dir}"/>
-
         <PSConfigurePort rootDir="${install.dir}"/>
-
+        </then>
+        </if>
     </target>
 
     <!-- Text files to fix up line endings -->
