@@ -144,7 +144,7 @@ public class PSEmailHelper implements IPSEmailHelper
         log.debug("SMTP Host: {}", emailProps.getProperty(EMAIL_PROPS_HOSTNAME));
         log.debug("SMTP Port: {}", emailProps.getProperty(EMAIL_PROPS_PORT));
         log.debug("SMTP From Address: {}", emailProps.getProperty(EMAIL_PROPS_FROM_ADDRESS));
-        log.debug("SMTP From Address: {}", emailProps.getProperty(EMAIL_PROPS_FROMNAME));
+        log.debug("SMTP From Name: {}", emailProps.getProperty(EMAIL_PROPS_FROMNAME));
         log.debug("SMTP Bounce Address: {}", emailProps.getProperty(EMAIL_PROPS_BOUNCE_ADDRESS));
         log.debug("SMTP Use TLS: {}", emailProps.getProperty(EMAIL_PROPS_TLS));
         log.debug("SMTP SSL/TLS Port: {}", emailProps.getProperty(EMAIL_PROPS_SSLPORT));
