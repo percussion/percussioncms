@@ -24,8 +24,8 @@
 package com.percussion.deployer.server.dependencies;
 
 import com.percussion.data.PSIdGenerator;
-import com.percussion.deployer.error.IPSDeploymentErrors;
-import com.percussion.deployer.error.PSDeployException;
+import com.percussion.error.IPSDeploymentErrors;
+import com.percussion.error.PSDeployException;
 import com.percussion.extension.IPSExtensionManager;
 import com.percussion.extension.PSExtensionException;
 import com.percussion.extension.PSExtensionRef;

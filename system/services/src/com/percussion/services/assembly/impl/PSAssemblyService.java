@@ -2000,26 +2000,7 @@ public class PSAssemblyService implements IPSAssemblyService
       Session s = sessionFactory.getCurrentSession();
       try
       {
-         // ideally, we need to make sure the saved object is not in the
-         // "memory" region of EHcache. However, this strategy does not work
-         // due to the following scenario:
-         // EHcache may contain the objects that are retrieved from the 1st
-         // level cache of hibernate, and loadSlotModifiable() may also retrieve
-         // the objects from the 1st level cache.
-         //
-         // so we are not check the saved object against the object stored in
-         // "memory" region of EHcache, which is the same way in 6.5.2.
-
-         if ( slot.getGUID() != null && !s.contains(slot) && s.load(PSTemplateSlot.class, slot.getGUID().longValue())!=null) {
-            s.merge(slot);
-         }
-         else {
-
-            s.saveOrUpdate( slot );
-         }
-
-         // the object will be evicted by the framework,
-         // see PSEhCacheAccessor.notifyEvent()
+         s.saveOrUpdate( slot );
       }
       catch (Exception e)
       {

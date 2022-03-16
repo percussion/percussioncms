@@ -24,12 +24,12 @@
  
 package com.percussion.deployer.server.dependencies;
 
-import com.percussion.deployer.error.PSDeployException;
 import com.percussion.deployer.objectstore.PSApplicationIDTypeMapping;
 import com.percussion.deployer.objectstore.PSDependency;
 import com.percussion.deployer.server.PSDependencyDef;
 import com.percussion.deployer.server.PSDependencyMap;
 import com.percussion.deployer.server.PSIdTypeManager;
+import com.percussion.error.PSDeployException;
 import com.percussion.security.PSSecurityToken;
 import com.percussion.services.error.PSNotFoundException;
 
@@ -38,7 +38,7 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * Base class to provide common functionality to handlers impelementing the 
+ * Base class to provide common functionality to handlers implementing the
  * {@link com.percussion.deployer.server.IPSIdTypeHandler IPSIdTypeHandler}
  * interface.
  */
@@ -141,5 +141,9 @@ public abstract class PSIdTypeDependencyHandler extends PSDependencyHandler
       }
       
       return deps;
+   }
+
+   public static boolean isIdTypeMappingEnabled(){
+      return false; //TODO: drive this off of the operating mode
    }
 }

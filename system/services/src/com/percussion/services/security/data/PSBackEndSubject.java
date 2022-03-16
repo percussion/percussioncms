@@ -23,27 +23,22 @@
  */
 package com.percussion.services.security.data;
 
-import java.util.Objects;
-import java.util.Set;
-
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.NaturalId;
+import org.hibernate.annotations.NaturalIdCache;
 
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.NaturalId;
-import org.hibernate.annotations.NaturalIdCache;
+import java.util.Objects;
+import java.util.Set;
 
 /**
  * Represents a single back-end subject
@@ -67,8 +62,8 @@ public class PSBackEndSubject
     * The name of this subject
     */
    @Basic
-   @Column(name="NAME")
-   @NaturalId
+   @NaturalId(mutable=true)
+   @Column(name = "NAME", unique=true)
    private String name;
    
    /**

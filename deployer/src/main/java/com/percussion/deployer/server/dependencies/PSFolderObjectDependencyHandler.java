@@ -34,12 +34,12 @@ import com.percussion.cms.objectstore.PSDbComponent;
 import com.percussion.cms.objectstore.PSDisplayFormat;
 import com.percussion.cms.objectstore.PSFolder;
 import com.percussion.cms.objectstore.PSKey;
+import com.percussion.cms.objectstore.PSObjectAclEntry;
 import com.percussion.cms.objectstore.PSRelationshipFilter;
 import com.percussion.cms.objectstore.server.PSRelationshipProcessor;
-import com.percussion.deployer.error.IPSDeploymentErrors;
-import com.percussion.deployer.error.PSDeployException;
 import com.percussion.deployer.objectstore.PSDependency;
 import com.percussion.deployer.objectstore.PSDependencyFile;
+import com.percussion.deployer.objectstore.PSIdMapping;
 import com.percussion.deployer.objectstore.PSTransactionSummary;
 import com.percussion.deployer.server.PSArchiveHandler;
 import com.percussion.deployer.server.PSDependencyDef;
@@ -48,6 +48,8 @@ import com.percussion.deployer.server.PSImportCtx;
 import com.percussion.design.objectstore.PSLocator;
 import com.percussion.design.objectstore.PSRelationshipConfig;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
+import com.percussion.error.IPSDeploymentErrors;
+import com.percussion.error.PSDeployException;
 import com.percussion.security.PSSecurityToken;
 import com.percussion.services.error.PSNotFoundException;
 import com.percussion.util.IPSHtmlParameters;
@@ -168,6 +170,10 @@ public abstract class PSFolderObjectDependencyHandler
                   IPSDeploymentErrors.DEP_OBJECT_NOT_FOUND, args);
             }
          }
+
+         // translate ids
+         if (ctx.getCurrentIdMap() != null)
+            transformIds(compProc, dep, ctx, newFolder);
 
          // save folder
          newFolder = (PSFolder)compProc.save(
@@ -368,6 +374,21 @@ public abstract class PSFolderObjectDependencyHandler
                   childDeps.add(commDep);
             }
 
+            // get roles
+            PSDependencyHandler roleHandler = getDependencyHandler(
+               PSRoleDefDependencyHandler.DEPENDENCY_TYPE);
+            Iterator aclEntries = folder.getAcl().iterator();
+            while (aclEntries.hasNext())
+            {
+               PSObjectAclEntry aclEntry = (PSObjectAclEntry)aclEntries.next();
+               if (aclEntry.isRole())
+               {
+                  PSDependency roleDep = roleHandler.getDependency(tok,
+                     aclEntry.getName());
+                  if (roleDep != null)
+                     childDeps.add(roleDep);
+               }
+            }
 
             String dispFormatId = folder.getDisplayFormatPropertyValue();
             if (dispFormatId != null && dispFormatId.trim().length() != 0)
@@ -827,6 +848,91 @@ public abstract class PSFolderObjectDependencyHandler
 
       return dep;
    }
+
+   /**
+    * Transforms the child ids in the supplied folder.
+    *
+    * @param proc The processor to use, may not be <code>null</code>
+    * @param dep The dependency being installed, may not be <code>null</code>.
+    * @param ctx The context to use to get id mappings, may not be
+    * <code>null</code>.
+    * @param folder The folder to transform, may not be <code>null</code>.
+    *
+    * @throws IllegalArgumentException if any param is invalid.
+    * @throws PSDeployException if there are any errors
+    */
+   protected void transformIds(PSComponentProcessorProxy proc, PSDependency dep,
+      PSImportCtx ctx, PSFolder folder) throws PSDeployException
+   {
+      if (proc == null)
+         throw new IllegalArgumentException("proc may not be null");
+      if (dep == null)
+         throw new IllegalArgumentException("dep may not be null");
+      if (ctx == null)
+         throw new IllegalArgumentException("ctx may not be null");
+      if (folder == null)
+         throw new IllegalArgumentException("folder may not be null");
+
+      // transform community id
+      int commId = folder.getCommunityId();
+      if (commId != -1)
+      {
+         PSIdMapping comMapping = getIdMapping(ctx, String.valueOf(commId),
+            PSCommunityDependencyHandler.DEPENDENCY_TYPE);
+         if (comMapping != null)
+         {
+            String strCommId = comMapping.getTargetId();
+            try
+            {
+               int newCommId = Integer.parseInt(strCommId);
+               folder.setCommunityId(newCommId);
+            }
+            catch (NumberFormatException e)
+            {
+               Object[] args = {PSCommunityDependencyHandler.DEPENDENCY_TYPE,
+                  String.valueOf(commId), ctx.getSourceRepository(), strCommId};
+               throw new PSDeployException(
+                  IPSDeploymentErrors.INVALID_ID_MAPPING_TARGET, args);
+            }
+         }
+      }
+
+
+      // transform display format - locate expected single child dep of this
+      // type to get name, search for object on local system.
+      String oldDfId = folder.getDisplayFormatPropertyValue();
+      if (oldDfId != null && oldDfId.trim().length() > 0)
+      {
+         String dfType = PSDisplayFormatDefDependencyHandler.DEPENDENCY_TYPE;
+         Iterator deps = dep.getDependencies(dfType);
+         if (!deps.hasNext())
+         {
+            Object[] args = {oldDfId, dfType,
+               dep.getDependencyId(), dep.getObjectTypeName()};
+            throw new PSDeployException(IPSDeploymentErrors.CHILD_DEP_NOT_FOUND,
+               args);
+         }
+
+         PSDependency dfDep = (PSDependency)deps.next();
+         PSDisplayFormatDefDependencyHandler dfHandler =
+            (PSDisplayFormatDefDependencyHandler)getDependencyHandler(
+               PSDisplayFormatDefDependencyHandler.DEPENDENCY_TYPE);
+         PSDisplayFormat df = dfHandler.loadDisplayFormat(proc,
+               dfDep.getDependencyId());
+         if (df == null)
+         {
+            Object[] args = {dfDep.getDependencyId(), dfDep.getObjectTypeName(),
+               dfDep.getDisplayName()};
+            throw new PSDeployException(
+               IPSDeploymentErrors.DEP_OBJECT_NOT_FOUND, args);
+         }
+
+         String newDfId = getIdFromKey(df, df.getComponentType());
+         folder.setDisplayFormatPropertyValue(newDfId);
+      }
+   }
+
+
 
    /**
     * Determine if the supplied path specifies a folder that has a parent.

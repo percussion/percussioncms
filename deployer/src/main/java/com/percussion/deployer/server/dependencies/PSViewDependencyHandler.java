@@ -24,9 +24,9 @@
 
 package com.percussion.deployer.server.dependencies;
 
-import com.percussion.deployer.error.PSDeployException;
 import com.percussion.deployer.server.PSDependencyDef;
 import com.percussion.deployer.server.PSDependencyMap;
+import com.percussion.error.PSDeployException;
 
 import java.util.ArrayList;
 import java.util.Iterator;

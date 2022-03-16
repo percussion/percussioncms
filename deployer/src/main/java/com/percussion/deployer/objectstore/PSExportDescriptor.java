@@ -26,6 +26,7 @@ package com.percussion.deployer.objectstore;
 
 import com.percussion.design.objectstore.IPSObjectStoreErrors;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
+import com.percussion.error.PSDeployException;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
 import org.w3c.dom.Document;
@@ -95,8 +96,7 @@ public class PSExportDescriptor extends PSDescriptor
     * @throws IllegalArgumentException if <code>src</code> is <code>null</code>.
     * @throws PSUnknownNodeTypeException if <code>src</code> is malformed.
     */
-   public PSExportDescriptor(Element src, boolean readShortDesc) throws PSUnknownNodeTypeException
-   {
+   public PSExportDescriptor(Element src, boolean readShortDesc) throws PSUnknownNodeTypeException, PSDeployException {
       if (src == null)
          throw new IllegalArgumentException("src may not be null");
       if ( readShortDesc )
@@ -128,8 +128,7 @@ public class PSExportDescriptor extends PSDescriptor
     * @throws IllegalArgumentException if <code>src</code> is <code>null</code>.
     * @throws PSUnknownNodeTypeException if <code>src</code> is malformed.
     */
-   public PSExportDescriptor(Element src) throws PSUnknownNodeTypeException
-   {
+   public PSExportDescriptor(Element src) throws PSUnknownNodeTypeException, PSDeployException {
       if (src == null)
          throw new IllegalArgumentException("src may not be null");
 
@@ -434,8 +433,7 @@ public class PSExportDescriptor extends PSDescriptor
     * {@link IPSDeployComponent#fromXml(Element)} for more info on method
     * signature.
     */
-   public void fromXml(Element sourceNode) throws PSUnknownNodeTypeException
-   {
+   public void fromXml(Element sourceNode) throws PSUnknownNodeTypeException, PSDeployException {
       if (sourceNode == null)
          throw new IllegalArgumentException("sourceNode may not be null");
 

@@ -25,8 +25,6 @@
 package com.percussion.deployer.server.dependencies;
 
 import com.percussion.content.PSMimeContentAdapter;
-import com.percussion.deployer.error.IPSDeploymentErrors;
-import com.percussion.deployer.error.PSDeployException;
 import com.percussion.deployer.objectstore.PSDependency;
 import com.percussion.deployer.objectstore.PSDependencyFile;
 import com.percussion.deployer.objectstore.PSDeployableObject;
@@ -36,6 +34,8 @@ import com.percussion.deployer.server.PSDependencyDef;
 import com.percussion.deployer.server.PSDependencyMap;
 import com.percussion.deployer.server.PSImportCtx;
 import com.percussion.design.objectstore.PSNotFoundException;
+import com.percussion.error.IPSDeploymentErrors;
+import com.percussion.error.PSDeployException;
 import com.percussion.extension.IPSExtensionDef;
 import com.percussion.extension.IPSExtensionManager;
 import com.percussion.extension.PSExtensionDefFactory;
@@ -43,8 +43,10 @@ import com.percussion.extension.PSExtensionException;
 import com.percussion.extension.PSExtensionRef;
 import com.percussion.security.PSSecurityToken;
 import com.percussion.server.PSServer;
-import com.percussion.util.PSIteratorUtils;
+import com.percussion.utils.collections.PSIteratorUtils;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -61,6 +63,11 @@ import java.util.Set;
  */
 public class PSExitDefDependencyHandler extends PSDependencyHandler
 {
+   /**
+    * Logger for this class
+    */
+   private static final Logger log = LogManager.getLogger(PSExitDefDependencyHandler.class);
+
 
    /**
     * Construct a dependency handler.
@@ -93,7 +100,7 @@ public class PSExitDefDependencyHandler extends PSDependencyHandler
       if (!dep.getObjectType().equals(DEPENDENCY_TYPE))
          throw new IllegalArgumentException("dep wrong type");
       
-      Set appDeps = new HashSet();
+      Set appDeps = new HashSet<>();
       
       // Get the def
       IPSExtensionDef def;

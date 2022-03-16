@@ -131,6 +131,7 @@ public class PSEmailHelper implements IPSEmailHelper
                     e.getMessage(),
                     e.getCause().getMessage());
             logDebugProperties();
+
             //send failed so we shouldn't proceed.
             throw new PSEmailException(e);
         }
@@ -149,6 +150,7 @@ public class PSEmailHelper implements IPSEmailHelper
         log.debug("SMTP SSL/TLS Port: {}", emailProps.getProperty(EMAIL_PROPS_SSLPORT));
         log.debug("============ End Debug Email Properties  ==============================");
     }
+    
     private MultiPartEmail createMultiPartEmail()
     {
         MultiPartEmail commonsMultiPartEmail = null;

@@ -3,7 +3,7 @@
     <parent>
         <groupId>com.percussion</groupId>
         <artifactId>core</artifactId>
-        <version>8.0.3</version>
+        <version>8.1.1-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <artifactId>perc-web-ui</artifactId>
@@ -178,18 +178,6 @@
 
                             </excludes>
                         </resource>
-                        <!--
-                          <resource>
-                            <directory>..\system\ear</directory>
-                             <filtering>false</filtering>
-                                           <excludes>
-                                           <exclude>..\system\ear\jsps</exclude>
-                                           <exclude>..\system\ear\jboss-4.0</exclude>
-                                             <exclude>..\system\ear\metadata</exclude>
-                                             <exclude>..\system\ear\config</exclude>
-
-                            </excludes>
-                          </resource>-->
                         <resource>
                             <directory>../system/ear/config</directory>
                             <!-- override the destination directory for this resource -->
@@ -200,6 +188,13 @@
                                 <exclude>**/trinidad/*</exclude>
                                 <exclude>**/hibernate/*</exclude>
                             </excludes>
+                        </resource>
+                         <resource>
+                            <directory>../deployer/src/main/webapp/WEB-INF/config</directory>
+                            <!-- override the destination directory for this resource -->
+                            <targetPath>WEB-INF/config</targetPath>
+                            <!-- enable filtering -->
+                            <filtering>false</filtering>
                         </resource>
                         <resource>
                             <directory>../system/ear/config/hibernate</directory>

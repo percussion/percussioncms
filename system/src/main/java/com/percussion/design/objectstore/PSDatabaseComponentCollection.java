@@ -25,7 +25,7 @@ package com.percussion.design.objectstore;
 
 import com.percussion.design.objectstore.server.PSDatabaseComponentLoader;
 import com.percussion.util.PSCollection;
-import com.percussion.util.PSIteratorUtils;
+import com.percussion.utils.collections.PSIteratorUtils;
 import com.percussion.xml.PSXmlTreeWalker;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;

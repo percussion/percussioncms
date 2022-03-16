@@ -23,8 +23,6 @@
  */
 package com.percussion.deployer.services.impl;
 
-import com.percussion.deployer.error.IPSDeploymentErrors;
-import com.percussion.deployer.error.PSDeployException;
 import com.percussion.deployer.objectstore.PSDependency;
 import com.percussion.deployer.objectstore.PSDependencyFile;
 import com.percussion.deployer.server.IPSServiceDependencyHandler;
@@ -38,12 +36,15 @@ import com.percussion.deployer.server.dependencies.PSTemplateDefDependencyHandle
 import com.percussion.deployer.server.dependencies.PSVariantDefDependencyHandler;
 import com.percussion.deployer.services.IPSDeployService;
 import com.percussion.deployer.services.PSDeployServiceException;
+import com.percussion.error.IPSDeploymentErrors;
+import com.percussion.error.PSDeployException;
 import com.percussion.security.PSSecurityToken;
 import com.percussion.services.assembly.data.PSAssemblyTemplate;
 import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.filter.IPSFilterService;
 import com.percussion.services.filter.IPSItemFilter;
 import com.percussion.services.filter.PSFilterServiceLocator;
+import com.percussion.services.filter.data.PSItemFilter;
 import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.utils.guid.IPSGuid;
 import org.hibernate.SessionFactory;
@@ -61,6 +62,7 @@ import java.util.List;
  * @author vamsinukala
  *
  */
+//todo: reconcile with system/src/main/java/com/percussion/deploy/services/impl/PSDeployService.java
 @Transactional (propagation = Propagation.REQUIRES_NEW, noRollbackFor=Exception.class)
 public class PSDeployService
    implements IPSDeployService
@@ -254,6 +256,11 @@ public class PSDeployService
                throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR,
                      "Could not load the existing filter: " + fName);
             }
+
+                // deserialize on the existing filter
+                lver = ((PSItemFilter) filter).getVersion();
+                ((PSItemFilter) filter).setVersion(null);
+                filter = null;
          }
          
          filter = dh.generateFilterFromFile(tok, archive, dep, depFile, ctx,

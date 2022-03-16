@@ -26,12 +26,12 @@ package com.percussion.deployer.server.dependencies;
 
 import com.percussion.cms.PSCmsException;
 import com.percussion.cms.objectstore.PSAction;
+import com.percussion.cms.objectstore.PSActionVisibilityContext;
+import com.percussion.cms.objectstore.PSActionVisibilityContexts;
 import com.percussion.cms.objectstore.PSChildActions;
 import com.percussion.cms.objectstore.PSComponentProcessorProxy;
 import com.percussion.cms.objectstore.PSDbComponentCollection;
 import com.percussion.cms.objectstore.PSMenuChild;
-import com.percussion.deployer.error.IPSDeploymentErrors;
-import com.percussion.deployer.error.PSDeployException;
 import com.percussion.deployer.objectstore.PSDependency;
 import com.percussion.deployer.objectstore.PSDependencyFile;
 import com.percussion.deployer.objectstore.PSIdMapping;
@@ -41,6 +41,8 @@ import com.percussion.deployer.server.PSDependencyDef;
 import com.percussion.deployer.server.PSDependencyMap;
 import com.percussion.deployer.server.PSImportCtx;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
+import com.percussion.error.IPSDeploymentErrors;
+import com.percussion.error.PSDeployException;
 import com.percussion.security.PSSecurityToken;
 import org.w3c.dom.Element;
 
@@ -338,6 +340,12 @@ public class PSMenuActionDefDependencyHandler
       // set tgt id on the source object
       srcAction.setLocator(PSAction.createKey(tgtId));
 
+      if (idMapping != null)
+      {
+         // transform child dep ids (not menus)
+         transformIds(proc, dep, ctx, srcAction);
+      }
+
       // if the source child is not in the list, add it
       if (srcChildActions != null && !foundChild && tgtChild != null)
          srcChildActions.add(tgtChild);
@@ -363,6 +371,52 @@ public class PSMenuActionDefDependencyHandler
       // perform the save
       proc.save(new PSDbComponentCollection[] {compDeletes});
       proc.save(new PSDbComponentCollection[] {compInserts});
+   }
+
+   /**
+    * Transforms referenced ids in the supplied action to match the target
+    * system.  Assumed child action ids do not need to be transformed.
+    *
+    * @param proc The processor to use, assumed not <code>null</code>.
+    * @param dep The dependency representing the action to transform, assumed
+    * not <code>null</code>.
+    * @param ctx The import ctx, assumed not <code>null</code>.
+    * @param action The action to transform, assumed not <code>null</code>.
+    *
+    * @throws PSDeployException if there are any errors.
+    */
+   private void transformIds(PSComponentProcessorProxy proc, PSDependency dep,
+      PSImportCtx ctx, PSAction action) throws PSDeployException
+   {
+      // tranform community and content type contexts
+      PSActionVisibilityContexts visContexts = action.getVisibilityContexts();
+      PSActionVisibilityContext comCtx = visContexts.getContext(
+         PSActionVisibilityContext.VIS_CONTEXT_COMMUNITY);
+      if (comCtx != null)
+      {
+         transformMultiValuedProperty(comCtx, ctx,
+            PSCommunityDependencyHandler.DEPENDENCY_TYPE);
+      }
+
+      PSActionVisibilityContext ctCtx = visContexts.getContext(
+         PSActionVisibilityContext.VIS_CONTEXT_CONTENT_TYPE);
+      if (ctCtx != null)
+      {
+         transformMultiValuedProperty(ctCtx, ctx,
+            PSCEDependencyHandler.DEPENDENCY_TYPE);
+      }
+
+      PSActionVisibilityContext wfCtx = visContexts.getContext(
+         PSActionVisibilityContext.VIS_CONTEXT_WORKFLOWS_TYPE);
+      if (wfCtx != null)
+      {
+         transformMultiValuedProperty(wfCtx, ctx,
+            PSWorkflowDependencyHandler.DEPENDENCY_TYPE);
+      }
+
+
+      // transform idtype dependencies
+      transformIds(action, ctx.getIdTypes(), ctx.getCurrentIdMap());
    }
 
    // see base class

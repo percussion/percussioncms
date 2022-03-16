@@ -23,28 +23,27 @@
  */
 package com.percussion.rx.publisher.impl;
 
-import static java.util.Collections.emptyList;
-
-import com.percussion.deploy.server.PSJexlHelper;
 import com.percussion.services.assembly.IPSAssemblyItem;
 import com.percussion.services.assembly.IPSAssemblyResult;
 import com.percussion.services.assembly.IPSAssemblyService;
 import com.percussion.services.assembly.IPSAssemblyTemplate;
 import com.percussion.services.assembly.PSAssemblyException;
 import com.percussion.services.assembly.PSAssemblyServiceLocator;
+import com.percussion.services.assembly.jexl.PSJexlHelper;
 import com.percussion.services.assembly.jexl.PSLocationUtils;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.utils.codec.PSXmlDecoder;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.jexl.IPSScript;
 import com.percussion.utils.jexl.PSJexlEvaluator;
+import org.apache.commons.codec.EncoderException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.codec.EncoderException;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import static java.util.Collections.emptyList;
 
 /**
  * 

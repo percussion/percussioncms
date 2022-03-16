@@ -26,7 +26,6 @@ package com.percussion.deployer.server;
 import com.percussion.cms.objectstore.server.PSItemDefManager;
 import com.percussion.deployer.client.IPSDeployConstants;
 import com.percussion.deployer.client.PSDeploymentManager;
-import com.percussion.deployer.error.PSDeployException;
 import com.percussion.deployer.objectstore.PSArchive;
 import com.percussion.deployer.objectstore.PSArchiveInfo;
 import com.percussion.deployer.objectstore.PSArchivePackage;
@@ -39,6 +38,7 @@ import com.percussion.deployer.objectstore.PSImportDescriptor;
 import com.percussion.deployer.objectstore.PSImportPackage;
 import com.percussion.deployer.objectstore.PSTransactionSummary;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
+import com.percussion.error.PSDeployException;
 import com.percussion.error.PSExceptionUtils;
 import com.percussion.rx.config.IPSConfigRegistrationMgr;
 import com.percussion.rx.config.IPSConfigService;
@@ -134,7 +134,7 @@ public class PSImportJob extends PSDeployJob
          // init dependency count for status messages
          initDepCount();
       }
-      catch (PSUnknownNodeTypeException e)
+      catch (PSUnknownNodeTypeException | PSDeployException e)
       {
          throw new PSJobException(IPSJobErrors.INVALID_JOB_DESCRIPTOR, e
                .getLocalizedMessage());
@@ -160,7 +160,7 @@ public class PSImportJob extends PSDeployJob
         PSServerLockManager lockMgr = PSServerLockManager.getInstance();
          PSServerLockResult result = lockMgr.acquireLock(
                PSServerLockManager.RESOURCE_PUBLISHER,
-               PSDeploymentHandler.DEPLOY_SUBSYSTEM + ":" + getUserId());
+               PSDeploymentHandler.getActiveSubsystem().name() + ":" + getUserId());
     
          if (!result.wasLockAcquired())
          {
@@ -317,7 +317,7 @@ public class PSImportJob extends PSDeployJob
       throws PSDeployException, IOException
    {
       PSDeploymentHandler dh = PSDeploymentHandler.getInstance();
-      PSDependencyManager dm = dh.getDependencyManager();
+      PSDependencyManager dm = (PSDependencyManager) dh.getDependencyManager();
 
       PSExportDescriptor cvtDesc = dm.convertExportDescriptor(info, dh
             .getLogHandler(), ctx.getCurrentIdMap());
@@ -398,7 +398,7 @@ public class PSImportJob extends PSDeployJob
          ctx.setArchiveLogId(archiveLogId);
 
          // get the ordered package elements
-         PSDependencyManager dm = dh.getDependencyManager();
+         PSDependencyManager dm = (PSDependencyManager) dh.getDependencyManager();
          List<PSImportPackage> importList = m_descriptor.getImportPackageList();
          List<PSImportPackage> pkgs = dm.reorderDeployedElements(importList);
 

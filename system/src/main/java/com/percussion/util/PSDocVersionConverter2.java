@@ -36,6 +36,7 @@ import com.percussion.extension.IPSExtensionManager;
 import com.percussion.extension.PSExtensionDef;
 import com.percussion.extension.PSExtensionException;
 import com.percussion.extension.PSExtensionRef;
+import com.percussion.utils.collections.PSIteratorUtils;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
 import org.apache.logging.log4j.LogManager;

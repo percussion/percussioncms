@@ -24,10 +24,9 @@
 
 package com.percussion.deployer.server.dependencies;
 
+import com.percussion.cms.handlers.PSGlobalTemplateUpdateHandler;
 import com.percussion.conn.PSServerException;
 import com.percussion.debug.PSDebugManager;
-import com.percussion.deployer.error.IPSDeploymentErrors;
-import com.percussion.deployer.error.PSDeployException;
 import com.percussion.deployer.objectstore.PSDependency;
 import com.percussion.deployer.objectstore.PSDependencyFile;
 import com.percussion.deployer.objectstore.PSDeployComponentUtils;
@@ -48,16 +47,22 @@ import com.percussion.design.objectstore.PSUnknownNodeTypeException;
 import com.percussion.design.objectstore.PSUrlRequest;
 import com.percussion.design.objectstore.server.PSServerXmlObjectStore;
 import com.percussion.design.objectstore.server.PSXmlObjectStoreLockerId;
+import com.percussion.error.IPSDeploymentErrors;
+import com.percussion.error.PSDeployException;
 import com.percussion.extension.PSExtensionRef;
+import com.percussion.fastforward.globaltemplate.PSGlobalTemplate;
+import com.percussion.fastforward.globaltemplate.PSRxGlobals;
 import com.percussion.security.PSAuthorizationException;
 import com.percussion.security.PSSecurityToken;
 import com.percussion.server.PSCustomControlManager;
 import com.percussion.tablefactory.PSJdbcTableSchema;
 import com.percussion.util.IOTools;
 import com.percussion.util.PSPurgableTempFile;
+import com.percussion.utils.tools.PSPatternMatcher;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -65,9 +70,11 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
 
@@ -75,7 +82,6 @@ import java.util.StringTokenizer;
 /**
  * Base class for handlers that deploy application objects.
  */
-@SuppressWarnings("unchecked")
 public abstract class PSAppObjectDependencyHandler 
    extends PSIdTypeDependencyHandler
 {
@@ -386,8 +392,7 @@ public abstract class PSAppObjectDependencyHandler
     * @throws PSDeployException if there are any errors.
     */
    protected Iterator getStylesheetDependencies(PSSecurityToken tok, 
-      Document doc) throws PSDeployException
-   {
+      Document doc) throws PSDeployException, com.percussion.services.error.PSNotFoundException {
       
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
@@ -407,7 +412,28 @@ public abstract class PSAppObjectDependencyHandler
       for (int i = 0; i < imports.getLength(); i++) 
          sheetNodeList.add(imports.item(i));
       
-      
+      // check for global templates as we go
+      boolean hasGlobals = false;
+      PSRxGlobals rxGlobals = null;
+      Exception ex = null;
+      try
+      {
+         rxGlobals = new PSRxGlobals(null);
+      }
+      catch (IOException e)
+      {
+         ex = e;
+      }
+      catch (SAXException e)
+      {
+         ex = e;
+      }
+      if (ex != null)
+      {
+         throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR,
+               "Error instantiating PSRxGlobals: " + ex.getLocalizedMessage());
+      }
+
       Iterator sheetNodes = sheetNodeList.iterator();
       while (sheetNodes.hasNext())
       {
@@ -430,6 +456,13 @@ public abstract class PSAppObjectDependencyHandler
                   }
                   
                   deps.add(dep);
+                  // see if path matches the rx_gobals stylesheet path, make
+                  // sure path separators are normalize for the comparison
+                  if (normalizePathSep(path).equals(normalizePathSep(
+                     rxGlobals.getGlobalTemplateFilePath())))
+                  {
+                     hasGlobals = true;
+                  }
                }
             }
             catch (MalformedURLException | com.percussion.services.error.PSNotFoundException e)
@@ -439,6 +472,76 @@ public abstract class PSAppObjectDependencyHandler
          }
       }
       
+      // if globals is imported, then check for gobal template calls
+      // for each global template name found, check for the template
+      // file, and if at least one is found, then add the global
+      // templates app as a dependency
+      if (hasGlobals)
+      {
+         NodeList templateCalls = doc.getElementsByTagName("xsl:call-template");
+         for (int i = 0; i < templateCalls.getLength(); i++)
+         {
+            Element callEl = (Element) templateCalls.item(i);
+            String name = callEl.getAttribute("name");
+            boolean gtCallExists = false;
+            //New way of adding global template to a local template
+            if (name.equals(PSRxGlobals.DISPATCHING_TEMPLATE_NAME))
+            {
+               gtCallExists = true;
+            }
+            //Support old way too
+            else if (name.endsWith(
+                  PSGlobalTemplate.GLOBAL_TEMPLATE_NAME_SUFFIX))
+            {
+               String templateName = name.substring(0, name.indexOf(
+                     PSGlobalTemplate.GLOBAL_TEMPLATE_NAME_SUFFIX));
+                  File templateFile = new File(
+                     PSRxGlobals.ABS_GLOBAL_TEMPLATES_PATH, templateName
+                     + ".xsl");
+                  if (templateFile.exists())
+                  {
+                     gtCallExists = true;
+                  }
+            }
+            if(gtCallExists)
+            {
+                  /*
+                   * found the call to global template dispatcher, add app
+                   * dependency on global templates app
+                   */
+                  String globalAppName = PSGlobalTemplateUpdateHandler.
+                     DEFAULT_GLOBALTEMPLATE_APP_NAME;
+                  PSDependency globalAppDep =
+                     getAppDepHandler().getDependency(tok, globalAppName);
+                  if (globalAppDep != null)
+                     deps.add(globalAppDep);
+                  break;
+            }
+         }
+      }
+
+      // build map of variables
+      Map varMap = new HashMap();
+      NodeList vars = doc.getElementsByTagName("xsl:variable");
+      for (int i = 0; i < vars.getLength(); i++)
+      {
+         Element varEl = (Element)vars.item(i);
+         String varName = varEl.getAttribute("name");
+         String varVal = varEl.getAttribute("select");
+         if (varName.trim().length() > 0)
+            varMap.put(varName, varVal);
+      }
+
+      // get path dependencies using all vars
+      Iterator paths = getVarPaths(doc, varMap);
+      while (paths.hasNext())
+      {
+         String path = (String)paths.next();
+         PSDependency pathDep = getDepFromPath(tok, path);
+         if (pathDep != null)
+            deps.add(pathDep);
+      }
+
       return deps.iterator();
    }
    
@@ -763,8 +866,90 @@ public abstract class PSAppObjectDependencyHandler
       }
 
    }
-   
-   
+
+   /**
+    * Gets a list of file paths using variables from the supplied stylesheet.
+    *
+    * @param doc The stylesheet parsed as an XML document, assumed not
+    * <code>null</code>.
+    * @param varMap The map for variables used in the supplied stylesheet,
+    * assumed not <code>null</code>.
+    *
+    * @return An iterator over zero or more filepaths as <code>String</code>
+    * objects, never <code>null</code>.
+    */
+   private Iterator getVarPaths(Document doc, Map varMap)
+   {
+      Set pathSet = new HashSet();
+
+      if (!varMap.isEmpty())
+      {
+         // walk all nodes and check for var use
+         NodeList nodes = doc.getElementsByTagName("*");
+         for (int i = 0; i < nodes.getLength(); i++)
+         {
+            // look for elements with attr select="concat($<var>, <file>)
+            Element el = (Element)nodes.item(i);
+            String path = el.getAttribute("select");
+            if (path.trim().length() == 0)
+               path = el.getAttribute("src");
+            if (path.trim().length() == 0)
+               path = el.getAttribute("href");
+            // if node is embeded in literal output text, value may have "{}"
+            // around it, need to trim before pattern matching
+            path = trim(path, "{", "}");
+            if (!ms_concatPatMatch.doesMatchPattern(path))
+               continue;
+
+            int iSep = path.indexOf(CONCAT_SEP);
+
+            // get the variable name
+            String var = path.substring(path.indexOf(CONCAT_START) +
+                    CONCAT_START.length(), iSep);
+
+            // see if its in the map
+            String replVal = (String)varMap.get(var);
+            if (replVal == null)
+               continue;
+
+            // get the file
+            String file = path.substring(iSep + CONCAT_SEP.length(),
+                    path.lastIndexOf(CONCAT_END)).trim();
+            if (file.length() == 0)
+               continue;
+
+            // trim any quotes
+            file = trim(file, QUOTE_STRING, QUOTE_STRING);
+            replVal = trim(replVal, QUOTE_STRING, QUOTE_STRING);
+
+            path = replVal + file;
+            pathSet.add(path);
+         }
+      }
+
+      return pathSet.iterator();
+   }
+
+   /**
+    * Trims the leading and trailing strings from the supplied string, only if
+    * the supplied string starts with the leading string and also ends with the
+    * trailing string.
+    * @param string The string to trim, assumed not <code>null</code> or empty.
+    * @param leading The leading string to trim from the <code>string</code>,
+    * assumed not <code>null</code> or empty.
+    * @param trailing The trailing string to trim from the <code>string</code>,
+    * assumed not <code>null</code> or empty.
+    *
+    * @return The trimmed string, or the original string.
+    */
+   private String trim(String string, String leading, String trailing)
+   {
+      if (string.startsWith(leading) && string.endsWith(trailing))
+         string = string.substring(leading.length(), string.length() -
+            trailing.length());
+      return string;
+   }
+
    /**
     * Gets the variable table schema, caching after first call
     * 
@@ -982,6 +1167,49 @@ public abstract class PSAppObjectDependencyHandler
    private PSDependencyHandler m_fileHandler = null;
  
    /**
+    * Constant for start of concat function pattern.
+    */
+   private static final String CONCAT_START = "concat($";
+
+   /**
+    * Constant for end of concat function pattern.
+    */
+   private static final String CONCAT_END = ")";
+
+   /**
+    * Constant for the comma separator of concat function pattern.
+    */
+   private static final String CONCAT_SEP = ",";
+
+   /**
+    * Constant for the single character pattern match.
+    */
+   private static final char MATCH_ONE = '?';
+
+   /**
+    * Constant for the multiple character pattern match.
+    */
+   private static final char MATCH_ALL = '*';
+
+   /**
+    * Constant for a quote character used in the concat function pattern.
+    */
+   private static final String QUOTE_STRING = "\'";
+
+   /**
+    * Constant for concat function pattern <code>concat($*,*)</code>.
+    */
+   private static final String CONCAT_PAT = CONCAT_START + MATCH_ALL +
+      CONCAT_SEP + MATCH_ALL + CONCAT_END;
+
+   /**
+    * Pattern matcher for concat() function in sytlesheets, never
+    * <code>null</code> or modified after construction.
+    */
+   private static PSPatternMatcher ms_concatPatMatch = new PSPatternMatcher(
+      MATCH_ONE, MATCH_ALL, CONCAT_PAT);
+
+   /**
     * Separator used in file paths on windows.
     */
    private static final char WIN_SEP_CHAR = '\\';
@@ -1006,5 +1234,8 @@ public abstract class PSAppObjectDependencyHandler
    
    // db constants
    private static final String VAR_TABLE = "RXASSEMBLERPROPERTIES";
+   private static final String VAR_NAME_COL = "PROPERTYNAME";
+   private static final String VAR_VALUE_COL = "PROPERTYVALUE";
+   private static final String CONTEXT_ID_COL = "CONTEXTID";
 }
 

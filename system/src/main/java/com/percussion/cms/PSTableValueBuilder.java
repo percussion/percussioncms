@@ -48,8 +48,8 @@ import com.percussion.i18n.PSI18nUtils;
 import com.percussion.server.IPSServerErrors;
 import com.percussion.server.PSServer;
 import com.percussion.util.IPSHtmlParameters;
-import com.percussion.util.PSIteratorUtils;
 import com.percussion.util.PSMapPair;
+import com.percussion.utils.collections.PSIteratorUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 

@@ -86,8 +86,8 @@ public class PSNodeDefinition implements IPSNodeDefinition
    @Column(name = "VERSION")
    private Integer m_version = -1;
 
-   @NaturalId
-   @Column(name = "CONTENTTYPENAME")
+   @NaturalId(mutable=true)
+   @Column(name = "CONTENTTYPENAME", unique=true)
    private String m_name;
 
    @Basic

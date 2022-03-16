@@ -6087,8 +6087,18 @@
             <column name="NAME">View_Properties</column>
             <column name="DISPLAYNAME">Properties</column>
             <column name="DESCRIPTION">View content properties</column>
-            <column name="URL">../sys_cxSupport/contenteditorurls.html?sys_view=sys_ItemMeta&amp;sys_command=preview
-            </column>
+            <column name="URL">../sys_cxSupport/contenteditorurls.html?sys_view=sys_ItemMeta&amp;sys_command=preview</column>
+            <column name="SORTORDER">2</column>
+            <column name="TYPE">MENUITEM</column>
+            <column name="HANDLER">SERVER</column>
+            <column name="VERSION">0</column>
+        </row>
+        <row onTableCreateOnly="no" action="u">
+            <column name="ACTIONID">106</column>
+            <column name="NAME">View_Properties</column>
+            <column name="DISPLAYNAME">Properties</column>
+            <column name="DESCRIPTION">View content properties</column>
+            <column name="URL">../sys_cxSupport/contenteditorurls.html?sys_view=sys_ItemMeta&amp;sys_command=preview</column>
             <column name="SORTORDER">2</column>
             <column name="TYPE">MENUITEM</column>
             <column name="HANDLER">SERVER</column>

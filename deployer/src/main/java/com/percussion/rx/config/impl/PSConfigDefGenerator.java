@@ -80,7 +80,7 @@ public class PSConfigDefGenerator
       if(desc == null)
          throw new IllegalArgumentException("descriptor cannot be null.");
       PSDeploymentHandler dh = PSDeploymentHandler.getInstance();
-      PSDependencyManager dm = dh.getDependencyManager();
+      PSDependencyManager dm = (PSDependencyManager) dh.getDependencyManager();
       
       String packageName = desc.getName();
       Iterator<? extends PSDependency> it = desc.getPackages();

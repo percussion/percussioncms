@@ -25,8 +25,8 @@ package com.percussion.extension;
 
 import com.percussion.design.objectstore.PSNonUniqueException;
 import com.percussion.design.objectstore.PSNotFoundException;
-import com.percussion.util.PSIteratorUtils;
 import com.percussion.util.PSSortTool;
+import com.percussion.utils.collections.PSIteratorUtils;
 import com.percussion.utils.tools.PSPatternMatcher;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
