@@ -167,7 +167,13 @@ public class PSJdbcDbmsDef implements IPSJdbcDbmsDefConstants
       if (m_backendDb != null && m_backendDb.trim().length() == 0)
          m_backendDb = null;
       m_driver = getRequiredProperty(serverProps, DB_DRIVER_NAME_PROPERTY);
+      if (PSJdbcUtils.JTDS_DRIVER.equalsIgnoreCase(m_driver)){
+         m_driver = PSJdbcUtils.MICROSOFT_DRIVER;
+      }
       m_class = getRequiredProperty(serverProps, DB_DRIVER_CLASS_NAME_PROPERTY);
+      if(PSJdbcUtils.LEGACY_SQL_DRIVER_CLASSNAME.equalsIgnoreCase(m_class)){
+         m_class = PSJdbcUtils.MICROSOFT_SQL_DRIVER_CLASSNAME;
+      }
       m_server = getRequiredProperty(serverProps, DB_SERVER_PROPERTY);
       m_database = serverProps.getProperty(DB_NAME_PROPERTY);
       m_schema = serverProps.getProperty(DB_SCHEMA_PROPERTY);
@@ -176,7 +182,7 @@ public class PSJdbcDbmsDef implements IPSJdbcDbmsDefConstants
 
       // handle possible encryption of password
       String isEncrypted = serverProps.getProperty(PWD_ENCRYPTED_PROPERTY);
-      if (isEncrypted != null && isEncrypted.equalsIgnoreCase("Y")) {
+      if (isEncrypted == null || isEncrypted.equalsIgnoreCase("Y")) {
          try {
             m_pw = PSEncryptor.decryptString(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR), m_pw);
          } catch (PSEncryptionException e) {
@@ -474,6 +480,9 @@ public class PSJdbcDbmsDef implements IPSJdbcDbmsDefConstants
       m_database = null;
       m_backendDb = null;
       m_driver = driverType;
+      if (PSJdbcUtils.JTDS_DRIVER.equalsIgnoreCase(m_driver)){
+         m_driver = PSJdbcUtils.MICROSOFT_DRIVER;
+      }
       m_schema = origin;
 
       m_dataSource = dataSource;
@@ -489,6 +498,9 @@ public class PSJdbcDbmsDef implements IPSJdbcDbmsDefConstants
             conn = m_dataSource.getConnection();
             DatabaseMetaData dmd = conn.getMetaData();
             m_driver = PSJdbcUtils.getDriverFromUrl(dmd.getURL());
+            if (PSJdbcUtils.JTDS_DRIVER.equalsIgnoreCase(m_driver)){
+               m_driver = PSJdbcUtils.MICROSOFT_DRIVER;
+            }
          }
          catch (SQLException e)
          {

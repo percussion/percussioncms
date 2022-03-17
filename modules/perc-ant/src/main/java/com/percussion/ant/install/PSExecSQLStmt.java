@@ -102,7 +102,6 @@ public class PSExecSQLStmt extends PSAction
    @SuppressFBWarnings("HARD_CODE_PASSWORD")
    @Override
    public void execute() {
-      String driver = null;
       String propFile = getRootDir() + File.separator
               + "rxconfig/Installer/rxrepository.properties";
 
@@ -118,11 +117,15 @@ public class PSExecSQLStmt extends PSAction
             InstallUtil.setRootDir(getRootDir());
          }
          String pw = dbmsDef.getPassword();
-         driver = dbmsDef.getDriver();
-         try (Connection conn = InstallUtil.createConnection(dbmsDef.getDriver(),
-                 dbmsDef.getServer(),
-                 dbmsDef.getDataBase(),
-                 dbmsDef.getUserId(),
+         String driver = dbmsDef.getDriver();
+         String server = dbmsDef.getServer();
+         String database = dbmsDef.getDataBase();
+         String uid = dbmsDef.getUserId();
+         PSLogger.logInfo("Driver : " + driver + " Server : " + server + " Database : " + database + " uid : " + uid);
+         try (Connection conn = InstallUtil.createConnection(driver,
+                 server,
+                 database,
+                 uid,
                  pw
          )) {
 

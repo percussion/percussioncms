@@ -121,6 +121,12 @@ public class PSTableAction extends PSAction
                  dbmsDef.getDriver(), null);
          InstallUtil.setRootDir(getRootDir());
          String pw = dbmsDef.getPassword();
+         String driver = dbmsDef.getDriver();
+         String server = dbmsDef.getServer();
+         String database = dbmsDef.getDataBase();
+         String uid = dbmsDef.getUserId();
+         PSLogger.logInfo("Driver : " + driver + " Server : " + server + " Database : " + database + " uid : " + uid);
+
          //get table def files
          String[] tableDef = getTableDef();
          for (int i = 0; i < tableDef.length; i++)
@@ -133,16 +139,16 @@ public class PSTableAction extends PSAction
 
             if (schemaColl==null)
                schemaColl = new PSJdbcTableSchemaCollection(doc,
-                     dataTypeMap);
+                       dataTypeMap);
             else
                schemaColl.addAll(new PSJdbcTableSchemaCollection(doc,
-                     dataTypeMap));
+                       dataTypeMap));
 
          }
-         try(Connection conn = InstallUtil.createConnection(dbmsDef.getDriver(),
-                 dbmsDef.getServer(),
-                 dbmsDef.getDataBase(),
-                 dbmsDef.getUserId(),
+         try(Connection conn = InstallUtil.createConnection(driver,
+                 server,
+                 database,
+                 uid,
                  pw)) {
             //get table data files
             String[] tableData = getTableData();
@@ -167,7 +173,7 @@ public class PSTableAction extends PSAction
                   dataColl = new PSJdbcTableDataCollection(doc);
                else
                   dataColl.addAll(new PSJdbcTableDataCollection(doc));
-            }
+               }
 
             Iterator it = schemaColl.iterator();
 
