@@ -42,6 +42,7 @@ import com.percussion.utils.jdbc.PSJdbcUtils;
 import com.percussion.utils.xml.PSInvalidXmlException;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import org.apache.commons.lang.StringUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -182,7 +183,7 @@ public class PSJdbcDbmsDef implements IPSJdbcDbmsDefConstants
 
       // handle possible encryption of password
       String isEncrypted = serverProps.getProperty(PWD_ENCRYPTED_PROPERTY);
-      if (isEncrypted == null || isEncrypted.equalsIgnoreCase("Y")) {
+      if (StringUtils.isNotBlank(m_pw) &&( isEncrypted == null || isEncrypted.equalsIgnoreCase("Y"))) {
          try {
             m_pw = PSEncryptor.decryptString(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR), m_pw);
          } catch (PSEncryptionException e) {
