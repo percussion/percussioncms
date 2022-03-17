@@ -179,7 +179,7 @@
        <hikari.version>4.0.3</hikari.version>
        <commons-email.version>1.5</commons-email.version>
        <commons.codec.version>1.14</commons.codec.version>
-       <tinymce.version>6.0.0</tinymce.version>
+       <tinymce.version>4.9.10</tinymce.version>
        <jfx.version>11.0.2</jfx.version>
        <twelvemonkeys.version>3.7.0</twelvemonkeys.version>
        <commons.beanutils.version>1.9.4</commons.beanutils.version>
