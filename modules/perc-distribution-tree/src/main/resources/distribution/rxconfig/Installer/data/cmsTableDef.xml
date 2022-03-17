@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tables>
-    <table name="CONTENTADHOCUSERS">
+    <table name="CONTENTADHOCUSERS" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="CONTENTID">
                 <jdbctype>INTEGER</jdbctype>
@@ -29,7 +29,7 @@
             <name>USERNAME</name>
         </primarykey>
     </table>
-    <table name="CONTENTAPPROVALS">
+    <table name="CONTENTAPPROVALS" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="CONTENTID">
                 <jdbctype>INTEGER</jdbctype>
@@ -68,7 +68,7 @@
             <name>USERNAME</name>
         </primarykey>
     </table>
-    <table name="CONTENTSTATUS">
+    <table name="CONTENTSTATUS" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="CONTENTID">
                 <jdbctype>INTEGER</jdbctype>
@@ -274,7 +274,7 @@
             </index>
         </indexdefinitions>
     </table>
-    <table name="CONTENTSTATUSHISTORY">
+    <table name="CONTENTSTATUSHISTORY" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="CONTENTSTATUSHISTORYID">
                 <jdbctype>INTEGER</jdbctype>
@@ -402,7 +402,7 @@
             </index>
         </indexdefinitions>
     </table>
-    <table name="CONTENTTYPES">
+    <table name="CONTENTTYPES" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <schemaHandlers>
             <schemaHandler type="noAlterTableStmt"/>
             <schemaHandler type="fromBackup">
@@ -476,7 +476,7 @@
             </index>
         </indexdefinitions>
     </table>
-    <table name="PSX_TEMPLATE">
+    <table name="PSX_TEMPLATE" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="TEMPLATE_ID">
                 <jdbctype>BIGINT</jdbctype>
@@ -585,7 +585,7 @@
             </index>
         </indexdefinitions>
     </table>
-    <table name="PSX_CONTENTTYPE_TEMPLATE">
+    <table name="PSX_CONTENTTYPE_TEMPLATE" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="TEMPLATE_TYPE_ID">
                 <jdbctype>BIGINT</jdbctype>
@@ -632,7 +632,7 @@
             </index>
         </indexdefinitions>
     </table>
-    <table name="PSX_TEMPLATE_BINDING">
+    <table name="PSX_TEMPLATE_BINDING" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="BINDING_ID">
                 <jdbctype>BIGINT</jdbctype>
@@ -703,7 +703,7 @@
             <name>KEYNAME</name>
         </primarykey>
     </table>
-    <table name="NOTIFICATIONS">
+    <table name="NOTIFICATIONS" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="NOTIFICATIONID">
                 <jdbctype>INTEGER</jdbctype>
@@ -736,7 +736,7 @@
             <name>WORKFLOWAPPID</name>
         </primarykey>
     </table>
-    <table name="ROLES">
+    <table name="ROLES" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="ROLEID">
                 <jdbctype>INTEGER</jdbctype>
@@ -770,7 +770,7 @@
             </index>
         </indexdefinitions>
     </table>
-    <table name="PSX_ITEM_FILTER">
+    <table name="PSX_ITEM_FILTER" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="FILTER_ID">
                 <jdbctype>BIGINT</jdbctype>
@@ -810,7 +810,7 @@
           Make sure update both places for any changes in this table.
           This is to avoid a catch 22 issue when changing the type of the primary key in RXCONTENTLIST table.
     -->
-    <table name="PSX_CONTENTLIST_GEN_PARAM">
+    <table name="PSX_CONTENTLIST_GEN_PARAM" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="PARAM_ID">
                 <jdbctype>BIGINT</jdbctype>
@@ -844,7 +844,7 @@
           Make sure update both places for any changes in this table.
           This is to avoid a catch 22 issue when changing the type of the primary key in RXCONTENTLIST table.
     -->
-    <table name="PSX_CONTENTLIST_EXPANDER_PARAM">
+    <table name="PSX_CONTENTLIST_EXPANDER_PARAM" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="PARAM_ID">
                 <jdbctype>BIGINT</jdbctype>
@@ -873,7 +873,7 @@
             <name>PARAM_ID</name>
         </primarykey>
     </table>
-    <table name="RXCONTENTLIST">
+    <table name="RXCONTENTLIST" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="CONTENTLISTID">
                 <jdbctype>BIGINT</jdbctype>
@@ -943,7 +943,7 @@
          Make sure update both places for any changes in this table.
          This is to avoid a catch 22 issue when changing the type of the primary key in RXCONTENTLIST table.
    -->
-    <table name="PSX_CONTENTLIST_GEN_PARAM" alter="y">
+    <table name="PSX_CONTENTLIST_GEN_PARAM" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="PARAM_ID">
                 <jdbctype>BIGINT</jdbctype>
@@ -984,7 +984,7 @@
          Make sure update both places for any changes in this table.
          This is to avoid a catch 22 issue when changing the type of the primary key in RXCONTENTLIST table.
    -->
-    <table name="PSX_CONTENTLIST_EXPANDER_PARAM" alter="y">
+    <table name="PSX_CONTENTLIST_EXPANDER_PARAM" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="PARAM_ID">
                 <jdbctype>BIGINT</jdbctype>
@@ -1020,7 +1020,7 @@
             </fkColumn>
         </foreignkey>
     </table>
-    <table name="RXEDITION">
+    <table name="RXEDITION" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="EDITIONID">
                 <jdbctype>BIGINT</jdbctype>
@@ -1068,7 +1068,7 @@
             <name>EDITIONID</name>
         </primarykey>
     </table>
-    <table name="RXEDITIONCLIST">
+    <table name="RXEDITIONCLIST" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="EDITIONCLISTID">
                 <jdbctype>BIGINT</jdbctype>
@@ -1118,7 +1118,7 @@
             </index>
         </indexdefinitions>
     </table>
-    <table name="RXEDITIONITEM">
+    <table name="RXEDITIONITEM" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="EDITIONID">
                 <jdbctype>INTEGER</jdbctype>
@@ -1156,7 +1156,7 @@
             <name>EDITIONID</name>
         </primarykey>
     </table>
-    <table name="RXLOOKUP">
+    <table name="RXLOOKUP" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="LOOKUPID">
                 <jdbctype>INTEGER</jdbctype>
@@ -1204,7 +1204,7 @@
             </index>
         </indexdefinitions>
     </table>
-    <table name="PSX_PUBLICATION_STATUS">
+    <table name="PSX_PUBLICATION_STATUS" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="STATUS_ID">
                 <jdbctype>BIGINT</jdbctype>
@@ -1277,7 +1277,7 @@
             </index>
         </indexdefinitions>
     </table>
-    <table name="PSX_PUBLICATION_DOC">
+    <table name="PSX_PUBLICATION_DOC" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="REFERENCE_ID">
                 <jdbctype>BIGINT</jdbctype>
@@ -1431,7 +1431,7 @@
             </index>
         </indexdefinitions>
     </table>
-    <table name="PSX_PUBLICATION_SITE_ITEM">
+    <table name="PSX_PUBLICATION_SITE_ITEM" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="REFERENCE_ID">
                 <jdbctype>BIGINT</jdbctype>
@@ -1579,7 +1579,7 @@
             </indexdefinitions>
         </row>
     </table>
-    <table name="RXSITES">
+    <table name="RXSITES" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="SITEID">
                 <jdbctype>BIGINT</jdbctype>
@@ -1801,7 +1801,7 @@
             <name>SITEID</name>
         </primarykey>
     </table>
-    <table name="RXSLOTCONTENT">
+    <table name="RXSLOTCONTENT" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="SLOTID">
                 <jdbctype>BIGINT</jdbctype>
@@ -1837,7 +1837,7 @@
             </index>
         </indexdefinitions>
     </table>
-    <table name="RXSLOTTYPE">
+    <table name="RXSLOTTYPE" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="SLOTID">
                 <jdbctype>BIGINT</jdbctype>
@@ -1898,7 +1898,7 @@
             </index>
         </indexdefinitions>
     </table>
-    <table name="PSX_SLOT_FINDER_PARAM">
+    <table name="PSX_SLOT_FINDER_PARAM" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="PARAM_ID">
                 <jdbctype>BIGINT</jdbctype>
@@ -1938,7 +1938,7 @@
             </fkColumn>
         </foreignkey>
     </table>
-    <table name="RXVARIANTSLOTTYPE">
+    <table name="RXVARIANTSLOTTYPE" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="VARIANTID">
                 <jdbctype>BIGINT</jdbctype>
@@ -1961,7 +1961,7 @@
             </index>
         </indexdefinitions>
     </table>
-    <table name="STATEROLES">
+    <table name="STATEROLES" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <schemaHandlers>
             <schemaHandler type="noAlterTableStmt"/>
             <schemaHandler type="fromBackup">
@@ -2022,7 +2022,7 @@
             </index>
         </indexdefinitions>
     </table>
-    <table name="STATES">
+    <table name="STATES" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="STATEID">
                 <jdbctype>INTEGER</jdbctype>
@@ -2065,7 +2065,7 @@
             </index>
         </indexdefinitions>
     </table>
-    <table name="TRANSITIONS">
+    <table name="TRANSITIONS" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="TRANSITIONID">
                 <jdbctype>INTEGER</jdbctype>
@@ -2158,7 +2158,7 @@
             <name>WORKFLOWAPPID</name>
         </primarykey>
     </table>
-    <table name="USERLOGIN">
+    <table name="USERLOGIN" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="USERID">
                 <jdbctype>VARCHAR</jdbctype>
@@ -2175,7 +2175,7 @@
             <name>USERID</name>
         </primarykey>
     </table>
-    <table name="WORKFLOWAPPS">
+    <table name="WORKFLOWAPPS" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="WORKFLOWAPPID">
                 <jdbctype>INTEGER</jdbctype>
@@ -2213,7 +2213,7 @@
             <name>WORKFLOWAPPID</name>
         </primarykey>
     </table>
-    <table name="PSX_ADMINLOOKUP">
+    <table name="PSX_ADMINLOOKUP" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="ID">
                 <jdbctype>INTEGER</jdbctype>
@@ -2250,7 +2250,7 @@
             <name>ID</name>
         </primarykey>
     </table>
-    <table name="PSX_ATTRIBUTE_NAMES">
+    <table name="PSX_ATTRIBUTE_NAMES" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="ID">
                 <jdbctype>INTEGER</jdbctype>
@@ -2282,7 +2282,7 @@
             </index>
         </indexdefinitions>
     </table>
-    <table name="PSX_ATTRIBUTE_VALUES">
+    <table name="PSX_ATTRIBUTE_VALUES" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="ID">
                 <jdbctype>INTEGER</jdbctype>
@@ -2309,7 +2309,7 @@
             <name>ID</name>
         </primarykey>
     </table>
-    <table name="PSX_ROLE_ATTRIBUTES">
+    <table name="PSX_ROLE_ATTRIBUTES" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="ROLEID">
                 <jdbctype>INTEGER</jdbctype>
@@ -2327,7 +2327,7 @@
             <name>ATTRIBUTEID</name>
         </primarykey>
     </table>
-    <table name="PSX_ROLE_SUBJECT_ATTRIBUTES">
+    <table name="PSX_ROLE_SUBJECT_ATTRIBUTES" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="ROLEID">
                 <jdbctype>INTEGER</jdbctype>
@@ -2351,7 +2351,7 @@
             <name>ATTRIBUTEID</name>
         </primarykey>
     </table>
-    <table name="PSX_ROLE_SUBJECTS">
+    <table name="PSX_ROLE_SUBJECTS" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="ROLEID">
                 <jdbctype>INTEGER</jdbctype>
@@ -2369,7 +2369,7 @@
             <name>SUBJECTID</name>
         </primarykey>
     </table>
-    <table name="PSX_ROLES">
+    <table name="PSX_ROLES" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="ID">
                 <jdbctype>INTEGER</jdbctype>
@@ -2406,7 +2406,7 @@
             </index>
         </indexdefinitions>
     </table>
-    <table name="PSX_SUBJECT_ATTRIBUTES">
+    <table name="PSX_SUBJECT_ATTRIBUTES" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="SUBJECTID">
                 <jdbctype>INTEGER</jdbctype>
@@ -2424,7 +2424,7 @@
             <name>ATTRIBUTEID</name>
         </primarykey>
     </table>
-    <table name="PSX_SUBJECTS">
+    <table name="PSX_SUBJECTS" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="ID">
                 <jdbctype>INTEGER</jdbctype>
@@ -2456,7 +2456,7 @@
             </index>
         </indexdefinitions>
     </table>
-    <table name="TRANSITIONNOTIFICATIONS">
+    <table name="TRANSITIONNOTIFICATIONS" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="TRANSITIONNOTIFICATIONID">
                 <jdbctype>INTEGER</jdbctype>
@@ -2505,7 +2505,7 @@
             </index>
         </indexdefinitions>
     </table>
-    <table name="RXSYSCOMPONENT">
+    <table name="RXSYSCOMPONENT" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="COMPONENTID">
                 <jdbctype>INTEGER</jdbctype>
@@ -2552,7 +2552,7 @@
             </index>
         </indexdefinitions>
     </table>
-    <table name="RXSYSCOMPONENTPROPERTY">
+    <table name="RXSYSCOMPONENTPROPERTY" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="PROPERTYID">
                 <jdbctype>INTEGER</jdbctype>
@@ -2589,7 +2589,7 @@
             </index>
         </indexdefinitions>
     </table>
-    <table name="RXSYSCOMPONENTRELATIONS">
+    <table name="RXSYSCOMPONENTRELATIONS" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="COMPONENTID">
                 <jdbctype>INTEGER</jdbctype>
@@ -2622,7 +2622,7 @@
             </index>
         </indexdefinitions>
     </table>
-    <table name="RXCONTEXT">
+    <table name="RXCONTEXT" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="CONTEXTID">
                 <jdbctype>BIGINT</jdbctype>
@@ -2655,7 +2655,7 @@
             <name>CONTEXTID</name>
         </primarykey>
     </table>
-    <table name="RXASSEMBLERPROPERTIES">
+    <table name="RXASSEMBLERPROPERTIES" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="SITEID">
                 <jdbctype>BIGINT</jdbctype>
@@ -2693,7 +2693,7 @@
             <name>PROPERTYID</name>
         </primarykey>
     </table>
-    <table name="RXLOCATIONSCHEME">
+    <table name="RXLOCATIONSCHEME" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="SCHEMEID">
                 <jdbctype>BIGINT</jdbctype>
@@ -2748,7 +2748,7 @@
             </index>
         </indexdefinitions>
     </table>
-    <table name="RXLOCATIONSCHEMEPARAMS">
+    <table name="RXLOCATIONSCHEMEPARAMS" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="SCHEMEPARAMID">
                 <jdbctype>INTEGER</jdbctype>
@@ -2790,7 +2790,7 @@
             </index>
         </indexdefinitions>
     </table>
-    <table name="RXSEARCHES">
+    <table name="RXSEARCHES" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="SEARCHID">
                 <jdbctype>INTEGER</jdbctype>
@@ -2822,7 +2822,7 @@
             </index>
         </indexdefinitions>
     </table>
-    <table name="RXCOMMUNITY">
+    <table name="RXCOMMUNITY" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="COMMUNITYID">
                 <jdbctype>INTEGER</jdbctype>
@@ -2855,7 +2855,7 @@
             </index>
         </indexdefinitions>
     </table>
-    <table name="RXCOMMUNITYROLE">
+    <table name="RXCOMMUNITYROLE" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="ROLEID">
                 <jdbctype>INTEGER</jdbctype>
@@ -2878,7 +2878,7 @@
             </index>
         </indexdefinitions>
     </table>
-    <table name="RXCOMPONENTCOMMUNITY">
+    <table name="RXCOMPONENTCOMMUNITY" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="COMPONENTID">
                 <jdbctype>INTEGER</jdbctype>
@@ -2901,7 +2901,7 @@
             </index>
         </indexdefinitions>
     </table>
-    <table name="RXMENUACTION">
+    <table name="RXMENUACTION" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="ACTIONID">
                 <jdbctype>INTEGER</jdbctype>
@@ -2959,7 +2959,7 @@
             </index>
         </indexdefinitions>
     </table>
-    <table name="RXMENUACTIONPARAM">
+    <table name="RXMENUACTIONPARAM" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="ACTIONID">
                 <jdbctype>INTEGER</jdbctype>
@@ -2987,7 +2987,7 @@
             <name>PARAMNAME</name>
         </primarykey>
     </table>
-    <table name="RXMENUACTIONRELATION">
+    <table name="RXMENUACTIONRELATION" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="ACTIONID">
                 <jdbctype>INTEGER</jdbctype>
@@ -3005,7 +3005,7 @@
             <name>CHILDACTIONID</name>
         </primarykey>
     </table>
-    <table name="RXMODE">
+    <table name="RXMODE" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="MODEID">
                 <jdbctype>INTEGER</jdbctype>
@@ -3032,7 +3032,7 @@
             <name>MODEID</name>
         </primarykey>
     </table>
-    <table name="RXMODEUICONTEXTACTION">
+    <table name="RXMODEUICONTEXTACTION" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="MODEID">
                 <jdbctype>INTEGER</jdbctype>
@@ -3061,7 +3061,7 @@
             </index>
         </indexdefinitions>
     </table>
-    <table name="RXUICONTEXT">
+    <table name="RXUICONTEXT" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="UICONTEXTID">
                 <jdbctype>INTEGER</jdbctype>
@@ -3088,7 +3088,7 @@
             <name>UICONTEXTID</name>
         </primarykey>
     </table>
-    <table name="RXLOCALE">
+    <table name="RXLOCALE" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="LOCALEID">
                 <jdbctype>INTEGER</jdbctype>
@@ -3131,7 +3131,7 @@
             <name>LOCALEID</name>
         </primarykey>
     </table>
-    <table name="RXLOCALEPROPERTY">
+    <table name="RXLOCALEPROPERTY" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="LOCALEID">
                 <jdbctype>INTEGER</jdbctype>
@@ -3159,7 +3159,7 @@
             <name>PROPERTYNAME</name>
         </primarykey>
     </table>
-    <table name="PSX_PERSISTEDPROPERTYMETA">
+    <table name="PSX_PERSISTEDPROPERTYMETA" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="PROPERTYID">
                 <jdbctype>INTEGER</jdbctype>
@@ -3212,7 +3212,7 @@
             </index>
         </indexdefinitions>
     </table>
-    <table name="PSX_PERSISTEDPROPERTYVALUES" allowSchemaChanges="y">
+    <table name="PSX_PERSISTEDPROPERTYVALUES" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="CONTEXT">
                 <jdbctype>VARCHAR</jdbctype>
@@ -3247,7 +3247,7 @@
             <name>CONTEXT</name>
         </primarykey>
     </table>
-    <table name="PSX_RXCONFIGURATIONS">
+    <table name="PSX_RXCONFIGURATIONS" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="NAME">
                 <jdbctype>VARCHAR</jdbctype>
@@ -3289,7 +3289,7 @@
             <name>NAME</name>
         </primarykey>
     </table>
-    <table name="PSX_RELATIONSHIPCONFIGNAME">
+    <table name="PSX_RELATIONSHIPCONFIGNAME" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="CONFIG_ID">
                 <jdbctype>INTEGER</jdbctype>
@@ -3312,7 +3312,7 @@
             <name>CONFIG_ID</name>
         </primarykey>
     </table>
-    <table name="PSX_OBJECTRELATIONSHIP">
+    <table name="PSX_OBJECTRELATIONSHIP" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="RID">
                 <jdbctype>INTEGER</jdbctype>
@@ -3414,7 +3414,7 @@
             </index>
         </indexdefinitions>
     </table>
-    <table name="PSX_OBJECTRELATIONSHIPPROP">
+    <table name="PSX_OBJECTRELATIONSHIPPROP" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="RID">
                 <jdbctype>INTEGER</jdbctype>
@@ -3717,7 +3717,7 @@
             </column>
         </row>
     </table>
-    <table name="PSX_FOLDER">
+    <table name="PSX_FOLDER" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="CONTENTID">
                 <jdbctype>INTEGER</jdbctype>
@@ -3738,7 +3738,7 @@
             <name>REVISIONID</name>
         </primarykey>
     </table>
-    <table name="PSX_PROPERTIES">
+    <table name="PSX_PROPERTIES" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="CONTENTID">
                 <jdbctype>INTEGER</jdbctype>
@@ -3775,7 +3775,7 @@
             <name>PROPERTYNAME</name>
         </primarykey>
     </table>
-    <table name="RXMENUVISIBILITY">
+    <table name="RXMENUVISIBILITY" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="ACTIONID">
                 <jdbctype>INTEGER</jdbctype>
@@ -3804,7 +3804,7 @@
             <name>VALUE</name>
         </primarykey>
     </table>
-    <table name="RXMENUACTIONPROPERTIES">
+    <table name="RXMENUACTIONPROPERTIES" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="ACTIONID">
                 <jdbctype>INTEGER</jdbctype>
@@ -3832,7 +3832,7 @@
             <name>PROPNAME</name>
         </primarykey>
     </table>
-    <table name="PSX_OBJECTS">
+    <table name="PSX_OBJECTS" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="OBJECTTYPE">
                 <jdbctype>INTEGER</jdbctype>
@@ -3874,7 +3874,7 @@
             </index>
         </indexdefinitions>
     </table>
-    <table name="PSX_OBJECTPROPERTIES">
+    <table name="PSX_OBJECTPROPERTIES" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="OBJECTTYPE">
                 <jdbctype>INTEGER</jdbctype>
@@ -3908,7 +3908,7 @@
             </fkColumn>
         </foreignkey>
     </table>
-    <table name="PSX_SEARCHES">
+    <table name="PSX_SEARCHES" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="SEARCHID">
                 <jdbctype>INTEGER</jdbctype>
@@ -3973,7 +3973,7 @@
             </index>
         </indexdefinitions>
     </table>
-    <table name="PSX_SEARCHFIELDS">
+    <table name="PSX_SEARCHFIELDS" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="SEARCHID">
                 <jdbctype>INTEGER</jdbctype>
@@ -4024,7 +4024,7 @@
             <name>FIELDNAME</name>
         </primarykey>
     </table>
-    <table name="PSX_SEARCHPROPERTIES">
+    <table name="PSX_SEARCHPROPERTIES" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="PROPERTYID">
                 <jdbctype>INTEGER</jdbctype>
@@ -4052,7 +4052,7 @@
             <name>PROPERTYVALUE</name>
         </primarykey>
     </table>
-    <table name="PSX_DISPLAYFORMATS">
+    <table name="PSX_DISPLAYFORMATS" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="DISPLAYID">
                 <jdbctype>INTEGER</jdbctype>
@@ -4089,7 +4089,7 @@
             </index>
         </indexdefinitions>
     </table>
-    <table name="PSX_DISPLAYFORMATCOLUMNS">
+    <table name="PSX_DISPLAYFORMATCOLUMNS" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="DISPLAYID">
                 <jdbctype>INTEGER</jdbctype>
@@ -4138,7 +4138,7 @@
             <name>SOURCE</name>
         </primarykey>
     </table>
-    <table name="PSX_DISPLAYFORMATPROPERTIES">
+    <table name="PSX_DISPLAYFORMATPROPERTIES" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="PROPERTYID">
                 <jdbctype>INTEGER</jdbctype>
@@ -4166,7 +4166,7 @@
             <name>PROPERTYVALUE</name>
         </primarykey>
     </table>
-    <table name="TRANSITIONROLES">
+    <table name="TRANSITIONROLES" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <schemaHandlers>
             <schemaHandler type="onCreate">
                 <dataHandlers>
@@ -4215,7 +4215,7 @@
             </index>
         </indexdefinitions>
     </table>
-    <table name="PSX_OBJECTACL">
+    <table name="PSX_OBJECTACL" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="CONTENTID">
                 <jdbctype>INTEGER</jdbctype>
@@ -4252,7 +4252,7 @@
             </index>
         </indexdefinitions>
     </table>
-    <table name="PSX_SEARCHINDEXQUEUE" delolddata="y">
+    <table name="PSX_SEARCHINDEXQUEUE" allowSchemaChanges="y" alter="y"  delolddata="y" isView="n">
         <row>
             <column name="QUEUEID">
                 <jdbctype>INTEGER</jdbctype>
@@ -4316,7 +4316,7 @@
             </index>
         </indexdefinitions>
     </table>
-    <table name="PSX_AUTOTRANSLATION">
+    <table name="PSX_AUTOTRANSLATION" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="CONTENTTYPEID">
                 <jdbctype>BIGINT</jdbctype>
@@ -4346,7 +4346,7 @@
             <name>LOCALE</name>
         </primarykey>
     </table>
-    <table name="PSX_VARIANT_SITE">
+    <table name="PSX_VARIANT_SITE" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="VARIANTID">
                 <jdbctype>BIGINT</jdbctype>
@@ -4364,7 +4364,7 @@
             <name>SITEID</name>
         </primarykey>
     </table>
-    <table name="PSX_GUID_DATA">
+    <table name="PSX_GUID_DATA" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="ID">
                 <jdbctype>INTEGER</jdbctype>
@@ -4384,7 +4384,7 @@
             <name>ID</name>
         </primarykey>
     </table>
-    <table name="PSX_ITEM_FILTER_RULE">
+    <table name="PSX_ITEM_FILTER_RULE" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="FILTER_RULE_ID">
                 <jdbctype>BIGINT</jdbctype>
@@ -4416,7 +4416,7 @@
             </fkColumn>
         </foreignkey>
     </table>
-    <table name="PSX_ITEM_FILTER_RULE_PARAM">
+    <table name="PSX_ITEM_FILTER_RULE_PARAM" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="FILTER_RULE_PARAM_ID">
                 <jdbctype>BIGINT</jdbctype>
@@ -4452,7 +4452,7 @@
             </fkColumn>
         </foreignkey>
     </table>
-    <table name="PSX_SHARED_PROPERTIES">
+    <table name="PSX_SHARED_PROPERTIES" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="ID">
                 <jdbctype>BIGINT</jdbctype>
@@ -4477,7 +4477,7 @@
             <name>ID</name>
         </primarykey>
     </table>
-    <table name="PSX_WB_HIERARCHY_NODE">
+    <table name="PSX_WB_HIERARCHY_NODE" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="NODE_ID">
                 <jdbctype>BIGINT</jdbctype>
@@ -4505,7 +4505,7 @@
             <name>NODE_ID</name>
         </primarykey>
     </table>
-    <table name="PSX_WB_HIERARCHY_NODE_PROP">
+    <table name="PSX_WB_HIERARCHY_NODE_PROP" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="NODE_ID">
                 <jdbctype>BIGINT</jdbctype>
@@ -4538,7 +4538,7 @@
             </fkColumn>
         </foreignkey>
     </table>
-    <table name="PSX_LOCKS">
+    <table name="PSX_LOCKS" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="ID">
                 <jdbctype>BIGINT</jdbctype>
@@ -4581,7 +4581,7 @@
             </index>
         </indexdefinitions>
     </table>
-    <table name="PSX_ACLS">
+    <table name="PSX_ACLS" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="ID">
                 <jdbctype>BIGINT</jdbctype>
@@ -4620,7 +4620,7 @@
             </index>
         </indexdefinitions>
     </table>
-    <table name="PSX_ACLENTRIES">
+    <table name="PSX_ACLENTRIES" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="ID">
                 <jdbctype>BIGINT</jdbctype>
@@ -4669,7 +4669,7 @@
             </index>
         </indexdefinitions>
     </table>
-    <table name="PSX_ACLENTRYPERMISSIONS">
+    <table name="PSX_ACLENTRYPERMISSIONS" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="ID">
                 <jdbctype>BIGINT</jdbctype>
@@ -4702,7 +4702,7 @@
             </index>
         </indexdefinitions>
     </table>
-    <table name="PSX_TEMPIDS">
+    <table name="PSX_TEMPIDS" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="ID">
                 <jdbctype>BIGINT</jdbctype>
@@ -4726,7 +4726,7 @@
             </index>
         </indexdefinitions>
     </table>
-    <table name="PSX_DELIVERY_TYPE">
+    <table name="PSX_DELIVERY_TYPE" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="ID">
                 <jdbctype>BIGINT</jdbctype>
@@ -4762,7 +4762,7 @@
             </index>
         </indexdefinitions>
     </table>
-    <table name="PSX_EDITION_TASK">
+    <table name="PSX_EDITION_TASK" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="TASK_ID">
                 <jdbctype>BIGINT</jdbctype>
@@ -4799,7 +4799,7 @@
             </index>
         </indexdefinitions>
     </table>
-    <table name="PSX_EDITION_TASK_PARAM">
+    <table name="PSX_EDITION_TASK_PARAM" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="TASK_PARAM_ID">
                 <jdbctype>BIGINT</jdbctype>
@@ -4833,7 +4833,7 @@
             </index>
         </indexdefinitions>
     </table>
-    <table name="PSX_EDITION_TASK_LOG">
+    <table name="PSX_EDITION_TASK_LOG" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="REFERENCE_ID">
                 <jdbctype>BIGINT</jdbctype>
@@ -4873,7 +4873,7 @@
             </index>
         </indexdefinitions>
     </table>
-    <table name="PSX_SCH_NOTIF_TEMPLATE">
+    <table name="PSX_SCH_NOTIF_TEMPLATE" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="ID">
                 <jdbctype>BIGINT</jdbctype>
@@ -5597,7 +5597,7 @@
             <name>AUDIT_ID</name>
         </primarykey>
     </table>
-    <table name="PSX_BINARY">
+    <table name="PSX_BINARY" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="ID">
                 <jdbctype>INTEGER</jdbctype>
@@ -5655,7 +5655,7 @@
             <name>ID</name>
         </primarykey>
     </table>
-    <table name="PSX_BINARYCOLUMNS">
+    <table name="PSX_BINARYCOLUMNS" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="TABLE_NAME">
                 <jdbctype>VARCHAR</jdbctype>
@@ -5678,7 +5678,7 @@
             <name>COLUMN_NAME</name>
         </primarykey>
     </table>
-    <table name="PSX_BINARYDATA">
+    <table name="PSX_BINARYDATA" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="ID">
                 <jdbctype>INTEGER</jdbctype>
@@ -5706,7 +5706,7 @@
             </fkColumn>
         </foreignkey>
     </table>
-    <table name="PSX_BINARYMETAENTRY">
+    <table name="PSX_BINARYMETAENTRY" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="ID">
                 <jdbctype>INTEGER</jdbctype>
@@ -5758,7 +5758,7 @@
             </index>
         </indexdefinitions>
     </table>
-    <table name="PSX_BINARYMETAKEY">
+    <table name="PSX_BINARYMETAKEY" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="ID">
                 <jdbctype>INTEGER</jdbctype>
@@ -5792,7 +5792,7 @@
         </indexdefinitions>
     </table>
 
-    <table name="PSX_BINARY">
+    <table name="PSX_BINARY" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="ID">
                 <jdbctype>INTEGER</jdbctype>
@@ -5850,7 +5850,7 @@
             <name>ID</name>
         </primarykey>
     </table>
-    <table name="PSX_BINARYCOLUMNS">
+    <table name="PSX_BINARYCOLUMNS" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="TABLE_NAME">
                 <jdbctype>VARCHAR</jdbctype>
@@ -5873,7 +5873,7 @@
             <name>COLUMN_NAME</name>
         </primarykey>
     </table>
-    <table name="PSX_BINARYDATA">
+    <table name="PSX_BINARYDATA" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="ID">
                 <jdbctype>INTEGER</jdbctype>
@@ -5901,7 +5901,7 @@
             </fkColumn>
         </foreignkey>
     </table>
-    <table name="PSX_BINARYMETAENTRY">
+    <table name="PSX_BINARYMETAENTRY" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="ID">
                 <jdbctype>INTEGER</jdbctype>
@@ -5953,7 +5953,7 @@
             </index>
         </indexdefinitions>
     </table>
-    <table name="PSX_BINARYMETAKEY">
+    <table name="PSX_BINARYMETAKEY" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="ID">
                 <jdbctype>INTEGER</jdbctype>
@@ -6132,7 +6132,7 @@
             </index>
         </indexdefinitions>
     </table>
-    <table name="PSX_CONTENTTYPE_WORKFLOW">
+    <table name="PSX_CONTENTTYPE_WORKFLOW" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="CONTENTTYPE_WORKFLOW_ID">
                 <jdbctype>BIGINT</jdbctype>
@@ -6167,7 +6167,7 @@
             </index>
         </indexdefinitions>
     </table>
-    <table name="PSX_ID_NAME">
+    <table name="PSX_ID_NAME" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="DEP_ID">
                 <jdbctype>VARCHAR</jdbctype>
@@ -6184,7 +6184,7 @@
             <name>DEP_ID</name>
         </primarykey>
     </table>
-    <table name="PSX_CONFIG_STATUS">
+    <table name="PSX_CONFIG_STATUS" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="STATUS_ID">
                 <jdbctype>INTEGER</jdbctype>
@@ -6681,7 +6681,7 @@
             </fkColumn>
         </foreignkey>
     </table>
-    <table name="PSX_METADATA">
+    <table name="PSX_METADATA" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="METAKEY">
                 <jdbctype>VARCHAR</jdbctype>
@@ -6698,7 +6698,7 @@
             <name>METAKEY</name>
         </primarykey>
     </table>
-    <table name="PSX_DELIVERY_INFO">
+    <table name="PSX_DELIVERY_INFO" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="INFO_ID">
                 <jdbctype>INTEGER</jdbctype>
@@ -6817,7 +6817,7 @@
             <name>SERVER_ID</name>
         </primarykey>
     </table>
-    <table name="PSX_PUBSERVER">
+    <table name="PSX_PUBSERVER" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="PUBSERVERID">
                 <jdbctype>BIGINT</jdbctype>
@@ -6864,7 +6864,7 @@
             <name>PUBSERVERID</name>
         </primarykey>
     </table>
-    <table name="PSX_PUBSERVER_PROPERTIES">
+    <table name="PSX_PUBSERVER_PROPERTIES" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="SERVERPROPERTYID">
                 <jdbctype>BIGINT</jdbctype>
@@ -6891,7 +6891,7 @@
             <name>SERVERPROPERTYID</name>
         </primarykey>
     </table>
-    <table name="PSX_IMPORTLOGENTRY">
+    <table name="PSX_IMPORTLOGENTRY" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="LOGENTRYID">
                 <jdbctype>BIGINT</jdbctype>
@@ -6939,7 +6939,7 @@
             </index>
         </indexdefinitions>
     </table>
-    <table name="PSX_MANAGEDLINK">
+    <table name="PSX_MANAGEDLINK" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="LINKID">
                 <jdbctype>BIGINT</jdbctype>
@@ -6983,7 +6983,7 @@
             </index>
         </indexdefinitions>
     </table>
-    <table name="PSX_SITEIMPORTSUMMARY">
+    <table name="PSX_SITEIMPORTSUMMARY" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="SUMMARYID">
                 <jdbctype>BIGINT</jdbctype>
@@ -7030,7 +7030,7 @@
             </index>
         </indexdefinitions>
     </table>
-    <table name="PSX_USERITEM">
+    <table name="PSX_USERITEM" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="USERITEMID">
                 <jdbctype>BIGINT</jdbctype>
@@ -7148,7 +7148,7 @@
             </index>
         </indexdefinitions>
     </table>
-    <table name="PSX_CONTENTCHANGEEVENT">
+    <table name="PSX_CONTENTCHANGEEVENT" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="CONTENTID">
                 <jdbctype>INTEGER</jdbctype>
@@ -7186,7 +7186,7 @@
         </indexdefinitions>
     </table>
 
-    <table name="PSX_RECENT">
+    <table name="PSX_RECENT" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="ID">
                 <jdbctype>BIGINT</jdbctype>
@@ -7232,7 +7232,7 @@
             <name>TYPE</name>
         </index>
     </table>
-    <table name="PSX_INTEGRITYSTATUS">
+    <table name="PSX_INTEGRITYSTATUS" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="TOKEN">
                 <jdbctype>VARCHAR</jdbctype>
@@ -7262,7 +7262,7 @@
             <name>TOKEN</name>
         </index>
     </table>
-    <table name="PSX_INTEGRITYTASK">
+    <table name="PSX_INTEGRITYTASK" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="TASKID">
                 <jdbctype>BIGINT</jdbctype>
@@ -7305,7 +7305,7 @@
             <name>TOKEN</name>
         </index>
     </table>
-    <table name="PSX_INTEGRITY_TASK_PROPERTIES">
+    <table name="PSX_INTEGRITY_TASK_PROPERTIES" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="TASKRPROPERTYID">
                 <jdbctype>BIGINT</jdbctype>
@@ -7338,7 +7338,7 @@
             <name>TASKID</name>
         </index>
     </table>
-    <table name="RXS_CT_SHARED">
+    <table name="RXS_CT_SHARED" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="CONTENTID">
                 <jdbctype>INTEGER</jdbctype>
@@ -7396,7 +7396,7 @@
             <name>REVISIONID</name>
         </primarykey>
     </table>
-    <table name="RXS_CT_SHAREDBINARY">
+    <table name="RXS_CT_SHAREDBINARY" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="CONTENTID">
                 <jdbctype>INTEGER</jdbctype>
@@ -7443,7 +7443,7 @@
             <name>REVISIONID</name>
         </primarykey>
     </table>
-    <table name="RXS_CT_SHAREDIMAGE">
+    <table name="RXS_CT_SHAREDIMAGE" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="CONTENTID">
                 <jdbctype>INTEGER</jdbctype>
@@ -7550,7 +7550,7 @@
             <name>REVISIONID</name>
         </primarykey>
     </table>
-    <table allowSchemaChanges="y" alter="y" create="y" delolddata="n" isView="n" name="RXS_CT_NAVTREE">
+    <table allowSchemaChanges="y" alter="y"  delolddata="n" isView="n" name="RXS_CT_NAVTREE">
         <row>
             <column action="c" limitSizeForIndex="n" name="CONTENTID">
                 <jdbctype>INTEGER</jdbctype>
@@ -7627,78 +7627,78 @@
             <name>REVISIONID</name>
         </primarykey>
     </table>
-    <table allowSchemaChanges="y" alter="y" create="y" delolddata="n" isView="n" name="RXS_CT_NAVON">
-    <row>
-        <column action="c" limitSizeForIndex="n" name="CONTENTID">
-            <jdbctype>INTEGER</jdbctype>
-            <allowsnull>no</allowsnull>
-            <defaultvalue/>
-        </column>
-        <column action="c" limitSizeForIndex="n" name="REVISIONID">
-            <jdbctype>INTEGER</jdbctype>
-            <allowsnull>no</allowsnull>
-            <defaultvalue/>
-        </column>
-        <column action="c" limitSizeForIndex="n" name="NO_PROPAGATE">
-            <jdbctype>CHAR</jdbctype>
-            <allowsnull>yes</allowsnull>
-            <defaultvalue/>
-        </column>
-        <column action="c" limitSizeForIndex="n" name="NO_SELECTOR">
-            <jdbctype>VARCHAR</jdbctype>
-            <size>50</size>
-            <allowsnull>yes</allowsnull>
-            <defaultvalue/>
-        </column>
-        <column action="c" limitSizeForIndex="n" name="NO_VARIABLE">
-            <jdbctype>VARCHAR</jdbctype>
-            <size>50</size>
-            <allowsnull>yes</allowsnull>
-            <defaultvalue/>
-        </column>
-        <column action="c" limitSizeForIndex="n" name="NO_TYPE">
-            <jdbctype>VARCHAR</jdbctype>
-            <size>50</size>
-            <allowsnull>yes</allowsnull>
-            <defaultvalue/>
-        </column>
-        <column action="c" limitSizeForIndex="n" name="NO_EXTERNALURL">
-            <jdbctype>VARCHAR</jdbctype>
-            <size>512</size>
-            <allowsnull>yes</allowsnull>
-            <defaultvalue/>
-        </column>
-        <column action="c" limitSizeForIndex="n" name="NO_TARGET">
-            <jdbctype>VARCHAR</jdbctype>
-            <size>50</size>
-            <allowsnull>yes</allowsnull>
-            <defaultvalue/>
-        </column>
-        <column action="c" limitSizeForIndex="n" name="ALLOWACCESSTO">
-            <jdbctype>VARCHAR</jdbctype>
-            <size>2000</size>
-            <allowsnull>yes</allowsnull>
-            <defaultvalue/>
-        </column>
-        <column action="c" limitSizeForIndex="n" name="REQUIRESLOGIN">
-            <jdbctype>VARCHAR</jdbctype>
-            <size>50</size>
-            <allowsnull>yes</allowsnull>
-            <defaultvalue/>
-        </column>
-        <column action="c" limitSizeForIndex="n" name="CSSCLASSNAMES">
-            <jdbctype>VARCHAR</jdbctype>
-            <size>50</size>
-            <allowsnull>yes</allowsnull>
-            <defaultvalue/>
-        </column>
-    </row>
-    <primarykey action="c">
-        <name>CONTENTID</name>
-        <name>REVISIONID</name>
-    </primarykey>
+    <table allowSchemaChanges="y" alter="y"  delolddata="n" isView="n" name="RXS_CT_NAVON">
+        <row>
+            <column action="c" limitSizeForIndex="n" name="CONTENTID">
+                <jdbctype>INTEGER</jdbctype>
+                <allowsnull>no</allowsnull>
+                <defaultvalue/>
+            </column>
+            <column action="c" limitSizeForIndex="n" name="REVISIONID">
+                <jdbctype>INTEGER</jdbctype>
+                <allowsnull>no</allowsnull>
+                <defaultvalue/>
+            </column>
+            <column action="c" limitSizeForIndex="n" name="NO_PROPAGATE">
+                <jdbctype>CHAR</jdbctype>
+                <allowsnull>yes</allowsnull>
+                <defaultvalue/>
+            </column>
+            <column action="c" limitSizeForIndex="n" name="NO_SELECTOR">
+                <jdbctype>VARCHAR</jdbctype>
+                <size>50</size>
+                <allowsnull>yes</allowsnull>
+                <defaultvalue/>
+            </column>
+            <column action="c" limitSizeForIndex="n" name="NO_VARIABLE">
+                <jdbctype>VARCHAR</jdbctype>
+                <size>50</size>
+                <allowsnull>yes</allowsnull>
+                <defaultvalue/>
+            </column>
+            <column action="c" limitSizeForIndex="n" name="NO_TYPE">
+                <jdbctype>VARCHAR</jdbctype>
+                <size>50</size>
+                <allowsnull>yes</allowsnull>
+                <defaultvalue/>
+            </column>
+            <column action="c" limitSizeForIndex="n" name="NO_EXTERNALURL">
+                <jdbctype>VARCHAR</jdbctype>
+                <size>512</size>
+                <allowsnull>yes</allowsnull>
+                <defaultvalue/>
+            </column>
+            <column action="c" limitSizeForIndex="n" name="NO_TARGET">
+                <jdbctype>VARCHAR</jdbctype>
+                <size>50</size>
+                <allowsnull>yes</allowsnull>
+                <defaultvalue/>
+            </column>
+            <column action="c" limitSizeForIndex="n" name="ALLOWACCESSTO">
+                <jdbctype>VARCHAR</jdbctype>
+                <size>2000</size>
+                <allowsnull>yes</allowsnull>
+                <defaultvalue/>
+            </column>
+            <column action="c" limitSizeForIndex="n" name="REQUIRESLOGIN">
+                <jdbctype>VARCHAR</jdbctype>
+                <size>50</size>
+                <allowsnull>yes</allowsnull>
+                <defaultvalue/>
+            </column>
+            <column action="c" limitSizeForIndex="n" name="CSSCLASSNAMES">
+                <jdbctype>VARCHAR</jdbctype>
+                <size>50</size>
+                <allowsnull>yes</allowsnull>
+                <defaultvalue/>
+            </column>
+        </row>
+        <primarykey action="c">
+            <name>CONTENTID</name>
+            <name>REVISIONID</name>
+        </primarykey>
     </table>
-    <table allowSchemaChanges="y" alter="y" create="y" delolddata="n" isView="n" name="RXS_CT_NAVIGATIONIMAGETRIPLE">
+    <table allowSchemaChanges="y" alter="y"  delolddata="n" isView="n" name="RXS_CT_NAVIGATIONIMAGETRIPLE">
         <row>
             <column action="c" limitSizeForIndex="n" name="CONTENTID">
                 <jdbctype>INTEGER</jdbctype>

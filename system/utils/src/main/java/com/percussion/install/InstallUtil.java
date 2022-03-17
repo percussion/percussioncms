@@ -1432,8 +1432,9 @@ public class InstallUtil
           * previous version deployed Derby in networked mode by default.  So we will switch to the
           * embedded defaults in this case.
           */
-
-         if(!server.equalsIgnoreCase(RxInstallerProperties.getString("embedded.db_server_name"))) {
+            String svr = RxInstallerProperties.getString("embedded.db_server_name");
+         logInfo("Embedded Server : " + svr);
+         if(!server.equalsIgnoreCase(svr)) {
             logInfo("Switching Apache Derby configuration to embedded mode for upgrade...");
             server = RxInstallerProperties.getString("embedded.db_server_name");
             db = "";
