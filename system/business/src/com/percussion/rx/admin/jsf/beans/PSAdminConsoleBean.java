@@ -120,7 +120,7 @@ public class PSAdminConsoleBean extends PSLockableNode
          }
          catch (Throwable t)
          {
-            m_result.append(t.getLocalizedMessage());
+            m_result.append(t.getMessage());
          }
       }
 

@@ -37,17 +37,7 @@ import java.io.StringWriter;
 public class PSExceptionUtils {
 
     private static final Logger log = LogManager.getLogger(PSExceptionUtils.class);
-
-    /**
-     * Use when outputting error messages or warnings to the log based on exceptions.
-     *
-     * The message will be written out localized if the localized message is available and the
-     * error message will include C:[ClassName] L:[Line Number] to aid in problem diagnosis without
-     * flooding the log with stack traces,  Stack traces should only ever be written to the debug log.
-     * @param exception A valid exception, never null;
-     * @return A string with the message, never null;
-     */
-    public static String getMessageForLog(Exception exception){
+    public static String getMessageForLog(Throwable exception){
 
         //Try localized message first and if there isn't one - just do default.
         String message = exception.getLocalizedMessage();
@@ -71,6 +61,19 @@ public class PSExceptionUtils {
         }
         return message;
 
+    }
+
+    /**
+     * Use when outputting error messages or warnings to the log based on exceptions.
+     *
+     * The message will be written out localized if the localized message is available and the
+     * error message will include C:[ClassName] L:[Line Number] to aid in problem diagnosis without
+     * flooding the log with stack traces,  Stack traces should only ever be written to the debug log.
+     * @param exception A valid exception, never null;
+     * @return A string with the message, never null;
+     */
+    public static String getMessageForLog(Exception exception){
+        return getMessageForLog((Throwable) exception);
     }
 
     /**

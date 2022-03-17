@@ -85,6 +85,7 @@ public class PSConsoleCommandDumpCache extends PSConsoleCommandCache
    }
    
    //see super class method for description.
+   @Override
    public String getCommandName()
    {
       return ms_cmdName;
@@ -93,5 +94,5 @@ public class PSConsoleCommandDumpCache extends PSConsoleCommandCache
    /**
     * The command executed by this class.
     */
-   public final static String ms_cmdName = "dump cache";
+   public static final String ms_cmdName = "dump cache";
 }
