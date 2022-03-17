@@ -41,7 +41,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Singleton class to manage server-wide caching.  Is impelemented as a set of
+ * Singleton class to manage server-wide caching.  Is implemented as a set of
  * {@link IPSCacheHandler} objects, each of which is responsible for handling
  * the caching of a certain class of requests.  Responses to requests are cached
  * and may be retrieved by a subsequent request.  The keys used to store and

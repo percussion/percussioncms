@@ -23,16 +23,21 @@
  */
 package com.percussion.server.command;
 
+import com.percussion.cms.IPSConstants;
 import com.percussion.design.objectstore.PSServerCacheSettings;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.server.cache.PSCacheException;
 import com.percussion.server.cache.PSCacheManager;
 import com.percussion.server.cache.PSCacheStatisticsSnapshot;
 import com.percussion.services.memory.IPSCacheAccess;
 import com.percussion.services.memory.PSCacheAccessLocator;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -42,6 +47,9 @@ import java.util.Map;
  */
 public abstract class PSConsoleCommandCache extends PSConsoleCommand
 {
+
+   private static final Logger log = LogManager.getLogger(IPSConstants.CACHING_LOG);
+
    /**
     * The constructor for this class.
     *
@@ -89,7 +97,7 @@ public abstract class PSConsoleCommandCache extends PSConsoleCommand
     *
     * @throws IllegalStateException if the cache manager is not yet inited.
     *
-    * @throws clause for PSCacheException
+    * @throws PSCacheException
     */
    protected boolean startCache() throws PSCacheException
    {
@@ -104,7 +112,7 @@ public abstract class PSConsoleCommandCache extends PSConsoleCommand
     *
     * @throws IllegalStateException if the cache manager is not yet inited.
     *
-    * @throws clause for PSCacheException
+    * @throws PSCacheException
     */
    protected boolean stopCache() throws PSCacheException
    {
@@ -120,7 +128,7 @@ public abstract class PSConsoleCommandCache extends PSConsoleCommand
     * @return  <code>false</code> if the caching is already started/stopped and
     * we are trying to start/stop, otherwise <code>true</code>
     *
-    * missing @throws clause for PSCacheException
+    * @throws PSCacheException
     */
    private boolean startStopCache(boolean start) throws PSCacheException
    {
@@ -150,7 +158,7 @@ public abstract class PSConsoleCommandCache extends PSConsoleCommand
     *
     * @throws IllegalStateException if the cache manager is not yet inited.
     *
-    * @throws clause for PSCacheException
+    * @throws PSCacheException
     */
    protected void restartCache() throws PSCacheException
    {
@@ -167,9 +175,7 @@ public abstract class PSConsoleCommandCache extends PSConsoleCommand
    }
 
    /**
-    * Creates the cache statistics element. See {@link
-    * com.percussion.server.cache.PSCacheStatisticsSnapshot#toXml() toXml} for
-    * the structure of the element.
+    * Creates the cache statistics element.
 
     * @param doc the document to use to create the element, may not be <code>
     * null</code>
@@ -207,14 +213,23 @@ public abstract class PSConsoleCommandCache extends PSConsoleCommand
     */
    private static Element getLegacyCacheStatistics(Document doc)
    {
-      PSCacheManager cacheManager = PSCacheManager.getInstance();
-      PSCacheStatisticsSnapshot cacheStatistics =
-         cacheManager.getStatisticsSnapShot();
+      PSCacheStatisticsSnapshot cacheStatistics=null;
+
+      try {
+         PSCacheManager cacheManager = PSCacheManager.getInstance();
+          cacheStatistics =
+                 cacheManager.getStatisticsSnapShot();
+      }catch(Exception x){
+         log.error(PSExceptionUtils.getDebugMessageForLog(x));
+      }
       Element parent = doc.createElement("AssemblyResourceCacheStatistics");
-      parent.appendChild(cacheStatistics.toXml( doc ));
-      
+      if(cacheStatistics != null) {
+         parent.appendChild(cacheStatistics.toXml(doc));
+      }
+
       parent.setAttribute("size", "" + parent.getChildNodes().getLength());
       return parent;
+
    }
 
    /**
@@ -229,8 +244,15 @@ public abstract class PSConsoleCommandCache extends PSConsoleCommand
    private static Element getEhCacheStatistics(Document doc)
    {
       Element parentEl = doc.createElement("EhCacheStatistics");
-      IPSCacheAccess cache = PSCacheAccessLocator.getCacheAccess();      
-      List<PSCacheStatisticsSnapshot> statList = cache.getStatistics();
+
+      IPSCacheAccess cache = PSCacheAccessLocator.getCacheAccess();
+      List<PSCacheStatisticsSnapshot> statList = new ArrayList<>();
+
+      try {
+         statList = cache.getStatistics();
+      }catch(Throwable ex){
+         log.error(PSExceptionUtils.getMessageForLog( ex));
+      }
 
       long totalItems = 0;
       long memUsage = 0;
@@ -239,11 +261,15 @@ public abstract class PSConsoleCommandCache extends PSConsoleCommand
       // convert statistics to XML
       for (PSCacheStatisticsSnapshot stat : statList)
       {
-         memUsage += stat.getMemoryUsage();
-         diskUsage += stat.getDiskUsage();
-         totalItems += stat.getTotalItems();
-         
-         parentEl.appendChild( stat.toXml(doc));
+         try {
+            memUsage += stat.getMemoryUsage();
+            diskUsage += stat.getDiskUsage();
+            totalItems += stat.getTotalItems();
+
+            parentEl.appendChild(stat.toXml(doc));
+         }catch(Exception ex){
+            log.error(PSExceptionUtils.getMessageForLog(ex));
+         }
       }
 
       parentEl.setAttribute("size", "" + statList.size());

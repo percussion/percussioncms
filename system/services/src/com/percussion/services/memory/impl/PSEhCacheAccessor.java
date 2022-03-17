@@ -23,6 +23,7 @@
  */
 package com.percussion.services.memory.impl;
 
+import com.percussion.cms.IPSConstants;
 import com.percussion.server.cache.PSCacheStatisticsSnapshot;
 import com.percussion.services.memory.IPSCacheAccess;
 import com.percussion.services.memory.PSCacheAccessLocator;
@@ -36,7 +37,6 @@ import net.sf.ehcache.CacheException;
 import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Ehcache;
 import net.sf.ehcache.Element;
-import net.sf.ehcache.constructs.classloader.ClassLoaderAwareCache;
 import net.sf.ehcache.statistics.LiveCacheStatistics;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -61,7 +61,7 @@ public class PSEhCacheAccessor implements IPSCacheAccess
    /**
     * Logger for this class
     */
-   private static final Logger log = LogManager.getLogger("PSEhCacheAccessor");
+   private static final Logger log = LogManager.getLogger(IPSConstants.CACHING_LOG);
    
    /**
     * Implements the notification service endpoint used to invalidate objects
@@ -301,7 +301,7 @@ public class PSEhCacheAccessor implements IPSCacheAccess
     */
    private PSCacheStatisticsSnapshot getCacheStatistics(Ehcache cache)
    {
-      ClassLoaderAwareCache classLoaderAwareCache;
+
       LiveCacheStatistics stat = cache.getLiveCacheStatistics();
 
       long memItems = stat.getSize();

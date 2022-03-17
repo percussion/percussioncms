@@ -153,15 +153,6 @@ http://www.springframework.org/schema/context/spring-context.xsd">
 
         <property name="packagesToScan" value="com.percussion"/>
 
-        <!-- Uncomment for debugging hibernate events
-        <property name="interceptEvents">
-        <list>
-           <value>delete</value>
-           <value>persist</value>
-           <value>load</value>
-        </list>
-        </property>
-         -->
         <property name="hibernateProperties">
             <props>
                 <prop key="hibernate.current_session_context_class">
