@@ -42,7 +42,7 @@
     <property name="installation.properties" location="${jetty.base}/etc/installation.properties"/>
     <property name="install.configdir.src" location="${install.src}/rxconfig/Installer"/>
     <property name="install.configdir" location="${install.dir}/rxconfig/Installer"/>
-    <property name="rxrepository.properties.new" location="install.configdir.src}/rxrepository.properties"/>
+    <property name="rxrepository.properties.new" location="${install.configdir.src}/rxrepository.properties"/>
     <property name="rxrepository.properties" location="${install.dir}/rxconfig/Installer/rxrepository.properties"/>
     <basename property="destination_folder_name" file="${install.dir}"/>
     <property name="backup_folder" location="${install.dir_parent}/${destination_folder_name}_${timestamp}"/>
