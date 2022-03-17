@@ -1,27 +1,3 @@
-<!--
-  ~     Percussion CMS
-  ~     Copyright (C) 1999-2021 Percussion Software, Inc.
-  ~
-  ~     This program is free software: you can redistribute it and/or modify
-  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
-  ~
-  ~     This program is distributed in the hope that it will be useful,
-  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
-  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  ~     GNU Affero General Public License for more details.
-  ~
-  ~     Mailing Address:
-  ~
-  ~      Percussion Software, Inc.
-  ~      PO Box 767
-  ~      Burlington, MA 01803, USA
-  ~      +01-781-438-9900
-  ~      support@percussion.com
-  ~      https://www.percussion.com
-  ~
-  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
-  -->
-
 <project name="installRepository" default="installRepository" >
 
     <property name="install.dir" location="C:\DevEnv\Installs\dev"/>
@@ -35,7 +11,6 @@
     <property name="rxrepository.properties" location="${install.dir}/rxconfig/Installer/rxrepository.properties"/>
 
     <target name="installRepository" depends="init,repository_properties">
-
 
     <!-- The main install target -->
 
@@ -52,7 +27,7 @@
                        sqlMysql="DROP TABLE IF EXISTS PSX_QJOB_LISTENERS"
                        sqlDerby="DROP TABLE PSX_QJOB_LISTENERS"
                        failonerror="false"
-                       silenceerrors="true"
+                       silenceerrors="false"
         />
 
         <echo>Dropping selected indexes...</echo>
@@ -62,7 +37,7 @@
                        qualifyViewNames="PSX_CONTENTCHANGEEVENT,CONTENTSTATUS"
                        sql="DELETE FROM PSX_CONTENTCHANGEEVENT where CONTENTID not in (SELECT CONTENTID from CONTENTSTATUS)"
                        failonerror="false"
-                       silenceerrors="true"
+                       silenceerrors="false"
         />
 
         <PSExecSQLStmt rootDir="${install.dir}"
@@ -70,7 +45,7 @@
                        qualifyViewNames="PSX_CONTENTCHANGEEVENT,RXSITES"
                        sql="DELETE FROM PSX_CONTENTCHANGEEVENT where SITEID  not in (SELECT SITEID  from RXSITES)"
                        failonerror="false"
-                       silenceerrors="true"
+                       silenceerrors="false"
         />
 
         <echo>dropping views..</echo>
@@ -78,7 +53,7 @@
                        qualifyViewNames="" sql="DROP VIEW RXSITEITEMS"
                        sqlMysql="DROP VIEW IF EXISTS RXSITEITEMS"
                        failonerror="false"
-                       silenceerrors="true"/>
+                       silenceerrors="false"/>
 
         <PSExecSQLStmt
                 printExceptionStackTrace="true"
@@ -86,7 +61,7 @@
                 sql="DROP VIEW RXSITEITEMS"
                 sqlMysql="DROP VIEW IF EXISTS RXSITEITEMS"
                 failonerror="false"
-                silenceerrors="true"
+                silenceerrors="false"
         />
 
         <echo>renaming PSX_PUBLICATION_SITE_ITEM</echo>
@@ -94,43 +69,43 @@
                         qualifyViewNames="" sql="RENAME TABLE PSX_PUBLICATION_SITE_ITEM TO PSX_PUBLICATION_SITE_ITEM_BAK_PATCH"
                         sqlSqlServer="EXEC sp_rename 'PSX_PUBLICATION_SITE_ITEM', 'PSX_PUBLICATION_SITE_ITEM_BAK_PATCH';"
                         failonerror="false"
-                        silenceerrors="true"/>
+                        silenceerrors="false"/>
 
         <PSExecSQLStmt  printExceptionStackTrace="true" qualifyTableNames="PSX_PUBLICATION_SITE_ITEM_BAK_PATCH"
                         qualifyViewNames="" sqlDerby="ALTER TABLE PSX_PUBLICATION_SITE_ITEM_BAK_PATCH DROP CONSTRAINT FK_SITE_ITEMS_REF_1"
                         failonerror="false"
-                        silenceerrors="true"
+                        silenceerrors="false"
         />
 
         <PSExecSQLStmt  printExceptionStackTrace="true" qualifyTableNames="PSX_PUBLICATION_SITE_ITEM_BAK_PATCH"
                         qualifyViewNames="" sqlDerby="ALTER TABLE PSX_PUBLICATION_SITE_ITEM_BAK_PATCH DROP CONSTRAINT FK_SITE_ITEMS_REF"
                         failonerror="false"
-                        silenceerrors="true"
+                        silenceerrors="false"
         />
 
 
         <PSExecSQLStmt  printExceptionStackTrace="true" qualifyTableNames="PSX_PUBLICATION_SITE_ITEM_BAK_PATCH"
                         qualifyViewNames="" sqlDerby="ALTER TABLE PSX_PUBLICATION_SITE_ITEM_BAK_PATCH DROP CONSTRAINT PK_PSX_PUBLICATION_SITE_ITEM"
                         failonerror="false"
-                        silenceerrors="true"
+                        silenceerrors="false"
         />
 
         <PSExecSQLStmt  printExceptionStackTrace="true" qualifyTableNames=""
                         qualifyViewNames="" sqlDerby="DROP INDEX IX_SITE_ITEMS"
                         failonerror="false"
-                        silenceerrors="true"
+                        silenceerrors="false"
         />
 
         <PSExecSQLStmt  printExceptionStackTrace="true" qualifyTableNames=""
                         qualifyViewNames="" sqlDerby="DROP INDEX IX_REF_SERV_CONTXT"
                         failonerror="false"
-                        silenceerrors="true"
+                        silenceerrors="false"
         />
 
         <PSExecSQLStmt  printExceptionStackTrace="true" qualifyTableNames=""
                         qualifyViewNames="" sqlDerby="DROP INDEX IX_WORKING_CONTXT"
                         failonerror="false"
-                        silenceerrors="true"
+                        silenceerrors="false"
         />
 
         <PSExecSQLStmt
@@ -138,23 +113,16 @@
                 qualifyViewNames="CONTENTVARIANTS"
                 sql="DROP VIEW CONTENTVARIANTS"
                 failonerror="false"
-                silenceerrors="true"
+                silenceerrors="false"
         />
-        <PSExecSQLStmt
-                printExceptionStackTrace="true"
-                qualifyTableNames="PSX_TEMPLATE,CONTENTTYPES,PSX_CONTENTTYPE_TEMPLATE"
-                qualifyViewNames="CONTENTVARIANTS"
-                sql="CREATE VIEW CONTENTVARIANTS AS SELECT T.TEMPLATE_ID VARIANTID, C.CONTENTTYPEID, T.LABEL VARIANTDESCRIPTION, T.STYLESHEETNAME, '../assembler/render' ASSEMBLYURL, T.OUTPUTFORMAT, T.AATYPE, T.DESCRIPTION, T.PUBLISHWHEN, T.LOCATIONPREFIX, T.LOCATIONSUFFIX FROM PSX_TEMPLATE T, CONTENTTYPES C, PSX_CONTENTTYPE_TEMPLATE CT WHERE T.TEMPLATE_ID = CT.TEMPLATE_ID AND C.CONTENTTYPEID = CT.CONTENTTYPEID"
-                failonerror="false"
-                silenceerrors="true"
-        />
+
 
         <PSExecSQLStmt
                 printExceptionStackTrace="true"
                 qualifyViewNames="RXSITECOMMUNITY"
                 sql="DROP VIEW RXSITECOMMUNITY"
                 failonerror="false"
-                silenceerrors="true"
+                silenceerrors="false"
         />
 
 
@@ -163,7 +131,7 @@
                 qualifyViewNames="RXCONTENTTYPECOMMUNITY"
                 sql="DROP VIEW RXCONTENTTYPECOMMUNITY"
                 failonerror="false"
-                silenceerrors="true"
+                silenceerrors="false"
         />
 
 
@@ -172,7 +140,7 @@
                 qualifyViewNames="RXVARIANTCOMMUNITY"
                 sql="DROP VIEW RXVARIANTCOMMUNITY"
                 failonerror="false"
-                silenceerrors="true"
+                silenceerrors="false"
         />
 
         <PSExecSQLStmt
@@ -180,14 +148,14 @@
                 qualifyViewNames="RXWORKFLOWCOMMUNITY"
                 sql="DROP VIEW RXWORKFLOWCOMMUNITY"
                 failonerror="false"
-                silenceerrors="true"
+                silenceerrors="false"
         />
         <PSExecSQLStmt
                 printExceptionStackTrace="true"
                 qualifyViewNames="PSX_DISPLAYFORMATPROPERTY_VIEW"
                 sql="DROP VIEW PSX_DISPLAYFORMATPROPERTY_VIEW"
                 failonerror="false"
-                silenceerrors="true"
+                silenceerrors="false"
         />
 
         <PSExecSQLStmt
@@ -195,7 +163,7 @@
                 qualifyViewNames="PSX_SEARCHPROPERTIES_VIEW"
                 sql="DROP VIEW PSX_SEARCHPROPERTIES_VIEW"
                 failonerror="false"
-                silenceerrors="true"
+                silenceerrors="false"
         />
 
         <PSExecSQLStmt
@@ -203,14 +171,14 @@
                 qualifyViewNames="PSX_MENUVISIBILITY_VIEW"
                 sql="DROP VIEW PSX_MENUVISIBILITY_VIEW"
                 failonerror="false"
-                silenceerrors="true"
+                silenceerrors="false"
         />
         <PSExecSQLStmt
                 printExceptionStackTrace="true"
                 qualifyViewNames="PSX_COMMUNITY_PERMISSION_VIEW"
                 sql="DROP VIEW PSX_COMMUNITY_PERMISSION_VIEW"
                 failonerror="false"
-                silenceerrors="true"
+                silenceerrors="false"
         />
 
 
@@ -219,7 +187,7 @@
                 qualifyViewNames="RXPUBDOCS"
                 sql="DROP VIEW RXPUBDOCS"
                 failonerror="false"
-                silenceerrors="true"
+                silenceerrors="false"
         />
 
 <!-- update table schema -->
@@ -237,6 +205,16 @@
         <echo>Repository installation complete...</echo>
 
         <echo>creating views</echo>
+        <!-- CONTENTVARIANTS -->
+        <PSExecSQLStmt
+                printExceptionStackTrace="true"
+                qualifyTableNames="PSX_TEMPLATE,CONTENTTYPES,PSX_CONTENTTYPE_TEMPLATE"
+                qualifyViewNames="CONTENTVARIANTS"
+                sql="CREATE VIEW CONTENTVARIANTS AS SELECT T.TEMPLATE_ID VARIANTID, C.CONTENTTYPEID, T.LABEL VARIANTDESCRIPTION, T.STYLESHEETNAME, '../assembler/render' ASSEMBLYURL, T.OUTPUTFORMAT, T.AATYPE, T.DESCRIPTION, T.PUBLISHWHEN, T.LOCATIONPREFIX, T.LOCATIONSUFFIX FROM PSX_TEMPLATE T, CONTENTTYPES C, PSX_CONTENTTYPE_TEMPLATE CT WHERE T.TEMPLATE_ID = CT.TEMPLATE_ID AND C.CONTENTTYPEID = CT.CONTENTTYPEID"
+                failonerror="false"
+                silenceerrors="false"
+        />
+
         <!-- PSX_COMMUNITY_PERMISSION_VIEW -->
         <PSExecSQLStmt
                 printExceptionStackTrace="true"
@@ -383,8 +361,6 @@
                        sql="ALTER TABLE PSX_CONTENTCHANGEEVENT ADD FOREIGN KEY (SITEID) REFERENCES RXSITES(SITEID)"
                        failonerror="true" silenceerrors="false"
         />
-
-
 
     </target>
 
