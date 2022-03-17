@@ -1348,7 +1348,7 @@ public class PSJdbcPlanBuilder
          {
             // doesn't exist, so it's an add
             colAction = PSJdbcTableComponent.ACTION_CREATE;
-            buffer.append("New column: " + NEWLINE);
+            buffer.append(NEWLINE + " New column: " + NEWLINE);
             buffer.append(newCol);
          }
          else
@@ -1517,7 +1517,7 @@ public class PSJdbcPlanBuilder
          PSJdbcIndex newIndex = (PSJdbcIndex) newIndexes.next();
          PSJdbcIndex oldIdx = oldSchema.getIndex(newIndex.getName());
          if(oldIdx != null) {
-            buffer.append("Deleting Found Index: ");
+            buffer.append(NEWLINE + " Deleting Found Index: ");
             buffer.append(oldIdx.getName());
             processedOldIdx.add(oldIdx.getName());
             int indexAction = PSJdbcTableComponent.ACTION_REPLACE;
@@ -1539,7 +1539,7 @@ public class PSJdbcPlanBuilder
                String colName = it.next();
                if(diffTableSchema.getColumn(colName) == null){
                   valid = false;
-                  buffer.append("Deleting Index as column not found: ");
+                  buffer.append(NEWLINE + " Deleting Index as column not found: ");
                   buffer.append(oldIdx.getName());
                   int indexAction = PSJdbcTableComponent.ACTION_DELETE;
                   PSJdbcIndex difIndex = new PSJdbcIndex(oldIdx.getName(),
@@ -1549,8 +1549,8 @@ public class PSJdbcPlanBuilder
                }
             }
             //Add valid custom index from old schema
-            if(valid){
-               buffer.append("Adding Old Index : ");
+            if(valid && oldIdx.isOfType(PSJdbcIndex.TYPE_NON_UNIQUE)){
+               buffer.append(NEWLINE + " Adding Old Index : ");
                buffer.append(oldIdx.getName());
                int indexAction = PSJdbcTableComponent.ACTION_CREATE;
                PSJdbcIndex difIndex = new PSJdbcIndex(oldIdx.getName(),

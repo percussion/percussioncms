@@ -123,11 +123,15 @@ public class PSTableViewExistsWizCondition extends PSAction implements Condition
                     dbmsDef.getDriver(), null);
 
             String pw = dbmsDef.getPassword();
-
-            try(Connection conn = InstallUtil.createConnection(dbmsDef.getDriver(),
-                    dbmsDef.getServer(),
-                    dbmsDef.getDataBase(),
-                    dbmsDef.getUserId(),
+            String driver = dbmsDef.getDriver();
+            String server = dbmsDef.getServer();
+            String database = dbmsDef.getDataBase();
+            String uid = dbmsDef.getUserId();
+            PSLogger.logInfo("Driver : " + driver + " Server : " + server + " Database : " + database + " uid : " + uid);
+            try(Connection conn = InstallUtil.createConnection(driver,
+                    server,
+                    database,
+                    uid,
                     pw)) {
 
                PSJdbcTableSchema objectSchema = PSJdbcTableFactory.catalogTable(
