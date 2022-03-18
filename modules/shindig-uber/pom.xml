@@ -369,7 +369,6 @@
         <dependency>
             <groupId>net.sf.ehcache</groupId>
             <artifactId>ehcache</artifactId>
-            <version>2.10.4</version>
         </dependency>
        <!-- this version has old package naming but excludes the META-INF/service that breaks jsp-->
         <dependency>
