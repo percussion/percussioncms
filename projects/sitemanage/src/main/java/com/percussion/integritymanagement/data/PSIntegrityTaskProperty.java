@@ -24,18 +24,17 @@
 package com.percussion.integritymanagement.data;
 
 import com.percussion.share.data.PSAbstractDataObject;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 @Entity
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "PSIntegrityTaskProperty")
@@ -53,7 +52,7 @@ public class PSIntegrityTaskProperty extends PSAbstractDataObject
     private long taskPropertyId = -1L;
 
     @Basic
-    @Column(name = "TASKID")
+    @Column(name = "TASKID", insertable = false,updatable = false)
     private long taskId;
 
     @Basic

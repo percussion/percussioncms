@@ -683,7 +683,6 @@
       <dependency>
           <groupId>net.sf.ehcache</groupId>
           <artifactId>ehcache</artifactId>
-          <scope>compile</scope>
       </dependency>
       <dependency>
           <groupId>commons-httpclient</groupId>

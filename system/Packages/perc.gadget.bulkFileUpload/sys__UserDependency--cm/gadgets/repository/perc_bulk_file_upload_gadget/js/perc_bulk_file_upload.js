@@ -27,7 +27,7 @@ var TOTAL_IN_QUEUE = 0;
 var NUM_FAILED = 0;
 var NUM_COMPLETED = 0;
 var PERC_UTILS = percJQuery.perc_utils;
-var IMAGE_FILE_TYPES = ['png', 'jpg', 'jpeg', 'tiff', 'gif'];
+var IMAGE_FILE_TYPES = ['png', 'jpg', 'jpeg', 'tiff', 'gif', 'webp', 'svg'];
 var DID_UPLOAD_FAIL = false;
 var XHR_REQUESTS = [];
 

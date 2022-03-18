@@ -61,7 +61,7 @@ public class PSStylesheetCacheManager
     * javax.xml.transform.Templates objects.  ConcurrentHashMap is used
     * rather than HashMap because it is synchronized.
     **/
-   static Map ms_cache = new ConcurrentHashMap();
+   static Map ms_cache = new ConcurrentHashMap<>();
 
    /**
     * get a stylesheet from the cache by URL.  If the stylesheet does not

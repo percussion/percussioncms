@@ -28,7 +28,7 @@ import com.percussion.services.guidmgr.IPSGuidManager;
 import com.percussion.services.guidmgr.PSGuidManagerLocator;
 import org.hibernate.HibernateException;
 import org.hibernate.MappingException;
-import org.hibernate.engine.spi.SessionImplementor;
+import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.id.Configurable;
 import org.hibernate.id.IdentifierGenerator;
 import org.hibernate.service.ServiceRegistry;
@@ -49,17 +49,22 @@ public class PSGuidHibernateGenerator implements IdentifierGenerator, Configurab
    private PSTypeEnum guidType = PSTypeEnum.INTERNAL;
    private IPSGuidManager gmgr = null;
    private String entityName;
-   
-   public Serializable generate(SessionImplementor session, Object obj) throws HibernateException
-   {
-         // If we want to allow the id to be set manually can get current value using following
-         // otherwise any value stored before persistance will be overwritten.
-         // final Serializable hibid = session.getEntityPersister( entityName, obj ).getIdentifier( obj, session.getEntityMode() );
-      
-         if (gmgr==null) gmgr = PSGuidManagerLocator.getGuidMgr();
-         final Serializable hibid = gmgr.createGuid(guidType).longValue();
-         return hibid;
 
+   /**
+    * Generate a new identifier.
+    *
+    * @param session The session from which the request originates
+    * @param obj  the entity or collection (idbag) for which the id is being generated
+    * @return a new identifier
+    * @throws HibernateException Indicates trouble generating the identifier
+    */
+   @Override
+   public Serializable generate(SharedSessionContractImplementor session, Object obj) throws HibernateException
+   {
+         if (gmgr==null)
+            gmgr = PSGuidManagerLocator.getGuidMgr();
+
+         return  gmgr.createGuid(guidType).longValue();
    }
 
    @Override
@@ -72,4 +77,5 @@ public class PSGuidHibernateGenerator implements IdentifierGenerator, Configurab
          guidType = PSTypeEnum.valueOf(param);
       }
    }
+
 }

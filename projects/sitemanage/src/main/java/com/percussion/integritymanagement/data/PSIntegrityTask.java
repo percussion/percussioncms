@@ -32,7 +32,17 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.HashSet;
 import java.util.Set;
@@ -45,7 +55,7 @@ import java.util.Set;
 public class PSIntegrityTask  extends PSAbstractDataObject
 {
     private static final long serialVersionUID = 1L;
-    public static enum TaskStatus {
+    public enum TaskStatus {
         SUCCESS, FAILED;
     }
 
@@ -54,7 +64,7 @@ public class PSIntegrityTask  extends PSAbstractDataObject
     private long taskId = -1L;
     
     @Basic
-    @Column(name = "TOKEN")
+    @Column(name = "TOKEN" ,nullable = false, insertable = false, updatable = false)
     private String token;
     
     @Basic
