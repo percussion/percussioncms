@@ -335,7 +335,7 @@ tinymce.PluginManager.add('percadvlink', function(editor) {
 
     }
 
-    editor.addButton('link', {
+    editor.ui.registry.addButton('link', {
         icon: 'link',
         tooltip: I18N.message("perc.ui.widget.tinymce@Insert Edit Link"),
         shortcut: 'Ctrl+K',
@@ -343,18 +343,18 @@ tinymce.PluginManager.add('percadvlink', function(editor) {
         stateSelector: 'a[href]'
     });
 
-    editor.addButton('unlink', {
+    editor.ui.registry.addButton('unlink', {
         icon: 'unlink',
         tooltip: I18N.message("perc.ui.widget.tinymce@Remove links"),
         cmd: 'unlink',
         stateSelector: 'a[href]'
     });
 
-    editor.addShortcut('Ctrl+K', '', createLinkList(showDialog));
+    editor.shortcuts.add('ctrl+k', '', createLinkList(showDialog));
 
     this.showDialog = showDialog;
 
-    editor.addMenuItem('percadvlink', {
+    editor.ui.registry.addMenuItem('percadvlink', {
         icon: 'link',
         text: I18N.message("perc.ui.widget.tinymce@Insert link"),
         shortcut: 'Ctrl+K',

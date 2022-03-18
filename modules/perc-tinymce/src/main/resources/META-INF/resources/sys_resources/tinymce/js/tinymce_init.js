@@ -168,8 +168,8 @@ function getBaseConfig(parameters) {
             "autosave_retention": "1440m",
             "perc_config": "../sys_resources/tinymce/config/default_config.json",
             "content_css": "../sys_resources/css/tinymce/content.css",
-            "theme": "modern",
-            "editor_selector": "tinymce_callout",
+            "theme": "silver",
+            "selector": "tinymce_callout",
             "valid_elements": "*[*]",
             "noneditable_leave_contenteditable": true,
             "autosave_ask_before_unload": false,
@@ -185,7 +185,6 @@ function getBaseConfig(parameters) {
             "style_formats": styleFormats,
             "autosave_restore_when_empty": false,
             "init_instance_callback": "percTinyMceInitialized",
-            "file_browser_callback": $.noop,
             "convert_urls" : false,
             "toolbar": "newdocument undo redo restoredraft | cut copy paste searchreplace | styleselect fontselect fontsizeselect forecolor backcolor removeformat | bold italic underline strikethrough superscript subscript | alignleft aligncenter alignright alignjustify alignnone |  bullist numlist outdent indent | link unlink openlink media | visualchars visualblocks fullscreen print preview | anchor charmap hr emoticons insertdatetime | table tabledelete tableinsertrowafter tabledeleterow tableinsertcolbefore tabledeletecol tablesplitcells tablemergecells | rxinlinelink rxinlinetemplate rxinlineimage rxinserthtml | ltr rtl codesample code"
         }, options);
