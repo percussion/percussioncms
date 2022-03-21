@@ -94,7 +94,7 @@ public class PSDependencyManager implements IPSDependencyManagerBaseline
     * Singleton instance of this class. Intialized when first instance of the
     * class is constructed, never <code>null</code> or modified after that.
     */
-   public static final PSDependencyManager INSTANCE = new PSDependencyManager();
+   private static PSDependencyManager INSTANCE;
 
 
    /**
@@ -950,21 +950,20 @@ public class PSDependencyManager implements IPSDependencyManagerBaseline
     */
    public Map getParentTypes() throws PSDeployException
    {
-      if (m_parentTypeMap == null)
-      {
+      if (m_parentTypeMap == null) {
          Map types = new HashMap();
-         Iterator defs = m_depMap.getDefs();
-         while (defs.hasNext())
-         {
-            PSDependencyDef def = (PSDependencyDef) defs.next();
-            if (def.supportsParentId())
-            {
-               PSDependencyHandler handler = PSDependencyHandler
-                     .getHandlerInstance(def, m_depMap);
-               types.put(def.getObjectType(), handler.getParentType());
+         if (m_depMap != null) {
+            Iterator defs = m_depMap.getDefs();
+            while (defs.hasNext()) {
+               PSDependencyDef def = (PSDependencyDef) defs.next();
+               if (def.supportsParentId()) {
+                  PSDependencyHandler handler = PSDependencyHandler
+                          .getHandlerInstance(def, m_depMap);
+                  types.put(def.getObjectType(), handler.getParentType());
+               }
             }
+            m_parentTypeMap = types;
          }
-         m_parentTypeMap = types;
       }
 
       return m_parentTypeMap;
@@ -978,6 +977,9 @@ public class PSDependencyManager implements IPSDependencyManagerBaseline
     */
    public static PSDependencyManager getInstance()
    {
+      if(INSTANCE == null){
+         INSTANCE = new PSDependencyManager();
+      }
       return INSTANCE;
    }
 
