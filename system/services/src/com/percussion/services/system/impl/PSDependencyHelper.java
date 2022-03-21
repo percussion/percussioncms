@@ -98,7 +98,6 @@ public class PSDependencyHelper
          throw new IllegalStateException(
             "Deployment Handler must be initialized");
 
-
       m_depMgr = deploymentHandler.getDependencyManager();
 
       // todo: restore once we need to support apps via MSM

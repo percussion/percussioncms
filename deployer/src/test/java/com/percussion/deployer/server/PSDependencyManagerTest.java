@@ -57,8 +57,7 @@ public class PSDependencyManagerTest
 {
    /**
     * Construct this unit test
-    * 
-    * @param name The name of this test.
+    *
     */
    public PSDependencyManagerTest()
    {
@@ -79,7 +78,7 @@ public class PSDependencyManagerTest
       
       PSDependencyManager.setConfigDir(RESOURCE_D0C_DIR);
       
-      PSDependencyManager depMgr =  PSDependencyManager.INSTANCE;
+      PSDependencyManager depMgr =  PSDependencyManager.getInstance();
       depMgr = PSDependencyManager.getInstance();
 
       return depMgr;
