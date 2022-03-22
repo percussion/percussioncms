@@ -303,7 +303,7 @@ public class PSDeploymentHandler implements IPSDeploymentHandler, IPSLoadableReq
     * </code></pre>
     *
     * @return A document containing the following format:
-    *
+    *ni
     * <pre><code>
     * &lt;!ELEMENT PSXDeployGetDeployableElementsResponse
     *    (PSXDeployableElement*)&gt;
@@ -3244,6 +3244,13 @@ public class PSDeploymentHandler implements IPSDeploymentHandler, IPSLoadableReq
     */
    public PSIdMapManager getIdMapMgr()
    {
+      if(m_idmapMgr == null){
+         try {
+            this.init(null,null);
+         } catch (PSServerException e) {
+            ms_log.error(PSExceptionUtils.getMessageForLog(e));
+         }
+      }
       return m_idmapMgr;
    }
 
@@ -3254,6 +3261,13 @@ public class PSDeploymentHandler implements IPSDeploymentHandler, IPSLoadableReq
     */
    public PSLogHandler getLogHandler()
    {
+      if(m_logHandler == null){
+         try {
+            this.init(null,null);
+         } catch (PSServerException e) {
+            ms_log.error(PSExceptionUtils.getMessageForLog(e));
+         }
+      }
       return m_logHandler;
    }
 
@@ -3264,6 +3278,13 @@ public class PSDeploymentHandler implements IPSDeploymentHandler, IPSLoadableReq
     */
    public IPSDependencyManagerBaseline getDependencyManager()
    {
+     if(m_depMgr == null){
+        try {
+           this.init(null,null);
+        } catch (PSServerException e) {
+           ms_log.error(PSExceptionUtils.getMessageForLog(e));
+        }
+     }
       return (IPSDependencyManagerBaseline) m_depMgr;
    }
 
@@ -3342,7 +3363,7 @@ public class PSDeploymentHandler implements IPSDeploymentHandler, IPSLoadableReq
 
       try
       {
-         m_depMgr = PSDependencyManager.INSTANCE;
+         m_depMgr = PSDependencyManager.getInstance();
          m_idmapMgr = new PSIdMapManager();
          m_logHandler = new PSLogHandler();
       }
@@ -3385,7 +3406,11 @@ public class PSDeploymentHandler implements IPSDeploymentHandler, IPSLoadableReq
     */
    public Iterator getRequestRoots()
    {
-      return m_requestRoots.iterator();
+      if(m_requestRoots != null ) {
+         return m_requestRoots.iterator();
+      }else{
+         return null;
+      }
    }
 
    // Methods generated from implementation of interface IPSRequestHandler

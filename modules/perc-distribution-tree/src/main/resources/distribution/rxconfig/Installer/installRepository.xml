@@ -97,6 +97,12 @@
         />
 
         <PSExecSQLStmt  printExceptionStackTrace="true" qualifyTableNames=""
+                        qualifyViewNames="" sqlDerby="DROP INDEX IX_SITE_ITEMS_2"
+                        failonerror="false"
+                        silenceerrors="false"
+        />
+
+        <PSExecSQLStmt  printExceptionStackTrace="true" qualifyTableNames=""
                         qualifyViewNames="" sqlDerby="DROP INDEX IX_REF_SERV_CONTXT"
                         failonerror="false"
                         silenceerrors="false"
