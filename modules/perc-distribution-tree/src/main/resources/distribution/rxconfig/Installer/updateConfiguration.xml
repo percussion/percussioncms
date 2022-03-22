@@ -100,7 +100,7 @@
                 <entry key="autotuneCachePercentage" default="60"/>
                 <entry key="brokenManagedLinkBehavior" default="deadLink"/>
                 <entry key="caseSensitiveUrl" default="true"/>
-                <entry key="communities_enabled" value="yes" default="yes" operation="-"/>
+                <entry key="communities_enabled" value="yes" default="yes" operation="="/>
                 <entry key="forceSockets" default="true"/>
                 <entry key="requireUniqueFieldNames" default="true"/>
                 <entry key="responseCloseDelay" default="10"/>
