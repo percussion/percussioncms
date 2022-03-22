@@ -12,7 +12,9 @@ package com.percussion.workflow.actions;
 import com.percussion.design.objectstore.PSNotFoundException;
 import com.percussion.extension.IPSWorkflowAction;
 import com.percussion.extension.PSExtensionException;
+import com.percussion.utils.testing.IntegrationTest;
 import org.apache.cactus.ServletTestCase;
+import org.junit.experimental.categories.Category;
 
 import java.util.List;
 
@@ -22,6 +24,7 @@ import java.util.List;
  * 
  * @author BillLanglais
  */
+@Category(IntegrationTest.class)
 public class PSWFActionServiceTest extends ServletTestCase
 {
    /**
