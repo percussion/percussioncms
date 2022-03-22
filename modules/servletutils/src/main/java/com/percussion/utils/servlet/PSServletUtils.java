@@ -24,7 +24,6 @@
 
 package com.percussion.utils.servlet;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.mock.web.MockHttpServletResponse;
 
@@ -43,7 +42,6 @@ import java.io.IOException;
  * called once before any other methods may be called.  This should be done by
  * the servlet during its initialization.
  */
-@SuppressFBWarnings("REQUESTDISPATCHER_FILE_DISCLOSURE")
 public class PSServletUtils
 {
    /**
@@ -100,8 +98,20 @@ public class PSServletUtils
     * are not modified for a specific implementation.
     */
    public static final String BEANS_FILE_NAME = "beans.xml";
-   
+
    /**
+    * The name of the Spring configuration file for the sitemanage module.
+    */
+   public static final String SITEMANAGE_FILE_NAME = "sitemanage-beans.xml";
+
+
+   public static final String PACKAGE_BEANS_FILE_NAME="package-beans.xml";
+
+   public static final String IMAGEWIDGET_BEANS_FILE_NAME="imageWidget-beans.xml";
+
+   public static final String IMAGEWIDGET_SERVLET_FILE_NAME="imageWidget-servlet.xml";
+
+   /**c
     * The name of the spring configuration directory, located below the 
     * {@link #SYS_CONFIG_DIR}.
     */

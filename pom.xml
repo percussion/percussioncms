@@ -8,7 +8,7 @@
     <licenses>
         <license>
             <name>GNU AFFERO GENERAL PUBLIC LICENSE, Version 3 (AGPL-3.0)</name>
-            <url>http://opensource.org/licenses/AGPL-3.0</url>
+            <url>https://opensource.org/licenses/AGPL-3.0</url>
             <distribution />
         </license>
     </licenses>
@@ -28,12 +28,12 @@
         <module>modules/perc-exceptions-spring</module>
         <module>modules/shindig-uber</module>
         <module>modules/perc-tinymce</module>
-        <module>system/utils</module>
+        <module>modules/utils</module>
         <module>modules/perc-legacy</module>
         <module>modules/perc-shared-test-resources</module>
         <module>modules/webservices</module>
-        <module>system/Tools/Simple</module>
-        <module>system/Tools/TableFactory</module>
+        <module>modules/Simple</module>
+        <module>modules/TableFactory</module>
         <module>modules/perc-service-wrapper</module>
         <module>rest</module>
         <module>system</module>
@@ -125,19 +125,17 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-       <spring.version>4.3.30.RELEASE</spring.version>
-       <hibernate.version>5.2.10.Final</hibernate.version>
-       <ehcache.version>2.10.3</ehcache.version>
+       <spring.version>5.3.17</spring.version>
+       <hibernate.version>5.6.5.Final</hibernate.version>
+       <ehcache.version>2.10.6</ehcache.version>
        <gson.version>2.8.5</gson.version>
        <cxf.version>3.4.4</cxf.version>
        <servlet.spec>3.1.0</servlet.spec>
        <xmlgraphics.common.version>2.6</xmlgraphics.common.version>
-
        <commons-logging.version>1.2</commons-logging.version>
        <commons.io.version>2.8.0</commons.io.version>
        <lucene.version>8.7.0</lucene.version>
        <myfaces.version>1.1.5</myfaces.version>
-
        <simplexml.version>2.7.1</simplexml.version>
        <stax.version>1.0.1</stax.version>
         <poi.version>4.1.2</poi.version>
@@ -179,6 +177,7 @@
        <solr.version>8.11.1</solr.version>
         <nettyall.version>4.1.45.Final</nettyall.version>
        <hikari.version>4.0.3</hikari.version>
+       <snakeyaml.version>1.29</snakeyaml.version>
        <commons-email.version>1.5</commons-email.version>
        <commons.codec.version>1.14</commons.codec.version>
        <tinymce.version>4.9.10</tinymce.version>
@@ -737,12 +736,6 @@
 							<groupId>com.google.guava</groupId>
 							<artifactId>guava</artifactId>
 							<version>${guava.version}</version>
-							<exclusions>
-								<exclusion>
-									<artifactId>jsr305</artifactId>
-									<groupId>com.google.code.findbugs</groupId>
-								</exclusion>
-							</exclusions>
 						</dependency>
                     </dependencies>
                 </plugin>
@@ -949,6 +942,11 @@
             </plugins>
         </pluginManagement>
         <extensions>
+            <extension>
+                <groupId>org.apache.maven.extensions</groupId>
+                <artifactId>maven-build-cache-extension</artifactId>
+                <version>1.0.0-SNAPSHOT</version>
+            </extension>
             <extension>
                 <groupId>fi.yle.tools</groupId>
                 <artifactId>aws-maven</artifactId>
@@ -1212,6 +1210,12 @@
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-core</artifactId>
                 <version>${spring.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-jcl</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
@@ -1259,6 +1263,10 @@
                 <version>${spring.version}</version>
                 <exclusions>
                     <exclusion>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-jcl</artifactId>
+                    </exclusion>
+                    <exclusion>
                         <groupId>org.hibernate</groupId>
                         <artifactId>*</artifactId>
                     </exclusion>
@@ -1297,12 +1305,12 @@
                 <artifactId>cxf-rt-frontend-jaxrs</artifactId>
                 <version>${cxf.version}</version>
             </dependency>
-<dependency>
-    <groupId>org.apache.cxf</groupId>
-    <artifactId>cxf-rt-features-logging</artifactId>
-    <version>${cxf.version}</version>
-    <scope>runtime</scope>
-</dependency>
+            <dependency>
+                <groupId>org.apache.cxf</groupId>
+                <artifactId>cxf-rt-features-logging</artifactId>
+                <version>${cxf.version}</version>
+                <scope>runtime</scope>
+            </dependency>
             <dependency>
                 <groupId>org.apache.cxf</groupId>
                 <artifactId>cxf-rt-rs-service-description-openapi-v3</artifactId>
@@ -1347,7 +1355,7 @@
             <dependency>
                 <groupId>org.jboss</groupId>
                 <artifactId>jandex</artifactId>
-                <version>2.0.3.Final</version>
+                <version>2.1.2.Final</version>
             </dependency>
 
             <dependency>
@@ -1386,6 +1394,11 @@
                 </exclusions>
             </dependency>
             <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-hikaricp</artifactId>
+                <version>${hibernate.version}</version>
+            </dependency>
+            <dependency>
                 <!-- used in hibernate and swagger-jaxrs -->
                 <groupId>org.javassist</groupId>
                 <artifactId>javassist</artifactId>
@@ -1396,12 +1409,6 @@
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-ehcache</artifactId>
                 <version>${hibernate.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.hibernate.javax.persistence</groupId>
-                <artifactId>hibernate-jpa-2.1-api</artifactId>
-                <version>1.0.0.Final</version>
             </dependency>
 
             <dependency>
@@ -1528,12 +1535,6 @@
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
                 <version>${guava.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <artifactId>jsr305</artifactId>
-                        <groupId>com.google.code.findbugs</groupId>
-                    </exclusion>
-                </exclusions>
             </dependency>
          <dependency>
                 <groupId>org.apache.jackrabbit</groupId>
@@ -1727,7 +1728,7 @@
             <dependency>
                 <groupId>org.yaml</groupId>
                 <artifactId>snakeyaml</artifactId>
-                <version>1.26</version>
+                <version>${snakeyaml.version}</version>
                 <scope>runtime</scope>
             </dependency>
 
