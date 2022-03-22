@@ -23,12 +23,19 @@
  */
 package com.percussion.services.security.impl;
 
+import com.percussion.cms.IPSConstants;
 import com.percussion.cms.objectstore.PSActionVisibilityContext;
 import com.percussion.data.utils.PSHibernateEvictionTableUpdateHandler;
-import com.percussion.design.objectstore.*;
+import com.percussion.design.objectstore.PSAttribute;
+import com.percussion.design.objectstore.PSAttributeList;
+import com.percussion.design.objectstore.PSRelativeSubject;
+import com.percussion.design.objectstore.PSRole;
+import com.percussion.design.objectstore.PSRoleConfiguration;
+import com.percussion.design.objectstore.PSSubject;
 import com.percussion.design.objectstore.server.PSServerXmlObjectStore;
 import com.percussion.design.objectstore.server.PSXmlObjectStoreLockerId;
 import com.percussion.error.PSException;
+import com.percussion.security.IPSPrincipalAttribute;
 import com.percussion.security.PSBackendCataloger;
 import com.percussion.security.PSSecurityToken;
 import com.percussion.server.PSRequest;
@@ -52,20 +59,29 @@ import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.jdbc.PSConnectionDetail;
 import com.percussion.utils.jdbc.PSConnectionHelper;
 import com.percussion.utils.request.PSRequestInfo;
-import com.percussion.security.IPSPrincipalAttribute;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.*;
+import org.hibernate.Criteria;
+import org.hibernate.Query;
+import org.hibernate.SQLQuery;
+import org.hibernate.Session;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.naming.NamingException;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.security.auth.Subject;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 
@@ -75,16 +91,25 @@ import java.util.stream.Collectors;
 @PSBaseBean("sys_backEndRoleMgr")
 @Transactional
 public class PSBackEndRoleMgr implements IPSBackEndRoleMgr {
+
+    @PersistenceContext
+    private EntityManager entityManager;
+
+    private Session getSession(){
+        return entityManager.unwrap(Session.class);
+    }
+
+
     /**
      * Used for logging of all messages, never <code>null</code>.
      */
-    private static final Logger ms_log = LogManager.getLogger(PSBackEndRoleMgr.class);
+    private static final Logger ms_log = LogManager.getLogger(IPSConstants.SECURITY_LOG);
 
     /**
      * Used to set/get email on the subject
      */
-    private static String EMAIL_ATTRIBUTE_NAME = "sys_email";
-    private SessionFactory sessionFactory;
+    private static final String EMAIL_ATTRIBUTE_NAME = "sys_email";
+  
 
     /**
      * Default ctor, sets up necessary eviction handler.
@@ -103,14 +128,6 @@ public class PSBackEndRoleMgr implements IPSBackEndRoleMgr {
                 tables, pks, clazz));
     }
 
-    public SessionFactory getSessionFactory() {
-        return sessionFactory;
-    }
-
-    @Autowired
-    public void setSessionFactory(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
 
     // see IPSBackendRoleMgr interface
     public List<String> getRhythmyxRoles() {
@@ -130,7 +147,7 @@ public class PSBackEndRoleMgr implements IPSBackEndRoleMgr {
     public List<String> getRhythmyxRoles(String subjectName, int subjectType) {
         List<String> roleNames = new ArrayList<>();
 
-        Session session = getSessionFactory().getCurrentSession();
+        Session session = getSession();
 
         Criteria criteria = session.createCriteria(PSBackEndSubject.class);
 
@@ -194,12 +211,10 @@ public class PSBackEndRoleMgr implements IPSBackEndRoleMgr {
             config = getRoleConfig();
 
             // Iterate to add every subject to the roles
-            Iterator<String> subjectNamesIterator = subjectNames.iterator();
 
-            while (subjectNamesIterator.hasNext()) {
-                String subjectName = (String) subjectNamesIterator.next();
+            for (String subjectName : subjectNames) {
                 setSubjectRoles(subjectName, subjectType, roleNames,
-                    config.roleCfg);
+                        config.roleCfg);
             }
 
             // Saving role config just once as it is very costfull
@@ -250,7 +265,7 @@ public class PSBackEndRoleMgr implements IPSBackEndRoleMgr {
         }
 
         // Persist the role
-        getSessionFactory().getCurrentSession().saveOrUpdate(role);
+        getSession().saveOrUpdate(role);
         ms_log.info("Role description is updated for the role: " + roleName);
 
         return role;
@@ -519,7 +534,7 @@ public class PSBackEndRoleMgr implements IPSBackEndRoleMgr {
      * <code>null</code> or empty.
      */
     private List loadRoleList(IPSGuid[] ids) {
-        Session session = getSessionFactory().getCurrentSession();
+        Session session = getSession();
         if (ids==null)
             return session.createCriteria(PSBackEndRole.class).setCacheable(true).list();
         else
@@ -536,10 +551,9 @@ public class PSBackEndRoleMgr implements IPSBackEndRoleMgr {
      * @return a list with all loaded communities in the same order as requested,
      * never <code>null</code> or empty.
      */
-   @SuppressWarnings("unchecked")
    private List loadCommunityList(IPSGuid[] ids)
    {
-        Session session = getSessionFactory().getCurrentSession();
+        Session session = getSession();
        if (ids==null)
            return session.createCriteria(PSCommunity.class).setCacheable(true).list();
        else
@@ -602,7 +616,7 @@ public class PSBackEndRoleMgr implements IPSBackEndRoleMgr {
             }
 
             // Persist the role
-            getSessionFactory().getCurrentSession().saveOrUpdate(role);
+            getSession().saveOrUpdate(role);
             ms_log.info("Role '" + name + "' added to Role Configuration.");
         }
 
@@ -637,7 +651,7 @@ public class PSBackEndRoleMgr implements IPSBackEndRoleMgr {
         // Delete role name if found
         if (role != null) {
             // Delete the role
-            getSessionFactory().getCurrentSession().delete(role);
+            getSession().delete(role);
             ms_log.info("Role '" + name + "' removed from Role Configuration.");
         }
     }
@@ -673,7 +687,7 @@ public class PSBackEndRoleMgr implements IPSBackEndRoleMgr {
             throw new IllegalArgumentException("id cannot be null");
         }
 
-        Session s = getSessionFactory().getCurrentSession();
+        Session s = getSession();
 
         try {
             PSCommunity community = loadCommunity(id);
@@ -723,10 +737,9 @@ public class PSBackEndRoleMgr implements IPSBackEndRoleMgr {
      *
      * @see IPSBackendRoleMgr#findCommunitiesByName(String)
      */
-   @SuppressWarnings("unchecked")
    public List<PSCommunity> findCommunitiesByName(String name)
    {
-      Session session = sessionFactory.getCurrentSession();
+      Session session = getSession();
       List<PSCommunity> communities;
 
          if (StringUtils.isBlank(name) || name.equals("%"))
@@ -755,9 +768,9 @@ public class PSBackEndRoleMgr implements IPSBackEndRoleMgr {
             throw new IllegalArgumentException("id cannot be null");
         }
 
-      Session session = sessionFactory.getCurrentSession();
+      Session session = getSession();
 
-         PSCommunity community = (PSCommunity)session.get(PSCommunity.class,id.longValue());
+         PSCommunity community = session.get(PSCommunity.class,id.longValue());
 
          if (community==null)
             throw new PSSecurityException(IPSSecurityErrors.MISSING_COMMUNITY,
@@ -777,7 +790,7 @@ public class PSBackEndRoleMgr implements IPSBackEndRoleMgr {
             throw new IllegalArgumentException("community cannot be null");
         }
 
-        Session session = getSessionFactory().getCurrentSession();
+        Session session = getSession();
 
         try {
             if (community.getVersion() == null) {
@@ -844,7 +857,7 @@ public class PSBackEndRoleMgr implements IPSBackEndRoleMgr {
      * @see IPSBackendRoleMgr#findRolesByName(String)
      */
     public List<PSBackEndRole> findRolesByName(String name) {
-        Session session = getSessionFactory().getCurrentSession();
+        Session session = getSession();
 
         if (StringUtils.isBlank(name)) {
             name = "%";
@@ -863,7 +876,7 @@ public class PSBackEndRoleMgr implements IPSBackEndRoleMgr {
      * @see IPSBackendRoleMgr#findRolesByName(String)
      */
     public PSBackEndRole findRoleById(long id) {
-        Session session = getSessionFactory().getCurrentSession();
+        Session session = getSession();
 
         return session.byId(PSBackEndRole.class).load(id);
     }
@@ -875,7 +888,7 @@ public class PSBackEndRoleMgr implements IPSBackEndRoleMgr {
                 "roleIds may not be null or empty");
         }
 
-        Session session = getSessionFactory().getCurrentSession();
+        Session session = getSession();
 
         IPSGuid[] ids = roleIds.toArray(new IPSGuid[roleIds.size()]);
         Query query = session.createQuery(

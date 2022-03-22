@@ -23,14 +23,14 @@
  */
 package com.percussion.services.datasource;
 
+import com.percussion.cms.IPSConstants;
 import com.percussion.utils.jdbc.IPSConnectionInfo;
 import com.percussion.utils.jdbc.PSConnectionHelper;
 import com.percussion.utils.jdbc.PSConnectionInfo;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.HibernateException;
-import org.springframework.orm.hibernate3.LocalSessionFactoryBean;
+import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 
 /**
  * An adaptor bean that allows wiring a new session factory using a Rhythmyx
@@ -70,7 +70,7 @@ public class PSDatasourceSessionFactoryBean extends LocalSessionFactoryBean
     * Logger for this class
     */
    private static final Logger ms_log = LogManager.getLogger(
-      PSDatasourceSessionFactoryBean.class);
+           IPSConstants.SERVER_LOG);
    
    /**
     * Datasource name for connections, may be <code>null</code> or empty if the 

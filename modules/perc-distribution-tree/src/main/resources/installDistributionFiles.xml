@@ -157,7 +157,7 @@
         <mkdir dir="${assembly-directory}/rxconfig/secure"/>
 
         <copy todir="${assembly-directory}/rxconfig/secure">
-            <fileset dir="${basedir}/../../system/utils/src/main/resources/com/percussion/security/encryption/"/>
+            <fileset dir="${basedir}/../../modules/utils/src/main/resources/com/percussion/security/encryption/"/>
         </copy>
 
         <!-- Deployment Table Definition -->
@@ -170,7 +170,7 @@
         <mkdir dir="${assembly-directory}/DTD"/>
         <copy todir="${assembly-directory}/DTD">
             <!--<fileset dir="${basedir}/../../system/cms/dbpublisher/dtd" includes="sys_DatabasePublisher.dtd, aliasmap.dtd" />-->
-            <fileset dir="${basedir}/../../system/Tools/TableFactory/src/main/resources/dtd" includes="sys_Tabledata.dtd, sys_Tabledef.dtd" />
+            <fileset dir="${basedir}/../../modules/TableFactory/src/main/resources/dtd" includes="sys_Tabledata.dtd, sys_Tabledef.dtd" />
             <fileset dir="${basedir}/../../system/DTD" includes="**"/>
         </copy>
 

@@ -750,7 +750,7 @@ public class PSLocationSchemeEditor extends PSBaseValidator
       
       List<String> tpNames = new ArrayList<>();
       if (ct == null)
-         return Collections.EMPTY_LIST;
+         return Collections.emptyList();
       
       Map<IPSGuid, String> tps = m_ctxNode.catalogTemplates();
       for (IPSGuid tpId : ct.getVariantGuids())

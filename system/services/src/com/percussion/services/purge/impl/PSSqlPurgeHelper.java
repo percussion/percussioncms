@@ -76,10 +76,12 @@ import org.apache.logging.log4j.Logger;
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -103,12 +105,15 @@ import static com.percussion.cms.objectstore.PSFolder.FOLDER_CONTENT_TYPE_ID;
  * will bypass any security and will remove all references to items
  */
 @Transactional
+@Component
 public class PSSqlPurgeHelper implements IPSSqlPurgeHelper
 {
-   /**
-    * Injected hibernate session factory
-    */
-   private SessionFactory sessionFactory;
+   @PersistenceContext
+   private EntityManager entityManager;
+
+   private Session getSession(){
+      return entityManager.unwrap(Session.class);
+   }
 
    /**
     * This is a fast Database method for purging items and folders from the
@@ -221,7 +226,7 @@ public class PSSqlPurgeHelper implements IPSSqlPurgeHelper
     */
    public int purgeAll(PSLocator parent, Collection<PSLocator> items, List<Integer> typeFilter) throws PSException, PSValidationException {
       
-      Session session = sessionFactory.getCurrentSession();
+      Session session = getSession();
       
       int count = 0;
       Map<Integer, List<String>> contentTypeTableMap = new HashMap<>();
@@ -425,7 +430,7 @@ public class PSSqlPurgeHelper implements IPSSqlPurgeHelper
       PreparedStatement pstDelObjRelations = null;
       Connection conn = null;
 
-      session = sessionFactory.getCurrentSession();
+      session = getSession();
 
       try
       {
@@ -976,7 +981,7 @@ public class PSSqlPurgeHelper implements IPSSqlPurgeHelper
     * @param ceh
     * @throws PSException
     */
-   
+   @Transactional
    public Set<Integer> deleteBatch(List<String> tables, Set<Integer> ids, PSContentEditorHandler ceh) throws PSException, PSValidationException {
       if (ids == null || ids.isEmpty())
          return Collections.emptySet();
@@ -988,7 +993,7 @@ public class PSSqlPurgeHelper implements IPSSqlPurgeHelper
          //  If local content has more than one owner we leave it.
          String localContentsql = "SELECT r.DEPENDENT_ID FROM "+ qualify("PSX_OBJECTRELATIONSHIP") + " r where r.CONFIG_ID=(select config_id from "+ qualify("PSX_RELATIONSHIPCONFIGNAME") + " where config_name like 'LocalContent')  group by r.DEPENDENT_ID having count(distinct(r.OWNER_ID))=1 and MAX(r.OWNER_ID) in (:ids)";
 
-         localContent = sessionFactory.getCurrentSession()
+         localContent = getSession()
                .createSQLQuery(localContentsql)
                .setParameterList("ids", ids).list();
       }
@@ -998,7 +1003,7 @@ public class PSSqlPurgeHelper implements IPSSqlPurgeHelper
       }
      
       // Clean up managed links for item
-      sessionFactory.getCurrentSession()
+      getSession()
             .createQuery("DELETE FROM PSManagedLink ml WHERE ml.childId IN (:ids) or ml.parentId in (:ids)")
             .setParameterList("ids", ids)
             .executeUpdate();
@@ -1034,13 +1039,15 @@ public class PSSqlPurgeHelper implements IPSSqlPurgeHelper
 
       updateCaches(relset);
 
-      purge_logger.debug("Deleting from tables " + tables + " for id list" + filteredIds);
+      purge_logger.debug("Deleting from tables {} for id list {}" ,
+              tables,
+              filteredIds);
 
-      if (filteredIds.size() > 0) {
+      if (!filteredIds.isEmpty()) {
          for (String table : tables) {
             String sqlString = "DELETE FROM " + table + " where CONTENTID IN (:ids)";
 
-            Query query = sessionFactory.getCurrentSession()
+            Query query = getSession()
                     .createSQLQuery(sqlString)
                     .addSynchronizedQuerySpace(table)
                     .setParameterList("ids", filteredIds);
@@ -1232,22 +1239,4 @@ public class PSSqlPurgeHelper implements IPSSqlPurgeHelper
 
    }
    
-   /**
-    * Get the hibernate session factory
-    * @return SessionFactory
-    */
-   public SessionFactory getSessionFactory()
-   {
-      return sessionFactory;
-   }
-
-   /**
-    * Set the hibernate session factory
-    * @param sessionFactory
-    */
-   public void setSessionFactory(SessionFactory sessionFactory)
-   {
-      this.sessionFactory = sessionFactory;
-   }
-
 }

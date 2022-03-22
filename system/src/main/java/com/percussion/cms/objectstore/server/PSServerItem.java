@@ -71,6 +71,7 @@ import com.percussion.webservices.PSWebserviceUtils;
 import com.percussion.webservices.transformation.converter.PSItemConverterUtils;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.transaction.annotation.Transactional;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -94,6 +95,7 @@ import static com.percussion.cms.IPSConstants.DB_ACTION_UPDATE;
  * A PSCoreItem that is Rhythmyx server aware.  Meaning it can persist itself
  * to the system.
  */
+@Transactional
 public class PSServerItem extends PSCoreItem implements IPSPersister
 {
    @Override

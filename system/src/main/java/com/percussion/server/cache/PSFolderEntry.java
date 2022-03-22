@@ -33,6 +33,7 @@ import com.percussion.services.legacy.data.PSItemEntry;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.transaction.annotation.Transactional;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -41,6 +42,7 @@ import org.w3c.dom.Element;
  * information initially. Other data, such as the {@link PSFolder} object will 
  * be lazily loaded later.
  */
+@Transactional
 public class PSFolderEntry extends PSItemEntry
 {
 

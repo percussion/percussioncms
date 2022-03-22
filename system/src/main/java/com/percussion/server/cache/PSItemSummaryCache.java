@@ -61,6 +61,7 @@ import com.percussion.webservices.PSWebserviceUtils;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.transaction.annotation.Transactional;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -87,6 +88,7 @@ import static org.apache.commons.lang.Validate.notNull;
  * caches the skeleton, name and Acl (for folder), of the items at the
  * beginning.  The complete folder objects will be lazily loaded.
  */
+@Transactional
 public class PSItemSummaryCache implements IPSTableChangeListener
 {
 

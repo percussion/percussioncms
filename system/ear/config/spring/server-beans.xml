@@ -1,34 +1,10 @@
-<!--
-  ~     Percussion CMS
-  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
-  ~
-  ~     This program is free software: you can redistribute it and/or modify
-  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
-  ~
-  ~     This program is distributed in the hope that it will be useful,
-  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
-  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  ~     GNU Affero General Public License for more details.
-  ~
-  ~     Mailing Address:
-  ~
-  ~      Percussion Software, Inc.
-  ~      PO Box 767
-  ~      Burlington, MA 01803, USA
-  ~      +01-781-438-9900
-  ~      support@percussion.com
-  ~      https://www.percussion.com
-  ~
-  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
-  -->
-
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:tx="http://www.springframework.org/schema/tx"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+http://www.springframework.org/schema/beans/spring-beans.xsd
 http://www.springframework.org/schema/tx
-http://www.springframework.org/schema/tx/spring-tx-4.2.xsd">
+http://www.springframework.org/schema/tx/spring-tx.xsd">
 
 	<tx:annotation-driven transaction-manager="sys_transactionManager"/>
 
@@ -40,9 +16,7 @@ http://www.springframework.org/schema/tx/spring-tx-4.2.xsd">
 		class="com.percussion.services.general.impl.PSRhythmyxInfo">
 		<property name="bindings">
 			<map>
-				<entry key="UNIT_TESTING">
-					<value>false</value>
-				</entry>
+				<entry key="UNIT_TESTING" value="false"/>
 			</map>
 		</property>
 	</bean>
@@ -70,7 +44,8 @@ http://www.springframework.org/schema/tx/spring-tx-4.2.xsd">
           <property name="connectionFactory" ref="sys_jmsConnectionFactory" />
           <property name="destination" ref="sys_notificationQueueDestination" />
           <property name="messageListener" ref="sys_messageQueueService" />
-    </bean>    	
+          <property name="acceptMessagesWhileStopping" value="true"/>
+    </bean>
 	
 	<bean id="sys_emailMessageHandlerContainerQ"
 		  class="org.springframework.jms.listener.DefaultMessageListenerContainer">
@@ -78,6 +53,7 @@ http://www.springframework.org/schema/tx/spring-tx-4.2.xsd">
 		  <property name="connectionFactory" ref="sys_jmsConnectionFactory" />
 		  <property name="destination" ref="sys_emailQueueDestination" />
 		  <property name="messageListener" ref="sys_emailQueueListener" />
+        <property name="acceptMessagesWhileStopping" value="true"/>
 	</bean>
 			
 	<bean id="sys_emailQueueListener" 
@@ -88,27 +64,13 @@ http://www.springframework.org/schema/tx/spring-tx-4.2.xsd">
 		class="com.percussion.services.datasource.PSHibernateDialectConfig">
 		<property name="dialects">
 			<map>
-                <entry key="jtds:sqlserver">
-                    <value>org.hibernate.dialect.SQLServer2012Dialect</value>
-                </entry>
-                <entry key="sqlserver">
-                    <value>org.hibernate.dialect.SQLServer2012Dialect</value>
-                </entry>
-                <entry key="inetdae7">
-                    <value>org.hibernate.dialect.SQLServer2012Dialect</value>
-                </entry>
-                <entry key="oracle:thin">
-                    <value>org.hibernate.dialect.Oracle9iDialect</value>
-                </entry>
-                <entry key="db2">
-                    <value>org.hibernate.dialect.DB2Dialect</value>
-                </entry>
-                <entry key="derby">
-                    <value>org.hibernate.dialect.DerbyTenSevenDialect</value>
-                </entry>
-                <entry key="mysql">
-                    <value>org.hibernate.dialect.MySQLInnoDBDialect</value>
-                </entry>
+                <entry key="jtds:sqlserver" value="org.hibernate.dialect.SQLServer2012Dialect"/>
+                <entry key="sqlserver" value="org.hibernate.dialect.SQLServer2012Dialect"/>
+                <entry key="inetdae7" value="org.hibernate.dialect.SQLServer2012Dialect"/>
+                <entry key="oracle:thin" value="org.hibernate.dialect.Oracle12cDialect"/>
+                <entry key="db2" value="org.hibernate.dialect.DB2Dialect"/>
+                <entry key="derby" value="org.hibernate.dialect.DerbyTenSevenDialect"/>
+                <entry key="mysql" value="org.hibernate.dialect.MySQLInnoDBDialect"/>
 			</map>
 		</property>		
 	</bean>
@@ -173,22 +135,13 @@ http://www.springframework.org/schema/tx/spring-tx-4.2.xsd">
             org.quartz.dataSource.rhythmyxDataSource.connectionProvider.class=com.percussion.services.schedule.impl.PSRhythmyxConnectionProvider
          </value>
       </property>
-      <property name="datasourceManager">
-         <ref bean="sys_datasourceManager"/>
-      </property>
-      <property name="configurationBean">
-      	<ref bean="sys_beanConfiguration" />
-      </property>    
+      <property name="datasourceManager" ref="sys_datasourceManager"/>
+      <property name="configurationBean" ref="sys_beanConfiguration"/>
    </bean>
    
    	<bean id="sys_schedulingService"
       class="com.percussion.services.schedule.impl.PSSchedulingService">
-      <property name="sessionFactory">
-         <ref bean="sys_sessionFactory"/>
-      </property>
-      <property name="scheduler">
-         <ref bean="sys_quartzScheduler"/>
-      </property>
+      <property name="scheduler" ref="sys_quartzScheduler"/>
    </bean>
    
    <!-- Test service used only for AOP based web service security testing

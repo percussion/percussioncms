@@ -87,12 +87,12 @@ import java.util.Set;
 /**
  * The private security design webservice implementations.
  */
-@Transactional
 @PSBaseBean("sys_securityDesignWs")
 public class PSSecurityDesignWs extends PSSecurityBaseWs implements
    IPSSecurityDesignWs
 {
    // @see IPSSecurityDesignWs#createCommunities(List, String, String)
+   @Transactional
    public List<PSCommunity> createCommunities(List<String> names,
       String session, String user)
    {
@@ -134,6 +134,7 @@ public class PSSecurityDesignWs extends PSSecurityBaseWs implements
    }
 
    // @see IPSSecurityDesignWs#deleteCommunities(List, boolean, String, String)
+   @Transactional
    public void deleteCommunities(List<IPSGuid> ids, boolean ignoreDependencies,
       String session, String user) throws PSErrorsException
    {
@@ -297,6 +298,7 @@ public class PSSecurityDesignWs extends PSSecurityBaseWs implements
     * 
     * @see IPSSecurityDesign#saveCommunities(List, boolean, String, String)
     */
+   @Transactional
    public void saveCommunities(List<PSCommunity> communities, boolean release, 
       String session, String user) throws PSErrorsException
    {

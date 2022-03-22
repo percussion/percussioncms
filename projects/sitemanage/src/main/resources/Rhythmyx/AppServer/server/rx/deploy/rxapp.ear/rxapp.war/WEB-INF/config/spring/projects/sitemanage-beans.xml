@@ -6,13 +6,13 @@
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:jaxrs="http://cxf.apache.org/jaxrs"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+http://www.springframework.org/schema/beans/spring-beans.xsd
 http://www.springframework.org/schema/tx
-http://www.springframework.org/schema/tx/spring-tx-4.2.xsd
+http://www.springframework.org/schema/tx/spring-tx.xsd
 http://cxf.apache.org/core
 http://cxf.apache.org/schemas/core.xsd
 http://www.springframework.org/schema/context
-http://www.springframework.org/schema/context/spring-context-4.2.xsd
+http://www.springframework.org/schema/context/spring-context.xsd
 http://cxf.apache.org/jaxrs
 http://cxf.apache.org/schemas/jaxrs.xsd">
 
@@ -20,7 +20,7 @@ http://cxf.apache.org/schemas/jaxrs.xsd">
 
 
     <context:annotation-config/>
-    <!-- need to move sitemanage to sub package -->
+
     <context:component-scan
             base-package="com.percussion.recent,com.percussion.redirect,com.percussion.metadata,com.percussion.pathmanagement,com.percussion.integritymanagement,com.percussion.pagemanagement,com.percussion.sitemanage,com.percussion.assetmanagement,com.percussion.utils,com.percussion.searchmanagement,com.percussion.share,com.percussion.user.service.impl,com.percussion.theme,com.percussion.itemmanagement,com.percussion.comments.service.impl,com.percussion.siteimportsummary,com.percussion.pubserver,com.percussion.monitor,com.percussion.apibridge,com.percussion.rest,com.percussion,com.percussion.licensemanagement">
         <context:include-filter type="annotation" expression="com.percussion.util.PSSiteManageBean"/>
@@ -1511,7 +1511,19 @@ http://cxf.apache.org/schemas/jaxrs.xsd">
         </property>
     </bean>
 
-    <bean id="recyclePathItemService" class="com.percussion.pathmanagement.service.impl.PSRecyclePathItemService">
+    <bean id="recyclePathItemService" class="com.percussion.pathmanagement.service.impl.PSRecyclePathItemService" autowire="constructor">
+        <constructor-arg index="0" ref="folderHelper"/>
+        <constructor-arg index="1" ref="sys_idMapper"/>
+        <constructor-arg index="2" ref="pageService"/>
+        <constructor-arg index="3" ref="workflowRestService"/>
+        <constructor-arg index="4" ref="assetService"/>
+        <constructor-arg index="5" ref="widgetAssetRelationshipService"/>
+        <constructor-arg index="6" ref="sys_contentManager"/>
+        <constructor-arg index="7" ref="sys_workflowService"/>
+        <constructor-arg index="8" ref="cm1ListViewHelper"/>
+        <constructor-arg index="9" ref="userService"/>
+        <constructor-arg index="10" ref="recycleService"/>
+        <constructor-arg index="11" ref="sys_managedNavService"/>
         <property name="rolesAllowed">
             <list>
                 <value>Admin</value>
@@ -1724,9 +1736,6 @@ http://cxf.apache.org/schemas/jaxrs.xsd">
           autowire="constructor"/>
     <bean id="widgetAssetRelationshipDao"
           class="com.percussion.assetmanagement.service.impl.PSWidgetAssetRelationshipDao">
-        <property name="sessionFactory">
-            <ref bean="sys_sessionFactory"/>
-        </property>
     </bean>
 
     <!--  Content Migration Service  -->

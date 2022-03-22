@@ -30,13 +30,11 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Common implementations used with the public and private content 
  * webservices.
  */
-@Transactional
 public class PSContentBaseWs
 {
 

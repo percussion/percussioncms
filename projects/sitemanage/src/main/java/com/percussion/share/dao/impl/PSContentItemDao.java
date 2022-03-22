@@ -26,6 +26,7 @@ package com.percussion.share.dao.impl;
 import com.percussion.auditlog.PSActionOutcome;
 import com.percussion.auditlog.PSAuditLogService;
 import com.percussion.auditlog.PSContentEvent;
+import com.percussion.cms.IPSConstants;
 import com.percussion.cms.objectstore.IPSFieldValue;
 import com.percussion.cms.objectstore.PSComponentSummary;
 import com.percussion.cms.objectstore.PSCoreItem;
@@ -238,7 +239,7 @@ public class PSContentItemDao implements IPSContentItemDao
         Integer contentId = locator.getId();
         PSComponentSummary sum = cmsObjectMgr.loadComponentSummary(contentId);
         if ( ! sum.isRevisionLock() ) {
-            log.debug("Turning revision lock on for item: " + contentId);
+            log.debug("Turning revision lock on for item: {}" , contentId);
             sum.setRevisionLock(true);
             cmsObjectMgr.saveComponentSummaries(singletonList(sum));
         }
@@ -442,5 +443,5 @@ public class PSContentItemDao implements IPSContentItemDao
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Logger log = LogManager.getLogger(PSContentItemDao.class);
+    private static final Logger log = LogManager.getLogger(IPSConstants.CONTENTREPOSITORY_LOG);
 }

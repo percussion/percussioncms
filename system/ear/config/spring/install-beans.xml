@@ -25,7 +25,7 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-http://www.springframework.org/schema/beans/spring-beans-4.2.xsd">
+http://www.springframework.org/schema/beans/spring-beans.xsd">
 
    <bean id="sys_protoLegacyDataSource"
       class="com.percussion.util.PSDataSourceFactory"
@@ -44,14 +44,10 @@ http://www.springframework.org/schema/beans/spring-beans-4.2.xsd">
    <bean id="sys_mockJndiContextHelper" 
       class="com.percussion.utils.jndi.PSNamingContextHelper">
       <!-- Set root before bindings! -->
-      <property name="root">
-         <value>java:comp/env</value>
-      </property>
+      <property name="root" value="java:comp/env"/>
       <property name="bindings">
          <map>
-            <entry key="jdbc/rxdefault">
-               <ref bean="sys_protoLegacyDataSource"/>
-            </entry>
+            <entry key="jdbc/rxdefault" value-ref="sys_protoLegacyDataSource"/>
          </map>
       </property>
    </bean>
@@ -60,9 +56,7 @@ http://www.springframework.org/schema/beans/spring-beans-4.2.xsd">
       class="com.percussion.services.general.impl.PSRhythmyxInfo">
       <property name="bindings">
          <map>
-            <entry key="UNIT_TESTING">
-               <value>true</value>
-            </entry>
+            <entry key="UNIT_TESTING" value="true"/>
          </map>
       </property>
    </bean>
@@ -88,24 +82,12 @@ http://www.springframework.org/schema/beans/spring-beans-4.2.xsd">
       class="com.percussion.services.datasource.PSHibernateDialectConfig">
       <property name="dialects">
          <map>
-                <entry key="jtds:sqlserver">
-                    <value>org.hibernate.dialect.SQLServer2012Dialect</value>
-                </entry>
-                <entry key="inetdae7">
-                    <value>org.hibernate.dialect.SQLServer2012Dialect</value>
-                </entry>
-                <entry key="oracle:thin">
-                    <value>org.hibernate.dialect.OracleDialect</value>
-                </entry>
-                <entry key="db2">
-                    <value>org.hibernate.dialect.DB2Dialect</value>
-                </entry>
-                <entry key="derby">
-                    <value>org.hibernate.dialect.DerbyTenSevenDialect</value>
-                </entry>
-                <entry key="mysql">
-                    <value>org.hibernate.dialect.MySQLInnoDBDialect</value>
-                </entry>                
+                <entry key="jtds:sqlserver" value="org.hibernate.dialect.SQLServer2012Dialect"/>
+                <entry key="inetdae7" value="org.hibernate.dialect.SQLServer2012Dialect"/>
+                <entry key="oracle:thin" value="org.hibernate.dialect.Oracle12cDialect"/>
+                <entry key="db2" value="org.hibernate.dialect.DB2Dialect"/>
+                <entry key="derby" value="org.hibernate.dialect.DerbyTenSevenDialect"/>
+                <entry key="mysql" value="org.hibernate.dialect.MySQLInnoDBDialect"/>
          </map>
       </property>      
    </bean>   
@@ -113,15 +95,6 @@ http://www.springframework.org/schema/beans/spring-beans-4.2.xsd">
 	<bean id="sys_beanConfiguration"
 		class="com.percussion.services.utils.general.PSServiceConfigurationBean">
 		<property name="maxCachedContentNodeSize" value="100000"/>
-	</bean>
-	
-	<bean id="sys_testSetup"
-		class="com.percussion.testing.PSTestSetupBean">
-		<property name="config">
-			<map>
-				<entry key="extensionDir" value="build/unitTestConfig/extensions" />
-			</map>
-		</property>
 	</bean>
 
 	<bean id="sys_deliveryManager"
@@ -133,32 +106,5 @@ http://www.springframework.org/schema/beans/spring-beans-4.2.xsd">
 		<property name="enabled" value="false"/>
 		<property name="logRetentionDays" value="-1"/>   
 	</bean>
-	
-	<!-- Setup all JMS queues and topics here that need to be available
-	 	for unit testing -->
-	<bean id="sys_mockJmsConnectionFactory"
-		class="com.percussion.utils.spring.PSMockJmsConnectionFactoryHelper">
-		<constructor-arg>
-			<ref bean="sys_mockJndiContextHelper"/>
-		</constructor-arg>
-      <property name="destinations">
-         <map>
-            <entry key="queue/notificationQueue">
-               <value>queue</value>
-            </entry>
-            <entry key="topic/notificationTopic">
-            	<value>topic</value>
-            </entry>
-            <entry key="queue/publishQueue">
-            	<value>queue</value>
-            </entry>
-            <entry key="queue/emailQueue">
-            	<value>queue</value>
-            </entry>
-            <entry key="queue/publishResultQueue">
-            	<value>queue</value>
-            </entry>
-         </map>
-      </property>
-	</bean>
+
 </beans>

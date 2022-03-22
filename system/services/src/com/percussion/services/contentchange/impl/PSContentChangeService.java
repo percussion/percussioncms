@@ -23,6 +23,7 @@
  */
 package com.percussion.services.contentchange.impl;
 
+import com.percussion.cms.IPSConstants;
 import com.percussion.cms.IPSEditorChangeListener;
 import com.percussion.cms.PSEditorChangeEvent;
 import com.percussion.cms.PSRelationshipChangeEvent;
@@ -51,10 +52,10 @@ import org.apache.logging.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.annotations.QueryHints;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,11 +63,17 @@ import java.util.List;
  * @author JaySeletz
  *
  */
+@Transactional
 public class PSContentChangeService implements IPSContentChangeService, IPSEditorChangeListener, IPSHandlerInitListener, IPSNotificationListener
 {
-   private static final Logger log = LogManager.getLogger(PSContentChangeService.class);
-   
-  
+   private static final Logger log = LogManager.getLogger(IPSConstants.CONTENTREPOSITORY_LOG);
+
+   @PersistenceContext
+   private EntityManager entityManager;
+
+   private Session getSession(){
+      return entityManager.unwrap(Session.class);
+   }
 
    /**
     * Constant for the key used to generate link id's.
@@ -88,10 +95,10 @@ public class PSContentChangeService implements IPSContentChangeService, IPSEdito
    public void contentChanged(PSContentChangeEvent changeEvent) throws IPSGenericDao.SaveException {
       Validate.notNull(changeEvent);
       
-      Session session = sessionFactory.getCurrentSession();
+      Session session = getSession();
       try
       {
-         PSContentChangeEvent ce = (PSContentChangeEvent)session.get(PSContentChangeEvent.class, new PSContentChangePK(changeEvent.getContentId(), changeEvent.getSiteId(), changeEvent.getChangeType().name()));
+         PSContentChangeEvent ce = session.get(PSContentChangeEvent.class, new PSContentChangePK(changeEvent.getContentId(), changeEvent.getSiteId(), changeEvent.getChangeType().name()));
          
          if (ce == null)
          {
@@ -106,10 +113,9 @@ public class PSContentChangeService implements IPSContentChangeService, IPSEdito
       }      
    }
 
-   @Transactional
    public List<Integer> getChangedContent(long siteId, PSContentChangeType changeType)
    {
-      Session session = sessionFactory.getCurrentSession();
+      Session session = getSession();
       
     
       Query query = session.createQuery("from PSContentChangeEvent where changeType = :changeType and siteId = :siteId");
@@ -139,7 +145,7 @@ public class PSContentChangeService implements IPSContentChangeService, IPSEdito
    @Transactional
    public void deleteChangeEvents(long siteId, int contentId, PSContentChangeType changeType)
    {
-      Session session = sessionFactory.getCurrentSession();
+      Session session = getSession();
       
      
       String queryStr = "delete from PSContentChangeEvent where contentId = :contentId and changeType = :changeType";
@@ -159,7 +165,7 @@ public class PSContentChangeService implements IPSContentChangeService, IPSEdito
    @Transactional
    public void deleteChangeEventsForSite(long siteId)
    {
-      Session session = sessionFactory.getCurrentSession();
+      Session session = getSession();
       
 
       String queryStr = "delete from PSContentChangeEvent where siteId = :siteId"; 
@@ -174,7 +180,7 @@ public class PSContentChangeService implements IPSContentChangeService, IPSEdito
    @Transactional
    public void deleteChangeEventsForSite(long siteId, PSContentChangeType changeType)
    {
-      Session session = sessionFactory.getCurrentSession();
+      Session session = getSession();
       
       String queryStr = "delete from PSContentChangeEvent where siteId = :siteId and changeType = :changeType"; 
       
@@ -245,19 +251,6 @@ public class PSContentChangeService implements IPSContentChangeService, IPSEdito
    public void shutdownHandler(IPSRequestHandler requestHandler)
    {
       // noop
-   }
-   
-   
-   private SessionFactory sessionFactory;
-   
-   public SessionFactory getSessionFactory()
-   {
-      return sessionFactory;
-   }
-
-   public void setSessionFactory(SessionFactory sessionFactory)
-   {
-      this.sessionFactory = sessionFactory;
    }
 
    

@@ -33,22 +33,19 @@ import com.percussion.services.PSMissingBeanConfigurationException;
  */
 public class PSCmsObjectMgrLocator extends PSBaseServiceLocator
 {
-   private static volatile IPSCmsObjectMgr objectMgr = null; 
+   private static  IPSCmsObjectMgr objectMgr = null;
    /**
     * Get object manager
-    * 
+    *
     * @return object manager, never <code>null</code>
     * @throws PSMissingBeanConfigurationException
     */
-   public static IPSCmsObjectMgr getObjectManager() throws PSMissingBeanConfigurationException
+   public static synchronized IPSCmsObjectMgr getObjectManager() throws PSMissingBeanConfigurationException
    {
       if (objectMgr==null)
       {
-         synchronized (PSCmsObjectMgrLocator.class)
-         {
             if (objectMgr==null)
                objectMgr=(IPSCmsObjectMgr) getBean("sys_cmsObjectMgr");
-         }
       }
       return objectMgr;
    }

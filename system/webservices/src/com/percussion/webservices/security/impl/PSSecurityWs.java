@@ -75,7 +75,6 @@ import java.util.Map;
 /**
  * The public security webservice implementations.
  */
-@Transactional
 @PSBaseBean("sys_securityWs")
 public class PSSecurityWs extends PSSecurityBaseWs implements IPSSecurityWs
 {
@@ -109,7 +108,7 @@ public class PSSecurityWs extends PSSecurityBaseWs implements IPSSecurityWs
     * @see IPSSecurityWs#login(HttpServletRequest, HttpServletResponse, 
     *    String, String, String, String, String)
     */
-   @SuppressWarnings("unchecked")
+   @Transactional
    public PSLogin login(HttpServletRequest request,
       HttpServletResponse response, String user, String password,
       String clientId, String community, String localeCode) throws IOException,
@@ -250,6 +249,7 @@ public class PSSecurityWs extends PSSecurityBaseWs implements IPSSecurityWs
    }
 
    // @see IPSSecurityWs#logout(HttpServletRequest, String)
+   @Transactional
    public void logout(HttpServletRequest request, String session)
    {
       if (request == null)
@@ -262,6 +262,7 @@ public class PSSecurityWs extends PSSecurityBaseWs implements IPSSecurityWs
    }
 
    // @see IPSSecurityWs#refreshSession(HttpServletRequest, String)
+   @Transactional
    public void refreshSession(HttpServletRequest request, String session)
       throws LoginException
    {
@@ -328,6 +329,7 @@ public class PSSecurityWs extends PSSecurityBaseWs implements IPSSecurityWs
       return null;
    }
 
+   @Transactional
    public PSLogin login(String user, String password, String community,
       String localeCode) throws LoginException
    {
@@ -363,6 +365,7 @@ public class PSSecurityWs extends PSSecurityBaseWs implements IPSSecurityWs
       }
    }
 
+   @Transactional
    public boolean reconnectSession(PSSecurityToken token)
    {
       if (token == null)
@@ -371,6 +374,7 @@ public class PSSecurityWs extends PSSecurityBaseWs implements IPSSecurityWs
       return PSThreadRequestUtils.initUserThreadRequestByToken(token);
    }
 
+   @Transactional
    public void restoreRequestContext(IPSRequestContext ctx)
    {
       if (ctx == null)

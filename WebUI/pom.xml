@@ -178,6 +178,18 @@
 
                             </excludes>
                         </resource>
+                        <!--
+                          <resource>
+                            <directory>..\system\ear</directory>
+                             <filtering>false</filtering>
+                                           <excludes>
+                                           <exclude>..\system\ear\jsps</exclude>
+                                           <exclude>..\system\ear\jboss-4.0</exclude>
+                                             <exclude>..\system\ear\metadata</exclude>
+                                             <exclude>..\system\ear\config</exclude>
+
+                            </excludes>
+                          </resource>-->
                         <resource>
                             <directory>../system/ear/config</directory>
                             <!-- override the destination directory for this resource -->
@@ -189,7 +201,8 @@
                                 <exclude>**/hibernate/*</exclude>
                             </excludes>
                         </resource>
-                         <resource>
+                        <!-- deployer beans file -->
+                        <resource>
                             <directory>../deployer/src/main/webapp/WEB-INF/config</directory>
                             <!-- override the destination directory for this resource -->
                             <targetPath>WEB-INF/config</targetPath>
@@ -920,22 +933,18 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-beans</artifactId>
-            <version>${spring.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
-
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context-support</artifactId>
-
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-expression</artifactId>
-
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
@@ -1234,8 +1243,6 @@
         <dependency>
             <groupId>org.yaml</groupId>
             <artifactId>snakeyaml</artifactId>
-            <version>1.26</version>
-            <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>org.javassist</groupId>

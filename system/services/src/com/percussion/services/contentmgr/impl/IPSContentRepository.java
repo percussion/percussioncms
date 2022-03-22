@@ -28,11 +28,7 @@ import com.percussion.services.contentmgr.data.PSNodeDefinition;
 import com.percussion.services.contentmgr.impl.legacy.PSContentTypeChange;
 import com.percussion.services.contentmgr.impl.query.IPSPropertyMapper;
 import com.percussion.utils.guid.IPSGuid;
-
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import org.hibernate.SessionFactory;
 
 import javax.jcr.ItemNotFoundException;
 import javax.jcr.Node;
@@ -42,6 +38,9 @@ import javax.jcr.nodetype.NodeType;
 import javax.jcr.query.InvalidQueryException;
 import javax.jcr.query.Query;
 import javax.jcr.query.QueryResult;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * The content repository is in charge of managing content items for a given
@@ -93,6 +92,12 @@ public interface IPSContentRepository extends IPSPropertyMapper
    public static final int LOAD_ALL = LOAD_CHILDREN | LOAD_BODIES;
 
    /**
+    * Get the current sessionfactory for the content repository.
+    * @return
+    */
+    SessionFactory getSessionFactory();
+
+    /**
     * Attributes of content repositories
     */
    public enum Capability {

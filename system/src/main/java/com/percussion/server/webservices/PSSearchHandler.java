@@ -147,8 +147,7 @@ import static com.percussion.cms.objectstore.PSProcessorProxy.RELATIONSHIP_COMPT
  * 
  * @see {@link com.percussion.hooks.webservices.PSWSSearch}.
  */
-public class PSSearchHandler extends PSWebServicesBaseHandler
-{     
+public class PSSearchHandler extends PSWebServicesBaseHandler implements IPSSearchHandler {
    /**
     * Operation to search for a specific content item(s).
     * 
@@ -188,8 +187,9 @@ public class PSSearchHandler extends PSWebServicesBaseHandler
     * @return the searcch response, never <code>null</code>.
     * @throws PSException for any error.
     */
-   public PSWSSearchResponse search(PSRequest request, 
-      PSWSSearchRequest searchRequest) throws PSException
+   @Override
+   public PSWSSearchResponse search(PSRequest request,
+                                    PSWSSearchRequest searchRequest) throws PSException
    {
       Document responseDoc = PSXmlDocumentBuilder.createXmlDocument();
       PSXmlDocumentBuilder.createRoot(responseDoc, "SearchTmp");
@@ -214,8 +214,9 @@ public class PSSearchHandler extends PSWebServicesBaseHandler
     * @return A List of content IDs that match with the give search request.
     * @throws PSException for any error executing the search.
     */
+   @Override
    public List<Integer> searchAndGetContentIds(PSRequest request,
-         PSWSSearchRequest searchReq) throws PSException
+                                               PSWSSearchRequest searchReq) throws PSException
    {
       List<Integer> result = new ArrayList<>();
       
@@ -284,6 +285,7 @@ public class PSSearchHandler extends PSWebServicesBaseHandler
       return result;
    }
 
+   @Override
    public List<Integer> searchAndGetContentIdsForSearchByStatus(PSRequest request,
                                                                 PSWSSearchRequest searchReq) throws PSException{
 
@@ -330,8 +332,9 @@ public class PSSearchHandler extends PSWebServicesBaseHandler
     *           base element for the response.
     * @throws PSException for any error executing the search.
     */
-   public void search(PSRequest request, PSWSSearchRequest searchReq, 
-      Document parent) throws PSException
+   @Override
+   public void search(PSRequest request, PSWSSearchRequest searchReq,
+                      Document parent) throws PSException
    {
       if (request == null)
          throw new IllegalArgumentException("request may not be null");
@@ -1670,9 +1673,10 @@ public class PSSearchHandler extends PSWebServicesBaseHandler
     * @param updateItem the standard item to update, not <code>null</code>.
     * @throws PSException for any error.
     */
+   @Override
    @SuppressWarnings("unchecked")
    public void executeKeyFieldSearch(PSRequest request,
-         PSServerItem updateItem) throws PSException
+                                     PSServerItem updateItem) throws PSException
    {
       if (request == null)
          throw new IllegalArgumentException("request cannot be null");
@@ -1990,76 +1994,7 @@ public class PSSearchHandler extends PSWebServicesBaseHandler
     * <code>sys_SearchParameters.xsd</code>
     */
    private static final String ATTR_TRUNCATED = "truncated";
-   
-   /**
-    * Iterator for a delimited list of values formated for an external search
-    * with an "in" operator.
-    */
-   private static class PSExternalInValuesIterator implements Iterator<String>
-   {
-      /**
-       * Construct the iterator
-       * 
-       * @param val The delimited list, assumed not <code>null</code>, may be
-       * empty.
-       */
-      PSExternalInValuesIterator(String val)
-      {
-         mi_toker = new StringTokenizer(val, " ");
-         getNext();
-      }
-      
-      public boolean hasNext()
-      {
-         return mi_next != null;
-      }
 
-      public String next()
-      {
-         String next = mi_next;
-         getNext();
-         
-         return next;
-      }
-
-      @Override
-      public void remove()
-      {
-         throw new UnsupportedOperationException("remove not supported");
-      }
-      
-      /**
-       * Checks ahead to determine the next possible value
-       */
-      private void getNext()
-      {
-         String next = null;
-         while (mi_toker.hasMoreTokens())
-         {
-            String token = mi_toker.nextToken();
-            if (token == null || token.equals(""))
-               continue;
-            if (token.trim().equalsIgnoreCase("or"))
-               continue;
-            next = token;
-            break;
-         }  
-         mi_next = next;
-      }
-      
-      /**
-       * Used to walk the string supplied during construction to return values.
-       * never <code>null</code> or modified after construction.
-       */
-      private final StringTokenizer mi_toker;
-      
-      /**
-       * The next value to return, modified by calls to {@link #getNext()}, 
-       * <code>null</code> if there are no values left to return.
-       */
-      private String mi_next;
-   }
-   
    /**
     * Commons logger
     */

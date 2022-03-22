@@ -31,7 +31,6 @@ import com.percussion.services.publisher.IPSPublisherService;
 import com.percussion.services.publisher.PSPublisherServiceLocator;
 import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.services.sitemgr.IPSSiteManager;
-import com.percussion.services.sitemgr.IPSSiteManagerInternal;
 import com.percussion.services.sitemgr.PSSiteManagerLocator;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.types.PSPair;
@@ -132,10 +131,10 @@ public class PSSiteModel extends PSDesignModel
     * 
     * @return the Site Manager service, never <code>null</code>.
     */
-   private IPSSiteManagerInternal getSiteMgr()
+   private IPSSiteManager getSiteMgr()
    {
       if (m_siteMgr == null)
-         m_siteMgr = (IPSSiteManagerInternal) getService();
+         m_siteMgr = (IPSSiteManager) getService();
       
       return m_siteMgr;
    }
@@ -171,5 +170,5 @@ public class PSSiteModel extends PSDesignModel
     * The cached Site Manager Service. Default to <code>null</code> if has not
     * been initialized.
     */
-   IPSSiteManagerInternal m_siteMgr = null;
+   IPSSiteManager m_siteMgr = null;
 }

@@ -23,6 +23,7 @@
  */
 package com.percussion.services.pubserver.impl;
 
+import com.percussion.cms.IPSConstants;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.IPSGuidManager;
@@ -32,35 +33,37 @@ import com.percussion.services.pubserver.IPSPubServerDao;
 import com.percussion.services.pubserver.data.PSPubServer;
 import com.percussion.services.pubserver.data.PSPubServerProperty;
 import com.percussion.services.sitemgr.IPSSite;
+import com.percussion.util.PSBaseBean;
 import com.percussion.utils.guid.IPSGuid;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.SessionFactory;
+import org.hibernate.Session;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 
 import static org.apache.commons.lang.Validate.notNull;
 
 @Transactional
+@PSBaseBean("sys_pubserverdao")
 public class PSPubServerDao
       implements
          IPSPubServerDao
 {
-   private SessionFactory sessionFactory;
 
-   public SessionFactory getSessionFactory() {
-      return sessionFactory;
-   }
+   @PersistenceContext
+   private EntityManager entityManager;
 
-   public void setSessionFactory(SessionFactory sessionFactory) {
-      this.sessionFactory = sessionFactory;
+   private Session getSession(){
+      return entityManager.unwrap(Session.class);
    }
+   
    /**
     * Logger for the site manager
     */
-   static Logger log = LogManager.getLogger("PSPubServerDao");
+   static Logger log = LogManager.getLogger(IPSConstants.PUBLISHING_LOG);
 
    /**
     * Default server name when a new server is created
@@ -82,6 +85,7 @@ public class PSPubServerDao
     * com.percussion.services.pubservermgr.IPSPubServerManager#createServer(
     * com.percussion.services.sitemgr.IPSSite)
     */
+   @Transactional
    public PSPubServer createServer(IPSSite site)
    {
       PSPubServer pubServer = new PSPubServer();
@@ -184,13 +188,10 @@ public class PSPubServerDao
    {
       notNull(siteId);
 
-      List<PSPubServer> pubServers = new ArrayList<>();
-
-      pubServers = sessionFactory.getCurrentSession().createQuery(
+      return getSession().createQuery(
             "from PSPubServer where siteId = :siteid").setParameter("siteid",
             siteId.longValue()).list();
 
-      return pubServers;
    }
 
    /*
@@ -200,6 +201,7 @@ public class PSPubServerDao
     * com.percussion.services.pubservermgr.IPSPubServerManager#saveServer(com
     * .percussion.services.pubservermgr.data.PSPubServer)
     */
+   @Transactional
    public void savePubServer(PSPubServer pubServer)
    {
       notNull (pubServer);
@@ -207,7 +209,7 @@ public class PSPubServerDao
 
       setValidPersistedIds(pubServer);
 
-      sessionFactory.getCurrentSession().saveOrUpdate(pubServer);
+      getSession().saveOrUpdate(pubServer);
 
    }
 
@@ -223,6 +225,7 @@ public class PSPubServerDao
          {
             long nextId = PSGuidHelper.generateNext(PSTypeEnum.SERVER_PROPERTY).longValue();
             p.setPropertyId(nextId);
+            p.setServerId(pubServer.getServerId());
          }
       }
    }
@@ -234,11 +237,12 @@ public class PSPubServerDao
     * com.percussion.services.pubservermgr.IPSPubServerManager#deleteServer(
     * com.percussion.services.pubservermgr.data.PSPubServer)
     */
+   @Transactional
    public void deletePubServer(PSPubServer pubServer)
    {
       notNull (pubServer);
 
-      sessionFactory.getCurrentSession().delete(pubServer);
+      getSession().delete(pubServer);
 
    }
 
@@ -252,7 +256,7 @@ public class PSPubServerDao
     */
    private PSPubServer findServerFromDatabase(IPSGuid serverId)
    {
-      return (PSPubServer) sessionFactory.getCurrentSession().get(PSPubServer.class,
+      return getSession().get(PSPubServer.class,
             serverId.longValue());
    }
 }

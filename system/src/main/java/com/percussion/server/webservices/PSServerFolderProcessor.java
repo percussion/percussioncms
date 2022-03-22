@@ -26,7 +26,38 @@ package com.percussion.server.webservices;
 import com.percussion.cms.IPSCmsErrors;
 import com.percussion.cms.PSCmsException;
 import com.percussion.cms.handlers.PSContentEditorHandler;
-import com.percussion.cms.objectstore.*;
+import com.percussion.cms.objectstore.IPSComponentProcessor;
+import com.percussion.cms.objectstore.IPSDbComponent;
+import com.percussion.cms.objectstore.IPSFieldValue;
+import com.percussion.cms.objectstore.IPSFolderProcessor;
+import com.percussion.cms.objectstore.IPSRelationshipProcessor;
+import com.percussion.cms.objectstore.IPSVisitor;
+import com.percussion.cms.objectstore.PSCloningOptions;
+import com.percussion.cms.objectstore.PSCmsObject;
+import com.percussion.cms.objectstore.PSComponentSummaries;
+import com.percussion.cms.objectstore.PSComponentSummary;
+import com.percussion.cms.objectstore.PSDbComponent;
+import com.percussion.cms.objectstore.PSFolder;
+import com.percussion.cms.objectstore.PSFolderAcl;
+import com.percussion.cms.objectstore.PSFolderPermissions;
+import com.percussion.cms.objectstore.PSFolderProcessorProxy;
+import com.percussion.cms.objectstore.PSFolderProperty;
+import com.percussion.cms.objectstore.PSInvalidContentTypeException;
+import com.percussion.cms.objectstore.PSItemChild;
+import com.percussion.cms.objectstore.PSItemChildEntry;
+import com.percussion.cms.objectstore.PSItemDefinition;
+import com.percussion.cms.objectstore.PSItemField;
+import com.percussion.cms.objectstore.PSKey;
+import com.percussion.cms.objectstore.PSObjectAclEntry;
+import com.percussion.cms.objectstore.PSObjectPermissions;
+import com.percussion.cms.objectstore.PSProcessingStatistics;
+import com.percussion.cms.objectstore.PSProcessorCommon;
+import com.percussion.cms.objectstore.PSRelationshipFilter;
+import com.percussion.cms.objectstore.PSRelationshipProcessorProxy;
+import com.percussion.cms.objectstore.PSSaveResults;
+import com.percussion.cms.objectstore.PSSlotType;
+import com.percussion.cms.objectstore.PSTextValue;
+import com.percussion.cms.objectstore.PSUserInfo;
 import com.percussion.cms.objectstore.server.PSFolderSecurityManager;
 import com.percussion.cms.objectstore.server.PSInlineLinkProcessor;
 import com.percussion.cms.objectstore.server.PSItemDefManager;
@@ -42,6 +73,7 @@ import com.percussion.design.objectstore.PSRelationshipConfig;
 import com.percussion.design.objectstore.PSRelationshipSet;
 import com.percussion.design.objectstore.PSRelationshipTracker;
 import com.percussion.error.PSException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.fastforward.managednav.PSManagedNavServiceLocator;
 import com.percussion.fastforward.managednav.PSNavException;
 import com.percussion.i18n.PSI18nUtils;
@@ -62,6 +94,7 @@ import com.percussion.server.cache.PSItemSummaryCache;
 import com.percussion.server.webservices.crosssite.PSCrossSiteFolderActionProcessor;
 import com.percussion.server.webservices.crosssite.PSCrossSiteFolderMoveActionProcessor;
 import com.percussion.server.webservices.crosssite.PSCrossSiteFolderRemoveActionProcessor;
+import com.percussion.services.PSBaseServiceLocator;
 import com.percussion.services.assembly.impl.ModifyRelatedContentUtils;
 import com.percussion.services.assembly.impl.nav.PSNavConfig;
 import com.percussion.services.error.PSNotFoundException;
@@ -77,6 +110,7 @@ import com.percussion.services.sitemgr.IPSSiteManager;
 import com.percussion.services.sitemgr.PSSiteManagerLocator;
 import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.util.IPSHtmlParameters;
+import com.percussion.util.PSBaseBean;
 import com.percussion.util.PSCms;
 import com.percussion.util.PSHttpConnection;
 import com.percussion.util.PSPathUtil;
@@ -125,6 +159,8 @@ import static org.apache.commons.lang.Validate.notNull;
  * operations, such as <code>move</code>, <code>add</code>,
  * <code>getChildren</code>, <code>getParent</code>, ...etc.
  */
+@Transactional
+@PSBaseBean
 public class PSServerFolderProcessor extends PSProcessorCommon implements
    IPSRelationshipProcessor, IPSFolderProcessor
 {
@@ -250,7 +286,9 @@ public class PSServerFolderProcessor extends PSProcessorCommon implements
       }
       catch (PSException e)
       {
-         log.error("Failed to save folder id=" + folder.getLocator(), e);
+         log.error("Failed to save folder id={} Error: {}",
+                 folder.getLocator(),
+                 PSExceptionUtils.getMessageForLog(e));
          throw new PSCmsException(e);
       }
 
@@ -404,14 +442,18 @@ public class PSServerFolderProcessor extends PSProcessorCommon implements
       if (log.isDebugEnabled())
       {
          String folderString = PSXmlDocumentBuilder.toString(folderEl);
-         log.info("FOLDER: " + folderString);
+         log.info("FOLDER: {}" , folderString);
       }
-      
-      PSContentDataHandler dataHandler = new PSContentDataHandler();
+
+      IPSContentDataHandler dataHandler = getContentDataHandler();
+
       dataHandler.updateItem(request, folderEl, locator,
          getFolderTypeId());
    }
 
+   private IPSContentDataHandler getContentDataHandler(){
+      return (IPSContentDataHandler)PSBaseServiceLocator.getBean("sys_contentDataHandler");
+   }
    /**
     * Insert a folder object to the database.
     *
@@ -441,7 +483,7 @@ public class PSServerFolderProcessor extends PSProcessorCommon implements
 
       Document doc = PSXmlDocumentBuilder.createXmlDocument();
 
-      PSContentDataHandler dataHandler = new PSContentDataHandler();
+      IPSContentDataHandler dataHandler = getContentDataHandler();
       dataHandler.processInsertItem(request, FOLDER_CONTENTTYPE, fItem
          .toXml(doc));
 
@@ -2780,7 +2822,7 @@ public class PSServerFolderProcessor extends PSProcessorCommon implements
       throws PSException
    {
       List<PSLocator> newLocators = new ArrayList<>();
-      PSContentDataHandler dataHandler = new PSContentDataHandler();
+      IPSContentDataHandler dataHandler = getContentDataHandler();
       PSItemDefManager defManager = PSItemDefManager.getInstance();
       PSRequest request = PSThreadRequestUtils.getPSRequest();
       while (summaries.hasNext())

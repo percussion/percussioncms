@@ -32,11 +32,11 @@ import com.percussion.services.guidmgr.IPSGuidManager;
 import com.percussion.services.guidmgr.PSGuidManagerLocator;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -49,16 +49,11 @@ import java.util.List;
 public class PSDesignObjectAuditService
    implements IPSDesignObjectAuditService
 {
+   @PersistenceContext
+   private EntityManager entityManager;
 
-   private SessionFactory sessionFactory;
-
-   public SessionFactory getSessionFactory() {
-      return sessionFactory;
-   }
-
-   @Autowired
-   public void setSessionFactory(SessionFactory sessionFactory) {
-      this.sessionFactory = sessionFactory;
+   private Session getSession(){
+      return entityManager.unwrap(Session.class);
    }
 
    /**
@@ -79,7 +74,8 @@ public class PSDesignObjectAuditService
    {
       return m_config;
    }
-   
+
+   @Transactional
    public PSAuditLogEntry createAuditLogEntry()
    {
       PSAuditLogEntry entry  = new PSAuditLogEntry();
@@ -89,18 +85,19 @@ public class PSDesignObjectAuditService
       return entry;
    }
 
+   @Transactional
    public void saveAuditLogEntry(PSAuditLogEntry entry)
    {
-      sessionFactory.getCurrentSession().save(entry);
+      getSession().save(entry);
    }
 
-   @SuppressWarnings("unchecked")
+   @Transactional
    public void deleteAuditLogEntriesByDate(Date beforeDate)
    {
       if (beforeDate == null)
          throw new IllegalArgumentException("beforeDate may not be null");
       
-      Session session = sessionFactory.getCurrentSession();
+      Session session = getSession();
 
          Criteria criteria = session.createCriteria(PSAuditLogEntry.class);
          criteria.add(Restrictions.lt("auditDate", beforeDate));
@@ -113,9 +110,10 @@ public class PSDesignObjectAuditService
 
    }
 
+   @Transactional
    public void saveAuditLogEntries(Collection<PSAuditLogEntry> entries)
    {
-      Session session = sessionFactory.getCurrentSession();
+      Session session = getSession();
       
 
          for (PSAuditLogEntry entry : entries)
@@ -125,10 +123,9 @@ public class PSDesignObjectAuditService
 
    }
 
-   @SuppressWarnings("unchecked")
    public Collection<PSAuditLogEntry> findAuditLogEntries()
    {
-      Session session = sessionFactory.getCurrentSession();
+      Session session = getSession();
 
          Criteria criteria = session.createCriteria(PSAuditLogEntry.class);
          return criteria.list();

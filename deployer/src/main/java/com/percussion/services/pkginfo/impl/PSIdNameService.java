@@ -29,13 +29,14 @@ import com.percussion.services.guidmgr.data.PSGuid;
 import com.percussion.services.memory.IPSCacheAccess;
 import com.percussion.services.pkginfo.IPSIdNameService;
 import com.percussion.services.pkginfo.data.PSIdName;
+import com.percussion.util.PSBaseBean;
 import com.percussion.utils.guid.IPSGuid;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashMap;
@@ -46,43 +47,38 @@ import java.util.Map;
  * Implementation of the id-name service.
  */
 @Transactional
+@PSBaseBean("sys_idNameService")
 public class PSIdNameService
    implements IPSIdNameService
 {
+   @PersistenceContext
+   private EntityManager entityManager;
 
-   private SessionFactory sessionFactory;
-
-   public SessionFactory getSessionFactory() {
-      return sessionFactory;
-   }
-
-   @Autowired
-   public void setSessionFactory(SessionFactory sessionFactory) {
-      this.sessionFactory = sessionFactory;
+   private Session getSession(){
+      return entityManager.unwrap(Session.class);
    }
 
 
-   @SuppressWarnings("unchecked")
-   synchronized public void deleteAll()
+   public synchronized  void deleteAll()
    {
-      Session session = sessionFactory.getCurrentSession();
+      Session session = getSession();
 
       loadAll().forEach(session::delete);
          
          clearCache();
 
       }
-   
-   synchronized public void saveIdName(PSIdName mapping)
+
+   public synchronized  void saveIdName(PSIdName mapping)
    {
       if (mapping == null)
          throw new IllegalArgumentException("mapping may not be null");
       
-      sessionFactory.getCurrentSession().saveOrUpdate(mapping);
+      getSession().saveOrUpdate(mapping);
       clearCache();
    }
 
-   synchronized public IPSGuid findId(String name, PSTypeEnum type)
+   public synchronized  IPSGuid findId(String name, PSTypeEnum type)
    {
       if (StringUtils.isBlank(name))
       {
@@ -98,8 +94,8 @@ public class PSIdNameService
             
       return loadNameTypeToIdMap().get(key);
    }
-   
-   synchronized public String findName(IPSGuid guid)
+
+   public synchronized  String findName(IPSGuid guid)
    {
       if (guid == null)
       {
@@ -118,7 +114,7 @@ public class PSIdNameService
    @SuppressWarnings("unchecked")
    private Collection<PSIdName> loadAll()
    {
-      Session session = sessionFactory.getCurrentSession();
+      Session session = getSession();
       return session.createCriteria(PSIdName.class).list();
 
    }
@@ -157,7 +153,6 @@ public class PSIdNameService
     * 
     * @return The desired map.  Never <code>null</code>.
     */
-   @SuppressWarnings("unchecked")
    private Map loadMap(int requiredMap)
    {
       if (requiredMap == NAME_TYPE_ID_MAP)
@@ -208,7 +203,7 @@ public class PSIdNameService
    @SuppressWarnings("unchecked")
    private Map<String, IPSGuid> getNameTypeToIdMap()
    {
-      return (HashMap<String, IPSGuid>) m_cache.get(NAME_TYPE_ID_MAP_KEY,
+      return (HashMap<String, IPSGuid>) cache.get(NAME_TYPE_ID_MAP_KEY,
             IPSCacheAccess.IN_MEMORY_STORE);
    }
    
@@ -221,7 +216,7 @@ public class PSIdNameService
    @SuppressWarnings("unchecked")
    private Map<IPSGuid, String> getIdToNameMap()
    {
-      return (HashMap<IPSGuid, String>) m_cache.get(ID_NAME_MAP_KEY,
+      return (HashMap<IPSGuid, String>) cache.get(ID_NAME_MAP_KEY,
             IPSCacheAccess.IN_MEMORY_STORE);
    }
    
@@ -232,7 +227,6 @@ public class PSIdNameService
     * @param ntMap The name/type to id map, assumed not <code>null</code>.
     * @param idMap The id to name map, assumed not <code>null</code>.
     */
-   @SuppressWarnings("unchecked")
    private void loadMaps(Map<String, IPSGuid> ntMap, Map<IPSGuid, String> idMap)
    {
       Collection<PSIdName> mappings = loadAll();
@@ -260,7 +254,7 @@ public class PSIdNameService
          ntMap.put(getNameTypeKey(name, mapping.getType()), guid);
       }
 
-      m_cache.save(NAME_TYPE_ID_MAP_KEY, (Serializable) ntMap,
+      cache.save(NAME_TYPE_ID_MAP_KEY, (Serializable) ntMap,
             IPSCacheAccess.IN_MEMORY_STORE);
    }
    
@@ -283,7 +277,7 @@ public class PSIdNameService
          idMap.put(guid, name);
       }
      
-      m_cache.save(ID_NAME_MAP_KEY, (Serializable) idMap,
+      cache.save(ID_NAME_MAP_KEY, (Serializable) idMap,
             IPSCacheAccess.IN_MEMORY_STORE);
    }
    
@@ -292,10 +286,10 @@ public class PSIdNameService
     */
    private void clearCache()
    {
-      if (m_cache != null)
+      if (cache != null)
       {
-         m_cache.evict(NAME_TYPE_ID_MAP_KEY, IPSCacheAccess.IN_MEMORY_STORE);
-         m_cache.evict(ID_NAME_MAP_KEY, IPSCacheAccess.IN_MEMORY_STORE);
+         cache.evict(NAME_TYPE_ID_MAP_KEY, IPSCacheAccess.IN_MEMORY_STORE);
+         cache.evict(ID_NAME_MAP_KEY, IPSCacheAccess.IN_MEMORY_STORE);
       }
    }
    
@@ -306,7 +300,7 @@ public class PSIdNameService
     */
    public IPSCacheAccess getCache()
    {
-      return m_cache;
+      return cache;
    }
 
    /**
@@ -320,7 +314,7 @@ public class PSIdNameService
       {
          throw new IllegalArgumentException("cache may not be null");
       }
-      m_cache = cache;
+      this.cache = cache;
    }
    
    /**
@@ -363,5 +357,5 @@ public class PSIdNameService
    /**
     * Cache service, used to invalidate mapping information.
     */
-   private IPSCacheAccess m_cache;
+   private IPSCacheAccess cache;
 }

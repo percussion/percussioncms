@@ -23,6 +23,7 @@
  */
 package com.percussion.services.contentmgr.impl.legacy;
 
+import com.percussion.cms.IPSConstants;
 import com.percussion.cms.IPSEditorChangeListener;
 import com.percussion.cms.PSCmsException;
 import com.percussion.cms.PSEditorChangeEvent;
@@ -66,6 +67,7 @@ import com.percussion.services.contentmgr.impl.PSContentInternalLocator;
 import com.percussion.services.contentmgr.impl.PSContentUtils;
 import com.percussion.services.contentmgr.impl.legacy.PSTypeConfiguration.GeneratedClassBase;
 import com.percussion.services.contentmgr.impl.query.IPSFolderExpander;
+import com.percussion.services.contentmgr.impl.query.IPSPropertyMapper;
 import com.percussion.services.contentmgr.impl.query.nodes.IPSQueryNode;
 import com.percussion.services.contentmgr.impl.query.nodes.IPSQueryNode.Op;
 import com.percussion.services.contentmgr.impl.query.nodes.PSQueryNodeComparison;
@@ -108,14 +110,12 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyHbmImpl;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.metadata.CollectionMetadata;
 import org.hibernate.transform.Transformers;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Propagation;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PreDestroy;
-import javax.inject.Singleton;
 import javax.jcr.ItemNotFoundException;
 import javax.jcr.Node;
 import javax.jcr.PropertyType;
@@ -129,6 +129,8 @@ import javax.jcr.query.QueryResult;
 import javax.jcr.query.RowIterator;
 import javax.naming.NamingException;
 import javax.persistence.Column;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -166,9 +168,8 @@ import static com.percussion.utils.request.PSRequestInfoBase.getRequestInfo;
  *
  * @author dougrand
  */
-@Transactional
 @PSBaseBean("sys_legacyContentRepository")
-@Singleton
+@Transactional
 public class PSContentRepository
         implements
         IPSContentRepository,
@@ -176,27 +177,41 @@ public class PSContentRepository
         IPSEditorChangeListener
 {
 
+    @Qualifier("sys_sessionFactory")
+    @Autowired
     private SessionFactory sessionFactory;
 
-    public SessionFactory getSessionFactory() {
-        return sessionFactory;
-    }
-
-    @Autowired
     public void setSessionFactory(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
 
+    @PersistenceContext
+    private EntityManager entityManager;
+
+    private Session getSession(){
+        if(ctypeFactory != null)
+            return ctypeFactory.getCurrentSession();
+        else
+            return entityManager.unwrap(Session.class);
+    }
+
+    public SessionFactory getSessionFactory(){
+        return getSession().getSessionFactory();
+    }
+
+    private SessionFactory ctypeFactory;
+
     /**
      * Logger used for the content repository
      */
-    private static final Logger ms_log = LogManager.getLogger("PSContentRepository");
+    private static final Logger ms_log = LogManager.getLogger(IPSConstants.CONTENTREPOSITORY_LOG);
 
     /**
      * Eponymously named
      */
     static final int FOLDER_CONTENT_TYPE = 101;
     static final String COLUMN_PREFIX_CGLIB="$cglib_prop_";
+
 
     /**
      * The implementation of the folder expander used by the server code. The
@@ -210,7 +225,7 @@ public class PSContentRepository
          *
          * @throws InvalidQueryException
          *
-         * @see com.percussion.services.contentmgr.impl.query.IPSFolderExpander#expandPath(java.lang.String)
+         * @see IPSFolderExpander#expandPath(String)
          */
         public List<IPSGuid> expandPath(String path) throws InvalidQueryException
         {
@@ -503,7 +518,7 @@ public class PSContentRepository
     /**
      * (non-Javadoc)
      *
-     * @see com.percussion.services.contentmgr.impl.IPSContentRepository#save(java.util.List,
+     * @see IPSContentRepository#save(List,
      *      boolean)
      */
     @SuppressWarnings("unused")
@@ -515,7 +530,7 @@ public class PSContentRepository
     /**
      * (non-Javadoc)
      *
-     * @see com.percussion.services.contentmgr.impl.IPSContentRepository#delete(java.util.List)
+     * @see IPSContentRepository#delete(List)
      */
     public void delete(@SuppressWarnings("unused")
                                List<Node> nodes)
@@ -526,8 +541,8 @@ public class PSContentRepository
     /**
      * (non-Javadoc)
      *
-     * @see com.percussion.services.contentmgr.impl.IPSContentRepository#loadByPath(java.util.List,
-     *      com.percussion.services.contentmgr.PSContentMgrConfig)
+     * @see IPSContentRepository#loadByPath(List,
+     *      PSContentMgrConfig)
      */
     public List<Node> loadByPath(List<String> paths, PSContentMgrConfig config)
             throws RepositoryException
@@ -586,7 +601,7 @@ public class PSContentRepository
     /**
      * (non-Javadoc)
      *
-     * @see com.percussion.services.contentmgr.impl.IPSContentRepository#getCapabilities()
+     * @see IPSContentRepository#getCapabilities()
      */
     public Capability[] getCapabilities()
     {
@@ -596,8 +611,8 @@ public class PSContentRepository
     /**
      * (non-Javadoc)
      *
-     * @see com.percussion.services.contentmgr.impl.IPSContentRepository#loadByGUID(java.util.List,
-     *      com.percussion.services.contentmgr.PSContentMgrConfig)
+     * @see IPSContentRepository#loadByGUID(List,
+     *      PSContentMgrConfig)
      */
     public List<Node> loadByGUID(List<IPSGuid> guids, PSContentMgrConfig cconfig)
             throws RepositoryException
@@ -605,7 +620,7 @@ public class PSContentRepository
         Set<PSContentMgrOption> options = cconfig != null
                 ? cconfig.getOptions()
                 : new HashSet<>();
-        Session session = sessionFactory.getCurrentSession();
+        Session session = getSession();
         List<Node> rval = new ArrayList<>();
         try
         {
@@ -1006,7 +1021,7 @@ public class PSContentRepository
             {
                 query.append(" order by sys_sortrank asc");
             }
-            List children = sessionFactory.getCurrentSession().createQuery(
+            List children = getSession().createQuery(
                     query.toString()).setParameter("cid",content_id).setParameter("rev",revision).list();
             for (Object rep : children)
             {
@@ -1277,14 +1292,15 @@ public class PSContentRepository
         // Copy properties from main session factory configuration
         IPSDatasourceManager dsMgr = PSDatasourceMgrLocator.getDatasourceMgr();
         Properties props = new Properties();
-        props.putAll(dsMgr.getHibernateProperties(null));
+
+        props.putAll(sessionFactory.getProperties());
         hibConfig.setProperties(props);
         hibConfig.setPhysicalNamingStrategy(new UpperCaseNamingStrategy());
         hibConfig.setImplicitNamingStrategy(new ImplicitNamingStrategyLegacyHbmImpl());
         // Note, getSessionFactory().close() does not release resources or
         // the heap memories by the existing session factory
+        this.ctypeFactory = hibConfig.buildSessionFactory();
 
-        setSessionFactory(hibConfig.buildSessionFactory());
     }
 
     /**
@@ -1521,7 +1537,7 @@ public class PSContentRepository
     /**
      * (non-Javadoc)
      *
-     * @see com.percussion.server.IPSHandlerInitListener#initHandler(com.percussion.server.IPSRequestHandler)
+     * @see IPSHandlerInitListener#initHandler(IPSRequestHandler)
      */
     public void initHandler(IPSRequestHandler requestHandler)
     {
@@ -1551,7 +1567,7 @@ public class PSContentRepository
     /**
      * (non-Javadoc)
      *
-     * @see com.percussion.server.IPSHandlerInitListener#shutdownHandler(com.percussion.server.IPSRequestHandler)
+     * @see IPSHandlerInitListener#shutdownHandler(IPSRequestHandler)
      */
     @SuppressWarnings("unused")
     public void shutdownHandler(IPSRequestHandler requestHandler)
@@ -1562,9 +1578,8 @@ public class PSContentRepository
     /**
      * (non-Javadoc)
      *
-     * @see com.percussion.cms.IPSEditorChangeListener#editorChanged(com.percussion.cms.PSEditorChangeEvent)
+     * @see IPSEditorChangeListener#editorChanged(PSEditorChangeEvent)
      */
-    @Transactional(propagation = Propagation.REQUIRED)
     public void editorChanged(PSEditorChangeEvent e)
     {
         int content_id = e.getContentId();
@@ -1586,7 +1601,7 @@ public class PSContentRepository
     /**
      * (non-Javadoc)
      *
-     * @see com.percussion.services.contentmgr.impl.IPSContentRepository#evict(java.util.List)
+     * @see IPSContentRepository#evict(List)
      */
     public void evict(List<IPSGuid> guids)
     {
@@ -1622,7 +1637,7 @@ public class PSContentRepository
                 PSNotificationHelper.notifyEvent(EventType.CONTENT_CHANGED,
                         legacyguid);
                 PSComponentSummary s = summarymap.get(legacyguid.getContentId());
-                Set<String> affectedclasses = new HashSet<>();
+                List<Class> affectedclasses = new ArrayList<>();
 
                 // If the component summary is not there, we've never loaded
                 // this item through the repository interface, or the second
@@ -1638,9 +1653,8 @@ public class PSContentRepository
                     if (!ic.getImplementingClass().equals(PSComponentSummary.class))
                     {
                         PSLegacyCompositeId id = new PSLegacyCompositeId(legacyguid);
-                        fact.getCache().evictEntity(ic.getImplementingClass(), id);
-                        affectedclasses.add(ic.getImplementingClass()
-                                .getCanonicalName());
+                        fact.getCache().evictEntityData(ic.getImplementingClass(), id);
+                        affectedclasses.add(ic.getImplementingClass());
                     }
                 }
 
@@ -1652,24 +1666,16 @@ public class PSContentRepository
                             .getImplementingClasses())
                     {
 
-                        affectedclasses.add(ic.getImplementingClass()
-                                .getCanonicalName());
+                        affectedclasses.add(ic.getImplementingClass());
 
                     }
                 }
 
                 // Evict any associated collections. Doesn't try to preserve
                 // other possible objects
-                Map<String, CollectionMetadata> colmeta = fact
-                        .getAllCollectionMetadata();
-                for (String cname : colmeta.keySet())
+                for (Class c : affectedclasses)
                 {
-                    int l = cname.lastIndexOf('.');
-                    String base = cname.substring(0, l);
-                    if (affectedclasses.contains(base))
-                    {
-                        fact.getCache().evictCollectionRegion(cname);
-                    }
+                    fact.getCache().evictEntityData(c);
                 }
             }
         }
@@ -1688,8 +1694,8 @@ public class PSContentRepository
     /**
      * (non-Javadoc)
      *
-     * @see com.percussion.services.contentmgr.impl.IPSContentRepository#loadChildren(java.util.List,
-     *      com.percussion.services.contentmgr.PSContentMgrConfig)
+     * @see IPSContentRepository#loadChildren(List,
+     *      PSContentMgrConfig)
      */
     public void loadChildren(List<Node> nodes, PSContentMgrConfig config)
             throws RepositoryException
@@ -1705,12 +1711,12 @@ public class PSContentRepository
     /**
      * The maximum date value that is acceptable by hibernate binding API
      */
-    private static java.util.Date MAX_DATE;
+    private static Date MAX_DATE;
 
     /**
      * The minimum date value that is acceptable by hibernate binding API
      */
-    private static java.util.Date MIN_DATE;
+    private static Date MIN_DATE;
     static {
         Calendar c = Calendar.getInstance();
         //FB: DMI_BAD_MONTH  NC 1-17-16
@@ -1741,7 +1747,7 @@ public class PSContentRepository
 
     /**
      * Log the specified parameter if the debug is enabled. It also validates
-     * the value of a date if the value type is {@link java.util.Date} and
+     * the value of a date if the value type is {@link Date} and
      * the debug is enabled.
      * <p>
      * Do nothing is debug log is not enabled.
@@ -1755,9 +1761,9 @@ public class PSContentRepository
         if (!ms_log.isDebugEnabled())
             return;
 
-        if (value instanceof java.util.Date)
+        if (value instanceof Date)
         {
-            java.util.Date dvalue = (java.util.Date) value;
+            Date dvalue = (Date) value;
             validateDate(pname, dvalue);
         }
 
@@ -2234,7 +2240,7 @@ public class PSContentRepository
             rowcomparator.setLocale(new Locale(locale));
         }
         PSQueryResult rval = new PSQueryResult(columns, rowcomparator);
-        Session s = sessionFactory.getCurrentSession();
+        Session s = getSession();
         List<Long> collectionIds = Collections.emptyList();
         try
         {
@@ -2308,7 +2314,7 @@ public class PSContentRepository
     /**
      * (non-Javadoc)
      *
-     * @see com.percussion.services.contentmgr.impl.query.IPSPropertyMapper#translateProperty(java.lang.String)
+     * @see IPSPropertyMapper#translateProperty(String)
      */
     public String translateProperty(String propname)
     {
@@ -2327,11 +2333,11 @@ public class PSContentRepository
     /**
      * (non-Javadoc)
      *
-     * @see com.percussion.services.contentmgr.impl.IPSContentRepository#loadBodies(java.util.List)
+     * @see IPSContentRepository#loadBodies(List)
      */
     public void loadBodies(List<Node> nodes) throws RepositoryException
     {
-        Session s = sessionFactory.getCurrentSession();
+        Session s = getSession();
         PSRequest req = (PSRequest) getRequestInfo(KEY_PSREQUEST);
         boolean allowBinaryNew = false;
 
@@ -2358,6 +2364,7 @@ public class PSContentRepository
             if (ic == null)
                 continue;
             Object data = null;
+            //ms_log.info(getSessionFactory().getMetamodel().entity(ic).getAttributes());
             String[] columnNames = getSessionFactory().getClassMetadata(ic).getPropertyNames();
 
             if (cn.getConfiguration().isParent()) {
@@ -2405,7 +2412,7 @@ public class PSContentRepository
                         " where sys_contentid = :cid " +
                         "and sys_revision = :rev and sys_sysid = :child";
 
-                List children = sessionFactory.getCurrentSession().createQuery(
+                List children = getSession().createQuery(
                                 query).setParameter("cid", pg.getContentId())
                         .setParameter("rev", pg.getRevision())
                         .setParameter("child", lg.getContentId()).list();

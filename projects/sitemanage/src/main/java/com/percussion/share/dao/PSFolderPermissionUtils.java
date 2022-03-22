@@ -23,9 +23,6 @@
  */
 package com.percussion.share.dao;
 
-import static org.apache.commons.lang.Validate.isTrue;
-import static org.apache.commons.lang.Validate.notNull;
-
 import com.percussion.cms.objectstore.PSFolder;
 import com.percussion.cms.objectstore.PSObjectAcl;
 import com.percussion.cms.objectstore.PSObjectAclEntry;
@@ -34,24 +31,27 @@ import com.percussion.pathmanagement.data.PSFolderPermission.Access;
 import com.percussion.pathmanagement.data.PSFolderPermission.Principal;
 import com.percussion.pathmanagement.data.PSFolderPermission.PrincipalType;
 import com.percussion.utils.types.PSPair;
-
-import static com.percussion.role.service.IPSRoleService.ADMINISTRATOR_ROLE;
-import static com.percussion.role.service.IPSRoleService.DESIGNER_ROLE;
+import org.apache.commons.lang.Validate;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.commons.lang.Validate;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import static com.percussion.role.service.IPSRoleService.ADMINISTRATOR_ROLE;
+import static com.percussion.role.service.IPSRoleService.DESIGNER_ROLE;
+import static org.apache.commons.lang.Validate.isTrue;
+import static org.apache.commons.lang.Validate.notNull;
 
 /**
  * A utility class used to retrieve and store {@link PSFolderPermission} from {@link PSFolder}
  * 
  * @author yubingchen
  */
+@Transactional
 public class PSFolderPermissionUtils
 {
     /**

@@ -105,6 +105,13 @@
         </executions>
         </plugin>
     </plugins>
+      <extensions>
+      <extension>
+          <groupId>org.apache.maven.extensions</groupId>
+          <artifactId>maven-build-cache-extension</artifactId>
+          <version>1.0.0-SNAPSHOT</version>
+      </extension>
+      </extensions>
   </build>
   <dependencies>
       <dependency>
@@ -592,11 +599,7 @@
           <artifactId>spring-context</artifactId>
           <scope>compile</scope>
       </dependency>
-      <dependency>
-          <groupId>org.hibernate.javax.persistence</groupId>
-          <artifactId>hibernate-jpa-2.1-api</artifactId>
-          <scope>compile</scope>
-      </dependency>
+
       <dependency>
           <groupId>javax.activation</groupId>
           <artifactId>activation</artifactId>
@@ -738,6 +741,10 @@
       <dependency>
           <groupId>org.owasp.encoder</groupId>
           <artifactId>encoder</artifactId>
+      </dependency>
+      <dependency>
+          <groupId>org.apache.cxf</groupId>
+          <artifactId>cxf-rt-rs-service-description-openapi-v3</artifactId>
       </dependency>
   </dependencies>
 </project>

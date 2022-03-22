@@ -23,6 +23,7 @@
  */
 package com.percussion.sitemanage.importer.dao.impl;
 
+import com.percussion.cms.IPSConstants;
 import com.percussion.services.guidmgr.IPSGuidManager;
 import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.sitemanage.importer.dao.IPSImportLogDao;
@@ -33,11 +34,12 @@ import org.apache.logging.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -51,7 +53,14 @@ import static com.percussion.services.utils.orm.PSDataCollectionHelper.MAX_IDS;
 @Transactional
 public class PSImportLogDao implements IPSImportLogDao
 {
-    private static final Logger log = LogManager.getLogger(PSImportLogDao.class);
+    @PersistenceContext
+    private EntityManager entityManager;
+
+    private Session getSession(){
+        return entityManager.unwrap(Session.class);
+    }
+
+    private static final Logger log = LogManager.getLogger(IPSConstants.CONTENTREPOSITORY_LOG);
     
     /**
      * Constant for the key used to generate local content id's.
@@ -184,29 +193,12 @@ public class PSImportLogDao implements IPSImportLogDao
       
     }
 
-    private Session getSession()
-    {
-        return sessionFactory.getCurrentSession();
-    }
-
     @Autowired
     public final void setGuidManager(IPSGuidManager guidMgr)
     {
         this.guidMgr = guidMgr;
     }
 
-    private  SessionFactory sessionFactory;
-
-    public final SessionFactory getSessionFactory()
-    {
-        return sessionFactory;
-    }
-    
-    @Autowired
-    public final void setSessionFactory(SessionFactory sessionFactory)
-    {
-        this.sessionFactory = sessionFactory;
-    }
     
 
 }

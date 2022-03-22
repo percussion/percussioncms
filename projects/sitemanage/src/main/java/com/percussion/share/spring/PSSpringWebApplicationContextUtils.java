@@ -67,6 +67,7 @@ public class PSSpringWebApplicationContextUtils
         {
             logAutoWire(bean);
             AutowireCapableBeanFactory beanFactory = getWebApplicationContext().getAutowireCapableBeanFactory();
+
             beanFactory.autowireBeanProperties(bean, AutowireCapableBeanFactory.AUTOWIRE_AUTODETECT, false);
             beanFactory.initializeBean(bean, bean.getClass().getName());
         }

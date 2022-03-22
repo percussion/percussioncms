@@ -24,6 +24,7 @@
 package com.percussion.sitemanage.service.impl;
 
 import com.percussion.assetmanagement.service.IPSAssetService;
+import com.percussion.cms.IPSConstants;
 import com.percussion.cms.objectstore.server.PSItemDefManager;
 import com.percussion.pagemanagement.data.PSWidgetContentType;
 import com.percussion.pagemanagement.service.IPSPageService;
@@ -34,12 +35,13 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -60,11 +62,16 @@ public class PSSitePublishServiceHelper implements IPSSitePublishServiceHelper
 {
     private static final long MAX_RELATED_ITEMS = 1000;
     private static final long MAX_LOOPS = 10;
-    
-    private SessionFactory sessionFactory;
-    
-   
-    List<Integer> publishableContentTypeIds;
+
+	@PersistenceContext
+	private EntityManager entityManager;
+
+	private Session getSession(){
+		return entityManager.unwrap(Session.class);
+	}
+
+
+	List<Integer> publishableContentTypeIds;
     List<Integer> nonBinaryContentTypeIds;
 	String allSharedAssetContentTypeIds;
 	String allValidRelationshipConfigs;
@@ -235,22 +242,9 @@ public class PSSitePublishServiceHelper implements IPSSitePublishServiceHelper
 		return nonBinaryContentTypeIds;
 	}
 
-	private Session getSession()
-    {
-        return sessionFactory.getCurrentSession();
-    }
-	
-	public SessionFactory getSessionFactory()
-    {
-        return sessionFactory;
-    }
- 
-    @Autowired
-    public void setSessionFactory(SessionFactory sessionFactory)
-    {
-        this.sessionFactory = sessionFactory;
-    }
 
 
-	private static final Logger ms_logger = LogManager.getLogger(PSSitePublishServiceHelper.class);
+
+
+	private static final Logger ms_logger = LogManager.getLogger(IPSConstants.PUBLISHING_LOG);
 }

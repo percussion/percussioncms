@@ -27,24 +27,27 @@ package com.percussion.services.filestorage.impl;
 import com.percussion.services.filestorage.IPSHashedFieldCatalogerDAO;
 import com.percussion.services.filestorage.data.PSHashedColumn;
 import com.percussion.services.filestorage.data.PSHashedColumn.HashedColumnsPK;
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.criterion.CriteriaSpecification;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.hibernate.Criteria;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.criterion.CriteriaSpecification;
-
+@Transactional
 public class PSHashedFieldCatalogerDAO implements IPSHashedFieldCatalogerDAO
 {
 
+   @PersistenceContext
+   private EntityManager entityManager;
 
-   /**
-    * The hibernate session factory injected by spring
-    */
-   private SessionFactory sessionFactory;
-   
+   private Session getSession(){
+      return entityManager.unwrap(Session.class);
+   }
+
    /**
     * The default empty constructor
     */
@@ -92,25 +95,10 @@ public class PSHashedFieldCatalogerDAO implements IPSHashedFieldCatalogerDAO
    public void save(PSHashedColumn newCol)
    {
       HashedColumnsPK pk = new PSHashedColumn.HashedColumnsPK(newCol.getTablename(), newCol.getColumnName());
-      PSHashedColumn dbCol = (PSHashedColumn) getSession().get(PSHashedColumn.class, pk);
+      PSHashedColumn dbCol = getSession().get(PSHashedColumn.class, pk);
       if (dbCol == null)
          getSession().saveOrUpdate(newCol);
    }
 
-   /**
-    * The hibernate session factory injected by spring
-    * @param sessionFactory
-    */
-   public void setSessionFactory(SessionFactory sessionFactory)
-   {
-      this.sessionFactory = sessionFactory;
-   }
 
-   /**
-    * @return The hibernate session factory injected by spring
-    */
-   public Session getSession()
-   {
-      return sessionFactory.getCurrentSession();
-   }
 }

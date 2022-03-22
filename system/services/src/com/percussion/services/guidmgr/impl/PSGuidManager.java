@@ -23,25 +23,6 @@
  */
 package com.percussion.services.guidmgr.impl;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.security.SecureRandom;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
-
-import com.percussion.util.PSBaseBean;
-import org.apache.commons.lang.StringUtils;
-import org.hibernate.HibernateException;
-import org.hibernate.LockMode;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.percussion.design.objectstore.PSLocator;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.guidmgr.IPSGuidManager;
@@ -50,8 +31,26 @@ import com.percussion.services.guidmgr.data.PSGuid;
 import com.percussion.services.guidmgr.data.PSGuidGeneratorData;
 import com.percussion.services.guidmgr.data.PSLegacyGuid;
 import com.percussion.services.guidmgr.data.PSNextNumber;
+import com.percussion.util.PSBaseBean;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.types.PSConversions;
+import org.apache.commons.lang.StringUtils;
+import org.hibernate.HibernateException;
+import org.hibernate.LockMode;
+import org.hibernate.Session;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.security.SecureRandom;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Guid manager implementation. Allocates new ids in groups, updating the
@@ -66,21 +65,17 @@ import com.percussion.utils.types.PSConversions;
  * @author dougrand
  */
 @PSBaseBean("sys_guidmanager")
-@Transactional(propagation = Propagation.SUPPORTS, noRollbackFor = IllegalArgumentException.class)
+@Transactional
 public class PSGuidManager implements IPSGuidManager
 {
 
-   private SessionFactory sessionFactory;
+   @PersistenceContext
+   private EntityManager entityManager;
 
-   public SessionFactory getSessionFactory() {
-      return sessionFactory;
+   private Session getSession(){
+      return entityManager.unwrap(Session.class);
    }
-
-   @Autowired
-   public void setSessionFactory(SessionFactory sessionFactory) {
-      this.sessionFactory = sessionFactory;
-   }
-
+   
    static final Object newBlockLock = new Object();
 
    static final Object hostIdLock = new Object();
@@ -88,18 +83,18 @@ public class PSGuidManager implements IPSGuidManager
    /**
     * The key for the GUID data table where the host information is stored
     */
-   static final Integer HOST_KEY = new Integer(-1);
+   static final Integer HOST_KEY = -1;
 
    /**
     * These keys are used to store the host IP address. The IP address is always
     * buffered out to 128 bits for comparison purposes.
     */
-   static final Integer IP_KEY1 = new Integer(-2);
+   static final Integer IP_KEY1 = -2;
 
    /**
     * The second part of the host IP address
     */
-   static final Integer IP_KEY2 = new Integer(-3);
+   static final Integer IP_KEY2 = -3;
 
    /**
     * This is the range of IDs created before allocating a new block.
@@ -147,15 +142,15 @@ public class PSGuidManager implements IPSGuidManager
    public void loadHostId()
    {
 
-      Session sess = sessionFactory.getCurrentSession();
+      Session sess = getSession();
       PSGuidGeneratorData host = null;
 
       try
       {
          // Must get values with an upgrade key to avoid multiple writers
-         host = (PSGuidGeneratorData) sess.get(PSGuidGeneratorData.class, HOST_KEY, LockMode.UPGRADE);
-         PSGuidGeneratorData ip1 = (PSGuidGeneratorData) sess.get(PSGuidGeneratorData.class, IP_KEY1, LockMode.UPGRADE);
-         PSGuidGeneratorData ip2 = (PSGuidGeneratorData) sess.get(PSGuidGeneratorData.class, IP_KEY2, LockMode.UPGRADE);
+         host =  sess.get(PSGuidGeneratorData.class, HOST_KEY, LockMode.UPGRADE);
+         PSGuidGeneratorData ip1 = sess.get(PSGuidGeneratorData.class, IP_KEY1, LockMode.UPGRADE);
+         PSGuidGeneratorData ip2 =  sess.get(PSGuidGeneratorData.class, IP_KEY2, LockMode.UPGRADE);
 
          byte[] hostip = null;
 
@@ -225,7 +220,7 @@ public class PSGuidManager implements IPSGuidManager
     * com.percussion.guidmgr.IPSGuidManager#createGuids(com.percussion.utils
     * .guid.PSGuid.Type, int)
     */
-
+   @Transactional(propagation = Propagation.SUPPORTS, noRollbackFor = IllegalArgumentException.class)
    public List<IPSGuid> createGuids(PSTypeEnum type, int count)
    {
       return createGuids((byte) 0, type, count);
@@ -237,7 +232,7 @@ public class PSGuidManager implements IPSGuidManager
     * @see com.percussion.guidmgr.IPSGuidManager#createGuids(byte,
     * com.percussion.utils.guid.PSGuid.Type, int)
     */
-
+   @Transactional(propagation = Propagation.SUPPORTS, noRollbackFor = IllegalArgumentException.class)
    public List<IPSGuid> createGuids(byte repositoryId, PSTypeEnum type, int count)
    {
       List<IPSGuid> rval = new ArrayList<>();
@@ -255,7 +250,7 @@ public class PSGuidManager implements IPSGuidManager
     * com.percussion.guidmgr.IPSGuidManager#createGuid(com.percussion.util.guid
     * .PSGuid.Type)
     */
-
+   @Transactional(propagation = Propagation.SUPPORTS, noRollbackFor = IllegalArgumentException.class)
    public IPSGuid createGuid(PSTypeEnum type)
    {
       return createGuid((byte) 0, type);
@@ -267,6 +262,7 @@ public class PSGuidManager implements IPSGuidManager
     * @see com.percussion.guidmgr.IPSGuidManager#createGuid(byte,
     * com.percussion.utils.guid.PSGuid.Type)
     */
+   @Transactional(propagation = Propagation.SUPPORTS, noRollbackFor = IllegalArgumentException.class)
    public IPSGuid createGuid(byte repositoryId, PSTypeEnum type)
    {
       if (repositoryId < 0)
@@ -384,7 +380,7 @@ public class PSGuidManager implements IPSGuidManager
    private Allocation createNextNumberAllocation(final String key, final int blocksize)
    {
       // A lot easier with computeIfAbsent in java 8.
-      return ms_allocation.computeIfAbsent(key, k -> new Allocation(blocksize,(bs,sv) -> Long.valueOf(PSGuidManagerLocator.getGuidMgr().updateNextNumber(key, bs,sv))));
+      return ms_allocation.computeIfAbsent(key, k -> new Allocation(blocksize,(bs,sv) -> (long) PSGuidManagerLocator.getGuidMgr().updateNextNumber(key, bs, sv)));
 /*
       Allocation aloc = ms_allocation.get(key);
       if (aloc==null)
@@ -412,6 +408,7 @@ public class PSGuidManager implements IPSGuidManager
    }
 
    @Override
+   @Transactional(propagation = Propagation.SUPPORTS, noRollbackFor = IllegalArgumentException.class)
    public int fixNextNumber(String key, int value)
    {
       Allocation allocation = createNextNumberAllocation(key,BLOCK_SIZE);
@@ -419,6 +416,7 @@ public class PSGuidManager implements IPSGuidManager
    }
 
    @Override
+   @Transactional(propagation = Propagation.SUPPORTS, noRollbackFor = IllegalArgumentException.class)
    public int peekNextNumber(String key)
    {
       Allocation allocation = createNextNumberAllocation(key,BLOCK_SIZE);
@@ -433,7 +431,7 @@ public class PSGuidManager implements IPSGuidManager
 
       int current = -1;
 
-      Session s = sessionFactory.getCurrentSession();
+      Session s = getSession();
       PSNextNumber data;
 
       data = (PSNextNumber)s.get(PSNextNumber.class, key, LockMode.UPGRADE);
@@ -491,7 +489,7 @@ public class PSGuidManager implements IPSGuidManager
          // Each repository has it's own allocation
          // To make this easy to interpret in the database, multiply
          // by a power of 10.
-         key = new Integer(type.getOrdinal() + repositoryId * 1000);
+         key = type.getOrdinal() + repositoryId * 1000;
       }
       else
       {
@@ -504,7 +502,7 @@ public class PSGuidManager implements IPSGuidManager
             }
          }
          hostValue = ms_hostId;
-         key = new Integer(type.getOrdinal());
+         key = (int) type.getOrdinal();
       }
 
       try
@@ -568,14 +566,14 @@ public class PSGuidManager implements IPSGuidManager
    @Transactional(propagation=Propagation.REQUIRES_NEW)
    public long updateNextLong(Integer key)
    {
-      Session s = sessionFactory.getCurrentSession();
+      Session s = getSession();
       PSGuidGeneratorData data;
       long current = -1L;
 
-      data = (PSGuidGeneratorData)s.get(PSGuidGeneratorData.class, key, LockMode.UPGRADE);
+      data = s.get(PSGuidGeneratorData.class, key, LockMode.UPGRADE);
       if (data == null)
       {
-         data = new PSGuidGeneratorData(key.intValue(), 1);
+         data = new PSGuidGeneratorData(key, 1);
          data.setVersion(0);
          s.persist(data);
          s.lock(data, LockMode.UPGRADE);
@@ -614,6 +612,7 @@ public class PSGuidManager implements IPSGuidManager
     * @see
     * com.percussion.services.guidmgr.IPSGuidManager#createId(java.lang.String)
     */
+   @Transactional(propagation = Propagation.SUPPORTS, noRollbackFor = IllegalArgumentException.class)
    public int createId(String key)
    {
       return createNextNumberId(key, BLOCK_SIZE);
@@ -626,6 +625,7 @@ public class PSGuidManager implements IPSGuidManager
     * com.percussion.services.guidmgr.IPSGuidManager#createIdBlock(java.lang
     * .String, int)
     */
+   @Transactional(propagation = Propagation.SUPPORTS, noRollbackFor = IllegalArgumentException.class)
    public int[] createIdBlock(String key, int blocksize)
    {
       if (StringUtils.isBlank(key))
@@ -649,7 +649,7 @@ public class PSGuidManager implements IPSGuidManager
 
    public List<Integer> extractContentIds(List<IPSGuid> guids)
    {
-      if (guids == null || guids.size() == 0)
+      if (guids == null || !guids.isEmpty())
       {
          throw new IllegalArgumentException("guids may not be null or empty");
       }
@@ -685,13 +685,14 @@ public class PSGuidManager implements IPSGuidManager
     *           <code>null</code>.
     * @return the next value.
     */
+   @Transactional(propagation = Propagation.SUPPORTS, noRollbackFor = IllegalArgumentException.class)
    public long createLongId(PSTypeEnum type)
    {
       if (type == null)
       {
          throw new IllegalArgumentException("type may not be null");
       }
-      Integer key = new Integer(type.getOrdinal());
+      Integer key = (int) type.getOrdinal();
 
       long longVal = createNextLong(key);
 

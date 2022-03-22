@@ -26,16 +26,14 @@
 	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	   xmlns:tx="http://www.springframework.org/schema/tx"
 	   xsi:schemaLocation="http://www.springframework.org/schema/beans
-http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+http://www.springframework.org/schema/beans/spring-beans.xsd
 http://www.springframework.org/schema/tx
-http://www.springframework.org/schema/tx/spring-tx-4.2.xsd">
+http://www.springframework.org/schema/tx/spring-tx.xsd">
 
    <tx:annotation-driven transaction-manager="sys_transactionManager"/>
    <bean id="sys_design_ACL"
 		class="com.percussion.rx.design.impl.PSAclModel">
-		<property name="service">
-			<ref bean="sys_aclService"/>
-		</property>
+		<property name="service" ref="sys_aclService" />
    </bean>
 
    <bean id="sys_design_ACTION"
@@ -48,16 +46,12 @@ http://www.springframework.org/schema/tx/spring-tx-4.2.xsd">
 
    <bean id="sys_design_COMMUNITY_DEF"
 		class="com.percussion.rx.design.impl.PSCommunityModel">
-		<property name="service">
-			<ref bean="sys_backEndRoleMgr"/>
-		</property>
+		<property name="service" ref="sys_backEndRoleMgr" />
    </bean>
 
    <bean id="sys_design_CONTEXT"
 		class="com.percussion.rx.design.impl.PSContextModel">
-		<property name="service">
-			<ref bean="sys_sitemanager"/>
-		</property>
+		<property name="service" ref="sys_sitemanager" />
    </bean>
 
    <bean id="sys_design_CONTROL"
@@ -74,26 +68,18 @@ http://www.springframework.org/schema/tx/spring-tx-4.2.xsd">
 
    <bean id="sys_design_ITEM_FILTER"
 		class="com.percussion.rx.design.impl.PSItemFilterModel">
-		<property name="service">
-			<ref bean="sys_filtermanager"/>
-		</property>
-		<property name="normalizedTypeEnumName">
-            <value>Filter</value>
-        </property>
+		<property name="service" ref="sys_filtermanager" />
+		<property name="normalizedTypeEnumName" value="Filter"/>
    </bean>
 
    <bean id="sys_design_LOCALE"
 		class="com.percussion.rx.design.impl.PSLocaleModel">
-		<property name="service">
-			<ref bean="sys_cmsObjectMgr"/>
-		</property>
+		<property name="service" ref="sys_cmsObjectMgr"/>
    </bean>
 
    <bean id="sys_design_LOCATION_SCHEME"
 		class="com.percussion.rx.design.impl.PSLocationSchemeModel">
-		<property name="service">
-			<ref bean="sys_sitemanager"/>
-		</property>
+		<property name="service" ref="sys_sitemanager"/>
    </bean>
 
    <bean id="sys_design_NODEDEF"
@@ -110,47 +96,31 @@ http://www.springframework.org/schema/tx/spring-tx-4.2.xsd">
 
    <bean id="sys_design_SLOT"
 		class="com.percussion.rx.design.impl.PSSlotModel">
-		<property name="service">
-			<ref bean="sys_assemblyService"/>
-		</property>
+		<property name="service" ref="sys_assemblyService"/>
    </bean>
  
    <bean id="sys_design_TEMPLATE"
 		class="com.percussion.rx.design.impl.PSTemplateModel">
-		<property name="service">
-			<ref bean="sys_assemblyService"/>
-		</property>
+		<property name="service" ref="sys_assemblyService"/>
    </bean>
 
    <bean id="sys_design_KEYWORD_DEF"
 		class="com.percussion.rx.design.impl.PSKeywordModel">
-		<property name="service">
-			<ref bean="sys_contentService"/>
-		</property>
-      <property name="normalizedTypeEnumName">
-         <value>Keyword</value>
-      </property>
+		<property name="service" ref="sys_contentService"/>
+      <property name="normalizedTypeEnumName" value="Keyword"/>
    </bean>
    <bean id="sys_design_SITE"
 		class="com.percussion.rx.design.impl.PSSiteModel">
-		<property name="service">
-			<ref bean="sys_sitemanager"/>
-		</property>
+		<property name="service" ref="sys_sitemanager"/>
    </bean>
    <bean id="sys_design_EDITION"
 		class="com.percussion.rx.design.impl.PSEditionModel">
-		<property name="service">
-			<ref bean="sys_publisherservice"/>
-		</property>
+		<property name="service" ref="sys_publisherservice"/>
    </bean>
    <bean id="sys_design_CONTENT_LIST"
 		class="com.percussion.rx.design.impl.PSContentListModel">
-		<property name="service">
-			<ref bean="sys_publisherservice"/>
-		</property>
-      <property name="normalizedTypeEnumName">
-         <value>ContentList</value>
-      </property>
+		<property name="service" ref="sys_publisherservice"/>
+      <property name="normalizedTypeEnumName" value="ContentList"/>
    </bean>
    <bean id="sys_design_SEARCH_DEF"
 		class="com.percussion.rx.design.impl.PSSearchModel">
@@ -160,8 +130,6 @@ http://www.springframework.org/schema/tx/spring-tx-4.2.xsd">
    </bean>
    <bean id="sys_design_WORKFLOW"
 		class="com.percussion.rx.design.impl.PSWorkflowModel">
-		<property name="service">
-			<ref bean="sys_workflowService"/>
-		</property>
+		<property name="service" ref="sys_workflowService"/>
    </bean>
 </beans>

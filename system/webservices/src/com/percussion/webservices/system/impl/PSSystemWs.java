@@ -101,7 +101,6 @@ public class PSSystemWs extends PSSystemBaseWs implements IPSSystemWs
    }
 
    // @see IPSSystemWs#findDependents(IPSGuid, PSRelationshipFilter)
-   @Transactional
    public List<IPSGuid> findDependents(IPSGuid id, PSRelationshipFilter filter)
       throws PSErrorException
    {
@@ -109,7 +108,6 @@ public class PSSystemWs extends PSSystemBaseWs implements IPSSystemWs
    }
 
    // @see IPSSystemWs#findOwners(IPSGuid, PSRelationshipFilter)
-   @Transactional
    public List<IPSGuid> findOwners(IPSGuid id, PSRelationshipFilter filter)
       throws PSErrorException
    {
@@ -157,7 +155,6 @@ public class PSSystemWs extends PSSystemBaseWs implements IPSSystemWs
    }
 
    // @see IPSSystemWs#loadAuditTrails(List<IPSGuid>)
-   @Transactional
    public Map<IPSGuid, List<PSContentStatusHistory>> loadAuditTrails(
       List<IPSGuid> ids)
    {
@@ -181,7 +178,6 @@ public class PSSystemWs extends PSSystemBaseWs implements IPSSystemWs
    }
 
    // @see IPSSystemWs#loadRelationships(PSRelationshipFilter)
-   @Transactional
    public List<PSRelationship> loadRelationships(PSRelationshipFilter filter)
       throws PSErrorException
    {
@@ -192,7 +188,6 @@ public class PSSystemWs extends PSSystemBaseWs implements IPSSystemWs
    }
 
    // @see IPSSystemWs#loadRelationshipTypes(String, String)
-   @Transactional
    public List<PSRelationshipConfig> loadRelationshipTypes(String name,
       String category) throws PSErrorException
    {
@@ -287,7 +282,6 @@ public class PSSystemWs extends PSSystemBaseWs implements IPSSystemWs
    }
 
    // @see IPSSystemWs#loadWorkflows(String)
-   @Transactional
    public List<PSWorkflow> loadWorkflows(String name)
    {
       if (!StringUtils.isBlank(name))
@@ -432,13 +426,14 @@ public class PSSystemWs extends PSSystemBaseWs implements IPSSystemWs
    }
 
    @Deprecated
+   @Transactional
    public List<String> transitionItems(List<IPSGuid> ids, String transition,
             String user) throws PSErrorsException, PSErrorException
    {
       return transitionItems(ids, transition);
    }
-   
-   
+
+   @Transactional
    public List<String> transitionItems(List<IPSGuid> ids, String transition)
       throws PSErrorsException, PSErrorException
    {
@@ -446,6 +441,7 @@ public class PSSystemWs extends PSSystemBaseWs implements IPSSystemWs
    }
 
    @Deprecated
+   @Transactional
    public List<String> transitionItems(List<IPSGuid> ids, String transition,
       String comment, List<String> adhocUsers, String user)
       throws PSErrorsException, PSErrorException
@@ -453,6 +449,7 @@ public class PSSystemWs extends PSSystemBaseWs implements IPSSystemWs
       return transitionItems(ids, transition, comment, adhocUsers);
    }
 
+   @Transactional
    public List<String> transitionItems(List<IPSGuid> ids, String transition,
       String comment, List<String> adhocUsers) 
       throws PSErrorsException, PSErrorException
@@ -568,8 +565,6 @@ public class PSSystemWs extends PSSystemBaseWs implements IPSSystemWs
     * @see com.percussion.webservices.system.IPSSystemWs#getAllowedTransitions(
     *    List)
     */
-   @Transactional
-   @SuppressWarnings("unchecked")
    public Map<String, String> getAllowedTransitions(List<IPSGuid> ids)
    {
       PSWebserviceUtils.validateLegacyGuids(ids);
