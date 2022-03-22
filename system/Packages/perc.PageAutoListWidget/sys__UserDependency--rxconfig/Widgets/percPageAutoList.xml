@@ -52,7 +52,7 @@
     <UserPref name="sortby"
               display_name="Sort by"
               required="true"
-              default_value="rx:resource_link_title"
+              default_value="rx:sys_contentpostdate"
               datatype="enum">
         <EnumValue value="none" display_value="None" />
         <EnumValue value="rx:resource_link_title" display_value="Link text" />
@@ -60,12 +60,11 @@
         <EnumValue value="rx:sys_title" display_value="File Name" />
         <EnumValue value="rx:sys_contentcreateddate" display_value="Created date" />
         <EnumValue value="rx:sys_contentpostdate" display_value="Post date" />
-
     </UserPref>
     <UserPref name="sortDirection"
               display_name="Sort Order"
               required="true"
-              default_value="asc"
+              default_value="desc"
               datatype="enum">
         <EnumValue value="desc" display_value="Descending" />
         <EnumValue value="asc" display_value="Ascending" />
