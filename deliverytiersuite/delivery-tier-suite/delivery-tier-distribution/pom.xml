@@ -988,13 +988,13 @@
                                 </copy>
                                 <!-- Version.properties -->
                                 <copy todir="${assembly-directory}">
-                                    <fileset dir="{basedir}/../../../../system/target/classes/com/percussion/util/">
+                                    <fileset dir="{basedir}/../../../../modules/utils/target/classes/com/percussion/util/">
                                         <include name="Version.properties" />
                                     </fileset>
                                 </copy>
                                 <mkdir dir="${assembly-directory}/rxconfig/secure" />
                                 <copy todir="${assembly-directory}/rxconfig/secure">
-                                    <fileset dir="{basedir}/../../../../system/utils/src/main/resources/com/percussion/security/encryption">
+                                    <fileset dir="{basedir}/../../../../modules/utils/src/main/resources/com/percussion/security/encryption">
                                         <include name=".legacy-key" />
                                     </fileset>
                                 </copy>
