@@ -23,7 +23,7 @@
  */
 package com.percussion.metadata.service.impl;
 
-import com.percussion.metadata.dao.impl.PSMetadataDao;
+import com.percussion.metadata.dao.IPSMetadataDao;
 import com.percussion.metadata.data.PSMetadata;
 import com.percussion.metadata.service.IPSMetadataService;
 import com.percussion.share.dao.IPSGenericDao;
@@ -44,7 +44,7 @@ public class PSMetadataService implements IPSMetadataService
     * @param dao
     */
    @Autowired
-   public PSMetadataService(PSMetadataDao dao)
+   public PSMetadataService(IPSMetadataDao dao)
    {
       this.dao = dao;
    }
@@ -100,6 +100,6 @@ public class PSMetadataService implements IPSMetadataService
 
    }
    
-   private PSMetadataDao dao;
+   private IPSMetadataDao dao;
 
 }

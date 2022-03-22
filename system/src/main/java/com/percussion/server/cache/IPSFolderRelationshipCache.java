@@ -8,7 +8,6 @@ import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.notification.IPSNotificationListener;
 import com.percussion.services.notification.PSNotificationEvent;
 import com.percussion.utils.guid.IPSGuid;
-import org.hibernate.SessionFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -24,8 +23,6 @@ public interface IPSFolderRelationshipCache extends IPSNotificationListener {
     static IPSFolderRelationshipCache getInstance(){return null;}
 
     void reinitialize(boolean isEnabled) throws PSCacheException;
-
-    void setSessionFactory(SessionFactory sessionFactory);
 
     void notifyEvent(PSNotificationEvent notify);
 

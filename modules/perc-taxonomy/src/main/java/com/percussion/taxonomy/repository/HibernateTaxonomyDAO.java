@@ -24,18 +24,16 @@
 package com.percussion.taxonomy.repository;
 
 import com.percussion.taxonomy.domain.Taxonomy;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
-import org.springframework.orm.hibernate3.HibernateCallback;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+import org.springframework.orm.hibernate5.HibernateCallback;
+import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
+
+import java.util.Collection;
+import java.util.List;
 
 public class HibernateTaxonomyDAO extends HibernateDaoSupport implements TaxonomyDAO
 {
@@ -47,36 +45,23 @@ public class HibernateTaxonomyDAO extends HibernateDaoSupport implements Taxonom
 
    public List<Taxonomy> getTaxonomy(String name)
    {
-      Session sess = getSession();
-      try
-      {
+      Session sess = this.currentSession();
          Criteria c = sess.createCriteria(Taxonomy.class); 
          c.add(Restrictions.ilike("Name", name));
          c.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
          return c.list();
-      }
-      finally
-      {
-         releaseSession(sess);
-      }
    } 
    
    public List<Integer> getTaxonomyIdForName(String name)
    {
     
-      Session sess = getSession();
-      try
-      {
+      Session sess = this.currentSession();
+
          Query query = sess.createQuery("select id from Taxonomy where name like :name");
          query.setString("name", name);
          @SuppressWarnings("unchecked")
          List<Integer> taxIds = query.list();
          return taxIds;
-      }
-      finally
-      {
-         releaseSession(sess);
-      }
    }
    
    public Collection getAllTaxonomys()

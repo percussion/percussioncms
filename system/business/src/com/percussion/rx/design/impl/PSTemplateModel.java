@@ -37,7 +37,7 @@ import com.percussion.services.contentmgr.IPSNodeDefinition;
 import com.percussion.services.contentmgr.PSContentMgrLocator;
 import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.sitemgr.IPSSite;
-import com.percussion.services.sitemgr.IPSSiteManagerInternal;
+import com.percussion.services.sitemgr.IPSSiteManager;
 import com.percussion.services.sitemgr.PSSiteManagerLocator;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.types.PSPair;
@@ -307,7 +307,7 @@ public class PSTemplateModel extends PSDesignModel
       template = service.loadTemplate(guid, true);
 
       // get site / templates associations
-      IPSSiteManagerInternal sitemgr = (IPSSiteManagerInternal) PSSiteManagerLocator
+      IPSSiteManager sitemgr = PSSiteManagerLocator
             .getSiteManager();
       Map<PSPair<IPSGuid, String>, Collection<IPSGuid>> siteToTemplates = sitemgr
             .findSiteTemplatesAssociations();

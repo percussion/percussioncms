@@ -36,11 +36,10 @@ import org.apache.logging.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.annotations.QueryHints;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,18 +49,14 @@ public class PSUserItemsDao implements IPSUserItemsDao
 {
    private static final Logger log = LogManager.getLogger(PSUserItemsDao.class);
 
-    private SessionFactory sessionFactory;
+    @PersistenceContext
+    private EntityManager entityManager;
 
-    public SessionFactory getSessionFactory() {
-        return sessionFactory;
+    private Session getSession(){
+        return entityManager.unwrap(Session.class);
     }
-
-    @Autowired
-    public void setSessionFactory(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
-
-   /**
+    
+    /**
     * Constant for the key used to generate summary ids.
     */
    private static final String USER_ITEM_KEY = "PSX_USERITEM";
@@ -77,7 +72,7 @@ public class PSUserItemsDao implements IPSUserItemsDao
       PSUserItem userItem = null;
       if(StringUtils.isBlank(userName))
          return userItem;
-      Session session = sessionFactory.getCurrentSession();
+      Session session = getSession();
 
           Query query = session.createQuery("from PSUserItem where itemId = :itemId and userName = :userName");
           query.setParameter("itemId", itemId);
@@ -95,6 +90,7 @@ public class PSUserItemsDao implements IPSUserItemsDao
     * (non-Javadoc)
     * @see com.percussion.services.userpages.IPSUserItemsDao#save(com.percussion.services.userpages.data.PSUserItem)
     */
+   @Transactional
    public void save(PSUserItem userItem) throws IPSGenericDao.SaveException {
       Validate.notNull(userItem);
 
@@ -103,7 +99,7 @@ public class PSUserItemsDao implements IPSUserItemsDao
          userItem.setUserItemId(m_guidMgr.createId(USER_ITEM_KEY));
       }
 
-      Session session = sessionFactory.getCurrentSession();
+      Session session = getSession();
       try
       {
           session.saveOrUpdate(userItem);
@@ -130,7 +126,7 @@ public class PSUserItemsDao implements IPSUserItemsDao
       List<PSUserItem> userItems = new ArrayList<>();
       if(StringUtils.isBlank(userName))
          return userItems;
-      Session session = sessionFactory.getCurrentSession();
+      Session session = getSession();
 
           Query query = session.createQuery("from PSUserItem where userName = :userName");
           query.setParameter("userName", userName);
@@ -148,7 +144,7 @@ public class PSUserItemsDao implements IPSUserItemsDao
    public List<PSUserItem> find(int itemId)
    {
       List<PSUserItem> userItems;
-      Session session = sessionFactory.getCurrentSession();
+      Session session = getSession();
 
           Query query = session.createQuery("from PSUserItem where itemId = :itemId");
           query.setParameter("itemId", itemId);
@@ -161,10 +157,11 @@ public class PSUserItemsDao implements IPSUserItemsDao
     * (non-Javadoc)
     * @see com.percussion.services.userpages.IPSUserItemsDao#delete(com.percussion.services.userpages.data.PSUserItem)
     */
+   @Transactional
    public void delete(PSUserItem userItem)
    {
       Validate.notNull(userItem);
-      Session session = sessionFactory.getCurrentSession();
+      Session session = getSession();
       try
       {
           session.delete(userItem);

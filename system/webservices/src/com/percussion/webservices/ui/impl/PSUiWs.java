@@ -39,12 +39,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.transaction.annotation.Transactional;
-
 /**
  * The public ui webservice implementations.
  */
-@Transactional
 public class PSUiWs extends PSUiBaseWs implements IPSUiWs
 {
    /*

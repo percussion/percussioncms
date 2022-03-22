@@ -24,10 +24,10 @@
 
 package com.percussion.taxonomy.repository;
 
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
-import java.util.Collection;
+import com.percussion.taxonomy.domain.Attribute;
+import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 
-import com.percussion.taxonomy.domain.*;
+import java.util.Collection;
 
 public class HibernateAttributeDAO extends HibernateDaoSupport implements AttributeDAO {
 

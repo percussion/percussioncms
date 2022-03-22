@@ -24,6 +24,7 @@
 package com.percussion.services.legacy.impl;
 
 import com.percussion.cms.IPSCmsErrors;
+import com.percussion.cms.IPSConstants;
 import com.percussion.cms.PSCmsException;
 import com.percussion.cms.PSEditorChangeEvent;
 import com.percussion.cms.handlers.PSCommandHandler;
@@ -58,6 +59,7 @@ import com.percussion.server.PSUserSession;
 import com.percussion.server.cache.PSItemSummaryCache;
 import com.percussion.server.webservices.PSServerFolderProcessor;
 import com.percussion.services.catalog.PSTypeEnum;
+import com.percussion.services.contentmgr.impl.IPSContentRepository;
 import com.percussion.services.data.IPSIdentifiableItem;
 import com.percussion.services.guidmgr.IPSGuidManager;
 import com.percussion.services.guidmgr.PSGuidHelper;
@@ -66,9 +68,7 @@ import com.percussion.services.guidmgr.data.PSLegacyGuid;
 import com.percussion.services.legacy.IPSCmsObjectMgr;
 import com.percussion.services.legacy.IPSCmsObjectMgrInternal;
 import com.percussion.services.legacy.IPSItemEntry;
-import com.percussion.services.legacy.PSCmsObjectMgrLocator;
 import com.percussion.services.legacy.data.PSItemEntry;
-import com.percussion.services.memory.IPSCacheAccess;
 import com.percussion.services.memory.PSCacheAccessLocator;
 import com.percussion.services.menus.PSActionMenu;
 import com.percussion.services.menus.PSUIMode;
@@ -97,6 +97,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.Cache;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -105,17 +106,17 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.metadata.ClassMetadata;
-import org.hibernate.metadata.CollectionMetadata;
 import org.hibernate.type.IntegerType;
 import org.hibernate.type.LongType;
 import org.hibernate.type.ShortType;
 import org.hibernate.type.StringType;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -145,14 +146,16 @@ import static org.apache.commons.lang.Validate.notNull;
  * 
  * @author dougrand
  */
-@Transactional(noRollbackFor = Exception.class)
 @PSBaseBean("sys_cmsObjectMgr")
+@Transactional
 public class PSCmsObjectMgr
       implements
          IPSCmsObjectMgrInternal, IPSHandlerInitListener
 {
+    @Autowired
+    private IPSContentRepository contentRepository;
 
-   private static final String UPDATE_DATE_HQL = "update PSComponentSummary cs set cs.%s = :dateToSet where cs.m_contentId in (:ids)";
+    private static final String UPDATE_DATE_HQL = "update PSComponentSummary cs set cs.%s = :dateToSet where cs.m_contentId in (:ids)";
 
    private static final String WHERE_NULL = " and cs.%s is null";
 
@@ -162,24 +165,32 @@ public class PSCmsObjectMgr
    /**
     * Logger
     */
-   private static final Logger logger = LogManager.getLogger("PSCmsObjectMgr");
+   private static final Logger logger = LogManager.getLogger(IPSConstants.CONTENTREPOSITORY_LOG);
    
    private static final int BATCH_SIZE = 50;
    private static ThreadLocal<Integer> ms_itemCount = new ThreadLocal<>();
   
    private Map<Long,PSCommandHandler> workflowHandlers = new ConcurrentHashMap<>(16, 0.9f, 1);
 
-   private SessionFactory sessionFactory;
+    @PersistenceContext
+    private EntityManager entityManager;
 
-   public SessionFactory getSessionFactory() {
-      return sessionFactory;
+    private SessionFactory factory;
+    public SessionFactory getSessionFactory(){
+       this.factory = contentRepository.getSessionFactory();
+       if(factory == null){
+           return entityManager.unwrap(Session.class).getSessionFactory();
+       }
+       return this.factory;
    }
 
-   @Autowired
-   public void setSessionFactory(SessionFactory sessionFactory) {
-      this.sessionFactory = sessionFactory;
-   }
-
+    private Session getSession(){
+       if(factory == null) {
+           return getSessionFactory().getCurrentSession();
+       }else{
+           return entityManager.unwrap(Session.class);
+       }
+    }
    
    /**
     * Ctor, invoked from Spring
@@ -223,11 +234,11 @@ public class PSCmsObjectMgr
 
     public Date getFirstPublishDate(Integer contentId){
         Date postDate  = null;
-        Session session = sessionFactory.getCurrentSession();
+        Session session = getSession();
         Query q = session.getNamedQuery("getPostDate");
         q.setParameter("contentId", contentId);
         List result = q.list();
-        if(result != null && result.size()>0)
+        if(result != null && !result.isEmpty())
             postDate = (Date) result.get(0);
         return postDate;
     }
@@ -259,6 +270,7 @@ public class PSCmsObjectMgr
     * @see com.percussion.services.legacy.IPSCmsObjectMgr#setPostDate(java.util.
     * Collection)
     */
+    @Transactional
    public void setPublishDate(List<Integer> ids, Date date)
    {
       updateSummaryDate("m_contentPublishDate",date,ids,true);
@@ -270,7 +282,7 @@ public class PSCmsObjectMgr
    
     @Override
     public List<PSUIMode> findUiModes() {
-        Session session = sessionFactory.getCurrentSession();
+        Session session = getSession();
   		try{
             return session.createCriteria(PSUIMode.class).list();
         }catch(Exception e){
@@ -282,7 +294,7 @@ public class PSCmsObjectMgr
 
     @Override
     public List<PSActionMenu> findActionMenus() {
-        Session session = sessionFactory.getCurrentSession();
+        Session session = getSession();
 
         try {
             return session.createCriteria(PSActionMenu.class).addOrder(Order.asc("sortOrder")).list();
@@ -294,7 +306,7 @@ public class PSCmsObjectMgr
 
     @Override
     public List<PSActionMenu> findActionMenusByType(String type) {
-        Session session = sessionFactory.getCurrentSession();
+        Session session = getSession();
 
         try {
             return session.createCriteria(PSActionMenu.class).add(Restrictions.ilike("type",type)).addOrder(Order.asc("sortOrder")).list();
@@ -306,7 +318,7 @@ public class PSCmsObjectMgr
 
     @Override
     public List<PSUiContext> findUiContexts() {
-        Session session = sessionFactory.getCurrentSession();
+        Session session = getSession();
         try {
             return session.createCriteria(PSUiContext.class).list();
         }catch(Exception e) {
@@ -360,7 +372,7 @@ public class PSCmsObjectMgr
     */
    public PSLocale loadLocale(int id)
    {
-      return sessionFactory.getCurrentSession().get(PSLocale.class,
+      return getSession().get(PSLocale.class,
               id);
    }
 
@@ -374,7 +386,7 @@ public class PSCmsObjectMgr
    public PSLocale findLocaleByLanguageString(String lang)
    {
 
-         Criteria c = sessionFactory.getCurrentSession().createCriteria(PSLocale.class).add(
+         Criteria c = getSession().createCriteria(PSLocale.class).add(
                Restrictions.eq("m_languageString", lang));
          List<PSLocale> locales = c.list();
          if (locales != null && !locales.isEmpty())
@@ -396,7 +408,7 @@ public class PSCmsObjectMgr
    @SuppressWarnings("unchecked")
    public List<PSLocale> findLocaleByStatus(int status)
    {
-      Session session = sessionFactory.getCurrentSession();
+      Session session = getSession();
 
          Criteria c = session.createCriteria(PSLocale.class).add(Restrictions.eq("m_status", status))
                .addOrder(Order.asc("m_displayName"));
@@ -412,7 +424,7 @@ public class PSCmsObjectMgr
    @SuppressWarnings("unchecked")
    public List<PSLocale> findLocales(String lang, String label)
    {
-      Session session = sessionFactory.getCurrentSession();
+      Session session = getSession();
 
          List<PSLocale> locales = new ArrayList<>();
 
@@ -452,7 +464,7 @@ public class PSCmsObjectMgr
    @SuppressWarnings("unchecked")
    public List<PSLocale> findAllLocales()
    {
-      Session session = sessionFactory.getCurrentSession();
+      Session session = getSession();
 
          List<PSLocale> locales = new ArrayList<>();
 
@@ -473,7 +485,7 @@ public class PSCmsObjectMgr
    @SuppressWarnings("unchecked")
    public List<PSPersistentPropertyMeta> findAllPersistentMeta()
    {
-      Session s = sessionFactory.getCurrentSession();
+      Session s = getSession();
 
          Criteria c = s.createCriteria(PSPersistentPropertyMeta.class);
          return (List<PSPersistentPropertyMeta>) c.list();
@@ -489,7 +501,7 @@ public class PSCmsObjectMgr
     @Override
     public List<PSPersistentPropertyMeta> saveAllPersistentMeta(List<PSPersistentPropertyMeta> list) {
 
-        Session s = sessionFactory.getCurrentSession();
+        Session s = getSession();
         list.forEach(pm -> s.saveOrUpdate(pm));
 
         return list;
@@ -502,7 +514,7 @@ public class PSCmsObjectMgr
     @Override
     public void deleteAllPersistentMeta(List<PSPersistentPropertyMeta> list) {
 
-        Session s = sessionFactory.getCurrentSession();
+        Session s = getSession();
         list.forEach(pm -> s.delete(pm));
     }
 
@@ -516,7 +528,7 @@ public class PSCmsObjectMgr
     public PSPersistentPropertyMeta savePersistentPropertyMeta(PSPersistentPropertyMeta meta) {
 
 
-        Session session = sessionFactory.getCurrentSession();
+        Session session = getSession();
        Criteria criteria = session.createCriteria(PSPersistentPropertyMeta.class);
        PSPersistentPropertyMeta prop = ((PSPersistentPropertyMeta) criteria.add(Restrictions.eq("propertyName", meta.getPropertyName()))
                .add((Restrictions.eq("userName",meta.getUserName()))).uniqueResult());
@@ -550,7 +562,7 @@ public class PSCmsObjectMgr
       if (StringUtils.isBlank(name))
          throw new IllegalArgumentException("name may not be null or empty.");
 
-      return sessionFactory.getCurrentSession()
+      return getSession()
             .createQuery(
                   "from PSPersistentPropertyMeta pm where pm.userName like :name").setParameter(
                   "name", name).list();
@@ -565,7 +577,7 @@ public class PSCmsObjectMgr
    @SuppressWarnings("unchecked")
    public List<PSPersistentProperty> findAllPersistentProperties()
    {
-      Session s = sessionFactory.getCurrentSession();
+      Session s = getSession();
 
          Criteria c = s.createCriteria(PSPersistentProperty.class);
          return (List<PSPersistentProperty>) c.list();
@@ -584,7 +596,7 @@ public class PSCmsObjectMgr
       if (StringUtils.isBlank(userName))
          throw new IllegalArgumentException("userName may not be null or empty.");
 
-      return sessionFactory.getCurrentSession()
+      return getSession()
             .createQuery(
                   "from PSPersistentProperty p where p.m_userName like :name").setParameter(
                   "name", userName).list();
@@ -602,7 +614,7 @@ public class PSCmsObjectMgr
       if (prop == null)
          throw new IllegalArgumentException("prop may not be null.");
 
-      sessionFactory.getCurrentSession().merge(prop);
+      getSession().merge(prop);
    }
 
    /*
@@ -617,7 +629,7 @@ public class PSCmsObjectMgr
       if (prop == null)
          throw new IllegalArgumentException("prop may not be null.");
 
-      sessionFactory.getCurrentSession().delete(prop);
+      getSession().delete(prop);
    }
 
    /*
@@ -632,7 +644,7 @@ public class PSCmsObjectMgr
       if (prop == null)
          throw new IllegalArgumentException("prop may not be null.");
 
-      sessionFactory.getCurrentSession().update(prop);
+      getSession().update(prop);
    }
 
    /*
@@ -644,7 +656,7 @@ public class PSCmsObjectMgr
     */
    public void saveLocale(PSLocale locale)
    {
-      sessionFactory.getCurrentSession().saveOrUpdate(locale);
+      getSession().saveOrUpdate(locale);
    }
 
    /*
@@ -655,25 +667,25 @@ public class PSCmsObjectMgr
     */
    public void deleteLocale(PSLocale locale)
    {
-      sessionFactory.getCurrentSession().delete(locale);
+      getSession().delete(locale);
    }
 
    @SuppressWarnings("unchecked")
    public List<PSComponentSummary> loadComponentSummaries(Collection<Integer> ids)
    {
-      Session s = sessionFactory.getCurrentSession();
-      List<PSComponentSummary> summaries = new ArrayList<>();
+       Session s = getSession();
+       List<PSComponentSummary> summaries = new ArrayList<>();
 
-         for (Integer id : ids)
-         {
-            PSComponentSummary sum = s.get(PSComponentSummary.class, id);
-            if (sum != null)
+       for (Integer id : ids)
+       {
+           PSComponentSummary sum = s.get(PSComponentSummary.class, id);
+           if (sum != null)
                summaries.add(sum);
-         }
-         fixupLocators(summaries);
+       }
+       fixupLocators(summaries);
 
 
-      return summaries;
+       return summaries;
    }
 
    /**
@@ -683,7 +695,7 @@ public class PSCmsObjectMgr
     */
    public PSComponentSummary loadComponentSummary(int contentid,boolean refresh)
    {
-      Session s = sessionFactory.getCurrentSession();
+      Session s = getSession();
       PSComponentSummary sum = (PSComponentSummary) s.get(PSComponentSummary.class, contentid);
       if(refresh) {
           s.refresh(sum);
@@ -692,6 +704,7 @@ public class PSCmsObjectMgr
        return sum;
 
    }
+
     public PSComponentSummary loadComponentSummary(int contentid)
     {
         return loadComponentSummary(contentid,false);
@@ -727,7 +740,7 @@ public class PSCmsObjectMgr
    @SuppressWarnings("unchecked")
    public List<PSComponentSummary> findComponentSummariesByCheckedOutUsers(Set<String> users) throws PSORMException
    {
-      Session s = sessionFactory.getCurrentSession();
+      Session s = getSession();
 
          List<PSComponentSummary> summaries = s
                .createQuery("from PSComponentSummary c where c.m_checkoutUserName in (:users)")
@@ -740,7 +753,7 @@ public class PSCmsObjectMgr
    @SuppressWarnings("unchecked")
    public List<PSComponentSummary> findComponentSummariesByType(long contentType) throws PSORMException
    {
-      List<PSComponentSummary> summaries = sessionFactory.getCurrentSession()
+      List<PSComponentSummary> summaries = getSession()
             .createQuery(
                   "from PSComponentSummary c where c.m_contentTypeId = :type").setParameter(
                   "type", contentType).list();
@@ -751,7 +764,7 @@ public class PSCmsObjectMgr
    @SuppressWarnings("unchecked")
    public Collection<Integer> findContentIdsByType(long contentType) throws PSORMException
    {
-      return sessionFactory.getCurrentSession()
+      return getSession()
             .createQuery(
                   "select c.m_contentId "
                         + "from PSComponentSummary c where c.m_contentTypeId = :type").setParameter(
@@ -761,7 +774,7 @@ public class PSCmsObjectMgr
    @SuppressWarnings("unchecked")
    public Collection<Integer> findContentIdsByWorkflow(int workflowid) throws PSORMException
    {
-      return sessionFactory.getCurrentSession()
+      return getSession()
             .createQuery(
                   "select c.m_contentId "
                         + "from PSComponentSummary c where c.m_workflowAppId = :workflowid").setParameter(
@@ -773,7 +786,7 @@ public class PSCmsObjectMgr
    {
 
       
-      return sessionFactory.getCurrentSession()
+      return getSession()
             .createQuery(
                   "select c.m_contentId "
                         + "from PSComponentSummary c where c.m_workflowAppId = :workflowid " +
@@ -782,26 +795,26 @@ public class PSCmsObjectMgr
               .list();
 
    }
-   
+
    public void saveComponentSummaries(List<PSComponentSummary> summaries) throws PSORMException
    {
-      Session session = sessionFactory.getCurrentSession();
+      Session session = getSession();
       summaries.forEach(sum -> session.saveOrUpdate(sum));
 
    }
 
    public void deleteComponentSummaries(List<PSComponentSummary> summaries) throws PSORMException
    {
-      Session session = sessionFactory.getCurrentSession();
+      Session session = getSession();
       summaries.forEach(sum -> session.delete(sum));
    }
 
    public void evictComponentSummaries(List<Integer> ids)
    {
-      SessionFactory fact = getSessionFactory();
+      SessionFactory fact = getSession().getSessionFactory();
       for (Integer id : ids)
       {
-         fact.getCache().evictEntity(PSComponentSummary.class, id);
+         fact.getCache().evictEntityData(PSComponentSummary.class, id);
       }
    }
 
@@ -836,7 +849,7 @@ public class PSCmsObjectMgr
    public <T extends IPSIdentifiableItem> List<T> filterItemsByPublishableFlag(List<T> items, List<String> flags)
          throws PSORMException
    {
-      Session s = sessionFactory.getCurrentSession();
+      Session s = getSession();
       List<T> rval = new ArrayList<>();
       List<Integer> cids = new ArrayList<>();
       for (T item : items)
@@ -897,7 +910,7 @@ public class PSCmsObjectMgr
 
    public void handleDataEviction(Class clazz, Serializable id) throws PSORMException
    {
-      Session s = sessionFactory.getCurrentSession();
+      Session s = getSession();
 
       try
       {
@@ -948,7 +961,7 @@ public class PSCmsObjectMgr
    {"unchecked"})
    public Collection<PSConfig> findAllConfigs() throws PSCmsException
    {
-      Session s = sessionFactory.getCurrentSession();
+      Session s = getSession();
 
          List<PSConfig> result = s.createCriteria(PSConfig.class).list();
          for (PSConfig c : result)
@@ -963,7 +976,7 @@ public class PSCmsObjectMgr
    // implement IPSCmsObjectMgr.findConfig(String)
    public PSConfig findConfig(String name) throws PSCmsException
    {
-      Session s = sessionFactory.getCurrentSession();
+      Session s = getSession();
 
          PSConfig config = (PSConfig) s.get(PSConfig.class, name);
          if (PSConfigurationFactory.RELATIONSHIPS_CFG.equals(name))
@@ -977,7 +990,7 @@ public class PSCmsObjectMgr
    // implement IPSCmsObjectMgr.saveConfig(PSCOnfig)
    public void saveConfig(PSConfig config) throws PSCmsException
    {
-      Session s = sessionFactory.getCurrentSession();
+      Session s = getSession();
 
          if (config.getName().equals(PSConfigurationFactory.RELATIONSHIPS_CFG))
          {
@@ -1288,38 +1301,24 @@ public class PSCmsObjectMgr
    @SuppressWarnings("unchecked")
    public void flushSecondLevelCache()
    {
-      Session s = sessionFactory.getCurrentSession();
+       Cache cache = getSession().getSessionFactory().getCache();
 
-         SessionFactory fact = s.getSessionFactory();
+       if (cache != null) {
+           cache.evictAllRegions(); // Evict data from all query regions.
+       }
 
-         fact.getCache().evictQueryRegions();
-         Map<String, ClassMetadata> metamap = fact.getAllClassMetadata();
-         Map<String, CollectionMetadata> collmap = fact.getAllCollectionMetadata();
-         for (String entity : metamap.keySet())
-         {
-            ClassMetadata data = metamap.get(entity);
-            Class pclass = data.getMappedClass();
-            fact.getCache().evictEntityRegion(pclass);
-         }
-         for (String collection : collmap.keySet())
-         {
-            fact.getCache().evictCollectionRegion(collection);
-         }
          if (logger.isDebugEnabled())
             logger.debug("Flushed hibernate 2nd level cache.");
          
          // Clear the Eh cache
-         IPSCacheAccess cache = PSCacheAccessLocator.getCacheAccess();
-         cache.clear();
-
-
+        PSCacheAccessLocator.getCacheAccess().clear();
    }
 
    // Implements IPSRelationshipService.findAllRelationshipConfigNames()
    @SuppressWarnings("unchecked")
    public Collection<PSRelationshipConfigName> findAllRelationshipConfigNames()
    {
-      List<PSRelationshipConfigName> names = sessionFactory.getCurrentSession()
+      List<PSRelationshipConfigName> names = getSession()
               .createCriteria(PSRelationshipConfigName.class).list();
 
       if (names == null)
@@ -1332,7 +1331,7 @@ public class PSCmsObjectMgr
    @SuppressWarnings("unchecked")
    public List<PSRelationshipConfigName> findRelationshipConfigNames(String name)
    {
-      Session sess = sessionFactory.getCurrentSession();
+      Session sess = getSession();
 
          return sess.createCriteria(PSRelationshipConfigName.class).add(Restrictions.ilike("config_name", name))
                .list();
@@ -1380,7 +1379,7 @@ public class PSCmsObjectMgr
    @SuppressWarnings("unchecked")
    public List<IPSGuid> findPublicOrCurrentGuids(List<Integer> ids)
    {
-      Session s = sessionFactory.getCurrentSession();
+      Session s = getSession();
 
 
          List<PSComponentSummary> results = loadComponentSummaries(ids);
@@ -1409,7 +1408,7 @@ public class PSCmsObjectMgr
     */
    public PSCmsObject loadCmsObject(int objectType)
    {
-      Session s = sessionFactory.getCurrentSession();
+      Session s = getSession();
 
          PSCmsObject cmsObject = (PSCmsObject) s.get(PSCmsObject.class, objectType);
          return cmsObject;
@@ -1424,7 +1423,7 @@ public class PSCmsObjectMgr
    @SuppressWarnings("unchecked")
    public List<PSCmsObject> findAllCmsObjects()
    {
-      Session session = sessionFactory.getCurrentSession();
+      Session session = getSession();
 
          Query query = session.createQuery("from PSCmsObject");
 
@@ -1441,7 +1440,7 @@ public class PSCmsObjectMgr
          return Collections.emptySet();
       }
       
-      Session session = sessionFactory.getCurrentSession();
+      Session session = getSession();
 
          // Convert incoming id strings to id numbers as appropriate
          List<Integer> ids = new ArrayList<>();
@@ -1721,7 +1720,7 @@ public class PSCmsObjectMgr
     */
    public Collection<IPSItemEntry> loadAllItemEntries()
    {
-      Session session = sessionFactory.getCurrentSession();
+      Session session = getSession();
 
          Query q = session.createQuery(itemQuery);
          List<Object[]> listItems = q.list();
@@ -1747,7 +1746,7 @@ public class PSCmsObjectMgr
      */
     public IPSItemEntry loadItemEntry(Integer id)
     {
-        Session session = sessionFactory.getCurrentSession();
+        Session session = getSession();
 
         Query q = session.createQuery(itemQuery + " where c.m_contentId=" + id);
         List<Object[]> listItems = q.list();
@@ -1812,7 +1811,7 @@ public class PSCmsObjectMgr
    @Override
    public void forceCheckinUsers(HashMap<String, PSUserSession> usersMap)
    {
-      Session session = sessionFactory.getCurrentSession();
+      Session session = getSession();
       Validate.notNull(usersMap);
  
       if (usersMap.size()>0)
@@ -1881,7 +1880,7 @@ public class PSCmsObjectMgr
       }
          
    }
-   
+
    public void changeWorfklowForItems(List<Integer> folderIds, int workflowId, List<String> validStateNames)
          throws PSCmsException, PSORMException
    {
@@ -2024,7 +2023,7 @@ public class PSCmsObjectMgr
          return Collections.emptySet();
       }
       
-      Session session = sessionFactory.getCurrentSession();
+      Session session = getSession();
 
          Set<Long> rval;
          Set<Integer> results;
@@ -2099,7 +2098,7 @@ public class PSCmsObjectMgr
          histories.add(hist);
       }
       
-      Session s = sessionFactory.getCurrentSession();
+      Session s = getSession();
 
          int count=0;
          for (Integer id : ids)
@@ -2188,7 +2187,7 @@ public class PSCmsObjectMgr
    
    public void setRevisionLocks(List<Integer> ids)
    {
-      Session session = sessionFactory.getCurrentSession();
+      Session session = getSession();
 
 
          List<PSComponentSummary> summaries = loadComponentSummaries(ids);
@@ -2222,10 +2221,9 @@ public class PSCmsObjectMgr
       
    }
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void updateSummaryDateFieldBatch(String fieldName, Date dateToSet, List<Integer> ids, boolean updateExisting)
     {
-        Session s = sessionFactory.getCurrentSession();
+        Session s = getSession();
 
             String queryToUse = String.format(UPDATE_DATE_HQL, fieldName);
             if (!updateExisting)
@@ -2247,7 +2245,7 @@ public class PSCmsObjectMgr
         {
             // we have to call methods in this class with proxy to respect
             // transactional annotations.
-            IPSCmsObjectMgr objMgr = PSCmsObjectMgrLocator.getObjectManager();
+            IPSCmsObjectMgr objMgr = this;
             List<Integer> idBatch = new ArrayList<>();
             for (int id : ids)
             {

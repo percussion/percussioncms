@@ -24,7 +24,6 @@
 package com.percussion.services.contentmgr.ui;
 
 import com.percussion.cms.objectstore.PSComponentSummary;
-import com.percussion.design.objectstore.PSLocator;
 import com.percussion.services.contentmgr.IPSNodeDefinition;
 import com.percussion.services.contentmgr.impl.legacy.PSContentRepository;
 import com.percussion.services.contentmgr.impl.legacy.PSTypeConfiguration;
@@ -33,6 +32,8 @@ import com.percussion.services.legacy.PSCmsObjectMgrLocator;
 import com.percussion.utils.exceptions.PSORMException;
 import com.percussion.utils.jdbc.PSConnectionHelper;
 
+import javax.jcr.RepositoryException;
+import javax.naming.NamingException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -44,9 +45,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import javax.jcr.RepositoryException;
-import javax.naming.NamingException;
 
 /**
  * Find problems with a given content type's items. For a given content type,
@@ -108,9 +106,6 @@ public class PSConsistencyProblemFinder extends PSConsistencyBase
       PSTypeConfiguration config = PSContentRepository
             .getTypeConfiguration((int) ctid);
 
-      Connection connection = PSConnectionHelper.getDbConnection();
-      try
-      {
          IPSCmsObjectMgr cms = PSCmsObjectMgrLocator.getObjectManager();
          List<PSComponentSummary> summaries = cms
                .findComponentSummariesByType(ctid);
@@ -120,13 +115,6 @@ public class PSConsistencyProblemFinder extends PSConsistencyBase
             List<PSComponentSummary> sblock = summaries.subList(i, e);
             problems.addAll(check(sblock, config));
          }
-
-      }
-      finally
-      {
-         if (connection != null)
-            connection.close();
-      }
 
       return problems;
    }

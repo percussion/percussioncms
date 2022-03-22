@@ -23,11 +23,9 @@
  */
 package com.percussion.taxonomy.repository;
 
-import org.hibernate.Query;
+import com.percussion.taxonomy.domain.Relationship_type;
 import org.hibernate.Session;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
-
-import com.percussion.taxonomy.domain.*;
+import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 
 import java.util.Collection;
 
@@ -41,41 +39,26 @@ public class HibernateRelationship_typeDAO extends HibernateDaoSupport implement
 
    public Collection getAllRelationship_types()
    {
-      Session session = getSession();
-      try
-      {
-         // Optional: Add order by to query
-         return session.createQuery("from Relationship_type rel").list();
-      }
-      finally
-      {
-         releaseSession(session);
-      }
+      Session session = this.currentSession();
+
+      // Optional: Add order by to query
+      return session.createQuery("from Relationship_type rel").list();
    }
 
    public void saveRelationship_type(Relationship_type relationship_type)
    {
-      Session session = getSession();
-      try
-      {
+      Session session = this.currentSession();
+
          session.saveOrUpdate(relationship_type);
-      }
-      finally
-      {
-         releaseSession(session);
-      }
+
+
    }
 
    public void removeRelationship_type(Relationship_type relationship_type)
    {
-      Session session = getSession();
-      try
-      {
+      Session session = this.currentSession();
+
          session.delete(relationship_type);
-      }
-      finally
-      {
-         releaseSession(session);
-      }
+
    }
 }

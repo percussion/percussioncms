@@ -30,7 +30,7 @@ import com.percussion.services.PSBaseServiceLocator;
  */
 public class PSQueueSenderLocator extends PSBaseServiceLocator
 {
-   private static volatile IPSQueueSender qsnd=null;
+   private static  IPSQueueSender qsnd=null;
    /**
     * Gets the Queue Sender from the supplied bean name.
     * 
@@ -40,17 +40,11 @@ public class PSQueueSenderLocator extends PSBaseServiceLocator
     * @return the Queue Sender, never <code>null</code> in a correct 
     *    configuration.
     */
-   public static IPSQueueSender getQueueSender(String beanName)
+   public static synchronized IPSQueueSender getQueueSender(String beanName)
    {
       if (qsnd==null)
       {
-         synchronized (PSQueueSenderLocator.class)
-         {
-            if (qsnd==null)
-            {
-               qsnd = (IPSQueueSender) getBean(beanName);
-            }
-         }
+         qsnd = (IPSQueueSender) getBean(beanName);
       }
       return qsnd;
    }   

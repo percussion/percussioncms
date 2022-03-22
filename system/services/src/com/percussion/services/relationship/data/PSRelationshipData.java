@@ -112,7 +112,7 @@ public class PSRelationshipData implements Serializable
     */
    @SuppressWarnings("unchecked")
    @Transient
-   private List<PSRelationshipPropertyData> m_childProps = Collections.EMPTY_LIST;
+   private List<PSRelationshipPropertyData> m_childProps = Collections.emptyList();
 
    /**
     * The relationship config object, init by {@link #setConfig(PSRelationshipConfig)}
@@ -350,7 +350,7 @@ public class PSRelationshipData implements Serializable
       if (m_config.getCustomPropertyNames().isEmpty())
          throw new IllegalStateException("there is no (additional) child properties for this relationship.");
 
-      if (m_childProps == Collections.EMPTY_LIST)
+      if (m_childProps.equals(Collections.emptyList()))
          m_childProps = new ArrayList<>();
       else
          m_childProps.clear();
@@ -369,7 +369,7 @@ public class PSRelationshipData implements Serializable
     */
    public void addProperty (PSRelationshipPropertyData prop)
    {
-      if (m_childProps == Collections.EMPTY_LIST)
+      if (m_childProps.equals(Collections.emptyList()))
          m_childProps = new ArrayList<>();
 
       prop.setPersisted(isPersisted());

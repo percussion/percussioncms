@@ -105,8 +105,7 @@ import static org.apache.commons.lang.Validate.notNull;
 @Component("sitePublishDao")
 @Lazy
 @Transactional(noRollbackFor = Exception.class)
-public class PSSitePublishDao
-{
+public class PSSitePublishDao implements com.percussion.sitemanage.dao.IPSSitePublishDao {
 
     /**
      * The publishing ws. Initialized in ctor, never <code>null</code> after
@@ -152,6 +151,7 @@ public class PSSitePublishDao
         this.siteMgr = siteMgr;
     }
 
+    @Override
     public List<PSSiteSummary> findAllSummaries() {
         List<IPSSite> sites = publishWs.findAllSites();
 
@@ -177,6 +177,7 @@ public class PSSitePublishDao
      * 
      * @return the site with the specified ID. It may be <code>null</code> if cannot find the site.
      */
+    @Override
     public PSSiteSummary findByLegacySiteId(String id, boolean isValidate)
     {
         IPSGuid siteGuid = idMapper.getGuid(id);
@@ -196,6 +197,7 @@ public class PSSitePublishDao
     }
     
     
+    @Override
     public PSSiteSummary findSummary(String name) throws IPSGenericDao.LoadException {
         try
         {
@@ -239,6 +241,7 @@ public class PSSitePublishDao
      * @return <code>true</code> if the update resulted in a change to a pubserver definition, <code>false</code>
      * if not.
      */
+    @Override
     public boolean updateSite(IPSSite site, String newName, String newDescrption) throws PSNotFoundException {
         notNull(site, "site");
         notEmpty(newName, "newName");
@@ -266,6 +269,7 @@ public class PSSitePublishDao
      * @param site the existing site, not <code>null</code>.
      * @param publishProps publishing properties to be updated on the site. not <code>null</code>.
      */
+    @Override
     public void updateSitePublishProperties(IPSSite site, PSSitePublishProperties publishProps) throws PSNotFoundException {
         notNull(site, "site");
         notNull(publishProps, "publishProps");
@@ -296,7 +300,7 @@ public class PSSitePublishDao
         publishWs.saveSite(site);
     }
     
-    protected boolean saveSite(PSSite site) throws PSErrorException, IPSPubServerService.PSPubServerServiceException, PSNotFoundException {
+    public boolean saveSite(PSSite site) throws PSErrorException, IPSPubServerService.PSPubServerServiceException, PSNotFoundException {
         notNull(site,"site may not be null");
         
 
@@ -346,6 +350,7 @@ public class PSSitePublishDao
         return isNew;
     }
     
+    @Override
     public IPSSite createSite(String siteName) throws PSNotFoundException {
 
         IPSSite tmpSite = publishWs.createSite();
@@ -360,6 +365,7 @@ public class PSSitePublishDao
      * 
      * @return The edition, or <code>null</code> if not found.
      */
+    @Override
     public IPSEdition findEdition(IPSGuid pubServerId, PubType pubType)
     {
         Validate.notNull(pubServerId);
@@ -441,6 +447,7 @@ public class PSSitePublishDao
      * 
      * @return the absolute path of the root publishing location, never blank.
      */
+    @Override
     public String getPublishingRoot(String basePath, String siteName)
     {
         notNull(basePath);
@@ -463,6 +470,7 @@ public class PSSitePublishDao
      * 
      * @return the base path, never <code>null</code>.
      */
+    @Override
     public String getPublishingBase(String siteRoot, String siteName)
     {
         notEmpty(siteRoot);
@@ -500,6 +508,7 @@ public class PSSitePublishDao
      * @return the relative directory of the publishing path for the site, never blank.  Forward slash is used as the
      * file separator.
      */
+    @Override
     public String getPublishingDeliveryRoot(String siteName, String publishServerType, String deliveryRootPath)
     {
         String folderPath = StringUtils.EMPTY;
@@ -529,6 +538,7 @@ public class PSSitePublishDao
      * @return the relative directory of the publishing path for the site, never blank.  Forward slash is used as the
      * file separator.
      */
+    @Override
     public String makePublishingDir(String siteName)
     {
         notEmpty(siteName);
@@ -548,6 +558,7 @@ public class PSSitePublishDao
         }
     }
         
+    @Override
     public void convertToSummary(IPSSite site, PSSiteSummary summary) {
 
         summary.setGuid(new PSGuid(PSTypeEnum.SITE, site.getSiteId()).toString());
@@ -671,6 +682,7 @@ public class PSSitePublishDao
      * @param pubServer the {@link PSPubServer publish server}, must not be
      *            <code>null</code>.
      */
+    @Override
     public void createPublishingItemsForPubServer(IPSSite site, PSPubServer pubServer, boolean isDefaultServer) throws PSNotFoundException {
         notNull(site, "site");
         notNull(pubServer, "pubServer");
@@ -796,11 +808,13 @@ public class PSSitePublishDao
      * if one is not provided by the user.
      * @return should be never <code>null</code>, but not guaranteed.
      */
+    @Override
     public String getWebServerFileSystemRoot()
     {
         return webServerFileSystemRoot;
     }
 
+    @Override
     public void setWebServerFileSystemRoot(String fileSystemRoot)
     {
         this.webServerFileSystemRoot = fileSystemRoot;
@@ -810,11 +824,13 @@ public class PSSitePublishDao
      * The default server port of the webserver.
      * @return never <code>null</code>.
      */
+    @Override
     public String getWebServerPort()
     {
         return webServerPort;
     }
 
+    @Override
     public void setWebServerPort(String webServerPort)
     {
         this.webServerPort = webServerPort;
@@ -1094,6 +1110,7 @@ public class PSSitePublishDao
      * @param oldServer
      * @param server
      */
+    @Override
     public void updateServerEditions(IPSSite site, PSPubServer oldServer, PSPubServer server, boolean isDefaultServer) throws PSNotFoundException {
         notNull(oldServer);
         notNull(server);
@@ -1730,6 +1747,7 @@ public class PSSitePublishDao
         return !equalsIgnoreCase(oldServer.getName(), pubServer.getName());
     }
 
+    @Override
     public void deleteSite(String name)
     {
         notEmpty(name, "name may not be blank");
@@ -1836,6 +1854,7 @@ public class PSSitePublishDao
      * @throws PSErrorException if no edition is found for the default publish
      *             server.
      */
+    @Override
     public String getSiteDeliveryType(IPSSite site) throws PSNotFoundException {
         // Get the default publish server for the site
         PSPubServer defaultPubServer = getPubServerService().getDefaultPubServer(site.getGUID());
@@ -1864,6 +1883,7 @@ public class PSSitePublishDao
      * @throws PSErrorException if no edition is found for the staging publish
      *             server.
      */
+    @Override
     public String getStagingDeliveryType(IPSSite site) throws PSNotFoundException {
         // Get the default publish server for the site
         PSPubServer stagingPubServer = PSSitePublishDaoHelper.getStagingPubServer(site.getGUID());
@@ -1891,6 +1911,7 @@ public class PSSitePublishDao
      * 
      * @param site may not be <code>null</code>.
      */
+    @Override
     public void addPublishNow(IPSSite site) throws PSNotFoundException {
         addOnDemandEdition(site, PSSitePublishDaoHelper.PUBLISH_NOW);
     }
@@ -1900,6 +1921,7 @@ public class PSSitePublishDao
      * 
      * @param site may not be <code>null</code>.
      */
+    @Override
     public void addUnpublishNow(IPSSite site) throws PSNotFoundException {
         addOnDemandEdition(site, PSSitePublishDaoHelper.UNPUBLISH_NOW);
     }
@@ -1909,6 +1931,7 @@ public class PSSitePublishDao
      * 
      * @param site may not be <code>null</code>.
      */
+    @Override
     public void addStagingPublishNow(IPSSite site) throws PSNotFoundException {
         addOnDemandEdition(site, PSSitePublishDaoHelper.STAGING_PUBLISH_NOW);
     }
@@ -1918,6 +1941,7 @@ public class PSSitePublishDao
      * 
      * @param site may not be <code>null</code>.
      */
+    @Override
     public void addStagingUnpublishNow(IPSSite site) throws PSNotFoundException {
         addOnDemandEdition(site, PSSitePublishDaoHelper.STAGING_UNPUBLISH_NOW);
     }
@@ -2008,6 +2032,7 @@ public class PSSitePublishDao
      * @param site the existing site, not <code>null</code>.
      * @param pubServer The publish server, may not be <code>null</code>.
      */
+    @Override
     public void setPublishServerAsDefault(IPSSite site, PSPubServer pubServer) throws PSNotFoundException {
         notNull(site, "site");
         notNull(pubServer, "pubServer");
@@ -2032,6 +2057,7 @@ public class PSSitePublishDao
      * 
      * @param pubServer The pubServer, may not be <code>null</code>.
      */
+    @Override
     public void deletePublishingItemsByPubServer(PSPubServer pubServer) throws PSNotFoundException {
         // delete server entry in the site's tch file
         handleDeleteServerEntryFromTchFile(pubServer);
@@ -2140,31 +2166,7 @@ public class PSSitePublishDao
         }
         return false;
     }
-    /**
-     * Constant for the full edition name.
-     */
-    public static final String FULL = "FULL";
 
-    /**
-     * Constant for the full site content list name.
-     */
-    public static final String FULL_SITE = "FULL_SITE";
-
-    /**
-     * Constant for the full asset content list name.
-     */
-    public static final String FULL_ASSET = "FULL_ASSET";
-    
-    /**
-     * Constant for the staging site content list name.
-     */
-    public static final String STAGING_SITE = "STAGING_SITE";
-
-    /**
-     * Constant for the staging asset content list name.
-     */
-    public static final String STAGING_ASSET = "STAGING_ASSET";
-    
     /**
      * Constant for the default search generator.
      */

@@ -33,8 +33,10 @@ import com.percussion.webservices.PSErrorException;
 import com.percussion.webservices.PSWebserviceErrors;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.hibernate.Session;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 /**
  * Common implementations used with the public and private system 
@@ -43,18 +45,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class PSSystemBaseWs
 {
 
-   private SessionFactory sessionFactory;
-
    protected static final Logger log = LogManager.getLogger(IPSConstants.WEBSERVICES_LOG);
 
-   public SessionFactory getSessionFactory() {
-      return sessionFactory;
+   @PersistenceContext
+   private EntityManager entityManager;
+
+   protected Session getSession(){
+      return entityManager.unwrap(Session.class);
    }
 
-   @Autowired
-   public void setSessionFactory(SessionFactory sessionFactory) {
-      this.sessionFactory = sessionFactory;
-   }
 
    /**
     * Loads the (cached) relationship config set.

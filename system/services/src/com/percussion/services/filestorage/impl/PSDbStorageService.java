@@ -85,7 +85,6 @@ import static org.apache.commons.lang.Validate.notNull;
  * @author stephenbolton
  *
  */
-@Transactional
 public class PSDbStorageService implements IPSFileStorageService, InitializingBean 
 {
 
@@ -201,7 +200,6 @@ public class PSDbStorageService implements IPSFileStorageService, InitializingBe
     * com.percussion.services.filestorage.IPSFileStorageService#reparseMeta(
     * java.lang.String)
     */
-   @Transactional
    public boolean reparseMeta(String hash)
    {
       PSBinary binary = hashDao.getBinary(hash);
@@ -245,7 +243,6 @@ public class PSDbStorageService implements IPSFileStorageService, InitializingBe
     * com.percussion.services.filestorage.IPSFileStorageService#getMeta(java
     * .lang.String)
     */
-   @Transactional
    public PSMeta getMeta(String hash)
    {
       return convertFromDbMeta(getDbMeta(hash));
@@ -258,7 +255,6 @@ public class PSDbStorageService implements IPSFileStorageService, InitializingBe
     * com.percussion.services.filestorage.IPSFileStorageService#getStream(java
     * .lang.String)
     */
-   @Transactional
    public InputStream getStream(String hash)
    {
       if (StringUtils.isNotEmpty(hash))
@@ -300,7 +296,6 @@ public class PSDbStorageService implements IPSFileStorageService, InitializingBe
     * com.percussion.services.filestorage.IPSFileStorageService#getText(java
     * .lang.String)
     */
-   @Transactional
    public String getText(String hash)
    {
       notNull(hash);
@@ -816,6 +811,7 @@ public class PSDbStorageService implements IPSFileStorageService, InitializingBe
    /* (non-Javadoc)
     * @see com.percussion.services.filestorage.IPSFileStorageService#importAllBinary(java.lang.String)
     */
+   @Transactional
    public synchronized boolean importAllBinary(String rootPath)
    {
       if (impExpThread == null || !impExpThread.isAlive())

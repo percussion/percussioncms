@@ -86,7 +86,6 @@ import com.percussion.services.notification.PSNotificationEvent;
 import com.percussion.services.notification.PSNotificationEvent.EventType;
 import com.percussion.services.sitemgr.IPSSiteManager;
 import com.percussion.services.sitemgr.PSSiteHelper;
-import com.percussion.services.sitemgr.PSSiteManagerException;
 import com.percussion.services.sitemgr.PSSiteManagerLocator;
 import com.percussion.services.utils.general.PSServiceConfigurationBean;
 import com.percussion.services.utils.xml.PSXmlSerializationHelper;
@@ -108,7 +107,6 @@ import org.apache.logging.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
@@ -127,6 +125,12 @@ import javax.jcr.Property;
 import javax.jcr.RepositoryException;
 import javax.jcr.UnsupportedRepositoryOperationException;
 import javax.jcr.ValueFormatException;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLEventReader;
@@ -163,19 +167,11 @@ import java.util.stream.Collectors;
  * @author dougrand
  */
 @PSBaseBean("sys_assemblyService")
-@Transactional(noRollbackFor = Exception.class)
 public class PSAssemblyService implements IPSAssemblyService
 {
-   private SessionFactory sessionFactory;
+   @PersistenceContext
+   private EntityManager entityManager;
 
-   public SessionFactory getSessionFactory() {
-      return sessionFactory;
-   }
-
-   @Autowired
-   public void setSessionFactory(SessionFactory sessionFactory) {
-      this.sessionFactory = sessionFactory;
-   }
    /**
     * Cache key for content cache.
     */
@@ -475,6 +471,7 @@ public class PSAssemblyService implements IPSAssemblyService
       }
    }
 
+   @Transactional
    public IPSAssemblyResult processServletRequest(HttpServletRequest request, String templatename, String variantidstr)
          throws PSAssemblyException
    {
@@ -943,6 +940,7 @@ public class PSAssemblyService implements IPSAssemblyService
     *           <code>null</code>
     * @throws PSAssemblyException
     */
+   @Transactional
    public void handleItemTemplates(List<IPSAssemblyItem> items) throws PSAssemblyException
    {
       // Optimize in case the templates are already present, i.e. they
@@ -1101,7 +1099,6 @@ public class PSAssemblyService implements IPSAssemblyService
     * @throws UnsupportedRepositoryOperationException
     * @throws PathNotFoundException
     * @throws PSCmsException
-    * @throws PSSiteManagerException
     */
    private PSAssemblyJexlEvaluator setupItemForAssembly(IPSAssemblyItem work, boolean isLegacy)
          throws PSAssemblyException, PSFilterException, PSCmsException, PathNotFoundException,
@@ -1317,6 +1314,7 @@ public class PSAssemblyService implements IPSAssemblyService
       {PSTypeEnum.TEMPLATE, PSTypeEnum.SLOT};
    }
 
+   @Transactional
    public List<IPSCatalogSummary> getSummaries(PSTypeEnum type)
    {
       List<IPSCatalogSummary> rval = new ArrayList<>();
@@ -1335,7 +1333,7 @@ public class PSAssemblyService implements IPSAssemblyService
    @Transactional
    public void loadByType(PSTypeEnum type, String item) throws PSCatalogException
    {
-      Session s = sessionFactory.getCurrentSession();
+      Session session = entityManager.unwrap(Session.class);
       try
       {
          if (type.equals(PSTypeEnum.TEMPLATE))
@@ -1380,7 +1378,7 @@ public class PSAssemblyService implements IPSAssemblyService
                      binding.setVersion(bversion);
                   }
                }
-               s.merge(temp);
+               session.merge(temp);
             }
 
             saveTemplate(temp);
@@ -1422,6 +1420,7 @@ public class PSAssemblyService implements IPSAssemblyService
 
    }
 
+   @Transactional()
    public String saveByType(IPSGuid id) throws PSCatalogException
    {
       try
@@ -1439,7 +1438,7 @@ public class PSAssemblyService implements IPSAssemblyService
          else
          {
             PSTypeEnum type = PSTypeEnum.valueOf(id.getType());
-            throw new PSCatalogException(IPSCatalogErrors.UNKNOWN_TYPE, type.toString());
+            throw new PSCatalogException(IPSCatalogErrors.UNKNOWN_TYPE, type);
          }
       }
       catch (PSAssemblyException e)
@@ -1456,6 +1455,7 @@ public class PSAssemblyService implements IPSAssemblyService
       }
    }
 
+   @Transactional()
    public PSAssemblyTemplate createTemplate()
    {
       IPSGuidManager gmgr = PSGuidManagerLocator.getGuidMgr();
@@ -1485,6 +1485,7 @@ public class PSAssemblyService implements IPSAssemblyService
       return var;
    }
 
+   @Transactional(readOnly = true)
    public IPSAssemblyTemplate loadUnmodifiableTemplate(IPSGuid tid) throws PSAssemblyException
    {
       if (tid == null)
@@ -1499,6 +1500,7 @@ public class PSAssemblyService implements IPSAssemblyService
       return var;
    }
 
+   @Transactional
    public IPSAssemblyTemplate findTemplate(IPSGuid tid)
    {
       if (tid == null)
@@ -1522,7 +1524,7 @@ public class PSAssemblyService implements IPSAssemblyService
    @Transactional
    public PSAssemblyTemplate findTemplate(IPSGuid id, boolean loadSlots)
    {
-      Session session = sessionFactory.getCurrentSession();
+      Session session = entityManager.unwrap(Session.class);
 
          PSAssemblyTemplate var = session.get(PSAssemblyTemplate.class, id.longValue());
 
@@ -1590,7 +1592,7 @@ public class PSAssemblyService implements IPSAssemblyService
    @Transactional
    public void saveTemplate(IPSAssemblyTemplate var) throws PSAssemblyException
    {
-      Session sess = sessionFactory.getCurrentSession();
+      Session session = entityManager.unwrap(Session.class);
       try
       {
          // ideally, we need to make sure the saved object is not in the
@@ -1602,8 +1604,8 @@ public class PSAssemblyService implements IPSAssemblyService
          //
          // so we arse not check the saved object against the object stored in
          // "memory" region of EHcache, which is the same way in 6.5.2.
-         sess.saveOrUpdate(var);
-         sess.flush();
+         session.saveOrUpdate(var);
+         session.flush();
 
          // the object will be evicted by the framework,
          // see PSEhCacheAccessor.notifyEvent()
@@ -1623,14 +1625,15 @@ public class PSAssemblyService implements IPSAssemblyService
 
 
 
-   @SuppressWarnings("unchecked")
+   @Transactional
    public PSAssemblyTemplate findTemplateByName(String name) throws PSAssemblyException
    {
       if (name == null || StringUtils.isBlank(name))
       {
          throw new IllegalArgumentException("name may not be null or empty");
       }
-      PSAssemblyTemplate template = sessionFactory.getCurrentSession().bySimpleNaturalId(PSAssemblyTemplate.class).load(name);
+      Session session = entityManager.unwrap(Session.class);
+      PSAssemblyTemplate template = session.bySimpleNaturalId(PSAssemblyTemplate.class).load(name);
       if (template == null)
       {
          throw new PSAssemblyException(IPSAssemblyErrors.TEMPLATE_MISSING, name);
@@ -1638,7 +1641,7 @@ public class PSAssemblyService implements IPSAssemblyService
       return template;
    }
 
-   @SuppressWarnings("unchecked")
+   @Transactional
    public IPSAssemblyTemplate findTemplateByNameAndType(String name, IPSGuid contenttype) throws PSAssemblyException
    {
 
@@ -1654,10 +1657,9 @@ public class PSAssemblyService implements IPSAssemblyService
    }
 
    @Transactional
-   @SuppressWarnings("unchecked")
    public List<IPSAssemblyTemplate> findTemplatesByAssemblyUrl(String url, boolean loadSlot)
    {
-      Session session = sessionFactory.getCurrentSession();
+      Session session = entityManager.unwrap(Session.class);
       List<IPSAssemblyTemplate> templates;
 
          Criteria c = session.createCriteria(PSAssemblyTemplate.class);
@@ -1676,11 +1678,10 @@ public class PSAssemblyService implements IPSAssemblyService
    }
 
    @Transactional
-   @SuppressWarnings("unchecked")
    public List<IPSAssemblyTemplate> findTemplatesBySlot(IPSTemplateSlot slot) throws PSAssemblyException
    {
       List<IPSAssemblyTemplate> rval;
-      Session session = sessionFactory.getCurrentSession();
+      Session session = entityManager.unwrap(Session.class);
 
          Criteria c = session.createCriteria(PSAssemblyTemplate.class);
          c.setCacheable(true);
@@ -1703,25 +1704,23 @@ public class PSAssemblyService implements IPSAssemblyService
    }
 
    @Transactional
-   @SuppressWarnings("unchecked")
    public List<IPSAssemblyTemplate> findTemplatesByContentType(IPSGuid contenttype) {
-      Session sess = sessionFactory.getCurrentSession();
-      return sess.get(PSNodeDefinition.class, contenttype.longValue())
+      Session session = entityManager.unwrap(Session.class);
+      return session.get(PSNodeDefinition.class, contenttype.longValue())
               .getCvDescriptors()
               .stream()
-              .map(t -> sess.load(PSAssemblyTemplate.class, (long) t.getTemplateId().getUUID()))
+              .map(t -> session.load(PSAssemblyTemplate.class, (long) t.getTemplateId().getUUID()))
               .map(t -> {
                  Hibernate.initialize(t); return t;})
               .collect(Collectors.toList());
    }
 
    @Transactional
-   @SuppressWarnings("unchecked")
    public List<IPSAssemblyTemplate> findTemplates(String name, String contentType,
          Set<IPSAssemblyTemplate.OutputFormat> outputFormats, IPSAssemblyTemplate.TemplateType type,
          Boolean globalFilter, Boolean legacyFilter, String assembler) throws PSAssemblyException
    {
-      Session session = sessionFactory.getCurrentSession();
+      Session session = entityManager.unwrap(Session.class);
       try
       {
          // get all templates if no name was specified
@@ -1790,10 +1789,17 @@ public class PSAssemblyService implements IPSAssemblyService
    }
 
    @Transactional
-   @SuppressWarnings("unchecked")
    public Set<IPSAssemblyTemplate> findAllTemplates()
    {
-      List<IPSAssemblyTemplate> list = sessionFactory.getCurrentSession().createCriteria(PSAssemblyTemplate.class).list();
+      List<IPSAssemblyTemplate> list=null;
+      Session session = entityManager.unwrap(Session.class) ;
+         CriteriaBuilder builder = session.getCriteriaBuilder();
+         CriteriaQuery<PSAssemblyTemplate> criteria = builder.createQuery(PSAssemblyTemplate.class);
+         Root<PSAssemblyTemplate> root = criteria.from(PSAssemblyTemplate.class);
+         criteria.select(root);
+
+         Query query = session.createQuery(criteria);
+         list = query.getResultList();
 
       return list == null ? Collections.emptySet() : new HashSet<>(list);
    }
@@ -1803,18 +1809,17 @@ public class PSAssemblyService implements IPSAssemblyService
     *
     * @return a set of slots, could be empty but never <code>null</code>
     */
-   @SuppressWarnings("unchecked")
    private List<IPSTemplateSlot> findAllSlots()
    {
-      return sessionFactory.getCurrentSession().createCriteria(PSTemplateSlot.class).list();
+      Session session = entityManager.unwrap(Session.class);
+      return session.createCriteria(PSTemplateSlot.class).list();
    }
 
    @Transactional
-   @SuppressWarnings("unchecked")
    public Set<IPSAssemblyTemplate> findAllGlobalTemplates()
    {
       Set<IPSAssemblyTemplate> rval;
-      Session session = sessionFactory.getCurrentSession();
+      Session session = entityManager.unwrap(Session.class);
 
          Criteria c = session.createCriteria(PSAssemblyTemplate.class);
          c.add(Restrictions.eq("outputFormat", OutputFormat.Global.ordinal()));
@@ -1904,10 +1909,12 @@ public class PSAssemblyService implements IPSAssemblyService
    @Transactional
    public void deleteTemplate(IPSGuid id) throws PSAssemblyException
    {
+      Session session = entityManager.unwrap(Session.class);
+
       try
       {
          IPSAssemblyTemplate template = loadTemplate(id, false);
-         sessionFactory.getCurrentSession().delete(template);
+         session.delete(template);
          // The saved object will be (indirectly) evicted by the framework
       }
       catch (DataAccessException e)
@@ -1916,6 +1923,7 @@ public class PSAssemblyService implements IPSAssemblyService
       }
    }
 
+   @Transactional()
    public IPSTemplateSlot createSlot()
    {
       IPSGuidManager gmgr = PSGuidManagerLocator.getGuidMgr();
@@ -1951,6 +1959,7 @@ public class PSAssemblyService implements IPSAssemblyService
       return slot;
    }
 
+   @Transactional
    public IPSTemplateSlot findSlot(IPSGuid id)
    {
       if (id == null)
@@ -1978,7 +1987,8 @@ public class PSAssemblyService implements IPSAssemblyService
    @Transactional
    public IPSTemplateSlot getSlotById(IPSGuid id)
    {
-      return sessionFactory.getCurrentSession().get(PSTemplateSlot.class, id.longValue());
+      Session session = entityManager.unwrap(Session.class);
+      return session.get(PSTemplateSlot.class, id.longValue());
    }
 
    @Transactional
@@ -1997,10 +2007,10 @@ public class PSAssemblyService implements IPSAssemblyService
    @Transactional
    public void saveSlot(IPSTemplateSlot slot) throws PSAssemblyException
    {
-      Session s = sessionFactory.getCurrentSession();
+      Session session = entityManager.unwrap(Session.class);
       try
       {
-         s.saveOrUpdate( slot );
+         session.saveOrUpdate( slot );
       }
       catch (Exception e)
       {
@@ -2012,7 +2022,7 @@ public class PSAssemblyService implements IPSAssemblyService
       }
       finally
       {
-         s.flush();
+         session.flush();
 
       }
    }
@@ -2020,7 +2030,8 @@ public class PSAssemblyService implements IPSAssemblyService
    @Transactional
    public IPSTemplateSlot findSlotByName(String name) throws PSAssemblyException
    {
-      PSTemplateSlot slot = sessionFactory.getCurrentSession().bySimpleNaturalId(PSTemplateSlot.class).load(name);
+      Session session = entityManager.unwrap(Session.class);
+      PSTemplateSlot slot = session.bySimpleNaturalId(PSTemplateSlot.class).load(name);
 
       if (slot == null)
       {
@@ -2033,7 +2044,7 @@ public class PSAssemblyService implements IPSAssemblyService
    @Transactional
    public List<IPSTemplateSlot> findSlotsByName(String name)
    {
-      Session session = sessionFactory.getCurrentSession();
+      Session session = entityManager.unwrap(Session.class);
          // get all slots if no name was specified
          if (StringUtils.isBlank(name) || name.equals("%"))
             return findAllSlots();
@@ -2056,12 +2067,14 @@ public class PSAssemblyService implements IPSAssemblyService
    @Transactional
    public List<IPSTemplateSlot> findSlotsByNames(List<String> names)
    {
+      Session session = entityManager.unwrap(Session.class);
+
       if (names == null)
       {
          throw new IllegalArgumentException("names may not be null");
       }
 
-      return names.stream().map( name -> sessionFactory.getCurrentSession()
+      return names.stream().map( name -> session
               .bySimpleNaturalId(PSTemplateSlot.class).load(name))
               .collect(Collectors.toList());
    }
@@ -2071,9 +2084,14 @@ public class PSAssemblyService implements IPSAssemblyService
    {
       try
       {
+         Session session = entityManager.unwrap(Session.class);
          IPSTemplateSlot slot = loadSlot(id);
-         sessionFactory.getCurrentSession().delete(slot);
+         session.delete(slot);
          // The deleted object will be (indirectly) evicted by the framework
+         IPSCacheAccess cache = getCache();
+         IPSGuid slotId = slot.getGUID();
+         cache.evict(slotId, IPSCacheAccess.IN_MEMORY_STORE);
+
       }
       catch (DataAccessException e)
       {
@@ -2101,7 +2119,6 @@ public class PSAssemblyService implements IPSAssemblyService
    }
 
    @Transactional
-   @SuppressWarnings("unchecked")
    public String getLandingPageLink(IPSAssemblyItem parentItem, Node landingPage, IPSGuid templateId)
          throws PSAssemblyException
    {
@@ -2252,7 +2269,6 @@ public class PSAssemblyService implements IPSAssemblyService
 
       return url;
    }
-
 
 
    public void setCurrentAssemblyItem(IPSAssemblyItem item)

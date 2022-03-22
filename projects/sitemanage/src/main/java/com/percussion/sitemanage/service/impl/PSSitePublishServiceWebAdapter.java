@@ -23,6 +23,7 @@
  */
 package com.percussion.sitemanage.service.impl;
 
+import com.percussion.cms.IPSConstants;
 import com.percussion.cms.PSRelationshipChangeEvent;
 import com.percussion.cms.objectstore.PSRelationshipFilter;
 import com.percussion.design.objectstore.PSRelationship;
@@ -46,8 +47,8 @@ import com.percussion.services.notification.PSNotificationServiceLocator;
 import com.percussion.services.relationship.IPSRelationshipService;
 import com.percussion.services.relationship.PSRelationshipServiceLocator;
 import com.percussion.services.sitemgr.IPSSite;
+import com.percussion.share.dao.IPSFolderHelper;
 import com.percussion.share.dao.IPSGenericDao;
-import com.percussion.share.dao.impl.PSFolderHelper;
 import com.percussion.share.data.PSPagedItemList;
 import com.percussion.share.service.IPSIdMapper;
 import com.percussion.share.service.exception.PSDataServiceException;
@@ -99,12 +100,12 @@ public class PSSitePublishServiceWebAdapter
    private IPSContentChangeService changeSvc;
 
    @Autowired
-   private PSFolderHelper folderHelper;
+   private IPSFolderHelper folderHelper;
 
     @Autowired
     IPSRelationshipService relationshipService;
 
-   private static final Logger log = LogManager.getLogger(PSSitePublishServiceWebAdapter.class);
+   private static final Logger log = LogManager.getLogger(IPSConstants.PUBLISHING_LOG);
 
    /**
     * Constructs a PSSitePublishServiceWebAdapter object.

@@ -186,7 +186,9 @@ public class PSAssetService extends PSAbstractFullDataService<PSAsset, PSAssetSu
      * @param assetUploadFolderPathMap used for figuring out the folder path for new assets.
      */
     @Autowired
-    public PSAssetService(IPSIdMapper idMapper, IPSPageService pageService,
+    public PSAssetService(
+			IPSIdMapper idMapper,
+			IPSPageService pageService,
             @Qualifier("sys_templateService") IPSTemplateService templateService,
             IPSWidgetService widgetService,
             IPSContentDesignWs contentDs,

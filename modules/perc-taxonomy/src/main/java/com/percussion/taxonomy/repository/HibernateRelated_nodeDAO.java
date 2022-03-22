@@ -24,9 +24,10 @@
 
 package com.percussion.taxonomy.repository;
 
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
-
-import com.percussion.taxonomy.domain.*;
+import com.percussion.taxonomy.domain.Related_node;
+import org.hibernate.query.Query;
+import org.springframework.orm.hibernate5.HibernateCallback;
+import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 
 import java.util.Collection;
 
@@ -39,7 +40,11 @@ public class HibernateRelated_nodeDAO extends HibernateDaoSupport implements Rel
     public Collection getAllRelated_nodes() {
         //Optional: Add order by to query
         String queryString = "from Related_node rn left join fetch rn.relationship";
-        return (Collection) getHibernateTemplate().execute(new HibernateQuery(queryString));
+        return (Collection) getHibernateTemplate().execute((HibernateCallback) session -> {
+            Query query = session.createQuery(queryString);
+            return query.list();
+        });
+
     }
 
     public void saveRelated_node(Related_node related_node) {

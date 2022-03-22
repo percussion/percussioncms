@@ -72,12 +72,14 @@ import org.apache.logging.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -111,24 +113,19 @@ import static org.apache.commons.lang.Validate.notNull;
  * Implements all services defined with the <code>IPSSystemService</code>
  * interface.
  */
-@Transactional
 @PSBaseBean("sys_systemService")
+@Transactional
 public class PSSystemService
    implements IPSSystemService
 {
 
-   private SessionFactory sessionFactory;
+   @PersistenceContext
+   private EntityManager entityManager;
 
-
-   public SessionFactory getSessionFactory() {
-      return sessionFactory;
+   private Session getSession(){
+      return entityManager.unwrap(Session.class);
    }
-
-   @Autowired
-   public void setSessionFactory(SessionFactory sessionFactory) {
-      this.sessionFactory = sessionFactory;
-   }
-
+   
    public PSSystemService(IPSDatasourceManager dsMgr,  
          IPSGuidManager guidMgr, IPSWorkflowService wfService, IPSCmsObjectMgr cmsMgr)
    {
@@ -141,10 +138,9 @@ public class PSSystemService
    /* (non-Javadoc)
     * @see IPSSystemService#findSharedPropertiesByName(String)
     */
-   @SuppressWarnings("unchecked")
    public List<PSSharedProperty> findSharedPropertiesByName(String name)
    {
-      Session session = sessionFactory.getCurrentSession();
+      Session session = getSession();
 
          // get all shared properties if no name is supplied
          if (StringUtils.isBlank(name))
@@ -171,13 +167,12 @@ public class PSSystemService
       if (id == null)
          throw new IllegalArgumentException("id cannot be null");
 
-      Session session = sessionFactory.getCurrentSession();
+      Session session = getSession();
 
          Criteria criteria = session.createCriteria(PSSharedProperty.class);
          criteria.add(Restrictions.eq("id", id.longValue()));
 
-         List<PSSharedProperty> properties =
-            (List<PSSharedProperty>) criteria.list();
+         List<PSSharedProperty> properties = criteria.list();
          if (properties.isEmpty())
             throw new PSSystemException(
                IPSSystemErrors.MISSING_SHARED_PROPERTY, id);
@@ -189,6 +184,7 @@ public class PSSystemService
    /* (non-Javadoc)
     * @see IPSSystemService#deleteSharedProperty(IPSGuid)
     */
+   @Transactional
    public void deleteSharedProperty(IPSGuid id)
    {
       if (id == null)
@@ -197,7 +193,7 @@ public class PSSystemService
       try
       {
          PSSharedProperty property = loadSharedProperty(id);
-         sessionFactory.getCurrentSession().delete(property);
+         getSession().delete(property);
       }
       catch (PSSystemException e)
       {
@@ -208,12 +204,13 @@ public class PSSystemService
    /* (non-Javadoc)
     * @see IPSSystemService#saveSharedProperty(PSSharedProperty)
     */
+   @Transactional
    public void saveSharedProperty(PSSharedProperty property)
    {
       if (property == null)
          throw new IllegalArgumentException("property cannot be null");
 
-      Session session = sessionFactory.getCurrentSession();
+      Session session = getSession();
       try
       {
          if (property.getVersion() == null)
@@ -258,8 +255,9 @@ public class PSSystemService
             }
             catch (Exception e)
             {
-               ms_logger.error("Error finding dependencies for :" +
-                  id.toString(), e);
+               ms_logger.error("Error finding dependencies for : {} Error: {}",
+                  id, PSExceptionUtils.getMessageForLog(e));
+
                throw new RuntimeException(e);
             }
          }
@@ -310,8 +308,8 @@ public class PSSystemService
             }
             catch (Exception e)
             {
-               ms_logger.error("Error finding dependencies for :" +
-                  id.toString(), e);
+               ms_logger.error("Error finding dependencies for : {} Error: {}",
+                  id, PSExceptionUtils.getMessageForLog(e));
                throw new RuntimeException(e);
             }
          }
@@ -359,6 +357,7 @@ public class PSSystemService
       return content;
    }
 
+   @Transactional
    public void saveConfiguration(PSMimeContentAdapter config) throws IOException
    {
       if (config == null)
@@ -367,41 +366,17 @@ public class PSSystemService
       PSConfigurationTypes type = PSConfigurationTypes.valueOf(
          config.getName());
       PSMimeContentDescriptor desc = getContentDescriptor(type);
-      InputStream in = config.getContent();
-      if (in == null)
-         throw new IllegalArgumentException("in may not be null");
 
-      OutputStream out = null;
       boolean isSaved = false;
-      File cFile = desc.getConfigFile();
-      try
-      {
-         out = new FileOutputStream(cFile);
-         IOTools.copyStream(in, out);
-         isSaved = true;
-      }
-      finally
-      {
-         if (in != null)
-         {
-            try
-            {
-               in.close();
-            }
-            catch (IOException e)
-            {
-            }
-         }
+      File cFile;
+      try(InputStream in = config.getContent()) {
+         if (in == null)
+            throw new IllegalArgumentException("in may not be null");
 
-         if (out != null)
-         {
-            try
-            {
-               out.close();
-            }
-            catch (IOException e)
-            {
-            }
+         cFile = desc.getConfigFile();
+         try (OutputStream out = new FileOutputStream(cFile)) {
+            IOTools.copyStream(in, out);
+            isSaved = true;
          }
       }
 
@@ -440,16 +415,13 @@ public class PSSystemService
 
       PSLegacyGuid lguid = (PSLegacyGuid) id;
 
-      Session session = sessionFactory.getCurrentSession();
+      Session session = getSession();
 
          Criteria c = session.createCriteria(PSContentStatusHistory.class)
-         .add(Restrictions.eq("contentId", new Integer(lguid.getContentId())))
+         .add(Restrictions.eq("contentId", lguid.getContentId()))
          .addOrder(Order.asc("id"));
 
-         List<PSContentStatusHistory> results = c.list();
-
-         return results;
-
+         return c.list();
 
    }
 
@@ -458,10 +430,11 @@ public class PSSystemService
     * 
     * @param entity the to be deleted content history entry, not <code>null</code>
     */
+   @Transactional
    public void deleteContentStatusHistory(PSContentStatusHistory entity)
    {
       notNull(entity);
-      sessionFactory.getCurrentSession().delete(entity);
+      getSession().delete(entity);
    }
    
    /**
@@ -470,19 +443,20 @@ public class PSSystemService
     * 
     * @param entity the to be saved content history entry, not <code>null</code>.
     */
+   @Transactional
    public void saveContentStatusHistory(PSContentStatusHistory entity)
    {
       notNull(entity);
       
       if (entity.getId() >= 0L)
       {
-         sessionFactory.getCurrentSession().update(entity);
+         getSession().update(entity);
          return;
       }
 
       IPSGuid id = m_guidMgr.createGuid(PSTypeEnum.ITEM_HISTORY);
       entity.setId(id.longValue());
-      sessionFactory.getCurrentSession().save(entity);
+      getSession().save(entity);
    }
    
    /**
@@ -618,7 +592,7 @@ public class PSSystemService
     * <p>
     * Expected parameters are: begin-date, end-date, publish-state and archive-state.
     * <p>
-    * Note, this query is used when the number of content IDs is less than {@link #MAX_IDS}.   
+    * Note, this query is used when the number of content IDs is less than MAX_IDS.
     */
    private static String FIND_NUM_PUB_ITEMS_InClause = "SELECT DISTINCT h1.contentId "
       + "FROM PSContentStatusHistory h1 "
@@ -634,7 +608,7 @@ public class PSSystemService
 
    /**
     * This is the same as {@link #FIND_NUM_PUB_ITEMS_InClause}, except this query is used
-    * when the number of content IDs is greater than {@link #MAX_IDS}.
+    * when the number of content IDs is greater than MAX_IDS.
     */
    private static String FIND_NUM_PUB_ITEMS_TempIds = "SELECT DISTINCT h1.contentId "
       + "FROM PSContentStatusHistory h1, PSTempId t "
@@ -673,7 +647,7 @@ public class PSSystemService
     * <p>
     * Expected parameters are: publish-state and archive-state.
     * <p>
-    * Note, this query is used when the number of content IDs is less than {@link #MAX_IDS}.   
+    * Note, this query is used when the number of content IDs is less than MAX_IDS.
     */
    private static String FIND_PUB_ITEMS_InClause = "SELECT DISTINCT h1.contentId "
       + "FROM PSContentStatusHistory h1 "
@@ -692,7 +666,7 @@ public class PSSystemService
 
    /**
     * This is the same as {@link #FIND_PUB_ITEMS_InClause}, except this query is used when the number of content IDs is
-    * greater than {@link #MAX_IDS}.
+    * greater than MAX_IDS.
     */
    private static String FIND_PUB_ITEMS_TempIds = "SELECT DISTINCT h1.contentId "
       + "FROM PSContentStatusHistory h1, PSTempId t "
@@ -722,9 +696,6 @@ public class PSSystemService
    }
 
    /**
-    * Utility method used by both
-    * {@link #findNewContentActivities(String, Collection, Date, Date)} and
-    * {@link #findNumberContentActivities(String, Collection, Date, Date)}.
     * Executes the specified query based on the specified state, items, begin
     * and end dates.
     * 
@@ -746,7 +717,7 @@ public class PSSystemService
       notNull(cids);
       notNull(params);
 
-      Session s = sessionFactory.getCurrentSession();
+      Session s = getSession();
       long idset = 0;
       
       //String querySource = queryTempIds;
@@ -797,14 +768,14 @@ public class PSSystemService
 
       PSLegacyGuid lguid = (PSLegacyGuid) id;
 
-      Session session = sessionFactory.getCurrentSession();
+      Session session = getSession();
 
          // Note, transitionLabel column is always "CheckOut" for both
          //       check in & out actions. However, the checkout user is blank
          //       if checkin; otherwise it is checkout action.
          
          Criteria c = session.createCriteria(PSContentStatusHistory.class).add(
-               Restrictions.eq("contentId", new Integer(lguid.getContentId())))
+               Restrictions.eq("contentId", lguid.getContentId()))
                .add(Restrictions.eq("transitionLabel", "CheckOut")).addOrder(
                      Order.desc("id"));
          c.setMaxResults(1);
@@ -911,7 +882,7 @@ public class PSSystemService
    @SuppressWarnings("unchecked")
    public PSUIComponent findComponentByName(String name)
    {
-      Session s = sessionFactory.getCurrentSession();
+      Session s = getSession();
 
          Criteria c = s.createCriteria(PSUIComponent.class);
          c.add(Restrictions.eq("name", name));
@@ -925,6 +896,7 @@ public class PSSystemService
    /* (non-Javadoc)
     * @see com.percussion.services.system.IPSSystemService#sendEmail(com.percussion.workflow.mail.IPSMailMessageContext)
     */
+   @Transactional
    public void sendEmail(IPSMailMessageContext emailContext)
    {
       if (emailContext == null)
@@ -954,7 +926,7 @@ public class PSSystemService
     * @param emailSender the email queue sender, never <code>null</code>
     */
    @Autowired
-   public void setEmailSender(IPSQueueSender emailSender)
+   public void setEmailSender(@Qualifier("sys_emailQueueSender") IPSQueueSender emailSender)
    {
       if (emailSender == null)
       {
@@ -979,9 +951,8 @@ public class PSSystemService
       PSAssignmentTypeHelper helper = new PSAssignmentTypeHelper( 
             user, roles, community);
       List<PSAssignmentTypeEnum> rval = new ArrayList<>();
-      for (int i = 0; i < ids.size(); i++)
-      {
-         rval.add(helper.getAssignmentType(ids.get(i)));
+      for (IPSGuid id : ids) {
+         rval.add(helper.getAssignmentType(id));
       }
       return rval;
    }
@@ -989,7 +960,6 @@ public class PSSystemService
    /*
     * //see base interface method for details
     */
-   @SuppressWarnings("unchecked")
    public List<PSAssignmentTypeEnum> getContentAssignmentTypes(List<IPSGuid> ids)
          throws PSSystemException
    {
@@ -1148,7 +1118,7 @@ public class PSSystemService
       PSComponentSummary sum = m_cmsMgr.loadComponentSummary(contentId.getUUID());
       if (sum == null)
       {
-         ms_logger.error("Failed to locate component summary for item: " + 
+         ms_logger.error("Failed to locate component summary for item: {}" ,
             contentId);
       }
       

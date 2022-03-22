@@ -24,6 +24,8 @@
 
 package com.percussion.services.widgetbuilder;
 
+import com.percussion.share.dao.IPSGenericDao;
+
 import java.util.List;
 
 
@@ -35,7 +37,7 @@ public interface IPSWidgetBuilderDefinitionDao
      * @param definition must not be <code>null</code>
      * @return the widget builder definition
      */
-    PSWidgetBuilderDefinition save(PSWidgetBuilderDefinition definition);
+    PSWidgetBuilderDefinition save(PSWidgetBuilderDefinition definition) throws IPSGenericDao.SaveException;
     
     /**
      * Finds widget builder definition by the definition id

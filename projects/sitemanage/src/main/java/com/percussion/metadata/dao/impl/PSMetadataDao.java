@@ -23,6 +23,7 @@
  */
 package com.percussion.metadata.dao.impl;
 
+import com.percussion.cms.IPSConstants;
 import com.percussion.error.PSExceptionUtils;
 import com.percussion.metadata.data.PSMetadata;
 import com.percussion.share.dao.IPSGenericDao;
@@ -31,13 +32,12 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.Collection;
 
 /**
@@ -46,26 +46,22 @@ import java.util.Collection;
  */
 @PSSiteManageBean("metadataDao")
 @Transactional
-public class PSMetadataDao
-{
+public class PSMetadataDao implements com.percussion.metadata.dao.IPSMetadataDao {
 
-    private static final Logger log = LogManager.getLogger(PSMetadataDao.class);
+    @PersistenceContext
+    private EntityManager entityManager;
 
-    private SessionFactory sessionFactory;
-
-    public SessionFactory getSessionFactory() {
-        return sessionFactory;
+    private Session getSession(){
+        return entityManager.unwrap(Session.class);
     }
 
-    @Autowired
-    public void setSessionFactory(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
+    private static final Logger log = LogManager.getLogger(IPSConstants.CONTENTREPOSITORY_LOG);
 
-
+    
+   @Override
    public PSMetadata create(PSMetadata data)throws IPSGenericDao.SaveException
    {
-      Session session = sessionFactory.getCurrentSession();
+      Session session = getSession();
       try 
       {   
           session.save(data);
@@ -90,6 +86,7 @@ public class PSMetadataDao
       return data;      
    }
    
+   @Override
    public void delete(String key) throws IPSGenericDao.DeleteException, IPSGenericDao.LoadException {
       PSMetadata data = find(key);
       if (data == null)
@@ -100,9 +97,10 @@ public class PSMetadataDao
       delete(data);      
    }
    
+   @Override
    public void delete(PSMetadata data) throws IPSGenericDao.DeleteException
    {      
-      Session session = sessionFactory.getCurrentSession();
+      Session session = getSession();
       
       try
       {         
@@ -129,14 +127,15 @@ public class PSMetadataDao
       }      
    }
    
+   @Override
    public PSMetadata save(PSMetadata data) throws IPSGenericDao.SaveException
    {
       String emsg; 
-      Session session = sessionFactory.getCurrentSession();
+      Session session = getSession();
       try 
       {   
           String key = data.getKey();
-          PSMetadata existing = (PSMetadata) session.get(PSMetadata.class, key);
+          PSMetadata existing =  session.get(PSMetadata.class, key);
           if(existing == null)
           {
               emsg = "Attempt to modify non-existant record " + key; 
@@ -168,13 +167,14 @@ public class PSMetadataDao
       return data;
    }
    
+   @Override
    public PSMetadata find(String key) throws IPSGenericDao.LoadException {
-      Session session = sessionFactory.getCurrentSession();
+      Session session = getSession();
       
       try
       {
-         PSMetadata data = (PSMetadata)session.get(PSMetadata.class, key);
-         return data;         
+        return  session.get(PSMetadata.class, key);
+
       }
       catch (HibernateException e)
       {
@@ -185,12 +185,13 @@ public class PSMetadataDao
 
    }
    
+   @Override
    @SuppressWarnings("unchecked")
    @Transactional
    public Collection<PSMetadata> findByPrefix(String prefix) throws IPSGenericDao.LoadException {
       String emsg;
-      Session session = sessionFactory.getCurrentSession();
-      Collection<PSMetadata> results = new ArrayList<>();
+      Session session = getSession();
+      Collection<PSMetadata> results;
       try
       {
           results = session.createCriteria(PSMetadata.class)

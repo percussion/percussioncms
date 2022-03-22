@@ -69,7 +69,7 @@ public class PSPubServerProperty extends PSAbstractDataObject
    private long propertyId = -1L;
 
    @Basic
-   @Column(name = "PUBSERVERID", nullable = false, insertable = false, updatable = false)
+   @Column(name = "PUBSERVERID")
    long serverId;
 
    @Basic

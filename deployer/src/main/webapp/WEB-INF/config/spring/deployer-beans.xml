@@ -1,4 +1,27 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percussion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:tx="http://www.springframework.org/schema/tx"
@@ -9,20 +32,17 @@ http://www.springframework.org/schema/tx/spring-tx.xsd">
 
 	<tx:annotation-driven transaction-manager="sys_transactionManager"/>
 
-   <bean id="sys_deployerService"
-         class="com.percussion.deployer.services.impl.PSDeployService">
-      <property name="sessionFactory" ref="sys_sessionFactory"/>
-   </bean>
-
-   <bean id="sys_pkgInfoService" 
-   class="com.percussion.services.pkginfo.impl.PSPkgInfoService">
-      <property name="sessionFactory" ref="sys_sessionFactory"/>
-   </bean>
-
-   <bean id="sys_idNameService" 
-   class="com.percussion.services.pkginfo.impl.PSIdNameService">
-      <property name="sessionFactory" ref="sys_sessionFactory"/>
+   <bean id="sys_idNameService"
+         class="com.percussion.services.pkginfo.impl.PSIdNameService">
       <property name="cache" ref="sys_cacheAccessor"/>
+   </bean>
+
+   <bean id="sys_pkgInfoService"
+         class="com.percussion.services.pkginfo.impl.PSPkgInfoService">
+   </bean>
+
+   <bean id="sys_deployerService"
+	  class="com.percussion.deployer.services.impl.PSDeployService">
    </bean>
    
    <bean id="sys_configService" 
@@ -33,7 +53,6 @@ http://www.springframework.org/schema/tx/spring-tx.xsd">
    
    <bean id="sys_configStatusMgr" 
    class="com.percussion.rx.config.impl.PSConfigStatusMgr">
-      <property name="sessionFactory" ref="sys_sessionFactory"/>
    </bean>
    
    <bean id="sys_configRegistrationService" class="com.percussion.rx.config.impl.PSConfigRegistrationMgr">
@@ -46,5 +65,4 @@ http://www.springframework.org/schema/tx/spring-tx.xsd">
    <bean id="sys_pkgElemVersionUpdater" class="com.percussion.services.pkginfo.impl.PSPkgElemVersionUpdater">
      <property name="configService" ref="sys_configService"/>
    </bean>
-
 </beans>

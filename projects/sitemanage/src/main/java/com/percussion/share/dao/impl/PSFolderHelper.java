@@ -32,6 +32,7 @@ import com.percussion.cms.objectstore.PSObjectAclEntry;
 import com.percussion.design.objectstore.PSLocator;
 import com.percussion.design.objectstore.PSRelationshipConfig;
 import com.percussion.designmanagement.service.IPSFileSystemService.PSInvalidCharacterInFolderNameException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.i18n.PSI18nUtils;
 import com.percussion.pagemanagement.service.IPSPageService;
 import com.percussion.pathmanagement.data.PSFolderPermission;
@@ -96,6 +97,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.jcr.Node;
 import javax.jcr.RepositoryException;
@@ -127,6 +129,7 @@ import static org.apache.commons.lang.Validate.notNull;
 
 @PSSiteManageBean("folderHelper")
 @Lazy
+@Transactional
 public class PSFolderHelper implements IPSFolderHelper
 {    
     /**
@@ -232,7 +235,7 @@ public class PSFolderHelper implements IPSFolderHelper
                 
             } catch (Exception e)
             {
-                throw new RuntimeException(errorMessage, e);
+                log.error(PSExceptionUtils.getMessageForLog(e));
             }
             log.info("Finished setting permissions for: " + PSAssetPathItemService.ASSET_ROOT);
 

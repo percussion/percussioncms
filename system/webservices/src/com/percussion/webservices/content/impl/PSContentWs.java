@@ -174,7 +174,7 @@ import static org.apache.commons.lang.Validate.notNull;
  * The public content webservice implementations.
  */
 @Component("sys_contentWs")
-@Transactional(noRollbackFor = Exception.class)
+@Transactional
 public class PSContentWs extends PSContentBaseWs implements IPSContentWs
 {
    // @see IPSContentWs#loadContentTypes(String)
@@ -262,6 +262,7 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
    }
 
    @Deprecated
+   @Transactional
    public void checkinItems(List<IPSGuid> ids, String comment,
       @SuppressWarnings("unused") String user)
       throws PSErrorsException
@@ -270,12 +271,14 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
    }
 
    // @see IPSContentWs#checkinItems(List, String, String)
+   @Transactional
    public void checkinItems(List<IPSGuid> ids, String comment)
       throws PSErrorsException
    {
       checkinItems(ids, comment, false);
    }
 
+   @Transactional
    public void checkinItems(List<IPSGuid> ids, String comment, boolean ignoreRevisionCheck)
    {
       PSWebserviceUtils.validateLegacyGuids(ids);
@@ -310,6 +313,7 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
    }
 
    @Deprecated
+   @Transactional
    public void checkoutItems(List<IPSGuid> ids, String comment,
       @SuppressWarnings("unused") String user)
       throws PSErrorsException
@@ -318,6 +322,7 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
    }
 
    // @see IPSContentWs#checkoutItems(List, String, String, String)
+   @Transactional
    public void checkoutItems(List<IPSGuid> ids, String comment)
       throws PSErrorsException
    {
@@ -352,6 +357,7 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
    }
 
    @Deprecated
+   @Transactional
    public List<PSCoreItem> createItems(String contentType, int count,
       @SuppressWarnings({"unused"})
       String session, @SuppressWarnings("unused")
@@ -361,6 +367,7 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
       return createItems(contentType, count);
    }
 
+   @Transactional
    public List<PSCoreItem> createItems(String contentType, int count)
       throws PSUnknownContentTypeException, PSErrorException
    {
@@ -406,6 +413,7 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
    }
 
    @Deprecated
+   @Transactional
    public void deleteItems(List<IPSGuid> ids, @SuppressWarnings("unused")
    String session, @SuppressWarnings("unused") String user)
    throws PSErrorsException
@@ -413,6 +421,7 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
       deleteItems(ids);
    }
 
+   @Transactional
    public void deleteItems(List<IPSGuid> ids)
       throws PSErrorsException
    {
@@ -922,6 +931,7 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
    }
 
    @Deprecated
+   @Transactional
    public List<PSCoreItem> newCopies(List<IPSGuid> ids, List<String> paths,
       String relationshipType, boolean enableRevisions,
       @SuppressWarnings("unused") String session,
@@ -931,6 +941,7 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
       return newCopies(ids, paths, relationshipType, enableRevisions);
    }
 
+   @Transactional
    public List<PSCoreItem> newCopies(List<IPSGuid> ids, List<String> paths,
                                      String relationshipType, boolean enableRevisions)
            throws PSErrorResultsException, PSErrorException
@@ -939,7 +950,7 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
       return newCopies(ids,  paths, relationshipType, enableRevisions ,false);
    }
 
-   @SuppressWarnings("unchecked")
+   @Transactional
    public List<PSCoreItem> newCopies(List<IPSGuid> ids, List<String> paths,
       String relationshipType, boolean enableRevisions , boolean enableViewForceFully)
       throws PSErrorResultsException, PSErrorException
@@ -1032,6 +1043,7 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
    }
 
    @Deprecated
+   @Transactional
    public List<PSCoreItem> newPromotableVersions(List<IPSGuid> ids,
       List<String> paths, String relationshipType, boolean enableRevisions,
       @SuppressWarnings("unused") String session, @SuppressWarnings("unused")
@@ -1042,7 +1054,7 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
          enableRevisions);
    }
 
-   @SuppressWarnings("unchecked")
+   @Transactional
    public List<PSCoreItem> newPromotableVersions(List<IPSGuid> ids,
       List<String> paths, String relationshipType, boolean enableRevisions)
       throws PSErrorResultsException, PSErrorException
@@ -1155,6 +1167,7 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
     * @throws PSErrorException
     */
    @Deprecated
+   @Transactional
    public List<PSCoreItem> newTranslations(List<IPSGuid> ids,
       List<PSAutoTranslation> translationSettings, String relationshipType,
       boolean enableRevisions, @SuppressWarnings("unused")
@@ -1166,7 +1179,7 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
          enableRevisions);
    }
 
-
+   @Transactional
    public List<PSCoreItem> newTranslations(List<IPSGuid> ids,
       List<PSAutoTranslation> translationSettings, String relationshipType,
       boolean enableRevisions)
@@ -1457,6 +1470,7 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
    }
 
    @Deprecated
+   @Transactional
    public List<PSItemStatus> prepareForEdit(List<IPSGuid> ids,
       @SuppressWarnings("unused") String user)
       throws PSErrorResultsException
@@ -1465,6 +1479,7 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
    }
 
    @SuppressWarnings("unchecked")
+   @Transactional
    public List<PSItemStatus> prepareForEdit(List<IPSGuid> ids)
       throws PSErrorResultsException
    {
@@ -1498,6 +1513,7 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
    /*
     * //see base interface method for details
     */
+   @Transactional
    public PSItemStatus prepareForEdit(IPSGuid itemId)
       throws PSErrorException
    {
@@ -1713,12 +1729,14 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
     * @throws PSErrorException
     */
    @Override
+   @Transactional
    public void promoteRevisions(List<IPSGuid> ids, String session, String user)
       throws PSErrorsException, PSErrorException
    {
       promoteRevisions(ids);
    }
 
+   @Transactional
    public void promoteRevisions(List<IPSGuid> ids)
       throws PSErrorsException
    {
@@ -1786,6 +1804,7 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
    }
 
    // @see IPSContentWs#releaseFromEdit(List, boolean, String, String)
+   @Transactional
    public void releaseFromEdit(List<PSItemStatus> status, boolean checkinOnly)
       throws PSErrorsException
    {
@@ -1809,6 +1828,7 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
    /*
     * //see base interface method for details
     */
+   @Transactional
    public void releaseFromEdit(PSItemStatus itemStatus, boolean checkinOnly)
       throws PSErrorException
    {
@@ -1929,6 +1949,7 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
    }
 
    @Deprecated
+   @Transactional
    public List<IPSGuid> saveItems(List<PSCoreItem> items,
       boolean enableRevisions, boolean checkin, @SuppressWarnings("unused")
       String session, @SuppressWarnings("unused") String user)
@@ -1937,6 +1958,7 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
       return saveItems(items, enableRevisions, checkin);
    }
 
+   @Transactional
    public List<IPSGuid> saveItems(List<PSCoreItem> items,
          boolean enableRevisions, boolean checkin)
          throws PSErrorResultsException
@@ -1957,6 +1979,7 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
     * @return
     * @throws PSErrorResultsException
     */
+   @Transactional
    public List<IPSGuid> saveItems(List<PSCoreItem> items,
       boolean enableRevisions, boolean checkin, IPSGuid folderId)
       throws PSErrorResultsException
@@ -1974,6 +1997,7 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
     * @return
     * @throws PSErrorResultsException
     */
+   @Transactional
    public List<IPSGuid> saveItems(List<PSCoreItem> items,
                                   boolean enableRevisions, boolean checkin, IPSGuid folderId,
                                   String relationshipTypeName)
@@ -2268,6 +2292,7 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
    }
 
    @Deprecated
+   @Transactional
    public List<PSItemChildEntry> createChildEntries(IPSGuid id, String name,
       int count, @SuppressWarnings("unused")
       String session, @SuppressWarnings("unused")
@@ -2277,6 +2302,7 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
       return createChildEntries(id, name, count);
    }
 
+   @Transactional
    public List<PSItemChildEntry> createChildEntries(IPSGuid id, String name,
       int count) throws PSUnknownChildException,
       PSInvalidStateException, PSErrorException
@@ -2363,6 +2389,7 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
    }
 
    @Deprecated
+   @Transactional
    public void deleteChildEntries(IPSGuid id, String name,
       List<IPSGuid> childIds, @SuppressWarnings("unused")
       String session, @SuppressWarnings("unused")
@@ -2373,6 +2400,7 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
       deleteChildEntries(id, name, childIds);
    }
 
+   @Transactional
    public void deleteChildEntries(IPSGuid id, String name,
       List<IPSGuid> childIds)
       throws
@@ -2541,6 +2569,7 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
    }
 
    @Deprecated
+   @Transactional
    public void reorderChildEntries(IPSGuid id, String name,
       List<IPSGuid> childIds, @SuppressWarnings("unused")
       String session, @SuppressWarnings("unused") String user)
@@ -2551,6 +2580,7 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
    }
 
 
+   @Transactional
    public void reorderChildEntries(IPSGuid id, String name,
       List<IPSGuid> childIds)
       throws PSUnknownChildException, PSInvalidStateException,
@@ -2657,6 +2687,7 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
    }
 
    @Deprecated
+   @Transactional
    public void saveChildEntries(IPSGuid contentId, String name,
       List<PSItemChildEntry> entries, @SuppressWarnings("unused")
       String session, @SuppressWarnings("unused") String user)
@@ -2666,6 +2697,7 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
       saveChildEntries(contentId, name, entries);
    }
 
+   @Transactional
    public void saveChildEntries(IPSGuid id, String name,
       List<PSItemChildEntry> entries)
       throws PSUnknownChildException, PSInvalidStateException,
@@ -2941,6 +2973,7 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
 
 
    @Deprecated
+   @Transactional
    public List<PSAaRelationship> addContentRelations(IPSGuid id,
       List<IPSGuid> relatedIds, IPSGuid folderId, IPSGuid siteId,
       IPSGuid slotId, IPSGuid templateId, int index, @SuppressWarnings("unused")
@@ -2952,6 +2985,7 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
    }
 
    @Deprecated
+   @Transactional
    public List<PSAaRelationship> addContentRelations(IPSGuid id,
       List<IPSGuid> relatedIds, String slot, String template, int index,
       String relationshipName, @SuppressWarnings("unused")
@@ -2962,6 +2996,7 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
    }
 
    @Deprecated
+   @Transactional
    public List<PSAaRelationship> addContentRelations(IPSGuid id,
       List<IPSGuid> relatedIds, String slot, String template, int index,
       @SuppressWarnings("unused")
@@ -2970,6 +3005,7 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
       return addContentRelations(id, relatedIds, slot, template, index);
    }
 
+   @Transactional
    public List<PSAaRelationship> addContentRelations(IPSGuid ownerId,
       List<IPSGuid> relatedIds, String slotName, String templateName,
       String relationshipName, int index) throws PSErrorException
@@ -3023,6 +3059,7 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
     *  (non-Javadoc)
     * @see com.percussion.webservices.content.IPSContentWs#addContentRelations(com.percussion.utils.guid.IPSGuid, java.util.List, java.lang.String, java.lang.String, int, java.lang.String)
     */
+   @Transactional
    public List<PSAaRelationship> addContentRelations(IPSGuid ownerId,
             List<IPSGuid> relatedIds, String slotName, String templateName,
             int index) throws PSErrorException
@@ -3047,6 +3084,7 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
                slot.getRelationshipName(), null, null);
    }
 
+   @Transactional
    public List<PSAaRelationship> addContentRelations(IPSGuid ownerId,
       List<IPSGuid> relatedIds, IPSGuid folderId, IPSGuid siteId,
       IPSGuid slotId, IPSGuid templateId, int index)
@@ -3261,6 +3299,7 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
    }
 
    @Deprecated
+   @Transactional
    public void deleteContentRelations(List<IPSGuid> ids,
       @SuppressWarnings("unused") String user)
       throws PSErrorsException, PSErrorException
@@ -3268,6 +3307,7 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
       deleteContentRelations(ids);
    }
 
+   @Transactional
    public void deleteContentRelations(List<IPSGuid> ids)
       throws PSErrorsException, PSErrorException
    {
@@ -3691,6 +3731,7 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
     * @throws PSErrorException
     */
    @Deprecated
+   @Transactional
    public void reorderContentRelations(List<IPSGuid> ids, int index,
       @SuppressWarnings("unused") String user)
       throws PSErrorException
@@ -3698,6 +3739,7 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
       reorderContentRelations(ids, index);
    }
 
+   @Transactional
    public void reorderContentRelations(List<IPSGuid> ids, int index)
       throws PSErrorException
    {
@@ -3714,6 +3756,7 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
    }
 
    @Deprecated
+   @Transactional
    public void reArrangeContentRelations(List<PSAaRelationship> rels,
       int index, @SuppressWarnings("unused") String user)
    throws PSErrorException
@@ -3721,6 +3764,7 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
       reArrangeContentRelations(rels, index);
    }
 
+   @Transactional
    public void reArrangeContentRelations(List<PSAaRelationship> rels,
       int index) throws PSErrorException
    {
@@ -3864,6 +3908,7 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
    }
 
    @Deprecated
+   @Transactional
    public void saveContentRelations(List<PSAaRelationship> relationships,
       @SuppressWarnings("unused") String user)
       throws PSErrorsException, PSErrorException
@@ -3871,6 +3916,7 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
       saveContentRelations(relationships);
    }
 
+   @Transactional
    public void saveContentRelations(List<PSAaRelationship> relationships)
       throws PSErrorsException, PSErrorException
    {
@@ -3902,6 +3948,7 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
     * @throws PSErrorException
     */
    @Deprecated
+   @Transactional
    public PSFolder addFolder(String name, String path,
       @SuppressWarnings("unused") String user)
       throws PSErrorException
@@ -3909,12 +3956,14 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
       return addFolder(name, path);
    }
 
+   @Transactional
    public PSFolder addFolder(String name, String path)
    throws PSErrorException
    {
       return addFolder(name, path, true);
    }
 
+   @Transactional
    public PSFolder addFolder(String name, String path, boolean loadTransientData)
       throws PSErrorException
    {
@@ -3931,6 +3980,7 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
     * (non-Javadoc)
     * @see com.percussion.webservices.content.IPSContentWs#addFolder(java.lang.String, java.lang.String, java.lang.String, boolean)
     */
+   @Transactional
    public PSFolder addFolder(String name, String parentPath, String srcPath, boolean loadTransientData)
    {
       notEmpty(name);
@@ -4044,6 +4094,7 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
    }
 
    // @see IPSContentWs#addFolderChildren(IPSGuid, List)
+   @Transactional
    public void addFolderChildren(IPSGuid parentId, List<IPSGuid> childIds)
       throws PSErrorException
    {
@@ -4070,6 +4121,7 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
    }
 
    // @see IPSContentWs#addFolderChildren(String, List, String)
+   @Transactional
    public void addFolderChildren(String parentPath, List<IPSGuid> childIds)
       throws PSErrorException
    {
@@ -4083,6 +4135,7 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
    }
 
    @Deprecated
+   @Transactional
    public List<PSFolder> addFolderTree(String path,
       @SuppressWarnings("unused") String user)
       throws PSErrorResultsException, PSErrorException
@@ -4090,12 +4143,14 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
       return addFolderTree(path);
    }
 
+   @Transactional
    public List<PSFolder> addFolderTree(String path)
    throws PSErrorResultsException, PSErrorException
    {
       return addFolderTree(path, true);
    }
 
+   @Transactional
    public List<PSFolder> addFolderTree(String path, boolean loadTransientData)
       throws PSErrorResultsException, PSErrorException
    {
@@ -4179,6 +4234,7 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
     * (non-Javadoc)
     * @see com.percussion.webservices.content.IPSContentWs#deleteFolders(java.util.List, boolean)
     */
+   @Transactional
    public void deleteFolders(List<IPSGuid> ids, boolean purgeItems)
    throws PSErrorsException
    {
@@ -4189,6 +4245,7 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
     * (non-Javadoc)
     * @see com.percussion.webservices.content.IPSContentWs#deleteFolders(java.util.List, boolean, boolean)
     */
+   @Transactional
    public void deleteFolders(List<IPSGuid> ids, boolean purgeItems,
          boolean checkFolderPermission) throws PSErrorsException
    {
@@ -4796,6 +4853,7 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
    /**
     * @see IPSContentWs#moveFolderChildren(IPSGuid, IPSGuid, List)
     */
+   @Transactional
    public void moveFolderChildren(IPSGuid sourceId, IPSGuid targetId,
       List<IPSGuid> childIds) throws PSErrorException
    {
@@ -4806,6 +4864,7 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
     * (non-Javadoc)
     * @see com.percussion.webservices.content.IPSContentWs#moveFolderChildren(com.percussion.utils.guid.IPSGuid, com.percussion.utils.guid.IPSGuid, java.util.List, boolean)
     */
+   @Transactional
    public void moveFolderChildren(IPSGuid sourceId, IPSGuid targetId,
          List<IPSGuid> childIds, boolean checkFolderPermission)
          throws PSErrorException
@@ -4882,6 +4941,7 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
    }
 
    // @see IPSContentWs#moveFolderChildren(String, String, List, String, String)
+   @Transactional
    public void moveFolderChildren(String sourcePath, String targetPath,
       List<IPSGuid> childIds) throws PSErrorException
    {
@@ -4903,12 +4963,14 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
    }
 
    // @see IPSContentWs#removeFolderChildren(IPSGuid, List, boolean)
+   @Transactional
    public void removeFolderChildren(IPSGuid parentId, List<IPSGuid> childIds,
       boolean purgeItems) throws PSErrorsException, PSErrorException
    {
       removeFolderChildren(parentId, childIds, purgeItems, FOLDER_RELATE_TYPE);
    }
 
+   @Transactional
    public void removeFolderChildren(IPSGuid parentId, List<IPSGuid> childIds,
                                     boolean purgeItems, String relationshipTypeName) throws PSErrorsException, PSErrorException
    {
@@ -5083,6 +5145,7 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
    }
 
    // @see IPSContentWs#removeFolderChildren(String, List, boolean)
+   @Transactional
    public void removeFolderChildren(String parentPath, List<IPSGuid> childIds,
       boolean purgeItems) throws PSErrorsException, PSErrorException
    {
@@ -5101,7 +5164,7 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
    /**
     * @see IPSContentWs#saveFolders(List)
     */
-   @SuppressWarnings("unchecked")
+   @Transactional
    public List<IPSGuid> saveFolders(List<PSFolder> folders)
       throws PSErrorResultsException
    {
@@ -5178,6 +5241,7 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
 
             savedFolder = processor.save(folder);
          }
+         //seems to break here
          return savedFolder;
       }
       catch (PSCmsException e)

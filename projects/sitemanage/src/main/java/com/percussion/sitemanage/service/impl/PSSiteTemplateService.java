@@ -152,10 +152,17 @@ public class PSSiteTemplateService implements IPSSiteTemplateService
     private static final String IMPORT_STATUS_MESSAGE_PREFIX = "Importing template:";
 
     @Autowired
-    public PSSiteTemplateService(IPSiteDao siteDao, IPSSiteSectionMetaDataService siteSectionMetaDataService,
-            @Qualifier("sys_templateService") IPSTemplateService templateService, IPSAsyncJobService asyncJobService,  IPSPageService pageService,
-            IPSAssetService assetService, IPSItemWorkflowService itemWorkflowService, 
-            IPSWidgetAssetRelationshipService widgetAssetRelationshipService, IPSPageTemplateService pageTemplateService, IPSSiteManager siteMgr, IPSFolderHelper folderHelper)
+    public PSSiteTemplateService(IPSiteDao siteDao,
+                                 IPSSiteSectionMetaDataService siteSectionMetaDataService,
+                                 @Qualifier("sys_templateService") IPSTemplateService templateService,
+                                 IPSAsyncJobService asyncJobService,
+                                 IPSPageService pageService,
+                                 IPSAssetService assetService,
+                                 IPSItemWorkflowService itemWorkflowService,
+                                 IPSWidgetAssetRelationshipService widgetAssetRelationshipService,
+                                 IPSPageTemplateService pageTemplateService,
+                                 IPSSiteManager siteMgr,
+                                 IPSFolderHelper folderHelper)
     {
         super();
         this.siteDao = siteDao;

@@ -107,7 +107,7 @@ public class PSCompleteChildDocumentBuilder extends PSEditorDocumentBuilder
    protected Iterator getActionLinks( Document doc, PSExecutionData data )
       throws PSDataExtractionException
    {
-      return Collections.EMPTY_LIST.iterator();
+      return Collections.emptyList().iterator();
    }
 }
 

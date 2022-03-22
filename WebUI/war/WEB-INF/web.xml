@@ -3,9 +3,10 @@
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
 		 http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          version="3.1">
+    <!-- WEBUI -->
     <context-param>
         <param-name>contextConfigLocation</param-name>
-        <param-value>/WEB-INF/servicesContext*.xml,/WEB-INF/config/spring/projects/*.xml</param-value>
+        <param-value>/WEB-INF/servicesContext*.xml</param-value>
     </context-param>
     <context-param>
         <param-name>org.eclipse.jetty.servlet.SessionPath</param-name>

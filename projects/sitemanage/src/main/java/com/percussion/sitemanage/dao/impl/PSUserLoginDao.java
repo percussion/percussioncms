@@ -25,28 +25,25 @@ package com.percussion.sitemanage.dao.impl;
 
 import com.percussion.auditlog.PSActionOutcome;
 import com.percussion.auditlog.PSAuditLogService;
-import com.percussion.auditlog.PSAuthenticationEvent;
 import com.percussion.auditlog.PSUserManagementEvent;
-import com.percussion.services.security.data.PSSecurityUtils;
+import com.percussion.cms.IPSConstants;
 import com.percussion.servlets.PSSecurityFilter;
 import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.sitemanage.dao.IPSUserLoginDao;
 import com.percussion.user.data.PSUserLogin;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import com.percussion.utils.security.PSSecurityUtility;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author DavidBenua
@@ -56,16 +53,19 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository("userLoginDao")
 public class PSUserLoginDao implements IPSUserLoginDao
 {
-    private static final Logger log = LogManager.getLogger(PSUserLoginDao.class);
+    @PersistenceContext
+    private EntityManager entityManager;
+
+    private Session getSession(){
+        return entityManager.unwrap(Session.class);
+    }
+
+    private static final Logger log = LogManager.getLogger(IPSConstants.SECURITY_LOG);
     
-    private SessionFactory sessionFactory;
+
     private PSAuditLogService psAuditLogService=PSAuditLogService.getInstance();
     private PSUserManagementEvent psUserManagementEvent;
-    @Autowired
-    public PSUserLoginDao(SessionFactory sessionFactory)
-    {
-        this.setSessionFactory(sessionFactory);
-    }
+
     /* (non-Javadoc)
      * @see com.percussion.share.dao.IPSGenericDao#delete(java.io.Serializable)
      */
@@ -133,10 +133,7 @@ public class PSUserLoginDao implements IPSUserLoginDao
         return result;
     }
     
-    private Session getSession()
-    {
-        return sessionFactory.getCurrentSession();
-    }
+
     /* (non-Javadoc)
      * @see com.percussion.share.dao.IPSUserLoginDao#findByName(java.lang.String)
      */
@@ -259,15 +256,5 @@ public class PSUserLoginDao implements IPSUserLoginDao
         }
         return login;
     }
-   
-    public SessionFactory getSessionFactory()
-    {
-        return sessionFactory;
-    }
-    
-    @Autowired
-    public void setSessionFactory(SessionFactory sessionFactory)
-    {
-        this.sessionFactory = sessionFactory;
-    }
+
 }

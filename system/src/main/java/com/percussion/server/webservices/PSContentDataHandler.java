@@ -40,8 +40,10 @@ import com.percussion.services.purge.IPSSqlPurgeHelper;
 import com.percussion.services.purge.PSSqlPurgeHelperLocator;
 import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.util.IPSHtmlParameters;
+import com.percussion.util.PSBaseBean;
 import com.percussion.util.PSXMLDomUtil;
 import org.apache.commons.lang3.math.NumberUtils;
+import org.springframework.transaction.annotation.Transactional;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -55,8 +57,9 @@ import java.util.List;
  *
  * @See {@link com.percussion.hooks.webservices.PSWSContentData}.
  */
-public class PSContentDataHandler extends PSSearchHandler
-{
+@Transactional
+@PSBaseBean("sys_contentDataHandler")
+public class PSContentDataHandler extends PSSearchHandler implements IPSContentDataHandler {
    /**
     * This operation is used to retrieve a content item in standard item format.
     * see sys_StandardItem.xsd for more info.
@@ -346,6 +349,7 @@ public class PSContentDataHandler extends PSSearchHandler
     *    
     * @throws PSException
     */
+   @Override
    public void newCopy(PSRequest request) throws PSException
    {
       if (request == null)
@@ -380,7 +384,7 @@ public class PSContentDataHandler extends PSSearchHandler
     *    not <code>null</code>.
     * @throws PSException if any error occurs.
     */
-   void purgeItemsAction(PSRequest request, Document parent) throws PSException, PSValidationException {
+   public void purgeItemsAction(PSRequest request, Document parent) throws PSException, PSValidationException {
       if (request == null)
          throw new IllegalArgumentException("request may not be null");
          
@@ -405,7 +409,7 @@ public class PSContentDataHandler extends PSSearchHandler
     *    request does nothing.
     * @throws PSException if anything goes wrong making the request.
     */
-   static void purgeItems(PSRequest request) throws PSException, PSValidationException {
+   public static void purgeItems(PSRequest request) throws PSException, PSValidationException {
       if (request == null)
          throw new IllegalArgumentException("request may not be null");
       
@@ -423,25 +427,23 @@ public class PSContentDataHandler extends PSSearchHandler
       }
       purgeHelper.purgeAll(locList);
    }
-   
 
    /**
     * Purge the specified content items.
-    * 
-    * @param request the request used for the purge operation, 
-    *    not <code>null</code>.
+    *
+    * @param request the request used for the purge operation,
+    *                not <code>null</code>.
     * @param itemIds the to be purged item ids, not <code>null</code>, may
-    *    be empty. Do nothing if it is empty.
-    *    
+    *                be empty. Do nothing if it is empty.
     * @throws PSException if anything goes wrong making the request.
     */
-   public static void purgeItems(PSRequest request, List<String>itemIds)
+   public static void purgeItems(PSRequest request, List<String> itemIds)
            throws PSException, PSValidationException {
       if (request == null)
          throw new IllegalArgumentException("request may not be null.");
       if (itemIds == null)
          throw new IllegalArgumentException("itemIds may not be null.");
-      
+
       if (itemIds.isEmpty())
          return; // do nothing
 
@@ -449,13 +451,12 @@ public class PSContentDataHandler extends PSSearchHandler
       List<PSLocator> locatorList = new ArrayList<>();
       for (String item : itemIds) {
          int id = NumberUtils.toInt(item);
-         if (id>0)
+         if (id > 0)
             locatorList.add(new PSLocator(id));
       }
       purgeHelper.purgeAll(locatorList);
 
    }
-
 
    /**
     * Creates an <code>ContentKey</code> element for the specified item locator.
@@ -558,11 +559,12 @@ public class PSContentDataHandler extends PSSearchHandler
     *
     * @throws PSException if an error occurs.
     */
+   @Override
    public PSServerItem updateItem(
-      PSRequest request,
-      Element item,
-      PSLocator loc,
-      long typeId)
+           PSRequest request,
+           Element item,
+           PSLocator loc,
+           long typeId)
       throws PSException
    {
       // we are doing an update, get all the data from
@@ -636,7 +638,8 @@ public class PSContentDataHandler extends PSSearchHandler
     * @param item The xml representation of the item to be inserted, must not be
     *    <code>null</code>.
     */
-   void processInsertItem(PSRequest request, String contentType, Element item)
+   @Override
+   public void processInsertItem(PSRequest request, String contentType, Element item)
       throws PSException
    {
       PSItemDefinition itemDef = getItemDefinition(request, contentType);
@@ -710,11 +713,6 @@ public class PSContentDataHandler extends PSSearchHandler
 
       addResultResponseXml("success", 0, null, parent);
    }
-
-   /**
-    * The resource path used to purge content items.
-    */
-   public final static String PURGE_PATH = "sys_cxSupport/purgecontent.html";
 
    /**
     * Constants for XML elements/attributes defined in the 

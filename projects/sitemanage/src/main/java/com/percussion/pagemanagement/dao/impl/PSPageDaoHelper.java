@@ -41,13 +41,14 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -71,16 +72,22 @@ import static org.springframework.util.CollectionUtils.isEmpty;
 @Transactional(propagation = Propagation.SUPPORTS, noRollbackFor = Exception.class)
 public class PSPageDaoHelper implements IPSPageDaoHelper
 {
+
+    @PersistenceContext
+    private EntityManager entityManager;
+
+    private Session getSession(){
+        return entityManager.unwrap(Session.class);
+    }
+
+
     private IPSContentWs contentWs;
     
     private IPSFolderHelper folderHelper;
     
     private IPSIdMapper idMapper;
 
-    @Autowired
-    private SessionFactory sessionFactory;
-    
-    
+
     @Autowired
     public PSPageDaoHelper(IPSContentWs contentWs, IPSFolderHelper folderHelper, IPSIdMapper idMapper)
     {
@@ -422,11 +429,6 @@ public class PSPageDaoHelper implements IPSPageDaoHelper
             log.error(ERROR_QUALIFY, PAGE_TABLE,CONTENT_TABLE);
             throw new PSRuntimeException(e);
         }
-    }
-    
-    private Session getSession()
-    {
-        return this.sessionFactory.getCurrentSession();
     }
 
     private static final String ERROR_QUALIFY = "Failed to get the fully qualified table name for '{}' or '{}'";

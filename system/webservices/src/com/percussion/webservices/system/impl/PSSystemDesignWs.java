@@ -94,12 +94,12 @@ import java.util.TreeSet;
 /**
  * The private system design webservice implementations.
  */
-@Transactional
 @PSBaseBean("sys_systemDesignWs")
 public class PSSystemDesignWs extends PSSystemBaseWs implements
    IPSSystemDesignWs
 {
    // @see IPSSystemDesignWs#createAcl(IPSGuid)
+   @Transactional
    public PSAclImpl createAcl(IPSGuid id, String session, String user)
       throws PSLockErrorException
    {
@@ -120,6 +120,7 @@ public class PSSystemDesignWs extends PSSystemBaseWs implements
    }
 
    // @see IPSSystemDesignWs#createGuids(PSTypeEnum, int)
+   @Transactional
    public List<IPSGuid> createGuids(PSTypeEnum type, int count)
    {
       if (type == null)
@@ -133,6 +134,7 @@ public class PSSystemDesignWs extends PSSystemBaseWs implements
    }
 
    // @see IPSSystemDesignWs#createItemFilters(List, String, String)
+   @Transactional
    public List<PSItemFilter> createItemFilters(List<String> names,
       String session, String user)
    {
@@ -175,6 +177,7 @@ public class PSSystemDesignWs extends PSSystemBaseWs implements
    }
 
    // @see IPSSystemDesignWs#createLocks(List, boolean, String, String)
+   @Transactional
    public void createLocks(List<IPSGuid> ids, boolean overrideLock,
       String session, String user) throws PSErrorsException
    {
@@ -209,6 +212,7 @@ public class PSSystemDesignWs extends PSSystemBaseWs implements
    }
 
    // @see IPSSystemDesignWs#createRelationshipType(String, String)
+   @Transactional
    public List<PSRelationshipConfig> createRelationshipTypes(
       List<String> names, List<String> categories, String session, String user)
       throws PSErrorException
@@ -268,6 +272,7 @@ public class PSSystemDesignWs extends PSSystemBaseWs implements
     * 
     * @see IPSSystemDesignWs#deleteAcls(List, boolean)
     */
+   @Transactional
    public void deleteAcls(List<IPSGuid> ids, boolean ignoreDependencies, 
       String session, String user) throws PSErrorsException
    {
@@ -323,6 +328,7 @@ public class PSSystemDesignWs extends PSSystemBaseWs implements
    }
 
    // @see IPSSystemDesignWs#deleteRelationshipTypes(List, boolean)
+   @Transactional
    public void deleteRelationshipTypes(List<IPSGuid> ids,
       boolean ignoreDependencies, String session, String user)
       throws PSErrorsException, PSErrorException
@@ -374,6 +380,7 @@ public class PSSystemDesignWs extends PSSystemBaseWs implements
     * @see IPSSystemDesignWs#deleteSharedProperties(List, boolean, String, 
     *    String)
     */
+   @Transactional
    public void deleteSharedProperties(List<PSSharedProperty> properties,
       boolean ignoreDependencies, String session, String user)
       throws PSErrorsException
@@ -436,6 +443,7 @@ public class PSSystemDesignWs extends PSSystemBaseWs implements
    }
 
    // @see IPSSystemDesignWs#deleteItemFilters(List, boolean, String, String)
+   @Transactional
    public void deleteItemFilters(List<IPSGuid> ids, boolean ignoreDependencies,
       String session, String user) throws PSErrorsException
    {
@@ -515,6 +523,7 @@ public class PSSystemDesignWs extends PSSystemBaseWs implements
    }
 
    // @see IPSSystemDesignWs#extendLocks(List, String, String)
+   @Transactional
    public void extendLocks(List<IPSGuid> ids, String session, String user)
       throws PSErrorsException
    {
@@ -992,6 +1001,7 @@ public class PSSystemDesignWs extends PSSystemBaseWs implements
    }
 
    // @see IPSSystemDesignWs#releaseLocks(List, String, String)
+   @Transactional
    public void releaseLocks(List<IPSGuid> ids, String session, String user)
    {
       IPSObjectLockService lockService = PSObjectLockServiceLocator
@@ -1008,6 +1018,7 @@ public class PSSystemDesignWs extends PSSystemBaseWs implements
     * @see IPSSystemDesignWs#saveAcls(List, boolean, String, String)
     */
    @SuppressWarnings("unchecked")
+   @Transactional
    public List<PSUserAccessLevel> saveAcls(List<PSAclImpl> acls, 
       boolean release, String session, String user) 
       throws PSErrorResultsException
@@ -1162,6 +1173,7 @@ public class PSSystemDesignWs extends PSSystemBaseWs implements
     * @see IPSSystemDesignWs#saveConfiguration(PSMimeContentAdapter, boolean,
     *    String, String)
     */
+   @Transactional
    public void saveConfiguration(PSMimeContentAdapter configuration,
       boolean release, String session, String user)
       throws PSLockErrorException, IOException
@@ -1223,6 +1235,7 @@ public class PSSystemDesignWs extends PSSystemBaseWs implements
    }
 
    // @see IPSSystemDesignWs#saveItemFilters(List, boolean, String, String)
+   @Transactional
    public void saveItemFilters(List<PSItemFilter> filters, boolean release,
       String session, String user) throws PSErrorsException
    {
@@ -1323,6 +1336,7 @@ public class PSSystemDesignWs extends PSSystemBaseWs implements
     * @see IPSSystemDesignWs#saveRelationshipTypes(List, boolean, String, 
     *    String)
     */
+   @Transactional
    public void saveRelationshipTypes(List<PSRelationshipConfig> configs,
       boolean release, String session, String user) throws PSErrorsException,
       PSErrorException
@@ -1377,6 +1391,7 @@ public class PSSystemDesignWs extends PSSystemBaseWs implements
    }
 
    // @see IPSSystemDesignWs#saveSharedProperties(List, boolean, String, String)
+   @Transactional
    public void saveSharedProperties(List<PSSharedProperty> properties,
       boolean release, String session, String user) throws PSErrorsException
    {

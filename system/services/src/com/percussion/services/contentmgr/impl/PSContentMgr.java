@@ -25,6 +25,7 @@ package com.percussion.services.contentmgr.impl;
 
 import antlr.ANTLRException;
 import antlr.CharScanner;
+import com.percussion.cms.IPSConstants;
 import com.percussion.cms.objectstore.PSComponentSummary;
 import com.percussion.cms.objectstore.server.PSItemDefManager;
 import com.percussion.design.objectstore.IPSBackEndMapping;
@@ -53,7 +54,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
-import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.transaction.annotation.Transactional;
@@ -70,6 +70,8 @@ import javax.jcr.nodetype.NodeTypeIterator;
 import javax.jcr.query.InvalidQueryException;
 import javax.jcr.query.Query;
 import javax.jcr.query.QueryResult;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.io.Reader;
 import java.io.StringReader;
 import java.sql.SQLException;
@@ -92,20 +94,18 @@ import java.util.stream.Collectors;
 public class PSContentMgr  implements IPSContentMgr
 {
 
-   private SessionFactory sessionFactory;
+   @PersistenceContext
+   private EntityManager entityManager;
 
-   public SessionFactory getSessionFactory() {
-      return sessionFactory;
+   private org.hibernate.Session getSession(){
+      return entityManager.unwrap(org.hibernate.Session.class);
    }
 
-   public void setSessionFactory(SessionFactory sessionFactory) {
-      this.sessionFactory = sessionFactory;
-   }
 
    /**
     * The logger for the content manager
     */
-    private static final Logger ms_log = LogManager.getLogger(PSContentMgr.class);
+    private static final Logger ms_log = LogManager.getLogger(IPSConstants.CONTENTREPOSITORY_LOG);
    
    /**
     * The region that caches information for the content manager. Used for 
@@ -165,6 +165,7 @@ public class PSContentMgr  implements IPSContentMgr
       return m_repository.loadByGUID(guids, config);
    }
 
+   @Transactional
    public IPSNodeDefinition createNodeDefinition()
    {
       PSNodeDefinition nodeDef = new PSNodeDefinition();
@@ -173,19 +174,18 @@ public class PSContentMgr  implements IPSContentMgr
       return nodeDef;
    }
 
-   @SuppressWarnings("unchecked")
    public List<IPSNodeDefinition> loadNodeDefinitions(List<IPSGuid> typeids)
          throws RepositoryException
    {
 
       try
       {
-         org.hibernate.Session session = sessionFactory.getCurrentSession();
+         org.hibernate.Session session = getSession();
          //  Force initialize at the moment to prevent problems with callers not in session
-         List defs =typeids.stream().map(tid -> session.get(PSNodeDefinition.class,tid.longValue())).filter(Objects::nonNull).map(nd -> {Hibernate.initialize(nd);return nd;})
+         List<IPSNodeDefinition> defs =typeids.stream().map(tid -> session.get(PSNodeDefinition.class,tid.longValue())).filter(Objects::nonNull).map(nd -> {Hibernate.initialize(nd);return nd;})
                  .collect(Collectors.toList());
 
-         if (defs.size() == 0)
+         if (defs.isEmpty())
          {
             throw new NoSuchNodeTypeException("Specified defs not found");
          }
@@ -200,12 +200,13 @@ public class PSContentMgr  implements IPSContentMgr
       }
    }
 
+   @Transactional
    public void saveNodeDefinitions(List<IPSNodeDefinition> defs)
          throws RepositoryException
    {
       try
       {
-         org.hibernate.Session session = sessionFactory.getCurrentSession();
+         org.hibernate.Session session = getSession();
          defs.forEach(def -> session.saveOrUpdate(def));
       }
       catch (Exception e)
@@ -214,10 +215,11 @@ public class PSContentMgr  implements IPSContentMgr
       }
    }
 
+   @Transactional
    public void deleteNodeDefinitions(List<IPSNodeDefinition> defs)
          throws RepositoryException
    {
-      org.hibernate.Session s = sessionFactory.getCurrentSession();
+      org.hibernate.Session s = getSession();
       try
       {
          for (IPSNodeDefinition def : defs)
@@ -269,7 +271,7 @@ public class PSContentMgr  implements IPSContentMgr
    public List<IPSNodeDefinition> findNodeDefinitionsByName(String name)
          throws RepositoryException
    {
-      org.hibernate.Session s = sessionFactory.getCurrentSession();
+      org.hibernate.Session s = getSession();
       try
       {
          name = PSContentUtils.internalizeName(name).toLowerCase();
@@ -310,7 +312,7 @@ public class PSContentMgr  implements IPSContentMgr
    public List<IPSNodeDefinition> findAllItemNodeDefinitions()
          throws RepositoryException
    {
-      org.hibernate.Session s = sessionFactory.getCurrentSession();
+      org.hibernate.Session s = getSession();
       try
       {
          Criteria c = s.createCriteria(PSNodeDefinition.class);
@@ -340,7 +342,7 @@ public class PSContentMgr  implements IPSContentMgr
       if (ctId == null)
          throw new IllegalArgumentException("Content Type id may not be null");
      
-      org.hibernate.Session s = sessionFactory.getCurrentSession();
+      org.hibernate.Session s = getSession();
 
          Criteria c = s.createCriteria(PSContentTemplateDesc.class);
          c.setCacheable(true);
@@ -360,7 +362,7 @@ public class PSContentMgr  implements IPSContentMgr
       if (ctId == null)
          throw new IllegalArgumentException("Content Type id may not be null");
      
-      org.hibernate.Session s = sessionFactory.getCurrentSession();
+      org.hibernate.Session s = getSession();
 
          Criteria c = s.createCriteria(PSContentTypeWorkflow.class);
          c.setCacheable(true);
@@ -381,7 +383,7 @@ public class PSContentMgr  implements IPSContentMgr
          throw new IllegalArgumentException("templateid may not be null");
       }
       
-      org.hibernate.Session s = sessionFactory.getCurrentSession();
+      org.hibernate.Session s = getSession();
       
 
          Criteria c = s.createCriteria(PSNodeDefinition.class);
@@ -407,7 +409,7 @@ public class PSContentMgr  implements IPSContentMgr
          throw new IllegalArgumentException("workflowid may not be null");
       }
       
-      org.hibernate.Session s = sessionFactory.getCurrentSession();
+      org.hibernate.Session s = getSession();
       
 
          Criteria c = s.createCriteria(PSNodeDefinition.class);
@@ -434,7 +436,7 @@ public class PSContentMgr  implements IPSContentMgr
             + " from PSComponentSummary c where c.m_contentTypeId = :ctid";
 
       @SuppressWarnings("unchecked")
-      List<Object[]> results = sessionFactory.getCurrentSession().createQuery(query).setParameter(
+      List<Object[]> results = getSession().createQuery(query).setParameter(
             "ctid", psdef.getRawContentType()).list();
 
       for (Object[] result : results)
@@ -568,7 +570,7 @@ public class PSContentMgr  implements IPSContentMgr
             PSLegacyGuid lg = (PSLegacyGuid) i;
             cids.add(lg.getContentId());
          }
-         List<Object[]> results = sessionFactory.getCurrentSession().createQuery(query).setParameter(
+         List<Object[]> results = getSession().createQuery(query).setParameter(
                "ids", cids).list();
          // Build a map
          Map<Integer,IPSGuid> idToType = new HashMap<>();
@@ -602,7 +604,7 @@ public class PSContentMgr  implements IPSContentMgr
    public List<String> findNodesByTitle(Long contentTypeId, String title)
    throws RepositoryException
    {
-      org.hibernate.Session s = sessionFactory.getCurrentSession();
+      org.hibernate.Session s = getSession();
       List<String> contentIds = new ArrayList<>();
       try
       {
@@ -623,32 +625,36 @@ public class PSContentMgr  implements IPSContentMgr
       }
 
    }
-   
 
+   @Transactional
    public Node copyItem(Node existing)
    {
       // TODO Auto-generated method stub
       return null;
    }
 
+   @Transactional
    public Node createItem(NodeDefinition def)
    {
       // TODO Auto-generated method stub
       return null;
    }
 
+   @Transactional
    public Node createItemRevision(Node existing)
    {
       // TODO Auto-generated method stub
       return null;
    }
 
+   @Transactional
    public void deleteItems(List<IPSGuid> items) throws RepositoryException
    {
       // TODO Auto-generated method stub
       
    }
 
+   @Transactional
    public void saveItems(List<Node> items, PSContentMgrConfig config) throws RepositoryException
    {
       // TODO Auto-generated method stub
@@ -661,7 +667,6 @@ public class PSContentMgr  implements IPSContentMgr
     * @see com.percussion.services.contentmgr.IPSContentMgr#findItemsByLocalFieldValue(
     *      java.long.Long, java.lang.String, java.lang.String)
     */
-   @SuppressWarnings("unchecked")
    public List<Integer> findItemsByLocalFieldValue(long contentTypeId,
          String fieldName, String fieldValue)
    {
@@ -682,7 +687,7 @@ public class PSContentMgr  implements IPSContentMgr
       PSBackEndColumn beColumn = (PSBackEndColumn)loc;
       String tableName = beColumn.getTable().getTable();
       String columnName = beColumn.getColumn();
-      org.hibernate.Session sess = sessionFactory.getCurrentSession();
+      org.hibernate.Session sess = getSession();
 
 
       String sql = null;
