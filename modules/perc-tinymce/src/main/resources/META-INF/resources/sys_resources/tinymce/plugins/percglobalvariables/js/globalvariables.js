@@ -33,8 +33,9 @@ var templates = {
 function preinit() {
 	var url;
 
-	if (url = tinyMCEPopup.getParam("external_link_list_url"))
+	if (url === tinyMCEPopup.getParam("external_link_list_url")) {
 		document.write('<script language="javascript" src="' + tinyMCEPopup.editor.documentBaseURI.toAbsolute(url) + '"></script>');
+	}
 }
 
 function changeClass() {
@@ -139,7 +140,7 @@ function checkPrefix(n) {
 		n.value = 'mailto:' + n.value;
 
 	if (/^\s*www\./i.test(n.value) && confirm(tinyMCEPopup.getLang('advlink_dlg.is_external')))
-		n.value = 'http://' + n.value;
+		n.value = '//' + n.value;
 }
 
 function setFormValue(name, value) {
@@ -162,10 +163,10 @@ function parseWindowOpen(onclick) {
 		formObj.ispopup.checked = true;
 		setPopupControlsDisabled(false);
 
-		var onClickWindowOptions = parseOptions(onClickData['options']);
-		var url = onClickData['url'];
+		var onClickWindowOptions = parseOptions(onClickData.options);
+		var url = onClickData.url;
 
-		formObj.popupname.value = onClickData['target'];
+		formObj.popupname.value = onClickData.target;
 		formObj.popupurl.value = url;
 		formObj.popupwidth.value = getOption(onClickWindowOptions, 'width');
 		formObj.popupheight.value = getOption(onClickWindowOptions, 'height');
@@ -226,14 +227,14 @@ function setPopupControlsDisabled(state) {
 function parseLink(link) {
 	link = link.replace(new RegExp('&#39;', 'g'), "'");
 
-	var fnName = link.replace(new RegExp("\\s*([A-Za-z0-9\.]*)\\s*\\(.*", "gi"), "$1");
+	var fnName = link.replace(new RegExp("\\s*([A-Za-z0-9.]*)\\s*\\(.*", "gi"), "$1");
 
 	// Is function name a template function
 	var template = templates[fnName];
 	if (template) {
 		// Build regexp
-		var variableNames = template.match(new RegExp("'?\\$\\{[A-Za-z0-9\.]*\\}'?", "gi"));
-		var regExp = "\\s*[A-Za-z0-9\.]*\\s*\\(";
+		var variableNames = template.match(new RegExp("'?\\$\{[A-Za-z0-9.]*\}'?", "gi"));
+		var regExp = "\\s*[A-Za-z0-9.]*\\s*\\(";
 		var replaceStr = "";
 		for (var i=0; i<variableNames.length; i++) {
 			// Is string value
@@ -258,10 +259,10 @@ function parseLink(link) {
 
 		// Build variable array
 		var variables = [];
-		variables["_function"] = fnName;
+		variables._function = fnName;
 		var variableValues = link.replace(new RegExp(regExp, "gi"), replaceStr).split('<delim>');
-		for (var i=0; i<variableNames.length; i++)
-			variables[variableNames[i]] = variableValues[i];
+		for (var i2=0; i<variableNames.length; i2++)
+			variables[variableNames[i2]] = variableValues[i2];
 
 		return variables;
 	}
@@ -451,15 +452,15 @@ function setAllAttribs(elm) {
 	var target = getSelectValue(formObj, 'targetlist');
 
 	// JGA { 12/11/2009
-	if(!(formObj.sys_dependentvariantid.value === 'sys_dependentvariantid'))
+	if((formObj.sys_dependentvariantid.value !== 'sys_dependentvariantid'))
 		setAttrib(elm, 'sys_dependentvariantid', formObj.sys_dependentvariantid.value);
-	if(!(formObj.rxinlineslot.value == 'rxinlineslot'))
+	if((formObj.rxinlineslot.value !== 'rxinlineslot'))
 		setAttrib(elm, 'rxinlineslot', formObj.rxinlineslot.value);
-	if(!(formObj.sys_dependentid.value == 'sys_dependentid'))
+	if((formObj.sys_dependentid.value !== 'sys_dependentid'))
 		setAttrib(elm, 'sys_dependentid', formObj.sys_dependentid.value);
-	if(!(formObj.inlinetype.value == 'inlinetype'))
+	if((formObj.inlinetype.value !== 'inlinetype'))
 		setAttrib(elm, 'inlinetype', formObj.inlinetype.value);
-	if(!(formObj.perc_resource_definition_id.value == 'resourcedefinitionid'))
+	if((formObj.perc_resource_definition_id.value !== 'resourcedefinitionid'))
 		setAttrib(elm,'resourcedefinitionid', formObj.perc_resource_definition_id.value); // AG 1/26/2010
 	// } JGA
 	setAttrib(elm, 'href', href);
