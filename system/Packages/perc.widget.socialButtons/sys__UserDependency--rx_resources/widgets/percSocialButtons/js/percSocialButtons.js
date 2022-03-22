@@ -86,7 +86,7 @@
            };
 
            /**
-            * Respsonsible for rendering a read-only view of the control.
+            * Responsible for rendering a read-only view of the control.
             */
            function renderReadOnly()
            {
@@ -221,7 +221,7 @@
          * @returns true if everything is valid, false if not
          */
         function validateForm(){
-            var urlregex = new RegExp("^(http:\/\/|https:\/\/){1}((www\.)?([0-9A-Za-z]+\.)|(plus\.google\.){1})");
+            var urlregex = new RegExp("^(http:\/\/|https:\/\/){1}((www.)?([0-9A-Za-z]+.)|(plus.google.){1})");
 
             $.each(config, function(key, value){
 

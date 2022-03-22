@@ -234,7 +234,7 @@
             $.each(config, function(key, value){
 
               // Checks to ensure that a valid URL has been entered
-              var urlregex = new RegExp("^(http:\/\/|https:\/\/){1}((www\.)?([0-9A-Za-z]+\.)|(plus\.google\.){1})");
+              var urlregex = new RegExp("^(http:\/\/|https:\/\/){1}((www.)?([0-9A-Za-z]+.)|(plus.google.){1})");
               var urlValid = urlregex.test(value.socialLink);
 
               if( data.buttonType == 'page' && value.enableButton === true && urlValid === false  ) {
@@ -264,21 +264,21 @@
 
                   var alt = {};
 
-                  alt["platform"] =  $(this).find(".perc-social-platform").val();
+                  alt.platform =  $(this).find(".perc-social-platform").val();
                   if( $(this).find(".perc-social-platform-enabled").is(':checked') ) {
-                    alt["enableButton"] =  true;
+                    alt.enableButton =  true;
                   }
                   else {
-                    alt["enableButton"] =  false;
+                    alt.enableButton =  false;
                   }
                   if( $(this).find(".perc-social-data-push-enabled").is(':checked') ){
-                    alt["enableDataPush"] =  true;
+                    alt.enableDataPush =  true;
                   }
                   else {
-                    alt["enableDataPush"] =  false;
+                    alt.enableDataPush =  false;
                   }
-                  alt["socialLink"] =  $(this).find(".perc-social-page-link").val();
-                  alt["buttonOrder"] = index;
+                  alt.socialLink =  $(this).find(".perc-social-page-link").val();
+                  alt.buttonOrder = index;
 
                   config.push(alt);
 
