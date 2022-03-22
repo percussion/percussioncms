@@ -841,15 +841,9 @@ public class PSCms
                break;
                
             default:
-               if (matchesDefault)
+               if (resultWorkflows.isEmpty() || matchesDefault )
                   theWorkflowId = Integer.parseInt(defaultWorkflowId);
-               else
-               {
-                  throw new RuntimeException(
-                     "Couldn't find unique workflow for community id " + 
-                     communityId + " and content type id " + 
-                     ce.getContentType() + ".");
-               }
+
          }
       }
 
