@@ -33,6 +33,7 @@ import com.percussion.services.notification.PSNotificationEvent;
 import com.percussion.services.notification.PSNotificationEvent.EventType;
 import com.percussion.util.PSBaseBean;
 import com.percussion.utils.guid.IPSGuid;
+import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheException;
 import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Ehcache;
@@ -92,18 +93,11 @@ public class PSEhCacheAccessor implements IPSCacheAccess
 
    /**
     * Ctor
-    * 
-    * @throws Exception
+    *
     */
-   public PSEhCacheAccessor() throws Exception 
+   public PSEhCacheAccessor()
    {
       m_manager = CacheManager.create();
-      // PSJexlEvaluator in rxutils and does not have access to this class so we inject
-      // a reference to this cache manager.
-      
-      // New Jexl 3 will do caching for us
-      // PSJexlEvaluator.setJexlScriptCacher(new PSEhCacheJexlScriptCacher(m_manager));
-     
    }
 
    /*
@@ -292,7 +286,91 @@ public class PSEhCacheAccessor implements IPSCacheAccess
 
       return statList;
    }
-   
+
+   /**
+    * The maximum number of seconds an element can exist in the cache without being accessed.
+    * The element expires at this limit and will no longer be returned from the cache.
+    * The default value is 0, which means no TTI eviction takes place (infinite lifetime).
+    *
+    * @param key
+    * @param region
+    * @param timeToIdleSeconds
+    */
+   @Override
+   public boolean setTimeToIdle(Serializable key, String region, int timeToIdleSeconds) {
+      if (key == null)
+      {
+         throw new IllegalArgumentException("key may not be null");
+      }
+      if (StringUtils.isBlank(region))
+      {
+         throw new IllegalArgumentException("region may not be null or empty");
+      }
+      if (m_manager == null)
+         throw new IllegalStateException("Cache not configured");
+      Cache cache = m_manager.getCache(region);
+      if (cache == null)
+         throw new IllegalArgumentException("Region " + region + " not found");
+      try
+      {
+         Element el = cache.get(key);
+         if (el != null){
+            el.setEternal(false);
+            el.setTimeToIdle(timeToIdleSeconds);
+
+            return true;
+         }
+      }
+      catch (CacheException e)
+      {
+         throw new IllegalStateException("Problem with cache", e);
+      }
+
+      return false;
+   }
+
+   /**
+    * The maximum number of seconds an element can exist in the cache regardless of use.
+    * The element expires at this limit and will no longer be returned from the cache.
+    * The default value is 0, which means no TTL eviction takes place (infinite lifetime).
+    *
+    * @param key
+    * @param region
+    * @param timeToLiveSeconds
+    */
+   @Override
+   public boolean setTimeToLive(Serializable key, String region, int timeToLiveSeconds) {
+      if (key == null)
+      {
+         throw new IllegalArgumentException("key may not be null");
+      }
+      if (StringUtils.isBlank(region))
+      {
+         throw new IllegalArgumentException("region may not be null or empty");
+      }
+      if (m_manager == null)
+         throw new IllegalStateException("Cache not configured");
+      Cache cache = m_manager.getCache(region);
+      if (cache == null)
+         throw new IllegalArgumentException("Region " + region + " not found");
+      try
+      {
+         Element el = cache.get(key);
+         if (el != null){
+            el.setEternal(false);
+            el.setTimeToLive(timeToLiveSeconds);
+
+            return true;
+         }
+      }
+      catch (CacheException e)
+      {
+         throw new IllegalStateException("Problem with cache", e);
+      }
+
+      return false;
+   }
+
    /**
     * Get the statistics for the given cache region.
     * 

@@ -23,12 +23,11 @@
  */
 package com.percussion.services.memory;
 
-import java.io.Serializable;
-import java.util.List;
-
+import com.percussion.server.cache.PSCacheStatisticsSnapshot;
 import net.sf.ehcache.CacheManager;
 
-import com.percussion.server.cache.PSCacheStatisticsSnapshot;
+import java.io.Serializable;
+import java.util.List;
 
 /**
  * This service provides access to the runtime cache mechanism. The
@@ -123,6 +122,29 @@ public interface IPSCacheAccess
     *    (if the cache is not used at all).
     */
    List<PSCacheStatisticsSnapshot> getStatistics();
-   
-   public CacheManager getManager();
+
+   /**
+	 * The maximum number of seconds an element can exist in the cache without being accessed.
+	 * The element expires at this limit and will no longer be returned from the cache.
+	 * The default value is 0, which means no TTI eviction takes place (infinite lifetime).
+	 *
+	 * @param key
+	 * @param region
+	 * @param timeToIdleSeconds
+	 */
+   boolean setTimeToIdle(Serializable key, String region, int timeToIdleSeconds);
+
+   /**
+	 * The maximum number of seconds an element can exist in the cache regardless of use.
+	 * The element expires at this limit and will no longer be returned from the cache.
+	 * The default value is 0, which means no TTL eviction takes place (infinite lifetime).
+	 *
+	 * @param key
+	 * @param region
+	 * @param timeToLiveSeconds
+	 */
+   boolean setTimeToLive(Serializable key, String region, int timeToLiveSeconds);
+
+    CacheManager getManager();
 }
+
