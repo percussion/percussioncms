@@ -32,12 +32,7 @@ import com.percussion.services.contentmgr.impl.query.nodes.IPSQueryNode;
 import com.percussion.services.contentmgr.impl.query.nodes.PSQueryNodeIdentifier;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.utils.types.PSPair;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import org.apache.commons.lang.StringUtils;
 
 import javax.jcr.ItemExistsException;
 import javax.jcr.ItemNotFoundException;
@@ -50,8 +45,10 @@ import javax.jcr.nodetype.ConstraintViolationException;
 import javax.jcr.query.Query;
 import javax.jcr.query.QueryResult;
 import javax.jcr.version.VersionException;
-
-import org.apache.commons.lang.StringUtils;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Represents a single JSR-170 query. This class contains processing code to
@@ -299,15 +296,13 @@ public class PSQuery implements Query
       }
       
       // Add missing fields needed for sorting
-      Iterator<PSPair<PSQueryNodeIdentifier,SortOrder>>
-         sfiter = m_sortFields.iterator();
-      while(sfiter.hasNext())
-      {
-         String name = sfiter.next().getFirst().getName();
-         if (!seen.contains(name))
-         {
-            seen.add(name);
-            first = mapProjectionParam(rval, first, name, type, classes);
+      for (PSPair<PSQueryNodeIdentifier, SortOrder> m_sortField : m_sortFields) {
+         if(m_sortField != null) {
+            String name = m_sortField.getFirst().getName();
+            if (!seen.contains(name)) {
+               seen.add(name);
+               first = mapProjectionParam(rval, first, name, type, classes);
+            }
          }
       }
 
@@ -414,7 +409,7 @@ public class PSQuery implements Query
       {
          throw new IllegalArgumentException("type may not be null"); //$NON-NLS-1$
       }
-      if (m_sortFields.size() == 0)
+      if (m_sortFields.isEmpty())
       {
          return ""; //$NON-NLS-1$
       }
@@ -425,24 +420,24 @@ public class PSQuery implements Query
 
       for (PSPair<PSQueryNodeIdentifier, SortOrder> sf : m_sortFields)
       {
-         String prop = sf.getFirst().getName();
-         if (fields.contains(prop))
-         {
-            PSPair<String,Class> resolvedref = 
-               PSContentUtils.resolveFieldReference(prop, type);
-            String queryref = PSContentUtils.makeQueryRef(resolvedref,classes);
-            if (resolvedref != null)
-            {
-               if (!first)
-                  rval.append(',');
-               rval.append(" "); //$NON-NLS-1$
-               rval.append(queryref);
-               if (sf.getSecond().equals(SortOrder.ASC))
-                  rval.append(" asc"); //$NON-NLS-1$
-               else
-                  rval.append(" desc"); //$NON-NLS-1$
+         if(sf != null) {
+            String prop = sf.getFirst().getName();
+            if (fields.contains(prop)) {
+               PSPair<String, Class> resolvedref =
+                       PSContentUtils.resolveFieldReference(prop, type);
+               String queryref = PSContentUtils.makeQueryRef(resolvedref, classes);
+               if (resolvedref != null) {
+                  if (!first)
+                     rval.append(',');
+                  rval.append(" "); //$NON-NLS-1$
+                  rval.append(queryref);
+                  if (sf.getSecond().equals(SortOrder.ASC))
+                     rval.append(" asc"); //$NON-NLS-1$
+                  else
+                     rval.append(" desc"); //$NON-NLS-1$
 
-               first = false;
+                  first = false;
+               }
             }
          }
       }
@@ -461,10 +456,14 @@ public class PSQuery implements Query
    public PSRowComparator getSorter()
    {
       List<PSPair<String, Boolean>> comparisons = new ArrayList<>();
+
       for (PSPair<PSQueryNodeIdentifier, PSQuery.SortOrder> sf : m_sortFields)
       {
-         comparisons.add(new PSPair<>(sf.getFirst().getName(),
-               sf.getSecond().equals(PSQuery.SortOrder.ASC)));
+         //Could be null if an invalid sort field was passed in
+         if(sf != null) {
+            comparisons.add(new PSPair<>(sf.getFirst().getName(),
+                    sf.getSecond().equals(PSQuery.SortOrder.ASC)));
+         }
       }
 
       return new PSRowComparator(comparisons);

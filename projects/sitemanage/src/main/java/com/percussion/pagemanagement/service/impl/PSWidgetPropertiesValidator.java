@@ -23,6 +23,7 @@
  */
 package com.percussion.pagemanagement.service.impl;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.pagemanagement.data.PSWidgetDefinition;
 import com.percussion.pagemanagement.data.PSWidgetDefinition.AbstractUserPref;
 import com.percussion.pagemanagement.data.PSWidgetDefinition.UserPref;
@@ -106,7 +107,7 @@ public abstract class PSWidgetPropertiesValidator<T extends AbstractUserPref> ex
                 T p = prefs.get(name);
                 if (p == null) {
                     // The widget contains a preference which has been removed from the definition and is no longer used.
-                    log.debug("Field '{}' does not exist in widget '{}'.",
+                    log.warn("Field '{}' does not exist in widget '{}'.",
                             name,
                             definition.getId() );
 
@@ -117,17 +118,6 @@ public abstract class PSWidgetPropertiesValidator<T extends AbstractUserPref> ex
         } catch (PSDataServiceException dataServiceLoadException) {
             e.addSuppressed(dataServiceLoadException);
         }
-    }
-
-    private Object fixUpgrdePropertyIssue(String name, Object object, T userPref, Map<String, Object> properties, Errors errors){
-        String propName = "sortby";
-        String wrongValue = "rx:sys_contentpostdate desc";
-        String correctValue = "rx:sys_contentpostdate";
-        if(propName.equalsIgnoreCase(name) && wrongValue.equalsIgnoreCase(object.toString())){
-            properties.put(name,correctValue);
-            return correctValue;
-        }
-        return object;
     }
 
     @Override
@@ -163,25 +153,27 @@ public abstract class PSWidgetPropertiesValidator<T extends AbstractUserPref> ex
         }
         catch (PSWidgetPropertyBlankStringCoercionException e)
         {
-            log.debug("Failed to coerce blank widget property: " 
-                    + name 
-                    + " Is is not a string and since its blank we will skip it.", e);
+            log.debug("Failed to coerce blank widget property:{}  Is is not a string and since its blank we will skip it. Error: {} "
+                    , name
+                    , PSExceptionUtils.getMessageForLog(e));
             return;
         }
         catch (PSWidgetPropertyCoercionException e)
         {
-            log.warn("Failed coerce widget property: ", e);
+            log.warn("Failed coerce widget property: Error: {}", PSExceptionUtils.getMessageForLog(e));
         }
         boolean valid = validateType(klass, userPref.getDisplayName(), object, errors);
         if (valid &&  isEnum(userPref)) {
             valid = getEnums(userPref).contains(object);
             if ( ! valid ) {
-                //Try to see if Upgraded Property and fix it, else throw error.
-                //Doing it here to not have performance impact on all properties.
-                Object obj = fixUpgrdePropertyIssue(name, object, userPref, properties, errors);
+                //If the enum value is invalid - this is probably an upgrade issue - just use the default value instead of erroring.
+                Object obj = userPref.getDefaultValue();
                 valid = getEnums(userPref).contains(obj);
                 if ( ! valid ) {
+                    //default value on the property is no good.
                     errors.rejectValue(name, "widgetItem.badEnumValue", "Bad enum value");
+                }else{
+                    properties.put(name,String.valueOf(obj));
                 }
             }
         }

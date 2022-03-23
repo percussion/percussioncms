@@ -24,6 +24,7 @@
 
 package com.percussion.pagemanagement.assembler.impl.finder;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.pagemanagement.assembler.PSWidgetInstance;
 import com.percussion.services.assembly.IPSAssemblyItem;
 import com.percussion.services.assembly.impl.finder.PSAutoFinderUtils;
@@ -72,7 +73,8 @@ public class PSAutoWidgetContentFinder extends PSWidgetContentFinder
     	catch(Exception e)
     	{
     		ms_logger.error("Error getting content items for the given finder. " +
-    				"\nPlease make sure the query parameters are valid.", e);
+    				"\nPlease make sure the query parameters are valid. Error: {}",
+					PSExceptionUtils.getMessageForLog(e));
     	}
     	return items;
     }

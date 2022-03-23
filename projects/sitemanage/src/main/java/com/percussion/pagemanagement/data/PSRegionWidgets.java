@@ -25,18 +25,15 @@ package com.percussion.pagemanagement.data;
 
 import com.fasterxml.jackson.annotation.JsonRootName;
 import com.percussion.share.data.PSAbstractPersistantObject;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
-
 import net.sf.oval.constraint.AssertValid;
 import net.sf.oval.constraint.NotBlank;
 import net.sf.oval.constraint.NotNull;
+
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * 
@@ -60,7 +57,7 @@ public class PSRegionWidgets extends PSAbstractPersistantObject
     @NotBlank
     private String regionId;
     
-    @AssertValid(requireValidElements=true)
+    @AssertValid()
     private List<PSWidgetItem> widgetItems = new ArrayList<>();
     
     /**
@@ -82,7 +79,7 @@ public class PSRegionWidgets extends PSAbstractPersistantObject
      * Returns the widgets in the correct order.
      * @return never <code>null</code>, maybe empty.
      */
-    @AssertValid(requireValidElements=true)
+    @AssertValid()
     @XmlElementWrapper(name = "widgetItems")
     @XmlElement(name = "widgetItem")
     public List<PSWidgetItem> getWidgetItems()
@@ -106,6 +103,18 @@ public class PSRegionWidgets extends PSAbstractPersistantObject
     }
     
     private static final long serialVersionUID = 1L;
-    
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof PSRegionWidgets)) return false;
+        if (!super.equals(o)) return false;
+        PSRegionWidgets that = (PSRegionWidgets) o;
+        return getRegionId().equals(that.getRegionId()) && getWidgetItems().equals(that.getWidgetItems());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), getRegionId(), getWidgetItems());
+    }
 }
