@@ -269,7 +269,6 @@
                 <exclusion>
                     <groupId>jtidy</groupId>
                     <artifactId>jtidy</artifactId>
-                    <!--<version>4aug2000r7-dev</version>-->
                 </exclusion>
                 <exclusion>
                     <artifactId>xmlParserAPIs</artifactId>
@@ -290,35 +289,6 @@
             <artifactId>javax.servlet-api</artifactId>
             <scope>provided</scope>
         </dependency>
-        <!--
-        <dependency>
-            <groupId>httpunit</groupId>
-            <artifactId>httpunit</artifactId>
-            <version>1.6</version>
-            <scope>test</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>jtidy</groupId>
-                    <artifactId>jtidy</artifactId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>xmlParserAPIs</artifactId>
-                    <groupId>xerces</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>xercesImpl</artifactId>
-                    <groupId>xerces</groupId>
-                </exclusion>
-            </exclusions>
-        </dependency>
--->
-        <!--
-        <dependency>
-            <groupId>commons-beanutils</groupId>
-            <artifactId>commons-beanutils</artifactId>
-            <version>1.9.2</version>
-        </dependency>
--->
         <dependency>
             <groupId>org.apache.derby</groupId>
             <artifactId>derby</artifactId>
@@ -331,12 +301,6 @@
             <optional>true</optional>
             <scope>provided</scope>
         </dependency>
-
-        <dependency>
-            <groupId>xml-apis</groupId>
-            <artifactId>xml-apis</artifactId>
-        </dependency>
-
         <dependency>
             <artifactId>xercesImpl</artifactId>
             <groupId>xerces</groupId>
