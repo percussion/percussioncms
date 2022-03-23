@@ -413,11 +413,6 @@
         </dependency>
 
         <dependency>
-            <groupId>com.percussion</groupId>
-            <artifactId>perc-taxonomy</artifactId>
-            <version>${project.parent.version}</version>
-        </dependency>
-        <dependency>
             <groupId>org.mortbay.jasper</groupId>
             <artifactId>apache-jsp</artifactId>
             <scope>provided</scope>
