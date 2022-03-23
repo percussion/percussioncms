@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT addeditionclist (publishers*, site*, editionbytype*, editionbyname*, editionbysite*, contentlistlink*, publications*, editionid*, editionclistid*, category*, sequence*, destinationsiteurl*, editiontypeurl*, contentlisturl*, sourcesiteurl*, authtypeurl*, editionurl*, userstatusincludeurl* )>
+<!ELEMENT userstatusincludeurl (#PCDATA)>
+<!ELEMENT editionurl (#PCDATA)>
+<!ELEMENT authtypeurl (#PCDATA)>
+<!ELEMENT sourcesiteurl (#PCDATA)>
+<!ELEMENT contentlisturl (#PCDATA)>
+<!ELEMENT editiontypeurl (#PCDATA)>
+<!ELEMENT destinationsiteurl (#PCDATA)>
+<!ELEMENT sequence (#PCDATA)>
+<!ELEMENT category (#PCDATA)>
+<!ELEMENT editionclistid (#PCDATA)>
+<!ELEMENT editionid (#PCDATA)>
+<!ELEMENT publications (#PCDATA)>
+<!ELEMENT contentlistlink (#PCDATA)>
+<!ELEMENT editionbysite (#PCDATA)>
+<!ELEMENT editionbyname (#PCDATA)>
+<!ELEMENT editionbytype (#PCDATA)>
+<!ELEMENT site (#PCDATA)>
+<!ELEMENT publishers (#PCDATA)>

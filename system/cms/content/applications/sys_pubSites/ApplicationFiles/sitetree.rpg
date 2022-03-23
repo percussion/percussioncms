@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT sitetree (publishers*, sitesbyname*, sitesbyid*, edition*, contentlist*, publications*, userstatusincludeurl* )>
+<!ELEMENT userstatusincludeurl (#PCDATA)>
+<!ELEMENT publications (#PCDATA)>
+<!ELEMENT contentlist (#PCDATA)>
+<!ELEMENT edition (#PCDATA)>
+<!ELEMENT sitesbyid (#PCDATA)>
+<!ELEMENT sitesbyname (#PCDATA)>
+<!ELEMENT publishers (#PCDATA)>

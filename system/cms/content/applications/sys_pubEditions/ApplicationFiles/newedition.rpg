@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT newedition (publishers*, site*, editionbytype*, editionbyname*, editionbysite*, contentlist*, publications*, editionid*, category*, editiontitle*, editioncomments*, destinationsitevalue*, editiontypevalue*, pubstatusid*, sourcesitevalue*, addeditionclisturl*, edition*, destinationsiteurl*, editiontypeurl*, sourcesiteurl*, userstatusincludeurl* )>
+<!ELEMENT userstatusincludeurl (#PCDATA)>
+<!ELEMENT sourcesiteurl (#PCDATA)>
+<!ELEMENT editiontypeurl (#PCDATA)>
+<!ELEMENT destinationsiteurl (#PCDATA)>
+<!ELEMENT edition (editionclistseq*, editionclistauth*, editionclistcont* )>
+<!ELEMENT editionclistcont (#PCDATA)>
+<!ELEMENT editionclistauth (#PCDATA)>
+<!ELEMENT editionclistseq (#PCDATA)>
+<!ELEMENT addeditionclisturl (#PCDATA)>
+<!ELEMENT sourcesitevalue (#PCDATA)>
+<!ELEMENT pubstatusid (#PCDATA)>
+<!ELEMENT editiontypevalue (#PCDATA)>
+<!ELEMENT destinationsitevalue (#PCDATA)>
+<!ELEMENT editioncomments (#PCDATA)>
+<!ELEMENT editiontitle (#PCDATA)>
+<!ELEMENT category (#PCDATA)>
+<!ELEMENT editionid (#PCDATA)>
+<!ELEMENT publications (#PCDATA)>
+<!ELEMENT contentlist (#PCDATA)>
+<!ELEMENT editionbysite (#PCDATA)>
+<!ELEMENT editionbyname (#PCDATA)>
+<!ELEMENT editionbytype (#PCDATA)>
+<!ELEMENT site (#PCDATA)>
+<!ELEMENT publishers (#PCDATA)>

@@ -1,0 +1,588 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PSXApplication active="no" appType="SYSTEM" enabled="yes" hidden="no" id="420" startPriority="0" version="2.0">
+   <name>sys_pubSites</name>
+   <description/>
+   <requestRoot>sys_pubSites</requestRoot>
+   <defaultRequestPage/>
+   <appExtensionContext>application/crow_997397384421/</appExtensionContext>
+   <PSXRevisionHistory>
+      <PSXRevisionEntry majorVersion="1" minorVersion="0">
+         <agent>BackEndTable:admin1</agent>
+         <description>Saved</description>
+         <time>20010809T184304375</time>
+      </PSXRevisionEntry>
+      <PSXRevisionEntry majorVersion="1" minorVersion="141">
+         <agent>admin1</agent>
+         <description>Saved</description>
+         <time>20080819T170822207</time>
+      </PSXRevisionEntry>
+   </PSXRevisionHistory>
+   <PSXAcl id="0">
+      <PSXAclEntry id="0" type="user">
+         <name>Default</name>
+         <applicationAccessLevel dataCreate="yes" dataDelete="yes" dataQuery="yes" dataUpdate="yes" designDelete="no" designRead="no" designUpdate="no" modifyAcl="no"/>
+      </PSXAclEntry>
+      <PSXAclEntry id="0" type="role">
+         <name>Admin</name>
+         <applicationAccessLevel dataCreate="yes" dataDelete="yes" dataQuery="yes" dataUpdate="yes" designDelete="yes" designRead="yes" designUpdate="yes" modifyAcl="yes"/>
+      </PSXAclEntry>
+      <multiMembershipBehavior>mergeMaximumAccess</multiMembershipBehavior>
+   </PSXAcl>
+   <maxThreads>0</maxThreads>
+   <maxRequestTime>0</maxRequestTime>
+   <maxRequestsInQueue>0</maxRequestsInQueue>
+   <userSessionEnabled>no</userSessionEnabled>
+   <userSessionTimeout>0</userSessionTimeout>
+   <requestTypeHtmlParamName>DBActionType</requestTypeHtmlParamName>
+   <requestTypeValueQuery>QUERY</requestTypeValueQuery>
+   <requestTypeValueInsert>INSERT</requestTypeValueInsert>
+   <requestTypeValueUpdate>UPDATE</requestTypeValueUpdate>
+   <requestTypeValueDelete>DELETE</requestTypeValueDelete>
+   <PSXDataSet id="234">
+      <name>copySiteDef</name>
+      <description>This is a dummy resource where all work is done in a post exit. 3 parameters are expected: sys_originalSiteName, sys_newSiteName and sys_newFolderPath. 
+A search is done looking for a site whose name matches the original supplied. Once found, this site is copied and the site name and folder path are set from the supplied values before saving the copy.
+The result doc indicates success or failure and includes error info on failure (if success is false).
+The result doc has the following DTD:
+&lt;!ELEMENT CopySiteDefResults (Error?)&gt;
+&lt;!ATTLIST CopySiteDefResults
+   success (true|false) #REQUIRED
+   &gt;
+&lt;!ELEMENT Error (Message, StackTrace)&gt;
+&lt;!ELEMENT Message (#PCDATA)&gt;
+&lt;!ELEMENT StackTrace (#PCDATA)&gt;</description>
+      <transactionType>none</transactionType>
+      <PSXQueryPipe id="559">
+         <name>QueryPipe</name>
+         <description/>
+         <PSXBackEndDataTank id="555">
+            <PSXBackEndTable id="554">
+               <alias>RXDUAL</alias>
+               <table>RXDUAL</table>
+               <datasource/>
+            </PSXBackEndTable>
+         </PSXBackEndDataTank>
+         <PSXDataMapper id="557" returnEmptyXml="no">
+            <PSXDataMapping groupId="0" id="0">
+               <PSXXmlField id="0">
+                  <name>_RXDUAL/RXDUALSet/RXDUAL/GB</name>
+               </PSXXmlField>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>RXDUAL</tableAlias>
+                  <column>GB</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+               <Conditionals/>
+            </PSXDataMapping>
+         </PSXDataMapper>
+         <PSXDataSelector id="556" method="whereClause" unique="no">
+            <WhereClauses>
+               <PSXWhereClause id="0" omitWhenNull="no">
+                  <PSXConditional id="0">
+                     <variable>
+                        <PSXNumericLiteral id="0">
+                           <number>1</number>
+                           <format>#,##0.###</format>
+                        </PSXNumericLiteral>
+                     </variable>
+                     <operator>=</operator>
+                     <value>
+                        <PSXNumericLiteral id="0">
+                           <number>2</number>
+                           <format>#,##0.###</format>
+                        </PSXNumericLiteral>
+                     </value>
+                     <boolean>AND</boolean>
+                  </PSXConditional>
+               </PSXWhereClause>
+            </WhereClauses>
+            <Sorting/>
+            <nativeStatement/>
+            <Caching enabled="no" type="interval">
+               <ageInterval>15</ageInterval>
+            </Caching>
+         </PSXDataSelector>
+         <ResultDataExits>
+            <PSXExtensionCallSet id="232">
+               <PSXExtensionCall id="0">
+                  <name>Java/global/percussion/system/sys_copySiteDef</name>
+               </PSXExtensionCall>
+            </PSXExtensionCallSet>
+         </ResultDataExits>
+         <PSXResourceCacheSettings enabled="no" id="0">
+            <Keys/>
+            <Dependencies/>
+         </PSXResourceCacheSettings>
+      </PSXQueryPipe>
+      <PSXPageDataTank id="233">
+         <schemaSource>file:_RXDUAL.dtd</schemaSource>
+         <actionTypeXmlField/>
+      </PSXPageDataTank>
+      <PSXRequestor directDataStream="no" id="0">
+         <requestPage>copySiteDef</requestPage>
+         <SelectionParams/>
+         <ValidationRules/>
+         <characterEncoding>UTF-8</characterEncoding>
+         <MimeProperties>
+            <html>
+               <PSXTextLiteral id="0">
+                  <text>text/html</text>
+               </PSXTextLiteral>
+            </html>
+            <htm>
+               <PSXTextLiteral id="0">
+                  <text>text/html</text>
+               </PSXTextLiteral>
+            </htm>
+         </MimeProperties>
+      </PSXRequestor>
+      <PSXResultPageSet id="0">
+         <PSXResultPage allowNamespaceCleanup="false" id="235">
+            <extensionsSupported/>
+         </PSXResultPage>
+      </PSXResultPageSet>
+   </PSXDataSet>
+   <PSXDataSet id="238">
+      <name>modifySiteDefs</name>
+      <description>This is a dummy resource where all work is done in a post exit. 2 parameters are expected: sys_originalPath and sys_newPath. All sites (RXSITES) are scanned and any folder path that matches original is updated to match the new path.
+The result doc indicates success or failure and includes error info on failure (if success is false).
+The result doc has the following DTD:
+&lt;!ELEMENT ModifySiteDefsResults (Error?)&gt;
+&lt;!ATTLIST ModifySiteDefsResults
+   success (true|false) #REQUIRED
+   &gt;
+&lt;!ELEMENT Error (Message, StackTrace)&gt;
+&lt;!ELEMENT Message (#PCDATA)&gt;
+&lt;!ELEMENT StackTrace (#PCDATA)&gt;</description>
+      <transactionType>none</transactionType>
+      <PSXQueryPipe id="565">
+         <name>QueryPipe</name>
+         <description/>
+         <PSXBackEndDataTank id="561">
+            <PSXBackEndTable id="560">
+               <alias>RXDUAL</alias>
+               <table>RXDUAL</table>
+               <datasource/>
+            </PSXBackEndTable>
+         </PSXBackEndDataTank>
+         <PSXDataMapper id="563" returnEmptyXml="no">
+            <PSXDataMapping groupId="0" id="0">
+               <PSXXmlField id="0">
+                  <name>_RXDUAL/RXDUALSet/RXDUAL/GB</name>
+               </PSXXmlField>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>RXDUAL</tableAlias>
+                  <column>GB</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+               <Conditionals/>
+            </PSXDataMapping>
+         </PSXDataMapper>
+         <PSXDataSelector id="562" method="whereClause" unique="no">
+            <WhereClauses>
+               <PSXWhereClause id="0" omitWhenNull="no">
+                  <PSXConditional id="0">
+                     <variable>
+                        <PSXNumericLiteral id="0">
+                           <number>1</number>
+                           <format>#,##0.###</format>
+                        </PSXNumericLiteral>
+                     </variable>
+                     <operator>=</operator>
+                     <value>
+                        <PSXNumericLiteral id="0">
+                           <number>2</number>
+                           <format>#,##0.###</format>
+                        </PSXNumericLiteral>
+                     </value>
+                     <boolean>AND</boolean>
+                  </PSXConditional>
+               </PSXWhereClause>
+            </WhereClauses>
+            <Sorting/>
+            <nativeStatement/>
+            <Caching enabled="no" type="interval">
+               <ageInterval>15</ageInterval>
+            </Caching>
+         </PSXDataSelector>
+         <ResultDataExits>
+            <PSXExtensionCallSet id="236">
+               <PSXExtensionCall id="0">
+                  <name>Java/global/percussion/system/sys_modifySiteDefs</name>
+               </PSXExtensionCall>
+            </PSXExtensionCallSet>
+         </ResultDataExits>
+         <PSXResourceCacheSettings enabled="no" id="0">
+            <Keys/>
+            <Dependencies/>
+         </PSXResourceCacheSettings>
+      </PSXQueryPipe>
+      <PSXPageDataTank id="237">
+         <schemaSource>file:_RXDUAL.dtd</schemaSource>
+         <actionTypeXmlField/>
+      </PSXPageDataTank>
+      <PSXRequestor directDataStream="no" id="0">
+         <requestPage>modifySiteDefs</requestPage>
+         <SelectionParams/>
+         <ValidationRules/>
+         <characterEncoding>UTF-8</characterEncoding>
+         <MimeProperties>
+            <html>
+               <PSXTextLiteral id="0">
+                  <text>text/html</text>
+               </PSXTextLiteral>
+            </html>
+            <htm>
+               <PSXTextLiteral id="0">
+                  <text>text/html</text>
+               </PSXTextLiteral>
+            </htm>
+         </MimeProperties>
+      </PSXRequestor>
+      <PSXResultPageSet id="0">
+         <PSXResultPage allowNamespaceCleanup="false" id="239">
+            <extensionsSupported/>
+         </PSXResultPage>
+      </PSXResultPageSet>
+   </PSXDataSet>
+   <PSXDataSet id="242">
+      <name>Dataset81</name>
+      <description>This resource allows a user to get all site definitions or the specified ones for the supplied sys_sitename and/or sys_folderroot.</description>
+      <transactionType>none</transactionType>
+      <PSXQueryPipe id="231">
+         <name>QueryPipe</name>
+         <description/>
+         <PSXBackEndDataTank id="226">
+            <PSXBackEndTable id="225">
+               <alias>RXSITES</alias>
+               <table>RXSITES</table>
+               <datasource/>
+            </PSXBackEndTable>
+         </PSXBackEndDataTank>
+         <PSXDataMapper id="229" returnEmptyXml="yes">
+            <PSXDataMapping groupId="1" id="0">
+               <PSXXmlField id="0">
+                  <name>Sites/PSXSite/@id</name>
+               </PSXXmlField>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>RXSITES</tableAlias>
+                  <column>SITEID</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+               <Conditionals/>
+            </PSXDataMapping>
+            <PSXDataMapping groupId="1" id="0">
+               <PSXXmlField id="0">
+                  <name>Sites/PSXSite/@name</name>
+               </PSXXmlField>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>RXSITES</tableAlias>
+                  <column>SITENAME</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+               <Conditionals/>
+            </PSXDataMapping>
+            <PSXDataMapping groupId="1" id="0">
+               <PSXXmlField id="0">
+                  <name>Sites/PSXSite/@description</name>
+               </PSXXmlField>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>RXSITES</tableAlias>
+                  <column>SITEDESC</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+               <Conditionals/>
+            </PSXDataMapping>
+            <PSXDataMapping groupId="1" id="0">
+               <PSXXmlField id="0">
+                  <name>Sites/PSXSite/@baseUrl</name>
+               </PSXXmlField>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>RXSITES</tableAlias>
+                  <column>BASEURL</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+               <Conditionals/>
+            </PSXDataMapping>
+            <PSXDataMapping groupId="1" id="0">
+               <PSXXmlField id="0">
+                  <name>Sites/PSXSite/@root</name>
+               </PSXXmlField>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>RXSITES</tableAlias>
+                  <column>ROOT</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+               <Conditionals/>
+            </PSXDataMapping>
+            <PSXDataMapping groupId="1" id="0">
+               <PSXXmlField id="0">
+                  <name>Sites/PSXSite/@ipAddress</name>
+               </PSXXmlField>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>RXSITES</tableAlias>
+                  <column>IPADDRESS</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+               <Conditionals/>
+            </PSXDataMapping>
+            <PSXDataMapping groupId="1" id="0">
+               <PSXXmlField id="0">
+                  <name>Sites/PSXSite/@port</name>
+               </PSXXmlField>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>RXSITES</tableAlias>
+                  <column>PORT</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+               <Conditionals/>
+            </PSXDataMapping>
+            <PSXDataMapping groupId="1" id="0">
+               <PSXXmlField id="0">
+                  <name>Sites/PSXSite/@userId</name>
+               </PSXXmlField>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>RXSITES</tableAlias>
+                  <column>USERID</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+               <Conditionals/>
+            </PSXDataMapping>
+            <PSXDataMapping groupId="1" id="0">
+               <PSXXmlField id="0">
+                  <name>Sites/PSXSite/@password</name>
+               </PSXXmlField>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>RXSITES</tableAlias>
+                  <column>PASSWORD</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+               <Conditionals/>
+            </PSXDataMapping>
+            <PSXDataMapping groupId="1" id="0">
+               <PSXXmlField id="0">
+                  <name>Sites/PSXSite/@state</name>
+               </PSXXmlField>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>RXSITES</tableAlias>
+                  <column>STATE</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+               <Conditionals/>
+            </PSXDataMapping>
+            <PSXDataMapping groupId="1" id="0">
+               <PSXXmlField id="0">
+                  <name>Sites/PSXSite/@folderRoot</name>
+               </PSXXmlField>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>RXSITES</tableAlias>
+                  <column>FOLDER_ROOT</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+               <Conditionals/>
+            </PSXDataMapping>
+            <PSXDataMapping groupId="1" id="0">
+               <PSXXmlField id="0">
+                  <name>Sites/PSXSite/@navTheme</name>
+               </PSXXmlField>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>RXSITES</tableAlias>
+                  <column>NAV_THEME</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+               <Conditionals/>
+            </PSXDataMapping>
+            <PSXDataMapping groupId="1" id="0">
+               <PSXXmlField id="0">
+                  <name>Sites/PSXSite/@globalTemplate</name>
+               </PSXXmlField>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>RXSITES</tableAlias>
+                  <column>GLOBALTEMPLATE</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+               <Conditionals/>
+            </PSXDataMapping>
+         </PSXDataMapper>
+         <PSXDataSelector id="227" method="whereClause" unique="no">
+            <WhereClauses>
+               <PSXWhereClause id="0" omitWhenNull="yes">
+                  <PSXConditional id="0">
+                     <variable>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>RXSITES</tableAlias>
+                           <column>SITENAME</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </variable>
+                     <operator>=</operator>
+                     <value>
+                        <PSXSingleHtmlParameter id="0">
+                           <name>sys_sitename</name>
+                        </PSXSingleHtmlParameter>
+                     </value>
+                     <boolean>AND</boolean>
+                  </PSXConditional>
+               </PSXWhereClause>
+               <PSXWhereClause id="0" omitWhenNull="yes">
+                  <PSXConditional id="0">
+                     <variable>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>RXSITES</tableAlias>
+                           <column>FOLDER_ROOT</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </variable>
+                     <operator>=</operator>
+                     <value>
+                        <PSXSingleHtmlParameter id="0">
+                           <name>sys_folderroot</name>
+                        </PSXSingleHtmlParameter>
+                     </value>
+                     <boolean>AND</boolean>
+                  </PSXConditional>
+               </PSXWhereClause>
+               <PSXWhereClause id="0" omitWhenNull="yes">
+                  <PSXConditional id="0">
+                     <variable>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>RXSITES</tableAlias>
+                           <column>SITEID</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </variable>
+                     <operator>=</operator>
+                     <value>
+                        <PSXSingleHtmlParameter id="0">
+                           <name>sys_siteid</name>
+                        </PSXSingleHtmlParameter>
+                     </value>
+                     <boolean>AND</boolean>
+                  </PSXConditional>
+               </PSXWhereClause>
+            </WhereClauses>
+            <Sorting>
+               <PSXSortedColumn id="0" isAscending="yes">
+                  <PSXBackEndColumn id="0">
+                     <tableAlias>RXSITES</tableAlias>
+                     <column>SITENAME</column>
+                     <columnAlias/>
+                  </PSXBackEndColumn>
+               </PSXSortedColumn>
+            </Sorting>
+            <nativeStatement/>
+            <Caching enabled="no" type="interval">
+               <ageInterval>15</ageInterval>
+            </Caching>
+         </PSXDataSelector>
+         <ResultDataExits>
+            <PSXExtensionCallSet id="240">
+               <PSXExtensionCall id="0">
+                  <name>Java/global/percussion/system/sys_emptyDoc</name>
+                  <PSXExtensionParamValue id="0">
+                     <value>
+                        <PSXTextLiteral id="0">
+                           <text>Sites</text>
+                        </PSXTextLiteral>
+                     </value>
+                  </PSXExtensionParamValue>
+               </PSXExtensionCall>
+            </PSXExtensionCallSet>
+         </ResultDataExits>
+         <PSXResourceCacheSettings enabled="no" id="0">
+            <Keys/>
+            <Dependencies/>
+         </PSXResourceCacheSettings>
+      </PSXQueryPipe>
+      <PSXPageDataTank id="241">
+         <schemaSource>file:Sites.dtd</schemaSource>
+         <actionTypeXmlField/>
+      </PSXPageDataTank>
+      <PSXRequestor directDataStream="no" id="0">
+         <requestPage>getSites</requestPage>
+         <SelectionParams/>
+         <ValidationRules/>
+         <characterEncoding>UTF-8</characterEncoding>
+         <MimeProperties>
+            <html>
+               <PSXTextLiteral id="0">
+                  <text>text/html</text>
+               </PSXTextLiteral>
+            </html>
+            <htm>
+               <PSXTextLiteral id="0">
+                  <text>text/html</text>
+               </PSXTextLiteral>
+            </htm>
+         </MimeProperties>
+      </PSXRequestor>
+      <PSXResultPageSet id="0">
+         <PSXResultPage allowNamespaceCleanup="false" id="243">
+            <extensionsSupported/>
+         </PSXResultPage>
+      </PSXResultPageSet>
+      <PSXResultPager id="228">
+         <maxRowsPerPage>-1</maxRowsPerPage>
+         <maxPages>-1</maxPages>
+         <maxPageLinks>10</maxPageLinks>
+      </PSXResultPager>
+   </PSXDataSet>
+   <PSXLogger id="0" logAppStartStop="no" logAppStatistics="no" logBasicUserActivity="no" logDetailedUserActivity="no" logErrors="no" logExecutionPlan="no" logFullUserActivity="no" logMultipleHandlers="no" logServerStartStop="no"/>
+   <PSXTraceInfo id="0" traceAppHandlerProc="no" traceAppSecurity="no" traceBasicRequestInfo="no" traceConditionalEval="no" traceDbPool="no" traceEnabled="no" traceExitExec="no" traceExitProc="no" traceFileInfo="no" traceInitHttpVar="no" traceMapper="no" traceOutputColumnWidth="80" traceOutputConv="no" tracePostExitCgi="no" tracePostExitXml="no" tracePostPreProcHttpVar="no" traceResourceHandler="no" traceResultSet="no" traceSessionInfo="no" traceTimestampOnlyEnabled="no"/>
+   <PSXErrorWebPages id="99" returnHtml="yes"/>
+   <backEndLoginPassthru>no</backEndLoginPassthru>
+   <PSXNotifier id="100">
+      <providerType>SMTP</providerType>
+      <server>//Ben</server>
+      <from/>
+   </PSXNotifier>
+   <userProperty name="pageDatatankFilePath230">D:\rx\specs\centaur\Sites.dtd</userProperty>
+   <userProperty name="schemaSourceReadOnly241">true</userProperty>
+   <userProperty name="225locationy">20</userProperty>
+   <userProperty name="pageDatatankSrcType237">3</userProperty>
+   <userProperty name="225locationx">20</userProperty>
+   <userProperty name="locationX239">327</userProperty>
+   <userProperty name="pageDatatankSrcType233">3</userProperty>
+   <userProperty name="locationX238">160</userProperty>
+   <userProperty name="locationX236">56</userProperty>
+   <userProperty name="pageDatatankSrcType230">2</userProperty>
+   <userProperty name="locationX235">325</userProperty>
+   <userProperty name="locationX234">155</userProperty>
+   <userProperty name="resultPageFilePath243">D:\rx\specs\centaur\Sites.dtd</userProperty>
+   <userProperty name="locationX232">56</userProperty>
+   <userProperty name="locationX231">10</userProperty>
+   <userProperty name="locationX230">357</userProperty>
+   <userProperty name="savedFromWorkbench">Yes</userProperty>
+   <userProperty name="locationY243">288</userProperty>
+   <userProperty name="locationY242">275</userProperty>
+   <userProperty name="locationY241">0</userProperty>
+   <userProperty name="locationY240">22</userProperty>
+   <userProperty name="schemaSourceReadOnly237">true</userProperty>
+   <userProperty name="schemaSourceReadOnly233">true</userProperty>
+   <userProperty name="schemaSourceReadOnly230">true</userProperty>
+   <userProperty name="225sizewidth">120</userProperty>
+   <userProperty name="locationX229">211</userProperty>
+   <userProperty name="locationX228">144</userProperty>
+   <userProperty name="locationX227">77</userProperty>
+   <userProperty name="locationX226">0</userProperty>
+   <userProperty name="locationY239">158</userProperty>
+   <userProperty name="locationY238">150</userProperty>
+   <userProperty name="locationY236">22</userProperty>
+   <userProperty name="locationY235">37</userProperty>
+   <userProperty name="225sizeheight">200</userProperty>
+   <userProperty name="locationY234">29</userProperty>
+   <userProperty name="locationY232">22</userProperty>
+   <userProperty name="locationY231">10</userProperty>
+   <userProperty name="locationY230">0</userProperty>
+   <userProperty name="pageDatatankFilePath241">D:\rx\specs\centaur\Sites.dtd</userProperty>
+   <userProperty name="pageDatatankSrcType241">2</userProperty>
+   <userProperty name="locationY229">24</userProperty>
+   <userProperty name="locationX243">339</userProperty>
+   <userProperty name="locationY228">24</userProperty>
+   <userProperty name="locationX242">171</userProperty>
+   <userProperty name="locationY227">24</userProperty>
+   <userProperty name="locationX241">357</userProperty>
+   <userProperty name="locationY226">0</userProperty>
+   <userProperty name="locationX240">56</userProperty>
+   <userProperty name="225readonly">false</userProperty>
+</PSXApplication>

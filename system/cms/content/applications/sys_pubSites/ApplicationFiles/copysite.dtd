@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT copysite (list*, relatedlinks, componentname )>
+<!ELEMENT componentname (#PCDATA)>
+<!ELEMENT relatedlinks (#PCDATA)>
+<!ELEMENT list (sitename, copylink, ftppassword )>
+<!ELEMENT ftppassword (#PCDATA)>
+<!ELEMENT copylink (#PCDATA)>
+<!ELEMENT sitename (#PCDATA)>

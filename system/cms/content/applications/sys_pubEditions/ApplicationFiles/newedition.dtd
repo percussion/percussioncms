@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT newedition (editioncomments, editionid, destinationsiteurl, pubstatusid, sourcesitevalue, editionbyname*, editionbytype*, contentlist*, relatedlinks, edition*, editiontypevalue, destinationsitevalue, editiontypeurl, userstatusincludeurl*, editiondate, editiontitle, category, publishers*, cancelurl, addeditionclisturl, publications*, newaddeditionclisturl, editionbysite*, site*, sourcesiteurl, componentname )>
+<!ELEMENT componentname (#PCDATA)>
+<!ELEMENT sourcesiteurl (#PCDATA)>
+<!ELEMENT site (#PCDATA)>
+<!ELEMENT editionbysite (#PCDATA)>
+<!ELEMENT newaddeditionclisturl (#PCDATA)>
+<!ELEMENT publications (#PCDATA)>
+<!ELEMENT addeditionclisturl (#PCDATA)>
+<!ELEMENT cancelurl (#PCDATA)>
+<!ELEMENT publishers (#PCDATA)>
+<!ELEMENT category (#PCDATA)>
+<!ELEMENT editiontitle (#PCDATA)>
+<!ELEMENT editiondate (#PCDATA)>
+<!ELEMENT userstatusincludeurl (#PCDATA)>
+<!ELEMENT editiontypeurl (#PCDATA)>
+<!ELEMENT destinationsitevalue (#PCDATA)>
+<!ELEMENT editiontypevalue (#PCDATA)>
+<!ELEMENT edition (deleteeditionclist, clisturl, contentlistid, contentlistname, editaddeditionclisturl, editionclistauth, editionclistseq, editionclistcont )>
+<!ELEMENT editionclistcont (#PCDATA)>
+<!ELEMENT editionclistseq (#PCDATA)>
+<!ELEMENT editionclistauth (#PCDATA)>
+<!ELEMENT editaddeditionclisturl (#PCDATA)>
+<!ELEMENT contentlistname (#PCDATA)>
+<!ELEMENT contentlistid (#PCDATA)>
+<!ELEMENT clisturl (#PCDATA)>
+<!ELEMENT deleteeditionclist (#PCDATA)>
+<!ELEMENT relatedlinks (#PCDATA)>
+<!ELEMENT contentlist (#PCDATA)>
+<!ELEMENT editionbytype (#PCDATA)>
+<!ELEMENT editionbyname (#PCDATA)>
+<!ELEMENT sourcesitevalue (#PCDATA)>
+<!ELEMENT pubstatusid (#PCDATA)>
+<!ELEMENT destinationsiteurl (#PCDATA)>
+<!ELEMENT editionid (#PCDATA)>
+<!ELEMENT editioncomments (#PCDATA)>

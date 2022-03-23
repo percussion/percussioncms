@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT copyedition (relatedlinks, componentname, pagename, list* )>
+<!ELEMENT list (editionname, editionlink, editionid, editiondesc, edtype, destsite, destsiteid )>
+<!ELEMENT destsiteid (#PCDATA)>
+<!ELEMENT destsite (#PCDATA)>
+<!ELEMENT edtype (#PCDATA)>
+<!ELEMENT editiondesc (#PCDATA)>
+<!ELEMENT editionid (#PCDATA)>
+<!ELEMENT editionlink (#PCDATA)>
+<!ELEMENT editionname (#PCDATA)>
+<!ELEMENT componentname (#PCDATA)>
+<!ELEMENT pagename (#PCDATA)>
+<!ELEMENT relatedlinks (#PCDATA)>

@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT addeditionclist (relatedlinks, componentname, cancelurl, authtypeurl, destinationsiteurl, editionid, sourcesiteurl, sequence, contentlisturl, category, editiontypeurl, editionurl, editionclistid )>
+<!ELEMENT editionclistid (#PCDATA)>
+<!ELEMENT editionurl (#PCDATA)>
+<!ELEMENT editiontypeurl (#PCDATA)>
+<!ELEMENT category (#PCDATA)>
+<!ELEMENT contentlisturl (#PCDATA)>
+<!ELEMENT sequence (#PCDATA)>
+<!ELEMENT sourcesiteurl (#PCDATA)>
+<!ELEMENT editionid (#PCDATA)>
+<!ELEMENT destinationsiteurl (#PCDATA)>
+<!ELEMENT authtypeurl (#PCDATA)>
+<!ELEMENT cancelurl (#PCDATA)>
+<!ELEMENT componentname (#PCDATA)>
+<!ELEMENT relatedlinks (#PCDATA)>

@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT variableslist (relatedlinks, componentname, pagename, currentpsfirst, newlink, category* )>
+<!ELEMENT category (propname, newproplink, varlist* )>
+<!ELEMENT varlist (sitelookupurl, propid, contextlookupurl, propertyvalue, editlink, deletelink )>
+<!ELEMENT deletelink (#PCDATA)>
+<!ELEMENT editlink (#PCDATA)>
+<!ELEMENT propertyvalue (#PCDATA)>
+<!ATTLIST  propertyvalue contextid CDATA #REQUIRED>
+<!ELEMENT contextlookupurl (#PCDATA)>
+<!ELEMENT propid (#PCDATA)>
+<!ELEMENT sitelookupurl (#PCDATA)>
+<!ELEMENT newproplink (#PCDATA)>
+<!ELEMENT propname (#PCDATA)>
+<!ELEMENT newlink (#PCDATA)>
+<!ELEMENT currentpsfirst (#PCDATA)>
+<!ELEMENT pagename (#PCDATA)>
+<!ELEMENT componentname (#PCDATA)>
+<!ELEMENT relatedlinks (#PCDATA)>
