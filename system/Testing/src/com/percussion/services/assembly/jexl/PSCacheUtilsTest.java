@@ -1,13 +1,16 @@
 package com.percussion.services.assembly.jexl;
 
+import com.percussion.utils.testing.IntegrationTest;
 import junit.framework.TestCase;
 import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 import java.util.concurrent.TimeUnit;
 
+@Category(IntegrationTest.class)
 public class PSCacheUtilsTest extends TestCase {
 	
 	private static Logger logger = Logger.getLogger(PSCacheUtilsTest.class.getName());
