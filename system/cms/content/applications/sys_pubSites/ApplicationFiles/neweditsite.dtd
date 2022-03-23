@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT neweditsite (relatedlinks, componentname, publisherlookupvalue, new, statevalue, contenttypeurl, rowkiller, publisherlookupurl, contentlookupurl, cancelurl )>
+<!ELEMENT cancelurl (#PCDATA)>
+<!ELEMENT contentlookupurl (#PCDATA)>
+<!ELEMENT publisherlookupurl (#PCDATA)>
+<!ELEMENT rowkiller (#PCDATA)>
+<!ELEMENT contenttypeurl (#PCDATA)>
+<!ELEMENT statevalue (#PCDATA)>
+<!ELEMENT new (newsiteid, port, ftppassword, requiredsitename, baseurl, homepageurl, folderroot, navtheme, ftpuserid, root, sitdesc, ipaddress )>
+<!ELEMENT ipaddress (#PCDATA)>
+<!ELEMENT sitdesc (#PCDATA)>
+<!ELEMENT root (#PCDATA)>
+<!ELEMENT ftpuserid (#PCDATA)>
+<!ELEMENT navtheme (#PCDATA)>
+<!ELEMENT folderroot (#PCDATA)>
+<!ELEMENT homepageurl (#PCDATA)>
+<!ELEMENT baseurl (#PCDATA)>
+<!ELEMENT requiredsitename (#PCDATA)>
+<!ELEMENT ftppassword (#PCDATA)>
+<!ELEMENT port (#PCDATA)>
+<!ELEMENT newsiteid (#PCDATA)>
+<!ELEMENT publisherlookupvalue (#PCDATA)>
+<!ELEMENT componentname (#PCDATA)>
+<!ELEMENT relatedlinks (#PCDATA)>

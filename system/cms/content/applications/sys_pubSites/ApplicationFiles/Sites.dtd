@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT Site EMPTY>
+<!ATTLIST  Site id CDATA #REQUIRED>
+<!ATTLIST  Site name CDATA #REQUIRED>
+<!ATTLIST  Site description CDATA #REQUIRED>
+<!ATTLIST  Site baseUrl CDATA #REQUIRED>
+<!ATTLIST  Site root CDATA #REQUIRED>
+<!ATTLIST  Site ipAddress CDATA #REQUIRED>
+<!ATTLIST  Site port CDATA #REQUIRED>
+<!ATTLIST  Site userId CDATA #REQUIRED>
+<!ATTLIST  Site password CDATA #REQUIRED>
+<!ATTLIST  Site state CDATA #REQUIRED>
+<!ATTLIST  Site folderRoot CDATA #REQUIRED>
+<!ATTLIST  Site navTheme CDATA #REQUIRED>
+<!ATTLIST  Site globalTemplate CDATA #REQUIRED>
+<!ELEMENT Sites (Site* )>

@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT editvariables (relatedlinks, componentname, pagename, sitelookup, cancelurl, variables )>
+<!ELEMENT variables (assemblerpropid, assemblerpropname, assemblerpropvalue, siteid, contextid )>
+<!ELEMENT contextid (#PCDATA)>
+<!ELEMENT siteid (#PCDATA)>
+<!ELEMENT assemblerpropvalue (#PCDATA)>
+<!ELEMENT assemblerpropname (#PCDATA)>
+<!ELEMENT assemblerpropid (#PCDATA)>
+<!ELEMENT cancelurl (#PCDATA)>
+<!ELEMENT sitelookup (#PCDATA)>
+<!ELEMENT pagename (#PCDATA)>
+<!ELEMENT componentname (#PCDATA)>
+<!ELEMENT relatedlinks (#PCDATA)>

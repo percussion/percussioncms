@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT editionlist (publishers*, site*, editionbytype*, editionbyname*, editionbysite*, contentlist*, publications*, rowkiller*, newedition*, list*, bannerincludeurl*, userstatusincludeurl* )>
+<!ELEMENT userstatusincludeurl (#PCDATA)>
+<!ELEMENT bannerincludeurl (#PCDATA)>
+<!ELEMENT list (editionid*, destsite* )>
+<!ELEMENT destsite (#PCDATA)>
+<!ELEMENT editionid (#PCDATA)>
+<!ELEMENT newedition (#PCDATA)>
+<!ELEMENT rowkiller (#PCDATA)>
+<!ELEMENT publications (#PCDATA)>
+<!ELEMENT contentlist (#PCDATA)>
+<!ELEMENT editionbysite (#PCDATA)>
+<!ELEMENT editionbyname (#PCDATA)>
+<!ELEMENT editionbytype (#PCDATA)>
+<!ELEMENT site (#PCDATA)>
+<!ELEMENT publishers (#PCDATA)>

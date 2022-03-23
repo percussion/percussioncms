@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT sitelist (list*, relatedlinks, edition*, newsite, userstatusincludeurl*, sitesbyname*, publishers*, currentpsfirst, sitesbyid*, publications*, contentlist*, componentname )>
+<!ELEMENT componentname (#PCDATA)>
+<!ELEMENT contentlist (#PCDATA)>
+<!ELEMENT publications (#PCDATA)>
+<!ELEMENT sitesbyid (#PCDATA)>
+<!ELEMENT currentpsfirst (#PCDATA)>
+<!ELEMENT publishers (#PCDATA)>
+<!ELEMENT sitesbyname (#PCDATA)>
+<!ELEMENT userstatusincludeurl (#PCDATA)>
+<!ELEMENT newsite (#PCDATA)>
+<!ELEMENT edition (#PCDATA)>
+<!ELEMENT relatedlinks (#PCDATA)>
+<!ELEMENT list (filetree, lastpubdate, siteid, sitedesc )>
+<!ELEMENT sitedesc (#PCDATA)>
+<!ELEMENT siteid (#PCDATA)>
+<!ELEMENT lastpubdate (#PCDATA)>
+<!ELEMENT filetree (#PCDATA)>

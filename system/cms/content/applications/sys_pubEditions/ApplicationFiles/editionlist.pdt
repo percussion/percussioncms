@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT editionlist (relatedlinks, componentname, currentpsfirst, newedition, destinationsiteurl, sourcesiteurl, list* )>
+<!ELEMENT list (editionname, editiondelete, editionlink, editionstatuslink, editionid, editiondesc, edtype, destsite, destsiteid )>
+<!ELEMENT destsiteid (#PCDATA)>
+<!ELEMENT destsite (#PCDATA)>
+<!ELEMENT edtype (#PCDATA)>
+<!ELEMENT editiondesc (#PCDATA)>
+<!ELEMENT editionid (#PCDATA)>
+<!ELEMENT editionstatuslink (#PCDATA)>
+<!ELEMENT editionlink (#PCDATA)>
+<!ELEMENT editiondelete (#PCDATA)>
+<!ELEMENT editionname (#PCDATA)>
+<!ELEMENT sourcesiteurl (#PCDATA)>
+<!ELEMENT destinationsiteurl (#PCDATA)>
+<!ELEMENT newedition (#PCDATA)>
+<!ELEMENT currentpsfirst (#PCDATA)>
+<!ELEMENT componentname (#PCDATA)>
+<!ELEMENT relatedlinks (#PCDATA)>

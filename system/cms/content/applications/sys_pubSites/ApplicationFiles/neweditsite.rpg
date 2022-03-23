@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT neweditsite (publishers*, sitesbyname*, sitesbyid*, edition*, contentlist*, publications*, new*, publisherlookupvalue*, statevalue*, publisherlookupurl*, contenttypeurl*, contentlookupurl*, userstatusincludeurl* )>
+<!ELEMENT userstatusincludeurl (#PCDATA)>
+<!ELEMENT contentlookupurl (#PCDATA)>
+<!ELEMENT contenttypeurl (#PCDATA)>
+<!ELEMENT publisherlookupurl (#PCDATA)>
+<!ELEMENT statevalue (#PCDATA)>
+<!ELEMENT publisherlookupvalue (#PCDATA)>
+<!ELEMENT new (newsiteid*, requiredsitename*, sitdesc*, baseurl*, root*, ipaddress*, port*, ftpuserid*, ftppassword* )>
+<!ELEMENT ftppassword (#PCDATA)>
+<!ELEMENT ftpuserid (#PCDATA)>
+<!ELEMENT port (#PCDATA)>
+<!ELEMENT ipaddress (#PCDATA)>
+<!ELEMENT root (#PCDATA)>
+<!ELEMENT baseurl (#PCDATA)>
+<!ELEMENT sitdesc (#PCDATA)>
+<!ELEMENT requiredsitename (#PCDATA)>
+<!ELEMENT newsiteid (#PCDATA)>
+<!ELEMENT publications (#PCDATA)>
+<!ELEMENT contentlist (#PCDATA)>
+<!ELEMENT edition (#PCDATA)>
+<!ELEMENT sitesbyid (#PCDATA)>
+<!ELEMENT sitesbyname (#PCDATA)>
+<!ELEMENT publishers (#PCDATA)>

@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT variable (#PCDATA)>
+<!ATTLIST  variable siteid CDATA #IMPLIED>
+<!ATTLIST  variable variableid CDATA #IMPLIED>
+<!ATTLIST  variable assemblerpropvalue CDATA #IMPLIED>
+<!ATTLIST  variable assemblerpropname CDATA #IMPLIED>
+<!ATTLIST  variable contextid CDATA #IMPLIED>
+<!ELEMENT sitevariables (variable* )>

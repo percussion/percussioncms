@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PSXApplication active="no" appType="SYSTEM" enabled="yes" hidden="no" id="422" startPriority="0" version="2.0">
+   <name>sys_pubEditions</name>
+   <description/>
+   <requestRoot>sys_pubEditions</requestRoot>
+   <defaultRequestPage/>
+   <appExtensionContext>application/crow_997450378578/</appExtensionContext>
+   <PSXRevisionHistory>
+      <PSXRevisionEntry majorVersion="1" minorVersion="0">
+         <agent>BackEndTable:admin1</agent>
+         <description>Saved</description>
+         <time>20010810T092611156</time>
+      </PSXRevisionEntry>
+      <PSXRevisionEntry majorVersion="1" minorVersion="170">
+         <agent>admin1</agent>
+         <description>Saved</description>
+         <time>20080803T184142090</time>
+      </PSXRevisionEntry>
+   </PSXRevisionHistory>
+   <PSXAcl id="0">
+      <PSXAclEntry id="0" type="user">
+         <name>Default</name>
+         <applicationAccessLevel dataCreate="yes" dataDelete="yes" dataQuery="yes" dataUpdate="yes" designDelete="no" designRead="no" designUpdate="no" modifyAcl="no"/>
+      </PSXAclEntry>
+      <PSXAclEntry id="0" type="role">
+         <name>Admin</name>
+         <applicationAccessLevel dataCreate="yes" dataDelete="yes" dataQuery="yes" dataUpdate="yes" designDelete="yes" designRead="yes" designUpdate="yes" modifyAcl="yes"/>
+      </PSXAclEntry>
+      <multiMembershipBehavior>mergeMaximumAccess</multiMembershipBehavior>
+   </PSXAcl>
+   <maxThreads>0</maxThreads>
+   <maxRequestTime>0</maxRequestTime>
+   <maxRequestsInQueue>0</maxRequestsInQueue>
+   <userSessionEnabled>no</userSessionEnabled>
+   <userSessionTimeout>0</userSessionTimeout>
+   <requestTypeHtmlParamName>DBActionType</requestTypeHtmlParamName>
+   <requestTypeValueQuery>QUERY</requestTypeValueQuery>
+   <requestTypeValueInsert>INSERT</requestTypeValueInsert>
+   <requestTypeValueUpdate>UPDATE</requestTypeValueUpdate>
+   <requestTypeValueDelete>DELETE</requestTypeValueDelete>
+   <PSXDataSet id="65">
+      <name>bounceToContentList</name>
+      <description>Flushes cache, then bounce to the specified content list generator. The flush cache action (or Exit) only takes effect for a Publishing Hub, but do nothing for a Content Hub.</description>
+      <transactionType>none</transactionType>
+      <PSXQueryPipe id="66">
+         <name>QueryPipe</name>
+         <description/>
+         <PSXBackEndDataTank id="62">
+            <PSXBackEndTable id="61">
+               <alias>RXDUAL</alias>
+               <table>RXDUAL</table>
+               <datasource/>
+            </PSXBackEndTable>
+         </PSXBackEndDataTank>
+         <PSXDataMapper id="64" returnEmptyXml="no">
+            <PSXDataMapping groupId="0" id="0">
+               <PSXXmlField id="0">
+                  <name>empty/BounceTo</name>
+               </PSXXmlField>
+               <PSXSingleHtmlParameter id="0">
+                  <name>bounceto</name>
+               </PSXSingleHtmlParameter>
+               <Conditionals/>
+            </PSXDataMapping>
+            <PSXDataMapping groupId="0" id="0">
+               <PSXXmlField id="0">
+                  <name>empty/@xml:lang</name>
+               </PSXXmlField>
+               <PSXUserContext id="0">
+                  <name>User/SessionObject/sys_lang</name>
+               </PSXUserContext>
+               <Conditionals/>
+            </PSXDataMapping>
+         </PSXDataMapper>
+         <PSXDataSelector id="63" method="whereClause" unique="no">
+            <WhereClauses/>
+            <Sorting/>
+            <nativeStatement/>
+            <Caching enabled="no" type="interval">
+               <ageInterval>15</ageInterval>
+            </Caching>
+         </PSXDataSelector>
+         <InputDataExits>
+            <PSXExtensionCallSet id="62">
+               <PSXExtensionCall id="0">
+                  <name>Java/global/percussion/system/sys_FlushCache</name>
+               </PSXExtensionCall>
+            </PSXExtensionCallSet>
+         </InputDataExits>
+         <ResultDataExits>
+            <PSXExtensionCallSet id="63">
+               <PSXExtensionCall id="0">
+                  <name>Java/global/percussion/system/sys_emptyDoc</name>
+                  <PSXExtensionParamValue id="0">
+                     <value>
+                        <PSXTextLiteral id="0">
+                           <text>Flushed_Cache_for_Publishing_Hub</text>
+                        </PSXTextLiteral>
+                     </value>
+                  </PSXExtensionParamValue>
+               </PSXExtensionCall>
+            </PSXExtensionCallSet>
+         </ResultDataExits>
+         <PSXResourceCacheSettings enabled="no" id="0">
+            <Keys/>
+            <Dependencies/>
+         </PSXResourceCacheSettings>
+      </PSXQueryPipe>
+      <PSXPageDataTank id="64">
+         <schemaSource>file:empty.dtd</schemaSource>
+         <actionTypeXmlField/>
+      </PSXPageDataTank>
+      <PSXRequestor directDataStream="no" id="0">
+         <requestPage>bounceToContentList</requestPage>
+         <SelectionParams/>
+         <ValidationRules/>
+         <characterEncoding>UTF-8</characterEncoding>
+         <MimeProperties>
+            <html>
+               <PSXTextLiteral id="0">
+                  <text>text/html</text>
+               </PSXTextLiteral>
+            </html>
+            <htm>
+               <PSXTextLiteral id="0">
+                  <text>text/html</text>
+               </PSXTextLiteral>
+            </htm>
+         </MimeProperties>
+      </PSXRequestor>
+      <PSXResultPageSet id="0">
+         <PSXResultPage allowNamespaceCleanup="false" id="66">
+            <styleSheet>file:bounceToContentList.xsl</styleSheet>
+            <extensionsSupported/>
+         </PSXResultPage>
+      </PSXResultPageSet>
+   </PSXDataSet>
+   <PSXLogger id="0" logAppStartStop="no" logAppStatistics="no" logBasicUserActivity="no" logDetailedUserActivity="no" logErrors="yes" logExecutionPlan="no" logFullUserActivity="no" logMultipleHandlers="no" logServerStartStop="no"/>
+   <PSXTraceInfo id="0" traceAppHandlerProc="no" traceAppSecurity="no" traceBasicRequestInfo="no" traceConditionalEval="no" traceDbPool="no" traceEnabled="no" traceExitExec="no" traceExitProc="no" traceFileInfo="no" traceInitHttpVar="no" traceMapper="no" traceOutputColumnWidth="80" traceOutputConv="no" tracePostExitCgi="no" tracePostExitXml="no" tracePostPreProcHttpVar="no" traceResourceHandler="no" traceResultSet="no" traceSessionInfo="no" traceTimestampOnlyEnabled="no"/>
+   <PSXErrorWebPages id="8263" returnHtml="yes"/>
+   <backEndLoginPassthru>no</backEndLoginPassthru>
+   <PSXNotifier id="8264">
+      <providerType>SMTP</providerType>
+      <server>JB</server>
+      <from/>
+   </PSXNotifier>
+   <userProperty name="savedFromWorkbench">Yes</userProperty>
+   <userProperty name="pageDatatankSrcType64">2</userProperty>
+   <userProperty name="resultPageFilePath66">D:\Araunah_Project\RXSite\RXEdition\redirect.xsl</userProperty>
+   <userProperty name="schemaSourceReadOnly64">true</userProperty>
+   <userProperty name="locationX66">201</userProperty>
+   <userProperty name="locationX65">26</userProperty>
+   <userProperty name="locationX63">75</userProperty>
+   <userProperty name="locationX62">16</userProperty>
+   <userProperty name="locationY66">35</userProperty>
+   <userProperty name="locationY65">30</userProperty>
+   <userProperty name="pageDatatankFilePath64">D:\RxRhino\sys_pubEditions\empty.dtd</userProperty>
+   <userProperty name="locationY63">22</userProperty>
+   <userProperty name="locationY62">22</userProperty>
+</PSXApplication>

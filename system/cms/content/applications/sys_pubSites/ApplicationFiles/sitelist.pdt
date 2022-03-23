@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!ELEMENT sitelist (relatedlinks, componentname, currentpsfirst, newsite, list* )>
+<!ELEMENT list (siteid, sitedesc, lastpubdate, filetree )>
+<!ELEMENT filetree (#PCDATA)>
+<!ELEMENT lastpubdate (#PCDATA)>
+<!ELEMENT sitedesc (#PCDATA)>
+<!ELEMENT siteid (#PCDATA)>
+<!ELEMENT newsite (#PCDATA)>
+<!ELEMENT currentpsfirst (#PCDATA)>
+<!ELEMENT componentname (#PCDATA)>
+<!ELEMENT relatedlinks (#PCDATA)>
