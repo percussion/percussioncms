@@ -1092,24 +1092,20 @@ public class PSPageUtils extends PSJexlUtilBase
                     @IPSJexlParam(name = "params", description = "extra parameters to the process"),
                     @IPSJexlParam(name = "processPageAssetOnly", description = "if true, then lookup lookup items relate to page only")}, returns = "list of assembly items")
     public List<PSRenderAsset> widgetContents(IPSAssemblyItem item, Object widgetParam, String finderName,
-                                              Map<String, Object> params, boolean processPageAssetOnly)
-    {
+                                              Map<String, Object> params, boolean processPageAssetOnly) {
         notNull(item, "assemblyItem");
         PSWidgetInstance widget = getWidgetInstance(widgetParam);
-        if (log.isDebugEnabled())
-        {
+        if (log.isDebugEnabled()) {
             log.debug(format("Calling widget finder with widgetId:{0}, finderName:{1} and params:{2}", widget.getItem()
                     .getId(), finderName, params));
         }
         PSStopwatchStack sws = PSStopwatchStack.getStack();
         sws.start(getClass().getCanonicalName() + "#assemble");
-        try
-        {
-            if (isBlank(finderName))
-            {
+        List<PSRenderAsset> widgetAssets = null;
+        try {
+            if (isBlank(finderName)) {
                 finderName = DEFAULT_WIDGET_CONTENT_FINDER;
-                if (log.isDebugEnabled())
-                {
+                if (log.isDebugEnabled()) {
                     log.debug("No finder defined for widget id \"" + widget.getItem().getId() + "\", defaulting to \""
                             + DEFAULT_WIDGET_CONTENT_FINDER + "\"");
                 }
@@ -1121,8 +1117,7 @@ public class PSPageUtils extends PSJexlUtilBase
             IPSWidgetContentFinder finder = getWidgetContentFinder(finderName);
             if (finder == null)
                 throw new PSAssemblyException(IPSAssemblyErrors.MISSING_FINDER, finder);
-            if (!isBlank(item.getUserName()))
-            {
+            if (!isBlank(item.getUserName())) {
                 // Need user name for preview filter rule
                 params.put(IPSHtmlParameters.SYS_USER, item.getUserName());
             }
@@ -1130,18 +1125,14 @@ public class PSPageUtils extends PSJexlUtilBase
             String itemType = getAssemblyItemBridge().getContentType(item);
             boolean page = StringUtils.equalsIgnoreCase(IPSPageService.PAGE_CONTENT_TYPE, itemType);
 
-            List<PSRenderAsset> widgetAssets = null;
-            if (!page)
-            {
+            widgetAssets = null;
+            if (!page) {
                 if (!processPageAssetOnly)
                     widgetAssets = toAssets(finder.find(item, widget, params));
                 else
                     widgetAssets = new ArrayList<>();
-            }
-            else
-            {
-                if (!processPageAssetOnly)
-                {
+            } else {
+                if (!processPageAssetOnly) {
                     PSTemplate template = getAssemblyItemBridge().getTemplateAndPage(item).getTemplate();
                     IPSAssemblyItem templateAssembly = (IPSAssemblyItem) item.clone();
                     templateAssembly.setId(idMapper.getGuid(template.getId()));
@@ -1151,27 +1142,20 @@ public class PSPageUtils extends PSJexlUtilBase
                     params.put(IS_MATCH_BY_NAME, Boolean.TRUE);
                 }
 
-                if (widgetAssets == null || widgetAssets.isEmpty())
-                {
+                if (widgetAssets == null || widgetAssets.isEmpty()) {
                     widgetAssets = toAssets(finder.find(item, widget, params));
                 }
             }
-
-            return widgetAssets;
-        }
-        catch (Exception ae)
-        {
+        } catch (Exception ae) {
             String errMsg = "Failed to find content for widget id=" + widget.getItem().getId()
                     + " while assemble item id=" + item.getId().toString();
             log.error(errMsg, ae);
-
-            throw new RuntimeException(errMsg, ae);
-        }
-        finally
-        {
+            //log error but don't blow up the page assembly
+        } finally {
             sws.stop();
             log.debug(sws);
         }
+        return widgetAssets;
     }
 
     /**
