@@ -1084,7 +1084,11 @@
             <version>${project.parent.version}</version>
             <scope>compile</scope>
         </dependency>
-
+        <dependency>
+            <groupId>com.percussion</groupId>
+            <artifactId>perc-taxonomy</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>perc-shared-test-resources</artifactId>
