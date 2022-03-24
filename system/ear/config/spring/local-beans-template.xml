@@ -1,27 +1,3 @@
-<!--
-  ~     Percussion CMS
-  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
-  ~
-  ~     This program is free software: you can redistribute it and/or modify
-  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
-  ~
-  ~     This program is distributed in the hope that it will be useful,
-  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
-  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  ~     GNU Affero General Public License for more details.
-  ~
-  ~     Mailing Address:
-  ~
-  ~      Percussion Software, Inc.
-  ~      PO Box 767
-  ~      Burlington, MA 01803, USA
-  ~      +01-781-438-9900
-  ~      support@percussion.com
-  ~      https://www.percussion.com
-  ~
-  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
-  -->
-
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:util="http://www.springframework.org/schema/util"
@@ -48,14 +24,10 @@ http://www.springframework.org/schema/util/spring-util.xsd">
    <bean id="sys_mockJndiContextHelper" 
       class="com.percussion.utils.jndi.PSNamingContextHelper">
       <!-- Set root before bindings! -->
-      <property name="root">
-         <value>java:comp/env</value>
-      </property>
+      <property name="root" value="java:comp/env"/>
       <property name="bindings">
             <util:map>
-            <entry key="jdbc/rxdefault">
-               <ref bean="sys_protoLegacyDataSource"/>
-            </entry>
+            <entry key="jdbc/rxdefault" value-ref="sys_protoLegacyDataSource"/>
             </util:map>
       </property>
    </bean>
@@ -64,9 +36,7 @@ http://www.springframework.org/schema/util/spring-util.xsd">
       class="com.percussion.services.general.impl.PSRhythmyxInfo">
       <property name="bindings">
             <util:map>
-            <entry key="UNIT_TESTING">
-               <value>true</value>
-            </entry>
+            <entry key="UNIT_TESTING" value="true"/>
             </util:map>
       </property>
    </bean>
@@ -92,27 +62,13 @@ http://www.springframework.org/schema/util/spring-util.xsd">
       class="com.percussion.services.datasource.PSHibernateDialectConfig">
       <property name="dialects">
             <util:map>
-             <entry key="sqlserver">
-                 <value> "org.hibernate.dialect.SQLServer2012Dialect"</value>
-             </entry>
-                <entry key="jtds:sqlserver">
-                    <value>org.hibernate.dialect.SQLServer2012Dialect</value>
-                </entry>
-                <entry key="inetdae7">
-                    <value>org.hibernate.dialect.SQLServer2012Dialect</value>
-                </entry>
-                <entry key="oracle:thin">
-                    <value>org.hibernate.dialect.OracleDialect</value>
-                </entry>
-                <entry key="db2">
-                    <value>org.hibernate.dialect.DB2Dialect</value>
-                </entry>
-                <entry key="derby">
-                    <value>org.hibernate.dialect.DerbyTenSevenDialect</value>
-                </entry>
-                <entry key="mysql">
-                    <value>org.hibernate.dialect.MySQLInnoDBDialect</value>
-                </entry>                
+             <entry key="sqlserver" value="org.hibernate.dialect.SQLServer2012Dialect"/>
+                <entry key="jtds:sqlserver" value="org.hibernate.dialect.SQLServer2012Dialect"/>
+                <entry key="inetdae7" value="org.hibernate.dialect.SQLServer2012Dialect"/>
+                <entry key="oracle:thin" value="org.hibernate.dialect.OracleDialect"/>
+                <entry key="db2" value="org.hibernate.dialect.DB2Dialect"/>
+                <entry key="derby" value="org.hibernate.dialect.DerbyTenSevenDialect"/>
+                <entry key="mysql" value="org.hibernate.dialect.MySQLInnoDBDialect"/>
             </util:map>
       </property>      
    </bean>   
@@ -139,26 +95,14 @@ http://www.springframework.org/schema/util/spring-util.xsd">
 	 	for unit testing -->
 	<bean id="sys_mockJmsConnectionFactory"
 		class="com.percussion.utils.spring.PSMockJmsConnectionFactoryHelper">
-		<constructor-arg>
-			<ref bean="sys_mockJndiContextHelper"/>
-		</constructor-arg>
+		<constructor-arg ref="sys_mockJndiContextHelper"/>
       <property name="destinations">
             <util:map>
-            <entry key="queue/notificationQueue">
-               <value>queue</value>
-            </entry>
-            <entry key="topic/notificationTopic">
-            	<value>topic</value>
-            </entry>
-            <entry key="queue/publishQueue">
-            	<value>queue</value>
-            </entry>
-            <entry key="queue/emailQueue">
-            	<value>queue</value>
-            </entry>
-            <entry key="queue/publishResultQueue">
-            	<value>queue</value>
-            </entry>
+            <entry key="queue/notificationQueue" value="queue"/>
+            <entry key="topic/notificationTopic" value="topic"/>
+            <entry key="queue/publishQueue" value="queue"/>
+            <entry key="queue/emailQueue" value="queue"/>
+            <entry key="queue/publishResultQueue" value="queue"/>
             </util:map>
       </property>
 	</bean>
@@ -185,20 +129,12 @@ http://www.springframework.org/schema/util/spring-util.xsd">
          org.quartz.dataSource.rhythmyxDataSource.connectionProvider.class=com.percussion.services.schedule.impl.PSRhythmyxConnectionProvider
          </value>
       </property>
-      <property name="datasourceManager">
-         <ref bean="sys_datasourceManager"/>
-      </property>
-      <property name="configurationBean">
-      	<ref bean="sys_beanConfiguration" />
-      </property>    
+      <property name="datasourceManager" ref="sys_datasourceManager"/>
+      <property name="configurationBean" ref="sys_beanConfiguration"/>
     </bean>
 	<bean id="sys_schedulingService"
       class="com.percussion.services.schedule.impl.PSSchedulingService">
-      <property name="sessionFactory">
-         <ref bean="sys_sessionFactory"/>
-      </property>
-      <property name="scheduler">
-         <ref bean="sys_quartzScheduler"/>
-      </property>
+      <property name="sessionFactory" ref="sys_sessionFactory"/>
+      <property name="scheduler" ref="sys_quartzScheduler"/>
    </bean>
 </beans>
