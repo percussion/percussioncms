@@ -11,13 +11,7 @@
       <property name="bindings">
 			
          <map>
-				
-            <entry key="UNIT_TESTING">
-					
-               <value>false</value>
-				
-            </entry>
-			
+            <entry key="UNIT_TESTING" value="false"/>
          </map>
 		
       </property>
@@ -53,28 +47,18 @@
       <property name="dialects">
 			
          <map>
-               <entry key="sqlserver">
-                  <value> "org.hibernate.dialect.SQLServer2012Dialect"</value>
-               </entry>
-                <entry key="jtds:sqlserver">
-                    <value>org.hibernate.dialect.SQLServer2012Dialect</value>
-                </entry>
-                <entry key="inetdae7">
-                    <value>org.hibernate.dialect.SQLServer2012Dialect</value>
-                </entry>
-                <entry key="oracle:thin">
-                    <value>org.hibernate.dialect.OracleDialect</value>
-                </entry>
-                <entry key="db2">
-                    <value>org.hibernate.dialect.DB2Dialect</value>
-                </entry>
+               <entry key="sqlserver" value="org.hibernate.dialect.SQLServer2012Dialect;"/>
+                <entry key="jtds:sqlserver" value="org.hibernate.dialect.SQLServer2012Dialect"/>
+                <entry key="inetdae7" value="org.hibernate.dialect.SQLServer2012Dialect"/>
+                <entry key="oracle:thin" value="org.hibernate.dialect.OracleDialect"/>
+                <entry key="db2" value="org.hibernate.dialect.DB2Dialect"/>
 			
          </map>
 		
       </property>		
 	
    </bean>
-   <bean class="com.percussion.services.security.impl.PSRoleMgr" id="sys_roleMgr" singleton="true">
+   <bean class="com.percussion.services.security.impl.PSRoleMgr" id="sys_roleMgr">
       <property name="subjectCatalogers">
          <list/>
       </property>    
