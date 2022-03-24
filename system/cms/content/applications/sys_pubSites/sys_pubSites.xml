@@ -403,6 +403,17 @@ The result doc has the following DTD:
                </PSXBackEndColumn>
                <Conditionals/>
             </PSXDataMapping>
+            <PSXDataMapping groupId="1" id="0">
+               <PSXXmlField id="0">
+                  <name>Sites/PSXSite/@isPageBased</name>
+               </PSXXmlField>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>RXSITES</tableAlias>
+                  <column>IS_PAGE_BASED</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+               <Conditionals/>
+            </PSXDataMapping>
          </PSXDataMapper>
          <PSXDataSelector id="227" method="whereClause" unique="no">
             <WhereClauses>

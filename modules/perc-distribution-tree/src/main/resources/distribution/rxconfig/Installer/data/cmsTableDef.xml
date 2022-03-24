@@ -1796,6 +1796,12 @@
                 <allowsnull>yes</allowsnull>
                 <defaultvalue>F</defaultvalue>
             </column>
+            <column action="c" limitSizeForIndex="n" name="IS_PAGE_BASED">
+                <jdbctype>CHAR</jdbctype>
+                <size>1</size>
+                <allowsnull>yes</allowsnull>
+                <defaultvalue>T</defaultvalue>
+            </column>
         </row>
         <primarykey>
             <name>SITEID</name>
