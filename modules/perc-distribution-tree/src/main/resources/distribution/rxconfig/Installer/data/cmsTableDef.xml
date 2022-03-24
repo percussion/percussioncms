@@ -1800,7 +1800,7 @@
                 <jdbctype>CHAR</jdbctype>
                 <size>1</size>
                 <allowsnull>yes</allowsnull>
-                <defaultvalue>T</defaultvalue>
+                <defaultvalue>F</defaultvalue>
             </column>
         </row>
         <primarykey>

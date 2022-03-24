@@ -206,7 +206,7 @@ function dateValidate(dateValue){
 	var ermsg = LocalizedMessage("date_error"); 
 	var mindate = new Date(1900,0,1);
 	var maxdate = new Date(2079,6,6);
-	if(!dateValue==""){
+	if(dateValue !== ""){
 		datearr = dateValue.split("-");
 		if(datearr.length!=3 || datearr[0]=="" || datearr[1]=="" || datearr[2]=="" || parseInt(datearr[0],10)!=datearr[0] || parseInt(datearr[1],10)!=datearr[1] || parseInt(datearr[2],10)!=datearr[2]){
 			alert(ermsg);
@@ -235,9 +235,13 @@ function showUserSearch2(datafield, windowName){
         // It opens an empty window, which is the target for the "UserSearchForm" to post to
 	userDataField = datafield;
 
+	if (window.java != undefined) {
+		var contentid = document.wfcomment.sys_contentid.value;
+		window.open("../sys_ServerUserRoleSearch/rolelist.html?sys_command=GetRoles&sys_contentid=" + contentid,windowName,"toolbar=0,location=0,directories=0,status=0,menubar=0,scrollbars=1,resizable=1,width=400,height=300,z-lock=1");
+	} else {
         window.open("", windowName,"toolbar=0,location=0,directories=0,status=0,menubar=0,scrollbars=1,resizable=1,width=400,height=300,z-lock=1");
         document.UserSearchForm.submit();
-
+	}
 }
 
 // This function merges the new values with the existing values. Note that
@@ -251,19 +255,19 @@ function setUserDataField(val)
 	var i;
 	for(i = 0; i < originalArray.length; i++)
 	{
-		var val = originalArray[i];
-		if (val != "")
+		var val2 = originalArray[i];
+		if (val2 != "")
 		{
-			newval = appendWithDel(newval,";",val);
+			newval = appendWithDel(newval,";",val2);
 		}
 	}
 	// Now copy new values that don't exist in the existing values
 	for(i = 0; i < newvalues.length; i++)
 	{
-		var val = newvalues[i];
-		if (val.length > 0 && !contains(originalArray, val))
+		var val3 = newvalues[i];
+		if (val3.length > 0 && !contains(originalArray, val3))
 		{
-			newval = appendWithDel(newval,";",val);
+			newval = appendWithDel(newval,";",val3);
 		}
 	}
 	// Reset to new value
@@ -323,3 +327,10 @@ function contentListUrl(url,fieldName,fileExt)
 	}
 	return reqFileExtinURL(url,fieldName,fileExt);
 }
+
+// Set focus to error message
+$(document).ready(function() {
+   setTimeout(function() {
+$('#globalErrorMessage').focus();
+	},50);
+});

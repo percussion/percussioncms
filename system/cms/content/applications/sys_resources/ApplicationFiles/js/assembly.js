@@ -29,20 +29,20 @@ function hide(obj)
 
 function ishidden(obj)
 {
-	return obj.style.display == 'none'
+	return obj.style.display == 'none';
 }
 
 function toggle(el, name)
 {
-	var obj = getobj(name)
+	var obj = getobj(name);
 	if (ishidden(obj))
 	{
-		show(obj)
-		el.firstChild.data = 'hide'
+		show(obj);
+		el.firstChild.data = 'hide';
 	}
 	else
 	{
-		hide(obj)
-		el.firstChild.data = 'show'
+		hide(obj);
+		el.firstChild.data = 'show';
 	}
 }

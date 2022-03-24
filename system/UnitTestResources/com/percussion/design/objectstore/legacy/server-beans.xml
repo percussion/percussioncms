@@ -53,6 +53,9 @@
       <property name="dialects">
 			
          <map>
+               <entry key="sqlserver">
+                  <value> "org.hibernate.dialect.SQLServer2012Dialect"</value>
+               </entry>
                 <entry key="jtds:sqlserver">
                     <value>org.hibernate.dialect.SQLServer2012Dialect</value>
                 </entry>

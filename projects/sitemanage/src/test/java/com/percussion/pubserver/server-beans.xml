@@ -23,7 +23,10 @@
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   -->
 
-<beans xmlns="http://www.springframework.org/schema/beans" xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="    http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd    http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:util="http://www.springframework.org/schema/util" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd      http://www.springframework.org/schema/util
+http://www.springframework.org/schema/util/spring-util.xsd">
    <tx:annotation-driven transaction-manager="sys_transactionManager"/>
    <bean class="com.percussion.services.PSResourceHelper" id="sys_dummy">
 	
@@ -32,7 +35,7 @@
 		
       <property name="bindings">
 			
-         <map>
+         <util:map>
 				
             <entry key="UNIT_TESTING">
 					
@@ -40,7 +43,7 @@
 				
             </entry>
 			
-         </map>
+         </util:map>
 		
       </property>
 	
@@ -92,7 +95,10 @@
    </bean>
    <bean class="com.percussion.services.datasource.PSHibernateDialectConfig" id="sys_hibernateDialects">
       <property name="dialects">
-         <map>
+         <util:map>
+            <entry key="sqlserver">
+               <value> "org.hibernate.dialect.SQLServer2012Dialect"</value>
+            </entry>
             <entry key="oracle:thin">
                <value>org.hibernate.dialect.Oracle9iDialect</value>
             </entry>
@@ -111,7 +117,7 @@
             <entry key="mysql">
                <value>org.hibernate.dialect.MySQLInnoDBDialect</value>
             </entry>
-         </map>
+         </util:map>
       </property>
    </bean>
    <bean class="com.percussion.services.utils.general.PSServiceConfigurationBean" id="sys_beanConfiguration">
