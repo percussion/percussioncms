@@ -21,8 +21,8 @@ function inlineCallback(objectId, callback, type)
 
    var buff = "";
    var attribs = "";
-var allowTrueInlineTemplates = (___serverProperties.allowTrueInlineTemplates != undefined
-               ? ___serverProperties.allowTrueInlineTemplates : "true").toLowerCase() == "true";
+var allowTrueInlineTemplates = (___serverProperties.allowTrueInlineTemplates != undefined ?
+                ___serverProperties.allowTrueInlineTemplates : "true").toLowerCase() == "true";
    attribs += (" sys_dependentvariantid=\"" + oId.getTemplateId() + "\"");
    attribs += (" sys_dependentid=\"" + oId.getContentId() + "\"");
    attribs += (" inlinetype=\"" + type + "\"");
@@ -58,11 +58,11 @@ var allowTrueInlineTemplates = (___serverProperties.allowTrueInlineTemplates != 
     }
     else if(type == "rxvariant" && allowTrueInlineTemplates)
     {
-        var response =
+        var response2 =
            ps.io.Actions.getSnippetContent(oId, false, ___selectedContent);
-       if(response.isSuccess())
+       if(response2.isSuccess())
       {
-        var theContent = unicode2entity(response.getValue());
+        var theContent = unicode2entity(response2.getValue());
         var tagstart = theContent.indexOf("<") + 1;
         var tagend = minIgnoreNegative(
            theContent.indexOf(">", tagstart),
@@ -92,34 +92,39 @@ var allowTrueInlineTemplates = (___serverProperties.allowTrueInlineTemplates != 
        }
       else
       {
-         ps.io.Actions.maybeReportActionError(response);
+         ps.io.Actions.maybeReportActionError(response2);
          return;
       }
 
     }
    else if(type == "rxvariant" && !allowTrueInlineTemplates)
    {
-        var response =
+        var response3 =
            ps.io.Actions.getSnippetContent(oId, false, ___selectedContent);
-       if(response.isSuccess())
+       if(response3.isSuccess())
       {
         attribs += (" style=\"display: inline;\"");
         attribs += (" class=\"rx_ephox_inlinevariant mceNonEditable\"");
         attribs += (" contenteditable=\"false\"");
           attribs += (" rxselectedtext=\"" + encodeURIComponent(___selectedContent)+ "\"");
         buff += ("<div" + attribs + ">\n");
-        buff += unicode2entity(response.getValue());
+        buff += unicode2entity(response3.getValue());
         buff += "\n</div>\n<p></p>";
        }
       else
       {
-         ps.io.Actions.maybeReportActionError(response);
+         ps.io.Actions.maybeReportActionError(response3);
          return;
       }
 
    }
    callback(buff);
+   if(window.java != undefined)
+   {
+	   ___bws.closeWindow("contentBrowerDialog");
+   } else {
    ___bws.close();
+}
 }
 
 // Converts unicode chars into the hexidecimal reference
@@ -184,17 +189,17 @@ function createInlineSearchBox(type,selectedText,inlineslotid,ctypeid,callback)
     //set serverproperties
   
 
-  ___selectedContent=selectedText
+  ___selectedContent=selectedText;
 
-  ___slotId ='["1",null,null,null,null,null,null,"'
-          + ctypeid + '",null,"'
-          + inlineslotid + '",null,null,null,null,null]';
+  ___slotId ='["1",null,null,null,null,null,null,"' +
+           ctypeid + '",null,"' +
+          inlineslotid + '",null,null,null,null,null]';
 
   
 
   ___cBackFunction = function(objectId) {
     inlineCallback(objectId,callback, type) ;
-  }
+  };
   if(type == "rxhyperlink")
   {   
      ___bwsMode = ps.util.BROWSE_MODE_RTE_INLINE_LINK;
@@ -208,10 +213,20 @@ function createInlineSearchBox(type,selectedText,inlineslotid,ctypeid,callback)
       ___bwsMode =  ps.util.BROWSE_MODE_RTE_INLINE;
   }
   
-  ___bws = window.open("/Rhythmyx/ui/content/ContentBrowserDialog.jsp", "contentBrowerDialog",
-             "resizable=1;status=0,toolbar=0,scrollbars=0,menubar=0,location=0,directories=0,width=750,height=500"); 
+  openWindow();
+}
   
-  
+function openWindow()
+{
+	if(window.java != undefined)
+	{
+		___bws = window.java;
+		___bws.openWindow("/Rhythmyx/ui/content/ContentBrowserDialog.jsp", "contentBrowerDialog", "resizable,status=1,scrollbars=yes,width=750,height=500", false);
 
+
+		setTimeout(function(){___bws.focus();},1000);
+	} else {
+		___bws = window.open("/Rhythmyx/ui/content/ContentBrowserDialog.jsp", "contentBrowerDialog", "resizable,status=1,scrollbars=yes,width=750,height=500");
    setTimeout(function(){___bws.focus();},1000);
+}
 }

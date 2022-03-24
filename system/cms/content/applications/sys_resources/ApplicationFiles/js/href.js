@@ -5,7 +5,7 @@ function PSHref2Hash(loc)
 	if (loc == null)
 		loc = window.location.href;
 	
-	var hash = new Array();
+	var hash = [];
 	var temp = loc.split("?");
 	if(temp.length > 1){
 	var params = temp[1].split("&");
@@ -27,7 +27,7 @@ function PSHash2Href(hash, loc)
 
 	var x = loc.split("?")[0] + "?";
 	var first = true;
-	for (i in hash)
+	for (var i in hash)
 	{
 		//is it not weird???
 		if(i.indexOf("toJSON")!=-1)
@@ -37,7 +37,7 @@ function PSHash2Href(hash, loc)
 		if (hash[i] != null)
 		{
 			if (!first)
-				x += "&"
+				x += "&";
 					
 			x += i + "=" + hash[i];
 			first = false;

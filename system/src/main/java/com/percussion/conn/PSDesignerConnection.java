@@ -928,6 +928,10 @@ public class PSDesignerConnection
                                     final PSAuthorizationException e = new PSAuthorizationException(errorCode, args);
                                     e.setOverridingMessage(eMessage);
                                     throw e;
+                                 }else if("com.percussion.design.objectstore.PSLockedException".equals(eClass)){
+                                    final PSAuthorizationException e = new PSAuthorizationException(errorCode, args);
+                                    e.setOverridingMessage(eMessage);
+                                    throw e;
                                  } else if ("com.percussion.security.PSAuthenticationRequiredException".equals(eClass)) {
                                     final PSAuthenticationRequiredException e = new PSAuthenticationRequiredException(errorCode, args);
                                     e.setOverridingMessage(eMessage);
@@ -1005,6 +1009,8 @@ public class PSDesignerConnection
                         throw new PSServerException(
                                 IPSConnectionErrors.SERVER_NOT_RESPONDING,
                                 m_requestLine);
+                     }catch (PSAuthorizationException e){
+                        throw new PSServerException(e.getMessage(),e);
                      } catch (Exception e) {
                         throw new PSServerException(
                                 IPSConnectionErrors.SERVER_NOT_RESPONDING,
