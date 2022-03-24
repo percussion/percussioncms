@@ -4,7 +4,10 @@
 
     <target name="install">
         <property environment="env"/>
-        <property name="DEVELOPMENT" value="${env.DEVELOPMENT}"/>
+        <property name="" value="${env.}"/>
+        <condition property="DEVELOPMENT" value="${env.DEVELOPMENT}" else="false">
+            <isset property="env.DEVELOPMENT" />
+        </condition>
         <property name="perc.version" value="${env.percversion}" />
         <property name="assembly-directory" value="${basedir}/target/classes/distribution"/>
         <property name="rxbase" value="${basedir}/../../system"/>
