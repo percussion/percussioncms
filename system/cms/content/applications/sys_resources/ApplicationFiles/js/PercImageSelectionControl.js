@@ -33,15 +33,15 @@
                 $("#" + imgInputName ).attr("data-perc-image-content-id",pathItem.id.split(/[- ]+/).pop())
                     .trigger("change");
 
-            }
+            };
             //Create new button click function. The success callback is called with PathItem, if the new image creation is successful
             //Otherwise cancelcall back is called.
             var openCreateImageDialog = function(successCallback, cancelCallback){
                 $.topFrameJQuery.PercCreateNewAssetDialog("percImage", successCallback, cancelCallback);
-            }
+            };
             var validator = function(pathItem){
                 return pathItem && pathItem.type == "percImageAsset"?null:"Please select an image.";
-            }
+            };
 
             var pathSelectionOptions = {
                 okCallback: updateImageData,

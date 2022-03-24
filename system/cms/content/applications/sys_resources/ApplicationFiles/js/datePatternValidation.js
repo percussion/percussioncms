@@ -1,20 +1,20 @@
 // Pre-defined date constants that are regular expressions equivilent to the
 // date parts as defined in Java's SimpleDateFormat class
-var m_constants = new Array();
-m_constants["MM"] = "(01|02|03|04|05|06|07|08|09|1|2|3|4|5|6|7|8|9|10|11|12)";
-m_constants["dd"] = "(01|02|03|04|05|06|07|08|09|1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16|17|18|19|20|21|22|23|24|25|26|27|28|29|30|31)";
-m_constants["hh"] = "(00|01|02|03|04|05|06|07|08|09|1|2|3|4|5|6|7|8|9|10|11|12)";
-m_constants["HH"] = "(00|01|02|03|04|05|06|07|08|09|1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16|17|18|19|20|21|22|23)";
-m_constants["mm"] = "(00|01|02|03|04|05|06|07|08|09|1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16|17|18|19|20|21|22|23|24|25|26|27|28|29|30|31|32|33|34|35|36|37|38|39|40|41|42|43|44|45|46|47|48|49|50|51|52|53|54|55|56|57|58|59)";
-m_constants["ss"] = "(00|01|02|03|04|05|06|07|08|09|1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16|17|18|19|20|21|22|23|24|25|26|27|28|29|30|31|32|33|34|35|36|37|38|39|40|41|42|43|44|45|46|47|48|49|50|51|52|53|54|55|56|57|58|59)";
-m_constants["yyyy"] = "\\d{4}";
-m_constants["SSS"] = "\\d{1,3}";
-m_constants["MMM"] = "(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)";
-m_constants["MMMM"] = "(january|february|march|april|may|june|july|august|september|october|november|december)";
-m_constants["aaa"] = "(am|pm)";
-m_constants["G"] = "(ad|bc)";
+var m_constants = [];
+m_constants.MM = "(01|02|03|04|05|06|07|08|09|1|2|3|4|5|6|7|8|9|10|11|12)";
+m_constants.dd = "(01|02|03|04|05|06|07|08|09|1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16|17|18|19|20|21|22|23|24|25|26|27|28|29|30|31)";
+m_constants.hh = "(00|01|02|03|04|05|06|07|08|09|1|2|3|4|5|6|7|8|9|10|11|12)";
+m_constants.HH = "(00|01|02|03|04|05|06|07|08|09|1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16|17|18|19|20|21|22|23)";
+m_constants.mm = "(00|01|02|03|04|05|06|07|08|09|1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16|17|18|19|20|21|22|23|24|25|26|27|28|29|30|31|32|33|34|35|36|37|38|39|40|41|42|43|44|45|46|47|48|49|50|51|52|53|54|55|56|57|58|59)";
+m_constants.ss = "(00|01|02|03|04|05|06|07|08|09|1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16|17|18|19|20|21|22|23|24|25|26|27|28|29|30|31|32|33|34|35|36|37|38|39|40|41|42|43|44|45|46|47|48|49|50|51|52|53|54|55|56|57|58|59)";
+m_constants.yyyy = "\\d{4}";
+m_constants.SSS = "\\d{1,3}";
+m_constants.MMM = "(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)";
+m_constants.MMMM = "(january|february|march|april|may|june|july|august|september|october|november|december)";
+m_constants.aaa = "(am|pm)";
+m_constants.G = "(ad|bc)";
 
-var m_patternStr = new Array();
+var m_patternStr = [];
 var m_patternStrIdx = 1;
 
 //add trim function to string object
@@ -203,7 +203,7 @@ function addLeadingZero(val)
 // *Note: Many of the patterns have been commented out as they are not commonly used.
 //        However, we will leave them here so they can be easily added be uncommenting
 //        them.
-var m_patterns = new Array();
+var m_patterns =[];
 var m_idx = 0;
 //m_patterns[m_idx++] = getRegEx(true, "yyyy","-","MMMM","-","dd"," at ","hh",":", "mm",":","ss"," ","aaa");
 //m_patterns[m_idx++] = getRegEx(true, "yyyy","-","MMMM","-","dd"," ","HH",":", "mm",":","ss");
@@ -248,7 +248,7 @@ m_patterns[m_idx++] = getRegEx(true, "yyyy","MM","dd"," ","HH",":","mm",":","ss"
 
 
 // Patterns that all contain a time element
-var m_timePatterns = new Array();
+var m_timePatterns = [];
 var m_tIdx = 0;
 m_timePatterns[m_tIdx++] = getRegEx(false, "yyyy","-","MM","-","dd"," ","HH",":", "mm",":","ss","\\.","SSS");
 m_timePatterns[m_tIdx++] = getRegEx(false, "yyyy","-","MM","-","dd"," ","HH",":", "mm",":","ss");

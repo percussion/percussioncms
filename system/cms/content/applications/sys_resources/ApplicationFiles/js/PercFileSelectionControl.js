@@ -28,7 +28,7 @@
                     $("#" + fileInputName + "_linkId").val(path);
                 }
                 
-            }
+            };
             //Create new button click function. The success callback is called with PathItem, if the new image creation is successful
             //Otherwise cancelcall back is called. 
             var openCreateFileDialog = function(successCallback, cancelCallback){
@@ -37,7 +37,7 @@
 
             var validator = function(pathItem){
                 return pathItem && pathItem.type == "percFileAsset"?null:"Please select a file.";
-            }            
+            } ;
             var pathSelectionOptions = {
                 okCallback: updateFileData,
                 dialogTitle: "Select a file",

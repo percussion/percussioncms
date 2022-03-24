@@ -29,10 +29,14 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:util="http://www.springframework.org/schema/util"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
 http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
 http://www.springframework.org/schema/tx
-http://www.springframework.org/schema/tx/spring-tx-4.2.xsd">
+http://www.springframework.org/schema/tx/spring-tx-4.2.xsd
+http://www.springframework.org/schema/util
+http://www.springframework.org/schema/util/spring-util.xsd">
+
    <tx:annotation-driven transaction-manager="sys_transactionManager"/>
     <bean class="com.percussion.services.PSResourceHelper" id="sys_dummy">
 
@@ -41,7 +45,7 @@ http://www.springframework.org/schema/tx/spring-tx-4.2.xsd">
 
         <property name="bindings">
 
-            <map>
+            <util:map>
 
                 <entry key="UNIT_TESTING">
 
@@ -49,7 +53,7 @@ http://www.springframework.org/schema/tx/spring-tx-4.2.xsd">
 
                 </entry>
 
-            </map>
+            </util:map>
 
         </property>
 
@@ -91,7 +95,10 @@ http://www.springframework.org/schema/tx/spring-tx-4.2.xsd">
 
         <property name="dialects">
 
-            <map>
+            <util:map>
+                <entry key="sqlserver">
+                    <value> "org.hibernate.dialect.SQLServer2012Dialect"</value>
+                </entry>
                 <entry key="jtds:sqlserver">
                     <value>org.hibernate.dialect.SQLServerDialect</value>
                 </entry>
@@ -111,7 +118,7 @@ http://www.springframework.org/schema/tx/spring-tx-4.2.xsd">
                     <value>org.hibernate.dialect.MySQLInnoDBDialect</value>
                 </entry>
 
-            </map>
+            </util:map>
 
         </property>
 
