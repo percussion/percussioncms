@@ -41,6 +41,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * This object represents a site definition. See {@link #toXml(Document)} for
@@ -84,6 +85,7 @@ public class PSSite extends PSComponent
    /* (non-Javadoc)
     * @see IPSComponent#clone() for documentation.
     */
+   @Override
    public Object clone()
    {
       PSSite clone = (PSSite) super.clone();
@@ -91,58 +93,21 @@ public class PSSite extends PSComponent
       
       return clone;
    }
-   
-   /**
-    * Must be overridden to properly fulfill the contract.
-    *
-    * @return a value computed by adding the hash codes of all required members.
-    */
-   public int hashCode()
-   {
-      return m_name.hashCode();
-   }
-   
-   /**
-    * Tests if the supplied object is equal to this one.
-    * 
-    * @param o the object to test, may be <code>null</code>.
-    * @return <code>true</code> if the supplied object is equal to this one,
-    *    <code>false</code> otherwise.
-    */
-   public boolean equals(Object o)
-   {
-      if (!(o instanceof PSSite))
-         return false;
 
-      PSSite t = (PSSite) o;
-      if (t.m_id != m_id)
-         return false;
-      if (!compare(t.m_name, m_name))
-         return false;
-      if (!compare(t.m_description, m_description))
-         return false;
-      if (!compare(t.m_root, m_root))
-         return false;
-      if (!compare(t.m_ipAddress, m_ipAddress))
-         return false;
-      if (!compare(t.m_port, m_port))
-         return false;
-      if (!compare(t.m_userId, m_userId))
-         return false;
-      if (!compare(t.m_password, m_password))
-         return false;
-      if (!compare(t.m_state, m_state))
-         return false;
-      if (!compare(t.m_folderRoot, m_folderRoot))
-         return false;
-      if (!compare(t.m_navTheme, m_navTheme))
-         return false;
-      if (!compare(t.m_globalTemplate, m_globalTemplate))
-         return false;
-
-      return true;
+   @Override
+   public boolean equals(Object o) {
+      if (this == o) return true;
+      if (!(o instanceof PSSite)) return false;
+      if (!super.equals(o)) return false;
+      PSSite psSite = (PSSite) o;
+      return isPageBased() == psSite.isPageBased() && m_name.equals(psSite.m_name) && Objects.equals(m_description, psSite.m_description) && Objects.equals(m_baseUrl, psSite.m_baseUrl) && Objects.equals(m_root, psSite.m_root) && Objects.equals(m_ipAddress, psSite.m_ipAddress) && Objects.equals(m_port, psSite.m_port) && Objects.equals(m_userId, psSite.m_userId) && Objects.equals(m_password, psSite.m_password) && Objects.equals(m_state, psSite.m_state) && Objects.equals(m_folderRoot, psSite.m_folderRoot) && Objects.equals(m_navTheme, psSite.m_navTheme) && Objects.equals(m_globalTemplate, psSite.m_globalTemplate);
    }
-   
+
+   @Override
+   public int hashCode() {
+      return Objects.hash(super.hashCode(), m_name, m_description, m_baseUrl, m_root, m_ipAddress, m_port, m_userId, m_password, m_state, m_folderRoot, m_navTheme, m_globalTemplate, isPageBased());
+   }
+
    /**
     * Creates the XML presentation of this object conforming to the following
     * DTD:
@@ -236,6 +201,7 @@ public class PSSite extends PSComponent
       m_folderRoot = source.getAttribute(FOLDERROOT_ATTR);
       m_navTheme = source.getAttribute(NAVTHEME_ATTR);
       m_globalTemplate = source.getAttribute(GLOBALTEMPLATE_ATTR);
+      setPageBased(Boolean.parseBoolean(source.getAttribute(IS_PAGE_BASED_ATTR)));
    }
 
    /* (non-Javadoc)
@@ -266,6 +232,8 @@ public class PSSite extends PSComponent
       if (m_globalTemplate != null)
          root.setAttribute(GLOBALTEMPLATE_ATTR, m_globalTemplate);
 
+       root.setAttribute(IS_PAGE_BASED_ATTR, Boolean.toString(isPageBased()));
+
       return root;
    }
    
@@ -295,7 +263,15 @@ public class PSSite extends PSComponent
 
       m_name = name;
    }
-   
+
+   public boolean isPageBased() {
+      return isPageBased;
+   }
+
+   public void setPageBased(boolean pageBased) {
+      isPageBased = pageBased;
+   }
+
    /**
     * Get the folder root of this site.
     * 
@@ -483,7 +459,8 @@ public class PSSite extends PSComponent
     * The sites global template, may be <code>null</code> or empty.
     */
    private String m_globalTemplate = null;
-   
+
+   private boolean isPageBased = false;
    /**
     * Constant to indicate the inactive site state.
     */
@@ -551,4 +528,5 @@ public class PSSite extends PSComponent
    private static final String FOLDERROOT_ATTR = "folderRoot";
    private static final String NAVTHEME_ATTR = "navTheme";
    private static final String GLOBALTEMPLATE_ATTR = "globalTemplate";
+   private static final String IS_PAGE_BASED_ATTR ="isPageBased";
 }

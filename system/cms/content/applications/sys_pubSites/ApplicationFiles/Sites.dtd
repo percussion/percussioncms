@@ -13,4 +13,5 @@
 <!ATTLIST  Site folderRoot CDATA #REQUIRED>
 <!ATTLIST  Site navTheme CDATA #REQUIRED>
 <!ATTLIST  Site globalTemplate CDATA #REQUIRED>
+<!ATTLIST  Site isPageBased CDATA #REQUIRED>
 <!ELEMENT Sites (Site* )>
