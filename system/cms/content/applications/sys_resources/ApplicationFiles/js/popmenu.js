@@ -1,8 +1,8 @@
 
-var PS_SUB_MENU_IMG				= "../sys_resources/images/submenu.gif"
-var PS_INVERTED_SUB_MENU_IMG	= "../sys_resources/images/submenuI.gif"
-var PS_SEPERATOR_LINE_IMG		= "../sys_resources/images/line.gif"
-var PS_SPACER_IMG				= "/sys_resources/images/spacer.gif"
+var PS_SUB_MENU_IMG				= "../sys_resources/images/submenu.gif";
+var PS_INVERTED_SUB_MENU_IMG	= "../sys_resources/images/submenuI.gif";
+var PS_SEPERATOR_LINE_IMG		= "../sys_resources/images/line.gif";
+var PS_SPACER_IMG				= "/sys_resources/images/spacer.gif";
 var PS_NO_ENTRIES               = LocalizedMessage('no_entries');
 
 var PSitemHeight  = 19;
@@ -10,8 +10,8 @@ var PSxOverlap    = 2;
 var PSyOverlap    = 0;
 
 var PSpopMenuDelay	= 400;
-var PSmenuLookup	= new Array(); 
-var PSmenuElement	= new Array();
+var PSmenuLookup	= [];
+var PSmenuElement	= [];
 
 var PSlastEnteredObj   = null;
 // used for revision list
@@ -87,20 +87,20 @@ function PSCreateMenuIE(menu, menuIndex)
 		if (item.img != null)
 			spacerHTML = '<img align=absmiddle src="' + item.img + '"/>';
 
-		var controlBlock = ' height="' + h 
-					+ '" onmouseover="PSEnterItemIE(this,' + menuIndex + ', ' + j + ');"' 
-					+ ' onmouseout="PSExitItemIE(this,' + menuIndex + ', ' + j + ');" ';
+		var controlBlock = ' height="' + h +
+			'" onmouseover="PSEnterItemIE(this,' + menuIndex + ', ' + j + ');"' +
+			' onmouseout="PSExitItemIE(this,' + menuIndex + ', ' + j + ');" ';
 
 		var linkData;
 		var subImg;
 		if (subItems)
 		{
-			linkData =	'<td ' + controlBlock + ' nowrap="true">' 
-						+	'<div style="float:left;width:80%;text-align:left">' + spacerHTML + item.name + '</div>'
-						+	'<div style="float:left;width:20%;text-align:right">'
-						+		'<img id="subIMG' + menuIndex + '-' + j + '" src="' + PS_SUB_MENU_IMG + '" align="absmiddle"/>&nbsp;'
-						+	'</div>'
-						+ '</td>';
+			linkData =	'<td ' + controlBlock + ' nowrap="true">' +
+						'<div style="float:left;width:80%;text-align:left">' + spacerHTML + item.name + '</div>' +
+						'<div style="float:left;width:20%;text-align:right">' +
+						'<img id="subIMG' + menuIndex + '-' + j + '" src="' + PS_SUB_MENU_IMG + '" align="absmiddle"/>&nbsp;' +
+						'</div>'+
+						 '</td>';
 		}
 		else
 		{
@@ -120,19 +120,19 @@ function PSCreateMenuIE(menu, menuIndex)
 				linkData = '<td ' + controlBlock + ' nowrap="true">' + spacerHTML + item.label + '</td>';
 			}
 		}
-		menuBody += '<tr>'
-				 +		linkData
-				 +	'</tr>\n';
+		menuBody += '<tr>' +
+				 		linkData +
+				 	'</tr>\n';
 	}
 	if(noEntries)
 	   menuBody += '<tr><td>' + spacerHTML + PS_NO_ENTRIES + '</td></tr>\n';
 
 	var z = menuIndex + 1000;
-	var menuHeader = '<div class="PSpopupmenu" id="PSXMenu' + menuIndex 
-					+ '" onmouseover = "PSEnterMenu(' + menuIndex + ');"'
-					+ ' onmouseout  = "PSExitMenu(' + menuIndex + ');"'
-					+ ' style="position: absolute; z-index:' + z + '">'
-					+ ' <table class="PSmenuitem" border="0" cellpadding="0" cellspacing="0" width="' + menu.width + '">';
+	var menuHeader = '<div class="PSpopupmenu" id="PSXMenu' + menuIndex +
+					'" onmouseover = "PSEnterMenu(' + menuIndex + ');"' +
+					' onmouseout  = "PSExitMenu(' + menuIndex + ');"' +
+					' style="position: absolute; z-index:' + z + '">' +
+					' <table class="PSmenuitem" border="0" cellpadding="0" cellspacing="0" width="' + menu.width + '">';
 
 	var menuFooter = '</table></div>';
 
@@ -158,20 +158,20 @@ function PSCreateMenuSafari(menu, menuIndex)
 		if (item.img != null)
 			spacerHTML = '<img align=absmiddle src="' + item.img + '">';
 
-		var controlBlock = ' height="' + h 
-					+ '" onmouseover="PSEnterItemIE(this,' + menuIndex + ', ' + j + ');"' 
-					+ ' onmouseout="PSExitItemIE(this,' + menuIndex + ', ' + j + ');" ';
+		var controlBlock = ' height="' + h +
+					 '" onmouseover="PSEnterItemIE(this,' + menuIndex + ', ' + j + ');"' +
+					 ' onmouseout="PSExitItemIE(this,' + menuIndex + ', ' + j + ');" ';
 
 		var linkData;
 		var subImg;
 		if (subItems)
 		{
-			linkData =	'<td ' + controlBlock + ' nowrap="true">' 
-						+	'<span style="width:80%;text-align:left">' + spacerHTML + item.name + '</span></td>'
-						+	'<td><span style="width:20%;text-align:right">'
-						+		'<img id="subIMG' + menuIndex + '-' + j + '" src="' + PS_SUB_MENU_IMG + '" align="absmiddle"/>'
-						+	'</span>'
-						+ '</td>';
+			linkData =	'<td ' + controlBlock + ' nowrap="true">' +
+							'<span style="width:80%;text-align:left">' + spacerHTML + item.name + '</span></td>' +
+							'<td><span style="width:20%;text-align:right">' +
+								'<img id="subIMG' + menuIndex + '-' + j + '" src="' + PS_SUB_MENU_IMG + '" align="absmiddle"/>' +
+							'</span>' +
+						 '</td>';
 		}
 		else
 		{
@@ -191,19 +191,19 @@ function PSCreateMenuSafari(menu, menuIndex)
 				linkData = '<td ' + controlBlock + ' nowrap="true">' + spacerHTML + item.label + '</td>';
 			}
 		}
-		menuBody += '<tr>'
-				 +		linkData
-				 +	'</tr>\n';
+		menuBody += '<tr>' +
+				 		linkData +
+				 	'</tr>\n';
 	}
 	if(noEntries)
 	   menuBody += '<tr><td>' + spacerHTML + PS_NO_ENTRIES + '</td></tr>\n';
 
 	var z = menuIndex + 1000;
-	var menuHeader = '<div class="PSpopupmenu" id="PSXMenu' + menuIndex 
-					+ '" onmouseover = "PSEnterMenu(' + menuIndex + ');"'
-					+ ' onmouseout  = "PSExitMenu(' + menuIndex + ');"'
-					+ ' style="position: absolute; z-index:' + z + '">'
-					+ ' <table class="PSmenuitem" border="0" cellpadding="0" cellspaing="0" width="' + menu.width + '">';
+	var menuHeader = '<div class="PSpopupmenu" id="PSXMenu' + menuIndex +
+					 '" onmouseover = "PSEnterMenu(' + menuIndex + ');"' +
+					 ' onmouseout  = "PSExitMenu(' + menuIndex + ');"' +
+					 ' style="position: absolute; z-index:' + z + '">' +
+					 ' <table class="PSmenuitem" border="0" cellpadding="0" cellspaing="0" width="' + menu.width + '">';
 
 	var menuFooter = '</table></div>';
 
@@ -567,13 +567,13 @@ function PSTogglePreview(preview)
 	
 	if (gotoPreview)
 	{
-		h["sys_lastid"] = h["sys_activeitemid"];
-		h["sys_activeitemid"] = "";
+		h.sys_lastid = h.sys_activeitemid;
+		h.sys_activeitemid = "";
 	}
 	else
 	{
-		h["sys_activeitemid"] = h["sys_lastid"];
-		h["sys_lastid"] = null;
+		h.sys_activeitemid = h.sys_lastid;
+		h.sys_lastid = null;
 	}
 
 	var x = PSHash2Href(h);
@@ -623,10 +623,10 @@ function PSParentURL()
 	var h = PSHref2Hash();
 
 	// clear the breadcrumb trail
-	h["sys_trail"] = null;
+	h.sys_trail = null;
 	
 	// clear the active item
-	h["sys_activeitemid"] = null;
+	h.sys_activeitemid = null;
 
 	var url = PSHash2Href(h);
 	return url;
@@ -637,12 +637,12 @@ function PSActivateItem(id)
 	var h = PSHref2Hash();
 
 	// build the breadcrumb trail
-	if (h["sys_trail"] == null)
-		h["sys_trail"] = id;
+	if (h.sys_trail == null)
+		h.sys_trail = id;
 	else
-		h["sys_trail"] += ":" + id;
+		h.sys_trail += ":" + id;
 
-	h["sys_activeitemid"] = id;
+	h.sys_activeitemid = id;
 	
 	var y = PSHash2Href(h);
 	var tmp = null;
@@ -669,10 +669,10 @@ function PSActivateBreadCrumbItem(id, trail)
 {
 	var h = PSHref2Hash();
 
-	h["sys_activeitemid"] = id;
+	h.sys_activeitemid = id;
 
 	// update the breadcrumb trail
-	h["sys_trail"] = trail.substring(0, trail.indexOf(id) + id.length);
+	h.sys_trail = trail.substring(0, trail.indexOf(id) + id.length);
 
 	var x = PSHash2Href(h);
 
@@ -692,14 +692,14 @@ function PSBreadCrumbParentItemURL()
 	var url;
 	var h = PSHref2Hash();
 
-	var trail = h["sys_trail"].split(":");
+	var trail = h.sys_trail.split(":");
 	if (trail.length - 1 < 0)
 		url = PSParentURL();
 	else
 	{
 		// update the breadcrumb trail
 		trail = trail.slice(0,-1);		// clear out the last item
-		h["sys_activeitemid"] = trail[trail.length - 1];
+		h.sys_activeitemid = trail[trail.length - 1];
 		
 		// build the new trail
 		var tmp = trail[0];
@@ -708,7 +708,7 @@ function PSBreadCrumbParentItemURL()
 			if (trail[i] != null)
 				tmp += ":" + trail[i];
 		}
-		h["sys_trail"] = tmp;
+		h.sys_trail = tmp;
 		
 		url = PSHash2Href(h);
 	}
@@ -733,9 +733,9 @@ function PSAddItem(url, slotname)
 {
 	var x = appendQuestionOrAmpersandtoURL(url);
 	var h = PSHref2Hash(window.location.href);
-	var contentid = h["sys_contentid"];
-	var revision = h["sys_revision"];
-	var activeitemid =  h["sys_activeitemid"];
+	var contentid = h.sys_contentid;
+	var revision = h.sys_revision;
+	var activeitemid =  h.sys_activeitemid;
 	if(activeitemid == null)
 		activeitemid = 0;
 	x += "sys_slotname=" + slotname + "&sys_contentid=" + contentid + "&sys_activeitemid=" + activeitemid + "&sys_revision=" + revision + "&sys_mode=Site Centric";
@@ -940,13 +940,13 @@ function PSCheckinCheckout(url, sysconid, sysrevid, wfaction, actionsetid, check
 	if (actionsetid == "Parent" && 
 		(wfaction == "checkin" || wfaction == "forcecheckin"))
 	{
-		h["sys_revision"] = sysrevid;
+		h.sys_revision = sysrevid;
 		redir = PSHash2Href(h);
 	}
 
 	if (actionsetid == "Parent" && wfaction == "checkout")
 	{
-		h["sys_revision"] = ":PSXSingleHtmlParameter/sys_revision";
+		h.sys_revision = ":PSXSingleHtmlParameter/sys_revision";
 		redir = PSHash2Href(h);
 	}
 	x += "&psredirect=" + escape(redir);

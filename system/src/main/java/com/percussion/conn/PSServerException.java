@@ -94,7 +94,7 @@ public class PSServerException extends PSException
     * exception is of a type it is interested in reconstructing and throwing. If
     * so, it can do so by using the class name, msg code and msg args.
     * 
-    * @param exceptionClass the originator class
+    * @param className the originator class
     * 
     * @param msgCode the message code thrown
     * 
@@ -103,6 +103,10 @@ public class PSServerException extends PSException
    public PSServerException(String className, int msgCode, Object[] msgArgs) {
       super(msgCode, msgArgs);
       m_className = className;
+   }
+
+   public PSServerException(String message, Exception exp) {
+      super(message, exp);
    }
 
    /**

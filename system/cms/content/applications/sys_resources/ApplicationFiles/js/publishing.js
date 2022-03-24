@@ -34,9 +34,9 @@ PS.edition = {
    // active counts as not running.
    isNotRunning:function(val)
    {
-      return val == null || val == '' || val == 'INACTIVE'
-            || val == 'CANCELLED' || val == 'ABORTED' || val == 'COMPLETED'
-            || val == 'COMPLETED_W_FAILURE';
+      return val == null || val == '' || val == 'INACTIVE' ||
+             val == 'CANCELLED' || val == 'ABORTED' || val == 'COMPLETED' ||
+             val == 'COMPLETED_W_FAILURE';
    },
    
    // Update a specific element. The prefix plus the element name locates the
@@ -100,7 +100,7 @@ PS.edition = {
       }
       el.innerHTML = text;
    }
-}
+};
 
 /**
  * Single edition runtime functions
@@ -146,7 +146,7 @@ PS.editionrt = {
       if(!linkElem)
          return;
       this.__renameAttribute(linkElem,"onclick_bkp","onclick");
-      YAHOO.util.Dom.setStyle(linkElem.getAttribute("id"),"color","black")
+      YAHOO.util.Dom.setStyle(linkElem.getAttribute("id"),"color","black");
    },
 
    //Disables a link
@@ -155,7 +155,7 @@ PS.editionrt = {
       if(!linkElem)
          return;
       this.__renameAttribute(linkElem,"onclick","onclick_bkp");
-      YAHOO.util.Dom.setStyle(linkElem.getAttribute("id"),"color","gray")
+      YAHOO.util.Dom.setStyle(linkElem.getAttribute("id"),"color","gray");
    },
 
    //Renames the attribute 
@@ -226,7 +226,7 @@ PS.editionrt = {
 	      else
 	      {
 	         PS.editionrt.jobRunning();
-	         setInterval("PS.editionrt.doEditionUpdate()",3000);
+	         setInterval(PS.editionrt.doEditionUpdate(),3000);
 	      }
       }
    },
@@ -252,7 +252,7 @@ PS.editionrt = {
          PS.edition.releaseLock();
       }
    }
-}
+};
 
 /**
  * Demand publishing page show running demand publish.
@@ -268,7 +268,7 @@ PS.demand = {
    startEditionUpdateTimer:function()
    {
       this.doUpdate();   
-      setInterval("PS.demand.doUpdate()",this.interval);
+      setInterval(PS.demand.doUpdate(),this.interval);
    },
    
    doUpdate:function()
@@ -309,4 +309,4 @@ PS.demand = {
       }
       PS.edition.updateUI(row, '');
    }
-}
+};
