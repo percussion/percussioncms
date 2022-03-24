@@ -3,6 +3,7 @@
        xmlns:cxf="http://cxf.apache.org/core"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:util="http://www.springframework.org/schema/util"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:jaxrs="http://cxf.apache.org/jaxrs"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
@@ -14,7 +15,9 @@ http://cxf.apache.org/schemas/core.xsd
 http://www.springframework.org/schema/context
 http://www.springframework.org/schema/context/spring-context-4.2.xsd
 http://cxf.apache.org/jaxrs
-http://cxf.apache.org/schemas/jaxrs.xsd">
+http://cxf.apache.org/schemas/jaxrs.xsd
+http://www.springframework.org/schema/util
+http://www.springframework.org/schema/util/spring-util.xsd">
    <tx:annotation-driven transaction-manager="sys_transactionManager"/>
    <bean class="com.percussion.services.PSResourceHelper" id="sys_dummy">
 
@@ -23,7 +26,7 @@ http://cxf.apache.org/schemas/jaxrs.xsd">
 
       <property name="bindings">
 
-         <map>
+         <util:map>
 
             <entry key="UNIT_TESTING">
 
@@ -31,7 +34,7 @@ http://cxf.apache.org/schemas/jaxrs.xsd">
 
             </entry>
 
-         </map>
+         </util:map>
 
       </property>
 
@@ -73,7 +76,10 @@ http://cxf.apache.org/schemas/jaxrs.xsd">
 
       <property name="dialects">
 
-         <map>
+         <util:map>
+                <entry key="sqlserver">
+         					<value> "org.hibernate.dialect.SQLServer2012Dialect"</value>
+         				</entry>
                 <entry key="jtds:sqlserver">
                     <value>org.hibernate.dialect.SQLServerDialect</value>
                 </entry>
@@ -93,7 +99,7 @@ http://cxf.apache.org/schemas/jaxrs.xsd">
                     <value>org.hibernate.dialect.MySQLInnoDBDialect</value>
                 </entry>
 
-         </map>
+         </util:map>
 
       </property>
 

@@ -49,7 +49,7 @@ function modifyPageId(myform, id)
 function addNewChildItem(id)
 {
    	var h = PSHref2Hash();
-	h["sys_pageid"] = id;
+	h.sys_pageid = id;
 	window.location.href = PSHash2Href(h);
 }
 
@@ -139,7 +139,7 @@ function buildRedirectURL(conid, rev)
 		redirecturl = "../sys_rcSupport/updaterelateditems.html?" + "sys_activeitemid=" + sys_activeitemid + "&sys_contentid=" + sys_contentid + "&sys_revision=" + sys_revision + "&sys_slotid=" + sys_slotid + "&itemvariantid=" + itemvariantid; 
 		if (folderid != "")
 		{
-			redirecturl += "&sys_folderid=" + folderid
+			redirecturl += "&sys_folderid=" + folderid;
 		}
 	}
 	else if (currenturl.indexOf("sys_folderid=")!=-1)

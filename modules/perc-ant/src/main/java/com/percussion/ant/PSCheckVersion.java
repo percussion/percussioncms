@@ -38,11 +38,8 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 /**
- * This task compares the version of a specified Rhythmyx installation with that
- * of the given Rhythmyx jar file. A build exception will be thrown if the
- * versions don't match. The task will ensure that once installed, a patch
- * cannot be installed a second time until it has been uninstalled. It will also
- * ensure that a patch cannot be uninstalled until it has been installed.
+ * This task gets the currently installed version in upgrade scenarios and
+ * sets the ant property perc.previous.version
  * 
  * <br>
  * Example Usage: <br>
@@ -64,7 +61,6 @@ import java.util.jar.JarFile;
  *        operation="install"/&gt;
  *  </code>
  */
-@Deprecated
 public class PSCheckVersion extends Task
 {
 

@@ -24,8 +24,12 @@
 
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans
-http://www.springframework.org/schema/beans/spring-beans.xsd">
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+
+
+http://www.springframework.org/schema/util
+http://www.springframework.org/schema/util/spring-util.xsd">
 
    <bean id="sys_protoLegacyDataSource"
       class="com.percussion.util.PSDataSourceFactory"
@@ -48,22 +52,22 @@ http://www.springframework.org/schema/beans/spring-beans.xsd">
          <value>java:comp/env</value>
       </property>
       <property name="bindings">
-         <map>
+            <util:map>
             <entry key="jdbc/rxdefault">
                <ref bean="sys_protoLegacyDataSource"/>
             </entry>
-         </map>
+            </util:map>
       </property>
    </bean>
    
    <bean id="sys_rhythmyxinfo"
       class="com.percussion.services.general.impl.PSRhythmyxInfo">
       <property name="bindings">
-         <map>
+            <util:map>
             <entry key="UNIT_TESTING">
                <value>true</value>
             </entry>
-         </map>
+            </util:map>
       </property>
    </bean>
    
@@ -87,7 +91,10 @@ http://www.springframework.org/schema/beans/spring-beans.xsd">
    <bean id="sys_hibernateDialects"
       class="com.percussion.services.datasource.PSHibernateDialectConfig">
       <property name="dialects">
-         <map>
+            <util:map>
+             <entry key="sqlserver">
+                 <value> "org.hibernate.dialect.SQLServer2012Dialect"</value>
+             </entry>
                 <entry key="jtds:sqlserver">
                     <value>org.hibernate.dialect.SQLServer2012Dialect</value>
                 </entry>
@@ -106,7 +113,7 @@ http://www.springframework.org/schema/beans/spring-beans.xsd">
                 <entry key="mysql">
                     <value>org.hibernate.dialect.MySQLInnoDBDialect</value>
                 </entry>                
-         </map>
+            </util:map>
       </property>      
    </bean>   
 
@@ -118,9 +125,9 @@ http://www.springframework.org/schema/beans/spring-beans.xsd">
 	<bean id="sys_testSetup"
 		class="com.percussion.testing.PSTestSetupBean">
 		<property name="config">
-			<map>
+            <util:map>
 				<entry key="extensionDir" value="build/unitTestConfig/extensions" />
-			</map>
+            </util:map>
 		</property>
 	</bean>
 
@@ -136,7 +143,7 @@ http://www.springframework.org/schema/beans/spring-beans.xsd">
 			<ref bean="sys_mockJndiContextHelper"/>
 		</constructor-arg>
       <property name="destinations">
-         <map>
+            <util:map>
             <entry key="queue/notificationQueue">
                <value>queue</value>
             </entry>
@@ -152,7 +159,7 @@ http://www.springframework.org/schema/beans/spring-beans.xsd">
             <entry key="queue/publishResultQueue">
             	<value>queue</value>
             </entry>
-         </map>
+            </util:map>
       </property>
 	</bean>
     <!-- Quartz beans needed for testing -->
