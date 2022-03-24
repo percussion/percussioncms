@@ -27,6 +27,7 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:cxf="http://cxf.apache.org/core"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
        xmlns:tx="http://www.springframework.org/schema/tx"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:jaxrs="http://cxf.apache.org/jaxrs"
@@ -39,7 +40,9 @@ http://cxf.apache.org/schemas/core.xsd
 http://www.springframework.org/schema/context
 http://www.springframework.org/schema/context/spring-context-3.1.xsd
 http://cxf.apache.org/jaxrs
-http://cxf.apache.org/schemas/jaxrs.xsd">
+http://cxf.apache.org/schemas/jaxrs.xsd
+http://www.springframework.org/schema/util
+http://www.springframework.org/schema/util/spring-util.xsd">
 
 <bean class="org.springframework.mock.web.MockHttpServletRequest" name="httpRequest" lazy-init="false" />
 <bean class="org.springframework.mock.web.MockHttpServletResponse" name="httpResponse" lazy-init="false" />
@@ -68,7 +71,7 @@ http://cxf.apache.org/schemas/jaxrs.xsd">
             <ref bean="sys_mockJndiContextHelper"/>
         </constructor-arg>
         <property name="destinations">
-            <map>
+            <util:map>
                 <entry key="java:comp/env/queue/notificationQueue">
                     <value>queue</value>
                 </entry>
@@ -84,7 +87,7 @@ http://cxf.apache.org/schemas/jaxrs.xsd">
                 <entry key="java:comp/env/queue/publishResultQueue">
                     <value>queue</value>
                 </entry>
-            </map>
+            </util:map>
         </property>
     </bean>
     <bean id="sys_mockJndiContextHelper"
@@ -94,21 +97,21 @@ http://cxf.apache.org/schemas/jaxrs.xsd">
         <value>java:comp/env</value>
     </property>
     <property name="bindings">
-        <map>
+        <util:map>
             <entry key="jdbc/RhythmyxData">
                 <ref local="sys_protoLegacyDataSource"/>
             </entry>
-        </map>
+        </util:map>
     </property>
     </bean>
     <bean id="sys_rhythmyxinfo"
           class="com.percussion.services.general.impl.PSRhythmyxInfo">
         <property name="bindings">
-            <map>
+            <util:map>
                 <entry key="UNIT_TESTING">
                     <value>true</value>
                 </entry>
-            </map>
+            </util:map>
         </property>
     </bean>
 
@@ -131,7 +134,10 @@ http://cxf.apache.org/schemas/jaxrs.xsd">
     <bean id="sys_hibernateDialects"
           class="com.percussion.services.datasource.PSHibernateDialectConfig">
         <property name="dialects">
-            <map>
+            <util:map>
+                <entry key="sqlserver">
+                    <value> "org.hibernate.dialect.SQLServer2012Dialect"</value>
+                </entry>
                 <entry key="jtds:sqlserver">
                     <value>org.hibernate.dialect.SQLServer2012Dialect</value>
                 </entry>
@@ -150,7 +156,7 @@ http://cxf.apache.org/schemas/jaxrs.xsd">
                 <entry key="mysql">
                     <value>org.hibernate.dialect.MySQLInnoDBDialect</value>
                 </entry>
-            </map>
+            </util:map>
         </property>
     </bean>
     <bean id="sys_beanConfiguration"
@@ -161,9 +167,9 @@ http://cxf.apache.org/schemas/jaxrs.xsd">
     <bean id="sys_testSetup"
           class="com.percussion.testing.PSTestSetupBean">
         <property name="config">
-            <map>
+            <util:map>
                 <entry key="extensionDir" value="build/unitTestConfig/extensions" />
-            </map>
+            </util:map>
         </property>
     </bean>
 

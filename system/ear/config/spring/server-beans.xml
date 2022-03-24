@@ -1,10 +1,13 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:util="http://www.springframework.org/schema/util"
        xmlns:tx="http://www.springframework.org/schema/tx"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
 http://www.springframework.org/schema/beans/spring-beans.xsd
 http://www.springframework.org/schema/tx
-http://www.springframework.org/schema/tx/spring-tx.xsd">
+http://www.springframework.org/schema/tx/spring-tx.xsd
+http://www.springframework.org/schema/util
+http://www.springframework.org/schema/util/spring-util.xsd">
 
 	<tx:annotation-driven transaction-manager="sys_transactionManager"/>
 
@@ -15,9 +18,9 @@ http://www.springframework.org/schema/tx/spring-tx.xsd">
 	<bean id="sys_rhythmyxinfo"
 		class="com.percussion.services.general.impl.PSRhythmyxInfo">
 		<property name="bindings">
-			<map>
+			<util:map>
 				<entry key="UNIT_TESTING" value="false"/>
-			</map>
+			</util:map>
 		</property>
 	</bean>
 	
@@ -63,7 +66,7 @@ http://www.springframework.org/schema/tx/spring-tx.xsd">
 	<bean id="sys_hibernateDialects"
 		class="com.percussion.services.datasource.PSHibernateDialectConfig">
 		<property name="dialects">
-			<map>
+			<util:map>
                 <entry key="jtds:sqlserver" value="org.hibernate.dialect.SQLServer2012Dialect"/>
                 <entry key="sqlserver" value="org.hibernate.dialect.SQLServer2012Dialect"/>
                 <entry key="inetdae7" value="org.hibernate.dialect.SQLServer2012Dialect"/>
@@ -71,7 +74,7 @@ http://www.springframework.org/schema/tx/spring-tx.xsd">
                 <entry key="db2" value="org.hibernate.dialect.DB2Dialect"/>
                 <entry key="derby" value="org.hibernate.dialect.DerbyTenSevenDialect"/>
                 <entry key="mysql" value="org.hibernate.dialect.MySQLInnoDBDialect"/>
-			</map>
+			</util:map>
 		</property>		
 	</bean>
 	

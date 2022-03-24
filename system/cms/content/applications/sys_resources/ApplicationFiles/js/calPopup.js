@@ -91,13 +91,13 @@ calDateFormat    = "yyyy-MM-DD";
 
 
 //Set the time flag to 0
-var timeflag =0
+var timeflag =0;
 
 var tDoc = null;
 var bDoc = null;
 
 //Set the time flag to 0
-var appendflag =0
+var appendflag =0;
 
 // CALENDAR COLORS
 topBackground    = "#bec5e7";         // BG COLOR OF THE TOP FRAME
@@ -130,9 +130,7 @@ var is_mac = (agt.indexOf("mac")!= -1);
 
 var is_safari = (is_mac && (agt.indexOf("safari") != -1));
 var is_ie = ((agt.indexOf("msie") != -1) && (agt.indexOf("opera") == -1));
-var is_nav  = ((agt.indexOf('mozilla') != -1) && (agt.indexOf('spoofer') == -1)
-            && (agt.indexOf('compatible') == -1) && (agt.indexOf('opera') == -1)
-            && (agt.indexOf('webtv') == -1) && (agt.indexOf('hotjava') == -1) && !is_safari);
+var is_nav  = ((agt.indexOf('mozilla') != -1) && (agt.indexOf('spoofer') == -1) && (agt.indexOf('compatible') == -1) && (agt.indexOf('opera') == -1) && (agt.indexOf('webtv') == -1) && (agt.indexOf('hotjava') == -1) && !is_safari);
 var is_mozilla = ((agt.indexOf('mozilla') != -1) && (agt.indexOf('gecko') != -1));
 var is_nav4 = (is_nav && (is_major == 4));
 
@@ -245,8 +243,7 @@ function showCalendar(dateField,timevar,appendvar) {
           "<link type=\"text/css\" src=\"/sys_resources/css/templates.css\">\n" +
           calStyleSheet + "</head>\n" +
           "<body bgcolor=\""+ topBackground +"\">\n" +
-          "  <div id=\"calTop\" style=\"background-color:"+ topBackground +"\">" + buildTopCalFrame() + "<div>\n" 
-          + calendarBegin + calendarEnd +
+          "  <div id=\"calTop\" style=\"background-color:"+ topBackground +"\">" + buildTopCalFrame() + "<div>\n" + calendarBegin + calendarEnd +
           "</body>\n";
        tDoc.open();
        tDoc.write(calDoc);
@@ -266,8 +263,8 @@ function showCalendar(dateField,timevar,appendvar) {
        top.newWin.document.write(calDocFrameset);
        top.newWin.document.close();
        
-       tDoc = top.newWin.frames['topCalFrame'].document;
-       bDoc = top.newWin.frames['bottomCalFrame'].document;    
+       tDoc = top.newWin.frames.topCalFrame.document;
+       bDoc = top.newWin.frames.bottomCalFrame.document;
        
        tDoc.open();
        tDoc.write(calDocTop);
@@ -842,12 +839,12 @@ function getMonthSelect() {
 
     // IF FRENCH
     if (selectedLanguage == "fr") {
-        monthArray = new Array('Janvier', 'F�vrier', 'Mars', 'Avril', 'Mai', 'Juin',
+        monthArray = new Array('Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin',
                                'Juillet', 'Aout', 'Septembre', 'Octobre', 'Novembre', 'D�cembre');
     }
     // IF GERMAN
     else if (selectedLanguage == "de") {
-        monthArray = new Array('Januar', 'Februar', 'M�rz', 'April', 'Mai', 'Juni',
+        monthArray = new Array('Januar', 'Februar', 'März', 'April', 'Mai', 'Juni',
                                'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember');
     }
     // IF SPANISH
@@ -897,7 +894,7 @@ ValueTimeArray = new Array('24:00:00','1:00:00', '2:00:00', '3:00:00', '4:00:00'
 							   '13:00:00', '14:00:00', '15:00:00', '16:00:00', '17:00:00', '18:00:00',
                                '19:00:00', '20:00:00', '21:00:00', '22:00:00', '23:00:00' );
 
- TimeSelect = "<select  name=\"time\">"
+ TimeSelect = "<select  name=\"time\">";
  TimeSelect += "<option selected value = >" + "Set Time" + "</option>\n";
 	for (i=0;i<TimeArray.length;i++) {
         TimeSelect += "<option value = " + ValueTimeArray[i] + ">" + TimeArray[i] + "</option>\n";
@@ -925,8 +922,8 @@ function createWeekdayList() {
     }
     // IF SPANISH
     else if (selectedLanguage == "es") {
-        weekdayList  = new Array('Domingo', 'Lunes', 'Martes', 'Mi�rcoles', 'Jueves', 'Viernes', 'S�bado')
-        weekdayArray = new Array('Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa');
+        weekdayList  = ['Domingo', 'Lunes', 'Martes', 'Mi�rcoles', 'Jueves', 'Viernes', 'S�bado'];
+        weekdayArray = ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa'];
     }
     else {
         weekdayList  = new Array('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday');
@@ -1097,7 +1094,7 @@ function returnDate(inDay)
     var monthAbbrev   = monthString.substring(0,3);
     var weekday       = weekdayList[calDate.getDay()];
     var weekdayAbbrev = weekday.substring(0,3);
-    var time
+    var time;
     outDate = calDateFormat;
 
     // RETURN TWO DIGIT DAY
@@ -1128,7 +1125,7 @@ function returnDate(inDay)
     // RETURN TWO-DIGIT YEAR
     else if (calDateFormat.indexOf("yy") != -1) {
         var yearString = "" + year;
-        var yearString = yearString.substring(2,4);
+        yearString = yearString.substring(2,4);
         outDate = jsReplace(outDate, "yy", yearString);
     }
     // RETURN FOUR-DIGIT YEAR
@@ -1204,5 +1201,5 @@ function returnDate(inDay)
     calDateField.focus();
 
     // CLOSE THE CALENDAR WINDOW
-    top.newWin.close()
+    top.newWin.close();
 }
