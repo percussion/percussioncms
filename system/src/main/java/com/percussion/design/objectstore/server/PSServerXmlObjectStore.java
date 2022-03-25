@@ -672,9 +672,11 @@ public class PSServerXmlObjectStore extends PSObjectFactory
       }
 
       File appFileName = new File(appDir, appFile.getPath());
-   
-      try( InputStream in = m_objectStoreHandler.lockInputStream(appFileName))
-      {
+      InputStream in = null;
+      try{
+
+         in = m_objectStoreHandler.lockInputStream(appFileName);
+
      
          ByteArrayOutputStream tmpOut = new ByteArrayOutputStream();
          IOTools.copyStream(in, tmpOut);
@@ -694,6 +696,23 @@ public class PSServerXmlObjectStore extends PSObjectFactory
          Object[] args = new Object[] { appFileName.toString(), e.toString() };
          throw new PSServerException(IPSObjectStoreErrors.APP_FILE_IO_ERROR,
                args);
+      }
+      finally
+      {
+         if (in != null)
+         {
+            try
+            {
+               m_objectStoreHandler.releaseInputStream(in, appFileName);
+            }
+            catch (IOException e)
+            {
+               Object[] args = new Object[] { appFileName.toString(),
+                       e.toString() };
+               throw new PSServerException(
+                       IPSObjectStoreErrors.APP_FILE_IO_ERROR, args);
+            }
+         }
       }
    }
 
