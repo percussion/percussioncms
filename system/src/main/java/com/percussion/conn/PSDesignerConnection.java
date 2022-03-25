@@ -987,7 +987,9 @@ public class PSDesignerConnection
                               reason = statusCode;
                            }
                            if("401".equals(statusCode)){
-                              throw new PSServerException("User Not Authenticated. Invalid Username/Password",null);
+                              throw new PSServerException(
+                                      IPSConnectionErrors.UNAUTHORIZED,
+                                      reason);
                            }
                            throw new PSServerException(
                                    IPSConnectionErrors.UNKNOWN_SERVER_EXCEPTION,

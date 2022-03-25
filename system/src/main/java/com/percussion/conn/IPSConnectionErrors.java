@@ -223,5 +223,7 @@ public interface IPSConnectionErrors {
     */
    public static final int NULL_SOCKET                  = 3106;
 
+   public static final int UNAUTHORIZED                  = 3107;
+
 }
 
