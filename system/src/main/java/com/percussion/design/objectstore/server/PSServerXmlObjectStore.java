@@ -23,6 +23,7 @@
  */
 package com.percussion.design.objectstore.server;
 
+import com.percussion.cms.IPSConstants;
 import com.percussion.conn.PSServerException;
 import com.percussion.data.IPSInternalRequestHandler;
 import com.percussion.data.PSDatabaseMetaData;
@@ -66,6 +67,7 @@ import com.percussion.design.objectstore.PSTextLiteral;
 import com.percussion.design.objectstore.PSUnknownDocTypeException;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
 import com.percussion.error.PSException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.security.PSAclHandler;
 import com.percussion.security.PSAuthenticationFailedException;
 import com.percussion.security.PSAuthenticationRequiredException;
@@ -90,6 +92,7 @@ import com.percussion.utils.jdbc.IPSDatasourceResolver;
 import com.percussion.utils.servlet.PSServletUtils;
 import com.percussion.utils.spring.PSSpringConfiguration;
 import com.percussion.utils.types.PSPair;
+import com.percussion.utils.xml.PSInvalidXmlException;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -134,6 +137,11 @@ import java.util.Vector;
  */
 public class PSServerXmlObjectStore extends PSObjectFactory
 {
+   private static final String TOK_NOT_NULL_ERROR = "tok may not be null";
+   private static final String LOCKID_NOT_NULL_ERROR = "lockId may not be null";
+   private static final String APPFILE_NOTNULL_ERROR = "appFile may not be null";
+   private static final String SERVER_CONFIGURATION = "Server Configuration";
+   private static final String ID_NOT_NULL_ERROR ="id may not be null";
    /**
     * Used to create and obtain the single instance of this class. This method
     * should only be called once (this should be done by the server when
@@ -141,8 +149,7 @@ public class PSServerXmlObjectStore extends PSObjectFactory
     * 
     * @param os The objectstore handler. May not be <code>null</code>.
     * @return The instance of this class.
-    * @throws IllegalStateException if {@link
-    * #createInstance(PSXmlObjectStoreHandler)} has already been called.
+    * @throws IllegalStateException if createInstance has already been called.
     */
    public static synchronized PSServerXmlObjectStore createInstance(
          PSXmlObjectStoreHandler os)
@@ -240,7 +247,7 @@ public class PSServerXmlObjectStore extends PSObjectFactory
          // should never be here. log error in case it does get here.
          String errorMsg = "failed to make backup for '"
                + m_src.getAbsolutePath() + "' file/directory.";
-         ms_log.error(errorMsg);
+         log.error(errorMsg);
          throw new PSException(errorMsg);
       }
 
@@ -267,8 +274,9 @@ public class PSServerXmlObjectStore extends PSObjectFactory
          catch (Exception e)
          {
             // ignore error if any
-            ms_log.error("Failed to recover '" + m_src.getAbsolutePath()
-                  + "' file", e);
+            log.error("Failed to recover '{}' file. Error: {}",  
+                    m_src.getAbsolutePath(), 
+                    PSExceptionUtils.getMessageForLog(e));
          }
          return false;
       }
@@ -332,13 +340,13 @@ public class PSServerXmlObjectStore extends PSObjectFactory
    public PSApplication getApplicationObject(String appName,
          PSSecurityToken tok)
       throws PSServerException, PSNotFoundException,
-      PSAuthenticationRequiredException, PSAuthorizationException
+           PSAuthorizationException
    {
       if (appName == null)
          throw new IllegalArgumentException("appName may not be null");
 
       if (tok == null)
-         throw new IllegalArgumentException("tok may not be null");
+         throw new IllegalArgumentException(TOK_NOT_NULL_ERROR);
 
       return getApplicationObject(appName, tok, true);
    }
@@ -363,13 +371,13 @@ public class PSServerXmlObjectStore extends PSObjectFactory
    public PSApplication getApplicationObject(String appName,
          PSSecurityToken tok, boolean fixupCeFields)
       throws PSServerException, PSNotFoundException,
-      PSAuthenticationRequiredException, PSAuthorizationException
+           PSAuthorizationException
    {
       if (appName == null)
          throw new IllegalArgumentException("appName may not be null");
 
       if (tok == null)
-         throw new IllegalArgumentException("tok may not be null");
+         throw new IllegalArgumentException(TOK_NOT_NULL_ERROR);
 
       PSApplication app = loadApplicationObject(appName, fixupCeFields);
 
@@ -389,18 +397,17 @@ public class PSServerXmlObjectStore extends PSObjectFactory
    public PSApplication getApplicationObject(IPSLockerId lockId,
          String appName, PSSecurityToken tok)
       throws PSServerException, PSNotFoundException, PSLockedException,
-      PSNotLockedException, PSAuthenticationRequiredException,
-      PSAuthorizationException
+      PSNotLockedException, PSAuthorizationException
    {
       // validate params
       if (lockId == null)
-         throw new IllegalArgumentException("lockId may not be null");
+         throw new IllegalArgumentException(LOCKID_NOT_NULL_ERROR);
 
       if (appName == null)
          throw new IllegalArgumentException("appName may not be null");
 
       if (tok == null)
-         throw new IllegalArgumentException("tok may not be null");
+         throw new IllegalArgumentException(TOK_NOT_NULL_ERROR);
 
       return getApplicationObject(lockId, appName, tok, true);
    }
@@ -429,18 +436,17 @@ public class PSServerXmlObjectStore extends PSObjectFactory
    public PSApplication getApplicationObject(IPSLockerId lockId,
          String appName, PSSecurityToken tok, boolean fixupCeFields)
       throws PSServerException, PSNotFoundException, PSLockedException,
-      PSNotLockedException, PSAuthenticationRequiredException,
-      PSAuthorizationException
+      PSNotLockedException, PSAuthorizationException
    {
       // validate params
       if (lockId == null)
-         throw new IllegalArgumentException("lockId may not be null");
+         throw new IllegalArgumentException(LOCKID_NOT_NULL_ERROR);
 
       if (appName == null)
          throw new IllegalArgumentException("appName may not be null");
 
       if (tok == null)
-         throw new IllegalArgumentException("tok may not be null");
+         throw new IllegalArgumentException(TOK_NOT_NULL_ERROR);
 
       // Check to see if app is locked
       if (!isApplicationLocked(lockId, appName))
@@ -482,19 +488,17 @@ public class PSServerXmlObjectStore extends PSObjectFactory
     */
    public Document getApplicationDoc(String appName, PSSecurityToken tok)
       throws PSServerException, PSNotFoundException,
-      PSAuthenticationRequiredException, PSAuthorizationException
+           PSAuthorizationException
    {
       if (appName == null)
          throw new IllegalArgumentException("appName may not be null");
 
       if (tok == null)
-         throw new IllegalArgumentException("tok may not be null");
+         throw new IllegalArgumentException(TOK_NOT_NULL_ERROR);
 
       // get the doc - this will validate security for us as well
       PSApplication app = getApplicationObject(appName, tok);
-      Document appDoc = app.toXml();
-
-      return appDoc;
+      return  app.toXml();
    }
 
    /**
@@ -517,24 +521,21 @@ public class PSServerXmlObjectStore extends PSObjectFactory
    public Document getApplicationDoc(IPSLockerId lockId, String appName,
          PSSecurityToken tok)
       throws PSServerException, PSNotFoundException, PSLockedException,
-      PSNotLockedException, PSAuthenticationRequiredException,
-      PSAuthorizationException
+      PSNotLockedException, PSAuthorizationException
    {
       // validate params
       if (lockId == null)
-         throw new IllegalArgumentException("lockId may not be null");
+         throw new IllegalArgumentException(LOCKID_NOT_NULL_ERROR);
 
       if (appName == null)
          throw new IllegalArgumentException("appName may not be null");
 
       if (tok == null)
-         throw new IllegalArgumentException("tok may not be null");
+         throw new IllegalArgumentException(TOK_NOT_NULL_ERROR);
 
       // get the object - this will validate lock and security for us
       PSApplication app = getApplicationObject(lockId, appName, tok);
-      Document appDoc = app.toXml();
-
-      return appDoc;
+      return app.toXml();
    }
 
    /**
@@ -559,7 +560,7 @@ public class PSServerXmlObjectStore extends PSObjectFactory
    public Iterator<File> getAppRootFileList(String appRoot,
          boolean includeDirs, boolean recurse) throws PSServerException
    {
-      List<File> newFileList = new ArrayList<File>();
+      List<File> newFileList = new ArrayList<>();
 
       File appDir = getAppRootDir(appRoot);
       if (appDir.exists() && appDir.isDirectory())
@@ -571,7 +572,7 @@ public class PSServerXmlObjectStore extends PSObjectFactory
             String tmpPath = file.getPath();
             int sepPos = tmpPath.indexOf(File.separator);
             if (sepPos > -1)
-               tmpPath = tmpPath.substring(sepPos + 1, tmpPath.length());
+               tmpPath = tmpPath.substring(sepPos + 1);
             newFileList.add(new File(tmpPath));
          }
       }
@@ -590,7 +591,6 @@ public class PSServerXmlObjectStore extends PSObjectFactory
     * 
     * @throws PSServerException for any other errors encountered.
     */
-   @SuppressWarnings("unchecked")
    public Iterator getApplicationFiles(String appName)
       throws PSServerException
    {
@@ -644,10 +644,10 @@ public class PSServerXmlObjectStore extends PSObjectFactory
          throw new IllegalArgumentException("appName may not be null or empty");
 
       if (appFile == null)
-         throw new IllegalArgumentException("appFile may not be null");
+         throw new IllegalArgumentException(APPFILE_NOTNULL_ERROR);
 
       if (tok == null)
-         throw new IllegalArgumentException("tok may not be null");
+         throw new IllegalArgumentException(TOK_NOT_NULL_ERROR);
 
       checkCanReadApplication(appName, tok, false);
 
@@ -672,16 +672,15 @@ public class PSServerXmlObjectStore extends PSObjectFactory
       }
 
       File appFileName = new File(appDir, appFile.getPath());
-      InputStream in = null;
-      try
+   
+      try( InputStream in = m_objectStoreHandler.lockInputStream(appFileName))
       {
-         in = m_objectStoreHandler.lockInputStream(appFileName);
+     
          ByteArrayOutputStream tmpOut = new ByteArrayOutputStream();
          IOTools.copyStream(in, tmpOut);
-         ByteArrayInputStream bIn = new ByteArrayInputStream(tmpOut
+         return new ByteArrayInputStream(tmpOut
                .toByteArray());
 
-         return bIn;
       }
       catch (FileNotFoundException e)
       {
@@ -695,23 +694,6 @@ public class PSServerXmlObjectStore extends PSObjectFactory
          Object[] args = new Object[] { appFileName.toString(), e.toString() };
          throw new PSServerException(IPSObjectStoreErrors.APP_FILE_IO_ERROR,
                args);
-      }
-      finally
-      {
-         if (in != null)
-         {
-            try
-            {
-               m_objectStoreHandler.releaseInputStream(in, appFileName);
-            }
-            catch (IOException e)
-            {
-               Object[] args = new Object[] { appFileName.toString(),
-                     e.toString() };
-               throw new PSServerException(
-                     IPSObjectStoreErrors.APP_FILE_IO_ERROR, args);
-            }
-         }
       }
    }
 
@@ -799,10 +781,10 @@ public class PSServerXmlObjectStore extends PSObjectFactory
          throw new IllegalArgumentException("appName may not be null or empty");
 
       if (appFile == null)
-         throw new IllegalArgumentException("appFile may not be null");
+         throw new IllegalArgumentException(APPFILE_NOTNULL_ERROR);
 
       if (tok == null)
-         throw new IllegalArgumentException("tok may not be null");
+         throw new IllegalArgumentException(TOK_NOT_NULL_ERROR);
 
       checkCanReadApplication(appName, tok, true);
 
@@ -963,24 +945,22 @@ public class PSServerXmlObjectStore extends PSObjectFactory
     * to the specified application
     * @throws PSNotFoundException If the specified application or file cannot be
     * found.
-    * @throws PSNotLockedException If the application is not already locked.
-    * @throws PSNotLockedException If the application lock cannot be extended.
     * @throws PSServerException If any other errors occur.
     */
    public boolean saveApplicationFileWithoutLocking(String appName, File appFile,
          InputStream in, boolean overWrite,
          PSSecurityToken tok, boolean isFolder)
       throws PSAuthorizationException, PSNotFoundException,
-      PSNotLockedException, PSLockedException, PSServerException
+           PSServerException
    {
       if (appName == null || appName.trim().length() == 0)
          throw new IllegalArgumentException("appName may not be null or empty");
 
       if (appFile == null)
-         throw new IllegalArgumentException("appFile may not be null");
+         throw new IllegalArgumentException(APPFILE_NOTNULL_ERROR);
 
       if (tok == null)
-         throw new IllegalArgumentException("tok may not be null");
+         throw new IllegalArgumentException(TOK_NOT_NULL_ERROR);
 
       checkCanReadApplication(appName, tok, true);
 
@@ -1111,17 +1091,18 @@ public class PSServerXmlObjectStore extends PSObjectFactory
     * <code>null</code>.
     * @return <code>true</code> if successful.
     */
-   static private boolean deleteFile(File file)
+   private static boolean deleteFile(File file)
    {
       if (!file.exists())
          return false;
       if (file.isDirectory())
       {
          File[] children = file.listFiles();
-         for (int i = 0; i < children.length; i++)
-         {
-            if (!deleteFile(children[i]))
-               return false;
+         if(children != null) {
+            for (File child : children) {
+               if (!deleteFile(child))
+                  return false;
+            }
          }
       }
       return file.delete();
@@ -1161,10 +1142,10 @@ public class PSServerXmlObjectStore extends PSObjectFactory
          throw new IllegalArgumentException("app may not be null or empty");
 
       if (appFile == null)
-         throw new IllegalArgumentException("appFile may not be null");
+         throw new IllegalArgumentException(APPFILE_NOTNULL_ERROR);
 
       if (tok == null)
-         throw new IllegalArgumentException("tok may not be null");
+         throw new IllegalArgumentException(TOK_NOT_NULL_ERROR);
 
       checkCanSaveApplication(app, tok);
 
@@ -1245,10 +1226,10 @@ public class PSServerXmlObjectStore extends PSObjectFactory
          throw new IllegalArgumentException("app may not be null or empty");
 
       if (appFile == null)
-         throw new IllegalArgumentException("appFile may not be null");
+         throw new IllegalArgumentException(APPFILE_NOTNULL_ERROR);
 
       if (tok == null)
-         throw new IllegalArgumentException("tok may not be null");
+         throw new IllegalArgumentException(TOK_NOT_NULL_ERROR);
 
       checkCanSaveApplication(app, tok);
 
@@ -1311,26 +1292,25 @@ public class PSServerXmlObjectStore extends PSObjectFactory
     * 
     * @return An iterator over zero or more <code>File</code>, never
     * <code>null</code>. File paths will include the supplied directory.
-    * 
-    * @throws PSServerException if there are any errors.
+    *
     */
    private List<File> catalogFiles(String dirName, boolean includeDirs,
-         boolean recurse) throws PSServerException
-   {
-      List<File> retFiles = new ArrayList<File>();
-      List<File> dirFiles = new ArrayList<File>();
+         boolean recurse) {
+      List<File> retFiles = new ArrayList<>();
+      List<File> dirFiles = new ArrayList<>();
 
       File dir = getAppRootDir(dirName);
       if (dir.isDirectory())
       {
          File[] files = dir.listFiles();
-         for (int i = 0; i < files.length; i++)
-         {
-            File file = new File(dirName, files[i].getName());
-            if (files[i].isFile())
-               retFiles.add(file);
-            else
-               dirFiles.add(file);
+         if(files != null) {
+            for (File value : files) {
+               File file = new File(dirName, value.getName());
+               if (value.isFile())
+                  retFiles.add(file);
+               else
+                  dirFiles.add(file);
+            }
          }
       }
 
@@ -1381,17 +1361,17 @@ public class PSServerXmlObjectStore extends PSObjectFactory
       throws PSServerException, PSNotLockedException, PSSystemValidationException,
       PSUnknownDocTypeException, PSUnknownNodeTypeException, IOException,
       PSLockedException, PSNonUniqueException, PSAuthorizationException,
-      PSAuthenticationRequiredException, PSNotFoundException
+           PSNotFoundException
    {
       // validate inputs
       if (appDoc == null)
          throw new IllegalArgumentException("appDoc may not be null");
 
       if (lockId == null)
-         throw new IllegalArgumentException("lockId may not be null");
+         throw new IllegalArgumentException(LOCKID_NOT_NULL_ERROR);
 
       if (tok == null)
-         throw new IllegalArgumentException("tok may not be null");
+         throw new IllegalArgumentException(TOK_NOT_NULL_ERROR);
 
       // save it
       PSApplication app = new PSApplication(appDoc);
@@ -1408,7 +1388,7 @@ public class PSServerXmlObjectStore extends PSObjectFactory
     */
    public boolean deleteApplication(String appName, IPSLockerId lockId,
          PSSecurityToken tok)
-      throws PSAuthenticationRequiredException, PSAuthorizationException,
+      throws PSAuthorizationException,
       PSNotFoundException, PSServerException, PSNotLockedException,
       PSLockedException
    {
@@ -1416,10 +1396,10 @@ public class PSServerXmlObjectStore extends PSObjectFactory
          throw new IllegalArgumentException("appName may not be null or empty");
 
       if (lockId == null)
-         throw new IllegalArgumentException("lockId may not be null");
+         throw new IllegalArgumentException(LOCKID_NOT_NULL_ERROR);
 
       if (tok == null)
-         throw new IllegalArgumentException("tok may not be null");
+         throw new IllegalArgumentException(TOK_NOT_NULL_ERROR);
 
       boolean deleted = false;
       int appId = m_objectStoreHandler.getApplicationIdFromName(appName);
@@ -1453,15 +1433,15 @@ public class PSServerXmlObjectStore extends PSObjectFactory
     */
    public boolean deleteApplication(int appId, IPSLockerId lockId,
          PSSecurityToken tok)
-      throws PSAuthenticationRequiredException, PSAuthorizationException,
+      throws PSAuthorizationException,
       PSNotFoundException, PSServerException, PSNotLockedException,
       PSLockedException
    {
       if (lockId == null)
-         throw new IllegalArgumentException("lockId may not be null");
+         throw new IllegalArgumentException(LOCKID_NOT_NULL_ERROR);
 
       if (tok == null)
-         throw new IllegalArgumentException("tok may not be null");
+         throw new IllegalArgumentException(TOK_NOT_NULL_ERROR);
 
       String appName = m_objectStoreHandler.getApplicationNameFromId(appId);
       if (appName == null)
@@ -1529,14 +1509,14 @@ public class PSServerXmlObjectStore extends PSObjectFactory
    private void deleteDirectory(File dir)
    {
       File[] files = dir.listFiles();
-      for (int i = 0; i < files.length; i++)
-      {
-         if (files[i].isDirectory())
-            deleteDirectory(files[i]);
-         else
-            files[i].delete();
+      if(files!= null) {
+         for (File file : files) {
+            if (file.isDirectory())
+               deleteDirectory(file);
+            else
+               file.delete();
+         }
       }
-
       dir.delete();
    }
 
@@ -1587,10 +1567,10 @@ public class PSServerXmlObjectStore extends PSObjectFactory
          throw new IllegalArgumentException("app may not be null");
 
       if (lockId == null)
-         throw new IllegalArgumentException("lockId may not be null");
+         throw new IllegalArgumentException(LOCKID_NOT_NULL_ERROR);
 
       if (tok == null)
-         throw new IllegalArgumentException("tok may not be null");
+         throw new IllegalArgumentException(TOK_NOT_NULL_ERROR);
 
       if ((curName == null) || (curName.length() == 0))
          throw new IllegalArgumentException("app name may not be null");
@@ -1823,8 +1803,7 @@ public class PSServerXmlObjectStore extends PSObjectFactory
     * an authenticated user.
     */
    public PSRoleConfiguration getRoleConfigurationObject(PSSecurityToken tok)
-      throws PSServerException, PSAuthorizationException,
-      PSAuthenticationRequiredException
+      throws PSServerException, PSAuthorizationException
    {
       checkCanEditServerConfig(tok);
       try
@@ -1860,15 +1839,10 @@ public class PSServerXmlObjectStore extends PSObjectFactory
          Document cfgDoc = getServerConfigDoc(tok);
          config = new PSServerConfiguration(cfgDoc);
       }
-      catch (PSUnknownNodeTypeException ne)
+      catch (PSUnknownNodeTypeException | PSUnknownDocTypeException ne)
       {
          throw new PSServerException(ne.getClass().toString(), ne
                .getErrorCode(), ne.getErrorArguments());
-      }
-      catch (PSUnknownDocTypeException de)
-      {
-         throw new PSServerException(de.getClass().toString(), de
-               .getErrorCode(), de.getErrorArguments());
       }
 
       return config;
@@ -1888,7 +1862,7 @@ public class PSServerXmlObjectStore extends PSObjectFactory
       throws PSServerException
    {
       if (tok == null)
-         throw new IllegalArgumentException("tok may not be null.");
+         throw new IllegalArgumentException(TOK_NOT_NULL_ERROR);
 
       Document cfgDoc = m_objectStoreHandler.loadServerConfig();
       Element cfgRoot = cfgDoc.getDocumentElement();
@@ -1937,14 +1911,14 @@ public class PSServerXmlObjectStore extends PSObjectFactory
    public PSServerConfiguration getServerConfigObject(IPSLockerId lockId,
          PSSecurityToken tok)
       throws PSNotLockedException, PSServerException, PSLockedException,
-      PSAuthorizationException, PSAuthenticationRequiredException
+      PSAuthorizationException
    {
       // validate params
       if (lockId == null)
-         throw new IllegalArgumentException("lockId may not be null");
+         throw new IllegalArgumentException(LOCKID_NOT_NULL_ERROR);
 
       if (tok == null)
-         throw new IllegalArgumentException("tok may not be null");
+         throw new IllegalArgumentException(TOK_NOT_NULL_ERROR);
 
       PSServerConfiguration config;
       try
@@ -1952,15 +1926,10 @@ public class PSServerXmlObjectStore extends PSObjectFactory
          Document cfgDoc = getServerConfigDoc(lockId, tok);
          config = new PSServerConfiguration(cfgDoc);
       }
-      catch (PSUnknownNodeTypeException ne)
+      catch (PSUnknownNodeTypeException | PSUnknownDocTypeException ne)
       {
          throw new PSServerException(ne.getClass().toString(), ne
                .getErrorCode(), ne.getErrorArguments());
-      }
-      catch (PSUnknownDocTypeException de)
-      {
-         throw new PSServerException(de.getClass().toString(), de
-               .getErrorCode(), de.getErrorArguments());
       }
 
       return config;
@@ -1983,21 +1952,20 @@ public class PSServerXmlObjectStore extends PSObjectFactory
     * @throws PSServerException for any other errors encountered.
     */
    public Document getServerConfigDoc(IPSLockerId lockId, PSSecurityToken tok)
-      throws PSLockedException, PSNotLockedException, PSServerException,
-      PSLockedException, PSAuthorizationException,
-      PSAuthenticationRequiredException
+      throws PSNotLockedException, PSServerException,
+      PSLockedException, PSAuthorizationException
    {
       // validate params
       if (lockId == null)
-         throw new IllegalArgumentException("lockId may not be null");
+         throw new IllegalArgumentException(LOCKID_NOT_NULL_ERROR);
 
       if (tok == null)
-         throw new IllegalArgumentException("tok may not be null");
+         throw new IllegalArgumentException(TOK_NOT_NULL_ERROR);
 
       // Check to see if config is locked
       if (!isServerConfigLocked(lockId))
       {
-         Object[] args = { "Server Configuration" };
+         Object[] args = { SERVER_CONFIGURATION };
          throw new PSNotLockedException(IPSObjectStoreErrors.LOCK_NOT_HELD,
                args);
       }
@@ -2008,13 +1976,12 @@ public class PSServerXmlObjectStore extends PSObjectFactory
       }
 
       tok.setResourceType("Edit");
-      tok.setResourceName("Server Configuration");
+      tok.setResourceName(SERVER_CONFIGURATION);
       checkCanEditServerConfig(tok);
 
       // now load the config
-      Document cfgDoc = m_objectStoreHandler.loadServerConfig();
-
-      return cfgDoc;
+      return  m_objectStoreHandler.loadServerConfig();
+      
    }
 
    /**
@@ -2032,27 +1999,27 @@ public class PSServerXmlObjectStore extends PSObjectFactory
    public void saveRoleConfiguration(PSRoleConfiguration config,
          IPSLockerId lockId, PSSecurityToken tok)
       throws PSNotLockedException, PSServerException, PSLockedException,
-      PSAuthorizationException, PSAuthenticationRequiredException
+      PSAuthorizationException
    {
       // validate inputs
       if (config == null)
          throw new IllegalArgumentException("config may not be null");
 
       if (lockId == null)
-         throw new IllegalArgumentException("lockId may not be null");
+         throw new IllegalArgumentException(LOCKID_NOT_NULL_ERROR);
 
       if (tok == null)
-         throw new IllegalArgumentException("tok may not be null");
+         throw new IllegalArgumentException(TOK_NOT_NULL_ERROR);
 
       // check to see if user is allowed
       tok.setResourceType("Save");
-      tok.setResourceName("Server Configuration");
+      tok.setResourceName(SERVER_CONFIGURATION);
       checkCanEditServerConfig(tok);
 
       // Check to see if config is locked
       if (!isServerConfigLocked(lockId))
       {
-         Object[] args = { "Server Configuration" };
+         Object[] args = { SERVER_CONFIGURATION };
          throw new PSNotLockedException(IPSObjectStoreErrors.LOCK_NOT_HELD,
                args);
       }
@@ -2112,28 +2079,27 @@ public class PSServerXmlObjectStore extends PSObjectFactory
    public void saveServerConfig(PSServerConfiguration config,
          IPSLockerId lockId, PSSecurityToken tok)
       throws PSNotLockedException, PSServerException, PSSystemValidationException,
-      PSLockedException, PSAuthorizationException,
-      PSAuthenticationRequiredException
+      PSLockedException, PSAuthorizationException
    {
       // validate inputs
       if (config == null)
          throw new IllegalArgumentException("config may not be null");
 
       if (lockId == null)
-         throw new IllegalArgumentException("lockId may not be null");
+         throw new IllegalArgumentException(LOCKID_NOT_NULL_ERROR);
 
       if (tok == null)
-         throw new IllegalArgumentException("tok may not be null");
+         throw new IllegalArgumentException(TOK_NOT_NULL_ERROR);
 
       // check to see if user is allowed
       tok.setResourceType("Save");
-      tok.setResourceName("Server Configuration");
+      tok.setResourceName(SERVER_CONFIGURATION);
       checkCanEditServerConfig(tok);
 
       // Check to see if config is locked
       if (!isServerConfigLocked(lockId))
       {
-         Object[] args = { "Server Configuration" };
+         Object[] args = { SERVER_CONFIGURATION };
          throw new PSNotLockedException(IPSObjectStoreErrors.LOCK_NOT_HELD,
                args);
       }
@@ -2167,15 +2133,7 @@ public class PSServerXmlObjectStore extends PSObjectFactory
          // nofify listeners
          m_objectStoreHandler.notifyServerListeners(config);
       }
-      catch (PSAuthorizationException e)
-      {
-         throw new PSServerException(e);
-      }
-      catch (PSNonUniqueException e)
-      {
-         throw new PSServerException(e);
-      }
-      catch (IOException e)
+      catch (PSAuthorizationException | IOException | PSNonUniqueException e)
       {
          throw new PSServerException(e);
       }
@@ -2197,8 +2155,7 @@ public class PSServerXmlObjectStore extends PSObjectFactory
    public void saveServerConfig(Document config, IPSLockerId lockId,
          PSSecurityToken tok)
       throws PSNotLockedException, PSServerException, PSLockedException,
-           PSSystemValidationException, PSAuthorizationException,
-      PSAuthenticationRequiredException
+           PSSystemValidationException, PSAuthorizationException
    {
       // validate inputs
       if (config == null)
@@ -2208,22 +2165,17 @@ public class PSServerXmlObjectStore extends PSObjectFactory
          throw new IllegalArgumentException("lockId cannot be null.");
 
       if (tok == null)
-         throw new IllegalArgumentException("tok may not be null");
+         throw new IllegalArgumentException(TOK_NOT_NULL_ERROR);
 
       try
       {
          PSServerConfiguration cfg = new PSServerConfiguration(config);
          saveServerConfig(cfg, lockId, tok);
       }
-      catch (PSUnknownNodeTypeException ne)
+      catch (PSUnknownNodeTypeException | PSUnknownDocTypeException ne)
       {
          throw new PSServerException(ne.getClass().toString(), ne
                .getErrorCode(), ne.getErrorArguments());
-      }
-      catch (PSUnknownDocTypeException de)
-      {
-         throw new PSServerException(de.getClass().toString(), de
-               .getErrorCode(), de.getErrorArguments());
       }
 
    }
@@ -2244,7 +2196,7 @@ public class PSServerXmlObjectStore extends PSObjectFactory
       throws PSLockedException, PSServerException
    {
       if (id == null)
-         throw new IllegalArgumentException("id may not be null");
+         throw new IllegalArgumentException();
 
       if (appName == null)
          throw new IllegalArgumentException("appName may not be null");
@@ -2263,7 +2215,7 @@ public class PSServerXmlObjectStore extends PSObjectFactory
          PSLockedException ex = new PSLockedException(0, null);
 
          boolean acquired = m_objectStoreHandler.m_lockMgr.acquireLock(id,
-               lockKey, lockMins * 60000, // convert minutes to milliseconds
+               lockKey, lockMins * 60000L, // convert minutes to milliseconds
                0, // don't time out
                ex);
 
@@ -2274,11 +2226,7 @@ public class PSServerXmlObjectStore extends PSObjectFactory
             throw ex;
          }
       }
-      catch (IllegalArgumentException e)
-      {
-         throw new PSServerException(e);
-      }
-      catch (PSLockAcquisitionException e)
+      catch (IllegalArgumentException | PSLockAcquisitionException e)
       {
          throw new PSServerException(e);
       }
@@ -2297,7 +2245,7 @@ public class PSServerXmlObjectStore extends PSObjectFactory
       throws PSServerException
    {
       if (id == null)
-         throw new IllegalArgumentException("id may not be null");
+         throw new IllegalArgumentException(ID_NOT_NULL_ERROR);
 
       if (appName == null)
          throw new IllegalArgumentException("appName may not be null");
@@ -2330,7 +2278,7 @@ public class PSServerXmlObjectStore extends PSObjectFactory
       throws PSServerException
    {
       if (id == null)
-         throw new IllegalArgumentException("id may not be null");
+         throw new IllegalArgumentException(ID_NOT_NULL_ERROR);
 
       if (appName == null)
          throw new IllegalArgumentException("appName may not be null");
@@ -2389,7 +2337,7 @@ public class PSServerXmlObjectStore extends PSObjectFactory
       throws PSLockedException, PSServerException
    {
       if (id == null)
-         throw new IllegalArgumentException("id may not be null");
+         throw new IllegalArgumentException(ID_NOT_NULL_ERROR);
 
       if (lockMins < 0)
          throw new IllegalArgumentException(
@@ -2408,7 +2356,7 @@ public class PSServerXmlObjectStore extends PSObjectFactory
          PSLockedException ex = new PSLockedException(0, null);
 
          boolean acquired = m_objectStoreHandler.m_lockMgr.acquireLock(id,
-               lockKey, lockMins * 60000, // convert minutes to milliseconds
+               lockKey, lockMins * 60000L, // convert minutes to milliseconds
                0, // don't time out
                ex);
 
@@ -2419,11 +2367,7 @@ public class PSServerXmlObjectStore extends PSObjectFactory
             throw ex;
          }
       }
-      catch (IllegalArgumentException e)
-      {
-         throw new PSServerException(e);
-      }
-      catch (PSLockAcquisitionException e)
+      catch (IllegalArgumentException | PSLockAcquisitionException e)
       {
          throw new PSServerException(e);
       }
@@ -2441,7 +2385,7 @@ public class PSServerXmlObjectStore extends PSObjectFactory
       throws PSServerException
    {
       if (id == null)
-         throw new IllegalArgumentException("id may not be null");
+         throw new IllegalArgumentException(ID_NOT_NULL_ERROR);
 
       try
       {
@@ -2475,7 +2419,7 @@ public class PSServerXmlObjectStore extends PSObjectFactory
       throws PSServerException
    {
       if (id == null)
-         throw new IllegalArgumentException("id may not be null");
+         throw new IllegalArgumentException(ID_NOT_NULL_ERROR);
 
       boolean isLocked;
       try
@@ -2507,10 +2451,10 @@ public class PSServerXmlObjectStore extends PSObjectFactory
     * authentication and user has not been authenticated.
     */
    public void checkCanEditServerConfig(PSSecurityToken tok)
-      throws PSAuthorizationException, PSAuthenticationRequiredException
+      throws PSAuthorizationException
    {
       if (tok == null)
-         throw new IllegalArgumentException("tok may not be null.");
+         throw new IllegalArgumentException(TOK_NOT_NULL_ERROR);
 
       // only administrators can read all, edit, or save
       PSServer.checkAccessLevel(tok, PSAclEntry.SACE_ADMINISTER_SERVER);
@@ -2531,14 +2475,13 @@ public class PSServerXmlObjectStore extends PSObjectFactory
     */
    public void checkCanReadApplication(PSApplication app, PSSecurityToken tok,
          boolean isEditing)
-      throws PSAuthorizationException, PSAuthenticationRequiredException,
-      PSServerException
+      throws PSAuthorizationException, PSServerException
    {
 
       try
       {
          if (tok == null)
-            throw new IllegalArgumentException("tok may not be null.");
+            throw new IllegalArgumentException(TOK_NOT_NULL_ERROR);
 
          // get app aclhandler
          PSAclHandler aclHandler = loadAclHandler(app);
@@ -2580,8 +2523,7 @@ public class PSServerXmlObjectStore extends PSObjectFactory
     */
    public void checkCanReadApplication(String appName, PSSecurityToken tok,
          boolean isEditing)
-      throws PSAuthorizationException, PSAuthenticationRequiredException,
-      PSServerException
+      throws PSAuthorizationException, PSServerException
    {
       if (appName == null || appName.trim().length() == 0)
          throw new IllegalArgumentException("appName may not be null or empty");
@@ -2589,7 +2531,7 @@ public class PSServerXmlObjectStore extends PSObjectFactory
       try
       {
          if (tok == null)
-            throw new IllegalArgumentException("tok may not be null.");
+            throw new IllegalArgumentException(TOK_NOT_NULL_ERROR);
 
          // get app aclhandler
          PSAclHandler aclHandler = m_objectStoreHandler
@@ -2637,7 +2579,7 @@ public class PSServerXmlObjectStore extends PSObjectFactory
          throw new IllegalArgumentException("app may not be null.");
 
       if (tok == null)
-         throw new IllegalArgumentException("tok may not be null.");
+         throw new IllegalArgumentException(TOK_NOT_NULL_ERROR);
 
       // see if user is creating a new app
       String curAppName = app.getName();
@@ -2720,7 +2662,7 @@ public class PSServerXmlObjectStore extends PSObjectFactory
          throw new IllegalArgumentException("app may not be null.");
 
       if (tok == null)
-         throw new IllegalArgumentException("tok may not be null.");
+         throw new IllegalArgumentException(TOK_NOT_NULL_ERROR);
 
       // See if they can update
       PSAclHandler aclHandler = loadAclHandler(app);
@@ -2800,23 +2742,16 @@ public class PSServerXmlObjectStore extends PSObjectFactory
 
          // Need to call fixupFields() to set the "correct" search
          // properties for binary fields
-         Iterator dataSets = app.getDataSets().iterator();
-         while (dataSets.hasNext())
-         {
-            Object dataSet = dataSets.next();
-            if ((dataSet instanceof PSContentEditor) && fixupCeFields)
-            {
+         for (Object dataSet : app.getDataSets()) {
+            if ((dataSet instanceof PSContentEditor) && fixupCeFields) {
                PSContentEditor ce = (PSContentEditor) dataSet;
                PSContentEditorPipe pipe = (PSContentEditorPipe) ce.getPipe();
 
-               try
-               {
+               try {
                   fixupFields(pipe.getMapper().getFieldSet(), pipe
-                        .getLocator().getTableSets(), pipe.getLocator()
-                        .getBackEndTables());
-               }
-               catch (SQLException se)
-               {
+                          .getLocator().getTableSets(), pipe.getLocator()
+                          .getBackEndTables());
+               } catch (SQLException se) {
                   throw new RuntimeException(se.getLocalizedMessage());
                }
 
@@ -2824,15 +2759,10 @@ public class PSServerXmlObjectStore extends PSObjectFactory
          }
 
       }
-      catch (PSUnknownNodeTypeException ne)
+      catch (PSUnknownNodeTypeException | PSUnknownDocTypeException ne)
       {
          throw new PSServerException(ne.getClass().toString(), ne
                .getErrorCode(), ne.getErrorArguments());
-      }
-      catch (PSUnknownDocTypeException de)
-      {
-         throw new PSServerException(de.getClass().toString(), de
-               .getErrorCode(), de.getErrorArguments());
       }
 
       return app;
@@ -2948,15 +2878,11 @@ public class PSServerXmlObjectStore extends PSObjectFactory
                   fixupFields(fs, loc.getTableSets(), loc.getBackEndTables());
                }
             }
-            catch (SQLException se)
+            catch (SQLException | PSSystemValidationException se)
             {
                throw new RuntimeException(se.getLocalizedMessage());
             }
-            catch (PSSystemValidationException ve)
-            {
-               // this should never happen
-               throw new RuntimeException(ve.getLocalizedMessage());
-            }
+            // this should never happen
             catch (FileNotFoundException e)
             {
                // if the file doesn't exist, just return null
@@ -3071,23 +2997,22 @@ public class PSServerXmlObjectStore extends PSObjectFactory
          sizeCurrent = curFile.length();
          if (m_SharedDefFilesAndModifedDates.containsKey(curFilePath))
          {
-            PSPair timeAndSize = (PSPair) m_SharedDefFilesAndModifedDates
+            PSPair timeAndSize = m_SharedDefFilesAndModifedDates
                   .get(curFilePath);
-            dateTime = ((Long) timeAndSize.getFirst()).longValue();
-            size = ((Long) timeAndSize.getSecond()).longValue();
+            dateTime = (Long) timeAndSize.getFirst();
+            size = (Long) timeAndSize.getSecond();
             if (dateTimeCurrent != dateTime || size != sizeCurrent)
             {
                m_SharedDefFilesAndModifedDates.put(curFilePath, new PSPair(
-                     new Long(curFile.lastModified()), new Long(curFile
-                           .length())));
+                       curFile.lastModified(), curFile
+                       .length()));
                isModifiedOnDisk = true;
             }
          }
          else
          {
             m_SharedDefFilesAndModifedDates.put(curFilePath,
-                  new PSPair(new Long(curFile.lastModified()), new Long(
-                        curFile.length())));
+                  new PSPair(curFile.lastModified(), curFile.length()));
             isModifiedOnDisk = true;
          }
       }
@@ -3098,18 +3023,15 @@ public class PSServerXmlObjectStore extends PSObjectFactory
       if (m_contentEditorSharedDef != null)
       {
          Iterator fgIter = m_contentEditorSharedDef.getFieldGroups();
-         Set<String> filesInDef = new HashSet<String>();
+         Set<String> filesInDef = new HashSet<>();
          while (fgIter.hasNext())
          {
             PSSharedFieldGroup fg = (PSSharedFieldGroup) fgIter.next();
             filesInDef.add(new File(m_cfgDirShared, fg.getFilename())
                   .getPath());
          }
-         Iterator iter = filesInDef.iterator();
-         while (iter.hasNext())
-         {
-            if (!filesOnDisk.contains(iter.next()))
-            {
+         for (String s : filesInDef) {
+            if (!filesOnDisk.contains(s)) {
                m_SharedDefFilesAndModifedDates.remove(curFilePath);
                isModifiedOnDisk = true;
             }
@@ -3124,70 +3046,57 @@ public class PSServerXmlObjectStore extends PSObjectFactory
        * At least one of the files in directory is not in sync, so build the
        * object from scratch.
        */
-      for (int i = 0; i < defs.length; i++)
-      {
+      for (File def : defs) {
          // load the def file and create an xml doc
-         PSContentEditorSharedDef tmpDef = getContentEditorSharedDef(defs[i]
-               .getName());
+         PSContentEditorSharedDef tmpDef = getContentEditorSharedDef(def
+                 .getName());
 
          // merge it into the def to return
          if (resultDef == null)
             resultDef = tmpDef;
-         else
-         {
+         else {
             // first copy app flow
             PSApplicationFlow resAppFlow = resultDef.getApplicationFlow();
             PSApplicationFlow curAppFlow = tmpDef.getApplicationFlow();
-            if (resAppFlow != null)
-            {
-               if (curAppFlow != null)
-               {
+            if (resAppFlow != null) {
+               if (curAppFlow != null) {
                   Iterator flows = curAppFlow.getCommandHandlerNames();
-                  while (flows.hasNext())
-                  {
+                  while (flows.hasNext()) {
                      String name = (String) flows.next();
                      PSCollection coll = new PSCollection(curAppFlow
-                           .getRedirects(name));
+                             .getRedirects(name));
                      resAppFlow.addRedirects(name, coll);
                   }
                }
-            }
-            else if (curAppFlow != null)
+            } else if (curAppFlow != null)
                resultDef.setApplicationFlow(curAppFlow);
 
             // copy field groups
             Iterator resFields = resultDef.getFieldGroups();
             PSCollection curFields = new PSCollection(tmpDef.getFieldGroups());
-            if (resFields.hasNext())
-            {
-               if (curFields != null)
-               {
+            if (resFields.hasNext()) {
+               if (curFields != null) {
                   PSCollection resFieldColl = new PSCollection(resFields);
                   resFieldColl.addAll(curFields);
                   resultDef.setFieldGroups(resFieldColl);
                }
-            }
-            else if (curFields != null)
+            } else if (curFields != null)
                resultDef.setFieldGroups(curFields);
 
             // copy stylesheets
             PSCommandHandlerStylesheets resSheets = resultDef
-                  .getStylesheetSet();
+                    .getStylesheetSet();
             PSCommandHandlerStylesheets curSheets = tmpDef.getStylesheetSet();
-            if (resSheets != null)
-            {
-               if (curSheets != null)
-               {
+            if (resSheets != null) {
+               if (curSheets != null) {
                   Iterator sheets = curSheets.getCommandHandlerNames();
-                  while (sheets.hasNext())
-                  {
+                  while (sheets.hasNext()) {
                      String name = (String) sheets.next();
                      resSheets.addStylesheets(name, new PSCollection(curSheets
-                           .getStylesheets(name)));
+                             .getStylesheets(name)));
                   }
                }
-            }
-            else if (curSheets != null)
+            } else if (curSheets != null)
                resultDef.setStylesheetSet(curSheets);
          }
 
@@ -3347,7 +3256,7 @@ public class PSServerXmlObjectStore extends PSObjectFactory
       if (def == null)
          throw new IllegalArgumentException("def may not be null");
 
-      Map<String, PSContentEditorSharedDef> sharedDefs = new HashMap<String, PSContentEditorSharedDef>();
+      Map<String, PSContentEditorSharedDef> sharedDefs = new HashMap<>();
 
       // put the application flow into the correct file
       PSApplicationFlow applicationFlow = def.getApplicationFlow();
@@ -3388,7 +3297,7 @@ public class PSServerXmlObjectStore extends PSObjectFactory
       }
 
       // create the field group mappings
-      Map<String, PSCollection> fieldGroupMappings = new HashMap<String, PSCollection>();
+      Map<String, PSCollection> fieldGroupMappings = new HashMap<>();
 
       Iterator fieldGroups = def.getFieldGroups();
       while (fieldGroups.hasNext())
@@ -3429,7 +3338,7 @@ public class PSServerXmlObjectStore extends PSObjectFactory
 
       // save all shared definitions
       filenames = sharedDefs.keySet().iterator();
-      Set<String> newFiles = new HashSet<String>();
+      Set<String> newFiles = new HashSet<>();
       while (filenames.hasNext())
       {
          String filename = (String) filenames.next();
@@ -3438,18 +3347,14 @@ public class PSServerXmlObjectStore extends PSObjectFactory
       }
       // Let us delete the shared def files that were not submitted -> deleted
       File[] existing = getContentEditorSharedDefFiles();
-      for (int i = 0; i < existing.length; i++)
-      {
-         File f = existing[i];
+      for (File f : existing) {
          // Does every shared file on the disk exists in the set submitted?
-         if (!newFiles.contains(f.getName()))
-         {
+         if (!newFiles.contains(f.getName())) {
             File defFile = new File(m_cfgDirShared, f.getName());
             // no - try deleting, if fails log to console
-            if (!defFile.delete())
-            {
+            if (!defFile.delete()) {
                PSConsole.printMsg("ObjectStore",
-                     "Failed to delete the shared def file: " + f.getName());
+                       "Failed to delete the shared def file: " + f.getName());
             }
          }
       }
@@ -3490,27 +3395,21 @@ public class PSServerXmlObjectStore extends PSObjectFactory
          isServerAdmin = false;
       }
 
-      List retSums = new java.util.ArrayList();
+      List<PSApplicationSummary> retSums = new ArrayList<>();
 
       synchronized (m_objectStoreHandler.m_appSums)
       {
          PSApplicationSummary[] sums = m_objectStoreHandler.m_appSums
                .getSummaries();
-         for (int i = 0; i < sums.length; i++)
-         {
-            PSApplicationSummary sum = sums[i];
-
+         for (PSApplicationSummary sum : sums) {
             if (!showHiddenApps && sum.isHidden())
                continue;
 
-            try
-            {
+            try {
                if (!isServerAdmin)
                   checkCanReadApplication(sum.getName(), tok, false);
                retSums.add(sum);
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                // no matter what the error, we'll just skip the bad summary
             }
          }
@@ -3518,7 +3417,7 @@ public class PSServerXmlObjectStore extends PSObjectFactory
 
       PSApplicationSummary[] retArray = new PSApplicationSummary[retSums
             .size()];
-      if (retSums.size() != 0)
+      if (!retSums.isEmpty())
       {
          retSums.toArray(retArray);
          PSSortTool.MergeSort(retArray, PSApplicationSummary.getComparator());
@@ -3570,60 +3469,49 @@ public class PSServerXmlObjectStore extends PSObjectFactory
       PSField[] roFields = fs.getAllFields(true);
       PSField[] allFields = new PSField[rFields.length + roFields.length];
       int j = 0;
-      for (int i = 0; i < rFields.length; i++)
-      {
-         allFields[j++] = rFields[i];
+      for (PSField rField : rFields) {
+         allFields[j++] = rField;
       }
-      for (int i = 0; i < roFields.length; i++)
-      {
-         allFields[j++] = roFields[i];
+      for (PSField roField : roFields) {
+         allFields[j++] = roField;
       }
 
-      Collection beFields = new ArrayList();
+      Collection beFields = new ArrayList<>();
 
-      for (int i = 0; i < allFields.length; i++)
-      {
-         if (allFields[i].getLocator() instanceof PSBackEndColumn)
-            beFields.add(allFields[i]);
-         else
-         {
+      for (PSField psField : allFields) {
+         if (psField.getLocator() instanceof PSBackEndColumn)
+            beFields.add(psField);
+         else {
             // set the data type if we know it, otherwise, leave blank
-            if (allFields[i].getLocator() instanceof PSDateLiteral)
-               allFields[i].setDataType(PSField.DT_DATETIME);
-            else if (allFields[i].getLocator() instanceof PSNumericLiteral)
-               allFields[i].setDataType(PSField.DT_INTEGER);
-            else if (allFields[i].getLocator() instanceof PSTextLiteral)
-               allFields[i].setDataType(PSField.DT_TEXT);
-            else if (allFields[i].getLocator() instanceof PSExtensionCall)
-            {
+            if (psField.getLocator() instanceof PSDateLiteral)
+               psField.setDataType(PSField.DT_DATETIME);
+            else if (psField.getLocator() instanceof PSNumericLiteral)
+               psField.setDataType(PSField.DT_INTEGER);
+            else if (psField.getLocator() instanceof PSTextLiteral)
+               psField.setDataType(PSField.DT_TEXT);
+            else if (psField.getLocator() instanceof PSExtensionCall) {
                /*
                 * I was debating where this code belongs and settled on her.
                 * It's not the ideal location, but I didn't see a better one.
                 */
-               PSExtensionParamValue[] params = ((PSExtensionCall) allFields[i]
-                     .getLocator()).getParamValues();
-               for (int k = 0; k < params.length; k++)
-               {
-                  if ((null != params[k]) && (params[k].isBackEndColumn()))
-                  {
-                     PSBackEndColumn col = (PSBackEndColumn) params[k]
-                           .getValue();
+               PSExtensionParamValue[] params = ((PSExtensionCall) psField
+                       .getLocator()).getParamValues();
+               for (PSExtensionParamValue param : params) {
+                  if ((null != param) && (param.isBackEndColumn())) {
+                     PSBackEndColumn col = (PSBackEndColumn) param
+                             .getValue();
                      PSBackEndTable table = (PSBackEndTable) tables.get(col
-                           .getTable().getAlias().toLowerCase());
-                     if (null == table)
-                     {
+                             .getTable().getAlias().toLowerCase());
+                     if (null == table) {
                         PSSystemValidationException e = new PSSystemValidationException(
-                              IPSObjectStoreErrors.BE_TABLE_NULL);
+                                IPSObjectStoreErrors.BE_TABLE_NULL);
                         throw new SQLException(e.getLocalizedMessage());
                      }
-                     try
-                     {
+                     try {
                         col.setTable(table);
-                     }
-                     catch (IllegalArgumentException iae)
-                     {
+                     } catch (IllegalArgumentException iae) {
                         throw new IllegalArgumentException(iae
-                              .getLocalizedMessage());
+                                .getLocalizedMessage());
                      }
                   }
                }
@@ -3639,7 +3527,7 @@ public class PSServerXmlObjectStore extends PSObjectFactory
          meta.add(PSMetaDataCache.getCachedDatabaseMetaData(ts));
       }
 
-      if (meta.size() == 0)
+      if (meta.isEmpty())
          return;
 
       PSDatabaseMetaData[] dbMeta = new PSDatabaseMetaData[meta.size()];
@@ -3655,36 +3543,32 @@ public class PSServerXmlObjectStore extends PSObjectFactory
          PSField field = (PSField) itFields.next();
          PSBackEndColumn col = (PSBackEndColumn) field.getLocator();
          String colName = col.getColumn();
-         for (int i = 0; i < dbMeta.length; i++)
-         {
+         for (PSDatabaseMetaData psDatabaseMetaData : dbMeta) {
             PSBackEndTable t = col.getTable();
             String tableName = t.getTable();
             if (tableName == null)
                tableName = t.getAlias();
 
             PSMetaDataCache.loadConnectionDetail(t);
-            PSTableMetaData tableMeta = dbMeta[i].getTableMetaData(t
-                  .getConnectionDetail().getOrigin(), tableName);
-            if (null != tableMeta)
-            {
+            PSTableMetaData tableMeta = psDatabaseMetaData.getTableMetaData(t
+                    .getConnectionDetail().getOrigin(), tableName);
+            if (null != tableMeta) {
                tableMeta.loadDataTypes(col.getTable().getAlias());
                field.fixupDataType(tableMeta.getColumnType(colName), tableMeta
-                     .getSize(colName), tableMeta.getScale(colName), tableMeta
-                     .getTypeName(colName), searchEnabled);
+                       .getSize(colName), tableMeta.getScale(colName), tableMeta
+                       .getTypeName(colName), searchEnabled);
             }
          }
       }
 
       // now fixup the mime types as best we can
-      for (int i = 0; i < allFields.length; i++)
-      {
-         String mimeType = allFields[i].getMimeType();
-         if (null == mimeType)
-         {
-            if (allFields[i].getDataType().equals(PSField.DT_BINARY))
-               allFields[i].setMimeType("application/octet-stream");
+      for (PSField allField : allFields) {
+         String mimeType = allField.getMimeType();
+         if (null == mimeType) {
+            if (allField.getDataType().equals(PSField.DT_BINARY))
+               allField.setMimeType("application/octet-stream");
             else
-               allFields[i].setMimeType("text/plain");
+               allField.setMimeType("text/plain");
          }
       }
    }
@@ -3712,11 +3596,11 @@ public class PSServerXmlObjectStore extends PSObjectFactory
     */
    public List<PSCatalogerConfig> getCatalogerConfigs(IPSLockerId lockId,
          PSSecurityToken tok)
-      throws PSAuthenticationRequiredException, PSAuthorizationException,
+      throws PSAuthorizationException,
       PSServerException, PSNotLockedException, PSLockedException
    {
       if (tok == null)
-         throw new IllegalArgumentException("tok may not be null");
+         throw new IllegalArgumentException(TOK_NOT_NULL_ERROR);
 
       checkCanEditServerConfig(tok);
 
@@ -3755,17 +3639,17 @@ public class PSServerXmlObjectStore extends PSObjectFactory
     */
    public void saveCatalogerConfigs(List<PSCatalogerConfig> configs,
          IPSLockerId lockId, PSSecurityToken tok)
-      throws PSAuthenticationRequiredException, PSAuthorizationException,
+      throws PSAuthorizationException,
       PSServerException, PSNotLockedException, PSLockedException
    {
       if (configs == null)
          throw new IllegalArgumentException("resolver may not be null");
 
       if (lockId == null)
-         throw new IllegalArgumentException("lockerId may not be null");
+         throw new IllegalArgumentException(LOCKID_NOT_NULL_ERROR);
 
       if (tok == null)
-         throw new IllegalArgumentException("tok may not be null");
+         throw new IllegalArgumentException(TOK_NOT_NULL_ERROR);
 
       checkCanEditServerConfig(tok);
 
@@ -3803,10 +3687,10 @@ public class PSServerXmlObjectStore extends PSObjectFactory
    public List<IPSJndiDatasource> getJndiDatasources(IPSLockerId lockId,
          PSSecurityToken tok)
       throws PSServerException, PSNotLockedException, PSLockedException,
-      PSAuthenticationRequiredException, PSAuthorizationException
+           PSAuthorizationException
    {
       if (tok == null)
-         throw new IllegalArgumentException("tok may not be null");
+         throw new IllegalArgumentException(TOK_NOT_NULL_ERROR);
 
       checkCanEditServerConfig(tok);
 
@@ -3834,7 +3718,7 @@ public class PSServerXmlObjectStore extends PSObjectFactory
       }
       catch (Exception e)
       {
-         ms_log.error("Error getting datasource ",e);
+         log.error("Error getting datasource ",e);
          throw new PSServerException(e);
       }
    }
@@ -3861,15 +3745,15 @@ public class PSServerXmlObjectStore extends PSObjectFactory
    public void saveJndiDatasources(List<IPSJndiDatasource> datasources,
          IPSLockerId lockId, PSSecurityToken tok)
       throws PSServerException, PSNotLockedException, PSLockedException,
-      PSAuthenticationRequiredException, PSAuthorizationException
+           PSAuthorizationException
    {
       if (datasources == null || datasources.isEmpty())
          throw new IllegalArgumentException(
                "datasources may not be null or empty");
       if (lockId == null)
-         throw new IllegalArgumentException("lockerId may not be null");
+         throw new IllegalArgumentException(LOCKID_NOT_NULL_ERROR);
       if (tok == null)
-         throw new IllegalArgumentException("tok may not be null");
+         throw new IllegalArgumentException(TOK_NOT_NULL_ERROR);
 
       checkCanEditServerConfig(tok);
 
@@ -3910,11 +3794,11 @@ public class PSServerXmlObjectStore extends PSObjectFactory
     */
    public IPSDatasourceResolver getDatasourceConfigs(IPSLockerId lockId,
          PSSecurityToken tok)
-      throws PSAuthenticationRequiredException, PSAuthorizationException,
+      throws PSAuthorizationException,
       PSServerException, PSNotLockedException, PSLockedException
    {
       if (tok == null)
-         throw new IllegalArgumentException("tok may not be null");
+         throw new IllegalArgumentException(TOK_NOT_NULL_ERROR);
 
       checkCanEditServerConfig(tok);
 
@@ -3968,7 +3852,7 @@ public class PSServerXmlObjectStore extends PSObjectFactory
     */
    public void saveDatasourceConfigs(IPSDatasourceResolver resolver,
          IPSLockerId lockId, PSSecurityToken tok)
-      throws PSAuthenticationRequiredException, PSAuthorizationException,
+      throws PSAuthorizationException,
       PSServerException, PSNotLockedException, PSLockedException
    {
       if (resolver == null)
@@ -3979,9 +3863,9 @@ public class PSServerXmlObjectStore extends PSObjectFactory
          throw new IllegalArgumentException("invalid resolver configuration");
       }
       if (lockId == null)
-         throw new IllegalArgumentException("lockerId may not be null");
+         throw new IllegalArgumentException(LOCKID_NOT_NULL_ERROR);
       if (tok == null)
-         throw new IllegalArgumentException("tok may not be null");
+         throw new IllegalArgumentException(TOK_NOT_NULL_ERROR);
 
       checkCanEditServerConfig(tok);
 
@@ -4020,11 +3904,11 @@ public class PSServerXmlObjectStore extends PSObjectFactory
     */
    public PSHibernateDialectConfig getHibernateDialectConfig(
          IPSLockerId lockId, PSSecurityToken tok)
-      throws PSAuthenticationRequiredException, PSAuthorizationException,
+      throws PSAuthorizationException,
       PSServerException, PSNotLockedException, PSLockedException
    {
       if (tok == null)
-         throw new IllegalArgumentException("tok may not be null");
+         throw new IllegalArgumentException(TOK_NOT_NULL_ERROR);
 
       checkCanEditServerConfig(tok);
 
@@ -4041,8 +3925,9 @@ public class PSServerXmlObjectStore extends PSObjectFactory
          return (PSHibernateDialectConfig) springConfig
                .getBean(PSServletUtils.HIBERNATE_DIALECTS_NAME);
       }
-      catch (Exception e)
+      catch (PSInvalidXmlException|IOException|SAXException e)
       {
+         log.error(PSExceptionUtils.getMessageForLog(e));
          throw new PSServerException(e);
       }
    }
@@ -4066,15 +3951,15 @@ public class PSServerXmlObjectStore extends PSObjectFactory
     */
    public void saveHibernateDialectConfig(PSHibernateDialectConfig config,
          IPSLockerId lockId, PSSecurityToken tok)
-      throws PSAuthenticationRequiredException, PSAuthorizationException,
+      throws PSAuthorizationException,
       PSServerException, PSNotLockedException, PSLockedException
    {
       if (config == null || config.getDialects().isEmpty())
          throw new IllegalArgumentException("config may not be null or empty");
       if (lockId == null)
-         throw new IllegalArgumentException("lockerId may not be null");
+         throw new IllegalArgumentException(LOCKID_NOT_NULL_ERROR);
       if (tok == null)
-         throw new IllegalArgumentException("tok may not be null");
+         throw new IllegalArgumentException(TOK_NOT_NULL_ERROR);
 
       checkCanEditServerConfig(tok);
 
@@ -4112,7 +3997,7 @@ public class PSServerXmlObjectStore extends PSObjectFactory
       if (!isServerConfigLocked(lockId))
       {
          throw new PSNotLockedException(IPSObjectStoreErrors.LOCK_NOT_HELD,
-               "Server Configuration");
+               SERVER_CONFIGURATION);
       }
       else
       {
@@ -4140,7 +4025,7 @@ public class PSServerXmlObjectStore extends PSObjectFactory
     * Stores the file path as key and <code>PSPair</code> of last modified
     * date and length of the file as value.
     */
-   private HashMap m_SharedDefFilesAndModifedDates = new HashMap();
+   private HashMap<String, PSPair<String, Long>> m_SharedDefFilesAndModifedDates = new HashMap<>();
 
    /**
     * The object containing the system wide definitions for content editors.
@@ -4214,5 +4099,5 @@ public class PSServerXmlObjectStore extends PSObjectFactory
    /**
     * The logger for this class.
     */
-   private static final Logger ms_log = LogManager.getLogger(PSServerXmlObjectStore.class);
+   private static final Logger log = LogManager.getLogger(IPSConstants.SERVER_LOG);
 }

@@ -31,6 +31,8 @@ import com.percussion.utils.xml.PSXmlUtils;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
 import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -44,6 +46,9 @@ import java.util.Map;
  */
 public class PSSpringBeanUtils
 {
+
+   private static final Logger log = LogManager.getLogger(PSSpringBeanUtils.class);
+
    /**
     * Enforce static use.
     */
@@ -392,7 +397,7 @@ public class PSSpringBeanUtils
       if (source == null)
          throw new IllegalArgumentException("source may not be null");
       
-      Map<String, String> map = new HashMap<String, String>();
+      Map<String, String> map = new HashMap<>();
       
       PSXmlTreeWalker tree = new PSXmlTreeWalker(source);
       Element mapEl = tree.getNextElement(BEAN_PROP_VAL_MAP, 
@@ -407,15 +412,21 @@ public class PSSpringBeanUtils
       {
          String key = PSXmlUtils.checkAttribute(entryEl, 
             BEAN_PROP_VAL_MAP_KEY_ATTR, true);
-         
-         Element valEl = tree.getNextElement(BEAN_PROP_VAL_MAP_VAL, 
-               PSXmlTreeWalker.GET_NEXT_ALLOW_CHILDREN);
-         if (valEl == null)
-            throw new PSInvalidXmlException(IPSXmlErrors.XML_ELEMENT_MISSING,
-               BEAN_PROP_VAL_MAP_VAL);
-         String value = PSXmlUtils.getElementData(valEl, BEAN_PROP_VAL_MAP_VAL, 
-            true);
-         
+
+         String value = PSXmlUtils.checkAttribute(entryEl,
+                 BEAN_PROP_VAL_ATTR, false);
+
+         if(StringUtils.isBlank(value)) {
+            Element valEl = tree.getNextElement(BEAN_PROP_VAL_MAP_VAL,
+                    PSXmlTreeWalker.GET_NEXT_ALLOW_CHILDREN);
+
+            if (valEl == null)
+               throw new PSInvalidXmlException(IPSXmlErrors.XML_ELEMENT_MISSING,
+                       BEAN_PROP_VAL_MAP_VAL);
+
+            value = PSXmlUtils.getElementData(valEl, BEAN_PROP_VAL_MAP_VAL,
+                    true);
+         }
          map.put(key, value);
          
          tree.setCurrent(entryEl);
