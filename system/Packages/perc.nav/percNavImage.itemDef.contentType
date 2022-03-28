@@ -581,6 +581,45 @@
                      </PSXPropertySet>
                      <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
                   </PSXField>
+                  <PSXField export="yes" forceBinary="no" mimetype="text/plain" modificationType="user" name="activeimg_type" showInPreview="yes" showInSummary="yes" type="local">
+                       <DataLocator>
+                          <PSXBackEndColumn id="0">
+                             <tableAlias>RXS_CT_NAVIGATIONIMAGETRIPLE</tableAlias>
+                             <column>ACTIVEIMG_HASH</column>
+                             <columnAlias/>
+                          </PSXBackEndColumn>
+                       </DataLocator>
+                       <DataType>text</DataType>
+                       <DataFormat>50</DataFormat>
+                       <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                       <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                    </PSXField>
+                    <PSXField export="yes" forceBinary="no" mimetype="text/plain" modificationType="user" name="activeimg_type" showInPreview="yes" showInSummary="yes" type="local">
+                         <DataLocator>
+                            <PSXBackEndColumn id="0">
+                               <tableAlias>RXS_CT_NAVIGATIONIMAGETRIPLE</tableAlias>
+                               <column>ROLLOVERIMG_HASH</column>
+                               <columnAlias/>
+                            </PSXBackEndColumn>
+                         </DataLocator>
+                         <DataType>text</DataType>
+                         <DataFormat>50</DataFormat>
+                         <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                         <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                      </PSXField>
+                      <PSXField export="yes" forceBinary="no" mimetype="text/plain" modificationType="user" name="activeimg_type" showInPreview="yes" showInSummary="yes" type="local">
+                           <DataLocator>
+                              <PSXBackEndColumn id="0">
+                                 <tableAlias>RXS_CT_NAVIGATIONIMAGETRIPLE</tableAlias>
+                                 <column>INACTIVEIMG_HASH</column>
+                                 <columnAlias/>
+                              </PSXBackEndColumn>
+                           </DataLocator>
+                           <DataType>text</DataType>
+                           <DataFormat>50</DataFormat>
+                           <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                           <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                      </PSXField>
                </PSXFieldSet>
                <PSXUIDefinition>
                   <PSXDisplayMapper fieldSetRef="RXS_CT_NAVIGATIONIMAGETRIPLE" id="0">
@@ -1109,6 +1148,96 @@
                            </PSXChoices>
                         </PSXUISet>
                      </PSXDisplayMapping>
+                  <PSXDisplayMapping>
+                     <FieldRef>ACTIVEIMG_HASH</FieldRef>
+                     <PSXUISet>
+                        <Label>
+                           <PSXDisplayText>Active Image Hash:</PSXDisplayText>
+                        </Label>
+                        <PSXControlRef id="9000" name="sys_EditBox"/>
+                        <ErrorLabel>
+                           <PSXDisplayText>Active Image Hash:</PSXDisplayText>
+                        </ErrorLabel>
+                        <ReadOnlyRules>
+                           <PSXRule boolean="and">
+                              <PSXConditional id="2">
+                                 <variable>
+                                    <PSXTextLiteral id="0">
+                                       <text>1</text>
+                                    </PSXTextLiteral>
+                                 </variable>
+                                 <operator>=</operator>
+                                 <value>
+                                    <PSXTextLiteral id="0">
+                                       <text>1</text>
+                                    </PSXTextLiteral>
+                                 </value>
+                                 <boolean>AND</boolean>
+                              </PSXConditional>
+                           </PSXRule>
+                        </ReadOnlyRules>
+                     </PSXUISet>
+                  </PSXDisplayMapping>
+                   <PSXDisplayMapping>
+                      <FieldRef>INACTIVEIMG_HASH</FieldRef>
+                      <PSXUISet>
+                         <Label>
+                            <PSXDisplayText>InActive Image Hash:</PSXDisplayText>
+                         </Label>
+                         <PSXControlRef id="9001" name="sys_EditBox"/>
+                         <ErrorLabel>
+                            <PSXDisplayText>InActive Image Hash:</PSXDisplayText>
+                         </ErrorLabel>
+                         <ReadOnlyRules>
+                            <PSXRule boolean="and">
+                               <PSXConditional id="2">
+                                  <variable>
+                                     <PSXTextLiteral id="0">
+                                        <text>1</text>
+                                     </PSXTextLiteral>
+                                  </variable>
+                                  <operator>=</operator>
+                                  <value>
+                                     <PSXTextLiteral id="0">
+                                        <text>1</text>
+                                     </PSXTextLiteral>
+                                  </value>
+                                  <boolean>AND</boolean>
+                               </PSXConditional>
+                            </PSXRule>
+                         </ReadOnlyRules>
+                      </PSXUISet>
+                   </PSXDisplayMapping>
+                    <PSXDisplayMapping>
+                       <FieldRef>ROLLOVERIMG_HASH</FieldRef>
+                       <PSXUISet>
+                          <Label>
+                             <PSXDisplayText>Rollover Image Hash:</PSXDisplayText>
+                          </Label>
+                          <PSXControlRef id="9002" name="sys_EditBox"/>
+                          <ErrorLabel>
+                             <PSXDisplayText>Rollover Image Hash:</PSXDisplayText>
+                          </ErrorLabel>
+                          <ReadOnlyRules>
+                             <PSXRule boolean="and">
+                                <PSXConditional id="2">
+                                   <variable>
+                                      <PSXTextLiteral id="0">
+                                         <text>1</text>
+                                      </PSXTextLiteral>
+                                   </variable>
+                                   <operator>=</operator>
+                                   <value>
+                                      <PSXTextLiteral id="0">
+                                         <text>1</text>
+                                      </PSXTextLiteral>
+                                   </value>
+                                   <boolean>AND</boolean>
+                                </PSXConditional>
+                             </PSXRule>
+                          </ReadOnlyRules>
+                       </PSXUISet>
+                    </PSXDisplayMapping>
                      <PSXDisplayMapping>
                         <FieldRef>sys_communityid</FieldRef>
                         <PSXUISet accessKey="m"/>

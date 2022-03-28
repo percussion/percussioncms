@@ -943,7 +943,7 @@ public class PSContentTypeDependencyHandler
            isNew = itemVer.getSecond() == -1;
        } catch (PSDeployException e)
        {
-           log.error("There was an error with existing type, will try and fix", e);
+           log.error("There was an error with existing type, will try and fix {}",PSExceptionUtils.getMessageForLog(e));
        }
 
 
@@ -1047,7 +1047,7 @@ public class PSContentTypeDependencyHandler
          try {
             item = findContentTypeByNodeDef(node);
          } catch (PSDeployException e){
-            log.error("Content Type exists but problem with ObjectStore Node definition:",e);
+            log.error("Content Type exists but problem with ObjectStore Node definition: {}",PSExceptionUtils.getMessageForLog(e));
          }
       }
       return new PSPair(item, curVer);
@@ -1094,8 +1094,14 @@ public class PSContentTypeDependencyHandler
          // determine if current workflow is included in package
          PSContentEditor ce = itemDef.getContentEditor();
          PSCmsObject objType = PSServer.getCmsObject(ce.getObjectType());
+         if(objType == null){
+            LogManager.getLogger(PSContentTypeDependencyHandler.class)
+                    .error("Could not locate Object Type: " + itemDef.getName()
+                                    + ".  The Content Type will be disabled.");
+         }
+
          boolean isIncluded = false;
-         if (objType.isWorkflowable())
+         if (objType != null && objType.isWorkflowable())
          {
             String wfId = String.valueOf(ce.getWorkflowId());
             isIncluded = isChildDependencyIncluded(dep, wfId,
@@ -1122,7 +1128,7 @@ public class PSContentTypeDependencyHandler
          }
          
          PSWorkflow workflow = null;
-         if (objType.isWorkflowable())
+         if (objType != null && objType.isWorkflowable())
          {
             // determine if current workflow exists on target system
             IPSGuid wfGuid = PSGuidUtils.makeGuid(ce.getWorkflowId(),
@@ -1136,7 +1142,7 @@ public class PSContentTypeDependencyHandler
 
          // new default workflow needs to be set if current is not included
          // and doesn't exist on the target system
-         if (objType.isWorkflowable() && !isIncluded && !exists)
+         if (objType != null && objType.isWorkflowable() && !isIncluded && !exists)
          {
             // need to find new default
             PSWorkflowInfo wfInfo = ce.getWorkflowInfo();
@@ -1178,8 +1184,8 @@ public class PSContentTypeDependencyHandler
       }
       catch (Exception e)
       {
-         String msg = "\n Error was: " + e.getLocalizedMessage();
-         log.error(msg,e);
+         String msg = "\n Error was: {}" ;
+         log.error(msg,PSExceptionUtils.getMessageForLog(e));
          throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR,
                "Error occurred while installing content type:"
                      + itemDef.getAppName() + msg);

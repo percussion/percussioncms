@@ -328,7 +328,6 @@
         <include name="JRE-32/**"/>
         <include name="JRE-64/**"/>
         <include name="logs/**"/>
-        <include name="ObjectStore/psx_cerff*.xml"/>
         <include name="sys_resources/**" />
         <!-- Delete any left over translations artifacts -->
         <include name="tobetranslated.tmx"/>
@@ -391,10 +390,6 @@
         <exclude name="ObjectStore"/>
         <exclude name="jetty/base/logs"/>
         <exclude name="rxconfig/Installer/*.bat"/>
-        <exclude name="ObjectStore/psx_cerff*.xml"/>
-        <exclude name="ObjectStore/psx_cepercNavImage.xml"/>
-        <exclude name="ObjectStore/psx_cepercNavon.xml"/>
-        <exclude name="ObjectStore/psx_cepercNavTree.xml"/>
     </patternset>
 
     <patternset id="upgrade.preserve">
@@ -469,6 +464,7 @@
         <ant antfile="removeOldPatches.xml" target="removeOldPatches" inheritAll="true" inheritRefs="true" />
         <antcall target="alwaysCopyIfMissing" inheritall="true" inheritrefs="true"/>
         <ant antfile="updateConfiguration.xml" target="updateConfiguration" inheritAll="true" inheritRefs="true" />
+        <antcall target="updateConfigXMLForPasswordFilter" inheritall="true" inheritrefs="true"/>
         <antcall target="upgradeSiteConfig" inheritall="true" inheritrefs="true" />
         <antcall target="replaceOldFontAwesome"  inheritall="true" inheritrefs="true"/>
         <antcall target="deleteOldJqueryUIJsFile"  inheritall="true" inheritrefs="true"/>
@@ -758,12 +754,6 @@
             </else>
         </if>
 
-        <delete failonerror="false" includeemptydirs="true" verbose="true" removenotfollowedsymlinks="true">
-            <fileset dir="${install.dir}/ObjectStore/">
-                <include name="psx_cerff*.xml"/>
-            </fileset>
-        </delete>
-
         <if>
             <available file="${install.dir}/AppServer/server/rx/deploy/jboss-web.deployer/server.xml" type="file"/>
             <then>
@@ -913,6 +903,28 @@
 
     </target>
 
+    <target name="updateConfigXMLForPasswordFilter">
+        <echo>Updating Server Config.xml ...</echo>
+        <if>
+            <available file="${install.dir}/rxconfig/Server/config.xml"/>
+            <then>
+                <if>
+                    <not>
+                        <resourcecontains resource="${install.dir}/rxconfig/Server/config.xml" substring="passwordFilter" />
+                    </not>
+                    <then>
+                        <echo>Adding passwordFilter </echo>
+                        <replace file="${install.dir}/rxconfig/Server/config.xml" summary="yes">
+                            <replacetoken><![CDATA[<passwordColumn>PASSWORD</passwordColumn>]]></replacetoken>
+                            <replacevalue><![CDATA[<passwordColumn>PASSWORD</passwordColumn>
+                                <passwordFilter>Java/global/percussion/filter/sys_DefaultPasswordFilter</passwordFilter>]]></replacevalue>
+                        </replace>
+                    </then>
+                </if>
+            </then>
+        </if>
+
+    </target>
 
     <target name="updateExtensions">
         <echo>Updating updateExtensions ...</echo>
