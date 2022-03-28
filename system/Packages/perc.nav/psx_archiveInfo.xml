@@ -39,7 +39,7 @@
          <PSXDescriptor id="-6647656694627162352" name="perc.nav">
             <Description>This package contains components used by navigation.</Description>
             <Publisher name="Percussion Software" url="www.percussion.com"/>
-            <CmsVersion max="9.0.0" min="1.0.0"/>
+            <CmsVersion max="9.0.1" min="1.0.0"/>
             <Version>1.1.5</Version>
             <ImplConfigFile/>
             <LocalConfigFile/>
