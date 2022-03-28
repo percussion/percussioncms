@@ -402,14 +402,12 @@
 
       </style>
 
-      <script>
-      window.addEventListener('DOMContentLoaded', function() {
-      function hideCalendarSource(calendarClass) {
-        $('#'+calendarClass+'-button').toggleClass("perc-disabled-calendar-button");
-        $('.'+calendarClass).toggleClass("perc-hide-calendar");
-      };
-      });
-      </script>
+          <script>
+          window.addEventListener('DOMContentLoaded',function hideCalendarSource(calendarClass) {
+            $('#'+calendarClass+'-button').toggleClass("perc-disabled-calendar-button");
+            $('.'+calendarClass).toggleClass("perc-hide-calendar");
+          });
+          </script>
 
       #if($perc_calendar_view == "full")##
       <div class ="perc-full-calendar" id="calendar-${calendarContentId}-${widgetId}"></div>
@@ -460,7 +458,7 @@
       * to keep both of these modifications in place.
       **/
 
-
+     $(document).ready(function() {
 
         $('#perc-event-list-${calendarContentId}-${widgetId}').hide();
 
@@ -727,6 +725,7 @@
           $('#calendar-${calendarContentId}-${widgetId}').hide();
         });
     });
+    });
       </script>
 
 
@@ -735,6 +734,7 @@
                     <div class="perc-mini-calendar" id="perc-mini-calendar-$id"></div>
                     <script>
                     window.addEventListener('DOMContentLoaded', function() {
+                        $(document).ready(function() {
                             tempDateArray = [];
                             dateWithData = [];
                             #if($perc.isEditMode() || $perc.isPreviewMode())
@@ -807,7 +807,7 @@
                                   }
                                   return [true, ''];
                             }
-
+        });
                      });
                     </script>
 

@@ -32,22 +32,18 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 import javax.jcr.AccessDeniedException;
-import javax.jcr.InvalidItemStateException;
 import javax.jcr.Item;
-import javax.jcr.ItemExistsException;
 import javax.jcr.ItemNotFoundException;
 import javax.jcr.ItemVisitor;
 import javax.jcr.Node;
 import javax.jcr.PathNotFoundException;
 import javax.jcr.PropertyType;
-import javax.jcr.ReferentialIntegrityException;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import javax.jcr.Value;
 import javax.jcr.ValueFormatException;
 import javax.jcr.lock.LockException;
 import javax.jcr.nodetype.ConstraintViolationException;
-import javax.jcr.nodetype.NoSuchNodeTypeException;
 import javax.jcr.nodetype.NodeType;
 import javax.jcr.nodetype.PropertyDefinition;
 import javax.jcr.version.VersionException;
@@ -62,7 +58,6 @@ import java.util.List;
  * 
  * @author dougrand
  */
-@SuppressWarnings("unused")
 public class PSMultiProperty extends PSPropertyWrapper 
    implements IPSJcrCacheItem, IPSProperty
 {
@@ -127,17 +122,16 @@ public class PSMultiProperty extends PSPropertyWrapper
       Collection<Object> values = (Collection<Object>) super.getPropertyValue(propname);
       //Getting values.size() is a costly db call use a list so we only query for the
       // actual values.  values.iterator() is called in the for loop, this calls the db
-      List<Value> valuesList = new ArrayList<Value>();
-      int index = 0;
+      List<Value> valuesList = new ArrayList<>();
+
       for(Object value : values)
       {
          valuesList.add(PSValueFactory.createValue(value));
       }
-      m_value = valuesList.toArray(new Value[valuesList.size()]);
+      m_value = valuesList.toArray(new Value[0]);
    }
 
-   public void setValue(Value arg0) throws ValueFormatException,
-         VersionException, LockException, ConstraintViolationException,
+   public void setValue(Value arg0) throws VersionException, LockException, ConstraintViolationException,
          RepositoryException
    {
       throw new RepositoryException("Set is not supported");
@@ -242,24 +236,24 @@ public class PSMultiProperty extends PSPropertyWrapper
       throw new ValueFormatException("This is a multi valued property");
    }
 
-   public boolean getBoolean() throws ValueFormatException, RepositoryException
+   public boolean getBoolean() throws RepositoryException
    {
       throw new ValueFormatException("This is a multi valued property");
    }
 
-   public Node getNode() throws ValueFormatException, RepositoryException
+   public Node getNode() throws RepositoryException
    {
       throw new ValueFormatException("This is a multi valued property");
    }
 
-   public long getLength() throws ValueFormatException, RepositoryException
+   public long getLength() throws RepositoryException
    {
       throw new ValueFormatException("This is a multi valued property");
    }
 
-   public long[] getLengths() throws ValueFormatException, RepositoryException
+   public long[] getLengths() throws RepositoryException
    {
-      long rval[] = new long[m_value.length];
+      long[] rval = new long[m_value.length];
       for(int i = 0; i < m_value.length; i++)
       {
          if (m_value[i] == null)
@@ -283,18 +277,9 @@ public class PSMultiProperty extends PSPropertyWrapper
     */
    public PropertyDefinition getDefinition() throws RepositoryException
    {
-      if (m_parent == null || m_parent.getDefinition() == null
-            || m_parent.getDefinition().getDeclaringNodeType() == null)
-      {
-         throw new IllegalStateException(
-               "Missing parent, parent definition or nodetype information");
-      }
-      NodeType nodetype = m_parent.getDefinition().getDeclaringNodeType();
-      if (nodetype == null)
-      {
-         throw new IllegalStateException("Missing nodetype information");
-      }
-      PropertyDefinition defs[] = nodetype.getPropertyDefinitions();
+      NodeType nodetype = validateParent(m_parent);
+
+      PropertyDefinition[] defs = nodetype.getPropertyDefinitions();
       for (PropertyDefinition def : defs)
       {
          if (m_name.equals(def.getName()))
@@ -392,22 +377,17 @@ public class PSMultiProperty extends PSPropertyWrapper
       arg0.visit(this);
    }
 
-   public void save() throws AccessDeniedException, ItemExistsException,
-         ConstraintViolationException, InvalidItemStateException,
-         ReferentialIntegrityException, VersionException, LockException,
-         NoSuchNodeTypeException, RepositoryException
+   public void save() throws RepositoryException
    {
       throw new RepositoryException("Save is not supported");
    }
 
-   public void refresh(boolean arg0) throws InvalidItemStateException,
-         RepositoryException
+   public void refresh(boolean arg0) throws RepositoryException
    {
       throw new RepositoryException("Refresh is not supported");
    }
 
-   public void remove() throws VersionException, LockException,
-         ConstraintViolationException, RepositoryException
+   public void remove() throws RepositoryException
    {
       throw new RepositoryException("Remove is not supported");
    }

@@ -24,6 +24,7 @@
 package com.percussion.utils.jsr170;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.percussion.cms.IPSConstants;
 import com.percussion.error.PSExceptionUtils;
 import com.percussion.utils.beans.IPSPropertyLoader;
 import com.percussion.utils.beans.PSPropertyWrapper;
@@ -49,7 +50,6 @@ import javax.jcr.ValueFormatException;
 import javax.jcr.nodetype.NodeType;
 import javax.jcr.nodetype.PropertyDefinition;
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -71,52 +71,54 @@ import java.util.List;
  * fields and the instances is part of the
  * {@link com.percussion.services.contentmgr.impl.legacy.PSTypeConfiguration}.
  */
-@SuppressWarnings("unused")
+
 public class PSProperty extends PSPropertyWrapper 
    implements IPSProperty, IPSJcrCacheItem
 {
-   private static final Logger log = LogManager.getLogger(PSProperty.class);
+   private static final Logger log = LogManager.getLogger(IPSConstants.CONTENTREPOSITORY_LOG);
 
    private static final String SET_NOT_SUPPORTED="Set is not supported";
+   private static final String PNAME_NULL_ERROR = "pname may not be null or empty";
+   private static final String PARENT_NULL_ERROR = "parent may not be null";
    /**
     * The name of this property, never <code>null</code> after construction
     */
-   protected String m_name;
+   protected String name;
 
    /**
     * The value of the property, extracted at initialization, could be
     * <code>null</code>
     */
-   protected Object m_value;
+   protected Object value;
    
    /**
     * Cached string value for Clobs.
     */
-   protected String m_strValue = null;
+   protected String strValue = null;
 
    /**
-    * The name of the bean property, normally the same as {@link #m_name}. May
+    * The name of the bean property, normally the same as {@link #name}. May
     * be <code>null</code>.
     */
-   protected String m_beanPropertyName = null;
+   protected String beanPropertyName = null;
 
    /**
     * The parent (containing) node for this property, never <code>null</code>
     * after construction
     */
-   protected Node m_parent;
+   protected Node parent;
 
    /**
     * This tracks how deep this item is in the overall tree. Set in the ctor.
     */
-   protected int m_depth;
+   protected int depth;
 
    /**
     * If this is not <code>null</code>, the listed interceptors are run,
     * first to last, when accessing the property for the first time, i.e. during
     * initialization.
     */
-   protected List<IPSPropertyInterceptor> m_interceptors = null;
+   protected List<IPSPropertyInterceptor> interceptors = null;
 
    /**
     * Ctor
@@ -128,7 +130,7 @@ public class PSProperty extends PSPropertyWrapper
     *           <code>null</code>
     * @param loader the underlying mapping object instance, never
     *           <code>null</code>, checked in superclass
-    * @throws RepositoryException
+    * @throws RepositoryException If a backend error occurs
     */
    public PSProperty(String pname, Node parent, IPSPropertyLoader loader)
          throws RepositoryException {
@@ -136,15 +138,15 @@ public class PSProperty extends PSPropertyWrapper
 
       if (StringUtils.isBlank(pname))
       {
-         throw new IllegalArgumentException("pname may not be null or empty");
+         throw new IllegalArgumentException(PNAME_NULL_ERROR);
       }
       if (parent == null)
       {
-         throw new IllegalArgumentException("parent may not be null");
+         throw new IllegalArgumentException(PARENT_NULL_ERROR);
       }
-      m_name = pname;
-      m_parent = parent;
-      m_depth = parent.getDepth() + 1;
+      name = pname;
+      this.parent = parent;
+      depth = parent.getDepth() + 1;
    }
 
    /**
@@ -160,7 +162,7 @@ public class PSProperty extends PSPropertyWrapper
     * @param beanPropertyName optional, may be <code>null</code>, if present,
     *           this is used instead of the pname in accessing the underlying
     *           bean property
-    * @throws RepositoryException
+    * @throws RepositoryException if a backend error occurs
     */
    public PSProperty(String pname, Node parent, Object instance,
          String beanPropertyName) throws RepositoryException {
@@ -168,16 +170,16 @@ public class PSProperty extends PSPropertyWrapper
 
       if (StringUtils.isBlank(pname))
       {
-         throw new IllegalArgumentException("pname may not be null or empty");
+         throw new IllegalArgumentException(PNAME_NULL_ERROR);
       }
       if (parent == null)
       {
-         throw new IllegalArgumentException("parent may not be null");
+         throw new IllegalArgumentException(PARENT_NULL_ERROR);
       }
-      m_name = pname;
-      m_beanPropertyName = beanPropertyName;
-      m_parent = parent;
-      m_depth = parent.getDepth() + 1;
+      name = pname;
+      this.beanPropertyName = beanPropertyName;
+      this.parent = parent;
+      depth = parent.getDepth() + 1;
    }
 
    @Override
@@ -188,30 +190,30 @@ public class PSProperty extends PSPropertyWrapper
 
       super.init(); // Sets initialized
 
-      if (m_beanPropertyName != null)
-         m_value = getPropertyValue(m_beanPropertyName);
+      if (beanPropertyName != null)
+         value = getPropertyValue(beanPropertyName);
       else
       {
-         int colon = m_name.indexOf(':');
+         int colon = name.indexOf(':');
          String propname;
          if (colon >= 0)
          {
-            propname = m_name.substring(colon + 1);
+            propname = name.substring(colon + 1);
          }
          else
          {
-            propname = m_name;
+            propname = name;
          }
-         m_value = getPropertyValue(propname);
+         value = getPropertyValue(propname);
       }
 
-      if (m_interceptors != null)
+      if (interceptors != null)
       {
          try
          {
-            for (IPSPropertyInterceptor intercept : m_interceptors)
+            for (IPSPropertyInterceptor intercept : interceptors)
             {
-               m_value = intercept.translate(getString());
+               value = intercept.translate(getString());
             }
          }
          catch (Exception e)
@@ -221,7 +223,7 @@ public class PSProperty extends PSPropertyWrapper
                   "Setting property to null as the interceptor threw an error: {}",
                     PSExceptionUtils.getMessageForLog(e));
             log.debug(PSExceptionUtils.getDebugMessageForLog(e));
-            m_value = null;
+            value = null;
          }
       }
    }
@@ -234,7 +236,7 @@ public class PSProperty extends PSPropertyWrapper
     * @param pname the name of the property, never <code>null</code> or empty
     * @param parent the parent node, never <code>null</code>
     * @param value the value, may be <code>null</code>.
-    * @throws RepositoryException
+    * @throws RepositoryException if a backend error occurs
     */
    public PSProperty(String pname, Node parent, Object value)
          throws RepositoryException {
@@ -242,17 +244,14 @@ public class PSProperty extends PSPropertyWrapper
 
       if (StringUtils.isBlank(pname))
       {
-         throw new IllegalArgumentException("pname may not be null or empty");
-      }
-      if (parent == null)
-      {
-         throw new IllegalArgumentException("parent may not be null");
+         throw new IllegalArgumentException(PNAME_NULL_ERROR);
       }
 
-      m_depth = parent.getDepth() + 1;
-      m_parent = parent;
-      m_value = value;
-      m_name = pname;
+
+      depth = parent.getDepth() + 1;
+      this.parent = parent;
+      this.value = value;
+      name = pname;
       m_initialized = true;
 
    }
@@ -365,7 +364,7 @@ public class PSProperty extends PSPropertyWrapper
    public Value getValue() throws RepositoryException
    {
       init();
-      return PSValueFactory.createValue(m_value);
+      return PSValueFactory.createValue(value);
    }
 
    /*
@@ -388,54 +387,54 @@ public class PSProperty extends PSPropertyWrapper
    {
       init();
 
-      if (m_value == null)
+      if (value == null)
          return "";
-      else if (m_value instanceof Clob)
+      else if (value instanceof Clob)
       {
-         if (m_strValue == null)
+         if (strValue == null)
          {
             try
             {
-               Clob clob = (Clob) m_value;
+               Clob clob = (Clob) value;
                try(StringWriter w = new StringWriter((int) clob.length())) {
                   try (Reader r = clob.getCharacterStream()) {
                      IOUtils.copy(r, w);
-                     m_strValue = w.toString();
+                     strValue = w.toString();
                   }
                }
             }
             catch (Exception e)
             {
                throw new RepositoryException(
-                     "Could not extract string for property " + m_name, e);
+                     "Could not extract string for property " + name, e);
             }
          }
-         return m_strValue;
+         return strValue;
       }
-      else if (m_value instanceof Blob)
+      else if (value instanceof Blob)
       {
-         if (m_strValue == null)
+         if (strValue == null)
          {
             try
             {
-               Blob blob = (Blob) m_value;
+               Blob blob = (Blob) value;
                try(StringWriter w = new StringWriter((int) blob.length() * 2)) {
                   try (Reader r = new InputStreamReader(blob.getBinaryStream(), StandardCharsets.UTF_8)) {
                      IOUtils.copy(r, w);
-                     m_strValue = w.toString();
+                     strValue = w.toString();
                   }
                }
             }
             catch (Exception e)
             {
                throw new RepositoryException(
-                     "Could not extract string for property " + m_name, e);
+                     "Could not extract string for property " + name, e);
             }
          }
-         return m_strValue;
+         return strValue;
       }
       else
-         return m_value.toString();
+         return value.toString();
    }
 
    /*
@@ -450,28 +449,20 @@ public class PSProperty extends PSPropertyWrapper
 
       try
       {
-         if (m_value instanceof byte[]) {
-            try (ByteArrayInputStream bs = new ByteArrayInputStream((byte[]) m_value)) {
-               return bs;
-            }
-         }else if (m_value instanceof Clob)
+         if (value instanceof byte[]) {
+            return new ByteArrayInputStream((byte[]) value);
+         }else if (value instanceof Clob)
          {
-            try(InputStream ism = new PSReaderInputStream(((Clob) m_value)
-                     .getCharacterStream())){
-               return ism;
-            }
+            return new PSReaderInputStream(((Clob) value)
+                     .getCharacterStream());
          }
-         else if (m_value instanceof Blob) {
-            try (InputStream ism = ((Blob) m_value).getBinaryStream()) {
-               return ism;
-            }
+         else if (value instanceof Blob) {
+            return ((Blob) value).getBinaryStream();
          }else {
-            try(InputStream ism = PSValueConverter.convertToStream(getString())){
-               return ism;
-            }
+            return PSValueConverter.convertToStream(getString());
          }
       }
-      catch (SQLException| IOException e)
+      catch (SQLException e)
       {
          throw new RepositoryException("Couldn't retrieve LOB value", e);
       }
@@ -486,15 +477,15 @@ public class PSProperty extends PSPropertyWrapper
    {
       init();
 
-      if (m_value == null || m_value=="")
+      if (value == null || value =="")
          return 0;
-      else if (m_value instanceof Long)
-         return (Long) m_value;
+      else if (value instanceof Long)
+         return (Long) value;
       else
       {
          try
          {
-            return Long.parseLong(m_value.toString());
+            return Long.parseLong(value.toString());
          }
          catch (NumberFormatException e)
          {
@@ -512,15 +503,15 @@ public class PSProperty extends PSPropertyWrapper
    {
       init();
 
-      if (m_value == null || m_value=="")
+      if (value == null || value =="")
          return 0;
-      else if (m_value instanceof Double)
-         return (Double) m_value;
+      else if (value instanceof Double)
+         return (Double) value;
       else
       {
          try
          {
-            return Double.parseDouble(m_value.toString());
+            return Double.parseDouble(value.toString());
          }
          catch (NumberFormatException e)
          {
@@ -538,25 +529,25 @@ public class PSProperty extends PSPropertyWrapper
    {
       init();
 
-      if (m_value == null || m_value=="")
+      if (value == null || value =="")
          return null;
-      else if (m_value instanceof Calendar)
-         return (Calendar) m_value;
-      else if (m_value instanceof Timestamp)
+      else if (value instanceof Calendar)
+         return (Calendar) value;
+      else if (value instanceof Timestamp)
       {
          Calendar cal = new GregorianCalendar();
-         cal.setTimeInMillis(((Timestamp) m_value).getTime());
+         cal.setTimeInMillis(((Timestamp) value).getTime());
          return cal;
       }
-      else if (m_value instanceof Date)
+      else if (value instanceof Date)
       {
          Calendar cal = new GregorianCalendar();
-         cal.setTimeInMillis(((Date) m_value).getTime());
+         cal.setTimeInMillis(((Date) value).getTime());
          return cal;
       }
       else
       {
-         return PSValueConverter.convertToCalendar(m_value.toString());
+         return PSValueConverter.convertToCalendar(value.toString());
       }
    }
 
@@ -569,13 +560,13 @@ public class PSProperty extends PSPropertyWrapper
    {
       init();
 
-      if (m_value == null || m_value == "")
+      if (value == null || value == "")
          return false;
-      else if (m_value instanceof Boolean)
-         return (Boolean) m_value;
+      else if (value instanceof Boolean)
+         return (Boolean) value;
       else
       {
-         return Boolean.parseBoolean(m_value.toString());
+         return Boolean.parseBoolean(value.toString());
       }
    }
 
@@ -588,8 +579,8 @@ public class PSProperty extends PSPropertyWrapper
    {
       init();
 
-      if (m_value instanceof Node)
-         return (Node) m_value;
+      if (value instanceof Node)
+         return (Node) value;
       else
          return null;
    }
@@ -603,28 +594,28 @@ public class PSProperty extends PSPropertyWrapper
    {
       init();
 
-      if (m_value == null)
+      if (value == null)
          return 0;
-      else if (m_value instanceof byte[])
+      else if (value instanceof byte[])
       {
-         return ((byte[]) m_value).length;
+         return ((byte[]) value).length;
       }
-      else if (m_value instanceof Clob)
+      else if (value instanceof Clob)
       {
          try
          {
-            return ((Clob) m_value).length();
+            return ((Clob) value).length();
          }
          catch (SQLException e)
          {
             throw new RepositoryException("Couldn't determine length", e);
          }
       }
-      else if (m_value instanceof Blob)
+      else if (value instanceof Blob)
       {
          try
          {
-            return ((Blob) m_value).length();
+            return ((Blob) value).length();
          }
          catch (SQLException e)
          {
@@ -633,8 +624,7 @@ public class PSProperty extends PSPropertyWrapper
       }
       else
       {
-         String str = getString();
-         return str.length();
+        return getString().length();
       }
    }
 
@@ -656,27 +646,18 @@ public class PSProperty extends PSPropertyWrapper
     */
    public PropertyDefinition getDefinition() throws RepositoryException
    {
-      if (m_parent == null || m_parent.getDefinition() == null
-            || m_parent.getDefinition().getDeclaringNodeType() == null)
-      {
-         throw new IllegalStateException(
-               "Missing parent, parent definition or nodetype information");
-      }
-      NodeType nodetype = m_parent.getDefinition().getDeclaringNodeType();
-      if (nodetype == null)
-      {
-         throw new IllegalStateException("Missing nodetype information");
-      }
+      NodeType nodetype = validateParent(parent);
+
       PropertyDefinition[] defs = nodetype.getPropertyDefinitions();
       for (PropertyDefinition def : defs)
       {
-         if (m_name.equals(def.getName()))
+         if (name.equals(def.getName()))
          {
             return def;
          }
       }
       throw new PathNotFoundException("Can't find definition for property: "
-            + m_name);
+            + name);
    }
 
    /*
@@ -690,7 +671,7 @@ public class PSProperty extends PSPropertyWrapper
 
       // Get the value and extract the type... the future will
       // have more here
-      Value v = PSValueFactory.createValue(m_value);
+      Value v = PSValueFactory.createValue(value);
       return v != null ? v.getType() : PropertyType.UNDEFINED;
    }
 
@@ -713,7 +694,7 @@ public class PSProperty extends PSPropertyWrapper
     */
    public String getName() throws RepositoryException
    {
-      return m_name;
+      return name;
    }
 
    /*
@@ -723,18 +704,18 @@ public class PSProperty extends PSPropertyWrapper
     */
    public Item getAncestor(int index) throws RepositoryException
    {
-      if (m_depth < index)
+      if (depth < index)
       {
          throw new ItemNotFoundException(
                "Can't have an ancestor below this node's depth");
       }
-      if (m_depth == index)
+      if (depth == index)
       {
          return this;
       }
       else
       {
-         return m_parent.getAncestor(index);
+         return parent.getAncestor(index);
       }
    }
 
@@ -745,7 +726,7 @@ public class PSProperty extends PSPropertyWrapper
     */
    public Node getParent() throws RepositoryException
    {
-      return m_parent;
+      return parent;
    }
 
    /*
@@ -755,7 +736,7 @@ public class PSProperty extends PSPropertyWrapper
     */
    public int getDepth()
    {
-      return m_depth;
+      return depth;
    }
 
    /*
@@ -857,8 +838,8 @@ public class PSProperty extends PSPropertyWrapper
    @Override
    public String toString()
    {
-      return new ToStringBuilder(this).append("name", m_name).append(
-            "value", m_value).append("initialized", m_initialized)
+      return new ToStringBuilder(this).append("name", name).append(
+            "value", value).append("initialized", m_initialized)
             .toString();
    }
 
@@ -873,8 +854,8 @@ public class PSProperty extends PSPropertyWrapper
       if (! (obj instanceof PSProperty)) return false;
       
       PSProperty b = (PSProperty) obj;
-      return new EqualsBuilder().append(m_depth, b.m_depth).append(m_name,
-            b.m_name).append(m_value, b.m_value).isEquals();
+      return new EqualsBuilder().append(depth, b.depth).append(name,
+            b.name).append(value, b.value).isEquals();
    }
 
    /*
@@ -885,8 +866,8 @@ public class PSProperty extends PSPropertyWrapper
    @Override
    public int hashCode()
    {
-      return new HashCodeBuilder().append(m_depth).append(m_name).append(
-            m_value).toHashCode();
+      return new HashCodeBuilder().append(depth).append(name).append(
+              value).toHashCode();
    }
 
    /**
@@ -900,26 +881,26 @@ public class PSProperty extends PSPropertyWrapper
       {
          throw new IllegalArgumentException("interceptor may not be null");
       }
-      if (m_interceptors == null)
+      if (interceptors == null)
       {
-         m_interceptors = new ArrayList<>();
+         interceptors = new ArrayList<>();
       }
-      m_interceptors.add(interceptor);
+      interceptors.add(interceptor);
    }
 
    public long getSizeInBytes() throws RepositoryException {
       try
       {
-         if (m_value == null)
+         if (value == null)
             return 0;
-         else if (m_value instanceof byte[])
-            return ((byte[]) m_value).length;
-         else if (m_value instanceof String)
-            return ((String) m_value).length() * 4;
-         else if (m_value instanceof Clob)
-            return ((Clob) m_value).length() * 4;
-         else if (m_value instanceof Blob)
-            return ((Blob) m_value).length();
+         else if (value instanceof byte[])
+            return ((byte[]) value).length;
+         else if (value instanceof String)
+            return ((String) value).length() * 4L;
+         else if (value instanceof Clob)
+            return ((Clob) value).length() * 4L;
+         else if (value instanceof Blob)
+            return ((Blob) value).length();
          else 
             return 0;
       }
@@ -938,6 +919,6 @@ public class PSProperty extends PSPropertyWrapper
    public boolean isNull()
    {
       init();
-      return m_value == null;
+      return value == null;
    }
 }

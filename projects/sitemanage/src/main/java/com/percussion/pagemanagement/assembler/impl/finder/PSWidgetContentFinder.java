@@ -31,6 +31,7 @@ import com.percussion.services.assembly.PSAssemblyException;
 import com.percussion.services.assembly.impl.finder.PSContentFinderBase;
 import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.filter.PSFilterException;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.jcr.RepositoryException;
 import java.util.List;
@@ -45,6 +46,7 @@ import java.util.Map;
  * 
  * @see PSContentFinderBase
  */
+@Transactional(readOnly = true, noRollbackFor = Exception.class)
 public abstract class PSWidgetContentFinder extends PSContentFinderBase<PSWidgetInstance>
    implements IPSWidgetContentFinder
 {

@@ -47,7 +47,6 @@ http://cxf.apache.org/schemas/jaxrs.xsd">
 
     <tx:annotation-driven transaction-manager="sys_transactionManager"/>
 
-
     <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="locations">
             <list>

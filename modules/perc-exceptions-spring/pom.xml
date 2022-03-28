@@ -8,7 +8,6 @@
         <relativePath>../../pom.xml</relativePath>
     </parent>
     <artifactId>perc-exceptions-spring</artifactId>
-    <groupId>com.percussion</groupId>
     <packaging>jar</packaging>
     <description>Spring related exceptions</description>
     <build>
@@ -37,12 +36,6 @@
             <artifactId>jackson-annotations</artifactId>
         </dependency>
         <dependency>
-            <groupId>net.sf.oval</groupId>
-            <artifactId>oval</artifactId>
-            <version>1.40</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
             <groupId>commons-collections</groupId>
             <artifactId>commons-collections</artifactId>
         </dependency>
@@ -52,12 +45,13 @@
             <version>8.1.1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/javax.xml.bind/jaxb-api -->
         <dependency>
             <groupId>javax.xml.bind</groupId>
             <artifactId>jaxb-api</artifactId>
-            <version>2.3.1</version>
         </dependency>
-
+        <dependency>
+            <groupId>net.sf.oval</groupId>
+            <artifactId>oval</artifactId>
+        </dependency>
     </dependencies>
 </project>

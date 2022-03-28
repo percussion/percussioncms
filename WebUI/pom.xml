@@ -56,41 +56,6 @@
                             </execution>
                         </executions>
                     </plugin>
-                    <!--  TODO: Weback
-                    <plugin>
-                        <groupId>com.github.eirslett</groupId>
-                        <artifactId>frontend-maven-plugin</artifactId>
-                        <version>1.6</version>
-
-                        <executions>
-                            <execution>
-                                <id>install-node-and-npm</id>
-                                <goals><goal>install-node-and-npm</goal></goals>
-                                <phase>generate-resources</phase>
-                            </execution>
-
-                            <execution>
-                                <id>npm-install</id>
-                                <goals><goal>npm</goal></goals>
-                                <configuration>
-                                    <arguments>-prefix Vue-app/ install</arguments>
-                                </configuration>
-                            </execution>
-
-                            <execution>
-                                <id>webpack-build</id>
-                                <goals><goal>npm</goal></goals>
-                                <configuration>
-                                    <arguments>-prefix Vue-app/ run build-prod</arguments>
-                                </configuration>
-                            </execution>
-                        </executions>
-
-                        <configuration>
-                            <nodeVersion>v8.11.1</nodeVersion>
-                            <npmVersion>5.6.0</npmVersion>
-                        </configuration>
-                    </plugin> -->
                 </plugins>
             </build>
         </profile>
@@ -131,8 +96,6 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
                 <configuration>
-                    <!--<warSourceDirectory>war</warSourceDirectory>-->
-
                     <webResources>
                         <resource>
                             <directory>war</directory>
@@ -178,18 +141,6 @@
 
                             </excludes>
                         </resource>
-                        <!--
-                          <resource>
-                            <directory>..\system\ear</directory>
-                             <filtering>false</filtering>
-                                           <excludes>
-                                           <exclude>..\system\ear\jsps</exclude>
-                                           <exclude>..\system\ear\jboss-4.0</exclude>
-                                             <exclude>..\system\ear\metadata</exclude>
-                                             <exclude>..\system\ear\config</exclude>
-
-                            </excludes>
-                          </resource>-->
                         <resource>
                             <directory>../system/ear/config</directory>
                             <!-- override the destination directory for this resource -->
@@ -371,57 +322,7 @@
                         <version>1.8.1</version>
                     </dependency>
                 </dependencies>
-
             </plugin>
-            <!--      <plugin>
-                    <groupId>org.codehaus.mojo</groupId>
-                    <artifactId>exec-maven-plugin</artifactId>
-                    <version>1.6.0</version>
-                    <executions>
-                      <execution>
-                        <phase>process-resources</phase>
-                        <goals>
-                          <goal>exec</goal>
-                        </goals>
-                      </execution>
-                    </executions>
-                    <configuration>
-                      <executable>attrib</executable>
-                      <workingDirectory>${project.build.directory}/${project.artifactId}-${project.version}</workingDirectory>
-                      <arguments>
-                        <argument>-r</argument>
-                        <argument>*</argument>
-                         <argument>/s</argument>
-                      </arguments>
-                    </configuration>
-                  </plugin>
-            -->
-           <!-- TODO: Figure out how to integrate  <plugin>
-                <groupId>com.jarslab.maven</groupId>
-                <artifactId>babel-maven-plugin</artifactId>
-                <version>1.6</version>
-                <executions>
-                    <execution>
-                        <id>js-transpile</id>
-                        <phase>process-resources</phase>
-                        <goals>
-                            <goal>babel</goal>
-                        </goals>
-                        <configuration>
-                            <verbose>true</verbose>
-                            <threads>4</threads>
-                            <babelSrc>${project.basedir}/target/classes/assets/jslib/babel.min.js</babelSrc>
-                            <sourceDir>${project.basedir}/target/classes/assets/</sourceDir>
-                            <targetDir>${project.basedir}/target/classes/assets/</targetDir>
-                            <jsSourceIncludes>
-                                <jsSourceInclude>src/*.js</jsSourceInclude>
-                            </jsSourceIncludes>
-                            <prefix>trans-</prefix>
-                            <presets>react,es2015</presets>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin> -->
             <plugin>
                 <groupId>com.samaxes.maven</groupId>
                 <artifactId>minify-maven-plugin</artifactId>
@@ -882,22 +783,41 @@
         <dependency>
             <groupId>com.fasterxml.jackson.module</groupId>
             <artifactId>jackson-module-jaxb-annotations</artifactId>
-
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-
         </dependency>
-        <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.dataformat/jackson-dataformat-xml -->
         <dependency>
             <groupId>com.fasterxml.jackson.dataformat</groupId>
             <artifactId>jackson-dataformat-xml</artifactId>
-
         </dependency>
-
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-hikaricp</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-ehcache</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate.validator</groupId>
+            <artifactId>hibernate-validator</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish</groupId>
+            <artifactId>javax.el</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.apache.xbean</groupId>
             <artifactId>xbean-spring</artifactId>
@@ -913,22 +833,18 @@
                     <groupId>org.apache.activemq.protobuf</groupId>
                 </exclusion>
             </exclusions>
-
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-core</artifactId>
-
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-aop</artifactId>
-
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-aspects</artifactId>
-
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
@@ -964,19 +880,15 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-oxm</artifactId>
-
         </dependency>
-        <!-- <dependency> <groupId>org.springframework</groupId> <artifactId>spring-struts</artifactId>
-            <version>${spring.version}</version> </dependency> -->
+
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
-
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-tx</artifactId>
-
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>

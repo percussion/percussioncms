@@ -24,6 +24,7 @@
 package com.percussion.services.assembly.impl.finder;
 
 
+import com.percussion.cms.IPSConstants;
 import com.percussion.error.PSExceptionUtils;
 import com.percussion.services.assembly.IPSAssemblyItem;
 import com.percussion.services.assembly.impl.finder.PSContentFinderBase.ContentItem;
@@ -35,12 +36,15 @@ import com.percussion.services.contentmgr.data.PSQuery;
 import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.data.PSLegacyGuid;
 import com.percussion.services.sitemgr.PSSiteManagerException;
+import com.percussion.util.PSBaseBean;
 import com.percussion.utils.collections.PSFacadeMap;
 import com.percussion.utils.guid.IPSGuid;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.exception.DataException;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.jcr.RepositoryException;
 import javax.jcr.Value;
@@ -60,8 +64,14 @@ import static com.percussion.services.assembly.impl.finder.PSContentFinderUtils.
 /**
  * This class provides various helper methods for auto content finders.
  */
-public class PSAutoFinderUtils
-{
+@PSBaseBean("sys_autoFinderUtils")
+@Service
+@Transactional(readOnly = true,noRollbackFor = RuntimeException.class)
+public class PSAutoFinderUtils implements IPSAutoFinderUtils {
+
+
+   public PSAutoFinderUtils(){ /* NOOP - for spring */ }
+
    /**
     * Gets the content items returned by a query, which is specified in
     * the parameter. The allowed parameters are the following:
@@ -99,8 +109,9 @@ public class PSAutoFinderUtils
     * @return a set of related items, never <code>null</code>, but may be empty.
     * The items can be re-ordered with {@link ContentItemOrder}. 
     */   
+   @Override
    public Set<ContentItem> getContentItems(IPSAssemblyItem sourceItem,
-         long slotId, Map<String, Object> params, IPSGuid templateId) throws PSSiteManagerException, PSNotFoundException, RepositoryException {
+                                           long slotId, Map<String, Object> params, IPSGuid templateId) throws PSSiteManagerException, PSNotFoundException, RepositoryException {
       Set<ContentItem> rval = new TreeSet<>(new ContentItemOrder());
       String type;
       String query = "";
@@ -187,5 +198,5 @@ public class PSAutoFinderUtils
    /**
     * Logger
     */
-   private static final Logger log = LogManager.getLogger(PSAutoFinderUtils.class);
+   private static final Logger log = LogManager.getLogger(IPSConstants.ASSEMBLY_LOG);
 }

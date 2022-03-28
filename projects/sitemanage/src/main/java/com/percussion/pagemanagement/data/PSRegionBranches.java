@@ -23,20 +23,18 @@
  */
 package com.percussion.pagemanagement.data;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlRootElement;
-
 import net.sf.oval.constraint.AssertValid;
-
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
+
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Contains the page regions that will override the templates regions.
@@ -48,10 +46,10 @@ import org.apache.commons.lang.builder.ToStringStyle;
 @XmlRootElement(name = "RegionBranches")
 public class PSRegionBranches extends PSRegionWidgetAssociations
 {
-    @AssertValid(requireValidElements=true)
+    @AssertValid()
     private List<PSRegion> regions = new ArrayList<>();
 
-    @AssertValid(requireValidElements=true)
+    @AssertValid()
     @XmlElementWrapper(name = "regions")
     @XmlElement(name = "region")
     public List<PSRegion> getRegions()

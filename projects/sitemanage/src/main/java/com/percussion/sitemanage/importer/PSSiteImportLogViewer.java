@@ -41,6 +41,7 @@ import com.percussion.sitemanage.importer.data.PSImportLogEntry;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -56,6 +57,7 @@ import java.util.List;
  * @author federicoromanelli
  *
  */
+@Transactional
 public class PSSiteImportLogViewer extends HttpServlet  {
     
     private static final long serialVersionUID = 1L;

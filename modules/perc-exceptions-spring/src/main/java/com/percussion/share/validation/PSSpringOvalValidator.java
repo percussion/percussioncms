@@ -23,24 +23,22 @@
  */
 package com.percussion.share.validation;
 
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import net.sf.oval.ConstraintViolation;
 import net.sf.oval.context.FieldContext;
 import net.sf.oval.context.OValContext;
 import net.sf.oval.exception.ValidationFailedException;
-
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.util.Assert;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 /**
- * Implements spring's validator. Uses Oval {@link net.sf.oval.Validator} for
- * actually validating the objects. Supports validating nested complex
+ * Implements spring's validator.  Supports validating nested complex
  * properties, which should be marked with {@link PSValidateNestedProperty}.
  * 
  * @author SergeyZ

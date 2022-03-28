@@ -53,6 +53,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,6 +64,7 @@ import static com.percussion.share.service.IPSSystemProperties.IMPORT_PAGE_MAX;
 
 @Component("pageImportQueue")
 @Lazy
+@Transactional
 public class PSPageImportQueue extends PSAbstractEventQueue<PSSiteQueue>
 		implements IPSPageImportQueue, IPSNotificationListener,
 		IPSPerformPageImport {

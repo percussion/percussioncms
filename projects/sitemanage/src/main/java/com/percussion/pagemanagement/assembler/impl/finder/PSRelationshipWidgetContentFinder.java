@@ -42,6 +42,7 @@ import com.percussion.utils.guid.IPSGuid;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
 import java.util.Comparator;
@@ -83,6 +84,7 @@ import static org.apache.commons.lang.Validate.notNull;
  * 
  * @author YuBingChen
  */
+@Transactional(readOnly = true, noRollbackFor = Exception.class)
 public class PSRelationshipWidgetContentFinder extends PSWidgetContentFinder
 {
     public static final String IS_MATCH_BY_NAME = "IS_MATCH_BY_NAME";

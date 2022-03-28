@@ -58,6 +58,7 @@ import org.apache.velocity.runtime.RuntimeConstants;
 import org.apache.velocity.runtime.RuntimeInstance;
 import org.apache.velocity.runtime.RuntimeServices;
 import org.apache.velocity.util.ExtProperties;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -125,6 +126,7 @@ import static org.apache.commons.lang.StringUtils.isBlank;
  *
  * @author dougrand
  */
+@Transactional(readOnly = true,noRollbackFor = RuntimeException.class)
 public class PSVelocityAssembler extends PSAssemblerBase
         implements
         IPSNotificationListener
@@ -561,7 +563,7 @@ public class PSVelocityAssembler extends PSAssemblerBase
          catch (Exception ae)
          {
 
-            logger.error("An unexpected error occurred while assembling resource: {} with Template: {} Error: {}",
+            logger.error("][An unexpected error occurred while assembling resource: {} with Template: {} Error: {}",
                     item.getId(),
                     item.getTemplate().getName(),
                     PSExceptionUtils.getMessageForLog(ae));
@@ -583,7 +585,7 @@ public class PSVelocityAssembler extends PSAssemblerBase
             results.append(message);
             results.append(" \"");
             results.append("</h2><p>");
-            results.append(message +" : " +ae.getMessage());
+            results.append(message).append(" : ").append(ae.getMessage());
             results.append("</p></div></body></html>");
             work.setResultData(results.toString().getBytes(StandardCharsets.UTF_8));
 

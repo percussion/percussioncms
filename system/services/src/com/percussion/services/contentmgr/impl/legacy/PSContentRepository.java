@@ -105,6 +105,7 @@ import org.apache.commons.collections.MultiMap;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -210,7 +211,8 @@ public class PSContentRepository
      * Eponymously named
      */
     static final int FOLDER_CONTENT_TYPE = 101;
-    static final String COLUMN_PREFIX_CGLIB="$cglib_prop_";
+    //@TODO: replace cglib with ByteBuddy
+    static final String COLUMN_PREFIX_CGLIB=""; //empty prefix set by -Dcglib.propFieldPrefix= in defaults/startd/jvm.ini - requires percussion snapshot version of cglib
 
 
     /**
@@ -1886,7 +1888,7 @@ public class PSContentRepository
      */
     private PSPair<IPSQueryNode, List<Long>> getWhereClause(
             javax.jcr.query.Query query, Session s,
-            Map<String, ? extends Object> params, List<Long> collectionIds)
+            Map<String, ?> params, List<Long> collectionIds)
             throws InvalidQueryException, ValueFormatException
     {
         if (((PSQuery) query).getWhere() == null)
@@ -2254,19 +2256,23 @@ public class PSContentRepository
 
             for (Long typeid : typeids)
             {
-                Query q = prepareQuery(psquery, typeid, s, internalwhere, maxresults, params);
-                if (q == null)
-                    continue;
+                try {
+                    Query q = prepareQuery(psquery, typeid, s, internalwhere, maxresults, params);
+                    if (q == null)
+                        continue;
 
-                PSStopwatch sw = new PSStopwatch();
-                sw.start();
-                List<Map> results = (!collectionIds.isEmpty()) ? (List)executeQuery(q) : q.list();
-                sw.stop();
+                    PSStopwatch sw = new PSStopwatch();
+                    sw.start();
+                    List<Map> results = (!collectionIds.isEmpty()) ? (List) executeQuery(q) : q.list();
+                    sw.stop();
 
-                if (ms_log.isDebugEnabled())
-                    ms_log.debug("HQL Query execution on content type {}:{}" , typeid,sw);
+                    if (ms_log.isDebugEnabled())
+                        ms_log.debug("HQL Query execution on content type {}:{}", typeid, sw);
 
-                gatherQueryResults(results, rval);
+                    gatherQueryResults(results, rval);
+                }catch(HibernateException e){
+                    ms_log.error(PSExceptionUtils.getMessageForLog(e));
+                }
             }
 
             // Limit results?
