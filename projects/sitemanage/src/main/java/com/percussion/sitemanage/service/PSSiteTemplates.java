@@ -76,12 +76,8 @@ public class PSSiteTemplates {
     public static class CreateTemplate extends Template
     {
 
-        @NotBlank
-        @NotNull
-        private String name;
 
-        @NotBlank
-        @NotNull
+        private String name;
         private String sourceTemplateId;
 
         public String getName()
@@ -89,6 +85,8 @@ public class PSSiteTemplates {
             return name;
         }
 
+        @NotBlank
+        @NotNull
         public void setName(String name)
         {
             this.name = name;
@@ -99,6 +97,8 @@ public class PSSiteTemplates {
             return sourceTemplateId;
         }
 
+        @NotBlank
+        @NotNull
         public void setSourceTemplateId(String sourceTemplateId)
         {
             this.sourceTemplateId = sourceTemplateId;

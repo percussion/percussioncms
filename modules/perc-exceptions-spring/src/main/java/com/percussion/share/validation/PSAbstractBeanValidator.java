@@ -24,9 +24,9 @@
 package com.percussion.share.validation;
 
 import com.percussion.share.service.exception.PSBeanValidationException;
-import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.service.exception.PSParameterValidationUtils;
 import com.percussion.share.service.exception.PSValidationException;
+import net.sf.oval.exception.ValidationFailedException;
 import net.sf.oval.integration.spring.SpringValidator;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
@@ -61,13 +61,17 @@ public abstract class PSAbstractBeanValidator<FULL> implements Validator
 
 
     public void validate(Object object, Errors errors)  {
-        ovalValidator.validate(object, errors);
-        if (errors instanceof PSBeanValidationException) {
-            try {
-                doValidation((FULL) object, (PSBeanValidationException) errors);
-            } catch (PSValidationException e) {
-                ((PSBeanValidationException) errors).addSuppressed(e);
+        try {
+            ovalValidator.validate(object, errors);
+            if (errors instanceof PSBeanValidationException) {
+                try {
+                    doValidation((FULL) object, (PSBeanValidationException) errors);
+                } catch (PSValidationException e) {
+                    ((PSBeanValidationException) errors).addSuppressed(e);
+                }
             }
+        }catch(ValidationFailedException ex){
+            ((PSBeanValidationException) errors).addSuppressed(ex);
         }
     }
 }
