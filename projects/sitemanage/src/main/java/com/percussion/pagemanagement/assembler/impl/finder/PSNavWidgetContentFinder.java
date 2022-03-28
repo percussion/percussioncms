@@ -28,13 +28,13 @@ import com.percussion.pagemanagement.assembler.PSWidgetInstance;
 import com.percussion.services.assembly.IPSAssemblyItem;
 import com.percussion.services.assembly.PSAssemblyException;
 import com.percussion.services.assembly.impl.finder.PSNavFinderUtils;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.jcr.RepositoryException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import javax.jcr.RepositoryException;
 
 /**
  * The navigation widget content finder looks up a related navigation node 
@@ -49,6 +49,7 @@ import javax.jcr.RepositoryException;
  * 
  * @author YuBingChen
  */
+@Transactional(readOnly = true, noRollbackFor = Exception.class)
 public class PSNavWidgetContentFinder extends PSWidgetContentFinder
 {
     @Override

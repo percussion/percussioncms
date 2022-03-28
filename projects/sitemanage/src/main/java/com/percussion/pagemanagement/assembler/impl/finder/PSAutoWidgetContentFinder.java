@@ -24,10 +24,12 @@
 
 package com.percussion.pagemanagement.assembler.impl.finder;
 
+import com.percussion.cms.IPSConstants;
 import com.percussion.error.PSExceptionUtils;
 import com.percussion.pagemanagement.assembler.PSWidgetInstance;
+import com.percussion.services.PSBaseServiceLocator;
 import com.percussion.services.assembly.IPSAssemblyItem;
-import com.percussion.services.assembly.impl.finder.PSAutoFinderUtils;
+import com.percussion.services.assembly.impl.finder.IPSAutoFinderUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -59,6 +61,13 @@ import java.util.Set;
  */
 public class PSAutoWidgetContentFinder extends PSWidgetContentFinder
 {
+
+	public PSAutoWidgetContentFinder(){
+		super();
+		this.utils = (IPSAutoFinderUtils) PSBaseServiceLocator.getBean("sys_autoFinderUtils");
+
+	}
+
     @Override
     protected Set<ContentItem> getContentItems(IPSAssemblyItem sourceItem, 
             PSWidgetInstance widget, Map<String, Object> params)
@@ -79,14 +88,22 @@ public class PSAutoWidgetContentFinder extends PSWidgetContentFinder
     	return items;
     }
 
-    /**
+	public IPSAutoFinderUtils getUtils() {
+		return utils;
+	}
+
+	public void setUtils(IPSAutoFinderUtils utils) {
+		this.utils = utils;
+	}
+
+	/**
      * The utility object, used to fetch the content items.
      */
-    private PSAutoFinderUtils utils = new PSAutoFinderUtils();
+    private IPSAutoFinderUtils utils;
     
     /**
      * Log for this class.
      */
-    private static final Logger ms_logger = LogManager.getLogger(PSAutoWidgetContentFinder.class);
+    private static final Logger ms_logger = LogManager.getLogger(IPSConstants.ASSEMBLY_LOG);
 
 }

@@ -27,11 +27,19 @@ package com.percussion.services.menus;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.*;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.*;
+import javax.persistence.Transient;
+import javax.persistence.Version;
 import java.io.Serializable;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -156,11 +164,6 @@ public class PSActionMenu implements Serializable {
         this.properties.add(prop);
         prop.setMenu(this);
     }
-
- //   public void addVisibility(PSActionMenuVisibility v){
- //       this.visibility.add(v);
- //       v.setMenu(this);
- //   }
 
     public int getActionId() {
         return actionId;

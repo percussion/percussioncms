@@ -167,6 +167,7 @@ import java.util.stream.Collectors;
  * @author dougrand
  */
 @PSBaseBean("sys_assemblyService")
+@Transactional
 public class PSAssemblyService implements IPSAssemblyService
 {
    @PersistenceContext
@@ -607,16 +608,10 @@ public class PSAssemblyService implements IPSAssemblyService
     *           be empty.
     * @param eval the evaluator, assumed not <code>null</code>.
     * @param isLegacy <code>true</code> if the assembler is legacy assembler.
-    * 
-    * @throws PSAssemblyException if failed to setup the item for assembly
-    * @throws PSCmsException if failed to setup the item for assembly
-    * @throws PathNotFoundException if failed to setup the item for assembly
-    * @throws RepositoryException if failed to setup the item for assembly
+    *
     */
    private void processItemBinding(IPSAssemblyItem item, Set<IPSAssemblyResult> paginatedItems,
-         List<IPSAssemblyItem> debugItems, PSAssemblyJexlEvaluator eval, boolean isLegacy) throws PSAssemblyException,
-           PSCmsException, PathNotFoundException,
-           RepositoryException
+         List<IPSAssemblyItem> debugItems, PSAssemblyJexlEvaluator eval, boolean isLegacy)
    {
       try
       {
@@ -787,7 +782,7 @@ public class PSAssemblyService implements IPSAssemblyService
     */
    private void assembleItems(String assemblerName, PSStopwatchStack sws, List<IPSAssemblyItem> perAssemblerItems,
          List<IPSAssemblyItem> debugItems, Map<IPSAssemblyItem, IPSAssemblyResult> assemblyResultMap)
-         throws PSAssemblyException, ItemNotFoundException, PSFilterException, RepositoryException,
+         throws PSAssemblyException, PSFilterException, RepositoryException,
          PSTemplateNotImplementedException
    {
       if (!perAssemblerItems.isEmpty())
@@ -1024,7 +1019,6 @@ public class PSAssemblyService implements IPSAssemblyService
     * @param item the assembly item, assumed non-<code>null</code>
     * @param eval the evaluator, assumed non-<code>null</code>
     */
-   @SuppressWarnings("unchecked")
    private void processBindings(IPSAssemblyItem item, PSAssemblyJexlEvaluator eval)
    {
       IPSAssemblyTemplate t = item.getTemplate();
@@ -1070,9 +1064,6 @@ public class PSAssemblyService implements IPSAssemblyService
                        item.getId(),
                        exp,
                        PSExceptionUtils.getMessageForLog(e));
-
-               //Removed the Runtime exception here as that would seem to fail all bindings and any assembly transactions if one binding is bad.
-
             }
          }
       }
@@ -1092,17 +1083,9 @@ public class PSAssemblyService implements IPSAssemblyService
     * @param work the assembly item, assumed not <code>null</code>
     * @param isLegacy <code>true</code> when assembling legacy templates
     * @return a jexl evaluator, never <code>null</code>
-    * @throws PSAssemblyException
-    * @throws PSFilterException
-    * @throws RepositoryException
-    * @throws ValueFormatException
-    * @throws UnsupportedRepositoryOperationException
-    * @throws PathNotFoundException
-    * @throws PSCmsException
     */
    private PSAssemblyJexlEvaluator setupItemForAssembly(IPSAssemblyItem work, boolean isLegacy)
-         throws PSAssemblyException, PSFilterException, PSCmsException, PathNotFoundException,
-         UnsupportedRepositoryOperationException, ValueFormatException, RepositoryException
+         throws PSAssemblyException, PSFilterException, PSCmsException, RepositoryException
    {
       PSStopwatchStack sws = PSStopwatchStack.getStack();
       try
@@ -1133,9 +1116,7 @@ public class PSAssemblyService implements IPSAssemblyService
          boolean isAA;
          // As we do not active assemble child items set $sys.activeAssembly to
          // false if it is a child table item.
-         boolean isChildTableItem = false;
-         if (work.getId() instanceof PSLegacyGuid && ((PSLegacyGuid) work.getId()).isChildGuid())
-            isChildTableItem = true;
+         boolean isChildTableItem = work.getId() instanceof PSLegacyGuid && ((PSLegacyGuid) work.getId()).isChildGuid();
          if (isForAaSlot && !nonHTML && StringUtils.isNotEmpty(sys_command)
                && sys_command.equals(IPSHtmlParameters.SYS_ACTIVE_ASSEMBLY) && !isChildTableItem)
          {
@@ -1234,8 +1215,7 @@ public class PSAssemblyService implements IPSAssemblyService
     * @throws PSFilterException
     */
    private void loadContentItem(IPSAssemblyItem work, PSAssemblyJexlEvaluator eval, boolean isAA)
-         throws PSAssemblyException, RepositoryException, PSCmsException, PathNotFoundException,
-         UnsupportedRepositoryOperationException, ValueFormatException, PSFilterException
+         throws PSAssemblyException, RepositoryException, PSCmsException, PSFilterException
    {
       Node item = null;
       IPSCacheAccess cache = null;
@@ -1352,8 +1332,7 @@ public class PSAssemblyService implements IPSAssemblyService
                bversions = new HashMap<>();
                for (PSTemplateBinding b : temp.getBindings())
                {
-                  PSTemplateBinding binding = b;
-                  bversions.put(binding.getId(), binding.getVersion());
+                  bversions.put(b.getId(), b.getVersion());
                }
                temp.setVersion(null);
             }
@@ -1370,12 +1349,11 @@ public class PSAssemblyService implements IPSAssemblyService
                temp.setVersion(tversion);
                for (PSTemplateBinding b : temp.getBindings())
                {
-                  PSTemplateBinding binding = b;
-                  Integer bversion = bversions.get(binding.getId());
+                  Integer bversion = bversions.get(b.getId());
                   if (bversion != null)
                   {
-                     binding.setVersion(null);
-                     binding.setVersion(bversion);
+                     b.setVersion(null);
+                     b.setVersion(bversion);
                   }
                }
                session.merge(temp);

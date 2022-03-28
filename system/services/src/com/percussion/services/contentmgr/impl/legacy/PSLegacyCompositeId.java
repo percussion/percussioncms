@@ -42,9 +42,9 @@ public class PSLegacyCompositeId implements Serializable
     */
    private static final long serialVersionUID = -2025905370029396658L;
 
-   private int m_content_id;
+   private int sys_contentid;
 
-   private int m_revision;
+   private int sys_revision;
 
    /**
     * No arg constructor required for Hibernate interceptor
@@ -61,8 +61,8 @@ public class PSLegacyCompositeId implements Serializable
     * @param rev revision
     */
    public PSLegacyCompositeId(int cid, int rev) {
-      m_content_id = cid;
-      m_revision = rev;
+      sys_contentid = cid;
+      sys_revision = rev;
    }
 
    /**
@@ -75,8 +75,8 @@ public class PSLegacyCompositeId implements Serializable
       {
          throw new IllegalArgumentException("legacyguid may not be null");
       }
-      m_content_id = legacyguid.getContentId();
-      m_revision = legacyguid.getRevision();
+      sys_contentid = legacyguid.getContentId();
+      sys_revision = legacyguid.getRevision();
    }
 
    /**
@@ -84,7 +84,7 @@ public class PSLegacyCompositeId implements Serializable
     */
    public int getSys_contentid()
    {
-      return m_content_id;
+      return sys_contentid;
    }
 
    /**
@@ -92,7 +92,7 @@ public class PSLegacyCompositeId implements Serializable
     */
    public void setSys_contentid(int content_id)
    {
-      m_content_id = content_id;
+      sys_contentid = content_id;
    }
 
    /**
@@ -100,7 +100,7 @@ public class PSLegacyCompositeId implements Serializable
     */
    public int getSys_revision()
    {
-      return m_revision;
+      return sys_revision;
    }
 
    /**
@@ -108,7 +108,7 @@ public class PSLegacyCompositeId implements Serializable
     */
    public void setSys_revision(int revision)
    {
-      m_revision = revision;
+      sys_revision = revision;
    }
 
    /*
@@ -120,7 +120,7 @@ public class PSLegacyCompositeId implements Serializable
    public boolean equals(Object obj)
    {
       PSLegacyCompositeId b = (PSLegacyCompositeId) obj;
-      return (m_content_id == b.m_content_id) && (m_revision == b.m_revision);
+      return (sys_contentid == b.sys_contentid) && (sys_revision == b.sys_revision);
    }
 
    /*
@@ -131,7 +131,7 @@ public class PSLegacyCompositeId implements Serializable
    @Override
    public int hashCode()
    {
-      return m_content_id * 10 + m_revision;
+      return sys_contentid * 10 + sys_revision;
    }
 
    /*
@@ -142,8 +142,8 @@ public class PSLegacyCompositeId implements Serializable
    @Override
    public String toString()
    {
-      return "<composite-key content_id = " + m_content_id + " revision = "
-            + m_revision + ">";
+      return "<composite-key content_id = " + sys_contentid + " revision = "
+            + sys_revision + ">";
    }
 
 }

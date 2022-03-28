@@ -23,7 +23,9 @@
  */
 package com.percussion.services.assembly.impl.finder;
 
+import com.percussion.cms.IPSConstants;
 import com.percussion.error.PSExceptionUtils;
+import com.percussion.services.PSBaseServiceLocator;
 import com.percussion.services.assembly.IPSAssemblyItem;
 import com.percussion.services.assembly.IPSTemplateSlot;
 import com.percussion.services.error.PSNotFoundException;
@@ -81,7 +83,12 @@ import static com.percussion.services.assembly.impl.finder.PSContentFinderUtils.
 public class PSAutoSlotContentFinder extends PSSlotContentFinderBase
 {
 
-   private static Logger log = LogManager.getLogger(PSAutoSlotContentFinder.class);
+   private static Logger log = LogManager.getLogger(IPSConstants.ASSEMBLY_LOG);
+
+   public PSAutoSlotContentFinder(){
+      super();
+      this.utils = (IPSAutoFinderUtils) PSBaseServiceLocator.getBean("sys_autoFinderUtils");
+   }
    /*
     * (non-Javadoc)
     * 
@@ -116,5 +123,5 @@ public class PSAutoSlotContentFinder extends PSSlotContentFinderBase
    /**
     * The utility object, used to fetch the content items.
     */
-   private PSAutoFinderUtils utils = new PSAutoFinderUtils(); 
+   private IPSAutoFinderUtils utils;
 }

@@ -26,6 +26,9 @@ package com.percussion.utils.beans;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
+import javax.jcr.Node;
+import javax.jcr.RepositoryException;
+import javax.jcr.nodetype.NodeType;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Map;
@@ -298,5 +301,20 @@ public class PSPropertyWrapper
       }
 
 
+   }
+
+   protected NodeType validateParent(Node parent) throws RepositoryException {
+      if (parent == null || parent.getDefinition() == null
+              || parent.getDefinition().getDeclaringNodeType() == null)
+      {
+         throw new IllegalStateException(
+                 "Missing parent, parent definition or nodetype information");
+      }
+      NodeType nodetype = parent.getDefinition().getDeclaringNodeType();
+      if (nodetype == null)
+      {
+         throw new IllegalStateException("Missing nodetype information");
+      }
+      return nodetype;
    }
 }

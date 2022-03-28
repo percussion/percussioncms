@@ -75,8 +75,7 @@ public class PSSiteImporter
     private static final String HEAD = "head";
     private static final String BODY = "body";
 
-    //FB: 
-    private static volatile IPSSystemProperties systemProperties = null;
+    private static IPSSystemProperties systemProperties = null;
 
     /**
      * Gets the page in the given URL, and parses its content into a
@@ -327,7 +326,7 @@ public class PSSiteImporter
     }
     
     @Autowired
-    public void setSystemProperties(IPSSystemProperties systemProps)
+    public synchronized void setSystemProperties(IPSSystemProperties systemProps)
     {
         systemProperties = systemProps;
     }

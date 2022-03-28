@@ -59,7 +59,7 @@ public class PSSiteImportLogger implements IPSSiteImportLogger
     /**
      * Construct a logger.
      * 
-     * @param type The type of object being imported.
+     * @param objectType The type of object being imported.
      */
     public PSSiteImportLogger(PSLogObjectType objectType)
     {

@@ -28,14 +28,15 @@ import com.percussion.services.siteimportsummary.IPSSiteImportSummaryDao;
 import com.percussion.services.siteimportsummary.data.PSSiteImportSummary;
 import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.sitesummaryservice.service.IPSSiteImportSummaryService;
-
-import java.util.Map;
-
 import org.apache.commons.lang.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Map;
 
 @Component("siteImportSummaryService")
+@Transactional()
 public class PSSiteImportSummaryService implements IPSSiteImportSummaryService
 {
     private IPSSiteImportSummaryDao summaryDao;

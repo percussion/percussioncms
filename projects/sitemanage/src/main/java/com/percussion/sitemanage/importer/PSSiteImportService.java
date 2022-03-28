@@ -27,7 +27,6 @@ import com.percussion.pagemanagement.dao.IPSPageDao;
 import com.percussion.pagemanagement.data.PSPage;
 import com.percussion.pagemanagement.service.IPSPageCatalogService;
 import com.percussion.pagemanagement.service.IPSPageService;
-import com.percussion.share.dao.IPSGenericDao.LoadException;
 import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.sitemanage.data.PSPageContent;
 import com.percussion.sitemanage.data.PSSite;
@@ -44,6 +43,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -52,6 +52,7 @@ import java.util.List;
 import static com.percussion.share.spring.PSSpringWebApplicationContextUtils.getWebApplicationContext;
 @Component("siteImportService")
 @Lazy
+@Transactional
 public class PSSiteImportService implements IPSSiteImportService
 {
     private static final Logger log = LogManager.getLogger(PSSiteImportService.class);

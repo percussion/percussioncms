@@ -327,6 +327,7 @@ http://www.springframework.org/schema/context/spring-context.xsd">
     <bean id="sys_transactionManager"
           class="org.springframework.orm.hibernate5.HibernateTransactionManager">
         <property name="sessionFactory" ref="sys_sessionFactory"/>
+        <property name="globalRollbackOnParticipationFailure" value="false"/>
     </bean>
 
     <bean id="sys_sessionFactory"
@@ -372,6 +373,10 @@ http://www.springframework.org/schema/context/spring-context.xsd">
         </property>
         <property name="datasourceManager" ref="sys_datasourceManager"/>
         <property name="dialects" ref="sys_hibernateDialects"/>
+    </bean>
+
+    <bean id="sys_autoFinderUtils"
+          class="com.percussion.services.assembly.impl.finder.PSAutoFinderUtils">
     </bean>
 
     <bean id="sys_cacheManager"

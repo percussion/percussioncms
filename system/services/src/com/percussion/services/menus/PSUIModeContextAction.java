@@ -28,10 +28,8 @@ package com.percussion.services.menus;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import javax.persistence.Embeddable;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 import javax.persistence.Table;
@@ -43,77 +41,6 @@ import java.io.Serializable;
         region = "RXMODEUICONTEXTACTION")
 @Table(name="RXMODEUICONTEXTACTION")
 public class PSUIModeContextAction implements Serializable{
-
-    @Embeddable
-    public class PSUIModeContextActionPK implements Serializable {
-
-
-        @JoinColumn(name = "ACTIONID")
-        private int actionId;
-
-
-        @JoinColumn(name = "MODEID")
-        private int modeId;
-
-
-        @JoinColumn(name = "UICONTEXTID")
-        private int contextId;
-
-        public PSUIModeContextActionPK() {}
-
-        public PSUIModeContextActionPK(int actionId, int modeId, int contextId) {
-            this.actionId = actionId;
-            this.modeId = modeId;
-            this.contextId= contextId;
-        }
-        @Override
-        public boolean equals(Object other) {
-            if (this == other) return true;
-            if ( !(other instanceof PSUIModeContextAction.PSUIModeContextActionPK) ) return false;
-
-            final PSUIModeContextAction.PSUIModeContextActionPK pk = (PSUIModeContextAction.PSUIModeContextActionPK) other;
-
-            if ( pk.actionId != actionId &&
-                    pk.contextId==contextId &&
-                    pk.modeId==modeId &&
-                    pk.actionId == actionId) {
-                return true;
-            }else {
-                return false;
-            }
-        }
-
-        public int hashCode() {
-            int result;
-
-            result = 31 * (modeId + actionId + contextId);
-            return result;
-        }
-
-        public int getActionId() {
-            return actionId;
-        }
-
-        public void setActionId(int actionId) {
-            this.actionId = actionId;
-        }
-
-        public int getModeId() {
-            return modeId;
-        }
-
-        public void setModeId(int modeId) {
-            this.modeId = modeId;
-        }
-
-        public int getContextId() {
-            return contextId;
-        }
-
-        public void setContextId(int contextId) {
-            this.contextId = contextId;
-        }
-    }
 
     @EmbeddedId
     PSUIModeContextActionPK primaryKey;

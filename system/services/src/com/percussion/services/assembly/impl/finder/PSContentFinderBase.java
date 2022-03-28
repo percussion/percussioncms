@@ -83,7 +83,7 @@ import static com.percussion.services.assembly.impl.finder.PSContentFinderUtils.
  * @author dougrand
  * @param <T> 
  */
-public abstract class PSContentFinderBase<T extends Object> 
+public abstract class PSContentFinderBase<T extends Object>
    implements IPSContentFinder<T>
 {
    /*
@@ -240,7 +240,7 @@ public abstract class PSContentFinderBase<T extends Object>
    abstract protected Set<ContentItem> getContentItems(IPSAssemblyItem sourceItem,
          T slot, Map<String, Object> params) throws PSNotFoundException, RepositoryException, PSFilterException, PSAssemblyException;
 
-   @SuppressWarnings({"unchecked"})
+
    public List<IPSAssemblyItem> find(IPSAssemblyItem sourceItem,
          T slot, Map<String, Object> params)
            throws RepositoryException, PSFilterException, PSAssemblyException, PSNotFoundException {

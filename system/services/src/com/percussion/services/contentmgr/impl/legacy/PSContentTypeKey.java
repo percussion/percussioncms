@@ -25,8 +25,7 @@ package com.percussion.services.contentmgr.impl.legacy;
 
 import com.percussion.services.contentmgr.impl.IPSTypeKey;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
+import java.util.Objects;
 
 
 /**
@@ -54,23 +53,18 @@ public class PSContentTypeKey implements IPSTypeKey
    /* (non-Javadoc)
     * @see java.lang.Object#equals(java.lang.Object)
     */
+
    @Override
-   public boolean equals(Object obj)
-   {
-      PSContentTypeKey other = (PSContentTypeKey) obj;
-      EqualsBuilder eb = new EqualsBuilder();
-      return eb.append(m_contentTypeId, other.m_contentTypeId)
-         .isEquals();
+   public boolean equals(Object o) {
+      if (this == o) return true;
+      if (!(o instanceof PSContentTypeKey)) return false;
+      PSContentTypeKey that = (PSContentTypeKey) o;
+      return m_contentTypeId == that.m_contentTypeId;
    }
 
-   /* (non-Javadoc)
-    * @see java.lang.Object#hashCode()
-    */
    @Override
-   public int hashCode()
-   {
-      HashCodeBuilder hb = new HashCodeBuilder();
-      return hb.append(m_contentTypeId).toHashCode();
+   public int hashCode() {
+      return Objects.hash(m_contentTypeId);
    }
 
    /* (non-Javadoc)

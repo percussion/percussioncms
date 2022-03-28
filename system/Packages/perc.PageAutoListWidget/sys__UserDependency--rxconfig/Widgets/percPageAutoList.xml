@@ -673,7 +673,7 @@ $!{titleFormatStartTag}$!{title}$!{titleFormatEndTag}
 <span class ="perc-rss-icon-top"><a class="perc-rss-icon" aria-label="$!{rssLinkText}" title="$!{rssLinkText}" href="$!{sUrl}">RSS link</a></span>
 #end##
 #set($filteredList = $rx.string.getArrayList())##
-#if($relresults.size() > 0)##
+#if(0  < $relresults.size() )##
 #if($rendering == "ordered")##
 <div class = "perc-list-main-wrapper"><ol class="perc-list-main">##
 #else##
