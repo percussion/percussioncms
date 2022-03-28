@@ -542,6 +542,21 @@
 				<size>50</size>
 				<allowsnull>yes</allowsnull>
 			</column>
+			<column name="ACTIVEIMG_HASH">
+				<jdbctype>VARCHAR</jdbctype>
+				<size>50</size>
+				<allowsnull>yes</allowsnull>
+			</column>
+			<column name="INACTIVEIMG_HASH">
+				<jdbctype>VARCHAR</jdbctype>
+				<size>50</size>
+				<allowsnull>yes</allowsnull>
+			</column>
+			<column name="ROLLOVERIMG_HASH">
+				<jdbctype>VARCHAR</jdbctype>
+				<size>50</size>
+				<allowsnull>yes</allowsnull>
+			</column>
 		</row>
 		<primarykey>
 			<name>CONTENTID</name>
@@ -746,6 +761,11 @@
 				<size>50</size>
 				<allowsnull>yes</allowsnull>
 			</column>
+			<column name="ITEM_FILE_ATTACHMENT_HASH">
+				<jdbctype>VARCHAR</jdbctype>
+				<size>256</size>
+				<allowsnull>yes</allowsnull>
+			</column>
 		</row>
 		<primarykey>
 			<name>CONTENTID</name>
@@ -801,6 +821,11 @@
 				<allowsnull>yes</allowsnull>
 				<scale>0</scale>
 			</column>
+			<column name="IMG1_HASH">
+				<jdbctype>VARCHAR</jdbctype>
+				<size>256</size>
+				<allowsnull>yes</allowsnull>
+			</column>
 			<column name="IMG_ALT">
 				<jdbctype>VARCHAR</jdbctype>
 				<size>512</size>
@@ -842,6 +867,11 @@
 				<size>10</size>
 				<allowsnull>yes</allowsnull>
 				<scale>0</scale>
+			</column>
+			<column name="IMG2_HASH">
+				<jdbctype>VARCHAR</jdbctype>
+				<size>256</size>
+				<allowsnull>yes</allowsnull>
 			</column>
 		</row>
 		<primarykey>
