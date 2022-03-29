@@ -325,11 +325,11 @@
         <servlet-class>
             com.percussion.cxfextension.PSCXFServlet
         </servlet-class>
-        <load-on-startup>1</load-on-startup>
         <init-param>
             <param-name>hide-service-list-page</param-name>
             <param-value>true</param-value>
         </init-param>
+        <load-on-startup>1</load-on-startup>
     </servlet>
 
     <!--
@@ -436,12 +436,10 @@
         <servlet-name>ActiveAssemblyServlet</servlet-name>
         <servlet-class>com.percussion.services.aaclient.PSAaClientServlet</servlet-class>
     </servlet>
-    <!--
     <servlet>
         <servlet-name>ContentUiAAServlet</servlet-name>
         <servlet-class>com.percussion.content.ui.aa.PSAAClientServlet</servlet-class>
     </servlet>
-    -->
     <servlet>
         <servlet-name>EditionJobStatusServlet</servlet-name>
         <servlet-class>com.percussion.rx.publisher.servlet.PSJobStatusServlet</servlet-class>
@@ -632,17 +630,14 @@
         <servlet-name>AxisServlet</servlet-name>
         <url-pattern>/designwebservices/*</url-pattern>
     </servlet-mapping>
-    <!-- this entry is temporary and will be removed -->
     <servlet-mapping>
         <servlet-name>ActiveAssemblyServlet</servlet-name>
         <url-pattern>/assembly/aa</url-pattern>
     </servlet-mapping>
-    <!--
     <servlet-mapping>
         <servlet-name>ContentUiAAServlet</servlet-name>
         <url-pattern>/contentui/aa</url-pattern>
     </servlet-mapping>
-    -->
     <servlet-mapping>
         <servlet-name>PSTdSchemaXmlServlet</servlet-name>
         <url-pattern>/servlet/tdschemaxml</url-pattern>
