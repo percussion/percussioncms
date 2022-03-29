@@ -23,9 +23,9 @@
  */
 package com.percussion.assetmanagement.data;
 
-import java.io.InputStream;
-
 import org.apache.commons.lang.StringUtils;
+
+import java.io.InputStream;
 
 /**
  * Base class for all service requests to create assets during bulk upload.
@@ -100,7 +100,7 @@ public abstract class PSAbstractAssetRequest
            throw new IllegalArgumentException("fileName may not be blank");
        }
 
-       this.fileName = fileName;
+       this.fileName = fileName.replace("\\x20","-");
    }
    
    /**
