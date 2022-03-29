@@ -1095,9 +1095,8 @@ public class PSContentTypeDependencyHandler
          PSContentEditor ce = itemDef.getContentEditor();
          PSCmsObject objType = PSServer.getCmsObject(ce.getObjectType());
          if(objType == null){
-            LogManager.getLogger(PSContentTypeDependencyHandler.class)
-                    .error("Could not locate Object Type: " + itemDef.getName()
-                                    + ".  The Content Type will be disabled.");
+            log.error("Could not locate Object Type: {}.  The Content Type will be disabled.",
+                    itemDef.getName());
          }
 
          boolean isIncluded = false;

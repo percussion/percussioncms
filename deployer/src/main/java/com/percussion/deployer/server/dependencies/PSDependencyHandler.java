@@ -24,6 +24,7 @@
 
 package com.percussion.deployer.server.dependencies;
 
+import com.percussion.deployer.objectstore.PSDatasourceMap;
 import com.percussion.deployer.objectstore.PSDependency;
 import com.percussion.deployer.objectstore.PSDeployableElement;
 import com.percussion.deployer.objectstore.PSDeployableObject;
@@ -786,7 +787,7 @@ public abstract class PSDependencyHandler implements IPSDependencyHandler {
     * @throws PSDeployException if there are any errors.
     */
    @Override
-   public List getExternalDbmsInfoList(PSSecurityToken tok, PSDependency dep)
+   public List<PSDatasourceMap> getExternalDbmsInfoList(PSSecurityToken tok, PSDependency dep)
       throws PSDeployException
    {
       if (tok == null)

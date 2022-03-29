@@ -319,7 +319,7 @@ public class PSApplicationDependencyHandler
    }
 
    // see base class
-   public List getExternalDbmsInfoList(PSSecurityToken tok, PSDependency dep)
+   public List<PSDatasourceMap> getExternalDbmsInfoList(PSSecurityToken tok, PSDependency dep)
       throws PSDeployException
    {
       if (tok == null)
@@ -377,7 +377,7 @@ public class PSApplicationDependencyHandler
       catch (Exception e)
       {
          throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR,
-            e.getLocalizedMessage());
+            e.getMessage());
       }
    }
 

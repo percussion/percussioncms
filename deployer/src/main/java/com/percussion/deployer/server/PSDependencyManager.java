@@ -29,6 +29,7 @@ import com.percussion.deployer.client.PSDeploymentManager;
 import com.percussion.deployer.objectstore.PSApplicationIDTypes;
 import com.percussion.deployer.objectstore.PSArchiveDetail;
 import com.percussion.deployer.objectstore.PSArchiveInfo;
+import com.percussion.deployer.objectstore.PSDatasourceMap;
 import com.percussion.deployer.objectstore.PSDependency;
 import com.percussion.deployer.objectstore.PSDependencyContext;
 import com.percussion.deployer.objectstore.PSDependencyTreeContext;
@@ -302,19 +303,20 @@ public class PSDependencyManager implements IPSDependencyManagerBaseline
                archiveHandler.addIdTypes(dependency, idTypes);
             }
 
-            List dbmsInfoList = handler.getExternalDbmsInfoList(tok,
+            List<PSDatasourceMap> dbmsInfoList = handler.getExternalDbmsInfoList(tok,
                   dependency);
             if (dbmsInfoList != null)
                archiveHandler.addDbmsInfoList(dependency, dbmsInfoList);
          }
       }
 
-      Iterator deps = dependency.getDependencies();
+      Iterator<PSDependency> deps = dependency.getDependencies();
+
       if (deps != null)
       {
          while (deps.hasNext())
          {
-            PSDependency dep = (PSDependency) deps.next();
+            PSDependency dep = deps.next();
             if (!(dep instanceof PSDeployableElement))
             {
                addToArchive(tok, dep, archiveHandler, jobHandle);
@@ -723,7 +725,7 @@ public class PSDependencyManager implements IPSDependencyManagerBaseline
                // Transform dependency id if necessary
                String depId = dependency.getDependencyId();
                PSIdMap idMap = ctx.getCurrentIdMap();
-               Boolean supportsIdMapping = dependency.supportsIDMapping();
+               boolean supportsIdMapping = dependency.supportsIDMapping();
 
                if (idMap != null && supportsIdMapping)
                {
@@ -777,18 +779,11 @@ public class PSDependencyManager implements IPSDependencyManagerBaseline
                   }
                }
             }
-            catch (PSDeployException e)
+            catch (PSDeployException | PSRuntimeException | PSAssemblyException | PSNotFoundException e)
             {
                // log the specific dependency that failed, to aid debugging
-               log.error("failure while processing: "
-                     + formatDependencyString(dependency));
-               throw e;
-            }
-            catch (PSRuntimeException | PSAssemblyException | PSNotFoundException e)
-            {
-               // log the specific dependency that failed, to aid debugging
-               log.error("failure while processing: "
-                     + formatDependencyString(dependency));
+               log.error("failure while processing: {}",
+                       dependency);
                throw e;
             }
          }
