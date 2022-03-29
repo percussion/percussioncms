@@ -23,27 +23,25 @@
  */
 package com.percussion.pagemanagement.service.impl;
 
-import static java.text.MessageFormat.format;
-
-import static org.apache.commons.lang.Validate.notEmpty;
-import static org.apache.commons.lang.Validate.notNull;
-
 import com.percussion.pagemanagement.data.PSWidgetDefinition;
-import com.percussion.pagemanagement.data.PSWidgetItem;
-import com.percussion.pagemanagement.data.PSWidgetPropertyDataType;
 import com.percussion.pagemanagement.data.PSWidgetDefinition.AbstractUserPref;
+import com.percussion.pagemanagement.data.PSWidgetDefinition.AbstractUserPref.EnumValue;
 import com.percussion.pagemanagement.data.PSWidgetDefinition.CssPref;
 import com.percussion.pagemanagement.data.PSWidgetDefinition.UserPref;
-import com.percussion.pagemanagement.data.PSWidgetDefinition.AbstractUserPref.EnumValue;
+import com.percussion.pagemanagement.data.PSWidgetItem;
+import com.percussion.pagemanagement.data.PSWidgetPropertyDataType;
 import com.percussion.share.dao.PSSerializerUtils;
 import com.percussion.share.data.PSCollectionUtils;
+import org.apache.commons.lang.math.NumberUtils;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.lang.math.NumberUtils;
+import static java.text.MessageFormat.format;
+import static org.apache.commons.lang.Validate.notEmpty;
+import static org.apache.commons.lang.Validate.notNull;
 
 
 /**
@@ -56,7 +54,10 @@ import org.apache.commons.lang.math.NumberUtils;
  */
 public class PSWidgetUtils
 {
- 
+
+    private PSWidgetUtils(){
+        //noop
+    }
 
     private static UserPrefMapper userPrefMapper = new UserPrefMapper();
     
@@ -84,8 +85,7 @@ public class PSWidgetUtils
     public static Map<String, UserPref> getUserPrefs(PSWidgetDefinition definition) {
         notNull(definition);
         List<UserPref> prefs = definition.getUserPref();
-        Map<String, UserPref> prefMap = userPrefMapper.toMap(prefs);
-        return prefMap;
+        return userPrefMapper.toMap(prefs);
     }
     
     /**
@@ -94,8 +94,7 @@ public class PSWidgetUtils
      */
     public static Map<String, CssPref> getCssPrefs(PSWidgetDefinition definition) {
         List<CssPref> prefs = definition.getCssPref();
-        Map<String, CssPref> prefMap = cssPrefMapper.toMap(prefs);
-        return prefMap;
+        return cssPrefMapper.toMap(prefs);
     }
     
     /**
@@ -174,8 +173,7 @@ public class PSWidgetUtils
     {
         String dt = userPref.getDatatype();
         dt = dt == null ? "string" : dt.toLowerCase();
-        Class<?> klass = PSWidgetPropertyDataType.parseType(dt).getJavaType();
-        return klass;
+        return PSWidgetPropertyDataType.parseType(dt).getJavaType();
     }
     
     /**
@@ -193,7 +191,7 @@ public class PSWidgetUtils
      * @param object maybe <code>null</code>
      * @param dataType never <code>null</code>.
      * @return only <code>null</code> if the object parameter is <code>null</code> otherwise never <code>null</code>.
-     * @throws PSWidgetPropertyCoercionException
+     * @throws PSWidgetPropertyCoercionException coersion exception if the property can't be coerced.
      */
     @SuppressWarnings("unchecked")
     public static <T> T coerceProperty(String name, Object object, Class<T> dataType) 
@@ -224,7 +222,7 @@ public class PSWidgetUtils
                 }
                 else if (Boolean.class.isAssignableFrom(dataType))
                 {
-                    rvalue = (T) new Boolean(Boolean.parseBoolean(s));
+                    rvalue = (T) Boolean.valueOf(Boolean.parseBoolean(s));
                 }
             }
         }
@@ -273,13 +271,10 @@ public class PSWidgetUtils
         for (AbstractUserPref pref : prefs)
         {
             String defValue = pref.getDefaultValue();
-            if (defValue != null)
+            if (defValue !=  null && !propNames.contains(pref.getName()))
             {
-                if (!propNames.contains(pref.getName()))
-                {
-                    Object v = PSWidgetUtils.getDefaultValue(pref);
-                    props.put(pref.getName(), v);
-                }
+                Object v = PSWidgetUtils.getDefaultValue(pref);
+                props.put(pref.getName(), v);
             }
         }
     }
@@ -293,20 +288,18 @@ public class PSWidgetUtils
     {
 
         private static final long serialVersionUID = 1L;
-        private String name;
-        private Object value;
-        @SuppressWarnings("unchecked")
-        private Class dataType;
-        
-        @SuppressWarnings("unchecked")
-        public PSWidgetPropertyCoercionException(String name, Object object, Class dataType)
+
+        private final String name;
+        private final transient Object value;
+        private final Class<?> dataType;
+
+        public PSWidgetPropertyCoercionException(String name, Object object, Class<?> dataType)
         {
             this(name, object, dataType, null);
         }
         
-        
-        @SuppressWarnings("unchecked")
-        public PSWidgetPropertyCoercionException(String name, Object object, Class dataType, Throwable cause)
+
+        public PSWidgetPropertyCoercionException(String name, Object object, Class<?> dataType, Throwable cause)
         {
             super(format("Failed convert property:{0}, value:{1}, datatype:{2}", name, object, dataType), cause);
             this.name = name;
@@ -322,8 +315,7 @@ public class PSWidgetUtils
         {
             return value;
         }
-        @SuppressWarnings("unchecked")
-        public Class getDataType()
+        public Class<?> getDataType()
         {
             return dataType;
         } 
@@ -339,8 +331,7 @@ public class PSWidgetUtils
     {
         private static final long serialVersionUID = 1L;
 
-        @SuppressWarnings("unchecked")
-        public PSWidgetPropertyBlankStringCoercionException(String name, Object object, Class dataType)
+        public PSWidgetPropertyBlankStringCoercionException(String name, Object object, Class<?> dataType)
         {
             super(name, object, dataType);
         }
