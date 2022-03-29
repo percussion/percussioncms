@@ -1070,4 +1070,6 @@
         <location>/ui/default-error.html</location>
     </error-page>
 
+    <absolute-ordering/>
+
 </web-app>
