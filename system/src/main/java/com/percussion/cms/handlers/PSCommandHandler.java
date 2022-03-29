@@ -787,20 +787,8 @@ public abstract class PSCommandHandler extends PSDataHandler
 
          if ( null == o )
          {
-            String label = "unlabeled";
-            if ( null != mapping.getUISet().getLabel())
-               label = mapping.getUISet().getLabel().getText();
-            String [] args =
-            {
-               fieldName,
-               label
-            };
-            throw new PSSystemValidationException(
-                  IPSServerErrors.CE_MISSING_FIELD, args );
-         }
-
-         if (o instanceof PSFieldSet)
-         {
+            log.error("No Mapper Found for FieldSet : {} Field: {} ",fieldSet.getName(),fieldName);
+         }else if (o instanceof PSFieldSet){
             PSFieldSet fs = (PSFieldSet) o;
             PSDisplayMapper childMapper = mapping.getDisplayMapper();
             if (fs.getType() == PSFieldSet.TYPE_COMPLEX_CHILD)
@@ -810,9 +798,7 @@ public abstract class PSCommandHandler extends PSDataHandler
              * NOTE: input field translations are currently not supported
              * for simple children (choices).
              */
-         }
-         else if (o instanceof PSField)
-         {
+         }else if (o instanceof PSField){
             PSField field = (PSField) o;
             String submitName = field.getSubmitName();
 

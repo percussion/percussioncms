@@ -267,8 +267,8 @@
 		<row action="r" onTableCreateOnly="no">
 			<column name="CONTENTTYPEID">313</column>
 			<column name="VERSION">0</column>
-			<column name="CONTENTTYPENEWREQUEST">../psx_cepercNavImage/percNavImage.html</column>
-			<column name="CONTENTTYPEQUERYREQUEST">../psx_cepercNavImage/percNavImage.html</column>
+			<column name="CONTENTTYPENEWREQUEST">../percNavImage/percNavImage.html</column>
+			<column name="CONTENTTYPEQUERYREQUEST">../percNavImage/percNavImage.html</column>
 			<column name="CONTENTTYPENAME">percNavImage</column>
 			<column name="CONTENTTYPELABEL">Nav Image</column>
 			<column name="CONTENTTYPEDESC">A binary image file used in Managed Navigation.</column>

@@ -1,28 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-  ~     Percussion CMS
-  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
-  ~
-  ~     This program is free software: you can redistribute it and/or modify
-  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
-  ~
-  ~     This program is distributed in the hope that it will be useful,
-  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
-  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  ~     GNU Affero General Public License for more details.
-  ~
-  ~     Mailing Address:
-  ~
-  ~      Percussion Software, Inc.
-  ~      PO Box 767
-  ~      Burlington, MA 01803, USA
-  ~      +01-781-438-9900
-  ~      support@percussion.com
-  ~      https://www.percussion.com
-  ~
-  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
-  -->
-
 <PSXApplication active="no" enabled="yes" hidden="no" id="1055" startPriority="0" version="2.0">
 	<name>psx_cepercNavImage</name>
 	<description>Creates Navigation Image Triple Content Items </description>
@@ -41,17 +17,21 @@
 			<time>20040518T182808328</time>
 		</PSXRevisionEntry>
 	</PSXRevisionHistory>
-   <PSXAcl id="0">
-      <PSXAclEntry id="0" type="user">
-         <name>Anonymous</name>
-         <applicationAccessLevel dataCreate="yes" dataDelete="yes" dataQuery="yes" dataUpdate="yes" designDelete="no" designRead="no" designUpdate="no" modifyAcl="no"/>
-      </PSXAclEntry>
-      <PSXAclEntry id="0" type="user">
-         <name>Default</name>
-         <applicationAccessLevel dataCreate="yes" dataDelete="yes" dataQuery="yes" dataUpdate="yes" designDelete="yes" designRead="yes" designUpdate="yes" modifyAcl="yes"/>
-      </PSXAclEntry>
-      <multiMembershipBehavior/>
-   </PSXAcl>
+	<PSXAcl id="0">
+		<PSXAclEntry id="0" type="user">
+			<name>Default</name>
+			<securityProviderType>Any</securityProviderType>
+			<securityProviderInstance/>
+			<applicationAccessLevel dataCreate="yes" dataDelete="yes" dataQuery="yes" dataUpdate="yes" designDelete="no" designRead="no" designUpdate="no" modifyAcl="no"/>
+		</PSXAclEntry>
+		<PSXAclEntry id="0" type="role">
+			<name>Admin</name>
+			<securityProviderType>Any</securityProviderType>
+			<securityProviderInstance/>
+			<applicationAccessLevel dataCreate="yes" dataDelete="yes" dataQuery="yes" dataUpdate="yes" designDelete="yes" designRead="yes" designUpdate="yes" modifyAcl="yes"/>
+		</PSXAclEntry>
+		<multiMembershipBehavior/>
+	</PSXAcl>
 	<maxThreads>-1</maxThreads>
 	<maxRequestTime>-1</maxRequestTime>
 	<maxRequestsInQueue>-1</maxRequestsInQueue>
@@ -145,18 +125,18 @@
 			</MimeProperties>
 		</PSXRequestor>
 	</PSXDataSet>
-	<PSXContentEditor contentType="313" iconSource="1" iconValue="percNavImage.gif" enableRelatedContent="no" objectType="1" workflowId="4">
+	<PSXContentEditor contentType="313" enableRelatedContent="no" iconSource="1" iconValue="rffNavImage.gif" objectType="1" workflowId="4">
 		<PSXDataSet id="1180">
-			<name>template</name>
+			<name>rffNavImage</name>
 			<description>default template</description>
 			<transactionType>none</transactionType>
 			<PSXContentEditorPipe id="0">
 				<name>cePipe</name>
 				<description>This is the ContentEditorLocaDef for Default ContentType</description>
 				<InputDataExits>
-					<PSXExtensionCallSet id="1178">
-						<PSXExtensionCall id="5045">
-							<name>Java/global/percussion/generic/sys_FileInfo</name>
+					<PSXExtensionCallSet id="0">
+						<PSXExtensionCall id="10017">
+							<name>Java/global/percussion/generic/sys_HashedFileInfo</name>
 						</PSXExtensionCall>
 						<PSXExtensionCall id="0">
 							<name>Java/global/percussion/exit/sys_imageInfoExtractor</name>
@@ -180,28 +160,28 @@
 							<PSXExtensionParamValue id="0">
 								<value>
 									<PSXTextLiteral id="0">
-										<text/>
+										<text></text>
 									</PSXTextLiteral>
 								</value>
 							</PSXExtensionParamValue>
 							<PSXExtensionParamValue id="0">
 								<value>
 									<PSXTextLiteral id="0">
-										<text/>
+										<text></text>
 									</PSXTextLiteral>
 								</value>
 							</PSXExtensionParamValue>
 							<PSXExtensionParamValue id="0">
 								<value>
 									<PSXTextLiteral id="0">
-										<text/>
+										<text></text>
 									</PSXTextLiteral>
 								</value>
 							</PSXExtensionParamValue>
 							<PSXExtensionParamValue id="0">
 								<value>
 									<PSXTextLiteral id="0">
-										<text/>
+										<text></text>
 									</PSXTextLiteral>
 								</value>
 							</PSXExtensionParamValue>
@@ -213,7 +193,8 @@
 						<PSXTableLocator>
 							<PSXBackEndCredential id="275">
 								<alias>contentCredential</alias>
-								<datasource/>
+								<comment></comment>
+								<datasource></datasource>
 							</PSXBackEndCredential>
 						</PSXTableLocator>
 						<PSXTableRef alias="RXS_CT_NAVIGATIONIMAGETRIPLE" name="RXS_CT_NAVIGATIONIMAGETRIPLE"/>
@@ -221,30 +202,30 @@
 				</PSXContainerLocator>
 				<PSXContentEditorMapper>
 					<SystemFieldExcludes>
-						<FieldRef>sys_pathname</FieldRef>
-						<FieldRef>sys_reminderdate</FieldRef>
 						<FieldRef>sys_contentexpirydate</FieldRef>
-						<FieldRef>sys_suffix</FieldRef>
+						<FieldRef>sys_pathname</FieldRef>
 						<FieldRef>sys_pubdate</FieldRef>
+						<FieldRef>sys_reminderdate</FieldRef>
+						<FieldRef>sys_suffix</FieldRef>
 					</SystemFieldExcludes>
 					<SharedFieldIncludes>
 						<SharedFieldGroupName>shared</SharedFieldGroupName>
 						<SharedFieldExcludes>
-						   <FieldRef>body</FieldRef>
-						   <FieldRef>filename</FieldRef>
-						   <FieldRef>keywords</FieldRef>
-						   <FieldRef>callout</FieldRef>
-						   <FieldRef>description</FieldRef>
-						   <FieldRef>webdavowner</FieldRef>
+							<FieldRef>body</FieldRef>
+							<FieldRef>callout</FieldRef>
+							<FieldRef>description</FieldRef>
+							<FieldRef>filename</FieldRef>
+							<FieldRef>keywords</FieldRef>
+							<FieldRef>webdavowner</FieldRef>
 						</SharedFieldExcludes>
 					</SharedFieldIncludes>
-					<PSXFieldSet name="RXS_CT_NAVIGATIONIMAGETRIPLE" repeatability="zeroOrMore" supportsSequencing="yes" type="parent">
-						<PSXField forceBinary="no" modificationType="user" name="activeimg_ext" showInPreview="yes" showInSummary="yes" type="local" userCustomizable="yes" userSearchable="yes">
+					<PSXFieldSet name="RXS_CT_NAVIGATIONIMAGETRIPLE" repeatability="zeroOrMore" supportsSequencing="yes" type="parent" userSearchable="yes">
+						<PSXField forceBinary="no" mimetype="text/plain" modificationType="user" name="activeimg_ext" showInPreview="yes" showInSummary="yes" type="local">
 							<DataLocator>
 								<PSXBackEndColumn id="0">
 									<tableAlias>RXS_CT_NAVIGATIONIMAGETRIPLE</tableAlias>
 									<column>ACTIVEIMG_EXT</column>
-									<columnAlias/>
+									<columnAlias></columnAlias>
 								</PSXBackEndColumn>
 							</DataLocator>
 							<DataType>text</DataType>
@@ -270,326 +251,80 @@
 									</PSXRule>
 								</PSXVisibilityRules>
 							</FieldRules>
+							<PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
 						</PSXField>
-						<PSXField forceBinary="no" modificationType="user" name="rolloverimg_filename" showInPreview="yes" showInSummary="yes" type="local" userCustomizable="yes" userSearchable="yes">
-							<DataLocator>
-								<PSXBackEndColumn id="0">
-									<tableAlias>RXS_CT_NAVIGATIONIMAGETRIPLE</tableAlias>
-									<column>ROLLOVERIMG_FILENAME</column>
-									<columnAlias/>
-								</PSXBackEndColumn>
-							</DataLocator>
-							<DataType>text</DataType>
-							<DataFormat>50</DataFormat>
-							<OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
-						</PSXField>
-						<PSXField clearBinaryParam="yes" forceBinary="yes" modificationType="user" name="rolloverimg" showInPreview="yes" showInSummary="no" type="local" userCustomizable="yes" userSearchable="no">
-							<DataLocator>
-								<PSXBackEndColumn id="0">
-									<tableAlias>RXS_CT_NAVIGATIONIMAGETRIPLE</tableAlias>
-									<column>ROLLOVERIMG</column>
-									<columnAlias/>
-								</PSXBackEndColumn>
-							</DataLocator>
-							<DataType/>
-							<OccurrenceSettings delimiter=";" dimension="required" multiValuedType="delimited"/>
-							<FieldRules>
-								<PSXFieldValidationRules maxErrorsToStop="10" name="isValidDisplayTitle">
-									<PSXRule boolean="and">
-										<PSXConditional id="1">
-											<variable>
-												<PSXHtmlParameter id="0">
-													<name>rolloverimg_type</name>
-												</PSXHtmlParameter>
-											</variable>
-											<operator>IS NOT NULL</operator>
-											<value>
-												<PSXTextLiteral id="0">
-													<text/>
-												</PSXTextLiteral>
-											</value>
-											<boolean>AND</boolean>
-										</PSXConditional>
-									</PSXRule>
-									<PSXApplyWhen ifFieldEmpty="yes"/>
-									<ErrorMessage>
-										<PSXDisplayText>This field cannot be empty</PSXDisplayText>
-									</ErrorMessage>
-								</PSXFieldValidationRules>
-							</FieldRules>
-						</PSXField>
-						<PSXField forceBinary="no" modificationType="user" name="inactiveimg_width" showInPreview="yes" showInSummary="yes" type="local" userCustomizable="yes" userSearchable="yes">
-							<DataLocator>
-								<PSXBackEndColumn id="0">
-									<tableAlias>RXS_CT_NAVIGATIONIMAGETRIPLE</tableAlias>
-									<column>INACTIVEIMG_WIDTH</column>
-									<columnAlias/>
-								</PSXBackEndColumn>
-							</DataLocator>
-							<DataType/>
-						</PSXField>
-						<PSXField forceBinary="no" modificationType="user" name="rolloverimg_type" showInPreview="yes" showInSummary="yes" type="local" userCustomizable="yes" userSearchable="yes">
-							<DataLocator>
-								<PSXBackEndColumn id="0">
-									<tableAlias>RXS_CT_NAVIGATIONIMAGETRIPLE</tableAlias>
-									<column>ROLLOVERIMG_TYPE</column>
-									<columnAlias/>
-								</PSXBackEndColumn>
-							</DataLocator>
-							<DataType>text</DataType>
-							<DataFormat>50</DataFormat>
-							<OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
-						</PSXField>
-						<PSXField forceBinary="no" modificationType="user" name="activeimg_filename" showInPreview="yes" showInSummary="yes" type="local" userCustomizable="yes" userSearchable="yes">
+						<PSXField forceBinary="no" mimetype="text/plain" modificationType="user" name="activeimg_filename" showInPreview="yes" showInSummary="yes" type="local">
 							<DataLocator>
 								<PSXBackEndColumn id="0">
 									<tableAlias>RXS_CT_NAVIGATIONIMAGETRIPLE</tableAlias>
 									<column>ACTIVEIMG_FILENAME</column>
-									<columnAlias/>
+									<columnAlias></columnAlias>
 								</PSXBackEndColumn>
 							</DataLocator>
 							<DataType>text</DataType>
 							<DataFormat>50</DataFormat>
 							<OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+							<PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
 						</PSXField>
-						<PSXField forceBinary="no" modificationType="user" name="activeimg_width" showInPreview="yes" showInSummary="yes" type="local" userCustomizable="yes" userSearchable="yes">
+						<PSXField forceBinary="no" mimetype="text/plain" modificationType="user" name="activeimg_hash" showInPreview="yes" showInSummary="yes" type="local">
 							<DataLocator>
 								<PSXBackEndColumn id="0">
 									<tableAlias>RXS_CT_NAVIGATIONIMAGETRIPLE</tableAlias>
-									<column>ACTIVEIMG_WIDTH</column>
-									<columnAlias/>
-								</PSXBackEndColumn>
-							</DataLocator>
-							<DataType>text</DataType>
-							<DataFormat>50</DataFormat>
-							<OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
-						</PSXField>
-						<PSXField forceBinary="no" modificationType="user" name="rolloverimg_width" showInPreview="yes" showInSummary="yes" type="local" userCustomizable="yes" userSearchable="yes">
-							<DataLocator>
-								<PSXBackEndColumn id="0">
-									<tableAlias>RXS_CT_NAVIGATIONIMAGETRIPLE</tableAlias>
-									<column>ROLLOVERIMG_WIDTH</column>
-									<columnAlias/>
-								</PSXBackEndColumn>
-							</DataLocator>
-							<DataType>text</DataType>
-							<DataFormat>50</DataFormat>
-							<OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
-						</PSXField>
-						<PSXField forceBinary="no" modificationType="user" name="inactiveimg_height" showInPreview="yes" showInSummary="yes" type="local" userCustomizable="yes" userSearchable="yes">
-							<DataLocator>
-								<PSXBackEndColumn id="0">
-									<tableAlias>RXS_CT_NAVIGATIONIMAGETRIPLE</tableAlias>
-									<column>INACTIVEIMG_HEIGHT</column>
-									<columnAlias/>
-								</PSXBackEndColumn>
-							</DataLocator>
-							<DataType/>
-						</PSXField>
-						<PSXField forceBinary="no" modificationType="user" name="inactiveimg_filename" showInPreview="yes" showInSummary="yes" type="local" userCustomizable="yes" userSearchable="yes">
-							<DataLocator>
-								<PSXBackEndColumn id="0">
-									<tableAlias>RXS_CT_NAVIGATIONIMAGETRIPLE</tableAlias>
-									<column>INACTIVEIMG_FILENAME</column>
-									<columnAlias/>
-								</PSXBackEndColumn>
-							</DataLocator>
-							<DataType/>
-							<PSXPropertySet>
-								<PSXProperty locked="no" name="cleanupBrokenInlineLinks">
-									<Value type="Boolean">no</Value>
-								</PSXProperty>
-								<PSXProperty locked="no" name="mayHaveInlineLinks">
-									<Value type="Boolean">no</Value>
-								</PSXProperty>
-							</PSXPropertySet>
-						</PSXField>
-						<PSXField clearBinaryParam="yes" forceBinary="yes" modificationType="user" name="inactiveimg" showInPreview="yes" showInSummary="no" type="local" userCustomizable="yes" userSearchable="no">
-							<DataLocator>
-								<PSXBackEndColumn id="0">
-									<tableAlias>RXS_CT_NAVIGATIONIMAGETRIPLE</tableAlias>
-									<column>INACTIVEIMG</column>
-									<columnAlias/>
-								</PSXBackEndColumn>
-							</DataLocator>
-							<DataType/>
-							<OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
-							<PSXPropertySet>
-								<PSXProperty locked="no" name="cleanupBrokenInlineLinks">
-									<Value type="Boolean">no</Value>
-								</PSXProperty>
-								<PSXProperty locked="no" name="mayHaveInlineLinks">
-									<Value type="Boolean">no</Value>
-								</PSXProperty>
-							</PSXPropertySet>
-						</PSXField>
-						<PSXField forceBinary="no" modificationType="user" name="activeimg_type" showInPreview="yes" showInSummary="yes" type="local" userCustomizable="yes" userSearchable="yes">
-							<DataLocator>
-								<PSXBackEndColumn id="0">
-									<tableAlias>RXS_CT_NAVIGATIONIMAGETRIPLE</tableAlias>
-									<column>ACTIVEIMG_TYPE</column>
-									<columnAlias/>
-								</PSXBackEndColumn>
-							</DataLocator>
-							<DataType>text</DataType>
-							<DataFormat>50</DataFormat>
-							<OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
-						</PSXField>
-						<PSXField forceBinary="no" modificationType="user" name="inactiveimg_type" showInPreview="yes" showInSummary="yes" type="local" userCustomizable="yes" userSearchable="yes">
-							<DataLocator>
-								<PSXBackEndColumn id="0">
-									<tableAlias>RXS_CT_NAVIGATIONIMAGETRIPLE</tableAlias>
-									<column>INACTIVEIMG_TYPE</column>
-									<columnAlias/>
-								</PSXBackEndColumn>
-							</DataLocator>
-							<DataType/>
-							<PSXPropertySet>
-								<PSXProperty locked="no" name="cleanupBrokenInlineLinks">
-									<Value type="Boolean">no</Value>
-								</PSXProperty>
-								<PSXProperty locked="no" name="mayHaveInlineLinks">
-									<Value type="Boolean">no</Value>
-								</PSXProperty>
-							</PSXPropertySet>
-						</PSXField>
-						<PSXField forceBinary="no" modificationType="user" name="rolloverimg_ext" showInPreview="yes" showInSummary="yes" type="local" userCustomizable="yes" userSearchable="yes">
-							<DataLocator>
-								<PSXBackEndColumn id="0">
-									<tableAlias>RXS_CT_NAVIGATIONIMAGETRIPLE</tableAlias>
-									<column>ROLLOVERIMG_EXT</column>
-									<columnAlias/>
-								</PSXBackEndColumn>
-							</DataLocator>
-							<DataType>text</DataType>
-							<DataFormat>50</DataFormat>
-							<OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
-							<FieldRules>
-								<PSXVisibilityRules dataHiding="xsl">
-									<PSXRule boolean="and">
-										<PSXConditional id="0">
-											<variable>
-												<PSXTextLiteral id="0">
-													<text>1</text>
-												</PSXTextLiteral>
-											</variable>
-											<operator>=</operator>
-											<value>
-												<PSXTextLiteral id="0">
-													<text>2</text>
-												</PSXTextLiteral>
-											</value>
-											<boolean>AND</boolean>
-										</PSXConditional>
-									</PSXRule>
-								</PSXVisibilityRules>
-							</FieldRules>
-						</PSXField>
-						<PSXField forceBinary="no" modificationType="user" name="activeimg_height" showInPreview="yes" showInSummary="yes" type="local" userCustomizable="yes" userSearchable="yes">
-							<DataLocator>
-								<PSXBackEndColumn id="0">
-									<tableAlias>RXS_CT_NAVIGATIONIMAGETRIPLE</tableAlias>
-									<column>ACTIVEIMG_HEIGHT</column>
-									<columnAlias/>
-								</PSXBackEndColumn>
-							</DataLocator>
-							<DataType>text</DataType>
-							<DataFormat>50</DataFormat>
-							<OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
-						</PSXField>
-						<PSXField forceBinary="no" modificationType="user" name="rolloverimg_size" showInPreview="yes" showInSummary="yes" type="local" userCustomizable="yes" userSearchable="yes">
-							<DataLocator>
-								<PSXBackEndColumn id="0">
-									<tableAlias>RXS_CT_NAVIGATIONIMAGETRIPLE</tableAlias>
-									<column>ROLLOVERIMG_SIZE</column>
-									<columnAlias/>
-								</PSXBackEndColumn>
-							</DataLocator>
-							<DataType>text</DataType>
-							<DataFormat>50</DataFormat>
-							<OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
-							<FieldRules>
-								<PSXVisibilityRules dataHiding="xsl">
-									<PSXRule boolean="and">
-										<PSXConditional id="0">
-											<variable>
-												<PSXTextLiteral id="0">
-													<text>1</text>
-												</PSXTextLiteral>
-											</variable>
-											<operator>=</operator>
-											<value>
-												<PSXTextLiteral id="0">
-													<text>2</text>
-												</PSXTextLiteral>
-											</value>
-											<boolean>AND</boolean>
-										</PSXConditional>
-									</PSXRule>
-								</PSXVisibilityRules>
-							</FieldRules>
-						</PSXField>
-						<PSXField forceBinary="no" modificationType="user" name="selector" showInPreview="yes" showInSummary="no" type="local" userCustomizable="yes" userSearchable="yes">
-							<DataLocator>
-								<PSXBackEndColumn id="0">
-									<tableAlias>RXS_CT_NAVIGATIONIMAGETRIPLE</tableAlias>
-									<column>SELECTOR</column>
-									<columnAlias/>
-								</PSXBackEndColumn>
-							</DataLocator>
-							<DataType/>
-							<OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
-							<PSXPropertySet>
-								<PSXProperty locked="no" name="cleanupBrokenInlineLinks">
-									<Value type="Boolean">no</Value>
-								</PSXProperty>
-								<PSXProperty locked="no" name="mayHaveInlineLinks">
-									<Value type="Boolean">no</Value>
-								</PSXProperty>
-							</PSXPropertySet>
-						</PSXField>
-						<PSXField clearBinaryParam="yes" forceBinary="yes" modificationType="user" name="activeimg" showInPreview="yes" showInSummary="no" type="local" userCustomizable="yes" userSearchable="no">
-							<DataLocator>
-								<PSXBackEndColumn id="0">
-									<tableAlias>RXS_CT_NAVIGATIONIMAGETRIPLE</tableAlias>
-									<column>ACTIVEIMG</column>
-									<columnAlias/>
+									<column>ACTIVEIMG_HASH</column>
+									<columnAlias></columnAlias>
 								</PSXBackEndColumn>
 							</DataLocator>
 							<DataType>text</DataType>
 							<DataFormat>50</DataFormat>
 							<OccurrenceSettings delimiter=";" dimension="required" multiValuedType="delimited"/>
 							<FieldRules>
-								<PSXFieldValidationRules maxErrorsToStop="10" name="isValidDisplayTitle">
+								<PSXFieldValidationRules maxErrorsToStop="2147483647">
 									<PSXRule boolean="and">
-										<PSXConditional id="1">
-											<variable>
-												<PSXHtmlParameter id="0">
-													<name>activeimg_type</name>
-												</PSXHtmlParameter>
-											</variable>
-											<operator>IS NOT NULL</operator>
-											<value>
-												<PSXTextLiteral id="0">
-													<text/>
-												</PSXTextLiteral>
-											</value>
-											<boolean>AND</boolean>
-										</PSXConditional>
+										<PSXExtensionCallSet id="0">
+											<PSXExtensionCall id="0">
+												<name>Java/global/percussion/content/sys_ValidateRequiredField</name>
+												<PSXExtensionParamValue id="0">
+													<value>
+														<PSXSingleHtmlParameter id="0">
+															<name>activeimg_hash</name>
+														</PSXSingleHtmlParameter>
+													</value>
+												</PSXExtensionParamValue>
+											</PSXExtensionCall>
+										</PSXExtensionCallSet>
 									</PSXRule>
 									<PSXApplyWhen ifFieldEmpty="yes"/>
-									<ErrorMessage>
-										<PSXDisplayText>This field cannot be empty</PSXDisplayText>
-									</ErrorMessage>
 								</PSXFieldValidationRules>
 							</FieldRules>
+							<PSXPropertySet>
+								<PSXProperty locked="yes" name="cleanupBrokenInlineLinks">
+									<Value type="Boolean">no</Value>
+								</PSXProperty>
+								<PSXProperty locked="yes" name="mayHaveInlineLinks">
+									<Value type="Boolean">no</Value>
+								</PSXProperty>
+							</PSXPropertySet>
+							<PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
 						</PSXField>
-						<PSXField forceBinary="no" modificationType="user" name="activeimg_size" showInPreview="yes" showInSummary="yes" type="local" userCustomizable="yes" userSearchable="yes">
+						<PSXField forceBinary="no" mimetype="text/plain" modificationType="user" name="activeimg_height" showInPreview="yes" showInSummary="yes" type="local">
+							<DataLocator>
+								<PSXBackEndColumn id="0">
+									<tableAlias>RXS_CT_NAVIGATIONIMAGETRIPLE</tableAlias>
+									<column>ACTIVEIMG_HEIGHT</column>
+									<columnAlias></columnAlias>
+								</PSXBackEndColumn>
+							</DataLocator>
+							<DataType>text</DataType>
+							<DataFormat>50</DataFormat>
+							<OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+							<PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+						</PSXField>
+						<PSXField forceBinary="no" mimetype="text/plain" modificationType="user" name="activeimg_size" showInPreview="yes" showInSummary="yes" type="local">
 							<DataLocator>
 								<PSXBackEndColumn id="0">
 									<tableAlias>RXS_CT_NAVIGATIONIMAGETRIPLE</tableAlias>
 									<column>ACTIVEIMG_SIZE</column>
-									<columnAlias/>
+									<columnAlias></columnAlias>
 								</PSXBackEndColumn>
 							</DataLocator>
 							<DataType>text</DataType>
@@ -615,57 +350,40 @@
 									</PSXRule>
 								</PSXVisibilityRules>
 							</FieldRules>
+							<PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
 						</PSXField>
-						<PSXField forceBinary="no" modificationType="user" name="inactiveimg_size" showInPreview="yes" showInSummary="yes" type="local" userCustomizable="yes" userSearchable="yes">
+						<PSXField forceBinary="no" mimetype="text/plain" modificationType="user" name="activeimg_type" showInPreview="yes" showInSummary="yes" type="local">
 							<DataLocator>
 								<PSXBackEndColumn id="0">
 									<tableAlias>RXS_CT_NAVIGATIONIMAGETRIPLE</tableAlias>
-									<column>INACTIVEIMG_SIZE</column>
-									<columnAlias/>
+									<column>ACTIVEIMG_TYPE</column>
+									<columnAlias></columnAlias>
 								</PSXBackEndColumn>
 							</DataLocator>
 							<DataType>text</DataType>
 							<DataFormat>50</DataFormat>
 							<OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
-							<FieldRules>
-								<PSXVisibilityRules dataHiding="xsl">
-									<PSXRule boolean="and">
-										<PSXConditional id="0">
-											<variable>
-												<PSXTextLiteral id="0">
-													<text>1</text>
-												</PSXTextLiteral>
-											</variable>
-											<operator>=</operator>
-											<value>
-												<PSXTextLiteral id="0">
-													<text>2</text>
-												</PSXTextLiteral>
-											</value>
-											<boolean>AND</boolean>
-										</PSXConditional>
-									</PSXRule>
-								</PSXVisibilityRules>
-							</FieldRules>
+							<PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
 						</PSXField>
-						<PSXField forceBinary="no" modificationType="user" name="rolloverimg_height" showInPreview="yes" showInSummary="yes" type="local" userCustomizable="yes" userSearchable="yes">
+						<PSXField forceBinary="no" mimetype="text/plain" modificationType="user" name="activeimg_width" showInPreview="yes" showInSummary="yes" type="local">
 							<DataLocator>
 								<PSXBackEndColumn id="0">
 									<tableAlias>RXS_CT_NAVIGATIONIMAGETRIPLE</tableAlias>
-									<column>ROLLOVERIMG_HEIGHT</column>
-									<columnAlias/>
+									<column>ACTIVEIMG_WIDTH</column>
+									<columnAlias></columnAlias>
 								</PSXBackEndColumn>
 							</DataLocator>
 							<DataType>text</DataType>
 							<DataFormat>50</DataFormat>
 							<OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+							<PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
 						</PSXField>
-						<PSXField forceBinary="no" modificationType="user" name="inactiveimg_ext" showInPreview="yes" showInSummary="yes" type="local" userCustomizable="yes" userSearchable="yes">
+						<PSXField forceBinary="no" mimetype="text/plain" modificationType="user" name="inactiveimg_ext" showInPreview="yes" showInSummary="yes" type="local">
 							<DataLocator>
 								<PSXBackEndColumn id="0">
 									<tableAlias>RXS_CT_NAVIGATIONIMAGETRIPLE</tableAlias>
 									<column>INACTIVEIMG_EXT</column>
-									<columnAlias/>
+									<columnAlias></columnAlias>
 								</PSXBackEndColumn>
 							</DataLocator>
 							<DataType>text</DataType>
@@ -691,29 +409,308 @@
 									</PSXRule>
 								</PSXVisibilityRules>
 							</FieldRules>
+							<PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+						</PSXField>
+						<PSXField forceBinary="no" mimetype="text/plain" modificationType="user" name="inactiveimg_filename" showInPreview="yes" showInSummary="yes" type="local">
+							<DataLocator>
+								<PSXBackEndColumn id="0">
+									<tableAlias>RXS_CT_NAVIGATIONIMAGETRIPLE</tableAlias>
+									<column>INACTIVEIMG_FILENAME</column>
+									<columnAlias></columnAlias>
+								</PSXBackEndColumn>
+							</DataLocator>
+							<DataType>text</DataType>
+							<DataFormat>50</DataFormat>
+							<PSXPropertySet>
+								<PSXProperty locked="no" name="cleanupBrokenInlineLinks">
+									<Value type="Boolean">no</Value>
+								</PSXProperty>
+								<PSXProperty locked="no" name="mayHaveInlineLinks">
+									<Value type="Boolean">no</Value>
+								</PSXProperty>
+							</PSXPropertySet>
+							<PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+						</PSXField>
+						<PSXField forceBinary="no" mimetype="text/plain" modificationType="user" name="inactiveimg_hash" showInPreview="yes" showInSummary="yes" type="local">
+							<DataLocator>
+								<PSXBackEndColumn id="0">
+									<tableAlias>RXS_CT_NAVIGATIONIMAGETRIPLE</tableAlias>
+									<column>INACTIVEIMG_HASH</column>
+									<columnAlias></columnAlias>
+								</PSXBackEndColumn>
+							</DataLocator>
+							<DataType>text</DataType>
+							<DataFormat>50</DataFormat>
+							<OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+							<PSXPropertySet>
+								<PSXProperty locked="yes" name="cleanupBrokenInlineLinks">
+									<Value type="Boolean">no</Value>
+								</PSXProperty>
+								<PSXProperty locked="yes" name="mayHaveInlineLinks">
+									<Value type="Boolean">no</Value>
+								</PSXProperty>
+							</PSXPropertySet>
+							<PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="no" visibleToGlobalQuery="yes"/>
+						</PSXField>
+						<PSXField forceBinary="no" mimetype="text/plain" modificationType="user" name="inactiveimg_height" showInPreview="yes" showInSummary="yes" type="local">
+							<DataLocator>
+								<PSXBackEndColumn id="0">
+									<tableAlias>RXS_CT_NAVIGATIONIMAGETRIPLE</tableAlias>
+									<column>INACTIVEIMG_HEIGHT</column>
+									<columnAlias></columnAlias>
+								</PSXBackEndColumn>
+							</DataLocator>
+							<DataType>text</DataType>
+							<DataFormat>50</DataFormat>
+							<PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+						</PSXField>
+						<PSXField forceBinary="no" mimetype="text/plain" modificationType="user" name="inactiveimg_size" showInPreview="yes" showInSummary="yes" type="local">
+							<DataLocator>
+								<PSXBackEndColumn id="0">
+									<tableAlias>RXS_CT_NAVIGATIONIMAGETRIPLE</tableAlias>
+									<column>INACTIVEIMG_SIZE</column>
+									<columnAlias></columnAlias>
+								</PSXBackEndColumn>
+							</DataLocator>
+							<DataType>text</DataType>
+							<DataFormat>50</DataFormat>
+							<OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+							<FieldRules>
+								<PSXVisibilityRules dataHiding="xsl">
+									<PSXRule boolean="and">
+										<PSXConditional id="0">
+											<variable>
+												<PSXTextLiteral id="0">
+													<text>1</text>
+												</PSXTextLiteral>
+											</variable>
+											<operator>=</operator>
+											<value>
+												<PSXTextLiteral id="0">
+													<text>2</text>
+												</PSXTextLiteral>
+											</value>
+											<boolean>AND</boolean>
+										</PSXConditional>
+									</PSXRule>
+								</PSXVisibilityRules>
+							</FieldRules>
+							<PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+						</PSXField>
+						<PSXField forceBinary="no" mimetype="text/plain" modificationType="user" name="inactiveimg_type" showInPreview="yes" showInSummary="yes" type="local">
+							<DataLocator>
+								<PSXBackEndColumn id="0">
+									<tableAlias>RXS_CT_NAVIGATIONIMAGETRIPLE</tableAlias>
+									<column>INACTIVEIMG_TYPE</column>
+									<columnAlias></columnAlias>
+								</PSXBackEndColumn>
+							</DataLocator>
+							<DataType>text</DataType>
+							<DataFormat>50</DataFormat>
+							<PSXPropertySet>
+								<PSXProperty locked="no" name="cleanupBrokenInlineLinks">
+									<Value type="Boolean">no</Value>
+								</PSXProperty>
+								<PSXProperty locked="no" name="mayHaveInlineLinks">
+									<Value type="Boolean">no</Value>
+								</PSXProperty>
+							</PSXPropertySet>
+							<PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+						</PSXField>
+						<PSXField forceBinary="no" mimetype="text/plain" modificationType="user" name="inactiveimg_width" showInPreview="yes" showInSummary="yes" type="local">
+							<DataLocator>
+								<PSXBackEndColumn id="0">
+									<tableAlias>RXS_CT_NAVIGATIONIMAGETRIPLE</tableAlias>
+									<column>INACTIVEIMG_WIDTH</column>
+									<columnAlias></columnAlias>
+								</PSXBackEndColumn>
+							</DataLocator>
+							<DataType>text</DataType>
+							<DataFormat>50</DataFormat>
+							<PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+						</PSXField>
+						<PSXField forceBinary="no" mimetype="text/plain" modificationType="user" name="rolloverimg_ext" showInPreview="yes" showInSummary="yes" type="local">
+							<DataLocator>
+								<PSXBackEndColumn id="0">
+									<tableAlias>RXS_CT_NAVIGATIONIMAGETRIPLE</tableAlias>
+									<column>ROLLOVERIMG_EXT</column>
+									<columnAlias></columnAlias>
+								</PSXBackEndColumn>
+							</DataLocator>
+							<DataType>text</DataType>
+							<DataFormat>50</DataFormat>
+							<OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+							<FieldRules>
+								<PSXVisibilityRules dataHiding="xsl">
+									<PSXRule boolean="and">
+										<PSXConditional id="0">
+											<variable>
+												<PSXTextLiteral id="0">
+													<text>1</text>
+												</PSXTextLiteral>
+											</variable>
+											<operator>=</operator>
+											<value>
+												<PSXTextLiteral id="0">
+													<text>2</text>
+												</PSXTextLiteral>
+											</value>
+											<boolean>AND</boolean>
+										</PSXConditional>
+									</PSXRule>
+								</PSXVisibilityRules>
+							</FieldRules>
+							<PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+						</PSXField>
+						<PSXField forceBinary="no" mimetype="text/plain" modificationType="user" name="rolloverimg_filename" showInPreview="yes" showInSummary="yes" type="local">
+							<DataLocator>
+								<PSXBackEndColumn id="0">
+									<tableAlias>RXS_CT_NAVIGATIONIMAGETRIPLE</tableAlias>
+									<column>ROLLOVERIMG_FILENAME</column>
+									<columnAlias></columnAlias>
+								</PSXBackEndColumn>
+							</DataLocator>
+							<DataType>text</DataType>
+							<DataFormat>50</DataFormat>
+							<OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+							<PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+						</PSXField>
+						<PSXField forceBinary="no" mimetype="text/plain" modificationType="user" name="rolloverimg_hash" showInPreview="yes" showInSummary="yes" type="local">
+							<DataLocator>
+								<PSXBackEndColumn id="0">
+									<tableAlias>RXS_CT_NAVIGATIONIMAGETRIPLE</tableAlias>
+									<column>ROLLOVERIMG_HASH</column>
+									<columnAlias></columnAlias>
+								</PSXBackEndColumn>
+							</DataLocator>
+							<DataType>text</DataType>
+							<DataFormat>50</DataFormat>
+							<OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+							<PSXPropertySet>
+								<PSXProperty locked="yes" name="cleanupBrokenInlineLinks">
+									<Value type="Boolean">no</Value>
+								</PSXProperty>
+								<PSXProperty locked="yes" name="mayHaveInlineLinks">
+									<Value type="Boolean">no</Value>
+								</PSXProperty>
+							</PSXPropertySet>
+							<PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="no" visibleToGlobalQuery="yes"/>
+						</PSXField>
+						<PSXField forceBinary="no" mimetype="text/plain" modificationType="user" name="rolloverimg_height" showInPreview="yes" showInSummary="yes" type="local">
+							<DataLocator>
+								<PSXBackEndColumn id="0">
+									<tableAlias>RXS_CT_NAVIGATIONIMAGETRIPLE</tableAlias>
+									<column>ROLLOVERIMG_HEIGHT</column>
+									<columnAlias></columnAlias>
+								</PSXBackEndColumn>
+							</DataLocator>
+							<DataType>text</DataType>
+							<DataFormat>50</DataFormat>
+							<OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+							<PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+						</PSXField>
+						<PSXField forceBinary="no" mimetype="text/plain" modificationType="user" name="rolloverimg_size" showInPreview="yes" showInSummary="yes" type="local">
+							<DataLocator>
+								<PSXBackEndColumn id="0">
+									<tableAlias>RXS_CT_NAVIGATIONIMAGETRIPLE</tableAlias>
+									<column>ROLLOVERIMG_SIZE</column>
+									<columnAlias></columnAlias>
+								</PSXBackEndColumn>
+							</DataLocator>
+							<DataType>text</DataType>
+							<DataFormat>50</DataFormat>
+							<OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+							<FieldRules>
+								<PSXVisibilityRules dataHiding="xsl">
+									<PSXRule boolean="and">
+										<PSXConditional id="0">
+											<variable>
+												<PSXTextLiteral id="0">
+													<text>1</text>
+												</PSXTextLiteral>
+											</variable>
+											<operator>=</operator>
+											<value>
+												<PSXTextLiteral id="0">
+													<text>2</text>
+												</PSXTextLiteral>
+											</value>
+											<boolean>AND</boolean>
+										</PSXConditional>
+									</PSXRule>
+								</PSXVisibilityRules>
+							</FieldRules>
+							<PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+						</PSXField>
+						<PSXField forceBinary="no" mimetype="text/plain" modificationType="user" name="rolloverimg_type" showInPreview="yes" showInSummary="yes" type="local">
+							<DataLocator>
+								<PSXBackEndColumn id="0">
+									<tableAlias>RXS_CT_NAVIGATIONIMAGETRIPLE</tableAlias>
+									<column>ROLLOVERIMG_TYPE</column>
+									<columnAlias></columnAlias>
+								</PSXBackEndColumn>
+							</DataLocator>
+							<DataType>text</DataType>
+							<DataFormat>50</DataFormat>
+							<OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+							<PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+						</PSXField>
+						<PSXField forceBinary="no" mimetype="text/plain" modificationType="user" name="rolloverimg_width" showInPreview="yes" showInSummary="yes" type="local">
+							<DataLocator>
+								<PSXBackEndColumn id="0">
+									<tableAlias>RXS_CT_NAVIGATIONIMAGETRIPLE</tableAlias>
+									<column>ROLLOVERIMG_WIDTH</column>
+									<columnAlias></columnAlias>
+								</PSXBackEndColumn>
+							</DataLocator>
+							<DataType>text</DataType>
+							<DataFormat>50</DataFormat>
+							<OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+							<PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+						</PSXField>
+						<PSXField forceBinary="no" mimetype="text/plain" modificationType="user" name="selector" showInPreview="yes" showInSummary="no" type="local">
+							<DataLocator>
+								<PSXBackEndColumn id="0">
+									<tableAlias>RXS_CT_NAVIGATIONIMAGETRIPLE</tableAlias>
+									<column>SELECTOR</column>
+									<columnAlias></columnAlias>
+								</PSXBackEndColumn>
+							</DataLocator>
+							<DataType>text</DataType>
+							<DataFormat>50</DataFormat>
+							<OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+							<PSXPropertySet>
+								<PSXProperty locked="no" name="cleanupBrokenInlineLinks">
+									<Value type="Boolean">no</Value>
+								</PSXProperty>
+								<PSXProperty locked="no" name="mayHaveInlineLinks">
+									<Value type="Boolean">no</Value>
+								</PSXProperty>
+							</PSXPropertySet>
+							<PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
 						</PSXField>
 					</PSXFieldSet>
 					<PSXUIDefinition>
 						<PSXDisplayMapper fieldSetRef="RXS_CT_NAVIGATIONIMAGETRIPLE" id="0">
 							<PSXDisplayMapping>
 								<FieldRef>sys_title</FieldRef>
-                        <PSXUISet accessKey="s"/>
+								<PSXUISet accessKey="s"/>
 							</PSXDisplayMapping>
 							<PSXDisplayMapping>
 								<FieldRef>displaytitle</FieldRef>
-                        <PSXUISet accessKey="t"/>
+								<PSXUISet accessKey="t"/>
 							</PSXDisplayMapping>
 							<PSXDisplayMapping>
 								<FieldRef>sys_contentstartdate</FieldRef>
-                        <PSXUISet accessKey="D"/>
+								<PSXUISet accessKey="D"/>
 							</PSXDisplayMapping>
 							<PSXDisplayMapping>
-								<FieldRef>activeimg</FieldRef>
-                        <PSXUISet accessKey="m">
+								<FieldRef>activeimg_hash</FieldRef>
+								<PSXUISet accessKey="m">
 									<Label>
 										<PSXDisplayText>Active Image:</PSXDisplayText>
 									</Label>
-									<PSXControlRef id="8392" name="sys_File"/>
+									<PSXControlRef id="10010" name="sys_HashedFile"/>
 									<ErrorLabel>
 										<PSXDisplayText>Active Image:</PSXDisplayText>
 									</ErrorLabel>
@@ -864,12 +861,12 @@
 								</PSXUISet>
 							</PSXDisplayMapping>
 							<PSXDisplayMapping>
-								<FieldRef>inactiveimg</FieldRef>
-                        <PSXUISet accessKey="n">
+								<FieldRef>inactiveimg_hash</FieldRef>
+								<PSXUISet accessKey="n">
 									<Label>
-										<PSXDisplayText>Inactive Image:</PSXDisplayText>
+										<PSXDisplayText>Inactive Image :</PSXDisplayText>
 									</Label>
-									<PSXControlRef id="1100" name="sys_File"/>
+									<PSXControlRef id="10013" name="sys_HashedFile"/>
 									<ErrorLabel>
 										<PSXDisplayText>Inactive Image:</PSXDisplayText>
 									</ErrorLabel>
@@ -1044,12 +1041,12 @@
 								</PSXUISet>
 							</PSXDisplayMapping>
 							<PSXDisplayMapping>
-								<FieldRef>rolloverimg</FieldRef>
-                        <PSXUISet accessKey="r">
+								<FieldRef>rolloverimg_hash</FieldRef>
+								<PSXUISet accessKey="r">
 									<Label>
 										<PSXDisplayText>Rollover Image:</PSXDisplayText>
 									</Label>
-									<PSXControlRef id="8392" name="sys_File"/>
+									<PSXControlRef id="10016" name="sys_HashedFile"/>
 									<ErrorLabel>
 										<PSXDisplayText>Rollover Image:</PSXDisplayText>
 									</ErrorLabel>
@@ -1201,7 +1198,7 @@
 							</PSXDisplayMapping>
 							<PSXDisplayMapping>
 								<FieldRef>selector</FieldRef>
-                        <PSXUISet accessKey="S">
+								<PSXUISet accessKey="S">
 									<Label>
 										<PSXDisplayText>Image Selector:</PSXDisplayText>
 									</Label>
@@ -1222,50 +1219,56 @@
 							</PSXDisplayMapping>
 							<PSXDisplayMapping>
 								<FieldRef>sys_communityid</FieldRef>
-                        <PSXUISet accessKey="m"/>
+								<PSXUISet accessKey="m"/>
 							</PSXDisplayMapping>
 							<PSXDisplayMapping>
 								<FieldRef>sys_workflowid</FieldRef>
-                        <PSXUISet accessKey="w"/>
+								<PSXUISet accessKey="w"/>
 							</PSXDisplayMapping>
 							<PSXDisplayMapping>
 								<FieldRef>sys_lang</FieldRef>
-                        <PSXUISet accessKey="l"/>
+								<PSXUISet accessKey="l"/>
 							</PSXDisplayMapping>
 							<PSXDisplayMapping>
 								<FieldRef>sys_currentview</FieldRef>
 								<PSXUISet/>
 							</PSXDisplayMapping>
+							<PSXDisplayMapping>
+								<FieldRef>sys_hibernateVersion</FieldRef>
+								<PSXUISet/>
+							</PSXDisplayMapping>
 						</PSXDisplayMapper>
 					</PSXUIDefinition>
 				</PSXContentEditorMapper>
-            <userProperties>
-               <userProperty name="Control8392_Dependency5045">sys_FileInfo</userProperty>
-               <userProperty name="Control8392_DependencyIds">5045</userProperty>
-               <userProperty name="Control1100_Dependency5045">sys_FileInfo</userProperty>
-               <userProperty name="Control1100_DependencyIds">5045</userProperty>
-            </userProperties>
+				<userProperties>
+					<userProperty name="Control10016_DependencyIds">10017</userProperty>
+					<userProperty name="Control10016_Dependency10017">sys_HashedFileInfo</userProperty>
+					<userProperty name="Control10013_DependencyIds">10017</userProperty>
+					<userProperty name="Control10013_Dependency10017">sys_HashedFileInfo</userProperty>
+					<userProperty name="Control10010_DependencyIds">10017</userProperty>
+					<userProperty name="Control10010_Dependency10017">sys_HashedFileInfo</userProperty>
+				</userProperties>
 			</PSXContentEditorPipe>
 			<PSXPageDataTank id="1179">
 				<schemaSource>file:navigationimage.xml</schemaSource>
-				<actionTypeXmlField/>
+				<actionTypeXmlField></actionTypeXmlField>
 			</PSXPageDataTank>
 			<PSXRequestor directDataStream="no" id="0">
-				<requestPage>percNavImage</requestPage>
+				<requestPage>rffNavImage</requestPage>
 				<SelectionParams/>
 				<ValidationRules/>
 				<characterEncoding>UTF-8</characterEncoding>
 				<MimeProperties>
-					<htm>
-						<PSXTextLiteral id="0">
-							<text>text/html</text>
-						</PSXTextLiteral>
-					</htm>
 					<html>
 						<PSXTextLiteral id="0">
 							<text>text/html</text>
 						</PSXTextLiteral>
 					</html>
+					<htm>
+						<PSXTextLiteral id="0">
+							<text>text/html</text>
+						</PSXTextLiteral>
+					</htm>
 				</MimeProperties>
 			</PSXRequestor>
 		</PSXDataSet>

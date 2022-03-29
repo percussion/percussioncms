@@ -328,6 +328,8 @@
         <include name="JRE-32/**"/>
         <include name="JRE-64/**"/>
         <include name="logs/**"/>
+        <include name="ObjectStore/psx_cerffNavon.xml"/>
+        <include name="ObjectStore/psx_cerffNavImage.xml"/>
         <include name="sys_resources/**" />
         <!-- Delete any left over translations artifacts -->
         <include name="tobetranslated.tmx"/>
@@ -390,6 +392,10 @@
         <exclude name="ObjectStore"/>
         <exclude name="jetty/base/logs"/>
         <exclude name="rxconfig/Installer/*.bat"/>
+        <exclude name="ObjectStore/psx_cerff*.xml"/>
+        <exclude name="ObjectStore/psx_cepercNavImage.xml"/>
+        <exclude name="ObjectStore/psx_cepercNavon.xml"/>
+        <exclude name="ObjectStore/psx_cepercNavTree.xml"/>
     </patternset>
 
     <patternset id="upgrade.preserve">

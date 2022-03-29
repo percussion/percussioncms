@@ -43,11 +43,15 @@
 	</PSXRevisionHistory>
    <PSXAcl id="0">
       <PSXAclEntry id="0" type="user">
-         <name>Anonymous</name>
+         <name>Default</name>
+         <securityProviderType>Any</securityProviderType>
+         <securityProviderInstance/>
          <applicationAccessLevel dataCreate="yes" dataDelete="yes" dataQuery="yes" dataUpdate="yes" designDelete="no" designRead="no" designUpdate="no" modifyAcl="no"/>
       </PSXAclEntry>
-      <PSXAclEntry id="0" type="user">
-         <name>Default</name>
+      <PSXAclEntry id="0" type="role">
+         <name>Admin</name>
+         <securityProviderType>Any</securityProviderType>
+         <securityProviderInstance/>
          <applicationAccessLevel dataCreate="yes" dataDelete="yes" dataQuery="yes" dataUpdate="yes" designDelete="yes" designRead="yes" designUpdate="yes" modifyAcl="yes"/>
       </PSXAclEntry>
       <multiMembershipBehavior/>

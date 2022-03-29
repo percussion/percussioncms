@@ -77,6 +77,17 @@
                </PSXAppNamedItemIdContext>
             </PSXAppNamedItemIdContext>
          </PSXApplicationIDTypeMapping>
+         <PSXApplicationIDTypeMapping type="sys_none" value="50">
+            <PSXAppNamedItemIdContext name="maxlength" type="Param">
+               <PSXAppNamedItemIdContext name="sys_EditBox" type="Control">
+                  <PSXAppUISetIdContext>
+                     <PSXAppNamedItemIdContext name="inactiveimg_hash" type="DisplayMapping">
+                        <PSXAppDisplayMapperIdContext fieldSetRef="RXS_CT_NAVIGATIONIMAGETRIPLE" id="0"/>
+                     </PSXAppNamedItemIdContext>
+                  </PSXAppUISetIdContext>
+               </PSXAppNamedItemIdContext>
+            </PSXAppNamedItemIdContext>
+         </PSXApplicationIDTypeMapping>
       </PSXApplicationIDTypesElement>
    </PSXApplicationIDTypesResource>
 </PSXApplicationIDTypes>

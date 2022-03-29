@@ -45,6 +45,7 @@ import com.percussion.design.objectstore.PSTableSet;
 import com.percussion.design.objectstore.PSUIDefinition;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
 import com.percussion.server.IPSRequestContext;
+import com.percussion.server.PSConsole;
 import com.percussion.server.PSServer;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.data.IPSCloneTuner;
@@ -321,15 +322,16 @@ public class PSItemDefinition extends PSItemDefSummary implements IPSComponent,
          }
          else if (o == null)
          {
-            throw new RuntimeException("Field " + fieldName 
-                  + " referenced by mapping not found.");
+
+            throw new RuntimeException("Field " + fieldName
+                    + " referenced by mapping not found.");
          }
          else
          {
-            throw new RuntimeException("Field " + fieldName 
-                  + " referenced by mapping not found." 
-                  + " Object of class " + o.getClass() 
-                  + " found instead of PSField");
+            throw new RuntimeException("Field " + fieldName
+                    + " referenced by mapping not found."
+                    + " Object of class " + o.getClass()
+                    + " found instead of PSField");
          }
       }
       return fields;

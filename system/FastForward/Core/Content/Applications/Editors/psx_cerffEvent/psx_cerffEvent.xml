@@ -43,14 +43,14 @@
    </PSXRevisionHistory>
    <PSXAcl id="0">
       <PSXAclEntry id="0" type="user">
-         <name>Anonymous</name>
+         <name>Default</name>
          <applicationAccessLevel dataCreate="yes" dataDelete="yes" dataQuery="yes" dataUpdate="yes" designDelete="no" designRead="no" designUpdate="no" modifyAcl="no"/>
       </PSXAclEntry>
-      <PSXAclEntry id="0" type="user">
-         <name>Default</name>
+      <PSXAclEntry id="0" type="role">
+         <name>Admin</name>
          <applicationAccessLevel dataCreate="yes" dataDelete="yes" dataQuery="yes" dataUpdate="yes" designDelete="yes" designRead="yes" designUpdate="yes" modifyAcl="yes"/>
       </PSXAclEntry>
-      <multiMembershipBehavior/>
+      <multiMembershipBehavior>mergeMaximumAccess</multiMembershipBehavior>
    </PSXAcl>
    <maxThreads>-1</maxThreads>
    <maxRequestTime>-1</maxRequestTime>

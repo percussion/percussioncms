@@ -220,7 +220,7 @@
                      <DataLocator>
                         <PSXBackEndColumn id="0">
                            <tableAlias>CT_PERCFILEASSET</tableAlias>
-                           <column>ITEM_FILE_ATTACHMENTX</column>
+                           <column>ITEM_FILE_ATTACHMENT</column>
                            <columnAlias/>
                         </PSXBackEndColumn>
                      </DataLocator>

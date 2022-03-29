@@ -29,7 +29,7 @@
          <allowsnull>yes</allowsnull>
          <defaultvalue/>
       </column>
-      <column action="c" limitSizeForIndex="n" name="ITEM_FILE_ATTACHMENTX">
+      <column action="c" limitSizeForIndex="n" name="ITEM_FILE_ATTACHMENT">
          <jdbctype>BLOB</jdbctype>
          <allowsnull>yes</allowsnull>
          <defaultvalue/>

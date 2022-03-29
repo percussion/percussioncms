@@ -1184,11 +1184,15 @@ public class PSContentTypeDependencyHandler
       }
       catch (Exception e)
       {
+         String appname = itemFile.toString();
+         if(itemDef != null){
+            appname = itemDef.getAppName();
+         }
          String msg = "\n Error was: {}" ;
          log.error(msg,PSExceptionUtils.getMessageForLog(e));
          throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR,
                "Error occurred while installing content type:"
-                     + itemDef.getAppName() + msg);
+                     + appname + msg);
       }
 
       // make sure mapping is reset after update
@@ -1709,7 +1713,7 @@ public class PSContentTypeDependencyHandler
 
       PSContentEditor ce = item.getContentEditor();
       PSCmsObject objType = PSServer.getCmsObject(ce.getObjectType());
-      if (!objType.isWorkflowable())
+      if (objType == null || !objType.isWorkflowable())
          return; // do nothing if the object type is not workflowable
       
       PSIdMap idMap = ctx.getCurrentIdMap();
