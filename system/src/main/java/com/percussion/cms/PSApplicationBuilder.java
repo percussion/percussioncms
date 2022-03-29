@@ -1686,7 +1686,7 @@ public class PSApplicationBuilder
 
          // add contentCheckoutUsername = username
          IPSDocumentMapping value = new PSUserContext("User/Name");
-         if (!ceHandler.getCmsObject().isWorkflowable())
+         if (ceHandler.getCmsObject() == null || !ceHandler.getCmsObject().isWorkflowable())
             value = new PSTextLiteral(""); //Set empty if not workflowable 
          mapping =
             new PSSystemMapping(sysTable, "CONTENTCHECKOUTUSERNAME", value);

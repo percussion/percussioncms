@@ -1017,6 +1017,9 @@ public class PSDesignerConnection
                      }catch (PSAuthorizationException e){
                         throw new PSServerException(e.getMessage(),e);
                      } catch (Exception e) {
+                        if(e instanceof PSServerException){
+                           throw e;
+                        }
                         throw new PSServerException(
                                 IPSConnectionErrors.SERVER_NOT_RESPONDING,
                                 m_requestLine);

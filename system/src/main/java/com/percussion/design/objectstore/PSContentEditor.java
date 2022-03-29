@@ -1036,7 +1036,7 @@ public class PSContentEditor extends PSDataSet
                IPSObjectStoreErrors.INVALID_CONTENT_TYPE, String
                      .valueOf(m_contentType));
       }
-      if (cmsObject.isWorkflowable() && (m_workflowId <= 0))
+      if (cmsObject != null && cmsObject.isWorkflowable() && (m_workflowId <= 0))
       {
          context.validationError(this,
                IPSObjectStoreErrors.INVALID_WORKFLOW_ID, String
@@ -1173,7 +1173,7 @@ public class PSContentEditor extends PSDataSet
    }
    
    /**
-    * Gets the icon value. If the {@link getIconSource()} is none then the value
+    * Gets the icon value. If the IconSource is none then the value
     * will be <code>null</code>. The value depends on the mode. See
     * ICON_SOURCE_XXX for the details.
     */

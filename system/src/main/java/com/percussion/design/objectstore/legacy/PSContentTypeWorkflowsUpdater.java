@@ -98,7 +98,7 @@ public class PSContentTypeWorkflowsUpdater implements IPSComponentUpdater
       // do nothing if the editor is not workflowable
       PSCmsObject cmsObject = PSServer.getCmsObjectRequired(editor
             .getObjectType());
-      if (!cmsObject.isWorkflowable())
+      if (cmsObject == null || !cmsObject.isWorkflowable())
          return;
       //get the workflow rels from table
       List<IPSGuid> wfGuids = new ArrayList<>();
