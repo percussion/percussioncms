@@ -41,17 +41,17 @@
 			<time>20050318T182226595</time>
 		</PSXRevisionEntry>
 	</PSXRevisionHistory>
-   <PSXAcl id="0">
-      <PSXAclEntry id="0" type="user">
-         <name>Anonymous</name>
-         <applicationAccessLevel dataCreate="yes" dataDelete="yes" dataQuery="yes" dataUpdate="yes" designDelete="no" designRead="no" designUpdate="no" modifyAcl="no"/>
-      </PSXAclEntry>
-      <PSXAclEntry id="0" type="user">
-         <name>Default</name>
-         <applicationAccessLevel dataCreate="yes" dataDelete="yes" dataQuery="yes" dataUpdate="yes" designDelete="yes" designRead="yes" designUpdate="yes" modifyAcl="yes"/>
-      </PSXAclEntry>
-      <multiMembershipBehavior/>
-   </PSXAcl>
+	<PSXAcl id="0">
+		<PSXAclEntry id="0" type="user">
+			<name>Anonymous</name>
+			<applicationAccessLevel dataCreate="yes" dataDelete="yes" dataQuery="yes" dataUpdate="yes" designDelete="no" designRead="no" designUpdate="no" modifyAcl="no"/>
+		</PSXAclEntry>
+		<PSXAclEntry id="0" type="user">
+			<name>Default</name>
+			<applicationAccessLevel dataCreate="yes" dataDelete="yes" dataQuery="yes" dataUpdate="yes" designDelete="yes" designRead="yes" designUpdate="yes" modifyAcl="yes"/>
+		</PSXAclEntry>
+		<multiMembershipBehavior/>
+	</PSXAcl>
 	<maxThreads>-1</maxThreads>
 	<maxRequestTime>-1</maxRequestTime>
 	<maxRequestsInQueue>-1</maxRequestsInQueue>
@@ -145,18 +145,18 @@
 			</MimeProperties>
 		</PSXRequestor>
 	</PSXDataSet>
-<PSXContentEditor contentType="307" enableRelatedContent="no" iconSource="2" iconValue="img1_ext" objectType="1" workflowId="5">
+	<PSXContentEditor contentType="307" iconSource="2" iconValue="img1_ext" enableRelatedContent="no" objectType="1" workflowId="5">
 		<PSXDataSet id="41">
-    <name>rffImage</name>
+			<name>rffImage</name>
 			<description>default template</description>
 			<transactionType>none</transactionType>
 			<PSXContentEditorPipe id="0">
 				<name>cePipe</name>
 				<description>This is the ContentEditorLocaDef for Default ContentType</description>
 				<InputDataExits>
-        <PSXExtensionCallSet id="0">
-          <PSXExtensionCall id="10019">
-            <name>Java/global/percussion/generic/sys_HashedFileInfo</name>
+					<PSXExtensionCallSet id="39">
+						<PSXExtensionCall id="1630">
+							<name>Java/global/percussion/generic/sys_HashedFileInfo</name>
 						</PSXExtensionCall>
 						<PSXExtensionCall id="0">
 							<name>Java/global/percussion/exit/sys_imageInfoExtractor</name>
@@ -202,8 +202,7 @@
 						<PSXTableLocator>
 							<PSXBackEndCredential id="275">
 								<alias>contentCredential</alias>
-              <comment></comment>
-              <datasource></datasource>
+								<datasource/>
 							</PSXBackEndCredential>
 						</PSXTableLocator>
 						<PSXTableRef alias="RXS_CT_IMAGE" name="RXS_CT_IMAGE"/>
@@ -218,12 +217,18 @@
 						<SharedFieldGroupName>shared</SharedFieldGroupName>
 						<SharedFieldGroupName>sharedimage</SharedFieldGroupName>
 						<SharedFieldExcludes>
-						   <FieldRef>keywords</FieldRef>
-						   <FieldRef>body</FieldRef>
-						   <FieldRef>callout</FieldRef>
+							<FieldRef>keywords</FieldRef>
+							<FieldRef>body</FieldRef>
+							<FieldRef>callout</FieldRef>
 						</SharedFieldExcludes>
 					</SharedFieldIncludes>
 					<PSXFieldSet name="RXS_CT_Image" repeatability="zeroOrMore" supportsSequencing="yes" type="parent" userSearchable="yes">
+						<PSXFieldSet name="shared" repeatability="oneOrMore" supportsSequencing="no" type="multiPropertySimpleChild" userSearchable="yes">
+							<PSXField forceBinary="no" modificationType="user" name="filename" showInPreview="no" showInSummary="no" type="shared">
+								<DataType/>
+								<PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+							</PSXField>
+						</PSXFieldSet>
 						<PSXField forceBinary="no" mimetype="text/plain" modificationType="user" name="img_category" showInPreview="yes" showInSummary="no" type="local">
 							<DataLocator>
 								<PSXBackEndColumn id="0">
@@ -236,71 +241,57 @@
 							<DataFormat>50</DataFormat>
 							<OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
 							<PSXPropertySet>
-              <PSXProperty locked="no" name="cleanupBrokenInlineLinks">
+								<PSXProperty locked="no" name="mayHaveInlineLinks">
 									<Value type="Boolean">no</Value>
 								</PSXProperty>
-              <PSXProperty locked="no" name="mayHaveInlineLinks">
+								<PSXProperty locked="no" name="cleanupBrokenInlineLinks">
 									<Value type="Boolean">no</Value>
 								</PSXProperty>
 							</PSXPropertySet>
 							<PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
 						</PSXField>
-          <PSXFieldSet name="shared" repeatability="oneOrMore" supportsSequencing="no" type="multiPropertySimpleChild" userSearchable="yes">
-            <PSXField forceBinary="no" modificationType="user" name="filename" showInPreview="no" showInSummary="no" type="shared">
-              <DataType></DataType>
-              <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
-            </PSXField>
-          </PSXFieldSet>
 						<PSXFieldSet name="sharedimage" repeatability="oneOrMore" supportsSequencing="no" type="multiPropertySimpleChild" userSearchable="yes">
-            <PSXField forceBinary="no" modificationType="user" name="img1_filename" showInPreview="yes" showInSummary="no" type="shared">
-              <DataType></DataType>
+							<PSXField forceBinary="no" modificationType="user" name="img1_type" showInPreview="yes" showInSummary="no" type="shared">
+								<DataType/>
 								<OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
 								<PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
 							</PSXField>
-            <PSXField forceBinary="no" modificationType="user" name="img1_hash" showInPreview="yes" showInSummary="yes" type="shared">
-              <DataType></DataType>
-              <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="no" visibleToGlobalQuery="yes"/>
-            </PSXField>
-            <PSXField forceBinary="no" modificationType="user" name="img1_type" showInPreview="yes" showInSummary="no" type="shared">
-              <DataType></DataType>
+							<PSXField forceBinary="no" modificationType="user" name="img1_filename" showInPreview="yes" showInSummary="no" type="shared">
+								<DataType/>
 								<OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
 								<PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
 							</PSXField>
-            <PSXField forceBinary="no" modificationType="user" name="img2_hash" showInPreview="yes" showInSummary="yes" type="shared">
-              <DataType></DataType>
-              <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="no" visibleToGlobalQuery="yes"/>
-            </PSXField>
 						</PSXFieldSet>
 					</PSXFieldSet>
 					<PSXUIDefinition>
 						<PSXDisplayMapper fieldSetRef="RXS_CT_Image" id="0">
 							<PSXDisplayMapping>
 								<FieldRef>sys_title</FieldRef>
-                        <PSXUISet accessKey="s"/>
+								<PSXUISet accessKey="s"/>
 							</PSXDisplayMapping>
 							<PSXDisplayMapping>
 								<FieldRef>displaytitle</FieldRef>
-                        <PSXUISet accessKey="t"/>
+								<PSXUISet accessKey="t"/>
 							</PSXDisplayMapping>
 							<PSXDisplayMapping>
 								<FieldRef>sys_contentstartdate</FieldRef>
-                        <PSXUISet accessKey="D"/>
+								<PSXUISet accessKey="D"/>
 							</PSXDisplayMapping>
 							<PSXDisplayMapping>
 								<FieldRef>sys_contentexpirydate</FieldRef>
-                        <PSXUISet accessKey="e"/>
+								<PSXUISet accessKey="e"/>
 							</PSXDisplayMapping>
 							<PSXDisplayMapping>
 								<FieldRef>sys_reminderdate</FieldRef>
-                        <PSXUISet accessKey="r"/>
+								<PSXUISet accessKey="r"/>
 							</PSXDisplayMapping>
 							<PSXDisplayMapping>
 								<FieldRef>description</FieldRef>
-                        <PSXUISet accessKey="D"/>
+								<PSXUISet accessKey="D"/>
 							</PSXDisplayMapping>
 							<PSXDisplayMapping>
-              			<FieldRef>img1_hash</FieldRef>
-                        <PSXUISet accessKey="m"/>
+								<FieldRef>img1_hash</FieldRef>
+								<PSXUISet accessKey="m"/>
 							</PSXDisplayMapping>
 							<PSXDisplayMapping>
 								<FieldRef>img1_filename</FieldRef>
@@ -362,11 +353,11 @@
 							</PSXDisplayMapping>
 							<PSXDisplayMapping>
 								<FieldRef>img_alt</FieldRef>
-                        <PSXUISet accessKey="x"/>
+								<PSXUISet accessKey="x"/>
 							</PSXDisplayMapping>
 							<PSXDisplayMapping>
 								<FieldRef>img_category</FieldRef>
-                        <PSXUISet accessKey="g">
+								<PSXUISet accessKey="g">
 									<Label>
 										<PSXDisplayText>Image Category:</PSXDisplayText>
 									</Label>
@@ -385,15 +376,15 @@
 							</PSXDisplayMapping>
 							<PSXDisplayMapping>
 								<FieldRef>filename</FieldRef>
-                        <PSXUISet accessKey="N"/>
+								<PSXUISet accessKey="N"/>
 							</PSXDisplayMapping>
 							<PSXDisplayMapping>
 								<FieldRef>sys_suffix</FieldRef>
-                        <PSXUISet accessKey="S"/>
+								<PSXUISet accessKey="S"/>
 							</PSXDisplayMapping>
 							<PSXDisplayMapping>
-              			<FieldRef>img2_hash</FieldRef>
-                        <PSXUISet accessKey="M"/>
+								<FieldRef>img2_hash</FieldRef>
+								<PSXUISet accessKey="M"/>
 							</PSXDisplayMapping>
 							<PSXDisplayMapping>
 								<FieldRef>img2_filename</FieldRef>
@@ -421,15 +412,15 @@
 							</PSXDisplayMapping>
 							<PSXDisplayMapping>
 								<FieldRef>sys_communityid</FieldRef>
-                        <PSXUISet accessKey="m"/>
+								<PSXUISet accessKey="m"/>
 							</PSXDisplayMapping>
 							<PSXDisplayMapping>
 								<FieldRef>sys_workflowid</FieldRef>
-                        <PSXUISet accessKey="w"/>
+								<PSXUISet accessKey="w"/>
 							</PSXDisplayMapping>
 							<PSXDisplayMapping>
 								<FieldRef>sys_lang</FieldRef>
-                        <PSXUISet accessKey="l"/>
+								<PSXUISet accessKey="l"/>
 							</PSXDisplayMapping>
 							<PSXDisplayMapping>
 								<FieldRef>sys_currentview</FieldRef>
@@ -437,21 +428,17 @@
 							</PSXDisplayMapping>
 							<PSXDisplayMapping>
 								<FieldRef>webdavowner</FieldRef>
-                        <PSXUISet accessKey="O"/>
+								<PSXUISet accessKey="O"/>
 							</PSXDisplayMapping>
-            <PSXDisplayMapping>
-              <FieldRef>sys_hibernateVersion</FieldRef>
-              <PSXUISet/>
-            </PSXDisplayMapping>
 						</PSXDisplayMapper>
 					</PSXUIDefinition>
 				</PSXContentEditorMapper>
-            <userProperties>
-        <userProperty name="Control10003_DependencyIds">10019</userProperty>
-        <userProperty name="Control10005_DependencyIds">10019</userProperty>
-        <userProperty name="Control10003_Dependency10019">sys_HashedFileInfo</userProperty>
-        <userProperty name="Control10005_Dependency10019">sys_HashedFileInfo</userProperty>
-            </userProperties>
+				<userProperties>
+					<userProperty name="Control86_Dependency1630">sys_FileInfo</userProperty>
+					<userProperty name="Control86_DependencyIds">1630</userProperty>
+					<userProperty name="Control76_DependencyIds">1630</userProperty>
+					<userProperty name="Control76_Dependency1630">sys_FileInfo</userProperty>
+				</userProperties>
 			</PSXContentEditorPipe>
 			<PSXPageDataTank id="40">
 				<schemaSource>file:unspecified</schemaSource>

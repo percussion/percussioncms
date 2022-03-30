@@ -1726,7 +1726,7 @@ public class PSApplicationBuilder
          mappings.add(mapping);
 
          // add workflowAppId = id from the request
-         if ( ceHandler.getCmsObject().isWorkflowable())
+         if ( ceHandler != null && ceHandler.getCmsObject() != null && ceHandler.getCmsObject().isWorkflowable())
          {
             mapping = new PSSystemMapping(sysTable, "WORKFLOWAPPID",
                new PSSingleHtmlParameter(IPSHtmlParameters.SYS_WORKFLOWID));

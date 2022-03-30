@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<table allowSchemaChanges="y" alter="n" create="y" delolddata="n" isView="n" name="RXS_CT_NAVIGATIONIMAGETRIPLE">
+<table allowSchemaChanges="y" alter="y" create="y" delolddata="n" isView="n" name="RXS_CT_NAVIGATIONIMAGETRIPLE">
    <row>
       <column action="c" limitSizeForIndex="n" name="CONTENTID">
          <jdbctype>INTEGER</jdbctype>
@@ -139,6 +139,21 @@
          <size>50</size>
          <allowsnull>yes</allowsnull>
          <defaultvalue/>
+      </column>
+       <column action="c" limitSizeForIndex="n" name="ACTIVEIMG_HASH">
+          <jdbctype>VARCHAR</jdbctype>
+          <size>50</size>
+          <allowsnull>yes</allowsnull>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="INACTIVEIMG_HASH">
+          <jdbctype>VARCHAR</jdbctype>
+          <size>50</size>
+          <allowsnull>yes</allowsnull>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="ROLLOVERIMG_HASH">
+          <jdbctype>VARCHAR</jdbctype>
+          <size>50</size>
+          <allowsnull>yes</allowsnull>
       </column>
    </row>
    <primarykey action="c">
