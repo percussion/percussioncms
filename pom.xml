@@ -181,7 +181,7 @@
        <snakeyaml.version>1.29</snakeyaml.version>
        <commons-email.version>1.5</commons-email.version>
        <commons.codec.version>1.14</commons.codec.version>
-       <tinymce.version>4.9.10</tinymce.version>
+       <tinymce.version>5.10.3</tinymce.version>
        <jfx.version>11.0.2</jfx.version>
        <twelvemonkeys.version>3.7.0</twelvemonkeys.version>
        <commons.beanutils.version>1.9.4</commons.beanutils.version>

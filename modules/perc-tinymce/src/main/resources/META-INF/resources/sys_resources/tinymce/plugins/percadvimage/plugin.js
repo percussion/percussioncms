@@ -26,7 +26,7 @@
 /*global tinymce:true */
 
 tinymce.PluginManager.add('percadvimage', function(editor) {
-    function showDialog() {
+    function showDialog(buttonAPI) {
         var win, data = {}, cm1LinkData = {}, dom = editor.dom, imgElm = editor.selection.getNode();
         var width, height, imageListCtrl;
         var mainEditor = editor.contentWindow.parent;
@@ -538,7 +538,7 @@ tinymce.PluginManager.add('percadvimage', function(editor) {
                     maxWidth:135,
                     onselect:updateImage,
                     values: [{text: 'Full', value: '_full'},{text: 'Thumbnail', value: '_thumb'}],
-                    onPostRender: function() {
+                    onSetup: function() {
                         if(data.dataimgtype === '') {
                             data.dataimgtype = this._values[0].value;
                         }
@@ -574,7 +574,7 @@ tinymce.PluginManager.add('percadvimage', function(editor) {
                         win.close();
                     }}
                 ],
-            onPostRender:function() {
+            onSetup:function(editor) {
                 var openCreateImageDialog = function(successCallback, cancelCallback) {
                     $.topFrameJQuery.PercCreateNewAssetDialog('percImage', successCallback, cancelCallback);
                 };
@@ -777,17 +777,17 @@ tinymce.PluginManager.add('percadvimage', function(editor) {
         }
     }
 
-    editor.addButton('image', {
+    editor.ui.registry.addButton('image', {
         icon: 'image',
         tooltip: 'Insert/edit image',
-        onclick: showDialog,
+        onAction: showDialog,
         stateSelector: 'img:not([data-mce-object])'
     });
 
-    editor.addMenuItem('image', {
+    editor.ui.registry.addMenuItem('image', {
         icon: 'image',
         text: 'Insert image',
-        onclick: showDialog,
+        onAction: showDialog,
         context: 'insert',
         prependToContext: true
     });
