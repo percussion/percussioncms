@@ -97,10 +97,12 @@ tinymce.PluginManager.add('percglobalvariables', function(editor, url) {
         });
 	});
 
-	editor.addMenuItem('globalvariables', {
+    editor.ui.registry.addMenuItem('globalvariables', {
 		text: 'Global variables',
 		icon: 'globalvariables',
-		cmd: 'mceInsertGlobalVariables',
+        onAction: function () {
+            editor.execCommand('mceInsertGlobalVariables');
+        },
 		context: 'insert'
 	});
 

@@ -1,26 +1,3 @@
-/*
- *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
- *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
- *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
- *
- *     Mailing Address:
- *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
- */
 
 function percTinyMceInitialized(tinymceEditor) {
 
@@ -152,10 +129,6 @@ function mergeConfig(options, url) {
     });
 }
 
-
-
-
-
 function getBaseConfig(parameters) {
     var options = parameters[0];
     var styleFormats = parameters[1];
@@ -164,11 +137,12 @@ function getBaseConfig(parameters) {
         var mergedBaseOptions = $.extend({}, {
             "branding": false,
             "mode": "textareas",
+            "selector": "textarea",
             "autosave_interval": "10m",
             "autosave_retention": "1440m",
             "perc_config": "../sys_resources/tinymce/config/default_config.json",
             "content_css": "../sys_resources/css/tinymce/content.css",
-            "theme": "modern",
+            "theme": "silver",
             "editor_selector": "tinymce_callout",
             "valid_elements": "*[*]",
             "noneditable_leave_contenteditable": true,
@@ -183,9 +157,9 @@ function getBaseConfig(parameters) {
             },
             "style_formats_merge": true,
             "style_formats": styleFormats,
-            "autosave_restore_when_empty": false,
+            "autosave_restore_when_empty": true,
             "init_instance_callback": "percTinyMceInitialized",
-            "file_browser_callback": $.noop,
+            "file_picker_callback": $.noop,
             "convert_urls" : false,
             "toolbar": "newdocument undo redo restoredraft | cut copy paste searchreplace | styleselect fontselect fontsizeselect forecolor backcolor removeformat | bold italic underline strikethrough superscript subscript | alignleft aligncenter alignright alignjustify alignnone |  bullist numlist outdent indent | link unlink openlink media | visualchars visualblocks fullscreen print preview | anchor charmap hr emoticons insertdatetime | table tabledelete tableinsertrowafter tabledeleterow tableinsertcolbefore tabledeletecol tablesplitcells tablemergecells | rxinlinelink rxinlinetemplate rxinlineimage rxinserthtml | ltr rtl codesample code"
         }, options);
@@ -251,6 +225,7 @@ function perc_tinymce_init(options) {
         .then(getBaseConfig)
         .then(load_type_config, fail_type_config)
         .then(load_user_config, fail_user_config)
+        .catch(fail_user_config)
         .then(init_tinymce);
 
 }

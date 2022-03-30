@@ -197,7 +197,7 @@ tinymce.PluginManager.add('percadvlink', function(editor) {
 
                 {name: 'title', type: 'textbox', size: 40, label: I18N.message("perc.ui.widget.tinymce@Title")}
             ],
-            onPostRender:function(){
+            onSetup:function(editor){
                 var validator = function(pathItem){
                     return pathItem && (pathItem.type === 'percPage' || pathItem.type === 'percImageAsset' || pathItem.type === 'percFileAsset')?null:'Please select a page, file, or an image';
                 };
@@ -339,14 +339,16 @@ tinymce.PluginManager.add('percadvlink', function(editor) {
         icon: 'link',
         tooltip: I18N.message("perc.ui.widget.tinymce@Insert Edit Link"),
         shortcut: 'Ctrl+K',
-        onclick: createLinkList(showDialog),
+        onAction: createLinkList(showDialog),
         stateSelector: 'a[href]'
     });
 
     editor.ui.registry.addButton('unlink', {
         icon: 'unlink',
         tooltip: I18N.message("perc.ui.widget.tinymce@Remove links"),
-        cmd: 'unlink',
+        onAction: function () {
+            editor.execCommand('unlink');
+        },
         stateSelector: 'a[href]'
     });
 

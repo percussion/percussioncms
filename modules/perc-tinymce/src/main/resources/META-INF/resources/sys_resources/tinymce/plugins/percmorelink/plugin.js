@@ -33,10 +33,12 @@ tinymce.PluginManager.add('percmorelink', function(editor, url) {
 		editor.execCommand('mceInsertContent', 0, ml);
 	});
 
-	editor.addMenuItem('percmorelink', {
+	editor.ui.registry.addMenuItem('percmorelink', {
 		text: 'More link',
 		icon: 'morelink',
-		cmd: 'mceInsertMoreLink',
+		onAction: function () {
+			editor.execCommand('mceInsertMoreLink');
+		},
      	separator: 'before',
     	context: 'insert'
 	});

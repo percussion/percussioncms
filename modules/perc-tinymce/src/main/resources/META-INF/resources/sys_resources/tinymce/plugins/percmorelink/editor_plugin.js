@@ -39,7 +39,13 @@
 			});
             
             // Register button
-			ed.addButton('morelink', {title : "More link", image: url + "/img/MoreLinkIcon.gif", cmd : 'mceInsertMoreLink'});
+			ed.addButton('morelink',
+				{   title : "More link",
+					image: url + "/img/MoreLinkIcon.gif",
+					onAction: function () {
+						editor.execCommand('mceInsertMoreLink');
+					}
+				});
             
             ed.onInit.add(function() {
 				if (ed.settings.content_css !== false)
