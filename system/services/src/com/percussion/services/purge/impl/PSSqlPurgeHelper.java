@@ -76,6 +76,9 @@ import org.apache.logging.log4j.Logger;
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
+import org.hibernate.engine.spi.SessionImplementor;
+import org.hibernate.type.DateType;
+import org.hibernate.type.LongType;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
@@ -241,7 +244,6 @@ public class PSSqlPurgeHelper implements IPSSqlPurgeHelper
       // Get the type tables first. if there are any errors we will throw
       // exception before any relationships
       // processed.
-      List<String> qualifiedTables = new ArrayList<>();
 
       for (int typeId : contentTypeMap.keySet())
       {
@@ -393,47 +395,49 @@ public class PSSqlPurgeHelper implements IPSSqlPurgeHelper
 
       if (data.getKeepMinNumberOfRevs() < 0)
       {
-         throw new Exception("Inconsistent data input: keepMinNumberOfRevs " + "is required");
+         throw new Exception("Inconsistent data input: keepMinNumberOfRevs is required");
       }
 
       if (data.getKeepRevsYoungerThanDays() < 0)
       {
-         throw new Exception("Inconsistent data input: keepRevsYoungerThanDays " + "is required");
+         throw new Exception("Inconsistent data input: keepRevsYoungerThanDays is required");
       }
 
       if (data.getDeleteRevsAboveCount() < 0)
       {
-         throw new Exception("Inconsistent data input: deleteRevsAboveCount " + "is required");
+         throw new Exception("Inconsistent data input: deleteRevsAboveCount is required");
       }
       if (data.getDeleteRevsOlderThanDays() < 0)
       {
-         throw new Exception("Inconsistent data input: deleteRevsOlderThanDays " + "is required");
+         throw new Exception("Inconsistent data input: deleteRevsOlderThanDays is required");
       }
 
       if (data.getKeepMinNumberOfRevs() > data.getDeleteRevsAboveCount())
       {
-         throw new Exception("Inconsistent data input: deleteRevsAboveCount can't be "
-               + "less than keepMinNumberOfRevs");
+         throw new Exception("Inconsistent data input: deleteRevsAboveCount can't be less than keepMinNumberOfRevs");
       }
 
       if (data.getKeepRevsYoungerThanDays() > data.getDeleteRevsOlderThanDays())
       {
-         throw new Exception("Inconsistent data input:  deleteRevsOlderThanDays can't be "
-               + "less than keepRevsYoungerThanDays");
+         throw new Exception("Inconsistent data input:  deleteRevsOlderThanDays can't be less than keepRevsYoungerThanDays");
       }
 
-      Map<Integer, List<Table>> contentTypeMap = new HashMap<>();
+      Map<Long, List<Table>> contentTypeMap = new HashMap<>();
       PSItemDefManager itemDefMgr = PSItemDefManager.getInstance();
       Session session = null;
       PreparedStatement pst = null;
       PreparedStatement pstDelCSHistory = null;
       PreparedStatement pstDelObjRelations = null;
-      Connection conn = null;
 
-      session = getSession();
+
+
 
       try
       {
+         session = getSession();
+
+         SessionImplementor sessionImplementor = (SessionImplementor) session;
+         Connection conn = sessionImplementor.getJdbcConnectionAccess().obtainConnection();
 
          SQLQuery delCsHistoryQuery = session.createSQLQuery("DELETE from "
                  + qualify("CONTENTSTATUSHISTORY") + " where CONTENTID = ? and REVISIONID <= ?");
@@ -443,14 +447,15 @@ public class PSSqlPurgeHelper implements IPSSqlPurgeHelper
                  + " where OWNER_ID = ? and OWNER_REVISION > 0 and OWNER_REVISION <= ? or "
                  + " DEPENDENT_ID = ? and DEPENDENT_REVISION > 0 and DEPENDENT_REVISION <= ?");
 
-         SQLQuery selTypes =  session.createSQLQuery("select CONTENTTYPEID from " + qualify("CONTENTTYPES"));
+         SQLQuery selTypes =  session.createSQLQuery("select CONTENTTYPEID from " + qualify("CONTENTTYPES"))
+                 .addScalar("CONTENTTYPEID", LongType.INSTANCE);
 
 
 
          Iterator<?> rs = selTypes.list().iterator();
          while (rs.hasNext())
          {
-            int contentTypeId = (Integer)rs.next();
+            long contentTypeId = (Long)rs.next();
             PSItemDefinition itemDef = itemDefMgr.getItemDef(contentTypeId, -1);
             List<PSBackEndTable> tables = itemDef.getTypeTables();
             List<Table> tableList = new ArrayList<>();
@@ -463,7 +468,7 @@ public class PSSqlPurgeHelper implements IPSSqlPurgeHelper
          }
 
          selTypes = session.createSQLQuery(
-                     "select csh.CONTENTID, cs.CONTENTTYPEID, csh.REVISIONID, max(csh.LASTMODIFIEDDATE) as LASTMODIFIEDDATE  "
+                     "select csh.CONTENTID AS CONTENTID, cs.CONTENTTYPEID AS CONTENTTYPEID, csh.REVISIONID AS REVISIONID, max(csh.LASTMODIFIEDDATE) as LASTMODIFIEDDATE  "
                            + "from "
                            + qualify("CONTENTSTATUSHISTORY")
                            + " csh, "
@@ -476,7 +481,12 @@ public class PSSqlPurgeHelper implements IPSSqlPurgeHelper
                            + " cs where csh.CONTENTID = cs.CONTENTID and "
                            + "PUBLIC_REVISION is null and csh.REVISIONID < cs.CURRENTREVISION "
                            + "group by  cs.CONTENTTYPEID,csh.REVISIONID,csh.CONTENTID "
-                           + "order by CONTENTID, REVISIONID desc, LASTMODIFIEDDATE ");
+                           + "order by CONTENTID, REVISIONID desc, LASTMODIFIEDDATE ")
+                 .addScalar("CONTENTID",LongType.INSTANCE)
+                 .addScalar("CONTENTTYPEID",LongType.INSTANCE)
+                 .addScalar("REVISIONID",LongType.INSTANCE)
+                 .addScalar("LASTMODIFIEDDATE", DateType.INSTANCE);
+
 
          rs = selTypes.list().iterator();
 
@@ -514,10 +524,10 @@ public class PSSqlPurgeHelper implements IPSSqlPurgeHelper
             {
             }
 
-         Set<Integer> keys = contentTypeMap.keySet();
-         for (Iterator<Integer> it = keys.iterator(); it.hasNext();)
+         Set<Long> keys = contentTypeMap.keySet();
+         for (Iterator<Long> it = keys.iterator(); it.hasNext();)
          {
-            Integer conId = it.next();
+            Long conId = it.next();
             List<Table> tables = contentTypeMap.get(conId);
             if (tables != null)
             {
@@ -550,7 +560,7 @@ public class PSSqlPurgeHelper implements IPSSqlPurgeHelper
     * @throws SQLException
     */
    @Transactional
-   public int deleteItemRevisions(RevisionData data, Map<Integer, List<Table>> contentTypeMap,
+   public int deleteItemRevisions(RevisionData data, Map<Long, List<Table>> contentTypeMap,
                                   SQLQuery pstDelCSHistory, SQLQuery pstDelObjRelations, Iterator<?> rs, Connection conn)
          throws SQLException
    {
@@ -558,8 +568,8 @@ public class PSSqlPurgeHelper implements IPSSqlPurgeHelper
       long minDays = now - (1000L * 60 * 60 * 24) * data.getKeepRevsYoungerThanDays();
       long maxDays = now - (1000L * 60 * 60 * 24) * data.getDeleteRevsOlderThanDays();
       int revisionsRemoved = 0;
-      int prevContentId = 0;
-      int prevRevisionId = 0;
+      long prevContentId = 0;
+      long prevRevisionId = 0;
       int revisionCount = 0;
       int keepMinNumberOfRevs = data.getKeepMinNumberOfRevs();
       int deleteRevsAboveCount = data.getDeleteRevsAboveCount();
@@ -584,9 +594,9 @@ public class PSSqlPurgeHelper implements IPSSqlPurgeHelper
       {
          Object[] tuple= (Object[]) rs.next();
          // condition #1 minimum number of revisions
-         int currContentId = (Integer) tuple[0];
-         int currContentTypeId =(Integer) tuple[1];
-         int currRevisionId = (Integer) tuple[2];
+         long currContentId = (Long) tuple[0];
+         long currContentTypeId =(Long) tuple[1];
+         long currRevisionId = (Long) tuple[2];
          if (currContentId != prevContentId)
          { // new contentId
             revisionCount = 1;
@@ -598,7 +608,7 @@ public class PSSqlPurgeHelper implements IPSSqlPurgeHelper
          {
             if (!rolledBackId)
             {
-               purge_logger.debug("Removed Content Id:" + currContentId + ", Revision Id:" + currRevisionId);
+               purge_logger.debug("Removed Content Id: {}, Revision Id:{}" ,currContentId, currRevisionId);
                revisionsRemoved++;
             }
             continue; // the processing for this contentId is completed skip all
@@ -644,25 +654,23 @@ public class PSSqlPurgeHelper implements IPSSqlPurgeHelper
          try
          {
             conn.setAutoCommit(false);
-            pstDelCSHistory.setParameter(0, currContentId);
-            pstDelCSHistory.setParameter(1, currRevisionId);
+            pstDelCSHistory.setParameter(1, currContentId);
+            pstDelCSHistory.setParameter(2, currRevisionId);
             pstDelCSHistory.executeUpdate();
 
-            pstDelObjRelations.setParameter(0, currContentId);
-            pstDelObjRelations.setParameter(1, currRevisionId);
-            pstDelObjRelations.setParameter(2, currContentId);
-            pstDelObjRelations.setParameter(3, currRevisionId);
+            pstDelObjRelations.setParameter(1, currContentId);
+            pstDelObjRelations.setParameter(2, currRevisionId);
+            pstDelObjRelations.setParameter(3, currContentId);
+            pstDelObjRelations.setParameter(4, currRevisionId);
             pstDelObjRelations.executeUpdate();
 
             List<Table> tables = contentTypeMap.get(currContentTypeId);
             if (tables != null)
             {
-               for (Iterator<Table> it = tables.iterator(); it.hasNext();)
-               {
-                  Table t = it.next();
+               for (Table t : tables) {
                   PreparedStatement ps = t.getPreparedStatement();
-                  ps.setInt(0, currContentId);
-                  ps.setInt(1, currRevisionId);
+                  ps.setLong(1, currContentId);
+                  ps.setLong(2, currRevisionId);
                   ps.executeUpdate();
                }
             }
@@ -672,7 +680,7 @@ public class PSSqlPurgeHelper implements IPSSqlPurgeHelper
          }
          catch (Exception ex)
          {
-            purge_logger.error("Rolled back purge revisions for:" + currContentId + ", Revision Id:" + currRevisionId);
+            purge_logger.error("Rolled back purge revisions for: {}, Revision Id: {}" ,currContentId , currRevisionId);
             throw new RuntimeException(ex);
          }
          finally
@@ -683,7 +691,9 @@ public class PSSqlPurgeHelper implements IPSSqlPurgeHelper
                {
                   conn.commit();
                   revisionsRemoved++;
-                  purge_logger.debug("Removed Content Id:" + currContentId + ", Revision Id:" + currRevisionId);
+                  purge_logger.debug("Removed Content Id: {}, Revision Id: {}" ,
+                          currContentId,
+                          currRevisionId);
                }
                else
                {
@@ -1214,6 +1224,9 @@ public class PSSqlPurgeHelper implements IPSSqlPurgeHelper
 
       Table(String name, Connection conn) throws SQLException
       {
+         if(name ==null || conn == null)
+            throw new IllegalArgumentException();
+
          this.name = name;
          this.pst = PSPreparedStatement.getPreparedStatement(conn, "DELETE FROM " + name
                + " WHERE CONTENTID = ? AND REVISIONID <= ?");
