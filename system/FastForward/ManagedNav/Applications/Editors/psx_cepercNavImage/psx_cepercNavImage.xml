@@ -127,7 +127,7 @@
 	</PSXDataSet>
 	<PSXContentEditor contentType="313" enableRelatedContent="no" iconSource="1" iconValue="rffNavImage.gif" objectType="1" workflowId="4">
 		<PSXDataSet id="1180">
-			<name>rffNavImage</name>
+			<name>template</name>
 			<description>default template</description>
 			<transactionType>none</transactionType>
 			<PSXContentEditorPipe id="0">
@@ -277,25 +277,6 @@
 							<DataType>text</DataType>
 							<DataFormat>50</DataFormat>
 							<OccurrenceSettings delimiter=";" dimension="required" multiValuedType="delimited"/>
-							<FieldRules>
-								<PSXFieldValidationRules maxErrorsToStop="2147483647">
-									<PSXRule boolean="and">
-										<PSXExtensionCallSet id="0">
-											<PSXExtensionCall id="0">
-												<name>Java/global/percussion/content/sys_ValidateRequiredField</name>
-												<PSXExtensionParamValue id="0">
-													<value>
-														<PSXSingleHtmlParameter id="0">
-															<name>activeimg_hash</name>
-														</PSXSingleHtmlParameter>
-													</value>
-												</PSXExtensionParamValue>
-											</PSXExtensionCall>
-										</PSXExtensionCallSet>
-									</PSXRule>
-									<PSXApplyWhen ifFieldEmpty="yes"/>
-								</PSXFieldValidationRules>
-							</FieldRules>
 							<PSXPropertySet>
 								<PSXProperty locked="yes" name="cleanupBrokenInlineLinks">
 									<Value type="Boolean">no</Value>
