@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>  <node-definition id="1">
     <auto-created>false</auto-created>
     <description>A widget that displays an 'accept consent' dialog on the website.</description>
-    <hide-from-menu>false</hide-from-menu>
+    <hide-from-menu>true</hide-from-menu>
     <id>402</id>
     <internal-name>percCookieConsent</internal-name>
     <label>percCookieConsent</label>
