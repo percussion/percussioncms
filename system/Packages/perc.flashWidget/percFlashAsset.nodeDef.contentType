@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>  <node-definition id="1">
     <auto-created>false</auto-created>
     <description>Manages binary files other than images, such as .pdf or .doc.</description>
-    <hide-from-menu>false</hide-from-menu>
+    <hide-from-menu>true</hide-from-menu>
     <id>333</id>
     <internal-name>percFlashAsset</internal-name>
     <label>Flash</label>
