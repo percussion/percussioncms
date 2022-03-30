@@ -437,10 +437,6 @@
         <servlet-class>com.percussion.services.aaclient.PSAaClientServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>ContentUiAAServlet</servlet-name>
-        <servlet-class>com.percussion.content.ui.aa.PSAAClientServlet</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>EditionJobStatusServlet</servlet-name>
         <servlet-class>com.percussion.rx.publisher.servlet.PSJobStatusServlet</servlet-class>
     </servlet>
