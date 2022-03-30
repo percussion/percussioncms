@@ -23,21 +23,20 @@
  */
 package com.percussion.assetmanagement.service.impl;
 
-import static org.apache.commons.lang.Validate.notEmpty;
-import static org.apache.commons.lang.Validate.notNull;
-
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import com.percussion.assetmanagement.data.PSAssetSummary;
 import com.percussion.assetmanagement.service.IPSAssetService;
 import com.percussion.assetmanagement.service.IPSAssetService.PSAssetServiceException;
 import com.percussion.pathmanagement.service.impl.PSAssetPathItemService;
 import com.percussion.share.dao.IPSFolderHelper;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.apache.commons.lang.Validate.notEmpty;
+import static org.apache.commons.lang.Validate.notNull;
 
 /**
  * 
@@ -142,7 +141,7 @@ public class PSAssetUploadFolderPathMap
             if (defaultPath) {
                 throw e;
             }
-            log.warn("Cannot use folder path for uploading assets: " + path);
+            log.warn("Cannot use folder path for uploading assets: {}" , path);
             /*
              * Try again with the default.
              */

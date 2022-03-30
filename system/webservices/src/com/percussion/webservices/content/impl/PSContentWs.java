@@ -4019,6 +4019,7 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
       }
       PSFolder folder = (PSFolder) folders.get(0).clone();
       folder.setName(name);
+      folder.setDescription(name);
       if (folder.getDisplayFormatId() == -1)
       {
          // this should not happen.
@@ -4026,6 +4027,7 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
          logger.warn("Cannot find display format property from Folder id='{}'", folders.get(0).getLocator());
          folder.setDisplayFormatId(0);
       }
+
 
       // make sure the current user has the Admin access
       String user = PSWebserviceUtils.getUserName();

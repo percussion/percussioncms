@@ -201,4 +201,20 @@ public class TestSecureStringUtils {
 
     }
 
+    @Test
+    public void testSanitizeFileName(){
+        StringBuilder t = new StringBuilder(SecureStringUtils.sanitizeFileName("this has   some spaces.png"));
+        assertEquals("this-has-some-spaces.png", t.toString());
+        t = new StringBuilder(SecureStringUtils.sanitizeFileName("this-has-dashes.png"));
+        assertEquals("this-has-dashes.png", t.toString());
+        t = new StringBuilder(SecureStringUtils.sanitizeFileName("Latin_alphabet_Ħħ.png"));
+        assertEquals("Latin_alphabet_Ħħ.png", t.toString());
+        for(int i=0;i<500;i++){
+            t.append(i);
+        }
+        assertTrue(t.length() > SecureStringUtils.MAX_FILENAME_LEN);
+        t = new StringBuilder(SecureStringUtils.sanitizeFileName(t.toString()));
+        assertTrue(t.length() <= SecureStringUtils.MAX_FILENAME_LEN);
+    }
+
 }
