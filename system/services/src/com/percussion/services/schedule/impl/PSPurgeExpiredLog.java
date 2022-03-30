@@ -125,9 +125,9 @@ public abstract class PSPurgeExpiredLog implements IPSTask
          Throwable cause = e;
          if (e.getCause() != null)
             cause = e.getCause();
-         m_log.error("Failed to purge log. Error: {}" + cause.getMessage());
+         m_log.error("Failed to purge log. Error: {}",  cause.getMessage());
          m_log.debug(cause);
-         errorCause = cause.getLocalizedMessage();
+         errorCause = cause.getMessage();
       }
       
       result = new PSTaskResult(isSuccess, errorCause, 
@@ -167,6 +167,7 @@ public abstract class PSPurgeExpiredLog implements IPSTask
       }
       catch (Exception e)
       {
+         m_log.warn("{} is not a valid value for the number of days of logs to retain. Defaulting to 30 days.", numParam);
       }
 
       Calendar cal = Calendar.getInstance();
