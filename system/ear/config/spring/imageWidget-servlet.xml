@@ -1,55 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-http://www.springframework.org/schema/beans/spring-beans-4.2.xsd">
+http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd
+http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
-   <bean id="imageWidgetBinaryUpload" class="com.percussion.widgets.image.web.impl.BinaryUploadController">
-      <property name="cacheManager" ref="imageWidgetCacheManager" />
-      <property name="viewName" value="imageWidgetJSONView" />
-      <property name="modelObjectName" value="results" />
-    </bean>
-    
+    <mvc:annotation-driven />
+
+
+    <context:component-scan base-package="com.percussion.widgets.image.web.impl" />
+
+
     <bean id="imageWidgetBinaryDisplay" class="com.percussion.widgets.image.web.impl.BinaryImageController">
-       <property name="cacheManager" ref="imageWidgetCacheManager" /> 
+        <property name="cacheManager" ref="imageWidgetCacheManager" />
     </bean>
-    
+
     <bean id="imageWidgetRequestImage" class="com.percussion.widgets.image.web.impl.ImageRequestController">
-       <property name="imageCacheManager" ref="imageWidgetCacheManager" />
-       <property name="supportedMethods" value="GET" /> 
-       <property name="modelObjectName" value="results" />
-       <property name="viewName" value="imageWidgetJSONView" /> 
-    </bean>
-    
-    <bean id="imageWidgetResize" class="com.percussion.widgets.image.web.impl.ImageResizeController">
-        <property name="viewName" value="imageWidgetJSONView" /> 
+        <property name="imageCacheManager" ref="imageWidgetCacheManager" />
+        <property name="supportedMethods" value="GET" />
         <property name="modelObjectName" value="results" />
-        <property name="imageCacheManager" ref="imageWidgetCacheManager" /> 
-        <property name="imageResizeManager" ref="imageWidgetResizeManager" /> 
-         
+        <property name="viewName" value="imageWidgetJSONView" />
     </bean>
-    
+
     <bean id="imageWidgetViewResolver" class="org.springframework.web.servlet.view.BeanNameViewResolver">
-       <property name="order" value="1" /> 
+        <property name="order" value="1" />
     </bean>
-    
-    
+
+
     <bean id="imageWidgetJSONView" class="com.percussion.widgets.image.web.impl.JSONView">
         <property name="contentType" value="application/json" />
-        <property name="modelObjectName" value="results" /> 
+        <property name="modelObjectName" value="results" />
     </bean>
-    
-    
-   <bean id="imageWidgetUrlMapping"
-   	class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
-   	<property name="mappings">
-   	    <value>
-   	       /imageWidget/image/img*.*=imageWidgetBinaryDisplay
-   	       /imageWidget/upload*=imageWidgetBinaryUpload
-   	       /imageWidget/requestImage.do=imageWidgetRequestImage
-   	       /imageWidget/resizeImage.do=imageWidgetResize
-   	    </value>
-   	</property>
-   </bean>
+
+
+    <bean id="imageWidgetUrlMapping"
+          class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+        <property name="mappings">
+            <value>
+                /imageWidget/image/img*.*=imageWidgetBinaryDisplay
+                /imageWidget/upload*=imageWidgetBinaryUpload
+                /imageWidget/requestImage.do=imageWidgetRequestImage
+                /imageWidget/resizeImage.do=imageWidgetResize
+            </value>
+        </property>
+    </bean>
 
 </beans>

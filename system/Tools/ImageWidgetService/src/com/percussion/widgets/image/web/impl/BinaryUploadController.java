@@ -25,6 +25,7 @@
 package com.percussion.widgets.image.web.impl;
 
 import com.percussion.server.PSServer;
+import com.percussion.util.PSBaseBean;
 import com.percussion.widgets.image.data.CachedImageMetaData;
 import com.percussion.widgets.image.data.ImageData;
 import com.percussion.widgets.image.services.ImageCacheManager;
@@ -35,6 +36,7 @@ import net.sf.json.JSONSerializer;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -54,21 +56,23 @@ import java.util.Map;
 import java.util.Properties;
 
 @RestController
-@RequestMapping("/imageWidget/upload")
+@PSBaseBean("imageWidgetBinaryUpload")
 public class BinaryUploadController
 {
    private static final Logger log = LogManager.getLogger(BinaryUploadController.class);
 
+   @Autowired
    private ImageCacheManager cacheManager = null;
 
-   private String modelObjectName;
+   private String modelObjectName="results";
 
-   private String viewName;
+   private String viewName = "imageWidgetJSONView";
 
    private static final String MESSAGE_BAD_CONTENT_TYPE = "Invalid or unsupported image type \"{0}\"";
 
    private static final String MESSAGE_UNABLE_TO_COMPUTE_SIZE = "Possibly invalid image. Unable to determine image height and width.";
 
+   @RequestMapping("/imageWidget/upload")
    @PostMapping(consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
    public ModelAndView handle(HttpServletRequest request,
          HttpServletResponse response) throws PSBinaryUploadException
