@@ -210,6 +210,17 @@ public class PSUserService implements IPSUserService
     public static final String CONTRIBUTOR_NAME="Contributor";
     public static final String RXSERVER_NAME="rxserver";
     public static final String RXPUBLISHER_NAME="rxpublisher";
+    public static final String ARTIST1_NAME="artist1";
+    public static final String ARTIST2_NAME="artist2";
+    public static final String AUTHOR1_NAME="author1";
+    public static final String AUTHOR2_NAME="author2";
+    public static final String DESIGNER1_NAME="designer1";
+    public static final String DESIGNER2_NAME="designer2";
+    public static final String EDITOR1_NAME="editor1";
+    public static final String EDITOR2_NAME="editor2";
+    public static final String QA1_NAME="qa1";
+    public static final String QA2_NAME="qa2";
+
 
 
     public static final List<String> SYSTEM_USERS = asList(RXSERVER_NAME,PERCUSSION_ADMIN_NAME);
@@ -299,7 +310,16 @@ public class PSUserService implements IPSUserService
                 count+=updateLegacyPasswordsForUser(RXSERVER_NAME);
                 count+=updateLegacyPasswordsForUser(ADMIN1_NAME);
                 count+=updateLegacyPasswordsForUser(ADMIN2_NAME);
-                count+=updateLegacyPasswordsForUser(PERCUSSION_ADMIN_NAME);
+                count+=updateLegacyPasswordsForUser(ARTIST1_NAME);
+                count+=updateLegacyPasswordsForUser(ARTIST2_NAME);
+                count+=updateLegacyPasswordsForUser(AUTHOR1_NAME);
+                count+=updateLegacyPasswordsForUser(AUTHOR2_NAME);
+                count+=updateLegacyPasswordsForUser(DESIGNER1_NAME);
+                count+=updateLegacyPasswordsForUser(DESIGNER2_NAME);
+                count+=updateLegacyPasswordsForUser(EDITOR1_NAME);
+                count+=updateLegacyPasswordsForUser(EDITOR2_NAME);
+                count+=updateLegacyPasswordsForUser(QA1_NAME);
+                count+=updateLegacyPasswordsForUser(QA2_NAME);
 
                 if(count > 0) {
                     log.info("Done generating {} new password(s) for generated users.", count);
