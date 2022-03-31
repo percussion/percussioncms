@@ -271,7 +271,10 @@ public class PSJdbcTableData
       // get onCreateOnly - default to true if not specified
       String onCreateOnly = PSJdbcTableComponent.getAttribute(tree,
          ON_CREATE_ATTR, false);
-      if (onCreateOnly != null && onCreateOnly.equalsIgnoreCase(XML_FALSE))
+      //Making default to "No" as we need to add data on Rhythmyx Upgrade
+      if (onCreateOnly == null){
+         m_onCreateOnly = false;
+      }else if(onCreateOnly.equalsIgnoreCase(XML_FALSE))
          m_onCreateOnly = false;
       else
          m_onCreateOnly = true;
@@ -406,9 +409,9 @@ public class PSJdbcTableData
     * If <code>true</code>, table data is only processed if the table does not
     * already exist and is being created.  If <code>false</code>, data is
     * processed whether or not the table is being created.  Initialized to
-    * <code>true</code>.
+    * <code>false</code>.
     */
-   private boolean m_onCreateOnly = true;
+   private boolean m_onCreateOnly = false;
 
    /**
     * List of rows for this table, never <code>null</code>, may be empty.
