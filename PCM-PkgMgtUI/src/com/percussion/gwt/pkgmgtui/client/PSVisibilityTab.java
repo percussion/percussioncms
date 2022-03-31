@@ -25,8 +25,6 @@ package com.percussion.gwt.pkgmgtui.client;
 
 import com.google.gwt.user.client.Window;
 import com.smartgwt.client.data.DSCallback;
-import com.smartgwt.client.data.DSRequest;
-import com.smartgwt.client.data.DSResponse;
 import com.smartgwt.client.data.DataSourceField;
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.data.RestDataSource;
@@ -35,18 +33,16 @@ import com.smartgwt.client.types.SelectionStyle;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.Button;
 import com.smartgwt.client.widgets.Canvas;
-import com.smartgwt.client.widgets.events.MouseUpEvent;
-import com.smartgwt.client.widgets.events.MouseUpHandler;
 import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
-import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
-import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.tab.Tab;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -91,14 +87,14 @@ public class PSVisibilityTab
     */
    private HLayout createListsPanel()
    {
-      m_leftGrid.setDataSource(createShowByPkgDataSource());
+      leftGrid.setDataSource(createShowByPkgDataSource());
       setGridProperties();
       HLayout pcLayout = new HLayout();
       pcLayout.setWidth100();
       pcLayout.setHeight100();
-      pcLayout.addMember(m_leftGrid);
+      pcLayout.addMember(leftGrid);
       pcLayout.setMembersMargin(10);
-      pcLayout.addMember(m_rightGrid);
+      pcLayout.addMember(rightGrid);
       return pcLayout;
    }
 
@@ -108,12 +104,12 @@ public class PSVisibilityTab
    public void refreshTab()
    {
      
-      m_leftGrid.invalidateCache();
-      m_leftGrid.fetchData();
-      m_leftGrid.redraw();
+      leftGrid.invalidateCache();
+      leftGrid.fetchData();
+      leftGrid.redraw();
       // Clear out right grid
-      m_rightGrid.setData(new ListGridRecord[0]);
-      m_rightGrid.refreshFields();
+      rightGrid.setData();
+      rightGrid.refreshFields();
       
    }
 
@@ -126,7 +122,7 @@ public class PSVisibilityTab
       RestDataSource restDS = new RestDataSource();
       restDS.setFetchDataURL(GET_PACKAGE_COMMUNITIES_URL);
       restDS.setXmlRecordXPath("/Packages");
-      restDS.setRecordXPath("/Packages");
+      restDS.setRecordXPath("/Packages/package");
       restDS.setFields(createShowByPkgDsFields());
       return restDS;
    }
@@ -140,7 +136,7 @@ public class PSVisibilityTab
       RestDataSource restDS = new RestDataSource();
       restDS.setFetchDataURL(GET_COMMUNITY_PACKAGES_URL);
       restDS.setXmlRecordXPath("/Communities");
-      restDS.setRecordXPath("/Communities");
+      restDS.setRecordXPath("/Communities/community");
       restDS.setFields(createShowByCommDsFields());
       return restDS;
    }
@@ -151,13 +147,7 @@ public class PSVisibilityTab
     */
    private void addLeftGridClickListener()
    {
-      m_leftGrid.addRecordClickHandler(new RecordClickHandler()
-      {
-         public void onRecordClick(RecordClickEvent event)
-         {
-            handleLeftGridClick(event.getRecord());
-         }
-      });
+      leftGrid.addRecordClickHandler(event -> handleLeftGridClick(event.getRecord()));
    }
 
    /**
@@ -165,29 +155,19 @@ public class PSVisibilityTab
     * 
     * @param event assumed not <code>null</code>.
     */
-   private void handleLeftGridClick(Record record)
+   private void handleLeftGridClick(Record event)
    {
       String temp1 = ELEMENT_PACKAGES;
       String temp2 = RECORD_ATTR_PACKAGE;
-      if (m_isShowByPkgs)
+      if (isShowByPkgs)
       {
          temp1 = ELEM_COMMUNITIES;
          temp2 = GRID_ATTR_COMMUNITY;
       }
-      String commStr = record.getAttribute(temp1);
+      String commStr = event.getAttribute(temp1);
       if (commStr != null)
       {
-         String[] comms = commStr.split(NAME_SEPARATOR);
-         ListGridRecord[] dsArray = new ListGridRecord[comms.length];
-         for (int i = 0; i < comms.length; i++)
-         {
-            ListGridRecord rec = new ListGridRecord();
-            rec.setAttribute(temp2, comms[i]);
-            dsArray[i] = rec;
-         }
-         m_rightGrid.setData(dsArray);
-         m_rightGrid.setSortField(temp2);
-         m_rightGrid.refreshFields();
+         getAssociatedCommunities(commStr, temp2);
       }
    }
 
@@ -196,26 +176,26 @@ public class PSVisibilityTab
     */
    private void setGridProperties()
    {
-      m_leftGrid.setWidth("30%");
-      m_leftGrid.setAlternateRecordStyles(true);
-      m_leftGrid.setAutoFetchData(true);
-      m_leftGrid.setFields(createGridField(ELEM_PACKAGE, PkgMgtUI
+      leftGrid.setWidth("30%");
+      leftGrid.setAlternateRecordStyles(true);
+      leftGrid.setAutoFetchData(true);
+      leftGrid.setFields(createGridField(ELEM_PACKAGE, PkgMgtUI
             .getMessages().packagesLabel()));
-      m_leftGrid.setCanGroupBy(false);
-      m_leftGrid.setSortField(ELEM_PACKAGE);
-      m_leftGrid.setSelectionType(SelectionStyle.SINGLE);
-      m_leftGrid.setLeaveScrollbarGap(false);
-      m_leftGrid.draw();
+      leftGrid.setCanGroupBy(false);
+      leftGrid.setSortField(ELEM_PACKAGE);
+      leftGrid.setSelectionType(SelectionStyle.SINGLE);
+      leftGrid.setLeaveScrollbarGap(false);
+      leftGrid.draw();
 
-      m_rightGrid.setWidth("68%");
-      m_rightGrid.setAlternateRecordStyles(true);
-      m_rightGrid.setAutoFetchData(true);
-      m_rightGrid.setFields(createGridField(GRID_ATTR_COMMUNITY, PkgMgtUI
+      rightGrid.setWidth("68%");
+      rightGrid.setAlternateRecordStyles(true);
+      rightGrid.setAutoFetchData(true);
+      rightGrid.setFields(createGridField(GRID_ATTR_COMMUNITY, PkgMgtUI
             .getMessages().associatedCommunities()));
-      m_rightGrid.setCanGroupBy(false);
-      m_rightGrid.setSortField(GRID_ATTR_COMMUNITY);
-      m_rightGrid.setLeaveScrollbarGap(false);
-      m_rightGrid.draw();
+      rightGrid.setCanGroupBy(false);
+      rightGrid.setSortField(GRID_ATTR_COMMUNITY);
+      rightGrid.setLeaveScrollbarGap(false);
+      rightGrid.draw();
    }
 
    /**
@@ -225,35 +205,25 @@ public class PSVisibilityTab
     */
    private HLayout createButtonsPanel()
    {
-      m_showByBtn.setSelected(true);
-      m_showByBtn.setWidth(150);
-      m_showByBtn.setAutoFit(true);
-      m_showByBtn.addMouseUpHandler(new MouseUpHandler()
-      {
-         public void onMouseUp(MouseUpEvent event)
-         {
-            m_isShowByPkgs = !m_isShowByPkgs;
-            String btnTitle = m_isShowByPkgs ? PkgMgtUI.getMessages()
-                  .showByCommunities() : PkgMgtUI.getMessages()
-                  .showByPackages();
-            m_showByBtn.setTitle(btnTitle);
-            refreshGridPanel();
-         }
+      showByBtn.setSelected(true);
+      showByBtn.setWidth(150);
+      showByBtn.setAutoFit(true);
+      showByBtn.addMouseUpHandler(event -> {
+         isShowByPkgs = !isShowByPkgs;
+         String btnTitle = isShowByPkgs ? PkgMgtUI.getMessages()
+               .showByCommunities() : PkgMgtUI.getMessages()
+               .showByPackages();
+         showByBtn.setTitle(btnTitle);
+         refreshGridPanel();
       });
-      m_editAssociationsBtn.setWidth(150);
-      m_editAssociationsBtn.setAutoFit(true);
-      m_editAssociationsBtn.addMouseUpHandler(new MouseUpHandler()
-      {
-         public void onMouseUp(MouseUpEvent event)
-         {
-            editAssociationsClickHandler();
-         }
-      });
+      editAssociationsBtn.setWidth(150);
+      editAssociationsBtn.setAutoFit(true);
+      editAssociationsBtn.addMouseUpHandler(event -> editAssociationsClickHandler());
       HLayout btnLayout = new HLayout();
       btnLayout.setMembersMargin(10);
       btnLayout.setHeight(20);
-      btnLayout.addMember(m_showByBtn);
-      btnLayout.addMember(m_editAssociationsBtn);
+      btnLayout.addMember(showByBtn);
+      btnLayout.addMember(editAssociationsBtn);
       return btnLayout;
    }
 
@@ -265,13 +235,13 @@ public class PSVisibilityTab
       String temp1 = ELEM_ALLPACKAGES;
       String temp2 = ELEMENT_PACKAGES;
       String temp3 = ELEM_COMMUNITY;
-      if (m_isShowByPkgs)
+      if (isShowByPkgs)
       {
          temp1 = ELEM_ALLCOMMUNITIES;
          temp2 = ELEM_COMMUNITIES;
          temp3 = ELEM_PACKAGE;
       }
-      ListGridRecord rec = m_leftGrid.getSelectedRecord();
+      ListGridRecord rec = leftGrid.getSelectedRecord();
       if (rec == null)
       {
          Window.alert(PkgMgtUI.getMessages().selectRecordMessage());
@@ -286,44 +256,38 @@ public class PSVisibilityTab
 
    /**
     * Refreshes the grids.
-    * 
-    * @param leftGridField filed name of left grid, assumed not
-    * <code>null</code>.
-    * 
-    * @param rightGridField field name of right grid, assumed not
-    * <code>null</code>.
     */
    private void refreshGridPanel()
    {
       String leftGridSortField;
       String rightGridSortField;
-      if (m_isShowByPkgs)
+      if (isShowByPkgs)
       {
-         m_leftGrid.setDataSource(createShowByPkgDataSource());
-         m_leftGrid.setFields(createGridField(ELEM_PACKAGE, PkgMgtUI
+         leftGrid.setDataSource(createShowByPkgDataSource());
+         leftGrid.setFields(createGridField(ELEM_PACKAGE, PkgMgtUI
                .getMessages().packagesLabel()));
          leftGridSortField = ELEM_PACKAGE;
-         m_rightGrid.setFields(createGridField(GRID_ATTR_COMMUNITY, PkgMgtUI
+         rightGrid.setFields(createGridField(GRID_ATTR_COMMUNITY, PkgMgtUI
                .getMessages().associatedCommunities()));
          rightGridSortField = GRID_ATTR_COMMUNITY;
       }
       else
       {
-         m_leftGrid.setDataSource(createShowByComDataSource());
-         m_leftGrid.setFields(createGridField(ELEM_COMMUNITY, PkgMgtUI
+         leftGrid.setDataSource(createShowByComDataSource());
+         leftGrid.setFields(createGridField(ELEM_COMMUNITY, PkgMgtUI
                .getMessages().communitiesLabel()));
          leftGridSortField = ELEM_COMMUNITY;
-         m_rightGrid.setFields(createGridField(RECORD_ATTR_PACKAGE, PkgMgtUI
+         rightGrid.setFields(createGridField(RECORD_ATTR_PACKAGE, PkgMgtUI
                .getMessages().associatedPackages()));
          rightGridSortField = RECORD_ATTR_PACKAGE;
       }
-      m_leftGrid.fetchData();
-      m_leftGrid.setSortField(leftGridSortField);
-      m_leftGrid.refreshFields();
-      m_leftGrid.redraw();
-      m_rightGrid.setSortField(rightGridSortField);
-      m_rightGrid.refreshFields();
-      m_rightGrid.redraw();
+      leftGrid.fetchData();
+      leftGrid.setSortField(leftGridSortField);
+      leftGrid.refreshFields();
+      leftGrid.redraw();
+      rightGrid.setSortField(rightGridSortField);
+      rightGrid.refreshFields();
+      rightGrid.redraw();
    }
 
    /**
@@ -383,33 +347,26 @@ public class PSVisibilityTab
    private void openAssociationSelectionDlg(final String ownerName,
          String[] available, String[] selected)
    {
-      if (m_selectionDlg == null)
+      if (selectionDlg == null)
       {
-         m_selectionDlg = new PSCommPkgSelectionDialog();
-         m_selectionDlg.setHeight(350);
-         m_selectionDlg.setWidth(480);
-         m_selectionDlg.setID("SelectionDlg");
-         m_selectionDlg.setIsModal(true);
+         selectionDlg = new PSCommPkgSelectionDialog();
+         selectionDlg.setHeight(350);
+         selectionDlg.setWidth(480);
+         selectionDlg.setID("SelectionDlg");
+         selectionDlg.setIsModal(true);
       }
-      DSCallback okCallBack = new DSCallback()
+      DSCallback okCallBack = (response, rawData, request) -> saveAssociations(ownerName, selectionDlg.getSelectedData());
+      if (isShowByPkgs)
       {
-         public void execute(DSResponse response, Object rawData,
-               DSRequest request)
-         {
-            saveAssociations(ownerName, m_selectionDlg.getSelectedData());
-         }
-      };
-      if (m_isShowByPkgs)
-      {
-         m_selectionDlg.setTitle(PkgMgtUI.getMessages()
+         selectionDlg.setTitle(PkgMgtUI.getMessages()
                .editCommunityAssociations());
-         m_selectionDlg.open(available, selected, okCallBack);
+         selectionDlg.open(available, selected, okCallBack);
       }
       else
       {
-         m_selectionDlg.setTitle(PkgMgtUI.getMessages()
+         selectionDlg.setTitle(PkgMgtUI.getMessages()
                .editPackageAssociations());
-         m_selectionDlg.open(available, selected, okCallBack);
+         selectionDlg.open(available, selected, okCallBack);
       }
    }
 
@@ -425,8 +382,8 @@ public class PSVisibilityTab
     */
    private void saveAssociations(final String ownerName, final String assocData)
    {
-      String actionUrl = "";
-      if (m_isShowByPkgs)
+      String actionUrl;
+      if (isShowByPkgs)
       {
          actionUrl = UPDATE_PACKAGE_COMMUNITIES_URL
                + "packageName=" + ownerName + "&selectedComms=" + assocData;
@@ -447,28 +404,22 @@ public class PSVisibilityTab
       saveDs.setXmlRecordXPath("/Response");
       saveDs.setRecordXPath("/Response");
       saveDs.setUpdateDataURL(actionUrl);
-      saveDs.updateData(new ListGridRecord(), new DSCallback()
-      {
-         public void execute(DSResponse response, Object rawData,
-               DSRequest request)
+      saveDs.updateData(new ListGridRecord(), (response, rawData, request) -> {
+         Record[] records = response.getData();
+         String respType = records[0].getAttribute("type");
+         if (respType.equals("FAILURE"))
          {
-            Record[] records = response.getData();
-            String respType = records[0].getAttribute("type");
-            if (respType.equals("FAILURE"))
-            {
-               String respMsg = records[0].getAttribute("message");
-               if (respMsg.trim().length() < 1)
-                  respMsg = "Unexpected error occurred while saving the "
-                        + "associations.";
-               SC.say(respMsg);
-            }
-            else
-            {
-               updateGrids(assocData);
-            }
-            m_selectionDlg.hide();
+            String respMsg = records[0].getAttribute("message");
+            if (respMsg.trim().length() < 1)
+               respMsg = "Unexpected error occurred while saving the "
+                     + "associations.";
+            SC.say(respMsg);
          }
-
+         else
+         {
+            updateGrids(assocData);
+         }
+         selectionDlg.hide();
       });
    }
 
@@ -482,12 +433,17 @@ public class PSVisibilityTab
     */
    private void updateGrids(String assocData)
    {
-      ListGridRecord[] recs = m_leftGrid.getSelection();
-      String atrName1 = m_isShowByPkgs ? ELEM_COMMUNITIES : ELEMENT_PACKAGES;
+      ListGridRecord[] recs = leftGrid.getSelectedRecords();
+      String atrName1 = isShowByPkgs ? ELEM_COMMUNITIES : ELEMENT_PACKAGES;
       recs[0].setAttribute(atrName1, assocData);
 
-      String atrName2 = m_isShowByPkgs ? GRID_ATTR_COMMUNITY
+      String atrName2 = isShowByPkgs ? GRID_ATTR_COMMUNITY
             : RECORD_ATTR_PACKAGE;
+      getAssociatedCommunities(assocData, atrName2);
+      rightGrid.redraw();
+   }
+
+   private void getAssociatedCommunities(String assocData, String atrName2) {
       String[] comms = assocData.split(NAME_SEPARATOR);
       ListGridRecord[] dsArray = new ListGridRecord[comms.length];
       for (int i = 0; i < comms.length; i++)
@@ -496,10 +452,9 @@ public class PSVisibilityTab
          rec.setAttribute(atrName2, comms[i]);
          dsArray[i] = rec;
       }
-      m_rightGrid.setData(dsArray);
-      m_rightGrid.setSortField(atrName2);
-      m_rightGrid.refreshFields();
-      m_rightGrid.redraw();
+      rightGrid.setData(dsArray);
+      rightGrid.setSortField(atrName2);
+      rightGrid.refreshFields();
    }
 
    /**
@@ -513,33 +468,26 @@ public class PSVisibilityTab
    private String[] removeAll(String[] from, String[] remove)
    {
       List<String> l1 = new ArrayList<>();
-      for (int i = 0; i < from.length; i++)
-      {
-         l1.add(from[i]);
-      }
-      List<String> l2 = new ArrayList<>();
-      for (int i = 0; i < from.length; i++)
-      {
-         l2.add(remove[i]);
-      }
+      Collections.addAll(l1, from);
+      List<String> l2 = new ArrayList<>(Arrays.asList(remove).subList(0, from.length));
       l1.removeAll(l2);
-      return l1.toArray(new String[l1.size()]);
+      return l1.toArray(new String[0]);
    }
 
    // Controls used in this class.
-   private Button m_showByBtn = new Button(PkgMgtUI.getMessages()
+   private final Button showByBtn = new Button(PkgMgtUI.getMessages()
          .showByCommunities());
 
-   private Button m_editAssociationsBtn = new Button(PkgMgtUI.getMessages()
+   private final Button editAssociationsBtn = new Button(PkgMgtUI.getMessages()
          .editCommunities());
 
-   private ListGrid m_leftGrid = new ListGrid();
+   private final ListGrid leftGrid = new ListGrid();
 
-   private ListGrid m_rightGrid = new ListGrid();
+   private final ListGrid rightGrid = new ListGrid();
 
-   private PSCommPkgSelectionDialog m_selectionDlg = null;
+   private PSCommPkgSelectionDialog selectionDlg = null;
 
-   private boolean m_isShowByPkgs = true;
+   private boolean isShowByPkgs = true;
 
    // Constants for element names in the xml.
    private static final String ELEM_PACKAGES = "Packages";
