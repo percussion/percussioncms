@@ -257,9 +257,10 @@
                 callback(self.STATUS_SUCCESS, result);
             },
             error: function (request, textstatus, error) {
+                var result;
                 // look for status 204 which should not be an error
                 if (request.status === 204 || request.status === 1223) {
-                    var result = {
+                    result = {
                         data: {},
                         textstatus: request.statusText
                     };
@@ -267,7 +268,7 @@
                     return;
                 }
                 else if (request.status > 0) {
-                    var result = {
+                     result = {
                         request: request,
                         textstatus: textstatus,
                         error: error
@@ -288,12 +289,14 @@
         makeAjaxRequest(args);
     }
     function makeAjaxRequest(args){
+
         if(!csrfSafeMethod(args.method)) {
             var u = csrfGetURLFromServiceCall(args.url);
             if (u != null) {
                 csrfGetToken(u, function (response) {
+                    var tokenHeader;
                     if (typeof response !== 'undefined' && response != null)
-                            var tokenHeader = response.getResponseHeader(CSRF_HEADER);
+                            tokenHeader = response.getResponseHeader(CSRF_HEADER);
                         if (typeof tokenHeader !== "undefined" && tokenHeader != null) {
                             var token = response.getResponseHeader("X-CSRF-TOKEN");
                              if (tokenHeader != null && token != null) {
@@ -349,9 +352,11 @@
                 callback(self.STATUS_SUCCESS, result);
             },
             error: function (request, textstatus, error) {
+                var result;
+
                 // look for status 204 which should not be an error
                 if (request.status === 204 || request.status === 1223) {
-                    var result = {
+                     result = {
                         data: {},
                         textstatus: request.statusText
                     };
@@ -359,7 +364,7 @@
                     return;
                 }
                 else if (request.status > 0) {
-                    var result = {
+                     result = {
                         request: request,
                         textstatus: textstatus,
                         error: error
@@ -581,7 +586,7 @@
              return true;
          }
         // these HTTP methods do not require CSRF protection
-        return !(['post','put','delete'].indexOf(method.toLowerCase())!==-1);
+        return (['post','put','delete'].indexOf(method.toLowerCase())!==-1);
     }
 
 
