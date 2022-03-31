@@ -1,27 +1,3 @@
-/*
- *     Percussion CMS
- *     Copyright (C) 1999-2021 Percussion Software, Inc.
- *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
- *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
- *
- *     Mailing Address:
- *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
- */
-
 /**
  * Gloabl Variables Plugin.
  */
@@ -39,7 +15,7 @@
                 var topFrJQ = mainEditor.jQuery.topFrameJQuery;
                 var dialogHtml = '<div><div id="perc-global-variables-wrapper"><table id="perc-global-variables-table"><tbody><tr class="perc-row-0"><th align="left" class="perc-column-0 perc-global-variables-column-header">Variable name</th><th class="perc-column-1 perc-global-variables-column-header">Variable value</th></tr>';
                 topFrJQ.each(PercGlobalVariablesData, function(varName, varValue){
-                    dialogHtml += '<tr class="perc-wfconfig-row perc-gv-row"><td align:"left"="" class="perc-column-0 perc-global-variables-column"><input type="radio" class="perc-global-variables-radio" style="width:auto;"><span class="perc-roleName-wrapper perc-ellipsis perc-gv-name">' + varName + '</span></td><td align:"left"="" class="perc-column-1 perc-global-variables-column"><span class="perc-roleName-wrapper perc-ellipsis perc-gv-value">' + varValue + '</span></td></tr>'
+                    dialogHtml += '<tr class="perc-wfconfig-row perc-gv-row"><td align:"left"="" class="perc-column-0 perc-global-variables-column"><input type="radio" class="perc-global-variables-radio" style="width:auto;"><span class="perc-roleName-wrapper perc-ellipsis perc-gv-name">' + varName + '</span></td><td align:"left"="" class="perc-column-1 perc-global-variables-column"><span class="perc-roleName-wrapper perc-ellipsis perc-gv-value">' + varValue + '</span></td></tr>';
                 });
                 dialogHtml += '</table></div></div>';
                 // if we are in the new blog post dialog, the width is 
