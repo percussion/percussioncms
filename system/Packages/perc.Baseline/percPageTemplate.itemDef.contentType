@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ItemDefData appName="psx_cepercPageTemplate" isHidden="false" objectType="3">
+<ItemDefData appName="psx_cepercPageTemplate" isHidden="true" objectType="3">
    <PSXItemDefSummary editorUrl="../psx_cepercPageTemplate/percPageTemplate.html" id="319" label="percPageTemplate" name="percPageTemplate" typeId="319">
       <Description>The Content Type for Page Template items</Description>
    </PSXItemDefSummary>

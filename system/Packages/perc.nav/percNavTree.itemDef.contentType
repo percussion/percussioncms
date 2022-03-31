@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ItemDefData appName="psx_cepercNavTree" isHidden="false" objectType="1">
+<ItemDefData appName="psx_cepercNavTree" isHidden="true" objectType="1">
    <PSXItemDefSummary editorUrl="../psx_cepercNavTree/percNavTree.html" id="315" label="NavTree" name="percNavTree" typeId="315">
       <Description>Managed Navigation Content Item used in the root Folder of a Site.  The Site root Folder must contain a NavTree Content Item for Managed Navigation to work.</Description>
    </PSXItemDefSummary>

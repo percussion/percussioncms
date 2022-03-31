@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ItemDefData appName="psx_cepercUserProfile" isHidden="false" objectType="1">
+<ItemDefData appName="psx_cepercUserProfile" isHidden="true" objectType="1">
    <PSXItemDefSummary editorUrl="../psx_cepercUserProfile/percUserProfile.html" id="321" label="percUserProfile" name="percUserProfile" typeId="321"/>
    <PSXContentEditor contentType="321" enableRelatedContent="yes" iconSource="0" iconValue="" objectType="1" producesResource="no" workflowId="6">
       <PSXDataSet id="768">

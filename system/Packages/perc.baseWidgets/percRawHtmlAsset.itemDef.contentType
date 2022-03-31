@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ItemDefData appName="psx_cepercRawHtmlAsset" isHidden="false" objectType="1">
+<ItemDefData appName="psx_cepercRawHtmlAsset" isHidden="true" objectType="1">
    <PSXItemDefSummary editorUrl="../psx_cepercRawHtmlAsset/percRawHtmlAsset.html" id="324" label="HTML" name="percRawHtmlAsset" typeId="324"/>
    <PSXContentEditor contentType="324" enableRelatedContent="yes" iconSource="1" iconValue="filetypeIconsGenericHtml.png" objectType="1" producesResource="no" workflowId="6">
       <PSXDataSet id="768">

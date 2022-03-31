@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ItemDefData appName="psx_cepercRichTextAsset" isHidden="false" objectType="1">
+<ItemDefData appName="psx_cepercRichTextAsset" isHidden="true" objectType="1">
    <PSXItemDefSummary editorUrl="../psx_cepercRichTextAsset/percRichTextAsset.html" id="326" label="Rich Text" name="percRichTextAsset" typeId="326"/>
    <PSXContentEditor contentType="326" enableRelatedContent="yes" iconSource="1" iconValue="filetypeIconsRichText.png" objectType="1" producesResource="no" workflowId="6">
       <PSXDataSet id="768">

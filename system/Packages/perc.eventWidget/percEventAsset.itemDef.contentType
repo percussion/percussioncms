@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ItemDefData appName="psx_cepercEventAsset" isHidden="false" objectType="1">
+<ItemDefData appName="psx_cepercEventAsset" isHidden="true" objectType="1">
    <PSXItemDefSummary editorUrl="../psx_cepercEventAsset/percEventAsset.html" id="335" label="Event" name="percEventAsset" typeId="335"/>
    <PSXContentEditor contentType="335" enableRelatedContent="yes" iconSource="1" iconValue="filetypeIconsEvent.png" objectType="1" producesResource="no" workflowId="6">
       <PSXDataSet id="768">

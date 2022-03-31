@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ItemDefData appName="psx_cepercCategoryList" isHidden="false" objectType="1">
+<ItemDefData appName="psx_cepercCategoryList" isHidden="true" objectType="1">
    <PSXItemDefSummary editorUrl="../psx_cepercCategoryList/percCategoryList.html" id="353" label="Categories" name="percCategoryList" typeId="353">
       <Description>Category widget</Description>
    </PSXItemDefSummary>

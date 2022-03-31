@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ItemDefData appName="psx_cepercFileAsset" isHidden="false" objectType="1">
+<ItemDefData appName="psx_cepercFileAsset" isHidden="true" objectType="1">
    <PSXItemDefSummary editorUrl="../psx_cepercFileAsset/percFileAsset.html" id="337" label="File" name="percFileAsset" typeId="337">
       <Description>Manages binary files other than images, such as .pdf or .doc.</Description>
    </PSXItemDefSummary>

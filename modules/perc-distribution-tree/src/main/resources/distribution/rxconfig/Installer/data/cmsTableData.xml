@@ -13849,7 +13849,7 @@
         </row>
     </table>
 
-    <table name="PSX_FOLDER">
+    <table name="PSX_FOLDER" onCreateOnly="no">
             <row action="i" onTableCreateOnly="no">
             <column name="CONTENTID">1</column>
             <column name="REVISIONID">1</column>
@@ -14167,7 +14167,7 @@
     </table>
 
 
-    <table name="PSX_OBJECTS">
+    <table name="PSX_OBJECTS" onCreateOnly="no">
             <row action="i" onTableCreateOnly="no">
             <column name="OBJECTTYPE">1</column>
             <column name="OBJECTNAME">Item</column>

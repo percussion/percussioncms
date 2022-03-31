@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ItemDefData appName="psx_cepercSecureLogin" isHidden="false" objectType="1">
+<ItemDefData appName="psx_cepercSecureLogin" isHidden="true" objectType="1">
    <PSXItemDefSummary editorUrl="../psx_cepercSecureLogin/percSecureLogin.html" id="369" label="Secure Login" name="percSecureLogin" typeId="369"/>
    <PSXContentEditor contentType="369" enableRelatedContent="yes" iconSource="0" iconValue="" objectType="1" producesResource="no" workflowId="6">
       <PSXDataSet id="768">
