@@ -25,6 +25,7 @@
       package com.percussion.widgets.image.web.impl;
 
       import com.percussion.error.PSExceptionUtils;
+      import com.percussion.util.PSBaseBean;
       import com.percussion.widgets.image.data.CachedImageMetaData;
       import com.percussion.widgets.image.data.ImageData;
       import com.percussion.widgets.image.services.ImageCacheManager;
@@ -35,6 +36,7 @@
       import org.apache.commons.lang.Validate;
       import org.apache.logging.log4j.LogManager;
       import org.apache.logging.log4j.Logger;
+      import org.springframework.beans.factory.annotation.Autowired;
       import org.springframework.stereotype.Controller;
       import org.springframework.validation.BindingResult;
       import org.springframework.web.bind.annotation.ModelAttribute;
@@ -48,12 +50,15 @@
 
       @Controller
       @RequestMapping("/imageWidget/resizeImage.do")
+      @PSBaseBean("imageWidgetResize")
       public class ImageResizeController {
 
           private static final Logger log = LogManager.getLogger(ImageResizeController.class);
-          private String viewName;
-          private String modelObjectName;
+          private String viewName="imageWidgetJSONView";
+          private String modelObjectName="results";
+          @Autowired
           private ImageCacheManager imageCacheManager;
+          @Autowired
           private ImageResizeManager imageResizeManager;
 
           @PostMapping()
@@ -119,7 +124,7 @@
           }
 
           public String getViewName() {
-              return "imageWidgetJSONView";
+              return viewName;
           }
 
           public void setViewName(String viewName) {

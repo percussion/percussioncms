@@ -2,7 +2,7 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-http://www.springframework.org/schema/beans/spring-beans-4.2.xsd">
+http://www.springframework.org/schema/beans/spring-beans.xsd">
 
    <bean id="imageWidgetResizeManager" class="com.percussion.widgets.image.services.impl.ImageResizeManagerImpl">
        <!--DEPRECATED - default values of (png, image/png, png) no longer needed as the image type should be pulled from the image itself -->
