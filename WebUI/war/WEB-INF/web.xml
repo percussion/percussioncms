@@ -631,10 +631,6 @@
         <url-pattern>/assembly/aa</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>ContentUiAAServlet</servlet-name>
-        <url-pattern>/contentui/aa</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>PSTdSchemaXmlServlet</servlet-name>
         <url-pattern>/servlet/tdschemaxml</url-pattern>
     </servlet-mapping>

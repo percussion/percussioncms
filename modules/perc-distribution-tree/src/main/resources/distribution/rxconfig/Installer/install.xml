@@ -328,9 +328,6 @@
         <include name="JRE-32/**"/>
         <include name="JRE-64/**"/>
         <include name="logs/**"/>
-        <include name="ObjectStore/psx_cerffNavon.xml"/>
-        <include name="ObjectStore/psx_cerffNavTree.xml.xml"/>
-        <include name="ObjectStore/psx_cerffNavImage.xml"/>
         <include name="sys_resources/**" />
         <!-- Delete any left over translations artifacts -->
         <include name="tobetranslated.tmx"/>

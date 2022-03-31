@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ItemDefData appName="psx_cepercFormAsset" isHidden="false" objectType="1">
+<ItemDefData appName="psx_cepercFormAsset" isHidden="true" objectType="1">
    <PSXItemDefSummary editorUrl="../psx_cepercFormAsset/percFormAsset.html" id="342" label="Form" name="percFormAsset" typeId="342"/>
    <PSXContentEditor contentType="342" enableRelatedContent="yes" iconSource="1" iconValue="filetypeIconsForm.png" objectType="1" producesResource="yes" workflowId="6">
       <PSXDataSet id="768">

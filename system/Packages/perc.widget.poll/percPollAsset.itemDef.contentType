@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ItemDefData appName="psx_cepercPollAsset" isHidden="false" objectType="1">
+<ItemDefData appName="psx_cepercPollAsset" isHidden="true" objectType="1">
    <PSXItemDefSummary editorUrl="../psx_cepercPollAsset/percPollAsset.html" id="365" label="Polls" name="percPollAsset" typeId="365"/>
    <PSXContentEditor contentType="365" enableRelatedContent="yes" iconSource="1" iconValue="finderIconPolls.png" objectType="1" producesResource="yes" workflowId="6">
       <PSXDataSet id="768">

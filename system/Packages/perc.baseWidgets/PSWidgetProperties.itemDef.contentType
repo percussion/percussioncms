@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ItemDefData appName="psx_cePSWidgetProperties" isHidden="false" objectType="1">
+<ItemDefData appName="psx_cePSWidgetProperties" isHidden="true" objectType="1">
    <PSXItemDefSummary editorUrl="../psx_cePSWidgetProperties/PSWidgetProperties.html" id="330" label="PSWidgetProperties" name="PSWidgetProperties" typeId="330">
       <Description>Stores all property data for all widgets.</Description>
    </PSXItemDefSummary>

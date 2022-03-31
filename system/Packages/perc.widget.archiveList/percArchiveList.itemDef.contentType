@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ItemDefData appName="psx_cepercArchiveList" isHidden="false" objectType="1">
+<ItemDefData appName="psx_cepercArchiveList" isHidden="true" objectType="1">
    <PSXItemDefSummary editorUrl="../psx_cepercArchiveList/percArchiveList.html" id="351" label="Archives" name="percArchiveList" typeId="351"/>
    <PSXContentEditor contentType="351" enableRelatedContent="yes" iconSource="1" iconValue="filetypeIconsArchiveList.png" objectType="1" producesResource="no" workflowId="6">
       <PSXDataSet id="768">
