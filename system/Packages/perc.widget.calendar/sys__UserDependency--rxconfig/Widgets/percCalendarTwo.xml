@@ -403,9 +403,11 @@
       </style>
 
           <script>
-          window.addEventListener('DOMContentLoaded',function hideCalendarSource(calendarClass) {
+      window.addEventListener('DOMContentLoaded', function() {
+		  function hideCalendarSource(calendarClass) {
             $('#'+calendarClass+'-button').toggleClass("perc-disabled-calendar-button");
             $('.'+calendarClass).toggleClass("perc-hide-calendar");
+		  };
           });
           </script>
 
@@ -458,7 +460,7 @@
       * to keep both of these modifications in place.
       **/
 
-     $(document).ready(function() {
+	$(function(){
 
         $('#perc-event-list-${calendarContentId}-${widgetId}').hide();
 
@@ -610,9 +612,14 @@
       if( layoutType == 'list' ) {
         $('#calendar-${calendarContentId}-${widgetId}').hide();
         $('.perc-mini-calendar').hide();
-        jQuery.when(Perc.events['calendar-${calendarContentId}-${widgetId}']).done( function( resolvedEvents ){
+        jQuery.when(Perc.events['calendar-${calendarContentId}-${widgetId}'])
+		 .then(
+			function(resolvedEvents) {
+				console.log('processing event list');
               percProcessEventList(resolvedEvents, maxResults);
-        });
+			},
+			function(err) { console.log('errpr processing event list', err); }
+		  );
       }
 
       // This method hides the calendar view, shows the list view, and populates the target with the event list
@@ -714,9 +721,12 @@
         $('#perc-button-container-${calendarContentId}-${widgetId}').hide();
         $('#calendar-${calendarContentId}-${widgetId}').fullCalendar( 'destroy' );
         Perc.events['calendar-${calendarContentId}-${widgetId}'] = jQuery.Deferred();
-        jQuery.when(Perc.events['calendar-${calendarContentId}-${widgetId}']).done( function( resolvedEvents ){
+        jQuery.when(Perc.events['calendar-${calendarContentId}-${widgetId}']).then(
+			function( resolvedEvents ){
               percProcessEventList(resolvedEvents, maxResults);
-        });
+			},
+			function(err) { console.log('error processing events', err); }
+		);
         Perc.range = 52;
         $('#perc-event-list-${calendarContentId}-${widgetId}').fadeIn();
         $('#perc-event-list-${calendarContentId}-${widgetId} ul').empty();
@@ -734,7 +744,7 @@
                     <div class="perc-mini-calendar" id="perc-mini-calendar-$id"></div>
                     <script>
                     window.addEventListener('DOMContentLoaded', function() {
-                        $(document).ready(function() {
+						$(function(){
                             tempDateArray = [];
                             dateWithData = [];
                             #if($perc.isEditMode() || $perc.isPreviewMode())
