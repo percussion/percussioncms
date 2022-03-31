@@ -267,8 +267,10 @@
 #end##
 ##
 #if($perc.isEditMode() || $perc.isPreviewMode())##
+<script src="/Rhythmyx/web_resources/widgets/calendarTwo/js/moment.min.js"></script>
 #set($resourcePrefix = "/Rhythmyx")##
 #else##
+<script src="/web_resources/widgets/calendarTwo/js/moment.min.js"></script>
 #set($resourcePrefix = "")##
 #end##
 ##
@@ -402,14 +404,14 @@
 
       </style>
 
-          <script>
+	  <script>
       window.addEventListener('DOMContentLoaded', function() {
 		  function hideCalendarSource(calendarClass) {
-            $('#'+calendarClass+'-button').toggleClass("perc-disabled-calendar-button");
-            $('.'+calendarClass).toggleClass("perc-hide-calendar");
+			$('#'+calendarClass+'-button').toggleClass("perc-disabled-calendar-button");
+			$('.'+calendarClass).toggleClass("perc-hide-calendar");
 		  };
-          });
-          </script>
+      });
+      </script>
 
       #if($perc_calendar_view == "full")##
       <div class ="perc-full-calendar" id="calendar-${calendarContentId}-${widgetId}"></div>
@@ -616,7 +618,7 @@
 		 .then(
 			function(resolvedEvents) {
 				console.log('processing event list');
-              percProcessEventList(resolvedEvents, maxResults);
+				percProcessEventList(resolvedEvents, maxResults);
 			},
 			function(err) { console.log('errpr processing event list', err); }
 		  );
@@ -630,7 +632,7 @@
             //  fullcalendar does not presort the event dates
             eventObject.sort(function(x, y){
                 return x.start - y.start;
-      });
+			});
 
             percCurrentDate = new Date();
 
@@ -734,7 +736,7 @@
         initializeCalendar();
           $('#calendar-${calendarContentId}-${widgetId}').hide();
         });
-    });
+	});
     });
       </script>
 
@@ -817,7 +819,7 @@
                                   }
                                   return [true, ''];
                             }
-        });
+						});
                      });
                     </script>
 
