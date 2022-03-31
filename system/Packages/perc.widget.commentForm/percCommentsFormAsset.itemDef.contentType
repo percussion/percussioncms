@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ItemDefData appName="psx_cepercCommentsFormAsset" isHidden="false" objectType="1">
+<ItemDefData appName="psx_cepercCommentsFormAsset" isHidden="true" objectType="1">
    <PSXItemDefSummary editorUrl="../psx_cepercCommentsFormAsset/percCommentsFormAsset.html" id="343" label="Comments Form" name="percCommentsFormAsset" typeId="343"/>
    <PSXContentEditor contentType="343" enableRelatedContent="yes" iconSource="1" iconValue="filetypeIconsComments.png" objectType="1" producesResource="no" workflowId="6">
       <PSXDataSet id="768">

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ItemDefData appName="psx_cepercRssAsset" isHidden="false" objectType="1">
+<ItemDefData appName="psx_cepercRssAsset" isHidden="true" objectType="1">
    <PSXItemDefSummary editorUrl="../psx_cepercRssAsset/percRssAsset.html" id="359" label="RSS" name="percRssAsset" typeId="359">
       <Description>A widget to read rss feeds.</Description>
    </PSXItemDefSummary>

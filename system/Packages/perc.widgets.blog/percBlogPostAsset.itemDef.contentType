@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ItemDefData appName="psx_cepercBlogPostAsset" isHidden="false" objectType="1">
+<ItemDefData appName="psx_cepercBlogPostAsset" isHidden="true" objectType="1">
    <PSXItemDefSummary editorUrl="../psx_cepercBlogPostAsset/percBlogPostAsset.html" id="357" label="Blog Post" name="percBlogPostAsset" typeId="357"/>
    <PSXContentEditor contentType="357" enableRelatedContent="yes" iconSource="1" iconValue="filetypeIconsBlog.png" objectType="1" producesResource="no" workflowId="6">
       <PSXDataSet id="768">

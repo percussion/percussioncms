@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ItemDefData appName="psx_cepercCookieConsent" isHidden="false" objectType="1">
+<ItemDefData appName="psx_cepercCookieConsent" isHidden="true" objectType="1">
    <PSXItemDefSummary editorUrl="../psx_cepercCookieConsent/percCookieConsent.html" id="402" label="percCookieConsent" name="percCookieConsent" typeId="402">
       <Description>A widget that displays an 'accept consent' dialog on the website.</Description>
    </PSXItemDefSummary>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ItemDefData appName="psx_cepercCalendarAsset" isHidden="false" objectType="1">
+<ItemDefData appName="psx_cepercCalendarAsset" isHidden="true" objectType="1">
    <PSXItemDefSummary editorUrl="../psx_cepercCalendarAsset/percCalendarAsset.html" id="348" label="Calendar" name="percCalendarAsset" typeId="348"/>
    <PSXContentEditor contentType="348" enableRelatedContent="yes" iconSource="1" iconValue="finderIconCalendar.png" objectType="1" producesResource="yes" workflowId="1">
       <PSXDataSet id="768">

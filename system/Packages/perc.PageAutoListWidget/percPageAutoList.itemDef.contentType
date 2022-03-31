@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ItemDefData appName="psx_cepercPageAutoList" isHidden="false" objectType="1">
+<ItemDefData appName="psx_cepercPageAutoList" isHidden="true" objectType="1">
    <PSXItemDefSummary editorUrl="../psx_cepercPageAutoList/percPageAutoList.html" id="340" label="Page Auto List" name="percPageAutoList" typeId="340"/>
    <PSXContentEditor contentType="340" enableRelatedContent="yes" iconSource="1" iconValue="filetypeIconsAutoList.png" objectType="1" producesResource="no" workflowId="1">
       <PSXDataSet id="768">

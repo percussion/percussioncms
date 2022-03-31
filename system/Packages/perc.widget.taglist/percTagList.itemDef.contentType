@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ItemDefData appName="psx_cepercTagList" isHidden="false" objectType="1">
+<ItemDefData appName="psx_cepercTagList" isHidden="true" objectType="1">
    <PSXItemDefSummary editorUrl="../psx_cepercTagList/percTagList.html" id="347" label="Tags" name="percTagList" typeId="347">
       <Description>Tag widget</Description>
    </PSXItemDefSummary>

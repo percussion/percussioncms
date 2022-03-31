@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ItemDefData appName="psx_cepercLoginAsset" isHidden="false" objectType="1">
+<ItemDefData appName="psx_cepercLoginAsset" isHidden="true" objectType="1">
    <PSXItemDefSummary editorUrl="../psx_cepercLoginAsset/percLoginAsset.html" id="367" label="Login" name="percLoginAsset" typeId="367">
       <Description>Login Asset for Content configuration.</Description>
    </PSXItemDefSummary>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ItemDefData appName="psx_cepercSimpleTextAsset" isHidden="false" objectType="1">
+<ItemDefData appName="psx_cepercSimpleTextAsset" isHidden="true" objectType="1">
    <PSXItemDefSummary editorUrl="../psx_cepercSimpleTextAsset/percSimpleTextAsset.html" id="328" label="Simple Text" name="percSimpleTextAsset" typeId="328"/>
    <PSXContentEditor contentType="328" enableRelatedContent="yes" iconSource="1" iconValue="filetypeIconsSimpleText.png" objectType="1" producesResource="no" workflowId="6">
       <PSXDataSet id="768">

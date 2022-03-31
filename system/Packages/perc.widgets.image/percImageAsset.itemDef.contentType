@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ItemDefData appName="psx_cepercImageAsset" isHidden="false" objectType="1">
+<ItemDefData appName="psx_cepercImageAsset" isHidden="true" objectType="1">
    <PSXItemDefSummary editorUrl="../psx_cepercImageAsset/percImageAsset.html" id="384" label="Image Asset" name="percImageAsset" typeId="384"/>
    <PSXContentEditor contentType="384" enableRelatedContent="yes" iconSource="2" iconValue="img_ext" objectType="1" producesResource="yes" workflowId="6">
       <PSXDataSet id="768">
