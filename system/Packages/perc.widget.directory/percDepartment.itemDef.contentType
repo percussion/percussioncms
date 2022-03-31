@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ItemDefData appName="psx_cepercDepartment" isHidden="false" objectType="1">
+<ItemDefData appName="psx_cepercDepartment" isHidden="true" objectType="1">
    <PSXItemDefSummary editorUrl="../psx_cepercDepartment/percDepartment.html" id="366" label="percDepartment" name="percDepartment" typeId="366"/>
    <PSXContentEditor contentType="366" enableRelatedContent="yes" iconSource="0" iconValue="" objectType="1" producesResource="no" workflowId="6">
       <PSXDataSet id="768">

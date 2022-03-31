@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ItemDefData appName="psx_cepercTitleAsset" isHidden="false" objectType="1">
+<ItemDefData appName="psx_cepercTitleAsset" isHidden="true" objectType="1">
    <PSXItemDefSummary editorUrl="../psx_cepercTitleAsset/percTitleAsset.html" id="355" label="percTitleAsset" name="percTitleAsset" typeId="355">
       <Description>Title Widget</Description>
    </PSXItemDefSummary>

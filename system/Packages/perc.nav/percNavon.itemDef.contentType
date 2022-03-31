@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ItemDefData appName="psx_cepercNavon" isHidden="false" objectType="1">
+<ItemDefData appName="psx_cepercNavon" isHidden="true" objectType="1">
    <PSXItemDefSummary editorUrl="../psx_cepercNavon/percNavon.html" id="314" label="Navon" name="percNavon" typeId="314">
       <Description>Content Type for basic Managed Navigation Content Items.</Description>
    </PSXItemDefSummary>

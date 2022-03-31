@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ItemDefData appName="psx_cepercRedirect" isHidden="false" objectType="1">
+<ItemDefData appName="psx_cepercRedirect" isHidden="true" objectType="1">
    <PSXItemDefSummary editorUrl="../psx_cepercRedirect/percRedirect.html" id="394" label="Redirect" name="percRedirect" typeId="394">
       <Description>Adds a client side redirect to a Page.</Description>
    </PSXItemDefSummary>
