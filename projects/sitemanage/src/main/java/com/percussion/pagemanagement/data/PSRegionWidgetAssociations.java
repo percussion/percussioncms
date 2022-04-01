@@ -23,9 +23,17 @@
  */
 package com.percussion.pagemanagement.data;
 
-import static org.apache.commons.lang.Validate.notEmpty;
-import static org.apache.commons.lang.Validate.notNull;
+import net.sf.oval.constraint.AssertValid;
+import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -33,17 +41,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-
-import net.sf.oval.constraint.AssertValid;
-
-import org.apache.commons.beanutils.BeanUtils;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.commons.lang.builder.ToStringStyle;
+import static org.apache.commons.lang.Validate.notEmpty;
+import static org.apache.commons.lang.Validate.notNull;
 
 /**
  * 
@@ -53,13 +52,12 @@ import org.apache.commons.lang.builder.ToStringStyle;
  * @author adamgent
  *
  */
-public abstract class PSRegionWidgetAssociations
-{
+public abstract class PSRegionWidgetAssociations implements Serializable {
 
-    @AssertValid(requireValidElements=true)
+    @AssertValid()
     private Set<PSRegionWidgets> regionWidgetAssociations = new HashSet<>();
 
-    public PSRegionWidgetAssociations()
+    protected PSRegionWidgetAssociations()
     {
         super();
     }
@@ -70,7 +68,7 @@ public abstract class PSRegionWidgetAssociations
      * 
      * @return region-widgets assocation.
      */
-    @AssertValid(requireValidElements=true)
+    @AssertValid()
     @XmlElementWrapper(name = "regionWidgetAssociations")
     @XmlElement(name = "regionWidget")
     public Set<PSRegionWidgets> getRegionWidgetAssociations()
@@ -83,21 +81,10 @@ public abstract class PSRegionWidgetAssociations
         if (widgetRegions == null) return;
         this.regionWidgetAssociations = new HashSet<> (widgetRegions);
     }
-    
-//    public List<PSWidgetItem> getWidgetsForRegion(String regionId) {
-//        Collection<PSRegionWidgets> regionWidgets = getRegionWidgetAssocations();
-//        if (regionWidgets != null) {
-//            for (PSRegionWidgets w : regionWidgets) {
-//                if (regionId.equals(w.getRegionId())) {
-//                    return w.getWidgetItems();
-//                }
-//            }
-//        }
-//        return new ArrayList<PSWidgetItem>();
-//    }
+
     
     public Map<String, List<PSWidgetItem>> getRegionWidgetsMap() {
-        Map<String, List<PSWidgetItem>> map = new HashMap<String, List<PSWidgetItem>>();
+        Map<String, List<PSWidgetItem>> map = new HashMap<>();
         Collection<PSRegionWidgets> regionWidgets = getRegionWidgetAssociations();
         if (regionWidgets != null) {
             for (PSRegionWidgets w : regionWidgets) {

@@ -24,15 +24,15 @@
 
 package com.percussion.delivery.forms;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.commons.mail.EmailException;
-
+import com.percussion.delivery.exceptions.PSEmailException;
 import com.percussion.delivery.forms.data.IPSFormData;
 import com.percussion.delivery.forms.impl.PSRecaptchaService;
 import com.percussion.delivery.utils.PSEmailServiceNotInitializedException;
+import org.apache.commons.mail.EmailException;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 public interface IPSFormService 
 {
@@ -113,11 +113,11 @@ public interface IPSFormService
      * @throws PSEmailServiceNotInitializedException if the email service is not properly configured
      * @throws EmailException If there are any errors sending the email
      */
-    public void emailFormData(String toList, String subject, IPSFormData formData)  throws PSEmailServiceNotInitializedException, EmailException;
+    public void emailFormData(String toList, String subject, IPSFormData formData) throws PSEmailServiceNotInitializedException, PSEmailException;
 
     /**
      * Check if form name is a valid Form
-     * @param form name
+     * @param formName the name of the form
      * @return true if valid
      */
     public boolean isValidFormName(String formName);

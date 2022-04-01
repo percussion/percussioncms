@@ -97,7 +97,7 @@ public class PSAssetUploadServlet extends HttpServlet
             PSAsset newAsset = null;
             for (Part part : request.getParts()) {
 
-                fileName = SecureStringUtils.sanitizeForJson(getFileName(part));
+                fileName = SecureStringUtils.sanitizeFileName(getFileName(part));
                 if(!StringUtils.isEmpty(fileName)) {
                     newAsset = assetCreator.createAsset(folderpath, PSAssetCreator.getAssetType(assetType), part.getInputStream(), fileName, selector, includeOuterHtml, approveOnUpload);
                 }
@@ -123,6 +123,7 @@ public class PSAssetUploadServlet extends HttpServlet
         }
         catch (Exception e)
         {
+            logger.error(PSExceptionUtils.getMessageForLog(e));
             response.setStatus(500);
         }
     }

@@ -41,8 +41,7 @@
               display_name="Sort Order"
               required="true"
               default_value="desc"
-              datatype="enum"
-    >
+              datatype="enum">
         <EnumValue value="desc" display_value="Descending" />
         <EnumValue value="asc" display_value="Ascending" />
     </UserPref>
