@@ -281,7 +281,7 @@ $.perc = {};
         //        '#' (used by HTML anchors),
         //        ';' (used to append jsessionid to URL)
         //        '%' (used to URL encoding/escape)
-        URL: function(txt){if(typeof txt === 'undefined' || txt === null){return txt;} return txt.replace( /[ ]/g, '-' ).replace( /[\\\/\:\*\?\"<\>\|\#\;\%\']/g, '' );},
+        URL: function(txt){if(typeof txt === 'undefined' || txt === null){return txt;} return txt.replace( /[ ]/g, '-' ).replace( /[\\\/\:\*\?\"<\>\|\#\;\%\']/gu, '' );},
 
         // This filter used for site name (or hostname).
         // The allowed characters are: alpha-numeric, '-' and '.'
