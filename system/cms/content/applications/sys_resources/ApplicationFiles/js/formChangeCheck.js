@@ -35,52 +35,54 @@
   	
   }
 
+  function checkbeforeClose(){
+      if(ps_theForm != null && ps_initialChecksum != null)
+      {
+          if(ps_warnIfDirty())
+          {
+              if(window.opener != null)
+                  window.opener.ps_noCloseFlag = false;
+              ps_MarkWindowForClose();
+              _formAlreadySubmitted = false; // Get around double click check
+              ps_theForm.submit();
+
+          }
+          else if(window.opener != null)
+          {
+              window.opener.ps_noCloseFlag = false;
+              if(window.opener.ps_updateFlag === true)
+              {
+                  if(!isOpenerActiveAssembly())
+                  {
+                      // Refresh applet's selected view
+                      if(ps_theForm.sys_contentid === null)
+                      {
+                          refreshCxApplet(window.opener, "Selected", null, null);
+                      }
+                      else
+                      {
+                          refreshCxApplet(window.opener, "Selected",ps_theForm.sys_contentid.value,"");
+                      }
+                      window.opener.ps_updateFlag = false;
+                  }
+              }
+          }
+      }
+
+  }
+
+
  // Close the edit window but check for
  // dirty fields and post warning if changes
  // to the form were made
  function ps_closeWithDirtyCheck()
  {
-    if(ps_theForm != null && ps_initialChecksum != null)
-    {
-        if(ps_warnIfDirty())
-        {
-            if(window.opener != null)
-                window.opener.ps_noCloseFlag = false;
-                ps_MarkWindowForClose();
-              _formAlreadySubmitted = false; // Get around double click check
-                ps_submitElem.trigger("click");
+     checkbeforeClose();
+     closeWindow();
+ }
 
-        }
-        else if(window.opener != null)
-        {
-            window.opener.ps_noCloseFlag = false;
-            if(window.opener.ps_updateFlag === true)
-            {
-                if(!isOpenerActiveAssembly())
-                {
-                    // Refresh applet's selected view
-                    if(ps_theForm.sys_contentid === null)
-                    {		      
-                        refreshCxApplet(window.opener, "Selected", null, null);
-                    }
-                    else
-                    {                     
-                        refreshCxApplet(window.opener, "Selected",ps_theForm.sys_contentid.value,"");
-                    }
-                    window.opener.ps_updateFlag = false;
-                }
-            }
-            window.close();
-        }
-        else
-        {
-            window.close();
-        }
-    }
-    else
-    {
-        window.close();
-    }
+ function closeWindow(){
+	 window.open("", '_self').window.close();
  }
  
 /**
