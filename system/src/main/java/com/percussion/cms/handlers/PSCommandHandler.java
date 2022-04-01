@@ -109,6 +109,9 @@ public abstract class PSCommandHandler extends PSDataHandler
    private static final Logger log = LogManager.getLogger(PSCommandHandler.class);
 
    public static String fixProxiedUrl(String url, String serverName, int serverPort) throws MalformedURLException {
+      if(url != null && ! url.toLowerCase().startsWith("http")){
+         return url;
+      }
       URL proxyTest = new URL(url);
       String replacementUrl = url;
 
