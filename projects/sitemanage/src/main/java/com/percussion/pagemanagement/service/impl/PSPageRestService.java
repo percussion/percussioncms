@@ -351,6 +351,9 @@ public class PSPageRestService
     public PSPage save(PSPage page) throws PSBeanValidationException
     {
         try {
+            if(page.getTitle().isEmpty())
+                page.setTitle(page.getLinkTitle());
+
             return pageService.save(page);
         }catch (PSBeanValidationException bve){
             throw  bve;
