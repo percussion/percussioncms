@@ -310,6 +310,7 @@
             path = path.replace("//Sites/","/Sites/");
             String siteName = path.replace("/Sites/","").split("/")[0];
             path = URLEncoder.encode(path,"UTF-8");
+            pageName = URLEncoder.encode(pageName,"UTF-8");
             temp = item.getId();
             String pageId = temp != null?temp.toString():"";
             urlParams.put("site", siteName);
