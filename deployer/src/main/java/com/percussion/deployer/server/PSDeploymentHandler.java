@@ -1030,7 +1030,8 @@ public class PSDeploymentHandler implements IPSDeploymentHandler, IPSLoadableReq
             }
 
             // if the version is lower, we cannot install
-            if (isLowerVersion)
+            //TODO: make this downgrade check an option but disable it by default
+           if (false && isLowerVersion)
             {
                Object[] args =
                        {expDesc.getVersion(), pkgInfo.getPackageVersion()};
@@ -1039,6 +1040,7 @@ public class PSDeploymentHandler implements IPSDeploymentHandler, IPSLoadableReq
                        .getMessage();
                validationMap.put(IPSDeployConstants.ERROR_KEY, message);
             }
+
          }
       }
 
