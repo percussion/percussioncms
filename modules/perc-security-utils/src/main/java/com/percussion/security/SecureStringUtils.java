@@ -35,6 +35,7 @@ import org.owasp.esapi.ESAPI;
 import org.owasp.esapi.errors.EncodingException;
 import org.owasp.esapi.reference.DefaultEncoder;
 
+import javax.annotation.Nonnull;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -51,6 +52,7 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * A centralized utility class with static methods for performing a variety of secure
@@ -177,6 +179,26 @@ public class SecureStringUtils {
      */
     public static String sanitizeForJson(String s) {
         return DefaultEncoder.getInstance().encodeForJavaScript(s);
+    }
+
+    public static final int MAX_FILENAME_LEN=255;
+    public static final Pattern filenamePattern = Pattern.compile("[^\\w.\\w]", Pattern.UNICODE_CHARACTER_CLASS);
+    /**
+     * Remove / replace any invalid characters.
+     * @param s a user provided filename to be sanitized
+     * @return the sanitized filename
+     * @throws IllegalArgumentException if the filename is too long
+     */
+    public static String sanitizeFileName(@Nonnull String s){
+        String fileName = s.trim();
+        if(fileName.length()>MAX_FILENAME_LEN)
+            fileName = s.substring(0, MAX_FILENAME_LEN-1);
+
+        fileName = filenamePattern.matcher(fileName).replaceAll("-");
+        while(fileName.contains("--")) {
+            fileName = fileName.replace("--", "-");
+        }
+        return fileName;
     }
 
     public enum DatabaseType{

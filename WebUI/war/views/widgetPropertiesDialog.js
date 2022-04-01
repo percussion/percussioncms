@@ -38,12 +38,13 @@ function countProperties(obj) {
     P.widgetPropertiesDialog = function( setWidgetProperty, widgetProperties, widgetDefinitionId, postCallback, propertyType, getWidgetByName ) {
         $.perc_widget_definition_client.restGetWidgetDefinition(widgetDefinitionId, propertyType, function(widgetDef) {
             if (widgetProperties){
-                if (typeof(widgetProperties['sys_perc_name']) != "undefined" && typeof(widgetProperties['sys_perc_description']) != "undefined" ){
-                    widgetDef.userPrefDef['sys_perc_name'] = (new $.perc_sys_pref("perc_sys_name","","Name","sys_perc_name"));
-                    widgetDef.userPrefDef['sys_perc_description'] = (new $.perc_sys_pref("perc_sys_description","","Description","sys_perc_description"));
+                if (typeof(widgetProperties.sys_perc_name) !== "undefined" && typeof(widgetProperties.sys_perc_description) !== "undefined" ){
+                    widgetDef.userPrefDef.sys_perc_name = (new $.perc_sys_pref("perc_sys_name","","Name","sys_perc_name"));
+                    widgetDef.userPrefDef.sys_perc_description = (new $.perc_sys_pref("perc_sys_description","","Description","sys_perc_description"));
                 }
                 widgetDef.setValuesFromWidgetProperties( widgetProperties );
             }
+
             var dialogOptions = {
                 modal : true,
                 width : 500,
@@ -300,50 +301,50 @@ function countProperties(obj) {
     $.perc_widget_definition_client = new function()
     {
         this.restGetWidgetDefinition = function(widgetDefinitionId, propertyType, callback)
-    {
-        $.ajax(
-            {
-                headers: {
-                    'Accept': 'application/xml',
-                    'Content-Type': 'application/xml'
-                },
-                url: $.perc_paths.WIDGET_FULL + "/" + widgetDefinitionId,
-                type: "GET",
-                success: function(xml, textstatus)
+        {
+            $.ajax(
                 {
-                    var model = new $.perc_widget_definition_model(xml);
-                    model.init(xml, propertyType);
-                    callback(model);
-                },
-                error : function()
-                {
-                    alert(I18N.message("perc.ui.widget.properties.dialog@Unable To Retrieve Widget Definition") + widgetDefinitionId);
-                }
-            });
-    };
+                    headers: {
+                        'Accept': 'application/xml',
+                        'Content-Type': 'application/xml'
+                    },
+                    url: $.perc_paths.WIDGET_FULL + "/" + widgetDefinitionId,
+                    type: "GET",
+                    success: function(xml, textstatus)
+                    {
+                        var model = new $.perc_widget_definition_model(xml);
+                        model.init(xml, propertyType);
+                        callback(model);
+                    },
+                    error : function()
+                    {
+                        alert(I18N.message("perc.ui.widget.properties.dialog@Unable To Retrieve Widget Definition") + widgetDefinitionId);
+                    }
+                });
+        };
 
         this.restGetWidgetPrefs = function(widgetDefinitionId, callback)
-    {
-        $.ajax(
-            {
-                headers: {
-                    'Accept': 'application/xml',
-                    'Content-Type': 'application/xml'
-                },
-                url: $.perc_paths.WIDGET_FULL + "/" + widgetDefinitionId,
-                type: "GET",
-                success: function(xml, textstatus)
+        {
+            $.ajax(
                 {
-                    var $widgetDefinitionXml = $(xml);
-                    var $widgetPrefs = $widgetDefinitionXml.find("WidgetPrefs");
-                    callback($widgetPrefs);
-                },
-                error : function()
-                {
-                    alert(I18N.message("perc.ui.widget.properties.dialog@Unable To Retrieve Widget Definition") + widgetDefinitionId);
-                }
-            });
-    };
+                    headers: {
+                        'Accept': 'application/xml',
+                        'Content-Type': 'application/xml'
+                    },
+                    url: $.perc_paths.WIDGET_FULL + "/" + widgetDefinitionId,
+                    type: "GET",
+                    success: function(xml, textstatus)
+                    {
+                        var $widgetDefinitionXml = $(xml);
+                        var $widgetPrefs = $widgetDefinitionXml.find("WidgetPrefs");
+                        callback($widgetPrefs);
+                    },
+                    error : function()
+                    {
+                        alert(I18N.message("perc.ui.widget.properties.dialog@Unable To Retrieve Widget Definition") + widgetDefinitionId);
+                    }
+                });
+        };
     };
 
     $.perc_sys_pref = function(datatype, default_value, display_name, name, required_field)
@@ -448,11 +449,26 @@ function countProperties(obj) {
             {
                 buff += '   <td><label' + this.required_class + 'for="' + this.name + '">' + this.display_name+'</label>: </td>\n'+ '</tr>\n';
                 buff += '   <td>\n';
-                buff += '   <select class="perc-widget-property" name="'+this.name+'" value2="'+value2+'"'+this.required_attr+'>\n';
-                for(let v in enumValues)
-                {
-                    var selected = (v === value2) ? 'SELECTED' : '';
-                    buff += '       <option value="'+v+'" '+selected+'> '+enumValues[v]+'   </option>\n' ;
+                buff += '   <select class="perc-widget-property" name="'+this.name+ '" ' +this.required_attr+'>\n';
+                var selected='';
+                var pickDefault = false;
+                if(!enumValues.hasOwnProperty(value2)) {
+                    pickDefault = true;
+                }
+                for (let v in enumValues) {
+
+                    if(pickDefault){
+                        selected = (v===this.default_value) ? 'selected' :'';
+                    }else{
+                        selected = (v === value2) ? 'selected' : '';
+                    }
+
+                    buff += '       <option value="' + v + '" ' + selected + '> ' + enumValues[v] + '   </option>\n';
+                }
+
+                //If no option was selected and value2 has a value then select the default value
+                if(selected === '' && value2 != ''){
+
                 }
                 buff += '   </select>\n';
                 buff += '</td>\n'+ '</tr>\n';

@@ -23,9 +23,9 @@
  */
 package com.percussion.delivery.utils;
 
-import org.apache.commons.mail.EmailException;
-
 import com.percussion.delivery.email.data.IPSEmailRequest;
+import com.percussion.delivery.exceptions.PSEmailException;
+import org.apache.commons.mail.EmailException;
 
 /**
  * A common helper class to send emails.
@@ -42,6 +42,17 @@ public interface IPSEmailHelper
      * @throws PSEmailServiceNotInitializedException When there is an error
      *             while initializing the email client.
      */
-    public String sendMail(IPSEmailRequest emailRequest) throws PSEmailServiceNotInitializedException, EmailException;
+    public String sendMail(IPSEmailRequest emailRequest) throws PSEmailServiceNotInitializedException, PSEmailException;
+
+    public static final String EMAIL_PROPS_HOSTNAME = "email.hostName";
+    public static final String EMAIL_PROPS_PORT = "email.portNumber";
+    public static final String EMAIL_PROPS_SMTP_USERNAME = "email.userName";
+    public static final String EMAIL_PROPS_SMTP_PASSWORD = "email.password";
+    public static final String EMAIL_PROPS_FROM_ADDRESS = "email.fromAddress";
+    public static final String EMAIL_PROPS_BOUNCE_ADDRESS = "email.bounceAddress";
+    public static final String EMAIL_PROPS_TLS = "email.TLS";
+    public static final String EMAIL_PROPS_FROMNAME = "email.fromName";
+    public static final String EMAIL_PROPS_SSLPORT = "email.sslPort";
+
 
 }
