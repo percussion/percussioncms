@@ -64,9 +64,9 @@ function buildEditorUrl(itemObject, itemJcrPath) {
     itemId = itemObject.id;
     itemName = itemObject.name;
     itemPath = encodeURIComponent(itemJcrPath);
-    itemView = (itemObject.type === 'percPage') ? 'editor' : 'editAsset';
+    itemView = (itemObject.type == 'percPage') ? 'editor' : 'editAsset';
 
-    url = "/cm/app?view=${itemView}&mode=readonly&id=${itemId}&name=${itemName}&path=${itemPath}";
+    url = `/cm/app?view=${itemView}&mode=readonly&id=${itemId}&name=${itemName}&path=${itemPath}`;
 
     return url;
 
@@ -81,7 +81,7 @@ function mergeConfig(options, url) {
                 var config = {};
                 var css_path = options.content_css;
                 var external_plugins = options.external_plugins;
-                if (Array.isArray(data)) {
+                if ($.isArray(data)) {
                     $.each(data, function(i, item) {
                         if (
                             (!item.hasOwnProperty('roles') || $(options.userRoles).not(item.roles).length < $(options.userRoles).length) &&
@@ -91,12 +91,12 @@ function mergeConfig(options, url) {
                             config = $.extend({},config,item);
                         }
                     });
-                } else if (data) {
+                } else if (data != null) {
                     config = data;
 
                 }
 
-                if (config)
+                if (config!=null)
                 {
                     if (config.hasOwnProperty('content_css')) {
                         config.content_css = css_path + "," + config.content_css;
@@ -115,7 +115,8 @@ function mergeConfig(options, url) {
                     var perc_locale = options.perc_locale;
 
                     if (langmap.hasOwnProperty(perc_locale)) {
-                        options.language = langmap[perc_locale];
+                        var language = langmap[perc_locale];
+                        options.language = language;
                     }
                 }
                 resolve(options);
@@ -146,14 +147,13 @@ function getBaseConfig(parameters) {
             "editor_selector": "tinymce_callout",
             "valid_elements": "*[*]",
             "noneditable_leave_contenteditable": true,
-            "autosave_ask_before_unload": false,
             "height": options.height,
             "width": "100%",
             "external_plugins": {
-                'percadvimage': '/Rhythmyx/sys_resources/tinymce/plugins/percadvimage/plugin.min.js',
-                'percadvlink': '/Rhythmyx/sys_resources/tinymce/plugins/percadvlink/plugin.min.js',
-                'percglobalvariables': '/Rhythmyx/sys_resources/tinymce/plugins/percglobalvariables/plugin.min.js',
-                'percmorelink': '/Rhythmyx/sys_resources/tinymce/plugins/percmorelink/plugin.min.js'
+                'percadvimage': '/Rhythmyx/sys_resources/tinymce/plugins/percadvimage/plugin.js',
+                'percadvlink': '/Rhythmyx/sys_resources/tinymce/plugins/percadvlink/plugin.js',
+                'percglobalvariables': '/Rhythmyx/sys_resources/tinymce/plugins/percglobalvariables/plugin.js',
+                'percmorelink': '/Rhythmyx/sys_resources/tinymce/plugins/percmorelink/plugin.js'
             },
             "style_formats_merge": true,
             "style_formats": styleFormats,
@@ -223,8 +223,8 @@ function perc_tinymce_init(options) {
 
     getStyles(options)
         .then(getBaseConfig)
-        .then(load_type_config, fail_type_config)
-        .then(load_user_config, fail_user_config)
+        .then(load_type_config)
+        .then(load_user_config, fail_type_config)
         .catch(fail_user_config)
         .then(init_tinymce);
 
