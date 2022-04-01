@@ -1,27 +1,3 @@
-/*
- *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
- *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
- *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
- *
- *     Mailing Address:
- *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
- */
-
 tinymce.PluginManager.add('percmorelink', function(editor, url) {
 	var cls = 'perc-blog-more-link', sep = '<!-- morelink -->', mlRE;
 	var ml = '<img src="' + url + '/img/ReadMoreInsert-1.png" class="perc-blog-more-link mceItemNoResize" />';
@@ -30,13 +6,15 @@ tinymce.PluginManager.add('percmorelink', function(editor, url) {
 
 	// Register commands
 	editor.addCommand('mceInsertMoreLink', function() {
-		editor.execCommand('mceInsertContent', 0, ml);
+
 	});
 
-	editor.addMenuItem('percmorelink', {
+	editor.ui.registry.addMenuItem('percmorelink', {
 		text: 'More link',
 		icon: 'morelink',
-		cmd: 'mceInsertMoreLink',
+		onAction: function () {
+            editor.execCommand('mceInsertContent', false, ml);
+		},
      	separator: 'before',
     	context: 'insert'
 	});
@@ -67,6 +45,14 @@ tinymce.PluginManager.add('percmorelink', function(editor, url) {
                 return im;
             });
     });
+	editor.on('setup', function(e) {
+		if (e.get)
+			e.content = e.content.replace(/<img[^>]+>/g, function(im) {
+				if (im.indexOf('class="perc-blog-more-link') !== -1)
+					im = sep;
+				return im;
+			});
+	});
 
     editor.on('PreInit', function() {
         if (editor.settings.content_css !== false)
