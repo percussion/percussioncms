@@ -1,8 +1,32 @@
+/*
+ *     Percussion CMS
+ *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU Affero General Public License for more details.
+ *
+ *     Mailing Address:
+ *
+ *      Percussion Software, Inc.
+ *      PO Box 767
+ *      Burlington, MA 01803, USA
+ *      +01-781-438-9900
+ *      support@percussion.com
+ *      https://www.percussion.com
+ *
+ *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ */
 
+//TODO: I18N
 /*global tinymce:true */
 
 tinymce.PluginManager.add('percadvimage', function(editor) {
-    function showDialog() {
+    function showDialog(buttonAPI) {
         var win, data = {}, cm1LinkData = {}, dom = editor.dom, imgElm = editor.selection.getNode();
         var width, height, imageListCtrl;
         var mainEditor = editor.contentWindow.parent;
@@ -25,137 +49,144 @@ tinymce.PluginManager.add('percadvimage', function(editor) {
 
         function setReadWriteMode(e) {
 
-            var url = win.getData().src.value;
-            var description = win.getData().alt;
-            var title = win.getData().title;
-            var datadescriptionoverride = win.getData()["data-description-override"];
-            var datatitleoverride = win.getData()["data-title-override"];
-            var datadecorativeoverride = win.getData()["data-decorative-override"];
+            var url = win.find('#src')[0].state.data.value;
+            var description = win.find('#alt');
+            var title = win.find('#title');
+            var datadescriptionoverride = win.find('#data-description-override');
+            var datatitleoverride = win.find('#data-title-override');
+            var datadecorativeoverride = win.find('#data-decorative-override');
             var sys_dependentid = cm1LinkData.sys_dependentid;
-            var dataconstrain = win.getData()["data-constrain"];
-            var height = win.getData().height;
-            var width = win.getData().width;
+            var dataconstrain = win.find('#data-constrain');
+            var height = win.find('#height');
+            var width = win.find('#width');
 
             // check for upgrade scenario.  here we need to see if customers have previously 
             // set overrides and enable the checkboxes for those if previously set.
             // data-description-override was not ever used prior to current patch 1/24/2018
             // so we can use these attributes to detect if they are upgrading
             if (imgElm && !cm1LinkData.title) {
-                if(!imgElm.getAttribute('data-description-override') || !imgElm.getAttribute('data-title-override'))
+                if(!imgElm.getAttribute('data-description-override') || !imgElm.getAttribute('data-title-override')){
                     isUpgradeScenario = true;
+                }
                 getImageData('16777215-101-' + sys_dependentid, true);
             }
 
             //If it is an external url, we want to be able to write to it.
-            if(url.startsWith("http")) {
-                win.enable("alt");
-                win.enable("title");
-
+            if(url.startsWith('http')) {
+                description.removeClass('disabled');
+                title.removeClass('disabled');
+                description.disabled(false);
+                title.disabled(false);
             } 
             else {
-                if(!datadescriptionoverride) {
-                    //-- description.disabled(true);
-                    //--description.addClass("disabled");
-                    //--datadecorativeoverride.disabled(false);
-
-                    win.disable("alt");
-                    win.enable("data-decorative-override");
-                } else {
-
-                    //-- description.removeClass("disabled");
-                    //--description.disabled(false);
-                    win.enable("alt");
-
-                    //-- datadecorativeoverride.disabled(true);
-                    //--datadecorativeoverride.checked(false);
-                    win.setData({"data-decorative-override":false});
-                    win.disable("data-decorative-override");
-
+                updateDecorativeImage(null);
+                if(!dataconstrain.checked()) {
+                    width.disabled(true);
+                    height.disabled(true);
                 }
-
-                if(!datatitleoverride) {
-                    win.disable("title");
-                } else {
-                    //--title.removeClass("disabled");
-                    //--title.disabled(false);
-                    win.enable("title");
             }
-
-                if(datadecorativeoverride) {
-                    //--description.disabled(true);
-                    //--description.addClass('disabled');
-                    win.disable("alt");
-
-                    //--datadescriptionoverride.checked(false);
-                    //--datadescriptionoverride.disabled(true);
-                    win.setData({"data-description-override":false});
-                    win.disable("data-description-override");
-
-
-
+        }
+        function updateDecorativeImage(e) {
+            var url = win.find('#src')[0].state.data.value;
+            var datadecorativeoverride = win.find('#data-decorative-override');
+            var description = win.find('#alt');
+            var title = win.find('#title');
+            var titleOverride = win.find('#data-title-override');
+            var descriptionOverride = win.find('#data-description-override');
+            //If it is an external url, we want to be able to write to it.
+            if(url.startsWith('http')) {
+                description.removeClass('disabled');
+                title.removeClass('disabled');
+                description.disabled(false);
+                title.disabled(false);
             }
             else {
-                    //--datadescriptionoverride.disabled(false);
-                    win.enable("data-description-override");
+                if(datadecorativeoverride.checked()){
+                    description.disabled(true);
+                    description.addClass('disabled');
+                    title.addClass('disabled');
+                    title.disabled(true);
+                    win.find('#alt').value('');
+                    win.find('#title').value('');
+                    titleOverride[0].checked(false);
+                    titleOverride[0].disabled(true);
+                    descriptionOverride[0].checked(false);
+                    descriptionOverride[0].disabled(true);
+                 }else {
+                    titleOverride[0].disabled(false);
+                    descriptionOverride[0].disabled(false);
+                }
+                if (e !== null) {
+                    setReadWriteModeAlt(null);
+                    setReadWriteModeTitle(null);
                 }
 
-                if(!dataconstrain) {
-
-                    //-- width.disabled(true);
-                    //--height.disabled(true);
-                    win.disable("width");
-                    win.disable("height");
-                }
             }
         }
 
         function setReadWriteModeAlt(e) {
-            var url = win.getData().src.value;
-            var description = win.getData().alt;
+            var url = win.find('#src')[0].state.data.value;
+            var description = win.find('#alt');
+            var title = win.find('#title');
             var sys_dependentid = cm1LinkData.sys_dependentid;
-            var datadescriptionoverride = win.getData()["data-description-override"];
-            var datapreviousaltoverride = win.getData()["data-previous-alt-override"];
+            var datadescriptionoverride = win.find('#data-description-override');
+            var datapreviousaltoverride = win.find('#data-previous-alt-override').value();
 
             //If it is an external url, we want to be able to write to it.
-            if(url.startsWith("http")) {
-                win.enable("title");
-                win.enable("alt");
+            if(url.startsWith('http')) {
+                description.removeClass('disabled');
+                title.removeClass('disabled');
+                description.disabled(false);
+                title.disabled(false);
             } 
             else {
-                if(!datadescriptionoverride) {
-                    if(url !== "") {
-                        getImageData("16777215-101-" + sys_dependentid, true);
+                if(!datadescriptionoverride.checked()) {
+                    description.addClass('disabled');
+                    description.disabled(true);
+                    if(url !== '') {
+                        getImageData('16777215-101-' + sys_dependentid, true);
                     }
                 }
                 else {
-                    if(datapreviousaltoverride !== '')
-                        win.setData({alt:datapreviousaltoverride});
+                     description.removeClass('disabled');
+                     description.disabled(false);
+                    if(datapreviousaltoverride !== '') {
+                        win.find('#alt').value(datapreviousaltoverride);
+                    }
                 }
                 setReadWriteMode(null);
             }
         }
 
         function setReadWriteModeTitle(e) {
-            var data = win.getData();
-            var title = win.getData().title;
-            var url = win.getData().src.value;
-            var description = win.getData().alt;
+            var title = win.find('#title');
+            var url = win.find('#src')[0].state.data.value;
+            var description = win.find('#alt');
             var sys_dependentid = cm1LinkData.sys_dependentid;
-            var dataprevioustitleoverride = win.getData()["data-previous-title-override"];
-            var datatitleoverride = win.getData()["data-title-override"];
+            var dataprevioustitleoverride = win.find('#data-previous-title-override').value();
+            var datatitleoverride = win.find('#data-title-override');
+
             //If it is an external url, we want to be able to write to it.
-            if(url.startsWith("http")) {
-                win.enable("alt");
-                win.enable("title");
+            if(url.startsWith('http')) {
+                description.removeClass('disabled');
+                title.removeClass('disabled');
+                description.disabled(false);
+                title.disabled(false);
             } 
             else {
-                if(!datatitleoverride) {
-                    if(url !== "")
-                        getImageData("16777215-101-" + sys_dependentid, true);
+                if(!datatitleoverride.checked()) {
+                    title.addClass('disabled');
+                    title.disabled(true);
+                    if(url !== '') {
+                        getImageData('16777215-101-' + sys_dependentid, true);
+                    }
                 } 
                 else {
-                    if(dataprevioustitleoverride !== '')
-                        win.setData({title:dataprevioustitleoverride});
+                     title.removeClass('disabled');
+                     title.disabled(false);
+                    if(dataprevioustitleoverride !== '') {
+                        win.find('#title').value(dataprevioustitleoverride);
+                    }
                 }
                 setReadWriteMode(null);
             }
@@ -163,56 +194,84 @@ tinymce.PluginManager.add('percadvimage', function(editor) {
 
         function resetAriaBoxes() {
 
-            var description = win.getData().alt;
-            var title = win.getData().title;
+            var description = win.find('#alt');
+            var title = win.find('#title');
+            var datadecorativeoverride = win.find('#data-decorative-override');
+            var width = win.find('#width');
+            var height = win.find('#height');
 
-            if(description && description.trim() != '') {
-                $('.mce-perc-description').css({"border-color":"#c5c5c5", "transition":"border 2s ease"});
-                $(".mce-perc-description").attr("role","");
-                $(".mce-perc-description").attr("aria-invalid","false");
+            if (description && description.value().trim() !== '') {
+                $('.mce-perc-description').css({'border-color': '#c5c5c5', 'transition': 'border 2s ease'});
+                $('.mce-perc-description').attr('role', '');
+                $('.mce-perc-description').attr('aria-invalid', 'false');
             }
 
-            if(title && title.trim() != '') {
-                $('.mce-perc-title').css({"border-color":"#c5c5c5", "transition":"border 2s ease"});
-                $(".mce-perc-title").attr("role","");
-                $(".mce-perc-title").attr("aria-invalid","false");
-            }
+            if (title && title.value().trim() !== '') {
+                $('.mce-perc-title').css({'border-color': '#c5c5c5', 'transition': 'border 2s ease'});
+                $('.mce-perc-title').attr('role', '');
+                $('.mce-perc-title').attr('aria-invalid', 'false');
             }
 
-        /**
-         * True if either title or alt is empty
-         */
-        function validateTitleAndAlt(alt, title) {
-            if(alt && title) {
-                return (alt.trim() == '' || title.trim() == '');
-            } else {
-                return true;
+
+            if (width && width.value().trim() !== '') {
+                $('.mce-perc-width').css({'border-color': '#c5c5c5', 'transition': 'border 2s ease'});
+                $('.width').attr('role', '');
+                $('.mce-perc-width').attr('aria-invalid', 'false');
+            }
+
+            if (height && height.value().trim() !== '') {
+                $('.mce-perc-height').css({'border-color': '#c5c5c5', 'transition': 'border 2s ease'});
+                $('.mce-perc-height').attr('role', '');
+                $('.mce-perc-height').attr('aria-invalid', 'false');
             }
 
         }
 
-        function recalcSize(control) {
+
+        function recalcSize(e) {
             var widthCtrl, heightCtrl, newWidth, newHeight;
 
-            newWidth = win.getData().width;
-            newHeight = win.getData().height;
+            widthCtrl = win.find('#width')[0];
+            heightCtrl = win.find('#height')[0];
 
-            if (win.getData()["data-constrain"] && width && height && newWidth && newHeight) {
-                win.enable("height");
-                win.enable("width");
+            newWidth = widthCtrl.value();
+            newHeight = heightCtrl.value();
 
-                if (control == "width") {
+            if(typeof  proportion === 'undefined'){
+                proportion = 1;
+            }
+            if(e.control === widthCtrl && isNaN(newWidth)){
+                widthCtrl.value(width);
+              }
+            if(e.control === heightCtrl && isNaN(newHeight)){
+                heightCtrl.value(height);
+            }
+
+            if (win.find('#data-constrain')[0].checked()){
+                if (newWidth && newHeight) {
+
+                    heightCtrl.disabled(false);
+                    widthCtrl.disabled(false);
+
+                    if (e.control === widthCtrl) {
                         newHeight = Math.round(newWidth / proportion);
-                    if (newHeight == 0) newHeight = 1;
-                    win.setData({height:""+newHeight});
+                        if (newHeight === 0) {
+                            newHeight = 1;
+                        }
+
+                        heightCtrl.value(newHeight);
                     } else {
                         newWidth = Math.round(proportion * newHeight);
-                    if (newWidth == 0) newWidth = 1;
-                    win.setData({width:""+newWidth});
+                        if (newWidth === 0) {
+                            newWidth = 1;
+                        }
+                        widthCtrl.value(newWidth);
+
+                    }
                 }
             }else{
-                win.disable("height");
-                win.disable("width");
+                 heightCtrl.disabled(true);
+                 widthCtrl.disabled(true);
             }
             width = newWidth;
             height = newHeight;
@@ -223,185 +282,96 @@ tinymce.PluginManager.add('percadvimage', function(editor) {
                 setSrcAndSize();
             }
             else if(cm1LinkData.sys_dependentid) {
-                getImageData("-1-101-" + cm1LinkData.sys_dependentid, false);
+                getImageData('-1-101-' + cm1LinkData.sys_dependentid, false);
             }
         }
         function setSrcAndSize() {
             //handle thumb url and switch from thumb to full
-            if(win.getData()["data-imgtype"] == "_thumb") {
-                var srcObj = {src:{"value":cm1LinkData.thumbUrl}};
-                win.setData(srcObj);
+            if(win.find('#data-imgtype').value() === '_thumb') {
+                win.find('#src').value(cm1LinkData.thumbUrl);
                 cm1LinkData.sys_dependentvariantid = cm1LinkData.thumbVarId;
             }
             else{
-                var srcObj = {src:{"value":cm1LinkData.fullUrl}};
-                win.setData(srcObj);
+                win.find('#src').value(cm1LinkData.fullUrl);
                 cm1LinkData.sys_dependentvariantid = cm1LinkData.fullVarId;
             }
             var inlineImage = new Image();
             inlineImage.onload = function() {
-                win.setData({width:""+this.width});
-                win.setData({height:""+this.height});
+                if(!width && !height && !proportion) {
+                    win.find('#width').value(this.width);
+                    win.find('#height').value(this.height);
                     width = this.width;
                     height = this.height;
                     proportion = width / height;
-                };
+                }
+            };
+
             //setReadWriteMode(null);
-            inlineImage.src = win.getData().src.value;
-        }
-
-
-        function windowItemPreProcessor() {
-            var imageTitleDisable  = true;
-            var hightNdWidthDisable  = true;
-            var imageDiscDisable  =true;
-
-
-            if(data.datatitleoverride){imageTitleDisable = false;}
-            if(data.dataconstrain){hightNdWidthDisable=false;}
-            if(data.datadescriptionoverride){imageDiscDisable=false;}
-            windowArray = [];
-            windowArray.push({name: 'src', tabindex:"1",  type: 'urlinput', filetype: 'image', label: 'Source' ,  onkeyup: setReadWriteMode});
-            windowArray.push({name: 'data-previous-alt-override', type: 'input', hidden: true, value: data.datapreviousaltoverride});
-            windowArray.push({name: 'data-previous-title-override', type: 'input', hidden: true, value: data.dataprevioustitleoverride}  );
-            imageListCtrl,
-                windowArray.push({
-                    type: 'bar',
-                    items: [
-                        {name: 'alt', tabindex:"2",  type: 'input', label: 'Image description', size: 26, disabled:imageDiscDisable, classes: 'perc-description', onchange: resetAriaBoxes},
-                        {type: 'checkbox', tabindex:"3",  name: 'data-description-override', checked: data.datadescriptionoverride, label: 'override', text: 'Override', onchange: setReadWriteModeAlt},
-                        {type: 'checkbox',tabindex:"4",  name: 'data-decorative-override', checked: data.datadecorativeoverride, label: 'decorative', onchange: setReadWriteModeAlt}
-                    ]
-                }  );
-            windowArray.push({
-                type: 'bar',
-                label: 'Image title*',
-                layout: 'flex',
-                direction: 'row',
-                align: 'center',
-
-                spacing: 5,
-                items: [
-                    {name: 'title', type: 'input', tabindex:"5",  label: 'Image title', size: 26,  disabled:imageTitleDisable ,classes: 'perc-title',onchange: resetAriaBoxes},
-                    {type: 'checkbox', name: 'data-title-override',tabindex:"6",  checked: data.datatitleoverride, label: 'override',  onchange: setReadWriteModeTitle},
-                ]
-            }  );
-            windowArray.push({
-                type: 'bar',
-                layout: 'flex',
-                direction: 'row',
-                align: 'center',
-                spacing: 5,
-                items: [
-                    {name: 'width', label: 'Width', type: 'input',tabindex:"7",  maxLength: 3, size: 3, disabled:hightNdWidthDisable, onkeyup: recalcSize, onchange: recalcSize},
-                    {name: 'height',label: 'Height', type: 'input',tabindex:"8",   maxLength: 3, size: 3, onkeyup: recalcSize,  disabled:hightNdWidthDisable,onchange: recalcSize},
-                    {name: 'data-constrain', type: 'checkbox',tabindex:"9",  checked: data.dataconstrain, label: 'Constrain proportions', onchange: recalcSize}
-                ]
-            }  );
-
-            windowArray.push({
-                type: 'bar',
-
-                items: [
-                    {
-                        name: 'data-imgtype',
-                        type: 'selectbox',
-                        label: 'Image type',
-                        tabindex:"10",
-                        minWidth: 90,
-                        maxWidth:125,
-                        onselect:updateImage,
-                        items: [{text: 'Full', value: '_full'},{text: 'Thumbnail', value: '_thumb'}],
-                    },
-                    {
-                        minWidth: 20,
-                        maxWidth:20,
-                        type: 'htmlpanel', // component type
-                        html: '<span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>'
-                    },
-                    {
-                        label: 'Alignment',
-                        minWidth: 90,
-                        tabindex:"11",
-                        name: 'align',
-                        type: 'selectbox',
-                        text: 'None',
-
-                        items: [
-                            {text: 'None', value: ''},
-                            {text: 'Baseline', value: 'baseline'},
-                            {text: 'Top', value: 'top'},
-                            {text: 'Middle', value: 'middle'},
-                            {text: 'Bottom', value: 'bottom'},
-                            {text: 'Text top', value: 'text-top'},
-                            {text: 'Text bottom', value: 'text-bottom'},
-                            {text: 'Left', value: 'left'},
-                            {text: 'Right', value: 'right'}
-                        ]
-                    }
-                ]
-            }  );
-
-
-
-
-            return windowArray;
+            inlineImage.src = win.find('#src').value();
         }
         function getImageData(itemId, updateTitle, callback) {
+
+            topFrJQ.PercPathService.getPathItemById(itemId, function(idstatus, pathItem){
+
+                if(!idstatus) {
+                    topFrJQ.perc_utils.info(pathItem);
+                    topFrJQ.perc_utils.alert_dialog({'title':'Error', 'content':'Sorry for the inconvenience, could not get selected item details to insert image.'});
+                    return;
+                }
+
             topFrJQ.PercPathService.getInlineRenderLink(itemId, function(status, data) {
                 if(!status) {
                     topFrJQ.perc_utils.info(data);
-                    topFrJQ.perc_utils.alert_dialog({"title":"Error", "content":"Sorry for the inconvience, could not get selected item details to insert image."});
+                    topFrJQ.perc_utils.alert_dialog({'title':'Error', 'content':'Sorry for the inconvenience, could not get selected item details to insert image.'});
                     return;
                 }
                 
                 var renderLink = data.InlineRenderLink;
-                cm1LinkData.rxinlineslot = "104";
+                cm1LinkData.rxinlineslot = '104';
                 cm1LinkData.sys_dependentid = renderLink.sys_dependentid;
-                cm1LinkData.inlinetype = "rximage";
+                cm1LinkData.inlinetype = 'rximage';
                 cm1LinkData.alt = renderLink.altText;
                 cm1LinkData.title = renderLink.title;
+                cm1LinkData.jcrpath = pathItem.PathItem.folderPaths[0].replace('/Folders/$System$/','') + "/" + pathItem.PathItem.name;
+                cm1LinkData.pathItem = pathItem.PathItem;
 
-                var currentaltoverride = win.getData().alt;
-                var currenttitleoverride = win.getData().title;
-                var previousoverride = win.getData()["data-previous-alt-override"];
-                var previoustitleoverride = win.getData()["data-previous-title-override"];
-                var datadecorative = win.getData()["data-decorative-override"];
-                var titleOverride = win.getData()["data-title-override"];
-                var descriptionOverride = win.getData()["data-description-override"];
+                var currentaltoverride = win.find('#alt').value();
+                var currenttitleoverride = win.find('#title').value();
+                var previousoverride = win.find('#data-previous-alt-override').value();
+                var previoustitleoverride = win.find('#data-previous-title-override').value();
+                var datadecorative = win.find('#data-decorative-override');
+                var titleOverride = win.find('#data-title-override');
+                var descriptionOverride = win.find('#data-description-override');
+                var width = win.find('#width');
+                var height = win.find('#height');
 
                 if(isUpgradeScenario) {
                     //updateTitle = false;
-                    if((currentaltoverride !== renderLink.altText) && currentaltoverride !== "") {
+                    if((currentaltoverride !== renderLink.altText) && currentaltoverride !== '') {
                         // here if the override does not match the value of the asset
                         // we assume an override has been set and set the overrides
                         // checkboxes to true in addition to preserving the current override
                         imgElm.setAttribute('data-description-override', true);
                         if(previousoverride !== 'undefined' && previousoverride === '' && currentaltoverride !== 'undefined' && currentaltoverride === '') {
-                            if(renderLink.altText !== 'undefined')
-                                win.setData({alt:renderLink.altText});
+                            if(renderLink.altText !== 'undefined') {
+                                win.find('#alt').value(renderLink.altText);
                             }
-
-                        //--descriptionOverride.checked(true);
-                        win.setData({"data-description-override":true});
-
-                        //--datadecorative.checked(false);
-                        win.setDat({"data-decorative-override":false});
-
-                        //--datadecorative.disabled(true);
-                        win.disable("data-decorative-override");
+                        }
+                        descriptionOverride.checked(true);
+                        datadecorative.checked(false);
+                        datadecorative.disabled(true);
                     }
                     else if(renderLink.altText) {
                         imgElm.setAttribute('data-description-override', false);
                     }
 
-                    if((currenttitleoverride !== renderLink.title) && currenttitleoverride !== "") {
-                        //--titleOverride.checked(true);
-                        win.setData({"data-title-override":true});
+                    if((currenttitleoverride !== renderLink.title) && currenttitleoverride !== '') {
+                        titleOverride.checked(true);
                         imgElm.setAttribute('data-title-override', true);
                         if(previoustitleoverride !== 'undefined' && previoustitleoverride === '' && currenttitleoverride !== 'undefined' && currenttitleoverride === '') {
-                            if(renderLink.title !== 'undefined')
-                                win.setData({title:renderLink.title});
+                            if(renderLink.title !== 'undefined') {
+                                win.find('#title').value(renderLink.title);
+                            }
                         }
                     }
                     else {
@@ -413,33 +383,44 @@ tinymce.PluginManager.add('percadvimage', function(editor) {
                 if(updateTitle)
                 {
                     // if the title is not overridden, we use the value from the renderLink obj.
-                    if(!titleOverride){
-                        win.setData({"title":renderLink.title});
+                    if(!titleOverride.checked() && renderLink.title && !datadecorative.checked()) {
+                        win.find('#title').value(renderLink.title);
+                    }
                     // if the alt is not override AND there is alt text present and its not a decorative (empty) alt
                     // we use the renderLink value.
-                    }if(!descriptionOverride && renderLink.altText && !datadecorative){
-                    win.setData({"alt":renderLink.altText});
-                    // this is not an alt override and there is alttext
-                } else if(datadecorative && renderLink.altText){
-                    win.setData({alt:''});
-                }else if(!datadecorative && !descriptionOverride){
-                    win.setData({alt:''});
+                    if(!descriptionOverride.checked() && renderLink.altText && !datadecorative.checked()) {
+                        win.find('#alt').value(renderLink.altText);
+                    }
+
+                    // the asset has no title text
+                    if(!renderLink.title && currenttitleoverride !== '') {
+                        win.find('#data-previous-title-override').value(currenttitleoverride);
+                    }
+                    // the override title text is different than the asset title text and override has been deselected
+                    else if(currenttitleoverride !== renderLink.title && !datadecorative.checked() && currenttitleoverride !== '') {
+                        win.find('#data-previous-title-override').value(currenttitleoverride);
+                    }
+                    // if the current override is empty and decorative is de-selected
+                    else if(currenttitleoverride === '' && !datadecorative.checked()) {
+                        win.find('#data-previous-title-override').value(previoustitleoverride);
                     }
                 }
 
                 // the asset has no alt text
                 if(!renderLink.altText && currentaltoverride !== '') {
-                    win.setData({'data-previous-alt-override':currentaltoverride});
-
+                    win.find('#data-previous-alt-override').value(currentaltoverride);
+                }
                 // the override alt text is different than the asset alt text and override has been deselected
-                }else if(currentaltoverride !== renderLink.altText && !datadecorative && currentaltoverride !== ''){
-                    win.setData({'data-previous-alt-override':currentaltoverride});
+                else if(currentaltoverride !== renderLink.altText && !datadecorative.checked() && currentaltoverride !== '') {
+                    win.find('#data-previous-alt-override').value(currentaltoverride);
+                }
                 // if the current override is empty and decorative is de-selected
-                }else if(currentaltoverride === '' && !datadecorative){
-                    win.setData({'data-previous-alt-override':previousoverride});
+                else if(currentaltoverride === '' && !datadecorative.checked()) {
+                    win.find('#data-previous-alt-override').value(previousoverride);
+                }
 
-                }if(currenttitleoverride !== renderLink.title){
-                    win.setData({'data-previous-title-override':currenttitleoverride});
+                if(currenttitleoverride !== renderLink.title) {
+                    win.find('#data-previous-title-override').value(currenttitleoverride);
                 }
 
                 cm1LinkData.thumbUrl = renderLink.thumbUrl;
@@ -447,44 +428,39 @@ tinymce.PluginManager.add('percadvimage', function(editor) {
                 cm1LinkData.fullUrl = renderLink.url;
                 cm1LinkData.fullVarId = renderLink.sys_dependentvariantid;
 
-                if(cm1LinkData.thumbUrl === "")
-                    win.disable('data-imgtype');
+                if(cm1LinkData.thumbUrl === '') {
+                    win.find('#data-imgtype').disabled(true);
+                }
 
                 setSrcAndSize();
-                if(topFrJQ.isFunction(callback))
+                if(typeof callback === "function") {
                     callback(renderLink.url, renderLink.thumbUrl, renderLink.title);
+                }
+            });
             });
         }
-        var isImage = imgElm.nodeName == "IMG";
+        var isImage = imgElm.nodeName === 'IMG';
         width = data.width = isImage ? dom.getAttrib(imgElm, 'width'):'';
         height = data.height = isImage ? dom.getAttrib(imgElm, 'height'):'';
         proportion = width / height;
         data.dataimgtype = isImage ? dom.getAttrib(imgElm, 'data-imgtype') : '_full';
-        data["data-imgtype"] = isImage ? dom.getAttrib(imgElm, 'data-imgtype') : '_full';
-
         data.dataconstrain = isImage ? (dom.getAttrib(imgElm, 'data-constrain') === 'true') : false;
-        data["data-constrain"] = data.dataconstrain;
-        var srcPath = isImage ? dom.getAttrib(imgElm, 'src') : '';
-        var srcObj = {"value":srcPath};
-        data.src = srcObj;
+        data.src = isImage ? dom.getAttrib(imgElm, 'src') : '';
         data.alt = isImage ? dom.getAttrib(imgElm, 'alt') : '';
         data.datadescriptionoverride = isImage ? (dom.getAttrib(imgElm, 'data-description-override') === 'true') : false;
-        data["data-description-override"] = data.datadescriptionoverride;
-        data.datapreviousaltoverride = isImage ? dom.getAttrib(imgElm, 'data-previous-alt-override') : '';
         data.datapreviousaltoverride = isImage ? dom.getAttrib(imgElm, 'data-previous-alt-override') : '';
         data.dataprevioustitleoverride = isImage ? dom.getAttrib(imgElm, 'data-previous-title-override') : '';
         data.datadecorativeoverride = isImage ? (dom.getAttrib(imgElm, 'data-decorative-override') === 'true') : false;
         data.datatitleoverride = isImage ? (dom.getAttrib(imgElm, 'data-title-override') === 'true') : false;
-        data["data-title-override"] = data.datatitleoverride ;
-
         data.title = isImage ? dom.getAttrib(imgElm, 'title') : '';
         data.align = isImage ? dom.getStyle(imgElm, 'float') !== '' ? dom.getStyle(imgElm, 'float') : dom.getStyle(imgElm, 'vertical-align') : '';
         cm1LinkData.sys_dependentvariantid = isImage ? dom.getAttrib(imgElm, 'sys_dependentvariantid') : '';
         cm1LinkData.rxinlineslot = isImage ? dom.getAttrib(imgElm, 'rxinlineslot') : '';
         cm1LinkData.sys_dependentid = isImage ? dom.getAttrib(imgElm, 'sys_dependentid') : '';
         cm1LinkData.inlinetype = isImage ? dom.getAttrib(imgElm, 'inlinetype') : '';
+        cm1LinkData.jcrpath = isImage ? dom.getAttrib(imgElm, 'data-jcrpath') : '';
 
-        if (imgElm.nodeName === "IMG" && !imgElm.getAttribute('data-mce-object')) {
+        if (imgElm.nodeName === 'IMG' && !imgElm.getAttribute('data-mce-object')) {
         } else {
             imgElm = null;
         }
@@ -492,106 +468,183 @@ tinymce.PluginManager.add('percadvimage', function(editor) {
         if (editor.settings.image_list) {
             imageListCtrl = {
                 name: 'target',
-                type: 'selectbox',
+                type: 'listbox',
                 label: 'Image list',
                 values: buildImageList(),
                 onselect: function(e) {
-                    var altCtrl = win.getData().alt;
+                    var altCtrl = win.find('#alt');
 
-                    if (!altCtrl.value() || (e.lastControl && altCtrl.value() == e.lastControl.text())) {
+                    if (!altCtrl.value() || (e.lastControl && altCtrl.value() === e.lastControl.text())) {
                         altCtrl.value(e.control.text());
                     }
 
-                    win.setData({src:e.control.value()});
+                    win.find('#src').value(e.control.value());
                 }
             };
         }
 
-        windowItems = windowItemPreProcessor();
         win = editor.windowManager.open({
-            title: "Edit image",
-            initialData: data,
-
-            body: {
-                type: 'panel',
-                items: [...windowItems]
+            title: 'Edit image',
+            data: data,
+            body: [
+                {name: 'src', type: 'filepicker', filetype: 'image', label: 'Source', autofocus: true, onkeyup: setReadWriteMode},
+                {name: 'data-previous-alt-override', type: 'textbox', hidden: true, value: data.datapreviousaltoverride},
+                {name: 'data-previous-title-override', type: 'textbox', hidden: true, value: data.dataprevioustitleoverride},
+                {name: 'data-decorative-override',type: 'checkbox', checked: data.datadecorativeoverride, label: 'Decorative (WAI)', text: 'Decorative Image', onchange: updateDecorativeImage},
+                imageListCtrl,
+                {
+                    type: 'container',
+                    label: 'Image description*',
+                    layout: 'flex',
+                    direction: 'row',
+                    align: 'center',
+                    spacing: 5,
+                    items: [
+                        {name: 'alt', type: 'textbox', label: 'Image description', size: 26, classes: 'perc-description', onchange: resetAriaBoxes},
+                        {type: 'checkbox', name: 'data-description-override', checked: data.datadescriptionoverride, label: 'override', text: 'Override', onchange: setReadWriteModeAlt},
+                    ]
                 },
+                {
+                    type: 'container',
+                    label: 'Image title*',
+                    layout: 'flex',
+                    direction: 'row',
+                    align: 'center',
+                    spacing: 5,
+                    items: [
+                        {name: 'title', type: 'textbox', label: 'Image title', size: 26, classes: 'perc-title',onchange: resetAriaBoxes},
+                        {type: 'checkbox', name: 'data-title-override', checked: data.datatitleoverride, label: 'override', text: 'Override', onchange: setReadWriteModeTitle},
+                    ]
+                },
+                {
+                    type: 'container',
+                    label: 'Dimensions',
+                    layout: 'flex',
+                    direction: 'row',
+                    align: 'center',
+                    spacing: 5,
+                    items: [
+                        {name: 'width', type: 'textbox', maxLength: 3, size: 3, onkeyup: recalcSize, onchange: recalcSize},
+                        {type: 'label', text: 'x'},
+                        {name: 'height', type: 'textbox', maxLength: 3, size: 3, onkeyup: recalcSize, onchange: recalcSize},
+                        {name: 'data-constrain', type: 'checkbox', checked: data.dataconstrain, text: 'Constrain proportions', onchange: recalcSize}
+                    ]
+                },
+                {
+                    name: 'data-imgtype',
+                    type: 'listbox',
+                    label: 'Image type',
+                    minWidth: 90,
+                    maxWidth:135,
+                    onselect:updateImage,
+                    values: [{text: 'Full', value: '_full'},{text: 'Thumbnail', value: '_thumb'}],
+                    onSetup: function() {
+                        if(data.dataimgtype === '') {
+                            data.dataimgtype = this._values[0].value;
+                        }
+                        this.value(data.dataimgtype);
+                    }
+                },
+                {
+                    label: 'Alignment',
+                    minWidth: 90,
+                    name: 'align',
+                    type: 'listbox',
+                    text: 'None',
+                    maxWidth: null,
+                    values: [
+                        {text: 'None', value: ''},
+                        {text: 'Baseline', value: 'baseline'},
+                        {text: 'Top', value: 'top'},
+                        {text: 'Middle', value: 'middle'},
+                        {text: 'Bottom', value: 'bottom'},
+                        {text: 'Text top', value: 'text-top'},
+                        {text: 'Text bottom', value: 'text-bottom'},
+                        {text: 'Left', value: 'left'},
+                        {text: 'Right', value: 'right'}
+                    ]
+                }
+
+            ],
                 buttons : [
-            {
-                type: 'cancel', // button type
-                name: 'cancel', // identifying name
-                text: 'Cancel', // text for the button
-                disabled: false, // button is active when the dialog opens
-                tabindex:"12",
-                align: 'end' // align the button to the left of the dialog footer
-            },
-            {
-
-                type: 'submit', // button type
-                name: 'save', // identifying name
-                text: 'Save', // text for the button
-                disabled: false, // button is active when the dialog opens
-                primary: true,
-                tabindex:"13",
-                align: 'end' // align the button to the left of the dialog footer
-            }
+                    {text: 'Ok', subtype: 'primary', minWidth: 50, onclick: function(e) {
+                        win.find('form')[0].submit();
+                    }},
+                    {text: 'Cancel', onclick: function() {
+                        win.close();
+                    }}
                 ],
-
-            onChange: (dialogApi, details) => {
-            var data = dialogApi.getData();
-            if (details.name === "src") {
-                setReadWriteMode();
-            } else if( details.name === "alt" || details.name === "title"){
-                resetAriaBoxes();
-            }else if(details.name === "data-description-override" || details.name === "data-decorative-override"){
-                setReadWriteModeAlt();
-            } else if(details.name ===  "data-title-override"){
-                setReadWriteModeTitle();
-            } else if(details.name === "width" || details.name === "height" ||  details.name === "data-constrain" ){
-                recalcSize(details.name);
-            } else if (details.name  === "data-imgtype"){
-                updateImage();
-            }
-
-
+            onSetup:function(editor) {
+                var openCreateImageDialog = function(successCallback, cancelCallback) {
+                    $.topFrameJQuery.PercCreateNewAssetDialog('percImage', successCallback, cancelCallback);
+                };
+                var validator;
+                validator = function (pathItem) {
+                    return pathItem && pathItem.type === 'percImageAsset' ? null : 'Please select an image.';
+                };
+                jQuery('[aria-label=\'Edit image\']').find('.mce-btn.mce-open').on("click",function() {
+                    var pathSelectionOptions = {
+                        okCallback: updateLinkData,
+                        dialogTitle: 'Select an image',
+                        rootPath:topFrJQ.PercFinderTreeConstants.ROOT_PATH_ASSETS,
+                        initialPath: topFrJQ.cookie('perc-inlineimage-path'),
+                        selectedItemValidator:validator,
+                        acceptableTypes:'percImageAsset,site,Folder',
+                        createNew:{'label':'Upload', 'iconclass':'icon-upload-alt', 'onclick':openCreateImageDialog}
+                    };
+                    topFrJQ.PercPathSelectionDialog.open(pathSelectionOptions);
+                });
             },
             onOpen:function(e) {
                 //initialize accessibility since tinymce currently doesn't allow it directly
-            $(".mce-perc-description").attr("aria-invalid","false");
-            $(".mce-perc-description").attr("aria-required","true");
-            $(".mce-perc-title").attr("aria-required","true");
-            $(".mce-perc-title").attr("aria-invalid","false");
+                $('.mce-perc-description').attr('aria-invalid','false');
+                $('.mce-perc-description').attr('aria-required','true');
+                $('.mce-perc-title').attr('aria-required','true');
+                $('.mce-perc-title').attr('aria-invalid','false');
+                $('.mce-perc-width').attr('aria-required','true');
+                $('.mce-perc-width').attr('aria-invalid','false');
+                $('.mce-perc-height').attr('aria-required','true');
+                $('.mce-perc-height').attr('aria-invalid','false');
                 setReadWriteMode(e);
+                setReadWriteModeAlt(null);
+                setReadWriteModeTitle(null);
             },
             onSubmit: function(e) {
-            var data = e.getData();
+
+                resetAriaBoxes();
+                var data = e.data;
+
                 data['data-previous-alt-override'] = data['data-description-override'] ? data.alt : data['data-previous-alt-override'];
-            data['data-previous-title-override'] = data['data-title-override'] ? data.alt : data['data-previous-title-override'];
-            data["src"] = data.src.value;
-            if (validateTitleAndAlt(data.alt, data.title) && !data['data-decorative-override']) {
-                if (!data.alt || data.alt == '') {
-
+                data['data-previous-title-override'] = data['data-title-override'] ? data.title : data['data-previous-title-override'];
+                if(!data['data-decorative-override']) {
+                    if (data['data-description-override'] && (!data.alt || data.alt.trim() === '') ){
                         $('.mce-perc-description').css('border-color', 'red');
-
-                    $(".mce-perc-description").attr("aria-invalid", "true");
-
-                    $(".mce-perc-description").attr("role", "alert");
-
+                        $('.mce-perc-description').attr('aria-invalid', 'true');
+                        $('.mce-perc-description').attr('role', 'alert');
+                        e.preventDefault();
+                        return;
                     }
-
-                if (!data.title || data.title == '') {
-
+                    if (data['data-title-override'] && (!data.title || data.title.trim() === '')) {
                         $('.mce-perc-title').css('border-color', 'red');
-
-                    $(".mce-perc-title").attr("aria-invalid", "true");
-
-                    $(".mce-perc-title").attr("role", "alert");
-
+                        $('.mce-perc-title').attr('aria-invalid', 'true');
+                        $('.mce-perc-title').attr('role', 'alert');
+                        e.preventDefault();
+                        return;
                     }
 
-
-                //e.preventDefault();
-
+                }
+                if(isNaN(data.width) ){
+                    $('.mce-perc-width').css('border-color', 'red');
+                    $('.mce-perc-width').attr('aria-invalid', 'true');
+                    $('.mce-perc-width').attr('role', 'alert');
+                    e.preventDefault();
+                    return;
+                }
+                if (isNaN(data.height)){
+                    $('.mce-perc-height').css('border-color', 'red');
+                    $('.mce-perc-height').attr('aria-invalid', 'true');
+                    $('.mce-perc-height').attr('role', 'alert');
+                    e.preventDefault();
                     return;
                 }
 
@@ -613,49 +666,36 @@ tinymce.PluginManager.add('percadvimage', function(editor) {
                      **/
                     var tempAltValue = data.alt;
                     if(data['data-decorative-override']) {
-
-                    data.alt = "";
-
+                        data.alt = '';
                     }
 
                     //Handle allign
                     if(imgElm) {
                         editor.dom.setStyles(imgElm,{'float':'', 'vertical-align':''});
-
-                    if (data.align == 'left' || data.align == 'right') {
-
+                        if(data.align === 'left' || data.align === 'right') {
                             editor.dom.setStyle(imgElm, 'float', data.align);
-
-                    } else if (data.align != "") {
-
+                        }
+                        else if(data.align !== '') {
                             editor.dom.setStyle(imgElm, 'vertical-align', data.align);
-
+                        }
                     }
-
-                } else {
-
-                    if (data.align == 'left' || data.align == 'right') {
-
-                        data.style = "float:" + data.align + ";";
-
-                    } else if (data.align && data.align != "") {
-
-                        data.style = "vertical-align:" + data.align + ";";
-
+                    else{
+                        if(data.align === 'left' || data.align === 'right') {
+                            data.style = 'float:' + data.align + ';';
                         }
-
+                        else if(data.align && data.align !== '') {
+                           data.style = 'vertical-align:' + data.align + ';';
                         }
-
+                    }
                     delete data.align;
                     var cm1ImgAttrs = {
                             sys_dependentvariantid : cm1LinkData.sys_dependentvariantid,
                             rxinlineslot : cm1LinkData.rxinlineslot,
                             sys_dependentid : cm1LinkData.sys_dependentid,
-
-                    sys_relationshipid: "",
-
-                    inlinetype: cm1LinkData.inlinetype
-
+                            sys_relationshipid : '',
+                            inlinetype : cm1LinkData.inlinetype,
+                            'data-jcrpath' : cm1LinkData.jcrpath,
+                            'data-pathitem' : JSON.stringify(cm1LinkData.pathItem)
                     };
 
                     /*
@@ -676,19 +716,13 @@ tinymce.PluginManager.add('percadvimage', function(editor) {
                     delete data.datatitleoverride;
                     delete data.datadecorativeoverride;
 
-
-                data["class"] ="perc-CustomPubliclink";
                     jQuery.extend(data,cm1ImgAttrs);
                     if (imgElm) {
-
-                    if (imgElm.attributes.getNamedItem("style")) {
-
+                        if (!imgElm.attributes.getNamedItem('style')) {
+                        } else {
                             var style = {
-
-                            style: imgElm.attributes.getNamedItem("style").value
-
-                        };
-
+                                style: imgElm.attributes.getNamedItem('style').value
+                            };
                             jQuery.extend(data, style);
                         }
 
@@ -704,36 +738,23 @@ tinymce.PluginManager.add('percadvimage', function(editor) {
                     data.alt = tempAltValue;
                 }
 
-
-            var imgPath = topFrJQ.trim(data.src), imgPathLower = imgPath.toLowerCase();
-
+                var dataSrc = data.src;
+                var imgPath = dataSrc.trim(),imgPathLower = imgPath.toLowerCase();
                 //Resolve manually entered internal links
-
-            if (imgPathLower.match("^//sites/") || imgPathLower.match("^//assets/") || imgPathLower.match("^/sites/") || imgPathLower.match("^/assets/") || imgPathLower.match("^sites/") || imgPathLower.match("^assets/")) {
-
-                if (imgPathLower.match("^sites/") || imgPathLower.match("^assets/"))
-
-                    imgPath = "/" + imgPath;
-
-                else if (imgPathLower.match("^//sites/") || imgPathLower.match("^//assets/"))
-
+                if(imgPathLower.match('^//sites/') || imgPathLower.match('^//assets/') || imgPathLower.match('^/sites/') || imgPathLower.match('^/assets/') || imgPathLower.match('^sites/') || imgPathLower.match('^assets/')) {
+                    if(imgPathLower.match('^sites/') || imgPathLower.match('^assets/')) {
+                        imgPath = '/' + imgPath;
+                    }
+                    else if(imgPathLower.match('^//sites/') || imgPathLower.match('^//assets/')) {
                         imgPath = imgPath.substring(1);
-
+                    }
                     topFrJQ.PercPathService.getPathItemForPath(imgPath, function(status, result) {
-
-                    if (status == topFrJQ.PercServiceUtils.STATUS_ERROR || result.PathItem.type != "percImageAsset") {
-
-                        topFrJQ.perc_utils.alert_dialog({
-                            "title": "Error",
-                            "content": "We were unable to create the image because this is an invalid URL. Please validate the URL and re-enter the image."
-                        });
-
-                    } else {
-
+                        if(status === topFrJQ.PercServiceUtils.STATUS_ERROR || result.PathItem.type !== 'percImageAsset') {
+                            topFrJQ.perc_utils.alert_dialog({'title':'Error', 'content':'We were unable to create the image because this is an invalid URL. Please validate the URL and re-enter the image.'});
+                        }
+                        else{
                             updateLinkData(result.PathItem, function(fullUrl, thumUrl, title) {
-
-                            data.src = data.dataimgtype == "_thumb" ? thumUrl : fullUrl;
-
+                                data.src = data.dataimgtype === '_thumb' ? thumUrl : fullUrl;
                                 data.width = width;
                                 data.height = height;
 
@@ -745,50 +766,15 @@ tinymce.PluginManager.add('percadvimage', function(editor) {
                 else{
                     addImage();
                 }
-            jQuery(".tox-browse-url").unbind("click");
-
-            e.close();
-
 
             }// end onSubmit()
             
         }); // end of win object initialization
         function updateLinkData(pathItem, callback) {
             //Save the path to cookie
-            topFrJQ.cookie("perc-inlineimage-path", pathItem.path);
+            topFrJQ.cookie('perc-inlineimage-path', pathItem.path);
             getImageData(pathItem.id, true, callback);
         }
-
-        var openCreateImageDialog = function(successCallback, cancelCallback) {
-            $.topFrameJQuery.PercCreateNewAssetDialog("percImage", successCallback, cancelCallback);
-        };
-
-        $(".tox-form").find("input").eq(1).css({display:"none"});
-        $(".tox-form").find("input").eq(2).css({display:"none"});
-        $(".tox-form").find("input").eq(3).addClass("mce-perc-description");
-        $(".tox-form").find("input").eq(6).addClass("mce-perc-title");
-
-        var validator = function(pathItem) {
-            return pathItem && pathItem.type == "percImageAsset"?null:"Please select an image.";
-        };
-
-        // to bind browse file click
-        jQuery(".tox-browse-url").bind( "click", function() {
-            var pathSelectionOptions = {
-                okCallback: updateLinkData,
-                dialogTitle: "Select an image",
-                rootPath:topFrJQ.PercFinderTreeConstants.ROOT_PATH_ASSETS,
-                initialPath: topFrJQ.cookie("perc-inlineimage-path"),
-                selectedItemValidator:validator,
-                acceptableTypes:"percImageAsset,site,Folder",
-                createNew:{"label":"Upload", "iconclass":"icon-upload-alt", "onclick":openCreateImageDialog}
-            };
-            topFrJQ.PercPathSelectionDialog.open(pathSelectionOptions);
-        });
-
-
-
-
     }
 
     editor.ui.registry.addButton('image', {
@@ -805,12 +791,4 @@ tinymce.PluginManager.add('percadvimage', function(editor) {
         context: 'insert',
         prependToContext: true
     });
-
-    editor.on('dblclick', function(e) {
-        e = e.target;
-        if (e.nodeName === 'IMG' && (editor.dom.hasClass(e,'perc-notpubliclink' ) || editor.dom.hasClass(e,'perc-CustomPubliclink' )  )) {
-            editor.selection.select(e);
-            showDialog();
-        }
-});
 });
