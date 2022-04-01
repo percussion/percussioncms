@@ -29,12 +29,12 @@ import com.percussion.services.contentmgr.data.PSQuery.SortOrder;
 import com.percussion.services.contentmgr.impl.PSContentUtils;
 import com.percussion.services.contentmgr.impl.legacy.PSTypeConfiguration;
 import com.percussion.services.contentmgr.impl.query.nodes.IPSQueryNode;
+import com.percussion.services.contentmgr.impl.query.nodes.IPSQueryNode.Op;
 import com.percussion.services.contentmgr.impl.query.nodes.PSQueryNodeComparison;
 import com.percussion.services.contentmgr.impl.query.nodes.PSQueryNodeConjunction;
 import com.percussion.services.contentmgr.impl.query.nodes.PSQueryNodeIdentifier;
 import com.percussion.services.contentmgr.impl.query.nodes.PSQueryNodeLiteral;
 import com.percussion.services.contentmgr.impl.query.nodes.PSQueryNodeValue;
-import com.percussion.services.contentmgr.impl.query.nodes.IPSQueryNode.Op;
 import com.percussion.services.guidmgr.data.PSGuid;
 import com.percussion.services.guidmgr.data.PSLegacyGuid;
 import com.percussion.utils.guid.IPSGuid;
@@ -42,6 +42,11 @@ import com.percussion.utils.jsr170.PSValueFactory;
 import com.percussion.utils.string.PSStringUtils;
 import com.percussion.utils.types.PSPair;
 
+import javax.jcr.PropertyType;
+import javax.jcr.RepositoryException;
+import javax.jcr.Value;
+import javax.jcr.ValueFormatException;
+import javax.jcr.query.InvalidQueryException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -49,12 +54,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import javax.jcr.PropertyType;
-import javax.jcr.RepositoryException;
-import javax.jcr.Value;
-import javax.jcr.ValueFormatException;
-import javax.jcr.query.InvalidQueryException;
 
 /**
  * The where builder actually serves two purposes. It builds the where clause
@@ -667,13 +666,14 @@ public class PSQueryWhereBuilder extends PSQueryNodeVisitor
       }
       for (PSPair<PSQueryNodeIdentifier, SortOrder> sorter : sortFields)
       {
-         PSPair<String, Class> fieldref = PSContentUtils.resolveFieldReference(
-               sorter.getFirst().getName(), m_type);
-         if (fieldref == null)
-         {
-            continue; // There are valid cases for this
-         }
-         checkAndRegisterInUse(fieldref.getSecond());
+         if(sorter != null) {
+            PSPair<String, Class> fieldref = PSContentUtils.resolveFieldReference(
+                    sorter.getFirst().getName(), m_type);
+            if (fieldref == null) {
+               continue; // There are valid cases for this
+            }
+            checkAndRegisterInUse(fieldref.getSecond());
+         } //there are no sort fields
       }
    }
 
