@@ -217,4 +217,11 @@ public class TestSecureStringUtils {
         assertTrue(t.length() <= SecureStringUtils.MAX_FILENAME_LEN);
     }
 
+    @Test
+    public void testValidString(){
+        assertFalse(SecureStringUtils.isValidString("<script>alert(111);</script>"));
+        assertTrue(SecureStringUtils.isValidString("somestring"));
+        assertTrue(SecureStringUtils.isValidString("se-inicia-la-postulación-al-fondo-concursable-para-apoyar-tu-practica-en-el-extranjero"));
+    }
+
 }
