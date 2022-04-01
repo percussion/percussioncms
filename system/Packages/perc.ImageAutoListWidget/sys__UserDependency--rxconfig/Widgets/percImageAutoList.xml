@@ -51,7 +51,7 @@
     <UserPref name="sortby"
               display_name="Sort by"
               required="true"
-              default_value="rx:displaytitle"
+              default_value="rx:sys_contentpostdate"
               datatype="enum">
         <EnumValue value="none" display_value="None" />
         <EnumValue value="rx:displaytitle" display_value="Title" />
@@ -60,7 +60,7 @@
     <UserPref name="sortDirection"
               display_name="Sort Order"
               required="true"
-              default_value="asc"
+              default_value="desc"
               datatype="enum">
         <EnumValue value="desc" display_value="Descending" />
         <EnumValue value="asc" display_value="Ascending" />
