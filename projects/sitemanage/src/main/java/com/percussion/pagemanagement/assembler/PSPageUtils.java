@@ -3030,6 +3030,13 @@ public class PSPageUtils extends PSJexlUtilBase
         return true;
     }
 
+    public boolean isValidPercId(String str){
+        if(!SecureStringUtils.isValidPercId(str)){
+            throw new IllegalArgumentException("Invalid Param: " + str);
+        }
+        return true;
+    }
+
     public void setPubServerService(IPSPubServerService pubServerService)
     {
         this.pubServerService = pubServerService;

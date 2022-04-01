@@ -249,9 +249,8 @@ public class SecureStringUtils {
         return id.matches("^[0-9-]*$");
     }
 
-
     /**
-     * Checks if the supplied string doesn't have an invalid character.
+     * Checks if the supplied string has any known xss characters.
      * @param string the stringto test
      * @return true if the string is valid, false if not
      */
@@ -259,8 +258,7 @@ public class SecureStringUtils {
         if(string == null || string.trim().equals("")){
             return true;
         }
-
-         return string.matches("[a-zA-Z0-9,.;/=?@*%\\[\\]()&:_'\\s-]*");
+       return !containsXSSChars(string);
     }
 
     /**
