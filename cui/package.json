@@ -9,8 +9,12 @@
     "express": "~4.17.1",
     "extend": "*",
     "jquery-ui": "^1.13.1",
-    "jqueryui": "^1.13.1",
-    "lodash": ">=4.17.21"
+    "lodash": ">=4.17.21",
+    "pubsub-js": "^1.9.4",
+    "requirejs": "^2.3.6",
+    "requirejs-text": "^2.0.16",
+    "jquery": "^3.6.0",
+    "knockout": "^3.5.1"
   },
   "devDependencies": {
 
