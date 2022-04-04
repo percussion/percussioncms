@@ -154,7 +154,13 @@ function getBaseConfig(parameters) {
                 'percadvimage': '/Rhythmyx/sys_resources/tinymce/plugins/percadvimage/plugin.js',
                 'percadvlink': '/Rhythmyx/sys_resources/tinymce/plugins/percadvlink/plugin.js',
                 'percglobalvariables': '/Rhythmyx/sys_resources/tinymce/plugins/percglobalvariables/plugin.js',
-                'percmorelink': '/Rhythmyx/sys_resources/tinymce/plugins/percmorelink/plugin.js'
+                'percmorelink': '/Rhythmyx/sys_resources/tinymce/plugins/percmorelink/plugin.js',
+                'codemirror': '/Rhythmyx/sys_resources/tinymce/plugins/codemirror/plugin.js',
+            },
+            "codemirror": {
+                "indentOnInit": true, // Whether or not to indent code on init.
+                "fullscreen": false,   // Default setting is false
+                "saveCursorPosition": true,
             },
             "style_formats_merge": true,
             "style_formats": styleFormats,
