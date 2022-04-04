@@ -24,6 +24,8 @@
 
 package com.percussion.security.xml;
 
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.xml.DomDriver;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.xml.sax.InputSource;
@@ -193,6 +195,16 @@ public class PSSecureXMLUtils {
         xif.setProperty("javax.xml.stream.isSupportingExternalEntities", options.isEnableExternalEntities());
 
         return xif;
+    }
+
+
+    public static XStream getSecuredXStream(){
+        XStream xs = new XStream(new DomDriver());
+        // TODO: 01-04-2022   whitelist specific classes
+        xs.allowTypesByWildcard(new String[] {
+                "com.percussion.**"
+        });
+        return xs;
     }
 
     public static SAXParserFactory getSecuredSaxParserFactory(String className, ClassLoader classLoader, PSXmlSecurityOptions options){
