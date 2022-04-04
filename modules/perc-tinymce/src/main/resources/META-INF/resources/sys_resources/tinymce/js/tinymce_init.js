@@ -149,6 +149,7 @@ function getBaseConfig(parameters) {
             "noneditable_leave_contenteditable": true,
             "height": options.height,
             "width": "100%",
+            "table_sizing_mode": "relative",
             "external_plugins": {
                 'percadvimage': '/Rhythmyx/sys_resources/tinymce/plugins/percadvimage/plugin.js',
                 'percadvlink': '/Rhythmyx/sys_resources/tinymce/plugins/percadvlink/plugin.js',
