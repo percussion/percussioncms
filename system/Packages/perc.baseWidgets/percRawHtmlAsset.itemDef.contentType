@@ -168,6 +168,20 @@
                                     </PSXTextLiteral>
                                  </DataLocator>
                               </PSXParam>
+                               <PSXParam name="codeeditor">
+                                <DataLocator>
+                                  <PSXTextLiteral id="0">
+                                    <text>yes</text>
+                                  </PSXTextLiteral>
+                                </DataLocator>
+                              </PSXParam>
+                              <PSXParam name="codeeditor_mode">
+                                <DataLocator>
+                                  <PSXTextLiteral id="0">
+                                    <text>html</text>
+                                  </PSXTextLiteral>
+                                </DataLocator>
+                              </PSXParam>
                            </PSXControlRef>
                            <ErrorLabel>
                               <PSXDisplayText>HTML:</PSXDisplayText>

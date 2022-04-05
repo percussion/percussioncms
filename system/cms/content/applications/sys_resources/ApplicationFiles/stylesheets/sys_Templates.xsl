@@ -963,7 +963,7 @@ onchange    %Script;       #IMPLIED
                </xsl:call-template>
             </xsl:when>
             <xsl:otherwise>
-                <xsl:value-of select="DisplayLabel"/>
+               <xsl:value-of select="DisplayLabel"/>
             </xsl:otherwise>
          </xsl:choose>
       </option>
@@ -1009,7 +1009,7 @@ onchange    %Script;       #IMPLIED
                         </xsl:call-template>
                      </xsl:when>
                      <xsl:otherwise>
-                         <xsl:value-of select="DisplayLabel"/>
+                        <xsl:value-of select="DisplayLabel"/>
                      </xsl:otherwise>
                   </xsl:choose>
                </xsl:for-each>
@@ -1345,16 +1345,87 @@ onchange    %Script;       #IMPLIED
             <psxctl:Description>This parameter specifies whether the text area needs to be checked for critical classes.</psxctl:Description>
             <psxctl:DefaultValue>no</psxctl:DefaultValue>
          </psxctl:Param>
+         <psxctl:Param name="codeeditor" datatype="String" paramtype="generic">
+            <psxctl:Description>This boolean parameter specifies whether the text area is a code editor.</psxctl:Description>
+            <psxctl:DefaultValue>no</psxctl:DefaultValue>
+         </psxctl:Param>
+         <psxctl:Param name="codeeditor_mode" datatype="String" paramtype="generic">
+            <psxctl:Description>This parameter specifies the language or mode that the text editor should used when it is used as a code editor. Supported modes: html</psxctl:Description>
+            <psxctl:DefaultValue>html</psxctl:DefaultValue>
+         </psxctl:Param>
       </psxctl:ParamList>
       <psxctl:AssociatedFileList>
          <psxctl:FileDescriptor name="PercContentChecker.js" type="script" mimetype="text/javascript">
             <psxctl:FileLocation>/sys_resources/js/PercContentChecker.js</psxctl:FileLocation>
             <psxctl:Timestamp/>
          </psxctl:FileDescriptor>
+         <psxctl:FileDescriptor name="codemirror.js" type="script" mimetype="text/javascript">
+            <psxctl:FileLocation>/sys_resources/tinymce/plugins/codemirror/codemirror-4.8/lib/codemirror.js</psxctl:FileLocation>
+            <psxctl:Timestamp/>
+         </psxctl:FileDescriptor>
+         <psxctl:FileDescriptor name="matchbrackets.js" type="script" mimetype="text/javascript">
+            <psxctl:FileLocation>/sys_resources/tinymce/plugins/codemirror/codemirror-4.8/addon/edit/matchbrackets.js</psxctl:FileLocation>
+            <psxctl:Timestamp/>
+         </psxctl:FileDescriptor>
+         <psxctl:FileDescriptor name="xml.js" type="script" mimetype="text/javascript">
+            <psxctl:FileLocation>/sys_resources/tinymce/plugins/codemirror/codemirror-4.8/mode/xml/xml.js</psxctl:FileLocation>
+            <psxctl:Timestamp/>
+         </psxctl:FileDescriptor>
+         <psxctl:FileDescriptor name="javascript.js" type="script" mimetype="text/javascript">
+            <psxctl:FileLocation>/sys_resources/tinymce/plugins/codemirror/codemirror-4.8/mode/javascript/javascript.js</psxctl:FileLocation>
+            <psxctl:Timestamp/>
+         </psxctl:FileDescriptor>
+         <psxctl:FileDescriptor name="css.js" type="script" mimetype="text/javascript">
+            <psxctl:FileLocation>/sys_resources/tinymce/plugins/codemirror/codemirror-4.8/mode/css/css.js</psxctl:FileLocation>
+            <psxctl:Timestamp/>
+         </psxctl:FileDescriptor>
+         <psxctl:FileDescriptor name="htmlmixed.js" type="script" mimetype="text/javascript">
+            <psxctl:FileLocation>/sys_resources/tinymce/plugins/codemirror/codemirror-4.8/mode/htmlmixed/htmlmixed.js</psxctl:FileLocation>
+            <psxctl:Timestamp/>
+         </psxctl:FileDescriptor>
+         <psxctl:FileDescriptor name="dialog.js" type="script" mimetype="text/javascript">
+            <psxctl:FileLocation>/sys_resources/tinymce/plugins/codemirror/codemirror-4.8/addon/dialog/dialog.js</psxctl:FileLocation>
+            <psxctl:Timestamp/>
+         </psxctl:FileDescriptor>
+         <psxctl:FileDescriptor name="searchcursor.js" type="script" mimetype="text/javascript">
+            <psxctl:FileLocation>/sys_resources/tinymce/plugins/codemirror/codemirror-4.8/addon/search/searchcursor.js</psxctl:FileLocation>
+            <psxctl:Timestamp/>
+         </psxctl:FileDescriptor>
+         <psxctl:FileDescriptor name="search.js" type="script" mimetype="text/javascript">
+            <psxctl:FileLocation>/sys_resources/tinymce/plugins/codemirror/codemirror-4.8/addon/search/search.js</psxctl:FileLocation>
+            <psxctl:Timestamp/>
+         </psxctl:FileDescriptor>
+         <psxctl:FileDescriptor name="active-line.js" type="script" mimetype="text/javascript">
+            <psxctl:FileLocation>/sys_resources/tinymce/plugins/codemirror/codemirror-4.8/addon/selection/active-line.js</psxctl:FileLocation>
+            <psxctl:Timestamp/>
+         </psxctl:FileDescriptor>
+         <psxctl:FileDescriptor name="codemirror.css" type="css" mimetype="text/css">
+            <psxctl:FileLocation>/sys_resources/tinymce/plugins/codemirror/codemirror-4.8/lib/codemirror.css</psxctl:FileLocation>
+            <psxctl:Timestamp/>
+         </psxctl:FileDescriptor>
+         <psxctl:FileDescriptor name="dialog.css" type="css" mimetype="text/css">
+            <psxctl:FileLocation>/sys_resources/tinymce/plugins/codemirror/codemirror-4.8/addon/dialog/dialog.css</psxctl:FileLocation>
+            <psxctl:Timestamp/>
+         </psxctl:FileDescriptor>
       </psxctl:AssociatedFileList>
    </psxctl:ControlMeta>
    <xsl:template match="Control[@name='sys_TextArea']" mode="psxcontrol">
-      <textarea name="{@paramName}" wrap="soft">
+      <div class="perc-codeeditor-legend">
+      </div>
+      <script>
+         var isMac = /macintosh|mac os/i.test(navigator.userAgent);
+         const collection = document.getElementsByClassName("perc-codeeditor-legend");
+         var div =  collection.item(0);
+      <![CDATA[
+         td1 = '<td style="font-size:11px;background:#777;color:#fff;padding:0 4px">';
+         td2 = '<td style="font-size:11px;padding-right:5px">';
+
+         div.innerHTML = "<table cellspacing='0' cellpadding='0' style='border-spacing:4px'><tr>" + td1 + (isMac ? '&#8984;-F' : 'Ctrl-F</td>') + td2 + 'Start search' + '</td>' + td1 + (isMac ? '&#8984;-G' : 'Ctrl-G') + '</td>' + td2 + 'Find next' + '</td>' + td1 + (isMac ? '&#8984;-Alt-F' : 'Shift-Ctrl-F') + '</td>' + td2 + 'Find previous' + '</td></tr>' + '<tr>' + td1 + (isMac ? '&#8984;-Alt-F' : 'Shift-Ctrl-F') + '</td>' + td2 + 'Replace' + '</td>' + td1 + (isMac ? 'Shift-&#8984;-Alt-F' : 'Shift-Ctrl-R') +'</td>' + td2 + 'Replace all' + '</td></tr></table>';
+         div.style.position = 'absolute';
+         div.style.left = div.style.bottom = '5px';
+         ]]>
+      </script>
+      <textarea id="{@paramName}" name="{@paramName}" wrap="soft">
          <xsl:if test="@accessKey!=''">
             <xsl:attribute name="accesskey"><xsl:call-template name="getaccesskey"><xsl:with-param name="label" select="preceding-sibling::DisplayLabel"/><xsl:with-param name="sourceType" select="preceding-sibling::DisplayLabel/@sourceType"/><xsl:with-param name="paramName" select="@paramName"/><xsl:with-param name="accessKey" select="@accessKey"/></xsl:call-template></xsl:attribute>
          </xsl:if>
@@ -1377,6 +1448,45 @@ onchange    %Script;       #IMPLIED
       <xsl:if test="$requirescleanup = 'yes'">
          <script >
             PercHtmlFieldsContentCheckerArray.push('<xsl:value-of select="@paramName" />');
+         </script>
+      </xsl:if>
+      <xsl:variable name="codeeditor">
+         <xsl:choose>
+            <xsl:when test="ParamList/Param[@name='codeeditor']">
+               <xsl:value-of select="ParamList/Param[@name='codeeditor']"/>
+            </xsl:when>
+            <xsl:otherwise>
+               <xsl:value-of select="document('')/*/psxctl:ControlMeta[@name='sys_TextArea']/psxctl:ParamList/psxctl:Param[@name='codeeditor']/psxctl:DefaultValue"/>
+            </xsl:otherwise>
+         </xsl:choose>
+      </xsl:variable>
+      <xsl:variable name="codeeditor_mode">
+         <xsl:choose>
+            <xsl:when test="ParamList/Param[@name='codeeditor_mode']">
+               <xsl:value-of select="ParamList/Param[@name='codeeditor_mode']"/>
+            </xsl:when>
+            <xsl:otherwise>
+               <xsl:value-of select="document('')/*/psxctl:ControlMeta[@name='sys_TextArea']/psxctl:ParamList/psxctl:Param[@name='codeeditor_mode']/psxctl:DefaultValue"/>
+            </xsl:otherwise>
+         </xsl:choose>
+      </xsl:variable>
+      <xsl:if test="$codeeditor = 'yes'">
+         <script>
+            var editor = CodeMirror.fromTextArea(document.getElementById('<xsl:value-of select="@paramName" />'), {
+            mode: 'htmlmixed',
+            theme: 'default',
+            lineNumbers: true,
+            lineWrapping: true,
+            indentUnit: 2,
+            tabSize: 2,
+            indentWithTabs: true,
+            matchBrackets: true,
+            saveCursorPosition: true,
+            styleActiveLine: true,
+            spellcheck: true,
+            autocorrect: true,
+            autofocus: true,
+            screenReaderLabel: 'HTML Source Code Editor'});
          </script>
       </xsl:if>
    </xsl:template>
@@ -1469,11 +1579,11 @@ onchange    %Script;       #IMPLIED
          var vdate = '<xsl:value-of select="$value" />'.split(' ');
          var formatDate = "";
          <xsl:text disable-output-escaping="yes">
-         if (vdate.length > 1){
-         var vtime = vdate[1].split(':');
-         vtime = ((vtime[0]==0 || vtime[0]==12)? '12' : vtime[0]%12) + ":" + vtime[1] + ((vtime[0]>11)? " pm" : " am" );
-         formatDate = vdate[0] + " " + vtime;
-         }
+            if (vdate.length > 1){
+            var vtime = vdate[1].split(':');
+            vtime = ((vtime[0]==0 || vtime[0]==12)? '12' : vtime[0]%12) + ":" + vtime[1] + ((vtime[0]>11)? " pm" : " am" );
+            formatDate = vdate[0] + " " + vtime;
+            }
          </xsl:text>
          $('#' + options.display).datepicker({
          altTimeField: '',
@@ -1503,11 +1613,11 @@ onchange    %Script;       #IMPLIED
          var newDate = dateText.split(' ');
          var newFormatDate = "";
          <xsl:text disable-output-escaping="yes">
-         if (newDate.length > 1){
-         var newTime = newDate[1].split(':');
-         newTime = (((newDate[2].toUpperCase()=='PM' &amp;&amp; newTime[0]!=12)  || (newDate[2].toUpperCase()=='AM' &amp;&amp; newTime[0]==12)) ? (((parseInt(newTime[0])+12)%24) + ':' + newTime[1]) : newTime.join(':'));
-         newFormatDate = newDate[0] + " " + newTime;
-         }
+            if (newDate.length > 1){
+            var newTime = newDate[1].split(':');
+            newTime = (((newDate[2].toUpperCase()=='PM' &amp;&amp; newTime[0]!=12)  || (newDate[2].toUpperCase()=='AM' &amp;&amp; newTime[0]==12)) ? (((parseInt(newTime[0])+12)%24) + ':' + newTime[1]) : newTime.join(':'));
+            newFormatDate = newDate[0] + " " + newTime;
+            }
          </xsl:text>
          $('#' + options.inputId).val(newFormatDate);
          }
@@ -3511,7 +3621,7 @@ onchange    %Script;       #IMPLIED
          </psxctl:Param>
          <psxctl:Param name="config_src_url" datatype="String" paramtype="generic">
             <psxctl:Description>This parameter specifies the location of the config.xml that will the control will use for configuration. This file must be in the /rx_resources/ephox folder.  The default value is "config.xml".</psxctl:Description>
-            <psxctl:DefaultValue>/sys_resources/tinymce/config/default_config.json</psxctl:DefaultValue>
+            <psxctl:DefaultValue>/Rhythmyx/sys_resources/tinymce/config/default_config.json</psxctl:DefaultValue>
          </psxctl:Param>
          <psxctl:Param name="css_file" datatype="String" paramtype="generic">
             <psxctl:Description>This parameter specifies the location of the customer defined css file. This file must be in the /rx_resources/tinymce folder.</psxctl:Description>
@@ -3744,8 +3854,8 @@ onchange    %Script;       #IMPLIED
          </xsl:choose>
       </xsl:variable>
       <script>
-     <xsl:text disable-output-escaping="yes">
-     //&lt;![CDATA[<![CDATA[
+         <xsl:text disable-output-escaping="yes">
+            //&lt;![CDATA[<![CDATA[
 
        function TinyMCEControlIsDirty_]]></xsl:text><xsl:value-of select="$uniqueName"/><xsl:text disable-output-escaping="yes"><![CDATA[()
        {

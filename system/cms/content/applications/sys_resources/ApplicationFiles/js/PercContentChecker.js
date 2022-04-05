@@ -3,7 +3,7 @@ var PercHtmlFieldsContentCheckerArray = [];
 var PercTinymceFieldsContentCheckerArray = [];
 
 //Adds a handler that fires when the user submits/saves the text area. 
-$(document).ready(function ($){
+$(function ($){
 	if (window.location !== window.parent.location) {
 		window.parent.jQuery.PercContentPreSubmitHandlers.addHandler(reservedClassesWarning);
 	}
