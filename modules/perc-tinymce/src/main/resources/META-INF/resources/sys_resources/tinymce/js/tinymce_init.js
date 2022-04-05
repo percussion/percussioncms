@@ -81,7 +81,7 @@ function mergeConfig(options, url) {
                 var config = {};
                 var css_path = options.content_css;
                 var external_plugins = options.external_plugins;
-                if ($.isArray(data)) {
+                if (Array.isArray(data)) {
                     $.each(data, function(i, item) {
                         if (
                             (!item.hasOwnProperty('roles') || $(options.userRoles).not(item.roles).length < $(options.userRoles).length) &&
@@ -144,16 +144,28 @@ function getBaseConfig(parameters) {
             "perc_config": "../sys_resources/tinymce/config/default_config.json",
             "content_css": "../sys_resources/css/tinymce/content.css",
             "theme": "silver",
-            "editor_selector": "tinymce_callout",
             "valid_elements": "*[*]",
             "noneditable_leave_contenteditable": true,
             "height": options.height,
             "width": "100%",
+            "table_sizing_mode": "relative",
             "external_plugins": {
-                'percadvimage': '/Rhythmyx/sys_resources/tinymce/plugins/percadvimage/plugin.js',
-                'percadvlink': '/Rhythmyx/sys_resources/tinymce/plugins/percadvlink/plugin.js',
-                'percglobalvariables': '/Rhythmyx/sys_resources/tinymce/plugins/percglobalvariables/plugin.js',
-                'percmorelink': '/Rhythmyx/sys_resources/tinymce/plugins/percmorelink/plugin.js'
+                'codemirror': '/sys_resources/tinymce/plugins/codemirror/plugin.js',
+                'percadvimage': '/sys_resources/tinymce/plugins/percadvimage/plugin.js',
+                'percadvlink': '/sys_resources/tinymce/plugins/percadvlink/plugin.js',
+                'percglobalvariables': '/sys_resources/tinymce/plugins/percglobalvariables/plugin.js',
+                'percmorelink': '/sys_resources/tinymce/plugins/percmorelink/plugin.js',
+            },
+            "codemirror": {
+                "indentOnInit": true, // Whether or not to indent code on init.
+                "fullscreen": false,   // Default setting is false
+                "saveCursorPosition": true,
+                "config": {
+                    "lineNumbers": true,
+                    "autofocus": true,
+                    "screenReaderLabel":'HTML Source Code Editor',
+                }
+
             },
             "style_formats_merge": true,
             "style_formats": styleFormats,
