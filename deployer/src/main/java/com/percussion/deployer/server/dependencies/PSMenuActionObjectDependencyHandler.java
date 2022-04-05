@@ -198,7 +198,9 @@ public abstract class PSMenuActionObjectDependencyHandler
          }
       }
          // add idtype dependencies
+      if(dep.supportsIdTypes()) {
          childDeps.addAll(getIdTypeDependencies(tok, dep));
+      }
 
          // Add ACL dependency
          addAclDependency(tok, PSTypeEnum.ACTION, dep, childDeps);
