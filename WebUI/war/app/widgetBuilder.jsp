@@ -27,16 +27,16 @@
   --%>
 
 <%
-	String locale= PSRoleUtilities.getUserCurrentLocale();
-	String lang="en";
-	if(locale==null){
-		locale="en-us";
-	}else{
-		if(locale.contains("-"))
-			lang=locale.split("-")[0];
-		else
-			lang=locale;
-	}
+    String locale= PSRoleUtilities.getUserCurrentLocale();
+    String lang="en";
+    if(locale==null){
+        locale="en-us";
+    }else{
+        if(locale.contains("-"))
+            lang=locale.split("-")[0];
+        else
+            lang=locale;
+    }
     String debug = request.getParameter("debug");
     boolean isDebug = "true".equals(debug);
     String debugQueryString = isDebug ? "?debug=true" : "";
@@ -50,21 +50,21 @@
 <!DOCTYPE html>
 <html lang="<%=lang%>">
 <head>
-<title><i18n:message key = "perc.ui.widget.builder@Widget Builder"/></title>
-<!--Meta Includes -->
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<%@include file="includes/common_meta.jsp" %>
+    <title><i18n:message key = "perc.ui.widget.builder@Widget Builder"/></title>
+    <!--Meta Includes -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <%@include file="includes/common_meta.jsp" %>
 
-<%--
-   When ran in normal mode all javascript will be in one compressed file and
-   the same for css (Currently just concatenated bu tnot compressed.).
-   ?debug=true to the url for the page.
+    <%--
+       When ran in normal mode all javascript will be in one compressed file and
+       the same for css (Currently just concatenated bu tnot compressed.).
+       ?debug=true to the url for the page.
 
-   Be sure that when a new javascript file is added to the page, an entry
-   for each inclusion will be needed in the appropriate concat task within
-   the minify target in the build.xml file. If this is not done then it won't
-   get into the files used in production.
---%>
+       Be sure that when a new javascript file is added to the page, an entry
+       for each inclusion will be needed in the appropriate concat task within
+       the minify target in the build.xml file. If this is not done then it won't
+       get into the files used in production.
+    --%>
 
     <!-- Themes never should be concatenated or packed -->
     <link rel="stylesheet" type="text/css" href="../themes/smoothness/jquery-ui-1.8.9.custom.css"/>
@@ -73,50 +73,64 @@
     <script src="/JavaScriptServlet"></script>
     <%@include file="../widgetbuilder/templates/templates.jsp" %>
 
-<% if (isDebug) { %>
+    <% if (isDebug) { %>
 
-<!-- CSS Includes -->
-<%@include file="includes/common_css.jsp" %>
-<link rel="stylesheet" type="text/css" href="../css/styles.css"/>
-<link rel="stylesheet" type="text/css" href="../jslib/profiles/3x/jquery/libraries/backgridjs/backgrid.css"/>
-<link rel="stylesheet" type="text/css" href="../widgetbuilder/css/perc_widgetbuilder.css"/>
-<link rel="stylesheet" type="text/css" href="../css/perc_ChangePw.css"/>
+    <!-- CSS Includes -->
+    <%@include file="includes/common_css.jsp" %>
+    <link rel="stylesheet" type="text/css" href="../css/styles.css"/>
+    <link rel="stylesheet" type="text/css" href="../jslib/profiles/3x/jquery/libraries/backgridjs/backgrid.css"/>
+    <link rel="stylesheet" type="text/css" href="../widgetbuilder/css/perc_widgetbuilder.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/perc_ChangePw.css"/>
 
-<!-- JavaScript Includes (order matters) -->
-<%@include file="includes/common_js.jsp" %>
-<script src="../jslib/profiles/3x/libraries/underscore/underscore.js"></script>
-<script src="../jslib/profiles/3x/libraries/backbone/backbone.js"></script>
-<script src="../jslib/profiles/3x/jquery/libraries/backgridjs/backgrid.js"></script>
-<script src="../widgetbuilder/js/PercWidgetBuilder.js"></script>
-<script src="../widgetbuilder/js/PercWidgetBuilderExpander.js"></script>
-<script src="../widgetbuilder/js/PercWidgetBuilderService.js"></script>
-<script src="../widgetbuilder/js/PercWidgetDefsTable.js"></script>
-<script src="../widgetbuilder/js/models/PercWidgetBuilderDefinitionModel.js"></script>
-<script src="../widgetbuilder/js/models/PercWidgetFieldsModels.js"></script>
-<script src="../widgetbuilder/js/models/PercWidgetDisplayModels.js"></script>
-<script src="../widgetbuilder/js/models/PercWidgetResourceModels.js"></script>
-<script src="../widgetbuilder/js/views/PercWidgetBuilderDefinitionView.js"></script>
-<script src="../widgetbuilder/js/views/PercWidgetFieldsViews.js"></script>
-<script src="../widgetbuilder/js/views/PercWidgetDisplayViews.js"></script>
-<script src="../widgetbuilder/js/views/PercWidgetResourceViews.js"></script>
-<script src="../services/PercUserService.js"></script>
-<script src="../plugins/perc_ChangePwDialog.js"></script>
-<% } else { %>
-<script src="../jslibMin/perc_widgetBuilder.packed.min.js"></script>
-<link rel="stylesheet" type="text/css" href="../cssMin/perc_widgetBuilder.packed.min.css"/>
-<% } %>
-<!--[if lte IE 7]>
-<link rel="stylesheet" type="text/css" href="../css/IE_styles.css"/><![endif]-->
-<!--[if gte IE 8]>
-<link rel="stylesheet" type="text/css" href="../css/IE8_styles.css"/><![endif]-->
-<script>
-    var dirtyController = $.PercDirtyController;
-    function navigationEvent() {
-        // if template is not dirty, return nothing and allow navigation
-        // otherwise return alert message and display confirmantion box
-        return dirtyController.navigationEvent();
-    }
-</script>
+    <!-- JavaScript Includes (order matters) -->
+    <%@include file="includes/common_js.jsp" %>
+    <script src="../jslib/profiles/3x/libraries/underscore/underscore.js"></script>
+    <script src="../jslib/profiles/3x/libraries/backbone/backbone.js"></script>
+    <script src="../jslib/profiles/3x/jquery/libraries/backgridjs/backgrid.js"></script>
+    <script src="../widgetbuilder/js/PercWidgetBuilder.js"></script>
+    <script src="../widgetbuilder/js/PercWidgetBuilderExpander.js"></script>
+    <script src="../widgetbuilder/js/PercWidgetBuilderService.js"></script>
+    <script src="../widgetbuilder/js/PercWidgetDefsTable.js"></script>
+    <script src="../widgetbuilder/js/models/PercWidgetBuilderDefinitionModel.js"></script>
+    <script src="../widgetbuilder/js/models/PercWidgetFieldsModels.js"></script>
+    <script src="../widgetbuilder/js/models/PercWidgetDisplayModels.js"></script>
+    <script src="../widgetbuilder/js/models/PercWidgetResourceModels.js"></script>
+    <script src="../widgetbuilder/js/views/PercWidgetBuilderDefinitionView.js"></script>
+    <script src="../widgetbuilder/js/views/PercWidgetFieldsViews.js"></script>
+    <script src="../widgetbuilder/js/views/PercWidgetDisplayViews.js"></script>
+    <script src="../widgetbuilder/js/views/PercWidgetResourceViews.js"></script>
+    <script src="../services/PercUserService.js"></script>
+    <script src="../plugins/perc_ChangePwDialog.js"></script>
+    <% } else { %>
+    <script src="../jslibMin/perc_widgetBuilder.packed.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="../cssMin/perc_widgetBuilder.packed.min.css"/>
+    <% } %>
+    <script src="/sys_resources/tinymce/plugins/codemirror/codemirror-4.8/lib/codemirror.js"></script>
+    <script src="/sys_resources/tinymce/plugins/codemirror/codemirror-4.8/addon/edit/matchbrackets.js"></script>
+    <script src="/sys_resources/tinymce/plugins/codemirror/codemirror-4.8/mode/xml/xml.js"></script>
+    <script src="/sys_resources/tinymce/plugins/codemirror/codemirror-4.8/mode/javascript/javascript.js"></script>
+    <script src="/sys_resources/tinymce/plugins/codemirror/codemirror-4.8/mode/css/css.js"></script>
+    <script src="/sys_resources/tinymce/plugins/codemirror/codemirror-4.8/mode/htmlmixed/htmlmixed.js"></script>
+    <script src="/sys_resources/tinymce/plugins/codemirror/codemirror-4.8/mode/velocity/velocity.js"></script>
+    <script src="/sys_resources/tinymce/plugins/codemirror/codemirror-4.8/addon/dialog/dialog.js"></script>
+    <script src="/sys_resources/tinymce/plugins/codemirror/codemirror-4.8/addon/search/searchcursor.js"></script>
+    <script src="/sys_resources/tinymce/plugins/codemirror/codemirror-4.8/addon/search/search.js"></script>
+    <script src="/sys_resources/tinymce/plugins/codemirror/codemirror-4.8/addon/selection/active-line.js"></script>
+    <link rel="stylesheet" href="/sys_resources/tinymce/plugins/codemirror/codemirror-4.8/lib/codemirror.css" />
+    <link rel="stylesheet" href="/sys_resources/tinymce/plugins/codemirror/codemirror-4.8/addon/dialog/dialog.css"/>
+
+    <!--[if lte IE 7]>
+    <link rel="stylesheet" type="text/css" href="../css/IE_styles.css"/><![endif]-->
+    <!--[if gte IE 8]>
+    <link rel="stylesheet" type="text/css" href="../css/IE8_styles.css"/><![endif]-->
+    <script>
+        var dirtyController = $.PercDirtyController;
+        function navigationEvent() {
+            // if template is not dirty, return nothing and allow navigation
+            // otherwise return alert message and display confirmantion box
+            return dirtyController.navigationEvent();
+        }
+    </script>
 </head>
 <body onbeforeunload="return navigationEvent()" style="overflow:auto;">
 <div class="perc-main">
