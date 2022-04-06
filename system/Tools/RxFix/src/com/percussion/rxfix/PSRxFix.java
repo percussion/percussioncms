@@ -25,25 +25,7 @@ package com.percussion.rxfix;
 
 import com.percussion.error.PSExceptionUtils;
 import com.percussion.rx.ui.jsf.beans.PSHelpTopicMapping;
-import com.percussion.rxfix.dbfixes.PSFixAcls;
-import com.percussion.rxfix.dbfixes.PSFixAllowedSitePropertiesWithBadSites;
-import com.percussion.rxfix.dbfixes.PSFixBrokenRelationships;
-import com.percussion.rxfix.dbfixes.PSFixCommunityVisibilityForViews;
-import com.percussion.rxfix.dbfixes.PSFixContentStatusHistory;
-import com.percussion.rxfix.dbfixes.PSFixDanglingAssociations;
-import com.percussion.rxfix.dbfixes.PSFixFormUrl;
-import com.percussion.rxfix.dbfixes.PSFixInvalidFolderRelationships;
-import com.percussion.rxfix.dbfixes.PSFixInvalidFolders;
-import com.percussion.rxfix.dbfixes.PSFixInvalidSysTitle;
-import com.percussion.rxfix.dbfixes.PSFixNextNumberTable;
-import com.percussion.rxfix.dbfixes.PSFixOrphanedContentChangeEvents;
-import com.percussion.rxfix.dbfixes.PSFixOrphanedFolders;
-import com.percussion.rxfix.dbfixes.PSFixOrphanedManagedLinks;
-import com.percussion.rxfix.dbfixes.PSFixOrphanedSlots;
-import com.percussion.rxfix.dbfixes.PSFixPageCatalog;
-import com.percussion.rxfix.dbfixes.PSFixStaleDataForContentTypes;
-import com.percussion.rxfix.dbfixes.PSFixTranslationRelationships;
-import com.percussion.rxfix.dbfixes.PSFixZerosInRelationshipProperties;
+import com.percussion.rxfix.dbfixes.*;
 import com.percussion.server.IPSStartupProcessManager;
 import com.percussion.server.PSStartupProcessManager;
 import com.percussion.server.cache.PSCacheManager;
@@ -193,7 +175,8 @@ public class PSRxFix
       PSFixStaleDataForContentTypes.class,
       PSFixPageCatalog.class,
            PSFixAcls.class,
-           PSFixFormUrl.class
+           PSFixFormUrl.class,
+           PSFixWidgetVisibility.class
    };
 
    /**
