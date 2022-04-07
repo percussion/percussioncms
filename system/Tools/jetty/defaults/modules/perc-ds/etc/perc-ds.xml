@@ -1,7 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<!DOCTYPE Configure
-  PUBLIC "-//Jetty//Configure//EN" "http://www.eclipse.org/jetty/configure_9_3.dtd">
 <Configure class="org.eclipse.jetty.server.Server" id="Server">
 
 
@@ -22,6 +19,7 @@
                   <Set name="poolName">Hikari <Property name="perc.ds.1.name"/> Pool</Set>
              
                   <Set name="connectionTimeout">120000</Set>
+                  <Set name="initializationFailTimeout">0</Set>
              
                   <Set name="minimumIdle">
                      <Property default="50" name="perc.ds.1.connections.min"/>

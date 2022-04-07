@@ -224,60 +224,152 @@
             <!-- don't try to migrate configuration if it has already been done -->
             <available file="${install.dir}/AppServer/server/rx/deploy/jboss-web.deployer/server.xml" />
         <then>
-        <PSUpdateJettyConfigFromJBoss rootDir="${install.dir}"/>
-        <PSConfigurePort rootDir="${install.dir}"/>
+            <PSUpdateJettyConfigFromJBoss rootDir="${install.dir}"/>
+            <PSConfigurePort rootDir="${install.dir}"/>
         </then>
         </if>
 
         <echo>Updating CMS Config Files ************************...</echo>
-        <mkdir dir="${install.dir}/rxconfig/DeliveryServer" />
-        <copy todir="${install.dir}/rxconfig/DeliveryServer" file="${install.src}/rxconfig/DeliveryServer/delivery-servers.xml"  failonerror="true" overwrite="false" verbose="true" />
-        <mkdir dir="${install.dir}/rxconfig/LDAP" />
-        <copy todir="${install.dir}/rxconfig/LDAP" file="${install.src}/rxconfig/LDAP/ldapserver.xml"  failonerror="true" overwrite="false" verbose="true" />
-        <mkdir dir="${install.dir}/rxconfig/Widgets" />
-        <copy todir="${install.dir}/rxconfig/Widgets/"
-              failonerror="true" overwrite="false" verbose="true">
-            <fileset dir="${install.src}/rxconfig/Widgets/" defaultexcludes="no">
-                <include name="**/*"/>
-            </fileset>
-        </copy>
-        <mkdir dir="${install.dir}/rxconfig/Categories" />
-        <copy todir="${install.dir}/rxconfig/Categories/"
-              failonerror="true" overwrite="false" verbose="true">
-            <fileset dir="${install.src}/rxconfig/Categories/" defaultexcludes="no">
-                <include name="**/*"/>
-            </fileset>
-        </copy>
-        <mkdir dir="${install.dir}/rxconfig/Proxy" />
-        <copy todir="${install.dir}/rxconfig/Proxy/"
-              failonerror="true" overwrite="false" verbose="true">
-            <fileset dir="${install.src}/rxconfig/Proxy/" defaultexcludes="no">
-                <include name="**/*"/>
-            </fileset>
-        </copy>
-        <mkdir dir="${install.dir}/rxconfig/Plugins" />
-        <copy todir="${install.dir}/rxconfig/Plugins/"
-              failonerror="true" overwrite="false" verbose="true">
-            <fileset dir="${install.src}/rxconfig/Proxy/" defaultexcludes="no">
-                <include name="**/*"/>
-            </fileset>
-        </copy>
-        <mkdir dir="${install.dir}/rxconfig/ContentEditors" />
-        <copy todir="${install.dir}/rxconfig/ContentEditors/"
-              failonerror="true" overwrite="false" verbose="true">
-            <fileset dir="${install.src}/rxconfig/ContentEditors/" defaultexcludes="no">
-                <include name="**/*"/>
-            </fileset>
-        </copy>
-        <mkdir dir="${install.dir}/rxconfig/Data" />
-        <copy todir="${install.dir}/rxconfig/Data/"
-              failonerror="true" overwrite="false" verbose="true">
-            <fileset dir="${install.src}/rxconfig/Data/" defaultexcludes="no">
-                <include name="**/*"/>
-            </fileset>
-        </copy>
-        <mkdir dir="${install.dir}/rxconfig/SiteConfigs" />
-        <copy todir="${install.dir}/rxconfig/" file="${install.src}/rxconfig/tika-config.xml"  failonerror="true" overwrite="false" verbose="true" />
+
+        <if>
+            <not>
+                <available file="${install.dir}/rxconfig/DeliveryServer" type="dir"/>
+            </not>
+            <then>
+                <mkdir dir="${install.dir}/rxconfig/DeliveryServer" />
+                <copy todir="${install.dir}/rxconfig/DeliveryServer" file="${install.src}/rxconfig/DeliveryServer/delivery-servers.xml"  failonerror="true" overwrite="false" verbose="true" />
+            </then>
+        </if>
+
+
+        <if>
+            <not>
+                <available file="${install.dir}/rxconfig/LDAP" type="dir" />
+            </not>
+            <then>
+                <mkdir dir="${install.dir}/rxconfig/LDAP" />
+                <copy todir="${install.dir}/rxconfig/LDAP" file="${install.src}/rxconfig/LDAP/ldapserver.xml"  failonerror="true" overwrite="false" verbose="true" />
+            </then>
+        </if>
+
+
+        <if>
+            <not>
+                <available file="${install.dir}/rxconfig/Widgets" type="dir" />
+            </not>
+            <then>
+                <mkdir dir="${install.dir}/rxconfig/Widgets" />
+                <copy todir="${install.dir}/rxconfig/Widgets/"
+                      failonerror="true" overwrite="false" verbose="true">
+                    <fileset dir="${install.src}/rxconfig/Widgets/" defaultexcludes="no">
+                        <include name="**/*"/>
+                    </fileset>
+                </copy>
+            </then>
+        </if>
+
+
+        <if>
+            <not>
+                <available file="${install.dir}/rxconfig/Categories" type="dir" />
+            </not>
+            <then>
+                <mkdir dir="${install.dir}/rxconfig/Categories" />
+                <copy todir="${install.dir}/rxconfig/Categories/"
+                      failonerror="true" overwrite="false" verbose="true">
+                    <fileset dir="${install.src}/rxconfig/Categories/" defaultexcludes="no">
+                        <include name="**/*"/>
+                    </fileset>
+                </copy>
+            </then>
+        </if>
+
+
+
+        <if>
+            <not>
+                <available file="${install.dir}/rxconfig/Proxy" type="dir" />
+            </not>
+            <then>
+                <mkdir dir="${install.dir}/rxconfig/Proxy" />
+                <copy todir="${install.dir}/rxconfig/Proxy/"
+                      failonerror="true" overwrite="false" verbose="true">
+                    <fileset dir="${install.src}/rxconfig/Proxy/" defaultexcludes="no">
+                        <include name="**/*"/>
+                    </fileset>
+                </copy>
+            </then>
+        </if>
+
+
+
+        <if>
+            <not>
+                <available file="${install.dir}/rxconfig/Plugins" type="dir" />
+            </not>
+            <then>
+                <mkdir dir="${install.dir}/rxconfig/Plugins" />
+                <copy todir="${install.dir}/rxconfig/Plugins/"
+                      failonerror="true" overwrite="false" verbose="true">
+                    <fileset dir="${install.src}/rxconfig/Proxy/" defaultexcludes="no">
+                        <include name="**/*"/>
+                    </fileset>
+                </copy>
+            </then>
+        </if>
+
+
+
+
+        <if>
+            <not>
+                <available file="${install.dir}/rxconfig/ContentEditors" type="dir" />
+            </not>
+            <then>
+                <mkdir dir="${install.dir}/rxconfig/ContentEditors" />
+                <copy todir="${install.dir}/rxconfig/ContentEditors/"
+                      failonerror="true" overwrite="false" verbose="true">
+                    <fileset dir="${install.src}/rxconfig/ContentEditors/" defaultexcludes="no">
+                        <include name="**/*"/>
+                    </fileset>
+                </copy>
+            </then>
+        </if>
+
+
+        <if>
+            <not>
+                <available file="${install.dir}/rxconfig/Data" type="dir" />
+            </not>
+            <then>
+                <mkdir dir="${install.dir}/rxconfig/Data" />
+                <copy todir="${install.dir}/rxconfig/Data/"
+                      failonerror="true" overwrite="false" verbose="true">
+                    <fileset dir="${install.src}/rxconfig/Data/" defaultexcludes="no">
+                        <include name="**/*"/>
+                    </fileset>
+                </copy>
+            </then>
+        </if>
+
+        <if>
+            <not>
+                <available file="${install.dir}/rxconfig/SiteConfigs" type="dir" />
+            </not>
+            <then>
+                <mkdir dir="${install.dir}/rxconfig/SiteConfigs" />
+            </then>
+        </if>
+
+        <if>
+            <not>
+                <available file="${install.dir}/rxconfig/tika-config.xml" type="file" />
+            </not>
+            <then>
+                <copy todir="${install.dir}/rxconfig/" file="${install.src}/rxconfig/tika-config.xml"  failonerror="true" overwrite="false" verbose="true" />
+            </then>
+        </if>
+
 
     </target>
 
@@ -765,12 +857,61 @@
 
         <antcall target="configure_jetty" inheritall="true" inheritrefs="true" />
 
-
         <copy todir="${install.dir}/jetty/base/etc/" overwrite="false" failonerror="false">
             <fileset dir="${install.src}/jetty/base/etc/" followsymlinks="false" includes="perc-ds.*,installation.properties">
                 <present present="srconly" targetdir="${install.dir}/jetty/base/etc/"/>
             </fileset>
         </copy>
+
+        <echo>Remove DOCTYPE from perc-ds.xml..</echo>
+        <if>
+        <available file="${install.dir}/jetty/base/etc/perc-ds.xml"/>
+        <then>
+            <if>
+                <resourcecontains resource="${install.dir}/jetty/base/etc/perc-ds.xml" substring="DOCTYPE Configure PUBLIC " />
+
+                <then>
+                    <echo>Removing Doctype from ${install.dir}/jetty/base/etc/perc-ds.xml </echo>
+                    <replace file="${install.dir}/jetty/base/etc/perc-ds.xml" summary="yes">
+                        <replacetoken><![CDATA[<!DOCTYPE Configure PUBLIC "-//Jetty//Configure//EN" "http://www.eclipse.org/jetty/configure_9_3.dtd">]]></replacetoken>
+                        <replacevalue><![CDATA[]]></replacevalue>
+                    </replace>
+                </then>
+            </if>
+        </then>
+        </if>
+        <if>
+            <available file="${install.dir}/jetty/defaults/etc/perc-ds.xml"/>
+            <then>
+                <if>
+                    <resourcecontains resource="${install.dir}/jetty/defaults/etc/perc-ds.xml" substring="DOCTYPE Configure PUBLIC " />
+
+                    <then>
+                        <echo>Removing Doctype from ${install.dir}/jetty/defaults/etc/perc-ds.xml </echo>
+                        <replace file="${install.dir}/jetty/defaults/etc/perc-ds.xml" summary="yes">
+                            <replacetoken><![CDATA[<!DOCTYPE Configure PUBLIC "-//Jetty//Configure//EN" "http://www.eclipse.org/jetty/configure_9_3.dtd">]]></replacetoken>
+                            <replacevalue><![CDATA[]]></replacevalue>
+                        </replace>
+                    </then>
+                </if>
+            </then>
+        </if>
+        <if>
+            <available file="${install.dir}/jetty/defaults/modules/perc-ds/etc/perc-ds.xml"/>
+            <then>
+                <if>
+                    <resourcecontains resource="${install.dir}/jetty/defaults/modules/perc-ds/etc/perc-ds.xml" substring="!DOCTYPE Configure" />
+                    <then>
+                        <echo>Removing Doctype from ${install.dir}/jetty/defaults/modules/perc-ds/etc/perc-ds.xml </echo>
+                        <replace file="${install.dir}/jetty/defaults/modules/perc-ds/etc/perc-ds.xml" summary="yes">
+                            <replacetoken><![CDATA[<!DOCTYPE Configure
+  PUBLIC "-//Jetty//Configure//EN" "http://www.eclipse.org/jetty/configure_9_3.dtd">]]></replacetoken>
+                            <replacevalue><![CDATA[]]></replacevalue>
+                        </replace>
+                    </then>
+                </if>
+            </then>
+        </if>
 
         <echo>Creating jetty work and logs directory..</echo>
         <mkdir dir="${install.dir}/jetty/base/work"/>

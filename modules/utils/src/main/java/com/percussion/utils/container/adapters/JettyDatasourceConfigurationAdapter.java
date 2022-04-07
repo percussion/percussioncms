@@ -428,14 +428,10 @@ public class JettyDatasourceConfigurationAdapter implements IPSConfigurationAdap
                                 }
                                 break;
                             }
-
-
                         }
-
                     }
                 }
             }
-
         }
 
 
@@ -493,7 +489,7 @@ public class JettyDatasourceConfigurationAdapter implements IPSConfigurationAdap
         } else {
             try (InputStream sourceIn = new FileInputStream(file)) {
 
-                doc = PSXmlDocumentBuilder.createXmlDocument(sourceIn, true);
+                doc = PSXmlDocumentBuilder.createXmlDocument(sourceIn, false);
                 //If XML doesn't have a root Node or empty Root Node, then create new file
                 //May happen in case of corrupted file
                 if(doc == null || doc.getDocumentElement() == null ||
