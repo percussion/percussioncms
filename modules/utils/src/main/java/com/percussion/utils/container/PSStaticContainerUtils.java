@@ -29,7 +29,6 @@ import com.percussion.security.PSEncryptionException;
 import com.percussion.security.PSEncryptor;
 import com.percussion.utils.io.PathUtils;
 import com.percussion.utils.jdbc.PSJdbcUtils;
-import com.percussion.utils.tools.SortedProperties;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
@@ -51,7 +50,7 @@ public class PSStaticContainerUtils
    public static Properties getProperties(File f)
    {
 
-      SortedProperties prop = new SortedProperties();
+      Properties prop = new Properties();
       
       if (f.exists())
       {
