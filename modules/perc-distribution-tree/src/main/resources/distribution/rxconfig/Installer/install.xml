@@ -865,22 +865,6 @@
 
         <echo>Remove DOCTYPE from perc-ds.xml..</echo>
         <if>
-        <available file="${install.dir}/jetty/base/etc/perc-ds.xml"/>
-        <then>
-            <if>
-                <resourcecontains resource="${install.dir}/jetty/base/etc/perc-ds.xml" substring="DOCTYPE Configure PUBLIC " />
-
-                <then>
-                    <echo>Removing Doctype from ${install.dir}/jetty/base/etc/perc-ds.xml </echo>
-                    <replace file="${install.dir}/jetty/base/etc/perc-ds.xml" summary="yes">
-                        <replacetoken><![CDATA[<!DOCTYPE Configure PUBLIC "-//Jetty//Configure//EN" "http://www.eclipse.org/jetty/configure_9_3.dtd">]]></replacetoken>
-                        <replacevalue><![CDATA[]]></replacevalue>
-                    </replace>
-                </then>
-            </if>
-        </then>
-        </if>
-        <if>
             <available file="${install.dir}/jetty/defaults/etc/perc-ds.xml"/>
             <then>
                 <if>
