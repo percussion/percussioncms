@@ -78,6 +78,9 @@
             $.PercBlogPostService.getPostNavEntries(queryString, pagePath, function(status, navEntries){
                 if(status)
                 {
+                    if(typeof navEntries ===  "string" ){
+                        navEntries = JSON.parse(navEntries);
+                    }
                     //If we have the next entry set the anchor href and if the setting is blogTitle set the link text also
                     if(null !== navEntries.next)
                     {
