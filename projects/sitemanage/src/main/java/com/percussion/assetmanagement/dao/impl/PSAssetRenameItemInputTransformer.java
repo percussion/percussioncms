@@ -23,6 +23,26 @@
  */
 package com.percussion.assetmanagement.dao.impl;
 
+import com.percussion.cms.PSCmsException;
+import com.percussion.extension.IPSExtensionDef;
+import com.percussion.extension.IPSItemInputTransformer;
+import com.percussion.security.SecureStringUtils;
+import com.percussion.server.IPSRequestContext;
+import com.percussion.server.webservices.PSServerFolderProcessor;
+import com.percussion.share.dao.PSFolderPathUtils;
+import com.percussion.share.rx.PSLegacyExtensionUtils;
+import com.percussion.share.spring.PSSpringWebApplicationContextUtils;
+import com.percussion.util.IPSHtmlParameters;
+import com.percussion.util.PSPurgableTempFile;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import static com.percussion.share.rx.PSLegacyExtensionUtils.addParameters;
 import static java.text.MessageFormat.format;
 import static org.apache.commons.collections.MapUtils.getInteger;
@@ -31,26 +51,6 @@ import static org.apache.commons.lang.StringUtils.endsWith;
 import static org.apache.commons.lang.StringUtils.isBlank;
 import static org.apache.commons.lang.StringUtils.isNotBlank;
 import static org.apache.commons.lang.Validate.notEmpty;
-
-import com.percussion.cms.PSCmsException;
-import com.percussion.extension.IPSExtensionDef;
-import com.percussion.extension.IPSItemInputTransformer;
-import com.percussion.server.IPSRequestContext;
-import com.percussion.server.webservices.PSServerFolderProcessor;
-import com.percussion.share.dao.PSFolderPathUtils;
-import com.percussion.share.rx.PSLegacyExtensionUtils;
-import com.percussion.share.spring.PSSpringWebApplicationContextUtils;
-import com.percussion.util.IPSHtmlParameters;
-import com.percussion.util.PSPurgableTempFile;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 /**
  * Renames the asset title if its not unique in the given folder.
@@ -142,6 +142,7 @@ public class PSAssetRenameItemInputTransformer implements IPSItemInputTransforme
          * We remove any bad file name characters that our new title might have
          * to avoid publishing problems.
          */
+        newTitle = SecureStringUtils.sanitizeFileName(newTitle);
         newTitle = PSFolderPathUtils.replaceInvalidItemNameCharacters(newTitle);
         /*
          * Make sure the title is unique and correct it if its not.
