@@ -77,13 +77,13 @@
 		<tr:column sortable="true" sortProperty="nameWithId" headerText="Name (Id)">
 			<tr:commandLink text="#{row.nameWithId}" action="#{row.perform}" />
 		</tr:column>
-		<tr:column headerText="Rhythmyx Path">
+		<tr:column sortable="true" sortProperty="folderRootPath" headerText="Rhythmyx Path">
 			<tr:outputText value="#{row.properties.rootpath}" />
 		</tr:column>        	
-		<tr:column headerText="Published URL">
+		<tr:column sortable="true" sortProperty="baseUrl" headerText="Published URL">
 			<tr:outputText value="#{row.properties.baseurl}" />
 		</tr:column>
-		<tr:column headerText="Published Path">
+		<tr:column sortable="true" sortProperty="rootPath" headerText="Published Path">
 			<tr:outputText value="#{row.properties.pubpath}" />
 		</tr:column>
 	</tr:table>

@@ -74,6 +74,8 @@ public class PSRuntimeStatusNode extends PSNodeBase
       m_runtimeNav = runtimeNav;
    }
 
+
+
    /**
     * This class is used to populate the table in status.jsp page. It is also
     * provide actions/methods to view log of the job or stop the job.
@@ -135,30 +137,108 @@ public class PSRuntimeStatusNode extends PSNodeBase
     * @return the created entry, never <code>null</code>.
     */
    @SuppressWarnings("unchecked")
-   private Map<String, Object> createJobStatus(Long jobId, IPSEdition edition,
+   private JobStatus createJobStatus(Long jobId, IPSEdition edition,
          IPSPublisherJobStatus status)
    {
-      Map props = new HashMap<String, Object>();
-      
-      props.put("editionNameWithId", PSDesignNode.getNameWithId(edition
+      JobStatus jobStatus = new JobStatus();
+
+      jobStatus.setEditionNameWithId(PSDesignNode.getNameWithId(edition
             .getName(), ((PSEdition) edition).getId()));
-      props.put("editionBehavior", edition.getEditionType()
+      jobStatus.setEditionBehavior(edition.getEditionType()
             .getDisplayTitle());
-      props.put("status", status.getState().getDisplayName());
-      props.put("statusEntry", new StatusEntry(jobId));
-      props.put("isTerminal", isTerminated(status.getState()));
-      props.put("progress", ""
-            + PSPublishingStatusHelper.getJobCompletionPercent(status));
+      jobStatus.setStatus(status.getState().getDisplayName());
+      jobStatus.setStatusEntry(new StatusEntry(jobId));
+      jobStatus.setTerminated(isTerminated(status.getState()));
+      jobStatus.setProgress(PSPublishingStatusHelper.getJobCompletionPercent(status));
       
       EndingState endState = PSPublishingStatusHelper.getEndingState(status
             .getState());
       String[] imgSrc = PSPublishingStatusHelper.getStatusImage(endState,
             true, true);
-      props.put("statusImage", imgSrc[0]);
+      jobStatus.setStatusImage(imgSrc[0]);
 
-      return props;      
+      return jobStatus;
    }
-   
+
+   public static class JobStatus{
+
+      public JobStatus(){
+
+      }
+      private String editionNameWithId;
+
+      public String getEditionNameWithId() {
+         return editionNameWithId;
+      }
+
+      public String getEditionBehavior() {
+         return editionBehavior;
+      }
+
+      public String getStatus() {
+         return status;
+      }
+
+      public Integer getProgress() {
+         return progress;
+      }
+
+      public StatusEntry getStatusEntry() {
+         return statusEntry;
+      }
+
+      public Boolean getTerminated() {
+         return isTerminated;
+      }
+
+      public Boolean getIsTerminated(){
+         return isTerminated;
+      }
+
+      public String getStatusImage() {
+         return statusImage;
+      }
+
+      private String editionBehavior;
+
+      public void setEditionNameWithId(String editionNameWithId) {
+         this.editionNameWithId = editionNameWithId;
+      }
+
+      public void setEditionBehavior(String editionBehavior) {
+         this.editionBehavior = editionBehavior;
+      }
+
+      public void setStatus(String status) {
+         this.status = status;
+      }
+
+      public void setProgress(Integer progress) {
+         this.progress = progress;
+      }
+
+      public void setStatusEntry(StatusEntry statusEntry) {
+         this.statusEntry = statusEntry;
+      }
+
+      public void setTerminated(Boolean terminated) {
+         isTerminated = terminated;
+      }
+
+      public void setStatusImage(String statusImage) {
+         this.statusImage = statusImage;
+      }
+
+      private String status;
+      private Integer progress;
+      private StatusEntry statusEntry;
+      private Boolean isTerminated;
+      private String statusImage;
+
+
+
+   }
+
    /**
     * Gets the active jobs for the current node. The current node can be
     * the node that associate with this backing bean, the "Sites" node or
@@ -166,7 +246,7 @@ public class PSRuntimeStatusNode extends PSNodeBase
     * 
     * @return entries of all active jobs, never <code>null</code>, maybe empty.
     */
-   public List<Map<String, Object>> getActiveJobStatus()
+   public List<JobStatus> getActiveJobStatus()
    {
       IPSRxPublisherServiceInternal rxpub = PSRxPubServiceInternalLocator
             .getRxPublisherService();
@@ -179,7 +259,7 @@ public class PSRuntimeStatusNode extends PSNodeBase
          siteId = ((PSRuntimeSiteNode)m_runtimeNav.getCurrentNode()).getSiteID();
       }
       
-      List<Map<String, Object>> reval = new ArrayList<>();
+      List<JobStatus> reval = new ArrayList<>();
       for (Long jobId : rxpub.getActiveJobIds())
       {
          IPSPublisherJobStatus stat = rxpub.getPublishingJobStatus(jobId);
@@ -196,7 +276,7 @@ public class PSRuntimeStatusNode extends PSNodeBase
             continue; // don't show if cannot find the Edition
          }
 
-         Map<String, Object> entry = createJobStatus(jobId, ed, stat);
+         JobStatus entry = createJobStatus(jobId, ed, stat);
          reval.add(entry);
       }
       
