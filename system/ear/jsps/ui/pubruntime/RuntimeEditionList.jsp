@@ -58,21 +58,21 @@
 				      <tr:image source="../../sys_resources/images/stop.png" shortDesc="Stop"/>
                </tr:commandLink>
 				</tr:column>
-				<tr:column headerText="Edition">
+				<tr:column sortable="true" sortProperty="editionId" headerText="Edition">
 					<tr:commandLink text="#{entry.edition.displayTitle} (#{entry.edition.id})"
 						action="#{entry.perform}"/>
 					<tr:inputHidden value="#{entry.edition.id}" />
 				</tr:column>
-				<tr:column headerText="Behavior">
+				<tr:column sortable="true" sortProperty="editionTypeName"  headerText="Behavior">
 					<tr:outputText value="#{entry.edition.editionType.displayTitle}"/>
 				</tr:column>
-            <tr:column headerText="Status">
+            <tr:column sortable="true" sortProperty="status"  headerText="Status">
             	<tr:panelHorizontalLayout>
 	               <tr:image source="#{entry.statusImage}" rendered="#{! empty entry.statusImage}"/>
 	               <tr:outputText value="#{entry.status}"/>
                </tr:panelHorizontalLayout>
             </tr:column>
-            <tr:column headerText="Progress">
+            <tr:column sortable="true" sortProperty="progress"  headerText="Progress">
                <rxcomp:progressBar percent="#{entry.progress}" 
                   rendered="#{entry.running}"/>
             </tr:column>
