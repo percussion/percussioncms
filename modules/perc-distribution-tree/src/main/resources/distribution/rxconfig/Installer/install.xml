@@ -219,7 +219,7 @@
         </copy>
 
         <echo>Configuring Datasource...</echo>
-        <touch mkdirs="true" file="${install.dir}/jetty/base/etc/perc-ds.xml"/>
+
         <if>
             <!-- don't try to migrate configuration if it has already been done -->
             <available file="${install.dir}/AppServer/server/rx/deploy/jboss-web.deployer/server.xml" />
@@ -260,7 +260,7 @@
             <then>
                 <mkdir dir="${install.dir}/rxconfig/Widgets" />
                 <copy todir="${install.dir}/rxconfig/Widgets/"
-                      failonerror="true" overwrite="false" verbose="true">
+                      failonerror="false" overwrite="false" verbose="true">
                     <fileset dir="${install.src}/rxconfig/Widgets/" defaultexcludes="no">
                         <include name="**/*"/>
                     </fileset>
@@ -276,7 +276,7 @@
             <then>
                 <mkdir dir="${install.dir}/rxconfig/Categories" />
                 <copy todir="${install.dir}/rxconfig/Categories/"
-                      failonerror="true" overwrite="false" verbose="true">
+                      failonerror="false" overwrite="false" verbose="true">
                     <fileset dir="${install.src}/rxconfig/Categories/" defaultexcludes="no">
                         <include name="**/*"/>
                     </fileset>
@@ -293,7 +293,7 @@
             <then>
                 <mkdir dir="${install.dir}/rxconfig/Proxy" />
                 <copy todir="${install.dir}/rxconfig/Proxy/"
-                      failonerror="true" overwrite="false" verbose="true">
+                      failonerror="false" overwrite="false" verbose="true">
                     <fileset dir="${install.src}/rxconfig/Proxy/" defaultexcludes="no">
                         <include name="**/*"/>
                     </fileset>
@@ -310,7 +310,7 @@
             <then>
                 <mkdir dir="${install.dir}/rxconfig/Plugins" />
                 <copy todir="${install.dir}/rxconfig/Plugins/"
-                      failonerror="true" overwrite="false" verbose="true">
+                      failonerror="false" overwrite="false" verbose="true">
                     <fileset dir="${install.src}/rxconfig/Proxy/" defaultexcludes="no">
                         <include name="**/*"/>
                     </fileset>
@@ -328,7 +328,7 @@
             <then>
                 <mkdir dir="${install.dir}/rxconfig/ContentEditors" />
                 <copy todir="${install.dir}/rxconfig/ContentEditors/"
-                      failonerror="true" overwrite="false" verbose="true">
+                      failonerror="false" overwrite="false" verbose="true">
                     <fileset dir="${install.src}/rxconfig/ContentEditors/" defaultexcludes="no">
                         <include name="**/*"/>
                     </fileset>
@@ -344,7 +344,7 @@
             <then>
                 <mkdir dir="${install.dir}/rxconfig/Data" />
                 <copy todir="${install.dir}/rxconfig/Data/"
-                      failonerror="true" overwrite="false" verbose="true">
+                      failonerror="false" overwrite="false" verbose="true">
                     <fileset dir="${install.src}/rxconfig/Data/" defaultexcludes="no">
                         <include name="**/*"/>
                     </fileset>
@@ -821,7 +821,7 @@
             </fileset>
         </copy>
 
-        <copy todir="${install.dir}/jetty/base/logs" failonerror="false" overwrite="false">
+       <copy todir="${install.dir}/jetty/base/logs" failonerror="false" overwrite="false">
             <fileset dir="${install.src}/jetty/base/webapps/Rhythmyx/WEB-INF/config/spring/projects" followsymlinks="false" includes="**">
                 <present present="srconly" targetdir="${install.dir}/jetty/base/webapps/Rhythmyx/WEB-INF/config/spring/projects"/>
             </fileset>
@@ -844,7 +844,6 @@
         <antcall target="zip_AppServer" inheritall="true" inheritrefs="true" />
 
         <echo>Updating rxrepository.properties</echo>
-        <touch mkdirs="true" file="${install.dir}/jetty/base/etc/perc-ds.xml"/>
         <chmod perm="ugo+rw" file="${install.dir}/jetty/base/etc/perc-ds.properties" />
         <touch mkdirs="true" file="${install.dir}/jetty/base/etc/perc-ds.properties"/>
 
@@ -865,24 +864,68 @@
 
         <echo>Remove DOCTYPE from perc-ds.xml..</echo>
         <if>
+            <available file="${install.dir}/jetty/base/etc/perc-ds.xml"/>
+            <then>
+                <if>
+                    <!--- if ugrading from 7.3.2, then this file will be there thus replace with new -->
+                    <resourcecontains resource="${install.dir}/jetty/base/etc/perc-ds.xml" substring="com.percussion.utils.container.jetty.PSJettyUtils" />
+                    <then>
+                        <echo>Replace perc-ds.xml with new version from source </echo>
+                        <copy file="${install.src}/jetty/base/etc/perc-ds.xml" tofile="${install.dir}/jetty/base/etc/perc-ds.xml" />
+                    </then>
+                    <else>
+                        <if>
+                            <resourcecontains resource="${install.dir}/jetty/base/etc/perc-ds.xml" substring="DOCTYPE Configure PUBLIC " />
+
+                            <then>
+                                <echo>Removing Doctype from ${install.dir}/jetty/base/etc/perc-ds.xml </echo>
+                                <replace file="${install.dir}/jetty/base/etc/perc-ds.xml" summary="yes">
+                                    <replacetoken><![CDATA[<!DOCTYPE Configure PUBLIC "-//Jetty//Configure//EN" "http://www.eclipse.org/jetty/configure_9_3.dtd">]]></replacetoken>
+                                    <replacevalue><![CDATA[]]></replacevalue>
+                                </replace>
+                            </then>
+                        </if>
+                    </else>
+                </if>
+            </then>
+        </if>
+        <if>
             <available file="${install.dir}/jetty/defaults/etc/perc-ds.xml"/>
             <then>
                 <if>
+                    <!--- if ugrading from 7.3.2, then this file will be there thus replace with new -->
+                    <resourcecontains resource="${install.dir}/jetty/defaults/etc/perc-ds.xml" substring="com.percussion.utils.container.jetty.PSJettyUtils" />
+                <then>
+                    <echo>Replace perc-ds.xml with new version from source </echo>
+                    <copy file="${install.src}/jetty/defaults/etc/perc-ds.xml" tofile="${install.dir}/jetty/defaults/etc/perc-ds.xml" />
+                </then>
+                <else>
+                    <if>
                     <resourcecontains resource="${install.dir}/jetty/defaults/etc/perc-ds.xml" substring="DOCTYPE Configure PUBLIC " />
 
-                    <then>
-                        <echo>Removing Doctype from ${install.dir}/jetty/defaults/etc/perc-ds.xml </echo>
-                        <replace file="${install.dir}/jetty/defaults/etc/perc-ds.xml" summary="yes">
-                            <replacetoken><![CDATA[<!DOCTYPE Configure PUBLIC "-//Jetty//Configure//EN" "http://www.eclipse.org/jetty/configure_9_3.dtd">]]></replacetoken>
-                            <replacevalue><![CDATA[]]></replacevalue>
-                        </replace>
-                    </then>
+                        <then>
+                            <echo>Removing Doctype from ${install.dir}/jetty/defaults/etc/perc-ds.xml </echo>
+                            <replace file="${install.dir}/jetty/defaults/etc/perc-ds.xml" summary="yes">
+                                <replacetoken><![CDATA[<!DOCTYPE Configure PUBLIC "-//Jetty//Configure//EN" "http://www.eclipse.org/jetty/configure_9_3.dtd">]]></replacetoken>
+                                <replacevalue><![CDATA[]]></replacevalue>
+                            </replace>
+                        </then>
+                    </if>
+                    </else>
                 </if>
             </then>
         </if>
         <if>
             <available file="${install.dir}/jetty/defaults/modules/perc-ds/etc/perc-ds.xml"/>
             <then>
+                <if>
+                    <!--- if ugrading from 7.3.2, then this file will be there thus replace with new -->
+                    <resourcecontains resource="${install.dir}/jetty/defaults/modules/perc-ds/etc/perc-ds.xml" substring="com.percussion.utils.container.jetty.PSJettyUtils" />
+                <then>
+                    <echo>Replace perc-ds.xml with new version from source </echo>
+                    <copy file="${install.src}/jetty/defaults/modules/perc-ds/etc/perc-ds.xml" tofile="${install.dir}/jetty/defaults/modules/perc-ds/etc/perc-ds.xml" />
+                </then>
+                <else>
                 <if>
                     <resourcecontains resource="${install.dir}/jetty/defaults/modules/perc-ds/etc/perc-ds.xml" substring="!DOCTYPE Configure" />
                     <then>
@@ -893,6 +936,8 @@
                             <replacevalue><![CDATA[]]></replacevalue>
                         </replace>
                     </then>
+                </if>
+                </else>
                 </if>
             </then>
         </if>
