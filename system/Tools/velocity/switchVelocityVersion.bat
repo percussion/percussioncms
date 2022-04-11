@@ -223,7 +223,6 @@ echo Removing Velocity 2.0-patched libraries...
 	echo Deploying Velocity 1.6.2 libraries...	
 	copy /Y 1.6.2\*.jar ..\..\jetty\base\webapps\Rhythmyx\WEB-INF\lib\
     xcopy /Y /R /S 1.6.2\classes ..\..\jetty\base\webapps\Rhythmyx\WEB-INF\classes\
-	copy /Y 1.6.2\config\tools.xml ..\..\AppServer\server\rx\deploy\rxapp.ear\rxapp.war\WEB-INF\config\velocity\
 	copy /Y 1.6.2\config\tools.xml ..\..\jetty\base\webapps\Rhythmyx\WEB-INF\config\velocity\
 	copy /Y 1.6.2\config\velocity-precompile.properties ..\..\rxconfig\Server\
 
