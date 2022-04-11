@@ -281,7 +281,16 @@ $.perc = {};
         //        '#' (used by HTML anchors),
         //        ';' (used to append jsessionid to URL)
         //        '%' (used to URL encoding/escape)
-        URL: function(txt){if(typeof txt === 'undefined' || txt === null){return txt;} return txt.replace( /[ ]/g, '-' ).replace( /[\\\/\:\*\?\"<\>\|\#\;\%\']/gu, '' );},
+        URL: function(txt){
+            if(typeof txt === 'undefined' || txt === null){
+                return txt;
+            }
+            txt =  txt.replace(' ','-').replace( /(?![\p{L}\p{N}._\-~])./gu, '-' ).toLowerCase();
+            while(txt.indexOf("--")>0){
+                txt = txt.replace("--","-");
+            }
+            return txt;
+        },
 
         // This filter used for site name (or hostname).
         // The allowed characters are: alpha-numeric, '-' and '.'
@@ -353,8 +362,16 @@ $.perc = {};
         // This auto-fill filter used for page & asset name entries.
         // It only allowes: alpha-numeric and '-'.
         // It auto converts ' ' or '_' to '-'
-        URL: function(txt){if(typeof txt === 'undefined' || txt === null){return txt;} return txt.replace( /[ \_]/g, '-' )
-            .replace( /[^a-zA-Z0-9\-\_]/g, '' ).replace(/[-]+/g, '-').toLowerCase();},
+        URL: function(txt){
+            if(typeof txt === 'undefined' || txt === null){
+                return txt;
+            }
+            txt =  txt.replace(' ','-').replace( /(?![\p{L}\p{N}._\-~])./gu, '-' ).toLowerCase();
+            while(txt.indexOf("--")>0){
+                txt = txt.replace("--","-");
+            }
+            return txt;
+        },
 
         // This filter allows only characters which are valid in name and/or id attributes.
         // Note: This filter does NOT force starting alpha, which IS a requirement of the W3C spec.
