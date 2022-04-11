@@ -213,6 +213,7 @@ public class PSRuntimeEditionNode extends PSLogNode
       else
          return "" + PSPublishingStatusHelper.getJobCompletionPercent(status);
    }
+
    
    /**
     * @return get the edition, never <code>null</code>.
@@ -220,6 +221,14 @@ public class PSRuntimeEditionNode extends PSLogNode
    public IPSEdition getEdition()
    {
       return m_edition;
+   }
+
+   public String getEditionTypeName()
+   {
+      if(m_edition != null){
+         return m_edition.getName();
+      }
+      return null;
    }
    
    /**
