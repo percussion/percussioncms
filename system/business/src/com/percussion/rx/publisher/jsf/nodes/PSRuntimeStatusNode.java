@@ -191,6 +191,10 @@ public class PSRuntimeStatusNode extends PSNodeBase
          return isTerminated;
       }
 
+      public Boolean getIsTerminal(){
+         return this.getTerminated();
+      }
+
       public Boolean getIsTerminated(){
          return isTerminated;
       }
