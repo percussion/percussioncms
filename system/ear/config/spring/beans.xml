@@ -120,6 +120,7 @@ http://www.springframework.org/schema/context/spring-context.xsd">
             </list>
         </property>
     </bean>
+    <alias name="sys_amazons3DeliveryHandler" alias="sys_amazonS3DeliveryHandler"/>
     <bean id="sys_ftp"
           class="com.percussion.rx.delivery.impl.PSFtpDeliveryHandler">
         <!-- Properties that can be set here:
