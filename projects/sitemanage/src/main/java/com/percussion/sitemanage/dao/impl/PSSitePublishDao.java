@@ -1080,7 +1080,7 @@ public class PSSitePublishDao implements com.percussion.sitemanage.dao.IPSSitePu
             workflowTask.setEditionId(edtnGuid);
             workflowTask.setParam("state", PSSitePublishDaoHelper.PENDING_WORKFLOW_STATE);
             workflowTask.setParam("trigger", PSSitePublishDaoHelper.LIVE_WORKFLOW_TRANSITION);
-            workflowTask.setSequence(1);
+            workflowTask.setSequence(2);
             workflowTask.setExtensionName(PSSitePublishDaoHelper.WF_EDITION_TASK_EXT_NAME);        
             publishWs.saveEditionTask(workflowTask);
         }
@@ -1248,7 +1248,7 @@ public class PSSitePublishDao implements com.percussion.sitemanage.dao.IPSSitePu
                 IPSEditionTaskDef stagingPostEdTask = publishWs.createEditionTask();
                 stagingPostEdTask.setContinueOnFailure(false);
                 stagingPostEdTask.setEditionId(editionGuid);
-                stagingPostEdTask.setSequence(1);
+                stagingPostEdTask.setSequence(3);
                 stagingPostEdTask.setExtensionName(PSSitePublishDaoHelper.STAGING_EDITION_TASK_EXT_NAME);
                 publishWs.saveEditionTask(stagingPostEdTask);
             }
@@ -1262,7 +1262,7 @@ public class PSSitePublishDao implements com.percussion.sitemanage.dao.IPSSitePu
                 workflowTask.setEditionId(editionGuid);
                 workflowTask.setParam("state", PSSitePublishDaoHelper.PENDING_WORKFLOW_STATE);
                 workflowTask.setParam("trigger", PSSitePublishDaoHelper.LIVE_WORKFLOW_TRANSITION);
-                workflowTask.setSequence(1);
+                workflowTask.setSequence(2);
                 workflowTask.setExtensionName(PSSitePublishDaoHelper.WF_EDITION_TASK_EXT_NAME);
                 publishWs.saveEditionTask(workflowTask);
             }
@@ -1287,7 +1287,7 @@ public class PSSitePublishDao implements com.percussion.sitemanage.dao.IPSSitePu
                //Do nothing
             }
             preTask.setParam("region", pubServer.getPropertyValue(IPSPubServerDao.PUBLISH_EC2_REGION, (defaultRegion != null? defaultRegion.getName():"")));
-            preTask.setSequence(0);
+            preTask.setSequence(1);
             preTask.setExtensionName(PSSitePublishDaoHelper.AMAZONS3_EDITION_TASK_EXT_NAME);
             publishWs.saveEditionTask(preTask);
         }
@@ -1300,7 +1300,7 @@ public class PSSitePublishDao implements com.percussion.sitemanage.dao.IPSSitePu
             preTask.setContinueOnFailure(false);
             preTask.setEditionId(editionGuid);
             preTask.setParam("ant_file", "copy-resources.xml");
-            preTask.setSequence(0);
+            preTask.setSequence(1);
             preTask.setExtensionName(PSSitePublishDaoHelper.EDITION_TASK_EXT_NAME);
             publishWs.saveEditionTask(preTask);
         }
@@ -1315,7 +1315,7 @@ public class PSSitePublishDao implements com.percussion.sitemanage.dao.IPSSitePu
             workflowTask.setEditionId(editionGuid);
             workflowTask.setParam("state", PSSitePublishDaoHelper.PENDING_WORKFLOW_STATE);
             workflowTask.setParam("trigger", PSSitePublishDaoHelper.LIVE_WORKFLOW_TRANSITION);
-            workflowTask.setSequence(1);
+            workflowTask.setSequence(2);
             workflowTask.setExtensionName(PSSitePublishDaoHelper.WF_EDITION_TASK_EXT_NAME);
             publishWs.saveEditionTask(workflowTask);
         }
@@ -1328,7 +1328,7 @@ public class PSSitePublishDao implements com.percussion.sitemanage.dao.IPSSitePu
             IPSEditionTaskDef stagingPostEdTask = publishWs.createEditionTask();
             stagingPostEdTask.setContinueOnFailure(false);
             stagingPostEdTask.setEditionId(editionGuid);
-            stagingPostEdTask.setSequence(1);
+            stagingPostEdTask.setSequence(3);
             stagingPostEdTask.setExtensionName(PSSitePublishDaoHelper.STAGING_EDITION_TASK_EXT_NAME);
             publishWs.saveEditionTask(stagingPostEdTask);
         }
@@ -1348,8 +1348,8 @@ public class PSSitePublishDao implements com.percussion.sitemanage.dao.IPSSitePu
             IPSEditionTaskDef pushFeedsTask = publishWs.createEditionTask();
             pushFeedsTask.setContinueOnFailure(false);
             pushFeedsTask.setEditionId(editionGuid);
-            pushFeedsTask.setSequence(2);
-            pushFeedsTask.setExtensionName("Java/global/percussion/task/perc_PushFeedDescriptorTask");
+            pushFeedsTask.setSequence(4);
+            pushFeedsTask.setExtensionName(PSSitePublishDaoHelper.FEEDS_EDITION_TASK_EXT_NAME);
             publishWs.saveEditionTask(pushFeedsTask);
 
         }
