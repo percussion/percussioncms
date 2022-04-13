@@ -504,3 +504,32 @@ a:hover.rx-tab-link-off
         border-right: 1px solid rgb(219, 223, 230);
    background-color: #ffffff;
 }
+.perc-button {
+	background-color: #4a65a2;
+    border: 1px;
+	border-radius: 15px 0px 0px 0px;
+    color: white !important;
+    padding: 5px 5px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 11px;
+    margin-left: -3px;
+	 margin-bottom: 2px;
+    cursor: pointer;
+}
+
+.perc-button:hover {
+	background-color: #4a65a2;
+    border: 1px;
+	border-radius: 15px 0px 0px 0px;
+    color: white !important;
+    padding: 5px 5px;
+    text-align: center;
+    text-decoration: underline;
+    display: inline-block;
+    font-size: 11px;
+    margin-left: -3px;
+	 margin-bottom: 2px;
+    cursor: pointer;
+}
