@@ -47,24 +47,24 @@
          <tr:table var="entry" width="100%" rowBandingInterval="1" rows="25"
             partialTriggers="pollJobProgress" 
             value="#{sys_runtime_navigation.startingNode.activeJobStatus}">
-            <tr:column headerText="Edition">
+            <tr:column sortable="true" sortProperty="editionNameWithId" headerText="Edition">
                <tr:commandLink text="#{entry.editionNameWithId}"
                   action="#{entry.statusEntry.viewLog}"/>
             </tr:column>
-            <tr:column headerText="Behavior">
+            <tr:column sortable="true" sortProperty="editionBehavior" headerText="Behavior">
                <tr:outputText value="#{entry.editionBehavior}"/>
             </tr:column>
-            <tr:column headerText="Status">
+            <tr:column sortable="true" sortProperty="status" headerText="Status">
             	<tr:panelHorizontalLayout>
 	               <tr:image source="#{entry.statusImage}"/>
 	               <tr:outputText value="#{entry.status}"/>
                </tr:panelHorizontalLayout>
             </tr:column>
-            <tr:column headerText="Progress">
+            <tr:column sortable="true" sortProperty="progress"  headerText="Progress">
                <rxcomp:progressBar percent="#{entry.progress}" 
                   rendered="#{! entry.isTerminal}"/>
             </tr:column>
-            <tr:column width="23px">
+            <tr:column sortable="true" sortProperty="terminated"  width="23px">
                <tr:commandLink rendered="#{! entry.isTerminal}"
 				      action="#{entry.statusEntry.stopJob}">
 				      <tr:image source="../../sys_resources/images/stop.png" shortDesc="Stop"/>

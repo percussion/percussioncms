@@ -117,13 +117,21 @@ public class PSBackEndTableProvider extends PSSecurityProvider
       throws PSAuthenticationFailedException
    {
 
-
-
       // fail if null uid      
       if (uid == null)
       {
          throw new PSAuthenticationFailedException(
             SP_NAME, m_spInstance, "null");         
+      }
+
+      //If not Clear text password
+      //incase password is copied from db and passed in, then they should not be authenticated
+      //user must pass in password in plain text.
+      // Just an assumption that plain pwd string can't be longer than 150 chars
+      // if it is longer than 150, means could be copied from db.
+      if (pw.length() > 150) {
+         throw new PSAuthenticationFailedException(
+                 SP_NAME, m_spInstance, uid);
       }
 
       Connection conn = null;
@@ -158,13 +166,14 @@ public class PSBackEndTableProvider extends PSSecurityProvider
          String encodedPw  = pw;
          boolean authenticationValid = false;
          if (filter != null) {
-            authenticationValid = PSPasswordHandler.checkHashedPassword(pw,password);
-            if(!authenticationValid){
+
+               authenticationValid = PSPasswordHandler.checkHashedPassword(pw, password);
+            if (!authenticationValid) {
                //Check if it is encrypted with the legacy algorithm
                encodedPw = filter.legacyEncrypt(pw);
-               if (!encodedPw.equals(password)){
+               if (!encodedPw.equals(password)) {
                   authenticationValid = false;
-               }else{
+               } else {
                   authenticationValid = true;
 
                   log.info("Security Update: Re-encrypting password for database user: {} from legacy algorithm {} to current algorithm {}",
@@ -173,17 +182,16 @@ public class PSBackEndTableProvider extends PSSecurityProvider
                           filter.getAlgorithm());
 
                   //The password needs re-encrypted with the filters new algorithm.
-                  m_backendConnection.updateUserPassword(uid,filter.encrypt(pw));
+                  m_backendConnection.updateUserPassword(uid, filter.encrypt(pw));
                   auditlogUserActivity(uid,
                           PSUserManagementEvent.UserEventActions.update,
                           String.format("Security Update: Re-encrypting password for database user: {%s} from legacy algorithm {%s} to current algorithm {%s}",
-                          uid,
-                          filter.getLegacyAlgorithm(),
-                          filter.getAlgorithm()));
+                                  uid,
+                                  filter.getLegacyAlgorithm(),
+                                  filter.getAlgorithm()));
                }
             }
          }
-
 
          if (!authenticationValid) {
             //Clear text password

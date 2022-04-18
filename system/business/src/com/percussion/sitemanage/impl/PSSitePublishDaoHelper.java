@@ -377,7 +377,7 @@ public class PSSitePublishDaoHelper
           preTask.setContinueOnFailure(false);
           preTask.setEditionId(edtnGuid);
           preTask.setParam("ant_file", "copy-resources.xml");
-          preTask.setSequence(0);
+          preTask.setSequence(1);
           preTask.setExtensionName(EDITION_TASK_EXT_NAME);
           pubWs.saveEditionTask(preTask);
           
@@ -393,7 +393,7 @@ public class PSSitePublishDaoHelper
            workflowTask.setEditionId(edtnGuid);
            workflowTask.setParam("state", PENDING_WORKFLOW_STATE);
            workflowTask.setParam("trigger", LIVE_WORKFLOW_TRANSITION);
-           workflowTask.setSequence(1);
+           workflowTask.setSequence(2);
            workflowTask.setExtensionName(WF_EDITION_TASK_EXT_NAME);
            pubWs.saveEditionTask(workflowTask);
        }
@@ -405,7 +405,7 @@ public class PSSitePublishDaoHelper
            IPSEditionTaskDef stagingPostEdTask = pubWs.createEditionTask();
            stagingPostEdTask.setContinueOnFailure(false);
            stagingPostEdTask.setEditionId(edtnGuid);
-           stagingPostEdTask.setSequence(1);
+           stagingPostEdTask.setSequence(3);
            stagingPostEdTask.setExtensionName(STAGING_EDITION_TASK_EXT_NAME);
            pubWs.saveEditionTask(stagingPostEdTask);
        }
@@ -418,8 +418,8 @@ public class PSSitePublishDaoHelper
            IPSEditionTaskDef pushFeedsTask = pubWs.createEditionTask();
            pushFeedsTask.setContinueOnFailure(false);
            pushFeedsTask.setEditionId(edtnGuid);
-           pushFeedsTask.setSequence(2);
-           pushFeedsTask.setExtensionName("Java/global/percussion/task/perc_PushFeedDescriptorTask");
+           pushFeedsTask.setSequence(4);
+           pushFeedsTask.setExtensionName(PSSitePublishDaoHelper.FEEDS_EDITION_TASK_EXT_NAME);
            pubWs.saveEditionTask(pushFeedsTask);
        }
 
@@ -428,7 +428,7 @@ public class PSSitePublishDaoHelper
            sitemapTask.setContinueOnFailure(true);
            sitemapTask.setEditionId(edtnGuid);
            sitemapTask.setSequence(0);
-           sitemapTask.setExtensionName("Java/global/percussion/task/perc_SitemapGeneratorTask");
+           sitemapTask.setExtensionName(PSSitePublishDaoHelper.SITE_GENERATOR_EDITION_TASK_EXT_NAME);
            pubWs.saveEditionTask(sitemapTask);
        }
        
@@ -518,6 +518,8 @@ public class PSSitePublishDaoHelper
    public static String AMAZONS3_EDITION_TASK_EXT_NAME = "Java/global/percussion/task/perc_AmazonS3EditionTask";
    public static String WF_EDITION_TASK_EXT_NAME = "Java/global/percussion/task/perc_WorkflowEditionTask";
    public static String STAGING_EDITION_TASK_EXT_NAME = "Java/global/percussion/task/perc_StagingPostEditionTask";
+   public static String FEEDS_EDITION_TASK_EXT_NAME = "Java/global/percussion/task/perc_PushFeedDescriptorTask";
+   public static String SITE_GENERATOR_EDITION_TASK_EXT_NAME = "Java/global/percussion/task/perc_SitemapGeneratorTask";
    public static final String LIVE_WORKFLOW_TRANSITION = "forcetolive";
    public static final String PENDING_WORKFLOW_STATE = "Pending";
    public static final String CONTENT_LIST_TEMPLATE_EXPANDER = "Java/global/percussion/system/perc_ResourceTemplateExpander";
