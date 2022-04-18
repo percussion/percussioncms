@@ -151,10 +151,11 @@ function getBaseConfig(parameters) {
             "table_sizing_mode": "relative",
             "external_plugins": {
                 'codemirror': '/sys_resources/tinymce/plugins/codemirror/plugin.js',
-                'percadvimage': '/sys_resources/tinymce/plugins/percadvimage/plugin.js',
+                //   'percadvimage': '/sys_resources/tinymce/plugins/percadvimage/plugin.js',
                 'percadvlink': '/sys_resources/tinymce/plugins/percadvlink/plugin.js',
-                'percglobalvariables': '/sys_resources/tinymce/plugins/percglobalvariables/plugin.js',
-                'percmorelink': '/sys_resources/tinymce/plugins/percmorelink/plugin.js',
+                //    'percglobalvariables': '/sys_resources/tinymce/plugins/percglobalvariables/plugin.js',
+                //    'percmorelink': '/sys_resources/tinymce/plugins/percmorelink/plugin.js',
+
             },
             "codemirror": {
                 "indentOnInit": true, // Whether or not to indent code on init.
@@ -171,7 +172,65 @@ function getBaseConfig(parameters) {
             "style_formats": styleFormats,
             "autosave_restore_when_empty": true,
             "init_instance_callback": "percTinyMceInitialized",
-            "file_picker_callback": $.noop,
+            "file_picker_callback": function(callback, value, meta) {
+                var mainEditor = window.parent;
+                var topFrJQ = mainEditor.jQuery;
+                // Provide file and text for the link dialog
+                if (meta.filetype == 'file') {
+                    var pathSelectionOptions = {
+                        okCallback: function (pathItem, callback)
+                        {
+                            var mainEditor = window.parent;
+                            var topFrJQ = mainEditor.jQuery;
+
+                            //Save the path to cookie
+                            topFrJQ.cookie('perc-inlinelink-path', pathItem.path);
+                            topFrJQ.PercPathService.getInlineRenderLink(pathItem.id, function(status, data){
+                                if(!status)
+                                {
+                                    topFrJQ.perc_utils.info(data);
+                                    topFrJQ.perc_utils.alert_dialog({"title":I18N.message("perc.ui.widget.tincymce@Error"), "content":I18N.message("perc.ui.widget.tinymce@Could not get item details")});
+                                    return;
+                                }
+                                var renderLink = data.InlineRenderLink;
+                                var cm1LinkData = {};
+                                cm1LinkData.sys_dependentvariantid = renderLink.sys_dependentvariantid;
+                                cm1LinkData.stateClass = renderLink.stateClass;
+                                cm1LinkData.rxinlineslot = '103';
+                                cm1LinkData.sys_dependentid = renderLink.sys_dependentid;
+                                cm1LinkData.inlinetype = 'rxhyperlink';
+                                cm1LinkData.jcrPath = pathItem.path;
+                                cm1LinkData.pathItem = pathItem;
+                                if(typeof callback === "function") {
+                                    callback(renderLink.url, renderLink.title);
+                                }
+                            });
+
+                        },
+                        dialogTitle: I18N.message("perc.ui.widget.tinymce@Please select"),
+                        rootPath:topFrJQ.PercFinderTreeConstants.ROOT_PATH_ALL,
+                        initialPath: topFrJQ.cookie('perc-inlinelink-path'),
+                        selectedItemValidator: function(pathItem){
+                            return pathItem && (pathItem.type === 'percPage' || pathItem.type === 'percImageAsset' || pathItem.type === 'percFileAsset')?null:'Please select a page, file, or an image';
+                        },
+                        acceptableTypes:'percPage,percImageAsset,percFileAsset,site,Folder'
+                    };
+
+                    topFrJQ.PercPathSelectionDialog.open(pathSelectionOptions,callback);
+
+
+                }
+
+                // Provide image and alt text for the image dialog
+                if (meta.filetype == 'image') {
+                    callback('myimage.jpg', {alt: 'My alt text'});
+                }
+
+                // Provide alternative source and posted for the media dialog
+                if (meta.filetype == 'media') {
+                    callback('movie.mp4', {source2: 'alt.ogg', poster: 'image.jpg'});
+                }
+            },
             "convert_urls" : false,
             "toolbar": "newdocument undo redo restoredraft | cut copy paste searchreplace | styleselect fontselect fontsizeselect forecolor backcolor removeformat | bold italic underline strikethrough superscript subscript | alignleft aligncenter alignright alignjustify alignnone |  bullist numlist outdent indent | link unlink openlink media | visualchars visualblocks fullscreen print preview | anchor charmap hr emoticons insertdatetime | table tabledelete tableinsertrowafter tabledeleterow tableinsertcolbefore tabledeletecol tablesplitcells tablemergecells | rxinlinelink rxinlinetemplate rxinlineimage rxinserthtml | ltr rtl codesample code"
         }, options);
