@@ -555,6 +555,13 @@ function refreshCxApplet()
 	
 }
 
+function clickInsertButton(){
+    if(submitButton != null && submitButton != undefined)
+    {
+        submitButton.trigger('click');
+    }
+}
+
 // Inhibits multiple submits from occuring and disables submit
 // changing the value to 'Please Wait...'. If close button is
 //pressed then simply returns true.
@@ -584,7 +591,7 @@ function addEvent( obj, type, fn ) {
 
 	else if (obj.attachEvent) {
 		obj["e"+type+fn] = fn;
-		obj[type+fn] = function() { obj["e"+type+fn]( window.event ); }
+		obj[type+fn] = function() { obj["e"+type+fn]( window.event ); };
 		obj.attachEvent( "on"+type, obj[type+fn] );
 		EventCache.add(obj, type, fn);
 	}
@@ -606,15 +613,15 @@ var EventCache = function(){
 				item = listEvents[i];
 				if(item[0].removeEventListener){
 					item[0].removeEventListener(item[1], item[2], item[3]);
-				};
+				}
 				if(item[1].substring(0, 2) != "on"){
 					item[1] = "on" + item[1];
-				};
+				}
 				if(item[0].detachEvent){
 					item[0].detachEvent(item[1], item[2]);
-				};
+				}
 				item[0][item[1]] = null;
-			};
+			}
 		}
 	};
 }();

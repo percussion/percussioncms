@@ -97,6 +97,7 @@ version: 2.6.0
                     return val / 100;
                 case 'float': // fix reserved word
                     property = 'styleFloat'; // fall through
+                    break;
                 default: 
                     // test currentStyle before touching
                     var value = el.currentStyle ? el.currentStyle[property] : null;
@@ -121,6 +122,7 @@ version: 2.6.0
                     break;
                 case 'float':
                     property = 'styleFloat';
+                    break;
                 default:
                 el.style[property] = val;
             }
@@ -1051,7 +1053,7 @@ version: 2.6.0
                 return pos;
             };
         }
-    }() // NOTE: Executing for loadtime branching
+    }(); // NOTE: Executing for loadtime branching
 })();
 /**
  * A region is a representation of an object on a grid.  It is defined

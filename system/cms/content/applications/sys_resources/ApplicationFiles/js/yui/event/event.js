@@ -258,7 +258,7 @@ throw new Error("Invalid callback for subscriber to '" + this.type + "'");
         if (rebuild) {
             var newlist=[],subs=this.subscribers;
             for (i=0,len=subs.length; i<len; ++i) {
-                s = subs[i];
+                let s = subs[i];
                 newlist.push(subs[i]);
             }
 
@@ -1054,7 +1054,7 @@ if (!YAHOO.util.Event) {
                     var llist = legacyHandlers[legacyIndex];
                     if (llist) {
                         for (i=0, len=llist.length; i<len; ++i) {
-                            li = llist[i];
+                            let li = llist[i];
                             if (li && 
                                 li[this.EL] == el && 
                                 li[this.TYPE] == sType && 
@@ -1579,7 +1579,7 @@ if (!YAHOO.util.Event) {
                 }
 
                 if (recurse && el && el.childNodes) {
-                    for (i=0,len=el.childNodes.length; i<len ; ++i) {
+                    for (let i=0,len=el.childNodes.length; i<len ; ++i) {
                         this.purgeElement(el.childNodes[i], recurse, sType);
                     }
                 }
@@ -1976,6 +1976,7 @@ YAHOO.util.EventProvider.prototype = {
     unsubscribe: function(p_type, p_fn, p_obj) {
         this.__yui_events = this.__yui_events || {};
         var evts = this.__yui_events;
+        var ret;
         if (p_type) {
             var ce = evts[p_type];
             if (ce) {
@@ -1983,7 +1984,7 @@ YAHOO.util.EventProvider.prototype = {
             }
         } else {
             for (var i in evts) {
-                var ret = true;
+                ret = true;
                 if (YAHOO.lang.hasOwnProperty(evts, i)) {
                     ret = ret && evts[i].unsubscribe(p_fn, p_obj);
                 }
