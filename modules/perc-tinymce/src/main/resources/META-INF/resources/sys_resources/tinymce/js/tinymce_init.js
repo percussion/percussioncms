@@ -181,35 +181,9 @@ function getBaseConfig(parameters) {
                 var parentDialog = jQuery('[type=\'url\']').find(meta.fieldName);
                 // Provide file and text for the link dialog
                 if (meta.filetype == 'file') {
-                    var filePathSelectionOptions = {
-                        onSubmit: function (pathItem, callback)
-                        {
-                            var mainEditor = window.parent;
-                            var topFrJQ = mainEditor.jQuery;
-
-                            //Save the path to cookie
-                            topFrJQ.cookie('perc-inlinelink-path', pathItem.path);
-                            topFrJQ.PercPathService.getInlineRenderLink(pathItem.id, function(status, data){
-                                if(!status)
-                                {
-                                    topFrJQ.perc_utils.info(data);
-                                    topFrJQ.perc_utils.alert_dialog({"title":I18N.message("perc.ui.widget.tincymce@Error"), "content":I18N.message("perc.ui.widget.tinymce@Could not get item details")});
-                                    return;
-                                }
-                                var renderLink = data.InlineRenderLink;
-                                var cm1LinkData = {};
-                                cm1LinkData.sys_dependentvariantid = renderLink.sys_dependentvariantid;
-                                cm1LinkData.stateClass = renderLink.stateClass;
-                                cm1LinkData.rxinlineslot = '103';
-                                cm1LinkData.sys_dependentid = renderLink.sys_dependentid;
-                                cm1LinkData.inlinetype = 'rxhyperlink';
-                                cm1LinkData.jcrPath = pathItem.path;
-                                cm1LinkData.pathItem = pathItem;
-                                if(typeof callback === "function") {
-                                    callback(renderLink.url, renderLink.title);
-                                }
-                            });
-
+                    var pathSelectionOptions = {
+                        okCallback: function(selectedItem){
+							  tinymce.execCommand('updateFileSelection',false,selectedItem);
                         },
                         dialogTitle: I18N.message("perc.ui.widget.tinymce@Please select"),
                         rootPath:topFrJQ.PercFinderTreeConstants.ROOT_PATH_ALL,
@@ -220,7 +194,7 @@ function getBaseConfig(parameters) {
                         acceptableTypes:'percPage,percImageAsset,percFileAsset,site,Folder'
                     };
 
-                    filePickerDialog = topFrJQ.PercPathSelectionDialog.open(filePathSelectionOptions,callback);
+                    filePickerDialog = topFrJQ.PercPathSelectionDialog.open(pathSelectionOptions,callback);
 
 
                 }
@@ -231,11 +205,10 @@ function getBaseConfig(parameters) {
                     var openCreateImageDialog = function(successCallback, cancelCallback) {
                         $.topFrameJQuery.PercCreateNewAssetDialog('percImage', successCallback, cancelCallback);
                     };
-                    var validator;
-                    validator = function (pathItem) {
+					var validator = function (pathItem) {
                         return pathItem && pathItem.type === 'percImageAsset' ? null : 'Please select an image.';
                     };
-                    var pathSelectionOptions = {
+                    var pathSelectionOptions2 = {
                         okCallback: function(selectedItem){
                             tinymce.execCommand('updateFileSelection',false,selectedItem);
                         },
@@ -246,7 +219,7 @@ function getBaseConfig(parameters) {
                         acceptableTypes:'percImageAsset,site,Folder',
                         createNew:{'label':'Upload', 'iconclass':'icon-upload-alt', 'onAction':openCreateImageDialog}
                     };
-                    imagePickerDialog = topFrJQ.PercPathSelectionDialog.open(pathSelectionOptions);
+                    imagePickerDialog = topFrJQ.PercPathSelectionDialog.open(pathSelectionOptions2);
                 }
 
             },

@@ -14,7 +14,7 @@ tinymce.PluginManager.add('percadvimage', function(editor, url) {
         function buildImageList() {
             var linkImageItems = [{text: 'None', value: ''}];
 
-            tinymce.each(editor.settings.image_list, function(link) {
+            tinymce.each(editor.settings.image_list, function (link) {
                 linkImageItems.push({
                     text: link.text || link.title,
                     value: link.value || link.url,
@@ -26,7 +26,7 @@ tinymce.PluginManager.add('percadvimage', function(editor, url) {
         }
 
         function setReadWriteMode(e) {
-            var url = formData.src[0].state.data.value;
+            var url = formData.src;
             var description = formData.alt;
             var title = formData.title;
             var datadescriptionoverride = formData.isDataDescriptionOverride;
@@ -42,29 +42,27 @@ tinymce.PluginManager.add('percadvimage', function(editor, url) {
             // isDataDescriptionOverride was not ever used prior to current patch 1/24/2018
             // so we can use these attributes to detect if they are upgrading
             if (imgElm && !cm1LinkData.title) {
-                if(!imgElm.getAttribute('data-description-override') || !imgElm.getAttribute('data-title-override')){
+                if (!imgElm.getAttribute('data-description-override') || !imgElm.getAttribute('data-title-override')) {
                     isUpgradeScenario = true;
                 }
                 getImageData('16777215-101-' + sys_dependentid, true);
             }
 
             //If it is an external url, we want to be able to write to it.
-            if(url.startsWith('http')) {
-                description.removeClass('disabled');
-                title.removeClass('disabled');
-                description.disabled(false);
-                title.disabled(false);
-            }
-            else {
+            if (url.startsWith('http')) {
+                win.enable('description');
+                win.enable('title');
+            } else {
                 updateDecorativeImage(null);
-                if(!dataconstrain) {
-                    width.disabled(true);
-                    height.disabled(true);
+                if (!dataconstrain) {
+                    win.disable('dimensions');
                 }
             }
         }
+
+
         function updateDecorativeImage(e) {
-            var url = formData.src[0].state.data.value;
+            var url = formData.src;
             var datadecorativeoverride = formData.isDataDecorativeOverride;
             var description = formData.alt;
             var title = formData.title;
@@ -72,26 +70,22 @@ tinymce.PluginManager.add('percadvimage', function(editor, url) {
             var descriptionOverride = formData.isDataDescriptionOverride;
             //If it is an external url, we want to be able to write to it.
             if(url.startsWith('http')) {
-                description.removeClass('disabled');
-                title.removeClass('disabled');
-                description.disabled(false);
-                title.disabled(false);
+                win.enable('description');
+                win.enable('title');
             }
             else {
                 if(datadecorativeoverride){
-                    description.disabled(true);
-                    description.addClass('disabled');
-                    title.addClass('disabled');
-                    title.disabled(true);
+                    win.disable('description');
+                    win.disable('title');
                     formData.alt= '';
                     formData.title='';
                     formData.isDataTitleOverride =false;
-                    //@todo :titleOverride[0].disabled(true);
+                    win.disable('isDataTitleOverride');
                     formData.isDescriptionOverride = false;
-                    //@todo descriptionOverride[0].disabled(true);
+                    win.disable('isDescriptionOverride');
                 }else {
-                    //@todo titleOverride[0].disabled(false);
-                    //@todo descriptionOverride[0].disabled(false);
+                    win.enable('isDescriptionOverride');
+                    win.enable('isDataTitleOverride');
                 }
                 if (e !== null) {
                     setReadWriteModeAlt(null);
@@ -101,32 +95,30 @@ tinymce.PluginManager.add('percadvimage', function(editor, url) {
             }
         }
 
+
+
         function setReadWriteModeAlt(e) {
-            var url = formData.src[0].state.data.value;
+            var url = formData.src;
             var description = formData.alt;
             var title = formData.title;
             var sys_dependentid = cm1LinkData.sys_dependentid;
             var datadescriptionoverride = formData.isDataDescriptionOverride;
-            var datapreviousaltoverride = formData.data-previous-alt-override;
+            var datapreviousaltoverride = formData.dataPreviousAltOverride;
 
             //If it is an external url, we want to be able to write to it.
             if(url.startsWith('http')) {
-                description.removeClass('disabled');
-                title.removeClass('disabled');
-                description.disabled(false);
-                title.disabled(false);
+                win.enable('description');
+                win.enable('title');
             }
             else {
-                if(!datadescriptionoverride.checked()) {
-                    description.addClass('disabled');
-                    description.disabled(true);
+                if(formData.isDataDescriptionOverride) {
+                    win.disable('description');
                     if(url !== '') {
                         getImageData('16777215-101-' + sys_dependentid, true);
                     }
                 }
                 else {
-                    description.removeClass('disabled');
-                    description.disabled(false);
+                    win.enable('description');
                     if(datapreviousaltoverride !== '') {
                         formData.alt= datapreviousaltoverride;
                     }
@@ -137,7 +129,7 @@ tinymce.PluginManager.add('percadvimage', function(editor, url) {
 
         function setReadWriteModeTitle(e) {
             var title = formData.title;
-            var url = formData.src[0].state.data.value;
+            var url = formData.src;
             var description = formData.alt;
             var sys_dependentid = cm1LinkData.sys_dependentid;
             var dataprevioustitleoverride = formData.dataPreviousAltOverride;
@@ -145,22 +137,18 @@ tinymce.PluginManager.add('percadvimage', function(editor, url) {
 
             //If it is an external url, we want to be able to write to it.
             if(url.startsWith('http')) {
-                description.removeClass('disabled');
-                title.removeClass('disabled');
-                description.disabled(false);
-                title.disabled(false);
+                win.enable('description');
+                win.enable('title');
             }
             else {
-                if(!datatitleoverride.checked()) {
-                    title.addClass('disabled');
-                    title.disabled(true);
+                if(!datatitleoverride) {
+                    win.disable('title');
                     if(url !== '') {
                         getImageData('16777215-101-' + sys_dependentid, true);
                     }
                 }
                 else {
-                    title.removeClass('disabled');
-                    title.disabled(false);
+                    win.enable('title');
                     if(dataprevioustitleoverride !== '') {
                         formData.title=dataprevioustitleoverride;
                     }
@@ -212,24 +200,23 @@ tinymce.PluginManager.add('percadvimage', function(editor, url) {
             widthCtrl = formData.dimensions.width;
             heightCtrl = formData.dimensions.height;
 
-            newWidth = widthCtrl.value();
-            newHeight = heightCtrl.value();
+            newWidth = widthCtrl;
+            newHeight = heightCtrl;
 
             if(typeof  proportion === 'undefined'){
                 proportion = 1;
             }
             if(e.control === widthCtrl && isNaN(newWidth)){
-                widthCtrl.value(width);
+                widthCtrl= width;
             }
             if(e.control === heightCtrl && isNaN(newHeight)){
-                heightCtrl.value(height);
+                heightCtrl = height;
             }
 
             if (formData.constrain){
                 if (newWidth && newHeight) {
 
-                    heightCtrl.disabled(false);
-                    widthCtrl.disabled(false);
+                    win.disable('dimensions');
 
                     if (e.control === widthCtrl) {
                         newHeight = Math.round(newWidth / proportion);
@@ -237,19 +224,18 @@ tinymce.PluginManager.add('percadvimage', function(editor, url) {
                             newHeight = 1;
                         }
 
-                        heightCtrl.value(newHeight);
+                        formData.dimensions.height = newHeight;
                     } else {
                         newWidth = Math.round(proportion * newHeight);
                         if (newWidth === 0) {
                             newWidth = 1;
                         }
-                        widthCtrl.value(newWidth);
+                        formData.dimensions.width = newWidth;
 
                     }
                 }
             }else{
-                heightCtrl.disabled(true);
-                widthCtrl.disabled(true);
+                win.enable('dimensions');
             }
             width = newWidth;
             height = newHeight;
@@ -341,16 +327,16 @@ tinymce.PluginManager.add('percadvimage', function(editor, url) {
                                     formData.alt=renderLink.altText;
                                 }
                             }
-                            descriptionOverride.checked(true);
-                            datadecorative.checked(false);
-                            datadecorative.disabled(true);
+                            formData.isDescriptionOverride = true;
+                            formData.isDataDecorativeOverride = false;
+                            win.disable(isDataDecorativeOverride);
                         }
                         else if(renderLink.altText) {
                             imgElm.setAttribute('data-description-override', false);
                         }
 
                         if((currenttitleoverride !== renderLink.title) && currenttitleoverride !== '') {
-                            titleOverride.checked(true);
+                            formData.isTitleOverride = true;
                             imgElm.setAttribute('data-title-override', true);
                             if(previoustitleoverride !== 'undefined' && previoustitleoverride === '' && currenttitleoverride !== 'undefined' && currenttitleoverride === '') {
                                 if(renderLink.title !== 'undefined') {
@@ -413,7 +399,7 @@ tinymce.PluginManager.add('percadvimage', function(editor, url) {
                     cm1LinkData.fullVarId = renderLink.sys_dependentvariantid;
 
                     if(cm1LinkData.thumbUrl === '') {
-                        //@todo: formData.dataImgtype').disabled(true);
+                        win.disable('dataImgtype');
                     }
 
                     setSrcAndSize();
@@ -477,18 +463,7 @@ tinymce.PluginManager.add('percadvimage', function(editor, url) {
                 items: [
                     {name: 'srcPath', type: 'urlinput', filetype: 'image', label: 'Source'},
                     {name: 'src', type: 'input', label: 'Source'},
-                    {name: 'isDataDecorativeOverride',type: 'checkbox', label: 'Decorative (WAI)', text: 'Decorative Image', onChange: updateDecorativeImage},
-                    {name: 'target', type: 'listbox', label: 'Image list',items: buildImageList(),
-                        onChange: function(e) {
-                            var altCtrl = formData.alt;
-
-                            if (!altCtrl.value() || (e.lastControl && altCtrl.value() === e.lastControl.text())) {
-                                altCtrl.value(e.control.text());
-                            }
-
-                            formData.src=e.control.value();
-                        }
-                    },
+                {name: 'isDataDecorativeOverride',type: 'checkbox', label: 'Decorative- Image (WAI)', text: 'Decorative Image', onChange: updateDecorativeImage},
                     {type: 'bar',label: 'Image description*',name: 'imageDesc',layout: 'flex',direction: 'row', align: 'center',spacing: 5,
                         items: [
                             {name: 'alt', type: 'input', label: 'Image description', size: 26, classes: 'perc-description', onChange: resetAriaBoxes},
@@ -563,32 +538,12 @@ tinymce.PluginManager.add('percadvimage', function(editor, url) {
                     }
                 }],
 
-            initialData: {
-                'isDataDecorativeOverride': formData.isDataDecorativeOverride,
-                'isDataDescriptionOverride': formData.isDataDescriptionOverride,
-                'isDataTitleOverride': false,
-                'constrain':formData.dataconstrain
-            },
+			initialData: formData,
 
-            onOpen:function(e) {
-                //initialize accessibility since tinymce currently doesn't allow it directly
-                $('.mce-perc-description').attr('aria-invalid','false');
-                $('.mce-perc-description').attr('aria-required','true');
-                $('.mce-perc-title').attr('aria-required','true');
-                $('.mce-perc-title').attr('aria-invalid','false');
-                $('.mce-perc-width').attr('aria-required','true');
-                $('.mce-perc-width').attr('aria-invalid','false');
-                $('.mce-perc-height').attr('aria-required','true');
-                $('.mce-perc-height').attr('aria-invalid','false');
-                setReadWriteMode(e);
-                setReadWriteModeAlt(null);
-                setReadWriteModeTitle(null);
-            },
+
             onSubmit: function(e) {
 
                 resetAriaBoxes();
-                var data = e.data;
-
                 formData.dataPreviousAltOverride = formData.isDataDescriptionOverride ? formData.alt : formData.dataPreviousAltOverride;
                 formData.dataPreviousTitleOverride = formData.isDataTitleOverride ? formData.title : formData.dataPreviousTitleOverride;
                 if(!formData.isDataDecorativeOverride) {
@@ -691,7 +646,7 @@ tinymce.PluginManager.add('percadvimage', function(editor, url) {
                     delete formData.datatitleoverride;
                     delete formData.datadecorativeoverride;
 
-                    jQuery.extend(data,cm1ImgAttrs);
+                    jQuery.extend(formData,cm1ImgAttrs);
                     if (imgElm) {
                         if (!imgElm.attributes.getNamedItem('style')) {
                         } else {
@@ -742,6 +697,8 @@ tinymce.PluginManager.add('percadvimage', function(editor, url) {
                     addImage();
                 }
 
+				win.close();
+
             }// end onSubmit()
 
         }); // end of win object initialization
@@ -756,6 +713,20 @@ tinymce.PluginManager.add('percadvimage', function(editor, url) {
             console.log("Hello");
             updateLinkData(selectedItem,null);
         });
+
+                //initialize accessibility since tinymce currently doesn't allow it directly
+                $('.mce-perc-description').attr('aria-invalid','false');
+                $('.mce-perc-description').attr('aria-required','true');
+                $('.mce-perc-title').attr('aria-required','true');
+                $('.mce-perc-title').attr('aria-invalid','false');
+                $('.mce-perc-width').attr('aria-required','true');
+                $('.mce-perc-width').attr('aria-invalid','false');
+                $('.mce-perc-height').attr('aria-required','true');
+                $('.mce-perc-height').attr('aria-invalid','false');
+                setReadWriteMode(null);
+                setReadWriteModeAlt(null);
+                setReadWriteModeTitle(null);
+
         return win;
     }
 

@@ -195,6 +195,7 @@ tinymce.PluginManager.add('percadvlink', function(editor) {
                 { type: 'cancel', text: 'Close' },
                 { type: 'submit', text: 'Save', primary: true}
             ],
+			initialData: data,
 
             onSubmit: function(e) {
                 var linkPath = data.href;
@@ -227,6 +228,7 @@ tinymce.PluginManager.add('percadvlink', function(editor) {
                         addLink('yes');
                     }
                 }
+				win.close();
             }
         });
 
