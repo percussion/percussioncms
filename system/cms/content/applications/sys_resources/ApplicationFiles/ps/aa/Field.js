@@ -34,7 +34,7 @@ ps.aa.Field = function()
     */
    this.init = function()
    {
-   }
+   };
    
    /**
     * Creates the field modal dialog if it is not created yet.
@@ -60,12 +60,12 @@ ps.aa.Field = function()
       this.fieldModalDlg.closeWindow = function()
       {
          _this.fieldModalDlg.hide();
-      }
+      };
       dojo.event.connect(this.fieldModalDlg, "onLoad", function()
       {
          _this.parseControls();
       });
-   }
+   };
 
    /**
     * Creates the inplace editing dialog if it is not created yet.
@@ -94,23 +94,23 @@ ps.aa.Field = function()
                resizable: false
              }, div);
       this.inplaceDlg.setContent(
-            '<input type="text" style="border:0px; padding:0px; margin-top:1px"'
-               + 'size="50" id="ps.field.inplaceTextBox" '
-               + 'name="ps.field.inplaceTextBox"/>\n'
-            + '<div class="PsAaFieldButtonsbox">\n'
-            + '<table align="center" width="100%" border="0">\n'
-            + '<tr>\n'
-            + '<td align="right">\n'
-            + '<button dojoType="Button" id="ps.field.inplaceUpdateButton">'
-               + 'Update</button>\n'
-            + '</td>\n'
-            + '<td align="left">\n'
-            + '<button dojoType="Button" id="ps.field.inplaceCancelButton">'
-               + 'Cancel</button>\n'
-            + '</td>\n'
-            + '</tr>\n'
-            + '</table>\n'
-            + '</div>');
+            '<input type="text" style="border:0px; padding:0px; margin-top:1px"'+
+          'size="50" id="ps.field.inplaceTextBox" '+
+          'name="ps.field.inplaceTextBox"/>\n' +
+             '<div class="PsAaFieldButtonsbox">\n'  +
+            '<table align="center" width="100%" border="0">\n' +
+            '<tr>\n' +
+            '<td align="right">\n' +
+            '<button dojoType="Button" id="ps.field.inplaceUpdateButton">'+
+            'Update</button>\n' +
+             '</td>\n'  +
+            '<td align="left">\n'  +
+            '<button dojoType="Button" id="ps.field.inplaceCancelButton">' +
+            'Cancel</button>\n'  +
+            '</td>\n' +
+             '</tr>\n'  +
+            '</table>\n'  +
+            '</div>');
 
       this.inplaceTextBox = dojo.byId("ps.field.inplaceTextBox");
       dojo.event.connect(
@@ -122,7 +122,7 @@ ps.aa.Field = function()
 
       dojo.event.connect(updateButton, "onClick", this, "updateField");
       dojo.event.connect(cancelButon, "onClick", this, "onInplaceCancel");
-   }
+   };
    
    /**
     * Helper method called by init() to parse all the controls and connect 
@@ -148,7 +148,7 @@ ps.aa.Field = function()
       var suburl = ps.io.Actions.getUpdateItemUrl() + "&ceUrl=" + encodeURI(ceurl);
       ps.io.Actions.initFormBind(suburl,"EditForm",ps.io.Actions.MIMETYPE_JSON);
       this.initialCheckSum = ps_getAllFieldChecksums(document.EditForm,true);
-   }
+   };
 
    /**
     * Dialog close.
@@ -164,7 +164,7 @@ ps.aa.Field = function()
          }
       }
       this.fieldModalDlg.hide();
-   }
+   };
 
    /**
     * Function to open the full editor.
@@ -181,7 +181,7 @@ ps.aa.Field = function()
       }
       ps.aa.controller.editAll();
       this.fieldModalDlg.hide();
-   }
+   };
        
    /**
     * Function to edit the filed
@@ -271,7 +271,7 @@ ps.aa.Field = function()
       }
       else if(this.renderer == this.FIELD_RENDERER_INPLACE_TEXT)
       {
-         var response = ps.io.Actions.getContentEditorFieldValue(this.objectId);
+         let response = ps.io.Actions.getContentEditorFieldValue(this.objectId);
          if(!response.isSuccess())
          {
             ps.io.Actions.maybeReportActionError(response);
@@ -326,7 +326,7 @@ ps.aa.Field = function()
          }
       }
       return false;
-   }
+   };
    
    /**
     * Is called when on onkeyup event for the inline editing text box.
@@ -347,7 +347,7 @@ ps.aa.Field = function()
       {
          this.onInplaceCancel();
       }
-   }
+   };
 
    /**
     * Cancels inplace editing
@@ -357,7 +357,7 @@ ps.aa.Field = function()
       this.inplaceEditing = false;
       this.inplaceDlg.hide();
       dojo.html.show(this.divElem);
-   }
+   };
 
    /**
     * Opens the field for inplace editing.
@@ -394,7 +394,7 @@ ps.aa.Field = function()
       this.inplaceTextBox.focus();
 
       dojo.html.hide(this.divElem);
-   }
+   };
 
    /**
     * Updates the fields and refreshes the page. 
@@ -435,13 +435,13 @@ ps.aa.Field = function()
       }
       else if(this.renderer == this.FIELD_RENDERER_INPLACE_TEXT)
       {
-         var response = ps.io.Actions.setContentEditorFieldValue(this.objectId,this.inplaceTextBox.value);
+         let response = ps.io.Actions.setContentEditorFieldValue(this.objectId,this.inplaceTextBox.value);
          if(!response.isSuccess())
          {
             ps.io.Actions.maybeReportActionError(response);
             return false;
          }
-         var value = response.getValue();
+         let value = response.getValue();
          //Check for the cmsErrors first and warn the user about it.
          if(dojo.lang.has(value, "cmsError"))
          {
@@ -459,7 +459,7 @@ ps.aa.Field = function()
          this.onInplaceCancel();
       }
       ps.aa.controller.refreshFieldsOnPage(this.objectId.getContentId(),this.objectId.getFieldName(),this.psCeFieldWindow);
-   }
+   };
    
    /**
     * Constant for defualt field height for the controls

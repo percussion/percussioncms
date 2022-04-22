@@ -151,7 +151,7 @@ function getBaseConfig(parameters) {
             "table_sizing_mode": "relative",
             "external_plugins": {
                 'codemirror': '/sys_resources/tinymce/plugins/codemirror/plugin.js',
-                //   'percadvimage': '/sys_resources/tinymce/plugins/percadvimage/plugin.js',
+                'percadvimage': '/sys_resources/tinymce/plugins/percadvimage/plugin.js',
                 'percadvlink': '/sys_resources/tinymce/plugins/percadvlink/plugin.js',
                 //    'percglobalvariables': '/sys_resources/tinymce/plugins/percglobalvariables/plugin.js',
                 //    'percmorelink': '/sys_resources/tinymce/plugins/percmorelink/plugin.js',
@@ -175,10 +175,14 @@ function getBaseConfig(parameters) {
             "file_picker_callback": function(callback, value, meta) {
                 var mainEditor = window.parent;
                 var topFrJQ = mainEditor.jQuery;
+                var filePickerDialog;
+                var imagePickerDialog;
+
+                var parentDialog = jQuery('[type=\'url\']').find(meta.fieldName);
                 // Provide file and text for the link dialog
                 if (meta.filetype == 'file') {
-                    var pathSelectionOptions = {
-                        okCallback: function (pathItem, callback)
+                    var filePathSelectionOptions = {
+                        onSubmit: function (pathItem, callback)
                         {
                             var mainEditor = window.parent;
                             var topFrJQ = mainEditor.jQuery;
@@ -216,20 +220,35 @@ function getBaseConfig(parameters) {
                         acceptableTypes:'percPage,percImageAsset,percFileAsset,site,Folder'
                     };
 
-                    topFrJQ.PercPathSelectionDialog.open(pathSelectionOptions,callback);
+                    filePickerDialog = topFrJQ.PercPathSelectionDialog.open(filePathSelectionOptions,callback);
 
 
                 }
 
                 // Provide image and alt text for the image dialog
                 if (meta.filetype == 'image') {
-                    callback('myimage.jpg', {alt: 'My alt text'});
+
+                    var openCreateImageDialog = function(successCallback, cancelCallback) {
+                        $.topFrameJQuery.PercCreateNewAssetDialog('percImage', successCallback, cancelCallback);
+                    };
+                    var validator;
+                    validator = function (pathItem) {
+                        return pathItem && pathItem.type === 'percImageAsset' ? null : 'Please select an image.';
+                    };
+                    var pathSelectionOptions = {
+                        okCallback: function(selectedItem){
+                            tinymce.execCommand('updateFileSelection',false,selectedItem);
+                        },
+                        dialogTitle: 'Select an image',
+                        rootPath:topFrJQ.PercFinderTreeConstants.ROOT_PATH_ASSETS,
+                        initialPath: topFrJQ.cookie('perc-inlineimage-path'),
+                        selectedItemValidator:validator,
+                        acceptableTypes:'percImageAsset,site,Folder',
+                        createNew:{'label':'Upload', 'iconclass':'icon-upload-alt', 'onAction':openCreateImageDialog}
+                    };
+                    imagePickerDialog = topFrJQ.PercPathSelectionDialog.open(pathSelectionOptions);
                 }
 
-                // Provide alternative source and posted for the media dialog
-                if (meta.filetype == 'media') {
-                    callback('movie.mp4', {source2: 'alt.ogg', poster: 'image.jpg'});
-                }
             },
             "convert_urls" : false,
             "toolbar": "newdocument undo redo restoredraft | cut copy paste searchreplace | styleselect fontselect fontsizeselect forecolor backcolor removeformat | bold italic underline strikethrough superscript subscript | alignleft aligncenter alignright alignjustify alignnone |  bullist numlist outdent indent | link unlink openlink media | visualchars visualblocks fullscreen print preview | anchor charmap hr emoticons insertdatetime | table tabledelete tableinsertrowafter tabledeleterow tableinsertcolbefore tabledeletecol tablesplitcells tablemergecells | rxinlinelink rxinlinetemplate rxinlineimage rxinserthtml | ltr rtl codesample code"
