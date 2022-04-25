@@ -21,7 +21,7 @@ function percTinyMceInitialized(tinymceEditor) {
                 $itemTarget = $target;
                 itemJcrPath = $itemTarget.data('jcrpath');
                 itemObject = $itemTarget.data('pathitem');
-                var menu = new tinymce.ui.Menu({
+                /* var menu = editor.ui.registry.addMenuItem({
                     classes: 'perc-broken-link-tooltip',
                     items: [{
                         text: $itemTarget.is('.perc-brokenlink') ? 'Deleted item referenced: ' + itemJcrPath : itemJcrPath,
@@ -48,7 +48,7 @@ function percTinyMceInitialized(tinymceEditor) {
                 pos.x += targetPos.x;
                 pos.y += targetPos.y;
 
-                menu.moveTo(pos.x, pos.y + e.target.offsetHeight + 5);
+                menu.moveTo(pos.x, pos.y + e.target.offsetHeight + 5);*/
             }
         });
 
