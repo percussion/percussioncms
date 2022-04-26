@@ -153,8 +153,8 @@ function getBaseConfig(parameters) {
                 'codemirror': '/sys_resources/tinymce/plugins/codemirror/plugin.js',
                 'percadvimage': '/sys_resources/tinymce/plugins/percadvimage/plugin.js',
                 'percadvlink': '/sys_resources/tinymce/plugins/percadvlink/plugin.js',
-                //    'percglobalvariables': '/sys_resources/tinymce/plugins/percglobalvariables/plugin.js',
-                //    'percmorelink': '/sys_resources/tinymce/plugins/percmorelink/plugin.js',
+                    'percglobalvariables': '/sys_resources/tinymce/plugins/percglobalvariables/plugin.js',
+                    'percmorelink': '/sys_resources/tinymce/plugins/percmorelink/plugin.js',
 
             },
             "codemirror": {
