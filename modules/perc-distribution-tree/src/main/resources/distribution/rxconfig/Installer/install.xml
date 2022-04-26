@@ -87,6 +87,13 @@
         </and>
     </condition>
 
+    <condition property="upgradeFrom732" value="true" else="false">
+        <and>
+            <available file="${install.dir}/jetty/base/etc/perc-ds.xml"/>
+            <resourcecontains resource="${install.dir}/jetty/base/etc/perc-ds.xml" substring="com.percussion.utils.container.jetty.PSJettyUtils" />
+        </and>
+    </condition>
+
     <echo>development install=${DEVELOPMENT}</echo>
     <echo>clean.install=${clean.install}</echo>
     <echo>base.dir=${base.dir}</echo>
@@ -867,8 +874,7 @@
             <available file="${install.dir}/jetty/base/etc/perc-ds.xml"/>
             <then>
                 <if>
-                    <!--- if ugrading from 7.3.2, then this file will be there thus replace with new -->
-                    <resourcecontains resource="${install.dir}/jetty/base/etc/perc-ds.xml" substring="com.percussion.utils.container.jetty.PSJettyUtils" />
+                    <istrue value="${upgradeFrom732}"/>
                     <then>
                         <echo>Replace perc-ds.xml with new version from source </echo>
                         <copy file="${install.src}/jetty/base/etc/perc-ds.xml" tofile="${install.dir}/jetty/base/etc/perc-ds.xml" />
@@ -1108,6 +1114,21 @@
             <istrue value="${do.upgrade}"/>
             <then>
                 <copy verbose="true" overwrite="true" file="${install.src}/rxconfig/Installer/InstallPackages.upgrade.xml" tofile="${install.dir}/rxconfig/Installer/InstallPackages.xml" />
+                <if>
+                    <istrue value="${upgradeFrom732}"/>
+                    <then>
+                        <echo>Adding Workflow Package to 7.3.2 upgrade...</echo>
+                        <replace file="${install.dir}/rxconfig/Installer/InstallPackages.xml" summary="yes">
+                            <replacetoken><![CDATA[<PackageFileList>]]></replacetoken>
+                            <replacevalue><![CDATA[<PackageFileList>
+    <PackageFileEntry>
+        <packageName>perc.workflow</packageName>
+        <status>PENDING</status>
+    </PackageFileEntry>]]></replacevalue>
+                        </replace>
+                    </then>
+                </if>
+
             </then>
             <else>
                 <copy verbose="true" overwrite="true" file="${install.src}/rxconfig/Installer/InstallPackages.xml" tofile="${install.dir}/rxconfig/Installer/InstallPackages.xml" />

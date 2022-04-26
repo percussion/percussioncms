@@ -320,8 +320,8 @@ tinymce.PluginManager.add('percadvimage', function(editor, url) {
 
                     var currentaltoverride = formData.alt;
                     var currenttitleoverride = formData.title;
-                    var previousoverride = imgElm.getAttribute('data-previous-alt-override');
-                    var previoustitleoverride = imgElm.getAttribute('data-previous-title-override');
+                    var previousoverride = imgElm !== null? imgElm.getAttribute('data-previous-alt-override'):'';
+                    var previoustitleoverride = imgElm !== null? imgElm.getAttribute('data-previous-title-override'):'';
                     var datadecorative = formData.isDataDecorativeOverride;
 
                     var titleOverride = formData.isDataTitleOverride;
