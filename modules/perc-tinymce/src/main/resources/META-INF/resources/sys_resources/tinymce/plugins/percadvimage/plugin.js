@@ -2,10 +2,10 @@
 /*global tinymce:true */
 
 tinymce.PluginManager.add('percadvimage', function(editor, url) {
-
+    var formData = {};
 
     function showDialog(buttonAPI) {
-        var win, formData = {}, cm1LinkData = {}, dom = editor.dom, imgElm = editor.selection.getNode();
+        var win, cm1LinkData = {}, dom = editor.dom, imgElm = editor.selection.getNode();
         var width, height, imageListCtrl;
         var mainEditor = editor.contentWindow.parent;
         var topFrJQ = mainEditor.jQuery.topFrameJQuery;
@@ -25,7 +25,7 @@ tinymce.PluginManager.add('percadvimage', function(editor, url) {
             return linkImageItems;
         }
 
-        function setReadWriteMode(e) {
+        function setReadWriteMode() {
             var url = formData.src;
             var description = formData.alt;
             var title = formData.title;
@@ -50,115 +50,185 @@ tinymce.PluginManager.add('percadvimage', function(editor, url) {
 
             //If it is an external url, we want to be able to write to it.
             if (url.startsWith('http')) {
-                win.enable('description');
+                win.enable('alt');
                 win.enable('title');
-            } else {
-                updateDecorativeImage(null);
-                if (!dataconstrain) {
-                    win.disable('dimensions');
-                }
             }
         }
 
+        function addImage() {
 
-        function updateDecorativeImage(e) {
+            var tempAltValue = formData.alt;
+            if(formData.isDataDecorativeOverride) {
+                formData.alt = '';
+            }
+
+            //Handle allign
+            if(imgElm) {
+                editor.dom.setStyles(imgElm,{'float':'', 'vertical-align':''});
+                if(formData.align === 'left' || formData.align === 'right') {
+                    editor.dom.setStyle(imgElm, 'float', formData.align);
+                }
+                else if(formData.align !== '') {
+                    editor.dom.setStyle(imgElm, 'vertical-align', formData.align);
+                }
+            }
+            else{
+                if(formData.align === 'left' || formData.align === 'right') {
+                    formData.style = 'float:' + formData.align + ';';
+                }
+                else if(formData.align && formData.align !== '') {
+                    formData.style = 'vertical-align:' + formData.align + ';';
+                }
+            }
+            var cm1ImgAttrs = {
+                sys_dependentvariantid : cm1LinkData.sys_dependentvariantid,
+                rxinlineslot : cm1LinkData.rxinlineslot,
+                sys_dependentid : cm1LinkData.sys_dependentid,
+                sys_relationshipid : '',
+                inlinetype : cm1LinkData.inlinetype,
+                'data-jcrpath' : cm1LinkData.jcrpath,
+                'data-pathitem' : JSON.stringify(cm1LinkData.pathItem)
+            };
+
+            var formImgAttrs = {
+                'data-description-override': formData.isDataDescriptionOverride,
+                'data-previous-alt-override' : formData.dataPreviousAltOverride,
+                'data-title-override' : formData.isDataTitleOverride,
+                'data-previous-title-override' : formData.dataPreviousTitleOverride,
+                'data-decorative-override': formData.isDataDecorativeOverride,
+                'data-constrain' : formData.constrain,
+
+                'src' :formData.src,
+                'alt' :formData.alt,
+                'title' : formData.title,
+                'align' : formData.align,
+                'data-imgtype' : formData.dataImgtype,
+                'height' :  formData.dimensions.height,
+                'width' : formData.dimensions.width,
+            };
+
+            jQuery.extend(formImgAttrs,cm1ImgAttrs);
+            if (imgElm) {
+                if (!imgElm.attributes.getNamedItem('style')) {
+                } else {
+                    var style = {
+                        style: imgElm.attributes.getNamedItem('style').value
+                    };
+                    jQuery.extend(formImgAttrs, style);
+                }
+
+                dom.removeAllAttribs(imgElm);
+                dom.setAttribs(imgElm, formImgAttrs);
+                editor.nodeChanged();
+            } else {
+                editor.insertContent(dom.createHTML('img', formImgAttrs));
+            }
+
+        }
+
+
+        function updateDecorativeImage() {
             var url = formData.src;
             var datadecorativeoverride = formData.isDataDecorativeOverride;
-            var description = formData.alt;
-            var title = formData.title;
-            var isTitleOverride = formData.isDataTitleOverride;
-            var descriptionOverride = formData.isDataDescriptionOverride;
             //If it is an external url, we want to be able to write to it.
             if(url.startsWith('http')) {
-                win.enable('description');
+                win.enable('alt');
                 win.enable('title');
             }
             else {
                 if(datadecorativeoverride){
-                    win.disable('description');
+                    win.disable('alt');
                     win.disable('title');
                     formData.alt= '';
                     formData.title='';
                     formData.isDataTitleOverride =false;
                     win.disable('isDataTitleOverride');
-                    formData.isDescriptionOverride = false;
-                    win.disable('isDescriptionOverride');
+                    formData.isDataDescriptionOverride = false;
+                    win.disable('isDataDescriptionOverride');
                 }else {
-                    win.enable('isDescriptionOverride');
+                    win.enable('isDataDescriptionOverride');
                     win.enable('isDataTitleOverride');
+                    setReadWriteModeAlt();
+                    setReadWriteModeTitle();
                 }
-                if (e !== null) {
-                    setReadWriteModeAlt(null);
-                    setReadWriteModeTitle(null);
-                }
+
+                win.setData(formData);
 
             }
         }
 
 
 
-        function setReadWriteModeAlt(e) {
+        function setReadWriteModeAlt() {
             var url = formData.src;
             var description = formData.alt;
             var title = formData.title;
             var sys_dependentid = cm1LinkData.sys_dependentid;
             var datadescriptionoverride = formData.isDataDescriptionOverride;
-            var datapreviousaltoverride = formData.dataPreviousAltOverride;
+            var datapreviousaltoverride = (formData.dataPreviousAltOverride == null || typeof formData.dataPreviousAltOverride === 'undefined' )? '': formData.dataPreviousAltOverride;
+            var datadecorativeoverride = formData.isDataDecorativeOverride;
 
             //If it is an external url, we want to be able to write to it.
             if(url.startsWith('http')) {
-                win.enable('description');
+                win.enable('alt');
                 win.enable('title');
             }
             else {
-                if(formData.isDataDescriptionOverride) {
-                    win.disable('description');
-                    if(url !== '') {
-                        getImageData('16777215-101-' + sys_dependentid, true);
-                    }
-                }
-                else {
-                    win.enable('description');
-                    if(datapreviousaltoverride !== '') {
+                if(datadecorativeoverride){
+                    win.disable('alt');
+                    win.disable('isDataDescriptionOverride');
+                }else{
+                    if(datadescriptionoverride) {
+                        win.enable('alt');
                         formData.alt= datapreviousaltoverride;
+
+                    }
+                    else {
+
+                        win.disable('alt');
+                        if(url !== '') {
+                            getImageData('16777215-101-' + sys_dependentid, true);
+                        }
                     }
                 }
-                setReadWriteMode(null);
             }
         }
 
-        function setReadWriteModeTitle(e) {
+        function setReadWriteModeTitle() {
             var title = formData.title;
             var url = formData.src;
             var description = formData.alt;
             var sys_dependentid = cm1LinkData.sys_dependentid;
-            var dataprevioustitleoverride = formData.dataPreviousAltOverride;
+            var dataprevioustitleoverride = (formData.dataPreviousTitleOverride == null || typeof formData.dataPreviousTitleOverride === 'undefined' )? '': formData.dataPreviousTitleOverride;
             var datatitleoverride = formData.isDataTitleOverride;
+            var datadecorativeoverride = formData.isDataDecorativeOverride;
 
             //If it is an external url, we want to be able to write to it.
             if(url.startsWith('http')) {
-                win.enable('description');
+                win.enable('alt');
                 win.enable('title');
             }
             else {
-                if(!datatitleoverride) {
+                if(datadecorativeoverride){
                     win.disable('title');
-                    if(url !== '') {
-                        getImageData('16777215-101-' + sys_dependentid, true);
-                    }
-                }
-                else {
-                    win.enable('title');
-                    if(dataprevioustitleoverride !== '') {
+                    win.disable('isDataTitleOverride');
+                }else{
+                    if(datatitleoverride) {
+                        win.enable('title');
                         formData.title=dataprevioustitleoverride;
                     }
+                    else {
+                        win.disable('title');
+                        if(url !== '') {
+                            getImageData('16777215-101-' + sys_dependentid, true);
+                        }
+
+                    }
                 }
-                setReadWriteMode(null);
             }
         }
 
         function resetAriaBoxes() {
-
 
             var description = formData.alt;
             var title = formData.title;
@@ -193,54 +263,6 @@ tinymce.PluginManager.add('percadvimage', function(editor, url) {
 
         }
 
-
-        function recalcSize(e) {
-            var widthCtrl, heightCtrl, newWidth, newHeight;
-
-            widthCtrl = formData.dimensions.width;
-            heightCtrl = formData.dimensions.height;
-
-            newWidth = widthCtrl;
-            newHeight = heightCtrl;
-
-            if(typeof  proportion === 'undefined'){
-                proportion = 1;
-            }
-            if(e.control === widthCtrl && isNaN(newWidth)){
-                widthCtrl= width;
-            }
-            if(e.control === heightCtrl && isNaN(newHeight)){
-                heightCtrl = height;
-            }
-
-            if (formData.constrain){
-                if (newWidth && newHeight) {
-
-                    win.disable('dimensions');
-
-                    if (e.control === widthCtrl) {
-                        newHeight = Math.round(newWidth / proportion);
-                        if (newHeight === 0) {
-                            newHeight = 1;
-                        }
-
-                        formData.dimensions.height = newHeight;
-                    } else {
-                        newWidth = Math.round(proportion * newHeight);
-                        if (newWidth === 0) {
-                            newWidth = 1;
-                        }
-                        formData.dimensions.width = newWidth;
-
-                    }
-                }
-            }else{
-                win.enable('dimensions');
-            }
-            width = newWidth;
-            height = newHeight;
-        }
-
         function updateImage() {
             if(cm1LinkData.thumbUrl) {
                 setSrcAndSize();
@@ -262,16 +284,12 @@ tinymce.PluginManager.add('percadvimage', function(editor, url) {
             }
             var inlineImage = new Image();
             inlineImage.onload = function() {
-                if(!width && !height && !proportion) {
-                    formData.dimensions.width=this.width;
-                    formData.dimensions.height=this.height;
-                    width = this.width;
-                    height = this.height;
-                    proportion = width / height;
-                }
+                formData.dimensions.width=this.width.toString();
+                formData.dimensions.height=this.height.toString();
+                win.setData(formData);
+
             };
 
-            //setReadWriteMode(null);
             inlineImage.src = formData.src;
         }
         function getImageData(itemId, updateTitle, callback) {
@@ -300,23 +318,17 @@ tinymce.PluginManager.add('percadvimage', function(editor, url) {
                     cm1LinkData.jcrpath = pathItem.PathItem.folderPaths[0].replace('/Folders/$System$/','') + "/" + pathItem.PathItem.name;
                     cm1LinkData.pathItem = pathItem.PathItem;
 
+                    var currentaltoverride = formData.alt;
+                    var currenttitleoverride = formData.title;
+                    var previousoverride = imgElm.getAttribute('data-previous-alt-override');
+                    var previoustitleoverride = imgElm.getAttribute('data-previous-title-override');
+                    var datadecorative = formData.isDataDecorativeOverride;
 
-                    var currentaltoverride = data.alt;
-                    var currenttitleoverride = data.title;
-                    var previousoverride = data.dataPreviousAltOverride;
-                    var previoustitleoverride = data.dataPreviousTitleOverride;
-                    var datadecorative = data.isDataDecorativeOverride;
-                    var titleOverride = data.isDataTitleOverride;
-                    var descriptionOverride = data.isDataDescriptionOverride;
-                    var width = 0;
-                    var height = 0;
-                    if(typeof data.dimensions !== 'undefined'){
-                        width = data.dimensions.width;
-                        height = data.dimensions.height;
-                    }
+                    var titleOverride = formData.isDataTitleOverride;
+                    var descriptionOverride = formData.isDataDescriptionOverride;
+
 
                     if(isUpgradeScenario) {
-                        //updateTitle = false;
                         if((currentaltoverride !== renderLink.altText) && currentaltoverride !== '') {
                             // here if the override does not match the value of the asset
                             // we assume an override has been set and set the overrides
@@ -327,9 +339,9 @@ tinymce.PluginManager.add('percadvimage', function(editor, url) {
                                     formData.alt=renderLink.altText;
                                 }
                             }
-                            formData.isDescriptionOverride = true;
+                            formData.isDataDescriptionOverride = true;
                             formData.isDataDecorativeOverride = false;
-                            win.disable(isDataDecorativeOverride);
+                            win.disable('isDataDecorativeOverride');
                         }
                         else if(renderLink.altText) {
                             imgElm.setAttribute('data-description-override', false);
@@ -353,9 +365,10 @@ tinymce.PluginManager.add('percadvimage', function(editor, url) {
                     if(updateTitle)
                     {
                         // if the title is not overridden, we use the value from the renderLink obj.
-                        if(!titleOverride && renderLink.title && !datadecorative) {
+                        if(!formData.isDataTitleOverride && renderLink.title && !datadecorative) {
                             formData.title=renderLink.title;
                         }
+
                         // if the alt is not override AND there is alt text present and its not a decorative (empty) alt
                         // we use the renderLink value.
                         if(!descriptionOverride && renderLink.altText && !datadecorative) {
@@ -415,15 +428,15 @@ tinymce.PluginManager.add('percadvimage', function(editor, url) {
         height =  isImage ? dom.getAttrib(imgElm, 'height'):'';
         formData.dimensions = {width:width,height:height};
         proportion = width / height;
-        formData.dataImgtype = isImage ? dom.getAttrib(imgElm, 'dataImgtype') : '_full';
-        formData.constrain = isImage ? (dom.getAttrib(imgElm, 'dataConstrain') === 'true') : false;
+        formData.dataImgtype = isImage ? dom.getAttrib(imgElm, 'data-imgtype') : '_full';
+        formData.constrain = isImage ? (dom.getAttrib(imgElm, 'data-constrain') === 'true') : false;
         formData.src = isImage ? dom.getAttrib(imgElm, 'src') : '';
         formData.alt = isImage ? dom.getAttrib(imgElm, 'alt') : '';
-        formData.isDataDescriptionOverride = isImage ? (dom.getAttrib(imgElm, 'isDataDescriptionOverride') === 'true') : false;
-        formData.dataPreviousAltOverride = isImage ? dom.getAttrib(imgElm, 'dataPreviousAltOverride') : '';
-        formData.dataPreviousTitleOverride = isImage ? dom.getAttrib(imgElm, 'dataPreviousTitleOverride') : '';
-        formData.isDataDecorativeOverride = isImage ? (dom.getAttrib(imgElm, 'isDataDecorativeOverride') === 'true') : false;
-        formData.dataTitleOverride = isImage ? (dom.getAttrib(imgElm, 'dataTitleOverride') === 'true') : false;
+        formData.isDataDescriptionOverride = isImage ? (dom.getAttrib(imgElm, 'data-description-override') === 'true') : false;
+        formData.dataPreviousAltOverride = isImage ? dom.getAttrib(imgElm, 'data-previous-alt-override') : '';
+        formData.dataPreviousTitleOverride = isImage ? dom.getAttrib(imgElm, 'data-previous-title-override') : '';
+        formData.isDataDecorativeOverride = isImage ? (dom.getAttrib(imgElm, 'data-decorative-override') === 'true') : false;
+        formData.isDataTitleOverride = isImage ? (dom.getAttrib(imgElm, 'data-title-override') === 'true') : false;
         formData.title = isImage ? dom.getAttrib(imgElm, 'title') : '';
         formData.align = isImage ? dom.getStyle(imgElm, 'float') !== '' ? dom.getStyle(imgElm, 'float') : dom.getStyle(imgElm, 'vertical-align') : '';
         cm1LinkData.sys_dependentvariantid = isImage ? dom.getAttrib(imgElm, 'sys_dependentvariantid') : '';
@@ -437,24 +450,6 @@ tinymce.PluginManager.add('percadvimage', function(editor, url) {
             imgElm = null;
         }
 
-        if (editor.settings.image_list) {
-            imageListCtrl = [{
-                name: 'target',
-                type: 'listbox',
-                label: 'Image list',
-                items: buildImageList(),
-                onAction: function(e) {
-                    var altCtrl = formData.alt;
-
-                    if (!altCtrl.value() || (e.lastControl && altCtrl.value() === e.lastControl.text())) {
-                        altCtrl.value(e.control.text());
-                    }
-
-                    formData.src=e.control.value();
-                }
-            }];
-        }
-
         win = editor.windowManager.open({
             title: 'Edit image',
             data: formData,
@@ -463,17 +458,17 @@ tinymce.PluginManager.add('percadvimage', function(editor, url) {
                 items: [
                     {name: 'srcPath', type: 'urlinput', filetype: 'image', label: 'Source'},
                     {name: 'src', type: 'input', label: 'Source'},
-                {name: 'isDataDecorativeOverride',type: 'checkbox', label: 'Decorative- Image (WAI)', text: 'Decorative Image', onChange: updateDecorativeImage},
+                    {name: 'isDataDecorativeOverride',type: 'checkbox', label: 'Decorative- Image (WAI)', text: 'Decorative Image'},
                     {type: 'bar',label: 'Image description*',name: 'imageDesc',layout: 'flex',direction: 'row', align: 'center',spacing: 5,
                         items: [
-                            {name: 'alt', type: 'input', label: 'Image description', size: 26, classes: 'perc-description', onChange: resetAriaBoxes},
-                            {name: 'isDataDescriptionOverride', type: 'checkbox', label: 'override',  onChange: setReadWriteModeAlt},
+                            {name: 'alt', type: 'input', label: 'Image description', size: 26, classes: 'perc-description'},
+                            {name: 'isDataDescriptionOverride', type: 'checkbox', label: 'override'},
                         ]
                     },
                     {type: 'bar',label: 'Image title*',name: 'imageTitle',layout: 'flex',direction: 'row', align: 'center', spacing: 5,
                         items: [
-                            {name: 'title', type: 'input', label: 'Image title', size: 26, classes: 'perc-title',onChange: resetAriaBoxes},
-                            {type: 'checkbox', name: 'isDataTitleOverride',  label: 'override',  onChange: setReadWriteModeTitle},
+                            {name: 'title', type: 'input', label: 'Image title', size: 26, classes: 'perc-title'},
+                            {type: 'checkbox', name: 'isDataTitleOverride',  label: 'override'},
                         ]
                     },
                     {
@@ -489,14 +484,7 @@ tinymce.PluginManager.add('percadvimage', function(editor, url) {
                         label: 'Image type',
                         minWidth: 90,
                         maxWidth:135,
-                        onSubmit:updateImage,
                         items: [{text: 'Full', value: '_full'},{text: 'Thumbnail', value: '_thumb'}],
-                        onSetup: function() {
-                            if(formData.dataImgtype === '') {
-                                formData.dataImgtype = this._values[0].value;
-                            }
-                            this.value(formData.dataImgtype);
-                        }
                     },
                     {
                         label: 'Alignment',
@@ -538,8 +526,32 @@ tinymce.PluginManager.add('percadvimage', function(editor, url) {
                     }
                 }],
 
-			initialData: formData,
+            initialData: formData,
+            onChange: function(api, changeData){
+                formData = win.getData();
+                if(changeData.name === 'isDataDecorativeOverride') {
+                    updateDecorativeImage();
+                }
+                if(changeData.name === 'isDataDescriptionOverride') {
+                    setReadWriteModeAlt();
+                }
+                if(changeData.name === 'title') {
+                    resetAriaBoxes();
+                }
 
+                if(changeData.name === 'isDataTitleOverride') {
+                    setReadWriteModeTitle();
+
+                }
+
+                if(changeData.name === 'dataImgtype'){
+                    updateImage();
+                }
+                if(changeData.name === 'align'){
+
+                    formData.align = newData.align;
+                }
+            },
 
             onSubmit: function(e) {
 
@@ -551,14 +563,12 @@ tinymce.PluginManager.add('percadvimage', function(editor, url) {
                         $('.mce-perc-description').css('border-color', 'red');
                         $('.mce-perc-description').attr('aria-invalid', 'true');
                         $('.mce-perc-description').attr('role', 'alert');
-                        e.preventDefault();
                         return;
                     }
                     if (formData.isDataTitleOverride && (!formData.title || formData.title.trim() === '')) {
                         $('.mce-perc-title').css('border-color', 'red');
                         $('.mce-perc-title').attr('aria-invalid', 'true');
                         $('.mce-perc-title').attr('role', 'alert');
-                        e.preventDefault();
                         return;
                     }
 
@@ -567,105 +577,13 @@ tinymce.PluginManager.add('percadvimage', function(editor, url) {
                     $('.mce-perc-width').css('border-color', 'red');
                     $('.mce-perc-width').attr('aria-invalid', 'true');
                     $('.mce-perc-width').attr('role', 'alert');
-                    e.preventDefault();
                     return;
                 }
                 if (isNaN(formData.dimensions.height)){
                     $('.mce-perc-height').css('border-color', 'red');
                     $('.mce-perc-height').attr('aria-invalid', 'true');
                     $('.mce-perc-height').attr('role', 'alert');
-                    e.preventDefault();
                     return;
-                }
-
-                function addImage() {
-                    if (formData.dimensions.width === '') {
-                        delete formData.dimensions.width;
-                    }
-
-                    if (formData.dimensions.height === '') {
-                        delete formData.dimensions.height;
-                    }
-
-                    /* If this is a decorative image, we need to set the value to empty.
-                     * We do, however, need to preserve the original overridden alt
-                     * text if there was some. This sends the empty alt attribute
-                     * to TinyMCE for updating the HTML, however we restore that
-                     * value when loading the editor the next time right after
-                     * the jQuery.extend method below.
-                     **/
-                    var tempAltValue = formData.alt;
-                    if(formData.isDataDecorativeOverride) {
-                        formData.alt = '';
-                    }
-
-                    //Handle allign
-                    if(imgElm) {
-                        editor.dom.setStyles(imgElm,{'float':'', 'vertical-align':''});
-                        if(formData.align === 'left' || formData.align === 'right') {
-                            editor.dom.setStyle(imgElm, 'float', formData.align);
-                        }
-                        else if(formData.align !== '') {
-                            editor.dom.setStyle(imgElm, 'vertical-align', formData.align);
-                        }
-                    }
-                    else{
-                        if(formData.align === 'left' || formData.align === 'right') {
-                            formData.style = 'float:' + formData.align + ';';
-                        }
-                        else if(formData.align && formData.align !== '') {
-                            formData.style = 'vertical-align:' + formData.align + ';';
-                        }
-                    }
-                    delete formData.align;
-                    var cm1ImgAttrs = {
-                        sys_dependentvariantid : cm1LinkData.sys_dependentvariantid,
-                        rxinlineslot : cm1LinkData.rxinlineslot,
-                        sys_dependentid : cm1LinkData.sys_dependentid,
-                        sys_relationshipid : '',
-                        inlinetype : cm1LinkData.inlinetype,
-                        'data-jcrpath' : cm1LinkData.jcrpath,
-                        'data-pathitem' : JSON.stringify(cm1LinkData.pathItem)
-                    };
-
-                    /*
-                     * This section does not work.  What is its purpose?
-                     * The properties data.dataimgtype, for example, isn't accessible
-                     * because it's an object and needs to be accessed via
-                     * data['data-img-type'].  However, doing this prevents the
-                     * features from being loaded the next edit b/c they've been deleted.
-                     * Makes no sense.
-                     **/
-                    tdi = formData.dataImgtype;
-                    delete formData.dataImgtype;
-
-                    tdc = formData.constrain;
-                    delete formData.constrain;
-
-                    delete formData.datadescriptionoverride;
-                    delete formData.datatitleoverride;
-                    delete formData.datadecorativeoverride;
-
-                    jQuery.extend(formData,cm1ImgAttrs);
-                    if (imgElm) {
-                        if (!imgElm.attributes.getNamedItem('style')) {
-                        } else {
-                            var style = {
-                                style: imgElm.attributes.getNamedItem('style').value
-                            };
-                            jQuery.extend(data, style);
-                        }
-
-                        dom.removeAllAttribs(imgElm);
-                        dom.setAttribs(imgElm, formData);
-                        editor.nodeChanged();
-                    } else {
-                        editor.insertContent(dom.createHTML('img', formData));
-                    }
-
-                    formData.dataImgtype = tdi;
-                    formData.constrain = tdc;
-                    formData.alt = tempAltValue;
                 }
 
                 var dataSrc = formData.src;
@@ -697,7 +615,7 @@ tinymce.PluginManager.add('percadvimage', function(editor, url) {
                     addImage();
                 }
 
-				win.close();
+                win.close();
 
             }// end onSubmit()
 
@@ -714,24 +632,21 @@ tinymce.PluginManager.add('percadvimage', function(editor, url) {
             updateLinkData(selectedItem,null);
         });
 
-                //initialize accessibility since tinymce currently doesn't allow it directly
-                $('.mce-perc-description').attr('aria-invalid','false');
-                $('.mce-perc-description').attr('aria-required','true');
-                $('.mce-perc-title').attr('aria-required','true');
-                $('.mce-perc-title').attr('aria-invalid','false');
-                $('.mce-perc-width').attr('aria-required','true');
-                $('.mce-perc-width').attr('aria-invalid','false');
-                $('.mce-perc-height').attr('aria-required','true');
-                $('.mce-perc-height').attr('aria-invalid','false');
-                setReadWriteMode(null);
-                setReadWriteModeAlt(null);
-                setReadWriteModeTitle(null);
+        //initialize accessibility since tinymce currently doesn't allow it directly
+        $('.mce-perc-description').attr('aria-invalid','false');
+        $('.mce-perc-description').attr('aria-required','true');
+        $('.mce-perc-title').attr('aria-required','true');
+        $('.mce-perc-title').attr('aria-invalid','false');
+        $('.mce-perc-width').attr('aria-required','true');
+        $('.mce-perc-width').attr('aria-invalid','false');
+        $('.mce-perc-height').attr('aria-required','true');
+        $('.mce-perc-height').attr('aria-invalid','false');
+        setReadWriteMode();
+        setReadWriteModeAlt();
+        setReadWriteModeTitle();
 
         return win;
     }
-
-
-
 
     editor.ui.registry.addButton('image', {
         icon: 'image',
@@ -740,9 +655,6 @@ tinymce.PluginManager.add('percadvimage', function(editor, url) {
         stateSelector: 'img:not([data-mce-object])',
 
     });
-
-
-
 
     editor.ui.registry.addMenuItem('image', {
         icon: 'image',
