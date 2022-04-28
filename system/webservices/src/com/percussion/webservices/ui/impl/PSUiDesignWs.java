@@ -624,9 +624,16 @@ public class PSUiDesignWs extends PSUiBaseWs implements IPSUiDesignWs
 
          if (parentNode != null)
             getNodePath(parentNode, nodes);
-         else
-            //throw new IllegalArgumentException("Parent Node for the recursive call cannot be null");
-            ms_log.error("Parent Node for the recursive call cannot be null. {}" , nodePath);
+         else {
+            //if the parent node is not found - remove the parent id and treat as top level item
+            ms_log.warn("Workbench parent folder: {} was not found, moving {} to top level.",
+                    node.getParentId(),
+                    node.getName());
+            node.setParentId(null);
+            IPSUiService service = PSUiServiceLocator.getUiService();
+            service.saveHierarchyNode(node);
+            nodePath.insert(0, "/" + node.getName());
+         }
       }
 
       return nodePath.toString();
