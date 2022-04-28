@@ -267,7 +267,7 @@ throw new Error("Invalid callback for subscriber to '" + this.type + "'");
         if (rebuild) {
             var newlist=[],subs=this.subscribers;
             for (i=0,len=subs.length; i<len; ++i) {
-                s = subs[i];
+                let s = subs[i];
                 newlist.push(subs[i]);
             }
 
@@ -1070,7 +1070,7 @@ YAHOO.log(sType + " addListener call failed, invalid callback", "error", "Event"
                     var llist = legacyHandlers[legacyIndex];
                     if (llist) {
                         for (i=0, len=llist.length; i<len; ++i) {
-                            li = llist[i];
+                            let li = llist[i];
                             if (li && 
                                 li[this.EL] == el && 
                                 li[this.TYPE] == sType && 
@@ -1598,7 +1598,7 @@ YAHOO.log(sType + " addListener call failed, invalid callback", "error", "Event"
                 }
 
                 if (recurse && el && el.childNodes) {
-                    for (i=0,len=el.childNodes.length; i<len ; ++i) {
+                    for (let i=0,len=el.childNodes.length; i<len ; ++i) {
                         this.purgeElement(el.childNodes[i], recurse, sType);
                     }
                 }
@@ -1869,7 +1869,7 @@ YAHOO.log(sType + " addListener call failed, invalid callback", "error", "Event"
 
             } else {
                 //YAHOO.log("-dw-");
-document.write('<scr'+'ipt id="_yui_eu_dr" defer="true" src="//:"><'+'/script>');
+                document.write('<scr'+'ipt id="_yui_eu_dr" defer="true" src="//:"><'+'/script>');
                 el=document.getElementById("_yui_eu_dr");
             }
             
@@ -2005,8 +2005,8 @@ YAHOO.util.EventProvider.prototype = {
                 return ce.unsubscribe(p_fn, p_obj);
             }
         } else {
+            var ret = true;
             for (var i in evts) {
-                var ret = true;
                 if (YAHOO.lang.hasOwnProperty(evts, i)) {
                     ret = ret && evts[i].unsubscribe(p_fn, p_obj);
                 }

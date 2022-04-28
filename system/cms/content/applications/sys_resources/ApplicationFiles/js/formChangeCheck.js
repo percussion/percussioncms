@@ -36,6 +36,7 @@
   }
 
   function checkbeforeClose(){
+
       if(ps_theForm != null && ps_initialChecksum != null)
       {
           if(ps_warnIfDirty())

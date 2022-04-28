@@ -8,37 +8,36 @@
 /* jshint unused:false */
 /* global tinymce:true */
 
-tinymce.PluginManager.requireLangPack('codemirror')
+tinymce.PluginManager.requireLangPack('codemirror');
 
 tinymce.PluginManager.add('codemirror', function(editor, url) {
     function showSourceEditor() {
-        editor.focus()
-        editor.selection.collapse(true)
+        editor.focus();
+        editor.selection.collapse(true);
 
         // Insert caret marker
         if (editor.settings.codemirror.saveCursorPosition) {
-            editor.selection.setContent('<span style="display: none;" class="CmCaReT">&#x0;</span>')
+            editor.selection.setContent('<span style="display: none;" class="CmCaReT">&#x0;</span>');
         }
 
-        var codemirrorWidth = 800
+        var codemirrorWidth = 800;
         if (editor.settings.codemirror.width) {
-            codemirrorWidth = editor.settings.codemirror.width
+            codemirrorWidth = editor.settings.codemirror.width;
         }
 
-        var codemirrorHeight = 550
+        var codemirrorHeight = 550;
         if (editor.settings.codemirror.height) {
-            codemirrorHeight = editor.settings.codemirror.height
+            codemirrorHeight = editor.settings.codemirror.height;
         }
 
-        var buttonsConfig = (tinymce.majorVersion < 5)
-            ? [
+        var buttonsConfig = (tinymce.majorVersion < 5) ? [
                 {
                     text: 'Ok',
                     subtype: 'primary',
                     onclick: function() {
-                        var doc = document.querySelectorAll('.mce-container-body>iframe')[0]
-                        doc.contentWindow.submit()
-                        win.close()
+                        var doc = document.querySelectorAll('.mce-container-body>iframe')[0];
+                        doc.contentWindow.submit();
+                        win.close();
                     }
                 },
                 {
@@ -58,7 +57,7 @@ tinymce.PluginManager.add('codemirror', function(editor, url) {
                     text: 'Cancel',
                     name: 'codemirrorCancel'
                 }
-            ]
+            ];
 
         var config = {
             title: 'HTML source code',
@@ -70,25 +69,25 @@ tinymce.PluginManager.add('codemirror', function(editor, url) {
             fullScreen: editor.settings.codemirror.fullscreen,
             saveCursorPosition: false,
             buttons: buttonsConfig
-        }
+        };
 
         if (tinymce.majorVersion >= 5) {
             config.onAction = function (dialogApi, actionData) {
                 if (actionData.name === 'codemirrorOk') {
-                    var doc = document.querySelectorAll('.tox-dialog__body-iframe iframe')[0]
-                    doc.contentWindow.submit()
-                    editor.undoManager.add()
-                    win.close()
+                    var doc = document.querySelectorAll('.tox-dialog__body-iframe iframe')[0];
+                    doc.contentWindow.submit();
+                    editor.undoManager.add();
+                    win.close();
                 }
-            }
+            };
         }
 
-        var win = (tinymce.majorVersion < 5)
-            ? editor.windowManager.open(config)
-            : editor.windowManager.openUrl(config)
+        var win = (tinymce.majorVersion < 5)?
+            editor.windowManager.open(config)
+            : editor.windowManager.openUrl(config);
 
         if (editor.settings.codemirror.fullscreen) {
-            win.fullscreen(true)
+            win.fullscreen(true);
         }
     }
 
@@ -98,7 +97,7 @@ tinymce.PluginManager.add('codemirror', function(editor, url) {
             title: 'Source code',
             icon: 'code',
             onclick: showSourceEditor
-        })
+        });
 
         // Add a menu item to the tools menu
         editor.addMenuItem('code', {
@@ -106,20 +105,20 @@ tinymce.PluginManager.add('codemirror', function(editor, url) {
             text: 'Source code',
             context: 'tools',
             onclick: showSourceEditor
-        })
+        });
     } else {
         editor.ui.registry.addButton('code', {
             icon: 'sourcecode',
             title: 'Source code',
             tooltip: 'Source code',
             onAction: showSourceEditor
-        })
+        });
 
         editor.ui.registry.addMenuItem('code', {
             icon: 'sourcecode',
             text: 'Source code',
             onAction: showSourceEditor,
             context: 'tools'
-        })
+        });
     }
-})
+});

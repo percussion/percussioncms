@@ -125,7 +125,7 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-       <spring.version>5.3.18</spring.version>
+       <spring.version>5.3.19</spring.version>
        <hibernate.version>5.6.5.Final</hibernate.version>
        <hibernate.validator.version>6.2.3.Final</hibernate.validator.version>
        <ehcache.version>2.10.6</ehcache.version>
@@ -140,7 +140,7 @@
        <simplexml.version>2.7.1</simplexml.version>
        <stax.version>1.0.1</stax.version>
         <poi.version>4.1.2</poi.version>
-        <esapi.version>2.2.3.1</esapi.version>
+        <esapi.version>2.3.0.0</esapi.version>
         <esapi.encoder.version>1.2.3</esapi.encoder.version>
         <ant.version>1.10.11</ant.version>
         <shindig.version>1.1-BETA5-incubating</shindig.version>
