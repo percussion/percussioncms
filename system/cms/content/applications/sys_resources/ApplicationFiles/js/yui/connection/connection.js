@@ -609,8 +609,7 @@ YAHOO.util.Connect =
 
 					oConn.handleTransactionResponse(o, callback);
 				}
-			}
-		,this._polling_interval);
+			},this._polling_interval);
     },
 
   /**
@@ -733,10 +732,11 @@ YAHOO.util.Connect =
     {
 		var obj = {};
 		var headerObj = {};
+		var headerStr;
 
 		try
 		{
-			var headerStr = o.conn.getAllResponseHeaders();
+			headerStr = o.conn.getAllResponseHeaders();
 			var header = headerStr.split('\n');
 			for(var i=0; i<header.length; i++){
 				var delimitPos = header[i].indexOf(':');
@@ -858,9 +858,9 @@ YAHOO.util.Connect =
 		}
 
 		if(this._has_http_headers){
-			for(var prop in this._http_headers){
-				if(YAHOO.lang.hasOwnProperty(this._http_headers, prop)){
-					o.conn.setRequestHeader(prop, this._http_headers[prop]);
+			for(var prop1 in this._http_headers){
+				if(YAHOO.lang.hasOwnProperty(this._http_headers, prop1)){
+					o.conn.setRequestHeader(prop1, this._http_headers[prop1]);
 				}
 			}
 			delete this._http_headers;
@@ -955,7 +955,7 @@ YAHOO.util.Connect =
 						for(var j=0; j<oElement.options.length; j++){
 							if(oElement.options[j].selected){
 								if(window.ActiveXObject){
-									this._sFormData += encodeURIComponent(oName) + '=' + encodeURIComponent(oElement.options[j].attributes['value'].specified?oElement.options[j].value:oElement.options[j].text) + '&';
+									this._sFormData += encodeURIComponent(oName) + '=' + encodeURIComponent(oElement.options[j].attributes.value.specified?oElement.options[j].value:oElement.options[j].text) + '&';
 								}
 								else{
 									this._sFormData += encodeURIComponent(oName) + '=' + encodeURIComponent(oElement.options[j].hasAttribute('value')?oElement.options[j].value:oElement.options[j].text) + '&';
@@ -1107,6 +1107,7 @@ YAHOO.util.Connect =
 		var uploadEncoding = 'multipart/form-data';
 		var io = document.getElementById(frameId);
 		var oConn = this;
+	  var oElements;
 
 		// Initialize the HTML form properties in case they are
 		// not defined in the HTML form.
@@ -1124,7 +1125,7 @@ YAHOO.util.Connect =
 		}
 
 		if(postData){
-			var oElements = this.appendPostData(postData);
+			oElements = this.appendPostData(postData);
 		}
 
 		// Start file upload.

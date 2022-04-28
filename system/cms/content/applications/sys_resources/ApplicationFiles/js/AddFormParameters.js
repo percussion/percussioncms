@@ -30,10 +30,12 @@ function addFormRedirect(myform)
 
 		}
 	} 
-	
-	
-	
 }
+
+function addCurrentFormRedirect(){
+	addFormRedirect(document.forms.EditForm);
+}
+
 
 /*
  * Modifies the sys page id
