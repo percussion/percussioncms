@@ -775,7 +775,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 #if($perc.linkContext.mode == "PUBLISH")##
 <link rel="stylesheet" href="/web_resources/cm/foundation/css/foundation.min.css">
-<link rel="stylesheet" href="/web_resources/cm/foundation/css/normalize.cs">
+<link rel="stylesheet" href="/web_resources/cm/foundation/css/normalize.css">
 #else##
 <link rel="stylesheet" href="/Rhythmyx/web_resources/cm/foundation/css/foundation.min.css">
 <link rel="stylesheet" href="/Rhythmyx/web_resources/cm/foundation/css/normalize.css">
