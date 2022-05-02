@@ -568,7 +568,7 @@ function clickInsertButton(){
 var _formAlreadySubmitted = false;
 function _ignoreMultipleSubmit()
 {
-   if(window.opener.ps_CloseMe)
+   if(window.opener !== null && window.opener.ps_CloseMe)
       return true;
    if(_formAlreadySubmitted == true)
       return false;
