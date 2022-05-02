@@ -121,3 +121,4 @@ fabric.properties
 /modules/CMLight-Main-cactus-tests/depends.txt
 /modules/perc-samples/perc-loader-sample-java/Loader.xml
 /modules/perc-samples/perc-loader-sample-java/LoaderData.xml
+/system/Tools/TableFactory/CMDB/
