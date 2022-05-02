@@ -9,7 +9,7 @@ function addFormRedirect(myform)
 	if(myform.sys_currentview)
 	{
 		
-		if((myform.sys_currentview.value=='sys_All' || myform.sys_currentview.value=='sys_Content' || myform.sys_currentview.value=='sys_ItemMeta' || myform.sys_currentview.value.indexOf('sys_SingleField')!=-1) && window.opener && myform.sys_pageid.value == 0)
+		if((myform.sys_currentview.value=='sys_All' || myform.sys_currentview.value=='sys_Content' || myform.sys_currentview.value=='sys_ItemMeta' || myform.sys_currentview.value.indexOf('sys_SingleField')!=-1) && myform.sys_pageid.value == 0)
 		{
 			var currenturl = window.location.href;
 			

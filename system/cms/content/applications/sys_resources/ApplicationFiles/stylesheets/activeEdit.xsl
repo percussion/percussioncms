@@ -14,8 +14,8 @@
 		]>
 <!-- $ Id: $ -->
 <xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:psxctl="urn:percussion.com/control"
-                xmlns="http://www.w3.org/1999/xhtml" xmlns:psxi18n="com.percussion.i18n"
-                extension-element-prefixes="psxi18n" exclude-result-prefixes="psxi18n">
+				xmlns="http://www.w3.org/1999/xhtml" xmlns:psxi18n="com.percussion.i18n"
+				extension-element-prefixes="psxi18n" exclude-result-prefixes="psxi18n">
 	<xsl:import href="file:sys_resources/stylesheets/sys_I18nUtils.xsl"/>
 	<xsl:import href="file:sys_resources/stylesheets/sys_Templates.xsl"/>
 	<xsl:import href="file:sys_resources/stylesheets/customControlImports.xsl"/>
@@ -39,7 +39,7 @@
 			<xsl:otherwise>en-us</xsl:otherwise>
 		</xsl:choose>
 	</xsl:variable>
-   <xsl:variable name="EditLiveDynamicName" select="'PSEditLiveDynamic'"/>
+	<xsl:variable name="EditLiveDynamicName" select="'PSEditLiveDynamic'"/>
 	<xsl:template match="/">
 		<xsl:apply-templates select="ContentEditor"/>
 	</xsl:template>
@@ -53,52 +53,52 @@
 		<xsl:variable name="syspageid" select="/*/ActionLinkList/ActionLink/Param[@name='sys_pageid']"/>
 		<xsl:variable name="hasWebImageFx" select="//ControlNameSet[ControlName='sys_webImageFX']"/>
 		<xsl:variable name="hasEditLive" select="//ControlNameSet[ControlName='sys_EditLive']"/>
-      <xsl:variable name="hasEditLiveDynamic" select="//ControlNameSet[ControlName='sys_EditLiveDynamic']"/>
+		<xsl:variable name="hasEditLiveDynamic" select="//ControlNameSet[ControlName='sys_EditLiveDynamic']"/>
 		<html>
 			<head>
 				<!-- <xsl:copy-of select="/*/UserStatus"/> -->
-			<script src="../tmx/tmx.jsp?sys_lang={$lang}">;</script>
+				<script src="../tmx/tmx.jsp?sys_lang={$lang}">;</script>
 				<script src="/cm/jslib/profiles/3x/jquery/jquery-3.6.0.js">;</script>
 				<script src="/cm/jslib/profiles/3x/jquery/jquery-migrate-3.3.2.js">;</script>
 				<script src="../sys_resources/js/browser.js">;</script>
 				<script src="../sys_resources/js/href.js">;</script>
-			   <script language="javascript" src="../sys_resources/js/globalErrorMessages.js">;</script>
-			   <script language="javascript" src="{concat('../rx_resources/js/',$lang,'/globalErrorMessages.js')}">;</script>
-			   <script src="../sys_resources/js/AddFormParameters.js">;</script>
-			   <script src="../sys_resources/js/formValidation.js">;</script>
-			   <script src="../sys_resources/js/formChangeCheck.js">;</script>
-			   <xsl:if test="$hasWebImageFx">
-			      <script src="../sys_resources/js/href.js">;</script>
-			      <script src="../rx_resources/webimagefx/rx_wifx.js">;</script>
-			   </xsl:if>
-			   <xsl:variable name="scripttags">
-			   	<xsl:apply-templates select="ControlNameSet/ControlName" mode="scriptfiles"/>
-			   </xsl:variable>
-  			   <xsl:variable name="styletags">
-  			   	 <xsl:apply-templates select="ControlNameSet/ControlName" mode="stylefiles"/>
-			   </xsl:variable>
-			   <xsl:call-template name="createControlScriptTags">
-			   	<xsl:with-param name="scripttags" select="$scripttags"/>
-			   </xsl:call-template>
-			   <xsl:call-template name="createControlStyleTags">
-			   	<xsl:with-param name="styletags" select="$styletags"/>
-			   </xsl:call-template>
-			   <script>
-      		  var hasEditLiveControls = false;
-        		</script>
-            <xsl:if test="$hasEditLive or $hasEditLiveDynamic">
+				<script language="javascript" src="../sys_resources/js/globalErrorMessages.js">;</script>
+				<script language="javascript" src="{concat('../rx_resources/js/',$lang,'/globalErrorMessages.js')}">;</script>
+				<script src="../sys_resources/js/AddFormParameters.js">;</script>
+				<script src="../sys_resources/js/formValidation.js">;</script>
+				<script src="../sys_resources/js/formChangeCheck.js">;</script>
+				<xsl:if test="$hasWebImageFx">
+					<script src="../sys_resources/js/href.js">;</script>
+					<script src="../rx_resources/webimagefx/rx_wifx.js">;</script>
+				</xsl:if>
+				<xsl:variable name="scripttags">
+					<xsl:apply-templates select="ControlNameSet/ControlName" mode="scriptfiles"/>
+				</xsl:variable>
+				<xsl:variable name="styletags">
+					<xsl:apply-templates select="ControlNameSet/ControlName" mode="stylefiles"/>
+				</xsl:variable>
+				<xsl:call-template name="createControlScriptTags">
+					<xsl:with-param name="scripttags" select="$scripttags"/>
+				</xsl:call-template>
+				<xsl:call-template name="createControlStyleTags">
+					<xsl:with-param name="styletags" select="$styletags"/>
+				</xsl:call-template>
+				<script>
+					var hasEditLiveControls = false;
+				</script>
+				<xsl:if test="$hasEditLive or $hasEditLiveDynamic">
+					<script><![CDATA[
+						hasEditLiveControls = true;
+						]]></script>
+				</xsl:if>
+				<xsl:variable name="escapedTitle">
+					<xsl:call-template name="replace-string">
+						<xsl:with-param name="text" select="Workflow/ContentStatus/Title" />
+						<xsl:with-param name="replace" select='"&#39;"' />
+						<xsl:with-param name="with" select='"\&#39;"' />
+					</xsl:call-template>
+				</xsl:variable>
 				<script><![CDATA[
-      		  hasEditLiveControls = true;
-         		]]></script>
-            </xsl:if>
-	    <xsl:variable name="escapedTitle">
-	       <xsl:call-template name="replace-string">
-		  <xsl:with-param name="text" select="Workflow/ContentStatus/Title" />
-		  <xsl:with-param name="replace" select='"&#39;"' />
-		  <xsl:with-param name="with" select='"\&#39;"' />
-	       </xsl:call-template>
-	    </xsl:variable>
-		<script><![CDATA[
 			var contentEditor = "yes";
 			var canSubmit = true;
 			if(window.opener != null)
@@ -116,7 +116,7 @@
 							if(rxApplet != null && !is_safari)
 							{
 								rxApplet.refresh("Selected","]]><xsl:value-of select="$syscontentid"/><![CDATA[","");
-							} 					
+							}
 							else
 							{
 								refreshCxApplet(window.opener, "Selected","]]><xsl:value-of select="$syscontentid"/><![CDATA[","");
@@ -131,7 +131,7 @@
 				   updateAaParent();
 				}
 			}
-			
+
          function updateAaParent()
          {
             if(window.opener.ps_updateFlag && isOpenerActiveAssembly())
@@ -160,7 +160,7 @@
                window.opener.ps_updateFlag = false;
             }
          }
-			
+
 			function refreshWithHint()
 			{
 				var url = window.location.href;
@@ -180,13 +180,13 @@
 					}
 				}
 				// Always refresh caller action pane
-				reloadOpener(window);            
+				reloadOpener(window);
 			}
 			function resizeWindow()
 			{
 				if(isOpenerActiveAssembly())
 					self.resizeTo(800, 400);
-			}         
+			}
 	 function psCustomControlIsDirty()
 	 {
 	    return (false]]><xsl:apply-templates select="/*/ItemContent/DisplayField[@displayType='sys_normal']" mode="psxcontrol-customcontrol-isdirty"/><![CDATA[);
@@ -220,10 +220,10 @@
 						<xsl:with-param name="key" select="'psx.contenteditor.activeedit@Rhythmyx'"/>
 						<xsl:with-param name="lang" select="$lang"/>
 					</xsl:call-template>
-               		-
-               		<xsl:value-of select="Workflow/ContentStatus/Title"/>
-               		-
-               <xsl:call-template name="getLocaleString">
+					-
+					<xsl:value-of select="Workflow/ContentStatus/Title"/>
+					-
+					<xsl:call-template name="getLocaleString">
 						<xsl:with-param name="key" select="concat('psx.contenteditor.activeedit@',$thetitle)"/>
 						<xsl:with-param name="lang" select="$lang"/>
 					</xsl:call-template>
@@ -255,7 +255,7 @@
 																	<xsl:with-param name="lang" select="$lang"/>
 																</xsl:call-template>
 															</a>&nbsp;&nbsp;
-                                       </xsl:when>
+														</xsl:when>
 														<xsl:otherwise>
 															<font class="outerboxcellfont">
 																<xsl:call-template name="getLocaleString">
@@ -263,7 +263,7 @@
 																	<xsl:with-param name="lang" select="$lang"/>
 																</xsl:call-template>
 															</font>&nbsp;&nbsp;
-                                             <a>
+															<a>
 																<xsl:attribute name="accesskey"><xsl:call-template name="getLocaleString"><xsl:with-param name="key" select="'psx.contenteditor.activeedit.mnemonic.Properties@P'"/><xsl:with-param name="lang" select="$lang"/></xsl:call-template></xsl:attribute>
 																<xsl:attribute name="href"><xsl:value-of select="concat(@submitHref,'?sys_contentid=',$syscontentid,'&amp;sys_revision=',$sysrevision,'&amp;sys_pageid=0&amp;sys_command=',@commandName,'&amp;sys_view=sys_ItemMeta')"/></xsl:attribute>
 																<xsl:call-template name="getLocaleString">
@@ -271,7 +271,7 @@
 																	<xsl:with-param name="lang" select="$lang"/>
 																</xsl:call-template>
 															</a>&nbsp;&nbsp;
-                                       </xsl:otherwise>
+														</xsl:otherwise>
 													</xsl:choose>
 												</xsl:when>
 												<xsl:when test="$sysview='sys_ItemMeta'">
@@ -283,11 +283,11 @@
 															<xsl:with-param name="lang" select="$lang"/>
 														</xsl:call-template>
 													</a>&nbsp;&nbsp;<font class="outerboxcellfont">
-														<xsl:call-template name="getLocaleString">
-															<xsl:with-param name="key" select="'psx.contenteditor.activeedit@Properties'"/>
-															<xsl:with-param name="lang" select="$lang"/>
-														</xsl:call-template>
-													</font>
+													<xsl:call-template name="getLocaleString">
+														<xsl:with-param name="key" select="'psx.contenteditor.activeedit@Properties'"/>
+														<xsl:with-param name="lang" select="$lang"/>
+													</xsl:call-template>
+												</font>
 												</xsl:when>
 												<xsl:otherwise>
 													<xsl:if test="$syspageid&gt;0">
@@ -299,7 +299,7 @@
 																<xsl:with-param name="lang" select="$lang"/>
 															</xsl:call-template>
 														</a>&nbsp;&nbsp;
-                                    </xsl:if>
+													</xsl:if>
 												</xsl:otherwise>
 											</xsl:choose>
 										</td>
@@ -310,8 +310,8 @@
 										<xsl:if test="ItemContent[@newDocument='no']">
 											<tr align="right" class="datacell1">
 												<td class="outerboxcellfont">
-                                       &nbsp;
-                                    </td>
+													&nbsp;
+												</td>
 											</tr>
 											<tr>
 												<td class="l2">
@@ -335,7 +335,7 @@
 												<form id="perc-content-form" method="post" action="{@submitHref}" name="EditForm" encType="multipart/form-data">
 													<!-- provide a hook for controls to get script to run when page is submitted -->
 													<!-- each template should generate JS that returns a true/false value -->
-                                       				<xsl:attribute name="onSubmit"><xsl:text>addFormRedirect(document.forms['EditForm']); ps_setUpdateFlag(); return </xsl:text><xsl:if test="$hasWebImageFx"><xsl:text>wifxHandleSubmit</xsl:text></xsl:if><xsl:text>(_ignoreMultipleSubmit() &amp;&amp; canSubmit &amp;&amp; true</xsl:text><xsl:apply-templates select="/*/ItemContent" mode="psxcontrol-form-onsubmit"/><xsl:text>)</xsl:text></xsl:attribute>
+													<xsl:attribute name="onsubmit"><xsl:text>addFormRedirect(document.forms['EditForm']); ps_setUpdateFlag(); return </xsl:text><xsl:if test="$hasWebImageFx"><xsl:text>wifxHandleSubmit</xsl:text></xsl:if><xsl:text>(_ignoreMultipleSubmit() &amp;&amp; canSubmit &amp;&amp; true</xsl:text><xsl:apply-templates select="/*/ItemContent" mode="psxcontrol-form-onsubmit"/><xsl:text>)</xsl:text></xsl:attribute>
 													<table width="100%" border="0" cellspacing="5" cellpadding="0" summary="controls for editing metadata">
 														<tr>
 															<td colspan="2"/>
@@ -349,62 +349,62 @@
 															<xsl:if test="Workflow/@contentId and /ContentEditor/@enableRelatedContent='yes' and $RelatedContent">
 																<xsl:choose>
 																	<xsl:when test="/ContentEditor/@mode='sys_edit'">
-																	   <tr>
-																	      <td colspan="2">
-   																	      <div id="psRelatedContent">
-													                        <table>
-     																	            <tr>
-            																			<td>
-            																				<b>
-            																					<span class="controlname">
-            																						<xsl:call-template name="getLocaleString">
-            																							<xsl:with-param name="key" select="'psx.contenteditor.activeedit@Related Content'"/>
-            																							<xsl:with-param name="lang" select="$lang"/>
-            																						</xsl:call-template>:
-                                                                        </span>
-            																				</b>
-            																			</td>
-                                                                     <td>
-               																			<table border="0" width="760">
-            																					<xsl:variable name="variants" select="document(SectionLinkList/SectionLink[@name='VariantListURL'])/*"/>
-            																					<xsl:choose>
-            																						<xsl:when test="count($variants//Variant) = 1 and $variants//Variant/@variantId = ''">
-            																							<td class="groupbox" valign="top" align="left" colspan="2">
-            																								<div class="datacellnoentriesfound">
-            																									<xsl:call-template name="getLocaleString">
-            																										<xsl:with-param name="key" select="'psx.contenteditor.activeedit@No Templates registered for this Content Type.'"/>
-            																										<xsl:with-param name="lang" select="$lang"/>
-            																									</xsl:call-template>
-            																								</div>
-            																							</td>
-            																						</xsl:when>
-            																						<xsl:otherwise>
-            																							<td valign="top" align="left" colspan="2" class="groupbox">
-            																								<div>
-            																									<xsl:apply-templates select="$variants" mode="previewbar-edit">
-            																										<xsl:with-param name="contentid" select="Workflow/@contentId"/>
-            																										<xsl:with-param name="revision" select="Workflow/BasicInfo/HiddenFormParams/Param[@name='sys_revision']"/>
-            																									</xsl:apply-templates>
-                                                    &nbsp;
-                                                    <xsl:apply-templates select="document(SectionLinkList/SectionLink[@name='ContentSlotLookupURL'])/*" mode="relatedcontentctrl">
-            																										<xsl:with-param name="relateddoc" select="document(SectionLinkList/SectionLink[@name='RelatedLookupURL'])"/>
-            																										<xsl:with-param name="mode" select="@mode"/>
-            																										<xsl:with-param name="editable" select="'no'"/>
-            																									</xsl:apply-templates>
-            																								</div>
-            																							</td>
-            																						</xsl:otherwise>
-            																					</xsl:choose>
-            																				</table>
-      																			   </td>
-   																		      </tr>
-   																	      </table> 
-   																	      </div>
-   																	    </td>
-																	   </tr>
+																		<tr>
+																			<td colspan="2">
+																				<div id="psRelatedContent">
+																					<table>
+																						<tr>
+																							<td>
+																								<b>
+																									<span class="controlname">
+																										<xsl:call-template name="getLocaleString">
+																											<xsl:with-param name="key" select="'psx.contenteditor.activeedit@Related Content'"/>
+																											<xsl:with-param name="lang" select="$lang"/>
+																										</xsl:call-template>:
+																									</span>
+																								</b>
+																							</td>
+																							<td>
+																								<table border="0" width="760">
+																									<xsl:variable name="variants" select="document(SectionLinkList/SectionLink[@name='VariantListURL'])/*"/>
+																									<xsl:choose>
+																										<xsl:when test="count($variants//Variant) = 1 and $variants//Variant/@variantId = ''">
+																											<td class="groupbox" valign="top" align="left" colspan="2">
+																												<div class="datacellnoentriesfound">
+																													<xsl:call-template name="getLocaleString">
+																														<xsl:with-param name="key" select="'psx.contenteditor.activeedit@No Templates registered for this Content Type.'"/>
+																														<xsl:with-param name="lang" select="$lang"/>
+																													</xsl:call-template>
+																												</div>
+																											</td>
+																										</xsl:when>
+																										<xsl:otherwise>
+																											<td valign="top" align="left" colspan="2" class="groupbox">
+																												<div>
+																													<xsl:apply-templates select="$variants" mode="previewbar-edit">
+																														<xsl:with-param name="contentid" select="Workflow/@contentId"/>
+																														<xsl:with-param name="revision" select="Workflow/BasicInfo/HiddenFormParams/Param[@name='sys_revision']"/>
+																													</xsl:apply-templates>
+																													&nbsp;
+																													<xsl:apply-templates select="document(SectionLinkList/SectionLink[@name='ContentSlotLookupURL'])/*" mode="relatedcontentctrl">
+																														<xsl:with-param name="relateddoc" select="document(SectionLinkList/SectionLink[@name='RelatedLookupURL'])"/>
+																														<xsl:with-param name="mode" select="@mode"/>
+																														<xsl:with-param name="editable" select="'no'"/>
+																													</xsl:apply-templates>
+																												</div>
+																											</td>
+																										</xsl:otherwise>
+																									</xsl:choose>
+																								</table>
+																							</td>
+																						</tr>
+																					</table>
+																				</div>
+																			</td>
+																		</tr>
 																	</xsl:when>
-                                                   <xsl:otherwise>
-                                                      <tr>
+																	<xsl:otherwise>
+																		<tr>
 																			<td align="center" colspan="2">
 																				<xsl:variable name="cslookupbase" select="SectionLinkList/SectionLink[@name='ContentSlotLookupURL']"/>
 																				<xsl:variable name="cslookup" select="concat($cslookupbase,'&amp;filter=true')"/>
@@ -414,30 +414,30 @@
 																					<xsl:with-param name="editable" select="'no'"/>
 																				</xsl:apply-templates>
 																			</td>
-                                                      </tr>
-                                                   </xsl:otherwise>
+																		</tr>
+																	</xsl:otherwise>
 																</xsl:choose>
 															</xsl:if>
 														</xsl:if>
-													<xsl:apply-templates select="ActionLinkList" mode="addformparams"/>
-													<input xmlns="" type="hidden" name="httpcaller" value=""/>
-													<xsl:if test="not(//Control[@paramName='psredirect'])">
-														<input xmlns="" type="hidden" name="psredirect" value=""/>
-													</xsl:if>
-													<input xmlns="" type="hidden" name="sys_contenttypeid">
-														<xsl:attribute name="value"><xsl:value-of select="//ContentEditor/@contentTypeId"/></xsl:attribute>
-													</input>
-													<tr>
-														<td align="center" colspan="2" class="headercell2">
-															<xsl:comment>Action List goes here</xsl:comment>
-															<xsl:apply-templates select="ActionLinkList" mode="actionlist"/>
-						 &nbsp;<input type="button" onClick="ps_closeWithDirtyCheck();" class="nav_body">
+														<xsl:apply-templates select="ActionLinkList" mode="addformparams"/>
+														<input xmlns="" type="hidden" name="httpcaller" value=""/>
+														<xsl:if test="not(//Control[@paramName='psredirect'])">
+															<input xmlns="" type="hidden" name="psredirect" value=""/>
+														</xsl:if>
+														<input xmlns="" type="hidden" name="sys_contenttypeid">
+															<xsl:attribute name="value"><xsl:value-of select="//ContentEditor/@contentTypeId"/></xsl:attribute>
+														</input>
+														<tr>
+															<td align="center" colspan="2" class="headercell2">
+																<xsl:comment>Action List goes here</xsl:comment>
+																<xsl:apply-templates select="ActionLinkList" mode="actionlist"/>
+																&nbsp;<input type="button" onClick="checkBeforeClose();" class="nav_body">
 																<xsl:attribute name="accesskey"><xsl:call-template name="getLocaleString"><xsl:with-param name="key" select="'psx.generic.mnemonic.Close@C'"/><xsl:with-param name="lang" select="$lang"/></xsl:call-template></xsl:attribute>
 																<xsl:attribute name="value"><xsl:call-template name="getLocaleString"><xsl:with-param name="key" select="'psx.generic@Close'"/><xsl:with-param name="lang" select="$lang"/></xsl:call-template></xsl:attribute>
 															</input>
-															<xsl:apply-templates select="ActionListFormParams" mode="actionlist"/>
-														</td>
-													</tr>
+																<xsl:apply-templates select="ActionListFormParams" mode="actionlist"/>
+															</td>
+														</tr>
 													</table>
 												</form>
 												<form name="inlinelinkssearch" encType="multipart/form-data" target="searchitems" method="post">
@@ -461,19 +461,19 @@
 						</td>
 					</tr>
 				</table>
-			<!--This code changes the update buttons label-->
+				<!--This code changes the update buttons label-->
 				<script><![CDATA[
 					if(isOpenerActiveAssembly())
 					{
 						var relcDiv = document.getElementById("psRelatedContent");
 						if(relcDiv)
 						{
-						   relcDiv.style.position = "absolute";
-						   relcDiv.style.visibility = "hidden";
-						} 
+							relcDiv.style.position = "absolute";
+							relcDiv.style.visibility = "hidden";
+						}
 					}
-				]]></script>
-				
+					]]></script>
+
 			</body>
 		</html>
 	</xsl:template>
@@ -601,16 +601,16 @@
 			<xsl:when test="$systemLibraryDoc/*/psxctl:ControlMeta[@name=$ctlname]">
 				<xsl:apply-templates select="$systemLibraryDoc/*/psxctl:ControlMeta[@name=$ctlname]/psxctl:AssociatedFileList/psxctl:FileDescriptor[@type='script']" mode="scriptfiles"/>
 			</xsl:when>
-         <xsl:otherwise>
-            <xsl:for-each select="$customControlImportsDoc//xsl:import">
-               <xsl:variable name="customLibrary" select="@href"/>
-                  <xsl:choose>
-                     <xsl:when test="document($customLibrary)/*/psxctl:ControlMeta[@name=$ctlname]">
-                        <xsl:apply-templates select="document($customLibrary)/*/psxctl:ControlMeta[@name=$ctlname]/psxctl:AssociatedFileList/psxctl:FileDescriptor[@type='script']" mode="scriptfiles"/>
-                     </xsl:when>
-                  </xsl:choose>
-            </xsl:for-each>
-         </xsl:otherwise>
+			<xsl:otherwise>
+				<xsl:for-each select="$customControlImportsDoc//xsl:import">
+					<xsl:variable name="customLibrary" select="@href"/>
+					<xsl:choose>
+						<xsl:when test="document($customLibrary)/*/psxctl:ControlMeta[@name=$ctlname]">
+							<xsl:apply-templates select="document($customLibrary)/*/psxctl:ControlMeta[@name=$ctlname]/psxctl:AssociatedFileList/psxctl:FileDescriptor[@type='script']" mode="scriptfiles"/>
+						</xsl:when>
+					</xsl:choose>
+				</xsl:for-each>
+			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
 	<xsl:template match="psxctl:FileDescriptor" mode="scriptfiles"><xsl:value-of select="psxctl:FileLocation"/>;</xsl:template>
@@ -624,49 +624,49 @@
 			<xsl:when test="$userLibraryDoc/*/psxctl:ControlMeta[@name=$ctlname]">
 				<xsl:apply-templates select="$userLibraryDoc/*/psxctl:ControlMeta[@name=$ctlname]/psxctl:AssociatedFileList/psxctl:FileDescriptor[@type='css']" mode="stylefiles"/>
 			</xsl:when>
-         <xsl:otherwise>
-            <xsl:for-each select="$customControlImportsDoc/*/xsl:import">
-               <xsl:variable name="customLibrary" select="@href"/>
-                  <xsl:choose>
-                     <xsl:when test="document($customLibrary)/*/psxctl:ControlMeta[@name=$ctlname]">
-                        <xsl:apply-templates select="document($customLibrary)/*/psxctl:ControlMeta[@name=$ctlname]/psxctl:AssociatedFileList/psxctl:FileDescriptor[@type='css']" mode="stylefiles"/>
-                     </xsl:when>
-                  </xsl:choose>
-            </xsl:for-each>
-         </xsl:otherwise>
+			<xsl:otherwise>
+				<xsl:for-each select="$customControlImportsDoc/*/xsl:import">
+					<xsl:variable name="customLibrary" select="@href"/>
+					<xsl:choose>
+						<xsl:when test="document($customLibrary)/*/psxctl:ControlMeta[@name=$ctlname]">
+							<xsl:apply-templates select="document($customLibrary)/*/psxctl:ControlMeta[@name=$ctlname]/psxctl:AssociatedFileList/psxctl:FileDescriptor[@type='css']" mode="stylefiles"/>
+						</xsl:when>
+					</xsl:choose>
+				</xsl:for-each>
+			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
 	<xsl:template match="psxctl:FileDescriptor" mode="stylefiles"><xsl:value-of select="psxctl:FileLocation"/>:<xsl:value-of select="@name"/>;</xsl:template>
-   <xsl:template match="ControlNameSet"/>
+	<xsl:template match="ControlNameSet"/>
 	<xsl:template match="Workflow"/>
 	<xsl:template match="SectionLinkList"/>
 	<xsl:template match="ActionLinkList"/>
-        
+
 	<!-- Generic template that searches for a supplied string  in the supplied text and then replaces with another supplied string -->
-        <!-- Parameters: -->
-        <!-- text    - text in which search and replace is needed -->
-        <!-- replace - string to search for -->
-        <!-- with    - string to replace with -->
-        <xsl:template name="replace-string">
-        <xsl:param name="text"/>
-        <xsl:param name="replace"/>
-        <xsl:param name="with"/>
-        <xsl:variable name="stringText" select="string($text)"/>
-        <xsl:choose>
-           <xsl:when test="contains($stringText,$replace)">
-              <xsl:value-of select="substring-before($stringText,$replace)"/>
-              <xsl:value-of select="$with"/>
-              <xsl:call-template name="replace-string">
-                 <xsl:with-param name="text" select="substring-after($stringText,$replace)"/>
-                 <xsl:with-param name="replace" select="$replace"/>
-                 <xsl:with-param name="with" select="$with"/>
-              </xsl:call-template>
-           </xsl:when>
-           <xsl:otherwise>
-              <xsl:value-of select="$stringText"/>
-           </xsl:otherwise>
-         </xsl:choose>
-        </xsl:template>
+	<!-- Parameters: -->
+	<!-- text    - text in which search and replace is needed -->
+	<!-- replace - string to search for -->
+	<!-- with    - string to replace with -->
+	<xsl:template name="replace-string">
+		<xsl:param name="text"/>
+		<xsl:param name="replace"/>
+		<xsl:param name="with"/>
+		<xsl:variable name="stringText" select="string($text)"/>
+		<xsl:choose>
+			<xsl:when test="contains($stringText,$replace)">
+				<xsl:value-of select="substring-before($stringText,$replace)"/>
+				<xsl:value-of select="$with"/>
+				<xsl:call-template name="replace-string">
+					<xsl:with-param name="text" select="substring-after($stringText,$replace)"/>
+					<xsl:with-param name="replace" select="$replace"/>
+					<xsl:with-param name="with" select="$with"/>
+				</xsl:call-template>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="$stringText"/>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
 	<xsl:template name="createControlScriptTags">
 		<xsl:param name="scripttags"/>
 		<xsl:if test="not(contains(substring-after($scripttags, ';'),substring-before($scripttags, ';')))">

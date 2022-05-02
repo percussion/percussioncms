@@ -10,12 +10,14 @@
  var ps_submitElem;
 
  //Display dirty field warning
- function ps_warnIfDirty(){
+ function ps_warnSaveChanges(){
     if(!ps_isPreviewMode() && ps_isFormDirty() === true){
      return window.confirm(LocalizedMessage('form_change_warning'));
+    }else{
+		return false;
       }
-
   }
+
 
   //Mark window for closing by activeedit
   function ps_MarkWindowForClose(){
@@ -35,20 +37,25 @@
   	
   }
 
-  function checkbeforeClose(){
+
+  function checkBeforeClose(){
 
       if(ps_theForm != null && ps_initialChecksum != null)
       {
-          if(ps_warnIfDirty())
-          {
-              if(window.opener != null)
-                  window.opener.ps_noCloseFlag = false;
-              ps_MarkWindowForClose();
-              _formAlreadySubmitted = false; // Get around double click check
-              ps_theForm.submit();
 
+	   var saveChanges = ps_warnSaveChanges();
+          if(saveChanges)
+          {
+			  ps_submitElem.onclick();
+			  // We need both of teh following calls
+			  ps_theForm.onsubmit();
+              ps_theForm.submit();
           }
-          else if(window.opener != null)
+
+
+         if(window.opener != null)
+          {
+			  if(window.opener.ps_CloseMe == true)
           {
               window.opener.ps_noCloseFlag = false;
               if(window.opener.ps_updateFlag === true)
@@ -67,23 +74,23 @@
                       window.opener.ps_updateFlag = false;
                   }
               }
+				}
+
+            window.close();
+			return true;
+        }
+        else
+        {
+            window.close();
+			return true;
           }
       }
-
-  }
-
-
- // Close the edit window but check for
- // dirty fields and post warning if changes
- // to the form were made
- function ps_closeWithDirtyCheck()
- {
-     checkbeforeClose();
-     closeWindow();
- }
-
- function closeWindow(){
-	 window.open("", '_self').window.close();
+    else
+    {
+        window.close();
+		return true;
+    }
+	return true;
  }
  
 /**
@@ -208,15 +215,16 @@ function ps_openFullEditor()
       _editLiveInstance.setIsDirty(false);
     }
    ps_initialChecksum = ps_getAllFieldChecksums(theForm);
+
  }
  
  // Do a new checksum on the forms current state and
  // compare it tp the initial checksum.
  // Return true if the fields have data that has changed.
  function ps_isFormDirty(){
-   newChecksum = ps_getAllFieldChecksums(ps_theForm, false);	 
+   newChecksum = ps_getAllFieldChecksums(ps_theForm, false);
    return (newChecksum !== ps_initialChecksum);
- 
+
  }
  
  function ps_isPreviewMode()
