@@ -210,9 +210,8 @@ public class InstallUtil
       // are internally generated so that we do not have to worry about Solaris.
       String[] drives = getPossibleDrives();
       String strReplace = "\"" + strCurDir.charAt(0) + ":\\";
-      for (int iDrive = 0; iDrive < drives.length; ++iDrive)
-      {
-         String strFind = "\"" + drives[iDrive] + ":\\";
+      for (String drive : drives) {
+         String strFind = "\"" + drive + ":\\";
          findReplace(strFind, strReplace, project);
       }
 
@@ -273,7 +272,6 @@ public class InstallUtil
                continue;
             default :
                retval.append(str.charAt(i));
-               continue;
          }
       }
       return retval.toString();
@@ -549,9 +547,9 @@ public class InstallUtil
     *
     */
 
-   static public ArrayList getValueList(Node node, String childElemName)
+   public static List<String> getValueList(Node node, String childElemName)
    {
-      ArrayList list = new ArrayList();
+      List<String> list = new ArrayList<>();
 
       if (null == node || null == childElemName || childElemName.trim().length() < 1)
          return list;
@@ -847,13 +845,13 @@ public class InstallUtil
          throw new IllegalArgumentException("install location may not be " + "null or empty");
 
       Properties prop = new Properties();
-      try
+      try(FileInputStream fis  = new FileInputStream(dirName + File.separator + "rxconfig" + File.separator + "server"
+              + File.separator + "server.properties"))
       {
          // First Check the Port. We have to read the config file, and then
          // check
          // if the port is active
-         prop.load(new FileInputStream(dirName + File.separator + "rxconfig" + File.separator + "server"
-                 + File.separator + "server.properties"));
+         prop.load(fis);
          String bindPort = prop.getProperty("bindPort");
          if (bindPort == null || bindPort.isEmpty())
          {
@@ -883,7 +881,6 @@ public class InstallUtil
       } catch (SQLException e) {
          if ("XJ015".equals(e.getSQLState())) {
             PSLogger.logInfo( "Derby shutdown succeeded. SQLState=" + e.getSQLState() );
-            return;
          }
       }
    }
@@ -1038,6 +1035,7 @@ public class InstallUtil
             if (jarFile.exists()) {
                jar = new JarFile(jarFile);
                jarEntry = jar.getJarEntry(RxFileManager.VERSION_FILE);
+
                break;
             }
          }
@@ -1230,7 +1228,7 @@ public class InstallUtil
       if("oracle:thin".equals(driver))
          className = RxInstallerProperties.getResources().getString("oracle");
       else
-         className = RxInstallerProperties.getResources().getString("driver");
+         className = RxInstallerProperties.getResources().getString(driver);
 
       if (className == null)
          throw new SQLException("Driver " + driver + " is not supported by the current installer.");
@@ -1268,7 +1266,7 @@ public class InstallUtil
                if (m_jarUrls != null) {
                   try {
                      int size = m_jarUrls.size();
-                     URL urlList[] = new URL[size];
+                     URL[] urlList = new URL[size];
                      for (int i = 0; i < size; i++) {
                         InstallUtil.logInfo("Loading " + m_jarUrls.get(i));
                         urlList[i] = (URL) m_jarUrls.get(i);
@@ -1371,7 +1369,7 @@ public class InstallUtil
          log.debug(cls.getMessage(), cls);
          logError("Could not find the driver class : " + className);
          logError("Exception : " + cls.getMessage());
-         throw new SQLException("JDBC driver class not found. " + cls.toString());
+         throw new SQLException("JDBC driver class not found. " + cls);
       }
       catch (LinkageError link)
       {
@@ -1379,7 +1377,7 @@ public class InstallUtil
          log.debug(link.getMessage(), link);
          logError("linkage error");
          logError("Exception : " + link.getMessage());
-         throw new SQLException("JDBC driver could not be loaded. " + link.toString());
+         throw new SQLException("JDBC driver could not be loaded. " + link);
       }
       catch (Exception e)
       {
