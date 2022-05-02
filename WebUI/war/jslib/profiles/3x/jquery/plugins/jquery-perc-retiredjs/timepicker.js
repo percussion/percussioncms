@@ -38,7 +38,7 @@
 
         var date = inst.input.val().split(" ");
         if (date.length > 0 ) {
-            inst.input.val(date[0])
+            inst.input.val(date[0]);
             _setDateFromFieldOrg.apply(this,[inst, noDefault]);
             inst.input.val(date.join(" "));
         }
@@ -57,7 +57,7 @@
         _connectDateOrg.apply(this,[target, inst]);
         // showButtonPanel is required with timepicker
         if (this._get(inst, 'showTime')) {
-            inst.settings['showButtonPanel'] = true;
+            inst.settings.showButtonPanel = true;
         }
 
         var showOn = this._get(inst, 'showOn');
@@ -132,7 +132,7 @@
                     if(typeof inst !== 'undefined'){
                         $.datepicker._hideDatepicker(inst);
                     }
-                })
+                });
         }
         return;
 
@@ -262,11 +262,11 @@
             if (60 % stepMinutes != 0) { stepMinutes = 1; }
             if (24 % stepHours != 0)   { stepHours   = 1; }
 
-            $('#hourSlider').slider('option', 'max', 24 - stepHours);
-            $('#hourSlider').slider('option', 'step', stepHours);
+            $('#hourSlider').css('slider',{max: 24 - stepHours});
+            $('#hourSlider').css('slider',{step: stepHours});
 
-            $('#minuteSlider').slider('option', 'max', 60 - stepMinutes);
-            $('#minuteSlider').slider('option', 'step', stepMinutes);
+            $('#minuteSlider').css('slider',{max: 60 - stepMinutes});
+            $('#minuteSlider').css('slider',{step: stepMinutes});
 
             this._inputId = input.id;
 
@@ -301,9 +301,9 @@
 
         update: function (fd)
         {
-            var curTime = $('#' + this._mainDivId + ' span.fragHours').text()
-                + ':'
-                + $('#' + this._mainDivId + ' span.fragMinutes').text();
+            var curTime = $('#' + this._mainDivId + ' span.fragHours').text() +
+                ':' +
+                 $('#' + this._mainDivId + ' span.fragMinutes').text();
 
             if (!this._time24h) {
                 curTime += ' ' + $('#' + this._mainDivId + ' span.fragAmpm').text();
@@ -359,7 +359,7 @@
 
             var self = this;
 
-            $('#hourSlider').slider({
+            $('#hourSlider').css('slider',{
                 orientation: "vertical",
                 range: 'min',
                 min: 0,
@@ -373,7 +373,7 @@
                 }
             });
 
-            $('#minuteSlider').slider({
+            $('#minuteSlider').css('slider',{
                 orientation: "vertical",
                 range: 'min',
                 min: 0,

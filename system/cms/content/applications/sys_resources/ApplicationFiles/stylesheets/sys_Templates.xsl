@@ -1414,7 +1414,7 @@ onchange    %Script;       #IMPLIED
       </div>
       <script>
          var isMac = /macintosh|mac os/i.test(navigator.userAgent);
-         const collection = document.getElementsByClassName("perc-codeeditor-legend");
+         var collection = document.getElementsByClassName("perc-codeeditor-legend");
          var div =  collection.item(0);
       <![CDATA[
          td1 = '<td style="font-size:11px;background:#777;color:#fff;padding:0 4px">';
@@ -1550,10 +1550,16 @@ onchange    %Script;       #IMPLIED
       </psxctl:ParamList>
       <psxctl:AssociatedFileList>
 
+         <psxctl:FileDescriptor name="datepicker.js" type="script" mimetype="text/javascript">
+            <psxctl:FileLocation>/cm/jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/datepicker.js</psxctl:FileLocation>
+            <psxctl:Timestamp/>
+         </psxctl:FileDescriptor>
          <psxctl:FileDescriptor name="timepicker.js" type="script" mimetype="text/javascript">
             <psxctl:FileLocation>/cm/jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/timepicker.js</psxctl:FileLocation>
             <psxctl:Timestamp/>
          </psxctl:FileDescriptor>
+
+
 
          <psxctl:FileDescriptor name="jquery-ui-1.8.9.custom.css" type="css" mimetype="text/css">
             <psxctl:FileLocation>/cm/themes/smoothness/jquery-ui-1.8.9.custom.css</psxctl:FileLocation>
@@ -3671,6 +3677,10 @@ onchange    %Script;       #IMPLIED
          </psxctl:FileDescriptor>
          <psxctl:FileDescriptor name="editorinline.js" type="script" mimetype="text/javascript">
             <psxctl:FileLocation>/sys_resources/js/editorinline.js</psxctl:FileLocation>
+            <psxctl:Timestamp/>
+         </psxctl:FileDescriptor>
+         <psxctl:FileDescriptor name="datepicker.js" type="script" mimetype="text/javascript">
+            <psxctl:FileLocation>/cm/jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/datepicker.js</psxctl:FileLocation>
             <psxctl:Timestamp/>
          </psxctl:FileDescriptor>
          <psxctl:FileDescriptor name="timepicker.js" type="script" mimetype="text/javascript">

@@ -1517,11 +1517,11 @@ public class PSJdbcStatementFactory
       String indexName, PSJdbcDbmsDef dbmsDef)
    {
       StringBuilder buf = new StringBuilder();
-      if ( isDBOracle(dbmsDef) )
-      {
-         buf.append(dbmsDef.getSchema());
-         buf.append(".");
-      }
+//      if ( isDBOracle(dbmsDef) )
+//      {
+//         buf.append(dbmsDef.getSchema());
+//         buf.append(".");
+//      }
       
       if (indexName == null || indexName.trim().length() == 0 ||
             indexName.trim().length() > PSSqlHelper.getMaxConstraintNameLength(
