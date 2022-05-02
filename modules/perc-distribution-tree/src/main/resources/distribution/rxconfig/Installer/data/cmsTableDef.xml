@@ -7148,11 +7148,7 @@
         <primarykey name="PK_PSX_WIDGETBUILDERDEFINITION">
             <name>WIDGETBUILDERDEFINITIONID</name>
         </primarykey>
-        <indexdefinitions>
-            <index name="IX_WIDGET_BUILDER_DEFINITION_ID" isUnique="n">
-                <name>WIDGETBUILDERDEFINITIONID</name>
-            </index>
-        </indexdefinitions>
+        <indexdefinitions />
     </table>
     <table name="PSX_CONTENTCHANGEEVENT" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
