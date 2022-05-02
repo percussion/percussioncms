@@ -44,6 +44,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Properties;
 
 /**
@@ -86,9 +87,9 @@ public class PSUpgradePluginGeneralTables implements IPSUpgradePlugin
             props.getProperty("DB_BACKEND"),
             props.getProperty("DB_DRIVER_NAME"), null);
          conn = RxLogTables.createConnection(props);
-         ArrayList tableList =  null;
-         ArrayList schemaXslList =  null;
-         ArrayList dataXslList =  null;
+         List<String> tableList =  null;
+         List<String> schemaXslList =  null;
+         List<String> dataXslList =  null;
          PSJdbcTableSchemaCollection schemaColl = null;
          PSJdbcTableDataCollection dataColl = null;
          Document schemaDoc = null;
@@ -180,13 +181,13 @@ public class PSUpgradePluginGeneralTables implements IPSUpgradePlugin
     * @param dbmsDef Used to connect to the database and provides correct
     * schema/origin.
     * @param dataTypeMap The dataType map to use for this table's columns.
-    * @param tablelist array of table names
+    * @param tableList array of table names
     * @param schemaDoc table schema document
     * @param dataDoc table data document
     */
    static public void getTableSchemaAndDataDoc(IPSUpgradeModule config,
          Connection conn, PSJdbcDbmsDef dbmsDef, PSJdbcDataTypeMap dataTypeMap,
-         ArrayList tableList, Document schemaDoc, Document dataDoc)
+         List<String> tableList, Document schemaDoc, Document dataDoc)
       throws PSJdbcTableFactoryException
    {
       PSJdbcTableDataCollection collData = new PSJdbcTableDataCollection();
