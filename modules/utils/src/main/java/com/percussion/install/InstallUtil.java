@@ -1227,7 +1227,11 @@ public class InstallUtil
    {
       String className = null;
       Class driverClass = null;
-      className = RxInstallerProperties.getResources().getString(driver);
+      if("oracle:thin".equals(driver))
+         className = RxInstallerProperties.getResources().getString("oracle");
+      else
+         className = RxInstallerProperties.getResources().getString("driver");
+
       if (className == null)
          throw new SQLException("Driver " + driver + " is not supported by the current installer.");
       try {
