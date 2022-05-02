@@ -2096,17 +2096,14 @@
             <column name="NAME">Admin</column>
             <column name="COMPONENTID">0</column>
             <column name="NORMALNAME">admin</column>
-            <column name="DESCRIPTION">Admins have rights to take control of a page from a user that is currently accessing it. Admins can also delete pages that are not in the Public state. Finally, Admins have rights beyond the page workflow, such as rights to add new users to the system.
-            </column>
+            <column name="DESCRIPTION">Admins have rights to take control of a page from a user that is currently accessing it. Admins can also delete pages that are not in the Public state. Admins have rights beyond the page workflow, such as rights to add new users to the system.</column>
         </row>
             <row action="i" onTableCreateOnly="no">
             <column name="ID">4</column>
             <column name="NAME">Editor</column>
             <column name="COMPONENTID">0</column>
             <column name="NORMALNAME">editor</column>
-            <column name="DESCRIPTION">Editors review items and approve them to be published. They can change the
-                workflow state of items in all states and can modify item content in all states except Archive.
-            </column>
+            <column name="DESCRIPTION">Editors review items and approve them to be published. They can change the workflow state of items in all states and can modify item content in all states except Archive.</column>
         </row>
             <row action="i" onTableCreateOnly="no">
             <column name="ID">311</column>
@@ -2114,10 +2111,7 @@
 
             <column name="COMPONENTID">0</column>
             <column name="NORMALNAME">contributor</column>
-            <column name="DESCRIPTION">Contributors create new items and do most of the initial work on them, adding
-                content and modifying the layout of pages. Contributors can access and modify items in the following
-                states: Draft, Review.
-            </column>
+            <column name="DESCRIPTION">Contributors create new items and do most of the initial work on them, adding ontent and modifying the layout of pages. Contributors can access and modify items in the following states: Draft, Review.</column>
         </row>
             <row action="i" onTableCreateOnly="no">
             <column name="ID">7</column>
@@ -2136,8 +2130,7 @@
             <column name="NAME">Designer</column>
             <column name="COMPONENTID">0</column>
             <column name="NORMALNAME">designer</column>
-            <column name="DESCRIPTION">Designers have the same abilities as Admins, except that they do not have the
-                ability to manage workflows, users, roles, and folders, and cannot create, delete, or copy sites
+            <column name="DESCRIPTION">Designers have the same abilities as Admins, except that they do not have the ability to manage workflows, users, roles, and folders, and cannot create, delete, or copy sites
             </column>
         </row>
         <row action="i" onTableCreateOnly="no">
