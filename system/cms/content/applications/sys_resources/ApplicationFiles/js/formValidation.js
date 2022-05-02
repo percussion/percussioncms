@@ -331,6 +331,6 @@ function contentListUrl(url,fieldName,fileExt)
 // Set focus to error message
 $(document).ready(function() {
    setTimeout(function() {
-$('#globalErrorMessage').focus();
+		$('#globalErrorMessage').trigger('focus');
 	},50);
 });
