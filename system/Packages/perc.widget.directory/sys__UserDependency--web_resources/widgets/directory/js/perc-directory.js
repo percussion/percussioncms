@@ -77,7 +77,9 @@ $(document).ready(function() {
 
     function populateAlphaFilters(alphaFilterLetters) {
         alphaFilterLetters.forEach(function(letter) {
-            $('#perc-directory-alphabet-sort #perc-alpha-sort-letters').append('<a id="perc-alpha-sort-' + letter + '" class="perc-alpha-sort" aria-label="Filter by letter ' + letter.toUpperCase() + '" tabindex="0">' + letter.toUpperCase() + '</a>');
+            if( typeof(letter) !== "undefined" && letter.trim() !== "" ) {
+                $('#perc-directory-alphabet-sort #perc-alpha-sort-letters').append('<a id="perc-alpha-sort-' + letter + '" class="perc-alpha-sort" aria-label="Filter by letter ' + letter.toUpperCase() + '" tabindex="0">' + letter.toUpperCase() + '</a>');
+            }
         }, this);
     }
 
