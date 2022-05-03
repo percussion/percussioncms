@@ -1,28 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-  ~     Percussion CMS
-  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
-  ~
-  ~     This program is free software: you can redistribute it and/or modify
-  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
-  ~
-  ~     This program is distributed in the hope that it will be useful,
-  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
-  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  ~     GNU Affero General Public License for more details.
-  ~
-  ~     Mailing Address:
-  ~
-  ~      Percussion Software, Inc.
-  ~      PO Box 767
-  ~      Burlington, MA 01803, USA
-  ~      +01-781-438-9900
-  ~      support@percussion.com
-  ~      https://www.percussion.com
-  ~
-  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
-  -->
-
 <PSXArchiveInfo archiveRef="perc.widget.directory" category="USER" created="1572448751890" editable="true" serverName="eng-mreidy:9992" userName="Admin">
    <PSXFormatVersion buildId="3020246" buildNumber="20191001" displayVersion="5.3.15" interfaceVersion="9" majorVersion="5" microVersion="15" minorVersion="3" optionalId="" versionString="INTERNAL"/>
    <PSXDbmsInfo>
@@ -40,7 +16,7 @@
             <Description>This package contains structured content widgets: Person, Department and Organization that are used with the included Directory widget to display a paginated list of people belonging to a selected organization and enable users to search through the list.</Description>
             <Publisher name="Percussion Software Inc." url="Percussion Software Inc."/>
             <CmsVersion max="9.0.0" min="5.3.15"/>
-            <Version>2.0.4</Version>
+            <Version>2.0.5</Version>
             <ImplConfigFile/>
             <LocalConfigFile/>
             <PKGDependencies>
