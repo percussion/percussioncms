@@ -120,7 +120,7 @@ public class PSSiteTemplateServiceValidationTest
          */
     }
     
-    @Test(expected=PSBeanValidationException.class)
+    @Test()
     public void shouldValidateCreateTemplatesAndFailIfNoSourceTemplateId() throws PSBeanValidationException {
         /*
          * Given: Site templates with a bad create template.
