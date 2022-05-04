@@ -474,6 +474,9 @@ public class PSLivePublishChangeHandler implements IPSContentChangeHandler
     
     private boolean canPublishAssetIncremental(Long siteId) throws PSNotFoundException {
         PSPubServer pubServer = PSSitePublishDaoHelper.getDefaultPubServer(PSGuidUtils.makeGuid(siteId, PSTypeEnum.SITE));
+        if(pubServer == null){
+            return false;
+        }
         return !pubServer.isXmlFormat() && !pubServer.isDatabaseType();
     }
 
