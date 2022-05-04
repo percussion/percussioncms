@@ -39,6 +39,7 @@ public class PSSiteTemplates {
 
     @AssertValid
     private List<CreateTemplate> createTemplates = new ArrayList<>();
+
     @AssertValid
     private List<AssignTemplate> assignTemplates = new ArrayList<>();
     private ImportTemplate importTemplate = new ImportTemplate();
@@ -85,9 +86,9 @@ public class PSSiteTemplates {
             return name;
         }
 
-        @NotBlank
-        @NotNull
-        public void setName(String name)
+
+        public void setName(@NotBlank
+                            @NotNull String name)
         {
             this.name = name;
         }
@@ -97,9 +98,7 @@ public class PSSiteTemplates {
             return sourceTemplateId;
         }
 
-        @NotBlank
-        @NotNull
-        public void setSourceTemplateId(String sourceTemplateId)
+        public void setSourceTemplateId(@NotBlank @NotNull String sourceTemplateId)
         {
             this.sourceTemplateId = sourceTemplateId;
         }
