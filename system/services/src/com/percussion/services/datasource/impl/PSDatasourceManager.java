@@ -123,7 +123,11 @@ public class PSDatasourceManager implements IPSDatasourceManager
       String dsName = dsConfig.getDataSource();
       Connection conn = getDbConnection(dsName);
       String dbName = dsConfig.getDatabase();
-      
+      if(conn.getMetaData().getURL().contains("oracle")){
+         conn = new PSOracleConnectionWrapper(conn);
+      }
+
+
       if (!StringUtils.isBlank(dbName))
       {
          if (!dbName.equals(conn.getCatalog()))
@@ -236,7 +240,7 @@ public class PSDatasourceManager implements IPSDatasourceManager
    
    /**
     * The resolver to use, <code>null</code> until first call to 
-    * {@link #setDatasourceResolver(IPSDatasourceResolver)}, never 
+    * , never
     * <code>null</code> after that.
     */
    private static IPSDatasourceResolver m_datasourceResolver;
@@ -270,7 +274,7 @@ public class PSDatasourceManager implements IPSDatasourceManager
     *         server's configuration.
     * 
     * @throws IllegalStateException if
-    *            {@link #setDatasourceManager(IPSDatasourceManager)} has not
+    *             has not
     *            been called (this is normally called when the spring framework
     *            is initialized).
     * @throws NamingException If there is an error looking up the datasource.

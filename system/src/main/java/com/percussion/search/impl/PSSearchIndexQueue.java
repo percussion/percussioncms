@@ -42,6 +42,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -91,9 +92,9 @@ public class PSSearchIndexQueue  implements IPSSearchIndexQueue
       try {
          sql = "select qi.CONTENTID from "
                + PSSqlHelper.qualifyTableName("PSX_SEARCHINDEXQUEUE")
-               + " as qi left outer join "
+               + " qi left outer join "
                + PSSqlHelper.qualifyTableName("CONTENTSTATUS")
-               + " as cs on qi.CONTENTID = cs.CONTENTID group by qi.CONTENTID "
+               + " cs on qi.CONTENTID = cs.CONTENTID group by qi.CONTENTID "
                + "having coalesce(min(cs.CURRENTREVISION),-2)=-2  or  ( min(qi.REVISIONID) <= min(cs.CURRENTREVISION) and ( max(qi.CREATED) <= :minDelayDate) or min(qi.CREATED) <= :maxDelayDate ) order by min(qi.PRIORITY) asc, "
                + "min(qi.CREATED) asc";
       } catch (SQLException e) {
@@ -101,8 +102,8 @@ public class PSSearchIndexQueue  implements IPSSearchIndexQueue
       }
 
       SQLQuery query = sess.createSQLQuery(sql);
-         query.setTimestamp("minDelayDate", minDelayDate);
-         query.setTimestamp("maxDelayDate", maxDelayDate);
+         query.setParameter("minDelayDate", minDelayDate);
+         query.setParameter("maxDelayDate", maxDelayDate);
 
          if (count > 0)
          {
@@ -122,7 +123,12 @@ public class PSSearchIndexQueue  implements IPSSearchIndexQueue
 
             for (Object r : idRows)
             {
-               idList.add(((Integer) r));
+               if(r instanceof Integer) {
+                  idList.add(((Integer) r));
+               }else if(r instanceof BigDecimal){
+                  BigDecimal b = (BigDecimal)r;
+                  idList.add(Integer.valueOf(b.intValue()));
+               }
             }
             
             // Once we have selected the ids to process the following query will get all change events for the set of ids.
@@ -131,9 +137,9 @@ public class PSSearchIndexQueue  implements IPSSearchIndexQueue
             try {
                sql = "select qi.*, cs.CURRENTREVISION from "
                      + PSSqlHelper.qualifyTableName("PSX_SEARCHINDEXQUEUE")
-                     + " as qi left outer join "
+                     + " qi left outer join "
                      + PSSqlHelper.qualifyTableName("CONTENTSTATUS")
-                     + " as cs on qi.CONTENTID = cs.CONTENTID where (cs.CURRENTREVISION is null  or   qi.REVISIONID  <= cs.CURRENTREVISION )  and qi.CONTENTID in (:idList) order by qi.QUEUEID asc";
+                     + " cs on qi.CONTENTID = cs.CONTENTID where (cs.CURRENTREVISION is null  or   qi.REVISIONID  <= cs.CURRENTREVISION )  and qi.CONTENTID in (:idList) order by qi.QUEUEID asc";
             } catch (SQLException e) {
                throw new RuntimeException(e);
             }
@@ -300,9 +306,9 @@ public class PSSearchIndexQueue  implements IPSSearchIndexQueue
       try {
          sql = "select count(distinct(qi.CONTENTID)) from "
                 + PSSqlHelper.qualifyTableName("PSX_SEARCHINDEXQUEUE")
-                + " as qi left outer join "
+                + " qi left outer join "
                 + PSSqlHelper.qualifyTableName("CONTENTSTATUS")
-                + " as cs on qi.CONTENTID = cs.CONTENTID where cs.CONTENTID is null or qi.REVISIONID <= cs.CURRENTREVISION";
+                + " cs on qi.CONTENTID = cs.CONTENTID where cs.CONTENTID is null or qi.REVISIONID <= cs.CURRENTREVISION";
       } catch (SQLException e) {
          throw new RuntimeException(e);
       }
