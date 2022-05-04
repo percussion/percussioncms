@@ -1749,7 +1749,7 @@ public class PSWebserviceUtils
       PSRequest req = getRequest();
 
       Map<String, Object> oldParams = req.getParameters();
-      req.setParameters( Collections.synchronizedMap(new HashMap<>()));
+      req.setParameters( new HashMap<>());
 
       String addhocList = null;
       // concatenate a list of user names with ';' delimiter
