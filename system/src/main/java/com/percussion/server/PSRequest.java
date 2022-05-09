@@ -794,7 +794,7 @@ public class PSRequest
     *
     * @throws IllegalArgumentException if name is <code>null</code> or empty.
     */
-   public String getParameter(
+   public synchronized String getParameter(
       String name, String defValue)
    {
       if(name == null || name.trim().length() == 0)
@@ -848,7 +848,7 @@ public class PSRequest
     *
     * @throws IllegalArgumentException if name is <code>null</code> or empty.
     */
-   public Object getParameterObject(String name, Object defValue)
+   public synchronized Object getParameterObject(String name, Object defValue)
    {
       if(name == null || name.trim().length() == 0)
          throw new IllegalArgumentException("name can not be null or empty");
@@ -892,7 +892,7 @@ public class PSRequest
     * <code>null</code>
     * @param size the size to balance, assumed to be >= 1
     */
-   private Object getBalancedValue(Object value, int size)
+   private synchronized Object getBalancedValue(Object value, int size)
    {
       Object retValue = null;
 
@@ -956,7 +956,7 @@ public class PSRequest
     *
     * @return The requested parameter's value, may be <code>null</code> if list.
     */
-   public Object getSingleParameterObject(String name, Object defValue)
+   public synchronized Object getSingleParameterObject(String name, Object defValue)
    {
       if (m_params.isEmpty())
          return defValue;
@@ -978,7 +978,7 @@ public class PSRequest
     * Convenience method, calls {@link #getSingleParameterObject(String, Object)
     * getSingleParameterObject(name, null)}.
     */
-   public Object getSingleParameterObject(String name)
+   public synchronized Object getSingleParameterObject(String name)
    {
       return getSingleParameterObject(name, null);
    }
@@ -987,7 +987,7 @@ public class PSRequest
     * Convenience method, calls {@link #getParameter(String, String)
     * getParameter(name, null)}.
     */
-   public String getParameter(String name)
+   public synchronized String getParameter(String name)
    {
       return getParameter(name, null);
    }
@@ -1005,7 +1005,7 @@ public class PSRequest
     *
     * @return the request parameters, never <code>null</code>, may be empty.
     */
-   public Map<String,Object> getParameters()
+   public synchronized Map<String,Object> getParameters()
    {
       return m_params;
    }
@@ -1023,7 +1023,7 @@ public class PSRequest
     *
     * @throws IllegalArgumentException if name is <code>null</code> or empty.
     */
-    public Object[] getParameterList(String name)
+    public synchronized Object[] getParameterList(String name)
     {
        Object value = getParameterObject(name, null);
 
@@ -1050,7 +1050,7 @@ public class PSRequest
     * or parameter is not found for the specified name, <code>null</code> will
     * be returned.
     */
-   public Object removeParameter(String name)
+   public synchronized Object removeParameter(String name)
    {
       if(name == null || name.trim().length() == 0)
          return null;
@@ -1072,7 +1072,7 @@ public class PSRequest
     * @throws IllegalStateException if the type of objects in the parameter
     * values does not match the type of object being appended.
     */
-   public void appendParameter(String name, Object value)
+   public synchronized void appendParameter(String name, Object value)
    {
       if(name == null || name.trim().length() == 0)
          throw new IllegalArgumentException("name can not be null or empty");
@@ -1383,15 +1383,15 @@ public class PSRequest
     *
     * @throws IllegalArgumentException if params is <code>null</code>
     */
-   public void setParameters(Map<String, Object> params)
+   public synchronized void setParameters(Map<String, Object> params)
    {
       if (params == null)
          throw new IllegalArgumentException("params can not be null");
 
-      m_params = params;
-      if (m_serverRequest != null && m_serverRequest != this)
-         m_serverRequest.setParameters(params);
-   }
+         m_params = params;
+         if (m_serverRequest != null && m_serverRequest != this)
+            m_serverRequest.setParameters(params);
+      }
 
    /**
     * Replaces the value of an existing entry or creates a new entry in the

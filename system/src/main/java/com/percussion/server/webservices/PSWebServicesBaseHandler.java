@@ -796,7 +796,7 @@ public abstract class PSWebServicesBaseHandler implements IPSPortActionHandler
 
    /**
     * Reset the validation error in the given request. This is used
-    * in conjuction with the {@link #checkValidationError(PSRequest)}.
+    * in conjuction with the {@link #checkValidationError(PSRequest, String)}.
     * 
     * @param request The request object, it may not be <code>null</code>.
     */   
