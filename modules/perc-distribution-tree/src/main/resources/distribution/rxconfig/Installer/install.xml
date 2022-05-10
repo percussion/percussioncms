@@ -89,11 +89,11 @@
 
     <condition property="upgradeFrom732" value="true" else="false">
         <and>
-            <available file="${install.dir}/jetty/base/etc/perc-ds.xml"/>
-            <resourcecontains resource="${install.dir}/jetty/base/etc/perc-ds.xml" substring="com.percussion.utils.container.jetty.PSJettyUtils" />
+            <available file="${install.dir}/Version.properties"/>
+            <resourcecontains resource="${install.dir}/Version.properties" substring="displayVersion=7.3.2" />
         </and>
     </condition>
-
+    <echo>upgradeFrom732=${upgradeFrom732}</echo>
     <echo>development install=${DEVELOPMENT}</echo>
     <echo>clean.install=${clean.install}</echo>
     <echo>base.dir=${base.dir}</echo>
@@ -623,6 +623,7 @@
         <antcall target="replaceOldFontAwesome"  inheritall="true" inheritrefs="true"/>
         <antcall target="deleteOldJqueryUIJsFile"  inheritall="true" inheritrefs="true"/>
         <antcall target="deleteOldJqueryJsFile"  inheritall="true" inheritrefs="true"/>
+        <antcall target="deleteOldEXEFiles"  inheritall="true" inheritrefs="true"/>
     </target>
 
     <target name="deleteOldLog4jJars">
@@ -652,6 +653,29 @@
             </then>
         </if>
     </target>
+
+
+
+    <target name="deleteOldEXEFiles">
+        <echo>Deleting old 7.3.2 exe files...</echo>
+        <delete>
+            <fileset dir="${install.dir}">
+                <include name="lax.jar"/>
+                <include name="PackageBuilderHelp.zip"/>
+                <include name="PackageInstallerHelp.zip"/>
+                <include name="PercussionPackageBuilder.*"/>
+                <include name="PercussionPackageInstaller.*"/>
+                <include name="RhythmyxMultiServerManager.*"/>
+                <include name="RhythmyxServer.*"/>
+                <include name="RhythmyxServerAdministrator.*"/>
+                <include name="RhythmyxServerPropertiesEditor.*"/>
+                <include name="RhythmyxWorkbench.*"/>
+                <include name="RhythmyxWorkbenchHelp.zip"/>
+                <include name="RhythmyxXSpLit.*"/>
+            </fileset>
+        </delete>
+      </target>
+
 
     <target name="deleteOldJqueryJsFile">
         <if>
