@@ -1325,6 +1325,9 @@ public class PSSitePublishDao
             sitemapTask.setExtensionName(PSSiteMapGeneratorTask.EXTENSION_NAME);
             publishWs.saveEditionTask(sitemapTask);
 
+        }
+        if( !isOnDemandEdition(tgtEdition) ) {
+
             /*
              * Add the push feeds edition task
              */
@@ -1334,7 +1337,6 @@ public class PSSitePublishDao
             pushFeedsTask.setSequence(2);
             pushFeedsTask.setExtensionName("Java/global/percussion/task/perc_PushFeedDescriptorTask");
             publishWs.saveEditionTask(pushFeedsTask);
-
         }
     }
 
