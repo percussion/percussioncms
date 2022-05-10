@@ -53,15 +53,7 @@ public class TLSV12ProtocolSocketFactory implements SecureProtocolSocketFactory
            "TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384",
            "TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256",
            "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256",
-           "TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256",
-           "TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256",
-           "TLS_AES_128_GCM_SHA256",
-           "TLS_AES_256_GCM_SHA384",
-           "TLS_DHE_RSA_WITH_CHACHA20_POLY1305_SHA256",
-           "TLS_CHACHA20_POLY1305_SHA256",
            "TLS_DH_RSA_WITH_AES_128_GCM_SHA256",
-           "TLS_DHE_RSA_WITH_AES_128_GCM_SHA256",
-           "TLS_DHE_RSA_WITH_AES_256_GCM_SHA384",
            "TLS_RSA_WITH_AES_128_GCM_SHA256",
            "TLS_RSA_WITH_AES_256_GCM_SHA384"};
    
@@ -89,26 +81,15 @@ public class TLSV12ProtocolSocketFactory implements SecureProtocolSocketFactory
       if(log.isDebugEnabled()){
          SSLContext context;
          try{
-            context = SSLContext.getInstance("TLS","BCJSSE");
+            context = SSLContext.getInstance("TLS");
             log.debug("Default TLS Provider is: {}" , context.getProvider().getName());
          }
          catch (NoSuchAlgorithmException e)
          {
            log.debug("WARNING!  No TLS Providers are available!");
          }
-         catch (NoSuchProviderException e)
-         {
-             try
-            {
-               context = SSLContext.getDefault();
-            }
-            catch (NoSuchAlgorithmException e1)
-            {
-               log.debug("WARNING!  No TLS Providers are available!");
-            }
-         }
-         
-      log.debug("--- Enabled Protocols ---");
+
+         log.debug("--- Enabled Protocols ---");
       for(String s : socket.getEnabledProtocols()){
        log.debug("Protocol: {} :ENABLED",s);
     }

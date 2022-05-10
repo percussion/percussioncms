@@ -26,6 +26,7 @@ package com.percussion.delivery.feeds.services.rdbms;
 import com.percussion.delivery.feeds.data.IPSFeedDescriptor;
 import com.percussion.delivery.feeds.services.IPSConnectionInfo;
 import com.percussion.delivery.feeds.services.IPSFeedDao;
+import com.percussion.error.PSExceptionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
@@ -159,7 +160,15 @@ public class PSFeedDao extends HibernateDaoSupport implements IPSFeedDao {
 			Session session = getSession();
 			List<IPSFeedDescriptor> prepared = prepareDescriptors(descriptors);
 			for (IPSFeedDescriptor p : prepared) {
-				session.saveOrUpdate(p);
+				try {
+					session.saveOrUpdate(p);
+				}catch(Exception e){
+					log.error("Skipping feed: {} on site {} with link: {} due to error: {} ",
+							p.getName(),
+							p.getSite(),
+							p.getLink(),
+							PSExceptionUtils.getMessageForLog(e));
+				}
 			}
 
 	}

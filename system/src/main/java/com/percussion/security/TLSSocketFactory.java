@@ -51,7 +51,10 @@ import java.security.NoSuchProviderException;
 import java.security.Provider;
 import java.security.SecureRandom;
 import java.security.Security;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Properties;
 
 public class TLSSocketFactory extends SSLSocketFactory implements ProtocolSocketFactory {
@@ -71,15 +74,7 @@ public class TLSSocketFactory extends SSLSocketFactory implements ProtocolSocket
             "TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384",
             "TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256",
             "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256",
-            "TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256",
-            "TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256",
-            "TLS_AES_128_GCM_SHA256",
-            "TLS_AES_256_GCM_SHA384",
-            "TLS_DHE_RSA_WITH_CHACHA20_POLY1305_SHA256",
             "TLS_CHACHA20_POLY1305_SHA256",
-            "TLS_DH_RSA_WITH_AES_128_GCM_SHA256",
-            "TLS_DHE_RSA_WITH_AES_128_GCM_SHA256",
-            "TLS_DHE_RSA_WITH_AES_256_GCM_SHA384",
             "TLS_RSA_WITH_AES_128_GCM_SHA256",
             "TLS_RSA_WITH_AES_256_GCM_SHA384"};
     
@@ -126,31 +121,15 @@ public class TLSSocketFactory extends SSLSocketFactory implements ProtocolSocket
         }
        
       
-        SSLContext context;
-      try
-      {
-         context = SSLContext.getInstance("TLS","BCJSSE");
-      }
-      catch (NoSuchProviderException e)
-      {
-         ms_log.warn("Unable to initialize Bouncy Castle TLS provider, not found.  Reverting to default TLS provider.");
-         //use the default
-         context = SSLContext.getInstance("TLS");
-      }
-       
-        
+        SSLContext context=null;
+        context = SSLContext.getInstance("TLS");
+
+
         ms_log.debug("Initialized TLSSocketFactory enabled protocols to : {}",Arrays.toString(protocols));
         ms_log.debug("Using Security Provider: {}" , context.getProvider());
        
         TrustManagerFactory trustManagerFactory;
-      try
-      {
-         trustManagerFactory = TrustManagerFactory.getInstance("PKIX", "BCJSSE");
-      }
-      catch (NoSuchProviderException e1)
-      {
-         trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
-      }
+        trustManagerFactory = TrustManagerFactory.getInstance("PKIX");
         trustManagerFactory.init((KeyStore) null);
         TrustManager[] tm = trustManagerFactory.getTrustManagers();
         SecureRandom random;
@@ -175,6 +154,8 @@ public class TLSSocketFactory extends SSLSocketFactory implements ProtocolSocket
         for(String s : enabledCiphers){
            s = s.trim();
         }
+
+
        
     }
 
@@ -263,14 +244,25 @@ public class TLSSocketFactory extends SSLSocketFactory implements ProtocolSocket
         if((socket instanceof SSLSocket)) {
            SSLSocket sslSocket = (SSLSocket) socket;
               sslSocket.setEnabledProtocols(protocols);
-            sslSocket.setEnabledCipherSuites(enabledCiphers);
+            sslSocket.setEnabledCipherSuites(scrubCiphers(sslSocket.getSupportedCipherSuites(),enabledCiphers));
             ms_log.debug("Setting Enabled Ciphers to: {}" , StringUtils.join(enabledCiphers,","));
             logTLSConfig(sslSocket);
         }
         return socket;
     }
 
-   @Override
+    private static String[] scrubCiphers(String[] supportedCipherSuites, String[] enabledCiphers) {
+        ArrayList<String> ret = new ArrayList<>();
+        Collections.addAll(ret, enabledCiphers);
+        List<String> copySupported = Arrays.asList(supportedCipherSuites);
+        for(String s : enabledCiphers){
+            if(!copySupported.contains(s))
+                ret.remove(s);
+        }
+        return ret.toArray(new String[]{});
+    }
+
+    @Override
    public Socket createSocket(String host, int port, InetAddress localAddress, int localPort, HttpConnectionParams params)
          throws IOException
    {
