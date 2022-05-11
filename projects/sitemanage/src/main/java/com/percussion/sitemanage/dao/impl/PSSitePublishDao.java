@@ -1342,6 +1342,9 @@ public class PSSitePublishDao implements com.percussion.sitemanage.dao.IPSSitePu
             sitemapTask.setExtensionName(PSSiteMapGeneratorTask.EXTENSION_NAME);
             publishWs.saveEditionTask(sitemapTask);
 
+        }
+        if( !isOnDemandEdition(tgtEdition) ) {
+
             /*
              * Add the push feeds edition task
              */
@@ -1351,7 +1354,6 @@ public class PSSitePublishDao implements com.percussion.sitemanage.dao.IPSSitePu
             pushFeedsTask.setSequence(4);
             pushFeedsTask.setExtensionName(PSSitePublishDaoHelper.FEEDS_EDITION_TASK_EXT_NAME);
             publishWs.saveEditionTask(pushFeedsTask);
-
         }
     }
 
