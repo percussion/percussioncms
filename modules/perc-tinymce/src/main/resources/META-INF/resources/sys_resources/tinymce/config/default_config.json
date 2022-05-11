@@ -1,11 +1,14 @@
 [{
 
 	"config_css": "../sys_resources/css/tinymce/content.css",
-	"menubar": "edit insert view format table tools",
+	"menubar": "edit insert view format table tools custom",
 	"browser_spellcheck": true,
 	"plugins": "autosave,advlist,lists,table,searchreplace,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,anchor,charmap, hr,emoticons,code,textcolor,percadvlink,percmorelink,percglobalvariables,percadvimage,rxinline,rxinserthtml",
-	"toolbar": "restoredraft | undo redo  | styleselect bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link unlink | image",
+	"toolbar": "restoredraft | undo redo  | styleselect bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link unlink | image | percmorelink| rxinlinelink rxinlinetemplate rxinlineimage rxinserthtml",
 	"paste_word_valid_elements": "b,strong,i,em,h1,h2,u,p,ol,ul,li,a[href],table,tr,td,style",
 	"paste_data_images": true,
-	"valid_elements": "*[*]"
+	"valid_elements": "*[*]",
+   "menu":{
+	    "custom":{"title" :"Perc Menu", "items":"link unlink | image | percmorelink| rxinlinelink rxinlinetemplate rxinlineimage rxinserthtml"}
+   }
 }]

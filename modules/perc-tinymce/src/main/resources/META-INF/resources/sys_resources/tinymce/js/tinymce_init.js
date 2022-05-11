@@ -153,8 +153,10 @@ function getBaseConfig(parameters) {
                 'codemirror': '/sys_resources/tinymce/plugins/codemirror/plugin.js',
                 'percadvimage': '/sys_resources/tinymce/plugins/percadvimage/plugin.js',
                 'percadvlink': '/sys_resources/tinymce/plugins/percadvlink/plugin.js',
-                    'percglobalvariables': '/sys_resources/tinymce/plugins/percglobalvariables/plugin.js',
-                    'percmorelink': '/sys_resources/tinymce/plugins/percmorelink/plugin.js',
+                'percglobalvariables': '/sys_resources/tinymce/plugins/percglobalvariables/plugin.js',
+                'percmorelink': '/sys_resources/tinymce/plugins/percmorelink/plugin.js',
+				'rxinline':'/sys_resources/tinymce/plugins/rxinline/plugin.js',
+				'rxinserthtml':'/sys_resources/tinymce/plugins/rxinserthtml/plugin.js',
 
             },
             "codemirror": {
@@ -183,7 +185,7 @@ function getBaseConfig(parameters) {
                 if (meta.filetype == 'file') {
                     var pathSelectionOptions = {
                         okCallback: function(selectedItem){
-							  tinymce.execCommand('updateFileSelection',false,selectedItem);
+                            tinymce.execCommand('updateFileSelection',false,selectedItem);
                         },
                         dialogTitle: I18N.message("perc.ui.widget.tinymce@Please select"),
                         rootPath:topFrJQ.PercFinderTreeConstants.ROOT_PATH_ALL,
@@ -205,7 +207,7 @@ function getBaseConfig(parameters) {
                     var openCreateImageDialog = function(successCallback, cancelCallback) {
                         $.topFrameJQuery.PercCreateNewAssetDialog('percImage', successCallback, cancelCallback);
                     };
-					var validator = function (pathItem) {
+                    var validator = function (pathItem) {
                         return pathItem && pathItem.type === 'percImageAsset' ? null : 'Please select an image.';
                     };
                     var pathSelectionOptions2 = {
