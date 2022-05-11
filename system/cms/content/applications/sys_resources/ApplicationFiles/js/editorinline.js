@@ -221,12 +221,12 @@ function openWindow()
 	if(window.java != undefined)
 	{
 		___bws = window.java;
-		___bws.openWindow("/Rhythmyx/ui/content/ContentBrowserDialog.jsp", "contentBrowerDialog", "resizable,status=1,scrollbars=yes,width=750,height=500", false);
+		___bws.openWindow("/ui/content/ContentBrowserDialog.jsp", "contentBrowerDialog", "resizable,status=1,scrollbars=yes,width=750,height=500", false);
 
 
 		setTimeout(function(){___bws.focus();},1000);
 	} else {
-		___bws = window.open("/Rhythmyx/ui/content/ContentBrowserDialog.jsp", "contentBrowerDialog", "resizable,status=1,scrollbars=yes,width=750,height=500");
+		___bws = window.open("/ui/content/ContentBrowserDialog.jsp", "contentBrowerDialog", "resizable,status=1,scrollbars=yes,width=750,height=500");
    setTimeout(function(){___bws.focus();},1000);
 }
 }
