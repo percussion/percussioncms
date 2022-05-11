@@ -624,6 +624,7 @@
         <antcall target="deleteOldJqueryUIJsFile"  inheritall="true" inheritrefs="true"/>
         <antcall target="deleteOldJqueryJsFile"  inheritall="true" inheritrefs="true"/>
         <antcall target="deleteOldEXEFiles"  inheritall="true" inheritrefs="true"/>
+        <antcall target="backupTinymceRxresources"  inheritall="true" inheritrefs="true"/>
     </target>
 
     <target name="deleteOldLog4jJars">
@@ -654,7 +655,13 @@
         </if>
     </target>
 
-
+    <target name="backupTinymceRxresources">
+        <echo>Backup tinymce overrides as needs to be upgraded to 5...</echo>
+        <copydir src="${install.dir}/rx_resources/tinymce" dest="${install.dir}/rx_resources/tinymce_811Upgrade_BAK" />
+        <delete failonerror="false" includeemptydirs="true" verbose="true">
+            <fileset dir="${install.dir}/rx_resources/tinymce" includes="**/*" excludesfile="customer_config_override.json"/>
+        </delete>
+    </target>
 
     <target name="deleteOldEXEFiles">
         <echo>Deleting old 7.3.2 exe files...</echo>
