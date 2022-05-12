@@ -530,13 +530,12 @@
         <exclude name="jetty/base/resources/log4j*.xml"/>
         <exclude name="rxconfig/Installer/rxrepository.properties"/>
         <exclude name="rx_resources/vm/custom_head.vm"/>
-        <exclude name="rx_resources/tinymce/config/customer_config_override.json"/>
+        <exclude name="**/customer_config_override.json"/>
         <exclude name="Repository/**"/>
         <exclude name="Extensions/**"/>
         <exclude name="rxconfig/**"/>
         <exclude name="Deployment"/>
         <exclude name="Staging"/>
-        <exclude name="rx_resources/tinymce/config/customer_config_override.json"/>
         <exclude name="logs"/>
         <exclude name="ObjectStore"/>
         <exclude name="jetty/base/logs"/>
@@ -660,7 +659,10 @@
         <echo>Backup tinymce overrides as needs to be upgraded to 5...</echo>
         <copydir src="${install.dir}/rx_resources/tinymce" dest="${install.dir}/rx_resources/tinymce_811Upgrade_BAK" />
         <delete failonerror="false" includeemptydirs="true" verbose="true">
-            <fileset dir="${install.dir}/rx_resources/tinymce" includes="**/*" excludesfile="customer_config_override.json"/>
+            <fileset dir="${install.dir}/rx_resources/tinymce">
+                <include name="**/*"/>
+                <exclude name="**/customer_config_override.json"/>
+            </fileset>
         </delete>
     </target>
 
