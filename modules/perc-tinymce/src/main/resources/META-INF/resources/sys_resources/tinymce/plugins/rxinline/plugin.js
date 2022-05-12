@@ -32,7 +32,7 @@ tinymce.PluginManager.add('rxinline', function(editor) {
 
     // Adds a button to the toolbar
     editor.ui.registry.addButton('rxinlinelink', {
-        icon: '/rx_resources/images/slink.gif',
+        icon: 'slink',
         type: 'button',
         tooltip: 'Insert Inline Link',
         onAction: function() {
@@ -44,7 +44,7 @@ tinymce.PluginManager.add('rxinline', function(editor) {
     editor.ui.registry.addMenuItem('rxinlinelink', {
         text: 'Inline Link',
         shortcut: 'Meta+Shift+L',
-        icon: '/rx_resources/images/slink.gif',
+        icon: 'slink',
         onAction: function() {
             createInlineSearchBox("rxhyperlink",tinyMCE.activeEditor.selection.getContent(),tinyMCEinlineLinkSlot,ctypeid,insertInlineText);
         },
@@ -60,7 +60,7 @@ tinymce.PluginManager.add('rxinline', function(editor) {
 
     // Adds a button to the toolbar
     editor.ui.registry.addButton('rxinlinetemplate', {
-        icon: '/rx_resources/images/variant.gif',
+        icon: 'variant',
         tooltip: 'Insert Inline Template',
         onAction: function() {
             createInlineSearchBox("rxvariant",tinyMCE.activeEditor.selection.getContent(),tinyMCEinlineVariantSlot,ctypeid,insertInlineText);
@@ -71,7 +71,7 @@ tinymce.PluginManager.add('rxinline', function(editor) {
     editor.ui.registry.addMenuItem('rxinlinetemplate', {
         text: 'Inline Template',
         shortcut: 'Meta+Shift+T',
-        icon: '/rx_resources/images/variant.gif',
+        icon: 'variant',
         onAction: function() {
             createInlineSearchBox("rxvariant",tinyMCE.activeEditor.selection.getContent(),tinyMCEinlineVariantSlot,ctypeid,insertInlineText);
         },
@@ -86,7 +86,7 @@ tinymce.PluginManager.add('rxinline', function(editor) {
 
     // Adds a button to the toolbar
     editor.ui.registry.addButton('rxinlineimage', {
-        icon: '/rx_resources/images/inlineimage.gif',
+        icon: 'inlineimage',
         tooltip: 'Insert Inline Image',
         onAction: function() {
             createInlineSearchBox("rximage",tinyMCE.activeEditor.selection.getContent(),tinyMCEinlineImageSlot,ctypeid,insertInlineText);
@@ -98,7 +98,7 @@ tinymce.PluginManager.add('rxinline', function(editor) {
     editor.ui.registry.addMenuItem('rxinlineimage', {
         text: 'Inline Image',
         shortcut: 'Meta+Shift+I',
-        icon: '/rx_resources/images/inlineimage.gif',
+        icon: 'inlineimage',
         onAction: function() {
             createInlineSearchBox("rximage",tinyMCE.activeEditor.selection.getContent(),tinyMCEinlineImageSlot,ctypeid,insertInlineText);
         },

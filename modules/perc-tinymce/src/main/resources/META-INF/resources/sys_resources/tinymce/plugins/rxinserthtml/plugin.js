@@ -3,7 +3,7 @@ tinymce.PluginManager.add('rxinserthtml', function(editor) {
 
     editor.ui.registry.addButton('rxinserthtml', {
         tooltip: 'Insert HTML Fragment...',
-		icon: '../rx_resources/images/inserthtml.gif',
+		icon: 'inserthtml',
         onAction: function() {
             win = editor.windowManager.open({
                     title: 'Insert HTML Fragment...',
@@ -32,7 +32,7 @@ tinymce.PluginManager.add('rxinserthtml', function(editor) {
     // Adds a menu item to the tools menu
     editor.ui.registry.addMenuItem('rxinserthtml', {
         text: 'Insert HTML Fragment...',
-		icon: '../rx_resources/images/inserthtml.gif',
+		icon: 'inserthtml',
         shortcut: 'Meta+Shift+H',
         context:'insert',
         onAction: function() {
