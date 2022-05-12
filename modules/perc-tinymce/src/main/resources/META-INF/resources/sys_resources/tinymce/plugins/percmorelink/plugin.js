@@ -6,16 +6,28 @@ tinymce.PluginManager.add('percmorelink', function(editor, url) {
 
 	// Register commands
 	editor.addCommand('mceInsertMoreLink', function() {
-
+			editor.execCommand('mceInsertContent', false,ml);
 	});
 
 	editor.ui.registry.addMenuItem('percmorelink', {
 		text: 'More link',
-		icon: 'morelink',
+		icon: 'more-drawer',
 		onAction: function () {
-            editor.execCommand('mceInsertContent', false, ml);
+            editor.execCommand('mceInsertContent',false, ml);
 		},
      	separator: 'before',
+    	context: 'insert'
+	});
+
+
+    editor.ui.registry.addButton('percmorelink', {
+        icon: 'more-drawer',
+        type: 'button',
+        tooltip: 'More Link',
+        onAction: function () {
+            editor.execCommand('mceInsertContent', false,ml);
+        },
+        separator: 'before',
     	context: 'insert'
 	});
 
