@@ -8,6 +8,7 @@
 	"paste_word_valid_elements": "b,strong,i,em,h1,h2,u,p,ol,ul,li,a[href],table,tr,td,style",
 	"paste_data_images": true,
 	"valid_elements": "*[*]",
+	"icons": "percCustIcon",
    "menu":{
 	    "custom":{"title" :"Perc Menu", "items":"link unlink | image | percmorelink| rxinlinelink rxinlinetemplate rxinlineimage rxinserthtml"}
    }
