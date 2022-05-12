@@ -657,7 +657,9 @@
 
     <target name="backupTinymceRxresources">
         <echo>Backup tinymce overrides as needs to be upgraded to 5...</echo>
-        <copydir src="${install.dir}/rx_resources/tinymce" dest="${install.dir}/rx_resources/tinymce_811Upgrade_BAK" />
+        <copy todir="${install.dir}/rx_resources/tinymce_811Upgrade_BAK">
+            <fileset dir="${install.dir}/rx_resources/tinymce"/>
+        </copy>
         <delete failonerror="false" includeemptydirs="true" verbose="true">
             <fileset dir="${install.dir}/rx_resources/tinymce">
                 <include name="**/*"/>
