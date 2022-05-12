@@ -3675,6 +3675,10 @@ onchange    %Script;       #IMPLIED
             <psxctl:FileLocation>/sys_resources/tinymce/js/tinymce_init.js</psxctl:FileLocation>
             <psxctl:Timestamp/>
          </psxctl:FileDescriptor>
+		<psxctl:FileDescriptor name="dojo.js" type="script" mimetype="text/javascript">
+                <psxctl:FileLocation>/sys_resources/dojo/dojo.js</psxctl:FileLocation>
+                <psxctl:Timestamp/>
+            </psxctl:FileDescriptor>
          <psxctl:FileDescriptor name="editorinline.js" type="script" mimetype="text/javascript">
             <psxctl:FileLocation>/sys_resources/js/editorinline.js</psxctl:FileLocation>
             <psxctl:Timestamp/>
