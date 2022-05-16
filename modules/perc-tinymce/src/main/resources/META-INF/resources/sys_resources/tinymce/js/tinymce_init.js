@@ -219,14 +219,14 @@ function getBaseConfig(parameters) {
                         initialPath: topFrJQ.cookie('perc-inlineimage-path'),
                         selectedItemValidator:validator,
                         acceptableTypes:'percImageAsset,site,Folder',
-                        createNew:{'label':'Upload', 'iconclass':'icon-upload-alt', 'onAction':openCreateImageDialog}
+                        createNew:{'label':'Upload', 'iconclass':'icon-upload-alt', 'onclick':openCreateImageDialog}
                     };
                     imagePickerDialog = topFrJQ.PercPathSelectionDialog.open(pathSelectionOptions2);
                 }
 
             },
             "convert_urls" : false,
-            "toolbar": "newdocument undo redo restoredraft | cut copy paste searchreplace | styleselect fontselect fontsizeselect forecolor backcolor removeformat | bold italic underline strikethrough superscript subscript | alignleft aligncenter alignright alignjustify alignnone |  bullist numlist outdent indent | link unlink openlink media | visualchars visualblocks fullscreen print preview | anchor charmap hr emoticons insertdatetime | table tabledelete tableinsertrowafter tabledeleterow tableinsertcolbefore tabledeletecol tablesplitcells tablemergecells | rxinlinelink rxinlinetemplate rxinlineimage rxinserthtml | ltr rtl codesample code"
+            "toolbar": "newdocument undo redo restoredraft | cut copy paste searchreplace | styleselect fontselect fontsizeselect forecolor backcolor removeformat | bold italic underline strikethrough superscript subscript | alignleft aligncenter alignright alignjustify alignnone |  bullist numlist outdent indent | link unlink openlink media | visualchars visualblocks fullscreen print preview | anchor charmap hr emoticons insertdatetime | table tabledelete tableinsertrowafter tabledeleterow tableinsertcolbefore tabledeletecol tablesplitcells tablemergecells | percglobalvariables | rxinlinelink rxinlinetemplate rxinlineimage rxinserthtml | ltr rtl codesample code"
         }, options);
         console.log("From base config="+JSON.stringify(mergedBaseOptions, null, 2));
 
