@@ -56,7 +56,8 @@ tinymce.PluginManager.add('percadvlink', function(editor) {
         }
 
         data.text = initialText = selection.getContent({format: 'text'});
-        data.href = anchorElm ? dom.getAttrib(anchorElm, 'href') : '';
+        data.url = anchorElm ? dom.getAttrib(anchorElm, 'href') : '';
+		data.href = {value: data.url};
         data.title = anchorElm ? dom.getAttrib(anchorElm, 'title') : '';
         data.target = anchorElm ? dom.getAttrib(anchorElm, 'target') : '';
         data.rel = anchorElm ? dom.getAttrib(anchorElm, 'rel') : '';
@@ -80,8 +81,7 @@ tinymce.PluginManager.add('percadvlink', function(editor) {
             body: {
                 type: 'panel', // root body panel
                 items: [
-                    { name: 'hrefPath',type: 'urlinput',filetype: 'file',size: 40,label: 'Url' },
-                    { name: 'href', type: 'input', label: 'Url'},
+                    { name: 'href',type: 'urlinput',filetype: 'file',size: 40,label: 'Url' },
                     { name: 'title', type: 'input',label: I18N.message("perc.ui.widget.tinymce@Title"),inputMode: 'text'},
                     { name: 'target', type: 'listbox',label: I18N.message("perc.ui.widget.tinymce@Target"),
                         items: [
@@ -107,7 +107,7 @@ tinymce.PluginManager.add('percadvlink', function(editor) {
             },
 
             onSubmit: function(e) {
-                var linkPath = data.href;
+                var linkPath = data.url;
                 if (!linkPath) {
                     editor.execCommand('unlink');
                     return;
@@ -161,7 +161,8 @@ tinymce.PluginManager.add('percadvlink', function(editor) {
                 cm1LinkData.inlinetype = 'rxhyperlink';
                 cm1LinkData.jcrPath = pathItem.path;
                 cm1LinkData.pathItem = pathItem;
-                data.href = renderLink.url;
+                data.url = renderLink.url;
+				data.href = {value: data.url};
                 data.title= renderLink.title;
                 addLink('no');
                 win.setData(data);
@@ -171,7 +172,7 @@ tinymce.PluginManager.add('percadvlink', function(editor) {
         //Inner function that adds the link.
         function addLink(extLink){
             var anchorAttrs = {
-                href: data.href,
+                href: data.url,
                 target: data.target ? data.target : null,
                 title: data.title ? data.title : null,
                 rel: data.rel ? data.rel : null,
@@ -185,7 +186,7 @@ tinymce.PluginManager.add('percadvlink', function(editor) {
                 'data-pathitem': JSON.stringify(cm1LinkData.pathItem)
             };
             var extAnchorAttrs = {
-                href: data.href,
+                href: data.url,
                 target: data.target ? data.target : null,
                 title: data.title ? data.title : null
             };
