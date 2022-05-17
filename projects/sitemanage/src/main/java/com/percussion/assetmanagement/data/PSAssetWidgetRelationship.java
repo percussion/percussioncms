@@ -289,8 +289,6 @@ public class PSAssetWidgetRelationship extends PSAbstractDataObject
     private String ownerId;
     
     @NotNull
-    @NotNegative
-    @Min(value=1)
     private long widgetId;
         
     @NotNull
