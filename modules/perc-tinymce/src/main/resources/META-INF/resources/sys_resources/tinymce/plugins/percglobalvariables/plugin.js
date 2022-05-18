@@ -73,7 +73,7 @@ tinymce.PluginManager.add('percglobalvariables', function(editor, url) {
 
     editor.ui.registry.addButton('percglobalvariables', {
         tooltip: 'Global variables',
-        icon: 'globalvariables',
+        icon: 'character-count',
         onAction:function () {
             editor.execCommand('mceInsertGlobalVariables');
         },
@@ -81,7 +81,7 @@ tinymce.PluginManager.add('percglobalvariables', function(editor, url) {
     });
     editor.ui.registry.addMenuItem('percglobalvariables', {
         text: 'Global variables',
-        icon: 'globalvariables',
+        icon: 'character-count',
         onAction:function () {
             editor.execCommand('mceInsertGlobalVariables');
         },
