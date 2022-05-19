@@ -2959,7 +2959,7 @@ onchange    %Script;       #IMPLIED
          </psxctl:Param>
          <psxctl:Param name="height" datatype="String" paramtype="generic">
             <psxctl:Description>This parameter specifies the height of the applet. This parameter may be either a pixel or a percentage of the available vertical space. The default value is 300.</psxctl:Description>
-            <psxctl:DefaultValue>250</psxctl:DefaultValue>
+            <psxctl:DefaultValue>100%</psxctl:DefaultValue>
          </psxctl:Param>
          <psxctl:Param name="style" datatype="String" paramtype="generic">
             <psxctl:Description>This parameter specifies style information for the current element. The syntax of the value of the style attribute is determined by the default style sheet language.</psxctl:Description>
@@ -3627,7 +3627,7 @@ onchange    %Script;       #IMPLIED
          </psxctl:Param>
          <psxctl:Param name="config_src_url" datatype="String" paramtype="generic">
             <psxctl:Description>This parameter specifies the location of the config.xml that will the control will use for configuration. This file must be in the /rx_resources/ephox folder.  The default value is "config.xml".</psxctl:Description>
-            <psxctl:DefaultValue>/Rhythmyx/sys_resources/tinymce/config/default_config.json</psxctl:DefaultValue>
+            <psxctl:DefaultValue>/sys_resources/tinymce/config/default_config.json</psxctl:DefaultValue>
          </psxctl:Param>
          <psxctl:Param name="css_file" datatype="String" paramtype="generic">
             <psxctl:Description>This parameter specifies the location of the customer defined css file. This file must be in the /rx_resources/tinymce folder.</psxctl:Description>
@@ -3869,7 +3869,7 @@ onchange    %Script;       #IMPLIED
       </xsl:variable>
       <script>
          <xsl:text disable-output-escaping="yes">
-            //&lt;![CDATA[<![CDATA[
+            <![CDATA[
 
        function TinyMCEControlIsDirty_]]></xsl:text><xsl:value-of select="$uniqueName"/><xsl:text disable-output-escaping="yes"><![CDATA[()
        {
@@ -3881,7 +3881,7 @@ onchange    %Script;       #IMPLIED
 
             return false;
        }
-      //  ]]>]]&gt;</xsl:text>
+        ]]></xsl:text>
 
          <![CDATA[
 
