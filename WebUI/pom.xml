@@ -1202,5 +1202,10 @@
             <groupId>org.owasp</groupId>
             <artifactId>csrfguard</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.percussion</groupId>
+            <artifactId>perc-server-ui-cmp</artifactId>
+            <version>8.1.1-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 </project>
