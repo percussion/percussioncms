@@ -235,7 +235,9 @@ ul#perc-control-menu-container{
     width:150px;
 }
 #perc-control-menu-container li{
-    background-color:#3288B0;
+    background-color:#133C55 !important;
+   	color:white;
+   	font-weight: bold;
     padding-top:6px;
     padding-bottom:6px;
     border-bottom:1px solid #99C4D8;
