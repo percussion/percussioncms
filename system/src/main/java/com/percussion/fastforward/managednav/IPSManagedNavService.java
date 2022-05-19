@@ -399,6 +399,7 @@ public interface IPSManagedNavService
     *         <code>false</code> otherwise.
     */
    boolean isNavTree(IPSGuid guid);
+   long getMenuSlotId();
 
    /**
     * Finds the ancestor's IDs for the specified navon node.
