@@ -596,7 +596,7 @@
     <!--
     <servlet>
         <servlet-name>ContentUiAAServlet</servlet-name>
-        <servlet-class>com.percussion.content.ui.aa.PSAAClientServlet</servlet-class>
+        <servlet-class>PSAAClientServlet</servlet-class>
     </servlet>
 -->
     <servlet>

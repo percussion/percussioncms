@@ -4,6 +4,9 @@
 <%@ page import="org.apache.commons.lang.StringUtils" %>
 <%@ page import="org.json.JSONArray" %>
 <%@ page import="org.json.JSONObject" %>
+<%@ page import="com.percussion.content.ui.aa.actions.IPSAAClientAction" %>
+<%@ page import="com.percussion.content.ui.aa.actions.PSAAClientActionFactory" %>
+<%@ page import="com.percussion.content.ui.aa.actions.PSActionResponse" %>
 <%--
   ~     Percussion CMS
   ~     Copyright (C) 1999-2020 Percussion Software, Inc.

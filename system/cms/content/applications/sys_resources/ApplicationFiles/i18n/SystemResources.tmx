@@ -792,14 +792,14 @@
 				<seg>The context for Active Assembly Processor Proxy must be either PSRequest or IPSRequestContext to filter the dependents by authorization type</seg>
 			</tuv>
 		</tu>
-      <tu tuid="com.percussion.search.ui.PSSearchFieldOperators@NonNumericFieldValueException">
+      <tu tuid="PSSearchFieldOperators@NonNumericFieldValueException">
          <prop type="sectionname" xml:lang="en-us">Content Explorer</prop>
          <note xml:lang="en-us">A non-numeric value was supplied for a numeric field.</note>
          <tuv xml:lang="en-us">
             <seg>A non-numeric value "{0}" was supplied for the search field "{1}".  Values supplied for this field must be numeric.</seg>
          </tuv>
       </tu>
-      <tu tuid="com.percussion.search.ui.PSSearchSimplePanel@Display Format:">
+      <tu tuid="PSSearchSimplePanel@Display Format:">
          <prop type="sectionname" xml:lang="en-us">Content Explorer</prop>
          <note xml:lang="en-us">Label for the PSSearchDialog</note>
          <tuv xml:lang="en-us">
@@ -807,7 +807,7 @@
             <seg>Display Format</seg>
          </tuv>
       </tu>
-      <tu tuid="com.percussion.search.ui.PSSearchSimplePanel@Unlimited">
+      <tu tuid="PSSearchSimplePanel@Unlimited">
          <prop type="sectionname" xml:lang="en-us">Content Explorer</prop>
          <note xml:lang="en-us">Default for max results check</note>
          <tuv xml:lang="en-us">
@@ -815,7 +815,7 @@
             <seg>Unlimited</seg>
          </tuv>
       </tu>
-      <tu tuid="com.percussion.search.ui.PSSearchSimplePanel@Max rows returned">
+      <tu tuid="PSSearchSimplePanel@Max rows returned">
          <prop type="sectionname" xml:lang="en-us">Content Explorer</prop>
          <note xml:lang="en-us">Max rows returned.</note>
          <tuv xml:lang="en-us">
@@ -823,35 +823,35 @@
             <seg>Max rows returned</seg>
          </tuv>
       </tu>
-      <tu tuid="com.percussion.search.ui.PSSearchSimplePanel@AllowableRange">
+      <tu tuid="PSSearchSimplePanel@AllowableRange">
          <prop type="sectionname" xml:lang="en-us">Content Explorer</prop>
          <note xml:lang="en-us">Allowable range is used when the maxSearchResult is not unlimited</note>
          <tuv xml:lang="en-us">
             <seg>Allowable range is {0}-{1}</seg>
          </tuv>
       </tu>
-      <tu tuid="com.percussion.search.ui.PSSearchSimplePanel@Maximum Results">
+      <tu tuid="PSSearchSimplePanel@Maximum Results">
          <prop type="sectionname" xml:lang="en-us">Content Explorer</prop>
          <note xml:lang="en-us">Top property row name.</note>
          <tuv xml:lang="en-us">
             <seg>Maximum Results</seg>
          </tuv>
       </tu>
-      <tu tuid="com.percussion.search.ui.PSSearchSimplePanel@Invalid maximum results">
+      <tu tuid="PSSearchSimplePanel@Invalid maximum results">
          <prop type="sectionname" xml:lang="en-us">Content Explorer</prop>
          <note xml:lang="en-us">Error message for invalid maximum results entered.</note>
          <tuv xml:lang="en-us">
             <seg>Invalid maximum results</seg>
          </tuv>
       </tu>
-      <tu tuid="com.percussion.search.ui.PSSearchSimplePanel@Search query too long">
+      <tu tuid="PSSearchSimplePanel@Search query too long">
          <prop type="sectionname" xml:lang="en-us">Content Explorer</prop>
          <note xml:lang="en-us">Error message for query string that exceeds the max value length allowed.</note>
          <tuv xml:lang="en-us">
             <seg>The search query text is longer than the maximum {0} characters allowed.</seg>
          </tuv>
       </tu>
-      <tu tuid="com.percussion.search.ui.PSSearchSimplePanel@Validation Error">
+      <tu tuid="PSSearchSimplePanel@Validation Error">
          <prop type="sectionname" xml:lang="en-us">Content Explorer</prop>
          <note xml:lang="en-us">Title for validation error dialog.</note>
          <tuv xml:lang="en-us">
@@ -895,7 +895,7 @@
             <seg>Maximum results must be a number between 0 and &lt;{0}&gt;</seg>
          </tuv>
       </tu>
-      <tu tuid="com.percussion.search.ui.PSSearchSimplePanel@Case Sensitive:">
+      <tu tuid="PSSearchSimplePanel@Case Sensitive:">
          <prop type="sectionname" xml:lang="en-us">Content Explorer</prop>
          <note xml:lang="en-us">Label for case sensitive search check box.</note>
          <tuv xml:lang="en-us">
@@ -967,7 +967,7 @@
             <seg>The following characters are not allowed as part of a full text search query when synonym expansion is enabled:</seg>
          </tuv>
       </tu>
-      <tu tuid="com.percussion.search.ui.PSSearchSimplePanel@Search for:">
+      <tu tuid="PSSearchSimplePanel@Search for:">
          <prop type="sectionname" xml:lang="en-us">Content Explorer</prop>
          <note xml:lang="en-us">Label for full text query text area.</note>
          <tuv xml:lang="en-us">
@@ -1383,119 +1383,119 @@
             <seg>Ignoring the folder &lt;{0}&gt;, because a folder with that name already exists in the folder &lt;{1}&gt;</seg>
          </tuv>
       </tu>
-      <tu tuid="com.percussion.search.ui.PSSearchFieldEditor@Search Criteria">
+      <tu tuid="PSSearchFieldEditor@Search Criteria">
          <prop type="sectionname" xml:lang="en-us">Content Explorer</prop>
          <note xml:lang="en-us">Label for search criteria border.</note>
          <tuv xml:lang="en-us">
             <seg>Search Criteria</seg>
          </tuv>
       </tu>
-      <tu tuid="com.percussion.search.ui.PSSearchFieldEditor$DualSearchFieldPanel@AND">
+      <tu tuid="PSSearchFieldEditor$DualSearchFieldPanel@AND">
          <prop type="sectionname" xml:lang="en-us">Content Explorer</prop>
          <note xml:lang="en-us">Label for AND.</note>
          <tuv xml:lang="en-us">
             <seg>AND</seg>
          </tuv>
       </tu>
-      <tu tuid="com.percussion.search.ui.PSSearchFieldEditor@Starts with">
+      <tu tuid="PSSearchFieldEditor@Starts with">
          <prop type="sectionname" xml:lang="en-us">Content Explorer</prop>
          <note xml:lang="en-us">Text for operator starts with.</note>
          <tuv xml:lang="en-us">
             <seg>Starts with</seg>
          </tuv>
       </tu>
-      <tu tuid="com.percussion.search.ui.PSSearchFieldEditor@Contains">
+      <tu tuid="PSSearchFieldEditor@Contains">
          <prop type="sectionname" xml:lang="en-us">Content Explorer</prop>
          <note xml:lang="en-us">Text for operator contains.</note>
          <tuv xml:lang="en-us">
             <seg>Contains</seg>
          </tuv>
       </tu>
-      <tu tuid="com.percussion.search.ui.PSSearchFieldEditor@Ends with">
+      <tu tuid="PSSearchFieldEditor@Ends with">
          <prop type="sectionname" xml:lang="en-us">Content Explorer</prop>
          <note xml:lang="en-us">Text for operator ends with.</note>
          <tuv xml:lang="en-us">
             <seg>Ends with</seg>
          </tuv>
       </tu>
-      <tu tuid="com.percussion.search.ui.PSSearchFieldEditor@Exact">
+      <tu tuid="PSSearchFieldEditor@Exact">
          <prop type="sectionname" xml:lang="en-us">Content Explorer</prop>
          <note xml:lang="en-us">Text for operator exact.</note>
          <tuv xml:lang="en-us">
             <seg>Exact</seg>
          </tuv>
       </tu>
-      <tu tuid="com.percussion.search.ui.PSSearchFieldEditor@Equals">
+      <tu tuid="PSSearchFieldEditor@Equals">
          <prop type="sectionname" xml:lang="en-us">Content Explorer</prop>
          <note xml:lang="en-us">Text for operator equals.</note>
          <tuv xml:lang="en-us">
             <seg>Equals</seg>
          </tuv>
       </tu>
-      <tu tuid="com.percussion.search.ui.PSSearchFieldEditor@Greater than">
+      <tu tuid="PSSearchFieldEditor@Greater than">
          <prop type="sectionname" xml:lang="en-us">Content Explorer</prop>
          <note xml:lang="en-us">Text for operator greater than.</note>
          <tuv xml:lang="en-us">
             <seg>Greater than</seg>
          </tuv>
       </tu>
-      <tu tuid="com.percussion.search.ui.PSSearchFieldEditor@Less than">
+      <tu tuid="PSSearchFieldEditor@Less than">
          <prop type="sectionname" xml:lang="en-us">Content Explorer</prop>
          <note xml:lang="en-us">Text for operator less than.</note>
          <tuv xml:lang="en-us">
             <seg>Less than</seg>
          </tuv>
       </tu>
-      <tu tuid="com.percussion.search.ui.PSSearchFieldEditor@On">
+      <tu tuid="PSSearchFieldEditor@On">
          <prop type="sectionname" xml:lang="en-us">Content Explorer</prop>
          <note xml:lang="en-us">Text for operator on.</note>
          <tuv xml:lang="en-us">
             <seg>On</seg>
          </tuv>
       </tu>
-      <tu tuid="com.percussion.search.ui.PSSearchFieldEditor@After">
+      <tu tuid="PSSearchFieldEditor@After">
          <prop type="sectionname" xml:lang="en-us">Content Explorer</prop>
          <note xml:lang="en-us">Text for operator After.</note>
          <tuv xml:lang="en-us">
             <seg>After</seg>
          </tuv>
       </tu>
-      <tu tuid="com.percussion.search.ui.PSSearchFieldEditor@Before">
+      <tu tuid="PSSearchFieldEditor@Before">
          <prop type="sectionname" xml:lang="en-us">Content Explorer</prop>
          <note xml:lang="en-us">Text for operator Before.</note>
          <tuv xml:lang="en-us">
             <seg>Before</seg>
          </tuv>
       </tu>
-      <tu tuid="com.percussion.search.ui.PSSearchFieldEditor@Between">
+      <tu tuid="PSSearchFieldEditor@Between">
          <prop type="sectionname" xml:lang="en-us">Content Explorer</prop>
          <note xml:lang="en-us">Text for operator Between.</note>
          <tuv xml:lang="en-us">
             <seg>Between</seg>
          </tuv>
       </tu>
-      <tu tuid="com.percussion.search.ui.PSSearchFieldEditor@ChoiceFilterLookupException">
+      <tu tuid="PSSearchFieldEditor@ChoiceFilterLookupException">
          <prop type="sectionname" xml:lang="en-us">Content Explorer</prop>
          <note xml:lang="en-us">Error message text for failed choice filter lookup.</note>
          <tuv xml:lang="en-us">
             <seg>Choice Filter Lookup Failed: Exception: ({0}), Lookup Url: ({1}), Message: ({2}).</seg>
          </tuv>
       </tu>
-      <tu tuid="com.percussion.search.ui.PSFieldSelectionEditorDialog@Field Selection Editor">
+      <tu tuid="PSFieldSelectionEditorDialog@Field Selection Editor">
          <prop type="sectionname" xml:lang="en-us">Content Explorer</prop>
          <note xml:lang="en-us">Title for dialog.</note>
          <tuv xml:lang="en-us">
             <seg>Field Selection Editor</seg>
          </tuv>
       </tu>
-      <tu tuid="com.percussion.search.ui.PSFieldSelectionEditorDialog@Apply">
+      <tu tuid="PSFieldSelectionEditorDialog@Apply">
          <prop type="sectionname" xml:lang="en-us">Content Explorer</prop>
          <note xml:lang="en-us">The label for the Apply button.</note>
          <tuv xml:lang="en-us">
             <seg>Apply</seg>
          </tuv>
       </tu>
-      <tu tuid="com.percussion.search.ui.PSFieldSelectionEditorDialog@Category">
+      <tu tuid="PSFieldSelectionEditorDialog@Category">
          <prop type="mnemonic">a</prop>
          <prop type="sectionname" xml:lang="en-us">Content Explorer</prop>
          <note xml:lang="en-us">Label for category.</note>
@@ -1504,7 +1504,7 @@
             <seg>Category</seg>
          </tuv>
       </tu>
-      <tu tuid="com.percussion.search.ui.PSFieldSelectionEditorDialog@Field Filter">
+      <tu tuid="PSFieldSelectionEditorDialog@Field Filter">
          <prop type="mnemonic">F</prop>
          <prop type="sectionname" xml:lang="en-us">Content Explorer</prop>
          <note xml:lang="en-us">Label for field filter.</note>
@@ -1513,35 +1513,35 @@
             <seg>Field Filter</seg>
          </tuv>
       </tu>
-      <tu tuid="com.percussion.search.ui.PSFieldSelectionEditorDialog@Available Fields">
+      <tu tuid="PSFieldSelectionEditorDialog@Available Fields">
          <prop type="sectionname" xml:lang="en-us">Content Explorer</prop>
          <note xml:lang="en-us">Label for available fields border.</note>
          <tuv xml:lang="en-us">
             <seg>Available Fields</seg>
          </tuv>
       </tu>
-      <tu tuid="com.percussion.search.ui.PSFieldSelectionEditorDialog@Display Label">
+      <tu tuid="PSFieldSelectionEditorDialog@Display Label">
          <prop type="sectionname" xml:lang="en-us">Content Explorer</prop>
          <note xml:lang="en-us">Label for display name column.</note>
          <tuv xml:lang="en-us">
             <seg>Display Label</seg>
          </tuv>
       </tu>
-      <tu tuid="com.percussion.search.ui.PSFieldSelectionEditorDialog@Field">
+      <tu tuid="PSFieldSelectionEditorDialog@Field">
          <prop type="sectionname" xml:lang="en-us">Content Explorer</prop>
          <note xml:lang="en-us">Label for internal name column.</note>
          <tuv xml:lang="en-us">
             <seg>Field</seg>
          </tuv>
       </tu>
-      <tu tuid="com.percussion.search.ui.PSFieldSelectionEditorDialog@&lt;Data Type">
+      <tu tuid="PSFieldSelectionEditorDialog@&lt;Data Type">
          <prop type="sectionname" xml:lang="en-us">Content Explorer</prop>
          <note xml:lang="en-us">Label for the data type column.</note>
          <tuv xml:lang="en-us">
             <seg>Data Type</seg>
          </tuv>
       </tu>
-      <tu tuid="com.percussion.search.ui.PSFieldSelectionEditorDialog@Select">
+      <tu tuid="PSFieldSelectionEditorDialog@Select">
          <prop type="sectionname" xml:lang="en-us">Content Explorer</prop>
          <note xml:lang="en-us">Label for the Select  button.</note>
          <tuv xml:lang="en-us">
@@ -1549,7 +1549,7 @@
             <seg>Select</seg>
          </tuv>
       </tu>
-      <tu tuid="com.percussion.search.ui.PSFieldSelectionEditorDialog@Up">
+      <tu tuid="PSFieldSelectionEditorDialog@Up">
          <prop type="sectionname" xml:lang="en-us">Content Explorer</prop>
          <note xml:lang="en-us">Tooltip for the Up  button Alt-p</note>
          <tuv xml:lang="en-us">
@@ -1558,7 +1558,7 @@
             <seg>Up</seg>
          </tuv>
       </tu>
-      <tu tuid="com.percussion.search.ui.PSFieldSelectionEditorDialog@Down">
+      <tu tuid="PSFieldSelectionEditorDialog@Down">
          <prop type="sectionname" xml:lang="en-us">Content Explorer</prop>
          <note xml:lang="en-us">Tooltip for the Up  button.</note>
          <tuv xml:lang="en-us">
@@ -1567,7 +1567,7 @@
             <seg>Down</seg>
          </tuv>
       </tu>
-      <tu tuid="com.percussion.search.ui.PSFieldSelectionEditorDialog@Delete">
+      <tu tuid="PSFieldSelectionEditorDialog@Delete">
          <prop type="sectionname" xml:lang="en-us">Content Explorer</prop>
          <note xml:lang="en-us">Tooltip for the Delete button.</note>
          <tuv xml:lang="en-us">
@@ -1576,98 +1576,98 @@
             <seg>Delete</seg>
          </tuv>
       </tu>
-      <tu tuid="com.percussion.search.ui.PSFieldSelectionEditorDialog@Selected Fields">
+      <tu tuid="PSFieldSelectionEditorDialog@Selected Fields">
          <prop type="sectionname" xml:lang="en-us">Content Explorer</prop>
          <note xml:lang="en-us">Label for the border selected fields.</note>
          <tuv xml:lang="en-us">
             <seg>Selected Fields</seg>
          </tuv>
       </tu>
-      <tu tuid="com.percussion.search.ui.PSFieldSelectionEditorDialog@Remove">
+      <tu tuid="PSFieldSelectionEditorDialog@Remove">
          <prop type="sectionname" xml:lang="en-us">Content Explorer</prop>
          <note xml:lang="en-us">Label for the border selected fields.</note>
          <tuv xml:lang="en-us">
             <seg>Remove</seg>
          </tuv>
       </tu>
-      <tu tuid="com.percussion.search.ui.PSFieldSelectionEditorDialog@Ascending">
+      <tu tuid="PSFieldSelectionEditorDialog@Ascending">
          <prop type="sectionname" xml:lang="en-us">Content Explorer</prop>
          <note xml:lang="en-us">Drop list entry for sort order.</note>
          <tuv xml:lang="en-us">
             <seg>Ascending</seg>
          </tuv>
       </tu>
-      <tu tuid="com.percussion.search.ui.PSFieldSelectionEditorDialog@Descending">
+      <tu tuid="PSFieldSelectionEditorDialog@Descending">
          <prop type="sectionname" xml:lang="en-us">Content Explorer</prop>
          <note xml:lang="en-us">Drop list entry for sort order.</note>
          <tuv xml:lang="en-us">
             <seg>Descending</seg>
          </tuv>
       </tu>
-      <tu tuid="com.percussion.search.ui.PSFieldSelectionEditorDialog@System">
+      <tu tuid="PSFieldSelectionEditorDialog@System">
          <prop type="sectionname" xml:lang="en-us">Content Explorer</prop>
          <note xml:lang="en-us">Drop list entry for field set category.</note>
          <tuv xml:lang="en-us">
             <seg>System</seg>
          </tuv>
       </tu>
-      <tu tuid="com.percussion.search.ui.PSFieldSelectionEditorDialog@Shared">
+      <tu tuid="PSFieldSelectionEditorDialog@Shared">
          <prop type="sectionname" xml:lang="en-us">Content Explorer</prop>
          <note xml:lang="en-us">Drop list entry for field set category.</note>
          <tuv xml:lang="en-us">
             <seg>Shared</seg>
          </tuv>
       </tu>
-      <tu tuid="com.percussion.search.ui.PSFieldSelectionEditorDialog@Local">
+      <tu tuid="PSFieldSelectionEditorDialog@Local">
          <prop type="sectionname" xml:lang="en-us">Content Explorer</prop>
          <note xml:lang="en-us">Drop list entry for field set category.</note>
          <tuv xml:lang="en-us">
             <seg>Local</seg>
          </tuv>
       </tu>
-      <tu tuid="com.percussion.search.ui.PSFieldSelectionEditorDialog@All">
+      <tu tuid="PSFieldSelectionEditorDialog@All">
          <prop type="sectionname" xml:lang="en-us">Content Explorer</prop>
          <note xml:lang="en-us">Drop list entry for field set category.</note>
          <tuv xml:lang="en-us">
             <seg>All</seg>
          </tuv>
       </tu>
-      <tu tuid="com.percussion.search.ui.PSFieldSelectionEditorDialog@error.title.dependentFieldNotFound">
+      <tu tuid="PSFieldSelectionEditorDialog@error.title.dependentFieldNotFound">
          <prop type="sectionname" xml:lang="en-us">Content Explorer</prop>
          <note xml:lang="en-us">dependentFieldNotFound Error Title.</note>
          <tuv xml:lang="en-us">
             <seg>Dependent Field Name Not Found</seg>
          </tuv>
       </tu>
-      <tu tuid="com.percussion.search.ui.PSFieldSelectionEditorDialog@error.msg.dependentFieldNotFound">
+      <tu tuid="PSFieldSelectionEditorDialog@error.msg.dependentFieldNotFound">
          <prop type="sectionname" xml:lang="en-us">Content Explorer</prop>
          <note xml:lang="en-us">dependentFieldNotFound Error Message.</note>
          <tuv xml:lang="en-us">
             <seg>Field ({0}) depends on Field: ({1}) which is Not found in the field catalog!</seg>
          </tuv>
       </tu>
-      <tu tuid="com.percussion.search.ui.PSFieldSelectionEditorDialog@opt.title.includeOptionalDependency">
+      <tu tuid="PSFieldSelectionEditorDialog@opt.title.includeOptionalDependency">
          <prop type="sectionname" xml:lang="en-us">Content Explorer</prop>
          <note xml:lang="en-us">includeOptionalDependency Option Dialog Title.</note>
          <tuv xml:lang="en-us">
             <seg>Optional Field Dependency</seg>
          </tuv>
       </tu>
-      <tu tuid="com.percussion.search.ui.PSFieldSelectionEditorDialog@opt.msg.includeOptionalDependency">
+      <tu tuid="PSFieldSelectionEditorDialog@opt.msg.includeOptionalDependency">
          <prop type="sectionname" xml:lang="en-us">Content Explorer</prop>
          <note xml:lang="en-us">includeOptionalDependency Option Dialog Message.</note>
          <tuv xml:lang="en-us">
             <seg>This field: ({0}) is dependent on another field: ({1}). Do you want to include it in the query?</seg>
          </tuv>
       </tu>
-      <tu tuid="com.percussion.search.ui.PSFieldSelectionEditorDialog@opt.title.removeOptionalDependent">
+      <tu tuid="PSFieldSelectionEditorDialog@opt.title.removeOptionalDependent">
          <prop type="sectionname" xml:lang="en-us">Content Explorer</prop>
          <note xml:lang="en-us">removeOptionalDependent Option Dialog Title.</note>
          <tuv xml:lang="en-us">
             <seg>Remove Optionally Dependent Search Field</seg>
          </tuv>
       </tu>
-      <tu tuid="com.percussion.search.ui.PSFieldSelectionEditorDialog@opt.msg.removeOptionalDependent">
+      <tu tuid="PSFieldSelectionEditorDialog@opt.msg.removeOptionalDependent">
          <prop type="sectionname" xml:lang="en-us">Content Explorer</prop>
          <note xml:lang="en-us">removeOptionalDependent Option Dialog Message.</note>
          <tuv xml:lang="en-us">

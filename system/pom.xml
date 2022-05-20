@@ -349,6 +349,12 @@
         </dependency>
         <dependency>
             <groupId>com.percussion</groupId>
+            <artifactId>extensions-main</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.percussion</groupId>
             <artifactId>perc-xml-security</artifactId>
             <version>${project.parent.version}</version>
         </dependency>

@@ -5,6 +5,9 @@
 <%@ page import="org.json.JSONArray" %>
 <%@ page import="org.json.JSONObject" %>
 <%@ page import="java.util.*,com.percussion.i18n.PSI18nUtils" %>
+<%@ page import="com.percussion.content.ui.aa.actions.IPSAAClientAction" %>
+<%@ page import="com.percussion.content.ui.aa.actions.PSAAClientActionFactory" %>
+<%@ page import="com.percussion.content.ui.aa.actions.PSActionResponse" %>
 <%@ taglib uri="http://rhythmyx.percussion.com/components"
 	prefix="rxcomp"%>
 <%--
