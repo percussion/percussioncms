@@ -57,8 +57,8 @@
 
 	<script >
 
-        var __rxroot = "<%= root %>";
-        //Global flag to indicate that the dojo initialization is required for active assembly
+        var __rxroot = "";
+        //Global flag to indicatthat the dojo initialization is required for active assembly
         var __isAa = false;
 
         // Turn on console for dojo.debug.

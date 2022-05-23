@@ -1134,7 +1134,7 @@ public class PSManagedNavService implements IPSManagedNavService
     * 
     * @return menu slot UUID.
     */
-   private long getMenuSlotId()
+   public long getMenuSlotId()
    {
       return getMenuSlot().getGUID().getUUID();
    }

@@ -1675,7 +1675,7 @@ onchange    %Script;       #IMPLIED
          </psxctl:Param>
          <psxctl:Param name="height" datatype="String" paramtype="generic">
             <psxctl:Description>This parameter specifies the height of the inline frame. This parameter may be either a pixel or a percentage of the available vertical space. The default value is 250.</psxctl:Description>
-            <psxctl:DefaultValue>250</psxctl:DefaultValue>
+            <psxctl:DefaultValue>350</psxctl:DefaultValue>
          </psxctl:Param>
          <psxctl:Param name="SCROLLING" datatype="String" paramtype="generic">
             <psxctl:Description>This parameter specifies scrolling information for the inline frame.  The default value is "auto".</psxctl:Description>
@@ -3623,7 +3623,7 @@ onchange    %Script;       #IMPLIED
          </psxctl:Param>
          <psxctl:Param name="height" datatype="String" paramtype="generic">
             <psxctl:Description>This parameter specifies the height of the inline frame. This parameter may be either a pixel or a percentage of the available vertical space. The default value is 250.</psxctl:Description>
-            <psxctl:DefaultValue>250</psxctl:DefaultValue>
+            <psxctl:DefaultValue>350</psxctl:DefaultValue>
          </psxctl:Param>
          <psxctl:Param name="config_src_url" datatype="String" paramtype="generic">
             <psxctl:Description>This parameter specifies the location of the config.xml that will the control will use for configuration. This file must be in the /rx_resources/ephox folder.  The default value is "config.xml".</psxctl:Description>
@@ -3665,6 +3665,10 @@ onchange    %Script;       #IMPLIED
       <psxctl:AssociatedFileList>
          <psxctl:FileDescriptor name="bluebird.min.js" type="script" mimetype="text/javascript">
             <psxctl:FileLocation>https://cdnjs.cloudflare.com/ajax/libs/bluebird/3.3.5/bluebird.min.js</psxctl:FileLocation>
+            <psxctl:Timestamp/>
+         </psxctl:FileDescriptor>
+		 <psxctl:FileDescriptor name="elementEventListener.js" type="script" mimetype="text/javascript">
+                <psxctl:FileLocation>/sys_resources/js/elementEventListener.js</psxctl:FileLocation>
             <psxctl:Timestamp/>
          </psxctl:FileDescriptor>
          <psxctl:FileDescriptor name="tinymce.min.js" type="script" mimetype="text/javascript">
