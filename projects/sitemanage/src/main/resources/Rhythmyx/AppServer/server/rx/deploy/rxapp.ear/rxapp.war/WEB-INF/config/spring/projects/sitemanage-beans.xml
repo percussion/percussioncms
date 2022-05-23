@@ -77,12 +77,11 @@ http://cxf.apache.org/schemas/jaxrs.xsd">
         <property name="supportSwaggerUi" value="true"/>
         <property name="swaggerUiVersion" value="${swagger.ui.version}"/>
         <property name="swaggerUiMavenGroupAndArtifact" value="org.webjars.swagger-ui"/>
-        <property name="scan" value="false" />
-        <property name="readAllResources" value="false" />
+        <property name="scan" value="true" />
+        <property name="readAllResources" value="true" />
         <property name="resourcePackages" value="com.percussion.rest" />
-        <property name="useContextBasedConfig" value="true"/>
+        <property name="useContextBasedConfig" value="false"/>
         <property name="prettyPrint" value="true"/>
-        <property name="scannerClass" value="io.swagger.v3.oas.integration.GenericOpenApiScanner"/>
     </bean>
 
     <!-- Used to Authorize API access -->
