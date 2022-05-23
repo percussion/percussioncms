@@ -992,6 +992,16 @@
         </dependency>
         <dependency>
             <groupId>com.percussion</groupId>
+            <artifactId>perc-server-ui-content</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.percussion</groupId>
+            <artifactId>perc-server-ui-cmp</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.percussion</groupId>
             <artifactId>perc-system-cactus-tests</artifactId>
             <version>${project.parent.version}</version>
             <scope>compile</scope>

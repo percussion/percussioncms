@@ -22,7 +22,7 @@ tinymce.PluginManager.add('rxinline', function(editor) {
             scriptElm = editor.dom.create('script', {
                 id: scriptId,
                 type: 'text/javascript',
-                src: '/Rhythmyx/sys_resources/js/browser.js'
+                src: '/sys_resources/js/browser.js'
             });
 
             editor.getDoc().getElementsByTagName('head')[0].appendChild(scriptElm);

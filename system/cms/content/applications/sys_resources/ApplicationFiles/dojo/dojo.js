@@ -17,7 +17,7 @@
 	for documentation and information on getting the source.
 */
 
-if(typeof dojo=="undefined"){
+if(typeof dojo === "undefined"){
 var dj_global=this;
 var dj_currentContext=this;
 function dj_undef(_1,_2){
@@ -764,7 +764,7 @@ _be(_c0.responseText);
 }
 };
 }
-_c0.open("GET",uri,_be?true:false);
+_c0.open("GET",uri.toString(),_be?true:false);
 try{
 _c0.send(null);
 if(_be){
