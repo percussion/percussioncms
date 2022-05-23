@@ -1412,19 +1412,6 @@ onchange    %Script;       #IMPLIED
    <xsl:template match="Control[@name='sys_TextArea']" mode="psxcontrol">
       <div class="perc-codeeditor-legend">
       </div>
-      <script>
-         var isMac = /macintosh|mac os/i.test(navigator.userAgent);
-         var collection = document.getElementsByClassName("perc-codeeditor-legend");
-         var div =  collection.item(0);
-      <![CDATA[
-         td1 = '<td style="font-size:11px;background:#777;color:#fff;padding:0 4px">';
-         td2 = '<td style="font-size:11px;padding-right:5px">';
-
-         div.innerHTML = "<table cellspacing='0' cellpadding='0' style='border-spacing:4px'><tr>" + td1 + (isMac ? '&#8984;-F' : 'Ctrl-F</td>') + td2 + 'Start search' + '</td>' + td1 + (isMac ? '&#8984;-G' : 'Ctrl-G') + '</td>' + td2 + 'Find next' + '</td>' + td1 + (isMac ? '&#8984;-Alt-F' : 'Shift-Ctrl-F') + '</td>' + td2 + 'Find previous' + '</td></tr>' + '<tr>' + td1 + (isMac ? '&#8984;-Alt-F' : 'Shift-Ctrl-F') + '</td>' + td2 + 'Replace' + '</td>' + td1 + (isMac ? 'Shift-&#8984;-Alt-F' : 'Shift-Ctrl-R') +'</td>' + td2 + 'Replace all' + '</td></tr></table>';
-         div.style.position = 'absolute';
-         div.style.left = div.style.bottom = '5px';
-         ]]>
-      </script>
       <textarea id="{@paramName}" name="{@paramName}" wrap="soft">
          <xsl:if test="@accessKey!=''">
             <xsl:attribute name="accesskey"><xsl:call-template name="getaccesskey"><xsl:with-param name="label" select="preceding-sibling::DisplayLabel"/><xsl:with-param name="sourceType" select="preceding-sibling::DisplayLabel/@sourceType"/><xsl:with-param name="paramName" select="@paramName"/><xsl:with-param name="accessKey" select="@accessKey"/></xsl:call-template></xsl:attribute>
