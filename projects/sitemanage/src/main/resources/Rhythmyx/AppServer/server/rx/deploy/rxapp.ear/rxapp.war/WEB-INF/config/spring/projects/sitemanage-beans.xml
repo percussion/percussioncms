@@ -63,7 +63,6 @@ http://cxf.apache.org/schemas/jaxrs.xsd">
     <bean id="springWebApplicationContextSetter"
           class="com.percussion.share.spring.PSSpringWebApplicationContextSetter"/>
 
-    <!-- CXF OpenApiFeature -->
     <bean id="openApiFeature" class="org.apache.cxf.jaxrs.openapi.OpenApiFeature">
         <property name="title" value="Percussion CMS REST API"/>
         <property name="version" value="${project.parent.version}"/>
