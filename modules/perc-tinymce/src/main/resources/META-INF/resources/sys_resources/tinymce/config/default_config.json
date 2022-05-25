@@ -2,6 +2,7 @@
 	"height":"350px",
 	"config_css": "../sys_resources/css/tinymce/content.css",
 	"menubar": "edit insert view format table tools ",
+	"browser_spellcheck": true,
 	"plugins":[
 		"advlist autosave autolink lists link charmap print preview hr anchor",
 		"searchreplace wordcount visualblocks visualchars code fullscreen",
@@ -9,14 +10,13 @@
 		"emoticons paste textcolor save codesample colorpicker",
 		"noneditable rxinline rxinserthtml contextmenu"
 	],
-	"toolbar": [" undo rdo restoredraft | cut copy paste searchreplace  | styleselect fontselect fontsizeselect forecolor backcolor removeformat | bold italic underline strikethrough superscript subscript | alignleft aligncenter alignright alignjustify alignnone | bullist numlist outdent indent | link unlink openlink media | image  | visualchars visualblocks fullscreen print preview | anchor charmap hr emoticons insertdatetime | table tabledelete tableinsertrowafter tabledeleterow tableinsertcolbefore tabledeletecol tablesplitcells tablemergecells  | percmorelink| percglobalvariables | rxinlinelink rxinlinetemplate rxinlineimage rxinserthtml  | ltr rtl codesample code"],
+	"toolbar": [" newdocument undo rdo restoredraft | cut copy paste searchreplace useBrowserSpellcheck | styleselect fontselect fontsizeselect forecolor backcolor removeformat | bold italic underline strikethrough superscript subscript | alignleft aligncenter alignright alignjustify alignnone | bullist numlist outdent indent | link unlink openlink media | image  | visualchars visualblocks fullscreen print preview | anchor charmap hr emoticons insertdatetime | table tabledelete tableinsertrowafter tabledeleterow tableinsertcolbefore tabledeletecol tablesplitcells tablemergecells  | percmorelink| percglobalvariables | rxinlinelink rxinlinetemplate rxinlineimage rxinserthtml  | ltr rtl codesample code"],
 	"paste_word_valid_elements": "b,strong,i,em,h1,h2,u,p,ol,ul,li,a[href],table,tr,td,style",
 	"paste_data_images": true,
 	"relative_urls": false,
 	"remove_script_host" : false,
-	"browser_spellcheck" : true,
 	"valid_elements": "*[*]",
-	"contextmenu":"link openlink | inserttable | cell row column ",
+	"contextmenu":"link openlink | useBrowserSpellcheck | inserttable | cell row column ",
 	"icons": "percCustIcon",
    "menu":{
 	    "insert":{"title" :"insert", "items":"rxinlineimage rxinlinetemplate rxinline rxinserthtml link | image media | percmorelink | percglobalvariables | charmap codesample addcomment emoticons nonbreaking insertdatetime hr anchor pagebreak emoticons nonbreaking pageembed template toc"}
