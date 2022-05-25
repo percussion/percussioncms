@@ -13,6 +13,7 @@ function percTinyMceInitialized(tinymceEditor) {
             dirtyController.setDirty(true, "asset");
             tinymceEditor.off('keypress');
         });
+	}
 
         // This event listener creates a tooltip when hovering over a broken image
         tinymceEditor.on("MouseOver", function(e) {
@@ -59,7 +60,7 @@ function percTinyMceInitialized(tinymceEditor) {
             }
         });
 
-    }
+
 }
 
 function openEditor(itemObject, itemJcrPath) {
