@@ -106,6 +106,7 @@ function mergeConfig(options, url) {
                         config.external_plugins = $.extend({},config.external_plugins, external_plugins);
                     }
 
+
                 }
 
                 options = $.extend({}, options, config);
@@ -141,6 +142,7 @@ function getBaseConfig(parameters) {
             "selector": "textarea",
             "autosave_interval": "10m",
             "autosave_retention": "1440m",
+			"link_context_toolbar": true,
             "perc_config": "../sys_resources/tinymce/config/default_config.json",
             "content_css": "../sys_resources/css/tinymce/content.css",
             "theme": "silver",
@@ -226,7 +228,6 @@ function getBaseConfig(parameters) {
 
             },
             "convert_urls" : false,
-            "toolbar": "newdocument undo redo restoredraft | cut copy paste searchreplace | styleselect fontselect fontsizeselect forecolor backcolor removeformat | bold italic underline strikethrough superscript subscript | alignleft aligncenter alignright alignjustify alignnone |  bullist numlist outdent indent | link unlink openlink media | visualchars visualblocks fullscreen print preview | anchor charmap hr emoticons insertdatetime | table tabledelete tableinsertrowafter tabledeleterow tableinsertcolbefore tabledeletecol tablesplitcells tablemergecells | percglobalvariables | rxinlinelink rxinlinetemplate rxinlineimage rxinserthtml | ltr rtl codesample code"
         }, options);
         console.log("From base config="+JSON.stringify(mergedBaseOptions, null, 2));
 
