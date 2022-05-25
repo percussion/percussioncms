@@ -21,34 +21,26 @@ function percTinyMceInitialized(tinymceEditor) {
                 $itemTarget = $target;
                 itemJcrPath = $itemTarget.data('jcrpath');
                 itemObject = $itemTarget.data('pathitem');
-                /* var menu = editor.ui.registry.addMenuItem({
-                    classes: 'perc-broken-link-tooltip',
-                    items: [{
-                        text: $itemTarget.is('.perc-brokenlink') ? 'Deleted item referenced: ' + itemJcrPath : itemJcrPath,
-                        onClick: function() {
-                            if($itemTarget.is('.perc-notpubliclink')) {
-                                openEditor(itemObject, itemJcrPath);
-                            }
-                        }
-                    }],
-                    context: "contextmenu",
-                    onhide: function() { menu.remove(); }
+
+
+            }
+        });
+
+        tinymceEditor.ui.registry.addMenuItem('useBrowserSpellcheck', {
+            text: 'Use `Ctrl+Right click` to access spellchecker',
+            onAction: function () {
+                tinymceEditor.notificationManager.open({
+                    text: 'To access the spellchecker, hold the Control (Ctrl) key and right-click on the misspelt word.',
+                    type: 'info',
+                    timeout: 5000,
+                    closeButton: true
                 });
+            }
+        });
 
-                menu.renderTo(document.body);
-
-                var pos = tinymce.DOM.getPos(tinymceEditor.getContentAreaContainer());
-                var targetPos = tinymceEditor.dom.getPos(e.target);
-                var root = tinymceEditor.dom.getRoot();
-
-
-                targetPos.x -= e.target.scrollLeft || root.scrollLeft;
-                targetPos.y -= e.target.scrollTop || root.scrollTop;
-
-                pos.x += targetPos.x;
-                pos.y += targetPos.y;
-
-                menu.moveTo(pos.x, pos.y + e.target.offsetHeight + 5);*/
+        tinymceEditor.ui.registry.addContextMenu('useBrowserSpellcheck', {
+            update: function (node) {
+                return tinymceEditor.selection.isCollapsed() ? ['useBrowserSpellcheck'] : [];
             }
         });
 
@@ -106,7 +98,6 @@ function mergeConfig(options, url) {
                         config.external_plugins = $.extend({},config.external_plugins, external_plugins);
                     }
 
-
                 }
 
                 options = $.extend({}, options, config);
@@ -142,7 +133,7 @@ function getBaseConfig(parameters) {
             "selector": "textarea",
             "autosave_interval": "10m",
             "autosave_retention": "1440m",
-			"link_context_toolbar": true,
+            "link_context_toolbar": true,
             "perc_config": "../sys_resources/tinymce/config/default_config.json",
             "content_css": "../sys_resources/css/tinymce/content.css",
             "theme": "silver",
@@ -157,8 +148,8 @@ function getBaseConfig(parameters) {
                 'percadvlink': '/sys_resources/tinymce/plugins/percadvlink/plugin.js',
                 'percglobalvariables': '/sys_resources/tinymce/plugins/percglobalvariables/plugin.js',
                 'percmorelink': '/sys_resources/tinymce/plugins/percmorelink/plugin.js',
-				'rxinline':'/sys_resources/tinymce/plugins/rxinline/plugin.js',
-				'rxinserthtml':'/sys_resources/tinymce/plugins/rxinserthtml/plugin.js',
+                'rxinline':'/sys_resources/tinymce/plugins/rxinline/plugin.js',
+                'rxinserthtml':'/sys_resources/tinymce/plugins/rxinserthtml/plugin.js',
 
             },
             "codemirror": {
