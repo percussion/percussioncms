@@ -28,9 +28,24 @@ function percTinyMceInitialized(tinymceEditor) {
 
         tinymceEditor.ui.registry.addMenuItem('useBrowserSpellcheck', {
             text: 'Use `Ctrl+Right click` to access spellchecker',
+            icon:'spell-check',
             onAction: function () {
                 tinymceEditor.notificationManager.open({
-                    text: 'To access the spellchecker, hold the Control (Ctrl) key and right-click on the misspelt word.',
+                    text: 'Spellchecker - hold the Control (Ctrl) key and right-click on the misspelt word.',
+                    type: 'info',
+                    timeout: 5000,
+                    closeButton: true
+                });
+            }
+        });
+
+        tinymceEditor.ui.registry.addButton('useBrowserSpellcheck', {
+            text: 'Use `Ctrl+Right click` to access spellchecker',
+            icon:'spell-check',
+            type: 'button',
+            onAction: function () {
+                tinymceEditor.notificationManager.open({
+                    text: 'Spellchecker - hold the Control (Ctrl) key and right-click on the misspelt word.',
                     type: 'info',
                     timeout: 5000,
                     closeButton: true
