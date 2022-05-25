@@ -242,16 +242,48 @@ tinymce.PluginManager.add('percadvlink', function(editor) {
         },
         stateSelector: 'a[href]'
     });
+	 editor.ui.registry.addButton('openlink', {
+        icon: 'new-tab',
+        type: 'button',
+		onAction: function () {
+            editor.execCommand('mceLink');
+        },
+        stateSelector: 'a[href]',
+		 selector: 'textarea',
+		 default_link_target: '_blank',
+    });
 
     editor.shortcuts.add('ctrl+k', '', createLinkList(showDialog));
 
     this.showDialog = showDialog;
 
-    editor.ui.registry.addMenuItem('percadvlink', {
+    editor.ui.registry.addMenuItem('openlink', {
+        icon: 'new-tab',
+        text: I18N.message("perc.ui.widget.tinymce@Open link"),
+        onAction: function () {
+            editor.execCommand('mceLink');
+        },
+        stateSelector: 'a[href]',
+        context: 'insert',
+        prependToContext: true
+    });
+
+    editor.ui.registry.addMenuItem('link', {
         icon: 'link',
         text: I18N.message("perc.ui.widget.tinymce@Insert link"),
         shortcut: 'Ctrl+K',
         onAction: createLinkList(showDialog),
+        stateSelector: 'a[href]',
+        context: 'insert',
+        prependToContext: true
+    });
+
+	editor.ui.registry.addMenuItem('unlink', {
+        icon: 'unlink',
+        text: I18N.message("perc.ui.widget.tinymce@Remove links"),
+        onAction: function () {
+            editor.execCommand('unlink');
+        },
         stateSelector: 'a[href]',
         context: 'insert',
         prependToContext: true
