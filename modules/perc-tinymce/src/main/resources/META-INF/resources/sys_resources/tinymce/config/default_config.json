@@ -1,5 +1,5 @@
 [{
-	"height":"350px",
+	"height":"530px",
 	"config_css": "../sys_resources/css/tinymce/content.css",
 	"menubar": "edit insert view format table tools ",
 	"browser_spellcheck": true,
