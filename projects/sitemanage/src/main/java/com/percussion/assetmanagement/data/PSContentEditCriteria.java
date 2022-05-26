@@ -168,7 +168,7 @@ public class PSContentEditCriteria extends PSAssetEditor
    /**
     * Constant for default preferred height for the editor. 
     */
-   public static int DEFAULT_PREFERRED_EDITOR_HEIGHT = 400;
+   public static int DEFAULT_PREFERRED_EDITOR_HEIGHT = 750;
 
    /**
     * Constant for default preferred width for the editor. 
