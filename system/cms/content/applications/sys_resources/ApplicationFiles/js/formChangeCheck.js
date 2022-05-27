@@ -46,6 +46,12 @@
 	   var saveChanges = ps_warnSaveChanges();
           if(saveChanges)
           {
+			   if(window.opener != null){
+                  window.opener.ps_noCloseFlag = true;
+				   window.opener.ps_CloseMe = false;
+				   window.opener.ps_updateFlag = true;
+			   }
+              _formAlreadySubmitted = false;
 			  ps_submitElem.onclick();
 			  // We need both of teh following calls
 			  ps_theForm.onsubmit();
