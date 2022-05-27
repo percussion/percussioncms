@@ -1412,19 +1412,6 @@ onchange    %Script;       #IMPLIED
    <xsl:template match="Control[@name='sys_TextArea']" mode="psxcontrol">
       <div class="perc-codeeditor-legend">
       </div>
-      <script>
-         var isMac = /macintosh|mac os/i.test(navigator.userAgent);
-         var collection = document.getElementsByClassName("perc-codeeditor-legend");
-         var div =  collection.item(0);
-      <![CDATA[
-         td1 = '<td style="font-size:11px;background:#777;color:#fff;padding:0 4px">';
-         td2 = '<td style="font-size:11px;padding-right:5px">';
-
-         div.innerHTML = "<table cellspacing='0' cellpadding='0' style='border-spacing:4px'><tr>" + td1 + (isMac ? '&#8984;-F' : 'Ctrl-F</td>') + td2 + 'Start search' + '</td>' + td1 + (isMac ? '&#8984;-G' : 'Ctrl-G') + '</td>' + td2 + 'Find next' + '</td>' + td1 + (isMac ? '&#8984;-Alt-F' : 'Shift-Ctrl-F') + '</td>' + td2 + 'Find previous' + '</td></tr>' + '<tr>' + td1 + (isMac ? '&#8984;-Alt-F' : 'Shift-Ctrl-F') + '</td>' + td2 + 'Replace' + '</td>' + td1 + (isMac ? 'Shift-&#8984;-Alt-F' : 'Shift-Ctrl-R') +'</td>' + td2 + 'Replace all' + '</td></tr></table>';
-         div.style.position = 'absolute';
-         div.style.left = div.style.bottom = '5px';
-         ]]>
-      </script>
       <textarea id="{@paramName}" name="{@paramName}" wrap="soft">
          <xsl:if test="@accessKey!=''">
             <xsl:attribute name="accesskey"><xsl:call-template name="getaccesskey"><xsl:with-param name="label" select="preceding-sibling::DisplayLabel"/><xsl:with-param name="sourceType" select="preceding-sibling::DisplayLabel/@sourceType"/><xsl:with-param name="paramName" select="@paramName"/><xsl:with-param name="accessKey" select="@accessKey"/></xsl:call-template></xsl:attribute>
@@ -1675,7 +1662,7 @@ onchange    %Script;       #IMPLIED
          </psxctl:Param>
          <psxctl:Param name="height" datatype="String" paramtype="generic">
             <psxctl:Description>This parameter specifies the height of the inline frame. This parameter may be either a pixel or a percentage of the available vertical space. The default value is 250.</psxctl:Description>
-            <psxctl:DefaultValue>250</psxctl:DefaultValue>
+            <psxctl:DefaultValue>350</psxctl:DefaultValue>
          </psxctl:Param>
          <psxctl:Param name="SCROLLING" datatype="String" paramtype="generic">
             <psxctl:Description>This parameter specifies scrolling information for the inline frame.  The default value is "auto".</psxctl:Description>
@@ -2959,7 +2946,7 @@ onchange    %Script;       #IMPLIED
          </psxctl:Param>
          <psxctl:Param name="height" datatype="String" paramtype="generic">
             <psxctl:Description>This parameter specifies the height of the applet. This parameter may be either a pixel or a percentage of the available vertical space. The default value is 300.</psxctl:Description>
-            <psxctl:DefaultValue>250</psxctl:DefaultValue>
+            <psxctl:DefaultValue>100%</psxctl:DefaultValue>
          </psxctl:Param>
          <psxctl:Param name="style" datatype="String" paramtype="generic">
             <psxctl:Description>This parameter specifies style information for the current element. The syntax of the value of the style attribute is determined by the default style sheet language.</psxctl:Description>
@@ -3623,11 +3610,11 @@ onchange    %Script;       #IMPLIED
          </psxctl:Param>
          <psxctl:Param name="height" datatype="String" paramtype="generic">
             <psxctl:Description>This parameter specifies the height of the inline frame. This parameter may be either a pixel or a percentage of the available vertical space. The default value is 250.</psxctl:Description>
-            <psxctl:DefaultValue>250</psxctl:DefaultValue>
+            <psxctl:DefaultValue>350</psxctl:DefaultValue>
          </psxctl:Param>
          <psxctl:Param name="config_src_url" datatype="String" paramtype="generic">
             <psxctl:Description>This parameter specifies the location of the config.xml that will the control will use for configuration. This file must be in the /rx_resources/ephox folder.  The default value is "config.xml".</psxctl:Description>
-            <psxctl:DefaultValue>/Rhythmyx/sys_resources/tinymce/config/default_config.json</psxctl:DefaultValue>
+            <psxctl:DefaultValue>/sys_resources/tinymce/config/default_config.json</psxctl:DefaultValue>
          </psxctl:Param>
          <psxctl:Param name="css_file" datatype="String" paramtype="generic">
             <psxctl:Description>This parameter specifies the location of the customer defined css file. This file must be in the /rx_resources/tinymce folder.</psxctl:Description>
@@ -3667,6 +3654,10 @@ onchange    %Script;       #IMPLIED
             <psxctl:FileLocation>https://cdnjs.cloudflare.com/ajax/libs/bluebird/3.3.5/bluebird.min.js</psxctl:FileLocation>
             <psxctl:Timestamp/>
          </psxctl:FileDescriptor>
+		 <psxctl:FileDescriptor name="elementEventListener.js" type="script" mimetype="text/javascript">
+                <psxctl:FileLocation>/sys_resources/js/elementEventListener.js</psxctl:FileLocation>
+            <psxctl:Timestamp/>
+         </psxctl:FileDescriptor>
          <psxctl:FileDescriptor name="tinymce.min.js" type="script" mimetype="text/javascript">
             <psxctl:FileLocation>/sys_resources/tinymce/js/tinymce/tinymce.min.js</psxctl:FileLocation>
             <psxctl:Timestamp/>
@@ -3675,6 +3666,10 @@ onchange    %Script;       #IMPLIED
             <psxctl:FileLocation>/sys_resources/tinymce/js/tinymce_init.js</psxctl:FileLocation>
             <psxctl:Timestamp/>
          </psxctl:FileDescriptor>
+		<psxctl:FileDescriptor name="dojo.js" type="script" mimetype="text/javascript">
+                <psxctl:FileLocation>/sys_resources/dojo/dojo.js</psxctl:FileLocation>
+                <psxctl:Timestamp/>
+            </psxctl:FileDescriptor>
          <psxctl:FileDescriptor name="editorinline.js" type="script" mimetype="text/javascript">
             <psxctl:FileLocation>/sys_resources/js/editorinline.js</psxctl:FileLocation>
             <psxctl:Timestamp/>
@@ -3865,7 +3860,7 @@ onchange    %Script;       #IMPLIED
       </xsl:variable>
       <script>
          <xsl:text disable-output-escaping="yes">
-            //&lt;![CDATA[<![CDATA[
+            <![CDATA[
 
        function TinyMCEControlIsDirty_]]></xsl:text><xsl:value-of select="$uniqueName"/><xsl:text disable-output-escaping="yes"><![CDATA[()
        {
@@ -3877,7 +3872,7 @@ onchange    %Script;       #IMPLIED
 
             return false;
        }
-      //  ]]>]]&gt;</xsl:text>
+        ]]></xsl:text>
 
          <![CDATA[
 

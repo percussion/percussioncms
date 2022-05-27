@@ -5,6 +5,9 @@
 <%@ page import="org.json.JSONArray" %>
 <%@ page import="org.json.JSONObject" %>
 <%@ page import="java.util.*,com.percussion.i18n.PSI18nUtils" %>
+<%@ page import="com.percussion.content.ui.aa.actions.IPSAAClientAction" %>
+<%@ page import="com.percussion.content.ui.aa.actions.PSAAClientActionFactory" %>
+<%@ page import="com.percussion.content.ui.aa.actions.PSActionResponse" %>
 <%@ taglib uri="http://rhythmyx.percussion.com/components"
 	prefix="rxcomp"%>
 <%--
@@ -100,10 +103,10 @@
                for (int i = 0; i < len; i++)
                {
                  JSONObject jobj = temps.getJSONObject(i);
-                 String obid = jobj.getString("objectid");
+                 String obid = jobj.get("objectid").toString();
                  obid = obid.substring(2, obid.length() - 2);
                  obid = StringUtils.replace(obid, "\\", "");
-                 String name = jobj.getString("name");
+                 String name = jobj.get("name").toString();
                  name = name.substring(2, name.length() - 2);
             %>
             <option value='<%= obid %>'><%= name %></option>

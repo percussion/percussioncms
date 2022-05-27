@@ -89,11 +89,11 @@
 
     <condition property="upgradeFrom732" value="true" else="false">
         <and>
-            <available file="${install.dir}/jetty/base/etc/perc-ds.xml"/>
-            <resourcecontains resource="${install.dir}/jetty/base/etc/perc-ds.xml" substring="com.percussion.utils.container.jetty.PSJettyUtils" />
+            <available file="${install.dir}/Version.properties"/>
+            <resourcecontains resource="${install.dir}/Version.properties" substring="displayVersion=7.3.2" />
         </and>
     </condition>
-
+    <echo>upgradeFrom732=${upgradeFrom732}</echo>
     <echo>development install=${DEVELOPMENT}</echo>
     <echo>clean.install=${clean.install}</echo>
     <echo>base.dir=${base.dir}</echo>
@@ -530,7 +530,7 @@
         <exclude name="jetty/base/resources/log4j*.xml"/>
         <exclude name="rxconfig/Installer/rxrepository.properties"/>
         <exclude name="rx_resources/vm/custom_head.vm"/>
-        <exclude name="rx_resources/tinymce/config/customer_config_override.json"/>
+        <exclude name="**/customer_config_override.json"/>
         <exclude name="Repository/**"/>
         <exclude name="Extensions/**"/>
         <exclude name="rxconfig/**"/>
@@ -623,6 +623,8 @@
         <antcall target="replaceOldFontAwesome"  inheritall="true" inheritrefs="true"/>
         <antcall target="deleteOldJqueryUIJsFile"  inheritall="true" inheritrefs="true"/>
         <antcall target="deleteOldJqueryJsFile"  inheritall="true" inheritrefs="true"/>
+        <antcall target="deleteOldEXEFiles"  inheritall="true" inheritrefs="true"/>
+        <antcall target="backupTinymceRxresources"  inheritall="true" inheritrefs="true"/>
     </target>
 
     <target name="deleteOldLog4jJars">
@@ -652,6 +654,40 @@
             </then>
         </if>
     </target>
+
+    <target name="backupTinymceRxresources">
+        <echo>Backup tinymce overrides as needs to be upgraded to 5...</echo>
+        <copy todir="${install.dir}/rx_resources/tinymce_811Upgrade_BAK">
+            <fileset dir="${install.dir}/rx_resources/tinymce"/>
+        </copy>
+        <delete failonerror="false" includeemptydirs="true" verbose="true">
+            <fileset dir="${install.dir}/rx_resources/tinymce">
+                <include name="**/*"/>
+                <exclude name="**/customer_config_override.json"/>
+            </fileset>
+        </delete>
+    </target>
+
+    <target name="deleteOldEXEFiles">
+        <echo>Deleting old 7.3.2 exe files...</echo>
+        <delete>
+            <fileset dir="${install.dir}">
+                <include name="lax.jar"/>
+                <include name="PackageBuilderHelp.zip"/>
+                <include name="PackageInstallerHelp.zip"/>
+                <include name="PercussionPackageBuilder.*"/>
+                <include name="PercussionPackageInstaller.*"/>
+                <include name="RhythmyxMultiServerManager.*"/>
+                <include name="RhythmyxServer.*"/>
+                <include name="RhythmyxServerAdministrator.*"/>
+                <include name="RhythmyxServerPropertiesEditor.*"/>
+                <include name="RhythmyxWorkbench.*"/>
+                <include name="RhythmyxWorkbenchHelp.zip"/>
+                <include name="RhythmyxXSpLit.*"/>
+            </fileset>
+        </delete>
+      </target>
+
 
     <target name="deleteOldJqueryJsFile">
         <if>

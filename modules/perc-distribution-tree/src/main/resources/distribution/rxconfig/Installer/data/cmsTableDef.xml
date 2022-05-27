@@ -1471,7 +1471,7 @@
             <column name="CONTENT_ID">
                 <jdbctype>INTEGER</jdbctype>
                 <size/>
-                <allowsnull>no</allowsnull>
+                <allowsnull>yes</allowsnull>
             </column>
             <column name="REVISION_ID">
                 <jdbctype>INTEGER</jdbctype>

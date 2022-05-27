@@ -54,17 +54,17 @@
 		<tr>
 		<td align="center">
 			<button style="border: 1px solid black;" dojoType="Button" id="<%= idPrefix %>refreshButton">
-				<img src="<%= rxRoot %>/sys_resources/images/aa/refresh16.gif" width="16" height="16" title="${rxcomp:i18ntext('jsp_addressbarpanel@refresh',locale)}" alt="${rxcomp:i18ntext('jsp_addressbarpanel@refresh',locale)}">
+				<img src="<%= rxRoot %>/../sys_resources/images/aa/refresh16.gif" width="16" height="16" title="${rxcomp:i18ntext('jsp_addressbarpanel@refresh',locale)}" alt="${rxcomp:i18ntext('jsp_addressbarpanel@refresh',locale)}">
 			</button>			
 		</td>
 		<td align="center">
 			<button style="border: 1px solid black;" dojoType="Button" id="<%= idPrefix %>backButton" disabled="true">
-				<img src="<%= rxRoot %>/sys_resources/images/aa/back16.gif" width="16" height="16" title="${rxcomp:i18ntext('jsp_addressbarpanel@back',locale)}" alt="${rxcomp:i18ntext('jsp_addressbarpanel@back',locale)}">
+				<img src="<%= rxRoot %>/../sys_resources/images/aa/back16.gif" width="16" height="16" title="${rxcomp:i18ntext('jsp_addressbarpanel@back',locale)}" alt="${rxcomp:i18ntext('jsp_addressbarpanel@back',locale)}">
 			</button>
 		</td>
 		<td align="center">
 			<button style="border: 1px solid black;" dojoType="Button" id="<%= idPrefix %>upButton">
-				<img src="<%= rxRoot %>/sys_resources/images/aa/up16.gif" width="16" height="16" title="${rxcomp:i18ntext('jsp_addressbarpanel@up',locale)}" alt="${rxcomp:i18ntext('jsp_addressbarpanel@up',locale)}">
+				<img src="<%= rxRoot %>/../sys_resources/images/aa/up16.gif" width="16" height="16" title="${rxcomp:i18ntext('jsp_addressbarpanel@up',locale)}" alt="${rxcomp:i18ntext('jsp_addressbarpanel@up',locale)}">
 			</button>
 		</td>		
 		</tr>

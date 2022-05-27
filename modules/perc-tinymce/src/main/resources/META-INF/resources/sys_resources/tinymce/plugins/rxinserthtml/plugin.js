@@ -1,60 +1,84 @@
-tinymce.PluginManager.add('rxinserthtml', function(editor, url) {
+tinymce.PluginManager.add('rxinserthtml', function(editor) {
 
-    editor.addButton('rxinserthtml', {
+
+    editor.ui.registry.addButton('rxinserthtml', {
         tooltip: 'Insert HTML Fragment...',
-		image: '../rx_resources/images/inserthtml.gif',
-        onclick: function() {
-               editor.windowManager.open({
-        title: 'Insert HTML Fragment...',
-		width: 600,
-        height: 400,
-        body: [
-          {type: 'textbox', name: 'content', multiline: true, style:'height:345px'}
-        ],
-        onsubmit: function(e) {
-          // Insert content when the window form is submitted
-          editor.insertContent(e.data.content);
-        }
-      });
+		icon: 'inserthtml',
+        onAction: function() {
+            win = editor.windowManager.open({
+                    title: 'Insert HTML Fragment...',
+                    size: 'normal',
+                    data: {},
+                    body: {
+                        type: 'panel', // root body panel
+                        items: [
+                            {type: 'textarea', name: 'content'}
+                        ]},
+                    onSubmit: function(e) {
+                        // Insert content when the window form is submitted
+                        editor.insertContent(e.getData().content);
+                        win.close();
+                    },
+                    buttons: [
+                        { type: 'cancel', text: 'Close' },
+                        { type: 'submit', text: 'Save', primary: true}
+                    ]
+                }
+
+            );
         }
     });
 
     // Adds a menu item to the tools menu
-    editor.addMenuItem('rxinserthtml', {
+    editor.ui.registry.addMenuItem('rxinserthtml', {
         text: 'Insert HTML Fragment...',
-		image: '../rx_resources/images/inserthtml.gif',
-		shortcut: 'Meta+Shift+H',
-		context:'insert',
-        onclick: function() {
-               editor.windowManager.open({
-        title: 'Insert HTML Fragment...',
-		width: 600,
-        height: 400,
-        body: [
-          {type: 'textbox', name: 'content', multiline: true, style:'height:345px'}
-        ],
-        onsubmit: function(e) {
-          // Insert content when the window form is submitted
-          editor.insertContent(e.data.content);
-        }
-      });
+		icon: 'inserthtml',
+        shortcut: 'Meta+Shift+H',
+        context:'insert',
+        onAction: function() {
+            win = editor.windowManager.open({
+                title: 'Insert HTML Fragment...',
+                data: {},
+                size: 'normal',
+                body: {
+                    type: 'panel', // root body panel
+                    items: [
+                        {type: 'textarea', name: 'content'}
+                    ]},
+                onSubmit: function(e) {
+                    // Insert content when the window form is submitted
+                    editor.insertContent(e.getData().content);
+                    win.close();
+                },
+                buttons: [
+                    { type: 'cancel', text: 'Close' },
+                    { type: 'submit', text: 'Save', primary: true}
+                ]
+            });
         },
     });
-	
-	// Adds rxhyperlink keyboard shortcut
-    editor.shortcuts.add('ctrl+shift+h','rxinserthtml', function() {		
-               editor.windowManager.open({
-        title: 'Insert HTML Fragment...',
-		width: 600,
-        height: 400,
-        body: [
-          {type: 'textbox', name: 'content', multiline: true, style:'height:345px'}
-        ],
-        onsubmit: function(e) {
-          // Insert content when the window form is submitted
-          editor.insertContent(e.data.content);
-        }
-      });	
-	});
-	
+
+    // Adds rxhyperlink keyboard shortcut
+    editor.shortcuts.add('ctrl+shift+h','rxinserthtml', function() {
+        win =  editor.windowManager.open({
+            title: 'Insert HTML Fragment...',
+            size: 'normal',
+            data: {},
+            body: {
+                type: 'panel', // root body panel
+                items: [
+                    {type: 'textarea', name: 'content'}
+                ]},
+            onSubmit: function(e) {
+                // Insert content when the window form is submitted
+                editor.insertContent(e.getData().content);
+                win.close();
+            },
+            buttons: [
+                { type: 'cancel', text: 'Close' },
+                { type: 'submit', text: 'Save', primary: true}
+            ]
+        });
+    });
+
 });

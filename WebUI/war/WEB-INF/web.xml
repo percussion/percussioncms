@@ -437,6 +437,10 @@
         <servlet-class>com.percussion.services.aaclient.PSAaClientServlet</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>ContentUiAAServlet</servlet-name>
+        <servlet-class>com.percussion.content.ui.aa.PSAAClientServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>EditionJobStatusServlet</servlet-name>
         <servlet-class>com.percussion.rx.publisher.servlet.PSJobStatusServlet</servlet-class>
     </servlet>
@@ -630,6 +634,11 @@
         <servlet-name>ActiveAssemblyServlet</servlet-name>
         <url-pattern>/assembly/aa</url-pattern>
     </servlet-mapping>
+	<servlet-mapping>
+        <servlet-name>ContentUiAAServlet</servlet-name>
+        <url-pattern>/contentui/aa</url-pattern>
+    </servlet-mapping>
+
     <servlet-mapping>
         <servlet-name>PSTdSchemaXmlServlet</servlet-name>
         <url-pattern>/servlet/tdschemaxml</url-pattern>

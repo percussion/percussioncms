@@ -27,25 +27,29 @@ import com.percussion.cms.PSCmsException;
 import com.percussion.server.PSRequestParsingException;
 import com.percussion.services.assembly.IPSAssemblyItem;
 import com.percussion.services.assembly.IPSAssemblyResult;
+import com.percussion.services.assembly.IPSAssemblyResult.Status;
 import com.percussion.services.assembly.IPSAssemblyService;
+import com.percussion.services.assembly.IPSTemplateSlot;
 import com.percussion.services.assembly.PSAssemblyException;
 import com.percussion.services.assembly.PSAssemblyServiceLocator;
 import com.percussion.services.assembly.PSTemplateNotImplementedException;
-import com.percussion.services.assembly.IPSAssemblyResult.Status;
 import com.percussion.services.filter.PSFilterException;
 import com.percussion.util.PSParseUrlQueryString;
-
-import java.io.UnsupportedEncodingException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import com.percussion.utils.guid.IPSGuid;
+import com.percussion.utils.types.PSPair;
+import org.apache.commons.lang.StringUtils;
 
 import javax.jcr.ItemNotFoundException;
 import javax.jcr.RepositoryException;
-
-import org.apache.commons.lang.StringUtils;
+import java.io.UnsupportedEncodingException;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Various methods to allow easy direct calling of the assembly service
@@ -152,6 +156,31 @@ public class PSAssemblyServiceUtils
          return result.toResultString();
       }
       return null;
+   }
+
+   /**
+    * Get a map that associates a particular content type with a set of template
+    * ids for this slot
+    *
+    * @return a map, never <code>null</code> but could be empty
+    */
+   public static Map<IPSGuid, Set<IPSGuid>> getSlotAssociationMap(IPSTemplateSlot slot)
+   {
+      Collection<PSPair<IPSGuid, IPSGuid>> assoc = slot.getSlotAssociations();
+      Map<IPSGuid, Set<IPSGuid>> map = new HashMap<IPSGuid, Set<IPSGuid>>();
+      for (PSPair<IPSGuid, IPSGuid> pair : assoc)
+      {
+         IPSGuid ctype = pair.getFirst();
+         IPSGuid ttype = pair.getSecond();
+         Set<IPSGuid> templates = map.get(ctype);
+         if (templates == null)
+         {
+            templates = new HashSet<IPSGuid>();
+            map.put(ctype, templates);
+         }
+         templates.add(ttype);
+      }
+      return map;
    }
 
 }

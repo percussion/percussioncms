@@ -1,11 +1,24 @@
 [{
-
+	"height":"530px",
 	"config_css": "../sys_resources/css/tinymce/content.css",
-	"menubar": "edit insert view format table tools",
+	"menubar": "edit insert view format table tools ",
 	"browser_spellcheck": true,
-	"plugins": "autosave,advlist,lists,table,searchreplace,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,anchor,charmap, hr,emoticons,code,textcolor,percadvlink,percmorelink,percglobalvariables,percadvimage,rxinline,rxinserthtml",
-	"toolbar": "restoredraft | undo redo  | styleselect bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link unlink | image",
+	"plugins":[
+		"advlist autosave autolink lists link charmap print preview hr anchor",
+		"searchreplace wordcount visualblocks visualchars code fullscreen",
+		"insertdatetime media nonbreaking table directionality",
+		"emoticons paste textcolor save codesample colorpicker",
+		"noneditable rxinline rxinserthtml contextmenu"
+	],
+	"toolbar": [" newdocument undo rdo restoredraft | cut copy paste searchreplace useBrowserSpellcheck | styleselect fontselect fontsizeselect forecolor backcolor removeformat | bold italic underline strikethrough superscript subscript | alignleft aligncenter alignright alignjustify alignnone | bullist numlist outdent indent | link unlink openlink media | image  | visualchars visualblocks fullscreen print preview | anchor charmap hr emoticons insertdatetime | table tabledelete tableinsertrowafter tabledeleterow tableinsertcolbefore tabledeletecol tablesplitcells tablemergecells  | percmorelink| percglobalvariables | rxinlinelink rxinlinetemplate rxinlineimage rxinserthtml  | ltr rtl codesample code"],
 	"paste_word_valid_elements": "b,strong,i,em,h1,h2,u,p,ol,ul,li,a[href],table,tr,td,style",
 	"paste_data_images": true,
-	"valid_elements": "*[*]"
+	"relative_urls": false,
+	"remove_script_host" : false,
+	"valid_elements": "*[*]",
+	"contextmenu":"link openlink | useBrowserSpellcheck | inserttable | cell row column ",
+	"icons": "percCustIcon",
+   "menu":{
+	    "insert":{"title" :"insert", "items":"rxinlineimage rxinlinetemplate rxinline rxinserthtml link | image media | percmorelink | percglobalvariables | charmap codesample addcomment emoticons nonbreaking insertdatetime hr anchor pagebreak emoticons nonbreaking pageembed template toc"}
+   }
 }]

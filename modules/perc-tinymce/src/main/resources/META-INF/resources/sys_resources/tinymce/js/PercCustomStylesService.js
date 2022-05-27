@@ -42,6 +42,10 @@
     function getCustomStyles(callback)
     {
 		var parentJq = window.parent.jQuery;
+		if(typeof parentJq.perc_paths === 'undefined'){
+			callback(true, tinyMCEDefaultStyles);
+			return;
+		}
 		var url = parentJq.perc_paths.RICHTEXT_CUSTOM_STYLES;
         parentJq.PercServiceUtils.makeJsonRequest(url,parentJq.PercServiceUtils.TYPE_GET,false,function(status, result){
 			/**
