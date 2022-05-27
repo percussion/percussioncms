@@ -3,6 +3,7 @@
 	"config_css": "../sys_resources/css/tinymce/content.css",
 	"menubar": "edit insert view format table tools ",
 	"browser_spellcheck": true,
+	"autosave_ask_before_unload": false,
 	"plugins":[
 		"advlist autosave autolink lists link charmap print preview hr anchor",
 		"searchreplace wordcount visualblocks visualchars code fullscreen",
