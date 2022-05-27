@@ -235,7 +235,7 @@
      */
     function makeJsonRequest(url, type, sync, callback, dataObject, abortCallback, timeout) {
         var self = this;
-        var version = typeof $.getCMSVersion === "function" ? $.getCMSVersion() : "";
+
         var ajaxTimeout = $.perc_utils.percParseInt(timeout);
         var args = {
             dataType: 'json',
@@ -248,7 +248,7 @@
                 withCredentials: true
             },
             url: url,
-            headers: {"perc-version": version},
+            headers: {"perc-version": getVersion()},
             success: function (data, textstatus) {
                 var result = {
                     data: data,
@@ -319,7 +319,7 @@
      */
     function makeRequest(url, type, sync, callback, dataObject, contentType, dataType, noEscape, abortCallback) {
         var self = this;
-        var version = typeof $.getCMSVersion === "function" ? $.getCMSVersion() : "";
+
         if (dataType === null || typeof dataType === "undefined") {
             dataType = "text";
 
@@ -343,7 +343,7 @@
             contentType: contentType,
             type: type,
             url: (noEscape) ? url : escape(url),
-            headers: {"perc-version": version},
+            headers: {"perc-version": getVersion()},
             success: function (data, textstatus) {
                 var result = {
                     data: data,
@@ -410,7 +410,6 @@
      */
     function makeXdmXmlRequest(servicebase, url, type, callback, dataObject) {
         var self = this;
-        var version = typeof $.getCMSVersion === "function" ? $.getCMSVersion() : "";
 
         if (null === callback || 'undefined' === typeof (callback)) {
             alert("Callback cannot be null or undefined");
@@ -457,7 +456,7 @@
             headers: {
                 'Content-Type': 'application/json',
                 "Accept": "application/xml",
-                "perc-version": version
+                "perc-version": getVersion()
             },
             redirect: 'follow', // manual, *follow, error
             referrerPolicy: 'origin-when-cross-origin',
@@ -539,11 +538,11 @@
         if (null !== dataObject && '' !== dataObject && 'undefined' !== typeof (dataObject)) {
             body = JSON.stringify(dataObject);
         }
-        var version = typeof $.getCMSVersion ==="function" ? $.getCMSVersion() : "";
+
         var header =   {
             'Content-Type': 'application/json',
             "Accept": "application/json,text/plain",
-            "perc-version": version
+            "perc-version": getVersion()
         };
         var init = {
             url: url,
@@ -589,6 +588,10 @@
         return (['post','put','delete'].indexOf(method.toLowerCase())!==-1);
     }
 
+    function getVersion(){
+         //Version can't be empty as it is illegal to have an empty header
+        return typeof $.getCMSVersion === "function" ? $.getCMSVersion() : "8.0";
+    }
 
     /**
      *  Makes a request to a specified url, returning status and results
@@ -621,8 +624,6 @@
      */
     function makeXmlRequest(url, type, sync, callback, dataString, abortCallback) {
         var self = this;
-        var version = typeof $.getCMSVersion === "function" ? $.getCMSVersion() : "";
-
         var args = {
             dataType: 'xml',
             async: !sync,
@@ -634,7 +635,7 @@
                 withCredentials: true
             },
             url: url,
-            headers: {"perc-version": version},
+            headers: {"perc-version": getVersion()},
             success: function (data, textstatus) {
                 var result = {
                     data: data,
@@ -689,7 +690,6 @@
      */
     function makeDeleteRequest(url, sync, callback, dataString, abortCallback) {
         var self = this;
-        var version = typeof $.getCMSVersion === "function" ? $.getCMSVersion() : "";
 
         var args = {
             dataType: 'text',
@@ -698,7 +698,7 @@
             method: self.TYPE_DELETE,
             type: self.TYPE_DELETE,
             url: url,
-            headers: {"perc-version": version},
+            headers: {"perc-version": getVersion()},
             success: function (data, textstatus) {
                 var result = {
                     data: data,

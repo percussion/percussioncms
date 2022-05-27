@@ -383,7 +383,7 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
                 if(percFields.get(FORM_PROCESSORURL)!=null){
                     processorUrl = percFields.get(FORM_PROCESSORURL)[0];
                     Security.addProvider(new BouncyCastleProvider());
-                    SSLContext sslContext = SSLContext.getInstance("TLS", "BCJSSE");
+                    SSLContext sslContext = SSLContext.getInstance("TLS");
                     sslContext.init(null, null, new SecureRandom());
 
                     Protocol.registerProtocol("https",

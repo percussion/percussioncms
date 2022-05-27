@@ -1276,6 +1276,8 @@ public class PSInlineLinkField
     * relationship and for the cleanupBrokenLinks parameter to enable cleanup.
     */
    public static final String RS_YES = "yes";
+
+   public static final String RX_ANCHORTEXT = "rxanchortext";
    
    /**
     * The delimiter used to separate the inline link field name from the

@@ -99,6 +99,10 @@ public class PSUpdateDTSConfiguration extends PSAction {
             List<IPSConnector> connectors = null;
             if(prodPath.getAbsolutePath().contains(STAGING_PATH) || prodPath.getAbsolutePath().contains(STAGING_PATH_WIN)){
                 PSLogger.logInfo("Processing Staging DTS configuration..");
+                if(config.getConfig() == null || config.getConfig().getDtsConfig() == null || config.getConfig().getDtsConfig().getStagingDtsConnectorInfo() == null ){
+                    //this case happenes if old empty dir exists
+                    return;
+                }
                connectors = config.getConfig().getDtsConfig().getStagingDtsConnectorInfo().getConnectors();
                 File percCatalinaFile = new File(prodPath,CATALINA_PROPERTIES);
                 try {
@@ -122,6 +126,10 @@ public class PSUpdateDTSConfiguration extends PSAction {
 
             }else{
                 PSLogger.logInfo("Processing Production DTS configuration..");
+                if(config.getConfig() == null || config.getConfig().getDtsConfig() == null ||  config.getConfig().getDtsConfig().getDtsConnectorInfo() == null ){
+                    //this case happenes if old empty dir exists
+                    return;
+                }
                 connectors = config.getConfig().getDtsConfig().getDtsConnectorInfo().getConnectors();
                 File percCatalinaFile = new File(prodPath,CATALINA_PROPERTIES);
                 try {

@@ -74,9 +74,9 @@
                  for (int i = 0; i < len; i++)
                  {
                    JSONObject jobj = temps.getJSONObject(i);
-                   String ctypeid = jobj.getString("contenttypeid");
+                   String ctypeid = jobj.get("contenttypeid").toString();
                    ctypeid = ctypeid.substring(2, ctypeid.length() - 2);
-                   String name = jobj.getString("name");
+                   String name = jobj.get("name").toString();
                    name = name.substring(2, name.length() - 2);
               %>
               <option value='<%= ctypeid %>'><%= name %></option>
