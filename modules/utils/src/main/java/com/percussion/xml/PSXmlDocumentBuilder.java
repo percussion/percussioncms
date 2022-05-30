@@ -320,7 +320,19 @@ public class PSXmlDocumentBuilder {
 
             if (db == null) {
                 DocumentBuilderFactory dbf = getDocumentBuilderFactory(validating);
+                dbf.setNamespaceAware(true);
+                db = dbf.newDocumentBuilder();
 
+                PSCatalogResolver resolver  = new PSCatalogResolver();
+                if(internalRequestURIResolver != null){
+                    resolver.setInternalRequestURIResolver(internalRequestURIResolver);
+                }
+                db.setEntityResolver(resolver);
+                returnDocumentBuilderFactory(dbf);
+            }
+            if(db.isNamespaceAware() == false){
+                DocumentBuilderFactory dbf = getDocumentBuilderFactory(validating);
+                dbf.setNamespaceAware(true);
                 db = dbf.newDocumentBuilder();
 
                 PSCatalogResolver resolver  = new PSCatalogResolver();

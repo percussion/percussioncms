@@ -30,6 +30,8 @@ import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.guidmgr.data.PSGuid;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.xml.IPSXmlSerialization;
+import com.percussion.utils.xml.PSSaxHelper;
+import com.percussion.xml.PSXmlDocumentBuilder;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.betwixt.IntrospectionConfiguration;
 import org.apache.commons.betwixt.XMLIntrospector;
@@ -47,10 +49,12 @@ import org.apache.commons.betwixt.strategy.TypeBindingStrategy;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.w3c.dom.Document;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import java.beans.IntrospectionException;
@@ -582,8 +586,7 @@ public class PSXmlSerializationHelper
     * @throws SAXException
     */
    public static Object readFromXML(String xmlsource, Object object)
-         throws IOException, SAXException
-   {
+           throws IOException, SAXException, ParserConfigurationException {
       if (object == null)
       {
          throw new IllegalArgumentException("object may not be null");
@@ -618,14 +621,18 @@ public class PSXmlSerializationHelper
     * @throws SAXException
     */
    public static Object readFromXML(String xmlString, Class clazz)
-         throws IOException, SAXException
-   {
+           throws IOException, SAXException, ParserConfigurationException {
       if (StringUtils.isBlank(xmlString))
       {
          throw new IllegalArgumentException(
                "xmlString may not be null or empty");
       }
-      BeanReader reader = new BeanReader();
+      Document doc = PSXmlDocumentBuilder.createXmlDocument(
+              new StringReader(xmlString), false);
+
+      SAXParser parser = PSSaxHelper.newSAXParser(null);
+      BeanReader reader = new BeanReader(parser);
+
       standardBetwixtConfiguration(reader, clazz);
       Reader r = new StringReader(xmlString);
 
@@ -651,8 +658,7 @@ public class PSXmlSerializationHelper
     * @throws IOException
     */
    public static Object readFromXML(String xmlString) throws IOException,
-         SAXException
-   {
+           SAXException, ParserConfigurationException {
       return readFromXML(xmlString, null);
    }
 }

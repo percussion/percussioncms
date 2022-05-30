@@ -106,11 +106,6 @@
            <scope>provided</scope>
        </dependency>
        <dependency>
-           <groupId>saxon</groupId>
-           <artifactId>saxon</artifactId>
-           <scope>compile</scope>
-       </dependency>
-       <dependency>
            <groupId>org.owasp.encoder</groupId>
            <artifactId>encoder</artifactId>
            <scope>compile</scope>
