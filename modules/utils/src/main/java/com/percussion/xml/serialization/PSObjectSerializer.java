@@ -180,7 +180,7 @@ public class PSObjectSerializer
       {
          throw new PSObjectSerializerException(e);
       }
-      catch (SAXException e)
+      catch (SAXException | ParserConfigurationException e)
       {
          throw new PSObjectSerializerException(e);
       }
