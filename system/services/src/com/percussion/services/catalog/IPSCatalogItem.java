@@ -27,7 +27,6 @@ import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.xml.PSInvalidXmlException;
 import org.xml.sax.SAXException;
 
-import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 
 /**
@@ -73,7 +72,7 @@ public interface IPSCatalogItem extends IPSCatalogIdentifier
     *    missing or incorrect
     */
    void fromXML(String xmlsource) throws IOException, SAXException,
-           PSInvalidXmlException, ParserConfigurationException;
+           PSInvalidXmlException;
 
 
    /**

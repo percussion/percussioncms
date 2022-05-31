@@ -46,7 +46,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
-import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.io.Serializable;
 
@@ -263,7 +262,7 @@ public class PSSiteProperty implements IPSCatalogItem, Serializable
    /** (non-Javadoc)
     * @see com.percussion.services.catalog.IPSCatalogItem#fromXML(java.lang.String)
     */
-   public void fromXML(String xmlsource) throws IOException, SAXException, ParserConfigurationException {
+   public void fromXML(String xmlsource) throws IOException, SAXException {
       PSXmlSerializationHelper.readFromXML(xmlsource, this);   }
 
    /** (non-Javadoc)
