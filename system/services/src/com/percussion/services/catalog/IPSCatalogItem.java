@@ -25,10 +25,10 @@ package com.percussion.services.catalog;
 
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.xml.PSInvalidXmlException;
-
-import java.io.IOException;
-
 import org.xml.sax.SAXException;
+
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.IOException;
 
 /**
  * A single item that can be stored into or retrieved from a service. An item is
@@ -73,7 +73,7 @@ public interface IPSCatalogItem extends IPSCatalogIdentifier
     *    missing or incorrect
     */
    void fromXML(String xmlsource) throws IOException, SAXException,
-      PSInvalidXmlException;
+           PSInvalidXmlException, ParserConfigurationException;
 
 
    /**
