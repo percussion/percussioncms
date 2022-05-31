@@ -30,9 +30,13 @@ import com.percussion.services.guidmgr.data.PSGuid;
 import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.services.utils.xml.PSXmlSerializationHelper;
 import com.percussion.utils.guid.IPSGuid;
-
-import java.io.IOException;
-import java.io.Serializable;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.xml.sax.SAXException;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -42,14 +46,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.xml.sax.SAXException;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.IOException;
+import java.io.Serializable;
 
 /**
  * Represents a single property for the site. Each property is keyed to 
@@ -264,8 +263,7 @@ public class PSSiteProperty implements IPSCatalogItem, Serializable
    /** (non-Javadoc)
     * @see com.percussion.services.catalog.IPSCatalogItem#fromXML(java.lang.String)
     */
-   public void fromXML(String xmlsource) throws IOException, SAXException
-   {
+   public void fromXML(String xmlsource) throws IOException, SAXException, ParserConfigurationException {
       PSXmlSerializationHelper.readFromXML(xmlsource, this);   }
 
    /** (non-Javadoc)
