@@ -586,7 +586,7 @@ public class PSXmlSerializationHelper
     * @throws SAXException
     */
    public static Object readFromXML(String xmlsource, Object object)
-           throws IOException, SAXException, ParserConfigurationException {
+           throws IOException, SAXException {
       if (object == null)
       {
          throw new IllegalArgumentException("object may not be null");
@@ -621,7 +621,7 @@ public class PSXmlSerializationHelper
     * @throws SAXException
     */
    public static Object readFromXML(String xmlString, Class clazz)
-           throws IOException, SAXException, ParserConfigurationException {
+           throws IOException, SAXException {
       if (StringUtils.isBlank(xmlString))
       {
          throw new IllegalArgumentException(
@@ -630,17 +630,24 @@ public class PSXmlSerializationHelper
       Document doc = PSXmlDocumentBuilder.createXmlDocument(
               new StringReader(xmlString), false);
 
-      SAXParser parser = PSSaxHelper.newSAXParser(null);
-      BeanReader reader = new BeanReader(parser);
+      SAXParser parser = null;
+      Object restored = null;
+      try {
+         parser = PSSaxHelper.newSAXParser(null);
 
-      standardBetwixtConfiguration(reader, clazz);
-      Reader r = new StringReader(xmlString);
+         BeanReader reader = new BeanReader(parser);
 
-      BeanCreationList chain = BeanCreationList.createStandardChain();
-      chain.insertBeanCreator(1, getBeanCreator());
-      reader.getReadConfiguration().setBeanCreationChain(chain);
+         standardBetwixtConfiguration(reader, clazz);
+         Reader r = new StringReader(xmlString);
 
-      Object restored = reader.parse(r);
+         BeanCreationList chain = BeanCreationList.createStandardChain();
+         chain.insertBeanCreator(1, getBeanCreator());
+         reader.getReadConfiguration().setBeanCreationChain(chain);
+
+         restored = reader.parse(r);
+      } catch (ParserConfigurationException e) {
+         throw new SAXException("No bean found");
+      }
       if (restored == null)
       {
          throw new SAXException("No bean found");
