@@ -184,7 +184,7 @@ function createInlineSearchBox(type,selectedText,inlineslotid,ctypeid,callback)
 {
 
      var inlinetype = type;
-  __rxroot="";
+  __rxroot="/Rhythmyx";
    //var type = dataObject.searchType;
     //set serverproperties
   
