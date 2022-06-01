@@ -26,7 +26,7 @@ package com.percussion.relationship.effect;
 import com.percussion.cms.PSCmsException;
 import com.percussion.cms.objectstore.PSDbComponent;
 import com.percussion.cms.objectstore.PSFolder;
-import com.percussion.cms.objectstore.server.PSRelationshipProcessor;
+import com.percussion.cms.objectstore.PSRelationshipProcessorProxy;
 import com.percussion.design.objectstore.PSLocator;
 import com.percussion.design.objectstore.PSRelationship;
 import com.percussion.design.objectstore.PSRelationshipConfig;
@@ -35,6 +35,8 @@ import com.percussion.extension.PSParameterMismatchException;
 import com.percussion.relationship.IPSExecutionContext;
 import com.percussion.relationship.PSEffect;
 import com.percussion.relationship.PSEffectResult;
+import com.percussion.relationship.annotation.PSEffectContext;
+import com.percussion.relationship.annotation.PSHandlesEffectContext;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.util.IPSHtmlParameters;
 import org.apache.commons.lang.StringUtils;
@@ -67,6 +69,7 @@ import java.util.Set;
  * target folder.
  *
  */
+@PSHandlesEffectContext(required=PSEffectContext.PRE_CONSTRUCTION)
 public class PSAttachCloneToFolder extends PSEffect
 {
 
@@ -83,7 +86,7 @@ public class PSAttachCloneToFolder extends PSEffect
       throws PSExtensionProcessingException, PSParameterMismatchException
    {
       //context must be construction
-      if(!context.isPreConstruction())
+      if(!context.isPreConstruction() && context.isPreClone())
       {
          result.setWarning(
             "This effect is active only during relationship construction");
@@ -160,8 +163,10 @@ public class PSAttachCloneToFolder extends PSEffect
 
        try
        {
-          PSRelationshipProcessor proc = PSRelationshipProcessor.getInstance();
-          
+          PSRelationshipProcessorProxy proc =
+             new PSRelationshipProcessorProxy(
+                PSRelationshipProcessorProxy.PROCTYPE_SERVERLOCAL,
+                request);
           List children = new ArrayList();
           children.add(currentRel.getDependent());
           for (int i = 0; i < tgtFolders.size(); i++)

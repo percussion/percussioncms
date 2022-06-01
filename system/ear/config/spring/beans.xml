@@ -613,9 +613,18 @@ http://www.springframework.org/schema/context/spring-context.xsd">
     <bean id="sys_designModelFactory"
           class="com.percussion.rx.design.impl.PSDesignModelFactory">
     </bean>
-
+    <bean id="sys_digestService" class="com.percussion.services.filestorage.impl.PSFileDigestService"/>
     <bean id="sys_fileMonitorService"
           class="com.percussion.services.notification.filemonitor.impl.PSFileMonitorService">
+    </bean>
+
+    <bean id="sys_hashDao" class="com.percussion.services.filestorage.impl.PSHashedFileDAO"/>
+
+    <bean id="sys_fileStorageService" class="com.percussion.services.filestorage.impl.PSDbStorageService">
+        <property name="digestService" ref="sys_digestService">
+        </property>
+        <property name="hashDao" ref="sys_hashDao">
+        </property>
     </bean>
 
     <!--  Uncomment to add profiling to services, adjust the expression(s) to
