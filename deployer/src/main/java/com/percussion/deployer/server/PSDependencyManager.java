@@ -113,7 +113,7 @@ public class PSDependencyManager implements IPSDependencyManagerBaseline
    {
 
       String configDir = ms_configDir;
-      boolean buildDepMaps = false;
+      boolean buildDepMaps = true;
       try
       {
          if (ms_configDir == null)
@@ -125,7 +125,7 @@ public class PSDependencyManager implements IPSDependencyManagerBaseline
       }
       catch (Exception e)
       {
-         log.error("Failed to load configure file from {}. Error: {}" ,
+         log.error("Failed to load config file from {}. Error: {}" ,
                  configDir,
                  PSExceptionUtils.getDebugMessageForLog(e));
       }
@@ -1273,16 +1273,17 @@ public class PSDependencyManager implements IPSDependencyManagerBaseline
    public Iterator getElementTypes()
    {
       List types = new ArrayList();
-      Iterator defs = m_depMap.getDefs();
-      while (defs.hasNext())
-      {
-         PSDependencyDef def = (PSDependencyDef) defs.next();
-         if (def.isDeployableElement()
-               && !def.getObjectType().equals(
-                     IPSDeployConstants.DEP_OBJECT_TYPE_CUSTOM))
-         {
-            types.add(def);
-         }
+
+      if(m_depMap!=null) {
+          Iterator defs = m_depMap.getDefs();
+          while (defs.hasNext()) {
+             PSDependencyDef def = (PSDependencyDef) defs.next();
+             if (def.isDeployableElement()
+                     && !def.getObjectType().equals(
+                     IPSDeployConstants.DEP_OBJECT_TYPE_CUSTOM)) {
+                types.add(def);
+             }
+          }
       }
       return types.iterator();
    }
@@ -1383,19 +1384,20 @@ public class PSDependencyManager implements IPSDependencyManagerBaseline
    public Iterator getCustomElementTypes() throws PSDeployException
    {
       List types = new ArrayList();
-      PSDependencyDef custDef = m_depMap
-            .getDependencyDef(IPSDeployConstants.DEP_OBJECT_TYPE_CUSTOM);
-      if (custDef != null) // should never be null
-      {
-         PSDependencyHandler custHandler = PSDependencyHandler
-               .getHandlerInstance(custDef, m_depMap);
-         Iterator childTypes = custHandler.getChildTypes();
-         while (childTypes.hasNext())
+      if(m_depMap !=null) {
+         PSDependencyDef custDef = m_depMap
+                 .getDependencyDef(IPSDeployConstants.DEP_OBJECT_TYPE_CUSTOM);
+         if (custDef != null) // should never be null
          {
-            String type = (String) childTypes.next();
-            PSDependencyDef childDef = m_depMap.getDependencyDef(type);
-            if (childDef != null)
-               types.add(childDef);
+            PSDependencyHandler custHandler = PSDependencyHandler
+                    .getHandlerInstance(custDef, m_depMap);
+            Iterator childTypes = custHandler.getChildTypes();
+            while (childTypes.hasNext()) {
+               String type = (String) childTypes.next();
+               PSDependencyDef childDef = m_depMap.getDependencyDef(type);
+               if (childDef != null)
+                  types.add(childDef);
+            }
          }
       }
       return types.iterator();

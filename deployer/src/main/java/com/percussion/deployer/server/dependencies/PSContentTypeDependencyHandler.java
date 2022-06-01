@@ -347,8 +347,10 @@ public class PSContentTypeDependencyHandler
       childDeps.addAll(getTemplateDependencies(tok, dep));
 
       // Don't forget the idTypes
-      childDeps.addAll(PSIdTypeDependencyHandler.getIdTypeDependencies(tok,
-            dep, this));
+      if(dep.supportsIdTypes()) {
+         childDeps.addAll(PSIdTypeDependencyHandler.getIdTypeDependencies(tok,
+                 dep, this));
+      }
       
       // Package the icon file
       PSItemDefinition item = findContentTypeByNodeDef(node);

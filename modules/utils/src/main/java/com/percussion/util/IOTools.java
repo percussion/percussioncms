@@ -23,6 +23,8 @@
  */
 package com.percussion.util;
 
+import org.apache.commons.io.IOUtils;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -40,6 +42,7 @@ import java.util.zip.CRC32;
 /**
  * The IOTools class contains IO helper utilities.
  */
+@Deprecated //Use commons io
 public class IOTools
 {
    /**
@@ -380,6 +383,7 @@ public class IOTools
     */
    public static void copyFileStreams(File source, File dest) throws IOException 
    {
+
       if (source==null)
          throw new IllegalArgumentException("source may not be null");
       if (dest==null)

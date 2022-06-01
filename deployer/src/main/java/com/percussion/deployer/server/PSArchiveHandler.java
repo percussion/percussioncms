@@ -24,6 +24,7 @@
 
 package com.percussion.deployer.server;
 
+import com.percussion.cms.IPSConstants;
 import com.percussion.deployer.objectstore.PSApplicationIDTypes;
 import com.percussion.deployer.objectstore.PSArchive;
 import com.percussion.deployer.objectstore.PSArchiveManifest;
@@ -36,6 +37,10 @@ import com.percussion.deployer.server.dependencies.PSSupportFileDependencyHandle
 import com.percussion.error.IPSDeploymentErrors;
 import com.percussion.error.PSDeployException;
 import com.percussion.util.IOTools;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
@@ -53,6 +58,8 @@ import java.util.Map;
  */
 public class PSArchiveHandler
 {
+
+   private static final Logger log = LogManager.getLogger(IPSConstants.PACKAGING_LOG);
 
    /**
     * Constructing the handler from a <code>PSArchive</code> object.
@@ -158,14 +165,17 @@ public class PSArchiveHandler
          {
             PSDependencyFile depFile = (PSDependencyFile) files.next();
             String fileName = depFile.getFile().getName();
+
+            log.debug("Dependency File Name: {}", fileName);
+
             // Generate meaningful, unique names for files with names created using temporary files (design objects).
-            if (fileName.startsWith("dpl_") && (fileName.endsWith(".xml") || fileName.endsWith(".tmp")))
+            if (depFile.getFile().exists() && fileName.startsWith("dpl_") && (fileName.endsWith(".xml") || fileName.endsWith(".tmp")))
             {
                if (ms_tmpDir == null)
                {
                   File tmpFile = File.createTempFile("tmp", ".tmp");
+                  tmpFile.deleteOnExit();
                   ms_tmpDir = tmpFile.getParentFile();
-                  tmpFile.delete();
                }
 
                String tmpFileName = tmpName + tmpExt;
@@ -174,29 +184,40 @@ public class PSArchiveHandler
                   tmpFileName = tmpName + '.' + ms_depFileTypeMap.get(depFile.getType()) + tmpExt;
                }
                File tmp = new File(ms_tmpDir, tmpFileName);
+               log.debug("Created temp file: {} in {}",
+                       tmpFileName, ms_tmpDir.getAbsolutePath());
+
                int i = 1;
                while (tmp.exists())
                {
+                  log.debug("Creating temp file: {} count: {}",tmpName,i);
                   tmp = new File(ms_tmpDir, tmpName + '(' + i++ + ')'
                         + tmpExt);
                }
+               log.debug("Adding file: {}", tmp.getAbsolutePath());
                tmpFiles.add(tmp);
 
-               IOTools.copyFileStreams(depFile.getFile(), tmp);
+               log.debug("Copying file {} to temp file: {}",
+                       depFile.getFile().getAbsolutePath(),
+                       tmp.getAbsolutePath());
+         FileUtils.copyFile(depFile.getFile(), tmp);
 
                depFile = new PSDependencyFile(depFile.getType(), tmp,
                      depFile.getOriginalFile());
             }
-                        
-            setArchiveLocation(depFile, dep, dupFiles);
 
-            m_archive.storeFile(depFile.getFile(),
-                  getNormalizedArchivePath(depFile));
-            dupFiles.add(depFile);
+            if(depFile.getFile().exists()) {
+               setArchiveLocation(depFile, dep, dupFiles);
+
+               m_archive.storeFile(depFile.getFile(),
+                       getNormalizedArchivePath(depFile));
+               dupFiles.add(depFile);
+            }
          }
 
          // then update the manifest
-         m_archiveMan.addFiles(dep, dupFiles.iterator());
+         if(hasDependencyFiles(dep))
+            m_archiveMan.addFiles(dep, dupFiles.iterator());
       }
       catch (IOException e)
       {

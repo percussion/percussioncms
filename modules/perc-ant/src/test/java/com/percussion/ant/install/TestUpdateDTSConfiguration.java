@@ -208,4 +208,62 @@ public class TestUpdateDTSConfiguration {
 
 
     }
+
+
+    @Test
+    public void testDTSUpgradeStagingExistingCatalinaProps() throws IOException {
+
+        Path root = temporaryFolder.getRoot().toPath().resolve("53Stageto8upgrade");
+        root.toFile().mkdirs();
+
+        InputStream srcProdDTSXML= DtsConnectorConfigurationAdapterTest.class.getResourceAsStream("/com/percussion/ant/install/mockinstall/Deployment/Server/conf/server.xml");
+        InputStream srcStageDTSXML= DtsConnectorConfigurationAdapterTest.class.getResourceAsStream("/com/percussion/ant/install/mockinstall/Staging/Deployment/Server/conf/server.xml");
+
+        InputStream srcProdDTSXML53= DtsConnectorConfigurationAdapterTest.class.getResourceAsStream("/com/percussion/ant/install/mockinstall/Deployment/Server/conf/server.xml.5.3");
+        InputStream srcStageDTSXML53= DtsConnectorConfigurationAdapterTest.class.getResourceAsStream("/com/percussion/ant/install/mockinstall/Staging/Deployment/Server/conf/server.xml.5.3");
+
+        InputStream srcProdDTSXMLBAK= DtsConnectorConfigurationAdapterTest.class.getResourceAsStream("/com/percussion/ant/install/mockinstall/Deployment/Server/conf/server.xml.bak");
+        //   InputStream srcStageDTSXMLBAK= DtsConnectorConfigurationAdapterTest.class.getResourceAsStream("/com/percussion/ant/install/mockinstall/Staging/Deployment/Server/conf/server.xml.bak");
+
+        InputStream srcProdDTSProps= DtsConnectorConfigurationAdapterTest.class.getResourceAsStream("/com/percussion/ant/install/mockinstall/Deployment/Server/conf/perc/perc-catalina.properties");
+        InputStream srcStageDTSProps = DtsConnectorConfigurationAdapterTest.class.getResourceAsStream("/com/percussion/ant/install/mockinstall/Staging/Deployment/Server/conf/perc/perc-catalina.properties");
+
+        temporaryFolder.newFolder("53Stageto8upgrade", "Staging", "Deployment","Server","conf","perc");
+
+       // Files.copy(srcProdDTSXML,root.resolve("Deployment/Server/conf/server.xml"));
+        Files.copy(srcStageDTSXML,root.resolve("Staging/Deployment/Server/conf/server.xml"));
+      //  Files.copy(srcProdDTSXML53,root.resolve("Deployment/Server/conf/server.xml.5.3"));
+     //   Files.copy(srcStageDTSXML53,root.resolve("Staging/Deployment/Server/conf/server.xml.5.3"));
+      //  Files.copy(srcProdDTSXMLBAK,root.resolve("Deployment/Server/conf/server.xml.bak"));
+        //   Files.copy(srcStageDTSXMLBAK,root.resolve("Staging/Deployment/Server/conf/server.xml.bak"));
+      //  Files.copy(srcProdDTSProps,root.resolve("Deployment/Server/conf/perc/perc-catalina.properties"));
+        Files.copy(srcStageDTSProps,root.resolve("Staging/Deployment/Server/conf/perc/perc-catalina.properties"));
+
+        PSUpdateDTSConfiguration task = new PSUpdateDTSConfiguration();
+        task.setRootDir(root.toAbsolutePath().toString());
+
+        task.execute();
+
+        //validate that existing properties not overwritten
+        Properties prodProps = new Properties();
+
+        //Now check staging properties
+        try (InputStream input = new FileInputStream(
+                root.resolve("Staging" + File.separator + "Deployment" + File.separator +
+                        "Server" + File.separator + "conf" + File.separator + "perc" + File.separator+ "perc-catalina.properties").toFile())) {
+
+            prodProps.load(input);
+            assertEquals("29970",prodProps.getProperty("http.port"));
+            assertEquals("29443", prodProps.getProperty("https.port"));
+            assertEquals("somepassword",prodProps.getProperty("https.keystorePass"));
+            assertEquals("somepassword",prodProps.getProperty("https.certificateKeystorePassword"));
+            assertEquals("TLSv1.2,TLSv1.3",prodProps.getProperty("https.sslEnabledProtocols"));
+            assertEquals("TLSv1.2,TLSv1.3",prodProps.getProperty("https.protocols"));
+            assertEquals("conf/A.keystore",prodProps.getProperty("https.keystoreFile"));
+            assertEquals("29443", prodProps.getProperty("http.redirectPort"));
+
+        }
+
+
+    }
 }

@@ -133,7 +133,9 @@ public class PSApplicationDependencyHandler
       PSApplication app = getApplication(tok, dep.getDependencyId());
 
       // get dependencies specified by id type map
-      childDeps.addAll(getIdTypeDependencies(tok, dep));
+      if(dep.supportsIdTypes()) {
+         childDeps.addAll(getIdTypeDependencies(tok, dep));
+      }
 
       // add stylesheet dependencies
       List<PSDependency> styleSheetDepList = getStyleSheetDependencies(tok, dep);
