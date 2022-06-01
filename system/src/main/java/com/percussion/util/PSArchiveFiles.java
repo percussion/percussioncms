@@ -24,6 +24,10 @@
 
 package com.percussion.util;
 
+import com.percussion.cms.IPSConstants;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -47,6 +51,8 @@ import java.util.zip.ZipOutputStream;
  */
 public class PSArchiveFiles
 {
+
+   private static final Logger log = LogManager.getLogger(IPSConstants.PACKAGING_LOG);
 
    /**
     * Opens the specified archive file. The classes calling this method are
@@ -94,7 +100,6 @@ public class PSArchiveFiles
     * @return the inputstream.  Never <code>null</code>. Caller must close when
     * finished with it.
     *
-    * @throws IllegalArgmumentException if any param is <code>null</code>.
     * @throws IOException if an error occurs reading from the archive or if
     * file is not found in archive.
     * @throws ZipException if a ZIP format error has occurred.
@@ -141,7 +146,6 @@ public class PSArchiveFiles
     * @return the inputstream.  Never <code>null</code>. Caller must close when
     * finished with it.
     *
-    * @throws IllegalArgmumentException if any param is <code>null</code>.
     * @throws IOException if an error occurs reading from the archive or if
     * file is not found in archive.
     * @throws ZipException if a ZIP format error has occurred.
@@ -186,7 +190,6 @@ public class PSArchiveFiles
     * @return the archive output stream, never <code>null</code>.
     *
     * @throws IllegalArgumentException if archive is <code>null</code>.
-    * @throws IOExeption if archive cannot be created or cannot get output
     * stream  from it.
     */
    public static ZipOutputStream createArchive(File archive, String type,
@@ -335,21 +338,28 @@ public class PSArchiveFiles
       if (extra != null)
          entry.setExtra(extra);
 
-      archiveOutputStream.putNextEntry(entry);
+      try {
+         archiveOutputStream.putNextEntry(entry);
 
-      if(sourceFile.isFile())
-      {
-         // read in file and write it out
-         FileInputStream in = new FileInputStream(sourceFile);
+         if (sourceFile.isFile()) {
+            // read in file and write it out
+            FileInputStream in = new FileInputStream(sourceFile);
 
-         byte[] buf = new byte[1024];
-         int len;
-         while ((len = in.read(buf)) > 0)
-            archiveOutputStream.write(buf, 0, len);
+            byte[] buf = new byte[1024];
+            int len;
+            while ((len = in.read(buf)) > 0)
+               archiveOutputStream.write(buf, 0, len);
 
-         in.close();
+            in.close();
+         }
+      }catch(ZipException e){
+         if(e.getMessage().contains("duplicate entry")){
+            log.warn("Skipping duplicate entry: {} in package archive.",
+                    fileEntryPath);
+         }else{
+            throw e;
+         }
       }
-
       archiveOutputStream.closeEntry();
    }
 
@@ -388,8 +398,6 @@ public class PSArchiveFiles
     * not be <code>null</code>.
     * @param extractDir The directory to which files to be extracted, may not be
     * <code>null</code> and should be a valid directory.
-    * @param printFileNames if <code>true</code>, prints to console the files
-    * extracting from archive otherwise not.
     * @param log The names of files being extracted from archive are logged to
     * this stream. Useful for debugging. If it is <code>null</code>, ignored
     * logging.

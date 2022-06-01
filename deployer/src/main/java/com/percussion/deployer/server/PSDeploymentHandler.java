@@ -228,13 +228,13 @@ public class PSDeploymentHandler implements IPSDeploymentHandler, IPSLoadableReq
       // clients will not have the "enforceLicense" attribute. So for backwards
       // compatability the server will enforce the licensing if
       // "enforceLicense" attribute is missing.
-      boolean bEnforceLic = true;
+      boolean bEnforceLic = false;
       String strEnforceLic = root.getAttribute("enforceLicense");
       if ((strEnforceLic != null) && (strEnforceLic.equalsIgnoreCase("no")))
          bEnforceLic = false;
 
       // check if the Multi-Server Manager is licensed or not
-      String licensed = "no";
+      String licensed = "yes";
       PSServerBrand brand = new PSServerBrand();
       if (brand
               .isComponentLicensed(IPSBrandCodeConstants.MULTI_SERVER_MANANGER))
