@@ -138,25 +138,12 @@ public abstract class PSDependencyHandler implements IPSDependencyHandler {
 
          return handler;
       }
-      catch (ClassNotFoundException cnfe)
+      catch (ClassNotFoundException | InstantiationException | IllegalAccessException | NoSuchMethodException cnfe)
       {
          Object[] args = {className, cnfe.getLocalizedMessage()};
          throw new PSDeployException(
             IPSDeploymentErrors.DEPENDENCY_HANDLER_INIT, args);
-      }
-      catch (InstantiationException ie)
-      {
-         Object[] args = {className, ie.getLocalizedMessage()};
-         throw new PSDeployException(
-            IPSDeploymentErrors.DEPENDENCY_HANDLER_INIT, args);
-      }
-      catch (IllegalAccessException iae)
-      {
-         Object[] args = {className, iae.getLocalizedMessage()};
-         throw new PSDeployException(
-            IPSDeploymentErrors.DEPENDENCY_HANDLER_INIT, args);
-      }
-      catch (InvocationTargetException ite)
+      } catch (InvocationTargetException ite)
       {
          Throwable origException = ite.getTargetException();
          String msg = origException.getLocalizedMessage();
@@ -164,14 +151,7 @@ public abstract class PSDependencyHandler implements IPSDependencyHandler {
             msg};
          throw new PSDeployException(
             IPSDeploymentErrors.DEPENDENCY_HANDLER_INIT, args);
-      }
-      catch (NoSuchMethodException nsme)
-      {
-         Object[] args = {className, nsme.getLocalizedMessage()};
-         throw new PSDeployException(
-            IPSDeploymentErrors.DEPENDENCY_HANDLER_INIT, args);
-      }
-      catch (IllegalArgumentException iae)
+      } catch (IllegalArgumentException iae)
       {
          //this should never happen because we checked ahead of time
          throw new RuntimeException("Ctor args failed validation: " +

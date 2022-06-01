@@ -24,12 +24,16 @@
  
 package com.percussion.deployer.server;
 
+import com.percussion.cms.IPSConstants;
 import com.percussion.deployer.server.dependencies.PSDependencyHandler;
 import com.percussion.design.objectstore.IPSObjectStoreErrors;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
 import com.percussion.error.IPSDeploymentErrors;
 import com.percussion.error.PSDeployException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.xml.PSXmlTreeWalker;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Element;
 
 import java.util.ArrayList;
@@ -45,6 +49,7 @@ import java.util.Map;
  */
 public class PSDependencyMap 
 {
+   private static final Logger log = LogManager.getLogger(IPSConstants.PACKAGING_LOG);
    /**
     * Construct this map from a list of dependency type defintions.
     * 
@@ -271,43 +276,48 @@ public class PSDependencyMap
       m_handlerMap = new HashMap();
       m_parentDefMap = new HashMap();
       m_childDefMap = new HashMap();
-      
-      Iterator defs = m_dependencyMap.values().iterator();
-      while (defs.hasNext())
-      {
-         // create handler and add to handler map
-         PSDependencyDef def = (PSDependencyDef)defs.next();
-         String defType = def.getObjectType();
-         PSDependencyHandler handler = PSDependencyHandler.getHandlerInstance(
-            def, this);
-         m_handlerMap.put(defType, handler);
-         
-         Iterator childTypes = handler.getChildTypes();
-         List childList = new ArrayList();
-         m_childDefMap.put(defType, childList);
-         while(childTypes.hasNext())
-         {
-            // get child defs and add them as children in the child map
-            String childType = (String)childTypes.next();
-            PSDependencyDef childDef = getDependencyDef(childType);
-            if (childDef == null)
-            {
-               Object args[] = {childType, defType};
-               throw new PSDeployException(
-                  IPSDeploymentErrors.CHILD_DEPENDENCY_TYPE_NOT_FOUND, args);
+
+         Iterator defs = m_dependencyMap.values().iterator();
+         while (defs.hasNext()) {
+            try{
+               // create handler and add to handler map
+               PSDependencyDef def = (PSDependencyDef) defs.next();
+               String defType = def.getObjectType();
+               PSDependencyHandler handler = PSDependencyHandler.getHandlerInstance(
+                       def, this);
+               m_handlerMap.put(defType, handler);
+
+               Iterator childTypes = handler.getChildTypes();
+               List childList = new ArrayList();
+               m_childDefMap.put(defType, childList);
+               while (childTypes.hasNext()) {
+                  try {
+                     // get child defs and add them as children in the child map
+                     String childType = (String) childTypes.next();
+                     PSDependencyDef childDef = getDependencyDef(childType);
+                     if (childDef == null) {
+                        Object args[] = {childType, defType};
+                        throw new PSDeployException(
+                                IPSDeploymentErrors.CHILD_DEPENDENCY_TYPE_NOT_FOUND, args);
+                     }
+                     childList.add(childDef);
+
+                     // for each child, add the current def as its parent in parent map
+                     List parentList = (List) m_parentDefMap.get(childType);
+                     if (parentList == null) {
+                        parentList = new ArrayList();
+                        m_parentDefMap.put(childType, parentList);
+                     }
+                     parentList.add(def);
+                  }catch(Exception e){
+                     log.error(PSExceptionUtils.getMessageForLog(e));
+                  }
+               }
+            }catch(Exception e){
+                log.error(PSExceptionUtils.getMessageForLog(e));
             }
-            childList.add(childDef);
-            
-            // for each child, add the current def as its parent in parent map
-            List parentList = (List)m_parentDefMap.get(childType);
-            if (parentList == null)
-            {
-               parentList = new ArrayList();
-               m_parentDefMap.put(childType, parentList);
-            }
-            parentList.add(def);
          }
-      }
+
    }
    
    /**
