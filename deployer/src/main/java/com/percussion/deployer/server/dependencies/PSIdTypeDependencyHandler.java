@@ -91,7 +91,7 @@ public abstract class PSIdTypeDependencyHandler extends PSDependencyHandler
     * 
     * @throws PSDeployException if there are any errors.
     */   
-   public static final List<PSDependency> getIdTypeDependencies(PSSecurityToken tok, 
+   public static List<PSDependency> getIdTypeDependencies(PSSecurityToken tok,
       PSDependency dep, PSDependencyHandler handler) throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
@@ -105,41 +105,38 @@ public abstract class PSIdTypeDependencyHandler extends PSDependencyHandler
       List<PSDependency> deps = new ArrayList<>();
       
       // get dependencies specified by id type map
-      Iterator mappings = PSIdTypeManager.getIdTypeDependencies(tok, dep);
-      while (mappings.hasNext())
-      {
-         PSApplicationIDTypeMapping mapping = 
-            (PSApplicationIDTypeMapping)mappings.next();
-         String type = mapping.getType();
-         if (type.equals(PSApplicationIDTypeMapping.TYPE_NONE) || 
-            type.equals(PSApplicationIDTypeMapping.TYPE_UNDEFINED))
-         {
-            continue;
+      if(dep.supportsIdTypes()) {
+         Iterator mappings = PSIdTypeManager.getIdTypeDependencies(tok, dep);
+         while (mappings.hasNext()) {
+            PSApplicationIDTypeMapping mapping =
+                    (PSApplicationIDTypeMapping) mappings.next();
+            String type = mapping.getType();
+            if (type.equals(PSApplicationIDTypeMapping.TYPE_NONE) ||
+                    type.equals(PSApplicationIDTypeMapping.TYPE_UNDEFINED)) {
+               continue;
+            }
+
+            PSDependencyHandler depHandler = handler.getDependencyHandler(
+                    type);
+            // If type supports parent ids, one will be specified in the mapping.
+            // If so, add the parent as a dependency, not the child.  The child
+            // will be handled by the addition of the parent (currently only state
+            // defintions have parents, and the state is a local dependency of the
+            // workflow definition).
+            PSDependency childDep;
+            if (mapping.getParentId() != null) {
+               // get parent
+               PSDependencyHandler parentHandler = handler.getDependencyHandler(
+                       mapping.getParentType());
+               childDep = parentHandler.getDependency(tok, mapping.getParentId());
+            } else
+               childDep = depHandler.getDependency(tok, mapping.getValue());
+
+            // add child
+            if (childDep != null && !childDep.getKey().equals(dep.getKey()))
+               deps.add(childDep);
          }
-         
-         PSDependencyHandler depHandler = handler.getDependencyHandler(
-           type);
-         // If type supports parent ids, one will be specified in the mapping.
-         // If so, add the parent as a dependency, not the child.  The child
-         // will be handled by the addition of the parent (currently only state
-         // defintions have parents, and the state is a local dependency of the
-         // workflow definition).
-         PSDependency childDep;
-         if (mapping.getParentId() != null)
-         {
-            // get parent 
-            PSDependencyHandler parentHandler = handler.getDependencyHandler(
-               mapping.getParentType());
-            childDep = parentHandler.getDependency(tok, mapping.getParentId());
-         }
-         else
-            childDep = depHandler.getDependency(tok, mapping.getValue());
-         
-         // add child
-         if (childDep != null && !childDep.getKey().equals(dep.getKey()))
-            deps.add(childDep);
       }
-      
       return deps;
    }
 
