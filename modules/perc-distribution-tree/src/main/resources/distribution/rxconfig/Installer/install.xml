@@ -537,7 +537,7 @@
         <exclude name="Deployment"/>
         <exclude name="Staging"/>
         <exclude name="logs"/>
-        <exclude name="ObjectStore"/>
+        <exclude name="ObjectStore/**"/>
         <exclude name="jetty/base/logs"/>
         <exclude name="rxconfig/Installer/*.bat"/>
         <exclude name="ObjectStore/psx_cerff*.xml"/>
@@ -857,6 +857,19 @@
                 <present present="srconly" targetdir="${install.dir}/ObjectStore"/>
             </fileset>
         </copy>
+
+        <echo> updating sys_TinyMCE and sys_EditLive with sys_tinymce in objectstore </echo>
+        <replace dir="${install.dir}/ObjectStore">
+            <include name="**/*.xml"/>
+            <replacefilter>
+                <replacetoken><![CDATA[name="sys_TinyMCE"]]></replacetoken>
+                <replacevalue><![CDATA[name="sys_tinymce"]]></replacevalue>
+            </replacefilter>
+            <replacefilter>
+                <replacetoken><![CDATA[name="sys_EditLive"]]></replacetoken>
+                <replacevalue><![CDATA[name="sys_tinymce"]]></replacevalue>
+            </replacefilter>
+        </replace>
 
         <copy todir="${install.dir}/jetty/base/webapps/Rhythmyx/WEB-INF/config/spring/projects" overwrite="false" failonerror="false">
             <fileset dir="${install.src}/jetty/base/webapps/Rhythmyx/WEB-INF/config/spring/projects" followsymlinks="false" includes="**">
