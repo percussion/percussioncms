@@ -364,7 +364,18 @@ public class PSExitNotifyAssignees implements IPSResultDocumentProcessor
                     url = (URL) ext.call(contentID, revisionID, domainName, port,
                             PSWorkFlowUtils.isSSLEnabledForNotification());
                 }else{
-                    url = (URL) ext.call(contentID, revisionID, baseUrl.getHost(), baseUrl.getPort(),
+                   // CMS-7940 - use configured settings
+                   String port = PSWorkFlowUtils.getProperty("RX_SERVER_PORT_NOTIFICATION");
+                   if(StringUtils.isBlank(port)){
+                      port = Integer.toString(baseUrl.getPort());
+                   }
+
+                   String host = PSWorkFlowUtils.getProperty("RX_SERVER_HOST_NOTIFICATION");
+                   if(StringUtils.isBlank(host)){
+                      host = baseUrl.getHost();
+                   }
+                    url = (URL) ext.call(contentID, revisionID, host,
+                            Integer.valueOf(port),
                         PSWorkFlowUtils.isSSLEnabledForNotification());
                 }
                if (url != null)
