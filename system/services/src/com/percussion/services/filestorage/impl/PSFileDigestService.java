@@ -37,7 +37,7 @@ public class PSFileDigestService implements IPSFileDigestService
    /**
     * See {@link #getAlgorithm()}, {@link #setAlgorithm(String)}.
     */
-   private String algorithm = "SHA-1";
+   private String algorithm = "SHA-256";
 
    public String createChecksum(InputStream fis)
          throws NoSuchAlgorithmException, IOException

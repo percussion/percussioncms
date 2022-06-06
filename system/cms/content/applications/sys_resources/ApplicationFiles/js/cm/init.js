@@ -6,7 +6,7 @@
         updateTitleValue = updateTitleValue.trim();
         $(this).val(updateTitleValue);
     });
-}); 
+
 
 function findTopMostJQuery() {
     // look for the top most jQuery instance
@@ -57,4 +57,5 @@ function fixIE(jqRef){
       .css("padding-bottom", pBot);
 
 }
+ });
 

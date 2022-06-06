@@ -625,6 +625,7 @@ http://www.springframework.org/schema/context/spring-context.xsd">
         </property>
         <property name="hashDao" ref="sys_hashDao">
         </property>
+
     </bean>
 
     <!--  Uncomment to add profiling to services, adjust the expression(s) to
