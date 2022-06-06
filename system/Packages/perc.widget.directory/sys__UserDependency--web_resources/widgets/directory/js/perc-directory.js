@@ -37,6 +37,7 @@ $(document).ready(function() {
                 'perc-person-dpt',
                 'perc-person-title',
                 'perc-person-phone',
+                'perc-person-office-location',
                 'perc-person-email'
             ],
             plugins: []
