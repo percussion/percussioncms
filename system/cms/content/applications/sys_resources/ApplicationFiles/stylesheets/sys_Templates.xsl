@@ -3,7 +3,7 @@
 <!DOCTYPE xsl:stylesheet [
         <!ENTITY nbsp "&#160;">
         <!--  no-break space = non-breaking space, U+00A0 ISOnum -->
-        <!ENTITY customEphoxFunctions SYSTEM "/Rhythmyx/rx_resources/ephox/rx_ephox_custom.xml">
+        <!ENTITY customEphoxFunctions SYSTEM "/rx_resources/ephox/rx_ephox_custom.xml">
         ]>
 <xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:psxctl="urn:percussion.com/control"
@@ -27,7 +27,6 @@
          <head>
             <title>Control Library Test</title>
             <script src="/sys_resources/js/textedit.js">;</script>
-			<script src="/sys_resources/js/cm/init.js">;</script>
          </head>
          <body>
             <xsl:for-each select="/ContentEditor/ItemContent/DisplayField">
@@ -555,6 +554,7 @@ accept      %ContentTypes; #IMPLIED
             <xsl:with-param name="lang" select="$lang"/>
          </xsl:call-template>
       </a>
+
    </xsl:template>
    <!-- when the file control is used in edit mode, provide a clear checkbox -->
    <xsl:template name="sys_fileclear" match="Control[@name='sys_File' and @isReadOnly='no']" priority="10" mode="psxcontrol-sys_fileclear">
@@ -3553,7 +3553,7 @@ onchange    %Script;       #IMPLIED
       </xsl:variable>
       <xsl:if test="string-length(normalize-space(Value)) != 0">
          <xsl:variable name="binaryurl">
-            <xsl:value-of select="concat('/Rhythmyx/assembly/aa?widget=hf&amp;hash=',Value)"/>
+            <xsl:value-of select="concat('/assembly/aa?widget=hf&amp;hash=',Value)"/>
          </xsl:variable>
          <a href="#">
             <xsl:attribute name="onclick">saveFile('<xsl:value-of select="$binaryurl"/>','<xsl:value-of select="$binary_type"/>','<xsl:value-of select="$field_filename"/>');</xsl:attribute>
@@ -3564,7 +3564,7 @@ onchange    %Script;       #IMPLIED
          </a>
          &nbsp;&nbsp;&nbsp;
          <xsl:variable name="metaurl">
-            <xsl:value-of select="concat('/Rhythmyx/ui/content/MetaDataTable.jsp?hash=',Value)"/>
+            <xsl:value-of select="concat('/ui/content/MetaDataTable.jsp?hash=',Value)"/>
          </xsl:variable>
          <a href="#">
             <xsl:attribute name="onclick">saveFile('<xsl:value-of select="$metaurl"/>','<xsl:value-of select="$binary_type"/>','<xsl:value-of select="$field_filename"/>');</xsl:attribute>
@@ -3658,6 +3658,19 @@ onchange    %Script;       #IMPLIED
          </psxctl:FileDescriptor>
       </psxctl:AssociatedFileList>
    </psxctl:ControlMeta>
+   <xsl:template match="Control[@name='sys_FilePath']" mode="psxcontrol">
+      <input type="text" name="{@paramName}"  title="{Value}" value="{Value}" readonly="readonly" style="background-color:#E6E6E9;overflow: hidden;text-overflow: ellipsis;">
+         <xsl:if test="@accessKey!=''">
+            <xsl:attribute name="accesskey"><xsl:call-template name="getaccesskey"><xsl:with-param name="label" select="preceding-sibling::DisplayLabel"/><xsl:with-param name="sourceType" select="preceding-sibling::DisplayLabel/@sourceType"/><xsl:with-param name="paramName" select="@paramName"/><xsl:with-param name="accessKey" select="@accessKey"/></xsl:call-template></xsl:attribute>
+         </xsl:if>
+         <xsl:call-template name="parametersToAttributes">
+            <xsl:with-param name="controlClassName" select="'sys_PagePath'"/>
+            <xsl:with-param name="controlNode" select="."/>
+         </xsl:call-template>
+      </input>
+      <input type="button" for="perc-content-edit-{@paramName}" class="perc-page-field-select-button" value="Browse"/>
+      <input type="button" for="perc-content-edit-{@paramName}" class="perc-page-field-clear-button" value="Clear"/>
+   </xsl:template>
 
    <!--
       sys_PagePath
