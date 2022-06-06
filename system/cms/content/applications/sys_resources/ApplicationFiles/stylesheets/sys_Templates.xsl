@@ -2,11 +2,14 @@
 <!-- $Id: sys_Templates.xsl 1.81 2002/12/07 00:05:27Z bjoginipally Exp $ -->
 <!DOCTYPE xsl:stylesheet [
         <!ENTITY nbsp "&#160;">
+        <!--  no-break space = non-breaking space, U+00A0 ISOnum -->
+        <!ENTITY customEphoxFunctions SYSTEM "/Rhythmyx/rx_resources/ephox/rx_ephox_custom.xml">
         ]>
 <xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:psxctl="urn:percussion.com/control"
+                xmlns:xmns="http://www.w3.org/1999/xhtml"
                 xmlns="http://www.w3.org/1999/xhtml" xmlns:psxi18n="com.percussion.i18n"
-                extension-element-prefixes="psxi18n" exclude-result-prefixes="psxi18n">
+                extension-element-prefixes="psxi18n" exclude-result-prefixes="psxi18n psxctl xmns">
 
    <xsl:import href="file:sys_resources/stylesheets/sys_I18nUtils.xsl"/>
    <!-- write the xml header according to XHTML 1.0 spec -->
@@ -24,6 +27,7 @@
          <head>
             <title>Control Library Test</title>
             <script src="/sys_resources/js/textedit.js">;</script>
+			<script src="/sys_resources/js/cm/init.js">;</script>
          </head>
          <body>
             <xsl:for-each select="/ContentEditor/ItemContent/DisplayField">
@@ -526,7 +530,26 @@ accept      %ContentTypes; #IMPLIED
          '&amp;sys_submitname=',@paramName,'&amp;sys_childrowid=',$childkey)"/>
          <!-- childid if it exists -->
       </xsl:variable>
-      <a href="{$url}{$fileName}" target="_blank"  rel = "noopener noreferrer" class="perc-preview-file-link" id="perc-content-edit-{@paramName}">
+      <xsl:variable name="fileBase"><xsl:value-of select="@paramName"/></xsl:variable>
+      <xsl:variable name="item_title"><xsl:value-of select="//Control[@paramName='sys_title']/Value"/></xsl:variable>
+      <xsl:variable name="binary_type"><xsl:value-of select="//Control[@paramName=concat($fileBase,'_type')]/Value"/></xsl:variable>
+      <xsl:variable name="binary_ext"><xsl:value-of select="//Control[@paramName=concat($fileBase,'_ext')]/Value"/></xsl:variable>
+      <xsl:variable name="binary_filename"><xsl:value-of select="//Control[@paramName=concat($fileBase,'_filename')]/Value"/></xsl:variable>
+      <xsl:variable name="field_filename">
+         <xsl:choose>
+            <xsl:when test="string-length(normalize-space($binary_filename)) &gt; 0">
+               <xsl:value-of select="$binary_filename"/>
+            </xsl:when>
+            <xsl:when test="not(contains($item_title,'.'))">
+               <xsl:value-of select="concat($item_title,$binary_ext)"/>
+            </xsl:when>
+            <xsl:otherwise>
+               <xsl:value-of select="$item_title"/>
+            </xsl:otherwise>
+         </xsl:choose>
+      </xsl:variable>
+      <a href="#">
+         <xsl:attribute name="onclick">saveFile('<xsl:value-of select="$url"/>','<xsl:value-of select="$binary_type"/>','<xsl:value-of select="$field_filename"/>');</xsl:attribute>
          <xsl:call-template name="getLocaleString">
             <xsl:with-param name="key" select="'psx.contenteditor.sys_templates@Preview File'"/>
             <xsl:with-param name="lang" select="$lang"/>
@@ -702,7 +725,7 @@ accept      %ContentTypes; #IMPLIED
       ]]></script>
          </xsl:when>
          <xsl:otherwise>
-            <input type="file" name="uploadfilephoto">
+            <input type="file" name="uploadfilephoto" id="ce_{@paramName}">
                <xsl:call-template name="parametersToAttributes">
                   <xsl:with-param name="controlClassName" select="'sys_File'"/>
                   <xsl:with-param name="controlNode" select="."/>
@@ -913,7 +936,7 @@ onchange    %Script;       #IMPLIED
    </psxctl:ControlMeta>
    <xsl:template match="Control[@name='sys_DropDownSingle']" mode="psxcontrol">
       <div>
-         <select name="{@paramName}">
+         <select name="{@paramName}" id="ce_{@paramName}">
             <xsl:if test="@accessKey!=''">
                <xsl:attribute name="accesskey"><xsl:call-template name="getaccesskey"><xsl:with-param name="label" select="preceding-sibling::DisplayLabel"/><xsl:with-param name="sourceType" select="preceding-sibling::DisplayLabel/@sourceType"/><xsl:with-param name="paramName" select="@paramName"/><xsl:with-param name="accessKey" select="@accessKey"/></xsl:call-template></xsl:attribute>
             </xsl:if>
@@ -1868,7 +1891,7 @@ onchange    %Script;       #IMPLIED
          </xsl:when>
          <xsl:when test="contains(/ContentEditor/UserStatus/RequestProperties/UserAgent, 'MSIE')">
             <!-- If not a Mac or NN -->
-            <IFrame>
+            <IFrame id="ce_{$name}">
                <xsl:call-template name="parametersToAttributes">
                   <xsl:with-param name="controlClassName" select="'sys_HtmlEditor'"/>
                   <xsl:with-param name="controlNode" select="."/>
@@ -1878,7 +1901,7 @@ onchange    %Script;       #IMPLIED
          </xsl:when>
          <xsl:otherwise>
             <!-- This is only a temporary arrangment. Permanent fix should use sys_Textarea control -->
-            <textarea cols="50" rows="15" wrap="soft">
+            <textarea cols="50" rows="15" wrap="soft" id="ce_{$name}">
                <xsl:attribute name="name"><xsl:value-of select="$name"/></xsl:attribute>
                <xsl:value-of select="Value"/>
             </textarea>
@@ -2291,7 +2314,7 @@ onchange    %Script;       #IMPLIED
                                     <xsl:variable name="dfield" select="//ItemContent/DisplayField[Control/@paramName=$subName]"/>
                                     <table width="100%" cellpadding="0" cellspacing="0" border="0" class="backgroundcolor">
                                        <tr>
-                                          <td width="20%" class="headererrorcell">
+                                          <td width="20%"  id="error_ce_{@displayName}"  class="headererrorcell">
                                              <xsl:variable name="keyval">
                                                 <xsl:choose>
                                                    <xsl:when test="$dfield/DisplayLabel/@sourceType='sys_system'">
@@ -2655,7 +2678,7 @@ onchange    %Script;       #IMPLIED
                                     <xsl:with-param name="controlClassName" select="'sys_CheckBoxGroup'"/>
                                     <xsl:with-param name="controlNode" select="$Control"/>
                                  </xsl:call-template>
-                                 <xsl:if test="Value = $ISselected">
+                                 <xsl:if test="Value = $ISselected or @selected='yes'">
                                     <xsl:attribute name="checked"><xsl:value-of select="'checked'"/></xsl:attribute>
                                  </xsl:if>
                               </input>
@@ -3266,7 +3289,7 @@ onchange    %Script;       #IMPLIED
          </xsl:choose>
       </xsl:variable>
       <xsl:attribute name="name"><xsl:value-of select="$control_id"/></xsl:attribute>
-      <select multiple="1" name="{@paramName}">
+      <select multiple="1" name="{@paramName}" id="ce_{@paramName}">
          <xsl:if test="ParamList/Param[@name='size']">
             <xsl:attribute name="size"><xsl:value-of select="ParamList/Param[@name='size']"/></xsl:attribute>
          </xsl:if>
@@ -3432,6 +3455,140 @@ onchange    %Script;       #IMPLIED
       </input>
       <input type="button" for="perc-content-edit-{@paramName}" class="perc-image-field-select-button" value="Browse"/>
       <input type="button" for="perc-content-edit-{@paramName}" class="perc-image-field-clear-button" value="Clear"/>
+   </xsl:template>
+   <!--
+   sys_HashedFile
+-->
+   <psxctl:ControlMeta name="sys_HashedFile" dimension="single" choiceset="none">
+      <psxctl:Description>The standard control for uploading files:  an &lt;input type="file"> tag.</psxctl:Description>
+      <psxctl:ParamList>
+         <psxctl:Param name="id" datatype="String" paramtype="generic">
+            <psxctl:Description>This parameter assigns a name to an element. This name must be unique in a document.</psxctl:Description>
+         </psxctl:Param>
+         <psxctl:Param name="class" datatype="String" paramtype="generic">
+            <psxctl:Description>This parameter assigns a class name or set of class names to an element. Any number of elements may be assigned the same class name or names. Multiple class names must be separated by white space characters.  The default value is "datadisplay".</psxctl:Description>
+            <psxctl:DefaultValue>datadisplay</psxctl:DefaultValue>
+         </psxctl:Param>
+         <psxctl:Param name="style" datatype="String" paramtype="generic">
+            <psxctl:Description>This parameter specifies style information for the current element. The syntax of the value of the style attribute is determined by the default style sheet language.</psxctl:Description>
+         </psxctl:Param>
+         <psxctl:Param name="size" datatype="Number" paramtype="generic">
+            <psxctl:Description>This parameter tells the user agent the initial width of the control. The width is given in pixels. The default value is 50.</psxctl:Description>
+            <psxctl:DefaultValue>50</psxctl:DefaultValue>
+         </psxctl:Param>
+         <psxctl:Param name="tabindex" datatype="Number" paramtype="generic">
+            <psxctl:Description>This parameter specifies the position of the current element in the tabbing order for the current document. This value must be a number between 0 and 32767.</psxctl:Description>
+         </psxctl:Param>
+         <psxctl:Param name="cleartext" datatype="String" paramtype="custom">
+            <psxctl:Description>This parameter determines the text that will be displayed along with a checkbox when the field supports being cleared.  The default value is 'Clear'.</psxctl:Description>
+            <psxctl:DefaultValue>Clear</psxctl:DefaultValue>
+         </psxctl:Param>
+         <psxctl:Param name="dlg_width" datatype="Number" paramtype="generic">
+            <psxctl:Description>This parameter specifies the width of the dialog box that is opened during field editing in Active Assembly.</psxctl:Description>
+            <psxctl:DefaultValue>400</psxctl:DefaultValue>
+         </psxctl:Param>
+         <psxctl:Param name="dlg_height" datatype="Number" paramtype="generic">
+            <psxctl:Description>This parameter specifies the height of the dialog box that is opened during field editing in Active Assembly.</psxctl:Description>
+            <psxctl:DefaultValue>125</psxctl:DefaultValue>
+         </psxctl:Param>
+         <psxctl:Param name="aarenderer" datatype="String" paramtype="generic">
+            <psxctl:Description>This parameter specifies whether the field editing in Active Assembly takes place in a modal dialog or in a popup. Applicable values are MODAL, POPUP and INPLACE_TEXT, any other value is treated as POPUP. The recommended value is POPUP only.</psxctl:Description>
+            <psxctl:DefaultValue>POPUP</psxctl:DefaultValue>
+         </psxctl:Param>
+         <psxctl:Param name="helptext" datatype="String" paramtype="generic">
+            <psxctl:Description>This parameter specifies the help text to be used on a control</psxctl:Description>
+            <psxctl:DefaultValue>This is the default helptext</psxctl:DefaultValue>
+         </psxctl:Param>
+      </psxctl:ParamList>
+      <psxctl:Dependencies>
+         <psxctl:Dependency status="readyToGo" occurrence="single">
+            <psxctl:Default>
+               <PSXExtensionCall id="0">
+                  <name>Java/global/percussion/generic/sys_HashedFileInfo</name>
+               </PSXExtensionCall>
+            </psxctl:Default>
+         </psxctl:Dependency>
+      </psxctl:Dependencies>
+   </psxctl:ControlMeta>
+   <xsl:template match="Control[@name='sys_HashedFile']" mode="psxcontrol">
+      <xsl:variable name="fileBase"><xsl:value-of select="substring-before(@paramName,'_hash')"/></xsl:variable>
+      <input type="hidden" name="psxmldoc" value="treatAsText"/>
+      <input type="file" name="{concat($fileBase,'_hupload')}" id="ce_{@paramName}">
+         <xsl:if test="@accessKey!=''">
+            <xsl:attribute name="accesskey"><xsl:call-template name="getaccesskey"><xsl:with-param name="label" select="preceding-sibling::DisplayLabel"/><xsl:with-param name="sourceType" select="preceding-sibling::DisplayLabel/@sourceType"/><xsl:with-param name="paramName" select="@paramName"/><xsl:with-param name="accessKey" select="@accessKey"/></xsl:call-template></xsl:attribute>
+         </xsl:if>
+         <xsl:call-template name="parametersToAttributes">
+            <xsl:with-param name="controlClassName" select="'sys_HashedFile'"/>
+            <xsl:with-param name="controlNode" select="."/>
+         </xsl:call-template>
+      </input>
+      <xsl:if test="Value">
+         &nbsp;&nbsp;
+         <xsl:call-template name="sys_hashedfileclear"/>
+         <br />
+         <xsl:call-template name="sys_hashedfilereadonly" />
+      </xsl:if>
+      <input type="hidden" name="{@paramName}" value="{Value}"/>
+
+   </xsl:template>
+   <!-- when the file control is used in read-only mode, provide a binary preview -->
+   <xsl:template name="sys_hashedfilereadonly" match="Control[@name='sys_HashedFile' and @isReadOnly='yes']" priority="10" mode="psxcontrol">
+      <xsl:variable name="fileBase"><xsl:value-of select="substring-before(@paramName,'_hash')"/></xsl:variable>
+      <xsl:variable name="item_title"><xsl:value-of select="//Control[@paramName='sys_title']/Value"/></xsl:variable>
+      <xsl:variable name="binary_type"><xsl:value-of select="//Control[@paramName=concat($fileBase,'_type')]/Value"/></xsl:variable>
+      <xsl:variable name="binary_ext"><xsl:value-of select="//Control[@paramName=concat($fileBase,'_ext')]/Value"/></xsl:variable>
+      <xsl:variable name="binary_filename"><xsl:value-of select="//Control[@paramName=concat($fileBase,'_filename')]/Value"/></xsl:variable>
+      <xsl:variable name="field_filename">
+         <xsl:choose>
+            <xsl:when test="string-length(normalize-space($binary_filename)) &gt; 0">
+               <xsl:value-of select="$binary_filename"/>
+            </xsl:when>
+            <xsl:when test="not(contains($item_title,'.'))">
+               <xsl:value-of select="concat($item_title,$binary_ext)"/>
+            </xsl:when>
+            <xsl:otherwise>
+               <xsl:value-of select="$item_title"/>
+            </xsl:otherwise>
+         </xsl:choose>
+      </xsl:variable>
+      <xsl:if test="string-length(normalize-space(Value)) != 0">
+         <xsl:variable name="binaryurl">
+            <xsl:value-of select="concat('/Rhythmyx/assembly/aa?widget=hf&amp;hash=',Value)"/>
+         </xsl:variable>
+         <a href="#">
+            <xsl:attribute name="onclick">saveFile('<xsl:value-of select="$binaryurl"/>','<xsl:value-of select="$binary_type"/>','<xsl:value-of select="$field_filename"/>');</xsl:attribute>
+            <xsl:call-template name="getLocaleString">
+               <xsl:with-param name="key" select="'psx.contenteditor.sys_templates@Preview File'"/>
+               <xsl:with-param name="lang" select="$lang"/>
+            </xsl:call-template>
+         </a>
+         &nbsp;&nbsp;&nbsp;
+         <xsl:variable name="metaurl">
+            <xsl:value-of select="concat('/Rhythmyx/ui/content/MetaDataTable.jsp?hash=',Value)"/>
+         </xsl:variable>
+         <a href="#">
+            <xsl:attribute name="onclick">saveFile('<xsl:value-of select="$metaurl"/>','<xsl:value-of select="$binary_type"/>','<xsl:value-of select="$field_filename"/>');</xsl:attribute>
+            View Metadata
+         </a>
+      </xsl:if>
+      <input type="hidden" name="{@paramName}" value="{Value}"/>
+
+   </xsl:template>
+   <!-- when the file control is used in edit mode, provide a clear checkbox -->
+   <xsl:template name="sys_hashedfileclear" match="Control[@name='sys_HashedFile' and @isReadOnly='no']" priority="10" mode="psxcontrol-sys_hashedfileclear">
+      <xsl:variable name="fileBase"><xsl:value-of select="substring-before(@paramName,'_hash')"/></xsl:variable>
+      <span class="datadisplay">
+         <input name="{concat($fileBase,'_clear')}" type="checkbox" value="yes">
+            <xsl:if test="@accessKey!=''">
+               <xsl:attribute name="accesskey"><xsl:call-template name="getaccesskey"><xsl:with-param name="label" select="preceding-sibling::DisplayLabel"/><xsl:with-param name="sourceType" select="preceding-sibling::DisplayLabel/@sourceType"/><xsl:with-param name="paramName" select="@paramName"/><xsl:with-param name="accessKey" select="@accessKey"/></xsl:call-template></xsl:attribute>
+            </xsl:if>
+         </input>
+         <xsl:call-template name="parameterToValuefileclear">
+            <xsl:with-param name="controlClassName" select="'sys_HashedFile'"/>
+            <xsl:with-param name="controlNode" select="."/>
+            <xsl:with-param name="paramName" select="'cleartext'"/>
+         </xsl:call-template>
+      </span>
    </xsl:template>
    <!--
         sys_FilePath
@@ -3654,8 +3811,8 @@ onchange    %Script;       #IMPLIED
             <psxctl:FileLocation>https://cdnjs.cloudflare.com/ajax/libs/bluebird/3.3.5/bluebird.min.js</psxctl:FileLocation>
             <psxctl:Timestamp/>
          </psxctl:FileDescriptor>
-		 <psxctl:FileDescriptor name="elementEventListener.js" type="script" mimetype="text/javascript">
-                <psxctl:FileLocation>/sys_resources/js/elementEventListener.js</psxctl:FileLocation>
+         <psxctl:FileDescriptor name="elementEventListener.js" type="script" mimetype="text/javascript">
+            <psxctl:FileLocation>/sys_resources/js/elementEventListener.js</psxctl:FileLocation>
             <psxctl:Timestamp/>
          </psxctl:FileDescriptor>
          <psxctl:FileDescriptor name="tinymce.min.js" type="script" mimetype="text/javascript">
@@ -3666,10 +3823,10 @@ onchange    %Script;       #IMPLIED
             <psxctl:FileLocation>/sys_resources/tinymce/js/tinymce_init.js</psxctl:FileLocation>
             <psxctl:Timestamp/>
          </psxctl:FileDescriptor>
-		<psxctl:FileDescriptor name="dojo.js" type="script" mimetype="text/javascript">
-                <psxctl:FileLocation>/sys_resources/dojo/dojo.js</psxctl:FileLocation>
-                <psxctl:Timestamp/>
-            </psxctl:FileDescriptor>
+         <psxctl:FileDescriptor name="dojo.js" type="script" mimetype="text/javascript">
+            <psxctl:FileLocation>/sys_resources/dojo/dojo.js</psxctl:FileLocation>
+            <psxctl:Timestamp/>
+         </psxctl:FileDescriptor>
          <psxctl:FileDescriptor name="editorinline.js" type="script" mimetype="text/javascript">
             <psxctl:FileLocation>/sys_resources/js/editorinline.js</psxctl:FileLocation>
             <psxctl:Timestamp/>

@@ -29,23 +29,33 @@ import com.percussion.services.filestorage.data.PSHashedColumn;
 import com.percussion.services.filestorage.data.PSHashedColumn.HashedColumnsPK;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.criterion.CriteriaSpecification;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.util.HashSet;
 import java.util.Set;
 
+@Repository
+@Scope("singleton")
 @Transactional
 public class PSHashedFieldCatalogerDAO implements IPSHashedFieldCatalogerDAO
 {
 
-   @PersistenceContext
-   private EntityManager entityManager;
+   private SessionFactory sessionFactory;
+
+   @Autowired
+   public void setSessionFactory(SessionFactory sessionFactory) {
+      this.sessionFactory = sessionFactory;
+   }
 
    private Session getSession(){
-      return entityManager.unwrap(Session.class);
+
+      return sessionFactory.getCurrentSession();
+
    }
 
    /**

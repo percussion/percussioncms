@@ -39,14 +39,16 @@ import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.naming.NamingException;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.io.InputStream;
 import java.sql.Blob;
 import java.sql.Connection;
@@ -63,6 +65,8 @@ import java.util.Set;
  * @author stephenbolton
  *
  */
+@Repository
+@Scope("singleton")
 @Transactional
 public class PSHashedFileDAO implements IPSHashedFileDAO
 {
@@ -72,11 +76,17 @@ public class PSHashedFileDAO implements IPSHashedFileDAO
     */
    private static final Logger log = LogManager.getLogger(IPSConstants.CONTENTREPOSITORY_LOG);
 
-   @PersistenceContext
-   private EntityManager entityManager;
+   private SessionFactory sessionFactory;
+
+   @Autowired
+   public void setSessionFactory(SessionFactory sessionFactory) {
+      this.sessionFactory = sessionFactory;
+   }
 
    private Session getSession(){
-      return entityManager.unwrap(Session.class);
+
+      return sessionFactory.getCurrentSession();
+
    }
 
    /**
@@ -90,7 +100,7 @@ public class PSHashedFileDAO implements IPSHashedFileDAO
     * @see com.percussion.services.filestorage.IPSHashedFileDAO#save(com.percussion.services.filestorage.data.PSBinary)
     */
    @Override
-   @Transactional
+
    public void save(PSBinary binary)
    {
       getSession().saveOrUpdate(binary);

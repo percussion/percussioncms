@@ -5612,202 +5612,7 @@
             </column>
             <column name="HASH">
                 <jdbctype>VARCHAR</jdbctype>
-                <size>40</size>
-                <allowsnull>yes</allowsnull>
-            </column>
-            <column name="TYPE">
-                <jdbctype>VARCHAR</jdbctype>
-                <size>255</size>
-                <allowsnull>yes</allowsnull>
-            </column>
-            <column name="ENCODING">
-                <jdbctype>VARCHAR</jdbctype>
-                <size>20</size>
-                <allowsnull>yes</allowsnull>
-            </column>
-            <column name="ORIG_FILENAME">
-                <jdbctype>VARCHAR</jdbctype>
-                <size>255</size>
-                <allowsnull>yes</allowsnull>
-            </column>
-            <column name="LENGTH">
-                <jdbctype>BIGINT</jdbctype>
-                <size>22</size>
-                <allowsnull>no</allowsnull>
-            </column>
-            <column name="VERSION">
-                <jdbctype>INTEGER</jdbctype>
-                <size>22</size>
-                <allowsnull>yes</allowsnull>
-            </column>
-            <column name="EXTRACT_ERROR">
-                <jdbctype>SMALLINT</jdbctype>
-                <size>22</size>
-                <allowsnull>yes</allowsnull>
-                <scale>3</scale>
-            </column>
-            <column name="LAST_ACCESS">
-                <jdbctype>TIMESTAMP</jdbctype>
-                <allowsnull>yes</allowsnull>
-            </column>
-            <column name="REPARSE_META">
-                <jdbctype>SMALLINT</jdbctype>
-                <size>22</size>
-                <allowsnull>no</allowsnull>
-                <scale>3</scale>
-            </column>
-        </row>
-        <primarykey action="c">
-            <name>ID</name>
-        </primarykey>
-    </table>
-    <table name="PSX_BINARYCOLUMNS" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
-        <row>
-            <column name="TABLE_NAME">
-                <jdbctype>VARCHAR</jdbctype>
-                <size>255</size>
-                <allowsnull>no</allowsnull>
-            </column>
-            <column name="COLUMN_NAME">
-                <jdbctype>VARCHAR</jdbctype>
-                <size>255</size>
-                <allowsnull>no</allowsnull>
-            </column>
-            <column name="FIELD_NAME">
-                <jdbctype>VARCHAR</jdbctype>
-                <size>255</size>
-                <allowsnull>yes</allowsnull>
-            </column>
-        </row>
-        <primarykey action="c">
-            <name>TABLE_NAME</name>
-            <name>COLUMN_NAME</name>
-        </primarykey>
-    </table>
-    <table name="PSX_BINARYDATA" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
-        <row>
-            <column name="ID">
-                <jdbctype>INTEGER</jdbctype>
-                <size>22</size>
-                <allowsnull>no</allowsnull>
-            </column>
-            <column name="CONTENT">
-                <jdbctype>BLOB</jdbctype>
-                <allowsnull>no</allowsnull>
-            </column>
-            <column name="VERSION">
-                <jdbctype>INTEGER</jdbctype>
-                <size>22</size>
-                <allowsnull>no</allowsnull>
-            </column>
-        </row>
-        <primarykey action="c">
-            <name>ID</name>
-        </primarykey>
-        <foreignkey name="FK_DATA_BINID">
-            <fkColumn>
-                <name>ID</name>
-                <externalTable>PSX_BINARY</externalTable>
-                <externalColumn>ID</externalColumn>
-            </fkColumn>
-        </foreignkey>
-    </table>
-    <table name="PSX_BINARYMETAENTRY" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
-        <row>
-            <column name="ID">
-                <jdbctype>INTEGER</jdbctype>
-                <size>22</size>
-                <allowsnull>no</allowsnull>
-            </column>
-            <column name="KEY_ID">
-                <jdbctype>INTEGER</jdbctype>
-                <size>22</size>
-                <allowsnull>no</allowsnull>
-            </column>
-            <column name="VALUE">
-                <jdbctype>VARCHAR</jdbctype>
-                <size>1024</size>
-                <allowsnull>yes</allowsnull>
-            </column>
-            <column name="VERSION">
-                <jdbctype>INTEGER</jdbctype>
-                <size>22</size>
-                <allowsnull>yes</allowsnull>
-            </column>
-            <column name="BINARY_ID">
-                <jdbctype>INTEGER</jdbctype>
-                <size>22</size>
-                <allowsnull>no</allowsnull>
-            </column>
-        </row>
-        <primarykey>
-            <name>ID</name>
-        </primarykey>
-        <foreignkey name="FK_META_BIN">
-            <fkColumn>
-                <name>BINARY_ID</name>
-                <externalTable>PSX_BINARY</externalTable>
-                <externalColumn>ID</externalColumn>
-            </fkColumn>
-        </foreignkey>
-        <foreignkey name="FK_META_KEY">
-            <fkColumn>
-                <name>KEY_ID</name>
-                <externalTable>PSX_BINARYMETAKEY</externalTable>
-                <externalColumn>ID</externalColumn>
-            </fkColumn>
-        </foreignkey>
-        <indexdefinitions>
-            <index isUnique="y" name="UK_METAENTRY_BIN_KEY">
-                <name>BINARY_ID</name>
-                <name>KEY_ID</name>
-            </index>
-        </indexdefinitions>
-    </table>
-    <table name="PSX_BINARYMETAKEY" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
-        <row>
-            <column name="ID">
-                <jdbctype>INTEGER</jdbctype>
-                <size>22</size>
-                <allowsnull>no</allowsnull>
-            </column>
-            <column name="NAME">
-                <jdbctype>VARCHAR</jdbctype>
-                <size>255</size>
-                <allowsnull>yes</allowsnull>
-            </column>
-            <column name="VERSION">
-                <jdbctype>INTEGER</jdbctype>
-                <size>22</size>
-                <allowsnull>yes</allowsnull>
-            </column>
-            <column name="ENABLED">
-                <jdbctype>SMALLINT</jdbctype>
-                <size>22</size>
-                <allowsnull>yes</allowsnull>
-                <scale>3</scale>
-            </column>
-        </row>
-        <primarykey>
-            <name>ID</name>
-        </primarykey>
-        <indexdefinitions>
-            <index isUnique="y" name="PSX_BINARYMETAKEY_UKNAME">
-                <name>NAME</name>
-            </index>
-        </indexdefinitions>
-    </table>
-
-    <table name="PSX_BINARY" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
-        <row>
-            <column name="ID">
-                <jdbctype>INTEGER</jdbctype>
-                <size>22</size>
-                <allowsnull>no</allowsnull>
-            </column>
-            <column name="HASH">
-                <jdbctype>VARCHAR</jdbctype>
-                <size>40</size>
+                <size>256</size>
                 <allowsnull>yes</allowsnull>
             </column>
             <column name="TYPE">
@@ -7843,17 +7648,17 @@
             </column>
             <column action="c" limitSizeForIndex="n" name="ACTIVEIMG_HASH">
                 <jdbctype>VARCHAR</jdbctype>
-                <size>50</size>
+                <size>256</size>
                 <allowsnull>yes</allowsnull>
             </column>
             <column action="c" limitSizeForIndex="n" name="INACTIVEIMG_HASH">
                 <jdbctype>VARCHAR</jdbctype>
-                <size>50</size>
+                <size>256</size>
                 <allowsnull>yes</allowsnull>
             </column>
             <column action="c" limitSizeForIndex="n" name="ROLLOVERIMG_HASH">
                 <jdbctype>VARCHAR</jdbctype>
-                <size>50</size>
+                <size>256</size>
                 <allowsnull>yes</allowsnull>
             </column>
         </row>

@@ -157,7 +157,7 @@ public class PSDbStorageService implements IPSFileStorageService, InitializingBe
 
       return binary.getHash();
    }
-   
+   @Transactional
    public String getType(File file)
    {
       String type="application/octet-stream";
@@ -200,6 +200,7 @@ public class PSDbStorageService implements IPSFileStorageService, InitializingBe
     * com.percussion.services.filestorage.IPSFileStorageService#reparseMeta(
     * java.lang.String)
     */
+   @Transactional
    public boolean reparseMeta(String hash)
    {
       PSBinary binary = hashDao.getBinary(hash);
@@ -243,6 +244,7 @@ public class PSDbStorageService implements IPSFileStorageService, InitializingBe
     * com.percussion.services.filestorage.IPSFileStorageService#getMeta(java
     * .lang.String)
     */
+   @Transactional
    public PSMeta getMeta(String hash)
    {
       return convertFromDbMeta(getDbMeta(hash));
@@ -255,6 +257,7 @@ public class PSDbStorageService implements IPSFileStorageService, InitializingBe
     * com.percussion.services.filestorage.IPSFileStorageService#getStream(java
     * .lang.String)
     */
+   @Transactional
    public InputStream getStream(String hash)
    {
       if (StringUtils.isNotEmpty(hash))
@@ -273,6 +276,7 @@ public class PSDbStorageService implements IPSFileStorageService, InitializingBe
     * com.percussion.services.filestorage.IPSFileStorageService#fileExists(java
     * .lang.String)
     */
+   @Transactional
    public boolean fileExists(String hash)
    {
       return hashDao.exists(hash);
@@ -284,6 +288,7 @@ public class PSDbStorageService implements IPSFileStorageService, InitializingBe
     * @see
     * com.percussion.services.filestorage.IPSFileStorageService#getAlgorithm()
     */
+   @Transactional
    public String getAlgorithm()
    {
       return this.digestService.getAlgorithm();
@@ -296,6 +301,7 @@ public class PSDbStorageService implements IPSFileStorageService, InitializingBe
     * com.percussion.services.filestorage.IPSFileStorageService#getText(java
     * .lang.String)
     */
+   @Transactional
    public String getText(String hash)
    {
       notNull(hash);
@@ -625,6 +631,7 @@ public class PSDbStorageService implements IPSFileStorageService, InitializingBe
    /**
     * @return the dao
     */
+   @Transactional
    public IPSHashedFileDAO getHashDao()
    {
       return hashDao;
@@ -633,6 +640,7 @@ public class PSDbStorageService implements IPSFileStorageService, InitializingBe
    /**
     * @param hashDao the dao
     */
+   @Transactional
    public void setHashDao(IPSHashedFileDAO hashDao)
    {
       this.hashDao = hashDao;
@@ -769,6 +777,7 @@ public class PSDbStorageService implements IPSFileStorageService, InitializingBe
     * @see com.percussion.services.filestorage.IPSFileStorageService#legacyTableExists()
     */
    @Override
+   @Transactional
    public boolean legacyTableExists()
    {
       return hashDao.hasLegacyTable();
@@ -1357,6 +1366,7 @@ public class PSDbStorageService implements IPSFileStorageService, InitializingBe
     * @param hash
     * @return
     */
+   @Transactional
    public PSBinary getBinary(String hash)
    {
 

@@ -23,11 +23,17 @@
  */
 package com.percussion.services.filestorage.data;
 
-import java.io.Serializable;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.NumberUtils;
+import org.apache.commons.lang.time.DateUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.tika.metadata.Metadata;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -41,19 +47,12 @@ import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.persistence.Version;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.math.NumberUtils;
-import org.apache.commons.lang.time.DateUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.apache.tika.metadata.Metadata;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
+import javax.transaction.Transactional;
+import java.io.Serializable;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Stores base information about each unique binary in the system inclding its
@@ -96,7 +95,7 @@ public class PSBinary implements Serializable
    /**
     * The hash value for the binary
     */
-   @Column(updatable = false, name = "HASH", nullable = false, length = 40)
+   @Column(updatable = false, name = "HASH", nullable = false, length = 256)
    private String hash;
 
    /**
@@ -234,6 +233,7 @@ public class PSBinary implements Serializable
    /**
     * @return The data entity containing the file stream
     */
+   @Transactional
    public PSBinaryData getData()
    {
       return data;
@@ -332,6 +332,7 @@ public class PSBinary implements Serializable
    /**
     * @return the set of metadata entities
     */
+   @Transactional
    public Set<PSBinaryMetaEntry> getMetaEntries()
    {
       return metaEntries;
@@ -340,6 +341,7 @@ public class PSBinary implements Serializable
    /**
     * @param metaEntries the set or metadata entities
     */
+   @Transactional
    public void setMetaEntries(Set<PSBinaryMetaEntry> metaEntries)
    {
       for (PSBinaryMetaEntry metaEntry : metaEntries)
