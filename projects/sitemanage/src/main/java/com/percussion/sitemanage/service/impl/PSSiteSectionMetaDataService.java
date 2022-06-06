@@ -101,6 +101,9 @@ public class PSSiteSectionMetaDataService implements IPSSiteSectionMetaDataServi
     {
         notNull(section, "section");
         String sectionPath = section.getFolderPath();
+        if(sectionPath == null){
+            return false;
+        }
         validateSection(sectionPath);
         String categoryPath = folderHelper.concatPath(sectionPath, SECTION_SYSTEM_FOLDER_NAME);
         return contentWs.getIdByPath(categoryPath) != null;
