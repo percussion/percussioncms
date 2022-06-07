@@ -65,6 +65,24 @@
     </PSXExtensionParamDef>
     <suppliedResources/>
   </Extension>
+
+  <Extension name="sys_sortXml" context="global/percussion/generic" handler="Java" categorystring="generic">
+    <initParam name="com.percussion.user.description">Restructures the XML Document by sorting on first level elements</initParam>
+    <initParam name="com.percussion.extension.version">1</initParam>
+    <initParam name="com.percussion.extension.reentrant">yes</initParam>
+    <initParam name="className">com.percussion.extension.PSSortXmlExtension</initParam>
+    <interface name="com.percussion.extension.IPSResultDocumentProcessor"/>
+    <PSXExtensionParamDef id="0">
+      <name>element</name>
+      <dataType>java.lang.String</dataType>
+      <description>(required) The tag name of the element to use for sorting. This element should be 3 levels deep (root grand child).</description>
+    </PSXExtensionParamDef>
+    <PSXExtensionParamDef id="1">
+      <name>descending</name>
+      <dataType>java.lang.String</dataType>
+      <description>(optional) Default is false.</description>
+    </PSXExtensionParamDef>
+  </Extension>
   <Extension categorystring="security" context="global/percussion/content/" deprecated="no" handler="Java" name="sys_AllowOnlyTheseCharacters">
     <initParam name="com.percussion.user.description">Given a comma separated list of html parameters, will only pass the value to the server if the value matches the supplied regular expression. Otherwise the value is stripped and an empty string is returned for the parameters. Use to make sure that a supplied parameter matches a specific regex.  Regular Expression should follow Java syntax.</initParam>
     <initParam name="com.percussion.extension.version">1</initParam>
