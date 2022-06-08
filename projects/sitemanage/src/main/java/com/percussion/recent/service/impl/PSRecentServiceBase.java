@@ -24,6 +24,7 @@
 
 package com.percussion.recent.service.impl;
 
+import com.percussion.recent.dao.IPSRecentDao;
 import com.percussion.recent.dao.impl.PSRecentDao;
 import com.percussion.recent.data.PSRecent;
 import com.percussion.recent.data.PSRecent.RecentType;
@@ -52,7 +53,12 @@ import java.util.List;
 @Lazy
 public class PSRecentServiceBase implements IPSRecentServiceBase
 {
-    private PSRecentDao recentDao;
+    @Autowired
+    private IPSRecentDao recentDao;
+
+    public PSRecentServiceBase(IPSRecentDao recentDao) {
+        this.recentDao = recentDao;
+    }
 
     /** (non-Javadoc)
      * @see com.percussion.recent.service.IPSRecentServiceBase#findRecent(java.lang.String, java.lang.String, com.percussion.recent.data.PSRecent.RecentType)
@@ -185,11 +191,10 @@ public class PSRecentServiceBase implements IPSRecentServiceBase
         recentDao.saveAll(siteRecents);
     }
 
-    public PSRecentDao getRecentDao() {
+    public IPSRecentDao getRecentDao() {
         return recentDao;
     }
 
-    @Autowired
     public void setRecentDao(PSRecentDao recentDao) {
         this.recentDao = recentDao;
     }

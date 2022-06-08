@@ -24,6 +24,7 @@
 
 package com.percussion.recent.dao.impl;
 
+import com.percussion.recent.dao.IPSRecentDao;
 import com.percussion.recent.data.PSRecent;
 import com.percussion.recent.data.PSRecent.RecentType;
 import com.percussion.share.dao.IPSGenericDao.SaveException;
@@ -32,34 +33,29 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Repository("recentDao")
-public class PSRecentDao
+@Transactional
+public class PSRecentDao implements IPSRecentDao
 {
 
-    @PersistenceContext
-    private EntityManager entityManager;
+  @PersistenceContext
+private EntityManager entityManager;
 
     private Session getSession(){
         return entityManager.unwrap(Session.class);
     }
 
-
     PSRecentDao()
     {
         
     }
-    /*
-    PSRecentDao(SessionFactory sessionFactory)
-    {
-        this.setSessionFactory(sessionFactory);
-    }
-    */
-    
+
     @SuppressWarnings("unchecked")
     public List<PSRecent> find(String user, String siteName, RecentType type)
     {

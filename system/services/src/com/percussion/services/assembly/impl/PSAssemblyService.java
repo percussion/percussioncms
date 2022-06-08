@@ -1356,7 +1356,7 @@ public class PSAssemblyService implements IPSAssemblyService
                      b.setVersion(bversion);
                   }
                }
-               session.merge(temp);
+               session.saveOrUpdate(temp);
             }
 
             saveTemplate(temp);
