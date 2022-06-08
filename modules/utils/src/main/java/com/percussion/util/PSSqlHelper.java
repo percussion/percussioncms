@@ -68,6 +68,12 @@ public class PSSqlHelper
 
    private static final String JBOSS_WRAPPED_CLASS="org.jboss.ejb.plugins.cmp.jdbc.WrappedStatement";
 
+   public static String escapeQueryParamValue(String value)
+   {
+      return value.replace("'", "''");
+   }
+
+
    /**
     * Convenience method that looks up the Rx server's database info and calls
     * {@link #qualifyTableName(String, String, String, String)}.
