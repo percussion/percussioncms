@@ -32,7 +32,7 @@ import com.percussion.itemmanagement.service.impl.PSWorkflowHelper;
 import com.percussion.pagemanagement.data.PSTemplateSummary;
 import com.percussion.pagemanagement.data.PSWidgetContentType;
 import com.percussion.pathmanagement.data.PSPathItem;
-import com.percussion.pathmanagement.service.impl.PSPathService;
+import com.percussion.pathmanagement.service.IPSPathService;
 import com.percussion.pathmanagement.service.impl.PSPathUtils;
 import com.percussion.recent.data.PSRecent.RecentType;
 import com.percussion.recent.service.IPSRecentServiceBase;
@@ -69,13 +69,13 @@ public class PSRecentService implements IPSRecentService
     private @Qualifier("recentServiceBase") IPSRecentServiceBase recentService;
 
     @Autowired
-    private @Qualifier("pathService") PSPathService pathService;
+    private @Qualifier("pathService") IPSPathService pathService;
 
     @Autowired
     private IPSIdMapper idMapper;
    
     @Autowired
-    private IPSFolderHelper folderHelper;
+    private @Qualifier("folderHelper") IPSFolderHelper  folderHelper;
     
     @Autowired
     private IPSAssetService assetService;
@@ -85,19 +85,6 @@ public class PSRecentService implements IPSRecentService
 
     private static final Logger log = LogManager.getLogger(IPSConstants.CONTENTREPOSITORY_LOG);
 
-    /*
-    @Autowired
-    
-    public PSRecentService(IPSRecentServiceBase recentService, IPSPathService pathService, IPSIdMapper idMapper,
-            IPSFolderHelper folderHelper, IPSSiteTemplateService siteTemplateService)
-    {
-        this.recentService = recentService;
-        this.pathService = pathService;
-        this.idMapper = idMapper;
-        this.folderHelper = folderHelper;
-        this.siteTemplateService = siteTemplateService;
-    }
-    */
 
     @Override
     public List<PSItemProperties> findRecentItem(boolean ignoreArchivedItems)

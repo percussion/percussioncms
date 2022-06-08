@@ -381,7 +381,7 @@ public class PSSiteManager
       if (site == null)
          throw new IllegalArgumentException("site must not be null.");
 
-      getSession().merge(site);
+      getSession().saveOrUpdate(site);
 
    }
 
