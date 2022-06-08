@@ -826,7 +826,7 @@ public class PSBackEndRoleMgr implements IPSBackEndRoleMgr {
                     community = current;
                 }
 
-                session.merge(community);
+                session.saveOrUpdate(community);
             }
         } catch (SQLException e) {
             ms_log.error("Couldn't save community", e);

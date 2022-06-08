@@ -479,8 +479,10 @@ public class PSRelationshipService
       // do save
       if (!rdata.isPersisted())
          sess.save(rdata);
-      else
-         rdata = (PSRelationshipData) sess.merge(rdata);
+      else {
+         sess.saveOrUpdate(rdata);
+         rdata = getRelationshipData(rel);
+      }
 
       saveOrUpdateRelationshipProperties(rdata, sess);
 

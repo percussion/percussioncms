@@ -527,11 +527,9 @@ public class PSCmsObjectMgr
     @Override
     public PSPersistentPropertyMeta savePersistentPropertyMeta(PSPersistentPropertyMeta meta) {
 
-
+        PSPersistentPropertyMeta prop = findProperties(meta);
         Session session = getSession();
-       Criteria criteria = session.createCriteria(PSPersistentPropertyMeta.class);
-       PSPersistentPropertyMeta prop = ((PSPersistentPropertyMeta) criteria.add(Restrictions.eq("propertyName", meta.getPropertyName()))
-               .add((Restrictions.eq("userName",meta.getUserName()))).uniqueResult());
+
 
        if(prop == null){
           //add new
@@ -545,9 +543,20 @@ public class PSCmsObjectMgr
           prop.setOverridable(meta.getOverridable());
           prop.setPropertyName(meta.getPropertyName());
           prop.setPropertySaveType(meta.getPropertySaveType());
-          return (PSPersistentPropertyMeta)session.merge(prop);
+          session.saveOrUpdate(prop);
+           prop = findProperties(meta);
+           return prop;
       }
    }
+
+    private  PSPersistentPropertyMeta findProperties(PSPersistentPropertyMeta meta) {
+        Session session = getSession();
+        Criteria criteria = session.createCriteria(PSPersistentPropertyMeta.class);
+        PSPersistentPropertyMeta prop = ((PSPersistentPropertyMeta) criteria.add(Restrictions.eq("propertyName", meta.getPropertyName()))
+                .add((Restrictions.eq("userName",meta.getUserName()))).uniqueResult());
+        return prop;
+    }
+
 
    /*
     * (non-Javadoc)
@@ -614,7 +623,7 @@ public class PSCmsObjectMgr
       if (prop == null)
          throw new IllegalArgumentException("prop may not be null.");
 
-      getSession().merge(prop);
+      getSession().saveOrUpdate(prop);
    }
 
    /*
