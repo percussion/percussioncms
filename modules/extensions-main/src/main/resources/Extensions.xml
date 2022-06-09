@@ -70,7 +70,7 @@
     <initParam name="com.percussion.user.description">Restructures the XML Document by sorting on first level elements</initParam>
     <initParam name="com.percussion.extension.version">1</initParam>
     <initParam name="com.percussion.extension.reentrant">yes</initParam>
-    <initParam name="className">com.percussion.extension.PSSortXmlExtension</initParam>
+    <initParam name="className">com.percussion.extensions.PSSortXmlExtension</initParam>
     <interface name="com.percussion.extension.IPSResultDocumentProcessor"/>
     <PSXExtensionParamDef id="0">
       <name>element</name>
