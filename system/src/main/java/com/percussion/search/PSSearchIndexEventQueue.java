@@ -1121,7 +1121,7 @@ public class PSSearchIndexEventQueue implements IPSEditorChangeListener, IPSHand
                }
             }
 
-            if (m_fieldValueModifier != null)
+            if (m_fieldValueModifier != null &&  fragment != null && fragment.get("sys_contentid") != null)
                m_fieldValueModifier.modifyFields(fragment);
 
             if (engine.isTraceEnabled() && log.isInfoEnabled())

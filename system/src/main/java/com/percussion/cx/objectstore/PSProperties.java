@@ -164,7 +164,11 @@ public class PSProperties implements IPSComponent
             Map.Entry prop = (Map.Entry)properties.next();
             Element propEl = doc.createElement(PROP_NODE_NAME);
             propEl.setAttribute(NAME_ATTR, (String)prop.getKey());
-            propEl.appendChild(doc.createTextNode((String)prop.getValue()));
+            String value = (String)prop.getValue();
+            if(value != null)
+               propEl.appendChild(doc.createTextNode(value));
+            else
+               propEl.appendChild(doc.createTextNode(""));
             props.appendChild(propEl);
          }
       }
