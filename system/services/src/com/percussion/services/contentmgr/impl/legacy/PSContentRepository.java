@@ -210,7 +210,7 @@ public class PSContentRepository
     /**
      * Eponymously named
      */
-    static final int FOLDER_CONTENT_TYPE = 101;
+    public static final int FOLDER_CONTENT_TYPE = 101;
     //@TODO: replace cglib with ByteBuddy
     static final String COLUMN_PREFIX_CGLIB=""; //empty prefix set by -Dcglib.propFieldPrefix= in defaults/startd/jvm.ini - requires percussion snapshot version of cglib
 

@@ -63,6 +63,7 @@ import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.contentmgr.IPSContentMgr;
 import com.percussion.services.contentmgr.PSContentMgrLocator;
 import com.percussion.services.contentmgr.data.PSNodeDefinition;
+import com.percussion.services.contentmgr.impl.legacy.PSContentRepository;
 import com.percussion.services.guidmgr.IPSGuidManager;
 import com.percussion.services.guidmgr.PSGuidManagerLocator;
 import com.percussion.services.guidmgr.data.PSLegacyGuid;
@@ -859,10 +860,14 @@ public class PSSearchIndexEventQueue implements IPSEditorChangeListener, IPSHand
                   try
                   {
                      item = loadItem(request, parentLoc, loadFlags);
-                     indexItemChanges(cTypeKey, item, itemChanges, commit);
+                     if(PSContentRepository.FOLDER_CONTENT_TYPE == item.getContentTypeId()){
+                        log.debug("Skipping full text indexing of folder item: {}", item.getContentId());
+                     }else {
+                        indexItemChanges(cTypeKey, item, itemChanges, commit);
 
-                     log.debug("Finished Indexing item {} revision={}"
-                           ,parentLoc.getId() , parentLoc.getRevision());
+                        log.debug("Finished Indexing item {} revision={}"
+                                , parentLoc.getId(), parentLoc.getRevision());
+                     }
                   }
                   catch (Exception e)
                   {
