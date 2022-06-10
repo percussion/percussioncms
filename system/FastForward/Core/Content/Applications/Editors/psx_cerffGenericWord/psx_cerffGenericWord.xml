@@ -875,7 +875,7 @@
                <PSXExtensionParamValue id="0">
                   <value>
                      <PSXTextLiteral id="0">
-                        <text>../sys_rcSupport/variantlistwithslots.xml</text>
+                        <text>../sys_cxSupport/variantlistwithslots.xml</text>
                      </PSXTextLiteral>
                   </value>
                </PSXExtensionParamValue>
