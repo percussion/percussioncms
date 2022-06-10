@@ -899,7 +899,7 @@ public class PSItemDefManager
       }
 
       long typeId = editorDef.getContentType();
-      Long key = new Long(typeId);
+      Long key = typeId;
 
       PSSecurityToken internalToken = PSRequest.getContextForRequest()
             .getSecurityToken();
@@ -928,7 +928,7 @@ public class PSItemDefManager
 
          namenows = StringUtils.deleteWhitespace(typeName);
       }else{
-         log.error("Unable to locate content type with id {}" + typeId);
+         log.error("Unable to locate content type with id {}" , typeId);
          throw new PSInvalidContentTypeException(Long.toString(typeId));
       }
       if (namenows.length() != typeName.length())
@@ -939,14 +939,14 @@ public class PSItemDefManager
       String editorUrl = typeDef.getQueryRequest();
       if (!appName.equals(PSContentType.getAppName(editorUrl)))
       {
-         log.warn("The content editor application name \"{} \" does not match the request root specified in the editor url"
+         log.warn("The content editor application name \"{}\" does not match the request root specified in the editor url"
             + " registration \"{}\" for content type name: {}", appName, editorUrl, typeName);
       }
       
       if (!PSContentType.createRequestUrl(typeName).equalsIgnoreCase(
          editorUrl))
       {
-         log.warn("The content editor application \" {} \" does not follow proper naming conventions based on the "
+         log.warn("The content editor application \"{}\" does not follow proper naming conventions based on the "
             + "content type name: {}", appName, typeName);
       }
       
