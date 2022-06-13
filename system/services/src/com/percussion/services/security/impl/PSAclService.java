@@ -612,7 +612,7 @@ public class PSAclService implements IPSAclService
          if(iacl != null) {
             try {
                ms_logger.debug("Saving ACL: {}" , iacl);
-               getSession().saveOrUpdate(iacl);
+              iacl = (IPSAcl) getSession().merge(iacl);
                updatedList.add(iacl);
                 ms_logger.debug("Save complete.");
             } catch (Exception ex) {
