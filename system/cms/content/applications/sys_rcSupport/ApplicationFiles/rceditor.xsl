@@ -40,7 +40,7 @@
                var ___slotId = null;
                var ___bws = null;
                var ___bwsMode = ps.util.BROWSE_MODE_ACTIVE_ASSEMBLY_TABLE_EDITOR;
-               var __rxroot = "/Rhythmyx";
+               var __rxroot = "";
 
                function onClose()
                {

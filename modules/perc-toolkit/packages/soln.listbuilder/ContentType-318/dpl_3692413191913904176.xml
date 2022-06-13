@@ -563,7 +563,7 @@
                            <Label>
                               <PSXDisplayText>Callout:</PSXDisplayText>
                            </Label>
-                           <PSXControlRef id="10050" name="sys_EditLive"/>
+                           <PSXControlRef id="10050" name="sys_tinymce"/>
                            <ErrorLabel>
                               <PSXDisplayText>Callout:</PSXDisplayText>
                            </ErrorLabel>

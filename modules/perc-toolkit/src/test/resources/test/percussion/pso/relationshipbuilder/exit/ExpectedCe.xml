@@ -29,7 +29,7 @@
     <ControlName>sys_EditBox</ControlName>
     <ControlName>sys_CalendarSimple</ControlName>
     <ControlName>sys_CheckBoxTree</ControlName>
-    <ControlName>sys_EditLive</ControlName>
+    <ControlName>sys_tinymce</ControlName>
     <ControlName>sys_HiddenInput</ControlName>
     </ControlNameSet>
  <ItemContent newDocument="no">

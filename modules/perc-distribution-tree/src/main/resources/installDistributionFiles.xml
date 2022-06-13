@@ -113,6 +113,13 @@
             <fileset dir="${rxapps-directory}/perc-rxapps-${project.version}/RxApp/sysAppSupport">
             </fileset>
         </copy>
+
+        <copy todir="${assembly-directory}/ObjectStore" flatten="true">
+            <fileset dir="${rxbase}/cms/content/applications">
+                <include name="*/*.xml"/>
+            </fileset>
+        </copy>
+
         <copy todir="${assembly-directory}/ObjectStore">
             <fileset dir="${rxapps-directory}/perc-rxapps-${project.version}/RxApp/ObjectStore">
             </fileset>
