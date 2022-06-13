@@ -3561,7 +3561,7 @@ onchange    %Script;       #IMPLIED
       </xsl:variable>
       <xsl:if test="string-length(normalize-space(Value)) != 0">
          <xsl:variable name="binaryurl">
-            <xsl:value-of select="concat('../../assembly/aa?widget=hf&amp;hash=',Value)"/>
+            <xsl:value-of select="concat('../assembly/aa?widget=hf&amp;hash=',Value)"/>
          </xsl:variable>
          <a href="#">
             <xsl:attribute name="onclick">saveFile('<xsl:value-of select="$binaryurl"/>','<xsl:value-of select="$binary_type"/>','<xsl:value-of select="$field_filename"/>');</xsl:attribute>

@@ -937,23 +937,27 @@ public class PSServerItem extends PSCoreItem implements IPSPersister
          new PSLocator(getContentId(), getRevision()));
       for (PSRelationship psRelationship : (Iterable<PSRelationship>) rset) {
          PSItemRelatedItem relatedItem = new PSItemRelatedItem();
-         relatedItem.setRelationship(new PSAaRelationship(psRelationship));
-         relatedItem.setRelatedType(psRelationship.getConfig().getName());
-         relatedItem.setRelationshipId(psRelationship.getId());
-         relatedItem.setDependentId(psRelationship.getDependent().getId());
-         Map<String, String> propertyMap = psRelationship.getUserProperties();
-         for (String o : propertyMap.keySet()) {
-            String key = o;
-            String value = propertyMap.get(key);
-            relatedItem.addProperty(key, value);
-         }
+         String slotId = psRelationship.getProperty(IPSHtmlParameters.SYS_SLOTID);
+         //if relationship is active Assembly Relationship, then only create it as Active assembly
+         if(slotId != null) {
+            relatedItem.setRelationship(new PSAaRelationship(psRelationship));
+            relatedItem.setRelatedType(psRelationship.getConfig().getName());
+            relatedItem.setRelationshipId(psRelationship.getId());
+            relatedItem.setDependentId(psRelationship.getDependent().getId());
+            Map<String, String> propertyMap = psRelationship.getUserProperties();
+            for (String o : propertyMap.keySet()) {
+               String key = o;
+               String value = propertyMap.get(key);
+               relatedItem.addProperty(key, value);
+            }
 
-         if ((TYPE_RELATED_ITEM & m_loadFlags) == TYPE_RELATED_ITEM) {
-            Element relatedItemData = loadRelatedItem(psRelationship.getDependent()
-                    .getId(), request);
-            relatedItem.setRelatedItemData(relatedItemData);
+            if ((TYPE_RELATED_ITEM & m_loadFlags) == TYPE_RELATED_ITEM) {
+               Element relatedItemData = loadRelatedItem(psRelationship.getDependent()
+                       .getId(), request);
+               relatedItem.setRelatedItemData(relatedItemData);
+            }
+            m_relatedItemsMap.put("" + psRelationship.getId(), relatedItem);
          }
-         m_relatedItemsMap.put("" + psRelationship.getId(), relatedItem);
       }
    }
 
