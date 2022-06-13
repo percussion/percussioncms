@@ -543,8 +543,7 @@ public class PSCmsObjectMgr
           prop.setOverridable(meta.getOverridable());
           prop.setPropertyName(meta.getPropertyName());
           prop.setPropertySaveType(meta.getPropertySaveType());
-          session.saveOrUpdate(prop);
-           prop = findProperties(meta);
+           prop = (PSPersistentPropertyMeta) session.merge(prop);
            return prop;
       }
    }
@@ -623,7 +622,7 @@ public class PSCmsObjectMgr
       if (prop == null)
          throw new IllegalArgumentException("prop may not be null.");
 
-      getSession().saveOrUpdate(prop);
+       getSession().merge(prop);
    }
 
    /*
