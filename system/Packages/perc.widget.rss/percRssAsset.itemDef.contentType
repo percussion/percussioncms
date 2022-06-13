@@ -27,6 +27,7 @@
                <SystemFieldExcludes>
                   <FieldRef>sys_contentexpirydate</FieldRef>
                   <FieldRef>sys_contentstartdate</FieldRef>
+                  <FieldRef>sys_contentpostdate</FieldRef>
                   <FieldRef>sys_pathname</FieldRef>
                   <FieldRef>sys_pubdate</FieldRef>
                   <FieldRef>sys_reminderdate</FieldRef>
