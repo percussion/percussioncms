@@ -175,7 +175,7 @@ public class PSControlDependencyMapTest
       int extCount = extListOrig.size();
     
       Map<String, List<PSDependency>> resultMap = 
-         new HashMap<String, List<PSDependency>>();
+         new HashMap<>();
       
       Map<String, String> newUserProps = depMap.generateUserProperties(extList);
       assertEquals(userProps, newUserProps);
@@ -266,7 +266,7 @@ public class PSControlDependencyMapTest
    private Map<String, PSControlMeta> getControlMetaMap() throws Exception
    {
       List<PSControlMeta> metaList = loadControlMeta();
-      Map<String, PSControlMeta> map = new HashMap<String, PSControlMeta>();
+      Map<String, PSControlMeta> map = new HashMap<>();
       for (PSControlMeta meta : metaList)
       {
          map.put(meta.getName(), meta);
