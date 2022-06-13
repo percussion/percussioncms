@@ -49,6 +49,10 @@ public class PSWidgetHandlerFactory
       {
          return new PSActionExecutor();
       }
+      else if (widgetName.equals(WIDGET_HASHEDFILE))
+      {
+         return new PSHashedFileWidgetHandler();
+      }
       throw new IllegalArgumentException(
          "No handler is available for widget named '" + widgetName + "'.");
    }
@@ -71,4 +75,6 @@ public class PSWidgetHandlerFactory
     * Action Executor
     */
    static public final String WIDGET_ACTIONEXECUTOR = "ae";
+
+   static public final String WIDGET_HASHEDFILE = "hf";
 }
