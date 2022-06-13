@@ -501,6 +501,13 @@
         <include name="Synchronizer.exe"/>
         <include name="Synchronizer.lax"/>
         <include name="sys_search/lucene/indexes/**"/> <!-- Remove old lucene indexes - file format to old -->
+        <!--
+        <include name="ObjectStore/psx_cerffNavImage.xml"/>
+        <include name="ObjectStore/psx_cerffNavon.xml"/>
+        <include name="ObjectStore/psx_cerffNavTree.xml"/> -->
+      <!--  <include name="ObjectStore/psx_cepercNavImage.xml"/>
+        <include name="ObjectStore/psx_cepercNavon.xml"/>
+        <include name="ObjectStore/psx_cepercNavTree.xml"/> -->
     </patternset>
 
     <patternset id="upgrade.overwrite">
@@ -852,9 +859,9 @@
             </fileset>
         </copy>
 
-        <copy todir="${install.dir}/ObjectStore" failonerror="false" overwrite="false">
+        <copy todir="${install.dir}/ObjectStore" failonerror="false" overwrite="true">
             <fileset dir="${install.src}/ObjectStore" followsymlinks="false" includes="**">
-                <present present="srconly" targetdir="${install.dir}/ObjectStore"/>
+               <!-- <present present="srconly" targetdir="${install.dir}/ObjectStore"/> -->
             </fileset>
         </copy>
 
@@ -1073,9 +1080,6 @@
                 <!-- Exclude Fast Forward Content Types Definitions
                      must be installed with packages instead.-->
                 <exclude name="psx_cerff*.xml"/>
-                <exclude name="psx_cepercNavImage.xml"/>
-                <exclude name="psx_cepercNavon.xml"/>
-                <exclude name="psx_cepercNavTree.xml"/>
                 <exclude name="**/Assets.json"/>
                 <exclude name="**/Pages.json"/>
             </fileset>

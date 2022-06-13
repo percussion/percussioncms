@@ -32,7 +32,7 @@
           <Label>
              <PSXDisplayText>calloutField1:</PSXDisplayText>
           </Label>
-          <PSXControlRef id="3" name="sys_EditLive"/>
+          <PSXControlRef id="3" name="sys_tinymce"/>
           <ErrorLabel>
              <PSXDisplayText>calloutField1:</PSXDisplayText>
           </ErrorLabel>
@@ -44,7 +44,7 @@
           <Label>
              <PSXDisplayText>calloutField2:</PSXDisplayText>
           </Label>
-          <PSXControlRef id="4" name="sys_EditLive"/>
+          <PSXControlRef id="4" name="sys_tinymce"/>
           <ErrorLabel>
              <PSXDisplayText>calloutField2:</PSXDisplayText>
           </ErrorLabel>

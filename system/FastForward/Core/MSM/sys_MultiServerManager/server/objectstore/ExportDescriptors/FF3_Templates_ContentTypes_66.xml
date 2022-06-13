@@ -1921,7 +1921,7 @@
                                     <RequiredClasses/>
                                  </PSXDeployableObject>
                                  <PSXDeployableObject>
-                                    <PSXDependency autoDep="no" autoExpand="yes" dependencyId="sys_EditLive" dependencyType="System" displayName="sys_EditLive" isIncluded="no" objectType="Control" objectTypeName="Control" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="yes"/>
+                                    <PSXDependency autoDep="no" autoExpand="yes" dependencyId="sys_tinymce" dependencyType="System" displayName="sys_tinymce" isIncluded="no" objectType="Control" objectTypeName="Control" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="yes"/>
                                     <RequiredClasses/>
                                  </PSXDeployableObject>
                                  <PSXDeployableObject>
@@ -4371,7 +4371,7 @@
                            <RequiredClasses/>
                         </PSXDeployableObject>
                         <PSXDeployableObject>
-                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="sys_EditLive" dependencyType="System" displayName="sys_EditLive" isIncluded="no" objectType="Control" objectTypeName="Control" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="yes"/>
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="sys_tinymce" dependencyType="System" displayName="sys_tinymce" isIncluded="no" objectType="Control" objectTypeName="Control" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="yes"/>
                            <RequiredClasses/>
                         </PSXDeployableObject>
                         <PSXDeployableObject>

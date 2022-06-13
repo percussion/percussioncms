@@ -1,28 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-  ~     Percussion CMS
-  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
-  ~
-  ~     This program is free software: you can redistribute it and/or modify
-  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
-  ~
-  ~     This program is distributed in the hope that it will be useful,
-  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
-  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  ~     GNU Affero General Public License for more details.
-  ~
-  ~     Mailing Address:
-  ~
-  ~      Percussion Software, Inc.
-  ~      PO Box 767
-  ~      Burlington, MA 01803, USA
-  ~      +01-781-438-9900
-  ~      support@percussion.com
-  ~      https://www.percussion.com
-  ~
-  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
-  -->
-
 <PSXArchiveInfo archiveRef="perc.nav" category="USER" created="1338224207943" editable="true" serverName="Usuario-Win7:9982" userName="Admin">
    <PSXFormatVersion buildId="10" buildNumber="20120501" displayVersion="5.3.14" interfaceVersion="9" majorVersion="5" microVersion="14" minorVersion="3" optionalId="" versionString="INTERNAL"/>
    <PSXDbmsInfo>
@@ -40,7 +16,7 @@
             <Description>This package contains components used by navigation.</Description>
             <Publisher name="Percussion Software" url="www.percussion.com"/>
             <CmsVersion max="9.0.0" min="1.0.0"/>
-            <Version>1.1.7</Version>
+            <Version>1.1.9</Version>
             <ImplConfigFile/>
             <LocalConfigFile/>
             <PKGDependencies/>
@@ -366,7 +342,7 @@
                                           <RequiredClasses/>
                                        </PSXDeployableObject>
                                        <PSXDeployableObject>
-                                          <PSXDependency autoDep="no" autoExpand="yes" dependencyId="sys_EditLive" dependencyType="System" displayName="sys_EditLive" isAssociation="yes" isIncluded="no" objectType="Control" objectTypeName="Control" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="yes"/>
+                                          <PSXDependency autoDep="no" autoExpand="yes" dependencyId="sys_tinymce" dependencyType="System" displayName="sys_tinymce" isAssociation="yes" isIncluded="no" objectType="Control" objectTypeName="Control" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="yes"/>
                                           <RequiredClasses/>
                                        </PSXDeployableObject>
                                        <PSXDeployableObject>
@@ -1302,7 +1278,7 @@
                                           <RequiredClasses/>
                                        </PSXDeployableObject>
                                        <PSXDeployableObject>
-                                          <PSXDependency autoDep="no" autoExpand="yes" dependencyId="sys_EditLive" dependencyType="System" displayName="sys_EditLive" isAssociation="yes" isIncluded="no" objectType="Control" objectTypeName="Control" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="yes"/>
+                                          <PSXDependency autoDep="no" autoExpand="yes" dependencyId="sys_tinymce" dependencyType="System" displayName="sys_tinymce" isAssociation="yes" isIncluded="no" objectType="Control" objectTypeName="Control" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="yes"/>
                                           <RequiredClasses/>
                                        </PSXDeployableObject>
                                        <PSXDeployableObject>
@@ -2196,7 +2172,7 @@
                                           <RequiredClasses/>
                                        </PSXDeployableObject>
                                        <PSXDeployableObject>
-                                          <PSXDependency autoDep="no" autoExpand="yes" dependencyId="sys_EditLive" dependencyType="System" displayName="sys_EditLive" isAssociation="yes" isIncluded="no" objectType="Control" objectTypeName="Control" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="yes"/>
+                                          <PSXDependency autoDep="no" autoExpand="yes" dependencyId="sys_tinymce" dependencyType="System" displayName="sys_tinymce" isAssociation="yes" isIncluded="no" objectType="Control" objectTypeName="Control" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="yes"/>
                                           <RequiredClasses/>
                                        </PSXDeployableObject>
                                        <PSXDeployableObject>

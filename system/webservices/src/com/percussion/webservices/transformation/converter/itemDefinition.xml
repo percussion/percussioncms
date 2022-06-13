@@ -832,7 +832,7 @@
                            <Label>
                               <PSXDisplayText>Callout:</PSXDisplayText>
                            </Label>
-                           <PSXControlRef id="19" name="sys_EditLive"/>
+                           <PSXControlRef id="19" name="sys_tinymce"/>
                            <ErrorLabel>
                               <PSXDisplayText>Callout:</PSXDisplayText>
                            </ErrorLabel>
@@ -844,7 +844,7 @@
                            <Label>
                               <PSXDisplayText>Body:</PSXDisplayText>
                            </Label>
-                           <PSXControlRef id="24" name="sys_EditLive"/>
+                           <PSXControlRef id="24" name="sys_tinymce"/>
                            <ErrorLabel>
                               <PSXDisplayText>Body:</PSXDisplayText>
                            </ErrorLabel>
@@ -856,7 +856,7 @@
                            <Label>
                               <PSXDisplayText>Summary:</PSXDisplayText>
                            </Label>
-                           <PSXControlRef id="205" name="sys_EditLive"/>
+                           <PSXControlRef id="205" name="sys_tinymce"/>
                            <ErrorLabel>
                               <PSXDisplayText>Pr_summary:</PSXDisplayText>
                            </ErrorLabel>

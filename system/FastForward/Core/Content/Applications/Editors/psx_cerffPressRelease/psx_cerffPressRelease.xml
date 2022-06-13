@@ -349,7 +349,7 @@
                            <Label>
                               <PSXDisplayText>Summary:</PSXDisplayText>
                            </Label>
-                           <PSXControlRef id="205" name="sys_EditLive"/>
+                           <PSXControlRef id="205" name="sys_tinymce"/>
                            <ErrorLabel>
                               <PSXDisplayText>Pr_summary:</PSXDisplayText>
                            </ErrorLabel>
