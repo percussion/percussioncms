@@ -97,10 +97,6 @@
                         <PSXUISet/>
                      </PSXDisplayMapping>
                      <PSXDisplayMapping>
-                        <FieldRef>sys_contentpostdate</FieldRef>
-                        <PSXUISet/>
-                     </PSXDisplayMapping>
-                     <PSXDisplayMapping>
                         <FieldRef>sys_communityid</FieldRef>
                         <PSXUISet/>
                      </PSXDisplayMapping>
