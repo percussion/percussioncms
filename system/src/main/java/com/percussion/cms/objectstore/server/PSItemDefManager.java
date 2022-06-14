@@ -955,7 +955,7 @@ public class PSItemDefManager
 
       PSItemDefSummary summary = new PSItemDefSummary(typeName,
             typeDef.getLabel(), typeDef.getTypeId(), typeDef.getQueryRequest(),
-            typeDef.getDescription());
+            typeDef.getDescription(),typeDef.isHiddenFromMenu());
 
       PSCmsObject cmsObject = PSServer.getCmsObjectRequired(typeDef
             .getObjectType());

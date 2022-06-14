@@ -202,7 +202,7 @@ public class PSGenerateContentTypeList extends PSDefaultExtension implements IPS
       paramMap.put(IPSHtmlParameters.SYS_VIEW, "sys_All");
       URL url = PSUrlUtils.createUrl(null, null, sourceUrl, paramMap.entrySet().iterator(), null, request);
       PSMenuAction action = new PSMenuAction(itemDefSummary.getName(), il8nLabel, PSMenuAction.TYPE_MENUITEM,
-            url.toString(), PSMenuAction.HANDLER_SERVER, 0);
+            url.toString(), PSMenuAction.HANDLER_SERVER, 0,itemDefSummary.getHideFromMenu());
       PSProperties props = new PSProperties();
       action.setProperties(props);
       action.setParameter(IPSHtmlParameters.SYS_FOLDERID, "$sys_contentid");
@@ -327,7 +327,7 @@ public class PSGenerateContentTypeList extends PSDefaultExtension implements IPS
          if (folders.size() > 1 || alwaysShowSubmenu)
          {
             PSMenuAction subMenu = new PSMenuAction("sub-" + folder, folder, PSMenuAction.TYPE_MENU, "",
-                  PSMenuAction.HANDLER_CLIENT, 0);
+                  PSMenuAction.HANDLER_CLIENT, 0,false);
             subMenu.setChildren(subResult.iterator());
             retList.add(subMenu);
          }
