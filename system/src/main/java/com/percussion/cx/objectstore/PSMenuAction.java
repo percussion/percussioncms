@@ -41,14 +41,12 @@ import java.util.List;
 public class PSMenuAction implements IPSComponent, Cloneable
 {
    /**
-    * Convenience constructor for {@link
-    * #PSMenuAction(String, String, String, String, String, int)
-    * PSMenuAction(name, label, TYPE_MENUITEM, "", HANDLER_CLIENT, 0) }. See the
+    * Convenience constructor for . See the
     * link for more description.
     */
    public PSMenuAction(String name, String label)
    {
-      this(name, label, TYPE_MENUITEM, "", HANDLER_CLIENT, 0);
+      this(name, label, TYPE_MENUITEM, "", HANDLER_CLIENT, 0,false);
    }
 
    /**
@@ -64,10 +62,11 @@ public class PSMenuAction implements IPSComponent, Cloneable
     * values.
     * @param sortrank the sort rank of the action.
     *
+    *
     * @throws IllegalArgumentException if any parameter is invalid.
     */
    public PSMenuAction(String name, String label, String type, String url,
-      String handler, int sortrank)
+      String handler, int sortrank,boolean hideFromMenu)
    {
       if(name == null || name.trim().length() == 0)
          throw new IllegalArgumentException("name may not be null or empty.");
@@ -91,6 +90,11 @@ public class PSMenuAction implements IPSComponent, Cloneable
       m_handler = handler;
       m_actionURL = (url == null) ? "" : url;
       m_sortrank = sortrank;
+   }
+   public PSMenuAction(String name, String label, String type, String url,
+                       String handler, int sortrank)
+   {
+      this(name,label,type,url,handler,sortrank,false);
    }
 
    /**
@@ -136,6 +140,7 @@ public class PSMenuAction implements IPSComponent, Cloneable
       m_handler = PSComponentUtils.getEnumeratedAttribute(
          sourceNode, HANDLER_ATTR, ms_handlers);
       m_sortrank = 0;
+      m_hideFromMenu = Boolean.valueOf(PSComponentUtils.getAttribute(sourceNode, HIDEFROMMENU_ATTR, "false"));
 
       //#IMPLIED attribute
       String sortrank = sourceNode.getAttribute(SORTRANK_ATTR);
@@ -550,11 +555,14 @@ public class PSMenuAction implements IPSComponent, Cloneable
       while(children.hasNext())
       {
          Object obj = children.next();
-         if(obj instanceof PSMenuAction)
-            m_children.add(obj);
-         else
+         if(obj instanceof PSMenuAction) {
+            PSMenuAction maction = (PSMenuAction) obj;
+            if(!maction.m_hideFromMenu)
+                  m_children.add(obj);
+         }else {
             throw new IllegalArgumentException(
-               "Elements of children must be instances of PSMenuAction");
+                    "Elements of children must be instances of PSMenuAction");
+         }
       }
    }
 
@@ -590,6 +598,7 @@ public class PSMenuAction implements IPSComponent, Cloneable
       root.setAttribute(TYPE_ATTR, m_type);
       root.setAttribute(URL_ATTR, m_actionURL);
       root.setAttribute(HANDLER_ATTR, m_handler);
+      root.setAttribute(HIDEFROMMENU_ATTR, Boolean.toString(m_hideFromMenu));
       root.setAttribute(SORTRANK_ATTR, String.valueOf(m_sortrank));
 
       if(m_props != null)
@@ -897,6 +906,7 @@ public class PSMenuAction implements IPSComponent, Cloneable
     */
    private int m_sortrank;
 
+   private boolean m_hideFromMenu;
    /**
     * The list of properties associated with the action, initialized in
     * {@link #PSMenuAction(Element) constructor} and never <code>null</code> or
@@ -1055,4 +1065,5 @@ public class PSMenuAction implements IPSComponent, Cloneable
    private static final String URL_ATTR = "url";
    private static final String HANDLER_ATTR = "handler";
    private static final String SORTRANK_ATTR = "sortrank";
+   private static final String HIDEFROMMENU_ATTR = "hidefrommenu";
 }
