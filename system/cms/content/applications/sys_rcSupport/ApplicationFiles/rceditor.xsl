@@ -44,7 +44,7 @@
 
                function onClose()
                {
-                  self.close();
+                  window.open("", '_self').window.close();
                }
                function onClickEdit(url)
                {
