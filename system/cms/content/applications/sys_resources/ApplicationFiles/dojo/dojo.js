@@ -1353,9 +1353,9 @@ return wh&&!isNaN(wh.nodeType);
 dojo.dom.getUniqueId=function(){
 var _13c=dojo.doc();
 do{
-var id="dj_unique_"+(++arguments.callee._idIncrement);
-}while(_13c.getElementById(id));
-return id;
+var id1="dj_unique_"+(++arguments.callee._idIncrement);
+}while(_13c.getElementById(id1));
+return id1;
 };
 dojo.dom.getUniqueId._idIncrement=0;
 dojo.dom.firstElement=dojo.dom.getFirstChildElement=function(_13e,_13f){
@@ -1434,8 +1434,8 @@ _152.push(node.childNodes[i]);
 }
 dojo.dom.removeChildren(node);
 node.appendChild(_151);
-for(var i=0;i<_152.length;i++){
-dojo.dom.destroyNode(_152[i]);
+for(var j=0;j<_152.length;j++){
+dojo.dom.destroyNode(_152[j]);
 }
 };
 dojo.dom.removeChildren=function(node){
@@ -17071,7 +17071,7 @@ ps.util.DIALOG_BACKGROUND_OPACITY=0.1;
 ps.util.BROWSETAB_SITES_PANEL_PREF="ps.content.sitespanel";
 ps.util.BROWSETAB_FOLDERS_PANEL_PREF="ps.content.folderspanel";
 ps.util.BROWSETAB_SEARCH_PANEL_PREF="ps.content.searchpanel";
-ps.util.CONTENT_BROWSE_URL="../ui/content/ContentBrowserDialog.jsp";
+ps.util.CONTENT_BROWSE_URL="../../ui/content/ContentBrowserDialog.jsp";
 ps.util.BROWSE_MODE_ACTIVE_ASSEMBLY="activeAssembly";
 ps.util.BROWSE_MODE_ACTIVE_ASSEMBLY_TABLE_EDITOR="activeAssemblyTable";
 ps.util.BROWSE_MODE_RTE_INLINE="rteInline";
