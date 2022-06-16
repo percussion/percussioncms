@@ -53,7 +53,7 @@
     </Code>
     <Content type="velocity">
         <![CDATA[
-<div class="$!{rootclass}perc-breadcrumb">
+<div class="$!{rootclass}perc-breadcrumb" aria-label="$!{ariaLabel}">
 #if ($navSelf)##
 #set($ancestors = $navSelf.getAncestors())##
 #if($ancestors.size()>0 && !$showHome)##
