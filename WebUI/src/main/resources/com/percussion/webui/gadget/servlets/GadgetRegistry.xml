@@ -20,7 +20,7 @@
         <gadget name="Redirect Management" baseuri="/cm/gadgets/repository/perc_website_config_gadget" file="perc_website_config_gadget.xml"/>
         <gadget name="Reports" baseuri="/cm/gadgets/repository/perc_reports_gadget" file="perc_reports_gadget.xml"/>
         <gadget name="SEO Audit" baseuri="/cm/gadgets/repository/perc_seo_gadget" file="perc_seo_status_gadget.xml"/>
-        <gadget name="Site Framework"  baseuri="/cm/gadgets/repository/PercSiteFrameworkGadget" file="perc_sitewide_framework_gadget.xml"/>
+        <gadget name="Sitewide Framework"  baseuri="/cm/gadgets/repository/PercSiteFrameworkGadget" file="perc_sitewide_framework_gadget.xml"/>
         <gadget name="Traffic" baseuri="/cm/gadgets/repository/perc_traffic_gadget" file="perc_traffic_gadget.xml"/>
         <gadget name="Welcome" baseuri="/cm/gadgets/repository/cm1_welcome_gadget" file="perc_welcome_gadget.xml"/>
         <gadget name="What's Working" baseuri="/cm/gadgets/repository/perc_effectiveness_gadget" file="perc_effectiveness_gadget.xml"/>
