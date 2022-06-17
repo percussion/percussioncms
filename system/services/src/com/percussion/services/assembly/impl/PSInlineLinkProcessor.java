@@ -75,11 +75,11 @@ import org.apache.commons.lang.math.NumberUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jdom2.JDOMException;
+import org.jsoup.nodes.Attribute;
+import org.jsoup.nodes.Attributes;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
 
 import javax.jcr.Node;
 import javax.jcr.RepositoryException;
@@ -91,6 +91,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.percussion.services.assembly.IPSAssemblyErrors.INLINE_LINK_ERROR;
 import static com.percussion.services.assembly.IPSAssemblyErrors.INLINE_TEMPLATE_ERROR;
 import static com.percussion.services.assembly.IPSAssemblyErrors.INLINE_TEMPLATE_NON_HTML;
 
@@ -469,19 +470,19 @@ public class PSInlineLinkProcessor implements IPSPropertyInterceptor
          // inline content is a variant, then the state is set to IGNORE
          // so that the inline content of the variant from the body field
          // is swallowed
-         inlineType = attrs.getValue(PSSingleValueBuilder.INLINE_TYPE);
+         inlineType = attrs.get(PSSingleValueBuilder.INLINE_TYPE);
          overrides = new HashMap<>();
 
          // Get attributes
          dependentVariantId =
-                 attrs.getValue(IPSHtmlParameters.SYS_DEPENDENTVARIANTID);
-         dependentId = attrs.getValue(IPSHtmlParameters.SYS_DEPENDENTID);
-         relationshipId = attrs.getValue(IPSHtmlParameters.SYS_RELATIONSHIPID);
+                 attrs.get(IPSHtmlParameters.SYS_DEPENDENTVARIANTID);
+         dependentId = attrs.get(IPSHtmlParameters.SYS_DEPENDENTID);
+         relationshipId = attrs.get(IPSHtmlParameters.SYS_RELATIONSHIPID);
 
-         siteId = attrs.getValue(IPSHtmlParameters.SYS_SITEID);
-         folderId = attrs.getValue(IPSHtmlParameters.SYS_FOLDERID);
+         siteId = attrs.get(IPSHtmlParameters.SYS_SITEID);
+         folderId = attrs.get(IPSHtmlParameters.SYS_FOLDERID);
          selectedText = StringUtils.defaultString(attrs
-                 .getValue(PSInlineLinkField.RX_SELECTEDTEXT));
+                 .get(PSInlineLinkField.RX_SELECTEDTEXT));
          selectedText = PSSingleValueBuilder
                  .decodeSelectedText(selectedText);
          PSRequest req = PSRequest.getContextForRequest();
@@ -506,19 +507,19 @@ public class PSInlineLinkProcessor implements IPSPropertyInterceptor
                     IPSHtmlParameters.SYS_SITEID, "");
          }
 
-         if (!StringUtils.isBlank(attrs.getValue(PSSingleValueBuilder.DATA_DESCRIPTION_OVERRIDE))) {
-            dataAltOverride = Boolean.parseBoolean(attrs.getValue(PSSingleValueBuilder.DATA_DESCRIPTION_OVERRIDE));
-            dataTitleOverride = Boolean.parseBoolean(attrs.getValue(PSSingleValueBuilder.DATA_TITLE_OVERRIDE));
+         if (!StringUtils.isBlank(attrs.get(PSSingleValueBuilder.DATA_DESCRIPTION_OVERRIDE))) {
+            dataAltOverride = Boolean.parseBoolean(attrs.get(PSSingleValueBuilder.DATA_DESCRIPTION_OVERRIDE));
+            dataTitleOverride = Boolean.parseBoolean(attrs.get(PSSingleValueBuilder.DATA_TITLE_OVERRIDE));
             isUpgradeScenario = false;
          }
          else if(inlineType.equals("rximage"))
             isUpgradeScenario = true;
 
-         if(!StringUtils.isBlank(attrs.getValue(PSSingleValueBuilder.DATA_DECORATIVE_OVERRIDE)))
-            dataDecorativeOverride = Boolean.parseBoolean(attrs.getValue(PSSingleValueBuilder.DATA_DECORATIVE_OVERRIDE));
+         if(!StringUtils.isBlank(attrs.get(PSSingleValueBuilder.DATA_DECORATIVE_OVERRIDE)))
+            dataDecorativeOverride = Boolean.parseBoolean(attrs.get(PSSingleValueBuilder.DATA_DECORATIVE_OVERRIDE));
 
-         href = attrs.getValue(PSSingleValueBuilder.HREF);
-         resourceDefinitionId = attrs.getValue(PSSingleValueBuilder.RESOURCE_DEFINITION_ID);
+         href = attrs.get(PSSingleValueBuilder.HREF);
+         resourceDefinitionId = attrs.get(PSSingleValueBuilder.RESOURCE_DEFINITION_ID);
 
       }
 
@@ -561,9 +562,8 @@ public class PSInlineLinkProcessor implements IPSPropertyInterceptor
                     this.resourceDefinitionId);
          }
          try {
-            String link = (String) enc.encode(locationUtils.generate(
+            return (String) enc.encode(locationUtils.generate(
                     assemblyItem, Long.valueOf(this.dependentVariantId)));
-            return link;
          }
          catch (EncoderException e)
          {
@@ -656,7 +656,7 @@ public class PSInlineLinkProcessor implements IPSPropertyInterceptor
 
       link.overrides.put("src", link.getLink(target));
 
-      Map<String, String> altAndTitle = new HashMap<>();
+      Map<String, String> altAndTitle;
 
       // get alt text and title from actual asset itself
       // only if rtw overrides are not set
@@ -704,8 +704,7 @@ public class PSInlineLinkProcessor implements IPSPropertyInterceptor
    }
 
    private void handleError(Attributes attrs, String replacementbody,
-                            Exception e) throws SAXException
-   {
+                            Exception e) throws PSAssemblyException {
       log.error("Problem processing inline link for item {} Error: {}", linkProcessor.getWorkItem().getId(),PSExceptionUtils.getMessageForLog(e));
       log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       PSTrackAssemblyError
@@ -717,11 +716,12 @@ public class PSInlineLinkProcessor implements IPSPropertyInterceptor
       message.append(PSExceptionUtils.getMessageForLog(e));
       message.append(" See the replacement body in the console log. ");
       message.append("The attributes on the affected link were: ");
-      int len = attrs != null ? attrs.getLength() : 0;
-      for (int i = 0; i < len; i++)
+      int i = 0;
+      for (Attribute attr : attrs)
       {
-         String name = attrs.getQName(i);
-         String value = attrs.getValue(i);
+
+         String name = attr.getKey();
+         String value = attr.getValue();
          if (i > 0)
          {
             message.append(",");
@@ -730,10 +730,11 @@ public class PSInlineLinkProcessor implements IPSPropertyInterceptor
          message.append("=\"");
          message.append(value);
          message.append("\"");
+         i++;
       }
 
       log.error("Actual replacement body for error was: {}", replacementbody);
-      throw new SAXException(message.toString(), e);
+      throw new PSAssemblyException(INLINE_LINK_ERROR,e,message.toString());
    }
 
    public void processATags(Elements elements) {
@@ -780,173 +781,204 @@ public class PSInlineLinkProcessor implements IPSPropertyInterceptor
       IPSUdfProcessor processor = getManagedLinkConverterUdf();
 
       //Process each img tag in the list
-      for(Element e : elements) {
-         InlineLink link = null;
-         String type = null;
+      for (Element e : elements) {
 
+         String type = "rximage";
+         InlineLink link = new InlineLink(e.attributes());
 
-         type = "rximage";
+         boolean foundClass = false;
+         boolean foundAlt = false;
+         boolean foundTitle = false;
+         boolean foundSrc = false;
 
-      }
+         for (Attribute attr : e.attributes()) {
+            String name = attr.getKey().toLowerCase();
+            if (PSSingleValueBuilder.IGNORED_ATTRIBUTES.contains(name))
+               continue;
 
-         // fix to not break upgrade of images alt/title text
-     /*    if((link.isUpgradeScenario && name.equals(PSSingleValueBuilder.ALT))
-                 || (link.isUpgradeScenario && name.equals(PSSingleValueBuilder.TITLE))) {
             // if the values are not the same we assume a previous
             // override value and use that
-            if(name.equals(PSSingleValueBuilder.ALT))
-               foundAlt = true;
-            else if(name.equals(PSSingleValueBuilder.TITLE))
-               foundTitle = true;
-            if("src".equals(name)){
-               if(override != null ){
-                  writeToWriter(name, override);
-               }else {
-                  String v = (String) attrs.getValue(PSSingleValueBuilder.JRCPATH);
-                  if (v == null || v.trim().isEmpty()) {
-                     writeToWriter(name, attrs.getValue(i));
-                  } else {
-                     writeToWriter(name, v);
-
-                  }
-               }
-
-            }else {
-               writeToWriter(name, attrs.getValue(i));
+            // Skip our attributes used for inline links
+            String override = "";
+            if (link.overrides != null && link.overrides.containsKey(name)) {
+               override = link.overrides.get(name);
             }
-            continue;
+
+            //class attribute
+            if (name.equals(PSSingleValueBuilder.CLASS)) {
+               foundClass = handleClassAttribute(link, attr);
+               continue;
+            }
+
+            //alt attribute
+            if (name.equals(PSSingleValueBuilder.ALT)) {
+               foundAlt = handleAltAttribute(link, attr);
+               continue;
+            }
+
+            //title
+            if (name.equals(PSSingleValueBuilder.TITLE)) {
+               foundTitle = handleTitleAttribute(link, attr);
+               continue;
+            }
+
+            //src
+            if (name.equals(PSSingleValueBuilder.SRC)) {
+               foundSrc = handleSrcAttribute(link, attr, e.attributes().get(PSSingleValueBuilder.JRCPATH), override);
+               continue;
+            }
+
          }
-*/
+
+         if (!foundTitle)
+         {
+            if (!link.dataTitleOverride && !link.isUpgradeScenario && !link.dataDecorativeOverride )
+               e.attr(PSSingleValueBuilder.TITLE,link.overrides.get(PSSingleValueBuilder.TITLE));
+            else
+               e.attr(PSSingleValueBuilder.TITLE, "");
+         }
+
+         if (!foundAlt)
+         {
+            if (!link.dataAltOverride && !link.isUpgradeScenario && !link.dataDecorativeOverride)
+               e.attr(PSSingleValueBuilder.ALT, link.overrides.get(PSSingleValueBuilder.ALT));
+            else
+               e.attr(PSSingleValueBuilder.ALT, "");
+         }
+
+      }
+   }
+
+   private boolean handleSrcAttribute(InlineLink link, Attribute srcAttr, String jcrpath, String override) {
+      if(link == null || srcAttr == null)
+         throw new IllegalArgumentException();
+
+      boolean ret = false;
+
+         if(override != null && !StringUtils.isEmpty(override)){
+            srcAttr.setValue(override);
+            ret = true;
+         }else {
+            if (jcrpath != null && !StringUtils.isEmpty(jcrpath)){
+               srcAttr.setValue(jcrpath);
+               ret = true;
+            }
+         }
+      return ret;
+   }
+
+   /**
+    * Process the title attribute.
+    * @param link a valid InlineLink
+    * @param attr a valid title attribute
+    * @return True if the title attribute was processed.
+    */
+   private boolean handleTitleAttribute(InlineLink link, Attribute attr) {
+
+      if(link==null || attr == null)
+         throw new IllegalArgumentException();
+      boolean ret = false;
+
+      if(!link.dataDecorativeOverride) {
+         if (!link.dataTitleOverride) {
+            if (link.overrides != null) {
+               String val = link.overrides.get(PSSingleValueBuilder.TITLE);
+               if (val != null) {
+                  attr.setValue(val);
+                  ret = true;
+               }
+            }
+         } else {
+            ret = true;
+         }
+      }else {
+         attr.setValue("");
+         ret = true;
+      }
+      return ret;
+   }
+
+   /**
+    * Process alt attribute
+    * @param link a link. not null
+    * @param attr an alt attribute. not null.
+    * @return true if the alt attribute was processed
+    */
+   private boolean handleAltAttribute(InlineLink link, Attribute attr) {
+      boolean ret = false;
+
+      if(link == null || attr == null)
+         throw new IllegalArgumentException();
+
+      if(!link.dataDecorativeOverride) {
+         if (!link.dataAltOverride) {
+            attr.setValue( link.overrides.get(PSSingleValueBuilder.ALT));
+            ret = true;
+         }
+         else {
+            ret = true;
+         }
+      } else {
+         attr.setValue("");
+         ret = true;
+      }
+
+      return ret;
+   }
+
+   /**
+    * Handle class attribute
+    * @param link An inline link, not null
+    * @param attr A class attribute, not null
+    * @return True if a class attribute with a value has been found.
+    */
+   private boolean handleClassAttribute(InlineLink link,Attribute attr ) {
+
+         String existingClass = attr.getValue().trim();
+         boolean foundClass = false;
+
+         if(link.isNotPublic)
+         {
+            if(!existingClass.contains(PERC_NOTPUBLICLINK))
+               existingClass += " " + PERC_NOTPUBLICLINK;
+         }
+         else
+            existingClass = StringUtils.remove(existingClass, PERC_NOTPUBLICLINK).trim();
+
+         if(link.isBroken)
+         {
+            if (!existingClass.contains(PERC_BROKENLINK))
+               existingClass += " " + PERC_BROKENLINK;
+         }
+         else
+            existingClass = StringUtils.remove(existingClass, PERC_BROKENLINK).trim();
+
+         if (!StringUtils.isEmpty(existingClass)){
+            foundClass = true;
+            attr.setValue(existingClass);
+         }
+
+         return foundClass;
    }
 
    public void processTags(Document doc)
    {
-
-
       processATags(doc.select("a"));
       processIMGTags(doc.select("img"));
+   }
 
-
-      }
-  /**    else if(StringUtils.isNotEmpty(attrs.getValue(PSSingleValueBuilder.ATTR_INLINESLOT)))
-      {
-         link = new InlineLink(attrs);
-      }
-
-      if (currentstate.equals(State.PASSTHROUGH)
-              && (link != null))
-      {
-
-         State inlineLinkState = null;
-
-
-         if (link.inlineType.equals("rxhyperlink"))
-         {
-            inlineLinkState =
-         }
-         else if (link.inlineType.equals("rximage"))
-         {
-            inlineLinkState = doRxImage(link, target);
-         }
-         else if (link.inlineType.equals("rxvariant"))
-         {
-            inlineLinkState = doRxVariant(link, target);
-         }
 
 
          // At this point we need to decide what to do. If the above was
          // just a reference to an image or link, then the current state
          // will be unmodified (and will be passthrough)
-         if (link.replacementBody == null)
+   /*      if (link.replacementBody == null)
          {
-            m_writer.writeStartElement(qname);
-            log.debug("Write Start {} depth {}", qname, m_stateStack.size());
-            boolean foundClass = false;
-            boolean foundAlt = false;
-            boolean foundTitle = false;
+
             for (int i = 0; i < attrs.getLength(); i++)
             {
-               String name = attrs.getQName(i);
-               // Skip our attributes used for inline links
-               if (PSSingleValueBuilder.IGNORED_ATTRIBUTES.contains(name))
-                  continue;
-               String override = link.overrides.get(name);
-
-               if(name.equals(PSSingleValueBuilder.CLASS))
-               {
-                  String existingClass = attrs.getValue(i).trim();
-                  foundClass = true;
-                  if(link.isNotPublic)
-                  {
-                     if(!existingClass.contains(PERC_NOTPUBLICLINK))
-                        existingClass += " " + PERC_NOTPUBLICLINK;
-                  }
-                  else
-                     existingClass = StringUtils.remove(existingClass, PERC_NOTPUBLICLINK).trim();
-
-                  if(link.isBroken)
-                  {
-                     if (!existingClass.contains(PERC_BROKENLINK))
-                        existingClass += " " + PERC_BROKENLINK;
-                  }
-                  else
-                     existingClass = StringUtils.remove(existingClass, PERC_BROKENLINK).trim();
-                  if (!StringUtils.isEmpty(existingClass))
-                     writeToWriter(PSSingleValueBuilder.CLASS, existingClass.trim());
-                  continue;
-               }
 
 
-                  if(name.equals(PSSingleValueBuilder.ALT)) {
-                     foundAlt=true;
-                     if(!link.dataDecorativeOverride) {
-                        if (!link.dataAltOverride)
-                           writeToWriter(PSSingleValueBuilder.ALT, link.overrides.get(PSSingleValueBuilder.ALT));
-                        else
-                           writeToWriter(name, attrs.getValue(i));
-                     } else {
-                        writeToWriter(PSSingleValueBuilder.ALT, "");
-                     }
-                     continue;
-                  }
-
-                  if(name.equals(PSSingleValueBuilder.TITLE)) {
-                     foundTitle=true;
-                     if(!link.dataDecorativeOverride) {
-                        if (!link.dataTitleOverride) {
-                           if (link.overrides != null) {
-                              String val = link.overrides.get(PSSingleValueBuilder.TITLE);
-                              if (val != null) {
-                                 writeToWriter(PSSingleValueBuilder.TITLE, val);
-                              }
-                           }
-                        } else {
-                           writeToWriter(name, attrs.getValue(i));
-                        }
-                     }else {
-                        writeToWriter(PSSingleValueBuilder.TITLE, "");
-                     }
-                     continue;
-                  }
-
-                  if("src".equals(name)){
-                     if(override != null ){
-                        writeToWriter(name, override);
-                     }else {
-                        String v = (String) attrs.getValue(PSSingleValueBuilder.JRCPATH);
-                        if (v == null || v.trim().isEmpty()) {
-                           writeToWriter(name, attrs.getValue(i));
-                        } else {
-                           writeToWriter(name, v);
-
-                        }
-                     }
-                  }else {
-                     writeToWriter(name, attrs.getValue(i));
-                  }
-
-                  continue;
-               }
 
                // here we handle the rest of the attributes as normal
                //After new Customization for broken link, we need to set override value
@@ -964,21 +996,7 @@ public class PSInlineLinkProcessor implements IPSPropertyInterceptor
 
             }
 
-            if (!foundTitle && qname.equals("img"))
-            {
-               if (!link.dataTitleOverride && !link.isUpgradeScenario && !link.dataDecorativeOverride )
-                  writeToWriter(PSSingleValueBuilder.TITLE, link.overrides.get(PSSingleValueBuilder.TITLE));
-               else
-                  writeToWriter(PSSingleValueBuilder.TITLE, "");
-            }
 
-            if (!foundAlt && qname.equals("img"))
-            {
-               if (!link.dataAltOverride && !link.isUpgradeScenario && !link.dataDecorativeOverride)
-                  writeToWriter(PSSingleValueBuilder.ALT, link.overrides.get(PSSingleValueBuilder.ALT));
-               else
-                  writeToWriter(PSSingleValueBuilder.ALT, "");
-            }
 
             if (!foundClass)
             {
@@ -1045,8 +1063,7 @@ public class PSInlineLinkProcessor implements IPSPropertyInterceptor
 
             writeToWriter(name, value);
          }
-      }
+         */
+     // }
 
-   }
-}**/
 }

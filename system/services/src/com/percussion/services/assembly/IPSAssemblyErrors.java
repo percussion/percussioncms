@@ -271,6 +271,7 @@ public interface IPSAssemblyErrors
 
    public static final int INLINE_TEMPLATE_ERROR = 26;
 
+   public static final int INLINE_LINK_ERROR = 27;
 }
 
 

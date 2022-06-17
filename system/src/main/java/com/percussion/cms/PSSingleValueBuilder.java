@@ -126,13 +126,14 @@ public class PSSingleValueBuilder extends PSDisplayFieldBuilder
    public static final String ALT = "alt";
    public static final String CLASS = "class";
    public static final String TITLE = "title";
+   public static final String SRC = "src";
    public static final String JRCPATH = "data-jcrpath";
    public static final String HREF = "href";
 
    /**
     * A set of attributes that should be ignored, statically initialized.
     */
-   public static Set<String> IGNORED_ATTRIBUTES = new HashSet<String>();
+   public static Set<String> IGNORED_ATTRIBUTES = new HashSet<>();
 
    static
    {
@@ -156,7 +157,7 @@ public class PSSingleValueBuilder extends PSDisplayFieldBuilder
       IGNORED_ATTRIBUTES.add(RESOURCE_DEFINITION_ID);
    }
    
-   public static Set<String> REMOVE_EMPTY_ATTRIBUTES = new HashSet<String>();
+   public static Set<String> REMOVE_EMPTY_ATTRIBUTES = new HashSet<>();
    {
       REMOVE_EMPTY_ATTRIBUTES.add(ATTR_INLINESLOT);
       REMOVE_EMPTY_ATTRIBUTES.add(INLINE_TYPE);
