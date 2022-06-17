@@ -462,7 +462,9 @@ public class PSWorkflowHelper implements IPSWorkflowHelper
             {            
                 // check to see if it is a navon or navtree
                 long cTypeId = item.getContentTypeId();
-                return cTypeId != navService.getNavonContentTypeId() && cTypeId != navService.getNavtreeContentTypeId();
+
+                return !(navService.getNavonContentTypeIds().contains(cTypeId) ||
+                        navService.getNavTreeContentTypeIds().contains(cTypeId));
             }
         }
         
@@ -523,10 +525,10 @@ public class PSWorkflowHelper implements IPSWorkflowHelper
             if (PSFolder.FOLDER_CONTENT_TYPE_ID == cTypeId) {
                 type = PSItemTypeEnum.FOLDER;
             }
-            else if (cTypeId == navService.getNavonContentTypeId()) {
+            else if (navService.getNavonContentTypeIds().contains(cTypeId)) {
                 type = PSItemTypeEnum.NAVON;
             }
-            else if(cTypeId == navService.getNavtreeContentTypeId()) {
+            else if(navService.getNavTreeContentTypeIds().contains(cTypeId)) {
                 type = PSItemTypeEnum.NAVTREE;
             }
             else if(cTypeId == itemDefManager.contentTypeNameToId(IPSTemplateService.TPL_CONTENT_TYPE)) {

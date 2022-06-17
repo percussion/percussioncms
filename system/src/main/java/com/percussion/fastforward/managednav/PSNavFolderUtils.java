@@ -30,7 +30,7 @@ import com.percussion.cms.objectstore.PSAaRelationshipList;
 import com.percussion.cms.objectstore.PSActiveAssemblyProcessorProxy;
 import com.percussion.cms.objectstore.PSComponentSummaries;
 import com.percussion.cms.objectstore.PSComponentSummary;
-import com.percussion.cms.objectstore.PSContentTypeVariant;
+import com.percussion.cms.objectstore.PSContentTypeTemplate;
 import com.percussion.cms.objectstore.PSContentTypeVariantSet;
 import com.percussion.cms.objectstore.PSDateValue;
 import com.percussion.cms.objectstore.PSInvalidContentTypeException;
@@ -48,8 +48,10 @@ import com.percussion.design.objectstore.PSLocator;
 import com.percussion.design.objectstore.PSRelationship;
 import com.percussion.design.objectstore.PSRelationshipConfig;
 import com.percussion.design.objectstore.PSRelationshipSet;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.server.IPSInternalRequest;
 import com.percussion.server.IPSRequestContext;
+import com.percussion.services.assembly.impl.nav.PSNavConfig;
 import com.percussion.services.legacy.IPSCmsObjectMgr;
 import com.percussion.services.legacy.PSCmsObjectMgrLocator;
 import com.percussion.util.IPSHtmlParameters;
@@ -153,11 +155,11 @@ public class PSNavFolderUtils
       }
       else
       {
-         ms_log.debug("parent navon is " + parentNavon.getName());
+         ms_log.debug("parent navon is {}" , parentNavon.getName());
       }
 
       int parentCommunity = parentNavon.getCommunityId();
-      ms_log.debug("parent community is " + parentCommunity);
+      ms_log.debug("parent community is {}" , parentCommunity);
       PSComponentSummary currentNavon = getChildNavonSummary(req, childFolder);
       if (currentNavon == null)
       {
@@ -196,10 +198,8 @@ public class PSNavFolderUtils
          parentFilter.setCommunityFiltering(false);
 
          // get all folder parents
-         PSComponentSummaries summaries = relProxy.getSummaries(parentFilter,
+         return relProxy.getSummaries(parentFilter,
                true);
-
-         return summaries;
       }
       catch (PSCmsException e)
       {
@@ -267,7 +267,7 @@ public class PSNavFolderUtils
    public static PSLocator findChildNavonLocator(IPSRequestContext req,
          PSLocator folderLoc, String relationshipTypeName) throws PSNavException
    {   
-      PSRelationshipSet rels = null;
+      PSRelationshipSet rels;
 
       try
       {
@@ -281,9 +281,9 @@ public class PSNavFolderUtils
          filter.setCommunityFiltering(false);
          
          PSNavConfig config = PSNavConfig.getInstance();
-         List<Long> navCTypeIds = new ArrayList<Long>();
-         navCTypeIds.add(config.getNavonType());
-         navCTypeIds.add(config.getNavTreeType());
+         List<Long> navCTypeIds = new ArrayList<>();
+         navCTypeIds.addAll(config.getNavonTypeIds());
+         navCTypeIds.addAll(config.getNavTreeTypeIds());
          filter.setDependentContentTypeIds(navCTypeIds);
 
          rels = relProxy.getRelationships(filter);
@@ -355,7 +355,7 @@ public class PSNavFolderUtils
    public static PSNavFolder getNavParentFolder(IPSRequestContext req,
          PSComponentSummary folder, boolean recurseFlag) throws PSNavException
    {
-      ms_log.debug("searching parent folder " + folder.getName() + " for navon");
+      ms_log.debug("searching parent folder {} for navon",folder.getName() );
       PSComponentSummary navon = getChildNavonSummary(req, folder);
       if (navon != null)
       {
@@ -408,12 +408,12 @@ public class PSNavFolderUtils
       while (it.hasNext())
       {
          PSComponentSummary pFolder = (PSComponentSummary) it.next();
-         ms_log.debug("Testing nav folder " + pFolder.getName());
+         ms_log.debug("Testing nav folder {}" , pFolder.getName());
          PSNavFolder navFolder = PSNavFolderUtils.getNavParentFolder(req,
                pFolder);
          if (navFolder != null)
          { // we found a parent folder with a Navon in it.
-            ms_log.debug("found Navon in folder " + pFolder.getName());
+            ms_log.debug("found Navon in folder {}" , pFolder.getName());
             folderSet.add(navFolder);
          }
       }
@@ -440,7 +440,7 @@ public class PSNavFolderUtils
          PSComponentSummary folder, int communityId) throws PSNavException
    {
       String folderName = folder.getName();
-      ms_log.debug("adding new navon to folder " + folderName);
+      ms_log.debug("adding new navon to folder {}" , folderName);
       String navonName = makeNavonName(req, folder);
       return addNavonToFolder(req, folder.getCurrentLocator(), communityId,
             navonName, navonName);
@@ -477,7 +477,7 @@ public class PSNavFolderUtils
       notEmpty(navonTitle);
       
       if (ms_log.isDebugEnabled())
-         ms_log.debug("adding new navon to folder loc = " + folderLoc.toString());
+         ms_log.debug("adding new navon to folder loc = {}" ,folderLoc);
 
       boolean changeCommunity = false;
       String savedCommunity = null;
@@ -486,21 +486,22 @@ public class PSNavFolderUtils
       {
          PSItemDefManager defMgr = PSItemDefManager.getInstance();
          if (communityId != req.getSecurityToken().getCommunityId())
-         { // the user is in a different ocmmunity from the parent navon
+         {
+            // the user is in a different community from the parent navon
             // we have to temporarily switch communities to save the new item
             changeCommunity = true;
             savedCommunity = PSNavUtil.getSessionCommunity(req);
-            ms_log.debug("Changing communities, old id was " + savedCommunity);
+            ms_log.debug("Changing communities, old id was {}" , savedCommunity);
             PSNavUtil.setSessionCommunity(req, communityId);
          }
-         //PSItemDefinition navonDef = config.getNavonItemDef();
-         PSItemDefinition navonDef = defMgr.getItemDef(config.getNavonType(),
+
+         PSItemDefinition navonDef = defMgr.getItemDef(config.getNavonTypeIds().get(0),
                communityId);
          if (navonDef == null)
          {
             String errmsg = "Unable to find Itemdef for type {0} in community {1}. ";
             Object[] args = new Object[2];
-            args[0] = config.getNavonType();
+            args[0] = config.getNavonTypeIds().get(0);
             args[1] = communityId;
             String sb = MessageFormat.format(errmsg, args);
             ms_log.error(sb);
@@ -512,12 +513,12 @@ public class PSNavFolderUtils
 
          IPSFieldValue nameValue = new PSTextValue(navonName);
          IPSFieldValue titleValue = new PSTextValue(navonTitle);
-         ms_log.debug("New Navon name is " + nameValue.getValueAsString());
+         ms_log.debug("New Navon name is {}" ,nameValue.getValueAsString());
          setFieldValue(navon, "sys_title", nameValue);
          setFieldValue(navon, "displaytitle", titleValue);
          setFieldValue(navon, "sys_contentstartdate", new PSDateValue(
                new Date()));
-         ms_log.debug("navon community id " + String.valueOf(communityId));
+         ms_log.debug("navon community id {}" , communityId);
          setFieldValue(navon, "sys_communityid", new PSTextValue(String
                .valueOf(communityId)));
          Object workflowId = req.getPrivateObject(SYS_WORKFLOWID);
@@ -529,9 +530,9 @@ public class PSNavFolderUtils
          ms_log.debug("after save");
 
          int contentId = navon.getContentId();
-         ms_log.debug("new content id is " + String.valueOf(contentId));
+         ms_log.debug("new content id is {}" , contentId);
          int revision = navon.getRevision();
-         ms_log.debug("new revision is " + String.valueOf(revision));
+         ms_log.debug("new revision is {}" , revision);
          PSLocator navonLoc = new PSLocator(contentId, revision);
          checkInItem(req, navonLoc);
 
@@ -546,7 +547,7 @@ public class PSNavFolderUtils
          if (changeCommunity)
          { // we changed communities, so we have to go back
             PSNavUtil.setSessionCommunity(req, savedCommunity);
-            ms_log.debug("Restored community to " + savedCommunity);
+            ms_log.debug("Restored community to {}" , savedCommunity);
          }
          return navonSummary;
       }
@@ -623,7 +624,7 @@ public class PSNavFolderUtils
       PSItemField field = item.getFieldByName(fieldName);
       if (field == null)
       {
-         ms_log.warn("Field " + fieldName + " not found ");
+         ms_log.warn("Field {} not found ",fieldName);
          return;
       }
       field.clearValues();
@@ -671,31 +672,28 @@ public class PSNavFolderUtils
       PSNavProxyFactory pf = PSNavProxyFactory.getInstance(req);
       PSActiveAssemblyProcessorProxy aaProxy = pf.getAaProxy();
 
-      PSSlotType menuSlot = config.getMenuSlot();
+      List<PSSlotType> menuSlots = config.getNavSubMenuSlotTypes();
 
       try
       {
-         PSAaRelationshipList removeList = new PSAaRelationshipList();
-         PSAaRelationshipList rels = aaProxy.getSlotRelationships(parentNavon,
-               menuSlot, authType);
-         Iterator slotIter = rels.iterator();
-         while (slotIter.hasNext())
-         {
-            PSAaRelationship testRel = (PSAaRelationship) slotIter.next();
-            if (testRel.getDependent().getId() == childNavon.getId())
-            {
-               removeList.add(testRel);
+         for(PSSlotType ms : menuSlots) {
+            PSAaRelationshipList removeList = new PSAaRelationshipList();
+            PSAaRelationshipList rels = aaProxy.getSlotRelationships(parentNavon,
+                    ms, authType);
+            for (Object rel : rels) {
+               PSAaRelationship testRel = (PSAaRelationship) rel;
+               if (testRel.getDependent().getId() == childNavon.getId()) {
+                  removeList.add(testRel);
+               }
+            }
+            if (!removeList.isEmpty()) {
+               aaProxy.removeSlotRelations(removeList);
             }
          }
-         if (!removeList.isEmpty())
-         {
-            aaProxy.removeSlotRelations(removeList);
-         }
-
       }
       catch (PSCmsException e)
       {
-         ms_log.error(PSNavFolderUtils.class.getName(), e);
+         ms_log.error("{}", PSExceptionUtils.getMessageForLog(e));
          throw new PSNavException(e);
       }
 
@@ -733,17 +731,12 @@ public class PSNavFolderUtils
 
          PSRelationshipSet parents = relProxy.getRelationships(filter);
 
-         Iterator parentIter = parents.iterator();
-         while (parentIter.hasNext())
-         {
-            PSRelationship rel = (PSRelationship) parentIter.next();
-            if (includeParent == null)
-            {
-               removeNavonChild(req, rel.getOwner(), childNavon, null);
-            }
-            else if (includeParent.getId() == rel.getOwner().getId())
-            {
-               removeNavonChild(req, rel.getOwner(), childNavon, null);
+         for (PSRelationship parent : (Iterable<PSRelationship>) parents) {
+
+            if (includeParent == null) {
+               removeNavonChild(req, parent.getOwner(), childNavon, null);
+            } else if (includeParent.getId() == parent.getOwner().getId()) {
+               removeNavonChild(req, parent.getOwner(), childNavon, null);
             }
          }
 
@@ -845,16 +838,19 @@ public class PSNavFolderUtils
       if (slotId == null)
       {
          config = PSNavConfig.getInstance(req);
-         PSSlotType menuSlot = config.getMenuSlot();
-         ms_log.debug("menu slot is " + menuSlot.toString() + " "
-               + menuSlot.getSlotName());
-         slotId = new Long(menuSlot.getSlotId());
+         List<PSSlotType> menuSlots = config.getNavSubMenuSlotTypes();
+
+         ms_log.debug("menu slot is {}",menuSlots.get(0));
+
+         slotId = (long) menuSlots.get(0).getSlotId();
          
          
-         PSContentTypeVariant navLinkVariant = findFirstVariant(req, menuSlot);
-         ms_log.debug("nav link Variant " + navLinkVariant.getName() + " "
-               + navLinkVariant.toString());
-         templateId = new Long(navLinkVariant.getVariantId());
+         PSContentTypeTemplate navLinkVariant = findFirstVariant(req, menuSlots.get(0));
+         ms_log.debug("nav link Variant {}",
+                 navLinkVariant);
+         if(navLinkVariant != null) {
+            templateId = (long) navLinkVariant.getVariantId();
+         }
       }
 
       PSLocator childLoc = (PSLocator) childNavon.clone();
@@ -866,11 +862,9 @@ public class PSNavFolderUtils
          rel.setProperty(IPSHtmlParameters.SYS_VARIANTID, "" + templateId);
          
          PSAaRelationship aaRel = new PSAaRelationship(rel);
-         PSRelationshipProcessor relProxy = PSRelationshipProcessor.getInstance();
 
-         //aaProxy.validateAaRelationship(aaRel);
          PSAaRelationshipList aaList = new PSAaRelationshipList();
-         ms_log.debug("add to list " + aaList.toString());
+         ms_log.debug("add to list {}" , aaList);
          aaList.add(aaRel);
          PSNavProxyFactory pf = PSNavProxyFactory.getInstance(req);
 
@@ -904,9 +898,9 @@ public class PSNavFolderUtils
       }
       PSComponentSummary parentSummary = null;
       int parentCount = 0;
-      Set parentSummarySet = new HashSet();
+      Set<Integer> parentSummarySet = new HashSet<>();
 
-      ms_log.debug("finding parent summary for " + loc.getId());
+      ms_log.debug("finding parent summary for {}" , loc.getId());
       try
       {
          PSRelationshipProcessor relProxy = PSRelationshipProcessor.getInstance();
@@ -917,44 +911,25 @@ public class PSNavFolderUtils
                .setCategory(PSRelationshipFilter.FILTER_CATEGORY_ACTIVE_ASSEMBLY);
          parentFilter.setCommunityFiltering(false);
          parentFilter.limitToEditOrCurrentOwnerRevision(true);
-         
-         // get all AA parents
-         // this method throws errrors if there is a bad relationship.
-         //         PSComponentSummaries summaries =
-         //            relProxy.getSummaries(parentFilter, true);
-         //        
-         //         Iterator parentIterator =
-         //            summaries.getComponents(PSComponentSummary.TYPE_ITEM);
 
-         Iterator parentIterator = relProxy.getRelationships(parentFilter)
-               .iterator();
-
-         while (parentIterator.hasNext())
-         {
-            PSRelationship maybeRelated = (PSRelationship) parentIterator
-                  .next();
+         for (PSRelationship maybeRelated : (Iterable<PSRelationship>) relProxy.getRelationships(parentFilter)) {
             PSComponentSummary maybeParent;
-            try
-            {
-               ms_log.debug("loading parent item "
-                     + maybeRelated.getOwner().getId());
+            try {
+               ms_log.debug("loading parent item {}"
+                       , maybeRelated.getOwner().getId());
                maybeParent = PSNavUtil.getItemSummary(req, maybeRelated
-                     .getOwner());
-            }
-            catch (Exception ex)
-            {
-               ms_log.warn("Unable to load parent item. Id = "
-                     + maybeRelated.getOwner().getId(), ex);
+                       .getOwner());
+            } catch (Exception ex) {
+               ms_log.warn("Unable to load parent item. Id = {} Error: {}",
+                        maybeRelated.getOwner().getId(),
+                       PSExceptionUtils.getMessageForLog(ex));
                continue;
             }
-            ms_log.debug("Loaded parent item " + maybeParent.getName());
-            //   (PSComponentSummary) parentIterator.next();
+            ms_log.debug("Loaded parent item {}" ,maybeParent.getName());
 
-            if (PSNavUtil.isNavType(req, maybeParent))
-            {
-               parentSummarySet.add(new Integer(maybeParent.getCurrentLocator()
-                     .getId()));
-               //parentCount++;
+            if (PSNavUtil.isNavType(req, maybeParent)) {
+               parentSummarySet.add(maybeParent.getCurrentLocator()
+                       .getId());
                parentSummary = maybeParent;
             }
          }
@@ -973,7 +948,7 @@ public class PSNavFolderUtils
       {
          //danger danger the tree is invalid
          String errMsg = "Invalid tree structure. Item with duplicate parents "
-               + String.valueOf(loc.getId());
+               + loc.getId();
          ms_log.error(errMsg);
          throw new PSNavException(errMsg);
       }
@@ -990,11 +965,11 @@ public class PSNavFolderUtils
     *         <code>null</code> if not found.
     * @throws PSNavException if lookup cannot be performed for any reason.
     */
-   public static PSContentTypeVariant findFirstVariant(IPSRequestContext req,
-         PSSlotType ourSlot) throws PSNavException
+   public static PSContentTypeTemplate findFirstVariant(IPSRequestContext req,
+                                                        PSSlotType ourSlot) throws PSNavException
    {
       PSNavConfig config = PSNavConfig.getInstance(req);
-      long navonType = config.getNavonType();
+
       int variantId = -1;
       PSSlotTypeContentTypeVariantSet cvs = ourSlot.getSlotVariants();
       Iterator it = cvs.iterator();
@@ -1003,7 +978,7 @@ public class PSNavFolderUtils
       {
          PSSlotTypeContentTypeVariant xtv = (PSSlotTypeContentTypeVariant) it
                .next();
-         if (xtv.getContentTypeId() == navonType)
+         if (config.getNavonTypeIds().contains(xtv.getContentTypeId()))
          {
             variantId = xtv.getVariantId();
             break;
@@ -1011,10 +986,11 @@ public class PSNavFolderUtils
       }
       if (variantId == -1)
       {
-         ms_log.error("Slot " + ourSlot.getSlotName() + " has no variants ");
+         ms_log.error("Slot {} has no templates.",
+                 ourSlot.getSlotName());
          return null;
       }
-      PSContentTypeVariantSet tvs = config.getNavonVariants();
+      PSContentTypeVariantSet tvs = config.getNavonTemplates();
       return tvs.getContentVariantById(variantId);
 
    }
@@ -1050,8 +1026,9 @@ public class PSNavFolderUtils
          throw new IllegalArgumentException("navon must not be null");
       }
       
-      ms_log.debug("Processing subFolder " + folder.getName() + " propagate is "
-            + String.valueOf(propFlag));
+      ms_log.debug("Processing subFolder {} propagate is {}",
+              folder.getName(),
+              propFlag);
       PSNavConfig config = PSNavConfig.getInstance();
       PSRelationshipProcessor relProxy = PSRelationshipProcessor.getInstance();
       try
@@ -1071,7 +1048,7 @@ public class PSNavFolderUtils
          {
             PSComponentSummary childFolder = (PSComponentSummary) resIter
                   .next();
-            ms_log.debug("testing subfolder " + childFolder.getName());
+            ms_log.debug("testing subfolder {}" , childFolder.getName());
             PSComponentSummary childNavon = getChildNavonSummary(req,
                   childFolder);
             if (childNavon == null && propFlag)
@@ -1087,7 +1064,7 @@ public class PSNavFolderUtils
             else if (childNavon != null)
             {
 
-               if (childNavon.getContentTypeId() == config.getNavTreeType())
+               if (config.getNavTreeTypeIds().contains(childNavon.getContentTypeId() ))
                { // this is subtree, not a navon in a subfolder. Do nothing.
                   ms_log.debug("NavonTree found, not linked");
                   continue;
@@ -1126,7 +1103,7 @@ public class PSNavFolderUtils
          throws PSNavException
    {
       PSNavConfig config = PSNavConfig.getInstance();
-      long navonType = config.getNavonType();
+      long navonType = config.getNavonTypeIds().get(0);
       PSItemDefManager mgr = PSItemDefManager.getInstance();
       try
       {
@@ -1144,8 +1121,8 @@ public class PSNavFolderUtils
          PSComponentSummary folder) throws PSNavException
    {
       PSNavConfig config = PSNavConfig.getInstance();
-      String pattern = (String) config
-            .getProperty(PSNavConfig.NAVON_TITLE_TEMPLATE);
+      String pattern = config.getNavonTitleTemplate();
+
       if (pattern == null || pattern.trim().length() == 0)
       {
          return folder.getName();

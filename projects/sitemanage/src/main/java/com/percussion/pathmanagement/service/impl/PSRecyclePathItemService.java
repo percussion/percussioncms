@@ -182,16 +182,16 @@ public class PSRecyclePathItemService extends PSPathItemService {
     protected boolean shouldFilterItem(IPSItemSummary item)
     {
         if (navonType == null) {
-            navonType = navService.getNavonContentTypeName();
+            navonType = navService.getNavonContentTypeNames().get(0);
         }
 
         if (navTreeType == null) {
-            navTreeType = navService.getNavtreeContentTypeName();
+            navTreeType = navService.getNavTreeContentTypeNames().get(0);
         }
 
         if (item == null || (".system".equals(item.getName())) || (item.getCategory().equals(IPSItemSummary.Category.EXTERNAL_SECTION_FOLDER) ||
-                (navonType != null && item.getType().equals(navonType)) ||
-                (navTreeType != null && item.getType().equals(navTreeType))))
+                (navonType != null && navService.getNavonContentTypeNames().contains(item.getType()) ||
+                (navTreeType != null && navService.getNavTreeContentTypeNames().contains(item.getType())))))
         {
             return true;
         }

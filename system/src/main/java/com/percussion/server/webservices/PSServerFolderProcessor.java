@@ -364,7 +364,7 @@ public class PSServerFolderProcessor extends PSProcessorCommon implements
 
       if (folder.getName().indexOf('/') > -1)
       {
-         String args[] = new String[]
+         String[] args = new String[]
          {
             folder.getName()
          };
@@ -1164,19 +1164,20 @@ public class PSServerFolderProcessor extends PSProcessorCommon implements
                "Failed to load Manage Nav Configuration. "
                   + "FastForward might not be installed", e);
          }
+
          /*
           * If FF is installed and folders children size is non zero, delete
           * Navon items
           */
          if (navConfig != null && !contentIdSet.isEmpty())
          {
-            long navonContentTypeId = navConfig.getNavonType().getUUID();
-            if (navonContentTypeId > 0)
+            List<IPSGuid>  navonContentTypeIds = navConfig.getNavonTypes();
+            for(IPSGuid g : navonContentTypeIds)
             {
                List<String> cids = new ArrayList<>(contentIdSet);
                Map<String,Object> params = new HashMap<>();
                params.put(IPSHtmlParameters.SYS_CONTENTTYPEID, ""
-                  + navonContentTypeId);
+                  + g.getUUID());
                params.put(IPSHtmlParameters.SYS_CONTENTID, cids);
                List<PSLocator> locators = new ArrayList<>();
                IPSSqlPurgeHelper purgeHelper = PSSqlPurgeHelperLocator.getPurgeHelper();
@@ -1206,17 +1207,13 @@ public class PSServerFolderProcessor extends PSProcessorCommon implements
                      }
                   }
                }
-               catch (PSException | PSValidationException e)
+               catch (PSException | PSValidationException | SQLException e)
                {
                   getLogger().error(
-                     "Failed to delete Navon(s) with contentids: " + cids, e);
-               }
-               catch (SQLException e)
-               {
-                  getLogger().error(
-                     "Failed to delete Navon(s) with contentids: " + cids, e);
-               }
-               finally
+                     "Failed to delete Navon(s) with contentids: {} Error: {}" ,
+                          cids,
+                          PSExceptionUtils.getMessageForLog(e));
+               } finally
                {
                   if (irq != null)
                   {
@@ -5143,7 +5140,7 @@ public class PSServerFolderProcessor extends PSProcessorCommon implements
                }catch (PSCmsException e) {
                   log.error("SlotType not found for id: {}",slotid,e);
                }
-               if (landingPage == null && slotType != null && navConfig.getLandingPageRelationship().equals(slotType.getSlotName())) {
+               if (landingPage == null && slotType != null && navConfig.getNavLandingPageSlotNames().contains(slotType.getSlotName())) {
                   PSManagedNavServiceLocator.getContentWebservice().addLandingPageToNavnode(childId,
                           parentId, assemblyTemplate);
                } else if(slotType != null){
@@ -5909,9 +5906,30 @@ public class PSServerFolderProcessor extends PSProcessorCommon implements
          return false;
       }
 
-      return config.getNavTreeType().getUUID() == summary.getContentTypeId()
-         || config.getNavonType().getUUID() == summary.getContentTypeId()
-         || config.getNavImageType().getUUID() == summary.getContentTypeId();
+      //Check for NavTree Types
+      for(IPSGuid g : config.getNavTreeTypes()){
+         if(g.getUUID() == summary.getContentTypeId()){
+               return true;
+         }
+      }
+
+      //Check for NavOn types
+      for(IPSGuid g : config.getNavonTypes()){
+         if(g.getUUID() == summary.getContentTypeId()){
+           return true;
+         }
+      }
+
+      //Check for NavImage types
+      for(IPSGuid g : config.getNavImageTypes()){
+         if(g.getUUID() == summary.getContentTypeId()){
+           return true;
+         }
+      }
+
+      // If we got this far it is not a nav type.
+      return false;
+
    }
 
    /**

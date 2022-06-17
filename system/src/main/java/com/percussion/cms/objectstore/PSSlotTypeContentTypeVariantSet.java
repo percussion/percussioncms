@@ -75,7 +75,7 @@ public class PSSlotTypeContentTypeVariantSet extends PSDbComponentSet
     * @return <code>true</code> if this slot allowes the specified variant, 
     * <code>false</code> otherwise.
     */   
-   public boolean isVariantAllowed(PSContentTypeVariant variant)
+   public boolean isVariantAllowed(PSContentTypeTemplate variant)
    {
       if (variant == null)
          throw new IllegalArgumentException("variant must not be null");

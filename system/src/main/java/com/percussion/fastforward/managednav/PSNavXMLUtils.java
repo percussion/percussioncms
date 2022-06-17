@@ -23,11 +23,12 @@
  */
 package com.percussion.fastforward.managednav;
 
-import com.percussion.cms.objectstore.PSContentTypeVariant;
+import com.percussion.cms.objectstore.PSContentTypeTemplate;
 import com.percussion.error.PSExceptionUtils;
 import com.percussion.server.IPSInternalRequest;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.server.PSRequestParsingException;
+import com.percussion.services.assembly.impl.nav.PSNavConfig;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.util.PSMutableUrl;
 import com.percussion.util.PSUrlUtils;
@@ -43,7 +44,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -91,12 +91,10 @@ public class PSNavXMLUtils
     */
    public static void setAttributes(Element elem, Map params)
    {
-      Iterator it = params.keySet().iterator();
-      while (it.hasNext())
-      {
-         String pName = it.next().toString();
+      for (Object o : params.keySet()) {
+         String pName = o.toString();
          String pValue = params.get(pName).toString();
-         log.debug("setting attribute {} value {}",pName, pValue);
+         log.debug("setting attribute {} value {}", pName, pValue);
          elem.setAttribute(pName, pValue);
       }
    }
@@ -114,7 +112,7 @@ public class PSNavXMLUtils
          PSNavonStack stack) throws PSNavException
    {
       Element docElem = doc.getDocumentElement();
-      setRootAttributes(req, docElem, stack, Collections.EMPTY_MAP);
+      setRootAttributes(req, docElem, stack, Collections.emptyMap());
    }
 
    /**
@@ -305,11 +303,11 @@ public class PSNavXMLUtils
          String variantIdStr = lpElement
                .getAttribute(IPSHtmlParameters.SYS_VARIANTID);
          int variantid = Integer.parseInt(variantIdStr);
-         PSContentTypeVariant variant = 
+         PSContentTypeTemplate variant =
             PSNavConfig.getInstance(req).getAllVariants()
                .getContentVariantById(variantid);
          log.debug("found variant {}", variant.getName());
-         Map linkParams = new HashMap();
+         Map<String,String> linkParams = new HashMap<>();
          String contentId = lpElement
                .getAttribute(IPSHtmlParameters.SYS_CONTENTID);
          linkParams.put(IPSHtmlParameters.SYS_CONTENTID, contentId);
@@ -335,9 +333,9 @@ public class PSNavXMLUtils
          URL intURL;
          try
          {
-            intURL = PSUrlUtils.createUrl("127.0.0.1", new Integer(req
-                  .getOriginalPort()), variant.getAssemblyUrl(), linkParams
-                  .entrySet().iterator(), (String) null, //no Anchor
+            intURL = PSUrlUtils.createUrl("127.0.0.1", req
+                            .getOriginalPort(), variant.getAssemblyUrl(), linkParams
+                  .entrySet().iterator(), null, //no Anchor
                   req);
          }
          catch (MalformedURLException e)
@@ -363,7 +361,7 @@ public class PSNavXMLUtils
     * @throws PSNavException
     */
    private static void fixInfoLink(IPSRequestContext req, Element navonElem,
-         Map landingPageParams) throws PSNavException
+         Map<String,String> landingPageParams) throws PSNavException
    {
       log.debug("fixing Info Link");
       PSXmlTreeWalker infoWalker = new PSXmlTreeWalker(navonElem);
@@ -377,9 +375,6 @@ public class PSNavXMLUtils
             String oldUrl = infoWalker.getElementData();
             log.debug("Old Url was: {}", oldUrl);
             PSMutableUrl nUrl = new PSMutableUrl(oldUrl);
-            //log.debug("Base URL is:" + nUrl.getBase());
-            //nUrl.dropParam("?sys_siteid"); // can't fix this now
-            //PSNavUtil.logMap(nUrl.getParamMap(), "URL Params", log);
             nUrl.setParamList(landingPageParams);
             String replaceUrl = nUrl.toString();
             log.debug("New Url is: {}", replaceUrl);
@@ -557,9 +552,9 @@ public class PSNavXMLUtils
     * @param req the parent request context
     * @return a new map of landing page parameters.
     */
-   public static Map getLandingPageMap(IPSRequestContext req)
+   public static Map<String,String> getLandingPageMap(IPSRequestContext req)
    {
-      Map landingPageParams = new HashMap();
+      Map<String,String> landingPageParams = new HashMap<>();
       PSNavUtil
             .copyParam(req, landingPageParams, IPSHtmlParameters.SYS_CONTEXT);
       PSNavUtil.copyParam(req, landingPageParams, IPSHtmlParameters.SYS_SITEID);

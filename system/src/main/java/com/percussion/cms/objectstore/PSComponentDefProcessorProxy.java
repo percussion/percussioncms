@@ -99,7 +99,7 @@ public class PSComponentDefProcessorProxy extends PSProcessorProxy
          */
          {
             int varKeys[] = {25, 11};
-            PSKey[] keys = PSContentTypeVariant.createKeys(varKeys);
+            PSKey[] keys = PSContentTypeTemplate.createKeys(varKeys);
             
             Element[] elems = proxy.load("PSContentTypeVariantSet", keys);
             
@@ -108,7 +108,7 @@ public class PSComponentDefProcessorProxy extends PSProcessorProxy
             Iterator it = vs.iterator();
             while(it.hasNext())
             {
-               PSContentTypeVariant v = (PSContentTypeVariant)it.next();
+               PSContentTypeTemplate v = (PSContentTypeTemplate)it.next();
                
                checkContentVariant(v);
             }
@@ -160,7 +160,7 @@ public class PSComponentDefProcessorProxy extends PSProcessorProxy
       }     
    }
 
-   private static void checkContentVariant(PSContentTypeVariant v)
+   private static void checkContentVariant(PSContentTypeTemplate v)
    {                 
       PSDbComponentSet slots = v.getVariantSlots();
       

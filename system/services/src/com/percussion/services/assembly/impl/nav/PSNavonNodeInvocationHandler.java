@@ -421,7 +421,7 @@ public class PSNavonNodeInvocationHandler implements InvocationHandler
    private void loadNavChildren() throws PSCmsException, RepositoryException,
          PSFilterException
    {
-      if (m_children != null)
+      if (m_children != null && !m_children.isEmpty())
          return;
 
       m_children = m_helper.findNavChildren(m_axis, m_containedNode);

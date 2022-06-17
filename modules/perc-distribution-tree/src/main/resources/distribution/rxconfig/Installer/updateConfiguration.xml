@@ -145,6 +145,38 @@
                 <entry key="enableLogTool" operation="del"/>
             </propertyfile>
 
+        <echo>Updating Navigation.properties file...</echo>
+
+        <copy file="${install.dir}/rxconfig/Server/Navigation.properties" tofile="${install.dir}/rxconfig/Server/Navigation.properties.backup" overwrite="true"/>
+
+        <propertyfile file="${install.dir}/rxconfig/Server/Navigation.properties" >
+            <entry key="navimage.content_types" value="percNavImage,rffNavImage"/>
+            <entry key="navimage.field.selector" value="selector"/>
+            <entry key="navon.content_types" value="percNavon,rffNavon"/>
+            <entry key="navon.field.displaytitle" value="displaytitle"/>
+            <entry key="navon.field.namefield" value="sys_title"/>
+            <entry key="navon.field.propagate" value="no_propagate"/>
+            <entry key="navon.field.selector" value="no_selector"/>
+            <entry key="navon.field.variable" value="no_variable"/>
+            <entry key="navon.landingpage.required" value="false"/>
+            <entry key="navon.slot.images" value="perc.nav.image,rffNavImage"/>
+            <entry key="navon.slot.landingpages" value="perc.nav.landingPage,rffNavLandingPage"/>
+            <entry key="navon.slot.submenus" value="perc.nav.subMenu,rffNavSubmenu"/>
+            <entry key="navon.slotnames" value="perc.nav.slot,rffNav"/>
+            <entry key="navtree.content_types" value="percNavTree,rffNavTree"/>
+            <entry key="navtree.field.theme" value="nt_theme"/>
+            <entry key="navtree.theme.default" value="DefaultTheme"/>
+            <entry key="navtree.variable" value="rxs_navbase"/>
+            <entry key="navtree.param.theme" value="nav_theme"/>
+            <entry key="navtree.variant.info" value="NavTreeInfo"/>
+            <entry key="navon.variant.info" value="NavonInfo"/>
+            <entry key="navon.variant.navlink" value="NavonLink"/>
+            <entry key="navon.variant.tree" value="NavonXML"/>
+            <entry key="navimage.variant.info" value="NavImageInfo"/>
+            <entry key="navon.title.template" value="{0}"/>
+            <entry key="navon.displaytitle.template" value="{0}"/>
+        </propertyfile>
+
         <echo>Setting default velocity.properties...</echo>
         <copy failonerror="false" verbose="true" overwrite="false" todir="${install.dir}/rxconfig/Server" file="${install.dir}/rxconfig/velocity/2.3/config/*.properties" />
 

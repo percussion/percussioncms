@@ -992,8 +992,14 @@ public class PSInlineLinkContentHandler extends PSSaxCopier
             conf.addOption(PSContentMgrOption.LAZY_LOAD_CHILDREN);
 
             nodeList = mgr.findItemsByGUID(guidList, conf);
-            items.put(PSSingleValueBuilder.ALT, nodeList.get(0).getProperty("rx:alttext").getString());
-            items.put(PSSingleValueBuilder.TITLE, nodeList.get(0).getProperty("rx:displaytitle").getString());
+
+            //Add alt and title if available
+            if(nodeList.get(0).hasProperty("rx:alttext")) {
+               items.put(PSSingleValueBuilder.ALT, nodeList.get(0).getProperty("rx:alttext").getString());
+            }
+            if(nodeList.get(0).hasProperty("rx:displaytitle")) {
+               items.put(PSSingleValueBuilder.TITLE, nodeList.get(0).getProperty("rx:displaytitle").getString());
+            }
          }
          catch (RepositoryException e)
          {

@@ -119,7 +119,7 @@ public class PSActiveAssemblyProcessorProxy extends PSProcessorProxy
       Set slotKeys = new HashSet();
       while (iter.hasNext())
       {
-         PSContentTypeVariant variant = (PSContentTypeVariant) iter.next();
+         PSContentTypeTemplate variant = (PSContentTypeTemplate) iter.next();
          Iterator iter2 = variant.getVariantSlots().iterator();
          while (iter2.hasNext())
          {
@@ -176,7 +176,7 @@ public class PSActiveAssemblyProcessorProxy extends PSProcessorProxy
             PSComponentDefProcessorProxy.PROCTYPE_SERVERLOCAL,
             m_context);
 
-      PSKey cTypeKey = PSContentTypeVariant.createKey(cTypeId, -1);
+      PSKey cTypeKey = PSContentTypeTemplate.createKey(cTypeId, -1);
       return new PSContentTypeVariantSet(
          defProxy.load(
             PSDbComponent.getComponentType(PSContentTypeVariantSet.class),
@@ -274,11 +274,11 @@ public class PSActiveAssemblyProcessorProxy extends PSProcessorProxy
          }
          IPSAssemblyService assembly = 
             PSAssemblyServiceLocator.getAssemblyService();
-         PSContentTypeVariant variant = null;
+         PSContentTypeTemplate variant = null;
          try
          {
             variant = 
-               new PSContentTypeVariant(assembly
+               new PSContentTypeTemplate(assembly
                      .loadUnmodifiableTemplate(variantstr));
          }
          catch(PSAssemblyException e)
@@ -702,7 +702,7 @@ public class PSActiveAssemblyProcessorProxy extends PSProcessorProxy
                args);
       }
       PSSlotType slot = null;
-      PSContentTypeVariant variant = null;
+      PSContentTypeTemplate variant = null;
       slot = aaRel.getSlot();
       variant = aaRel.getVariant();
       PSSlotTypeContentTypeVariantSet slotVariants = slot.getSlotVariants();

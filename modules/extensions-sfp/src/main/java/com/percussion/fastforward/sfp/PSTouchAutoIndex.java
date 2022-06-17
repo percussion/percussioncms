@@ -24,7 +24,7 @@
 package com.percussion.fastforward.sfp;
 
 import com.percussion.cms.PSCmsException;
-import com.percussion.cms.objectstore.PSContentTypeVariant;
+import com.percussion.cms.objectstore.PSContentTypeTemplate;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
 import com.percussion.extension.IPSRequestPreProcessor;
 import com.percussion.extension.IPSResultDocumentProcessor;
@@ -189,7 +189,7 @@ public class PSTouchAutoIndex extends PSDefaultExtension
       Iterator variants = helper.getVariantSet().iterator();
       while (variants.hasNext())
       {
-         PSContentTypeVariant vart = (PSContentTypeVariant) variants.next();
+         PSContentTypeTemplate vart = (PSContentTypeTemplate) variants.next();
          if (vart.getActiveAssemblyType() == 1)
          {
             m_log.debug("Found automated variant " + vart.getName() + " - "

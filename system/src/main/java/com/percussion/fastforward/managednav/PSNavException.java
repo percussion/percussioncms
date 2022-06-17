@@ -38,18 +38,20 @@ public class PSNavException extends PSRuntimeException
     * Creates an exception with a specific message.
     * 
     * @param msg
+    * @deprecated
     */
    @Deprecated
    public PSNavException(String msg)
    {
       super(-1, msg);
-      this.m_msg.append(msg);
+      this.message.append(msg);
    }
 
    /**
     * Creates an exception that encapsulates a runtime exception.
     * 
     * @param ex the exception to encapsulate
+    * @deprecated
     */
    @Deprecated
    public PSNavException(Exception ex)
@@ -58,13 +60,13 @@ public class PSNavException extends PSRuntimeException
 
       if (ex instanceof PSNavException)
       { // just clone
-         this.m_parentException = ((PSNavException) ex).m_parentException;
-         this.m_msg = ((PSNavException) ex).m_msg;
+         this.parentException = ((PSNavException) ex).parentException;
+         this.message = ((PSNavException) ex).message;
       }
       else
       {
-         this.m_parentException = ex;
-         this.m_msg.append(handleException(ex));
+         this.parentException = ex;
+         this.message.append(handleException(ex));
       }
 
    }
@@ -75,12 +77,13 @@ public class PSNavException extends PSRuntimeException
     * 
     * @param routine the routine where the exception occurred.
     * @param ex the exception to encapsulate.
+    * @deprecated
     */
    @Deprecated
    public PSNavException(String routine, Exception ex)
    {
       this(ex);
-      this.m_msg.append("Caught in " + routine);
+      this.message.append("Caught in ").append(routine);
    }
 
    /**
@@ -88,6 +91,7 @@ public class PSNavException extends PSRuntimeException
     * 
     * @param clazz the class where the exception occurred.
     * @param ex the exception to encapsulate.
+    * @deprecated
     */
    @Deprecated
    public PSNavException(Class clazz, Exception ex)
@@ -139,7 +143,7 @@ public PSNavException(int code, Object[] arrayArgs, Throwable cause){
     * Create a new exception withe specific error code
     * and message parameters.
     * @param code A valid code from IPSErrorCatalog
-    * @param arrayArgs An array of objects to be used in error message rendering
+    * @param arg An array of objects to be used in error message rendering
     */
    public PSNavException(int code, Object arg){
       super(code, arg);
@@ -149,13 +153,14 @@ public PSNavException(int code, Object[] arrayArgs, Throwable cause){
     * The underlying exception that caused this exception.
     */
    @Deprecated
-   Exception m_parentException = null;
+   Exception parentException = null;
 
    /**
     * The message buffer for this exception.
+    * @deprecated
     */
    @Deprecated
-   StringBuilder m_msg = new StringBuilder();
+   StringBuilder message = new StringBuilder();
 
 }
 

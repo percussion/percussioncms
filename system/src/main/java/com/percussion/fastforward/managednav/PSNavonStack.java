@@ -26,6 +26,7 @@ package com.percussion.fastforward.managednav;
 import com.percussion.cms.objectstore.PSComponentSummary;
 import com.percussion.design.objectstore.PSLocator;
 import com.percussion.server.IPSRequestContext;
+import com.percussion.services.assembly.impl.nav.PSNavConfig;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import org.apache.logging.log4j.LogManager;
@@ -89,7 +90,7 @@ public class PSNavonStack
 
       this.push(req, navon);
       PSNavConfig config = PSNavConfig.getInstance(req);
-      if (navon.getContentTypeId() == config.getNavTreeType())
+      if (config.getNavTreeTypes().contains(navon.getContentTypeGUID()))
       {
          return;
       }
@@ -105,7 +106,7 @@ public class PSNavonStack
             break;
          }
          this.push(req, next);
-         if (next.getContentTypeId() == config.getNavTreeType())
+         if (config.getNavTreeTypes().contains(next.getContentTypeGUID()))
          { // we found a NavTree content item
             log.debug("NavTree found");
             break;
@@ -169,15 +170,13 @@ public class PSNavonStack
          if (oldFolderId != null)
             req.setParameter(IPSHtmlParameters.SYS_FOLDERID, oldFolderId);
       }
-      
-      if (log.isDebugEnabled() && false)
-      {
-         String navDoc = PSXmlDocumentBuilder.toString(doc);
-         log.debug("Navon document is {}", navDoc);
-      }
+
+      String navDoc = PSXmlDocumentBuilder.toString(doc);
+      log.debug("Navon document is {}", navDoc);
+
       PSNavConfig config = PSNavConfig.getInstance(req);
       String navImageSelect = PSNavUtil.getFieldValueFromXML(doc, config
-            .getPropertyString(PSNavConfig.NAVON_SELECTOR_FIELD));
+            .getNavonSelectorField());
       log.debug("navImageSelect is {}", navImageSelect);
       if (m_imageSelector == null && navImageSelect != null
             && navImageSelect.trim().length() > 0)
@@ -187,7 +186,7 @@ public class PSNavonStack
       }
 
       String varSelect = PSNavUtil.getFieldValueFromXML(doc, config
-            .getPropertyString(PSNavConfig.NAVON_VARIABLE_FIELD));
+            .getNavonVariableName());
       log.debug("navVarSelect is {}", varSelect);
       if (m_varSelector == null && varSelect != null
             && varSelect.trim().length() > 0)
@@ -256,7 +255,7 @@ public class PSNavonStack
     */
    public String getVarSelector()
    {
-      log.debug("getting variable selector ", m_varSelector);
+      log.debug("getting variable selector {}", m_varSelector);
       return m_varSelector;
    }
 

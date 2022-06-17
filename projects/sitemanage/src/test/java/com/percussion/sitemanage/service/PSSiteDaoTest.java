@@ -607,13 +607,12 @@ public class PSSiteDaoTest extends PSServletTestCase
         boolean foundNavTree = false;
         boolean foundHomePage = false;
 
-        String navTreeName = getManagedNavService().getNavtreeContentTypeName();
         List<PSItemSummary> items = contentWs.findFolderChildren(folderRoot,
                 false);
         for (PSItemSummary item : items)
         {
             String ctName = item.getContentTypeName();
-            if (ctName.equals(navTreeName))
+            if (getManagedNavService().getNavTreeContentTypeNames().contains(ctName))
             {
                 foundNavTree = true;
             }

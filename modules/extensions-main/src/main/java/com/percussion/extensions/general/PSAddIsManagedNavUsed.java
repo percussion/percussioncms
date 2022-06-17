@@ -28,7 +28,7 @@ import com.percussion.extension.IPSResultDocumentProcessor;
 import com.percussion.extension.PSExtensionException;
 import com.percussion.extension.PSExtensionProcessingException;
 import com.percussion.extension.PSParameterMismatchException;
-import com.percussion.fastforward.managednav.PSNavConfig;
+import com.percussion.services.assembly.impl.nav.PSNavConfig;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.server.PSConsole;
 

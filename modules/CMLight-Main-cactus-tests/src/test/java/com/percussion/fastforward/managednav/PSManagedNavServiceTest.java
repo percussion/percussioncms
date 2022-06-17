@@ -46,7 +46,6 @@ import org.junit.experimental.categories.Category;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -69,7 +68,7 @@ public class PSManagedNavServiceTest extends ServletTestCase
       
       navService = PSManagedNavServiceLocator.getContentWebservice();
       contentWs = PSContentWsLocator.getContentWebservice();
-      createdFolders = new ArrayList<IPSGuid>();
+      createdFolders = new ArrayList<>();
    }
    
    @Override
@@ -96,17 +95,16 @@ public class PSManagedNavServiceTest extends ServletTestCase
    
    /**
     * Tests find and get operations of the managed nav service.
-    * 
-    * @throws Exception if error occurs.
+    *
     */
-   public void testFinds() throws Exception
+   public void testFinds()
    {
       String EI_ROOT = "//Sites/EnterpriseInvestments";
       List<IPSGuid> ids = contentWs.findPathIds(EI_ROOT);
       IPSGuid parentFolderId = ids.get(ids.size()-1);
       
       PSComponentSummary navSum = navService.findNavSummary(parentFolderId);
-      assertTrue(navSum != null);
+      assertNotNull(navSum);
       
       IPSGuid navTreeId = new PSLegacyGuid(navSum.getCurrentLocator());
       String title = navService.getNavTitle(navTreeId);
@@ -118,7 +116,7 @@ public class PSManagedNavServiceTest extends ServletTestCase
       for (int i=0; i<4; i++)
       {
          int contentId = ((PSLegacyGuid)rels.get(i)).getContentId();
-         assertTrue(contentIds[i] == contentId);
+         assertEquals(contentIds[i], contentId);
       }
       
       rels = navService.findDescendantNavonIds(navTreeId);
@@ -126,17 +124,21 @@ public class PSManagedNavServiceTest extends ServletTestCase
       
       assertTrue(navService.isManagedNavUsed());
       
-      long navtreeTypeId = navService.getNavtreeContentTypeId();
-      long navonTypeId = navService.getNavonContentTypeId();
+      List<Long> navtreeTypeId = navService.getNavTreeContentTypeIds();
+      List<Long> navonTypeId = navService.getNavonContentTypeIds();
       
-      assertTrue(navtreeTypeId > 0);
-      assertTrue(navonTypeId > 0);
+      assertTrue(navtreeTypeId.size() > 0);
+      assertTrue(navonTypeId.size() > 0);
       
-      String navtreeTypeName = navService.getNavtreeContentTypeName();
-      String navonTypeName = navService.getNavonContentTypeName();
-      
-      assertTrue(StringUtils.isNotBlank(navtreeTypeName));
-      assertTrue(StringUtils.isNotBlank(navonTypeName));
+      List<String> navtreeTypeName = navService.getNavTreeContentTypeNames();
+      List<String> navonTypeName = navService.getNavonContentTypeNames();
+
+      for(String s : navtreeTypeName) {
+         assertTrue(StringUtils.isNotBlank(s));
+      }
+      for(String s : navonTypeName) {
+         assertTrue(StringUtils.isNotBlank(s));
+      }
    }
    
    /**
@@ -163,17 +165,15 @@ public class PSManagedNavServiceTest extends ServletTestCase
 
       navService.addNavonToFolder(parentFolderId, folderId, folderName, folderName);
       navSum = navService.findNavSummary(createdFolder.getGuid());
-      assertTrue(navSum != null);
+      assertNotNull(navSum);
       
       return createdFolder;
    }
    
    /**
     * Tests add or move node service.
-    * 
-    * @throws Exception if error occurs.
     */
-   public void testAdds() throws Exception
+   public void testAdds()
    {
       String EI_ROOT = "//Sites/EnterpriseInvestments";
       List<IPSGuid> ids = contentWs.findPathIds(EI_ROOT);
@@ -214,8 +214,8 @@ public class PSManagedNavServiceTest extends ServletTestCase
       
       // validate the link
       List<PSItemSummary> items = contentWs.findDependents(navonId, null, false);
-      assertTrue(items.size() == 1);
-      assertTrue(items.get(0).getGUID().getUUID() == 335);
+      assertEquals(1, items.size());
+      assertEquals(335, items.get(0).getGUID().getUUID());
 
       validateMoveService(createdFolder, EI_ROOT);
    }
@@ -236,10 +236,8 @@ public class PSManagedNavServiceTest extends ServletTestCase
    public void testIsNavTree_withNavon()
    {
       String EI_ROOT = "//Sites/EnterpriseInvestments";
-      List<IPSGuid> ids = contentWs.findPathIds(EI_ROOT);
-      IPSGuid parentFolderId = ids.get(ids.size() - 1);
 
-      PSComponentSummary navSum = navService.findNavSummary(parentFolderId);
+      PSComponentSummary navSum;
       PSFolder createdFolder = createFolderAndNavon("TestFolder_", EI_ROOT);
       negativeTestAddNavon(createdFolder, EI_ROOT);
 
@@ -256,8 +254,8 @@ public class PSManagedNavServiceTest extends ServletTestCase
       PSPair<List<Integer>, IPSGuid> pair = createNavigationStructure();
       
       List<IPSGuid> calculatedParentNavons = navService.findAncestorNavonIds(pair.getSecond());
-      
-      assertTrue(pair.getFirst().size() == calculatedParentNavons.size());
+
+      assertEquals(pair.getFirst().size(), calculatedParentNavons.size());
       for(IPSGuid parentNavon : calculatedParentNavons)
       {
          assertTrue(pair.getFirst().contains(((PSLegacyGuid) parentNavon).getContentId()));
@@ -282,9 +280,9 @@ public class PSManagedNavServiceTest extends ServletTestCase
    @SuppressWarnings("unused")
    private PSPair<List<Integer>, IPSGuid> createNavigationStructure()
    {
-      PSPair<List<Integer>, IPSGuid> pair = new PSPair<List<Integer>, IPSGuid>();
+      PSPair<List<Integer>, IPSGuid> pair = new PSPair<>();
       
-      List<Integer> parentNavons = new ArrayList<Integer>();
+      List<Integer> parentNavons = new ArrayList<>();
       
       String EI_ROOT = "//Sites/EnterpriseInvestments";
       List<IPSGuid> ids = contentWs.findPathIds(EI_ROOT);
@@ -388,12 +386,8 @@ public class PSManagedNavServiceTest extends ServletTestCase
    private void clearFolder(PSFolder folder)
    {
       IPSGuid folderId = folder.getGuid();
-      Iterator<IPSGuid> ids = createdFolders.iterator();
-      while (ids.hasNext())
-      {
-         IPSGuid id = ids.next();
-         if (id.equals(folderId))
-         {
+      for (IPSGuid id : createdFolders) {
+         if (id.equals(folderId)) {
             createdFolders.remove(id);
             break;
          }

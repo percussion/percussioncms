@@ -33,7 +33,7 @@ import com.percussion.cms.handlers.PSRelationshipCommandHandler;
 import com.percussion.cms.objectstore.PSAaRelationship;
 import com.percussion.cms.objectstore.PSAaRelationshipList;
 import com.percussion.cms.objectstore.PSActiveAssemblyProcessorProxy;
-import com.percussion.cms.objectstore.PSContentTypeVariant;
+import com.percussion.cms.objectstore.PSContentTypeTemplate;
 import com.percussion.cms.objectstore.PSRelationshipFilter;
 import com.percussion.cms.objectstore.PSSlotType;
 import com.percussion.cms.objectstore.server.PSActiveAssemblerProcessor;
@@ -268,7 +268,7 @@ public class PSModifyRelatedContent extends PSDefaultExtension
          
         PSAaRelationshipList relationshipList = new PSAaRelationshipList();
         PSAaRelationship aarelationship = new PSAaRelationship(relationship, slot, 
-              new PSContentTypeVariant(template));
+              new PSContentTypeTemplate(template));
         //Sets the siteid and folderid of the original relationship to aarelationship
         String siteid = relationship.getProperty(
               IPSHtmlParameters.SYS_SITEID);
@@ -415,7 +415,7 @@ public class PSModifyRelatedContent extends PSDefaultExtension
                "No variant type found for variantid: " + variantid);
          
          PSAaRelationship relationship = new PSAaRelationship(owner, 
-            dependent, slot, new PSContentTypeVariant(template), config);
+            dependent, slot, new PSContentTypeTemplate(template), config);
          if (siteid.length() > 0)
             relationship.setProperty(IPSHtmlParameters.SYS_SITEID, siteid);
          if (folderid.length() > 0)
@@ -481,7 +481,7 @@ public class PSModifyRelatedContent extends PSDefaultExtension
       
       PSAaRelationshipList relationshipList = new PSAaRelationshipList();
       PSAaRelationship aarelationship = new PSAaRelationship(relationship, slot, 
-            new PSContentTypeVariant(template));
+            new PSContentTypeTemplate(template));
       aarelationship.setProperty(IPSHtmlParameters.SYS_VARIANTID, variantid);
       //Sets the siteid and folderid of the original relationship to aarelationship
       String siteid = relationship.getProperty(
@@ -527,7 +527,7 @@ public class PSModifyRelatedContent extends PSDefaultExtension
       
      PSAaRelationshipList relationshipList = new PSAaRelationshipList();
      PSAaRelationship aarelationship = new PSAaRelationship(relationship, slot, 
-           new PSContentTypeVariant(template));
+           new PSContentTypeTemplate(template));
      //Sets the siteid and folderid of the original relationship to aarelationship
      String siteid = relationship.getProperty(
            IPSHtmlParameters.SYS_SITEID);

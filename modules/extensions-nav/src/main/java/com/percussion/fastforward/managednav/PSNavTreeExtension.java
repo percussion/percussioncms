@@ -30,6 +30,7 @@ import com.percussion.extension.PSDefaultExtension;
 import com.percussion.extension.PSExtensionProcessingException;
 import com.percussion.extension.PSParameterMismatchException;
 import com.percussion.server.IPSRequestContext;
+import com.percussion.services.assembly.impl.nav.PSNavConfig;
 import com.percussion.util.IPSHtmlParameters;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -82,7 +83,7 @@ public class PSNavTreeExtension extends PSDefaultExtension
 
          PSLocator loc = new PSLocator(contentid, revision);
 
-         Map landingPageParams = PSNavXMLUtils.getLandingPageMap(req);
+         Map<String,String> landingPageParams = PSNavXMLUtils.getLandingPageMap(req);
 
          PSNavonStack stack = new PSNavonStack(req, loc);
 
@@ -95,8 +96,7 @@ public class PSNavTreeExtension extends PSDefaultExtension
                tree = new PSNavTree(req);
                config.storeNavTree(tree, req);
             }
-            Document treeDoc = tree.toXml(req);
-            return treeDoc;
+           return tree.toXml(req);
          }
          else
          {
@@ -104,9 +104,8 @@ public class PSNavTreeExtension extends PSDefaultExtension
             log.debug("getting tree document for preview");
             PSLocator stackLoc = stack.peek(0).getCurrentLocator();
             log.debug("top of stack locator {}", stackLoc.getPart(PSLocator.KEY_ID));
-            Document doc = PSNavTreeLinkExtension.getTreeVariantXMLClean(req,
+            return  PSNavTreeLinkExtension.getTreeVariantXMLClean(req,
                   stackLoc);
-            return doc;
          }
 
       }

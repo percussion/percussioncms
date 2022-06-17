@@ -24,6 +24,7 @@
 package com.percussion.services.assembly.impl.finder;
 
 import com.percussion.cms.PSCmsException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.services.assembly.IPSAssemblyErrors;
 import com.percussion.services.assembly.IPSAssemblyItem;
 import com.percussion.services.assembly.IPSAssemblyService;
@@ -87,8 +88,8 @@ public class PSNavFinderUtils
       }
       catch (Exception e1)
       {
-         ms_log.warn("Problem finding the navon - probably previewing a managed nav slot outside of a site. Caught exception: "
-                     + e1);
+         ms_log.warn("Problem finding the navon - probably previewing a managed nav slot outside of a site. Caught exception: {}",
+                 PSExceptionUtils.getMessageForLog(e1));
          // If we have a problem finding the node, just set it to null and
          // we'll have no navon. This will generally happen when previewing
          // outside of a site

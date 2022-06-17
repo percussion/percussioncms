@@ -2388,15 +2388,15 @@ public class ItemRestServiceImpl implements IItemRestService {
 	      filter.setName(PSRelationshipFilter.FILTER_NAME_FOLDER_CONTENT);
 	      Set<Long> typeIds = new HashSet<>();
 	      PSNavConfig navConfig = PSNavConfig.getInstance(); 
-	      typeIds.add((long) navConfig.getNavonType().getUUID());
-	      typeIds.add((long) navConfig.getNavTreeType().getUUID());
+	      typeIds.addAll( navConfig.getNavonTypeIds());
+	      typeIds.addAll(navConfig.getNavTreeTypeIds());
 	      filter.setDependentContentTypeIds(typeIds);
 	      
 	      List<PSRelationship> rels;
 		try {
 			rels = system.loadRelationships(filter);
 		} catch (PSErrorException e) {
-			log.error("Cannot get folder relationships for path {} Error:{}",path,e.getMessage());
+			log.error("Cannot get folder relationships for path {} Error:{}",path,e);
 			throw new ItemRestException("Cannot get folder relationships for path "+path);
 		}
 	 

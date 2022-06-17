@@ -35,7 +35,7 @@ import com.percussion.data.PSIdGenerator;
 import com.percussion.data.PSTableChangeEvent;
 import com.percussion.data.utils.PSTableUpdateHandlerBase;
 import com.percussion.error.PSExceptionUtils;
-import com.percussion.fastforward.managednav.PSNavConfig;
+import com.percussion.services.assembly.impl.nav.PSNavConfig;
 import com.percussion.fastforward.managednav.PSNavException;
 import com.percussion.server.PSRequest;
 import com.percussion.server.PSServer;
@@ -232,7 +232,7 @@ public class PSUiDesignWs extends PSUiBaseWs implements IPSUiDesignWs
 
       validateComponentNames(names, FIND_SEARCHES, PSSearch.XML_NODE_NAME, PSTypeEnum.SEARCH_DEF, PSSearch.class);
 
-      List<PSSearch> searches = new ArrayList<PSSearch>();
+      List<PSSearch> searches = new ArrayList<>();
       for (int i = 0; i < names.size(); i++)
       {
          PSSearch s = createSearch(names.get(i), types.get(i));
@@ -507,7 +507,7 @@ public class PSUiDesignWs extends PSUiBaseWs implements IPSUiDesignWs
 
       // Load Hierarchy Node for all the node ids that have the provided path as
       // their path of part of it.
-      List<PSHierarchyNode> resultNodes = new ArrayList<PSHierarchyNode>();
+      List<PSHierarchyNode> resultNodes = new ArrayList<>();
 
       for (IPSGuid id : nodeIds)
       {
@@ -716,7 +716,7 @@ public class PSUiDesignWs extends PSUiBaseWs implements IPSUiDesignWs
             PSSearch.class);
 
       List<PSSearch> searches = getSearchOrViews(searchViews, false);
-      return getSummaries(new ArrayList<IPSDbComponent>(searches));
+      return getSummaries(new ArrayList<>(searches));
    }
 
    /*
@@ -730,7 +730,7 @@ public class PSUiDesignWs extends PSUiBaseWs implements IPSUiDesignWs
             PSSearch.class);
 
       List<PSSearch> searches = getSearchOrViews(searchViews, true);
-      return getSummaries(new ArrayList<IPSDbComponent>(searches));
+      return getSummaries(new ArrayList<>(searches));
    }
 
    /*
@@ -763,7 +763,7 @@ public class PSUiDesignWs extends PSUiBaseWs implements IPSUiDesignWs
       {
          try
          {
-            List<PSHierarchyNode> tree = new ArrayList<PSHierarchyNode>();
+            List<PSHierarchyNode> tree = new ArrayList<>();
             getHierarchyNodeTree(id, tree);
 
             results.addResult(id, treeToPath(tree));
@@ -821,10 +821,7 @@ public class PSUiDesignWs extends PSUiBaseWs implements IPSUiDesignWs
     */
    public PSDisplayFormat findDisplayFormat(IPSGuid id)
    {
-
-      PSDisplayFormat dispFormat =  loadDisplayFormat(id);
-
-      return dispFormat;
+      return  loadDisplayFormat(id);
    }
 
    /*
@@ -940,7 +937,6 @@ public class PSUiDesignWs extends PSUiBaseWs implements IPSUiDesignWs
     * 
     * @see IPSUiDesignWs#loadSearches(List, boolean, boolean, String, String)
     */
-   @SuppressWarnings("unchecked")
    public List<PSSearch> loadSearches(List<IPSGuid> ids, boolean lock, boolean overrideLock, String session, String user)
          throws PSErrorResultsException
    {
@@ -993,7 +989,7 @@ public class PSUiDesignWs extends PSUiBaseWs implements IPSUiDesignWs
       if (paths == null || paths.isEmpty())
          throw new IllegalArgumentException("paths cannot be null or empty");
 
-      List<List<IPSGuid>> results = new ArrayList<List<IPSGuid>>();
+      List<List<IPSGuid>> results = new ArrayList<>();
       for (String path : paths)
       {
          List<PSHierarchyNode> tree = getHierarchyNodeTree(path);
@@ -1036,7 +1032,7 @@ public class PSUiDesignWs extends PSUiBaseWs implements IPSUiDesignWs
    {
       PSWebserviceUtils.validateParameters(actions, "actions", true, session, user);
 
-      List<IPSDbComponent> components = new ArrayList<IPSDbComponent>(actions);
+      List<IPSDbComponent> components = new ArrayList<>(actions);
       saveComponents(components, PSAction.class, release, session, user);
    }
 
@@ -1051,7 +1047,7 @@ public class PSUiDesignWs extends PSUiBaseWs implements IPSUiDesignWs
    {
       PSWebserviceUtils.validateParameters(displayFormats, "displayFormats", true, session, user);
 
-      List<IPSDbComponent> components = new ArrayList<IPSDbComponent>(displayFormats);
+      List<IPSDbComponent> components = new ArrayList<>(displayFormats);
       saveComponents(components, PSDisplayFormat.class, release, session, user);
 
    }
@@ -1217,11 +1213,11 @@ public class PSUiDesignWs extends PSUiBaseWs implements IPSUiDesignWs
    public String objectIdToPath(IPSGuid guid) throws PSErrorsException
    {
       PSTimer timer = new PSTimer(ms_log);
-      IPSUiService service = PSUiServiceLocator.getUiService();
+
       PSErrorsException results = new PSErrorsException();
       IPSGuid id = null;
       Map<IPSGuid, String> paths;
-      String nodePath = "";
+      String nodePath="";
 
       if (nodeIdToPathMap == null || nodeIdToPathMap.isEmpty())
          initializeHierarchyNodeMaps();
@@ -1239,12 +1235,12 @@ public class PSUiDesignWs extends PSUiBaseWs implements IPSUiDesignWs
             if (PSNavConfig.isManagedNavUsed())
             {
                PSNavConfig config = PSNavConfig.getInstance();
-               if (config.getNavonType() == guid.getUUID())
-                  nodePath = CONTENTTYPES_NAV_PATH + config.getPropertyString(config.NAVON_CONTENT_TYPE);
-               if (config.getNavImageType() == guid.getUUID())
-                  nodePath = CONTENTTYPES_NAV_PATH + config.getPropertyString(config.NAVIMAGE_CONTENT_TYPE);
-               if (config.getNavTreeType() == guid.getUUID())
-                  nodePath = CONTENTTYPES_NAV_PATH + config.getPropertyString(config.NAVTREE_CONTENT_TYPE);
+               if (config.getNavonTypes().contains(guid))
+                  nodePath = CONTENTTYPES_NAV_PATH + guid.toString();
+               if (config.getNavImageTypes().contains(guid))
+                  nodePath = CONTENTTYPES_NAV_PATH + guid.toString();
+               if (config.getNavTreeTypes().contains(guid))
+                  nodePath = CONTENTTYPES_NAV_PATH + guid.toString();
             }
          }
 

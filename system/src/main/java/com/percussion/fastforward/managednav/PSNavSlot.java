@@ -23,11 +23,13 @@
  */
 package com.percussion.fastforward.managednav;
 
-import com.percussion.cms.objectstore.PSContentTypeVariant;
+import com.percussion.cms.IPSConstants;
+import com.percussion.cms.objectstore.PSContentTypeTemplate;
 import com.percussion.cms.objectstore.PSContentTypeVariantSet;
 import com.percussion.cms.objectstore.PSSlotType;
 import com.percussion.cms.objectstore.PSSlotTypeContentTypeVariant;
 import com.percussion.cms.objectstore.PSSlotTypeContentTypeVariantSet;
+import com.percussion.services.assembly.impl.nav.PSNavConfig;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -57,7 +59,7 @@ public class PSNavSlot
       m_slotDef = slot;
       PSNavConfig config = PSNavConfig.getInstance();
 
-      PSContentTypeVariantSet navonVariants = config.getNavonVariants();
+      PSContentTypeVariantSet navonVariants = config.getNavonTemplates();
       if (navonVariants == null)
       {
          log.debug("no navon variants defined");
@@ -76,10 +78,10 @@ public class PSNavSlot
       { // loop through all allowed variants in this slot
          PSSlotTypeContentTypeVariant childVar = (PSSlotTypeContentTypeVariant) children
                .next();
-         PSContentTypeVariant navonVar = navonVariants
+         PSContentTypeTemplate navonVar = navonVariants
                .getContentVariantById(childVar.getVariantId());
          if (navonVar != null
-               && childVar.getContentTypeId() == config.getNavonType())
+               && config.getNavonTypeIds().contains(childVar.getContentTypeId()))
          { // we found a variant of type Navon
             m_slotVariantSet.add(navonVar); // add it to our collection
          }
@@ -128,11 +130,11 @@ public class PSNavSlot
     * Set of all navslot variants. Initialized in the ctor, never
     * <code>null</code>.
     */
-   private Set m_slotVariantSet = new HashSet();
+   private Set<PSContentTypeTemplate> m_slotVariantSet = new HashSet<>();
 
    /**
     * Reference to Log4j singleton object used to log any errors or debug info.
     */
-   private Logger log = LogManager.getLogger(getClass());
+   private static final Logger log = LogManager.getLogger(IPSConstants.NAVIGATION_LOG);
 
 }

@@ -20,9 +20,11 @@
 package com.percussion.pso.jexl;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.percussion.error.PSExceptionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -104,18 +106,18 @@ public class PSORelationshipTools extends PSJexlUtilBase implements IPSJexlExpre
       try
       {
          ctypes = cws.loadContentTypes(contenttypename);
-         if (ctypes.size() > 0)
+         if (!ctypes.isEmpty())
          {
         	 contenttypeid = ctypes.get(0).getGuid();
         	 }
          else
          {
-             log.warn("Content type " + contenttypename + " not found"); 
-        	 return new ArrayList<PSItemSummary>();
+             log.warn("Content type {} not found",  contenttypename);
+        	 return new ArrayList<>();
          }
       } catch (Exception e1)
       {
-         log.error("Cannot load content types", e1); 
+         log.error("Cannot load content types. Error: {}", PSExceptionUtils.getMessageForLog(e1));
          throw new PSExtensionProcessingException(PSORelationshipTools.class.getName(), e1);
       } 
       
@@ -130,8 +132,8 @@ public class PSORelationshipTools extends PSJexlUtilBase implements IPSJexlExpre
                 false);
       } catch (Exception e)
       {
-        log.error("Unexpected exception " + e.getMessage(), e );
-        throw new PSExtensionProcessingException(this.getClass().getCanonicalName(), e); 
+        log.error("Unexpected exception {}" , PSExceptionUtils.getMessageForLog(e) );
+        throw new PSExtensionProcessingException(this.getClass().getCanonicalName(), e);
       } 
       if(dependents.isEmpty())
       {
@@ -163,7 +165,7 @@ public class PSORelationshipTools extends PSJexlUtilBase implements IPSJexlExpre
      
       IPSOParentFinder relFinder = new PSOParentFinder();
       Set<PSLocator> parentLocs = relFinder.findAllParents(contentid, slotName);
-      List<IPSGuid> guids = new ArrayList<IPSGuid>(parentLocs.size()); 
+      List<IPSGuid> guids = new ArrayList<>(parentLocs.size());
       for(PSLocator loc : parentLocs)
       {
          guids.add(gmgr.makeGuid(loc)); 
@@ -197,7 +199,7 @@ public class PSORelationshipTools extends PSJexlUtilBase implements IPSJexlExpre
      
       IPSOParentFinder relFinder = new PSOParentFinder();
       Set<PSLocator> parentLocs = relFinder.findParents(contentid, slotName, usePublic);
-      List<IPSGuid> guids = new ArrayList<IPSGuid>(parentLocs.size()); 
+      List<IPSGuid> guids = new ArrayList<>(parentLocs.size());
       for(PSLocator loc : parentLocs)
       {
          guids.add(gmgr.makeGuid(loc)); 
@@ -219,10 +221,14 @@ public class PSORelationshipTools extends PSJexlUtilBase implements IPSJexlExpre
    public boolean isLandingPage(String contentid) throws Exception
    {
       IPSOParentFinder relFinder = new PSOParentFinder();
-      PSNavConfig nc = PSNavConfig.getInstance(); 
-      String landingSlot = nc.getLandingPageRelationship(); 
-      Set<PSLocator> parents = relFinder.findParents(contentid, landingSlot, true);
-      return !parents.isEmpty(); 
+      PSNavConfig nc = PSNavConfig.getInstance();
+      //loop through all landing slots and return true if there is a match
+      for(String s : nc.getNavLandingPageSlotNames() ) {
+         Set<PSLocator> parents = relFinder.findParents(contentid, s, true);
+         if (!parents.isEmpty())
+            return true;
+      }
+      return false;
    }
    
    /**
@@ -241,9 +247,11 @@ public class PSORelationshipTools extends PSJexlUtilBase implements IPSJexlExpre
       initServices();
       IPSOParentFinder relFinder = new PSOParentFinder();
       PSNavConfig nc = PSNavConfig.getInstance(); 
-      String landingSlot = nc.getLandingPageRelationship();
-      Set<PSLocator> parents = relFinder.findParents(contentid, landingSlot, true);
-      
+      List<String> landingSlots = nc.getNavLandingPageSlotNames();
+      Set<PSLocator> parents = new HashSet<>();
+      for(String s : landingSlots) {
+         parents.addAll(relFinder.findParents(contentid, s, true));
+      }
       if(parents.isEmpty())
       { //no parents at all 
          return false; 
@@ -253,7 +261,7 @@ public class PSORelationshipTools extends PSJexlUtilBase implements IPSJexlExpre
       IPSNode navon = navTools.findNavNodeForFolder(folderid);
       if(navon == null)
       {
-         log.warn("no navon found for folder id " + folderid);
+         log.warn("no navon found for folder id {}" , folderid);
          return false; 
       }
       int navonId = gmgr.makeLocator(navon.getGuid()).getId();
@@ -261,7 +269,7 @@ public class PSORelationshipTools extends PSJexlUtilBase implements IPSJexlExpre
       {
          if(navonId == loc.getId())
          {//navon id matches parent id
-            log.trace("found matching parent navon " + loc.getId()); 
+            log.trace("found matching parent navon {}" , loc.getId());
             return true; 
          }
       }
@@ -362,14 +370,13 @@ public class PSORelationshipTools extends PSJexlUtilBase implements IPSJexlExpre
 	
    @IPSJexlMethod(description="Return a list of slots that are populated for this item",
 	         params={@IPSJexlParam(name="owner",description="guid for this item")})
-   public List<String> getItemSlots(IPSGuid owner) 
-   		throws Exception {
+   public List<String> getItemSlots(IPSGuid owner) {
 	   initServices();
 	   PSRelationshipFilter filter = new PSRelationshipFilter();
 	   IPSContentWs cws = PSContentWsLocator.getContentWebservice();
 	   PSLocator ownerLoc = gmgr.makeLocator(owner);
 	   filter.setOwner(ownerLoc);
-	   List<String> slotnames = new ArrayList<String>();
+	   List<String> slotnames = new ArrayList<>();
 	   for (PSAaRelationship rel : cws.loadContentRelations(filter,true)) {
 		   if (!slotnames.contains(rel.getSlotName())) {
 			   slotnames.add(rel.getSlotName());

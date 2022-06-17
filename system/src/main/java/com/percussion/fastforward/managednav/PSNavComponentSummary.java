@@ -23,9 +23,15 @@
  */
 package com.percussion.fastforward.managednav;
 
+import com.percussion.cms.IPSConstants;
 import com.percussion.cms.objectstore.PSComponentSummary;
 import com.percussion.design.objectstore.PSLocator;
+import com.percussion.services.catalog.PSTypeEnum;
+import com.percussion.services.guidmgr.PSGuidManagerLocator;
+import com.percussion.services.guidmgr.data.PSGuid;
+import com.percussion.services.guidmgr.data.PSLegacyGuid;
 import com.percussion.util.PSPreparedStatement;
+import com.percussion.utils.guid.IPSGuid;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -64,6 +70,7 @@ public class PSNavComponentSummary
     */
    public PSNavComponentSummary(PSComponentSummary sum1)
    {
+      contentTypeGuid = sum1.getContentTypeGUID();
       m_currentLoc = sum1.getCurrentLocator();
       m_name = sum1.getName();
       m_typeid = sum1.getContentTypeId(); 
@@ -95,6 +102,7 @@ public class PSNavComponentSummary
             int revision = rs.getInt(2);
             m_typeid = rs.getInt(3);
             m_currentLoc = new PSLocator(id,revision);
+            contentTypeGuid = new PSGuid(PSTypeEnum.NODEDEF,m_typeid);
          }
          else
          {
@@ -159,7 +167,7 @@ public class PSNavComponentSummary
    /**
     * Logger for debugging purposes.
     */
-   private static final Logger log = LogManager.getLogger(PSNavComponentSummary.class);
+   private static final Logger log = LogManager.getLogger(IPSConstants.NAVIGATION_LOG);
    
    /**
     * Name of this component
@@ -169,8 +177,21 @@ public class PSNavComponentSummary
    /**
     * Content Type id 
     */
-   private long m_typeid = 0; 
-   
+   private long m_typeid = 0;
+
+   public IPSGuid getContentTypeGuid() {
+      return contentTypeGuid;
+   }
+
+   public void setContentTypeGuid(IPSGuid contentTypeGuid) {
+      this.contentTypeGuid = contentTypeGuid;
+   }
+
+   /**
+    * Content Type GUID
+    */
+   private IPSGuid contentTypeGuid = null;
+
    /**
     * Current contentid and revision. 
     */
