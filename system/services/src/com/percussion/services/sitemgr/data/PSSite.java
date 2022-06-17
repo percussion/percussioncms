@@ -327,7 +327,7 @@ public class PSSite implements IPSSite, IPSCatalogItem
    String generateSiteMap;
 
    @Basic
-   @Column(name="IS_PAGE_BASED", nullable = true)
+   @Column(name="IS_PAGE_BASED", nullable = false)
    String isPageBased;
 
    @OneToMany(targetEntity = PSSiteProperty.class, cascade =

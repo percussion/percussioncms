@@ -144,7 +144,7 @@ public interface IPSSiteDataService extends IPSDataService<PSSite,PSSiteSummary,
 
     /***
      * Gets the publishing server info for the supplied siteid
-     * @param sitId
+     * @param siteId
      * @return may be null or a publishing server
      */
     public PSPubInfo getS3PubServerInfo(long siteId);

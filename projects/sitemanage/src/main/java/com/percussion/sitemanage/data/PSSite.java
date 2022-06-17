@@ -23,7 +23,6 @@
  */
 package com.percussion.sitemanage.data;
 
-import javax.persistence.Entity;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import net.sf.oval.constraint.NotBlank;

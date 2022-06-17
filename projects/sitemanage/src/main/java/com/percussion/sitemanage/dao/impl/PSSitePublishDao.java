@@ -252,7 +252,7 @@ public class PSSitePublishDao implements com.percussion.sitemanage.dao.IPSSitePu
         }
         boolean serverChanged = setSiteNameRelatedProperties(site, newName);
         site.setDescription(newDescrption);
-      
+        site.setPageBased(true);
         siteMgr.saveSite(site);
         
         List<IPSEdition> editions = publishWs.findAllEditionsBySite(site.getGUID());
@@ -338,6 +338,7 @@ public class PSSitePublishDao implements com.percussion.sitemanage.dao.IPSSitePu
         tmpSite.setDefaultDocument(site.getDefaultDocument());
         tmpSite.setCanonicalDist(site.getCanonicalDist());
         tmpSite.setCanonicalReplace(site.isCanonicalReplace());
+        tmpSite.setPageBased(true);
         site.setSiteId(tmpSite.getSiteId());
 
         publishWs.saveSite(tmpSite);
