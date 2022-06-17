@@ -58,11 +58,16 @@
                 a.PercServiceUtils.TYPE_POST,
                 function (r, t) {
                     if (t.status === a.PercServiceUtils.STATUS_SUCCESS) {
-                        var u = JSON.parse(t.data);
+                        try {
+                            var u = JSON.parse(t.data);
+                        }catch (err){
+                            console.error(u.data);
+                            return;
+                        }
                         if (u.status === "SUCCESS") {
                             if (o === "Cookie") {
                                 var q = h.pollName;
-                                a.cookie("PercPoll-" + m, "voted", { expires: 7,sameSite: "Lax",secure:true ,httpOnly="false"});
+                                a.cookie("PercPoll-" + m, "voted", { expires: 7,sameSite: "none",secure:true ,httpOnly:"false"});
                             }
                             var s = u.result;
                             e(s);

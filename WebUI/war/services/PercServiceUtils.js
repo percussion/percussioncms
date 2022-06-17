@@ -584,8 +584,9 @@
          if(typeof method === 'undefined' || method === null){
              return true;
          }
-        // these HTTP methods do not require CSRF protection
-        return (['post','put','delete'].indexOf(method.toLowerCase())!==-1);
+        // these HTTP methods require CSRF protection
+        var csrfSafe =  (['post','put','delete'].indexOf(method.toLowerCase()) !== -1);
+         return  !csrfSafe;
     }
 
     function getVersion(){
