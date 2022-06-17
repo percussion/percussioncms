@@ -621,5 +621,7 @@ public interface IPSSite extends IPSCatalogSummary
 
     public void setSiteAfterBodyOpenContent(String siteAfterBodyOpenContent) ;
 
-   
+   boolean isPageBased();
+
+   void setPageBased(boolean pageBasedSite);
 }

@@ -393,6 +393,7 @@ public class PSSiteDao implements IPSiteDao
         s.setSiteProtocol(site.getSiteProtocol());
         s.setDefaultDocument(site.getDefaultDocument());
         s.setBaseUrl(site.getSiteProtocol() + "//" + s.getName());
+        s.setPageBased(site.isPageBased());
         PSPage homepage = siteContentDao.getHomePage(site);
         String navTitle = siteContentDao.getNavTitle(site);
         

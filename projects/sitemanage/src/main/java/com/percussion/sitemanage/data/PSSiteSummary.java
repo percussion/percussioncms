@@ -68,6 +68,16 @@ public class PSSiteSummary extends PSDataItemSummarySingleFolderPath implements 
 
     private String siteAfterBodyOpenContent;
 
+    private boolean pageBased;
+
+    public boolean isPageBased() {
+        return pageBased;
+    }
+
+    public void setPageBased(boolean pageBased) {
+        this.pageBased = pageBased;
+    }
+
     /**
      * Determines canonical URL's protocol ("http" or "https").  
      */
