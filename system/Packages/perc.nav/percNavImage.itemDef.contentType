@@ -1154,7 +1154,7 @@
                         <Label>
                            <PSXDisplayText>Active Image Hash:</PSXDisplayText>
                         </Label>
-                        <PSXControlRef id="9000" name="sys_EditBox"/>
+                        <PSXControlRef id="9000" name="ontent"/>
                         <ErrorLabel>
                            <PSXDisplayText>Active Image Hash:</PSXDisplayText>
                         </ErrorLabel>
@@ -1184,7 +1184,7 @@
                          <Label>
                             <PSXDisplayText>InActive Image Hash:</PSXDisplayText>
                          </Label>
-                         <PSXControlRef id="9001" name="sys_EditBox"/>
+                         <PSXControlRef id="9001" name="sys_HashedFile"/>
                          <ErrorLabel>
                             <PSXDisplayText>InActive Image Hash:</PSXDisplayText>
                          </ErrorLabel>
@@ -1214,7 +1214,7 @@
                           <Label>
                              <PSXDisplayText>Rollover Image Hash:</PSXDisplayText>
                           </Label>
-                          <PSXControlRef id="9002" name="sys_EditBox"/>
+                          <PSXControlRef id="9002" name="sys_HashedFile"/>
                           <ErrorLabel>
                              <PSXDisplayText>Rollover Image Hash:</PSXDisplayText>
                           </ErrorLabel>

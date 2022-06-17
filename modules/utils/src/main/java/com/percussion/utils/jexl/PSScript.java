@@ -151,7 +151,7 @@ public class PSScript implements IPSScript
     @Override
     public String getSourceText()
     {
-        return scriptText;
+        return getScriptText();
     }
 
     @Override

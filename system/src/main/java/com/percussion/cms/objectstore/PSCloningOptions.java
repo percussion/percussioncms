@@ -817,7 +817,7 @@ public class PSCloningOptions extends PSComponent
     * the target mapping found in this map. If no mapping is found the original
     * community is used.
     */
-   private Map m_communityMappings = new HashMap();
+   private Map<Integer,Integer> m_communityMappings = new HashMap<>();
    
    /**
     * Maps source site ids as <code>Integer</code> to target site ids as 

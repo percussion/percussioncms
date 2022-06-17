@@ -575,7 +575,9 @@ public class PSManagedNavService implements IPSManagedNavService
       {
          for(String name : propertyNames)
          {
-            propertyMap.put(name, node.getProperty("rx:" + name).getString());
+            if(node.hasProperty(name)) {
+               propertyMap.put(name, node.getProperty("rx:" + name).getString());
+            }
          }
       }
       catch (Exception e)
