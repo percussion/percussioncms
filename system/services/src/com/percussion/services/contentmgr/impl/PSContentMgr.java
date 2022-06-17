@@ -253,7 +253,7 @@ public class PSContentMgr  implements IPSContentMgr
    {
       List<IPSNodeDefinition> defs = findNodeDefinitionsByName(name);
       
-      if (defs.size() == 0)
+      if (defs.isEmpty())
       {
          throw new NoSuchNodeTypeException("Did not find " + name);
       }

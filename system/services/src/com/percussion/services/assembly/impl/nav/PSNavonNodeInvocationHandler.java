@@ -228,10 +228,6 @@ public class PSNavonNodeInvocationHandler implements InvocationHandler
 
             return iter;
          }
-         else if (mname.equals("getAncestors"))
-         {
-            return getAncestors();
-         }
          else if (mname.equals("getRoot"))
          {
             return m_helper.getRoot(m_proxyNode);
@@ -270,10 +266,7 @@ public class PSNavonNodeInvocationHandler implements InvocationHandler
       }
       else
       {
-         if(m_sectionType == PSSectionTypeEnum.section)
             loadNavChildren();
-         else
-            m_children = new MultiHashMap();
 
          // We treat getNode(String name) and getNodes(String pathpattern)
          // the same here.
@@ -375,12 +368,10 @@ public class PSNavonNodeInvocationHandler implements InvocationHandler
       }
       else if (property.equals(NAV_SELECTED_IMAGE))
       {
-         if (m_selectedNavImage == null)
-         {
             loadNavChildren();
             m_selectedNavImage = new PSProperty(NAV_SELECTED_IMAGE,
                   m_containedNode, m_helper.findSelectedImage(proxy));
-         }
+
          rval = m_selectedNavImage;
       }
       else if (property.equals(NAV_PROXIED_NODE))

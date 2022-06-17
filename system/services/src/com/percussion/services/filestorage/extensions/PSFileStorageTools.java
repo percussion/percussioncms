@@ -32,6 +32,7 @@ import com.percussion.cms.objectstore.PSItemDefinition;
 import com.percussion.cms.objectstore.server.PSItemDefManager;
 import com.percussion.design.objectstore.PSExtensionCall;
 import com.percussion.design.objectstore.PSPipe;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSExtension;
 import com.percussion.extension.IPSExtensionManager;
 import com.percussion.extension.IPSJexlExpression;
@@ -51,7 +52,6 @@ import com.percussion.utils.jsr170.PSValueFactory;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Blob;
-import java.util.Iterator;
 
 import javax.jcr.ValueFormatException;
 
@@ -166,8 +166,8 @@ public class PSFileStorageTools extends PSJexlUtilBase
     * Determines if the content field is a hash content field.
     * A hash content field uses the IPSFileStorageService for 
     * efficient file storage.
-    * @param item
-    * @param contentType
+    * @param contentTypeId
+    * @param fieldName
     * @return true if it as hash field which needs special processing.
     */
    public static boolean isHashField(Number contentTypeId, String fieldName)
@@ -180,32 +180,28 @@ public class PSFileStorageTools extends PSJexlUtilBase
       IPSExtensionManager em = PSServer.getExtensionManager(null);
       PSPipe pipe = def.getContentEditor().getPipe();
       if (pipe != null && pipe.getInputDataExtensions() != null) {
-         Iterator<?> it = pipe.getInputDataExtensions().iterator();
-         while (it.hasNext()) {
-            PSExtensionCall pc = (PSExtensionCall) it.next();
-            PSExtensionRef ref = pc.getExtensionRef();
-            IPSExtension ext;
-            try
-            {
-               ext = em.prepareExtension(ref, null);
-            }
-            catch (Exception e)
-            {
-               log.error("Failure in loading extensions for content type: " 
-                     + contentTypeId , e);
-               continue;
-            }
-            if (ext instanceof IPSHashFileInfoExtension) {
-               return true;
-            }
-         }
+          for (Object o : pipe.getInputDataExtensions()) {
+              PSExtensionCall pc = (PSExtensionCall) o;
+              PSExtensionRef ref = pc.getExtensionRef();
+              IPSExtension ext;
+              try {
+                  ext = em.prepareExtension(ref, null);
+              } catch (Exception e) {
+                  log.error("Failure in loading extensions for content type: {} Error: {}"
+                          , contentTypeId, PSExceptionUtils.getMessageForLog(e));
+                  continue;
+              }
+              if (ext instanceof IPSHashFileInfoExtension) {
+                  return true;
+              }
+          }
       }
       return false;
    }
    
    /**
     * Gets the content type definition for the item.
-    * @param item not null and content type id must be set.
+    * @param contentTypeId not null and content type id must be set.
     * @return not null.
     * @throws RuntimeException if the content type is not found.
     */

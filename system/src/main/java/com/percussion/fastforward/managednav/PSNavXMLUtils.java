@@ -422,11 +422,9 @@ public class PSNavXMLUtils
             try
             {
                String oldUrl = imageWalker.getElementData();
-               //log.debug("Old Url was:" + oldUrl);
+
                PSMutableUrl nUrl = new PSMutableUrl(oldUrl);
-               //log.debug("Base URL is:" + nUrl.getBase());
-               //nUrl.dropParam("?sys_siteid"); // can't fix this now
-               //PSNavUtil.logMap(nUrl.getParamMap(), "URL Params", log);
+
                nUrl.setParamList(landingPageParams);
                String replaceUrl = nUrl.toString();
                log.debug("New Url is: {}", replaceUrl);

@@ -25,6 +25,7 @@ package com.percussion.fastforward.managednav;
 
 import com.percussion.cms.objectstore.PSAaRelationship;
 import com.percussion.cms.objectstore.PSContentTypeTemplate;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.services.assembly.impl.nav.PSNavConfig;
 import com.percussion.util.PSPreparedStatement;
@@ -51,7 +52,7 @@ public class PSNavImageLink extends PSNavLink
    /**
     * Construct a image link from a relationship.
     * 
-    * @param req the parent request contrxt
+    * @param req the parent request context
     * @param relation an Active Assembly relationship between the Navon and the
     *           desired NavImage item.
     * @throws PSNavException when any error occurs.
@@ -133,7 +134,7 @@ public class PSNavImageLink extends PSNavLink
       }
       catch (Exception ex)
       {
-         log.error("SQL Error", ex);
+         log.error("SQL Error: {}", PSExceptionUtils.getMessageForLog(ex));
          throw new PSNavException(ex);
       }
       finally

@@ -34,7 +34,6 @@ import com.percussion.cms.objectstore.PSSlotTypeSet;
 import com.percussion.design.objectstore.PSLocator;
 import com.percussion.design.objectstore.PSRelationshipConfig;
 import com.percussion.error.PSExceptionUtils;
-import com.percussion.fastforward.managednav.PSLegacyNavConfig;
 import com.percussion.fastforward.managednav.PSNavException;
 import com.percussion.fastforward.managednav.PSNavSlotContents;
 import com.percussion.fastforward.managednav.PSNavSlotSet;
@@ -409,8 +408,6 @@ public class PSNavConfig
     * @return true if the type is a Nav type, false if not.
     */
    public boolean isManagedNavType(IPSGuid ctypeGuid){
-      if(m_navImageTypes.contains(ctypeGuid))
-         return true;
 
       if(m_navonTypes.contains(ctypeGuid))
          return true;
@@ -1344,5 +1341,13 @@ public class PSNavConfig
          ms_singleInstance = null;
          return getInstance(req);
       }
+   }
+
+   public List<Long> getNavImageTypeIds() {
+      List<Long> ret = new ArrayList<>();
+      for(IPSGuid g : m_navImageTypes){
+         ret.add(g.longValue());
+      }
+      return ret;
    }
 }

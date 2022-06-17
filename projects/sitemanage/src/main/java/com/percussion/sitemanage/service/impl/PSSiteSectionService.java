@@ -1635,7 +1635,7 @@ public class PSSiteSectionService implements IPSSiteSectionService
     private PSSiteSection loadSiteSection(IPSGuid id, IPSGuid parentGuid, String folderPath, boolean resolvePath,
             boolean resolveDisplayPath, String parentDisplayPath) throws PSSiteSectionException {
         String idStr = idMapper.getString(id);
-        if (idStr.indexOf("_") != -1)
+        if (idStr.contains("_"))
         {
             idStr = idStr.split("_")[0];
             id = idMapper.getGuid(idStr);

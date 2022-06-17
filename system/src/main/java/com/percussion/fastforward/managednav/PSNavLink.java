@@ -55,12 +55,12 @@ import java.util.Map;
  */
 public class PSNavLink
 {
-   /**
-    * Default constructor
-    */
+
    public PSNavLink()
    {
-
+      /*
+       * Default constructor
+       */
    }
 
    /**
@@ -399,7 +399,7 @@ public class PSNavLink
       log.debug("building link from relationship");
 
       PSLocator childLoc = relation.getDependent();
-      Map extraParams = new HashMap();
+      Map extraParams = new HashMap<>();
       String folderid = relation.getProperty(IPSHtmlParameters.SYS_FOLDERID);
       if (folderid != null && folderid.trim().length() > 0)
       {
@@ -407,12 +407,6 @@ public class PSNavLink
       }
       log.debug("loading child summary");
       PSNavComponentSummary childSummary = new PSNavComponentSummary(childLoc);
-      //PSNavUtil.getItemSummary(req, childLoc);
-      if (childSummary == null)
-      {
-         log.error("Dependent item not found");
-         throw new PSNavException("Dependent item not found");
-      }
 
       PSContentTypeTemplate ourVariant = null;
       if (useVariant != null)

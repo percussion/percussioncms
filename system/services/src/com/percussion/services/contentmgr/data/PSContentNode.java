@@ -494,7 +494,7 @@ public class PSContentNode implements IPSNode, IPSJcrCacheItem, Serializable
     * @see javax.jcr.Node#getProperty(java.lang.String)
     */
    public Property getProperty(String name) throws PathNotFoundException,
-         RepositoryException
+         RepositoryException,IllegalArgumentException
    {
       if (StringUtils.isBlank(name))
       {
