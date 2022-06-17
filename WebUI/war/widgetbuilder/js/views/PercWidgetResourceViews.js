@@ -75,7 +75,7 @@
         },
         updateEdits: function(event){
             WidgetBuilderApp.dirtyController.setDirty(true,"Widget",WidgetBuilderApp.saveOnDirty);
-            var value = $(this.el).find("input").val();
+            var value = $(this.el).find("input.datadisplay.perc-resource-entry-field").val();
             this.model.set({"name":value});
         },
         initialize:function(){

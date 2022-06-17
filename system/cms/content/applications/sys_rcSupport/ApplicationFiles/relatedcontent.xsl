@@ -27,7 +27,7 @@
             if(window.opener && !window.opener.closed)
             {
                alert("You need to update the document to see the changes");
-               self.close();
+              window.open("", '_self').window.close();
             }
           }
           function onClickEdit(url)

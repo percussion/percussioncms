@@ -14,7 +14,7 @@
 				function refreshParent()
 				{
  					window.opener.location.href = window.opener.location.href;
- 					self.close(); 				
+ 					window.open("", '_self').window.close();
  				}
 				</script>
 				<link rel="stylesheet" type="text/css" href="/sys_resources/css/templates.css"/>

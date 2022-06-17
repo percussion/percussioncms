@@ -81,7 +81,7 @@ dojo.global = function(){
 	//		Refer to 'dojo.global()' rather than referring to window to ensure your
 	//		code runs correctly in contexts other than web browsers (eg: Rhino on a server).
 	return dj_currentContext;
-}
+};
 
 // Override locale setting, if specified
 dojo.locale  = djConfig.locale;
@@ -30348,7 +30348,7 @@ ps.util.BROWSETAB_SEARCH_PANEL_PREF = "ps.content.searchpanel";
 /**
  * Constant: ContentBrowser Dialog page URL
  */
-ps.util.CONTENT_BROWSE_URL = "../ui/content/ContentBrowserDialog.jsp";
+ps.util.CONTENT_BROWSE_URL = "../../ui/content/ContentBrowserDialog.jsp";
 
 /**
  * Constant for active assembly browse mode.
