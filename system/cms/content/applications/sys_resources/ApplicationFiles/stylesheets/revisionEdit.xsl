@@ -38,17 +38,19 @@
 						<xsl:with-param name="lang" select="$lang"/>
 					</xsl:call-template>
 				</title>
-				<link rel="stylesheet" type="text/css" href="/sys_resources/css/templates.css"/>
-				<link rel="stylesheet" type="text/css" href="/rx_resources/css/templates.css"/>
-				<link rel="stylesheet" type="text/css" href="{concat('/rx_resources/css/',$lang,'/templates.css')}"/>
+				<link rel="stylesheet" type="text/css" href="../sys_resources/css/templates.css"/>
+				<link rel="stylesheet" type="text/css" href="../rx_resources/css/templates.css"/>
+				<link rel="stylesheet" type="text/css" href="{concat('../rx_resources/css/',$lang,'/templates.css')}"/>
 				<link rel="stylesheet" type="text/css" href="../sys_resources/css/popmenu.css"/>
 				<script language="javascript" src="../sys_resources/js/globalErrorMessages.js">;</script>
 				<script language="javascript" src="{concat('../rx_resources/js/',$lang,'/globalErrorMessages.js')}">;</script>
 				<script language="javascript" src="../sys_resources/js/browser.js">;</script>
 				<script language="javascript" src="../sys_resources/js/href.js">;</script>
 				<script language="javascript" src="../sys_resources/js/popmenu.js">;</script>
+				<script language="javascript" src="../web_resources/cm/jslib/jquery.js">;</script>
+				<script language="javascript" src="../web_resources/cm/jslib/jquery-ui.js">;</script>
 				<script>
-					<![CDATA[
+				<![CDATA[
 
 					   var textWin = null;
 					   function textWindow(s)
@@ -151,7 +153,7 @@
 						<xsl:with-param name="rev" select="@revision"/>
 						<xsl:with-param name="showpromote">
 							<xsl:choose>
-								<xsl:when test="//BasicInfo/@CheckOutUserName='' and //BasicInfo/UserName/@assignmentType > 2 and 	//ContentStatus/StateName/@isPublishable='no'">
+								<xsl:when test="//BasicInfo/@CheckOutUserName='' and //BasicInfo/UserName/@assignmentType > 2 and 	//ContentStatus/StateName/@isPublishable='no' and not(//ContentEditor/@isNavType='true')">
 									<xsl:value-of select="'yes'"/>
 								</xsl:when>
 								<xsl:otherwise>
