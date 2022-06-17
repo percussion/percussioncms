@@ -23,7 +23,7 @@
  */
 package com.percussion.fastforward.managednav;
 
-import com.percussion.cms.objectstore.PSContentTypeVariant;
+import com.percussion.cms.objectstore.PSContentTypeTemplate;
 import com.percussion.data.PSInternalRequestCallException;
 import com.percussion.design.objectstore.PSLocator;
 import com.percussion.error.PSExceptionUtils;
@@ -33,6 +33,7 @@ import com.percussion.extension.PSExtensionProcessingException;
 import com.percussion.extension.PSParameterMismatchException;
 import com.percussion.server.IPSInternalRequest;
 import com.percussion.server.IPSRequestContext;
+import com.percussion.services.assembly.impl.nav.PSNavConfig;
 import com.percussion.util.IPSHtmlParameters;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -86,9 +87,7 @@ public class PSNavTreeLinkExtension extends PSDefaultExtension
       log.debug("start of NavTreeLinkExtension");
       try
       {
-         Document rDoc = getTreeVariantXMLClean(req, null);
-
-         return rDoc;
+         return  getTreeVariantXMLClean(req, null);
       }
       catch (PSNavException e)
       {
@@ -115,7 +114,7 @@ public class PSNavTreeLinkExtension extends PSDefaultExtension
     * @param req the parent request context
     * @param loc the locator of the self node. If <code>null</code> the
     *           content id and revision from the parent context will be used.
-    * @return the clean XML documnet. Never <code>null</code>
+    * @return the clean XML document. Never <code>null</code>
     * @throws PSNavException
     */
    public static Document getTreeVariantXMLClean(IPSRequestContext req,
@@ -187,7 +186,7 @@ public class PSNavTreeLinkExtension extends PSDefaultExtension
 
       log.debug("Loading Root XML");
 
-      PSContentTypeVariant treeVar = config.getTreeVariant();
+      PSContentTypeTemplate treeVar = config.getNavTreeTemplate();
       if (treeVar == null)
       {
          String errMsg = "Tree Variant not found, check configuration";

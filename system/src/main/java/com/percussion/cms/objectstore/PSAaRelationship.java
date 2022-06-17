@@ -74,7 +74,7 @@ public class PSAaRelationship extends PSRelationship
     *             instead.
     */
    public PSAaRelationship(PSLocator owner, PSLocator dependent, PSSlotType slot,
-      PSContentTypeVariant variant, PSRelationshipConfig config)
+                           PSContentTypeTemplate variant, PSRelationshipConfig config)
    {
       super(-1, owner, dependent, config);
       setSlot(slot);
@@ -97,7 +97,7 @@ public class PSAaRelationship extends PSRelationship
     *             instead.
     */
    public PSAaRelationship(PSRelationship relationship, PSSlotType slot,
-      PSContentTypeVariant variant)
+      PSContentTypeTemplate variant)
    {
       super(relationship.getId(), relationship);
       setSlot(slot);
@@ -130,7 +130,7 @@ public class PSAaRelationship extends PSRelationship
          IPSAssemblyTemplate template)
    {
       this(relationship, new PSSlotType(slot), 
-            new PSContentTypeVariant(template));
+            new PSContentTypeTemplate(template));
    }
    
    /**
@@ -166,7 +166,7 @@ public class PSAaRelationship extends PSRelationship
       setConfig(config);
       // setSlot() must be called after the setConfig(...)
       setSlot(new PSSlotType(slot));
-      setVariant(new PSContentTypeVariant(template));
+      setVariant(new PSContentTypeTemplate(template));
    }
    
    /**
@@ -286,7 +286,7 @@ public class PSAaRelationship extends PSRelationship
     *    user properties.
     */
    @SuppressWarnings("deprecation")
-   public void setVariant(PSContentTypeVariant variant)
+   public void setVariant(PSContentTypeTemplate variant)
    {
       if (variant == null)
          throw new IllegalArgumentException("variant must not be null");
@@ -316,7 +316,7 @@ public class PSAaRelationship extends PSRelationship
       if (template == null)
          throw new IllegalArgumentException("template must not be null");
       
-      setVariant(new PSContentTypeVariant(template));   
+      setVariant(new PSContentTypeTemplate(template));
    }
 
 
@@ -402,7 +402,7 @@ public class PSAaRelationship extends PSRelationship
     * @throws IllegalStateException if the variant object has not been set yet.
     */
    @SuppressWarnings("deprecation")
-   public PSContentTypeVariant getVariant()
+   public PSContentTypeTemplate getVariant()
    {
       if (m_variant == null)
          throw new IllegalStateException(
@@ -660,7 +660,7 @@ public class PSAaRelationship extends PSRelationship
     * slot and the relationship will be persisted when the relationship is 
     * saved in the repository, but not the slot instance itself.
     * 
-    * @see #PSAaRelationship(PSLocator, PSLocator, PSSlotType, PSContentTypeVariant, PSRelationshipConfig)
+    * @see #PSAaRelationship(PSLocator, PSLocator, PSSlotType, PSContentTypeTemplate, PSRelationshipConfig)
     * @see PSAaRelationship#setSlot(PSSlotType, PSRelationshipConfig)
     */
    @SuppressWarnings("deprecation")
@@ -675,11 +675,11 @@ public class PSAaRelationship extends PSRelationship
     * variant and the relationship will be persisted when the relationship is 
     * saved in the repository, but not the variant instance itself.
     * 
-    * @see #PSAaRelationship(PSLocator, PSLocator, PSSlotType, PSContentTypeVariant, PSRelationshipConfig)
-    * @see #setVariant(PSContentTypeVariant)
+    * @see #PSAaRelationship(PSLocator, PSLocator, PSSlotType, PSContentTypeTemplate, PSRelationshipConfig)
+    * @see #setVariant(PSContentTypeTemplate)
     */
    @SuppressWarnings("deprecation")
-   private PSContentTypeVariant m_variant = null;
+   private PSContentTypeTemplate m_variant = null;
    
    /**
     * Generated serial #

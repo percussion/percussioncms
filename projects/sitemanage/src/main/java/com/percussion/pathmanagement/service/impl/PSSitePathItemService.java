@@ -303,31 +303,11 @@ public class PSSitePathItemService extends PSPathItemService
      */
     private List<String> getFilteredItemTypes()
     {
-        if (navService.isManagedNavUsed())
-        {
-            if (navTreeType == null)
-            {
-                navTreeType = navService.getNavtreeContentTypeName();
-            }
-
-            if (navonType == null)
-            {
-                navonType = navService.getNavonContentTypeName();
-            }
-        }
-
         List<String> types = new ArrayList<>();
 
-        if (StringUtils.isNotBlank(navTreeType))
-        {
-            types.add(navTreeType);
-        }
+        types.addAll(navService.getNavonContentTypeNames());
+        types.addAll(navService.getNavTreeContentTypeNames());
 
-        if (StringUtils.isNotBlank(navonType))
-        {
-            types.add(navonType);
-        }
-               
         return types;
     }
     

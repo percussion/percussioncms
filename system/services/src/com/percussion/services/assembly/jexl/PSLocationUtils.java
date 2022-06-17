@@ -361,8 +361,9 @@ public class PSLocationUtils extends PSJexlUtilBase
    })
    public String folderPath(Node node)
    {
-      if (node == null)
-         throw new IllegalArgumentException("node may not be null.");
+      if (node == null) {
+         return "#";
+      }
       
       return getPath(node, true);
    }

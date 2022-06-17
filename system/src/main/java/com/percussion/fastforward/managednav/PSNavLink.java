@@ -25,7 +25,7 @@ package com.percussion.fastforward.managednav;
 
 import com.percussion.cms.objectstore.PSAaRelationship;
 import com.percussion.cms.objectstore.PSComponentSummary;
-import com.percussion.cms.objectstore.PSContentTypeVariant;
+import com.percussion.cms.objectstore.PSContentTypeTemplate;
 import com.percussion.design.objectstore.PSLocator;
 import com.percussion.error.PSExceptionUtils;
 import com.percussion.server.IPSInternalRequest;
@@ -162,7 +162,7 @@ public class PSNavLink
    public void createLinkToDocument(IPSRequestContext req,
          PSNavComponentSummary summary, int variantId) throws PSNavException
    {
-      PSContentTypeVariant variant = PSNavUtil.loadVariantInfo(req, summary
+      PSContentTypeTemplate variant = PSNavUtil.loadVariantInfo(req, summary
             .getContentTypeId(), variantId);
       if (variant == null)
       {
@@ -182,7 +182,7 @@ public class PSNavLink
     * @throws PSNavException
     */
    public void createLinkToDocument(IPSRequestContext req,
-         PSNavComponentSummary summary, PSContentTypeVariant variant)
+         PSNavComponentSummary summary, PSContentTypeTemplate variant)
          throws PSNavException
    {
       createLinkToDocument(req, summary, variant, Collections.EMPTY_MAP);
@@ -207,7 +207,7 @@ public class PSNavLink
     */
 
    public void createLinkToDocument(IPSRequestContext req,
-         PSComponentSummary summary, PSContentTypeVariant variant,
+         PSComponentSummary summary, PSContentTypeTemplate variant,
          Map extraParams) throws PSNavException
    {
       PSNavComponentSummary navsum = new PSNavComponentSummary(summary);
@@ -228,7 +228,7 @@ public class PSNavLink
     * @throws PSNavException if a link could not be generated.
     */
    public void createLinkToDocument(IPSRequestContext req,
-         PSNavComponentSummary summary, PSContentTypeVariant variant,
+         PSNavComponentSummary summary, PSContentTypeTemplate variant,
          Map extraParams) throws PSNavException
    {
       m_variantId = variant.getVariantId();
@@ -275,7 +275,7 @@ public class PSNavLink
    public void createLinkFromSnippet(IPSRequestContext req,
          PSNavComponentSummary summary, int variantId) throws PSNavException
    {
-      PSContentTypeVariant variant = PSNavUtil.loadVariantInfo(req, summary
+      PSContentTypeTemplate variant = PSNavUtil.loadVariantInfo(req, summary
             .getContentTypeId(), variantId);
       if (variant == null)
       {
@@ -298,7 +298,7 @@ public class PSNavLink
     * @throws PSNavException when any exception is encountered.
     */
    public void createLinkFromSnippet(IPSRequestContext req,
-         PSNavComponentSummary summary, PSContentTypeVariant variant)
+         PSNavComponentSummary summary, PSContentTypeTemplate variant)
          throws PSNavException
    {
       createLinkFromSnippet(req, summary, variant, null);
@@ -318,7 +318,7 @@ public class PSNavLink
     * @throws PSNavException when any exception is encountered.
     */
    public void createLinkFromSnippet(IPSRequestContext req,
-         PSNavComponentSummary summary, PSContentTypeVariant variant,
+         PSNavComponentSummary summary, PSContentTypeTemplate variant,
          Map extraParams) throws PSNavException
    {
       
@@ -393,7 +393,7 @@ public class PSNavLink
     * @throws PSNavException
     */
    public void buildLinkFromRelationship(IPSRequestContext req,
-         PSAaRelationship relation, PSContentTypeVariant useVariant,
+         PSAaRelationship relation, PSContentTypeTemplate useVariant,
          boolean followLink) throws PSNavException
    {
       log.debug("building link from relationship");
@@ -414,7 +414,7 @@ public class PSNavLink
          throw new PSNavException("Dependent item not found");
       }
 
-      PSContentTypeVariant ourVariant = null;
+      PSContentTypeTemplate ourVariant = null;
       if (useVariant != null)
       {
          ourVariant = useVariant;
@@ -447,7 +447,7 @@ public class PSNavLink
     * @return the paraemters for
     */
    private Map buildLinkParams(PSComponentSummary summary,
-         PSContentTypeVariant variant, IPSRequestContext req)
+                               PSContentTypeTemplate variant, IPSRequestContext req)
    {
       PSNavComponentSummary navsum = new PSNavComponentSummary(summary);
       return buildLinkParams(navsum, variant, req);
@@ -463,7 +463,7 @@ public class PSNavLink
     *         <code>Empty</code>.
     */
    private Map buildLinkParams(PSNavComponentSummary summary,
-         PSContentTypeVariant variant, IPSRequestContext req)
+                               PSContentTypeTemplate variant, IPSRequestContext req)
    {
       PSLocator currentLoc = summary.getCurrentLocator();
       String contentId = String.valueOf(currentLoc.getId());
@@ -537,9 +537,9 @@ public class PSNavLink
    /**
     * Folder Id of linked object this gets initialized through
     * {@link #createLinkFromSnippet(IPSRequestContext, 
-    *    PSNavComponentSummary, PSContentTypeVariant, Map)};
+    *    PSNavComponentSummary, PSContentTypeTemplate, Map)};
     * or {@link #createLinkToDocument(IPSRequestContext, 
-    * PSNavComponentSummary, PSContentTypeVariant, Map)};
+    * PSNavComponentSummary, PSContentTypeTemplate, Map)};
     * methods, if the Map consists of IPSHtmlParameters.SYS_FOLDERID.
     * otherwise the value will be 0;
     *  

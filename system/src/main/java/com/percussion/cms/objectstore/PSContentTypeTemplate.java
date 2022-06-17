@@ -48,7 +48,7 @@ import java.util.List;
  * @deprecated Use the assembly service to load and manipulate variant
  * information
  */
-public class PSContentTypeVariant extends PSDbComponent
+public class PSContentTypeTemplate extends PSDbComponent
 {
   /**
     * Creates an instance from a previously serialized (using <code>toXml
@@ -60,7 +60,7 @@ public class PSContentTypeVariant extends PSDbComponent
     * @throws PSUnknownNodeTypeException If the supplied source element does
     *    not conform to the dtd defined in the <code>fromXml<code> method.
     */
-   public PSContentTypeVariant(Element source)
+   public PSContentTypeTemplate(Element source)
       throws PSUnknownNodeTypeException
    {
       super(source);
@@ -71,7 +71,7 @@ public class PSContentTypeVariant extends PSDbComponent
     * Create a content type variant from an assembly template
     * @param template the template, never <code>null</code>
     */
-   public PSContentTypeVariant(IPSAssemblyTemplate template) {
+   public PSContentTypeTemplate(IPSAssemblyTemplate template) {
       super(new PSKey(new String[] { KEY_VARIANTID }, 
             new int[] { (int) template.getGUID().longValue() }, 
             false));
@@ -141,7 +141,7 @@ public class PSContentTypeVariant extends PSDbComponent
    }
    
    /**
-    * Does this variant support the given content type
+    * Does this template support the given content type
     * @param contenttypeid the content type to check for
     * @return <code>true</code> if the type is supported
     */
@@ -151,9 +151,10 @@ public class PSContentTypeVariant extends PSDbComponent
       {
          return false;
       }
-      return m_contentTypes.contains(new Long(contenttypeid));
+      return m_contentTypes.contains((long) contenttypeid);
    }
-   
+
+
    /**
     * Retrieve the supported content types
     * @return a list of content types, never <code>null</code> and never empty
@@ -398,7 +399,7 @@ public class PSContentTypeVariant extends PSDbComponent
     */
    public Object clone()
    {
-      PSContentTypeVariant copy = (PSContentTypeVariant)super.clone();
+      PSContentTypeTemplate copy = (PSContentTypeTemplate)super.clone();
 
       copy.m_name = m_name;
       copy.m_styleSheetName = m_styleSheetName;
@@ -441,10 +442,10 @@ public class PSContentTypeVariant extends PSDbComponent
     */
    public boolean equals( Object o )
    {
-      if ( !(o instanceof PSContentTypeVariant ))
+      if ( !(o instanceof PSContentTypeTemplate))
          return false;
 
-      PSContentTypeVariant type = (PSContentTypeVariant) o;
+      PSContentTypeTemplate type = (PSContentTypeTemplate) o;
       if(getVariantId()!=type.getVariantId())
          return false;
       if ( m_aaType!=type.m_aaType)
@@ -463,10 +464,7 @@ public class PSContentTypeVariant extends PSDbComponent
          return false;
       if (!compare(m_styleSheetName, type.m_styleSheetName))
          return false;
-      if (!compare(m_variantSlots, type.m_variantSlots))
-         return false;
-
-      return true;
+       return compare(m_variantSlots, type.m_variantSlots);
    }
 
    /**
@@ -499,7 +497,7 @@ public class PSContentTypeVariant extends PSDbComponent
       if (variantIds == null || variantIds.length < 1)
          throw new IllegalArgumentException("variantIds may not be null or empty");
       
-      PSKey keys[] = new PSKey[variantIds.length];
+      PSKey[] keys = new PSKey[variantIds.length];
             
       for (int i = 0; i < variantIds.length; i++)
       {
@@ -550,12 +548,12 @@ public class PSContentTypeVariant extends PSDbComponent
    /**
     * Constant for variant output form page 
     */
-   static public int OUTPUTFORMAT_PAGE = 1;
+    public static int OUTPUTFORMAT_PAGE = 1;
 
    /**
     * Constant for variant output form snippet
     */
-   static public int OUTPUTFORMAT_SNIPPET = 2;
+    public static int OUTPUTFORMAT_SNIPPET = 2;
    
    /**
     * ContentVariants Table Key Name.

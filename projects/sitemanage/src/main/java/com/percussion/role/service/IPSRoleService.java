@@ -43,6 +43,7 @@ public interface IPSRoleService
     public static final String HOMEPAGE_TYPE_DASHBOARD = "Dashboard";
     public static final String HOMEPAGE_TYPE_EDITOR = "Editor";
     public static final String HOMEPAGE_TYPE_HOME = "Home";
+
     /**
      * Finds a role.
      * @param name of the role to find, wrapped by a {@link PSStringWrapper} object.  Never <code>null</code>.

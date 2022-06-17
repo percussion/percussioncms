@@ -352,7 +352,7 @@ public class PSRecycleService implements IPSRecycleService {
                 for (PSRelationship rel : childRels) {
                     IPSCmsContentSummaries summaries = PSCmsContentSummariesLocator.getObjectManager();
                     PSComponentSummary summ = summaries.loadComponentSummary(rel.getDependent().getId());
-                    if (summ.getContentTypeId() == navService.getNavonContentTypeId()) {
+                    if (navService.getNavonContentTypeIds().contains(summ.getContentTypeId())) {
                         recycleItem(rel.getDependent().getId());
                         foundNavonType = true;
                     }
@@ -515,7 +515,7 @@ public class PSRecycleService implements IPSRecycleService {
             IPSGuid sectionGuid =  idMapper.getGuid(pathLocator);
             IPSCmsContentSummaries summaries = PSCmsContentSummariesLocator.getObjectManager();
             PSComponentSummary summ = summaries.loadComponentSummary(relationship.getDependent().getId());
-            if (summ.getContentTypeId() == navService.getNavonContentTypeId()) {
+            if (navService.getNavonContentTypeIds().contains(summ.getContentTypeId() )) {
                 List<String> temp = new ArrayList<>();
                 temp.add(NAVON_FIELD_DISPLAYTITLE);
                 Map<String, String> navProps = navService.getNavonProperties(sectionGuid, temp);
@@ -897,7 +897,7 @@ public class PSRecycleService implements IPSRecycleService {
             log.debug("The item will need to be saved as its path or name have changed.");
             if (!folder) {
                 contentWs.prepareForEdit(guid);
-                if(items.size()>0 && items.get(0).getItemDefinition().getName().equalsIgnoreCase("percFileAsset")){
+                if(!items.isEmpty() && items.get(0).getItemDefinition().getName().equalsIgnoreCase("percFileAsset")){
                     items = contentWs.loadItems(Collections
                             .singletonList(guid), true, true, false, false);
                 }else{
@@ -916,7 +916,7 @@ public class PSRecycleService implements IPSRecycleService {
     }
 
     public static boolean checkValidPathPrefix(String sb) throws IllegalArgumentException {
-        String currentPath = sb.toString();
+        String currentPath = sb;
         log.debug("Looking for the correct path prefix.  The path is: {}", currentPath);
         if (currentPath.startsWith(SITES)) {
             return true;

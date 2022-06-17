@@ -506,12 +506,16 @@ public class PSContentNode implements IPSNode, IPSJcrCacheItem, Serializable
       {
          if (name.indexOf(':') < 0)
             name = "rx:" + name;
-
-         IPSProperty p = (IPSProperty) m_properties.get(name);
-         if (p == null)
-         {
+         IPSProperty p;
+         try{
+            p = (IPSProperty) m_properties.get(name);
+            if (p == null)
+            {
+               throw new PathNotFoundException("Property " + name + " not found");
+            }
+         }catch(javax.jcr.RepositoryException e){
             throw new PathNotFoundException("Property " + name + " not found");
-         }         
+         }
          return p;
       }
       else

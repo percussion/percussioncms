@@ -31,11 +31,10 @@ import com.percussion.cms.objectstore.IPSFieldValue;
 import com.percussion.cms.objectstore.IPSRelationshipProcessor;
 import com.percussion.cms.objectstore.PSAaRelationship;
 import com.percussion.cms.objectstore.PSAaRelationshipList;
-import com.percussion.cms.objectstore.PSActiveAssemblyProcessorProxy;
 import com.percussion.cms.objectstore.PSComponentProcessorProxy;
 import com.percussion.cms.objectstore.PSComponentSummaries;
 import com.percussion.cms.objectstore.PSComponentSummary;
-import com.percussion.cms.objectstore.PSContentTypeVariant;
+import com.percussion.cms.objectstore.PSContentTypeTemplate;
 import com.percussion.cms.objectstore.PSContentTypeVariantSet;
 import com.percussion.cms.objectstore.PSDbComponent;
 import com.percussion.cms.objectstore.PSFolder;
@@ -44,7 +43,6 @@ import com.percussion.cms.objectstore.PSItemDefinition;
 import com.percussion.cms.objectstore.PSItemField;
 import com.percussion.cms.objectstore.PSKey;
 import com.percussion.cms.objectstore.PSProcessorProxy;
-import com.percussion.cms.objectstore.PSRelationshipProcessorProxy;
 import com.percussion.cms.objectstore.PSSaveResults;
 import com.percussion.cms.objectstore.PSSlotType;
 import com.percussion.cms.objectstore.PSSlotTypeContentTypeVariant;
@@ -62,7 +60,7 @@ import com.percussion.extension.IPSResultDocumentProcessor;
 import com.percussion.extension.PSExtensionException;
 import com.percussion.extension.PSExtensionProcessingException;
 import com.percussion.extension.PSParameterMismatchException;
-import com.percussion.fastforward.managednav.PSNavConfig;
+import com.percussion.services.assembly.impl.nav.PSNavConfig;
 import com.percussion.fastforward.managednav.PSNavException;
 import com.percussion.fastforward.managednav.PSNavFolderUtils;
 import com.percussion.fastforward.managednav.PSNavProxyFactory;
@@ -87,7 +85,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.Random;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -556,7 +553,7 @@ public class PSContentHelper implements IPSResultDocumentProcessor
          PSNavConfig config = PSNavConfig.getInstance(req);
          PSRelationshipConfig aaConfig = config.getAaRelConfig();
          PSSlotType landingSlot = config.getAllSlots().getSlotTypeByName(
-            config.getPropertyString(PSNavConfig.NAVON_LANDING_SLOT));
+            config.getNavLandingPageSlotNames().get(0));
          PSSlotTypeContentTypeVariantSet cvs = landingSlot.getSlotVariants();
          int variantId = -1;
          Iterator it = cvs.iterator();
@@ -583,9 +580,9 @@ public class PSContentHelper implements IPSResultDocumentProcessor
             new PSKey[0]);
          PSContentTypeVariantSet variants = 
             new PSContentTypeVariantSet(variantElems);
-         PSContentTypeVariant slotVariant = variants.getContentVariantById(
+         PSContentTypeTemplate slotVariant = variants.getContentVariantById(
             variantId);
-         PSContentTypeVariant defaultVariant = 
+         PSContentTypeTemplate defaultVariant =
             variants.getContentVariantByName(navprops.getProperty(
                "landing.defaultVariant"));
          PSRelationshipProcessor relProxy = PSRelationshipProcessor.getInstance();
@@ -693,13 +690,13 @@ public class PSContentHelper implements IPSResultDocumentProcessor
             // create the navtree
             int communityId = req.getSecurityToken().getCommunityId(); 
             PSItemDefinition navonDef = defMgr.getItemDef(
-               config.getNavTreeType(), communityId);
+               config.getNavTreeTypeIds().get(0), communityId);
             if (navonDef == null)
             {
                String errmsg = "Unable to find Itemdef for type {0} in " +
                   "community {1}. ";
                Object[] args = new Object[2];
-               args[0] = config.getNavonType();
+               args[0] = config.getNavonTypeIds().get(0);
                args[1] = communityId;
                String sb = MessageFormat.format(errmsg, args);
                throw new PSNavException(sb);
@@ -711,21 +708,17 @@ public class PSContentHelper implements IPSResultDocumentProcessor
             IPSFieldValue titleValue = new PSTextValue(folderSum.getName());
             setFieldValue(navon, "sys_title", titleValue);
             
-            String dispTitleField = config.getPropertyString(
-               PSNavConfig.NAVON_TITLE_FIELD);
+            String dispTitleField = config.getNavonTitleField();
             setFieldValue(navon, dispTitleField, titleValue);
             
-            String propField = config.getPropertyString(
-               PSNavConfig.NAVON_PROP_FIELD);
+            String propField = config.getNavonPropagateField();
             setFieldValue(navon, propField, new PSTextValue(null));
             
-            String themeField = config.getPropertyString(
-               PSNavConfig.NAVTREE_THEME_FIELD);
+            String themeField = config.getNavThemeParamName();
             setFieldValue(navon, themeField, new PSTextValue(
                navprops.getProperty("nav.theme")));
 
-            String varField = config.getPropertyString(
-               PSNavConfig.NAVON_VARIABLE_FIELD);
+            String varField = config.getNavonVariableName();
             setFieldValue(navon, varField, new PSTextValue(
                navprops.getProperty("nav.variable")));
 
@@ -872,9 +865,7 @@ public class PSContentHelper implements IPSResultDocumentProcessor
 
    /**
     * Calculates how many folders should be present at each level of a 
-    * hierarchy given the provided constraints. See {@link #createFolderTree(
-    * int, float, int, String, IPSRelationshipProcessor, IPSComponentProcessor)
-    * createFolderTree} for a description of the algorithm.
+    * hierarchy given the provided constraints. See  for a description of the algorithm.
     * 
     * @param count Total # of folders to exist in hierarchy. Assumed 
     * &gt;= <code>maxDepth</code>.

@@ -155,12 +155,17 @@ public class PSSqlPurgeHelper implements IPSSqlPurgeHelper
    private List<Integer> getNavContentTypeIds()
    {
       IPSManagedNavService navService = PSManagedNavServiceLocator.getContentWebservice();
-      long navonTypeId = navService.getNavonContentTypeId();
-      long navTreeTypeId = navService.getNavtreeContentTypeId();
+      List<Long> navonTypeId = navService.getNavonContentTypeIds();
+      List<Long> navTreeTypeId = navService.getNavTreeContentTypeIds();
 
       List<Integer> typeFilter = new ArrayList<>();
-      typeFilter.add((int) navonTypeId);
-      typeFilter.add((int) navTreeTypeId);
+      for(Long l : navonTypeId){
+         typeFilter.add(l.intValue());
+      }
+      for(Long l : navTreeTypeId){
+         typeFilter.add(l.intValue());
+      }
+
       return typeFilter;
    }
 

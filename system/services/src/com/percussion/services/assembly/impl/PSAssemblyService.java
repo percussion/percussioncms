@@ -1274,10 +1274,8 @@ public class PSAssemblyService implements IPSAssemblyService
       // Check to see if this item is a managed nav object. If it is we'll
       // wrap it up into a proxy
       PSNavConfig navcfg = PSNavConfig.getInstance();
-      IPSGuid navontype = navcfg.getNavonType();
-      IPSGuid navtreetype = navcfg.getNavTreeType();
       IPSGuid itemtype = new PSGuid(PSTypeEnum.NODEDEF, item.getProperty("sys_contenttypeid").getString());
-      if (itemtype.equals(navontype) || itemtype.equals(navtreetype))
+      if (navcfg.isManagedNavType(itemtype))
       {
          PSNavHelper h = work.getNavHelper();
          PSLegacyGuid lg = (PSLegacyGuid) work.getId();
@@ -1628,11 +1626,12 @@ public class PSAssemblyService implements IPSAssemblyService
 
       List<IPSAssemblyTemplate> templateTypes = findTemplatesByContentType(contenttype);
 
-      if (templateTypes.stream().anyMatch(temp -> temp.getGUID() == template.getGUID()))
+      if(templateTypes.contains(template)) {
          return template;
-      else
+      }
+      else {
          throw new PSAssemblyException(IPSAssemblyErrors.TEMPLATE_BY_ID_MISSING, name, contenttype.longValue());
-
+      }
    }
 
    @Transactional

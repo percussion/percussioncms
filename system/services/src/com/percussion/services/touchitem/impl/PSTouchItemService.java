@@ -471,10 +471,11 @@ public class PSTouchItemService
     */
    private boolean isNavigationType(long typeId)
    {
-      long navonId = navService.getNavonContentTypeId();
-      long navtreeId = navService.getNavtreeContentTypeId();
+      List<Long> navonId = navService.getNavonContentTypeIds();
+      List<Long> navtreeId = navService.getNavTreeContentTypeIds();
           
-      return (typeId == navonId || typeId == navtreeId);
+      return (navonId.contains(typeId) ||
+              navtreeId.contains(typeId));
    }
    
    /**

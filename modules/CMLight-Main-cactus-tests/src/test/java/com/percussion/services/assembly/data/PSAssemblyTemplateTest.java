@@ -23,6 +23,7 @@
  */
 package com.percussion.services.assembly.data;
 
+import com.percussion.cms.objectstore.PSContentTypeTemplate;
 import com.percussion.cms.objectstore.server.PSContentTypeVariantsMgr;
 import com.percussion.error.PSExceptionUtils;
 import com.percussion.services.assembly.IPSAssemblyService;
@@ -781,7 +782,7 @@ public class PSAssemblyTemplateTest extends ServletTestCase
       com.percussion.cms.objectstore.PSContentTypeVariantSet set = PSContentTypeVariantsMgr
             .getAllContentTypeVariants(null);
       assertTrue(set.size() > 0);
-      com.percussion.cms.objectstore.PSContentTypeVariant var = set
+      PSContentTypeTemplate var = set
             .getContentVariantById(505);
       com.percussion.cms.objectstore.PSVariantSlotTypeSet slots = var
             .getVariantSlots();

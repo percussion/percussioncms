@@ -24,8 +24,9 @@
 package com.percussion.fastforward.managednav;
 
 import com.percussion.cms.objectstore.PSAaRelationship;
-import com.percussion.cms.objectstore.PSContentTypeVariant;
+import com.percussion.cms.objectstore.PSContentTypeTemplate;
 import com.percussion.server.IPSRequestContext;
+import com.percussion.services.assembly.impl.nav.PSNavConfig;
 import com.percussion.util.PSPreparedStatement;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -60,21 +61,10 @@ public class PSNavImageLink extends PSNavLink
    {
       super();
 
-      PSContentTypeVariant variant = m_config.getImageInfoVariant();
+      PSContentTypeTemplate variant = m_config.getNavImageInfoTemplate();
 
       super.buildLinkFromRelationship(req, relation, variant, false);
 
-      //      PSLocator loc = new PSLocator(this.contentId);
-      //      PSComponentSummary summary = PSNavUtil.getItemSummary(req, loc);
-      //      Document ddoc =
-      //         PSNavUtil.getVariantDocument(
-      //            req,
-      //            variant,
-      //            summary.getCurrentLocator());
-      //      String select =
-      //         PSNavUtil.getFieldValueFromXML(
-      //            ddoc,
-      //            config.getPropertyString(PSNavConfig.NAVIMAGE_SELECTOR_FIELD));
       String select = getSelector(this.m_contentId);
 
       if (select != null && select.trim().length() > 0)
@@ -162,7 +152,7 @@ public class PSNavImageLink extends PSNavLink
    /**
     * Configuration instance.
     */
-   private PSNavConfig m_config = PSNavConfig.getInstance();
+   private final PSNavConfig m_config = PSNavConfig.getInstance();
 
    /**
     * SQL Statement for loading the NavImage item data

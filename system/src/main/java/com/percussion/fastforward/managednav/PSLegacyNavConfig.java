@@ -27,7 +27,7 @@ import com.percussion.cms.IPSConstants;
 import com.percussion.cms.PSCmsException;
 import com.percussion.cms.handlers.PSRelationshipCommandHandler;
 import com.percussion.cms.objectstore.PSComponentSummary;
-import com.percussion.cms.objectstore.PSContentTypeVariant;
+import com.percussion.cms.objectstore.PSContentTypeTemplate;
 import com.percussion.cms.objectstore.PSContentTypeVariantSet;
 import com.percussion.cms.objectstore.PSItemDefinition;
 import com.percussion.cms.objectstore.PSSlotType;
@@ -57,10 +57,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
-import java.util.StringTokenizer;
 
 /**
  * PSNavConfig centralizes all configuration information used by the Navigation
@@ -82,10 +80,10 @@ import java.util.StringTokenizer;
  *
  *
  */
-public class PSNavConfig
+public class PSLegacyNavConfig
 {
 
-    private static final Logger log = LogManager.getLogger(PSNavConfig.class);
+    private static final Logger log = LogManager.getLogger(PSLegacyNavConfig.class);
 
     /**
      * Gets the NavTree cache key from the supplied request context. The cache
@@ -135,7 +133,7 @@ public class PSNavConfig
     * @throws PSNavException for any error loading the managed navigation
      *    configuration.
      */
-    private PSNavConfig() throws PSNavException
+    private PSLegacyNavConfig() throws PSNavException
     {
         try
         {
@@ -152,126 +150,55 @@ public class PSNavConfig
                 m_props.load(fis);
             PSItemDefManager defmgr = PSItemDefManager.getInstance();
                 String navonTypeName = m_props.get(NAVON_CONTENT_TYPE).toString();
-                m_log.debug("Navon content type " + navonTypeName);
+                log.debug("Navon content type {}" , navonTypeName);
                 String navTreeTypeName = m_props.get(NAVTREE_CONTENT_TYPE)
                         .toString();
-                m_log.debug("NavTree content type " + navTreeTypeName);
+                log.debug("NavTree content type {}" , navTreeTypeName);
                 String navImageTypeName = m_props.get(NAVIMAGE_CONTENT_TYPE)
                         .toString();
-                m_log.debug("NavImage content type " + navImageTypeName);
+                log.debug("NavImage content type {}" , navImageTypeName);
 
                 if (navonTypeName != null && navonTypeName.trim().length() > 0)
                 {
                m_navonType = defmgr.contentTypeNameToId(navonTypeName);
-                    m_log.debug("Navon content type id is "
-                            + String.valueOf(m_navonType));
+                    log.debug("Navon content type id is {}",
+                             m_navonType);
 
                 }
                 if (navTreeTypeName != null && navTreeTypeName.trim().length() > 0)
                 {
                m_navTreeType = defmgr.contentTypeNameToId(navTreeTypeName);
-                    m_log.debug("NavTree content type id is "
-                            + String.valueOf(m_navTreeType));
+                    log.debug("NavTree content type id is {}"
+                            ,m_navTreeType);
                 }
                 if (navImageTypeName != null
                         && navImageTypeName.trim().length() > 0)
                 {
                this.m_navImageType = defmgr
                      .contentTypeNameToId(navImageTypeName);
-                    m_log.debug("Nav Image content type id is "
-                            + String.valueOf(m_navImageType));
+                    log.debug("Nav Image content type id is {}"
+                            , m_navImageType);
                 }
 
                 m_navonInfoVariantName = m_props.get(NAVON_INFO_VARIANT).toString();
-                m_log.debug("Navon info variant " + m_navonInfoVariantName);
+                log.debug("Navon info variant " + m_navonInfoVariantName);
 
                 m_navImageInfoVariantName = m_props.getProperty(
-                        NAVIMAGE_INFO_VARIANT).toString();
-                m_log.debug("Nav Image info variant " + m_navImageInfoVariantName);
+                        NAVIMAGE_INFO_VARIANT);
+                log.debug("Nav Image info variant " + m_navImageInfoVariantName);
 
                 m_navTreeInfoVariantName = m_props
-                        .getProperty(NAVTREE_INFO_VARIANT).toString();
+                        .getProperty(NAVTREE_INFO_VARIANT);
             }
         }
         catch (Exception e)
         {
-            m_log.error(PSNavException.handleException(e));
+            log.error(PSNavException.handleException(e));
             throw new PSNavException(e);
         }
     }
 
 
-    /**
-     * Loads the variant, slot and content proxy information. This is the second
-     * part of initialization. All initialization that requires an
-     * <code>IPSRequestContext</code> is in this method.
-     *
-     * @param req the parent request
-     * @throws PSNavException when any error occurs.
-     */
-    private void loadVariantInfo(IPSRequestContext req) throws PSNavException
-    {
-        this.m_allVariants = PSNavUtil.loadVariantSet(req);
-
-        try
-        {
-            this.m_navonVariants = new PSContentTypeVariantSet();
-        }
-        catch (PSCmsException e)
-        {
-            throw new PSNavException(this.getClass().getName(), e);
-        }
-        Iterator variants = m_allVariants.iterator();
-        m_log.debug("scanning all variants");
-        while (variants.hasNext())
-        {
-            PSContentTypeVariant current = (PSContentTypeVariant) variants.next();
-            m_log.debug("variant " + current.getName());
-            if (current.supportsContentType((int) this.m_navonType))
-            {
-                m_navonVariants.add(current);
-            }
-        }
-
-        this.m_navSlots = new PSNavSlotSet(req);
-        String slotNames = this.getPropertyString(NAVON_SLOT_NAMES);
-        StringTokenizer st = new StringTokenizer(slotNames, ",;");
-        while (st.hasMoreTokens())
-        {
-            String slotName = st.nextToken();
-            m_navSlots.addSlotByName(slotName);
-        }
-
-        try
-        {
-
-            m_allSlots = PSNavUtil.loadAllSlots(req);
-
-            m_menuSlot = m_allSlots.getSlotTypeByName(m_props
-                    .getProperty(NAVON_MENU_SLOT));
-            m_imageSlot = m_allSlots.getSlotTypeByName(m_props
-                    .getProperty(NAVON_IMAGE_SLOT));
-            if (m_menuSlot == null)
-            {
-                m_log.error("Menu slot not found, check config");
-                throw new PSNavException("Menu Slot not found");
-            }
-            m_allVariants = PSNavUtil.loadVariantSet(req);
-
-            //         this.navonItemDef =
-            //            PSItemDefManager.getInstance().getItemDef(
-            //               this.navonType,
-            //               req.getSecurityToken());
-            //         log.debug("Navon Item Def is " + this.navonItemDef.toString());
-
-        }
-        catch (Exception e1)
-        {
-            m_log.error(this.getClass().getName(), e1);
-            throw new PSNavException(e1);
-        }
-
-    }
 
     /**
      * Checks to ensure the config is loaded with the variant/slot info.
@@ -395,7 +322,7 @@ public class PSNavConfig
     * The cache key is created from sys_contentid, sys_revision and
      * sys_authtype parameters in the request.
      *
-     * @param navTree the to be cached NavTree, never <code>null</code>.
+     * @param navTreeXML the to be cached NavTree, never <code>null</code>.
      *
     * @param intParams the parameter mapp, never <code>null</code>.
      */
@@ -433,10 +360,10 @@ public class PSNavConfig
     * @throws PSNavException for any error loading the managed navigation
      *    configuration.
      */
-    public synchronized static PSNavConfig getInstance() throws PSNavException
+    public synchronized static PSLegacyNavConfig getInstance() throws PSNavException
     {
         if (ms_singleInstance == null)
-            ms_singleInstance = new PSNavConfig();
+            ms_singleInstance = new PSLegacyNavConfig();
 
         return ms_singleInstance;
     }
@@ -450,12 +377,12 @@ public class PSNavConfig
     * @throws PSNavException for any error loading the managed navigation
      *    configuration.
      */
-    public synchronized static PSNavConfig getInstance(IPSRequestContext req)
+    public synchronized static PSLegacyNavConfig getInstance(IPSRequestContext req)
             throws PSNavException
     {
-        PSNavConfig config = getInstance();
-        if (config.m_props != null && config.m_allVariants == null)
-            config.loadVariantInfo(req);
+        PSLegacyNavConfig config = getInstance();
+     //   if (config.m_props != null && config.m_allVariants == null)
+         //   config.loadVariantInfo(req);
 
         return config;
     }
@@ -469,7 +396,7 @@ public class PSNavConfig
      *    configuration.
      */
 
-    public synchronized static PSNavConfig reset(IPSRequestContext req)
+    public synchronized static PSLegacyNavConfig reset(IPSRequestContext req)
             throws PSNavException
     {
         // if haven't load any variants, then the reset is not needed.
@@ -494,7 +421,7 @@ public class PSNavConfig
      */
     public static boolean isManagedNavUsed() throws PSNavException
     {
-        PSNavConfig config = null;
+        PSLegacyNavConfig config = null;
         try
         {
             config = getInstance();
@@ -511,7 +438,7 @@ public class PSNavConfig
           * If the Navigation.properties file is missing, managed
           * navigation can never be used.
           */
-            if (e.m_parentException instanceof FileNotFoundException)
+            if (e.parentException instanceof FileNotFoundException)
                 return false;
             else
                 throw e;
@@ -611,23 +538,6 @@ public class PSNavConfig
     }
 
     /**
-     * Gets the value of a property in the navigation properties as a String.
-     *
-     * @param name the name of the property.
-     * @return the object representing that property. Will be <code>null</code>
-     *         if the property does not exist.
-     */
-    public String getPropertyString(String name)
-    {
-        Object o = getProperty(name);
-        if (o == null)
-        {
-            return null;
-        }
-        return o.toString();
-    }
-
-    /**
      * Gets the content type id of the Navon type. Will be 0 if the configuration
      * has not been initialized.
      *
@@ -660,16 +570,6 @@ public class PSNavConfig
         return m_navImageType;
     }
 
-    /**
-     * Gets the current set of Nav slots. Will be <code>null</code> if the
-     * confguration has not been initialized.
-     *
-     * @return the slots defined for navigation.
-     */
-    public PSNavSlotSet getNavSlots()
-    {
-        return this.m_navSlots;
-    }
 
     /**
      * Gets the current set of Nav variants. Will be <code>null</code> if the
@@ -690,7 +590,7 @@ public class PSNavConfig
      * @throws IllegalStateException if the config has not been initialized.
      * @throws PSNavException If the info variant cannot be found
      */
-    public PSContentTypeVariant getInfoVariant() throws PSNavException
+    public PSContentTypeTemplate getInfoVariant() throws PSNavException
     {
         if (m_infoVariant == null)
             m_infoVariant = getVariant(m_navonInfoVariantName);
@@ -706,7 +606,7 @@ public class PSNavConfig
      * @throws IllegalStateException if the config has not been initialized.
      * @throws PSNavException If the variant cannot be found
      */
-    public PSContentTypeVariant getNavtreeInfoVariant() throws PSNavException
+    public PSContentTypeTemplate getNavtreeInfoVariant() throws PSNavException
     {
         if (m_navtreeInfoVariant == null)
             m_navtreeInfoVariant = getVariant(m_navTreeInfoVariantName);
@@ -722,7 +622,7 @@ public class PSNavConfig
      * @throws IllegalStateException if the config has not been initialized.
      * @throws PSNavException If the variant cannot be found.
      */
-    public PSContentTypeVariant getImageInfoVariant() throws PSNavException
+    public PSContentTypeTemplate getImageInfoVariant() throws PSNavException
     {
         if (m_imageInfoVariant == null)
             m_imageInfoVariant = getVariant(m_navImageInfoVariantName);
@@ -738,12 +638,12 @@ public class PSNavConfig
      * @throws IllegalStateException if the config has not been initialized.
      * @throws PSNavException If the variant cannot be found.
      */
-    public PSContentTypeVariant getTreeVariant() throws PSNavException
+    public PSContentTypeTemplate getTreeVariant() throws PSNavException
     {
         if (m_treeVariant == null)
         {
-            String treeVariant = this.getPropertyString(NAVON_TREE_VARIANT);
-            m_treeVariant = getVariant(treeVariant);
+            String treeVariant;// = this.getPropertyString(NAVON_TREE_VARIANT);
+           // m_treeVariant = getVariant(treeVariant);
         }
         return m_treeVariant;
     }
@@ -758,7 +658,7 @@ public class PSNavConfig
      * @throws IllegalStateException if the config has not been initialized.
      * @throws PSNavException If the variant cannot be found.
      */
-    public PSContentTypeVariant getNavLinkVariant() throws PSNavException
+    public PSContentTypeTemplate getNavLinkVariant() throws PSNavException
     {
         if (m_navLinkVariant == null)
             m_navLinkVariant = getVariant(m_props.getProperty(NAVON_LINK_VARIANT));
@@ -776,16 +676,16 @@ public class PSNavConfig
      * @throws IllegalStateException if the config has not been initialized.
      * @throws PSNavException If the variant cannot be found.
      */
-    private PSContentTypeVariant getVariant(String variantName)
+    private PSContentTypeTemplate getVariant(String variantName)
             throws PSNavException
     {
         checkConfigLoaded();
-        m_log.debug("loading variant " + variantName);
-        PSContentTypeVariant variant = m_allVariants
+        log.debug("loading variant {}" , variantName);
+        PSContentTypeTemplate variant = m_allVariants
                 .getContentVariantByName(variantName);
         if (variant == null)
         {
-            m_log.error("Navon variant " + variantName + " not found");
+            log.error("Navon variant {} not found", variantName);
             throw new PSNavException("Variant " + variantName
                     + " not found, check config");
         }
@@ -845,7 +745,7 @@ public class PSNavConfig
       catch (PSAssemblyException e)
       {
          String msg = "Failed to find menu slot: " + getMenuSlotName();
-         m_log.error(msg, e);
+         log.error(msg, e);
          throw new PSNavException(msg, e);
       }
         return m_menuSlot;
@@ -900,7 +800,7 @@ public class PSNavConfig
      */
     public String getNavThemeParamName()
     {
-        return this.getPropertyString(NAVTREE_PARAM_THEME);
+        return "";//this.getPropertyString(NAVTREE_PARAM_THEME);
     }
 
     /**
@@ -928,14 +828,14 @@ public class PSNavConfig
             }
             catch (NumberFormatException nfe)
             {
-                m_log.warn("Invalid Authtype " + sAuth + " assuming 0 ", nfe);
-                AuthType = new Integer(0);
+                log.warn("Invalid Authtype " + sAuth + " assuming 0 ", nfe);
+                AuthType = 0;
             }
         }
         else
         {
-            m_log.debug("no authtype specified, using 0");
-            AuthType = new Integer(0);
+            log.debug("no authtype specified, using 0");
+            AuthType = 0;
         }
         PSNavSlotContents contents = (PSNavSlotContents) m_SlotContentCache
                 .get(AuthType);
@@ -950,12 +850,8 @@ public class PSNavConfig
     /**
      * singleton instance of this class.
      */
-    private static PSNavConfig ms_singleInstance = null;
-
-    /**
-     * write the log.
-     */
-    private Logger m_log = LogManager.getLogger(this.getClass());
+    private static PSLegacyNavConfig ms_singleInstance = null;
+    
 
     /**
      * internal copy of Navigation properties. Loaded once and referenced in many
@@ -1002,22 +898,22 @@ public class PSNavConfig
     /**
      * The Navon Info variant object.
      */
-    private PSContentTypeVariant m_infoVariant = null;
+    private PSContentTypeTemplate m_infoVariant = null;
 
     /**
      * The Navon Tree variant object
      */
-    private PSContentTypeVariant m_treeVariant = null;
+    private PSContentTypeTemplate m_treeVariant = null;
 
     /**
      * The NavTree Info variant object.
      */
-    private PSContentTypeVariant m_navtreeInfoVariant = null;
+    private PSContentTypeTemplate m_navtreeInfoVariant = null;
 
     /**
      * The NavImage Info variant object.
      */
-    private PSContentTypeVariant m_imageInfoVariant = null;
+    private PSContentTypeTemplate m_imageInfoVariant = null;
 
     /**
      * The set of all variants. Used to shortcut searches for variant objects.
@@ -1034,7 +930,7 @@ public class PSNavConfig
      * The Navon link variant object. This variant is used in active assembly to
      * build the tree.
      */
-    private PSContentTypeVariant m_navLinkVariant = null;
+    private PSContentTypeTemplate m_navLinkVariant = null;
 
     /**
      * The set of all slots.
@@ -1051,10 +947,7 @@ public class PSNavConfig
      */
     private PSSlotType m_imageSlot = null;
 
-    /**
-     * The set of all slots listed in the navigation properties.
-     */
-    private PSNavSlotSet m_navSlots = null;
+
 
     /**
      * The relationship config for active assembly relationships. Used to

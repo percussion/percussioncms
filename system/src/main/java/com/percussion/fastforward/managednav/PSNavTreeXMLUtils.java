@@ -26,6 +26,7 @@ package com.percussion.fastforward.managednav;
 import com.percussion.data.PSInternalRequestCallException;
 import com.percussion.server.IPSInternalRequest;
 import com.percussion.server.IPSRequestContext;
+import com.percussion.services.assembly.impl.nav.PSNavConfig;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
@@ -82,7 +83,7 @@ public class PSNavTreeXMLUtils
       PSNavConfig config = PSNavConfig.getInstance(req);
       String varName = navonDoc.getDocumentElement().getAttribute(
             PSNavTree.XML_ATTR_VARIABLE);
-      if (varName == null || varName.trim().length() == 0)
+      if (varName.trim().length() == 0)
       { // nothing to do here
          log.debug("No variable name specified");
          return;
@@ -127,8 +128,7 @@ public class PSNavTreeXMLUtils
          log.warn("property not found {}", srcName);
          return;
       }
-      String newPropName = config
-            .getPropertyString(PSNavConfig.NAVTREE_VARIABLE);
+      String newPropName = config.getNavtreeVarName();
       Element newProp = getPropertyByName(assemblerProps, newPropName);
       if (newProp == null)
       {

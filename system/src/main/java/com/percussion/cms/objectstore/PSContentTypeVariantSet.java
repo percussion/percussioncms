@@ -47,7 +47,7 @@ public class PSContentTypeVariantSet extends PSDbComponentSet
    @SuppressWarnings("unused")
    public PSContentTypeVariantSet() throws PSCmsException
    {
-      super(PSContentTypeVariant.class);
+      super(PSContentTypeTemplate.class);
    }
 
    /**
@@ -67,7 +67,7 @@ public class PSContentTypeVariantSet extends PSDbComponentSet
     */
    public PSContentTypeVariantSet(Element[] items) throws PSUnknownNodeTypeException
    {
-      super(items, PSContentTypeVariant.class);
+      super(items, PSContentTypeTemplate.class);
    }
 
    /**
@@ -76,14 +76,14 @@ public class PSContentTypeVariantSet extends PSDbComponentSet
     * @param templates the list of templates, never <code>null</code>
     */
    public PSContentTypeVariantSet(Set<IPSAssemblyTemplate> templates) {
-      super(PSContentTypeVariant.class);
+      super(PSContentTypeTemplate.class);
       if (templates == null)
       {
          throw new IllegalArgumentException("templates may not be null");
       }
       for(IPSAssemblyTemplate template : templates)
       {
-         add(new PSContentTypeVariant(template));
+         add(new PSContentTypeTemplate(template));
       }
    }
 
@@ -100,7 +100,7 @@ public class PSContentTypeVariantSet extends PSDbComponentSet
     * <code>null</code> or empty.
     * @return matching variant if found. <code>null</code> if not found.
     */
-   public PSContentTypeVariant getContentVariantByName(String variantName)
+   public PSContentTypeTemplate getContentVariantByName(String variantName)
    {
       if(variantName==null || variantName.length() < 1)
          throw new IllegalArgumentException("variantName must not be null");
@@ -108,7 +108,7 @@ public class PSContentTypeVariantSet extends PSDbComponentSet
       Iterator iter = iterator();
       while (iter.hasNext())
       {
-         PSContentTypeVariant element = (PSContentTypeVariant) iter.next();
+         PSContentTypeTemplate element = (PSContentTypeTemplate) iter.next();
          if(element.getName().equalsIgnoreCase(variantName))
             return element;
       }
@@ -120,7 +120,7 @@ public class PSContentTypeVariantSet extends PSDbComponentSet
     * @param variantId of the varint to find, must be > 0. 
     * @return matching variant if found. <code>null</code> if not found.
     */
-   public PSContentTypeVariant getContentVariantById(int variantId)
+   public PSContentTypeTemplate getContentVariantById(int variantId)
    {
       if (variantId < 0)
          throw new IllegalArgumentException(
@@ -129,7 +129,7 @@ public class PSContentTypeVariantSet extends PSDbComponentSet
       Iterator iter = iterator();
       while (iter.hasNext())
       {
-         PSContentTypeVariant element = (PSContentTypeVariant) iter.next();
+         PSContentTypeTemplate element = (PSContentTypeTemplate) iter.next();
          if(element.getVariantId() == variantId)
             return element;
       }

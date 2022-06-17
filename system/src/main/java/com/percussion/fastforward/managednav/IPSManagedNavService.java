@@ -53,28 +53,28 @@ public interface IPSManagedNavService
     *  
     * @return the Content Type ID.
     */
-   long getNavtreeContentTypeId();
+   List<Long> getNavTreeContentTypeIds();
    
    /**
     * Gets Content Type name of Navigation Tree.
     *  
     * @return the Content Type name.  May be <code>null</code> or empty.
     */
-   String getNavtreeContentTypeName();
+   List<String> getNavTreeContentTypeNames();
 
    /**
     * Gets Content Type ID of Navigation Node. 
     *  
     * @return the Content Type ID.
     */
-   long getNavonContentTypeId();
+   List<Long> getNavonContentTypeIds();
    
    /**
     * Gets Content Type name of Navigation Node.
     *  
     * @return the Content Type name.  May be <code>null</code> or empty.
     */
-   String getNavonContentTypeName();
+   List<String> getNavonContentTypeNames();
    
    /**
     * Adds a Navon to a child folder. The Navon should always be added in the
@@ -184,7 +184,7 @@ public interface IPSManagedNavService
    /**
     * Determines if the specified item is a landing page.
     * 
-    * @param item the ID of the item in question, assumed not <code>null</code>.
+    * @param id the ID of the item in question, assumed not <code>null</code>.
     * 
     * @return <code>true</code> if the item is a landing page; otherwise
     * return <code>false</code>.
@@ -194,8 +194,8 @@ public interface IPSManagedNavService
     /**
      * Determines if the specified item is a landing page.
      *
-     * @param item the ID of the item in question, assumed not <code>null</code>.
-     *
+     * @param id the ID of the item in question, assumed not <code>null</code>.
+     * @param relationshipTypeName The relationship type name
      * @return <code>true</code> if the item is a landing page; otherwise
      * return <code>false</code>.
      */
@@ -342,7 +342,7 @@ public interface IPSManagedNavService
    /**
     * Returns a map of property names and values corresponding to the supplied list of field names.
     * Throws exception if any of the supplied name is not a field on navon content type.
-    * @param nodeId the ID of the navigation node, never <code>null</code>.
+    * @param navId the ID of the navigation node, never <code>null</code>.
     * @param propertyNames, names of the navon fields for which the value is required.
     * @return Map<String, String> the map of name and value pairs, corresponding to the supplied list of names.
     */
@@ -352,7 +352,7 @@ public interface IPSManagedNavService
     * Sets the supplied property values on the supplied navon. If the navon is in publishable state, moves to
     * quick edit state and leaves it there checked in.
     * @param nodeId the ID of the navigation node, never <code>null</code>.
-    * @param map of name and value pairs. If the name is not field of navon type throws exception.
+    * @param propertyMap of name and value pairs. If the name is not field of navon type throws exception.
     */
    public void setNavonProperties(IPSGuid nodeId, Map<String, String> propertyMap);
    

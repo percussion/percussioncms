@@ -32,6 +32,7 @@ import com.percussion.design.objectstore.PSLocator;
 import com.percussion.design.objectstore.PSRelationship;
 import com.percussion.design.objectstore.PSRelationshipConfig;
 import com.percussion.design.objectstore.PSRelationshipSet;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.server.cache.IPSFolderRelationshipCache;
 import com.percussion.server.cache.PSFolderRelationshipCache;
 import com.percussion.services.assembly.IPSAssemblyItem;
@@ -122,7 +123,7 @@ public class PSNavHelper
    /**
     * Logger for this class
     */
-   private static final Logger ms_log = LogManager.getLogger(PSNavHelper.class);
+   private static final Logger log = LogManager.getLogger(PSNavHelper.class);
 
    /**
     * Static configuration used for loading navon nodes
@@ -147,17 +148,17 @@ public class PSNavHelper
    /**
     * Landing page slot id, inited in ctor
     */
-   private static volatile String m_landingPageSlot;
+   private static volatile List<String> landingPageSlots = new ArrayList<>();
 
    /**
     * Sub menu slot id, inited in ctor
     */
-   private static volatile String m_submenuSlot;
+   private static volatile List<String> submenuSlots = new ArrayList<>();
 
    /**
     * Image slot id, inited in ctor
     */
-   private static volatile String m_imageSlot;
+   private static volatile List<String> imageSlots = new ArrayList<>();
 
    /**
     * Cms object Manager initialized in ctor
@@ -173,12 +174,12 @@ public class PSNavHelper
    /**
     * Relationship processor object initialized in ctor
     */
-   private PSRelationshipProcessor m_relProc;
+   private static PSRelationshipProcessor m_relProc;
 
    /**
     * Instance of Navigation Configuration object initialized in ctor
     */
-   private static volatile PSNavConfig m_navConfig;
+   private static volatile PSNavConfig navConfig;
 
    /**
     * Holds onto nav nodes already found. Used to reconstruct children
@@ -254,17 +255,17 @@ public class PSNavHelper
             
             if (!m_isInited)
             {
-            m_navConfig = PSNavConfig.getInstance();
+            navConfig = PSNavConfig.getInstance();
             m_cmsObjMgr = PSCmsObjectMgrLocator.getObjectManager();
             m_contentMgr = PSContentMgrLocator.getContentMgr();
             m_gmgr = PSGuidManagerLocator.getGuidMgr();
             
             // Initialize the navconfig
-            if (m_navConfig.getNavonType() == null)
+            if (navConfig.getNavonTypes() == null)
             {
                throw new IllegalArgumentException("Navon content type configuration missing!");
             }
-            if (m_navConfig.getNavTreeType() == null)
+            if (navConfig.getNavTreeTypes() == null)
             {
                throw new IllegalArgumentException("NavTree content type configuration missing!");
             }
@@ -272,44 +273,66 @@ public class PSNavHelper
            
             
             m_navCtypes = new ArrayList<>();
-            m_navCtypes.add(m_navConfig.getNavonType().longValue());
-            m_navCtypes.add(m_navConfig.getNavTreeType().longValue());
+            for(IPSGuid g: navConfig.getNavonTypes()){
+               m_navCtypes.add(g.longValue());
+            }
+           for(IPSGuid g : navConfig.getNavTreeTypes()){
+              m_navCtypes.add(g.longValue());
+           }
             
       IPSAssemblyService asm = PSAssemblyServiceLocator.getAssemblyService();
       List<String> slotnames = new ArrayList<>();
-      String lpslot = m_navConfig.getLandingPageRelationship();
-      String islot = m_navConfig.getNavImageRelationship();
-      String subslot = m_navConfig.getSubmenuRelationship();
-      slotnames.add(lpslot);
-      slotnames.add(islot);
-      slotnames.add(subslot);
+
+      List<String> lSubMenuList = navConfig.getNavSubMenuSlotNames();
+      slotnames.addAll(lSubMenuList);
+
+      List<String> lNavImageList = navConfig.getNavImageSlotNames();
+      slotnames.addAll(lNavImageList);
+
+      List<String> lNavLandingList = navConfig.getNavLandingPageSlotNames();
+      slotnames.addAll(lNavLandingList);
+
       try
       {
          List<IPSTemplateSlot> slots = asm.findSlotsByNames(slotnames);
-         Map<String, IPSTemplateSlot> smap = new HashMap<>();
          for (IPSTemplateSlot s : slots)
          {
-            smap.put(s.getName(), s);
+            if(lSubMenuList.contains(s.getName())) {
+               submenuSlots.add(String.valueOf(
+                       s.getGUID().getUUID()));
+            }
+            else if (lNavImageList.contains(s.getName())){
+               imageSlots.add(String.valueOf(
+                       s.getGUID().getUUID()));
+            }else if(lNavLandingList.contains(s.getName())){
+               landingPageSlots.add(String.valueOf(
+                       s.getGUID().getUUID()));
+            }
+
          }
-         if (smap.size() != slotnames.size())
-         {
-            throw new Exception("Wrong number of nav slots found: "
-                  + smap.size());
-         }
-               m_landingPageSlot = String.valueOf(smap.get(lpslot).getGUID().getUUID());
-               m_imageSlot = String.valueOf(smap.get(islot).getGUID().getUUID());
-               m_submenuSlot = String.valueOf(smap.get(subslot).getGUID().getUUID());
-               m_isInited = true;
+
+         m_isInited = true;
       }
       catch (Exception e)
       {
-         ms_log.warn("Could not load one or more nav slots ", e);
+         log.warn("Could not load one or more nav slots. Error: {}",
+                 PSExceptionUtils.getMessageForLog(e));
       }
             
             }
          }
       
       }
+   }
+
+   private List<String> getSlotIdsAsList(List<IPSTemplateSlot> slots){
+      List<String> ret = new ArrayList<>();
+
+      for(IPSTemplateSlot ts : slots){
+         ret.add(String.valueOf(ts.getGUID().getUUID()));
+      }
+
+      return ret;
    }
 
    public static ArrayList<Long> geNavCtypes()
@@ -366,7 +389,7 @@ public class PSNavHelper
             folder = findFolder(sourceItem);
          }else{
             //This item is in the Recycler so should be ignored in the NavTree.
-            ms_log.debug("Skipping Navigation for Recycled item:" + sourceItem.getId().toStringUntyped());
+            log.debug("Skipping Navigation for Recycled item:" + sourceItem.getId().toStringUntyped());
             return null;
          }
 
@@ -453,11 +476,11 @@ public class PSNavHelper
 
       // Calculate base
       Map<String, Object> navmap = new HashMap<>();
-      Property basevar = ms_utils.findProperty(self, m_navConfig
-            .getNavonVarName());
+      Property basevar = ms_utils.findProperty(self, navConfig
+            .getNavonVariableName());
       if (basevar == null || StringUtils.isBlank(basevar.getString()))
       {
-         basevar = ms_utils.findProperty(root, m_navConfig.getNavtreeVarName());
+         basevar = ms_utils.findProperty(root, navConfig.getNavtreeVarName());
       }
       // Bind
       if (basevar != null && basevar.getString() != null)
@@ -729,7 +752,7 @@ public class PSNavHelper
 
       int folderid = 0;
 
-      ms_log.debug("The parent folderid (sys_folderid) is not specified, "
+      log.debug("The parent folderid (sys_folderid) is not specified, "
             + "finding the navon folder from item relationships for id=" + sourceItem.getId().getUUID());
       // Find the items folder from relationships
       String siteidstr = sourceItem.getParameterValue(
@@ -748,7 +771,7 @@ public class PSNavHelper
          // If the item is not in any folder return null
          if (relationships.isEmpty())
          {
-            ms_log.error("The supplied source item(" + sourceItem.getId()
+            log.error("The supplied source item(" + sourceItem.getId()
                   + ") does not exist in any folder");
          }
          // If the item is in only one folder, that is the folder we want
@@ -786,7 +809,7 @@ public class PSNavHelper
             // After filtering if we are left with 0 items return null
             if (relationships.isEmpty())
             {
-               ms_log
+               log
                      .error("The supplied source item("
                            + sourceItem.getId()
                            + ") does not exist in any folder under the supplied site("
@@ -828,11 +851,11 @@ public class PSNavHelper
       }
       catch (PSNotFoundException | PSCmsException e)
       {
-         ms_log.error("problem finding the parent folder", e);
+         log.error("problem finding the parent folder", e);
       }
       catch (PSSiteManagerException e)
       {
-         ms_log.error("problem finding the parent folder", e);
+         log.error("problem finding the parent folder", e);
       }
 
       return folderid;
@@ -853,13 +876,13 @@ public class PSNavHelper
    {
       if (folderLoc == null)
       {
-         ms_log.error("Could not find navon/navTree content item."
+         log.error("Could not find navon/navTree content item."
                + " The supplied folderLoc is null or empty");
          return null;
       }
 
       if (folderLoc!= null && folderLoc.getId()==1) {
-         ms_log.warn("Previewing item using navigation outside of a site");
+         log.warn("Previewing item using navigation outside of a site");
          return null;
       }
       PSRelationshipFilter filter = new PSRelationshipFilter();
@@ -891,7 +914,7 @@ public class PSNavHelper
             }
             if (relSet.isEmpty() || relSet.size() > 1)
             {
-               ms_log.debug("Invalid folder structure."
+               log.debug("Invalid folder structure."
                      + " Failed to get proper parent folder for folder id:"
                      + folderLoc.getId());
             return null;
@@ -905,7 +928,7 @@ public class PSNavHelper
          }
          else
          {
-            ms_log.debug("The folder with id(" + folderLoc.getId()
+            log.debug("The folder with id(" + folderLoc.getId()
                   + ") in the hierarchy has multiple items of"
                   + " navon/navTree content types");
 
@@ -914,7 +937,7 @@ public class PSNavHelper
       }
       catch (PSCmsException e)
       {
-         ms_log.error(e);
+         log.error(e);
          return null;
       }
    }
@@ -966,12 +989,12 @@ public class PSNavHelper
       for (PSRelationship r : ((Collection<PSRelationship>) dependents))
       {
          String slotid = r.getProperty("sys_slotid");
-         if (slotid != null && slotid.equals(m_submenuSlot))
+         if (slotid != null && (submenuSlots.contains(slotid)))
          {
             sortedSubMenues.add(r);
             nguids.add(new PSLegacyGuid(r.getDependent().getId()));
          }
-         else if (slotid != null && slotid.equals(m_imageSlot))
+         else if (slotid != null && imageSlots.contains(slotid))
          {
             sortedNavImages.add(r);
             iguids.add(new PSLegacyGuid(r.getDependent().getId()));
@@ -985,13 +1008,16 @@ public class PSNavHelper
       guids.addAll(nguids);
       guids.addAll(iguids);
 
-      if (ms_log.isDebugEnabled())
+      if (log.isDebugEnabled())
       {
-         ms_log.debug("findNavChildren(" + axis + ", " + curLocator.getId() + "), dependes = " + guids);
+         log.debug("findNavChildren({}, {}), depends = {}",
+                 axis,
+                 curLocator.getId(),
+                 guids);
       }
       
       MultiMap rval = new MultiValueMap();
-      if (guids.size() == 0)
+      if (guids.isEmpty())
          return rval;
 
       // Load all the nodes
@@ -1013,7 +1039,7 @@ public class PSNavHelper
          Node n = nodeMap.get(contentId);
          if (n == null)
          {
-            ms_log.warn("Didn't load node for image id " + contentId);
+            log.warn("Didn't load node for image id {}" , contentId);
          }
          else
          {
@@ -1095,9 +1121,9 @@ public class PSNavHelper
       
       List<PSLocator> parents = folderCache.getParentLocators(psLocator);
       if (parents.isEmpty())
-         ms_log.warn("Navon with id {} is not in any folder", psLocator.getId());
+         log.warn("Navon with id {} is not in any folder", psLocator.getId());
       else if (parents.size()>1)
-         ms_log.warn("Navon with id {} is in multiple folders {}", psLocator.getId(),
+         log.warn("Navon with id {} is in multiple folders {}", psLocator.getId(),
                  parents);
       
       return !parents.isEmpty() ? parents.get(0): null;
@@ -1155,6 +1181,7 @@ public class PSNavHelper
       filter.setDependentId(((PSLegacyGuid) parentNode.getGuid())
             .getContentId());
       filter.setName(PSRelationshipFilter.FILTER_NAME_FOLDER_CONTENT);
+      filter.setCommunityFiltering(false);
       PSRelationshipSet relSet = m_relProc.getRelationships(filter);
       if (relSet.size() == 0)
       {
@@ -1185,6 +1212,18 @@ public class PSNavHelper
       return filteredids;
    }
 
+
+   private static PSRelationshipSet filterForSlotDependants(IPSNode node, String slotId) throws PSCmsException {
+      PSLegacyGuid lg = (PSLegacyGuid) node.getGuid();
+      PSRelationshipFilter filter = new PSRelationshipFilter();
+      filter.setName(PSRelationshipFilter.FILTER_NAME_ACTIVE_ASSEMBLY);
+      filter.setOwner(lg.getLocator());
+
+      // without this it all revisions may be pulled from database regardless of locator revision then filtered in java.
+      filter.limitToOwnerRevision(true);
+      filter.setProperty("sys_slotid", slotId);
+      return m_relProc.getRelationships(filter);
+   }
    /**
     * Find the landing page node associated with the given navon guid
     * 
@@ -1201,40 +1240,39 @@ public class PSNavHelper
          throw new IllegalArgumentException("node may not be null");
       }
 
-      PSLegacyGuid lg = (PSLegacyGuid) node.getGuid();
-      PSRelationshipFilter filter = new PSRelationshipFilter();
-      filter.setName(PSRelationshipFilter.FILTER_NAME_ACTIVE_ASSEMBLY);
-      filter.setOwner(lg.getLocator());
-      // without this it all revisions may be pulled from database regardless of locator revision then filtered in java.
-      filter.limitToOwnerRevision(true);
-      filter.setProperty("sys_slotid", m_landingPageSlot);
-      PSRelationshipSet dependents = m_relProc.getRelationships(filter);
+      PSRelationshipSet dependents = new PSRelationshipSet();
+      for(String s : landingPageSlots) {
+         PSRelationshipSet rs =filterForSlotDependants(node, s);
+         if(!rs.isEmpty()){
+            dependents.addAll(rs);
+         }
+      }
+
 
       // Use the relationships and filter out any that are not visible
       IPSGuid landingPageItem = null, 
                landingPageFolder = null,
                landingPageSite = null;
       
-      if (dependents.size() > 0)
+      if (!dependents.isEmpty())
       {
          List<IPSFilterItem> items = new ArrayList<>();
-         for (int i = 0; i < dependents.size(); i++)
-         {
-            PSRelationship dep = (PSRelationship) dependents.get(i);
+         for (Object dependent : dependents) {
+            PSRelationship dep = (PSRelationship) dependent;
             String fid = dep.getProperty(PSRelationshipConfig.PDU_FOLDERID);
             String sid = dep.getProperty(PSRelationshipConfig.PDU_SITEID);
             IPSGuid item = m_gmgr.makeGuid(dep.getDependent());
             IPSGuid folderId = StringUtils.isNotBlank(fid) ? m_gmgr
-                  .makeGuid(new PSLocator(fid)) : null;
+                    .makeGuid(new PSLocator(fid)) : null;
             IPSGuid siteId = StringUtils.isNotBlank(sid) ? m_gmgr
-                  .makeGuid(sid, PSTypeEnum.SITE) : null;
+                    .makeGuid(sid, PSTypeEnum.SITE) : null;
             items.add(new PSFilterItem(item, folderId, siteId));
          }
          try
          {
             List<IPSFilterItem> filtereditems = m_assemblyItem.getFilter().filter(
                   items, m_params);
-            if (filtereditems.size() > 0)
+            if (!filtereditems.isEmpty())
             {
                IPSFilterItem first = filtereditems.get(0);
                landingPageItem = first.getItemId();
@@ -1244,24 +1282,25 @@ public class PSNavHelper
          }
          catch (PSFilterException e)
          {
-            ms_log.error("Problem filtering landing pages", e);
+            log.error("Problem filtering landing pages.  Error: {}",
+                    PSExceptionUtils.getMessageForLog(e));
             return null;
          }
       }
       
       if (landingPageItem == null)
       {
-         if (m_navConfig.isNavonLandingPageRequired())
+         if (navConfig.isNavonLandingPageRequired())
          {
             int count = landingPageWarnCount.get();
             if (count > 0)
             {
                
-               ms_log.warn("No landing page relationship found for content id "
-               + lg.getContentId());
+               log.warn("No landing page relationship found for content id {}"
+               , node.getGuid().getUUID());
                if (landingPageWarnCount.decrementAndGet()==0)
                {
-                  ms_log.warn("Suppressing further landing page warnings.  To turn off warnings set navon.landingpage.required=false in rxconfig/Server/Navigation.properties"); 
+                  log.warn("Suppressing further landing page warnings.  To turn off warnings set navon.landingpage.required=false in rxconfig/Server/Navigation.properties");
                }
             }
          }
@@ -1269,20 +1308,18 @@ public class PSNavHelper
       }
       List<Node> nodes = m_contentMgr.findItemsByGUID(
             Collections.singletonList(landingPageItem), ms_config);
-      if (nodes.size() == 0)
+      if (nodes.isEmpty())
       {
-         ms_log.error("No landing page node found for landing page id " 
-               + landingPageItem);
+         log.error("No landing page node found for landing page id {}"
+               , landingPageItem);
       }
 
       // Setup the template information
       PSRelationship landingPageRel = null;
       PSLocator landingPageLoc = m_gmgr.makeLocator(landingPageItem);
-      for (int i = 0; i < dependents.size(); i++)
-      {
-         PSRelationship dep = (PSRelationship) dependents.get(i);
-         if (dep.getDependent().getId() == landingPageLoc.getId())
-         {
+      for (Object dependent : dependents) {
+         PSRelationship dep = (PSRelationship) dependent;
+         if (dep.getDependent().getId() == landingPageLoc.getId()) {
             landingPageRel = dep;
             break;
          }
@@ -1291,7 +1328,8 @@ public class PSNavHelper
             landingPageRel.getProperty("sys_variantid") : null;
       if (StringUtils.isBlank(vid))
       {
-         ms_log.error("No template registered for landing page, id: " + landingPageItem);
+         log.error("No template registered for landing page, id: {}",
+                 landingPageItem);
       }
       else
       {
@@ -1334,14 +1372,13 @@ public class PSNavHelper
          throw new IllegalArgumentException("node may not be null");
       }
 
-      PSLegacyGuid lg = (PSLegacyGuid) node.getGuid();
-      PSRelationshipFilter filter = new PSRelationshipFilter();
-      filter.setName(PSRelationshipFilter.FILTER_NAME_ACTIVE_ASSEMBLY);
-      filter.setOwner(lg.getLocator());
-      // without this it all revisions may be pulled from database regardless of locator revision then filtered in java.
-      filter.limitToOwnerRevision(true);
-      filter.setProperty("sys_slotid", m_landingPageSlot);
-      PSRelationshipSet dependents = PSRelationshipProcessor.getInstance().getRelationships(filter);
+      PSRelationshipSet dependents = new PSRelationshipSet();
+      for(String s : landingPageSlots) {
+         PSRelationshipSet rs =filterForSlotDependants(node, s);
+         if(!rs.isEmpty()){
+            dependents.addAll(rs);
+         }
+      }
 
       // Use the relationships and filter out any that are not visible
       if (dependents.size()>0)
@@ -1385,7 +1422,7 @@ public class PSNavHelper
       {
          throw new IllegalArgumentException("navon may not be null");
       }
-      String sel_prop = m_navConfig.getImageSelector();
+      String sel_prop = navConfig.getImageSelector();
       Property color = ms_utils.findProperty(navon, sel_prop);
 
       NodeIterator niter = navon.getNodes("nav:image");
@@ -1458,19 +1495,19 @@ public class PSNavHelper
    public static boolean isSubmenuSlot(String slot)
    {
       init();
-      return slot.equals(m_submenuSlot);
+      return submenuSlots.contains(slot);
    }
        
    public static boolean isLandingSlot(String slot)
    {
       init();
-      return slot.equals(m_landingPageSlot);
+      return landingPageSlots.contains(slot);
    }
        
    public static boolean isNavImageSlot(String slot)
    {
       init();
-      return slot.equals(m_imageSlot);
+      return imageSlots.contains(slot);
    }
 
 
@@ -1500,8 +1537,10 @@ public class PSNavHelper
          }
       } catch (PSCmsException e) {
          //NOTE: We may want to flip this logic and return true on error depending on behavior we see - NC
-         ms_log.warn("Unable to confirm if item: " + guid + " is in Recycler, assuming not. " + e.getMessage());
-         ms_log.debug("Recycler check failed with:",e);
+         log.warn("Unable to confirm if item: {} is in Recycler, assuming not. Error: {}",
+                 guid,
+                 PSExceptionUtils.getMessageForLog(e));
+         log.debug("Recycler check failed with:",e);
       }
 
       return ret;

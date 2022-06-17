@@ -25,10 +25,10 @@ package com.percussion.fastforward.managednav;
 
 import com.percussion.cms.PSCmsException;
 import com.percussion.cms.objectstore.PSComponentSummary;
-import com.percussion.cms.objectstore.PSContentTypeVariant;
+import com.percussion.cms.objectstore.PSContentTypeTemplate;
 import com.percussion.cms.objectstore.PSFolder;
+import com.percussion.cms.objectstore.PSProcessorProxy;
 import com.percussion.cms.objectstore.PSRelationshipFilter;
-import com.percussion.cms.objectstore.PSRelationshipProcessorProxy;
 import com.percussion.cms.objectstore.PSVariantSlotType;
 import com.percussion.cms.objectstore.server.PSRelationshipProcessor;
 import com.percussion.design.objectstore.PSLocator;
@@ -40,6 +40,7 @@ import com.percussion.extension.PSExtensionProcessingException;
 import com.percussion.extension.PSParameterMismatchException;
 import com.percussion.server.IPSInternalRequest;
 import com.percussion.server.IPSRequestContext;
+import com.percussion.services.assembly.impl.nav.PSNavConfig;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.xml.PSXmlTreeWalker;
 import org.apache.logging.log4j.LogManager;
@@ -114,8 +115,8 @@ public class PSNavAutoSlotExtension extends PSDefaultExtension
       try
       {
          Object recurse = req.getPrivateObject(RECURSION_DETECT);
-         if (recurse != null && recurse instanceof Boolean
-               && ((Boolean) recurse).booleanValue() == true)
+         if (recurse instanceof Boolean
+                 && Boolean.TRUE.equals(recurse))
          {
             log.error("Recursion violation in PSNavAutoSlot. Content Id= {} ", req.getParameter(IPSHtmlParameters.SYS_CONTENTID));
             //leave without adding any Navigation
@@ -125,7 +126,7 @@ public class PSNavAutoSlotExtension extends PSDefaultExtension
          {
             req.setPrivateObject(RECURSION_DETECT, true);
          }
-         ms_config = PSNavConfig.getInstance(req);
+         ms_config = PSNavConfig.getInstance();
          PSComponentSummary navon = findNavon(req);
          if (navon != null)
          {
@@ -280,7 +281,7 @@ public class PSNavAutoSlotExtension extends PSDefaultExtension
                   log.debug("Found Site Root folder");
                   PSRelationshipProcessor relProxy = PSRelationshipProcessor.getInstance();
                   PSLocator siteLoc = siteRoot.getCurrentLocator();
-                  String cType = PSRelationshipProcessorProxy.RELATIONSHIP_COMPTYPE;
+                  String cType = PSProcessorProxy.RELATIONSHIP_COMPTYPE;
                   PSNavFolderSet siteFolders = new PSNavFolderSet();
                   Iterator it = allFolders.iterator();
 
@@ -346,14 +347,14 @@ public class PSNavAutoSlotExtension extends PSDefaultExtension
             .getParameter(IPSHtmlParameters.SYS_VARIANTID));
       //int contentTypeId = itemSummary.getContentTypeId();
       int contentTypeId = -1;
-      PSContentTypeVariant variant = PSNavUtil.loadVariantInfo(req,
+      PSContentTypeTemplate variant = PSNavUtil.loadVariantInfo(req,
             contentTypeId, variantId);
 
       if (variant == null)
       {
          Object[] args = new Object[2];
-         args[0] = new Integer(contentTypeId);
-         args[1] = new Integer(variantId);
+         args[0] = contentTypeId;
+         args[1] = variantId;
          String errMsg = MessageFormat.format(MSG_VARIANT, args);
          log.error(errMsg);
          return;
@@ -378,7 +379,7 @@ public class PSNavAutoSlotExtension extends PSDefaultExtension
       {
          PSVariantSlotType varSlot = (PSVariantSlotType) slots.next();
          int varSlotId = varSlot.getSlotId();
-         log.debug("Processing Slot Id {}", String.valueOf(varSlotId));
+         log.debug("Processing Slot Id {}", varSlotId);
 
          //look for the slot in our set of nav slots.
          PSNavSlot navSlot = navSlots.getSlotById(varSlotId);
@@ -388,7 +389,7 @@ public class PSNavAutoSlotExtension extends PSDefaultExtension
             Iterator navSlotVariants = navSlot.getVariantIterator();
             while (navSlotVariants.hasNext())
             {
-               PSContentTypeVariant linkVar = (PSContentTypeVariant) navSlotVariants
+               PSContentTypeTemplate linkVar = (PSContentTypeTemplate) navSlotVariants
                      .next();
                log.debug("Adding Variant {}", linkVar.getName());
 
@@ -451,12 +452,11 @@ public class PSNavAutoSlotExtension extends PSDefaultExtension
    private static Map buildThemeParams(IPSRequestContext req, Document navonDoc)
          throws PSNavException
    {
-      ms_config = PSNavConfig.getInstance(req);
+      ms_config = PSNavConfig.getInstance();
       Map params = new HashMap();
 
       //first see if the caller specified a Theme
-      String themeParam = ms_config
-            .getPropertyString(PSNavConfig.NAVTREE_PARAM_THEME);
+      String themeParam = ms_config.getNavThemeParamName();
       String oldNavTheme = req.getParameter(themeParam);
       if (oldNavTheme != null && oldNavTheme.trim().length() > 0)
       {

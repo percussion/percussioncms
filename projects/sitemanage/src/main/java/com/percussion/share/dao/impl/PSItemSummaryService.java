@@ -104,7 +104,7 @@ public class PSItemSummaryService implements IPSItemSummaryFactoryService, IPSDa
 
     @Override
     public String pathToId(String path) throws DataServiceNotFoundException {
-        String pathToId = null;
+        String pathToId;
         if(path==null){
             throw new IllegalArgumentException("path may not be null or empty");
         }
@@ -221,7 +221,7 @@ public class PSItemSummaryService implements IPSItemSummaryFactoryService, IPSDa
      * 
      * @param item the item in question, assumed not <code>null</code>.
      *
-     * @param relationshipTypeName
+     * @param relationshipTypeName the type of relationship
      * @return <code>true</code> if the item is a navigation folder; otherwise
      * return <code>false</code>.
      */
@@ -338,14 +338,14 @@ public class PSItemSummaryService implements IPSItemSummaryFactoryService, IPSDa
      */
     private int getLandingPageId(List<PSItemSummary> sums)
     {
-        long navonCType = navService.getNavonContentTypeId();
-        long navtreeCType = navService.getNavtreeContentTypeId();
+        List<Long> navonCType = navService.getNavonContentTypeIds();
+        List<Long> navtreeCType = navService.getNavTreeContentTypeIds();
         PSItemSummary navItem = null;
         for (PSItemSummary sum : sums)
         {
             PSThreadUtils.checkForInterrupt();
             long type = sum.getContentTypeId();
-            if (type == navonCType || type == navtreeCType)
+            if (navonCType.contains(type) || navtreeCType.contains(type))
             {
                 navItem = sum;
                 break;

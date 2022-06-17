@@ -29,6 +29,7 @@ import com.percussion.data.PSInternalRequestCallException;
 import com.percussion.design.objectstore.IPSJavaPlugin;
 import com.percussion.design.objectstore.IPSJavaPluginConfig;
 import com.percussion.design.objectstore.PSServerConfiguration;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSJexlMethod;
 import com.percussion.extension.IPSJexlParam;
 import com.percussion.extension.PSJexlUtilBase;
@@ -131,8 +132,8 @@ public class PSAssemblerUtils extends PSJexlUtilBase
          String findername = slot.getFinderName();
          if (findername == null)
          {
-            log.warn("No finder defined for slot " + slot.getName()
-                  + " defaulting to sys_RelationshipContentFinder");
+            log.warn("No finder defined for slot {} defaulting to sys_RelationshipContentFinder",
+                    slot.getName());
             findername = "Java/global/percussion/slotcontentfinder/sys_RelationshipContentFinder";
          }
          IPSSlotContentFinder finder = asm.loadFinder(findername);
@@ -148,7 +149,7 @@ public class PSAssemblerUtils extends PSJexlUtilBase
          return asm.assemble(relitems);
       }
       catch (Exception ae) {
-         log.error("Assembly Error", ae);
+         log.error("Assembly Error: {}", PSExceptionUtils.getMessageForLog(ae));
 
          PSTrackAssemblyError.addProblem(PSI18nUtils
                  .getString("psx_assembly@Error processing slot"), ae);

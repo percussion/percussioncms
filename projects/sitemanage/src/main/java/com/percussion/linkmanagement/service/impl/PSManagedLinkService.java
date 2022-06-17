@@ -1797,8 +1797,7 @@ public class PSManagedLinkService implements IPSManagedLinkService
         }
         catch (RepositoryException e)
         {
-            log.error("Unable to get node for alt and title text with ID: {} and error message: {}",
-                    childId,
+            log.error("{}",
                     PSExceptionUtils.getMessageForLog(e));
             log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
