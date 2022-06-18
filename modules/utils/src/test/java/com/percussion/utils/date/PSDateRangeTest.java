@@ -24,18 +24,22 @@
 package com.percussion.utils.date;
 
 import com.percussion.utils.date.PSDateRange.Granularity;
-import junit.framework.TestCase;
 import org.apache.commons.lang3.time.FastDateFormat;
 import org.joda.time.DateTime;
+import org.junit.Test;
 
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 /**
  * @author paulhoward
  */
-public class PSDateRangeTest extends TestCase
+public class PSDateRangeTest
 {
    /**
     * Create a date from expected values, hiding the weird values you have to pass to the Date ctor.
@@ -51,12 +55,13 @@ public class PSDateRangeTest extends TestCase
       cal.set(year, month-1, day, 0, 0, 0);
       return cal.getTime();
    }
-   
+
+   @Test
    public void testCtor() throws Exception
    {
       Date d1 = createDate(2010, 9, 1);
       Date d2 = createDate(2010, 9, 7);
-      PSDateRange range = new PSDateRange(d1, d2);
+      PSDateRange range;
       try
       {
          range = new PSDateRange(d2, d1);
@@ -130,7 +135,8 @@ public class PSDateRangeTest extends TestCase
       assertEquals(formatter.format(range.getEnd()), formatter.format(range2.getEnd()));
       assertEquals(range.getGranularity(), range2.getGranularity());
    }
-   
+
+   @Test
    public void testMonthGranularity()
    {
       Date d1 = createDate(2010, 9, 1);
@@ -180,7 +186,8 @@ public class PSDateRangeTest extends TestCase
       range = new PSDateRange(d1, d2);
       assertEquals(25, range.getMonthsInRange());
    }
-   
+
+   @Test
    public void testDayGranularity()
    {
       Date d1 = createDate(2010, 9, 1);
@@ -226,7 +233,8 @@ public class PSDateRangeTest extends TestCase
       range = new PSDateRange(d1, d2);
       assertEquals(367, range.getDaysInRange());
    }
-   
+
+   @Test
    public void testWeekGranularity()
    {
       Date d1 = createDate(2010, 9, 1);
@@ -275,7 +283,8 @@ public class PSDateRangeTest extends TestCase
       range = new PSDateRange(d1, d2);
       assertEquals(1, range.getWeeksInRange());
    }
-   
+
+   @Test
    public void testYearGranularity()
    {
       // single year
@@ -304,7 +313,8 @@ public class PSDateRangeTest extends TestCase
       range = new PSDateRange(d1, d2);
       assertEquals(11, range.getYearsInRange());
    }
-   
+
+   @Test
    public void testGranularityBreakdown()
    {
       //days
