@@ -47,7 +47,7 @@
         </div>
         <div type="sys_normal">
             <label accesskey="" for="prefix" class="perc-required-field"><i18n:message key="perc.ui.widget.builder@Prefix"/>:</label><br/>
-            <input type="text" id="prefix" name="prefix" class="datadisplay" size="50" maxlength="100" style="height: 15px; padding-top: 3px; padding-bottom: 5px;" value="<@- prefix @>"/>
+            <input type="text" id="prefix" <@- prefix != ''?'readonly=readonly':'' @> <@- prefix != ''?'class=perc-disabled-input':'class="datadisplay"' @> type="text" name="prefix" class="datadisplay" size="50" maxlength="100" style="height: 15px; padding-top: 3px; padding-bottom: 5px;" value="<@- prefix @>"/>
             <br/>
         </div>
         <div type="sys_normal">
