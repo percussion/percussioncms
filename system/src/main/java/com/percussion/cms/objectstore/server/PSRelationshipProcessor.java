@@ -461,7 +461,7 @@ public class PSRelationshipProcessor implements IPSRelationshipProcessor
     * {@link #getParents(String, PSKey, int)
     * getParents(String, PSKey, 0)}
     */
-   public List getParents(String type, PSKey owner) throws PSCmsException
+   public List<PSLocator> getParents(String type, PSKey owner) throws PSCmsException
    {
       return getParents(type, owner, 0);
    }
@@ -485,10 +485,10 @@ public class PSRelationshipProcessor implements IPSRelationshipProcessor
     *    Never <code>null</code>, may be empty.
     * @throws PSCmsException if any errors occur processing the request.
     */
-   public List getParents(String type, PSKey object, int doNotApplyFilters)
+   public List<PSLocator> getParents(String type, PSKey object, int doNotApplyFilters)
       throws PSCmsException
    {
-      Iterator relationships =
+      Iterator<PSRelationship> relationships =
          m_dbProcessor
             .queryRelationships(
                getConfig(type),
@@ -497,9 +497,9 @@ public class PSRelationshipProcessor implements IPSRelationshipProcessor
                doNotApplyFilters)
             .iterator();
 
-      List parents = new ArrayList();
+      List<PSLocator> parents = new ArrayList<>();
       while (relationships.hasNext())
-         parents.add(((PSRelationship) relationships.next()).getOwner());
+         parents.add(( relationships.next()).getOwner());
 
       return parents;
    }
