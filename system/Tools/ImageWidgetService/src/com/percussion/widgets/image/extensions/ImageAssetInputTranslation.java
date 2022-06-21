@@ -44,6 +44,7 @@ import com.percussion.widgets.image.services.ImageCacheManagerLocator;
 import com.percussion.widgets.image.services.ImageResizeManager;
 import com.percussion.widgets.image.services.ImageResizeManagerLocator;
 import com.percussion.widgets.image.web.impl.ImageReader;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -99,10 +100,9 @@ public class ImageAssetInputTranslation extends PSDefaultExtension implements IP
             PSPurgableTempFile imageFile = (PSPurgableTempFile) request.getParameterObject(imageName);
             if (imageFile != null)
             {
-               updateRequest(request, thumbName, generateThumbnail(imageFile));
-
                String mimeType = request.getParameter(imageName + "_type");
                updateRequest(request, imageName, generateImage(imageFile, mimeType));
+               updateRequest(request, thumbName, generateThumbnail(imageFile));
             }
             else
             {
@@ -164,6 +164,10 @@ public class ImageAssetInputTranslation extends PSDefaultExtension implements IP
 
    private ImageData generateImage(PSPurgableTempFile imageFile, String mimeType) throws Exception {
       try(FileInputStream fin = new FileInputStream(imageFile)){
+         String fileType = FilenameUtils.getExtension(imageFile.getSourceFileName());
+         this.resizeManager.setExtension(fileType);
+         this.resizeManager.setContentType(imageFile.getSourceContentType());
+         this.resizeManager.setImageFormat(fileType);
          ImageData iData = this.resizeManager.generateImage(fin);
          iData.setFilename(imageFile.getSourceFileName());
          iData.setMimeType(mimeType);
