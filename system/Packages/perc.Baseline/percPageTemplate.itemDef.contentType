@@ -525,7 +525,7 @@
                         <FieldRef>additional_head_content</FieldRef>
                         <PSXUISet>
                            <Label>
-                              <PSXDisplayText>Additional head content:</PSXDisplayText>
+                              <PSXDisplayText>Additional head content: (HTML Code)</PSXDisplayText>
                            </Label>
                            <PSXControlRef id="10005" name="sys_TextArea">
                              <PSXParam name="id">
@@ -559,7 +559,7 @@
                         <FieldRef>code_insert_after_body_start</FieldRef>
                         <PSXUISet>
                            <Label>
-                              <PSXDisplayText>Code insert after body start:</PSXDisplayText>
+                              <PSXDisplayText>Code insert after body start: (HTML Code)</PSXDisplayText>
                            </Label>
                            <PSXControlRef id="10006" name="sys_TextArea">
                             <PSXParam name="id">
@@ -593,7 +593,7 @@
                         <FieldRef>code_insert_before_body_close</FieldRef>
                         <PSXUISet>
                            <Label>
-                              <PSXDisplayText>Code insert before body close:</PSXDisplayText>
+                              <PSXDisplayText>Code insert before body close: (HTML Code)</PSXDisplayText>
                            </Label>
                            <PSXControlRef id="10007" name="sys_TextArea">
                               <PSXParam name="id">
