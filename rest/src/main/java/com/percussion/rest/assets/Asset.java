@@ -32,9 +32,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @XmlRootElement
 @JsonInclude(Include.NON_NULL)
@@ -42,7 +40,7 @@ import java.util.Map;
 public class Asset
 {
     @Schema(description = "fields")
-	private Map<String, String> fields = new HashMap<>();
+	private AssetFieldList fields = new AssetFieldList();
 	@Schema(description = "id must match the id of the item for the same server path, usually best not to send id to server.")
 	private String id;
 	private String name;
@@ -63,7 +61,7 @@ public class Asset
     /**
 	 * @return the fields
 	 */
-	public Map<String, String> getFields()
+	public AssetFieldList getFields()
 	{
 		return fields;
 	}
@@ -72,7 +70,7 @@ public class Asset
 	 * @param fields
 	 *            the fields to set
 	 */
-	public void setFields(Map<String, String> fields)
+	public void setFields(AssetFieldList fields)
 	{
 		this.fields = fields;
 	}
