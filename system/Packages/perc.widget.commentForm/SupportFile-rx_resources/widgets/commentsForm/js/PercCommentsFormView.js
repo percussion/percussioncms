@@ -66,11 +66,11 @@
         //Make form fields draggable and sortable
         dragSortFields();
 
-        //Bind the click event on Menu items
-        onClickMenu();
-
         //Attach the mouse over and out
         mouseActionOnMenu();
+
+        //Bind the click event on Menu items
+        onClickMenu();
 
         //If editor is empty load it with basic fields
         if(formData === null) {
@@ -160,9 +160,8 @@
         }
 
         $("." + className).addClass(className + '-disable');
-        var bgimage = $("." + className).css('background-image');
-        bgimage = bgimage.replace("-over.png", "-disable.png");
-        $("." + className).css('background-image', bgimage);
+        $("." + className).css('color', '#CCCCCC');
+
     }
 
     /**
@@ -262,16 +261,20 @@
         $(".perc-control-label").on("mouseenter",function(evt) {
             var bgimage = $(this).css('background-image');
             var fieldClass = $(this).attr('class');
-            if(fieldClass.indexOf('disable') !== -1) {
+            if (fieldClass.indexOf('disable') !== -1) {
                 bgimage = bgimage.replace(".png", ".png");
+                $(this).css({'background-color': '#133C55',
+                    'color':'#CCCCCC',
+                    'background-image':bgimage,
+                    'border-bottom':'1px solid #99C4D8'});
                 return;
-            }
-            else {
+            } else {
                 bgimage = bgimage.replace(".png", "-over.png");
             }
 
-            $(this).css({'background-color': '#247297',
-                'color':'83A9BB',
+
+            $(this).css({'background-color': '#133C55',
+                'color':'#ffffff',
                 'background-image':bgimage,
                 'border-bottom':'1px solid #99C4D8'});
         }).on("mouseleave",function(){
@@ -279,15 +282,15 @@
             bgimage = bgimage.replace(".png", ".png");
             var fieldClass = $(this).attr('class');
             if(fieldClass.indexOf('disable') !== -1) {
-                $(this).css({'background-color': '#3288B0',
-                    'color':'#1a5f7f',
+                $(this).css({'background-color': '#133C55',
+                    'color':'#CCCCCC',
                     'background-image':bgimage,
                     'border-bottom':'1px solid #99C4D8'});
                 return;
             }
             else {
                 bgimage = bgimage.replace("-over.png", ".png");
-                $(this).css({'background-color': '#3288B0',
+                $(this).css({'background-color': '#133C55',
                     'color':'#ffffff',
                     'cursor': 'pointer',
                     'background-image':bgimage,
@@ -307,9 +310,6 @@
         }
         else {
             $("." + className).addClass(className + '-disable');
-            var bgimage = $("." + className).css('background-image');
-            bgimage = bgimage.replace("-over.png", "-disable.png");
-            $("." + className).css('background-image', bgimage);
         }
         var newElem = $.PercCommentsFormController().getNewFieldEditor(controlType);
         addEvents(newElem);
@@ -342,20 +342,24 @@
             deactivateMenuItem("form-email-label" , "PercEmailFieldControl");
         });
 
+
         //Add Title field
         $(".form-title-label").on("click",function(){
             deactivateMenuItem("form-title-label" , "PercTitleFieldControl");
         });
+
 
         //Add Username field
         $(".form-username-label").on("click",function(){
             deactivateMenuItem("form-username-label" , "PercUserFieldControl");
         });
 
+
         //Add Honeypot field
         $(".form-honeypot-label").on("click",function(){
             deactivateMenuItem("form-honeypot-label" , "PercHoneypotFieldControl");
         });
+
 
     }
     /**
@@ -395,9 +399,6 @@
     // Activate menu item once the field is deleted from the form editor
     function activateMenuItem(className) {
         $("." + className).removeClass(className + '-disable');
-        var bgimage = $("." + className).css('background-image');
-        bgimage = bgimage.replace("-disable.png", ".png");
-        $("." + className).css('background-image', bgimage);
     }
 
     // Decativate the Editor
@@ -499,8 +500,8 @@
                     modal: true,
                     zIndex: 50000,
                     buttons:[ {
-                                text:"Apply",
-                                id : "perc-field-prefs-apply",
+                        text:"Apply",
+                        id : "perc-field-prefs-apply",
                         click:function(){
 
                         }
