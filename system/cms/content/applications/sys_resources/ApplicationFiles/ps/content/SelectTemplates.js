@@ -31,7 +31,7 @@
    this.init = function(url)
    {
       this.url = url;
-   }
+   };
    
    /**
     * Creates the template selection dialog if it is not created yet.
@@ -58,7 +58,7 @@
       {
          _this.cancelCallback();
          this.hide();
-      }     
+      };
  
       dojo.event.connect(this.wgtDlg, "onLoad", function()
       {
@@ -89,7 +89,7 @@
             _this.wgtPreviewPane.setContent("No templates associated to the slot.");            
          }         
       });
-   }
+   };
 
    /**
     * Use when the select templates dialog contents is used in a panel.
@@ -111,7 +111,7 @@
          this.wgtTemplates.selectedIndex = 0;
          this.onTemplateChoice();
       } 
-   }
+   };
    
    /**
     * Retrieves the controls from the main content and connects
@@ -125,7 +125,7 @@
       this.wgtTemplates.onchange = function()
       {
          _this.onTemplateChoice();
-      }
+      };
       if(this.isAsDialog)
       {
          this.wgtButtonSelect = dojo.widget.byId("ps.select.templates.wgtButtonSelect");
@@ -144,11 +144,11 @@
                _this.okCallback(id, _this.snippetId);
                _this.wgtDlg.hide();
             }
-         }
+         };
       }      
           
       
-   }   
+   };
   
    /**
     * Resets the content url and displays the dialog.
@@ -174,7 +174,7 @@
       ps.util.setDialogSize(this.wgtDlg, this.preferredWidth, this.preferredHeight);
       this.wgtDlg.show();
       
-   }
+   };
    
    /**
     * Callback used when a template is highlighted in the
@@ -186,7 +186,7 @@
       var id = this.getSelectedId();
       if(id)
          this.loadPreviewPane(id);
-   }
+   };
    
    /**
     * Returns the selected template id.
@@ -198,7 +198,7 @@
          return null;
       var option =  this.wgtTemplates.options[index];
       return new ps.aa.ObjectId(option.value); 
-  }
+  };
    
    /**
     * Assembles and loads the snippet template combination
@@ -213,7 +213,7 @@
      var content = "";
 	  var response = null;
      // load template list
-      var response = ps.io.Actions.getItemTemplatesForSlot(snippetId);
+      response = ps.io.Actions.getItemTemplatesForSlot(snippetId);
 		if(response.isSuccess())
 		{
          var res = response.getValue();
@@ -256,7 +256,7 @@
 			  else 
 			  {
 			  	   content = "<table width=\"100%\" height=\"100%\"><tr><td valign=\"middle\" align=\"center\">";
-			  	   content += "<a target=\"_new\" href=\"" + response.getValue().url + "\">" +
+			  	   content += "<a id ='downloadAnchor' onclick='webviewAction.showFileInBrowser();' target=\"_new\" href=\"" + response.getValue().url + "\">" +
 			  	   "<u>Click To View Binary</u>" +
 			  	   "</a>";
 			  	   content += "</td></tr></table>";
@@ -282,10 +282,14 @@
        }
 
 	  }
-	  if(content == "")
+	  if(content == ""){
 	     content = "No preview available.";
+	  }else{
+		  content = content.replace("href", " onclick='webviewAction.showFileInBrowser();' href");
+	  }
+
      this.wgtPreviewPane.setContent(content);
       
-   }
+   };
  
- }
+ };
