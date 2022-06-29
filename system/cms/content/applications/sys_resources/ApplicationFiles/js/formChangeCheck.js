@@ -82,18 +82,18 @@
               }
 				}
 
-            window.close();
+            window.open(location.href, "_self", "");window.close();
 			return true;
         }
         else
         {
-            window.close();
+            window.open(location.href, "_self", "");window.close();
 			return true;
           }
       }
     else
     {
-        window.close();
+        window.open(location.href, "_self", "");window.close();
 		return true;
     }
 	return true;

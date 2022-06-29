@@ -3,7 +3,7 @@
 	"menubar": "null",
 	"browser_spellcheck": true,
 	"plugins" : "-example",
-	"toolbar": "bold,italic,underline,undo,redo,formatselect",
+	"toolbar": ["bold italic underline undo redo styleselect "],
 	"paste_word_valid_elements": "b,strong,i,em,h1,h2",
 	"valid_elements": "*[*]"
 }]
