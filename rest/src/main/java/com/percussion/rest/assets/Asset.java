@@ -34,7 +34,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Date;
 import java.util.List;
 
-@XmlRootElement
+@XmlRootElement(name="Asset")
 @JsonInclude(Include.NON_NULL)
 @Schema(description = "Represents a shared asset")
 public class Asset
