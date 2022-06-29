@@ -69,7 +69,7 @@
 }
 .perc-spacer {
     background-image: url("../images/buttonBluePlusOver.gif");
-    background-position: 13px 9px;
+    background-position: 13px 14px;
     border-bottom: 7px solid #FFFFFF;
 }
 #perc-form-fields, #perc-form-title-field{
@@ -126,6 +126,13 @@
     background-position: 15px 0;
 }
 
+
+.form-honeypot-label-disable{
+    background-repeat:no-repeat;
+    background-position: 15px 0;
+    pointer-events:none; //This makes it not clickable
+opacity:0.6;
+}
 .field-editor-basic div.perc-form-datadisplay, #perc-form-metadata-save-to-url-text-readonly, .perc-form-header-datadisplay,  #perc-formbuild-success-url-readonly, #perc-formbuild-error-url-readonly{
     height: 19px;
 }
@@ -231,7 +238,7 @@
 }
 
 #perc-form-control-wrapper{
-    border-top: 10px solid white;
+    border-top: 7px solid white;
     margin-left: -35px;
     padding-left: 50px;
     position: relative;
@@ -256,7 +263,9 @@ ul#perc-control-menu-container{
     width:150px;
 }
 #perc-control-menu-container li{
-    background-color:#3288B0;
+    background-color:#133C55;
+    color:white;
+    font-weight: bold;
     padding-top:6px;
     padding-bottom:6px;
     border-bottom:1px solid #99C4D8;
@@ -270,11 +279,52 @@ ul#perc-control-menu-container{
     background-position: 15px 0;
 }
 
-.form-text-label-disable{
-    background-image: url("../images/text-icon-disable.png");
+.form-heading-label{
+    background-image: url("../images/text-icon.png");
+    background-repeat:no-repeat;
+    background-position: 15px 1px;
+
+}
+
+.form-textarea-label{
+    background-image: url("../images/text-box-icon.png");
+    background-repeat:no-repeat;
+    background-position: 15px 1px;
+
+}
+
+.form-hidden-field-label{
+    background-image: url("../images/hidden-field-icon.png");
+    background-repeat:no-repeat;
+    background-position: 15px 7px;
+}
+
+.form-perc-honeypot-label{
+    background-image: url("../images/perc-honeypot-field-icon.png");
     background-repeat:no-repeat;
     background-position: 15px 0;
-    color: #1a5f7f;
+}
+
+.form-perc-honeypot-label-disable{
+
+    background-repeat:no-repeat;
+    background-position: 15px 0;
+    pointer-events:none; //This makes it not clickable
+opacity:0.6;
+}
+
+.form-perc-recaptcha-label{
+    background-image: url("../images/perc-recaptcha-field-icon.png");
+    background-repeat:no-repeat;
+    background-position: 15px 0;
+}
+
+.form-text-label-disable{
+
+    background-repeat:no-repeat;
+    pointer-events:none; //This makes it not clickable
+opacity:0.6;
+    background-position: 15px 0;
 }
 
 
@@ -292,10 +342,9 @@ ul#perc-control-menu-container{
 }
 
 .form-email-label-disable{
-    background-image: url("../images/email-icon-disable.png");
-    color: #1a5f7f;
+    pointer-events:none; //This makes it not clickable
+opacity:0.6;
     cursor:default;
-    background-color: #3288B0;
 }
 
 .form-username-label {
@@ -305,8 +354,8 @@ ul#perc-control-menu-container{
 }
 
 .form-username-label-disable{
-    background-image: url("../images/username-icon-disable.png");
-    color: #1a5f7f;
+    pointer-events:none; //This makes it not clickable
+opacity:0.6;
     cursor:default;
 }
 
@@ -317,9 +366,8 @@ ul#perc-control-menu-container{
 }
 
 .form-title-label-disable{
-    background-image: url("../images/title-icon-disable.png");
-    color: #1a5f7f;
-    cursor:default;
+    pointer-events:none; //This makes it not clickable
+opacity:0.6;
     background-position: 15px 1px;
 }
 
@@ -330,10 +378,8 @@ ul#perc-control-menu-container{
 }
 
 .form-website-label-disable{
-    background-image: url("../images/website-icon-disable.png");
-    color: #1a5f7f;
-    cursor:default;
-
+    pointer-events:none; //This makes it not clickable
+opacity:0.6;
 }
 .form-date-field-label{
     background-image: url("../images/date.png");
@@ -452,16 +498,16 @@ ul#perc-control-menu-container{
     color: #0099CC;
     font-size: 11px;
     font-weight: normal;
-    padding: 10px 30px 10px 32px;
+    padding: 15px 30px 15px 32px;
     text-decoration: none;
-    border-top: 10px solid #FFFFFF;
+    border-top: 7px solid #FFFFFF;
     margin-left:-35px;
     cursor:pointer;
 }
 
 .perc-form-meta-tab-open {
     background-image: url("../images/buttonBlueMinusOver.gif");
-    background-position: 13px 9px;
+    background-position: 13px 14px;
 
 }
 
@@ -473,9 +519,7 @@ ul#perc-control-menu-container{
 
 .perc-form-spacer {
     background-image: url("../images/buttonBluePlusOver.gif");
-    background-position: 13px 9px;
-    margin-bottom:-52px;
-
+    background-position: 13px 14px;
 }
 .perc-form-meta-textarea{
     vertical-align:top;
@@ -539,7 +583,7 @@ ul#perc-control-menu-container{
     cursor:default;
 }
 .perc-div-rowOption input[type="radio"]{
-
+    display:inline-block;
     margin: 0 5px 0 0;
     cursor:default;
 }
@@ -551,12 +595,25 @@ ul#perc-control-menu-container{
 .perc-div-rowOption .datadisplay {
 
 }
+
+.block { overflow: hidden; padding:10px; margin-top:10px; height:auto; background-color:#f9f9f9; }
+
 .add-control {
+    background-image: url('../images/form-plus.png');
+    background-repeat:no-repeat;
     margin:0;
     padding-top:0;
+    height: 18px;
+    width: 18px;
+    border-width: 0;
 }
 .delete-control {
+    background-image: url('../images/form-minus.png');
+    background-repeat:no-repeat;
     margin-right: 2px;
+    height: 18px;
+    width: 18px;
+    border-width: 0;
 }
 .table-layout{
     display: table;
@@ -586,6 +643,8 @@ ul#perc-control-menu-container{
 #perc-form-help-text {
 
     margin-bottom:10px;
+    margin-right:25px;
+    padding-left:15px;
 }
 
 #perc-form-metadata-save-to-url-text-readonly{
@@ -604,6 +663,7 @@ ul#perc-control-menu-container{
     cursor:pointer;
 }
 .perc-div-rowOption input[type="checkbox"]{
+    display:inline-block;
     vertical-align:middle;
 }
 
@@ -624,6 +684,9 @@ form input[type="text"], form textarea {
 }
 form input[type="text"]{
     padding: 3px 3px 5px 3px;
+}
+input {
+    display: block;
 }
 
 .field-editor-basic input[type="button"]{
@@ -652,7 +715,8 @@ form input[type="text"]{
     background-image : url("../images/ButtonBrowse.png");
     width:63px;
     height:22px;
-    text-indent:-10000px;
+    background-color: #133c55;
+    color: white;
     border:0;
     display:block;
     position:absolute;
@@ -666,6 +730,8 @@ form input[type="text"]{
 #perc-formbuild-error-url-browse{
     top: 0;
     left: 105%;
+    background-color: #133c55;
+    color: white;
 }
 
 #perc-formbuild-success-url-browse:hover, #perc-formbuild-error-url-browse:hover{
@@ -853,7 +919,6 @@ form input[type="text"]{
 .perc-prefs-dialog .ui-dialog-content{
     background-color: #3288B0;
     font-size: 11px;
-    border: 1px solid #aaaaaa;
 }
 
 .perc-prefs-dialog .ui-dialog-titlebar{
@@ -889,7 +954,6 @@ form input[type="text"]{
 .perc-pref-text{
     font-size: 11px;
     width: 40px;
-    margin-left: 10px;
     margin-right: 5px;
     margin-top: 5px;
 }
@@ -901,6 +965,7 @@ form input[type="text"]{
 .perc-pref-entry{
     padding-top: 5px;
     height: 28px;
+    padding-bottom: 15px;
 }
 #perc-field-max-char-enabled{
     margin: -3px 10px 0 0;
@@ -912,9 +977,11 @@ form input[type="text"]{
     margin-left: 10px;
     width:98.5%;
 }
+
 #perc-formbuild-success-url-readonly, #perc-formbuild-error-url-readonly, #perc-form-meta-readonly-description, #perc-form-metadata-save-to-url-text-readonly{
     margin-top:0;
 }
+
 body * {
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Open Sans', sans-serif, serif;
 }
