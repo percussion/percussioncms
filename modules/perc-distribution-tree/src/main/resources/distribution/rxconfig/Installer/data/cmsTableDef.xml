@@ -7306,7 +7306,7 @@
             </column>
             <column name="IMG_ALT">
                 <jdbctype>VARCHAR</jdbctype>
-                <size>512</size>
+                <size>800</size>
                 <allowsnull>yes</allowsnull>
             </column>
             <column name="IMG2">
