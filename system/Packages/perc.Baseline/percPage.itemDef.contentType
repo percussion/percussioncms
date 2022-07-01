@@ -1309,21 +1309,7 @@
                               <PSXParam name="id">
                                  <DataLocator>
                                     <PSXTextLiteral id="0">
-                          <text>additional_head_content</text>
-                        </PSXTextLiteral>
-                      </DataLocator>
-                    </PSXParam>
-                    <PSXParam name="codeeditor">
-                      <DataLocator>
-                        <PSXTextLiteral id="0">
-                          <text>yes</text>
-                        </PSXTextLiteral>
-                      </DataLocator>
-                    </PSXParam>
-                    <PSXParam name="codeeditor_mode">
-                      <DataLocator>
-                        <PSXTextLiteral id="0">
-                          <text>html</text>
+                                       <text>percpagehead</text>
                                     </PSXTextLiteral>
                                  </DataLocator>
                               </PSXParam>
@@ -1343,21 +1329,7 @@
                               <PSXParam name="id">
                                  <DataLocator>
                                     <PSXTextLiteral id="0">
-                          <text>code_insert_after_body_start</text>
-                        </PSXTextLiteral>
-                      </DataLocator>
-                    </PSXParam>
-                    <PSXParam name="codeeditor">
-                      <DataLocator>
-                        <PSXTextLiteral id="0">
-                          <text>yes</text>
-                        </PSXTextLiteral>
-                      </DataLocator>
-                    </PSXParam>
-                    <PSXParam name="codeeditor_mode">
-                      <DataLocator>
-                        <PSXTextLiteral id="0">
-                          <text>html</text>
+                                       <text>percpagebodybefore</text>
                                     </PSXTextLiteral>
                                  </DataLocator>
                               </PSXParam>
@@ -1377,21 +1349,7 @@
                               <PSXParam name="id">
                                  <DataLocator>
                                     <PSXTextLiteral id="0">
-                          <text>code_insert_before_body_close</text>
-                        </PSXTextLiteral>
-                      </DataLocator>
-                    </PSXParam>
-                    <PSXParam name="codeeditor">
-                      <DataLocator>
-                        <PSXTextLiteral id="0">
-                          <text>yes</text>
-                        </PSXTextLiteral>
-                      </DataLocator>
-                    </PSXParam>
-                    <PSXParam name="codeeditor_mode">
-                      <DataLocator>
-                        <PSXTextLiteral id="0">
-                          <text>html</text>
+                                       <text>percpagebodyafter</text>
                                     </PSXTextLiteral>
                                  </DataLocator>
                               </PSXParam>
