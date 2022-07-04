@@ -525,31 +525,9 @@
                         <FieldRef>additional_head_content</FieldRef>
                         <PSXUISet>
                            <Label>
-                              <PSXDisplayText>Additional head content: (HTML Code)</PSXDisplayText>
+                              <PSXDisplayText>Additional head content:</PSXDisplayText>
                            </Label>
-                           <PSXControlRef id="10005" name="sys_TextArea">
-                             <PSXParam name="id">
-                              <DataLocator>
-                                <PSXTextLiteral id="0">
-                                   <text>additional_head_content</text>
-                                 </PSXTextLiteral>
-                             </DataLocator>
-                             </PSXParam>
-                             <PSXParam name="codeeditor">
-                                 <DataLocator>
-                                   <PSXTextLiteral id="0">
-                                     <text>yes</text>
-                                   </PSXTextLiteral>
-                                 </DataLocator>
-                               </PSXParam>
-                               <PSXParam name="codeeditor_mode">
-                                 <DataLocator>
-                                   <PSXTextLiteral id="0">
-                                     <text>html</text>
-                                   </PSXTextLiteral>
-                                 </DataLocator>
-                               </PSXParam>
-                           </PSXControlRef>
+                           <PSXControlRef id="10005" name="sys_TextArea"/>
                            <ErrorLabel>
                               <PSXDisplayText>Additional head content:</PSXDisplayText>
                            </ErrorLabel>
@@ -559,31 +537,9 @@
                         <FieldRef>code_insert_after_body_start</FieldRef>
                         <PSXUISet>
                            <Label>
-                              <PSXDisplayText>Code insert after body start: (HTML Code)</PSXDisplayText>
+                              <PSXDisplayText>Code insert after body start:</PSXDisplayText>
                            </Label>
-                           <PSXControlRef id="10006" name="sys_TextArea">
-                            <PSXParam name="id">
-                               <DataLocator>
-                           <PSXTextLiteral id="0">
-                              <text>code_insert_after_body_start</text>
-                            </PSXTextLiteral>
-                          </DataLocator>
-                             </PSXParam>
-                             <PSXParam name="codeeditor">
-                                 <DataLocator>
-                                   <PSXTextLiteral id="0">
-                                     <text>yes</text>
-                                   </PSXTextLiteral>
-                                 </DataLocator>
-                               </PSXParam>
-                               <PSXParam name="codeeditor_mode">
-                                 <DataLocator>
-                                   <PSXTextLiteral id="0">
-                                     <text>html</text>
-                                   </PSXTextLiteral>
-                                 </DataLocator>
-                               </PSXParam>
-                           </PSXControlRef>
+                           <PSXControlRef id="10006" name="sys_TextArea"/>
                            <ErrorLabel>
                               <PSXDisplayText>Code insert after body start:</PSXDisplayText>
                            </ErrorLabel>
@@ -593,31 +549,9 @@
                         <FieldRef>code_insert_before_body_close</FieldRef>
                         <PSXUISet>
                            <Label>
-                              <PSXDisplayText>Code insert before body close: (HTML Code)</PSXDisplayText>
+                              <PSXDisplayText>Code insert before body close:</PSXDisplayText>
                            </Label>
-                           <PSXControlRef id="10007" name="sys_TextArea">
-                              <PSXParam name="id">
-                                 <DataLocator>
-                                    <PSXTextLiteral id="0">
-                          <text>code_insert_before_body_close</text>
-                        </PSXTextLiteral>
-                      </DataLocator>
-                    </PSXParam>
-                    <PSXParam name="codeeditor">
-                      <DataLocator>
-                        <PSXTextLiteral id="0">
-                          <text>yes</text>
-                        </PSXTextLiteral>
-                      </DataLocator>
-                    </PSXParam>
-                    <PSXParam name="codeeditor_mode">
-                      <DataLocator>
-                        <PSXTextLiteral id="0">
-                          <text>html</text>
-                                    </PSXTextLiteral>
-                                 </DataLocator>
-                              </PSXParam>
-                           </PSXControlRef>
+                           <PSXControlRef id="10007" name="sys_TextArea"/>
                            <ErrorLabel>
                               <PSXDisplayText>Code insert before body close:</PSXDisplayText>
                            </ErrorLabel>
