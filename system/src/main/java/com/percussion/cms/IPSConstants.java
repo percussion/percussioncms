@@ -594,5 +594,23 @@ public interface IPSConstants
     public static final String CACHING_LOG = "Caching";
     public static String JAVA_EXTENSIONS_LOG = "Java Extensions";
     public static final String SERVER_PROP_FILE_COPY_BUFFER_SIZE = "fileCopyBufferSize";
+
+    //system defined Roles
+   /**
+    * Administrator role.
+    */
+   public static final String ADMINISTRATOR_ROLE = "Admin";
+   public static final String DESIGNER_ROLE = "Designer";
+
+   /**
+    * Can administer Navigation Only
+    */
+   public static final String NAV_ADMIN_ROLE = "Navigation Admin";
+
+   /**
+    * Can administer users only.
+    */
+   public static final String USER_ADMIN_ROLE = "User Admin";
+
 }
 

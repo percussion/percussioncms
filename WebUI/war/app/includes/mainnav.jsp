@@ -44,6 +44,8 @@
     boolean isDebug = "true".equals(debug);
     boolean isAdmin = (Boolean)request.getAttribute("isAdmin");
     boolean isDesigner = (Boolean)request.getAttribute("isDesigner");
+    boolean isUserAdmin = false;
+    boolean isNavAdmin = false;
     String wdgBuilderParam = (String)request.getAttribute("isWidgetBuilderActive");
     boolean isWdgActive = "true".equalsIgnoreCase(wdgBuilderParam.trim());
     String debugQueryString = isDebug ? "&debug=true" : "";

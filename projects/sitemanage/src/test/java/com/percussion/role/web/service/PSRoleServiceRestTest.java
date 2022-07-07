@@ -35,6 +35,7 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import com.percussion.cms.IPSConstants;
 import com.percussion.role.data.PSRole;
 import com.percussion.role.service.IPSRoleService;
 import com.percussion.role.service.impl.PSRoleService;
@@ -174,10 +175,10 @@ public class PSRoleServiceRestTest extends PSRestTestCase<PSRoleServiceRestClien
     public void testCannotRemoveSelfFromAdminRole() throws Exception
     {
         PSUser actual = getUserServiceRestClient().getCurrentUser();
-        assertThat(actual.getRoles(), hasItem(IPSRoleService.ADMINISTRATOR_ROLE));
+        assertThat(actual.getRoles(), hasItem(IPSConstants.ADMINISTRATOR_ROLE));
         
         PSStringWrapper strWrapper = new PSStringWrapper();
-        strWrapper.setValue(IPSRoleService.ADMINISTRATOR_ROLE);
+        strWrapper.setValue(IPSConstants.ADMINISTRATOR_ROLE);
         
         PSRole adminRole = restClient.find(strWrapper); 
         adminRole.getUsers().remove(actual.getName());
