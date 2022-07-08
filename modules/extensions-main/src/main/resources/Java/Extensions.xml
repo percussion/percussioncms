@@ -2483,6 +2483,27 @@
       <interface name="com.percussion.extension.IPSRequestPreProcessor"/>
       <suppliedResources/>
    </Extension>
+   <Extension categorystring="uicontext" context="global/percussion/exit/" deprecated="no" handler="Java" name="sys_generateVariantList">
+      <initParam name="com.percussion.user.description">Adds the Preview Action menu and menu items nodes for available templates in a user community</initParam>
+      <initParam name="com.percussion.extension.version">1</initParam>
+      <initParam name="className">com.percussion.uicontext.PSGenerateVariantList</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <interface name="com.percussion.extension.IPSResultDocumentProcessor"/>
+      <PSXExtensionParamDef id="0">
+         <name>aaIsAa</name>
+         <dataType>java.lang.String</dataType>
+         <description>Flag to identify Active Assembly preview.  Set true for AA</description>
+      </PSXExtensionParamDef>
+      <suppliedResources/>
+   </Extension>
+   <Extension categorystring="uicontext" context="global/percussion/exit/" deprecated="no" handler="Java" name="sys_generateContentTypeList">
+      <initParam name="com.percussion.user.description">Adds New Item Action menus and menu items nodes for available Content Types in a user community</initParam>
+      <initParam name="com.percussion.extension.version">1</initParam>
+      <initParam name="className">com.percussion.uicontext.PSGenerateContentTypeList</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <interface name="com.percussion.extension.IPSResultDocumentProcessor"/>
+      <suppliedResources/>
+   </Extension>
    <Extension name="sys_ParameterTokenizer" context="global/percussion/generic" handler="Java" categorystring="generic">
       <initParam name="com.percussion.user.description">Split a parameter with delimiters into a series of lists</initParam>
       <initParam name="com.percussion.extension.version">1</initParam>
