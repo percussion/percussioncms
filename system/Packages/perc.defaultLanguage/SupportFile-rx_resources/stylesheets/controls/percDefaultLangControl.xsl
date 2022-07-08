@@ -96,7 +96,7 @@
                     <li>International sites should follow identical site folder layouts or this widget can't generate the alternate url.</li>
                     <li>Always choose language and country when you want search engines to return search results only in that region.</li>
                     <li>Save this Widget as a Shared Asset and re-use that asset on all sites.</li>
-                    <li>There should only be one Default site.</li/>
+                    <li>There should only be one Default site.</li>
                     <li>Click here for more information: <a href="https://support.google.com/webmasters/answer/189077?hl=en" target="_blank" rel="noopener noreferrer">rel=alternate href-lang=x</a></li>
                 </ul>
             </div>
