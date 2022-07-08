@@ -3,9 +3,11 @@ package com.percussion.rest.assets;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 import java.util.Objects;
 
 @XmlRootElement(name = "AssetField")
+@XmlType(propOrder = {})
 @Schema(description="Represents an Asset field")
 public class AssetField {
 

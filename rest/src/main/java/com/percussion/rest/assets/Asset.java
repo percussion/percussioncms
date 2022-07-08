@@ -33,6 +33,7 @@ import com.percussion.rest.pages.WorkflowInfo;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -41,6 +42,7 @@ import java.util.Objects;
 @JsonRootName(value="Asset")
 @JsonInclude(Include.NON_NULL)
 @JsonPropertyOrder()
+@XmlType(propOrder = {})
 @Schema(description = "Represents a shared asset")
 public class Asset
 {
