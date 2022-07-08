@@ -38,6 +38,9 @@
         <module>rest</module>
         <module>system</module>
         <module>deployer</module>
+        <module>modules/Help</module>
+        <module>modules/ContentUI</module>
+        <module>modules/ServerUIComponents</module>
         <module>modules/extensions-default-template</module>
         <module>modules/extensions-main</module>
         <module>modules/extensions-nav</module>
@@ -93,7 +96,8 @@
        <gwt.maven.plugin.version>2.8.2</gwt.maven.plugin.version>
        <build.helper.maven.plugin.version>3.0.0</build.helper.maven.plugin.version>
        <maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
-       <maven.clean.plugin.version>3.1.0</maven.clean.plugin.version>
+       <maven.clean.plugin.version>3.2.0</maven.clean.plugin.version>
+       <maven.build.helper.plugin.version>3.3.0</maven.build.helper.plugin.version>
        <maven.install.plugin.version>3.0.0-M1</maven.install.plugin.version>
        <spotbugs.plugin.version>4.2.0</spotbugs.plugin.version>
        <maven.checkstyle.plugin.version>3.1.1</maven.checkstyle.plugin.version>
@@ -148,7 +152,7 @@
         <owl.version>5.1.10</owl.version>
        <awssdk.version>1.11.804</awssdk.version>
         <bc.version>1.70</bc.version>
-        <jackson.version>2.13.2</jackson.version>
+        <jackson.version>2.13.3</jackson.version>
         <jsoup.version>1.14.2</jsoup.version>
         <json.version>20201115</json.version>
         <junit.version>4.13.1</junit.version>
@@ -267,6 +271,11 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-site-plugin</artifactId>
                 <version>${maven.site.plugin.version}</version>
+            </plugin>
+            <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>build-helper-maven-plugin</artifactId>
+                <version>${maven.build.helper.plugin.version}</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -2829,6 +2838,21 @@
                 <version>1.2</version>
             </dependency>
 
+            <dependency>
+                <groupId>com.percussion</groupId>
+                <artifactId>perc-help</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.percussion</groupId>
+                <artifactId>perc-server-ui-content</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.percussion</groupId>
+                <artifactId>perc-server-ui-cmp</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
