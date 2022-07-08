@@ -378,9 +378,20 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
                 String currentPath = PSPathUtils.getFinderPath(oldPSAsset.getFolderPaths().get(0));
                 if (currentPath.endsWith("/")) {
                     currentPath = currentPath.substring(1, currentPath.length() - 1);
-                } else {
-                    currentPath = currentPath.substring(1);
                 }
+
+                if(currentPath.startsWith("//"))
+                    currentPath = currentPath.substring(1);
+
+                if(asset.getFolderPath().startsWith("//"))
+                    asset.setFolderPath(asset.getFolderPath().substring(1));
+
+                if(!asset.getFolderPath().startsWith("/"))
+                    asset.setFolderPath("/" + asset.getFolderPath());
+
+                if(!currentPath.startsWith("/"))
+                    currentPath = "/" + currentPath;
+
                 if (!asset.getFolderPath().equalsIgnoreCase(currentPath)) { // And the given path information is different than the current
                     // path
 
