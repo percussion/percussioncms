@@ -58,15 +58,18 @@
 			<head>
 				<!-- <xsl:copy-of select="/*/UserStatus"/> -->
 				<script src="../tmx/tmx.jsp?sys_lang={$lang}">;</script>
-				<script src="/cm/jslib/profiles/3x/jquery/jquery-3.6.0.js">;</script>
-				<script src="/cm/jslib/profiles/3x/jquery/jquery-migrate-3.3.2.js">;</script>
+				<script src="../cm/jslib/profiles/3x/jquery/jquery-3.6.0.js">;</script>
+				<script src="../cm/jslib/profiles/3x/jquery/libraries/jquery-ui/jquery-ui.js">;</script>
+				<script src="../cm/jslib/profiles/3x/jquery/jquery-migrate-3.3.2.js">;</script>
 				<script src="../sys_resources/js/browser.js">;</script>
+				<script src="../cm/jslib/profiles/3x/libraries/perc-retiredjs/json2.js">;</script>
 				<script src="../sys_resources/js/href.js">;</script>
 				<script language="javascript" src="../sys_resources/js/globalErrorMessages.js">;</script>
 				<script language="javascript" src="{concat('../rx_resources/js/',$lang,'/globalErrorMessages.js')}">;</script>
 				<script src="../sys_resources/js/AddFormParameters.js">;</script>
 				<script src="../sys_resources/js/formValidation.js">;</script>
 				<script src="../sys_resources/js/formChangeCheck.js">;</script>
+				<script src="../sys_resources/js/elementEventListener.js">;</script>
 				<xsl:if test="$hasWebImageFx">
 					<script src="../sys_resources/js/href.js">;</script>
 					<script src="../rx_resources/webimagefx/rx_wifx.js">;</script>
@@ -123,7 +126,7 @@
 							}
 						}
 						window.opener.ps_updateFlag = false;
-						window.close();
+                        window.open('','_self').close();
 					}
 				}
 				else
@@ -228,9 +231,11 @@
 						<xsl:with-param name="lang" select="$lang"/>
 					</xsl:call-template>
 				</title>
-				<link rel="stylesheet" type="text/css" href="/sys_resources/css/templates.css"/>
-				<link rel="stylesheet" type="text/css" href="/rx_resources/css/templates.css"/>
-				<link rel="stylesheet" type="text/css" href="{concat('/rx_resources/css/',$lang,'/templates.css')}"/>
+				<link rel="stylesheet" type="text/css" href="../cm/themes/base/jquery.ui.all.css"/>
+				<link rel="stylesheet" type="text/css" href="../rx_resources/css/tooltip.css"/>
+				<link rel="stylesheet" type="text/css" href="../sys_resources/css/templates.css"/>
+				<link rel="stylesheet" type="text/css" href="../rx_resources/css/templates.css"/>
+				<link rel="stylesheet" type="text/css" href="{concat('../rx_resources/css/',$lang,'/templates.css')}"/>
 				<!-- @@REP WITH WEP I18N FUNC@@ -->
 			</head>
 			<body class="datacell1" topmargin="5" leftmargin="5">
@@ -482,7 +487,7 @@
 		<xsl:apply-templates select="DisplayField"/>
 	</xsl:template>
 	<xsl:template match="DisplayField[@displayType='sys_hidden']">
-		<tr>
+		<tr style="display:none">
 			<td>
 				<xsl:comment>Hidden Control</xsl:comment>
 				<xsl:apply-templates select="Control" mode="psxcontrol-hidden"/>
@@ -491,7 +496,7 @@
 	</xsl:template>
 	<!-- Treat sys_HiddenInput control also as hidden field-->
 	<xsl:template match="DisplayField[Control[@name='sys_HiddenInput']]" priority="10">
-		<tr>
+		<tr style="display: none;">
 			<td>
 				<xsl:comment>Hidden Control</xsl:comment>
 				<xsl:apply-templates select="Control" mode="psxcontrol-hidden"/>
