@@ -157,6 +157,12 @@
                         <artifactId>wsdl4j</artifactId>
                         <version>1.6.2</version>
                     </dependency>
+                    <!-- https://mvnrepository.com/artifact/javax.xml.soap/javax.xml.soap-api -->
+                    <dependency>
+                        <groupId>javax.xml.soap</groupId>
+                        <artifactId>javax.xml.soap-api</artifactId>
+                        <version>1.4.0</version>
+                    </dependency>
 
                 </dependencies>
                 <executions>
@@ -246,6 +252,12 @@
             <groupId>javax.xml</groupId>
             <artifactId>jaxrpc-api</artifactId>
             <version>1.1</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/javax.xml.soap/javax.xml.soap-api -->
+        <dependency>
+            <groupId>javax.xml.soap</groupId>
+            <artifactId>javax.xml.soap-api</artifactId>
+            <version>1.4.0</version>
         </dependency>
 
     </dependencies>
