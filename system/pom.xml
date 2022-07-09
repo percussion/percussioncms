@@ -162,9 +162,11 @@
             </testResource>
         </testResources>
         <plugins>
+
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
+                <version>3.3.0</version>
                 <executions>
                     <execution>
                         <phase>validate</phase>
@@ -174,6 +176,7 @@
                         </goals>
                         <configuration>
                             <propertyPrefix>parsedVersion</propertyPrefix>
+                            <versionString>${project.parent.version}</versionString>
                         </configuration>
                     </execution>
                     <execution>
@@ -248,11 +251,10 @@
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
+                    <release>8</release>
                     <fork>true</fork>
                     <meminitial>1024m</meminitial>
                     <maxmem>2024m</maxmem>
-
-
                 </configuration>
             </plugin>
 
