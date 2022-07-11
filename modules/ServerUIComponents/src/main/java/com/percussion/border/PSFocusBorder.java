@@ -8,7 +8,6 @@
 package com.percussion.border;
 
 import com.percussion.cx.PSDisplayOptions;
-import javafx.embed.swing.*;
 import javax.swing.*;
 import javax.swing.border.AbstractBorder;
 import javax.swing.border.Border;
@@ -257,7 +256,7 @@ public class PSFocusBorder extends AbstractBorder implements FocusListener
       return
          c instanceof JMenuBar ||
          c instanceof JMenu ||
-         c instanceof JFXPanel ||
+         c instanceof JPanel ||
          c instanceof JTextArea ||
          c instanceof JCheckBox ||
          c instanceof JTextField ||
