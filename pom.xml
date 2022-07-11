@@ -129,7 +129,6 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-       <maven.compiler.release>8</maven.compiler.release>
        <spring.version>5.3.18</spring.version>
        <hibernate.version>5.6.5.Final</hibernate.version>
        <hibernate.validator.version>6.2.3.Final</hibernate.validator.version>
@@ -570,7 +569,6 @@
                         <source>1.8</source>
                         <target>1.8</target>
                         <fork>true</fork>
-                        <release>8</release>
                          <debug>true</debug>
                         <debuglevel>lines,vars,source</debuglevel> 
                         <meminitial>1024m</meminitial>

@@ -131,13 +131,6 @@
             <groupId>commons-lang</groupId>
             <artifactId>commons-lang</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-swing</artifactId>
-            <version>11.0.2</version>
-            <!-- Allows compile on JDK > 8 this dependency is only used client side -->
-            <scope>provided</scope>
-        </dependency>
     </dependencies>
 
 </project>

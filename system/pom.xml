@@ -251,7 +251,6 @@
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
-                    <release>8</release>
                     <fork>true</fork>
                     <meminitial>1024m</meminitial>
                     <maxmem>2024m</maxmem>
