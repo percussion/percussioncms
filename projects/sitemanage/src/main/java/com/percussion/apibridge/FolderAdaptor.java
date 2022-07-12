@@ -594,17 +594,19 @@ public class FolderAdaptor implements IFolderAdaptor {
 		PSLocator loc = idMapper.getLocator(existingFolder.getId());
 		loc.setRevision(-1);
 		pathItem = folderHelper.findItemById(idMapper.getString(loc));
-		} catch (PSParametersValidationException e) {
-			throw new FolderNotFoundException(e);
-		} catch ( IPSDataService.DataServiceLoadException | PSValidationException | PSNotFoundException e) {
+		} catch (IPSDataService.DataServiceLoadException | PSValidationException | PSNotFoundException e) {
 			throw new FolderNotFoundException(e);
 		}
+
 		pathUtilsPath = pathItem.getFolderPath();
 		if (pathUtilsPath == null && CollectionUtils.isNotEmpty(pathItem.getFolderPaths())) {
 			fullPath = pathItem.getFolderPaths().get(0) + "/" + pathItem.getName();
 			pathUtilsPath = StringUtils.substringAfter(fullPath, "/");
 		} else {
-			fullPath = "/" + pathUtilsPath;
+			if(pathUtilsPath!= null && !pathUtilsPath.startsWith("//"))
+				fullPath = "/" + pathUtilsPath;
+			else
+				fullPath = pathUtilsPath;
 		}
 
 		folderSections = new UrlParts(fullPath);
@@ -628,8 +630,7 @@ public class FolderAdaptor implements IFolderAdaptor {
 			reorderSiteSection(baseUri, existingFolder.getId(), folder, existingFolder);
 		}
 
-		// create patch item so do not need to get everything again.
-		return getFolder(baseUri, existingFolder.getId());
+		return existingFolder;
 	}
 
 	/***
