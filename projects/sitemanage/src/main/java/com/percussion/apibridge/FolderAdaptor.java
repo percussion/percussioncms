@@ -543,7 +543,7 @@ public class FolderAdaptor implements IFolderAdaptor {
 				} else {
 					existingFolder = getFolder(baseUri, folder.getSiteName(), folder.getPath(), folder.getName());
 				}
-			} catch (FolderNotFoundException e) {
+			} catch (FolderNotFoundException | BackendException e) {
 				newFolder = true;
 				if (StringUtils.isEmpty(folder.getPath()) && StringUtils.isEmpty(folder.getName()))
 					throw new BackendException(
