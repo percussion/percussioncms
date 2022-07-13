@@ -458,6 +458,16 @@ accept      %ContentTypes; #IMPLIED
             <psxctl:DefaultValue>POPUP</psxctl:DefaultValue>
          </psxctl:Param>
       </psxctl:ParamList>
+	  <psxctl:AssociatedFileList>
+	  <psxctl:FileDescriptor name="PercFileSelectionControl.js" type="script" mimetype="text/javascript">
+            <psxctl:FileLocation>/sys_resources/js/cm/init.js</psxctl:FileLocation>
+            <psxctl:Timestamp/>
+         </psxctl:FileDescriptor>
+	     <psxctl:FileDescriptor name="PercFileSelectionControl.js" type="script" mimetype="text/javascript">
+            <psxctl:FileLocation>/sys_resources/js/browser.js</psxctl:FileLocation>
+            <psxctl:Timestamp/>
+         </psxctl:FileDescriptor>
+      </psxctl:AssociatedFileList>
       <psxctl:Dependencies>
          <psxctl:Dependency status="readyToGo" occurrence="single">
             <psxctl:Default>
