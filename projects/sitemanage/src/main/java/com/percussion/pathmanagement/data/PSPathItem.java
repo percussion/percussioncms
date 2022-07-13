@@ -35,6 +35,7 @@ import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -153,6 +154,12 @@ public class PSPathItem extends PSDataItemSummary implements IPSItemSummary, IPS
     
     public String getFolderPath()
     {
+        if(folderPath == null){
+            List<String> paths = getFolderPaths();
+            if(paths!=null && !paths.isEmpty()){
+                folderPath = paths.get(0);
+            }
+        }
         return folderPath;
     }
 
