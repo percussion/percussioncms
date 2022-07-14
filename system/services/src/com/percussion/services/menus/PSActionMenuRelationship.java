@@ -34,6 +34,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.io.Serializable;
+import java.util.Objects;
 
 @Entity
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE,
@@ -55,5 +56,16 @@ public class PSActionMenuRelationship implements Serializable {
     public PSActionMenuRelationship(){}
 
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof PSActionMenuRelationship)) return false;
+        PSActionMenuRelationship that = (PSActionMenuRelationship) o;
+        return menu.equals(that.menu) && child.equals(that.child);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(menu, child);
+    }
 }
