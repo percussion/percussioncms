@@ -532,6 +532,10 @@ public class FolderAdaptor implements IFolderAdaptor {
 		try {
 			checkAPIPermission();
 
+			String baseName = folder.getName();
+			String baseSite = folder.getSiteName();
+			String basePath = folder.getPath();
+
 			Folder existingFolder = null;
 			boolean newFolder = false;
 			boolean byId = StringUtils.isNotEmpty(folder.getId()) && folder.getSiteName() == null
@@ -571,6 +575,12 @@ public class FolderAdaptor implements IFolderAdaptor {
 			} else {
 				folder = modifyExistingFolder(baseUri, existingFolder, folder);
 			}
+			if(folder.getName().equalsIgnoreCase("")){
+				folder.setName(baseName);
+				folder.setSiteName(baseSite);
+				folder.setPath(basePath);
+			}
+
 			return folder;
 		} catch (PSDataServiceException | IPSPathService.PSPathServiceException e) {
 			throw new BackendException(e);
