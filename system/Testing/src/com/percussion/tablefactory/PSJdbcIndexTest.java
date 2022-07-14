@@ -70,7 +70,7 @@ public class PSJdbcIndexTest extends TestCase
       {
          createIndex(cols);
       }
-      catch (IllegalArgumentException e)
+      catch (PSJdbcTableFactoryException e)
       {
          caught = true;
       }
