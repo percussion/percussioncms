@@ -42,7 +42,7 @@ import com.percussion.utils.jdbc.PSConnectionInfo;
 import com.percussion.utils.testing.IntegrationTest;
 import com.percussion.utils.timing.PSStopwatchStack;
 import com.percussion.xml.PSXmlTreeWalker;
-import org.hibernate.Query;
+import org.hibernate.query.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
