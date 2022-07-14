@@ -75,7 +75,7 @@ public class PSJdbcUpdateKeyTest extends TestCase
       {
          PSJdbcUpdateKey uc = new PSJdbcUpdateKey(cols.iterator());
       }
-      catch (IllegalArgumentException e)
+      catch (PSJdbcTableFactoryException e)
       {
          caught = true;
       }
