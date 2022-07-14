@@ -23,11 +23,11 @@
  */
 package com.percussion.tablefactory;
 
-import com.percussion.util.IOTools;
 import com.percussion.util.PSCharSets;
 import com.percussion.util.PSStringOperation;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
+import org.apache.commons.io.IOUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -158,7 +158,7 @@ public class PSJdbcColumnData
             os = Base64.getMimeEncoder().wrap(oBuf);
          }
 
-         IOTools.copyStream(is, os);
+         IOUtils.copy(is, os);
          data = oBuf.toString(PSCharSets.rxJavaEnc());
       }
       catch (Exception e1)
@@ -301,8 +301,8 @@ public class PSJdbcColumnData
          {
             m_value = null;
          }
-         else if (isEmptyNull != null && !isEmptyNull.trim().equalsIgnoreCase(
-            EMPTY_NULL_FALSE))
+         else if (!isEmptyNull.trim().equalsIgnoreCase(
+                     EMPTY_NULL_FALSE))
          {
             // bad value for attribute
             Object[] args = {NODE_NAME, EMPTY_NULL_ATTR, isEmptyNull};

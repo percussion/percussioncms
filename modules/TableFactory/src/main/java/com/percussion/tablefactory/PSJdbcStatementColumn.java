@@ -146,7 +146,7 @@ public class PSJdbcStatementColumn
     *
     * @throws IllegalArgumentException if stmt is <code>null</code>.
     * @throws SQLException if an error occurs.
-    * @throws IOExcpetion if an error occurs converting any binary values.
+    * @throws IOException if an error occurs converting any binary values.
     */
    public void setDataFromString(PreparedStatement stmt, int bindStart)
       throws SQLException, IOException

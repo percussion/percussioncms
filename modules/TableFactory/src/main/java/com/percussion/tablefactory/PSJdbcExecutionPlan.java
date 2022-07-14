@@ -53,7 +53,7 @@ public class PSJdbcExecutionPlan
    /**
     * Adds all the steps of a plan to this plan.
     *
-    * @param plan The plan whose stpes are added to this plan.
+    * @param plan The plan whose steps are added to this plan.
     *
     * @throws IllegalArgumentException if plan is <code>null</code>.
     */
@@ -108,7 +108,7 @@ public class PSJdbcExecutionPlan
       int index = 0;
       if (!forward)
          index = m_steps.size();
-      ListIterator steps = m_steps.listIterator(index);
+      ListIterator<PSJdbcExecutionStep> steps = m_steps.listIterator(index);
 
       boolean continueLoop = false;
       if (forward)
@@ -120,9 +120,9 @@ public class PSJdbcExecutionPlan
       {
          PSJdbcExecutionStep step = null;
          if (forward)
-            step = (PSJdbcExecutionStep)steps.next();
+            step = steps.next();
          else
-            step = (PSJdbcExecutionStep)steps.previous();
+            step = steps.previous();
 
          m_planLogData.addStepLogData(step.getStepLogData());
 
@@ -180,7 +180,7 @@ public class PSJdbcExecutionPlan
    /**
     * List of steps, never <code>null</code>, may be empty.
     */
-   private List m_steps = new ArrayList();
+   private List<PSJdbcExecutionStep> m_steps = new ArrayList<>();
 
    /**
     * Stores the log of execution of this plan, never <code>null</code>

@@ -113,7 +113,7 @@ public class PSJdbcColumnDef extends PSJdbcTableComponent
       }
       catch (PSJdbcTableFactoryException e)
       {
-         throw new IllegalArgumentException("Invalid type: " + e.toString());
+         throw new IllegalArgumentException("Invalid type: " + e);
       }
 
       // this will validate, must set default value first
@@ -180,7 +180,8 @@ public class PSJdbcColumnDef extends PSJdbcTableComponent
       m_size = srcCol.m_size;
       m_scale = srcCol.m_scale;
       m_limitSizeForIndex = srcCol.m_limitSizeForIndex;
-
+      m_sequence = srcCol.m_sequence;
+      m_nativeType = srcCol.m_nativeType;
       try
       {
          setType(srcCol.getType());
@@ -188,7 +189,7 @@ public class PSJdbcColumnDef extends PSJdbcTableComponent
       catch (PSJdbcTableFactoryException e)
       {
          // this can never happen, but what the heck...
-         throw new IllegalStateException("Invalid type: " + e.toString());
+         throw new IllegalStateException("Invalid type: " + e);
       }
    }
 
@@ -762,7 +763,7 @@ public class PSJdbcColumnDef extends PSJdbcTableComponent
    
    /**
     * Sets the flag to indicate if this column should limit its size based on 
-    * the maximum defined in the datatype map (see {@link #getAdjustedSize()} 
+    * the maximum defined in the datatype map (see {@link #getAdjustedSize(boolean)}
     * for more info.  Defaults to <code>false</code> if never set.
     * 
     * @param limitSize <code>true</code> to limit the size based on the defined

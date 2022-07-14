@@ -152,9 +152,7 @@ public class PSJdbcResultSetIteratorStep extends PSJdbcSqlStatement
    {
       if (m_rs == null)
          return false;
-      if (!m_rs.next())
-         return false;
-      return true;
+      return m_rs.next();
    }
 
    /**
@@ -173,14 +171,14 @@ public class PSJdbcResultSetIteratorStep extends PSJdbcSqlStatement
       if (!m_rs.next())
          return null;
 
-      List colDataList = new ArrayList();
-      Iterator it = m_columns.iterator();
+      List<PSJdbcColumnData> colDataList = new ArrayList<>();
+      Iterator<String> it = m_columns.iterator();
       String colName = "";
       try
       {
          while (it.hasNext())
          {
-            colName = (String)it.next();
+            colName = it.next();
             PSJdbcColumnData colData = PSJdbcTableFactory.getColumnData(
                m_dbmsDef, m_tableSchema, m_rs, colName);
             colDataList.add(colData);
@@ -188,7 +186,7 @@ public class PSJdbcResultSetIteratorStep extends PSJdbcSqlStatement
       }
       catch (IOException e)
       {
-         Object args[] = {m_tableSchema.getName(),
+         Object[] args = {m_tableSchema.getName(),
             "Column : " + colName + " " + e.getMessage()};
          throw new PSJdbcTableFactoryException(
             IPSTableFactoryErrors.SQL_CATALOG_DATA, args, e);
@@ -307,6 +305,6 @@ public class PSJdbcResultSetIteratorStep extends PSJdbcSqlStatement
     * List of columns obtained from the result set metadata, populated in the
     * <code>execute</code> method, never <code>null</code>
     */
-   private List m_columns = new ArrayList();
+   private List<String> m_columns = new ArrayList<>();
 }
 

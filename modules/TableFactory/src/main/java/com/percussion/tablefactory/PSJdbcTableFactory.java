@@ -66,7 +66,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Types;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -121,7 +120,7 @@ public class PSJdbcTableFactory
    public static PSJdbcTableSchema catalogTable(
       Connection conn,
       PSJdbcDbmsDef dbmsDef,
-      Map tableMetaMap,
+      Map<String, PSJdbcTableMetaData> tableMetaMap,
       PSJdbcDataTypeMap dataTypeMap,
       String tableName,
       boolean includeData)
@@ -145,7 +144,7 @@ public class PSJdbcTableFactory
       {
          PSJdbcTableMetaData tmd = null;
          if (tableMetaMap != null)
-            tmd = (PSJdbcTableMetaData)tableMetaMap.get(tableName);
+            tmd = tableMetaMap.get(tableName);
 
          if (tmd == null)
          {
@@ -169,7 +168,7 @@ public class PSJdbcTableFactory
                tableSchema.setIsView(true);
             }
 
-            Iterator pkeys = tmd.getPrimaryKeyColumns();
+            Iterator<String> pkeys = tmd.getPrimaryKeyColumns();
             if (pkeys.hasNext())
                tableSchema.setPrimaryKey(new PSJdbcPrimaryKey(
                   tmd.getPrimaryKeyName(), pkeys,
@@ -187,11 +186,11 @@ public class PSJdbcTableFactory
                fKeys.add(newFKey);
             }
 
-            Iterator indexes = tmd.getIndexObjects(
+            Iterator<PSJdbcIndex> indexes = tmd.getIndexObjects(
                PSJdbcIndex.TYPE_UNIQUE | PSJdbcIndex.TYPE_NON_UNIQUE);
             while (indexes.hasNext())
             {
-               PSJdbcIndex index = (PSJdbcIndex)indexes.next();
+               PSJdbcIndex index = indexes.next();
                tableSchema.setIndex(new PSJdbcIndex(index.getName(),
                   index.getColumnNames(), PSJdbcTableComponent.ACTION_CREATE,
                   index.getType()));
@@ -319,7 +318,7 @@ public class PSJdbcTableFactory
    public static void processTable(
       Connection conn,
       PSJdbcDbmsDef dbmsDef,
-      Map tableMetaMap,
+      Map<String, PSJdbcTableMetaData> tableMetaMap,
       PSJdbcTableSchema tableSchema,
       PrintStream logOut,
       boolean logDebug)
@@ -355,8 +354,7 @@ public class PSJdbcTableFactory
          boolean bAllowSchemaChanges = tableSchema.isAllowSchemaChanges();
          boolean bAllowTableCreation = tableSchema.isCreate();
          boolean bTableExists = false;
-         boolean processData = true;
-         if (tableData == null) processData = false;
+         boolean processData = tableData != null;
 
 
          // Look for the table and its meta-data.
@@ -367,7 +365,7 @@ public class PSJdbcTableFactory
                (!bAllowSchemaChanges && bAllowTableCreation) )
          {           
             if (tableMetaMap != null)
-               tmd = (PSJdbcTableMetaData)tableMetaMap.get(tableName);
+               tmd = tableMetaMap.get(tableName);
             if (tmd == null)
             {
                tmd = getTableMetaData(conn,
@@ -395,6 +393,7 @@ public class PSJdbcTableFactory
                   conn, dbmsDef, tableSchema, plan);
             tableSchema.setSchemaAction(schemaAction);
 
+            //duplicate key error happens below here
             plan.execute(conn);
 
             // Process data changes if required
@@ -538,7 +537,7 @@ public class PSJdbcTableFactory
    public static void processTables(
       Connection conn,
       PSJdbcDbmsDef dbmsDef,
-      Map tableMetaMap,
+      Map<String,PSJdbcTableMetaData> tableMetaMap,
       PSJdbcTableSchemaCollection tables,
       PrintStream logOut,
       boolean logDebug)
@@ -554,15 +553,12 @@ public class PSJdbcTableFactory
          throw new IllegalArgumentException("tables may not be null");
 
       ms_planLogsContainer.clearPlanLogs();
-      Iterator i = tables.iterator();
-      while (i.hasNext())
-      {
-         PSJdbcTableSchema tableSchema = (PSJdbcTableSchema)i.next();
+      for (Object table :  tables) {
          processTable(
             conn,
             dbmsDef,
             tableMetaMap,
-            tableSchema,
+                 (PSJdbcTableSchema)table,
             logOut,
             logDebug);
       }
@@ -642,8 +638,7 @@ public class PSJdbcTableFactory
    }
 
    /**
-    * Convenience method, calls {@link #processTables(null, PSJdbcDbmsDef,
-    * null, Document, Document, PrintStream, boolean, boolean)}.
+    * Convenience method, calls .
     */
    public static void processTables(PSJdbcDbmsDef dbmsDef, Document dataTypeMap,
       Document doc, PrintStream logOut, boolean logDebug,
@@ -662,8 +657,7 @@ public class PSJdbcTableFactory
    }
 
    /**
-    * Convenience version of {@link #processTables(Connection, PSJdbcDbmsDef,
-    * Map, Document, Document, Document, PrintStream, boolean)} that creates the
+    * Convenience version of  that creates the
     * tabledef and tabledata from a document conforming to the
     * sys_DatabasePublisher.dtd.
     *
@@ -776,8 +770,7 @@ public class PSJdbcTableFactory
    }
 
    /**
-    * Convenient method, calls {@link processTables(null,PSJdbcDbmsDef,null,
-    * Document,Document,Document,PrintStream,boolean,boolean)}.
+    * Convenient method.
     */
    public static void processTables(PSJdbcDbmsDef dbmsDef,
       Document dataTypeMap, Document tableDef, Document tableData,
@@ -866,7 +859,7 @@ public class PSJdbcTableFactory
       if (tableDef == null)
          throw new IllegalArgumentException("tableDef may not be null");
 
-      PSJdbcDataTypeMap dataTypeMapObj = null;
+      PSJdbcDataTypeMap dataTypeMapObj;
       if (dataTypeMap == null)
       {
          try
@@ -1253,8 +1246,8 @@ public class PSJdbcTableFactory
       String options = null;
       String logFile = null;
 
-      Collection defs = new ArrayList();
-      Collection datas = new ArrayList();
+      List<String> defs = new ArrayList<>();
+      List<String> datas = new ArrayList<>();
 
       boolean nextDbProps = false;
       boolean nextDbTypeMap = false;
@@ -1355,10 +1348,10 @@ public class PSJdbcTableFactory
       PSJdbcTableSchema schema = null;
       PSJdbcTableData data = null;
       PrintStream ps = System.out;
-      Connection conn = null;
-      PSProperties props = null;
-      PSJdbcDbmsDef dbmsDef = null;
-      PSJdbcDataTypeMap dataTypeMap = null;
+      Connection conn;
+      PSProperties props;
+      PSJdbcDbmsDef dbmsDef;
+      PSJdbcDataTypeMap dataTypeMap;
 
       try
       {
@@ -1395,14 +1388,10 @@ public class PSJdbcTableFactory
          conn = PSJdbcTableFactory.getConnection(dbmsDef);
 
          //get table def files
-         Iterator itdefs = defs.iterator();
 
-         while (itdefs.hasNext())
-         {
-            String filePath = (String) itdefs.next();
-
+         for (String filePath : defs) {
             Document doc = PSXmlDocumentBuilder.createXmlDocument(
-                     new FileInputStream(new File(filePath)),
+                    new FileInputStream(filePath),
                      false);
 
                if (schemaColl==null)
@@ -1415,12 +1404,8 @@ public class PSJdbcTableFactory
          }
 
          //get table data files
-         Iterator itdatas = datas.iterator();
 
-         while (itdatas.hasNext())
-         {
-            String filePath = (String) itdatas.next();
-
+         for (String filePath : datas) {
             File f = new File(filePath);
 
             //set system property so that table factory can find external
@@ -1544,7 +1529,7 @@ public class PSJdbcTableFactory
       }
       catch (SQLException e)
       {
-         Object args[] = {tableSchema.getName(),
+         Object[] args = {tableSchema.getName(),
             PSJdbcTableFactoryException.formatSqlException(e)};
          throw new PSJdbcTableFactoryException(
             IPSTableFactoryErrors.CHECK_EXISTING_DATA, args, e);
@@ -1673,7 +1658,7 @@ public class PSJdbcTableFactory
     * @throws PSJdbcTableFactoryException if database connection using the
     * datasource object fails.
     */
-   public static Collection catalogTables(PSJdbcDbmsDef dbmsDef,
+   public static List<String> catalogTables(PSJdbcDbmsDef dbmsDef,
       String tableNamePattern) throws SQLException, PSJdbcTableFactoryException
    {
       if (dbmsDef == null)
@@ -1685,7 +1670,7 @@ public class PSJdbcTableFactory
          tableNamePattern = filterAll;
 
       // catalog the table names
-      List tableList = new ArrayList();
+      List<String> tableList = new ArrayList<>();
 
       String db = dbmsDef.getDataBase();
 
@@ -1851,7 +1836,7 @@ public class PSJdbcTableFactory
    /**
     * Stores the binary file, if not exists.
     * @param dbmsDef assumed not <code>null</code>
-    * @param baos assumed not <code>null</code>
+    * @param is assumed not <code>null</code>
     * @return String md5Hex hash value of the binary data
     * @throws IOException
     */
@@ -1859,7 +1844,7 @@ public class PSJdbcTableFactory
    {
    
       File temp = File.createTempFile("rxtf", null,getBinaryDataFolder(dbmsDef));
-      String hash = null;
+      String hash;
      
     
       MessageDigest md=null;
@@ -1878,7 +1863,7 @@ public class PSJdbcTableFactory
 
             byte[] dataBytes = new byte[4096];
   
-            int nread = 0;
+            int nread;
             while ((nread = is.read(dataBytes)) != -1) {
                 md.update(dataBytes, 0, nread);
                 outputStream.write(dataBytes, 0, nread);
@@ -1958,7 +1943,7 @@ public class PSJdbcTableFactory
     * @param tableName The unqualified table name to retrieve meta data for.
     * May not be <code> null</code> or empty.
     *
-    * @returns The table meta data, never <code>null</code>, may not contain
+    * @return The table meta data, never <code>null</code>, may not contain
     * any info if the table does not exist (check {@link
     * PSJdbcTableMetaData#exists()})
     *

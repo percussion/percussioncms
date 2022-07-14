@@ -62,7 +62,7 @@ public class PSCollection extends PSConcurrentList
     * @param      cl            the class which this collection's
     *                                                                     members must be or extend
     */
-   public PSCollection(Class cl)
+   public PSCollection(Class<?> cl)
    {
       m_memberClass = cl;
    }

@@ -231,7 +231,7 @@ public class RxJdbcTableFactory
          if(oldNodeCount > 0)
          {
             System.out.println("No of Transactions failed = " +
-                                 Integer.toString(oldNodeCount));
+                    oldNodeCount);
 
             PSXmlTreeWalker walker1 = new PSXmlTreeWalker(cDB.oldDtdDoc);
             walker1.write(System.out);
@@ -298,11 +298,11 @@ public class RxJdbcTableFactory
     */
    public String parseTableDefs(Document docTableDef, DbmsDefinition dbmsDef)
    {
-      Vector  locRxTables       = new Vector();
-      String   sTableName       = new String();
-      String   sCreate          = new String();
-      String   sAlter           = new String();
-      String   sDelOldData      = new String();
+      Vector<RxTables>  locRxTables       = new Vector<>();
+      String   sTableName;
+      String   sCreate;
+      String   sAlter;
+      String   sDelOldData;
       String   sColumnName      = new String();
       String   sStatus          = new String();
 

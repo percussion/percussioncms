@@ -36,6 +36,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -165,11 +166,16 @@ public class PSFolderProperty implements Serializable
       this.propertyValue = propertyValue;
    }
 
+   @Override
+   public boolean equals(Object o) {
+      if (this == o) return true;
+      if (!(o instanceof PSFolderProperty)) return false;
+      PSFolderProperty that = (PSFolderProperty) o;
+      return getContentID() == that.getContentID() && getRevisionID() == that.getRevisionID() && getSysID() == that.getSysID() && getPropertyName().equals(that.getPropertyName()) && Objects.equals(getPropertyValue(), that.getPropertyValue()) && Objects.equals(getDescription(), that.getDescription());
+   }
 
-
-   
-   
-   
-   
-   
+   @Override
+   public int hashCode() {
+      return Objects.hash(getContentID(), getRevisionID(), getSysID(), getPropertyName(), getPropertyValue(), getDescription());
+   }
 }

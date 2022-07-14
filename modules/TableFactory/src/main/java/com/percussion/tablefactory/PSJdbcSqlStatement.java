@@ -117,7 +117,7 @@ public class PSJdbcSqlStatement extends PSJdbcExecutionStep
    }
 
    /**
-    * The statment to execute, initialized in ctor, never <code>null</code> or
+    * The statement to execute, initialized in ctor, never <code>null</code> or
     * empty.
     */
    protected String m_statement = null;

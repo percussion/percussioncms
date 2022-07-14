@@ -47,7 +47,7 @@ public class PSJdbcTableData
     * Convenience constructor that calls {@link #PSJdbcTableData(String,
     * Iterator, boolean) this(name, rows, true)}
     */
-   public PSJdbcTableData(String name, Iterator rows)
+   public PSJdbcTableData(String name, Iterator<PSJdbcRowData> rows)
    {
       this(name, rows, true);
    }
@@ -65,7 +65,7 @@ public class PSJdbcTableData
     * @throws IllegalArgumentException if name is <code>null</code> or
     * empty.
     */
-   public PSJdbcTableData(String name, Iterator rows, boolean onCreateOnly)
+   public PSJdbcTableData(String name, Iterator<PSJdbcRowData> rows, boolean onCreateOnly)
    {
       if ((name == null || name.trim().length() == 0))
          throw new IllegalArgumentException("name is invalid");
@@ -75,11 +75,7 @@ public class PSJdbcTableData
 
       while (rows != null && rows.hasNext())
       {
-         Object rowObj = rows.next();
-         if (!(rowObj instanceof PSJdbcRowData))
-            throw new IllegalArgumentException("rows contains invalid object");
-
-         addRow((PSJdbcRowData)rowObj);
+         addRow(rows.next());
       }
    }
 
@@ -137,10 +133,10 @@ public class PSJdbcTableData
    private void addRow(PSJdbcRowData row)
    {
       m_rows.add(row);
-      Iterator columns = row.getColumns();
+      Iterator<PSJdbcColumnData> columns = row.getColumns();
       while (columns.hasNext())
       {
-         PSJdbcColumnData column = (PSJdbcColumnData)columns.next();
+         PSJdbcColumnData column = columns.next();
          m_columnNames.add(column.getName());
       }
 
@@ -167,7 +163,7 @@ public class PSJdbcTableData
     *
     * @return Iterator over zero or more rows of data.  Never <code>null</code>.
     */
-   public Iterator getRows()
+   public Iterator<PSJdbcRowData> getRows()
    {
       return m_rows.iterator();
    }
@@ -187,7 +183,7 @@ public class PSJdbcTableData
     *
     * @return An iterator over one or more column names as Strings.
     */
-   public Iterator getColumnNames()
+   public Iterator<String> getColumnNames()
    {
       return m_columnNames.iterator();
    }
@@ -211,7 +207,7 @@ public class PSJdbcTableData
     * @return An iterator over zero or more PSJdbcRowData objects, never <code>
     * null</code>.
     */
-   public Iterator getUpdateRows()
+   public Iterator<PSJdbcRowData> getUpdateRows()
    {
       return m_updateRows.iterator();
    }
@@ -259,9 +255,9 @@ public class PSJdbcTableData
          throw new PSJdbcTableFactoryException(
             IPSTableFactoryErrors.XML_ELEMENT_WRONG_TYPE, args);
       }
-      m_rows = new ArrayList();
-      m_columnNames = new HashSet();
-      m_updateRows = new ArrayList();
+      m_rows = new ArrayList<>();
+      m_columnNames = new HashSet<>();
+      m_updateRows = new ArrayList<>();
 
       PSXmlTreeWalker tree = new PSXmlTreeWalker(sourceNode);
 
@@ -274,10 +270,7 @@ public class PSJdbcTableData
       //Making default to "No" as we need to add data on Rhythmyx Upgrade
       if (onCreateOnly == null){
          m_onCreateOnly = false;
-      }else if(onCreateOnly.equalsIgnoreCase(XML_FALSE))
-         m_onCreateOnly = false;
-      else
-         m_onCreateOnly = true;
+      }else m_onCreateOnly = !onCreateOnly.equalsIgnoreCase(XML_FALSE);
 
 
       Element rowEl = tree.getNextElement(PSJdbcRowData.NODE_NAME,
@@ -285,7 +278,7 @@ public class PSJdbcTableData
 
       while (rowEl != null)
       {
-         PSJdbcRowData rowData = null;
+         PSJdbcRowData rowData;
          if (m_parentRowData == null)
             rowData = new PSJdbcRowData(m_name);
          else
@@ -319,8 +312,7 @@ public class PSJdbcTableData
       root.setAttribute(NAME_ATTR, m_name);
       root.setAttribute(ON_CREATE_ATTR, m_onCreateOnly ? XML_TRUE : XML_FALSE);
 
-      for (int i = 0; i < m_rows.size(); i++)
-         root.appendChild(((PSJdbcRowData)m_rows.get(i)).toXml(doc));
+      for (PSJdbcRowData m_row : m_rows) root.appendChild(m_row.toXml(doc));
 
       return root;
     }
@@ -379,16 +371,12 @@ public class PSJdbcTableData
     * @param colName The column name, may not be <code>null</code> or empty.
     * @param colValue The new column value.  May be <code>null</code> or empty.
     */
-   @SuppressWarnings("unchecked")
    public void updateColumn(String colName, String colValue)
    {
       if (colName == null || colName.trim().length() == 0)
          throw new IllegalArgumentException("colName may not be null or empty");
       
-      Iterator rows = m_rows.iterator();
-      while (rows.hasNext())
-      {
-         PSJdbcRowData rowData = (PSJdbcRowData) rows.next();
+      for (PSJdbcRowData rowData : m_rows) {
          PSJdbcColumnData versionCol = rowData.getColumn(colName);
          if (versionCol != null)
             versionCol.setValue(colValue);
@@ -416,13 +404,13 @@ public class PSJdbcTableData
    /**
     * List of rows for this table, never <code>null</code>, may be empty.
     */
-   private List m_rows = new ArrayList();
+   private List<PSJdbcRowData> m_rows = new ArrayList<>();
 
    /**
     * Set of column names used in this table's rows.  Never <code>null</code> or
     * emtpy.
     */
-   private Set m_columnNames = new HashSet();
+   private Set<String> m_columnNames = new HashSet<>();
 
    /**
     * Tracks if any rows have been added with actions that update existing data.
@@ -445,7 +433,7 @@ public class PSJdbcTableData
     * action type other than {@link PSJdbcRowData#ACTION_INSERT}.  Never <code>
     * null</code>, may be empty.
     */
-   private List m_updateRows = new ArrayList();
+   private List<PSJdbcRowData> m_updateRows = new ArrayList<>();
 
    // Constants for Xml Elements and Attibutes
    private static final String NAME_ATTR = "name";

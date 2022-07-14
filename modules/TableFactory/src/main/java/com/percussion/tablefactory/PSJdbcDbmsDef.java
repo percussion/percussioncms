@@ -468,7 +468,7 @@ public class PSJdbcDbmsDef implements IPSJdbcDbmsDefConstants
     * 
     * @param dataSource The datasource to use, assumed not <code>null</code>.
     * @param driverType The JDBC driver name, may be <code>null</code> or empty
-    * to derive it from the datsource.
+    * to derive it from the data source.
     * @param origin The origin or schema to use, may be <code>null</code> or 
     * empty.
     * 
@@ -564,17 +564,11 @@ public class PSJdbcDbmsDef implements IPSJdbcDbmsDefConstants
          {
             Class.forName(getDriverClassName());
          }
-         catch (ClassNotFoundException cls)
+         catch (ClassNotFoundException | LinkageError cls)
          {
             throw new PSJdbcTableFactoryException(
                IPSTableFactoryErrors.SQL_CONNECTION_FAILED,
                cls.getLocalizedMessage(),cls);
-         }
-         catch (LinkageError link)
-         {
-            throw new PSJdbcTableFactoryException(
-               IPSTableFactoryErrors.SQL_CONNECTION_FAILED,
-               link.getLocalizedMessage(),link);
          }
 
          String connStr = PSSqlHelper.getJdbcUrl(getDriver(), getServer());
@@ -726,7 +720,7 @@ public class PSJdbcDbmsDef implements IPSJdbcDbmsDefConstants
    /**
     * Gets a property by name, validating that it is a non-empty string
     *
-    * @param props The properies object, assumed not <code>null</code>.
+    * @param props The properties object, assumed not <code>null</code>.
     * @param name The property to get, assumed not <code>null</code> or empty.
     *
     * @return The property value, never <code>null</code> or empty.
@@ -799,7 +793,7 @@ public class PSJdbcDbmsDef implements IPSJdbcDbmsDefConstants
    }
 
    /**
-    * Overridden to fullfill the contract that if t1 and t2 are 2 different
+    * Overridden to fulfill the contract that if t1 and t2 are 2 different
     * instances of this class and t1.equals(t2), t1.hashCode() ==
     * t2.hashCode().
     *
@@ -875,11 +869,9 @@ public class PSJdbcDbmsDef implements IPSJdbcDbmsDefConstants
       }
       else
       {
-         Hashtable ht = new Hashtable();
-         Iterator keys = environment.keySet().iterator();
-         while (keys.hasNext())
-         {
-            String key = keys.next().toString();
+         Hashtable<String,String> ht = new Hashtable<>();
+         for (Object o : environment.keySet()) {
+            String key = o.toString();
             ht.put(key, environment.getProperty(key));
          }
 
@@ -976,7 +968,7 @@ public class PSJdbcDbmsDef implements IPSJdbcDbmsDefConstants
    }
 
    /**
-    * Returns the key value to use as part one with the Rhythmyx encyrption
+    * Returns the key value to use as part one with the Rhythmyx encryption
     * algorithm.
     *
     * @return The key, never <code>null</code> or empty.
@@ -990,7 +982,7 @@ public class PSJdbcDbmsDef implements IPSJdbcDbmsDefConstants
 
    /**
     * The constant for the partone key for the Rx encryption algorithm.  The
-    * constant is encrytped by the {@link #rot13(char)} method.
+    * constant is encrypted by the {@link #rot13(char)} method.
     */
    @Deprecated
    private static final String PART_ONE = PSLegacyEncrypter.getInstance(PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)).PART_ONE();
@@ -1053,7 +1045,7 @@ public class PSJdbcDbmsDef implements IPSJdbcDbmsDefConstants
 
 
    /**
-    * Defaut string for initial JNDI context lookup.
+    * Default string for initial JNDI context lookup.
     */
    private static String DEFAULT_ENV = "java:comp/env";
 

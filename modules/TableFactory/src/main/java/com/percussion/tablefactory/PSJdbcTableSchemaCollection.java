@@ -181,7 +181,7 @@ public class PSJdbcTableSchemaCollection extends PSCollection
          throw new IllegalArgumentException(
             "tableDataCollection may not be null");
 
-      Set matchedTables = new HashSet();
+      Set<String> matchedTables = new HashSet<>();
 
          Iterator tables = this.iterator();
          while (tables.hasNext()) {
@@ -259,11 +259,11 @@ public class PSJdbcTableSchemaCollection extends PSCollection
     */
    protected void fixParentChildRelationship()
    {
-      Iterator it = null;
-      String childTableName = null;
-      String parentTableName = null;
-      PSJdbcTableSchema childTableSchema = null;
-      PSJdbcTableSchema parentTableSchema = null;
+      Iterator<String> it;
+      String childTableName;
+      String parentTableName;
+      PSJdbcTableSchema childTableSchema;
+      PSJdbcTableSchema parentTableSchema;
       int size = size();
       for (int i = 0; i < size; i++)
       {

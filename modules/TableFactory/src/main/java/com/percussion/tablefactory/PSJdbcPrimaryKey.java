@@ -41,7 +41,7 @@ public class PSJdbcPrimaryKey extends PSJdbcKey
     * Iterator, int)} with the pkName parameter as <code>null</code>.
     * See that method for parameter descriptions.
     */
-   public PSJdbcPrimaryKey(Iterator names, int action)
+   public PSJdbcPrimaryKey(Iterator<String> names, int action)
       throws PSJdbcTableFactoryException
    {
       this( null, names, action );
@@ -64,7 +64,7 @@ public class PSJdbcPrimaryKey extends PSJdbcKey
     * </code>, empty or duplicate column names, or if there are any other
     * errors.
     */
-   public PSJdbcPrimaryKey(String pkName, Iterator names, int action)
+   public PSJdbcPrimaryKey(String pkName, Iterator<String> names, int action)
       throws PSJdbcTableFactoryException
    {
       super( pkName, action, names, CONTAINER_NAME );
@@ -138,7 +138,7 @@ public class PSJdbcPrimaryKey extends PSJdbcKey
 
    /**
     * Compares this primary key to another object.
-    * See {@link PSJdbcTableComponent#compare(Object)} for values returned
+    * See {@link PSJdbcTableComponent#compare(Object, int)} for values returned
     * by this method.
     *
     * @param obj the object to compare, may be <code>null</code>

@@ -29,8 +29,8 @@ import com.percussion.util.PSEntrySet;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -125,7 +125,7 @@ public abstract class PSJdbcExecutionStep
     *
     * @throws IllegalArgumentException if any param is invalid.
     */
-   public void addTableChangeEvent(PSJdbcTableChangeEvent e, List listeners)
+   public void addTableChangeEvent(PSJdbcTableChangeEvent e, List<IPSJdbcTableChangeListener> listeners)
    {
       if (e == null)
          throw new IllegalArgumentException("e may not be null");
@@ -134,40 +134,26 @@ public abstract class PSJdbcExecutionStep
          throw new IllegalArgumentException(
             "listeners may not be null or empty");
 
-      Iterator i = listeners.iterator();
-      while (i.hasNext())
-      {
-         if (!(i.next() instanceof IPSJdbcTableChangeListener))
-            throw new IllegalArgumentException(
-               "listeners may only contain IPSJdbcTableChangeListener objects");
-      }
-
       PSEntrySet entry = new PSEntrySet(e, listeners);
       if (m_listenerEvents == null)
-         m_listenerEvents = new ArrayList();
+         m_listenerEvents = new ArrayList<>();
       m_listenerEvents.add(entry);
    }
 
    /**
     * Notifies any listeners with any events that have been set on this step by
-    * a call to {@link addTableChangeEvent(PSJdbcTableChangeEvent, List)
-    * addTableChangeEvent}.
+    * a call to {@link #addTableChangeEvent(PSJdbcTableChangeEvent, List)}.
     */
    public void notifyChangeListeners()
    {
       if (m_listenerEvents != null)
       {
-         Iterator events = m_listenerEvents.iterator();
-         while (events.hasNext())
-         {
-            PSEntrySet entry = (PSEntrySet)events.next();
-            PSJdbcTableChangeEvent e = (PSJdbcTableChangeEvent)entry.getKey();
-            List listenerList = (List)entry.getValue();
-            Iterator listeners = listenerList.iterator();
-            while (listeners.hasNext())
-            {
+         for (PSEntrySet entry : m_listenerEvents) {
+            PSJdbcTableChangeEvent e = (PSJdbcTableChangeEvent) entry.getKey();
+            List<?> listenerList = (List<?>) entry.getValue();
+            for (Object o : listenerList) {
                IPSJdbcTableChangeListener listener =
-                  (IPSJdbcTableChangeListener)listeners.next();
+                       (IPSJdbcTableChangeListener) o;
                listener.tableChanged(e);
             }
          }
@@ -189,16 +175,15 @@ public abstract class PSJdbcExecutionStep
       if ((sqlStates == null) || (sqlStates.length == 0))
          return;
       if (m_sqlStates == null)
-         m_sqlStates = new HashSet();
+         m_sqlStates = new HashSet<>();
       m_sqlStates.clear();
-      for (int i = 0; i < sqlStates.length; i++)
-         m_sqlStates.add(sqlStates[i]);
+      Collections.addAll(m_sqlStates, sqlStates);
    }
 
    /**
     * Throws the supplied sql exception if the sql state specified in the
     * exception does not exist in the list of sql states to ignore.
-    * See {@link #setIgnoreSQLException(String[])
+    * See {@link #setIgnoreSQLExceptions(String[])}
     * setIgnoreSQLException(String[])} for details.
     *
     * @param sqle the sql exception to throw, may not be <code>null</code>
@@ -242,7 +227,7 @@ public abstract class PSJdbcExecutionStep
     * {@link #addTableChangeEvent(PSJdbcTableChangeEvent, List)}, may be
     * <code>null</code>.
     */
-   private List m_listenerEvents = null;
+   private List<PSEntrySet> m_listenerEvents = null;
 
    /**
     * Set of sql states for sql exceptions that should be ignored when
@@ -250,7 +235,7 @@ public abstract class PSJdbcExecutionStep
     * initialized and modified in <code>setIgnoreSQLException</code> method,
     * may be empty in which case no sql exception is ignored.
     */
-   protected Set m_sqlStates = null;
+   protected Set<String> m_sqlStates = null;
 
 }
 
