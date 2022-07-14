@@ -425,7 +425,7 @@ public abstract class PSJdbcKey extends PSJdbcTableComponent
       while (columnNames.hasNext())
       {
          String colName = columnNames.next();
-         if (colName.trim().length() == 0)
+         if (colName == null || colName.trim().length() == 0)
             throw new PSJdbcTableFactoryException(
                IPSTableFactoryErrors.INVALID_COLUMN_NAME, m_containerName);
 

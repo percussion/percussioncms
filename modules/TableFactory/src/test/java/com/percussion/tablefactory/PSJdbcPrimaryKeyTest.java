@@ -77,7 +77,7 @@ public class PSJdbcPrimaryKeyTest extends TestCase
          PSJdbcPrimaryKey pk = new PSJdbcPrimaryKey(cols.iterator(),
             PSJdbcTableComponent.ACTION_CREATE);
       }
-      catch (IllegalArgumentException e)
+      catch (PSJdbcTableFactoryException e)
       {
          caught = true;
       }
