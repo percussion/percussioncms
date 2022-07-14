@@ -253,10 +253,20 @@ public class Main {
             } else {
                 javabin = javaHome + "\\bin\\java.exe";
             }
-            //"-Dlistener=com.percussion.preinstall.AntBuildListener",
-            ProcessBuilder builder = new ProcessBuilder(
-                    javabin,"-Dfile.encoding=UTF-8","-Dsun.jnu.encoding=UTF-8", "-Dinstall.dir=" + installDir.toAbsolutePath().toString(), "-jar", jar.toAbsolutePath().toString(), "-f", ANT_INSTALL).directory(execPath.toFile());
+            String debugMode = System.getProperty("perc.debug","false");
+            String debugFlag = "";
+            if(Boolean.parseBoolean(debugMode)){
+                debugFlag = "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=8054";
+            }
 
+            ProcessBuilder builder;
+            if(debugFlag.trim().length()>0) {
+                builder = new ProcessBuilder(
+                        javabin, debugFlag, "-Dfile.encoding=UTF-8", "-Dsun.jnu.encoding=UTF-8", "-Dinstall.dir=" + installDir.toAbsolutePath().toString(), "-jar", jar.toAbsolutePath().toString(), "-f", ANT_INSTALL).directory(execPath.toFile());
+            }else {
+                builder = new ProcessBuilder(
+                        javabin, "-Dfile.encoding=UTF-8", "-Dsun.jnu.encoding=UTF-8", "-Dinstall.dir=" + installDir.toAbsolutePath().toString(), "-jar", jar.toAbsolutePath().toString(), "-f", ANT_INSTALL).directory(execPath.toFile());
+            }
             //pass in known flags
             builder.environment().put(DEVELOPMENT, developmentFlag);
             builder.environment().put(PERCUSSION_VERSION, percVersion);
