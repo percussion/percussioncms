@@ -175,6 +175,7 @@ public class PSSessionFactoryBean extends LocalSessionFactoryBean
       }
 
       props.setProperty("hibernate.cache.use_query_cache", "true");
+      props.setProperty("hibernate.cache.ehcache.missing_cache_strategy","create");
 
       return props;
    }
