@@ -103,15 +103,16 @@ public abstract class PSIteratorUtils
     * @return the list, never <code>null</code>, may be empty if supplied <code>
     * iter</code> is empty.
     */
-   public static List cloneList(Iterator iter)
+   public static <T>List<T> cloneList(Iterator<T> iter)
    {
       if(iter == null)
          throw new IllegalArgumentException("iter may not be null.");
          
-      List entries = new ArrayList();
-      while(iter.hasNext())
+      List<T> entries = new ArrayList<>();
+      while(iter.hasNext()) {
          entries.add(iter.next());
-         
+      }
+
       return entries;
    }
 

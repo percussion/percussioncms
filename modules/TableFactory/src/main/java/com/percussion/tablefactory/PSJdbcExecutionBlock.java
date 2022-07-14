@@ -27,7 +27,6 @@ package com.percussion.tablefactory;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -66,10 +65,7 @@ public class PSJdbcExecutionBlock extends PSJdbcExecutionStep
       if (conn == null)
          throw new IllegalArgumentException("conn may not be null");
 
-      Iterator steps = m_steps.iterator();
-      while (steps.hasNext())
-      {
-         PSJdbcExecutionStep step = (PSJdbcExecutionStep)steps.next();
+      for (PSJdbcExecutionStep step : m_steps) {
          step.execute(conn);
       }
       return 0;
@@ -78,7 +74,7 @@ public class PSJdbcExecutionBlock extends PSJdbcExecutionStep
    /**
     * List of steps, never <code>null</code>, may be empty.
     */
-   private List m_steps = new ArrayList();
+   private List<PSJdbcExecutionStep> m_steps = new ArrayList<>();
 
 }
 

@@ -28,9 +28,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 /**
  * Step for processing the data handlers encapsulated by the specified
@@ -206,7 +204,6 @@ public class  PSJdbcTableSchemaHandlerStep extends PSJdbcExecutionStep
       {
          step.execute(conn);
          // walk result and for each row, build a row of column data
-         List rowList = new ArrayList();
          PSJdbcRowData insertRow = step.next();
          while (insertRow != null)
          {

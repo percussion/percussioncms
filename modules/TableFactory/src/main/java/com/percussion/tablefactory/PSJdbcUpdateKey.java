@@ -49,7 +49,7 @@ public class PSJdbcUpdateKey extends PSJdbcKey
     * </code>, empty or duplicate column names, or if there are any other
     * errors.
     */
-   public PSJdbcUpdateKey(Iterator names)
+   public PSJdbcUpdateKey(Iterator<String> names)
       throws PSJdbcTableFactoryException
    {
       super(null, PSJdbcTableComponent.ACTION_CREATE, names, CONTAINER_NAME);
@@ -113,7 +113,7 @@ public class PSJdbcUpdateKey extends PSJdbcKey
    }
 
    /**
-    * Overides base class method as name is not required for a primary key.
+    * Overrides base class method as name is not required for a primary key.
     *
     * @return <code>true</code> if name is required, <code>false</code> if not.
     */

@@ -34,7 +34,7 @@ import java.util.List;
 /**
  * This class is used to represent both a unique index and a unique constraint
  * in a table schema, and the action to perform when that table schema is used
- * to create or modify a table.  Unique indexes and unique constriants are
+ * to create or modify a table.  Unique indexes and unique constraints are
  * considered to be interchangeable, and in most dbms systems, unique
  * constraints are implemented using unique indexes.  When
  * a table is cataloged, all unique index columns are queried to construct this
@@ -48,7 +48,7 @@ public class PSJdbcIndex extends PSJdbcKey
     * {@link #PSJdbcIndex(String, Iterator, int, int)}
     * with <code>type</code> set to <code>PSJdbcIndex.TYPE_UNIQUE</code>
     */
-   public PSJdbcIndex(String name, Iterator colNames,  int action)
+   public PSJdbcIndex(String name, Iterator<String> colNames,  int action)
       throws PSJdbcTableFactoryException
    {
       this(name, colNames, action, TYPE_UNIQUE);
@@ -76,7 +76,7 @@ public class PSJdbcIndex extends PSJdbcKey
     * any <code>null</code>, empty or duplicate column names, or if there are
     * any other errors.
     */
-   public PSJdbcIndex(String name, Iterator colNames, int action, int type)
+   public PSJdbcIndex(String name, Iterator<String> colNames, int action, int type)
       throws PSJdbcTableFactoryException
    {
       super(name, action, colNames, CONTAINER_NAME);
@@ -157,7 +157,7 @@ public class PSJdbcIndex extends PSJdbcKey
       // for backwards compatibility
       m_type = TYPE_UNIQUE;
       String sTemp = sourceNode.getAttribute(ATTR_IS_UNIQUE);
-      if ((sTemp != null) && (sTemp.trim().length() > 0))
+      if (sTemp.trim().length() > 0)
          m_type = sTemp.trim().equalsIgnoreCase(XML_FALSE) ?
             TYPE_NON_UNIQUE : TYPE_UNIQUE;
    }
@@ -228,8 +228,6 @@ public class PSJdbcIndex extends PSJdbcKey
 
    /**
     * Compares this index to another object.
-    * See {@link PSJdbcTableComponent#compare(Object)} for values returned
-    * by this method.
     *
     * @param obj the object to compare, may be <code>null</code>
     * @param flags one or more <code>COMPARE_XXX</code> values OR'ed
@@ -240,7 +238,7 @@ public class PSJdbcIndex extends PSJdbcKey
     */
    public int compare(Object obj, int flags)
    {
-      int match = IS_GENERIC_MISMATCH;
+      int match;
       // dummy do...while loop to avoid many return statements
       do
       {
@@ -270,7 +268,7 @@ public class PSJdbcIndex extends PSJdbcKey
     * {@inheritDoc}
     */
    @Override
-   protected int compareColumns(List cols1, List cols2)
+   protected int compareColumns(List<String> cols1, List<String> cols2)
    {
       return super.compareColumns(numberColumns(cols1), numberColumns(cols2));
    }
@@ -287,7 +285,7 @@ public class PSJdbcIndex extends PSJdbcKey
     */
    private List<String> numberColumns(List<String> columns)
    {
-      final List<String> numbered = new ArrayList<String>();
+      final List<String> numbered = new ArrayList<>();
       for (int i = 0; i < columns.size(); i++)
       {
          numbered.add(i + " " + columns.get(i));
@@ -304,7 +302,7 @@ public class PSJdbcIndex extends PSJdbcKey
    List<String> getIndexColumnNames()
    {
       Iterator<?> columnNameIterator = getColumnNames();
-      ArrayList<String> columnNameList = new ArrayList<String>();
+      ArrayList<String> columnNameList = new ArrayList<>();
       while (columnNameIterator.hasNext())
       {
          String columnName = (String) columnNameIterator.next();

@@ -297,12 +297,12 @@ public class PSJdbcTableFactoryException extends Exception
          String sArgs = "";
          String sep = "";
 
-         for (int i = 0; i < arrayArgs.length; i++) {
-            sArgs += sep + arrayArgs[i].toString();
+         for (Object arrayArg : arrayArgs) {
+            sArgs += sep + arrayArg.toString();
             sep = "; ";
          }
 
-         msg = String.valueOf(msgCode) + ": " + sArgs;
+         msg = msgCode + ": " + sArgs;
       }
 
       return msg;
@@ -394,8 +394,7 @@ public class PSJdbcTableFactoryException extends Exception
 
       int errNo = 1;
       final int maxErrors = 20;
-      for ( ; e != null && errNo <= maxErrors; )
-      {
+      while (e != null && errNo <= maxErrors) {
          errorText.append( "[" );
          errorText.append( errNo );
          errorText.append( "] " );

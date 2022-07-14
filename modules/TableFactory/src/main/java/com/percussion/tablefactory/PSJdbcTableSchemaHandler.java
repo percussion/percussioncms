@@ -89,9 +89,9 @@ public class PSJdbcTableSchemaHandler
       root.appendChild(dataHandlersEl);
 
       // add data handlers
-      Iterator it = m_dataHandlers.iterator();
+      Iterator<IPSJdbcTableDataHandler> it = m_dataHandlers.iterator();
       {
-         IPSJdbcTableDataHandler handler = (IPSJdbcTableDataHandler)it.next();
+         IPSJdbcTableDataHandler handler = it.next();
          Element dataHandlerEl = handler.toXml(doc);
          dataHandlersEl.appendChild(dataHandlerEl);
       }
@@ -166,10 +166,10 @@ public class PSJdbcTableSchemaHandler
             String className = sTemp;
 
             // load the data handler class
-            IPSJdbcTableDataHandler dataHandler = null;
+            IPSJdbcTableDataHandler dataHandler;
             try
             {
-               Class cls = Class.forName(className);
+               Class<?> cls = Class.forName(className);
                dataHandler = (IPSJdbcTableDataHandler)cls.newInstance();
                dataHandler.fromXml(dataHandlerEl);
             }
@@ -253,10 +253,7 @@ public class PSJdbcTableSchemaHandler
       }
 
       // initialize the data handlers
-      Iterator it = m_dataHandlers.iterator();
-      while (it.hasNext())
-      {
-         IPSJdbcTableDataHandler handler = (IPSJdbcTableDataHandler)it.next();
+      for (IPSJdbcTableDataHandler handler : m_dataHandlers) {
          handler.init(dbmsDef, conn, srcTableSchema, destTableSchema);
       }
       m_bHandlersInitialized = true;
@@ -281,10 +278,7 @@ public class PSJdbcTableSchemaHandler
             throw new IllegalArgumentException("conn may not be null");
 
       // close the data handlers
-      Iterator it = m_dataHandlers.iterator();
-      while (it.hasNext())
-      {
-         IPSJdbcTableDataHandler handler = (IPSJdbcTableDataHandler)it.next();
+      for (IPSJdbcTableDataHandler handler : m_dataHandlers) {
          handler.close(conn);
       }
       m_bHandlersInitialized = false;
@@ -311,10 +305,7 @@ public class PSJdbcTableSchemaHandler
       if (conn == null)
          throw new IllegalArgumentException("conn may not be null");
       // execute the data handlers
-      Iterator it = m_dataHandlers.iterator();
-      while (it.hasNext())
-      {
-         IPSJdbcTableDataHandler handler = (IPSJdbcTableDataHandler)it.next();
+      for (IPSJdbcTableDataHandler handler : m_dataHandlers) {
          row = handler.execute(conn, row);
       }
       return row;
@@ -425,7 +416,7 @@ public class PSJdbcTableSchemaHandler
     * schema change occurs. These objects process data when the schema plan
     * is being executed. Never <code>null</code>, may be empty.
     */
-   private List m_dataHandlers = new ArrayList();
+   private List<IPSJdbcTableDataHandler> m_dataHandlers = new ArrayList<>();
 
    /**
     * stores the initialization state of the data handlers. If

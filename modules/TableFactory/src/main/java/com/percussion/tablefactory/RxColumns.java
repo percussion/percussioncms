@@ -69,7 +69,7 @@ public class RxColumns
       if (nativeColLength > 0)
       {
          buf.append("(");
-         buf.append(new Integer(nativeColLength).toString());
+         buf.append(nativeColLength);
          buf.append(")");
       }
 
@@ -97,7 +97,7 @@ public class RxColumns
   private int     decimal         = 0 ;
   private int     colAction       = 0;
   private String  colValue        = new String();
-  public  Vector  vtOldValues     = new Vector();
+  public  Vector  vtOldValues     = new Vector<>();
 
   public static final int ADD_COLUMN = 1;
   public static final int MODIFY_COLUMN = 2;

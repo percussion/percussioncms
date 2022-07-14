@@ -161,7 +161,7 @@ public class PSJdbcTableMetaData
     * null</code>, may be empty.  The action of each column is set to {@link
     * PSJdbcTableComponent#ACTION_NONE}.
     */
-   public Iterator getColumns()
+   public Iterator<PSJdbcColumnDef> getColumns()
    {
       return m_columns.iterator();
    }
@@ -172,7 +172,7 @@ public class PSJdbcTableMetaData
     * @return Iterator over zero or more column names, never <code>null</code>,
     * may be empty.
     */
-   public Iterator getPrimaryKeyColumns()
+   public Iterator<String> getPrimaryKeyColumns()
    {
       return m_primaryKeyColumns.iterator();
    }
@@ -208,7 +208,7 @@ public class PSJdbcTableMetaData
     * Convenience method that calls
     * {@link #getIndexes(int) getIndexes(PSJdbcIndex.TYPE_UNIQUE)}
     */
-   public Iterator getIndexes()
+   public Iterator<Map.Entry<String, List<String>>> getIndexes()
    {
       return getIndexes(PSJdbcIndex.TYPE_UNIQUE);
    }
@@ -225,13 +225,10 @@ public class PSJdbcTableMetaData
     * <code>List</code> of column names (<code>String</code>) as value.
     * Never <code>null</code>, may be empty.
     */
-   public Iterator getIndexes(int type)
+   public Iterator<Map.Entry<String,List<String>>> getIndexes(int type)
    {
-      Map indexes = new HashMap();
-      Iterator it = m_indexes.iterator();
-      while (it.hasNext())
-      {
-         PSJdbcIndex index = (PSJdbcIndex)it.next();
+      Map<String,List<String>> indexes = new HashMap<>();
+      for (PSJdbcIndex index : m_indexes) {
          if (index.isOfType(type))
             indexes.put(index.getName(),
                PSIteratorUtils.cloneList(index.getColumnNames()));
@@ -250,13 +247,10 @@ public class PSJdbcTableMetaData
     * @return the Iterator over a list of <code>PSJdbcIndex</code> objects,
     * never <code>null</code>, may be empty.
     */
-   public Iterator getIndexObjects(int type)
+   public Iterator<PSJdbcIndex> getIndexObjects(int type)
    {
-      List list = new ArrayList();
-      Iterator it = m_indexes.iterator();
-      while (it.hasNext())
-      {
-         PSJdbcIndex index = (PSJdbcIndex)it.next();
+      List<PSJdbcIndex> list = new ArrayList<>();
+      for (PSJdbcIndex index : m_indexes) {
          if (index.isOfType(type))
             list.add(index);
       }
@@ -293,10 +287,7 @@ public class PSJdbcTableMetaData
             Connection conn = md.getConnection();
             step = PSJdbcStatementFactory.getQueryStatement(m_dbmsDef, sql);
             step.execute(conn);
-            if (step.hasNext())
-               m_isView = true;
-            else
-               m_isView = false;
+            m_isView = step.hasNext();
          }
          else
          {
@@ -328,7 +319,7 @@ public class PSJdbcTableMetaData
    }
 
    /**
-    * Private utility method to check for table's existance.
+    * Private utility method to check for table's existence.
     *
     * @param md The meta data to use, assumed not <code>null</code>.
     */
@@ -347,10 +338,7 @@ public class PSJdbcTableMetaData
             Connection conn = md.getConnection();
             step = PSJdbcStatementFactory.getQueryStatement(m_dbmsDef, sql);
             step.execute(conn);
-            if (step.hasNext())
-               m_tableExists = true;
-            else
-               m_tableExists = false;
+            m_tableExists = step.hasNext();
          }
          else
          {
@@ -402,8 +390,8 @@ public class PSJdbcTableMetaData
             String nativeType = meta.getColumnTypeName(i);
 
             jdbcType = PSSqlHelper.convertNativeDataType(
-               new Short("" + jdbcType).shortValue(), nativeType, driver);
-            String size = null;
+                    new Short("" + jdbcType), nativeType, driver);
+            String size;
             int sizeInt = meta.getColumnDisplaySize(i);
             if (m_dbmsDef.getDriver().equals("db2") && jdbcType == Types.BLOB)
             {
@@ -419,9 +407,7 @@ public class PSJdbcTableMetaData
                jdbcType);
 
             String defaultValue = null;
-            boolean allowsNull = false;
-            if (meta.isNullable(i) == ResultSetMetaData.columnNullable)
-               allowsNull = true;
+            boolean allowsNull = meta.isNullable(i) == ResultSetMetaData.columnNullable;
 
             size = convertSize(jdbcType, size, driver);
             scale = convertScale(jdbcType, scale);
@@ -477,12 +463,10 @@ public class PSJdbcTableMetaData
             {
                while (rs.next())
                {
-                  Short driverType = new Short(rs.getShort(5));
+                  short driverType = rs.getShort(5);
                   String typeName = rs.getString(6);
-                  Short convertedType = new Short(
-                     PSSqlHelper.convertNativeDataType(
-                        driverType.shortValue(), typeName, driver));
-                  int type = convertedType.intValue();
+                  int type = PSSqlHelper.convertNativeDataType(
+                          driverType, typeName, driver);
 
                   String nativeType = rs.getString(6);
                   String size = String.valueOf(rs.getInt(7));
@@ -595,12 +579,12 @@ public class PSJdbcTableMetaData
          if (rs != null)
          {
             // build a tree map so we can sort by sequence
-            Map keys = new TreeMap();  // use compareTo() of the key object
+            Map<Short, String> keys = new TreeMap<>();  // use compareTo() of the key object
             String keyName = null;
             while (rs.next())
             {
                String colName = rs.getString(4);
-               Short index = new Short(rs.getShort(5));
+               Short index = rs.getShort(5);
                keys.put(index, colName);
 
                // see if we have the name of the primary key
@@ -638,11 +622,7 @@ public class PSJdbcTableMetaData
                
                String fkName = rs.getString(12);
                if (fkName!=null && fkName.trim().length() > 0) {
-               List<String[]> keyCols = m_foreignKeyColumns.get(fkName);
-               if (keyCols==null) {
-                  keyCols = new ArrayList<>();
-                  m_foreignKeyColumns.put(fkName, keyCols);
-               }
+                  List<String[]> keyCols = m_foreignKeyColumns.computeIfAbsent(fkName, k -> new ArrayList<>());
                keyCols.add(colDef);
                }
             }
@@ -677,21 +657,20 @@ public class PSJdbcTableMetaData
     */
    private void loadIndexInformation(DatabaseMetaData md) throws SQLException
    {
-      ResultSet rs = null;
+
       m_indexes.clear();
 
       // Map containing the unique index name as key and the List of columns
       // as value
-      Map uniqueIndexMap = new HashMap();
+      Map<String, List<String>> uniqueIndexMap = new HashMap<>();
 
       // Map containing the non-unique index name as key and the List of
       // columns as value
-      Map nonUniqueIndexMap = new HashMap();
+      Map<String, List<String>> nonUniqueIndexMap = new HashMap<>();
 
-      try
-      {
          // ask for all (unique and non-unique) indexes
-         rs = md.getIndexInfo(m_database, m_schema, m_tableName, false, true);
+      try( ResultSet rs = md.getIndexInfo(m_database, m_schema, m_tableName, false, true))
+      {
          if (rs != null)
          {
             while (rs.next())
@@ -718,13 +697,8 @@ public class PSJdbcTableMetaData
                   continue;
                name = nameBuffer.toString(); // update name of index
                
-               Map whichMap = unique ? uniqueIndexMap : nonUniqueIndexMap;
-               List colList = (List)whichMap.get(name);
-               if (colList == null)
-               {
-                  colList = new ArrayList();
-                  whichMap.put(name, colList);
-               }
+               Map<String, List<String>> whichMap = unique ? uniqueIndexMap : nonUniqueIndexMap;
+               List<String> colList = whichMap.computeIfAbsent(name, k -> new ArrayList<>());
                colList.add(colName);
             }
          }
@@ -734,14 +708,7 @@ public class PSJdbcTableMetaData
       }
       catch(PSJdbcTableFactoryException ex)
       {
-         throw new SQLException(ex.getLocalizedMessage());
-      }
-      finally
-      {
-         if (rs != null)
-         {
-            try { rs.close(); } catch (SQLException e) { /* ignore */ }
-         }
+         throw new SQLException(ex);
       }
    }
 
@@ -764,16 +731,13 @@ public class PSJdbcTableMetaData
     * contains any <code>null</code>, empty or duplicate column names, or if
     * there are any other errors.
     */
-   private List getIndexes(Map indexMap, int type)
+   private List<PSJdbcIndex> getIndexes(Map<String,List<String>> indexMap, int type)
       throws PSJdbcTableFactoryException
    {
-      List list = new ArrayList();
-      Iterator it = indexMap.entrySet().iterator();
-      while (it.hasNext())
-      {
-         Map.Entry item = (Map.Entry)it.next();
-         String name = (String)item.getKey();
-         List columns = (List)item.getValue();
+      List<PSJdbcIndex> list = new ArrayList<>();
+      for (Map.Entry<String, List<String>> item : indexMap.entrySet()) {
+         String name = item.getKey();
+         List<String> columns = item.getValue();
          PSJdbcIndex index = new PSJdbcIndex(name, columns.iterator(),
             PSJdbcTableComponent.ACTION_NONE, type);
          list.add(index);
@@ -786,7 +750,7 @@ public class PSJdbcTableMetaData
     * ctor, never <code>null</code> or modified after that.  May be empty.
     * Column name is stored as a String.
     */
-   private List m_primaryKeyColumns = new ArrayList();
+   private List<String> m_primaryKeyColumns = new ArrayList<>();
 
    /**
     * The name of this table's primary key if available during ctor, may be
@@ -802,13 +766,13 @@ public class PSJdbcTableMetaData
     * the column name, the external table name, and the external column name
     * respectively.  Each entry in the list is not <code>null</code>.
     */
-   private Map<String,List<String[]>> m_foreignKeyColumns = new HashMap<String,List<String[]>>();
+   private Map<String,List<String[]>> m_foreignKeyColumns = new HashMap<>();
 
    /**
     * A List of PSJdbcColumnDef objects, initialized during ctor, never
     * <code>null</code>, may be empty.
     */
-   private List m_columns = new ArrayList();
+   private List<PSJdbcColumnDef> m_columns = new ArrayList<>();
 
    /**
     * A list of index definitions (<code>PSJdbcIndex</code> objects).
@@ -816,7 +780,7 @@ public class PSJdbcTableMetaData
     * so always have a valid and unique name.
     * Never <code>null</code>, may be empty.
     */
-   private List m_indexes = new ArrayList();
+   private List<PSJdbcIndex> m_indexes = new ArrayList<>();
 
    /**
     * The table to retrieve data for, initialized in the ctor, never <code>null

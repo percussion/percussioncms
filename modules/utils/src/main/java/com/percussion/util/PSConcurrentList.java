@@ -43,14 +43,14 @@ public class PSConcurrentList <T> implements List<T> {
     private transient volatile  List<T> list;
 
     public PSConcurrentList(){
-        list = new ArrayList();
+        list = new ArrayList<>();
     }
 
-    public PSConcurrentList(Class clazz){
+    public PSConcurrentList(Class<T> clazz){
         list = (List<T>)Arrays.asList(Array.newInstance(clazz,0));
     }
 
-    public PSConcurrentList(Class clazz,int capacity){
+    public PSConcurrentList(Class<?> clazz,int capacity){
         list = (List<T>)Arrays.asList(Array.newInstance(clazz,capacity));
     }
 
@@ -557,7 +557,7 @@ public class PSConcurrentList <T> implements List<T> {
         readWriteLock.readLock().lock();
         try
         {
-            return new PSConcurrentListIterator(new ArrayList<T>( list ).listIterator(index));
+            return new PSConcurrentListIterator<>(new ArrayList<T>( list ).listIterator(index));
         }
         finally
         {

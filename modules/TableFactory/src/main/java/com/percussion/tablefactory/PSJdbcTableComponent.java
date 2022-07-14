@@ -179,6 +179,10 @@ public abstract class PSJdbcTableComponent
     */
    public boolean equals(Object obj)
    {
+      if(! (obj instanceof PSJdbcTableComponent)){
+         return false;
+      }
+
       return (compare(obj, 0) >= IS_EXACT_MATCH);
    }
 
@@ -280,7 +284,7 @@ public abstract class PSJdbcTableComponent
     *         or empty and required is <code>true</code>.
     * @throws IllegalArgumentException if either parameter is <code>null</code>
     *         or attrName is empty.
-    * @throws IllegalStateExcpetion if tree is not postioned at an Element.
+    * @throws IllegalStateException if tree is not postioned at an Element.
     */
    public static String getAttribute(PSXmlTreeWalker tree, String attrName,
       boolean required)
@@ -326,7 +330,7 @@ public abstract class PSJdbcTableComponent
     * @throws PSJdbcTableFactoryException if the node has an illegal value
     * @throws IllegalArgumentException if any parameter is <code>null</code>,
     *         or if attrName or legalValues is empty.
-    * @throws IllegalStateExcpetion if tree is not postioned at an Element.
+    * @throws IllegalStateException if tree is not postioned at an Element.
     */
    public static int getEnumeratedAttributeIndex(PSXmlTreeWalker tree,
                                                   String attrName,
@@ -457,11 +461,8 @@ public abstract class PSJdbcTableComponent
     */
    private boolean validateName(String name)
    {
-      boolean isValid = true;
-      if ((name == null || name.trim().length() == 0) && isNameRequired())
-         isValid = false;
 
-      return isValid;
+      return (name != null && name.trim().length() != 0) || !isNameRequired();
    }
 
    /**

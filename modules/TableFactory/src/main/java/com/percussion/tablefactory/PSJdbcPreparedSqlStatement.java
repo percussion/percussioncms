@@ -30,7 +30,6 @@ import org.apache.commons.io.IOUtils;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.Iterator;
 
 
 /**
@@ -167,9 +166,8 @@ public class PSJdbcPreparedSqlStatement extends PSJdbcSqlStatement
    protected void closeColumnStreams(PSCollection values) {
       try {
          if (values != null) {
-            Iterator valueIt = values.iterator();
-            while (valueIt.hasNext()) {
-               PSJdbcStatementColumn value = (PSJdbcStatementColumn) valueIt.next();
+            for (Object o : values) {
+               PSJdbcStatementColumn value = (PSJdbcStatementColumn) o;
                if (value.getBinaryValue() != null && value.getBinaryValue().getStream() != null) {
                   IOUtils.closeQuietly(value.getBinaryValue().getStream());
                }
@@ -187,7 +185,7 @@ public class PSJdbcPreparedSqlStatement extends PSJdbcSqlStatement
     * Binds the list of values to the statement.
     *
     * @param stmt The PreparedStatement, assumed not <code>null</code>.
-    * @param value A list of one or more PSJdbcStatementColumn objects,
+    * @param values A list of one or more PSJdbcStatementColumn objects,
     * assumed not <code>null</code> or empty.
     *
     * @throws SQLException if any errors occur
@@ -209,7 +207,7 @@ public class PSJdbcPreparedSqlStatement extends PSJdbcSqlStatement
          catch(Exception e)
          {
             // convert to SQLException
-            Object args[] = {value.getValue(), new Integer(value.getType()),
+            Object[] args = {value.getValue(), value.getType(),
                e.toString()};
             PSJdbcTableFactoryException fe =  new PSJdbcTableFactoryException(
                IPSTableFactoryErrors.SQL_BIND_PARAMETER, args, e);

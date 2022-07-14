@@ -129,9 +129,8 @@ public class PSJdbcTableSchemaHandlerCollection extends PSCollection
 
       // create the root element
       Element   root = doc.createElement(NODE_NAME);
-      for (int i = 0; i < size(); i++)
-      {
-         PSJdbcTableSchemaHandler schemaHandler = (PSJdbcTableSchemaHandler)get(i);
+      for (Object o : this) {
+         PSJdbcTableSchemaHandler schemaHandler = (PSJdbcTableSchemaHandler) o;
          root.appendChild(schemaHandler.toXml(doc));
       }
       return root;
@@ -157,9 +156,8 @@ public class PSJdbcTableSchemaHandlerCollection extends PSCollection
    {
       PSJdbcTableSchemaHandler.checkValidSchemaHandlerType(schemaHandlerType);
       PSJdbcTableSchemaHandler schemaHandler = null;
-      for (int i = 0; i < size(); i++)
-      {
-         schemaHandler = (PSJdbcTableSchemaHandler)get(i);
+      for (Object o : this) {
+         schemaHandler = (PSJdbcTableSchemaHandler) o;
          if (schemaHandler.getType() == schemaHandlerType)
             return schemaHandler;
       }

@@ -69,7 +69,7 @@ public class PSJdbcSelectFilter
     * may be empty
     * @param colDataType the jdbc data type of the column
     *
-    * @throw IllegalArgumentException if colName or colValue is <code>null</code>
+    * @throws IllegalArgumentException if colName or colValue is <code>null</code>
     * or colName is empty or op is an invalid conditional operator
     */
    public PSJdbcSelectFilter(String colName, int op,
@@ -103,22 +103,8 @@ public class PSJdbcSelectFilter
                m_filter += colValue;
                break;
 
-            case Types.DATE:
-            case Types.TIME:
-            case Types.TIMESTAMP:
-            case Types.BINARY:
-            case Types.VARBINARY:
-            case Types.LONGVARBINARY:
-            case Types.BLOB:
-            case Types.CHAR:
-            case Types.VARCHAR:
-            case Types.LONGVARCHAR:
-            case Types.CLOB:
-               m_filter += "\'" + colValue + "\'";
-               break;
-
-            default:
-               m_filter += "\'" + colValue + "\'";
+            default: //CLOB
+               m_filter += "'" + colValue + "'";
                break;
          }
       }
@@ -128,7 +114,7 @@ public class PSJdbcSelectFilter
     * Returns the conditional clause encapsulated by this object, never
     * <code>null</code> or empty. the returned string does not contain the
     * "WHERE" keyword.
-    * @return
+    * @return A string
     */
    public String toString()
    {
@@ -237,10 +223,6 @@ public class PSJdbcSelectFilter
     * of this class has to concat the WHERE string.
     */
    public static final String WHERE = " WHERE ";
-
-   /**
-    * Constants to be used in the public constructor.
-    */
 
    /**
     * Constant for use in the public constructor for creating a filter where

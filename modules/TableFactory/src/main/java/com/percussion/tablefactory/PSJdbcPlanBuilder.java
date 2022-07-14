@@ -89,7 +89,7 @@ public class PSJdbcPlanBuilder
          "Creating schema plan for table: " + tableSchema.getName());
 
       // create schema change event in case we need it
-      List changeListeners = tableSchema.getSchemaChangeListeners();
+      List<IPSJdbcTableChangeListener> changeListeners = tableSchema.getSchemaChangeListeners();
       PSJdbcTableChangeEvent changeEvent = null;
       boolean addListeners = changeListeners != null;
       if (addListeners)
@@ -237,7 +237,8 @@ public class PSJdbcPlanBuilder
                addTableChanges(curSchema, tableSchema) : tableSchema);
             // remove ForeignKey constraints to avoid double creation of the constraints (bug RHYT-426)
             newSchema.clearForeignKeys();
-
+            //remove indexes to avoid double creation.
+            newSchema.clearIndexes();
             boolean copyData = false;
             if (newSchema.isDelOldData() || !hasRows)
             {
@@ -291,17 +292,15 @@ public class PSJdbcPlanBuilder
                      rs.close();
                   }
                }
-               
-               if (rsTableNames==null)
+
                   rsTableNames.close();
                
-               Iterator itTableSchemasFithFK =
+               Iterator<PSJdbcTableSchema> itTableSchemasFithFK =
                   curSchema.getTablesWithForeignKey();
                
                while (itTableSchemasFithFK.hasNext())
                {
-                  PSJdbcTableSchema schemaFK = (PSJdbcTableSchema)
-                  itTableSchemasFithFK.next();
+                  PSJdbcTableSchema schemaFK = itTableSchemasFithFK.next();
                   
                   //drop FK constraint - to be restored later
                   List<PSJdbcForeignKey> fks = schemaFK.getForeignKeys();
@@ -399,8 +398,7 @@ public class PSJdbcPlanBuilder
                
                while (itTableSchemasFithFK.hasNext())
                {
-                  PSJdbcTableSchema schema = 
-                     (PSJdbcTableSchema) itTableSchemasFithFK.next();
+                  PSJdbcTableSchema schema = itTableSchemasFithFK.next();
 
                   String fullFKSQL = 
                      PSJdbcStatementFactory.getForeignKeyConstraint(dbmsDef,
@@ -511,7 +509,7 @@ public class PSJdbcPlanBuilder
    static public void getDataPlan(
       Connection conn,
       PSJdbcDbmsDef dbmsDef,
-      Map tableMetaMap,
+      Map<String, PSJdbcTableMetaData> tableMetaMap,
       PSJdbcTableSchema tableSchema,
       PSJdbcTableData tableData,
       PSJdbcExecutionPlan insertPlan,
@@ -550,10 +548,10 @@ public class PSJdbcPlanBuilder
       // check in case schema has been modified to invalidate the data.
       tableSchema.validateTableData(tableData);
 
-      Iterator rows = tableData.getRows();
+      Iterator<PSJdbcRowData> rows = tableData.getRows();
       while (rows.hasNext())
       {
-         PSJdbcRowData row = (PSJdbcRowData)rows.next();
+         PSJdbcRowData row = rows.next();
 
          // for parent tables, catalog all the child tables rows for this parent
        
@@ -1337,7 +1335,7 @@ public class PSJdbcPlanBuilder
       throws PSJdbcTableFactoryException
    {
       // First build list of column changes
-      List changedCols = new ArrayList();
+      List changedCols = new ArrayList<>();
       Iterator newCols = newSchema.getColumns();
       while (newCols.hasNext())
       {
@@ -1510,14 +1508,14 @@ public class PSJdbcPlanBuilder
               PSJdbcIndex.TYPE_UNIQUE | PSJdbcIndex.TYPE_NON_UNIQUE);
 
       //Keeps a record of all indexes that are in new schema as well
-      List processedOldIdx = new ArrayList();
+      List<String> processedOldIdx = new ArrayList<>();
 
       //Traverse over all new Indexes and see if old Index with same name exists, then replace that index with new one
       while (newIndexes.hasNext()){
          PSJdbcIndex newIndex = (PSJdbcIndex) newIndexes.next();
          PSJdbcIndex oldIdx = oldSchema.getIndex(newIndex.getName());
          if(oldIdx != null) {
-            buffer.append(NEWLINE + " Deleting Found Index: ");
+            buffer.append(NEWLINE).append(" Deleting Found Index: ");
             buffer.append(oldIdx.getName());
             processedOldIdx.add(oldIdx.getName());
             int indexAction = PSJdbcTableComponent.ACTION_REPLACE;

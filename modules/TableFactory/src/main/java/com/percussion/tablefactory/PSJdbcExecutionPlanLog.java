@@ -47,7 +47,7 @@ public class PSJdbcExecutionPlanLog
     * <code>PSJdbcExecutionStepLog</code> objects, never <code>null</code>,
     * may be empty.
     */
-   public Iterator getStepLogs()
+   public Iterator<PSJdbcExecutionStepLog> getStepLogs()
    {
       return m_logDataList.iterator();
    }
@@ -95,11 +95,11 @@ public class PSJdbcExecutionPlanLog
 
       // create the root element
       Element   root = doc.createElement(NODE_NAME);
-      Iterator list = getStepLogs();
+      Iterator<PSJdbcExecutionStepLog> list = getStepLogs();
       while (list.hasNext())
       {
          PSJdbcExecutionStepLog stepLogData =
-            (PSJdbcExecutionStepLog)list.next();
+                 list.next();
          root.appendChild(stepLogData.toXml(doc));
       }
 
@@ -129,7 +129,7 @@ public class PSJdbcExecutionPlanLog
     * Contains a list of <code>PSJdbcExecutionStepLog</code> objects,
     * never <code>null</code>, may be empty
     */
-   private List m_logDataList = new ArrayList();
+   private List<PSJdbcExecutionStepLog> m_logDataList = new ArrayList<>();
 
 }
 

@@ -324,7 +324,7 @@ public class PSJdbcExecutionStepLog
 
       if (m_pkKeyRowData != null)
       {
-         Iterator pkeyList = m_pkKeyRowData.getColumns();
+         Iterator<PSJdbcColumnData> pkeyList = m_pkKeyRowData.getColumns();
          if (pkeyList.hasNext())
          {
             Element pkey = PSXmlDocumentBuilder.addEmptyElement(doc, root,
@@ -332,7 +332,7 @@ public class PSJdbcExecutionStepLog
 
             while (pkeyList.hasNext())
             {
-               PSJdbcColumnData colData = (PSJdbcColumnData)pkeyList.next();
+               PSJdbcColumnData colData = pkeyList.next();
                Element pkeyCol = PSXmlDocumentBuilder.addEmptyElement(doc, pkey,
                   PRIMARY_KEY_COL_NODE_NAME);
                PSXmlDocumentBuilder.addElement(doc, pkeyCol,
@@ -375,7 +375,7 @@ public class PSJdbcExecutionStepLog
     }
 
    /**
-    * Constants for Xml Elements and Attibutes
+    * Constants for Xml Elements and Attributes
     */
    public static final String NODE_NAME = "StepLogData";
    public static final String CONNECTION_NODE_NAME = "connection";

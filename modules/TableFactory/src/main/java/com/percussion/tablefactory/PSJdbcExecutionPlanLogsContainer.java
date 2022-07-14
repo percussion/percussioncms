@@ -52,7 +52,7 @@ public class PSJdbcExecutionPlanLogsContainer
     * <code>PSJdbcExecutionPlanLog</code> objects, never <code>null</code>,
     * may be empty.
     */
-   public Iterator getPlanLogs()
+   public Iterator<PSJdbcExecutionPlanLog> getPlanLogs()
    {
       return m_logDataList.iterator();
    }
@@ -100,11 +100,11 @@ public class PSJdbcExecutionPlanLogsContainer
 
       // create the root element
       Element  root = doc.createElement(NODE_NAME);
-      Iterator list = getPlanLogs();
+      Iterator<PSJdbcExecutionPlanLog> list = getPlanLogs();
       while (list.hasNext())
       {
          PSJdbcExecutionPlanLog planLogData =
-            (PSJdbcExecutionPlanLog)list.next();
+                 list.next();
          root.appendChild(planLogData.toXml(doc));
       }
 
@@ -139,7 +139,7 @@ public class PSJdbcExecutionPlanLogsContainer
       if (ps == null)
         throw new IllegalArgumentException("print stream cannot be null");
         
-      ps.print(toString());
+      ps.print(this);
    }
    
    /**
@@ -250,7 +250,7 @@ public class PSJdbcExecutionPlanLogsContainer
     * Contains a list of <code>PSJdbcExecutionPlanLog</code> objects,
     * never <code>null</code>, may be empty
     */
-   private List m_logDataList = new ArrayList();
+   private List<PSJdbcExecutionPlanLog> m_logDataList = new ArrayList<>();
 
    /** The action value used for UNKNOWN database actions. */
    public static final int UNKNOWN = -1;

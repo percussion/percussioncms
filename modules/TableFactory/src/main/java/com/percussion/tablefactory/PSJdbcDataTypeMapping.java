@@ -61,14 +61,14 @@ public class PSJdbcDataTypeMapping
     * the data type does not support size/precision.  Never empty.
     *
     * @param defaultScale provides a default scale to be used when the table
-    * defintion does not provide one.  This attribute must be defined if the
+    * definition does not provide one.  This attribute must be defined if the
     * data type supports scale.  Must be <code>null</code> if the data type
     * does not support scale.  Never empty.
     *
     * @param suffix  an optional clause to be appended after the native string
     * and size and scale parameters.  Some databases have data types that
     * require this addition text; for example, the VARBINARY data type in DB2
-    * is specifed as "VARCHAR () FOR BIT DATA".  "FOR BIT DATA" is the suffix.
+    * is specified as "VARCHAR () FOR BIT DATA".  "FOR BIT DATA" is the suffix.
     * May be <code>null</code> if not needed.  Never empty.
     *
     * @param isNative2Jdbc If two or more jdbc data types map to the same native
@@ -331,7 +331,7 @@ public class PSJdbcDataTypeMapping
    static final String IS_NATIVE_2_JDBC_AT = "isNative2Jdbc";
 
    /**
-    * Constants for attibute values corresponding to boolean <code>true</code>
+    * Constants for attribute values corresponding to boolean <code>true</code>
     * and <code>false</code>
     */
    private static final String XML_TRUE = "y";
@@ -364,7 +364,7 @@ public class PSJdbcDataTypeMapping
    /**
     * Optional clause to be appended after the native string and size and scale
     * parameters.  Some databases have data types that require this addition
-    * text; for example, DB2's VARBINARY data type is specifed as
+    * text; for example, DB2's VARBINARY data type is specified as
     * "VARCHAR () FOR BIT DATA" ("FOR BIT DATA" is the suffix).  Will be
     * <code>null</code> (never empty) if the data type has no suffix.
     */
