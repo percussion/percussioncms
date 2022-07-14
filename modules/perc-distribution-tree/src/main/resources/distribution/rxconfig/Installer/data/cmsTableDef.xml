@@ -834,11 +834,6 @@
             <name>PARAM_ID</name>
         </primarykey>
     </table>
-    <!-- defined PSX_CONTENTLIST_EXPANDER_PARAM table without foriegn key to RXCONTENTLIST table.
-          There are 2 definition for PSX_CONTENTLIST_EXPANDER_PARAM table, with/without forgien key.
-          Make sure update both places for any changes in this table.
-          This is to avoid a catch 22 issue when changing the type of the primary key in RXCONTENTLIST table.
-    -->
     <table name="PSX_CONTENTLIST_EXPANDER_PARAM" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
             <column name="PARAM_ID">
@@ -932,47 +927,6 @@
                 <name>EDITIONTYPE</name>
             </index>
         </indexdefinitions>
-    </table>
-    <!-- defined PSX_CONTENTLIST_EXPANDER_PARAM table with foriegn key to RXCONTENTLIST table.
-         There are 2 definition for PSX_CONTENTLIST_EXPANDER_PARAM table, with/without forgien key.
-         Make sure update both places for any changes in this table.
-         This is to avoid a catch 22 issue when changing the type of the primary key in RXCONTENTLIST table.
-   -->
-    <table name="PSX_CONTENTLIST_EXPANDER_PARAM" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
-        <row>
-            <column name="PARAM_ID">
-                <jdbctype>BIGINT</jdbctype>
-                <allowsnull>no</allowsnull>
-            </column>
-            <column name="CONTENT_LIST_ID">
-                <jdbctype>BIGINT</jdbctype>
-                <allowsnull>yes</allowsnull>
-            </column>
-            <column name="VERSION">
-                <jdbctype>INTEGER</jdbctype>
-                <allowsnull>no</allowsnull>
-            </column>
-            <column name="NAME">
-                <jdbctype>VARCHAR</jdbctype>
-                <allowsnull>yes</allowsnull>
-                <size>64</size>
-            </column>
-            <column name="VALUE">
-                <jdbctype>VARCHAR</jdbctype>
-                <allowsnull>no</allowsnull>
-                <size>4000</size>
-            </column>
-        </row>
-        <primarykey>
-            <name>PARAM_ID</name>
-        </primarykey>
-        <foreignkey name="FK_EPARM_CLIST_ID">
-            <fkColumn>
-                <name>CONTENT_LIST_ID</name>
-                <externalTable>RXCONTENTLIST</externalTable>
-                <externalColumn>CONTENTLISTID</externalColumn>
-            </fkColumn>
-        </foreignkey>
     </table>
     <table name="RXEDITION" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
