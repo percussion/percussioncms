@@ -73,7 +73,7 @@ import com.percussion.util.PSSqlHelper;
 import com.percussion.utils.request.PSRequestInfo;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.Query;
+import org.hibernate.query.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.engine.spi.SessionImplementor;
