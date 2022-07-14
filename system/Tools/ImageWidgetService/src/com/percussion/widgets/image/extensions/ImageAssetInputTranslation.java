@@ -68,6 +68,7 @@ public class ImageAssetInputTranslation extends PSDefaultExtension implements IP
    ImageCacheManager cacheManager = null;
    ImageResizeManager resizeManager = null;
 
+   @Override
    public void init(IPSExtensionDef def, File file) throws PSExtensionException
    {
       super.init(def, file);
@@ -117,9 +118,8 @@ public class ImageAssetInputTranslation extends PSDefaultExtension implements IP
       }
       catch (Exception ex)
       {
-         log.error("Unexpected Exception: {}" , PSExceptionUtils.getMessageForLog(ex));
-         log.debug(ex);
-         throw new PSExtensionProcessingException(getClass().getName(), ex);
+         log.warn("Unable to process image field for thumbnail creation. Error: {}",
+                 PSExceptionUtils.getMessageForLog(ex));
       }
    }
 
