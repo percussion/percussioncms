@@ -105,8 +105,7 @@ import org.apache.commons.collections.MultiMap;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.HibernateException;
-import org.hibernate.Query;
+import org.hibernate.query.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyHbmImpl;
@@ -114,6 +113,7 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.transform.Transformers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PreDestroy;
@@ -161,6 +161,12 @@ import static com.percussion.services.utils.orm.PSDataCollectionHelper.clearIdSe
 import static com.percussion.services.utils.orm.PSDataCollectionHelper.executeQuery;
 import static com.percussion.utils.request.PSRequestInfoBase.KEY_PSREQUEST;
 import static com.percussion.utils.request.PSRequestInfoBase.getRequestInfo;
+import static org.hibernate.type.StandardBasicTypes.BOOLEAN;
+import static org.hibernate.type.StandardBasicTypes.DATE;
+import static org.hibernate.type.StandardBasicTypes.INTEGER;
+import static org.hibernate.type.StandardBasicTypes.LONG;
+import static org.hibernate.type.StandardBasicTypes.STRING;
+
 
 /**
  * Content repository implementation that stores content nodes, properties and
@@ -170,7 +176,7 @@ import static com.percussion.utils.request.PSRequestInfoBase.getRequestInfo;
  * @author dougrand
  */
 @PSBaseBean("sys_legacyContentRepository")
-@Transactional
+@Transactional(propagation = Propagation.REQUIRES_NEW)
 public class PSContentRepository
         implements
         IPSContentRepository,
@@ -1917,7 +1923,7 @@ public class PSContentRepository
                 right.setType(PropertyType.LONG);
                 internalwhere = new PSQueryNodeComparison(left, right, Op.EQ);
             }
-            else if (val instanceof Boolean && ! (Boolean) val)
+            else if (val instanceof Boolean)
             {
                 //NOOP JDBC does not support parameters on both sides for not equal (?<>?)
                 //See #createQueryWhere in this class.
@@ -2098,7 +2104,19 @@ public class PSContentRepository
             Object value = pname.getValue();
             logParameter(pname.getKey(), value);
 
-            q.setParameter(pname.getKey(), value);
+            if(value instanceof Boolean) {
+                q.setParameter(pname.getKey(), value, BOOLEAN);
+            }else if (value instanceof Integer) {
+                q.setParameter(pname.getKey(), value, INTEGER);
+            }else if(value instanceof String){
+                q.setParameter(pname.getKey(), value, STRING);
+            }else if(value instanceof Date) {
+                q.setParameter(pname.getKey(), value, DATE);
+            }else if(value instanceof Long) {
+                q.setParameter(pname.getKey(), value, LONG);
+            }else{
+                q.setParameter(pname.getKey(),value);
+            }
         }
         if (maxresults > 0)
             q.setMaxResults(maxresults);
@@ -2220,15 +2238,22 @@ public class PSContentRepository
      * @see PSQueryNodeVisitor and its subclasses to understand the visitor
      * pattern used to process the query tree
      */
-    @SuppressWarnings("unchecked")
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public QueryResult executeInternalQuery(javax.jcr.query.Query query,
                                             int maxresults, Map<String, ? extends Object> params, String locale)
-            throws RepositoryException
     {
         if (query == null)
         {
             throw new IllegalArgumentException("query may not be null");
         }
+
+        List<Long> collectionIds = Collections.emptyList();
+        Session s = getSession();
+        PSQueryResult rval = null;
+
+        try
+        {
+            s = s.getSessionFactory().openSession();
 
         // Get the list of types
         PSQuery psquery = (PSQuery) query;
@@ -2241,11 +2266,8 @@ public class PSContentRepository
         {
             rowcomparator.setLocale(new Locale(locale));
         }
-        PSQueryResult rval = new PSQueryResult(columns, rowcomparator);
-        Session s = getSession();
-        List<Long> collectionIds = Collections.emptyList();
-        try
-        {
+         rval = new PSQueryResult(columns, rowcomparator);
+
             s.enableFilter("relationshipConfigFilter");
             PSPair<IPSQueryNode, List<Long>> pair = getWhereClause(query, s, params, collectionIds);
             if (pair == null)
@@ -2256,29 +2278,38 @@ public class PSContentRepository
 
             for (Long typeid : typeids)
             {
-                try {
+
                     Query q = prepareQuery(psquery, typeid, s, internalwhere, maxresults, params);
                     if (q == null)
                         continue;
 
                     PSStopwatch sw = new PSStopwatch();
                     sw.start();
-                    List<Map> results = (!collectionIds.isEmpty()) ? (List) executeQuery(q) : q.list();
+                    List<Map> results;
+                    //if (!collectionIds.isEmpty()) {
+                        results = (List) executeQuery(q);
+                //    } else {
+                 //       results = q.list();
+                //   }
+
                     sw.stop();
 
                     if (ms_log.isDebugEnabled())
                         ms_log.debug("HQL Query execution on content type {}:{}", typeid, sw);
 
                     gatherQueryResults(results, rval);
-                }catch(HibernateException e){
-                    ms_log.error(PSExceptionUtils.getMessageForLog(e));
-                }
+
             }
 
             // Limit results?
             rval = limitQueryResults(rval, maxresults, columns, rowcomparator);
-        }
-        finally
+        } catch (ValueFormatException e) {
+            e.printStackTrace();
+        } catch (InvalidQueryException e) {
+            e.printStackTrace();
+        } catch (RepositoryException e) {
+            e.printStackTrace();
+        } finally
         {
             if (!collectionIds.isEmpty())
             {
