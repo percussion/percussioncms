@@ -1654,17 +1654,6 @@
             <column name="RELATIONSHIPNAME">ActiveAssembly</column>
             <column name="FINDER">Java/global/percussion/slotcontentfinder/sys_RelationshipContentFinder</column>
         </row>
-        <row action="i" onTableCreateOnly="no">
-            <column name="SLOTID">510</column>
-            <column name="VERSION">0</column>
-            <column name="LABEL">Nav Landing Page</column>
-            <column name="SLOTNAME">perc.nav.landingPage</column>
-            <column name="SLOTDESC">landing page for nav</column>
-            <column name="SYSTEMSLOT"/>
-            <column name="SLOTTYPE">0</column>
-            <column name="RELATIONSHIPNAME">ActiveAssembly</column>
-            <column name="FINDER">Java/global/percussion/slotcontentfinder/sys_RelationshipContentFinder</column>
-        </row>
         <row action="r" onTableCreateOnly="no">
             <column name="SLOTID">111</column>
             <column name="VERSION">0</column>
@@ -1676,40 +1665,6 @@
             <column name="RELATIONSHIPNAME">ActiveAssembly</column>
             <column name="FINDER">Java/global/percussion/slotcontentfinder/sys_ManagedNavContentFinder</column>
         </row>
-        <row action="i" onTableCreateOnly="no">
-            <column name="SLOTID">511</column>
-            <column name="VERSION">0</column>
-            <column name="LABEL">Managed Nav Slot</column>
-            <column name="SLOTNAME">perc.nav.slot</column>
-            <column name="SLOTDESC">Managed navigation slot, which is used to render all navs</column>
-            <column name="SYSTEMSLOT"/>
-            <column name="SLOTTYPE">0</column>
-            <column name="RELATIONSHIPNAME">ActiveAssembly</column>
-            <column name="FINDER">Java/global/percussion/slotcontentfinder/sys_ManagedNavContentFinder</column>
-        </row>
-        <row action="i" onTableCreateOnly="no">
-            <column name="SLOTID">513</column>
-            <column name="VERSION">0</column>
-            <column name="LABEL">Nav Image</column>
-            <column name="SLOTNAME">perc.nav.image</column>
-            <column name="SLOTDESC">navigation image for rollovers</column>
-            <column name="SYSTEMSLOT"/>
-            <column name="SLOTTYPE">0</column>
-            <column name="RELATIONSHIPNAME">ActiveAssembly</column>
-            <column name="FINDER">Java/global/percussion/slotcontentfinder/sys_RelationshipContentFinder</column>
-        </row>
-        <row action="i" onTableCreateOnly="no">
-            <column name="SLOTID">516</column>
-            <column name="VERSION">0</column>
-            <column name="LABEL">Nav Submenu</column>
-            <column name="SLOTNAME">perc.nav.subMenu</column>
-            <column name="SLOTDESC">submenu slot for managed nav</column>
-            <column name="SYSTEMSLOT"/>
-            <column name="SLOTTYPE">0</column>
-            <column name="RELATIONSHIPNAME">ActiveAssembly</column>
-            <column name="FINDER">Java/global/percussion/slotcontentfinder/sys_RelationshipContentFinder</column>
-        </row>
-
     </table>
     <table name="USERLOGIN">
         <row onTableCreateOnly="no" action="i">
