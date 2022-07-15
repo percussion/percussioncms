@@ -57,6 +57,28 @@ tinymce.PluginManager.add('rxinline', function(editor) {
         createInlineSearchBox("rxhyperlink",tinyMCE.activeEditor.selection.getContent(),tinyMCEinlineLinkSlot,ctypeid,insertInlineText);
     });
 
+    editor.ui.registry.addMenuItem('unlink', {
+        icon: 'unlink',
+        text: I18N.message("perc.ui.widget.tinymce@Remove links"),
+        onAction: function () {
+            editor.execCommand('unlink');
+        },
+        stateSelector: 'a[href]',
+        context: 'insert',
+        prependToContext: true
+    });
+
+    editor.ui.registry.addButton('unlink', {
+        icon: 'unlink',
+        type: 'button',
+        tooltip: I18N.message("perc.ui.widget.tinymce@Remove links"),
+        onAction: function () {
+            editor.execCommand('unlink');
+        },
+        stateSelector: 'a[href]'
+    });
+
+
 
     // Adds a button to the toolbar
     editor.ui.registry.addButton('rxinlinetemplate', {
@@ -111,6 +133,19 @@ tinymce.PluginManager.add('rxinline', function(editor) {
         createInlineSearchBox("rximage",tinyMCE.activeEditor.selection.getContent(),tinyMCEinlineImageSlot,ctypeid,insertInlineText);
     });
 
+	editor.on('init', addBrowserjs);
+
+	// Workaround for tinymce bug links open in tinymce frame on JavaFX
+    editor.on('click', function(e) {
+        var elm = e.target;
+
+        do {
+            if (elm.tagName === 'A') {
+                e.preventDefault();
+                return;
+            }
+        } while ((elm = elm.parentNode));
+    });
 
 
     function insertInlineText(returnedHTML)

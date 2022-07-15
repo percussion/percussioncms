@@ -138,6 +138,8 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
     @Autowired
     private IPSPathService pathService;
 
+    public static String IMAGE_THUMB_PREFIX = "thumb_";
+
     private enum WorkflowStates{
         APPROVE,
         ARCHIVE,
@@ -175,8 +177,8 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
         String filename = StringUtils.substringAfterLast(path, "/");
        
         // should base on prefix stored on asset.  Would require a search for match in folder.
-        if (filename.startsWith("thumb_"))
-            filename = StringUtils.substringAfter(filename, "thumb_");
+        if (filename.startsWith(IMAGE_THUMB_PREFIX))
+            filename = StringUtils.substringAfter(filename, IMAGE_THUMB_PREFIX);
         
         PSPathItem item = null;
         try
@@ -605,10 +607,10 @@ try{
         String filename = StringUtils.substringAfterLast(path, "/");
         boolean thumbRequest = false;
         // should base on prefix stored on asset.  Would require a search for match in folder.
-        if (filename.startsWith("thumb_"))
+        if (filename.startsWith(IMAGE_THUMB_PREFIX))
         {
             thumbRequest = true;
-            filename = StringUtils.substringAfter(filename, "thumb_");
+            filename = StringUtils.substringAfter(filename, IMAGE_THUMB_PREFIX);
         }
         
         

@@ -121,12 +121,12 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
-import org.hibernate.query.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
@@ -187,7 +187,7 @@ public class PSPublisherService
    private Session getSession(){
       return entityManager.unwrap(Session.class);
    }
-   
+
    public static final int BATCH_SIZE = 50;
    
    /**
@@ -1286,7 +1286,7 @@ public class PSPublisherService
     * 
     * @see com.percussion.services.catalog.IPSCataloger#getSummaries(com.percussion.services.catalog.PSTypeEnum)
     */
-   public List<IPSCatalogSummary> getSummaries(PSTypeEnum type)
+    public List<IPSCatalogSummary> getSummaries(PSTypeEnum type)
    {
       List<IPSCatalogSummary> rval = new ArrayList<>();
 
@@ -1419,10 +1419,6 @@ public class PSPublisherService
       {
          throw new IllegalArgumentException("template may not be null");
       }
-      if (filter == null)
-      {
-         throw new IllegalArgumentException("filter may not be null");
-      }
       if (!(contentid instanceof PSLegacyGuid))
       {
          throw new IllegalArgumentException("contentid must be a legacy guid");
@@ -1461,8 +1457,9 @@ public class PSPublisherService
          params.put(IPSHtmlParameters.SYS_SITEID, Long.toString(siteguid
                .longValue()));
       }
-
-      params.put(IPSHtmlParameters.SYS_ITEMFILTER, filter.getName());
+      if(filter != null) {
+         params.put(IPSHtmlParameters.SYS_ITEMFILTER, filter.getName());
+      }
       params.put(IPSHtmlParameters.SYS_CONTEXT, Integer.toString(context));
       params.put(IPSHtmlParameters.SYS_TEMPLATE, Long.toString(template
             .getGUID().longValue()));
@@ -2332,6 +2329,7 @@ public class PSPublisherService
    /*
     * //see base class method for details
     */
+
    public IPSEdition loadEditionModifiable(IPSGuid id)
       throws PSNotFoundException
    {
@@ -2455,7 +2453,7 @@ public class PSPublisherService
       return dtype;
    }
 
-   @Transactional(propagation=Propagation.REQUIRES_NEW)
+   @Transactional(propagation= Propagation.REQUIRES_NEW)
    public void updatePublishingInfo(List<IPSPublisherItemStatus> stati)
    {
       if (stati == null || stati.size() == 0)
@@ -3037,7 +3035,7 @@ public class PSPublisherService
                "edition", editionid.longValue()).list();
    }
 
-   public IPSEditionTaskDef findEditionTaskById(IPSGuid id) 
+   public IPSEditionTaskDef findEditionTaskById(IPSGuid id)
       throws PSNotFoundException
    {
       if (id == null)

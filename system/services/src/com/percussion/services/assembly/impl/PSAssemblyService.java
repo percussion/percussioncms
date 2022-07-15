@@ -1944,14 +1944,9 @@ public class PSAssemblyService implements IPSAssemblyService
       {
          throw new IllegalArgumentException("id may not be null");
       }
-      IPSCacheAccess cache = getCache();
-      IPSTemplateSlot rval = (IPSTemplateSlot) cache.get(id, IPSCacheAccess.IN_MEMORY_STORE);
-      if (rval == null)
-      {
-         rval = getSlotById(id);
-         if (rval != null)
-            cache.save(id, rval, IPSCacheAccess.IN_MEMORY_STORE);
-      }
+
+      IPSTemplateSlot rval = getSlotById(id);
+
       return rval;
    }
 
@@ -2065,11 +2060,6 @@ public class PSAssemblyService implements IPSAssemblyService
          Session session = entityManager.unwrap(Session.class);
          IPSTemplateSlot slot = loadSlot(id);
          session.delete(slot);
-         // The deleted object will be (indirectly) evicted by the framework
-         IPSCacheAccess cache = getCache();
-         IPSGuid slotId = slot.getGUID();
-         cache.evict(slotId, IPSCacheAccess.IN_MEMORY_STORE);
-
       }
       catch (DataAccessException e)
       {

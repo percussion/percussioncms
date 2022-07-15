@@ -649,7 +649,7 @@ public class PSGuidManager implements IPSGuidManager
 
    public List<Integer> extractContentIds(List<IPSGuid> guids)
    {
-      if (guids == null || !guids.isEmpty())
+      if (guids == null || guids.isEmpty())
       {
          throw new IllegalArgumentException("guids may not be null or empty");
       }

@@ -35,7 +35,7 @@ import com.percussion.services.filter.IPSItemFilterRuleDef;
 import com.percussion.services.filter.PSFilterException;
 import com.percussion.services.filter.PSFilterServiceLocator;
 import com.percussion.services.guidmgr.PSGuidHelper;
-import com.percussion.services.guidmgr.data.PSGuid;
+import com.percussion.services.guidmgr.PSGuidUtils;
 import com.percussion.services.utils.xml.PSXmlSerializationHelper;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.xml.IPSXmlSerialization;
@@ -371,7 +371,7 @@ public class PSItemFilter implements IPSItemFilter, IPSCatalogSummary,
     */
    public IPSGuid getGUID()
    {
-      return new PSGuid(PSTypeEnum.ITEM_FILTER,filter_id);
+      return PSGuidUtils.makeGuid(filter_id, PSTypeEnum.ITEM_FILTER);
    }
    
    /**

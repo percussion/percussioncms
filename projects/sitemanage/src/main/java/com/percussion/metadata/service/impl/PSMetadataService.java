@@ -29,6 +29,7 @@ import com.percussion.metadata.service.IPSMetadataService;
 import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.util.PSSiteManageBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 
@@ -37,6 +38,7 @@ import java.util.Collection;
  *
  */
 @PSSiteManageBean("metadataService")
+@Transactional
 public class PSMetadataService implements IPSMetadataService
 {   
 
