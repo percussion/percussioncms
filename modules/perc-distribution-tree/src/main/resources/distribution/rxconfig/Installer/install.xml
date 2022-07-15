@@ -1071,6 +1071,8 @@
             </fileset>
         </copy>
         <delete dir="${install.dir}/AppServer" verbose="true" failonerror="false" />
+        <delete dir="${install.dir}/jetty/base/webapps/RxServices"/>
+        <delete dir="${install.dir}/jetty/base/webapps/root"/>
     </target>
 
 

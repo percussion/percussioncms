@@ -33,9 +33,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 
-@XmlRootElement(name = "PathItem")
+@XmlRootElement(name = "PathItemList")
 @ArraySchema(schema=@Schema(implementation = PSPathItem.class))
-@JsonRootName("PathItem")
+@JsonRootName("PathItemList")
 public class PSPathItemList extends ArrayList<PSPathItem> {
     public PSPathItemList(Collection<? extends PSPathItem> c) {
         super(c);

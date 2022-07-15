@@ -261,7 +261,12 @@ public class PSModifyCommandHandler extends PSCommandHandler
          allLinkFields = new HashMap<>();
          
       String key = fieldSet.getName();
-      List<PSField> value = allLinkFields.computeIfAbsent(key, k -> new ArrayList<>());
+      List value = (List) allLinkFields.get(key);
+      if (value == null)
+      {
+         value = new ArrayList();
+         allLinkFields.put(key, value);
+      }
       return prepareInlineLinkFields(fieldSet, value, allLinkFields);
    }
    
@@ -522,6 +527,8 @@ public class PSModifyCommandHandler extends PSCommandHandler
       
       if (updateFieldData && !inlineLinkDataUpdate)
          preProcessInlineLinks(request, id);
+      else if (planType == PSModifyPlan.TYPE_DELETE_COMPLEX_CHILD)
+    	  preProcessInlineLinks(request, id);
 
       int stepsExecuted=0;
       
@@ -555,6 +562,9 @@ public class PSModifyCommandHandler extends PSCommandHandler
 
       if (updateFieldData && !inlineLinkDataUpdate)
          postProcessInlineLinks(request);
+      else if (planType == PSModifyPlan.TYPE_DELETE_COMPLEX_CHILD)
+    	  postProcessInlineLinks(request);
+
 
       // notify listeners of any change
       if (stepsExecuted > 0)
@@ -669,11 +679,17 @@ public class PSModifyCommandHandler extends PSCommandHandler
             {
                PSRelationshipSet all = PSInlineLinkField.getInlineRelationships(
                   new PSRequestContext(request));
-               for (PSRelationship psRelationship : (Iterable<PSRelationship>) all) {
-                  String inlineRelationshipId = psRelationship.getProperty(
+            Iterator relationships = all.iterator();
+            while (relationships.hasNext())
+            {
+               PSRelationship relationship =
+                  (PSRelationship) relationships.next();
+               String inlineRelationshipId = relationship.getProperty(
                           PSRelationshipConfig.PDU_INLINERELATIONSHIP);
-                  for (PSField o : fieldList) {
-                     PSField test1 = m_flatInlinelinkFields.get(
+               for (int i=0; i<fieldList.size(); i++)
+               {
+                  PSField field = (PSField) fieldList.get(i);
+                  Object test1 = m_flatInlinelinkFields.get(
                              PSInlineLinkField.getFieldName(inlineRelationshipId));
                      if (test1 == null) {
                         /*
@@ -681,7 +697,7 @@ public class PSModifyCommandHandler extends PSCommandHandler
                          * add it to the delete list. This cleans up orphaned
                          * inline relationships.
                          */
-                        deletes.add(psRelationship);
+                     deletes.add(relationship);
                         break;
                      } else {
                         /*
@@ -691,10 +707,12 @@ public class PSModifyCommandHandler extends PSCommandHandler
                          * for this property.
                          */
                         String test = PSInlineLinkField.getInlineRelationshipId(
-                                request, o);
-                        if (test.equals(
-                                PSInlineLinkField.RS_YES)) {
-                           deletes.add(psRelationship);
+                        request, field);
+                     if (inlineRelationshipId.equals(test) ||
+                        inlineRelationshipId.equals(
+                           PSInlineLinkField.RS_YES))
+                     {
+                        deletes.add(relationship);
                            break;
                         }
                      }
@@ -868,8 +886,8 @@ public class PSModifyCommandHandler extends PSCommandHandler
             errMsg += ": ";
 
          // currently only one exit supported for field translations
-         PSExtensionRunner runner = runners.get(0);
-
+         for (PSExtensionRunner runner : runners)
+         {
          try {
             Object result = runner.processUdfCallExtractor(data);
             if (result != null) {
@@ -886,6 +904,8 @@ public class PSModifyCommandHandler extends PSCommandHandler
             throw new PSConversionException(
                     IPSServerErrors.FIELD_TRANSFORM_ERROR, args);
          }
+      }
+
       }
    }
 

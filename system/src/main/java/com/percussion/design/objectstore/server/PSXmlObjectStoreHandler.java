@@ -32,35 +32,12 @@ import com.percussion.data.PSMetaDataCache;
 import com.percussion.data.jdbc.PSFileSystemDriver;
 import com.percussion.data.vfs.IPSVirtualDirectory;
 import com.percussion.data.vfs.PSVirtualApplicationDirectory;
-import com.percussion.design.objectstore.IPSObjectStoreErrors;
-import com.percussion.design.objectstore.PSAcl;
-import com.percussion.design.objectstore.PSAclEntry;
-import com.percussion.design.objectstore.PSApplication;
-import com.percussion.design.objectstore.PSApplicationFile;
-import com.percussion.design.objectstore.PSComponent;
-import com.percussion.design.objectstore.PSContentEditorSharedDef;
-import com.percussion.design.objectstore.PSContentEditorSystemDef;
-import com.percussion.design.objectstore.PSExtensionFile;
-import com.percussion.design.objectstore.PSFeatureSet;
-import com.percussion.design.objectstore.PSLockedException;
-import com.percussion.design.objectstore.PSLogger;
-import com.percussion.design.objectstore.PSNonUniqueException;
-import com.percussion.design.objectstore.PSNotFoundException;
-import com.percussion.design.objectstore.PSNotLockedException;
-import com.percussion.design.objectstore.PSObjectFactory;
-import com.percussion.design.objectstore.PSRevisionEntry;
-import com.percussion.design.objectstore.PSRevisionHistory;
-import com.percussion.design.objectstore.PSRoleConfiguration;
-import com.percussion.design.objectstore.PSServerConfiguration;
-import com.percussion.design.objectstore.PSSystemValidationException;
-import com.percussion.design.objectstore.PSTableLocator;
-import com.percussion.design.objectstore.PSUnknownDocTypeException;
-import com.percussion.design.objectstore.PSUnknownNodeTypeException;
-import com.percussion.design.objectstore.PSVersionConflictException;
+import com.percussion.design.objectstore.*;
 import com.percussion.design.objectstore.legacy.IPSComponentConverter;
 import com.percussion.design.objectstore.legacy.IPSComponentUpdater;
 import com.percussion.design.objectstore.legacy.IPSConfigFileLocator;
 import com.percussion.design.objectstore.legacy.IPSRepositoryInfo;
+import com.percussion.design.objectstore.legacy.PSAllowAllCtypeWorkflowsUpdater;
 import com.percussion.design.objectstore.legacy.PSBackendTableConverter;
 import com.percussion.design.objectstore.legacy.PSConfigurationCtx;
 import com.percussion.design.objectstore.legacy.PSContentTypeWorkflowsUpdater;
@@ -539,7 +516,7 @@ public class PSXmlObjectStoreHandler extends PSObjectFactory
       
       // CM1RXdiff
 	   updaters.add(new PSContentTypeWorkflowsUpdater());
-     // updaters.add(new PSAllowAllCtypeWorkflowsUpdater());
+       updaters.add(new PSAllowAllCtypeWorkflowsUpdater());
       
       return updaters;
    }
