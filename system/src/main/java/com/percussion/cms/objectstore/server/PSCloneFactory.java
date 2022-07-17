@@ -219,8 +219,9 @@ public class PSCloneFactory
          
          Object test = ir.getRequest().getPrivateObject(
             CHILD_ROW_MAPPINGS_PRIVATE_OBJECT);
-         if (test != null)
-            childRowMappings = (Map) test;
+         if (test instanceof Map) {
+            childRowMappings.putAll((Map)test);
+         }
    
          // create the locater for the cloned object
          return new PSLocator(ir.getRequest().getParameter(
