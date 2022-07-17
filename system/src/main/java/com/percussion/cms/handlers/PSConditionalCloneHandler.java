@@ -964,6 +964,7 @@ public class PSConditionalCloneHandler extends PSCloneHandler
          {
             PSRelationshipProcessor processor = PSRelationshipProcessor.getInstance();
             processor.save(needModification);
+            //need to clear relationship Cache in graph as well
          }
       }
    }
