@@ -539,7 +539,7 @@ accept      %ContentTypes; #IMPLIED
          '&amp;sys_submitname=',@paramName,'&amp;sys_childrowid=',$childkey)"/>
          <!-- childid if it exists -->
       </xsl:variable>
-      <xsl:variable name="fileBase"><xsl:value-of select="@paramName"/></xsl:variable>
+	        <xsl:variable name="fileBase"><xsl:value-of select="@paramName"/></xsl:variable>
       <xsl:variable name="item_title"><xsl:value-of select="//Control[@paramName='sys_title']/Value"/></xsl:variable>
       <xsl:variable name="binary_type"><xsl:value-of select="//Control[@paramName=concat($fileBase,'_type')]/Value"/></xsl:variable>
       <xsl:variable name="binary_ext"><xsl:value-of select="//Control[@paramName=concat($fileBase,'_ext')]/Value"/></xsl:variable>
@@ -557,8 +557,7 @@ accept      %ContentTypes; #IMPLIED
             </xsl:otherwise>
          </xsl:choose>
       </xsl:variable>
-      <a href="#">
-         <xsl:attribute name="onclick">saveFile('<xsl:value-of select="$url"/>','<xsl:value-of select="$binary_type"/>','<xsl:value-of select="$field_filename"/>');</xsl:attribute>
+      <a href="{$url}{$fileName}" target="_blank"  rel = "noopener noreferrer" class="perc-preview-file-link" id="perc-content-edit-{@paramName}">
          <xsl:call-template name="getLocaleString">
             <xsl:with-param name="key" select="'psx.contenteditor.sys_templates@Preview File'"/>
             <xsl:with-param name="lang" select="$lang"/>
