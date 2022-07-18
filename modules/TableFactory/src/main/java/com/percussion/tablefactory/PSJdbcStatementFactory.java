@@ -258,6 +258,7 @@ public class PSJdbcStatementFactory
 
       }
 
+      int i = 1;
       // add each fk create
       for (PSJdbcForeignKey fKey : tableSchema.getForeignKeys())
       {
@@ -268,7 +269,7 @@ public class PSJdbcStatementFactory
 
          // add a separate alter statement for each external table constraint
          Iterator<String> tables = fKey.getTables();
-         int i = 1;
+
          while (tables.hasNext())
          {
             String tableName = tables.next();
