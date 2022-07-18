@@ -46,7 +46,9 @@
 .perc-table-remove:hover {
   color: #f00;
 }
-
+.perc-error-text {
+	color: #f00;
+}
 .perc-table-up, .table-down {
   color: #007;
   cursor: pointer;

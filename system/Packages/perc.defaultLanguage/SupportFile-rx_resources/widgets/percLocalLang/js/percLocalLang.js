@@ -237,16 +237,24 @@
         function validateForm() {
             var validation = false;
             // Check all page selector fields for a valid page-id.
+			// Because in case user wants to remove all rows and save, we want to allow user ro save.
+			if($('.perc-page-select input[name="pageSelections"]:not("#perc-content-page-selections-0")').length == 0){
+				return true;
+			}else{
             $('.perc-page-select input[name="pageSelections"]:not("#perc-content-page-selections-0")').each(function(){
                 var selectedPageId = $(this).attr("data-page-id");
                 if (selectedPageId === "false" ){
                     console.log("No page selected for page field.");
-                    $('#perc-local-lang-editor').append('<div id="page-selection-error">Error: Page selection missing. Please select an alternate language page for each row.</div>')
+						if(document.getElementById('page-selection-error') == null){
+							$('#localLangData').append('<div class="perc-error-text" id="page-selection-error">Error: Page selection missing. Please select an alternate language page for each row.</div>');
+						}
+						document.getElementById('page-selection-error').scrollIntoView();
                     validation = false;
                 } else {
                     validation = true;
                 }
             });
+			}
             return validation;
         }
         
