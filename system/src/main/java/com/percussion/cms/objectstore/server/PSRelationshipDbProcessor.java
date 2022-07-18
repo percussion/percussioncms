@@ -1575,6 +1575,9 @@ private List<PSRelationship> getRelationshipsFromAaCache(IPSFolderRelationshipCa
          return;
       
       ((PSAssemblerCacheHandler)handler).relationshipChanged(event);
+      if(PSFolderRelationshipCache.getInstance() != null) {
+         PSFolderRelationshipCache.getInstance().update(relationships);
+      }
 
    }
    
