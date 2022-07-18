@@ -24,25 +24,26 @@
 package com.percussion.tablefactory;
 
 import com.percussion.xml.PSXmlDocumentBuilder;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import org.junit.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 
 /**
  * Unit test for PSJdbcForeignKey.
  */
-public class PSJdbcForeignKeyTest extends TestCase
+public class PSJdbcForeignKeyTest
 {
-   public PSJdbcForeignKeyTest(String name)
-   {
-      super(name);
+   public PSJdbcForeignKeyTest(){
    }
 
    /**
     * Test the def
     */
+   @Test
    public void testDef() throws Exception
    {
       PSJdbcForeignKey fk = new PSJdbcForeignKey("col1", "extTable", "extCol1",
@@ -52,14 +53,11 @@ public class PSJdbcForeignKeyTest extends TestCase
       Element el = fk.toXml(doc);
       PSJdbcForeignKey fk2 = new PSJdbcForeignKey(el);
       assertEquals(fk, fk2);
+
+      fk2.setName("FK_SOME_OTHER_NAME_1");
+      assertNotEquals("Should not be equal", fk, fk2);
+
    }
 
-   // collect all tests into a TestSuite and return it
-   public static Test suite()
-   {
-      TestSuite suite = new TestSuite();
-      suite.addTest(new PSJdbcForeignKeyTest("testDef"));
-       return suite;
-   }
 
 }

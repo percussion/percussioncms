@@ -1454,7 +1454,7 @@ public class PSJdbcPlanBuilder
                PSJdbcForeignKey difFKey = new PSJdbcForeignKey(fk.getName(),fk.getColumns(),
                   PSJdbcTableComponent.ACTION_DELETE);
                updateKeys.add(difFKey);
-               buffer.append("Deleted foreign key: " + NEWLINE);
+               buffer.append("Deleted foreign key: ").append(NEWLINE);
                buffer.append(difFKey);
          } else {
             for (PSJdbcForeignKey newKey : newFKeys) {
