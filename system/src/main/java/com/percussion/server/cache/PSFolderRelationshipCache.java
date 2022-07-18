@@ -724,6 +724,7 @@ public class PSFolderRelationshipCache  implements IPSFolderRelationshipCache {
          if (folderId==null) folderId = -1;
          int variantId = NumberUtils.toInt(relationship.getProperty(PSRelationshipConfig.PDU_VARIANTID));
          int slotId = NumberUtils.toInt(relationship.getProperty(PSRelationshipConfig.PDU_SLOTID));
+         String inlineRelationshipId = relationship.getProperty(PSRelationshipConfig.PDU_INLINERELATIONSHIP);
          configId = relationship.getConfig().getId();
          boolean insertToCache = false;
          if (cache == null)
@@ -734,7 +735,7 @@ public class PSFolderRelationshipCache  implements IPSFolderRelationshipCache {
                || cache.getSortRank() != sort || cache.getOwnerId() != parent.getId() || cache.getOwnerRevision() != parent.getRevision()
                || cache.getDependentId() != child.getId() || cache.getDependentRevision() != relationship.getDependent().getRevision()
                || cache.getSlotId() != slotId)
-               || cache.getConfigId() != configId) {
+               || cache.getConfigId() != configId || ! StringUtils.equals(inlineRelationshipId,cache.getInlineRelationship())) {
             deleteFromCache(relationship);
             insertToCache = true;
          }
