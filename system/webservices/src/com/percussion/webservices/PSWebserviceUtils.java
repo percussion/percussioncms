@@ -1458,7 +1458,7 @@ public class PSWebserviceUtils
       // then check if it is checked out to the original logged in user. This is
       // required specially when this is invoked by an effect
       if (!checkedOutByUser
-            && user.equals(PSSecurityProvider.INTERNAL_USER_NAME))
+            && (user.equals(PSSecurityProvider.INTERNAL_USER_NAME) || StringUtils.isEmpty(user)))
       {
          PSRequest req = getRequest();
          String originalUser = "";

@@ -281,16 +281,8 @@ public class PSLogger
       
       //set console appender for WARN and up at rool level
       props.setProperty("log4j.rootCategory", "ALL, rxISFile");
-      
-      /*
-       props.setProperty("log4j.appender.console",
-       "org.apache.log4j.ConsoleAppender");
-       props.setProperty("log4j.appender.console.layout", 
-       "org.apache.log4j.PatternLayout");
-       props.setProperty("log4j.appender.console.layout.ConversionPattern", 
-       "%-5p [%c{1}] %d{MM/dd/yy HH:mm:ss}  %m%n");
-       */
-      
+
+
       props.setProperty("log4j.additivity.rxISFile", "false");
       
       props.setProperty("log4j.appender.rxISFile",
@@ -364,15 +356,15 @@ public class PSLogger
     * stores the log strings, grouped by a log level, to be logged later
     * to log file, never <code>null</code>.
     */
-   static private Map  ms_mapLevel2LogList = new HashMap();
+   static private Map  ms_mapLevel2LogList = new HashMap<>();
    
    static
    { 
-      ms_mapLevel2LogList.put("trace", new ArrayList());
-      ms_mapLevel2LogList.put("info", new ArrayList());
-      ms_mapLevel2LogList.put("debug", new ArrayList());
-      ms_mapLevel2LogList.put("warn", new ArrayList());
-      ms_mapLevel2LogList.put("error", new ArrayList());
+      ms_mapLevel2LogList.put("trace", new ArrayList<>());
+      ms_mapLevel2LogList.put("info", new ArrayList<>());
+      ms_mapLevel2LogList.put("debug", new ArrayList<>());
+      ms_mapLevel2LogList.put("warn", new ArrayList<>());
+      ms_mapLevel2LogList.put("error", new ArrayList<>());
    }
    
 }

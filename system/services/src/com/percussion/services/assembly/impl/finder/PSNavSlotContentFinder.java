@@ -26,6 +26,7 @@ package com.percussion.services.assembly.impl.finder;
 import static com.percussion.services.assembly.impl.finder.PSContentFinderUtils.getValue;
 
 import com.percussion.services.assembly.IPSAssemblyItem;
+import com.percussion.services.assembly.IPSProxyNode;
 import com.percussion.services.assembly.IPSTemplateSlot;
 import com.percussion.services.assembly.PSAssemblyException;
 
@@ -41,7 +42,7 @@ import javax.jcr.RepositoryException;
  * navigation. The returned item is a navigation node (navon or navtree) 
  * that relates to the specified item. Both items are under the same folder. 
  * The returned navigation node can be accessed from "$nav.self" binding of the 
- * returned assembly item. The navigation node implements {@link IPSProxyNode}. 
+ * returned assembly item. The navigation node implements {@link IPSProxyNode}.
  * In addition, the binding of "$nav.root" is the root of the navigation.
  * <p>
  * All navigation nodes, from the related node to the root of the navigation

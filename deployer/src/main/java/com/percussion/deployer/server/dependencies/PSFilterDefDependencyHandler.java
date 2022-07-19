@@ -322,7 +322,7 @@ public class PSFilterDefDependencyHandler extends PSDependencyHandler implements
     * @param ver the version of filter
     * @throws PSDeployException
     */
-  @Transactional(propagation = Propagation.REQUIRES_NEW)
+  @Transactional(propagation = Propagation.REQUIRED)
    public void saveFilter(IPSItemFilter f, Integer ver)
          throws PSDeployException
    {

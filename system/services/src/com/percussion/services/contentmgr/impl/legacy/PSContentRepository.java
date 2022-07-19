@@ -176,7 +176,7 @@ import static org.hibernate.type.StandardBasicTypes.STRING;
  * @author dougrand
  */
 @PSBaseBean("sys_legacyContentRepository")
-@Transactional(propagation = Propagation.REQUIRES_NEW)
+@Transactional(propagation = Propagation.REQUIRED)
 public class PSContentRepository
         implements
         IPSContentRepository,
@@ -629,6 +629,7 @@ public class PSContentRepository
                 ? cconfig.getOptions()
                 : new HashSet<>();
         Session session = getSession();
+        session.flush();
         List<Node> rval = new ArrayList<>();
         try
         {
@@ -909,7 +910,7 @@ public class PSContentRepository
         // using hibernate
         for (Map.Entry<Long, Class> type : typeToClassMap.entrySet())
         {
-            Class iclass = typeToClassMap.get(type.getKey());
+            Class<?> iclass = typeToClassMap.get(type.getKey());
             List<PSLegacyCompositeId> ids = (List<PSLegacyCompositeId>) typeToIdsMap
                     .get(type.getKey());
             List<GeneratedClassBase> results = new ArrayList<>();
@@ -2449,7 +2450,7 @@ public class PSContentRepository
                         " where sys_contentid = :cid " +
                         "and sys_revision = :rev and sys_sysid = :child";
 
-                List children = getSession().createQuery(
+                List<?> children = getSession().createQuery(
                                 query).setParameter("cid", pg.getContentId())
                         .setParameter("rev", pg.getRevision())
                         .setParameter("child", lg.getContentId()).list();

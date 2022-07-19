@@ -2453,7 +2453,7 @@ public class PSPublisherService
       return dtype;
    }
 
-   @Transactional(propagation= Propagation.REQUIRES_NEW)
+   @Transactional(propagation= Propagation.REQUIRED)
    public void updatePublishingInfo(List<IPSPublisherItemStatus> stati)
    {
       if (stati == null || stati.size() == 0)

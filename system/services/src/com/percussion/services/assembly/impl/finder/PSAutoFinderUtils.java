@@ -44,6 +44,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.exception.DataException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.jcr.RepositoryException;
@@ -66,7 +67,7 @@ import static com.percussion.services.assembly.impl.finder.PSContentFinderUtils.
  */
 @PSBaseBean("sys_autoFinderUtils")
 @Service
-@Transactional(readOnly = true,noRollbackFor = RuntimeException.class)
+@Transactional(propagation = Propagation.REQUIRED)
 public class PSAutoFinderUtils implements IPSAutoFinderUtils {
 
 
