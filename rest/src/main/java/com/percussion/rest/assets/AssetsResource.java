@@ -26,6 +26,7 @@ package com.percussion.rest.assets;
 
 import com.percussion.error.PSExceptionUtils;
 import com.percussion.rest.Status;
+import com.percussion.rest.errors.AssetNotFoundException;
 import com.percussion.rest.errors.BackendException;
 import com.percussion.rest.util.APIUtilities;
 import com.percussion.util.PSSiteManageBean;
@@ -120,7 +121,11 @@ public class AssetsResource
         {
             // UTF-8 always supported
         }
-        return assetAdaptor.getSharedAssetByPath(uriInfo.getBaseUri(), path);
+        try {
+            return assetAdaptor.getSharedAssetByPath(uriInfo.getBaseUri(), path);
+        }catch(AssetNotFoundException e){
+            throw new WebApplicationException(404);
+        }
     }
 
     @GET
@@ -292,7 +297,7 @@ public class AssetsResource
         asset.setName(filename);
         asset.setFolderPath(StringUtils.substringBeforeLast(path, "/"));
         try {
-            return assetAdaptor.createOrUpdateSharedAsset(uriInfo.getBaseUri(), path, asset);
+            return assetAdaptor.createSharedAsset(uriInfo.getBaseUri(), path, asset);
         } catch (BackendException e) {
             log.error(PSExceptionUtils.getMessageForLog(e));
             log.debug(PSExceptionUtils.getDebugMessageForLog(e));
@@ -322,10 +327,11 @@ public class AssetsResource
         }
         try {
             return assetAdaptor.deleteSharedAssetByPath(path);
+        } catch(AssetNotFoundException e){
+            return new Status(404,e.getMessage());
         } catch (BackendException e) {
             log.error(PSExceptionUtils.getMessageForLog(e));
-            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
-            throw new WebApplicationException(e);
+            return new Status(500,e.getMessage());
         }
     }
     
