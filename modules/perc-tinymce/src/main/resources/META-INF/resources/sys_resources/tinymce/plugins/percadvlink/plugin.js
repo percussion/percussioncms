@@ -224,13 +224,38 @@ tinymce.PluginManager.add('percadvlink', function(editor) {
         });
     }
 
+    /**
+     * This method checks if TinyMCE is part of ContentEditor or CMS UI
+     * In Case it is CMS UI, it enables buttons and menu items applicable to CMS and
+     * disables buttons and menuitems applicable to Rhythmyx Objects and vice a versa.
+     * @returns {boolean}
+     */
+	function isRXEditor(){
+		 var isRxEdr = false;
+		if(typeof contentEditor !== 'undefined' && "yes" === contentEditor){
+			isRxEdr = true;
+		}
+		return isRxEdr;
+	}
+
     editor.ui.registry.addButton('link', {
         icon: 'link',
         type: 'button',
         tooltip: I18N.message("perc.ui.widget.tinymce@Insert Edit Link"),
         shortcut: 'Ctrl+K',
         onAction: createLinkList(showDialog),
-        stateSelector: 'a[href]'
+        stateSelector: 'a[href]',
+		onSetup: function (buttonApi) {
+            var editorEventCallback = function (eventApi) {
+              buttonApi.setDisabled(isRXEditor() === true );
+            };
+            editor.on('NodeChange', editorEventCallback);
+
+            /* onSetup should always return the unbind handlers */
+            return function (buttonApi) {
+              editor.off('NodeChange', editorEventCallback);
+            };
+      }
     });
 
     editor.ui.registry.addButton('unlink', {
@@ -240,7 +265,18 @@ tinymce.PluginManager.add('percadvlink', function(editor) {
         onAction: function () {
             editor.execCommand('unlink');
         },
-        stateSelector: 'a[href]'
+        stateSelector: 'a[href]',
+		onSetup: function (buttonApi) {
+            var editorEventCallback = function (eventApi) {
+              buttonApi.setDisabled(isRXEditor() === true );
+            };
+            editor.on('NodeChange', editorEventCallback);
+
+            /* onSetup should always return the unbind handlers */
+            return function (buttonApi) {
+              editor.off('NodeChange', editorEventCallback);
+            };
+      }
     });
 	 editor.ui.registry.addButton('openlink', {
         icon: 'new-tab',
@@ -251,6 +287,17 @@ tinymce.PluginManager.add('percadvlink', function(editor) {
         stateSelector: 'a[href]',
 		 selector: 'textarea',
 		 default_link_target: '_blank',
+		 onSetup: function (buttonApi) {
+            var editorEventCallback = function (eventApi) {
+              buttonApi.setDisabled(isRXEditor() === true );
+            };
+            editor.on('NodeChange', editorEventCallback);
+
+            /* onSetup should always return the unbind handlers */
+            return function (buttonApi) {
+              editor.off('NodeChange', editorEventCallback);
+            };
+      }
     });
 
     editor.shortcuts.add('ctrl+k', '', createLinkList(showDialog));
@@ -265,7 +312,14 @@ tinymce.PluginManager.add('percadvlink', function(editor) {
         },
         stateSelector: 'a[href]',
         context: 'insert',
-        prependToContext: true
+        prependToContext: true,
+        onSetup: function (buttonApi) {
+            if (isRXEditor() === false) {
+                buttonApi.setDisabled(false);
+            } else {
+                buttonApi.setDisabled(true);
+            }
+        }
     });
 
     editor.ui.registry.addMenuItem('link', {
@@ -275,7 +329,14 @@ tinymce.PluginManager.add('percadvlink', function(editor) {
         onAction: createLinkList(showDialog),
         stateSelector: 'a[href]',
         context: 'insert',
-        prependToContext: true
+        prependToContext: true,
+        onSetup: function (buttonApi) {
+            if (isRXEditor() === false) {
+                buttonApi.setDisabled(false);
+            } else {
+                buttonApi.setDisabled(true);
+            }
+        }
     });
 
 	editor.ui.registry.addMenuItem('unlink', {
@@ -286,6 +347,13 @@ tinymce.PluginManager.add('percadvlink', function(editor) {
         },
         stateSelector: 'a[href]',
         context: 'insert',
-        prependToContext: true
+        prependToContext: true,
+        onSetup: function (buttonApi) {
+            if (isRXEditor() === false) {
+                buttonApi.setDisabled(false);
+            } else {
+                buttonApi.setDisabled(true);
+            }
+        }
     });
 });

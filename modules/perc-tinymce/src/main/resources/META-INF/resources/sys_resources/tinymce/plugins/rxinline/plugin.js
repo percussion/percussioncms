@@ -27,30 +27,24 @@ tinymce.PluginManager.add('rxinline', function(editor) {
 
             editor.getDoc().getElementsByTagName('head')[0].appendChild(scriptElm);
         }
-
     }
 
-    // Adds a button to the toolbar
-    editor.ui.registry.addButton('rxinlinelink', {
-        icon: 'slink',
-        type: 'button',
-        tooltip: 'Insert Inline Link',
-        onAction: function() {
-            createInlineSearchBox("rxhyperlink",tinyMCE.activeEditor.selection.getContent(),tinyMCEinlineLinkSlot,ctypeid,insertInlineText);
-        }
-    });
+    /**
+     * This method checks if TinyMCE is part of ContentEditor or CMS UI
+     * In Case it is CMS UI, it enables buttons and menu items applicable to CMS and
+     * disables buttons and menuitems applicable to Rhythmyx Objects and vice a versa.
+     * @returns {boolean}
+     */
 
-    // Adds a menu item to the tools menu
-    editor.ui.registry.addMenuItem('rxinlinelink', {
-        text: 'Inline Link',
-        shortcut: 'Meta+Shift+L',
-        icon: 'slink',
-        onAction: function() {
-            createInlineSearchBox("rxhyperlink",tinyMCE.activeEditor.selection.getContent(),tinyMCEinlineLinkSlot,ctypeid,insertInlineText);
-        },
-        context: 'insert',
-        prependToContext: true
-    });
+	function isRXEditor(){
+		 var isRxEdr = false;
+		if(typeof contentEditor !== 'undefined' && "yes" === contentEditor){
+			isRxEdr = true;
+		}
+		return isRxEdr;
+    }
+
+
 
     // Adds rxhyperlink keyboard shortcut
     editor.shortcuts.add('ctrl+shift+l','rxhyperlink', function() {
@@ -62,6 +56,15 @@ tinymce.PluginManager.add('rxinline', function(editor) {
         text: I18N.message("perc.ui.widget.tinymce@Remove links"),
         onAction: function () {
             editor.execCommand('unlink');
+        },
+        onSetup: function (buttonApi) {
+			  if(isRXEditor() === false ){
+			  buttonApi.setDisabled(true);
+		  }else{
+			   buttonApi.setDisabled(false);
+		  }
+
+
         },
         stateSelector: 'a[href]',
         context: 'insert',
@@ -75,9 +78,59 @@ tinymce.PluginManager.add('rxinline', function(editor) {
         onAction: function () {
             editor.execCommand('unlink');
         },
+        onSetup: function (buttonApi) {
+            var editorEventCallback = function (eventApi) {
+                buttonApi.setDisabled(isRXEditor() === false );
+            };
+            editor.on('NodeChange', editorEventCallback);
+
+            /* onSetup should always return the unbind handlers */
+            return function (buttonApi) {
+                editor.off('NodeChange', editorEventCallback);
+            };
+        },
         stateSelector: 'a[href]'
     });
 
+    // Adds a button to the toolbar
+    editor.ui.registry.addButton('rxinlinelink', {
+        icon: 'slink',
+        type: 'button',
+        tooltip: 'Insert Inline Link',
+        onAction: function() {
+            createInlineSearchBox("rxhyperlink",tinyMCE.activeEditor.selection.getContent(),tinyMCEinlineLinkSlot,ctypeid,insertInlineText);
+        },
+        onSetup: function (buttonApi) {
+            var editorEventCallback = function (eventApi) {
+                buttonApi.setDisabled(isRXEditor() === false );
+            };
+            editor.on('NodeChange', editorEventCallback);
+
+            /* onSetup should always return the unbind handlers */
+            return function (buttonApi) {
+                editor.off('NodeChange', editorEventCallback);
+            };
+        }
+    });
+
+    // Adds a menu item to the tools menu
+    editor.ui.registry.addMenuItem('rxinlinelink', {
+        text: 'Inline Link',
+        shortcut: 'Meta+Shift+L',
+        icon: 'slink',
+        onAction: function() {
+            createInlineSearchBox("rxhyperlink",tinyMCE.activeEditor.selection.getContent(),tinyMCEinlineLinkSlot,ctypeid,insertInlineText);
+        },
+        onSetup: function (buttonApi) {
+            if(isRXEditor() === false ){
+                buttonApi.hide();
+            }else{
+                buttonApi.show();
+            }
+        },
+        context: 'insert',
+        prependToContext: true
+    });
 
 
     // Adds a button to the toolbar
@@ -86,6 +139,17 @@ tinymce.PluginManager.add('rxinline', function(editor) {
         tooltip: 'Insert Inline Template',
         onAction: function() {
             createInlineSearchBox("rxvariant",tinyMCE.activeEditor.selection.getContent(),tinyMCEinlineVariantSlot,ctypeid,insertInlineText);
+        },
+	   onSetup: function (buttonApi) {
+			var editorEventCallback = function (eventApi) {
+			  buttonApi.setDisabled(isRXEditor() === false );
+			};
+			editor.on('NodeChange', editorEventCallback);
+
+			/* onSetup should always return the unbind handlers */
+			return function (buttonApi) {
+			  editor.off('NodeChange', editorEventCallback);
+			};
         }
     });
 
@@ -97,6 +161,13 @@ tinymce.PluginManager.add('rxinline', function(editor) {
         onAction: function() {
             createInlineSearchBox("rxvariant",tinyMCE.activeEditor.selection.getContent(),tinyMCEinlineVariantSlot,ctypeid,insertInlineText);
         },
+		onSetup: function (buttonApi) {
+			  if(isRXEditor() === false ){
+			  buttonApi.setDisabled(true);
+		  }else{
+			   buttonApi.setDisabled(false);
+		  }
+      },
         context: 'insert',
         prependToContext: true
     });
@@ -112,6 +183,17 @@ tinymce.PluginManager.add('rxinline', function(editor) {
         tooltip: 'Insert Inline Image',
         onAction: function() {
             createInlineSearchBox("rximage",tinyMCE.activeEditor.selection.getContent(),tinyMCEinlineImageSlot,ctypeid,insertInlineText);
+        },
+		onSetup: function (buttonApi) {
+			var editorEventCallback = function (eventApi) {
+			  buttonApi.setDisabled(isRXEditor() === false );
+			};
+			editor.on('NodeChange', editorEventCallback);
+
+			/* onSetup should always return the unbind handlers */
+			return function (buttonApi) {
+			  editor.off('NodeChange', editorEventCallback);
+			};
         }
     });
 
@@ -124,6 +206,13 @@ tinymce.PluginManager.add('rxinline', function(editor) {
         onAction: function() {
             createInlineSearchBox("rximage",tinyMCE.activeEditor.selection.getContent(),tinyMCEinlineImageSlot,ctypeid,insertInlineText);
         },
+		onSetup: function (buttonApi) {
+			  if(isRXEditor() === false ){
+			  buttonApi.setDisabled(true);
+              }else{
+                   buttonApi.setDisabled(false);
+              }
+		  },
         context: 'insert',
         prependToContext: true
     });
