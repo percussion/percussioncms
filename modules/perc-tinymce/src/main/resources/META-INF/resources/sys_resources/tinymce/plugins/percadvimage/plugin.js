@@ -653,11 +653,36 @@ tinymce.PluginManager.add('percadvimage', function(editor, url) {
         return win;
     }
 
+    /**
+     * This method checks if TinyMCE is part of ContentEditor or CMS UI
+     * In Case it is CMS UI, it enables buttons and menu items applicable to CMS and
+     * disables buttons and menuitems applicable to Rhythmyx Objects and vice a versa.
+     * @returns {boolean}
+     */
+	function isRXEditor(){
+		 var isRxEdr = false;
+		if(typeof contentEditor !== 'undefined' && "yes" === contentEditor){
+			isRxEdr = true;
+		}
+		return isRxEdr;
+	}
+
     editor.ui.registry.addButton('image', {
         icon: 'image',
         tooltip: 'Insert/edit image',
         onAction:showDialog,
         stateSelector: 'img:not([data-mce-object])',
+		onSetup: function (buttonApi) {
+            var editorEventCallback = function (eventApi) {
+              buttonApi.setDisabled(isRXEditor() === true );
+            };
+            editor.on('NodeChange', editorEventCallback);
+
+            /* onSetup should always return the unbind handlers */
+            return function (buttonApi) {
+              editor.off('NodeChange', editorEventCallback);
+            };
+      }
 
     });
 
@@ -666,6 +691,13 @@ tinymce.PluginManager.add('percadvimage', function(editor, url) {
         text: 'Insert image',
         onAction: showDialog,
         context: 'insert',
-        prependToContext: true
+        prependToContext: true,
+        onSetup: function (buttonApi) {
+            if (isRXEditor() === false) {
+                buttonApi.setDisabled(false);
+            } else {
+                buttonApi.setDisabled(true);
+            }
+        }
     });
 });
