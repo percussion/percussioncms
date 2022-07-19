@@ -3125,8 +3125,7 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
       getRelationshipConfig(relationshipName,
          PSRelationshipConfig.CATEGORY_ACTIVE_ASSEMBLY);
 
-      PSLocator owner = PSWebserviceUtils.validateItemCheckoutByUser(
-         ((PSLegacyGuid) ownerId).getLocator());
+      PSLocator owner = ((PSLegacyGuid) ownerId).getLocator();
 
       List<PSAaRelationship> rels = createAaRelationships(owner, relatedIds,
          index, relationshipName, slot, template, folderId, siteId);

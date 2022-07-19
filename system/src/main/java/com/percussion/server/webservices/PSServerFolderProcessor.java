@@ -4222,7 +4222,7 @@ public class PSServerFolderProcessor extends PSProcessorCommon implements
     * @see com.percussion.cms.objectstore.IPSRelationshipProcessor#delete(
     * com.percussion.cms.objectstore.PSKey, java.util.List)
     */
-   @Transactional(propagation = Propagation.REQUIRES_NEW)
+   @Transactional(propagation = Propagation.REQUIRED)
    public void delete(PSKey sourceParent, List children, String relationshipTypeName) throws PSCmsException
    {
       delete(relationshipTypeName, sourceParent, children);

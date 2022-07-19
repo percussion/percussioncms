@@ -56,6 +56,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.jcr.Node;
@@ -90,7 +91,7 @@ import java.util.stream.Collectors;
  * 
  * @author dougrand
  */
-@Transactional
+@Transactional(propagation = Propagation.REQUIRED)
 public class PSContentMgr  implements IPSContentMgr
 {
 
@@ -98,7 +99,9 @@ public class PSContentMgr  implements IPSContentMgr
    private EntityManager entityManager;
 
    private org.hibernate.Session getSession(){
+
       return entityManager.unwrap(org.hibernate.Session.class);
+
    }
 
 
@@ -143,6 +146,7 @@ public class PSContentMgr  implements IPSContentMgr
     * 
     * @param rep the repository, never <code>null</code>
     */
+   @Transactional(propagation=Propagation.NOT_SUPPORTED)
    public void setRepository(IPSContentRepository rep)
    {
       if (rep == null)
@@ -152,6 +156,7 @@ public class PSContentMgr  implements IPSContentMgr
       m_repository = rep;
    }
 
+   @Transactional(propagation=Propagation.NOT_SUPPORTED)
    public List<Node> findItemsByPath(Session sess, List<String> paths,
          PSContentMgrConfig config) throws PathNotFoundException,
          RepositoryException
@@ -159,6 +164,7 @@ public class PSContentMgr  implements IPSContentMgr
       return m_repository.loadByPath(paths, config);
    }
 
+   @Transactional(propagation=Propagation.NOT_SUPPORTED)
    public List<Node> findItemsByGUID(List<IPSGuid> guids,
          PSContentMgrConfig config) throws RepositoryException
    {
@@ -533,6 +539,7 @@ public class PSContentMgr  implements IPSContentMgr
     * @see com.percussion.services.contentmgr.IPSContentMgr#executeQuery(javax.jcr.query.Query,
     *      int, java.util.Map, java.lang.String)
     */
+   @Transactional(propagation = Propagation.NOT_SUPPORTED)
    public QueryResult executeQuery(Query query, int maxresults,
          Map<String, ? extends Object> params, String locale)
          throws InvalidQueryException, RepositoryException

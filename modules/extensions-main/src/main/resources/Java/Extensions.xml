@@ -15,6 +15,179 @@
       old exit names were left for compatibility, but they all point to the
       new java classes.
    -->
+   <Extension categorystring="encoding" context="global/percussion/content/" deprecated="no" handler="Java" name="sys_itemHTMLEncodeTransformer">
+      <initParam name="com.percussion.user.description">Given a comma separated list of html parameters.  Sanitizes the specified fields by HTML Encoding them.</initParam>
+      <initParam name="com.percussion.extension.version">1</initParam>
+      <initParam name="className">com.percussion.extensions.encoding.PSItemHTMLEncodeTransformer</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <interface name="com.percussion.extension.IPSItemInputTransformer"/>
+      <PSXExtensionParamDef id="0">
+         <name>fields</name>
+         <dataType>java.lang.String</dataType>
+         <description>A comma separated list of HTML parameters / fields to be encoded.</description>
+      </PSXExtensionParamDef>
+      <suppliedResources/>
+   </Extension>
+
+   <Extension categorystring="report" context="global/percussion/report/" deprecated="no" handler="Java" name="sys_PubTimeStatistics" restoreRequestParamsOnError="no">
+      <initParam name="com.percussion.user.description">This exit creates XML representation from the SQL result set which is returned from sys_report/PubTimeStatistics resource.</initParam>
+      <initParam name="com.percussion.extension.version">1</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <initParam name="className">com.percussion.publisher.server.PSPubTimeStatistics</initParam>
+      <interface name="com.percussion.extension.IPSResultDocumentProcessor"/>
+      <PSXExtensionParamDef id="0">
+         <name>maxRows</name>
+         <dataType>String</dataType>
+         <description>the maximum rows (from the result set that is returned sys_report/PubTimeStatistics)  included in the result document. Defaults to 65000 (-1 is unlimited). </description>
+      </PSXExtensionParamDef>
+      <suppliedResources/>
+   </Extension>
+   <Extension categorystring="workflow" context="global/percussion/workflow/" deprecated="no" handler="Java" name="sys_WorkflowActionDispatcher" restoreRequestParamsOnError="no">
+      <initParam name="com.percussion.user.description">allows multiple workflow actions to be called when a transition occurs.</initParam>
+      <initParam name="com.percussion.extension.version">1</initParam>
+      <initParam name="className">com.percussion.workflow.actions.PSSpringWorkflowActionDispatcher</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <interface name="com.percussion.extension.IPSWorkflowAction"/>
+      <suppliedResources/>
+   </Extension>
+
+   <Extension categorystring="" context="global/percussion/relationship/" deprecated="no" handler="Java" name="sys_convertAutoManagedLinks" restoreRequestParamsOnError="no">
+      <initParam name="com.percussion.user.description">For each transitioned item that exists in exactly 1 folder under //Sites,
+         checks if it has a corresponding external link item in the same folder
+         structure under //Folders. If one is found and it has a contentTypeId that
+         matches the ctype specified in the autoLinkGeneration.properties file
+         (managedAutoLink.ContentTypeName,) all the relationships that have the
+         external link item as a dependent are loaded and for each one that uses the
+         inline template slot, the dependent item id is changed to point from the
+         original external link item to the item that is currently being processed
+         (this is done in a way such that the owning item does not need to be checked
+         out.) If successful and no other AA links point to the external link item, it
+         is purged.
+      </initParam>
+      <initParam name="com.percussion.extension.version">1</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <initParam name="className">com.percussion.cms.PSConvertAutoManagedLinks</initParam>
+      <interface name="com.percussion.extension.IPSWorkflowAction"/>
+      <suppliedResources/>
+   </Extension>
+
+   <Extension categorystring="relationship" context="global/percussion/relationship/effect/" deprecated="no" handler="Java" name="sys_NotifyEffect">
+      <initParam name="com.percussion.user.description">Notifies all assignees of the current item for the supplied parameters.</initParam>
+      <initParam name="com.percussion.extension.version">1</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <initParam name="className">com.percussion.relationship.effect.PSNotifyEffect</initParam>
+      <interface name="com.percussion.relationship.IPSEffect"/>
+      <PSXExtensionParamDef id="0">
+         <name>workflowid</name>
+         <dataType>java.lang.String</dataType>
+         <description>The workflow id for which to make the notification, required.</description>
+      </PSXExtensionParamDef>
+      <PSXExtensionParamDef id="0">
+         <name>stateid</name>
+         <dataType>java.lang.String</dataType>
+         <description>The workflow state id for which to make the notification, required.</description>
+      </PSXExtensionParamDef>
+      <PSXExtensionParamDef id="0">
+         <name>transitionid</name>
+         <dataType>java.lang.String</dataType>
+         <description>The transition id for which to make the notification, required.</description>
+      </PSXExtensionParamDef>
+      <PSXExtensionParamDef id="0">
+         <name>username</name>
+         <dataType>java.lang.String</dataType>
+         <description>The user name for which to make the notification, required.</description>
+      </PSXExtensionParamDef>
+      <suppliedResources/>
+   </Extension>
+
+   <Extension name="uploadAppendFileAttributes" context="global/" handler="Java" deprecated="yes">
+      <initParam name="com.percussion.user.description">This exit appends the size and modified datetimestamps to the update statistics document. This exit shall always goes with uploadFileAttributes preprocessor exit. The result statistics document shall have two elements added as first children, viz. size and modified.</initParam>
+      <initParam name="com.percussion.extension.version">6</initParam>
+      <initParam name="className">com.percussion.uploadexits.PSUploadAppendFileAttrs</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <resource href="file:classes"/>
+      <interface name="com.percussion.extension.IPSResultDocumentProcessor"/>
+      <PSXExtensionParamDef id="0">
+         <name>FileSizeParam</name>
+         <dataType>String</dataType>
+         <description>This is the name of the HTML parameter that stores the file size. This must be the same as that was given for the preprocessor exit uploadFileAttributes. Always literal.</description>
+      </PSXExtensionParamDef>
+      <PSXExtensionParamDef id="0">
+         <name>DateParam</name>
+         <dataType>String</dataType>
+         <description>This is the name of the HTML parameter that stores the modified date. This must be the same as that was given for the preprocessor exit uploadFileAttributes. Always literal.</description>
+      </PSXExtensionParamDef>
+   </Extension>
+   <Extension name="sys_ftUploadAppendFileAttributes" context="global/percussion/filetracker" handler="Java"
+              categorystring="filetracker">
+      <initParam name="com.percussion.user.description">This exit appends the size and modified datetimestamps to the update statistics document. This exit shall always goes with uploadFileAttributes preprocessor exit. The result statistics document shall have two elements added as first children, viz. size and modified.</initParam>
+      <initParam name="com.percussion.extension.version">6</initParam>
+      <initParam name="className">com.percussion.filetracker.PSUploadAppendFileAttrs</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <resource href="file:classes"/>
+      <interface name="com.percussion.extension.IPSResultDocumentProcessor"/>
+      <PSXExtensionParamDef id="0">
+         <name>FileSizeParam</name>
+         <dataType>String</dataType>
+         <description>This is the name of the HTML parameter that stores the file size. This must be the same as that was given for the preprocessor exit uploadFileAttributes. Always literal.</description>
+      </PSXExtensionParamDef>
+      <PSXExtensionParamDef id="0">
+         <name>DateParam</name>
+         <dataType>String</dataType>
+         <description>This is the name of the HTML parameter that stores the modified date. This must be the same as that was given for the preprocessor exit uploadFileAttributes. Always literal.</description>
+      </PSXExtensionParamDef>
+   </Extension>
+
+   <Extension categorystring="jexl" context="global/percussion/system" deprecated="no" handler="Java" name="percTaxonomyJexl" restoreRequestParamsOnError="no">
+      <initParam name="com.percussion.user.description">Taxonomy Jexl Utilities</initParam>
+      <initParam name="com.percussion.extension.version">1</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <initParam name="className">com.percussion.taxonomy.TaxonomyJexl</initParam>
+      <interface name="com.percussion.extension.IPSJexlExpression"/>
+      <suppliedResources/>
+   </Extension>
+   <Extension categorystring="search" context="global/percussion/search/" deprecated="no" handler="Java" name="percTaxonomyTextConverter" restoreRequestParamsOnError="no">
+      <initParam name="com.percussion.user.description"/>
+      <initParam name="com.percussion.extension.version">1</initParam>
+      <initParam name="className">com.percussion.taxonomy.TaxonomyTextConverter</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <interface name="com.percussion.search.lucene.textconverter.IPSLuceneTextConverter"/>
+      <suppliedResources/>
+      <requiredApplications>
+         <requiredApplication name="sys_searchSupport"/>
+      </requiredApplications>
+   </Extension>
+   <Extension categorystring="" context="global/percussion/udf/" deprecated="no" handler="Java" name="percTaxonomyFieldVisibility" restoreRequestParamsOnError="no">
+      <initParam name="com.percussion.user.description"/>
+      <initParam name="com.percussion.extension.version">1</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <initParam name="className">com.percussion.taxonomy.visibility.TaxonomyFieldVisibility</initParam>
+      <interface name="com.percussion.extension.IPSFieldVisibilityRule"/>
+      <PSXExtensionParamDef id="0">
+         <name>taxonomy_id</name>
+         <dataType>java.lang.Integer</dataType>
+         <description/>
+      </PSXExtensionParamDef>
+      <suppliedResources/>
+   </Extension>
+
+   <Extension name="cache" context="global/percussion/system" handler="Java" categorystring="jexl" deprecated="no">
+      <initParam name="com.percussion.user.description">Jexl extensions for cache</initParam>
+      <initParam name="com.percussion.extension.version">1</initParam>
+      <initParam name="className">com.percussion.services.assembly.jexl.PSCacheUtils</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <interface name="com.percussion.extension.IPSJexlExpression"/>
+      <suppliedResources/>
+   </Extension>
+   <Extension categorystring="generic" context="global/percussion/generic/" deprecated="no" handler="Java" name="sys_HashedFileInfo" restoreRequestParamsOnError="yes">
+      <initParam name="com.percussion.user.description">Similar to sys_FileInfo, but a single copy of the file is stored using the file storage service and a unique hash value is set on the _hash field. Meta data is also extracted from the file and stored in fields that are suffixed '_fieldType' like 'img1_length'.</initParam>
+      <initParam name="com.percussion.extension.version">1</initParam>
+      <initParam name="className">com.percussion.services.filestorage.extensions.PSChecksumFileInfo</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <interface name="com.percussion.extension.IPSRequestPreProcessor"/>
+      <interface name="com.percussion.extension.IPSItemInputTransformer"/>
+      <suppliedResources/>
+   </Extension>
    <Extension name="defaultPasswordFilter" context="global/percussion/filter/" handler="Java" deprecated="yes">
       <initParam name="com.percussion.user.description">Takes a plaintext string and encrypts it.</initParam>
       <initParam name="com.percussion.extension.version">1</initParam>
@@ -3543,7 +3716,7 @@ One can a give an empty value for the resource name corresponding to a choice in
       <initParam name="className">com.percussion.community.PSAddCommunityEnabledFlag</initParam>
       <interface name="com.percussion.extension.IPSResultDocumentProcessor"/>
    </Extension>
-        <Extension categorystring="" context="global/percussion/contentassembler/" deprecated="no" handler="Java" name="sys_templateToVariantid" restoreRequestParamsOnError="no">
+        <Extension categorystring="" context="global/percussion/contentassembler/" deprecated="no" handler="Java" name=" " restoreRequestParamsOnError="no">
                <initParam name="com.percussion.user.description">If a sys_template param exists and no sys_variantid exists, then the variant id is looked up and added as a parameter. Needed in casSupport in the PublicationUrl resource.</initParam>
                <initParam name="com.percussion.extension.version">1</initParam>
                <initParam name="className">com.percussion.cas.PSSysTemplateToSysVariantid</initParam>
@@ -4452,12 +4625,12 @@ One can a give an empty value for the resource name corresponding to a choice in
       <PSXExtensionParamDef id="0">
          <name>isForInClause</name>
          <dataType>String</dataType>
-         <description>&#39;y&#39; if the extraction is for IN clause of SQL statement, default is &#39;n&#39;</description>
+         <description>'y' if the extraction is for IN clause of SQL statement, default is 'n'</description>
       </PSXExtensionParamDef>
       <PSXExtensionParamDef id="0">
          <name>encloseInQuotes</name>
          <dataType>String</dataType>
-         <description>&#39;y&#39; if the individual value of the parameter needs to be enclosed in quotes, default is &#39;y&#39;</description>
+         <description>'y' if the individual value of the parameter needs to be enclosed in quotes, default is 'y'</description>
       </PSXExtensionParamDef>
       <PSXExtensionParamDef id="0">
          <name>paramName1</name>
@@ -6610,6 +6783,14 @@ The result doc has the following DTD:
 		<interface name="com.percussion.extension.IPSJexlExpression" />
 		<suppliedResources />
 	</Extension>
+   <Extension name="filestorage" context="global/percussion/system" handler="Java" categorystring="jexl" deprecated="no">
+      <initParam name="com.percussion.user.description">Jexl extension for hash-based file storage utilities.</initParam>
+      <initParam name="com.percussion.extension.version">1</initParam>
+      <initParam name="className">com.percussion.services.filestorage.extensions.PSFileStorageTools</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <interface name="com.percussion.extension.IPSJexlExpression"/>
+      <suppliedResources/>
+   </Extension>
    <Extension name="resourceHelper" context="global/percussion/system" handler="Java" categorystring="jexl" deprecated="no">
       <initParam name="com.percussion.user.description">Jexl extension for resources.</initParam>
       <initParam name="com.percussion.extension.version">1</initParam>

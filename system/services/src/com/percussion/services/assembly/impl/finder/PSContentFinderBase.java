@@ -51,6 +51,8 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.jcr.RepositoryException;
 import java.io.File;
@@ -83,6 +85,7 @@ import static com.percussion.services.assembly.impl.finder.PSContentFinderUtils.
  * @author dougrand
  * @param <T> 
  */
+@Transactional( readOnly = true, noRollbackFor = Exception.class, propagation = Propagation.REQUIRED)
 public abstract class PSContentFinderBase<T extends Object>
    implements IPSContentFinder<T>
 {
@@ -285,6 +288,7 @@ public abstract class PSContentFinderBase<T extends Object>
          clone.setOwnerId(slotitem.getOwnerId());
          
          items.add(clone);
+         index++;
       }
       Map<String, Object> sys = (Map<String, Object>) sourceItem.getBindings().get("$sys");
       if (sys != null)
@@ -505,7 +509,7 @@ public abstract class PSContentFinderBase<T extends Object>
       if (ms_log.isDebugEnabled())
       {
          ms_log.debug("slotitems size = " + slotitems.size() + ", maxchunk = "
-               + maxChunkItems + ", elapse = " + watch.toString());
+               + maxChunkItems + ", elapse = " + watch);
       }
 
       return slotitems;
@@ -524,15 +528,13 @@ public abstract class PSContentFinderBase<T extends Object>
    protected Set<ContentItem> filter(Set<ContentItem> items, IPSItemFilter filter,
          Map<String, Object> selectors) throws PSFilterException
    {
-      List<IPSFilterItem> temp = new ArrayList<>();
       Map<String, String> params = new HashMap<>();
-      //FIXME: This code is not handling null keys or values gracefully
       for (Map.Entry<String, Object> selector : selectors.entrySet())
       {
          Object value = selector.getValue();
          if (value instanceof String[])
          {
-            String p[] = (String[]) value;
+            String[] p = (String[]) value;
             if (p.length > 0)
             {
                params.put(selector.getKey(), p[0]);
@@ -543,7 +545,7 @@ public abstract class PSContentFinderBase<T extends Object>
             params.put(selector.getKey(), value.toString());
          }
       }
-      temp.addAll(items);
+      List<IPSFilterItem> temp = new ArrayList<>(items);
       if (filter != null)
       {
          temp = filter.filter(temp, params);

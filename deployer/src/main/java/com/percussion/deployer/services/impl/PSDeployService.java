@@ -63,7 +63,7 @@ import java.util.List;
  *
  */
 //todo: reconcile with system/src/main/java/com/percussion/deploy/services/impl/PSDeployService.java
-@Transactional (propagation = Propagation.REQUIRES_NEW, noRollbackFor=Exception.class)
+@Transactional (propagation = Propagation.REQUIRED, noRollbackFor=Exception.class)
 public class PSDeployService
    implements IPSDeployService
 {

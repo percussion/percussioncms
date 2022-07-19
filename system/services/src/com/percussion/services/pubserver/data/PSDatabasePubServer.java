@@ -44,6 +44,7 @@ public class PSDatabasePubServer extends PSAbstractDataObject
     {
         ORACLE("oracle:thin", "oracle.jdbc.driver.OracleDriver", "Oracle 10g", 1521),
         MYSQL("mysql", "com.mysql.jdbc.Driver", "MYSQL", 3306),
+        MYSQL8("mysql8", "com.mysql.cj.jdbc.Driver", "MYSQL", 3306),
         MSSQL("jtds:sqlserver", "net.sourceforge.jtds.jdbc.Driver", "MS SQLSERVER2000", 1433);
         
         private DriverType(String driverName, String driverClass, String typeMapping, int defaultPort)
