@@ -240,10 +240,9 @@ public class PSCommentsService implements IPSCommentsService
     @Path("/commentsonpage/{site}/{pagePath:.*}")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public List<PSComment> getCommentsOnPage(@PathParam("site") String site, @PathParam("pagePath") String pagePath,
-                                             @QueryParam("max") Integer max, @QueryParam("start") Integer start)
-    {
+                                             @QueryParam("max") Integer max, @QueryParam("start") Integer start) {
+        List<PSComment> aggregatedComments = new ArrayList<>();
         try {
-            List<PSComment> aggregatedComments = new ArrayList<>();
 
             if (isBlank(pagePath)) {
                 pagePath = "";
@@ -294,13 +293,12 @@ public class PSCommentsService implements IPSCommentsService
                 log.warn("Error getting all comments data from processor at : {}. Error: {}",
                         serviceUrl,
                         PSExceptionUtils.getMessageForLog(e));
-                throw new WebApplicationException(e, Response.serverError().build());
             }
-
-            return new PSCommentList(aggregatedComments);
         } catch (IPSPubServerService.PSPubServerServiceException | PSNotFoundException e) {
-            throw new WebApplicationException(e);
+            log.warn("Error getting all comments data from processor. Error: {}",
+                    PSExceptionUtils.getMessageForLog(e));
         }
+        return new PSCommentList(aggregatedComments);
     }
 
     /*
@@ -569,8 +567,9 @@ public class PSCommentsService implements IPSCommentsService
         catch (Exception e)
         {
             String urlStr = server.getUrl() + url;
-            log.warn("Error getting all comments data from processor at : {}", urlStr, e);
-            throw new WebApplicationException(e, Response.serverError().build());
+            log.warn("Error getting all comments data from processor at : {}. Error: {}",
+                    urlStr,
+                    PSExceptionUtils.getMessageForLog(e));
         }
 
         return summaries;
