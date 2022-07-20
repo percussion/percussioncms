@@ -23,7 +23,7 @@
  */
 
 package com.percussion.widgets.image.extensions;
-      
+
       import com.percussion.design.objectstore.PSLocator;
       import com.percussion.extension.IPSExtensionDef;
       import com.percussion.extension.IPSItemOutputTransformer;
@@ -42,20 +42,21 @@ package com.percussion.widgets.image.extensions;
       import com.percussion.widgets.image.data.ImageData;
       import com.percussion.widgets.image.services.ImageCacheManager;
       import com.percussion.widgets.image.services.ImageCacheManagerLocator;
+      import org.apache.commons.lang.StringUtils;
+      import org.apache.logging.log4j.LogManager;
+      import org.apache.logging.log4j.Logger;
+      import org.w3c.dom.Document;
+
+      import javax.jcr.Node;
+      import javax.jcr.PathNotFoundException;
+      import javax.jcr.RepositoryException;
+      import javax.jcr.ValueFormatException;
       import java.io.ByteArrayOutputStream;
       import java.io.File;
       import java.io.IOException;
       import java.io.InputStream;
       import java.util.Collections;
       import java.util.List;
-      import javax.jcr.Node;
-      import javax.jcr.PathNotFoundException;
-      import javax.jcr.RepositoryException;
-      import javax.jcr.ValueFormatException;
-      import org.apache.commons.lang.StringUtils;
-      import org.apache.logging.log4j.Logger;
-      import org.apache.logging.log4j.LogManager;
-      import org.w3c.dom.Document;
       
       public class ImageAssetOutputTranslation extends PSDefaultExtension
         implements IPSItemOutputTransformer
@@ -138,7 +139,8 @@ package com.percussion.widgets.image.extensions;
         	List nodes = this.cmgr.findItemsByGUID(Collections.singletonList(guid), null);
         	if (nodes.size() < 1)
           {
-        		throw new RepositoryException("Item not found for GUID " + guid);
+        		log.warn("Item not found for GUID " + guid);
+                return null;
           }
         	return (Node)nodes.get(0);
         }
