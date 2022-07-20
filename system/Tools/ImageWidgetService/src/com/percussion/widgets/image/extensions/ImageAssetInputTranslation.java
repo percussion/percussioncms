@@ -183,10 +183,6 @@ public class ImageAssetInputTranslation extends PSDefaultExtension implements IP
 
       Properties serverProps = PSServer.getServerProps();
       String thumbWidthStr = serverProps.getProperty("imageThumbnailWidth", "50");
-      String imageThumbnailExt = serverProps.getProperty("imageThumbnailExtension","png");
-      String imageThumbnailContentType = serverProps.getProperty("imageThumbnailContentType","image/png");
-      String imageThumbnailFormat = serverProps.getProperty("imageThumbnailFormat","png");
-
       int thumbWidth = Integer.parseInt(thumbWidthStr);
       try(      FileInputStream fin = new FileInputStream(imageFile)){
          final byte[] imageByteArray = IOUtils.toByteArray(fin);
@@ -198,13 +194,9 @@ public class ImageAssetInputTranslation extends PSDefaultExtension implements IP
             Rectangle rec = new Rectangle(0, 0, width, height);
             Dimension dim = new Dimension(thumbWidth, height / width * thumbWidth);
             try(FileInputStream fin2 = new FileInputStream(imageFile)) {
-               this.resizeManager.setExtension(imageThumbnailExt);
-               this.resizeManager.setContentType(imageThumbnailContentType);
-               this.resizeManager.setImageFormat(imageThumbnailFormat);
                iData = this.resizeManager.generateImage(fin2, rec, dim);
             }
          }
-
          return iData;
       }
    }
