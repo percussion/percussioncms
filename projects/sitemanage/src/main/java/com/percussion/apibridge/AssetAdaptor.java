@@ -303,9 +303,8 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
         {
             throw new AssetNotFoundException();
         }
-
-
-        return new Status("Deleted");
+        
+        return new Status(200,"Deleted");
     }
 
     @Override
