@@ -56,7 +56,7 @@ public class PSContentEditorSharedDef extends PSComponent
     * @param fieldGroups a collection of PSSharedFieldGroup objects. Never
     *           <code>null</code>, may be empty.
     */
-   public PSContentEditorSharedDef(PSCollection<PSSharedFieldGroup> fieldGroups) {
+   public PSContentEditorSharedDef(PSCollection fieldGroups) {
       setFieldGroups(fieldGroups);
    }
 
@@ -157,7 +157,7 @@ public class PSContentEditorSharedDef extends PSComponent
     * @return a collection of PSSharedFieldGroup objects, never
     *         <code>null</code>, may be empty.
     */
-   public Iterator<PSSharedFieldGroup> getFieldGroups()
+   public Iterator getFieldGroups()
    {
       return m_fieldGroups.iterator();
    }
@@ -171,13 +171,13 @@ public class PSContentEditorSharedDef extends PSComponent
     * @return the shared field corresponding to the file name supplied, never
     *         <code>null</code> may be empty if not found.
     */
-   public PSCollection<PSSharedFieldGroup> lookupFieldGroupByFileName(String fileName)
+   public PSCollection lookupFieldGroupByFileName(String fileName)
    {
-      PSCollection<PSSharedFieldGroup> fieldGroups = new PSCollection<>();
-      Iterator<PSSharedFieldGroup> iter = getFieldGroups();
+      PSCollection fieldGroups = new PSCollection(PSSharedFieldGroup.class);
+      Iterator iter = getFieldGroups();
       while (iter.hasNext())
       {
-         PSSharedFieldGroup g = iter.next();
+         PSSharedFieldGroup g = (PSSharedFieldGroup) iter.next();
          if (g.getFilename().equals(fileName))
             fieldGroups.add(g);
       }
@@ -192,14 +192,14 @@ public class PSContentEditorSharedDef extends PSComponent
     * @param group shared field group to add or replace. Must not be
     *           <code>null</code>.
     */
-   public void setFieldGroupsByFileName(Iterator<PSSharedFieldGroup> group)
+   public void setFieldGroupsByFileName(Iterator group)
    {
       if (group == null || !group.hasNext())
          throw new IllegalArgumentException("group must not be null or empty");
 
-      PSSharedFieldGroup first = group.next();
-      PSCollection<PSSharedFieldGroup> g = lookupFieldGroupByFileName(first.getFilename());
-      for (PSSharedFieldGroup psSharedFieldGroup : g) {
+      PSSharedFieldGroup first = (PSSharedFieldGroup) group.next();
+      PSCollection g = lookupFieldGroupByFileName(first.getFilename());
+      for (Object psSharedFieldGroup : g) {
          m_fieldGroups.remove(psSharedFieldGroup);
       }
 
@@ -228,7 +228,7 @@ public class PSContentEditorSharedDef extends PSComponent
     * @param fieldGroups the new collection of PSSharedFieldGroup objects, never
     *           <code>null</code>, may be empty.
     */
-   public void setFieldGroups(PSCollection<PSSharedFieldGroup> fieldGroups)
+   public void setFieldGroups(PSCollection fieldGroups)
    {
       if (fieldGroups == null)
          throw new IllegalArgumentException("the field groups cannot be null");
@@ -274,10 +274,10 @@ public class PSContentEditorSharedDef extends PSComponent
       }
       
       PSSharedFieldGroup group = null;
-      Iterator<PSSharedFieldGroup> groups = getFieldGroups();
+      Iterator groups = getFieldGroups();
       while (groups.hasNext() && group == null) 
       {
-         PSSharedFieldGroup test = groups.next();
+         PSSharedFieldGroup test = (PSSharedFieldGroup) groups.next();
          if (groupName.equals(test.getName()))
             group = test;
       }
@@ -556,5 +556,5 @@ public class PSContentEditorSharedDef extends PSComponent
     * A collection of PSSharedFieldGroup objects, never <code>null</code>,
     * might be empty after construction.
     */
-   private PSCollection<PSSharedFieldGroup> m_fieldGroups = new PSCollection<PSSharedFieldGroup>();
+   private PSCollection m_fieldGroups = new PSCollection(PSSharedFieldGroup.class);
 }
