@@ -39,7 +39,7 @@ import java.util.Objects;
  * @version      1.0
  * @since      1.0
  */
-public class PSCollection extends PSConcurrentList
+public class PSCollection<T> extends PSConcurrentList<T>
 {
    /**
     * Construct a collection object to store objects of the specified type.
@@ -89,14 +89,14 @@ public class PSCollection extends PSConcurrentList
     * @throws ClassCastException if all of the objects under the iterator are
     * not of the same type.
     */
-   public PSCollection(Iterator i)
+   public PSCollection(Iterator<T> i)
       throws ClassCastException
    {
       m_memberClass = null;
 
       while (i.hasNext())
       {
-         Object o = i.next();
+         T o = i.next();
          if (m_memberClass == null)
             m_memberClass = o.getClass();
 
@@ -108,7 +108,7 @@ public class PSCollection extends PSConcurrentList
    /**
     * Default constructor needed for serialization.
     */
-   protected PSCollection()
+   public PSCollection()
    {
       super();
    }
@@ -123,7 +123,7 @@ public class PSCollection extends PSConcurrentList
     * @param o   the object to add to the collection
     * @throws ClassCastException if the object is not of the appropriate class
     */
-   public void add(int index, Object o)
+   public void add(int index, T o)
       throws ArrayIndexOutOfBoundsException, ClassCastException
    {
       checkType(o);
@@ -142,7 +142,7 @@ public class PSCollection extends PSConcurrentList
     *        throws ClassCastException otherwise
     * @throws ClassCastException if the object is not of the appropriate class
     */
-   public boolean add(Object o)
+   public boolean add(T o)
       throws ClassCastException
    {
       checkType(o);
@@ -159,7 +159,7 @@ public class PSCollection extends PSConcurrentList
     * @param o   the object to add to the collection
     * @throws ClassCastException if the object is not of the appropriate class
     */
-   public void addElement(Object o)
+   public void addElement(T o)
       throws ClassCastException
    {
       add(o);
@@ -215,7 +215,7 @@ public class PSCollection extends PSConcurrentList
     * @throws ArrayIndexOutOfBoundsException   if index is out of range
     * @throws ClassCastException   if the object is not of the appropriate class
     */
-   public Object set(int index, Object o)
+   public T set(int index, T o)
       throws ArrayIndexOutOfBoundsException, ClassCastException
    {
       checkType(o);
@@ -234,7 +234,7 @@ public class PSCollection extends PSConcurrentList
     * @throws ArrayIndexOutOfBoundsException   if index is out of range
     * @throws ClassCastException   if the object is not of the appropriate class
     */
-   public void setElementAt(Object o, int index)
+   public void setElementAt(T o, int index)
       throws ArrayIndexOutOfBoundsException, ClassCastException
    {
       checkType(o);
@@ -242,7 +242,7 @@ public class PSCollection extends PSConcurrentList
       set(index, o);
    }
 
-   public void insertElementAt(Object o, int i){
+   public void insertElementAt(T o, int i){
       this.add(i,o);
    }
 

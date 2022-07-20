@@ -40,7 +40,6 @@ import java.util.Objects;
  * Implements the PSXContentEditorSharedDef DTD defined in
  * ContentEditorSharedDef.dtd.
  */
-@SuppressWarnings("serial")
 public class PSContentEditorSharedDef extends PSComponent
       implements
          IPSDocument
@@ -57,7 +56,7 @@ public class PSContentEditorSharedDef extends PSComponent
     * @param fieldGroups a collection of PSSharedFieldGroup objects. Never
     *           <code>null</code>, may be empty.
     */
-   public PSContentEditorSharedDef(PSCollection fieldGroups) {
+   public PSContentEditorSharedDef(PSCollection<PSSharedFieldGroup> fieldGroups) {
       setFieldGroups(fieldGroups);
    }
 
@@ -74,7 +73,7 @@ public class PSContentEditorSharedDef extends PSComponent
     *            appropriate type
     */
    public PSContentEditorSharedDef(Element sourceNode, IPSDocument parentDoc,
-         List parentComponents) throws PSUnknownNodeTypeException {
+                                   List<IPSComponent> parentComponents) throws PSUnknownNodeTypeException {
       fromXml(sourceNode, parentDoc, parentComponents);
    }
 
@@ -158,7 +157,7 @@ public class PSContentEditorSharedDef extends PSComponent
     * @return a collection of PSSharedFieldGroup objects, never
     *         <code>null</code>, may be empty.
     */
-   public Iterator getFieldGroups()
+   public Iterator<PSSharedFieldGroup> getFieldGroups()
    {
       return m_fieldGroups.iterator();
    }
@@ -172,14 +171,13 @@ public class PSContentEditorSharedDef extends PSComponent
     * @return the shared field corresponding to the file name supplied, never
     *         <code>null</code> may be empty if not found.
     */
-   public PSCollection lookupFieldGroupByFileName(String fileName)
+   public PSCollection<PSSharedFieldGroup> lookupFieldGroupByFileName(String fileName)
    {
-      PSCollection fieldGroups = new PSCollection((new PSSharedFieldGroup())
-            .getClass());
-      Iterator iter = getFieldGroups();
+      PSCollection<PSSharedFieldGroup> fieldGroups = new PSCollection<>();
+      Iterator<PSSharedFieldGroup> iter = getFieldGroups();
       while (iter.hasNext())
       {
-         PSSharedFieldGroup g = (PSSharedFieldGroup) iter.next();
+         PSSharedFieldGroup g = iter.next();
          if (g.getFilename().equals(fileName))
             fieldGroups.add(g);
       }
@@ -194,16 +192,16 @@ public class PSContentEditorSharedDef extends PSComponent
     * @param group shared field group to add or replace. Must not be
     *           <code>null</code>.
     */
-   public void setFieldGroupsByFileName(Iterator group)
+   public void setFieldGroupsByFileName(Iterator<PSSharedFieldGroup> group)
    {
       if (group == null || !group.hasNext())
          throw new IllegalArgumentException("group must not be null or empty");
 
-      PSSharedFieldGroup first = (PSSharedFieldGroup) group.next();
-      PSCollection g = lookupFieldGroupByFileName(first.getFilename());
-      Iterator iter = g.iterator();
-      while (iter.hasNext())
-         m_fieldGroups.remove(iter.next());
+      PSSharedFieldGroup first = group.next();
+      PSCollection<PSSharedFieldGroup> g = lookupFieldGroupByFileName(first.getFilename());
+      for (PSSharedFieldGroup psSharedFieldGroup : g) {
+         m_fieldGroups.remove(psSharedFieldGroup);
+      }
 
       m_fieldGroups.add(first);
       while (group.hasNext())
@@ -230,7 +228,7 @@ public class PSContentEditorSharedDef extends PSComponent
     * @param fieldGroups the new collection of PSSharedFieldGroup objects, never
     *           <code>null</code>, may be empty.
     */
-   public void setFieldGroups(PSCollection fieldGroups)
+   public void setFieldGroups(PSCollection<PSSharedFieldGroup> fieldGroups)
    {
       if (fieldGroups == null)
          throw new IllegalArgumentException("the field groups cannot be null");
@@ -267,7 +265,6 @@ public class PSContentEditorSharedDef extends PSComponent
     *
     * @return The group, may be <code>null</code> if not found.
     */
-   @SuppressWarnings("unchecked")
    public PSSharedFieldGroup getSharedGroup(String groupName)
    {
       if (groupName == null || groupName.trim().length() == 0)
@@ -277,10 +274,10 @@ public class PSContentEditorSharedDef extends PSComponent
       }
       
       PSSharedFieldGroup group = null;
-      Iterator groups = getFieldGroups();      
+      Iterator<PSSharedFieldGroup> groups = getFieldGroups();
       while (groups.hasNext() && group == null) 
       {
-         PSSharedFieldGroup test = (PSSharedFieldGroup)groups.next();
+         PSSharedFieldGroup test = groups.next();
          if (groupName.equals(test.getName()))
             group = test;
       }
@@ -343,7 +340,7 @@ public class PSContentEditorSharedDef extends PSComponent
     * @see IPSComponent
     */
    public void fromXml(Element sourceNode, IPSDocument parentDoc,
-         List parentComponents) throws PSUnknownNodeTypeException
+                       List<IPSComponent> parentComponents) throws PSUnknownNodeTypeException
    {
       if (sourceNode == null)
          throw new PSUnknownNodeTypeException(
@@ -559,6 +556,5 @@ public class PSContentEditorSharedDef extends PSComponent
     * A collection of PSSharedFieldGroup objects, never <code>null</code>,
     * might be empty after construction.
     */
-   private PSCollection m_fieldGroups = new PSCollection(
-         (new PSSharedFieldGroup()).getClass());
+   private PSCollection<PSSharedFieldGroup> m_fieldGroups = new PSCollection<PSSharedFieldGroup>();
 }

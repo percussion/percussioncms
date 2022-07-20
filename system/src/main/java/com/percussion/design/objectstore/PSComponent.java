@@ -148,7 +148,7 @@ public abstract class PSComponent implements IPSComponent, Serializable
       if (null == ms_features)
          return true;
       Integer version = ms_features.get(featureName.toLowerCase());
-      return null != version && version.intValue() >= minVersion;
+      return null != version && version >= minVersion;
    }
 
    /**
@@ -162,7 +162,7 @@ public abstract class PSComponent implements IPSComponent, Serializable
     *
     * @return      the new parent list (in case parentComponents was null)
     */
-   protected List<PSComponent> updateParentList(List<PSComponent> parentComponents)
+   protected List<IPSComponent> updateParentList(List<IPSComponent> parentComponents)
    {
       if (parentComponents == null)
          parentComponents = new ArrayList<>();

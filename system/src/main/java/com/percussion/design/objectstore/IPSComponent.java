@@ -89,7 +89,7 @@ public interface IPSComponent extends Cloneable {
     * represent a type supported by the class.
     */
    public void fromXml(Element sourceNode, IPSDocument parentDoc, 
-                       List parentComponents)
+                       List<IPSComponent> parentComponents)
       throws PSUnknownNodeTypeException;
 
    /**
