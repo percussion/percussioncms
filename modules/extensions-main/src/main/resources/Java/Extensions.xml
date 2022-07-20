@@ -3716,14 +3716,14 @@ One can a give an empty value for the resource name corresponding to a choice in
       <initParam name="className">com.percussion.community.PSAddCommunityEnabledFlag</initParam>
       <interface name="com.percussion.extension.IPSResultDocumentProcessor"/>
    </Extension>
-        <Extension categorystring="" context="global/percussion/contentassembler/" deprecated="no" handler="Java" name=" " restoreRequestParamsOnError="no">
-               <initParam name="com.percussion.user.description">If a sys_template param exists and no sys_variantid exists, then the variant id is looked up and added as a parameter. Needed in casSupport in the PublicationUrl resource.</initParam>
-               <initParam name="com.percussion.extension.version">1</initParam>
-               <initParam name="className">com.percussion.cas.PSSysTemplateToSysVariantid</initParam>
-               <initParam name="com.percussion.extension.reentrant">yes</initParam>
-               <interface name="com.percussion.extension.IPSRequestPreProcessor"/>
-               <suppliedResources/>
-        </Extension>   
+  <Extension categorystring="contentassembler" context="global/percussion/contentassembler/" deprecated="no" handler="Java" name="sys_templateToVariantid" restoreRequestParamsOnError="no">
+         <initParam name="com.percussion.user.description">If a sys_template param exists and no sys_variantid exists, then the variant id is looked up and added as a parameter. Needed in casSupport in the PublicationUrl resource.</initParam>
+         <initParam name="com.percussion.extension.version">1</initParam>
+         <initParam name="className">com.percussion.cas.PSSysTemplateToSysVariantid</initParam>
+         <initParam name="com.percussion.extension.reentrant">yes</initParam>
+         <interface name="com.percussion.extension.IPSRequestPreProcessor"/>
+         <suppliedResources/>
+  </Extension>
    <Extension name="sys_DatabasePublisher" context="global/percussion/contentassembler/" handler="Java" categorystring="contentassembler">
       <initParam name="com.percussion.user.description">Use this exit for assemblers that produce output for database publishing. Produces an output document conforming to the sys_DatabasePublisher.dtd. The input document must conform to the markup.dtd.</initParam>
       <initParam name="com.percussion.extension.version">1</initParam>

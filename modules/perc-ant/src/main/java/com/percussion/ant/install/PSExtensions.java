@@ -26,12 +26,14 @@ package com.percussion.ant.install;
 
 import com.percussion.design.objectstore.PSNonUniqueException;
 import com.percussion.design.objectstore.PSNotFoundException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSExtensionHandler;
 import com.percussion.extension.PSExtensionException;
 import com.percussion.install.PSLogger;
 import com.percussion.install.RxInstallerProperties;
 import com.percussion.util.PSExtensionInstallTool;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.apache.tools.ant.BuildException;
 import org.w3c.dom.Document;
 
 import java.io.File;
@@ -69,7 +71,7 @@ public class PSExtensions extends PSAction
    @Override
    public void execute()
    {
-      /** now look for the extensions.xml files so we can configure the
+      /* now look for the extensions.xml files so we can configure the
        *   extensions.
        */
 
@@ -86,35 +88,27 @@ public class PSExtensions extends PSAction
       {
          m_tool = new PSExtensionInstallTool(new File(m_strRootDir));
       }
-      catch (IOException io)
+      catch (IOException | PSExtensionException io)
       {
-         PSLogger.logInfo("ERROR : " + io.toString());
-         PSLogger.logInfo(io);
-      }
-      catch(PSExtensionException pse)
-      {
-         PSLogger.logInfo("ERROR : " + pse.toString());
-         PSLogger.logInfo(pse);
+         PSLogger.logInfo("ERROR : " + PSExceptionUtils.getMessageForLog(io));
+         throw new BuildException(io);
       }
 
-      if(m_tool != null)
+      String strInstallLocation = m_strRootDir;
+      String strMyLocation = getInstallLocation();
+      if(strMyLocation != null && strMyLocation.length() > 0)
       {
-         String strInstallLocation = m_strRootDir;
-         String strMyLocation = getInstallLocation();
-         if(strMyLocation != null && strMyLocation.length() > 0)
-         {
-            strInstallLocation += File.separator + strMyLocation;
-         }
-
-         File destDir = new File(strInstallLocation);
-         if(destDir != null && destDir.isDirectory())
-         {
-            findAndConfigureExits(destDir);
-         }
-
-         // WE MUST close the extension manager explicitly!!!
-         m_tool.close();
+         strInstallLocation += File.separator + strMyLocation;
       }
+
+      File destDir = new File(strInstallLocation);
+      if(destDir.isDirectory())
+      {
+         findAndConfigureExits(destDir);
+      }
+
+      // WE MUST close the extension manager explicitly!!!
+      m_tool.close();
    }
 
    /**
@@ -138,10 +132,10 @@ public class PSExtensions extends PSAction
       //does this directory have an extensions.xml?
       File extensions = new File(dir.getPath() + File.separator
             + IPSExtensionHandler.DEFAULT_CONFIG_FILENAME);
-      if(extensions != null && extensions.exists())
+      if(extensions.exists())
       {
          FileInputStream fIn = null;
-         Document doc = null;
+         Document doc;
          try
          {
             fIn = new FileInputStream(extensions);
@@ -153,33 +147,11 @@ public class PSExtensions extends PSAction
 
             m_tool.installExtensions(doc, dir);
          }
-         catch(IOException e)
+         catch(PSNotFoundException | PSNonUniqueException|org.xml.sax.SAXException|PSExtensionException|IOException e)
          {
-            PSLogger.logInfo("ERROR : " + e.toString());
-            PSLogger.logInfo(e);
+            PSLogger.logError("ERROR : " + PSExceptionUtils.getMessageForLog(e));
+            throw new BuildException(e);
          }
-         catch(PSExtensionException pse)
-         {
-            PSLogger.logInfo("ERROR : " +pse.toString());
-            PSLogger.logInfo(pse);
-         }
-         catch(org.xml.sax.SAXException sax)
-         {
-            PSLogger.logInfo("ERROR : " + sax.toString());
-                    ;
-            PSLogger.logInfo(sax);
-         }
-         catch(PSNonUniqueException psnonu)
-         {
-            PSLogger.logInfo("ERROR : " + psnonu.toString());
-            PSLogger.logInfo(psnonu);
-         }
-         catch(PSNotFoundException psnotf)
-         {
-            PSLogger.logInfo("ERROR : " + psnotf.toString());
-            PSLogger.logInfo(psnotf);
-         }
-
          finally
          {
             try
@@ -199,14 +171,12 @@ public class PSExtensions extends PSAction
       String[] children = dir.list();
       if(children != null)
       {
-         for(int iChild = 0; iChild < children.length; ++iChild)
-         {
-            String strChild = children[iChild];
-            if(strChild != null)
-            {
+         for (String child : children) {
+            String strChild = child;
+            if (strChild != null) {
                strChild = dir.getAbsolutePath() + File.separator + strChild;
                File childFile = new File(strChild);
-               if(childFile != null && childFile.isDirectory())
+               if (childFile.isDirectory())
                   findAndConfigureExits(childFile);
             }
          }
@@ -227,7 +197,7 @@ public class PSExtensions extends PSAction
       m_strInstallLoc = strInstallLoc;
    }
 
-   /**
+   /*
     * Variables
     */
 
