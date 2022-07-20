@@ -138,7 +138,7 @@ public class PSGuidManager implements IPSGuidManager
     * This must be called from synchronized code. Generates the host id if not
     * present, or if the ip address of the host has changed.
     */
-   @Transactional(propagation=Propagation.REQUIRED)
+   @Transactional(propagation=Propagation.REQUIRES_NEW)
    public void loadHostId()
    {
 
@@ -425,7 +425,7 @@ public class PSGuidManager implements IPSGuidManager
 
 
 
-   @Transactional(propagation=Propagation.REQUIRED)
+   @Transactional(propagation=Propagation.REQUIRES_NEW)
    public int updateNextNumber(String key, int blocksize, long setValue)
    {
 
@@ -563,7 +563,7 @@ public class PSGuidManager implements IPSGuidManager
 
 
 
-   @Transactional(propagation=Propagation.REQUIRED)
+   @Transactional(propagation=Propagation.REQUIRES_NEW)
    public long updateNextLong(Integer key)
    {
       Session s = getSession();
