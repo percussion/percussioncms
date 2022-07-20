@@ -94,6 +94,7 @@ import com.percussion.utils.spring.PSSpringConfiguration;
 import com.percussion.utils.types.PSPair;
 import com.percussion.utils.xml.PSInvalidXmlException;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -591,14 +592,14 @@ public class PSServerXmlObjectStore extends PSObjectFactory
     * 
     * @throws PSServerException for any other errors encountered.
     */
-   public Iterator getApplicationFiles(String appName)
+   public Iterator<File> getApplicationFiles(String appName)
       throws PSServerException
    {
       // validate inputs
       if (appName == null || appName.trim().length() == 0)
          throw new IllegalArgumentException("appName may not be null or empty");
 
-      Iterator result = null;
+      Iterator<File> result = null;
       // get request root
       PSApplicationSummary sum = m_objectStoreHandler.m_appSums
             .getSummary(appName);
@@ -609,7 +610,17 @@ public class PSServerXmlObjectStore extends PSObjectFactory
       }
 
       if (result == null)
-         result = PSIteratorUtils.emptyIterator();
+         result = new Iterator<File>() {
+            @Override
+            public boolean hasNext() {
+               return false;
+            }
+
+            @Override
+            public File next() {
+               return null;
+            }
+         };
 
       return result;
    }
@@ -679,7 +690,7 @@ public class PSServerXmlObjectStore extends PSObjectFactory
 
      
          ByteArrayOutputStream tmpOut = new ByteArrayOutputStream();
-         IOTools.copyStream(in, tmpOut);
+         IOUtils.copy(in, tmpOut);
          return new ByteArrayInputStream(tmpOut
                .toByteArray());
 
@@ -889,10 +900,10 @@ public class PSServerXmlObjectStore extends PSObjectFactory
       boolean isSaved = false;
       try
       {
-         if (!exists || (exists && overWrite))
+         if (!exists || overWrite)
          {
             out = m_objectStoreHandler.lockOutputStream(appFileName);
-            IOTools.copyStream(in, out);
+            IOUtils.copy(in, out);
             isSaved = true;
          }
 
@@ -1053,10 +1064,10 @@ public class PSServerXmlObjectStore extends PSObjectFactory
       boolean isSaved = false;
       try
       {
-         if (!exists || (exists && overWrite))
+         if (!exists || overWrite)
          {
             out = m_objectStoreHandler.lockOutputStream(appFileName);
-            IOTools.copyStream(in, out);
+            IOUtils.copy(in, out);
             isSaved = true;
          }
 
@@ -2059,17 +2070,11 @@ public class PSServerXmlObjectStore extends PSObjectFactory
 
          data = rh.makeInternalRequest(req);
       }
-      catch (PSInternalRequestCallException ire)
+      catch (PSInternalRequestCallException | PSDatabaseComponentException ire)
       {
          throw new PSServerException(ire.getErrorCode(), ire
                .getErrorArguments());
-      }
-      catch (PSDatabaseComponentException dbe)
-      {
-         throw new PSServerException(dbe.getErrorCode(), dbe
-               .getErrorArguments());
-      }
-      catch (PSAuthenticationFailedException afe)
+      } catch (PSAuthenticationFailedException afe)
       {
          throw new PSAuthenticationRequiredException(afe.getErrorCode(), afe
                .getErrorArguments());
@@ -3394,7 +3399,6 @@ public class PSServerXmlObjectStore extends PSObjectFactory
     * to see, never <code>null</code>, may be empty, sorted ascending by
     * application name.
     */
-   @SuppressWarnings("unchecked")
    public PSApplicationSummary[] getApplicationSummaryObjects(
          PSSecurityToken tok, boolean showHiddenApps)
    {
@@ -3475,8 +3479,7 @@ public class PSServerXmlObjectStore extends PSObjectFactory
     * table alias (lowercased) and each value is the PSBackEndTable that has all
     * properties properly specified. The Map is treated read-only.
     */
-   @SuppressWarnings("unchecked")
-   public static void fixupFields(PSFieldSet fs, Iterator tableSets, Map tables)
+   public static void fixupFields(PSFieldSet fs, Iterator<PSTableSet> tableSets, Map<String,PSBackEndTable> tables)
       throws SQLException
    {
       if (null == fs)
@@ -3495,7 +3498,7 @@ public class PSServerXmlObjectStore extends PSObjectFactory
          allFields[j++] = roField;
       }
 
-      Collection beFields = new ArrayList<>();
+      Collection<PSField> beFields = new ArrayList<>();
 
       for (PSField psField : allFields) {
          if (psField.getLocator() instanceof PSBackEndColumn)
@@ -3510,7 +3513,7 @@ public class PSServerXmlObjectStore extends PSObjectFactory
                psField.setDataType(PSField.DT_TEXT);
             else if (psField.getLocator() instanceof PSExtensionCall) {
                /*
-                * I was debating where this code belongs and settled on her.
+                * I was debating where this code belongs and settled on here.
                 * It's not the ideal location, but I didn't see a better one.
                 */
                PSExtensionParamValue[] params = ((PSExtensionCall) psField
@@ -3529,8 +3532,7 @@ public class PSServerXmlObjectStore extends PSObjectFactory
                      try {
                         col.setTable(table);
                      } catch (IllegalArgumentException iae) {
-                        throw new IllegalArgumentException(iae
-                                .getLocalizedMessage());
+                        throw new IllegalArgumentException(iae);
                      }
                   }
                }
@@ -3539,10 +3541,10 @@ public class PSServerXmlObjectStore extends PSObjectFactory
       }
 
       // get the meta data for each table set
-      Collection meta = new ArrayList();
+      Collection<PSDatabaseMetaData> meta = new ArrayList<>();
       while (tableSets.hasNext())
       {
-         PSTableSet ts = (PSTableSet) tableSets.next();
+         PSTableSet ts = tableSets.next();
          meta.add(PSMetaDataCache.getCachedDatabaseMetaData(ts));
       }
 
@@ -3553,13 +3555,13 @@ public class PSServerXmlObjectStore extends PSObjectFactory
       meta.toArray(dbMeta);
 
       // walk all the fields and look up the db field type
-      Iterator itFields = beFields.iterator();
+      Iterator<PSField> itFields = beFields.iterator();
 
       boolean searchEnabled = PSServer.getServerConfiguration()
             .getSearchConfig().isFtsEnabled();
       while (itFields.hasNext())
       {
-         PSField field = (PSField) itFields.next();
+         PSField field = itFields.next();
          PSBackEndColumn col = (PSBackEndColumn) field.getLocator();
          String colName = col.getColumn();
          for (PSDatabaseMetaData psDatabaseMetaData : dbMeta) {

@@ -250,7 +250,7 @@ public class PSContentEditorHandler implements IPSRequestHandler,
             pipe.getLocator().getBackEndTables());
 
       /* validate that all fields have a valid locator, as it is optional to
-       * allow easy overridding of field definitions, but is required in each
+       * allow easy overriding of field definitions, but is required in each
        * field contained in the content editor dataset that we pass to the
        * handlers.  Also validate that there are no duplicate field, fieldset, 
        * or column names.
@@ -260,7 +260,7 @@ public class PSContentEditorHandler implements IPSRequestHandler,
       // adds/validates properties such as data type and mime type
       try
       {
-         PSServerXmlObjectStore.getInstance().fixupFields(
+         PSServerXmlObjectStore.fixupFields(
                pipe.getMapper().getFieldSet(),
                pipe.getLocator().getTableSets(),
                pipe.getLocator().getBackEndTables());
@@ -287,7 +287,7 @@ public class PSContentEditorHandler implements IPSRequestHandler,
       // end debug
 
       // create command handlers and init them
-      m_commandHandlers = new HashMap();
+      m_commandHandlers = new HashMap<>();
 
       // TODO: Pass handlers the backEnd credentials retrieved from the call
       // to the locators resolve refs

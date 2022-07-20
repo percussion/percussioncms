@@ -204,26 +204,25 @@ public class PSExtensionDefFactory implements IPSExtensionDefFactory
       catch (IllegalArgumentException iae)
       {
          // TODO: i18n and code
-         throw new PSExtensionException(0, iae.toString());
+         throw new PSExtensionException(0, iae);
       }
 
       // get the deprecation setting
       boolean isDeprecated = false;
       String strDep = defElement.getAttribute("deprecated");
-      if (strDep != null)
-         isDeprecated = strDep.trim().equalsIgnoreCase("yes") ? true : false;
+      isDeprecated = strDep.trim().equalsIgnoreCase("yes");
 
       //get the restore on error setting
       boolean isRestoreRequestParamsOnError = false;
       String strRestore = defElement.getAttribute(
          "restoreRequestParamsOnError");
-      if (strRestore != null && strRestore.trim().equalsIgnoreCase("yes"))
+      if (strRestore.trim().equalsIgnoreCase("yes"))
       {
          isRestoreRequestParamsOnError = true;
       }
 
       // for this extension: get all resource URLs
-      Collection resURLs = new LinkedList();
+      Collection resURLs = new LinkedList<>();
       try
       {
          // reset so we don't have to worry about order
