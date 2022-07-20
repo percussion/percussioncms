@@ -25,22 +25,27 @@ package com.percussion.design.objectstore;
 
 import com.percussion.util.PSCollection;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.apache.commons.io.IOUtils;
+import org.junit.Before;
+import org.junit.Test;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import junit.framework.TestCase;
-
-import org.apache.commons.io.IOUtils;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Unit tests for <code>PSContentEditorMapper</code>.
  */
-public class PSContentEditorMapperTest extends TestCase
+public class PSContentEditorMapperTest
 {
    /**
     * Case tests object->xml->object serialization.The mapper is built as a Java
@@ -51,6 +56,7 @@ public class PSContentEditorMapperTest extends TestCase
     * @throws PSUnknownNodeTypeException if construction of the object from XML
     *            document fails
     */
+   @Test
    public void testXml() throws PSUnknownNodeTypeException
    {
       Document doc = PSXmlDocumentBuilder.createXmlDocument();
@@ -59,11 +65,11 @@ public class PSContentEditorMapperTest extends TestCase
       PSFieldSet fs = createFieldSet();
       PSUIDefinition uiDef = createUIDefinition();
 
-      ArrayList<String> systemExcludes = new ArrayList<String>();
+      ArrayList<String> systemExcludes = new ArrayList<>();
       systemExcludes.add("exclude1");
       systemExcludes.add("exclude2");
 
-      ArrayList<String> sharedIncludes = new ArrayList<String>();
+      ArrayList<String> sharedIncludes = new ArrayList<>();
       sharedIncludes.add("include1");
       sharedIncludes.add("include2");
 
@@ -81,22 +87,23 @@ public class PSContentEditorMapperTest extends TestCase
       Element root2 = PSXmlDocumentBuilder.createRoot(doc2, "Test");
       Element elem2 = testFrom.toXml(doc2);
       root2.appendChild(elem2);
-      assertTrue(testTo.equals(testFrom));
+      assertEquals(testTo, testFrom);
    }
 
    /**
     * Tests that excluding a specific shared field results in that field being
-    * excluded from the merged field set and UI defintion.
+    * excluded from the merged field set and UI definition.
     */
+   @Test
    public void testMergeForInclusionOfSharedGroupWithExcludedField()
          throws Exception
    {
       // now include a shared field group
-      ArrayList<String> sharedGroupIncludes = new ArrayList<String>();
+      ArrayList<String> sharedGroupIncludes = new ArrayList<>();
       sharedGroupIncludes.add("shared");
       m_testMapper.setSharedFieldIncludes(sharedGroupIncludes);
 
-      ArrayList<String> sharedFieldExcludes = new ArrayList<String>();
+      ArrayList<String> sharedFieldExcludes = new ArrayList<>();
       sharedFieldExcludes.add("body");
       m_testMapper.setSharedFieldExcludes(sharedFieldExcludes);
 
@@ -131,6 +138,7 @@ public class PSContentEditorMapperTest extends TestCase
     * Tests that system fields are included in the merged field set and UI
     * definition.
     */
+   @Test
    public void testMergeForInclusionOfSystemFields() throws Exception
    {
       PSContentEditorMapper mergedCem = m_testMapper.getMergedMapper(ms_sysDef,
@@ -161,13 +169,14 @@ public class PSContentEditorMapperTest extends TestCase
 
    /**
     * Tests that excluding a specific system field results in that field being
-    * excluded from the merged field set and UI defintion.
+    * excluded from the merged field set and UI definition.
     */
+   @Test
    public void testMergeForInclusionOfSystemFieldsWithExcludedField()
          throws Exception
    {
       // add an excluded system field to mapper
-      ArrayList<String> systemFieldExcludes = new ArrayList<String>();
+      ArrayList<String> systemFieldExcludes = new ArrayList<>();
       systemFieldExcludes.add("sys_pubdate");
       m_testMapper.setSystemFieldExcludes(systemFieldExcludes);
 
@@ -201,10 +210,11 @@ public class PSContentEditorMapperTest extends TestCase
     * Tests that including a shared group adds its fields to merged field set 
     * and UI definition.
     */
+   @Test
    public void testMergeForInclusionOfEntireSharedGroup() throws Exception
    {
       // include a shared group
-      ArrayList<String> sharedGroupIncludes = new ArrayList<String>(1);
+      ArrayList<String> sharedGroupIncludes = new ArrayList<>(1);
       sharedGroupIncludes.add("shared");
       m_testMapper.setSharedFieldIncludes(sharedGroupIncludes);
 
@@ -255,11 +265,12 @@ public class PSContentEditorMapperTest extends TestCase
     * Tests that including two shared groups adds fields from both groups to
     * merged field set and UI definition.
     */
+   @Test
    public void testMergeForInclusionOfTwoSharedGroups()
          throws Exception
    {
       // include two shared groups
-      ArrayList<String> sharedGroupIncludes = new ArrayList<String>(2);
+      ArrayList<String> sharedGroupIncludes = new ArrayList<>(2);
       sharedGroupIncludes.add("shared");
       sharedGroupIncludes.add("sharedbinary");
       m_testMapper.setSharedFieldIncludes(sharedGroupIncludes);
@@ -389,10 +400,8 @@ public class PSContentEditorMapperTest extends TestCase
    /**
     * Assigns test objects to system def, shared def, and CE mapper fields
     */
-   @Override
-   protected void setUp() throws Exception
-   {
-      super.setUp();
+   @Before
+   public void setUp() throws Exception {
       PSFieldSet fieldSet = createFieldSet();
       PSUIDefinition uiDefinition = createUIDefinition();
       m_testMapper = new PSContentEditorMapper(null, null, fieldSet,
