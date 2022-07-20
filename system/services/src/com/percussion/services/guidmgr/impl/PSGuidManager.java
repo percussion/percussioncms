@@ -586,7 +586,6 @@ public class PSGuidManager implements IPSGuidManager
       try
       {
          s.update(data);
-         s.flush();
       }
       catch (HibernateException e1)
       {
