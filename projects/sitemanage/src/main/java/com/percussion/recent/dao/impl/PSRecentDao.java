@@ -28,15 +28,17 @@ import com.percussion.recent.dao.IPSRecentDao;
 import com.percussion.recent.data.PSRecent;
 import com.percussion.recent.data.PSRecent.RecentType;
 import com.percussion.share.dao.IPSGenericDao.SaveException;
-import org.hibernate.Criteria;
 import org.hibernate.Session;
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import java.util.LinkedList;
 import java.util.List;
 
 @Repository("recentDao")
@@ -56,22 +58,31 @@ private EntityManager entityManager;
         
     }
 
-    @SuppressWarnings("unchecked")
     public List<PSRecent> find(String user, String siteName, RecentType type)
     {
         Session session = getSession();
-        Criteria crit = session.createCriteria(PSRecent.class);
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+
+        CriteriaQuery<PSRecent> criteria = builder.createQuery(PSRecent.class);
+        Root<PSRecent> recent = criteria.from(PSRecent.class);
+        List<Predicate> predList = new LinkedList<>();
+
         if (user!=null) {
-            crit.add(Restrictions.eq("user", user));
+            predList.add(builder.equal(recent.get("user"), user));
         }
         if(siteName!=null) {
-            crit.add(Restrictions.eq("siteName", siteName));
+            predList.add(builder.equal(recent.get("siteName"), siteName));
         }
         if(type!=null) {
-            crit.add(Restrictions.eq("type", type));
+            predList.add( builder.equal(recent.get("type"), type));
         }
-        crit.addOrder(Order.asc("order"));
-        return crit.list();
+        Predicate[] preds = new Predicate[predList.size()];
+        preds = predList.toArray(preds);
+        criteria.where(preds);
+        criteria.orderBy(builder.asc(recent.get("order")));
+        return entityManager
+                .createQuery(criteria)
+                .getResultList();
     }
     
 
