@@ -296,7 +296,7 @@ public class AssetsResource
         asset.setName(filename);
         asset.setFolderPath(StringUtils.substringBeforeLast(path, "/"));
         try {
-            return assetAdaptor.createSharedAsset(uriInfo.getBaseUri(), path, asset);
+            return assetAdaptor.createOrUpdateSharedAsset(uriInfo.getBaseUri(), path, asset);
         } catch (BackendException e) {
             log.error(PSExceptionUtils.getMessageForLog(e));
             log.debug(PSExceptionUtils.getDebugMessageForLog(e));
