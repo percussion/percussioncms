@@ -68,7 +68,6 @@ import org.springframework.stereotype.Component;
 
 import javax.jcr.Node;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -360,7 +359,7 @@ public class PSManagedNavService implements IPSManagedNavService
    }
 
    /**
-    * This API should return 1 live parent, if returns null, that is a problem with corrupted dataand needs to be looked at
+    * This API should return 1 live parent, if returns null, that is a problem with corrupted data and needs to be looked at
     * @param childId
     * @return
     * @throws PSCmsException
@@ -461,7 +460,7 @@ public class PSManagedNavService implements IPSManagedNavService
             coreItem.setTextField("sys_workflowid", String.valueOf(workflowId));
          }
 
-         List<IPSGuid> guids = contentWs.saveItems(Arrays.asList(coreItem), false, true);
+         List<IPSGuid> guids = contentWs.saveItems(Collections.singletonList(coreItem), false, true);
          contentWs.addFolderChildren(path, guids);
    
          return guids.get(0);
@@ -738,7 +737,7 @@ public class PSManagedNavService implements IPSManagedNavService
             if (isSectionLink(childNavonId, ownerId))
             {
                 if (log.isDebugEnabled())
-                    log.debug("Skip section link ownderId = {} , dependentId = {}",
+                    log.debug("Skip section link ownerId = {} , dependentId = {}",
                             ownerId.getUUID(),
                             childNavonId.getUUID());
 
@@ -1029,8 +1028,8 @@ public class PSManagedNavService implements IPSManagedNavService
       
       PSServerFolderProcessor fp = PSServerFolderProcessor.getInstance();
       
-      List<PSLocator> navonFolders = null;
-      List<PSLocator> parentFolders = null;
+      List<PSLocator> navonFolders;
+      List<PSLocator> parentFolders;
 
       try
       {
