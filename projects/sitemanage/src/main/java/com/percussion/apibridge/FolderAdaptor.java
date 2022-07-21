@@ -219,7 +219,12 @@ public class FolderAdaptor implements IFolderAdaptor {
 			checkAPIPermission();
 
 			return getFolder(baseUri, null, site, path, folderName);
-		} catch (PSDataServiceException e) {
+		} catch(FolderNotFoundException e){
+			log.warn("Folder {} not found. Error: {}",
+					folderName,
+					PSExceptionUtils.getMessageForLog(e));
+			throw(e);
+		} catch(PSDataServiceException e) {
 			throw new BackendException(e);
 		}
 	}
