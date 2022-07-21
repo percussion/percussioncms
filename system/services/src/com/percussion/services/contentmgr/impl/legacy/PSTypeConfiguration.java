@@ -1142,14 +1142,15 @@ public class PSTypeConfiguration implements NodeType, Serializable
     */
    private String buildHibernateConfiguration(String firstTable,
          StringBuilder hibProps, StringBuilder hibId, StringBuilder hibJoin,
-         Class beanClass)
+         Class<?> beanClass)
    {
       StringBuilder hibConfig = new StringBuilder(512);
-      hibConfig.append("<?xml version=\"1.0\"?>\n");
+      hibConfig.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
       hibConfig
             .append("<!DOCTYPE hibernate-mapping PUBLIC\r\n"
-                  + "      \"-//Hibernate/Hibernate Mapping DTD 3.0//EN\"\r\n"
-                  + "          \"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd\">\n");
+                  + "      \"-//Hibernate/Hibernate Mapping DTD//EN\"\r\n"
+                  + "          \"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd\">\n");
+
       hibConfig.append("<hibernate-mapping>\n");
       hibConfig.append("<class name=\"");
       hibConfig.append(beanClass.getName());
