@@ -283,11 +283,13 @@ public class FoldersResource
             }
 
             folderAdaptor.deleteFolder(uriInfo.getBaseUri(), siteName, apiPath, folderName, includeSubFolders);
-            return new Status("Deleted");
+            return new Status(200,"Deleted");
         } catch (BackendException | UnsupportedEncodingException e) {
             log.error(PSExceptionUtils.getMessageForLog(e));
             log.debug(PSExceptionUtils.getDebugMessageForLog(e));
-            throw new WebApplicationException(e);
+            throw new WebApplicationException(e.getMessage(),500);
+        } catch(FolderNotFoundException e){
+            throw new WebApplicationException("Folder not found",404);
         }
     }
     

@@ -35,6 +35,7 @@
         <option value="$PROJECT_DIR$/modules/perc-samples/perc-loader-sample-java/pom.xml" />
         <option value="$PROJECT_DIR$/modules/SSLTools/pom.xml" />
         <option value="$PROJECT_DIR$/modules/Help/pom.xml" />
+        <option value="$PROJECT_DIR$/modules/redirect-tool/pom.xml" />
       </list>
     </option>
   </component>
