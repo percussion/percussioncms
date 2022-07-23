@@ -38,7 +38,6 @@ import org.apache.tools.ant.BuildException;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.Statement;
@@ -172,19 +171,19 @@ public class PSExecSQLStmt extends PSAction
                InstallUtil.shutDownDerby();
          }
 
-      } catch (FileNotFoundException e) {
-         log.error(PSExceptionUtils.getMessageForLog(e));
-         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
-      } catch (IOException e) {
-         log.error(PSExceptionUtils.getMessageForLog(e));
-         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
-      } catch (PSJdbcTableFactoryException e) {
+      } catch (PSJdbcTableFactoryException | IOException e) {
          log.error(PSExceptionUtils.getMessageForLog(e));
          log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
    }
 
    private void handleException(Exception ex){
+      //ERROR Code for specified View Not Exist, ignore it
+      if( ex.getMessage().contains("ORA-00942") || ex.getMessage().contains("does not exist")){
+         PSLogger.logWarn(ex.getMessage());
+         return;
+      }
+
       if (!isFailonerror()) {
          if (!isSilenceErrors()) {
             PSLogger.logError(ex.getMessage());

@@ -12,8 +12,6 @@
 
     <target name="installRepository" depends="init,repository_properties">
 
-    <!-- The main install target -->
-
         <!-- Install Rhythmyx Tables -->
         <echo>Installing repository...</echo>
 
@@ -23,18 +21,18 @@
         <PSExecSQLStmt rootDir="${install.dir}"
                        printExceptionStackTrace="true"
                        qualifyViewNames="PSX_QJOB_LISTENERS"
-                       sql="DROP TABLE PSX_QJOB_LISTENERS IF EXISTS"
+                       sql="DROP TABLE PSX_QJOB_LISTENERS"
+                       sqlOracle="DROP TABLE PSX_QJOB_LISTENERS"
                        sqlMysql="DROP TABLE IF EXISTS PSX_QJOB_LISTENERS"
                        sqlDerby="DROP TABLE PSX_QJOB_LISTENERS"
                        failonerror="false"
                        silenceerrors="false"
         />
 
-        <echo>Dropping selected indexes...</echo>
         <!-- Cleanup to make sure new FK can be created -->
         <PSExecSQLStmt rootDir="${install.dir}"
                        printExceptionStackTrace="true"
-                       qualifyViewNames="PSX_CONTENTCHANGEEVENT,CONTENTSTATUS"
+                       qualifyTableNames="PSX_CONTENTCHANGEEVENT,CONTENTSTATUS"
                        sql="DELETE FROM PSX_CONTENTCHANGEEVENT where CONTENTID not in (SELECT CONTENTID from CONTENTSTATUS)"
                        failonerror="false"
                        silenceerrors="false"
@@ -42,92 +40,19 @@
 
         <PSExecSQLStmt rootDir="${install.dir}"
                        printExceptionStackTrace="true"
-                       qualifyViewNames="PSX_CONTENTCHANGEEVENT,RXSITES"
+                       qualifyTableNames="PSX_CONTENTCHANGEEVENT,RXSITES"
                        sql="DELETE FROM PSX_CONTENTCHANGEEVENT where SITEID  not in (SELECT SITEID  from RXSITES)"
                        failonerror="false"
                        silenceerrors="false"
         />
 
         <echo>dropping views..</echo>
-        <PSExecSQLStmt rootDir="${install.dir}" printExceptionStackTrace="true" qualifyTableNames=""
-                       qualifyViewNames="" sql="DROP VIEW RXSITEITEMS"
+        <PSExecSQLStmt rootDir="${install.dir}" printExceptionStackTrace="true"
+                       qualifyViewNames="RXSITEITEMS" sql="DROP VIEW RXSITEITEMS"
                        sqlMysql="DROP VIEW IF EXISTS RXSITEITEMS"
                        failonerror="false"
                        silenceerrors="false"/>
 
-        <PSExecSQLStmt
-                printExceptionStackTrace="true"
-                qualifyViewNames="RXSITEITEMS"
-                sql="DROP VIEW RXSITEITEMS"
-                sqlMysql="DROP VIEW IF EXISTS RXSITEITEMS"
-                failonerror="false"
-                silenceerrors="false"
-        />
-
-        <echo>renaming PSX_PUBLICATION_SITE_ITEM</echo>
-        <PSExecSQLStmt  printExceptionStackTrace="true" qualifyTableNames="PSX_PUBLICATION_SITE_ITEM"
-                        qualifyViewNames="" sql="RENAME TABLE PSX_PUBLICATION_SITE_ITEM TO PSX_PUBLICATION_SITE_ITEM_BAK_PATCH"
-                        sqlSqlServer="EXEC sp_rename 'PSX_PUBLICATION_SITE_ITEM', 'PSX_PUBLICATION_SITE_ITEM_BAK_PATCH';"
-                        sqlOracle="RENAME PSX_PUBLICATION_SITE_ITEM TO PSX_PUBLICATION_SITE_ITEM_BAK_PATCH;"
-                        failonerror="false"
-                        silenceerrors="false"/>
-
-        <PSExecSQLStmt  printExceptionStackTrace="true" qualifyTableNames="PSX_PUBLICATION_SITE_ITEM_BAK_PATCH"
-                        qualifyViewNames="" sqlDerby="ALTER TABLE PSX_PUBLICATION_SITE_ITEM_BAK_PATCH DROP CONSTRAINT FK_SITE_ITEMS_REF_1"
-                        sqlOracle="ALTER TABLE PSX_PUBLICATION_SITE_ITEM_BAK_PATCH DROP CONSTRAINT FK_PSX_PUBLICATION_DOC_1;"
-                        sqlMysql="ALTER TABLE PSX_PUBLICATION_SITE_ITEM_BAK_PATCH DROP CONSTRAINT FK_PSX_PUBLICATION_DOC_1;"
-                        failonerror="false"
-                        silenceerrors="false"
-        />
-
-        <PSExecSQLStmt  printExceptionStackTrace="true" qualifyTableNames="PSX_PUBLICATION_SITE_ITEM_BAK_PATCH"
-                        qualifyViewNames="" sqlDerby="ALTER TABLE PSX_PUBLICATION_SITE_ITEM_BAK_PATCH DROP CONSTRAINT FK_SITE_ITEMS_REF"
-                        sqlOracle="ALTER TABLE PSX_PUBLICATION_SITE_ITEM_BAK_PATCH DROP CONSTRAINT FK_SITE_ITEMS_REF;"
-                        sqlMysql="ALTER TABLE PSX_PUBLICATION_SITE_ITEM_BAK_PATCH DROP CONSTRAINT FK_SITE_ITEMS_REF;"
-                        failonerror="false"
-                        silenceerrors="false"
-        />
-
-
-        <PSExecSQLStmt  printExceptionStackTrace="true" qualifyTableNames="PSX_PUBLICATION_SITE_ITEM_BAK_PATCH"
-                        qualifyViewNames="" sqlDerby="ALTER TABLE PSX_PUBLICATION_SITE_ITEM_BAK_PATCH DROP CONSTRAINT PK_PSX_PUBLICATION_SITE_ITEM"
-                        sqlOracle="ALTER TABLE PSX_PUBLICATION_SITE_ITEM_BAK_PATCH DROP CONSTRAINT PK_PSX_PUBLICATION_SITE_ITEM;"
-                        sqlMysql="ALTER TABLE PSX_PUBLICATION_SITE_ITEM_BAK_PATCH DROP CONSTRAINT PK_PSX_PUBLICATION_SITE_ITEM;"
-                        failonerror="false"
-                        silenceerrors="false"
-        />
-
-        <PSExecSQLStmt  printExceptionStackTrace="true" qualifyTableNames=""
-                        qualifyViewNames="" sqlDerby="DROP INDEX IX_SITE_ITEMS"
-                        sqlOracle="DROP INDEX IX_SITE_ITEMS"
-                        sqlMysql="DROP INDEX IX_SITE_ITEMS"
-                        failonerror="false"
-                        silenceerrors="false"
-        />
-
-        <PSExecSQLStmt  printExceptionStackTrace="true" qualifyTableNames=""
-                        qualifyViewNames="" sqlDerby="DROP INDEX IX_SITE_ITEMS_2"
-                        sqlOracle="DROP INDEX IX_SITE_ITEMS_2"
-                        sqlMysql="DROP INDEX IX_SITE_ITEMS_2"
-                        failonerror="false"
-                        silenceerrors="false"
-        />
-
-        <PSExecSQLStmt  printExceptionStackTrace="true" qualifyTableNames=""
-                        qualifyViewNames="" sqlDerby="DROP INDEX IX_REF_SERV_CONTXT"
-                        sqlOracle="DROP INDEX IX_REF_SERV_CONTXT"
-                        sqlMysql="DROP INDEX IX_REF_SERV_CONTXT"
-                        failonerror="false"
-                        silenceerrors="false"
-        />
-
-        <PSExecSQLStmt  printExceptionStackTrace="true" qualifyTableNames=""
-                        qualifyViewNames="" sqlDerby="DROP INDEX IX_WORKING_CONTXT"
-                        sqlOracle="DROP INDEX IX_WORKING_CONTXT"
-                        sqlMysql="DROP INDEX IX_WORKING_CONTXT"
-                        failonerror="false"
-                        silenceerrors="false"
-        />
 
         <PSExecSQLStmt
                 printExceptionStackTrace="true"
@@ -207,6 +132,16 @@
                 printExceptionStackTrace="true"
                 qualifyViewNames="RXPUBDOCS"
                 sql="DROP VIEW RXPUBDOCS"
+                failonerror="false"
+                silenceerrors="false"
+        />
+
+        <!-- Delete orphan records from PSX_WB_HIERARCHY_NODE_PROP -->
+
+        <PSExecSQLStmt
+                printExceptionStackTrace="true"
+                qualifyTableNames="PSX_WB_HIERARCHY_NODE_PROP,PSX_WB_HIERARCHY_NODE"
+                sql="DELETE FROM PSX_WB_HIERARCHY_NODE_PROP WHERE NODE_ID NOT IN (SELECT NODE_ID FROM PSX_WB_HIERARCHY_NODE)"
                 failonerror="false"
                 silenceerrors="false"
         />
