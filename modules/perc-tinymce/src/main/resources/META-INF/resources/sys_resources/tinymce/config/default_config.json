@@ -8,8 +8,8 @@
 		"advlist autosave autolink lists link charmap print preview hr anchor",
 		"searchreplace wordcount visualblocks visualchars code fullscreen",
 		"insertdatetime media nonbreaking table directionality",
-		"emoticons paste textcolor save codesample colorpicker",
-		"noneditable rxinline rxinserthtml contextmenu"
+		"emoticons paste save codesample",
+		"noneditable rxinline rxinserthtml "
 	],
 	"toolbar": [" newdocument undo rdo restoredraft | cut copy paste searchreplace useBrowserSpellcheck | styleselect fontselect fontsizeselect forecolor backcolor removeformat | bold italic underline strikethrough superscript subscript | alignleft aligncenter alignright alignjustify alignnone | bullist numlist outdent indent | link unlink openlink media | image  | visualchars visualblocks fullscreen print preview | anchor charmap hr emoticons insertdatetime | table tabledelete tableinsertrowafter tabledeleterow tableinsertcolbefore tabledeletecol tablesplitcells tablemergecells  | percmorelink| percglobalvariables | rxinlinelink rxinlinetemplate rxinlineimage rxinserthtml  | ltr rtl codesample code"],
 	"paste_word_valid_elements": "b,strong,i,em,h1,h2,u,p,ol,ul,li,a[href],table,tr,td,style",
