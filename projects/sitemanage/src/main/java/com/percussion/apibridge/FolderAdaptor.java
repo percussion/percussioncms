@@ -219,7 +219,12 @@ public class FolderAdaptor implements IFolderAdaptor {
 			checkAPIPermission();
 
 			return getFolder(baseUri, null, site, path, folderName);
-		} catch (PSDataServiceException e) {
+		} catch(FolderNotFoundException e){
+			log.warn("Folder {} not found. Error: {}",
+					folderName,
+					PSExceptionUtils.getMessageForLog(e));
+			throw(e);
+		} catch(PSDataServiceException e) {
 			throw new BackendException(e);
 		}
 	}
@@ -1263,14 +1268,13 @@ public class FolderAdaptor implements IFolderAdaptor {
 			String folderUrl = urlParts.getUrl();
 
 			//Fix for sites with mismatched sitefolders
-			folderUrl = PSPathUtils.fixSiteFolderPath(siteDataService, folderUrl);
+			if(!siteName.equalsIgnoreCase("assets"))
+				folderUrl = PSPathUtils.fixSiteFolderPath(siteDataService, folderUrl);
 
 			PSPathItem folderPathItem = null;
 			try {
 				folderPathItem = pathService.find(folderUrl);
-			} catch (PSParametersValidationException e) {
-				throw new FolderNotFoundException();
-			} catch (PSPathNotFoundServiceException e) {
+			} catch (PSParametersValidationException | PSPathNotFoundServiceException e) {
 				throw new FolderNotFoundException();
 			}
 			boolean hasChildren = false;
@@ -1285,8 +1289,10 @@ public class FolderAdaptor implements IFolderAdaptor {
 			PSDeleteFolderCriteria criteria = new PSDeleteFolderCriteria();
 			criteria.setPath(StringUtils.substring(folderUrl, 1));
 			pathService.deleteFolder(criteria);
-		} catch (PSDataServiceException | PSNotFoundException | IPSPathService.PSPathServiceException e) {
+		} catch (PSDataServiceException | IPSPathService.PSPathServiceException e) {
 			throw new BackendException(e);
+		} catch(PSNotFoundException e){
+			throw new FolderNotFoundException();
 		}
 	}
 

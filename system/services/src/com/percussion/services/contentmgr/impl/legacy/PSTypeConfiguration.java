@@ -113,7 +113,7 @@ public class PSTypeConfiguration implements NodeType, Serializable
       /**
        * The sysid is used, as for child tables
        */
-      CHILDID;
+      CHILDID
    }
 
    /**
@@ -489,7 +489,7 @@ public class PSTypeConfiguration implements NodeType, Serializable
     */
    private static Map<String,Class> ms_hibernateTypeMap = 
       new HashMap<>();
-   /**
+   /*
     * Initialize type map
     */
    static {
@@ -514,7 +514,6 @@ public class PSTypeConfiguration implements NodeType, Serializable
     * @param isDerbyDatabase if <code>true</code> then the repository is a 
     *      derby database.
     */
-   @SuppressWarnings("unchecked")
    public PSTypeConfiguration(PSItemDefinition definition, PSItemChild child, 
          boolean isDerbyDatabase) 
    {
@@ -630,7 +629,6 @@ public class PSTypeConfiguration implements NodeType, Serializable
     *    
     * @return <code>true</code> the maps are equal. 
     */
-   @SuppressWarnings("unchecked")
    private boolean isEqualMap(Map<Class, ? extends Object> m1,
          Map<Class, ? extends Object> m2)
    {
@@ -658,7 +656,7 @@ public class PSTypeConfiguration implements NodeType, Serializable
     * @return the map value where the map key has the same base name as the 
     *    supplied key. It may be <code>null</code> if cannot find one in the map.
     */
-   @SuppressWarnings("unchecked")
+
    private Object getMapValue(Class srcKey, Map<Class, ? extends Object> m)
    {
       for (Class k : m.keySet())
@@ -1023,7 +1021,7 @@ public class PSTypeConfiguration implements NodeType, Serializable
 
       // Add to the implementing classes
       m_implementingClasses.add(new ImplementingClass(beanClass, hibConfig
-            .toString(), lazyFields));
+            , lazyFields));
       m_properties.put(beanClass, props);
       m_loadpolicy.put(beanClass, load);
    }
@@ -1142,14 +1140,15 @@ public class PSTypeConfiguration implements NodeType, Serializable
     */
    private String buildHibernateConfiguration(String firstTable,
          StringBuilder hibProps, StringBuilder hibId, StringBuilder hibJoin,
-         Class beanClass)
+         Class<?> beanClass)
    {
       StringBuilder hibConfig = new StringBuilder(512);
-      hibConfig.append("<?xml version=\"1.0\"?>\n");
+      hibConfig.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
       hibConfig
             .append("<!DOCTYPE hibernate-mapping PUBLIC\r\n"
-                  + "      \"-//Hibernate/Hibernate Mapping DTD 3.0//EN\"\r\n"
-                  + "          \"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd\">\n");
+                  + "      \"-//Hibernate/Hibernate Mapping DTD//EN\"\r\n"
+                  + "          \"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd\">\n");
+
       hibConfig.append("<hibernate-mapping>\n");
       hibConfig.append("<class name=\"");
       hibConfig.append(beanClass.getName());
@@ -1178,7 +1177,7 @@ public class PSTypeConfiguration implements NodeType, Serializable
       if (ms_logger.isDebugEnabled())
       {
          ms_logger.debug("Hibernate config for class-name = \""
-               + beanClass.getName() + "\"\n" + hibConfig.toString());
+               + beanClass.getName() + "\"\n" + hibConfig);
       }
       return hibConfig.toString();
    }
@@ -1828,7 +1827,7 @@ public class PSTypeConfiguration implements NodeType, Serializable
    {
       loadPropertyDefinitions();
       Collection<PSPropertyDefinition> defs = m_propertyDefinitions.values();
-      PropertyDefinition rval[] = new PropertyDefinition[defs.size()];
+      PropertyDefinition[] rval = new PropertyDefinition[defs.size()];
       defs.toArray(rval);
       return rval;
    }

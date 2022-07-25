@@ -52,6 +52,7 @@ import com.percussion.error.PSExceptionUtils;
 import com.percussion.server.IPSInternalRequest;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.services.assembly.impl.nav.PSNavConfig;
+import com.percussion.services.guidmgr.data.PSLegacyGuid;
 import com.percussion.services.legacy.IPSCmsObjectMgr;
 import com.percussion.services.legacy.PSCmsObjectMgrLocator;
 import com.percussion.util.IPSHtmlParameters;
@@ -147,10 +148,14 @@ public class PSNavFolderUtils
          PSLocator parentFolder, PSLocator childFolder, String navonName, 
          String navonTitle, Long slotId, Long templateId)
    {
-      PSComponentSummary parentNavon = getChildNavonSummary(req, parentFolder);
+      PSComponentSummary parentNavon = getParentNavOn(req,parentFolder);
+
       if (parentNavon == null)
-      { //there's no parent navon
-         ms_log.debug("parent folder has no Navon");
+      {
+
+         //there's no parent navon
+         ms_log.warn("Parent folder {} has no Navon", parentFolder.getId());
+
          return null; // we are done
       }
       else
@@ -176,6 +181,29 @@ public class PSNavFolderUtils
       
       return currentNavon;
    }
+
+   /**
+    * Attempts to locate the closest parent NavOn for a folder.  This is to handle
+    * situations where a nav section is created under a regular folder.
+    *
+    * @param req The current request
+    * @param parentFolder The locator for the parent folder.
+    * @return The closest parent navon or null if none is found
+    */
+   public static PSComponentSummary getParentNavOn(IPSRequestContext req, PSLocator parentFolder) {
+
+      IPSCmsObjectMgr objMgr = PSCmsObjectMgrLocator.getObjectManager();
+      PSComponentSummary parentSum = objMgr.loadComponentSummary(parentFolder.getId());
+
+      PSNavFolder parentNavon = getNavParentFolder(req, parentSum, true);
+
+      if(parentNavon == null){
+         return null;
+      }else{
+         return parentNavon.getNavonSummary();
+      }
+   }
+
    /**
     * Finds all parent folders for a given item.
     * 
