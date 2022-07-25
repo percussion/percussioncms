@@ -31,16 +31,15 @@ import com.percussion.integritymanagement.data.PSIntegrityTaskProperty;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.guidmgr.PSGuidHelper;
 import com.percussion.share.dao.IPSGenericDao.SaveException;
-import org.hibernate.Criteria;
 import org.hibernate.Session;
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.util.ArrayList;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.util.List;
 
 @Transactional
@@ -67,13 +66,20 @@ public class PSIntegrityCheckerDao implements com.percussion.integritymanagement
         PSIntegrityStatus result = null;
         Session session = getSession();
 
-        Criteria crit = session.createCriteria(PSIntegrityStatus.class);
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<PSIntegrityStatus> criteria = builder.createQuery(PSIntegrityStatus.class);
+        Root<PSIntegrityStatus> critRoot = criteria.from(PSIntegrityStatus.class);
+
         if (token != null)
-            crit.add(Restrictions.eq("token", token));
-        crit.addOrder(Order.desc("startTime"));
-        if (crit.list().size() > 0)
+            criteria.where(builder.equal(critRoot.get("token"), token));
+        criteria.orderBy(builder.desc(critRoot.get("startTime")));
+        List<PSIntegrityStatus> results = entityManager
+                .createQuery(criteria)
+                .getResultList();
+
+        if (results.size() > 0)
         {
-            result = (PSIntegrityStatus) crit.list().get(0);
+            result = results.get(0);
         }
 
         return result;
@@ -84,16 +90,19 @@ public class PSIntegrityCheckerDao implements com.percussion.integritymanagement
     public List<PSIntegrityStatus> find(Status status)
     {
         Session session = getSession();
-        List<PSIntegrityStatus> results = new ArrayList<>();
 
-        Criteria crit = session.createCriteria(PSIntegrityStatus.class);
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<PSIntegrityStatus> criteria = builder.createQuery(PSIntegrityStatus.class);
+        Root<PSIntegrityStatus> critRoot = criteria.from(PSIntegrityStatus.class);
+
         if (status != null)
-            crit.add(Restrictions.eq("status", status));
-        crit.addOrder(Order.desc("startTime"));
-        results = crit.list();
+            criteria.where(builder.equal(critRoot.get("status"), status));
 
+        criteria.orderBy(builder.desc(critRoot.get("startTime")));
 
-        return results;
+        return entityManager
+                .createQuery(criteria)
+                .getResultList();
     }
 
     @Override
