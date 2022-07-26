@@ -33,18 +33,19 @@ import com.percussion.cms.objectstore.server.PSItemDefManager;
 import com.percussion.design.objectstore.PSSearchConfig;
 import com.percussion.design.objectstore.PSServerConfiguration;
 import com.percussion.error.PSException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.search.PSSearchAdmin;
 import com.percussion.search.PSSearchException;
 import com.percussion.search.PSSearchIndexEventQueue;
 import com.percussion.server.PSServer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.lucene.index.CorruptIndexException;
 import org.apache.lucene.index.IndexWriter;
 
 import java.io.File;
-import java.io.FilenameFilter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -66,7 +67,7 @@ public class PSSearchAdminImpl extends PSSearchAdmin
       if (searchConfig != null && searchConfig.isFtsEnabled())
       {
          // Register listeners on the item def manager to handle
-         // content editors being added or removed dynamically. The philosphy
+         // content editors being added or removed dynamically. The philosophy
          // is to handle the adds/updates, and ignore the removals as the
          // removal may be temporary. A separate processing step on startup
          // will find content types that are truly removed from the RX 
@@ -128,7 +129,7 @@ public class PSSearchAdminImpl extends PSSearchAdmin
          boolean success = deleteDir(ctypeDir);
          if (!success)
          {
-            String msg = "Falied to delete the index directory for content "
+            String msg = "Failed to delete the index directory for content "
                   + "type id ({0}).";
             log.error(MessageFormat.format(msg, key.getPart()));
          }
@@ -138,7 +139,7 @@ public class PSSearchAdminImpl extends PSSearchAdmin
       }
       catch (Exception e)
       {
-         String msg = "Falied to delete the index directory for content "
+         String msg = "Failed to delete the index directory for content "
                + "type id ({0}).";
          throw new PSSearchException(MessageFormat.format(msg, key.getPart()),
                e);
@@ -147,16 +148,14 @@ public class PSSearchAdminImpl extends PSSearchAdmin
    
 
    /**
-    * Closes an IndexWriter that is associtaed with the supplied content type.
+    * Closes an IndexWriter that is associated with the supplied content type.
     * @param key Content type key whose index writer needs to be closed.
-    * @throws CorruptIndexException
-    * @throws IOException
     */
    private void closeIndexWriter(PSKey key)
-      throws CorruptIndexException, IOException
+      throws IOException
    {
       Map<Long, IndexWriter> iws = PSSearchIndexerImpl.getLuceneIndexWriters();
-      Long ctypeId = new Long(key.getPartAsInt());
+      Long ctypeId = (long) key.getPartAsInt();
       IndexWriter iw = iws.get(ctypeId);
       if (iw != null)
       {
@@ -179,12 +178,12 @@ public class PSSearchAdminImpl extends PSSearchAdmin
       if (dir.isDirectory())
       {
          String[] children = dir.list();
-         for (int i = 0; i < children.length; i++)
-         {
-            boolean success = deleteDir(new File(dir, children[i]));
-            if (!success)
-            {
-               return false;
+         if (children != null) {
+            for (String child : children) {
+               boolean success = deleteDir(new File(dir, child));
+               if (!success) {
+                  return false;
+               }
             }
          }
       }
@@ -203,7 +202,7 @@ public class PSSearchAdminImpl extends PSSearchAdmin
       List<PSKey> successList = new ArrayList<>();
       for (PSKey key : contentTypes)
       {
-         Long ctypeId = new Long(key.getPartAsInt());
+         Long ctypeId = (long) key.getPartAsInt();
          IndexWriter iw = iws.get(ctypeId);
          if (iw != null)
          {
@@ -216,18 +215,13 @@ public class PSSearchAdminImpl extends PSSearchAdmin
                String msg1 = "Successfully optimized indexes for content " +
                      "type id ({0}).";
                log.debug(MessageFormat.format(msg1, key.getPart()));
-            }
-            catch (CorruptIndexException e)
-            {
-               throw new PSSearchException(msg, e);
-            }
-            catch (IOException e)
+            } catch (IOException e)
             {
                throw new PSSearchException(msg, e);
             }
          }
       }
-      return successList.toArray(new PSKey[successList.size()]);
+      return successList.toArray(new PSKey[0]);
    }
 
    @Override
@@ -251,7 +245,7 @@ public class PSSearchAdminImpl extends PSSearchAdmin
                "for reindexing.";
          log.debug(MessageFormat.format(msg, key.getPart()));
       }
-      return successList.toArray(new PSKey[successList.size()]);
+      return successList.toArray(new PSKey[0]);
    }
 
    /**
@@ -267,11 +261,10 @@ public class PSSearchAdminImpl extends PSSearchAdmin
          throw new IllegalArgumentException(
                "contentTypes must have at least 1 entry");
       }
-      
-      for (int i=0; i < types.length; i++)
-      {
-         if (types[i] == null)
-            throw new IllegalArgumentException("No null entries in array.");            
+
+      for (PSKey type : types) {
+         if (type == null)
+            throw new IllegalArgumentException("No null entries in array.");
       }
    }
    
@@ -281,7 +274,7 @@ public class PSSearchAdminImpl extends PSSearchAdmin
    @Override
    public void save() throws IOException, PSSearchException
    {
-      //This method does nothing as there is nothing to save incase of lucene.
+      //This method does nothing as there is nothing to save in case of lucene.
    }
 
    /**
@@ -291,17 +284,17 @@ public class PSSearchAdminImpl extends PSSearchAdmin
    protected boolean update(PSItemDefinition def, boolean notify)
          throws PSSearchException
    {
-      //This method does nothing as there is nothing to update incase of lucene.
+      //This method does nothing as there is nothing to update in case of lucene.
       //return false so that it does not warn per reindexing.
       return false;
    }
 
    /**
     * The scheme for creating the lucene indexes is to create a folder with
-    * contenttype id under indexes folder. The folder indexes is created under
+    * content type id under indexes folder. The folder indexes is created under
     * search config directory if it does not exist. This method walks through
     * all the folders under indexes folder and checks whether a
-    * contenttype with the id exists or not if not it logs that folder other
+    * content type with the id exists or not if not it logs that folder other
     * wise it creates the folder.
     */
    @Override
@@ -312,28 +305,24 @@ public class PSSearchAdminImpl extends PSSearchAdmin
       if (rootDir.exists())
       {
          File[] indexDirs = rootDir.listFiles();
-         for (File indexDir : indexDirs)
-         {
-            if (!indexDir.isDirectory())
-               continue;
-            Long id = null;
-            try
-            {
-               id = Long.parseLong(indexDir.getName());
+         if(indexDirs!=null) {
+            for (File indexDir : indexDirs) {
+               if (!indexDir.isDirectory())
+                  continue;
+               Long id = null;
+               try {
+                  id = Long.parseLong(indexDir.getName());
+               } catch (NumberFormatException e) {
+                  // ignore this folder and continue with other folders
+               }
+               if (id != null)
+                  currentIndexes.add(id);
             }
-            catch (NumberFormatException e)
-            {
-               // ignore this folder and continue with other folders
-            }
-            if (id != null)
-               currentIndexes.add(id);
          }
       }
-      Set<Long> currentIndexesCopy = new HashSet<>();
-      currentIndexesCopy.addAll(currentIndexes);
+      Set<Long> currentIndexesCopy = new HashSet<>(currentIndexes);
 
-      Set<Long> knownContentTypesCopy = new HashSet<>();
-      knownContentTypesCopy.addAll(knownContentTypes);
+      Set<Long> knownContentTypesCopy = new HashSet<>(knownContentTypes);
 
       // Remove knownContentTypes from currentIndexesCopy
       currentIndexesCopy.removeAll(knownContentTypes);
@@ -378,30 +367,32 @@ public class PSSearchAdminImpl extends PSSearchAdmin
     * Call this method during server startup only.
     */
    @Override
-   public void clearIndexLocks()
-   {
+   public void clearIndexLocks() {
       File rootDir = new File(PSSearchEngineImpl.getLuceneIndexRootPath());
       if (rootDir.exists())
       {
          File[] indexDirs = rootDir.listFiles();
+         if(indexDirs!=null) {
+            for (File indexDir : indexDirs) {
+               if (!indexDir.isDirectory())
+                  continue;
+               // Delete the lock and try again
+               String[] lockedFiles = indexDir.list((dir, name) -> name.toLowerCase().endsWith(".lock"));
+               if(lockedFiles!=null) {
+                  for (String lf : lockedFiles) {
+                     File file = new File(indexDir.getAbsolutePath()
+                             + File.separator + lf);
 
-         for (File indexDir : indexDirs)
-         {
-            if (!indexDir.isDirectory())
-               continue;
-            // Delete the lock and try again
-            String[] lockedFiles = indexDir.list(new FilenameFilter()
-            {
-               public boolean accept(File dir, String name)
-               {
-                  return name.toLowerCase().endsWith(".lock");
+                     try {
+                        Files.deleteIfExists(Paths.get(file.getAbsolutePath()));
+                     } catch (IOException e) {
+                        log.warn("Unable to delete lock file: {} Error: {}",
+                                file.getAbsolutePath(),
+                                PSExceptionUtils.getMessageForLog(e)
+                                );
+                     }
+                  }
                }
-            });
-            for (String lf : lockedFiles)
-            {
-               File file = new File(indexDir.getAbsolutePath()
-                     + File.separator + lf);
-               file.delete();
             }
          }
       }
