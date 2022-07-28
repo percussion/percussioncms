@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2022 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -22,9 +22,10 @@
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
-package com.percussion.util;
+package com.percussion.extensions.utils;
 
 import com.percussion.extension.PSExtensionProcessingException;
+import com.percussion.share.service.exception.PSExtractHTMLException;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xmldom.PSXmlDomContext;
 import com.percussion.xmldom.PSXmlDomUtils;

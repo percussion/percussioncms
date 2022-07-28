@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2022 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -26,7 +26,6 @@ package com.percussion.testing;
 
 import com.percussion.error.PSExceptionUtils;
 import com.percussion.util.PSResourceUtils;
-import com.percussion.util.PSTidyUtils;
 import com.percussion.utils.testing.IntegrationTest;
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
