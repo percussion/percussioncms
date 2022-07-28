@@ -370,13 +370,11 @@ public class PSContentService
    public List<PSAutoTranslation> loadAutoTranslations()
    {
       Session session = getSession();
-
-//         Criteria criteria = session.createCriteria(PSAutoTranslation.class);
       CriteriaBuilder builder = session.getCriteriaBuilder();
       CriteriaQuery<PSAutoTranslation> criteria = builder.createQuery(PSAutoTranslation.class);
       Root<PSAutoTranslation> critRoot = criteria.from(PSAutoTranslation.class);
 
-         return criteria.get;
+         return entityManager.createQuery(criteria).getResultList();
 
    }
 
