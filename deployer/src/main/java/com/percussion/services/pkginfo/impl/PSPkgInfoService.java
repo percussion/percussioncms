@@ -47,6 +47,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -155,12 +158,13 @@ implements IPSPkgInfoService
          throw new IllegalArgumentException("id may not be null");
       
       Session session = getSession();
+      
+      CriteriaBuilder builder = session.getCriteriaBuilder();
+      CriteriaQuery<PSPkgInfo> criteria = builder.createQuery(PSPkgInfo.class);
+      Root<PSPkgInfo> critRoot = criteria.from(PSPkgInfo.class);
+      PSPkgInfo pkgInfo = entityManager.createQuery(criteria).getSingleResult();
 
-         Criteria criteria = session.createCriteria(PSPkgInfo.class);
-         criteria.add(Restrictions.eq("guid", id.longValue()));
-         PSPkgInfo pkgInfo = (PSPkgInfo) criteria.uniqueResult();
-         
-         if (pkgInfo == null)
+      if (pkgInfo == null)
             return;
 
          session.delete(pkgInfo);
