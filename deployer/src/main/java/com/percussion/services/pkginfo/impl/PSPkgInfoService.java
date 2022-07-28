@@ -288,11 +288,16 @@ implements IPSPkgInfoService
       
       Session session = getSession();
 
-         Criteria criteria = session.createCriteria(PSPkgElement.class);
-         criteria.add(Restrictions.eq("guid", id.longValue()));
-         PSPkgElement pkgElement = (PSPkgElement) criteria.uniqueResult();
-         
-         if (pkgElement == null)
+
+      CriteriaBuilder builder = session.getCriteriaBuilder();
+      CriteriaQuery<PSPkgElement> criteria = builder.createQuery(PSPkgElement.class);
+      Root<PSPkgElement> critRoot = criteria.from(PSPkgElement.class);
+      criteria.select(critRoot);
+      criteria.where(critRoot.get("guid").equals(id.longValue());
+      PSPkgElement pkgElement = (PSPkgElement) entityManager.createQuery(criteria).getSingleResult();
+
+
+      if (pkgElement == null)
             return;
 
          session.delete(pkgElement);
@@ -425,12 +430,17 @@ implements IPSPkgInfoService
       List<PSPkgElement>  pkgElementList = null;
       Session session = getSession();
 
-         Criteria criteria = session.createCriteria(PSPkgElement.class);
-         criteria.add(Restrictions.in("guid", idList));
-         criteria.setCacheable(true);
-         pkgElementList = criteria.list();
 
-         // If one ids does not match and object, the object is missing.
+
+      CriteriaBuilder builder = session.getCriteriaBuilder();
+      CriteriaQuery<PSPkgElement> criteria = builder.createQuery(PSPkgElement.class);
+      Root<PSPkgElement> critRoot = criteria.from(PSPkgElement.class);
+      criteria.select(critRoot);
+      criteria.where(critRoot.get("guid").in(idList);
+      pkgElementList = entityManager.createQuery(criteria).getResultList();
+
+
+      // If one ids does not match and object, the object is missing.
          // Find id and throw exception 
          if (pkgElementList.size() != idList.size())
          {
@@ -472,11 +482,19 @@ implements IPSPkgInfoService
       PSPkgElement pkgElement = null;
       Session session = getSession();
 
-         Criteria criteria = session.createCriteria(PSPkgElement.class);
-         criteria.add(Restrictions.eq("guid", id.longValue()));
-         pkgElement = (PSPkgElement) criteria.uniqueResult();
+//         Criteria criteria = session.createCriteria(PSPkgElement.class);
+//         criteria.add(Restrictions.eq("guid", id.longValue()));
+//         pkgElement = (PSPkgElement) criteria.uniqueResult();
 
-         if (pkgElement == null)
+      CriteriaBuilder builder = session.getCriteriaBuilder();
+      CriteriaQuery<PSPkgElement> criteria = builder.createQuery(PSPkgElement.class);
+      Root<PSPkgElement> critRoot = criteria.from(PSPkgElement.class);
+      criteria.select(critRoot);
+      criteria.where(critRoot.get("guid").equals(id.longValue());
+      pkgElement = (PSPkgElement) entityManager.createQuery(criteria).getSingleResult();
+
+
+      if (pkgElement == null)
             throw new PSNotFoundException(id);
 
       return pkgElement;
