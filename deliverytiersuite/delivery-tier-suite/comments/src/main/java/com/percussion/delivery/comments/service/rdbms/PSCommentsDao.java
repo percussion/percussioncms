@@ -33,7 +33,7 @@ import com.percussion.delivery.comments.services.IPSCommentsDao;
 import com.percussion.delivery.comments.services.PSCommentsService;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
-import org.hibernate.Query;
+import org.hibernate.query.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Conjunction;
 import org.hibernate.criterion.CriteriaSpecification;

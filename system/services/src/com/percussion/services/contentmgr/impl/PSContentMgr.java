@@ -60,7 +60,6 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.jcr.Node;
-import javax.jcr.PathNotFoundException;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import javax.jcr.UnsupportedRepositoryOperationException;
@@ -158,8 +157,7 @@ public class PSContentMgr  implements IPSContentMgr
 
    @Transactional(propagation=Propagation.NOT_SUPPORTED)
    public List<Node> findItemsByPath(Session sess, List<String> paths,
-         PSContentMgrConfig config) throws PathNotFoundException,
-         RepositoryException
+         PSContentMgrConfig config) throws RepositoryException
    {
       return m_repository.loadByPath(paths, config);
    }
@@ -298,12 +296,10 @@ public class PSContentMgr  implements IPSContentMgr
          }
          
          // Make unique
-         Set<IPSNodeDefinition> bdefs = new HashSet<>();
-         bdefs.addAll(defs);
+         Set<IPSNodeDefinition> bdefs = new HashSet<>(defs);
          
          // Convert back to a list
-         defs = new ArrayList<IPSNodeDefinition>();
-         defs.addAll(bdefs);
+         defs = new ArrayList<IPSNodeDefinition>(bdefs);
 
          return defs;
       }
@@ -337,8 +333,7 @@ public class PSContentMgr  implements IPSContentMgr
       }
 
    }
-   
-   @SuppressWarnings("unchecked")
+
    public PSContentTemplateDesc findContentTypeTemplateAssociation(
          IPSGuid tmpId, IPSGuid ctId) throws RepositoryException
    {
@@ -401,7 +396,7 @@ public class PSContentMgr  implements IPSContentMgr
          d.add(Restrictions.eq("m_templateid", templateid.longValue()));
          List<IPSNodeDefinition> defs = c.list();
          //there may be an entry for every template association
-         Set deduped = new HashSet<IPSNodeDefinition>(defs);
+         Set<IPSNodeDefinition> deduped = new HashSet<IPSNodeDefinition>(defs);
          return new ArrayList<>(deduped);
 
    }
