@@ -38,6 +38,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -106,9 +109,9 @@ public class PSConfigStatusMgr  implements IPSConfigStatusMgr
       PSConfigStatus cfgStatus = null;
       Session session = getSession();
 
-         Criteria criteria = session.createCriteria(PSConfigStatus.class);
-         criteria.add(Restrictions.eq("statusId", statusID));
-         cfgStatus = (PSConfigStatus) criteria.uniqueResult();
+      CriteriaBuilder builder = session.getCriteriaBuilder();
+      CriteriaQuery<PSConfigStatus> criteria = builder.createQuery(PSConfigStatus.class);
+      Root<PSConfigStatus> critRoot = criteria.from(PSConfigStatus.class);
 
          if (cfgStatus == null)
          {
