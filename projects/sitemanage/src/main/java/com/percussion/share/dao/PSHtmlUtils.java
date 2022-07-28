@@ -25,7 +25,7 @@
 package com.percussion.share.dao;
 
 import com.percussion.share.service.exception.PSExtractHTMLException;
-import com.percussion.util.PSTidyUtils;
+import com.percussion.extensions.utils.PSTidyUtils;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import net.htmlparser.jericho.Attribute;
 import net.htmlparser.jericho.Element;
@@ -260,10 +260,10 @@ public class PSHtmlUtils
     }
     
     /**
-     * This is the same as {@link #extractHtml(String, String, boolean)}, except the HTML source is already tidied.
+     * This is the same as , except the HTML source is already tidied.
      * 
      * @param cssSelector the CSS Selector, not <code>null</code>.
-     * @param source the tidied HTML content, assumed not <code>null</code> or empty.
+     * @param sourceDoc the tidied HTML content, assumed not <code>null</code> or empty.
      * @param outerHTML determines extract outer or inner HTML. It is <code>true</code> if extracting outer HTML.
      * 
      * @return the extracted content, never <code>null</code>. 
