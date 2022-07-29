@@ -176,7 +176,11 @@ public class PSPurgableTempFile extends File implements AutoCloseable
    {
       return m_sourceFile;
    }
-   
+
+   public void setSourceFileName(String s){
+      m_sourceFile = s;
+   }
+
    /**
     * Returns the content type of the source file of this
     * file, or <CODE>null</CODE> if it is not known.

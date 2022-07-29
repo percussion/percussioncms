@@ -25,6 +25,7 @@
 package com.percussion.widgets.image.extensions;
 
       import com.percussion.design.objectstore.PSLocator;
+      import com.percussion.error.PSExceptionUtils;
       import com.percussion.extension.IPSExtensionDef;
       import com.percussion.extension.IPSItemOutputTransformer;
       import com.percussion.extension.PSDefaultExtension;
@@ -71,7 +72,8 @@ package com.percussion.widgets.image.extensions;
         {
         	return false;
         }
-      
+
+        @Override
         public void init(IPSExtensionDef def, File codeRoot)
           throws PSExtensionException
         {
@@ -90,7 +92,8 @@ package com.percussion.widgets.image.extensions;
         		this.cmgr = PSContentMgrLocator.getContentMgr();
           }
         }
-      
+
+        @Override
         public Document processResultDocument(Object[] params, IPSRequestContext request, Document resultDoc)
           throws PSParameterMismatchException, PSExtensionProcessingException
         {
@@ -117,7 +120,8 @@ package com.percussion.widgets.image.extensions;
             }
           }
           catch (Exception ex) {
-        	  log.error("Unexpected Exception " + ex, ex);
+        	  log.error("Unexpected Exception: {}",
+                      PSExceptionUtils.getMessageForLog(ex));
         	  throw new PSExtensionProcessingException(getClass().getName(), ex);
           }
       

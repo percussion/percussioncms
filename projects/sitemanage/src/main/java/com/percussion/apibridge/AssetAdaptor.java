@@ -870,8 +870,8 @@ try{
 		 checkAPIPermission();
 
 		 
-		 UrlParts url = new UrlParts("", folder, name);
-		 String pathServicePath = folder;
+		 UrlParts url = new UrlParts(site, folder, name);
+		 String pathServicePath = url.getUrl();
 	       
 	        try
 	        {
@@ -884,7 +884,7 @@ try{
 	        }
 		
 		try {
-            Asset a = getSharedAssetByPath(baseUri, folder + "/" + name);
+            Asset a = getSharedAssetByPath(baseUri, pathServicePath);
             PSAsset update = this.assetService.load(a.getId());
             //Check it out
             if (!workflowHelper.isCheckedOutToCurrentUser(update.getId())) {
