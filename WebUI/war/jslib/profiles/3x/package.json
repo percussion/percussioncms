@@ -5,7 +5,7 @@
   "dependencies": {
     "jquery":"3.6.0",
     "jquery-migrate":"3.3.2",
-    "jquery-ui": "1.12.1",
+    "jquery-ui": "1.13.2",
     "jquery-perc-retiredjs":"1.0.0",
     "perc-retiredjs":"1.0.0",
     "backgrid": "0.3.8",
