@@ -25,97 +25,49 @@ table.dataTable tr.dt-hasChild td.dt-control:before {
   background-color: #d33333;
 }
 
-table.dataTable td.dt-control {
-  text-align: center;
-  cursor: pointer;
-}
-table.dataTable td.dt-control:before {
-  height: 1em;
-  width: 1em;
-  margin-top: -9px;
-  display: inline-block;
-  color: white;
-  border: 0.15em solid white;
-  border-radius: 1em;
-  box-shadow: 0 0 0.2em #444;
-  box-sizing: content-box;
-  text-align: center;
-  text-indent: 0 !important;
-  font-family: "Courier New", Courier, monospace;
-  line-height: 1em;
-  content: "+";
-  background-color: #31b131;
-}
-table.dataTable tr.dt-hasChild td.dt-control:before {
-  content: "-";
-  background-color: #d33333;
-}
-
-table.dataTable thead > tr > th.sorting, table.dataTable thead > tr > th.sorting_asc, table.dataTable thead > tr > th.sorting_desc, table.dataTable thead > tr > th.sorting_asc_disabled, table.dataTable thead > tr > th.sorting_desc_disabled,
-table.dataTable thead > tr > td.sorting,
-table.dataTable thead > tr > td.sorting_asc,
-table.dataTable thead > tr > td.sorting_desc,
-table.dataTable thead > tr > td.sorting_asc_disabled,
-table.dataTable thead > tr > td.sorting_desc_disabled {
-  cursor: pointer;
-  position: relative;
-  padding-right: 26px;
-}
-table.dataTable thead > tr > th.sorting:before, table.dataTable thead > tr > th.sorting:after, table.dataTable thead > tr > th.sorting_asc:before, table.dataTable thead > tr > th.sorting_asc:after, table.dataTable thead > tr > th.sorting_desc:before, table.dataTable thead > tr > th.sorting_desc:after, table.dataTable thead > tr > th.sorting_asc_disabled:before, table.dataTable thead > tr > th.sorting_asc_disabled:after, table.dataTable thead > tr > th.sorting_desc_disabled:before, table.dataTable thead > tr > th.sorting_desc_disabled:after,
-table.dataTable thead > tr > td.sorting:before,
-table.dataTable thead > tr > td.sorting:after,
-table.dataTable thead > tr > td.sorting_asc:before,
-table.dataTable thead > tr > td.sorting_asc:after,
-table.dataTable thead > tr > td.sorting_desc:before,
-table.dataTable thead > tr > td.sorting_desc:after,
-table.dataTable thead > tr > td.sorting_asc_disabled:before,
-table.dataTable thead > tr > td.sorting_asc_disabled:after,
-table.dataTable thead > tr > td.sorting_desc_disabled:before,
-table.dataTable thead > tr > td.sorting_desc_disabled:after {
-  position: absolute;
-  display: block;
-  opacity: 0.125;
-  right: 10px;
-  line-height: 9px;
-  font-size: 0.9em;
-}
-table.dataTable thead > tr > th.sorting:before, table.dataTable thead > tr > th.sorting_asc:before, table.dataTable thead > tr > th.sorting_desc:before, table.dataTable thead > tr > th.sorting_asc_disabled:before, table.dataTable thead > tr > th.sorting_desc_disabled:before,
-table.dataTable thead > tr > td.sorting:before,
-table.dataTable thead > tr > td.sorting_asc:before,
-table.dataTable thead > tr > td.sorting_desc:before,
-table.dataTable thead > tr > td.sorting_asc_disabled:before,
-table.dataTable thead > tr > td.sorting_desc_disabled:before {
-  bottom: 50%;
-  content: "▴";
-}
-table.dataTable thead > tr > th.sorting:after, table.dataTable thead > tr > th.sorting_asc:after, table.dataTable thead > tr > th.sorting_desc:after, table.dataTable thead > tr > th.sorting_asc_disabled:after, table.dataTable thead > tr > th.sorting_desc_disabled:after,
-table.dataTable thead > tr > td.sorting:after,
-table.dataTable thead > tr > td.sorting_asc:after,
-table.dataTable thead > tr > td.sorting_desc:after,
-table.dataTable thead > tr > td.sorting_asc_disabled:after,
-table.dataTable thead > tr > td.sorting_desc_disabled:after {
-  top: 50%;
-  content: "▾";
-}
-table.dataTable thead > tr > th.sorting_asc:before, table.dataTable thead > tr > th.sorting_desc:after,
-table.dataTable thead > tr > td.sorting_asc:before,
-table.dataTable thead > tr > td.sorting_desc:after {
-  opacity: 0.6;
-}
-table.dataTable thead > tr > th.sorting_desc_disabled:after, table.dataTable thead > tr > th.sorting_asc_disabled:before,
-table.dataTable thead > tr > td.sorting_desc_disabled:after,
-table.dataTable thead > tr > td.sorting_asc_disabled:before {
-  display: none;
+table.dataTable thead > tr > th.dt-orderable-asc, table.dataTable thead > tr > th.dt-orderable-desc,
+table.dataTable thead > tr > td.dt-orderable-asc,
+table.dataTable thead > tr > td.dt-orderable-desc {
+  padding-right: 30px;
 }
 table.dataTable thead > tr > th:active,
 table.dataTable thead > tr > td:active {
   outline: none;
 }
-
-div.dataTables_scrollBody table.dataTable thead > tr > th:before, div.dataTables_scrollBody table.dataTable thead > tr > th:after,
-div.dataTables_scrollBody table.dataTable thead > tr > td:before,
-div.dataTables_scrollBody table.dataTable thead > tr > td:after {
-  display: none;
+table.dataTable thead > tr > th.dt-orderable-asc, table.dataTable thead > tr > th.dt-orderable-desc,
+table.dataTable thead > tr > td.dt-orderable-asc,
+table.dataTable thead > tr > td.dt-orderable-desc {
+  cursor: pointer;
+  position: relative;
+}
+table.dataTable thead > tr > th.dt-orderable-asc:before, table.dataTable thead > tr > th.dt-orderable-asc:after, table.dataTable thead > tr > th.dt-orderable-desc:before, table.dataTable thead > tr > th.dt-orderable-desc:after,
+table.dataTable thead > tr > td.dt-orderable-asc:before,
+table.dataTable thead > tr > td.dt-orderable-asc:after,
+table.dataTable thead > tr > td.dt-orderable-desc:before,
+table.dataTable thead > tr > td.dt-orderable-desc:after {
+  position: absolute;
+  display: block;
+  opacity: 0.125;
+  right: 1em;
+  line-height: 9px;
+  font-size: 0.9em;
+}
+table.dataTable thead > tr > th.dt-orderable-asc:before, table.dataTable thead > tr > th.dt-orderable-desc:before,
+table.dataTable thead > tr > td.dt-orderable-asc:before,
+table.dataTable thead > tr > td.dt-orderable-desc:before {
+  bottom: 50%;
+  content: "▴";
+}
+table.dataTable thead > tr > th.dt-orderable-asc:after, table.dataTable thead > tr > th.dt-orderable-desc:after,
+table.dataTable thead > tr > td.dt-orderable-asc:after,
+table.dataTable thead > tr > td.dt-orderable-desc:after {
+  top: 50%;
+  content: "▾";
+}
+table.dataTable thead > tr > th.dt-ordering-asc:before, table.dataTable thead > tr > th.dt-ordering-desc:after,
+table.dataTable thead > tr > td.dt-ordering-asc:before,
+table.dataTable thead > tr > td.dt-ordering-desc:after {
+  opacity: 0.6;
 }
 
 div.dataTables_processing {
@@ -288,6 +240,7 @@ table.dataTable tfoot th {
 table.dataTable thead th,
 table.dataTable thead td {
   padding: 10px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.3);
 }
 table.dataTable thead th:active,
 table.dataTable thead td:active {
@@ -296,6 +249,7 @@ table.dataTable thead td:active {
 table.dataTable tfoot th,
 table.dataTable tfoot td {
   padding: 10px 10px 6px 10px;
+  border-top: 1px solid rgba(0, 0, 0, 0.3);
 }
 table.dataTable tbody tr {
   background-color: transparent;
@@ -424,50 +378,55 @@ table.dataTable.compact tbody td {
   padding: 4px;
 }
 
+table.dataTable,
 table.dataTable th,
 table.dataTable td {
-  box-sizing: content-box;
+  box-sizing: border-box;
 }
 
 /*
  * Control feature layout
  */
-.dataTables_wrapper {
+div.dataTables_wrapper {
   position: relative;
   clear: both;
 }
-.dataTables_wrapper .dataTables_length {
-  float: left;
+div.dataTables_wrapper div.dataTables_layout_row {
+  display: table;
+  clear: both;
+  width: 100%;
 }
-.dataTables_wrapper .dataTables_length select {
-  border: 1px solid #aaa;
-  border-radius: 3px;
-  padding: 5px;
-  background-color: transparent;
-  padding: 4px;
+div.dataTables_wrapper div.dataTables_layout_cell {
+  display: table-cell;
+  vertical-align: middle;
+  padding: 5px 0;
 }
-.dataTables_wrapper .dataTables_filter {
-  float: right;
+div.dataTables_wrapper div.dataTables_layout_cell.dt-full {
+  text-align: center;
+}
+div.dataTables_wrapper div.dataTables_layout_cell.dt-left {
+  text-align: left;
+}
+div.dataTables_wrapper div.dataTables_layout_cell.dt-right {
   text-align: right;
 }
-.dataTables_wrapper .dataTables_filter input {
+div.dataTables_wrapper .dataTables_filter input {
   border: 1px solid #aaa;
   border-radius: 3px;
   padding: 5px;
   background-color: transparent;
   margin-left: 3px;
 }
-.dataTables_wrapper .dataTables_info {
-  clear: both;
-  float: left;
-  padding-top: 0.755em;
+div.dataTables_wrapper .dt-input {
+  border: 1px solid #aaa;
+  border-radius: 3px;
+  padding: 5px;
+  background-color: transparent;
 }
-.dataTables_wrapper .dataTables_paginate {
-  float: right;
-  text-align: right;
-  padding-top: 0.25em;
+div.dataTables_wrapper select.dt-input {
+  padding: 4px;
 }
-.dataTables_wrapper .dataTables_paginate .paginate_button {
+div.dataTables_wrapper .dataTables_paginate .paginate_button {
   box-sizing: border-box;
   display: inline-block;
   min-width: 1.5em;
@@ -480,7 +439,7 @@ table.dataTable td {
   border: 1px solid transparent;
   border-radius: 2px;
 }
-.dataTables_wrapper .dataTables_paginate .paginate_button.current, .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+div.dataTables_wrapper .dataTables_paginate .paginate_button.current, div.dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
   color: #333 !important;
   border: 1px solid rgba(0, 0, 0, 0.3);
   background-color: rgba(230, 230, 230, 0.1);
@@ -497,14 +456,14 @@ table.dataTable td {
   background: linear-gradient(to bottom, rgba(230, 230, 230, 0.1) 0%, rgba(0, 0, 0, 0.1) 100%);
   /* W3C */
 }
-.dataTables_wrapper .dataTables_paginate .paginate_button.disabled, .dataTables_wrapper .dataTables_paginate .paginate_button.disabled:hover, .dataTables_wrapper .dataTables_paginate .paginate_button.disabled:active {
+div.dataTables_wrapper .dataTables_paginate .paginate_button.disabled, div.dataTables_wrapper .dataTables_paginate .paginate_button.disabled:hover, div.dataTables_wrapper .dataTables_paginate .paginate_button.disabled:active {
   cursor: default;
-  color: #666 !important;
+  color: rgba(0, 0, 0, 0.5) !important;
   border: 1px solid transparent;
   background: transparent;
   box-shadow: none;
 }
-.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+div.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
   color: white !important;
   border: 1px solid #111;
   background-color: #585858;
@@ -521,7 +480,7 @@ table.dataTable td {
   background: linear-gradient(to bottom, #585858 0%, #111 100%);
   /* W3C */
 }
-.dataTables_wrapper .dataTables_paginate .paginate_button:active {
+div.dataTables_wrapper .dataTables_paginate .paginate_button:active {
   outline: none;
   background-color: #2b2b2b;
   background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #2b2b2b), color-stop(100%, #0c0c0c));
@@ -538,41 +497,41 @@ table.dataTable td {
   /* W3C */
   box-shadow: inset 0 0 3px #111;
 }
-.dataTables_wrapper .dataTables_paginate .ellipsis {
+div.dataTables_wrapper .dataTables_paginate .ellipsis {
   padding: 0 1em;
 }
-.dataTables_wrapper .dataTables_length,
-.dataTables_wrapper .dataTables_filter,
-.dataTables_wrapper .dataTables_info,
-.dataTables_wrapper .dataTables_processing,
-.dataTables_wrapper .dataTables_paginate {
+div.dataTables_wrapper .dataTables_length,
+div.dataTables_wrapper .dataTables_filter,
+div.dataTables_wrapper .dataTables_info,
+div.dataTables_wrapper .dataTables_processing,
+div.dataTables_wrapper .dataTables_paginate {
   color: #333;
 }
-.dataTables_wrapper .dataTables_scroll {
+div.dataTables_wrapper .dataTables_scroll {
   clear: both;
 }
-.dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody {
+div.dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody {
   -webkit-overflow-scrolling: touch;
 }
-.dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody > table > thead > tr > th, .dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody > table > thead > tr > td, .dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody > table > tbody > tr > th, .dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody > table > tbody > tr > td {
+div.dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody > table > thead > tr > th, div.dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody > table > thead > tr > td, div.dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody > table > tbody > tr > th, div.dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody > table > tbody > tr > td {
   vertical-align: middle;
 }
-.dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody > table > thead > tr > th > div.dataTables_sizing,
-.dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody > table > thead > tr > td > div.dataTables_sizing, .dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody > table > tbody > tr > th > div.dataTables_sizing,
-.dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody > table > tbody > tr > td > div.dataTables_sizing {
+div.dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody > table > thead > tr > th > div.dataTables_sizing,
+div.dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody > table > thead > tr > td > div.dataTables_sizing, div.dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody > table > tbody > tr > th > div.dataTables_sizing,
+div.dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody > table > tbody > tr > td > div.dataTables_sizing {
   height: 0;
   overflow: hidden;
   margin: 0 !important;
   padding: 0 !important;
 }
-.dataTables_wrapper.no-footer .dataTables_scrollBody {
+div.dataTables_wrapper.no-footer .dataTables_scrollBody {
   border-bottom: 1px solid rgba(0, 0, 0, 0.3);
 }
-.dataTables_wrapper.no-footer div.dataTables_scrollHead table.dataTable,
-.dataTables_wrapper.no-footer div.dataTables_scrollBody > table {
+div.dataTables_wrapper.no-footer div.dataTables_scrollHead table.dataTable,
+div.dataTables_wrapper.no-footer div.dataTables_scrollBody > table {
   border-bottom: none;
 }
-.dataTables_wrapper:after {
+div.dataTables_wrapper:after {
   visibility: hidden;
   display: block;
   content: "";
@@ -581,81 +540,13 @@ table.dataTable td {
 }
 
 @media screen and (max-width: 767px) {
-  .dataTables_wrapper .dataTables_info,
-.dataTables_wrapper .dataTables_paginate {
-    float: none;
+  div.dataTables_wrapper div.dataTables_layout_row {
+    display: block;
+  }
+  div.dataTables_wrapper div.dataTables_layout_cell {
+    display: block;
+  }
+  div.dataTables_wrapper div.dataTables_layout_cell.dt-full, div.dataTables_wrapper div.dataTables_layout_cell.dt-left, div.dataTables_wrapper div.dataTables_layout_cell.dt-right {
     text-align: center;
   }
-  .dataTables_wrapper .dataTables_paginate {
-    margin-top: 0.5em;
-  }
-}
-@media screen and (max-width: 640px) {
-  .dataTables_wrapper .dataTables_length,
-.dataTables_wrapper .dataTables_filter {
-    float: none;
-    text-align: center;
-  }
-  .dataTables_wrapper .dataTables_filter {
-    margin-top: 0.5em;
-  }
-}
-table.dataTable thead th div.DataTables_sort_wrapper {
-  position: relative;
-}
-table.dataTable thead th div.DataTables_sort_wrapper span {
-  position: absolute;
-  top: 50%;
-  margin-top: -8px;
-  right: -18px;
-}
-table.dataTable thead th.ui-state-default,
-table.dataTable tfoot th.ui-state-default {
-  border-left-width: 0;
-}
-table.dataTable thead th.ui-state-default:first-child,
-table.dataTable tfoot th.ui-state-default:first-child {
-  border-left-width: 1px;
-}
-
-/*
- * Control feature layout
- */
-.dataTables_wrapper .dataTables_paginate .fg-button {
-  box-sizing: border-box;
-  display: inline-block;
-  min-width: 1.5em;
-  padding: 0.5em;
-  margin-left: 2px;
-  text-align: center;
-  text-decoration: none !important;
-  cursor: pointer;
-  border: 1px solid transparent;
-}
-.dataTables_wrapper .dataTables_paginate .fg-button:active {
-  outline: none;
-}
-.dataTables_wrapper .dataTables_paginate .fg-button:first-child {
-  border-top-left-radius: 3px;
-  border-bottom-left-radius: 3px;
-}
-.dataTables_wrapper .dataTables_paginate .fg-button:last-child {
-  border-top-right-radius: 3px;
-  border-bottom-right-radius: 3px;
-}
-.dataTables_wrapper .ui-widget-header {
-  font-weight: normal;
-}
-.dataTables_wrapper .ui-toolbar {
-  padding: 8px;
-}
-.dataTables_wrapper.no-footer .dataTables_scrollBody {
-  border-bottom: none;
-}
-.dataTables_wrapper .dataTables_length,
-.dataTables_wrapper .dataTables_filter,
-.dataTables_wrapper .dataTables_info,
-.dataTables_wrapper .dataTables_processing,
-.dataTables_wrapper .dataTables_paginate {
-  color: inherit;
 }

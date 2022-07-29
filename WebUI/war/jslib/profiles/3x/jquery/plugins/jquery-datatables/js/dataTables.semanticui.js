@@ -1,9 +1,9 @@
-/*! DataTables Bootstrap 4 integration
- * ©2011-2017 SpryMedia Ltd - datatables.net/license
+/*! DataTables Bootstrap 3 integration
+ * ©2011-2015 SpryMedia Ltd - datatables.net/license
  */
 
 /**
- * DataTables integration for Bootstrap 4. This requires Bootstrap 4 and
+ * DataTables integration for Bootstrap 3. This requires Bootstrap 3 and
  * DataTables 1.10 or newer.
  *
  * This file sets the defaults and adds options to DataTables to style its
@@ -46,25 +46,34 @@ var DataTable = $.fn.dataTable;
 /* Set the defaults for DataTables initialisation */
 $.extend( true, DataTable.defaults, {
 	dom:
-		"<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" +
-		"<'row'<'col-sm-12'tr>>" +
-		"<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
-	renderer: 'bootstrap'
+		"<'ui stackable grid'"+
+			"<'row'"+
+				"<'eight wide column'l>"+
+				"<'right aligned eight wide column'f>"+
+			">"+
+			"<'row dt-table'"+
+				"<'sixteen wide column'tr>"+
+			">"+
+			"<'row'"+
+				"<'seven wide column'i>"+
+				"<'right aligned nine wide column'p>"+
+			">"+
+		">",
+	renderer: 'semanticUI'
 } );
 
 
 /* Default class modification */
 $.extend( DataTable.ext.classes, {
-	sWrapper:      "dataTables_wrapper dt-bootstrap4",
-	sFilterInput:  "form-control form-control-sm",
-	sLengthSelect: "custom-select custom-select-sm form-control form-control-sm",
-	sProcessing:   "dataTables_processing card",
-	sPageButton:   "paginate_button page-item"
+	sWrapper:      "dataTables_wrapper dt-semanticUI",
+	sFilter:       "dataTables_filter ui input",
+	sProcessing:   "dataTables_processing ui segment",
+	sPageButton:   "paginate_button item"
 } );
 
 
 /* Bootstrap paging button renderer */
-DataTable.ext.renderer.pageButton.bootstrap = function ( settings, host, idx, buttons, page, pages ) {
+DataTable.ext.renderer.pageButton.semanticUI = function ( settings, host, idx, buttons, page, pages ) {
 	var api     = new DataTable.Api( settings );
 	var classes = settings.oClasses;
 	var lang    = settings.oLanguage.oPaginate;
@@ -127,23 +136,23 @@ DataTable.ext.renderer.pageButton.bootstrap = function ( settings, host, idx, bu
 						break;
 				}
 
+				var tag = btnClass.indexOf( 'disabled' ) === -1 ?
+					'a' :
+					'div';
+
 				if ( btnDisplay ) {
-					node = $('<li>', {
+					node = $('<'+tag+'>', {
 							'class': classes.sPageButton+' '+btnClass,
 							'id': idx === 0 && typeof button === 'string' ?
 								settings.sTableId +'_'+ button :
-								null
+								null,
+							'href': '#',
+							'aria-controls': settings.sTableId,
+							'aria-label': aria[ button ],
+							'data-dt-idx': counter,
+							'tabindex': settings.iTabIndex
 						} )
-						.append( $('<a>', {
-								'href': '#',
-								'aria-controls': settings.sTableId,
-								'aria-label': aria[ button ],
-								'data-dt-idx': counter,
-								'tabindex': settings.iTabIndex,
-								'class': 'page-link'
-							} )
-							.html( btnDisplay )
-						)
+						.html( btnDisplay )
 						.appendTo( container );
 
 					settings.oApi._fnBindAction(
@@ -170,7 +179,7 @@ DataTable.ext.renderer.pageButton.bootstrap = function ( settings, host, idx, bu
 	catch (e) {}
 
 	attach(
-		$(host).empty().html('<ul class="pagination"/>').children('ul'),
+		$(host).empty().html('<div class="ui stackable pagination menu"/>').children(),
 		buttons
 	);
 
@@ -178,6 +187,25 @@ DataTable.ext.renderer.pageButton.bootstrap = function ( settings, host, idx, bu
 		$(host).find( '[data-dt-idx='+activeEl+']' ).trigger('focus');
 	}
 };
+
+
+// Javascript enhancements on table initialisation
+$(document).on( 'init.dt', function (e, ctx) {
+	if ( e.namespace !== 'dt' ) {
+		return;
+	}
+
+	var api = new $.fn.dataTable.Api( ctx );
+
+	// Length menu drop down
+	if ( $.fn.dropdown ) {
+		$( 'div.dataTables_length select', api.table().container() ).dropdown();
+	}
+
+	// Filtering input
+	$( 'div.dataTables_filter.ui.input', api.table().container() ).removeClass('input').addClass('form');
+	$( 'div.dataTables_filter input', api.table().container() ).wrap( '<span class="ui input" />' );
+} );
 
 
 return DataTable;
