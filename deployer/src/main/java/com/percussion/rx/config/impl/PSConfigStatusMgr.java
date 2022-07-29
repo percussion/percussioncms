@@ -112,6 +112,7 @@ public class PSConfigStatusMgr  implements IPSConfigStatusMgr
       CriteriaBuilder builder = session.getCriteriaBuilder();
       CriteriaQuery<PSConfigStatus> criteria = builder.createQuery(PSConfigStatus.class);
       Root<PSConfigStatus> critRoot = criteria.from(PSConfigStatus.class);
+      criteria.where(builder.equal(critRoot.get("statusid"), statusID));
 
          if (cfgStatus == null)
          {
