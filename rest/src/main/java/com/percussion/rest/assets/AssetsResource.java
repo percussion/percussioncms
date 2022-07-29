@@ -26,6 +26,7 @@ package com.percussion.rest.assets;
 
 import com.percussion.error.PSExceptionUtils;
 import com.percussion.rest.Status;
+import com.percussion.rest.errors.AssetNotFoundException;
 import com.percussion.rest.errors.BackendException;
 import com.percussion.rest.util.APIUtilities;
 import com.percussion.util.PSSiteManageBean;
@@ -120,7 +121,11 @@ public class AssetsResource
         {
             // UTF-8 always supported
         }
-        return assetAdaptor.getSharedAssetByPath(uriInfo.getBaseUri(), path);
+        try {
+            return assetAdaptor.getSharedAssetByPath(uriInfo.getBaseUri(), path);
+        }catch(AssetNotFoundException e){
+            throw new WebApplicationException(404);
+        }
     }
 
     @GET
@@ -165,8 +170,7 @@ public class AssetsResource
     @Operation(summary = "Creates a binary asset by uploading the binary", description = "Create a new asset by uploading a binary file. "
             + "Asset type will be based upon the file type.  Images will create image assets, flash files will"
             + " create flash assets and everything else will create file assets.  Optional assetType query parameter can be passed "
-            + "to override this default (Options are file, flash, or image).  An asset cannot be updated "
-            + "with this method.", responses=
+            + "to override this default (Options are file, flash, or image).", responses=
             {
                     @ApiResponse(responseCode = "500", description = "Could not check out asset as it is checked out by another user."),
                     @ApiResponse(responseCode = "200", description = "Update OK", content=@Content(
@@ -322,10 +326,11 @@ public class AssetsResource
         }
         try {
             return assetAdaptor.deleteSharedAssetByPath(path);
+        } catch(AssetNotFoundException e){
+            return new Status(404,e.getMessage());
         } catch (BackendException e) {
             log.error(PSExceptionUtils.getMessageForLog(e));
-            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
-            throw new WebApplicationException(e);
+            return new Status(500,e.getMessage());
         }
     }
     
