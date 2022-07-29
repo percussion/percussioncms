@@ -35,6 +35,9 @@ public interface ImageResizeManager {
     int ROTATE_LEFT = -1;
     int ROTATE_RIGHT = 1;
 
+    String getFileName();
+    void setFileName(String imageFileName);
+
     String getImageFormat();
     void setImageFormat(String imageFormat);
 
