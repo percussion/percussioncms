@@ -1,6 +1,6 @@
 {
   "name": "perc-jsprofile-3x",
-  "version": "5.4.0",
+  "version": "8.1.1",
   "description": "Package to include Percussion 3rd party dependencies for the jquery 3.x profile",
   "dependencies": {
     "jquery":"3.3.1",
@@ -24,7 +24,7 @@
     "jquery.fancytree":"2.30.0",
     "jquery-form":"4.2.2",
     "timeago":"1.6.3",
-    "moment":"2.22.2",
+    "moment":"2.29.4",
     "moment-jdateformatparser":"1.2.1",
     "mousetrap":"1.6.2",
     "raf":"3.4.0",
