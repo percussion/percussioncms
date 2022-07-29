@@ -26,23 +26,28 @@ package com.percussion.rest.assets;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.annotation.JsonRootName;
 import com.percussion.rest.LinkRef;
 import com.percussion.rest.pages.WorkflowInfo;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Objects;
 
-@XmlRootElement
+@XmlRootElement(name="Asset")
+@JsonRootName(value="Asset")
 @JsonInclude(Include.NON_NULL)
+@JsonPropertyOrder()
+@XmlType(propOrder = {})
 @Schema(description = "Represents a shared asset")
 public class Asset
 {
     @Schema(description = "fields")
-	private Map<String, String> fields = new HashMap<>();
+	private AssetFieldList fields = new AssetFieldList();
 	@Schema(description = "id must match the id of the item for the same server path, usually best not to send id to server.")
 	private String id;
 	private String name;
@@ -63,7 +68,7 @@ public class Asset
     /**
 	 * @return the fields
 	 */
-	public Map<String, String> getFields()
+	public AssetFieldList getFields()
 	{
 		return fields;
 	}
@@ -72,7 +77,7 @@ public class Asset
 	 * @param fields
 	 *            the fields to set
 	 */
-	public void setFields(Map<String, String> fields)
+	public void setFields(AssetFieldList fields)
 	{
 		this.fields = fields;
 	}
@@ -288,5 +293,18 @@ public class Asset
 	public void setFlash(Flash flash)
 	{
 		this.flash = flash;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof Asset)) return false;
+		Asset asset = (Asset) o;
+		return Objects.equals(getFields(), asset.getFields()) && Objects.equals(getId(), asset.getId()) && Objects.equals(getName(), asset.getName()) && Objects.equals(getType(), asset.getType()) && Objects.equals(getFolderPath(), asset.getFolderPath()) && Objects.equals(getWorkflow(), asset.getWorkflow()) && Objects.equals(getLastModifiedDate(), asset.getLastModifiedDate()) && Objects.equals(getCreatedDate(), asset.getCreatedDate()) && Objects.equals(getLinks(), asset.getLinks()) && Objects.equals(getImage(), asset.getImage()) && Objects.equals(getThumbnail(), asset.getThumbnail()) && Objects.equals(getFile(), asset.getFile()) && Objects.equals(getFlash(), asset.getFlash()) && Objects.equals(getRemove(), asset.getRemove());
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(getFields(), getId(), getName(), getType(), getFolderPath(), getWorkflow(), getLastModifiedDate(), getCreatedDate(), getLinks(), getImage(), getThumbnail(), getFile(), getFlash(), getRemove());
 	}
 }
