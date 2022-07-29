@@ -47,6 +47,7 @@ import com.percussion.pathmanagement.service.impl.PSPathUtils;
 import com.percussion.redirect.service.IPSRedirectService;
 import com.percussion.rest.Status;
 import com.percussion.rest.assets.Asset;
+import com.percussion.rest.assets.AssetField;
 import com.percussion.rest.assets.BinaryFile;
 import com.percussion.rest.assets.Flash;
 import com.percussion.rest.assets.IAssetAdaptor;
@@ -137,6 +138,8 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
     @Autowired
     private IPSPathService pathService;
 
+    public static String IMAGE_THUMB_PREFIX = "thumb_";
+
     private enum WorkflowStates{
         APPROVE,
         ARCHIVE,
@@ -174,8 +177,8 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
         String filename = StringUtils.substringAfterLast(path, "/");
        
         // should base on prefix stored on asset.  Would require a search for match in folder.
-        if (filename.startsWith("thumb_"))
-            filename = StringUtils.substringAfter(filename, "thumb_");
+        if (filename.startsWith(IMAGE_THUMB_PREFIX))
+            filename = StringUtils.substringAfter(filename, IMAGE_THUMB_PREFIX);
         
         PSPathItem item = null;
         try
@@ -300,9 +303,8 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
         {
             throw new AssetNotFoundException();
         }
-
-
-        return new Status("Deleted");
+        
+        return new Status(200,"Deleted");
     }
 
     @Override
@@ -363,8 +365,8 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
             // reconcile fields
             // TODO we probably want some protection here against creating
             // completely useless fields or overriding something protected
-            for (Entry<String, String> field : asset.getFields().entrySet()) { // blanket update
-                oldPSAsset.getFields().put(field.getKey(), field.getValue());
+            for (AssetField field : asset.getFields()) { // blanket update
+                oldPSAsset.getFields().put(field.getName(), field.getValue());
             }
 
             // Is anyone trying to move this?
@@ -377,9 +379,20 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
                 String currentPath = PSPathUtils.getFinderPath(oldPSAsset.getFolderPaths().get(0));
                 if (currentPath.endsWith("/")) {
                     currentPath = currentPath.substring(1, currentPath.length() - 1);
-                } else {
-                    currentPath = currentPath.substring(1);
                 }
+
+                if(currentPath.startsWith("//"))
+                    currentPath = currentPath.substring(1);
+
+                if(asset.getFolderPath().startsWith("//"))
+                    asset.setFolderPath(asset.getFolderPath().substring(1));
+
+                if(!asset.getFolderPath().startsWith("/"))
+                    asset.setFolderPath("/" + asset.getFolderPath());
+
+                if(!currentPath.startsWith("/"))
+                    currentPath = "/" + currentPath;
+
                 if (!asset.getFolderPath().equalsIgnoreCase(currentPath)) { // And the given path information is different than the current
                     // path
 
@@ -447,8 +460,15 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
 
         // Binary asset type?
         if (assetBinaryTypes.contains(asset.getType())) {
-            if (!asset.getFields().containsKey("displaytitle")) {
-                asset.getFields().put("displaytitle", asset.getName());
+            boolean found = false;
+            for(AssetField f : asset.getFields() ){
+                if(f.getName().equalsIgnoreCase("displaytitle")){
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                asset.getFields().add(new AssetField("displaytitle", asset.getName()));
             }
             try {
 
@@ -464,9 +484,9 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
                 newAsset.getFields().put(fieldname, tmpFile);
 
 
-                asset.getFields().put("filename", asset.getName());
-                asset.getFields().put(fieldname + "_type", "image/gif");
-                asset.getFields().put(fieldname + "_filename", asset.getName());
+                asset.getFields().add(new AssetField("filename", asset.getName()));
+                asset.getFields().add(new AssetField(fieldname + "_type", "image/gif"));
+                asset.getFields().add(new AssetField(fieldname + "_filename", asset.getName()));
             } catch (IOException e) {
                 throw new RestExceptionBase(RestErrorCode.OTHER, "Couldn't Open Temp File", null,
                         Response.Status.INTERNAL_SERVER_ERROR);
@@ -475,10 +495,10 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
 
         try{
         if (asset.getFields() != null) {
-            for (Entry<String, String> field : asset.getFields().entrySet()) {
+            for (AssetField field : asset.getFields()) {
                 // TODO Should this have a contains check first, to prevent
                 // overwriting of workflow stuff?
-                newAsset.getFields().put(field.getKey(), field.getValue());
+                newAsset.getFields().put(field.getName(), field.getValue());
             }
         }
 
@@ -586,10 +606,10 @@ try{
         String filename = StringUtils.substringAfterLast(path, "/");
         boolean thumbRequest = false;
         // should base on prefix stored on asset.  Would require a search for match in folder.
-        if (filename.startsWith("thumb_"))
+        if (filename.startsWith(IMAGE_THUMB_PREFIX))
         {
             thumbRequest = true;
-            filename = StringUtils.substringAfter(filename, "thumb_");
+            filename = StringUtils.substringAfter(filename, IMAGE_THUMB_PREFIX);
         }
         
         
@@ -753,7 +773,7 @@ try{
             {
                 if (value == null)
                 {
-                    to.getFields().put(fieldname, null);
+                    to.getFields().add(new AssetField(fieldname, null));
                 }
                 else if (value instanceof List)
                 {
@@ -766,7 +786,7 @@ try{
                 }
                 else if (value instanceof String)
                 {
-                    to.getFields().put(fieldname, kvp.getValue().toString());
+                    to.getFields().add(new AssetField(fieldname, kvp.getValue().toString()));
                 }
                 else
                 {
@@ -850,8 +870,8 @@ try{
 		 checkAPIPermission();
 
 		 
-		 UrlParts url = new UrlParts("", folder, name);
-		 String pathServicePath = folder;
+		 UrlParts url = new UrlParts(site, folder, name);
+		 String pathServicePath = url.getUrl();
 	       
 	        try
 	        {
@@ -864,7 +884,7 @@ try{
 	        }
 		
 		try {
-            Asset a = getSharedAssetByPath(baseUri, folder + "/" + name);
+            Asset a = getSharedAssetByPath(baseUri, pathServicePath);
             PSAsset update = this.assetService.load(a.getId());
             //Check it out
             if (!workflowHelper.isCheckedOutToCurrentUser(update.getId())) {

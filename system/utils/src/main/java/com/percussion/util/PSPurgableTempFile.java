@@ -53,12 +53,12 @@ public class PSPurgableTempFile extends File implements AutoCloseable
    private static final Logger log = LogManager.getLogger(PSPurgableTempFile.class);
 
    /**
-    * Convenience constructor that calls {@link #PSPurgableTempFile(String, 
+    * Convenience constructor that calls {@link #PSPurgableTempFile(String,
     * String, File, String, String, String) PSPurgableTempFile(prefix, 
     * suffix, dir, null, null, null)}.
     */
    public PSPurgableTempFile(String prefix, String suffix, File dir)
-      throws IOException
+           throws IOException
    {
       this(prefix, suffix, dir, null, null, null);
    }
@@ -85,8 +85,8 @@ public class PSPurgableTempFile extends File implements AutoCloseable
     * @throws IOException if any IO operation fails.
     */
    public PSPurgableTempFile(String prefix, String suffix, File dir,
-      String sourceFile, String contentType, String encType)
-      throws IOException
+                             String sourceFile, String contentType, String encType)
+           throws IOException
    {
       super(calculatePath(prefix,suffix,dir));
 
@@ -96,7 +96,7 @@ public class PSPurgableTempFile extends File implements AutoCloseable
       {
          if (contentType != null)
             m_contentType = PSBaseHttpUtils.parseContentType(contentType,
-               m_contentProperties);
+                    m_contentProperties);
       }
       catch (IllegalArgumentException e)
       {
@@ -104,7 +104,7 @@ public class PSPurgableTempFile extends File implements AutoCloseable
       }
 
       m_sourceFile = sourceFile;
-      
+
       m_encType = encType;
    }
 
@@ -120,7 +120,7 @@ public class PSPurgableTempFile extends File implements AutoCloseable
     * @throws IOException
     */
    private static String calculatePath(String prefix, String suffix, File dir)
-         throws IOException
+           throws IOException
    {
       if (dir == null)
       {
@@ -149,7 +149,7 @@ public class PSPurgableTempFile extends File implements AutoCloseable
                throw new IllegalArgumentException("Cannot create tempfile in dir "+dir.getCanonicalPath(), ex);
             }
          }
-         
+
       }
       return tempFile.getAbsolutePath();
    }
@@ -159,13 +159,13 @@ public class PSPurgableTempFile extends File implements AutoCloseable
     * @throws IOException
     */
    private static void createTempFileDir() throws IOException
-   {      
+   {
       if (!ms_psxTempDirectory.exists())
       {
          ms_psxTempDirectory.mkdirs();
       }
    }
-   
+
    /**
     * Returns the name of the source file of this
     * file, or <CODE>null</CODE> if it is not known.
@@ -176,7 +176,11 @@ public class PSPurgableTempFile extends File implements AutoCloseable
    {
       return m_sourceFile;
    }
-   
+
+   public void setSourceFileName(String s){
+      m_sourceFile = s;
+   }
+
    /**
     * Returns the content type of the source file of this
     * file, or <CODE>null</CODE> if it is not known.
@@ -188,11 +192,11 @@ public class PSPurgableTempFile extends File implements AutoCloseable
       return m_contentType;
    }
 
-    public void setSourceContentType(String contentType) {
-        this.m_contentType = contentType;
-    }
+   public void setSourceContentType(String contentType) {
+      this.m_contentType = contentType;
+   }
 
-    /**
+   /**
     * Returns the name of the encoding scheme (the content-transfer-encoding,
     * not charset encoding) used to create this file, or <CODE>null</CODE>
     * if the encoding is not known.
@@ -226,17 +230,17 @@ public class PSPurgableTempFile extends File implements AutoCloseable
       // if the file hasn't been deleted, do so now
       if (!m_isDeleted)
       {
-            try {
-               m_isDeleted = delete();
-               if(!m_isDeleted)
-                  log.debug("Could not delete tempfile {}", this.getAbsolutePath(),new Throwable("STACKTRACE"));
-               
-            } catch (Exception e)
-            {
-               log.error(PSExceptionUtils.getMessageForLog(e));
-               log.debug(PSExceptionUtils.getDebugMessageForLog(e));
-               log.debug("Could not release temp file {} ", this.getAbsolutePath(),e);
-            }
+         try {
+            m_isDeleted = delete();
+            if(!m_isDeleted)
+               log.debug("Could not delete tempfile {}", this.getAbsolutePath(),new Throwable("STACKTRACE"));
+
+         } catch (Exception e)
+         {
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+            log.debug("Could not release temp file {} ", this.getAbsolutePath(),e);
+         }
       }
    }
 
@@ -244,7 +248,7 @@ public class PSPurgableTempFile extends File implements AutoCloseable
     * Fully qualified path of the source of this file if it is known.
     */
    private String m_sourceFile = null;
-   
+
    /**
     * Content type of the source of this file if it is known.
     */
@@ -269,7 +273,7 @@ public class PSPurgableTempFile extends File implements AutoCloseable
     * <code>null</code> after construction.  May be empty.
     */
    HashMap m_contentProperties = null;
-   
+
    /**
     * The temp directory is calculated based on the user's configuration. This 
     * is done on class load. The directory is a subdirectory of the temp dir,
@@ -289,9 +293,9 @@ public class PSPurgableTempFile extends File implements AutoCloseable
       {
          File temp = createTempFile("temp","tmp");
          ms_psxTempDirectory = new File(temp.getParentFile(), "rxtemp" + "."
-               + System.getProperty("user.name"));
+                 + System.getProperty("user.name"));
          createTempFileDir();
-         
+
          // Clear all files in temp directory
          File tempfiles[] = ms_psxTempDirectory.listFiles();
          for (File tempfile : tempfiles) {
@@ -302,13 +306,13 @@ public class PSPurgableTempFile extends File implements AutoCloseable
       {
          log.error(PSExceptionUtils.getMessageForLog(e));
          log.debug(PSExceptionUtils.getDebugMessageForLog(e));
-      }      
+      }
    }
-   
 
 
-   
-   
+
+
+
    private static Object makeTempLock = new Object();
    /**
     * The id used for serialization.
