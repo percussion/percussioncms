@@ -130,7 +130,7 @@ public class PSPathService extends PSDispatchingPathService implements IPSPathSe
     @GET
     @Path("/item/{path:.*}")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public PSPathItem find(@PathParam("path") String path) throws PSPathServiceException {
+    public PSPathItem find(@PathParam("path") String path) throws PSPathNotFoundServiceException, PSPathServiceException {
         try {
             if(!SecureStringUtils.isValidCMSPathString(path, PSOperationContext.SEARCH))
                 throw new PSPathServiceException("Invalid path.");
@@ -138,10 +138,12 @@ public class PSPathService extends PSDispatchingPathService implements IPSPathSe
             log.debug("Attempting to find item for path: {}", path);
             PSPathItem item = super.find(path);
             return folderHelper.setFolderAccessLevel(item);
-        } catch (PSPathServiceException | PSDataServiceException | PSNotFoundException e) {
+        } catch (PSDataServiceException e) {
             log.error(PSExceptionUtils.getMessageForLog(e));
             log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new PSPathServiceException(e);
+        } catch (PSNotFoundException e) {
+            throw new PSPathNotFoundServiceException(e);
         }
     }
 

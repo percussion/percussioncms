@@ -27,6 +27,8 @@ package com.percussion.rest.util;
 import com.percussion.rest.Guid;
 import com.percussion.rest.LinkRef;
 import com.percussion.rest.assets.Asset;
+import com.percussion.rest.assets.AssetField;
+import com.percussion.rest.assets.AssetFieldList;
 import com.percussion.rest.contentlists.ContentList;
 import com.percussion.rest.contexts.Context;
 import com.percussion.rest.deliverytypes.DeliveryType;
@@ -164,11 +166,11 @@ public class Examples
 
         region.setType("richtext");
         Asset asset1 = new Asset();
-        asset1.setFields(new HashMap<String, String>()
+        asset1.setFields(new AssetFieldList()
         {
             {
-                put("Field1", "<a href=\"test\">test<\\a>");
-                put("Field2", "<a href=\"test\">test<\\a>");
+                add(new AssetField("Field1", "<a href=\"test\">test<\\a>"));
+                add(new AssetField("Field2", "<a href=\"test\">test<\\a>"));
             }
         });
         Widget widget1 = new Widget();

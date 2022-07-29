@@ -53,7 +53,11 @@ public class JacksonContextResolver implements ContextResolver<ObjectMapper>
         // Indent may help with testing but can slow performance and can 
         // fail unit tests.
         // .configure(SerializationConfig.Feature.INDENT_OUTPUT, true)
-                .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+                .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS,
+                        false)
+                .configure(SerializationFeature.WRAP_ROOT_VALUE,true)
+                .configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT,true)
+                .configure(DeserializationFeature.UNWRAP_ROOT_VALUE,true);
     }
 
     @Override

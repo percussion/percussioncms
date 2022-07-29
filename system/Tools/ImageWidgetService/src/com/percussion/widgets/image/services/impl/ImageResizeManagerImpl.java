@@ -67,10 +67,12 @@ public class ImageResizeManagerImpl implements ImageResizeManager {
 
     private String imageFormat = "";
     private String extension = "";
+    private String filename;
     private String contentType = "";
     private float compression = 1F;
     private int stepFactor = 2;
     private int maxInterpolationSize = 1000000;
+
 
     public ImageData generateImage(InputStream input) throws IllegalArgumentException {
 
@@ -88,6 +90,7 @@ public class ImageResizeManagerImpl implements ImageResizeManager {
 
         result.setExt(this.getExtension());
         result.setMimeType(this.getContentType());
+        result.setFilename(this.getFileName());
 
         try {
             BufferedImage inImage = ImageIO.read(input);
@@ -135,10 +138,8 @@ public class ImageResizeManagerImpl implements ImageResizeManager {
                 log.debug("Transparent metadata is {}", metadata);
             }
 
-
-
             iw.setOutput(mcios);
-            iw.write(null, new IIOImage(outImage, new ArrayList(), metadata), iwp);
+            iw.write(null, new IIOImage(outImage, new ArrayList<>(), metadata), iwp);
             mcios.flush();
             outStream.flush();
             result.setSize(outStream.size());
@@ -488,6 +489,16 @@ public class ImageResizeManagerImpl implements ImageResizeManager {
         root.appendChild(node);
         log.debug("created new node {}" , nodeName);
         return node;
+    }
+
+    @Override
+    public String getFileName() {
+        return this.filename;
+    }
+
+    @Override
+    public void setFileName(String imageFileName) {
+        this.filename = imageFileName;
     }
 
     public String getImageFormat() {

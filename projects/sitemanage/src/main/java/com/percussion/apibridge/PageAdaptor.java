@@ -68,6 +68,8 @@ import com.percussion.redirect.data.PSCreateRedirectRequest;
 import com.percussion.redirect.data.PSRedirectStatus;
 import com.percussion.redirect.service.IPSRedirectService;
 import com.percussion.rest.assets.Asset;
+import com.percussion.rest.assets.AssetField;
+import com.percussion.rest.assets.AssetFieldList;
 import com.percussion.rest.assets.IAssetAdaptor;
 import com.percussion.rest.errors.AssetNotFoundException;
 import com.percussion.rest.errors.BackendException;
@@ -586,7 +588,7 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
                             if (assetItem != null)
                             {
 
-                                HashMap<String, String> restAssetFields = new HashMap<>();
+                                AssetFieldList restAssetFields = new AssetFieldList();
                                 asset.setFields(restAssetFields);
 
                                 Map<String, Object> assetFields = assetItem.getFields();
@@ -598,7 +600,7 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
                                             && !fieldName.startsWith("jcr:"))
                                     {
                                         String value = (field.getValue() == null) ? null : field.getValue().toString();
-                                        restAssetFields.put(field.getKey(), value);
+                                        restAssetFields.add(new AssetField(field.getKey(), value));
                                     }
                                 }
 
@@ -1179,9 +1181,9 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
         {
 
             fields = new HashMap<>();
-            for (Entry<String, String> field : asset.getFields().entrySet())
+            for (AssetField field : asset.getFields())
             {
-                fields.put(field.getKey(), field.getValue());
+                fields.put(field.getName(), field.getValue());
             }
 
             if (assetRels == null)
