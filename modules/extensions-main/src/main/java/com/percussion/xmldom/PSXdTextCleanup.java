@@ -42,23 +42,11 @@ import com.percussion.util.PSPurgableTempFile;
 import com.percussion.utils.string.PSXmlPIUtils;
 import com.percussion.utils.string.PSXmlPIUtils.Action;
 import com.percussion.utils.types.PSPair;
-import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.commons.lang.CharUtils;
 import org.apache.commons.lang.StringUtils;
-import org.w3c.dom.Attr;
+import org.jsoup.Jsoup;
+import org.jsoup.helper.W3CDom;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -66,6 +54,16 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.ProcessingInstruction;
 import org.w3c.dom.Text;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * A Rhythmyx extension used to translate a text field, parse it, tidy it, 
@@ -179,7 +177,7 @@ public class PSXdTextCleanup extends PSDefaultExtension
    {
       String encodingDefault = null;
       boolean inlineDisable = false;
-      Document tempXMLDocument = null;
+
 
       PSXmlDomContext contxt = new PSXmlDomContext(ms_className, request);
       contxt.setRxCommentHandling(true);
@@ -248,6 +246,7 @@ public class PSXdTextCleanup extends PSDefaultExtension
       param = PSXmlDomUtils.getParameter(params, 5, null);
       if (param != null && param.equalsIgnoreCase("yes"))
          contxt.setUsePrettyPrint(false);
+      W3CDom w3cHelper = new W3CDom();
 
       Object inputSourceObj = request.getParameterObject(fileParamName);
       if (null == inputSourceObj)
@@ -256,11 +255,15 @@ public class PSXdTextCleanup extends PSDefaultExtension
          request.printTraceMessage("source is null, exiting");
          return;
       }
+
+      String inputSourceString = null;
       
       try
       {
+         Document tempXMLDocument = null;
          if (inputSourceObj instanceof PSPurgableTempFile)
          {
+
             String encoding = null;
             PSPurgableTempFile inputSourceFile =
                   (PSPurgableTempFile) inputSourceObj;
@@ -271,19 +274,17 @@ public class PSXdTextCleanup extends PSDefaultExtension
                   (contxt, inputSourceFile, encodingDefault);
             if (encoding == null)
             {
-               tempXMLDocument = PSXmlDomUtils.loadXmlDocument
-                     (contxt, (File) inputSourceObj);
+               inputSourceString = Jsoup.parse((File) inputSourceObj, "UTF-8").toString();
             }
             else
             {
-               tempXMLDocument = PSXmlDomUtils.loadXmlDocument
-                     (contxt, (File) inputSourceObj, encoding);
+               inputSourceString = Jsoup.parse((File) inputSourceObj, encoding).toString();
             }
          }
          else
          {
             // inputSourceObj is a String
-            String inputSourceString = inputSourceObj.toString().trim();
+            inputSourceString = inputSourceObj.toString().trim();
             if (inputSourceString.length() < 1)
             {
                contxt.printTraceMessage("the source is empty");
@@ -297,47 +298,16 @@ public class PSXdTextCleanup extends PSDefaultExtension
                inputSourceString = piresult.getSecond();
             }
 
-            tempXMLDocument = PSXmlDomUtils.loadXmlDocument(contxt,
-                   inputSourceString);
-
-            if (escape_tags)
-            {
-               PSXmlPIUtils.substitutePIs(tempXMLDocument, piresult.getFirst());
-            }
             if (tempXMLDocument == null)
             {
                contxt.printTraceMessage("the source document is null");
                return;
             }
-         }
 
-         NodeList nl = tempXMLDocument.getElementsByTagName("body");
-         Element divBody = null;
-         Map nsMap = new HashMap();
-         if(nl.getLength() > 0)
-           divBody = (Element)nl.item(0);
-         if(divBody!=null)
-         {
-            NamedNodeMap nm = ((Element)divBody).getAttributes();
-            for(int i=0; i<nm.getLength(); i++)
-            {
-               Attr atr = (Attr)nm.item(i);
-               if(atr.getName().startsWith("xmlns"))
-                  nsMap.put(atr.getName(), atr.getValue());
-            }
          }
-        Document resultDoc = findBodyField(contxt, tempXMLDocument);
+         request.setParameter(fileParamName, inputSourceString);
 
-        if (resultDoc != null)
-         {
-           classicCleanup(request, inlineDisable, contxt, fileParamName,
-                 nsMap, resultDoc, itemDef, field);
-           if (cleanup_namespaces)
-              improvedCleanup(resultDoc, declared_namespaces);  
-           String outputString =
-              PSXmlDomUtils.copyTextFromDocument(contxt, resultDoc, ".");
-           request.setParameter(fileParamName, outputString);           
-         }
+
       }
       catch (Exception e)
       {

@@ -27,7 +27,20 @@ import com.percussion.extension.PSExtensionProcessingException;
 import com.percussion.util.PSPurgableTempFile;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
+import org.apache.commons.lang.StringUtils;
+import org.jsoup.Jsoup;
+import org.jsoup.helper.W3CDom;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.Text;
+import org.w3c.tidy.Tidy;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
 
+import javax.xml.parsers.DocumentBuilder;
 import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -47,19 +60,6 @@ import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.util.Iterator;
 
-import javax.xml.parsers.DocumentBuilder;
-
-import org.apache.commons.lang.StringUtils;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.w3c.dom.Text;
-import org.w3c.tidy.Tidy;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-import org.xml.sax.SAXParseException;
-
 
 /**
  * A set of utility routines for the XML document processing extensions.
@@ -70,6 +70,7 @@ import org.xml.sax.SAXParseException;
 public class PSXmlDomUtils
 {
 
+   private static W3CDom w3cDom = new W3CDom();
    /**
     * this class should never be instantiated.
     **/
@@ -150,7 +151,7 @@ public class PSXmlDomUtils
       if (null == cx)
          throw new IllegalArgumentException("PSXmlDomContext cannot be null");
 
-      String tidiedHTML = tidyInput(cx, HTMLString);
+      String tidiedHTML = jsoupInput(cx, HTMLString);
       String tidiedOutput;
 
       /*
@@ -164,7 +165,7 @@ public class PSXmlDomUtils
 
       if (hasXMLHeaders(tidiedHTML))
       {
-         tidiedOutput = tidiedHTML;         
+         tidiedOutput = tidiedHTML;
       }
       else
       {
@@ -255,7 +256,7 @@ public class PSXmlDomUtils
 
       Tidy tidy = new Tidy();
       tidy.setConfigurationFromProps(cx.getTidyProperties());
-      tidy.setInputEncoding("UTF-8");
+      tidy.setInputEncoding(ENCODING);
 
       if (cx.isLogging())
       {
@@ -264,44 +265,42 @@ public class PSXmlDomUtils
             preTidy.write(htmlInput.getBytes(DEBUG_ENCODING));
          }
       }
-
-      try(ByteArrayInputStream bystream = new ByteArrayInputStream(htmlInput.getBytes(ENCODING))){
          StringWriter tidyErrors = new StringWriter();
          tidy.setErrout(new PrintWriter((Writer) tidyErrors));
-         Document TidyXML = tidy.parseDOM(bystream, null);
-         /*
-          * The following code adds a non-breaking space as the first body
-          * node in case the body only contains comments. This is to work 
-          * around a bug in eWebEditPro, which is removing all comments on load
-          * if there are only comments. Adding a non-breaking space is ektrons
-          * recommended workaround.
-          */
-         if (cx.rxCommentHandling())
+      Document TidyXML = w3cDom.fromJsoup(Jsoup.parse(htmlInput,"UTF-8"));
+      /*
+       * The following code adds a non-breaking space as the first body
+       * node in case the body only contains comments. This is to work
+       * around a bug in eWebEditPro, which is removing all comments on load
+       * if there are only comments. Adding a non-breaking space is ektrons
+       * recommended workaround.
+       */
+      if (cx.rxCommentHandling())
+      {
+         NodeList nodes = TidyXML.getElementsByTagName("body");
+         if (nodes != null && nodes.getLength() > 0)
          {
-            NodeList nodes = TidyXML.getElementsByTagName("body");
-            if (nodes != null && nodes.getLength() > 0)
+            Element body = (Element) nodes.item(0);
+            NodeList children = body.getChildNodes();
+            if (children != null)
             {
-               Element body = (Element) nodes.item(0);
-               NodeList children = body.getChildNodes();
-               if (children != null)
+               boolean commentOnly = true;
+               for (int i=0; commentOnly && i<children.getLength(); i++)
                {
-                  boolean commentOnly = true;
-                  for (int i=0; commentOnly && i<children.getLength(); i++)
-                  {
-                     Node child = children.item(i);
-                     commentOnly = child.getNodeType() == Node.COMMENT_NODE;
-                  }
-                  
-                  if (commentOnly)
-                  {
-                     char nbsp = '\u00a0';
-                     Text text = TidyXML.createTextNode("" + nbsp);
-                     body.insertBefore(text, children.item(0));
-                  }
+                  Node child = children.item(i);
+                  commentOnly = child.getNodeType() == Node.COMMENT_NODE;
+               }
+
+               if (commentOnly)
+               {
+                  char nbsp = '\u00a0';
+                  Text text = TidyXML.createTextNode("" + nbsp);
+                  body.insertBefore(text, children.item(0));
                }
             }
          }
-         
+      }
+
          if (tidy.getParseErrors() > 0)
          {
             cx.printTraceMessage("Tidy Errors: " + tidyErrors.toString());
@@ -338,10 +337,113 @@ public class PSXmlDomUtils
             }
          }
          return result;
-      }
 
 
    }
+
+   public static String jsoupInput(PSXmlDomContext cx, String htmlInput)
+           throws IOException,PSExtensionProcessingException
+   {
+      if(StringUtils.isBlank(htmlInput))
+      {
+         return StringUtils.EMPTY;
+      }
+      if(cx==null)
+         throw new IllegalArgumentException("cx must not be null");
+
+      if (!cx.isTidyEnabled())
+      {
+         cx.printTraceMessage("Tidy Not Enabled");
+         return htmlInput;
+      }
+
+      Tidy tidy = new Tidy();
+      tidy.setConfigurationFromProps(cx.getTidyProperties());
+      tidy.setInputEncoding(ENCODING);
+
+      if (cx.isLogging())
+      {
+         cx.printTraceMessage("writing trace file xmldompretidy.doc");
+         try(FileOutputStream preTidy = new FileOutputStream("xmldompretidy.doc")) {
+            preTidy.write(htmlInput.getBytes(DEBUG_ENCODING));
+         }
+      }
+      StringWriter tidyErrors = new StringWriter();
+      tidy.setErrout(new PrintWriter((Writer) tidyErrors));
+      Document TidyXML = w3cDom.fromJsoup(Jsoup.parse(htmlInput,"UTF-8"));
+      /*
+       * The following code adds a non-breaking space as the first body
+       * node in case the body only contains comments. This is to work
+       * around a bug in eWebEditPro, which is removing all comments on load
+       * if there are only comments. Adding a non-breaking space is ektrons
+       * recommended workaround.
+       */
+      if (cx.rxCommentHandling())
+      {
+         NodeList nodes = TidyXML.getElementsByTagName("body");
+         if (nodes != null && nodes.getLength() > 0)
+         {
+            Element body = (Element) nodes.item(0);
+            NodeList children = body.getChildNodes();
+            if (children != null)
+            {
+               boolean commentOnly = true;
+               for (int i=0; commentOnly && i<children.getLength(); i++)
+               {
+                  Node child = children.item(i);
+                  commentOnly = child.getNodeType() == Node.COMMENT_NODE;
+               }
+
+               if (commentOnly)
+               {
+                  char nbsp = '\u00a0';
+                  Text text = TidyXML.createTextNode("" + nbsp);
+                  body.insertBefore(text, children.item(0));
+               }
+            }
+         }
+      }
+
+      if (tidy.getParseErrors() > 0)
+      {
+         cx.printTraceMessage("Tidy Errors: " + tidyErrors.toString());
+         throw new PSExtensionProcessingException(0,
+                 "Errors encoutered in Tidy" +
+                         tidyErrors.toString());
+      }
+
+      // Write out the document element using PSNodePrinter. This removes
+      // the Xml and Doctype declaration.
+      StringWriter swriter = new StringWriter();
+      PSNodePrinter np = new PSNodePrinter(swriter);
+      np.printNode(TidyXML.getDocumentElement());
+      String result = swriter.toString();
+
+      if(cx.getUsePrettyPrint())
+      {
+         try(ByteArrayInputStream xmlStream = new ByteArrayInputStream(result.getBytes(ENCODING))) {
+            TidyXML = tidy.parseDOM(xmlStream, null);
+            try (ByteArrayOutputStream tidiedStream = new ByteArrayOutputStream()) {
+               tidy.pprint(TidyXML, (OutputStream) tidiedStream);
+               result = tidiedStream.toString(ENCODING);
+            }
+         }
+      }
+      if (cx.isLogging())
+      {
+         cx.printTraceMessage("writing trace file xmldomtidied.doc");
+         try(FileOutputStream fs = new FileOutputStream("xmldomtidied.doc")) {
+            PrintWriter pw = new PrintWriter(fs);
+            pw.println(result);
+            pw.flush();
+            pw.close();
+         }
+      }
+      return result;
+
+
+   }
+
 
    /**
     * Put a string into the result document, at a particular node location,
@@ -494,17 +596,8 @@ public class PSXmlDomUtils
       {
          //copy the entire document
          cx.printTraceMessage("returning entire document");
-         try
-         {
-            StringWriter swriter = new StringWriter();
-            PSNodePrinter np = new PSNodePrinter(swriter);
-            np.printNode(sourceDocument);
-            resultText = swriter.toString();
-         }
-         catch (IOException e)
-         {
-            //Can it happen??
-         }
+         resultText = Jsoup.parse(w3cDom.asString(sourceDocument),"UTF-8").toString();
+
       }
       else
       {
@@ -773,7 +866,7 @@ public class PSXmlDomUtils
    /**
     *ENCODING is always ISO 8859-1 for all Word HTML files.
     **/
-   public static final String ENCODING = "UTF8";
+   public static final String ENCODING = "UTF-8";
 
    /**
     *Default name for all Private Objects is "XMLDOM"
@@ -783,7 +876,7 @@ public class PSXmlDomUtils
    /**
     *The encoding for all "debugging" files
     **/
-   public static final String DEBUG_ENCODING = "UTF8";
+   public static final String DEBUG_ENCODING = "UTF-8";
 
    /**
     * This section is copied directly from PSXmlDocumentBuilder.  We need to

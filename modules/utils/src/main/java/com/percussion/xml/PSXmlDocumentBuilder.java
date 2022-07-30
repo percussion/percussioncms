@@ -33,6 +33,7 @@ import com.percussion.utils.xml.PSProcessServerPageTags;
 import com.percussion.utils.xml.PSSaxParseException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jsoup.Jsoup;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
@@ -41,7 +42,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
-import org.w3c.tidy.Tidy;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
@@ -50,7 +50,6 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.FactoryConfigurationError;
 import javax.xml.parsers.ParserConfigurationException;
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -67,6 +66,7 @@ import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.net.URL;
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -665,11 +665,11 @@ public class PSXmlDocumentBuilder {
             return source;
         }
 
-        Tidy tidy = new Tidy();
-        tidy.setConfigurationFromProps(properties);
+        //Tidy tidy = new Tidy();
+       // tidy.setConfigurationFromProps(properties);
 
-        StringWriter tidyErrors = new StringWriter();
-        tidy.setErrout(new PrintWriter(tidyErrors));
+        //StringWriter tidyErrors = new StringWriter();
+       // tidy.setErrout(new PrintWriter(tidyErrors));
 
         if ((encoding == null) || (encoding.trim().length() == 0)) {
             encoding = "UTF8";
@@ -683,23 +683,22 @@ public class PSXmlDocumentBuilder {
             if (serverPageTags != null) {
                 preProcessed = serverPageTags.preProcess(preProcessed);
             }
+            String outputStr = Jsoup.parse(preProcessed,"UTF-8").toString();
 
-            try (InputStream is = new ByteArrayInputStream(preProcessed.getBytes(encoding))) {
-                tidy.parseDOM(is, os);
 
-                if (tidy.getParseErrors() > 0) {
-                    throw new RuntimeException(tidyErrors.toString());
-                }
+                //if (tidy.getParseErrors() > 0) {
+                  ///  throw new RuntimeException(tidyErrors.toString());
+              //  }
 
                 /**
                  * Return the tidied source with the XML header and the default
                  * entitied added.
                  */
-                return os.toString("UTF8") +
+                return outputStr +
                         "<?xml version='1.0' encoding=\"UTF-8\"?>" + NEWLINE +
                         "<!DOCTYPE html [" + getDefaultEntities(serverRoot) + "]>" +
                         NEWLINE + NEWLINE;
-            }
+
         }
     }
 
@@ -1408,38 +1407,39 @@ public class PSXmlDocumentBuilder {
         if (inStr == null) {
             return inStr;
         }
+        inStr = Normalizer.normalize(inStr,Normalizer.Form.NFC);
 
-        StringBuilder inBuf = new StringBuilder(inStr);
-        StringBuilder normBuf = new StringBuilder();
+//        StringBuilder inBuf = new StringBuilder(inStr);
+//        StringBuilder normBuf = new StringBuilder();
+//
+//        // walk the input looking for our match
+//        for (int i = 0; i < inBuf.length(); i++) {
+//            char curChar = inBuf.charAt(i);
+//
+//            if (curChar == '\r') {
+//                // first peek ahead and see if followed by a newline
+//                if (((i + 1) < inBuf.length()) &&
+//                        (inBuf.charAt(i + 1) == '\n')) {
+//                    // skip it
+//                    continue;
+//                } else {
+//                    // replace it
+//                    normBuf.append('\n');
+//                }
+//
+//                continue;
+//            }
+//
+//            // Only include valid XML characters.
+//            if ((curChar == 0x9) || (curChar == 0xA) || (curChar == 0xD) ||
+//                    ((curChar >= 0x20) && (curChar <= 0xD7FF)) ||
+//                    ((curChar >= 0xE000) && (curChar <= 0xFFFD)) ||
+//                    ((curChar >= 0x10000) && (curChar <= 0x10FFFF))) {
+//                normBuf.append(curChar);
+//            }
+//        }
 
-        // walk the input looking for our match
-        for (int i = 0; i < inBuf.length(); i++) {
-            char curChar = inBuf.charAt(i);
-
-            if (curChar == '\r') {
-                // first peek ahead and see if followed by a newline
-                if (((i + 1) < inBuf.length()) &&
-                        (inBuf.charAt(i + 1) == '\n')) {
-                    // skip it
-                    continue;
-                } else {
-                    // replace it
-                    normBuf.append('\n');
-                }
-
-                continue;
-            }
-
-            // Only include valid XML characters.
-            if ((curChar == 0x9) || (curChar == 0xA) || (curChar == 0xD) ||
-                    ((curChar >= 0x20) && (curChar <= 0xD7FF)) ||
-                    ((curChar >= 0xE000) && (curChar <= 0xFFFD)) ||
-                    ((curChar >= 0x10000) && (curChar <= 0x10FFFF))) {
-                normBuf.append(curChar);
-            }
-        }
-
-        return normBuf.toString();
+        return inStr;//normBuf.toString();
     }
 
     /**

@@ -51,11 +51,11 @@ import com.percussion.util.PSStringOperation;
 import com.percussion.util.PSXMLDomUtil;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.xml.PSProcessServerPageTags;
-import com.percussion.xml.PSNodePrinter;
-import com.percussion.xml.PSXmlDocumentBuilder;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jsoup.Jsoup;
+import org.jsoup.helper.W3CDom;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -68,7 +68,6 @@ import org.xml.sax.SAXException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -182,11 +181,14 @@ public class PSInlineLinkField
                PSServer.getRxDir(), m_field.getCleanupServerPageTagFile()));
          }
 
-         String serverRoot = "127.0.0.1:" + PSServer.getListenerPort() +
-            PSServer.getRequestRoot();
-         Document fieldDoc = PSXmlDocumentBuilder.createXmlDocument(
-            fieldValue, serverRoot, tidyProperties, serverPageTags,
-            m_field.getCleanupEncoding(), false);
+//         String serverRoot = "127.0.0.1:" + PSServer.getListenerPort() +
+//            PSServer.getRequestRoot();
+//         Document fieldDoc = PSXmlDocumentBuilder.createXmlDocument(
+//            fieldValue, serverRoot, tidyProperties, serverPageTags,
+//            m_field.getCleanupEncoding(), false);
+         org.jsoup.nodes.Document jsoupDoc = Jsoup.parse(fieldValue);
+         Document fieldDoc = new W3CDom().fromJsoup(jsoupDoc);
+
 
          PSRelationshipProcessor processor = PSRelationshipProcessor.getInstance();
 
@@ -194,21 +196,9 @@ public class PSInlineLinkField
             m_field.cleanupBrokenInlineLinks(), deletes, modifies);
 
          boolean isModified = expandEmptyElement(fieldDoc);
-         
-         //Use the version to not to indent. Indenting may messup JavaScript 
-         //if present.
-         String outputString = "";
-         try
-         {
-            StringWriter swriter = new StringWriter();
-            PSNodePrinter np = new PSNodePrinter(swriter);
-            np.printNode(fieldDoc);
-            outputString = swriter.toString();
-         }
-         catch (IOException e)
-         {
-            //Can it happen?
-         }
+
+         String outputString =jsoupDoc.toString();
+
 
          if(isModified)
          {
