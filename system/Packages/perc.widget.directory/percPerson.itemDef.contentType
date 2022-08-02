@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ItemDefData appName="psx_cepercPerson" isHidden="false" objectType="1">
+<ItemDefData appName="psx_cepercPerson" isHidden="true" objectType="1">
    <PSXItemDefSummary editorUrl="../psx_cepercPerson/percPerson.html" id="372" label="percPerson" name="percPerson" typeId="372"/>
    <PSXContentEditor contentType="372" enableRelatedContent="yes" iconSource="0" iconValue="" objectType="1" producesResource="no" workflowId="6">
       <PSXDataSet id="768">
@@ -542,6 +542,19 @@
                      </FieldRules>
                      <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
                   </PSXField>
+                  <PSXField export="yes" forceBinary="no" mimetype="text/plain" modificationType="user" name="personOfficeLocation" showInPreview="yes" showInSummary="yes" type="local">
+                                <DataLocator>
+                                  <PSXBackEndColumn id="0">
+                                    <tableAlias>CT_PERCPERSON</tableAlias>
+                                    <column>PERSONOFFICELOCATION</column>
+                                    <columnAlias/>
+                                  </PSXBackEndColumn>
+                                </DataLocator>
+                                <DataType>text</DataType>
+                                <DataFormat>255</DataFormat>
+                                <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                                <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                  </PSXField>
                   <PSXField export="yes" forceBinary="no" mimetype="text/plain" modificationType="user" name="personOrganization" showInPreview="yes" showInSummary="yes" type="local">
                      <DataLocator>
                         <PSXBackEndColumn id="0">
@@ -902,6 +915,26 @@
                            </ErrorLabel>
                         </PSXUISet>
                      </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                                    <FieldRef>personOfficeLocation</FieldRef>
+                                    <PSXUISet>
+                                      <Label>
+                                        <PSXDisplayText>Office Location:</PSXDisplayText>
+                                      </Label>
+                                      <PSXControlRef id="0" name="sys_EditBox">
+                                        <PSXParam name="maxlength">
+                                          <DataLocator>
+                                            <PSXTextLiteral id="0">
+                                              <text>255</text>
+                                            </PSXTextLiteral>
+                                          </DataLocator>
+                                        </PSXParam>
+                                      </PSXControlRef>
+                                      <ErrorLabel>
+                                        <PSXDisplayText>Office Location:</PSXDisplayText>
+                                      </ErrorLabel>
+                                    </PSXUISet>
+                                  </PSXDisplayMapping>
                      <PSXDisplayMapping>
                         <FieldRef>emailFormPage</FieldRef>
                         <PSXUISet>

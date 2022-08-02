@@ -24,6 +24,10 @@
            display_name="Hide Phone Number"
            default_value="true"
            datatype="bool" />
+ <UserPref name="perc_hidefield_personOfficeLocation"
+           display_name="Hide Office Location"
+           default_value="true"
+           datatype="bool" />
  <UserPref name="perc_hidefield_personEmailField"
            display_name="Hide 'Send Email' link"
            default_value="true"
@@ -72,6 +76,7 @@
             $percHideFieldPersonDepartment = $perc.widget.item.properties.get('perc_hidefield_personDptField');
             $percHideFieldPersonTitle = $perc.widget.item.properties.get('perc_hidefield_personTitleField');
             $percHidefieldPersonPhone = $perc.widget.item.properties.get('perc_hidefield_personPhoneField');
+            $percHidefieldPersonOfficeLocation = $perc.widget.item.properties.get('perc_hidefield_personOfficeLocation');
             $percHidefieldPersonEmail = $perc.widget.item.properties.get('perc_hidefield_personEmailField');
             $percHideFieldPersonImage = $perc.widget.item.properties.get('perc_hidefield_personImageField');
             $percHideFieldPersonPage = $perc.widget.item.properties.get('perc_hidefield_personPageField');
@@ -97,6 +102,7 @@
 
             $personPhone = $assetItem.getNode().getProperty('personPhone').String;
             $personEmail = $assetItem.getNode().getProperty('personEmail').String;
+            $personOfficeLocation = $assetItem.getNode().getProperty('personOfficeLocation').String;
 
             ##
             ## Configure form page for Send Email link
@@ -270,6 +276,10 @@ $perc.page.setAdditionalHeadContent("$!{addlHead}<script async id='$!{scriptSche
 #if( !($percHidefieldPersonPhone) && "$!{personPhone}" != "" && "$!{personPhone}" != "#" )##
                     <div class="perc-person-phone"><p>$!{personPhone}</p></div>
 #end##
+#if( !($percHidefieldPersonOfficeLocation) && "$!{personOfficeLocation}" != "" && "$!{personOfficeLocation}" != "#" )##
+                    <div class="perc-person-office-location"><p>$!{personOfficeLocation}</p></div>
+#end##
+
 #if( !($percHidefieldPersonEmail) && "$!{personEmail}" != "" && "$!{emailFormPage_path}" != "" && "$!{emailFormPage_path}" != "#")##
                     <div class="perc-person-email">
                         <a href="$sendMailLink" title="Send Email">Send Email</a>
