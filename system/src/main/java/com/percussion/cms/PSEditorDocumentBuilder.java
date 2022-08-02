@@ -214,7 +214,7 @@ public abstract class PSEditorDocumentBuilder
       {
          // create extractors for section link list links
          Iterator links = ce.getSectionLinkList();
-         List linkList = new ArrayList(5);
+         List linkList = new ArrayList<>(5);
          while ( links.hasNext())
          {
             PSUrlRequest req = (PSUrlRequest) links.next();
@@ -1587,7 +1587,7 @@ public abstract class PSEditorDocumentBuilder
     * whose value is the name of the element tag for which the extractor data
     * will be used as the value. Never <code>null</code>.
     */
-   private Map m_userStatusExtractors = new HashMap();
+   private Map m_userStatusExtractors = new HashMap<>();
 
    /**
     * These are the operations that will be performed each time a result

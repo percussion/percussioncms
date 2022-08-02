@@ -25,12 +25,11 @@ package com.percussion.widgetbuilder.utils;
 
 import com.percussion.widgetbuilder.data.PSWidgetBuilderFieldData;
 import com.percussion.widgetbuilder.data.PSWidgetBuilderFieldData.FieldType;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.Validate;
 
 import java.io.IOException;
 import java.text.MessageFormat;
-
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.Validate;
 
 /**
  * @author JaySeletz
@@ -70,7 +69,7 @@ public class PSRichTextFieldValueGenerator extends PSBasicFieldValueGenerator im
             }
             catch (IOException e)
             {
-                throw new RuntimeException("Failed to load rich text field binding template: " + e.getLocalizedMessage(), e);
+                throw new RuntimeException("Failed to load rich text field binding template:" + e.getMessage(),e);
             }
         }
         

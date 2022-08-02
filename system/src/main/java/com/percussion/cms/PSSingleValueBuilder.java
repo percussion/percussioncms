@@ -349,7 +349,7 @@ public class PSSingleValueBuilder extends PSDisplayFieldBuilder
             catch (Exception e)
             {
                /* This may happen for variety of reasons, however, we cannot
-                * throw an excption just for one field and stop processing
+                * throw an exception just for one field and stop processing
                 * completely
                 * Just write the trace in case if it happens...
                 */

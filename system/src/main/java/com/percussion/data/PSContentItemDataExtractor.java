@@ -131,17 +131,12 @@ public class PSContentItemDataExtractor extends PSDataExtractor
       {
          item = new PSServerItem(itemDef, locator, req.getSecurityToken());
       }
-      catch (PSInvalidContentTypeException ex)
+      catch (PSInvalidContentTypeException | PSCmsException ex)
       {
          throw new PSDataExtractionException(ex.getErrorCode(),
             ex.getMessage());
       }
-      catch (PSCmsException e1)
-      {
-         throw new PSDataExtractionException(e1.getErrorCode(),
-            e1.getMessage());
-      }
-      
+
       PSItemField field = item.getFieldByName(name);
       
       if (field==null)

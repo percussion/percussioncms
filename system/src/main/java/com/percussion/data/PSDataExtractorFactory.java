@@ -85,16 +85,10 @@ public abstract class PSDataExtractorFactory
             try {
                Object[] args = { replValue };
                ret = (IPSDataExtractor)constructor.newInstance(args);
-            } catch (InstantiationException inst){
+            } catch (InstantiationException | IllegalArgumentException | IllegalAccessException | ExceptionInInitializerError inst){
                errString = inst.toString();
-            } catch (IllegalAccessException acc){
-               errString = acc.toString();
-            } catch (IllegalArgumentException argu){
-               errString = argu.toString();
             } catch (java.lang.reflect.InvocationTargetException tar){
                errString = tar.getTargetException().toString();
-            } catch (ExceptionInInitializerError ee){
-               errString = ee.toString();
             }
          } else{
             errString = "cannot create a data extractor for the specified replacement value";

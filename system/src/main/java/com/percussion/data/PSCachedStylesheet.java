@@ -261,13 +261,13 @@ public class PSCachedStylesheet
          <META http-equiv="content-Type" content="text/html; charset=ISO-8859-1">
          */
          String attr = elem.getAttribute("http-equiv");
-         if (attr != null && attr.equalsIgnoreCase("content-type"))
+         if (attr.equalsIgnoreCase("content-type"))
          {
             String content = elem.getAttribute("content");
-            if (content != null && !content.equals(""))
+            if (!content.equals(""))
             {
               
-               found = (content.toLowerCase().indexOf("charset=") != -1);
+               found = (content.toLowerCase().contains("charset="));
                if(found)
                {
                   StringBuilder sb = new StringBuilder();
