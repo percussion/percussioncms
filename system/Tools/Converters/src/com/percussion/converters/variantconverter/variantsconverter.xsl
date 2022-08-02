@@ -40,7 +40,7 @@
                 exclude-result-prefixes="urlencoder">
 	<!-- Converter tool fills the variant map varible with the values from properties file.-->
    <xsl:variable name="variantMap"/>
-	<xsl:output method="xml"/>
+	<xsl:output method="xml" encoding="UTF-8" />
 	<!-- main template -->
 	<xsl:template match="/">
 		<xsl:apply-templates select="." mode="rxbodyfield"/>

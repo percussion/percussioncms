@@ -23,7 +23,7 @@
   -->
 
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
-   <xsl:output method="xml"/>
+   <xsl:output method="xml" encoding="UTF-8" />
    <!-- This Xsl is applied to all the Rx IS projects during the build time just before IS has a chance to compile the project -->
    <xsl:template match="*|@*">
       <xsl:copy>

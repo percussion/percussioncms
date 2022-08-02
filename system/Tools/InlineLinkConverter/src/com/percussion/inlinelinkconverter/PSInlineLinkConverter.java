@@ -223,10 +223,8 @@ public class PSInlineLinkConverter
     */
    private void initWorkflowIdMap(PSEntry community) throws PSRemoteException
    {
-      Iterator workflows = m_rtAgent.getWorkflows(community).iterator();
-      while (workflows.hasNext())
-      {
-         PSEntry wf = (PSEntry) workflows.next();
+      for (Object o : m_rtAgent.getWorkflows(community)) {
+         PSEntry wf = (PSEntry) o;
          String name = wf.getLabel().getText();
          m_wfIdNameMap.put(wf.getValue(), normalizeWorkflowName(name));
       }
@@ -1131,13 +1129,7 @@ public class PSInlineLinkConverter
    
          templates.newTransformer().transform(
             new DOMSource(srcDoc), new DOMResult(outNode));
-      }
-      catch (TransformerConfigurationException e)
-      {
-         log.error(PSExceptionUtils.getMessageForLog(e));
-         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
-      }
-      catch (TransformerException e)
+      } catch (TransformerException e)
       {
          log.error(PSExceptionUtils.getMessageForLog(e));
          log.debug(PSExceptionUtils.getDebugMessageForLog(e));

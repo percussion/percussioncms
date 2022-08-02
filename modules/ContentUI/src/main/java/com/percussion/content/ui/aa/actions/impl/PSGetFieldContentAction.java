@@ -32,6 +32,7 @@ import com.percussion.util.IPSHtmlParameters;
 import com.percussion.utils.types.PSPair;
 import org.apache.commons.lang.StringUtils;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 /**
@@ -49,7 +50,7 @@ public class PSGetFieldContentAction extends PSAAActionBase
       String isAAMode = (String)getParameter(params, "isaamode");
       String sys_aamode = (String)getParameter(params,
          IPSHtmlParameters.SYS_ACTIVE_ASSEMBLY_MODE);
-      String result = null;
+      String result;
       try
       {
          Map<String, String[]> assemblyParams = 
@@ -73,7 +74,7 @@ public class PSGetFieldContentAction extends PSAAActionBase
          }
          PSPair<IPSAssemblyItem, IPSAssemblyResult> pair = 
             PSActionUtil.assemble(assemblyParams);
-         result = result = new String(pair.getSecond().getResultData(), "UTF8");
+         result = new String(pair.getSecond().getResultData(), StandardCharsets.UTF_8);
       }
       catch (Exception e)
       {

@@ -29,7 +29,6 @@ import com.percussion.util.PSSqlHelper;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.sql.Blob;
 import java.sql.Clob;
 import java.sql.ResultSet;
@@ -297,7 +296,7 @@ public class PSRowDataBuffer
             the string "abc" in the database, what I get back is the following
             string "610062006300". The astute observer will notice that this
             is a representation of the Unicode-16 hex values in little endian
-            format. I used this knowlegde and created a fixup routine that
+            format. I used this knowledge and created a fixup routine that
             converts such a string to its proper form. I only do this for
             ntext fields.
             NOTE: This will have to be removed once we upgrade (assuming they
@@ -414,14 +413,9 @@ public class PSRowDataBuffer
             os.write((byte) utf16Octet );
          }
          val = new String( os.toByteArray(), "UTF-16" );
-      }
-      catch ( UnsupportedEncodingException e )
+      } catch ( IOException e )
       {
          throw new SQLException( e.getLocalizedMessage());
-      }
-      catch ( IOException ioe )
-      {
-         throw new SQLException( ioe.getLocalizedMessage());
       }
 
       return val;

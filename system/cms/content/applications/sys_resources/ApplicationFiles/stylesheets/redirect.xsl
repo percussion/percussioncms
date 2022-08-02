@@ -15,7 +15,7 @@
 <xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" extension-element-prefixes="psxi18n"
                 exclude-result-prefixes="psxi18n">
 	<xsl:import href="file:sys_resources/stylesheets/sys_I18nUtils.xsl"/>
-	<xsl:output method="html" omit-xml-declaration="yes"/>
+	<xsl:output method="html" omit-xml-declaration="yes" encoding="UTF-8" />
 	<xsl:variable name="lang1">
 		<xsl:choose>
 			<xsl:when test="//@lang"><xsl:value-of select="//@lang"/></xsl:when>
