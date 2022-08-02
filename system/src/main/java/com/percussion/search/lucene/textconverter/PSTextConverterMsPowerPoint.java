@@ -28,8 +28,7 @@ import com.percussion.extension.PSExtensionException;
 import com.percussion.extension.PSExtensionProcessingException;
 import com.percussion.search.lucene.IPSLuceneConstants;
 import org.apache.poi.extractor.POITextExtractor;
-import org.apache.poi.hslf.extractor.PowerPointExtractor;
-import org.apache.poi.xslf.extractor.XSLFPowerPointExtractor;
+import org.apache.poi.sl.extractor.SlideShowExtractor;
 import org.apache.poi.xslf.usermodel.XMLSlideShow;
 
 import java.io.File;
@@ -71,14 +70,14 @@ public class PSTextConverterMsPowerPoint implements IPSLuceneTextConverter
       if (IPSLuceneConstants.MIME_TYPE_APPLICATION_BY_MSPOWERPOINT.equalsIgnoreCase(mimetype) || 
             IPSLuceneConstants.MIME_TYPE_APPLICATION_BY_VNDMSPOWERPOINT.equalsIgnoreCase(mimetype))
       {
-         PowerPointExtractor ppext = new PowerPointExtractor(is);
+         SlideShowExtractor ppext = new SlideShowExtractor(new XMLSlideShow(is));
          ppext.setNotesByDefault(true);
          ppext.setSlidesByDefault(true);
          extractor = ppext;
       }
       else
       {
-         XSLFPowerPointExtractor ppext = new XSLFPowerPointExtractor(new XMLSlideShow(is));
+         SlideShowExtractor ppext = new SlideShowExtractor(new XMLSlideShow(is));
          ppext.setNotesByDefault(true);
          ppext.setSlidesByDefault(true);
          extractor = ppext;
