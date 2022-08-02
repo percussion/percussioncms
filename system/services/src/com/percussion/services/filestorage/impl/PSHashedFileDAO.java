@@ -157,6 +157,8 @@ public class PSHashedFileDAO implements IPSHashedFileDAO
          Criteria crit = getSession().createCriteria(PSBinary.class);
          crit.add(Restrictions.eq("hash", hash));
          return (PSBinary) crit.uniqueResult();
+
+
       }
       else
          return null;
@@ -307,6 +309,7 @@ public class PSHashedFileDAO implements IPSHashedFileDAO
    @Override
    public PSBinaryMetaKey getMetaKey(String keyname)
    {
+
       Criteria crit = getSession().createCriteria(PSBinaryMetaKey.class);
       crit.add(Restrictions.eq("name", keyname));
       return (PSBinaryMetaKey) crit.uniqueResult();

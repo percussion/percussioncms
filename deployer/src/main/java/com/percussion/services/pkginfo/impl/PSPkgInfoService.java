@@ -33,6 +33,7 @@ import com.percussion.services.pkginfo.data.PSPkgDependency;
 import com.percussion.services.pkginfo.data.PSPkgElement;
 import com.percussion.services.pkginfo.data.PSPkgInfo;
 import com.percussion.services.pkginfo.data.PSPkgInfo.PackageAction;
+import com.percussion.services.ui.data.PSHierarchyNodeProperty;
 import com.percussion.util.PSBaseBean;
 import com.percussion.utils.guid.IPSGuid;
 import org.apache.commons.lang.StringUtils;
@@ -393,12 +394,18 @@ implements IPSPkgInfoService
       List<PSPkgElement>  pkgElementList = null;
       Session session = getSession();
 
-         Criteria criteria = session.createCriteria(PSPkgElement.class);
-         criteria.add(Restrictions.eq("packageGuid", parentPkgId.longValue()));
-         criteria.setCacheable(true);
-         pkgElementList = criteria.list();
+//         Criteria criteria = session.createCriteria(PSPkgElement.class);
+//         criteria.add(Restrictions.eq("packageGuid", parentPkgId.longValue()));
+//         criteria.setCacheable(true);
+//         pkgElementList = criteria.list();
 
-      return pkgElementList;
+      CriteriaBuilder builder = session.getCriteriaBuilder();
+      CriteriaQuery<PSPkgElement> criteria = builder.createQuery(PSPkgElement.class);
+      Root<PSPkgElement> critRoot = criteria.from(PSPkgElement.class);
+      criteria.where(builder.equal(critRoot.get("packageGuid"),parentPkgId.longValue()));
+      return entityManager.createQuery(criteria).getResultList();
+
+
    }
 
 
@@ -525,9 +532,16 @@ implements IPSPkgInfoService
       List<PSPkgDependency> pkgDeps = new ArrayList<>();
       Session session = getSession();
 
-         Criteria criteria = session.createCriteria(PSPkgDependency.class);
-         criteria.add(Restrictions.eq("ownerPackageGuid", guid.longValue()));
-         pkgDeps = criteria.list();
+//         Criteria criteria = session.createCriteria(PSPkgDependency.class);
+//         criteria.add(Restrictions.eq("ownerPackageGuid", guid.longValue()));
+//         pkgDeps = criteria.list();
+
+      CriteriaBuilder builder = session.getCriteriaBuilder();
+      CriteriaQuery<PSPkgDependency> criteria = builder.createQuery(PSPkgDependency.class);
+      Root<PSPkgDependency> critRoot = criteria.from(PSPkgDependency.class);
+      criteria.where(builder.equal(critRoot.get("ownerPackageGuid"),guid.longValue()));
+      entityManager.createQuery(criteria).getResultList();
+
          for (PSPkgDependency dep : pkgDeps)
          {
             dPkgGuids.add(dep.getDependentPackageGuid());
@@ -553,6 +567,8 @@ implements IPSPkgInfoService
          Criteria criteria = session.createCriteria(PSPkgDependency.class);
          criteria.add(Restrictions.eq("dependentPackageGuid", guid.longValue()));
          pkgDeps = criteria.list();
+
+
          for (PSPkgDependency dep : pkgDeps)
          {
             oPkgGuids.add(dep.getOwnerPackageGuid());
