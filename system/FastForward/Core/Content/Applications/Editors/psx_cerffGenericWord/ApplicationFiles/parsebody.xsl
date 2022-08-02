@@ -28,7 +28,7 @@
                 extension-element-prefixes="psxi18n">
 <xsl:import href="../psx_cerffGenericWord/contentfilter.xsl" /> 	
 <xsl:strip-space elements="html:p html:span" /> 
-<xsl:output method="xml" /> 
+<xsl:output method="xml" encoding="UTF-8" />
 <xsl:variable name="styles" select="//html:head/html:style"/>
 
 <xsl:template match="/">

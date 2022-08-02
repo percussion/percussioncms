@@ -6,7 +6,7 @@
 <xsl:import href="../rx_ceArticleWord/contentfilter.xsl" /> 
 
 <xsl:strip-space elements="html:p html:span" /> 
-<xsl:output method="xml" /> 
+<xsl:output method="xml" encoding="UTF-8" />
 
 <xsl:template match="/">
 <PSXParam>
