@@ -13,10 +13,10 @@
 		%w3centities-f;
 		]>
 <xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                xmlns="http://www.w3.org/1999/xhtml" xmlns:psxi18n="com.percussion.i18n"
+                xmlns="http://www.w3.org/1999/xhtml"
                 extension-element-prefixes="psxi18n" exclude-result-prefixes="psxi18n">
 	<xsl:variable name="sysimgpath" select="'../sys_resources/images/'"/>
-	<xsl:output method="xml"/>
+	<xsl:output method="xml" encoding="UTF-8" />
 	<xsl:template match="/">
 		<xsl:variable name="userroles" select="document(*/userrolesurl)/*"/>
 		<xsl:variable name="pagename" select="*/pagename"/>

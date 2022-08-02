@@ -14,10 +14,10 @@
 		]>
 <xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:html="http://www.w3.org/TR/REC-html40" exclude-result-prefixes="psxi18n"
-                xmlns:psxi18n="com.percussion.i18n" extension-element-prefixes="psxi18n" >
+                extension-element-prefixes="psxi18n">
 
 <xsl:strip-space elements="html:p html:span" /> 
-<xsl:output method="xml" /> 
+<xsl:output method="xml" encoding="UTF-8"/>
 
 <!-- don't show any nodes that contain deleted text (Word's track changes) -->
 <xsl:template match="html:del" mode="contentfilter"/>
