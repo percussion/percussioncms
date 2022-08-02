@@ -44,7 +44,7 @@ public interface IPSExtension
     * Initializes this extension.
     * <p>
     * Note that the extension will have permission to read
-    * and write any files or directiors under <CODE>codeRoot</CODE>
+    * and write any files or directories under <CODE>codeRoot</CODE>
     * (recursively). The extension will not have permissions for
     * any other files or directories.
     *
@@ -63,14 +63,14 @@ public interface IPSExtension
     *
     * @throws IllegalArgumentException If any param is invalid.
     */
-   public void init(IPSExtensionDef def, File codeRoot)
+    void init(IPSExtensionDef def, File codeRoot)
       throws PSExtensionException;
 
    /**
     * The indicator flag which reflects that the implementing extension has
     * not been initialized yet.
     */
-   public static final int NOT_INITIALIZED = -1;
+    int NOT_INITIALIZED = -1;
 
    /**
     * A required parameter to the specified exit was invalid.
@@ -82,7 +82,7 @@ public interface IPSExtension
     * <TR><TD>1</TD><TD>the message related to the failure</TD></TR>
     * </TABLE>
     */
-   public static final int ERROR_INVALID_PARAMETER = 7403;
+   int ERROR_INVALID_PARAMETER = 7403;
 
 
    //***** Predefined extension names *****
@@ -90,45 +90,44 @@ public interface IPSExtension
    /**
     * Name of the binary assembler.
     */
-   public static final String BINARY_ASSEMBLER =
+   String BINARY_ASSEMBLER =
          "Java/global/percussion/assembly/binaryAssembler";
 
    /**
     * Name of the text page assembler.
     */
-   public static final String DATABASE_ASSEMBLER =
+   String DATABASE_ASSEMBLER =
          "Java/global/percussion/assembly/databaseAssembler";
 
    /**
     * Name of the debugging assembler used during development.
     */
-   public static final String DEBUG_ASSEMBLER =
+   String DEBUG_ASSEMBLER =
          "Java/global/percussion/assembly/debugAssembler";
 
    /**
     * Name of the dispatch assembler
     */
-   public static final String DISPATCH_ASSEMBLER =
+   String DISPATCH_ASSEMBLER =
          "Java/global/percussion/assembly/dispatchAssembler";
 
    /**
     * Name of the legacy assembler. 
     */
-   public static final String LEGACY_ASSEMBLER =
+   String LEGACY_ASSEMBLER =
          "Java/global/percussion/assembly/legacyAssembler";
 
    /**
     * Name of the text page assembler.
     */
-   public static final String VELOCITY_ASSEMBLER =
+   String VELOCITY_ASSEMBLER =
          "Java/global/percussion/assembly/velocityAssembler";
    
-   public static final Set<String> KNOWN_ASSEMBLERS = Collections.unmodifiableSet(
-         new HashSet<String>(Arrays.asList(new String[] {
-               BINARY_ASSEMBLER,
-               DATABASE_ASSEMBLER,
-               DEBUG_ASSEMBLER,
-               DISPATCH_ASSEMBLER,
-               LEGACY_ASSEMBLER,
-               VELOCITY_ASSEMBLER}))); 
+   Set<String> KNOWN_ASSEMBLERS = Collections.unmodifiableSet(
+         new HashSet<>(Arrays.asList(BINARY_ASSEMBLER,
+                 DATABASE_ASSEMBLER,
+                 DEBUG_ASSEMBLER,
+                 DISPATCH_ASSEMBLER,
+                 LEGACY_ASSEMBLER,
+                 VELOCITY_ASSEMBLER)));
 }
