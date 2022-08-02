@@ -71,6 +71,6 @@ public interface IPSUdfProcessor extends IPSExtension
     * an argument.  You should always pass in zero (0) for the 
     * message code.
     */
-   public Object processUdf(Object[] params, IPSRequestContext request)
+   Object processUdf(Object[] params, IPSRequestContext request)
       throws PSConversionException;
 }
