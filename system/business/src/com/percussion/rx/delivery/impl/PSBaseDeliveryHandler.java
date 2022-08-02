@@ -1571,7 +1571,7 @@ public abstract class PSBaseDeliveryHandler implements IPSDeliveryHandler
     */
    protected String getUnpublishingLocation(IPSDeliveryItem item) throws Exception
    {
-      return new String(item.getResultData(), "UTF-8");
+      return new String(item.getResultData(), StandardCharsets.UTF_8);
    }
 
    /**
