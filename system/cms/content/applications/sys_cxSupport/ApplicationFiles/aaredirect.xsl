@@ -2,7 +2,7 @@
 <xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns="http://www.w3.org/1999/xhtml" xmlns:psxi18n="com.percussion.i18n"
                 extension-element-prefixes="psxi18n" exclude-result-prefixes="psxi18n">
-	<xsl:output method="xml"/>
+	<xsl:output method="xml" encoding="UTF-8" />
    <!-- main template -->
 	<xsl:template match="/">
 		<xsl:apply-templates select="." mode="copy"/>

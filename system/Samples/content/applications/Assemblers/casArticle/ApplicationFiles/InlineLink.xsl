@@ -11,7 +11,7 @@
                 xmlns="http://www.w3.org/1999/xhtml" xmlns:psxi18n="com.percussion.i18n"
                 extension-element-prefixes="psxi18n" exclude-result-prefixes="psxi18n"><xsl:import href="file:sys_resources/stylesheets/assemblers/sys_InlineLinks.xsl"/><xsl:import href="file:rx_resources/stylesheets/assemblers/rx_InlineLinks.xsl"/><xsl:import href="file:sys_resources/stylesheets/assemblers/sys_Slots.xsl"/><xsl:import href="file:rx_resources/stylesheets/assemblers/rx_Slots.xsl"/><xsl:import href="file:sys_resources/stylesheets/assemblers/sys_ContextTemplates.xsl"/><xsl:import href="file:sys_resources/stylesheets/assemblers/sys_Globals.xsl"/><xsl:import href="file:rx_resources/stylesheets/assemblers/rx_Globals.xsl"/>
 <!-- begin XSL -->
-<xsl:output method="xml" omit-xml-declaration="yes" />
+<xsl:output method="xml" omit-xml-declaration="yes" encoding="UTF-8" />
 <!-- end XSL --><xsl:variable name="related" select="/*/sys_AssemblerInfo/RelatedContent"/><xsl:variable name="syscommand" select="//@sys_command"/><xsl:variable name="this" select="/"/><xsl:template match="/" name="xsplit_root"><html>
   <head><meta content="Percussion Rhythmyx" name="generator"/>
     <title>

@@ -21,7 +21,7 @@
          <xsl:otherwise>actionMenu</xsl:otherwise>
       </xsl:choose>
    </xsl:variable>
-   <xsl:output method="xml"/>
+   <xsl:output method="xml" encoding="UTF-8" />
    <xsl:template match="/">
       <xsl:variable name="userroles" select="document(*/userrolesurl)/*/UserStatus"/>
       <xsl:variable name="componentcontext" select="document(*/contexturl)/*/context"/>
