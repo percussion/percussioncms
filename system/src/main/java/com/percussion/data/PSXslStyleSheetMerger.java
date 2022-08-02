@@ -36,6 +36,7 @@ import org.w3c.dom.ProcessingInstruction;
 import org.xml.sax.SAXParseException;
 
 import javax.xml.transform.ErrorListener;
+import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Templates;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
@@ -256,7 +257,7 @@ public class PSXslStyleSheetMerger extends PSStyleSheetMerger
       try
       {
          transformer = ssTemplate.newTransformer();
-
+         transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
          PSCatalogResolver cr = new PSCatalogResolver();
          cr.setInternalRequestURIResolver(new PSInternalRequestURIResolver());
          transformer.setURIResolver(cr);
