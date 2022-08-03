@@ -367,7 +367,6 @@ public class PSAclService implements IPSAclService
    {
       synchronized (this) {
          getSession().flush();
-         //List<IPSAcl> acls = getSession().createCriteria(PSAclImpl.class).setCacheable(false).list();
          CriteriaBuilder builder = getSession().getCriteriaBuilder();
          CriteriaQuery criteria = builder.createQuery(PSAclImpl.class);
          Root critRoot = criteria.from(PSAclImpl.class);
