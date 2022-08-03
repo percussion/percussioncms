@@ -66,7 +66,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
-import static sun.awt.shell.Win32ShellFolderManager2.recent;
 
 /**
  * @author stephenbolton
