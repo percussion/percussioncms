@@ -146,12 +146,12 @@ public class PSUiService implements IPSUiService
 
       Session session = getSession();
 
-     // Criteria criteria = session.createCriteria(PSHierarchyNodeProperty.class);
+
       CriteriaBuilder builder = session.getCriteriaBuilder();
       CriteriaQuery<PSHierarchyNodeProperty> criteria = builder.createQuery(PSHierarchyNodeProperty.class);
       Root<PSHierarchyNodeProperty> critRoot = criteria.from(PSHierarchyNodeProperty.class);
       criteria.where(builder.equal(critRoot.get("name"),"guid"));
-     // criteria.add(Restrictions.eq("name", "guid"));
+
 
       return  entityManager.createQuery(criteria).getResultList();
    }
