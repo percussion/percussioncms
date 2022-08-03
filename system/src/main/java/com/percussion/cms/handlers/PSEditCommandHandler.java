@@ -171,7 +171,7 @@ public class PSEditCommandHandler extends PSQueryCommandHandler
     * authenticateUser exit. This is called by the base classes
     * processRequest method before it does its work.
     *
-    * @param request the request needed to make an internal request
+    * @param req the request needed to make an internal request
     *  to get workflow communities. Assumed not <code>null</code>.
     * @throws PSInternalRequestCallException if the request to get
     *  the list of workflows for a community fails while processing.
@@ -230,7 +230,7 @@ public class PSEditCommandHandler extends PSQueryCommandHandler
          return PSIteratorUtils.emptyIterator();
 
       // todo: cache these?
-      PSPageInfo info = (PSPageInfo) m_pageInfo.get( new Integer( id ));
+      PSPageInfo info = (PSPageInfo) m_pageInfo.get(id);
       Iterator datasetNames = info.getDatasetList();
       List handlers = new ArrayList();
       while ( datasetNames.hasNext())
@@ -260,7 +260,7 @@ public class PSEditCommandHandler extends PSQueryCommandHandler
       if (data == null) // this constrain is defined by base class
          throw new IllegalArgumentException("data may not be null");
          
-      PSPageInfo info = (PSPageInfo) m_pageInfo.get( new Integer( id ));
+      PSPageInfo info = (PSPageInfo) m_pageInfo.get(id);
       return null == info ? null : info.getBuilder();
    }
 
@@ -369,10 +369,10 @@ public class PSEditCommandHandler extends PSQueryCommandHandler
     * it finds key or there are no more entries in the list. It compares the
     * objects using the <code>equals</code> method.
     *
-    * @param A valid list of 0 or more entries. Each entry is a PSMapPair.
+    * @param pairs A valid list of 0 or more entries. Each entry is a PSMapPair.
     *    Assumed not <code>null</code>.
     *
-    * @param kay A valid ref. Assumed not <code>null</code>.
+    * @param key A valid ref. Assumed not <code>null</code>.
     *
     * @return <code>true</code> if the list contains an entry whose key
     *    matches the supplied key.
@@ -396,10 +396,10 @@ public class PSEditCommandHandler extends PSQueryCommandHandler
     * objects using the <code>equals</code> method. The matching entry is
     * returned.
     *
-    * @param A valid list of 0 or more entries. Each entry is a PSMapPair.
+    * @param pairs A valid list of 0 or more entries. Each entry is a PSMapPair.
     *    Assumed not <code>null</code>.
     *
-    * @param kay A valid ref. Assumed not <code>null</code>.
+    * @param key A valid ref. Assumed not <code>null</code>.
     *
     * @return The value associated with the entry whose key matches the
     *    supplied key.
@@ -440,7 +440,7 @@ public class PSEditCommandHandler extends PSQueryCommandHandler
     * @param pageId The key that will be used when the builder is added
     *    to the pageMap. An entry with this key must already exist, the
     *    builder will be added to the object. This key must be supplied as the
-    *    param to {@link #getDocumentBuilder(int) getDocumentBuilder} when
+    *    param to {@link #getDocumentBuilder(int, PSExecutionData)} when
     *    requesting this builder at run time.
     *
     * @param rowCtx The doc context for the row editor. Assumed not <code>
@@ -519,7 +519,7 @@ public class PSEditCommandHandler extends PSQueryCommandHandler
          PSEditorDocumentBuilder builder )
       throws PSNotFoundException
    {
-      Integer key = new Integer(pageId);
+      Integer key = pageId;
       PSPageInfo info = (PSPageInfo) pageInfo.get(key);
       if ( null == info )
       {
@@ -685,8 +685,8 @@ public class PSEditCommandHandler extends PSQueryCommandHandler
                   process for the row editor */
                int summaryPageId = nextPageId++;
 
-               pageMap.add( new Integer( summaryPageId ));
-               pageMap.add( new Integer( nextPageId ));
+               pageMap.add(summaryPageId);
+               pageMap.add(nextPageId);
                nextPageId = initializeRequestResources( app, ce, childMapper,
                      recursionDepth+1, nextPageId, pageInfoMap, resultName );
                datasetNames.add( resultName.toString());
@@ -696,14 +696,14 @@ public class PSEditCommandHandler extends PSQueryCommandHandler
                List summaryDSName = new ArrayList(1);
                summaryDSName.add( resultName.toString());
                List summaryPageMap = new ArrayList(1);
-               summaryPageMap.add( new Integer( summaryPageId+1 ));
-               pageInfoMap.put( new Integer( summaryPageId ),
+               summaryPageMap.add(summaryPageId + 1);
+               pageInfoMap.put(summaryPageId,
                      new PSPageInfo( PSPageInfo.TYPE_SUMMARY_EDITOR,
                      childMapper.getId(), summaryDSName, summaryPageMap ));
 
                //Hack alert: see COMPLETE_CHILD_PAGEID_OFFSET for details
                pageInfoMap.put(
-                     new Integer( summaryPageId+COMPLETE_CHILD_PAGEID_OFFSET ),
+                       summaryPageId + COMPLETE_CHILD_PAGEID_OFFSET,
                      new PSPageInfo( PSPageInfo.TYPE_SUMMARY_DATA,
                      childMapper.getId(), summaryDSName, summaryPageMap ));
             }
@@ -717,7 +717,7 @@ public class PSEditCommandHandler extends PSQueryCommandHandler
             }
          }
       }
-      pageInfoMap.put( new Integer( pageId ),
+      pageInfoMap.put(pageId,
             new PSPageInfo( PSPageInfo.TYPE_ROW_EDITOR, dispMapper.getId(),
             datasetNames, pageMap ));
 
