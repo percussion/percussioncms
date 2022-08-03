@@ -295,7 +295,7 @@ implements IPSPkgInfoService
       Root<PSPkgElement> critRoot = criteria.from(PSPkgElement.class);
       criteria.select(critRoot);
       criteria.where(critRoot.get("guid").equals(id.longValue());
-      PSPkgElement pkgElement = (PSPkgElement) entityManager.createQuery(criteria).getSingleResult();
+      PSPkgElement pkgElement = entityManager.createQuery(criteria).getSingleResult();
 
 
       if (pkgElement == null)
@@ -394,11 +394,6 @@ implements IPSPkgInfoService
       List<PSPkgElement>  pkgElementList = null;
       Session session = getSession();
 
-//         Criteria criteria = session.createCriteria(PSPkgElement.class);
-//         criteria.add(Restrictions.eq("packageGuid", parentPkgId.longValue()));
-//         criteria.setCacheable(true);
-//         pkgElementList = criteria.list();
-
       CriteriaBuilder builder = session.getCriteriaBuilder();
       CriteriaQuery<PSPkgElement> criteria = builder.createQuery(PSPkgElement.class);
       Root<PSPkgElement> critRoot = criteria.from(PSPkgElement.class);
@@ -489,9 +484,6 @@ implements IPSPkgInfoService
       PSPkgElement pkgElement = null;
       Session session = getSession();
 
-//         Criteria criteria = session.createCriteria(PSPkgElement.class);
-//         criteria.add(Restrictions.eq("guid", id.longValue()));
-//         pkgElement = (PSPkgElement) criteria.uniqueResult();
 
       CriteriaBuilder builder = session.getCriteriaBuilder();
       CriteriaQuery<PSPkgElement> criteria = builder.createQuery(PSPkgElement.class);
@@ -532,9 +524,7 @@ implements IPSPkgInfoService
       List<PSPkgDependency> pkgDeps = new ArrayList<>();
       Session session = getSession();
 
-//         Criteria criteria = session.createCriteria(PSPkgDependency.class);
-//         criteria.add(Restrictions.eq("ownerPackageGuid", guid.longValue()));
-//         pkgDeps = criteria.list();
+
 
       CriteriaBuilder builder = session.getCriteriaBuilder();
       CriteriaQuery<PSPkgDependency> criteria = builder.createQuery(PSPkgDependency.class);
