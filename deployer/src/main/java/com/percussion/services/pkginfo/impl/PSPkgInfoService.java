@@ -163,6 +163,7 @@ implements IPSPkgInfoService
       CriteriaBuilder builder = session.getCriteriaBuilder();
       CriteriaQuery<PSPkgInfo> criteria = builder.createQuery(PSPkgInfo.class);
       Root<PSPkgInfo> critRoot = criteria.from(PSPkgInfo.class);
+      criteria.where(builder.equal(critRoot.get("guid"),id.longValue()));
       PSPkgInfo pkgInfo = entityManager.createQuery(criteria).getSingleResult();
 
       if (pkgInfo == null)
