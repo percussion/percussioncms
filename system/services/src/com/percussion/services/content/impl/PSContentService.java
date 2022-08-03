@@ -53,6 +53,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -367,9 +370,11 @@ public class PSContentService
    public List<PSAutoTranslation> loadAutoTranslations()
    {
       Session session = getSession();
+      CriteriaBuilder builder = session.getCriteriaBuilder();
+      CriteriaQuery<PSAutoTranslation> criteria = builder.createQuery(PSAutoTranslation.class);
+      Root<PSAutoTranslation> critRoot = criteria.from(PSAutoTranslation.class);
 
-         Criteria criteria = session.createCriteria(PSAutoTranslation.class);
-         return criteria.list();
+         return entityManager.createQuery(criteria).getResultList();
 
    }
 
