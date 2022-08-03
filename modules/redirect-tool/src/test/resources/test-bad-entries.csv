@@ -1,0 +1,4 @@
+category,condition,createdOn,enabled,id,key,permanent,redirectTo,site,subkey,type
+REGEX,/presidents-day-map,2022-02-02T03:35:09.623,TRUE,701f3506-4f8c-42fd-8f38-d38516e6a68a,2018CM1-986f-8f40-5f84-0df1,TRUE,undefinedhttps://map.concept3d.com/?id=1174%23!ce/36594?ct/27823,36594undefined,www.test.edu,701f3506-4f8c-42fd-8f38-d38516e6a68a,CM1
+REGEX,/commencement-map,2022-05-05T14:13:15.831,TRUE,14b3e2eb-44f4-4b82-846b-86fe930ff338,2018CM1-986f-8f40-5f84-0df1,TRUE,undefinedhttps://map.concept3d.com/?id=1174%23!ce/60563?ct/27823,60563?mc/41.37041817394313,-81.84854363556954?z/17?lvl/0undefined,www.test.edu,14b3e2eb-44f4-4b82-846b-86fe930ff338,CM1
+VANITY,/boldgold-map,2021-09-24T19:19:38.716,TRUE,ef1808db-838c-4655-9299-e6d72bd4d671,2018CM1-986f-8f40-5f84-0df1,TRUE,www.test.edu,ef1808db-838c-4655-9299-e6d72bd4d671,CM1
