@@ -17,7 +17,7 @@
 				extension-element-prefixes="psxi18n" exclude-result-prefixes="psxi18n xalan">
 
 	<xsl:import href="file:sys_resources/stylesheets/sys_I18nUtils.xsl"/>
-	<xsl:output method="html" omit-xml-declaration="yes" />
+	<xsl:output method="html" omit-xml-declaration="yes" encoding="UTF-8" />
 	<xsl:variable name="rxroot">
 		<xsl:choose>
 			<xsl:when test="string-length(//@rxroot) = 0">..</xsl:when>

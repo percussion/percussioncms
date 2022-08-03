@@ -427,7 +427,7 @@ public class PSAddAssemblerInfo implements IPSResultDocumentProcessor
                if (nd instanceof Text)
                {
                   String content = ((Text) nd).getData();
-                  if (content.indexOf("rxbodyfield") != -1)
+                  if (content.contains("rxbodyfield"))
                      bodyFields.add((Text) nd);
                }
             }

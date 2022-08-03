@@ -18,7 +18,7 @@
   <xsl:import href="file:sys_resources/stylesheets/assemblers/sys_ContextTemplates.xsl"/>
   <xsl:import href="file:sys_resources/stylesheets/assemblers/sys_Globals.xsl"/>
   <xsl:import href="file:rx_resources/stylesheets/assemblers/rx_Globals.xsl"/>
-  <xsl:output encoding="UTF-8"/>
+  <xsl:output encoding="UTF-8" />
   <xsl:variable name="related" select="/*/sys_AssemblerInfo/RelatedContent"/>
   <xsl:variable name="syscommand" select="//@sys_command"/>
   <xsl:variable name="this" select="/"/>

@@ -12,7 +12,7 @@
                 exclude-result-prefixes="psxi18n">
    <xsl:import href="file:sys_resources/stylesheets/sys_I18nUtils.xsl"/>
    <xsl:variable name="lang" select="//@lang"/>
-   <xsl:output method="xml"/>
+   <xsl:output method="xml" encoding="UTF-8" />
    <xsl:variable name="contentstatus" select="document(//contentstatusurl)"/>
    <xsl:template match="/">
       <html>

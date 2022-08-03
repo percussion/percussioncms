@@ -17,7 +17,7 @@
                 xmlns:psxi18n="com.percussion.i18n" extension-element-prefixes="psxi18n" >
 
 <xsl:strip-space elements="html:p html:span" /> 
-<xsl:output method="xml" /> 
+<xsl:output method="xml" encoding="UTF-8"/>
 
 <!-- don't show any nodes that contain deleted text (Word's track changes) -->
 <xsl:template match="html:del" mode="contentfilter"/>

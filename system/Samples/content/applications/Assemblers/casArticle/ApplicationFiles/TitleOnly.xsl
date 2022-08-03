@@ -20,7 +20,7 @@
   <xsl:import href="file:sys_resources/stylesheets/assemblers/sys_Globals.xsl"/>
   <xsl:import href="file:rx_resources/stylesheets/assemblers/rx_Globals.xsl"/>
 <!-- begin XSL -->
-<xsl:output method="xml" omit-xml-declaration="yes" />
+<xsl:output method="xml" omit-xml-declaration="yes" encoding="UTF-8" />
 <!-- end XSL -->
   <xsl:variable name="related" select="/*/sys_AssemblerInfo/RelatedContent"/>
   <xsl:variable name="syscommand" select="//@sys_command"/>

@@ -59,6 +59,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -175,7 +176,7 @@ public class PSXdTextCleanup extends PSDefaultExtension
       throws PSAuthorizationException, PSRequestValidationException,
       PSParameterMismatchException, PSExtensionProcessingException
    {
-      String encodingDefault = null;
+      String encodingDefault = StandardCharsets.UTF_8.name();
       boolean inlineDisable = false;
 
 

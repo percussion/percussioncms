@@ -42,7 +42,7 @@ override inlinelinkconverter.xsl with this file, then run the RhythmyxInlineLink
 -->
 <xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 exclude-result-prefixes="urlencoder">
-	<xsl:output method="xml"/>
+	<xsl:output method="xml" encoding="UTF-8" />
 	<!-- main template -->
 	<xsl:template match="/">
 		<xsl:apply-templates select="." mode="rxbodyfield"/>

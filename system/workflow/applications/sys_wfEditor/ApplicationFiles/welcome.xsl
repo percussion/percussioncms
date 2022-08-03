@@ -16,7 +16,7 @@
                 xmlns="http://www.w3.org/1999/xhtml" xmlns:psxi18n="com.percussion.i18n"
                 extension-element-prefixes="psxi18n" exclude-result-prefixes="psxi18n">
 	<xsl:import href="file:sys_resources/stylesheets/sys_bannerTemplate.xsl"/>
-	<xsl:output method="html" omit-xml-declaration="yes"/>
+	<xsl:output method="html" omit-xml-declaration="yes" encoding="UTF-8" />
 	<xsl:include href="file:sys_wfLookups/workflowslist.xsl"/>
 	<xsl:variable name="this" select="/"/>
 	<xsl:variable name="extworkflows" select="/*/URL/extworkflows"/>

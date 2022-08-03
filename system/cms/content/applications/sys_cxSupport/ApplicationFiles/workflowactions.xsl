@@ -2,7 +2,7 @@
 <xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" exclude-result-prefixes="urlencoder"
                 extension-element-prefixes="psxi18n">
 	<!-- main template -->
-	<xsl:output method="xml"/>
+	<xsl:output method="xml" encoding="UTF-8" />
 	<xsl:variable name="chkoutuser" select="translate(//BasicInfo/@CheckOutUserName, 'abcdefghijklmnopqrstuvwxyz' , 'ABCDEFGHIJKLMNOPQRSTUVWXYZ')"/>
 	<xsl:variable name="loginuser" select="translate(//BasicInfo/UserName, 'abcdefghijklmnopqrstuvwxyz' , 'ABCDEFGHIJKLMNOPQRSTUVWXYZ')"/>
 	<xsl:variable name="isAssignee" select="//BasicInfo/UserName/@assignmentType > 2"/>

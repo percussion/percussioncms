@@ -15,7 +15,7 @@
 <xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:psxi18n="com.percussion.i18n" extension-element-prefixes="psxi18n" exclude-result-prefixes="psxi18n">
    <xsl:import href="file:sys_resources/stylesheets/sys_I18nUtils.xsl"/>
-   <xsl:output method= "html" indent= "yes" doctype-public= "-//W3C//DTD XHTML 1.0 Strict//EN" doctype-system = "DTD/xhtml1-strict.dtd" />
+   <xsl:output method= "html" indent= "yes" doctype-public= "-//W3C//DTD XHTML 1.0 Strict//EN" doctype-system = "DTD/xhtml1-strict.dtd" encoding="UTF-8" />
    <xsl:variable name="lang" select="//@lang"/>
    <xsl:template match="/">
       <html lang="{$lang}">
