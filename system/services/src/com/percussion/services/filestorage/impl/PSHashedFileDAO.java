@@ -314,7 +314,7 @@ public class PSHashedFileDAO implements IPSHashedFileDAO
    {
 
 
-      CriteriaBuilder builder = session.getCriteriaBuilder();
+      CriteriaBuilder builder = getSession().getCriteriaBuilder();
       CriteriaQuery<PSBinaryMetaKey> criteria = builder.createQuery(PSBinaryMetaKey.class);
       Root<PSBinaryMetaKey> critRoot = criteria.from(PSBinaryMetaKey.class);
       criteria.where(builder.equal(critRoot.get("name"),keyname));
