@@ -60,6 +60,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.security.acl.Permission;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -315,11 +318,16 @@ public class PSAclService implements IPSAclService
             acls.add(acl.get(0));
          }
          else {
-            //ACL is not in cache.
+         //ACL is not in cache.
             Session session = getSession();
-            Criteria crit = session.createCriteria(PSAclImpl.class).add(Restrictions.eq("objectId", (long) guid.getUUID()));
-            List<PSAclImpl> results = crit.list();
+            CriteriaBuilder builder = session.getCriteriaBuilder();
+            CriteriaQuery<PSAclImpl> criteria = builder.createQuery(PSAclImpl.class);
+            Root<PSAclImpl> critRoot = criteria.from(PSAclImpl.class);
 
+            if (guid != null)
+               criteria.where(builder.equal(critRoot.get("objectId"), (long) guid.getUUID()));
+
+            List<PSAclImpl> results =  entityManager.createQuery(criteria).getResultList();
             if(results != null && !results.isEmpty()) {
                acls.addAll(results);
 
@@ -359,7 +367,11 @@ public class PSAclService implements IPSAclService
    {
       synchronized (this) {
          getSession().flush();
-         List<IPSAcl> acls = getSession().createCriteria(PSAclImpl.class).setCacheable(false).list();
+         CriteriaBuilder builder = getSession().getCriteriaBuilder();
+         CriteriaQuery criteria = builder.createQuery(PSAclImpl.class);
+         Root critRoot = criteria.from(PSAclImpl.class);
+
+         List<IPSAcl> acls = entityManager.createQuery(criteria).getResultList();
          for (IPSAcl acl : acls) {
             if (acl.getObjectId() >> 32 != 0) {
                ms_logger.error("Fixing acl entry with bad id " + acl.getObjectId());
