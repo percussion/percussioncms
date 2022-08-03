@@ -88,7 +88,6 @@ public class PSConfigStatusMgr  implements IPSConfigStatusMgr
       
        getSession().saveOrUpdate(obj);
    }
-   
    /*
     * (non-Javadoc)
     * @see com.percussion.rx.config.IPSConfigStatusMgr#loadConfigStatus(long)
@@ -113,7 +112,7 @@ public class PSConfigStatusMgr  implements IPSConfigStatusMgr
       CriteriaQuery<PSConfigStatus> criteria = builder.createQuery(PSConfigStatus.class);
       Root<PSConfigStatus> critRoot = criteria.from(PSConfigStatus.class);
       criteria.where(builder.equal(critRoot.get("statusid"), statusID));
-      entityManager.createQuery(criteria).getSingleResult();
+      cfgStatus = entityManager.createQuery(criteria).getSingleResult();
 
          if (cfgStatus == null)
          {
