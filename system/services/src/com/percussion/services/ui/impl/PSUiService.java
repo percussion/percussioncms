@@ -42,6 +42,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -143,10 +146,14 @@ public class PSUiService implements IPSUiService
 
       Session session = getSession();
 
-      Criteria criteria = session.createCriteria(PSHierarchyNodeProperty.class);
-      criteria.add(Restrictions.eq("name", "guid"));
+     // Criteria criteria = session.createCriteria(PSHierarchyNodeProperty.class);
+      CriteriaBuilder builder = session.getCriteriaBuilder();
+      CriteriaQuery<PSHierarchyNodeProperty> criteria = builder.createQuery(PSHierarchyNodeProperty.class);
+      Root<PSHierarchyNodeProperty> critRoot = criteria.from(PSHierarchyNodeProperty.class);
+      criteria.where(builder.equal(critRoot.get("name"),"guid"));
+     // criteria.add(Restrictions.eq("name", "guid"));
 
-      return  criteria.list();
+      return  entityManager.createQuery(criteria).getResultList();
    }
 
    /*

@@ -49,6 +49,11 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.naming.NamingException;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.io.InputStream;
 import java.sql.Blob;
 import java.sql.Connection;
@@ -76,18 +81,14 @@ public class PSHashedFileDAO implements IPSHashedFileDAO
     */
    private static final Logger log = LogManager.getLogger(IPSConstants.CONTENTREPOSITORY_LOG);
 
-   private SessionFactory sessionFactory;
-
-   @Autowired
-   public void setSessionFactory(SessionFactory sessionFactory) {
-      this.sessionFactory = sessionFactory;
-   }
+   @PersistenceContext
+   private EntityManager entityManager;
 
    private Session getSession(){
-
-      return sessionFactory.getCurrentSession();
-
+      return entityManager.unwrap(Session.class);
    }
+
+
 
    /**
     * 
@@ -157,6 +158,8 @@ public class PSHashedFileDAO implements IPSHashedFileDAO
          Criteria crit = getSession().createCriteria(PSBinary.class);
          crit.add(Restrictions.eq("hash", hash));
          return (PSBinary) crit.uniqueResult();
+
+
       }
       else
          return null;
@@ -299,6 +302,8 @@ public class PSHashedFileDAO implements IPSHashedFileDAO
       Criteria crit = getSession().createCriteria(PSBinaryMetaKey.class);
       crit.addOrder(Order.asc("name"));
       return (List<PSBinaryMetaKey>) crit.list();
+
+
    }
 
    /* (non-Javadoc)
@@ -307,9 +312,13 @@ public class PSHashedFileDAO implements IPSHashedFileDAO
    @Override
    public PSBinaryMetaKey getMetaKey(String keyname)
    {
-      Criteria crit = getSession().createCriteria(PSBinaryMetaKey.class);
-      crit.add(Restrictions.eq("name", keyname));
-      return (PSBinaryMetaKey) crit.uniqueResult();
+
+
+      CriteriaBuilder builder = getSession().getCriteriaBuilder();
+      CriteriaQuery<PSBinaryMetaKey> criteria = builder.createQuery(PSBinaryMetaKey.class);
+      Root<PSBinaryMetaKey> critRoot = criteria.from(PSBinaryMetaKey.class);
+      criteria.where(builder.equal(critRoot.get("name"),keyname));
+      return entityManager.createQuery(criteria).getSingleResult();
    }
 
    /* (non-Javadoc)
