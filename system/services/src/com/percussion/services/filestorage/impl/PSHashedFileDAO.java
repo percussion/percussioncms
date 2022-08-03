@@ -66,6 +66,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
+import static sun.awt.shell.Win32ShellFolderManager2.recent;
+
 /**
  * @author stephenbolton
  *
@@ -155,10 +157,12 @@ public class PSHashedFileDAO implements IPSHashedFileDAO
 
       if (hash != null && StringUtils.isNotBlank(hash))
       {
-         Criteria crit = getSession().createCriteria(PSBinary.class);
-         crit.add(Restrictions.eq("hash", hash));
-         return (PSBinary) crit.uniqueResult();
-
+//
+         CriteriaBuilder builder = getSession().getCriteriaBuilder();
+         CriteriaQuery<PSBinary> criteria = builder.createQuery(PSBinary.class);
+         Root<PSBinary> critRoot = criteria.from(PSBinary.class);
+         criteria.where(builder.equal(critRoot.get("hash"),hash));
+         return entityManager.createQuery(criteria).getSingleResult();
 
       }
       else
@@ -299,10 +303,15 @@ public class PSHashedFileDAO implements IPSHashedFileDAO
    @Override
    public List<PSBinaryMetaKey> getMetaKeys()
    {
-      Criteria crit = getSession().createCriteria(PSBinaryMetaKey.class);
-      crit.addOrder(Order.asc("name"));
-      return (List<PSBinaryMetaKey>) crit.list();
+//      Criteria crit = getSession().createCriteria(PSBinaryMetaKey.class);
+//      crit.addOrder(Order.asc("name"));
+//      return (List<PSBinaryMetaKey>) crit.list();
 
+      CriteriaBuilder builder = getSession().getCriteriaBuilder();
+      CriteriaQuery<PSBinaryMetaKey> criteria = builder.createQuery(PSBinaryMetaKey.class);
+      Root<PSBinaryMetaKey> critRoot = criteria.from(PSBinaryMetaKey.class);
+      criteria.orderBy(builder.asc(critRoot.get("name")));
+      return entityManager.createQuery(criteria).getResultList();
 
    }
 
