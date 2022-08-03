@@ -302,9 +302,7 @@ public class PSHashedFileDAO implements IPSHashedFileDAO
    @Override
    public List<PSBinaryMetaKey> getMetaKeys()
    {
-//      Criteria crit = getSession().createCriteria(PSBinaryMetaKey.class);
-//      crit.addOrder(Order.asc("name"));
-//      return (List<PSBinaryMetaKey>) crit.list();
+
 
       CriteriaBuilder builder = getSession().getCriteriaBuilder();
       CriteriaQuery<PSBinaryMetaKey> criteria = builder.createQuery(PSBinaryMetaKey.class);
