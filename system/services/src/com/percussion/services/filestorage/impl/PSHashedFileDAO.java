@@ -156,7 +156,7 @@ public class PSHashedFileDAO implements IPSHashedFileDAO
 
       if (hash != null && StringUtils.isNotBlank(hash))
       {
-//
+
          CriteriaBuilder builder = getSession().getCriteriaBuilder();
          CriteriaQuery<PSBinary> criteria = builder.createQuery(PSBinary.class);
          Root<PSBinary> critRoot = criteria.from(PSBinary.class);
