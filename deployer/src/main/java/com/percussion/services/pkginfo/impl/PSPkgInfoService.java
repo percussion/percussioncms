@@ -644,7 +644,7 @@ implements IPSPkgInfoService
       CriteriaQuery<PSPkgDependency> criteria = builder.createQuery(PSPkgDependency.class);
       Root<PSPkgDependency> critRoot = criteria.from(PSPkgDependency.class);
       criteria.where(builder.equal(critRoot.get("pkgDependencyId"), pkgDepId));
-      PSPkgDependency pkgDeps = entityManager.createQuery(criteria).getSingleResult();
+      PSPkgDependency pkgDep = entityManager.createQuery(criteria).getSingleResult();
 
          if (pkgDep == null)
             return;
