@@ -133,8 +133,11 @@ public class PSDesignObjectAuditService
    {
       Session session = getSession();
 
-         Criteria criteria = session.createCriteria(PSAuditLogEntry.class);
-         return criteria.list();
+
+      CriteriaBuilder builder = getSession().getCriteriaBuilder();
+      CriteriaQuery<PSAuditLogEntry> criteria = builder.createQuery(PSAuditLogEntry.class);
+      Root<PSAuditLogEntry> critRoot = criteria.from(PSAuditLogEntry.class);
+      return entityManager.createQuery(criteria).getResultList();
 
    }
 
