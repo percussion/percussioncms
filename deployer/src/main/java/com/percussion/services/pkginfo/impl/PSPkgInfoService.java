@@ -26,6 +26,7 @@ package com.percussion.services.pkginfo.impl;
 import com.percussion.rx.config.data.PSConfigStatus;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.error.PSNotFoundException;
+import com.percussion.services.filestorage.data.PSBinary;
 import com.percussion.services.filestorage.data.PSBinaryMetaKey;
 import com.percussion.services.guidmgr.IPSGuidManager;
 import com.percussion.services.guidmgr.PSGuidManagerLocator;
@@ -221,8 +222,11 @@ implements IPSPkgInfoService
       List<PSPkgInfo>  pkgInfoList = null;
       Session session = getSession();
 
-         Criteria criteria = session.createCriteria(PSPkgInfo.class);
-         pkgInfoList = criteria.list();      
+
+      CriteriaBuilder builder = getSession().getCriteriaBuilder();
+      CriteriaQuery<PSPkgInfo> criteria = builder.createQuery(PSPkgInfo.class);
+      Root<PSPkgInfo> critRoot = criteria.from(PSPkgInfo.class);
+      pkgInfoList = entityManager.createQuery(criteria).getResultList();
 
       return pkgInfoList;
    }
