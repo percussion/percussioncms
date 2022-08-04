@@ -121,8 +121,7 @@ public class PSManagedLinksConverter extends PSDefaultExtension implements IPSFi
             if(!elem.hasAttr(IPSManagedLinkService.LEGACY_INLINETYPE) && (managedService.doManageAll() || elem.attr(IPSManagedLinkService.PERC_MANAGED_ATTR).equalsIgnoreCase(IPSManagedLinkService.TRUE_VAL)))
                 convertToOldLinks(elem, RXIMAGE, attribs);
         }
-        //TODO:  This should be returning the contents of the body tag - not the html shell around the contents
-        return doc.html();
+        return doc.body().html();
     }
     
     @SuppressWarnings("deprecation")

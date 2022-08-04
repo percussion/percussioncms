@@ -31,6 +31,8 @@ import com.percussion.security.xml.PSXmlSecurityOptions;
 import com.percussion.utils.tools.IPSUtilsConstants;
 import com.percussion.utils.xml.PSProcessServerPageTags;
 import com.percussion.utils.xml.PSSaxParseException;
+import com.sun.org.apache.xml.internal.serialize.OutputFormat;
+import org.apache.commons.lang.CharEncoding;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jsoup.Jsoup;
@@ -500,6 +502,16 @@ public class PSXmlDocumentBuilder {
 
 
         Document doc = db.parse(in);
+        // Append formatting
+        OutputFormat format = new OutputFormat(doc);
+
+        if (doc.getXmlEncoding() != null) {
+            format.setEncoding(doc.getXmlEncoding());
+        }else{
+            format.setEncoding(CharEncoding.UTF_8);
+        }
+
+
         returnDocumentBuilder(db);
 
         /*
@@ -575,7 +587,10 @@ public class PSXmlDocumentBuilder {
             tidiedSource = source;
         }
 
-        return createXmlDocument(new InputSource(new StringReader(tidiedSource)),
+        InputSource str = new InputSource(new StringReader(tidiedSource));
+        str.setEncoding("UTF-8");
+
+        return createXmlDocument(str,
             validate);
     }
 
@@ -683,7 +698,7 @@ public class PSXmlDocumentBuilder {
             if (serverPageTags != null) {
                 preProcessed = serverPageTags.preProcess(preProcessed);
             }
-            String outputStr = Jsoup.parse(preProcessed,"UTF-8").toString();
+            String outputStr = Jsoup.parse(preProcessed,"UTF-8").body().toString();
 
 
                 //if (tidy.getParseErrors() > 0) {
@@ -1407,6 +1422,7 @@ public class PSXmlDocumentBuilder {
         if (inStr == null) {
             return inStr;
         }
+
         inStr = Normalizer.normalize(inStr,Normalizer.Form.NFC);
 
 //        StringBuilder inBuf = new StringBuilder(inStr);

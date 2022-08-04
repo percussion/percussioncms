@@ -39,9 +39,6 @@ import com.percussion.server.IPSRequestContext;
 import com.percussion.server.PSRequestValidationException;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.util.PSPurgableTempFile;
-import com.percussion.utils.string.PSXmlPIUtils;
-import com.percussion.utils.string.PSXmlPIUtils.Action;
-import com.percussion.utils.types.PSPair;
 import com.percussion.xml.PSXmlTreeWalker;
 import org.apache.commons.lang.CharUtils;
 import org.apache.commons.lang.StringUtils;
@@ -178,7 +175,7 @@ public class PSXdTextCleanup extends PSDefaultExtension
    {
       String encodingDefault = StandardCharsets.UTF_8.name();
       boolean inlineDisable = false;
-
+      Document tempXMLDocument = null;
 
       PSXmlDomContext contxt = new PSXmlDomContext(ms_className, request);
       contxt.setRxCommentHandling(true);
@@ -247,7 +244,7 @@ public class PSXdTextCleanup extends PSDefaultExtension
       param = PSXmlDomUtils.getParameter(params, 5, null);
       if (param != null && param.equalsIgnoreCase("yes"))
          contxt.setUsePrettyPrint(false);
-      W3CDom w3cHelper = new W3CDom();
+
 
       Object inputSourceObj = request.getParameterObject(fileParamName);
       if (null == inputSourceObj)
@@ -261,7 +258,6 @@ public class PSXdTextCleanup extends PSDefaultExtension
       
       try
       {
-         Document tempXMLDocument = null;
          if (inputSourceObj instanceof PSPurgableTempFile)
          {
 
@@ -291,24 +287,57 @@ public class PSXdTextCleanup extends PSDefaultExtension
                contxt.printTraceMessage("the source is empty");
                return;
             }
-            PSPair<Map<Integer, PSPair<Action, String>>, String> piresult = null;
+//            PSPair<Map<Integer, PSPair<Action, String>>, String> piresult = null;
+//
+//            if (escape_tags)
+//            {
+//               piresult = PSXmlPIUtils.encodeTags(inputSourceString);
+//               inputSourceString = piresult.getSecond();
+//            }
 
-            if (escape_tags)
-            {
-               piresult = PSXmlPIUtils.encodeTags(inputSourceString);
-               inputSourceString = piresult.getSecond();
-            }
+           // tempXMLDocument = W3CDom.convert(Jsoup.parse(inputSourceString,"UTF-8"));
 
-            if (tempXMLDocument == null)
-            {
-               contxt.printTraceMessage("the source document is null");
-               return;
-            }
-
+//            if (escape_tags)
+//            {
+//               PSXmlPIUtils.substitutePIs(tempXMLDocument, piresult.getFirst());
+//            }
+//            if (tempXMLDocument == null)
+//            {
+//               contxt.printTraceMessage("the source document is null");
+//               return;
+//         }
          }
-         request.setParameter(fileParamName, inputSourceString);
 
+//         NodeList nl = tempXMLDocument.getElementsByTagName("body");
+//         Element divBody = null;
+//         Map nsMap = new HashMap();
+//         if(nl.getLength() > 0)
+//           divBody = (Element)nl.item(0);
+//         if(divBody!=null)
+//         {
+//            NamedNodeMap nm = ((Element)divBody).getAttributes();
+//            for(int i=0; i<nm.getLength(); i++)
+//            {
+//               Attr atr = (Attr)nm.item(i);
+//               if(atr.getName().startsWith("xmlns"))
+//                  nsMap.put(atr.getName(), atr.getValue());
+//            }
+//         }
+      //  Document resultDoc = findBodyField(contxt, inputSourceString);
+        /// NodeList nodes = resultDoc.getElementsByTagName("body");
+         String outputString = addBodyFieldJsoup(contxt, inputSourceString);
+         request.setParameter(fileParamName,  outputString);
 
+//        if (resultDoc != null)
+//         {
+//           classicCleanup(request, inlineDisable, contxt, fileParamName,
+//                 nsMap, resultDoc, itemDef, field);
+//           if (cleanup_namespaces)
+//              improvedCleanup(resultDoc, declared_namespaces);
+//           String outputString =
+//              PSXmlDomUtils.copyTextFromDocument(contxt, resultDoc, ".");
+//           request.setParameter(fileParamName,  outputString);
+//         }
       }
       catch (Exception e)
       {
@@ -717,12 +746,13 @@ public class PSXdTextCleanup extends PSDefaultExtension
     * @return the document after post processing.
     *
     **/
-   private Document findBodyField(PSXmlDomContext ctx, Document inputDoc)
+   private Document findBodyField(PSXmlDomContext ctx, String inputDoc)
          throws PSExtensionProcessingException
    {
       //a new empty document
-      Document outputDoc = PSXmlDocumentBuilder.createXmlDocument();
-      PSXmlTreeWalker srcWalker = new PSXmlTreeWalker(inputDoc);
+     // Document outputDoc = W3CDom.convert(Jsoup.parse(W3CDom.asString(inputDoc,null)));
+      Document outputDoc = W3CDom.convert(Jsoup.parse(inputDoc));
+      PSXmlTreeWalker srcWalker = new PSXmlTreeWalker(outputDoc);
       Element docElement = (Element) srcWalker.getCurrent();
 
       if (docElement.getNodeName().equalsIgnoreCase("div") &&
@@ -802,7 +832,29 @@ public class PSXdTextCleanup extends PSDefaultExtension
          outputDoc.removeChild(outputRoot);
       return outputDoc;
    }
-   
+
+   private String addBodyFieldJsoup(PSXmlDomContext ctx, String inputDoc)
+           throws PSExtensionProcessingException
+   {
+      //a new empty document
+      // Document outputDoc = W3CDom.convert(Jsoup.parse(W3CDom.asString(inputDoc,null)));
+      org.jsoup.nodes.Document outputDoc = Jsoup.parseBodyFragment(inputDoc);
+      //PSXmlTreeWalker srcWalker = new PSXmlTreeWalker(outputDoc);
+      //Element docElement = (Element) srcWalker.getCurrent();
+      org.jsoup.nodes.Element divElem = outputDoc.selectFirst("div");
+      if(divElem != null) {
+         divElem.attr("class", RXBODYFIELD_CLASS);
+      }else{
+         org.jsoup.nodes.Element body = outputDoc.select("body").first();
+         org.jsoup.nodes.Element div = new org.jsoup.nodes.Element("div");
+         div.attr("class",RXBODYFIELD_CLASS);
+         div.html(body.html());
+         body.html(div.outerHtml());
+      }
+
+
+      return outputDoc.body().html();
+   }
    /**
     * Determines if that the element should be considered empty. This
     * is needed for content from the rich text editor so we can determine

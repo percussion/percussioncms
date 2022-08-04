@@ -54,8 +54,6 @@ import com.percussion.utils.xml.PSProcessServerPageTags;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.jsoup.Jsoup;
-import org.jsoup.helper.W3CDom;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -121,43 +119,43 @@ public class PSInlineLinkField
     *
     * @param request the request that contains the field to be processed as
     *    HTML parameter, not <code>null</code>.
-    * @param deletes The relationship set used to keep track of relationships 
+    * @param deletes The relationship set used to keep track of relationships
     *    that need to be deleted in the post process. It should be initialized
-    *    by {@link getInlineRelationships(IPSRequestContext)}. It may not be 
-    *    <code>null</code>, but may be empty. 
-    * @param modifies The relationship set used to keep track of relationships 
-    *    that need to be modified in the post process. It may not be 
+    *    by {@link getInlineRelationships(IPSRequestContext)}. It may not be
     *    <code>null</code>, but may be empty.
-    * 
+    * @param modifies The relationship set used to keep track of relationships
+    *    that need to be modified in the post process. It may not be
+    *    <code>null</code>, but may be empty.
+    *
     * @throws IOException for any I/O errors.
     * @throws SAXException for any parsing error.
     * @throws PSCmsException for all other errors.
     */
    public void preProcess(
-      PSRequest request,
-      PSRelationshipSet deletes,
-      PSRelationshipSet modifies)
-      throws PSCmsException, IOException, SAXException
+           PSRequest request,
+           PSRelationshipSet deletes,
+           PSRelationshipSet modifies)
+           throws PSCmsException, IOException, SAXException
    {
       if (request == null)
          throw new IllegalArgumentException("request cannot be null");
-         
+
       preProcess(new PSRequestContext(request), deletes, modifies);
    }
-   
-   
+
+
    /**
     * Just like {@link preProcess(PSRequest)} except it accepts an
     * <code>IPSRequestContext</code> parameter.
-    * 
+    *
     * @param request the request that contains the field to be processed as
     *    HTML parameter, not <code>null</code>.
     */
    public void preProcess(
-      IPSRequestContext request,
-      PSRelationshipSet deletes,
-      PSRelationshipSet modifies)
-      throws IOException, SAXException, PSCmsException
+           IPSRequestContext request,
+           PSRelationshipSet deletes,
+           PSRelationshipSet modifies)
+           throws IOException, SAXException, PSCmsException
    {
       if (request == null)
          throw new IllegalArgumentException("request cannot be null");
@@ -175,37 +173,36 @@ public class PSInlineLinkField
          {
             tidyProperties = new Properties();
             tidyProperties.load(new FileInputStream(PSServer.getRxDir()
-                  + File.separator + m_field.getCleanupPropertiesFile()));
+                    + File.separator + m_field.getCleanupPropertiesFile()));
 
             serverPageTags = new PSProcessServerPageTags(new File(
-               PSServer.getRxDir(), m_field.getCleanupServerPageTagFile()));
+                    PSServer.getRxDir(), m_field.getCleanupServerPageTagFile()));
          }
 
 //         String serverRoot = "127.0.0.1:" + PSServer.getListenerPort() +
-//            PSServer.getRequestRoot();
+//                 PSServer.getRequestRoot();
 //         Document fieldDoc = PSXmlDocumentBuilder.createXmlDocument(
-//            fieldValue, serverRoot, tidyProperties, serverPageTags,
-//            m_field.getCleanupEncoding(), false);
-         org.jsoup.nodes.Document jsoupDoc = Jsoup.parse(fieldValue);
-         Document fieldDoc = new W3CDom().fromJsoup(jsoupDoc);
-
+//                 fieldValue, serverRoot, tidyProperties, serverPageTags,
+//                 m_field.getCleanupEncoding(), false);
 
          PSRelationshipProcessor processor = PSRelationshipProcessor.getInstance();
 
-         processField(fieldDoc.getDocumentElement(), request, processor,
-            m_field.cleanupBrokenInlineLinks(), deletes, modifies);
+//         processField(fieldDoc.getDocumentElement(), request, processor,
+//                 m_field.cleanupBrokenInlineLinks(), deletes, modifies);
+//
+//         boolean isModified = expandEmptyElement(fieldDoc);
 
-         boolean isModified = expandEmptyElement(fieldDoc);
+         //Use the version to not to indent. Indenting may messup JavaScript
+         //if present.
+        // String outputString = W3CDom.asString(fieldDoc,null);
+         String outputString = fieldValue;
 
-         String outputString =jsoupDoc.toString();
+//         if(isModified)
+//         {
+//            outputString = replaceString(outputString, ELEM_FILLER, "");
+//         }
 
 
-         if(isModified)
-         {
-            outputString = replaceString(outputString, ELEM_FILLER, "");
-         }
-       
-         
          request.setParameter(m_field.getSubmitName(), outputString);
       }
    }
@@ -215,16 +212,16 @@ public class PSInlineLinkField
     * some dummytext. You should call @link replaceString(String,String,String)
     * method to remove the dummytext.
     * @param fieldDoc must not be <code>null</code> or <code>empty</code>.
-    * @return <code>true</code> if expands any empty elements otherwise 
+    * @return <code>true</code> if expands any empty elements otherwise
     * <code>false</code>.
     */
    public static boolean expandEmptyElement(Document fieldDoc)
    {
       //Fix for empty elements like textareas and anchor tags.
-      /* 
+      /*
        * Empty elements are getting closed by tidy(like <a id="top"></a>
-       * <a id="top"/>, when the same document opened in ektron, 
-       * these elements are getting expanded by wrapping some other 
+       * <a id="top"/>, when the same document opened in ektron,
+       * these elements are getting expanded by wrapping some other
        * text inside them. We first add a filler text for the empty elements
        * if any and then we remove the filler text by string replace method.
        */
@@ -244,7 +241,7 @@ public class PSInlineLinkField
                }
             }
          }
-         
+
       }
       return isModified;
    }
@@ -258,16 +255,16 @@ public class PSInlineLinkField
     * @param request the request to operate on, not <code>null</code>.
     * @param deletes the to be deleted relationships, not <code>null</code>.
     * @param modifies the to be modified relationships, not <code>null</code>.
-    * 
+    *
     * @throws IOException for any I/O errors.
     * @throws SAXException for any parsing error.
     * @throws PSCmsException for all other errors.
     */
    public static void postProcess(
-      PSRequest request,
-      PSRelationshipSet deletes,
-      PSRelationshipSet modifies)
-      throws IOException, SAXException, PSCmsException
+           PSRequest request,
+           PSRelationshipSet deletes,
+           PSRelationshipSet modifies)
+           throws IOException, SAXException, PSCmsException
    {
       if (request == null)
          throw new IllegalArgumentException("request cannot be null");
@@ -275,22 +272,22 @@ public class PSInlineLinkField
          throw new IllegalArgumentException("deletes cannot be null");
       if (modifies == null)
          throw new IllegalArgumentException("modifies cannot be null");
-         
+
       postProcess(new PSRequestContext(request), deletes, modifies);
    }
-   
+
    /**
     * Just like {@link postProcess(PSRequest)} except it accepts an
     * <code>IPSRequestContext</code> parameter.
-    * 
+    *
     * @param request the request that contains the field to be processed as
     *    HTML parameter, not <code>null</code>.
     */
    public static void postProcess(
-      IPSRequestContext request,
-      PSRelationshipSet deletes,
-      PSRelationshipSet modifies)
-      throws IOException, SAXException, PSCmsException
+           IPSRequestContext request,
+           PSRelationshipSet deletes,
+           PSRelationshipSet modifies)
+           throws IOException, SAXException, PSCmsException
    {
       if (request == null)
          throw new IllegalArgumentException("request cannot be null");
@@ -300,10 +297,10 @@ public class PSInlineLinkField
          throw new IllegalArgumentException("modifies cannot be null");
 
       PSRelationshipProcessor processor = PSRelationshipProcessor.getInstance();
-         
+
       // process moidifies
       processor.save(modifies);
-      
+
       // process deletes
       processor.delete(deletes);
    }
@@ -315,48 +312,48 @@ public class PSInlineLinkField
     * relationships as well.
     *
     * @param request the request to operate on, it may not be <code>null</code>.
-    * 
+    *
     * @return a set of relationships with all existing inline relationships,
     *    never <code>null</code>, may be empty.
     */
    public static PSRelationshipSet getInlineRelationships(
-      IPSRequestContext request)
-      throws PSCmsException
+           IPSRequestContext request)
+           throws PSCmsException
    {
       try
       {
          if (request == null)
             throw new IllegalArgumentException("request may not be null");
-      
+
          PSRelationshipProcessor processor = PSRelationshipProcessor.getInstance();
          PSRelationshipSet result = new PSRelationshipSet();
 
          String contentid = request.getParameter(
-            IPSHtmlParameters.SYS_CONTENTID);
+                 IPSHtmlParameters.SYS_CONTENTID);
          String revision = request.getParameter(
-            IPSHtmlParameters.SYS_REVISION);
+                 IPSHtmlParameters.SYS_REVISION);
          PSLocator owner = new PSLocator(contentid, revision);
 
          PSRelationshipSet relationships = processor.getDependents(
-            PSRelationshipConfig.TYPE_ACTIVE_ASSEMBLY, owner);
+                 PSRelationshipConfig.TYPE_ACTIVE_ASSEMBLY, owner);
 
          for (int i=0; i<relationships.size(); i++)
          {
             PSRelationship relationship = (PSRelationship) relationships.get(i);
             String test = relationship.getProperty(
-               PSRelationshipConfig.RS_INLINERELATIONSHIP);
+                    PSRelationshipConfig.RS_INLINERELATIONSHIP);
 
             String slotid = relationship.getProperty(
-               IPSHtmlParameters.SYS_SLOTID);
-            if ((test != null && test.trim().length() > 0) || 
-               isInlineSlot(slotid)) 
+                    IPSHtmlParameters.SYS_SLOTID);
+            if ((test != null && test.trim().length() > 0) ||
+                    isInlineSlot(slotid))
             {
                if ((test == null || test.trim().length() == 0)
-                     && isInlineSlot(slotid))
+                       && isInlineSlot(slotid))
                {
                   relationship
-                     .setProperty(PSRelationshipConfig.RS_INLINERELATIONSHIP, 
-                           "yes");
+                          .setProperty(PSRelationshipConfig.RS_INLINERELATIONSHIP,
+                                  "yes");
                }
                result.add(relationship);
             }
@@ -369,17 +366,17 @@ public class PSInlineLinkField
          throw new PSCmsException(e);
       }
    }
-   
+
    /**
-    * Convenience method that calls 
-    * {@link #modifyField(Element, Map, Collection) 
+    * Convenience method that calls
+    * {@link #modifyField(Element, Map, Collection)
     * modifyField(elem, relationshipMap, null)}
     */
    public static void modifyField(Element elem, Map<?, ?> relationshipMap)
    {
       modifyField(elem, relationshipMap, null);
    }
-   
+
    /**
     * Modifies the field in the supplied element for inline links. It replaces
     * the existing Inline links with the supplied new one. The inline links are
@@ -393,13 +390,13 @@ public class PSInlineLinkField
     * @param relationshipMap the relationship mapper. It maps each existing
     *    relationship id (in <code>Integer</code> to the cloned relationship (in
     *    <code>PSRelationship</code>). It may not be <code>null</code>.
-    * 
-    * @param modified <code>PSRelationship</code> objects for which a link is 
+    *
+    * @param modified <code>PSRelationship</code> objects for which a link is
     *    modified by this method are added to this collection if supplied.  May
     *    be <code>null</code>, may or may not be empty.
     */
-   public static void modifyField(Element elem, Map<?,?> relationshipMap, 
-      Collection<PSRelationship> modified)
+   public static void modifyField(Element elem, Map<?,?> relationshipMap,
+                                  Collection<PSRelationship> modified)
    {
       if (elem == null)
          throw new IllegalArgumentException("elem may not be null");
@@ -424,23 +421,23 @@ public class PSInlineLinkField
          }
       }
    }
-   
+
    /**
     * Convenience method which calls {@link getInlineRelationshipId(
     * IPSRequestContext, PSField) getInlineRelationshipId(
     * new PSRequestContext(request), field)}.
     */
-   public static String getInlineRelationshipId(PSRequest request, 
-      PSField field)
+   public static String getInlineRelationshipId(PSRequest request,
+                                                PSField field)
    {
       return getInlineRelationshipId(new PSRequestContext(request), field);
    }
-   
+
    /**
-    * Get the inline relationship id for the supplied parameters. See 
+    * Get the inline relationship id for the supplied parameters. See
     * {@link makeInlineRelationshipId(String, String)} for more info on the
     * inline relationship id format.
-    * 
+    *
     * @param request the request for which to produce the inline relationship
     *    id, not <code>null</code>.
     * @param field the field for which to produce the inline relationship id,
@@ -448,40 +445,40 @@ public class PSInlineLinkField
     * @return the inline relationship id for the supplied request and field,
     *    see method description for details, never <code>null</code> or empty.
     */
-   public static String getInlineRelationshipId(IPSRequestContext request, 
-      PSField field)
+   public static String getInlineRelationshipId(IPSRequestContext request,
+                                                PSField field)
    {
       if (request == null)
          throw new IllegalArgumentException("request cannot be null");
-         
+
       if (field == null)
          throw new IllegalArgumentException("field cannot be null");
-         
+
       String childrowid = request.getParameter(
-         PSContentEditorHandler.CHILD_ROW_ID_PARAM_NAME);
-         
+              PSContentEditorHandler.CHILD_ROW_ID_PARAM_NAME);
+
       return makeInlineRelationshipId(field.getSubmitName(), childrowid);
    }
-   
+
    /**
     * Make an inline relationship id for the supplied parameters. The id has
     * the format <code>fieldName:childRowId</code>. If the supplied child
     * row id is <code>null</code> or empty, the returned id will just be
     * the <code>fieldName</code>.
-    * 
-    * @param fieldName The submit name of the content editor field that 
+    *
+    * @param fieldName The submit name of the content editor field that
     * contains the inline links. Never <code>null</code> or empty.
-    * 
+    *
     * @param childRowId The row id of the complex child that contains the
-    * field. If the field is in the parent editor, this value must be 
+    * field. If the field is in the parent editor, this value must be
     * <code>null</code> or empty. This method does not validate whether
     * the supplied field should have a child id or not.
-    * 
-    * @return the relationship id string in the format 
+    *
+    * @return the relationship id string in the format
     *    <code>fieldName:childRowId</code>, never <code>null</code> or empty.
     */
-   public static String makeInlineRelationshipId(String fieldName, 
-      String childRowId)
+   public static String makeInlineRelationshipId(String fieldName,
+                                                 String childRowId)
    {
       if (fieldName == null)
          throw new IllegalArgumentException("fieldName cannot be null");
@@ -489,120 +486,120 @@ public class PSInlineLinkField
       fieldName = fieldName.trim();
       if (fieldName.length() == 0)
          throw new IllegalArgumentException("fieldName cannot be empty");
-         
+
       if (childRowId == null || childRowId.trim().length() == 0)
          return fieldName;
 
       List<String> values = new ArrayList<>();
       values.add(fieldName);
-      values.add(childRowId);      
-      return PSStringOperation.append(values, INLINE_RELATIONSHIP_ID_DELIMITER); 
+      values.add(childRowId);
+      return PSStringOperation.append(values, INLINE_RELATIONSHIP_ID_DELIMITER);
    }
-   
+
    /**
     * Get the field name part of the supplied inline relationship id. See
     * {@link getInlineRelationshipId(IPSRequestContext, PSField)} for info on
     * the inline relationship id.
-    * 
+    *
     * @param inlineRelationshipId the inline relationship id from which to
-    * get the field name part, not <code>null</code> or empty. This must 
+    * get the field name part, not <code>null</code> or empty. This must
     * be a value previously generated by {@link getInlineRelationshipId(
     * IPSRequestContext, PSField)}
-    * 
-    * @return the field name part from the supplied inline relationship id, 
+    *
+    * @return the field name part from the supplied inline relationship id,
     *    never <code>null</code> or empty.
     */
    public static String getFieldName(String inlineRelationshipId)
    {
       if (inlineRelationshipId == null)
          throw new IllegalArgumentException(
-            "inlineRelationshipId cannot be null");
-            
+                 "inlineRelationshipId cannot be null");
+
       inlineRelationshipId = inlineRelationshipId.trim();
       if (inlineRelationshipId.length() == 0)
          throw new IllegalArgumentException(
-            "inlineRelationshipId cannot be empty");
-       
+                 "inlineRelationshipId cannot be empty");
+
       List<?> parts = PSStringOperation.getSplittedList(inlineRelationshipId,
-            INLINE_RELATIONSHIP_ID_DELIMITER.charAt(0));
-      return parts.get(0).toString();      
+              INLINE_RELATIONSHIP_ID_DELIMITER.charAt(0));
+      return parts.get(0).toString();
    }
-   
+
    /**
     * Get the child row id part of the supplied inline relationship id. See
     * {@link getInlineRelationshipId(IPSRequestContext, PSField)} for info on
     * the inline relationship id.
-    * 
+    *
     * @param inlineRelationshipId the inline relationship id from which to
-    * get the field name part, not <code>null</code> or empty. This must 
+    * get the field name part, not <code>null</code> or empty. This must
     * be a value previously generated by {@link getInlineRelationshipId(
     * IPSRequestContext, PSField)}
-    * 
-    * @return the child row part from the supplied inline relationship id, 
+    *
+    * @return the child row part from the supplied inline relationship id,
     *    may be <code>null</code> for parent fields but never empty.
     */
    public static String getChildRowId(String inlineRelationshipId)
    {
       if (inlineRelationshipId == null)
          throw new IllegalArgumentException(
-            "inlineRelationshipId cannot be null");
-            
+                 "inlineRelationshipId cannot be null");
+
       inlineRelationshipId = inlineRelationshipId.trim();
       if (inlineRelationshipId.length() == 0)
          throw new IllegalArgumentException(
-            "inlineRelationshipId cannot be empty");
-      
+                 "inlineRelationshipId cannot be empty");
+
       List<String> parts = PSStringOperation.getSplittedList(inlineRelationshipId,
-            INLINE_RELATIONSHIP_ID_DELIMITER.charAt(0));
+              INLINE_RELATIONSHIP_ID_DELIMITER.charAt(0));
       if (parts.size() == 0 || parts.size() > 2)
       {
-            throw new IllegalArgumentException(
-                  "Supplied id was not generated by this class.");
+         throw new IllegalArgumentException(
+                 "Supplied id was not generated by this class.");
       }
       if (parts.size() == 1)
          return null;
       else
          return parts.get(1).toString();
    }
-   
+
    /**
     * Test if the supplied id is for a slot of type inline.
-    * 
+    *
     * @param slotId the id of the slot to test, not <code>null</code> or empty.
     * @return <code>true</code> if the supplied slot id is of a slot of type
     *    inline slot, <code>false</code> otherwise.
     * @throws PSInternalRequestCallException if the lookup request to get the
     *    inline slot id's fails.
-    * @throws PSUnknownNodeTypeException if the lookup request to get the 
+    * @throws PSUnknownNodeTypeException if the lookup request to get the
     *    inline slot id's returns unexpected results.
     */
-   public static boolean isInlineSlot(String slotId) 
-      throws PSInternalRequestCallException, PSUnknownNodeTypeException
+   public static boolean isInlineSlot(String slotId)
+           throws PSInternalRequestCallException, PSUnknownNodeTypeException
    {
       if (slotId == null)
          throw new IllegalArgumentException("slotId cannot be null");
-         
+
       slotId = slotId.trim();
       if (slotId.length() == 0)
          throw new IllegalArgumentException("slotId cannot be empty");
-            
+
       return getInlineSlots().contains(slotId);
    }
-   
+
    /**
     * Get the ids of all inline slots. The collection is built the first time
     * this method is called and cached. The server is never queried again.
-    * 
+    *
     * @return a list of <code>String</code> objects with all inline link
     *    slots defined at the time this method is called the first time, never
     *    <code>null</code>, may be empty.
     * @throws PSInternalRequestCallException if the lookup request to get the
     *    inline slot id's fails.
-    * @throws PSUnknownNodeTypeException if the lookup request to get the 
+    * @throws PSUnknownNodeTypeException if the lookup request to get the
     *    inline slot id's returns unexpected results.
     */
    public static Collection<String> getInlineSlots()
-      throws PSInternalRequestCallException, PSUnknownNodeTypeException
+           throws PSInternalRequestCallException, PSUnknownNodeTypeException
    {
       if (ms_inlineslots == null)
       {
@@ -610,32 +607,32 @@ public class PSInlineLinkField
 
          PSRequest req = PSRequest.getContextForRequest();
          PSInternalRequest ir = PSServer.getInternalRequest(
-            "sys_slots/slotlist.xml", req, null, false);
-            
+                 "sys_slots/slotlist.xml", req, null, false);
+
          Document doc = ir.getResultDoc();
          Element slotListElem = doc.getDocumentElement();
          PSXMLDomUtil.checkNode(slotListElem, "slotlist");
          Element slotElem = PSXMLDomUtil.getFirstElementChild(slotListElem,
-            "slot");
+                 "slot");
          while (slotElem != null)
          {
-            Node slotType = PSXMLDomUtil.findFirstNamedChildNode(slotElem, 
-               "slottype");
+            Node slotType = PSXMLDomUtil.findFirstNamedChildNode(slotElem,
+                    "slottype");
             if (slotType != null)
             {
                String data = PSXMLDomUtil.getElementData(slotType);
                if (data.trim().equals(INLINE_SLOT_TYPE))
                {
-                  Node id = PSXMLDomUtil.findFirstNamedChildNode(slotElem, 
-                     "slotid");
+                  Node id = PSXMLDomUtil.findFirstNamedChildNode(slotElem,
+                          "slotid");
                   ms_inlineslots.add(PSXMLDomUtil.getElementData(id));
                }
             }
-            
+
             slotElem = PSXMLDomUtil.getNextElementSibling(slotElem);
          }
       }
-      
+
       return ms_inlineslots;
    }
 
@@ -650,21 +647,21 @@ public class PSInlineLinkField
     * @param relationshipMap the relationship mapper. It maps each existing
     *    relationship id (in <code>Integer</code> to a new relationship (in
     *    <code>PSRelationship</code>). Assume it is not <code>null</code>.
-    * 
-    * @param modified <code>PSRelationship</code> objects for which a link is 
+    *
+    * @param modified <code>PSRelationship</code> objects for which a link is
     *    modified by this method are added to this collection if supplied.  May
-    *    be <code>null</code>, may or may not be empty. 
+    *    be <code>null</code>, may or may not be empty.
     */
-   private static void modifyRelationships(Element elem, Map<?, ?> relationshipMap, 
-      Collection<PSRelationship> modified)
+   private static void modifyRelationships(Element elem, Map<?, ?> relationshipMap,
+                                           Collection<PSRelationship> modified)
    {
       String relationshipid =
-         elem.getAttribute(IPSHtmlParameters.SYS_RELATIONSHIPID);
+              elem.getAttribute(IPSHtmlParameters.SYS_RELATIONSHIPID);
       if (relationshipid == null || relationshipid.trim().length() == 0)
          return;
 
       PSRelationship relationship = (PSRelationship) relationshipMap.get(
-         new Integer(relationshipid));
+              new Integer(relationshipid));
 
       if (relationship == null)
          return;
@@ -672,18 +669,18 @@ public class PSInlineLinkField
          modified.add(relationship);
 
       elem.setAttribute(IPSHtmlParameters.SYS_RELATIONSHIPID,
-         Integer.toString(relationship.getId()));
+              Integer.toString(relationship.getId()));
 
       String dependentID = Integer.toString(relationship.getDependent().getId());
       elem.setAttribute(IPSHtmlParameters.SYS_DEPENDENTID, dependentID);
-      
+
       String slotId = relationship.getProperty(IPSHtmlParameters.SYS_SLOTID);
       elem.setAttribute(RX_INLINESLOT, slotId);
-      
+
       String variantId = relationship.getProperty(
-         IPSHtmlParameters.SYS_VARIANTID);
-      elem.setAttribute(IPSHtmlParameters.SYS_DEPENDENTVARIANTID, variantId);      
-      
+              IPSHtmlParameters.SYS_VARIANTID);
+      elem.setAttribute(IPSHtmlParameters.SYS_DEPENDENTVARIANTID, variantId);
+
       String siteId = relationship.getProperty(IPSHtmlParameters.SYS_SITEID);
       if (siteId != null && siteId.trim().length() > 0)
       {
@@ -697,7 +694,7 @@ public class PSInlineLinkField
       }
 
       String folderId = relationship
-            .getProperty(IPSHtmlParameters.SYS_FOLDERID);
+              .getProperty(IPSHtmlParameters.SYS_FOLDERID);
       if (folderId != null && folderId.trim().length() > 0)
       {
          elem.setAttribute(IPSHtmlParameters.SYS_FOLDERID, folderId);
@@ -708,7 +705,7 @@ public class PSInlineLinkField
          if (folderId != null && folderId.trim().length() > 0)
             elem.removeAttribute(IPSHtmlParameters.SYS_FOLDERID);
       }
-      
+
       // replaces the "sys_contentid" argument with the new dependent id for
       // the value of "href" or "src" attributes.
 
@@ -730,8 +727,8 @@ public class PSInlineLinkField
                if (token.startsWith(IPSHtmlParameters.SYS_CONTENTID))
                {
                   token = token.substring(0,
-                     token.indexOf(HTML_PARAMETER_VALUE_DELIMITER) + 
-                        HTML_PARAMETER_VALUE_DELIMITER.length()) + dependentID;
+                          token.indexOf(HTML_PARAMETER_VALUE_DELIMITER) +
+                                  HTML_PARAMETER_VALUE_DELIMITER.length()) + dependentID;
                }
                if (newValue == null)
                   newValue = url + token;
@@ -758,36 +755,32 @@ public class PSInlineLinkField
     *    <code>null</code>.
     * @param cleanup <code>true</code> to cleanup broken links,
     *    <code>false</code> otherwise.
-    * @param deletes The relationship set used to keep track of relationships 
+    * @param deletes The relationship set used to keep track of relationships
     *    that need to be deleted in the post process. Assume not
     *    <code>null</code>.
-    * @param modifies The relationship set used to keep track of relationships 
-    *    that need to be modified in the post process. Assume not 
+    * @param modifies The relationship set used to keep track of relationships
+    *    that need to be modified in the post process. Assume not
     *    <code>null</code>.
     */
    private void processField(
-      Element elem,
-      IPSRequestContext request,
-      PSRelationshipProcessor processor,
-      boolean cleanup,
-      PSRelationshipSet deletes,
-      PSRelationshipSet modifies)
-      throws PSCmsException
+           Element elem,
+           IPSRequestContext request,
+           PSRelationshipProcessor processor,
+           boolean cleanup,
+           PSRelationshipSet deletes,
+           PSRelationshipSet modifies)
+           throws PSCmsException
    {
       if (elem != null)
       {
-          PSSingleValueBuilder.removeClass(elem, PSSingleValueBuilder.PERC_BROKENLINK);
-          PSSingleValueBuilder.removeClass(elem, PSSingleValueBuilder.PERC_NOTPUBLICLINK);
-          
-          
+         PSSingleValueBuilder.removeClass(elem, PSSingleValueBuilder.PERC_BROKENLINK);
+         PSSingleValueBuilder.removeClass(elem, PSSingleValueBuilder.PERC_NOTPUBLICLINK);
          PSSingleValueBuilder.cleanupEmptyAttributes(elem);
-         
-        
          boolean processed = false;
          String inlineSlot = elem.getAttribute(RX_INLINESLOT);
          String inlineType = elem.getAttribute(RX_INLINETYPE);
-         if (inlineSlot != null && inlineSlot.trim().length() > 0 && 
-            inlineType != null && inlineType.trim().length() > 0)
+         if (inlineSlot != null && inlineSlot.trim().length() > 0 &&
+                 inlineType != null && inlineType.trim().length() > 0)
          {
             processInlineLink(elem, request, cleanup, deletes, modifies);
             processed = !inlineType.equals(RX_INLINETYPE_HYPERLINK);
@@ -808,56 +801,56 @@ public class PSInlineLinkField
                      if (token.startsWith(IPSHtmlParameters.SYS_DEPENDENTID))
                      {
                         elem.setAttribute(IPSHtmlParameters.SYS_DEPENDENTID,
-                           token.substring(token.indexOf(
-                              HTML_PARAMETER_VALUE_DELIMITER) + 
-                                 HTML_PARAMETER_VALUE_DELIMITER.length()));
+                                token.substring(token.indexOf(
+                                        HTML_PARAMETER_VALUE_DELIMITER) +
+                                        HTML_PARAMETER_VALUE_DELIMITER.length()));
                      }
                      else if (token.startsWith(
-                        IPSHtmlParameters.SYS_DEPENDENTVARIANTID))
+                             IPSHtmlParameters.SYS_DEPENDENTVARIANTID))
                      {
                         elem.setAttribute(
-                           IPSHtmlParameters.SYS_DEPENDENTVARIANTID,
-                              token.substring(token.indexOf(
-                                 HTML_PARAMETER_VALUE_DELIMITER) + 
-                                    HTML_PARAMETER_VALUE_DELIMITER.length()));
+                                IPSHtmlParameters.SYS_DEPENDENTVARIANTID,
+                                token.substring(token.indexOf(
+                                        HTML_PARAMETER_VALUE_DELIMITER) +
+                                        HTML_PARAMETER_VALUE_DELIMITER.length()));
                      }
                      else if (token.startsWith(RX_SHORT_DEPENDENTVARIANTID))
                      {
                         //also expect a short version of SYS_DEPENDENTVARIANTID
                         elem.setAttribute(
-                           IPSHtmlParameters.SYS_DEPENDENTVARIANTID,
-                              token.substring(token.indexOf(
-                                 HTML_PARAMETER_VALUE_DELIMITER) + 
-                                    HTML_PARAMETER_VALUE_DELIMITER.length()));
+                                IPSHtmlParameters.SYS_DEPENDENTVARIANTID,
+                                token.substring(token.indexOf(
+                                        HTML_PARAMETER_VALUE_DELIMITER) +
+                                        HTML_PARAMETER_VALUE_DELIMITER.length()));
                      }
                      else if (token.startsWith(RX_INLINESLOT))
                      {
                         elem.setAttribute(RX_INLINESLOT,
-                           token.substring(token.indexOf(
-                              HTML_PARAMETER_VALUE_DELIMITER) + 
-                                 HTML_PARAMETER_VALUE_DELIMITER.length()));
+                                token.substring(token.indexOf(
+                                        HTML_PARAMETER_VALUE_DELIMITER) +
+                                        HTML_PARAMETER_VALUE_DELIMITER.length()));
                      }
                      else if (token.startsWith(RX_SELECTEDTEXT))
                      {
                         elem.setAttribute(RX_SELECTEDTEXT,
-                           token.substring(token.indexOf(
-                              HTML_PARAMETER_VALUE_DELIMITER) + 
-                                 HTML_PARAMETER_VALUE_DELIMITER.length()));
+                                token.substring(token.indexOf(
+                                        HTML_PARAMETER_VALUE_DELIMITER) +
+                                        HTML_PARAMETER_VALUE_DELIMITER.length()));
                      }
                      else if (token.startsWith(RX_INLINETYPE))
                      {
                         elem.setAttribute(RX_INLINETYPE,
-                           token.substring(token.indexOf(
-                              HTML_PARAMETER_VALUE_DELIMITER) + 
-                                 HTML_PARAMETER_VALUE_DELIMITER.length()));
+                                token.substring(token.indexOf(
+                                        HTML_PARAMETER_VALUE_DELIMITER) +
+                                        HTML_PARAMETER_VALUE_DELIMITER.length()));
                      }
                      else if (token.startsWith(RX_SHORT_INLINETYPE))
                      {
                         //also expect a short version of RX_INLINETYPE
                         elem.setAttribute(RX_INLINETYPE,
-                           token.substring(token.indexOf(
-                              HTML_PARAMETER_VALUE_DELIMITER) + 
-                                 HTML_PARAMETER_VALUE_DELIMITER.length()));
+                                token.substring(token.indexOf(
+                                        HTML_PARAMETER_VALUE_DELIMITER) +
+                                        HTML_PARAMETER_VALUE_DELIMITER.length()));
                      }
                   }
 
@@ -879,8 +872,8 @@ public class PSInlineLinkField
                {
                   Node test = children.item(i);
                   if (test.getNodeType() == Node.ELEMENT_NODE)
-                     processField((Element) test, request, processor, cleanup, 
-                        deletes, modifies);
+                     processField((Element) test, request, processor, cleanup,
+                             deletes, modifies);
                }
             }
          }
@@ -900,18 +893,18 @@ public class PSInlineLinkField
     * @param request the request to operate on, assumed not <code>null</code>.
     * @param cleanup <code>true</code> to cleanup broken links,
     *    <code>false</code> otherwise.
-    * @param deletes The relationship set used to keep track of relationships 
+    * @param deletes The relationship set used to keep track of relationships
     *    that need to be deleted in the post process. Assume not
     *    <code>null</code>.
-    * @param modifies The relationship set used to keep track of relationships 
-    *    that need to be modified in the post process. Assume not 
+    * @param modifies The relationship set used to keep track of relationships
+    *    that need to be modified in the post process. Assume not
     *    <code>null</code>.
     */
    private void processInlineLink(Element elem, IPSRequestContext request,
-      boolean cleanup, PSRelationshipSet deletes, PSRelationshipSet modifies)
-      throws PSCmsException
+                                  boolean cleanup, PSRelationshipSet deletes, PSRelationshipSet modifies)
+           throws PSCmsException
    {
-	   
+
       /**
        * If we made it here, the following element attributes and request
        * parameters are valid.
@@ -922,22 +915,22 @@ public class PSInlineLinkField
       String siteid = elem.getAttribute(IPSHtmlParameters.SYS_SITEID);
       String folderid = elem.getAttribute(IPSHtmlParameters.SYS_FOLDERID);
       String reltype = getRelationshipType(slotid);
-      
+
       String dependentid = elem.getAttribute(IPSHtmlParameters.SYS_DEPENDENTID);
       if (dependentid == null || dependentid.trim().length() == 0)
          throw new RuntimeException(
-            "Missing required inline link parameter: " +
-               IPSHtmlParameters.SYS_DEPENDENTID);
+                 "Missing required inline link parameter: " +
+                         IPSHtmlParameters.SYS_DEPENDENTID);
 
       String variant = elem.getAttribute(
-         IPSHtmlParameters.SYS_DEPENDENTVARIANTID);
+              IPSHtmlParameters.SYS_DEPENDENTVARIANTID);
       if (variant == null || variant.trim().length() == 0)
          throw new RuntimeException(
-            "Missing required inline link parameter: " +
-               IPSHtmlParameters.SYS_DEPENDENTVARIANTID);
+                 "Missing required inline link parameter: " +
+                         IPSHtmlParameters.SYS_DEPENDENTVARIANTID);
 
       String relationshipid = elem.getAttribute(
-         IPSHtmlParameters.SYS_RELATIONSHIPID);
+              IPSHtmlParameters.SYS_RELATIONSHIPID);
 
       PSLocator owner = new PSLocator(contentid, revision);
       PSLocator dependent = new PSLocator(dependentid);
@@ -945,41 +938,41 @@ public class PSInlineLinkField
       if (!removeInlineLink(elem, request, cleanup))
       {
          PSRelationship relationship = getRelationship(relationshipid, deletes);
-            
+
          boolean addToModifyList = false;
          if (relationship == null)
          {
             int rid = PSRelationshipCommandHandler.getNextId();
-               relationship = new PSRelationship(rid, owner, dependent,
-                     PSRelationshipCommandHandler
-                           .getRelationshipConfig(reltype));
-            
+            relationship = new PSRelationship(rid, owner, dependent,
+                    PSRelationshipCommandHandler
+                            .getRelationshipConfig(reltype));
+
             // the new relationship, not exist in the backend repository
-            relationship.setPersisted(false);  
+            relationship.setPersisted(false);
 
             // update the requests relationshipid if we created a new one
             request.setParameter(IPSHtmlParameters.SYS_RELATIONSHIPID,
-               Integer.toString(relationship.getId()));
+                    Integer.toString(relationship.getId()));
             addToModifyList = true;
          }
          else
          {
             PSLocator rDependent = relationship.getDependent();
             String rSlotid = relationship
-                  .getProperty(IPSHtmlParameters.SYS_SLOTID);
+                    .getProperty(IPSHtmlParameters.SYS_SLOTID);
             String rVariant = relationship
-                  .getProperty(IPSHtmlParameters.SYS_VARIANTID);
+                    .getProperty(IPSHtmlParameters.SYS_VARIANTID);
             String rSiteid = relationship
-                  .getProperty(IPSHtmlParameters.SYS_SITEID);
+                    .getProperty(IPSHtmlParameters.SYS_SITEID);
             if (rSiteid == null)
                rSiteid = "";
             String rFolderid = relationship
-                  .getProperty(IPSHtmlParameters.SYS_FOLDERID);
+                    .getProperty(IPSHtmlParameters.SYS_FOLDERID);
             if (rFolderid == null)
                rFolderid = "";
             String inlineRelationshipId = relationship
-                  .getProperty(PSRelationshipConfig.RS_INLINERELATIONSHIP);
-            
+                    .getProperty(PSRelationshipConfig.RS_INLINERELATIONSHIP);
+
             if (rDependent.getId() != dependent.getId())
                addToModifyList = true;
             else if (!rSlotid.equals(slotid))
@@ -999,34 +992,34 @@ public class PSInlineLinkField
                addToModifyList = true;
             }
          }
-            
+
          if (addToModifyList)
          {
             relationship.setProperty(IPSHtmlParameters.SYS_SLOTID, slotid);
             relationship.setProperty(IPSHtmlParameters.SYS_VARIANTID, variant);
-            relationship.setProperty(PSRelationshipConfig.RS_INLINERELATIONSHIP, 
-               getInlineRelationshipId(request, getField()));
-   
-            //If request contains siteid parameter add it as a property 
+            relationship.setProperty(PSRelationshipConfig.RS_INLINERELATIONSHIP,
+                    getInlineRelationshipId(request, getField()));
+
+            //If request contains siteid parameter add it as a property
             String param = elem.getAttribute(IPSHtmlParameters.SYS_SITEID).trim();
             if(!param.equals(""))
                relationship.setProperty(IPSHtmlParameters.SYS_SITEID, param);
 
-            //If request contains folderid parameter add it as a property 
+            //If request contains folderid parameter add it as a property
             param = elem.getAttribute(IPSHtmlParameters.SYS_FOLDERID).trim();
             if(!param.equals(""))
                relationship.setProperty(IPSHtmlParameters.SYS_FOLDERID, param);
-            
+
             modifies.add(relationship);
          }
 
          elem.setAttribute(IPSHtmlParameters.SYS_RELATIONSHIPID,
-            Integer.toString(relationship.getId()));
+                 Integer.toString(relationship.getId()));
       }
    }
-   
+
    /**
-    * Gets the relationship type name of the supplied slot id. 
+    * Gets the relationship type name of the supplied slot id.
     * @param slotid must not be a blank, if not a valid slot id, throws exception.
     * @return The type either from the local storage or loads the slot and gets it.
     * It is {@link PSRelationshipConfig#TYPE_ACTIVE_ASSEMBLY} if cannot find
@@ -1041,7 +1034,7 @@ public class PSInlineLinkField
       {
          IPSGuidManager guidMgr = PSGuidManagerLocator.getGuidMgr();
          IPSAssemblyService asmSrvc = PSAssemblyServiceLocator
-               .getAssemblyService();
+                 .getAssemblyService();
          IPSGuid slotGuid = guidMgr.makeGuid(slotid, PSTypeEnum.SLOT);
          IPSTemplateSlot slot = asmSrvc.findSlot(slotGuid);
          if (slot == null)
@@ -1049,7 +1042,7 @@ public class PSInlineLinkField
             log.warn("Failed to find slot id= {} ", slotid);
             return PSRelationshipConfig.TYPE_ACTIVE_ASSEMBLY;
          }
-         
+
          relType = slot.getRelationshipName();
          m_slotRelationshipTypes.put(slotid, relType);
       }
@@ -1060,23 +1053,23 @@ public class PSInlineLinkField
     * Searches the supplied set for a relationship whose {@link
     * PSRelationshipConfig#RS_INLINERELATIONSHIP} property is equal to the
     * supplied id or it is equal to <code>RS_YES</code> (this latter is for
-    * backwards compatibility). 
+    * backwards compatibility).
     *
-    * @param relationshipId the inline link relationship id that must 
-    * match to find the existing relationship, may be <code>null</code> or 
+    * @param relationshipId the inline link relationship id that must
+    * match to find the existing relationship, may be <code>null</code> or
     * empty, in which case <code>null</code> is returned. The value supplied
-    * for this parameter must be one of the values returned by {@link 
+    * for this parameter must be one of the values returned by {@link
     * #getInlineRelationshipId(PSRequest,PSField)}.
-    * 
-    * @param possibilities The relationship set which will be searched for a 
-    * relationship that has an id that matches that supplied in 
+    *
+    * @param possibilities The relationship set which will be searched for a
+    * relationship that has an id that matches that supplied in
     * <code>inlineRelationshipId</code>. Assume not <code>null</code>.
     *
     * @return If a match is found in the set, it is removed and returned,
     * otherwise <code>null</code> is returned.
     */
-   private PSRelationship getRelationship(String relationshipId, 
-      PSRelationshipSet possibilities)
+   private PSRelationship getRelationship(String relationshipId,
+                                          PSRelationshipSet possibilities)
    {
       PSRelationship result = null;
       if (relationshipId != null && relationshipId.trim().length() > 0)
@@ -1111,12 +1104,12 @@ public class PSInlineLinkField
     *    inline link was removed, <code>false</code> otherwise.
     */
    private boolean removeInlineLink(Element elem, IPSRequestContext request,
-      boolean cleanup) throws PSCmsException
+                                    boolean cleanup) throws PSCmsException
    {
       if (!cleanup)
          return false;
-      
-      
+
+
       if (doesDependentExist(elem, request))
       {
          return false;
@@ -1125,27 +1118,27 @@ public class PSInlineLinkField
       return true;
    }
 
-  
-  
-   
+
+
+
    /**
     * Determines if the dependent item defined in the given inline-link
     * element exist or not.
-    * 
+    *
     * @param elem the inline-link element, assumed not <code>null</code>.
     * @param request the request, assumed not <code>null</code>.
-    * 
+    *
     * @return <code>true</code> if the dependent item exists; otherwise return
     * <code>false</code>.
     */
    private boolean doesDependentExist(Element elem, IPSRequestContext request)
    {
       String dependentId =
-         elem.getAttribute(IPSHtmlParameters.SYS_DEPENDENTID);
-      
+              elem.getAttribute(IPSHtmlParameters.SYS_DEPENDENTID);
+
       if (isBlank(dependentId))
          return false;
-      
+
       try
       {
          int contentId = Integer.valueOf(dependentId);
@@ -1157,35 +1150,35 @@ public class PSInlineLinkField
          return false;
       }
    }
-   
-   
-   
+
+
+
    /**
     * Gets the link text from the specified A tag element.
-    * 
+    *
     * @param elem the element in question, assumed <code>null</code>.
-    * 
+    *
     * @return the value of {@link #RX_SELECTEDTEXT} attribute if exist;
     * or return the link text if the element is an A tag; otherwise
-    * return an empty string. 
+    * return an empty string.
     */
    private String getLinkTextFromATag(Element elem)
    {
       String selectedText = elem.getAttribute(RX_SELECTEDTEXT);
       if (!isEmpty(selectedText))
          return selectedText;
-      
+
       // make sure this is an inline link element and is an <a> tag
       String inlineType = elem.getAttribute(RX_INLINETYPE);
       if (!RX_INLINETYPE_HYPERLINK.equals(inlineType))
          return "";
-      
+
       if (!"a".equalsIgnoreCase(elem.getNodeName()))
          return "";
-      
+
       return getElementData(elem);
    }
-   
+
    /**
     * A utility function for replacing one string with another string in
     * a given source string.
@@ -1196,7 +1189,7 @@ public class PSInlineLinkField
     *    source String is empty or <code>null</code>.
     */
    public static String replaceString(String srcString, String replace,
-      String replacewith)
+                                      String replacewith)
    {
       // In a string replace one substring with another
       if (srcString == null || srcString.trim().length() < 1) return "";
@@ -1220,13 +1213,13 @@ public class PSInlineLinkField
    private PSField m_field = null;
 
    /**
-    * A map of slotid and relationship type of the slot. This is filled as 
+    * A map of slotid and relationship type of the slot. This is filled as
     * needed in {@link #getRelationshipType(String)}. Do not use it directly to
     * get the relationship type for a given slot, rather use the method.
     */
-   private Map<String, String> m_slotRelationshipTypes = 
-      new HashMap<>();
-   
+   private Map<String, String> m_slotRelationshipTypes =
+           new HashMap<>();
+
    /**
     * The name of the attribute that identifies an element as Rhythmyx inline
     * slot.
@@ -1261,14 +1254,14 @@ public class PSInlineLinkField
    private static final String RX_INLINETYPE_HYPERLINK = "rxhyperlink";
 
    /**
-    * The old value expected in the relationship property 
+    * The old value expected in the relationship property
     * <code>RS_INLINERELATIONSHIP</code> to recognize it as inline link
     * relationship and for the cleanupBrokenLinks parameter to enable cleanup.
     */
    public static final String RS_YES = "yes";
 
    public static final String RX_ANCHORTEXT = "rxanchortext";
-   
+
    /**
     * The delimiter used to separate the inline link field name from the
     * child row id in inline relationship identifiers. Exactly 1 character long.
@@ -1287,20 +1280,20 @@ public class PSInlineLinkField
     * This is in an attempt to work around an apparent 255 char Url length
     * limitation in Word 2000, for more info see Rx-03-06-0153.
     */
-   private static final String RX_SHORT_DEPENDENTVARIANTID = "dvid";   
+   private static final String RX_SHORT_DEPENDENTVARIANTID = "dvid";
 
    /**
     * String constant for filling the empty anchor element
     */
    public static final String ELEM_FILLER = "##RX_FILLER##";
-   
+
    /**
     * A list with all inline link slot id's as <code>String</code> found in the
-    * first call to {@link isInlineSlot(String)}. The list is never 
+    * first call to {@link isInlineSlot(String)}. The list is never
     * <code>null</code> or changed after that, it may be empty.
     */
    private static Collection<String> ms_inlineslots = null;
-   
+
    /**
     * The string used to identify a slot as type inline slot.
     */

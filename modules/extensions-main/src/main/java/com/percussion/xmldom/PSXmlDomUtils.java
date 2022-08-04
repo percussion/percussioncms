@@ -23,13 +23,22 @@
  */
 package com.percussion.xmldom;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.PSExtensionProcessingException;
 import com.percussion.util.PSPurgableTempFile;
+import com.percussion.utils.io.PathUtils;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
+import com.sun.org.apache.xml.internal.serialize.OutputFormat;
+import org.apache.commons.lang.CharEncoding;
 import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.helper.W3CDom;
+import org.jsoup.nodes.Document.OutputSettings;
+import org.jsoup.parser.Parser;
+import org.jsoup.safety.Safelist;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -59,6 +68,8 @@ import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.util.Iterator;
+import java.util.Map;
+import java.util.Properties;
 
 
 /**
@@ -71,6 +82,19 @@ public class PSXmlDomUtils
 {
 
    private static W3CDom w3cDom = new W3CDom();
+
+   private  OutputSettings htmlOutputSettings;
+   private OutputSettings  xmlOutputSettings;
+   private Safelist safeList;
+   private boolean trackErrors;
+   private boolean prettyPrint;
+   private String charEncoding;
+
+
+   private static Map<String,String> htmlParserPropertiesMap = null;
+   private static String CHAR_ENCODING= CharEncoding.UTF_8;
+   private static final String HTML_PARSER_PROP_FILE_NAME = "HTML-XMLParser.properties";
+   private static final Logger log = LogManager.getLogger(PSXmlDomUtils.class);
    /**
     * this class should never be instantiated.
     **/
@@ -159,32 +183,33 @@ public class PSXmlDomUtils
        * if the incoming file uses common entities such as
        * <code>&amp;nbsp;</code>
        */
-      String doctypeHeader = "<?xml version='1.0'?>" + NEWLINE;
+      String doctypeHeader = "<?xml version='1.0' encoding='UTF-8'?>" + NEWLINE;
       doctypeHeader += "<!DOCTYPE html [" +
             getDefaultEntities(cx.getServerRoot()) + "]>" + NEWLINE + NEWLINE;
 
-      if (hasXMLHeaders(tidiedHTML))
-      {
-         tidiedOutput = tidiedHTML;
-      }
-      else
-      {
-         tidiedOutput = doctypeHeader + tidiedHTML;
-      }
+//      if (hasXMLHeaders(tidiedHTML))
+//      {
+//         tidiedOutput = tidiedHTML;
+//      }
+//      else
+//      {
+//         tidiedOutput = doctypeHeader + tidiedHTML;
+//      }
       if (cx.isLogging())
       {
          cx.printTraceMessage("writing trace file xmldocbeforeparse.doc");
          try(FileOutputStream beforeParse =
                new FileOutputStream("xmldocbeforeparse.doc")) {
-            beforeParse.write(tidiedOutput.getBytes(DEBUG_ENCODING));
+            beforeParse.write(tidiedHTML.getBytes(DEBUG_ENCODING));
 
          }
       }
 
       //add all provisioned namespaces to the 'body' tag
-      tidiedOutput = addNameSpaces(tidiedOutput, "body", cx);
+      tidiedOutput = addNameSpaces(tidiedHTML, "body", cx);
 
       InputSource is = new InputSource((Reader) new StringReader(tidiedOutput));
+      is.setEncoding(CHAR_ENCODING);
 
       StringWriter errString = new StringWriter();
       PrintWriter pWriter = new PrintWriter(errString, true);
@@ -211,7 +236,7 @@ public class PSXmlDomUtils
                new FileOutputStream("xmldocparsedout.doc")) {
 
             PSXmlTreeWalker walk = new PSXmlTreeWalker(resultDoc);
-            try(OutputStreamWriter osr = new OutputStreamWriter(parsedOutput, ENCODING)) {
+            try(OutputStreamWriter osr = new OutputStreamWriter(parsedOutput, CHAR_ENCODING)) {
                try(BufferedWriter br = new BufferedWriter(osr)) {
                   walk.write(br, true);
                }
@@ -256,7 +281,7 @@ public class PSXmlDomUtils
 
       Tidy tidy = new Tidy();
       tidy.setConfigurationFromProps(cx.getTidyProperties());
-      tidy.setInputEncoding(ENCODING);
+      tidy.setInputEncoding(CHAR_ENCODING);
 
       if (cx.isLogging())
       {
@@ -267,7 +292,7 @@ public class PSXmlDomUtils
       }
          StringWriter tidyErrors = new StringWriter();
          tidy.setErrout(new PrintWriter((Writer) tidyErrors));
-      Document TidyXML = w3cDom.fromJsoup(Jsoup.parse(htmlInput,"UTF-8"));
+      Document TidyXML = W3CDom.convert(Jsoup.parse(htmlInput,""));
       /*
        * The following code adds a non-breaking space as the first body
        * node in case the body only contains comments. This is to work
@@ -318,11 +343,11 @@ public class PSXmlDomUtils
 
          if(cx.getUsePrettyPrint())
          {
-            try(ByteArrayInputStream xmlStream = new ByteArrayInputStream(result.getBytes(ENCODING))) {
+            try(ByteArrayInputStream xmlStream = new ByteArrayInputStream(result.getBytes(CHAR_ENCODING))) {
                TidyXML = tidy.parseDOM(xmlStream, null);
                try (ByteArrayOutputStream tidiedStream = new ByteArrayOutputStream()) {
                   tidy.pprint(TidyXML, (OutputStream) tidiedStream);
-                  result = tidiedStream.toString(ENCODING);
+                  result = tidiedStream.toString(CHAR_ENCODING);
                }
             }
          }
@@ -339,6 +364,50 @@ public class PSXmlDomUtils
          return result;
 
 
+   }
+   public static Map<String,String> getParserPropertiesMap(){
+
+      if(htmlParserPropertiesMap != null){
+         return  htmlParserPropertiesMap;
+      }
+      File parserPropFile = new File(PathUtils.getRxDir().getAbsolutePath() + File.separator + HTML_PARSER_PROP_FILE_NAME);
+      Properties parserProperties = new Properties();
+      if (parserPropFile.exists())
+      {
+         try(FileInputStream parserPropFileStream = new FileInputStream(parserPropFile)){
+            parserProperties.load(parserPropFileStream);
+            htmlParserPropertiesMap.putAll((Map)parserProperties);
+         } catch (IOException e) {
+            log.info("Loading Version.properties file failed", PSExceptionUtils.getMessageForLog(e));
+         }
+      }
+      return htmlParserPropertiesMap;
+   }
+
+   private void loadJsoupSettings(){
+      xmlOutputSettings = new OutputSettings();
+      xmlOutputSettings.prettyPrint(false);
+      xmlOutputSettings.charset(charEncoding);
+      //xmlOutputSettings
+
+     // jsoupDoc.outputSettings(outputSettings);
+
+   }
+
+   public String parseHtml(String htmlString){
+
+      String returnString = Jsoup.clean(null, htmlString, safeList, htmlOutputSettings);
+
+      return returnString;
+
+   }
+
+   public String parseXML(String xmlString){
+      Parser xmlParser = Parser.xmlParser();
+      //xmlParser.
+      String returnString = Jsoup.clean(xmlString,null,  safeList, htmlOutputSettings);
+
+      return returnString;
    }
 
    public static String jsoupInput(PSXmlDomContext cx, String htmlInput)
@@ -359,7 +428,7 @@ public class PSXmlDomUtils
 
       Tidy tidy = new Tidy();
       tidy.setConfigurationFromProps(cx.getTidyProperties());
-      tidy.setInputEncoding(ENCODING);
+      tidy.setInputEncoding(CHAR_ENCODING);
 
       if (cx.isLogging())
       {
@@ -370,75 +439,8 @@ public class PSXmlDomUtils
       }
       StringWriter tidyErrors = new StringWriter();
       tidy.setErrout(new PrintWriter((Writer) tidyErrors));
-      Document TidyXML = w3cDom.fromJsoup(Jsoup.parse(htmlInput,"UTF-8"));
-      /*
-       * The following code adds a non-breaking space as the first body
-       * node in case the body only contains comments. This is to work
-       * around a bug in eWebEditPro, which is removing all comments on load
-       * if there are only comments. Adding a non-breaking space is ektrons
-       * recommended workaround.
-       */
-      if (cx.rxCommentHandling())
-      {
-         NodeList nodes = TidyXML.getElementsByTagName("body");
-         if (nodes != null && nodes.getLength() > 0)
-         {
-            Element body = (Element) nodes.item(0);
-            NodeList children = body.getChildNodes();
-            if (children != null)
-            {
-               boolean commentOnly = true;
-               for (int i=0; commentOnly && i<children.getLength(); i++)
-               {
-                  Node child = children.item(i);
-                  commentOnly = child.getNodeType() == Node.COMMENT_NODE;
-               }
+     String result = Jsoup.parse(htmlInput,"UTF-8").toString();
 
-               if (commentOnly)
-               {
-                  char nbsp = '\u00a0';
-                  Text text = TidyXML.createTextNode("" + nbsp);
-                  body.insertBefore(text, children.item(0));
-               }
-            }
-         }
-      }
-
-      if (tidy.getParseErrors() > 0)
-      {
-         cx.printTraceMessage("Tidy Errors: " + tidyErrors.toString());
-         throw new PSExtensionProcessingException(0,
-                 "Errors encoutered in Tidy" +
-                         tidyErrors.toString());
-      }
-
-      // Write out the document element using PSNodePrinter. This removes
-      // the Xml and Doctype declaration.
-      StringWriter swriter = new StringWriter();
-      PSNodePrinter np = new PSNodePrinter(swriter);
-      np.printNode(TidyXML.getDocumentElement());
-      String result = swriter.toString();
-
-      if(cx.getUsePrettyPrint())
-      {
-         try(ByteArrayInputStream xmlStream = new ByteArrayInputStream(result.getBytes(ENCODING))) {
-            TidyXML = tidy.parseDOM(xmlStream, null);
-            try (ByteArrayOutputStream tidiedStream = new ByteArrayOutputStream()) {
-               tidy.pprint(TidyXML, (OutputStream) tidiedStream);
-               result = tidiedStream.toString(ENCODING);
-            }
-         }
-      }
-      if (cx.isLogging())
-      {
-         cx.printTraceMessage("writing trace file xmldomtidied.doc");
-         try(FileOutputStream fs = new FileOutputStream("xmldomtidied.doc")) {
-            PrintWriter pw = new PrintWriter(fs);
-            pw.println(result);
-            pw.flush();
-            pw.close();
-         }
-      }
       return result;
 
 
@@ -592,12 +594,17 @@ public class PSXmlDomUtils
    {
 
       String resultText= "";
+      OutputFormat format = new OutputFormat(sourceDocument);
+      if (sourceDocument.getXmlEncoding() != null) {
+         format.setEncoding(sourceDocument.getXmlEncoding());
+      }else{
+         format.setEncoding(CharEncoding.UTF_8);
+      }
       if (sourceNodeName.trim().length() == 0 || sourceNodeName.equals("."))
       {
          //copy the entire document
          cx.printTraceMessage("returning entire document");
-         resultText = Jsoup.parse(w3cDom.asString(sourceDocument),"UTF-8").toString();
-
+            resultText = W3CDom.asString(sourceDocument,null);
       }
       else
       {
@@ -609,6 +616,7 @@ public class PSXmlDomUtils
       return resultText;
 
    }
+
 
    /**
     * check a Node to see if it contains only whitespace
@@ -864,11 +872,6 @@ public class PSXmlDomUtils
    private static final int BUFFERSIZE = 20000;
 
    /**
-    *ENCODING is always ISO 8859-1 for all Word HTML files.
-    **/
-   public static final String ENCODING = "UTF-8";
-
-   /**
     *Default name for all Private Objects is "XMLDOM"
     **/
    public static final String DEFAULT_PRIVATE_OBJECT = "XMLDOM";
@@ -876,7 +879,7 @@ public class PSXmlDomUtils
    /**
     *The encoding for all "debugging" files
     **/
-   public static final String DEBUG_ENCODING = "UTF-8";
+   public static final String DEBUG_ENCODING =CharEncoding.UTF_8;
 
    /**
     * This section is copied directly from PSXmlDocumentBuilder.  We need to
@@ -895,7 +898,10 @@ public class PSXmlDomUtils
       PSSaxErrorHandler errHandler = new PSSaxErrorHandler(errorLog);
       errHandler.throwOnFatalErrors(false);
       db.setErrorHandler(errHandler);
-      doc = db.parse(in);
+      in.setEncoding(CHAR_ENCODING);
+      //String input = IOUtils.toString(in.getCharacterStream());
+     // doc = W3CDom.convert(Jsoup.parse(input, "", Parser.xmlParser()));
+       doc = db.parse(in);
       errorLog.flush();
 
       /* We want to handle XML files without the <?xml ...> preamble. These
