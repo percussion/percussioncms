@@ -28,6 +28,7 @@ import com.percussion.services.audit.IPSDesignObjectAuditConfig;
 import com.percussion.services.audit.IPSDesignObjectAuditService;
 import com.percussion.services.audit.data.PSAuditLogEntry;
 import com.percussion.services.catalog.PSTypeEnum;
+import com.percussion.services.filestorage.data.PSBinary;
 import com.percussion.services.guidmgr.IPSGuidManager;
 import com.percussion.services.guidmgr.PSGuidManagerLocator;
 import org.hibernate.Criteria;
@@ -37,6 +38,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -99,10 +103,12 @@ public class PSDesignObjectAuditService
       
       Session session = getSession();
 
-         Criteria criteria = session.createCriteria(PSAuditLogEntry.class);
-         criteria.add(Restrictions.lt("auditDate", beforeDate));
-         List<PSAuditLogEntry> entries = criteria.list();
-         
+      CriteriaBuilder builder = getSession().getCriteriaBuilder();
+      CriteriaQuery<PSAuditLogEntry> criteria = builder.createQuery(PSAuditLogEntry.class);
+      Root<PSAuditLogEntry> critRoot = criteria.from(PSAuditLogEntry.class);
+      criteria.where(builder.equal(critRoot.get("auditDate"),beforeDate));
+      List<PSAuditLogEntry> entries = entityManager.createQuery(criteria).getResultList();
+
          for (PSAuditLogEntry entry : entries)
          {
             session.delete(entry);
