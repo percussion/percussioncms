@@ -52,10 +52,11 @@ import com.percussion.util.PSXMLDomUtil;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.xml.PSProcessServerPageTags;
 import com.percussion.xml.PSNodePrinter;
-import com.percussion.xml.PSXmlDocumentBuilder;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jsoup.Jsoup;
+import org.jsoup.helper.W3CDom;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -83,7 +84,7 @@ import static org.apache.commons.lang.StringUtils.isBlank;
 import static org.apache.commons.lang.StringUtils.isEmpty;
 
 /**
- * A container to hold all information and behavier required to process fields
+ * A container to hold all information and behavior required to process fields
  * that may contain inline links.
  */
 public class PSInlineLinkField
@@ -124,7 +125,7 @@ public class PSInlineLinkField
     *    HTML parameter, not <code>null</code>.
     * @param deletes The relationship set used to keep track of relationships 
     *    that need to be deleted in the post process. It should be initialized
-    *    by {@link getInlineRelationships(IPSRequestContext)}. It may not be 
+    *    by {@link #getInlineRelationships(IPSRequestContext)}. It may not be
     *    <code>null</code>, but may be empty. 
     * @param modifies The relationship set used to keep track of relationships 
     *    that need to be modified in the post process. It may not be 
@@ -148,7 +149,7 @@ public class PSInlineLinkField
    
    
    /**
-    * Just like {@link preProcess(PSRequest)} except it accepts an
+    * Just like {@link #preProcess(IPSRequestContext, PSRelationshipSet, PSRelationshipSet)} except it accepts an
     * <code>IPSRequestContext</code> parameter.
     * 
     * @param request the request that contains the field to be processed as
@@ -184,18 +185,17 @@ public class PSInlineLinkField
 
          String serverRoot = "127.0.0.1:" + PSServer.getListenerPort() +
             PSServer.getRequestRoot();
-         Document fieldDoc = PSXmlDocumentBuilder.createXmlDocument(
-            fieldValue, serverRoot, tidyProperties, serverPageTags,
-            m_field.getCleanupEncoding(), false);
+         W3CDom w3cDom = new W3CDom();
+         Document fieldDoc = w3cDom.fromJsoup(Jsoup.parseBodyFragment(fieldValue));
 
          PSRelationshipProcessor processor = PSRelationshipProcessor.getInstance();
 
          processField(fieldDoc.getDocumentElement(), request, processor,
             m_field.cleanupBrokenInlineLinks(), deletes, modifies);
 
-         boolean isModified = expandEmptyElement(fieldDoc);
+         boolean isModified = expandEmptyElement( fieldDoc);
          
-         //Use the version to not to indent. Indenting may messup JavaScript 
+         //Use the version to not to indent. Indenting may mess up JavaScript
          //if present.
          String outputString = "";
          try
@@ -239,22 +239,18 @@ public class PSInlineLinkField
        * if any and then we remove the filler text by string replace method.
        */
       boolean isModified = false;
-      for(int i=0; i<ELEMENTS_NO_SELF_CLOSE_LIST.size(); i++)
-      {
-         NodeList nl = fieldDoc.getElementsByTagName(ELEMENTS_NO_SELF_CLOSE_LIST.get(i));
-         if(nl != null && nl.getLength()>0)
-         {
-            for(int j=0; j<nl.getLength(); j++)
-            {
-               if(!nl.item(j).hasChildNodes())
-               {
+      for (String s : ELEMENTS_NO_SELF_CLOSE_LIST) {
+         NodeList nl = fieldDoc.getElementsByTagName(s);
+         if (nl != null && nl.getLength() > 0) {
+            for (int j = 0; j < nl.getLength(); j++) {
+               if (!nl.item(j).hasChildNodes()) {
                   Text txt = fieldDoc.createTextNode(ELEM_FILLER);
                   nl.item(j).appendChild(txt);
                   isModified = true;
                }
             }
          }
-         
+
       }
       return isModified;
    }
@@ -290,7 +286,7 @@ public class PSInlineLinkField
    }
    
    /**
-    * Just like {@link postProcess(PSRequest)} except it accepts an
+    * Just like {@link #postProcess(IPSRequestContext, PSRelationshipSet, PSRelationshipSet)} except it accepts an
     * <code>IPSRequestContext</code> parameter.
     * 
     * @param request the request that contains the field to be processed as
@@ -394,7 +390,7 @@ public class PSInlineLinkField
     * Modifies the field in the supplied element for inline links. It replaces
     * the existing Inline links with the supplied new one. The inline links are
     * recognized through the attribute named <code>RX_INLINESLOT</code>.
-    * All child nodes of the supplied element are processed recursivly. Inline
+    * All child nodes of the supplied element are processed recursively. Inline
     * link elements can contain further inline links.
     *
     * @param elem the element to process for inline links, may not be
@@ -436,7 +432,7 @@ public class PSInlineLinkField
    }
    
    /**
-    * Convenience method which calls {@link getInlineRelationshipId(
+    * Convenience method which calls {@link #getInlineRelationshipId(
     * IPSRequestContext, PSField) getInlineRelationshipId(
     * new PSRequestContext(request), field)}.
     */
@@ -448,7 +444,7 @@ public class PSInlineLinkField
    
    /**
     * Get the inline relationship id for the supplied parameters. See 
-    * {@link makeInlineRelationshipId(String, String)} for more info on the
+    * {@link #makeInlineRelationshipId(String, String)} for more info on the
     * inline relationship id format.
     * 
     * @param request the request for which to produce the inline relationship
@@ -511,12 +507,12 @@ public class PSInlineLinkField
    
    /**
     * Get the field name part of the supplied inline relationship id. See
-    * {@link getInlineRelationshipId(IPSRequestContext, PSField)} for info on
+    * {@link #getInlineRelationshipId(IPSRequestContext, PSField)} for info on
     * the inline relationship id.
     * 
     * @param inlineRelationshipId the inline relationship id from which to
     * get the field name part, not <code>null</code> or empty. This must 
-    * be a value previously generated by {@link getInlineRelationshipId(
+    * be a value previously generated by {@link #getInlineRelationshipId(
     * IPSRequestContext, PSField)}
     * 
     * @return the field name part from the supplied inline relationship id, 
@@ -540,12 +536,12 @@ public class PSInlineLinkField
    
    /**
     * Get the child row id part of the supplied inline relationship id. See
-    * {@link getInlineRelationshipId(IPSRequestContext, PSField)} for info on
+    * {@link #getInlineRelationshipId(IPSRequestContext, PSField)} for info on
     * the inline relationship id.
     * 
     * @param inlineRelationshipId the inline relationship id from which to
     * get the field name part, not <code>null</code> or empty. This must 
-    * be a value previously generated by {@link getInlineRelationshipId(
+    * be a value previously generated by {@link #getInlineRelationshipId(
     * IPSRequestContext, PSField)}
     * 
     * @return the child row part from the supplied inline relationship id, 
@@ -572,7 +568,7 @@ public class PSInlineLinkField
       if (parts.size() == 1)
          return null;
       else
-         return parts.get(1).toString();
+         return parts.get(1);
    }
    
    /**
@@ -758,12 +754,12 @@ public class PSInlineLinkField
     * Processes the field in the supplied element for inline links. Inline
     * links are recognized through the attribute named
     * <code>RX_INLINESLOT</code>. All child nodes of the supplied element are
-    * processed recursivly. Inline link elements cannot contain further inline
+    * processed recursively. Inline link elements cannot contain further inline
     * links.
     *
     * @param elem the element to process fro inline links, assumed not
     *    <code>null</code>.
-    * @param request the request to operate on, assuemd not <code>null</code>.
+    * @param request the request to operate on, assumed not <code>null</code>.
     * @param processor the relationship processor to use, assumed not
     *    <code>null</code>.
     * @param cleanup <code>true</code> to cleanup broken links,
@@ -809,7 +805,7 @@ public class PSInlineLinkField
             {
                Attr attribute = (Attr) attributes.item(i);
                String value = attribute.getValue();
-               if (value.indexOf(RX_INLINESLOT) >= 0)
+               if (value.contains(RX_INLINESLOT))
                {
                   StringTokenizer tokens = new StringTokenizer(value, "?&");
                   while (tokens.hasMoreTokens())
@@ -903,7 +899,7 @@ public class PSInlineLinkField
     * update the 'Related Content' relationship. If the related item does not
     * exist anymore, it will replace the complete inline link element with the
     * text found in the 'selectedtext' attribute and remove the relationship if
-    * so requestd through th eexit parameter 'clenupBrokenLinks'.
+    * so requestd through the exit parameter 'cleanupBrokenLinks'.
     *
     * @param elem the element to process, may be <code>null</code> in which
     *    case nothing is done.
@@ -1109,7 +1105,7 @@ public class PSInlineLinkField
 
    /**
     * This method tests if the dependent defined in the supplied inline link
-    * element is still valid and removes the inline link element completly if
+    * element is still valid and removes the inline link element completely if
     * the dependent was deleted and if so requested.
     *
     * @param elem the inline slot element, assumed not <code>null</code> and
@@ -1158,7 +1154,7 @@ public class PSInlineLinkField
       
       try
       {
-         int contentId = Integer.valueOf(dependentId);
+         int contentId = Integer.parseInt(dependentId);
          PSServerFolderProcessor processor = PSServerFolderProcessor.getInstance();
          return processor.doesItemExist(contentId);
       }
@@ -1211,7 +1207,7 @@ public class PSInlineLinkField
       // In a string replace one substring with another
       if (srcString == null || srcString.trim().length() < 1) return "";
       String res = "";
-      int i = srcString.indexOf(replace,0);
+      int i = srcString.indexOf(replace);
       int lastpos = 0;
       while (i != -1)
       {
@@ -1252,7 +1248,7 @@ public class PSInlineLinkField
    public static final String RX_SELECTEDTEXT = "rxselectedtext";
 
    /**
-    * The name of the attribute that holdes the type of the inline link,
+    * The name of the attribute that holds the type of the inline link,
     * possible values are <code>hyperlink</code> and <code>image</code>.
     */
    public static final String RX_INLINETYPE = "inlinetype";
@@ -1306,7 +1302,7 @@ public class PSInlineLinkField
    
    /**
     * A list with all inline link slot id's as <code>String</code> found in the
-    * first call to {@link isInlineSlot(String)}. The list is never 
+    * first call to {@link #isInlineSlot(String)}. The list is never
     * <code>null</code> or changed after that, it may be empty.
     */
    private static Collection<String> ms_inlineslots = null;

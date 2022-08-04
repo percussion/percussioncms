@@ -33,6 +33,9 @@ import com.percussion.utils.xml.PSProcessServerPageTags;
 import com.percussion.utils.xml.PSSaxParseException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jsoup.Jsoup;
+import org.jsoup.helper.W3CDom;
+import org.jsoup.safety.Safelist;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
@@ -41,7 +44,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
-import org.w3c.tidy.Tidy;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
@@ -50,8 +52,6 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.FactoryConfigurationError;
 import javax.xml.parsers.ParserConfigurationException;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
@@ -62,11 +62,11 @@ import java.io.OutputStreamWriter;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.Reader;
-import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -503,7 +503,7 @@ public class PSXmlDocumentBuilder {
         returnDocumentBuilder(db);
 
         /*
-         * if we have fatal errors, build execption and throw them, otherwise if
+         * if we have fatal errors, build exception and throw them, otherwise if
          * there are non-fatal errors, build exception and throw those.
          */
         List<SAXParseException> errors = null;
@@ -575,8 +575,9 @@ public class PSXmlDocumentBuilder {
             tidiedSource = source;
         }
 
-        return createXmlDocument(new InputSource(new StringReader(tidiedSource)),
-            validate);
+        W3CDom w3cDom = new W3CDom();
+        return  w3cDom.fromJsoup(Jsoup.parseBodyFragment(tidiedSource));
+
     }
 
     /**
@@ -665,42 +666,26 @@ public class PSXmlDocumentBuilder {
             return source;
         }
 
-        Tidy tidy = new Tidy();
-        tidy.setConfigurationFromProps(properties);
-
-        StringWriter tidyErrors = new StringWriter();
-        tidy.setErrout(new PrintWriter(tidyErrors));
-
         if ((encoding == null) || (encoding.trim().length() == 0)) {
-            encoding = "UTF8";
+            encoding = StandardCharsets.UTF_8.name();
         }
 
-        try(ByteArrayOutputStream os = new ByteArrayOutputStream()) {
+        String preProcessed = source;
 
-
-            String preProcessed = source;
-
-            if (serverPageTags != null) {
-                preProcessed = serverPageTags.preProcess(preProcessed);
-            }
-
-            try (InputStream is = new ByteArrayInputStream(preProcessed.getBytes(encoding))) {
-                tidy.parseDOM(is, os);
-
-                if (tidy.getParseErrors() > 0) {
-                    throw new RuntimeException(tidyErrors.toString());
-                }
-
-                /**
-                 * Return the tidied source with the XML header and the default
-                 * entitied added.
-                 */
-                return os.toString("UTF8") +
-                        "<?xml version='1.0' encoding=\"UTF-8\"?>" + NEWLINE +
-                        "<!DOCTYPE html [" + getDefaultEntities(serverRoot) + "]>" +
-                        NEWLINE + NEWLINE;
-            }
+        if (serverPageTags != null) {
+            preProcessed = serverPageTags.preProcess(preProcessed);
         }
+
+        String cleansed = Jsoup.clean(preProcessed, Safelist.relaxed().preserveRelativeLinks(true));
+        org.jsoup.nodes.Document.OutputSettings outputSettings = new org.jsoup.nodes.Document.OutputSettings();
+        outputSettings.prettyPrint(true).charset(StandardCharsets.UTF_8).syntax(org.jsoup.nodes.Document.OutputSettings.Syntax.xml);
+        org.jsoup.nodes.Document outputDoc = Jsoup.parseBodyFragment(cleansed).outputSettings(outputSettings);
+
+        /*
+         * Return the tidied source with the XML header and the default
+         * entities added.
+         */
+        return outputDoc.body().html();
     }
 
     /**

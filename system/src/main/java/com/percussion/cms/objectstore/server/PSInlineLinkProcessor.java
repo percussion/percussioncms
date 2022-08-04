@@ -41,14 +41,12 @@ import com.percussion.server.PSRequest;
 import com.percussion.server.webservices.PSWebServicesRequestHandler;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.xml.PSNodePrinter;
-import com.percussion.xml.PSXmlDocumentBuilder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jsoup.Jsoup;
 import org.w3c.dom.Document;
-import org.xml.sax.InputSource;
 
 import java.io.IOException;
-import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -169,7 +167,7 @@ public class PSInlineLinkProcessor
       List inlineFields)
    {
       if (inlineFields == null)
-         inlineFields = new ArrayList();
+         inlineFields = new ArrayList<>();
 
       Iterator fields = fieldSet.getAll();
       while (fields.hasNext())
@@ -314,8 +312,8 @@ public class PSInlineLinkProcessor
       try
       {
          // assume the text is a valid XML document, already tidied
-         Document fieldDoc = PSXmlDocumentBuilder.createXmlDocument(
-            new InputSource( new StringReader(text)), false);
+
+         Document fieldDoc = (Document) Jsoup.parseBodyFragment(text);
 
          PSInlineLinkField.modifyField(fieldDoc.getDocumentElement(),
             relationshipMap);
