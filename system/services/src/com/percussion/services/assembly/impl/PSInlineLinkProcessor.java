@@ -139,6 +139,7 @@ public class PSInlineLinkProcessor implements IPSPropertyInterceptor
          XMLStreamException
    {
       try {
+         //TODO: Unicode is corrupted before getting here.
          //Don't bother trying to parse if the string doesn't contain html / xml
          if(SecureStringUtils.isHTML(body) || SecureStringUtils.isXML(body)) {
             return PSSaxHelper.parseWithXMLWriter(body,

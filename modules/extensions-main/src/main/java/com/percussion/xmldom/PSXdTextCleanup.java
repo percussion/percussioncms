@@ -39,26 +39,12 @@ import com.percussion.server.IPSRequestContext;
 import com.percussion.server.PSRequestValidationException;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.util.PSPurgableTempFile;
-import com.percussion.utils.string.PSXmlPIUtils;
-import com.percussion.utils.string.PSXmlPIUtils.Action;
-import com.percussion.utils.types.PSPair;
-import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.commons.lang.CharUtils;
 import org.apache.commons.lang.StringUtils;
-import org.w3c.dom.Attr;
+import org.jsoup.Jsoup;
+import org.jsoup.helper.W3CDom;
+import org.jsoup.safety.Safelist;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -66,6 +52,17 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.ProcessingInstruction;
 import org.w3c.dom.Text;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * A Rhythmyx extension used to translate a text field, parse it, tidy it, 
@@ -177,7 +174,7 @@ public class PSXdTextCleanup extends PSDefaultExtension
       throws PSAuthorizationException, PSRequestValidationException,
       PSParameterMismatchException, PSExtensionProcessingException
    {
-      String encodingDefault = null;
+      String encodingDefault = StandardCharsets.UTF_8.name();
       boolean inlineDisable = false;
       Document tempXMLDocument = null;
 
@@ -249,7 +246,7 @@ public class PSXdTextCleanup extends PSDefaultExtension
       if (param != null && param.equalsIgnoreCase("yes"))
          contxt.setUsePrettyPrint(false);
 
-      Object inputSourceObj = request.getParameterObject(fileParamName);
+      Object inputSourceObj = request.getParameter(fileParamName);
       if (null == inputSourceObj)
       {
          // there is no input source. This is not really an error.
@@ -257,6 +254,8 @@ public class PSXdTextCleanup extends PSDefaultExtension
          return;
       }
       
+      String inputSourceString = null;
+
       try
       {
          if (inputSourceObj instanceof PSPurgableTempFile)
@@ -271,73 +270,73 @@ public class PSXdTextCleanup extends PSDefaultExtension
                   (contxt, inputSourceFile, encodingDefault);
             if (encoding == null)
             {
-               tempXMLDocument = PSXmlDomUtils.loadXmlDocument
-                     (contxt, (File) inputSourceObj);
+               inputSourceString = Jsoup.parse((File) inputSourceObj, "UTF-8").toString();
             }
             else
             {
-               tempXMLDocument = PSXmlDomUtils.loadXmlDocument
-                     (contxt, (File) inputSourceObj, encoding);
+               inputSourceString = Jsoup.parse((File) inputSourceObj, encoding).toString();
             }
          }
          else
          {
             // inputSourceObj is a String
-            String inputSourceString = inputSourceObj.toString().trim();
+            inputSourceString = inputSourceObj.toString().trim();
             if (inputSourceString.length() < 1)
             {
                contxt.printTraceMessage("the source is empty");
                return;
             }
-            PSPair<Map<Integer, PSPair<Action, String>>, String> piresult = null;
+//            PSPair<Map<Integer, PSPair<Action, String>>, String> piresult = null;
+//
+//            if (escape_tags)
+//            {
+//               piresult = PSXmlPIUtils.encodeTags(inputSourceString);
+//               inputSourceString = piresult.getSecond();
+//            }
 
-            if (escape_tags)
-            {
-               piresult = PSXmlPIUtils.encodeTags(inputSourceString);
-               inputSourceString = piresult.getSecond();
-            }
+           // tempXMLDocument = W3CDom.convert(Jsoup.parse(inputSourceString,"UTF-8"));
 
-            tempXMLDocument = PSXmlDomUtils.loadXmlDocument(contxt,
-                   inputSourceString);
-
-            if (escape_tags)
-            {
-               PSXmlPIUtils.substitutePIs(tempXMLDocument, piresult.getFirst());
-            }
-            if (tempXMLDocument == null)
-            {
-               contxt.printTraceMessage("the source document is null");
-               return;
-            }
+//            if (escape_tags)
+//            {
+//               PSXmlPIUtils.substitutePIs(tempXMLDocument, piresult.getFirst());
+//            }
+//            if (tempXMLDocument == null)
+//            {
+//               contxt.printTraceMessage("the source document is null");
+//               return;
+//         }
          }
 
-         NodeList nl = tempXMLDocument.getElementsByTagName("body");
-         Element divBody = null;
-         Map nsMap = new HashMap();
-         if(nl.getLength() > 0)
-           divBody = (Element)nl.item(0);
-         if(divBody!=null)
-         {
-            NamedNodeMap nm = ((Element)divBody).getAttributes();
-            for(int i=0; i<nm.getLength(); i++)
-            {
-               Attr atr = (Attr)nm.item(i);
-               if(atr.getName().startsWith("xmlns"))
-                  nsMap.put(atr.getName(), atr.getValue());
-            }
-         }
-        Document resultDoc = findBodyField(contxt, tempXMLDocument);
-
-        if (resultDoc != null)
-         {
-           classicCleanup(request, inlineDisable, contxt, fileParamName,
-                 nsMap, resultDoc, itemDef, field);
-           if (cleanup_namespaces)
-              improvedCleanup(resultDoc, declared_namespaces);  
-           String outputString =
-              PSXmlDomUtils.copyTextFromDocument(contxt, resultDoc, ".");
+//         NodeList nl = tempXMLDocument.getElementsByTagName("body");
+//         Element divBody = null;
+//         Map nsMap = new HashMap();
+//         if(nl.getLength() > 0)
+//           divBody = (Element)nl.item(0);
+//         if(divBody!=null)
+//         {
+//            NamedNodeMap nm = ((Element)divBody).getAttributes();
+//            for(int i=0; i<nm.getLength(); i++)
+//            {
+//               Attr atr = (Attr)nm.item(i);
+//               if(atr.getName().startsWith("xmlns"))
+//                  nsMap.put(atr.getName(), atr.getValue());
+//            }
+//         }
+      //  Document resultDoc = findBodyField(contxt, inputSourceString);
+        /// NodeList nodes = resultDoc.getElementsByTagName("body");
+         String outputString = addBodyFieldJsoup(contxt, inputSourceString);
            request.setParameter(fileParamName, outputString);           
-         }
+
+//        if (resultDoc != null)
+//         {
+//           classicCleanup(request, inlineDisable, contxt, fileParamName,
+//                 nsMap, resultDoc, itemDef, field);
+//           if (cleanup_namespaces)
+//              improvedCleanup(resultDoc, declared_namespaces);
+//           String outputString =
+//              PSXmlDomUtils.copyTextFromDocument(contxt, resultDoc, ".");
+//           request.setParameter(fileParamName,  outputString);
+//         }
       }
       catch (Exception e)
       {
@@ -746,12 +745,13 @@ public class PSXdTextCleanup extends PSDefaultExtension
     * @return the document after post processing.
     *
     **/
-   private Document findBodyField(PSXmlDomContext ctx, Document inputDoc)
+   private Document findBodyField(PSXmlDomContext ctx, String inputDoc)
          throws PSExtensionProcessingException
    {
       //a new empty document
-      Document outputDoc = PSXmlDocumentBuilder.createXmlDocument();
-      PSXmlTreeWalker srcWalker = new PSXmlTreeWalker(inputDoc);
+     // Document outputDoc = W3CDom.convert(Jsoup.parse(W3CDom.asString(inputDoc,null)));
+      Document outputDoc = W3CDom.convert(Jsoup.parse(inputDoc));
+      PSXmlTreeWalker srcWalker = new PSXmlTreeWalker(outputDoc);
       Element docElement = (Element) srcWalker.getCurrent();
 
       if (docElement.getNodeName().equalsIgnoreCase("div") &&
@@ -832,6 +832,31 @@ public class PSXdTextCleanup extends PSDefaultExtension
       return outputDoc;
    }
    
+   private String addBodyFieldJsoup(PSXmlDomContext ctx, String inputDoc)
+           throws PSExtensionProcessingException
+   {
+      //a new empty document
+      // Document outputDoc = W3CDom.convert(Jsoup.parse(W3CDom.asString(inputDoc,null)));
+      String cleansed = Jsoup.clean(inputDoc, Safelist.relaxed().preserveRelativeLinks(true));
+      org.jsoup.nodes.Document.OutputSettings outputSettings = new org.jsoup.nodes.Document.OutputSettings();
+      outputSettings.prettyPrint(true).charset(StandardCharsets.UTF_8).syntax(org.jsoup.nodes.Document.OutputSettings.Syntax.xml);
+      org.jsoup.nodes.Document outputDoc = Jsoup.parseBodyFragment(cleansed).outputSettings(outputSettings);
+      //PSXmlTreeWalker srcWalker = new PSXmlTreeWalker(outputDoc);
+      //Element docElement = (Element) srcWalker.getCurrent();
+      org.jsoup.nodes.Element divElem = outputDoc.selectFirst("div");
+      if(divElem != null) {
+         divElem.attr("class", RXBODYFIELD_CLASS);
+      }else{
+         org.jsoup.nodes.Element body = outputDoc.select("body").first();
+         org.jsoup.nodes.Element div = new org.jsoup.nodes.Element("div");
+         div.attr("class",RXBODYFIELD_CLASS);
+         div.html(body.html());
+         body.html(div.outerHtml());
+      }
+
+
+      return outputDoc.body().html();
+   }
    /**
     * Determines if that the element should be considered empty. This
     * is needed for content from the rich text editor so we can determine

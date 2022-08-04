@@ -117,7 +117,7 @@ public class PSSaxHelper
          XMLOutputFactory ofact = XMLOutputFactory.newInstance();
          XMLStreamWriter xmlwriter = ofact.createXMLStreamWriter(writer);
          int len = args != null ? args.length + 1 : 1;
-         Object cargs[] = new Object[len];
+         Object[] cargs = new Object[len];
          cargs[0] = xmlwriter;
          if (args != null)
          {

@@ -108,7 +108,7 @@ public class PSDisplayFieldElementBuilder
     * Create a DisplayField element using the supplied parameters.
     *
     *    @deprecated
-    *    @see createDisplayFieldElement
+    *    @see #createDisplayFieldElement(Document, String, String, String, String)
     */
    public static Element createDisplayFieldElement(Document doc, String 
       displayType, String displayLabel, String labelSource)
@@ -478,7 +478,7 @@ public class PSDisplayFieldElementBuilder
    /**
     * Get the value for a boolean attribute.
     *
-    * @param The flag that determines which string to return.
+    * @param b The flag that determines which string to return.
     *
     * @return The text to be used as the value for a boolean attribute.
     */
@@ -654,9 +654,9 @@ public class PSDisplayFieldElementBuilder
    public static final String DIMENSION_TABLE = "table";
 
    /**
-    * Name of the attribute of the element {@link CONTROL_NAME Control} 
+    * Name of the attribute of the element {@link #CONTROL_NAME Control}
     * representing the name of the control.
-    * @see sys_ContentEditor.dtd file for more details.
+    * see sys_ContentEditor.dtd file for more details.
     */
    static final String CONTROLNAME_NAME = "name";
    

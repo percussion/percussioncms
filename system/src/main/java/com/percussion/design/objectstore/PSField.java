@@ -35,8 +35,8 @@ import org.w3c.dom.Node;
 
 import java.io.File;
 import java.io.Serializable;
+import java.nio.charset.StandardCharsets;
 import java.sql.Types;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -891,7 +891,7 @@ public class PSField extends PSComponent
       if (property != null)
          return (String) property.getValue();
 
-      return "UTF8";
+      return StandardCharsets.UTF_8.name();
    }
 
    /**
