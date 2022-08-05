@@ -139,11 +139,7 @@ public class PSConfigStatusMgr  implements IPSConfigStatusMgr
       List<PSConfigStatus> cfgStatusList = null;
       Session session = getSession();
 
-//         Criteria criteria = session.createCriteria(PSConfigStatus.class);
-//         criteria.add(Restrictions.like("configName", nameFilter).ignoreCase());
-//         criteria.addOrder(Order.asc("configName"));
-//         criteria.addOrder(Order.desc("dateApplied"));
-//         cfgStatusList = criteria.list();
+
 
       CriteriaBuilder builder = getSession().getCriteriaBuilder();
       CriteriaQuery<PSConfigStatus> criteria = builder.createQuery(PSConfigStatus.class);
