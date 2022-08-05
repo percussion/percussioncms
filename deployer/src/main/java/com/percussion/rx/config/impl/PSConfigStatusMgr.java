@@ -227,6 +227,7 @@ public class PSConfigStatusMgr  implements IPSConfigStatusMgr
          criteria.setMaxResults(1);
          cfgList = criteria.list();
 
+
       return cfgList.size()==0 ? null : cfgList.get(0);
    }
 }
