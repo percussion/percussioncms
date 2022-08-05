@@ -28,7 +28,6 @@ import com.percussion.services.audit.IPSDesignObjectAuditConfig;
 import com.percussion.services.audit.IPSDesignObjectAuditService;
 import com.percussion.services.audit.data.PSAuditLogEntry;
 import com.percussion.services.catalog.PSTypeEnum;
-import com.percussion.services.filestorage.data.PSBinary;
 import com.percussion.services.guidmgr.IPSGuidManager;
 import com.percussion.services.guidmgr.PSGuidManagerLocator;
 import org.hibernate.Criteria;
@@ -106,7 +105,7 @@ public class PSDesignObjectAuditService
       CriteriaBuilder builder = getSession().getCriteriaBuilder();
       CriteriaQuery<PSAuditLogEntry> criteria = builder.createQuery(PSAuditLogEntry.class);
       Root<PSAuditLogEntry> critRoot = criteria.from(PSAuditLogEntry.class);
-      criteria.where(builder.equal(critRoot.get("auditDate"),beforeDate));
+      criteria.where(builder.lessThan(critRoot.get("auditDate"),beforeDate));
       List<PSAuditLogEntry> entries = entityManager.createQuery(criteria).getResultList();
 
          for (PSAuditLogEntry entry : entries)

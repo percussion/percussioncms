@@ -23,10 +23,9 @@
  */
 package com.percussion.services.pkginfo.impl;
 
-import com.percussion.rx.config.data.PSConfigStatus;
+
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.error.PSNotFoundException;
-import com.percussion.services.filestorage.data.PSBinary;
 import com.percussion.services.filestorage.data.PSBinaryMetaKey;
 import com.percussion.services.guidmgr.IPSGuidManager;
 import com.percussion.services.guidmgr.PSGuidManagerLocator;
@@ -615,9 +614,9 @@ implements IPSPkgInfoService
       CriteriaQuery<PSPkgDependency> criteria = builder.createQuery(PSPkgDependency.class);
       Root<PSPkgDependency> critRoot = criteria.from(PSPkgDependency.class);
       criteria.where(builder.equal(critRoot.get(temp),guid.longValue()));
-      pkgDeps = entityManager.createQuery(criteria).getResultList();
+      return entityManager.createQuery(criteria).getResultList();
 
-      return pkgDeps;
+
    }
 
    /*
@@ -639,10 +638,6 @@ implements IPSPkgInfoService
    public void deletePkgDependency(long pkgDepId)
    {
       Session session = getSession();
-
-//         Criteria criteria = session.createCriteria(PSPkgDependency.class);
-//         criteria.add(Restrictions.eq("pkgDependencyId", pkgDepId));
-//         PSPkgDependency pkgDep = (PSPkgDependency) criteria.uniqueResult();
 
       CriteriaBuilder builder = getSession().getCriteriaBuilder();
       CriteriaQuery<PSPkgDependency> criteria = builder.createQuery(PSPkgDependency.class);
