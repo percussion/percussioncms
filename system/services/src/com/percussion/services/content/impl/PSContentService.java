@@ -35,6 +35,7 @@ import com.percussion.services.content.data.PSAutoTranslationPK;
 import com.percussion.services.content.data.PSFolderProperty;
 import com.percussion.services.content.data.PSKeyword;
 import com.percussion.services.content.data.PSKeywordChoice;
+import com.percussion.services.filestorage.data.PSBinary;
 import com.percussion.services.guidmgr.IPSGuidManager;
 import com.percussion.services.guidmgr.PSGuidManagerLocator;
 import com.percussion.services.guidmgr.data.PSGuid;
@@ -111,14 +112,18 @@ public class PSContentService
          if (StringUtils.isBlank(label))
             label = "%";
          
-         // get all requested keywords
-         Criteria criteria = session.createCriteria(PSKeyword.class);
-         criteria.add(Restrictions.like("label", label));
-         criteria.add(Restrictions.eq("keywordType", String.valueOf(1)));
-         if (!StringUtils.isBlank(sortProperty))
-            criteria.addOrder(Order.asc(sortProperty));
+
+      CriteriaBuilder builder = getSession().getCriteriaBuilder();
+      CriteriaQuery<PSKeyword> criteria = builder.createQuery(PSKeyword.class);
+      Root<PSKeyword> critRoot = criteria.from(PSKeyword.class);
+      criteria.where(builder.like(critRoot.get("label"),label));
+      criteria.where(builder.equal(critRoot.get("keywordType"),String.valueOf(1)));
+
+
+      if (!StringUtils.isBlank(sortProperty))
+      criteria.orderBy(builder.asc(critRoot.get(sortProperty)));
          
-         List<PSKeyword> keywords = filterKeywordExcludes(criteria.list());
+         List<PSKeyword> keywords = filterKeywordExcludes(entityManager.createQuery(criteria).getResultList());
          
          // then get all choices for each result
          for (PSKeyword keyword : keywords)
@@ -143,12 +148,17 @@ public class PSContentService
       
       Session session = getSession();
 
-         Criteria criteria = session.createCriteria(PSKeyword.class);
-         criteria.add(Restrictions.eq("keywordType", type));
+
+      CriteriaBuilder builder = getSession().getCriteriaBuilder();
+      CriteriaQuery<PSKeyword> criteria = builder.createQuery(PSKeyword.class);
+      Root<PSKeyword> critRoot = criteria.from(PSKeyword.class);
+      criteria.where(builder.equal(critRoot.get("keywordType"), type));
+      
+
          if (!StringUtils.isBlank(sortProperty))
-            criteria.addOrder(Order.asc(sortProperty));
+            criteria.orderBy(builder.asc(critRoot.get(sortProperty)));
          
-         return criteria.list();
+         return entityManager.createQuery(criteria).getResultList();
 
    }
 
@@ -170,10 +180,12 @@ public class PSContentService
       
       Session session = getSession();
 
-         Criteria criteria = session.createCriteria(PSKeyword.class);
-         criteria.add(Restrictions.eq("id", id.longValue()));
+      CriteriaBuilder builder = getSession().getCriteriaBuilder();
+      CriteriaQuery<PSKeyword> criteria = builder.createQuery(PSKeyword.class);
+      Root<PSKeyword> critRoot = criteria.from(PSKeyword.class);
+      criteria.where(builder.equal(critRoot.get("id"),id.longValue()));
          
-         List<PSKeyword> keywords = criteria.list();
+         List<PSKeyword> keywords = entityManager.createQuery(criteria).getResultList();
          if (keywords.isEmpty())
             throw new PSContentException(IPSContentErrors.MISSING_KEYWORD, id);
          
