@@ -8,6 +8,7 @@
 <xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:psxctl="urn:percussion.com/control"
                 xmlns="http://www.w3.org/1999/xhtml" xmlns:psxi18n="com.percussion.i18n"
+				xmlns:escape-util="org.apache.commons.lang.StringEscapeUtils"
                 extension-element-prefixes="psxi18n escape-util"
                 exclude-result-prefixes="psxi18n psxctl xmns escape-util">
 

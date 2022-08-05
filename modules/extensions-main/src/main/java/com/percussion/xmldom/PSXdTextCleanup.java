@@ -39,12 +39,14 @@ import com.percussion.server.IPSRequestContext;
 import com.percussion.server.PSRequestValidationException;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.util.PSPurgableTempFile;
+import com.percussion.utils.string.PSXmlPIUtils;
+import com.percussion.utils.string.PSXmlPIUtils.Action;
+import com.percussion.utils.types.PSPair;
+import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
 import org.apache.commons.lang.CharUtils;
 import org.apache.commons.lang.StringUtils;
-import org.jsoup.Jsoup;
-import org.jsoup.helper.W3CDom;
-import org.jsoup.safety.Safelist;
+import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -59,13 +61,14 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
 /**
- * A Rhythmyx extension used to translate a text field, parse it, tidy it, 
+ * A Rhythmyx extension used to translate a text field, parse it, tidy it,
  * scan it for inline links and then place it back into the same field.
  * <p>
  * This extension is a standard Rhythmyx pre-exit. There are 7 parameters:
@@ -116,7 +119,7 @@ import java.util.Set;
  *    <td>5</td>
  *    <td>inlineDisable</td>
  *    <td>
- *       Disables scanning for in-line links if 'yes' (case insensitive) is 
+ *       Disables scanning for in-line links if 'yes' (case insensitive) is
  *       supplied.
  *    </td>
  *    <td>no</td>
@@ -126,7 +129,7 @@ import java.util.Set;
  *    <td>6</td>
  *    <td>prettyPrint</td>
  *    <td>
- *       To enable pretty printing of the output supply 'yes' (case 
+ *       To enable pretty printing of the output supply 'yes' (case
  *       insensitive).
  *    </td>
  *    <td>no</td>
@@ -138,12 +141,12 @@ import java.util.Set;
  * automatically detect if the uploaded field is an attached file or an HTML
  * field, and process it accordingly.
  * <p>
- * The Tidy properties file is optional. If it is provided, the text will be 
+ * The Tidy properties file is optional. If it is provided, the text will be
  * run through the HTML Tidy program before parsing. See the
  * {@link <a href="http://www.w3.org/People/Raggett/tidy" target="_blank">
- * W3C HTML Tidy</a>} page for details and properties file formats. Note that 
- * this implementation uses the Java version of Tidy, which is not exactly 
- * identical to the C implementation. The pathname provided must be relative 
+ * W3C HTML Tidy</a>} page for details and properties file formats. Note that
+ * this implementation uses the Java version of Tidy, which is not exactly
+ * identical to the C implementation. The pathname provided must be relative
  * to the Rhythmyx server root.
  * <p>
  * The ServerPageTags.xml file is used to elmininate certain non-parsible text
@@ -157,7 +160,7 @@ import java.util.Set;
  */
 
 public class PSXdTextCleanup extends PSDefaultExtension
-   implements IPSRequestPreProcessor
+        implements IPSRequestPreProcessor
 {
    /**
     * This method handles the pre-exit request.
@@ -171,8 +174,8 @@ public class PSXdTextCleanup extends PSDefaultExtension
     */
    @SuppressWarnings("unchecked")
    public void preProcessRequest(Object[] params, IPSRequestContext request)
-      throws PSAuthorizationException, PSRequestValidationException,
-      PSParameterMismatchException, PSExtensionProcessingException
+           throws PSAuthorizationException, PSRequestValidationException,
+           PSParameterMismatchException, PSExtensionProcessingException
    {
       String encodingDefault = StandardCharsets.UTF_8.name();
       boolean inlineDisable = false;
@@ -181,12 +184,12 @@ public class PSXdTextCleanup extends PSDefaultExtension
       PSXmlDomContext contxt = new PSXmlDomContext(ms_className, request);
       contxt.setRxCommentHandling(true);
 
-      if (params.length < 1 || null == params[0] || 
-         0 == params[0].toString().trim().length())
+      if (params.length < 1 || null == params[0] ||
+              0 == params[0].toString().trim().length())
          throw new PSParameterMismatchException(params.length, 1);
 
       /*
-       * fileParamName is also the field name 
+       * fileParamName is also the field name
        */
       String fileParamName = PSXmlDomUtils.getParameter(params, 0, null);
 
@@ -199,17 +202,17 @@ public class PSXdTextCleanup extends PSDefaultExtension
          }
          catch (IOException e)
          {
-            contxt.printTraceMessage("Tidy Properties file " + 
-               params[1].toString().trim() + " not found ");
-            
+            contxt.printTraceMessage("Tidy Properties file " +
+                    params[1].toString().trim() + " not found ");
+
             throw new PSExtensionProcessingException(ms_className, e);
          }
       }
-      
+
       String contenttypeid = request.getParameter(IPSHtmlParameters.SYS_CONTENTTYPEID);
       PSField field = null;
       PSItemDefinition itemDef = null;
-      
+
       if (!StringUtils.isBlank(contenttypeid))
       {
          // Null for search
@@ -217,9 +220,9 @@ public class PSXdTextCleanup extends PSDefaultExtension
          try
          {
             itemDef = PSItemDefManager.getInstance().getItemDef(
-               Long.parseLong(contenttypeid),
-               request.getSecurityToken());
-         }         
+                    Long.parseLong(contenttypeid),
+                    request.getSecurityToken());
+         }
          catch (PSInvalidContentTypeException e)
          {
             throw new PSExtensionProcessingException(ms_className, e);
@@ -228,8 +231,8 @@ public class PSXdTextCleanup extends PSDefaultExtension
       boolean escape_tags = field != null && field.isAllowActiveTags();
       boolean cleanup_namespaces = field != null && field.isCleanupNamespaces();
       String declared_namespaces[] = field != null ? field
-            .getDeclaredNamespaces() : null;
-      
+              .getDeclaredNamespaces() : null;
+
       param = PSXmlDomUtils.getParameter(params, 2, null);
       if (param != null && param.length() > 0)
          contxt.setServerPageTags(param);
@@ -246,15 +249,13 @@ public class PSXdTextCleanup extends PSDefaultExtension
       if (param != null && param.equalsIgnoreCase("yes"))
          contxt.setUsePrettyPrint(false);
 
-      Object inputSourceObj = request.getParameter(fileParamName);
+      Object inputSourceObj = request.getParameterObject(fileParamName);
       if (null == inputSourceObj)
       {
          // there is no input source. This is not really an error.
          request.printTraceMessage("source is null, exiting");
          return;
       }
-      
-      String inputSourceString = null;
 
       try
       {
@@ -262,81 +263,81 @@ public class PSXdTextCleanup extends PSDefaultExtension
          {
             String encoding = null;
             PSPurgableTempFile inputSourceFile =
-                  (PSPurgableTempFile) inputSourceObj;
+                    (PSPurgableTempFile) inputSourceObj;
             request.printTraceMessage
-                  ("Loading file " + inputSourceFile.getSourceFileName());
+                    ("Loading file " + inputSourceFile.getSourceFileName());
 
             encoding = PSXmlDomUtils.determineCharacterEncoding
-                  (contxt, inputSourceFile, encodingDefault);
+                    (contxt, inputSourceFile, encodingDefault);
             if (encoding == null)
             {
-               inputSourceString = Jsoup.parse((File) inputSourceObj, "UTF-8").toString();
+               tempXMLDocument = PSXmlDomUtils.loadXmlDocument
+                       (contxt, (File) inputSourceObj);
             }
             else
             {
-               inputSourceString = Jsoup.parse((File) inputSourceObj, encoding).toString();
+               tempXMLDocument = PSXmlDomUtils.loadXmlDocument
+                       (contxt, (File) inputSourceObj, encoding);
             }
          }
          else
          {
             // inputSourceObj is a String
-            inputSourceString = inputSourceObj.toString().trim();
+            String inputSourceString = inputSourceObj.toString().trim();
             if (inputSourceString.length() < 1)
             {
                contxt.printTraceMessage("the source is empty");
                return;
             }
-//            PSPair<Map<Integer, PSPair<Action, String>>, String> piresult = null;
-//
-//            if (escape_tags)
-//            {
-//               piresult = PSXmlPIUtils.encodeTags(inputSourceString);
-//               inputSourceString = piresult.getSecond();
-//            }
+            PSPair<Map<Integer, PSPair<Action, String>>, String> piresult = null;
 
-           // tempXMLDocument = W3CDom.convert(Jsoup.parse(inputSourceString,"UTF-8"));
+            if (escape_tags)
+            {
+               piresult = PSXmlPIUtils.encodeTags(inputSourceString);
+               inputSourceString = piresult.getSecond();
+            }
 
-//            if (escape_tags)
-//            {
-//               PSXmlPIUtils.substitutePIs(tempXMLDocument, piresult.getFirst());
-//            }
-//            if (tempXMLDocument == null)
-//            {
-//               contxt.printTraceMessage("the source document is null");
-//               return;
-//         }
+            tempXMLDocument = PSXmlDomUtils.loadXmlDocument(contxt,
+                    inputSourceString);
+
+            if (escape_tags)
+            {
+               PSXmlPIUtils.substitutePIs(tempXMLDocument, piresult.getFirst());
+            }
+            if (tempXMLDocument == null)
+            {
+               contxt.printTraceMessage("the source document is null");
+               return;
+            }
          }
 
-//         NodeList nl = tempXMLDocument.getElementsByTagName("body");
-//         Element divBody = null;
-//         Map nsMap = new HashMap();
-//         if(nl.getLength() > 0)
-//           divBody = (Element)nl.item(0);
-//         if(divBody!=null)
-//         {
-//            NamedNodeMap nm = ((Element)divBody).getAttributes();
-//            for(int i=0; i<nm.getLength(); i++)
-//            {
-//               Attr atr = (Attr)nm.item(i);
-//               if(atr.getName().startsWith("xmlns"))
-//                  nsMap.put(atr.getName(), atr.getValue());
-//            }
-//         }
-      //  Document resultDoc = findBodyField(contxt, inputSourceString);
-        /// NodeList nodes = resultDoc.getElementsByTagName("body");
-         String outputString = addBodyFieldJsoup(contxt, inputSourceString);
-           request.setParameter(fileParamName, outputString);           
+         NodeList nl = tempXMLDocument.getElementsByTagName("body");
+         Element divBody = null;
+         Map nsMap = new HashMap();
+         if(nl.getLength() > 0)
+            divBody = (Element)nl.item(0);
+         if(divBody!=null)
+         {
+            NamedNodeMap nm = ((Element)divBody).getAttributes();
+            for(int i=0; i<nm.getLength(); i++)
+            {
+               Attr atr = (Attr)nm.item(i);
+               if(atr.getName().startsWith("xmlns"))
+                  nsMap.put(atr.getName(), atr.getValue());
+            }
+         }
+         Document resultDoc = findBodyField(contxt, tempXMLDocument);
 
-//        if (resultDoc != null)
-//         {
-//           classicCleanup(request, inlineDisable, contxt, fileParamName,
-//                 nsMap, resultDoc, itemDef, field);
-//           if (cleanup_namespaces)
-//              improvedCleanup(resultDoc, declared_namespaces);
-//           String outputString =
-//              PSXmlDomUtils.copyTextFromDocument(contxt, resultDoc, ".");
-//           request.setParameter(fileParamName,  outputString);
-//         }
+         if (resultDoc != null)
+         {
+            classicCleanup(request, inlineDisable, contxt, fileParamName,
+                    nsMap, resultDoc, itemDef, field);
+            if (cleanup_namespaces)
+               improvedCleanup(resultDoc, declared_namespaces);
+            String outputString =
+                    PSXmlDomUtils.copyTextFromDocument(contxt, resultDoc, ".");
+            request.setParameter(fileParamName, outputString);
+         }
       }
       catch (Exception e)
       {
@@ -348,7 +349,7 @@ public class PSXdTextCleanup extends PSDefaultExtension
    /**
     * The improved cleanup of namespaces. In this we just strip namespace
     * declarations and add the specific configured namespaces.
-    * 
+    *
     * @param resultDoc the document to examine and modify, assumed not <code>null</code>
     * @param declared_namespaces the default namespaces to add
     */
@@ -356,7 +357,7 @@ public class PSXdTextCleanup extends PSDefaultExtension
    {
       NodeList nl = resultDoc.getElementsByTagName("div");
       PSStylesheetCleanupFilter scf = PSStylesheetCleanupFilter.getInstance();
-      
+
       // Clean existing declarations
       int len = nl.getLength();
       for(int i = 0; i < len; i++)
@@ -365,7 +366,7 @@ public class PSXdTextCleanup extends PSDefaultExtension
          removeNamespaceAttributes(el);
 
       }
-      
+
       if (len > 0 && declared_namespaces != null)
       {
          Element el = (Element) nl.item(0);
@@ -385,7 +386,7 @@ public class PSXdTextCleanup extends PSDefaultExtension
          }
       }
    }
-   
+
    /**
     * Clean the namespace attributes from a specific node
     * @param node the node, assumed not <code>null</code>
@@ -406,7 +407,7 @@ public class PSXdTextCleanup extends PSDefaultExtension
                remove.add(attr.getNodeName());
             }
          }
-      
+
          for (String attr : remove)
          {
             el.removeAttribute(attr);
@@ -425,7 +426,7 @@ public class PSXdTextCleanup extends PSDefaultExtension
 
    /**
     * Do classic cleanup of field
-    * 
+    *
     * @param request
     * @param inlineDisable
     * @param contxt
@@ -439,16 +440,16 @@ public class PSXdTextCleanup extends PSDefaultExtension
     * @throws IOException
     */
    private void classicCleanup(IPSRequestContext request, boolean inlineDisable,
-      PSXmlDomContext contxt, String fileParamName, Map nsMap, Document resultDoc,
-      PSItemDefinition itemDef, PSField field) throws FileNotFoundException, IOException
+                               PSXmlDomContext contxt, String fileParamName, Map nsMap, Document resultDoc,
+                               PSItemDefinition itemDef, PSField field) throws FileNotFoundException, IOException
    {
       boolean isEditLiveControl = false;
       if(itemDef != null && field != null)
       {
          PSContentEditor ce = itemDef.getContentEditor();
          PSControlRef control = ce.getFieldControl(field.getSubmitName());
-         isEditLiveControl = 
-            control.getName().toLowerCase().indexOf("editlive") != -1;
+         isEditLiveControl =
+                 control.getName().toLowerCase().indexOf("editlive") != -1;
       }
       NodeList nl;
       /* Sometimes text copied from Word has some extra process
@@ -457,7 +458,7 @@ public class PSXdTextCleanup extends PSDefaultExtension
       nl = resultDoc.getElementsByTagName("div");
       Element divElem = null;
       if(nl.getLength() > 0)
-        divElem = (Element)nl.item(0);
+         divElem = (Element)nl.item(0);
       if(divElem != null)
       {
          //transfer any namespace declarations from body element to div
@@ -468,14 +469,14 @@ public class PSXdTextCleanup extends PSDefaultExtension
             String key = iter.next().toString();
             divElem.setAttribute(key, nsMap.get(key).toString());
          }
-        cleanUpNameSpaces(divElem, divElem);
+         cleanUpNameSpaces(divElem, divElem);
       }
-      
+
       //cleanup custom rxwidth and rxheight
       cleanupImages(resultDoc);
       cleanupEmptyTables(resultDoc);
       if(isEditLiveControl)
-         cleanupTrailingEmptyParagraphElements(resultDoc);         
+         cleanupTrailingEmptyParagraphElements(resultDoc);
 
       if (contxt.isLogging())
       {
@@ -492,7 +493,7 @@ public class PSXdTextCleanup extends PSDefaultExtension
          String fullRoot = request.getRequestRoot();
          String realRoot = fullRoot.substring(0, fullRoot.lastIndexOf("/"));
          String hostPortRoot = request.getOriginalHost() + ":" +
-               String.valueOf(request.getOriginalPort()) + realRoot;
+                 String.valueOf(request.getOriginalPort()) + realRoot;
 
          PSXdProcessRelatedLinks.processLinks(resultDoc, hostPortRoot);
       }
@@ -536,39 +537,39 @@ public class PSXdTextCleanup extends PSDefaultExtension
     * If both are the same, removes either one. If width and height are different
     * then only removes rxwidth and leaves width alone.
     * Same logic of course applies to height and rxheight.
-    * 
+    *
     * @param doc The doc, never <code>null</code>, may be <code>empty</code>.
     */
    private void cleanupImages(Document doc)
    {
       if (doc == null)
          throw new IllegalArgumentException("doc may not be null");
-      
+
       NodeList nl = doc.getElementsByTagName("img");
-      
+
       int len = nl.getLength();
-      
+
       if (len < 1)
          return; //no images - nothing to do
-      
+
       for (int i = 0; i < len; i++)
       {
          Node node = nl.item(i);
 
          if (!(node instanceof Element))
             continue;
-         
+
          Element elImg = (Element)node;
-         
+
          String height = elImg.getAttribute(IPSHtmlParameters.ATTR_HEIGHT);
          String width = elImg.getAttribute(IPSHtmlParameters.ATTR_WIDTH);
          String rxheight = elImg.getAttribute(IPSHtmlParameters.ATTR_RX_HEIGHT);
          String rxwidth = elImg.getAttribute(IPSHtmlParameters.ATTR_RX_WIDTH);
 
          if (height.trim().equals(rxheight.trim()) &&
-             width.trim().equals(rxwidth.trim()))
+                 width.trim().equals(rxwidth.trim()))
          {
-            //remove if actual image size is the same as its view 
+            //remove if actual image size is the same as its view
             elImg.removeAttribute(IPSHtmlParameters.ATTR_HEIGHT);
             elImg.removeAttribute(IPSHtmlParameters.ATTR_WIDTH);
 
@@ -579,7 +580,7 @@ public class PSXdTextCleanup extends PSDefaultExtension
          elImg.removeAttribute(IPSHtmlParameters.ATTR_RX_WIDTH);
       }
    }
-   
+
    /**
     * Removes any empty table elements from the passed in document.
     * A table is empty if it has no Element or Text node children.
@@ -589,7 +590,7 @@ public class PSXdTextCleanup extends PSDefaultExtension
    {
       if (doc == null)
          throw new IllegalArgumentException("doc may not be null");
-      
+
       NodeList nl = doc.getElementsByTagName("table");
       int len = nl.getLength();
       if (len < 1)
@@ -605,7 +606,7 @@ public class PSXdTextCleanup extends PSDefaultExtension
          }
       }
    }
-   
+
    /**
     * Removes all empty trailing P tags. This method works backwards and
     * removes empty P tags until another type of element or text is encountered.
@@ -615,71 +616,71 @@ public class PSXdTextCleanup extends PSDefaultExtension
     */
    private void cleanupTrailingEmptyParagraphElements(Document doc)
    {
-        Element divEl = doc.getDocumentElement();
-        // Get body div element
-        if(divEl != null && divEl.getNodeName().equalsIgnoreCase("div"))
-        {
-           // Verify that this is indeed the body div with the rxbodyfield
-           // class attribute
-           String classAttrVal = divEl.getAttribute("class");
-           if(classAttrVal != null && classAttrVal.equals(RXBODYFIELD_CLASS))
-           {
-              Node current = divEl.getLastChild();
-              boolean stop = false;
-              // loop through all immiediate children of the div element
-              while(!stop && current != null)
-              {
-                 if(current instanceof Element)
-                 {
-                    Element el = (Element)current;
-                    if(current.getNodeName().equalsIgnoreCase("p"))
-                    {
-                       // Is this element empty
-                       boolean isEmpty = true;
-                       NodeList nl = el.getChildNodes();
-                       int len = nl.getLength();
-                       for(int i = 0; i < len; i++)
-                       {
-                          Node item = nl.item(i);
-                          if(item instanceof Element)
-                          {
-                             isEmpty = false;
-                             break;
-                          }
-                          if(item instanceof Text)
-                          {
-                             if(!isTextNodeEmpty((Text)item))
-                             {
-                                isEmpty = false;
-                                break;
-                             }
-                          }
-                       }
-                       current = el.getPreviousSibling();
-                       if(isEmpty)
-                       {
-                          Node parent = el.getParentNode();
-                          parent.removeChild(el);
-                       }
-                       else
-                       {
-                          stop = true;
-                       }
-                    }
-                    else
-                    {
-                       stop = true;
-                    }
-                 }
-                 else
-                 {
-                    current = current.getPreviousSibling();
-                 }
-              }
-           }
-        }
-   }  
-   
+      Element divEl = doc.getDocumentElement();
+      // Get body div element
+      if(divEl != null && divEl.getNodeName().equalsIgnoreCase("div"))
+      {
+         // Verify that this is indeed the body div with the rxbodyfield
+         // class attribute
+         String classAttrVal = divEl.getAttribute("class");
+         if(classAttrVal != null && classAttrVal.equals(RXBODYFIELD_CLASS))
+         {
+            Node current = divEl.getLastChild();
+            boolean stop = false;
+            // loop through all immiediate children of the div element
+            while(!stop && current != null)
+            {
+               if(current instanceof Element)
+               {
+                  Element el = (Element)current;
+                  if(current.getNodeName().equalsIgnoreCase("p"))
+                  {
+                     // Is this element empty
+                     boolean isEmpty = true;
+                     NodeList nl = el.getChildNodes();
+                     int len = nl.getLength();
+                     for(int i = 0; i < len; i++)
+                     {
+                        Node item = nl.item(i);
+                        if(item instanceof Element)
+                        {
+                           isEmpty = false;
+                           break;
+                        }
+                        if(item instanceof Text)
+                        {
+                           if(!isTextNodeEmpty((Text)item))
+                           {
+                              isEmpty = false;
+                              break;
+                           }
+                        }
+                     }
+                     current = el.getPreviousSibling();
+                     if(isEmpty)
+                     {
+                        Node parent = el.getParentNode();
+                        parent.removeChild(el);
+                     }
+                     else
+                     {
+                        stop = true;
+                     }
+                  }
+                  else
+                  {
+                     stop = true;
+                  }
+               }
+               else
+               {
+                  current = current.getPreviousSibling();
+               }
+            }
+         }
+      }
+   }
+
    /**
     * Determines whether a text node is empty.
     * A text node is empty if it is not an empty or <code>null</code> string and
@@ -691,14 +692,14 @@ public class PSXdTextCleanup extends PSDefaultExtension
     *    <tr><td>10</td><td>Line Feed</td></tr>
     *    <tr><td>32</td><td>Space</td></tr>
     *    <tr><td>160</td><td>Non-breaking Space</td></tr>
-    * </tbody>   
+    * </tbody>
     * </table>
     * @param node assumed not <code>null</code>.
     * @return <code>true</code> if empty.
     */
    private boolean isTextNodeEmpty(Text node)
    {
-      String data = node.getData();     
+      String data = node.getData();
       for(int c : data.toCharArray())
       {
          if(!(c == 9 || c == 10 || c == 32 || c == 160))
@@ -706,7 +707,7 @@ public class PSXdTextCleanup extends PSDefaultExtension
       }
       return true;
    }
-   
+
    /**
     * Helper method to determine if a node is considered empty. A node
     * is empty if it does not contain element or text node children.
@@ -729,7 +730,7 @@ public class PSXdTextCleanup extends PSDefaultExtension
       }
       return true;
    }
-   
+
    /**
     * this method finds the body field and returns it in a new document
     * there are a couple of different places that the body field can be found
@@ -745,18 +746,17 @@ public class PSXdTextCleanup extends PSDefaultExtension
     * @return the document after post processing.
     *
     **/
-   private Document findBodyField(PSXmlDomContext ctx, String inputDoc)
-         throws PSExtensionProcessingException
+   private Document findBodyField(PSXmlDomContext ctx, Document inputDoc)
+           throws PSExtensionProcessingException
    {
       //a new empty document
-     // Document outputDoc = W3CDom.convert(Jsoup.parse(W3CDom.asString(inputDoc,null)));
-      Document outputDoc = W3CDom.convert(Jsoup.parse(inputDoc));
-      PSXmlTreeWalker srcWalker = new PSXmlTreeWalker(outputDoc);
+      Document outputDoc = PSXmlDocumentBuilder.createXmlDocument();
+      PSXmlTreeWalker srcWalker = new PSXmlTreeWalker(inputDoc);
       Element docElement = (Element) srcWalker.getCurrent();
 
       if (docElement.getNodeName().equalsIgnoreCase("div") &&
-            docElement.getAttribute("class") != null &&
-            docElement.getAttribute("class").equals(RXBODYFIELD_CLASS))
+              docElement.getAttribute("class") != null &&
+              docElement.getAttribute("class").equals(RXBODYFIELD_CLASS))
       {
          Node importNode = outputDoc.importNode(docElement, true);
          outputDoc.appendChild(importNode);
@@ -782,7 +782,7 @@ public class PSXdTextCleanup extends PSDefaultExtension
       Node firstBody = bodyNodes.item(0);
       ctx.printTraceMessage("first body node is:" + firstBody.getNodeName());
       while (i < bodyNodes.getLength()
-            && PSXmlDomUtils.isOnlyWhiteSpace(bodyNodes.item(i)))
+              && PSXmlDomUtils.isOnlyWhiteSpace(bodyNodes.item(i)))
       {
          i++;
       }
@@ -797,9 +797,9 @@ public class PSXdTextCleanup extends PSDefaultExtension
       firstBody = bodyNodes.item(i);
 
       if (firstBody.getNodeType() == Node.ELEMENT_NODE &&
-            ((Element) firstBody).getNodeName().equalsIgnoreCase("div") &&
-            ((Element) firstBody).getAttribute("class") != null &&
-            ((Element) firstBody).getAttribute("class").equals(RXBODYFIELD_CLASS))
+              ((Element) firstBody).getNodeName().equalsIgnoreCase("div") &&
+              ((Element) firstBody).getAttribute("class") != null &&
+              ((Element) firstBody).getAttribute("class").equals(RXBODYFIELD_CLASS))
       {
          // the first body field is a <div class="rxbodyfield">
          outputRoot = (Element) firstBody.cloneNode(true); //first node becomes the root
@@ -813,7 +813,7 @@ public class PSXdTextCleanup extends PSDefaultExtension
          // subsequent loop starts with first non-whitespace node.
       }
       outputRoot = (Element)PSXmlDocumentBuilder.copyTree(outputDoc, outputDoc,
-         outputRoot, true);
+              outputRoot, true);
 
       /*
       loop through the rest of the body nodes, appending them to the root
@@ -831,32 +831,7 @@ public class PSXdTextCleanup extends PSDefaultExtension
          outputDoc.removeChild(outputRoot);
       return outputDoc;
    }
-   
-   private String addBodyFieldJsoup(PSXmlDomContext ctx, String inputDoc)
-           throws PSExtensionProcessingException
-   {
-      //a new empty document
-      // Document outputDoc = W3CDom.convert(Jsoup.parse(W3CDom.asString(inputDoc,null)));
-      String cleansed = Jsoup.clean(inputDoc, Safelist.relaxed().preserveRelativeLinks(true));
-      org.jsoup.nodes.Document.OutputSettings outputSettings = new org.jsoup.nodes.Document.OutputSettings();
-      outputSettings.prettyPrint(true).charset(StandardCharsets.UTF_8).syntax(org.jsoup.nodes.Document.OutputSettings.Syntax.xml);
-      org.jsoup.nodes.Document outputDoc = Jsoup.parseBodyFragment(cleansed).outputSettings(outputSettings);
-      //PSXmlTreeWalker srcWalker = new PSXmlTreeWalker(outputDoc);
-      //Element docElement = (Element) srcWalker.getCurrent();
-      org.jsoup.nodes.Element divElem = outputDoc.selectFirst("div");
-      if(divElem != null) {
-         divElem.attr("class", RXBODYFIELD_CLASS);
-      }else{
-         org.jsoup.nodes.Element body = outputDoc.select("body").first();
-         org.jsoup.nodes.Element div = new org.jsoup.nodes.Element("div");
-         div.attr("class",RXBODYFIELD_CLASS);
-         div.html(body.html());
-         body.html(div.outerHtml());
-      }
 
-
-      return outputDoc.body().html();
-   }
    /**
     * Determines if that the element should be considered empty. This
     * is needed for content from the rich text editor so we can determine
@@ -879,7 +854,7 @@ public class PSXdTextCleanup extends PSDefaultExtension
          return true;
       NodeList nl = elem.getChildNodes();
       int len = nl.getLength();
-      //If there are more than one child node treat it as not empty and return. 
+      //If there are more than one child node treat it as not empty and return.
       if(len>1)
          return false;
       int pCount = 0;
@@ -894,7 +869,7 @@ public class PSXdTextCleanup extends PSDefaultExtension
                // If there are more then one set of <p> tags then
                // it is considered not empty.
                if(++pCount > 1)
-                  return false;               
+                  return false;
                if(!isElementEmpty((Element)node))
                   return false;
             }
@@ -904,7 +879,7 @@ public class PSXdTextCleanup extends PSDefaultExtension
                // considered as not empty
                return false;
             }
-         }         
+         }
          else if(node.getNodeType() == Node.TEXT_NODE)
          {
             String val = ((Text)node).getData();
@@ -914,13 +889,13 @@ public class PSXdTextCleanup extends PSDefaultExtension
       }
       return true;
    }
-   
+
    /**
     * A special whitespace detection method that also considers
     * the html non breaking space entity &amp;#160; as a whitespace
     * character.
     * @param str the string to evaluate. Assumed not <code>null</code>.
-    * @return <code>true</code> if the string contains only whitespace 
+    * @return <code>true</code> if the string contains only whitespace
     * characters.
     */
    private boolean isWhitespace(String str)
@@ -930,7 +905,7 @@ public class PSXdTextCleanup extends PSDefaultExtension
       {
          int ch = chars[i];
          if(CharUtils.isAsciiControl(
-            chars[i]) || ch == 32 || ch == 160 || ch == 173)
+                 chars[i]) || ch == 32 || ch == 160 || ch == 173)
             continue;
          return false;
       }
@@ -1039,7 +1014,7 @@ public class PSXdTextCleanup extends PSDefaultExtension
     * The function name used for error handling
     **/
    private static final String ms_className = "PSXdTextCleanup";
-   
+
    /**
     * The rxbodyfield class that indicates the body div.
     */
