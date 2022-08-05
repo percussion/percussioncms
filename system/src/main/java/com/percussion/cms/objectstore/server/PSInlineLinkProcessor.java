@@ -41,12 +41,14 @@ import com.percussion.server.PSRequest;
 import com.percussion.server.webservices.PSWebServicesRequestHandler;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.xml.PSNodePrinter;
+import com.percussion.xml.PSXmlDocumentBuilder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.jsoup.Jsoup;
 import org.w3c.dom.Document;
+import org.xml.sax.InputSource;
 
 import java.io.IOException;
+import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -54,7 +56,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * This processor fixes up inline links for newly created or updated 
+ * This processor fixes up inline links for newly created or updated
  * relationships.
  */
 public class PSInlineLinkProcessor
@@ -66,39 +68,39 @@ public class PSInlineLinkProcessor
    private PSInlineLinkProcessor()
    {
    }
-   
+
    /**
-    * Convenience method that calls {@link #processInlineLinkItem(PSRequest, 
-    * PSLocator, Map, int) processInlineLinkItem(request, item, 
+    * Convenience method that calls {@link #processInlineLinkItem(PSRequest,
+    * PSLocator, Map, int) processInlineLinkItem(request, item,
     * relationships, request.getSecurityToken().getCommunityId())}.
     */
    public static void processInlineLinkItem(PSRequest request,
-      PSLocator item, Map relationships) throws PSException
+                                            PSLocator item, Map relationships) throws PSException
    {
       //convenience methods don't need to validate contract
-      processInlineLinkItem(request, item, relationships, 
-         request.getSecurityToken().getCommunityId());
+      processInlineLinkItem(request, item, relationships,
+              request.getSecurityToken().getCommunityId());
    }
-      
+
    /**
     * Convenience method that calls {@link #processInlineLinkItem(PSRequest, PSLocator, Map, int)}
     */
    public static void processInlineLinkItem(PSRequest request,
-      PSLocator item, Map relationships, int communityId) throws PSException
+                                            PSLocator item, Map relationships, int communityId) throws PSException
    {
       //convenience methods don't need to validate contract
       processInlineLinkItem(request, item, relationships, communityId, true,
-            true);
+              true);
    }
-   
+
    /**
     * Processes the supplied items inline links.
-    * 
+    *
     * @param request the request for this process, never <code>null</code>.
-    * @param item the locator of the item to be processed, never 
+    * @param item the locator of the item to be processed, never
     *   <code>null</code>.
-    * @param relationships a map that maps the old relationship id as 
-    *    <code>Integer</code> to the new relationship as 
+    * @param relationships a map that maps the old relationship id as
+    *    <code>Integer</code> to the new relationship as
     *    <code>PSRelationship</code>), not <code>null</code>, may be empty.
     * @param communityId the community id for which to process the item, -1
     *    to allow all communities.
@@ -109,24 +111,24 @@ public class PSInlineLinkProcessor
     * @throws PSException for any error.
     */
    public static void processInlineLinkItem(PSRequest request,
-      PSLocator item, Map relationships, int communityId, boolean bCheckout, 
-      boolean checkin) 
-      throws PSException
+                                            PSLocator item, Map relationships, int communityId, boolean bCheckout,
+                                            boolean checkin)
+           throws PSException
    {
       if (request == null)
          throw new IllegalArgumentException("request cannot be null");
-      
+
       if (item == null)
          throw new IllegalArgumentException("item cannot be null");
-      
+
       if (relationships == null)
          throw new IllegalArgumentException("relationships cannot be null");
-      
+
       if (relationships.size() == 0)
          return;
 
       PSItemDefinition itemDef = PSItemDefManager.getInstance().getItemDef(
-         item, -1);
+              item, -1);
 
       // do nothing if there is no inline link fields
       List inlinelinkFields = getInlineLinkFields(itemDef);
@@ -134,7 +136,7 @@ public class PSInlineLinkProcessor
          return;
       logger.debug("Processing inline Link for : {} ", item.getId() );
       processInlineLinkItem(request, item, itemDef, relationships,
-         inlinelinkFields.iterator(), communityId, bCheckout, checkin);
+              inlinelinkFields.iterator(), communityId, bCheckout, checkin);
    }
 
    /**
@@ -146,8 +148,8 @@ public class PSInlineLinkProcessor
     */
    private static List getInlineLinkFields(PSItemDefinition itemDef)
    {
-      PSContentEditorPipe pipe = 
-         (PSContentEditorPipe) itemDef.getContentEditor().getPipe();
+      PSContentEditorPipe pipe =
+              (PSContentEditorPipe) itemDef.getContentEditor().getPipe();
       PSFieldSet fieldSet = pipe.getMapper().getFieldSet();
 
       return getInlineLinkFields(fieldSet, null);
@@ -156,15 +158,15 @@ public class PSInlineLinkProcessor
    /**
     * Get a list of inline link fields from the given field set.
     *
-    * @param fieldSet the field set from which to get all inline link fileds, 
+    * @param fieldSet the field set from which to get all inline link fileds,
     *    assumed not <code>null</code>.
-    * @param inlineFields the list for collecting the inline links, may be 
+    * @param inlineFields the list for collecting the inline links, may be
     *    <code>null</code> in which case a new list is created.
     * @return a list over zero or more <code>PSInlineLinkField</code> objects,
     *    never <code>null</code>, may be empty.
     */
-   private static List getInlineLinkFields(PSFieldSet fieldSet, 
-      List inlineFields)
+   private static List getInlineLinkFields(PSFieldSet fieldSet,
+                                           List inlineFields)
    {
       if (inlineFields == null)
          inlineFields = new ArrayList<>();
@@ -176,7 +178,7 @@ public class PSInlineLinkProcessor
          if (testFieldSet instanceof PSFieldSet)
          {
             getInlineLinkFields((PSFieldSet) testFieldSet,
-               inlineFields);
+                    inlineFields);
          }
          else
          {
@@ -192,14 +194,14 @@ public class PSInlineLinkProcessor
    /**
     * Process the specified items inline link fields.
     *
-    * @param request the request for this process, assumed not 
+    * @param request the request for this process, assumed not
     *    <code>null</code>.
     * @param locator the locator of the item to be processed, assumed not
     *    <code>null</code>.
     * @param itemDef the item definition of the processed item, assumed
     *    not <code>null</code>.
-    * @param relationshipMap the map that maps the old relationship id as 
-    * <code>Integer</code> to the new relationship as 
+    * @param relationshipMap the map that maps the old relationship id as
+    * <code>Integer</code> to the new relationship as
     * <code>PSRelationship</code>, assumed not <code>null</code>, may be empty.
     * @param fields the list of inline link fields, assumed it is one or more
     *    <code>PSInlineLinkField</code> objects.
@@ -209,30 +211,30 @@ public class PSInlineLinkProcessor
     *    inline links have been processed or not.
     * @throws PSException for any error.
     */
-   private static void processInlineLinkItem(PSRequest request, 
-      PSLocator locator, PSItemDefinition itemDef, Map relationshipMap, 
-      Iterator fields, int communityId, boolean bCheckout, boolean checkin) 
-      throws PSException
+   private static void processInlineLinkItem(PSRequest request,
+                                             PSLocator locator, PSItemDefinition itemDef, Map relationshipMap,
+                                             Iterator fields, int communityId, boolean bCheckout, boolean checkin)
+           throws PSException
    {
       PSWebServicesRequestHandler ws =
-         PSWebServicesRequestHandler.getInstance();
+              PSWebServicesRequestHandler.getInstance();
 
       try
       {
-         request.setParameter(IPSHtmlParameters.SYS_CONTENTID, 
-            Integer.toString(locator.getId()));
-         request.setParameter(IPSHtmlParameters.SYS_REVISION, 
-            Integer.toString(locator.getRevision()));
+         request.setParameter(IPSHtmlParameters.SYS_CONTENTID,
+                 Integer.toString(locator.getId()));
+         request.setParameter(IPSHtmlParameters.SYS_REVISION,
+                 Integer.toString(locator.getRevision()));
          if (bCheckout)
          {
             request.setParameter(IPSHtmlParameters.SYS_CHECKOUT_SAME_REVISION,
-                  IPSConstants.BOOLEAN_TRUE);
+                    IPSConstants.BOOLEAN_TRUE);
             ws.executeCheckInOut(request, IPSConstants.TRIGGER_CHECKOUT);
          }
-   
+
          PSServerItem item = new PSServerItem(itemDef);
          item.load(locator, request, false, communityId);
-   
+
          // process all inline link fields
          while (fields.hasNext())
          {
@@ -261,21 +263,21 @@ public class PSInlineLinkProcessor
             else
                processInlineLinkField(itemField, relationshipMap);
          }
-         
+
          /*
-          * Indicate that the following update is for inline link data update 
+          * Indicate that the following update is for inline link data update
           * and therefore inline links don't need to be processed again.
           */
          try
          {
-            request.setParameter(IPSHtmlParameters.SYS_INLINELINK_DATA_UPDATE, 
-               "yes");
+            request.setParameter(IPSHtmlParameters.SYS_INLINELINK_DATA_UPDATE,
+                    "yes");
             item.save(request, -1);
          }
          finally
          {
             request.removeParameter(
-               IPSHtmlParameters.SYS_INLINELINK_DATA_UPDATE);
+                    IPSHtmlParameters.SYS_INLINELINK_DATA_UPDATE);
          }
       }
       finally
@@ -292,32 +294,32 @@ public class PSInlineLinkProcessor
     *
     * @param itemField the inline link field to be processed, assumed not
     *    <code>null</code>.
-    * @param relationshipMap the map that maps the old relationship id as 
-    * <code>Integer</code> to the new relationship as 
+    * @param relationshipMap the map that maps the old relationship id as
+    * <code>Integer</code> to the new relationship as
     * <code>PSRelationship</code>, assumed not <code>null</code>, may be empty.
     * @throws PSCmsException if an error occurs.
     */
    private static void processInlineLinkField(PSItemField itemField,
-      Map relationshipMap) throws PSCmsException
+                                              Map relationshipMap) throws PSCmsException
    {
       IPSFieldValue fieldValue = itemField.getValue();
       if (!(fieldValue instanceof PSTextValue))
          return;
 
 
-         String text = ((PSTextValue) fieldValue).getValueAsString();
-         if (text.trim().length() == 0)
-            return;
+      String text = ((PSTextValue) fieldValue).getValueAsString();
+      if (text.trim().length() == 0)
+         return;
 
       try
       {
          // assume the text is a valid XML document, already tidied
-
-         Document fieldDoc = (Document) Jsoup.parseBodyFragment(text);
+         Document fieldDoc = PSXmlDocumentBuilder.createXmlDocument(
+                 new InputSource( new StringReader(text)), false);
 
          PSInlineLinkField.modifyField(fieldDoc.getDocumentElement(),
-            relationshipMap);
-         
+                 relationshipMap);
+
          StringWriter swriter = new StringWriter();
          PSNodePrinter np = new PSNodePrinter(swriter);
          try
