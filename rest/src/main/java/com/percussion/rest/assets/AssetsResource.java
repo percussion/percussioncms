@@ -24,18 +24,26 @@
 
 package com.percussion.rest.assets;
 
+import com.percussion.data.PSInternalRequestCallException;
 import com.percussion.error.PSExceptionUtils;
 import com.percussion.rest.Status;
 import com.percussion.rest.errors.AssetNotFoundException;
 import com.percussion.rest.errors.BackendException;
+import com.percussion.rest.users.IUserAdaptor;
+import com.percussion.rest.users.User;
 import com.percussion.rest.util.APIUtilities;
 import com.percussion.util.PSSiteManageBean;
+import com.percussion.utils.request.PSRequestInfo;
+import com.percussion.utils.request.PSRequestInfoBase;
+import com.percussion.webservices.PSErrorResultsException;
+import com.percussion.workflow.PSWorkFlowUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.mail.EmailException;
 import org.apache.cxf.jaxrs.ext.multipart.Attachment;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -63,11 +71,18 @@ import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.core.StreamingOutput;
 import javax.ws.rs.core.UriInfo;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.URI;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -80,12 +95,20 @@ public class AssetsResource
 {
 	@Autowired
     private IAssetAdaptor assetAdaptor;
-	
+
+    @Autowired
+    private IUserAdaptor userAdaptor;
+
 
     @Context
     private UriInfo uriInfo;
     
-    private final Pattern p = Pattern.compile("^\\/?([^\\/]+)(\\/(.*?))??(\\/([^\\/]+))?$");
+    private final Pattern p = Pattern.compile("^/?([^/]+)(/(.*?))??(/([^/]+))?$");
+
+    private static final String ALL_FILES_REPORT= "All Files";
+    private static final String ALL_IMAGES_REPORT="All Images";
+    private static final String NON_ADA_COMPLAINT_FILES_REPORT="Non ADA Complaint Files";
+    private static final String NON_ADA_COMPLIANT_IMAGES_REPORT="Non ADA Complaint Images";
 
     private static final Logger log = LogManager.getLogger(AssetsResource.class);
 
@@ -142,8 +165,8 @@ public class AssetsResource
     public Response importPreview(@QueryParam("osPath") String osPath, 
     		@QueryParam("assetPath") String assetPath, @QueryParam("replace") boolean replace, @QueryParam("onlyIfDifferent") boolean onlyIfDifferent, @QueryParam("autoApprove") boolean autoApprove)
     {
-    	PSCSVStreamingOutput out = null;
-		List<String> rows = null;
+    	PSCSVStreamingOutput out;
+		List<String> rows;
 	
 		try {
 			 rows = assetAdaptor.previewAssetImport(uriInfo.getBaseUri(), osPath, assetPath, replace, onlyIfDifferent, autoApprove);
@@ -383,13 +406,12 @@ public class AssetsResource
     
     @GET
     @Path("/reports/non-ada-compliant-images")
-    @Produces(MediaType.APPLICATION_OCTET_STREAM)
-    @Operation(summary = "Returns a report in CSV format listing all Images in the system that have detactable ADA Compliance issues.",
+    @Operation(summary = "Sends an email with a report in CSV format listing all Images in the system that have detactable ADA Compliance issues to current users's email Id",
             description = "Current rules look for empty Alt Text, Empty title, Alt Text or Title with Filename, ",
             responses = {
                 @ApiResponse(responseCode = "404", description = "Path not found"),
                 @ApiResponse(responseCode = "500", description = "Error"),
-                @ApiResponse(responseCode = "200", description = "OK", content=@Content(
+                @ApiResponse(responseCode = "202", description = "Request Accepted", content=@Content(
                         schema=@Schema(implementation = Response.class)
                 ))
     })
@@ -399,42 +421,27 @@ public class AssetsResource
         if(log.isDebugEnabled()) {
             log.debug("Generating Non ADA compliant images report");
         }
-    	PSCSVStreamingOutput out = null;
-		List<String> rows = null;
-	
-		try {
-			 rows =  assetAdaptor.nonADACompliantImagesReport(uriInfo.getBaseUri());
-		     out = new PSCSVStreamingOutput(rows);
-		
-		} catch (Exception e) {
-		    log.error("Error occurred while generating Non ADA compliant images report, cause: {}", PSExceptionUtils.getMessageForLog(e));
+        try{
+            generateReport(NON_ADA_COMPLIANT_IMAGES_REPORT);
+        } catch (PSErrorResultsException |PSInternalRequestCallException | BackendException e) {
+            log.error(PSExceptionUtils.getMessageForLog(e));
             log.debug(PSExceptionUtils.getDebugMessageForLog(e));
-			return Response.serverError().build();
-		}
-		// check for empty resultset, if empty then return No Content message | CMS-3216
-        ResponseBuilder r;
-		if(rows.isEmpty()){
-		    r =  Response.noContent();
-		}
-        else {
-            r = Response.ok(out);
-
-            r.header("Content-Type", "application/csv");
-            r.header("Content-Disposition", "attachment; filename=" + APIUtilities.getReportFileName("non-ada-images", "csv"));
+            return Response.serverError().build();
         }
-        return r.build();
+        return Response.accepted().build();
     }
+
     
     @GET
     @Path("/reports/non-ada-compliant-files")
     @Produces(
     {MediaType.APPLICATION_OCTET_STREAM})
-    @Operation(summary = "Returns a report in CSV format listing all File assets in the system that have detactable ADA Compliance issues.",
+    @Operation(summary = "Sends an email with a report in CSV format listing all File assets in the system that have detactable ADA Compliance issues, to current users's email Id",
             description = "Current rules look for empty Alt Text, Empty title, Alt Text or Title with Filename, ",
             responses = {
                     @ApiResponse(responseCode = "404", description = "Path not found"),
                     @ApiResponse(responseCode = "500", description = "Error"),
-                    @ApiResponse(responseCode = "200", description = "OK", content=@Content(
+                    @ApiResponse(responseCode = "202", description = "Request Accepted", content=@Content(
                             schema=@Schema(implementation = Response.class)
                     ))
     })
@@ -444,43 +451,27 @@ public class AssetsResource
         if(log.isDebugEnabled()) {
             log.debug("Generating Non ADA compliant files report");
         }
-    	PSCSVStreamingOutput out = null;
-		List<String> rows = null;
-	
-		try {
-			 rows =  assetAdaptor.nonADACompliantFilesReport(uriInfo.getBaseUri());
-		     out = new PSCSVStreamingOutput(rows);
-		
-		} catch (Exception e) {
-		    log.error("Error occurred while generating Non ADA compliant files report, cause: {}", PSExceptionUtils.getMessageForLog(e));
+        try{
+            generateReport(NON_ADA_COMPLAINT_FILES_REPORT);
+        } catch (PSErrorResultsException |PSInternalRequestCallException | BackendException e) {
+            log.error(PSExceptionUtils.getMessageForLog(e));
             log.debug(PSExceptionUtils.getDebugMessageForLog(e));
-			return Response.serverError().build();
-		}
-        // check for empty resultset, if empty then return No Content message | CMS-3216
-        ResponseBuilder r;
-        if(rows.isEmpty()){
-            r =  Response.noContent();
+            return Response.serverError().build();
         }
-        else {
-            r = Response.ok(out);
-
-            r.header("Content-Type", "application/csv");
-            r.header("Content-Disposition", "attachment; filename=" + APIUtilities.getReportFileName("non-ada-files", "csv"));
-        }
-        return r.build();
+        return Response.accepted().build();
         
     }
-    
+
     @GET
     @Path("/reports/all-images")
     @Produces(
     {MediaType.APPLICATION_OCTET_STREAM})
-    @Operation(summary = "Returns a report in CSV format listing all Images in the system.",
+    @Operation(summary = "Sends an email with a report in CSV format listing all Images in the system, to current users's email Id",
             description = "NOTE:  This report can take a very long time to run, on a system with allot of images.  Be sure to set timeouts accordingly if requesting programatically.",
             responses = {
                     @ApiResponse(responseCode = "404", description = "Path not found"),
                     @ApiResponse(responseCode = "500", description = "Error"),
-                    @ApiResponse(responseCode = "200", description = "OK", content=@Content(
+                    @ApiResponse(responseCode = "202", description = "Request Accepted", content=@Content(
                             schema=@Schema(implementation = Response.class)
                     ))
     })
@@ -490,43 +481,26 @@ public class AssetsResource
         if(log.isDebugEnabled()) {
             log.debug("Generating all image report");
         }
-    	PSCSVStreamingOutput out = null;
-		List<String> rows = null;
-	
-		try {
-			 rows =  assetAdaptor.nonADACompliantImagesReport(uriInfo.getBaseUri());
-		     out = new PSCSVStreamingOutput(rows);
-		
-		} catch (Exception e) {
-            log.error("Error occurred while generating All images report, cause: {}",
-                    PSExceptionUtils.getMessageForLog(e));
+        try {
+            generateReport(ALL_IMAGES_REPORT);
+        } catch (PSErrorResultsException |PSInternalRequestCallException | BackendException e) {
+            log.error(PSExceptionUtils.getMessageForLog(e));
             log.debug(PSExceptionUtils.getDebugMessageForLog(e));
-			return Response.serverError().build();
-		}
-        // check for empty resultset, if empty then return No Content message | CMS-3216
-        ResponseBuilder r;
-        if(rows.isEmpty()){
-            r =  Response.noContent();
+            return Response.serverError().build();
         }
-        else {
-            r = Response.ok(out);
-
-            r.header("Content-Type", "application/csv");
-            r.header("Content-Disposition", "attachment; filename=" + APIUtilities.getReportFileName("all-images", "csv"));
-        }
-        return r.build();
+        return Response.accepted().build();
     }
-    
+
+
     @GET
     @Path("/reports/all-files")
     @Produces(
     {MediaType.APPLICATION_OCTET_STREAM})
-    @Operation(summary = "Returns a report in CSV format listing all Files in the system.",
-            description = "",
+    @Operation(summary = "Sends an email with a report in CSV format listing all Files in the system to current users's email Id",
             responses = {
                     @ApiResponse(responseCode = "404", description = "Path not found"),
                     @ApiResponse(responseCode = "500", description = "Error"),
-                    @ApiResponse(responseCode = "200", description = "OK", content=@Content(
+                    @ApiResponse(responseCode = "202", description = "Request Accepted", content=@Content(
                             schema=@Schema(implementation = Response.class)
                     ))
     })
@@ -536,36 +510,96 @@ public class AssetsResource
         if(log.isDebugEnabled()) {
             log.debug("Generating All files report");
         }
-    	PSCSVStreamingOutput out = null;
-		List<String> rows = null;
-		
-		try {
-			 rows =  assetAdaptor.allFilesReport(uriInfo.getBaseUri());
-		     out = new PSCSVStreamingOutput(rows);
-		
-		} catch (Exception e) {
-            log.error("Error occurred while generating All files report, cause: {}",
-                    PSExceptionUtils.getMessageForLog(e));
+        try {
+            generateReport(ALL_FILES_REPORT);
+        } catch (PSErrorResultsException |PSInternalRequestCallException | BackendException e) {
+            log.error(PSExceptionUtils.getMessageForLog(e));
             log.debug(PSExceptionUtils.getDebugMessageForLog(e));
-			return Response.serverError().build();
-		}
-        // check for empty resultset, if empty then return No Content message | CMS-3216
-        ResponseBuilder r;
-        if(rows.isEmpty()){
-            r =  Response.noContent();
+            return Response.serverError().build();
         }
-        else {
-            r = Response.ok(out);
+        return Response.accepted().build();
 
-            r.header("Content-Type", "application/csv");
-            r.header("Content-Disposition", "attachment; filename=" + APIUtilities.getReportFileName("all-files", "csv"));
-        }
-		return r.build();
-    
     }
-    
-    
-    
+
+    private void generateReport(String reportType) throws PSErrorResultsException, PSInternalRequestCallException, BackendException {
+        synchronized (this) {
+            URI baseUri = uriInfo.getBaseUri();
+            Map<String, Object> requestThreadMap = new HashMap<>();
+            requestThreadMap.putAll(PSRequestInfoBase.getRequestInfoMap());
+            String currentUser = (String) PSRequestInfoBase.getRequestInfo(PSRequestInfo.KEY_USER);
+            User user = userAdaptor.getUser(null, currentUser);
+            String toAddress = user.getEmailAddress();
+
+            CompletableFuture<PSCSVStreamingOutput> a = new CompletableFuture<PSCSVStreamingOutput>() {{
+                CompletableFuture.runAsync(() -> {
+                    try {
+                        if(!PSRequestInfoBase.isInited()) {
+                            PSRequestInfoBase.initRequestInfo(requestThreadMap);
+                        }
+                        List<String> report = getReportList(reportType, baseUri);
+                        PSCSVStreamingOutput out = null;
+                        if (report != null) {
+                            out = new PSCSVStreamingOutput(report);
+                        }
+                        sendMail(out, reportType,toAddress);
+                    } catch (Exception ex) {
+                        String errorStr = "Error occurred while generating" + reportType + "report";
+                        log.error(errorStr + "cause:" + PSExceptionUtils.getMessageForLog(ex));
+                        log.debug(PSExceptionUtils.getDebugMessageForLog(ex));
+                        sendMail(errorStr, reportType,toAddress);
+                    }
+                });
+            }};
+        }
+    }
+
+    private List<String> getReportList(String reportType, URI baseUri) throws BackendException {
+        switch (reportType){
+            case ALL_FILES_REPORT: return assetAdaptor.allFilesReport(baseUri);
+            case ALL_IMAGES_REPORT: return assetAdaptor.allImagesReport(baseUri);
+            case NON_ADA_COMPLAINT_FILES_REPORT: return assetAdaptor.nonADACompliantFilesReport(baseUri);
+            case NON_ADA_COMPLIANT_IMAGES_REPORT:return assetAdaptor.nonADACompliantImagesReport(baseUri);
+        }
+        return null;
+    }
+
+    /**
+     * This API sends email to given address with outputstream as file and given report name.
+     * @param out
+     * @param reportName
+     * @param toAddress
+     */
+    private void sendMail(Object out,String reportName,String toAddress){
+        //Generate a temp file from Report Data
+        File tempFile = null;
+        String subject = "Report :" + reportName + " Generated";
+        String mailMessage = "Please find attached the Report";
+        try {
+            if(out instanceof PSCSVStreamingOutput) {
+                try {
+                    tempFile = Files.createTempFile(reportName, ".csv").toFile();
+                    FileOutputStream outputStream = new FileOutputStream(tempFile);
+                    ((PSCSVStreamingOutput) out).write(outputStream);
+                } catch (IOException e) {
+                    log.error("Error Sending Report Mail: {}", PSExceptionUtils.getMessageForLog(e));
+                    log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+                    PSWorkFlowUtils.sendMailWithAttachment(tempFile,subject,mailMessage,toAddress);
+                }
+            }else if (out instanceof String){
+                mailMessage = (String)out;
+                mailMessage = mailMessage + "\n" + "Please contact System Administrator";
+            }else{
+                mailMessage = "No Data found for report";
+            }
+            PSWorkFlowUtils.sendMailWithAttachment(tempFile,subject,mailMessage,toAddress);
+
+        }catch (EmailException e){
+            log.error("Error Sending Report Mail: {}", PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+        }
+
+    }
+
     @POST
     @Path("/reports/non-ada-compliant-images")
     @Produces(MediaType.APPLICATION_JSON)
@@ -583,15 +617,7 @@ public class AssetsResource
               throw new RuntimeException("No file sent");
         
     	  Attachment att = atts.get(0);
-          String uploadFilename = att.getContentDisposition().getFilename();
           InputStream stream = att.getObject(InputStream.class);
-          
-          // Strip out any path portion of the uploaded filename as per rfc spec.
-          uploadFilename = StringUtils.replace(uploadFilename, "\\", "/");
-
-          if (StringUtils.contains(uploadFilename, "/"))
-              uploadFilename = StringUtils.substringAfter(uploadFilename, "/");
-
           return assetAdaptor.bulkupdateNonADACompliantImages(uriInfo.getBaseUri(),stream);
     }
     
@@ -608,23 +634,13 @@ public class AssetsResource
                     @ApiResponse(responseCode = "200", description = "OK", content=@Content(
                             schema=@Schema(implementation = Status.class)
                     ))})
-    public Status bulkupdateNonADACompliantFiles(List<Attachment> atts) throws IOException
-    {
+    public Status bulkupdateNonADACompliantFiles(List<Attachment> atts) {
       
         if (atts == null || atts.isEmpty())
             throw new RuntimeException("No file sent");
       
         Attachment att = atts.get(0);
-        
-        String uploadFilename = att.getContentDisposition().getFilename();
         InputStream stream = att.getObject(InputStream.class);
-        
-        // Strip out any path portion of the uploaded filename as per rfc spec.
-        uploadFilename = StringUtils.replace(uploadFilename, "\\", "/");
-
-        if (StringUtils.contains(uploadFilename, "/"))
-            uploadFilename = StringUtils.substringAfter(uploadFilename, "/");
-
         return assetAdaptor.bulkupdateNonADACompliantFiles(uriInfo.getBaseUri(),stream);
     }
     
@@ -641,23 +657,13 @@ public class AssetsResource
                             schema=@Schema(implementation = Status.class)
                     ))
     })
-    public Status bulkupdateImageAssets(List<Attachment> atts) throws IOException
-    {
+    public Status bulkupdateImageAssets(List<Attachment> atts) {
         if (atts == null || atts.isEmpty())
             throw new RuntimeException("No file sent");
       
         Attachment att = atts.get(0);
-        
-        String uploadFilename = att.getContentDisposition().getFilename();
         InputStream stream = att.getObject(InputStream.class);
-        
-          // Strip out any path portion of the uploaded filename as per rfc spec.
-          uploadFilename = StringUtils.replace(uploadFilename, "\\", "/");
-
-          if (StringUtils.contains(uploadFilename, "/"))
-              uploadFilename = StringUtils.substringAfter(uploadFilename, "/");
-
-          return assetAdaptor.bulkupdateImageAssets(uriInfo.getBaseUri(),stream);
+        return assetAdaptor.bulkupdateImageAssets(uriInfo.getBaseUri(),stream);
     }
     
     @POST
@@ -671,22 +677,12 @@ public class AssetsResource
                     @ApiResponse(responseCode = "200", description = "OK", content=@Content(
                             schema=@Schema(implementation = Status.class)
                     ))})
-    public Status bulkupdateFileAssets(List<Attachment> atts) throws IOException
-    {
+    public Status bulkupdateFileAssets(List<Attachment> atts) {
     	  if (atts == null || atts.isEmpty())
               throw new RuntimeException("No file sent");
           
           Attachment att = atts.get(0);
-          
-          String uploadFilename = att.getContentDisposition().getFilename();
           InputStream stream = att.getObject(InputStream.class);
-          
-          // Strip out any path portion of the uploaded filename as per rfc spec.
-          uploadFilename = StringUtils.replace(uploadFilename, "\\", "/");
-
-          if (StringUtils.contains(uploadFilename, "/"))
-              uploadFilename = StringUtils.substringAfter(uploadFilename, "/");
-
           return assetAdaptor.bulkupdateFileAssets(uriInfo.getBaseUri(),stream);
     }
     
@@ -738,10 +734,6 @@ public class AssetsResource
             log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e);
         }
-    }
-
-    public void setAssetAdaptor(IAssetAdaptor assetAdaptor){
-            this.assetAdaptor = assetAdaptor;
     }
 
     @POST

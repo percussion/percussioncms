@@ -31,7 +31,7 @@ const percReportsList = [
     {type: 'All Images', endpoint: 'all-images'},
     {type: 'Non-ADA Compliant Files', endpoint: 'non-ada-compliant-files'},
     {type: 'Non-ADA Compliant Images', endpoint: 'non-ada-compliant-images'}
-]
+];
 
 $(document).ready(function() {
     displayAvailableReports();
@@ -55,6 +55,8 @@ function bindReportEvents() {
 }
 
 function processReport(eventObject) {
+    //It opens dialog if email is empty
+    percJQuery.perc_ChangeUserEmailDialog.openDialogIfEmptyEmail();
     currentReportType = $(eventObject).data('perc-report-type');
     currentReportEndpoint = $(eventObject).data('perc-report-endpoint');
     path = constructPath(currentReportEndpoint);
@@ -71,15 +73,11 @@ function requestReport(path) {
 }
 
 function requestReportCallback(status, result) {
-    if(typeof(result.data) !== 'undefined' && result.data == '') {
-        showReportAlert(`The report type '${currentReportType}' is empty`);
-    }
-    else if (status == 'error') {
-        showReportAlert(`There was an problem creating the report '${currentReportType}'`)
+    if (status == 'error') {
+        showReportAlert(`There was an problem creating the report '${currentReportType}'`);
     }
     else {
-        saveData(result);
-        showReportAlert(`Successfully created report '${currentReportType}'`)
+        showReportAlert(`Create report request generated Successfully'${currentReportType}'`);
     }
 }
 
@@ -103,7 +101,7 @@ function showReportAlert(message) {
     $('#percReportAlertTarget').fadeOut('fast', function() {
         $('#percReportAlertTarget').text(message);
         $('#percReportAlertTarget').fadeIn('fast');
-    })
+    });
 }
 
 function createFileDate() {
