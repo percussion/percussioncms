@@ -30,6 +30,7 @@ import com.percussion.data.PSInternalRequestCallException;
 import com.percussion.design.objectstore.PSNotFoundException;
 import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.PSExtensionException;
+import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
 import com.percussion.security.PSAuthenticationFailedException;
 import com.percussion.security.PSAuthorizationException;
 import com.percussion.security.PSEncryptProperties;
@@ -62,6 +63,10 @@ import com.percussion.utils.string.PSStringUtils;
 import com.percussion.workflow.mail.IPSMailMessageContext;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.mail.DefaultAuthenticator;
+import org.apache.commons.mail.EmailConstants;
+import org.apache.commons.mail.EmailException;
+import org.apache.commons.mail.MultiPartEmail;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
@@ -1258,6 +1263,78 @@ public class PSWorkFlowUtils
       }
 
       return null;
+   }
+
+   /**
+    * This method sends an email to passed in email address with given file as attachment, subject and body
+    * @param attachment
+    * @param subject
+    * @param body
+    * @param toAddress
+    * @throws EmailException
+    */
+   public static void sendMailWithAttachment(File attachment,String subject,String body,String toAddress) throws EmailException {
+
+         //Create Mail
+         MultiPartEmail commonsMultiPartEmail;
+         // Initializes the email client.
+
+         commonsMultiPartEmail = new MultiPartEmail();
+         commonsMultiPartEmail.setCharset(EmailConstants.UTF_8);
+
+         //SMTP host name and port
+         String hostProp = PSWorkFlowUtils.properties.getProperty("SMTP_HOST", "");
+         String portProp = PSWorkFlowUtils.properties.getProperty("SMTP_PORT","");
+         commonsMultiPartEmail.setHostName(hostProp);
+         commonsMultiPartEmail.setSmtpPort(Integer.parseInt(portProp));
+
+         //SMTP To Address and Bounce Address
+
+         commonsMultiPartEmail.addTo(toAddress);
+         String smtpBounceAddr = PSWorkFlowUtils.properties.getProperty("SMTP_BOUNCEADDR", "");
+         commonsMultiPartEmail.setBounceAddress(smtpBounceAddr);
+
+         //SMTP Username Password
+         String smtpUsername = PSWorkFlowUtils.properties.getProperty("SMTP_USERNAME", "");
+         String smtpPassword = PSWorkFlowUtils.properties.getProperty("SMTP_PASSWORD", "");
+         String pwd = PSEncryptProperties.decryptProperty(smtpPassword,
+                 PSLegacyEncrypter.getInstance(
+                         PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+                 ).getPartOneKey(),
+                 PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),
+                 null
+         );
+         //Only apply authentication if it is supplied.
+         if(!StringUtils.isBlank(smtpUsername)){
+            commonsMultiPartEmail.setAuthenticator(new DefaultAuthenticator(smtpUsername,
+                    pwd));
+         }
+
+         //Default TLS to false
+         String tlsEnabled = PSWorkFlowUtils.properties.getProperty("SMTP_TLSENABLED", "");
+         if(StringUtils.isBlank( tlsEnabled))
+            commonsMultiPartEmail.setStartTLSEnabled(false);
+         else
+            commonsMultiPartEmail.setStartTLSEnabled(Boolean.parseBoolean(tlsEnabled));
+
+         //SSL Port Setting
+         String smtpSSLPort = PSWorkFlowUtils.properties.getProperty("SMTP_SSLPORT", "");
+         if (StringUtils.isNotBlank(smtpSSLPort))
+         {
+            commonsMultiPartEmail.setSSLOnConnect(true);
+            commonsMultiPartEmail.setSslSmtpPort(smtpSSLPort);
+         }
+
+         //Set Mail Subject And Attach File if present
+         commonsMultiPartEmail.setSubject(subject);
+         commonsMultiPartEmail.setMsg(body);
+         if(attachment != null) {
+            commonsMultiPartEmail.attach(attachment);
+         }
+
+         //Send Mail
+         commonsMultiPartEmail.send();
+
    }
 
    /*  ********* String Methods ********* */
