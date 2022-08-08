@@ -269,6 +269,7 @@
     <script src="../plugins/PercContributorUiAdaptor.js"></script>
     <script src="../services/PercBlogService.js"></script>
     <script src="../plugins/perc_ChangePwDialog.js"></script>
+    <script src="../plugins/perc_ChangeUserEmailDialog.js"></script>
     <script src="../plugins/perc_newsitedialog.js"></script>
     <script src="../services/perc_sectionServiceClient.js"></script>
 

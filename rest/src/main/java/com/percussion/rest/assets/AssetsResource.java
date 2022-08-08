@@ -109,6 +109,11 @@ public class AssetsResource
     
     private final Pattern p = Pattern.compile("^/?([^/]+)(/(.*?))??(/([^/]+))?$");
 
+    private static final String ALL_FILES_REPORT= "All Files";
+    private static final String ALL_IMAGES_REPORT="All Images";
+    private static final String NON_ADA_COMPLAINT_FILES_REPORT="Non ADA Complaint Files";
+    private static final String NON_ADA_COMPLIANT_IMAGES_REPORT="Non ADA Complaint Images";
+
     private static final Logger log = LogManager.getLogger(AssetsResource.class);
 
     private static class TikaConfigHolder {
@@ -410,7 +415,7 @@ public class AssetsResource
             responses = {
                 @ApiResponse(responseCode = "404", description = "Path not found"),
                 @ApiResponse(responseCode = "500", description = "Error"),
-                @ApiResponse(responseCode = "200", description = "OK", content=@Content(
+                @ApiResponse(responseCode = "202", description = "Request Accepted", content=@Content(
                         schema=@Schema(implementation = Response.class)
                 ))
     })
@@ -420,34 +425,10 @@ public class AssetsResource
         if(log.isDebugEnabled()) {
             log.debug("Generating Non ADA compliant images report");
         }
-        URI baseUri = uriInfo.getBaseUri();
-        Map requestThreadMap = PSRequestInfoBase.getRequestInfoMap();
-        CompletableFuture<PSCSVStreamingOutput> a = new CompletableFuture<PSCSVStreamingOutput>() {{
-            CompletableFuture.runAsync(() -> {
-                try {
-                    PSRequestInfoBase.initRequestInfo(requestThreadMap);
-                    PSCSVStreamingOutput out = geneNonADACompliantImagesReport(baseUri);
-                    sendMail(out,"Non ADA compliant images files");
-                } catch (Exception ex) {
-                    String errorStr = "Error occurred while generating Non ADA compliant images files report, cause:" + PSExceptionUtils.getMessageForLog(ex);
-                    log.error(errorStr);
-                    log.debug(PSExceptionUtils.getDebugMessageForLog((Exception) ex));
-                    sendMail(errorStr,"Non ADA compliant images files");
-                }
-            });
-        }};
-
+        generateReport(NON_ADA_COMPLIANT_IMAGES_REPORT);
         return Response.accepted().build();
     }
 
-    private PSCSVStreamingOutput geneNonADACompliantImagesReport(URI baseUri) throws BackendException {
-
-        List<String> rows = assetAdaptor.nonADACompliantImagesReport(baseUri);
-        if(rows.isEmpty()){
-            return null;
-        }
-        return new PSCSVStreamingOutput(rows);
-    }
     
     @GET
     @Path("/reports/non-ada-compliant-files")
@@ -458,7 +439,7 @@ public class AssetsResource
             responses = {
                     @ApiResponse(responseCode = "404", description = "Path not found"),
                     @ApiResponse(responseCode = "500", description = "Error"),
-                    @ApiResponse(responseCode = "200", description = "OK", content=@Content(
+                    @ApiResponse(responseCode = "202", description = "Request Accepted", content=@Content(
                             schema=@Schema(implementation = Response.class)
                     ))
     })
@@ -468,36 +449,12 @@ public class AssetsResource
         if(log.isDebugEnabled()) {
             log.debug("Generating Non ADA compliant files report");
         }
-        URI baseUri = uriInfo.getBaseUri();
-        Map requestThreadMap = PSRequestInfoBase.getRequestInfoMap();
-        CompletableFuture<PSCSVStreamingOutput> a = new CompletableFuture<PSCSVStreamingOutput>() {{
-            CompletableFuture.runAsync(() -> {
-                try {
-                    PSRequestInfoBase.initRequestInfo(requestThreadMap);
-                    PSCSVStreamingOutput out = geneNonADACompliantFilesReport(baseUri);
-                    sendMail(out,"Non ADA compliant files");
-                } catch (Exception ex) {
-                    String errorStr = "Error occurred while generating Non ADA compliant files report, cause:" + PSExceptionUtils.getMessageForLog(ex);
-                    log.error(errorStr);
-                    log.debug(PSExceptionUtils.getDebugMessageForLog((Exception) ex));
-                    sendMail(errorStr,"Non ADA compliant files");
-                }
-            });
-
-        }};
-
+        generateReport(NON_ADA_COMPLAINT_FILES_REPORT);
         return Response.accepted().build();
         
     }
 
-    private PSCSVStreamingOutput geneNonADACompliantFilesReport(URI baseUri) throws BackendException {
 
-        List<String> rows = assetAdaptor.nonADACompliantFilesReport(baseUri);
-        if(rows.isEmpty()){
-              return null;
-        }
-        return new PSCSVStreamingOutput(rows);
-    }
     
     @GET
     @Path("/reports/all-images")
@@ -508,7 +465,7 @@ public class AssetsResource
             responses = {
                     @ApiResponse(responseCode = "404", description = "Path not found"),
                     @ApiResponse(responseCode = "500", description = "Error"),
-                    @ApiResponse(responseCode = "200", description = "OK", content=@Content(
+                    @ApiResponse(responseCode = "202", description = "Request Accepted", content=@Content(
                             schema=@Schema(implementation = Response.class)
                     ))
     })
@@ -518,34 +475,10 @@ public class AssetsResource
         if(log.isDebugEnabled()) {
             log.debug("Generating all image report");
         }
-        URI baseUri = uriInfo.getBaseUri();
-        Map requestThreadMap = PSRequestInfoBase.getRequestInfoMap();
-        CompletableFuture<PSCSVStreamingOutput> a = new CompletableFuture<PSCSVStreamingOutput>() {{
-            CompletableFuture.runAsync(() -> {
-                    try {
-                        PSRequestInfoBase.initRequestInfo(requestThreadMap);
-                        PSCSVStreamingOutput out = genAllImagesReport(baseUri);
-                        sendMail(out,"All Images");
-                    } catch (Exception ex) {
-                        String errorStr = "Error occurred while generating All Images files report, cause:" + PSExceptionUtils.getMessageForLog(ex);
-                        log.error(errorStr);
-                        log.debug(PSExceptionUtils.getDebugMessageForLog((Exception) ex));
-                        sendMail(errorStr,"All Images");
-                    }
-                });
-
-        }};
-
-        return Response.accepted().build();    }
-
-    private PSCSVStreamingOutput genAllImagesReport(URI baseUri) throws BackendException {
-
-        List<String> rows = assetAdaptor.allImagesReport(baseUri);
-        if(rows == null){
-            return null;
-        }
-        return new PSCSVStreamingOutput(rows);
+        generateReport(ALL_IMAGES_REPORT);
+        return Response.accepted().build();
     }
+
 
     @GET
     @Path("/reports/all-files")
@@ -555,7 +488,7 @@ public class AssetsResource
             responses = {
                     @ApiResponse(responseCode = "404", description = "Path not found"),
                     @ApiResponse(responseCode = "500", description = "Error"),
-                    @ApiResponse(responseCode = "200", description = "OK", content=@Content(
+                    @ApiResponse(responseCode = "202", description = "Request Accepted", content=@Content(
                             schema=@Schema(implementation = Response.class)
                     ))
     })
@@ -565,37 +498,46 @@ public class AssetsResource
         if(log.isDebugEnabled()) {
             log.debug("Generating All files report");
         }
-        URI baseUri = uriInfo.getBaseUri();
-        Map requestThreadMap = PSRequestInfoBase.getRequestInfoMap();
-        CompletableFuture<PSCSVStreamingOutput> a = new CompletableFuture<PSCSVStreamingOutput>() {{
-            CompletableFuture.runAsync(() -> {
-                try {
-                    PSRequestInfoBase.initRequestInfo(requestThreadMap);
-                    PSCSVStreamingOutput out = genAllFilesReport(baseUri);
-                    sendMail(out,"All Files");
-                } catch (Exception ex) {
-                    String errorStr = "Error occurred while generating All files report, cause:" + PSExceptionUtils.getMessageForLog(ex);
-                    log.error(errorStr);
-                    log.debug(PSExceptionUtils.getDebugMessageForLog((Exception) ex));
-                    sendMail(errorStr,"All Files");
-                }
-            });
-
-        }};
-
+        generateReport(ALL_FILES_REPORT);
         return Response.accepted().build();
 
     }
 
-    private PSCSVStreamingOutput genAllFilesReport(URI baseUri) throws BackendException {
 
-        List<String> rows =  assetAdaptor.allFilesReport(baseUri);
-        if(rows == null){
-            return null;
+    private void generateReport(String reportType){
+        synchronized (this) {
+            URI baseUri = uriInfo.getBaseUri();
+            Map<String, Object> requestThreadMap = PSRequestInfoBase.getRequestInfoMap();
+            CompletableFuture<PSCSVStreamingOutput> a = new CompletableFuture<PSCSVStreamingOutput>() {{
+                CompletableFuture.runAsync(() -> {
+                    try {
+                        PSRequestInfoBase.initRequestInfo(requestThreadMap);
+                        List<String> report = getReportList(reportType, baseUri);
+                        PSCSVStreamingOutput out = null;
+                        if (report != null) {
+                            out = new PSCSVStreamingOutput(report);
+                        }
+                        sendMail(out, reportType);
+                    } catch (Exception ex) {
+                        String errorStr = "Error occurred while generating" + reportType + "report, cause:" + PSExceptionUtils.getMessageForLog(ex);
+                        log.error(errorStr);
+                        log.debug(PSExceptionUtils.getDebugMessageForLog(ex));
+                        sendMail(errorStr, reportType);
+                    }
+                });
+            }};
         }
-        return new PSCSVStreamingOutput(rows);
     }
 
+    private List<String> getReportList(String reportType, URI baseUri) throws BackendException {
+        switch (reportType){
+            case ALL_FILES_REPORT: return assetAdaptor.allFilesReport(baseUri);
+            case ALL_IMAGES_REPORT: return assetAdaptor.allImagesReport(baseUri);
+            case NON_ADA_COMPLAINT_FILES_REPORT: return assetAdaptor.nonADACompliantFilesReport(baseUri);
+            case NON_ADA_COMPLIANT_IMAGES_REPORT:return assetAdaptor.nonADACompliantImagesReport(baseUri);
+        }
+        return null;
+    }
 
     private void sendMail(Object out,String reportName){
 
@@ -604,13 +546,12 @@ public class AssetsResource
         String mailMessage = "Please find attached the Report";
         try {
             if(out instanceof PSCSVStreamingOutput) {
-                //String tempDir = System.getProperty("java.io.tmpdir");
                 tempFile = Files.createTempFile(reportName,".csv").toFile();
                 FileOutputStream outputStream = new FileOutputStream(tempFile);
                 ((PSCSVStreamingOutput)out).write(outputStream);
             }else if (out instanceof String){
                 mailMessage = (String)out;
-                mailMessage = mailMessage + "/n" + "Please contact Administrator";
+                mailMessage = mailMessage + "\n" + "Please contact Administrator";
             }else{
                 mailMessage = "No Data found for report";
             }
@@ -656,15 +597,15 @@ public class AssetsResource
                 //Default TLS to false
                 String tlsEnabled = PSWorkFlowUtils.properties.getProperty("SMTP_TLSENABLED", "");
                 if(StringUtils.isBlank( tlsEnabled))
-                    commonsMultiPartEmail.setTLS(false);
+                    commonsMultiPartEmail.setStartTLSEnabled(false);
                 else
-                    commonsMultiPartEmail.setTLS(Boolean.parseBoolean(tlsEnabled));
+                    commonsMultiPartEmail.setStartTLSEnabled(Boolean.parseBoolean(tlsEnabled));
 
                 //SSL Port Setting
                 String smtpSSLPort = PSWorkFlowUtils.properties.getProperty("SMTP_SSLPORT", "");
                 if (StringUtils.isNotBlank(smtpSSLPort))
                 {
-                    commonsMultiPartEmail.setSSL(true);
+                    commonsMultiPartEmail.setSSLOnConnect(true);
                     commonsMultiPartEmail.setSslSmtpPort(smtpSSLPort);
                 }
 
@@ -688,9 +629,7 @@ public class AssetsResource
             log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
     }
-    
-    
-    
+
     @POST
     @Path("/reports/non-ada-compliant-images")
     @Produces(MediaType.APPLICATION_JSON)

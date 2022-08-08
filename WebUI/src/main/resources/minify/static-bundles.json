@@ -21,6 +21,7 @@
         "services/PercReusableSearchService.js",
         "widgets/PercWizard/PercWizard.js",
         "plugins/perc_ChangePwDialog.js",
+        "plugins/perc_ChangeUserEmailDialog.js",
         "plugins/perc_newsitedialog.js"
       ]
     },
@@ -57,6 +58,7 @@
         "widgets/perc_site_map.js",
         "widgets/perc_save_as.js",
         "plugins/perc_ChangePwDialog.js",
+        "plugins/perc_ChangeUserEmailDialog.js",
         "plugins/perc_newsitedialog.js"
       ]
     },
@@ -137,6 +139,7 @@
         "plugins/PercContributorUiAdaptor.js",
         "services/PercBlogService.js",
         "plugins/perc_ChangePwDialog.js",
+        "plugins/perc_ChangeUserEmailDialog.js",
         "plugins/perc_newsitedialog.js",
         "services/perc_sectionServiceClient.js"
       ]
@@ -212,6 +215,7 @@
         "plugins/perc_assign_workflow_sites_folder_dialog.js",
         "views/PercWorkflowView.js",
         "plugins/perc_ChangePwDialog.js",
+        "plugins/perc_ChangeUserEmailDialog.js",
         "plugins/perc_newsitedialog.js"
       ]
     },
@@ -289,6 +293,7 @@
         "views/PercRegionCSSHandler.js",
         "views/PercEditRegionPropertiesDialog.js",
         "plugins/perc_ChangePwDialog.js",
+        "plugins/perc_ChangeUserEmailDialog.js",
         "plugins/perc_newsitedialog.js"
       ]
     },
@@ -333,6 +338,7 @@
         "widgetbuilder/js/views/PercWidgetResourceViews.js",
         "services/PercUserService.js",
         "plugins/perc_ChangePwDialog.js",
+        "plugins/perc_ChangeUserEmailDialog.js",
         "plugins/perc_newsitedialog.js"
       ]
     },
@@ -408,6 +414,7 @@
         "services/PercSiteSummaryService.js",
         "plugins/PercSiteSummaryDialog.js",
         "plugins/perc_ChangePwDialog.js",
+        "plugins/perc_ChangeUserEmailDialog.js",
         "plugins/perc_newsitedialog.js"
       ]
     },

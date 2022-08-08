@@ -173,6 +173,7 @@
     <script src="../services/PercReusableSearchService.js"></script>
     <script src="../widgets/PercWizard/PercWizard.js"></script>
     <script src="../plugins/perc_ChangePwDialog.js"></script>
+    <script src="../plugins/perc_ChangeUserEmailDialog.js"></script>
     <script src="../plugins/perc_newsitedialog.js"></script>
     <!-- End Dashboard JS -->
     <% } else { %>
