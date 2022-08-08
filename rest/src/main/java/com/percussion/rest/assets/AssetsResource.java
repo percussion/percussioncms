@@ -24,20 +24,18 @@
 
 package com.percussion.rest.assets;
 
+import com.percussion.data.PSInternalRequestCallException;
 import com.percussion.error.PSExceptionUtils;
-import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
 import com.percussion.rest.Status;
 import com.percussion.rest.errors.AssetNotFoundException;
 import com.percussion.rest.errors.BackendException;
 import com.percussion.rest.users.IUserAdaptor;
 import com.percussion.rest.users.User;
 import com.percussion.rest.util.APIUtilities;
-import com.percussion.security.PSEncryptProperties;
-import com.percussion.security.PSEncryptor;
 import com.percussion.util.PSSiteManageBean;
-import com.percussion.utils.io.PathUtils;
 import com.percussion.utils.request.PSRequestInfo;
 import com.percussion.utils.request.PSRequestInfoBase;
+import com.percussion.webservices.PSErrorResultsException;
 import com.percussion.workflow.PSWorkFlowUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -45,10 +43,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.mail.DefaultAuthenticator;
-import org.apache.commons.mail.EmailConstants;
 import org.apache.commons.mail.EmailException;
-import org.apache.commons.mail.MultiPartEmail;
 import org.apache.cxf.jaxrs.ext.multipart.Attachment;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -84,6 +79,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
@@ -410,7 +406,7 @@ public class AssetsResource
     
     @GET
     @Path("/reports/non-ada-compliant-images")
-    @Operation(summary = "Returns a report in CSV format listing all Images in the system that have detactable ADA Compliance issues.",
+    @Operation(summary = "Sends an email with a report in CSV format listing all Images in the system that have detactable ADA Compliance issues to current users's email Id",
             description = "Current rules look for empty Alt Text, Empty title, Alt Text or Title with Filename, ",
             responses = {
                 @ApiResponse(responseCode = "404", description = "Path not found"),
@@ -425,7 +421,13 @@ public class AssetsResource
         if(log.isDebugEnabled()) {
             log.debug("Generating Non ADA compliant images report");
         }
-        generateReport(NON_ADA_COMPLIANT_IMAGES_REPORT);
+        try{
+            generateReport(NON_ADA_COMPLIANT_IMAGES_REPORT);
+        } catch (PSErrorResultsException |PSInternalRequestCallException | BackendException e) {
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+            return Response.serverError().build();
+        }
         return Response.accepted().build();
     }
 
@@ -434,7 +436,7 @@ public class AssetsResource
     @Path("/reports/non-ada-compliant-files")
     @Produces(
     {MediaType.APPLICATION_OCTET_STREAM})
-    @Operation(summary = "Returns a report in CSV format listing all File assets in the system that have detactable ADA Compliance issues.",
+    @Operation(summary = "Sends an email with a report in CSV format listing all File assets in the system that have detactable ADA Compliance issues, to current users's email Id",
             description = "Current rules look for empty Alt Text, Empty title, Alt Text or Title with Filename, ",
             responses = {
                     @ApiResponse(responseCode = "404", description = "Path not found"),
@@ -449,18 +451,22 @@ public class AssetsResource
         if(log.isDebugEnabled()) {
             log.debug("Generating Non ADA compliant files report");
         }
-        generateReport(NON_ADA_COMPLAINT_FILES_REPORT);
+        try{
+            generateReport(NON_ADA_COMPLAINT_FILES_REPORT);
+        } catch (PSErrorResultsException |PSInternalRequestCallException | BackendException e) {
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+            return Response.serverError().build();
+        }
         return Response.accepted().build();
         
     }
 
-
-    
     @GET
     @Path("/reports/all-images")
     @Produces(
     {MediaType.APPLICATION_OCTET_STREAM})
-    @Operation(summary = "Returns a report in CSV format listing all Images in the system.",
+    @Operation(summary = "Sends an email with a report in CSV format listing all Images in the system, to current users's email Id",
             description = "NOTE:  This report can take a very long time to run, on a system with allot of images.  Be sure to set timeouts accordingly if requesting programatically.",
             responses = {
                     @ApiResponse(responseCode = "404", description = "Path not found"),
@@ -475,7 +481,13 @@ public class AssetsResource
         if(log.isDebugEnabled()) {
             log.debug("Generating all image report");
         }
-        generateReport(ALL_IMAGES_REPORT);
+        try {
+            generateReport(ALL_IMAGES_REPORT);
+        } catch (PSErrorResultsException |PSInternalRequestCallException | BackendException e) {
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+            return Response.serverError().build();
+        }
         return Response.accepted().build();
     }
 
@@ -484,7 +496,7 @@ public class AssetsResource
     @Path("/reports/all-files")
     @Produces(
     {MediaType.APPLICATION_OCTET_STREAM})
-    @Operation(summary = "Returns a report in CSV format listing all Files in the system.",
+    @Operation(summary = "Sends an email with a report in CSV format listing all Files in the system to current users's email Id",
             responses = {
                     @ApiResponse(responseCode = "404", description = "Path not found"),
                     @ApiResponse(responseCode = "500", description = "Error"),
@@ -498,31 +510,43 @@ public class AssetsResource
         if(log.isDebugEnabled()) {
             log.debug("Generating All files report");
         }
-        generateReport(ALL_FILES_REPORT);
+        try {
+            generateReport(ALL_FILES_REPORT);
+        } catch (PSErrorResultsException |PSInternalRequestCallException | BackendException e) {
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+            return Response.serverError().build();
+        }
         return Response.accepted().build();
 
     }
 
-
-    private void generateReport(String reportType){
+    private void generateReport(String reportType) throws PSErrorResultsException, PSInternalRequestCallException, BackendException {
         synchronized (this) {
             URI baseUri = uriInfo.getBaseUri();
-            Map<String, Object> requestThreadMap = PSRequestInfoBase.getRequestInfoMap();
+            Map<String, Object> requestThreadMap = new HashMap<>();
+            requestThreadMap.putAll(PSRequestInfoBase.getRequestInfoMap());
+            String currentUser = (String) PSRequestInfoBase.getRequestInfo(PSRequestInfo.KEY_USER);
+            User user = userAdaptor.getUser(null, currentUser);
+            String toAddress = user.getEmailAddress();
+
             CompletableFuture<PSCSVStreamingOutput> a = new CompletableFuture<PSCSVStreamingOutput>() {{
                 CompletableFuture.runAsync(() -> {
                     try {
-                        PSRequestInfoBase.initRequestInfo(requestThreadMap);
+                        if(!PSRequestInfoBase.isInited()) {
+                            PSRequestInfoBase.initRequestInfo(requestThreadMap);
+                        }
                         List<String> report = getReportList(reportType, baseUri);
                         PSCSVStreamingOutput out = null;
                         if (report != null) {
                             out = new PSCSVStreamingOutput(report);
                         }
-                        sendMail(out, reportType);
+                        sendMail(out, reportType,toAddress);
                     } catch (Exception ex) {
-                        String errorStr = "Error occurred while generating" + reportType + "report, cause:" + PSExceptionUtils.getMessageForLog(ex);
-                        log.error(errorStr);
+                        String errorStr = "Error occurred while generating" + reportType + "report";
+                        log.error(errorStr + "cause:" + PSExceptionUtils.getMessageForLog(ex));
                         log.debug(PSExceptionUtils.getDebugMessageForLog(ex));
-                        sendMail(errorStr, reportType);
+                        sendMail(errorStr, reportType,toAddress);
                     }
                 });
             }};
@@ -539,95 +563,41 @@ public class AssetsResource
         return null;
     }
 
-    private void sendMail(Object out,String reportName){
-
+    /**
+     * This API sends email to given address with outputstream as file and given report name.
+     * @param out
+     * @param reportName
+     * @param toAddress
+     */
+    private void sendMail(Object out,String reportName,String toAddress){
         //Generate a temp file from Report Data
         File tempFile = null;
+        String subject = "Report :" + reportName + " Generated";
         String mailMessage = "Please find attached the Report";
         try {
             if(out instanceof PSCSVStreamingOutput) {
-                tempFile = Files.createTempFile(reportName,".csv").toFile();
-                FileOutputStream outputStream = new FileOutputStream(tempFile);
-                ((PSCSVStreamingOutput)out).write(outputStream);
+                try {
+                    tempFile = Files.createTempFile(reportName, ".csv").toFile();
+                    FileOutputStream outputStream = new FileOutputStream(tempFile);
+                    ((PSCSVStreamingOutput) out).write(outputStream);
+                } catch (IOException e) {
+                    log.error("Error Sending Report Mail: {}", PSExceptionUtils.getMessageForLog(e));
+                    log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+                    PSWorkFlowUtils.sendMailWithAttachment(tempFile,subject,mailMessage,toAddress);
+                }
             }else if (out instanceof String){
                 mailMessage = (String)out;
-                mailMessage = mailMessage + "\n" + "Please contact Administrator";
+                mailMessage = mailMessage + "\n" + "Please contact System Administrator";
             }else{
                 mailMessage = "No Data found for report";
             }
+            PSWorkFlowUtils.sendMailWithAttachment(tempFile,subject,mailMessage,toAddress);
 
-            //Create Mail
-            MultiPartEmail commonsMultiPartEmail;
-            // Initializes the email client.
-            try
-            {
-                commonsMultiPartEmail = new MultiPartEmail();
-                commonsMultiPartEmail.setCharset(EmailConstants.UTF_8);
-
-                //SMTP host name and port
-                String hostProp = PSWorkFlowUtils.properties.getProperty("SMTP_HOST", "");
-                String portProp = PSWorkFlowUtils.properties.getProperty("SMTP_PORT","");
-                commonsMultiPartEmail.setHostName(hostProp);
-                commonsMultiPartEmail.setSmtpPort(Integer.parseInt(portProp));
-
-                //SMTP To Address and Bounce Address
-                String currentUser = (String) PSRequestInfoBase.getRequestInfo(PSRequestInfo.KEY_USER);
-                User user = userAdaptor.getUser(null,currentUser);
-                String toAddress = user.getEmailAddress();
-                commonsMultiPartEmail.addTo(toAddress);
-                String smtpBounceAddr = PSWorkFlowUtils.properties.getProperty("SMTP_BOUNCEADDR", "");
-                commonsMultiPartEmail.setBounceAddress(smtpBounceAddr);
-
-                //SMTP Username Password
-                String smtpUsername = PSWorkFlowUtils.properties.getProperty("SMTP_USERNAME", "");
-                String smtpPassword = PSWorkFlowUtils.properties.getProperty("SMTP_PASSWORD", "");
-                String pwd = PSEncryptProperties.decryptProperty(smtpPassword,
-                        PSLegacyEncrypter.getInstance(
-                                PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
-                        ).getPartOneKey(),
-                        PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),
-                        null
-                );
-                //Only apply authentication if it is supplied.
-                if(!StringUtils.isBlank(smtpUsername)){
-                    commonsMultiPartEmail.setAuthenticator(new DefaultAuthenticator(smtpUsername,
-                            pwd));
-                }
-
-                //Default TLS to false
-                String tlsEnabled = PSWorkFlowUtils.properties.getProperty("SMTP_TLSENABLED", "");
-                if(StringUtils.isBlank( tlsEnabled))
-                    commonsMultiPartEmail.setStartTLSEnabled(false);
-                else
-                    commonsMultiPartEmail.setStartTLSEnabled(Boolean.parseBoolean(tlsEnabled));
-
-                //SSL Port Setting
-                String smtpSSLPort = PSWorkFlowUtils.properties.getProperty("SMTP_SSLPORT", "");
-                if (StringUtils.isNotBlank(smtpSSLPort))
-                {
-                    commonsMultiPartEmail.setSSLOnConnect(true);
-                    commonsMultiPartEmail.setSslSmtpPort(smtpSSLPort);
-                }
-
-                //Set Mail Subject And Attach File if present
-                commonsMultiPartEmail.setSubject("Report :" + reportName + " Generated");
-                commonsMultiPartEmail.setMsg(mailMessage);
-                if(tempFile != null) {
-                    commonsMultiPartEmail.attach(tempFile);
-                }
-
-                //Send Mail
-                commonsMultiPartEmail.send();
-            }
-            catch (EmailException e)
-            {
-                log.error("Invalid properties supplied for email client: {}", PSExceptionUtils.getMessageForLog(e));
-            }
-
-        } catch (Exception e) {
+        }catch (EmailException e){
             log.error("Error Sending Report Mail: {}", PSExceptionUtils.getMessageForLog(e));
             log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
+
     }
 
     @POST
