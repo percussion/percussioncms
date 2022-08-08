@@ -35,7 +35,6 @@ import com.percussion.services.content.data.PSAutoTranslationPK;
 import com.percussion.services.content.data.PSFolderProperty;
 import com.percussion.services.content.data.PSKeyword;
 import com.percussion.services.content.data.PSKeywordChoice;
-import com.percussion.services.filestorage.data.PSBinary;
 import com.percussion.services.guidmgr.IPSGuidManager;
 import com.percussion.services.guidmgr.PSGuidManagerLocator;
 import com.percussion.services.guidmgr.data.PSGuid;
