@@ -83,6 +83,7 @@ private EntityManager entityManager;
         return entityManager
                 .createQuery(criteria)
                 .getResultList();
+
     }
     
 
