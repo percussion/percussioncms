@@ -4364,6 +4364,116 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
 	        <seg>Trabajando en ello...</seg>
 	    </tuv>
 	 </tu>
+	 <tu tuid="perc.ui.change.email@Change Email">
+     	    <prop type="sectionname" xml:lang="en-us">Change Email</prop>
+     	    <note xml:lang="en-us"></note>
+     	    <tuv xml:lang="en-us">
+     	        <seg>Change Email</seg>
+     	    </tuv>
+     	      <tuv xml:lang="es">
+     	        <seg>Cambiar e-mail</seg>
+     	    </tuv>
+     	 </tu>
+     	 <tu tuid="perc.ui.change.email@Close">
+     	    <prop type="sectionname" xml:lang="en-us">Close</prop>
+     	    <note xml:lang="en-us"></note>
+     	    <tuv xml:lang="en-us">
+     	        <seg>Close</seg>
+     	    </tuv>
+     	      <tuv xml:lang="es">
+     	        <seg>Cerrar</seg>
+     	    </tuv>
+     	 </tu>
+     	 <tu tuid="perc.ui.change.email@Error">
+     	    <prop type="sectionname" xml:lang="en-us">Error</prop>
+     	    <note xml:lang="en-us"></note>
+     	    <tuv xml:lang="en-us">
+     	        <seg>Error!</seg>
+     	    </tuv>
+     	      <tuv xml:lang="es">
+     	        <seg>¡Error!</seg>
+     	    </tuv>
+     	 </tu>
+     	 <tu tuid="perc.ui.change.email@Error Message">
+     	    <prop type="sectionname" xml:lang="en-us">Error Message</prop>
+     	    <note xml:lang="en-us"></note>
+     	    <tuv xml:lang="en-us">
+     	        <seg>Unable to obtain current user information.</seg>
+     	    </tuv>
+     	      <tuv xml:lang="es">
+     	        <seg>No se puede obtener la información del usuario actual.</seg>
+     	    </tuv>
+     	 </tu>
+     	 <tu tuid="perc.ui.change.email@Success">
+     	    <prop type="sectionname" xml:lang="en-us">Success</prop>
+     	    <note xml:lang="en-us"></note>
+     	    <tuv xml:lang="en-us">
+     	        <seg>Success!</seg>
+     	    </tuv>
+     	      <tuv xml:lang="es">
+     	        <seg>¡Éxito!</seg>
+     	    </tuv>
+     	 </tu>
+     	 <tu tuid="perc.ui.change.email@Success Message">
+     	    <prop type="sectionname" xml:lang="en-us">Success Message</prop>
+     	    <note xml:lang="en-us"></note>
+     	    <tuv xml:lang="en-us">
+     	        <seg>User email is updated.</seg>
+     	    </tuv>
+     	      <tuv xml:lang="es">
+     	        <seg>Se ha actualizado el usuario.</seg>
+     	    </tuv>
+     	 </tu>
+     	 <tu tuid="perc.ui.change.email@Error Updating">
+     	    <prop type="sectionname" xml:lang="en-us">Error Updating</prop>
+     	    <note xml:lang="en-us"></note>
+     	    <tuv xml:lang="en-us">
+     	        <seg>Could not update user email.</seg>
+     	    </tuv>
+     	      <tuv xml:lang="es">
+     	        <seg>No se pudo actualizar el usuario.</seg>
+     	    </tuv>
+     	 </tu>
+     	 <tu tuid="perc.ui.change.email@New Email">
+     	    <prop type="sectionname" xml:lang="en-us">New Email</prop>
+     	    <note xml:lang="en-us"></note>
+     	    <tuv xml:lang="en-us">
+     	        <seg>New Email</seg>
+     	    </tuv>
+     	      <tuv xml:lang="es">
+     	        <seg>Nueva Email</seg>
+     	    </tuv>
+     	 </tu>
+     	 <tu tuid="perc.ui.change.email@Enter New Email">
+     	    <prop type="sectionname" xml:lang="en-us">Enter New Email</prop>
+     	    <note xml:lang="en-us"></note>
+     	    <tuv xml:lang="en-us">
+     	        <seg>Enter New Email</seg>
+     	    </tuv>
+     	      <tuv xml:lang="es">
+     	        <seg>Introduzca Nueva Email</seg>
+     	    </tuv>
+     	 </tu>
+     	 <tu tuid="perc.ui.change.email@Confirm New Email">
+     	    <prop type="sectionname" xml:lang="en-us">Confirm New Email</prop>
+     	    <note xml:lang="en-us"></note>
+     	    <tuv xml:lang="en-us">
+     	        <seg>Confirm Email</seg>
+     	    </tuv>
+     	      <tuv xml:lang="es">
+     	        <seg>Confirmar Email</seg>
+     	    </tuv>
+     	 </tu>
+     	 <tu tuid="perc.ui.change.email@Working on it">
+     	    <prop type="sectionname" xml:lang="en-us">Working on it</prop>
+     	    <note xml:lang="en-us"></note>
+     	    <tuv xml:lang="en-us">
+     	        <seg>Working on it...</seg>
+     	    </tuv>
+     	      <tuv xml:lang="es">
+     	        <seg>Trabajando en ello...</seg>
+     	    </tuv>
+     	 </tu>
 	 <tu tuid="perc.ui.content.viewer@Unsaved Changes">
 	    <prop type="sectionname" xml:lang="en-us">Unsaved Changes</prop>
 	    <note xml:lang="en-us"></note>

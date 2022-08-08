@@ -101,6 +101,7 @@
     <script src="../widgetbuilder/js/views/PercWidgetResourceViews.js"></script>
     <script src="../services/PercUserService.js"></script>
     <script src="../plugins/perc_ChangePwDialog.js"></script>
+    <script src="../plugins/perc_ChangeUserEmailDialog.js"></script>
     <% } else { %>
     <script src="../jslibMin/perc_widgetBuilder.packed.min.js"></script>
     <link rel="stylesheet" type="text/css" href="../cssMin/perc_widgetBuilder.packed.min.css"/>
