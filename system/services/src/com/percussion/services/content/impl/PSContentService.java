@@ -30,11 +30,7 @@ import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.content.IPSContentErrors;
 import com.percussion.services.content.IPSContentService;
 import com.percussion.services.content.PSContentException;
-import com.percussion.services.content.data.PSAutoTranslation;
-import com.percussion.services.content.data.PSAutoTranslationPK;
-import com.percussion.services.content.data.PSFolderProperty;
-import com.percussion.services.content.data.PSKeyword;
-import com.percussion.services.content.data.PSKeywordChoice;
+import com.percussion.services.content.data.*;
 import com.percussion.services.guidmgr.IPSGuidManager;
 import com.percussion.services.guidmgr.PSGuidManagerLocator;
 import com.percussion.services.guidmgr.data.PSGuid;
@@ -45,10 +41,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
-import org.hibernate.query.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.query.Query;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
@@ -108,33 +104,30 @@ public class PSContentService
    {
       Session session = getSession();
 
-         if (StringUtils.isBlank(label))
-            label = "%";
-         
+      if (StringUtils.isBlank(label))
+         label = "%";
 
-      CriteriaBuilder builder = getSession().getCriteriaBuilder();
-      CriteriaQuery<PSKeyword> criteria = builder.createQuery(PSKeyword.class);
-      Root<PSKeyword> critRoot = criteria.from(PSKeyword.class);
-      criteria.where(builder.like(critRoot.get("label"),label));
-      criteria.where(builder.equal(critRoot.get("keywordType"),String.valueOf(1)));
-
-
+      // get all requested keywords
+      Criteria criteria = session.createCriteria(PSKeyword.class);
+      criteria.add(Restrictions.like("label", label));
+      criteria.add(Restrictions.eq("keywordType", String.valueOf(1)));
       if (!StringUtils.isBlank(sortProperty))
-      criteria.orderBy(builder.asc(critRoot.get(sortProperty)));
-         
-         List<PSKeyword> keywords = filterKeywordExcludes(entityManager.createQuery(criteria).getResultList());
-         
-         // then get all choices for each result
-         for (PSKeyword keyword : keywords)
-         {
-            List<PSKeywordChoice> choices = loadKeywordChoices(keyword, 
-               sortProperty);
-            keyword.setChoices(choices);
-         }
-         
-         return keywords;
+         criteria.addOrder(Order.asc(sortProperty));
+
+      List<PSKeyword> keywords = filterKeywordExcludes(criteria.list());
+
+      // then get all choices for each result
+      for (PSKeyword keyword : keywords)
+      {
+         List<PSKeywordChoice> choices = loadKeywordChoices(keyword,
+                 sortProperty);
+         keyword.setChoices(choices);
+      }
+
+      return keywords;
 
    }
+
 
    /* (non-Javadoc)
     * @see IPSContentService#findKeywordChoices(String, String)
