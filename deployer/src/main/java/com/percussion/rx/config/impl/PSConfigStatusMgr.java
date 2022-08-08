@@ -26,6 +26,7 @@ package com.percussion.rx.config.impl;
 import com.percussion.rx.config.IPSConfigStatusMgr;
 import com.percussion.rx.config.data.PSConfigStatus;
 import com.percussion.services.error.PSNotFoundException;
+
 import com.percussion.services.guidmgr.IPSGuidManager;
 import com.percussion.services.guidmgr.PSGuidManagerLocator;
 import com.percussion.util.PSBaseBean;
@@ -44,6 +45,7 @@ import javax.persistence.criteria.Root;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Class to handle the crud operations of config status object. 
@@ -105,7 +107,7 @@ public class PSConfigStatusMgr  implements IPSConfigStatusMgr
     * @see com.percussion.rx.config.IPSConfigStatusMgr#loadConfigStatusModifiable(long)
     */
    public PSConfigStatus loadConfigStatusModifiable(long statusID) throws PSNotFoundException {
-      PSConfigStatus cfgStatus = null;
+      PSConfigStatus cfgStatus;
       Session session = getSession();
 
       CriteriaBuilder builder = session.getCriteriaBuilder();
@@ -134,17 +136,17 @@ public class PSConfigStatusMgr  implements IPSConfigStatusMgr
    {
       if (StringUtils.isBlank(nameFilter))
          throw new IllegalArgumentException("nameFilter may not be null or empty string");
-     
-      List<PSConfigStatus> cfgStatusList = null;
-      Session session = getSession();
 
-         Criteria criteria = session.createCriteria(PSConfigStatus.class);
-         criteria.add(Restrictions.like("configName", nameFilter).ignoreCase());
-         criteria.addOrder(Order.asc("configName"));
-         criteria.addOrder(Order.desc("dateApplied"));
-         cfgStatusList = criteria.list();
 
-      return cfgStatusList;
+
+      CriteriaBuilder builder = getSession().getCriteriaBuilder();
+      CriteriaQuery<PSConfigStatus> criteria = builder.createQuery(PSConfigStatus.class);
+      Root<PSConfigStatus> critRoot = criteria.from(PSConfigStatus.class);
+      criteria.where(builder.like(builder.lower(critRoot.get("configName")),nameFilter.toLowerCase()));
+      criteria.orderBy(builder.asc(critRoot.get("configName")));
+      criteria.orderBy(builder.asc(critRoot.get("dateApplied")));
+      return entityManager.createQuery(criteria).getResultList();
+
    }
    
    /*
@@ -222,6 +224,7 @@ public class PSConfigStatusMgr  implements IPSConfigStatusMgr
          criteria.addOrder(Order.desc("dateApplied"));
          criteria.setMaxResults(1);
          cfgList = criteria.list();
+
 
       return cfgList.size()==0 ? null : cfgList.get(0);
    }
