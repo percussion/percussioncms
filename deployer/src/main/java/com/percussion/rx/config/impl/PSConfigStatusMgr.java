@@ -26,7 +26,7 @@ package com.percussion.rx.config.impl;
 import com.percussion.rx.config.IPSConfigStatusMgr;
 import com.percussion.rx.config.data.PSConfigStatus;
 import com.percussion.services.error.PSNotFoundException;
-import com.percussion.services.filestorage.data.PSBinary;
+
 import com.percussion.services.guidmgr.IPSGuidManager;
 import com.percussion.services.guidmgr.PSGuidManagerLocator;
 import com.percussion.util.PSBaseBean;
@@ -45,6 +45,7 @@ import javax.persistence.criteria.Root;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Class to handle the crud operations of config status object. 
@@ -106,7 +107,7 @@ public class PSConfigStatusMgr  implements IPSConfigStatusMgr
     * @see com.percussion.rx.config.IPSConfigStatusMgr#loadConfigStatusModifiable(long)
     */
    public PSConfigStatus loadConfigStatusModifiable(long statusID) throws PSNotFoundException {
-      PSConfigStatus cfgStatus = null;
+      PSConfigStatus cfgStatus;
       Session session = getSession();
 
       CriteriaBuilder builder = session.getCriteriaBuilder();
@@ -135,16 +136,13 @@ public class PSConfigStatusMgr  implements IPSConfigStatusMgr
    {
       if (StringUtils.isBlank(nameFilter))
          throw new IllegalArgumentException("nameFilter may not be null or empty string");
-     
-      List<PSConfigStatus> cfgStatusList = null;
-      Session session = getSession();
 
 
 
       CriteriaBuilder builder = getSession().getCriteriaBuilder();
       CriteriaQuery<PSConfigStatus> criteria = builder.createQuery(PSConfigStatus.class);
       Root<PSConfigStatus> critRoot = criteria.from(PSConfigStatus.class);
-      criteria.where(builder.like(critRoot.get("configName"),nameFilter));
+      criteria.where(builder.like(builder.lower(critRoot.get("configName")),nameFilter.toLowerCase()));
       criteria.orderBy(builder.asc(critRoot.get("configName")));
       criteria.orderBy(builder.asc(critRoot.get("dateApplied")));
       return entityManager.createQuery(criteria).getResultList();
