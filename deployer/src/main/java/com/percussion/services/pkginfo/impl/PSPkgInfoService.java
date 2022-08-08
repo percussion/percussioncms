@@ -225,9 +225,9 @@ implements IPSPkgInfoService
       CriteriaBuilder builder = getSession().getCriteriaBuilder();
       CriteriaQuery<PSPkgInfo> criteria = builder.createQuery(PSPkgInfo.class);
       Root<PSPkgInfo> critRoot = criteria.from(PSPkgInfo.class);
-      pkgInfoList = entityManager.createQuery(criteria).getResultList();
+      return entityManager.createQuery(criteria).getResultList();
 
-      return pkgInfoList;
+
    }
 
 
@@ -606,9 +606,8 @@ implements IPSPkgInfoService
    {
       if (guid == null)
          throw new IllegalArgumentException("ownerGuid may not be null");
-      List<PSPkgDependency> pkgDeps = new ArrayList<>();
       String temp = depType?"ownerPackageGuid":"dependentPackageGuid";
-      Session session = getSession();
+
 
       CriteriaBuilder builder = getSession().getCriteriaBuilder();
       CriteriaQuery<PSPkgDependency> criteria = builder.createQuery(PSPkgDependency.class);

@@ -30,9 +30,7 @@ import com.percussion.services.audit.data.PSAuditLogEntry;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.guidmgr.IPSGuidManager;
 import com.percussion.services.guidmgr.PSGuidManagerLocator;
-import org.hibernate.Criteria;
 import org.hibernate.Session;
-import org.hibernate.criterion.Restrictions;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
@@ -130,7 +128,6 @@ public class PSDesignObjectAuditService
 
    public Collection<PSAuditLogEntry> findAuditLogEntries()
    {
-      Session session = getSession();
 
 
       CriteriaBuilder builder = getSession().getCriteriaBuilder();
