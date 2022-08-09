@@ -139,6 +139,10 @@
             var cbAutoSummary = $("#edit-page-metadata-frame").contents().find("#perc-content-edit-auto_generate_summary");
             var trAutoSummary = cbAutoSummary.closest('tr');
             cbAutoSummary.on("click",_handleAutoSummary);
+			_handleAutoSummary();
+            cbAutoSummary.on("change",function() {
+                _handleAutoSummary();
+            });
             if(!pageSysName){
                 pageSysName = $("#edit-page-metadata-frame").contents().find("#perc-content-edit-sys_title").val();
             }
@@ -200,8 +204,9 @@
         function _handleAutoSummary()
         {
             var cbAutoSummary = $("#edit-page-metadata-frame").contents().find("#perc-content-edit-auto_generate_summary");
-            var containerArea = $("#edit-page-metadata-frame").contents().find(".mce-tinymce").parent();
-            var tinyMCESpan = $("#edit-page-metadata-frame").contents().find(".mce-tinymce");
+            var containerArea = $("#edit-page-metadata-frame").contents().find(".tox-tinymce").parent();
+			var containerAreaDiv = containerArea[0];
+            var tinyMCESpan = $("#edit-page-metadata-frame").contents().find(".tox-tinymce");
             if (cbAutoSummary.prop('checked'))
             {
                 content = $("#edit-page-metadata-frame").contents().find(".tinymce").val();
@@ -217,12 +222,12 @@
                     addClass('datadisplay perc-tinymce-readonly').
                     html(content)
                 );
-                tinyMCESpan.hide();
+                containerAreaDiv.style.display = 'none';
             }
             else
             {
                 containerArea.find('#perc_page_autogen_page_summary').remove();
-                tinyMCESpan.show();
+                containerAreaDiv.style.display = 'block';
             }
         }
 
