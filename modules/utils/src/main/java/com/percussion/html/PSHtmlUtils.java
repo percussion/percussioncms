@@ -62,7 +62,8 @@ public class PSHtmlUtils {
         Document.OutputSettings settings = new Document.OutputSettings();
 
         settings.charset(encoding);
-        settings.prettyPrint(false);
+
+        settings.prettyPrint(!props.getProperty(PROP_PRETTY_PRINT, "false").equalsIgnoreCase("false"));
 
         if(props.getProperty(PROP_OUTPUT_MODE,"xml").equalsIgnoreCase("xml"))
             settings.syntax(org.jsoup.nodes.Document.OutputSettings.Syntax.xml);
@@ -395,6 +396,7 @@ public class PSHtmlUtils {
     public static final String PROP_ENFORCED_ATTRS="enforcedAttributes";
     public static final String PROP_ADD_PROTOCOLS="addProtocols";
     public static final String PROP_REMOVE_PROTOCOLS="removeProtocols";
+    public static final String PROP_PRETTY_PRINT = "prettyPrint";
 
 
 }
