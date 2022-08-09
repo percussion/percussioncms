@@ -26,22 +26,25 @@ package com.percussion.xmldom;
 
 import com.percussion.extension.PSExtensionProcessingException;
 import com.percussion.extension.PSParameterMismatchException;
+import com.percussion.html.TestPSHtmlCleanerProperties;
 import com.percussion.security.PSAuthorizationException;
 import com.percussion.server.PSRequestValidationException;
 import com.percussion.testing.PSMockRequestContext;
+import com.percussion.util.PSPurgableTempFile;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
-import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
+import java.util.Objects;
+import java.util.Scanner;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
 
 /**
  * Test the text cleanup extension.
@@ -51,19 +54,6 @@ public class TestPSXDTextCleanup {
     @Rule
     public TemporaryFolder temporaryFolder = new TemporaryFolder();
 
-    private PSMockRequestContext getRequestContext(Object source){
-        PSMockRequestContext ret = new PSMockRequestContext();
-
-        if(source instanceof File){
-            //TODO
-        }else if (source instanceof String){
-            //TODO
-        }else{
-            fail("Invalid source");
-        }
-
-        return ret;
-    }
 
     @Test
     public void testStringCleanup() throws PSExtensionProcessingException, PSAuthorizationException, PSRequestValidationException, PSParameterMismatchException {
@@ -100,8 +90,36 @@ public class TestPSXDTextCleanup {
     }
 
    @Test
-    public void testFileSource(){
+    public void testFileSource() throws IOException, PSExtensionProcessingException, PSAuthorizationException, PSRequestValidationException, PSParameterMismatchException {
 
+       PSXdTextCleanup psXdTextCleanup = new PSXdTextCleanup();
+
+       String text = new Scanner(Objects.requireNonNull(TestPSHtmlCleanerProperties.class.getResourceAsStream("/com/percussion/xmldom/testdocument.html")), "UTF-8").useDelimiter("\\A").next();
+       Object[] params = new Object[]{
+               "postBody", //fieldName
+               "html-cleaner.properties", // cleaner properties config
+               null, //server tags config file
+               StandardCharsets.UTF_8.name(), //encoding
+               "yes", //disable inline links
+               "yes", //use pretty print
+       };
+
+       PSPurgableTempFile tempFile = new PSPurgableTempFile("test","html",temporaryFolder.getRoot());
+        tempFile.setSourceFileName("testdocument.html");
+        tempFile.setSourceContentType("text/html");
+        try(PrintWriter writer = new PrintWriter(tempFile)){
+            writer.print(text);
+        }
+
+       PSMockRequestContext context  = new PSMockRequestContext();
+
+       context.setParameter("postBody",tempFile);
+       psXdTextCleanup.preProcessRequest(params,context);
+
+       assertNotNull(context.getParameter("postBody"));
+       String newText = new Scanner(Objects.requireNonNull(tempFile), "UTF-8").useDelimiter("\\A").next();
+       System.out.println(newText);
+       assertEquals(text,newText);
     }
 
     @Before
