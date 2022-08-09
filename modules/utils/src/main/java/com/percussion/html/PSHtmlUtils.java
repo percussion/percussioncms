@@ -74,7 +74,9 @@ public class PSHtmlUtils {
     }
 
     /**
-     * Given
+     * Given an html fragment return a jsoup cleaned and parsed document based on the
+     * settings provided.
+     *
      * @param fragment A string containing an html body fragment
      * @param encoding Encoding to use for the content
      * @param cleanse When true content will be cleansed using the supplied properties
@@ -117,8 +119,36 @@ public class PSHtmlUtils {
     public static Document createHTMLDocument(File file,
                                               Charset encoding,
                                               boolean cleanse,
-                                              String configFile){
-    return null;
+                                              String configFile) throws PSHtmlParsingException {
+        Document ret = null;
+
+        if(file==null)
+            throw new IllegalArgumentException("File must not be null");
+
+        Properties props = new Properties();
+
+        if(configFile != null){
+            props = getCleanerProperties(configFile);
+        }else{
+            props = getDefaultCleanerProperties();
+        }
+
+
+
+        try{
+            ret = Jsoup.parse(file,encoding.name()).outputSettings(getOutputSettings(props,encoding));
+
+            String cleansed = "";
+            if(cleanse){
+                cleansed = cleanseHTMLContent(ret.html(),encoding,configFile);
+            }
+            //Apply the cleansed html
+            ret.html(cleansed);
+        } catch (IOException e) {
+            throw new PSHtmlParsingException(e);
+        }
+
+        return ret;
     }
 
     /**
