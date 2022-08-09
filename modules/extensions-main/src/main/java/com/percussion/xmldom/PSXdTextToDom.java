@@ -33,11 +33,13 @@ import com.percussion.server.IPSRequestContext;
 import com.percussion.server.PSRequestValidationException;
 import com.percussion.util.PSPurgableTempFile;
 import com.percussion.xml.PSXmlTreeWalker;
+import org.apache.commons.lang.StringUtils;
+import org.w3c.dom.Document;
 
 import java.io.File;
 import java.io.IOException;
-
-import org.w3c.dom.Document;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 /**
  * A Rhythmyx extension used to translate a text field into a temporary XML
@@ -159,6 +161,9 @@ public class PSXdTextToDom extends PSDefaultExtension
       if (params.length > 5 && null != params[4])
       {
          encodingDefault = params[4].toString().trim();
+         if(StringUtils.isBlank(encodingDefault)){
+            encodingDefault = StandardCharsets.UTF_8.name();
+         }
       }
 
       Object inputSourceObj = request.getParameterObject( fileParamName );
@@ -173,7 +178,7 @@ public class PSXdTextToDom extends PSDefaultExtension
          Document tempXMLDocument;
          if (inputSourceObj instanceof PSPurgableTempFile)
          {
-            String encoding = null;
+            Charset encoding = null;
             PSPurgableTempFile inputSourceFile =
                   (PSPurgableTempFile) inputSourceObj;
             request.printTraceMessage
@@ -181,16 +186,10 @@ public class PSXdTextToDom extends PSDefaultExtension
 
             encoding = PSXmlDomUtils.determineCharacterEncoding
                   ( contxt, inputSourceFile, encodingDefault );
-            if (encoding == null)
-            {
-               tempXMLDocument = PSXmlDomUtils.loadXmlDocument
-                     ( contxt, (File) inputSourceObj );
-            }
-            else
-            {
-               tempXMLDocument = PSXmlDomUtils.loadXmlDocument
-                     ( contxt, (File) inputSourceObj, encoding );
-            }
+
+            tempXMLDocument = PSXmlDomUtils.loadXmlDocument
+                  ( contxt, (File) inputSourceObj,encoding.name() );
+
          }
          else
          {
