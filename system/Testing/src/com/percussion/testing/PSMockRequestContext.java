@@ -31,7 +31,14 @@ import com.percussion.server.IPSInternalRequest;
 import com.percussion.server.IPSRequestContext;
 import org.w3c.dom.Document;
 
-import java.util.*;
+import java.util.Date;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * This is a mock object to allow the running of a subset of code that requires
@@ -122,27 +129,33 @@ public class PSMockRequestContext implements IPSRequestContext
 
    public String getParameter(String name, Object defValue)
    {
-      return null;
+      return parameters.getOrDefault(name, defValue).toString();
    }
 
    public String getParameter(String name)
    {
-      return null;
+      if(parameters.containsKey(name))
+         return parameters.get(name).toString();
+      else
+         return null;
    }
 
    public Object getParameterObject(String name, Object defValue)
    {
-      return null;
+      if(parameters.containsKey(name))
+         return parameters.get(name);
+
+      return defValue;
    }
 
    public Object getParameterObject(String name)
    {
-      return null;
+      return parameters.get(name);
    }
 
    public Map<String,Object> getParameters()
    {
-      return null;
+      return parameters;
    }
 
    public Object[] getParameterList(String name)
@@ -184,6 +197,7 @@ public class PSMockRequestContext implements IPSRequestContext
 
    public void setParameter(String name, Object value)
    {
+      parameters.put(name,value);
    }
 
    public void setParameterList(String name, Object[] values)
@@ -555,4 +569,6 @@ public class PSMockRequestContext implements IPSRequestContext
    {
       return null;
    }      
+
+   private HashMap<String, Object> parameters = new HashMap<>();
 }
