@@ -667,6 +667,82 @@
                 <p>Defines a set of frames</p>
                 <frameset>Set of frames</frameset>
             </article>
+            <label for="browser">Choose your browser from the list:</label>
+            <input list="browsers" name="browser" id="browser">
+
+            <datalist id="browsers">
+                <option value="Edge">
+                <option value="Firefox">
+                <option value="Chrome">
+                <option value="Opera">
+                <option value="Safari">
+            </datalist>
+            <iframe src="https://www.w3schools.com" title="W3Schools Free Online Web Tutorials"></iframe>
+            <form oninput="x.value=parseInt(a.value)+parseInt(b.value)">
+                <input type="range" id="a" value="50">
+                +<input type="number" id="b" value="25">
+                =<output name="x" for="a b"></output>
+            </form>
+            <ruby>
+                漢 <rp>(</rp><rt>ㄏㄢˋ</rt><rp>)</rp>
+            </ruby>
+            <ruby>
+                漢 <rt> ㄏㄢˋ </rt>
+            </ruby>
+            <audio controls>
+                <source src="horse.ogg" type="audio/ogg">
+                <source src="horse.mp3" type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio>
+            <iframe src="https://www.w3schools.com"></iframe>
+            <iframe src="https://www.w3schools.com" title="W3Schools Free Online Web Tutorials"></iframe>
+            <object data="pic_trulli.jpg" width="300" height="200"></object>
+            <iframe src="https://www.w3schools.com"></iframe>
+            <head>
+                <base href="https://www.w3schools.com/" target="_blank">
+            </head>
+
+            <body>
+            <img src="images/stickman.gif" width="24" height="39" alt="Stickman">
+            <a href="tags/tag_base.asp">HTML base Tag</a>
+            </body>
+            <address>
+                Written by <a href="mailto:webmaster@example.com">Jon Doe</a>.<br>
+                Visit us at:<br>
+                Example.com<br>
+                Box 564, Disneyland<br>
+                USA
+            </address>
+            <button onclick="showContent()">Show hidden content</button>
+
+            <template>
+                <h2>Flower</h2>
+                <img src="img_white_flower.jpg" width="214" height="204">
+            </template>
+
+            <script>
+            function showContent() {
+                var temp = document.getElementsByTagName("template")[0];
+                var clon = temp.content.cloneNode(true);
+                 document.body.appendChild(clon);
+               }
+            </script>
+            <ruby>
+                漢 <rt> ㄏㄢˋ </rt>
+            </ruby>
+            <script>
+              document.write("Hello World!")
+             </script>
+            <noscript>Your browser does not support JavaScript!</noscript>
+            <ul>
+                <li>User <bdi>hrefs</bdi>: 60 points</li>
+                <li>User <bdi>jdoe</bdi>: 80 points</li>
+                <li>User <bdi>إيان</bdi>: 90 points</li>
+            </ul>
+            <bdo dir="rtl">
+                This text will go right-to-left.
+            </bdo>
+
             <article id="deprecated__noframes">
                 <header><h2>noframes</h2></header>
                 <p>Defines an alternate content for users that do not support frames</p>
@@ -680,7 +756,22 @@
                 <header><h2>TT</h2></header>
                 <tt>Defines TeleType text</tt>
             </article>
+            <!--This is a comment. Comments are not displayed in the browser-->
 
+            <p>This is a paragraph.</p>
+            <embed type="image/jpg" src="pic_trulli.jpg" width="300" height="200">
+            <p>To learn AJAX, you must be familiar with the XML<wbr>Http<wbr>Request Object.</p>
+            <video width="320" height="240" controls>
+                <source src="forrest_gump.mp4" type="video/mp4">
+                <source src="forrest_gump.ogg" type="video/ogg">
+                <track src="fgsubtitles_en.vtt" kind="subtitles" srclang="en" label="English">
+                <track src="fgsubtitles_no.vtt" kind="subtitles" srclang="no" label="Norwegian">
+            </video>
+            <picture>
+                <source media="(min-width:650px)" srcset="img_pink_flowers.jpg">
+                <source media="(min-width:465px)" srcset="img_white_flower.jpg">
+                <img src="img_orange_flowers.jpg" alt="Flowers" style="width:auto;">
+            </picture>
             <footer><a href="#top">[Top]</a></footer>
         </section>
 
