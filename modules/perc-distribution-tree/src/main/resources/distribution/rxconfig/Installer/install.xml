@@ -952,6 +952,16 @@
                                 </replace>
                             </then>
                         </if>
+                        <if>
+                            <resourcecontains resource="${install.dir}/jetty/base/etc/perc-ds.xml" substring="com.percussion.utils.container.jetty.PSJettyUtils" />
+                            <then>
+                                <echo>Replacing PSJettyUtils with PSStaticContainerUtils from ${install.dir}/jetty/base/etc/perc-ds.xml </echo>
+                                <replace file="${install.dir}/jetty/base/etc/perc-ds.xml" summary="yes">
+                                    <replacetoken><![CDATA[com.percussion.utils.container.jetty.PSJettyUtils]]></replacetoken>
+                                    <replacevalue><![CDATA[com.percussion.utils.container.PSStaticContainerUtils]]></replacevalue>
+                                </replace>
+                            </then>
+                        </if>
                     </else>
                 </if>
             </then>
@@ -975,6 +985,16 @@
                             <replace file="${install.dir}/jetty/defaults/etc/perc-ds.xml" summary="yes">
                                 <replacetoken><![CDATA[<!DOCTYPE Configure PUBLIC "-//Jetty//Configure//EN" "http://www.eclipse.org/jetty/configure_9_3.dtd">]]></replacetoken>
                                 <replacevalue><![CDATA[]]></replacevalue>
+                            </replace>
+                        </then>
+                    </if>
+                    <if>
+                        <resourcecontains resource="${install.dir}/jetty/base/etc/perc-ds.xml" substring="com.percussion.utils.container.jetty.PSJettyUtils" />
+                        <then>
+                            <echo>Replacing PSJettyUtils with PSStaticContainerUtils from ${install.dir}/jetty/base/etc/perc-ds.xml </echo>
+                            <replace file="${install.dir}/jetty/base/etc/perc-ds.xml" summary="yes">
+                                <replacetoken><![CDATA[com.percussion.utils.container.jetty.PSJettyUtils]]></replacetoken>
+                                <replacevalue><![CDATA[com.percussion.utils.container.PSStaticContainerUtils]]></replacevalue>
                             </replace>
                         </then>
                     </if>
@@ -1004,6 +1024,16 @@
                         </replace>
                     </then>
                 </if>
+                    <if>
+                        <resourcecontains resource="${install.dir}/jetty/base/etc/perc-ds.xml" substring="com.percussion.utils.container.jetty.PSJettyUtils" />
+                        <then>
+                            <echo>Replacing PSJettyUtils with PSStaticContainerUtils from ${install.dir}/jetty/base/etc/perc-ds.xml </echo>
+                            <replace file="${install.dir}/jetty/base/etc/perc-ds.xml" summary="yes">
+                                <replacetoken><![CDATA[com.percussion.utils.container.jetty.PSJettyUtils]]></replacetoken>
+                                <replacevalue><![CDATA[com.percussion.utils.container.PSStaticContainerUtils]]></replacevalue>
+                            </replace>
+                        </then>
+                    </if>
                 </else>
                 </if>
             </then>
