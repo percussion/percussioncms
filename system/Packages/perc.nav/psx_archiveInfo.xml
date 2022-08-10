@@ -328,31 +328,6 @@
                                  </PSXDependency>
                                  <Description/>
                               </PSXDeployableElement>
-                              <PSXDeployableObject>
-                                 <PSXDependency autoDep="no" autoExpand="yes" dependencyId="shared" dependencyType="Shared" displayName="shared" isAssociation="no" isIncluded="yes" objectType="SharedGroup" objectTypeName="Shared Group" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
-                                    <Dependencies>
-                                       <PSXDeployableObject>
-                                          <PSXDependency autoDep="no" autoExpand="yes" dependencyId="RXS_CT_SHARED" dependencyType="Local" displayName="RXS_CT_SHARED" isAssociation="no" isIncluded="yes" objectType="Schema" objectTypeName="Table Schema" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
-                                             <Dependencies/>
-                                          </PSXDependency>
-                                          <RequiredClasses/>
-                                       </PSXDeployableObject>
-                                       <PSXDeployableObject>
-                                          <PSXDependency autoDep="no" autoExpand="yes" dependencyId="sys_EditBox" dependencyType="System" displayName="sys_EditBox" isAssociation="yes" isIncluded="no" objectType="Control" objectTypeName="Control" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="yes"/>
-                                          <RequiredClasses/>
-                                       </PSXDeployableObject>
-                                       <PSXDeployableObject>
-                                          <PSXDependency autoDep="no" autoExpand="yes" dependencyId="sys_tinymce" dependencyType="System" displayName="sys_tinymce" isAssociation="yes" isIncluded="no" objectType="Control" objectTypeName="Control" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="yes"/>
-                                          <RequiredClasses/>
-                                       </PSXDeployableObject>
-                                       <PSXDeployableObject>
-                                          <PSXDependency autoDep="no" autoExpand="yes" dependencyId="sys_TextArea" dependencyType="System" displayName="sys_TextArea" isAssociation="yes" isIncluded="no" objectType="Control" objectTypeName="Control" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="yes"/>
-                                          <RequiredClasses/>
-                                       </PSXDeployableObject>
-                                    </Dependencies>
-                                 </PSXDependency>
-                                 <RequiredClasses/>
-                              </PSXDeployableObject>
                               <PSXDeployableElement>
                                  <PSXDependency autoDep="no" autoExpand="yes" dependencyId="4" dependencyType="Shared" displayName="Simple Workflow" isAssociation="yes" isIncluded="no" objectType="Workflow" objectTypeName="Workflow" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
                                     <Dependencies>
@@ -1264,31 +1239,6 @@
                                  </PSXDependency>
                                  <RequiredClasses/>
                               </PSXDeployableObject>
-                              <PSXDeployableObject>
-                                 <PSXDependency autoDep="no" autoExpand="yes" dependencyId="shared" dependencyType="Shared" displayName="shared" isAssociation="no" isIncluded="yes" objectType="SharedGroup" objectTypeName="Shared Group" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
-                                    <Dependencies>
-                                       <PSXDeployableObject>
-                                          <PSXDependency autoDep="no" autoExpand="yes" dependencyId="RXS_CT_SHARED" dependencyType="Local" displayName="RXS_CT_SHARED" isAssociation="no" isIncluded="yes" objectType="Schema" objectTypeName="Table Schema" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
-                                             <Dependencies/>
-                                          </PSXDependency>
-                                          <RequiredClasses/>
-                                       </PSXDeployableObject>
-                                       <PSXDeployableObject>
-                                          <PSXDependency autoDep="no" autoExpand="yes" dependencyId="sys_EditBox" dependencyType="System" displayName="sys_EditBox" isAssociation="yes" isIncluded="no" objectType="Control" objectTypeName="Control" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="yes"/>
-                                          <RequiredClasses/>
-                                       </PSXDeployableObject>
-                                       <PSXDeployableObject>
-                                          <PSXDependency autoDep="no" autoExpand="yes" dependencyId="sys_tinymce" dependencyType="System" displayName="sys_tinymce" isAssociation="yes" isIncluded="no" objectType="Control" objectTypeName="Control" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="yes"/>
-                                          <RequiredClasses/>
-                                       </PSXDeployableObject>
-                                       <PSXDeployableObject>
-                                          <PSXDependency autoDep="no" autoExpand="yes" dependencyId="sys_TextArea" dependencyType="System" displayName="sys_TextArea" isAssociation="yes" isIncluded="no" objectType="Control" objectTypeName="Control" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="yes"/>
-                                          <RequiredClasses/>
-                                       </PSXDeployableObject>
-                                    </Dependencies>
-                                 </PSXDependency>
-                                 <RequiredClasses/>
-                              </PSXDeployableObject>
                               <PSXDeployableElement>
                                  <PSXDependency autoDep="no" autoExpand="yes" dependencyId="4" dependencyType="Shared" displayName="Simple Workflow" isAssociation="yes" isIncluded="no" objectType="Workflow" objectTypeName="Workflow" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
                                     <Dependencies>
@@ -2152,31 +2102,6 @@
                                        </PSXDeployableObject>
                                        <PSXDeployableObject>
                                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="sys_resources/stylesheets/assemblers/sys_Slots.xsl" dependencyType="System" displayName="sys_Slots.xsl" isAssociation="yes" isIncluded="no" objectType="Stylesheet" objectTypeName="Stylesheet" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no"/>
-                                          <RequiredClasses/>
-                                       </PSXDeployableObject>
-                                    </Dependencies>
-                                 </PSXDependency>
-                                 <RequiredClasses/>
-                              </PSXDeployableObject>
-                              <PSXDeployableObject>
-                                 <PSXDependency autoDep="no" autoExpand="yes" dependencyId="shared" dependencyType="Shared" displayName="shared" isAssociation="no" isIncluded="yes" objectType="SharedGroup" objectTypeName="Shared Group" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
-                                    <Dependencies>
-                                       <PSXDeployableObject>
-                                          <PSXDependency autoDep="no" autoExpand="yes" dependencyId="RXS_CT_SHARED" dependencyType="Local" displayName="RXS_CT_SHARED" isAssociation="no" isIncluded="yes" objectType="Schema" objectTypeName="Table Schema" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
-                                             <Dependencies/>
-                                          </PSXDependency>
-                                          <RequiredClasses/>
-                                       </PSXDeployableObject>
-                                       <PSXDeployableObject>
-                                          <PSXDependency autoDep="no" autoExpand="yes" dependencyId="sys_EditBox" dependencyType="System" displayName="sys_EditBox" isAssociation="yes" isIncluded="no" objectType="Control" objectTypeName="Control" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="yes"/>
-                                          <RequiredClasses/>
-                                       </PSXDeployableObject>
-                                       <PSXDeployableObject>
-                                          <PSXDependency autoDep="no" autoExpand="yes" dependencyId="sys_tinymce" dependencyType="System" displayName="sys_tinymce" isAssociation="yes" isIncluded="no" objectType="Control" objectTypeName="Control" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="yes"/>
-                                          <RequiredClasses/>
-                                       </PSXDeployableObject>
-                                       <PSXDeployableObject>
-                                          <PSXDependency autoDep="no" autoExpand="yes" dependencyId="sys_TextArea" dependencyType="System" displayName="sys_TextArea" isAssociation="yes" isIncluded="no" objectType="Control" objectTypeName="Control" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="yes"/>
                                           <RequiredClasses/>
                                        </PSXDeployableObject>
                                     </Dependencies>
