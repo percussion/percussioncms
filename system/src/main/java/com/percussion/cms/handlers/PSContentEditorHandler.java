@@ -71,6 +71,7 @@ import com.percussion.design.objectstore.PSViewSet;
 import com.percussion.design.objectstore.PSWorkflowInfo;
 import com.percussion.design.objectstore.server.PSServerXmlObjectStore;
 import com.percussion.error.PSException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.log.PSLogManager;
 import com.percussion.log.PSLogServerWarning;
 import com.percussion.security.PSAuthenticationFailedException;
@@ -343,6 +344,10 @@ public class PSContentEditorHandler implements IPSRequestHandler,
       }
       catch (PSException e)
       {
+         if(e.getErrorCode() == 0){
+            throw new PSSystemValidationException("Error in initialization application : "
+                    + myAppName + " Error: " + PSExceptionUtils.getMessageForLog(e),m_app, ce);
+         }
          throw new PSSystemValidationException(e.getErrorCode(),
             e.getErrorArguments());
       }

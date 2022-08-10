@@ -291,14 +291,10 @@ public class PSApplicationHandler implements IPSRootedHandler
 
             addMap(ds, qh);
             PSServer.notifyHandlerInitListeners(qh);
-            
+
             foundOne = true;
          }
-         catch (PSIllegalArgumentException | PSNotFoundException e)
-         {
-            throw new PSSystemValidationException(
-               e.getErrorCode(), e.getErrorArguments(), m_application, ds);
-         } catch (SQLException e)
+         catch (SQLException e)
          {
             Object[] args = { ds.getName(), m_name, e.toString() };
             throw new PSSystemValidationException(
@@ -306,9 +302,14 @@ public class PSApplicationHandler implements IPSRootedHandler
          }
          catch (PSException e)
          {
+            if(e.getErrorCode() == 0){
+               throw new PSSystemValidationException("Error in initialization application : "
+                       + m_application.getName() + " Error: " + PSExceptionUtils.getMessageForLog(e),m_application, ds);
+            }
             throw new PSSystemValidationException(
-               e.getErrorCode(), e.getErrorArguments(), m_application, ds);
+                    e.getErrorCode(), e.getErrorArguments(), m_application, ds);
          }
+
       }
       else if (dsPipe instanceof PSUpdatePipe)
       {
@@ -324,6 +325,10 @@ public class PSApplicationHandler implements IPSRootedHandler
          }
          catch (PSException e)
          {
+            if(e.getErrorCode() == 0){
+               throw new PSSystemValidationException("Error in initialization application : "
+                       + m_application.getName() + " Error: " + PSExceptionUtils.getMessageForLog(e),m_application, ds);
+            }
             throw new PSSystemValidationException(
                e.getErrorCode(), e.getErrorArguments(), m_application, ds);
          }
@@ -359,8 +364,13 @@ public class PSApplicationHandler implements IPSRootedHandler
          }
          catch (PSException e)
          {
+            if(e.getErrorCode() == 0){
+               throw new PSSystemValidationException("Error in initialization application : "
+                       + m_application.getName() + " Error: " + PSExceptionUtils.getMessageForLog(e),m_application, ds);
+            }
             throw new PSSystemValidationException(
                e.getErrorCode(), e.getErrorArguments(), m_application, ds);
+
          }
       }
 
