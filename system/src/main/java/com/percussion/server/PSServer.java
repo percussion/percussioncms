@@ -2383,8 +2383,13 @@ public class PSServer {
             }
             catch (PSSystemValidationException e)
             {
-               PSConsole.printMsg("Server",
-                  e.getErrorCode(), e.getErrorArguments());
+               if(e.getErrorCode() == 0){
+                  PSConsole.printMsg("Server",
+                        e.getLocalizedMessage());
+               }else {
+                  PSConsole.printMsg("Server",
+                          e.getErrorCode(), e.getErrorArguments());
+               }
 
                int appId = 0;
                if(app!=null)

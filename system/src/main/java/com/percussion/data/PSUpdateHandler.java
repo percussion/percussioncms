@@ -222,6 +222,10 @@ public class PSUpdateHandler extends PSDataHandler
             try {
                m_outputGenerator = new PSRequestRedirector(app, link);
             } catch (com.percussion.design.objectstore.PSNotFoundException e) {
+               if(e.getErrorCode() == 0){
+                  throw new PSSystemValidationException("Error in initialization application : "
+                          + app.getName() + " Error: " + PSExceptionUtils.getMessageForLog(e),null, ds);
+               }
                throw new PSSystemValidationException(
                   e.getErrorCode(), e.getErrorArguments(),
                   app.getApplicationDefinition(), ds);
