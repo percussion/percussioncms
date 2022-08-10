@@ -25,7 +25,7 @@
 .perc-tooltip .perc-tooltip-content {
 	font-size : 11px;
 	background : white;
-	padding : 5 10 5 10px;
+	padding : 5px 10px 5px 10px;
 	border : lightgrey 1px solid;
 	white-space : nowrap;
 	color : black;
