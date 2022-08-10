@@ -117,7 +117,7 @@ public class PSSerializerUtils
         T object;
         try {
             Reader reader = new InputStreamReader(
-                    new ByteArrayInputStream(dataField.getBytes(StandardCharsets.UTF_8)));
+                    new ByteArrayInputStream(xmlString.getBytes(StandardCharsets.UTF_8)));
          object = (T) Objects.requireNonNull(PSJaxbContext.createUnmarshaller(type)).unmarshal(reader);
          return object;
       }
@@ -125,7 +125,7 @@ public class PSSerializerUtils
       {
          log.error("Unable to load XML file.  Check for syntax problems. Error: {}, Data: {}" ,
                  PSExceptionUtils.getMessageForLog(e),
-                 dataField);
+                 xmlString);
          return null;
       }
         
