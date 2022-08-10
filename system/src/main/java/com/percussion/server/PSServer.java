@@ -2385,7 +2385,7 @@ public class PSServer {
             {
                if(e.getErrorCode() == 0){
                   PSConsole.printMsg("Server",
-                        e.getLocalizedMessage());
+                        e.getLocalizedMessage(),null,Level.ERROR);
                }else {
                   PSConsole.printMsg("Server",
                           e.getErrorCode(), e.getErrorArguments());
