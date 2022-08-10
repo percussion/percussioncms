@@ -24,12 +24,14 @@
 package com.percussion.share.dao;
 
 import com.percussion.error.PSExceptionUtils;
+import com.percussion.utils.xml.PSXmlUtils;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONException;
 import net.sf.json.JSONNull;
 import net.sf.json.JSONObject;
 import net.sf.json.JSONSerializer;
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.codehaus.jettison.mapped.MappedNamespaceConvention;
@@ -105,6 +107,13 @@ public class PSSerializerUtils
     @SuppressWarnings("unchecked")
    public static <T> T unmarshal(String dataField, Class<T> type)
     {
+
+        String xmlString = dataField;
+        //Handle scenario where xml was escaped prior to calling.
+        if(PSXmlUtils.isStringXMLEscaped(dataField)){
+            xmlString = StringEscapeUtils.unescapeXml(dataField);
+        }
+
         T object;
         try {
             Reader reader = new InputStreamReader(
