@@ -75,6 +75,15 @@ public class PSSystemValidationException extends PSException {
       super(msgCode);
    }
 
+   public PSSystemValidationException(String erroMessage,IPSDocument container, IPSComponent component)
+   {
+      super(erroMessage);
+      super.setOverridingMessage(erroMessage);
+      m_sourceDocument   = container;
+      m_sourceComponent   = component;
+   }
+
+
    /**
     * Construct an exception for messages taking an array of
     * arguments. Be sure to store the arguments in the correct order in

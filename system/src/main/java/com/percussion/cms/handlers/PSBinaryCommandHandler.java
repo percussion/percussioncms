@@ -60,6 +60,7 @@ import com.percussion.design.objectstore.PSWhereClause;
 import com.percussion.design.objectstore.PSXmlField;
 import com.percussion.error.PSBackEndQueryProcessingError;
 import com.percussion.error.PSException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.PSExtensionException;
 import com.percussion.security.PSAuthenticationFailedException;
 import com.percussion.security.PSAuthorizationException;
@@ -413,6 +414,10 @@ public class PSBinaryCommandHandler extends PSCommandHandler implements
       }
       catch (SQLException e)
       {
+         if(e.getErrorCode() == 0){
+            throw new PSSystemValidationException("Error in initialization application : "
+                    + m_appName + " Error: " + PSExceptionUtils.getMessageForLog(e),app,ce);
+         }
          throw new PSSystemValidationException(e.getErrorCode(),
             e.getLocalizedMessage());
       }
