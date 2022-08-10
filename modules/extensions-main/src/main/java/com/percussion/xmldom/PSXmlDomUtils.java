@@ -51,6 +51,8 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
 
 
@@ -840,11 +842,12 @@ public class PSXmlDomUtils
     * @return name of the character encoding to use, or <code>null</code> if
     *         the platform default should be used.
     */
-   static String determineCharacterEncoding(PSXmlDomContext contxt,
-                                            PSPurgableTempFile inputSourceFile,
-                                            String encodingDefault)
+   static Charset determineCharacterEncoding(PSXmlDomContext contxt,
+                                             PSPurgableTempFile inputSourceFile,
+                                             String encodingDefault)
    {
-      String encoding = null;
+      String encoding = StandardCharsets.UTF_8.name();
+
       if (inputSourceFile.getCharacterSetEncoding() != null)
       {
          encoding = inputSourceFile.getCharacterSetEncoding();
@@ -859,7 +862,7 @@ public class PSXmlDomUtils
       {
          contxt.printTraceMessage("Encoding is plaform default");
       }
-      return encoding;
+      return Charset.forName(encoding);
    }
 
    /**

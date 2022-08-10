@@ -34,7 +34,7 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 
 /**
- * Unit test for text convertion classes.
+ * Unit test for text conversion classes.
  *
  */
 //TODO: Fix these tests - the failures are valid
