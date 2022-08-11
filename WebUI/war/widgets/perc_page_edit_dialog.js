@@ -222,7 +222,9 @@
                     addClass('datadisplay perc-tinymce-readonly').
                     html(content)
                 );
-                containerAreaDiv.style.display = 'none';
+                if(typeof containerAreaDiv !== "undefined") {
+                    containerAreaDiv.style.display = 'none';
+                }
             }
             else
             {
