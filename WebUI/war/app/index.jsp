@@ -95,7 +95,7 @@
 
 
     // List of views requiring admin role
-    String[] adminViews = new String[]{
+    String[] adminViews = {
             "design",
             "arch",
             "publish",
@@ -104,12 +104,16 @@
     };
 
     // List of views requiring designer role
-    String[] designerViews = new String[]{
+    String[] designerViews = {
             "design",
             "arch",
             "publish",
             "widgetbuilder"
     };
+
+    String[] userAdminViews = {"design"};
+
+    String[] navAdminViews = {"arch"};
 
     boolean isAdminView = (view != null && ArrayUtils.contains(adminViews, view));
     boolean isDesignerView =  (view != null && ArrayUtils.contains(designerViews, view));
@@ -251,6 +255,8 @@
         String name = null;
         Boolean isAdmin = Boolean.FALSE;
         Boolean isDesigner = Boolean.FALSE;
+        Boolean isUserAdmin = Boolean.FALSE;
+        Boolean isNavAdmin = Boolean.FALSE;
         Boolean isAccessibilityUser = Boolean.FALSE;
 
         try
@@ -263,6 +269,8 @@
             isAccessibilityUser = user.isAccessibilityUser();
             isAdmin = user.isAdminUser();
             isDesigner = user.isDesignerUser();
+            isUserAdmin = user.isUserAdmin();
+            isNavAdmin = user.isNavAdmin();
 
 
             List<String> roles  = user.getRoles();
@@ -273,6 +281,8 @@
             request.setAttribute(CURRENT_USER_ROLES_KEY, roles.toString());
             request.setAttribute(IS_ADMIN_KEY, isAdmin);
             request.setAttribute(IS_DESIGNER_KEY, isDesigner);
+            request.setAttribute(IS_USERADMIN_KEY, isUserAdmin);
+            request.setAttribute(IS_NAVADMIN_KEY, isNavAdmin);
         } catch (Exception e) {
             throw new JspException(e);
         }
@@ -281,6 +291,8 @@
         setCookie(request, response, "perc_isAdmin", isAdmin.toString());
         setCookie(request, response, "perc_isDesigner", isDesigner.toString());
         setCookie(request, response, "perc_isAccessibilityUser", isAccessibilityUser.toString());
+        setCookie(request, response, "perc_isNavAdmin", isNavAdmin.toString());
+        setCookie(request, response, "perc_isUserAdmin", isUserAdmin.toString());
     }
 
     private void setCookie(HttpServletRequest request, HttpServletResponse response, String cookieName, String cookieValue) {
@@ -487,6 +499,8 @@
     private static final String HAS_SITES_KEY = "hasSites";
     private static final String IS_ADMIN_KEY = "isAdmin";
     private static final String IS_DESIGNER_KEY = "isDesigner";
+    private static final String IS_USERADMIN_KEY = "isUserAdmin";
+    private static final String IS_NAVADMIN_KEY = "isNavAdmin";
     private static final String ADMIN_ROLE = "Admin";
     private static final String IS_ACCESSIBILITY_USER = "isAccessibilityUser";
     private static final String IS_WIDGET_BUILDER_ACTIVE = "isWidgetBuilderActive";
