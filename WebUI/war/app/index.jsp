@@ -115,6 +115,7 @@
 
     String[] navAdminViews = {"arch"};
 
+    boolean isAdminView = view != null && ArrayUtils.contains(adminViews, view);
     boolean isDesignerView =  view != null && ArrayUtils.contains(designerViews, view);
     boolean isUserAdminView = view != null && ArrayUtils.contains(userAdminViews, view);
     boolean isNavAdminView = view != null && ArrayUtils.contains(navAdminViews, view);
@@ -124,11 +125,14 @@
     boolean isDesigner = (boolean) request.getAttribute(IS_DESIGNER_KEY);
     boolean isAdmin = (boolean) request.getAttribute(IS_ADMIN_KEY);
 
-    if(isNavAdminView && (!isAdmin || !isDesigner || !isNavAdmin)) {
+
+    if(isNavAdminView && !isAdmin && !isDesigner && !isNavAdmin) {
         view = null;
-    } else if(isUserAdminView && (!isAdmin || !isDesigner || !isUserAdmin)) {
+    }
+    if(isUserAdminView && !isAdmin && !isDesigner && !isUserAdmin) {
         view = null;
-    } else if(isDesignerView && (!isAdmin || !isDesigner)) {
+    }
+    if(isDesignerView && !isAdmin && !isDesigner) {
         view = null;
     }
 
