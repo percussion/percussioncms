@@ -94,7 +94,7 @@
     views.put("home", "home.jsp");
 
 
-    // List of views requiring admin role
+    // List of views allowed to admin role
     String[] adminViews = {
             "design",
             "arch",
@@ -103,7 +103,7 @@
             "widgetbuilder"
     };
 
-    // List of views requiring designer role
+    // List of views allowed to designer role
     String[] designerViews = {
             "design",
             "arch",
@@ -115,24 +115,22 @@
 
     String[] navAdminViews = {"arch"};
 
-    boolean isAdminView = (view != null && ArrayUtils.contains(adminViews, view));
-    boolean isDesignerView =  (view != null && ArrayUtils.contains(designerViews, view));
+    boolean isDesignerView =  view != null && ArrayUtils.contains(designerViews, view);
+    boolean isUserAdminView = view != null && ArrayUtils.contains(userAdminViews, view);
+    boolean isNavAdminView = view != null && ArrayUtils.contains(navAdminViews, view);
 
-    if(isAdminView && !(Boolean)request.getAttribute(IS_ADMIN_KEY))
-    {
-        if (isDesignerView)
-        {
-            if (!(Boolean)request.getAttribute(IS_DESIGNER_KEY))
-                view = null; //reset view sending user to default view
-        }
-        else
-        {
-            // no designer access to workflow view, send to default view
-            view = null;
-        }
+    boolean isNavAdmin = (boolean) request.getAttribute(IS_NAVADMIN_KEY);
+    boolean isUserAdmin = (boolean) request.getAttribute(IS_USERADMIN_KEY);
+    boolean isDesigner = (boolean) request.getAttribute(IS_DESIGNER_KEY);
+    boolean isAdmin = (boolean) request.getAttribute(IS_ADMIN_KEY);
+
+    if(isNavAdminView && (!isAdmin || !isDesigner || !isNavAdmin)) {
+        view = null;
+    } else if(isUserAdminView && (!isAdmin || !isDesigner || !isUserAdmin)) {
+        view = null;
+    } else if(isDesignerView && (!isAdmin || !isDesigner)) {
+        view = null;
     }
-
-
 
     String forwardTo = MAINT_ERROR_PAGE_URL;
     // Add the default view and redirect so it shows up in the url
