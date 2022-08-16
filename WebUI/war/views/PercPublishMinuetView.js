@@ -120,17 +120,17 @@ function getAllPublishingServer(serverType,serverObj) {
             $('#publishServer').append(new Option(publishingServerList[i], publishingServerList[i]));
         }
         var selectedserver;
-	    if(publishingServerList.length > 1){
-			selectedserver = publishingServerList[0];
-		}
+        if(publishingServerList.length > 1){
+            selectedserver = publishingServerList[0];
+        }
 
-	    if(typeof serverObj !== 'undefined' && typeof serverObj.serverInfo !== 'undefined'){
-		    var selectedserverProp = getArrayProperty(serverObj.serverInfo.properties, "key", "publishServer");
+        if(typeof serverObj !== 'undefined' && typeof serverObj.serverInfo !== 'undefined'){
+            var selectedserverProp = getArrayProperty(serverObj.serverInfo.properties, "key", "publishServer");
             //Selecting Second Record as default because first one is us gov.
             if( typeof selectedserverProp !== 'undefined' && selectedserverProp !== null && typeof selectedserverProp.value !== 'undefined'){
                 selectedserver = selectedserverProp.value;
             }
-	    }
+        }
         $('#publishServer').val(selectedserver);
     });
 }
@@ -405,40 +405,39 @@ function bindServerPropertiesEvents() {
         updateDriverPropertiesUi();
     });
 
-    // FTP property bindings
+    // SFTP property bindings
+    $('#fileDriver').on("change", function(evt) {
+        if(evt.currentTarget.options.item(evt.currentTarget.options.selectedIndex).text === 'SFTP') {
+            // Set the SFTP fields.
+            //if neither password or key is checked, trigger the key as it is preferred.
+            if (!$('#SFTPprivateKeyFlag').is(':checked') && !$('#SFTPpasswordFlag').is(':checked')) {
+                $('#perc-sftp-password').prop("disabled", true);
+                $('#privateKeyList').prop("disabled", false);
+            } else if ($('#SFTPprivateKeyFlag').is(':checked')) {
+                $('#perc-sftp-password').prop("disabled", true);
+                $('#privateKeyList').prop("disabled", false);
+            } else if ($('#SFTPpasswordFlag').is(':checked')) {
+                $('#perc-sftp-password').prop("disabled", false);
+                $('#privateKeyList').prop("disabled", true);
+            }
 
-    $('.perc-password-key-flag').on("change", function(evt) {
-        if($('#privateKeyFlag').is(':checked')) {
-            $('#secureFTP').prop('checked', true);
-            $('#perc-ftp-password').prop('disabled', true);
-            $('#privateKeyList').prop('disabled', false);
-        }
-        else {
-            $('#perc-ftp-password').prop('disabled', false);
-            $('#privateKeyList').prop('disabled', true);
+            $('#SFTPprivateKeyFlag').on("change", function (evt) {
+                if ($('#SFTPprivateKeyFlag').is(':checked')) {
+                    $('#perc-sftp-password').prop("disabled", true);
+                    $('#privateKeyList').prop("disabled", false);
+                }
+
+            });
+
+            $('#SFTPpasswordFlag').on("change", function (evt) {
+                if ($('#SFTPpasswordFlag').is(':checked')) {
+                    $('#perc-sftp-password').prop("disabled", false);
+                    $('#privateKeyList').prop("disabled", true);
+                }
+
+            });
         }
     });
-
-    $('#secureFTP').on("change", function(evt) {
-        if($('#secureFTP').is(':checked') && $('#privateKeyFlag').is(':checked')) {
-            $('#perc-ftp-password').prop('disabled', true);
-            $('#privateKeyFlag').prop('checked', true);
-            $('#privateKeyList').prop('disabled', false);
-        }
-        else {
-            $('#passwordFlag').prop('disabled', false);
-            $('#passwordFlag').prop('checked', true);
-            $('#perc-ftp-password').prop('disabled', false);
-            $('#privateKeyList').prop('disabled', true);
-
-            /*  We need to trigger a change on the flag to ensure
-            *   that the password field does not get enabled
-            *   while the private key radio is selected
-            */
-            $('.perc-password-key-flag').trigger('change');
-        }
-    });
-
 
     // Always trigger driver change and secureFTP flag change on initial load
     $('.perc-driver-group').trigger('change');
