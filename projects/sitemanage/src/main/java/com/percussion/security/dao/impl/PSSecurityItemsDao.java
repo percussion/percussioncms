@@ -23,7 +23,9 @@
  */
 package com.percussion.security.dao.impl;
 
+import com.percussion.cms.IPSConstants;
 import com.percussion.designmanagement.service.IPSFileSystemService;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.security.dao.IPSSecurityItemsDao;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -39,7 +41,7 @@ import java.util.List;
  */
 public class PSSecurityItemsDao implements IPSSecurityItemsDao
 {
-    private static final Logger logger = LogManager.getLogger(PSSecurityItemsDao.class);
+    private static final Logger logger = LogManager.getLogger(IPSConstants.PUBLISHING_LOG);
 
     /**
      * An {@link IPSFileSystemService} implementation pointing to the root folder where
@@ -64,12 +66,16 @@ public class PSSecurityItemsDao implements IPSSecurityItemsDao
         {
             privateKeys = fileSystemService.getChildren("/");
             for (File file : privateKeys) {
-                keyNames.add(file.getName());
+                //skip the ssh config file
+                if(!file.getName().equalsIgnoreCase("config")) {
+                    keyNames.add(file.getName());
+                }
             }
         }
         catch (FileNotFoundException e)
         {
-            logger.debug("rxconfig/ssh-keys folder is missing.",e);
+            logger.warn("rxconfig/ssh-keys folder is missing. Error: {}",
+                    PSExceptionUtils.getMessageForLog(e));
         }
         return keyNames;
     }
