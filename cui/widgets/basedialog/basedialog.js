@@ -34,8 +34,7 @@ define (
         'widgets/addwizard/addwizard',
         'widgets/search/search',
         'widgel-base',
-        'jquery-ui',
-        'jquery-ui/ui/dialog'
+        'jquery-ui'
     ],
     // module:
     function (cm1Adaptor, defaultView, defaultViewModel, addwizard, search) {
