@@ -62,15 +62,14 @@ import com.percussion.webservices.content.PSItemChildren;
 import com.percussion.webservices.content.PSItemFolders;
 import com.percussion.webservices.content.PSItemSlots;
 import com.percussion.webservices.content.PSRelatedItem;
+import org.apache.commons.beanutils.ConversionException;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.commons.beanutils.ConversionException;
-import org.apache.commons.lang.StringUtils;
 
 /**
  * This class provides utility methods used by the item converter and possibly
@@ -362,7 +361,7 @@ public class PSItemConverterUtils
       dest.setDataType((PSFieldDataType) callingConverter.getConverter(
          PSFieldDataType.class).convert(PSFieldDataType.class, 
             new Integer(meta.getBackendDataType())));
-      if (def.getDeclaredNamespaces() != null)
+      if (def.getDeclaredNamespaces() != null && def.getDeclaredNamespaces().length>0)
          dest.setDeclaredNamespaces(def.getDeclaredNamespaces().toString());
       dest.setDisplayName(meta.getDisplayName());
       dest.setFieldValueType(

@@ -652,6 +652,7 @@ public class PSFilterResultSetWrapper implements ResultSet
     * @exception SQLException if a database access error occurs
     * @deprecated
     */
+   @Deprecated
    public java.io.InputStream getUnicodeStream(String columnName) throws SQLException
    {
       return m_rs.getUnicodeStream(columnName);
@@ -1941,7 +1942,7 @@ public class PSFilterResultSetWrapper implements ResultSet
     * methods are called to update the database.
     *
     * @param columnName the name of the column
-    * @param x the new column value
+    * @param reader the reader
     * @param length of the stream
     * @exception SQLException if a database access error occurs
     */

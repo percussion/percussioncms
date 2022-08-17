@@ -47,6 +47,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -130,7 +131,9 @@ public class PSConcurrentRegionsAssembler implements IPSRegionsAssembler
         }
         finally {
             executorService.shutdown();
-            log.debug(sw.prettyPrint());
+
+            log.debug("{}",sw.prettyPrint());
+
         }
     }
     
@@ -141,11 +144,11 @@ public class PSConcurrentRegionsAssembler implements IPSRegionsAssembler
      */
     public static class RegionResultsCallable implements Callable<List<PSRegionResult>> {
 
-        private IPSRegionAssembler regionAssembler;
-        private IPSAssemblyItem assemblyItem;
-        private PSPageAssemblyContext pageAssemblyContext;
-        private PSMergedRegion mergedRegion;
-        private Map<String, Object> requestInfoMap;        
+        private final IPSRegionAssembler regionAssembler;
+        private final IPSAssemblyItem assemblyItem;
+        private final PSPageAssemblyContext pageAssemblyContext;
+        private final PSMergedRegion mergedRegion;
+        private final Map<String, Object> requestInfoMap;
 
 
         public RegionResultsCallable(Map<String,Object> requestInfoMap, IPSRegionAssembler regionAssembler,
@@ -245,7 +248,7 @@ public class PSConcurrentRegionsAssembler implements IPSRegionsAssembler
             catch (InterruptedException e)
             {
                 Thread.currentThread().interrupt();
-                return null;
+                return new ArrayList<>();
             }
             catch (ExecutionException e)
             {
@@ -275,7 +278,7 @@ public class PSConcurrentRegionsAssembler implements IPSRegionsAssembler
      * will be blocked till all the regions have assembled.
      * <p>
      * If <code>false</code> the regions will be assembled concurrently and the call
-     * to assemble will be returned immediatly. The region results will be
+     * to assemble will be returned immediately. The region results will be
      * wrapped so that when they accessed computation will block till the results are completed.
      *  
      * @return never <code>null</code> default is <code>false</code>
@@ -292,7 +295,18 @@ public class PSConcurrentRegionsAssembler implements IPSRegionsAssembler
         this.waitTillFinished = waitTillComplete;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof PSConcurrentRegionsAssembler)) return false;
+        PSConcurrentRegionsAssembler that = (PSConcurrentRegionsAssembler) o;
+        return isWaitTillFinished() == that.isWaitTillFinished();
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(isWaitTillFinished());
+    }
 
     /**
      * The log instance to use for this class, never <code>null</code>.
