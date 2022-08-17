@@ -113,60 +113,61 @@ public class PSField extends PSComponent
 
 
    /**
-    * One of the indentifiers for the allowed Data types. Indicates that the
+    * One of the identifiers for the allowed Data types. Indicates that the
     * field contains character data.
     */
    public static final String DT_TEXT = "text";
 
    /**
-    * One of the indentifiers for the allowed Data types. Indicates that the
+    * One of the identifiers for the allowed Data types. Indicates that the
     * field contains only a date, no time component is allowed.
     */
    public static final String DT_DATE = "date";
 
    /**
-    * One of the indentifiers for the allowed Data types. Indicates that the
+    * One of the identifiers for the allowed Data types. Indicates that the
     * field contains only a time, no date component is allowed.
     */
    public static final String DT_TIME = "time";
 
    /**
-    * One of the indentifiers for the allowed Data types. Indicates that the
+    * One of the identifiers for the allowed Data types. Indicates that the
     * field contains a date and time (the time is usually 00:00:00 if not
     * supplied).
     */
    public static final String DT_DATETIME = "datetime";
 
    /**
-    * One of the indentifiers for the allowed Data types. Indicates that the
+    * One of the identifiers for the allowed Data types. Indicates that the
     * field contains a value that should be interpreted as either <code>true
     * </code> or Ccode>false</code>.
     */
    public static final String DT_BOOLEAN = "bool";
 
    /**
-    * One of the indentifiers for the allowed Data types. Indicates that the
+    * One of the identifiers for the allowed Data types. Indicates that the
     * field contains a value that should be interpreted as a whole number.
     */
    public static final String DT_INTEGER = "integer";
 
    /**
-    * One of the indentifiers for the allowed Data types. Indicates that the
+    * One of the identifiers for the allowed Data types. Indicates that the
     * field contains a value that should be interpreted as a whole number.
     * 
     * @deprecated use {@link #DT_INTEGER} instead.
     */
+   @Deprecated
    public static final String DT_NUMBER = "number";
 
    
    /**
-    * One of the indentifiers for the allowed Data types. Indicates that the
+    * One of the identifiers for the allowed Data types. Indicates that the
     * field contains a value that should be interpreted as a real number.
     */
    public static final String DT_FLOAT = "float";
 
    /**
-    * One of the indentifiers for the allowed Data types. Indicates that the
+    * One of the identifiers for the allowed Data types. Indicates that the
     * field contains non human readable data.
     */
    public static final String DT_BINARY = "binary";
@@ -262,6 +263,7 @@ public class PSField extends PSComponent
     * 
     * @deprecated Use {@link #getSearchProperties()}.isUserCustomizable().
     */
+   @Deprecated
    public boolean isUserCustomizable()
    {
       return m_searchProps.isUserCustomizable();
@@ -273,6 +275,7 @@ public class PSField extends PSComponent
     * 
     * @deprecated Use {@link #getSearchProperties()}.getDefaultSearchLabel().
     */
+   @Deprecated
    public String getDefaultSearchLabel()
    {
       return m_searchProps.getDefaultSearchLabel();
@@ -552,8 +555,7 @@ public class PSField extends PSComponent
       PSProperty property = (PSProperty) m_properties.get(name);
       if (property != null)
       {
-         if (((Boolean) property.getValue()).booleanValue())
-            return true;
+         return (Boolean) property.getValue();
       }
 
       return false;
@@ -680,7 +682,7 @@ public class PSField extends PSComponent
    
    /**
     * This tells text cleanup that JSP and ASP tags 
-    * may appear in the content. These are escaped by inclosing them in 
+    * may appear in the content. These are escaped by enclosing them in 
     * processing instructions (PIs). These PIs have the name 
     * &quot;psx-activetag&quot;. 
     * The assembly system will selectively remove PIs from around these 
@@ -721,9 +723,9 @@ public class PSField extends PSComponent
       String allowedstr = allowedvalue != null ? allowedvalue.toString() : null; 
          
       if (StringUtils.isBlank(allowedstr))
-         return null;
+         return new String[]{};
       
-      String ns[] = allowedstr.split(",");
+      String[] ns = allowedstr.split(",");
       
       // Trim
       for(int i = 0; i < ns.length; i++)
@@ -1259,9 +1261,7 @@ public class PSField extends PSComponent
                m_searchProps.setUserSearchable(false);
          default:
             // all types except binary can be represented in a text column
-            changed = false;
-            if ( currentType.length() == 0 || currentType.equals(DT_BINARY))
-               changed = true;
+            changed = currentType.length() == 0 || currentType.equals(DT_BINARY);
             break;
       }
 
@@ -2523,7 +2523,7 @@ public class PSField extends PSComponent
       {
          if (m_locator != null && m_default instanceof IPSComponent)
             ((IPSComponent) m_locator).validate(context);
-         if (m_default != null && m_default instanceof IPSComponent)
+         if ( m_default instanceof IPSComponent)
             ((IPSComponent) m_default).validate(context);
          if (m_inputTranslation != null)
             m_inputTranslation.validate(context);
@@ -2568,7 +2568,7 @@ public class PSField extends PSComponent
    }
 
    /**
-    * Clears the occurence setting for this field.
+    * Clears the occurance setting for this field.
     */
    public void clearOccurrenceSettings()
    {
@@ -2576,17 +2576,17 @@ public class PSField extends PSComponent
    }
 
    /**
-    * Returns the array of Occurence settings Transition Ids.
+    * Returns the array of Occurance settings Transition Ids.
     * 
-    * @return Integer[] of Occurence settings Transition Ids.
+    * @return Integer[] of Occurance settings Transition Ids.
     */
-   public Integer[] getOccurenceSettingsTransitionIds()
+   public Integer[] getOccuranceSettingsTransitionIds()
    {
       return (Integer[]) m_occurrenceSettings.keySet().toArray(new Integer[0]);
    }
 
    /**
-    * Replaces this field's occurence settings with those of the supplied
+    * Replaces this field's occurance settings with those of the supplied
     * field.  A shallow copy of is performed, so any changes to the original
     * will also affect this object.
     *
@@ -2628,7 +2628,7 @@ public class PSField extends PSComponent
     * <li>If source has validation rules, target cannot also have them</li>
     * <li>If DataTypes are set on both, they must match. Otherwise, the set
     *    data type will be used in the merged field.</li>
-    * <li>Occurence Dimension must match</li>
+    * <li>Occurance Dimension must match</li>
     * <li>ForceBinary must match</li>
     * <li>Locators must match if both have them</li>
     * <li>systemMandatory overrides are ignored</li>
@@ -3580,7 +3580,7 @@ public class PSField extends PSComponent
    }
    
    /**
-    * This class encapsulates a set of OccurenceSettings.
+    * This class encapsulates a set of OccuranceSettings.
     */
    private class PSOccurrenceSetting implements Serializable
    {

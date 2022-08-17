@@ -24,6 +24,7 @@
 
 package com.percussion.util;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
 import org.apache.logging.log4j.LogManager;
@@ -151,7 +152,6 @@ public class PSModifyStyleSheet
                      break;
                }
                out.flush();
-               fIn.close();
 
                buffer = new StringBuilder(out.toString(PSCharSets.getStdName("UTF-8")));
             }
@@ -159,9 +159,9 @@ public class PSModifyStyleSheet
       catch (IOException e)
       {
          String fileName = "";
-         if (xslFile != null)
-            fileName = xslFile.toString();
-         log.error("An IO exception occurred accessing the file: " + fileName,e);
+         fileName = xslFile.toString();
+         log.error("An IO exception occurred accessing the file: {} Error: {}" , fileName,
+                 PSExceptionUtils.getMessageForLog(e));
          return true;
       } 
       
