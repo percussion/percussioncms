@@ -22,7 +22,7 @@
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
-define(['knockout', 'pubsub', 'utils', 'jquery-ui','jquery-ui/ui/tooltip'], function(ko,PubSub, utils) {
+define(['knockout', 'pubsub', 'utils', 'jquery-ui'], function(ko,PubSub, utils) {
     return function ContentListViewModel(options) {
         var self = this;
         self.options = options;
