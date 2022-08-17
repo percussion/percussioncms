@@ -31,7 +31,7 @@ import net.sf.json.JSONNull;
 import net.sf.json.JSONObject;
 import net.sf.json.JSONSerializer;
 import org.apache.commons.beanutils.BeanUtils;
-import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.text.StringEscapeUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.codehaus.jettison.mapped.MappedNamespaceConvention;
@@ -54,10 +54,10 @@ import java.io.StringWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-import static java.util.Arrays.asList;
 import static org.apache.commons.lang.StringUtils.removeEnd;
 import static org.apache.commons.lang.StringUtils.removeStart;
 import static org.apache.commons.lang.Validate.notNull;
@@ -108,8 +108,8 @@ public class PSSerializerUtils
    public static <T> T unmarshal(String dataField, Class<T> type)
     {
 
-        String xmlString = dataField;
-        //Handle scenario where xml was escaped prior to calling.
+        String xmlString = "";
+        //Handle scenario where xml was escaped / html encoded prior to calling.
         if(PSXmlUtils.isStringXMLEscaped(dataField)){
             xmlString = StringEscapeUtils.unescapeXml(dataField);
         }
@@ -133,7 +133,7 @@ public class PSSerializerUtils
     
     
     /**
-     * Unmarshals an XML stream into an Object validating against its schema.
+     * Unmarshal an XML stream into an Object validating against its schema.
      * <p>
      * The schema is assumed to be in the same java class package as the type parameter
      * with the same name but ending in <code>.xsd</code>
@@ -193,11 +193,7 @@ public class PSSerializerUtils
             {
                 sum = type.newInstance();
             }
-            catch (InstantiationException e)
-            {
-                throw new RuntimeException(e);
-            }
-            catch (IllegalAccessException e)
+            catch (InstantiationException | IllegalAccessException e)
             {
                 throw new RuntimeException(e);
             }
@@ -213,15 +209,11 @@ public class PSSerializerUtils
         {
             BeanUtils.copyProperties(to, from);
         }
-        catch (IllegalAccessException e)
+        catch (IllegalAccessException | InvocationTargetException e)
         {
             throw new RuntimeException(e);
         }
-        catch (InvocationTargetException e)
-        {
-            throw new RuntimeException(e);
-        }
-        
+
     }
     
     /**
@@ -265,7 +257,6 @@ public class PSSerializerUtils
      * @return either a list, number, string, map or <code>null</code>.
      * 
      */
-    @SuppressWarnings("unchecked")
     public static Object getObjectFromJson(String json) {
         try
         {
@@ -304,7 +295,7 @@ public class PSSerializerUtils
      * @return never <code>null</code>.
      */
     public static String getJsonFromObject(Object obj) {
-      String data = JSONSerializer.toJSON(asList(obj)).toString();
+      String data = JSONSerializer.toJSON(Collections.singletonList(obj)).toString();
       data = removeStart(data, "[");
       data = removeEnd(data, "]");
       return data;

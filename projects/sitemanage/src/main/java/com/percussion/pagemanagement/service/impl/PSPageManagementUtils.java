@@ -32,7 +32,7 @@ import com.percussion.sitemanage.importer.IPSSiteImportLogger.PSLogEntryType;
 import com.percussion.sitemanage.importer.helpers.IPSImportHelper;
 import com.percussion.sitemanage.importer.utils.PSManagedTagsUtils;
 import com.percussion.utils.types.PSPair;
-import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.text.StringEscapeUtils;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
@@ -95,7 +95,7 @@ public class PSPageManagementUtils
     public static void extractMetadata(PSPageContent pageContent, IPSSiteImportLogger logger)
     {
         String headContent = commentOutManagedTags(pageContent, logger);
-        pageContent.setHeadContent(StringEscapeUtils.unescapeHtml(headContent));
+        pageContent.setHeadContent(StringEscapeUtils.unescapeHtml4(headContent));
 
         Element docBody = pageContent.getSourceDocument().body();
         Elements bodyElems = docBody.children();
@@ -103,9 +103,9 @@ public class PSPageManagementUtils
         StringBuilder afterBodyStart = extractAfterBodyStartContent(bodyElems, logger);
         StringBuilder beforeBodyClose = extractBeforeBodyClose(bodyElems, logger);
 
-        pageContent.setAfterBodyStart(StringEscapeUtils.unescapeHtml(afterBodyStart.toString()));
-        pageContent.setBeforeBodyClose(StringEscapeUtils.unescapeHtml(beforeBodyClose.toString()));
-        pageContent.setBodyContent(StringEscapeUtils.unescapeHtml(docBody.html()));
+        pageContent.setAfterBodyStart(StringEscapeUtils.unescapeHtml4(afterBodyStart.toString()));
+        pageContent.setBeforeBodyClose(StringEscapeUtils.unescapeHtml4(beforeBodyClose.toString()));
+        pageContent.setBodyContent(StringEscapeUtils.unescapeHtml4(docBody.html()));
     }
 
     /**
@@ -181,7 +181,7 @@ public class PSPageManagementUtils
 
     /**
      * Process the header element to comment out those tags that are managed by
-     * CM1. See {@link #isManagedMetadataTag(Element)}.
+     * CMS.
      * 
      * @param pageContent The page content being modified.. Assumed not
      *            <code>null</code>.

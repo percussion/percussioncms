@@ -23,8 +23,8 @@
  */
 package com.percussion.utils;
 
-import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.text.StringEscapeUtils;
 
 /**
  * Handle encoding and preserving html content that JSoup may strip out, primarily to support
@@ -81,7 +81,7 @@ public class PSJsoupPreserver
         {
             for (String string : strings)
             {
-                returnHTML = returnHTML.replace(string, StringEscapeUtils.escapeHtml(string));
+                returnHTML = returnHTML.replace(string, StringEscapeUtils.escapeHtml4(string));
             }
         }
         return returnHTML;
@@ -95,7 +95,7 @@ public class PSJsoupPreserver
         {
             for (String string : strings)
             {
-                returnHTML = returnHTML.replace(string, StringEscapeUtils.unescapeHtml(string));
+                returnHTML = returnHTML.replace(string, StringEscapeUtils.unescapeHtml4(string));
             }
         }
         

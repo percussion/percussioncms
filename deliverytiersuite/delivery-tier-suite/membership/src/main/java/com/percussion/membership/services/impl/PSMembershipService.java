@@ -38,10 +38,10 @@ import com.percussion.membership.services.IPSMembershipService;
 import com.percussion.membership.services.PSAuthenticationFailedException;
 import com.percussion.membership.services.PSMemberExistsException;
 import com.percussion.membership.services.PSResetPwdException;
-import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 import org.apache.commons.lang.time.DateUtils;
+import org.apache.commons.text.StringEscapeUtils;
 import org.jasypt.util.password.PasswordEncryptor;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -141,7 +141,7 @@ public class PSMembershipService implements IPSMembershipService
 
 
         // ensure no html elements in the email
-        String escapedEmail = StringEscapeUtils.escapeHtml(email);
+        String escapedEmail = StringEscapeUtils.escapeHtml4(email);
         if (!email.equals(escapedEmail))
         {
             throw new IllegalArgumentException("Invalid email address");
@@ -166,7 +166,7 @@ public class PSMembershipService implements IPSMembershipService
         }
         else if (member.getStatus().equals(PSMemberStatus.Unconfirmed))
         {
-            resetKey = member.getPwdResetKey().toString();
+            resetKey = member.getPwdResetKey();
         }
         else if (member.getStatus().equals(PSMemberStatus.Active)
                 || member.getStatus().equals(PSMemberStatus.Blocked))
@@ -211,7 +211,7 @@ public class PSMembershipService implements IPSMembershipService
         Validate.notEmpty(email);
 
         // ensure no html elements in the email
-        String escapedEmail = StringEscapeUtils.escapeHtml(email);
+        String escapedEmail = StringEscapeUtils.escapeHtml4(email);
         if (!email.equals(escapedEmail))
         {
             throw new IllegalArgumentException("Invalid email address");
@@ -320,7 +320,7 @@ public class PSMembershipService implements IPSMembershipService
         {
             throw new PSAuthenticationFailedException("Unable to process the reset password request.");
         }
-        Boolean isValid = this.genericKeyService.isValidKey(resetKey);
+        boolean isValid = this.genericKeyService.isValidKey(resetKey);
 
         if(!isValid)
         {
@@ -349,7 +349,7 @@ public class PSMembershipService implements IPSMembershipService
             throw new PSAuthenticationFailedException("Unable to process the reset password.");
         }
         // Call the key service to validate the reset key
-        Boolean isValid = this.genericKeyService.isValidKey(resetKey);
+        boolean isValid = this.genericKeyService.isValidKey(resetKey);
 
         if(!isValid)
         {
@@ -395,7 +395,7 @@ public class PSMembershipService implements IPSMembershipService
             throw new PSAuthenticationFailedException("Unable to find the member by the key provided.");
         }
         // Call the key service to validate the reset key
-        Boolean isValid = this.genericKeyService.isValidKey(confirmKey);
+        boolean isValid = this.genericKeyService.isValidKey(confirmKey);
 
         if((!isValid))
         {
@@ -577,11 +577,9 @@ public class PSMembershipService implements IPSMembershipService
         sb.append("\r\n");
         sb.append("If you did not initiate a password reset, please ignore this email.");
         sb.append("\r\n");
-        sb.append("");
         sb.append("\r\n");
         sb.append("To reset the password, click the link below or copy and paste the link into your browser:");
         sb.append("\r\n");
-        sb.append("");
         sb.append(redirectLink);
 
         return sb.toString();
@@ -603,18 +601,15 @@ public class PSMembershipService implements IPSMembershipService
         sb.append("\r\n\n");
         sb.append("To complete the registration process and activate your account, simply visit the link below:");
         sb.append("\r\n");
-        sb.append("");
         sb.append(redirectLink);
         sb.append("\r\n");
         sb.append("If clicking the link does not work, just copy and paste the entire link into your browser.");
-        sb.append("");
         sb.append("\r\n\n");
         sb.append("We're excited to have you on board!");
-        sb.append("");
         sb.append("\r\n\n");
         sb.append("Sincerely,");
         sb.append("\r\n");
-        sb.append("The " + customerSite + " Team");
+        sb.append("The ").append(customerSite).append(" Team");
         return sb.toString();
     }
 
