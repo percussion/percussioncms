@@ -24,7 +24,7 @@
 
 package com.percussion.utils.xml;
 
-import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.text.StringEscapeUtils;
 import org.junit.Test;
 
 import static org.junit.Assert.assertFalse;
@@ -39,7 +39,7 @@ public class TestXmlUtils {
     public void testXMLEncoded(){
 
         assertFalse(PSXmlUtils.isStringXMLEscaped("<?xml version='1.0'?><test>text</test>"));
-        assertTrue(PSXmlUtils.isStringXMLEscaped(StringEscapeUtils.escapeXml("<?xml version='1.0'?><test>text</test>")));
+        assertTrue(PSXmlUtils.isStringXMLEscaped(StringEscapeUtils.escapeXml10("<?xml version='1.0'?><test>text</test>")));
 
     }
 }

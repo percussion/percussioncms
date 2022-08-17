@@ -33,7 +33,7 @@ import com.percussion.delivery.metadata.impl.PSPropertyDatatypeMappings;
 import com.percussion.delivery.metadata.impl.utils.PSPair;
 import com.percussion.delivery.metadata.utils.PSHashCalculator;
 import com.percussion.error.PSExceptionUtils;
-import org.apache.commons.lang.StringEscapeUtils;
+import com.percussion.security.SecureStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -380,7 +380,7 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
         Map<String, String> sortColumns = new HashMap<>();
 
         String orderBy = rawQuery.getOrderBy();
-        orderBy= StringEscapeUtils.escapeSql(orderBy);
+        orderBy= SecureStringUtils.sanitizeStringForSQLStatement(orderBy);
         String sortColumnName = "";
         SORTTYPE type = SORTTYPE.NONE;
         //is used for if the sort column is based on the property from the property table
