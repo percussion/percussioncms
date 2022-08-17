@@ -413,6 +413,7 @@ function bindServerPropertiesEvents() {
             if (!$('#SFTPprivateKeyFlag').is(':checked') && !$('#SFTPpasswordFlag').is(':checked')) {
                 $('#perc-sftp-password').prop("disabled", true);
                 $('#privateKeyList').prop("disabled", false);
+                $("#SFTPprivateKeyFlag").prop("checked",true);
             } else if ($('#SFTPprivateKeyFlag').is(':checked')) {
                 $('#perc-sftp-password').prop("disabled", true);
                 $('#privateKeyList').prop("disabled", false);
@@ -821,7 +822,7 @@ function deleteServerRequest() {
 
                 processAlert(response);
 
-                // Only close the modal when we have a successful reponse
+                // Only close the modal when we have a successful response
                 if(!(response.result.warning)) {
                     $('#percServerPropertiesModal').modal('toggle');
                     clearSelectedServer();
@@ -883,10 +884,10 @@ function processServerPropertiesForm(eventData) {
         driver = '';
     }
     if (driver == 'FTP' || driver == 'FTPS') {
-        $('#secureFTP').prop('checked', false);
+        $('#SFTPprivateKeyFlag').prop('checked', false);
     }
     if(driver == 'SFTP'){
-        $('#secureFTP').prop('checked', true);
+        $('#SFTPprivateKeyFlag').prop('checked', true);
     }
 
     //crawl through all properties and create an array of properties
