@@ -32,24 +32,25 @@ import com.percussion.cms.objectstore.PSItemChildEntry;
 import com.percussion.cms.objectstore.PSItemDefinition;
 import com.percussion.cms.objectstore.PSItemField;
 import com.percussion.cms.objectstore.PSTextValue;
+import com.percussion.design.objectstore.PSComponent;
 import com.percussion.design.objectstore.PSContentEditorPipe;
 import com.percussion.design.objectstore.PSField;
 import com.percussion.design.objectstore.PSFieldSet;
 import com.percussion.design.objectstore.PSLocator;
 import com.percussion.error.PSException;
+import com.percussion.error.PSExceptionUtils;
+import com.percussion.html.PSHtmlUtils;
 import com.percussion.server.PSRequest;
 import com.percussion.server.webservices.PSWebServicesRequestHandler;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.xml.PSNodePrinter;
-import com.percussion.xml.PSXmlDocumentBuilder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
-import org.xml.sax.InputSource;
 
 import java.io.IOException;
-import java.io.StringReader;
 import java.io.StringWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -131,7 +132,7 @@ public class PSInlineLinkProcessor
               item, -1);
 
       // do nothing if there is no inline link fields
-      List inlinelinkFields = getInlineLinkFields(itemDef);
+      List<PSInlineLinkField> inlinelinkFields = getInlineLinkFields(itemDef);
       if (inlinelinkFields.isEmpty())
          return;
       logger.debug("Processing inline Link for : {} ", item.getId() );
@@ -146,7 +147,7 @@ public class PSInlineLinkProcessor
     * @return a list over zero or more <code>PSInlineLinkField</code> objects,
     *    never <code>null</code>, may be empty.
     */
-   private static List getInlineLinkFields(PSItemDefinition itemDef)
+   private static List<PSInlineLinkField> getInlineLinkFields(PSItemDefinition itemDef)
    {
       PSContentEditorPipe pipe =
               (PSContentEditorPipe) itemDef.getContentEditor().getPipe();
@@ -165,16 +166,16 @@ public class PSInlineLinkProcessor
     * @return a list over zero or more <code>PSInlineLinkField</code> objects,
     *    never <code>null</code>, may be empty.
     */
-   private static List getInlineLinkFields(PSFieldSet fieldSet,
-                                           List inlineFields)
+   private static List<PSInlineLinkField> getInlineLinkFields(PSFieldSet fieldSet,
+                                           List<PSInlineLinkField> inlineFields)
    {
       if (inlineFields == null)
          inlineFields = new ArrayList<>();
 
-      Iterator fields = fieldSet.getAll();
+      Iterator<PSComponent> fields = fieldSet.getAll();
       while (fields.hasNext())
       {
-         Object testFieldSet = fields.next();
+         PSComponent testFieldSet = fields.next();
          if (testFieldSet instanceof PSFieldSet)
          {
             getInlineLinkFields((PSFieldSet) testFieldSet,
@@ -213,7 +214,7 @@ public class PSInlineLinkProcessor
     */
    private static void processInlineLinkItem(PSRequest request,
                                              PSLocator locator, PSItemDefinition itemDef, Map relationshipMap,
-                                             Iterator fields, int communityId, boolean bCheckout, boolean checkin)
+                                             Iterator<PSInlineLinkField> fields, int communityId, boolean bCheckout, boolean checkin)
            throws PSException
    {
       PSWebServicesRequestHandler ws =
@@ -238,19 +239,19 @@ public class PSInlineLinkProcessor
          // process all inline link fields
          while (fields.hasNext())
          {
-            PSInlineLinkField field = (PSInlineLinkField)fields.next();
+            PSInlineLinkField field = fields.next();
             String name = field.getField().getSubmitName();
-            PSItemField itemField = (PSItemField) item.getFieldByName(name);
+            PSItemField itemField = item.getFieldByName(name);
             if (itemField == null)
             {
-               Iterator childItems = item.getAllChildren();
+               Iterator<PSItemChild> childItems = item.getAllChildren();
                while (childItems.hasNext())
                {
-                  PSItemChild itemChild = (PSItemChild) childItems.next();
-                  Iterator entries = itemChild.getAllEntries();
+                  PSItemChild itemChild = childItems.next();
+                  Iterator<PSItemChildEntry> entries = itemChild.getAllEntries();
                   while (entries.hasNext())
                   {
-                     PSItemChildEntry entry = (PSItemChildEntry) entries.next();
+                     PSItemChildEntry entry = entries.next();
                      PSItemField childField = entry.getFieldByName(name);
                      if (childField != null)
                      {
@@ -313,9 +314,16 @@ public class PSInlineLinkProcessor
 
       try
       {
+         org.jsoup.nodes.Document jDoc = PSHtmlUtils.createHTMLDocument(text,
+                 StandardCharsets.UTF_8,
+                 false,
+                 null);
+
+         //Just get the body contents
+         jDoc.html(jDoc.body().html());
+
          // assume the text is a valid XML document, already tidied
-         Document fieldDoc = PSXmlDocumentBuilder.createXmlDocument(
-                 new InputSource( new StringReader(text)), false);
+         Document fieldDoc = PSHtmlUtils.getW3cDomDocument(jDoc);
 
          PSInlineLinkField.modifyField(fieldDoc.getDocumentElement(),
                  relationshipMap);
@@ -329,15 +337,15 @@ public class PSInlineLinkProcessor
          catch (IOException e1)
          {
 
-            logger.warn("IOException occurred while writing the inline link field {} ERROR: {}.",itemField.getName(),e1.getMessage());
-            logger.debug(e1.getMessage(),e1);
+            logger.warn("IOException occurred while writing the inline link field {} ERROR: {}.",itemField.getName(),
+                    PSExceptionUtils.getMessageForLog(e1));
          }
          text = swriter.toString();
       }
       catch (Exception e)
       {
-         logger.error("Error happened while parsing Field : {}, the inline link field value ERROR: {}.",itemField.getName(),e.getMessage());
-         logger.debug(e.getMessage(),e);
+         logger.error("Error happened while parsing Field : {}, the inline link field value ERROR: {}.",itemField.getName(),
+                 PSExceptionUtils.getMessageForLog(e));
       }
       itemField.addValue(new PSTextValue(text));
    }
