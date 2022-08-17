@@ -105,11 +105,11 @@ import org.apache.commons.collections.MultiMap;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.query.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyHbmImpl;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.query.Query;
 import org.hibernate.transform.Transformers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -899,8 +899,8 @@ public class PSContentRepository
                 PSTypeConfiguration config = ms_configuration.get(key);
                 if (config == null)
                 {
-                    throw new RepositoryException(
-                            "No content type info found for content type id: " + type);
+                    ms_log.error("No content type info found for content type id: {}",type);
+                    continue;
                 }
                 typeToClassMap.put(type, config.getMainClass());
             }
