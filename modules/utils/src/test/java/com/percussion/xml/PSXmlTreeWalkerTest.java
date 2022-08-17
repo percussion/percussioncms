@@ -31,6 +31,8 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.util.Objects;
 
+import static org.junit.Assert.assertNotEquals;
+
 /**
  * This is a unit test for the PSXmlTreeWalker class.
  *
@@ -45,9 +47,8 @@ public class PSXmlTreeWalkerTest extends TestCase
       Document doc = PSXmlDocumentBuilder.createXmlDocument();
       Element root = PSXmlDocumentBuilder.createRoot(doc, "BookList");
 
-      for (int i = 0; i < m_books.size(); i++)
-      {
-         ((Book)m_books.get(i)).addToDocument(doc, root);
+      for (Book m_book : m_books) {
+         m_book.addToDocument(doc, root);
       }
 
       PSXmlTreeWalker walker = new PSXmlTreeWalker(doc);
@@ -112,14 +113,14 @@ public class PSXmlTreeWalkerTest extends TestCase
 
    public void setUp()
    {
-      m_books = new java.util.ArrayList<Book>();
+      m_books = new java.util.ArrayList<>();
       m_books.add(new Book("The Power and the Glory", "123456789", "Graham Greene", "1"));
       m_books.add(new Book("Our Man in Havana", "223456789", "Graham Greene", "1"));
       m_books.add(new Book("The Man Within", "323456789", "Graham Greene", "1"));
       m_books.add(new Book("The Inheritors", "423456789", "William Golding", "2"));
       m_books.add(new Book("The Honourable Schoolboy", "523456789", "John le Carre", "3"));
       m_books.add(new Book("All Quiet on the Western Front", "623456789",
-         "Erich Maria Remarque", "4"));
+              "Erich Maria Remarque", "4"));
    }
    
    /**
@@ -146,87 +147,87 @@ public class PSXmlTreeWalkerTest extends TestCase
       String xmlField = "root/foo/bar";
       String base = PSXmlTreeWalker.getBaseElement(currentBase, xmlField);
       String oldBase = getBaseElement(currentBase, xmlField);
-      assertTrue(base.equals("root/foo/bar"));
-      assertTrue(base.equals(oldBase));
+      assertEquals("root/foo/bar", base);
+      assertEquals(base, oldBase);
       
       // this case tests the fix for bug Rx-04-04-0026
       currentBase = "root/foo/bar";
       xmlField = "root/foo/bar_1";
       base = PSXmlTreeWalker.getBaseElement(currentBase, xmlField);
       oldBase = getBaseElement(currentBase, xmlField);
-      assertTrue(base.equals("root/foo"));
-      assertTrue(!base.equals(oldBase));
+      assertEquals("root/foo", base);
+      assertNotEquals(base, oldBase);
 
       // this case tests the fix for bug Rx-04-04-0026
       currentBase = "root/foo/bar_1";
       xmlField = "root/foo/bar";
       base = PSXmlTreeWalker.getBaseElement(currentBase, xmlField);
       oldBase = getBaseElement(currentBase, xmlField);
-      assertTrue(base.equals("root/foo"));
-      assertTrue(!base.equals(oldBase));
+      assertEquals("root/foo", base);
+      assertNotEquals(base, oldBase);
 
       currentBase = null;
       xmlField = "root/foo/bar";
       base = PSXmlTreeWalker.getBaseElement(currentBase, xmlField);
       oldBase = getBaseElement(currentBase, xmlField);
-      assertTrue(base.equals("root/foo"));
-      assertTrue(base.equals(oldBase));
+      assertEquals("root/foo", base);
+      assertEquals(base, oldBase);
 
       currentBase = "root/foo/bar";
       xmlField = null;
       base = PSXmlTreeWalker.getBaseElement(currentBase, xmlField);
       oldBase = getBaseElement(currentBase, xmlField);
-      assertTrue(base.equals("root/foo/bar"));
-      assertTrue(base.equals(oldBase));
+      assertEquals("root/foo/bar", base);
+      assertEquals(base, oldBase);
 
       currentBase = null;
       xmlField = null;
       base = PSXmlTreeWalker.getBaseElement(currentBase, xmlField);
       // this case throws a null pointer in the old implementation
       // oldBase = getBaseElement(currentBase, xmlField);
-      assertTrue(base == null);
+      assertNull(base);
 
       currentBase = "root/foo1/bar";
       xmlField = "root/foo/bar";
       base = PSXmlTreeWalker.getBaseElement(currentBase, xmlField);
       oldBase = getBaseElement(currentBase, xmlField);
-      assertTrue(base.equals("root"));
-      assertTrue(base.equals(oldBase));
+      assertEquals("root", base);
+      assertEquals(base, oldBase);
 
       currentBase = "root/foo/bar";
       xmlField = "root/foo1/bar";
       base = PSXmlTreeWalker.getBaseElement(currentBase, xmlField);
       oldBase = getBaseElement(currentBase, xmlField);
-      assertTrue(base.equals("root"));
-      assertTrue(base.equals(oldBase));
+      assertEquals("root", base);
+      assertEquals(base, oldBase);
 
       currentBase = "/root/foo/bar";
       xmlField = "/root/foo1/bar";
       base = PSXmlTreeWalker.getBaseElement(currentBase, xmlField);
       oldBase = getBaseElement(currentBase, xmlField);
-      assertTrue(base.equals("/root"));
-      assertTrue(base.equals(oldBase));
+      assertEquals("/root", base);
+      assertEquals(base, oldBase);
 
       currentBase = "/root1/foo/bar";
       xmlField = "/root/foo/bar";
       base = PSXmlTreeWalker.getBaseElement(currentBase, xmlField);
       oldBase = getBaseElement(currentBase, xmlField);
-      assertTrue(base == null);
-      assertTrue(base == oldBase);
+      assertNull(base);
+      assertSame(base, oldBase);
 
       currentBase = "/root/foo/bar";
       xmlField = "root/foo1/bar";
       base = PSXmlTreeWalker.getBaseElement(currentBase, xmlField);
       oldBase = getBaseElement(currentBase, xmlField);
-      assertTrue(base == null);
-      assertTrue(base == oldBase);
+      assertNull(base);
+      assertSame(base, oldBase);
 
       currentBase = "root/foo/bar";
       xmlField = "/root/foo1/bar";
       base = PSXmlTreeWalker.getBaseElement(currentBase, xmlField);
       oldBase = getBaseElement(currentBase, xmlField);
-      assertTrue(base == null);
-      assertTrue(base == oldBase);
+      assertNull(base);
+      assertSame(base, oldBase);
    }
    
    static String ms_expectedSer = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + 
@@ -252,7 +253,7 @@ public class PSXmlTreeWalkerTest extends TestCase
         "      <author id=\"2\">William Golding</author>\n" + 
         "   </Book>\n" + 
         "   <Book>\n" + 
-        "      <title>The Honourable Schoolboy</title>\n" + 
+        "      <title>The Honourable Schoolboy</title>\n" +
         "      <isbn>523456789</isbn>\n" + 
         "      <author id=\"3\">John le Carre</author>\n" + 
         "   </Book>\n" + 
@@ -272,9 +273,8 @@ public class PSXmlTreeWalkerTest extends TestCase
       Document doc = PSXmlDocumentBuilder.createXmlDocument();
       Element root = PSXmlDocumentBuilder.createRoot(doc, "BookList");
 
-      for (int i = 0; i < m_books.size(); i++)
-      {
-         ((Book)m_books.get(i)).addToDocument(doc, root);
+      for (Book m_book : m_books) {
+         m_book.addToDocument(doc, root);
       }
 
       PSXmlTreeWalker walker = new PSXmlTreeWalker(doc);
@@ -288,8 +288,6 @@ public class PSXmlTreeWalkerTest extends TestCase
    /**
     * This was the old implementation for the getBaseElement method. This is
     * used to test the backwards compatibility.
-    * See {@link PSXmlTreeWalker.getBaseElement(String, String)} for parameter
-    * descriptions.
     */
    private String getBaseElement(String curBase, String xmlField)
    {
@@ -340,7 +338,7 @@ public class PSXmlTreeWalkerTest extends TestCase
 
    private java.util.List<Book> m_books;
 
-   protected class Book implements Comparable
+   protected static class Book implements Comparable
    {
       public Book(String title, String isbn, String author, String authorId)
       {
@@ -379,9 +377,7 @@ public class PSXmlTreeWalkerTest extends TestCase
          if (compare != 0)
             return compare;
          compare = m_author.compareTo(b.m_author);
-         if (compare != 0)
-            return compare;
-         return 0;
+         return compare;
       }
 
       public String toXmlString()
@@ -420,5 +416,11 @@ public class PSXmlTreeWalkerTest extends TestCase
       private String m_isbn;
       private String m_author;
       private String m_authorId;
+   }
+
+   public void testCovertToXMLEntities(){
+      String test = PSXmlTreeWalker.convertToXmlEntities("This is a test \uD83E\uDD21");
+
+      assertEquals("This is a test &#129313;",test);
    }
 }

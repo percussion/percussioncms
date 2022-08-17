@@ -561,7 +561,7 @@ public class PSXmlTreeWalker implements Serializable
    /**
     * Indicates that the name passed in is qualified.
     *
-    * @param the element name. May be <code>null</code>.
+    * @param name the element name. May be <code>null</code>.
     * @return <code>true</code> if the name passed in is
     * qualified.
     */
@@ -1279,14 +1279,36 @@ public class PSXmlTreeWalker implements Serializable
             default:
             {
                int num = c;
-               if (num > 126) // this is some kind of funky character
+               if (num > 126) // this is some kind of unicode character
                {
+                  //Check to see if the character is a surrogate
+                  if(Character.isSurrogate(c)){
+                     char high=0;
+                     char low=0;
+
+                     if(Character.isHighSurrogate(c)) {
+                        high = c;
+                        if(Character.isLowSurrogate(chars[i+1])){
+                           low = chars[i+1];
+                        }
+                     }
+
+                     if(high != 0 && low !=0) {
+                        num = Character.toCodePoint(high, low);
+                     }
+                  }
+
                   if (startNormal != i)
                      out.write(chars, startNormal, i - startNormal);
                   startNormal = i + 1;
                   out.write("&#");
                   out.write(Integer.toString(num));
                   out.write(";");
+                  //Skip the next character as it was part of the surrogate pair.
+                  if(Character.isSurrogate(c)){
+                     i++;
+                     startNormal++;
+                  }
                   break;
                }
                //else do nothing...this char becomes part of the normal run
