@@ -24,14 +24,12 @@
 package com.percussion.share.dao;
 
 import com.percussion.error.PSExceptionUtils;
-import com.percussion.utils.xml.PSXmlUtils;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONException;
 import net.sf.json.JSONNull;
 import net.sf.json.JSONObject;
 import net.sf.json.JSONSerializer;
 import org.apache.commons.beanutils.BeanUtils;
-import org.apache.commons.text.StringEscapeUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.codehaus.jettison.mapped.MappedNamespaceConvention;
@@ -107,17 +105,10 @@ public class PSSerializerUtils
     @SuppressWarnings("unchecked")
    public static <T> T unmarshal(String dataField, Class<T> type)
     {
-
-        String xmlString = "";
-        //Handle scenario where xml was escaped / html encoded prior to calling.
-        if(PSXmlUtils.isStringXMLEscaped(dataField)){
-            xmlString = StringEscapeUtils.unescapeXml(dataField);
-        }
-
         T object;
         try {
             Reader reader = new InputStreamReader(
-                    new ByteArrayInputStream(xmlString.getBytes(StandardCharsets.UTF_8)));
+                    new ByteArrayInputStream(dataField.getBytes(StandardCharsets.UTF_8)));
          object = (T) Objects.requireNonNull(PSJaxbContext.createUnmarshaller(type)).unmarshal(reader);
          return object;
       }
@@ -125,7 +116,7 @@ public class PSSerializerUtils
       {
          log.error("Unable to load XML file.  Check for syntax problems. Error: {}, Data: {}" ,
                  PSExceptionUtils.getMessageForLog(e),
-                 xmlString);
+                 dataField);
          return null;
       }
         
