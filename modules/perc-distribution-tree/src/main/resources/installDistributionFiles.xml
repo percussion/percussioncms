@@ -461,7 +461,7 @@
         </PSCopy>
 
         <PSCopy todir="${install.config}/Server/ContentEditors">
-            <fileset dir="${ffconfigdir}/ContentEditors" />
+            <fileset dir="${ffconfigdir}/Server/ContentEditors" />
         </PSCopy>
 
         <PSCopy todir="${install.config}/Server/requestHandlers" replaceType="never">

@@ -348,7 +348,7 @@
          <fileset dir="${basedir}/config/ContentEditors" includes="ContentEditorSystemDef.xml" />
       </copy>
       <copy todir="${rxdeploydir}/rxconfig/Server/ContentEditors/Shared">
-         <fileset dir="${basedir}/FastForward/Core/Config/ContentEditors/Shared" includes="*.xml" />
+         <fileset dir="${basedir}/FastForward/Core/Config/Server/ContentEditors/Shared" includes="*.xml" />
       </copy>
       <mkdir dir="${rxdeploydir}/rxconfig/Workflow" />
       <copy todir="${rxdeploydir}/rxconfig/Workflow">
