@@ -1,6 +1,5 @@
 <?xml version="1.0"?>
-<project name="Percussion Install"
-         default="install">
+<project name="Percussion Install" default="install">
 
     <tstamp>
         <format property="timestamp" pattern="yyyy-MM-dd_HH-mm-ss"/>
@@ -325,18 +324,15 @@
             </then>
         </if>
 
-
-
-
         <if>
             <not>
-                <available file="${install.dir}/rxconfig/ContentEditors" type="dir" />
+                <available file="${install.dir}/rxconfig/Server/ContentEditors" type="dir" />
             </not>
             <then>
-                <mkdir dir="${install.dir}/rxconfig/ContentEditors" />
-                <copy todir="${install.dir}/rxconfig/ContentEditors/"
+                <mkdir dir="${install.dir}/rxconfig/Server/ContentEditors" />
+                <copy todir="${install.dir}/rxconfig/Server/ContentEditors/"
                       failonerror="false" overwrite="false" verbose="true">
-                    <fileset dir="${install.src}/rxconfig/ContentEditors/" defaultexcludes="no">
+                    <fileset dir="${install.src}/rxconfig/Server/ContentEditors/" defaultexcludes="no">
                         <include name="**/*"/>
                     </fileset>
                 </copy>
@@ -621,6 +617,7 @@
     <target name="upgrade.chain">
         <echo>Performing upgrade installation...</echo>
         <antcall target="backup" inheritall="true" inheritrefs="true"/>
+        <antcall target="backupSharedContent" inheritall="true" inheritrefs="true"/>
         <antcall target="deleteOldLog4jJars"  inheritall="true" inheritrefs="true"/>
         <antcall target="upgrade_server" inheritall="true" inheritrefs="true"/>
         <antcall target="setupDB" inheritall="true" inheritrefs="true"/>
@@ -636,6 +633,7 @@
         <antcall target="deleteOldJqueryUIJsFile"  inheritall="true" inheritrefs="true"/>
         <antcall target="deleteOldJqueryJsFile"  inheritall="true" inheritrefs="true"/>
         <antcall target="deleteOldEXEFiles"  inheritall="true" inheritrefs="true"/>
+        <antcall target="deleteOldBouncyCastleJars"  inheritall="true" inheritrefs="true"/>
         <antcall target="backupTinymceRxresources"  inheritall="true" inheritrefs="true"/>
     </target>
 
@@ -656,6 +654,46 @@
             </fileset>
         </delete>
 
+    </target>
+
+    <target name="backupSharedContent">
+        <if>
+            <not>
+                <available file="${install.dir}/rxconfig/Server/ContentEditors/shared/percussioncms_shared_custom.xml" type="file" />
+            </not>
+            <then>
+                <echo>Backup rxs_ct_shared.xml...</echo>
+                <copy file="${install.dir}/rxconfig/Server/ContentEditors/shared/rxs_ct_shared.xml" tofile="${install.dir}/rxconfig/Server/ContentEditors/shared/percussioncms_shared_custom.xml" />
+            </then>
+        </if>
+        <echo>Deleting wrong dir from previous install...</echo>
+        <delete dir="${install.dir}/rxconfig/ContentEditors" includeemptydirs="true" verbose="true" />
+        <echo>Deleting wrongcase(shared/Shared) dir incase not Windows...</echo>
+        <if>
+            <not>
+                <os family="windows" />
+            </not>
+            <then>
+                <delete dir="${install.dir}/rxconfig/Server/ContentEditors/Shared" includeemptydirs="true" verbose="true" />
+            </then>
+        </if>
+
+    </target>
+
+    <target name="deleteOldBouncyCastleJars">
+        <echo>Deleting BouncyCastle Jars...</echo>
+        <delete failonerror="false" >
+            <fileset dir="${install.dir}/JRE/lib/ext" includes="**/bcprov-*.jar"/>
+            <fileset dir="${install.dir}/JRE/lib/ext" includes="**/bctls-*.jar"/>
+            <fileset dir="${install.dir}/JRE/lib/ext" includes="**/bcpkix-*.jar"/>
+            <fileset dir="${install.dir}/JRE/lib/ext" includes="**/bcmail-*.jar"/>
+            <fileset dir="${install.dir}/JRE/lib/ext" includes="**/bcpg-*.jar"/>
+            <fileset dir="${install.dir}/JRE64/lib/ext" includes="**/bcprov-*.jar"/>
+            <fileset dir="${install.dir}/JRE64/lib/ext" includes="**/bctls-*.jar"/>
+            <fileset dir="${install.dir}/JRE64/lib/ext" includes="**/bcpkix-*.jar"/>
+            <fileset dir="${install.dir}/JRE64/lib/ext" includes="**/bcmail-*.jar"/>
+            <fileset dir="${install.dir}/JRE64/lib/ext" includes="**/bcpg-*.jar"/>
+        </delete>
     </target>
 
     <target name="deleteOldJqueryUIJsFile">
