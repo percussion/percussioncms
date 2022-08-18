@@ -295,7 +295,7 @@
                 </exclusion>
                 <exclusion>
                     <groupId>org.bouncycastle</groupId>
-                    <artifactId>gcpg-jdk15on</artifactId>
+                    <artifactId>bcpg-jdk15on</artifactId>
                 </exclusion>
             </exclusions>
             <scope>test</scope>
