@@ -134,6 +134,7 @@
         <li role="menuitem" class="perc-actions-menu-item" data-navmgr="VIEW_EDITOR"><i18n:message key="perc.ui.navMenu.webmgt@Editor"/></li>
         <% if (isAdmin || isDesigner || isNavAdmin) { %>
         <li role="menuitem" class="perc-actions-menu-item" data-navmgr="VIEW_SITE_ARCH"><i18n:message key="perc.ui.navMenu.architecture@Architecture"/></li>
+        <% } %><% if (isAdmin || isDesigner) { %>
         <li role="menuitem" class="perc-actions-menu-item" data-navmgr="VIEW_DESIGN"><i18n:message key="perc.ui.navMenu.design@Design"/></li>
         <li role="menuitem" class="perc-actions-menu-item" data-navmgr="VIEW_PUBLISH"><i18n:message key="perc.ui.navMenu.publish@Publish"/></li>
         <% } %><% if (isAdmin || isUserAdmin) { %>
