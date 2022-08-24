@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PSXArchiveInfo archiveRef="perc.widget.imageSlider" category="USER" created="1487968482311" editable="true" serverName="mreidy:9992" userName="Admin">
-   <PSXFormatVersion buildId="58" buildNumber="20161201" displayVersion="5.4.5" interfaceVersion="9" majorVersion="5" microVersion="4" minorVersion="5" optionalId="" versionString="INTERNAL"/>
+   <PSXFormatVersion buildId="58" buildNumber="20161201" displayVersion="5.4.6" interfaceVersion="9" majorVersion="5" microVersion="4" minorVersion="6" optionalId="" versionString="INTERNAL"/>
    <PSXDbmsInfo>
       <datasource>RhythmyxData</datasource>
       <driver>derby</driver>
