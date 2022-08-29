@@ -33,9 +33,9 @@ import com.percussion.services.assembly.IPSAssemblyTemplate;
 import com.percussion.services.assembly.impl.plugin.PSVelocityAssembler;
 import com.percussion.share.spring.PSSpringWebApplicationContextUtils;
 import com.percussion.utils.jexl.PSJexlEvaluator;
-import org.springframework.util.StopWatch;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.util.StopWatch;
 
 import java.io.File;
 
@@ -81,8 +81,7 @@ public class PSPageAssembler extends PSVelocityAssembler
     {
         return getPageAssemblyContextFactory().createContext(assemblyItem, templateAndPage, true);
     }
-    
-    @SuppressWarnings("unchecked")
+
     @Override
     protected IPSAssemblyResult doAssembleSingle(IPSAssemblyItem assemblyItem) throws Exception
     {
@@ -105,7 +104,7 @@ public class PSPageAssembler extends PSVelocityAssembler
         IPSAssemblyResult result = super.doAssembleSingle(assemblyItem);
         sw.stop();
         
-        log.debug(sw.prettyPrint());
+        log.debug("{}",sw.prettyPrint());
         
         return result;
     }

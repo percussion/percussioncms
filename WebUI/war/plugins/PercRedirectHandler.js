@@ -224,7 +224,7 @@
             width: 700
         };
 
-        percDialogObject.percButtons["Yes"] = {
+        percDialogObject.percButtons.Yes = {
                     click: function()   {
                         if(!toPath){
                             toPath = dialog.find("#perc-redirect-to-path").val();
@@ -250,7 +250,7 @@
                     id: "perc-redirect-yes"
                 };
 
-        percDialogObject.percButtons["No"] = {
+        percDialogObject.percButtons.No = {
                     click: function()   {
                         dialog.remove();
                         deferred.resolve(I18N.message("perc.ui.redirect.handler@User doesn't want to create redirect"));

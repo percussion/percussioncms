@@ -28,7 +28,6 @@ import com.percussion.design.objectstore.PSField;
 import com.percussion.util.PSMapPair;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
-import org.apache.commons.lang.StringEscapeUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -316,8 +315,8 @@ public class PSDisplayFieldElementBuilder
          throw new IllegalArgumentException("invalid controlEl");
       
       Element dataNode = doc.createElement(DATA_NAME);
-
-      dataNode.setTextContent(StringEscapeUtils.escapeXml(value));
+     //normalize unicode
+      dataNode.setTextContent(value);
       controlEl.appendChild(dataNode);
 
       return controlEl;

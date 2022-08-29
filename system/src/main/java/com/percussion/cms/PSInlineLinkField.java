@@ -416,7 +416,7 @@ public class PSInlineLinkField
          throw new IllegalArgumentException("relationshipMap may not be null");
 
       String inlineSlot = elem.getAttribute(RX_INLINESLOT);
-      if (inlineSlot != null && inlineSlot.trim().length() > 0)
+      if (inlineSlot.trim().length() > 0)
       {
          modifyRelationships(elem, relationshipMap, modified);
       }
@@ -669,7 +669,7 @@ public class PSInlineLinkField
    {
       String relationshipid =
               elem.getAttribute(IPSHtmlParameters.SYS_RELATIONSHIPID);
-      if (relationshipid == null || relationshipid.trim().length() == 0)
+      if (relationshipid.trim().length() == 0)
          return;
 
       PSRelationship relationship = (PSRelationship) relationshipMap.get(
@@ -701,7 +701,7 @@ public class PSInlineLinkField
       else // need to remove SYS_SITEID attribute if there was one
       {
          siteId = elem.getAttribute(IPSHtmlParameters.SYS_SITEID);
-         if (siteId != null && siteId.trim().length() > 0)
+         if (siteId.trim().length() > 0)
             elem.removeAttribute(IPSHtmlParameters.SYS_SITEID);
       }
 
@@ -714,7 +714,7 @@ public class PSInlineLinkField
       else // need to remove SYS_FOLDERID attribute if there was one
       {
          folderId = elem.getAttribute(IPSHtmlParameters.SYS_FOLDERID);
-         if (folderId != null && folderId.trim().length() > 0)
+         if (folderId.trim().length() > 0)
             elem.removeAttribute(IPSHtmlParameters.SYS_FOLDERID);
       }
 
@@ -795,8 +795,7 @@ public class PSInlineLinkField
          boolean processed = false;
          String inlineSlot = elem.getAttribute(RX_INLINESLOT);
          String inlineType = elem.getAttribute(RX_INLINETYPE);
-         if (inlineSlot != null && inlineSlot.trim().length() > 0 &&
-                 inlineType != null && inlineType.trim().length() > 0)
+         if (inlineSlot.trim().length() > 0 && inlineType.trim().length() > 0)
          {
             processInlineLink(elem, request, cleanup, deletes, modifies);
             processed = !inlineType.equals(RX_INLINETYPE_HYPERLINK);
@@ -933,14 +932,14 @@ public class PSInlineLinkField
       String reltype = getRelationshipType(slotid);
 
       String dependentid = elem.getAttribute(IPSHtmlParameters.SYS_DEPENDENTID);
-      if (dependentid == null || dependentid.trim().length() == 0)
+      if (dependentid.trim().length() == 0)
          throw new RuntimeException(
                  "Missing required inline link parameter: " +
                          IPSHtmlParameters.SYS_DEPENDENTID);
 
       String variant = elem.getAttribute(
               IPSHtmlParameters.SYS_DEPENDENTVARIANTID);
-      if (variant == null || variant.trim().length() == 0)
+      if (variant.trim().length() == 0)
          throw new RuntimeException(
                  "Missing required inline link parameter: " +
                          IPSHtmlParameters.SYS_DEPENDENTVARIANTID);
@@ -1126,12 +1125,7 @@ public class PSInlineLinkField
          return false;
 
 
-      if (doesDependentExist(elem, request))
-      {
-         return false;
-      }
-
-      return true;
+      return !doesDependentExist(elem, request);
    }
 
 

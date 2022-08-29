@@ -1089,24 +1089,15 @@ var assetPagination = null;
                         if(status === $.PercServiceUtils.STATUS_SUCCESS)
                         {
                             var type = null;
-                            if (itemType === "percPage")
+
+                            if (itemType === "percPage") {
                                 type = "page";
-                            else if (itemType === "Folder" && targetPath.indexOf("/Sites")===0)
+                            }
+                            else if (itemType === "Folder" && targetPath.indexOf("/Sites")===0) {
                                 type = "folder";
-                            if(type){
-                                $.PercRedirectHandler.createRedirect(itemPath, targetPath + ui.draggable.data('spec').name, type)
-                                    .fail(function(errMsg){
-                                        $.perc_utils.alert_dialog({title: I18N.message("perc.ui.contributor.ui.adaptor@Redirect creation error"), content: errMsg, okCallBack: function(){
-                                                refresh();
-                                            }});
-                                    })
-                                    .done(function(){
-                                        refresh();
-                                    });
                             }
-                            else{
-                                refresh();
-                            }
+
+                            refresh();
                         }
                         else
                         {

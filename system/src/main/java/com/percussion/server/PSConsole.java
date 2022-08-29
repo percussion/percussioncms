@@ -259,6 +259,8 @@ public class PSConsole /* extends Thread */
 
       String errorMessage = t.getLocalizedMessage();
       if (errorMessage == null || errorMessage.trim().length() == 0)
+         errorMessage = t.getMessage();
+      if (errorMessage == null || errorMessage.trim().length() == 0)
          errorMessage = t.getClass().getName();
 
       Object[] args = { errorMessage };

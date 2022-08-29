@@ -575,7 +575,7 @@ public class PSPaginateUtils extends PSJexlUtilBase
        * <code>amp</code> and <code>lt</code> are processed.
        * 
        * @param value Anything ok.
-       * @return The orginal string, with reserved chars replaced by their
+       * @return The original string, with reserved chars replaced by their
        *         entity.
        */
       private String xmlEscapeText(String value)

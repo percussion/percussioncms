@@ -23,11 +23,12 @@
  */
 package com.percussion.utils;
 
+import org.apache.commons.text.StringEscapeUtils;
+
 import java.io.IOException;
 import java.io.PushbackReader;
 import java.io.Reader;
 import java.nio.CharBuffer;
-import org.apache.commons.lang.StringEscapeUtils;
 
 /**
  * Implementation from article on jenkov.com
@@ -129,7 +130,7 @@ public class PSTokenReplacingReader extends Reader
         if (!isXmlEncode) {
             this.tokenValue = this.tokenResolver.resolveToken(this.tokenNameBuffer.toString());
         } else {
-            this.tokenValue = StringEscapeUtils.escapeXml(this.tokenResolver.resolveToken(this.tokenNameBuffer.toString()));
+            this.tokenValue = StringEscapeUtils.escapeXml10(this.tokenResolver.resolveToken(this.tokenNameBuffer.toString()));
         }
 
         if (this.tokenValue == null)

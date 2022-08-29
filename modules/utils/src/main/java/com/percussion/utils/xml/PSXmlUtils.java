@@ -233,6 +233,17 @@ public class PSXmlUtils
             }
          }
       }
-   }   
+   }
+
+   /**
+    * Check if the string is XML escaped.
+    *
+    * @param data A string containing XML that may or may not be escaped.
+    * @return true if the string is escaped, false if it is not.
+    */
+   public static boolean isStringXMLEscaped(String data){
+      //if either of these character is present it is not escaped.
+      return !(data.contains("<") || data.contains(">"));
+   }
 }
 

@@ -35,9 +35,9 @@ import com.percussion.delivery.comments.data.PSPageSummary;
 import com.percussion.delivery.comments.service.rdbms.PSComment;
 import com.percussion.delivery.listeners.IPSServiceDataChangeListener;
 import com.percussion.error.PSExceptionUtils;
-import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
+import org.apache.commons.text.StringEscapeUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -116,9 +116,9 @@ public class PSCommentsService implements IPSCommentsService
         log.info("Adding a new comment");
 
         
-        comment.setTitle(StringEscapeUtils.escapeHtml(comment.getTitle()));
-        comment.setText(StringEscapeUtils.escapeHtml(comment.getText()));
-        comment.setUsername((StringEscapeUtils.escapeHtml(comment.getUsername())));
+        comment.setTitle(StringEscapeUtils.escapeHtml4(comment.getTitle()));
+        comment.setText(StringEscapeUtils.escapeHtml4(comment.getText()));
+        comment.setUsername((StringEscapeUtils.escapeHtml4(comment.getUsername())));
 
         APPROVAL_STATE modState = getDefaultModerationState(comment.getSite());
         if (modState == APPROVAL_STATE.APPROVED)

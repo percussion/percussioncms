@@ -55,7 +55,7 @@ import com.percussion.util.PSSiteManageBean;
 import com.percussion.utils.request.PSRequestInfo;
 import com.percussion.utils.types.PSPair;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.text.StringEscapeUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jsoup.nodes.Attribute;
@@ -479,7 +479,7 @@ public class PSPageExtractorHelper extends PSGenericMetadataExtractorHelper {
 			commentOutManagedJSReferences(doc.body(), context.getLogger());
 
 			pageContent.setBodyContent(doc.body().html());
-			return StringEscapeUtils.unescapeHtml(doc.body().html());
+			return StringEscapeUtils.unescapeHtml4(doc.body().html());
 		} catch (RuntimeException e) {
 			context.getLogger().appendLogMessage(PSLogEntryType.ERROR,
 					LOG_CATEGORY,

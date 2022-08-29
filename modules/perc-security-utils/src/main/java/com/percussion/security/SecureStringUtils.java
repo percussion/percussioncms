@@ -565,6 +565,9 @@ public class SecureStringUtils {
     }
 
     public static String sanitizeStringForSQLStatement(String str){
+        if(str == null || StringUtils.isEmpty(str))
+            return "";
+
         return str.replace("'", "\'");
     }
     /**

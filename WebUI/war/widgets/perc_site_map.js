@@ -1401,16 +1401,7 @@
                     self.fireOnChange(); // refresh finder in case folder name changed
                     $.unblockUI();
 
-                    if (data.SiteSection.sectionType === $.Perc_SectionServiceClient.PERC_SECTION_TYPE.SECTION) {
-                        $.PercRedirectHandler.createRedirect(oldSecData.folderPath, data.SiteSection.folderPath, "section").fail(function(errMsg){
-                            $.unblockUI();
-                            $.perc_utils.alert_dialog({
-                                title: I18N.message("perc.ui.contributor.ui.adaptor@Redirect creation error"),
-                                content: errMsg,
-                                okCallBack: $.noop
-                            });
-                        }).done($.noop);
-                    }
+                    $.noop();
                 }
                 else
                 {
@@ -1700,16 +1691,7 @@
                         var targetData = JSON.parse($target.attr("data"));
                         var newPath = targetData.folderPath + oldPath.substring(oldPath.lastIndexOf("/"));
 
-                        $.PercRedirectHandler.createRedirect(oldPath, newPath, sectionType)
-                            .fail(function(errMsg){
-                                $.unblockUI();
-                                $.perc_utils.alert_dialog({title: I18N.message("perc.ui.contributor.ui.adaptor@Redirect creation error"), content: errMsg, okCallBack: function(){
-                                        handleMoveRefresh();
-                                    }});
-                            })
-                            .done(function(){
-                                handleMoveRefresh();
-                            });
+                        handleMoveRefresh();
 
                     }
                     else
@@ -1818,15 +1800,7 @@
                         self.fireOnChange();  // refresh finder
                         $.unblockUI();
                     });
-                    if(createRedirect){
-                        $.PercRedirectHandler.createRedirect(metadata.folderPath, "", sectionType)
-                            .fail(function(errMsg){
-                                $.perc_utils.alert_dialog({title: I18N.message("perc.ui.contributor.ui.adaptor@Redirect creation error"), content: errMsg, okCallBack: function(){
-                                    }});
-                            })
-                            .done(function(){
-                            });
-                    }
+
                     return;
                 }
                 var levelIdx =   parseInt($section.metadata({type: 'attr', name: 'data'}).level);

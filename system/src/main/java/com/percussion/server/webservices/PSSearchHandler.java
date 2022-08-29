@@ -398,9 +398,11 @@ public class PSSearchHandler extends PSWebServicesBaseHandler implements IPSSear
          intSearchFields.add(0, titleField);
 
       int searchType = SEARCH_TYPE_WS;
+      boolean contentExplorerRequest = false;
       String cxSearch = request.getParameter("cxSearch");
       if (cxSearch != null)
       {
+         contentExplorerRequest =  true;
          if (cxSearch.equals("cxRCSearch"))
             searchType = SEARCH_TYPE_RC;
          else
@@ -456,8 +458,13 @@ public class PSSearchHandler extends PSWebServicesBaseHandler implements IPSSear
                request, request.getUserSession().getUserCurrentCommunity());
             if (!StringUtils.isBlank(communityId))
             {
-               long[] contentTypeIds = mgr.getAllContentTypeIds(
-                  Integer.parseInt(communityId));
+               long[] contentTypeIds = new long[]{};
+               if(contentExplorerRequest){
+                  contentTypeIds = mgr.getContentTypeIdsForContentExplorer(Integer.parseInt(communityId));
+               } else{
+                  contentTypeIds = mgr.getAllContentTypeIds(
+                          Integer.parseInt(communityId));
+               }
 
                StringBuilder ct = new StringBuilder();
                for (long contentTypeId : contentTypeIds)
@@ -514,8 +521,12 @@ public class PSSearchHandler extends PSWebServicesBaseHandler implements IPSSear
       Element root = parent.getDocumentElement();
 
       // get the complete list of content types first
-      long[] allTypes = mgr.getAllContentTypeIds(
-         PSItemDefManager.COMMUNITY_ANY);
+      long[] allTypes = new long[]{};
+      if(contentExplorerRequest){
+         allTypes = mgr.getContentTypeIdsForContentExplorer(PSItemDefManager.COMMUNITY_ANY);
+      } else{
+         allTypes = mgr.getAllContentTypeIds(PSItemDefManager.COMMUNITY_ANY);
+      }
       boolean hasContentTypeId = false;
 
       // if a full text query only, search for all content types.

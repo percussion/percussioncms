@@ -1248,9 +1248,6 @@ public class PSAssemblyService implements IPSAssemblyService
             config.addOption(PSContentMgrOption.LOAD_MINIMAL);
             config.setBodyAccess(new PSInlineLinkProcessor(work.getFilter(), work));
             config.setNamespaceCleanup(new PSNamespaceCleanup(stid));
-            //TODO: Isn't the div cleanup needed?
-            // Fix for CMS-3796 <div class="rxbodyfield"> being removed.
-            //config.setDivTagCleanup(new PSDivTagCleanup());
             items = contentmgr.findItemsByGUID(guids, config);
          }
          catch (PSFilterException | PSNotFoundException e)

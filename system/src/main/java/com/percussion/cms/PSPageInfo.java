@@ -27,6 +27,7 @@ package com.percussion.cms;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This class is used to group information about an item editor which is
@@ -198,7 +199,7 @@ public class PSPageInfo
     * @return An iterator over the dataset names, never <code>null</code>,
     *    may be empty.
     */
-   public Iterator getDatasetList()
+   public Iterator<String> getDatasetList()
    {
       return m_handlers.iterator();
    }
@@ -208,7 +209,7 @@ public class PSPageInfo
     * of the child page ids referenced by the editor associated with this
     * object in document order (from top to bottom).
     *
-    * @returns An iterator over the ids. Never <code>null</code>, may be empty.
+    * @return An iterator over the ids. Never <code>null</code>, may be empty.
     */
    public Iterator getPageIdList()
    {
@@ -237,12 +238,12 @@ public class PSPageInfo
     * A list of dataset names used to gather data for the request.
     * Never <code>null</code>, may be empty.
     */
-   private List m_handlers = new ArrayList();
+   private List<String> m_handlers = new ArrayList<>();
 
    /**
     * A list of Map.Entry objects whose key is a page id (as an Integer) and
     * whose value is a PSPageInfo object. Never <code>null</code>, may be
-    * emtpy.
+    * empty.
     */
-   private List m_pageMap = new ArrayList();
+   private List<Map.Entry<Integer,PSPageInfo>> m_pageMap = new ArrayList<>();
 }
