@@ -378,20 +378,7 @@
                     // Save was successful close the dialog and invoke callback with no arguments
                     var newName = $("#perc-folder-name").val().trim();
                     dialog.remove();
-                    if(folderSysPathName.match("^/Sites/") || folderSysPathName.match("^//Sites/")){
-                        $.PercRedirectHandler.createRedirect(folderSysPathName,folderSysPath + "/" + newName,"folder")
-                            .fail(function(errMsg){
-                                $.perc_utils.alert_dialog({title: I18N.message("perc.ui.folder.properties.dialog@Redirect Creation"), content: errMsg, okCallBack: function(){
-                                        callback(newName);
-                                    }});
-                            })
-                            .done(function(){
-                                callback(newName);
-                            });
-                    }
-                    else{
-                        callback(newName);
-                    }
+                    callback(newName);
                 }
                 else
                 {

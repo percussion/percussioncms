@@ -279,15 +279,8 @@
                                     var oldPath = result.PathItem.folderPaths + "/" + pageSysName;
                                     var toPath = "/" + newPath;
                                     $.unblockUI();
-                                    $.PercRedirectHandler.createRedirect(oldPath, toPath, "page")
-                                        .fail(function(errMsg){
-                                            $.perc_utils.alert_dialog({title: I18N.message("perc.ui.page.edit.dialog@Redirect Creation Error"), content: errMsg, okCallBack: function(){
-                                                    window.location.href = currentUrl;
-                                                }});
-                                        })
-                                        .done(function(){
-                                            window.location.href = currentUrl;
-                                        });
+                                    window.location.href = currentUrl;
+
                                 }
                                 else
                                 {

@@ -53,16 +53,16 @@
         });
         var createPath = null;
         var passIn = null;
-        var addToRecent = myObj['addToRecent']?true:false;
-        if (myObj['landingpage']) {
+        var addToRecent = myObj.addToRecent ?true:false;
+        if (myObj.landingpage) {
             createPath = $.perc_paths.SECTION_CREATE;
             pass_in = {
                 'CreateSiteSection': {
-                    'pageName': myObj['page_name'],
-                    'pageTitle': myObj['page_title'],
-                    'templateId': myObj['template'],
-                    'pageUrlIdentifier': myObj['page_name'],
-                    'pageLinkTitle': myObj['page_linktext'],
+                    'pageName': myObj.page_name,
+                    'pageTitle': myObj.page_title,
+                    'templateId': myObj.template,
+                    'pageUrlIdentifier': myObj.page_name,
+                    'pageLinkTitle': myObj.page_linktext,
                     'folderPath': folderPath,
                     'addToRecent':true
                 }
@@ -72,10 +72,10 @@
             createPath = $.perc_paths.PAGE_CREATE;
             pass_in = {
                 'Page': {
-                    'name': myObj['page_name'],
-                    'title': myObj['page_title'],
-                    'templateId': myObj['template'],
-                    'linkTitle': myObj['page_linktext'],
+                    'name': myObj.page_name,
+                    'title': myObj.page_title,
+                    'templateId': myObj.template,
+                    'linkTitle': myObj.page_linktext,
                     'folderPath': folderPath,
                     'addToRecent':true
                 }
