@@ -30,6 +30,7 @@ import com.percussion.redirect.data.PSRedirectStatus;
 import com.percussion.redirect.data.PSRedirectValidationData;
 import com.percussion.redirect.data.PSRedirectValidationResponse;
 
+@Deprecated
 public interface IPSRedirectService
 {
 	public static String REDIRECT_TYPE_DEFAULT = "CM1";

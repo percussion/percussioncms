@@ -61,6 +61,7 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
 
 @Service("pSRedirectService")
+@Deprecated
 public class PSRedirectService implements IPSRedirectService
 {
     private static final Logger log = LogManager.getLogger(PSRedirectService.class);
