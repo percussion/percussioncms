@@ -154,6 +154,20 @@
               default_value="480"
               datatype="number">
     </UserPref>
+    <UserPref name="perc_slide_targetblank"
+              display_name="Link Target"
+              default_value="_blank"
+              datatype="enum">
+        <EnumValue value="_blank" display_value="Blank" />
+        <EnumValue value="_self" display_value="Self" />
+        <EnumValue value="_parent" display_value="Parent" />
+        <EnumValue value="_top" display_value="Top" />
+    </UserPref>
+    <UserPref name="perc_slide_image_link"
+              display_name="Images are links"
+              default_value="true"
+              datatype="bool">
+    </UserPref>
     <CssPref name="rootclass"
              display_name="CSS root class"
              datatype="string" />
@@ -211,6 +225,9 @@
        $perc_thumbnail_height = $widgetProps.get("perc_thumbnail_height");
        $perc_slide_caption_tag_type = $widgetProps.get("perc_slide_caption_tag_type");
        $perc_slide_caption_2_tag_type = $widgetProps.get("perc_slide_caption_2_tag_type");
+	   $perc_slide_caption_alignment = $widgetProps.get("perc_slide_caption_alignment");
+	   $perc_slide_targetblank = $widgetProps.get("perc_slide_targetblank");
+	   $perc_slide_image_link = $widgetProps.get("perc_slide_image_link");
 
        ## sets the required default values if the navigation layout is selected ##
        if (  $perc_slide_layout == 'navigation') {
@@ -554,7 +571,7 @@
                 #if( $perc_slide_caption_location == "above" && $image.hasCaptions == "Y" )##
                 <div class="perc-slide-caption-container">
                   #if( $image.clickableLink != "" )##
-                  <a href="$image.clickableLink" target="_blank" rel = "noopener noreferrer">
+					<a href="$image.clickableLink" target="$perc_slide_targetblank" rel="noopener noreferrer">
                   #end##
                   <$perc_slide_caption_tag_type class="perc-slide-image-caption perc-slide-caption-horizontal-${perc_slide_caption_alignment} $captionclass">${image.imageCaption}</$perc_slide_caption_tag_type>
                   #if( $image.clickableLink != "" )##
@@ -563,9 +580,31 @@
                   <$perc_slide_caption_2_tag_type class="perc-slide-image-caption-2 perc-slide-caption-horizontal-${perc_slide_caption_alignment} $captionclass">${image.imageCaption2}</$perc_slide_caption_2_tag_type>
                 </div>
                 #end##
-                #if( $image.clickableLink != "" )##
-                <a href="$image.clickableLink" target="_blank" rel = "noopener noreferrer">
-                #end##
+
+				#if( $perc_slide_image_link == "false" )##
+
+                  <div class="perc-slide-image-container" style="background-image: url('${image.percImagePath}')" role="img" aria-label="$image.altText">
+				  #if( $image.clickableLink != "" )##
+				    <a href="$image.clickableLink" target="$perc_slide_targetblank" rel="noopener noreferrer">
+				  #end##
+                  #if( $perc_slide_caption_location == "over" && $image.hasCaptions == "Y" )##
+                  <div class="perc-slide-caption-overlay-container perc-slide-caption-overlay-container-vertical-${perc_slide_caption_vertical_alignment}">
+                  <$perc_slide_caption_tag_type class="perc-slide-image-caption perc-slide-caption-horizontal-${perc_slide_caption_alignment} perc-slide-caption-vertical-${perc_slide_caption_vertical_alignment} $captionclass">${image.imageCaption}</$perc_slide_caption_tag_type>
+                  #if( $image.hasCaption1 == "Y" && $image.hasCaption2 == "Y")##
+                  <span class="image-caption-overlay-divider"></span>
+                  #end##
+                  <$perc_slide_caption_2_tag_type class="perc-slide-image-caption-2 perc-slide-caption-horizontal-${perc_slide_caption_alignment} perc-slide-caption-vertical-${perc_slide_caption_vertical_alignment} $captionclass">${image.imageCaption2}</$perc_slide_caption_2_tag_type>
+                  </div>
+                  #end##
+				  </div>
+				  #if( $image.clickableLink != "" )##
+				  </a>
+                  #end
+				#else
+
+                  #if( $image.clickableLink != "" )##
+					<a href="$image.clickableLink" target="$perc_slide_targetblank" rel="noopener noreferrer">
+                  #end##
                   <div class="perc-slide-image-container" style="background-image: url('${image.percImagePath}')" role="img" aria-label="$image.altText">
                   #if( $perc_slide_caption_location == "over" && $image.hasCaptions == "Y" )##
                   <div class="perc-slide-caption-overlay-container perc-slide-caption-overlay-container-vertical-${perc_slide_caption_vertical_alignment}">
@@ -576,14 +615,18 @@
                   <$perc_slide_caption_2_tag_type class="perc-slide-image-caption-2 perc-slide-caption-horizontal-${perc_slide_caption_alignment} perc-slide-caption-vertical-${perc_slide_caption_vertical_alignment} $captionclass">${image.imageCaption2}</$perc_slide_caption_2_tag_type>
                   </div>
                   #end##
-                </div>
-                #if( $image.clickableLink != "" )##
-                </a>
-                #end
+                  </div>
+                  #if( $image.clickableLink != "" )##
+                  </a>
+                  #end
+				#end
+
+
+
                 #if( $perc_slide_caption_location == "below" && $image.hasCaptions == "Y" )##
                 <div class="perc-slide-caption-container">
                   #if( $image.clickableLink != "" )##
-                  <a href="$image.clickableLink" target="_blank" rel = "noopener noreferrer">
+				    <a href="$image.clickableLink" target="$perc_slide_targetblank" rel="noopener noreferrer">
                   #end##
                   <$perc_slide_caption_tag_type class="perc-slide-image-caption perc-slide-caption-horizontal-${perc_slide_caption_alignment} $captionclass">${image.imageCaption}</$perc_slide_caption_tag_type>
                   #if( $image.clickableLink != "" )##
