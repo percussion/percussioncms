@@ -133,33 +133,6 @@ public class TestAllHTML5Tags {
         }
     }
 
-    @Test
-    public void testCommentsTag(){
-
-        Elements tags = parsedDoc.select("!--");
-        assertTrue(tags.size()>0);
-        for (Element tag:tags) {
-            Attributes attrs = tag.attributes();
-            assertTrue(attrs.size()==86);
-            verifyAttributes(attrs,eventAttribute);
-        }
-
-    }
-
-    @Test
-    public void testDOCTYPETag(){
-
-        Elements tags = parsedDoc.select("!DOCTYPE");
-        assertTrue(tags.size()>0);
-        for (Element tag:tags) {
-            Attributes attrs = tag.attributes();
-            assertTrue(attrs.size()==86);
-
-        }
-
-    }
-
-    @Test
     public void testAbbrTag(){
 
         Elements tags = parsedDoc.select("abbr");
@@ -631,8 +604,7 @@ public class TestAllHTML5Tags {
     public void testFrameTag(){
 
         Elements tags = parsedDoc.select("frame");
-        assertTrue(tags.size()>0);
-        //TODO: Test attributes of a tag
+        assertTrue(tags.size()==0);
 
     }
 
@@ -640,8 +612,7 @@ public class TestAllHTML5Tags {
     public void testFrameSetTag(){
 
         Elements tags = parsedDoc.select("frameset");
-        assertTrue(tags.size()>0);
-        //TODO: Test attributes of a tag
+        assertTrue(tags.size() == 0);
 
     }
 

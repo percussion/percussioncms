@@ -25,6 +25,7 @@
 import com.percussion.security.PSEncryptionException;
 import com.percussion.security.PSEncryptor;
 import com.percussion.security.SecureStringUtils;
+import org.apache.commons.text.StringEscapeUtils;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Rule;
@@ -222,6 +223,64 @@ public class TestSecureStringUtils {
         assertFalse(SecureStringUtils.isValidString("<script>alert(111);</script>"));
         assertTrue(SecureStringUtils.isValidString("somestring"));
         assertTrue(SecureStringUtils.isValidString("se-inicia-la-postulación-al-fondo-concursable-para-apoyar-tu-practica-en-el-extranjero"));
+    }
+
+    @Test
+    public void testUnescapeXML(){
+
+        String test = "&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;UTF-8&amp;quot; standalone=&amp;quot;yes&amp;quot;?&amp;gt;\n" +
+                "&amp;lt;RegionBranches&amp;gt;\n" +
+                "    &amp;lt;regionWidgetAssociations&amp;gt;\n" +
+                "        &amp;lt;regionWidget&amp;gt;\n" +
+                "            &amp;lt;id&amp;gt;content&amp;lt;/id&amp;gt;\n" +
+                "            &amp;lt;regionId&amp;gt;content&amp;lt;/regionId&amp;gt;\n" +
+                "            &amp;lt;widgetItems&amp;gt;\n" +
+                "                &amp;lt;widgetItem&amp;gt;\n" +
+                "                    &amp;lt;cssProperties/&amp;gt;\n" +
+                "                    &amp;lt;definitionId&amp;gt;percBlogPost&amp;lt;/definitionId&amp;gt;\n" +
+                "                    &amp;lt;id&amp;gt;830717652&amp;lt;/id&amp;gt;\n" +
+                "                    &amp;lt;properties/&amp;gt;\n" +
+                "                &amp;lt;/widgetItem&amp;gt;\n" +
+                "            &amp;lt;/widgetItems&amp;gt;\n" +
+                "        &amp;lt;/regionWidget&amp;gt;\n" +
+                "        &amp;lt;regionWidget&amp;gt;\n" +
+                "            &amp;lt;id&amp;gt;header&amp;lt;/id&amp;gt;\n" +
+                "            &amp;lt;regionId&amp;gt;header&amp;lt;/regionId&amp;gt;\n" +
+                "            &amp;lt;widgetItems&amp;gt;\n" +
+                "                &amp;lt;widgetItem&amp;gt;\n" +
+                "                    &amp;lt;cssProperties/&amp;gt;\n" +
+                "                    &amp;lt;definitionId&amp;gt;percTitle&amp;lt;/definitionId&amp;gt;\n" +
+                "                    &amp;lt;id&amp;gt;533037133&amp;lt;/id&amp;gt;\n" +
+                "                    &amp;lt;properties/&amp;gt;\n" +
+                "                &amp;lt;/widgetItem&amp;gt;\n" +
+                "            &amp;lt;/widgetItems&amp;gt;\n" +
+                "        &amp;lt;/regionWidget&amp;gt;\n" +
+                "    &amp;lt;/regionWidgetAssociations&amp;gt;\n" +
+                "    &amp;lt;regions&amp;gt;\n" +
+                "        &amp;lt;region&amp;gt;\n" +
+                "            &amp;lt;regionId&amp;gt;header&amp;lt;/regionId&amp;gt;\n" +
+                "            &amp;lt;attributes/&amp;gt;\n" +
+                "            &amp;lt;children&amp;gt;\n" +
+                "                &amp;lt;code&amp;gt;\n" +
+                "                    &amp;lt;templateCode&amp;gt;#region(&amp;quot;header&amp;quot;,&amp;quot;&amp;quot;,&amp;quot;&amp;quot;,&amp;quot;&amp;quot;,&amp;quot;&amp;quot;)&amp;lt;/templateCode&amp;gt;\n" +
+                "                &amp;lt;/code&amp;gt;\n" +
+                "            &amp;lt;/children&amp;gt;\n" +
+                "        &amp;lt;/region&amp;gt;\n" +
+                "        &amp;lt;region&amp;gt;\n" +
+                "            &amp;lt;regionId&amp;gt;content&amp;lt;/regionId&amp;gt;\n" +
+                "            &amp;lt;attributes/&amp;gt;\n" +
+                "            &amp;lt;children&amp;gt;\n" +
+                "                &amp;lt;code&amp;gt;\n" +
+                "                    &amp;lt;templateCode&amp;gt;#region(&amp;quot;content&amp;quot;,&amp;quot;&amp;quot;,&amp;quot;&amp;quot;,&amp;quot;&amp;quot;,&amp;quot;&amp;quot;)&amp;lt;/templateCode&amp;gt;\n" +
+                "                &amp;lt;/code&amp;gt;\n" +
+                "            &amp;lt;/children&amp;gt;\n" +
+                "        &amp;lt;/region&amp;gt;\n" +
+                "    &amp;lt;/regions&amp;gt;\n" +
+                "&amp;lt;/RegionBranches&amp;gt;\n";
+        String t2 = test.replaceAll("&amp;","&");
+        System.out.println(StringEscapeUtils.UNESCAPE_XML.translate(t2));
+        assertFalse(t2.contains("&amp;lt;"));
+
     }
 
 }

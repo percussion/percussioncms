@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2022 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -22,29 +22,24 @@
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
-.perc-tooltip .perc-tooltip-content {
-	font-size : 11px;
-	background : white;
-	padding : 5px 10px 5px 10px;
-	border : lightgrey 1px solid;
-	white-space : nowrap;
-	color : black;
-	cursor : text;
-}
+package com.percussion.utils.xml;
 
-.perc-tooltip.perc-tooltip-arrow-up .perc-tooltip-arrow-top {
-	height : 10px;
-	display : none;
-	text-align : center;
-	position : absolute;
-	top : -4px;
-}
+import org.apache.commons.text.StringEscapeUtils;
+import org.junit.Test;
 
-.perc-tooltip.perc-tooltip-arrow-down .perc-tooltip-arrow-bottom {
-	height : 10px;
-	display : block;
-	text-align : center;
-	position : absolute;
-	bottom : -9px;
-}
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
+/**
+ * Unit tests for the xml utils class
+ */
+public class TestXmlUtils {
+
+    @Test
+    public void testXMLEncoded(){
+
+        assertFalse(PSXmlUtils.isStringXMLEscaped("<?xml version='1.0'?><test>text</test>"));
+        assertTrue(PSXmlUtils.isStringXMLEscaped(StringEscapeUtils.escapeXml10("<?xml version='1.0'?><test>text</test>")));
+
+    }
+}

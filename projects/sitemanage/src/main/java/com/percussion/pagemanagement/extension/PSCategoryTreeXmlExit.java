@@ -78,14 +78,12 @@ public class PSCategoryTreeXmlExit implements IPSResultDocumentProcessor
             returnString =  returnString.replace("<topLevelNodes>", "");
             returnString =  returnString.replace("</topLevelNodes>", "");
         	doc = PSCategoryControlUtils.convertToOldFormatXml(DocumentHelper.parseText(returnString));
+        } catch (PSDataServiceException | DocumentException e) {
+                log.error("Failed to retrieve category xml: {}",PSExceptionUtils.getMessageForLog(e));
+                throw new PSExtensionProcessingException("Failed to retrieve category xml: ", e);
         }
-        catch (Exception e)
-        {
-            log.error("Failed to retrieve category xml: {}",PSExceptionUtils.getMessageForLog(e));
-            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
-            throw new PSExtensionProcessingException("Failed to retrieve category xml: ", e);
-        }
-        
+
+
         try
         {
             return domWriter.write(doc);
@@ -93,7 +91,6 @@ public class PSCategoryTreeXmlExit implements IPSResultDocumentProcessor
         catch (DocumentException e)
         {
             log.error("Failed to retrieve category xml: {}",PSExceptionUtils.getMessageForLog(e));
-            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new PSExtensionProcessingException("Failed to write category xml: ", e);
         }   
     }  

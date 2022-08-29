@@ -24,21 +24,10 @@
 
 package com.percussion.category.extension;
 
-import static com.percussion.share.spring.PSSpringWebApplicationContextUtils.getWebApplicationContext;
-
 import com.percussion.category.data.PSCategory;
 import com.percussion.category.data.PSCategoryNode;
 import com.percussion.category.service.IPSCategoryService;
-
-import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.share.service.exception.PSDataServiceException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -46,6 +35,16 @@ import org.dom4j.Attribute;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import static com.percussion.share.spring.PSSpringWebApplicationContextUtils.getWebApplicationContext;
 
 public class PSCategoryControlUtils {
 	
@@ -85,9 +84,11 @@ public class PSCategoryControlUtils {
 			
 			jaxbMarshaller.marshal(category, writer);
 		} catch (JAXBException e) {
-			log.error("JAXB Exception occurred while marshalling category object to xml string- PSCategoryControlUtils.getCategoryXmlInString()", e);		
+			log.error("JAXB Exception occurred while marshalling category object to xml string- PSCategoryControlUtils.getCategoryXmlInString() Error: {}",
+					PSExceptionUtils.getMessageForLog(e));
 		} catch (Exception e) {
-			log.error("Exception occurred while marshalling category object to xml string- PSCategoryControlUtils.getCategoryXmlInString()", e);		
+			log.error("Exception occurred while marshalling category object to xml string- PSCategoryControlUtils.getCategoryXmlInString() Error: {}",
+					PSExceptionUtils.getMessageForLog(e));
 		}
 
 		return writer.toString();

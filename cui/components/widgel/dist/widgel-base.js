@@ -1,4 +1,4 @@
-﻿define(['knockout', 'jquery', 'jquery-ui','jquery-ui/widget'], function (ko, $) {
+﻿define(['knockout', 'jquery', 'jquery-ui'], function (ko, $) {
     $.widget("widGEL.baseWidget", {
         //#region Public Widget Members (API)
         options: {

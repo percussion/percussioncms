@@ -23,7 +23,7 @@
  */
 
 /**
- * Handles the editing of a page meta-data. Openes a dialog with an Iframe and gets the page edit url from server and
+ * Handles the editing of a page meta-data. Opens a dialog with an Iframe and gets the page edit url from server and
  * sets it as source on the iframe.
  */
 (function($) {
@@ -55,7 +55,7 @@
             dialogWidth = 800;
         } else {
             //Read-only mode
-            dialogTitle = I18N.message("perc.ui.page.edit.dialog@Metadata")
+            dialogTitle = I18N.message("perc.ui.page.edit.dialog@Metadata");
             dialogButtons = {
                 "Ok":    {
                     click: function()    {
@@ -123,7 +123,7 @@
 
         /**
          * Helper function to format the metadata, this must be called in the frame load events functions.
-         * As we use the regular content editor for editing the page meta-data, the editor putput needs to be
+         * As we use the regular content editor for editing the page meta-data, the editor output needs to be
          * formatted to suit the needs of metadata as the editor was designed for editing assets.
          */
         function _formatPageContent()
@@ -139,7 +139,7 @@
             var cbAutoSummary = $("#edit-page-metadata-frame").contents().find("#perc-content-edit-auto_generate_summary");
             var trAutoSummary = cbAutoSummary.closest('tr');
             cbAutoSummary.on("click",_handleAutoSummary);
-			_handleAutoSummary();
+            _handleAutoSummary();
             cbAutoSummary.on("change",function() {
                 _handleAutoSummary();
             });
@@ -205,7 +205,7 @@
         {
             var cbAutoSummary = $("#edit-page-metadata-frame").contents().find("#perc-content-edit-auto_generate_summary");
             var containerArea = $("#edit-page-metadata-frame").contents().find(".tox-tinymce").parent();
-			var containerAreaDiv = containerArea[0];
+            var containerAreaDiv = containerArea[0];
             var tinyMCESpan = $("#edit-page-metadata-frame").contents().find(".tox-tinymce");
             if (cbAutoSummary.prop('checked'))
             {
@@ -222,12 +222,16 @@
                     addClass('datadisplay perc-tinymce-readonly').
                     html(content)
                 );
-                containerAreaDiv.style.display = 'none';
+                if(typeof containerAreaDiv !== "undefined") {
+                    containerAreaDiv.style.display = 'none';
+                }
             }
             else
             {
                 containerArea.find('#perc_page_autogen_page_summary').remove();
-                containerAreaDiv.style.display = 'block';
+                if(typeof containerAreaDiv !== 'undefined'){
+                    containerAreaDiv.style.display = 'block';
+                }
             }
         }
 
@@ -275,15 +279,8 @@
                                     var oldPath = result.PathItem.folderPaths + "/" + pageSysName;
                                     var toPath = "/" + newPath;
                                     $.unblockUI();
-                                    $.PercRedirectHandler.createRedirect(oldPath, toPath, "page")
-                                        .fail(function(errMsg){
-                                            $.perc_utils.alert_dialog({title: I18N.message("perc.ui.page.edit.dialog@Redirect Creation Error"), content: errMsg, okCallBack: function(){
-                                                    window.location.href = currentUrl;
-                                                }});
-                                        })
-                                        .done(function(){
-                                            window.location.href = currentUrl;
-                                        });
+                                    window.location.href = currentUrl;
+
                                 }
                                 else
                                 {
@@ -315,7 +312,7 @@
             $("#edit-page-metadata-frame").contents().find("#perc-content-edit-sys_title").val(fieldValue);
 
             $.PercBlockUI();
-            //call all the pre submit handlers if nothing returns flase, submit the form.
+            //call all the pre submit handlers if nothing returns false, submit the form.
             var dosubmit = true;
             $.each($.PercContentPreSubmitHandlers.getHandlers(),function(){
                 if(!this()){

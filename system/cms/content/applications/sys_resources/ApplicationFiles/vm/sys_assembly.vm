@@ -622,6 +622,7 @@ $__style
 #suppressCatalogedLinks()##
 #addMobilePreviewToolbar()##
 #addResponsiveResources()##
+    <meta name='pageid' content="$perc.page.id" />
 </head>
 <body>
 <input type="hidden" id="perc_linkback_id" value="$perc.page.id"/>

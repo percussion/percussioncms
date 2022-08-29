@@ -267,6 +267,10 @@ public interface IPSAssemblyErrors
     */
    public static final int HASHED_BINARY_ERROR = 24;
 
+   public static final int INLINE_TEMPLATE_NON_HTML = 25;
+
+   public static final int INLINE_TEMPLATE_ERROR = 26;
+
 }
 
 

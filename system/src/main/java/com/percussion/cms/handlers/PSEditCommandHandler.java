@@ -181,12 +181,13 @@ public class PSEditCommandHandler extends PSQueryCommandHandler
     *  authenticated.
     *
     */
+   @Override
    public void preProcessRequest(PSRequest req)
       throws PSInternalRequestCallException, PSAuthorizationException,
          PSAuthenticationFailedException
    {
       String contentId =
-            req.getParameter( m_ceHandler.CONTENT_ID_PARAM_NAME );
+            req.getParameter(PSContentEditorHandler.CONTENT_ID_PARAM_NAME);
       String condition;
       if ( null == contentId || contentId.trim().length() == 0 )
       {
@@ -222,6 +223,7 @@ public class PSEditCommandHandler extends PSQueryCommandHandler
 
 
    // see base for description
+   @Override
    protected Iterator getAppList( int id, PSExecutionData data,
          boolean isNewDoc )
       throws PSDataExtractionException
@@ -230,12 +232,12 @@ public class PSEditCommandHandler extends PSQueryCommandHandler
          return PSIteratorUtils.emptyIterator();
 
       // todo: cache these?
-      PSPageInfo info = (PSPageInfo) m_pageInfo.get(id);
-      Iterator datasetNames = info.getDatasetList();
-      List handlers = new ArrayList();
+      PSPageInfo info = m_pageInfo.get(id);
+      Iterator<String> datasetNames = info.getDatasetList();
+      List<IPSInternalResultHandler> handlers = new ArrayList<>();
       while ( datasetNames.hasNext())
       {
-         String datasetName = (String) datasetNames.next();
+         String datasetName = datasetNames.next();
          String reqName = createRequestName( m_appName, datasetName );
          IPSInternalResultHandler rh = (IPSInternalResultHandler)
             PSServer.getInternalRequestHandler( reqName );
@@ -260,7 +262,7 @@ public class PSEditCommandHandler extends PSQueryCommandHandler
       if (data == null) // this constrain is defined by base class
          throw new IllegalArgumentException("data may not be null");
          
-      PSPageInfo info = (PSPageInfo) m_pageInfo.get(id);
+      PSPageInfo info =  m_pageInfo.get(id);
       return null == info ? null : info.getBuilder();
    }
 
@@ -288,21 +290,21 @@ public class PSEditCommandHandler extends PSQueryCommandHandler
       if ( tableDepth < 0 )
          throw new IllegalArgumentException( "table depth can't be negative" );
 
-      HashMap keys = new HashMap();
+      HashMap keys = new HashMap<>();
 
       // children of children don't get these keys
       if ( tableDepth >= 0 && tableDepth <= 1 )
       {
          keys.put( IPSConstants.ITEM_PKEY_CONTENTID, m_ceHandler.
-               getParamName( m_ceHandler.CONTENT_ID_PARAM_NAME ));
+               getParamName(PSContentEditorHandler.CONTENT_ID_PARAM_NAME));
          keys.put( IPSConstants.ITEM_PKEY_REVISIONID, m_ceHandler.
-               getParamName( m_ceHandler.REVISION_ID_PARAM_NAME ));
+               getParamName(PSContentEditorHandler.REVISION_ID_PARAM_NAME));
       }
 
       if ( tableDepth > 0 )
       {
          keys.put( IPSConstants.CHILD_ITEM_PKEY, m_ceHandler.
-               getParamName( m_ceHandler.CHILD_ROW_ID_PARAM_NAME ));
+               getParamName(PSContentEditorHandler.CHILD_ROW_ID_PARAM_NAME ));
       }
 
       return keys.entrySet();
@@ -326,19 +328,19 @@ public class PSEditCommandHandler extends PSQueryCommandHandler
          PSDisplayMapper dispMapper )
    {
       // This list contains 1 PSMapPair entry for each sdmp child
-      List fieldSetMappers = new ArrayList();
+      List<PSMapPair> fieldSetMappers = new ArrayList<>();
 
       Iterator mappings = dispMapper.iterator();
       while ( mappings.hasNext())
       {
          PSDisplayMapping mapping = (PSDisplayMapping) mappings.next();
          PSField sdmpField = fields.getChildField( mapping.getFieldRef(),
-               fields.TYPE_MULTI_PROPERTY_SIMPLE_CHILD );
+                 PSFieldSet.TYPE_MULTI_PROPERTY_SIMPLE_CHILD);
          if ( null != sdmpField )
          {
             PSFieldSet sdmpFieldSet = fields.getChildsFieldSet(
                   sdmpField.getSubmitName(),
-                  fields.TYPE_MULTI_PROPERTY_SIMPLE_CHILD );
+                    PSFieldSet.TYPE_MULTI_PROPERTY_SIMPLE_CHILD);
             PSDisplayMapper mapper = null;
             if ( !contains( fieldSetMappers, sdmpFieldSet ))
             {
@@ -731,7 +733,7 @@ public class PSEditCommandHandler extends PSQueryCommandHandler
     * The info is keyed by the pageid of the editor. Never <code>null</code>.
     * Never empty after construction.
     */
-   private HashMap m_pageInfo = new HashMap<>();
+   private HashMap<Integer,PSPageInfo> m_pageInfo = new HashMap<>();
 
    /**
     * The name of the application that contains all of the datasets

@@ -8,14 +8,12 @@
 <xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:psxctl="urn:percussion.com/control"
                 xmlns="http://www.w3.org/1999/xhtml" xmlns:psxi18n="com.percussion.i18n"
-				xmlns:escape-util="org.apache.commons.lang.StringEscapeUtils"
-                extension-element-prefixes="psxi18n escape-util"
-                exclude-result-prefixes="psxi18n psxctl xmns escape-util">
+                extension-element-prefixes="psxi18n"
+                exclude-result-prefixes="psxi18n psxctl xmns">
 
    <xsl:import href="file:sys_resources/stylesheets/sys_I18nUtils.xsl"/>
    <!-- write the xml header according to XHTML 1.0 spec -->
    <xsl:output method="text" standalone="yes" indent="yes" doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN" doctype-system="DTD/xhtml1-strict.dtd" encoding="UTF-8" />
-   <xsl:script implements-prefix="escape-util" language="java" src="java:org.apache.commons.lang.StringEscapeUtils"/>
    <xsl:variable name="itemLocale" select="/ContentEditor/@itemLocale"/>
 
    <!--
@@ -4104,10 +4102,9 @@ onchange    %Script;       #IMPLIED
             <xsl:attribute name="accesskey"><xsl:call-template name="getaccesskey"><xsl:with-param name="label" select="preceding-sibling::DisplayLabel"/><xsl:with-param name="sourceType" select="preceding-sibling::DisplayLabel/@sourceType"/><xsl:with-param name="paramName" select="@paramName+$uniqueName"/><xsl:with-param name="accessKey" select="@accessKey"/></xsl:call-template></xsl:attribute>
          </xsl:if>
          <xsl:text>
-            <xsl:value-of select="escape-util:unescapeXml(Value)" disable-output-escaping="yes" />
+            <xsl:value-of select="Value" disable-output-escaping="yes" />
          </xsl:text>
       </textarea>
-      <!--</div>-->
    </xsl:template>
 
    <xsl:template name="rolejsarray"><xsl:text>[</xsl:text>

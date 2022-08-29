@@ -121,10 +121,10 @@ import net.sf.json.JSONObject;
 import net.sf.json.JSONSerializer;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
-import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.apache.commons.lang3.time.FastDateFormat;
+import org.apache.commons.text.StringEscapeUtils;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
@@ -147,7 +147,6 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
@@ -225,7 +224,7 @@ public class PSPageUtils extends PSJexlUtilBase
     }
 
     @IPSJexlMethod(description = "Validates that the path / url passed in resolves to a resource that has a 20X http status code.",
-            params={@IPSJexlParam(description = "Link (relative or absoulte to be checked.", name = "link"),
+            params={@IPSJexlParam(description = "Link (relative or absolute to be checked.", name = "link"),
                     @IPSJexlParam(description = "Publishing context name", name = "context"),
                     @IPSJexlParam(description = "Set to true to not cache this link. false to use caching.  By default all links are cached for 30 minutes.",name="dontCache")}, returns = "boolean")
     public boolean isLinkGood(String link, String context, boolean dontCache){
@@ -570,7 +569,7 @@ public class PSPageUtils extends PSJexlUtilBase
     }
 
     @IPSJexlMethod(description = "Strip javascript", params =
-            {@IPSJexlParam(name = "souce", description = "The source that may contain javascript")}, returns = "The text without javascript")
+            {@IPSJexlParam(name = "source", description = "The source that may contain javascript")}, returns = "The text without javascript")
     public String stripJavascripts(String source)
     {
         return PSHtmlUtils.stripScriptElement(source);
@@ -584,7 +583,7 @@ public class PSPageUtils extends PSJexlUtilBase
     }
 
     @IPSJexlMethod(description = "Check canonical link", params =
-            {@IPSJexlParam(name = "souce", description = "The source that may contain canonical link")}, returns = "true if the source contains canonical link, false otherwize")
+            {@IPSJexlParam(name = "source", description = "The source that may contain canonical link")}, returns = "true if the source contains canonical link, false otherwise")
     public boolean checkLinkCanonical(String source)
     {
         return PSHtmlUtils.checkLinkCanonicalElement(source);
@@ -761,33 +760,27 @@ public class PSPageUtils extends PSJexlUtilBase
             for (int i = ancestors.size() - 1; i >= 0; i--)
             {
                 Node navNode = ancestors.get(i);
-                PSContentNode langingPageNode = null;
+                PSContentNode landingPageNode = null;
                 try
                 {
                     // Try to get landing page from current node.
                     Property landingPageProp = navNode.getProperty("nav:landingPage");
-                    langingPageNode = (PSContentNode)landingPageProp.getNode();
+                    landingPageNode = (PSContentNode)landingPageProp.getNode();
                     // If the original page was a landing page we don't need to recheck.
-                    if (langingPageNode.getGuid() == item.getId()) {
+                    if (landingPageNode.getGuid() == item.getId()) {
                         break;
                     }
-                }
-                catch (PathNotFoundException e)
+                } catch (RepositoryException e)
                 {
                     log.debug("Cannot get landing page, skipping", e);
 
                 }
-                catch (RepositoryException e)
-                {
-                    log.debug("Cannot get landing page, skipping", e);
-
-                }
-                if (langingPageNode == null ) {
+                if (landingPageNode == null ) {
                     break;
                 }
 
 
-                IPSGuid guid = langingPageNode.getGuid();
+                IPSGuid guid = landingPageNode.getGuid();
 
                 landingAssemblyItem.setId(guid);
                 landingAssemblyItem.removeParameterValue(IPSHtmlParameters.SYS_FOLDERID);
@@ -857,7 +850,7 @@ public class PSPageUtils extends PSJexlUtilBase
                 return Boolean.TRUE;
             }
         }catch (Exception e){
-            //incase any exception happens because of some reason
+            //in case any exception happens because of some reason
             log.error("isInRecycle check failed for item id: {}", itemId,e);
         }
         return  Boolean.FALSE;
@@ -874,7 +867,7 @@ public class PSPageUtils extends PSJexlUtilBase
      * @param defaultFormat
      * @return
      */
-    @IPSJexlMethod(description = "Verify if the entered date format is correct or not for the SimpleDateFormat. If not system returns the defulat error format", params =
+    @IPSJexlMethod(description = "Verify if the entered date format is correct or not for the SimpleDateFormat. If not system returns the default error format", params =
             {@IPSJexlParam(name = "format", description = "Date Format entered by user"),
                     @IPSJexlParam(name = "defaultFormat", description = "System Default format")}, returns = "dateformat")
     public String parseDateFormat(String format, String defaultFormat)
@@ -1025,7 +1018,7 @@ public class PSPageUtils extends PSJexlUtilBase
     }
 
     /**
-     * Method to render the managed item apth during the assembly. This is a
+     * Method to render the managed item path during the assembly. This is a
      * thin wrapper, calls IPSManagedLinkService for actual work.
      *
      * @param linkContext The render link context assumed not <code>null</code>.
@@ -1043,7 +1036,7 @@ public class PSPageUtils extends PSJexlUtilBase
     }
 
     /**
-     * Method to render the managed item apth during the assembly. This is a
+     * Method to render the managed item path during the assembly. This is a
      * thin wrapper, calls IPSManagedLinkService for actual work.
      *
      * @param linkContext The render link context assumed not <code>null</code>.
@@ -1194,8 +1187,8 @@ public class PSPageUtils extends PSJexlUtilBase
      * assembled pages and returns a hierarchical structure of unique categories
      * and the number of occurrence of each category. The returned object is a
      * PSCategoryTree object. The first element is the string category, the
-     * second is a PSPair<Integer, Integer> which count the ocurrence of the
-     * category of the current node and his childrens and the third is a list of
+     * second is a PSPair<Integer, Integer> which count the occurrence of the
+     * category of the current node and his children and the third is a list of
      * PSCategoryTree.
      *
      */
@@ -1303,11 +1296,7 @@ public class PSPageUtils extends PSJexlUtilBase
             }
 
         }
-        catch (JDOMException e)
-        {
-            log.error(e);
-        }
-        catch (IOException e)
+        catch (JDOMException | IOException e)
         {
             log.error(e);
         }
@@ -1446,12 +1435,12 @@ public class PSPageUtils extends PSJexlUtilBase
                 {
                     if (arrayElements[i]
                             .getString()
-                            .substring(arrayElements[i].getString().lastIndexOf('/') + 1,
-                                    arrayElements[i].getString().length())
+                            .substring(arrayElements[i].getString().lastIndexOf('/') + 1
+                            )
                             .compareToIgnoreCase(
                                     arrayElements[i + 1].getString().substring(
-                                            arrayElements[i + 1].getString().lastIndexOf('/') + 1,
-                                            arrayElements[i + 1].getString().length())) > 0)
+                                            arrayElements[i + 1].getString().lastIndexOf('/') + 1
+                                    )) > 0)
                     {
                         Value temp = arrayElements[i];
                         arrayElements[i] = arrayElements[i + 1];
@@ -1559,12 +1548,10 @@ public class PSPageUtils extends PSJexlUtilBase
             }
         }
 
-        List<PSBlogYear> blogYears = new ArrayList<>();
-
-        blogYears.addAll(blogs.getYears());
+        List<PSBlogYear> blogYears = new ArrayList<>(blogs.getYears());
 
         Comparator<PSBlogYear> comp = new YearOrderBlogsComparator();
-        Collections.sort(blogYears, comp);
+        blogYears.sort(comp);
 
         return blogYears;
     }
@@ -1715,7 +1702,7 @@ public class PSPageUtils extends PSJexlUtilBase
             }
             else
             {
-                tagMap.put(tag, new Integer(1));
+                tagMap.put(tag, 1);
             }
         }
         List<PSPair<String, Integer>> tagResultList = new ArrayList<>();
@@ -1728,7 +1715,7 @@ public class PSPageUtils extends PSJexlUtilBase
         {
             comp = new CountOrderTagComparator();
         }
-        Collections.sort(tagResultList, comp);
+        tagResultList.sort(comp);
         return tagResultList;
     }
 
@@ -1865,7 +1852,7 @@ public class PSPageUtils extends PSJexlUtilBase
             PSJcrNodeFinder nodeFinder = new PSJcrNodeFinder(contentMgr, type, IPSHtmlParameters.SYS_CONTENTID);
             Map<String, String> result = nodeFinder.find(selectFields, contentId);
             for (Map.Entry<String, String> entry : result.entrySet()) {
-                entry.setValue(StringEscapeUtils.escapeHtml(entry.getValue()));
+                entry.setValue(StringEscapeUtils.escapeHtml4(entry.getValue()));
             }
 
             return result;
@@ -2069,6 +2056,7 @@ public class PSPageUtils extends PSJexlUtilBase
             if (node.getId() != null && node.getId().equals(selectedId))
             {
                 foundInList = true;
+                break;
             }
         }
 
@@ -2206,7 +2194,7 @@ public class PSPageUtils extends PSJexlUtilBase
                 if (nv == null && defaultValue == null) {
                     handleNoFieldFound(item, fields);
                 }
-                return nv == null ? null : StringEscapeUtils.escapeHtml(nv.value);
+                return nv == null ? null : StringEscapeUtils.escapeHtml4(nv.value);
             }
             else
             {
@@ -2234,7 +2222,7 @@ public class PSPageUtils extends PSJexlUtilBase
              * Use the default value if the propery is null
              */
             if (prop == null) {
-                return StringEscapeUtils.escapeHtml(defaultValue.toString());
+                return StringEscapeUtils.escapeHtml4(defaultValue.toString());
             }
 
             String field = removeStart(prop.getName(), "rx:");
@@ -2247,7 +2235,7 @@ public class PSPageUtils extends PSJexlUtilBase
                 return prop.getString();
             }
 
-            return StringEscapeUtils.escapeHtml(prop.getString());
+            return StringEscapeUtils.escapeHtml4(prop.getString());
         }
         catch (RepositoryException e)
         {
@@ -2803,14 +2791,6 @@ public class PSPageUtils extends PSJexlUtilBase
     {
         this.idMapper = idMapper;
     }
-
-    /*public IPSRecycleService getRecycleService() {
-        return recycleService;
-    }
-
-    public void setRecycleService(IPSRecycleService recycleService) {
-        this.recycleService = recycleService;
-    }*/
 
     public IPSRenderLinkService getRenderLinkService()
     {

@@ -38,7 +38,7 @@
     var TOOLTIP = '<div style="width:304px;">' +
         '<div style="margin-left:7px; margin-right:7px; height:20px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{name}}</div>' +
         '<div style="text-align:center; width:auto; margin-left:7px; margin-right:7px; vertical-align: middle;">' +
-        '<div style="width:290px; height:207px; border:1px solid #BBBBBB; background: url({{url}}) no-repeat center;"></div>' +
+         '<div> <img style="width:290px; height:207px; border:1px solid #BBBBBB;" alt="Screenshot of Page or Template" title="Page or Template Thumbnail" src={{url}}></img> </div>' +
         '</div><div style="word-wrap:break-word; white-space:normal; margin-left:7px; margin-right:7px;">{{path}}</div></div>';
 
     /** replace template variables with respective data values in given text string */
