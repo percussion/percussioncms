@@ -753,35 +753,6 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
               }
           }
           
-          //Check if Redirects are turned on - if they are - generate a redirect.
-          if(redirectService!=null && redirectService.status().getStatusCode().equalsIgnoreCase(PSRedirectStatus.SERVICE_OK)){
-        	  try{
-        		  PSSiteSummary site = siteDataService.findByPath(psPage.getFolderPath() +"/" + newName);
-        		  
-          		  site.setPubInfo(siteDataService.getS3PubServerInfo(site.getSiteId()));
-        		  PSModuleLicense lic = redirectService.getLicense();
-        		  
-        		  if(lic != null && site.getPubInfo()!=null){
-	        		  PSCreateRedirectRequest request = new PSCreateRedirectRequest();
-	        		  request.setCategory(IPSRedirectService.REDIRECT_CATEGORY_AUTOGEN);
-	        		  request.setCondition(url.getPath() + "/" + url.getName() );
-	        		  request.setEnabled(true);
-	        		  request.setKey(lic.getKey());
-	        		  request.setPermanent(true);
-	        		  request.setRedirectTo(url.getPath() + "/" + newName);
-	        		  request.setSite(site.getPubInfo().getBucketName());
-	        		  request.setType(IPSRedirectService.REDIRECT_TYPE_DEFAULT);
-	        		  redirectService.createRedirect(request);
-        		  }
-        	  }catch(Exception e){
-        		  log.error("An error occurred generating a Redirect while renaming Page: {} Error: {}",
-                          psPage.getId(),
-                          PSExceptionUtils.getMessageForLog(e));
-        	  }
-        	  
-          }
-          
-          
           return getPage(baseUri, url.getSite(), url.getPath(), newName);
           
     }
