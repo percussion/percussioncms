@@ -71,7 +71,7 @@ public class TestAllHTML5Tags {
                 true,
                 null);
         parsedHTML = parsedDoc.html();
-        verifyHTML5Tags();
+
     }
 
     @After
