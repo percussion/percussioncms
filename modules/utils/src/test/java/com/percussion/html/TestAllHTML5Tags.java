@@ -24,7 +24,10 @@
 
 package com.percussion.html;
 
+import org.jsoup.nodes.Attribute;
+import org.jsoup.nodes.Attributes;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.junit.After;
 import org.junit.Before;
@@ -32,11 +35,13 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
+import javax.swing.text.html.HTML;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 import java.util.Scanner;
 
+import static javax.swing.text.html.CSS.getAllAttributeKeys;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -52,6 +57,9 @@ public class TestAllHTML5Tags {
     public Document parsedDoc;
     public String parsedHTML;
 
+    String[] globalAttributes= {"accesskey" , "class" , "contenteditable", "data-*", "dir", "draggable", "hidden", "id", "lang", "spellcheck", "style", "tabindex", "title", "translate"};
+    String[] eventAttribute = {"onafterprint", "onbeforeprint", "onbeforeunload", "onerror", "onhashchange", "onload", "onmessage", "onoffline", "ononline", "onpagehide", "onpageshow", "onpopstate", "onresize", "onstorage", "onunload", "onblur", "onchange", "oncontextmenu", "onfocus", "oninput", "oninput", "oninvalid", "onreset", "onsearch", "onselect", "onsubmit", "onkeydown", "onkeypress", "onkeyup", "onclick", "ondblclick", "onmousedown", "onmousemove", "onmouseout", "onmouseover", "onmouseup", "onmousewheel", "onwheel", "ondrag", "ondragend", "ondragenter", "ondragleave", "ondragover", "ondragstart", "ondrop", "onscroll", "oncopy", "oncut", "onpaste", "onabort", "oncanplay", "oncanplaythrough", "oncuechange", "ondurationchange", "onemptied", "onended", "onerror", "onloadeddata", "onloadedmetadata", "onloadstart", "onpause", "onplay", "onplaying", "onprogress", "onratechange", "onseeked", "onseeking", "onstalled", "onsuspend", "ontimeupdate", "onvolumechange", "onwaiting", "ontoggle"};
+
     @Before
     public void setup() throws IOException, PSHtmlParsingException {
         temporaryFolder.create();
@@ -63,11 +71,12 @@ public class TestAllHTML5Tags {
                 true,
                 null);
         parsedHTML = parsedDoc.html();
+        verifyHTML5Tags();
     }
 
     @After
     public void teardown(){
-        temporaryFolder.delete();
+
     }
 
     @Test
@@ -76,24 +85,52 @@ public class TestAllHTML5Tags {
         System.out.println(parsedHTML);
         assertNotNull(parsedHTML);
         assertTrue(parsedHTML.length()>1);
+        testAsideTag();
+
 
     }
+
+
+    private void verifyAttributes(Attributes attributes,String[] attrList){
+
+        for (String attrName:attrList) {
+            String attrValue = attributes.get(attrName);
+            assertTrue(attrValue != null);
+            assertTrue(attrValue.contains(attrName));
+
+        }
+
+    }
+
 
     @Test
     public void testAsideTag(){
         Elements tags = parsedDoc.select("aside");
         assertTrue(tags.size()>0);
+        for (Element tag:tags) {
+            Attributes attrs = tag.attributes();
+            assertTrue(attrs.size()==86);
+            verifyAttributes(attrs,globalAttributes);
+            verifyAttributes(attrs,eventAttribute);
 
-        //TODO: Test attributes of aside
+        }
     }
+
+
 
     @Test
     public void testATag(){
 
     Elements tags = parsedDoc.select("a");
     assertTrue(tags.size()>0);
-    //TODO: Test attributes of a tag
-
+        String[] aAttributes = {"download", "href", "hreflang", "media", "ping", "referrerpolicy", "rel", "target", "type"};
+        for (Element tag:tags) {
+            Attributes attrs = tag.attributes();
+            assertTrue(attrs.size()==86);
+            verifyAttributes(attrs,globalAttributes);
+            verifyAttributes(attrs,eventAttribute);
+            verifyAttributes(attrs,aAttributes);
+        }
     }
 
     @Test
@@ -101,7 +138,11 @@ public class TestAllHTML5Tags {
 
         Elements tags = parsedDoc.select("!--");
         assertTrue(tags.size()>0);
-        //TODO: Test attributes of a tag
+        for (Element tag:tags) {
+            Attributes attrs = tag.attributes();
+            assertTrue(attrs.size()==86);
+            verifyAttributes(attrs,eventAttribute);
+        }
 
     }
 
@@ -110,7 +151,11 @@ public class TestAllHTML5Tags {
 
         Elements tags = parsedDoc.select("!DOCTYPE");
         assertTrue(tags.size()>0);
-        //TODO: Test attributes of a tag
+        for (Element tag:tags) {
+            Attributes attrs = tag.attributes();
+            assertTrue(attrs.size()==86);
+
+        }
 
     }
 
@@ -119,7 +164,13 @@ public class TestAllHTML5Tags {
 
         Elements tags = parsedDoc.select("abbr");
         assertTrue(tags.size()>0);
-        //TODO: Test attributes of a tag
+        for (Element tag:tags) {
+            Attributes attrs = tag.attributes();
+            assertTrue(attrs.size()==86);
+            verifyAttributes(attrs,globalAttributes);
+            verifyAttributes(attrs,eventAttribute);
+
+        }
 
     }
 
@@ -128,7 +179,7 @@ public class TestAllHTML5Tags {
 
         Elements tags = parsedDoc.select("acronym");
         assertTrue(tags.size()>0);
-        //TODO: Test attributes of a tag
+
 
     }
 
@@ -137,7 +188,12 @@ public class TestAllHTML5Tags {
 
         Elements tags = parsedDoc.select("address");
         assertTrue(tags.size()>0);
-        //TODO: Test attributes of a tag
+        for (Element tag:tags) {
+            Attributes attrs = tag.attributes();
+            assertTrue(attrs.size()==86);
+            verifyAttributes(attrs,globalAttributes);
+            verifyAttributes(attrs,eventAttribute);
+        }
 
     }
 
@@ -146,7 +202,6 @@ public class TestAllHTML5Tags {
 
         Elements tags = parsedDoc.select("applet");
         assertTrue(tags.size()>0);
-        //TODO: Test attributes of a tag
 
     }
 
@@ -155,7 +210,14 @@ public class TestAllHTML5Tags {
 
         Elements tags = parsedDoc.select("Area");
         assertTrue(tags.size()>0);
-        //TODO: Test attributes of a tag
+        String[] areaAttributes = {"download", "href", "hreflang", "media", "alt","coords", "referrerpolicy", "rel", "shape", "target", "type"};
+        for (Element tag:tags) {
+            Attributes attrs = tag.attributes();
+            assertTrue(attrs.size()==86);
+            verifyAttributes(attrs,globalAttributes);
+            verifyAttributes(attrs,eventAttribute);
+            verifyAttributes(attrs,areaAttributes);
+        }
 
     }
 
@@ -164,7 +226,12 @@ public class TestAllHTML5Tags {
 
         Elements tags = parsedDoc.select("article");
         assertTrue(tags.size()>0);
-        //TODO: Test attributes of a tag
+        for (Element tag:tags) {
+            Attributes attrs = tag.attributes();
+            assertTrue(attrs.size()==86);
+            verifyAttributes(attrs,globalAttributes);
+            verifyAttributes(attrs,eventAttribute);
+        }
 
     }
 
@@ -173,16 +240,28 @@ public class TestAllHTML5Tags {
 
         Elements tags = parsedDoc.select("audio");
         assertTrue(tags.size()>0);
-        //TODO: Test attributes of a tag
+        String[] audioAttributes = {"autoplay", "controls", "loop", "muted", "preload", "src"};
+        for (Element tag:tags) {
+            Attributes attrs = tag.attributes();
+            assertTrue(attrs.size()==86);
+            verifyAttributes(attrs,globalAttributes);
+            verifyAttributes(attrs,eventAttribute);
+            verifyAttributes(attrs,audioAttributes);
+        }
 
     }
 
     @Test
-    public void testBoldTag(){
+    public void testBTag(){
 
         Elements tags = parsedDoc.select("b");
         assertTrue(tags.size()>0);
-        //TODO: Test attributes of a tag
+        for (Element tag:tags) {
+            Attributes attrs = tag.attributes();
+            assertTrue(attrs.size()==86);
+            verifyAttributes(attrs,globalAttributes);
+            verifyAttributes(attrs,eventAttribute);
+        }
 
     }
 
@@ -191,7 +270,14 @@ public class TestAllHTML5Tags {
 
         Elements tags = parsedDoc.select("base");
         assertTrue(tags.size()>0);
-        //TODO: Test attributes of a tag
+        String[] baseAttributes = {"href", "target"};
+        for (Element tag:tags) {
+            Attributes attrs = tag.attributes();
+            assertTrue(attrs.size()==86);
+            verifyAttributes(attrs,globalAttributes);
+            verifyAttributes(attrs,eventAttribute);
+            verifyAttributes(attrs,baseAttributes);
+        }
 
     }
 
@@ -200,8 +286,6 @@ public class TestAllHTML5Tags {
 
         Elements tags = parsedDoc.select("basefont");
         assertTrue(tags.size()>0);
-        //TODO: Test attributes of a tag
-
     }
 
     @Test
@@ -209,7 +293,12 @@ public class TestAllHTML5Tags {
 
         Elements tags = parsedDoc.select("bdi");
         assertTrue(tags.size()>0);
-        //TODO: Test attributes of a tag
+        for (Element tag:tags) {
+            Attributes attrs = tag.attributes();
+            assertTrue(attrs.size()==86);
+            verifyAttributes(attrs,globalAttributes);
+            verifyAttributes(attrs,eventAttribute);
+        }
 
     }
 
