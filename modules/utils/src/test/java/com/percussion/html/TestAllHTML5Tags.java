@@ -307,7 +307,14 @@ public class TestAllHTML5Tags {
 
         Elements tags = parsedDoc.select("bdo");
         assertTrue(tags.size()>0);
-        //TODO: Test attributes of a tag
+        String[] bdoAttributes = {"dir"};
+        for (Element tag:tags) {
+            Attributes attrs = tag.attributes();
+            assertTrue(attrs.size()==86);
+            verifyAttributes(attrs,globalAttributes);
+            verifyAttributes(attrs,eventAttribute);
+            verifyAttributes(attrs,bdoAttributes);
+        }
 
     }
 
@@ -316,7 +323,7 @@ public class TestAllHTML5Tags {
 
         Elements tags = parsedDoc.select("big");
         assertTrue(tags.size()>0);
-        //TODO: Test attributes of a tag
+
 
     }
 
@@ -325,7 +332,14 @@ public class TestAllHTML5Tags {
 
         Elements tags = parsedDoc.select("blockquote");
         assertTrue(tags.size()>0);
-        //TODO: Test attributes of a tag
+        String[] bigAttributes = {"cite"};
+        for (Element tag:tags) {
+            Attributes attrs = tag.attributes();
+            assertTrue(attrs.size()==86);
+            verifyAttributes(attrs,globalAttributes);
+            verifyAttributes(attrs,eventAttribute);
+            verifyAttributes(attrs,bigAttributes);
+        }
 
     }
 
@@ -334,7 +348,12 @@ public class TestAllHTML5Tags {
 
         Elements tags = parsedDoc.select("Body");
         assertTrue(tags.size()>0);
-        //TODO: Test attributes of a tag
+        for (Element tag:tags) {
+            Attributes attrs = tag.attributes();
+            assertTrue(attrs.size()==86);
+            verifyAttributes(attrs,globalAttributes);
+            verifyAttributes(attrs,eventAttribute);
+        }
 
     }
 
@@ -343,7 +362,13 @@ public class TestAllHTML5Tags {
 
         Elements tags = parsedDoc.select("br");
         assertTrue(tags.size()>0);
-        //TODO: Test attributes of a tag
+        for (Element tag:tags) {
+            Attributes attrs = tag.attributes();
+            assertTrue(attrs.size()==86);
+            verifyAttributes(attrs,globalAttributes);
+            verifyAttributes(attrs,eventAttribute);
+
+        }
 
     }
     @Test
@@ -351,7 +376,14 @@ public class TestAllHTML5Tags {
 
         Elements tags = parsedDoc.select("button");
         assertTrue(tags.size()>0);
-        //TODO: Test attributes of a tag
+        String[] buttonAttributes = {"autofocus", "disabled", "form", "formaction", "formenctype", "formmethod", "formnovalidate", "formtarget", "name", "type", "value"};
+        for (Element tag:tags) {
+            Attributes attrs = tag.attributes();
+            assertTrue(attrs.size()==86);
+            verifyAttributes(attrs,globalAttributes);
+            verifyAttributes(attrs,eventAttribute);
+            verifyAttributes(attrs,buttonAttributes);
+        }
 
     }
     @Test
@@ -359,7 +391,14 @@ public class TestAllHTML5Tags {
 
         Elements tags = parsedDoc.select("canvas");
         assertTrue(tags.size()>0);
-        //TODO: Test attributes of a tag
+        String[] canvasAttributes = {"height", "width"};
+        for (Element tag:tags) {
+            Attributes attrs = tag.attributes();
+            assertTrue(attrs.size()==86);
+            verifyAttributes(attrs,globalAttributes);
+            verifyAttributes(attrs,eventAttribute);
+            verifyAttributes(attrs,canvasAttributes);
+        }
 
     }
 
