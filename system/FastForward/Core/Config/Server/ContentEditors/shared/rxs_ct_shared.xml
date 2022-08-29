@@ -58,7 +58,7 @@
                            <PSXExtensionParamValue id="2">
                               <value>
                                  <PSXSingleHtmlParameter id="3">
-                                    <name>item_file_attachment</name>
+                                    <name>item_file_attachment_hash</name>
                                  </PSXSingleHtmlParameter>
                               </value>
                            </PSXExtensionParamValue>
@@ -168,12 +168,12 @@
       <PSXUIDefinition>
          <PSXDisplayMapper fieldSetRef="sharedbinary" id="5">
             <PSXDisplayMapping>
-               <FieldRef>item_file_attachment</FieldRef>
+               <FieldRef>item_file_attachment_hash</FieldRef>
                <PSXUISet>
                   <Label>
                      <PSXDisplayText>File:</PSXDisplayText>
                   </Label>
-                  <PSXControlRef id="121" name="sys_File"/>
+                   <PSXControlRef id="10001" name="sys_HashedFile"/>
                   <ErrorLabel>
                      <PSXDisplayText>File:</PSXDisplayText>
                   </ErrorLabel>
