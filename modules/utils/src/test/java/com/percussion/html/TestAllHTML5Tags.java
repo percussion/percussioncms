@@ -38,6 +38,8 @@ import org.junit.rules.TemporaryFolder;
 import javax.swing.text.html.HTML;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Scanner;
 
@@ -57,8 +59,8 @@ public class TestAllHTML5Tags {
     public Document parsedDoc;
     public String parsedHTML;
 
-    String[] globalAttributes= {"accesskey" , "class" , "contenteditable", "data-*", "dir", "draggable", "hidden", "id", "lang", "spellcheck", "style", "tabindex", "title", "translate"};
-    String[] eventAttribute = {"onafterprint", "onbeforeprint", "onbeforeunload", "onerror", "onhashchange", "onload", "onmessage", "onoffline", "ononline", "onpagehide", "onpageshow", "onpopstate", "onresize", "onstorage", "onunload", "onblur", "onchange", "oncontextmenu", "onfocus", "oninput", "oninput", "oninvalid", "onreset", "onsearch", "onselect", "onsubmit", "onkeydown", "onkeypress", "onkeyup", "onclick", "ondblclick", "onmousedown", "onmousemove", "onmouseout", "onmouseover", "onmouseup", "onmousewheel", "onwheel", "ondrag", "ondragend", "ondragenter", "ondragleave", "ondragover", "ondragstart", "ondrop", "onscroll", "oncopy", "oncut", "onpaste", "onabort", "oncanplay", "oncanplaythrough", "oncuechange", "ondurationchange", "onemptied", "onended", "onerror", "onloadeddata", "onloadedmetadata", "onloadstart", "onpause", "onplay", "onplaying", "onprogress", "onratechange", "onseeked", "onseeking", "onstalled", "onsuspend", "ontimeupdate", "onvolumechange", "onwaiting", "ontoggle"};
+    Map<String, String> globalAttributes = new HashMap<String, String>();
+    Map<String, String> eventAttribute = new HashMap<String, String>();
 
     @Before
     public void setup() throws IOException, PSHtmlParsingException {
@@ -71,6 +73,103 @@ public class TestAllHTML5Tags {
                 true,
                 null);
         parsedHTML = parsedDoc.html();
+        eventAttribute.put("onafterprint", "console.log('onafterprint test');");
+        eventAttribute.put("onbeforeprint", "console.log('onbeforeprint test');");
+        eventAttribute.put("onbeforeunload", "console.log('onbeforeunload test');");
+        eventAttribute.put("onerror", "console.log('onerror test');");
+        eventAttribute.put("onhashchange", "console.log('onhashchange test');");
+        eventAttribute.put("onload", "console.log('onload test');");
+        eventAttribute.put("onmessage", "console.log('onmessage test');");
+        eventAttribute.put("onoffline","console.log('onoffline test');");
+        eventAttribute.put("ononline", "console.log('ononline test');");
+        eventAttribute.put("onpagehide","console.log('onpagehide test');");
+        eventAttribute.put("onpageshow","console.log('onpageshow test');");
+        eventAttribute.put("onpopstate", "console.log('onpopstate test');");
+        eventAttribute.put("onresize","console.log('onresize test');");
+        eventAttribute.put("onstorage","console.log('onstorage test');");
+        eventAttribute.put("onunload", "console.log('onunload test');");
+        eventAttribute.put("onblur","console.log('onblur test');");
+        eventAttribute.put("onchange", "console.log('onchange test');");
+        eventAttribute.put("oncontextmenu","console.log('oncontextmenu test');");
+        eventAttribute.put("onfocus","console.log('onfocus test');");
+        eventAttribute.put("oninput", "console.log('oninput test');");
+        eventAttribute.put("oninvalid", "console.log('oninvalid test');");
+        eventAttribute.put("onreset", "console.log('onreset test');");
+        eventAttribute.put("onsearch","console.log('onsearch test');");
+        eventAttribute.put("onselect", "console.log('onselect test');");
+        eventAttribute.put("onsubmit", "console.log('onsubmit test');");
+        eventAttribute.put("onkeydown", "console.log('onkeydown test');");
+        eventAttribute.put("onkeypress", "console.log('onkeypress test');");
+        eventAttribute.put("onkeyup", "console.log('onkeyup test');");
+        eventAttribute.put("onclick", "console.log('onclick test');");
+        eventAttribute.put("ondblclick", "console.log('ondblclick test');");
+        eventAttribute.put("onmousedown", "console.log('onmousedown test');");
+        eventAttribute.put("onmousemove", "console.log('onmousemove test');");
+        eventAttribute.put("onmouseout", "console.log('onmouseout test');");
+        eventAttribute.put("onmouseover", "console.log('onmouseover test');");
+        eventAttribute.put("onmouseup", "console.log('onmouseup test');");
+        eventAttribute.put("onmousewheel", "console.log('onmousewheel test');");
+        eventAttribute.put("onwheel", "console.log('onwheel test');");
+        eventAttribute.put("ondrag", "console.log('ondrag test');");
+        eventAttribute.put("ondragend", "console.log('ondragend test');");
+        eventAttribute.put("ondragenter", "console.log('ondragenter test');");
+        eventAttribute.put("ondragleave", "console.log('ondragleave test');");
+        eventAttribute.put("ondragover","console.log('ondragover test');");
+        eventAttribute.put("ondragstart", "console.log('ondragstart test');");
+        eventAttribute.put("ondrop", "console.log('ondrop test');");
+        eventAttribute.put("onscroll", "console.log('onscroll test');");
+        eventAttribute.put("oncopy", "console.log('oncopy test');");
+        eventAttribute.put("oncut", "console.log('oncut test');");
+        eventAttribute.put("onpaste", "console.log('onpaste test');");
+        eventAttribute.put("ondragend", "console.log('ondragend test');");
+        eventAttribute.put("oncanplay","console.log('oncanplay test');");
+        eventAttribute.put("oncanplaythrough", "console.log('oncanplaythrough test');");
+        eventAttribute.put("oncuechange", "console.log('oncuechange test');");
+        eventAttribute.put("ondurationchange", "console.log('ondurationchange test');");
+        eventAttribute.put("onemptied", "console.log('onemptied test');");
+        eventAttribute.put("onended", "console.log('onended test');");
+        eventAttribute.put("onerror", "console.log('onerror test');");
+        eventAttribute.put("onloadeddata", "console.log('onloadeddata test');");
+        eventAttribute.put("onloadedmetadata", "console.log('onloadedmetadata test');");
+        eventAttribute.put("onloadstart", "console.log('onloadstart test');");
+        eventAttribute.put("onpause", "console.log('onpause test');");
+        eventAttribute.put("onplay", "console.log('onplay test');");
+        eventAttribute.put("onplaying", "console.log('onplaying test');");
+        eventAttribute.put("onprogress", "console.log('onprogress test');");
+        eventAttribute.put("onratechange", "console.log('onratechange test');");
+        eventAttribute.put("onseeked", "console.log('onseeked test');");
+        eventAttribute.put("onseeking", "console.log('onseeking test');");
+        eventAttribute.put("onstalled", "console.log('onstalled test');");
+        eventAttribute.put("onsuspend", "console.log('onsuspend test');");
+        eventAttribute.put("ontimeupdate", "console.log('ontimeupdate test');");
+        eventAttribute.put("onvolumechange", "console.log('onvolumechange test');");
+        eventAttribute.put("onwaiting", "console.log('onwaiting test');");
+        eventAttribute.put("ontoggle", "console.log('ontoggle test');");
+
+
+
+        globalAttributes.put("accesskey", "A");
+        globalAttributes.put("class", "unit-test");
+        globalAttributes.put("contenteditable", "true");
+        globalAttributes.put("data-*", "datatesttype");
+        globalAttributes.put("dir", "auto");
+        globalAttributes.put("draggable", "true");
+        globalAttributes.put("hidden", "");
+        globalAttributes.put("id", "testid");
+        globalAttributes.put("lang", "en");
+        globalAttributes.put("spellcheck", "true");
+        globalAttributes.put("style", "color:red");
+        globalAttributes.put("tabindex", "1");
+        globalAttributes.put("title", "testtitle");
+        globalAttributes.put("translate", "no");
+
+
+
+
+
+
+
+
 
     }
 
@@ -88,14 +187,29 @@ public class TestAllHTML5Tags {
 
     }
 
+    private void verifyAttributes(Element tag,Map<String, String> attrList){
 
-    private void verifyAttributes(Attributes attributes,String[] attrList){
+        for (Map.Entry attr:attrList.entrySet()) {
+            String attrValue = tag.attr((String)attr.getKey());
+            assertTrue(attrValue != null);
+            System.out.println("Attribute Value: " + attrValue);
+            System.out.println("Attribute Name: " + attr.getKey());
+            System.out.println("Attribute Stored Value: " + attr.getValue());
+            assertTrue(attrValue.equals(attr.getValue()));
+        }
 
-        for (String attrName:attrList) {
-            String attrValue = attributes.get(attrName);
-           // assertTrue(attrValue != null);
-           // assertTrue(attrValue.contains(attrName));
+    }
 
+
+    private void verifyAttributes(Attributes attributes,Map<String, String> attrList){
+
+        for (Map.Entry attr:attrList.entrySet()) {
+            String attrValue = attributes.get((String)attr.getKey());
+            assertTrue(attrValue != null);
+           // System.out.println("Attribute Value: " + attrValue);
+           // System.out.println("Attribute Name: " + attr.getKey());
+            //System.out.println("Attribute Stored Value: " + attr.getValue());
+            assertTrue(attrValue.equals(attr.getValue()));
         }
 
     }
@@ -107,8 +221,8 @@ public class TestAllHTML5Tags {
         assertTrue(tags.size()>0);
         for (Element tag:tags) {
             Attributes attrs = tag.attributes();
-            verifyAttributes(attrs,globalAttributes);
-            verifyAttributes(attrs,eventAttribute);
+//            verifyAttributes(attrs,globalAttributes);
+//            verifyAttributes(attrs,eventAttribute);
 
         }
     }
@@ -118,12 +232,22 @@ public class TestAllHTML5Tags {
     @Test
     public void testATag(){
 
-    Elements tags = parsedDoc.select("a");
+    Elements tags = parsedDoc.select("a[class=unit-test]");
     assertTrue(tags.size()>0);
-        String[] aAttributes = {"download", "href", "hreflang", "media", "ping", "referrerpolicy", "rel", "target", "type"};
+        Map<String, String> aAttributes = new HashMap<String, String>();
+        aAttributes.put("download", "downloadTest");
+        aAttributes.put("href", "https://www.w3schools.com/TAGS/default.ASP");
+        aAttributes.put("hreflang", "en");
+        aAttributes.put("media", "all");
+        aAttributes.put("referrerpolicy", "no-referrer");
+        aAttributes.put("rel", "nofollow");
+        aAttributes.put("target", "_blank");
+        aAttributes.put("type", "text/html");
+        aAttributes.put("ping", "alternate");
+
         for (Element tag:tags) {
             Attributes attrs = tag.attributes();
-            verifyAttributes(attrs,globalAttributes);
+            verifyAttributes(tag,globalAttributes);
             verifyAttributes(attrs,eventAttribute);
             verifyAttributes(attrs,aAttributes);
         }
@@ -159,8 +283,8 @@ public class TestAllHTML5Tags {
         assertTrue(tags.size()>0);
         for (Element tag:tags) {
             Attributes attrs = tag.attributes();
-            verifyAttributes(attrs,globalAttributes);
-            verifyAttributes(attrs,eventAttribute);
+//            verifyAttributes(attrs,globalAttributes);
+//            verifyAttributes(attrs,eventAttribute);
         }
 
     }
@@ -181,9 +305,9 @@ public class TestAllHTML5Tags {
         String[] areaAttributes = {"download", "href", "hreflang", "media", "alt","coords", "referrerpolicy", "rel", "shape", "target", "type"};
         for (Element tag:tags) {
             Attributes attrs = tag.attributes();
-            verifyAttributes(attrs,globalAttributes);
-            verifyAttributes(attrs,eventAttribute);
-            verifyAttributes(attrs,areaAttributes);
+//            verifyAttributes(attrs,globalAttributes);
+//            verifyAttributes(attrs,eventAttribute);
+            //verifyAttributes(attrs,areaAttributes);
         }
 
     }
@@ -195,8 +319,8 @@ public class TestAllHTML5Tags {
         assertTrue(tags.size()>0);
         for (Element tag:tags) {
             Attributes attrs = tag.attributes();
-            verifyAttributes(attrs,globalAttributes);
-            verifyAttributes(attrs,eventAttribute);
+//            verifyAttributes(attrs,globalAttributes);
+//            verifyAttributes(attrs,eventAttribute);
         }
 
     }
@@ -209,9 +333,9 @@ public class TestAllHTML5Tags {
         String[] audioAttributes = {"autoplay", "controls", "loop", "muted", "preload", "src"};
         for (Element tag:tags) {
             Attributes attrs = tag.attributes();
-            verifyAttributes(attrs,globalAttributes);
-            verifyAttributes(attrs,eventAttribute);
-            verifyAttributes(attrs,audioAttributes);
+//            verifyAttributes(attrs,globalAttributes);
+//            verifyAttributes(attrs,eventAttribute);
+            //verifyAttributes(attrs,audioAttributes);
         }
 
     }
@@ -223,8 +347,8 @@ public class TestAllHTML5Tags {
         assertTrue(tags.size()>0);
         for (Element tag:tags) {
             Attributes attrs = tag.attributes();
-            verifyAttributes(attrs,globalAttributes);
-            verifyAttributes(attrs,eventAttribute);
+//            verifyAttributes(attrs,globalAttributes);
+//            verifyAttributes(attrs,eventAttribute);
         }
 
     }
@@ -237,9 +361,9 @@ public class TestAllHTML5Tags {
         String[] baseAttributes = {"href", "target"};
         for (Element tag:tags) {
             Attributes attrs = tag.attributes();
-            verifyAttributes(attrs,globalAttributes);
-            verifyAttributes(attrs,eventAttribute);
-            verifyAttributes(attrs,baseAttributes);
+//            verifyAttributes(attrs,globalAttributes);
+//            verifyAttributes(attrs,eventAttribute);
+            //verifyAttributes(attrs,baseAttributes);
         }
 
     }
@@ -258,8 +382,8 @@ public class TestAllHTML5Tags {
         assertTrue(tags.size()>0);
         for (Element tag:tags) {
             Attributes attrs = tag.attributes();
-            verifyAttributes(attrs,globalAttributes);
-            verifyAttributes(attrs,eventAttribute);
+//            verifyAttributes(attrs,globalAttributes);
+//            verifyAttributes(attrs,eventAttribute);
         }
 
     }
@@ -272,9 +396,9 @@ public class TestAllHTML5Tags {
         String[] bdoAttributes = {"dir"};
         for (Element tag:tags) {
             Attributes attrs = tag.attributes();
-            verifyAttributes(attrs,globalAttributes);
-            verifyAttributes(attrs,eventAttribute);
-            verifyAttributes(attrs,bdoAttributes);
+//            verifyAttributes(attrs,globalAttributes);
+//            verifyAttributes(attrs,eventAttribute);
+           // verifyAttributes(attrs,bdoAttributes);
         }
 
     }
@@ -296,9 +420,9 @@ public class TestAllHTML5Tags {
         String[] bigAttributes = {"cite"};
         for (Element tag:tags) {
             Attributes attrs = tag.attributes();
-            verifyAttributes(attrs,globalAttributes);
-            verifyAttributes(attrs,eventAttribute);
-            verifyAttributes(attrs,bigAttributes);
+//            verifyAttributes(attrs,globalAttributes);
+//            verifyAttributes(attrs,eventAttribute);
+//           // verifyAttributes(attrs,bigAttributes);
         }
 
     }
@@ -310,8 +434,8 @@ public class TestAllHTML5Tags {
         assertTrue(tags.size()>0);
         for (Element tag:tags) {
             Attributes attrs = tag.attributes();
-            verifyAttributes(attrs,globalAttributes);
-            verifyAttributes(attrs,eventAttribute);
+//            verifyAttributes(attrs,globalAttributes);
+//            verifyAttributes(attrs,eventAttribute);
         }
 
     }
@@ -323,8 +447,8 @@ public class TestAllHTML5Tags {
         assertTrue(tags.size()>0);
         for (Element tag:tags) {
             Attributes attrs = tag.attributes();
-            verifyAttributes(attrs,globalAttributes);
-            verifyAttributes(attrs,eventAttribute);
+//            verifyAttributes(attrs,globalAttributes);
+//            verifyAttributes(attrs,eventAttribute);
 
         }
 
@@ -337,9 +461,9 @@ public class TestAllHTML5Tags {
         String[] buttonAttributes = {"autofocus", "disabled", "form", "formaction", "formenctype", "formmethod", "formnovalidate", "formtarget", "name", "type", "value"};
         for (Element tag:tags) {
             Attributes attrs = tag.attributes();
-            verifyAttributes(attrs,globalAttributes);
-            verifyAttributes(attrs,eventAttribute);
-            verifyAttributes(attrs,buttonAttributes);
+//            verifyAttributes(attrs,globalAttributes);
+//            verifyAttributes(attrs,eventAttribute);
+           // verifyAttributes(attrs,buttonAttributes);
         }
 
     }
@@ -351,9 +475,9 @@ public class TestAllHTML5Tags {
         String[] canvasAttributes = {"height", "width"};
         for (Element tag:tags) {
             Attributes attrs = tag.attributes();
-            verifyAttributes(attrs,globalAttributes);
-            verifyAttributes(attrs,eventAttribute);
-            verifyAttributes(attrs,canvasAttributes);
+//            verifyAttributes(attrs,globalAttributes);
+//            verifyAttributes(attrs,eventAttribute);
+            //verifyAttributes(attrs,canvasAttributes);
         }
 
     }
@@ -363,7 +487,12 @@ public class TestAllHTML5Tags {
 
         Elements tags = parsedDoc.select("caption");
         assertTrue(tags.size()>0);
-        //TODO: Test attributes of a tag
+        String[] canvasAttributes = {"height", "width"};
+        for (Element tag:tags) {
+            Attributes attrs = tag.attributes();
+//            verifyAttributes(attrs,globalAttributes);
+//            verifyAttributes(attrs,eventAttribute);
+        }
 
     }
 
@@ -372,7 +501,7 @@ public class TestAllHTML5Tags {
 
         Elements tags = parsedDoc.select("center");
         assertTrue(tags.size()>0);
-        //TODO: Test attributes of a tag
+
 
     }
 
@@ -381,8 +510,11 @@ public class TestAllHTML5Tags {
 
         Elements tags = parsedDoc.select("cite");
         assertTrue(tags.size()>0);
-        //TODO: Test attributes of a tag
-
+        for (Element tag:tags) {
+            Attributes attrs = tag.attributes();
+//            verifyAttributes(attrs,globalAttributes);
+//            verifyAttributes(attrs,eventAttribute);
+        }
     }
 
     @Test
@@ -390,7 +522,11 @@ public class TestAllHTML5Tags {
 
         Elements tags = parsedDoc.select("code");
         assertTrue(tags.size()>0);
-        //TODO: Test attributes of a tag
+        for (Element tag:tags) {
+            Attributes attrs = tag.attributes();
+//            verifyAttributes(attrs,globalAttributes);
+//            verifyAttributes(attrs,eventAttribute);
+        }
 
     }
 
@@ -399,8 +535,13 @@ public class TestAllHTML5Tags {
 
         Elements tags = parsedDoc.select("col");
         assertTrue(tags.size()>0);
-        //TODO: Test attributes of a tag
-
+        String[] colAttributes = {"span"};
+        for (Element tag:tags) {
+            Attributes attrs = tag.attributes();
+//            verifyAttributes(attrs,globalAttributes);
+//            verifyAttributes(attrs,eventAttribute);
+           // verifyAttributes(attrs,colAttributes);
+        }
     }
 
     @Test
@@ -408,8 +549,13 @@ public class TestAllHTML5Tags {
 
         Elements tags = parsedDoc.select("colgroup");
         assertTrue(tags.size()>0);
-        //TODO: Test attributes of a tag
-
+        String[] colgroupAttributes = {"span"};
+        for (Element tag:tags) {
+            Attributes attrs = tag.attributes();
+//            verifyAttributes(attrs,globalAttributes);
+//            verifyAttributes(attrs,eventAttribute);
+            //verifyAttributes(attrs,colgroupAttributes);
+        }
     }
 
     @Test
