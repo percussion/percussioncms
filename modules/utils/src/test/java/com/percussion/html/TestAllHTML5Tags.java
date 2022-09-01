@@ -433,14 +433,9 @@ public class TestAllHTML5Tags {
     @Test
     public void testBodyTag(){
 
-//        Elements tags = parsedDoc.select("body[class=unit-test]");
-//        assertTrue(tags.size()>0);
-//        for (Element tag:tags) {
-//            Attributes attrs = tag.attributes();
-//            verifyAttributes(attrs,globalAttributes);
-//            verifyAttributes(attrs,eventAttribute);
+        Elements tags = parsedDoc.select("body[class=unit-test]");
+        assertTrue(tags.size()>0);
 
-//        }
 
     }
 
@@ -678,19 +673,27 @@ public class TestAllHTML5Tags {
     @Test
     public void testDTTag(){
 
-        Elements tags = parsedDoc.select("dt");
+        Elements tags = parsedDoc.select("dt[class=unit-test]");
         assertTrue(tags.size()>0);
-        //TODO: Test attributes of a tag
+        for (Element tag:tags) {
+            Attributes attrs = tag.attributes();
+            verifyAttributes(attrs,globalAttributes);
+            verifyAttributes(attrs,eventAttribute);
 
+        }
     }
 
     @Test
     public void testEmphasizeTag(){
 
-        Elements tags = parsedDoc.select("em");
+        Elements tags = parsedDoc.select("em[class=unit-test]");
         assertTrue(tags.size()>0);
-        //TODO: Test attributes of a tag
+        for (Element tag:tags) {
+            Attributes attrs = tag.attributes();
+            verifyAttributes(attrs,globalAttributes);
+            verifyAttributes(attrs,eventAttribute);
 
+        }
     }
 
     @Test
@@ -714,19 +717,27 @@ public class TestAllHTML5Tags {
     @Test
     public void testFigCaptionTag(){
 
-        Elements tags = parsedDoc.select("figcaption");
+        Elements tags = parsedDoc.select("figcaption[class=unit-test]");
         assertTrue(tags.size()>0);
-        //TODO: Test attributes of a tag
+        for (Element tag:tags) {
+            Attributes attrs = tag.attributes();
+            verifyAttributes(attrs,globalAttributes);
+            verifyAttributes(attrs,eventAttribute);
 
+        }
     }
 
     @Test
     public void testFigureTag(){
 
-        Elements tags = parsedDoc.select("figure");
+        Elements tags = parsedDoc.select("figure[class=unit-test]");
         assertTrue(tags.size()>0);
-        //TODO: Test attributes of a tag
+        for (Element tag:tags) {
+            Attributes attrs = tag.attributes();
+            verifyAttributes(attrs,globalAttributes);
+            verifyAttributes(attrs,eventAttribute);
 
+        }
     }
 
     @Test
@@ -741,10 +752,14 @@ public class TestAllHTML5Tags {
     @Test
     public void testFooterTag(){
 
-        Elements tags = parsedDoc.select("footer");
+        Elements tags = parsedDoc.select("footer[class=unit-test]");
         assertTrue(tags.size()>0);
-        //TODO: Test attributes of a tag
+        for (Element tag:tags) {
+            Attributes attrs = tag.attributes();
+            verifyAttributes(attrs,globalAttributes);
+            verifyAttributes(attrs,eventAttribute);
 
+        }
     }
 
     @Test
@@ -775,55 +790,79 @@ public class TestAllHTML5Tags {
     @Test
     public void testH1Tag(){
 
-        Elements tags = parsedDoc.select("h1");
+        Elements tags = parsedDoc.select("h1[class=unit-test]");
         assertTrue(tags.size()>0);
-        //TODO: Test attributes of a tag
+        for (Element tag:tags) {
+            Attributes attrs = tag.attributes();
+            verifyAttributes(attrs,globalAttributes);
+            verifyAttributes(attrs,eventAttribute);
 
+        }
     }
 
     @Test
     public void testH2Tag(){
 
-        Elements tags = parsedDoc.select("h2");
+        Elements tags = parsedDoc.select("h2[class=unit-test]");
         assertTrue(tags.size()>0);
-        //TODO: Test attributes of a tag
+        for (Element tag:tags) {
+            Attributes attrs = tag.attributes();
+            verifyAttributes(attrs,globalAttributes);
+            verifyAttributes(attrs,eventAttribute);
 
+        }
     }
 
     @Test
     public void testH3Tag(){
 
-        Elements tags = parsedDoc.select("h3");
+        Elements tags = parsedDoc.select("h3[class=unit-test]");
         assertTrue(tags.size()>0);
-        //TODO: Test attributes of a tag
+        for (Element tag:tags) {
+            Attributes attrs = tag.attributes();
+            verifyAttributes(attrs,globalAttributes);
+            verifyAttributes(attrs,eventAttribute);
 
+        }
     }
 
     @Test
     public void testH4Tag(){
 
-        Elements tags = parsedDoc.select("h4");
+        Elements tags = parsedDoc.select("h4[class=unit-test]");
         assertTrue(tags.size()>0);
-        //TODO: Test attributes of a tag
+        for (Element tag:tags) {
+            Attributes attrs = tag.attributes();
+            verifyAttributes(attrs,globalAttributes);
+            verifyAttributes(attrs,eventAttribute);
 
+        }
     }
 
     @Test
     public void testH5Tag(){
 
-        Elements tags = parsedDoc.select("h5");
+        Elements tags = parsedDoc.select("h4[class=unit-test]");
         assertTrue(tags.size()>0);
-        //TODO: Test attributes of a tag
+        for (Element tag:tags) {
+            Attributes attrs = tag.attributes();
+            verifyAttributes(attrs,globalAttributes);
+            verifyAttributes(attrs,eventAttribute);
 
+        }
     }
 
     @Test
     public void testH6Tag(){
 
-        Elements tags = parsedDoc.select("h6");
+        Elements tags = parsedDoc.select("h4[class=unit-test]");
         assertTrue(tags.size()>0);
-        //TODO: Test attributes of a tag
+        for (Element tag:tags) {
+            Attributes attrs = tag.attributes();
+            verifyAttributes(attrs,globalAttributes);
+            verifyAttributes(attrs,eventAttribute);
 
+        }
     }
 
     @Test
