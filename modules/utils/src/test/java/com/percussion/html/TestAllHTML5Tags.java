@@ -430,14 +430,14 @@ public class TestAllHTML5Tags {
 
     }
 
-    @Test
-    public void testBodyTag(){
-
-        Elements tags = parsedDoc.select("body[class=unit-test]");
-        assertTrue(tags.size()>0);
-
-
-    }
+//    @Test
+//    public void testBodyTag(){
+//
+//        Elements tags = parsedDoc.select("body[class=unit-test]");
+//        assertTrue(tags.size()>0);
+//
+//
+//    }
 
     @Test
     public void testBRTag(){
