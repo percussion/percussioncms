@@ -31,7 +31,7 @@
         var warnCloseSpan = "</span>";
         var spec;
 
-        var btn = $('<a id="perc-finder-delete" class="perc-font-icon icon-remove fas fa-trash" title="' + I18N.message("perc.ui.delete.page.button@Click Delete Page") + '"href="#" ></a>')
+        var btn = $('<a id="perc-finder-delete" class="perc-font-icon icon-remove fas fa-trash" title="' + I18N.message("perc.ui.delete.page.button@Click Delete Page") + '" href="#" ></a>')
             .off()
             .perc_button()
             .on("click",function(evt){
@@ -199,7 +199,20 @@
                 asset_delete_handle_error
             );
         }
-		
+
+        function deleteFolder() {
+            // do not validate if deleting folders and user is Admin
+            if ($.PercNavigationManager.isAdmin()) {
+                $.PercPathService.deleteFolderSkipValidation(mcol_path.join('/'), mcol_path[mcol_path.length - 1], mcol_path[1], function (data) {
+                    cbDfSuccess(data);
+                });
+            }
+            else {
+                // call validation as usual
+                $.PercPathService.deleteFolder(mcol_path.join('/'), mcol_path[mcol_path.length - 1], mcol_path[1], cbDfSuccess);
+            }
+        }
+
         function handleDelete() {
 
             $.perc_pathmanager.open_path(ut.acop(mcol_path), false, function (specResponse) {
@@ -242,35 +255,8 @@
                 else if (spec.PathItem.type === 'Folder') {
                     if ((spec.PathItem.category === 'FOLDER') ||
                         spec.PathItem.category === 'SECTION_FOLDER' && mcol_path[1] === $.perc_paths.RECYCLING_ROOT_NO_SLASH) {
-                        function deleteFolder() {
-                            // do not validate if deleting folders and user is Admin
-                            if ($.PercNavigationManager.isAdmin()) {
-                                $.PercPathService.deleteFolderSkipValidation(mcol_path.join('/'), mcol_path[mcol_path.length - 1], mcol_path[1], function (data) {
-                                    cbDfSuccess(data);
-                                });
-                            }
-                            else {
-                                // call validation as usual
-                                $.PercPathService.deleteFolder(mcol_path.join('/'), mcol_path[mcol_path.length - 1], mcol_path[1], cbDfSuccess);
-                            }
-                        }
-                        if (spec.PathItem.path.match("^/Sites/") || spec.PathItem.path.match("^//Sites/")) {
-                            $.PercRedirectHandler.createRedirect(spec.PathItem.path, "", "folder").fail(function (errMsg) {
-                                $.perc_utils.alert_dialog({
-                                    title: I18N.message("perc.ui.contributor.ui.adaptor@Redirect creation error"),
-                                    content: errMsg,
-                                    okCallBack: function () {
-                                        deleteFolder();
-                                    }
-                                });
-                            }).done(function () {
-                                deleteFolder();
-                            });
-                        }
-                        else {
-                            deleteFolder();
-                        }
 
+                        deleteFolder();
                     }
                     else {
                         //not allowed
@@ -287,7 +273,7 @@
                 }
 
                 else if (spec.PathItem.type === 'FSFile') {
-                    var url = "";
+                    let url = "";
                     var paths = spec.PathItem.path.split("/");
                     paths = paths.slice(3, paths.length - 1);
 
@@ -431,26 +417,12 @@
                 purge_item(spec.PathItem.id, $.perc_paths.PAGE_PURGE, 'page');
                 return;
             }
-            $.PercRedirectHandler.createRedirect(spec.PathItem.path, "", "page")
-                .fail(function (errMsg) {
-                    $.perc_utils.alert_dialog({
-                        title: I18N.message("perc.ui.contributor.ui.adaptor@Redirect creation error"), content: errMsg, okCallBack: function () {
-                            $.perc_pagemanager.delete_page(spec.PathItem.id,
-                                function () {
-                                    delete_success(spec.PathItem.id, 'page');
-                                },
-                                page_delete_handle_error
-                            );
-                        }
-                    });
-                })
-                .done(function () {
-                    $.perc_pagemanager.delete_page(spec.PathItem.id,
-                        function () {
-                            delete_success(spec.PathItem.id, 'page');
-                        },
-                        page_delete_handle_error);
-                });
+
+            $.perc_pagemanager.delete_page(spec.PathItem.id,
+                function () {
+                    delete_success(spec.PathItem.id, 'page');
+                },
+                page_delete_handle_error);
         }
         function purge_item(id, path, type) {
             $.PercRecycleService.purgeItem(
