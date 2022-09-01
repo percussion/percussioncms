@@ -1339,33 +1339,6 @@ public class FolderAdaptor implements IFolderAdaptor {
 				throw new FolderNotFoundException();
 			}
 
-			// Generate a redirect from the old path to the new path.
-			if (redirectService.status().getStatusCode().equals( PSRedirectStatus.SERVICE_OK)) {
-				try {
-
-					PSSiteSummary site = siteDataService.findByPath("/" + targetFolderPath + folderPathItem.getName());
-					site.setPubInfo(siteDataService.getS3PubServerInfo(site.getSiteId()));
-
-					PSModuleLicense lic = redirectService.getLicense();
-
-					if (lic != null && site.getPubInfo() != null) {
-						PSCreateRedirectRequest req = new PSCreateRedirectRequest();
-						req.setCategory(IPSRedirectService.REDIRECT_CATEGORY_AUTOGEN);
-						req.setCondition(PSPathUtils.getBaseFolderFromPath(itemPath) + "/" + folderPathItem.getName());
-						req.setEnabled(true);
-						req.setKey(lic.getKey());
-						req.setPermanent(true);
-						req.setRedirectTo(
-								PSPathUtils.getBaseFolderFromPath(targetFolderPath) + "/" + folderPathItem.getName());
-						req.setSite(site.getPubInfo().getBucketName());
-						req.setType(IPSRedirectService.REDIRECT_TYPE_DEFAULT);
-						redirectService.createRedirect(req);
-					}
-				} catch (Exception e) {
-					log.error("An error occurred generating a Redirect while moving Item: " + itemPath, e);
-				}
-
-			}
 		} catch (IPSPathService.PSPathServiceException | IPSItemWorkflowService.PSItemWorkflowServiceException | PSDataServiceException e) {
 			throw new BackendException(e);
 		}

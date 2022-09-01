@@ -100,28 +100,13 @@
                             deferred.reject(retObj);
                         }
                         else{
-                          $.PercRedirectHandler.createRedirect(path, "", "page").fail(function(errMsg){
-                        	  $.perc_utils.alert_dialog({
-                        		  title: I18N.message("perc.ui.contributor.ui.adaptor@Redirect creation error"),
-                        		  content: errMsg,
-                        		  okCallBack: function(){
-                        			  $.perc_pagemanager.delete_page(id, function(){
-                        				  deferred.resolve(I18N.message("perc.ui.contributor.ui.adaptor@Deleted Selected Item"));
-                        			  }, function(data){
-                        				  var result = $.PercDeleteItemHelper.extractDeleteErrorMessage(data, name, "page");
-                        				  deferred.reject(result);
-                        			  });
-                        		  }
-                        	  });
-                     	}).done(function(){
-                          $.perc_pagemanager.delete_page(id, function(){
+                            $.perc_pagemanager.delete_page(id, function(){
                                 deferred.resolve(I18N.message("perc.ui.contributor.ui.adaptor@Deleted Selected Item"));
                             }, function(data){
-                               var result = $.PercDeleteItemHelper.extractDeleteErrorMessage(data, name, "page");
-                               deferred.reject(result);
+                                var result = $.PercDeleteItemHelper.extractDeleteErrorMessage(data, name, "page");
+                                deferred.reject(result);
                             });
-                      });
-                    }
+                        }
                     }).fail(function(message){
                        deferred.reject(message);
                     });

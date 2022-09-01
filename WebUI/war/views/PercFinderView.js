@@ -1522,21 +1522,7 @@
                 {
                     contentId = null;
                     $.unblockUI();
-                    if(type === "page" && trName === "Archive"){
-                        $.PercRedirectHandler.createRedirect($.PercNavigationManager.getPath(), "", "page")
-                            .fail(function(errMsg){
-                                $.perc_utils.alert_dialog({title: I18N.message("perc.ui.finder.view@Redirect Creation Error"), content: errMsg, okCallBack: function(){
-                                        $.PercNavigationManager.goTo($.PercNavigationManager.VIEW_EDITOR, true);
-                                    }});
-                            })
-                            .done(function(){
-                                $.PercNavigationManager.goTo($.PercNavigationManager.VIEW_EDITOR, true);
-                            });
-                    }
-                    else{
-                        $.PercNavigationManager.goTo($.PercNavigationManager.VIEW_EDITOR, true);
-                    }
-
+                    $.PercNavigationManager.goTo($.PercNavigationManager.VIEW_EDITOR, true);
                 }
 
 
