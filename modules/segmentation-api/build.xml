@@ -1,0 +1,29 @@
+<project name="Solution-Segmentation-API" default="dist" basedir=".">
+	<description>
+       Segmentation Solution
+    </description>
+	<!-- BEGIN Check and Import Build Tools -->
+	<property environment="my_env"/>
+	<available property="soln-buildtools" value="${my_env.SOLN_BUILDTOOLS}" file="${my_env.SOLN_BUILDTOOLS}" type="dir" />
+	<available property="soln-buildtools" value="../Solution-BuildTools" file="../Solution-BuildTools" type="dir" />
+	<fail unless="soln-buildtools" message="Could not find Solution Build Tools. Check SOLN_BUILDTOOLS env variable." />
+	<import file="${soln-buildtools}/build-share.xml"/>
+	<!-- END Check and Import Build Tools -->
+	
+	<target name="artifacts" depends="init">
+		<artifact-def id="seg-api">
+			<files>
+				<include name="com/percussion/soln/segment/**"/>
+				<exclude name="com/percussion/soln/segment/rx/**"/>
+				<exclude name="log4j.properties" /> 
+				<include name="build.properties" /> 
+				<include name="readme.txt" />	
+			</files>
+		</artifact-def>
+	</target>
+	
+	<target name="dist" depends="init, dist-buildnumber, jarbuilder, javadoc, readme, test-unit" />
+		
+		
+
+</project>
