@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="ivylib/commons-beanutils.jar"/>
+	<classpathentry kind="lib" path="ivylib/commons-collections.jar"/>
+	<classpathentry kind="lib" path="ivylib/commons-httpclient.jar"/>
+	<classpathentry kind="lib" path="ivylib/commons-lang.jar"/>
+	<classpathentry kind="lib" path="ivylib/commons-logging.jar"/>
+	<classpathentry kind="lib" path="ivylib/ezmorph.jar"/>
+	<classpathentry kind="lib" path="ivylib/hamcrest-core.jar"/>
+	<classpathentry kind="lib" path="ivylib/hamcrest-library.jar"/>
+	<classpathentry kind="lib" path="ivylib/jackrabbit-jcr-commons.jar"/>
+	<classpathentry kind="lib" path="ivylib/jcr.jar"/>
+	<classpathentry kind="lib" path="ivylib/jmock-junit4.jar"/>
+	<classpathentry kind="lib" path="ivylib/jmock.jar"/>
+	<classpathentry kind="lib" path="ivylib/json-lib.jar"/>
+	<classpathentry kind="lib" path="ivylib/jsp-api.jar"/>
+	<classpathentry kind="lib" path="ivylib/jstl.jar"/>
+	<classpathentry kind="lib" path="ivylib/junit-dep.jar"/>
+	<classpathentry kind="lib" path="ivylib/junit.jar"/>
+	<classpathentry kind="lib" path="ivylib/servlet-api.jar"/>
+	<classpathentry kind="lib" path="ivylib/soln-segment-api.jar" sourcepath="/Segmentation-api"/>
+	<classpathentry kind="lib" path="ivylib/spring-test.jar"/>
+	<classpathentry kind="lib" path="ivylib/spring.jar"/>
+	<classpathentry kind="lib" path="ivylib/standard.jar"/>
+	<classpathentry kind="lib" path="ivylib/log4j.jar"/>
+	<classpathentry kind="lib" path="ivylib/commons-codec.jar"/>
+	<classpathentry kind="output" path="build/classes"/>
+</classpath>
