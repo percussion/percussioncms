@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentEditor commandName="edit" contentTypeId="302" docType="sys_normal" enableRelatedContent="yes" itemLocale="en-us" mode="sys_edit" objectType="1" submitHref="rffBrief.html">
+    <ControlNameSet>
+    <ControlName>sys_DropDownSingle</ControlName>
+    <ControlName>sys_EditBox</ControlName>
+    <ControlName>sys_CalendarSimple</ControlName>
+    <ControlName>sys_CheckBoxTree</ControlName>
+    <ControlName>sys_EditLive</ControlName>
+    <ControlName>sys_HiddenInput</ControlName>
+    </ControlNameSet>
+ <ItemContent newDocument="no">
+      <DisplayField displayType="sys_normal">
+         <DisplayLabel sourceType="sys_local">Tree:</DisplayLabel>
+         <Control accessKey="" dataType="sys_local" dimension="array" isReadOnly="no" isRequired="no" name="sys_CheckBoxTree" paramName="tree">
+            <DisplayChoices>
+               <DisplayEntry selected="no">
+                  <Value>307</Value>
+                  <DisplayLabel>307</DisplayLabel>
+               </DisplayEntry>
+               <DisplayEntry selected="no">
+                  <Value>309</Value>
+                  <DisplayLabel>309</DisplayLabel>
+               </DisplayEntry>
+               <DisplayEntry selected="no">
+                  <Value>318</Value>
+                  <DisplayLabel>318</DisplayLabel>
+               </DisplayEntry>
+            </DisplayChoices>
+            <ParamList>
+               <Param name="tree_src_url">../demo_groovy/run.xml?scriptName=demo/TaxTree.groovy</Param>
+            </ParamList>
+         </Control>
+        <Control/>
+      </DisplayField>
+    </ItemContent>
+</ContentEditor>

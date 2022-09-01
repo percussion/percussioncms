@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx" xsi:schemaLocation="
+   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+   http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
+   http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
+      
+   <bean id="soln_Segment_ct" class="com.percussion.rx.config.impl.PSObjectConfigHandler">
+      <property name="name" value="soln_Segment_ct"/>
+      <property name="type" value="NODEDEF"/>
+      <property name="propertySetters">
+         <list>
+            <bean class="com.percussion.rx.config.impl.PSContentTypeSetter">
+               <property name="properties">
+                  <map>
+					 <entry key="label" value="${soln.segment.Label}"/>
+                     <entry key="defaultWorkflow" value="${soln.segment.DefaultWorkflow}"/>
+                     <entry key="templates" value="${soln.segment.AllowedTemplates}"/>
+                     <entry key="workflows" value="${soln.segment.AllowedWorkflows}"/>
+                  </map>
+               </property>
+            </bean>
+         </list>
+      </property>
+   </bean>
+   	<bean id="soln_Segment_RelationshipConfig"
+		class="com.percussion.rx.config.impl.PSObjectConfigHandler">
+		<property name="name" value="FolderContent" />
+		<property name="type" value="RELATIONSHIP_CONFIGNAME" />
+		<property name="propertySetters">
+			<list>
+				<bean
+					class="com.percussion.rx.config.impl.PSRelationshipConfigEffectSetter">
+					<property name="properties">
+						<map>
+							<entry key="effects"
+								value="${soln.segment.effects}" />
+						</map>
+					</property>
+				</bean>
+			</list>
+		</property>
+	</bean>
+</beans>
