@@ -509,7 +509,6 @@
     <patternset id="upgrade.overwrite">
         <include name="rxconfig/Server/RequestHandlers.xml"/>
         <include name="rxconfig/Server/ContentEditors/ContentEditorSystemDef.xml"/>
-        <include name="rxconfig/Server/ContentEditors/shared/rxs_ct_shared.xml"/>
         <include name="rxconfig/Server/startupProcessManager.properties"/>
         <include name="rxconfig/Server/sys_DatabaseFunctionDefs.xml"/>
         <include name="rxconfig/Installer/**"/>
@@ -659,11 +658,11 @@
     <target name="backupSharedContent">
         <if>
             <not>
-                <available file="${install.dir}/rxconfig/Server/ContentEditors/shared/percussioncms_shared_custom.xml" type="file" />
+                <available file="${install.dir}/rxconfig/Server/ContentEditors/shared/rxs_ct_shared.xml_percbak" type="file" />
             </not>
             <then>
                 <echo>Backup rxs_ct_shared.xml...</echo>
-                <copy file="${install.dir}/rxconfig/Server/ContentEditors/shared/rxs_ct_shared.xml" tofile="${install.dir}/rxconfig/Server/ContentEditors/shared/percussioncms_shared_custom.xml" />
+                <copy file="${install.dir}/rxconfig/Server/ContentEditors/shared/rxs_ct_shared.xml" tofile="${install.dir}/rxconfig/Server/ContentEditors/shared/rxs_ct_shared.xml_percbak" />
             </then>
         </if>
         <echo>Deleting wrong dir from previous install...</echo>
@@ -908,6 +907,81 @@
             </fileset>
         </copy>
 
+        <echo>Adding IMG HASH Mappings for IMG1 and IMG2 </echo>
+        <replace summary="yes">
+            <fileset dir="${install.dir}/ObjectStore" followsymlinks="false" includes="**">
+            <include name="**/*.xml"/>
+            <not>
+                <contains text="IMG1_HASH" casesensitive="false" />
+            </not>
+                <and>
+                    <contains text="IMG1" casesensitive="false" />
+                </and>
+            </fileset>
+
+        <replacetoken><![CDATA[<PSXFieldSet name="sharedimage" repeatability="oneOrMore" supportsSequencing="no" type="multiPropertySimpleChild" userSearchable="yes">]]></replacetoken>
+        <replacevalue><![CDATA[ <PSXFieldSet name="sharedimage" repeatability="oneOrMore" supportsSequencing="no" type="multiPropertySimpleChild" userSearchable="yes">
+                    <PSXField forceBinary="no" modificationType="user" name="img1_hash" showInPreview="yes" showInSummary="yes" type="shared">
+              <DataType></DataType>
+              <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="no" visibleToGlobalQuery="yes"/>
+            </PSXField>
+                   <PSXField forceBinary="no" modificationType="user" name="img2_hash" showInPreview="yes" showInSummary="yes" type="shared">
+              <DataType></DataType>
+              <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="no" visibleToGlobalQuery="yes"/>
+            </PSXField>]]></replacevalue>
+        <replacefilter>
+            <replacetoken><![CDATA[ <PSXDisplayMapping>
+               <FieldRef>img1</FieldRef>
+               <PSXUISet>
+                  <Label>
+                     <PSXDisplayText>Image:</PSXDisplayText>
+                  </Label>
+                  <PSXControlRef id="76" name="sys_File"/>
+                  <ErrorLabel>
+                     <PSXDisplayText>Image:</PSXDisplayText>
+                  </ErrorLabel>
+               </PSXUISet>
+            </PSXDisplayMapping>
+        ]]></replacetoken>
+        <replacevalue><![CDATA[ <PSXDisplayMapping>
+               <FieldRef>img1</FieldRef>
+               <PSXUISet>
+                  <Label>
+                     <PSXDisplayText>Image:</PSXDisplayText>
+                  </Label>
+                  <PSXControlRef id="76" name="sys_File"/>
+                  <ErrorLabel>
+                     <PSXDisplayText>Image:</PSXDisplayText>
+                  </ErrorLabel>
+               </PSXUISet>
+            </PSXDisplayMapping>
+            <PSXDisplayMapping>
+               <FieldRef>img1_hash</FieldRef>
+               <PSXUISet>
+                  <Label>
+                     <PSXDisplayText>Image:</PSXDisplayText>
+                  </Label>
+                  <PSXControlRef id="10003" name="sys_HashedFile"/>
+                  <ErrorLabel>
+                     <PSXDisplayText>Image:</PSXDisplayText>
+                  </ErrorLabel>
+               </PSXUISet>
+            </PSXDisplayMapping>
+            <PSXDisplayMapping>
+               <FieldRef>img2_hash</FieldRef>
+               <PSXUISet>
+                  <Label>
+                     <PSXDisplayText>Mini:</PSXDisplayText>
+                  </Label>
+                  <PSXControlRef id="10005" name="sys_HashedFile"/>
+                  <ErrorLabel>
+                     <PSXDisplayText>Mini:</PSXDisplayText>
+                  </ErrorLabel>
+               </PSXUISet>
+            </PSXDisplayMapping>]]></replacevalue>
+            </replacefilter>
+        </replace>
+
         <echo> updating sys_TinyMCE and sys_EditLive with sys_tinymce in objectstore </echo>
         <replace dir="${install.dir}/ObjectStore">
             <include name="**/*.xml"/>
@@ -918,6 +992,227 @@
             <replacefilter>
                 <replacetoken><![CDATA[name="sys_EditLive"]]></replacetoken>
                 <replacevalue><![CDATA[name="sys_tinymce"]]></replacevalue>
+            </replacefilter>
+        </replace>
+
+        <echo>Adding ITEM_FILE_ATTACHMENT_HASH Mapping </echo>
+        <replace summary="yes">
+            <fileset dir="${install.dir}/ObjectStore" followsymlinks="false" includes="**">
+            <include name="**/*.xml"/>
+
+            <not>
+                <contains text="item_file_attachment_hash" />
+            </not>
+                <and>
+                    <contains text="item_file_attachment" />
+                </and>
+            </fileset>
+        <replacefilter>
+            <replacetoken><![CDATA[    <PSXDisplayMapping>
+              <FieldRef>item_file_attachment</FieldRef>
+                        <PSXUISet accessKey="F"/>
+            </PSXDisplayMapping>
+        ]]></replacetoken>
+        <replacevalue><![CDATA[    <PSXDisplayMapping>
+              <FieldRef>item_file_attachment</FieldRef>
+                        <PSXUISet accessKey="F"/>
+            </PSXDisplayMapping>
+              <PSXDisplayMapping>
+              <FieldRef>item_file_attachment_hash</FieldRef>
+                        <PSXUISet accessKey="H"/>
+            </PSXDisplayMapping>]]></replacevalue>
+            </replacefilter>
+        </replace>
+
+        <echo> updating sys_TinyMCE and sys_EditLive with sys_tinymce in rxs_ct_shared and new columns </echo>
+        <replace dir="${install.dir}/rxconfig/Server/ContentEditors/shared">
+            <include name="**/*.xml"/>
+            <replacefilter>
+                <replacetoken><![CDATA[name="sys_TinyMCE"]]></replacetoken>
+                <replacevalue><![CDATA[name="sys_tinymce"]]></replacevalue>
+            </replacefilter>
+            <replacefilter>
+                <replacetoken><![CDATA[name="sys_EditLive"]]></replacetoken>
+                <replacevalue><![CDATA[name="sys_tinymce"]]></replacevalue>
+            </replacefilter>
+        </replace>
+
+        <echo>Adding IMG HASH Mappings for IMG1 and IMG2 in rxs_ct_shared</echo>
+        <replace summary="yes">
+            <fileset  dir="${install.dir}/rxconfig/Server/ContentEditors/shared" followsymlinks="false" includes="**">
+            <include name="**/*.xml"/>
+
+            <not>
+                <contains text="IMG1_HASH" />
+            </not>
+            </fileset>
+            <replacetoken><![CDATA[<PSXFieldSet name="sharedimage" repeatability="oneOrMore" supportsSequencing="no" type="multiPropertySimpleChild" userSearchable="yes">]]></replacetoken>
+            <replacevalue><![CDATA[<PSXFieldSet name="sharedimage" repeatability="oneOrMore" supportsSequencing="no" type="multiPropertySimpleChild" userSearchable="yes">
+        <PSXField forceBinary="no" modificationType="user" name="img1_hash" showInPreview="yes" showInSummary="yes" type="shared">
+            <DataLocator>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>RXS_CT_SHAREDIMAGE</tableAlias>
+                  <column>IMG1_HASH</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+            </DataLocator>
+            <DataType>text</DataType>
+            <DataFormat>10</DataFormat>
+            <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+            <PSXPropertySet>
+               <PSXProperty locked="yes" name="cleanupBrokenInlineLinks">
+                  <Value type="Boolean">no</Value>
+               </PSXProperty>
+               <PSXProperty locked="yes" name="mayHaveInlineLinks">
+                  <Value type="Boolean">no</Value>
+               </PSXProperty>
+            </PSXPropertySet>
+            <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+         </PSXField>
+        <PSXField forceBinary="no" modificationType="user" name="img2_hash" showInPreview="yes" showInSummary="yes" type="shared">
+            <DataLocator>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>RXS_CT_SHAREDIMAGE</tableAlias>
+                  <column>IMG2_HASH</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+            </DataLocator>
+            <DataType>text</DataType>
+            <DataFormat>10</DataFormat>
+            <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+            <PSXPropertySet>
+               <PSXProperty locked="yes" name="cleanupBrokenInlineLinks">
+                  <Value type="Boolean">no</Value>
+               </PSXProperty>
+               <PSXProperty locked="yes" name="mayHaveInlineLinks">
+                  <Value type="Boolean">no</Value>
+               </PSXProperty>
+            </PSXPropertySet>
+            <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+         </PSXField>]]></replacevalue>
+        <replacefilter>
+            <replacetoken><![CDATA[ <PSXDisplayMapping>
+               <FieldRef>img1</FieldRef>
+               <PSXUISet>
+                  <Label>
+                     <PSXDisplayText>Image:</PSXDisplayText>
+                  </Label>
+                  <PSXControlRef id="76" name="sys_File"/>
+                  <ErrorLabel>
+                     <PSXDisplayText>Image:</PSXDisplayText>
+                  </ErrorLabel>
+               </PSXUISet>
+            </PSXDisplayMapping>
+        ]]></replacetoken>
+        <replacevalue><![CDATA[ <PSXDisplayMapping>
+               <FieldRef>img1</FieldRef>
+               <PSXUISet>
+                  <Label>
+                     <PSXDisplayText>Image:</PSXDisplayText>
+                  </Label>
+                  <PSXControlRef id="76" name="sys_File"/>
+                  <ErrorLabel>
+                     <PSXDisplayText>Image:</PSXDisplayText>
+                  </ErrorLabel>
+               </PSXUISet>
+            </PSXDisplayMapping>
+            <PSXDisplayMapping>
+               <FieldRef>img1_hash</FieldRef>
+               <PSXUISet>
+                  <Label>
+                     <PSXDisplayText>Image:</PSXDisplayText>
+                  </Label>
+                  <PSXControlRef id="10003" name="sys_HashedFile"/>
+                  <ErrorLabel>
+                     <PSXDisplayText>Image:</PSXDisplayText>
+                  </ErrorLabel>
+               </PSXUISet>
+            </PSXDisplayMapping>
+            <PSXDisplayMapping>
+               <FieldRef>img2_hash</FieldRef>
+               <PSXUISet>
+                  <Label>
+                     <PSXDisplayText>Mini:</PSXDisplayText>
+                  </Label>
+                  <PSXControlRef id="10005" name="sys_HashedFile"/>
+                  <ErrorLabel>
+                     <PSXDisplayText>Mini:</PSXDisplayText>
+                  </ErrorLabel>
+               </PSXUISet>
+            </PSXDisplayMapping>]]></replacevalue>
+            </replacefilter>
+        </replace>
+
+        <echo>Adding ITEM_FILE_ATTACHMENT_HASH Mapping </echo>
+        <replace summary="yes">
+            <fileset  dir="${install.dir}/rxconfig/Server/ContentEditors/shared" followsymlinks="false" includes="**">
+            <include name="**/*.xml"/>
+
+            <not>
+                <contains text="ITEM_FILE_ATTACHMENT_HASH" />
+            </not>
+            </fileset>
+            <replacetoken><![CDATA[<PSXFieldSet name="sharedbinary" repeatability="oneOrMore" supportsSequencing="no" type="multiPropertySimpleChild" userSearchable="yes">]]></replacetoken>
+            <replacevalue><![CDATA[<PSXFieldSet name="sharedbinary" repeatability="oneOrMore" supportsSequencing="no" type="multiPropertySimpleChild" userSearchable="yes">
+        <PSXField forceBinary="no" modificationType="user" name="item_file_attachment_hash" showInPreview="yes" showInSummary="yes" type="shared">
+            <DataLocator>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>RXS_CT_SHAREDBINARY</tableAlias>
+                  <column>ITEM_FILE_ATTACHMENT_HASH</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+            </DataLocator>
+            <DataType>text</DataType>
+            <DataFormat>10</DataFormat>
+            <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+            <PSXPropertySet>
+               <PSXProperty locked="yes" name="cleanupBrokenInlineLinks">
+                  <Value type="Boolean">no</Value>
+               </PSXProperty>
+               <PSXProperty locked="yes" name="mayHaveInlineLinks">
+                  <Value type="Boolean">no</Value>
+               </PSXProperty>
+            </PSXPropertySet>
+            <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+         </PSXField>]]></replacevalue>
+        <replacefilter>
+            <replacetoken><![CDATA[   <PSXDisplayMapping>
+               <FieldRef>item_file_attachment</FieldRef>
+               <PSXUISet>
+                  <Label>
+                     <PSXDisplayText>File:</PSXDisplayText>
+                  </Label>
+                  <PSXControlRef id="121" name="sys_File"/>
+                  <ErrorLabel>
+                     <PSXDisplayText>File:</PSXDisplayText>
+                  </ErrorLabel>
+               </PSXUISet>
+            </PSXDisplayMapping>
+        ]]></replacetoken>
+        <replacevalue><![CDATA[   <PSXDisplayMapping>
+               <FieldRef>item_file_attachment</FieldRef>
+               <PSXUISet>
+                  <Label>
+                     <PSXDisplayText>File:</PSXDisplayText>
+                  </Label>
+                  <PSXControlRef id="121" name="sys_File"/>
+                  <ErrorLabel>
+                     <PSXDisplayText>File:</PSXDisplayText>
+                  </ErrorLabel>
+               </PSXUISet>
+            </PSXDisplayMapping>
+             <PSXDisplayMapping>
+               <FieldRef>item_file_attachment_hash</FieldRef>
+               <PSXUISet>
+                  <Label>
+                     <PSXDisplayText>File:</PSXDisplayText>
+                  </Label>
+                  <PSXControlRef id="121" name="sys_File"/>
+                  <ErrorLabel>
+                     <PSXDisplayText>File:</PSXDisplayText>
+                  </ErrorLabel>
+               </PSXUISet>
+            </PSXDisplayMapping>]]></replacevalue>
             </replacefilter>
         </replace>
 
