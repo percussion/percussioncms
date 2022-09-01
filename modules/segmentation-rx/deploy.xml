@@ -1,0 +1,25 @@
+<project name="segmentation-deploy" default="dist" basedir=".">
+	<description>
+       Install extensions on a Rhythmyx 6 server  
+	   The RHYTHMYX_HOME environment variable must be set 
+    </description>
+	<available property="deploy-share-ant" value="deploy-share.xml" 
+		file="deploy-share.xml" type="file" />
+	<available property="deploy-share-ant" value="../Solution-BuildTools/deploy-share.xml"
+		file="../Solution-BuildTools/deploy-share.xml" type="file" />
+	<fail unless="deploy-share-ant">Could not find deploy-share.xml for importing</fail>
+	
+	<import file="${deploy-share-ant}"/>
+	
+	<target name="objectStore" depends="rx,installExtensions">
+		<copy todir="${rhythmyx.home}" verbose="true">
+			<fileset dir="rx">
+				<include name="soln_segment_xml/**" />
+				<include name="ObjectStore/*.xml" />
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="dist" depends="jarcopy,installExtensions,objectStore,spring">
+	</target>
+</project>
