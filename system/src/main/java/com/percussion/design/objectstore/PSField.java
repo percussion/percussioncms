@@ -2675,10 +2675,11 @@ public class PSField extends PSComponent
             setting = "data type";
          else if (fbOverride)
             setting = "force binary";
-         throw new PSSystemValidationException(
+         PSSystemValidationException ex =  new PSSystemValidationException(
             IPSObjectStoreErrors.CE_INVALID_FIELD_OVERRIDE, 
             new Object[] {getSubmitName(), TYPE_ENUM[source.getType()], 
                setting});
+         ms_logger.warn(ex.getMessage());
       }
 
       if(getLocator() != null && source.getLocator() != null)

@@ -205,8 +205,12 @@
                         <PSXUISet accessKey="r"/>
 							</PSXDisplayMapping>
 							<PSXDisplayMapping>
-              <FieldRef>item_file_attachment_hash</FieldRef>
-                        <PSXUISet accessKey="F"/>
+								<FieldRef>item_file_attachment</FieldRef>
+								<PSXUISet accessKey="F"/>
+							</PSXDisplayMapping>
+							<PSXDisplayMapping>
+              				<FieldRef>item_file_attachment_hash</FieldRef>
+                        <PSXUISet accessKey="h"/>
 							</PSXDisplayMapping>
 							<PSXDisplayMapping>
 								<FieldRef>item_file_attachment_filename</FieldRef>
