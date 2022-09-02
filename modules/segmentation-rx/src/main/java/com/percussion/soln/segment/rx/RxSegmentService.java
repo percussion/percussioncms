@@ -25,13 +25,17 @@ import com.percussion.soln.segment.data.ISegmentDataService;
 import com.percussion.utils.timing.PSStopwatch;
 import com.percussion.webservices.PSErrorException;
 import com.percussion.webservices.content.IPSContentWs;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @WebService(serviceName="SegmentService", endpointInterface = "com.percussion.soln.segment.ISegmentService")
 @Path(value = "/segment")
 public class RxSegmentService implements ISegmentService, ISegmentDataService {
 
+    @Autowired
     private IPSContentMgr contentManager;
+    @Autowired
     private IPSContentWs  contentWs;
+    @Autowired
     private IPSGuidManager guidManager;
     
     private String jcrQuery;
