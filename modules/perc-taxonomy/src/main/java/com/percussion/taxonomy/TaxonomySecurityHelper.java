@@ -32,7 +32,7 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.jsoup.Jsoup;
-import org.jsoup.safety.Whitelist;
+import org.jsoup.safety.Safelist;
 
 import com.percussion.services.security.PSRoleMgrLocator;
 import com.percussion.services.security.data.PSCommunity;
@@ -45,7 +45,7 @@ public class TaxonomySecurityHelper {
 	public static final String TAXONOMY_ADMIN_GROUP = "Taxonomy_Admin";
 
 	public static Collection<PSCommunity> getAllCommunities(){
-		Collection<PSCommunity> ret = new ArrayList<PSCommunity>();
+		Collection<PSCommunity> ret;
 		
 		IPSSecurityWs securityWs = PSSecurityWsLocator.getSecurityWebservice();
 		
@@ -56,7 +56,7 @@ public class TaxonomySecurityHelper {
 	}
 	
 	public static List<String> getAllRoles() {
-		List<String> ret = new ArrayList<String>();
+		List<String> ret;
 		ret = new ArrayList(PSRoleMgrLocator.getRoleManager().getDefinedRoles());
 		ret.remove(TAXONOMY_ADMIN_GROUP);
 		Collections.sort(ret);
@@ -68,7 +68,7 @@ public class TaxonomySecurityHelper {
 	}
 
 	public static List<String> getMyRoles() {
-		List<String> ret = new ArrayList<String>();
+		List<String> ret = new ArrayList<>();
 		for (String the_role : StringUtils.split(PSRoleUtilities.getUserRoles(), ",")) {
 			ret.add(StringUtils.strip(the_role));
 		}
@@ -80,8 +80,10 @@ public class TaxonomySecurityHelper {
 		Collection<String> my_roles = getMyRoles();
 		boolean ret = false;
 		for (String the_role : search_in_roles) {
-			if (my_roles.contains(the_role))
+			if (my_roles.contains(the_role)) {
 				ret = true;
+				break;
+			}
 		}
 		return ret;
 	}
@@ -99,6 +101,6 @@ public class TaxonomySecurityHelper {
 	 * @return
 	 */
 	public static String sanitizeInputForXSS(String input){
-		return Jsoup.clean(input, Whitelist.none());
+		return Jsoup.clean(input, Safelist.none());
 	}
 }
