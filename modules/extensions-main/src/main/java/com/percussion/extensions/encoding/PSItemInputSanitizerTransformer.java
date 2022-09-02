@@ -28,7 +28,7 @@ import java.io.File;
 
 import org.apache.commons.lang.StringUtils;
 import org.jsoup.Jsoup;
-import org.jsoup.safety.Whitelist;
+import org.jsoup.safety.Safelist;
 
 import com.percussion.data.PSConversionException;
 import com.percussion.extension.IPSExtensionDef;
@@ -91,7 +91,7 @@ public class PSItemInputSanitizerTransformer implements IPSItemInputTransformer{
 		// expects one comma separated string parameter   
 		PSExtensionParams ep; 
 		String htmlParamCSV;
-		Whitelist whitelist;
+		Safelist safelist;
 		String wp;
 		
 		try{
@@ -101,15 +101,15 @@ public class PSItemInputSanitizerTransformer implements IPSItemInputTransformer{
 			wp = ep.getStringParam(1, "none", false);
 		
 			if(wp.equalsIgnoreCase("simpletext"))
-			   whitelist = Whitelist.simpleText();
+			   safelist = Safelist.simpleText();
 			else if (wp.equalsIgnoreCase("basic"))
-			   whitelist = Whitelist.basic();
+			   safelist = Safelist.basic();
 			else if(wp.equalsIgnoreCase("basicwithimages"))
-			   whitelist = Whitelist.basicWithImages();
+			   safelist = Safelist.basicWithImages();
 			else if(wp.equalsIgnoreCase("relaxed"))
-			   whitelist = Whitelist.relaxed();
+			   safelist = Safelist.relaxed();
 			else
-			   whitelist = Whitelist.none();
+			   safelist = Safelist.none();
 		
 			
 		}catch(PSConversionException e){
@@ -128,7 +128,7 @@ public class PSItemInputSanitizerTransformer implements IPSItemInputTransformer{
 				
 				String v = request.getParameter(s);
 				if(v!=null){
-					request.setParameter(s, Jsoup.clean(v, whitelist));
+					request.setParameter(s, Jsoup.clean(v, safelist));
 				}
 			}
 		}
