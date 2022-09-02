@@ -24,7 +24,6 @@
 
 package com.percussion.html;
 
-import org.jsoup.nodes.Attribute;
 import org.jsoup.nodes.Attributes;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -35,12 +34,13 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
-import javax.swing.text.html.HTML;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Scanner;
 
-import static javax.swing.text.html.CSS.getAllAttributeKeys;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -148,7 +148,7 @@ public class TestAllHTML5Tags {
         globalAttributes.put("accesskey", "A");
         globalAttributes.put("class", "unit-test");
         globalAttributes.put("contenteditable", "true");
-        globalAttributes.put("data-*", "datatesttype");
+       // globalAttributes.put("data-*", "datatesttype");
         globalAttributes.put("dir", "auto");
         globalAttributes.put("draggable", "true");
         globalAttributes.put("hidden", "");
