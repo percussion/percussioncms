@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.percussion.soln.p13n.delivery.data.DeliveryListItem" table="list_item">
+    	<cache usage="nonstrict-read-write" />
+		<id name="contentId" column="content_id" type="long" />
+    	<set name="segmentIds" table="list_segment_ids" lazy="false">
+    		<cache usage="nonstrict-read-write" />
+    		<key column="item_id"/>
+    		<element type="string" column="segment_id"/>
+		</set>
+        <property name="contentType" column="content_type" type="string"/>
+		<list name="snippetFilterIds" table="snippet_filter_ids" lazy="false">
+			<cache usage="nonstrict-read-write" />
+			<key column="list_item_id" not-null="true"/>
+			<list-index column="sort_order" />
+   			<element type="string" column="filter_id"/>
+		</list>
+		<list name="snippets" cascade="all-delete-orphan" lazy="false">
+			<cache usage="nonstrict-read-write" />
+			<key column="list_item_id"/>
+			<list-index column="sort_order" />
+   			<one-to-many 
+   				class="com.percussion.soln.p13n.delivery.data.DeliverySnippetItem" />
+		</list>
+		<map name="properties" table="list_props" lazy="false">
+			<cache usage="nonstrict-read-write" />
+        	<key column="id" />
+        	<map-key column="prop_name" type="string" />
+        	<element column="prop_value" type="string" />
+        </map>
+	</class>
+    <class name="com.percussion.soln.p13n.delivery.data.DeliverySnippetItem" table="snip_item">
+    	<cache usage="nonstrict-read-write" />
+    	<id name="id" column="id" unsaved-value="0">
+    		<generator class="increment" />
+    	</id>
+    	<set name="segmentIds" table="snip_segment_ids" lazy="false">
+    		<cache usage="nonstrict-read-write" />
+    		<key column="item_id"/>
+    		<element type="string" column="segment_id"/>
+		</set>
+    	<property name="contentId" column="content_id" type="long" not-null="true"/>
+        <property name="contentType" column="content_type" type="string"/>
+        <property name="rendering" column="rendering" type="text" length="16384"/>
+        <map name="properties" table="snip_props" lazy="false">
+        	<cache usage="nonstrict-read-write" />
+        	<key column="id" />
+        	<map-key column="prop_name" type="string" />
+        	<element column="prop_value" type="string" />
+        </map>
+    </class>
+</hibernate-mapping>

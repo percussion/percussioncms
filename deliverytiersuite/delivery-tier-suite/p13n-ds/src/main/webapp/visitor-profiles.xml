@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<VisitorProfiles>
+    <profile>
+        <id>1</id>
+        <lockProfile>false</lockProfile>
+        <segmentWeights/>
+        <userId>a</userId>
+        <label>A</label>
+    </profile>
+    <profile>
+        <id>2</id>
+        <lockProfile>false</lockProfile>
+        <segmentWeights/>
+        <userId>b</userId>
+        <label>B</label>
+    </profile>
+</VisitorProfiles>
