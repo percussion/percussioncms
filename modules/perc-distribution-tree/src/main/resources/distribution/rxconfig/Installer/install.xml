@@ -1207,7 +1207,7 @@
                   <Label>
                      <PSXDisplayText>File:</PSXDisplayText>
                   </Label>
-                  <PSXControlRef id="121" name="sys_File"/>
+                  <PSXControlRef id="10005" name="sys_HashedFile"/>
                   <ErrorLabel>
                      <PSXDisplayText>File:</PSXDisplayText>
                   </ErrorLabel>
