@@ -1,4 +1,4 @@
-package test.percussion.soln.p13n.tracking.data;
+package com.percussion.soln.p13n.tracking.data;
 
 import static java.util.Arrays.*;
 import static org.junit.Assert.*;

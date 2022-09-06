@@ -36,6 +36,12 @@
         <option value="$PROJECT_DIR$/modules/SSLTools/pom.xml" />
         <option value="$PROJECT_DIR$/modules/Help/pom.xml" />
         <option value="$PROJECT_DIR$/modules/redirect-tool/pom.xml" />
+        <option value="$PROJECT_DIR$/modules/p13n-api/pom.xml" />
+        <option value="$PROJECT_DIR$/modules/segmentation-api/pom.xml" />
+        <option value="$PROJECT_DIR$/modules/segmentation-rx/pom.xml" />
+        <option value="$PROJECT_DIR$/modules/extensions-landingpage/pom.xml" />
+        <option value="$PROJECT_DIR$/deliverytiersuite/delivery-tier-suite/p13n-ds/pom.xml" />
+        <option value="$PROJECT_DIR$/modules/extensions-serverutils/pom.xml" />
       </list>
     </option>
   </component>

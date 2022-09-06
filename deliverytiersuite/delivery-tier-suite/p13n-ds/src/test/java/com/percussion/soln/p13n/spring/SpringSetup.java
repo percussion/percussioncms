@@ -22,19 +22,26 @@
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
-package com.percussion.soln.p13n.delivery.ds;
+package com.percussion.soln.p13n.spring;
 
-import java.util.List;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.FileSystemXmlApplicationContext;
 
-import com.percussion.soln.p13n.delivery.IDeliverySnippetFilterContext;
-import com.percussion.soln.p13n.delivery.IDeliverySnippetFilter;
-import com.percussion.soln.p13n.delivery.IDeliveryResponseSnippetItem;
-
-public class SpringDeliveryRule implements IDeliverySnippetFilter {
-
-    public List<IDeliveryResponseSnippetItem> filter(IDeliverySnippetFilterContext context,
-            List<IDeliveryResponseSnippetItem> items) {
-        return items;
+public class SpringSetup {
+    static ApplicationContext context;
+    
+    public synchronized static void loadXmlBeanFiles(String... files) {
+        context = new FileSystemXmlApplicationContext(files);
+    }
+    
+    @SuppressWarnings("unchecked")
+    public static <T> T getBean(String name, Class<T> beanType) {
+        if (context == null) throw new IllegalStateException("Context is not loaded. Use loadXmlBeanFiles first.");
+        return (T) context.getBean(name);
+    }
+    
+    public static void destroyContext() {
+        context = null;
     }
 
 }

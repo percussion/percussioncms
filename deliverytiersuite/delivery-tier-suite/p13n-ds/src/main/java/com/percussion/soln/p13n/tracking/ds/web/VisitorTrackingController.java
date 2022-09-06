@@ -10,9 +10,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindException;
 import org.springframework.validation.ValidationUtils;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.percussion.soln.p13n.tracking.VisitorTrackingActionRequest;
@@ -21,13 +23,15 @@ import com.percussion.soln.p13n.tracking.web.IVisitorTrackingHttpService;
 import com.percussion.soln.p13n.tracking.web.VisitorTrackingWebUtils;
 
 @Controller
+@RequestMapping(path={"/track*"})
 public class VisitorTrackingController{
 
 	/**
 	 * The log instance to use for this class, never <code>null</code>.
 	 */
 	private static final Log log = LogFactory.getLog(VisitorTrackingController.class);
-	
+
+	@Autowired
 	private IVisitorTrackingHttpService visitorTrackingHttpService;
 
 	private boolean returnProfile = false;
@@ -41,9 +45,10 @@ public class VisitorTrackingController{
         01,00,01,00,00,02,02,68,01,00,59
     };
 
-	protected ModelAndView handle(HttpServletRequest request,
+	@RequestMapping
+	public ModelAndView handleRequest(HttpServletRequest request,
 			HttpServletResponse response, Object command,
-			BindException errors) throws Exception {
+			BindException errors) throws IOException {
 
 		log.trace("Handling delivery request command : " + command);
 		if (errors.hasErrors()) {
@@ -85,8 +90,6 @@ public class VisitorTrackingController{
 		return outputJSON(visitorTrackingResponse, response);
 	}
 
-
-	@Override
 	protected void onBindAndValidate(HttpServletRequest request, 
 			Object command, BindException errors) throws Exception {
 	    super.onBindAndValidate(request, command, errors);
@@ -120,7 +123,7 @@ public class VisitorTrackingController{
         this.returnProfile = returnProfile;
     }
     public VisitorTrackingController() {
-        setCommandClass(VisitorTrackingActionRequest.class);
+        //setCommandClass(VisitorTrackingActionRequest.class);
     }
 
     public IVisitorTrackingHttpService getVisitorTrackingHttpService() {

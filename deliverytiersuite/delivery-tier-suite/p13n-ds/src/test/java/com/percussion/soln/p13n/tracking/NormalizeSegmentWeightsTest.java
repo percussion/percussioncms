@@ -1,4 +1,5 @@
-package test.percussion.soln.p13n.tracking;
+package com.percussion.soln.p13n.tracking;
+
 import static com.percussion.soln.p13n.tracking.impl.SegmentWeightUtil.*;
 import static org.junit.Assert.*;
 
