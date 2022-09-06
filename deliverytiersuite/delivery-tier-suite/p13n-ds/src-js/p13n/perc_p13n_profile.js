@@ -37,7 +37,7 @@ perc_p13n.getLogger = function(loggerName) {
 		logger.addAppender(perc_p13n._popupAppender);
 	}
 	return logger;
-}
+};
 
 perc_p13n.log = perc_p13n.getLogger("perc_p13n");
 
@@ -46,7 +46,7 @@ perc_p13n.triggerOnProfileEditor = function(profile) {
 	$.each(perc_p13n._onProfileEditor, function(i, func) {
 		func(profile);
 	});	
-}
+};
 
 perc_p13n.bindOnProfileEditor = function(callback, win) {
 	var editor = perc_p13n.getProfileEditor(win);
@@ -57,19 +57,17 @@ perc_p13n.bindOnProfileEditor = function(callback, win) {
 		// The profile editor is ready now.
 		callback(editor);
 	}
-}
+};
 
 perc_p13n.getProfileEditor = function(win) {
 	
 	perc_p13n.log.debug("Getting Profile Editor for window: " + win.location.href);
 	if (typeof win.p13nProfileEditor != "undefined") {
-		perc_p13n.log.debug("Profile Editor is attached to the window object: " 
-			+ win.location.href);
+		perc_p13n.log.debug("Profile Editor is attached to the window object: " + win.location.href);
 		return win.p13nProfileEditor;
 	}
 	else if (typeof top.p13nProfileEditor != "undefined"){
-		perc_p13n.log.debug("Profile Editor is attached to the parent window object for: " 
-			+ win.location.href );
+		perc_p13n.log.debug("Profile Editor is attached to the parent window object for: " + win.location.href );
 		return top.p13nProfileEditor;
 	}
 	else if (top == win){
@@ -87,7 +85,7 @@ perc_p13n.getProfileEditor = function(win) {
 		perc_p13n.log.warn("Profile Editor was not loaded in parent for window: " + win.location.href);
 		return null;
 	}
-}
+};
 
 
 
@@ -140,42 +138,42 @@ P13NProfileEditor.prototype.__registerMenu = function() {
 	q("#p13nMenuAA").click(willDo("openAAPage",this));
 	q("#p13nMenuHideorShow").toggle(willDo("hideOutLine", this), willDo("showOutLine",this));
 	this.log.debug("Finished Registering Menu");
-}
+};
 
 
 P13NProfileEditor.prototype.getMenubarDocument = function() {
 	return this._menubarDocument;
-}
+};
 
 P13NProfileEditor.prototype.setMenubarDocument = function(d) {
 	this.log.debug("Setting menubar dom" + d);
 	this._menubarDocument = d;
 	this.__registerMenu();
-}
+};
 
 
 P13NProfileEditor.prototype.getMainDocument = function() {
 	return this._mainDocument;
-}
+};
 
 P13NProfileEditor.prototype.setMainDocument = function(d) {
 	this.log.debug("Setting main dom" + d);
 	this._mainDocument = d;
-}
+};
 
 P13NProfileEditor.prototype.getSidebarDocument = function() {
 	return this._sidebarDocument;
-}
+};
 
 P13NProfileEditor.prototype.setSidebarDocument = function(d) {
 	this.log.debug("Setting sidebar dom" + d);
 	this._sidebarDocument = d;
 	this.__registerProfileEditor();
-}
+};
 
 P13NProfileEditor.prototype.newProfile = function() {
 	this.loadProfileEditor({newProfile:"true"});
-}
+};
 
 P13NProfileEditor.prototype.loadProfileEditor = function (options, func) {
 	this.log.debug("loading profile editor");
@@ -213,7 +211,7 @@ P13NProfileEditor.prototype.loadProfileEditor = function (options, func) {
 			}
 		);
 	}
-}
+};
 
 P13NProfileEditor.prototype.refreshProfileEditor = function(force) {
 	this.log.debug("Refreshing profile Editor.");
@@ -221,9 +219,9 @@ P13NProfileEditor.prototype.refreshProfileEditor = function(force) {
 		this.loadProfileEditor();
 	}
 	else {
-		this.log.debug("Not Refreshing profile Editor.")
+		this.log.debug("Not Refreshing profile Editor.");
 	}
-}
+};
 
 P13NProfileEditor.prototype.refreshProfileEditorWithTracking = function(data, params) {
 	this.log.debug("Refreshing profile Editor.");
@@ -239,7 +237,8 @@ P13NProfileEditor.prototype.refreshProfileEditorWithTracking = function(data, pa
 			.append('<div class="actionName">Action: ' + params.actionName + "</div>");
 			//.toggle(function(){$(this).hide();}, function(){$(this).show();});
 	});
-}
+};
+
 /**
  * Save profile menu action
  * Saves the profile, if the profile is newProfile then calls the p13nSaveAsProfile. 
@@ -255,7 +254,7 @@ P13NProfileEditor.prototype.saveProfile = function()
 	else {
 		this.submitProfileData("saveProfile");
 	}
-}
+};
 
 P13NProfileEditor.prototype.submitProfileData = function (flag) {
 
@@ -268,14 +267,14 @@ P13NProfileEditor.prototype.submitProfileData = function (flag) {
 		success : willDo("onProfileDataSubmit",p)
 	};
 	q(".p13nProfileData").ajaxSubmit(options);
-}
+};
 
 
 P13NProfileEditor.prototype.saveProfileOnlyToSession = function()
 {
 	this.log.debug("saveProfileOnlyToSession");
 	this.submitProfileData("saveOnlyToSession");
-}
+};
 
 /**
  * SaveAs profile menu action
@@ -288,7 +287,7 @@ P13NProfileEditor.prototype.saveAsProfile = function()
 	var q = queryFrom(this.getSidebarDocument());
 	var p = this;
 	q(".p13nUserData").css("display","block");
-}
+};
 
 
 
@@ -306,7 +305,7 @@ P13NProfileEditor.prototype.onUserDataSave = function() {
 	q(".p13nUserData").css("display","none");
    //$(".p13nProfileData").ajaxSubmit(p13nHandleProfileDataSubmit);
    this.saveProfile();
-}
+};
 
 P13NProfileEditor.prototype.onProfileDataSubmit = function(domObj, responseText, statusText) {
 	this.log.debug("onProfileDataSubmitted");
@@ -329,7 +328,7 @@ P13NProfileEditor.prototype.onProfileDataSubmit = function(domObj, responseText,
    this.profileEditorIsDirty = false;
    this.previewPageIsDirty = true;
    this.refreshPreviewPage(true);
-}
+};
 
 /**
  * User data cancel handling function. Resets the user id and label fields.
@@ -340,33 +339,33 @@ P13NProfileEditor.prototype.onUserDataCancel = function() {
 	q(".p13nUserData").css("display","none");
 	q("#p13nUserDataInputID").val("");
 	q("#p13nUserDataInputLabel").val("");
-}
+};
 
 /**
  * Delete profile menu action
  */
 P13NProfileEditor.prototype.deleteProfile = function() {
-	this.log.debug("!! deleteProfile !!")
-	var profileid = this.getSelectedProfileId()
+	this.log.debug("!! deleteProfile !!");
+	var profileid = this.getSelectedProfileId();
 	var params = profileid == 0 ? {} : { id : profileid, deleteProfile : "true"};
 	this.loadProfileEditor(params);
-}
+};
 
 P13NProfileEditor.prototype.getPreviewPageUrl = function() {
 	return parent.frameMain.location.href.toString();
-}
+};
 
 P13NProfileEditor.prototype.setPreviewPageUrl = function(url) {
 	parent.frameMain.location.href = url;
-}
+};
 
 P13NProfileEditor.prototype.getSidebarUrl = function() {
 	return parent.frameSidebar.location.href.toString();
-}
+};
 
 P13NProfileEditor.prototype.setSidebarUrl = function(url) {
 	parent.frameSidebar.location.href = url;
-}
+};
 
 /**
  * Refreshes the page with the updated profile values
@@ -397,7 +396,7 @@ P13NProfileEditor.prototype.refreshPreviewPage = function(force) {
 		iframe.src = src;
 	}
 	*/
-}
+};
 
 /**
  * Function to handle hiding the outline
@@ -412,7 +411,7 @@ P13NProfileEditor.prototype.hideOutLine = function()
 	//$("#ProfileEditPane").css("display","none")
 	//$('#frameSidebar').parent().get(0).cols = "0,*";
 	$(this._mainDocument).find('#framesetMain').get(0).cols="0,*";
-}
+};
 
 /**
  * Function to handle show the outline
@@ -426,7 +425,7 @@ P13NProfileEditor.prototype.showOutLine = function()
 	//TODO fix me
 	//$("#ProfileEditPane").css("display","block");
 	$(this._mainDocument).find('#framesetMain').get(0).cols = "250,*";
-}
+};
 
 /**
  * Function to open the active assemble page.
@@ -438,7 +437,7 @@ P13NProfileEditor.prototype.openAAPage = function()
 	link = link.replace("sys_template", "sys_variantid");
 	link = link + "&sys_command=editrc";
 	window.open(link);
- }
+ };
 
 
 
@@ -495,14 +494,14 @@ P13NProfileEditor.prototype.__registerProfileEditor = function()
 	 */
 	setTimeout(function() { q(".trackingMessage").fadeIn("fast"); }, 1500);
 	this.log.debug("Finished Register Profile Editor");
-}
+};
 
 P13NProfileEditor.prototype.onProfileEditorLoad = function() {
 	this.log.debug("Profile Editor Loaded");
 	this.__registerProfileEditor();
 	this.profileEditorIsDirty = false;
 	this.refreshPreviewPage(false);
-}
+};
 
 P13NProfileEditor.prototype.onPreviewPageLoad = function () {
 	this.log.debug("Preview Page Loaded");
@@ -510,22 +509,22 @@ P13NProfileEditor.prototype.onPreviewPageLoad = function () {
 	//The tracking system will refresh the profile editor
 	//see perc_p13n_track.js
 	//this.refreshProfileEditor(true);
-}
+};
 
 P13NProfileEditor.prototype.getSelectedProfileId = function() {
 	var q = queryFrom(this.getSidebarDocument());
 	var psBox = q(".p13nProfileSelect").get(0);
 	return psBox.options[psBox.options.selectedIndex].value;
-}
+};
 /**
  * Handles the profile changes. 
  * Reloads the profile editor with the selected profile id.
  */
 P13NProfileEditor.prototype.onProfileChange = function() {
-	var profileid = this.getSelectedProfileId()
+	var profileid = this.getSelectedProfileId();
 	var params = profileid == 0 ? {} : { id : profileid, switchProfile : "true"};
 	this.loadProfileEditor(params);
-}
+};
 
 
 P13NProfileEditor.prototype.focusSegmentInput = function(id) {
@@ -533,7 +532,7 @@ P13NProfileEditor.prototype.focusSegmentInput = function(id) {
 	var q = queryFrom(this.getSidebarDocument());
 	q("#segmentWeights_" + id).parents().filter("li.expandable").children(".hitarea").click();
 	q("#segmentWeights_" + id).focus();
-}
+};
 
 /**
  * Handles the segment weight click changes.
@@ -546,7 +545,7 @@ P13NProfileEditor.prototype.onSegmentWeightClick = function(html) {
     }
   	this.selectedNode = $(html);
 	
-}
+};
 
 P13NProfileEditor.prototype.handleTreeHighLighting = function() {
 	var p = this;
@@ -559,7 +558,7 @@ P13NProfileEditor.prototype.handleTreeHighLighting = function() {
 			p.handleNodeHighLighting(nameNode, "bold");
 		}
    	});
-}
+};
 
 P13NProfileEditor.prototype.handleNodeHighLighting = function(jqNode,fwt)
 {
@@ -586,4 +585,4 @@ P13NProfileEditor.prototype.handleNodeHighLighting = function(jqNode,fwt)
       }
       this.handleNodeHighLighting(chSpan,fwt);
    }
-}
+};

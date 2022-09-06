@@ -12,11 +12,14 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.time.StopWatch;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.validation.ValidationUtils;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.percussion.soln.p13n.delivery.DeliveryException;
@@ -44,7 +47,6 @@ public class DeliveryController {
     private IVisitorTrackingHttpService visitorTrackingHttpService;
     
     public DeliveryController() {
-        super(DeliveryRequest.class);
     }
 
 
@@ -172,8 +174,12 @@ public class DeliveryController {
     private VisitorProfile getVisitorProfile (HttpServletRequest request) {
         return getVisitorTrackingHttpService().resolveProfile(null, request);
     }
-    
-    
+
+    @RequestMapping
+    public void handleRequest(MockHttpServletRequest request, MockHttpServletResponse response) {
+    }
+
+
     protected static class BadJSONDeliveryRequest extends DeliveryRequest {
     }
 
@@ -190,7 +196,8 @@ public class DeliveryController {
             }
             return target;
         }
-        return super.getCommand(request);
+
+        RequestMappingHandler
     }
     
     

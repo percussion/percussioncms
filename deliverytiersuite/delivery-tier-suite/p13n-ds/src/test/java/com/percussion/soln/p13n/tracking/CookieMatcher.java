@@ -7,7 +7,7 @@
  * work including confidential and proprietary information of Percussion.
  *
  *****************************************************************************/
-package test.percussion.soln.p13n.tracking;
+package com.percussion.soln.p13n.tracking;
 
 import javax.servlet.http.Cookie;
 

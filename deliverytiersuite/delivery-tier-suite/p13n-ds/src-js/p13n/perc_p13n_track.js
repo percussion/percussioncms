@@ -71,8 +71,8 @@ function p13nTrack(params) {
 
 		var header = '<div class="header">';
 		var body = 'ID=';
-		body = body + data.visitorProfileId + "<br>"
-		body = body + "STATUS=" + data.status + "<br>"
+		body = body + data.visitorProfileId + "<br>";
+		body = body + "STATUS=" + data.status + "<br>";
 		body = body + "meta=" + getmetacontents("segments");
 
 		var footer = '<' + '/div>';
@@ -96,7 +96,7 @@ function p13nTrack(params) {
 		 */
 		jQuery('html *').trigger("p13nAfterTracking", [ data, params ]);
 	});
-	;
+
 }
 
 function addTrackingSegmentWeight(params, name, value) {

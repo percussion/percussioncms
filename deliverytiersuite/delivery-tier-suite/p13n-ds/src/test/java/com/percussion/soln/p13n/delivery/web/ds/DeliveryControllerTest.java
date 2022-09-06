@@ -1,4 +1,4 @@
-package test.percussion.soln.p13n.delivery.web.ds;
+package com.percussion.soln.p13n.delivery.web.ds;
 
 import static java.util.Arrays.*;
 import static org.junit.Assert.*;

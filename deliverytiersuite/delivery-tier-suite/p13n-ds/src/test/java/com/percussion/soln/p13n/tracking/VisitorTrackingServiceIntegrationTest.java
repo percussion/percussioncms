@@ -22,7 +22,7 @@
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
-package integrationtest.p13n.tracking;
+package com.percussion.soln.p13n.tracking;
 
 import static integrationtest.spring.SpringSetup.*;
 import static org.junit.Assert.*;

@@ -9,7 +9,7 @@ Javascript functions to manipulate the P13N edit
  */
 /**
  * Variable to hold on to the selected node. 
- * This is set when a prfile weight node is selected and reset to null when the profile editor is loaded.
+ * This is set when a profile weight node is selected and reset to null when the profile editor is loaded.
  */
 //$(parent.frameSidebar.document).find('#ProfileEditPane').click(function() { alert("hello"); });
 var p13nSelectedNode = null;
@@ -53,11 +53,11 @@ $(document).ready(function(){
 //Not used anymore.
 p13nLoadProfileEditor = function() {
 	$("#ProfileEditPane").load(profileEditorUrl,{},p13nProfileEditorLoadedRefreshContentPage);
-}
+};
 
 p13nRefreshProfileEditor = function() {
 	$("#ProfileEditPane").load(profileEditorUrl + " #ProfileEditPane",{},p13nProfileEditorLoaded);
-}
+};
 
 /**
  * New profile menu action
@@ -66,7 +66,7 @@ p13nRefreshProfileEditor = function() {
 p13nNewProfile = function()
 {
 	$("#ProfileEditPane").load(profileEditorUrl,{newProfile:"true"},p13nProfileEditorLoadedRefreshContentPage);
-}
+};
 
 /**
  * Save profile menu action
@@ -86,7 +86,7 @@ p13nSaveProfile = function()
 		success : p13nHandleProfileDataSubmit
 	};
 	$(".p13nProfileData").ajaxSubmit(options);
-}
+};
 
 p13nSaveProfileOnlyToSession = function()
 {
@@ -100,7 +100,7 @@ p13nSaveProfileOnlyToSession = function()
 		} 
 	};
 	$(".p13nProfileData").ajaxSubmit(options);
-}
+};
 
 /**
  * SaveAs profile menu action
@@ -111,7 +111,7 @@ p13nSaveProfileOnlyToSession = function()
 p13nSaveAsProfile = function()
 {
 	$(".p13nUserData").css("display","block");
-}
+};
 
 /**
  * Saves the new profile. 
@@ -124,7 +124,7 @@ p13nUserDataSave = function()
 	$(".p13nUserData").css("display","none");
    //$(".p13nProfileData").ajaxSubmit(p13nHandleProfileDataSubmit);
    p13nSaveProfile();
-}
+};
 
 p13nHandleProfileDataSubmit = function(responseText, statusText)
 {
@@ -147,7 +147,7 @@ p13nHandleProfileDataSubmit = function(responseText, statusText)
    handleTreeHighLighting();
    p13nRefreshPage();
    p13nPreviewPageIsDirty = false;
-}
+};
 
 /**
  * User data cancel handling function. Resets the user id and label fields.
@@ -157,7 +157,7 @@ p13nUserDataCancel = function()
 	$(".p13nUserData").css("display","none");
 	$("#p13nUserDataInputID").val("");
 	$("#p13nUserDataInputLabel").val("");
-}
+};
 
 /**
  * Delete profile menu action
@@ -165,7 +165,7 @@ p13nUserDataCancel = function()
 p13nDeleteProfile = function()
 {
 	alert("This feature has not yet been implemented.");
-}
+};
 
 /**
  * Refreshes the page with the updated profile values
@@ -188,7 +188,7 @@ p13nRefreshPage = function()
 		iframe.src = src;
 	}
 	
-}
+};
 
 p13nResizePreviewFrame = function ()
 {
@@ -205,7 +205,7 @@ p13nResizePreviewFrame = function ()
   	}
   	iframe.width = width;
   	p13nRefreshProfileEditor();
-}
+};
 
 /**
  * Function to handle hiding the outline
@@ -214,7 +214,7 @@ p13nHideOutLine = function()
 {
 	$("#p13nMenuHideorShow").text("Show Outline");
 	$("#ProfileEditPane").css("display","none");
-}
+};
 
 /**
  * Function to handle show the outline
@@ -223,7 +223,7 @@ p13nShowOutLine = function()
 {
 	$("#p13nMenuHideorShow").text("Hide Outline");
 	$("#ProfileEditPane").css("display","block");
-}
+};
 
 /**
  * Function to open the active assemble page.
@@ -235,7 +235,7 @@ p13nOpenAAPage = function()
 	link = link.replace("sys_template", "sys_variantid");
 	link = link + "&sys_command=editrc";
 	window.open(link);
- }
+ };
 
 /**
  * Function executed when the profile editor loaded.
@@ -272,12 +272,12 @@ p13nProfileEditorLoaded = function()
 		p13nFocusSegmentInput(this.id.replace("cloud_segment_","")); 
 	});
 	
-}
+};
 
 p13nProfileEditorLoadedRefreshContentPage = function() {
 	p13nProfileEditorLoaded();
 	p13nRefreshPage();
-}
+};
 
 /**
  * Handles the profile changes. 
@@ -289,14 +289,14 @@ p13nProfileChange = function()
 	var profileid = psBox.options[psBox.options.selectedIndex].value;
 	var params = profileid == 0 ? {} : { id : profileid, switchProfile : "true"};
 	$("#ProfileEditPane").load(profileEditorUrl, params,p13nProfileEditorLoadedRefreshContentPage);
-}
+};
 
 
 p13nFocusSegmentInput = function(id)
 {
 	$("#segmentWeights_" + id).parents().filter("li.expandable").children(".hitarea").click();
 	$("#segmentWeights_" + id).focus();
-}
+};
 
 /**
  * Handles the segment weight click changes.
@@ -310,7 +310,7 @@ handleSegmentWeightClick = function()
 
   	p13nSelectedNode = $(this);
 	
-}
+};
 
 handleTreeHighLighting = function()
 {
@@ -320,7 +320,7 @@ handleTreeHighLighting = function()
    		var nameNode = $(w).siblings(".p13nSegmentWeightSpan");
    		handleNodeHighLighting(nameNode, "bold");
    });
-}
+};
 
 handleNodeHighLighting = function(jqNode,fwt)
 {
@@ -347,4 +347,4 @@ handleNodeHighLighting = function(jqNode,fwt)
       }
       handleNodeHighLighting(chSpan,fwt);
    }
-}
+};
