@@ -145,7 +145,6 @@ public class PSXmlDomUtils
       if (null == cx)
          throw new IllegalArgumentException("PSXmlDomContext cannot be null");
 
-      String tidiedHTML = tidyInput(cx, HTMLString);
       String tidiedOutput;
 
       /*
@@ -157,13 +156,13 @@ public class PSXmlDomUtils
       doctypeHeader += "<!DOCTYPE html [" +
             getDefaultEntities(cx.getServerRoot()) + "]>" + NEWLINE + NEWLINE;
 
-      if (hasXMLHeaders(tidiedHTML))
+      if (hasXMLHeaders(HTMLString))
       {
-         tidiedOutput = tidiedHTML;         
+         tidiedOutput = HTMLString;
       }
       else
       {
-         tidiedOutput = doctypeHeader + tidiedHTML;
+         tidiedOutput = doctypeHeader + HTMLString;
       }
       if (cx.isLogging())
       {
@@ -215,135 +214,6 @@ public class PSXmlDomUtils
       }
 
       return resultDoc;
-   }
-
-
-   /**
-    * Tidy the incoming document, based on the settings in the operation
-    * context.
-    * 
-    * @param cx the PSXmlDomContext for this request, must not be
-    *           <code>null</code>.
-    * 
-    * @param htmlInput a String containing the input to be tidied, if blank
-    *           returns empty string.
-    * 
-    * @returns the tidied output in a String, never <code>null</code> may be
-    *          empty.
-    * 
-    */
-   public static String tidyInput(PSXmlDomContext cx, String htmlInput)
-         throws IOException,PSExtensionProcessingException {
-      if (StringUtils.isBlank(htmlInput)) {
-         return StringUtils.EMPTY;
-      }
-      if (cx == null)
-         throw new IllegalArgumentException("cx must not be null");
-
-      org.jsoup.nodes.Node content = Jsoup.parse(htmlInput).body().unwrap();
-      String returnString = htmlInput;
-      if (content != null) {
-         returnString = content.toString();
-      }
-
-      return returnString;
-
-      
-//      if (!cx.isTidyEnabled())
-//      {
-//         cx.printTraceMessage("Tidy Not Enabled");
-//         return htmlInput;
-//      }
-
-//      Tidy tidy = new Tidy();
-//      tidy.setConfigurationFromProps(cx.getTidyProperties());
-//      tidy.setInputEncoding("UTF-8");
-//      tidy.setOutputEncoding("UTF-8");
-//
-//      if (cx.isLogging())
-//      {
-//         cx.printTraceMessage("writing trace file xmldompretidy.doc");
-//         try(FileOutputStream preTidy = new FileOutputStream("xmldompretidy.doc")) {
-//            preTidy.write(htmlInput.getBytes(DEBUG_ENCODING));
-//         }
-//      }
-//
-//      try(ByteArrayInputStream bystream = new ByteArrayInputStream(htmlInput.getBytes("UTF-8"))){
-//         StringWriter tidyErrors = new StringWriter();
-//         tidy.setErrout(new PrintWriter((Writer) tidyErrors));
-//         Document TidyXML = tidy.parseDOM(bystream, null);
-//         /*
-//          * The following code adds a non-breaking space as the first body
-//          * node in case the body only contains comments. This is to work
-//          * around a bug in eWebEditPro, which is removing all comments on load
-//          * if there are only comments. Adding a non-breaking space is ektrons
-//          * recommended workaround.
-//          */
-//         if (cx.rxCommentHandling())
-//         {
-//            NodeList nodes = TidyXML.getElementsByTagName("body");
-//            if (nodes != null && nodes.getLength() > 0)
-//            {
-//               Element body = (Element) nodes.item(0);
-//               NodeList children = body.getChildNodes();
-//               if (children != null)
-//               {
-//                  boolean commentOnly = true;
-//                  for (int i=0; commentOnly && i<children.getLength(); i++)
-//                  {
-//                     Node child = children.item(i);
-//                     commentOnly = child.getNodeType() == Node.COMMENT_NODE;
-//                  }
-//
-//                  if (commentOnly)
-//                  {
-//                     char nbsp = '\u00a0';
-//                     Text text = TidyXML.createTextNode("" + nbsp);
-//                     body.insertBefore(text, children.item(0));
-//                  }
-//               }
-//            }
-//         }
-//
-//         if (tidy.getParseErrors() > 0)
-//         {
-//            cx.printTraceMessage("Tidy Errors: " + tidyErrors.toString());
-//            throw new PSExtensionProcessingException(0,
-//                                                  "Errors encoutered in Tidy" +
-//                                                  tidyErrors.toString());
-//         }
-//
-//         // Write out the document element using PSNodePrinter. This removes
-//         // the Xml and Doctype declaration.
-//         StringWriter swriter = new StringWriter();
-//         PSNodePrinter np = new PSNodePrinter(swriter);
-//         np.printNode(TidyXML.getDocumentElement());
-//         String result = swriter.toString();
-//
-//         if(cx.getUsePrettyPrint())
-//         {
-//            try(ByteArrayInputStream xmlStream = new ByteArrayInputStream(result.getBytes(ENCODING))) {
-//               TidyXML = tidy.parseDOM(xmlStream, null);
-//               try (ByteArrayOutputStream tidiedStream = new ByteArrayOutputStream()) {
-//                  tidy.pprint(TidyXML, (OutputStream) tidiedStream);
-//                  result = tidiedStream.toString(ENCODING);
-//               }
-//            }
-//         }
-//         if (cx.isLogging())
-//         {
-//            cx.printTraceMessage("writing trace file xmldomtidied.doc");
-//            try(FileOutputStream fs = new FileOutputStream("xmldomtidied.doc")) {
-//               PrintWriter pw = new PrintWriter(fs);
-//               pw.println(result);
-//               pw.flush();
-//               pw.close();
-//            }
-//         }
-//         return result;
-      //}
-
-
    }
 
    /**
