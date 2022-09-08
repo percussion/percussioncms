@@ -231,22 +231,22 @@ public class TestAllHTML5Tags {
 
     Elements tags = parsedDoc.select("a[class=unit-test]");
     assertTrue(tags.size()>0);
-        Map<String, String> aAttributes = new HashMap<String, String>();
-        aAttributes.put("download", "downloadTest");
-        aAttributes.put("href", "https://www.w3schools.com/TAGS/default.ASP");
-        aAttributes.put("hreflang", "en");
-        aAttributes.put("media", "all");
-        aAttributes.put("referrerpolicy", "no-referrer");
-        aAttributes.put("rel", "nofollow");
-        aAttributes.put("target", "_blank");
-        aAttributes.put("type", "text/html");
-        aAttributes.put("ping", "alternate");
+        Map<String, String> Attributes = new HashMap<String, String>();
+        Attributes.put("download", "downloadTest");
+        Attributes.put("href", "https://www.w3schools.com/TAGS/default.ASP");
+        Attributes.put("hreflang", "en");
+        Attributes.put("media", "all");
+        Attributes.put("referrerpolicy", "no-referrer");
+        Attributes.put("rel", "nofollow");
+        Attributes.put("target", "_blank");
+        Attributes.put("type", "text/html");
+        Attributes.put("ping", "alternate");
 
         for (Element tag:tags) {
             Attributes attrs = tag.attributes();
             verifyAttributes(tag,globalAttributes);
             verifyAttributes(attrs,eventAttribute);
-            verifyAttributes(attrs,aAttributes);
+            verifyAttributes(attrs,Attributes);
         }
     }
 
@@ -299,14 +299,26 @@ public class TestAllHTML5Tags {
     @Test
     public void testAreaTag(){
 
-        Elements tags = parsedDoc.select("Area");
+        Elements tags = parsedDoc.select("area[class=unit-test]");
         assertTrue(tags.size()>0);
-        String[] areaAttributes = {"download", "href", "hreflang", "media", "alt","coords", "referrerpolicy", "rel", "shape", "target", "type"};
+        Map<String, String> Attributes = new HashMap<String, String>();
+        Attributes.put("download", "downloadTest");
+        Attributes.put("href", "https://www.w3schools.com/TAGS/default.ASP");
+        Attributes.put("hreflang", "en");
+        Attributes.put("media", "all");
+        Attributes.put("referrerpolicy", "no-referrer");
+        Attributes.put("rel", "nofollow");
+        Attributes.put("target", "_blank");
+        Attributes.put("type", "text/html");
+        Attributes.put("shape", "rect");
+        Attributes.put("alt", "testalt");
+        Attributes.put("coords", "0,0,0,0");
+
         for (Element tag:tags) {
             Attributes attrs = tag.attributes();
-//            verifyAttributes(attrs,globalAttributes);
-//            verifyAttributes(attrs,eventAttribute);
-            //verifyAttributes(attrs,areaAttributes);
+            verifyAttributes(tag,globalAttributes);
+            verifyAttributes(attrs,eventAttribute);
+            verifyAttributes(attrs,Attributes);
         }
 
     }
@@ -328,14 +340,24 @@ public class TestAllHTML5Tags {
     @Test
     public void testAudioTag(){
 
-        Elements tags = parsedDoc.select("audio");
+
+
+        Elements tags = parsedDoc.select("audio[class=unit-test]");
         assertTrue(tags.size()>0);
-        String[] audioAttributes = {"autoplay", "controls", "loop", "muted", "preload", "src"};
+        Map<String, String> Attributes = new HashMap<String, String>();
+        Attributes.put("autoplay", "true");
+        Attributes.put("controls", "true");
+        Attributes.put("muted", "true");
+        Attributes.put("loop", "true");
+        Attributes.put("preload", "no-referrer");
+        Attributes.put("src", "nofollow");
+
+
         for (Element tag:tags) {
             Attributes attrs = tag.attributes();
-//            verifyAttributes(attrs,globalAttributes);
-//            verifyAttributes(attrs,eventAttribute);
-            //verifyAttributes(attrs,audioAttributes);
+            verifyAttributes(tag,globalAttributes);
+            verifyAttributes(attrs,eventAttribute);
+            verifyAttributes(attrs,Attributes);
         }
 
     }
@@ -358,14 +380,19 @@ public class TestAllHTML5Tags {
     @Test
     public void testBaseTag(){
 
-        Elements tags = parsedDoc.select("base");
+
+        Elements tags = parsedDoc.select("area[class=unit-test]");
         assertTrue(tags.size()>0);
-        String[] baseAttributes = {"href", "target"};
+        Map<String, String> areaAttributes = new HashMap<String, String>();
+        areaAttributes.put("href", "downloadTest");
+        areaAttributes.put("target", "https://www.w3schools.com/TAGS/default.ASP");
+
+
         for (Element tag:tags) {
             Attributes attrs = tag.attributes();
-//            verifyAttributes(attrs,globalAttributes);
-//            verifyAttributes(attrs,eventAttribute);
-            //verifyAttributes(attrs,baseAttributes);
+            verifyAttributes(tag,globalAttributes);
+            verifyAttributes(attrs,eventAttribute);
+            verifyAttributes(attrs,areaAttributes);
         }
 
     }
@@ -484,13 +511,13 @@ public class TestAllHTML5Tags {
     @Test
     public void testCaptionTag(){
 
-        Elements tags = parsedDoc.select("caption");
+        Elements tags = parsedDoc.select("caption[class=unit-test]");
         assertTrue(tags.size()>0);
-        String[] canvasAttributes = {"height", "width"};
         for (Element tag:tags) {
             Attributes attrs = tag.attributes();
-//            verifyAttributes(attrs,globalAttributes);
-//            verifyAttributes(attrs,eventAttribute);
+            verifyAttributes(attrs,globalAttributes);
+            verifyAttributes(attrs,eventAttribute);
+
         }
 
     }
@@ -647,7 +674,7 @@ public class TestAllHTML5Tags {
     @Test
     public void testDivTag(){
 
-//        Elements tags = parsedDoc.select("div   [class=unit-test]");
+//        Elements tags = parsedDoc.select("div[class=unit-test]");
 //        assertTrue(tags.size()>0);
 //        for (Element tag:tags) {
 //            Attributes attrs = tag.attributes();
@@ -966,9 +993,14 @@ public class TestAllHTML5Tags {
     @Test
     public void testKBDTag(){
 
-        Elements tags = parsedDoc.select("kbd");
-        assertTrue(tags.size()>0);
-        //TODO: Test attributes of a tag
+//        Elements tags = parsedDoc.select("kbd[class=unit-test]");
+//        assertTrue(tags.size()>0);
+//        for (Element tag:tags) {
+//            Attributes attrs = tag.attributes();
+//            verifyAttributes(attrs,globalAttributes);
+//            verifyAttributes(attrs,eventAttribute);
+//
+//        }
 
     }
 
@@ -1187,10 +1219,14 @@ public class TestAllHTML5Tags {
     @Test
     public void testPreformattedTextTag(){
 
-        Elements tags = parsedDoc.select("pre");
-        assertTrue(tags.size()>0);
-        //TODO: Test attributes of a tag
-
+//        Elements tags = parsedDoc.select("pre[class=unit-test]");
+//        assertTrue(tags.size()>0);
+//        for (Element tag:tags) {
+//            Attributes attrs = tag.attributes();
+//            verifyAttributes(attrs,globalAttributes);
+//            verifyAttributes(attrs,eventAttribute);
+//
+//        }
     }
 
     @Test
@@ -1269,10 +1305,14 @@ public class TestAllHTML5Tags {
     @Test
     public void testSampleTag(){
 
-        Elements tags = parsedDoc.select("samp");
+        Elements tags = parsedDoc.select("samp[class=unit-test]");
         assertTrue(tags.size()>0);
-        //TODO: Test attributes of a tag
+        for (Element tag:tags) {
+            Attributes attrs = tag.attributes();
+            verifyAttributes(attrs,globalAttributes);
+            verifyAttributes(attrs,eventAttribute);
 
+        }
     }
 
     @Test
