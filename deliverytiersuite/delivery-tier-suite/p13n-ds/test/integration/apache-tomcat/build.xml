@@ -1,0 +1,296 @@
+<?xml version="1.0"?>
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<project name="tomcat-embed" default="start" basedir=".">
+
+  <property file="${user.home}/build.properties"/>
+  <property file="build.properties"/>
+
+  <property name="tomcat.home" location="." />
+  <!-- This matches the build struct with build and embed at the same level -->
+  <property name="tomcat.webapps" location="${tomcat.home}/webapps" />
+
+  <path id="tomcatCP-extra" /> 
+
+  <target name="init" unless="init.done">
+
+    <path id="tomcatCP" >
+      <path refid="tomcatCP-extra"/>
+
+      <!-- Just include everything for now -->
+      <fileset dir="${tomcat.home}/lib" includes="*.jar"/>
+      <pathelement  path="${tomcat.home}/conf"/>
+    </path>
+
+    <taskdef resource="org/apache/commons/modeler/ant/ant.properties"
+             classpathref="tomcatCP" />
+    <property name="init.done" value="true"/>
+
+    <available classname="com.sun.jdmk.comm.HtmlAdaptorServer"
+               property="jmxritools-available" 
+               classpathref="tomcatCP" />
+
+    <available classname="mx4j.adaptor.http.XSLTProcessor"
+               property="mx4jtools-available" 
+               classpathref="tomcatCP" />
+  </target>
+
+
+  <!-- ==================== Console - for debugging. ==================== 
+       Call this target if you want the console added.
+  -->
+
+  <target name="jmx-console" depends="jmx-console-ri,jmx-console-mx4j" />
+
+  <target name="jmx-console-ri" 
+          depends="init" 
+          description="Enable JMX-RI console ( web interface )" 
+          if="jmxritools-available">
+
+    <jmx-service>
+      <mbean code="com.sun.jdmk.comm.HtmlAdaptorServer"
+             name="jmx-console:type=HtmlAdaptorServer,port=9988">
+         <attribute name="Port" value="9988"/>
+     </mbean>
+    </jmx-service>    
+
+  </target>
+
+  <target name="jmx-console-mx4j" 
+          depends="init" 
+          description="Enable JMX console ( mx4j )" 
+          if="mx4jtools-available">
+
+    <jmx-service>
+      <mbean code="mx4j.adaptor.http.XSLTProcessor"
+             name="Http:name=XSLTProcessor">
+      </mbean>
+      <mbean code="mx4j.adaptor.http.HttpAdaptor"
+             name="Http:name=HttpAdaptor">
+         <attribute name="Port" value="9998"/>
+         <attribute name="ProcessorName" value="Http:name=XSLTProcessor"/>
+     </mbean>
+    </jmx-service>    
+
+  </target>
+
+  <!-- ======================= Proxy test ================ -->
+  <target name="proxy-run" depends="init,jmx-console,proxy" />
+
+  <target name="proxy" depends="init"
+        description="Start a JMX proxy service">
+    <property name="localDomain" value="catalina.proxy" />
+    <property name="remoteDomain" value="catalina" />
+
+    <jmx-service>
+       <mbean code="org.apache.commons.modeler.mbeans.SimpleRemoteConnector"
+              name="modjk:type=jmxProxy,name=apache80" 
+              modeler="true" >
+         <attribute name="webServerPort"  value="80"/>
+         <attribute name="statusPath"  value="/jkstatus"/>
+         <attribute name="filter"  value="*"/>
+         <attribute name="user"  value="tomcat"/>
+         <attribute name="pass"  value="tomcat"/>
+       </mbean>
+    </jmx-service>
+   
+    <jmx-service>
+       <mbean code="org.apache.commons.modeler.mbeans.SimpleRemoteConnector"
+              name="modjk:type=jmxProxy,name=apache8003" 
+              modeler="true" >
+         <attribute name="webServerPort"  value="8003"/>
+         <attribute name="statusPath"  value="/jkstatus"/>
+         <attribute name="filter"  value="*"/>
+         <attribute name="user"  value="tomcat"/>
+         <attribute name="pass"  value="tomcat"/>
+       </mbean>
+    </jmx-service>
+
+    <jmx-service>
+       <mbean code="org.apache.commons.modeler.mbeans.SimpleRemoteConnector"
+              name="Catalina9080:type=jmxProxy,name=tomcat9080" 
+              modeler="true" >
+         <attribute name="webServerPort"  value="9080"/>
+         <attribute name="statusPath"  value="/manager/jmxproxy"/>
+         <attribute name="domain"  value="Catalina"/>
+         <attribute name="user"  value="tomcat"/>
+         <attribute name="pass"  value="tomcat"/>
+       </mbean>
+    </jmx-service>
+
+    <jmx-service>
+       <mbean code="org.apache.commons.modeler.mbeans.SimpleRemoteConnector"
+              name="Catalina:type=jmxProxy,name=tomcat8080" 
+              modeler="true" >
+         <attribute name="webServerPort"  value="8080"/>
+         <attribute name="statusPath"  value="/manager/jmxproxy"/>
+         <attribute name="domain"  value="Catalina"/>
+         <attribute name="user"  value="tomcat"/>
+         <attribute name="pass"  value="tomcat"/>
+       </mbean>
+    </jmx-service>
+
+
+    <echo message="Proxy running"/>
+    <sleep hours="1"/>
+  </target>
+
+
+  <!-- ======================= Server.xml based - backward compat ================ -->
+
+  <property name="domain" value="Catalina" />
+  <property name="jsr77Domain" value="Catalina" />
+
+  <!-- ======================= JMX only  ================ -->
+
+  <target name="run" depends="init,jmx-console"
+        description="Start tomcat as an mbean, no server.xml">
+
+    <property name="catalina.useNaming" value="false" />
+
+<!--
+    <modelerRegistry resource="org/apache/catalina/mbeans/mbeans-descriptors.xml" />
+    <modelerRegistry resource="org/apache/catalina/loader/mbeans-descriptors.xml" />
+-->
+    <mkdir dir="${tomcat.home}/work/${domain}/" />
+
+    <jmx-service>
+<!--
+      Should be optional - but the name is used in several places.
+      The whole name should disapear - use domain instead
+-->
+       <mbean name="${domain}:type=Server" 
+              code="org.apache.catalina.core.StandardServer"
+              modeler="true">
+         <attribute name="port" value="9005"/>
+       </mbean>
+
+       <mbean name="${domain}:type=Service" 
+              code="org.apache.catalina.core.StandardService"
+              modeler="true">
+         <attribute name="name" value="Tomcat-Standalone"/>
+       </mbean>
+
+       <mbean name="${domain}:type=Engine" 
+              code="org.apache.catalina.core.StandardEngine"
+              modeler="true">
+         <attribute name="name" value="Tomcat-Standalone"/>
+         <attribute name="baseDir" value="${tomcat.home}"/>
+         <attribute name="defaultHost" value="localhost"/>
+       </mbean>
+
+<!--
+       <mbean name="${domain}:type=Realm" 
+              code="org.apache.catalina.realm.JAASRealm" modeler="true">
+       </mbean>
+-->
+
+       <mbean name="${domain}:type=Realm" 
+              code="org.apache.catalina.realm.MemoryRealm" modeler="true">
+         <attribute name="pathname"
+                    value="${tomcat.home}/conf/tomcat-users.xml" />
+       </mbean>
+
+       <mbean name="${domain}:type=Connector,port=9080" 
+              code="org.apache.catalina.connector.Connector"
+              modeler="true">
+          <attribute name="port" value="9080" />
+       </mbean>
+
+
+<!-- Optional: when the context is created it'll create a host if none is found. -->
+<!-- Setting appBase will make use of auto deployment. Regular deployment can be used using
+     static declarations of MBeans for each of the individual contexts -->
+
+       <mbean name="${domain}:type=Host,host=localhost" 
+              code="org.apache.catalina.core.StandardHost" modeler="true">
+         <attribute name="name" value="localhost"/>
+         <attribute name="appBase" value="webapps"/>
+       </mbean>
+
+       <!-- 
+       <mbean name="${jsr77Domain}:j2eeType=WebModule,name=//localhost/,J2EEApplication=none,J2EEServer=none" 
+              code="org.apache.catalina.core.StandardContext"  modeler="true">
+         <attribute name="docBase" value="${tomcat.webapps}/ROOT" />
+         <attribute name="privileged" value="true" />
+         <attribute name="engineName" value="${domain}" />
+       </mbean>
+
+       <mbean name="${jsr77Domain}:j2eeType=WebModule,name=//localhost/servlets-examples,J2EEApplication=none,J2EEServer=none" 
+              code="org.apache.catalina.core.StandardContext"  modeler="true">
+         <attribute name="docBase" value="${tomcat.webapps}/servlets-examples" />
+         <attribute name="privileged" value="true" />
+         <attribute name="engineName" value="${domain}" />
+       </mbean>
+
+       <mbean name="${jsr77Domain}:j2eeType=WebModule,name=//localhost/jsp-examples,J2EEApplication=none,J2EEServer=none" 
+              code="org.apache.catalina.core.StandardContext"  modeler="true">
+         <attribute name="docBase" value="${tomcat.webapps}/jsp-examples" />
+         <attribute name="privileged" value="true" />
+         <attribute name="engineName" value="${domain}" />
+       </mbean>
+
+       <mbean name="${jsr77Domain}:j2eeType=WebModule,name=//localhost/tomcat-docs,J2EEApplication=none,J2EEServer=none" 
+              code="org.apache.catalina.core.StandardContext"  modeler="true">
+         <attribute name="docBase" value="${tomcat.webapps}/tomcat-docs" />
+         <attribute name="privileged" value="true" />
+         <attribute name="engineName" value="${domain}" />
+       </mbean>
+
+       <mbean name="${jsr77Domain}:j2eeType=WebModule,name=//localhost/manager,J2EEApplication=none,J2EEServer=none" 
+              code="org.apache.catalina.core.StandardContext"  modeler="true">
+         <attribute name="docBase" value="${tomcat.webapps}/manager" />
+         <attribute name="engineName" value="${domain}" />
+         <attribute name="privileged" value="true" />
+       </mbean>
+       -->
+
+       <!-- The realm must be declared after the web module (for now).
+       <mbean name="${domain}:type=Realm,host=localhost,path=manager" 
+              code="org.apache.catalina.realm.MemoryRealm" modeler="true">
+         <attribute name="pathname"
+                    value="${tomcat.home}/conf/tomcat-users.xml" />
+       </mbean>
+       -->
+
+       <!--
+       <mbean name="${domain}:j2eeType=WebModule,name=//localhost/admin,J2EEApplication=none,J2EEServer=none" 
+              code="org.apache.catalina.core.StandardContext"  modeler="true">
+         <attribute name="docBase" value="${tomcat.webapps}/admin" />
+         <attribute name="privileged" value="true" />
+       </mbean>
+       -->
+
+    </jmx-service>
+  </target>
+
+
+  <!-- ==================== Await ==================== 
+       Call this target if you want the build file to hang in "await". Tomcat stop or ^C will stop the ant execution.
+    -->
+  <target name="await" depends="init"
+        description="Wait for tomcat stop. Call this target after run">
+    <jmx objectName="${domain}:type=Server"
+         operation="await" />
+    <sleep hours="1"/>
+  </target>
+
+  <target name="start"
+              depends="init,run,await" 
+  			  description="Start tomcat, wait for stop message"/>
+
+</project>

@@ -109,7 +109,7 @@ public class PSBlogPostVisitDao  implements IPSBlogPostVisitDao {
     @Transactional(isolation = Isolation.READ_UNCOMMITTED)
     public void save(Collection<IPSBlogPostVisit> visits) {
         Validate.notNull(visits, "visits cannot be null");
-        if (visits.size() == 0)
+        if (visits.isEmpty())
             return;
 
         Session session = getSession();

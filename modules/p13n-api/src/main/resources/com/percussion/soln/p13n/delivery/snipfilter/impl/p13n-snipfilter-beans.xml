@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:lang="http://www.springframework.org/schema/lang"
+       xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang-2.0.xsd">	
+	
+	<bean id="soln.p13n.filter.BestMatchScoring" class="com.percussion.soln.p13n.delivery.snipfilter.impl.BestMatchScoringFilter" />
+	<bean id="soln.p13n.filter.SortBasedOnScore" class="com.percussion.soln.p13n.delivery.snipfilter.impl.SortBasedOnScoreFilter" />
+	<bean id="soln.p13n.filter.ScoreRangeFilter" class="com.percussion.soln.p13n.delivery.snipfilter.impl.ScoreRangeFilter" />
+	<bean id="soln.p13n.filter.ListSizeFilter" class="com.percussion.soln.p13n.delivery.snipfilter.impl.ListSizeFilter" />
+	<bean id="soln.p13n.filter.PickFirst" class="com.percussion.soln.p13n.delivery.snipfilter.impl.PickFirstItemsIfEmptyPostFilter" />
+   
+</beans>

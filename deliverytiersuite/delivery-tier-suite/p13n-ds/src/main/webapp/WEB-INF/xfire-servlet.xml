@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+
+    <bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+        <property name="urlMap">
+            <map>
+				<entry key="/SegmentService">
+                    <ref bean="segmentWS"/>
+                </entry>
+                <entry key="/VisitorProfileDataService">
+                    <ref bean="visitorProfileDataServiceWS"/>
+                </entry>
+                <entry key="/DeliveryDataService">
+                    <ref bean="deliveryDataServiceWS"/>
+                </entry>
+            </map>
+        </property>
+    </bean>
+    
+        <!-- Declare a parent bean with all properties common to both services -->
+    <bean id="segmentWS" class="org.codehaus.xfire.spring.remoting.XFireExporter">
+        <property name="serviceFactory">
+            <ref bean="xfire.serviceFactory"/>
+        </property>
+        <property name="xfire">
+            <ref bean="xfire"/>
+        </property>
+        <property name="serviceBean">
+            <ref bean="segmentService"/>
+        </property>
+        <property name="serviceClass">
+            <value>com.percussion.soln.segment.data.ISegmentDataService</value>
+        </property>
+    </bean>
+    
+    <bean id="visitorProfileDataServiceWS" class="org.codehaus.xfire.spring.remoting.XFireExporter">
+        <property name="serviceFactory">
+            <ref bean="xfire.serviceFactory"/>
+        </property>
+        <property name="xfire">
+            <ref bean="xfire"/>
+        </property>
+        <property name="serviceBean">
+            <ref bean="visitorProfileDataService"/>
+        </property>
+        <property name="serviceClass">
+            <value>com.percussion.soln.p13n.tracking.IVisitorProfileDataService</value>
+        </property>
+    </bean>
+
+    <bean id="deliveryServiceWS" class="org.codehaus.xfire.spring.remoting.XFireExporter">
+        <property name="serviceFactory">
+            <ref bean="xfire.serviceFactory"/>
+        </property>
+        <property name="xfire">
+            <ref bean="xfire"/>
+        </property>
+        <property name="serviceBean">
+            <ref bean="deliveryService"/>
+        </property>
+        <property name="serviceClass">
+            <value>com.percussion.soln.p13n.delivery.IDeliveryService</value>
+        </property>
+    </bean>
+
+    <bean id="deliveryDataServiceWS" class="org.codehaus.xfire.spring.remoting.XFireExporter">
+        <property name="serviceFactory">
+            <ref bean="xfire.serviceFactory"/>
+        </property>
+        <property name="xfire">
+            <ref bean="xfire"/>
+        </property>
+        <property name="serviceBean">
+            <ref bean="deliveryDataService"/>
+        </property>
+        <property name="serviceClass">
+            <value>com.percussion.soln.p13n.delivery.data.IDeliveryDataService</value>
+        </property>
+    </bean>
+    
+</beans>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context>
+	<Parameter name="soln.p13n.jdbc.sql" value="mssql"/>
+	<Parameter name="soln.p13n.jdbc.driverClassName" value="net.sourceforge.jtds.jdbc.Driver"/>
+	<Parameter name="soln.p13n.jdbc.url" value="jdbc:jtds:sqlserver://localhost;DatabaseName=soln_p13n"/>
+	<Parameter name="soln.p13n.jdbc.username" value="sa"/>
+	<Parameter name="soln.p13n.jdbc.password" value="demo"/>
+	<Parameter name="soln.p13n.hibernate.dialect" value="org.hibernate.dialect.SQLServerDialect"/>
+
+</Context>
