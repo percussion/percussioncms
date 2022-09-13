@@ -1,4 +1,4 @@
-package test.percussion.soln.segment.rx.editor;
+package com.percussion.soln.segment.rx.editor;
 
 import java.util.Map;
 import java.util.Map.Entry;

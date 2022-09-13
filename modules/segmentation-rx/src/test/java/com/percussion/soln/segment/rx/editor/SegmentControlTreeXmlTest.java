@@ -1,9 +1,7 @@
-package test.percussion.soln.segment.rx.editor;
+package com.percussion.soln.segment.rx.editor;
 
-
-import static junit.framework.Assert.*;
 import static org.custommonkey.xmlunit.XMLAssert.*;
-import static test.percussion.soln.segment.rx.editor.XMLTestHelper.*;
+import static com.percussion.soln.segment.rx.editor.XMLTestHelper.*;
 
 import org.custommonkey.xmlunit.XMLUnit;
 import org.jmock.Mockery;
@@ -27,10 +25,6 @@ public class SegmentControlTreeXmlTest {
     
     @BeforeClass
     public static void setUpXML() throws Exception {
-        XMLUnit.setControlParser("org.apache.xerces.jaxp.DocumentBuilderFactoryImpl");
-        XMLUnit.setTestParser("org.apache.xerces.jaxp.DocumentBuilderFactoryImpl");
-        XMLUnit.setSAXParserFactory("org.apache.xerces.jaxp.SAXParserFactoryImpl");
-        XMLUnit.setTransformerFactory("org.apache.xalan.processor.TransformerFactoryImpl");
         XMLUnit.setIgnoreWhitespace(true);
     }
     

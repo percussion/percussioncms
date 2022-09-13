@@ -1,12 +1,9 @@
-package test.percussion.soln.segment.rx;
+package com.percussion.soln.segment.rx;
 
-import static java.util.Arrays.*;
-import static org.junit.Assert.*;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
+import com.percussion.soln.segment.ISegmentService;
+import com.percussion.soln.segment.Segment;
+import com.percussion.soln.segment.Segments;
+import com.percussion.soln.segment.rx.editor.SegmentMocks;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.integration.junit4.JMock;
@@ -15,12 +12,12 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import test.percussion.soln.segment.rx.editor.SegmentMocks;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
-import com.percussion.soln.segment.ISegmentService;
-import com.percussion.soln.segment.Segment;
-import com.percussion.soln.segment.Segments;
-import com.percussion.soln.segment.rx.RxSegmentRelationshipBuilder;
+import static java.util.Arrays.asList;
+import static org.junit.Assert.assertEquals;
 
 @RunWith(JMock.class)
 public class SegmentRelationshipBuilderTest {
