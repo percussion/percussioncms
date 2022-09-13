@@ -7,13 +7,7 @@ The toolkit was historically called the PSO Toolkit in Percussion implementation
 This package is where experimental extensions / features can and should be implemented / contributed.
 
 ## Upgrade
-On upgrade, the core CMS will remove all legacy toolkit filenames that it finds.  They will be replaced by the perc-toolkit-[version].jar package. 
-
-## Consolidation with other Solutions / Extensions
-There are a number of solutions / extensions that historically have been managed as seperate projects from the toolkit, but also use the com.percussion.pso namespace.  Legacy projects that use the com.percussion.pso namespace directly will be merged with the toolkit. 
-
-Legacy modules that don't will be evaluated to see if they can stand on their own, or should be merged into the main toolkit module.
-
+On upgrade, the core CMS will remove all legacy toolkit filenames that it finds.  They will be replaced by the perc-toolkit-[version].jar package.
 
 ## Contributions Java Package
 
@@ -34,7 +28,26 @@ There is an experimental folder under the packages folder.  Any packages that yo
 
 https://www.github.com/percussion/PSOToolkit -> https://www.github.com/percussion/percussioncms/modules/perc-toolkit
 
-API Changes
+## API Changes
 - PSServerFolderProcessor
 -- This is now a singleton  PSServerFolderProcessor.getInstance() should be used 
   
+## Editor Custom Controls
+Editor custom controls are XSL stylesheets that provide a control for editing specific field types in the Content Editor.
+
+### Image Cropping Control
+The image cropping control stores based x,y,width,height (as well as resize width / height) in a serialized JSON string in a field value.
+
+To utilize the control, name a field based on the name of the image you will be cropping.  Example,
+
+activeimg_hash may be the field value of the image field.
+
+To create a image cropping control, create a field nammed
+
+activeimg_crop_thumb
+
+Then select rx_ImageCroppingControl as the control.  For the field size, set the size to "MAX", (where the default would be 50)
+
+When editing a content item where an image has been uploaded, you should see a croppable image control.
+
+If the image has not yet rendered, you may have to hit save / update to actually upload the image and make it available.
