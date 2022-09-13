@@ -1,4 +1,4 @@
-package test.percussion.soln.segment.rx;
+package com.percussion.soln.segment.rx;
 
 import static com.percussion.soln.segment.rx.SegmentAliasUtil.*;
 import static java.util.Arrays.*;

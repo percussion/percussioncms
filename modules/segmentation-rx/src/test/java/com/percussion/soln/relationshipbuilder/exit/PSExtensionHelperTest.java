@@ -1,4 +1,4 @@
-package test.percussion.soln.relationshipbuilder.exit;
+package com.percussion.soln.relationshipbuilder.exit;
 
 import static org.custommonkey.xmlunit.XMLAssert.*;
 
@@ -34,10 +34,6 @@ public class PSExtensionHelperTest extends TestCase
    protected void setUp() throws Exception
    {
       m_output = new HashSet<Integer>();
-      XMLUnit.setControlParser("org.apache.xerces.jaxp.DocumentBuilderFactoryImpl");
-      XMLUnit.setTestParser("org.apache.xerces.jaxp.DocumentBuilderFactoryImpl");
-      XMLUnit.setSAXParserFactory("org.apache.xerces.jaxp.SAXParserFactoryImpl");
-      XMLUnit.setTransformerFactory("org.apache.xalan.processor.TransformerFactoryImpl");
       XMLUnit.setIgnoreWhitespace(true);
    }
 

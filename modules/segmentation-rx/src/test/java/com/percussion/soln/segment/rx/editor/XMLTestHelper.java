@@ -1,4 +1,4 @@
-package test.percussion.soln.segment.rx.editor;
+package com.percussion.soln.segment.rx.editor;
 
 import org.w3c.dom.Document;
 

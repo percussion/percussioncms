@@ -1,4 +1,4 @@
-package test.percussion.soln.segment.rx.editor;
+package com.percussion.soln.segment.rx.editor;
 
 import static org.custommonkey.xmlunit.XMLAssert.assertXMLEqual;
 import static test.percussion.soln.segment.rx.editor.XMLTestHelper.*;
@@ -30,10 +30,6 @@ public class SegmentControlTreeExitTest {
     
     @BeforeClass
     public static void setUpXML() throws Exception {
-        XMLUnit.setControlParser("org.apache.xerces.jaxp.DocumentBuilderFactoryImpl");
-        XMLUnit.setTestParser("org.apache.xerces.jaxp.DocumentBuilderFactoryImpl");
-        XMLUnit.setSAXParserFactory("org.apache.xerces.jaxp.SAXParserFactoryImpl");
-        XMLUnit.setTransformerFactory("org.apache.xalan.processor.TransformerFactoryImpl");
         XMLUnit.setIgnoreWhitespace(true);
     }
     

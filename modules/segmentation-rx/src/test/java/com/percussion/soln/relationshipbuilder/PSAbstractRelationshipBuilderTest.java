@@ -1,4 +1,4 @@
-package test.percussion.soln.relationshipbuilder;
+package com.percussion.soln.relationshipbuilder;
 
 import static java.util.Arrays.*;
 import static org.junit.Assert.*;
