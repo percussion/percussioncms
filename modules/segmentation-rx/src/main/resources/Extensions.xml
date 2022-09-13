@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PSXExtensionHandlerConfiguration handlerName="Java">
+
+   <Extension name="soln_segment_Lookup_ext" context="user/" handler="Java" categorystring="contenteditor" deprecated="no" restoreRequestParamsOnError="no">
+		<initParam name="com.percussion.user.description">This exit is used to retrieve all segments associated with an item in the sys_Lookup XML format.</initParam>
+		<initParam name="com.percussion.extension.version">1</initParam>
+		<initParam name="className">com.percussion.soln.segment.rx.editor.SegmentControlLookupExit</initParam>
+		<initParam name="com.percussion.extension.reentrant">yes</initParam>
+		<interface name="com.percussion.extension.IPSResultDocumentProcessor" />
+      <PSXExtensionParamDef id="0">
+         <name>sys_contentid</name>
+         <dataType>java.lang.String</dataType>
+         <description>The content id of the item.</description>
+      </PSXExtensionParamDef>
+      <PSXExtensionParamDef id="0">
+         <name>allSegments</name>
+         <dataType>java.lang.String</dataType>
+         <description>If set (non-null) will return all segments regardless of what segments the item is associated with. (optional)</description>
+      </PSXExtensionParamDef>
+	</Extension>
+	
+   	<Extension name="soln_segment_Tree_ext" context="user/" handler="Java" categorystring="contenteditor" deprecated="no" restoreRequestParamsOnError="no">
+		<initParam name="com.percussion.user.description">This exit is to be used retrieve segment tree in the XML format that the tree control expects.</initParam>
+		<initParam name="com.percussion.extension.version">1</initParam>
+		<initParam name="className">com.percussion.soln.segment.rx.editor.SegmentControlTreeExit</initParam>
+		<initParam name="com.percussion.extension.reentrant">yes</initParam>
+		<interface name="com.percussion.extension.IPSResultDocumentProcessor" />
+	</Extension>
+	
+   <Extension name="soln_segment_Assign_ext" categorystring="contenteditor" context="user/" deprecated="no" handler="Java" restoreRequestParamsOnError="no">
+      <initParam name="com.percussion.user.description">Adds items to the folders.</initParam>
+      <initParam name="com.percussion.extension.version">1</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <initParam name="com.percussion.extension.relationshipbuilder.mode">BUILD</initParam>
+      <initParam name="className">com.percussion.soln.segment.rx.editor.SegmentRelationshipBuilderExit</initParam>
+      <interface name="com.percussion.extension.IPSResultDocumentProcessor" />
+      <PSXExtensionParamDef id="0">
+         <name>fieldName</name>
+         <dataType>java.lang.String</dataType>
+         <description>The name of the field providing the segment ids. (required)</description>
+      </PSXExtensionParamDef>
+      <suppliedResources />
+   </Extension>
+   
+   <Extension name="soln_segment_Select_ext" categorystring="contenteditor" context="user/" deprecated="no" handler="Java" restoreRequestParamsOnError="no">
+      <initParam name="com.percussion.user.description">Selects segments that the item being editted is associated with.</initParam>
+      <initParam name="com.percussion.extension.version">1</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <initParam name="com.percussion.extension.relationshipbuilder.mode">SELECT</initParam>
+      <initParam name="className">com.percussion.soln.segment.rx.editor.SegmentRelationshipBuilderExit</initParam>
+	  <interface name="com.percussion.extension.IPSResultDocumentProcessor" />
+	  <interface name="com.percussion.extension.IPSItemOutputTransformer" />
+      <PSXExtensionParamDef id="0">
+         <name>fieldName</name>
+         <dataType>java.lang.String</dataType>
+         <description>The name of the field providing the segment ids. (required)</description>
+      </PSXExtensionParamDef>
+       <PSXExtensionParamDef id="0">
+         <name>selectAll</name>
+         <dataType>java.lang.String</dataType>
+         <description>Selects all display choices. Optimization hack useful only on tree controls.</description>
+      </PSXExtensionParamDef>
+      <suppliedResources />
+   </Extension>
+   
+   	<Extension name="soln_segment" categorystring="jexl" context="global/percussion/user/" deprecated="no" handler="Java" restoreRequestParamsOnError="no">
+		<initParam name="com.percussion.user.description">Jexl tools to provide segments and segment weights</initParam>
+		<initParam name="com.percussion.extension.version">1</initParam>
+		<initParam name="com.percussion.extension.reentrant">yes</initParam>
+		<initParam name="className">com.percussion.soln.segment.rx.assembly.SegmentJexlTools</initParam>
+		<interface name="com.percussion.extension.IPSJexlExpression"/>
+		<suppliedResources/>
+	</Extension>
+	
+	<Extension name="soln_segment_Effect_ext" categorystring="relationship" context="global/percussion/user/" deprecated="no" handler="Java" restoreRequestParamsOnError="no">
+		<initParam name="com.percussion.user.description">This effect updates the segment service when a segment is added to a folder.</initParam>
+		<initParam name="com.percussion.extension.version">1</initParam>
+		<initParam name="com.percussion.extension.reentrant">yes</initParam>
+		<initParam name="className">com.percussion.soln.segment.rx.effect.RxSegmentRelationshipEffect</initParam>
+		<interface name="com.percussion.relationship.IPSEffect"/>
+		<suppliedResources/>
+	</Extension>
+	
+	<Extension name="soln_segment_FlushCache_ext" categorystring="contenteditor" context="user/" deprecated="no" handler="Java" restoreRequestParamsOnError="no">
+      <initParam name="com.percussion.user.description">Flushes the Segment Cache</initParam>
+      <initParam name="com.percussion.extension.version">1</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <initParam name="className">com.percussion.soln.segment.rx.editor.SegmentFlushCacheExit</initParam>
+      <interface name="com.percussion.extension.IPSResultDocumentProcessor" />
+      <suppliedResources />
+   </Extension>
+     
+</PSXExtensionHandlerConfiguration>

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<web-app xmlns="http://java.sun.com/xml/ns/j2ee" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd" 
+	version="2.4">
+ 
+     <!-- Spring config location -->
+   <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>/WEB-INF/applicationContext.xml
+        classpath:org/codehaus/xfire/spring/xfire.xml
+        classpath:META-INF/p13n/spring/**/*.xml
+        /WEB-INF/spring/*.xml
+        /WEB-INF/spring/${soln.p13n.deploy}/*.xml</param-value>
+    </context-param>
+    
+    <!-- You have to setup Log4j globally for Tomcat so the following config is not needed  -->
+    <!-- http://tomcat.apache.org/tomcat-5.5-doc/logging.html -->
+    <!-- 
+    <context-param>
+        <param-name>log4jConfigLocation</param-name>
+        <param-value>/WEB-INF/log4j.properties</param-value>
+    </context-param>
+    <listener>
+        <listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
+    </listener>
+    -->
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+    
+
+    
+    <servlet>
+        <servlet-name>delivery</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    </servlet>
+    
+       <servlet>
+        <servlet-name>track</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    </servlet>
+    
+        <servlet>
+        <servlet-name>profile</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>test</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>xfire</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    </servlet>
+
+    <servlet>
+      <servlet-name>GroovyServlet</servlet-name>
+      <servlet-class>groovy.servlet.GroovyServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GroovyTemplate</servlet-name>
+        <servlet-class>groovy.servlet.TemplateServlet</servlet-class>    
+	</servlet>
+    <servlet-mapping>
+        <servlet-name>GroovyServlet</servlet-name>
+        <url-pattern>*.groovy</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GroovyTemplate</servlet-name>
+        <url-pattern>*.gsp</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
+        <servlet-name>delivery</servlet-name>
+        <url-pattern>/delivery/*</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
+        <servlet-name>track</servlet-name>
+        <url-pattern>/track/*</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
+        <servlet-name>profile</servlet-name>
+        <url-pattern>/profile/*</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
+        <servlet-name>test</servlet-name>
+        <url-pattern>/test/*</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
+        <servlet-name>xfire</servlet-name>
+        <url-pattern>/xfire/*</url-pattern>
+    </servlet-mapping>
+
+</web-app>

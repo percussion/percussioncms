@@ -1,0 +1,48 @@
+<project name="Solution-Segmentation-Rx" default="dist" basedir=".">
+	<description>
+       Segmentation Solution
+    </description>
+	<!-- BEGIN Check and Import Build Tools -->
+	<property environment="my_env"/>
+	<available property="soln-buildtools" value="${my_env.SOLN_BUILDTOOLS}" file="${my_env.SOLN_BUILDTOOLS}" type="dir" />
+	<available property="soln-buildtools" value="../Solution-BuildTools" file="../Solution-BuildTools" type="dir" />
+	<fail unless="soln-buildtools" message="Could not find Solution Build Tools. Check SOLN_BUILDTOOLS env variable." />
+	<import file="${soln-buildtools}/build-share.xml"/>
+	<!-- END Check and Import Build Tools -->
+	
+	<target name="artifacts" depends="init">
+		<artifact-def id="seg-rx" conf="rx">
+			<files>
+				<include name="com/percussion/soln/segment/rx/**"/>
+				<include name="com/percussion/soln/relationshipbuilder/**"/>
+				<exclude name="log4j.properties" /> 
+				<include name="build.properties" /> 
+				<include name="readme.txt" />
+			</files>
+		</artifact-def>
+		<artifact-def id="seg-dist" conf="dist" type="dist" ext="zip" />
+		<artifact-def id="package" fullname="soln.segment" conf="dist" type="dist" ext="ppkg" />
+	</target>
+	<macrodef name="prop-set">
+		<attribute name="name"/>
+		<attribute name="value" />
+		<sequential>
+			<property name="@{name}" value="@{value}" />
+		</sequential>
+	</macrodef>
+	
+    <target name="build-after" depends="groovy-task">
+        <copy file="${ivylib}/soln-segment-api.jar" todir="${build-jars}" />
+        <ppkg-jar ppkg-name="soln.segment" jar-name="soln-segment-rx,soln-segment-api" />
+    </target>
+		
+	<target name="compile-antlr">
+		<antlr
+		    target="src/com/percussion/soln/segment/rx/SegmentAliasFieldGrammer.g"
+		    outputdirectory="src/com/percussion/soln/segment/rx">
+			<classpath refid="classpath-all" />
+		</antlr>
+	</target>
+		
+
+</project>

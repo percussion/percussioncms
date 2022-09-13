@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<PSXApplication active="no" appType="USER" enabled="yes" hidden="no" id="1098" startPriority="0" version="2.0">
+  <name>soln_segment_xml</name>
+  <description/>
+  <requestRoot>soln_segment_xml</requestRoot>
+  <defaultRequestPage/>
+  <appExtensionContext>application/_adamgent_1198077736797/</appExtensionContext>
+  <PSXRevisionHistory>
+    <PSXRevisionEntry majorVersion="1" minorVersion="0">
+      <agent>admin1</agent>
+      <description>Saved</description>
+      <time>20071219T102138112</time>
+    </PSXRevisionEntry>
+    <PSXRevisionEntry majorVersion="1" minorVersion="9">
+      <agent>admin1</agent>
+      <description>Saved</description>
+      <time>20071219T164626527</time>
+    </PSXRevisionEntry>
+  </PSXRevisionHistory>
+  <PSXAcl id="0">
+    <PSXAclEntry id="0" type="user">
+      <name>Default</name>
+      <applicationAccessLevel dataCreate="yes" dataDelete="yes" dataQuery="yes" dataUpdate="yes" designDelete="yes" designRead="yes" designUpdate="yes" modifyAcl="yes"/>
+    </PSXAclEntry>
+    <PSXAclEntry id="0" type="user">
+      <name>admin1</name>
+      <applicationAccessLevel dataCreate="yes" dataDelete="yes" dataQuery="yes" dataUpdate="yes" designDelete="yes" designRead="yes" designUpdate="yes" modifyAcl="yes"/>
+    </PSXAclEntry>
+    <multiMembershipBehavior/>
+  </PSXAcl>
+  <maxThreads>0</maxThreads>
+  <maxRequestTime>0</maxRequestTime>
+  <maxRequestsInQueue>0</maxRequestsInQueue>
+  <userSessionEnabled>no</userSessionEnabled>
+  <userSessionTimeout>0</userSessionTimeout>
+  <requestTypeHtmlParamName>DBActionType</requestTypeHtmlParamName>
+  <requestTypeValueQuery>QUERY</requestTypeValueQuery>
+  <requestTypeValueInsert>INSERT</requestTypeValueInsert>
+  <requestTypeValueUpdate>UPDATE</requestTypeValueUpdate>
+  <requestTypeValueDelete>DELETE</requestTypeValueDelete>
+  <PSXDataSet id="10102">
+    <name>Dataset10030</name>
+    <description/>
+    <transactionType>none</transactionType>
+    <PSXQueryPipe id="10076">
+      <name>QueryPipe</name>
+      <description/>
+      <PSXBackEndDataTank id="10072">
+        <PSXBackEndTable id="10071">
+          <alias>RXDUAL</alias>
+          <table>RXDUAL</table>
+          <datasource/>
+        </PSXBackEndTable>
+      </PSXBackEndDataTank>
+      <PSXDataMapper id="10074" returnEmptyXml="no">
+        <PSXDataMapping groupId="1" id="0">
+          <PSXXmlField id="0">
+            <name>sys_Lookup/PSXEntry/Value/@type</name>
+          </PSXXmlField>
+          <PSXBackEndColumn id="0">
+            <tableAlias>RXDUAL</tableAlias>
+            <column>GB</column>
+            <columnAlias/>
+          </PSXBackEndColumn>
+          <Conditionals/>
+        </PSXDataMapping>
+      </PSXDataMapper>
+      <PSXDataSelector id="10073" method="whereClause" unique="no">
+        <WhereClauses/>
+        <Sorting/>
+        <nativeStatement/>
+        <Caching enabled="no" type="interval">
+          <ageInterval>15</ageInterval>
+        </Caching>
+      </PSXDataSelector>
+      <ResultDataExits>
+        <PSXExtensionCallSet id="10100">
+          <PSXExtensionCall id="0">
+            <name>Java/user/soln_segment_Tree_ext</name>
+          </PSXExtensionCall>
+        </PSXExtensionCallSet>
+      </ResultDataExits>
+      <PSXResourceCacheSettings enabled="no" id="0">
+        <Keys/>
+        <Dependencies/>
+      </PSXResourceCacheSettings>
+    </PSXQueryPipe>
+    <PSXPageDataTank id="10101">
+      <schemaSource>file:sys_Lookup.dtd</schemaSource>
+      <actionTypeXmlField/>
+    </PSXPageDataTank>
+    <PSXRequestor directDataStream="no" id="0">
+      <requestPage>tree</requestPage>
+      <SelectionParams/>
+      <ValidationRules/>
+      <characterEncoding>UTF-8</characterEncoding>
+      <MimeProperties>
+        <html>
+          <PSXTextLiteral id="0">
+            <text>text/html</text>
+          </PSXTextLiteral>
+        </html>
+        <htm>
+          <PSXTextLiteral id="0">
+            <text>text/html</text>
+          </PSXTextLiteral>
+        </htm>
+      </MimeProperties>
+    </PSXRequestor>
+  </PSXDataSet>
+  <PSXDataSet id="10105">
+    <name>lookup</name>
+    <description/>
+    <transactionType>none</transactionType>
+    <PSXQueryPipe id="10099">
+      <name>QueryPipe</name>
+      <description/>
+      <PSXBackEndDataTank id="10095">
+        <PSXBackEndTable id="10094">
+          <alias>RXDUAL</alias>
+          <table>RXDUAL</table>
+          <datasource/>
+        </PSXBackEndTable>
+      </PSXBackEndDataTank>
+      <PSXDataMapper id="10097" returnEmptyXml="no">
+        <PSXDataMapping groupId="1" id="0">
+          <PSXXmlField id="0">
+            <name>sys_Lookup/PSXEntry/Value/@type</name>
+          </PSXXmlField>
+          <PSXBackEndColumn id="0">
+            <tableAlias>RXDUAL</tableAlias>
+            <column>GB</column>
+            <columnAlias/>
+          </PSXBackEndColumn>
+          <Conditionals/>
+        </PSXDataMapping>
+      </PSXDataMapper>
+      <PSXDataSelector id="10096" method="whereClause" unique="no">
+        <WhereClauses/>
+        <Sorting/>
+        <nativeStatement/>
+        <Caching enabled="no" type="interval">
+          <ageInterval>15</ageInterval>
+        </Caching>
+      </PSXDataSelector>
+      <ResultDataExits>
+        <PSXExtensionCallSet id="10103">
+          <PSXExtensionCall id="0">
+            <name>Java/user/soln_segment_Lookup_ext</name>
+            <PSXExtensionParamValue id="0">
+              <value>
+                <PSXTextLiteral id="0">
+                  <text/>
+                </PSXTextLiteral>
+              </value>
+            </PSXExtensionParamValue>
+          </PSXExtensionCall>
+        </PSXExtensionCallSet>
+      </ResultDataExits>
+      <PSXResourceCacheSettings enabled="no" id="0">
+        <Keys/>
+        <Dependencies/>
+      </PSXResourceCacheSettings>
+    </PSXQueryPipe>
+    <PSXPageDataTank id="10104">
+      <schemaSource>file:sys_Lookup.dtd</schemaSource>
+      <actionTypeXmlField/>
+    </PSXPageDataTank>
+    <PSXRequestor directDataStream="no" id="0">
+      <requestPage>lookup</requestPage>
+      <SelectionParams/>
+      <ValidationRules/>
+      <characterEncoding>UTF-8</characterEncoding>
+      <MimeProperties>
+        <html>
+          <PSXTextLiteral id="0">
+            <text>text/html</text>
+          </PSXTextLiteral>
+        </html>
+        <htm>
+          <PSXTextLiteral id="0">
+            <text>text/html</text>
+          </PSXTextLiteral>
+        </htm>
+      </MimeProperties>
+    </PSXRequestor>
+  </PSXDataSet>
+  <PSXLogger id="0" logAppStartStop="no" logAppStatistics="no" logBasicUserActivity="no" logDetailedUserActivity="no" logErrors="no" logExecutionPlan="no" logFullUserActivity="no" logMultipleHandlers="no" logServerStartStop="no"/>
+  <PSXTraceInfo id="0" traceAppHandlerProc="yes" traceAppSecurity="yes" traceBasicRequestInfo="yes" traceConditionalEval="no" traceDbPool="no" traceEnabled="no" traceExitExec="no" traceExitProc="no" traceFileInfo="no" traceInitHttpVar="no" traceMapper="no" traceOutputColumnWidth="80" traceOutputConv="no" tracePostExitCgi="no" tracePostExitXml="no" tracePostPreProcHttpVar="no" traceResourceHandler="yes" traceResultSet="no" traceSessionInfo="no" traceTimestampOnlyEnabled="no"/>
+  <backEndLoginPassthru>no</backEndLoginPassthru>
+  <userProperty name="savedFromWorkbench">Yes</userProperty>
+  <userProperty name="locationX10100">56</userProperty>
+  <userProperty name="locationY10105">155</userProperty>
+  <userProperty name="locationY10104">0</userProperty>
+  <userProperty name="locationY10103">22</userProperty>
+  <userProperty name="locationY10102">10</userProperty>
+  <userProperty name="locationY10100">22</userProperty>
+  <userProperty name="schemaSourceReadOnly10104">true</userProperty>
+  <userProperty name="pageDatatankSrcType10104">2</userProperty>
+  <userProperty name="schemaSourceReadOnly10101">true</userProperty>
+  <userProperty name="pageDatatankSrcType10101">2</userProperty>
+  <userProperty name="pageDatatankFilePath10104">C:\Rhythmyx\DTD\sys_Lookup.dtd</userProperty>
+  <userProperty name="locationX10105">49</userProperty>
+  <userProperty name="pageDatatankFilePath10101">C:\Rhythmyx\DTD\sys_Lookup.dtd</userProperty>
+  <userProperty name="locationX10104">342</userProperty>
+  <userProperty name="locationX10103">56</userProperty>
+  <userProperty name="locationX10102">11</userProperty>
+</PSXApplication>

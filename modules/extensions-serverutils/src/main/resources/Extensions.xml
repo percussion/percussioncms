@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PSXExtensionHandlerConfiguration handlerName="Java">
+	<Extension categorystring="jexl" context="global/percussion/user/" deprecated="no" handler="Java" name="solnDispatch" restoreRequestParamsOnError="no">
+		<initParam name="com.percussion.user.description">Solutions Dispatch Template Picker</initParam>
+		<initParam name="com.percussion.extension.version">1</initParam>
+		<initParam name="com.percussion.extension.reentrant">yes</initParam>
+		<initParam name="className">com.percussion.soln.utilities.rx.jexl.DispatchTemplateUtil</initParam>
+		<interface name="com.percussion.extension.IPSJexlExpression"/>
+		<suppliedResources/>
+	</Extension>
+	<Extension name="solnMakeAbsLink" context="global/percussion/user" handler="Java" categorystring="generic">
+		<initParam name="com.percussion.user.description">Creates an absolute ENCODED URL with up to 12 name/value pairs.</initParam>
+		<initParam name="com.percussion.extension.version">1</initParam>
+		<initParam name="com.percussion.extension.reentrant">yes</initParam>
+		<initParam name="className">com.percussion.soln.utilities.rx.udf.MakeAbsLinkEncoded</initParam>
+		<interface name="com.percussion.extension.IPSUdfProcessor"/>
+		<PSXExtensionParamDef id="0">
+			<name>resource</name>
+			<dataType>java.lang.String</dataType>
+			<description>Relative resource without the parameters.</description>
+		</PSXExtensionParamDef>
+		<PSXExtensionParamDef id="1">
+			<name>paramName1</name>
+			<dataType>java.lang.String</dataType>
+			<description>(Optional) Name of the first HTML parameter.</description>
+		</PSXExtensionParamDef>
+		<PSXExtensionParamDef id="2">
+			<name>paramValue1</name>
+			<dataType>java.lang.String</dataType>
+			<description>(Optional) Value of the first HTML parameter.</description>
+		</PSXExtensionParamDef>
+		<PSXExtensionParamDef id="3">
+			<name>paramName2</name>
+			<dataType>java.lang.String</dataType>
+			<description>(Optional) Name of the second HTML parameter.</description>
+		</PSXExtensionParamDef>
+		<PSXExtensionParamDef id="4">
+			<name>paramValue2</name>
+			<dataType>java.lang.String</dataType>
+			<description>(Optional) Value of the second HTML parameter.</description>
+		</PSXExtensionParamDef>
+		<PSXExtensionParamDef id="5">
+			<name>paramName3</name>
+			<dataType>java.lang.String</dataType>
+			<description>(Optional) Name of the third HTML parameter.</description>
+		</PSXExtensionParamDef>
+		<PSXExtensionParamDef id="6">
+			<name>paramValue3</name>
+			<dataType>java.lang.String</dataType>
+			<description>(Optional) Value of the third HTML parameter.</description>
+		</PSXExtensionParamDef>
+		<PSXExtensionParamDef id="7">
+			<name>paramName4</name>
+			<dataType>java.lang.String</dataType>
+			<description>(Optional) Name of the fourth HTML parameter.</description>
+		</PSXExtensionParamDef>
+		<PSXExtensionParamDef id="8">
+			<name>paramValue4</name>
+			<dataType>java.lang.String</dataType>
+			<description>(Optional) Value of the fourth HTML parameter.</description>
+		</PSXExtensionParamDef>
+		<PSXExtensionParamDef id="9">
+			<name>paramName5</name>
+			<dataType>java.lang.String</dataType>
+			<description>(Optional) Name of the fifth HTML parameter.</description>
+		</PSXExtensionParamDef>
+		<PSXExtensionParamDef id="10">
+			<name>paramValue5</name>
+			<dataType>java.lang.String</dataType>
+			<description>(Optional) Value of the fifth HTML parameter.</description>
+		</PSXExtensionParamDef>
+		<PSXExtensionParamDef id="11">
+			<name>paramName6</name>
+			<dataType>java.lang.String</dataType>
+			<description>(Optional) Name of the sixth HTML parameter.</description>
+		</PSXExtensionParamDef>
+		<PSXExtensionParamDef id="12">
+			<name>paramValue6</name>
+			<dataType>java.lang.String</dataType>
+			<description>(Optional) Value of the sixth HTML parameter.</description>
+		</PSXExtensionParamDef>
+		<PSXExtensionParamDef id="13">
+			<name>paramName7</name>
+			<dataType>java.lang.String</dataType>
+			<description>(Optional) Name of the seventh HTML parameter.</description>
+		</PSXExtensionParamDef>
+		<PSXExtensionParamDef id="14">
+			<name>paramValue7</name>
+			<dataType>java.lang.String</dataType>
+			<description>(Optional) Value of the seventh HTML parameter.</description>
+		</PSXExtensionParamDef>
+		<PSXExtensionParamDef id="15">
+			<name>paramName8</name>
+			<dataType>java.lang.String</dataType>
+			<description>(Optional) Name of the eighth HTML parameter.</description>
+		</PSXExtensionParamDef>
+		<PSXExtensionParamDef id="16">
+			<name>paramValue8</name>
+			<dataType>java.lang.String</dataType>
+			<description>(Optional) Value of the eighth HTML parameter.</description>
+		</PSXExtensionParamDef>
+		<PSXExtensionParamDef id="17">
+			<name>paramName9</name>
+			<dataType>java.lang.String</dataType>
+			<description>(Optional) Name of the ninth HTML parameter.</description>
+		</PSXExtensionParamDef>
+		<PSXExtensionParamDef id="18">
+			<name>paramValue9</name>
+			<dataType>java.lang.String</dataType>
+			<description>(Optional) Value of the ninth HTML parameter.</description>
+		</PSXExtensionParamDef>
+		<PSXExtensionParamDef id="19">
+			<name>paramName10</name>
+			<dataType>java.lang.String</dataType>
+			<description>(Optional) Name of the tenth HTML parameter.</description>
+		</PSXExtensionParamDef>
+		<PSXExtensionParamDef id="20">
+			<name>paramValue10</name>
+			<dataType>java.lang.String</dataType>
+			<description>(Optional) Value of the tenth HTML parameter.</description>
+		</PSXExtensionParamDef>
+		<PSXExtensionParamDef id="21">
+			<name>paramName11</name>
+			<dataType>java.lang.String</dataType>
+			<description>(Optional) Name of the eleventh HTML parameter.</description>
+		</PSXExtensionParamDef>
+		<PSXExtensionParamDef id="22">
+			<name>paramValue11</name>
+			<dataType>java.lang.String</dataType>
+			<description>(Optional) Value of the eleventh HTML parameter.</description>
+		</PSXExtensionParamDef>
+		<PSXExtensionParamDef id="23">
+			<name>paramName12</name>
+			<dataType>java.lang.String</dataType>
+			<description>(Optional) Name of the twelfth HTML parameter.</description>
+		</PSXExtensionParamDef>
+		<PSXExtensionParamDef id="24">
+			<name>paramValue12</name>
+			<dataType>java.lang.String</dataType>
+			<description>(Optional) Value of the twelfth HTML parameter.</description>
+		</PSXExtensionParamDef>
+	</Extension>
+</PSXExtensionHandlerConfiguration>

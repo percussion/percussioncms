@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.percussion.soln.segment.Segment" table="segment">
+		<id name="id" column="id" type="string" />
+		<property name="folderId" column="folder_id" type="integer" />
+		<property name="folderPath" column="folder_path" type="string" not-null="true"/>
+		<property name="name" column="name" type="string" />
+		<property name="selectable" column="selectable" type="boolean" not-null="true"/>
+		<set name="aliases" table="segment_alias" lazy="false" cascade="all">
+    		<key column="segment_id"/>
+    		<element type="string" column="alias" length="256"/>
+		</set>
+	</class>
+</hibernate-mapping>

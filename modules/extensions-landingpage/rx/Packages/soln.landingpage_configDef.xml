@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx" xsi:schemaLocation="
+   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+   http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
+   http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
+      
+   <!--
+   This file contains bean entries for each object included in your package. 
+
+   Remove <bean> entries for objects that you don't want to expose for configuration.
+   Remove properties that you don't want to expose within each bean.
+   
+   The last part of each variable name should be set to a string that matches 
+   the business purpose of that property (sometimes the sample name may be OK.)
+   
+   You may also want to change how certain properties are exposed.
+   -->
+   <bean id="soln_LandingPage_ct" class="com.percussion.rx.config.impl.PSObjectConfigHandler">
+      <property name="name" value="soln_LandingPage_ct"/>
+      <property name="type" value="NODEDEF"/>
+      <property name="propertySetters">
+         <list>
+            <bean class="com.percussion.rx.config.impl.PSContentTypeSetter">
+               <property name="properties">
+
+                  <map>
+				     <entry key="label" value="${soln.landingpage.Label}"/>
+                     <entry key="defaultWorkflow" value="${soln.landingpage.DefaultWorkflow}"/>
+                     <!-- add shared or system fields or update fields already in the ctype
+                     <entry key="fields" value="${soln.landingpage.landingpage.AdditionalFields"/>
+                      -->
+                     <!-- property names for managing the associations -->
+                     <entry key="templates" value="${soln.landingpage.AllowedTemplates}"/>
+                     <entry key="workflows" value="${soln.landingpage.AllowedWorkflows}"/>
+                  </map>
+               </property>
+
+            </bean>
+         </list>
+      </property>
+   </bean>
+   	<bean id="soln_LandingPage_RelationshipConfig"
+		class="com.percussion.rx.config.impl.PSObjectConfigHandler">
+		<property name="name" value="FolderContent" />
+		<property name="type" value="RELATIONSHIP_CONFIGNAME" />
+		<property name="propertySetters">
+			<list>
+				<bean
+					class="com.percussion.rx.config.impl.PSRelationshipConfigEffectSetter">
+					<property name="properties">
+						<map>
+							<entry key="effects"
+								value="${soln.landingpage.effects}" />
+						</map>
+					</property>
+				</bean>
+			</list>
+		</property>
+	</bean>
+</beans>
