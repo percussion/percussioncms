@@ -29,6 +29,17 @@
                        silenceerrors="false"
         />
 
+        <PSExecSQLStmt rootDir="${install.dir}"
+                       printExceptionStackTrace="true"
+                       qualifyViewNames="PSX_PUBLICATION_SITE_ITEM_BAK_PATCH"
+                       sql="DROP TABLE PSX_PUBLICATION_SITE_ITEM_BAK_PATCH"
+                       sqlOracle="DROP TABLE PSX_PUBLICATION_SITE_ITEM_BAK_PATCH"
+                       sqlMysql="DROP TABLE IF EXISTS PSX_PUBLICATION_SITE_ITEM_BAK_PATCH"
+                       sqlDerby="DROP TABLE PSX_PUBLICATION_SITE_ITEM_BAK_PATCH"
+                       failonerror="false"
+                       silenceerrors="false"
+        />
+
         <!-- Cleanup to make sure new FK can be created -->
         <PSExecSQLStmt rootDir="${install.dir}"
                        printExceptionStackTrace="true"
