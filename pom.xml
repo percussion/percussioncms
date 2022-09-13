@@ -182,7 +182,7 @@
        <solr.version>8.11.2</solr.version>
         <nettyall.version>4.1.45.Final</nettyall.version>
        <hikari.version>4.0.3</hikari.version>
-       <snakeyaml.version>1.29</snakeyaml.version>
+       <snakeyaml.version>1.32</snakeyaml.version>
        <commons-email.version>1.5</commons-email.version>
        <commons.codec.version>1.14</commons.codec.version>
        <tinymce.version>5.10.3</tinymce.version>
