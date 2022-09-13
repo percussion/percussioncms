@@ -42,7 +42,6 @@ import com.percussion.itemmanagement.data.PSItemStateTransition;
 import com.percussion.itemmanagement.service.IPSItemService;
 import com.percussion.itemmanagement.service.IPSItemWorkflowService;
 import com.percussion.itemmanagement.service.IPSWorkflowHelper;
-import com.percussion.licensemanagement.data.PSModuleLicense;
 import com.percussion.pagemanagement.assembler.PSAbstractMergedRegionTree;
 import com.percussion.pagemanagement.assembler.PSMergedRegion;
 import com.percussion.pagemanagement.assembler.PSMergedRegion.PSMergedRegionOwner;
@@ -65,9 +64,6 @@ import com.percussion.pathmanagement.data.PSPathItem;
 import com.percussion.pathmanagement.service.IPSPathService;
 import com.percussion.pathmanagement.service.impl.PSPathUtils;
 import com.percussion.recent.service.rest.IPSRecentService;
-import com.percussion.redirect.data.PSCreateRedirectRequest;
-import com.percussion.redirect.data.PSRedirectStatus;
-import com.percussion.redirect.service.IPSRedirectService;
 import com.percussion.rest.assets.Asset;
 import com.percussion.rest.assets.AssetField;
 import com.percussion.rest.assets.AssetFieldList;
@@ -163,7 +159,6 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
     private final IPSAssetService assetService;
     
     private final IAssetAdaptor assetAdaptor;
-    private IPSRedirectService redirectService;
     
     private IPSSiteDataService siteDataService;
 
@@ -204,7 +199,6 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
         this.nameGenerator = nameGenerator;
         this.assetService = assetService;
         this.assetAdaptor = assetAdaptor;
-        this.redirectService = redirectService;
         this.siteDataService = siteDataService;
         this.migrationService = migrationService;
         this.recentService = recentService;
