@@ -156,7 +156,6 @@
                 failonerror="false"
                 silenceerrors="false"
         />
-
 <!-- update table schema -->
         <echo> updating table schemas</echo>
 
@@ -327,6 +326,19 @@
                        qualifyViewNames=""
                        sql="ALTER TABLE PSX_CONTENTCHANGEEVENT ADD FOREIGN KEY (SITEID) REFERENCES RXSITES(SITEID)"
                        failonerror="true" silenceerrors="false"
+        />
+
+        <PSExecSQLStmt printExceptionStackTrace="true" qualifyTableNames="RXS_CT_GENERIC"
+                       qualifyViewNames=""
+                       sqlSqlServer="sp_rename 'RXS_CT_GENERIC.USAGE', 'PUSAGE', 'COLUMN';"
+                       sql="ALTER TABLE RXS_CT_GENERIC rename column USAGE to PUSAGE;"
+                       failonerror="false" silenceerrors="true"
+        />
+<!-- There is an issue altering this table column to not null, thus taking this hack -->
+        <PSExecSQLStmt printExceptionStackTrace="true" qualifyTableNames="PSX_BINARYMETAENTRY "
+                       qualifyViewNames=""
+                       sqlSqlServer="if not exists (select * from PSX_BINARYMETAENTRY) drop table PSX_BINARYMETAENTRY;"
+                       failonerror="false" silenceerrors="true"
         />
 
     </target>

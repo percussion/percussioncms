@@ -361,7 +361,7 @@
                 <size>500</size>
                 <allowsnull>yes</allowsnull>
             </column>
-            <column name="TRANSITIONCOMMENT" >
+            <column action="r" name="TRANSITIONCOMMENT" >
                 <jdbctype>VARCHAR</jdbctype>
                 <size>500</size>
                 <allowsnull>yes</allowsnull>

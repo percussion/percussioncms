@@ -201,6 +201,18 @@
                </PSXUISet>
             </PSXDisplayMapping>
             <PSXDisplayMapping>
+               <FieldRef>item_file_attachment</FieldRef>
+               <PSXUISet>
+                  <Label>
+                     <PSXDisplayText>File:</PSXDisplayText>
+                  </Label>
+                  <PSXControlRef id="121" name="sys_File"/>
+                  <ErrorLabel>
+                     <PSXDisplayText>File:</PSXDisplayText>
+                  </ErrorLabel>
+               </PSXUISet>
+            </PSXDisplayMapping>
+            <PSXDisplayMapping>
                <FieldRef>item_file_attachment_filename</FieldRef>
                <PSXUISet>
                   <Label>
@@ -699,10 +711,22 @@
       <PSXUIDefinition>
          <PSXDisplayMapper fieldSetRef="sharedimage" id="5">
             <PSXDisplayMapping>
-               <FieldRef>img1_hash</FieldRef>
+               <FieldRef>img1</FieldRef>
                <PSXUISet>
                   <Label>
                      <PSXDisplayText>Image:</PSXDisplayText>
+                  </Label>
+                  <PSXControlRef id="76" name="sys_File"/>
+                  <ErrorLabel>
+                     <PSXDisplayText>Image:</PSXDisplayText>
+                  </ErrorLabel>
+               </PSXUISet>
+            </PSXDisplayMapping>
+            <PSXDisplayMapping>
+               <FieldRef>img1_hash</FieldRef>
+               <PSXUISet>
+                  <Label>
+                     <PSXDisplayText>Image Hash:</PSXDisplayText>
                   </Label>
                   <PSXControlRef id="10003" name="sys_HashedFile"/>
                   <ErrorLabel>

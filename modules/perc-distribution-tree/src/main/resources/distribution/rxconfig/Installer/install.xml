@@ -537,6 +537,12 @@
         <exclude name="jetty/base/resources/log4j*.xml"/>
         <exclude name="rxconfig/Installer/rxrepository.properties"/>
         <exclude name="rx_resources/vm/custom_head.vm"/>
+        <exclude name="rx_resources/stylesheets/rx_Templates.xsl"/>
+        <exclude name="rx_resources/stylesheets/rx_DisplayFieldTemplates.xsl"/>
+        <exclude name="rx_resources/stylesheets/rx_bannerTemplate.xsl"/>
+        <exclude name="rx_resources/stylesheets/DefaultError.xsl"/>
+        <exclude name="rx_resources/stylesheets/StatusBarQuery.xsl"/>
+        <exclude name="rx_resources/stylesheets/searchBox.xsl"/>
         <exclude name="**/customer_config_override.json"/>
         <exclude name="Repository/**"/>
         <exclude name="Extensions/**"/>
@@ -547,7 +553,19 @@
         <exclude name="ObjectStore/**"/>
         <exclude name="jetty/base/logs"/>
         <exclude name="rxconfig/Installer/*.bat"/>
-        <exclude name="ObjectStore/psx_cerff*.xml"/>
+        <exclude name="ObjectStore/psx_cerffAutoIndex.xml"/>
+        <exclude name="ObjectStore/psx_cerffBrief.xml"/>
+        <exclude name="ObjectStore/psx_cerffCalendar.xml"/>
+        <exclude name="ObjectStore/psx_cerffContacts.xml"/>
+        <exclude name="ObjectStore/psx_cerffEvent.xml"/>
+        <exclude name="ObjectStore/psx_cerffExternalLink.xml"/>
+        <exclude name="ObjectStore/psx_cerffFile.xml"/>
+        <exclude name="ObjectStore/psx_cerffGeneric.xml"/>
+        <exclude name="ObjectStore/psx_cerffGenericWord.xml"/>
+        <exclude name="ObjectStore/psx_cerffHome.xml"/>
+        <exclude name="ObjectStore/psx_cerffImage.xml"/>
+        <exclude name="ObjectStore/psx_cerffNavImage.xml"/>
+        <exclude name="ObjectStore/psx_cerffPressRelease.xml"/>
         <exclude name="ObjectStore/psx_cepercNavImage.xml"/>
         <exclude name="ObjectStore/psx_cepercNavon.xml"/>
         <exclude name="ObjectStore/psx_cepercNavTree.xml"/>
@@ -903,6 +921,7 @@
 
         <copy todir="${install.dir}/ObjectStore" failonerror="false" overwrite="true">
             <fileset dir="${install.src}/ObjectStore" followsymlinks="false" includes="**">
+                <patternset refid="upgrade.excludes"/>
                <!-- <present present="srconly" targetdir="${install.dir}/ObjectStore"/> -->
             </fileset>
         </copy>

@@ -213,16 +213,19 @@ public class PSJdbcIndex extends PSJdbcKey
       switch (getAction())
       {
          case ACTION_CREATE:
+            canAlter = true;
+            break;
          case ACTION_NONE:
             canAlter = true;
             break;
-
+         case ACTION_REPLACE:
+            canAlter = true;
+            break;
          case ACTION_DELETE:
             if (getType() == TYPE_NON_UNIQUE)
                canAlter = true;
             break;
       }
-
       return canAlter;
    }
 
@@ -261,6 +264,37 @@ public class PSJdbcIndex extends PSJdbcKey
       }
       while (false);
       return match;
+   }
+
+   public boolean equals(Object obj)
+   {
+
+      if (!(obj instanceof PSJdbcIndex))
+         return false;
+
+      PSJdbcIndex other = (PSJdbcIndex)obj;
+      return isComponentEqual(other);
+
+
+   }
+
+   public boolean isComponentEqual(PSJdbcIndex other)
+   {
+      if (other == null)
+         return false;
+
+      if (this.getType() != other.getType())
+         return false;
+      else if (this.getIndexColumnNames().size() != other.getIndexColumnNames().size())
+         return false;
+      else
+      {
+         if( compareColumns(this.getIndexColumnNames(),other.getIndexColumnNames()) != IS_EXACT_MATCH){
+            return false;
+         }
+      }
+
+      return true;
    }
 
    /**

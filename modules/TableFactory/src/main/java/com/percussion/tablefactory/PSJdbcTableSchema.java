@@ -420,6 +420,27 @@ public class PSJdbcTableSchema implements Comparable<PSJdbcTableSchema>
 
    }
 
+   public PSJdbcIndex getIndex(PSJdbcIndex newIndex)
+   {
+      if (newIndex == null )
+         throw new IllegalArgumentException("index may not be null");
+
+      PSJdbcIndex foundIndex = m_indexes.get(newIndex.getName());
+      if(foundIndex == null){
+         Iterator<PSJdbcIndex> indxes = m_indexes.values().iterator();
+         while (indxes.hasNext()){
+            PSJdbcIndex idx = indxes.next();
+            if(idx.equals(newIndex)){
+               foundIndex = idx;
+               break;
+            }
+         }
+      }
+
+      return foundIndex;
+
+   }
+
    /**
     * Convenience method that calls
     * {@link #getIndexes(int) getIndexes(PSJdbcIndex.TYPE_UNIQUE)}
@@ -1410,22 +1431,25 @@ public class PSJdbcTableSchema implements Comparable<PSJdbcTableSchema>
    public boolean canBeAltered()
    {
       for (PSJdbcColumnDef m_column : m_columns) {
-         if (!m_column.canAlter())
+         if (!m_column.canAlter()) {
             return false;
+         }
       }
 
-      if (m_primaryKey != null && !m_primaryKey.canAlter())
+      if (m_primaryKey != null && !m_primaryKey.canAlter()) {
          return false;
+      }
 
       for (PSJdbcForeignKey foreignKey : m_foreignKeys)
       {
-         if (!foreignKey.canAlter())
-         return false;
+         if (!foreignKey.canAlter()) {
+            return false;
+         }
       }
 
       for (PSJdbcIndex index : m_indexes.values()) {
-         if (!index.canAlter())
-            return false;
+         if (!index.canAlter()) {            return false;
+         }
       }
 
       return true;

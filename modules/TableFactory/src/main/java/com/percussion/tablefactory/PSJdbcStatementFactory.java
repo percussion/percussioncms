@@ -227,6 +227,16 @@ public class PSJdbcStatementFactory
 
       PSJdbcExecutionBlock block = new PSJdbcExecutionBlock();
 
+      //add indexes as unique constraints
+      Iterator<PSJdbcIndex> indexes = tableSchema.getIndexes(PSJdbcIndex.TYPE_UNIQUE);
+      while (indexes.hasNext()){
+         PSJdbcIndex index = indexes.next();
+        if (index.getAction() == PSJdbcTableComponent.ACTION_DELETE) {
+            block.addStep(new PSJdbcSqlStatement(getDropUniqueContraint(dbmsDef, tableSchema, index)));
+         }
+      }
+
+
       // add each column create
       Iterator<PSJdbcColumnDef> columns = tableSchema.getColumns();
       while (columns.hasNext())
@@ -242,6 +252,10 @@ public class PSJdbcStatementFactory
          {
             block.addStep(getDropComponentStatement(fullTableName, column.getName()));
          }
+         else if (column.getAction() == PSJdbcTableComponent.ACTION_REPLACE)
+         {
+            block.addStep(getAlterColumnStatement(dbmsDef,fullTableName, column));
+         }
       }
 
       // add pk create
@@ -250,7 +264,7 @@ public class PSJdbcStatementFactory
       {
          if (pKey.getAction() == PSJdbcTableComponent.ACTION_CREATE) {
             block.addStep(getAddComponentStatement(fullTableName, getPrimaryKeyConstraint(dbmsDef, tableSchema)));
-      }
+         }
          else if (pKey.getAction() == PSJdbcTableComponent.ACTION_DELETE)
          {
             block.addStep(new PSJdbcSqlStatement(getDropPrimaryContraint(dbmsDef, tableSchema, pKey)));
@@ -270,34 +284,24 @@ public class PSJdbcStatementFactory
          // add a separate alter statement for each external table constraint
          Iterator<String> tables = fKey.getTables();
 
-         while (tables.hasNext())
-         {
-            String tableName = tables.next();
-            Iterator<String[]> cols = fKey.getColumns(tableName);
-               if (fKey.getAction() == PSJdbcTableComponent.ACTION_CREATE)
-               {
-            block.addStep(getAddComponentStatement(fullTableName,
-                        getForeignKeyConstraintInt(dbmsDef, fkName + "_" + i++, cols)));
-         }
-               else if (fKey.getAction() == PSJdbcTableComponent.ACTION_DELETE)
-               {
+         while (tables.hasNext()){
+               String tableName = tables.next();
+               Iterator<String[]> cols = fKey.getColumns(tableName);
+               if (fKey.getAction() == PSJdbcTableComponent.ACTION_CREATE){
+                  block.addStep(getAddComponentStatement(fullTableName,
+                  getForeignKeyConstraintInt(dbmsDef, fkName + "_" + i++, cols)));
+               }else if (fKey.getAction() == PSJdbcTableComponent.ACTION_DELETE){
                   block.addStep(new PSJdbcSqlStatement(getDropFKContraint(dbmsDef, tableSchema, fKey)));
-      }
+               }
             }
-
          }
       }
-      //add indexes as unique constraints
-      Iterator<PSJdbcIndex> indexes = tableSchema.getIndexes(PSJdbcIndex.TYPE_UNIQUE);
 
       while (indexes.hasNext())
       {
          PSJdbcIndex index = indexes.next();
          if (index.getAction() == PSJdbcTableComponent.ACTION_CREATE)
             block.addStep(getAddComponentStatement(fullTableName, getUniqueConstraint(dbmsDef, tableSchema, index)));
-         else if (index.getAction() == PSJdbcTableComponent.ACTION_DELETE) {
-            block.addStep(new PSJdbcSqlStatement(getDropUniqueContraint(dbmsDef, tableSchema, index)));
-         }
       }
 
       return block;
@@ -1566,6 +1570,49 @@ public class PSJdbcStatementFactory
 
       return new PSJdbcSqlStatement(buf.toString());
    }
+
+   /**
+    * Generates an alter column statement to alter column defination as defined.
+    *
+    * @param dbmsDef Table Defination
+    * @param tableName The fully qualified table name.  Assumed not <code>null
+    * </code>.
+    * @param column Column that needs to be modified
+    * @return The add column statement, never <code>null</code>.
+    */
+   private static PSJdbcSqlStatement getAlterColumnStatement(PSJdbcDbmsDef dbmsDef, String tableName,
+                                                                PSJdbcColumnDef column)
+   {
+
+      StringBuilder buf = new StringBuilder();
+
+      if(PSSqlHelper.isMsSql(dbmsDef.getDriver())) {
+         //ALTER TABLE [TABLE_NAME] ALTER COLUMN [COLUMNNAME] nvarchar(500);
+         buf.append("ALTER TABLE ");
+         buf.append(tableName);
+         buf.append(" ALTER COLUMN ");
+         buf.append(column.getSqlDef(dbmsDef));
+      }else if(PSSqlHelper.isOracle(dbmsDef.getDriver()) || PSSqlHelper.isMysql(dbmsDef.getDriver())) {
+         //ALTER TABLE [TABLE_NAME] MODIFY [COLUMNNAME] VARCHAR2(300);
+         buf.append("ALTER TABLE ");
+         buf.append(tableName);
+         buf.append(" MODIFY ");
+         buf.append(column.getSqlDef(dbmsDef));
+      }else if(PSSqlHelper.isDerby(dbmsDef.getDriver()) || PSSqlHelper.isDB2(dbmsDef.getDriver())) {
+         //ALTER TABLE [table] ALTER COLUMN [column] SET DATA TYPE [type];
+         buf.append("ALTER TABLE ");
+         buf.append(tableName);
+         buf.append(" ALTER COLUMN ");
+         buf.append(column.getName());
+         buf.append(" SET DATA TYPE ");
+         String coldef = column.getSqlDef(dbmsDef);
+         coldef = coldef.replace(column.getName(),"");
+         buf.append(coldef);
+      }
+       return new PSJdbcSqlStatement(buf.toString());
+   }
+
+
 
    /**
     * Generates an alter table statement to drop the specified component.
