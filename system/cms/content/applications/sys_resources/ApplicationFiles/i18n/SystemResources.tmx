@@ -4103,7 +4103,16 @@ You have selected to copy the source Site Subfolder with the following options:
 				<prop type="mnemonic">A</prop>
 				<seg>Locale</seg>
 			</tuv>
-		</tu>	
+		</tu>
+
+		<tu tuid="jsp_login@SelectUI">
+        			<prop type="sectionname" xml:lang="en-us">Legacy UI</prop>
+        			<note xml:lang="en-us">UI Selection Label</note>
+        			<tuv xml:lang="en-us">
+        				<prop type="mnemonic">L</prop>
+        				<seg>Legacy UI</seg>
+        			</tuv>
+        </tu>
 		
 		<tu tuid="jsp_login@LoginButton">
 			<prop type="sectionname" xml:lang="en-us">Percussion Login</prop>
