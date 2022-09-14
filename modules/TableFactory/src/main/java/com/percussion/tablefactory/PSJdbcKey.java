@@ -334,7 +334,7 @@ public abstract class PSJdbcKey extends PSJdbcTableComponent
          match = IS_EXACT_MATCH;
 
          // start comparing column names
-         //We need to match the columns in same order as some Indexes and keys are having same columns but different odrder of indexing
+         //We need to match the columns in same order as some Indexes and keys are having same columns but different order of indexing
          //e.g. PSX_ACLENTRIES has 2 indexes
          //       <index name="IX_ENTRY_NAME_TYPE" isUnique="n">
          //                <name>NAME</name>
