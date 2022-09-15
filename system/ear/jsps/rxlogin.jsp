@@ -3,14 +3,14 @@
 <%@ page import="com.percussion.i18n.PSI18nUtils" %>
 <%@ page import="com.percussion.i18n.PSLocaleManager" %>
 <%@ page import="com.percussion.i18n.PSLocale" session="true" %>
-<%@ page import="com.percussion.security.SecureStringUtils" %>
+<%@ page import="com.percussion.i18n.PSLocaleException" %>
 <%@ taglib uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" prefix="csrf" %>
 <%@ taglib uri="http://rhythmyx.percussion.com/components"
 		   prefix="rxcomp"%>
 <%
 	//Checking for vulnerability
 	String str = request.getQueryString();
-	if(str != null && str != ""){
+	if(str == null || str.trim().equals("")){
 		response.sendError(response.SC_FORBIDDEN, "Invalid QueryString!");
 	}
 	String username = request.getParameter("j_username");
@@ -36,13 +36,18 @@
 	pageContext.setAttribute("locale",locale);
 
 	String loginComplete = PSServer.getServerProps().getProperty("loginAutoComplete");
-	String autoComplete = "";
+	String autoComplete;
 	if(loginComplete != null && loginComplete.equalsIgnoreCase("off") ){
 		autoComplete = "autocomplete='off'";
 	}else{
 		autoComplete = "autocomplete='on'";
 	}
-	PSLocaleManager locManager = PSLocaleManager.getInstance();
+	PSLocaleManager locManager;
+	try {
+		locManager = PSLocaleManager.getInstance();
+	}catch(PSLocaleException e){
+
+	}
 %>
 <!DOCTYPE html>
 <html lang="<%=lang %>">
@@ -115,7 +120,7 @@
 				</div>
 				<div class="form-group">
 					<label for="perc-login-select-ui">${rxcomp:i18ntext('jsp_login@SelectUI',locale)}</label>
-					<input id="perc-login-select-ui" type="checkbox">
+					<input id="perc-login-select-ui" name="j_selectUI" type="checkbox">
 				</div>
 				<button type="submit" id="perc-login-button" form="loginform" class="btn btn-primary btn-default">${rxcomp:i18ntext('jsp_login@LoginButton',locale)}</button>
 			</div>
@@ -141,7 +146,7 @@
 	<div class="row">
 		<div id="perc-register" class="span 12">
 			<p>Don't have a login?  Click the button below to request access from your System Administrator.</p>
-			<button type="button" id="perc-register-button"class="btn btn-primary">Request an Account</button>
+			<button type="button" id="perc-register-button" class="btn btn-primary">Request an Account</button>
 		</div>
 	</div>
 	<%
@@ -152,7 +157,6 @@
 	<%  }
 	%>
 
-</div>
 </div>
 <script>
 	jQuery(function ($) {
