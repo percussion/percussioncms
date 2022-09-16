@@ -329,6 +329,13 @@
                        failonerror="true" silenceerrors="false"
         />
 
+        <PSExecSQLStmt printExceptionStackTrace="true" qualifyTableNames="RXS_CT_GENERIC"
+                       qualifyViewNames=""
+                       sqlSqlServer="sp_rename 'RXS_CT_GENERIC.USAGE', 'PUSAGE', 'COLUMN';"
+                       sql="ALTER TABLE RXS_CT_GENERIC rename column USAGE to PUSAGE;"
+                       failonerror="false" silenceerrors="true"
+        />
+
     </target>
 
     <target name="init">
