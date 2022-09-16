@@ -21,6 +21,9 @@
    <path authType="anonymous">/v8/system/sites</path>
    <path authType="anonymous">/tmx/tmx.jsp</path>
    <path authType="anonymous">/cm/cui/components/*</path>
+   <path authType="anonymous">/cm/jslib/*</path>
+   <path authType="anonymous">/cm/css/*</path>
+   <path authType="anonymous">/cm/images/*</path>
    <path authType="anonymous">/rxlogin.jsp</path>
    <path authType="anonymous">/locale.jsp</path>
    <path authType="anonymous">/sessionstatus.jsp</path>

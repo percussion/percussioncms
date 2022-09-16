@@ -1,8 +1,7 @@
 <component name="CopyrightManager">
-  <settings>
+  <settings default="Apache 2.0">
     <module2copyright>
-      <element module="All" copyright="PercussionOpenSourceagplv3-classpath" />
-      <element module="PercussionOpenSource" copyright="PercussionOpenSourceagplv3-classpath" />
+      <element module="Java Code" copyright="Apache 2.0" />
     </module2copyright>
     <LanguageOptions name="CSS">
       <option name="fileTypeOverride" value="1" />
