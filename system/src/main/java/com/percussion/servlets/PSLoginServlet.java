@@ -94,7 +94,6 @@ public class PSLoginServlet extends HttpServlet
     * and redirect the user to the appropriate logout page ((standard or custom
     * if defined).
     *
-    *
     * @see HttpServlet#service(HttpServletRequest, HttpServletResponse) for
     * other details.
     */
@@ -139,6 +138,8 @@ public class PSLoginServlet extends HttpServlet
       }
 
       String redirect;
+      String legacyUI;
+      legacyUI = request.getParameter(LEGACY_UI_PARAM);
       try
       {
          boolean isBehindProxy = PSServer.isRequestBehindProxy(request);
@@ -154,14 +155,20 @@ public class PSLoginServlet extends HttpServlet
       catch (NullPointerException ex)
       {
          // Default
-         redirect = CMS_INDEX_PAGE;
+         if(!Boolean.parseBoolean(legacyUI))
+             redirect = CMS_INDEX_PAGE;
+         else
+            redirect = LEGACY_INDEX_PAGE;
       }
 
       String sep = "?";
       // if the original request was for the login page, redirect to CX
       if (redirect.endsWith(loginPage))
       {
-         redirect = CMS_INDEX_PAGE;
+         if(!Boolean.parseBoolean(legacyUI))
+            redirect = CMS_INDEX_PAGE;
+         else
+            redirect = LEGACY_INDEX_PAGE;
       }
       else if (request.getQueryString() != null)
       {
@@ -226,7 +233,7 @@ public class PSLoginServlet extends HttpServlet
       String uid = null;
       String pwd = null;
       String locale;
-      String legacyUI;
+      String legacyUI="false";
 
       // Checking for maximum users allowed in the system, if reached maximum, then don't allow more users
          if(!PSUserSessionManager.checkIfNewUserAllowed()){
@@ -266,18 +273,19 @@ public class PSLoginServlet extends HttpServlet
             uid = psreq.getParameter("j_username");
             pwd = psreq.getParameter("j_password");
             locale = psreq.getParameter("j_locale");
-            legacyUI = psreq.getParameter("j_selectUI");
+            legacyUI = psreq.getParameter(LEGACY_UI_PARAM);
+
+            if(legacyUI == null || legacyUI.equalsIgnoreCase("off"))
+               legacyUI = "false";
+            else if(legacyUI.equalsIgnoreCase("on"))
+               legacyUI = "true";
+
+            request.getSession().setAttribute(IPSConstants.LEGACY_UI_ATTR, Boolean.parseBoolean(legacyUI));
 
             if(locale!=null) {
                request.getSession().setAttribute(PSI18nUtils.USER_SESSION_OBJECT_SYS_LANG, locale);
             } else {
                request.getSession().setAttribute(PSI18nUtils.USER_SESSION_OBJECT_SYS_LANG, "en-us");
-            }
-
-            if(legacyUI!= null){
-               request.getSession().setAttribute(IPSConstants.LEGACY_UI_ATTR, Boolean.parseBoolean(legacyUI));
-            }else{
-               request.getSession().setAttribute(IPSConstants.LEGACY_UI_ATTR, false);
             }
 
          }
@@ -294,7 +302,7 @@ public class PSLoginServlet extends HttpServlet
       if (!StringUtils.isBlank(uid))
       {
          // handle authentication
-         authenticate(request, response, uid, pwd);
+         authenticate(request, response, uid, pwd,Boolean.parseBoolean(legacyUI));
 
 
       }
@@ -366,24 +374,24 @@ public class PSLoginServlet extends HttpServlet
     * @throws ServletException
     */
    private void authenticate(HttpServletRequest request,
-                             HttpServletResponse response, String uid, String pwd) throws IOException,
+                             HttpServletResponse response, String uid, String pwd,boolean legacyUI) throws IOException,
            ServletException
    {
       try
       {
 
          HttpSession sess = request.getSession(true);
-         String legacyUI = request.getParameter("j_selectUI");
+
          String redirect = (String) sess.getAttribute(REDIRECT_URL);
          if (redirect == null) {
-            if(!Boolean.parseBoolean(legacyUI)) {
+            if(!legacyUI) {
                redirect = CMS_INDEX_PAGE;
             }else{
                redirect = LEGACY_INDEX_PAGE;
             }
 
          }else{
-            if(Boolean.parseBoolean(legacyUI)) {
+            if(legacyUI) {
                redirect = LEGACY_INDEX_PAGE;
             }
          }
@@ -534,6 +542,7 @@ public class PSLoginServlet extends HttpServlet
     */
    public static final String REDIRECT_URL = "RX_REDIRECT_URL";
 
+   public static final String LEGACY_UI_PARAM= "j_selectUI";
    /**
     * logger
     */
