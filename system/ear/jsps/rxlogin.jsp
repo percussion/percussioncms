@@ -42,19 +42,17 @@
 	}else{
 		autoComplete = "autocomplete='on'";
 	}
-	PSLocaleManager locManager;
-	try {
-		locManager = PSLocaleManager.getInstance();
-	}catch(PSLocaleException e){
 
-	}
+	PSLocaleManager locManager = PSLocaleManager.getInstance();
+
 %>
 <!DOCTYPE html>
 <html lang="<%=lang %>">
 <head>
 	<title>${rxcomp:i18ntext('jsp_login@Percussion Login',locale)}</title>
 	<style>
-		body {background-color: #6C717C; font-family: Verdana; margin: 0; padding: 0; }
+		body {background-color: #6C717C;
+			font-family: Verdana, serif; margin: 0; padding: 0; }
 		.perc-login-logo {color: #121212; margin-top: 50px; margin-bottom: 50px;}
 		#loginform .perc-form    { }
 		#perc-forgot {color: #fff;}
@@ -86,7 +84,7 @@
 	<script src="/cm/jslib/profiles/3x/jquery/jquery-3.6.0.js"></script>
 	<script src="/cm/jslib/profiles/3x/jquery/jquery-migrate-3.3.2.js"></script>
 
-	<script src="/cm/war/jslib/profiles/3x/libraries/bootstrap/js/bootstrap.min.js"></script>
+	<script src="/cm/jslib/profiles/3x/libraries/bootstrap/js/bootstrap.min.js"></script>
 </head>
 <body onload="setCursor()">
 <div class="container">
