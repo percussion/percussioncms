@@ -8,11 +8,6 @@
 <%@ taglib uri="http://rhythmyx.percussion.com/components"
 		   prefix="rxcomp"%>
 <%
-	//Checking for vulnerability
-	String str = request.getQueryString();
-	if(str == null || str.trim().equals("")){
-		response.sendError(response.SC_FORBIDDEN, "Invalid QueryString!");
-	}
 	String username = request.getParameter("j_username");
 	String password = request.getParameter("j_password");
 	String locale = request.getParameter("j_locale");
