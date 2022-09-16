@@ -2272,6 +2272,38 @@
          <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
          <PSXSearchProperties defaultSearchLabel="Locale Name" enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
       </PSXField>
+      <PSXField forceBinary="no" mimetype="text/plain" modificationType="user" name="sys_lasttransitiondate" showInPreview="yes" showInSummary="yes" type="system">
+         <DataLocator>
+            <PSXBackEndColumn id="0">
+               <tableAlias>CONTENTSTATUS</tableAlias>
+               <column>LASTTRANSITIONDATE</column>
+               <columnAlias/>
+            </PSXBackEndColumn>
+         </DataLocator>
+         <DataType>datetime</DataType>
+         <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+         <FieldRules>
+            <PSXVisibilityRules dataHiding="xsl">
+               <PSXRule boolean="and">
+                  <PSXConditional id="0">
+                     <variable>
+                        <PSXTextLiteral id="0">
+                           <text>1</text>
+                        </PSXTextLiteral>
+                     </variable>
+                     <operator>=</operator>
+                     <value>
+                        <PSXTextLiteral id="0">
+                           <text>2</text>
+                        </PSXTextLiteral>
+                     </value>
+                     <boolean>AND</boolean>
+                  </PSXConditional>
+               </PSXRule>
+            </PSXVisibilityRules>
+         </FieldRules>
+         <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="no" visibleToGlobalQuery="yes"/>
+      </PSXField>
       <PSXField export="yes" forceBinary="no" mimetype="text/plain" modificationType="systemCreate" name="sys_objecttype" showInPreview="yes" showInSummary="yes" type="system">
          <DataLocator>
             <PSXBackEndColumn id="1">
@@ -2674,6 +2706,18 @@
    </PSXFieldSet>
    <PSXUIDefinition>
       <PSXDisplayMapper fieldSetRef="systemFieldset" id="282">
+         <PSXDisplayMapping>
+            <FieldRef>sys_lasttransitiondate</FieldRef>
+            <PSXUISet accessKey="S">
+               <Label>
+                  <PSXDisplayText>Last Transition Date:</PSXDisplayText>
+               </Label>
+               <PSXControlRef id="0" name="sys_CalendarSimple"/>
+               <ErrorLabel>
+                  <PSXDisplayText/>
+               </ErrorLabel>
+            </PSXUISet>
+         </PSXDisplayMapping>
          <PSXDisplayMapping>
             <FieldRef>sys_contentpostdatetz</FieldRef>
             <PSXUISet>

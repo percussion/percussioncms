@@ -1632,6 +1632,19 @@ public String toString()
    @Column(name = "REPEATEDAGINGTRANSSTARTDATE")
    private Date m_repeatedAgingTransStartDate = null;
 
+   @Basic
+   @Column(name="LASTTRANSITIONDATE")
+   private Date m_lastTransitionDate = null;
+
+
+   public Date getLastTransitionDate() {
+	return m_lastTransitionDate;
+}
+
+  public void setLastTransitionDate(Date lastTransitionDate) {
+	m_lastTransitionDate = lastTransitionDate;
+}
+
    /**
     * The content type id of the component.
     */
