@@ -496,14 +496,7 @@
         <include name="Synchronizer.bin"/>
         <include name="Synchronizer.exe"/>
         <include name="Synchronizer.lax"/>
-        <include name="sys_search/lucene/indexes/**"/> <!-- Remove old lucene indexes - file format to old -->
-        <!--
-        <include name="ObjectStore/psx_cerffNavImage.xml"/>
-        <include name="ObjectStore/psx_cerffNavon.xml"/>
-        <include name="ObjectStore/psx_cerffNavTree.xml"/> -->
-      <!--  <include name="ObjectStore/psx_cepercNavImage.xml"/>
-        <include name="ObjectStore/psx_cepercNavon.xml"/>
-        <include name="ObjectStore/psx_cepercNavTree.xml"/> -->
+        <include name="sys_search/lucene/indexes/**"/>
     </patternset>
 
     <patternset id="upgrade.overwrite">
@@ -544,13 +537,9 @@
         <exclude name="Deployment"/>
         <exclude name="Staging"/>
         <exclude name="logs"/>
-        <exclude name="ObjectStore/**"/>
+        <exclude name="**/ObjectStore/**"/>
         <exclude name="jetty/base/logs"/>
         <exclude name="rxconfig/Installer/*.bat"/>
-        <exclude name="ObjectStore/psx_cerff*.xml"/>
-        <exclude name="ObjectStore/psx_cepercNavImage.xml"/>
-        <exclude name="ObjectStore/psx_cepercNavon.xml"/>
-        <exclude name="ObjectStore/psx_cepercNavTree.xml"/>
     </patternset>
 
     <patternset id="upgrade.preserve">
@@ -892,28 +881,47 @@
         <delete verbose="true" failonerror="false" file="${install.dir}/jetty/base/webapps/Rhythmyx/WEB-INF/config/user/spring/imageWidget-beans.xml"/>
         <delete verbose="true" failonerror="false" file="${install.dir}/jetty/base/webapps/Rhythmyx/WEB-INF/config/user/spring/imageWidget-servlet.xml"/>
 
+        <echo>Copy Spring Config </echo>
         <copy verbose="true" todir="${install.dir}/jetty/base/webapps/Rhythmyx/WEB-INF/config/user/spring" overwrite="true" failonerror="false">
             <fileset dir="${install.src}/jetty/base/webapps/Rhythmyx/WEB-INF/config/user/spring" followsymlinks="false" includes="imageWidget*.xml">
             </fileset>
         </copy>
 
+        <echo>Copy Installer Dir </echo>
         <copy todir="${install.dir}/rxconfig/Installer" failonerror="false" overwrite="false">
             <fileset dir="${install.src}/rxconfig/Installer" followsymlinks="false" includes="rxrepository.properties">
                 <present present="srconly" targetdir="${install.dir}/rxconfig/Installer"/>
             </fileset>
         </copy>
 
+        <echo>Copy Repository Dir </echo>
         <copy todir="${install.dir}/Repository" failonerror="false" overwrite="false">
             <fileset dir="${install.src}/Repository" followsymlinks="false" includes="**">
                 <present present="srconly" targetdir="${install.dir}/Repository"/>
             </fileset>
         </copy>
 
+        <property name="fastforwardfile.list" value="psx_cerffAutoIndex.xml,psx_cerffBrief.xml,psx_cerffCalendar.xml,psx_cerffContacts.xml,psx_cerffEvent.xml,psx_cerffExternalLink.xml,psx_cerffFile.xml,psx_cerffGeneric.xml,psx_cerffGenericWord.xml,psx_cerffHome.xml,psx_cerffImage.xml,psx_cerffNavImage.xml,psx_cerffPressRelease.xml"/>
+
+        <echo>Update ObjectStore with latest files </echo>
         <copy todir="${install.dir}/ObjectStore" failonerror="false" overwrite="true">
-            <fileset dir="${install.src}/ObjectStore" followsymlinks="false" includes="**">
-               <!-- <present present="srconly" targetdir="${install.dir}/ObjectStore"/> -->
+            <fileset dir="${install.src}/ObjectStore" followsymlinks="false" excludes="${fastforwardfile.list}" includes="**">
+                <!-- <present present="srconly" targetdir="${install.dir}/ObjectStore"/> don't copy fastforward files -->
             </fileset>
         </copy>
+
+        <echo>Only copy Fastforward files, if already present  </echo>
+        <!-- Only copy Fastforward files, if already present -->
+        <for param="file" list="${fastforwardfile.list}">
+            <sequential>
+                <if>
+                    <available file="${install.dir}/ObjectStore/@{file}"/>
+                    <then>
+                        <copy todir="${install.dir}/ObjectStore" file="${install.src}/ObjectStore/@{file}" failonerror="false" overwrite="true"/>
+                    </then>
+                </if>
+            </sequential>
+        </for>
 
         <echo>Adding IMG HASH Mappings for IMG1 and IMG2 </echo>
         <replace summary="yes">

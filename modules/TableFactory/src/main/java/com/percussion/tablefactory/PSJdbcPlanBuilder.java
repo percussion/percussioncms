@@ -1372,23 +1372,6 @@ public class PSJdbcPlanBuilder
 
       }
 
-      // Now go through old columns and see if any need to be removed
-      Iterator oldCols = oldSchema.getColumns();
-      while (oldCols.hasNext())
-      {
-         PSJdbcColumnDef oldCol = (PSJdbcColumnDef)oldCols.next();
-         PSJdbcColumnDef newCol = newSchema.getColumn(oldCol.getName());
-         if (newCol == null)
-         {
-            // not in new schema, so we need to delete it
-            PSJdbcColumnDef difCol = new PSJdbcColumnDef(oldCol);
-            difCol.setAction(PSJdbcTableComponent.ACTION_DELETE);
-            changedCols.add(difCol);
-            buffer.append("Deleted column: " + NEWLINE);
-            buffer.append(oldCol);
-         }
-      }
-
       // now we can create the changed schema object using the column list
       PSJdbcTableSchema diffTableSchema = new PSJdbcTableSchema(
          newSchema.getName(), changedCols.iterator());
