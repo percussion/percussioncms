@@ -27,6 +27,7 @@ package com.percussion.servlets;
 import com.percussion.auditlog.PSActionOutcome;
 import com.percussion.auditlog.PSAuditLogService;
 import com.percussion.auditlog.PSAuthenticationEvent;
+import com.percussion.cms.IPSConstants;
 import com.percussion.content.IPSMimeContentTypes;
 import com.percussion.error.PSExceptionUtils;
 import com.percussion.i18n.PSI18nUtils;
@@ -55,7 +56,9 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Objects;
 
+import static com.percussion.cms.IPSConstants.SECURITY_LOG;
 import static com.percussion.utils.request.PSRequestInfoBase.KEY_PSREQUEST;
 import static com.percussion.utils.request.PSRequestInfoBase.getRequestInfo;
 import static org.apache.commons.lang.StringUtils.isNotBlank;
@@ -77,8 +80,6 @@ public class PSLoginServlet extends HttpServlet
     */
    private static final long serialVersionUID = 1L;
    private final PSAuditLogService psAuditLogService=PSAuditLogService.getInstance();
-   private PSAuthenticationEvent psAuthenticationEvent;
-
 
    /**
     * Handles requests to login and logout. Initial GET requests to "/login" are
@@ -93,10 +94,10 @@ public class PSLoginServlet extends HttpServlet
     * and redirect the user to the appropriate logout page ((standard or custom
     * if defined).
     *
-    *
     * @see HttpServlet#service(HttpServletRequest, HttpServletResponse) for
     * other details.
     */
+   @Override
    protected void service(HttpServletRequest request,
                           HttpServletResponse response) throws ServletException, IOException
    {
@@ -136,13 +137,15 @@ public class PSLoginServlet extends HttpServlet
                  "loginPage may not be null or empty");
       }
 
-      String redirect = null;
+      String redirect;
+      String legacyUI;
+      legacyUI = request.getParameter(LEGACY_UI_PARAM);
       try
       {
          boolean isBehindProxy = PSServer.isRequestBehindProxy(request);
          if(isBehindProxy){
             redirect =PSServer.getProxyURL(request,false);
-            if(redirect == ""){
+            if(Objects.equals(redirect, "")){
                redirect = request.getRequestURL().toString();
             }
          }else{
@@ -152,14 +155,20 @@ public class PSLoginServlet extends HttpServlet
       catch (NullPointerException ex)
       {
          // Default
-         redirect = RHYTHMYX_INDEX_PAGE;
+         if(!Boolean.parseBoolean(legacyUI))
+             redirect = CMS_INDEX_PAGE;
+         else
+            redirect = LEGACY_INDEX_PAGE;
       }
 
       String sep = "?";
       // if the original request was for the login page, redirect to CX
       if (redirect.endsWith(loginPage))
       {
-         redirect = RHYTHMYX_INDEX_PAGE;
+         if(!Boolean.parseBoolean(legacyUI))
+            redirect = CMS_INDEX_PAGE;
+         else
+            redirect = LEGACY_INDEX_PAGE;
       }
       else if (request.getQueryString() != null)
       {
@@ -170,8 +179,7 @@ public class PSLoginServlet extends HttpServlet
       loginPage += sep + IPSHtmlParameters.SYS_REDIRECT + "=" +
               PSURIEncoder.escape(redirect);
 
-      // loginPage += sep + IPSHtmlParameters.SYS_REDIRECT + "=" +PSURIEncoder.escape("/cm");
-      return loginPage;
+        return loginPage;
    }
 
    /**
@@ -188,7 +196,7 @@ public class PSLoginServlet extends HttpServlet
            throws IOException, ServletException
    {
        try {
-           psAuthenticationEvent = new PSAuthenticationEvent(PSActionOutcome.SUCCESS.name(), PSAuthenticationEvent.AuthenticationEventActions.logout, request, request.getRemoteUser());
+          PSAuthenticationEvent psAuthenticationEvent = new PSAuthenticationEvent(PSActionOutcome.SUCCESS.name(), PSAuthenticationEvent.AuthenticationEventActions.logout, request, request.getRemoteUser());
            psAuditLogService.logAuthenticationEvent(psAuthenticationEvent);
        }catch (Exception e){
           log.error(PSExceptionUtils.getMessageForLog(e));
@@ -224,7 +232,8 @@ public class PSLoginServlet extends HttpServlet
       // see if initial request for login page, or a post with credentials
       String uid = null;
       String pwd = null;
-      String locale=null;
+      String locale;
+      String legacyUI="false";
 
       // Checking for maximum users allowed in the system, if reached maximum, then don't allow more users
          if(!PSUserSessionManager.checkIfNewUserAllowed()){
@@ -263,10 +272,22 @@ public class PSLoginServlet extends HttpServlet
             psreq.parseBody();
             uid = psreq.getParameter("j_username");
             pwd = psreq.getParameter("j_password");
-            locale= psreq.getParameter("j_locale");
+            locale = psreq.getParameter("j_locale");
+            legacyUI = psreq.getParameter(LEGACY_UI_PARAM);
 
-            if(locale!=null)
+            if(legacyUI == null || legacyUI.equalsIgnoreCase("off"))
+               legacyUI = "false";
+            else if(legacyUI.equalsIgnoreCase("on"))
+               legacyUI = "true";
+
+            request.getSession().setAttribute(IPSConstants.LEGACY_UI_ATTR, Boolean.parseBoolean(legacyUI));
+
+            if(locale!=null) {
                request.getSession().setAttribute(PSI18nUtils.USER_SESSION_OBJECT_SYS_LANG, locale);
+            } else {
+               request.getSession().setAttribute(PSI18nUtils.USER_SESSION_OBJECT_SYS_LANG, "en-us");
+            }
+
          }
          catch (PSRequestParsingException e)
          {
@@ -281,7 +302,7 @@ public class PSLoginServlet extends HttpServlet
       if (!StringUtils.isBlank(uid))
       {
          // handle authentication
-         authenticate(request, response, uid, pwd);
+         authenticate(request, response, uid, pwd,Boolean.parseBoolean(legacyUI));
 
 
       }
@@ -353,18 +374,27 @@ public class PSLoginServlet extends HttpServlet
     * @throws ServletException
     */
    private void authenticate(HttpServletRequest request,
-                             HttpServletResponse response, String uid, String pwd) throws IOException,
+                             HttpServletResponse response, String uid, String pwd,boolean legacyUI) throws IOException,
            ServletException
    {
       try
       {
 
          HttpSession sess = request.getSession(true);
-//         event.setSessionid(sess.getId());
 
          String redirect = (String) sess.getAttribute(REDIRECT_URL);
-         if (redirect == null)
-            redirect = RHYTHMYX_INDEX_PAGE;
+         if (redirect == null) {
+            if(!legacyUI) {
+               redirect = CMS_INDEX_PAGE;
+            }else{
+               redirect = LEGACY_INDEX_PAGE;
+            }
+
+         }else{
+            if(legacyUI) {
+               redirect = LEGACY_INDEX_PAGE;
+            }
+         }
 
          request = PSSecurityFilter.authenticate(request, response, uid,
                  pwd);
@@ -373,12 +403,12 @@ public class PSLoginServlet extends HttpServlet
          response.sendRedirect(redirect);
 
          sess.removeAttribute(REDIRECT_URL);
-          psAuthenticationEvent=new PSAuthenticationEvent(PSActionOutcome.SUCCESS.name(), PSAuthenticationEvent.AuthenticationEventActions.login,request,uid);
+         PSAuthenticationEvent psAuthenticationEvent=new PSAuthenticationEvent(PSActionOutcome.SUCCESS.name(), PSAuthenticationEvent.AuthenticationEventActions.login,request,uid);
           psAuditLogService.logAuthenticationEvent(psAuthenticationEvent);
       }
       catch (LoginException e)
       {
-         psAuthenticationEvent=new PSAuthenticationEvent(PSActionOutcome.FAILURE.name(), PSAuthenticationEvent.AuthenticationEventActions.login,request,uid);
+         PSAuthenticationEvent psAuthenticationEvent=new PSAuthenticationEvent(PSActionOutcome.FAILURE.name(), PSAuthenticationEvent.AuthenticationEventActions.login,request,uid);
          psAuditLogService.logAuthenticationEvent(psAuthenticationEvent);
          Exception ex;
 
@@ -394,8 +424,8 @@ public class PSLoginServlet extends HttpServlet
                             IPSSecurityErrors.GENERIC_AUTHENTICATION_FAILED, null);
          }
 
-         final String errorText = ex.getLocalizedMessage();
-         m_log.debug(errorText, e);
+         final String errorText = ex.getMessage();
+         log.debug(errorText, e);
 
          // add error param
          request = new HttpServletRequestWrapper(request) {
@@ -482,10 +512,10 @@ public class PSLoginServlet extends HttpServlet
    }
 
    /**
-    * Default Rhythmyx page constant
+    * Default CMS page constant
     */
-   private static final String RHYTHMYX_INDEX_PAGE = "index.jsp";
-
+   private static final String CMS_INDEX_PAGE = "index.jsp";
+   private static final String LEGACY_INDEX_PAGE = "Rhythmyx/sys_cx/mainpage.html";
    /**
     * Constant for the "user" directory.
     */
@@ -512,10 +542,11 @@ public class PSLoginServlet extends HttpServlet
     */
    public static final String REDIRECT_URL = "RX_REDIRECT_URL";
 
+   public static final String LEGACY_UI_PARAM= "j_selectUI";
    /**
     * logger
     */
-   private static final Logger log = LogManager.getLogger(PSLoginServlet.class);
+   private static final Logger log = LogManager.getLogger(SECURITY_LOG);
 
    /**
     * The Content-Type header value to set when returning included pages,
@@ -525,8 +556,4 @@ public class PSLoginServlet extends HttpServlet
            IPSMimeContentTypes.MIME_TYPE_TEXT_HTML + ";charset=" +
                    IPSUtilsConstants.RX_STANDARD_ENC;
 
-   /**
-    * Static logger
-    */
-   private Logger m_log = LogManager.getLogger(PSLoginServlet.class);
 }
