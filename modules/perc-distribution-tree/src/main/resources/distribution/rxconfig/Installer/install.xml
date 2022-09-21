@@ -609,6 +609,7 @@
         <antcall target="deleteOldLog4jJars"  inheritall="true" inheritrefs="true"/>
         <antcall target="upgrade_server" inheritall="true" inheritrefs="true"/>
         <antcall target="setupDB" inheritall="true" inheritrefs="true"/>
+        <antcall target="upgradeRelationshipConfig"  inheritall="true" inheritrefs="true"/>
         <antcall target="updatePackages" inheritall="true" inheritrefs="true"/>
         <antcall target="updateAuditLog" inheritall="true" inheritrefs="true"/>
         <antcall target="updateExtensions" inheritall="true" inheritrefs="true"/>
@@ -691,6 +692,11 @@
                 <delete file="${install.dir}/web_resources/cm/jslib/jquery-ui.1.12.1.js"/>
             </then>
         </if>
+    </target>
+
+    <target name="upgradeRelationshipConfig">
+        <echo>Upgrading Relationship Config...</echo>
+        <PSUpgradeRelationshipConfig rootDir="${install.dir}"/>
     </target>
 
     <target name="backupTinymceRxresources">

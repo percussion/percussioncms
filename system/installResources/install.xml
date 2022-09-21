@@ -317,6 +317,10 @@
   
   </taskdef>
 
+  <taskdef name="PSUpgradeRelationshipConfig" classname="${ant.install}.PSUpgradeRelationshipConfig" loaderref="ant.coreLoader">
+
+  </taskdef>
+
   <taskdef name="PSTableAction" classname="${ant.install}.PSTableAction" loaderref="ant.coreLoader">
  
   </taskdef>
@@ -798,6 +802,9 @@
                          
             <!-- Rename deprecated system apps if any were found during pre-upgrade checks -->
             <PSRenameDeprecatedApps/>
+
+            <!-- Add New RaltionshipConfigs Types  -->
+            <PSUpgradeRelationshipConfig/>
      
          </then>
         </if>
