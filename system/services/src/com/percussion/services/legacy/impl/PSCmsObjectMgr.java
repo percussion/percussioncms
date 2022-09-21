@@ -1721,6 +1721,11 @@ public class PSCmsObjectMgr
            "c.m_contentLastModifiedDate, c.m_contentPostDate, c.m_contentCreatedDate, " +
            "c.m_workflowAppId, c.m_contentStateId, c.m_tipRevision, c.m_currRevision, " +
            "c.m_publicRevision, c.m_contentLastModifier, c.m_checkoutUserName, c.m_contentPublishDate from PSComponentSummary c";
+
+           private static final int DEFAULT_MAX_SUMMARY_CACHE_SIZE = 10000;
+           private String CUSTOMIZED_MAX_SUMMARY_CACHE_SIZE;
+           private int maxLimit = DEFAULT_MAX_SUMMARY_CACHE_SIZE;
+           private static final String PROP_MAX_SUMMARY_CACHE_SIZE = "MAX_SUMMARY_CACHE_SIZE";
    /*
     * (non-Javadoc)
     * 
@@ -1728,9 +1733,24 @@ public class PSCmsObjectMgr
     */
    public Collection<IPSItemEntry> loadAllItemEntries()
    {
-      Session session = getSession();
 
+         Session session = getSession();
          Query q = session.createQuery(itemQuery);
+
+          //Limit the contentSummary Cache size to customized or default size
+          // incase user sets the value 0 or -, then make it unlimited, else use customized/default value.
+          if(CUSTOMIZED_MAX_SUMMARY_CACHE_SIZE == null){
+              try {
+                CUSTOMIZED_MAX_SUMMARY_CACHE_SIZE = PSServer.getProperty(PROP_MAX_SUMMARY_CACHE_SIZE,Integer.toString(DEFAULT_MAX_SUMMARY_CACHE_SIZE));
+                maxLimit = Integer.parseInt(CUSTOMIZED_MAX_SUMMARY_CACHE_SIZE);
+              }catch (Exception e){
+                  maxLimit = DEFAULT_MAX_SUMMARY_CACHE_SIZE;
+              }
+          }
+          if (maxLimit > 0) {
+              q.setMaxResults(maxLimit);
+          }
+
          List<Object[]> listItems = q.list();
          
          List<IPSItemEntry> allEntries = new ArrayList<>();
