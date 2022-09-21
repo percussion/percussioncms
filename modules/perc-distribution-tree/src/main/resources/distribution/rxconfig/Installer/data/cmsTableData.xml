@@ -12150,7 +12150,7 @@
     </table>
     <table name="PSX_PERSISTEDPROPERTYVALUES"/>
     <table name="PSX_RXCONFIGURATIONS" onCreateOnly="no">
-        <row onTableCreateOnly="no" action="r">
+        <row onTableCreateOnly="no" action="i">
             <column name="NAME">relationships</column>
             <column name="TYPE">XML</column>
             <column name="VERSION">0</column>

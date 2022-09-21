@@ -326,7 +326,6 @@
                                 .attr('class','perc-no-update-link-text perc-blog-list-more-link')
                                 .attr('href', pageEntry.folder + pageEntry.name)
                                 .attr('title', pageEntry.linktext)
-                                .attr('aria-label', 'Read more about ' + pageEntry.linktext)
                                 .text(target.settings.blogPostReadMoreText);
                                 summary = data.xml ? data.xml : (new XMLSerializer()).serializeToString(data);
                             } // end if
