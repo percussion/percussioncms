@@ -217,14 +217,6 @@
         <status>PENDING</status>
     </PackageFileEntry>
     <PackageFileEntry>
-        <packageName>perc.gadget.licenseMonitor</packageName>
-        <status>PENDING</status>
-    </PackageFileEntry>
-    <PackageFileEntry>
-        <packageName>perc.gadget.pageOptimizerKeywords</packageName>
-        <status>UNINSTALL</status>
-    </PackageFileEntry>
-    <PackageFileEntry>
         <packageName>perc.gadget.SiteConfig</packageName>
         <status>PENDING</status>
     </PackageFileEntry>
@@ -274,10 +266,6 @@
     </PackageFileEntry>
     <PackageFileEntry>
         <packageName>perc.widget.emseventlist</packageName>
-        <status>PENDING</status>
-    </PackageFileEntry>
-    <PackageFileEntry>
-        <packageName>perc.widgets.Redirect</packageName>
         <status>PENDING</status>
     </PackageFileEntry>
     <PackageFileEntry>

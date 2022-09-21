@@ -228,7 +228,6 @@
 	                 .attr('class','perc-no-update-link-text perc-blog-list-more-link')
 	              	 .attr('href', pagePath)
                    .attr('title', entry.linktext)
-                   .attr('aria-label', 'Read more about ' + entry.linktext)
 	              	.text(settings.readMoreLink);
 	              if(null !== data && "undefined" !== typeof (data)){
 	              		summary = data.xml ? data.xml : (new XMLSerializer()).serializeToString(data);
