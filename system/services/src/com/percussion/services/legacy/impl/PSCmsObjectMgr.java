@@ -98,14 +98,15 @@ import org.apache.commons.lang.Validate;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Cache;
+import org.hibernate.CacheMode;
 import org.hibernate.Criteria;
-import org.hibernate.query.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.metadata.ClassMetadata;
+import org.hibernate.query.Query;
 import org.hibernate.type.IntegerType;
 import org.hibernate.type.LongType;
 import org.hibernate.type.ShortType;
@@ -1682,11 +1683,7 @@ public class PSCmsObjectMgr
       int objectType        = toInt(item[4], -1);
       String createdBy      = (String)item[5];
       Date lastModifiedDate = (Date)item[6];
-       Date postDate         = (Date)item[7];
-       if(item[7] == null && item[16] != null) {
-           //Find the first PublishDate From PSX_PUBLICATION_DOC and set that as post Date.
-           postDate = getFirstPublishDate(contentId);
-       }
+      Date postDate         = (Date)item[7];
       Date createdDate      = (Date)item[8];
       int workflowId        = toInt(item[9], -1);
       int stateId           = toInt(item[10], -1);
@@ -1736,6 +1733,9 @@ public class PSCmsObjectMgr
 
          Session session = getSession();
          Query q = session.createQuery(itemQuery);
+         q.setCacheable(true);
+         q.setCacheMode(CacheMode.NORMAL);
+         q.setCacheRegion("PSComponentSummary");
 
           //Limit the contentSummary Cache size to customized or default size
           // incase user sets the value 0 or -, then make it unlimited, else use customized/default value.
