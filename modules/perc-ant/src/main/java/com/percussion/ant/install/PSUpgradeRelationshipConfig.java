@@ -148,7 +148,7 @@ public class PSUpgradeRelationshipConfig extends PSAction {
 
         if(changed) {
 
-            String updateConfigXML = "UPDATE " + qualTableName + " SET CONFIGURATION='" + configXml + "' WHERE NAME='relationships'";
+            String updateConfigXML = "UPDATE " + qualTableName + " SET CONFIGURATION=? WHERE NAME='relationships'";
 
             try {
                 String driver = dbmsDef.getDriver();
@@ -157,6 +157,7 @@ public class PSUpgradeRelationshipConfig extends PSAction {
                     conn.setAutoCommit(false);
 
                 try (PreparedStatement stmt = conn.prepareStatement(updateConfigXML)) {
+                    stmt.setString(1, configXml);
                     stmt.executeUpdate();
                 }
                 if (PSSqlHelper.isOracle(driver) ||
