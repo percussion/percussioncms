@@ -259,10 +259,7 @@ public abstract class PSJdbcTableComponent
     */
    public boolean canAlter()
    {
-      return (getAction() == ACTION_CREATE ||
-         getAction() == ACTION_NONE) ||
-         getAction() == ACTION_DELETE
-         ;
+      return true;
    }
 
 
