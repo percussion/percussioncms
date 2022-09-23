@@ -336,6 +336,13 @@
                        failonerror="false" silenceerrors="true"
         />
 
+        <PSExecSQLStmt printExceptionStackTrace="true" qualifyTableNames="CONTENTSTATUS,PSX_PUBLICATION_DOC"
+                       qualifyViewNames=""
+                       sql="UPDATE CONTENTSTATUS SET CONTENTPOSTDATE=(SELECT MIN(PUBLISHING_DATE) FROM PSX_PUBLICATION_DOC WHERE PSX_PUBLICATION_DOC.CONTENT_ID = CONTENTSTATUS.CONTENTID) WHERE CONTENTPOSTDATE IS NULL;"
+                       failonerror="false" silenceerrors="true"
+        />
+
+
     </target>
 
     <target name="init">
