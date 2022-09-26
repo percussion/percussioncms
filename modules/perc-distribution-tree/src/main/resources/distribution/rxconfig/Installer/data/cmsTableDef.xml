@@ -1807,7 +1807,7 @@
             <name>SLOTID</name>
         </primarykey>
         <indexdefinitions>
-            <index name="IX_SLOTTYPE_NAME" isUnique="n">
+            <index name="IX_SLOTTYPE_NAME" isUnique="y">
                 <name>SLOTNAME</name>
             </index>
         </indexdefinitions>
