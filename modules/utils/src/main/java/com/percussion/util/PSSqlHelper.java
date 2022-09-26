@@ -1477,8 +1477,15 @@ public class PSSqlHelper
          sql += table + ".";
       
       sql += indexName.trim();
+
+      if(driver.equals(PSJdbcUtils.MICROSOFT_DRIVER)){
+         if (StringUtils.startsWithIgnoreCase(indexName, "UQ_"))
+         {
+            sql = "ALTER TABLE " + table + " DROP CONSTRAINT " + indexName;
+         }
+      }
       
-      if (driver.equals(PSJdbcUtils.MYSQL_DRIVER))
+      if (driver.equals(PSJdbcUtils.MYSQL_DRIVER) )
       {
          if (StringUtils.startsWithIgnoreCase(indexName, "FK_"))
          {

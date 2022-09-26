@@ -189,6 +189,18 @@
       <PSXUIDefinition>
          <PSXDisplayMapper fieldSetRef="sharedbinary" id="5">
             <PSXDisplayMapping>
+               <FieldRef>item_file_attachment</FieldRef>
+               <PSXUISet>
+                  <Label>
+                     <PSXDisplayText>File:</PSXDisplayText>
+                  </Label>
+                  <PSXControlRef id="121" name="sys_File"/>
+                  <ErrorLabel>
+                     <PSXDisplayText>File:</PSXDisplayText>
+                  </ErrorLabel>
+               </PSXUISet>
+            </PSXDisplayMapping>
+            <PSXDisplayMapping>
                <FieldRef>item_file_attachment_hash</FieldRef>
                <PSXUISet>
                   <Label>
@@ -699,6 +711,18 @@
       <PSXUIDefinition>
          <PSXDisplayMapper fieldSetRef="sharedimage" id="5">
             <PSXDisplayMapping>
+               <FieldRef>img1</FieldRef>
+               <PSXUISet>
+                  <Label>
+                     <PSXDisplayText>Image:</PSXDisplayText>
+                  </Label>
+                  <PSXControlRef id="76" name="sys_File"/>
+                  <ErrorLabel>
+                     <PSXDisplayText>Image:</PSXDisplayText>
+                  </ErrorLabel>
+               </PSXUISet>
+            </PSXDisplayMapping>
+            <PSXDisplayMapping>
                <FieldRef>img1_hash</FieldRef>
                <PSXUISet>
                   <Label>
@@ -827,6 +851,18 @@
                   <PSXControlRef id="84" name="sys_EditBox"/>
                   <ErrorLabel>
                      <PSXDisplayText>Image Alt Text:</PSXDisplayText>
+                  </ErrorLabel>
+               </PSXUISet>
+            </PSXDisplayMapping>
+            <PSXDisplayMapping>
+               <FieldRef>img2</FieldRef>
+               <PSXUISet>
+                  <Label>
+                     <PSXDisplayText>Mini:</PSXDisplayText>
+                  </Label>
+                  <PSXControlRef id="86" name="sys_File"/>
+                  <ErrorLabel>
+                     <PSXDisplayText>Mini:</PSXDisplayText>
                   </ErrorLabel>
                </PSXUISet>
             </PSXDisplayMapping>

@@ -420,6 +420,27 @@ public class PSJdbcTableSchema implements Comparable<PSJdbcTableSchema>
 
    }
 
+   public PSJdbcIndex getIndex(PSJdbcIndex newIndex)
+   {
+      if (newIndex == null )
+         throw new IllegalArgumentException("index may not be null");
+
+      PSJdbcIndex foundIndex = m_indexes.get(newIndex.getName());
+      if(foundIndex == null){
+         Iterator<PSJdbcIndex> indxes = m_indexes.values().iterator();
+         while (indxes.hasNext()){
+            PSJdbcIndex idx = indxes.next();
+            if(idx.equals(newIndex)){
+               foundIndex = idx;
+               break;
+            }
+         }
+      }
+
+      return foundIndex;
+
+   }
+
    /**
     * Convenience method that calls
     * {@link #getIndexes(int) getIndexes(PSJdbcIndex.TYPE_UNIQUE)}

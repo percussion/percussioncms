@@ -329,30 +329,31 @@ public abstract class PSJdbcKey extends PSJdbcTableComponent
          {
             break;
          }
-         // create a new list containing all the columns from cols2 in
-         // upper case
-         List<String> cols2UP = new ArrayList<>();
-         Iterator<String> it = cols2.iterator();
-         while (it.hasNext())
-         {
-            String col2 = it.next();
-            if ((col2 != null) && (col2.trim().length() > 0))
-               cols2UP.add(col2.toUpperCase());
-         }
-
          // start with an exact match, if anything does not match then
          // change the match type
          match = IS_EXACT_MATCH;
 
          // start comparing column names
-         it = cols1.iterator();
-         while (it.hasNext())
+         //We need to match the columns in same order as some Indexes and keys are having same columns but different odrder of indexing
+         //e.g. PSX_ACLENTRIES has 2 indexes
+         //       <index name="IX_ENTRY_NAME_TYPE" isUnique="n">
+         //                <name>NAME</name>
+         //                <name>TYPE</name>
+         //            </index>
+         //            <index name="IX_ENTRY_TYPE_NAME" isUnique="n">
+         //                <name>TYPE</name>
+         //                <name>NAME</name>
+         //            </index>
+        Iterator<String> col1it = cols1.iterator();
+        Iterator<String> col2it = cols2.iterator();
+         while (col1it.hasNext())
          {
-            String col1 = it.next();
-            if (!cols2.contains(col1))
+            String col1 = col1it.next();
+            String col2 = col2it.next();
+            if (!col1.equals(col2))
             {
                // check in the upper-cased list
-               if (cols2UP.contains(col1.toUpperCase()))
+               if (col1.equalsIgnoreCase(col2))
                {
                   // change the type of match
                   match = IS_CASE_INSENSITIVE_MATCH;

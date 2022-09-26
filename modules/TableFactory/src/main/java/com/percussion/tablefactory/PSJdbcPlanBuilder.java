@@ -178,7 +178,7 @@ public class PSJdbcPlanBuilder
          {
             PSJdbcTableFactory.logMessage("Schema change : " + NEWLINE);
             PSJdbcTableFactory.logMessage(schemaChangeBuffer.toString());
-         }
+          }
          if (!tableChanges.hasChanges())
          {
             // no changes, so just handle delolddata
@@ -1496,15 +1496,34 @@ public class PSJdbcPlanBuilder
       //Traverse over all new Indexes and see if old Index with same name exists, then replace that index with new one
       while (newIndexes.hasNext()){
          PSJdbcIndex newIndex = (PSJdbcIndex) newIndexes.next();
-         PSJdbcIndex oldIdx = oldSchema.getIndex(newIndex.getName());
+         PSJdbcIndex oldIdx = oldSchema.getIndex(newIndex);
          if(oldIdx != null) {
-            buffer.append(NEWLINE).append(" Deleting Found Index: ");
-            buffer.append(oldIdx.getName());
-            processedOldIdx.add(oldIdx.getName());
-            int indexAction = PSJdbcTableComponent.ACTION_REPLACE;
-            PSJdbcIndex difIndex = new PSJdbcIndex(newIndex.getName(),
-                    newIndex.getColumnNames(), indexAction, newIndex.getType());
-            diffTableSchema.setIndex(difIndex);
+            if(oldIdx.getName().equals(newIndex.getName())) {
+               buffer.append(NEWLINE).append(" Replace Found Index: ");
+               buffer.append(oldIdx.getName());
+               processedOldIdx.add(oldIdx.getName());
+               int indexAction = PSJdbcTableComponent.ACTION_REPLACE;
+               PSJdbcIndex difIndex = new PSJdbcIndex(newIndex.getName(),
+                       newIndex.getColumnNames(), indexAction, newIndex.getType());
+               diffTableSchema.setIndex(difIndex);
+            }else{
+               buffer.append(NEWLINE).append(" Delete Old Index: ");
+               buffer.append(oldIdx.getName());
+               processedOldIdx.add(oldIdx.getName());
+               int indexAction = PSJdbcTableComponent.ACTION_DELETE;
+               PSJdbcIndex difIndex = new PSJdbcIndex(oldIdx.getName(),
+                       oldIdx.getColumnNames(), indexAction, oldIdx.getType());
+               diffTableSchema.setIndex(difIndex);
+               buffer.append(NEWLINE).append(" Add New Index: ");
+               buffer.append(newIndex.getName());
+               processedOldIdx.add(newIndex.getName());
+                indexAction = PSJdbcTableComponent.ACTION_CREATE;
+               difIndex = new PSJdbcIndex(newIndex.getName(),
+                       newIndex.getColumnNames(), indexAction, newIndex.getType());
+               diffTableSchema.setIndex(difIndex);
+
+
+            }
          }
       }
 
