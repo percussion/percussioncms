@@ -25,6 +25,7 @@
 package com.percussion.tablefactory;
 
 import com.percussion.util.PSSqlHelper;
+import com.percussion.utils.jdbc.PSJdbcUtils;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
 import org.w3c.dom.Document;
@@ -823,17 +824,19 @@ public class PSJdbcColumnDef extends PSJdbcTableComponent
             nativeDataType = m_nativeType;
          }
       }
-      buf.append(nativeDataType);
 
-      String size = getAdjustedSize(true);
-      if (size != null)
-      {
-         buf.append("(");
-         buf.append( size );
-         String scale = getScale();
-         if (scale != null)
-            buf.append(",").append( scale );
-         buf.append(")");
+      //Don't add clob to alter statement as it fails in oracle
+      if(! "clob".equalsIgnoreCase(nativeDataType) && dataTypeMapDriver.equals(PSJdbcUtils.ORACLE)) {
+         buf.append(nativeDataType);
+         String size = getAdjustedSize(true);
+         if (size != null) {
+            buf.append("(");
+            buf.append(size);
+            String scale = getScale();
+            if (scale != null)
+               buf.append(",").append(scale);
+            buf.append(")");
+         }
       }
 
       // add the suffix, if defined in the mapping
