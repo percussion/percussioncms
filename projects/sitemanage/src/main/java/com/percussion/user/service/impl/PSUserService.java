@@ -67,7 +67,6 @@ import com.percussion.services.workflow.data.PSState;
 import com.percussion.services.workflow.data.PSWorkflow;
 import com.percussion.servlets.PSSecurityFilter;
 import com.percussion.share.dao.IPSGenericDao;
-import com.percussion.share.dao.impl.PSServerConfigUpdater;
 import com.percussion.share.service.IPSIdMapper;
 import com.percussion.share.service.IPSSystemProperties;
 import com.percussion.share.service.PSCollectionUtils;
@@ -220,6 +219,10 @@ public class PSUserService implements IPSUserService
     public static final String EDITOR2_NAME="editor2";
     public static final String QA1_NAME="qa1";
     public static final String QA2_NAME="qa2";
+    /**
+     * Name of the auto-generated directory set.
+     */
+    public static final String DIRECTORY_SET_NAME = "DirectorySet";
 
 
 
@@ -1150,7 +1153,7 @@ public class PSUserService implements IPSUserService
         List<Subject> subjects;
         try
         {
-            subjects = roleMgr.findUsers(Collections.singletonList(query), PSServerConfigUpdater.DIRECTORY_SET_NAME, "directorySet", null, true);
+            subjects = roleMgr.findUsers(Collections.singletonList(query), DIRECTORY_SET_NAME, "directorySet", null, true);
         }
         catch (PSSecurityCatalogException | PSSecurityException e)
         {

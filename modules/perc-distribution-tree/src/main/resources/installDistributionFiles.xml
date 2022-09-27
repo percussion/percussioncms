@@ -370,8 +370,6 @@
         <PSCopy todir="${install.config}/Proxy" file="${configdir}/proxy-config.xml" replaceType="never" />
         <!-- CMS Config Files -->
         <mkdir dir="${install.config}/DeliveryServer" />
-        <mkdir dir="${install.config}/LDAP" />
-        <PSCopy todir="${install.config}/LDAP" file="${configdir}/LDAP/ldapserver.xml" replaceType="never" />
 
         <if>
             <and>

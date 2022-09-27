@@ -156,7 +156,7 @@ public class PSRoleMgr implements IPSRoleMgr
          PSSecurityProviderPool.getAllDirectoryCatalogers();
       for (IPSDirectoryCataloger cataloger : catalogers)
       {
-         if ((specifiedName) && (!(cataloger.getName().equals(catalogerName) && 
+         if ((specifiedName) && (!(cataloger.getName().startsWith(catalogerName) &&
             cataloger.getCatalogerType().equals(type))))
          {
             continue;

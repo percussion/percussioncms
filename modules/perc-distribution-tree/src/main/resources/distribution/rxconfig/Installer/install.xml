@@ -247,17 +247,8 @@
             </then>
         </if>
 
-
-        <if>
-            <not>
-                <available file="${install.dir}/rxconfig/LDAP" type="dir" />
-            </not>
-            <then>
-                <mkdir dir="${install.dir}/rxconfig/LDAP" />
-                <copy todir="${install.dir}/rxconfig/LDAP" file="${install.src}/rxconfig/LDAP/ldapserver.xml"  failonerror="true" overwrite="false" verbose="true" />
-            </then>
-        </if>
-
+        <echo> Deleting CMS LDAP Directory </echo>
+        <delete dir="${install.dir}/rxconfig/LDAP"/>
 
         <if>
             <not>
