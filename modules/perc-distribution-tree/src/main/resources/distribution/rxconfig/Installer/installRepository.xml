@@ -333,7 +333,7 @@
                        qualifyViewNames=""
                        sqlSqlServer="sp_rename 'RXS_CT_GENERIC.USAGE', 'PUSAGE', 'COLUMN';"
                        sql="ALTER TABLE RXS_CT_GENERIC rename column USAGE to PUSAGE;"
-                       failonerror="false" silenceerrors="true"
+                       failonerror="false" silenceerrors="false"
         />
 
         <PSExecSQLStmt printExceptionStackTrace="true" qualifyTableNames="CONTENTSTATUS,PSX_PUBLICATION_DOC"
