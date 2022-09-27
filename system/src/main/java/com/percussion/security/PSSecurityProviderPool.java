@@ -48,7 +48,7 @@ import java.util.Properties;
  * <P>
  * At this time, the same instance of the provider is returned to each
  * caller. Synchronization must be done within the security provider
- * implementation. We may change this in the future, but the caller should
+ * implementation. We may change this in the future, but the caller shoul
  * always assume the returned object is thread-safe.
  *
  * @author   Tas Giakouminakis
