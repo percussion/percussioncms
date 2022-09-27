@@ -173,52 +173,57 @@ public class PSDeliveryInfoService implements IPSDeliveryInfoService
     }
     public static void copySecureKeyToDeliveryServer(IPSGuid edition) throws PSNotFoundException {
         String publishServer = null;
+        boolean legacyEdition = false; //When true this is a legacy edition so skip this step
         if(edition != null) {
             IPSPublisherService pubService = PSPublisherServiceLocator.getPublisherService();
             if(pubService != null) {
                 IPSEdition editionObject = pubService.loadEdition(edition);
                 PSPubServer pubServer;
-                if(editionObject != null) {
+                if(editionObject != null && editionObject.getPubServerId()!=null) {
                      pubServer = PSPubServerDaoLocator.getPubServerManager()
                             .loadPubServer(editionObject.getPubServerId());
                     PSPubServerProperty prop = pubServer.getProperty("publishServer");
                     if(prop!=null){
                         publishServer = prop.getValue();
                     }
+                }else{
+                    legacyEdition = true;
                 }
                 
             }
         }
-
-        PSDeliveryInfoService psDeliveryInfoService = (PSDeliveryInfoService) PSDeliveryInfoServiceLocator.getDeliveryInfoService();
-        List<PSDeliveryInfo> psDeliveryInfoServiceList = psDeliveryInfoService.findAll();
-        String secureKey= getSecureKey();
-        if(secureKey == null){
-            return;
-        }
-
-        for(PSDeliveryInfo info : psDeliveryInfoServiceList) {
-            //Copy only for passed in ServerID incase a serverId is passed.
-            if(publishServer != null && !publishServer.equals(info.getAdminUrl())){
-                continue;
+        //Skip dts processing for legacy editions.
+        if(!legacyEdition) {
+            PSDeliveryInfoService psDeliveryInfoService = (PSDeliveryInfoService) PSDeliveryInfoServiceLocator.getDeliveryInfoService();
+            List<PSDeliveryInfo> psDeliveryInfoServiceList = psDeliveryInfoService.findAll();
+            String secureKey = getSecureKey();
+            if (secureKey == null) {
+                return;
             }
-            if (info.getAvailableServices().contains(PSDeliveryInfo.SERVICE_FEEDS)) {
-                PSDeliveryClient deliveryClient = new PSDeliveryClient();
-                try {
-                    Set<Integer> successfullHttpStatusCodes = new HashSet<>();
-                    successfullHttpStatusCodes.add(204);
-                    deliveryClient.push(
-                            new IPSDeliveryClient.PSDeliveryActionOptions()
-                                    .setActionUrl("/feeds/rss/rotateKey")
-                                    .setDeliveryInfo(info)
-                                    .setHttpMethod(IPSDeliveryClient.HttpMethodType.PUT)
-                                    .setSuccessfullHttpStatusCodes(successfullHttpStatusCodes)
-                                    .setAdminOperation(true),
-                            secureKey);
-                    log.info("Updated security key pushed to DTS server: {}" , info.getAdminUrl());
-                } catch (Exception ex) {
-                    log.warn("Unable to push updated security key to DTS server:{} ",info.getAdminUrl());
-                    log.debug( "Unable to push updated security key to DTS server:{}  ERROR: {} ",info.getAdminUrl(), ex.getMessage(),ex);
+
+            for (PSDeliveryInfo info : psDeliveryInfoServiceList) {
+                //Copy only for passed in ServerID incase a serverId is passed.
+                if (publishServer != null && !publishServer.equals(info.getAdminUrl())) {
+                    continue;
+                }
+                if (info.getAvailableServices().contains(PSDeliveryInfo.SERVICE_FEEDS)) {
+                    PSDeliveryClient deliveryClient = new PSDeliveryClient();
+                    try {
+                        Set<Integer> successfullHttpStatusCodes = new HashSet<>();
+                        successfullHttpStatusCodes.add(204);
+                        deliveryClient.push(
+                                new IPSDeliveryClient.PSDeliveryActionOptions()
+                                        .setActionUrl("/feeds/rss/rotateKey")
+                                        .setDeliveryInfo(info)
+                                        .setHttpMethod(IPSDeliveryClient.HttpMethodType.PUT)
+                                        .setSuccessfullHttpStatusCodes(successfullHttpStatusCodes)
+                                        .setAdminOperation(true),
+                                secureKey);
+                        log.info("Updated security key pushed to DTS server: {}", info.getAdminUrl());
+                    } catch (Exception ex) {
+                        log.warn("Unable to push updated security key to DTS server:{} ", info.getAdminUrl());
+                        log.debug("Unable to push updated security key to DTS server:{}  ERROR: {} ", info.getAdminUrl(), ex.getMessage(), ex);
+                    }
                 }
             }
         }

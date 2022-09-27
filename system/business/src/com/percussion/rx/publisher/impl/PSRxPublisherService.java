@@ -305,6 +305,7 @@ public class PSRxPublisherService implements IPSRxPublisherServiceInternal
       
       try{
          if (checkConnectivity(edition, job)) {
+
              PSDeliveryInfoService.copySecureKeyToDeliveryServer(edition);
             m_jobs.put(job.getJobid(), job);
             job.startJob();
@@ -322,16 +323,19 @@ public class PSRxPublisherService implements IPSRxPublisherServiceInternal
  protected boolean checkConnectivity(IPSGuid edition, PSPublishingJob job) throws PSNotFoundException {
       IPSPublisherService pubService = PSPublisherServiceLocator.getPublisherService();
       IPSEdition editionObject =  pubService.loadEdition(edition);
-      
-      PSPubServer pubServer = PSPubServerDaoLocator.getPubServerManager()
-            .loadPubServer(editionObject.getPubServerId());
-      
-      String pubServerType = pubServer.getPublishType();
-      if (pubServerType != null
-              && (pubServerType.equals("ftp") ||pubServerType.equals("sftp"))) {
-          if (!PSConnectivityCheck.checkFTPConnectivity(edition, job, pubServer, pubServerType, pubServerType.equals("sftp")))
-             return false;
-  
+
+      //Legacy rx sites won't have a pub server id, so skip the check.
+      if(editionObject.getPubServerId()!=null) {
+          PSPubServer pubServer = PSPubServerDaoLocator.getPubServerManager()
+                  .loadPubServer(editionObject.getPubServerId());
+
+          String pubServerType = pubServer.getPublishType();
+          if (pubServerType != null
+                  && (pubServerType.equals("ftp") || pubServerType.equals("sftp"))) {
+              if (!PSConnectivityCheck.checkFTPConnectivity(edition, job, pubServer, pubServerType, pubServerType.equals("sftp")))
+                  return false;
+
+          }
       }
       return true;
    }
