@@ -440,10 +440,6 @@ public class PSPublishHandler implements MessageListener
    {
       ItemState state = IPSPublisherJobStatus.ItemState.FAILED;
       long pubServerId = result.getPubServerId() == null ? -1 : result.getPubServerId();
-      if (result.getPubServerId()==null)
-      {
-         log.error("PubServerId not passed in IPSAssemblyItem: {}" , result);
-      }
       
       PSPubItemStatus status = new PSPubItemStatus(result.getReferenceId(),
             result.getJobId(), pubServerId, result.getDeliveryContext(), state);
