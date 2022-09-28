@@ -66,8 +66,8 @@ public class PSDbUtils extends PSJexlUtilBase
     * @param sqlselect the sql select statement, never <code>null</code> or empty
     * @return list of results. Each list item is a map from the column name in
     * the result set to the value of that column in the result.
-    * @throws SQLException
-    * @throws NamingException
+    * @throws SQLException When a SQL error happens
+    * @throws NamingException If the JNDI resource name given does not resolve
     */
    @IPSJexlMethod(description = "Execute a sql query", params =
    {
@@ -82,35 +82,28 @@ public class PSDbUtils extends PSJexlUtilBase
       }
       List<Map<String,Object>> rval = new ArrayList<>();
       IPSDatasourceManager dsmgr = PSDatasourceMgrLocator.getDatasourceMgr();
-      Connection c = null;
-      PreparedStatement st = null;
-      ResultSet rs = null;
-      try
-      {
+
          IPSConnectionInfo cinfo = new PSConnectionInfo(datasource);
-         c = dsmgr.getDbConnection(cinfo);
-         st = c.prepareStatement(sqlselect);
-         rs = st.executeQuery();
-         if (rs == null) return rval;
-         ResultSetMetaData rsmd = rs.getMetaData();
-         while(rs.next())
-         {
-            Map<String,Object> row = new HashMap<>();
-            rval.add(row);
-            for(int i = 0; i < rsmd.getColumnCount(); i++)
-            {
-               String cname = rsmd.getColumnName(i+1);
-               Object val = rs.getObject(i+1);
-               row.put(cname, val);
-            }
+         try(Connection c = dsmgr.getDbConnection(cinfo)){
+               try(PreparedStatement st = c.prepareStatement(sqlselect)) {
+                  try(ResultSet rs = st.executeQuery()) {
+                     if (rs == null) {
+                        return rval;
+                     }
+
+                     ResultSetMetaData rsmd = rs.getMetaData();
+                     while (rs.next()) {
+                        Map<String, Object> row = new HashMap<>();
+                        for (int i = 0; i < rsmd.getColumnCount(); i++) {
+                           String cname = rsmd.getColumnName(i + 1);
+                           Object val = rs.getObject(i + 1);
+                           row.put(cname, val);
+                        }
+                        rval.add(row);
+                     }
+                  }
+               }
          }
-      }
-      finally
-      {
-         if(rs!=null)try{rs.close();}catch(SQLException e){/* ignored */}
-         if(st!=null)try{st.close();}catch(SQLException e){/* ignored */}
-         if(c!=null)try{c.close();}catch(SQLException e){/* ignored */}   
-      }
       
       return rval;
    }
@@ -134,19 +127,19 @@ public class PSDbUtils extends PSJexlUtilBase
          int m_current = start;
          int m_increment = increment;
          
-         public boolean getBoolean() throws ValueFormatException, IllegalStateException, RepositoryException
+         public boolean getBoolean() throws IllegalStateException, RepositoryException
          {
             throw new ValueFormatException("Sequence cannot be represented as a boolean");
          }
 
-         public Calendar getDate() throws ValueFormatException, IllegalStateException, RepositoryException
+         public Calendar getDate() throws IllegalStateException, RepositoryException
          {
             throw new ValueFormatException("Sequence cannot be represented as a date");
          }
 
          public double getDouble() throws IllegalStateException
          {
-            return new Double(getLong());
+            return getLong();
          }
 
          public long getLong() throws IllegalStateException
