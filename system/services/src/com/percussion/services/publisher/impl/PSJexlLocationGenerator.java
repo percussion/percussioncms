@@ -321,7 +321,7 @@ public class PSJexlLocationGenerator implements IPSAssemblyLocation
       catch (Exception e)
       {
          // Output bindings to console to aid in debugging
-         ms_log.error("Problem in evaluting, dumping bindings: \n"
+         ms_log.error("Problem in evaluating, dumping bindings: \n"
                + jexlEvaluator.bindingsToString());
          throw new PSExtensionException(
                IPSExtensionErrors.JEXL_EVALUATION_FAILED, e, expression);
