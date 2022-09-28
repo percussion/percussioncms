@@ -1,7 +1,7 @@
 package com.percussion.soln.segment.rx.editor;
 
 import static org.custommonkey.xmlunit.XMLAssert.assertXMLEqual;
-import static test.percussion.soln.segment.rx.editor.XMLTestHelper.*;
+import static com.percussion.soln.segment.rx.editor.XMLTestHelper.*;
 
 import org.custommonkey.xmlunit.XMLUnit;
 import org.jmock.Expectations;
