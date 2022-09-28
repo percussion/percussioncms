@@ -502,6 +502,8 @@ public class PSJdbcColumnDefTest
          "testVarbinary RAW(1) NULL",
          "testBit CHAR(1) NOT NULL",
          "testBlob BLOB NULL",
+         "testClob  NULL",
+         "testClobNotNull  NOT NULL",
          "testBigInt NUMBER(19,0) NULL"
       };
       
@@ -527,7 +529,16 @@ public class PSJdbcColumnDefTest
       columnDef = new PSJdbcColumnDef( map, "testBlob",
          PSJdbcTableComponent.ACTION_CREATE, Types.BLOB, null, true, null );
       assertEquals( expected[testnum++], columnDef.getSqlDef( dbDef ) );
-      
+
+      columnDef = new PSJdbcColumnDef( map, "testClob",
+              PSJdbcTableComponent.ACTION_CREATE, Types.CLOB, null, true, null );
+      assertEquals( expected[testnum++], columnDef.getSqlDef( dbDef ) );
+
+      columnDef = new PSJdbcColumnDef( map, "testClobNotNull",
+              PSJdbcTableComponent.ACTION_CREATE, Types.CLOB, null, false, null );
+      assertEquals( expected[testnum++], columnDef.getSqlDef( dbDef ) );
+
+
       columnDef = new PSJdbcColumnDef( map, "testBigInt",
          PSJdbcTableComponent.ACTION_CREATE, Types.BIGINT, null, true, null );
       assertEquals( expected[testnum++], columnDef.getSqlDef( dbDef ) );

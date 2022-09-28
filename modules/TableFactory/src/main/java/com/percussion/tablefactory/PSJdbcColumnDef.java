@@ -826,18 +826,19 @@ public class PSJdbcColumnDef extends PSJdbcTableComponent
       }
 
       //Don't add clob to alter statement as it fails in oracle
-      if(! "clob".equalsIgnoreCase(nativeDataType) && dataTypeMapDriver.equals(PSJdbcUtils.ORACLE)) {
-         buf.append(nativeDataType);
-         String size = getAdjustedSize(true);
-         if (size != null) {
-            buf.append("(");
-            buf.append(size);
-            String scale = getScale();
-            if (scale != null)
-               buf.append(",").append(scale);
-            buf.append(")");
+         if(! ("clob".equalsIgnoreCase(nativeDataType) &&  dataTypeMapDriver.equals(PSJdbcUtils.ORACLE))){
+
+               buf.append(nativeDataType);
+               String size = getAdjustedSize(true);
+               if (size != null) {
+                  buf.append("(");
+                  buf.append(size);
+                  String scale = getScale();
+                  if (scale != null)
+                     buf.append(",").append(scale);
+                  buf.append(")");
+               }
          }
-      }
 
       // add the suffix, if defined in the mapping
       if (dataType.getSuffix() != null)
