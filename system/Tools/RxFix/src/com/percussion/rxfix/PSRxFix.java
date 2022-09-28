@@ -347,6 +347,7 @@ public class PSRxFix
 
    public void doFix(boolean preview, IPSStartupProcessManager startupProcessManager) throws Exception
    {
+      boolean clearCache = false;
       for (Entry e : m_entries)
       {
          if (! e.isDofix())
@@ -362,10 +363,14 @@ public class PSRxFix
          }
 
          // Get results
+         if(!clearCache) {
+            clearCache = f.getResults().size() > 0;
+         }
          e.setResults(f.getResults());
       }
-      
-      if (PSCacheManager.isAvailable()) {
+
+      //Only Clear the cache if there was data changed.
+      if (PSCacheManager.isAvailable() && clearCache && !preview) {
          PSCacheManager cacheManager = PSCacheManager.getInstance();
          cacheManager.flush();
          PSCacheProxy.flushFolderCache();

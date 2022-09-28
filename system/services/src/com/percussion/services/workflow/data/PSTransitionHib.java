@@ -173,7 +173,7 @@ public class PSTransitionHib implements IPSTransition, IPSAgingTransition
    private String transitionRoles = 
       IPSTransitionsContext.NO_TRANSITION_ROLE_RESTRICTION;
 
-   @OneToMany(targetEntity = PSTransitionRole.class, fetch = FetchType.LAZY, cascade =
+   @OneToMany(targetEntity = PSTransitionRole.class, fetch = FetchType.EAGER, cascade =
    {CascadeType.ALL}, orphanRemoval = true )
    @JoinColumns({
       @JoinColumn(name = "WORKFLOWAPPID", referencedColumnName = "WORKFLOWAPPID", insertable = false, updatable = false),
