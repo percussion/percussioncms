@@ -63,7 +63,8 @@ public class PSDatasourceManager implements IPSDatasourceManager
 
       //backward compatibility
       props.put("hibernate.allow_update_outside_transaction","true");
-    //  props.put("hibernate.connection.provider_class","com.zaxxer.hikari.hibernate.HikariConnectionProvider");
+
+      defaultHibernateProperties = props;
    }
 
    public IPSHibernateDialectConfig getDialectCfg()
@@ -99,23 +100,21 @@ public class PSDatasourceManager implements IPSDatasourceManager
    }
 
    protected String getConnectionUrl(String dsName) throws NamingException, SQLException{
-    Connection conn = null;
-      try
+      try(Connection conn = getDbConnection(dsName))
       {
-         conn = getDbConnection(dsName);
-         
          return  conn.getMetaData().getURL(); 
-         
-         }
-      finally
-      {
-         if (conn != null)
-         {
-            try {conn.close();} catch (Exception e) {}
-         }
       }
    }
-   // see IPSDatasourceManager
+
+   /**
+    *
+    * @param info the connection info, may be <code>null</code> to use the
+    * repository connection.
+    *
+    * @return a database connection.  The caller is responsible for releasing the connection.
+    * @throws NamingException If a JNDI lookup error occurs
+    * @throws SQLException If a SQL exception occurs
+    */
    public Connection getDbConnection(IPSConnectionInfo info)
       throws NamingException, SQLException
    {
@@ -126,14 +125,11 @@ public class PSDatasourceManager implements IPSDatasourceManager
       if(conn.getMetaData().getURL().contains("oracle")){
          conn = new PSOracleConnectionWrapper(conn);
       }
-
-
       if (!StringUtils.isBlank(dbName))
       {
          if (!dbName.equals(conn.getCatalog()))
             conn.setCatalog(dbName);
       }
-      
       return conn;
    }
 
@@ -233,16 +229,11 @@ public class PSDatasourceManager implements IPSDatasourceManager
     */
    private static IPSDatasourceResolver m_datasourceResolver;
 
-   private IPSDatasourceResolver getDatasourceResolver()
+   private synchronized IPSDatasourceResolver getDatasourceResolver()
    {
        if (m_datasourceResolver==null)
        {
-           synchronized (this)
-           {
-               if (m_datasourceResolver==null) {
-                   m_datasourceResolver = PSContainerUtilsFactory.getInstance().getDatasourceResolver();
-               }
-           }
+          m_datasourceResolver = PSContainerUtilsFactory.getInstance().getDatasourceResolver();
        }
        return m_datasourceResolver;
    }
@@ -309,7 +300,7 @@ public class PSDatasourceManager implements IPSDatasourceManager
    }
 
    // see IPSDatasourceManager
-   public Properties getDefaultHibernateProperties(Properties properties) 
+   public Properties getDefaultHibernateProperties()
    {
       return defaultHibernateProperties;
    }
