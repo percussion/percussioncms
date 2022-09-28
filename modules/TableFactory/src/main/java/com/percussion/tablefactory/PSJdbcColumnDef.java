@@ -826,7 +826,7 @@ public class PSJdbcColumnDef extends PSJdbcTableComponent
       }
 
       //Don't add clob to alter statement as it fails in oracle
-         if(! ("clob".equalsIgnoreCase(nativeDataType) &&  dataTypeMapDriver.equals(PSJdbcUtils.ORACLE))){
+         if(! ( PSJdbcTableComponent.ACTION_REPLACE == getAction() && "clob".equalsIgnoreCase(nativeDataType) &&  dataTypeMapDriver.equals(PSJdbcUtils.ORACLE))){
 
                buf.append(nativeDataType);
                String size = getAdjustedSize(true);
