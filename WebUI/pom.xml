@@ -528,6 +528,13 @@
             <artifactId>extensions-nav</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.percussion.soln.serverutils</groupId>
+            <artifactId>soln-serverutils</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>perc-toolkit</artifactId>

@@ -47,6 +47,7 @@
         <module>modules/extensions-sfp</module>
         <module>modules/extensions-workflow</module>
         <module>modules/extensions-linkback</module>
+        <module>modules/extensions-serverutils</module>
         <module>PCM-PkgMgtUI</module>
         <module>WebUI</module>
         <module>delivery</module>
