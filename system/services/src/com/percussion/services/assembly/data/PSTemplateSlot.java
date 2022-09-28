@@ -41,7 +41,6 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
-import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 import org.hibernate.annotations.NaturalId;
 import org.hibernate.annotations.NaturalIdCache;
@@ -63,7 +62,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -84,9 +82,8 @@ import static java.util.stream.Collectors.toSet;
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "PSTemplateSlot")
 @Table(name = "RXSLOTTYPE")
 @NaturalIdCache
-@NamedQueries(
-        {@NamedQuery(name = "slot.findSlotsByNames",
-                query = "select s from PSTemplateSlot s where lower(s.name) in (:names)")})
+@NamedQuery(name = "slot.findSlotsByNames",
+                query = "select s from PSTemplateSlot s where lower(s.name) in (:names)")
 public class PSTemplateSlot
         implements
         IPSTemplateSlot,
@@ -243,7 +240,6 @@ public class PSTemplateSlot
      *
      * @see com.percussion.services.assembly.IPSTemplateSlot#getFinderArguments()
      */
-    @SuppressWarnings("unchecked")
     public Map<String, String> getFinderArguments() {
         return finderArguments.stream()
                 .collect(toMap(PSSlotContentFinderParam::getName, PSSlotContentFinderParam::getValue));
@@ -347,7 +343,7 @@ public class PSTemplateSlot
      * @see com.percussion.services.catalog.IPSCatalogItem#fromXML(java.lang.String)
      */
     public void fromXML(String xmlsource) throws IOException, SAXException {
-        id = 0l; // Avoid problems during restore
+        id = 0L; // Avoid problems during restore
         this.version=null;
         PSXmlSerializationHelper.readFromXML(xmlsource, this);
     }
@@ -403,13 +399,11 @@ public class PSTemplateSlot
      * @return get the slotAssociations set, never <code>null</code>
      */
     @IPSXmlSerialization(suppress = true)
-    @SuppressWarnings("unchecked")
     public Collection<PSPair<IPSGuid, IPSGuid>> getSlotAssociations() {
 
-        List<PSPair<IPSGuid, IPSGuid>>  results = slotAssociations.stream()
+        return  slotAssociations.stream()
                 .map(a -> new PSPair<IPSGuid,IPSGuid>(new PSGuid(PSTypeEnum.NODEDEF, a.getContentTypeId())
                         , new PSGuid(PSTypeEnum.TEMPLATE, a.getTemplateId()))).collect(toList());
-        return results;
     }
 
     /**
@@ -417,7 +411,6 @@ public class PSTemplateSlot
      *
      * @param newassociations The slotAssociations to set.
      */
-    @SuppressWarnings("unchecked")
     public void setSlotAssociations(
             Collection<PSPair<IPSGuid, IPSGuid>> newassociations) {
         this.slotAssociations.clear();
@@ -436,14 +429,13 @@ public class PSTemplateSlot
      * @return the slot associations as an arrau
      */
     public PSTemplateTypeSlotAssociation[] getSlotTypeAssociations() {
-        return slotAssociations.toArray(new PSTemplateTypeSlotAssociation[slotAssociations.size()]);
+        return slotAssociations.toArray(new PSTemplateTypeSlotAssociation[0]);
     }
 
     /**
      * Set the slot associations, used by MSM
      *
      */
-    @SuppressWarnings("unchecked")
     public void setSlotTypeAssociations(
             PSTemplateTypeSlotAssociation[] associations) {
         this.slotAssociations.clear();
