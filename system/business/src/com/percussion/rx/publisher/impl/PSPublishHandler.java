@@ -780,17 +780,20 @@ public class PSPublishHandler implements MessageListener
    private ItemState handleDelivery(IPSAssemblyResult work)
    {
       ItemState state;
+      long pubServerId=0;
       PSStopwatch sw = new PSStopwatch();
       sw.start();
       try
       {
          // Send status
          state = IPSPublisherJobStatus.ItemState.ASSEMBLED;
-         PSPubItemStatus status = new PSPubItemStatus(work.getReferenceId(),
-               work.getJobId(), work.getPubServerId(), work.getDeliveryContext(), state);
-         updateItemStatus(status);
-         
 
+          if(work.getPubServerId() != null) {
+             pubServerId = work.getPubServerId();
+         }
+         PSPubItemStatus status = new PSPubItemStatus(work.getReferenceId(),
+               work.getJobId(),pubServerId , work.getDeliveryContext(), state);
+         updateItemStatus(status);
          IPSDeliveryResult dresult = m_deliveryManager.process(work);
          String message = dresult.getFailureMessage();
          state = OUTCOME_STATE.get(dresult.getOutcome());
@@ -812,8 +815,8 @@ public class PSPublishHandler implements MessageListener
          log.error("Problem in delivery ", e);
          state = IPSPublisherJobStatus.ItemState.FAILED;
          PSPubItemStatus status = new PSPubItemStatus(work.getReferenceId(),
-               work.getJobId(), work.getPubServerId(), work.getDeliveryContext(), state);
-         status.addMessage("Problem in delivery: " + e.getLocalizedMessage());
+               work.getJobId(), pubServerId, work.getDeliveryContext(), state);
+         status.addMessage("Problem in delivery: " + PSExceptionUtils.getMessageForLog(e));
          updateItemStatus(status);
       }
       finally
