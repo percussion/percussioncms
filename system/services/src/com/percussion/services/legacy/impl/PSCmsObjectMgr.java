@@ -1719,7 +1719,7 @@ public class PSCmsObjectMgr
            "c.m_workflowAppId, c.m_contentStateId, c.m_tipRevision, c.m_currRevision, " +
            "c.m_publicRevision, c.m_contentLastModifier, c.m_checkoutUserName, c.m_contentPublishDate from PSComponentSummary c";
 
-           private static final int DEFAULT_MAX_SUMMARY_CACHE_SIZE = 10000;
+           private static final int DEFAULT_MAX_SUMMARY_CACHE_SIZE = -1;
            private String CUSTOMIZED_MAX_SUMMARY_CACHE_SIZE;
            private int maxLimit = DEFAULT_MAX_SUMMARY_CACHE_SIZE;
            private static final String PROP_MAX_SUMMARY_CACHE_SIZE = "MAX_SUMMARY_CACHE_SIZE";
@@ -1737,8 +1737,9 @@ public class PSCmsObjectMgr
          q.setCacheMode(CacheMode.NORMAL);
          q.setCacheRegion("PSComponentSummary");
 
-          //Limit the contentSummary Cache size to customized or default size
-          // incase user sets the value 0 or -, then make it unlimited, else use customized/default value.
+          // Limit the contentSummary Cache size to customized or default size
+          // incase user sets the value 0 or -1, then it makes it unlimited, else use customized/default value.
+          // We are by default loading all, as required by FolderCache buildup.
           if(CUSTOMIZED_MAX_SUMMARY_CACHE_SIZE == null){
               try {
                 CUSTOMIZED_MAX_SUMMARY_CACHE_SIZE = PSServer.getProperty(PROP_MAX_SUMMARY_CACHE_SIZE,Integer.toString(DEFAULT_MAX_SUMMARY_CACHE_SIZE));
