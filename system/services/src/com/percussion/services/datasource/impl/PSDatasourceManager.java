@@ -172,18 +172,7 @@ public class PSDatasourceManager implements IPSDatasourceManager
    private  Connection getDbConnection(String dsName) 
       throws NamingException, SQLException
    {
-      DataSource ds = getDatasource(dsName);
-      // clears interrupted if it was set.  workaround https://sourceforge.net/p/jboss/bugs/2224/
-      boolean isInterrupted = Thread.interrupted();
-      Connection con = null;
-      try {
-         con = ds.getConnection();
-      } finally
-      {
-        if (isInterrupted) 
-           Thread.currentThread().interrupt(); 
-      }
-      return con;
+         return getDatasource(dsName).getConnection();
    }   
 
    /**
@@ -197,8 +186,7 @@ public class PSDatasourceManager implements IPSDatasourceManager
    private  DataSource getDatasource(String dsName) throws NamingException
    {
       PSJndiObjectLocator loc = new PSJndiObjectLocator(dsName);
-      DataSource ds = loc.lookupDataSource();
-      return ds;
+      return loc.lookupDataSource();
    }
    
    /**
