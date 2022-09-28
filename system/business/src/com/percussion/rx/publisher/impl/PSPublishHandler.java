@@ -797,7 +797,7 @@ public class PSPublishHandler implements MessageListener
          IPSDeliveryResult dresult = m_deliveryManager.process(work);
          String message = dresult.getFailureMessage();
          state = OUTCOME_STATE.get(dresult.getOutcome());
-         status = new PSPubItemStatus(work.getReferenceId(), work.getJobId(), work.getPubServerId(), work.getDeliveryContext(),
+         status = new PSPubItemStatus(work.getReferenceId(), work.getJobId(), pubServerId, work.getDeliveryContext(),
                state);
          status.extractInfo(work);
          if (StringUtils.isNotEmpty(message))
