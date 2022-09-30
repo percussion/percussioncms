@@ -2690,8 +2690,8 @@
                 <allowsnull>no</allowsnull>
             </column>
             <column name="VALUE" >
-                <jdbctype>VARCHAR</jdbctype>
-                <size>2100</size>
+                <jdbctype>CLOB</jdbctype>
+                <size/>
                 <allowsnull>no</allowsnull>
             </column>
         </row>
@@ -3296,6 +3296,9 @@
         <indexdefinitions>
             <index name="IX_RLNSHIP_OWNERID" isUnique="n">
                 <name>OWNER_ID</name>
+            </index>
+            <index name="IX_RLNSHIP_CONFIGID" isUnique="n">
+                <name>CONFIG_ID</name>
             </index>
             <index name="IX_RLNSHIP_DEPID" isUnique="n">
                 <name>DEPENDENT_ID</name>
