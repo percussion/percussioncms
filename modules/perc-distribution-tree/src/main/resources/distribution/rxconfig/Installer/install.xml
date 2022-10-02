@@ -907,7 +907,7 @@
             </fileset>
         </copy>
 
-        <property name="fastforwardfileReplace.list" value="psx_cerffAutoIndex.xml,psx_cerffBrief.xml,psx_cerffCalendar.xml,psx_cerffContacts.xml,psx_cerffEvent.xml,psx_cerffExternalLink.xml,psx_cerffFile.xml,psx_cerffGeneric.xml,psx_cerffGenericWord.xml,psx_cerffHome.xml,psx_cerffImage.xml,psx_cerffNavImage.xml,psx_cerffPressRelease.xml"/>
+        <property name="fastforwardfileReplace.list" value="psx_cerffAutoIndex.xml,psx_cerffBrief.xml,psx_cerffCalendar.xml,psx_cerffContacts.xml,psx_cerffEvent.xml,psx_cerffExternalLink.xml,psx_cerffFile.xml,psx_cerffGeneric.xml,psx_cerffGenericWord.xml,psx_cerffHome.xml,psx_cerffImage.xml,psx_cerffPressRelease.xml"/>
         <echo>Only copy Fastforward files, if already present  </echo>
         <!-- Only copy Fastforward files, if already present Don't overwrite psx_cerffNavImage.xml,psx_cerffNavon.xml,psx_cerffNavTree.xml-->
         <for param="file" list="${fastforwardfileReplace.list}">
