@@ -51,11 +51,11 @@ public class PSJdbcTableSchemaTest extends TestCase
     */
    public void testDef() throws Exception
    {
-      PSJdbcDataTypeMap dataTypeMap =  new PSJdbcDataTypeMap("MSSQL", "inetdae7",
+      PSJdbcDataTypeMap dataTypeMap =  new PSJdbcDataTypeMap("MSSQL", "sqlserver",
          null);
 
       PSJdbcColumnDef col;
-      ArrayList coldefs = new ArrayList();
+      ArrayList coldefs = new ArrayList<>();
       coldefs.add(new PSJdbcColumnDef(dataTypeMap, "col1",
          PSJdbcTableComponent.ACTION_REPLACE, Types.CHAR, "10", true, null));
       coldefs.add(new PSJdbcColumnDef(dataTypeMap, "col2",
@@ -68,7 +68,7 @@ public class PSJdbcTableSchemaTest extends TestCase
       tableSchema.setAlter(true);
       tableSchema.setDelOldData(true);
 
-      List pkcols = new ArrayList();
+      List pkcols = new ArrayList<>();
       pkcols.add("col1");
       pkcols.add("col2");
       PSJdbcPrimaryKey pk = new PSJdbcPrimaryKey(pkcols.iterator(),
@@ -76,23 +76,24 @@ public class PSJdbcTableSchemaTest extends TestCase
       tableSchema.setPrimaryKey(pk);
 
 
-      List ukcols = new ArrayList();
+      List ukcols = new ArrayList<>();
       ukcols.add("col1");
       PSJdbcUpdateKey uk = new PSJdbcUpdateKey(ukcols.iterator());
       tableSchema.setUpdateKey(uk);
 
-      List fkCols = new ArrayList();
+      List fkCols = new ArrayList<>();
       String[] fcol1 = {"col1", "etable", "ecol1"};
       String[] fcol2 = {"col2", "etable", "ecol2"};
       fkCols.add(fcol1);
       fkCols.add(fcol2);
+     //TODO: Index on foreign key not being generated here.
       PSJdbcForeignKey fk = new PSJdbcForeignKey(fkCols.iterator(),
-         PSJdbcTableComponent.ACTION_DELETE);
+         PSJdbcTableComponent.ACTION_CREATE);
       List<PSJdbcForeignKey> fks = new ArrayList<>();
       fks.add(fk);
       tableSchema.setForeignKeys(fks);
 
-      List indexCols = new ArrayList();
+      List indexCols = new ArrayList<>();
       indexCols.add("col2");
       indexCols.add("col3");
       PSJdbcIndex index1 = new PSJdbcIndex("index1", indexCols.iterator(),
@@ -104,16 +105,16 @@ public class PSJdbcTableSchemaTest extends TestCase
          PSJdbcTableComponent.ACTION_CREATE);
       tableSchema.setIndex(index2);
 
-
       Document doc = PSXmlDocumentBuilder.createXmlDocument();
       Element el = tableSchema.toXml(doc);
+
       PSJdbcTableSchema tableSchema2 = new PSJdbcTableSchema(el, dataTypeMap);
       assertTrue(tableSchema.equals(tableSchema2));
 
-      List dataCols = new ArrayList();
+      List dataCols = new ArrayList<>();
       dataCols.add(new PSJdbcColumnData("col1", "foo"));
       dataCols.add(new PSJdbcColumnData("col3", "1"));
-      List dataRows = new ArrayList();
+      List dataRows = new ArrayList<>();
       dataRows.add(new PSJdbcRowData(dataCols.iterator(),
          PSJdbcRowData.ACTION_INSERT));
       PSJdbcTableData tableData = new PSJdbcTableData("myTable",
