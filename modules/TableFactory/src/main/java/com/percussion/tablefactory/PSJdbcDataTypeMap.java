@@ -247,7 +247,8 @@ public class PSJdbcDataTypeMap
    {
       String sTempIndex = map.getAttribute(CREATEFOREIGNKEYINDEXES);
       if (sTempIndex.trim().length() == 0 || !sTempIndex.equalsIgnoreCase("yes"))
-          return;
+         m_createforeignkeyindexes=false;
+
       m_createforeignkeyindexes = true;
    }
 
