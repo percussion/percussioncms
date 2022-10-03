@@ -126,7 +126,43 @@ public class PSJdbcStatementFactory
       buf.append(")");
       return new PSJdbcSqlStatement(buf.toString());
    }
-   
+
+   /**
+    * Returns an execution step that will drop FK constraint.
+    * @param dbmsDef Provides the database/schema information for the table.
+    * May not be <code>null</code>.
+    * @param tableSchema Provides the table components that require changes,
+    * but may contain columns with action set to {@link
+    * PSJdbcTableComponent#ACTION_NONE}, which are used in primary or foreign
+    * keys.  May not be <code>null</code>.
+    * @return complete ALTER table SQL statement, returns <code>null</code>
+    * if there is no FK in this table.
+    */
+   public static String getDropFKIndex(PSJdbcDbmsDef dbmsDef,
+                                           PSJdbcTableSchema tableSchema, PSJdbcForeignKey fk)
+   {
+      if (dbmsDef == null)
+         throw new IllegalArgumentException("dbmsDef may not be null");
+
+      if (tableSchema == null)
+         throw new IllegalArgumentException("tableSchema may not be null");
+
+      String ixName;
+
+      if (StringUtils.isEmpty(fk.getName()) || fk.getName().length() < 3)
+      {
+         Iterator<?> itcol = fk.getColumns();
+         String[] fkcolnames = (String[]) itcol.next();
+         String fkcolname = fkcolnames[0];
+         ixName = PSJdbcTableSchema.INDEX_PREFIX + fkcolname;
+      }else{
+         ixName = PSJdbcTableSchema.INDEX_PREFIX + fk.getName().substring(3);
+      }
+
+      return PSSqlHelper.getDropIndexStatement(
+              dbmsDef.getDriver(), tableSchema.getName(),
+              dbmsDef.getDataBase(), dbmsDef.getSchema(), ixName);
+   }
    /**
     * Returns an execution step that will drop FK constraint.
     * @param dbmsDef Provides the database/schema information for the table.

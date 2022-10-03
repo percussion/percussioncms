@@ -425,7 +425,7 @@ public class PSGuidManager implements IPSGuidManager
 
 
 
-   @Transactional(propagation=Propagation.REQUIRES_NEW)
+   @Transactional(propagation=Propagation.REQUIRED)
    public int updateNextNumber(String key, int blocksize, long setValue)
    {
 
@@ -563,7 +563,7 @@ public class PSGuidManager implements IPSGuidManager
 
 
 
-   @Transactional(propagation=Propagation.REQUIRES_NEW)
+   @Transactional(propagation=Propagation.REQUIRED)
    public long updateNextLong(Integer key)
    {
       Session s = getSession();
@@ -684,7 +684,7 @@ public class PSGuidManager implements IPSGuidManager
     *           <code>null</code>.
     * @return the next value.
     */
-   @Transactional(propagation = Propagation.SUPPORTS, noRollbackFor = IllegalArgumentException.class)
+   @Transactional(propagation = Propagation.REQUIRED, noRollbackFor = IllegalArgumentException.class)
    public long createLongId(PSTypeEnum type)
    {
       if (type == null)

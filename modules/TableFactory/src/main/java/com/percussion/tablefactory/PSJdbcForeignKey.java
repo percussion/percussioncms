@@ -295,7 +295,7 @@ public class PSJdbcForeignKey extends PSJdbcTableComponent
 
       m_columns.clear();
 
-      // allow base class to set its memebers
+      // allow base class to set its members
       getComponentState(sourceNode);
 
       // find first fkcolumn
@@ -365,12 +365,12 @@ public class PSJdbcForeignKey extends PSJdbcTableComponent
     * and new.
     * 
     * @return The A list of PSJdbcForeignKey objects never null <code>
-    *    null</code>. If the foreign key does not reverence more than one table
+    *    null</code>. If the foreign key does not reference more than one table
     *         the list will contain a single instance of the current object.
     * 
     * @throws IllegalArgumentException if doc is <code>null</code>.
     */
-   public List<PSJdbcForeignKey> normalizeForiegnKeys()
+   public List<PSJdbcForeignKey> normalizeForeignKeys()
    {
       List<PSJdbcForeignKey> newKeysList = new ArrayList<>();
       if (m_tables != null && m_tables.size() > 1)
@@ -410,6 +410,7 @@ public class PSJdbcForeignKey extends PSJdbcTableComponent
     * @return <code>true</code> if the object is a PSJdbcForeignKey with
     *    the same columns. Otherwise returns <code>false</code>.
     */
+   @Override
    public boolean equals(Object obj)
    {
       boolean isMatch;
@@ -495,6 +496,7 @@ public class PSJdbcForeignKey extends PSJdbcTableComponent
     *
     * @return The sum of all the hash codes of the composite objects.
     */
+   @Override
    public int hashCode()
    {
       int hash = 0;

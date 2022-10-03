@@ -732,7 +732,7 @@ public class PSJdbcTableSchema implements Comparable<PSJdbcTableSchema>
          
          // Convert old structure where there could only be one foreign key
          // into multiple if there are separate tables.
-         m_foreignKeys.addAll(fk.normalizeForiegnKeys());
+         m_foreignKeys.addAll(fk.normalizeForeignKeys());
          
          
          PSJdbcTableSchemaCollection tableSchemaColl =
@@ -802,7 +802,7 @@ public class PSJdbcTableSchema implements Comparable<PSJdbcTableSchema>
    {
       if (!(dataTypeMap.isCreateForeignKeyIndexes()))
           return;
-      if (m_foreignKeys == null || m_foreignKeys.size()==0)
+      if (m_foreignKeys == null || m_foreignKeys.isEmpty())
           return;
       if (doForeignKeyColumnsMatch(m_foreignKeys))
              return;
@@ -1441,7 +1441,7 @@ public class PSJdbcTableSchema implements Comparable<PSJdbcTableSchema>
       for (PSJdbcForeignKey foreignKey : m_foreignKeys)
       {
          if (!foreignKey.canAlter())
-         return false;
+            return false;
       }
 
       for (PSJdbcIndex index : m_indexes.values()) {
@@ -1738,7 +1738,7 @@ public class PSJdbcTableSchema implements Comparable<PSJdbcTableSchema>
      * when createForeignkeyIndexes mapping in is set to "yes" in
      * PSJdbcDataTypeMap.xml
      */
-   private static final String INDEX_PREFIX = "IX_";
+   public static final String INDEX_PREFIX = "IX_";
 
    /**
     * The type of action that will be taken when processing this schema.
