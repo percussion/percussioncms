@@ -238,12 +238,23 @@ public class PSSearchAdminImpl extends PSSearchAdmin
       for (PSKey key : contentTypes)
       {
          doDelete(key);
-         PSSearchIndexEventQueue.getInstance().indexContentType(
-               key.getPartAsInt());      
-         successList.add(key);
-         String msg = "Successfully queued items of content type id ({0}) " +
-               "for reindexing.";
-         log.debug(MessageFormat.format(msg, key.getPart()));
+         String idAsString = String.valueOf(key.getPartAsInt());
+         boolean success = (new File(PSSearchEngineImpl
+                 .getLuceneIndexRootPath()
+                 + idAsString)).mkdirs();
+         if(success) {
+
+            PSSearchIndexEventQueue.getInstance().indexContentType(
+                    key.getPartAsInt());
+            successList.add(key);
+            String msg = "Successfully queued items of content type id ({0}) " +
+                    "for reindexing.";
+            log.debug(MessageFormat.format(msg, key.getPart()));
+         }else{
+            String msg = "Failed to create an index directory for content "
+                    + "type id ({0})";
+            log.info(MessageFormat.format(msg, idAsString));
+         }
       }
       return successList.toArray(new PSKey[0]);
    }
@@ -341,11 +352,6 @@ public class PSSearchAdminImpl extends PSSearchAdmin
       // Create directories
       for (Long id : knownContentTypesCopy)
       {
-         boolean success = (new File(PSSearchEngineImpl
-               .getLuceneIndexRootPath()
-               + id.toString())).mkdirs();
-         if (success)
-         {
             String msg = "Created an index directory for content type id ({0}, submitting the type for indexing...)";
             log.info(MessageFormat.format(msg, id.toString()));
 
@@ -353,13 +359,6 @@ public class PSSearchAdminImpl extends PSSearchAdmin
             keys[0] = PSContentType.createKey(id.intValue());
             rebuildIndexes(keys);
          }
-         else
-         {
-            String msg = "Failed to create an index directory for content "
-                  + "type id ({0})";
-            log.info(MessageFormat.format(msg, id.toString()));
-         }
-      }
 
    }
 
