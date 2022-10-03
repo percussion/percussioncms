@@ -360,7 +360,10 @@ public class PSJdbcTableSchema implements Comparable<PSJdbcTableSchema>
       }
       else
       {
-         m_foreignKeys = foreignKeys;
+         m_foreignKeys.clear();
+         m_foreignKeys.addAll(foreignKeys);
+         //Add indexes for foreign keys
+         this.createIndexesForForeignKey(this.getDataTypeMap());
       }
       validateSchema();
    }
