@@ -64,12 +64,6 @@
                     "row": 0,
                     "expanded": true
                 }, {
-                    "instanceId": 1,
-                    "url": "/cm/gadgets/repository/perc_license_monitor_gadget/perc_license_monitor_gadget.xml",
-                    "col": 1,
-                    "row": 0,
-                    "expanded": true
-                }, {
                     "instanceId": 2,
                     "url": "/cm/gadgets/repository/perc_workflow_status_gadget/perc_workflow_status_gadget.xml",
                     "col": 1,
