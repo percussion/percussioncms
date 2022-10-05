@@ -89,7 +89,7 @@ public class PSJdbcSqlStatement extends PSJdbcExecutionStep
       }
       catch (SQLException e)
       {
-         updateCount = 0;
+         updateCount=0;
          stepLogData.setSuccess(false);
          stepLogData.setUpdateCount(0);
          String errMsg = PSJdbcTableFactoryException
@@ -120,7 +120,7 @@ public class PSJdbcSqlStatement extends PSJdbcExecutionStep
     * The statement to execute, initialized in ctor, never <code>null</code> or
     * empty.
     */
-   protected String m_statement = null;
+   protected String m_statement;
 
 }
 

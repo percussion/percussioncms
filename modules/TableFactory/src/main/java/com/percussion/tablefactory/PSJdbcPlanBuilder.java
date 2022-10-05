@@ -329,7 +329,15 @@ public class PSJdbcPlanBuilder
                      schemaPlan.addStep(new PSJdbcSqlStatement(dropFKSQL));
 
                      if(dropFKIndexSQL != null){
+                        if(PSSqlHelper.isMysql(dbmsDef.getDriver()))
+                        {
+                           schemaPlan.addStep(new PSJdbcSqlStatement("SET FOREIGN_KEY_CHECKS=0"));
+                        }
                         schemaPlan.addStep(new PSJdbcSqlStatement(dropFKIndexSQL) );
+                        if(PSSqlHelper.isMysql(dbmsDef.getDriver()))
+                        {
+                           schemaPlan.addStep(new PSJdbcSqlStatement("SET FOREIGN_KEY_CHECKS=1"));
+                        }
                      }
                   }
 
@@ -462,7 +470,7 @@ public class PSJdbcPlanBuilder
     * boolean) getDataPlan(conn,dbmsDef,null,tableSchema,tableData,insertPlan,
     * deletePlan,updatePlan,replacePlan,isChildTable)}
     */
-   static public void getDataPlan(Connection conn,
+    public static void getDataPlan(Connection conn,
       PSJdbcDbmsDef dbmsDef, PSJdbcTableSchema tableSchema,
       PSJdbcTableData tableData, PSJdbcExecutionPlan insertPlan,
       PSJdbcExecutionPlan deletePlan, PSJdbcExecutionPlan updatePlan,
@@ -873,12 +881,12 @@ public class PSJdbcPlanBuilder
       // for obtaining the child table rows corresponing to this parent table
       // row
       List<PSJdbcForeignKey> fkeys = childTableSchema.getForeignKeys();
-      if (fkeys == null || fkeys.size()==0)
+      if (fkeys == null || fkeys.isEmpty())
          return false;
       boolean bHasValidForeignKey = false;
       for (PSJdbcForeignKey fkey : fkeys) {
       Iterator fkeyColIt = fkey.getColumns(parentTableSchema.getName());
-      List fkeyCols = new ArrayList();
+      List fkeyCols = new ArrayList<>();
   
       while (fkeyColIt.hasNext())
       {
@@ -1074,7 +1082,7 @@ public class PSJdbcPlanBuilder
     * <code>null</code>
     */
    @SuppressWarnings("unchecked")
-   static private void setLogData(PSJdbcExecutionStep step,
+    private static void setLogData(PSJdbcExecutionStep step,
       PSJdbcDbmsDef dbmsDef, PSJdbcTableSchema tableSchema,
       PSJdbcRowData row)
    {
@@ -1140,7 +1148,7 @@ public class PSJdbcPlanBuilder
     * @throws IllegalArgumentException if any parameter is null.
     */
    @SuppressWarnings({"unchecked","unused"})
-   static private void addChildTablesDeletePlan(PSJdbcDbmsDef dbmsDef,
+    private static void addChildTablesDeletePlan(PSJdbcDbmsDef dbmsDef,
       PSJdbcTableSchema parentTableSchema, PSJdbcTableSchema childTableSchema,
       PSJdbcRowData parentRow, PSJdbcExecutionPlan deletePlan)
    {
@@ -1365,7 +1373,7 @@ public class PSJdbcPlanBuilder
          {
             // doesn't exist, so it's an add
             colAction = PSJdbcTableComponent.ACTION_CREATE;
-            buffer.append(NEWLINE + " New column: " + NEWLINE);
+            buffer.append(NEWLINE).append( " New column: ").append(NEWLINE);
             buffer.append(newCol);
          }
          else
@@ -1374,7 +1382,7 @@ public class PSJdbcPlanBuilder
             if (newCol.isChanged(oldCol))
             {
                colAction = PSJdbcTableComponent.ACTION_REPLACE;
-               buffer.append("Modified column: " + NEWLINE);
+               buffer.append("Modified column: ").append(NEWLINE);
                buffer.append("Old column: " + NEWLINE);
                buffer.append(oldCol);
                buffer.append("New column: " + NEWLINE);
@@ -1548,7 +1556,7 @@ public class PSJdbcPlanBuilder
 
       //Check old indexes that are not in new schema, and validate them, if are having valid column names, else delete them
       while (oldIndexes.hasNext()){
-         PSJdbcIndex oldIdx = (PSJdbcIndex) oldIndexes.next();
+         PSJdbcIndex oldIdx = oldIndexes.next();
          if(processedOldIdx.contains(oldIdx.getName())){
             continue;
          }else{
@@ -1558,7 +1566,7 @@ public class PSJdbcPlanBuilder
                String colName = it.next();
                if(diffTableSchema.getColumn(colName) == null){
                   valid = false;
-                  buffer.append(NEWLINE + " Deleting Index as column not found: ");
+                  buffer.append(NEWLINE).append( " Deleting Index as column not found: ");
                   buffer.append(oldIdx.getName());
                   int indexAction = PSJdbcTableComponent.ACTION_DELETE;
                   PSJdbcIndex difIndex = new PSJdbcIndex(oldIdx.getName(),
@@ -1569,9 +1577,9 @@ public class PSJdbcPlanBuilder
             }
             //Add valid custom index from old schema
             if(valid && oldIdx.isOfType(PSJdbcIndex.TYPE_NON_UNIQUE)){
-               buffer.append(NEWLINE + " Adding Old Index : ");
+               buffer.append(NEWLINE).append(" Adding Old Index : ");
                buffer.append(oldIdx.getName());
-               int indexAction = PSJdbcTableComponent.ACTION_CREATE;
+               int indexAction = PSJdbcTableComponent.ACTION_REPLACE;
                PSJdbcIndex difIndex = new PSJdbcIndex(oldIdx.getName(),
                        oldIdx.getColumnNames(), indexAction, oldIdx.getType());
                diffTableSchema.setIndex(difIndex);
