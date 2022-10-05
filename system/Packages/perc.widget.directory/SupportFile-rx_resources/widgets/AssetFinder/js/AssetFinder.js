@@ -126,21 +126,21 @@
                                 if (response != null ) {
                                     var displayValue ='';
                                     try{
-                                        var assetFieldsArray = response.asset.fields;
-                                        for(var i=0; i<assetFieldsArray.entry.length; i++){
-                                            if(assetFieldsArray.entry[i].key==opts.fieldToDisplay){
-                                                displayValue = assetFieldsArray.entry[i].value;
+                                        var assetFieldsArray = response.Asset.fields;
+                                        for(var i=0; i<assetFieldsArray.length; i++){
+                                            if(assetFieldsArray[i].name === opts.fieldToDisplay){
+                                                displayValue = assetFieldsArray[i].value;
                                             }
                                         }
                                         //displayValue = response.asset.fields[opts.fieldToDisplay];
                                     }catch(e){
                                         // it means wrong attempt
-                                        if(response.asset && response.asset.type =="percOrganization"){
-                                            displayValue = response.asset.fields.orgName;
-                                        }else if(response.asset && response.asset.type =="percDepartment"){
-                                            displayValue = response.asset.fields.dptName;
+                                        if(response.Asset && response.Asset.type =="percOrganization"){
+                                            displayValue = response.Asset.fields.orgName;
+                                        }else if(response.Asset && response.Asset.type =="percDepartment"){
+                                            displayValue = response.Asset.fields.dptName;
                                         }else{
-                                            displayValue = response.asset.name;
+                                            displayValue = response.Asset.name;
                                         }
                                     }
                                     $thisElem.find('.perc-asset-finder-data input#perc-content-display-' + opts.paramName).val(displayValue);
@@ -232,16 +232,16 @@
             var pathArray = path.split("/");
             return pathArray.length;
         } else {
-            console.log("Incorrect folderpath used in folderPathCount function.")
+            console.log("Incorrect folderpath used in folderPathCount function.");
         }
     }
 
     function getContentId(asset){
         if (asset != null && asset != undefined){
-            var idArray = asset.asset.id.split("-");
+            var idArray = asset.Asset.id.split("-");
             return idArray[idArray.length - 1];
         } else {
-            console.warn("Cannot get contentId from given Asset.")
+            console.warn("Cannot get contentId from given Asset.");
             return false;
         }
     }
