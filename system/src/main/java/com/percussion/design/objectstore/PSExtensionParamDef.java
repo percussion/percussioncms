@@ -33,6 +33,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import java.util.List;
+import java.util.Objects;
 
 
 /**
@@ -357,18 +358,17 @@ public class PSExtensionParamDef extends PSComponent implements IPSExtensionPara
    }
 
    @Override
-   public boolean equals(Object b)
-   {
-      if (!EqualsBuilder.reflectionEquals(this, b))
-         return false;
-      
-      return EqualsBuilder.reflectionEquals(this, b);
+   public boolean equals(Object o) {
+      if (this == o) return true;
+      if (!(o instanceof PSExtensionParamDef)) return false;
+      if (!super.equals(o)) return false;
+      PSExtensionParamDef that = (PSExtensionParamDef) o;
+      return Objects.equals(m_name, that.m_name) && Objects.equals(m_description, that.m_description) && Objects.equals(m_dataType, that.m_dataType);
    }
 
    @Override
-   public int hashCode()
-   {
-      return HashCodeBuilder.reflectionHashCode(this);
+   public int hashCode() {
+      return Objects.hash(super.hashCode(), m_name, m_description, m_dataType);
    }
 
    private      String          m_name = "";

@@ -392,15 +392,18 @@ public class PSItemFilterRuleDef implements IPSItemFilterRuleDef,
       return Objects.hash(name, filter);
    }
 
-   /*
-    * (non-Javadoc)
-    * 
-    * @see java.lang.Object#toString()
-    */
    @Override
-   public String toString()
-   {
-      return ToStringBuilder.reflectionToString(this);
+   public String toString() {
+      final StringBuffer sb = new StringBuffer("PSItemFilterRuleDef{");
+      sb.append("filter_rule_id=").append(filter_rule_id);
+      sb.append(", version=").append(version);
+      sb.append(", name='").append(name).append('\'');
+      sb.append(", m_rule=").append(m_rule);
+      sb.append(", isClientSide=").append(isClientSide);
+      sb.append(", filter=").append(filter);
+      sb.append(", params=").append(params);
+      sb.append('}');
+      return sb.toString();
    }
 
    public int compareTo(Object o)

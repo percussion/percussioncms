@@ -23,6 +23,7 @@
  */
 package com.percussion.services.assembly.impl;
 
+import com.percussion.cms.IPSConstants;
 import com.percussion.services.assembly.IPSAssemblyItem;
 import com.percussion.services.assembly.IPSAssemblyResult.Status;
 import com.percussion.utils.codec.PSXmlEncoder;
@@ -47,7 +48,7 @@ public class PSTrackAssemblyError
    /**
     * Logger for the tracker
     */
-    private static final Logger ms_log = LogManager.getLogger(PSTrackAssemblyError.class);
+    private static final Logger ms_log = LogManager.getLogger(IPSConstants.PUBLISHING_LOG);
    
    /**
     * Data structure to hold problem descriptions

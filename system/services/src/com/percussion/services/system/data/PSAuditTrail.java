@@ -29,6 +29,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -145,21 +146,26 @@ public class PSAuditTrail implements Serializable
    }
 
    @Override
-   public boolean equals(Object b)
-   {
-      return EqualsBuilder.reflectionEquals(this, b);
+   public boolean equals(Object o) {
+      if (this == o) return true;
+      if (!(o instanceof PSAuditTrail)) return false;
+      PSAuditTrail that = (PSAuditTrail) o;
+      return getCurrentRevision() == that.getCurrentRevision() && getEditRevision() == that.getEditRevision() && Objects.equals(getAudits(), that.getAudits());
    }
 
    @Override
-   public int hashCode()
-   {
-      return HashCodeBuilder.reflectionHashCode(this);
+   public int hashCode() {
+      return Objects.hash(getCurrentRevision(), getEditRevision(), getAudits());
    }
 
    @Override
-   public String toString()
-   {
-      return ToStringBuilder.reflectionToString(this);
+   public String toString() {
+      final StringBuffer sb = new StringBuffer("PSAuditTrail{");
+      sb.append("currentRevision=").append(currentRevision);
+      sb.append(", editRevision=").append(editRevision);
+      sb.append(", audits=").append(audits);
+      sb.append('}');
+      return sb.toString();
    }
 
    /* (non-Javadoc)

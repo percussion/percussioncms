@@ -26,6 +26,8 @@ package com.percussion.xml.serialization.junit;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
+import java.util.Objects;
+
 /**
  * A sample Name class used in unit test of the
  * {@link com.percussion.xml.serialization.PSObjectSerializer} class. As can be
@@ -71,23 +73,16 @@ public class Name
       this.last = last;
    }
 
-   /*
-    * (non-Javadoc)
-    * 
-    * @see java.lang.Object#hashCode()
-    */
-   public int hashCode()
-   {
-      return HashCodeBuilder.reflectionHashCode(this);
+   @Override
+   public boolean equals(Object o) {
+      if (this == o) return true;
+      if (!(o instanceof Name)) return false;
+      Name name = (Name) o;
+      return Objects.equals(getFirst(), name.getFirst()) && Objects.equals(getLast(), name.getLast());
    }
 
-   /*
-    * (non-Javadoc)
-    * 
-    * @see java.lang.Object#equals(java.lang.Object)
-    */
-   public boolean equals(Object obj)
-   {
-      return EqualsBuilder.reflectionEquals(this, obj);
+   @Override
+   public int hashCode() {
+      return Objects.hash(getFirst(), getLast());
    }
 }

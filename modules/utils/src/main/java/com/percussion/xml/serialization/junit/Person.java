@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * A sample person class used in unit test of the
@@ -93,23 +94,16 @@ public class Person
       this.books.addAll(books);
    }
 
-   /*
-    * (non-Javadoc)
-    * 
-    * @see java.lang.Object#hashCode()
-    */
-   public int hashCode()
-   {
-      return HashCodeBuilder.reflectionHashCode(this);
+   @Override
+   public boolean equals(Object o) {
+      if (this == o) return true;
+      if (!(o instanceof Person)) return false;
+      Person person = (Person) o;
+      return Objects.equals(getName(), person.getName()) && Objects.equals(getAddress(), person.getAddress()) && Objects.equals(getBooks(), person.getBooks());
    }
 
-   /*
-    * (non-Javadoc)
-    * 
-    * @see java.lang.Object#equals(java.lang.Object)
-    */
-   public boolean equals(Object obj)
-   {
-      return EqualsBuilder.reflectionEquals(this, obj);
+   @Override
+   public int hashCode() {
+      return Objects.hash(getName(), getAddress(), getBooks());
    }
 }

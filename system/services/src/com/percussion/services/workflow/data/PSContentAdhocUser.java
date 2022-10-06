@@ -34,6 +34,8 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
+import java.util.Objects;
+
 /**
  * Hibernate data object for adhoc information related to a content item, a
  * workflow role and a given user.
@@ -164,25 +166,16 @@ public class PSContentAdhocUser
       this.adhocType = adhocType;
    }
 
-   /*
-    * (non-Javadoc)
-    * 
-    * @see java.lang.Object#equals(java.lang.Object)
-    */
    @Override
-   public boolean equals(Object obj)
-   {
-      return EqualsBuilder.reflectionEquals(this, obj);
+   public boolean equals(Object o) {
+      if (this == o) return true;
+      if (!(o instanceof PSContentAdhocUser)) return false;
+      PSContentAdhocUser that = (PSContentAdhocUser) o;
+      return getContentId() == that.getContentId() && getRoleId() == that.getRoleId() && getAdhocType() == that.getAdhocType() && Objects.equals(getUser(), that.getUser());
    }
 
-   /*
-    * (non-Javadoc)
-    * 
-    * @see java.lang.Object#hashCode()
-    */
    @Override
-   public int hashCode()
-   {
-      return HashCodeBuilder.reflectionHashCode(this);
+   public int hashCode() {
+      return Objects.hash(getContentId(), getRoleId(), getUser(), getAdhocType());
    }
 }

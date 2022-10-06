@@ -130,15 +130,16 @@ public class PSObjectLockSummary
       return Objects.hash(getSession(), getLocker(), getRemainingTime());
    }
 
-   /* (non-Javadoc)
-    * @see java.lang.Object#toString()
-    */
    @Override
-   public String toString()
-   {
-      return ToStringBuilder.reflectionToString(this);
+   public String toString() {
+      final StringBuffer sb = new StringBuffer("PSObjectLockSummary{");
+      sb.append("session='").append(session).append('\'');
+      sb.append(", locker='").append(locker).append('\'');
+      sb.append(", remainingTime=").append(remainingTime);
+      sb.append('}');
+      return sb.toString();
    }
-   
+
    /**
     * The session which has this object locked, never <code>null</code> or
     * empty.

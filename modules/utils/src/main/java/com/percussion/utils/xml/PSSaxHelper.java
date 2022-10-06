@@ -115,7 +115,26 @@ public class PSSaxHelper
          }
          StringWriter writer = new StringWriter();
          XMLOutputFactory ofact = XMLOutputFactory.newInstance();
+
+         if(ofact.isPropertySupported("http://xml.org/sax/features/external-general-entities")){
+            ofact.setProperty("http://xml.org/sax/features/external-general-entities", false);
+         }
+
+         if(ofact.isPropertySupported("http://apache.org/xml/features/disallow-doctype-decl")){
+            ofact.setProperty("http://apache.org/xml/features/disallow-doctype-decl", true);
+         }
+
+         if(ofact.isPropertySupported("http://apache.org/xml/features/nonvalidating/load-external-dtd")){
+            ofact.setProperty("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+         }
+
+         if(ofact.isPropertySupported("http://xml.org/sax/features/external-parameter-entities")){
+            ofact.setProperty("http://xml.org/sax/features/external-parameter-entities", false);
+         }
+
+
          XMLStreamWriter xmlwriter = ofact.createXMLStreamWriter(writer);
+
          int len = args != null ? args.length + 1 : 1;
          Object[] cargs = new Object[len];
          cargs[0] = xmlwriter;
@@ -180,6 +199,7 @@ public class PSSaxHelper
          throws ParserConfigurationException, SAXException
    {
       SAXParser parser = ms_factory.newSAXParser();
+      parser.getXMLReader().setEntityResolver(PSEntityResolver.getInstance());
       if (handler instanceof LexicalHandler)
       {
          // set the optional extension handler for SAX2 to provide lexical

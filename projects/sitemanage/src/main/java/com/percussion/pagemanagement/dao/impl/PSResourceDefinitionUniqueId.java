@@ -31,6 +31,8 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import com.percussion.pagemanagement.service.IPSResourceDefinitionService;
 import com.percussion.pagemanagement.service.IPSResourceDefinitionService.PSResourceDefinitionInvalidIdException;
 
+import java.util.Objects;
+
 public class PSResourceDefinitionUniqueId {
     
     private String groupId;
@@ -67,19 +69,20 @@ public class PSResourceDefinitionUniqueId {
         this.localId = localId;
     }
 
-    
+
     @Override
-    public boolean equals(Object obj)
-    {
-        return EqualsBuilder.reflectionEquals(this, obj);
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof PSResourceDefinitionUniqueId)) return false;
+        PSResourceDefinitionUniqueId that = (PSResourceDefinitionUniqueId) o;
+        return Objects.equals(getGroupId(), that.getGroupId()) && Objects.equals(getLocalId(), that.getLocalId());
     }
-    
+
     @Override
-    public int hashCode()
-    {
-        return HashCodeBuilder.reflectionHashCode(this);
+    public int hashCode() {
+        return Objects.hash(getGroupId(), getLocalId());
     }
-    
+
     public String getUniqueId() {
         return groupId + IPSResourceDefinitionService.NAMESPACE_SEPARATOR + localId;
     }

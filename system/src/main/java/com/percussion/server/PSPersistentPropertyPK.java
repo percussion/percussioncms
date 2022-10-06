@@ -29,6 +29,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * The composit key for {@link PSPersistentProperty} object.  It is the 
@@ -46,15 +47,16 @@ public class PSPersistentPropertyPK implements Serializable
    }
 
    @Override
-   public boolean equals(Object b)
-   {
-      return EqualsBuilder.reflectionEquals(this, b);
+   public boolean equals(Object o) {
+      if (this == o) return true;
+      if (!(o instanceof PSPersistentPropertyPK)) return false;
+      PSPersistentPropertyPK that = (PSPersistentPropertyPK) o;
+      return Objects.equals(m_context, that.m_context) && Objects.equals(m_userName, that.m_userName) && Objects.equals(m_propertyName, that.m_propertyName) && Objects.equals(m_category, that.m_category);
    }
 
    @Override
-   public int hashCode()
-   {
-      return HashCodeBuilder.reflectionHashCode(this);
+   public int hashCode() {
+      return Objects.hash(m_context, m_userName, m_propertyName, m_category);
    }
 
    /**

@@ -39,6 +39,7 @@ import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import java.util.Objects;
 
 /**
  * Property to be persisted.  Always has a meta entry corresponding to it.
@@ -293,15 +294,16 @@ public class PSPersistentProperty
    }
 
    @Override
-   public boolean equals(Object b)
-   {
-      return EqualsBuilder.reflectionEquals(this, b);
+   public boolean equals(Object o) {
+      if (this == o) return true;
+      if (!(o instanceof PSPersistentProperty)) return false;
+      PSPersistentProperty that = (PSPersistentProperty) o;
+      return Objects.equals(m_context, that.m_context) && Objects.equals(m_userName, that.m_userName) && Objects.equals(m_propertyName, that.m_propertyName) && Objects.equals(m_category, that.m_category) && Objects.equals(m_propertyValue, that.m_propertyValue) && Objects.equals(m_action, that.m_action);
    }
 
    @Override
-   public int hashCode()
-   {
-      return HashCodeBuilder.reflectionHashCode(this);
+   public int hashCode() {
+      return Objects.hash(m_context, m_userName, m_propertyName, m_category, m_propertyValue, m_action);
    }
 
    /**

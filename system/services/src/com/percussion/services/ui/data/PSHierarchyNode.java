@@ -461,9 +461,16 @@ public class PSHierarchyNode implements Serializable, IPSCatalogSummary,
    }
 
    @Override
-   public String toString()
-   {
-      return ToStringBuilder.reflectionToString(this);
+   public String toString() {
+      final StringBuffer sb = new StringBuffer("PSHierarchyNode{");
+      sb.append("id=").append(id);
+      sb.append(", version=").append(version);
+      sb.append(", parentId=").append(parentId);
+      sb.append(", name='").append(name).append('\'');
+      sb.append(", type=").append(type);
+      sb.append(", properties=").append(properties);
+      sb.append('}');
+      return sb.toString();
    }
 
    /* (non-Javadoc)

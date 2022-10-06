@@ -267,7 +267,6 @@ public class PSContentRepository
 
     /**
      * A place holder to collect removed and added configurations.
-     *
      * It is used to determine if we can restore previously removed
      * configurations without calling {@link #createSessionFactory()} in the
      * following scenario:
@@ -2239,7 +2238,7 @@ public class PSContentRepository
      * @see PSQueryNodeVisitor and its subclasses to understand the visitor
      * pattern used to process the query tree
      */
-    @Transactional(propagation = Propagation.NOT_SUPPORTED)
+    @Transactional()
     public QueryResult executeInternalQuery(javax.jcr.query.Query query,
                                             int maxresults, Map<String, ? extends Object> params, String locale)
     {
@@ -2254,7 +2253,6 @@ public class PSContentRepository
 
         try
         {
-            s = s.getSessionFactory().openSession();
 
         // Get the list of types
         PSQuery psquery = (PSQuery) query;
@@ -2287,11 +2285,11 @@ public class PSContentRepository
                     PSStopwatch sw = new PSStopwatch();
                     sw.start();
                     List<Map> results;
-                    //if (!collectionIds.isEmpty()) {
+                    if (!collectionIds.isEmpty()) {
                         results = (List) executeQuery(q);
-                //    } else {
-                 //       results = q.list();
-                //   }
+                    } else {
+                      results = q.list();
+                   }
 
                     sw.stop();
 
@@ -2304,12 +2302,8 @@ public class PSContentRepository
 
             // Limit results?
             rval = limitQueryResults(rval, maxresults, columns, rowcomparator);
-        } catch (ValueFormatException e) {
-            e.printStackTrace();
-        } catch (InvalidQueryException e) {
-            e.printStackTrace();
         } catch (RepositoryException e) {
-            e.printStackTrace();
+
         } finally
         {
             if (!collectionIds.isEmpty())

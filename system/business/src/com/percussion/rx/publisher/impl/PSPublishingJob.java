@@ -88,7 +88,7 @@ package com.percussion.rx.publisher.impl;
  import com.percussion.util.PSStopwatch;
  import com.percussion.util.PSXMLDomUtil;
  import com.percussion.utils.guid.IPSGuid;
- import com.percussion.utils.request.PSRequestInfo;
+ import com.percussion.utils.request.PSRequestInfoBase;
  import com.percussion.utils.timing.PSTimer;
  import com.percussion.xml.PSXmlDocumentBuilder;
  import com.percussion.xml.PSXmlTreeWalker;
@@ -122,6 +122,7 @@ package com.percussion.rx.publisher.impl;
 
  import static com.percussion.rx.publisher.PSPublisherUtils.getContentList;
  import static com.percussion.rx.publisher.PSPublisherUtils.getEditionContentList;
+ import static com.percussion.util.IPSHtmlParameters.SYS_UNPUBLISH_CHANGED_LOCATION;
  import static org.apache.commons.lang.Validate.notNull;
 
 /**
@@ -700,21 +701,19 @@ public class PSPublishingJob implements Runnable
    {
       if (isQueueTimeout)
       {
-         log.warn("Edition "
-                     + getEditionLabel()
-                     + " has been aborted by publish queue timed out. The job is still waiting for "
-                     + m_queued + " unprocessed items.");
+         log.warn("Edition {} has been aborted by publish queue timed out. The job is still waiting for {} unprocessed items.",
+                 getEditionLabel(),
+                 m_queued);
       }
       else
       {
-         log.warn("Edition "
-                     + getEditionLabel()
-                     + " has been aborted by job timed out. The job is still waiting for "
-                     + m_queued + " unprocessed items.");
+         log.warn("Edition {} has been aborted by job timed out. The job is still waiting for {} unprocessed items.",
+                 getEditionLabel(),
+                 m_queued);
       }
 
       StateSummaryLogger stateSum = new StateSummaryLogger();
-      log.debug("Item map summary: " + stateSum.toString());
+      log.debug("Item map summary: {}" ,stateSum);
 
    }
    
@@ -755,8 +754,7 @@ public class PSPublishingJob implements Runnable
          ed = psvc.loadEdition(m_editionId);
          if (ed == null)
          {
-            log.error("Couldn't find edition: " + m_editionId.getUUID()
-                  + " exiting");
+            log.error("Couldn't find edition: {} exiting", m_editionId.getUUID());
             return;
          }
          m_edition = ed;
@@ -764,8 +762,7 @@ public class PSPublishingJob implements Runnable
          IPSGuid siteid = ed.getSiteId();
          if (siteid == null)
          {
-            log.error("Destination site must be configured for edition "
-                  + getEditionLabel() + " exiting");
+            log.error("Destination site must be configured for edition {} exiting",getEditionLabel());
             return;
          }
          m_siteguid = siteid;
@@ -795,7 +792,7 @@ public class PSPublishingJob implements Runnable
          if (!m_canceled)
          {
             changeState(State.WORKING);
-            log.info("All items for job "+m_jobid+ " Queued. State changed to WORKING" );
+            log.info("All items for job {} Queued. State changed to WORKING" ,m_jobid);
             debugStatusCounts();
             waitForJobCompletion();
          }
@@ -813,9 +810,10 @@ public class PSPublishingJob implements Runnable
 
             cancel(false);
             m_message = ExceptionUtils.getRootCauseMessage(e);
-            log.error("Cancelling due to error: "
-                    + "Unexpected problem while running publishing Job id="
-                    + m_jobid + ", Edition " + getLogLabel(ed), e);
+            log.error("Cancelling due to error: Unexpected problem while running publishing Job id={}, Edition {} Error: {}",
+                    m_jobid,
+                    getLogLabel(ed),
+                    PSExceptionUtils.getMessageForLog(e));
          }
       }
       finally
@@ -826,28 +824,29 @@ public class PSPublishingJob implements Runnable
 
    public void waitForStatusWrite()
    {
-      while (m_updates.size()>0)
+      while (!m_updates.isEmpty())
       {
         int updated=m_rxpubsvc.flushStatusToDatabase(m_updates);
-        log.info("Updated database with "+updated+" remaining status items "+m_updates.size()+" remaining" );
+        log.info("Updated database with {} remaining status items {} remaining",
+                updated,
+                m_updates.size());
       }
-      
-      /*
+
       try
       {
       while (!m_updates.isEmpty())
       {
-            ms_log.debug("Waiting for all job statuses to be flushed to DB, queue size = "+m_updates.size());
+            log.debug("Waiting for all job statuses to be flushed to DB, queue size = {}",m_updates.size());
             
            Thread.sleep(5000); 
       }
       }
       catch (InterruptedException e)
       {
-         Thread.currentThread().interrupt(); 
-         ms_log.debug("waitForStatusWrite interrupted");
+         Thread.currentThread().interrupt();
+         log.debug("waitForStatusWrite interrupted");
       }
-      */
+
       
    }
    
@@ -869,7 +868,10 @@ public class PSPublishingJob implements Runnable
       waitForStatusWrite();
       
       editionTimer.stop();
-      log.info("Main Publishing Job '" + m_jobid + "' for edition " + getLogLabel(ed) + " completed in " + editionTimer);
+      log.info("Main Publishing Job '{}' for edition {}} completed in {}",
+              m_jobid,
+              getLogLabel(ed),
+              editionTimer);
       // Capture the end time
       Date end_time = new Date();
       
@@ -881,10 +883,15 @@ public class PSPublishingJob implements Runnable
       {
          PSStopwatch tasksTimer = new PSStopwatch();
          tasksTimer.start();
-         log.info("Running Post Edition Tasks of '" + m_jobid + "' for edition " + getLogLabel(ed));
+         log.info("Running Post Edition Tasks of '{}' for edition {}",
+                 m_jobid,
+                 getLogLabel(ed));
          runPostTasks(ed, site, pubStatus, start_time, end_time, (long)editionTimer.elapsed());
          tasksTimer.stop();
-         log.info("Finished Post Edition Tasks of '" + m_jobid + "' for edition " + getLogLabel(ed) + " completed in " + tasksTimer);
+         log.info("Finished Post Edition Tasks of '{}' for edition {} completed in {}",
+                 m_jobid,
+                 getLogLabel(ed),
+                 tasksTimer);
       }
       
       EndingState endStatus = getEndingStatus();
@@ -896,7 +903,9 @@ public class PSPublishingJob implements Runnable
       
      
       m_endTime = new Date();
-      log.info("Publishing Finished '" + m_jobid + "' for edition " + getLogLabel(ed));
+      log.info("Publishing Finished '{}' for edition '{}'",
+              m_jobid,
+              getLogLabel(ed));
       if (m_notifyCallback != null)
          m_notifyCallback.notifyStatus(getStatus());
    }
@@ -920,15 +929,15 @@ public class PSPublishingJob implements Runnable
    {
       boolean isCreatedRequest = false;
       
-      PSRequest req = (PSRequest) PSRequestInfo
-      .getRequestInfo(PSRequestInfo.KEY_PSREQUEST);
+      PSRequest req = (PSRequest) PSRequestInfoBase
+      .getRequestInfo(PSRequestInfoBase.KEY_PSREQUEST);
       if (req == null)
       {
          isCreatedRequest = true;
          req = PSRequest.getContextForRequest();
-         PSRequestInfo.initRequestInfo((Map<String,Object>) null);
-         PSRequestInfo.setRequestInfo(PSRequestInfo.KEY_PSREQUEST, req);
-         PSRequestInfo.setRequestInfo(PSRequestInfo.KEY_USER, PSSecurityProvider.INTERNAL_USER_NAME);
+          PSRequestInfoBase.initRequestInfo((Map<String,Object>) null);
+          PSRequestInfoBase.setRequestInfo(PSRequestInfoBase.KEY_PSREQUEST, req);
+          PSRequestInfoBase.setRequestInfo(PSRequestInfoBase.KEY_USER, PSSecurityProvider.INTERNAL_USER_NAME);
       }
       
       return isCreatedRequest;
@@ -939,7 +948,7 @@ public class PSPublishingJob implements Runnable
     */
    private void resetRequestInfo()
    {
-      PSRequestInfo.resetRequestInfo();
+       PSRequestInfoBase.resetRequestInfo();
    }
    
    /**
@@ -961,10 +970,11 @@ public class PSPublishingJob implements Runnable
       catch (PSParameterMismatchException e) 
       {
          // should never be here.
-         log.error("Flush cache failed", e);
+         log.error("Flush cache failed. Error: {}",
+                 PSExceptionUtils.getMessageForLog(e));
       }
       sw.stop();
-      log.debug("Done flushAllCache " + sw.toString());
+      log.debug("Done flushAllCache {}" , sw);
    }
    
    /**
@@ -975,7 +985,7 @@ public class PSPublishingJob implements Runnable
    private void commitJobAndEndingJob()
    {
       changeState(State.COMMITTING);
-      log.info("Entering COMITTING State for job "+m_jobid);
+      log.info("Entering COMITTING State for job {}",m_jobid);
       // Wait for a while. The high priority message will run around and
       // will eventually cause the acknowledge message to be called.
       synchronized (this)
@@ -1091,7 +1101,7 @@ public class PSPublishingJob implements Runnable
          IPSEdition ed, IPSSite site)
    {
       PSTimer timer = new PSTimer(log);
-      log.debug("Begin unpublish items for Edition " + getLogLabel(ed));
+      log.debug("Begin unpublish items for Edition {}" , getLogLabel(ed));
       
       List<Long> refs = psvc.findReferenceIdsToUnpublishByServer(ed.getPubServerOrSiteId(), site.getUnpublishFlags());
       List<IPSPubItemStatus> stati =
@@ -1211,10 +1221,12 @@ public class PSPublishingJob implements Runnable
       if (!log.isDebugEnabled())
          return;
       
-      log.debug("Unpublishing Ref-ID: " + status.getReferenceId()
-            + ", Content-ID: " + status.getContentId() + ", Folder-ID: "
-            + status.getFolderId() + ", URL: " + status.getAssemblyUrl()
-            + ", Location: " + status.getLocation());
+      log.debug("Unpublishing Ref-ID: {}, Content-ID: {}, Folder-ID: {}, URL: {}, Location: {}",
+              status.getReferenceId(),
+              status.getContentId(),
+              status.getFolderId(),
+              status.getAssemblyUrl(),
+               status.getLocation());
    }
 
    /**
@@ -1313,9 +1325,7 @@ public class PSPublishingJob implements Runnable
     */
    private void recordFailureStatus(IPSAssemblyItem work, Object... messages)
    {
-      IPSPublisherService psvc = PSPublisherServiceLocator
-            .getPublisherService();
-      if (work.getTemplate() == null)
+       if (work.getTemplate() == null)
       {
          IPSAssemblyService asm = PSAssemblyServiceLocator.getAssemblyService();
          try
@@ -1395,7 +1405,7 @@ public class PSPublishingJob implements Runnable
             log.setJobId(m_jobid);
             log.setStatus(false);
             
-            PSPublishingJob.log.info("Running edition task " + task.getExtensionName());
+            PSPublishingJob.log.info("Running edition task {}" , task.getExtensionName());
             PSStopwatch sw = new PSStopwatch();
             sw.start();
             try
@@ -1429,7 +1439,6 @@ public class PSPublishingJob implements Runnable
                      msg = msg + ", terminating task processing";
                      PSPublishingJob.log.error(serverLog, e);
                      log.setMessage(msg);
-                     return;
                   }
                   else
                   {
@@ -1496,7 +1505,7 @@ public class PSPublishingJob implements Runnable
       {
          if (m_canceled)
          {
-            log.info("Edition " + getLogLabel(ed) + " has been cancelled");
+            log.info("Edition {} has been cancelled", getLogLabel(ed));
             return false;
          }
          processContentList(psvc, clist, ed, site, unpublishedKeys);         
@@ -1566,15 +1575,15 @@ public class PSPublishingJob implements Runnable
       final IPSContentList contentlist = getContentList(eclist);
       if (contentlist == null)
       {
-         log.warn("Could not load content list: "
-               + eclist.getContentListId() + " - skipping");
+         log.warn("Could not load content list: {} - skipping", eclist.getContentListId());
          return;
       }
     
       boolean isCreatedRequest = false;
 
       PSStopwatch sw = new PSStopwatch();
-      log.debug("Begin process content list " + getLogLabel(contentlist));
+      log.debug("Begin process content list {}" ,
+              getLogLabel(contentlist));
       PSObjectStream<IPSAssemblyItem> stream  = null;
       try
       {
@@ -1598,9 +1607,7 @@ public class PSPublishingJob implements Runnable
                ? new PSLocationChangeHandler(this) : null;
 
          final Iterator<List<IPSAssemblyItem>> asmIt = 
-            Iterators.transform(items.iterator(), new Function<ContentItem, List<IPSAssemblyItem>>(){
-            public List<IPSAssemblyItem> apply(ContentItem item)
-            {
+            Iterators.transform(items.iterator(), item -> {
                List<IPSAssemblyItem> rvalue = new ArrayList<>();
                try
                {
@@ -1613,8 +1620,7 @@ public class PSPublishingJob implements Runnable
                   throw new RuntimeException(e);
                }
                return rvalue;
-            }
-         });
+            });
          
          Iterator<IPSAssemblyItem> queuedItems = flatten(asmIt);
          
@@ -1670,7 +1676,9 @@ public class PSPublishingJob implements Runnable
       finally
       {
          sw.stop();
-         log.debug("Finish process content list " + getLogLabel(contentlist) + ". " + sw.toString());
+         log.debug("Finish process content list {} {}" ,
+                 getLogLabel(contentlist) ,
+                 sw);
 
          if (isCreatedRequest)
             resetRequestInfo();
@@ -1702,9 +1710,7 @@ public class PSPublishingJob implements Runnable
     */
    private void sendItemsToPubQueue(Iterator<IPSAssemblyItem> items, IPSEdition ed)
    {
-      Iterator<IPSAssemblyItem> resetItems = resetTemplate(items);
-      
-      //  Iterator that is being passed produces may items and does a lot
+       //  Iterator that is being passed produces may items and does a lot
       // of work while being consumed.  If this work is done in the m_publishSender
       // it locks the object preventing other messages, like cancel request from being sent
       // We will parse items here in batches of 100 and send them to unblock for other messages.
@@ -1744,17 +1750,11 @@ public class PSPublishingJob implements Runnable
     */
    private Iterator<IPSAssemblyItem> resetTemplate(Iterator<IPSAssemblyItem> queuedItems)
    {
-      Iterator<IPSAssemblyItem> items = Iterators.transform(queuedItems,
-            new Function<IPSAssemblyItem, IPSAssemblyItem>()
-            {
-               public IPSAssemblyItem apply(IPSAssemblyItem item)
-               {
-                  item.setTemplate(null);
-                  return item;
-               }
-            });
-      
-      return items;
+      return Iterators.transform(queuedItems,
+              item -> {
+                 item.setTemplate(null);
+                 return item;
+              });
    }
    
    /**
@@ -1789,19 +1789,13 @@ public class PSPublishingJob implements Runnable
    private boolean isHandleChangedLocation(IPSSite site, IPSEditionContentList eclist, 
          IPSContentList contentlist)
    {
-      // TODO the following code is commented because still behaviour of the CM system needs to be determined that
-      // whether it has to be the default behaviour of always having it to true. That is why for now it is returning
-      // true always. And also when code is put back add the following import.
-      //import static com.percussion.util.IPSHtmlParameters.SYS_UNPUBLISH_CHANGED_LOCATION;
 
-      /* 
       String url = PSPublisherUtils.getCListDocumentURL(site.getGUID(),
             eclist, contentlist);
       Map<String, String> params = getUrlParams(url);
       String value = params.get(SYS_UNPUBLISH_CHANGED_LOCATION);
       return "true".equalsIgnoreCase(value); 
-      */
-      return true;
+
    }
    
    public static boolean isHandleChangedLocation()
@@ -1867,19 +1861,19 @@ public class PSPublishingJob implements Runnable
          }
          if (m_queued.get() == 0 && m_assembled.get() == 0 && m_paged.get() == 0)
          {
-            log.debug("Detected Job Completion (queued, assembled and paged are 0) for job " + m_jobid );
+            log.debug("Detected Job Completion (queued, assembled and paged are 0) for job {}" , m_jobid );
             debugStatusCounts();
             break;
          }
          if (m_canceled)
          {
-            log.info("Edition " + getEditionLabel() + " has been cancelled");
+            log.info("Edition {} has been cancelled",getEditionLabel() );
             debugStatusCounts();
             break;
          }
          if (isTimeout())
          {
-            log.error("Job Timeout " +m_jobid);
+            log.error("Job Timeout {}" ,m_jobid);
             debugStatusCounts();
             break;            
          }
@@ -1897,11 +1891,13 @@ public class PSPublishingJob implements Runnable
    {
       if(log.isDebugEnabled())
       {
-         log.debug("Counts for job "+m_jobid + ": Queued = "+m_queued.get()
-         + ", Paged = "+m_paged.get() 
-         + ", Assembled = "+m_assembled.get() 
-         + ", Cancelled = "+m_delivered.get() 
-         + ", Prepared For Delivery = "+m_preparedForDelivery.get());
+         log.debug("Counts for job {}: Queued = {}, Paged = {}, Assembled = {}, Cancelled = {}, Prepared For Delivery = {}",
+                 m_jobid,
+                 m_queued.get(),
+                 m_paged.get(),
+                 m_assembled.get(),
+                 m_delivered.get(),
+                 m_preparedForDelivery.get());
          
       }
    }
@@ -1916,13 +1912,8 @@ public class PSPublishingJob implements Runnable
       PSJobControlMessage msg = new PSJobControlMessage(m_jobid,
             PSJobControlMessage.ControlType.START, siteguid,
             pubserverguid, siteguid);
-     /* PSJobControlMessage updateMsg = new PSJobControlMessage(m_jobid,
-            PSJobControlMessage.ControlType.UPDATE_HANDLER, siteguid,
-            pubserverguid, siteguid);
-   
-      ms_log.debug("Sending started update handler message for job "+m_jobid);
-      m_publishSender.sendMessage(updateMsg, IPSQueueSender.PRIORITY_HIGHEST);   */
-      log.debug("Sending Job Start message for job "+m_jobid);
+
+      log.debug("Sending Job Start message for job {}",m_jobid);
       m_publishSender.sendMessage(msg, IPSQueueSender.PRIORITY_HIGHEST);
    }
    
@@ -1933,7 +1924,7 @@ public class PSPublishingJob implements Runnable
    {
          PSJobControlMessage msg = new PSJobControlMessage(m_jobid,
                PSJobControlMessage.ControlType.END, m_siteguid, m_pubserverguid, null);
-         log.debug("Sending Job End message for job "+m_jobid);
+         log.debug("Sending Job End message for job {}", m_jobid);
          m_publishSender.sendMessage(msg, IPSQueueSender.PRIORITY_HIGHEST);
    }
 
@@ -2168,7 +2159,7 @@ public class PSPublishingJob implements Runnable
                .makeGuid(new PSLocator(contentidParam, revisionParam)));
 
          asm.handleItemTemplates(Collections.singletonList(item));
-         Object data[] = psvc.findUnpublishInfoForAssemblyItem(item.getId(),
+         Object[] data = psvc.findUnpublishInfoForAssemblyItem(item.getId(),
                item.getDeliveryContextId(), item.getTemplate().getGUID(), item
                      .getSiteId(), item.getPubServerId(), item.getDeliveryPath());
          if (data == null || data.length == 0)
@@ -2286,7 +2277,7 @@ public class PSPublishingJob implements Runnable
       Map<String, String> params = getUrlParams(url);
       
       String sys_publish = params.get(IPSHtmlParameters.SYS_PUBLISH);
-      final boolean isPublish = (! "unpublish".equalsIgnoreCase(sys_publish));
+      final boolean isPublish = (! ATTR_UNPUBLISH.equalsIgnoreCase(sys_publish));
       
       // get the Content List Items
       final IPSPublisherService pub = PSPublisherServiceLocator.getPublisherService();
@@ -2302,18 +2293,14 @@ public class PSPublishingJob implements Runnable
       final IPSAssemblyService asm = PSAssemblyServiceLocator.getAssemblyService();
       
       timer = new PSTimer(log);
-      cItems.mi_items = Iterators.transform(clResults.iterator(), new Function<PSContentListItem, ContentItem>()
-      {
-         public ContentItem apply(PSContentListItem item)
+      cItems.mi_items = Iterators.transform(clResults.iterator(), item -> {
+         try
          {
-            try
-            {
-               return new ContentItem(item, isPublish , eclist, clist, pub, asm);
-            }
-            catch (PSAssemblyException e)
-            {
-               throw new RuntimeException(e);
-            }
+            return new ContentItem(item, isPublish , eclist, clist, pub, asm);
+         }
+         catch (PSAssemblyException e)
+         {
+            throw new RuntimeException(e);
          }
       });
       timer.logElapsed("Create ContentItems/LocationGen Iterator ");
@@ -2330,8 +2317,8 @@ public class PSPublishingJob implements Runnable
     */
    private void setRequestParameters(Map<String, String> params)
    {
-      PSRequest req = (PSRequest) PSRequestInfo
-            .getRequestInfo(PSRequestInfo.KEY_PSREQUEST);
+      PSRequest req = (PSRequest) PSRequestInfoBase
+            .getRequestInfo(PSRequestInfoBase.KEY_PSREQUEST);
       req.setParameters((HashMap)params);
    }
 
@@ -2519,7 +2506,9 @@ public class PSPublishingJob implements Runnable
        
          if (preState != null)
          {
-            log.trace("Item State change from "+preState.name()+" to "+curState.name());
+            log.trace("Item State change from {} to {}",
+                    preState,
+                    curState);
             switch (preState)
             {
                case QUEUED: m_queued.decrementAndGet(); break;
@@ -2533,7 +2522,7 @@ public class PSPublishingJob implements Runnable
                      "Unrecognized item state: " + preState);
             }
          } else {
-            log.trace("New Item State to "+curState.name());
+            log.trace("New Item State to {}",curState.name());
          }
          
          switch (curState)

@@ -113,6 +113,8 @@ public class PSInternalRequest
       {
          if (execData != null)
             execData.release();
+
+         cleanUp();
       }
    }
 
@@ -207,19 +209,12 @@ public class PSInternalRequest
                IPSDataErrors.INTERNAL_REQUEST_AUTHENTICATION_FAILED_EXCEPTION,
                e.getLocalizedMessage() );
          } 
-         catch (PSCacheException e)
+         catch (PSCacheException | IOException e)
          {
             throw new PSInternalRequestCallException(
                IPSDataErrors.INTERNAL_REQUEST_CALL_EXCEPTION,
                e.getLocalizedMessage());
-         } 
-         catch (IOException e)
-         {
-            throw new PSInternalRequestCallException(
-               IPSDataErrors.INTERNAL_REQUEST_CALL_EXCEPTION,
-               e.getLocalizedMessage());
-         }
-         finally
+         } finally
          {
             cleanUp();
          }
@@ -665,19 +660,7 @@ public class PSInternalRequest
    // it back
    public Object getDataSet(PSRequest req)
    {
-      Object data = null;
-      try
-      {
-         
-      }
-      catch (Exception e)
-      {
-         // TODO: handle exception
-      }
-      finally
-      {
-      }
-      return data;
+      return null;
    }
    
    /**

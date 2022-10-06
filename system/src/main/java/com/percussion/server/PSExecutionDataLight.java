@@ -30,7 +30,7 @@ import com.percussion.security.PSThreadRequestUtils;
  * This class extends {@link com.percussion.data.PSExecutionData 
  * PSExecutionData} from com.percussion.data package and has a ctor that can 
  * be instantiated with {@link  com.percussion.server.IPSRequestContext}. 
- * This is light in the sense that it is not a fullfledged execution data and 
+ * This is light in the sense that it is not a full fledged execution data and
  * does not have anything outside of {@link com.percussion.server.PSRequest}. 
  * Note that the ctor calls the super ctor with <code>null</code> for both 
  * application handler and request handler (the first and second parameters).
@@ -43,7 +43,6 @@ public class PSExecutionDataLight extends PSExecutionData
 {
    /**
     * Ctor that takes a {@link IPSRequestContext request context} object.
-    * @param reqCxt requets context object, must not be <code>null</code>.
     */
    public PSExecutionDataLight()
    {

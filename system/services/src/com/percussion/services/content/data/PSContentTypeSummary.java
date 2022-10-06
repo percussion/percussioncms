@@ -29,6 +29,7 @@ import com.percussion.utils.guid.IPSGuid;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -195,21 +196,28 @@ public class PSContentTypeSummary
    }
 
    @Override
-   public boolean equals(Object b)
-   {
-      return EqualsBuilder.reflectionEquals(this, b);
+   public boolean equals(Object o) {
+      if (this == o) return true;
+      if (!(o instanceof PSContentTypeSummary)) return false;
+      PSContentTypeSummary that = (PSContentTypeSummary) o;
+      return Objects.equals(contentType, that.contentType) && Objects.equals(getDescription(), that.getDescription()) && Objects.equals(m_guid, that.m_guid) && Objects.equals(getFields(), that.getFields()) && Objects.equals(getChildren(), that.getChildren());
    }
 
    @Override
-   public int hashCode()
-   {
-      return HashCodeBuilder.reflectionHashCode(this);
+   public int hashCode() {
+      return Objects.hash(contentType, getDescription(), m_guid, getFields(), getChildren());
    }
 
    @Override
-   public String toString()
-   {
-      return ToStringBuilder.reflectionToString(this);
+   public String toString() {
+      final StringBuffer sb = new StringBuffer("PSContentTypeSummary{");
+      sb.append("contentType='").append(contentType).append('\'');
+      sb.append(", description='").append(description).append('\'');
+      sb.append(", m_guid=").append(m_guid);
+      sb.append(", fields=").append(fields);
+      sb.append(", children=").append(children);
+      sb.append('}');
+      return sb.toString();
    }
 
    /* (non-Javadoc)

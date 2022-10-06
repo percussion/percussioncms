@@ -27,6 +27,7 @@ import com.percussion.services.utils.xml.PSXmlSerializationHelper;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.Objects;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -185,21 +186,27 @@ public class PSKeywordChoice implements Serializable
    }
 
    @Override
-   public boolean equals(Object b)
-   {
-      return EqualsBuilder.reflectionEquals(this, b);
+   public boolean equals(Object o) {
+      if (this == o) return true;
+      if (!(o instanceof PSKeywordChoice)) return false;
+      PSKeywordChoice that = (PSKeywordChoice) o;
+      return Objects.equals(getValue(), that.getValue()) && Objects.equals(getLabel(), that.getLabel()) && Objects.equals(getDescription(), that.getDescription()) && Objects.equals(getSequence(), that.getSequence());
    }
 
    @Override
-   public int hashCode()
-   {
-      return HashCodeBuilder.reflectionHashCode(this);
+   public int hashCode() {
+      return Objects.hash(getValue(), getLabel(), getDescription(), getSequence());
    }
 
    @Override
-   public String toString()
-   {
-      return ToStringBuilder.reflectionToString(this);
+   public String toString() {
+      final StringBuffer sb = new StringBuffer("PSKeywordChoice{");
+      sb.append("value='").append(value).append('\'');
+      sb.append(", label='").append(label).append('\'');
+      sb.append(", description='").append(description).append('\'');
+      sb.append(", sequence=").append(sequence);
+      sb.append('}');
+      return sb.toString();
    }
 
    /* (non-Javadoc)

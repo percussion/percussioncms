@@ -29,6 +29,8 @@ import com.percussion.utils.guid.IPSGuid;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
+import java.util.Objects;
+
 /**
  * Holds the state of a single content item. This is a transient object 
  * created by the workflow service to communicate the workflow and state a 
@@ -113,23 +115,16 @@ public class PSContentWorkflowState
       return m_workflowAppId;
    }
 
-   /* (non-Javadoc)
-    * @see java.lang.Object#equals(java.lang.Object)
-    */
    @Override
-   public boolean equals(Object obj)
-   {
-      return EqualsBuilder.reflectionEquals(this, obj);
+   public boolean equals(Object o) {
+      if (this == o) return true;
+      if (!(o instanceof PSContentWorkflowState)) return false;
+      PSContentWorkflowState that = (PSContentWorkflowState) o;
+      return Objects.equals(m_contentId, that.m_contentId) && Objects.equals(m_workflowAppId, that.m_workflowAppId) && Objects.equals(m_stateId, that.m_stateId);
    }
 
-   /* (non-Javadoc)
-    * @see java.lang.Object#hashCode()
-    */
    @Override
-   public int hashCode()
-   {
-      return HashCodeBuilder.reflectionHashCode(this);
+   public int hashCode() {
+      return Objects.hash(m_contentId, m_workflowAppId, m_stateId);
    }
-   
-   
 }

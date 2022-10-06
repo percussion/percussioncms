@@ -74,15 +74,16 @@ public abstract class PSBaseValue<Type> implements Value, IPSJcrCacheItem
       HashCodeBuilder b = new HashCodeBuilder();
       return b.append(m_value).toHashCode();
    }
-   
-   /* (non-Javadoc)
-    * @see java.lang.Object#toString()
-    */
+
    @Override
-   public String toString()
-   {
-      return ToStringBuilder.reflectionToString(this);
+   public String toString() {
+      final StringBuffer sb = new StringBuffer("PSBaseValue{");
+      sb.append("m_value=").append(m_value);
+      sb.append(", m_strValue='").append(m_strValue).append('\'');
+      sb.append('}');
+      return sb.toString();
    }
+
    /*
     * (non-Javadoc)
     * @see com.percussion.utils.jsr170.IPSJcrCacheItem#getSizeInBytes()

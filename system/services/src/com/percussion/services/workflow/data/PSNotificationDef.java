@@ -31,6 +31,7 @@ import com.percussion.utils.guid.IPSGuid;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.Objects;
 
 
 import javax.persistence.Basic;
@@ -177,24 +178,31 @@ public class PSNotificationDef implements Serializable, IPSCatalogItem
    public long getWorkflowId()
    {
       return workflowId;
-   }   
-   
-   @Override
-   public boolean equals(Object b)
-   {
-      return EqualsBuilder.reflectionEquals(this, b);
    }
 
    @Override
-   public int hashCode()
-   {
-      return HashCodeBuilder.reflectionHashCode(this);
+   public boolean equals(Object o) {
+      if (this == o) return true;
+      if (!(o instanceof PSNotificationDef)) return false;
+      PSNotificationDef that = (PSNotificationDef) o;
+      return getWorkflowId() == that.getWorkflowId() && notificationId == that.notificationId && Objects.equals(getSubject(), that.getSubject()) && Objects.equals(getBody(), that.getBody()) && Objects.equals(getDescription(), that.getDescription());
    }
 
    @Override
-   public String toString()
-   {
-      return ToStringBuilder.reflectionToString(this);
+   public int hashCode() {
+      return Objects.hash(getWorkflowId(), notificationId, getSubject(), getBody(), getDescription());
+   }
+
+   @Override
+   public String toString() {
+      final StringBuffer sb = new StringBuffer("PSNotificationDef{");
+      sb.append("workflowId=").append(workflowId);
+      sb.append(", notificationId=").append(notificationId);
+      sb.append(", subject='").append(subject).append('\'');
+      sb.append(", body='").append(body).append('\'');
+      sb.append(", description='").append(description).append('\'');
+      sb.append('}');
+      return sb.toString();
    }
 
    /* (non-Javadoc)

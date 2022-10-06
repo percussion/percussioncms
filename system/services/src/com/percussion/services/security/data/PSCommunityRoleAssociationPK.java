@@ -24,6 +24,7 @@
 package com.percussion.services.security.data;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -97,21 +98,24 @@ public class PSCommunityRoleAssociationPK implements Serializable
    }
 
    @Override
-   public boolean equals(Object b)
-   {
-      return EqualsBuilder.reflectionEquals(this, b);
+   public boolean equals(Object o) {
+      if (this == o) return true;
+      if (!(o instanceof PSCommunityRoleAssociationPK)) return false;
+      PSCommunityRoleAssociationPK that = (PSCommunityRoleAssociationPK) o;
+      return getCommunityId() == that.getCommunityId() && getRoleId() == that.getRoleId();
    }
 
    @Override
-   public int hashCode()
-   {
-      return HashCodeBuilder.reflectionHashCode(this);
+   public int hashCode() {
+      return Objects.hash(getCommunityId(), getRoleId());
    }
 
    @Override
-   public String toString()
-   {
-      return ToStringBuilder.reflectionToString(this,
-         ToStringStyle.MULTI_LINE_STYLE);
+   public String toString() {
+      final StringBuffer sb = new StringBuffer("PSCommunityRoleAssociationPK{");
+      sb.append("communityId=").append(communityId);
+      sb.append(", roleId=").append(roleId);
+      sb.append('}');
+      return sb.toString();
    }
 }

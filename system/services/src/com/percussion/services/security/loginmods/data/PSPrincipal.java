@@ -25,6 +25,7 @@ package com.percussion.services.security.loginmods.data;
 
 import java.io.Serializable;
 import java.security.Principal;
+import java.util.Objects;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -66,23 +67,18 @@ public class PSPrincipal implements Principal, Serializable
    {
       return m_name;
    }
-   
 
-   /*
-    * (non-Javadoc)
-    * 
-    * @see java.lang.Object#equals(java.lang.Object)
-    */
-   public boolean equals(Object obj)
-   {
-      return EqualsBuilder.reflectionEquals(this, obj); 
+
+   @Override
+   public boolean equals(Object o) {
+      if (this == o) return true;
+      if (!(o instanceof PSPrincipal)) return false;
+      PSPrincipal that = (PSPrincipal) o;
+      return Objects.equals(m_name, that.m_name);
    }
-   
-   /* (non-Javadoc)
-    * @see java.lang.Object#hashCode()
-    */
-   public int hashCode()
-   {
-      return HashCodeBuilder.reflectionHashCode(this);
-   }   
+
+   @Override
+   public int hashCode() {
+      return Objects.hash(m_name);
+   }
 }

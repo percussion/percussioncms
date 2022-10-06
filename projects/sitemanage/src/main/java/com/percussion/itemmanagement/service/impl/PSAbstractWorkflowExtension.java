@@ -154,13 +154,26 @@ public abstract class PSAbstractWorkflowExtension implements IPSExtension
         public String type;
         public AssetType assetType = null;
         public ItemStatus  status = ItemStatus.STARTED;
-        
+
         @Override
-        public String toString()
-        {
-            return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
+        public String toString() {
+            final StringBuffer sb = new StringBuffer("WorkflowItem{");
+            sb.append("guid=").append(guid);
+            sb.append(", state='").append(state).append('\'');
+            sb.append(", workflow='").append(workflow).append('\'');
+            sb.append(", checkedOutUserName='").append(checkedOutUserName).append('\'');
+            sb.append(", publicRevision=").append(publicRevision);
+            sb.append(", publishable=").append(publishable);
+            sb.append(", itemSummary=").append(itemSummary);
+            sb.append(", revisionLock=").append(revisionLock);
+            sb.append(", error=").append(error);
+            sb.append(", type='").append(type).append('\'');
+            sb.append(", assetType=").append(assetType);
+            sb.append(", status=").append(status);
+            sb.append('}');
+            return sb.toString();
         }
-        
+
         public static enum AssetType {
             PAGE,RESOURCE,LOCAL,SHARED
         }

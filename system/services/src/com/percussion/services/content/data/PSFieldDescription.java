@@ -26,6 +26,7 @@ package com.percussion.services.content.data;
 import com.percussion.services.utils.xml.PSXmlSerializationHelper;
 
 import java.io.IOException;
+import java.util.Objects;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -133,21 +134,26 @@ public class PSFieldDescription
    }
 
    @Override
-   public boolean equals(Object b)
-   {
-      return EqualsBuilder.reflectionEquals(this, b);
+   public boolean equals(Object o) {
+      if (this == o) return true;
+      if (!(o instanceof PSFieldDescription)) return false;
+      PSFieldDescription that = (PSFieldDescription) o;
+      return Objects.equals(getName(), that.getName()) && Objects.equals(getType(), that.getType()) && Objects.equals(getExportable(), that.getExportable());
    }
 
    @Override
-   public int hashCode()
-   {
-      return HashCodeBuilder.reflectionHashCode(this);
+   public int hashCode() {
+      return Objects.hash(getName(), getType(), getExportable());
    }
 
    @Override
-   public String toString()
-   {
-      return ToStringBuilder.reflectionToString(this);
+   public String toString() {
+      final StringBuffer sb = new StringBuffer("PSFieldDescription{");
+      sb.append("name='").append(name).append('\'');
+      sb.append(", type='").append(type).append('\'');
+      sb.append(", exportable=").append(exportable);
+      sb.append('}');
+      return sb.toString();
    }
 
    /* (non-Javadoc)

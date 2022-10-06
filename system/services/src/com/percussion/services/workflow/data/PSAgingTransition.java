@@ -26,6 +26,7 @@ package com.percussion.services.workflow.data;
 import com.percussion.services.utils.xml.PSXmlSerializationHelper;
 
 import java.io.IOException;
+import java.util.Objects;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -107,21 +108,26 @@ public class PSAgingTransition extends PSTransitionBase implements IPSAgingTrans
    }
 
    @Override
-   public boolean equals(Object b)
-   {
-      return EqualsBuilder.reflectionEquals(this, b);
+   public boolean equals(Object o) {
+      if (this == o) return true;
+      if (!(o instanceof PSAgingTransition)) return false;
+      PSAgingTransition that = (PSAgingTransition) o;
+      return getType() == that.getType() && Objects.equals(getInterval(), that.getInterval()) && Objects.equals(getSystemField(), that.getSystemField());
    }
 
    @Override
-   public int hashCode()
-   {
-      return HashCodeBuilder.reflectionHashCode(this);
+   public int hashCode() {
+      return Objects.hash(getType(), getInterval(), getSystemField());
    }
 
    @Override
-   public String toString()
-   {
-      return ToStringBuilder.reflectionToString(this);
+   public String toString() {
+      final StringBuffer sb = new StringBuffer("PSAgingTransition{");
+      sb.append("type=").append(type);
+      sb.append(", interval=").append(interval);
+      sb.append(", systemField='").append(systemField).append('\'');
+      sb.append('}');
+      return sb.toString();
    }
 
    /* (non-Javadoc)

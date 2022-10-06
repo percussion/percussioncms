@@ -33,6 +33,8 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
+import java.util.Objects;
+
 /**
  * Implementation class for a filter item. This is used as a base class for
  * other implementations of a filter item.
@@ -136,31 +138,28 @@ public class PSFilterItem implements IPSFilterItem, Cloneable
       return m_siteId;
    }
 
-   /* (non-Javadoc)
-    * @see java.lang.Object#equals(java.lang.Object)
-    */
    @Override
-   public boolean equals(Object obj)
-   {
-      return EqualsBuilder.reflectionEquals(this, obj);
+   public boolean equals(Object o) {
+      if (this == o) return true;
+      if (!(o instanceof PSFilterItem)) return false;
+      PSFilterItem that = (PSFilterItem) o;
+      return Objects.equals(m_itemId, that.m_itemId) && Objects.equals(m_folderId, that.m_folderId) && Objects.equals(m_siteId, that.m_siteId) && Objects.equals(m_key, that.m_key);
    }
 
-   /* (non-Javadoc)
-    * @see java.lang.Object#hashCode()
-    */
    @Override
-   public int hashCode()
-   {
-      return HashCodeBuilder.reflectionHashCode(this);
+   public int hashCode() {
+      return Objects.hash(m_itemId, m_folderId, m_siteId, m_key);
    }
 
-   /* (non-Javadoc)
-    * @see java.lang.Object#toString()
-    */
    @Override
-   public String toString()
-   {
-      return ToStringBuilder.reflectionToString(this);
+   public String toString() {
+      final StringBuffer sb = new StringBuffer("PSFilterItem{");
+      sb.append("m_itemId=").append(m_itemId);
+      sb.append(", m_folderId=").append(m_folderId);
+      sb.append(", m_siteId=").append(m_siteId);
+      sb.append(", m_key='").append(m_key).append('\'');
+      sb.append('}');
+      return sb.toString();
    }
 
    /*

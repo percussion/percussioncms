@@ -183,9 +183,12 @@ public class PSJexlBinding
    }
 
    @Override
-   public String toString()
-   {
-      return ToStringBuilder.reflectionToString(this,
-            ToStringStyle.MULTI_LINE_STYLE).toString();
+   public String toString() {
+      final StringBuffer sb = new StringBuffer("PSJexlBinding{");
+      sb.append("m_name='").append(m_name).append('\'');
+      sb.append(", m_expression='").append(m_expression).append('\'');
+      sb.append(", m_index=").append(m_index);
+      sb.append('}');
+      return sb.toString();
    }
 }

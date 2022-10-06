@@ -26,6 +26,7 @@ package com.percussion.share.extension;
 
 import java.util.Properties;
 
+import com.percussion.error.PSExceptionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -47,11 +48,10 @@ public class PSAutotuneCacheStartup implements IPSStartupProcess {
             .getLogger(PSAutotuneCacheStartup.class.getName());
 
     @Override
-    public void doStartupWork(Properties startupProps) throws Exception {
+    public void doStartupWork(Properties startupProps) {
 
         if (!"true".equalsIgnoreCase(startupProps.getProperty(getPropName()))) {
-            log.info(getPropName()
-                    + " is set to false or missing from startup properties file. Nothing to run.");
+            log.info("{} is set to false or missing from startup properties file. Nothing to run.",getPropName());
             return;
         }
 
@@ -60,10 +60,11 @@ public class PSAutotuneCacheStartup implements IPSStartupProcess {
             cache.updateEhcache();
         }
         catch (Exception e) {
-            log.error("Error updating ehcache.xml file.", e);
+            log.error("Error updating ehcache.xml file. Error: {}",
+                    PSExceptionUtils.getMessageForLog(e));
         }
 
-        log.info(getPropName() + " has completed.");
+        log.info("{} has completed.",getPropName() );
     }
 
     @Override

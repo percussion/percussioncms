@@ -80,7 +80,6 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.locks.ReentrantLock;
 
 import static com.percussion.rx.publisher.PSPublisherUtils.validateEditionForOnDemandContentLists;
 
@@ -119,7 +118,7 @@ public class PSRxPublisherService implements IPSRxPublisherServiceInternal
                   for(Integer editionid : m_demandWork.keySet())
                   {
                      Queue<PSDemandWork> q = m_demandWork.get(editionid);
-                     if (q.size() > 0)
+                     if (!q.isEmpty())
                      {
                         IPSGuid edition = gmgr.makeGuid(editionid.longValue(), 
                               PSTypeEnum.EDITION);
@@ -182,7 +181,7 @@ public class PSRxPublisherService implements IPSRxPublisherServiceInternal
     * Further more, don't try to lock/sychronize "m_demandWork" and "this" at
     * the same time, except in the {@link PSDemandWork} - avoid deadlock. 
     */
-   Map<Integer,  ConcurrentLinkedQueue<PSDemandWork>> m_demandWork = 
+   final Map<Integer,  ConcurrentLinkedQueue<PSDemandWork>> m_demandWork =
       new ConcurrentHashMap<>();
    
    /**
@@ -763,10 +762,10 @@ public class PSRxPublisherService implements IPSRxPublisherServiceInternal
       {
          synchronized (m_demandWork)
          {
-            m_demandWork.notify();
+            m_demandWork.notifyAll();
          }
       }
-      ms_log.info("Queued demand work " + work);
+      ms_log.info("Queued demand work {}" , work);
       return work.getRequest();
    }
    
@@ -954,8 +953,7 @@ public class PSRxPublisherService implements IPSRxPublisherServiceInternal
          IOUtils.closeQuietly(os);
       }
    }
-   
-   private ReentrantLock writeBlock = new ReentrantLock();
+
 
    
 }

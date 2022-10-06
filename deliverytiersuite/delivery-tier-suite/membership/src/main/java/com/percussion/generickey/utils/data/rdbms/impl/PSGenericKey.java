@@ -127,15 +127,22 @@ public class PSGenericKey implements IPSGenericKey
     }
 
     @Override
-    public boolean equals(Object obj)
-    {
-        return EqualsBuilder.reflectionEquals(this, obj);
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof PSGenericKey)) return false;
+
+        PSGenericKey that = (PSGenericKey) o;
+
+        if (id != that.id) return false;
+        if (!getGenericKey().equals(that.getGenericKey())) return false;
+        return getExpirationDate().equals(that.getExpirationDate());
     }
-    
+
     @Override
-    public int hashCode()
-    {
-        return HashCodeBuilder.reflectionHashCode(this);
+    public int hashCode() {
+        int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + getGenericKey().hashCode();
+        result = 31 * result + getExpirationDate().hashCode();
+        return result;
     }
-    
 }

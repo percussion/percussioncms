@@ -32,6 +32,8 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
+import java.util.Objects;
+
 /**
  * One item to add to the content list. This class is used by the template
  * expander {@link com.percussion.services.publisher.IPSTemplateExpander} to 
@@ -160,35 +162,37 @@ public class PSContentListItem extends PSFilterItem
       }
       m_location = location;
    }
-   
 
-   /** (non-Javadoc)
-    * @see java.lang.Object#equals(java.lang.Object)
+
+   @Override
+   public boolean equals(Object o) {
+      if (this == o) return true;
+      if (!(o instanceof PSContentListItem)) return false;
+      if (!super.equals(o)) return false;
+      PSContentListItem that = (PSContentListItem) o;
+      return m_deliveryContextId == that.m_deliveryContextId && Objects.equals(m_templateId, that.m_templateId) && Objects.equals(m_location, that.m_location);
+   }
+
+   @Override
+   public int hashCode() {
+      return Objects.hash(super.hashCode(), m_templateId, m_deliveryContextId, m_location);
+   }
+
+   /**
+    * (non-Javadoc)
+    *
+    * @see Object#toString()
     */
    @Override
-   public boolean equals(Object arg0)
-   {
-      return EqualsBuilder.reflectionEquals(this, arg0);
+   public String toString() {
+      final StringBuffer sb = new StringBuffer("PSContentListItem{");
+      sb.append("m_templateId=").append(m_templateId);
+      sb.append(", m_deliveryContextId=").append(m_deliveryContextId);
+      sb.append(", m_location='").append(m_location).append('\'');
+      sb.append('}');
+      return sb.toString();
    }
-   
-   /** (non-Javadoc)
-    * @see java.lang.Object#hashCode()
-    */
-   @Override
-   public int hashCode()
-   {
-      return HashCodeBuilder.reflectionHashCode(this);
-   }
-   
-   /** (non-Javadoc)
-    * @see java.lang.Object#toString()
-    */
-   @Override
-   public String toString()
-   {
-      return ToStringBuilder.reflectionToString(this);
-   }
-   
+
    /**
     * Lookup location utils on demand
     * 

@@ -27,6 +27,8 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.Objects;
 
 /**
  * A cached result page represents a single result from a query app
@@ -77,22 +79,19 @@ public class PSCachedResultPage implements Serializable
       return m_resultData;
    }
 
-   /** (non-Javadoc)
-    * @see java.lang.Object#equals(java.lang.Object)
-    */
    @Override
-   public boolean equals(Object obj)
-   {
-      return EqualsBuilder.reflectionEquals(this, obj);
+   public boolean equals(Object o) {
+      if (this == o) return true;
+      if (!(o instanceof PSCachedResultPage)) return false;
+      PSCachedResultPage that = (PSCachedResultPage) o;
+      return Arrays.equals(m_resultData, that.m_resultData) && Objects.equals(m_mimeType, that.m_mimeType);
    }
 
-   /** (non-Javadoc)
-    * @see java.lang.Object#hashCode()
-    */
    @Override
-   public int hashCode()
-   {
-      return HashCodeBuilder.reflectionHashCode(this);
+   public int hashCode() {
+      int result = Objects.hash(m_mimeType);
+      result = 31 * result + Arrays.hashCode(m_resultData);
+      return result;
    }
 
    /** (non-Javadoc)

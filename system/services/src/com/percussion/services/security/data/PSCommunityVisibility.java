@@ -34,6 +34,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -175,21 +176,25 @@ public class PSCommunityVisibility implements Serializable, IPSCatalogItem
    }
 
    @Override
-   public boolean equals(Object b)
-   {
-      return EqualsBuilder.reflectionEquals(this, b);
+   public boolean equals(Object o) {
+      if (this == o) return true;
+      if (!(o instanceof PSCommunityVisibility)) return false;
+      PSCommunityVisibility that = (PSCommunityVisibility) o;
+      return id == that.id && Objects.equals(getVisibleObjects(), that.getVisibleObjects());
    }
 
    @Override
-   public int hashCode()
-   {
-      return HashCodeBuilder.reflectionHashCode(this);
+   public int hashCode() {
+      return Objects.hash(id, getVisibleObjects());
    }
 
    @Override
-   public String toString()
-   {
-      return ToStringBuilder.reflectionToString(this);
+   public String toString() {
+      final StringBuffer sb = new StringBuffer("PSCommunityVisibility{");
+      sb.append("id=").append(id);
+      sb.append(", visibleObjects=").append(visibleObjects);
+      sb.append('}');
+      return sb.toString();
    }
 }
 

@@ -31,6 +31,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -320,21 +321,30 @@ public class PSLogin implements Serializable
    }
 
    @Override
-   public boolean equals(Object b)
-   {
-      return EqualsBuilder.reflectionEquals(this, b);
+   public boolean equals(Object o) {
+      if (this == o) return true;
+      if (!(o instanceof PSLogin)) return false;
+      PSLogin psLogin = (PSLogin) o;
+      return getSessionTimeout() == psLogin.getSessionTimeout() && Objects.equals(getSessionId(), psLogin.getSessionId()) && Objects.equals(getDefaultCommunity(), psLogin.getDefaultCommunity()) && Objects.equals(getDefaultLocaleCode(), psLogin.getDefaultLocaleCode()) && Objects.equals(getCommunities(), psLogin.getCommunities()) && Objects.equals(getRoles(), psLogin.getRoles()) && Objects.equals(getLocales(), psLogin.getLocales());
    }
 
    @Override
-   public int hashCode()
-   {
-      return HashCodeBuilder.reflectionHashCode(this);
+   public int hashCode() {
+      return Objects.hash(getSessionId(), getSessionTimeout(), getDefaultCommunity(), getDefaultLocaleCode(), getCommunities(), getRoles(), getLocales());
    }
 
    @Override
-   public String toString()
-   {
-      return ToStringBuilder.reflectionToString(this);
+   public String toString() {
+      final StringBuffer sb = new StringBuffer("PSLogin{");
+      sb.append("sessionId='").append(sessionId).append('\'');
+      sb.append(", sessionTimeout=").append(sessionTimeout);
+      sb.append(", defaultCommunity='").append(defaultCommunity).append('\'');
+      sb.append(", defaultLocaleCode='").append(defaultLocaleCode).append('\'');
+      sb.append(", communities=").append(communities);
+      sb.append(", roles=").append(roles);
+      sb.append(", locales=").append(locales);
+      sb.append('}');
+      return sb.toString();
    }
 
    /* (non-Javadoc)

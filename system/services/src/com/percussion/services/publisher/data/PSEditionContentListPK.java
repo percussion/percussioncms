@@ -24,6 +24,7 @@
 package com.percussion.services.publisher.data;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 import javax.persistence.Embeddable;
 
@@ -108,22 +109,27 @@ public class PSEditionContentListPK implements Serializable
    {
       return editionclistid != -1L;
    }
-   
+
    @Override
-   public boolean equals(Object b)
-   {
-      return EqualsBuilder.reflectionEquals(this, b);
+   public boolean equals(Object o) {
+      if (this == o) return true;
+      if (!(o instanceof PSEditionContentListPK)) return false;
+      PSEditionContentListPK that = (PSEditionContentListPK) o;
+      return getEditionclistid() == that.getEditionclistid() && getEditionid() == that.getEditionid() && getContentlistid() == that.getContentlistid();
    }
 
    @Override
-   public int hashCode()
-   {
-      return HashCodeBuilder.reflectionHashCode(this);
+   public int hashCode() {
+      return Objects.hash(getEditionclistid(), getEditionid(), getContentlistid());
    }
 
    @Override
-   public String toString()
-   {
-      return ToStringBuilder.reflectionToString(this);
+   public String toString() {
+      final StringBuffer sb = new StringBuffer("PSEditionContentListPK{");
+      sb.append("editionclistid=").append(editionclistid);
+      sb.append(", editionid=").append(editionid);
+      sb.append(", contentlistid=").append(contentlistid);
+      sb.append('}');
+      return sb.toString();
    }
 }

@@ -20,7 +20,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.AbstractFormController;
 
 import com.percussion.soln.p13n.tracking.IVisitorProfileDataService;
 import com.percussion.soln.p13n.tracking.VisitorProfile;
@@ -57,12 +56,11 @@ public class ProfileEditController {
 
     public ProfileEditController() {
         super();
-        setCommandClass(VisitorProfile.class);
-        setCommandName("profile");
-        setBindOnNewForm(false);
+        //setCommandClass(VisitorProfile.class);
+       // setCommandName("profile");
+        //setBindOnNewForm(false);
     }
 
-    @Override
     protected Object formBackingObject(HttpServletRequest request) throws Exception {
         log.debug("Form backing object");
         if (log.isDebugEnabled())
@@ -140,7 +138,7 @@ public class ProfileEditController {
         return "true".equals(request.getParameter(NEW_PROFILE_REQ_PARAM));
     }
     
-    @Override
+
     protected void onBindAndValidate(HttpServletRequest request,
             Object command, BindException errors) throws Exception {
         VisitorProfile profile = (VisitorProfile) command;
@@ -172,8 +170,7 @@ public class ProfileEditController {
             SegmentWeightUtil.cleanSegmentWeightsOfNull(profile.getSegmentWeights());
         }
     }
-    
-    @Override
+
     protected ModelAndView processFormSubmission(HttpServletRequest request,
             HttpServletResponse response, Object command, BindException bindException)
             throws Exception {
@@ -200,7 +197,6 @@ public class ProfileEditController {
         return mv;
     }
 
-    @Override
     protected ModelAndView showForm(HttpServletRequest request,
             HttpServletResponse response, BindException bindException) throws Exception {
         log.debug("Start Show Form");

@@ -28,6 +28,7 @@ import com.percussion.services.utils.xml.PSXmlSerializationHelper;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.Objects;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -118,21 +119,25 @@ public class PSDependent implements Serializable
    }
 
    @Override
-   public boolean equals(Object b)
-   {
-      return EqualsBuilder.reflectionEquals(this, b);
+   public boolean equals(Object o) {
+      if (this == o) return true;
+      if (!(o instanceof PSDependent)) return false;
+      PSDependent that = (PSDependent) o;
+      return getId() == that.getId() && Objects.equals(getType(), that.getType());
    }
 
    @Override
-   public int hashCode()
-   {
-      return HashCodeBuilder.reflectionHashCode(this);
+   public int hashCode() {
+      return Objects.hash(getId(), getType());
    }
 
    @Override
-   public String toString()
-   {
-      return ToStringBuilder.reflectionToString(this);
+   public String toString() {
+      final StringBuffer sb = new StringBuffer("PSDependent{");
+      sb.append("id=").append(id);
+      sb.append(", type='").append(type).append('\'');
+      sb.append('}');
+      return sb.toString();
    }
 
    /* (non-Javadoc)

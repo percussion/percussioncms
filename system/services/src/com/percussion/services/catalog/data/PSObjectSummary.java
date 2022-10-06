@@ -472,15 +472,21 @@ public class PSObjectSummary implements IPSCatalogSummary
       return Objects.hash(getId(), getType(), getName(), getLabel(), getDescription(), getPermissions(), getLocked());
    }
 
-   /* (non-Javadoc)
-    * @see java.lang.Object#toString()
-    */
    @Override
-   public String toString()
-   {
-      return ToStringBuilder.reflectionToString(this);
+   public String toString() {
+      final StringBuffer sb = new StringBuffer("PSObjectSummary{");
+      sb.append("id=").append(id);
+      sb.append(", type=").append(type);
+      sb.append(", name='").append(name).append('\'');
+      sb.append(", label='").append(label).append('\'');
+      sb.append(", description='").append(description).append('\'');
+      sb.append(", m_arePermissionsValid=").append(m_arePermissionsValid);
+      sb.append(", permissions=").append(permissions);
+      sb.append(", locked=").append(locked);
+      sb.append('}');
+      return sb.toString();
    }
-   
+
    /**
     * Get the lock information.
     * 

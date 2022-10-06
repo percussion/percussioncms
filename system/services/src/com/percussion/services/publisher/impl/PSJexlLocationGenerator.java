@@ -179,8 +179,7 @@ public class PSJexlLocationGenerator implements IPSAssemblyLocation
       catch (Exception e)
       {
          throw new PSExtensionException(
-               IPSExtensionErrors.EXT_PARAM_VALUE_INVALID, e
-                     .getLocalizedMessage());
+               IPSExtensionErrors.EXT_PARAM_VALUE_INVALID, e);
       }
 
       Iterator<Map.Entry<String, Object>> iter = request
@@ -219,7 +218,7 @@ public class PSJexlLocationGenerator implements IPSAssemblyLocation
       {
          throw new PSExtensionException(
                IPSExtensionErrors.EXT_PARAM_VALUE_INVALID, e1
-                     .getLocalizedMessage());
+                     );
       }
 
       jexlEvaluator.bind("$sys.params", parammap);
@@ -235,7 +234,7 @@ public class PSJexlLocationGenerator implements IPSAssemblyLocation
       try
       {
          List<Node> nodes = cms.findItemsByGUID(guids, ms_options);
-         if (nodes.size() > 0)
+         if (!nodes.isEmpty())
          {
             Node thenode = nodes.get(0);
             jexlEvaluator.bind("$sys.item", thenode);
@@ -256,7 +255,7 @@ public class PSJexlLocationGenerator implements IPSAssemblyLocation
             {
                PSServerFolderProcessor proc = PSServerFolderProcessor.getInstance();
                PSLocator folderLocator = new PSLocator(fidstr);
-               String paths[] = proc.getItemPaths(folderLocator);
+               String[] paths = proc.getItemPaths(folderLocator);
                if (paths != null && paths.length > 0)
                {
                   jexlEvaluator.bind("$sys.path", paths[0]);
@@ -281,14 +280,9 @@ public class PSJexlLocationGenerator implements IPSAssemblyLocation
       catch (RepositoryException e)
       {
          throw new PSExtensionException(
-               IPSExtensionErrors.EXT_PARAM_VALUE_INVALID, e
-                     .getLocalizedMessage());
+               IPSExtensionErrors.EXT_PARAM_VALUE_INVALID, e);
       }
-      catch (PSNotFoundException | PSCmsException e)
-      {
-         set_dummy_site_paths = true;
-      }
-      catch (PSSiteManagerException se)
+      catch (PSNotFoundException | PSCmsException | PSSiteManagerException e)
       {
          set_dummy_site_paths = true;
       }
@@ -318,13 +312,13 @@ public class PSJexlLocationGenerator implements IPSAssemblyLocation
             return (String) rval;
          }
       }
-      catch (Exception e)
+      catch (org.apache.commons.jexl3.JexlException e)
       {
          // Output bindings to console to aid in debugging
-         ms_log.error("Problem in evaluating, dumping bindings: \n"
-               + jexlEvaluator.bindingsToString());
-         throw new PSExtensionException(
-               IPSExtensionErrors.JEXL_EVALUATION_FAILED, e, expression);
+         ms_log.error("Problem in evaluating, dumping bindings: \n {}"
+               , jexlEvaluator.bindingsToString());
+         return "/location-jexl-error/" + contextstr + "/" + cidstr +"-" + revstr;
+
       }
    }
 

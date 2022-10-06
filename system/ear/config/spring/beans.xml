@@ -487,11 +487,6 @@ http://www.springframework.org/schema/context/spring-context.xsd">
         <property name="advice" ref="webServiceAuthorizationInterceptor"/>
     </bean>
 
-    <bean id="sys_dataCollectionBean"
-          class="com.percussion.services.utils.orm.PSDataCollectionHelper">
-        <constructor-arg ref="sys_sessionFactory"/>
-    </bean>
-
     <bean id="sys_notificationService"
           class="com.percussion.services.notification.impl.PSNotificationService">
     </bean>

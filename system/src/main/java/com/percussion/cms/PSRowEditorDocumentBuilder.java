@@ -463,7 +463,7 @@ public class PSRowEditorDocumentBuilder extends PSModifyDocumentBuilder
          PSField field = (PSField) fs.get( mapping.getFieldRef());
          if (isBinaryField(field))
             continue;
-         IPSReplacementValue value = (IPSReplacementValue) field.getLocator();
+         IPSReplacementValue value = field.getLocator();
          if (!(value instanceof PSBackEndColumn))
             continue;
          if ( null == tableName )

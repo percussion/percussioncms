@@ -39,19 +39,17 @@ import com.percussion.server.PSInternalRequest;
 import com.percussion.server.PSRequest;
 import com.percussion.server.PSServer;
 import com.percussion.util.IPSHtmlParameters;
-import com.percussion.utils.request.PSRequestInfo;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.Text;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.w3c.dom.Text;
 
 /**
  * This class implements the interfaces <code>IPSAgent</code> and
@@ -268,7 +266,7 @@ public class PSAging extends TimerTask implements IPSAgent
     * @throws PSAgentException If the resource can't be found or any problems
     * occur making the request.
     */
-   private Document getDocument(HashMap params, String resourceName) 
+   private Document getDocument(HashMap<String, Object> params, String resourceName)
       throws PSAgentException
    {
       PSExecutionData data = null;
@@ -278,7 +276,7 @@ public class PSAging extends TimerTask implements IPSAgent
          
          IPSInternalRequestHandler rqh = PSServer.getInternalRequestHandler(
                resourceName);
-         if (null == rqh || !(rqh instanceof IPSInternalResultHandler))
+         if (!(rqh instanceof IPSInternalResultHandler))
          {
             throw new PSAgentException(
                "Aging resource: '" + resourceName + "' not found");
@@ -293,19 +291,10 @@ public class PSAging extends TimerTask implements IPSAgent
          data = rsh.makeInternalRequest(req);
          return rsh.getResultDoc(data);
       }
-      catch (PSInternalRequestCallException irce)
+      catch (PSInternalRequestCallException | PSAuthorizationException | PSAuthenticationFailedException irce)
       {
          throw new PSAgentException(irce.getMessage());
-      }
-      catch (PSAuthorizationException ae)
-      {
-         throw new PSAgentException(ae.getMessage());
-      }
-      catch (PSAuthenticationFailedException afe)
-      {
-         throw new PSAgentException(afe.getMessage());
-      }
-      finally
+      } finally
       {
          PSThreadRequestUtils.restoreOriginalRequest();
          if (null != data)

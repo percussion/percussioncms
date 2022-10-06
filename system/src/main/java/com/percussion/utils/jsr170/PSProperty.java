@@ -209,22 +209,27 @@ public class PSProperty extends PSPropertyWrapper
 
       if (interceptors != null)
       {
-         try
-         {
-            for (IPSPropertyInterceptor intercept : interceptors)
-            {
-               value = intercept.translate(getString());
+            try {
+               value = getString();
+            } catch (RepositoryException e) {
+               throw new RuntimeException(e);
             }
-         }
-         catch (Exception e)
-         {
 
-            log.warn(
-                  "Setting property to null as the interceptor threw an error: {}",
-                    PSExceptionUtils.getMessageForLog(e));
-            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
-            value = null;
+         for (IPSPropertyInterceptor intercept : interceptors)
+            {
+               try {
+                  value = intercept.translate(value);
+               } catch (Exception e)
+               {
+
+                     log.warn(
+                             "Skipping {} processing as the interceptor threw an error: {}",
+                             intercept.getClass().getName(),
+                             PSExceptionUtils.getMessageForLog(e));
+
+               }
          }
+
       }
    }
 

@@ -36,6 +36,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * The PSAttribute class is used to store attribute values.
@@ -193,27 +194,19 @@ public class PSAttribute extends PSDatabaseComponentCollection
          throw new IllegalArgumentException("Attribute name must be specified.");
       m_name = name;
    }
-   
-   /**
-    * Test if this attribute is equal to the supplied attribute. Two attributes 
-    * are equal if their names, and all values are equal. The order of the
-    * values is not important.
-    * 
-    * @param obj the object to test against, may be <code>null</code>. 
-    */
-   public boolean equals(Object obj)
-   {
-      return EqualsBuilder.reflectionEquals(this, obj);
+
+   @Override
+   public boolean equals(Object o) {
+      if (this == o) return true;
+      if (!(o instanceof PSAttribute)) return false;
+      if (!super.equals(o)) return false;
+      PSAttribute that = (PSAttribute) o;
+      return Objects.equals(m_name, that.m_name);
    }
 
-   /*
-    *  (non-Javadoc)
-    * @see java.lang.Object#hashCode()
-    */
    @Override
-   public int hashCode()
-   {
-      return HashCodeBuilder.reflectionHashCode(this);
+   public int hashCode() {
+      return Objects.hash(super.hashCode(), m_name);
    }
 
    /**

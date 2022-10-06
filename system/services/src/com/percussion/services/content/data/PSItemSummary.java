@@ -29,6 +29,7 @@ import com.percussion.utils.guid.IPSGuid;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Objects;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -293,23 +294,33 @@ public class PSItemSummary
    }
 
    @Override
-   public boolean equals(Object b)
-   {
-      return EqualsBuilder.reflectionEquals(this, b);
+   public boolean equals(Object o) {
+      if (this == o) return true;
+      if (!(o instanceof PSItemSummary)) return false;
+      PSItemSummary that = (PSItemSummary) o;
+      return contentId == that.contentId && revision == that.revision && isRevisionLock() == that.isRevisionLock() && getContentTypeId() == that.getContentTypeId() && Objects.equals(getName(), that.getName()) && Objects.equals(getContentTypeName(), that.getContentTypeName()) && getObjectType() == that.getObjectType() && Objects.equals(getOperations(), that.getOperations());
    }
 
    @Override
-   public int hashCode()
-   {
-      return HashCodeBuilder.reflectionHashCode(this);
+   public int hashCode() {
+      return Objects.hash(contentId, revision, isRevisionLock(), getName(), getContentTypeId(), getContentTypeName(), getObjectType(), getOperations());
    }
 
    @Override
-   public String toString()
-   {
-      return ToStringBuilder.reflectionToString(this);
+   public String toString() {
+      final StringBuffer sb = new StringBuffer("PSItemSummary{");
+      sb.append("contentId=").append(contentId);
+      sb.append(", revision=").append(revision);
+      sb.append(", revisionLock=").append(revisionLock);
+      sb.append(", name='").append(name).append('\'');
+      sb.append(", contentTypeId=").append(contentTypeId);
+      sb.append(", contentTypeName='").append(contentTypeName).append('\'');
+      sb.append(", objectType=").append(objectType);
+      sb.append(", operations=").append(operations);
+      sb.append('}');
+      return sb.toString();
    }
-   
+
    /**
     * The enumeration of all supported object types.
     */

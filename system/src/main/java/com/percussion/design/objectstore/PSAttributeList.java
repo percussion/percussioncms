@@ -195,12 +195,14 @@ public class PSAttributeList extends PSDatabaseComponentCollection
    }   
    
    /**
+    *
     * Test if this attribute list is equal to the supplied attribute list. Two 
     * attribute lists are equal if list 1 has the same entries as list 2. The
     * order is not important.
     * 
     * @param obj the object to test against, may be <code>null</code>. 
     */
+   @Override
    public boolean equals(Object obj)
    {
       if (obj instanceof PSAttributeList)
@@ -225,15 +227,6 @@ public class PSAttributeList extends PSDatabaseComponentCollection
       return false;
    }
 
-   /*
-    *  (non-Javadoc)
-    * @see java.lang.Object#hashCode()
-    */
-   @Override
-   public int hashCode()
-   {
-      return HashCodeBuilder.reflectionHashCode(this);
-   }
 
    /** IPSComponent interface implementation */
 

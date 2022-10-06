@@ -239,14 +239,15 @@ public class PSNamespaceCleanup implements IPSPropertyInterceptor
          }
          try
          {
-            return PSSaxHelper.parseWithXMLWriter((String) originalValue,
+            if(SecureStringUtils.isXML((String)originalValue))
+               return PSSaxHelper.parseWithXMLWriter((String) originalValue,
                   ContentHandler.class, m_namespaces);
+            else
+               return originalValue;
          }
          catch (Exception e)
          {
-            PSTrackAssemblyError
-               .addProblem("Problem processing namespace cleanup", e);
-            throw new RuntimeException(e);
+            return originalValue;
          }
       }
       else

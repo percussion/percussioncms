@@ -28,6 +28,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
 import java.text.MessageFormat;
+import java.util.Objects;
 
 /**
  * Provides specific details about a connection's properties
@@ -137,17 +138,18 @@ public class PSConnectionDetail
    }
 
    @Override
-   public boolean equals(Object obj)
-   {
-      return EqualsBuilder.reflectionEquals(this, obj);
+   public boolean equals(Object o) {
+      if (this == o) return true;
+      if (!(o instanceof PSConnectionDetail)) return false;
+      PSConnectionDetail that = (PSConnectionDetail) o;
+      return Objects.equals(m_dsName, that.m_dsName) && Objects.equals(m_driverName, that.m_driverName) && Objects.equals(m_database, that.m_database) && Objects.equals(m_origin, that.m_origin) && Objects.equals(m_jdbcUrl, that.m_jdbcUrl);
    }
 
    @Override
-   public int hashCode()
-   {
-      return HashCodeBuilder.reflectionHashCode(this);
+   public int hashCode() {
+      return Objects.hash(m_dsName, m_driverName, m_database, m_origin, m_jdbcUrl);
    }
-   
+
    /**
     * The datasource name supplied during construction, immutable after that.
     */

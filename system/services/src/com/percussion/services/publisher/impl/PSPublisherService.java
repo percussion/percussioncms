@@ -157,6 +157,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.Set;
 
@@ -278,15 +279,16 @@ public class PSPublisherService
       }
 
       @Override
-      public boolean equals(Object b)
-      {
-         return EqualsBuilder.reflectionEquals(this, b);
+      public boolean equals(Object o) {
+         if (this == o) return true;
+         if (!(o instanceof PubItem)) return false;
+         PubItem pubItem = (PubItem) o;
+         return Objects.equals(mi_contentId, pubItem.mi_contentId) && Objects.equals(mi_templateId, pubItem.mi_templateId);
       }
 
       @Override
-      public int hashCode()
-      {
-         return HashCodeBuilder.reflectionHashCode(this);
+      public int hashCode() {
+         return Objects.hash(mi_contentId, mi_templateId);
       }
 
       @Override

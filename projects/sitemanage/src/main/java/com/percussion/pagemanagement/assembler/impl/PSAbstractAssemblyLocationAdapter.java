@@ -54,6 +54,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import static com.percussion.share.rx.PSLegacyExtensionUtils.addParameters;
 import static org.apache.commons.lang.StringUtils.isNotBlank;
@@ -376,23 +377,33 @@ public abstract class PSAbstractAssemblyLocationAdapter implements IPSAssemblyLo
         }
 
         @Override
-        public boolean equals(Object o)
-        {
-            return EqualsBuilder.reflectionEquals(this, o);
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (!(o instanceof PSAssemblyLocationRequest)) return false;
+            PSAssemblyLocationRequest that = (PSAssemblyLocationRequest) o;
+            return Objects.equals(getItemId(), that.getItemId()) && Objects.equals(getTemplateId(), that.getTemplateId()) && Objects.equals(getSiteId(), that.getSiteId()) && Objects.equals(getFolderId(), that.getFolderId()) && Objects.equals(getContext(), that.getContext()) && Objects.equals(getAssemblyContext(), that.getAssemblyContext()) && Objects.equals(getDeliveryContext(), that.getDeliveryContext()) && Objects.equals(getItemFilter(), that.getItemFilter()) && Objects.equals(getPage(), that.getPage()) && Objects.equals(getParameters(), that.getParameters());
         }
 
         @Override
-        public int hashCode()
-        {
-            //Do not use the id to generate a hash code.
-            return HashCodeBuilder.reflectionHashCode(this, new String[]
-            {"id"});
+        public int hashCode() {
+            return Objects.hash(getItemId(), getTemplateId(), getSiteId(), getFolderId(), getContext(), getAssemblyContext(), getDeliveryContext(), getItemFilter(), getPage(), getParameters());
         }
 
         @Override
-        public String toString()
-        {
-            return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
+        public String toString() {
+            final StringBuffer sb = new StringBuffer("PSAssemblyLocationRequest{");
+            sb.append("itemId=").append(itemId);
+            sb.append(", templateId=").append(templateId);
+            sb.append(", siteId=").append(siteId);
+            sb.append(", folderId=").append(folderId);
+            sb.append(", context=").append(context);
+            sb.append(", assemblyContext=").append(assemblyContext);
+            sb.append(", deliveryContext=").append(deliveryContext);
+            sb.append(", itemFilter='").append(itemFilter).append('\'');
+            sb.append(", page=").append(page);
+            sb.append(", parameters=").append(parameters);
+            sb.append('}');
+            return sb.toString();
         }
 
         @Override

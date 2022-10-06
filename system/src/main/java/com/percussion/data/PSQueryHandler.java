@@ -597,8 +597,6 @@ public class PSQueryHandler extends PSDataHandler implements IPSInternalResultHa
 
       if (m_converter instanceof PSResultSetMimeConverter)
       {
-
-         PSResultSetMimeConverter c = (PSResultSetMimeConverter) m_converter;
          try
          {
             ((PSResultSetMimeConverter) m_converter).processMimeContent(

@@ -43,39 +43,18 @@ public class PSAbstractDataObject implements Serializable
 {
 
     private static final long serialVersionUID = 1L;
-    
-    @Override
-    public boolean equals(Object o)
-    {
-        return EqualsBuilder.reflectionEquals(this, o);
-    }
-
-
 
     @Override
-    protected Object clone()
-    {
+    protected Object clone() throws CloneNotSupportedException {
         try
         {
             return BeanUtils.cloneBean(this);
         }
         catch (Exception e)
         {
-            throw new RuntimeException("Cannot clone", e);
+            throw new CloneNotSupportedException();
         }
     }
 
-
-    @Override
-    public int hashCode() {
-        //Do not use the id to generate a hash code.
-        return HashCodeBuilder.reflectionHashCode(this);
-    }
-
-
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
-    }
     
 }

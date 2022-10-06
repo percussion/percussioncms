@@ -205,7 +205,7 @@ public class PSGeneratePubLocation extends PSSimpleJavaUdfExtension
       Number variantid = null;
       Number revision = null;
       String urlString = "";
-      Map paramsBackup = request.getParameters();
+      Map<String, Object> paramsBackup = request.getParameters();
       PSExtensionParams eparams = new PSExtensionParams(params, new String[]
       {IPSHtmlParameters.SYS_VARIANTID, IPSHtmlParameters.SYS_CONTENTID,
             IPSHtmlParameters.SYS_REVISION, IPSHtmlParameters.SYS_CONTEXT,
@@ -345,14 +345,15 @@ public class PSGeneratePubLocation extends PSSimpleJavaUdfExtension
       }
       catch (Exception e)
       {
-         log.error("Problem while generating a publishing "
-               + "location for template " + variantid + " and contentid "
-               + contentid, PSExceptionHelper.findRootCause(e, true));
+         log.error("Problem while generating a publishing location for template {} and contentid {}. Error: {}",
+                 variantid,
+                 contentid,
+                 PSExceptionUtils.getMessageForLog(e));
       }
       finally
       {
          // restore the original HTML parameters
-         request.setParameters((HashMap) paramsBackup);
+         request.setParameters(paramsBackup);
          sws.stop();
       }
 

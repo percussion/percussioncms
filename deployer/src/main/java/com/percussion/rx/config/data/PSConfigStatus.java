@@ -247,19 +247,20 @@ public class PSConfigStatus implements Serializable
             defaultConfig).append(configDef).toHashCode();
    }
 
-   /*
-    * (non-Javadoc)
-    * 
-    * @see java.lang.Object#toString()
-    */
    @Override
-   public String toString()
-   {
-      return ToStringBuilder.reflectionToString(this,
-            ToStringStyle.MULTI_LINE_STYLE).toString();
+   public String toString() {
+      final StringBuffer sb = new StringBuffer("PSConfigStatus{");
+      sb.append("statusId=").append(statusId);
+      sb.append(", configName='").append(configName).append('\'');
+      sb.append(", defaultConfig='").append(defaultConfig).append('\'');
+      sb.append(", localConfig='").append(localConfig).append('\'');
+      sb.append(", configDef='").append(configDef).append('\'');
+      sb.append(", dateApplied=").append(dateApplied);
+      sb.append(", status=").append(status);
+      sb.append('}');
+      return sb.toString();
    }
-
-   // ------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
    /**
     * Unique Identifier for this object

@@ -243,9 +243,17 @@ public abstract class PSTestDataCleaner<ID>
     }
 
     @Override
-    public String toString()
-    {
-        return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("PSTestDataCleaner{");
+        sb.append("dataIds=").append(dataIds);
+        sb.append(", failedIds=").append(failedIds);
+        sb.append(", failOnErrors=").append(failOnErrors);
+        sb.append(", failed=").append(failed);
+        sb.append(", removeDuplicates=").append(removeDuplicates);
+        sb.append(", finished=").append(finished);
+        sb.append(", log=").append(log);
+        sb.append('}');
+        return sb.toString();
     }
 
     /**

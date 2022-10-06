@@ -240,17 +240,19 @@ public class PSPkgElement implements Serializable
          .toHashCode();
    }
 
-   /* (non-Javadoc)
-    * @see java.lang.Object#toString()
-    */
    @Override
-   public String toString()
-   {
-      return ToStringBuilder.reflectionToString(this,
-            ToStringStyle.MULTI_LINE_STYLE).toString();
+   public String toString() {
+      final StringBuffer sb = new StringBuffer("PSPkgElement{");
+      sb.append("guid=").append(guid);
+      sb.append(", packageGuid=").append(packageGuid);
+      sb.append(", objectGuid='").append(objectGuid).append('\'');
+      sb.append(", objectUuid=").append(objectUuid);
+      sb.append(", objectType=").append(objectType);
+      sb.append(", version=").append(version);
+      sb.append('}');
+      return sb.toString();
    }
-   
-//------------------------------------------------------------------------------  
+//------------------------------------------------------------------------------
   /**
    * GUID for this Package Element (PSPkgElement) object
    */

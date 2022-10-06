@@ -371,15 +371,21 @@ public class PSEdition implements IPSCatalogItem, IPSEdition, Cloneable
       return (int)editionid;
    }
 
-   /* (non-Javadoc)
-    * @see com.percussion.services.publisher.data.IPSEdition#toString()
-    */
    @Override
-   public String toString()
-   {
-      return ToStringBuilder.reflectionToString(this);
+   public String toString() {
+      final StringBuffer sb = new StringBuffer("PSEdition{");
+      sb.append("editionid=").append(editionid);
+      sb.append(", version=").append(version);
+      sb.append(", displaytitle='").append(displaytitle).append('\'');
+      sb.append(", editioncomment='").append(editioncomment).append('\'');
+      sb.append(", editiontype='").append(editiontype).append('\'');
+      sb.append(", destsite=").append(destsite);
+      sb.append(", priority=").append(priority);
+      sb.append(", pubserver=").append(pubserver);
+      sb.append('}');
+      return sb.toString();
    }
-   
+
    /*
     * (non-Javadoc)
     * @see java.lang.Object#clone()

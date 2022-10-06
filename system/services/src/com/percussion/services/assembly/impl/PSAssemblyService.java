@@ -167,7 +167,7 @@ import java.util.stream.Collectors;
  * @author dougrand
  */
 @PSBaseBean("sys_assemblyService")
-@Transactional
+@Transactional(noRollbackFor = PSAssemblyException.class)
 public class PSAssemblyService implements IPSAssemblyService
 {
    @PersistenceContext
@@ -1239,21 +1239,14 @@ public class PSAssemblyService implements IPSAssemblyService
          List<IPSGuid> guids = new ArrayList<>();
          guids.add(work.getId());
 
-         try
-         {
             String siteid = work.getParameterValue(IPSHtmlParameters.SYS_SITEID, "");
-            Integer stid = !StringUtils.isBlank(siteid) && StringUtils.isNumeric(siteid) ? new Integer(siteid) : null;
             PSContentMgrConfig config = new PSContentMgrConfig();
             config.addOption(PSContentMgrOption.LAZY_LOAD_CHILDREN);
             config.addOption(PSContentMgrOption.LOAD_MINIMAL);
-            config.setBodyAccess(new PSInlineLinkProcessor(work.getFilter(), work));
-            config.setNamespaceCleanup(new PSNamespaceCleanup(stid));
+            config.setBodyAccess( PSInlineLinkProcessor2.getInstance());
+            config.setNamespaceCleanup( PSNamespaceCleanup2.getInstance());
             items = contentmgr.findItemsByGUID(guids, config);
-         }
-         catch (PSFilterException | PSNotFoundException e)
-         {
-            throw new PSAssemblyException(IPSAssemblyErrors.PARAMS_AUTHTYPE_OR_FILTER, e);
-         }
+
 
          if (items.isEmpty())
             throw new ItemNotFoundException("Can't find item for guid: " + work.getId());
@@ -1623,12 +1616,13 @@ public class PSAssemblyService implements IPSAssemblyService
 
       List<IPSAssemblyTemplate> templateTypes = findTemplatesByContentType(contenttype);
 
-      if(templateTypes.contains(template)) {
-         return template;
+      for(IPSAssemblyTemplate t : templateTypes){
+         if(t.getName().equalsIgnoreCase(template.getName())){
+            return template;
+         }
       }
-      else {
-         throw new PSAssemblyException(IPSAssemblyErrors.TEMPLATE_BY_ID_MISSING, name, contenttype.longValue());
-      }
+
+      throw new PSAssemblyException(IPSAssemblyErrors.TEMPLATE_BY_ID_MISSING, name, contenttype.longValue());
    }
 
    @Transactional

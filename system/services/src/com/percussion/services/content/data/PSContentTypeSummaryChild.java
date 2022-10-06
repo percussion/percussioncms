@@ -28,6 +28,7 @@ import com.percussion.services.utils.xml.PSXmlSerializationHelper;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -131,21 +132,25 @@ public class PSContentTypeSummaryChild
    }
 
    @Override
-   public boolean equals(Object b)
-   {
-      return EqualsBuilder.reflectionEquals(this, b);
+   public boolean equals(Object o) {
+      if (this == o) return true;
+      if (!(o instanceof PSContentTypeSummaryChild)) return false;
+      PSContentTypeSummaryChild that = (PSContentTypeSummaryChild) o;
+      return Objects.equals(getName(), that.getName()) && Objects.equals(getChildFields(), that.getChildFields());
    }
 
    @Override
-   public int hashCode()
-   {
-      return HashCodeBuilder.reflectionHashCode(this);
+   public int hashCode() {
+      return Objects.hash(getName(), getChildFields());
    }
 
    @Override
-   public String toString()
-   {
-      return ToStringBuilder.reflectionToString(this);
+   public String toString() {
+      final StringBuffer sb = new StringBuffer("PSContentTypeSummaryChild{");
+      sb.append("name='").append(name).append('\'');
+      sb.append(", childFields=").append(childFields);
+      sb.append('}');
+      return sb.toString();
    }
 
    /* (non-Javadoc)

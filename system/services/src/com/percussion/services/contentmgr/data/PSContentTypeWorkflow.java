@@ -40,6 +40,8 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import java.util.Objects;
+
 /**
  * Describes a single relationship between a content type and a workflow.
  * 
@@ -146,38 +148,33 @@ public class PSContentTypeWorkflow
       m_workflowid = new Integer(guid.longValue()+"");
    }
 
-   /** (non-Javadoc)
-    * @see java.lang.Object#equals(java.lang.Object)
-    */
    @Override
-   public boolean equals(Object arg0)
-   {
-      EqualsBuilder builder = new EqualsBuilder();
-      PSContentTypeWorkflow b = (PSContentTypeWorkflow) arg0;
-      
-      return builder.append(getContentTypeId(), b.getContentTypeId())
-         .append(getWorkflowId(), b.getWorkflowId())
-         .isEquals();
+   public boolean equals(Object o) {
+      if (this == o) return true;
+      if (!(o instanceof PSContentTypeWorkflow)) return false;
+      PSContentTypeWorkflow that = (PSContentTypeWorkflow) o;
+      return Objects.equals(m_ctWfId, that.m_ctWfId) && Objects.equals(m_contenttypeid, that.m_contenttypeid) && Objects.equals(m_version, that.m_version) && Objects.equals(m_workflowid, that.m_workflowid);
    }
 
-   /** (non-Javadoc)
-    * @see java.lang.Object#hashCode()
-    */
    @Override
-   public int hashCode()
-   {
-      return HashCodeBuilder.reflectionHashCode(this);
+   public int hashCode() {
+      return Objects.hash(m_ctWfId, m_contenttypeid, m_version, m_workflowid);
    }
 
-   /** (non-Javadoc)
-    * @see java.lang.Object#toString()
+   /**
+    * (non-Javadoc)
+    *
+    * @see Object#toString()
     */
    @Override
-   public String toString()
-   {
-      return ToStringBuilder.reflectionToString(this);
-   }  
-   
-   
+   public String toString() {
+      final StringBuffer sb = new StringBuffer("PSContentTypeWorkflow{");
+      sb.append("m_ctWfId=").append(m_ctWfId);
+      sb.append(", m_contenttypeid=").append(m_contenttypeid);
+      sb.append(", m_version=").append(m_version);
+      sb.append(", m_workflowid=").append(m_workflowid);
+      sb.append('}');
+      return sb.toString();
+   }
 }
 

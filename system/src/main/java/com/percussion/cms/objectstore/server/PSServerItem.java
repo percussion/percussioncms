@@ -602,6 +602,8 @@ public class PSServerItem extends PSCoreItem implements IPSPersister
 
       // get data from user session:
       extractLoginLocale(request);
+
+
    }
 
    /**

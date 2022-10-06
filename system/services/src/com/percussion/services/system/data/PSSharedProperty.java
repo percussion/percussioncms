@@ -31,6 +31,7 @@ import com.percussion.utils.guid.IPSGuid;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.Objects;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -185,21 +186,27 @@ public class PSSharedProperty implements Serializable, IPSCatalogItem, Comparabl
    }
 
    @Override
-   public boolean equals(Object b)
-   {
-      return EqualsBuilder.reflectionEquals(this, b);
+   public boolean equals(Object o) {
+      if (this == o) return true;
+      if (!(o instanceof PSSharedProperty)) return false;
+      PSSharedProperty that = (PSSharedProperty) o;
+      return id == that.id && Objects.equals(getVersion(), that.getVersion()) && Objects.equals(getName(), that.getName()) && Objects.equals(getValue(), that.getValue());
    }
 
    @Override
-   public int hashCode()
-   {
-      return HashCodeBuilder.reflectionHashCode(this);
+   public int hashCode() {
+      return Objects.hash(id, getVersion(), getName(), getValue());
    }
 
    @Override
-   public String toString()
-   {
-      return ToStringBuilder.reflectionToString(this);
+   public String toString() {
+      final StringBuffer sb = new StringBuffer("PSSharedProperty{");
+      sb.append("id=").append(id);
+      sb.append(", version=").append(version);
+      sb.append(", name='").append(name).append('\'');
+      sb.append(", value='").append(value).append('\'');
+      sb.append('}');
+      return sb.toString();
    }
 
    /* (non-Javadoc)

@@ -28,6 +28,7 @@ import java.security.Principal;
 import java.security.acl.Group;
 import java.util.Enumeration;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 import org.apache.commons.collections.iterators.IteratorEnumeration;
@@ -133,21 +134,16 @@ public class PSGroup implements Group, Serializable
       return mi_name;
    }
 
-   /*
-    * (non-Javadoc)
-    * 
-    * @see java.lang.Object#equals(java.lang.Object)
-    */
-   public boolean equals(Object obj)
-   {
-      return EqualsBuilder.reflectionEquals(this, obj); 
+   @Override
+   public boolean equals(Object o) {
+      if (this == o) return true;
+      if (!(o instanceof PSGroup)) return false;
+      PSGroup psGroup = (PSGroup) o;
+      return Objects.equals(mi_name, psGroup.mi_name) && Objects.equals(mi_principals, psGroup.mi_principals);
    }
-   
-   /* (non-Javadoc)
-    * @see java.lang.Object#hashCode()
-    */
-   public int hashCode()
-   {
-      return HashCodeBuilder.reflectionHashCode(this);
+
+   @Override
+   public int hashCode() {
+      return Objects.hash(mi_name, mi_principals);
    }
 }

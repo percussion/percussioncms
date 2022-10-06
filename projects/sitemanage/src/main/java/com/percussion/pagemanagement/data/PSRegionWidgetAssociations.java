@@ -39,6 +39,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import static org.apache.commons.lang.Validate.notEmpty;
@@ -125,30 +126,29 @@ public abstract class PSRegionWidgetAssociations implements Serializable {
         }
         return null;
     }
-    
-    
-    
-    
+
+
     @Override
-    public boolean equals(Object o)
-    {
-        return EqualsBuilder.reflectionEquals(this, o);
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof PSRegionWidgetAssociations)) return false;
+        PSRegionWidgetAssociations that = (PSRegionWidgetAssociations) o;
+        return Objects.equals(getRegionWidgetAssociations(), that.getRegionWidgetAssociations());
     }
-    
+
     @Override
-    public int hashCode()
-    {
-        //Do not use the id to generate a hash code.
-        return HashCodeBuilder.reflectionHashCode(this, new String[]
-        {"id"});
+    public int hashCode() {
+        return Objects.hash(getRegionWidgetAssociations());
     }
-    
+
     @Override
-    public String toString()
-    {
-        return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("PSRegionWidgetAssociations{");
+        sb.append("regionWidgetAssociations=").append(regionWidgetAssociations);
+        sb.append('}');
+        return sb.toString();
     }
-    
+
     @Override
     public PSRegionWidgetAssociations clone()
     {

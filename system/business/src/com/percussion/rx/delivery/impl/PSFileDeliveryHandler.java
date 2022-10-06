@@ -75,7 +75,7 @@ public class PSFileDeliveryHandler extends PSBaseDeliveryHandler
     * Logger.
     */
    @SuppressWarnings("hiding")
-    private static final Logger ms_log = LogManager.getLogger(PSFileDeliveryHandler.class);
+    private static final Logger ms_log = LogManager.getLogger(IPSConstants.PUBLISHING_LOG);
 
    /**
     * Remove the single item specified by location. This method can be
@@ -231,7 +231,11 @@ public class PSFileDeliveryHandler extends PSBaseDeliveryHandler
    @Override
    public boolean checkConnection(IPSPubServer pubServer, IPSSite site)
    {
-      return super.checkConnection(pubServer, site);
+      if(pubServer!=null) {
+         return super.checkConnection(pubServer, site);
+      }else{
+         return true;
+      }
    }
 
    /**

@@ -37,6 +37,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -294,23 +295,32 @@ public class PSNotification implements Serializable, IPSCatalogItem
       setTransitionId(src.getTransitionId());
       setWorkflowId(src.getWorkflowId());
    }
-   
+
    @Override
-   public boolean equals(Object b)
-   {
-      return EqualsBuilder.reflectionEquals(this, b);
+   public boolean equals(Object o) {
+      if (this == o) return true;
+      if (!(o instanceof PSNotification)) return false;
+      PSNotification that = (PSNotification) o;
+      return transNotificationId == that.transNotificationId && getNotificationId() == that.getNotificationId() && getTransitionId() == that.getTransitionId() && getWorkflowId() == that.getWorkflowId() && getStateRoleRecipientType() == that.getStateRoleRecipientType() && Objects.equals(getRecipients(), that.getRecipients()) && Objects.equals(ccRecipients, that.ccRecipients);
    }
 
    @Override
-   public int hashCode()
-   {
-      return HashCodeBuilder.reflectionHashCode(this);
+   public int hashCode() {
+      return Objects.hash(transNotificationId, getNotificationId(), getTransitionId(), getWorkflowId(), getStateRoleRecipientType(), getRecipients(), ccRecipients);
    }
 
    @Override
-   public String toString()
-   {
-      return ToStringBuilder.reflectionToString(this);
+   public String toString() {
+      final StringBuffer sb = new StringBuffer("PSNotification{");
+      sb.append("transNotificationId=").append(transNotificationId);
+      sb.append(", notificationId=").append(notificationId);
+      sb.append(", transitionId=").append(transitionId);
+      sb.append(", workflowId=").append(workflowId);
+      sb.append(", stateRoleRecipientType=").append(stateRoleRecipientType);
+      sb.append(", recipients='").append(recipients).append('\'');
+      sb.append(", ccRecipients='").append(ccRecipients).append('\'');
+      sb.append('}');
+      return sb.toString();
    }
 
    /* (non-Javadoc)

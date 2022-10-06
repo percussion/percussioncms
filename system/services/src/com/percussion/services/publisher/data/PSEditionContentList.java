@@ -38,6 +38,7 @@ import com.percussion.xml.PSXmlDocumentBuilder;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
+import java.util.Objects;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -223,23 +224,18 @@ IPSEditionContentList, Cloneable
    {
       this.sequence = seq;
    }
-   
-   /* (non-Javadoc)
-    * @see com.percussion.services.publisher.data.IPSEditionContentList#equals(java.lang.Object)
-    */
+
    @Override
-   public boolean equals(Object b)
-   {
-      return EqualsBuilder.reflectionEquals(this, b);
+   public boolean equals(Object o) {
+      if (this == o) return true;
+      if (!(o instanceof PSEditionContentList)) return false;
+      PSEditionContentList that = (PSEditionContentList) o;
+      return context == that.context && Objects.equals(pk, that.pk) && Objects.equals(getSequence(), that.getSequence()) && Objects.equals(getAuthtype(), that.getAuthtype()) && Objects.equals(assemblyContext, that.assemblyContext);
    }
 
-   /* (non-Javadoc)
-    * @see com.percussion.services.publisher.data.IPSEditionContentList#hashCode()
-    */
    @Override
-   public int hashCode()
-   {
-      return HashCodeBuilder.reflectionHashCode(this);
+   public int hashCode() {
+      return Objects.hash(pk, getSequence(), getAuthtype(), context, assemblyContext);
    }
 
    /**
@@ -253,16 +249,19 @@ IPSEditionContentList, Cloneable
       setDeliveryContextId(other.getDeliveryContextId());
       setSequence(other.getSequence());
    }
-   
-   /* (non-Javadoc)
-    * @see com.percussion.services.publisher.data.IPSEditionContentList#toString()
-    */
+
    @Override
-   public String toString()
-   {
-      return ToStringBuilder.reflectionToString(this);
+   public String toString() {
+      final StringBuffer sb = new StringBuffer("PSEditionContentList{");
+      sb.append("pk=").append(pk);
+      sb.append(", sequence=").append(sequence);
+      sb.append(", authtype=").append(authtype);
+      sb.append(", context=").append(context);
+      sb.append(", assemblyContext=").append(assemblyContext);
+      sb.append('}');
+      return sb.toString();
    }
-   
+
    /**
     * Restores this object's state from its XML representation (string).  See
     * {@link #toXML()} for format of XML.  See

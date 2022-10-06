@@ -1,4 +1,4 @@
-/*
+   /*
  *     Percussion CMS
  *     Copyright (C) 1999-2020 Percussion Software, Inc.
  *
@@ -68,7 +68,7 @@ public class PSSaxCopier extends DefaultHandler2
    /**
     * A map of elements to rename in copying
     */
-   protected Map<String,String> m_elementRenames = new HashMap<String,String>();
+   protected Map<String,String> m_elementRenames = new HashMap<>();
    
    /**
     * A filler string that is used to fill the empty elements. So that they
@@ -106,6 +106,7 @@ public class PSSaxCopier extends DefaultHandler2
    public PSSaxCopier(XMLStreamWriter writer, Map<String, String> renames,
          boolean addFillerTextToEmptyElements)
    {
+
       if (writer == null)
       {
          throw new IllegalArgumentException("writer may not be null");

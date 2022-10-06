@@ -30,6 +30,7 @@ import com.percussion.services.guidmgr.data.PSGuid;
 import com.percussion.utils.guid.IPSGuid;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -314,20 +315,29 @@ public class PSObjectLock implements Serializable
    }
 
    @Override
-   public boolean equals(Object b)
-   {
-      return EqualsBuilder.reflectionEquals(this, b);
+   public boolean equals(Object o) {
+      if (this == o) return true;
+      if (!(o instanceof PSObjectLock)) return false;
+      PSObjectLock that = (PSObjectLock) o;
+      return getId() == that.getId() && getObjectId() == that.getObjectId() && getLockTime() == that.getLockTime() && getExpirationTime() == that.getExpirationTime() && Objects.equals(getLockSession(), that.getLockSession()) && Objects.equals(getLocker(), that.getLocker()) && Objects.equals(getLockedVersion(), that.getLockedVersion());
    }
 
    @Override
-   public int hashCode()
-   {
-      return HashCodeBuilder.reflectionHashCode(this);
+   public int hashCode() {
+      return Objects.hash(getId(), getObjectId(), getLockTime(), getExpirationTime(), getLockSession(), getLocker(), getLockedVersion());
    }
 
    @Override
-   public String toString()
-   {
-      return ToStringBuilder.reflectionToString(this);
+   public String toString() {
+      final StringBuffer sb = new StringBuffer("PSObjectLock{");
+      sb.append("id=").append(id);
+      sb.append(", objectId=").append(objectId);
+      sb.append(", lockTime=").append(lockTime);
+      sb.append(", expirationTime=").append(expirationTime);
+      sb.append(", lockSession='").append(lockSession).append('\'');
+      sb.append(", locker='").append(locker).append('\'');
+      sb.append(", lockedVersion=").append(lockedVersion);
+      sb.append('}');
+      return sb.toString();
    }
 }

@@ -68,7 +68,7 @@ public class PSXmlEncoder implements Encoder
                case '\'':
                   rval.append("&apos;");
                   break;
-               default:
+               default:  //TODO: Will this break unicode?
                   if (ch > 127) {
                      rval.append("&#");
                      rval.append(Integer.toString(ch));

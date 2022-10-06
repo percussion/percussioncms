@@ -537,7 +537,7 @@ public class PSContentMgr  implements IPSContentMgr
    @Transactional(propagation = Propagation.NOT_SUPPORTED)
    public QueryResult executeQuery(Query query, int maxresults,
          Map<String, ? extends Object> params, String locale)
-         throws InvalidQueryException, RepositoryException
+         throws RepositoryException
    {
       return m_repository.executeInternalQuery(query, maxresults, params,
             locale);

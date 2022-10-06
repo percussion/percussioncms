@@ -24,6 +24,7 @@
 package com.percussion.services.content.data;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -117,21 +118,25 @@ public class PSAutoTranslationPK implements Serializable
    }
 
    @Override
-   public boolean equals(Object obj)
-   {
-      return EqualsBuilder.reflectionEquals(this, obj);
+   public boolean equals(Object o) {
+      if (this == o) return true;
+      if (!(o instanceof PSAutoTranslationPK)) return false;
+      PSAutoTranslationPK that = (PSAutoTranslationPK) o;
+      return getContentTypeId() == that.getContentTypeId() && Objects.equals(getLocale(), that.getLocale());
    }
 
    @Override
-   public int hashCode()
-   {
-      return HashCodeBuilder.reflectionHashCode(this);
+   public int hashCode() {
+      return Objects.hash(getContentTypeId(), getLocale());
    }
 
    @Override
-   public String toString()
-   {
-      return ToStringBuilder.reflectionToString(this);
+   public String toString() {
+      final StringBuffer sb = new StringBuffer("PSAutoTranslationPK{");
+      sb.append("contentTypeId=").append(contentTypeId);
+      sb.append(", locale='").append(locale).append('\'');
+      sb.append('}');
+      return sb.toString();
    }
 }
 

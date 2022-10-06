@@ -26,6 +26,7 @@ package com.percussion.services.system.data;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -209,21 +210,34 @@ public class PSAudit implements Serializable
    }
 
    @Override
-   public boolean equals(Object b)
-   {
-      return EqualsBuilder.reflectionEquals(this, b);
+   public boolean equals(Object o) {
+      if (this == o) return true;
+      if (!(o instanceof PSAudit)) return false;
+      PSAudit psAudit = (PSAudit) o;
+      return getId() == psAudit.getId() && isPublishable() == psAudit.isPublishable() && getStateId() == psAudit.getStateId() && getTransitionId() == psAudit.getTransitionId() && isCurrentRevision() == psAudit.isCurrentRevision() && isEditRevision() == psAudit.isEditRevision() && Objects.equals(getEventTime(), psAudit.getEventTime()) && Objects.equals(getActor(), psAudit.getActor()) && Objects.equals(getStateName(), psAudit.getStateName()) && Objects.equals(getTransitionName(), psAudit.getTransitionName()) && Objects.equals(getTransitionComment(), psAudit.getTransitionComment());
    }
 
    @Override
-   public int hashCode()
-   {
-      return HashCodeBuilder.reflectionHashCode(this);
+   public int hashCode() {
+      return Objects.hash(getId(), isPublishable(), getEventTime(), getActor(), getStateId(), getStateName(), getTransitionId(), getTransitionName(), getTransitionComment(), isCurrentRevision(), isEditRevision());
    }
 
    @Override
-   public String toString()
-   {
-      return ToStringBuilder.reflectionToString(this);
+   public String toString() {
+      final StringBuffer sb = new StringBuffer("PSAudit{");
+      sb.append("id=").append(id);
+      sb.append(", publishable=").append(publishable);
+      sb.append(", eventTime=").append(eventTime);
+      sb.append(", actor='").append(actor).append('\'');
+      sb.append(", stateId=").append(stateId);
+      sb.append(", stateName='").append(stateName).append('\'');
+      sb.append(", transitionId=").append(transitionId);
+      sb.append(", transitionName='").append(transitionName).append('\'');
+      sb.append(", transitionComment='").append(transitionComment).append('\'');
+      sb.append(", currentRevision=").append(currentRevision);
+      sb.append(", editRevision=").append(editRevision);
+      sb.append('}');
+      return sb.toString();
    }
 
    /* (non-Javadoc)

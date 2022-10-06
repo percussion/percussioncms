@@ -24,6 +24,7 @@
 package com.percussion.services.utils.orm.data;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -96,22 +97,17 @@ public class PSTempId  implements Serializable
       this.pk = id;
    }
 
-   /* (non-Javadoc)
-    * @see java.lang.Object#equals(java.lang.Object)
-    */
    @Override
-   public boolean equals(Object obj)
-   {
-      return EqualsBuilder.reflectionEquals(this, obj);
+   public boolean equals(Object o) {
+      if (this == o) return true;
+      if (!(o instanceof PSTempId)) return false;
+      PSTempId psTempId = (PSTempId) o;
+      return Objects.equals(getPk(), psTempId.getPk());
    }
 
-   /* (non-Javadoc)
-    * @see java.lang.Object#hashCode()
-    */
    @Override
-   public int hashCode()
-   {
-      return HashCodeBuilder.reflectionHashCode(this);
+   public int hashCode() {
+      return Objects.hash(getPk());
    }
 
    /* (non-Javadoc)

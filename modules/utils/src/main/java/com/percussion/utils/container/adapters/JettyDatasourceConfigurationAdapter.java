@@ -87,7 +87,7 @@ public class JettyDatasourceConfigurationAdapter implements IPSConfigurationAdap
     private Path dsXmlFile = Paths.get("jetty","base","etc","perc-ds.xml");
 
     private static String dsTemplate = null;
-    private static final int DEFAULT_IDLE_TIMEOUT=30;
+    private static final int DEFAULT_IDLE_TIMEOUT=59000;
 
      static  {
         try (ByteArrayOutputStream result = new ByteArrayOutputStream(); InputStream is = JettyDatasourceConfigurationAdapter.class.getClassLoader().getResourceAsStream("com/percussion/utils/container/jetty/jetty-ds-template.xml")) {
@@ -99,7 +99,8 @@ public class JettyDatasourceConfigurationAdapter implements IPSConfigurationAdap
 
             dsTemplate = result.toString("UTF-8").replaceAll("\\r\\n", "\n").replaceAll("\\r", "\n");
         } catch (IOException e) {
-            ms_log.error("Cannot load jetty-ds-template.xml from classpath", e);
+            ms_log.error("Cannot load jetty-ds-template.xml from classpath. Error: {}",
+                    PSExceptionUtils.getMessageForLog(e));
         }
     }
 
@@ -216,8 +217,9 @@ public class JettyDatasourceConfigurationAdapter implements IPSConfigurationAdap
                     try {
                         if (NumberUtils.isNumber(idleMs)) {
                             int ms = Integer.parseInt(idleMs);
-                            if (ms > 60000)
-                                ds.setIdleTimeout(ms / 60000);
+                            if (ms <=0) {
+                                ds.setIdleTimeout(59000);
+                            }
                         }
                     }catch (NumberFormatException nf){
                         ds.setIdleTimeout(DEFAULT_IDLE_TIMEOUT);

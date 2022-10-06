@@ -27,6 +27,7 @@ import com.percussion.security.IPSPrincipalAttribute;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -90,17 +91,20 @@ public class PSPrincipalAttribute implements IPSPrincipalAttribute, Serializable
    {
       return m_name;
    }
-   
-   public boolean equals(Object obj)
-   {
-      return EqualsBuilder.reflectionEquals(this, obj);
+
+   @Override
+   public boolean equals(Object o) {
+      if (this == o) return true;
+      if (!(o instanceof PSPrincipalAttribute)) return false;
+      PSPrincipalAttribute that = (PSPrincipalAttribute) o;
+      return Objects.equals(m_values, that.m_values) && m_type == that.m_type && Objects.equals(m_name, that.m_name);
    }
-   
-   public int hashCode()
-   {
-      return HashCodeBuilder.reflectionHashCode(this);
+
+   @Override
+   public int hashCode() {
+      return Objects.hash(m_values, m_type, m_name);
    }
-   
+
    public String toString()
    {
       return m_name + " : " + m_type + " : " + m_values;

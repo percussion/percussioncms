@@ -36,6 +36,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -421,23 +422,33 @@ public class PSKeyword implements Serializable, IPSCatalogSummary,
    {
       this.m_id = id;
    }
-   
+
    @Override
-   public boolean equals(Object b)
-   {
-      return EqualsBuilder.reflectionEquals(this, b);
+   public boolean equals(Object o) {
+      if (this == o) return true;
+      if (!(o instanceof PSKeyword)) return false;
+      PSKeyword psKeyword = (PSKeyword) o;
+      return m_id == psKeyword.m_id && Objects.equals(getKeywordType(), psKeyword.getKeywordType()) && Objects.equals(getValue(), psKeyword.getValue()) && Objects.equals(getLabel(), psKeyword.getLabel()) && Objects.equals(getDescription(), psKeyword.getDescription()) && Objects.equals(getSequence(), psKeyword.getSequence()) && Objects.equals(getVersion(), psKeyword.getVersion()) && Objects.equals(m_choices, psKeyword.m_choices);
    }
 
    @Override
-   public int hashCode()
-   {
-      return HashCodeBuilder.reflectionHashCode(this);
+   public int hashCode() {
+      return Objects.hash(m_id, getKeywordType(), getValue(), getLabel(), getDescription(), getSequence(), getVersion(), m_choices);
    }
 
    @Override
-   public String toString()
-   {
-      return ToStringBuilder.reflectionToString(this);
+   public String toString() {
+      final StringBuffer sb = new StringBuffer("PSKeyword{");
+      sb.append("m_id=").append(m_id);
+      sb.append(", keywordType='").append(keywordType).append('\'');
+      sb.append(", value='").append(value).append('\'');
+      sb.append(", label='").append(label).append('\'');
+      sb.append(", description='").append(description).append('\'');
+      sb.append(", sequence=").append(sequence);
+      sb.append(", version=").append(version);
+      sb.append(", m_choices=").append(m_choices);
+      sb.append('}');
+      return sb.toString();
    }
 
    /*

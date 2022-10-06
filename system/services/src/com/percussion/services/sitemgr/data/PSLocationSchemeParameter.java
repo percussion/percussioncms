@@ -232,12 +232,21 @@ public class PSLocationSchemeParameter implements Serializable
       return name.hashCode();
    }
 
-   /** (non-Javadoc)
-    * @see java.lang.Object#toString()
+   /**
+    * (non-Javadoc)
+    *
+    * @see Object#toString()
     */
    @Override
-   public String toString()
-   {
-      return ToStringBuilder.reflectionToString(this).toString();
+   public String toString() {
+      final StringBuffer sb = new StringBuffer("PSLocationSchemeParameter{");
+      sb.append("parameterId=").append(parameterId);
+      sb.append(", scheme=").append(scheme);
+      sb.append(", sequence=").append(sequence);
+      sb.append(", type='").append(type).append('\'');
+      sb.append(", name='").append(name).append('\'');
+      sb.append(", value='").append(value).append('\'');
+      sb.append('}');
+      return sb.toString();
    }
 }

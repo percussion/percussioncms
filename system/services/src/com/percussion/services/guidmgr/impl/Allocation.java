@@ -24,9 +24,6 @@
 
 package com.percussion.services.guidmgr.impl;
 
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.function.BiFunction;
 
 
@@ -38,9 +35,6 @@ import java.util.function.BiFunction;
  */
 class Allocation
 {
-    private final ReadWriteLock readWriteLock = new ReentrantReadWriteLock();
-    private final Lock readLock = readWriteLock.readLock();
-    private final Lock writeLock = readWriteLock.writeLock();
 
     private BiFunction<Integer,Long,Long> nextBlockFunction;
 
@@ -64,34 +58,23 @@ class Allocation
         this.nextBlockFunction = nextBlockFunction;
     }
 
-    public void setIds(long nextId, long last) {
-        writeLock.lock();
-        try {
+    public synchronized void setIds(long nextId, long last) {
             // set next id first. allocation will unblock when last is greater than
             // next
             this.mi_nextId = nextId;
             this.mi_last = last;
-
-        } finally {
-            writeLock.unlock();
-        }
     }
 
     /**
      * Ctor
      *
-     * @param first the intial value in the range
+     * @param first the initial value in the range
      * @param last  the last value in the range - this value will not be
      *              returned by
      */
     public Allocation(long first, long last) {
-        writeLock.lock();
-        try {
             this.mi_nextId = first;
             this.mi_last = last;
-        } finally {
-            writeLock.unlock();
-        }
 
     }
 
@@ -99,79 +82,39 @@ class Allocation
      * Obtain the next id for the given allocation and update the state
      *
      * @return the next id
-     * @throws Exception
      */
-    public long next() {
-        readLock.lock();
-        try {
+    public synchronized long next() {
             getNewBlockIfNeeded();
             return mi_nextId++;
-
-        } finally {
-
-            readLock.unlock();
-        }
     }
+
     // Expects to be within a readlock and will relock it.
-    private void getNewBlockIfNeeded() {
+    private synchronized void getNewBlockIfNeeded() {
         if (mi_last <= 0 || mi_nextId > mi_last) {
-            readLock.unlock();
-            writeLock.lock();
-            try {
-                try {
-                    // nextid = 10 last = 19 with blocksize=10  first and last inclusive
-                    this.mi_nextId = nextBlockFunction.apply(this.blockSize, -1l);
-                    this.mi_last = this.mi_nextId + blockSize - 1;
-                } catch (Exception e) {
-                    throw new RuntimeException("Could not create or save next number info", e);
-                }
-                readLock.lock();
-            } finally {
-                writeLock.unlock();
-            }
+            // nextid = 10 last = 19 with blocksize=10  first and last inclusive
+            this.mi_nextId = nextBlockFunction.apply(this.blockSize, -1l);
+            this.mi_last = this.mi_nextId + blockSize - 1;
         }
-
-
     }
 
-    public long peek() {
-        readLock.lock();
-        try {
+    public synchronized long peek() {
             getNewBlockIfNeeded();
             return mi_nextId;
-        } finally {
-
-            readLock.unlock();
-        }
     }
 
 
-    public int fix(long value) {
-        readLock.lock();
-        try {
-            getNewBlockIfNeeded();
-        } finally {
-            readLock.unlock();
-        }
+    public synchronized  int fix(long value) {
+        getNewBlockIfNeeded();
+        long origResult = this.mi_nextId;
+        // max value may be smaller than allocated values so increase if this is the case.
+        if (mi_nextId>0 && value < mi_nextId)
+            value=mi_nextId;
+
+        this.mi_nextId = nextBlockFunction.apply(this.blockSize, value);
+        this.mi_last = this.mi_nextId + blockSize - 1;
 
 
-        writeLock.lock();
-        long origResult;
-        try {
-            origResult = this.mi_nextId;
-
-            // max value may be smaller than allocated values so increase if this is the case.
-            if (mi_nextId>0 && value < mi_nextId)
-                value=mi_nextId;
-
-            this.mi_nextId = nextBlockFunction.apply(this.blockSize, value);
-            this.mi_last = this.mi_nextId + blockSize - 1;
-
-
-            return (int) origResult;
-        } finally {
-            writeLock.unlock();
-        }
+        return (int) origResult;
     }
 
 }
