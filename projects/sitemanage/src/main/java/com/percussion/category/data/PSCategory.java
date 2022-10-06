@@ -93,7 +93,7 @@ public class PSCategory extends PSAbstractDataObject implements Cloneable {
     }
 
     @Override
-    public PSCategory clone() {
+    public PSCategory clone() throws CloneNotSupportedException {
         PSCategory category = (PSCategory) super.clone();
         category.setTitle(this.getTitle());
         if (this.getTopLevelNodes() != null) {

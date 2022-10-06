@@ -152,8 +152,12 @@ public class PSRoleService implements IPSRoleService
         backEndRoleMgr.createRole(role.getName(), role.getDescription());
         setHomepage(role.getName(), role.getHomepage());
         wfService.addWorkflowRole(null, roleName);
-        
-        return (!role.getUsers().isEmpty()) ? update(role) : role.clone();
+
+        try {
+            return (!role.getUsers().isEmpty()) ? update(role) : role.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new PSDataServiceException(e);
+        }
     }
 
     @POST

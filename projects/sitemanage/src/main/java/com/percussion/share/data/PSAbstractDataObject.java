@@ -45,7 +45,7 @@ public class PSAbstractDataObject implements Serializable
     private static final long serialVersionUID = 1L;
 
     @Override
-    protected Object clone() throws CloneNotSupportedException {
+    public Object clone() throws CloneNotSupportedException {
         try
         {
             return BeanUtils.cloneBean(this);

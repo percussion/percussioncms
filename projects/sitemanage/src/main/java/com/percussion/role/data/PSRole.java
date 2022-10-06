@@ -154,8 +154,7 @@ public class PSRole extends PSAbstractNamedObject
     }
 
     @Override
-    public PSRole clone()
-    {
+    public PSRole clone() throws CloneNotSupportedException {
         PSRole role = (PSRole) super.clone();
         role.setDescription(this.getDescription());
         if (this.getUsers() != null) {

@@ -382,12 +382,6 @@ public class PSTemplate extends PSTemplateSummary implements IPSHtmlMetadata
         this.docType = docType;
     }
     
-    @Override
-    public PSTemplate clone()
-    {
-        return (PSTemplate) super.clone();
-    }
-    
     /**
      * Determines if this template has an instance of the specified widget.
      * 

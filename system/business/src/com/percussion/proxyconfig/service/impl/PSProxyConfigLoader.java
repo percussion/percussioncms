@@ -71,8 +71,13 @@ public class PSProxyConfigLoader
        
        proxyConfigurations = new ArrayList<>();
        
-       if (configFile.exists())
-          readAndEncryptConfigFile(configFile);
+       if (configFile.exists()) {
+           try {
+               readAndEncryptConfigFile(configFile);
+           } catch (CloneNotSupportedException e) {
+               throw new RuntimeException(e);
+           }
+       }
    }
 
    /**
@@ -89,8 +94,7 @@ public class PSProxyConfigLoader
     * 
     * @param configFile the proxy configuration file.
     */
-   private void readAndEncryptConfigFile(File configFile)
-   {
+   private void readAndEncryptConfigFile(File configFile) throws CloneNotSupportedException {
       ProxyConfigurations config = getProxyConfig(configFile);
        PSProxyConfig proxyConfig;
        String encrypterKey = PSLegacyEncrypter.getInstance(PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)).getPartOneKey();
@@ -98,7 +102,7 @@ public class PSProxyConfigLoader
        
        for (ProxyConfig s : config.getConfigs())
        {
-           log.debug("Proxy Configuration: " + s.getHost());
+           log.debug("Proxy Configuration: {}" , s.getHost());
            
            proxyConfig = new PSProxyConfig(s);
            proxyConfigurations.add(proxyConfig);

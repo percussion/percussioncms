@@ -222,12 +222,6 @@ public class PSTemplateSummary extends PSAbstractPersistantObject {
        this.sourceTemplateName = srcTemplate;
     }
 
-    @Override
-    protected Object clone() 
-    {
-        return super.clone();
-    }
-
     public String getType()
     {
         return type;

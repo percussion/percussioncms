@@ -436,7 +436,11 @@ public class PSTemplateDao implements IPSTemplateDao, ApplicationContextAware
      * //see base interface method for details
      */
     public PSTemplate createTemplate(String name, String srcId) throws PSDataServiceException {
-        return createTemplateFromSrc(srcId, name);
+        try {
+            return createTemplateFromSrc(srcId, name);
+        } catch (CloneNotSupportedException e) {
+            throw new PSDataServiceException(e);
+        }
     }
 
     /**
@@ -448,7 +452,7 @@ public class PSTemplateDao implements IPSTemplateDao, ApplicationContextAware
      * 
      * @return the core item, never <code>null</code>.
      */
-    private PSTemplate createTemplateFromSrc(String srcId, String name) throws PSDataServiceException {
+    private PSTemplate createTemplateFromSrc(String srcId, String name) throws PSDataServiceException, CloneNotSupportedException {
         PSTemplate template;
         IPSGuid templateGuid = getAssemblyTemplateGuid(srcId);
         if (templateGuid != null)
@@ -549,9 +553,9 @@ public class PSTemplateDao implements IPSTemplateDao, ApplicationContextAware
      * 
      * @return the created core item, never <code>null</code>.
      */
-    private PSTemplate createTemplateFromUserTemplate(String srcId, String name) throws PSDataServiceException {
+    private PSTemplate createTemplateFromUserTemplate(String srcId, String name) throws PSDataServiceException, CloneNotSupportedException {
         PSTemplate srcTpl = find(srcId);
-        PSTemplate copy = srcTpl.clone();
+        PSTemplate copy = (PSTemplate) srcTpl.clone();
         copy.setId(null);
         copy.setName(name);
         return copy;
