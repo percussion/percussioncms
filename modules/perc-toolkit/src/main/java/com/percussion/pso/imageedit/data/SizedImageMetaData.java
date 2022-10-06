@@ -60,13 +60,19 @@ public class SizedImageMetaData extends SimpleImageMetaData
    {
       this.sizeDefinition = sizeDefinition;
    }
-    
-   public String toString() 
-   {
-      return ToStringBuilder.reflectionToString(this);
-   }
 
-public Boolean isConstraint()
+	@Override
+	public String toString() {
+		final StringBuffer sb = new StringBuffer("SizedImageMetaData{");
+		sb.append("sizeDefinition=").append(sizeDefinition);
+		sb.append(", x=").append(x);
+		sb.append(", y=").append(y);
+		sb.append(", constraint=").append(constraint);
+		sb.append('}');
+		return sb.toString();
+	}
+
+	public Boolean isConstraint()
 {
 	return constraint;
 }

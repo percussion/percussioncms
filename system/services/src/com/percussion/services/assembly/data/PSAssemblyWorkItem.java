@@ -1232,16 +1232,43 @@ public class PSAssemblyWorkItem implements IPSAssemblyResult
             m_mimeType).toHashCode();
    }
 
-   /*
-    * (non-Javadoc)
-    * 
-    * @see java.lang.Object#toString()
-    */
    @Override
-   public String toString()
-   {
-      return ToStringBuilder.reflectionToString(this,
-            ToStringStyle.MULTI_LINE_STYLE);
+   public String toString() {
+      final StringBuffer sb = new StringBuffer("PSAssemblyWorkItem{");
+      sb.append("m_id=").append(m_id);
+      sb.append(", m_mimeType='").append(m_mimeType).append('\'');
+      sb.append(", m_isDebug=").append(m_isDebug);
+      sb.append(", m_isPublish=").append(m_isPublish);
+      sb.append(", m_fileReleased=").append(m_fileReleased);
+      sb.append(", m_status=").append(m_status);
+      sb.append(", m_path='").append(m_path).append('\'');
+      sb.append(", m_parameters=").append(m_parameters);
+      sb.append(", m_variables=").append(m_variables);
+      sb.append(", m_template=").append(m_template);
+      sb.append(", m_originalTemplateGuid=").append(m_originalTemplateGuid);
+      sb.append(", m_referenceId=").append(m_referenceId);
+      sb.append(", m_unpublishRefId=").append(m_unpublishRefId);
+      sb.append(", m_ownerId=").append(m_ownerId);
+      sb.append(", m_folderId=").append(m_folderId);
+      sb.append(", m_siteid=").append(m_siteid);
+      sb.append(", m_pubserverid=").append(m_pubserverid);
+      sb.append(", m_jobId=").append(m_jobId);
+      sb.append(", m_depth=").append(m_depth);
+      sb.append(", m_bindings=").append(m_bindings);
+      sb.append(", m_node=").append(m_node);
+      sb.append(", m_filter=").append(m_filter);
+      sb.append(", m_navHelper=").append(m_navHelper);
+      sb.append(", m_userName='").append(m_userName).append('\'');
+      sb.append(", m_deliveryType='").append(m_deliveryType).append('\'');
+      sb.append(", m_deliveryPath='").append(m_deliveryPath).append('\'');
+      sb.append(", m_deliveryContext=").append(m_deliveryContext);
+      sb.append(", m_assemblyUrl='").append(m_assemblyUrl).append('\'');
+      sb.append(", m_elapsed=").append(m_elapsed);
+      sb.append(", m_page=").append(m_page);
+      sb.append(", m_parentPageReference=").append(m_parentPageReference);
+      sb.append(", m_paginated=").append(m_paginated);
+      sb.append('}');
+      return sb.toString();
    }
 
    /*

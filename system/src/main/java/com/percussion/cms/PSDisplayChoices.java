@@ -38,6 +38,7 @@ import org.w3c.dom.Element;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * This class represents a set of choices and an optional choice filter.
@@ -230,11 +231,6 @@ public class PSDisplayChoices implements Cloneable
       return m_filter;
    }
 
-   public boolean equals(Object obj)
-   {
-      return EqualsBuilder.reflectionEquals(this, obj);
-   }
-
    //see base class for description
    public Object clone()
    {
@@ -261,10 +257,17 @@ public class PSDisplayChoices implements Cloneable
       return copy;
    }
 
-   // see base class for description
-   public int hashCode()
-   {
-      return HashCodeBuilder.reflectionHashCode(this);
+   @Override
+   public boolean equals(Object o) {
+      if (this == o) return true;
+      if (!(o instanceof PSDisplayChoices)) return false;
+      PSDisplayChoices that = (PSDisplayChoices) o;
+      return Objects.equals(m_choices, that.m_choices) && Objects.equals(m_filter, that.m_filter);
+   }
+
+   @Override
+   public int hashCode() {
+      return Objects.hash(m_choices, m_filter);
    }
 
    /**

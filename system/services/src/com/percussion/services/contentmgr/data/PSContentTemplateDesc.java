@@ -42,6 +42,8 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import java.util.Objects;
+
 /**
  * Describes a single relationship between a content type and a template.
  * 
@@ -157,41 +159,32 @@ public class PSContentTemplateDesc
       return new PSGuid(PSTypeEnum.NODEDEF, m_contenttypeid);
    }
 
-   /** (non-Javadoc)
-    * @see java.lang.Object#equals(java.lang.Object)
-    */
    @Override
-   public boolean equals(Object arg0)
-   {
-       if(!(arg0 instanceof PSContentTemplateDesc))
-           return false;
-       
-      EqualsBuilder builder = new EqualsBuilder();
-      PSContentTemplateDesc b = (PSContentTemplateDesc) arg0;
-      
-      return builder.append(getContentTypeId(), b.getContentTypeId())
-         .append(getId(), b.getId())
-         .append(getTemplateId(), b.getTemplateId())
-         .isEquals();
+   public boolean equals(Object o) {
+      if (this == o) return true;
+      if (!(o instanceof PSContentTemplateDesc)) return false;
+      PSContentTemplateDesc that = (PSContentTemplateDesc) o;
+      return Objects.equals(m_templateTypeId, that.m_templateTypeId) && Objects.equals(m_contenttypeid, that.m_contenttypeid) && Objects.equals(m_version, that.m_version) && Objects.equals(m_templateid, that.m_templateid);
    }
 
-   /** (non-Javadoc)
-    * @see java.lang.Object#hashCode()
-    */
    @Override
-   public int hashCode()
-   {
-      return HashCodeBuilder.reflectionHashCode(this);
+   public int hashCode() {
+      return Objects.hash(m_templateTypeId, m_contenttypeid, m_version, m_templateid);
    }
 
-   /** (non-Javadoc)
-    * @see java.lang.Object#toString()
+   /**
+    * (non-Javadoc)
+    *
+    * @see Object#toString()
     */
    @Override
-   public String toString()
-   {
-      return ToStringBuilder.reflectionToString(this);
-   }  
-   
-   
+   public String toString() {
+      final StringBuffer sb = new StringBuffer("PSContentTemplateDesc{");
+      sb.append("m_templateTypeId=").append(m_templateTypeId);
+      sb.append(", m_contenttypeid=").append(m_contenttypeid);
+      sb.append(", m_version=").append(m_version);
+      sb.append(", m_templateid=").append(m_templateid);
+      sb.append('}');
+      return sb.toString();
+   }
 }

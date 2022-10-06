@@ -45,9 +45,10 @@ public abstract class Template {
     }
 
     @Override
-    public String toString()
-    {
-        return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("Template{");
+        sb.append("siteIds=").append(siteIds);
+        sb.append('}');
+        return sb.toString();
     }
-
 }

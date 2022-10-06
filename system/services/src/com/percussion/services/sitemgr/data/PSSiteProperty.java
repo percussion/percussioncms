@@ -241,14 +241,23 @@ public class PSSiteProperty implements IPSCatalogItem, Serializable
    {
       return new HashCodeBuilder().append(name).toHashCode();
    }
-   
-   /** (non-Javadoc)
-    * @see java.lang.Object#toString()
+
+   /**
+    * (non-Javadoc)
+    *
+    * @see Object#toString()
     */
    @Override
-   public String toString()
-   {
-      return ToStringBuilder.reflectionToString(this).toString();
+   public String toString() {
+      final StringBuffer sb = new StringBuffer("PSSiteProperty{");
+      sb.append("propertyId=").append(propertyId);
+      sb.append(", version=").append(version);
+      sb.append(", site=").append(site);
+      sb.append(", contextId=").append(contextId);
+      sb.append(", name='").append(name).append('\'');
+      sb.append(", value='").append(value).append('\'');
+      sb.append('}');
+      return sb.toString();
    }
 
    /** (non-Javadoc)

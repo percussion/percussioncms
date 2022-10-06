@@ -24,6 +24,7 @@
 package com.percussion.services.workflow.data;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -117,22 +118,17 @@ public class PSAssignedRolePK implements Serializable
       workflowId = workflowid;
    }
 
-   /* (non-Javadoc)
-    * @see java.lang.Object#equals(java.lang.Object)
-    */
    @Override
-   public boolean equals(Object obj)
-   {
-      return EqualsBuilder.reflectionEquals(this,obj);
+   public boolean equals(Object o) {
+      if (this == o) return true;
+      if (!(o instanceof PSAssignedRolePK)) return false;
+      PSAssignedRolePK that = (PSAssignedRolePK) o;
+      return getWorkflowId() == that.getWorkflowId() && getStateId() == that.getStateId() && getRoleId() == that.getRoleId();
    }
 
-   /* (non-Javadoc)
-    * @see java.lang.Object#hashCode()
-    */
    @Override
-   public int hashCode()
-   {
-      return HashCodeBuilder.reflectionHashCode(this);
+   public int hashCode() {
+      return Objects.hash(getWorkflowId(), getStateId(), getRoleId());
    }
 }
 

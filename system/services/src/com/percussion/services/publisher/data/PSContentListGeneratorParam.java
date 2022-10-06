@@ -172,12 +172,20 @@ public class PSContentListGeneratorParam
       return name.hashCode();
    }
 
-   /** (non-Javadoc)
-    * @see java.lang.Object#toString()
+   /**
+    * (non-Javadoc)
+    *
+    * @see Object#toString()
     */
    @Override
-   public String toString()
-   {
-      return ToStringBuilder.reflectionToString(this);
+   public String toString() {
+      final StringBuffer sb = new StringBuffer("PSContentListGeneratorParam{");
+      sb.append("id=").append(id);
+      sb.append(", version=").append(version);
+      sb.append(", name='").append(name).append('\'');
+      sb.append(", value='").append(value).append('\'');
+      sb.append(", contentList=").append(contentList);
+      sb.append('}');
+      return sb.toString();
    }
 }

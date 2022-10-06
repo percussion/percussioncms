@@ -179,7 +179,7 @@ class PSCacheMemoryManager extends Thread
       synchronized(m_eventQueue)
       {
          m_eventQueue.add(event);
-         m_eventQueue.notify();
+         m_eventQueue.notifyAll();
       }
    }
 
@@ -234,7 +234,7 @@ class PSCacheMemoryManager extends Thread
       synchronized(m_eventQueue)
       {
          m_eventQueue.add(event);
-         m_eventQueue.notify();
+         m_eventQueue.notifyAll();
       }
    }
 

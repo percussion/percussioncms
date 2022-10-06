@@ -40,6 +40,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -478,21 +479,33 @@ public class PSState implements Serializable, IPSCatalogSummary, IPSCatalogItem
    }
 
    @Override
-   public boolean equals(Object b)
-   {
-      return EqualsBuilder.reflectionEquals(this, b);
+   public boolean equals(Object o) {
+      if (this == o) return true;
+      if (!(o instanceof PSState)) return false;
+      PSState psState = (PSState) o;
+      return getStateId() == psState.getStateId() && getWorkflowId() == psState.getWorkflowId() && Objects.equals(getName(), psState.getName()) && Objects.equals(getDescription(), psState.getDescription()) && Objects.equals(getSortOrder(), psState.getSortOrder()) && Objects.equals(getContentValidValue(), psState.getContentValidValue()) && Objects.equals(transitionHibs, psState.transitionHibs) && Objects.equals(getAssignedRoles(), psState.getAssignedRoles()) && Objects.equals(transitionsCache, psState.transitionsCache) && Objects.equals(agingTransitionsCache, psState.agingTransitionsCache);
    }
 
    @Override
-   public int hashCode()
-   {
-      return HashCodeBuilder.reflectionHashCode(this);
+   public int hashCode() {
+      return Objects.hash(getStateId(), getWorkflowId(), getName(), getDescription(), getSortOrder(), getContentValidValue(), transitionHibs, getAssignedRoles(), transitionsCache, agingTransitionsCache);
    }
 
    @Override
-   public String toString()
-   {
-      return ToStringBuilder.reflectionToString(this);
+   public String toString() {
+      final StringBuffer sb = new StringBuffer("PSState{");
+      sb.append("stateId=").append(stateId);
+      sb.append(", workflowId=").append(workflowId);
+      sb.append(", name='").append(name).append('\'');
+      sb.append(", description='").append(description).append('\'');
+      sb.append(", sortOrder=").append(sortOrder);
+      sb.append(", contentValidValue='").append(contentValidValue).append('\'');
+      sb.append(", transitionHibs=").append(transitionHibs);
+      sb.append(", assignedRoles=").append(assignedRoles);
+      sb.append(", transitionsCache=").append(transitionsCache);
+      sb.append(", agingTransitionsCache=").append(agingTransitionsCache);
+      sb.append('}');
+      return sb.toString();
    }
 
    /*

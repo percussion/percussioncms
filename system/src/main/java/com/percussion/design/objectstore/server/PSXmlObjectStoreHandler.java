@@ -6201,7 +6201,7 @@ public class PSXmlObjectStoreHandler extends PSObjectFactory
       synchronized (m_lockedFiles)
       {
          m_lockedFiles.remove(canon);
-         m_lockedFiles.notify();
+         m_lockedFiles.notifyAll();
       }
       try
       {
@@ -6259,7 +6259,7 @@ public class PSXmlObjectStoreHandler extends PSObjectFactory
       {
          File canon = f.getCanonicalFile();
          m_lockedFiles.remove(canon);
-         m_lockedFiles.notify();
+         m_lockedFiles.notifyAll();
       }
       try
       {

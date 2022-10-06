@@ -35,6 +35,7 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Contains the page regions that will override the templates regions.
@@ -61,26 +62,28 @@ public class PSRegionBranches extends PSRegionWidgetAssociations
     {
         this.regions = pageRegions;
     }
-    
+
 
     @Override
-    public boolean equals(Object o)
-    {
-        return EqualsBuilder.reflectionEquals(this, o);
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof PSRegionBranches)) return false;
+        if (!super.equals(o)) return false;
+        PSRegionBranches that = (PSRegionBranches) o;
+        return Objects.equals(getRegions(), that.getRegions());
     }
 
     @Override
-    public int hashCode()
-    {
-        //Do not use the id to generate a hash code.
-        return HashCodeBuilder.reflectionHashCode(this, new String[]
-        {"id"});
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), getRegions());
     }
 
     @Override
-    public String toString()
-    {
-        return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("PSRegionBranches{");
+        sb.append("regions=").append(regions);
+        sb.append('}');
+        return sb.toString();
     }
 
     @Override

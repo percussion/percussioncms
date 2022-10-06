@@ -382,19 +382,7 @@ public class PSExtensionDefFactory implements IPSExtensionDefFactory
       
       return def;
    }
-   
-   @Override
-   public boolean equals(Object b)
-   {
-      return EqualsBuilder.reflectionEquals(this, b);
-   }
 
-   @Override
-   public int hashCode()
-   {
-      return HashCodeBuilder.reflectionHashCode(this);
-   }
-   
    // constants used for XML serialization
    private static final String METHODS_ELEM = "Methods";
 }

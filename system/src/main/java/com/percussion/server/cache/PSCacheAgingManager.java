@@ -150,7 +150,7 @@ class PSCacheAgingManager implements IPSCacheModifiedListener
                         if(event.getAction() == PSCacheEvent.CACHE_ITEM_ADDED)
                         {
                            m_cachedItems.add( event.getObject() );
-                           m_cachedItems.notify();
+                           m_cachedItems.notifyAll();
                         }
                         else 
                            m_cachedItems.remove( event.getObject() );
@@ -241,7 +241,7 @@ class PSCacheAgingManager implements IPSCacheModifiedListener
          synchronized(m_queuedItems)
          {
             m_queuedItems.addLast( e );
-            m_queuedItems.notify();
+            m_queuedItems.notifyAll();
          }
       }
 

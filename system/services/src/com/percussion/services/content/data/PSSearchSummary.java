@@ -29,6 +29,7 @@ import com.percussion.util.IPSHtmlParameters;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -104,21 +105,25 @@ public class PSSearchSummary extends PSItemSummary
    }
 
    @Override
-   public boolean equals(Object b)
-   {
-      return EqualsBuilder.reflectionEquals(this, b);
+   public boolean equals(Object o) {
+      if (this == o) return true;
+      if (!(o instanceof PSSearchSummary)) return false;
+      if (!super.equals(o)) return false;
+      PSSearchSummary that = (PSSearchSummary) o;
+      return Objects.equals(getFields(), that.getFields());
    }
 
    @Override
-   public int hashCode()
-   {
-      return HashCodeBuilder.reflectionHashCode(this);
+   public int hashCode() {
+      return Objects.hash(super.hashCode(), getFields());
    }
 
    @Override
-   public String toString()
-   {
-      return ToStringBuilder.reflectionToString(this);
+   public String toString() {
+      final StringBuffer sb = new StringBuffer("PSSearchSummary{");
+      sb.append("fields=").append(fields);
+      sb.append('}');
+      return sb.toString();
    }
 }
 

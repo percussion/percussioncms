@@ -38,6 +38,7 @@ import javax.persistence.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Represent a workflow transition for both aging and non-aging transitions.
@@ -487,21 +488,41 @@ public class PSTransitionHib implements IPSTransition, IPSAgingTransition
    }
 
    @Override
-   public boolean equals(Object b)
-   {
-      return EqualsBuilder.reflectionEquals(this, b);
+   public boolean equals(Object o) {
+      if (this == o) return true;
+      if (!(o instanceof PSTransitionHib)) return false;
+      PSTransitionHib that = (PSTransitionHib) o;
+      return transitionId == that.transitionId && getWorkflowId() == that.getWorkflowId() && getStateId() == that.getStateId() && getToState() == that.getToState() && getTransitionType() == that.getTransitionType() && getApprovals() == that.getApprovals() && Objects.equals(getLabel(), that.getLabel()) && Objects.equals(getDescription(), that.getDescription()) && Objects.equals(getTrigger(), that.getTrigger()) && Objects.equals(getTransitionAction(), that.getTransitionAction()) && Objects.equals(getNotifications(), that.getNotifications()) && Objects.equals(getRequiresComment(), that.getRequiresComment()) && Objects.equals(isDefaultTransition(), that.isDefaultTransition()) && Objects.equals(getTransitionRoles(), that.getTransitionRoles()) && Objects.equals(roles, that.roles) && Objects.equals(agingType, that.agingType) && Objects.equals(getInterval(), that.getInterval()) && Objects.equals(getSystemField(), that.getSystemField());
    }
 
    @Override
-   public int hashCode()
-   {
-      return HashCodeBuilder.reflectionHashCode(this);
+   public int hashCode() {
+      return Objects.hash(transitionId, getWorkflowId(), getStateId(), getLabel(), getDescription(), getTrigger(), getToState(), getTransitionAction(), getNotifications(), getTransitionType(), getApprovals(), getRequiresComment(), isDefaultTransition(), getTransitionRoles(), roles, agingType, getInterval(), getSystemField());
    }
 
    @Override
-   public String toString()
-   {
-      return ToStringBuilder.reflectionToString(this);
+   public String toString() {
+      final StringBuffer sb = new StringBuffer("PSTransitionHib{");
+      sb.append("transitionId=").append(transitionId);
+      sb.append(", workflowId=").append(workflowId);
+      sb.append(", stateId=").append(stateId);
+      sb.append(", label='").append(label).append('\'');
+      sb.append(", description='").append(description).append('\'');
+      sb.append(", trigger='").append(trigger).append('\'');
+      sb.append(", toState=").append(toState);
+      sb.append(", transitionAction='").append(transitionAction).append('\'');
+      sb.append(", notifications=").append(notifications);
+      sb.append(", transitionType=").append(transitionType);
+      sb.append(", approvals=").append(approvals);
+      sb.append(", requiresComment='").append(requiresComment).append('\'');
+      sb.append(", defaultTransition='").append(defaultTransition).append('\'');
+      sb.append(", transitionRoles='").append(transitionRoles).append('\'');
+      sb.append(", roles=").append(roles);
+      sb.append(", agingType=").append(agingType);
+      sb.append(", interval=").append(interval);
+      sb.append(", systemField='").append(systemField).append('\'');
+      sb.append('}');
+      return sb.toString();
    }
 
    /* (non-Javadoc)

@@ -39,6 +39,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.Basic;
@@ -430,21 +431,32 @@ public class PSWorkflow
    }
 
    @Override
-   public boolean equals(Object b)
-   {
-      return EqualsBuilder.reflectionEquals(this, b);
+   public boolean equals(Object o) {
+      if (this == o) return true;
+      if (!(o instanceof PSWorkflow)) return false;
+      PSWorkflow that = (PSWorkflow) o;
+      return id == that.id && getInitialStateId() == that.getInitialStateId() && Objects.equals(getName(), that.getName()) && Objects.equals(getDescription(), that.getDescription()) && Objects.equals(getAdministratorRole(), that.getAdministratorRole()) && Objects.equals(getVersion(), that.getVersion()) && Objects.equals(getStates(), that.getStates()) && Objects.equals(getRoles(), that.getRoles()) && Objects.equals(getNotificationDefs(), that.getNotificationDefs());
    }
 
    @Override
-   public int hashCode()
-   {
-      return HashCodeBuilder.reflectionHashCode(this);
+   public int hashCode() {
+      return Objects.hash(id, getName(), getDescription(), getAdministratorRole(), getInitialStateId(), getVersion(), getStates(), getRoles(), getNotificationDefs());
    }
 
    @Override
-   public String toString()
-   {
-      return ToStringBuilder.reflectionToString(this);
+   public String toString() {
+      final StringBuffer sb = new StringBuffer("PSWorkflow{");
+      sb.append("id=").append(id);
+      sb.append(", name='").append(name).append('\'');
+      sb.append(", description='").append(description).append('\'');
+      sb.append(", administratorRole='").append(administratorRole).append('\'');
+      sb.append(", initialStateId=").append(initialStateId);
+      sb.append(", version=").append(version);
+      sb.append(", states=").append(states);
+      sb.append(", roles=").append(roles);
+      sb.append(", notificationDefs=").append(notificationDefs);
+      sb.append('}');
+      return sb.toString();
    }
 
    /*

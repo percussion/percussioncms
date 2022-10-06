@@ -32,6 +32,8 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import java.util.Objects;
+
 /** 
  * Class to describe the configuration used to obtain and use a database
  * connection.
@@ -266,23 +268,18 @@ public class PSDatasourceConfig implements IPSDatasourceConfig, IPSBeanConfig,
       return super.clone();
    }
 
-   
+
    @Override
-   public boolean equals(Object o)
-   {
-      return EqualsBuilder.reflectionEquals(this, o);
+   public boolean equals(Object o) {
+      if (this == o) return true;
+      if (!(o instanceof PSDatasourceConfig)) return false;
+      PSDatasourceConfig that = (PSDatasourceConfig) o;
+      return Objects.equals(m_name, that.m_name) && Objects.equals(m_dsName, that.m_dsName) && Objects.equals(m_origin, that.m_origin) && Objects.equals(m_database, that.m_database);
    }
 
-
-   /**
-    * See base class for more details. 
-    * <p>The id of this object is not considered in <code>equals</code> or in 
-    * this method. 
-    */
    @Override
-   public int hashCode()
-   {
-      return HashCodeBuilder.reflectionHashCode(this);
+   public int hashCode() {
+      return Objects.hash(m_name, m_dsName, m_origin, m_database);
    }
 
    /**

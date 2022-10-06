@@ -212,17 +212,18 @@ public class PSPkgElementDependency implements Serializable
          .toHashCode();
    }
 
-   /* (non-Javadoc)
-    * @see java.lang.Object#toString()
-    */
    @Override
-   public String toString()
-   {
-      return ToStringBuilder.reflectionToString(this,
-            ToStringStyle.MULTI_LINE_STYLE).toString();
+   public String toString() {
+      final StringBuffer sb = new StringBuffer("PSPkgElementDependency{");
+      sb.append("guid=").append(guid);
+      sb.append(", ownerPackageGuid=").append(ownerPackageGuid);
+      sb.append(", dependentPackageGuid=").append(dependentPackageGuid);
+      sb.append(", ownerElementGuid='").append(ownerElementGuid).append('\'');
+      sb.append(", dependentElementGuid='").append(dependentElementGuid).append('\'');
+      sb.append('}');
+      return sb.toString();
    }
-   
-//------------------------------------------------------------------------------  
+//------------------------------------------------------------------------------
 
    /**
     * This PSPkgElementDependency object's GUID

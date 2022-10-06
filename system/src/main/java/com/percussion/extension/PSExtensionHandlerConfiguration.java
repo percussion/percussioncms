@@ -53,6 +53,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -833,21 +834,27 @@ class PSExtensionHandlerConfiguration
    }
 
    @Override
-   public boolean equals(Object b)
-   {
-      return EqualsBuilder.reflectionEquals(this, b);
+   public boolean equals(Object o) {
+      if (this == o) return true;
+      if (!(o instanceof PSExtensionHandlerConfiguration)) return false;
+      PSExtensionHandlerConfiguration that = (PSExtensionHandlerConfiguration) o;
+      return Objects.equals(m_handlerName, that.m_handlerName) && Objects.equals(m_defFactory, that.m_defFactory) && Objects.equals(m_extensionContexts, that.m_extensionContexts) && Objects.equals(m_pendingRemovals, that.m_pendingRemovals);
    }
 
    @Override
-   public int hashCode()
-   {
-      return HashCodeBuilder.reflectionHashCode(this);
+   public int hashCode() {
+      return Objects.hash(m_handlerName, m_defFactory, m_extensionContexts, m_pendingRemovals);
    }
 
    @Override
-   public String toString()
-   {
-      return ToStringBuilder.reflectionToString(this);
+   public String toString() {
+      final StringBuffer sb = new StringBuffer("PSExtensionHandlerConfiguration{");
+      sb.append("m_handlerName='").append(m_handlerName).append('\'');
+      sb.append(", m_defFactory=").append(m_defFactory);
+      sb.append(", m_extensionContexts=").append(m_extensionContexts);
+      sb.append(", m_pendingRemovals=").append(m_pendingRemovals);
+      sb.append('}');
+      return sb.toString();
    }
 
    /** The handler name. Non-<CODE>null</CODE>.*/

@@ -31,6 +31,7 @@ import com.percussion.utils.guid.IPSGuid;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.Objects;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -230,23 +231,32 @@ public class PSAssignedRole implements Serializable, IPSCatalogItem
    }
 
    @Override
-   public boolean equals(Object b)
-   {
-      return EqualsBuilder.reflectionEquals(this, b);
+   public boolean equals(Object o) {
+      if (this == o) return true;
+      if (!(o instanceof PSAssignedRole)) return false;
+      PSAssignedRole that = (PSAssignedRole) o;
+      return roleId == that.roleId && getStateId() == that.getStateId() && getWorkflowId() == that.getWorkflowId() && getAssignmentType() == that.getAssignmentType() && getAdhocType() == that.getAdhocType() && isDoNotify() == that.isDoNotify() && isShowInInbox() == that.isShowInInbox();
    }
 
    @Override
-   public int hashCode()
-   {
-      return HashCodeBuilder.reflectionHashCode(this);
+   public int hashCode() {
+      return Objects.hash(roleId, getStateId(), getWorkflowId(), getAssignmentType(), getAdhocType(), isDoNotify(), isShowInInbox());
    }
 
    @Override
-   public String toString()
-   {
-      return ToStringBuilder.reflectionToString(this);
+   public String toString() {
+      final StringBuffer sb = new StringBuffer("PSAssignedRole{");
+      sb.append("roleId=").append(roleId);
+      sb.append(", stateId=").append(stateId);
+      sb.append(", workflowId=").append(workflowId);
+      sb.append(", assignmentType=").append(assignmentType);
+      sb.append(", adhocType=").append(adhocType);
+      sb.append(", doNotify=").append(doNotify);
+      sb.append(", showInInbox=").append(showInInbox);
+      sb.append('}');
+      return sb.toString();
    }
-   
+
    /* (non-Javadoc)
     * @see IPSCatalogItem#fromXML(String)
     */

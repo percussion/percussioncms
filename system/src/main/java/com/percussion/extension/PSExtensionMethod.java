@@ -35,6 +35,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Represents an extension method. 
@@ -244,21 +245,27 @@ public class PSExtensionMethod implements Serializable
    }
 
    @Override
-   public boolean equals(Object b)
-   {
-      return EqualsBuilder.reflectionEquals(this, b);
+   public boolean equals(Object o) {
+      if (this == o) return true;
+      if (!(o instanceof PSExtensionMethod)) return false;
+      PSExtensionMethod that = (PSExtensionMethod) o;
+      return Objects.equals(m_name, that.m_name) && Objects.equals(m_description, that.m_description) && Objects.equals(m_parameters, that.m_parameters) && Objects.equals(m_returnType, that.m_returnType);
    }
 
    @Override
-   public int hashCode()
-   {
-      return HashCodeBuilder.reflectionHashCode(this);
+   public int hashCode() {
+      return Objects.hash(m_name, m_description, m_parameters, m_returnType);
    }
 
    @Override
-   public String toString()
-   {
-      return ToStringBuilder.reflectionToString(this);
+   public String toString() {
+      final StringBuffer sb = new StringBuffer("PSExtensionMethod{");
+      sb.append("m_name='").append(m_name).append('\'');
+      sb.append(", m_description='").append(m_description).append('\'');
+      sb.append(", m_parameters=").append(m_parameters);
+      sb.append(", m_returnType='").append(m_returnType).append('\'');
+      sb.append('}');
+      return sb.toString();
    }
 
    /**

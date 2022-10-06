@@ -715,13 +715,28 @@ public class PSNodeDefinition implements IPSNodeDefinition
       return m_name != null ? m_name.hashCode() : 0;
    }
 
-   /** (non-Javadoc)
-    * @see java.lang.Object#toString()
+   /**
+    * (non-Javadoc)
+    *
+    * @see Object#toString()
     */
    @Override
-   public String toString()
-   {
-      return ToStringBuilder.reflectionToString(this);
+   public String toString() {
+      final StringBuffer sb = new StringBuffer("PSNodeDefinition{");
+      sb.append("m_contenttypeid=").append(m_contenttypeid);
+      sb.append(", m_version=").append(m_version);
+      sb.append(", m_name='").append(m_name).append('\'');
+      sb.append(", m_label='").append(m_label).append('\'');
+      sb.append(", m_description='").append(m_description).append('\'');
+      sb.append(", m_newRequest='").append(m_newRequest).append('\'');
+      sb.append(", m_queryRequest='").append(m_queryRequest).append('\'');
+      sb.append(", m_updateRequest='").append(m_updateRequest).append('\'');
+      sb.append(", m_objectType=").append(m_objectType);
+      sb.append(", m_hideFromMenu=").append(m_hideFromMenu);
+      sb.append(", m_cvDescriptors=").append(m_cvDescriptors);
+      sb.append(", m_ctWfRels=").append(m_ctWfRels);
+      sb.append('}');
+      return sb.toString();
    }
 
    /**

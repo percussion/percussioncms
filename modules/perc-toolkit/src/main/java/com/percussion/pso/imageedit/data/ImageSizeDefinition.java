@@ -109,10 +109,17 @@ public class ImageSizeDefinition
    {
       this.binaryTemplate = binaryTemplate;
    }
-   
-   public String toString() 
-   {
-      return ToStringBuilder.reflectionToString(this);
-   }
 
+   @Override
+   public String toString() {
+      final StringBuffer sb = new StringBuffer("ImageSizeDefinition{");
+      sb.append("code='").append(code).append('\'');
+      sb.append(", label='").append(label).append('\'');
+      sb.append(", height=").append(height);
+      sb.append(", width=").append(width);
+      sb.append(", snippetTemplate='").append(snippetTemplate).append('\'');
+      sb.append(", binaryTemplate='").append(binaryTemplate).append('\'');
+      sb.append('}');
+      return sb.toString();
+   }
 }

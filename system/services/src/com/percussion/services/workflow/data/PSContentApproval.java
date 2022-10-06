@@ -33,6 +33,8 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
+import java.util.Objects;
+
 /**
  * Hibernate data object for approval information related to a content item, a
  * workflow role and a given user.  This represents an attempt to transition an
@@ -244,16 +246,15 @@ public class PSContentApproval
    }
 
    @Override
-   public boolean equals(Object obj)
-   {
-      return EqualsBuilder.reflectionEquals(this, obj);
+   public boolean equals(Object o) {
+      if (this == o) return true;
+      if (!(o instanceof PSContentApproval)) return false;
+      PSContentApproval that = (PSContentApproval) o;
+      return getContentId() == that.getContentId() && getRoleId() == that.getRoleId() && getWorkflowId() == that.getWorkflowId() && getStateId() == that.getStateId() && getTransitionId() == that.getTransitionId() && Objects.equals(getUser(), that.getUser());
    }
 
    @Override
-   public int hashCode()
-   {
-      return HashCodeBuilder.reflectionHashCode(this);
+   public int hashCode() {
+      return Objects.hash(getContentId(), getRoleId(), getUser(), getWorkflowId(), getStateId(), getTransitionId());
    }
-   
-   
 }

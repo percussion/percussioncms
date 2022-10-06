@@ -36,6 +36,8 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import java.util.Objects;
+
 /**
  * Represents an "application-policy" element in the 
  * {@link PSJBossUtils#LOGIN_CONFIG_FILE_NAME} file, used to save datasource 
@@ -306,17 +308,18 @@ public class PSSecureCredentials
 
 
    @Override
-   public boolean equals(Object obj)
-   {
-      return EqualsBuilder.reflectionEquals(this, obj);
+   public boolean equals(Object o) {
+      if (this == o) return true;
+      if (!(o instanceof PSSecureCredentials)) return false;
+      PSSecureCredentials that = (PSSecureCredentials) o;
+      return Objects.equals(m_datasourceName, that.m_datasourceName) && Objects.equals(m_userId, that.m_userId) && Objects.equals(m_password, that.m_password) && Objects.equals(m_securityDomain, that.m_securityDomain);
    }
 
    @Override
-   public int hashCode()
-   {
-      return HashCodeBuilder.reflectionHashCode(this);
+   public int hashCode() {
+      return Objects.hash(m_datasourceName, m_userId, m_password, m_securityDomain);
    }
-   
+
    /**
     * Constructs a security domain name based on the supplied datasource name.
     * 

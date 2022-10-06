@@ -26,6 +26,7 @@ package com.percussion.services.content.data;
 import com.percussion.services.utils.xml.PSXmlSerializationHelper;
 
 import java.io.IOException;
+import java.util.Objects;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -278,21 +279,30 @@ public class PSItemStatus
    }
 
    @Override
-   public boolean equals(Object b)
-   {
-      return EqualsBuilder.reflectionEquals(this, b);
+   public boolean equals(Object o) {
+      if (this == o) return true;
+      if (!(o instanceof PSItemStatus)) return false;
+      PSItemStatus that = (PSItemStatus) o;
+      return contentId == that.contentId && isDidCheckout() == that.isDidCheckout() && isDidTransition() == that.isDidTransition() && Objects.equals(getFromState(), that.getFromState()) && Objects.equals(getFromStateId(), that.getFromStateId()) && Objects.equals(getToState(), that.getToState()) && Objects.equals(getToStateId(), that.getToStateId());
    }
 
    @Override
-   public int hashCode()
-   {
-      return HashCodeBuilder.reflectionHashCode(this);
+   public int hashCode() {
+      return Objects.hash(contentId, isDidCheckout(), isDidTransition(), getFromState(), getFromStateId(), getToState(), getToStateId());
    }
 
    @Override
-   public String toString()
-   {
-      return ToStringBuilder.reflectionToString(this);
+   public String toString() {
+      final StringBuffer sb = new StringBuffer("PSItemStatus{");
+      sb.append("contentId=").append(contentId);
+      sb.append(", didCheckout=").append(didCheckout);
+      sb.append(", didTransition=").append(didTransition);
+      sb.append(", fromState='").append(fromState).append('\'');
+      sb.append(", fromStateId=").append(fromStateId);
+      sb.append(", toState='").append(toState).append('\'');
+      sb.append(", toStateId=").append(toStateId);
+      sb.append('}');
+      return sb.toString();
    }
 
    /* (non-Javadoc)

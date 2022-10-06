@@ -24,6 +24,7 @@
 package com.percussion.services.workflow.data;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 
 import javax.persistence.Column;
@@ -97,23 +98,17 @@ public class PSNotificationDefPK implements Serializable
       workflowId = workflowid;
    }
 
-   /* (non-Javadoc)
-    * @see java.lang.Object#equals(java.lang.Object)
-    */
    @Override
-   public boolean equals(Object obj)
-   {
-      return EqualsBuilder.reflectionEquals(this,obj);
+   public boolean equals(Object o) {
+      if (this == o) return true;
+      if (!(o instanceof PSNotificationDefPK)) return false;
+      PSNotificationDefPK that = (PSNotificationDefPK) o;
+      return getWorkflowId() == that.getWorkflowId() && getNotificationId() == that.getNotificationId();
    }
 
-   /* (non-Javadoc)
-    * @see java.lang.Object#hashCode()
-    */
    @Override
-   public int hashCode()
-   {
-      return HashCodeBuilder.reflectionHashCode(this);
-   }   
-
+   public int hashCode() {
+      return Objects.hash(getWorkflowId(), getNotificationId());
+   }
 }
 

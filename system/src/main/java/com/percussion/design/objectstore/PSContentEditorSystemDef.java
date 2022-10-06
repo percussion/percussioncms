@@ -41,6 +41,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * This class wraps the system def xml document and provides access to the
@@ -1072,15 +1073,16 @@ public class PSContentEditorSystemDef implements IPSDocument
    }
 
    @Override
-   public boolean equals(Object b)
-   {
-      return EqualsBuilder.reflectionEquals(this, b);
+   public boolean equals(Object o) {
+      if (this == o) return true;
+      if (!(o instanceof PSContentEditorSystemDef)) return false;
+      PSContentEditorSystemDef that = (PSContentEditorSystemDef) o;
+      return m_cacheTimeout == that.m_cacheTimeout && Objects.equals(m_inputDataExits, that.m_inputDataExits) && Objects.equals(m_resultDataExits, that.m_resultDataExits) && Objects.equals(m_paramNames, that.m_paramNames) && Objects.equals(m_containerLocator, that.m_containerLocator) && Objects.equals(m_fieldSet, that.m_fieldSet) && Objects.equals(m_uiDef, that.m_uiDef) && Objects.equals(m_systemLocator, that.m_systemLocator) && Objects.equals(m_appFlow, that.m_appFlow) && Objects.equals(m_styleSheets, that.m_styleSheets) && Objects.equals(m_inputTranslations, that.m_inputTranslations) && Objects.equals(m_outputTranslations, that.m_outputTranslations) && Objects.equals(m_groupValidations, that.m_groupValidations) && Objects.equals(m_initParams, that.m_initParams) && Objects.equals(m_sectionLinkList, that.m_sectionLinkList);
    }
 
    @Override
-   public int hashCode()
-   {
-      return HashCodeBuilder.reflectionHashCode(this);
+   public int hashCode() {
+      return Objects.hash(m_cacheTimeout, m_inputDataExits, m_resultDataExits, m_paramNames, m_containerLocator, m_fieldSet, m_uiDef, m_systemLocator, m_appFlow, m_styleSheets, m_inputTranslations, m_outputTranslations, m_groupValidations, m_initParams, m_sectionLinkList);
    }
 
    @Override

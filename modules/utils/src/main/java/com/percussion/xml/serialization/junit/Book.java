@@ -29,6 +29,7 @@ import org.apache.commons.lang3.time.FastDateFormat;
 
 import java.text.ParseException;
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * A sample Book class used in unit test of the
@@ -80,24 +81,16 @@ public class Book
       this.title = title;
    }
 
-   /*
-    * (non-Javadoc)
-    * 
-    * @see java.lang.Object#hashCode()
-    */
-   public int hashCode()
-   {
-      return HashCodeBuilder.reflectionHashCode(this);
+   @Override
+   public boolean equals(Object o) {
+      if (this == o) return true;
+      if (!(o instanceof Book)) return false;
+      Book book = (Book) o;
+      return Objects.equals(getTitle(), book.getTitle()) && Objects.equals(getPubDate(), book.getPubDate());
    }
 
-   /*
-    * (non-Javadoc)
-    * 
-    * @see java.lang.Object#equals(java.lang.Object)
-    */
-   public boolean equals(Object obj)
-   {
-      return EqualsBuilder.reflectionEquals(this, obj);
+   @Override
+   public int hashCode() {
+      return Objects.hash(getTitle(), getPubDate());
    }
-
 }

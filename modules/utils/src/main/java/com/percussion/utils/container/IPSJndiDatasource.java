@@ -174,16 +174,16 @@ public interface IPSJndiDatasource
 
    /**
     * Set the the maximum time in minutes a connection may be idle before being
-    * closed.  Defaults to 15 if not set.
+    * closed.  Defaults to DEFAULT_IDLE_TIMEOUT if not set.
     * 
-    * @param mins The number of minutes, must be >= 0.
+    * @param ms The number of milliseconds
     */
-   void setIdleTimeout(int mins);
+   void setIdleTimeout(int ms);
 
    /**
     * Get the value set by {@link #setIdleTimeout(int)}.
     * 
-    * @return The number of minutes.
+    * @return The number of milliseconds.
     */
    int getIdleTimeout();
 

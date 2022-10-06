@@ -31,6 +31,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * A representation of an extension method parameter. 
@@ -167,21 +168,26 @@ public class PSExtensionMethodParam implements Serializable
    }
 
    @Override
-   public boolean equals(Object b)
-   {
-      return EqualsBuilder.reflectionEquals(this, b);
+   public boolean equals(Object o) {
+      if (this == o) return true;
+      if (!(o instanceof PSExtensionMethodParam)) return false;
+      PSExtensionMethodParam that = (PSExtensionMethodParam) o;
+      return Objects.equals(m_name, that.m_name) && Objects.equals(m_type, that.m_type) && Objects.equals(m_description, that.m_description);
    }
 
    @Override
-   public int hashCode()
-   {
-      return HashCodeBuilder.reflectionHashCode(this);
+   public int hashCode() {
+      return Objects.hash(m_name, m_type, m_description);
    }
 
    @Override
-   public String toString()
-   {
-      return ToStringBuilder.reflectionToString(this);
+   public String toString() {
+      final StringBuffer sb = new StringBuffer("PSExtensionMethodParam{");
+      sb.append("m_name='").append(m_name).append('\'');
+      sb.append(", m_type='").append(m_type).append('\'');
+      sb.append(", m_description='").append(m_description).append('\'');
+      sb.append('}');
+      return sb.toString();
    }
 
    /**

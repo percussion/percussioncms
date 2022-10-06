@@ -51,6 +51,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Version;
+import java.util.Objects;
 
 /**
  * This is the object representation of a Locale defintion.
@@ -445,20 +446,18 @@ public class PSLocale implements IPSCatalogSummary
    }
 
    @Override
-   public int hashCode()
-   {
-      return HashCodeBuilder.reflectionHashCode(this);
+   public boolean equals(Object o) {
+      if (this == o) return true;
+      if (!(o instanceof PSLocale)) return false;
+      PSLocale psLocale = (PSLocale) o;
+      return m_localeId == psLocale.m_localeId && m_status == psLocale.m_status && Objects.equals(m_languageString, psLocale.m_languageString) && Objects.equals(m_displayName, psLocale.m_displayName) && Objects.equals(m_description, psLocale.m_description) && Objects.equals(m_version, psLocale.m_version);
    }
-   
-   /**
-    * Determines if this object is equal to another.  See 
-    * {@link java.lang.Object#equals(Object) Object.equals()} for more info.
-    */
-   public boolean equals(Object obj)
-   {
-      return EqualsBuilder.reflectionEquals(this, obj);
+
+   @Override
+   public int hashCode() {
+      return Objects.hash(m_languageString, m_displayName, m_description, m_localeId, m_status, m_version);
    }
-   
+
    /**
     * Implementation of {@link IPSCatalogSummary#getGUID()}, constructs and
     * returns a guid from the locale id.

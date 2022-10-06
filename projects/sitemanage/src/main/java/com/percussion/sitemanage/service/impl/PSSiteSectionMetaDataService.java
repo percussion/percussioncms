@@ -246,11 +246,12 @@ public class PSSiteSectionMetaDataService implements IPSSiteSectionMetaDataServi
         }
 
         @Override
-        public String toString()
-        {
-            return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
+        public String toString() {
+            final StringBuffer sb = new StringBuffer("SectionPath{");
+            sb.append("folderPath='").append(folderPath).append('\'');
+            sb.append('}');
+            return sb.toString();
         }
-
     }
 
     private void handleException(String action, Exception e, IPSFolderPath section, String category, String itemId)

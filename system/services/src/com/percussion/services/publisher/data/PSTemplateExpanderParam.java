@@ -177,12 +177,18 @@ public class PSTemplateExpanderParam
 
    /**
     * (non-Javadoc)
-    * 
-    * @see java.lang.Object#toString()
+    *
+    * @see Object#toString()
     */
    @Override
-   public String toString()
-   {
-      return ToStringBuilder.reflectionToString(this);
+   public String toString() {
+      final StringBuffer sb = new StringBuffer("PSTemplateExpanderParam{");
+      sb.append("id=").append(id);
+      sb.append(", version=").append(version);
+      sb.append(", name='").append(name).append('\'');
+      sb.append(", value='").append(value).append('\'');
+      sb.append(", contentList=").append(contentList);
+      sb.append('}');
+      return sb.toString();
    }
 }

@@ -122,11 +122,16 @@ public class MasterImageMetaData extends AbstractImageMetaData
       this.sizedImages = new LinkedHashMap<String, SizedImageMetaData>(); 
      
    }
-   public String toString() 
-   {
-      return ToStringBuilder.reflectionToString(this);
-   }
 
-   
-   
+   @Override
+   public String toString() {
+      final StringBuffer sb = new StringBuffer("MasterImageMetaData{");
+      sb.append("sysTitle='").append(sysTitle).append('\'');
+      sb.append(", displayTitle='").append(displayTitle).append('\'');
+      sb.append(", description='").append(description).append('\'');
+      sb.append(", alt='").append(alt).append('\'');
+      sb.append(", sizedImages=").append(sizedImages);
+      sb.append('}');
+      return sb.toString();
+   }
 }

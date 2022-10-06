@@ -24,6 +24,7 @@
 package com.percussion.services.workflow.data;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -131,25 +132,19 @@ public class PSNotificationPK implements Serializable
    public void setTransitionId(long transid)
    {
       transitionId = transid;
-   }   
-
-   /* (non-Javadoc)
-    * @see java.lang.Object#equals(java.lang.Object)
-    */
-   @Override
-   public boolean equals(Object obj)
-   {
-      return EqualsBuilder.reflectionEquals(this,obj);
    }
 
-   /* (non-Javadoc)
-    * @see java.lang.Object#hashCode()
-    */
    @Override
-   public int hashCode()
-   {
-      return HashCodeBuilder.reflectionHashCode(this);
-   }   
+   public boolean equals(Object o) {
+      if (this == o) return true;
+      if (!(o instanceof PSNotificationPK)) return false;
+      PSNotificationPK that = (PSNotificationPK) o;
+      return getWorkflowId() == that.getWorkflowId() && getTransitionId() == that.getTransitionId() && getNotificationId() == that.getNotificationId() && getTransNotificationId() == that.getTransNotificationId();
+   }
 
+   @Override
+   public int hashCode() {
+      return Objects.hash(getWorkflowId(), getTransitionId(), getNotificationId(), getTransNotificationId());
+   }
 }
 

@@ -580,7 +580,7 @@ public abstract class PSBaseDeliveryHandler implements IPSDeliveryHandler
    {
       m_jobData.remove(jobId);
       if (ms_log.isDebugEnabled())
-         ms_log.debug("After cleanup(" + jobId + ") - job data size: " + m_jobData.size());
+         ms_log.debug("After cleanup({}) - job data size: {}", jobId,m_jobData.size());
 
    }
 

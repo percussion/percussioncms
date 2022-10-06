@@ -119,7 +119,7 @@ class PSCacheStatistics extends Thread
       synchronized(m_cachedEvents)
       {
          m_cachedEvents.addLast( e );
-         m_cachedEvents.notify();
+         m_cachedEvents.notifyAll();
       }
    }
 

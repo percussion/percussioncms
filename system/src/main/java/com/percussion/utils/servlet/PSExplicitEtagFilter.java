@@ -186,7 +186,7 @@ public class PSExplicitEtagFilter extends OncePerRequestFilter {
             public void write(int b) throws IOException {
                 content.write(b);
                 if (writeListener != null) {
-                    writeListener.notify();
+                    writeListener.notifyAll();
                 }
             }
 
@@ -194,7 +194,7 @@ public class PSExplicitEtagFilter extends OncePerRequestFilter {
             public void write(byte[] b, int off, int len) throws IOException {
                 content.write(b, off, len);
                 if (writeListener != null) {
-                    writeListener.notify();
+                    writeListener.notifyAll();
                 }
             }
 

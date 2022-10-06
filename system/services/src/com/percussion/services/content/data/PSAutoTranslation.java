@@ -33,6 +33,7 @@ import com.percussion.utils.xml.IPSXmlSerialization;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.Objects;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -331,24 +332,34 @@ public class PSAutoTranslation
    public Integer getVersion()
    {
       return m_version;
-   }  
-
-   @Override
-   public boolean equals(Object b)
-   {
-      return EqualsBuilder.reflectionEquals(this, b);
    }
 
    @Override
-   public int hashCode()
-   {
-      return HashCodeBuilder.reflectionHashCode(this);
+   public boolean equals(Object o) {
+      if (this == o) return true;
+      if (!(o instanceof PSAutoTranslation)) return false;
+      PSAutoTranslation that = (PSAutoTranslation) o;
+      return getContentTypeId() == that.getContentTypeId() && getWorkflowId() == that.getWorkflowId() && getCommunityId() == that.getCommunityId() && Objects.equals(getContentTypeName(), that.getContentTypeName()) && Objects.equals(getWorkflowName(), that.getWorkflowName()) && Objects.equals(getCommunityName(), that.getCommunityName()) && Objects.equals(getLocale(), that.getLocale()) && Objects.equals(m_version, that.m_version);
    }
 
    @Override
-   public String toString()
-   {
-      return ToStringBuilder.reflectionToString(this);
+   public int hashCode() {
+      return Objects.hash(getContentTypeId(), getContentTypeName(), getWorkflowId(), getWorkflowName(), getCommunityId(), getCommunityName(), getLocale(), m_version);
+   }
+
+   @Override
+   public String toString() {
+      final StringBuffer sb = new StringBuffer("PSAutoTranslation{");
+      sb.append("contentTypeId=").append(contentTypeId);
+      sb.append(", contentTypeName='").append(contentTypeName).append('\'');
+      sb.append(", workflowId=").append(workflowId);
+      sb.append(", workflowName='").append(workflowName).append('\'');
+      sb.append(", communityId=").append(communityId);
+      sb.append(", communityName='").append(communityName).append('\'');
+      sb.append(", locale='").append(locale).append('\'');
+      sb.append(", m_version=").append(m_version);
+      sb.append('}');
+      return sb.toString();
    }
 
    /* (non-Javadoc)

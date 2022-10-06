@@ -173,12 +173,26 @@ public class VisitorLocation implements Serializable, Cloneable {
         if (ttl == null) return null;
         return ttl.addAndGet(i * -1);
     }
-    
+
     @Override
     public String toString() {
-        return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
+        final StringBuffer sb = new StringBuffer("VisitorLocation{");
+        sb.append("id=").append(id);
+        sb.append(", countryShort='").append(countryShort).append('\'');
+        sb.append(", countryLong='").append(countryLong).append('\'');
+        sb.append(", region='").append(region).append('\'');
+        sb.append(", city='").append(city).append('\'');
+        sb.append(", latitude=").append(latitude);
+        sb.append(", longitude=").append(longitude);
+        sb.append(", zipCode='").append(zipCode).append('\'');
+        sb.append(", ISP='").append(ISP).append('\'');
+        sb.append(", domainName='").append(domainName).append('\'');
+        sb.append(", netSpeed='").append(netSpeed).append('\'');
+        sb.append(", timeToLive=").append(timeToLive);
+        sb.append('}');
+        return sb.toString();
     }
-    
+
     @Override
     public boolean equals(Object obj) {
         return EqualsBuilder.reflectionEquals(this, obj);

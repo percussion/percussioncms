@@ -23,6 +23,7 @@
  */
 package com.percussion.services.assembly.impl.plugin;
 
+import com.percussion.cms.IPSConstants;
 import com.percussion.cms.objectstore.PSComponentSummary;
 import com.percussion.cms.objectstore.PSFolder;
 import com.percussion.design.objectstore.PSLocator;
@@ -78,7 +79,7 @@ public abstract class PSAssemblerBase implements IPSAssembler, IPSExtension
    /**
     * Commons logger
     */
-    protected static final Logger ms_log = LogManager.getLogger(PSAssemblerBase.class);
+    protected static final Logger ms_log = LogManager.getLogger(IPSConstants.PUBLISHING_LOG);
 
    /**
     * Assembly service
@@ -374,7 +375,7 @@ public abstract class PSAssemblerBase implements IPSAssembler, IPSExtension
             // requires AA handling
             PSJexlEvaluator eval = new PSJexlEvaluator(rval.getBindings());
             eval.bind("$sys.innertemplate", item.getTemplate());
-            if (!singleitemresult.isEmpty())
+            if (singleitemresult.size()>1)
             {
                ms_log
                      .warn("Ignoring excess results from global template for item {}",

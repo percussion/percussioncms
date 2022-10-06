@@ -175,14 +175,15 @@ public class PSItemFilterRuleParam implements Serializable
       return Objects.hash(name, ruleDef);
    }
 
-   /*
-    * (non-Javadoc)
-    * 
-    * @see java.lang.Object#toString()
-    */
    @Override
-   public String toString()
-   {
-      return ToStringBuilder.reflectionToString(this);
+   public String toString() {
+      final StringBuffer sb = new StringBuffer("PSItemFilterRuleParam{");
+      sb.append("id=").append(id);
+      sb.append(", version=").append(version);
+      sb.append(", name='").append(name).append('\'');
+      sb.append(", value='").append(value).append('\'');
+      sb.append(", ruleDef=").append(ruleDef);
+      sb.append('}');
+      return sb.toString();
    }
 }

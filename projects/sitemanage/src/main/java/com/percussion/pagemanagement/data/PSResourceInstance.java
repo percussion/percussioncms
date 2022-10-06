@@ -35,6 +35,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.StringUtils;
@@ -212,25 +213,32 @@ public class PSResourceInstance  {
     {
         this.linkAndLocations = links;
     }
-    
+
     @Override
-    public boolean equals(Object o)
-    {
-        return EqualsBuilder.reflectionEquals(this, o);
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof PSResourceInstance)) return false;
+        PSResourceInstance that = (PSResourceInstance) o;
+        return Objects.equals(getResourceDefinition(), that.getResourceDefinition()) && Objects.equals(getLinkContext(), that.getLinkContext()) && Objects.equals(getItem(), that.getItem()) && Objects.equals(getSite(), that.getSite()) && Objects.equals(getLinkAndLocations(), that.getLinkAndLocations()) && Objects.equals(getBaseUrl(), that.getBaseUrl()) && Objects.equals(getLocationFolderPath(), that.getLocationFolderPath());
     }
 
     @Override
-    public int hashCode()
-    {
-        //Do not use the id to generate a hash code.
-        return HashCodeBuilder.reflectionHashCode(this, new String[]
-        {"id"});
+    public int hashCode() {
+        return Objects.hash(getResourceDefinition(), getLinkContext(), getItem(), getSite(), getLinkAndLocations(), getBaseUrl(), getLocationFolderPath());
     }
 
     @Override
-    public String toString()
-    {
-        return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("PSResourceInstance{");
+        sb.append("resourceDefinition=").append(resourceDefinition);
+        sb.append(", linkContext=").append(linkContext);
+        sb.append(", item=").append(item);
+        sb.append(", site=").append(site);
+        sb.append(", linkAndLocations=").append(linkAndLocations);
+        sb.append(", baseUrl=").append(baseUrl);
+        sb.append(", locationFolderPath='").append(locationFolderPath).append('\'');
+        sb.append('}');
+        return sb.toString();
     }
 
     @Override

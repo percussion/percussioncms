@@ -553,14 +553,24 @@ public class PSContentList implements IPSContentList {
         return (name != null) ? name.hashCode() : (-1);
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see java.lang.Object#toString()
-     */
     @Override
     public String toString() {
-        return ToStringBuilder.reflectionToString(this);
+        final StringBuffer sb = new StringBuffer("PSContentList{");
+        sb.append("contentListId=").append(contentListId);
+        sb.append(", version=").append(version);
+        sb.append(", name='").append(name).append('\'');
+        sb.append(", description='").append(description).append('\'');
+        sb.append(", type=").append(type);
+        sb.append(", url='").append(url).append('\'');
+        sb.append(", generator='").append(generator).append('\'');
+        sb.append(", expander='").append(expander).append('\'');
+        sb.append(", editionType='").append(editionType).append('\'');
+        sb.append(", filterId=").append(filterId);
+        sb.append(", generatorArguments=").append(generatorArguments);
+        sb.append(", expanderArguments=").append(expanderArguments);
+        sb.append(", m_filter=").append(m_filter);
+        sb.append('}');
+        return sb.toString();
     }
 
     /*

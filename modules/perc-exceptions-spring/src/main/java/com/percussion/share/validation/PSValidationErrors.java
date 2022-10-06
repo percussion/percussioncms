@@ -135,16 +135,25 @@ public class PSValidationErrors extends PSErrors {
         public void setBindingFailure(boolean bindingFailure) {
             this.bindingFailure = bindingFailure;
         }
-        
+
         @Override
         public String toString() {
-            return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
-        }    
+            final StringBuffer sb = new StringBuffer("PSFieldError{");
+            sb.append("field='").append(field).append('\'');
+            sb.append(", rejectedValue=").append(rejectedValue);
+            sb.append(", bindingFailure=").append(bindingFailure);
+            sb.append('}');
+            return sb.toString();
+        }
     }
-    
+
     @Override
     public String toString() {
-        return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
+        final StringBuffer sb = new StringBuffer("PSValidationErrors{");
+        sb.append("fieldErrors=").append(fieldErrors);
+        sb.append(", globalErrors=").append(globalErrors);
+        sb.append(", methodName='").append(methodName).append('\'');
+        sb.append('}');
+        return sb.toString();
     }
-    
 }

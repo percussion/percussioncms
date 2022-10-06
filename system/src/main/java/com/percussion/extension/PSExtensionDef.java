@@ -39,6 +39,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Properties;
 
 /**
@@ -472,13 +473,7 @@ public class PSExtensionDef implements IPSExtensionDef, Serializable,
 
       return ver;
    }
-   
-   @Override
-   public boolean equals(Object b)
-   {
-      return EqualsBuilder.reflectionEquals(this, b);
-   }
-   
+
    @Override
    public IPSExtensionDef clone()
    {
@@ -512,9 +507,16 @@ public class PSExtensionDef implements IPSExtensionDef, Serializable,
    }
 
    @Override
-   public int hashCode()
-   {
-      return HashCodeBuilder.reflectionHashCode(this);
+   public boolean equals(Object o) {
+      if (this == o) return true;
+      if (!(o instanceof PSExtensionDef)) return false;
+      PSExtensionDef that = (PSExtensionDef) o;
+      return m_isDepecated == that.m_isDepecated && m_isRestoreRequestParamsOnError == that.m_isRestoreRequestParamsOnError && Objects.equals(m_ref, that.m_ref) && Objects.equals(m_resURLs, that.m_resURLs) && Objects.equals(m_initParams, that.m_initParams) && Objects.equals(m_interfaces, that.m_interfaces) && Objects.equals(m_runtimeParams, that.m_runtimeParams) && Objects.equals(m_runtimeParamsMap, that.m_runtimeParamsMap) && Objects.equals(m_suppliedResources, that.m_suppliedResources) && Objects.equals(m_requiredApplications, that.m_requiredApplications) && Objects.equals(m_methods, that.m_methods);
+   }
+
+   @Override
+   public int hashCode() {
+      return Objects.hash(m_ref, m_resURLs, m_initParams, m_interfaces, m_runtimeParams, m_runtimeParamsMap, m_suppliedResources, m_requiredApplications, m_isDepecated, m_isRestoreRequestParamsOnError, m_methods);
    }
 
    /* (non-Javadoc)

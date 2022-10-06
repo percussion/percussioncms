@@ -178,13 +178,13 @@ public class PSCacheManager implements IPSHandlerInitListener
          {
             try
             {
-               m_memoryManager.cleanDiskCache();
+               PSCacheMemoryManager.cleanDiskCache();
                PSCacheHandler handler = null;
                Iterator<PSCacheHandler> handlers = null;
                handlers = m_cacheHandlers.iterator();
                while (handlers.hasNext())
                {
-                  handler = (PSCacheHandler)handlers.next();
+                  handler = handlers.next();
                   handler.start();
                   m_started = true;
                   PSConsole.printMsg(SUBSYSTEM, "Started " + handler.getType() + 
@@ -810,7 +810,7 @@ public class PSCacheManager implements IPSHandlerInitListener
     * Object to synchronize access to <code>m_cacheHandlers</code>. Never
     * <code>null</code>.
     */
-   private Object m_handlerMonitor = new Object();
+   private final Object m_handlerMonitor = new Object();
 
    /**
     * Flag to indicate if <code>start</code> has been called at least once.

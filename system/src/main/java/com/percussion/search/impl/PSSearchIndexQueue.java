@@ -347,7 +347,7 @@ public class PSSearchIndexQueue  implements IPSSearchIndexQueue
                {
                   
                   nextPollTime = DateUtils.round(DateUtils.addMilliseconds(date, POLL_DELAY + 1000), Calendar.SECOND);
-                  pollMonitor.notify();
+                  pollMonitor.notifyAll();
                }
             }
          }
@@ -407,7 +407,7 @@ public class PSSearchIndexQueue  implements IPSSearchIndexQueue
       synchronized (pollMonitor)
       {
          skipPollWait = true;
-         pollMonitor.notify();
+         pollMonitor.notifyAll();
       }
    }
    
@@ -421,7 +421,7 @@ public class PSSearchIndexQueue  implements IPSSearchIndexQueue
    {
       synchronized (pollMonitor)
       {
-         pollMonitor.notify();
+         pollMonitor.notifyAll();
          shutdown = true;
       }
    }

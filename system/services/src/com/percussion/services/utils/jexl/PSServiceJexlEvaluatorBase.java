@@ -23,6 +23,8 @@
  */
 package com.percussion.services.utils.jexl;
 
+import com.percussion.design.objectstore.PSNotFoundException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.*;
 import com.percussion.server.PSServer;
 import com.percussion.utils.jexl.PSJexlEvaluator;
@@ -249,23 +251,24 @@ public class PSServiceJexlEvaluatorBase extends PSJexlEvaluator
    @SuppressWarnings("unchecked")
    private boolean isJexlExtension(PSExtensionRef ref, IPSExtensionManager mgr)
    {
-      try
-      {
-         IPSExtensionDef def = mgr.getExtensionDef(ref);
+      IPSExtensionDef def = null;
+      try {
+         def = mgr.getExtensionDef(ref);
+      } catch (PSExtensionException | PSNotFoundException e) {
+         ms_log.error("Error checking exception {}. Error: {}" , ref.getExtensionName(),
+                 PSExceptionUtils.getMessageForLog(e));
+      }
+
+      if(def != null) {
          Iterator<String> interfaces = def.getInterfaces();
-         while (interfaces.hasNext())
-         {
+         while (interfaces.hasNext()) {
             String iface = interfaces.next();
-            if (IPSJEXL_EXPRESSION.equals(iface))
-            {
+            if (IPSJEXL_EXPRESSION.equals(iface)) {
                return true;
             }
          }
       }
-      catch (Exception e)
-      {
-         ms_log.error("Error checking exception " + ref.getExtensionName(), e);
-      }
+
       return false;
    }
 

@@ -156,14 +156,14 @@ public abstract class PSRenderLinkContext
             throw new RuntimeException("Cannot clone link legacyLinkContext", e);
         }
     }
-    
-    
-    @Override
-    public String toString()
-    {
-        return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
-    }
-    
-    
 
+
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("PSRenderLinkContext{");
+        sb.append("folderPath='").append(folderPath).append('\'');
+        sb.append(", isDeliveryContext=").append(isDeliveryContext);
+        sb.append('}');
+        return sb.toString();
+    }
 }

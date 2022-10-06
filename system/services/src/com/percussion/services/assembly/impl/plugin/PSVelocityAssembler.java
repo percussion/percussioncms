@@ -464,7 +464,6 @@ public class PSVelocityAssembler extends PSAssemblerBase
          {
             logger.error("Problem reinitializing velocity. Error: {}",
                     PSExceptionUtils.getMessageForLog(e));
-            logger.debug(e);
          }
       }
 
@@ -567,7 +566,6 @@ public class PSVelocityAssembler extends PSAssemblerBase
                     item.getId(),
                     item.getTemplate().getName(),
                     PSExceptionUtils.getMessageForLog(ae));
-            logger.debug(ae);
 
             String message = getErrorMsgForItem(item);
 

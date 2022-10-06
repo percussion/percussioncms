@@ -391,25 +391,12 @@ public class PSFieldRetriever
 
          return rh.getMimeContent(execData, false);
       }
-      catch (PSInternalRequestCallException e)
+      catch (PSInternalRequestCallException | PSAuthorizationException | PSAuthenticationFailedException e)
       {
          String[] errs = { "" + m_contentTypeId, e.getMessage() };
          throw new PSCmsException(IPSCmsErrors.CONTENT_TYPE_CANNOT_BE_OPENED,
             errs);
-      }
-      catch (PSAuthorizationException e)
-      {
-         String[] errs = { "" + m_contentTypeId, e.getMessage() };
-         throw new PSCmsException(IPSCmsErrors.CONTENT_TYPE_CANNOT_BE_OPENED,
-            errs);
-      }
-      catch (PSAuthenticationFailedException e)
-      {
-         String[] errs = { "" + m_contentTypeId, e.getMessage() };
-         throw new PSCmsException(IPSCmsErrors.CONTENT_TYPE_CANNOT_BE_OPENED,
-            errs);
-      }
-      finally
+      } finally
       {
          if (execData != null)
             execData.release();

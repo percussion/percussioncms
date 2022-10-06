@@ -33,6 +33,7 @@ import com.percussion.utils.guid.IPSGuid;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -165,23 +166,28 @@ public class PSTransitionRole implements Serializable, IPSCatalogItem
       setTransitionId(src.getTransitionId());
       setWorkflowId(src.getWorkflowId());
    }
-   
+
    @Override
-   public boolean equals(Object b)
-   {
-      return EqualsBuilder.reflectionEquals(this, b);
+   public boolean equals(Object o) {
+      if (this == o) return true;
+      if (!(o instanceof PSTransitionRole)) return false;
+      PSTransitionRole that = (PSTransitionRole) o;
+      return getRoleId() == that.getRoleId() && getTransitionId() == that.getTransitionId() && getWorkflowId() == that.getWorkflowId();
    }
 
    @Override
-   public int hashCode()
-   {
-      return HashCodeBuilder.reflectionHashCode(this);
+   public int hashCode() {
+      return Objects.hash(getRoleId(), getTransitionId(), getWorkflowId());
    }
 
    @Override
-   public String toString()
-   {
-      return ToStringBuilder.reflectionToString(this);
+   public String toString() {
+      final StringBuffer sb = new StringBuffer("PSTransitionRole{");
+      sb.append("roleId=").append(roleId);
+      sb.append(", transitionId=").append(transitionId);
+      sb.append(", workflowId=").append(workflowId);
+      sb.append('}');
+      return sb.toString();
    }
 
    /* (non-Javadoc)

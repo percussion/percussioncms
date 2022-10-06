@@ -506,14 +506,38 @@ public class PSPubItemStatus implements Serializable, IPSPublisherItemStatus
       m_parentPageReference = refid;
    }
 
-   /* (non-Javadoc)
-    * @see java.lang.Object#toString()
-    */
    @Override
-   public String toString()
-   {
-      return ToStringBuilder.reflectionToString(this,
-            ToStringStyle.MULTI_LINE_STYLE);
+   public String toString() {
+      final StringBuffer sb = new StringBuffer("PSPubItemStatus{");
+      sb.append("m_referenceId=").append(m_referenceId);
+      sb.append(", m_unpublishRefId=").append(m_unpublishRefId);
+      sb.append(", m_pubServerId=").append(m_pubServerId);
+      sb.append(", m_jobId=").append(m_jobId);
+      sb.append(", m_state=").append(m_state);
+      sb.append(", m_elapsed=").append(m_elapsed);
+      sb.append(", m_publishedDate=").append(m_publishedDate);
+      sb.append(", m_assemblyUrl='").append(m_assemblyUrl).append('\'');
+      sb.append(", m_publishedLocation='").append(m_publishedLocation).append('\'');
+      sb.append(", m_id=").append(m_id);
+      sb.append(", m_folderId=").append(m_folderId);
+      sb.append(", m_templateId=").append(m_templateId);
+      sb.append(", m_publish=").append(m_publish);
+      sb.append(", m_siteId=").append(m_siteId);
+      sb.append(", m_deliveryContext=").append(m_deliveryContext);
+      sb.append(", m_page=").append(m_page);
+      sb.append(", m_parentPageReference=").append(m_parentPageReference);
+      sb.append(", m_unpublishingInformation=");
+      if (m_unpublishingInformation == null) sb.append("null");
+      else {
+         sb.append('[');
+         for (int i = 0; i < m_unpublishingInformation.length; ++i)
+            sb.append(i == 0 ? "" : ", ").append(m_unpublishingInformation[i]);
+         sb.append(']');
+      }
+      sb.append(", m_messages=").append(m_messages);
+      sb.append(", m_deliveryType='").append(m_deliveryType).append('\'');
+      sb.append('}');
+      return sb.toString();
    }
 
    /**

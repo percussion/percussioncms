@@ -115,11 +115,11 @@ public class PSFolderSecurityManager
       // TODO: Steve - This should be replaced with AclService not an internal request.  
       // This method is not normally called directly and folder ACL will be pulled from PSItemSummaryCache through PSServerFolderProcessor and
       // when populating the cache initially.
-      Map params = new HashMap();
+      Map params = new HashMap<>();
       
       if (ids != null)
       {
-         List idList = new ArrayList();
+         List idList = new ArrayList<>();
          for (int i = 0; i < ids.length; i++)
             idList.add(String.valueOf(ids[i]));
          params.put(IPSHtmlParameters.SYS_CONTENTID, idList);
@@ -131,7 +131,7 @@ public class PSFolderSecurityManager
       if (ir == null)
          throw new PSCmsException(IPSCmsErrors.REQUIRED_RESOURCE_MISSING,
             FOLDER_ACL_RESOURCE);
-      List aclList = new ArrayList();
+      List aclList = new ArrayList<>();
       ResultSet rs = null;
       try
       {
@@ -158,6 +158,7 @@ public class PSFolderSecurityManager
             }
             folderAcl.add(aclEntry);
          }
+
          return (PSFolderAcl[])aclList.toArray(new PSFolderAcl[aclList.size()]);
       }
       catch (SQLException e)

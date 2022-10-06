@@ -32,6 +32,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * The PSAttributeValue class is used to store an attribute value.
@@ -257,18 +258,19 @@ public class PSAttributeValue extends PSDatabaseComponent
    {
       //no-op
    }
-   
+
    @Override
-   public boolean equals(Object obj)
-   {
-      return EqualsBuilder.reflectionEquals(this, obj);
+   public boolean equals(Object o) {
+      if (this == o) return true;
+      if (!(o instanceof PSAttributeValue)) return false;
+      PSAttributeValue that = (PSAttributeValue) o;
+      return Objects.equals(m_value, that.m_value);
    }
-   
+
    @Override
-   public int hashCode()
-   {
-      return HashCodeBuilder.reflectionHashCode(this);
-   }   
+   public int hashCode() {
+      return Objects.hash(m_value);
+   }
 
    /**
     * The value text.  Never <code>null</code>, may be empty.

@@ -26,6 +26,7 @@ package com.percussion.services.security;
 import com.percussion.security.IPSTypedPrincipal;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -124,14 +125,17 @@ public class PSTypedPrincipal implements IPSTypedPrincipal, Serializable
       return m_name;
    }
 
-   public boolean equals(Object obj)
-   {
-      return EqualsBuilder.reflectionEquals(this, obj);
+   @Override
+   public boolean equals(Object o) {
+      if (this == o) return true;
+      if (!(o instanceof PSTypedPrincipal)) return false;
+      PSTypedPrincipal that = (PSTypedPrincipal) o;
+      return m_type == that.m_type && Objects.equals(m_name, that.m_name);
    }
 
-   public int hashCode()
-   {
-      return HashCodeBuilder.reflectionHashCode(this);
+   @Override
+   public int hashCode() {
+      return Objects.hash(m_type, m_name);
    }
 
    public String toString()

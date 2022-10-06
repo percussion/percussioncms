@@ -36,9 +36,9 @@ public class PSJndiDatasourceImpl implements IPSJndiDatasource {
     protected String password;
     protected String driverClassName;
     protected String securityDomain;
-    protected int minConnections=0;
+    protected int minConnections=15;
     protected int maxConnections=100;
-    protected int idleTimeout=900000;
+    protected int idleTimeout=59000;
     protected String connectionTestQuery;
     protected boolean isEncrypted;
     private int id;

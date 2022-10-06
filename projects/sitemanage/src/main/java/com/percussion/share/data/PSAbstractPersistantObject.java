@@ -48,15 +48,6 @@ public abstract class PSAbstractPersistantObject extends PSAbstractDataObject im
     
     public abstract void setId(String id);
 
-
-    @Override
-    public int hashCode() {
-        //Do not use the id to generate a hash code.
-        return HashCodeBuilder.reflectionHashCode(this, new String[] {"id"});
-    }
-
-
-    
     private static final long serialVersionUID = 1L;
 
 }

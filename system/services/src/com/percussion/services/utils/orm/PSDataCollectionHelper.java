@@ -41,9 +41,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.query.Query;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.StatelessSession;
 import org.hibernate.Transaction;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * This class manages id sets in a temporary table in the database. It is
@@ -105,11 +106,16 @@ import org.hibernate.Transaction;
  * and {@link #createIdSet(Session, Collection)} can be processed from more than one 
  * thread at the same time, but {@link #clearIdSet(Session, long)} can only be 
  * processed from one thread at a time.
- * 
  * @author dougrand
  */
+@Repository
+@Transactional
 public class PSDataCollectionHelper
 {
+
+   public PSDataCollectionHelper() {
+   }
+
    /**
     * This reader/writer lock allows safe clean-up IDs while
     * allowing queries and insertions. The read lock is taken for query
@@ -123,7 +129,7 @@ public class PSDataCollectionHelper
     * we had experienced in SQL server, where sub-query select and delete IDs
     * from the PSX_TEMPID table at the same time caused deadlock in SQL Server.
     */
-   private static ReentrantReadWriteLock ms_rwlock = new ReentrantReadWriteLock(true);
+   private static final ReentrantReadWriteLock ms_rwlock = new ReentrantReadWriteLock(true);
 
 
    /**
@@ -140,35 +146,8 @@ public class PSDataCollectionHelper
    public static final int MAX_IDS = 650;
 
    /**
-    * Initialize system by removing all idsets
-    * 
-    * @param sf the hibernate session factory, passed via the beans.xml file as
-    *           a constructor argument
-    */
-   public PSDataCollectionHelper(SessionFactory sf) {
-      //fixme this code should be moved as it breaks install if left here
-      /*if (sf == null)
-      {
-         throw new IllegalArgumentException("sf may not be null");
-      }
-      Session session = null;
-      try
-      {
-         session = sf.openSession();
-         session.createQuery("delete from PSTempId").executeUpdate();
-      }
-      finally
-      {
-         if (session != null)
-         {
-            session.close();
-         }
-      }*/
-   }
-
-   /**
     * Clear the id set formed by an earlier call to
-    * {@link #createIdSet(Session, List)} within the same transaction. The id
+    *  within the same transaction. The id
     * passed must match the earlier call.
     * <p>
     * Note, this method may be blocked if it is called from more than one threads,
@@ -177,7 +156,7 @@ public class PSDataCollectionHelper
     * 
     * @param session the hibernate session to use, never <code>null</code>
     * @param idset the id set to clear, must be a value from an earlier call to
-    *           {@link #createIdSet(Session, List)} or problems may occur (such
+    *            or problems may occur (such
     *           as removing the wrong set).
     */
    public static void clearIdSet(Session session, long idset)
@@ -186,14 +165,13 @@ public class PSDataCollectionHelper
       
       if (ms_logger.isDebugEnabled())
       {
-         ms_logger.debug("clearIdSet() idset = " + idset);
+         ms_logger.debug("clearIdSet() idset = {}" , idset);
       }
       
       ms_rwlock.writeLock().lock();
       try
       {
-          session.createQuery("delete from PSTempId tid where tid.pk.id = :id")
-             .setLong("id", idset).executeUpdate();
+          session.createQuery("delete from PSTempId tid where tid.pk.id = :id").setParameter("id", idset).executeUpdate();
       }
       finally
       {
@@ -240,7 +218,7 @@ public class PSDataCollectionHelper
    /**
     * Create the id set. The IDs passed in the list are inserted into the table.
     * <p>
-    * This method and {@link #createIdSet(Session, Collection)} can be 
+    * This method can be
     * processed from more than one thread at the same time, but it has to wait 
     * until previous calls to {@link #clearIdSet(Session, long)} to be finished 
     * (from different thread).

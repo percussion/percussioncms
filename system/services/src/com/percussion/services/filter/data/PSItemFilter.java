@@ -437,13 +437,18 @@ public class PSItemFilter implements IPSItemFilter, IPSCatalogSummary,
       return Objects.hash(name);
    }
 
-   /* (non-Javadoc)
-    * @see java.lang.Object#toString()
-    */
    @Override
-   public String toString()
-   {
-      return ToStringBuilder.reflectionToString(this);
+   public String toString() {
+      final StringBuffer sb = new StringBuffer("PSItemFilter{");
+      sb.append("filter_id=").append(filter_id);
+      sb.append(", version=").append(version);
+      sb.append(", name='").append(name).append('\'');
+      sb.append(", description='").append(description).append('\'');
+      sb.append(", legacy_authtype=").append(legacy_authtype);
+      sb.append(", rules=").append(rules);
+      sb.append(", parentFilter=").append(parentFilter);
+      sb.append('}');
+      return sb.toString();
    }
 
    /* (non-Javadoc)

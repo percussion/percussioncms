@@ -384,12 +384,22 @@ public class PSLocationScheme implements IPSCatalogItem, IPSLocationScheme,
                                     .append(parameters).toHashCode();
     }
 
-    /* (non-Javadoc)
-     * @see java.lang.Object#toString()
-     */
     @Override
     public String toString() {
-        return ToStringBuilder.reflectionToString(this).toString();
+        final StringBuffer sb = new StringBuffer("PSLocationScheme{");
+        sb.append("schemeId=").append(schemeId);
+        sb.append(", version=").append(version);
+        sb.append(", name='").append(name).append('\'');
+        sb.append(", description='").append(description).append('\'');
+        sb.append(", templateId=").append(templateId);
+        sb.append(", contentTypeId=").append(contentTypeId);
+        sb.append(", contextId=").append(contextId);
+        sb.append(", generator='").append(generator).append('\'');
+        sb.append(", parameters=").append(parameters);
+        sb.append(", m_context=").append(m_context);
+        sb.append(", m_isCloned=").append(m_isCloned);
+        sb.append('}');
+        return sb.toString();
     }
 
     /* (non-Javadoc)

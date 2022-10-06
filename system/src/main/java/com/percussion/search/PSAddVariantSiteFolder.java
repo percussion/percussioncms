@@ -70,6 +70,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -1142,25 +1143,25 @@ public class PSAddVariantSiteFolder extends PSDefaultExtension
       }
 
       @Override
-      public boolean equals(Object obj)
-      {
-         return EqualsBuilder.reflectionEquals(
-               PSAddVariantSiteFolder.PSSiteRef.this, obj);
+      public boolean equals(Object o) {
+         if (this == o) return true;
+         if (!(o instanceof PSSiteRef)) return false;
+         PSSiteRef psSiteRef = (PSSiteRef) o;
+         return Objects.equals(mi_siteId, psSiteRef.mi_siteId) && Objects.equals(mi_siteName, psSiteRef.mi_siteName);
       }
 
-     @Override
-     public int hashCode()
-     {
-        return HashCodeBuilder.reflectionHashCode(
-           PSAddVariantSiteFolder.PSSiteRef.this);
-     }
-     
-     @Override
-     public String toString()
-     {
-        return ToStringBuilder.reflectionToString(
-           PSAddVariantSiteFolder.PSSiteRef.this);
-     }
-     
+      @Override
+      public int hashCode() {
+         return Objects.hash(mi_siteId, mi_siteName);
+      }
+
+      @Override
+      public String toString() {
+         final StringBuffer sb = new StringBuffer("PSSiteRef{");
+         sb.append("mi_siteId='").append(mi_siteId).append('\'');
+         sb.append(", mi_siteName='").append(mi_siteName).append('\'');
+         sb.append('}');
+         return sb.toString();
+      }
    }
 }

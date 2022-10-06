@@ -68,6 +68,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import static org.apache.commons.lang.StringUtils.isBlank;
@@ -132,30 +133,6 @@ public class PSDatabaseDeliveryHandler extends PSBaseDeliveryHandler
          m_origin = root.getAttribute("origin");
       }
 
-      /**
-       * Indicates if the supplied object equals to the current object.
-       * 
-       * @param obj The supplied object, it may be <code>null</code>
-       * 
-       * @return <code>true</code> if the two objects are the same; otherwise
-       *         return <code>false</code>.
-       */
-      @Override
-      public boolean equals(Object obj)
-      {
-         if (!(obj instanceof DbmsInfo))
-            return false;
-
-         DbmsInfo other = (DbmsInfo) obj;
-
-         return new EqualsBuilder()
-            .append(m_dbName, other.m_dbName)
-            .append(m_resourceName, other.m_resourceName)
-            .append(m_driverType, other.m_driverType)
-            .append(m_origin, other.m_origin)
-            .isEquals();
-      }
-      
       /*
        * //see base class method for details
        */
@@ -167,13 +144,17 @@ public class PSDatabaseDeliveryHandler extends PSBaseDeliveryHandler
                + (m_dbName == null ? "null" : m_dbName);
       }
 
-      /**
-       * Generates object hash code. Overrides {@link Object#hashCode()}.
-       */
       @Override
-      public int hashCode()
-      {
-         return HashCodeBuilder.reflectionHashCode(this);
+      public boolean equals(Object o) {
+         if (this == o) return true;
+         if (!(o instanceof DbmsInfo)) return false;
+         DbmsInfo dbmsInfo = (DbmsInfo) o;
+         return Objects.equals(m_dbName, dbmsInfo.m_dbName) && Objects.equals(m_resourceName, dbmsInfo.m_resourceName) && Objects.equals(m_driverType, dbmsInfo.m_driverType) && Objects.equals(m_origin, dbmsInfo.m_origin);
+      }
+
+      @Override
+      public int hashCode() {
+         return Objects.hash(m_dbName, m_resourceName, m_driverType, m_origin);
       }
 
       /**

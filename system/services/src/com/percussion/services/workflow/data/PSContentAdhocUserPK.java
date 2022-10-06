@@ -24,6 +24,7 @@
 package com.percussion.services.workflow.data;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -136,21 +137,16 @@ public class PSContentAdhocUserPK implements Serializable
       this.user = user;
    }
 
-   /* (non-Javadoc)
-    * @see java.lang.Object#equals(java.lang.Object)
-    */
    @Override
-   public boolean equals(Object obj)
-   {
-      return EqualsBuilder.reflectionEquals(this,obj);
+   public boolean equals(Object o) {
+      if (this == o) return true;
+      if (!(o instanceof PSContentAdhocUserPK)) return false;
+      PSContentAdhocUserPK that = (PSContentAdhocUserPK) o;
+      return getContentId() == that.getContentId() && getRoleId() == that.getRoleId() && Objects.equals(getUser(), that.getUser());
    }
 
-   /* (non-Javadoc)
-    * @see java.lang.Object#hashCode()
-    */
    @Override
-   public int hashCode()
-   {
-      return HashCodeBuilder.reflectionHashCode(this);
+   public int hashCode() {
+      return Objects.hash(getContentId(), getRoleId(), getUser());
    }
 }

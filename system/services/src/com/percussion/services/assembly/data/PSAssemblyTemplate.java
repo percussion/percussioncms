@@ -748,14 +748,32 @@ public class PSAssemblyTemplate
       return Objects.hash(name);
    }
 
-   /* (non-Javadoc)
-    * @see java.lang.Object#toString()
-    */
    @Override
-   public String toString()
-   {
-      return ToStringBuilder.reflectionToString(this,
-            ToStringStyle.MULTI_LINE_STYLE);
+   public String toString() {
+      final StringBuffer sb = new StringBuffer("PSAssemblyTemplate{");
+      sb.append("id=").append(id);
+      sb.append(", version=").append(version);
+      sb.append(", name='").append(name).append('\'');
+      sb.append(", label='").append(label).append('\'');
+      sb.append(", locationPrefix='").append(locationPrefix).append('\'');
+      sb.append(", locationSuffix='").append(locationSuffix).append('\'');
+      sb.append(", assembler='").append(assembler).append('\'');
+      sb.append(", assemblyUrl='").append(assemblyUrl).append('\'');
+      sb.append(", styleSheet='").append(styleSheet).append('\'');
+      sb.append(", aaType=").append(aaType);
+      sb.append(", outputFormat=").append(outputFormat);
+      sb.append(", publishWhen=").append(publishWhen);
+      sb.append(", templateType=").append(templateType);
+      sb.append(", description='").append(description).append('\'');
+      sb.append(", template='").append(template).append('\'');
+      sb.append(", mimeType='").append(mimeType).append('\'');
+      sb.append(", charset='").append(charset).append('\'');
+      sb.append(", bindings=").append(bindings);
+      sb.append(", slots=").append(slots);
+      sb.append(", globalTemplateUsage=").append(globalTemplateUsage);
+      sb.append(", globalTemplate=").append(globalTemplate);
+      sb.append('}');
+      return sb.toString();
    }
 
    /* (non-Javadoc)

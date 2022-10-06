@@ -244,9 +244,7 @@ public class PSScript implements IPSScript
             }
         }
 
-        protected static void reinit(boolean reloadOptionsFromConfig) {
-            synchronized (DEFAULT_ENGINE)
-            {
+        public static synchronized void reinit(boolean reloadOptionsFromConfig) {
                 //Reload from property files if set.
                 if (reloadOptionsFromConfig)
                     initConfig();
@@ -256,7 +254,6 @@ public class PSScript implements IPSScript
 
                 DEFAULT_ENGINE = new JexlBuilder().strict(jexlUseStrict).silent(jexlUseSilent).debug(jexlUseDebug).logger(LOG).cache(CACHE_SIZE).create();
             }
-        }
     }
 
     @Override

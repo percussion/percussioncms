@@ -173,10 +173,12 @@ public class PSCommunityRoleAssociation implements Serializable
    }
 
    @Override
-   public String toString()
-   {
-      return ToStringBuilder.reflectionToString(this,
-         ToStringStyle.MULTI_LINE_STYLE);
+   public String toString() {
+      final StringBuffer sb = new StringBuffer("PSCommunityRoleAssociation{");
+      sb.append("id=").append(id);
+      sb.append(", roleName='").append(roleName).append('\'');
+      sb.append('}');
+      return sb.toString();
    }
 }
 

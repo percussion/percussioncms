@@ -26,6 +26,8 @@ package com.percussion.xml.serialization.junit;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
+import java.util.Objects;
+
 /**
  * A sample address class used in unit test of the
  * {@link com.percussion.xml.serialization.PSObjectSerializer} class. As can be
@@ -117,23 +119,16 @@ public class Address
       return addressLine2;
    }
 
-   /*
-    * (non-Javadoc)
-    * 
-    * @see java.lang.Object#hashCode()
-    */
-   public int hashCode()
-   {
-      return HashCodeBuilder.reflectionHashCode(this);
+   @Override
+   public boolean equals(Object o) {
+      if (this == o) return true;
+      if (!(o instanceof Address)) return false;
+      Address address = (Address) o;
+      return Objects.equals(getStreet(), address.getStreet()) && Objects.equals(getAddressLine2(), address.getAddressLine2()) && Objects.equals(getTown(), address.getTown()) && Objects.equals(getState(), address.getState()) && Objects.equals(getZip(), address.getZip());
    }
 
-   /*
-    * (non-Javadoc)
-    * 
-    * @see java.lang.Object#equals(java.lang.Object)
-    */
-   public boolean equals(Object obj)
-   {
-      return EqualsBuilder.reflectionEquals(this, obj);
+   @Override
+   public int hashCode() {
+      return Objects.hash(getStreet(), getAddressLine2(), getTown(), getState(), getZip());
    }
 }

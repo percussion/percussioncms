@@ -114,7 +114,6 @@ public class PSConnectionMgr
                                 false  // Do not use the server database pool.
                                 ); // Set transaction isolation level.
       connection = connectionMgr.getWithOptionsConnection();
-      connectionMgr = null;
       return connection;
    }
 

@@ -250,15 +250,19 @@ public class PSPublishingContext implements IPSCatalogItem,
       return new HashCodeBuilder().append(name).toHashCode();
    }
 
-   /* (non-Javadoc)
-    * @see java.lang.Object#toString()
-    */
    @Override
-   public String toString()
-   {
-      return ToStringBuilder.reflectionToString(this).toString();
+   public String toString() {
+      final StringBuffer sb = new StringBuffer("PSPublishingContext{");
+      sb.append("id=").append(id);
+      sb.append(", version=").append(version);
+      sb.append(", name='").append(name).append('\'');
+      sb.append(", description='").append(description).append('\'');
+      sb.append(", defaultSchemeId=").append(defaultSchemeId);
+      sb.append(", m_defaultScheme=").append(m_defaultScheme);
+      sb.append('}');
+      return sb.toString();
    }
-   
+
    /*
     * (non-Javadoc)
     * @see java.lang.Object#clone()

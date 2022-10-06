@@ -745,17 +745,30 @@ public class PSPkgInfo implements Serializable
          .toHashCode();
    }
 
-   /* (non-Javadoc)
-    * @see java.lang.Object#toString()
-    */
    @Override
-   public String toString()
-   {
-      return ToStringBuilder.reflectionToString(this,
-            ToStringStyle.MULTI_LINE_STYLE).toString();
+   public String toString() {
+      final StringBuffer sb = new StringBuffer("PSPkgInfo{");
+      sb.append("guid=").append(guid);
+      sb.append(", descriptorName='").append(descriptorName).append('\'');
+      sb.append(", descriptorGuid=").append(descriptorGuid);
+      sb.append(", publisherName='").append(publisherName).append('\'');
+      sb.append(", publisherUrl='").append(publisherUrl).append('\'');
+      sb.append(", description='").append(description).append('\'');
+      sb.append(", pkgVersion='").append(pkgVersion).append('\'');
+      sb.append(", shippedConfigDefinition='").append(shippedConfigDefinition).append('\'');
+      sb.append(", lastActionDate=").append(lastActionDate);
+      sb.append(", origConfigDate=").append(origConfigDate);
+      sb.append(", lastActionByUser='").append(lastActionByUser).append('\'');
+      sb.append(", lastAction='").append(lastAction).append('\'');
+      sb.append(", lastActionStatus='").append(lastActionStatus).append('\'');
+      sb.append(", type='").append(type).append('\'');
+      sb.append(", category='").append(category).append('\'');
+      sb.append(", cmVersionMinimum='").append(cmVersionMinimum).append('\'');
+      sb.append(", cmVersionMaximum='").append(cmVersionMaximum).append('\'');
+      sb.append('}');
+      return sb.toString();
    }
-   
-//------------------------------------------------------------------------------  
+//------------------------------------------------------------------------------
 
    /**
     * Unique Identifier for this object

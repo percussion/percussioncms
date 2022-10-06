@@ -69,7 +69,7 @@ import java.util.Stack;
  * @version    1.0
  * @since      1.0
  */
-public class PSExecutionData 
+public class PSExecutionData implements AutoCloseable
 {
     private static final Logger ms_log = LogManager.getLogger(PSExecutionData.class);
    
@@ -789,6 +789,11 @@ public class PSExecutionData
       return m_tableChangeData;
    }
 
+   @Override
+   public void close() throws Exception {
+      release();
+   }
+
    /**
     * A container for the objects that are result set specific. Used to save/
     * restore result set context.
@@ -835,7 +840,7 @@ public class PSExecutionData
 
    /**
     * Access method fot current relationship that can be processed by an effect.
-    * @param currentRel must not be <code>null</code>.
+    * @param sourceRel must not be <code>null</code>.
     */
    public void setSourceRelationship(PSRelationship sourceRel)
    {
@@ -917,12 +922,10 @@ public class PSExecutionData
    
    /** 
     * List of connection detail that mirrors the {@link #m_Connections}
-    * list.  Initialized by first call to 
-    * {@link #addDbConnection(IPSConnectionInfo, long)}, never <code>null</code>
-    * after that.
+    * list.
     */
    private List<PSConnectionDetail> m_connectionDetailList = null;
 
-   static public final String    FIRST_QUERY_INDEX_PARAMETER_NAME = "psfirst";
+   public static final String    FIRST_QUERY_INDEX_PARAMETER_NAME = "psfirst";
 }
 

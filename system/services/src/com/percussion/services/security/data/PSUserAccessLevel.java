@@ -112,16 +112,14 @@ public class PSUserAccessLevel
       return m_permissions;
    }
 
-   /* (non-Javadoc)
-    * @see java.lang.Object#toString()
-    */
    @Override
-   public String toString()
-   {
-      return ToStringBuilder.reflectionToString(this);
+   public String toString() {
+      final StringBuffer sb = new StringBuffer("PSUserAccessLevel{");
+      sb.append("m_permissions=").append(m_permissions);
+      sb.append('}');
+      return sb.toString();
    }
-   
-   
+
    /**
     * Set of all permissions, never <code>null</code> after construction, may
     * be empty. 

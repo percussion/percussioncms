@@ -182,19 +182,17 @@ public class PSPkgDependency implements Serializable
             .toHashCode();
    }
 
-   /*
-    * (non-Javadoc)
-    * 
-    * @see java.lang.Object#toString()
-    */
    @Override
-   public String toString()
-   {
-      return ToStringBuilder.reflectionToString(this,
-            ToStringStyle.MULTI_LINE_STYLE).toString();
+   public String toString() {
+      final StringBuffer sb = new StringBuffer("PSPkgDependency{");
+      sb.append("pkgDependencyId=").append(pkgDependencyId);
+      sb.append(", ownerPackageGuid=").append(ownerPackageGuid);
+      sb.append(", dependentPackageGuid=").append(dependentPackageGuid);
+      sb.append(", impliedDep=").append(impliedDep);
+      sb.append('}');
+      return sb.toString();
    }
-
-   // ------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
    /**
     * This id of the package dependency table rows.

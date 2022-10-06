@@ -223,9 +223,14 @@ public class PSHierarchyNodeProperty implements Serializable
    }
 
    @Override
-   public String toString()
-   {
-      return ToStringBuilder.reflectionToString(this);
+   public String toString() {
+      final StringBuffer sb = new StringBuffer("PSHierarchyNodeProperty{");
+      sb.append("nodeId=").append(nodeId);
+      sb.append(", name='").append(name).append('\'');
+      sb.append(", version=").append(version);
+      sb.append(", value='").append(value).append('\'');
+      sb.append('}');
+      return sb.toString();
    }
 
    /* (non-Javadoc)

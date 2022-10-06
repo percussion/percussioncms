@@ -50,11 +50,17 @@ public class VisitorTrackingRequest extends VisitorRequest {
     public void setVisitorProfile(VisitorProfile visitorProfile) {
         this.visitorProfile = visitorProfile;
     }
+
     @Override
     public String toString() {
-        return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
+        final StringBuffer sb = new StringBuffer("VisitorTrackingRequest{");
+        sb.append("visitorProfileId=").append(visitorProfileId);
+        sb.append(", visitorProfile=").append(visitorProfile);
+        sb.append(", createProfileWhenNotFound=").append(createProfileWhenNotFound);
+        sb.append('}');
+        return sb.toString();
     }
-    
+
     /**
      * Create a new profile for this tracking request if non exist yet?
      * @return if <code>true</code> new profile will be created if one has not already been created,

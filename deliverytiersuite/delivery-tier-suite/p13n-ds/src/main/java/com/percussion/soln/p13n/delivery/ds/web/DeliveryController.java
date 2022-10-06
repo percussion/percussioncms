@@ -195,9 +195,9 @@ public class DeliveryController {
                 target = new BadJSONDeliveryRequest();
             }
             return target;
+        }else{
+            return null;
         }
-
-        RequestMappingHandler
     }
     
     

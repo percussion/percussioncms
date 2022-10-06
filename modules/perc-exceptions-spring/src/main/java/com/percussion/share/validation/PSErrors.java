@@ -139,15 +139,21 @@ public class PSErrors {
 
         @Override
         public String toString() {
-            return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
+            final StringBuffer sb = new StringBuffer("PSObjectError{");
+            sb.append("code='").append(code).append('\'');
+            sb.append(", defaultMessage='").append(defaultMessage).append('\'');
+            sb.append(", arguments=").append(arguments);
+            sb.append(", cause=").append(cause);
+            sb.append('}');
+            return sb.toString();
         }
-        
     }
-    
+
     @Override
     public String toString() {
-        return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
+        final StringBuffer sb = new StringBuffer("PSErrors{");
+        sb.append("globalError=").append(globalError);
+        sb.append('}');
+        return sb.toString();
     }
-    
-    
 }

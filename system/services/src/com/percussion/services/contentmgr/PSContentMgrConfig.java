@@ -26,6 +26,7 @@ package com.percussion.services.contentmgr;
 import com.percussion.utils.jsr170.IPSPropertyInterceptor;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -163,26 +164,16 @@ public class PSContentMgrConfig
       m_divTagCleanup = divCleanup;
    }
 
-   /*
-    * (non-Javadoc)
-    * 
-    * @see java.lang.Object#equals(java.lang.Object)
-    */
    @Override
-   public boolean equals(Object obj)
-   {
-      return EqualsBuilder.reflectionEquals(this, obj);
+   public boolean equals(Object o) {
+      if (this == o) return true;
+      if (!(o instanceof PSContentMgrConfig)) return false;
+      PSContentMgrConfig that = (PSContentMgrConfig) o;
+      return Objects.equals(m_options, that.m_options) && Objects.equals(m_bodyAccess, that.m_bodyAccess) && Objects.equals(m_namespaceCleanup, that.m_namespaceCleanup) && Objects.equals(m_divTagCleanup, that.m_divTagCleanup);
    }
 
-   /*
-    * (non-Javadoc)
-    * 
-    * @see java.lang.Object#hashCode()
-    */
    @Override
-   public int hashCode()
-   {
-      return HashCodeBuilder.reflectionHashCode(this);
+   public int hashCode() {
+      return Objects.hash(m_options, m_bodyAccess, m_namespaceCleanup, m_divTagCleanup);
    }
-
 }

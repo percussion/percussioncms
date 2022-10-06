@@ -31,6 +31,7 @@ import com.percussion.workflow.IPSTransitionsContext;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -186,21 +187,28 @@ public class PSTransition extends PSTransitionBase implements IPSTransition
    }
 
    @Override
-   public boolean equals(Object b)
-   {
-      return EqualsBuilder.reflectionEquals(this, b);
+   public boolean equals(Object o) {
+      if (this == o) return true;
+      if (!(o instanceof PSTransition)) return false;
+      PSTransition that = (PSTransition) o;
+      return getApprovals() == that.getApprovals() && Objects.equals(getRequiresComment(), that.getRequiresComment()) && Objects.equals(isDefaultTransition(), that.isDefaultTransition()) && Objects.equals(getTransitionRoles(), that.getTransitionRoles()) && Objects.equals(roles, that.roles);
    }
 
    @Override
-   public int hashCode()
-   {
-      return HashCodeBuilder.reflectionHashCode(this);
+   public int hashCode() {
+      return Objects.hash(getApprovals(), getRequiresComment(), isDefaultTransition(), getTransitionRoles(), roles);
    }
 
    @Override
-   public String toString()
-   {
-      return ToStringBuilder.reflectionToString(this);
+   public String toString() {
+      final StringBuffer sb = new StringBuffer("PSTransition{");
+      sb.append("approvals=").append(approvals);
+      sb.append(", requiresComment='").append(requiresComment).append('\'');
+      sb.append(", defaultTransition='").append(defaultTransition).append('\'');
+      sb.append(", transitionRoles='").append(transitionRoles).append('\'');
+      sb.append(", roles=").append(roles);
+      sb.append('}');
+      return sb.toString();
    }
 
    /* (non-Javadoc)

@@ -43,8 +43,7 @@ public class PSGuidHelper
    public static long generateNextLong(PSTypeEnum e)
    {
       IPSGuidManager mgr = PSGuidManagerLocator.getGuidMgr();
-      IPSGuid next = mgr.createGuid(e);
-      return next.getUUID();
+      return mgr.createGuid(e).getUUID();
    }
    
    /**
@@ -56,7 +55,6 @@ public class PSGuidHelper
    public static IPSGuid generateNext(PSTypeEnum e)
    {
       IPSGuidManager mgr = PSGuidManagerLocator.getGuidMgr();
-      IPSGuid next = mgr.createGuid(e);
-      return next;
+      return mgr.createGuid(e);
    }   
 }

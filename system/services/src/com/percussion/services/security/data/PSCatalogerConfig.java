@@ -32,6 +32,7 @@ import com.percussion.utils.xml.PSInvalidXmlException;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -299,24 +300,25 @@ public class PSCatalogerConfig implements IPSBeanConfig, Cloneable
       return clone;
    }
 
-   //see base class   
-   public boolean equals(Object o)
-   {
-      return EqualsBuilder.reflectionEquals(this, o);
-   }
-
    //see base class
    public String toString()
    {
       return getBeanName();
    }
-   
-   //see base class
-   public int hashCode()
-   {
-      return HashCodeBuilder.reflectionHashCode(this);
-   }   
-   
+
+   @Override
+   public boolean equals(Object o) {
+      if (this == o) return true;
+      if (!(o instanceof PSCatalogerConfig)) return false;
+      PSCatalogerConfig that = (PSCatalogerConfig) o;
+      return Objects.equals(m_name, that.m_name) && m_type == that.m_type && Objects.equals(m_className, that.m_className) && Objects.equals(m_description, that.m_description) && Objects.equals(m_props, that.m_props);
+   }
+
+   @Override
+   public int hashCode() {
+      return Objects.hash(m_name, m_type, m_className, m_description, m_props);
+   }
+
    /**
     * The name of the cataloger, never <code>null</code> or empty after
     * construction.

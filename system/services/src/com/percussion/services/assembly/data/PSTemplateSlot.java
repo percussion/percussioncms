@@ -506,12 +506,25 @@ public class PSTemplateSlot
     /**
      * (non-Javadoc)
      *
-     * @see java.lang.Object#toString()
+     * @see Object#toString()
      */
     @Override
     public String toString() {
-        return ToStringBuilder.reflectionToString(this,
-                ToStringStyle.MULTI_LINE_STYLE);
+        final StringBuffer sb = new StringBuffer("PSTemplateSlot{");
+        sb.append("slotAssociations=").append(slotAssociations);
+        sb.append(", id=").append(id);
+        sb.append(", version=").append(version);
+        sb.append(", name='").append(name).append('\'');
+        sb.append(", label='").append(label).append('\'');
+        sb.append(", description='").append(description).append('\'');
+        sb.append(", systemslot=").append(systemslot);
+        sb.append(", slottype=").append(slottype);
+        sb.append(", relationshipName='").append(relationshipName).append('\'');
+        sb.append(", finder='").append(finder).append('\'');
+        sb.append(", finderArguments=").append(finderArguments);
+        sb.append(", slotTemplates=").append(slotTemplates);
+        sb.append('}');
+        return sb.toString();
     }
 
     /**

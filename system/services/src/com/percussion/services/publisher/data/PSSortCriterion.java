@@ -27,6 +27,8 @@ import org.apache.commons.lang.Validate;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
+import java.util.Objects;
+
 /**
  * @author JaySeletz
  *
@@ -51,14 +53,17 @@ public class PSSortCriterion
        return m_property;
    }
 
-   public boolean equals(Object obj)
-   {
-      return EqualsBuilder.reflectionEquals(this, obj);
+   @Override
+   public boolean equals(Object o) {
+      if (this == o) return true;
+      if (!(o instanceof PSSortCriterion)) return false;
+      PSSortCriterion that = (PSSortCriterion) o;
+      return m_sortOrder == that.m_sortOrder && Objects.equals(m_property, that.m_property);
    }
 
-   public int hashCode()
-   {
-       return HashCodeBuilder.reflectionHashCode(this);
+   @Override
+   public int hashCode() {
+      return Objects.hash(m_property, m_sortOrder);
    }
 
    private final String m_property;

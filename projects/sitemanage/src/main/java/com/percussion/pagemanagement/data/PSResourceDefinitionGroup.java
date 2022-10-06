@@ -124,13 +124,14 @@ public class PSResourceDefinitionGroup extends PSAbstractPersistantObject
         {
             this.dependeeId = dependeeId;
         }
-        
+
         @Override
-        public String toString()
-        {
-            return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
+        public String toString() {
+            final StringBuffer sb = new StringBuffer("PSResourceDependency{");
+            sb.append("dependeeId='").append(dependeeId).append('\'');
+            sb.append('}');
+            return sb.toString();
         }
-        
     }
     
     /**

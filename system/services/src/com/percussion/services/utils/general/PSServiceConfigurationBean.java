@@ -203,7 +203,7 @@ public class PSServiceConfigurationBean
     */
    public void setPublishQueueTimeout(int timeout)
    {
-      ms_log.debug("publishQueueTimeout = " + timeout);
+      ms_log.debug("publishQueueTimeout = {}" , timeout);
       m_publishQueueTimeout = timeout;
    }
 
