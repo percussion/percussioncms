@@ -165,8 +165,7 @@ public class ProxyConfig
 
     
    @Override
-   public Object clone()
-   {
+   public Object clone() throws CloneNotSupportedException {
       ProxyConfig config = (ProxyConfig) super.clone();
       config.password = this.password;
       if (this.protocols != null)
