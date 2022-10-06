@@ -32,15 +32,18 @@ import java.util.List;
 import java.util.Set;
 
 import junit.framework.TestCase;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Unit tests for the {@link PSWorkflow} class.
  */
-public class PSWorkflowTest extends TestCase
+public class PSWorkflowTest
 {
-   public PSWorkflowTest(String name)
+   public PSWorkflowTest()
    {
-      super(name);
    }
    
    private PSWorkflowRole createWorkflowRole(int roleId)
@@ -53,12 +56,13 @@ public class PSWorkflowTest extends TestCase
       return role;
    }
 
+   @Test
    public void testAll() throws Exception
    {
       PSWorkflowRole role = createWorkflowRole(24);
       PSWorkflowRole role2 = new PSWorkflowRole();
       role2.fromXML(role.toXML());
-      assertTrue(role.equals(role2));
+      assertEquals(role, role2);
       
       List<PSWorkflowRole> roles = new ArrayList<PSWorkflowRole>();
       roles.add(role);
@@ -81,7 +85,7 @@ public class PSWorkflowTest extends TestCase
       notification.setCCRecipients(recipients);
       PSNotification notification2 = new PSNotification();
       notification2.fromXML(notification.toXML());
-      assertTrue(notification.equals(notification2));
+      assertEquals(notification, notification2);
       
       List<PSNotification> notifications = new ArrayList<PSNotification>();
       notifications.add(notification);
@@ -90,7 +94,7 @@ public class PSWorkflowTest extends TestCase
       PSTransition transition = createTransition(72, roles, notifications);
       PSTransition transition2 = new PSTransition();
       transition2.fromXML(transition.toXML());
-      assertTrue(transition.equals(transition2));
+      assertEquals(transition, transition2);
       
       List<PSTransition> transitions = new ArrayList<PSTransition>();
       transitions.add(transition);
@@ -100,7 +104,7 @@ public class PSWorkflowTest extends TestCase
       PSAgingTransition agingTransition = createAgingTransition(60);
       PSAgingTransition agingTransition2 = new PSAgingTransition();
       agingTransition2.fromXML(agingTransition.toXML());
-      assertTrue(agingTransition.equals(agingTransition2));
+      assertEquals(agingTransition, agingTransition2);
       
       List<PSAgingTransition> agingTransitions = new ArrayList<PSAgingTransition>();
       agingTransitions.add(agingTransition);
@@ -117,7 +121,7 @@ public class PSWorkflowTest extends TestCase
       assignedRole.setStateId(state.getStateId());
       PSAssignedRole assignedRole2 = new PSAssignedRole();
       assignedRole2.fromXML(assignedRole.toXML());
-      assertTrue(assignedRole.equals(assignedRole2));
+      assertEquals(assignedRole, assignedRole2);
       
       List<PSAssignedRole> assignedRoles = new ArrayList<PSAssignedRole>();
       assignedRoles.add(assignedRole);
@@ -128,7 +132,7 @@ public class PSWorkflowTest extends TestCase
       state.setAssignedRoles(assignedRoles);
       PSState state2 = new PSState();
       state2.fromXML(state.toXML());
-      assertTrue(state.equals(state2));
+      assertEquals(state,state2);
       
       List<PSState> states = new ArrayList<PSState>();
       states.add(state);
@@ -140,7 +144,7 @@ public class PSWorkflowTest extends TestCase
       notificationDef.setBody("body_1");
       PSNotificationDef notificationDef2 = new PSNotificationDef();
       notificationDef2.fromXML(notificationDef.toXML());
-      assertTrue(notificationDef.equals(notificationDef2));
+      assertEquals(notificationDef, notificationDef2);
       
       List<PSNotificationDef> notificationDefs = 
          new ArrayList<PSNotificationDef>();
@@ -161,7 +165,7 @@ public class PSWorkflowTest extends TestCase
 
       PSWorkflow wf2 = new PSWorkflow();
       wf2.fromXML(wf.toXML());
-      assertTrue(wf.equals(wf2));
+      assertEquals(wf, wf2);
       
       assertEquals(roles, wf.getRoles());
       assertEquals(roleNames, wf.getRoleNames(roleIds));

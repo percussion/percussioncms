@@ -29,6 +29,7 @@ import com.percussion.share.data.PSAbstractDataObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -81,5 +82,26 @@ public class PSWidgetBuilderFieldsListData  extends PSAbstractDataObject
         Validate.notNull(fields);
         
         this.fields = fields;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof PSWidgetBuilderFieldsListData)) return false;
+        PSWidgetBuilderFieldsListData that = (PSWidgetBuilderFieldsListData) o;
+        return Objects.equals(getFields(), that.getFields());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getFields());
+    }
+
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("PSWidgetBuilderFieldsListData{");
+        sb.append("fields=").append(fields);
+        sb.append('}');
+        return sb.toString();
     }
 }

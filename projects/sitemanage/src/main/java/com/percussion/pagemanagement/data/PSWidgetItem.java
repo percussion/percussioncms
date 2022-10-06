@@ -34,6 +34,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Widget Item is an instance of a widget.
@@ -42,7 +43,19 @@ import java.util.Map;
 @XmlRootElement(name = "WidgetItem")
 public class PSWidgetItem extends PSAbstractPersistantObject
 {
-    
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof PSWidgetItem)) return false;
+        PSWidgetItem that = (PSWidgetItem) o;
+        return Objects.equals(getId(), that.getId()) && Objects.equals(getName(), that.getName()) && Objects.equals(getDescription(), that.getDescription()) && Objects.equals(getDefinitionId(), that.getDefinitionId()) && Objects.equals(getProperties(), that.getProperties()) && Objects.equals(getCssProperties(), that.getCssProperties());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getName(), getDescription(), getDefinitionId(), getProperties(), getCssProperties());
+    }
+
     @NotBlank
     @MatchPattern(pattern = {"^-?[1-9][0-9]*"})
     private String id;

@@ -30,6 +30,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -44,6 +45,19 @@ import net.sf.oval.constraint.NotNull;
 @XmlRootElement(name = "Page")
 public class PSPage extends PSPageSummary implements IPSLinkableItem, IPSHtmlMetadata
 {
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof PSPage)) return false;
+        PSPage psPage = (PSPage) o;
+        return isAddToRecent() == psPage.isAddToRecent() && Objects.equals(getAdditionalHeadContent(), psPage.getAdditionalHeadContent()) && Objects.equals(getAfterBodyStartContent(), psPage.getAfterBodyStartContent()) && Objects.equals(getBeforeBodyCloseContent(), psPage.getBeforeBodyCloseContent()) && Objects.equals(getProtectedRegion(), psPage.getProtectedRegion()) && Objects.equals(getProtectedRegionText(), psPage.getProtectedRegionText()) && Objects.equals(getRegionBranches(), psPage.getRegionBranches()) && Objects.equals(getSummary(), psPage.getSummary()) && Objects.equals(getWorkflowId(), psPage.getWorkflowId()) && Objects.equals(getDocType(), psPage.getDocType());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getAdditionalHeadContent(), getAfterBodyStartContent(), getBeforeBodyCloseContent(), getProtectedRegion(), getProtectedRegionText(), getRegionBranches(), getSummary(), getWorkflowId(), getDocType(), isAddToRecent());
+    }
+
     /**
      *  Safe to serialize
      */
@@ -298,5 +312,21 @@ public void setAddToRecent(boolean addToRecent)
      * If set to true, the newly created item and its template and folder will be added to the recent list.
      */
     private boolean addToRecent;
-    
+
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("PSPage{");
+        sb.append("additionalHeadContent='").append(additionalHeadContent).append('\'');
+        sb.append(", afterBodyStartContent='").append(afterBodyStartContent).append('\'');
+        sb.append(", beforeBodyCloseContent='").append(beforeBodyCloseContent).append('\'');
+        sb.append(", protectedRegion='").append(protectedRegion).append('\'');
+        sb.append(", protectedRegionText='").append(protectedRegionText).append('\'');
+        sb.append(", regionBranches=").append(regionBranches);
+        sb.append(", summary='").append(summary).append('\'');
+        sb.append(", workflowId=").append(workflowId);
+        sb.append(", docType=").append(docType);
+        sb.append(", addToRecent=").append(addToRecent);
+        sb.append('}');
+        return sb.toString();
+    }
 }

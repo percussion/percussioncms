@@ -25,6 +25,8 @@ package com.percussion.pagemanagement.data;
 
 import com.percussion.share.data.PSAbstractDataObject;
 
+import java.util.Objects;
+
 /**
  * Represents a node in the region tree.
  * Currently a node is either a region or template code.
@@ -65,4 +67,24 @@ public abstract class PSRegionNode extends PSAbstractDataObject
         PAGE, TEMPLATE;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof PSRegionNode)) return false;
+        PSRegionNode that = (PSRegionNode) o;
+        return getOwnerType() == that.getOwnerType();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getOwnerType());
+    }
+
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("PSRegionNode{");
+        sb.append("ownerType=").append(ownerType);
+        sb.append('}');
+        return sb.toString();
+    }
 }

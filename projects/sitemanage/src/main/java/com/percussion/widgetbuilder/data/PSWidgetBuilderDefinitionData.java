@@ -31,6 +31,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 
+import java.util.Objects;
+
 @XmlRootElement(name="WidgetBuilderDefinitionData")
 public class PSWidgetBuilderDefinitionData  extends PSWidgetBuilderSummaryData
 {
@@ -118,7 +120,7 @@ public class PSWidgetBuilderDefinitionData  extends PSWidgetBuilderSummaryData
     /**
      * Set the html used to render the widget
      *
-     * @param html The html, not be <code>null<code/> or empty.
+     * @param widgetHtml The html, not be <code>null<code/> or empty.
      */
     public void setWidgetHtml(String widgetHtml)
     {
@@ -176,6 +178,30 @@ public class PSWidgetBuilderDefinitionData  extends PSWidgetBuilderSummaryData
     {
         Validate.notNull(cssFileList);
         this.cssFileList = cssFileList;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("PSWidgetBuilderDefinitionData{");
+        sb.append("fieldsList=").append(fieldsList);
+        sb.append(", widgetHtml='").append(widgetHtml).append('\'');
+        sb.append(", jsFileList=").append(jsFileList);
+        sb.append(", cssFileList=").append(cssFileList);
+        sb.append('}');
+        return sb.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof PSWidgetBuilderDefinitionData)) return false;
+        PSWidgetBuilderDefinitionData that = (PSWidgetBuilderDefinitionData) o;
+        return Objects.equals(getFieldsList(), that.getFieldsList()) && Objects.equals(getWidgetHtml(), that.getWidgetHtml()) && Objects.equals(getJsFileList(), that.getJsFileList()) && Objects.equals(getCssFileList(), that.getCssFileList());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getFieldsList(), getWidgetHtml(), getJsFileList(), getCssFileList());
     }
 }
 

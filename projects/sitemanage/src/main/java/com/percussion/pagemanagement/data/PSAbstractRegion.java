@@ -25,6 +25,7 @@ package com.percussion.pagemanagement.data;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
@@ -180,5 +181,29 @@ public abstract class PSAbstractRegion extends PSRegionNode {
         this.attributes = attributes;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof PSAbstractRegion)) return false;
+        PSAbstractRegion that = (PSAbstractRegion) o;
+        return Objects.equals(getRegionId(), that.getRegionId()) && Objects.equals(getStartTag(), that.getStartTag()) && Objects.equals(getEndTag(), that.getEndTag()) && Objects.equals(getCssClass(), that.getCssClass()) && Objects.equals(getChildren(), that.getChildren()) && Objects.equals(getAttributes(), that.getAttributes());
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(getRegionId(), getStartTag(), getEndTag(), getCssClass(), getChildren(), getAttributes());
+    }
+
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("PSAbstractRegion{");
+        sb.append("regionId='").append(regionId).append('\'');
+        sb.append(", startTag='").append(startTag).append('\'');
+        sb.append(", endTag='").append(endTag).append('\'');
+        sb.append(", cssClass='").append(cssClass).append('\'');
+        sb.append(", children=").append(children);
+        sb.append(", attributes=").append(attributes);
+        sb.append('}');
+        return sb.toString();
+    }
 }
