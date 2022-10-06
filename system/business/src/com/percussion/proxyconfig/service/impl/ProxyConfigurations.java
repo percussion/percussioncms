@@ -61,8 +61,7 @@ public class ProxyConfigurations
     * {@link ProxyConfig }
     * 
     */
-   public List<ProxyConfig> getConfigs()
-   {
+   public List<ProxyConfig> getConfigs() throws CloneNotSupportedException {
       if (proxyConfigs == null)
       {
          proxyConfigs = new ArrayList<>();
@@ -77,8 +76,7 @@ public class ProxyConfigurations
       return copy;
    }
 
-   public void setConfigs(List<ProxyConfig> configurations)
-   {
+   public void setConfigs(List<ProxyConfig> configurations) throws CloneNotSupportedException {
       proxyConfigs = new ArrayList<>();
 
       for (ProxyConfig config : configurations)

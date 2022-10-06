@@ -329,7 +329,7 @@ public class PSUserService implements IPSUserService
                 }
 
 
-            } catch (InterruptedException e) {
+            } catch (InterruptedException | PSDataServiceException e) {
                 log.warn("Shutting down user update thread...");
                 Thread.currentThread().interrupt();
             }
@@ -446,7 +446,7 @@ public class PSUserService implements IPSUserService
      * Create the PercussionUser.  Will generate a password and write the password
      * to system log and to the PWD_CONFIG_PATH + "password" file.
      */
-    protected void createPercussionUser() {
+    protected void createPercussionUser() throws PSDataServiceException {
 
         PSUser user = new PSUser();
 
@@ -480,8 +480,7 @@ public class PSUserService implements IPSUserService
         return createUser(user);
     }
 
-    private PSUser createUser(PSUser user)
-    {
+    private PSUser createUser(PSUser user) throws PSDataServiceException {
         PSUserLogin login = new PSUserLogin();
         login.setUserid(user.getName());
         String cryptPW = (passwordFilter == null) ? user.getPassword() : passwordFilter.encrypt(user.getPassword());
@@ -497,7 +496,12 @@ public class PSUserService implements IPSUserService
             log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
 
-        PSUser rvalue = user.clone();
+        PSUser rvalue = null;
+        try {
+            rvalue = user.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new PSDataServiceException(e);
+        }
         rvalue.setProviderType(PSUserProviderType.INTERNAL);
         rvalue.setPassword(null);
         rvalue.setEmail(user.getEmail());
@@ -709,7 +713,12 @@ public class PSUserService implements IPSUserService
         }
         updateRoles(user.getName(), user.getRoles());
 
-        PSUser rvalue = user.clone();
+        PSUser rvalue = null;
+        try {
+            rvalue = user.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new PSDataServiceException(e);
+        }
         rvalue.setProviderType(provider);
         rvalue.setPassword(null);
         if (provider.equals(PSUserProviderType.INTERNAL))
@@ -768,7 +777,11 @@ public class PSUserService implements IPSUserService
             // save changes
             userLoginDao.save(login);
 
-            rvalue = user.clone();
+            try {
+                rvalue = user.clone();
+            } catch (CloneNotSupportedException e) {
+                throw new PSDataServiceException(e);
+            }
             rvalue.setRoles(currentUser.getRoles());
             rvalue.setProviderType(provider);
             rvalue.setPassword(null);

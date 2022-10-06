@@ -102,7 +102,7 @@ public class PSDatabasePubServerFilesServiceTest
      * Test to modify an existing database, but keep the driver type the same.
      */
     @Test
-    public void testModifySameType() throws PSDataServiceException {
+    public void testModifySameType() throws PSDataServiceException, CloneNotSupportedException {
         // same type, but different database, user, ...etc.
         PSDatabasePubServer myServer = addDatabasePubServer(DriverType.MSSQL, "mssql", 1000L);
         PSDatabasePubServer pubServer = (PSDatabasePubServer) myServer.clone();
@@ -127,7 +127,7 @@ public class PSDatabasePubServerFilesServiceTest
      * Test modify an existing database pub server to different driver type
      */
     @Test
-    public void testModifyDifferentType() throws PSDataServiceException {
+    public void testModifyDifferentType() throws PSDataServiceException, CloneNotSupportedException {
         // same type, but different database, user, ...etc.
         PSDatabasePubServer myServer = addDatabasePubServer(DriverType.MSSQL, "mssql", 1000L);
         PSDatabasePubServer pubServer = (PSDatabasePubServer) myServer.clone();

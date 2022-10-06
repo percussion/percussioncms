@@ -305,7 +305,7 @@ public class PSCategoryNode extends PSAbstractDataObject implements Comparable<P
     }
 
     @Override
-    public PSCategoryNode clone() {
+    public PSCategoryNode clone() throws CloneNotSupportedException {
         PSCategoryNode categoryNode = (PSCategoryNode) super.clone();
 
         categoryNode.setId(this.getId());

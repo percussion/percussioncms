@@ -187,8 +187,7 @@ public class PSUser extends PSAbstractNamedObject
     }
 
     @Override
-    public PSUser clone()
-    {
+    public PSUser clone() throws CloneNotSupportedException {
         PSUser user = (PSUser) super.clone();
         if (this.getRoles() != null) {
             user.setRoles(new ArrayList<>(this.getRoles()));
