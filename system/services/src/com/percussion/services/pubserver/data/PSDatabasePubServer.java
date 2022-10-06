@@ -122,12 +122,6 @@ public class PSDatabasePubServer extends PSAbstractDataObject
                 Integer.toString(driverType.defaultPort)));
     }
 
-    @Override
-    public Object clone()
-    {
-        return super.clone();
-    }
-    
     /**
      * The name of the database publish server. 
      * This is the connection name and the spring bean ID in server-beans.xml.
