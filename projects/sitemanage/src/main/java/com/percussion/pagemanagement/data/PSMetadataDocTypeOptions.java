@@ -26,6 +26,7 @@ package com.percussion.pagemanagement.data;
 import com.percussion.share.data.PSAbstractDataObject;
 
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.Objects;
 
 /**
  * This class contains the structure of the doc type options for templates. The
@@ -96,4 +97,16 @@ public class PSMetadataDocTypeOptions extends PSAbstractDataObject
         this.value = value;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof PSMetadataDocTypeOptions)) return false;
+        PSMetadataDocTypeOptions that = (PSMetadataDocTypeOptions) o;
+        return Objects.equals(getOption(), that.getOption()) && Objects.equals(getValue(), that.getValue());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getOption(), getValue());
+    }
 }

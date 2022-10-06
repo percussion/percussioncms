@@ -29,6 +29,7 @@ import com.percussion.share.data.PSAbstractDataObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -72,5 +73,26 @@ public class PSWidgetBuilderResourceListData extends PSAbstractDataObject
     public void setResourceList(List<String> resourceList)
     {
         this.resourceList = resourceList;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("PSWidgetBuilderResourceListData{");
+        sb.append("resourceList=").append(resourceList);
+        sb.append('}');
+        return sb.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof PSWidgetBuilderResourceListData)) return false;
+        PSWidgetBuilderResourceListData that = (PSWidgetBuilderResourceListData) o;
+        return Objects.equals(getResourceList(), that.getResourceList());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getResourceList());
     }
 }

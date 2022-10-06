@@ -28,6 +28,7 @@ import com.percussion.share.data.PSAbstractDataObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -88,5 +89,18 @@ public class PSMetadataDocType extends PSAbstractDataObject
     public void setOptions(List<PSMetadataDocTypeOptions> options)
     {
         this.options = options;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof PSMetadataDocType)) return false;
+        PSMetadataDocType that = (PSMetadataDocType) o;
+        return Objects.equals(getSelected(), that.getSelected()) && Objects.equals(getOptions(), that.getOptions());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getSelected(), getOptions());
     }
 }

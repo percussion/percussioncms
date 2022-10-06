@@ -26,6 +26,7 @@ package com.percussion.pathmanagement.data;
 import com.percussion.share.data.PSAbstractDataObject;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * This class contains the permissions of a folder.
@@ -34,6 +35,18 @@ import java.util.List;
  */
 public class PSFolderPermission extends PSAbstractDataObject
 {
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof PSFolderPermission)) return false;
+        PSFolderPermission that = (PSFolderPermission) o;
+        return getAccessLevel() == that.getAccessLevel() && Objects.equals(getAdminPrincipals(), that.getAdminPrincipals()) && Objects.equals(getWritePrincipals(), that.getWritePrincipals()) && Objects.equals(getReadPrincipals(), that.getReadPrincipals()) && Objects.equals(getViewPrincipals(), that.getViewPrincipals());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getAccessLevel(), getAdminPrincipals(), getWritePrincipals(), getReadPrincipals(), getViewPrincipals());
+    }
 
     private static final long serialVersionUID = 1L;
 
@@ -106,6 +119,19 @@ public class PSFolderPermission extends PSAbstractDataObject
         public void setType(PrincipalType type)
         {
             this.type = type;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (!(o instanceof Principal)) return false;
+            Principal principal = (Principal) o;
+            return getType() == principal.getType() && Objects.equals(getName(), principal.getName());
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(getType(), getName());
         }
     }
     

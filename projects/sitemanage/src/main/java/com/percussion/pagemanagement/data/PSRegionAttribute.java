@@ -26,6 +26,7 @@ package com.percussion.pagemanagement.data;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.Objects;
 
 @XmlRootElement(name = "RegionAttribute")
 public class PSRegionAttribute {
@@ -58,5 +59,27 @@ public class PSRegionAttribute {
 
     public void setValue(String value) {
         this.value = value;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof PSRegionAttribute)) return false;
+        PSRegionAttribute that = (PSRegionAttribute) o;
+        return Objects.equals(getName(), that.getName()) && Objects.equals(getValue(), that.getValue());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getName(), getValue());
+    }
+
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("PSRegionAttribute{");
+        sb.append("name='").append(name).append('\'');
+        sb.append(", value='").append(value).append('\'');
+        sb.append('}');
+        return sb.toString();
     }
 }

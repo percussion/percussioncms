@@ -33,6 +33,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static org.apache.commons.lang.Validate.notNull;
 
@@ -95,6 +96,27 @@ public class PSRegionCSS extends PSAbstractDataObject implements Serializable, C
             this.value = value;
         }
 
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (!(o instanceof Property)) return false;
+            Property property = (Property) o;
+            return Objects.equals(getName(), property.getName()) && Objects.equals(getValue(), property.getValue());
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(getName(), getValue());
+        }
+
+        @Override
+        public String toString() {
+            final StringBuffer sb = new StringBuffer("Property{");
+            sb.append("name='").append(name).append('\'');
+            sb.append(", value='").append(value).append('\'');
+            sb.append('}');
+            return sb.toString();
+        }
     }
     public PSRegionCSS()
     {
@@ -208,5 +230,28 @@ public class PSRegionCSS extends PSAbstractDataObject implements Serializable, C
         }
         
         return regionName.compareTo(other.regionName);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof PSRegionCSS)) return false;
+        PSRegionCSS that = (PSRegionCSS) o;
+        return Objects.equals(getRegionName(), that.getRegionName()) && Objects.equals(getOuterRegionName(), that.getOuterRegionName()) && Objects.equals(getProperties(), that.getProperties());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getRegionName(), getOuterRegionName(), getProperties());
+    }
+
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("PSRegionCSS{");
+        sb.append("regionName='").append(regionName).append('\'');
+        sb.append(", outerRegionName='").append(outerRegionName).append('\'');
+        sb.append(", properties=").append(properties);
+        sb.append('}');
+        return sb.toString();
     }
 }
