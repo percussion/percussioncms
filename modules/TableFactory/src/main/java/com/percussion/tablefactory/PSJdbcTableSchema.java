@@ -646,9 +646,11 @@ public class PSJdbcTableSchema implements Comparable<PSJdbcTableSchema>
       if (!m_indexes.isEmpty())
       {
          Element indexdefs = PSXmlDocumentBuilder.addEmptyElement(doc, root,
-            INDEX_DEF_EL);
-         for (int i = 0; i < m_indexes.size(); i++)
-            indexdefs.appendChild((m_indexes.iterator().next()).toXml(doc));
+                 INDEX_DEF_EL);
+         for (int i = 0; i < m_indexes.size(); i++) {
+            PSJdbcIndex idx = m_indexes.get(i);
+            indexdefs.appendChild(idx.toXml(doc));
+         }
       }
 
       return root;
