@@ -99,9 +99,9 @@ public class PSJdbcTableSchemaTest extends TestCase
       PSJdbcIndex index1 = new PSJdbcIndex("index1", indexCols.iterator(),
          PSJdbcTableComponent.ACTION_CREATE);
       tableSchema.setIndex(index1);
-      indexCols.clear();
-      indexCols.add("col2");
-      PSJdbcIndex index2 = new PSJdbcIndex("index1", indexCols.iterator(),
+      List indexCols2 = new ArrayList<>();
+      indexCols2.add("col2");
+      PSJdbcIndex index2 = new PSJdbcIndex("index2", indexCols2.iterator(),
          PSJdbcTableComponent.ACTION_CREATE);
       tableSchema.setIndex(index2);
 

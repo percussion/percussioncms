@@ -29,7 +29,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 
 /**
@@ -54,7 +53,12 @@ public class PSJdbcForeignKeyTest
       PSJdbcForeignKey fk2 = new PSJdbcForeignKey(el);
       assertEquals(fk, fk2);
 
+      //Now ForeignKeys are different incase their components are different,
+      // if name is different and components are same, they are considered same
       fk2.setName("FK_SOME_OTHER_NAME_1");
+      assertEquals("Should not be equal", fk, fk2);
+
+      fk2.addColumn("col3", "extTable3", "extCol3");
       assertNotEquals("Should not be equal", fk, fk2);
 
    }
