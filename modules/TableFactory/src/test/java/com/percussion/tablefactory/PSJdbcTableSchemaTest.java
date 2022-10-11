@@ -91,7 +91,7 @@ public class PSJdbcTableSchemaTest extends TestCase
          PSJdbcTableComponent.ACTION_CREATE);
       List<PSJdbcForeignKey> fks = new ArrayList<>();
       fks.add(fk);
-      tableSchema.setForeignKeys(fks);
+      tableSchema.setForeignKeys(fks,true);
 
       List indexCols = new ArrayList<>();
       indexCols.add("col2");
@@ -250,7 +250,7 @@ public class PSJdbcTableSchemaTest extends TestCase
       PSJdbcForeignKey fk = new PSJdbcForeignKey(fkCols.iterator(), PSJdbcTableComponent.ACTION_DELETE);
       List<PSJdbcForeignKey> fks = new ArrayList<>();
       fks.add(fk);
-      tableSchema1.setForeignKeys(fks);
+      tableSchema1.setForeignKeys(fks,true);
 
       List<String> indexCols = new ArrayList<String>();
       indexCols.add("col2");
@@ -302,7 +302,7 @@ public class PSJdbcTableSchemaTest extends TestCase
       PSJdbcForeignKey fk = new PSJdbcForeignKey(fkCols.iterator(), PSJdbcTableComponent.ACTION_DELETE);
       List<PSJdbcForeignKey> fks = new ArrayList<>();
       fks.add(fk);
-      tableSchema1.setForeignKeys(fks);
+      tableSchema1.setForeignKeys(fks,true);
 
       List<String> indexCols = new ArrayList<String>();
       indexCols.add("col1");
@@ -345,7 +345,7 @@ public class PSJdbcTableSchemaTest extends TestCase
               PSJdbcTableComponent.ACTION_DELETE);
       List<PSJdbcForeignKey> fks = new ArrayList<>();
       fks.add(fk);
-      tableSchema1.setForeignKeys(fks);
+      tableSchema1.setForeignKeys(fks,true);
 
       List<String> indexCols = new ArrayList<String>();
       indexCols.add("col2");
@@ -372,7 +372,7 @@ public class PSJdbcTableSchemaTest extends TestCase
    /**
     * Sets a foreign key for a given table schema
     * 
-    * @param tableschema table schema object
+    * @param tableSchema table schema object
     * 
     * @return fk Foreign Key definition 
     * 
@@ -392,14 +392,14 @@ public class PSJdbcTableSchemaTest extends TestCase
       PSJdbcForeignKey fk = new PSJdbcForeignKey(fkCols.iterator(), PSJdbcTableComponent.ACTION_DELETE);
        List<PSJdbcForeignKey> fks = new ArrayList<>();
        fks.add(fk);
-      tableSchema.setForeignKeys(fks);
+      tableSchema.setForeignKeys(fks,true);
       return fk;
    }
     
    /**
     * Sets a primary key for a given table schema
     * 
-    * @param tableschema table schema object
+    * @param tableSchema table schema object
     * 
     * @throws PSJdbcTableFactoryException if error occurs
     */
