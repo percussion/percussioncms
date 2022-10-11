@@ -421,7 +421,13 @@ public class PSJdbcTableSchema implements Comparable<PSJdbcTableSchema>
       if (indexes == null)
          throw new IllegalArgumentException("indexes may not be null");
       m_indexes.clear();
+      //build Unique Name list of indexes before renaming new Indexes.
       List<String> uniqueNames = new ArrayList<>();
+      for (PSJdbcIndex idx1 : indexes){
+         if(idx1.getAction() == PSJdbcTableComponent.ACTION_NONE ) {
+            uniqueNames.add(idx1.getName());
+         }
+      }
       for (PSJdbcIndex idx : indexes){
          //if Action is Create, then make sure index name is unique
          if(idx.getAction() == PSJdbcTableComponent.ACTION_CREATE) {
@@ -433,8 +439,8 @@ public class PSJdbcTableSchema implements Comparable<PSJdbcTableSchema>
                no++;
             }
             idx.setName(newName);
+            uniqueNames.add(idx.getName());
          }
-         uniqueNames.add(idx.getName());
          m_indexes.add(idx);
       }
       validateSchema();
