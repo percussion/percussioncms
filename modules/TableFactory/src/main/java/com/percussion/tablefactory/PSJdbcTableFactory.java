@@ -175,8 +175,7 @@ public class PSJdbcTableFactory
                   PSJdbcTableComponent.ACTION_CREATE));
 
             List<PSJdbcForeignKey> fKeys = new ArrayList<>();
-            tableSchema.setForeignKeys(fKeys);
-            
+
             for (Entry<String, List<String[]>> fKeysEntry : tmd.getForeignKeys().entrySet()) {
                String fkName = fKeysEntry.getKey();
                List<String[]> fkeysCols = fKeysEntry.getValue();
@@ -186,14 +185,22 @@ public class PSJdbcTableFactory
                fKeys.add(newFKey);
             }
 
+            tableSchema.setForeignKeys(fKeys,false);
+
             Iterator<PSJdbcIndex> indexes = tmd.getIndexObjects(
                PSJdbcIndex.TYPE_UNIQUE | PSJdbcIndex.TYPE_NON_UNIQUE);
+
             while (indexes.hasNext())
             {
                PSJdbcIndex index = indexes.next();
-               tableSchema.setIndex(new PSJdbcIndex(index.getName(),
-                  index.getColumnNames(), PSJdbcTableComponent.ACTION_CREATE,
-                  index.getType()));
+              PSJdbcIndex idx = new PSJdbcIndex(index.getName(),
+                       index.getColumnNames(), PSJdbcTableComponent.ACTION_CREATE,
+                       index.getType());
+               PSJdbcIndex currIndex = tableSchema.getIndex(idx);
+               if( currIndex == null){
+                  tableSchema.setIndex(idx);
+               }
+
             }
 
             // get data if requested

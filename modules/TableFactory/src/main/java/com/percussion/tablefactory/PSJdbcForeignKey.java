@@ -447,9 +447,6 @@ public class PSJdbcForeignKey extends PSJdbcTableComponent
 
       boolean isMatch = true;
 
-      if(!getName().equalsIgnoreCase(other.getName()))
-         return false;
-
       if (this.m_columns.size() != other.m_columns.size())
          return false;
       else if (this.m_tables.size() != other.m_tables.size())
@@ -472,7 +469,7 @@ public class PSJdbcForeignKey extends PSJdbcTableComponent
                boolean equals = true;
                for (int k = 0; k < thisCol.length; k++)
                {
-                  if (!thisCol[k].equals(otherCol[k]))
+                  if (!thisCol[k].equalsIgnoreCase(otherCol[k]))
                   {
                      equals = false;
                      break;
