@@ -288,7 +288,7 @@ public class PSJdbcIndex extends PSJdbcKey
          if(other.getAction() != getAction()){
             return false;
          }
-         if( compareColumns(this.getIndexColumnNames(),other.getIndexColumnNames()) != IS_EXACT_MATCH){
+         if(  compareColumns(this.getIndexColumnNames(),other.getIndexColumnNames()) == IS_GENERIC_MISMATCH){
             return false;
          }
       }

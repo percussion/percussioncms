@@ -108,7 +108,7 @@ public class DbUtils {
         PSJdbcTableSchema destTableSchema = new PSJdbcTableSchema(srcTableSchema);
         destTableSchema.setName(destTableName);
         destTableSchema.setPrimaryKey(null);
-        destTableSchema.setForeignKeys(null);
+        destTableSchema.setForeignKeys(null,false);
         destTableSchema.clearIndexes();
 
         // drop the table

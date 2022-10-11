@@ -833,6 +833,13 @@
         <primarykey>
             <name>PARAM_ID</name>
         </primarykey>
+        <foreignkey name="FK_GPARM_CLIST_ID">
+            <fkColumn>
+                <name>CONTENT_LIST_ID</name>
+                <externalTable>RXCONTENTLIST</externalTable>
+                <externalColumn>CONTENTLISTID</externalColumn>
+            </fkColumn>
+        </foreignkey>
     </table>
     <table name="PSX_CONTENTLIST_EXPANDER_PARAM" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
@@ -862,6 +869,18 @@
         <primarykey>
             <name>PARAM_ID</name>
         </primarykey>
+        <foreignkey name="EPARM_CLIST_ID">
+            <fkColumn>
+                <name>CONTENT_LIST_ID</name>
+                <externalTable>rxcontentlist</externalTable>
+                <externalColumn>CONTENTLISTID</externalColumn>
+            </fkColumn>
+        </foreignkey>
+        <indexdefinitions>
+            <index name="IX_EPARM_CLIST_ID" isUnique="n">
+                <name>CONTENT_LIST_ID</name>
+            </index>
+        </indexdefinitions>
     </table>
     <table name="RXCONTENTLIST" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
         <row>
@@ -1457,7 +1476,7 @@
                 </fkColumn>
             </foreignkey>
             <indexdefinitions>
-                <index name="IX_SITE_ITEMS" isUnique="n">
+                <index name="IX_SITE_ITEMS_1" isUnique="n">
                     <name>SITE_ID</name>
                     <name>CONTEXT_ID</name>
                     <name>CONTENT_ID</name>
@@ -5623,7 +5642,7 @@
             </fkColumn>
         </foreignkey>
     </table>
-    <table name="PSX_BINARYMETAENTRY" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
+    <table name="PSX_BINARYMETAENTRY" allowSchemaChanges="y" alter="n"  delolddata="n" isView="n">
         <row>
             <column name="ID">
                 <jdbctype>INTEGER</jdbctype>
@@ -5675,7 +5694,7 @@
             </index>
         </indexdefinitions>
     </table>
-    <table name="PSX_BINARYMETAKEY" allowSchemaChanges="y" alter="y"  delolddata="n" isView="n">
+    <table name="PSX_BINARYMETAKEY" allowSchemaChanges="y" alter="n"  delolddata="n" isView="n">
         <row>
             <column name="ID">
                 <jdbctype>INTEGER</jdbctype>
