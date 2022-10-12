@@ -401,6 +401,10 @@ public abstract class PSJdbcKey extends PSJdbcTableComponent
       return m_names.iterator();
    }
 
+   public boolean hasColumn(String colName){
+     return m_names.contains(colName);
+   }
+
    /**
     * Set a list of column names that comprise this key.  Existing list
     * of columns is replaced.
