@@ -28,9 +28,7 @@ import com.percussion.util.PSSqlHelper;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.xml.sax.SAXException;
 
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
@@ -334,25 +332,9 @@ public class PSJdbcPlanBuilder
                        PSJdbcStatementFactory.getDropFKContraint(dbmsDef,
                                schemaFK,fk);
 
-               String dropFKIndexSQL=null;
-               try {
-                  if (dbmsDef.getTypemap().isCreateForeignKeyIndexes()) {
-                     //also need to drop any foreign key indexes that were created
-                     dropFKIndexSQL =
-                             PSJdbcStatementFactory.getDropFKIndex(dbmsDef,
-                                     schemaFK,fk);
-
-                  }
-               }catch (IOException | SAXException e){
-                  throw new PSJdbcTableFactoryException(0, e);
-               }
-
                if (dropFKSQL!=null) {
                   schemaPlan.addStep(new PSJdbcSqlStatement(dropFKSQL));
 
-                  if(dropFKIndexSQL != null){
-                     schemaPlan.addStep(new PSJdbcSqlStatement(dropFKIndexSQL) );
-                  }
                }
 
             }

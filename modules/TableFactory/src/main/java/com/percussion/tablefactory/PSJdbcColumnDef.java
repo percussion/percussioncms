@@ -177,6 +177,8 @@ public class PSJdbcColumnDef extends PSJdbcTableComponent
       setAction(srcCol.getAction());
       setAllowsNull(srcCol.allowsNull());
       setDefaultValue(srcCol.getDefaultValue());
+      m_isChanged = srcCol.m_isChanged;
+      isAllowedNullChanged = srcCol.isAllowedNullChanged;
       m_dataTypeMap = srcCol.m_dataTypeMap;
       m_size = srcCol.m_size;
       m_scale = srcCol.m_scale;
@@ -414,6 +416,10 @@ public class PSJdbcColumnDef extends PSJdbcTableComponent
       return hash;
    }
 
+   public boolean isChanged(){
+      return  m_isChanged;
+   }
+
 
    /**
     * Compares this column to another, testing equals of all members excluding
@@ -445,11 +451,12 @@ public class PSJdbcColumnDef extends PSJdbcTableComponent
          
          if (!super.equals(oldCol))
             isChanged = true;
-         else if (m_allowsNull ^ oldCol.m_allowsNull)
+         else if (m_allowsNull ^ oldCol.m_allowsNull) {
             isChanged = true;
-         else if (thisAdjSize != null ^ oldSize != null)
+            isAllowedNullChanged = true;
+         }else if (thisAdjSize != null ^ oldSize != null) {
             isChanged = true;
-         else if (thisAdjSize != null && !thisAdjSize.equals(oldSize))
+         }else if (thisAdjSize != null && !thisAdjSize.equals(oldSize))
          {
             // only consider it a change if the existing size is too small
             try
@@ -496,7 +503,8 @@ public class PSJdbcColumnDef extends PSJdbcTableComponent
          }
       }
 
-      return isChanged;
+      m_isChanged= isChanged;
+      return m_isChanged;
    }
 
    /**
@@ -870,9 +878,9 @@ public class PSJdbcColumnDef extends PSJdbcTableComponent
    public boolean canAlter()
    {
       boolean canAlter = super.canAlter();
-      if (canAlter && getAction() == ACTION_CREATE)
+      if (canAlter && (getAction() == ACTION_CREATE || getAction() == ACTION_REPLACE))
       {
-         if (!allowsNull())
+         if (isAllowedNullChanged)
             canAlter = false;
          else if (m_defaultValue != null &&
             m_defaultValue.trim().length() > 0)
@@ -940,7 +948,14 @@ public class PSJdbcColumnDef extends PSJdbcTableComponent
       
       return strAdjSize;
    }
-   
+
+   private boolean m_isChanged = false;
+
+   /**
+    * These Flags are used to decide if table needs to be recreated or columns can be altered, without dropping table
+    */
+   private boolean isAllowedNullChanged = false;
+
    /**
     * The name of this object's root Xml element.
     */
