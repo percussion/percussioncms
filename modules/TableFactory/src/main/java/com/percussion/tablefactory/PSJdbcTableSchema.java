@@ -1482,8 +1482,13 @@ public class PSJdbcTableSchema implements Comparable<PSJdbcTableSchema>
    public boolean canBeAltered()
    {
       for (PSJdbcColumnDef m_column : m_columns) {
-         if (!m_column.canAlter())
+         if (!m_column.canAlter()) {
             return false;
+         }else if(m_column.isChanged()){
+            if(m_primaryKey != null && m_primaryKey.hasColumn(m_column.getName())) {
+               return false;
+            }
+         }
       }
 
       if (m_primaryKey != null && !m_primaryKey.canAlter())
