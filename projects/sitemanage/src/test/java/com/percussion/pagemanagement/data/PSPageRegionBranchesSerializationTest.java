@@ -23,6 +23,15 @@
  */
 package com.percussion.pagemanagement.data;
 
+import com.percussion.share.dao.PSSerializerUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import static com.percussion.share.test.PSDataObjectTestUtils.assertEqualsMethod;
 import static com.percussion.share.test.PSDataObjectTestUtils.assertXmlSerialization;
 import static java.util.Arrays.asList;
@@ -30,23 +39,14 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 
-import com.percussion.share.dao.PSSerializerUtils;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.junit.Test;
-
 public class PSPageRegionBranchesSerializationTest
 {
-    PSRegionBranches branches = new PSRegionBranches();
+
 
     @Test
     public void testSerialization() throws Exception
     {
+        PSRegionBranches branches = new PSRegionBranches();
         PSWidgetItem item =  new PSWidgetItem();
         item.setName("JB");
         branches.setRegionWidgets("test", asList(item));
@@ -59,6 +59,7 @@ public class PSPageRegionBranchesSerializationTest
     
     @Test
     public void testSetRegionWidgets() throws Exception {
+        PSRegionBranches branches = new PSRegionBranches();
         String rid = "rid";
         PSWidgetItem wi = new PSWidgetItem();
         wi.setDefinitionId("BLAH");
@@ -76,6 +77,7 @@ public class PSPageRegionBranchesSerializationTest
     
     @Test
     public void testPageSerialization() throws Exception {
+        PSRegionBranches branches = new PSRegionBranches();
         testSetRegionWidgets();
         PSPage page = new PSPage();
         page.setId("1000");
