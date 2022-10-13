@@ -64,7 +64,7 @@ import java.util.Map;
  * @author dougrand
  * 
  */
-@Transactional()
+@Transactional
 @PSBaseBean("sys_filtermanager")
 public class PSFilterManager
       implements

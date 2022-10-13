@@ -38,11 +38,11 @@ import org.apache.commons.lang.StringUtils;
 import org.hibernate.HibernateException;
 import org.hibernate.LockMode;
 import org.hibernate.Session;
-import org.springframework.transaction.annotation.Propagation;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.security.SecureRandom;
@@ -65,17 +65,12 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author dougrand
  */
 @PSBaseBean("sys_guidmanager")
-@Transactional(propagation = Propagation.REQUIRES_NEW, noRollbackFor = IllegalArgumentException.class)
+@Repository
+@Transactional
 public class PSGuidManager implements IPSGuidManager
 {
 
-   @PersistenceContext
-   private EntityManager entityManager;
 
-   private Session getSession(){
-      return entityManager.unwrap(Session.class);
-   }
-   
    static final Object newBlockLock = new Object();
 
    static final Object hostIdLock = new Object();
@@ -125,6 +120,11 @@ public class PSGuidManager implements IPSGuidManager
 
    static Object allocationCreationLock = new Object();
 
+   @Autowired
+    private SessionFactory sessionFactory;
+
+    private Session session;
+
    /**
     * Ctor - this object will be configured as a singleton in each running
     * container.
@@ -134,6 +134,18 @@ public class PSGuidManager implements IPSGuidManager
       super();
    }
 
+    public void setSessionFactory(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
+
+    private Session getSession() {
+        try {
+            session = sessionFactory.getCurrentSession();
+        } catch (HibernateException e) {
+            session = sessionFactory.openSession();
+        }
+        return session;
+    }
    /**
     * This must be called from synchronized code. Generates the host id if not
     * present, or if the ip address of the host has changed.
@@ -141,15 +153,15 @@ public class PSGuidManager implements IPSGuidManager
    public void loadHostId()
    {
 
-      Session sess = getSession();
+      Session sess =  getSession();
       PSGuidGeneratorData host = null;
 
       try
       {
          // Must get values with an upgrade key to avoid multiple writers
-         host =  sess.get(PSGuidGeneratorData.class, HOST_KEY, LockMode.PESSIMISTIC_WRITE);
-         PSGuidGeneratorData ip1 = sess.get(PSGuidGeneratorData.class, IP_KEY1, LockMode.PESSIMISTIC_WRITE);
-         PSGuidGeneratorData ip2 =  sess.get(PSGuidGeneratorData.class, IP_KEY2, LockMode.PESSIMISTIC_WRITE);
+         host =  sess.get(PSGuidGeneratorData.class, HOST_KEY);
+         PSGuidGeneratorData ip1 = sess.get(PSGuidGeneratorData.class, IP_KEY1);
+         PSGuidGeneratorData ip2 =  sess.get(PSGuidGeneratorData.class, IP_KEY2);
 
          byte[] hostip = null;
 
@@ -397,15 +409,14 @@ public class PSGuidManager implements IPSGuidManager
 
       int current = -1;
 
-      Session s = getSession();
+      Session s =  getSession();
       PSNextNumber data;
 
-      data = s.get(PSNextNumber.class, key, LockMode.PESSIMISTIC_WRITE);
+      data = s.get(PSNextNumber.class, key);
       if (data == null)
       {
          data = new PSNextNumber(key, 100);
          s.persist(data);
-         s.lock(data, LockMode.PESSIMISTIC_WRITE);
       }
 
       current = data.getNext();
@@ -420,7 +431,6 @@ public class PSGuidManager implements IPSGuidManager
          data.setNext(next);
          try {
             s.update(data);
-            s.flush();
          } catch (HibernateException e1) {
             throw new RuntimeException("Could not create or save next number info");
          }
@@ -500,33 +510,33 @@ public class PSGuidManager implements IPSGuidManager
 
    public long updateNextLong(Integer key)
    {
-      Session s = getSession();
-      PSGuidGeneratorData data;
-      long current;
+       Session s = getSession();
+       PSGuidGeneratorData data;
+       long current = -1L;
 
-      data = s.get(PSGuidGeneratorData.class, key, LockMode.PESSIMISTIC_WRITE);
-      if (data == null)
-      {
-         data = new PSGuidGeneratorData(key, 1);
-         data.setVersion(0);
-         s.persist(data);
-         s.lock(data, LockMode.PESSIMISTIC_WRITE);
-      }
-      current = data.getValue();
+       data = (PSGuidGeneratorData)s.get(PSGuidGeneratorData.class, key, LockMode.UPGRADE);
+       if (data == null)
+       {
+           data = new PSGuidGeneratorData(key.intValue(), 1);
+           data.setVersion(0);
+           s.persist(data);
+           s.lock(data, LockMode.UPGRADE);
+       }
+       current = data.getValue();
 
-      long next = current + BLOCK_SIZE;
+       long next = current + BLOCK_SIZE;
 
-      data.setValue(next);
-      try
-      {
-         s.update(data);
-      }
-      catch (HibernateException e1)
-      {
-         throw new RuntimeException("Could not create or save guid info");
-      }
+       data.setValue(next);
+       try
+       {
+           s.update(data);
+       }
+       catch (HibernateException e1)
+       {
+           throw new RuntimeException("Could not create or save guid info");
+       }
 
-      return current+1;
+       return current+1;
    }
 
    /*
