@@ -27,6 +27,7 @@ import com.percussion.cms.PSCmsException;
 import com.percussion.cms.objectstore.IPSComponentProcessor;
 import com.percussion.cms.objectstore.PSActiveAssemblyProcessorProxy;
 import com.percussion.cms.objectstore.server.PSRelationshipProcessor;
+import com.percussion.rx.design.PSDesignModelUtils;
 import com.percussion.server.IPSRequestContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -71,6 +72,7 @@ public class PSNavProxyFactory
                PSActiveAssemblyProcessorProxy.PROCTYPE_SERVERLOCAL, req);
 
          m_relProxy = PSRelationshipProcessor.getInstance();
+         m_compProxy = PSDesignModelUtils.getComponentProxy();
 
       }
       catch (PSCmsException ex)
