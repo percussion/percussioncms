@@ -24,18 +24,15 @@
 package com.percussion.sitemanage.task.impl;
 
 import com.percussion.itemmanagement.service.impl.PSAbstractWorkflowExtension;
-import com.percussion.itemmanagement.service.impl.PSAbstractWorkflowExtension.WorkflowItem;
 import com.percussion.rx.publisher.IPSEditionTask;
 import com.percussion.rx.publisher.IPSEditionTaskStatusCallback;
-import com.percussion.security.PSSecurityProvider;
-import com.percussion.server.PSRequest;
 import com.percussion.services.publisher.IPSEdition;
 import com.percussion.services.publisher.IPSPubItemStatus;
 import com.percussion.services.publisher.IPSSiteItem.Operation;
 import com.percussion.services.publisher.IPSSiteItem.Status;
+import com.percussion.services.pubserver.data.PSPubServer;
 import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.utils.guid.IPSGuid;
-import com.percussion.utils.request.PSRequestInfo;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -93,7 +90,8 @@ public class PSWorkflowEditionTask extends PSAbstractWorkflowExtension implement
         
         boolean isDefaultPubServer = false;
         IPSGuid pubServerId = edition.getPubServerId();
-        if (pubServerId != null && pubServerId.equals(getPubServerService().getDefaultPubServer(site.getGUID()).getGUID()))
+        PSPubServer pubServer = getPubServerService().getDefaultPubServer(site.getGUID());
+        if (pubServerId != null && pubServer != null && pubServerId.equals(pubServer.getGUID()))
             isDefaultPubServer = true;
         
         Set<Integer> pubIds = new HashSet<>();
