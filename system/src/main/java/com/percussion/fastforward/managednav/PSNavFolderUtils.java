@@ -52,7 +52,6 @@ import com.percussion.error.PSExceptionUtils;
 import com.percussion.server.IPSInternalRequest;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.services.assembly.impl.nav.PSNavConfig;
-import com.percussion.services.guidmgr.data.PSLegacyGuid;
 import com.percussion.services.legacy.IPSCmsObjectMgr;
 import com.percussion.services.legacy.PSCmsObjectMgrLocator;
 import com.percussion.util.IPSHtmlParameters;
@@ -224,6 +223,8 @@ public class PSNavFolderUtils
          parentFilter.setDependent(loc);
          parentFilter.setName(PSRelationshipFilter.FILTER_NAME_FOLDER_CONTENT);
          parentFilter.setCommunityFiltering(false);
+         //remove the recycled folder
+         parentFilter.setCategory(PSRelationshipConfig.CATEGORY_FOLDER);
 
          // get all folder parents
          return relProxy.getSummaries(parentFilter,
