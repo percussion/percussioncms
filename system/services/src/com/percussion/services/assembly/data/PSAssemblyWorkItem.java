@@ -1255,9 +1255,7 @@ public class PSAssemblyWorkItem implements IPSAssemblyResult
       sb.append(", m_jobId=").append(m_jobId);
       sb.append(", m_depth=").append(m_depth);
       sb.append(", m_bindings=").append(m_bindings);
-      sb.append(", m_node=").append(m_node);
       sb.append(", m_filter=").append(m_filter);
-      sb.append(", m_navHelper=").append(m_navHelper);
       sb.append(", m_userName='").append(m_userName).append('\'');
       sb.append(", m_deliveryType='").append(m_deliveryType).append('\'');
       sb.append(", m_deliveryPath='").append(m_deliveryPath).append('\'');
