@@ -155,6 +155,7 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicLong;
@@ -2038,8 +2039,9 @@ public class PSAssemblyService implements IPSAssemblyService
          throw new IllegalArgumentException("names may not be null");
       }
 
-      return names.stream().map( name -> session
+      return names.stream().map(name -> session
               .bySimpleNaturalId(PSTemplateSlot.class).load(name))
+              .filter(Objects::nonNull)
               .collect(Collectors.toList());
    }
 
