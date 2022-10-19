@@ -195,6 +195,9 @@ public class PSSearchIndexQueueItem
    @Column(name = "PRIORITY")
    private int m_priority = DEFAULT_PRIORTY;
 
+   @Column(name = "EVENT")
+   private String m_event = "SEARCH_EVENT";
+
    /**
     *  Accessor method for QueueId
     * @param id - Primary key for events
@@ -231,11 +234,18 @@ public class PSSearchIndexQueueItem
       this.m_contentTypeId = event.getContentTypeId();
       this.m_priority = event.getPriority();
       this.m_revisionId = event.getRevisionId();
+      this.m_event = event.getActionTypeName();
       this.m_created = new Date();
    }
-   
-   
-   
+
+   public String getEvent() {
+      return m_event;
+   }
+
+   public void setEvent(String m_event) {
+      this.m_event = m_event;
+   }
+
    public int getContentId()
    {
       return m_contentId;
