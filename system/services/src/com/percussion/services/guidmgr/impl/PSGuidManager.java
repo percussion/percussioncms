@@ -75,10 +75,6 @@ public class PSGuidManager implements IPSGuidManager
    private Session getSession(){
       return entityManager.unwrap(Session.class);
    }
-   
-   static final Object newBlockLock = new Object();
-
-   static final Object hostIdLock = new Object();
 
    /**
     * The key for the GUID data table where the host information is stored
@@ -122,9 +118,6 @@ public class PSGuidManager implements IPSGuidManager
     */
    static ConcurrentHashMap<Object, Allocation> ms_allocation = new ConcurrentHashMap<>(8, 0.9f, 1);
 
-
-   static Object allocationCreationLock = new Object();
-
    /**
     * Ctor - this object will be configured as a singleton in each running
     * container.
@@ -141,15 +134,15 @@ public class PSGuidManager implements IPSGuidManager
    public void loadHostId()
    {
 
-      Session sess = getSession();
+      Session sess =  getSession();
       PSGuidGeneratorData host = null;
 
       try
       {
          // Must get values with an upgrade key to avoid multiple writers
-         host =  sess.get(PSGuidGeneratorData.class, HOST_KEY, LockMode.PESSIMISTIC_WRITE);
-         PSGuidGeneratorData ip1 = sess.get(PSGuidGeneratorData.class, IP_KEY1, LockMode.PESSIMISTIC_WRITE);
-         PSGuidGeneratorData ip2 =  sess.get(PSGuidGeneratorData.class, IP_KEY2, LockMode.PESSIMISTIC_WRITE);
+         host =  sess.get(PSGuidGeneratorData.class, HOST_KEY);
+         PSGuidGeneratorData ip1 = sess.get(PSGuidGeneratorData.class, IP_KEY1);
+         PSGuidGeneratorData ip2 =  sess.get(PSGuidGeneratorData.class, IP_KEY2);
 
          byte[] hostip = null;
 
@@ -397,15 +390,14 @@ public class PSGuidManager implements IPSGuidManager
 
       int current = -1;
 
-      Session s = getSession();
+      Session s =  getSession();
       PSNextNumber data;
 
-      data = s.get(PSNextNumber.class, key, LockMode.PESSIMISTIC_WRITE);
+      data = s.get(PSNextNumber.class, key);
       if (data == null)
       {
          data = new PSNextNumber(key, 100);
          s.persist(data);
-         s.lock(data, LockMode.PESSIMISTIC_WRITE);
       }
 
       current = data.getNext();
@@ -500,9 +492,9 @@ public class PSGuidManager implements IPSGuidManager
 
    public long updateNextLong(Integer key)
    {
-      Session s = getSession();
-      PSGuidGeneratorData data;
-      long current;
+       Session s = getSession();
+       PSGuidGeneratorData data;
+       long current = -1L;
 
       data = s.get(PSGuidGeneratorData.class, key, LockMode.PESSIMISTIC_WRITE);
       if (data == null)
