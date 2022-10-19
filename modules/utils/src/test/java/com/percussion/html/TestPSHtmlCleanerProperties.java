@@ -34,6 +34,7 @@ import java.util.Objects;
 import java.util.Properties;
 import java.util.Scanner;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -92,5 +93,14 @@ public class TestPSHtmlCleanerProperties {
         Document doc = PSHtmlUtils.createHTMLDocument(text, StandardCharsets.UTF_8, false, null);
         String parsed = doc.html();
         assertTrue(parsed.contains("/p>"));
+    }
+
+    @Test
+    public void testFragment3() throws PSHtmlParsingException, TransformerException {
+
+        String text = new Scanner(Objects.requireNonNull(TestPSHtmlCleanerProperties.class.getResourceAsStream("/com/percussion/html/fragment3.html")), "UTF-8").useDelimiter("\\Z").next();
+        Document doc = PSHtmlUtils.createHTMLDocument(text, StandardCharsets.UTF_8, true, null);
+        String parsed = doc.body().toString();
+        assertEquals(text,parsed);
     }
 }
