@@ -38,11 +38,10 @@ import org.apache.commons.lang.StringUtils;
 import org.hibernate.HibernateException;
 import org.hibernate.LockMode;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.security.SecureRandom;
@@ -65,15 +64,16 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author dougrand
  */
 @PSBaseBean("sys_guidmanager")
-@Repository
 @Transactional
 public class PSGuidManager implements IPSGuidManager
 {
 
+   @PersistenceContext
+   private EntityManager entityManager;
 
-   static final Object newBlockLock = new Object();
-
-   static final Object hostIdLock = new Object();
+   private Session getSession(){
+      return entityManager.unwrap(Session.class);
+   }
 
    /**
     * The key for the GUID data table where the host information is stored
@@ -117,14 +117,6 @@ public class PSGuidManager implements IPSGuidManager
     */
    static ConcurrentHashMap<Object, Allocation> ms_allocation = new ConcurrentHashMap<>(8, 0.9f, 1);
 
-
-   static Object allocationCreationLock = new Object();
-
-   @Autowired
-    private SessionFactory sessionFactory;
-
-    private Session session;
-
    /**
     * Ctor - this object will be configured as a singleton in each running
     * container.
@@ -134,18 +126,6 @@ public class PSGuidManager implements IPSGuidManager
       super();
    }
 
-    public void setSessionFactory(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
-
-    private Session getSession() {
-        try {
-            session = sessionFactory.getCurrentSession();
-        } catch (HibernateException e) {
-            session = sessionFactory.openSession();
-        }
-        return session;
-    }
    /**
     * This must be called from synchronized code. Generates the host id if not
     * present, or if the ip address of the host has changed.
@@ -431,6 +411,7 @@ public class PSGuidManager implements IPSGuidManager
          data.setNext(next);
          try {
             s.update(data);
+            s.flush();
          } catch (HibernateException e1) {
             throw new RuntimeException("Could not create or save next number info");
          }
@@ -514,29 +495,29 @@ public class PSGuidManager implements IPSGuidManager
        PSGuidGeneratorData data;
        long current = -1L;
 
-       data = (PSGuidGeneratorData)s.get(PSGuidGeneratorData.class, key, LockMode.UPGRADE);
-       if (data == null)
-       {
-           data = new PSGuidGeneratorData(key.intValue(), 1);
-           data.setVersion(0);
-           s.persist(data);
-           s.lock(data, LockMode.UPGRADE);
-       }
-       current = data.getValue();
+      data = s.get(PSGuidGeneratorData.class, key, LockMode.PESSIMISTIC_WRITE);
+      if (data == null)
+      {
+         data = new PSGuidGeneratorData(key, 1);
+         data.setVersion(0);
+         s.persist(data);
+         s.lock(data, LockMode.PESSIMISTIC_WRITE);
+      }
+      current = data.getValue();
 
-       long next = current + BLOCK_SIZE;
+      long next = current + BLOCK_SIZE;
 
-       data.setValue(next);
-       try
-       {
-           s.update(data);
-       }
-       catch (HibernateException e1)
-       {
-           throw new RuntimeException("Could not create or save guid info");
-       }
+      data.setValue(next);
+      try
+      {
+         s.update(data);
+      }
+      catch (HibernateException e1)
+      {
+         throw new RuntimeException("Could not create or save guid info");
+      }
 
-       return current+1;
+      return current+1;
    }
 
    /*
