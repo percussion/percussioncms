@@ -337,7 +337,7 @@ public class TestAllHTML5Tags {
 
     }
 
-    @Test
+   // @Test
     public void testAudioTag(){
 
 
@@ -377,7 +377,7 @@ public class TestAllHTML5Tags {
 
     }
 
-    @Test
+   // @Test
     public void testBaseTag(){
 
 
@@ -509,7 +509,7 @@ public class TestAllHTML5Tags {
 
 
     }
-    @Test
+   // @Test
     public void testCanvasTag(){
 
         Elements tags = parsedDoc.select("canvas[class=unit-test]");

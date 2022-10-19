@@ -177,12 +177,10 @@ public class PSHtmlUtils {
             props = getDefaultCleanerProperties();
         }
 
-
         Safelist safe = getSafeListFromProperties(props);
-
         Document.OutputSettings settings = getOutputSettings(props, encoding);
 
-        cleansed  = Jsoup.clean(fragment, "", safe,settings);
+        cleansed  = Jsoup.clean(fragment, "https://parser", safe,settings);
 
 
         return cleansed;

@@ -86,9 +86,13 @@ tinymce.PluginManager.add('percadvimage', function(editor, url) {
                 sys_dependentid : cm1LinkData.sys_dependentid,
                 sys_relationshipid : '',
                 inlinetype : cm1LinkData.inlinetype,
-                'data-jcrpath' : cm1LinkData.jcrpath,
-                'data-pathitem' : JSON.stringify(cm1LinkData.pathItem)
+                'data-jcrpath' : cm1LinkData.jcrpath
             };
+
+            var url = formData.url;
+            if(typeof url === 'undefined'){
+                url = formData.src.value;
+            }
 
             var formImgAttrs = {
                 'data-description-override': formData.isDataDescriptionOverride,
@@ -98,7 +102,7 @@ tinymce.PluginManager.add('percadvimage', function(editor, url) {
                 'data-decorative-override': formData.isDataDecorativeOverride,
                 'data-constrain' : formData.constrain,
 
-                'src' :formData.url,
+                'src' :url,
                 'alt' :formData.alt,
                 'title' : formData.title,
                 'align' : formData.align,
@@ -116,19 +120,19 @@ tinymce.PluginManager.add('percadvimage', function(editor, url) {
                     };
                     jQuery.extend(formImgAttrs, style);
                 }
-
-                dom.removeAllAttribs(imgElm);
-                dom.setAttribs(imgElm, formImgAttrs);
+				dom.setAttribs(imgElm, formImgAttrs);
                 editor.nodeChanged();
             } else {
-                editor.insertContent(dom.createHTML('img', formImgAttrs));
+                editor.insertContent(dom.createHTML('IMG', formImgAttrs));
             }
 
         }
 
-
         function updateDecorativeImage() {
             var url = formData.url;
+			if(typeof url === 'undefined'){
+				url = formData.src.value;
+			}
             var datadecorativeoverride = formData.isDataDecorativeOverride;
             //If it is an external url, we want to be able to write to it.
             if(url.startsWith('http')) {
@@ -161,6 +165,9 @@ tinymce.PluginManager.add('percadvimage', function(editor, url) {
 
         function setReadWriteModeAlt() {
             var url = formData.url;
+			if(typeof url === 'undefined'){
+				url = formData.src.value;
+			}
             var description = formData.alt;
             var title = formData.title;
             var sys_dependentid = cm1LinkData.sys_dependentid;
@@ -197,6 +204,9 @@ tinymce.PluginManager.add('percadvimage', function(editor, url) {
         function setReadWriteModeTitle() {
             var title = formData.title;
             var url = formData.url;
+			if(typeof url === 'undefined'){
+				url = formData.src.value;
+			}
             var description = formData.alt;
             var sys_dependentid = cm1LinkData.sys_dependentid;
             var dataprevioustitleoverride = (formData.dataPreviousTitleOverride == null || typeof formData.dataPreviousTitleOverride === 'undefined' )? '': formData.dataPreviousTitleOverride;
@@ -294,7 +304,11 @@ tinymce.PluginManager.add('percadvimage', function(editor, url) {
 
             };
 
+			if(typeof formData.url === 'undefined'){
+				inlineImage.src = formData.src.value;
+			}else{
             inlineImage.src = formData.url;
+        }
         }
         function getImageData(itemId, updateTitle, callback) {
 
@@ -320,7 +334,6 @@ tinymce.PluginManager.add('percadvimage', function(editor, url) {
                     cm1LinkData.alt = renderLink.altText;
                     cm1LinkData.title = renderLink.title;
                     cm1LinkData.jcrpath = pathItem.PathItem.folderPaths[0].replace('/Folders/$System$/','') + "/" + pathItem.PathItem.name;
-                    cm1LinkData.pathItem = pathItem.PathItem;
 
                     var currentaltoverride = formData.alt;
                     var currenttitleoverride = formData.title;
@@ -553,7 +566,7 @@ tinymce.PluginManager.add('percadvimage', function(editor, url) {
                 }
                 if(changeData.name === 'align'){
 
-                    formData.align = newData.align;
+                    formData.align = api.getData().align;
                 }
             },
 
@@ -591,6 +604,9 @@ tinymce.PluginManager.add('percadvimage', function(editor, url) {
                 }
 
                 var dataSrc = formData.url;
+				if(typeof dataSrc === 'undefined'){
+					dataSrc = formData.src.value;
+				}
                 var imgPath = dataSrc.trim(),imgPathLower = imgPath.toLowerCase();
                 //Resolve manually entered internal links
                 if(imgPathLower.match('^//sites/') || imgPathLower.match('^//assets/') || imgPathLower.match('^/sites/') || imgPathLower.match('^/assets/') || imgPathLower.match('^sites/') || imgPathLower.match('^assets/')) {
