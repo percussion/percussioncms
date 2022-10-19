@@ -38,6 +38,7 @@ import org.apache.commons.lang.StringUtils;
 import org.hibernate.HibernateException;
 import org.hibernate.LockMode;
 import org.hibernate.Session;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
@@ -64,7 +65,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author dougrand
  */
 @PSBaseBean("sys_guidmanager")
-@Transactional
+@Transactional(propagation = Propagation.REQUIRES_NEW, noRollbackFor = IllegalArgumentException.class)
 public class PSGuidManager implements IPSGuidManager
 {
 
