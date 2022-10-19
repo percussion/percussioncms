@@ -1244,7 +1244,7 @@ public class PSAssemblyService implements IPSAssemblyService
             PSContentMgrConfig config = new PSContentMgrConfig();
             config.addOption(PSContentMgrOption.LAZY_LOAD_CHILDREN);
             config.addOption(PSContentMgrOption.LOAD_MINIMAL);
-            config.setBodyAccess( PSInlineLinkProcessor2.getInstance());
+            config.setBodyAccess(new PSInlineLinkProcessor(work.getFilter(), work));
             config.setNamespaceCleanup( PSNamespaceCleanup2.getInstance());
             items = contentmgr.findItemsByGUID(guids, config);
 
