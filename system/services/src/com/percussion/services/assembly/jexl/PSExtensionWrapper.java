@@ -33,10 +33,9 @@ import com.percussion.server.PSRequest;
 import com.percussion.server.PSRequestContext;
 import com.percussion.server.PSServer;
 import com.percussion.utils.request.PSRequestInfo;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.Iterator;
-
-import org.apache.commons.lang.StringUtils;
 
 /**
  * Wrap an existing extension so it can be called from jexl. This is a helper
@@ -76,15 +75,16 @@ public class PSExtensionWrapper
       IPSExtensionManager emgr = PSServer.getExtensionManager(null);
       try
       {
-         Iterator<PSExtensionRef> refs = emgr.getExtensionNames(null, context,
-               "com.percussion.extension.IPSUdfProcessor", name);
-         if (refs.hasNext() == false)
-         {
-            throw new RuntimeException("Missing extension " + name);
+         if(emgr != null) {
+            Iterator<PSExtensionRef> refs = emgr.getExtensionNames(null, context,
+                    "com.percussion.extension.IPSUdfProcessor", name);
+            if (refs.hasNext() == false) {
+               throw new RuntimeException("Missing extension " + name);
+            }
+            PSExtensionRef assemblerref = refs.next();
+            m_processor = (IPSUdfProcessor) emgr.prepareExtension(assemblerref,
+                    null);
          }
-         PSExtensionRef assemblerref = refs.next();
-         m_processor = (IPSUdfProcessor) emgr.prepareExtension(assemblerref,
-               null);
       }
       catch (PSExtensionException e)
       {

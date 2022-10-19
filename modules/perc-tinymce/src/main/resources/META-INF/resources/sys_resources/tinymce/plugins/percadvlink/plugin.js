@@ -101,8 +101,10 @@ tinymce.PluginManager.add('percadvlink', function(editor) {
 			initialData: data,
 			onChange: function(api, changeData){
 				if(changeData.name === 'target'){
-					    var newData = api.getData();
-						data.target = newData.target;
+						data.target = api.getData().target;
+				}
+				if(changeData.name === 'title'){
+						data.title = api.getData().title;
 				}
             },
 
@@ -160,7 +162,6 @@ tinymce.PluginManager.add('percadvlink', function(editor) {
                 cm1LinkData.sys_dependentid = renderLink.sys_dependentid;
                 cm1LinkData.inlinetype = 'rxhyperlink';
                 cm1LinkData.jcrPath = pathItem.path;
-                cm1LinkData.pathItem = pathItem;
                 data.url = renderLink.url;
 				data.href = {value: data.url};
                 data.title= renderLink.title;
@@ -182,8 +183,7 @@ tinymce.PluginManager.add('percadvlink', function(editor) {
                 sys_dependentid : cm1LinkData.sys_dependentid,
                 inlinetype : cm1LinkData.inlinetype,
                 'class': cm1LinkData.stateClass,
-                'data-jcrpath': cm1LinkData.jcrPath,
-                'data-pathitem': JSON.stringify(cm1LinkData.pathItem)
+                'data-jcrpath': cm1LinkData.jcrPath
             };
             var extAnchorAttrs = {
                 href: data.url,
@@ -197,11 +197,6 @@ tinymce.PluginManager.add('percadvlink', function(editor) {
                 }
 
                 if(extLink === 'yes'){
-                    var attrList = anchorElm.attributes;
-                    var i = attrList.length;
-                    while( i-- ){
-                        anchorElm.removeAttributeNode(attrList[i]);
-                    }
                     dom.setAttribs(anchorElm, extAnchorAttrs);
                 } else {
                     dom.setAttribs(anchorElm, anchorAttrs);
