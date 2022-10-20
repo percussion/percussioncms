@@ -467,8 +467,7 @@ public class PSWidgetAssetRelationshipService implements IPSWidgetAssetRelations
         notEmpty(id, "id");
         PSRelationshipFilter filter = new PSRelationshipFilter();
         filter.setDependentId(idMapper.getGuid(id).getUUID());
-        filter.setCategory(PSRelationshipConfig.CATEGORY_ACTIVE_ASSEMBLY);
-        filter.limitToEditOrCurrentOwnerRevision(true);
+        filter.limitToEditOrCurrentOwnerRevision(restrictToOwnerCurrentRevision);
         Set<String> owners = new HashSet<>();
         List<PSRelationship> rels = getRelationships(filter);
         for (PSRelationship rel : rels)
