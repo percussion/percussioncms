@@ -290,8 +290,16 @@ public class PSJdbcStatementFactory
          }
          else if (column.getAction() == PSJdbcTableComponent.ACTION_REPLACE)
          {
-            block.addStep(getAlterColumnStatement(dbmsDef,fullTableName, column));
+            if(PSSqlHelper.isDerby(dbmsDef.getDriver())){
+               List<PSJdbcSqlStatement> steps = getAlterColumnRecreateStatements(dbmsDef,fullTableName, column);
+               for(PSJdbcExecutionStep step:steps) {
+                  block.addStep(step);
+               }
+            }else {
+               block.addStep(getAlterColumnStatement(dbmsDef, fullTableName, column));
+            }
          }
+
       }
 
       // add pk create
@@ -1607,6 +1615,52 @@ public class PSJdbcStatementFactory
       return new PSJdbcSqlStatement(buf.toString());
    }
 
+   private static List<PSJdbcSqlStatement> getAlterColumnRecreateStatements(PSJdbcDbmsDef dbmsDef, String tableName,
+                                                             PSJdbcColumnDef column)
+   {
+
+      List<PSJdbcSqlStatement> steps = new ArrayList<>();
+
+         //ALTER TABLE MY_TABLE ADD COLUMN NEW_COLUMN BLOB(2147483647);
+         //UPDATE MY_TABLE SET NEW_COLUMN=MY_COLUMN;
+         //ALTER TABLE MY_TABLE DROP COLUMN MY_COLUMN;
+         //RENAME COLUMN MY_TABLE.NEW_COLUMN TO MY_COLUMN;
+         StringBuilder buf = new StringBuilder();
+         buf.append("ALTER TABLE ");
+         buf.append(tableName);
+         buf.append(" ADD COLUMN ");
+         buf.append(column.getName()+"_NEW");
+         buf.append(" ");
+         String coldef = column.getSqlDef(dbmsDef);
+         coldef = coldef.replace(column.getName(),"");
+         coldef = coldef.replace(" NOT NULL","");
+         buf.append(coldef);
+         steps.add(new PSJdbcSqlStatement(buf.toString()));
+
+         StringBuilder buf2 = new StringBuilder();
+         buf2.append("UPDATE ");
+         buf2.append(tableName);
+         buf2.append(" SET ");
+         buf2.append(column.getName()+"_NEW=" + column.getName());
+         steps.add(new PSJdbcSqlStatement(buf2.toString()));
+
+         StringBuilder buf3 = new StringBuilder();
+         buf3.append("ALTER TABLE ");
+         buf3.append(tableName);
+         buf3.append(" DROP COLUMN ");
+         buf3.append(column.getName());
+         steps.add(new PSJdbcSqlStatement(buf3.toString()));
+
+         StringBuilder buf4 = new StringBuilder();
+         buf4.append("RENAME COLUMN ");
+         buf4.append(tableName);
+         buf4.append(".");
+         buf4.append(column.getName()+"_NEW TO " + column.getName());
+         steps.add(new PSJdbcSqlStatement(buf4.toString()));
+      return steps;
+   }
+
+
    /**
     * Generates an alter column statement to alter column defination as defined.
     *
@@ -1644,6 +1698,7 @@ public class PSJdbcStatementFactory
          String coldef = column.getSqlDef(dbmsDef);
          coldef = coldef.replace(column.getName(),"");
          buf.append(coldef);
+
       }
        return new PSJdbcSqlStatement(buf.toString());
    }
