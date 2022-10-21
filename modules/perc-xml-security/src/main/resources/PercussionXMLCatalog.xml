@@ -344,10 +344,6 @@ are not defined in this catalog file to prevent XXE vulnerabilities -->
             rewritePrefix="file://@@rxdir@@/sys_psxContentEditorCataloger/" />
 
     <rewriteURI
-            uriStartString="file:sys_psxFTSearchSupport/"
-            rewritePrefix="file://@@rxdir@@/sys_psxFTSearchSupport/" />
-
-    <rewriteURI
             uriStartString="file:sys_psxInternalSearches/"
             rewritePrefix="file://@@rxdir@@/sys_psxInternalSearches/" />
 
