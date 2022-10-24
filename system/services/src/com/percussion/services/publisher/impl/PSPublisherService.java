@@ -115,8 +115,6 @@ import com.percussion.utils.xml.PSInvalidXmlException;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Criteria;
@@ -600,7 +598,7 @@ public class PSPublisherService
       Criteria c = s.createCriteria(PSContentList.class);
       c.add(Restrictions.eq("contentListId", contListID.longValue()));
       List results = c.list();
-      if (results.size() == 0)
+      if (results.isEmpty())
       {
          return null;
       }
@@ -634,7 +632,9 @@ public class PSPublisherService
       }
       catch (Exception e)
       {
-         log.error("Bad site id found " + siteidstr, e);
+         log.error("Bad site id found {} Error: {}",
+                 siteidstr,
+                 PSExceptionUtils.getMessageForLog(e));
       }
       IPSGuid deliveryContextId = new PSGuid(PSTypeEnum.CONTEXT,
             deliveryContext);
@@ -1338,11 +1338,7 @@ public class PSPublisherService
       {
          throw new PSCatalogException(IPSCatalogErrors.IO, e, type);
       }
-      catch (SAXException e)
-      {
-         throw new PSCatalogException(IPSCatalogErrors.XML, e, item);
-      }
-      catch (PSInvalidXmlException e)
+      catch (SAXException | PSInvalidXmlException e)
       {
          throw new PSCatalogException(IPSCatalogErrors.XML, e, item);
       }
@@ -1866,7 +1862,7 @@ public class PSPublisherService
    /**
     * The HQL used to get the reference IDs for the specified folder IDs (from an in clause). 
     */
-   private final static String GET_REFS_4_FOLDER_IDS_INCLAUSE = "select i.referenceId from PSSiteItem i "
+   private static final String GET_REFS_4_FOLDER_IDS_INCLAUSE = "select i.referenceId from PSSiteItem i "
       + "where i.siteId = :siteid and "
       + "i.status = i.operation and i.folderId in (:folderIds)";
 
@@ -2076,7 +2072,7 @@ public class PSPublisherService
          PSTouchParentItemsHandler handler = new PSTouchParentItemsHandler(
             session);
          handler.addSpecificIds(cids);
-         log.debug("List of items to update is: " + handler.toString());
+         log.debug("List of items to update is: {}" , handler);
          handler.touchContentItems();
 
    }
@@ -2095,7 +2091,7 @@ public class PSPublisherService
          PSTouchParentItemsHandler handler =
                new PSTouchParentItemsHandler(session);
          handler.addParents(cids);
-         log.debug("List of items to update is: " + handler.toString());
+         log.debug("List of items to update is: {}" , handler);
          return handler.touchContentItems();
 
       }
@@ -2110,7 +2106,7 @@ public class PSPublisherService
                new PSTouchParentItemsHandler(session);
          handler.addSpecificIds(cids);
          handler.addParents(cids);
-         log.debug("List of items to update is: " + handler.toString());
+         log.debug("List of items to update is: {}" , handler);
          return handler.touchContentItems();
 
       }
@@ -2233,7 +2229,7 @@ public class PSPublisherService
          throw new IllegalArgumentException("edition must be numeric");
       }
 
-      int contentids[] = new int[ids.length];
+      int[] contentids = new int[ids.length];
       int i = 0;
       for (String id : ids)
       {
@@ -3548,7 +3544,7 @@ public class PSPublisherService
          List<Object[]> rows = q.list();
          Set<Integer> statusIds = new HashSet<>();
          for(Object[] row : rows){
-            int statusId = Integer.valueOf(StringUtils.EMPTY + row[5]);
+            int statusId = Integer.parseInt(StringUtils.EMPTY + row[5]);
             if(!statusIds.contains(statusId)) {
                String srvName = StringUtils.EMPTY + row[0];
                Date date = (Date)row[1];
@@ -3610,7 +3606,7 @@ public class PSPublisherService
       {
          c.add(Restrictions.eq("editionId", editionids.get(0)));
       }
-      else if (editionids.size() > 0)
+      else if (!editionids.isEmpty())
       {
          c.add(Restrictions.in("editionId", editionids));
       }
@@ -3862,7 +3858,7 @@ public class PSPublisherService
       List results = getSession().createQuery(
             "select s from PSPubStatus s where s.statusId = :sid").setParameter(
             "sid", jobid).list();
-      if (results != null && results.size() > 0)
+      if (results != null && !results.isEmpty())
       {
          return (IPSPubStatus) results.get(0);
       }
@@ -4087,13 +4083,11 @@ public class PSPublisherService
          q.setParameter("context", contextId.getUUID());
          q.setParameter("templateId", templateId.longValue());
          if (serverId != null)
-            q.setParameter("serverId", serverId.longValue());
+            q.setParameter("serverId", serverId);
          else
             q.setParameter("siteId", siteId.longValue());
          q.setParameter("location", targetPath);
-         Object data[] = (Object[]) q.uniqueResult();
-         return data;
-
+         return (Object[]) q.uniqueResult();
       }
    
    public int findLastPublishedItemsBySite(IPSGuid siteId,
@@ -4204,13 +4198,13 @@ public class PSPublisherService
    private boolean isMySQL()
    {
       if (m_isMySQL != null)
-         return m_isMySQL.booleanValue();
+         return m_isMySQL;
       
       try
       {
          PSConnectionDetail connDetail = m_dsMgr.getConnectionDetail(null);
          m_isMySQL = PSSqlHelper.isMysql(connDetail.getDriver());
-         return m_isMySQL.booleanValue();
+         return m_isMySQL;
       }
       catch (Exception e)
       {
