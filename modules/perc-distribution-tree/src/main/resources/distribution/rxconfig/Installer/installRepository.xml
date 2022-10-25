@@ -332,6 +332,7 @@
         <PSExecSQLStmt printExceptionStackTrace="true" qualifyTableNames="RXS_CT_GENERIC"
                        qualifyViewNames=""
                        sqlSqlServer="sp_rename 'RXS_CT_GENERIC.USAGE', 'PUSAGE', 'COLUMN';"
+                       sqlDerby="RENAME COLUMN RXS_CT_GENERIC.USAGE TO PUSAGE"
                        sql="ALTER TABLE RXS_CT_GENERIC rename column USAGE to PUSAGE;"
                        failonerror="false" silenceerrors="false"
         />
