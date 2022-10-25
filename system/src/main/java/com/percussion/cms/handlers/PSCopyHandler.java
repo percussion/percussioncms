@@ -158,7 +158,7 @@ class PSCopyHandler implements IPSCopyHandler
 
       /* build a list of workflows allowed for this content type (so we don't
          have to walk the iterator a million times */
-      if ( m_ceHandler.getCmsObject().isWorkflowable() &&
+      if ( m_ceHandler.getCmsObject() != null && m_ceHandler.getCmsObject().isWorkflowable() &&
            null != ce.getWorkflowInfo())
       {
          Iterator iter = ce.getWorkflowInfo().getValues();
