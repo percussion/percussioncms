@@ -36,7 +36,6 @@ import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.types.PSConversions;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.HibernateException;
-import org.hibernate.LockMode;
 import org.hibernate.Session;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -496,13 +495,13 @@ public class PSGuidManager implements IPSGuidManager
        PSGuidGeneratorData data;
        long current = -1L;
 
-      data = s.get(PSGuidGeneratorData.class, key, LockMode.PESSIMISTIC_WRITE);
+      data = s.get(PSGuidGeneratorData.class, key);
       if (data == null)
       {
          data = new PSGuidGeneratorData(key, 1);
          data.setVersion(0);
          s.persist(data);
-         s.lock(data, LockMode.PESSIMISTIC_WRITE);
+
       }
       current = data.getValue();
 
