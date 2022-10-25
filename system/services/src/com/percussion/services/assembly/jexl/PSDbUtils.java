@@ -50,6 +50,9 @@ import javax.jcr.ValueFormatException;
 import javax.naming.NamingException;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 
 /**
@@ -57,6 +60,7 @@ import org.apache.commons.lang.StringUtils;
  * 
  * @author dougrand
  */
+@Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_UNCOMMITTED,readOnly = true)
 public class PSDbUtils extends PSJexlUtilBase
 {
    /**
@@ -85,7 +89,8 @@ public class PSDbUtils extends PSJexlUtilBase
 
          IPSConnectionInfo cinfo = new PSConnectionInfo(datasource);
          try(Connection c = dsmgr.getDbConnection(cinfo)){
-               try(PreparedStatement st = c.prepareStatement(sqlselect)) {
+               try(PreparedStatement st = c.prepareStatement(sqlselect,ResultSet.TYPE_FORWARD_ONLY,
+                       ResultSet.CONCUR_READ_ONLY)) {
                   try(ResultSet rs = st.executeQuery()) {
                      if (rs == null) {
                         return rval;
