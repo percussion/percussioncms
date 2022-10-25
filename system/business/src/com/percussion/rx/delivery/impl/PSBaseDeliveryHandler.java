@@ -1078,8 +1078,13 @@ public abstract class PSBaseDeliveryHandler implements IPSDeliveryHandler
    {
          JobData data = m_jobData.get(result.getJobId());
          final ItemState state = PSPublishHandler.OUTCOME_STATE.get(result.getOutcome());
+        long pubServerId = 0;
+        if(data.m_pubServer != null){
+           pubServerId = data.m_pubServer.getServerId();
+        }
+
          PSPubItemStatus status = new PSPubItemStatus(
-               result.getReferenceId(), result.getJobId(), data.m_pubServer.getServerId(), result.getDeliveryContext(), state);
+               result.getReferenceId(), result.getJobId(), pubServerId, result.getDeliveryContext(), state);
          if (result.getUnpublishData() != null)
          {
             status.setUnpublishingInformation(result.getUnpublishData());

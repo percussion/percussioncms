@@ -20,7 +20,7 @@
              
                   <Set name="connectionTimeout">120000</Set>
                   <Set name="initializationFailTimeout">0</Set>
-             
+                  <Set name="autoCommit">true</Set>
                   <Set name="minimumIdle">
                      <Property default="50" name="perc.ds.1.connections.min"/>
                   </Set>

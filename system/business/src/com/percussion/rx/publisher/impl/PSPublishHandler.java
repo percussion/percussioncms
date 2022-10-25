@@ -608,9 +608,10 @@ public class PSPublishHandler implements MessageListener
          {
             Collection<IPSDeliveryResult> results = 
                m_deliveryManager.commit(jc.getJobId());
-            long pubServerId = 0;
+
             for(IPSDeliveryResult result : results)
             {
+               long pubServerId = 0;
                if (!result.hasUpdateSent())
                {
                   final ItemState state = OUTCOME_STATE.get(result.getOutcome());
