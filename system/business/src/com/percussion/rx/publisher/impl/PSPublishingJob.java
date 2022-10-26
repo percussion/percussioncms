@@ -601,8 +601,6 @@ public class PSPublishingJob implements Runnable
       long delta = System.currentTimeMillis() - m_lastNotificationTime;
       if (m_publishQueueTimeout > 0 && delta > m_publishQueueTimeout)
       {
-         logTimeoutWarning(true);
-         cancel(false);
          return true;            
       }
 
@@ -861,8 +859,7 @@ public class PSPublishingJob implements Runnable
     */
    private void finishEdition(PSStopwatch editionTimer, Date start_time, IPSEdition ed,
          IPSSite site, IPSPublisherService psvc)
-   {
-      if (!m_canceled)
+   {if (!m_canceled)
          commitJobAndEndingJob();
          
       waitForStatusWrite();
@@ -1859,7 +1856,7 @@ public class PSPublishingJob implements Runnable
             wait(POLL_TIME);
             counter++;
          }
-         if (m_queued.get() == 0 && m_assembled.get() == 0 && m_paged.get() == 0)
+         if (m_queued.get() <= 0 && m_assembled.get() <= 0 && m_paged.get() <= 0)
          {
             log.debug("Detected Job Completion (queued, assembled and paged are 0) for job {}" , m_jobid );
             debugStatusCounts();
@@ -1873,7 +1870,20 @@ public class PSPublishingJob implements Runnable
          }
          if (isTimeout())
          {
-            log.error("Job Timeout {}" ,m_jobid);
+
+             m_queued.addAndGet(-1 * failWorkingItemsNotReadyForDelivery());
+             if(m_queued.get()<0) {
+                 m_queued.set(0);
+             }
+
+             if(getState().getDisplayName().equalsIgnoreCase("WORKING")
+                     && m_queued.get() <= 0){
+                 continue;
+             }
+
+             logTimeoutWarning(true);
+             cancel(false);
+
             debugStatusCounts();
             break;            
          }
@@ -2757,4 +2767,27 @@ public class PSPublishingJob implements Runnable
          }
       };
    }
+
+   private int failWorkingItemsNotReadyForDelivery(){
+       ConcurrentHashMap<Long,AtomicReference<ItemState>> failures = new ConcurrentHashMap<>();
+       int ret = 0;
+       for( Map.Entry<Long,AtomicReference<ItemState>> e : m_items.entrySet()){
+           if(!e.getValue().get()
+                .name()
+             .equalsIgnoreCase("PREPARED_FOR_DELIVERY")){
+               failures.put(e.getKey(),e.getValue());
+               ret++;
+           }
+       }
+
+       if(!failures.isEmpty()){
+           for( Map.Entry<Long,AtomicReference<ItemState>> e : failures.entrySet()) {
+               updateJobStatus(e.getKey(),ItemState.FAILED);
+                ret++;
+           }
+       }
+       return ret;
+
+   }
+
 }
