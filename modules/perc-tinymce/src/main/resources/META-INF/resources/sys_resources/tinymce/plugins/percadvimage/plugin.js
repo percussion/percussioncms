@@ -333,7 +333,7 @@ tinymce.PluginManager.add('percadvimage', function(editor, url) {
                     cm1LinkData.inlinetype = 'rximage';
                     cm1LinkData.alt = renderLink.altText;
                     cm1LinkData.title = renderLink.title;
-                    cm1LinkData.jcrpath = pathItem.PathItem.folderPaths[0].replace('/Folders/$System$/','') + "/" + pathItem.PathItem.name;
+                    cm1LinkData.jcrpath = pathItem.PathItem.folderPaths.replace('/Folders/$System$/','') + "/" + pathItem.PathItem.name;
 
                     var currentaltoverride = formData.alt;
                     var currenttitleoverride = formData.title;

@@ -181,6 +181,7 @@ public class PSInlineLinkContentHandler
       //Process all "img" tags
       Elements imgTags = htmlDoc.select(IMG_TAG);
       processIMGTags(imgTags);
+      result=htmlDoc.toString();
       result = StringUtils.replace(result, RX_FILLER, "");
       return result;
    }
