@@ -343,6 +343,12 @@
                        failonerror="false" silenceerrors="true"
         />
 
+        <PSExecSQLStmt printExceptionStackTrace="true" qualifyTableNames="PSX_SEARCHINDEXQUEUE"
+                       qualifyViewNames=""
+                       sql="ALTER TABLE PSX_SEARCHINDEXQUEUE DROP COLUMN EVENT"
+                       failonerror="false" silenceerrors="true"
+        />
+
 
     </target>
 
