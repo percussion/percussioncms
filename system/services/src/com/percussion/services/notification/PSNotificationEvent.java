@@ -176,7 +176,12 @@ public class PSNotificationEvent implements Serializable
        * Items are found or updated for workflow folder assignment.  The target object is an integer of the number of
        * items found or processed (positive to add to found count, negative when items are processed).
        */
-      WORKFLOW_FOLDER_ASSIGNMENT_PROCESSING(false);
+      WORKFLOW_FOLDER_ASSIGNMENT_PROCESSING(false),
+
+      /**
+       * This is a JMS error.
+       */
+      JMS_ERROR(false);
 
       
       /**
