@@ -49,6 +49,7 @@ http://www.springframework.org/schema/context/spring-context.xsd">
     <!-- Publishing handler setup for the assembly and status queues -->
     <bean id="sys_publishMessageHandlerContainerQ"
           class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+        <property name="errorHandler" ref="sys_queueErrorHandler"/>
         <property name="concurrentConsumers" value="4"/>
         <property name="connectionFactory" ref="sys_jmsConnectionFactory" />
         <property name="destination" ref="sys_publishQueueDestination" />
@@ -605,6 +606,7 @@ http://www.springframework.org/schema/context/spring-context.xsd">
           class="com.percussion.rx.publisher.impl.PSPublishHandler">
         <constructor-arg type="com.percussion.rx.publisher.IPSRxPublisherServiceInternal" ref="sys_rxpublisherservice"/>
         <constructor-arg type="com.percussion.rx.delivery.IPSDeliveryManager" ref="sys_deliveryManager"/>
+        <constructor-arg type="com.percussion.services.jms.impl.PSQueueErrorHandler" ref="sys_queueErrorHandler"/>
     </bean>
 
     <bean id="sys_designModelFactory"
