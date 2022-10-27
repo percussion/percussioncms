@@ -575,10 +575,16 @@ public class PSVelocityAssembler extends PSAssemblerBase
             IPSAssemblyItem work = (IPSAssemblyItem) item.clone();
             work.setStatus(Status.FAILURE);
             work.setMimeType("text/html");
+            String style="";
+            //If not in preview - style the error to be hidden.
+            if(work.getContext() != 0){
+               style=" style='display:none;'";
+            }
+
             StringBuilder results = new StringBuilder();
             results.append("<html><head></head><body>");
             results
-                    .append("<div class='perc-assembly-error' \">");
+                    .append("<div class='perc-assembly-error'").append(style).append(" \">");
             results.append("<h2>");
             results.append(message);
             results.append(" \"");
