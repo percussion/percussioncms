@@ -1218,13 +1218,16 @@ public class PSPubServerService implements IPSPubServerService
                     serverInfo.getProperties().add(obfuPasswordProperty);
                 }
             }
-
-            setPublishDates(pubServer, site, serverInfo);
+            if(site.isPageBased()) {
+                setPublishDates(pubServer, site, serverInfo);
+            }
         }
 
         serverInfo.setServerId(pubServer.getServerId());
         serverInfo.setServerName(pubServer.getName());
-        serverInfo.setIsDefault(site.getDefaultPubServer() == pubServer.getServerId());
+        if(site.isPageBased()) {
+            serverInfo.setIsDefault(site.getDefaultPubServer() == pubServer.getServerId());
+        }
         serverInfo.setServerType(pubServer.getServerType());
 
         String pubType = pubServer.getPublishType();
@@ -1258,8 +1261,10 @@ public class PSPubServerService implements IPSPubServerService
         }
 
         // only the default server can incrementally publish
-        serverInfo.setCanIncrementalPublish(serverInfo.getIsDefault() || PSPubServer.STAGING.equalsIgnoreCase(pubServer.getServerType()));
-        serverInfo.setIsFullPublishRequired(!pubServer.hasFullPublished());
+        if(site.isPageBased()) {
+            serverInfo.setCanIncrementalPublish(serverInfo.getIsDefault() || PSPubServer.STAGING.equalsIgnoreCase(pubServer.getServerType()));
+            serverInfo.setIsFullPublishRequired(!pubServer.hasFullPublished());
+        }
 
 
         return serverInfo;
