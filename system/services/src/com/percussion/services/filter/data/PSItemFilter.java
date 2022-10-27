@@ -446,7 +446,11 @@ public class PSItemFilter implements IPSItemFilter, IPSCatalogSummary,
       sb.append(", description='").append(description).append('\'');
       sb.append(", legacy_authtype=").append(legacy_authtype);
       sb.append(", rules=").append(rules);
-      sb.append(", parentFilter=").append(parentFilter);
+      if(parentFilter!=null) {
+         sb.append(", parentFilter=").append(parentFilter.getGUID());
+      }else{
+         sb.append(", parentFilter=null");
+      }
       sb.append('}');
       return sb.toString();
    }
