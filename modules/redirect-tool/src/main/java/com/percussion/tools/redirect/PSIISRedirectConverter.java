@@ -31,7 +31,7 @@ public class PSIISRedirectConverter extends PSBaseRedirectConverter{
 
     public static final String START_REWRITE = "<rewrite>";
     public static final String START_RULES = "<rules>";
-    public static final String START_RULE = "<rule>";
+    public static final String START_RULE = "<rule name=\"{0}\">";
     public static final String MATCH = "<match url=\"{0}\" />";
     public static final String ACTION = "<action type=\"{0}\" url=\"{1}\" />";
     public static final String END_RULE = "</rule>";
@@ -57,7 +57,8 @@ public class PSIISRedirectConverter extends PSBaseRedirectConverter{
             throw new IllegalArgumentException("Redirect type must be Vanity");
         }
 
-        StringBuilder sb = new StringBuilder(START_RULE).append(System.lineSeparator());
+        String name = r.getCondition().replaceAll("[^a-zA-Z0-9]", "");
+        StringBuilder sb = new StringBuilder(START_RULE.replace("{0}",name)).append(System.lineSeparator());
 
         sb.append(MATCH.replace("{0}",r.getCondition())).append(System.lineSeparator());
 
@@ -80,15 +81,17 @@ public class PSIISRedirectConverter extends PSBaseRedirectConverter{
             throw new IllegalArgumentException("Redirect type must be Regex");
         }
 
-        StringBuilder sb = new StringBuilder(START_RULE).append("/r/n");
+        String name = r.getCondition().replaceAll("[^a-zA-Z0-9]", "");
+        StringBuilder sb = new StringBuilder(START_RULE.replace("{0}",name)).append(System.lineSeparator());
 
-        sb.append(MATCH.replace("{0}",r.getCondition())).append("/r/n");
+
+        sb.append(MATCH.replace("{0}",r.getCondition())).append(System.lineSeparator());
 
         sb.append(ACTION.replace("{0}","Rewrite").replace("{1}", r.getRedirectTo()));
-        sb.append("/r/n");
+        sb.append(System.lineSeparator());
 
         sb.append(END_RULE);
-
+        sb.append(System.lineSeparator());
         return sb.toString();
     }
 
