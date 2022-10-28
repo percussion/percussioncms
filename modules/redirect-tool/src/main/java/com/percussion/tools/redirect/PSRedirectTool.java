@@ -70,7 +70,17 @@ public class PSRedirectTool {
                 PSIISRedirectConverter cvt = new PSIISRedirectConverter();
                 PSPercussionRedirectEntryList list = new PSPercussionRedirectEntryList(csv);
                int count = cvt.convertRedirects(list, Paths.get("").toAbsolutePath().toString());
-                System.out.println("Wrote " +  count + " redirects to " + Paths.get("").toAbsolutePath() + File.separator + "iis-rewrites.config");
+                System.out.println("Wrote " +  count + " redirects to " + Paths.get("").toAbsolutePath() + File.separator + cvt.getFilename());
+                return;
+            }
+
+            if(line.hasOption("a")){
+                PSApacheRedirectConverter cvt = new PSApacheRedirectConverter();
+                PSPercussionRedirectEntryList list = new PSPercussionRedirectEntryList(csv);
+
+                int count = cvt.convertRedirects(list, Paths.get("").toAbsolutePath().toString());
+                System.out.println("Wrote " +  count + " redirects to " + Paths.get("").toAbsolutePath() + File.separator + cvt.getFilename());
+
             }
 
         }
