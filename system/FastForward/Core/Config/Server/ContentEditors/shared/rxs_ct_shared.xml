@@ -498,6 +498,27 @@
             </PSXPropertySet>
             <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="no" visibleToGlobalQuery="yes"/>
          </PSXField>
+		          <PSXField forceBinary="no" modificationType="user" name="img2_hash" showInPreview="yes" showInSummary="no" type="shared">
+            <DataLocator>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>RXS_CT_SHAREDIMAGE</tableAlias>
+                  <column>IMG2_HASH</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+            </DataLocator>
+            <DataType>text</DataType>
+            <DataFormat>10</DataFormat>
+            <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+            <PSXPropertySet>
+               <PSXProperty locked="yes" name="cleanupBrokenInlineLinks">
+                  <Value type="Boolean">no</Value>
+               </PSXProperty>
+               <PSXProperty locked="yes" name="mayHaveInlineLinks">
+                  <Value type="Boolean">no</Value>
+               </PSXProperty>
+            </PSXPropertySet>
+            <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="no" visibleToGlobalQuery="yes"/>
+         </PSXField>
 
          <PSXField export="yes" forceBinary="no" mimetype="text/plain" modificationType="user" name="img2_ext" showInPreview="yes" showInSummary="no" type="shared">
             <DataLocator>
