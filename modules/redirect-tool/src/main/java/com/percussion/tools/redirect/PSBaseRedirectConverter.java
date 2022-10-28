@@ -50,7 +50,7 @@ public class PSBaseRedirectConverter implements IPSRedirectConverter {
         List<String> lines = new ArrayList<>();
 
         for(PSPercussionRedirectEntry e : redirects){
-            if (e.getType().equalsIgnoreCase("REGEX")) {
+            if (e.getCategory().equalsIgnoreCase("REGEX")) {
                 lines.add(convertRegexRedirect(e));
             }else{
                 lines.add(convertVanityRedirect(e));
