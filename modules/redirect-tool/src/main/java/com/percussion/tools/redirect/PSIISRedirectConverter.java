@@ -60,7 +60,7 @@ public class PSIISRedirectConverter extends PSBaseRedirectConverter{
         String name = r.getCondition().replaceAll("[^a-zA-Z0-9]", "");
         StringBuilder sb = new StringBuilder(START_RULE.replace("{0}",name)).append(System.lineSeparator());
 
-        sb.append(MATCH.replace("{0}",r.getCondition())).append(System.lineSeparator());
+        sb.append(MATCH.replace("{0}","^" + r.getCondition())).append(System.lineSeparator());
 
         String action = "Rewrite";
         if(r.getRedirectTo().startsWith("http")){
