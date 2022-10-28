@@ -51,13 +51,45 @@ public class PSIISRedirectConverter extends PSBaseRedirectConverter{
      */
 
     @Override
-    public String convertVanityRedirect(PSPercussionRedirectEntry e) {
-        return super.convertVanityRedirect(e);
+    public String convertVanityRedirect(PSPercussionRedirectEntry r) {
+        if(!r.getCategory().equalsIgnoreCase("VANITY") &&
+                !r.getCategory().equalsIgnoreCase("AUTOGEN")){
+            throw new IllegalArgumentException("Redirect type must be Vanity");
+        }
+
+        StringBuilder sb = new StringBuilder(START_RULE).append(System.lineSeparator());
+
+        sb.append(MATCH.replace("{0}",r.getCondition())).append(System.lineSeparator());
+
+        String action = "Rewrite";
+        if(r.getRedirectTo().startsWith("http")){
+            action = "Redirect";
+        }
+        sb.append(ACTION.replace("{0}",action).replace("{1}", r.getRedirectTo()));
+        sb.append(System.lineSeparator());
+
+        sb.append(END_RULE).append(System.lineSeparator());
+
+        return sb.toString();
     }
 
     @Override
-    public String convertRegexRedirect(PSPercussionRedirectEntry e) {
-        return super.convertRegexRedirect(e);
+    public String convertRegexRedirect(PSPercussionRedirectEntry r) {
+
+        if(!r.getCategory().equalsIgnoreCase("REGEX")){
+            throw new IllegalArgumentException("Redirect type must be Regex");
+        }
+
+        StringBuilder sb = new StringBuilder(START_RULE).append("/r/n");
+
+        sb.append(MATCH.replace("{0}",r.getCondition())).append("/r/n");
+
+        sb.append(ACTION.replace("{0}","Rewrite").replace("{1}", r.getRedirectTo()));
+        sb.append("/r/n");
+
+        sb.append(END_RULE);
+
+        return sb.toString();
     }
 
     @Override

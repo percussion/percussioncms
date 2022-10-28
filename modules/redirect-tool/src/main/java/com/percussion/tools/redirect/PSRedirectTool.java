@@ -31,6 +31,9 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 
+import java.io.File;
+import java.nio.file.Paths;
+
 public class PSRedirectTool {
 
     public static void main(String[] args)  {
@@ -40,7 +43,7 @@ public class PSRedirectTool {
         options.addOption("i", "iis", false, "generate redirects in web.config format");
         options.addOption("n", "nginx", false, "generate redirects in nginx formay");
         options.addOption("s3", false, "generate redirects in S3 json redirect policy format");
-        options.addOption("csv", false, "input redirect manager CSV file");
+        options.addOption("csv", true, "input redirect manager CSV file");
         options.addOption("o", false, "the directory to write converted redirects to");
 
         // create the parser
@@ -52,7 +55,34 @@ public class PSRedirectTool {
             if(line.hasOption("h") || line.getOptions().length==0){
                 HelpFormatter formatter = new HelpFormatter();
                 formatter.printHelp("perc-redirect-tool", options);
+                return;
             }
+            String csv = "";
+
+            if(line.hasOption("csv")){
+                csv = line.getParsedOptionValue("csv").toString();
+                if(csv == null || "".equals(csv.trim())){
+                    System.err.println("Error: -csv parameter is required.");
+                    return;
+                }
+            }
+            if(line.hasOption("i") || line.hasOption("iis")){
+                PSIISRedirectConverter cvt = new PSIISRedirectConverter();
+                PSPercussionRedirectEntryList list = new PSPercussionRedirectEntryList(csv);
+               int count = cvt.convertRedirects(list, Paths.get("").toAbsolutePath().toString());
+                System.out.println("Wrote " +  count + " redirects to " + Paths.get("").toAbsolutePath() + File.separator + cvt.getFilename());
+                return;
+            }
+
+            if(line.hasOption("a")){
+                PSApacheRedirectConverter cvt = new PSApacheRedirectConverter();
+                PSPercussionRedirectEntryList list = new PSPercussionRedirectEntryList(csv);
+
+                int count = cvt.convertRedirects(list, Paths.get("").toAbsolutePath().toString());
+                System.out.println("Wrote " +  count + " redirects to " + Paths.get("").toAbsolutePath() + File.separator + cvt.getFilename());
+
+            }
+
         }
         catch (ParseException exp) {
             // oops, something went wrong
