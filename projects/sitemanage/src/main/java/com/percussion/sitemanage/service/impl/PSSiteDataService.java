@@ -674,14 +674,47 @@ import static org.apache.commons.lang.Validate.notNull;
         if (sums == null)
             return new ArrayList<>();
 
-        ArrayList<IPSGuid> guids = new ArrayList<>();
-        for(PSSiteSummary s: sums){
-            guids.add(new PSGuid(PSTypeEnum.SITE, s.getSiteId()));
+        List<PSSiteSummary> summaries = new ArrayList<>();
+
+        // Filter out sites that are currently getting copied
+        Map<String, String> entries = getCopySiteInfo().getEntries();
+        String newSiteName = null;
+        if (!entries.isEmpty())
+        {
+            newSiteName = entries.get("Target");
         }
+
+        for (PSSiteSummary site : sums)
+        {
+            if (!StringUtils.equals(site.getName(), newSiteName))
+            {
+                if(site.isPageBased()) {
+                    if(includePubInfo) {
+                        try {
+                            site.setPubInfo(getPubServerService().getS3PubInfo(new PSGuid(PSTypeEnum.SITE, site.getSiteId())));
+                        }catch (Exception e)
+                        {
+                            log.error("Error adding the publishing info to the site. Error:{}",
+                                    PSExceptionUtils.getMessageForLog(e));
+                        }
+                    }
+                    summaries.add(site);
+                }
+            }
+        }
+
+        return summaries;
 
         //Filter out sites that shouldn't be visible
         //TODO: Re-enable when site permissions are fixed
         /**
+        ArrayList<IPSGuid> guids = new ArrayList<>();
+        for(PSSiteSummary s: sums){
+            if(s.isPageBased()) {
+                guids.add(new PSGuid(PSTypeEnum.SITE, s.getSiteId()));
+            }
+        }
+
         List<IPSGuid> filtered_guids = securityWs.filterByRuntimeVisibility(guids);
         Iterator iterator = sums.iterator();
         while(iterator.hasNext()){
@@ -701,40 +734,6 @@ import static org.apache.commons.lang.Validate.notNull;
         }
         **/
 
-        // Filter out sites that are currently getting copied
-        Map<String, String> entries = getCopySiteInfo().getEntries();
-
-        if (!entries.isEmpty())
-        {
-            String newSiteName = entries.get("Target");
-            for (PSSiteSummary site : sums)
-            {
-                if (StringUtils.equals(site.getName(), newSiteName))
-                {
-                    sums.remove(site);
-                    break;
-                }
-            }
-        }
-
-        //Filter out Sites that shouldn't be visible
-
-        if(includePubInfo)
-        {
-            for (PSSiteSummary sum : sums)
-            {
-                try
-                {
-                    sum.setPubInfo(getPubServerService().getS3PubInfo(new PSGuid(PSTypeEnum.SITE, sum.getSiteId())));
-                }
-                catch (Exception e)
-                {
-                    log.error("Error adding the publishing info to the site. Error:{}",
-                            PSExceptionUtils.getMessageForLog(e));
-                }
-            }
-        }
-        return sums;
     }
 
     public PSEnumVals getChoices()
