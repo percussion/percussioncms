@@ -37,7 +37,7 @@ public class PSApacheRedirectConverter extends PSBaseRedirectConverter{
         StringBuilder sb = new StringBuilder(REWRITE_RULE).append(" ");
 
         sb.append("\"");
-        sb.append(r.getCondition());
+        sb.append("^" + r.getCondition());
         sb.append("\" ");
 
         sb.append("\"");
