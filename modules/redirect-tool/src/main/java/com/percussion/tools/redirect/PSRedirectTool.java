@@ -83,6 +83,15 @@ public class PSRedirectTool {
 
             }
 
+            if(line.hasOption("n")){
+                PSNginxRedirectConverter cvt = new PSNginxRedirectConverter();
+                PSPercussionRedirectEntryList list = new PSPercussionRedirectEntryList(csv);
+
+                int count = cvt.convertRedirects(list, Paths.get("").toAbsolutePath().toString());
+                System.out.println("Wrote " +  count + " redirects to " + Paths.get("").toAbsolutePath() + File.separator + cvt.getFilename());
+
+            }
+
         }
         catch (ParseException exp) {
             // oops, something went wrong
