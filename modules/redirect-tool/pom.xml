@@ -36,7 +36,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>com.percussion.SSLCertificateChecker</mainClass>
+                            <mainClass>com.percussion.tools.redirect.PSRedirectTool</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
