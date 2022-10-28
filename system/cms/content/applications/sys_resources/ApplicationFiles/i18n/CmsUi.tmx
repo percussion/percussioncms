@@ -251,7 +251,16 @@
                 <seg>Sobre</seg>
             </tuv>
         </tu>
-
+        <tu tuid="perc.ui.common.label@Rhythmyx UI">
+            <prop type="sectionname" xml:lang="en-us">UI Common</prop>
+            <note xml:lang="en-us"></note>
+            <tuv xml:lang="en-us">
+                <seg>Rhythmyx UI</seg>
+            </tuv>
+            <tuv xml:lang="es">
+                <seg>Rhythmyx UI</seg>
+            </tuv>
+        </tu>
          <tu tuid="perc.ui.common.label@Next">
             <prop type="sectionname" xml:lang="en-us">UI Common</prop>
             <note xml:lang="en-us"></note>
