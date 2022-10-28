@@ -57,10 +57,14 @@ public class PSIISRedirectConverter extends PSBaseRedirectConverter{
             throw new IllegalArgumentException("Redirect type must be Vanity");
         }
 
+        String condition = r.getCondition();
+        if(condition.startsWith("/")){
+            condition = condition.replaceFirst("/", "^");
+        }
         String name = r.getCondition().replaceAll("[^a-zA-Z0-9]", "");
         StringBuilder sb = new StringBuilder(START_RULE.replace("{0}",name)).append(System.lineSeparator());
 
-        sb.append(MATCH.replace("{0}","^" + r.getCondition())).append(System.lineSeparator());
+        sb.append(MATCH.replace("{0}",condition)).append(System.lineSeparator());
 
         String action = "Rewrite";
         if(r.getRedirectTo().startsWith("http")){
