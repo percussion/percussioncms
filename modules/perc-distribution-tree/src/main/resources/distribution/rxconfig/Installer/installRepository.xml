@@ -349,6 +349,14 @@
                        failonerror="false" silenceerrors="true"
         />
 
+        <PSExecSQLStmt printExceptionStackTrace="true" qualifyTableNames="RXSITES,PSX_PUBSERVER"
+                       qualifyViewNames=""
+                       sqlOracle="update RXSITES site set IS_PAGE_BASED = 'T' where exists (select pubser.* from PSX_PUBSERVER pubser where pubser.SITEID = site.SITEID group by pubser.SITEID);"
+                       sqlSqlServer="update RXSITES set IS_PAGE_BASED = 'T' FROM RXSITES site , PSX_PUBSERVER pubser where( pubser.SITEID = site.SITEID);"
+                       sql="update RXSITES as site set site.IS_PAGE_BASED = 'T' where exists (select pubser.* from PSX_PUBSERVER pubser where pubser.SITEID = site.SITEID group by pubser.SITEID);"
+                       failonerror="false" silenceerrors="true"
+        />
+
 
     </target>
 
