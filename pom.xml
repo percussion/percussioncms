@@ -170,7 +170,7 @@
        <axis.version>1.4.1</axis.version>
        <axiscore.version>1.4.2</axiscore.version>
        <httpcomponents.version>4.5.13</httpcomponents.version>
-       <tika.version>1.24.1</tika.version>
+       <tika.version>1.28.5</tika.version>
        <commons-cli.version>1.4</commons-cli.version>
        <opencsv.version>4.6</opencsv.version>
        <xmpbox.version>2.0.17</xmpbox.version>
