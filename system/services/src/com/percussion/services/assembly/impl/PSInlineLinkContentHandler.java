@@ -181,6 +181,7 @@ public class PSInlineLinkContentHandler
       //Process all "img" tags
       Elements imgTags = htmlDoc.select(IMG_TAG);
       processIMGTags(imgTags);
+      result=htmlDoc.toString();
       result = StringUtils.replace(result, RX_FILLER, "");
       return result;
    }
@@ -191,12 +192,18 @@ public class PSInlineLinkContentHandler
     * @throws PSHtmlParsingException
     */
    private void processATags(Elements aTags) throws PSHtmlParsingException {
-      if(aTags == null || aTags.size() == 0 ){
+      if(aTags == null || aTags.isEmpty() ){
          return;
       }
+      String inlineType;
+      String path;
       for(Element aTag: aTags){
-         String path = aTag.attr(HREF_ATTR);
-         processTag(aTag,path,RXLINK,false);
+         inlineType = aTag.attr(PSSingleValueBuilder.INLINE_TYPE);
+         if(inlineType.equalsIgnoreCase(PSInlineLinkContentHandler.RXLINK)) {
+            path = aTag.attr(HREF_ATTR);
+
+            processTag(aTag, path, RXLINK, false);
+         }
       }
    }
 
@@ -207,12 +214,20 @@ public class PSInlineLinkContentHandler
     */
 
    private void processIMGTags(Elements imgTags) throws PSHtmlParsingException {
-      if(imgTags == null || imgTags.size() == 0 ){
+      if(imgTags == null || imgTags.isEmpty() ){
          return;
       }
+      String inlineType;
+      String path;
+
       for(Element imgTag: imgTags){
-         String path = imgTag.attr(SRC_ATTR);
-         processTag(imgTag,path,RXIMAGE,true);
+
+         inlineType = imgTag.attr(PSSingleValueBuilder.INLINE_TYPE);
+
+         if(inlineType.equalsIgnoreCase(PSInlineLinkContentHandler.RXIMAGE)) {
+            path = imgTag.attr(SRC_ATTR);
+            processTag(imgTag, path, RXIMAGE, true);
+         }
       }
    }
 

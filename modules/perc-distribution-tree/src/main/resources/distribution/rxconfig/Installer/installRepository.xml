@@ -332,6 +332,7 @@
         <PSExecSQLStmt printExceptionStackTrace="true" qualifyTableNames="RXS_CT_GENERIC"
                        qualifyViewNames=""
                        sqlSqlServer="sp_rename 'RXS_CT_GENERIC.USAGE', 'PUSAGE', 'COLUMN';"
+                       sqlDerby="RENAME COLUMN RXS_CT_GENERIC.USAGE TO PUSAGE"
                        sql="ALTER TABLE RXS_CT_GENERIC rename column USAGE to PUSAGE;"
                        failonerror="false" silenceerrors="false"
         />
@@ -339,6 +340,20 @@
         <PSExecSQLStmt printExceptionStackTrace="true" qualifyTableNames="CONTENTSTATUS,PSX_PUBLICATION_DOC"
                        qualifyViewNames=""
                        sql="UPDATE CONTENTSTATUS SET CONTENTPOSTDATE=(SELECT MIN(PUBLISHING_DATE) FROM PSX_PUBLICATION_DOC WHERE PSX_PUBLICATION_DOC.CONTENT_ID = CONTENTSTATUS.CONTENTID) WHERE CONTENTPOSTDATE IS NULL;"
+                       failonerror="false" silenceerrors="true"
+        />
+
+        <PSExecSQLStmt printExceptionStackTrace="true" qualifyTableNames="PSX_SEARCHINDEXQUEUE"
+                       qualifyViewNames=""
+                       sql="ALTER TABLE PSX_SEARCHINDEXQUEUE DROP COLUMN EVENT"
+                       failonerror="false" silenceerrors="true"
+        />
+
+        <PSExecSQLStmt printExceptionStackTrace="true" qualifyTableNames="RXSITES,PSX_PUBSERVER"
+                       qualifyViewNames=""
+                       sqlOracle="update RXSITES site set IS_PAGE_BASED = 'T' where exists (select pubser.* from PSX_PUBSERVER pubser where pubser.SITEID = site.SITEID group by pubser.SITEID);"
+                       sqlSqlServer="update RXSITES set IS_PAGE_BASED = 'T' FROM RXSITES site , PSX_PUBSERVER pubser where( pubser.SITEID = site.SITEID);"
+                       sql="update RXSITES as site set site.IS_PAGE_BASED = 'T' where exists (select pubser.* from PSX_PUBSERVER pubser where pubser.SITEID = site.SITEID group by pubser.SITEID);"
                        failonerror="false" silenceerrors="true"
         />
 

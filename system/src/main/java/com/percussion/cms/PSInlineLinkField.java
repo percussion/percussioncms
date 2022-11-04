@@ -34,6 +34,10 @@ import com.percussion.design.objectstore.PSRelationshipConfig;
 import com.percussion.design.objectstore.PSRelationshipSet;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
 import com.percussion.error.PSException;
+import com.percussion.error.PSExceptionUtils;
+import com.percussion.html.PSHtmlParsingException;
+import com.percussion.html.PSHtmlUtils;
+import com.percussion.security.SecureStringUtils;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.server.PSInternalRequest;
 import com.percussion.server.PSRequest;
@@ -52,10 +56,10 @@ import com.percussion.util.PSXMLDomUtil;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.xml.PSProcessServerPageTags;
 import com.percussion.xml.PSNodePrinter;
-import com.percussion.xml.PSXmlDocumentBuilder;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jsoup.helper.W3CDom;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -63,12 +67,12 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
-import org.xml.sax.SAXException;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -131,14 +135,13 @@ public class PSInlineLinkField
     *    <code>null</code>, but may be empty.
     *
     * @throws IOException for any I/O errors.
-    * @throws SAXException for any parsing error.
     * @throws PSCmsException for all other errors.
     */
    public void preProcess(
            PSRequest request,
            PSRelationshipSet deletes,
            PSRelationshipSet modifies)
-           throws PSCmsException, IOException, SAXException
+           throws PSCmsException, IOException
    {
       if (request == null)
          throw new IllegalArgumentException("request cannot be null");
@@ -158,7 +161,7 @@ public class PSInlineLinkField
            IPSRequestContext request,
            PSRelationshipSet deletes,
            PSRelationshipSet modifies)
-           throws IOException, SAXException, PSCmsException
+           throws IOException, PSCmsException
    {
       if (request == null)
          throw new IllegalArgumentException("request cannot be null");
@@ -184,9 +187,18 @@ public class PSInlineLinkField
 
          String serverRoot = "127.0.0.1:" + PSServer.getListenerPort() +
                  PSServer.getRequestRoot();
-         Document fieldDoc = PSXmlDocumentBuilder.createXmlDocument(
-                 fieldValue, serverRoot, tidyProperties, serverPageTags,
-                 m_field.getCleanupEncoding(), false);
+       org.jsoup.nodes.Document document = null;
+         try {
+            //Don't bother trying to parse if the string doesn't contain html / xml
+            if(SecureStringUtils.isHTML(fieldValue) || SecureStringUtils.isXML(fieldValue)) {
+               document = PSHtmlUtils.createHTMLDocument(fieldValue, StandardCharsets.UTF_8,false,null);
+            }
+         }catch (PSHtmlParsingException e){
+            log.error("Error parsing content for inline links in Content Type field. Error: {}. The offending source code was: {}",
+                    PSExceptionUtils.getMessageForLog(e), fieldValue);
+            throw new PSCmsException(1001, PSExceptionUtils.getMessageForLog(e));
+         }
+         Document fieldDoc = W3CDom.convert(document);
 
          PSRelationshipProcessor processor = PSRelationshipProcessor.getInstance();
 
@@ -269,14 +281,13 @@ public class PSInlineLinkField
     * @param modifies the to be modified relationships, not <code>null</code>.
     *
     * @throws IOException for any I/O errors.
-    * @throws SAXException for any parsing error.
     * @throws PSCmsException for all other errors.
     */
    public static void postProcess(
            PSRequest request,
            PSRelationshipSet deletes,
            PSRelationshipSet modifies)
-           throws IOException, SAXException, PSCmsException
+           throws IOException, PSCmsException
    {
       if (request == null)
          throw new IllegalArgumentException("request cannot be null");
@@ -299,7 +310,7 @@ public class PSInlineLinkField
            IPSRequestContext request,
            PSRelationshipSet deletes,
            PSRelationshipSet modifies)
-           throws IOException, SAXException, PSCmsException
+           throws IOException,  PSCmsException
    {
       if (request == null)
          throw new IllegalArgumentException("request cannot be null");

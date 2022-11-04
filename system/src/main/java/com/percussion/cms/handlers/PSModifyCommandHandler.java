@@ -78,7 +78,6 @@ import com.percussion.error.PSBackEndUpdateProcessingError;
 import com.percussion.error.PSErrorException;
 import com.percussion.error.PSEvaluationException;
 import com.percussion.error.PSException;
-import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.PSExtensionException;
 import com.percussion.i18n.PSI18nUtils;
 import com.percussion.security.PSAuthenticationFailedException;
@@ -103,7 +102,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
-import org.xml.sax.SAXException;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -646,8 +644,6 @@ public class PSModifyCommandHandler extends PSCommandHandler
    private void preProcessInlineLinks(PSRequest request, int id)
       throws IOException, PSCmsException
    {
-      try
-      {
          PSContentEditorPipe pipe = (PSContentEditorPipe) m_ce.getPipe();
          if (pipe == null)
             return;
@@ -739,11 +735,9 @@ public class PSModifyCommandHandler extends PSCommandHandler
          m_tlInlineLinkDeletes.set(deletes);
          m_tlInlineLinkModifies.set(modifies);
       }
-      catch (SAXException e)
-      {
-         throw new PSCmsException(1001, PSExceptionUtils.getMessageForLog(e));
-      }
-   }
+
+
+
 
    /**
     * Processes all fields that may contain inline links after the document
@@ -757,17 +751,13 @@ public class PSModifyCommandHandler extends PSCommandHandler
    private void postProcessInlineLinks(PSRequest request)
       throws IOException, PSCmsException
    {
-      try
-      {
+
          PSRelationshipSet deletes = (PSRelationshipSet) m_tlInlineLinkDeletes.get();
          PSRelationshipSet modifies = (PSRelationshipSet) m_tlInlineLinkModifies.get();
          
          PSInlineLinkField.postProcess(request, deletes, modifies);
-      }
-      catch (SAXException e)
-      {
-         throw new PSCmsException(1001, e.getLocalizedMessage());
-      }
+
+
    }
 
    /* ************ IPSRequestHandler Interface Implementation ************ */

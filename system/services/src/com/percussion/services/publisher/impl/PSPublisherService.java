@@ -115,8 +115,6 @@ import com.percussion.utils.xml.PSInvalidXmlException;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Criteria;
@@ -600,7 +598,7 @@ public class PSPublisherService
       Criteria c = s.createCriteria(PSContentList.class);
       c.add(Restrictions.eq("contentListId", contListID.longValue()));
       List results = c.list();
-      if (results.size() == 0)
+      if (results.isEmpty())
       {
          return null;
       }
@@ -634,7 +632,9 @@ public class PSPublisherService
       }
       catch (Exception e)
       {
-         log.error("Bad site id found " + siteidstr, e);
+         log.error("Bad site id found {} Error: {}",
+                 siteidstr,
+                 PSExceptionUtils.getMessageForLog(e));
       }
       IPSGuid deliveryContextId = new PSGuid(PSTypeEnum.CONTEXT,
             deliveryContext);
@@ -848,7 +848,7 @@ public class PSPublisherService
 
       Query q = s.createQuery(
               "update PSPubStatus set hidden = 'Y' where pubServerId = :pubServerId");
-      q.setLong("pubServerId", psPubServer.getServerId());
+      q.setParameter("pubServerId", psPubServer.getServerId());
       q.executeUpdate();
    }
 
@@ -1338,11 +1338,7 @@ public class PSPublisherService
       {
          throw new PSCatalogException(IPSCatalogErrors.IO, e, type);
       }
-      catch (SAXException e)
-      {
-         throw new PSCatalogException(IPSCatalogErrors.XML, e, item);
-      }
-      catch (PSInvalidXmlException e)
+      catch (SAXException | PSInvalidXmlException e)
       {
          throw new PSCatalogException(IPSCatalogErrors.XML, e, item);
       }
@@ -1488,8 +1484,8 @@ public class PSPublisherService
       Session s = getSession();
 
       Query q = s.getNamedQuery("pssiteitem_query_joined_items");
-      q.setLong("siteid", siteid.longValue());
-      q.setInteger("context", deliveryContext);
+      q.setParameter("siteid", siteid.longValue());
+      q.setParameter("context", deliveryContext);
       return createSiteItemsList(q.list());
 
    }
@@ -1510,8 +1506,8 @@ public class PSPublisherService
       Session s = getSession();
 
          Query q = s.getNamedQuery("pssiteitem_pubserver_query_joined_items");
-         q.setLong("serverid", serverId.longValue());
-         q.setInteger("context", deliveryContext);
+         q.setParameter("serverid", serverId.longValue());
+         q.setParameter("context", deliveryContext);
          return createSiteItemsList(q.list());
 
 
@@ -1568,8 +1564,8 @@ public class PSPublisherService
             q.setParameterList("contentIds", contentIds);
          }
 
-         q.setLong("siteid", siteId.longValue());
-         q.setInteger("context", deliveryContext);
+         q.setParameter("siteid", siteId.longValue());
+         q.setParameter("context", deliveryContext);
          return createSiteItemsList(q.list());
       }
       finally
@@ -1610,8 +1606,8 @@ public class PSPublisherService
             q.setParameterList("contentIds", contentIds);
          }
 
-         q.setLong("serverid", serverId.longValue());
-         q.setInteger("context", deliveryContext);
+         q.setParameter("serverid", serverId.longValue());
+         q.setParameter("context", deliveryContext);
          return createSiteItemsList(q.list());
       }
       finally
@@ -1704,8 +1700,8 @@ public class PSPublisherService
          q = s.createQuery(QUERY_ITEMS_SINCE_LAST_PUBLISH_TEMPIDS);
          q.setParameter("idset", idset);
       }
-      q.setLong("siteId", siteId.longValue());
-      q.setInteger("context", deliveryContext);
+      q.setParameter("siteId", siteId.longValue());
+      q.setParameter("context", deliveryContext);
 
       Timer swTemp = new Timer();
       List<Integer> contentIds = (idset != 0) ? (List)executeQuery(q) : q.list();
@@ -1752,8 +1748,8 @@ public class PSPublisherService
          q = s.createQuery(QUERY_NEWITEMS_SINCE_LAST_PUBLISH_TEMPIDS);
          q.setParameter("idset", idset);
       }
-      q.setLong("siteId", siteId.longValue());
-      q.setInteger("context", deliveryContext);
+      q.setParameter("siteId", siteId.longValue());
+      q.setParameter("context", deliveryContext);
       // 
 
       Timer swTemp = new Timer();      
@@ -1804,8 +1800,8 @@ public class PSPublisherService
       Session s = getSession();
 
          Query q = s.getNamedQuery("pssiteitem_query_at_location");
-         q.setLong("siteid", siteid.longValue());
-         q.setString("location", location);
+         q.setParameter("siteid", siteid.longValue());
+         q.setParameter("location", location);
          return createSiteItemsList(q.list());
 
 
@@ -1850,7 +1846,7 @@ public class PSPublisherService
             q = s.createQuery(MARK_FOLDERID_4_SITEITEM_IN_FOLDERS_TEMPID);
             q.setParameter("idset", idset);
          }
-         q.setLong("siteid", siteid.longValue());
+         q.setParameter("siteid", siteid.longValue());
          q.executeUpdate();
       }
       finally
@@ -1866,7 +1862,7 @@ public class PSPublisherService
    /**
     * The HQL used to get the reference IDs for the specified folder IDs (from an in clause). 
     */
-   private final static String GET_REFS_4_FOLDER_IDS_INCLAUSE = "select i.referenceId from PSSiteItem i "
+   private static final String GET_REFS_4_FOLDER_IDS_INCLAUSE = "select i.referenceId from PSSiteItem i "
       + "where i.siteId = :siteid and "
       + "i.status = i.operation and i.folderId in (:folderIds)";
 
@@ -1905,7 +1901,7 @@ public class PSPublisherService
             q = s.createQuery(GET_REFS_4_FOLDER_IDS_TEMPID);
             q.setParameter("idset", idset);
          }
-         q.setLong("siteid", siteid.longValue());
+         q.setParameter("siteid", siteid.longValue());
          return (idset != 0) ? (List)executeQuery(q) : q.list();
          
       }
@@ -2048,7 +2044,7 @@ public class PSPublisherService
 
          int i = 0;
          stmt.setParameter(i++, siteId.getUUID());
-         stmt.setString(i++, clistGenerator);
+         stmt.setParameter(i++, clistGenerator);
          rs = stmt.list().iterator();
          List<IPSGuid> results = new ArrayList<>();
          IPSGuidManager gmgr = PSGuidManagerLocator.getGuidMgr();
@@ -2076,7 +2072,7 @@ public class PSPublisherService
          PSTouchParentItemsHandler handler = new PSTouchParentItemsHandler(
             session);
          handler.addSpecificIds(cids);
-         log.debug("List of items to update is: " + handler.toString());
+         log.debug("List of items to update is: {}" , handler);
          handler.touchContentItems();
 
    }
@@ -2095,7 +2091,7 @@ public class PSPublisherService
          PSTouchParentItemsHandler handler =
                new PSTouchParentItemsHandler(session);
          handler.addParents(cids);
-         log.debug("List of items to update is: " + handler.toString());
+         log.debug("List of items to update is: {}" , handler);
          return handler.touchContentItems();
 
       }
@@ -2110,7 +2106,7 @@ public class PSPublisherService
                new PSTouchParentItemsHandler(session);
          handler.addSpecificIds(cids);
          handler.addParents(cids);
-         log.debug("List of items to update is: " + handler.toString());
+         log.debug("List of items to update is: {}" , handler);
          return handler.touchContentItems();
 
       }
@@ -2233,7 +2229,7 @@ public class PSPublisherService
          throw new IllegalArgumentException("edition must be numeric");
       }
 
-      int contentids[] = new int[ids.length];
+      int[] contentids = new int[ids.length];
       int i = 0;
       for (String id : ids)
       {
@@ -3143,10 +3139,10 @@ public class PSPublisherService
          String sql = "update PSPubItem set status = :statusid " + 
             "where statusId = :job and status <> :success and status <> :failure";
          Query q = s.createQuery(sql);
-         q.setShort("statusid", (short)IPSSiteItem.Status.CANCELLED.ordinal());
-         q.setShort("success", (short)IPSSiteItem.Status.SUCCESS.ordinal());
-         q.setShort("failure", (short)IPSSiteItem.Status.FAILURE.ordinal());
-         q.setLong("job", jobId);
+         q.setParameter("statusid", (short)IPSSiteItem.Status.CANCELLED.ordinal());
+         q.setParameter("success", (short)IPSSiteItem.Status.SUCCESS.ordinal());
+         q.setParameter("failure", (short)IPSSiteItem.Status.FAILURE.ordinal());
+         q.setParameter("job", jobId);
          q.executeUpdate();
 
       }
@@ -3161,7 +3157,7 @@ public class PSPublisherService
 
          Query q = s.createQuery(
                "update PSPubStatus set hidden = 'Y' where statusId = :jobId");
-         q.setLong("jobId", jobId);
+         q.setParameter("jobId", jobId);
          q.executeUpdate();
 
          deletePublicationDocs(s, jobId);
@@ -3170,11 +3166,11 @@ public class PSPublisherService
                "delete from PSPubStatus where statusId = :jobId and statusId not in " +
                   "(select distinct p.statusId from PSSiteItem s, PSPubItem p " +
                      "where s.referenceId = p.referenceId and p.statusId = :jobId)");
-         q.setLong("jobId", jobId);
+         q.setParameter("jobId", jobId);
          q.executeUpdate();
 
          q = s.createQuery("delete from PSEditionTaskLog where jobId = :jobId");
-         q.setLong("jobId", jobId);
+         q.setParameter("jobId", jobId);
          q.executeUpdate();
 
 
@@ -3193,7 +3189,7 @@ public class PSPublisherService
             "select referenceId from PSPubItem where statusId = :jobId and " +
             "referenceId not in (select s.referenceId from PSSiteItem s, PSPubItem p " +
             "where s.referenceId = p.referenceId and p.statusId = :jobId)");
-      q.setLong("jobId", jobId);
+      q.setParameter("jobId", jobId);
       List<Long> references = q.list();
       
       if (references == null || references.isEmpty())
@@ -3228,7 +3224,7 @@ public class PSPublisherService
       Query q = s.createQuery(
             "delete from PSPubItem where statusId = :jobId and " +
             "referenceId in (" + join(references, ",") + ") ");
-      q.setLong("jobId", jobId);
+      q.setParameter("jobId", jobId);
       q.executeUpdate();
    }
 
@@ -3548,7 +3544,7 @@ public class PSPublisherService
          List<Object[]> rows = q.list();
          Set<Integer> statusIds = new HashSet<>();
          for(Object[] row : rows){
-            int statusId = Integer.valueOf(StringUtils.EMPTY + row[5]);
+            int statusId = Integer.parseInt(StringUtils.EMPTY + row[5]);
             if(!statusIds.contains(statusId)) {
                String srvName = StringUtils.EMPTY + row[0];
                Date date = (Date)row[1];
@@ -3610,7 +3606,7 @@ public class PSPublisherService
       {
          c.add(Restrictions.eq("editionId", editionids.get(0)));
       }
-      else if (editionids.size() > 0)
+      else if (!editionids.isEmpty())
       {
          c.add(Restrictions.in("editionId", editionids));
       }
@@ -3815,8 +3811,8 @@ public class PSPublisherService
          PSPubStatus pubstatus, Query q,
          Operation operation, Status status, int target)
    {
-      q.setShort("operation", (short) operation.ordinal() );
-      q.setShort("status", (short) status.ordinal());
+      q.setParameter("operation", (short) operation.ordinal() );
+      q.setParameter("status", (short) status.ordinal());
       q.setParameterList("ids", Collections.singleton(pubstatus.getStatusId()));
       List result = q.list();
       for(Object r : result)
@@ -3862,7 +3858,7 @@ public class PSPublisherService
       List results = getSession().createQuery(
             "select s from PSPubStatus s where s.statusId = :sid").setParameter(
             "sid", jobid).list();
-      if (results != null && results.size() > 0)
+      if (results != null && !results.isEmpty())
       {
          return (IPSPubStatus) results.get(0);
       }
@@ -3887,7 +3883,7 @@ public class PSPublisherService
       Session s = getSession();
 
          Query q = s.createQuery("delete from PSSiteItem where siteId = :site");
-         q.setLong("site", siteid);
+         q.setParameter("site", siteid);
          q.executeUpdate();
 
    }
@@ -3964,7 +3960,7 @@ public class PSPublisherService
                + " AND s.status = s.operation "
                + "AND s.contentId not in "
                + "(select c.m_contentId from PSComponentSummary c)");
-         q.setLong("objid", objectId.longValue());
+         q.setParameter("objid", objectId.longValue());
          List<Long> purgedItems = q.list();
          rval.addAll(purgedItems);
 
@@ -3990,7 +3986,7 @@ public class PSPublisherService
                 "AND state.workflowId = cs.m_workflowAppId " +
                 "AND state.contentValidValue in (:flags)");
          q.setParameterList("flags", upflagList);
-         q.setLong("objid", objectId.longValue());
+         q.setParameter("objid", objectId.longValue());
          List<Long> archiveItems = q.list();
          rval.addAll(archiveItems);
 
@@ -4020,7 +4016,7 @@ public class PSPublisherService
          //
          // Items not in their original folder
          s.enableFilter("relationshipConfigFilter");
-         String idRef = isGetReferenceId ? "s.referenceId" : "p.contentId";
+         String idRef = isGetReferenceId ? "s.referenceId" : "s.contentId";
          Query q = s.createQuery("select " + idRef + " " +
                "from PSSiteItem s " +
                "where s.serverId = :serverid " +
@@ -4030,7 +4026,7 @@ public class PSPublisherService
                "     where cs.m_contentId = s.contentId AND " +
                "           s.folderId in (select pfolder.owner_id " +
                "                          from cs.parentFolders pfolder)) = 0");
-         q.setLong("serverid", serverId.longValue());
+         q.setParameter("serverid", serverId.longValue());
          return q.list();
 
       }
@@ -4083,17 +4079,15 @@ public class PSPublisherService
          String queryName = serverId != null ? "site_item_and_doc_with_server_id" : "site_item_and_doc";
          
          Query q = s.getNamedQuery(queryName);
-         q.setInteger("contentId", contentId.getUUID());
-         q.setInteger("context", contextId.getUUID());
-         q.setLong("templateId", templateId.longValue());
+         q.setParameter("contentId", contentId.getUUID());
+         q.setParameter("context", contextId.getUUID());
+         q.setParameter("templateId", templateId.longValue());
          if (serverId != null)
-            q.setLong("serverId", serverId.longValue());
+            q.setParameter("serverId", serverId);
          else
-            q.setLong("siteId", siteId.longValue());
-         q.setString("location", targetPath);
-         Object data[] = (Object[]) q.uniqueResult();
-         return data;
-
+            q.setParameter("siteId", siteId.longValue());
+         q.setParameter("location", targetPath);
+         return (Object[]) q.uniqueResult();
       }
    
    public int findLastPublishedItemsBySite(IPSGuid siteId,
@@ -4121,7 +4115,7 @@ public class PSPublisherService
             q = s.getNamedQuery("lastPublishedItemsBySite_TempId");
             q.setParameter("idset", idset);
          }
-         q.setLong("siteId", siteId.longValue());
+         q.setParameter("siteId", siteId.longValue());
          List<Long> result = q.list();
          return result.size();
       }
@@ -4204,13 +4198,13 @@ public class PSPublisherService
    private boolean isMySQL()
    {
       if (m_isMySQL != null)
-         return m_isMySQL.booleanValue();
+         return m_isMySQL;
       
       try
       {
          PSConnectionDetail connDetail = m_dsMgr.getConnectionDetail(null);
          m_isMySQL = PSSqlHelper.isMysql(connDetail.getDriver());
-         return m_isMySQL.booleanValue();
+         return m_isMySQL;
       }
       catch (Exception e)
       {

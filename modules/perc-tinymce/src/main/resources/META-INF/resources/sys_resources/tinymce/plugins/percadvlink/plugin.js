@@ -56,10 +56,14 @@ tinymce.PluginManager.add('percadvlink', function(editor) {
         }
 
         data.text = initialText = selection.getContent({format: 'text'});
+	    data.target = anchorElm ? dom.getAttrib(anchorElm, 'target') : '';
         data.url = anchorElm ? dom.getAttrib(anchorElm, 'href') : '';
+		if(data.url){
+
 		data.href = {value: data.url};
+		}
         data.title = anchorElm ? dom.getAttrib(anchorElm, 'title') : '';
-        data.target = anchorElm ? dom.getAttrib(anchorElm, 'target') : '';
+
         data.rel = anchorElm ? dom.getAttrib(anchorElm, 'rel') : '';
         cm1LinkData.sys_dependentvariantid = anchorElm ? dom.getAttrib(anchorElm, 'sys_dependentvariantid') : '';
         cm1LinkData.rxinlineslot = anchorElm ? dom.getAttrib(anchorElm, 'rxinlineslot') : '';
@@ -103,6 +107,9 @@ tinymce.PluginManager.add('percadvlink', function(editor) {
 				if(changeData.name === 'target'){
 						data.target = api.getData().target;
 				}
+				if(changeData.name === 'href'){
+						data.href = api.getData().href;
+				}
 				if(changeData.name === 'title'){
 						data.title = api.getData().title;
 				}
@@ -111,8 +118,11 @@ tinymce.PluginManager.add('percadvlink', function(editor) {
             onSubmit: function(e) {
                 var linkPath = data.url;
                 if (!linkPath) {
-                    editor.execCommand('unlink');
-                    return;
+					linkPath = data.href.value;
+					if (!linkPath) {
+                        editor.execCommand('unlink');
+                        return;
+                    }
                 }
 
                 //Resolve manually entered internal links
@@ -173,8 +183,9 @@ tinymce.PluginManager.add('percadvlink', function(editor) {
         //Inner function that adds the link.
         function addLink(extLink){
             var anchorAttrs = {
-                href: data.url,
+
                 target: data.target ? data.target : null,
+				href:data.href?data.href.value :data.url,
                 title: data.title ? data.title : null,
                 rel: data.rel ? data.rel : null,
                 sys_dependentvariantid : cm1LinkData.sys_dependentvariantid,
@@ -186,8 +197,8 @@ tinymce.PluginManager.add('percadvlink', function(editor) {
                 'data-jcrpath': cm1LinkData.jcrPath
             };
             var extAnchorAttrs = {
-                href: data.url,
                 target: data.target ? data.target : null,
+				href:data.href? data.href.value :data.url,
                 title: data.title ? data.title : null
             };
             if (anchorElm) {
