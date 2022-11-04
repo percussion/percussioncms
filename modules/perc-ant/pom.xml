@@ -98,6 +98,12 @@
             <groupId>com.percussion</groupId>
             <artifactId>perc-system</artifactId>
             <version>${project.parent.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.apache.tika</groupId>
+                    <artifactId>tika-parsers</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.percussion</groupId>
