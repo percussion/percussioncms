@@ -48,6 +48,7 @@ import com.percussion.design.objectstore.PSSystemValidationException;
 import com.percussion.design.objectstore.PSUISet;
 import com.percussion.error.PSException;
 import com.percussion.extension.PSExtensionException;
+import com.percussion.html.PSHtmlUtils;
 import com.percussion.log.PSLogManager;
 import com.percussion.log.PSLogServerWarning;
 import com.percussion.security.PSSecurityToken;
@@ -80,6 +81,7 @@ import com.percussion.xml.PSXmlTreeWalker;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jsoup.helper.W3CDom;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -88,7 +90,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import java.io.ByteArrayInputStream;
-import java.io.StringReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -259,10 +261,8 @@ public class PSSingleValueBuilder extends PSDisplayFieldBuilder
          throw new IllegalArgumentException(
             "submitName may not be null or empty");
 
-      Element dispNode = PSDisplayFieldElementBuilder.createHiddenFieldElement(
+      return PSDisplayFieldElementBuilder.createHiddenFieldElement(
          doc, controlName, submitName, value, isReadOnly);
-
-      return dispNode;
    }
 
    /**
@@ -327,7 +327,7 @@ public class PSSingleValueBuilder extends PSDisplayFieldBuilder
       if ( null != content && content.length() > 0 )
       {
          //if content has rxinlineslot then fix the variants
-         if (content.indexOf("rxinlineslot") > -1)
+         if (content.contains("rxinlineslot"))
          {
             IPSRequestContext request =
                new PSRequestContext(data.getRequest());
@@ -335,14 +335,12 @@ public class PSSingleValueBuilder extends PSDisplayFieldBuilder
             Document contentDoc = null;
             try
             {
-               contentDoc =
-                  PSXmlDocumentBuilder.createXmlDocument(
-                     new StringReader(content),
-                     false);
+               org.jsoup.nodes.Document jsoupDoc = PSHtmlUtils.createHTMLDocument(content, StandardCharsets.UTF_8,false,null);
+               contentDoc = W3CDom.convert(jsoupDoc);
+               isModified = PSInlineLinkField.expandEmptyElement(contentDoc);
                isModified = PSInlineLinkField.expandEmptyElement(contentDoc);
                
-               processVariant(
-                  contentDoc.getDocumentElement(),
+               processVariant(contentDoc.getDocumentElement(),
                   request,
                   buildRelationshipData(request, null),
                   getControlName());
@@ -633,9 +631,9 @@ public class PSSingleValueBuilder extends PSDisplayFieldBuilder
       {
          if (!StringUtils.isEmpty(rel.getProperty(PSRelationshipConfig.PDU_INLINERELATIONSHIP)))
          {
-            Integer dependentid = new Integer(rel.getDependent().getId());
+            Integer dependentid = rel.getDependent().getId();
             inlineLinkRelData.m_relIdContentIdMap.put(
-               new Integer(rel.getId()),
+                    rel.getId(),
                dependentid);
             inlineLinkRelData.m_contentIdPathMap.put(dependentid, null);
          }
@@ -809,15 +807,7 @@ public class PSSingleValueBuilder extends PSDisplayFieldBuilder
                fixedUrl = PSMacroUtils.fixLinkUrlRevisionForFlags(request, url,
                      "i".toCharArray());
             }
-            catch (PSInternalRequestCallException e)
-            {
-               ex = e;
-            }
-            catch (PSNotFoundException e)
-            {
-               ex = e;
-            }
-            catch (PSRequestParsingException e)
+            catch (PSInternalRequestCallException | PSNotFoundException | PSRequestParsingException e)
             {
                ex = e;
             }

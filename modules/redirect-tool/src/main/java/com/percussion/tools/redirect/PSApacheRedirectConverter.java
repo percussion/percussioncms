@@ -37,7 +37,7 @@ public class PSApacheRedirectConverter extends PSBaseRedirectConverter{
         StringBuilder sb = new StringBuilder(REWRITE_RULE).append(" ");
 
         sb.append("\"");
-        sb.append(r.getCondition());
+        sb.append("^" + r.getCondition());
         sb.append("\" ");
 
         sb.append("\"");
@@ -51,7 +51,7 @@ public class PSApacheRedirectConverter extends PSBaseRedirectConverter{
             sb.append(",R=permanent");
 
         sb.append("]");
-
+        sb.append(System.lineSeparator());
         return sb.toString();
     }
 
@@ -78,13 +78,14 @@ public class PSApacheRedirectConverter extends PSBaseRedirectConverter{
             sb.append(",R=permanent");
 
         sb.append("]");
+        sb.append(System.lineSeparator());
 
         return sb.toString();
     }
 
     @Override
     public String getFilename() {
-        return null;
+        return "apache-redirects.conf";
     }
 
 

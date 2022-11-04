@@ -24,31 +24,37 @@
 
 package com.percussion.tools.redirect;
 
-public class PSNginxRedirectConverter implements IPSRedirectConverter{
-    /**
-     * Runs a redirect conversion.
-     *
-     * @param redirects A non null list of PSRedirectEntries
-     * @param outDir    The folder to generate the redirect file to
-     * @return A count of the redirects processed
-     */
-    @Override
-    public int convertRedirects(PSPercussionRedirectEntryList redirects, String outDir) {
-        return 0;
-    }
+public class PSNginxRedirectConverter extends PSBaseRedirectConverter{
+
+    public static final String NGINX_RULE="rewrite {0} {1}";
+    public static final String NGINX_FLAGS = "last";
+    public static final String NGINX_RULE_END=";";
+
+
 
     @Override
     public String convertVanityRedirect(PSPercussionRedirectEntry e) {
-        return null;
+
+        StringBuilder sb = new StringBuilder(NGINX_RULE.replace("{0}",
+                "^"+ e.getCondition()).replace("{1}",e.getRedirectTo()));
+        sb.append(" ").append(NGINX_FLAGS);
+        sb.append(NGINX_RULE_END);
+        sb.append(System.lineSeparator());
+        return sb.toString();
     }
 
     @Override
     public String convertRegexRedirect(PSPercussionRedirectEntry e) {
-        return null;
+        StringBuilder sb = new StringBuilder(NGINX_RULE.replace("{0}",
+                e.getCondition()).replace("{1}",e.getRedirectTo()));
+        sb.append(" ").append(NGINX_FLAGS);
+        sb.append(NGINX_RULE_END);
+        sb.append(System.lineSeparator());
+        return sb.toString();
     }
 
     @Override
     public String getFilename() {
-        return null;
+        return "nginx_rules.conf";
     }
 }

@@ -133,6 +133,7 @@ public class PSJdbcPlanBuilder
          }
          else
          {
+            result = SCHEMA_ACTION_CREATE;
             createMissingTable(conn, dbmsDef,tableSchema,schemaPlan);
          }
       }else {
@@ -167,10 +168,12 @@ public class PSJdbcPlanBuilder
                  (tableSchema.getTableSchemaHandler(
                          PSJdbcTableSchemaHandler.TYPE_INT_NO_ALTER_TABLE_STMT) == null))
          {
+            result = SCHEMA_ACTION_ALTER;
             alterModifiedTable(conn, dbmsDef,tableSchema,schemaPlan,hasRows,tableChanges,addListeners ,changeEvent,changeListeners);
          }
          else
          {
+            result = SCHEMA_ACTION_RECREATE;
             recreateExisitngTable(conn, dbmsDef, curSchema, tableSchema,schemaPlan,hasRows,addListeners ,changeEvent,changeListeners);
          }
       }
@@ -214,7 +217,6 @@ public class PSJdbcPlanBuilder
                                           PSJdbcTableChangeEvent changeEvent,List<IPSJdbcTableChangeListener> changeListeners){
       // only adding stuff, so delete data if required, alter table
       PSJdbcTableFactory.logMessage("Table exists, can alter");
-      int result = SCHEMA_ACTION_ALTER;
 
       if (tableSchema.isDelOldData() && hasRows)
       {
@@ -249,7 +251,7 @@ public class PSJdbcPlanBuilder
                                              PSJdbcTableChangeEvent changeEvent,List<IPSJdbcTableChangeListener> changeListeners) throws PSJdbcTableFactoryException {
 
       PSJdbcTableFactory.logMessage("Table exists, can't alter");
-      int result = SCHEMA_ACTION_RECREATE;
+
 
       /* if only alter changes specified, need to overlay the changes onto
        * the existing schema so we have the full definition of what we

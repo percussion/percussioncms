@@ -423,7 +423,6 @@ public class PSJdbcTableFactory
                      "skipping data plan");
                   processData = false;
                }
-               processingData = false;
             }
          }
 

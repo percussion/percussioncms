@@ -50,6 +50,9 @@ import com.percussion.services.assembly.PSAssemblyServiceLocator;
 import com.percussion.services.assembly.PSTemplateNotImplementedException;
 import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.filter.PSFilterException;
+import com.percussion.services.jms.impl.PSQueueErrorHandler;
+import com.percussion.services.notification.IPSNotificationListener;
+import com.percussion.services.notification.PSNotificationEvent;
 import com.percussion.services.publisher.IPSDeliveryType;
 import com.percussion.services.publisher.IPSPublisherService;
 import com.percussion.services.publisher.PSPublisherServiceLocator;
@@ -58,6 +61,7 @@ import com.percussion.services.pubserver.IPSPubServerDao;
 import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.services.sitemgr.IPSSiteManager;
 import com.percussion.services.sitemgr.PSSiteManagerLocator;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.util.PSBaseBean;
 import com.percussion.utils.guid.IPSGuid;
@@ -109,7 +113,7 @@ import static org.apache.commons.lang.Validate.notNull;
  * @author dougrand
  */
 @PSBaseBean("sys_publishQueueListener")
-public class PSPublishHandler implements MessageListener
+public class PSPublishHandler implements MessageListener, IPSNotificationListener
 {
    /**
     * Logger used for publishing handler service.
@@ -171,11 +175,15 @@ public class PSPublishHandler implements MessageListener
     */
    @Autowired
    public PSPublishHandler(IPSDeliveryManager deliveryMgr, 
-      IPSRxPublisherServiceInternal rxPubService)
+      IPSRxPublisherServiceInternal rxPubService,
+                           PSQueueErrorHandler errorHandler)
    {
       Thread.currentThread().setPriority(4);
       m_deliveryManager = deliveryMgr;
       m_rxPubService = rxPubService;
+
+      //register a listener for JMS Queue errors
+      errorHandler.addListener(this);
    }
    
 
@@ -608,9 +616,10 @@ public class PSPublishHandler implements MessageListener
          {
             Collection<IPSDeliveryResult> results = 
                m_deliveryManager.commit(jc.getJobId());
-            long pubServerId = 0;
+
             for(IPSDeliveryResult result : results)
             {
+               long pubServerId = 0;
                if (!result.hasUpdateSent())
                {
                   final ItemState state = OUTCOME_STATE.get(result.getOutcome());
@@ -899,5 +908,18 @@ public class PSPublishHandler implements MessageListener
       ms_deliveryTypeToAllowsEmptyLocation.put(deliveryType, isEmptyLocationAllowed);
       
       return isEmptyLocationAllowed;
+   }
+
+   /**
+    * Handle errors from the JMS side.
+    * @param notification the notification event, never <code>null</code>
+    * @throws PSDataServiceException
+    * @throws PSNotFoundException
+    */
+   @Override
+   public void notifyEvent(PSNotificationEvent notification) throws PSDataServiceException, PSNotFoundException {
+      if(notification.getType().equals(PSNotificationEvent.EventType.JMS_ERROR)){
+         // there was a JMS error so we need to
+      }
    }
 }
