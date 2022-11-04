@@ -37,7 +37,7 @@ public class PSIISRedirectConverter extends PSBaseRedirectConverter{
     public static final String END_RULE = "</rule>";
     public static final String END_RULES = "</rules>";
     public static final String END_REWRITE = "</rewrite>";
-
+    private int counter = 0;
 
     /*
 <rewrite>
@@ -56,12 +56,12 @@ public class PSIISRedirectConverter extends PSBaseRedirectConverter{
                 !r.getCategory().equalsIgnoreCase("AUTOGEN")){
             throw new IllegalArgumentException("Redirect type must be Vanity");
         }
-
+        counter++;
         String condition = r.getCondition();
         if(condition.startsWith("/")){
             condition = condition.replaceFirst("/", "^");
         }
-        String name = r.getCondition().replaceAll("[^a-zA-Z0-9]", "");
+        String name = r.getCondition().replaceAll("[^a-zA-Z0-9]", "") + counter;
         StringBuilder sb = new StringBuilder(START_RULE.replace("{0}",name)).append(System.lineSeparator());
 
         sb.append(MATCH.replace("{0}",condition)).append(System.lineSeparator());
@@ -84,8 +84,8 @@ public class PSIISRedirectConverter extends PSBaseRedirectConverter{
         if(!r.getCategory().equalsIgnoreCase("REGEX")){
             throw new IllegalArgumentException("Redirect type must be Regex");
         }
-
-        String name = r.getCondition().replaceAll("[^a-zA-Z0-9]", "");
+        counter++;
+        String name = r.getCondition().replaceAll("[^a-zA-Z0-9]", "")+ counter;
         StringBuilder sb = new StringBuilder(START_RULE.replace("{0}",name)).append(System.lineSeparator());
 
 
