@@ -53,6 +53,7 @@ import java.util.StringTokenizer;
  **/
 public class PSCachedStylesheet
 {
+
    /**
     * Constructor for initializing all variables.
     *
@@ -84,7 +85,8 @@ public class PSCachedStylesheet
       m_ssTemplate = null;
       m_listener = new PSTransformErrorListener();
 
-      m_transformFactory =  TransformerFactory.newInstance();
+      m_transformFactory =  TransformerFactory.newInstance("com.icl.saxon.TransformerFactoryImpl",
+              this.getClass().getClassLoader());
 
       PSCatalogResolver cr = new PSCatalogResolver();
       cr.setInternalRequestURIResolver(new PSInternalRequestURIResolver());
@@ -261,10 +263,10 @@ public class PSCachedStylesheet
          <META http-equiv="content-Type" content="text/html; charset=ISO-8859-1">
          */
          String attr = elem.getAttribute("http-equiv");
-         if (attr.equalsIgnoreCase("content-type"))
+         if (attr != null && attr.equalsIgnoreCase("content-type"))
          {
             String content = elem.getAttribute("content");
-            if (!content.equals(""))
+            if (content != null && !content.equals(""))
             {
               
                found = (content.toLowerCase().contains("charset="));

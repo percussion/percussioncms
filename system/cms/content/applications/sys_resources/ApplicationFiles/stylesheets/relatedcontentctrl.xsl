@@ -132,8 +132,8 @@
 	</xsl:template>
 	<xsl:template match="slot" mode="mode1">
 		<xsl:param name="editable"/>
-		<xsl:variable name="slotid" select="@slotid"/>
 		<xsl:param name="relateddoc"/>
+		<xsl:variable name="slotid" select="@slotid"/>
 		<xsl:choose>
 		<xsl:when test="count(../slot)=1 and $slotid=''">
 			<tr class="datacell1">

@@ -6,16 +6,10 @@
 		%HTMLsymbol;
 		<!ENTITY % HTMLspecial PUBLIC "-//W3C//ENTITIES_Special_for_XHTML//EN" "https://www.percussion.com/DTD/HTMLspecialx.ent">
 		%HTMLspecial;
-		<!ENTITY % w3centities-f PUBLIC
-				"-//W3C//ENTITIES Combined Set//EN//XML"
-				"http://www.w3.org/2003/entities/2007/w3centities-f.ent"
-				>
-		%w3centities-f;
 		]>
-<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xalan="http://xml.apache.org/xalan"
-				xmlns="http://www.w3.org/1999/xhtml" xmlns:psxi18n="com.percussion.i18n"
-				extension-element-prefixes="psxi18n" exclude-result-prefixes="psxi18n xalan">
-
+<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 	xmlns:saxon="http://icl.com/saxon"
+	xmlns:psxi18n="com.percussion.i18n" extension-element-prefixes="psxi18n saxon"
+                exclude-result-prefixes="psxi18n saxon">
 	<xsl:import href="file:sys_resources/stylesheets/sys_I18nUtils.xsl"/>
 	<xsl:output method="html" omit-xml-declaration="yes" encoding="UTF-8" />
 	<xsl:variable name="rxroot">
@@ -95,7 +89,7 @@
 						</title>
 						<xsl:call-template name="js-functions"/>
 					</head>
-					<body marginwidth="0" marginheight="0" leftmargin="0" topmargin="0" onunload="hideCxApplet();">
+					<body onunload="hideCxApplet();">
 						<div id="theCxApplet">
 							<xsl:call-template name="applet-body" />
 						</div>
@@ -106,8 +100,8 @@
 		</xsl:choose>
 	</xsl:template>
 	<xsl:template name="js-functions" >
-		<script src="{concat($rxroot,'/sys_resources/js/browser.js')}"><xsl:text>&nbsp;</xsl:text></script>
-		<xsl:text disable-output-escaping="yes">
+		<script src="{concat($rxroot,'/sys_resources/js/browser.js')}"></script>
+		<xsl:text disable-output-escaping="yes"/>
 		<script>
 			function showWindow(url, target, style)
 			{
@@ -136,13 +130,13 @@
 
 			}
 		</script>
-	</xsl:text>
+
 
 	</xsl:template>
 	<xsl:template name="applet-body">
 		<script language="JavaScript1.2">
 			var appletCaller = new AppletCaller();
-			<xsl:for-each select="xalan:nodeset($appletparams)/AppletParams/Param">
+			<xsl:for-each select="saxon:nodeset($appletparams)/AppletParams/Param">
 				<xsl:text>appletCaller.addParam("</xsl:text><xsl:value-of select="@name"/><xsl:text>", "</xsl:text><xsl:value-of select="@value"/><xsl:text>");</xsl:text>
 			</xsl:for-each>
 
