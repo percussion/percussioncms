@@ -9167,18 +9167,8 @@ ORDER BY PSX_TEMPLATE.NAME ASC</nativeStatement>
          <actionTypeXmlField/>
       </PSXPageDataTank>
       <PSXRequestor directDataStream="no" id="0">
-         <requestPage>wfactionset</requestPage>
-         <SelectionParams>
-            <PSXConditional id="0">
-               <variable>
-                  <PSXHtmlParameter id="0">
-                     <name>sys_assignmenttypeid</name>
-                  </PSXHtmlParameter>
-               </variable>
-               <operator>IS NOT NULL</operator>
-               <boolean>AND</boolean>
-            </PSXConditional>
-         </SelectionParams>
+         <requestPage>getItemIcons</requestPage>
+         <SelectionParams/>
          <ValidationRules/>
          <characterEncoding>UTF-8</characterEncoding>
          <MimeProperties>
@@ -9396,6 +9386,7 @@ ORDER BY PSX_TEMPLATE.NAME ASC</nativeStatement>
       </PSXRequestor>
       <PSXResultPageSet id="0">
          <PSXResultPage allowNamespaceCleanup="false" id="249">
+            <styleSheet>file:identity.xsl</styleSheet>
             <extensionsSupported/>
          </PSXResultPage>
       </PSXResultPageSet>
