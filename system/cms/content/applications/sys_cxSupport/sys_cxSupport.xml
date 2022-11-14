@@ -5966,14 +5966,14 @@
                   </PSXBackEndColumn>
                </PSXSortedColumn>
             </Sorting>
-            <nativeStatement>SELECT DISTINCT PSX_TEMPLATE.STYLESHEETNAME, PSX_TEMPLATE.TEMPLATE_ID, PSX_TEMPLATE.ASSEMBLYURL,  PSX_TEMPLATE.LABEL, 
-	PSX_TEMPLATE.OUTPUTFORMAT, PSX_TEMPLATE.NAME 
-FROM PSX_TEMPLATE, RXVARIANTSLOTTYPE, CONTENTSTATUS, PSX_CONTENTTYPE_TEMPLATE CTT
-WHERE 	CONTENTSTATUS.CONTENTTYPEID = CTT.CONTENTTYPEID  
-AND CTT.TEMPLATE_ID = PSX_TEMPLATE.TEMPLATE_ID
-AND  CONTENTSTATUS.CONTENTID = :"PSXSingleParam/sys_contentid"  
-AND (PSX_TEMPLATE.AATYPE&lt;&gt;2 OR PSX_TEMPLATE.AATYPE IS NULL) 
-ORDER BY PSX_TEMPLATE.NAME ASC</nativeStatement>
+            <nativeStatement>SELECT DISTINCT PSX_TEMPLATE.STYLESHEETNAME, PSX_TEMPLATE.TEMPLATE_ID, PSX_TEMPLATE.ASSEMBLYURL,  PSX_TEMPLATE.LABEL,
+               PSX_TEMPLATE.OUTPUTFORMAT, PSX_TEMPLATE.NAME
+               FROM PSX_TEMPLATE, RXVARIANTSLOTTYPE, CONTENTSTATUS, PSX_CONTENTTYPE_TEMPLATE CTT
+               WHERE 	CONTENTSTATUS.CONTENTTYPEID = CTT.CONTENTTYPEID
+               AND CTT.TEMPLATE_ID = PSX_TEMPLATE.TEMPLATE_ID
+               AND  CONTENTSTATUS.CONTENTID = :"PSXSingleParam/sys_contentid"
+               AND (PSX_TEMPLATE.AATYPE&lt;&gt;2 OR PSX_TEMPLATE.AATYPE IS NULL)
+               ORDER BY PSX_TEMPLATE.NAME ASC</nativeStatement>
             <Caching enabled="no" type="interval">
                <ageInterval>15</ageInterval>
             </Caching>
@@ -8507,16 +8507,16 @@ ORDER BY PSX_TEMPLATE.NAME ASC</nativeStatement>
                   </PSXBackEndColumn>
                </PSXSortedColumn>
             </Sorting>
-            <nativeStatement>SELECT DISTINCT PSX_TEMPLATE.STYLESHEETNAME,PSX_TEMPLATE.TEMPLATE_ID, PSX_TEMPLATE.ASSEMBLYURL, PSX_TEMPLATE.LABEL,            
-	PSX_TEMPLATE.OUTPUTFORMAT, PSX_TEMPLATE.NAME 
-FROM PSX_TEMPLATE, RXVARIANTSLOTTYPE, CONTENTSTATUS, RXVARIANTCOMMUNITY, PSX_CONTENTTYPE_TEMPLATE CTT
-WHERE CONTENTSTATUS.CONTENTTYPEID = CTT.CONTENTTYPEID 
-AND CTT.TEMPLATE_ID = PSX_TEMPLATE.TEMPLATE_ID
-AND PSX_TEMPLATE.TEMPLATE_ID = RXVARIANTCOMMUNITY.VARIANTID  
-AND RXVARIANTCOMMUNITY.COMMUNITYID = :"PSXUserContext/User/SessionObject/sys_community"
-AND CONTENTSTATUS.CONTENTID = :"PSXSingleParam/sys_contentid"  
-AND (PSX_TEMPLATE.AATYPE&lt;&gt;2 OR PSX_TEMPLATE.AATYPE IS NULL) 
-ORDER BY PSX_TEMPLATE.NAME ASC</nativeStatement>
+            <nativeStatement>SELECT DISTINCT PSX_TEMPLATE.STYLESHEETNAME,PSX_TEMPLATE.TEMPLATE_ID, PSX_TEMPLATE.ASSEMBLYURL, PSX_TEMPLATE.LABEL,
+               PSX_TEMPLATE.OUTPUTFORMAT, PSX_TEMPLATE.NAME
+               FROM PSX_TEMPLATE, RXVARIANTSLOTTYPE, CONTENTSTATUS, RXVARIANTCOMMUNITY, PSX_CONTENTTYPE_TEMPLATE CTT
+               WHERE CONTENTSTATUS.CONTENTTYPEID = CTT.CONTENTTYPEID
+               AND CTT.TEMPLATE_ID = PSX_TEMPLATE.TEMPLATE_ID
+               AND PSX_TEMPLATE.TEMPLATE_ID = RXVARIANTCOMMUNITY.VARIANTID
+               AND RXVARIANTCOMMUNITY.COMMUNITYID = :"PSXUserContext/User/SessionObject/sys_community"
+               AND CONTENTSTATUS.CONTENTID = :"PSXSingleParam/sys_contentid"
+               AND (PSX_TEMPLATE.AATYPE&lt;&gt;2 OR PSX_TEMPLATE.AATYPE IS NULL)
+               ORDER BY PSX_TEMPLATE.NAME ASC</nativeStatement>
             <Caching enabled="no" type="interval">
                <ageInterval>15</ageInterval>
             </Caching>
@@ -9167,8 +9167,18 @@ ORDER BY PSX_TEMPLATE.NAME ASC</nativeStatement>
          <actionTypeXmlField/>
       </PSXPageDataTank>
       <PSXRequestor directDataStream="no" id="0">
-         <requestPage>getItemIcons</requestPage>
-         <SelectionParams/>
+         <requestPage>wfactionset</requestPage>
+         <SelectionParams>
+            <PSXConditional id="0">
+               <variable>
+                  <PSXHtmlParameter id="0">
+                     <name>sys_assignmenttypeid</name>
+                  </PSXHtmlParameter>
+               </variable>
+               <operator>IS NOT NULL</operator>
+               <boolean>AND</boolean>
+            </PSXConditional>
+         </SelectionParams>
          <ValidationRules/>
          <characterEncoding>UTF-8</characterEncoding>
          <MimeProperties>
@@ -9386,7 +9396,6 @@ ORDER BY PSX_TEMPLATE.NAME ASC</nativeStatement>
       </PSXRequestor>
       <PSXResultPageSet id="0">
          <PSXResultPage allowNamespaceCleanup="false" id="249">
-            <styleSheet>file:identity.xsl</styleSheet>
             <extensionsSupported/>
          </PSXResultPage>
       </PSXResultPageSet>
