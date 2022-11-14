@@ -6,17 +6,11 @@
 		%HTMLsymbol;
 		<!ENTITY % HTMLspecial PUBLIC "-//W3C//ENTITIES_Special_for_XHTML//EN" "https://www.percussion.com/DTD/HTMLspecialx.ent">
 		%HTMLspecial;
-		<!ENTITY % w3centities-f PUBLIC
-				"-//W3C//ENTITIES Combined Set//EN//XML"
-				"http://www.w3.org/2003/entities/2007/w3centities-f.ent"
-				>
-		%w3centities-f;
 		]>
-<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:psxi18n="com.percussion.i18n" extension-element-prefixes="psxi18n"
+<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:psxi18n="com.percussion.i18n" extension-element-prefixes="psxi18n"
                 exclude-result-prefixes="psxi18n">
 	<xsl:import href="file:sys_resources/stylesheets/sys_I18nUtils.xsl"/>
-	<xsl:variable name="lang" select="/*/UserStatus/@lang"/>
+   <xsl:variable name="lang" select="//@lang"/>
 	<xsl:variable name="varContentStatus" select="//ContentStatus"/>
 	<xsl:variable name="varHistoryList">
 		<HistoryList>
@@ -35,16 +29,16 @@
 					<xsl:call-template name="getLocaleString">
 						<xsl:with-param name="key" select="'psx.contenteditor.audittrail@Rhythmyx'"/>
 						<xsl:with-param name="lang" select="$lang"/>
-					</xsl:call-template>&nbsp;-&nbsp;
-               <xsl:value-of select="$varContentStatus/Title"/>&nbsp;-&nbsp;
+					</xsl:call-template>
+               <xsl:value-of select="$varContentStatus/Title"/>
                <xsl:call-template name="getLocaleString">
 						<xsl:with-param name="key" select="'psx.contenteditor.audittrail@Audit Trail'"/>
 						<xsl:with-param name="lang" select="$lang"/>
 					</xsl:call-template>
 				</title>
-				<link rel="stylesheet" type="text/css" href="/sys_resources/css/templates.css"/>
-				<link rel="stylesheet" type="text/css" href="/rx_resources/css/templates.css"/>
-				<link rel="stylesheet" type="text/css" href="{concat('/rx_resources/css/',$lang,'/templates.css')}"/>
+				<link rel="stylesheet" type="text/css" href="../sys_resources/css/templates.css"/>
+				<link rel="stylesheet" type="text/css" href="../rx_resources/css/templates.css"/>
+				<link rel="stylesheet" type="text/css" href="{concat('../rx_resources/css/',$lang,'/templates.css')}"/>
 				<link rel="stylesheet" type="text/css" href="../sys_resources/css/popmenu.css"/>
 				<script src="../sys_resources/js/globalErrorMessages.js">;</script>
 				<script src="{concat('../rx_resources/js/',$lang,'/globalErrorMessages.js')}">;</script>
@@ -194,14 +188,14 @@
 					<xsl:call-template name="getLocaleString">
 						<xsl:with-param name="key" select="concat('psx.workflow.state@',StateName)"/>
 						<xsl:with-param name="lang" select="$lang"/>
-					</xsl:call-template>&nbsp;
+					</xsl:call-template>
                (<xsl:value-of select="StateName/@stateId"/>)
             </td>
 				<td align="center" class="datacell1font">
 					<xsl:call-template name="getLocaleString">
 						<xsl:with-param name="key" select="concat('psx.contenteditor.audittrail@',@isValid)"/>
 						<xsl:with-param name="lang" select="$lang"/>
-					</xsl:call-template>&nbsp;
+					</xsl:call-template>
             </td>
 				<td align="center" class="datacell1font">
 					<xsl:value-of select="Actor"/>
@@ -221,7 +215,7 @@
 						<img alt="{Comment}" src="../sys_resources/images/singlecomment.gif" width="16" height="16" border="0">
 							<xsl:attribute name="OnClick">textWindow('<xsl:value-of select="$tmp2"/>');</xsl:attribute>
 						</img>
-					</xsl:if>&nbsp;
+					</xsl:if>
 				</td>
 			</tr>
 		</xsl:for-each>

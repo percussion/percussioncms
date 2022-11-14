@@ -36,6 +36,7 @@ import com.percussion.extension.PSExtensionProcessingException;
 import com.percussion.extension.PSParameterMismatchException;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.server.PSRequest;
+import com.percussion.server.PSRequestContext;
 import com.percussion.server.PSUserSession;
 import com.percussion.services.legacy.IPSCmsObjectMgr;
 import com.percussion.services.legacy.PSCmsObjectMgrLocator;
@@ -107,8 +108,9 @@ public class PSFilterContextMenu implements IPSResultDocumentProcessor
          throws PSParameterMismatchException, PSExtensionProcessingException
    {
       PSManageActionInfo infomgr = new PSManageActionInfo();
-      String contentid = request.getParameter("sys_contentid");
-      String assignmenttype = request.getParameter("sys_assignmenttype");
+      PSRequest originalReq = ((PSRequestContext) request).getRequest().getOriginalRequest();
+      String contentid = originalReq.getParameter("sys_contentid");
+      String assignmenttype = originalReq.getParameter("sys_assignmenttype");
       String checkedoutstate = "SomeOneElse";
       String username = null;
       PSRequest req = (PSRequest) PSRequestInfo
@@ -261,8 +263,8 @@ public class PSFilterContextMenu implements IPSResultDocumentProcessor
             
             // If a user is not in the workflow or has no access through
             // the workflow, then all item actions should be suppressed.
-            if (assignmentType.equalsIgnoreCase("1") /* None */ ||
-                  assignmentType.equalsIgnoreCase("Default"))
+            if (assignmentType != null && (assignmentType.equalsIgnoreCase("1") /* None */ ||
+                  assignmentType.equalsIgnoreCase("Default")))
             {
                if (infomgr.isActionAnItem(id, request)) remove = true;
             }

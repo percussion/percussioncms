@@ -6,17 +6,11 @@
 		%HTMLsymbol;
 		<!ENTITY % HTMLspecial PUBLIC "-//W3C//ENTITIES_Special_for_XHTML//EN" "https://www.percussion.com/DTD/HTMLspecialx.ent">
 		%HTMLspecial;
-		<!ENTITY % w3centities-f PUBLIC
-				"-//W3C//ENTITIES Combined Set//EN//XML"
-				"http://www.w3.org/2003/entities/2007/w3centities-f.ent"
-				>
-		%w3centities-f;
 		]>
-<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:psxi18n="com.percussion.i18n" extension-element-prefixes="psxi18n"
+<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:psxi18n="com.percussion.i18n" extension-element-prefixes="psxi18n"
                 exclude-result-prefixes="psxi18n">
 	<xsl:import href="file:sys_resources/stylesheets/sys_I18nUtils.xsl"/>
-	<xsl:variable name="lang" select="/*/UserStatus/@lang"/>
+   <xsl:variable name="lang" select="//@lang"/>
 	<xsl:variable name="syscontentid" select="//Workflow/@contentId"/>
 	<xsl:variable name="sysrevision" select="//Workflow/BasicInfo/HiddenFormParams/Param[@name='sys_revision']"/>
 	<xsl:include href="file:sys_resources/stylesheets/assemblers/sys_popmenu.xsl"/>
@@ -31,8 +25,8 @@
 					<xsl:call-template name="getLocaleString">
 						<xsl:with-param name="key" select="'psx.contenteditor.revisionedit@Rhythmyx'"/>
 						<xsl:with-param name="lang" select="$lang"/>
-					</xsl:call-template>&nbsp;-&nbsp;
-               <xsl:value-of select="Workflow/ContentStatus/Title"/>&nbsp;-&nbsp;
+					</xsl:call-template>
+               <xsl:value-of select="Workflow/ContentStatus/Title"/>
                <xsl:call-template name="getLocaleString">
 						<xsl:with-param name="key" select="'psx.contenteditor.revisionedit@Revision List'"/>
 						<xsl:with-param name="lang" select="$lang"/>
@@ -49,21 +43,16 @@
 				<script language="javascript" src="../sys_resources/js/popmenu.js">;</script>
 				<script language="javascript" src="../web_resources/cm/jslib/jquery.js">;</script>
 				<script language="javascript" src="../web_resources/cm/jslib/jquery-ui.js">;</script>
-				<script>
-				<![CDATA[
+				<script language="javascript">
+					<![CDATA[
 
-					   var textWin = null;
-					   function textWindow(s)
-					   {
-
-					      textWin = window.open('','HistoryComment','width=500,height=100,resizable=yes');
-					      textWin.document.open();
-					      textWin.document.writeln("<html><head><title>History Comment</title></head><body>");
-					      textWin.document.write(s);
-					      textWin.document.writeln("</body></html>");
-					      textWin.document.close();
-					      setTimeout('textWin.close()',5000);				      
-					   }
+					function textWindow(s)
+					{
+						var html = "<div id='historycomment' title='History Comment'></div>";
+						$("body").append(html);
+						$("#historycomment").dialog();
+						$("#historycomment").text(s);
+					}
 					]]>
 				</script>
 			</head>
@@ -126,7 +115,7 @@
 								<xsl:apply-templates select="/ContentEditor/Workflow/HistoryList" mode="historybar"/>
 								<xsl:if test="count(/ContentEditor/Workflow/HistoryList)=0">
 									<tr class="datacell1">
-										<td align="center" colspan="5" class="datacellnoentriesfound">No entries found.&#160;</td>
+										<td align="center" colspan="5" class="datacellnoentriesfound">No entries found.</td>
 									</tr>
 								</xsl:if>
 							</table>
@@ -187,7 +176,7 @@
 						<img alt="{Comment}" src="../sys_resources/images/singlecomment.gif" width="16" height="16" border="0">
 							<xsl:attribute name="OnClick">textWindow('<xsl:value-of select="$tmp2"/>');</xsl:attribute>
 						</img>
-					</xsl:if>&nbsp;
+					</xsl:if>
 		</td>
 			</tr>
 		</xsl:for-each>

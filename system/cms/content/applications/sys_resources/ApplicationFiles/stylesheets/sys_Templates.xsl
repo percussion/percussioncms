@@ -4101,9 +4101,7 @@ onchange    %Script;       #IMPLIED
          <xsl:if test="@accessKey!=''">
             <xsl:attribute name="accesskey"><xsl:call-template name="getaccesskey"><xsl:with-param name="label" select="preceding-sibling::DisplayLabel"/><xsl:with-param name="sourceType" select="preceding-sibling::DisplayLabel/@sourceType"/><xsl:with-param name="paramName" select="@paramName+$uniqueName"/><xsl:with-param name="accessKey" select="@accessKey"/></xsl:call-template></xsl:attribute>
          </xsl:if>
-         <xsl:text>
-            <xsl:value-of select="Value" disable-output-escaping="yes" />
-         </xsl:text>
+         <xsl:value-of select="Value" disable-output-escaping="yes" />
       </textarea>
    </xsl:template>
 
