@@ -36,7 +36,6 @@ import com.percussion.extension.PSExtensionProcessingException;
 import com.percussion.extension.PSParameterMismatchException;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.server.PSRequest;
-import com.percussion.server.PSRequestContext;
 import com.percussion.server.PSUserSession;
 import com.percussion.services.legacy.IPSCmsObjectMgr;
 import com.percussion.services.legacy.PSCmsObjectMgrLocator;
@@ -57,7 +56,7 @@ import java.util.Set;
 
 /**
  * @author dougrand
- * 
+ *
  * <P>
  * This class implements a filter that checks each action in the context menu
  * and decides, based on visibility, whether the specific action should remain
@@ -80,7 +79,7 @@ import java.util.Set;
  * <td>The assignment type of the user/role for this content id</td>
  * </tr>
  * </table>
- * 
+ *
  * @see PSContextMenu for more information about the <code>ActionList</code>
  *      dtd.
  */
@@ -89,7 +88,7 @@ public class PSFilterContextMenu implements IPSResultDocumentProcessor
 
    /*
     * (non-Javadoc)
-    * 
+    *
     * @see com.percussion.extension.IPSResultDocumentProcessor#canModifyStyleSheet()
     */
    public boolean canModifyStyleSheet()
@@ -99,24 +98,23 @@ public class PSFilterContextMenu implements IPSResultDocumentProcessor
 
    /*
     * (non-Javadoc)
-    * 
+    *
     * @see com.percussion.extension.IPSResultDocumentProcessor#processResultDocument(java.lang.Object[],
     *      com.percussion.server.IPSRequestContext, org.w3c.dom.Document)
     */
    public Document processResultDocument(Object[] params,
-         IPSRequestContext request, Document resultDoc)
-         throws PSParameterMismatchException, PSExtensionProcessingException
+                                         IPSRequestContext request, Document resultDoc)
+           throws PSParameterMismatchException, PSExtensionProcessingException
    {
       PSManageActionInfo infomgr = new PSManageActionInfo();
-      PSRequest originalReq = ((PSRequestContext) request).getRequest().getOriginalRequest();
-      String contentid = originalReq.getParameter("sys_contentid");
-      String assignmenttype = originalReq.getParameter("sys_assignmenttype");
+      String contentid = request.getParameter("sys_contentid");
+      String assignmenttype = request.getParameter("sys_assignmenttype");
       String checkedoutstate = "SomeOneElse";
       String username = null;
       PSRequest req = (PSRequest) PSRequestInfo
-            .getRequestInfo(PSRequestInfo.KEY_PSREQUEST);
+              .getRequestInfo(PSRequestInfo.KEY_PSREQUEST);
       PSUserSession sess = req.getUserSession();
-      
+
       // Get user identification
       username = req.getServletRequest().getRemoteUser();
 
@@ -156,13 +154,13 @@ public class PSFilterContextMenu implements IPSResultDocumentProcessor
             checkedoutstate = IPSConstants.CHECKOUT_STATUS_NOBODY;
          }
 
-         state = cms.loadWorkflowState(contentItem.getWorkflowAppId(), 
-               contentItem.getContentStateId());
+         state = cms.loadWorkflowState(contentItem.getWorkflowAppId(),
+                 contentItem.getContentStateId());
       }
       catch (Exception e)
       {
          throw new PSExtensionProcessingException(
-               "Problem loading state information", e);
+                 "Problem loading state information", e);
       }
 
       String contentvalid = state != null ? state.getContentValidValue() : "n";
@@ -191,11 +189,11 @@ public class PSFilterContextMenu implements IPSResultDocumentProcessor
       Set actionsToRemove = new HashSet();
       list = resultDoc.getElementsByTagName("Action");
       checkActionsForRemoval(request, infomgr, contentvalid, roles,
-            assignmenttype, list, actionsToRemove, checkedoutstate);
+              assignmenttype, list, actionsToRemove, checkedoutstate);
       Set actionListsToRemove = new HashSet();
       list = resultDoc.getElementsByTagName("ActionList");
       checkActionsForRemoval(request, infomgr, contentvalid, roles,
-            assignmenttype, list, actionListsToRemove, checkedoutstate);
+              assignmenttype, list, actionListsToRemove, checkedoutstate);
 
       removeUnwantedActions(actionsToRemove);
       removeUnwantedActions(actionListsToRemove);
@@ -205,7 +203,7 @@ public class PSFilterContextMenu implements IPSResultDocumentProcessor
 
    /**
     * Remove the elements that were picked out for removal.
-    * 
+    *
     * @param actionsToRemove a {@link Collection}of elements to be removed,
     *           never <code>null</code> but might be empty
     */
@@ -225,7 +223,7 @@ public class PSFilterContextMenu implements IPSResultDocumentProcessor
    /**
     * Apply a series of visibility checks to the actions. Actions that fail one
     * or more checks are added to the removal list.
-    * 
+    *
     * @param request the original request context, assumed non-
     *           <code>null</code>
     * @param infomgr the info manager for action information, assumed non-
@@ -239,13 +237,13 @@ public class PSFilterContextMenu implements IPSResultDocumentProcessor
     * @param list the list of nodes to check, assumed non- <code>null</code>
     * @param actionsToRemove the list of actions to remove, will be modified by
     *           this method, assumed non- <code>null</code>
-    * @param checkedoutstate This is assimed to have a value from 
+    * @param checkedoutstate This is assimed to have a value from
     * {@link IPSConstants} indicating the checked out state of the item.
     */
    private void checkActionsForRemoval(IPSRequestContext request,
-         PSManageActionInfo infomgr, String contentvalid, Collection roles,
-         String assignmentType, NodeList list, Set actionsToRemove,
-         String checkedoutstate)
+                                       PSManageActionInfo infomgr, String contentvalid, Collection roles,
+                                       String assignmentType, NodeList list, Set actionsToRemove,
+                                       String checkedoutstate)
    {
       int count = list.getLength();
       for (int i = 0; i < count; i++)
@@ -255,20 +253,20 @@ public class PSFilterContextMenu implements IPSResultDocumentProcessor
          if (id != null && id.trim().length() > 0)
          {
             PSActionVisibilityContexts ctxs = infomgr.getActionVisibility(id,
-                  request);
+                    request);
             PSActionVisibilityContext visctx = null;
             boolean remove = false;
             visctx = ctxs
-                  .getContext(PSActionVisibilityContext.VIS_CONTEXT_CHECKOUT_STATUS);
-            
+                    .getContext(PSActionVisibilityContext.VIS_CONTEXT_CHECKOUT_STATUS);
+
             // If a user is not in the workflow or has no access through
             // the workflow, then all item actions should be suppressed.
-            if (assignmentType != null && (assignmentType.equalsIgnoreCase("1") /* None */ ||
-                  assignmentType.equalsIgnoreCase("Default")))
+            if (assignmentType.equalsIgnoreCase("1") /* None */ ||
+                    assignmentType.equalsIgnoreCase("Default"))
             {
                if (infomgr.isActionAnItem(id, request)) remove = true;
             }
-            
+
             if (visctx != null)
             {
                remove |= visctx.contains(checkedoutstate);
@@ -284,7 +282,7 @@ public class PSFilterContextMenu implements IPSResultDocumentProcessor
             if (contentvalid != null)
             {
                visctx = ctxs
-                     .getContext(PSActionVisibilityContext.VIS_CONTEXT_PUBLISHABLE_TYPE);
+                       .getContext(PSActionVisibilityContext.VIS_CONTEXT_PUBLISHABLE_TYPE);
                if (visctx != null)
                {
                   remove |= visctx.contains(contentvalid);
@@ -293,7 +291,7 @@ public class PSFilterContextMenu implements IPSResultDocumentProcessor
             // Check community information
             int community = request.getSecurityToken().getCommunityId();
             visctx = ctxs
-                  .getContext(PSActionVisibilityContext.VIS_CONTEXT_COMMUNITY);
+                    .getContext(PSActionVisibilityContext.VIS_CONTEXT_COMMUNITY);
             if (visctx != null)
             {
                String communityid = Integer.toString(community);
@@ -301,7 +299,7 @@ public class PSFilterContextMenu implements IPSResultDocumentProcessor
             }
 
             visctx = ctxs
-                  .getContext(PSActionVisibilityContext.VIS_CONTEXT_ROLES_TYPE);
+                    .getContext(PSActionVisibilityContext.VIS_CONTEXT_ROLES_TYPE);
             if (visctx != null && roles != null)
             {
                // Visible if any role is not in the hidden list. For example:
@@ -321,11 +319,11 @@ public class PSFilterContextMenu implements IPSResultDocumentProcessor
             }
 
             visctx = ctxs
-                  .getContext(PSActionVisibilityContext.VIS_CONTEXT_ASSIGNMENT_TYPE);
-            
+                    .getContext(PSActionVisibilityContext.VIS_CONTEXT_ASSIGNMENT_TYPE);
+
             if (visctx != null)
             {
-               remove |= visctx.contains(assignmentType); 
+               remove |= visctx.contains(assignmentType);
             }
 
             if (remove)
@@ -339,7 +337,7 @@ public class PSFilterContextMenu implements IPSResultDocumentProcessor
    /**
     * From a nodelist of action or actionlist nodes, get the actionid attributes
     * and populate the passed in collection.
-    * 
+    *
     * @param actionids a {@link Collection}to populate with the action ids that
     *           are found, assumed non- <code>null</code>
     * @param list the list of dom nodes to examine
@@ -358,12 +356,12 @@ public class PSFilterContextMenu implements IPSResultDocumentProcessor
 
    /*
     * (non-Javadoc)
-    * 
+    *
     * @see com.percussion.extension.IPSExtension#init(com.percussion.extension.IPSExtensionDef,
     *      java.io.File)
     */
    public void init(IPSExtensionDef def, File codeRoot)
-         throws PSExtensionException
+           throws PSExtensionException
    {
       // Do nothing
    }

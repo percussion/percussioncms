@@ -614,10 +614,11 @@ public class PSAssemblyService implements IPSAssemblyService
    private void processItemBinding(IPSAssemblyItem item, Set<IPSAssemblyResult> paginatedItems,
          List<IPSAssemblyItem> debugItems, PSAssemblyJexlEvaluator eval, boolean isLegacy)
    {
+
       try
       {
          ms_item.set(item);
-
+         processBindings(item, eval);
          Number count = null;
          try
          {
@@ -1094,7 +1095,8 @@ public class PSAssemblyService implements IPSAssemblyService
          sws.start(getClass().getName() + "#setupItemForAssembly");
 
          String siteidstr = work.getParameterValue(IPSHtmlParameters.SYS_SITEID, null);
-         String contextstr = work.getParameterValue(IPSHtmlParameters.SYS_CONTEXT, null);
+         String contextstr = work.getParameterValue(
+               IPSHtmlParameters.SYS_CONTEXT, null);
 
          String sys_command = work.getParameterValue(IPSHtmlParameters.SYS_COMMAND, null);
          String defaultAAMode = IPSHtmlParameters.SYS_AAMODE_ICONS;

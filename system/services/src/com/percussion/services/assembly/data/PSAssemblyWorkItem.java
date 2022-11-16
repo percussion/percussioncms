@@ -63,7 +63,15 @@ import com.percussion.utils.collections.PSCopier;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.string.PSStringUtils;
 import com.percussion.utils.timing.PSStopwatchStack;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
+import javax.jcr.Node;
+import javax.jcr.RepositoryException;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -79,18 +87,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
-
-import javax.jcr.Node;
-import javax.jcr.RepositoryException;
-
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.commons.lang.builder.ToStringStyle;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 /**
  * Concrete implementation class for assembly items and results. Allows the
@@ -1242,9 +1238,13 @@ public class PSAssemblyWorkItem implements IPSAssemblyResult
       sb.append(", m_fileReleased=").append(m_fileReleased);
       sb.append(", m_status=").append(m_status);
       sb.append(", m_path='").append(m_path).append('\'');
-      sb.append(", m_parameters=").append(m_parameters);
-      sb.append(", m_variables=").append(m_variables);
-      sb.append(", m_template=").append(m_template);
+     // sb.append(", m_parameters=").append(m_parameters);
+     // sb.append(", m_variables=").append(m_variables);
+      if(m_template == null){
+         sb.append(", m_template=").append("null");
+      }else {
+         sb.append(", m_template=").append(m_template.getName());
+      }
       sb.append(", m_originalTemplateGuid=").append(m_originalTemplateGuid);
       sb.append(", m_referenceId=").append(m_referenceId);
       sb.append(", m_unpublishRefId=").append(m_unpublishRefId);
@@ -1254,8 +1254,12 @@ public class PSAssemblyWorkItem implements IPSAssemblyResult
       sb.append(", m_pubserverid=").append(m_pubserverid);
       sb.append(", m_jobId=").append(m_jobId);
       sb.append(", m_depth=").append(m_depth);
-      sb.append(", m_bindings=").append(m_bindings);
-      sb.append(", m_filter=").append(m_filter);
+     // sb.append(", m_bindings=").append(m_bindings);
+      if(m_filter == null) {
+         sb.append(", m_filter=").append("null");
+      }else{
+         sb.append(", m_filter=").append(m_filter.getName());
+      }
       sb.append(", m_userName='").append(m_userName).append('\'');
       sb.append(", m_deliveryType='").append(m_deliveryType).append('\'');
       sb.append(", m_deliveryPath='").append(m_deliveryPath).append('\'');

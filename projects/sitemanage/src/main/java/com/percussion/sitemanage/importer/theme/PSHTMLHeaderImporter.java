@@ -23,24 +23,22 @@
  */
 package com.percussion.sitemanage.importer.theme;
 
+import com.percussion.sitemanage.importer.IPSSiteImportLogger;
+import com.percussion.sitemanage.importer.helpers.impl.PSImportThemeHelper.LogCategory;
+import com.percussion.utils.types.PSPair;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
+import java.text.MessageFormat;
+import java.util.HashMap;
+import java.util.Map;
+
 import static org.apache.commons.lang.StringUtils.containsIgnoreCase;
 import static org.apache.commons.lang.StringUtils.equalsIgnoreCase;
 import static org.apache.commons.lang.StringUtils.isBlank;
 import static org.apache.commons.lang.StringUtils.isNotBlank;
 import static org.apache.commons.lang.Validate.notNull;
-
-import com.percussion.sitemanage.importer.IPSSiteImportLogger;
-import com.percussion.sitemanage.importer.helpers.impl.PSImportThemeHelper.LogCategory;
-import com.percussion.utils.types.PSPair;
-
-import java.net.MalformedURLException;
-import java.text.MessageFormat;
-import java.util.HashMap;
-import java.util.Map;
-
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
 /**
  * Importer class that will be get the links and scripts from header of a given
@@ -82,7 +80,7 @@ public class PSHTMLHeaderImporter
      * Constructor, builds an instance of the importer with the given
      * parameters.
      * 
-     * @param docHeader {@link Element} which holds the <header> element from
+     * @param sourceDoc {@link Element} which holds the <header> element from
      *            the imported site. Must not be <code>null</code>.
      * @param siteUrl {@link String} with the url for the site the user is
      *            trying to import. Must not be <code>null</code>.
@@ -227,7 +225,6 @@ public class PSHTMLHeaderImporter
      * replaced properly, calls the CSS parser with the style content, and the
      * updates the Style tag inside the document header. A map is returned so the images
      * 
-     * @throws MalformedURLException. If the path for the link cannot be
      *             determined.
      * @return {@link Map}<{@link String}, {@link String}> that holds the images
      *         that need to be downloaded. Never <code>null</code> but may be
@@ -280,8 +277,6 @@ public class PSHTMLHeaderImporter
      * if needed, calls to the PSURLConvert. Then the original URL is replaced
      * in the img tag, and the image is added into the map, to be downloaded.
      * 
-     * @throws MalformedURLException. If the path for the link cannot be
-     *             determined.
      * @return {@link Map}<{@link String}, {@link String}> that holds the images
      *         that need to be downloaded. Never <code>null</code> but may be
      *         empty.
@@ -584,10 +579,9 @@ public class PSHTMLHeaderImporter
      * files that need to be downloaded.
      * 
      * @param flash {@link Element} the flash object element to be processed.
-     * @param cssQuerr {@link String} the jsoup query used to get the elements
+     * @param cssQuery {@link String} the jsoup query used to get the elements
      *            from flash object.
      * @param attribValue {@link String} the attribute value to get and update.
-     * @param embedFlashPaths {@link Map} the map of processed paths.
      * @param siteName {@link String} the name of the site.
      * 
      * @return {@link Map}<{@link String}, {@link String}> that holds the swf
@@ -624,7 +618,6 @@ public class PSHTMLHeaderImporter
      * Process the data attribute of a flash object if exists.
      * 
      * @param flash {@link Element} the flash object element to be processed.
-     * @param embedFlashPaths {@link Map} the map of processed paths.
      * @param siteName {@link String} the name of the site.
      * 
      * @return {@link Map}<{@link String}, {@link String}> that holds the swf
