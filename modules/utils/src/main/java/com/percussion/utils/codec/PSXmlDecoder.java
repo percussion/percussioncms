@@ -74,8 +74,7 @@ public class PSXmlDecoder implements Encoder
                int semi = input.indexOf(';', i);
                if (semi == -1)
                {
-                  throw new EncoderException(
-                        "Found unterminated xml entity at pos " + i);
+                  break;
                }
                String ent = input.substring(i + 1, semi);
                if (ent.charAt(0) == '#')

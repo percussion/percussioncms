@@ -24,6 +24,7 @@
 package com.percussion.services.assembly.jexl;
 
 import com.percussion.cms.PSCmsException;
+import com.percussion.cms.PSSingleValueBuilder;
 import com.percussion.cms.objectstore.PSComponentSummary;
 import com.percussion.cms.objectstore.server.PSRelationshipProcessor;
 import com.percussion.data.PSConversionException;
@@ -53,7 +54,6 @@ import com.percussion.services.publisher.data.PSContentListItem;
 import com.percussion.services.sitemgr.IPSSiteManager;
 import com.percussion.services.sitemgr.PSSiteManagerLocator;
 import com.percussion.util.IPSHtmlParameters;
-import com.percussion.utils.codec.PSXmlEncoder;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.jexl.IPSScript;
 import com.percussion.utils.jexl.PSJexlEvaluator;
@@ -66,6 +66,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.jcr.Node;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -225,9 +228,9 @@ public class PSLocationUtils extends PSJexlUtilBase
          } else {
              targetInfo.setAlt(alt);
          }
-         
+
          req.setParameter(IPSHtmlParameters.SYS_USE_PAGE_SUFFIX,
-               usePageSuffix ? "true" : "fales");
+               usePageSuffix ? "true" : "false");
 
          IPSGuid siteId = targetItem.getSiteId();
          targetInfo.setSiteId(siteId); // set siteId in the targetInfo object
@@ -235,10 +238,12 @@ public class PSLocationUtils extends PSJexlUtilBase
                IPSHtmlParameters.SYS_FOLDERID, null);
          String context = targetItem.getParameterValue(
                IPSHtmlParameters.SYS_CONTEXT, null);
-         String origSiteId = targetItem.getParameterValue(
-               IPSHtmlParameters.SYS_ORIGINALSITEID, null);
-         String command = targetItem.getParameterValue(
-               IPSHtmlParameters.SYS_COMMAND, null);
+         String origSiteId = targetItem.getParameterValue(IPSHtmlParameters.SYS_ORIGINALSITEID, null);
+         String origFolderId = targetItem.getParameterValue(IPSHtmlParameters.SYS_ORIGINALFOLDERID, null);
+         String command = targetItem.getParameterValue(IPSHtmlParameters.SYS_COMMAND, null);
+         String anchor = targetItem.getParameterValue(PSSingleValueBuilder.ANCHOR_TEXT, null);
+         String filter = targetItem.getParameterValue(IPSHtmlParameters.SYS_ITEMFILTER, null);
+
          String mode = targetItem.getParameterValue(IPSHtmlParameters.SYS_MODE,
                null);
          if (StringUtils.isNotBlank(mode) && StringUtils.isBlank(command) &&
@@ -260,28 +265,40 @@ public class PSLocationUtils extends PSJexlUtilBase
 
          // set folderId in the targetInfo object
          targetInfo.setFolderId(folderId);
-         PSXmlEncoder enc = new PSXmlEncoder();
+
          if (origSiteId != null)
          {
             req.setParameter(IPSHtmlParameters.SYS_ORIGINALSITEID, origSiteId);
+         }
+         if (origFolderId != null)
+         {
+            req.setParameter(IPSHtmlParameters.SYS_ORIGINALFOLDERID, origFolderId);
          }
          if (command != null)
          {
             req.setParameter(IPSHtmlParameters.SYS_COMMAND, command);
          }
-         String siteIdValue = (siteId == null ? null : Long.toString(siteId.longValue()));
-         String filter = targetItem.getFilter() == null ? null : targetItem.getFilter().getName();
-         String location = (String) enc.encode(m_genpub.call(req, templateId, targetItemLG
-               .getContentId(), targetItemLG.getRevision(), context, siteIdValue,
-               folderId, null, filter, page));
-         
+         if (anchor != null)
+         {
+            req.setParameter(PSSingleValueBuilder.ANCHOR_TEXT, anchor);
+         }
+         String siteIdValue = (siteId == null ? null : Integer.toString(siteId.getUUID()));
+         String location = (String) (m_genpub.call(req, templateId, targetItemLG.getContentId(),
+               targetItemLG.getRevision(), context, siteIdValue, folderId, null, filter, page));
+         try {
+            location = URLDecoder.decode(location, StandardCharsets.UTF_8.name());
+         }catch (UnsupportedEncodingException e){
+            //Don't do anything
+         }
+
          targetInfo.setUrl(location);
          
          return targetInfo;
       }
       catch (Exception e)
       {
-         throw new RuntimeException(e);
+         ms_log.debug("Error in generateLocation : ", e);
+         throw new RuntimeException("Error in generateLocation", e);
       }
       finally
       {
@@ -884,27 +901,83 @@ public class PSLocationUtils extends PSJexlUtilBase
          }
          int folderId = folder.getContentId();
 
-         PSXmlEncoder enc = new PSXmlEncoder();
-         return (String) enc.encode(m_genpub.call(templateid, guid
-               .getContentId(), guid.getRevision(), ctx, site, folderId, null,
-               filter));
+
+        String url = (String) m_genpub.call(templateid, guid
+                        .getContentId(), guid.getRevision(), ctx, site, folderId, null,
+                filter);
+         try {
+            url = (String) URLDecoder.decode(url, StandardCharsets.UTF_8.name());
+         } catch (UnsupportedEncodingException e) {
+            //Don't do anything
+         }
+
+         return url;
       }
-      catch (PSConversionException e)
+      catch (PSConversionException | PSAssemblyException | PSCmsException e)
       {
          throw new RuntimeException(e);
-      }
-      catch (PSAssemblyException e)
-      {
-         throw new RuntimeException(e);
-      }
-      catch (PSCmsException e)
-      {
-         throw new RuntimeException(e);
-      }
-      finally
+      } finally
       {
          sws.stop();
       }
+   }
+
+   /**
+    * General location path call This is deprecated as it does not pass the page
+    * context so could create links with the wrong site or folder ids.
+    *
+    * @param templateinfo - The target Content Item to which the URL will point.
+    * @param item - The Page Template to which the URL will point. Null will
+    *           result in default
+    * @return a path string, from the generate pub location udf
+    */
+   @IPSJexlMethod(description = "get url link for a given item and template.  The resulting url will be escaped for use in xhtml/xml.", params =
+   {@IPSJexlParam(name = "asm", description = "the assemblyitem with context e.g. $sys.assemblyItem"),
+         @IPSJexlParam(name = "templateinfo", description = "the template name or id"),
+         @IPSJexlParam(name = "item", description = "the content item")}, returns = "String")
+   public String generate(IPSAssemblyItem asm, Object templateinfo, Node item)
+   {
+      IPSAssemblyItem clone = (IPSAssemblyItem) asm.clone();
+      if (item != null)
+         clone.setNode(item);
+      return generate(clone, templateinfo);
+   }
+
+   /**
+    * General location path call
+    *
+    * @param asm -The target Content Item to which the URL will point.
+    * @param templateinfo - The Page Template to which the URL will point. Null
+    *           will result in default.
+    * @param item - The target Content Item to which the URL will point. Null
+    *           will result in default.
+    * @param filter - The Item Filter to use when generating the URL. Null will
+    *           result in default.
+    * @param context - The publishing Context for which to generate the URL.
+    *           Null will result in default.
+    * @return a path string, from the generate pub location udf
+    **/
+   @IPSJexlMethod(description = "get url link for a given item and template.  The resulting url will be escaped for use in xhtml/xml.", params =
+   {@IPSJexlParam(name = "asm", description = "the assemblyitem with context e.g. $sys.assemblyItem"),
+         @IPSJexlParam(name = "templateinfo", description = "the template name or id"),
+         @IPSJexlParam(name = "item", description = "the content item"),
+         @IPSJexlParam(name = "filter", description = "The Item Filter to use when generating the URL"),
+         @IPSJexlParam(name = "context", description = "The publishing Context for which to generate the URL")}, returns = "String")
+   public String generate(IPSAssemblyItem asm, Object templateinfo, Node item, String filter, Number context)
+   {
+
+      IPSAssemblyItem clone = (IPSAssemblyItem) asm.clone();
+      if (item != null)
+      {
+         clone.setNode(item);
+         clone.removeParameter(IPSHtmlParameters.SYS_FOLDERID);
+      }
+      if (context != null)
+         clone.setParameterValue(IPSHtmlParameters.SYS_CONTEXT, context.toString());
+      if (StringUtils.isNotEmpty(filter))
+         clone.setParameterValue(IPSHtmlParameters.SYS_ITEMFILTER, filter);
+      return generate(clone, templateinfo);
+
    }
 
    /**
