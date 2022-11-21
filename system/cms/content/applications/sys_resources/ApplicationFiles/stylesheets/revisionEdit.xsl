@@ -6,8 +6,14 @@
 		%HTMLsymbol;
 		<!ENTITY % HTMLspecial PUBLIC "-//W3C//ENTITIES_Special_for_XHTML//EN" "https://www.percussion.com/DTD/HTMLspecialx.ent">
 		%HTMLspecial;
+		<!ENTITY % w3centities-f PUBLIC
+				"-//W3C//ENTITIES Combined Set//EN//XML"
+				"http://www.w3.org/2003/entities/2007/w3centities-f.ent"
+				>
+		%w3centities-f;
 		]>
-<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:psxi18n="com.percussion.i18n" extension-element-prefixes="psxi18n"
+<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:psxi18n="com.percussion.i18n" extension-element-prefixes="psxi18n"
                 exclude-result-prefixes="psxi18n">
 	<xsl:import href="file:sys_resources/stylesheets/sys_I18nUtils.xsl"/>
    <xsl:variable name="lang" select="//@lang"/>
@@ -25,8 +31,8 @@
 					<xsl:call-template name="getLocaleString">
 						<xsl:with-param name="key" select="'psx.contenteditor.revisionedit@Rhythmyx'"/>
 						<xsl:with-param name="lang" select="$lang"/>
-					</xsl:call-template>
-               <xsl:value-of select="Workflow/ContentStatus/Title"/>
+					</xsl:call-template>&nbsp;-&nbsp;
+               <xsl:value-of select="Workflow/ContentStatus/Title"/>&nbsp;-&nbsp;
                <xsl:call-template name="getLocaleString">
 						<xsl:with-param name="key" select="'psx.contenteditor.revisionedit@Revision List'"/>
 						<xsl:with-param name="lang" select="$lang"/>
@@ -115,7 +121,7 @@
 								<xsl:apply-templates select="/ContentEditor/Workflow/HistoryList" mode="historybar"/>
 								<xsl:if test="count(/ContentEditor/Workflow/HistoryList)=0">
 									<tr class="datacell1">
-										<td align="center" colspan="5" class="datacellnoentriesfound">No entries found.</td>
+										<td align="center" colspan="5" class="datacellnoentriesfound">No entries found.&#160;</td>
 									</tr>
 								</xsl:if>
 							</table>
@@ -125,9 +131,8 @@
 			</body>
 		</html>
 	</xsl:template>
-	<xsl:key name="uniqueElement" match="HistoryEntry" use="@revision"/>
 	<xsl:template match="HistoryList" mode="historybar">
-		<xsl:for-each select="HistoryEntry[generate-id() = generate-id(key('uniqueElement',@revision))]">
+		<xsl:for-each select="//HistoryEntry[not(@revision=preceding::HistoryEntry/@revision)]">
 			<tr>
 				<xsl:choose>
 					<xsl:when test="position() mod 2 = 1">
@@ -142,7 +147,7 @@
 						<xsl:with-param name="rev" select="@revision"/>
 						<xsl:with-param name="showpromote">
 							<xsl:choose>
-								<xsl:when test="//BasicInfo/@CheckOutUserName='' and //BasicInfo/UserName/@assignmentType > 2 and 	//ContentStatus/StateName/@isPublishable='no' and not(//ContentEditor/@isNavType='true')">
+								<xsl:when test="//BasicInfo/@CheckOutUserName='' and //BasicInfo/UserName/@assignmentType > 2 and 	//ContentStatus/StateName/@isPublishable='no'">
 									<xsl:value-of select="'yes'"/>
 								</xsl:when>
 								<xsl:otherwise>
@@ -176,7 +181,7 @@
 						<img alt="{Comment}" src="../sys_resources/images/singlecomment.gif" width="16" height="16" border="0">
 							<xsl:attribute name="OnClick">textWindow('<xsl:value-of select="$tmp2"/>');</xsl:attribute>
 						</img>
-					</xsl:if>
+					</xsl:if>&nbsp;
 		</td>
 			</tr>
 		</xsl:for-each>
