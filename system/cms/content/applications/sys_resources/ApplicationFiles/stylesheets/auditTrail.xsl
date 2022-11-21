@@ -12,11 +12,6 @@
 	<xsl:import href="file:sys_resources/stylesheets/sys_I18nUtils.xsl"/>
    <xsl:variable name="lang" select="//@lang"/>
 	<xsl:variable name="varContentStatus" select="//ContentStatus"/>
-	<xsl:variable name="varHistoryList">
-		<HistoryList>
-			<xsl:call-template name="AddFirstCreateRow"/>
-		</HistoryList>
-	</xsl:variable>
 	<xsl:variable name="syscontentid" select="//Workflow/@contentId"/>
 	<xsl:variable name="sysrevision" select="//Workflow/BasicInfo/HiddenFormParams/Param[@name='sys_revision']"/>
 	<xsl:template match="/">
@@ -137,7 +132,7 @@
 										</xsl:call-template>
 									</th>
 								</tr>
-								<xsl:apply-templates select="$varHistoryList" mode="historybar"/>
+								<xsl:apply-templates select="/ContentEditor/Workflow/HistoryList" mode="historybar"/>
 							</table>
 						</td>
 					</tr>
@@ -219,63 +214,6 @@
 				</td>
 			</tr>
 		</xsl:for-each>
-	</xsl:template>
-	<!-- bug fix for Rx-03-10-0065, the audit trail is missing the first entry when it has not been transitioned at least once. -->
-	<!-- Below we add the first row, which is always the "create" row. We gather the data from a couple of places, we do -->
-	<!-- this because when an item is first created there is no history list, so we retrieve the data from the content status -->
-	<!-- element. We cannot however do this always since the state name, valid/publishable will change appropriately     -->
-	<!-- based on the current state of the content item. -->
-	<xsl:template name="AddFirstCreateRow">
-		<xsl:variable name="haveHistory" select="count(//HistoryList/HistoryEntry)!=0"/>
-		<xsl:variable name="stateName">
-			<xsl:choose>
-				<xsl:when test="$haveHistory">
-					<xsl:value-of select="//HistoryList/HistoryEntry/StateName"/>
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:value-of select="$varContentStatus/StateName"/>
-				</xsl:otherwise>
-			</xsl:choose>
-		</xsl:variable>
-		<xsl:variable name="stateId">
-			<xsl:choose>
-				<xsl:when test="$haveHistory">
-					<xsl:value-of select="//HistoryList/HistoryEntry/StateName/@stateId"/>
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:value-of select="$varContentStatus/StateName/@stateId"/>
-				</xsl:otherwise>
-			</xsl:choose>
-		</xsl:variable>
-		<xsl:variable name="valid">
-			<xsl:choose>
-				<xsl:when test="$haveHistory">
-					<xsl:value-of select="//HistoryList/HistoryEntry/@isValid"/>
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:value-of select="$varContentStatus/StateName/@isPublishable"/>
-				</xsl:otherwise>
-			</xsl:choose>
-		</xsl:variable>
-		<HistoryEntry isValid="{$valid}" revision="1">
-			<EventTime>
-				<xsl:value-of select="$varContentStatus/CreatedDate"/>
-			</EventTime>
-			<Actor>
-				<xsl:value-of select="$varContentStatus/CreatedBy"/>
-			</Actor>
-			<StateName stateId="{$stateId}">
-				<xsl:value-of select="$stateName"/>
-			</StateName>
-			<Comment/>
-			<TransitionLabel>
-				<xsl:call-template name="getLocaleString">
-					<xsl:with-param name="key" select="'psx.generic@Created'"/>
-					<xsl:with-param name="lang" select="$lang"/>
-				</xsl:call-template>
-			</TransitionLabel>
-		</HistoryEntry>
-		<xsl:copy-of select="//HistoryList/HistoryEntry[position() != 1]"/>
 	</xsl:template>
 	<xsl:template name="replace-apos">
 		<xsl:param name="text"/>
