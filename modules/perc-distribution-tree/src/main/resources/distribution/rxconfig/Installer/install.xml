@@ -615,6 +615,8 @@
         <antcall target="deleteOldEXEFiles"  inheritall="true" inheritrefs="true"/>
         <antcall target="deleteOldBouncyCastleJars"  inheritall="true" inheritrefs="true"/>
         <antcall target="backupTinymceRxresources"  inheritall="true" inheritrefs="true"/>
+        <echo>Upgrade Done...Update Version.properties</echo>
+        <copy file="${install.src}/Version.properties" tofile="${install.dir}/Version.properties" overwrite="true" failonerror="false" force="true"/>
     </target>
 
     <target name="deleteOldLog4jJars">
@@ -818,6 +820,7 @@
                 <patternset refid="upgrade.excludes"/>
                 <exclude name="**/Assets.json"/>
                 <exclude name="**/Pages.json"/>
+                <exclude name="**/Version.properties"/>
             </fileset>
         </copy>
 
@@ -831,6 +834,7 @@
                 <exclude name="**/Staging/**"/>
                 <exclude name="TomcatStartup.*"/>
                 <exclude name="TomcatShutdown.*"/>
+                <exclude name="**/Version.properties"/>
             </fileset>
         </delete>
         <copy verbose="true" todir="${install.dir}" preservelastmodified="true" filtering="false" overwrite="true" force="true" includeEmptyDirs="true">
@@ -840,6 +844,7 @@
                 <patternset refid="upgrade.excludes"/>
                 <exclude name="**/Assets.json"/>
                 <exclude name="**/Pages.json"/>
+                <exclude name="**/Version.properties"/>
             </fileset>
 
         </copy>
@@ -850,7 +855,6 @@
                 <include name="**"/>
             </fileset>
         </copy>
-        <copy file="${install.src}/Version.properties" tofile="${install.dir}/Version.properties" overwrite="true" failonerror="false" force="true"/>
 
         <!-- Copy new objects in rx_resources on upgrade -->
         <echo>Copy any rx_resources missing files</echo>
@@ -1463,7 +1467,7 @@
                 <patternset refid="cache.file.excludes"/>
                 <!-- Exclude Fast Forward Content Types Definitions
                      must be installed with packages instead.-->
-                <exclude name="psx_cerff*.xml"/>
+                <exclude name="**/psx_cerff*.xml"/>
                 <exclude name="**/Assets.json"/>
                 <exclude name="**/Pages.json"/>
             </fileset>

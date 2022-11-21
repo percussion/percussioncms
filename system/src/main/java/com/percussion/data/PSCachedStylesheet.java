@@ -85,8 +85,7 @@ public class PSCachedStylesheet
       m_ssTemplate = null;
       m_listener = new PSTransformErrorListener();
 
-      m_transformFactory =  TransformerFactory.newInstance("com.icl.saxon.TransformerFactoryImpl",
-              this.getClass().getClassLoader());
+       m_transformFactory =  TransformerFactory.newInstance();
 
       PSCatalogResolver cr = new PSCatalogResolver();
       cr.setInternalRequestURIResolver(new PSInternalRequestURIResolver());
