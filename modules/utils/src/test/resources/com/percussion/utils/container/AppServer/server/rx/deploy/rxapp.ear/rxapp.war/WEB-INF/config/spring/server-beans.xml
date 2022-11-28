@@ -112,7 +112,7 @@ http://www.springframework.org/schema/util/spring-util.xsd">
                     <value>org.hibernate.dialect.DB2Dialect</value>
                 </entry>
                 <entry key="derby">
-                    <value>org.hibernate.dialect.DerbyTenSevenDialect</value>
+                    <value>com.percussion.services.datasource.DerbyTenOneFourDialect</value>
                 </entry>
                 <entry key="mysql">
                     <value>org.hibernate.dialect.MySQLInnoDBDialect</value>
