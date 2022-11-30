@@ -38,7 +38,7 @@ public class PSExtensionHelperTest
       XMLUnit.setControlParser("org.apache.xerces.jaxp.DocumentBuilderFactoryImpl");
       XMLUnit.setTestParser("org.apache.xerces.jaxp.DocumentBuilderFactoryImpl");
       XMLUnit.setSAXParserFactory("org.apache.xerces.jaxp.SAXParserFactoryImpl");
-      XMLUnit.setTransformerFactory("org.apache.xalan.processor.TransformerFactoryImpl");
+      XMLUnit.setTransformerFactory("com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl");
       XMLUnit.setIgnoreWhitespace(true);
    }
 

@@ -24,8 +24,7 @@
 
 package com.percussion.xml;
 
-import org.apache.xalan.processor.TransformerFactoryImpl;
-import org.w3c.dom.Node;
+import com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl;
 import org.xml.sax.XMLFilter;
 
 import javax.xml.transform.ErrorListener;
@@ -54,11 +53,6 @@ public class PSTransformerFactoryImpl extends TransformerFactoryImpl {
         forceResolver();
     }
 
-    @Override
-    public Templates processFromNode(Node node) throws TransformerConfigurationException {
-        forceResolver();
-        return super.processFromNode(node);
-    }
 
     /**
      * Get InputSource specification(s) that are associated with the
@@ -333,15 +327,5 @@ public class PSTransformerFactoryImpl extends TransformerFactoryImpl {
     @Override
     public void setErrorListener(ErrorListener listener) throws IllegalArgumentException {
         super.setErrorListener(listener);
-    }
-
-    /**
-     * Return the state of the secure processing feature.
-     *
-     * @return state of the secure processing feature.
-     */
-    @Override
-    public boolean isSecureProcessing() {
-        return super.isSecureProcessing();
     }
 }
