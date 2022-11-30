@@ -40,8 +40,7 @@
 		<dependency org="xmlunit" name="xmlunit" rev="1.+" conf="test->master"/>  
 		<dependency org="net.sf.saxon" name="saxon" rev="8.7" conf="test->*"/>  
 		<dependency org="xerces" name="xercesImpl" rev="2.8.1" conf="test->*"/>  
-		<dependency org="xalan" name="xalan" rev="2.7.0" conf="test->*"/>  
-		<dependency org="javax.jcr" name="jcr" rev="1.0" force="true"/>  
+		<dependency org="javax.jcr" name="jcr" rev="1.0" force="true"/>
 		<dependency org="org.apache.jackrabbit" rev="1.4" name="jackrabbit-jcr-commons" conf="test->master"/>  
 		<exclude org="org.slf4j" module="slf4j"/>  
 		<exclude org="org.slf4j" module="slf4j-api"/> 

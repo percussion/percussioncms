@@ -2135,7 +2135,6 @@ dojo.dom.xmlns = {
 	xi : "http://www.w3.org/2001/XInclude",
 	xforms : "http://www.w3.org/2002/01/xforms",
 	saxon : "http://icl.com/saxon",
-	xalan : "http://xml.apache.org/xslt",
 	xsd : "http://www.w3.org/2001/XMLSchema",
 	dt: "http://www.w3.org/2001/XMLSchema-datatypes",
 	xsi : "http://www.w3.org/2001/XMLSchema-instance",
