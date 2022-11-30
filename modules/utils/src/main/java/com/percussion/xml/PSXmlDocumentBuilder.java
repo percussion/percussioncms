@@ -754,7 +754,7 @@ public class PSXmlDocumentBuilder {
      * have an non-empty alias; otherwise some of the XML serializer may not be
      * able to handle the default namespace, such as the transformer of saxon.
      * This method always adds an namespace equivalent attribute as a workaround
-     * for some of the faulty XML serializer, such as the transformer from xalan.
+     * for some of the faulty XML serializer.
      *
      * @param doc the XML document to add the element to, may not be
      *           <code>null</code>.
@@ -784,7 +784,7 @@ public class PSXmlDocumentBuilder {
                 aliasTagName(alias, rootName));
 
         // namespace equivalent attribute to make sure it works for all XML
-        // serializers. This is a workaround for the transformer of xalan.
+        // serializers.
         if ((alias != null) && (alias.trim().length() > 0) &&
                 (namespace != null) && (namespace.trim().length() > 0)) {
             root.setAttribute("xmlns:" + alias, namespace);

@@ -138,16 +138,6 @@ package.access=sun.,\
                com.sun.org.apache.regexp.internal.,\
                com.sun.org.apache.xerces.internal.,\
                com.sun.org.apache.xpath.internal.,\
-               com.sun.org.apache.xalan.internal.extensions.,\
-               com.sun.org.apache.xalan.internal.lib.,\
-               com.sun.org.apache.xalan.internal.res.,\
-               com.sun.org.apache.xalan.internal.templates.,\
-               com.sun.org.apache.xalan.internal.utils.,\
-               com.sun.org.apache.xalan.internal.xslt.,\
-               com.sun.org.apache.xalan.internal.xsltc.cmdline.,\
-               com.sun.org.apache.xalan.internal.xsltc.compiler.,\
-               com.sun.org.apache.xalan.internal.xsltc.trax.,\
-               com.sun.org.apache.xalan.internal.xsltc.util.,\
                com.sun.org.apache.xml.internal.res.,\
                com.sun.org.apache.xml.internal.serializer.utils.,\
                com.sun.org.apache.xml.internal.utils.,\
@@ -178,16 +168,6 @@ package.definition=sun.,\
                    com.sun.org.apache.regexp.internal.,\
                    com.sun.org.apache.xerces.internal.,\
                    com.sun.org.apache.xpath.internal.,\
-                   com.sun.org.apache.xalan.internal.extensions.,\
-                   com.sun.org.apache.xalan.internal.lib.,\
-                   com.sun.org.apache.xalan.internal.res.,\
-                   com.sun.org.apache.xalan.internal.templates.,\
-                   com.sun.org.apache.xalan.internal.utils.,\
-                   com.sun.org.apache.xalan.internal.xslt.,\
-                   com.sun.org.apache.xalan.internal.xsltc.cmdline.,\
-                   com.sun.org.apache.xalan.internal.xsltc.compiler.,\
-                   com.sun.org.apache.xalan.internal.xsltc.trax.,\
-                   com.sun.org.apache.xalan.internal.xsltc.util.,\
                    com.sun.org.apache.xml.internal.res.,\
                    com.sun.org.apache.xml.internal.serializer.utils.,\
                    com.sun.org.apache.xml.internal.utils.,\

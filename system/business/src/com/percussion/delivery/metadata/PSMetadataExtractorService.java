@@ -31,11 +31,8 @@ import com.percussion.delivery.metadata.extractor.data.PSMetadataEntry;
 import com.percussion.delivery.metadata.extractor.data.PSMetadataProperty;
 import org.apache.any23.Any23;
 import org.apache.any23.ExtractionReport;
-import org.apache.any23.configuration.Configuration;
 import org.apache.any23.extractor.ExtractionParameters;
-import org.apache.any23.extractor.html.JsoupUtils;
 import org.apache.any23.mime.NaiveMIMETypeDetector;
-import org.apache.any23.mime.TikaMIMETypeDetector;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
@@ -48,14 +45,18 @@ import org.jsoup.nodes.Element;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
-import java.nio.charset.Charset;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import static org.apache.commons.lang.StringUtils.*;
+import static org.apache.commons.lang.StringUtils.contains;
+import static org.apache.commons.lang.StringUtils.endsWith;
+import static org.apache.commons.lang.StringUtils.removeStart;
+import static org.apache.commons.lang.StringUtils.startsWith;
+import static org.apache.commons.lang.StringUtils.substringAfter;
+import static org.apache.commons.lang.StringUtils.substringBefore;
 import static org.apache.commons.lang.Validate.isTrue;
 import static org.apache.commons.lang.Validate.notEmpty;
 
@@ -236,9 +237,8 @@ public class PSMetadataExtractorService implements IPSMetadataExtractorService
              //  Hack to not use default saxon xslt parser.  This sets a transformer factory that can be used
              //  just by the thread in Any23 parser and does not affect the rest of the system. See ThreadLocalProperties class
 
-             //System.setProperty("threadlocal.javax.xml.transform.TransformerFactory", "org.apache.xalan.processor.TransformerFactoryImpl");
-             // DTS Was falling back to JRE internal transformer.  It seems the xalan version was stripping out the namespace declaration
-             // preventing the any23 rdfa stylesheet from processing the meta tags properly.
+             //System.setProperty("threadlocal.javax.xml.transform.TransformerFactory", "javax.xml.transform.sax.SAXTransformerFactory");
+             // DTS Was falling back to JRE internal transformer.
              System.setProperty("threadlocal.javax.xml.transform.TransformerFactory", "com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl");
 
              runner = new Any23();
