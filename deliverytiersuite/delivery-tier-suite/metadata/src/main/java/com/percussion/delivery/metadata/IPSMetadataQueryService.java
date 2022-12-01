@@ -25,6 +25,9 @@ package com.percussion.delivery.metadata;
 
 import com.percussion.delivery.metadata.data.PSMetadataQuery;
 import com.percussion.delivery.metadata.impl.utils.PSPair;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -45,6 +48,7 @@ public interface IPSMetadataQueryService
      * @throws Exception on query parsing error
      */
 
+@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_UNCOMMITTED, readOnly = true)
     public PSPair<List<IPSMetadataEntry>, Integer> executeQuery(PSMetadataQuery query) throws Exception;
     public List<Object[]>  executeCategoryQuery(PSMetadataQuery query) throws Exception;
     /**
