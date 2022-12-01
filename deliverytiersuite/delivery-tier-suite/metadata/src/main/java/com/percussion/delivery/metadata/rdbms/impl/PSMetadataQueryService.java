@@ -46,6 +46,10 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.xml.bind.DatatypeConverter;
 import java.sql.Connection;
@@ -66,8 +70,8 @@ import static org.apache.commons.lang.StringUtils.isNotBlank;
  *
  */
 
-@Repository
-@Scope("singleton")
+@Service
+@Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_UNCOMMITTED, readOnly = true)
 public class PSMetadataQueryService implements IPSMetadataQueryService
 {
     private SessionFactory sessionFactory;
@@ -289,13 +293,10 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
      * com.percussion.metadata.IPSMetadataQueryService#executeQuery(com.percussion
      * .metadata.IPSMetadataQuery)
      */
-    // I think this is leaking transactions
-    //   @Transactional(propagation = Propagation.REQUIRES_NEW,isolation = Isolation.READ_COMMITTED)
-    public PSPair<List<IPSMetadataEntry>, Integer> executeQuery(PSMetadataQuery query)
+     public PSPair<List<IPSMetadataEntry>, Integer> executeQuery(PSMetadataQuery query)
             throws Exception
     {
         log.debug("Executing query for metadata entries");
-        Transaction tx = null;
 
         PSPair<List<IPSMetadataEntry>, Integer>  searchResults = new PSPair<List<IPSMetadataEntry>, Integer>();
         PSPair<Query, SORTTYPE>  queryInfo = new PSPair<Query, SORTTYPE>();
@@ -316,11 +317,10 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
                 //total count already so no need to get the count again
                 if(query.getStartIndex() == 0 || query.getReturnTotalEntries())
                 {
-                    //Query countQuery = buildHibernateQuery(session, query,true);
                     queryInfo = buildHibernateQuery(session, query,true);
 
                     Long count = (Long) queryInfo.getFirst().list().get(0);
-                    totalResults = new Integer(count.intValue());
+                    totalResults = count.intValue();
                 }
 
                 // call the method for second time to get list of objects based on the query
@@ -372,6 +372,7 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
      * @throws ParseException
      * @throws HibernateException
      */
+    @Transactional
     private PSPair<Query, SORTTYPE> buildHibernateQuery(Session sess, PSMetadataQuery rawQuery, boolean isCount)
             throws PSMalformedMetadataQueryException, HibernateException, ParseException
     {
@@ -456,12 +457,12 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
             queryBuf.append(" from PSDbMetadataEntry as me");
             if(isSortingOnProperty)
             {
-                queryBuf.append(" join me.properties as prop");
+                queryBuf.append(" left join me.properties as prop");
             }
         }
 
         for (int i = 0; i < propsCrit.size(); i++)
-            queryBuf.append(" join me.properties as p" + i);
+            queryBuf.append(" left join me.properties as p").append( i);
 
         if (!entryCrit.isEmpty() || ! propsCrit.isEmpty())
             queryBuf.append(" where");
@@ -475,8 +476,8 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
         String clauseTemplate = " me.{0} {1} :{2}";
         String inClauseTemplate = " me.{0} {1} (:{2})";
         int paramIndex = 0;
-        Map<String, Object> paramValues = new HashMap<String, Object>();
-        Map<String, PSCriteriaElement.OPERATION_TYPE> paramOps = new HashMap<String, PSCriteriaElement.OPERATION_TYPE>();
+        Map<String, Object> paramValues = new HashMap<>();
+        Map<String, PSCriteriaElement.OPERATION_TYPE> paramOps = new HashMap<>();
         boolean needConjunction = false;
         if(isSortingOnProperty)
         {
@@ -568,7 +569,7 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
                 if(!sortColumns.isEmpty())
                 {
                     String orderByFirstOrder = "asc";
-                    if (orderBy.indexOf(",") != -1)
+                    if (orderBy.contains(","))
                     {
                         orderByFirstOrder = orderBy.substring(0, orderBy.indexOf(","));
                     }
@@ -576,8 +577,7 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
 
                     for (Map.Entry<String,String> entry : sortColumns.entrySet())
                     {
-                        // queryBuf.append(", " + "lower(me." + entry.getKey() + ") " + entry.getValue());
-                        queryBuf.append(", " + "me." + entry.getKey() + " " + entry.getValue());
+                         queryBuf.append(", ").append("me.").append(entry.getKey()).append( " " ).append(entry.getValue());
                     }
                 }
             }
@@ -585,7 +585,7 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
             {
                 //Make it case insensitive
                 // queryBuf.append(" order by " + "lower(me." + PSMetadataQueryServiceHelper.getSortPropertyName(orderBy) + ") ");
-                queryBuf.append(" order by " + "me." + PSMetadataQueryServiceHelper.getSortPropertyName(orderBy) + " ");
+                queryBuf.append(" order by ").append("me.").append( PSMetadataQueryServiceHelper.getSortPropertyName(orderBy)).append(" ");
             }
 
             if(sortColumns.isEmpty())

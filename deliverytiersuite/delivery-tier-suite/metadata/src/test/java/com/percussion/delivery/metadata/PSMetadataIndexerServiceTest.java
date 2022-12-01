@@ -691,7 +691,7 @@ public class PSMetadataIndexerServiceTest extends TestCase
 
     private List<IPSMetadataProperty> getAllProperties()
     {
-        List<IPSMetadataProperty> allProperties = new ArrayList<IPSMetadataProperty>();
+        List<IPSMetadataProperty> allProperties = new ArrayList<>();
         List<IPSMetadataEntry> allEntries = service.getAllEntries();
         
         for (IPSMetadataEntry en : allEntries)

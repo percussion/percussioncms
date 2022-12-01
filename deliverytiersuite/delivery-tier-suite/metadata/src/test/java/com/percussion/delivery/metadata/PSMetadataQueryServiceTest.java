@@ -48,6 +48,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -70,7 +71,7 @@ public class PSMetadataQueryServiceTest extends TestCase
     private static final Logger log = LogManager.getLogger(PSMetadataQueryServiceTest.class);
 
     @Autowired
-    public PSMetadataQueryService service;
+    public IPSMetadataQueryService service;
 
     @Autowired
     public IPSMetadataIndexerService indexer;
@@ -504,7 +505,7 @@ public class PSMetadataQueryServiceTest extends TestCase
         return count;
     }
     @Test
-    public void testCategoryQuery(){
+    public void testCategoryQuery() throws Exception {
         PSMetadataQuery q = new PSMetadataQuery();
 
         q.setTotalMaxResults(10);
