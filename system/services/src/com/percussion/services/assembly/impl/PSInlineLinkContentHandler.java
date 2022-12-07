@@ -894,9 +894,11 @@ public class PSInlineLinkContentHandler
       }
       else
       {
-         // We are setting to owner site id if we do not have one be careful when merging rhythmyx
-         targetitem.setParameterValue(IPSHtmlParameters.SYS_SITEID, Integer.toString(origSiteId.getUUID()));
-         targetitem.setSiteId(origSiteId);
+         if(origSiteId != null) {
+            // We are setting to owner site id if we do not have one be careful when merging rhythmyx
+            targetitem.setParameterValue(IPSHtmlParameters.SYS_SITEID, Integer.toString(origSiteId.getUUID()));
+            targetitem.setSiteId(origSiteId);
+         }
       }
 
       if(origSiteId != null && (siteguid==null || !siteguid.equals(origSiteId)))
