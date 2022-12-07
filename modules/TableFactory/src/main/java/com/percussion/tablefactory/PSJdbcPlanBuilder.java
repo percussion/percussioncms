@@ -637,7 +637,10 @@ public class PSJdbcPlanBuilder
                        PSSqlHelper.SQLSTATE_NO_UPDATE_ROWS);
                insertStep = PSJdbcStatementFactory.getInsertStatement(
                        dbmsDef, tableSchema, row);
+               insertStep.setIgnoreSQLExceptions(
+                       PSSqlHelper.SQLSTATE_INTEGRITY_CONSTRAINT_VIOLATIONS);
                replacePlan.addStep(updateStep, insertStep);
+
                processChildTables(conn, dbmsDef, tableMetaMap, tableSchema, tableData, insertPlan, deletePlan,
                        updatePlan, replacePlan, isChildTable, row);
                break;
@@ -1352,37 +1355,29 @@ public class PSJdbcPlanBuilder
    @SuppressWarnings("unchecked")
    private static PSJdbcTableSchema getTableChanges(PSJdbcTableSchema oldSchema,
                                                     PSJdbcTableSchema newSchema, StringBuilder buffer)
-           throws PSJdbcTableFactoryException
-   {
+           throws PSJdbcTableFactoryException {
       // First build list of column changes
       List changedCols = new ArrayList<>();
       Iterator newCols = newSchema.getColumns();
-      while (newCols.hasNext())
-      {
-         PSJdbcColumnDef newCol = (PSJdbcColumnDef)newCols.next();
+      while (newCols.hasNext()) {
+         PSJdbcColumnDef newCol = (PSJdbcColumnDef) newCols.next();
          PSJdbcColumnDef oldCol = oldSchema.getColumn(newCol.getName());
          int colAction;
-         if (oldCol == null)
-         {
+         if (oldCol == null) {
             // doesn't exist, so it's an add
             colAction = PSJdbcTableComponent.ACTION_CREATE;
-            buffer.append(NEWLINE).append( " New column: ").append(NEWLINE);
+            buffer.append(NEWLINE).append(" New column: ").append(NEWLINE);
             buffer.append(newCol);
-         }
-         else
-         {
+         } else {
             // exists, so see if it's changed
-            if (newCol.isChanged(oldCol))
-            {
+            if (newCol.isChanged(oldCol)) {
                colAction = PSJdbcTableComponent.ACTION_REPLACE;
                buffer.append("Modified column: ").append(NEWLINE);
                buffer.append("Old column: " + NEWLINE);
                buffer.append(oldCol);
                buffer.append("New column: " + NEWLINE);
                buffer.append(newCol);
-            }
-            else
-            {
+            } else {
                colAction = PSJdbcTableComponent.ACTION_NONE;
             }
          }
@@ -1404,32 +1399,23 @@ public class PSJdbcPlanBuilder
 
       PSJdbcPrimaryKey newPKey = newSchema.getPrimaryKey();
       PSJdbcPrimaryKey oldPKey = oldSchema.getPrimaryKey();
-      if (newPKey == null && oldPKey != null)
-      {
+      if (newPKey == null && oldPKey != null) {
          PSJdbcPrimaryKey difPKey = new PSJdbcPrimaryKey(
                  oldPKey.getColumnNames(), PSJdbcTableComponent.ACTION_DELETE);
          diffTableSchema.setPrimaryKey(difPKey);
          buffer.append("Deleted primary key: " + NEWLINE);
          buffer.append(difPKey);
-      }
-      else if (newPKey != null)
-      {
+      } else if (newPKey != null) {
          int pkAction;
-         if (oldPKey == null)
-         {
+         if (oldPKey == null) {
             pkAction = PSJdbcTableComponent.ACTION_CREATE;
             buffer.append("New primary key: " + NEWLINE);
             buffer.append(newPKey);
-         }
-         else
-         {
+         } else {
             if (newPKey.compare(oldPKey, flags) >=
-                    PSJdbcTableComponent.IS_EXACT_MATCH)
-            {
+                    PSJdbcTableComponent.IS_EXACT_MATCH) {
                pkAction = PSJdbcTableComponent.ACTION_NONE;
-            }
-            else
-            {
+            } else {
                pkAction = PSJdbcTableComponent.ACTION_REPLACE;
                buffer.append("Modified primary key: " + NEWLINE);
                buffer.append("Old primary key: " + NEWLINE);
@@ -1448,14 +1434,12 @@ public class PSJdbcPlanBuilder
       List<PSJdbcForeignKey> oldFKeys = oldSchema.getForeignKeys();
       List<PSJdbcForeignKey> updateKeys = new ArrayList<PSJdbcForeignKey>();
 
-      for (PSJdbcForeignKey fk : oldFKeys)
-      {
+      for (PSJdbcForeignKey fk : oldFKeys) {
          int fkAction;
          int idxFK = newFKeys.indexOf(fk);
          //if Old FK not found in new one, then delete it
-         if (idxFK == -1)
-         {
-            PSJdbcForeignKey difFKey = new PSJdbcForeignKey(fk.getName(),fk.getColumns(),
+         if (idxFK == -1) {
+            PSJdbcForeignKey difFKey = new PSJdbcForeignKey(fk.getName(), fk.getColumns(),
                     PSJdbcTableComponent.ACTION_DELETE);
             updateKeys.add(difFKey);
             buffer.append("Deleted foreign key: ").append(difFKey).append(NEWLINE);
@@ -1468,18 +1452,17 @@ public class PSJdbcPlanBuilder
          }
       }
 
-      for (PSJdbcForeignKey fk2 : newFKeys)
-      {
-         if (!updateKeys.contains(fk2))
-         {
-            buffer.append(" Add New foreign key: " ).append(fk2).append(NEWLINE);
-            PSJdbcForeignKey difFKey = new PSJdbcForeignKey(fk2.getName(),fk2.getColumns(),
+      for (PSJdbcForeignKey fk2 : newFKeys) {
+         if (!updateKeys.contains(fk2)) {
+            buffer.append(" Add New foreign key: ").append(fk2).append(NEWLINE);
+            PSJdbcForeignKey difFKey = new PSJdbcForeignKey(fk2.getName(), fk2.getColumns(),
                     PSJdbcTableComponent.ACTION_CREATE);
             updateKeys.add(difFKey);
          }
       }
 
-      diffTableSchema.setForeignKeys(updateKeys,true);
+         diffTableSchema.setForeignKeys(updateKeys, true);
+
 
       // check indexes for changes
 

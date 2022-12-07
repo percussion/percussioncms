@@ -1816,6 +1816,7 @@ public class PSJdbcStatementFactory
          {
             PSJdbcExecutionStep step = getCreateIndexStatement(
                dbmsDef, tableSchema, index);
+            step.setStopOnError(false);
             block.addStep(step);
          }
       }
