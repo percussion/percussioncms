@@ -497,16 +497,16 @@ public class PSJdbcColumnDefTest
       PSJdbcDbmsDef dbDef = new PSJdbcDbmsDef( props );
       
       final String[] expected = new String[] {
-         "testVarchar VARCHAR2(1) NULL",
+         "testVarchar VARCHAR2(1)",
          "testNumeric NUMBER(38,0) NOT NULL",
-         "testVarbinary RAW(1) NULL",
+         "testVarbinary RAW(1)",
          "testBit CHAR(1) NOT NULL",
-         "testBlob BLOB NULL",
-        "testClob CLOB NULL",
+         "testBlob BLOB",
+        "testClob CLOB",
         "testClobNotNull CLOB NOT NULL",
-         "testClob  NULL",
+         "testClob ",
          "testClobNotNull  NOT NULL",
-         "testBigInt NUMBER(19,0) NULL"
+         "testBigInt NUMBER(19,0)"
       };
       
       PSJdbcColumnDef columnDef;      
