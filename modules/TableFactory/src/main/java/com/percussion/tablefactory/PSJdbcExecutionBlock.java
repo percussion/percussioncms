@@ -66,7 +66,19 @@ public class PSJdbcExecutionBlock extends PSJdbcExecutionStep
          throw new IllegalArgumentException("conn may not be null");
 
       for (PSJdbcExecutionStep step : m_steps) {
-         step.execute(conn);
+         try {
+            step.execute(conn);
+         } catch (SQLException e) {
+            /* if there is an error step, log the error we got and execute the
+             * error step.
+             */
+            String errMsg = PSJdbcTableFactoryException.formatSqlException(e);
+            // log the error and execute the error step
+            PSJdbcTableFactory.logMessage("step failed: " + errMsg);
+            PSJdbcTableFactory.logMessage("executing error step");
+            if (step.stopOnError())
+               throw e;
+         }
       }
       return 0;
    }
