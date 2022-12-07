@@ -53,7 +53,7 @@ import org.hibernate.annotations.*;
  * 
  */
 @Entity
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "PSMetadataEntry")
+@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE, region = "PSMetadataEntry")
 @Table(name = "PERC_PAGE_METADATA")
 public class PSDbMetadataEntry implements IPSMetadataEntry, Serializable
 {
@@ -95,7 +95,7 @@ public class PSDbMetadataEntry implements IPSMetadataEntry, Serializable
     private String site;
 
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL,
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL,
             orphanRemoval = true, mappedBy = "entry", targetEntity = PSDbMetadataProperty.class)
     private Set<PSDbMetadataProperty> properties = new HashSet<>();
 
