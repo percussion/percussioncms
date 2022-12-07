@@ -33,6 +33,7 @@ import org.hibernate.annotations.Nationalized;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -87,6 +88,7 @@ public class PSDbMetadataProperty implements IPSMetadataProperty, Serializable
     @Column(length = Integer.MAX_VALUE)
     @Nationalized
     @Lob
+    @Basic(fetch = FetchType.LAZY)
     private String textvalue;
 
     @Basic

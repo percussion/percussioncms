@@ -1146,7 +1146,7 @@ public class PSSqlHelper
       String nullClause;
 
       if (driver.equals(PSJdbcUtils.DB2) || 
-            driver.equals(PSJdbcUtils.DERBY_DRIVER))
+            driver.equals(PSJdbcUtils.DERBY_DRIVER) || driver.equals(PSJdbcUtils.ORACLE))
       {
          nullClause = "";
       }

@@ -511,10 +511,13 @@ public class PSSearchIndexerImpl extends PSSearchIndexer
                   data = ts.substring(0, ts.indexOf(' '));
                }
                //TODO:  Review this for refactoring - should we be indexing a timestamp instead
-               lucField = new StringField(name, (String) data, Field.Store.NO);
-               lucFields.add(lucField);
-               if(addToAllContent)
-                  fieldData.add((String) data);
+               if(data != null) {
+                  lucField = new StringField(name, (String) data, Field.Store.NO);
+                  lucFields.add(lucField);
+                  if(addToAllContent)
+                     fieldData.add((String) data);
+               }
+
             }
             else if (field.getDataType().equals(PSField.DT_BOOLEAN))
             {

@@ -364,7 +364,7 @@ public class PSSecureXMLUtils {
      * that do not have access to the jvm.ini settings when running.
      */
     public static void setupJAXPDefaults(){
-        System.setProperty("javax.xml.transform.TransformerFactory","org.apache.xalan.xsltc.trax.SmartTransformerFactoryImpl");
+        System.setProperty("javax.xml.transform.TransformerFactory","com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl");
         System.setProperty("javax.xml.parsers.SAXParserFactory","com.sun.org.apache.xerces.internal.jaxp.SAXParserFactoryImpl");
         System.setProperty("javax.xml.datatype.DatatypeFactory","com.sun.org.apache.xerces.internal.jaxp.datatype.DatatypeFactoryImpl");
         System.setProperty("javax.xml.parsers.DocumentBuilderFactory","com.percussion.xml.PSDocumentBuilderFactoryImpl");
