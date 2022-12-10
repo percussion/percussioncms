@@ -521,11 +521,12 @@ public class PSSearchIndexerImpl extends PSSearchIndexer
             }
             else if (field.getDataType().equals(PSField.DT_BOOLEAN))
             {
-
-               lucField = new StringField(name, (String) data, Field.Store.NO);
-               lucFields.add(lucField);
-               if(addToAllContent)
-                  fieldData.add((String) data);
+               if(data != null) {
+                  lucField = new StringField(name, (String) data, Field.Store.NO);
+                  lucFields.add(lucField);
+                  if (addToAllContent)
+                     fieldData.add((String) data);
+               }
             }
             else
             {
@@ -555,10 +556,11 @@ public class PSSearchIndexerImpl extends PSSearchIndexer
                   continue;
                }
            
-               
-               lucField = new TextField(name, text, Field.Store.NO);
-               if(addToAllContent)
-                  fieldData.add(text);
+               if(text != null) {
+                  lucField = new TextField(name, text, Field.Store.NO);
+                  if (addToAllContent)
+                     fieldData.add(text);
+               }
             }
             lucFields.add(lucField);
          }
