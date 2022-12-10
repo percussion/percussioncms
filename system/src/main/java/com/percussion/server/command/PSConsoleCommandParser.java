@@ -249,7 +249,7 @@ public class PSConsoleCommandParser
 
       // in case they use an invalid base command, store the base list
       ms_cmdSet.put("", "start, restart, stop, show, log, trace, flush, "
-            + "dump, reload, debug, clear, search, autotune");
+            + "dump, reload, debug, clear, search, autotune, encrypt");
 
       // build the sub-command list for start
       ms_cmdSet.put("start", "application, cache");
@@ -326,6 +326,11 @@ public class PSConsoleCommandParser
 
       ms_cmdSet.put("show version",
          com.percussion.server.command.PSConsoleCommandShowVersion.class);
+
+      // build the sub-command list for encrypt
+      ms_cmdSet.put("encrypt", "passwords");
+      ms_cmdSet.put("encrypt passwords",
+              com.percussion.server.command.PSConsoleCommandEncryptDBPasswords.class);
 
       // build the sub-command list for log
       ms_cmdSet.put("log", "flush, dump");
