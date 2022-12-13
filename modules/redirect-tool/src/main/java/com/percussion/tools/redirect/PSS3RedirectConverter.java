@@ -33,7 +33,10 @@ public class PSS3RedirectConverter implements IPSRedirectConverter{
      * @return A count of the redirects processed
      */
     @Override
-    public int convertRedirects(PSPercussionRedirectEntryList redirects, String outDir) {
+    public int convertRedirects(PSPercussionRedirectEntryList redirects, String outDir,
+                                String fileStartChar,
+                                String fileEndChar,
+                                String delimiter) {
         return 0;
     }
 
