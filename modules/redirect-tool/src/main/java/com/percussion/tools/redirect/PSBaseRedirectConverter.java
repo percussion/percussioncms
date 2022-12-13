@@ -45,7 +45,11 @@ public class PSBaseRedirectConverter implements IPSRedirectConverter {
      * @return A count of the redirects processed
      */
     @Override
-    public int convertRedirects(PSPercussionRedirectEntryList redirects, String outDir) {
+    public int convertRedirects(PSPercussionRedirectEntryList redirects, String outDir,
+                                String fileStartChar,
+                                String fileEndChar,
+                                String delimiter
+                                ) {
         int count = 0;
         List<String> lines = new ArrayList<>();
 
@@ -58,7 +62,10 @@ public class PSBaseRedirectConverter implements IPSRedirectConverter {
             count++;
         }
 
-        int fileCount = PSRedirectUtils.writeRedirectFile(outDir,getFilename(),lines);
+        int fileCount = PSRedirectUtils.writeRedirectFile(outDir,getFilename(),lines,
+                 fileStartChar,
+                 fileEndChar,
+                delimiter);
         if(fileCount!=count){
             log.warn("{} lines were written to {}, but {} lines were detected.",
                     fileCount,getFilename(),count);
