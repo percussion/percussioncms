@@ -41,6 +41,7 @@ public class PSRedirectTool {
         options.addOption("h", "help", false, "show usage and options");
         options.addOption("a", "apache", false, "generate redirects in .htaccess format");
         options.addOption("i", "iis", false, "generate redirects in web.config format");
+        options.addOption("j", "json", false, "generate redirects in json format");
         options.addOption("n", "nginx", false, "generate redirects in nginx formay");
         options.addOption("s3", false, "generate redirects in S3 json redirect policy format");
         options.addOption("csv", true, "input redirect manager CSV file");
@@ -69,7 +70,7 @@ public class PSRedirectTool {
             if(line.hasOption("i") || line.hasOption("iis")){
                 PSIISRedirectConverter cvt = new PSIISRedirectConverter();
                 PSPercussionRedirectEntryList list = new PSPercussionRedirectEntryList(csv);
-               int count = cvt.convertRedirects(list, Paths.get("").toAbsolutePath().toString());
+               int count = cvt.convertRedirects(list, Paths.get("").toAbsolutePath().toString(),null,null,null);
                 System.out.println("Wrote " +  count + " redirects to " + Paths.get("").toAbsolutePath() + File.separator + cvt.getFilename());
                 return;
             }
@@ -78,16 +79,25 @@ public class PSRedirectTool {
                 PSApacheRedirectConverter cvt = new PSApacheRedirectConverter();
                 PSPercussionRedirectEntryList list = new PSPercussionRedirectEntryList(csv);
 
-                int count = cvt.convertRedirects(list, Paths.get("").toAbsolutePath().toString());
+                int count = cvt.convertRedirects(list, Paths.get("").toAbsolutePath().toString(),null,null,null);
                 System.out.println("Wrote " +  count + " redirects to " + Paths.get("").toAbsolutePath() + File.separator + cvt.getFilename());
 
             }
 
-            if(line.hasOption("n")){
+            if(line.hasOption("j")) {
+                PSJSONRedirectConverter cvt = new PSJSONRedirectConverter();
+                PSPercussionRedirectEntryList list = new PSPercussionRedirectEntryList(csv);
+
+                int count = cvt.convertRedirects(list, Paths.get("").toAbsolutePath().toString(),"{","}",",");
+                System.out.println("Wrote " + count + " redirects to " + Paths.get("").toAbsolutePath() + File.separator + cvt.getFilename());
+            }
+
+
+                if(line.hasOption("n")){
                 PSNginxRedirectConverter cvt = new PSNginxRedirectConverter();
                 PSPercussionRedirectEntryList list = new PSPercussionRedirectEntryList(csv);
 
-                int count = cvt.convertRedirects(list, Paths.get("").toAbsolutePath().toString());
+                int count = cvt.convertRedirects(list, Paths.get("").toAbsolutePath().toString(),null,null,null);
                 System.out.println("Wrote " +  count + " redirects to " + Paths.get("").toAbsolutePath() + File.separator + cvt.getFilename());
 
             }

@@ -35,9 +35,16 @@ public interface IPSRedirectConverter {
      *
      * @param redirects A non null list of PSRedirectEntries
      * @param outDir The folder to generate the redirect file to
+     * @param fileStartChar String to use to start the file, may be null
+     * @param fileEndChar String to use to end the file, may be null
+     * @param delimiter The delimiter to use between lines, may be null
      * @return A count of the redirects processed
      */
-    int convertRedirects(PSPercussionRedirectEntryList redirects, String outDir);
+    int convertRedirects(PSPercussionRedirectEntryList redirects,
+                         String outDir,
+                         String fileStartChar,
+                         String fileEndChar,
+                         String delimiter);
 
     String convertVanityRedirect(PSPercussionRedirectEntry e);
 
