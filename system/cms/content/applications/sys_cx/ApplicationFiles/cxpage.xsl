@@ -7,11 +7,12 @@
 		<!ENTITY % HTMLspecial PUBLIC "-//W3C//ENTITIES_Special_for_XHTML//EN" "https://www.percussion.com/DTD/HTMLspecialx.ent">
 		%HTMLspecial;
 		]>
-<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 	xmlns:saxon="http://icl.com/saxon"
-	xmlns:psxi18n="com.percussion.i18n" extension-element-prefixes="psxi18n saxon"
-                exclude-result-prefixes="psxi18n saxon">
+<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+	xmlns:psxi18n="com.percussion.i18n" extension-element-prefixes="psxi18n"
+                exclude-result-prefixes="psxi18n">
 	<xsl:import href="file:sys_resources/stylesheets/sys_I18nUtils.xsl"/>
 	<xsl:output method="html" omit-xml-declaration="yes" encoding="UTF-8" />
+	<xsl:variable name="lang" select="//@lang"/>
 	<xsl:variable name="rxroot">
 		<xsl:choose>
 			<xsl:when test="string-length(//@rxroot) = 0">..</xsl:when>
@@ -61,7 +62,6 @@
 			<Param name="SHOW_SPLASH" value="true"/>
 		</AppletParams>
 	</xsl:variable>
-	<xsl:variable name="lang" select="//@lang"/>
 	<xsl:variable name="useragent" select="//@useragent"/>
 	<xsl:template match="/">
 		<xsl:choose>
@@ -83,7 +83,7 @@
 					<head>
 						<title>
 							<xsl:call-template name="getLocaleString">
-								<xsl:with-param name="key" select="'psx.sys_caSites.casites@Rhythmyx -       Content Explorer'"/>
+								<xsl:with-param name="key" select="'psx.sys_caSites.casites@Rhythmyx - Content Explorer'"/>
 								<xsl:with-param name="lang" select="$lang"/>
 							</xsl:call-template>
 						</title>
@@ -136,7 +136,7 @@
 	<xsl:template name="applet-body">
 		<script language="JavaScript1.2">
 			var appletCaller = new AppletCaller();
-			<xsl:for-each select="saxon:nodeset($appletparams)/AppletParams/Param">
+			<xsl:for-each select="document($appletparams)/AppletParams/Param">
 				<xsl:text>appletCaller.addParam("</xsl:text><xsl:value-of select="@name"/><xsl:text>", "</xsl:text><xsl:value-of select="@value"/><xsl:text>");</xsl:text>
 			</xsl:for-each>
 

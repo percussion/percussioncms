@@ -119,7 +119,7 @@
 
                      document.getElementById('maincontent').src = "</xsl:text>
                     <xsl:value-of select="$ajaxswingUrl" disable-output-escaping="yes"/>
-                    <xsl:text disable-output-escaping="yes">"&amp;ran="+Math.random();
+                    <xsl:text disable-output-escaping="yes">&amp;ran="+Math.random();
                     }
             addEvent(window,"message",function(event) {
                  // Make sure we do not intercept requests not from ajaxswing
