@@ -48,7 +48,11 @@ public class PSRedirectUtils {
      * @param lines A list of strings to write
      */
     public static int writeRedirectFile(String outdir,
-                                         String fileName, List<String> lines){
+                                         String fileName,
+                                        List<String> lines,
+                                        String fileStartChar,
+                                        String fileEndChar,
+                                        String delimiter){
         int count = 0;
         Path p = Paths.get(outdir,fileName);
         try {
@@ -59,12 +63,27 @@ public class PSRedirectUtils {
 
            Path out =  Files.createFile(p);
            try(FileWriter fw = new FileWriter(out.toFile())){
+               //Write file start characters
+               if(fileStartChar!=null){
+                   fw.write(fileStartChar);
+               }
+               //loop through the lines
+               int idx = 0;
                 for(String s : lines){
+                    idx++; //increment every time
                     if(s!=null) {
+                        count++; //only increment for valid lines
+                        if(delimiter != null &&  idx < lines.size()){
+                            //append delimiter unless this is the last line
+                            s = s.concat(delimiter);
+                        }
                         fw.write(s);
-                        count++;
                     }
                 }
+                //Write the end chars
+               if(fileEndChar != null){
+                   fw.write(fileEndChar);
+               }
                 fw.flush();
            }
         } catch (IOException e) {
