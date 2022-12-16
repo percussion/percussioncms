@@ -25,7 +25,7 @@ package com.percussion.cms.handlers;
 
 import com.percussion.data.PSExecutionData;
 import com.percussion.design.objectstore.PSLocator;
-import com.percussion.relationship.PSRelationshipException;
+import com.percussion.error.PSRelationshipException;
 
 /**
  * Implementations of this interface can be passed to clone handlers to

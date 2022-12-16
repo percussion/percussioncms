@@ -43,7 +43,7 @@ public class PSEditorChangeEvent
 {
    /**
     * Convenience ctor for parent item change that calls 
-    * {@link #PSEditorChangeEvent(int, int, int, int, int, int, int) 
+    * {@link ##PSEditorChangeEvent(int, int, int, int, int, long)} 
     * this(actionType, contentId, revisionId, -1, -1, contentTypeId}.
     */
    public PSEditorChangeEvent(int actionType, int contentId, int revisionId, 

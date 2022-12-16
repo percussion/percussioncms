@@ -24,7 +24,7 @@
 
 package com.percussion.design.catalog.data.server;
 
-import com.percussion.data.PSSqlException;
+import com.percussion.error.PSSqlException;
 import com.percussion.design.catalog.IPSCatalogErrors;
 import com.percussion.design.catalog.IPSCatalogRequestHandler;
 import com.percussion.error.PSIllegalArgumentException;

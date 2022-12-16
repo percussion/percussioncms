@@ -24,6 +24,7 @@
 
 package com.percussion.design.objectstore;
 
+import com.percussion.error.PSDatabaseComponentException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 

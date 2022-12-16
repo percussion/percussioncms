@@ -10,7 +10,7 @@
 package com.percussion.pso.workflow;
 import java.util.List;
 
-import com.percussion.design.objectstore.PSNotFoundException;
+import com.percussion.error.PSNotFoundException;
 import com.percussion.extension.IPSWorkflowAction;
 import com.percussion.extension.PSExtensionException;
 /**

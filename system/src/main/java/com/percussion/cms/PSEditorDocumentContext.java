@@ -29,7 +29,7 @@ import com.percussion.design.objectstore.IPSReplacementValue;
 import com.percussion.design.objectstore.PSApplication;
 import com.percussion.design.objectstore.PSContentEditor;
 import com.percussion.design.objectstore.PSLiteral;
-import com.percussion.design.objectstore.PSNotFoundException;
+import com.percussion.error.PSNotFoundException;
 import com.percussion.server.IPSServerErrors;
 
 import java.util.ArrayList;

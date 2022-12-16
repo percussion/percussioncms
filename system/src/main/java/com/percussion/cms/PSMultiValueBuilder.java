@@ -25,10 +25,10 @@ package com.percussion.cms;
 
 import com.percussion.data.PSDataExtractionException;
 import com.percussion.data.PSExecutionData;
-import com.percussion.data.PSSqlException;
+import com.percussion.error.PSSqlException;
 import com.percussion.design.objectstore.PSChoices;
 import com.percussion.design.objectstore.PSFieldSet;
-import com.percussion.design.objectstore.PSNotFoundException;
+import com.percussion.error.PSNotFoundException;
 import com.percussion.design.objectstore.PSSystemValidationException;
 import com.percussion.design.objectstore.PSUISet;
 import com.percussion.extension.PSExtensionException;

@@ -25,7 +25,7 @@ package com.percussion.data.jdbc;
 
 import com.percussion.cms.IPSConstants;
 import com.percussion.data.vfs.PSVirtualApplicationDirectory;
-import com.percussion.server.IPSCgiVariables;
+import com.percussion.utils.server.IPSCgiVariables;
 import com.percussion.server.PSUserSession;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;

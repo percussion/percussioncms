@@ -28,7 +28,7 @@ import com.percussion.design.objectstore.IPSComponent;
 import com.percussion.design.objectstore.IPSDocument;
 import com.percussion.design.objectstore.IPSValidationContext;
 import com.percussion.design.objectstore.PSApplication;
-import com.percussion.design.objectstore.PSNonUniqueException;
+import com.percussion.error.PSNonUniqueException;
 import com.percussion.design.objectstore.PSServerConfiguration;
 import com.percussion.design.objectstore.PSSystemValidationException;
 import com.percussion.error.PSValidationError;

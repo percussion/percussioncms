@@ -40,7 +40,7 @@ import com.percussion.security.PSAuthorizationException;
 import com.percussion.security.PSThreadRequestUtils;
 import com.percussion.server.cache.IPSCacheHandler;
 import com.percussion.server.cache.PSCacheContext;
-import com.percussion.server.cache.PSCacheException;
+import com.percussion.util.PSCacheException;
 import com.percussion.server.cache.PSCacheManager;
 import com.percussion.server.cache.PSCachedResultPage;
 import com.percussion.util.IOTools;

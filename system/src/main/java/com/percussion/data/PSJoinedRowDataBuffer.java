@@ -24,6 +24,8 @@
 
 package com.percussion.data;
 
+import com.percussion.error.PSSqlException;
+
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.util.ArrayList;

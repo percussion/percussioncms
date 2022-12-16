@@ -28,7 +28,7 @@ import com.percussion.content.IPSMimeContentTypes;
 import com.percussion.debug.PSDebugLogHandler;
 import com.percussion.debug.PSTraceMessageFactory;
 import com.percussion.design.objectstore.PSDataSet;
-import com.percussion.design.objectstore.PSNotFoundException;
+import com.percussion.error.PSNotFoundException;
 import com.percussion.design.objectstore.PSPipe;
 import com.percussion.design.objectstore.PSRequestLink;
 import com.percussion.design.objectstore.PSResultPage;
@@ -221,7 +221,7 @@ public class PSUpdateHandler extends PSDataHandler
          if (link != null) {
             try {
                m_outputGenerator = new PSRequestRedirector(app, link);
-            } catch (com.percussion.design.objectstore.PSNotFoundException e) {
+            } catch (PSNotFoundException e) {
                if(e.getErrorCode() == 0){
                   throw new PSSystemValidationException("Error in initialization application : "
                           + app.getName() + " Error: " + PSExceptionUtils.getMessageForLog(e),null, ds);

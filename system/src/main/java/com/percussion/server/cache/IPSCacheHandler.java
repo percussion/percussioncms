@@ -27,6 +27,7 @@ package com.percussion.server.cache;
 import com.percussion.design.objectstore.PSSystemValidationException;
 import com.percussion.server.PSBaseResponse;
 import com.percussion.server.PSCachedResponse;
+import com.percussion.util.PSCacheException;
 import org.w3c.dom.Document;
 
 import java.util.Map;

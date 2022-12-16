@@ -24,7 +24,8 @@
 package com.percussion.design.objectstore;
 
 import com.percussion.data.PSIdGenerator;
-import com.percussion.data.PSSqlException;
+import com.percussion.error.PSDatabaseComponentException;
+import com.percussion.error.PSSqlException;
 import com.percussion.design.objectstore.server.PSDatabaseComponentLoader;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import org.w3c.dom.Document;

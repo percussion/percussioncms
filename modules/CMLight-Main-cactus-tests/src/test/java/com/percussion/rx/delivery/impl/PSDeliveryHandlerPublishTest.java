@@ -31,7 +31,7 @@ import com.percussion.rx.publisher.IPSRxPublisherService;
 import com.percussion.rx.publisher.PSPublisherUtils;
 import com.percussion.rx.publisher.PSRxPublisherServiceLocator;
 import com.percussion.services.PSBaseServiceLocator;
-import com.percussion.services.PSMissingBeanConfigurationException;
+import com.percussion.error.PSMissingBeanConfigurationException;
 import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.publisher.IPSContentList;
 import com.percussion.services.publisher.IPSEdition;

@@ -29,7 +29,7 @@ import com.percussion.design.objectstore.IPSDatabaseComponent;
 import com.percussion.design.objectstore.IPSObjectStoreErrors;
 import com.percussion.design.objectstore.PSDatabaseComponent;
 import com.percussion.design.objectstore.PSDatabaseComponentCollection;
-import com.percussion.design.objectstore.PSDatabaseComponentException;
+import com.percussion.error.PSDatabaseComponentException;
 import com.percussion.design.objectstore.PSRelation;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
 import com.percussion.error.PSException;

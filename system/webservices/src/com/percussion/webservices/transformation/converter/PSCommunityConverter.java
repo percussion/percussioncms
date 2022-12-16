@@ -23,7 +23,7 @@
  */
 package com.percussion.webservices.transformation.converter;
 
-import com.percussion.services.PSMissingBeanConfigurationException;
+import com.percussion.error.PSMissingBeanConfigurationException;
 import com.percussion.services.guidmgr.data.PSDesignGuid;
 import com.percussion.services.security.IPSBackEndRoleMgr;
 import com.percussion.services.security.PSRoleMgrLocator;

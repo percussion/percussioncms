@@ -53,7 +53,7 @@ import com.percussion.design.objectstore.PSViewSet;
 import com.percussion.extension.PSExtensionException;
 import com.percussion.i18n.PSI18nUtils;
 import com.percussion.i18n.tmxdom.IPSTmxDtdConstants;
-import com.percussion.server.IPSCgiVariables;
+import com.percussion.utils.server.IPSCgiVariables;
 import com.percussion.server.IPSServerErrors;
 import com.percussion.util.PSMapPair;
 import com.percussion.util.PSStringOperation;

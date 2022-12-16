@@ -55,6 +55,7 @@ import com.percussion.services.legacy.IPSItemEntry;
 import com.percussion.services.legacy.PSCmsObjectMgrLocator;
 import com.percussion.services.legacy.data.PSItemEntry;
 import com.percussion.services.workflow.data.PSWorkflow;
+import com.percussion.util.PSCacheException;
 import com.percussion.util.PSCollection;
 import com.percussion.util.PSStopwatch;
 import com.percussion.webservices.PSWebserviceUtils;

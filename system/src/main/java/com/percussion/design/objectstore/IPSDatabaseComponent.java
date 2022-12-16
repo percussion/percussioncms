@@ -24,6 +24,7 @@
 package com.percussion.design.objectstore;
 
 import com.percussion.design.objectstore.server.PSDatabaseComponentLoader;
+import com.percussion.error.PSDatabaseComponentException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -69,7 +70,7 @@ public interface IPSDatabaseComponent
     *
     * @throws IllegalArgumentException if any argument is invalid.
     *
-    * @throws PSDatabaseComponentException if there are errors creating the 
+    * @throws PSDatabaseComponentException if there are errors creating the
     *    element.
     */      
    public void toDatabaseXml(Document doc,

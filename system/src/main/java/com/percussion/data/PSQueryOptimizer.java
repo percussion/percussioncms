@@ -41,7 +41,8 @@ import com.percussion.design.objectstore.PSExtensionParamValue;
 import com.percussion.design.objectstore.PSFunctionCall;
 import com.percussion.design.objectstore.PSFunctionParamValue;
 import com.percussion.design.objectstore.PSHtmlParameter;
-import com.percussion.design.objectstore.PSNotFoundException;
+import com.percussion.error.PSCatalogException;
+import com.percussion.error.PSNotFoundException;
 import com.percussion.design.objectstore.PSPageDataTank;
 import com.percussion.design.objectstore.PSPipe;
 import com.percussion.design.objectstore.PSQueryPipe;
@@ -1667,7 +1668,7 @@ public class PSQueryOptimizer extends PSOptimizer
       PSDtdTree tree;
       try {
          tree = new PSDtdTree(dtd);
-      } catch (com.percussion.design.catalog.PSCatalogException e) {
+      } catch (PSCatalogException e) {
          throw new IllegalArgumentException(e.getLocalizedMessage());
       }
 

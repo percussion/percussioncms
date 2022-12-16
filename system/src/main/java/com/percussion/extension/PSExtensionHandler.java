@@ -24,7 +24,7 @@
 package com.percussion.extension;
 
 import com.percussion.content.IPSMimeContent;
-import com.percussion.design.objectstore.PSNotFoundException;
+import com.percussion.error.PSNotFoundException;
 import com.percussion.log.PSLogHandler;
 import com.percussion.log.PSLogServerWarning;
 import com.percussion.log.PSLogSubMessage;

@@ -23,7 +23,7 @@
  */
 package com.percussion.data;
 
-import com.percussion.design.objectstore.PSNotFoundException;
+import com.percussion.error.PSNotFoundException;
 import com.percussion.design.objectstore.PSUrlRequest;
 import com.percussion.extension.PSExtensionException;
 

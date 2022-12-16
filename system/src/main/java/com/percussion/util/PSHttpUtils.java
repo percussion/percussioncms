@@ -23,7 +23,7 @@
  */
 package com.percussion.util;
 
-import com.percussion.server.IPSCgiVariables;
+import com.percussion.utils.server.IPSCgiVariables;
 import com.percussion.server.IPSRequestContext;
 
 import java.util.Map;

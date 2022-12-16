@@ -23,8 +23,8 @@
  */
 package com.percussion.extension;
 
-import com.percussion.design.objectstore.PSNonUniqueException;
-import com.percussion.design.objectstore.PSNotFoundException;
+import com.percussion.error.PSNonUniqueException;
+import com.percussion.error.PSNotFoundException;
 
 import java.io.File;
 import java.util.Iterator;

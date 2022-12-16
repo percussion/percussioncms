@@ -42,6 +42,7 @@
         <option value="$PROJECT_DIR$/modules/extensions-landingpage/pom.xml" />
         <option value="$PROJECT_DIR$/deliverytiersuite/delivery-tier-suite/p13n-ds/pom.xml" />
         <option value="$PROJECT_DIR$/modules/extensions-serverutils/pom.xml" />
+        <option value="$PROJECT_DIR$/modules/perc-i18n/pom.xml" />
       </list>
     </option>
   </component>

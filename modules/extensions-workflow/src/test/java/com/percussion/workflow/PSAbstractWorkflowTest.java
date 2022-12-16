@@ -23,7 +23,7 @@
  */
 package com.percussion.workflow;
 
-import com.percussion.data.PSSqlException;
+import com.percussion.error.PSSqlException;
 import com.percussion.error.PSExceptionUtils;
 import com.percussion.util.PSPreparedStatement;
 import org.apache.logging.log4j.LogManager;

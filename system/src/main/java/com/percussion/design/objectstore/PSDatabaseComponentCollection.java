@@ -24,6 +24,7 @@
 package com.percussion.design.objectstore;
 
 import com.percussion.design.objectstore.server.PSDatabaseComponentLoader;
+import com.percussion.error.PSDatabaseComponentException;
 import com.percussion.util.PSCollection;
 import com.percussion.utils.collections.PSIteratorUtils;
 import com.percussion.xml.PSXmlTreeWalker;

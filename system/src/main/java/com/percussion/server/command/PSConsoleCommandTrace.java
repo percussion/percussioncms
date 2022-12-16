@@ -27,7 +27,7 @@ package com.percussion.server.command;
 import com.percussion.debug.PSDebugManager;
 import com.percussion.debug.PSTraceFlag;
 import com.percussion.debug.PSTraceMessageFactory;
-import com.percussion.design.objectstore.PSNotFoundException;
+import com.percussion.error.PSNotFoundException;
 import com.percussion.design.objectstore.PSTraceOption;
 import com.percussion.error.PSIllegalArgumentException;
 import com.percussion.server.IPSServerErrors;
