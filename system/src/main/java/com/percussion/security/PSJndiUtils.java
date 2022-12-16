@@ -25,7 +25,7 @@ package com.percussion.security;
 
 import com.percussion.design.objectstore.PSAuthentication;
 import com.percussion.design.objectstore.PSDirectory;
-import com.percussion.design.objectstore.PSNotFoundException;
+import com.percussion.error.PSNotFoundException;
 import com.percussion.design.objectstore.PSServerConfiguration;
 import com.percussion.error.PSErrorManager;
 import com.percussion.error.PSRuntimeException;

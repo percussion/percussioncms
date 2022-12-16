@@ -48,6 +48,7 @@ import com.percussion.services.notification.PSNotificationEvent.EventType;
 import com.percussion.services.notification.PSNotificationServiceLocator;
 import com.percussion.services.relationship.data.PSRelationshipData;
 import com.percussion.util.PSBaseBean;
+import com.percussion.util.PSCacheException;
 import com.percussion.util.PSSqlHelper;
 import com.percussion.util.PSStopwatch;
 import com.percussion.utils.guid.IPSGuid;

@@ -24,8 +24,7 @@
 package com.percussion.services.pubserver;
 
 import com.percussion.services.PSBaseServiceLocator;
-import com.percussion.services.PSMissingBeanConfigurationException;
-import com.percussion.services.pubserver.IPSPubServerDao;
+import com.percussion.error.PSMissingBeanConfigurationException;
 
 /**
  * Get the publication server manager from the Spring configuration.

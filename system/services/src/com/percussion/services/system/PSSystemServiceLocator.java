@@ -24,8 +24,7 @@
 package com.percussion.services.system;
 
 import com.percussion.services.PSBaseServiceLocator;
-import com.percussion.services.PSMissingBeanConfigurationException;
-import com.percussion.services.sitemgr.IPSSite;
+import com.percussion.error.PSMissingBeanConfigurationException;
 
 /**
  * Locator to get the system service.

@@ -25,6 +25,7 @@
 package com.percussion.server.cache;
 
 import com.percussion.server.IPSServerErrors;
+import com.percussion.util.PSCacheException;
 import com.percussion.util.PSPurgableTempFile;
 
 import java.io.File;

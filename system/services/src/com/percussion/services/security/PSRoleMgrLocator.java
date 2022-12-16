@@ -24,7 +24,7 @@
 package com.percussion.services.security;
 
 import com.percussion.services.PSBaseServiceLocator;
-import com.percussion.services.PSMissingBeanConfigurationException;
+import com.percussion.error.PSMissingBeanConfigurationException;
 
 /**
  * Provides lookup service for 

@@ -25,7 +25,7 @@ package com.percussion.services.aaclient;
 
 import com.percussion.cms.objectstore.PSComponentSummary;
 import com.percussion.server.PSRequest;
-import com.percussion.services.PSMissingBeanConfigurationException;
+import com.percussion.error.PSMissingBeanConfigurationException;
 import com.percussion.services.assembly.IPSAssemblyItem;
 import com.percussion.services.assembly.IPSAssemblyService;
 import com.percussion.services.assembly.IPSAssemblyTemplate;

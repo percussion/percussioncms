@@ -25,7 +25,7 @@ package com.percussion.fastforward.utils;
 
 import com.percussion.cms.IPSCmsErrors;
 import com.percussion.data.PSInternalRequestCallException;
-import com.percussion.design.objectstore.PSNotFoundException;
+import com.percussion.error.PSNotFoundException;
 import com.percussion.error.PSExceptionUtils;
 import com.percussion.server.IPSInternalRequest;
 import com.percussion.server.IPSRequestContext;

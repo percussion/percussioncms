@@ -26,7 +26,7 @@ package com.percussion.services.guidmgr.impl;
 
 import com.percussion.data.PSIdGenerator;
 import com.percussion.design.objectstore.PSLocator;
-import com.percussion.services.PSMissingBeanConfigurationException;
+import com.percussion.error.PSMissingBeanConfigurationException;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.guidmgr.IPSGuidManager;
 import com.percussion.services.guidmgr.PSGuidHelper;

@@ -24,7 +24,7 @@
 package com.percussion.search;
 
 import com.percussion.services.PSBaseServiceLocator;
-import com.percussion.services.PSMissingBeanConfigurationException;
+import com.percussion.error.PSMissingBeanConfigurationException;
 
 /**
  * Class description - locates the service for using hibernate to read, write

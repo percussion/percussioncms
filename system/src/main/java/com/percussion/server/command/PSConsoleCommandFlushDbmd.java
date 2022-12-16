@@ -26,7 +26,7 @@ package com.percussion.server.command;
 
 import com.percussion.data.PSDatabaseMetaData;
 import com.percussion.data.PSMetaDataCache;
-import com.percussion.data.PSSqlException;
+import com.percussion.error.PSSqlException;
 import com.percussion.error.PSIllegalArgumentException;
 import com.percussion.server.IPSConsoleCommand;
 import com.percussion.server.IPSServerErrors;

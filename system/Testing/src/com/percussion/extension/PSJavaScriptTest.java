@@ -25,8 +25,8 @@
 package com.percussion.extension;
 
 import com.google.common.io.Files;
-import com.percussion.design.objectstore.PSNonUniqueException;
-import com.percussion.design.objectstore.PSNotFoundException;
+import com.percussion.error.PSNonUniqueException;
+import com.percussion.error.PSNotFoundException;
 import com.percussion.utils.collections.PSIteratorUtils;
 import junit.framework.Test;
 import junit.framework.TestCase;

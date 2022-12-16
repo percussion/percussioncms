@@ -24,7 +24,7 @@
 package com.percussion.services.guidmgr;
 
 import com.percussion.services.PSBaseServiceLocator;
-import com.percussion.services.PSMissingBeanConfigurationException;
+import com.percussion.error.PSMissingBeanConfigurationException;
 
 import javax.annotation.concurrent.ThreadSafe;
 

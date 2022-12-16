@@ -27,7 +27,7 @@ import com.percussion.design.objectstore.PSRelationship;
 import com.percussion.error.PSException;
 import com.percussion.extension.IPSJexlMethod;
 import com.percussion.extension.IPSJexlParam;
-import com.percussion.services.PSMissingBeanConfigurationException;
+import com.percussion.error.PSMissingBeanConfigurationException;
 import com.percussion.services.assembly.IPSAssemblyItem;
 import com.percussion.services.assembly.PSAssemblyException;
 import com.percussion.services.relationship.IPSRelationshipService;

@@ -26,6 +26,7 @@ package com.percussion.server;
 import com.percussion.conn.PSServerException;
 import com.percussion.error.PSHookRequestError;
 import com.percussion.security.PSAuthorizationException;
+import com.percussion.utils.server.IPSCgiVariables;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;

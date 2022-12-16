@@ -25,7 +25,7 @@ package com.percussion.util;
 
 import com.percussion.data.PSInternalRequestCallException;
 import com.percussion.design.objectstore.PSLocator;
-import com.percussion.design.objectstore.PSNotFoundException;
+import com.percussion.error.PSNotFoundException;
 import com.percussion.design.objectstore.PSRelationship;
 import com.percussion.design.objectstore.PSRelationshipSet;
 import com.percussion.design.objectstore.PSSystemValidationException;

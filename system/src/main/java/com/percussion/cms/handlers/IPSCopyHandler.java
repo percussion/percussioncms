@@ -26,7 +26,7 @@ package com.percussion.cms.handlers;
 import com.percussion.data.PSExecutionData;
 import com.percussion.data.PSInternalRequestCallException;
 import com.percussion.design.objectstore.PSLocator;
-import com.percussion.design.objectstore.PSNotFoundException;
+import com.percussion.error.PSNotFoundException;
 import com.percussion.security.PSAuthenticationFailedException;
 import com.percussion.security.PSAuthorizationException;
 

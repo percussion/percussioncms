@@ -31,6 +31,7 @@ import com.percussion.security.PSAuthorizationException;
 import com.percussion.server.cache.PSCacheManager;
 import com.percussion.services.legacy.IPSCmsObjectMgr;
 import com.percussion.services.legacy.PSCmsObjectMgrLocator;
+import com.percussion.utils.server.IPSCgiVariables;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;

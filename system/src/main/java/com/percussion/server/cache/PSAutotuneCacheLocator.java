@@ -25,7 +25,7 @@
 package com.percussion.server.cache;
 
 import com.percussion.services.PSBaseServiceLocator;
-import com.percussion.services.PSMissingBeanConfigurationException;
+import com.percussion.error.PSMissingBeanConfigurationException;
 
 public class PSAutotuneCacheLocator extends PSBaseServiceLocator
 {

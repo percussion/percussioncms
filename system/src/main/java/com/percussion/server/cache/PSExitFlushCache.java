@@ -29,6 +29,7 @@ import com.percussion.extension.PSDefaultExtension;
 import com.percussion.extension.PSParameterMismatchException;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.server.PSServer;
+import com.percussion.util.PSCacheException;
 
 /**
  * Exit to expose flush all caches, Assembler Cache and Folder caches, 

@@ -30,7 +30,7 @@ import com.percussion.data.PSInternalRequestCallException;
 import com.percussion.design.objectstore.PSContentEditor;
 import com.percussion.design.objectstore.PSDisplayMapper;
 import com.percussion.design.objectstore.PSField;
-import com.percussion.design.objectstore.PSNotFoundException;
+import com.percussion.error.PSNotFoundException;
 import com.percussion.design.objectstore.PSSystemValidationException;
 import com.percussion.extension.PSExtensionException;
 import com.percussion.security.PSAuthenticationFailedException;

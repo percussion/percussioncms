@@ -24,7 +24,7 @@
 package com.percussion.proxyconfig.service;
 
 import com.percussion.services.PSBaseServiceLocator;
-import com.percussion.services.PSMissingBeanConfigurationException;
+import com.percussion.error.PSMissingBeanConfigurationException;
 
 /**
  * Provides a Locator for accessing the Proxy Service. 

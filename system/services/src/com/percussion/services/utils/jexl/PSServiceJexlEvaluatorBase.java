@@ -23,7 +23,7 @@
  */
 package com.percussion.services.utils.jexl;
 
-import com.percussion.design.objectstore.PSNotFoundException;
+import com.percussion.error.PSNotFoundException;
 import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.*;
 import com.percussion.server.PSServer;

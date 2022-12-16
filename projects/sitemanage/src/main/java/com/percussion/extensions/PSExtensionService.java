@@ -24,11 +24,10 @@
 
 package com.percussion.extensions;
 
-import com.percussion.design.objectstore.PSNonUniqueException;
-import com.percussion.design.objectstore.PSNotFoundException;
+import com.percussion.error.PSNonUniqueException;
+import com.percussion.error.PSNotFoundException;
 import com.percussion.extension.*;
 import com.percussion.server.PSServer;
-import com.percussion.share.dao.impl.PSExtensionManagerFactory;
 
 import java.io.File;
 import java.util.Iterator;

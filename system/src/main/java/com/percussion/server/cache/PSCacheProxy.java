@@ -29,6 +29,7 @@ import com.percussion.design.objectstore.PSSystemValidationException;
 import com.percussion.server.IPSServerErrors;
 import com.percussion.services.legacy.IPSCmsObjectMgr;
 import com.percussion.services.legacy.PSCmsObjectMgrLocator;
+import com.percussion.util.PSCacheException;
 
 import java.util.HashMap;
 import java.util.Map;

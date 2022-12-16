@@ -25,6 +25,7 @@
 package com.percussion.design.objectstore;
 
 import com.percussion.design.objectstore.server.PSDatabaseComponentLoader;
+import com.percussion.error.PSDatabaseComponentException;
 import com.percussion.services.catalog.IPSCatalogSummary;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.guidmgr.data.PSGuid;

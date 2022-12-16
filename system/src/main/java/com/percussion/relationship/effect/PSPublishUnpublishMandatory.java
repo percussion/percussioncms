@@ -30,7 +30,7 @@ import com.percussion.cms.handlers.PSWorkflowCommandHandler;
 import com.percussion.data.PSInternalRequestCallException;
 import com.percussion.data.macro.PSMacroUtils;
 import com.percussion.design.objectstore.PSLocator;
-import com.percussion.design.objectstore.PSNotFoundException;
+import com.percussion.error.PSNotFoundException;
 import com.percussion.design.objectstore.PSRelationship;
 import com.percussion.error.PSException;
 import com.percussion.extension.IPSExtensionErrors;

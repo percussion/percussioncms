@@ -32,7 +32,7 @@ import com.percussion.design.objectstore.PSUnknownNodeTypeException;
 import com.percussion.error.PSException;
 import com.percussion.security.PSAuthenticationFailedException;
 import com.percussion.security.PSAuthorizationException;
-import com.percussion.server.IPSCgiVariables;
+import com.percussion.utils.server.IPSCgiVariables;
 import com.percussion.server.IPSLoadableRequestHandler;
 import com.percussion.server.IPSServerErrors;
 import com.percussion.server.PSConsole;

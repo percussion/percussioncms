@@ -23,7 +23,7 @@
  */
 package com.percussion.security;
 
-import com.percussion.server.IPSCgiVariables;
+import com.percussion.utils.server.IPSCgiVariables;
 import com.percussion.servlets.PSSecurityFilter;
 import com.percussion.utils.security.PSRemoteUserCallback;
 import com.percussion.utils.security.PSRequestHeadersCallback;

@@ -24,7 +24,7 @@
 package com.percussion.data;
 
 import com.percussion.design.objectstore.PSConditionalExit;
-import com.percussion.design.objectstore.PSNotFoundException;
+import com.percussion.error.PSNotFoundException;
 import com.percussion.extension.IPSResultDocumentProcessor;
 import com.percussion.extension.PSExtensionException;
 import com.percussion.extension.PSExtensionProcessingException;

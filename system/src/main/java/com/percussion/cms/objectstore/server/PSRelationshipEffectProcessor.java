@@ -33,7 +33,7 @@ import com.percussion.data.PSRuleListEvaluator;
 import com.percussion.design.objectstore.PSConditionalEffect;
 import com.percussion.design.objectstore.PSExtensionCall;
 import com.percussion.design.objectstore.PSLocator;
-import com.percussion.design.objectstore.PSNotFoundException;
+import com.percussion.error.PSNotFoundException;
 import com.percussion.design.objectstore.PSRelationship;
 import com.percussion.design.objectstore.PSRelationshipConfig;
 import com.percussion.design.objectstore.PSRelationshipSet;

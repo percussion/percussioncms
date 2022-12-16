@@ -29,7 +29,7 @@ import com.percussion.design.objectstore.PSContentEditor;
 import com.percussion.design.objectstore.PSContentEditorPipe;
 import com.percussion.design.objectstore.PSDisplayMapping;
 import com.percussion.design.objectstore.PSFieldSet;
-import com.percussion.design.objectstore.PSNotFoundException;
+import com.percussion.error.PSNotFoundException;
 import com.percussion.design.objectstore.PSSystemValidationException;
 import com.percussion.extension.PSExtensionException;
 import com.percussion.server.IPSServerErrors;

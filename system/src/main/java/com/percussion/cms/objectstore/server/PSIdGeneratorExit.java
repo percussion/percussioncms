@@ -25,7 +25,7 @@ package com.percussion.cms.objectstore.server;
 
 import com.percussion.cms.IPSCmsErrors;
 import com.percussion.data.PSIdGenerator;
-import com.percussion.data.PSSqlException;
+import com.percussion.error.PSSqlException;
 import com.percussion.extension.IPSResultDocumentProcessor;
 import com.percussion.extension.PSDefaultExtension;
 import com.percussion.extension.PSExtensionProcessingException;

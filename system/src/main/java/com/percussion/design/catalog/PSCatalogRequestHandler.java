@@ -29,7 +29,7 @@ import com.percussion.error.IPSException;
 import com.percussion.error.PSErrorHandler;
 import com.percussion.error.PSIllegalArgumentException;
 import com.percussion.log.PSLogHandler;
-import com.percussion.server.IPSCgiVariables;
+import com.percussion.utils.server.IPSCgiVariables;
 import com.percussion.server.IPSRequestHandler;
 import com.percussion.server.IPSValidateSession;
 import com.percussion.server.PSRequest;

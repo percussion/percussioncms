@@ -24,7 +24,7 @@
 package com.percussion.log;
 
 import com.percussion.data.PSJoinFormatter;
-import com.percussion.data.PSSqlException;
+import com.percussion.error.PSSqlException;
 import com.percussion.server.PSConsole;
 import com.percussion.util.PSSQLStatement;
 import com.percussion.util.PSSqlHelper;

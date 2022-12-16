@@ -24,8 +24,7 @@
 package com.percussion.services.datasource;
 
 import com.percussion.services.PSBaseServiceLocator;
-import com.percussion.services.PSMissingBeanConfigurationException;
-import com.percussion.utils.container.PSContainerUtilsFactory;
+import com.percussion.error.PSMissingBeanConfigurationException;
 import com.percussion.utils.jdbc.IPSDatasourceManager;
 
 /**

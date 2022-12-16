@@ -33,6 +33,9 @@ import com.percussion.design.objectstore.server.IPSLockerId;
 import com.percussion.design.objectstore.server.PSServerXmlObjectStore;
 import com.percussion.design.objectstore.server.PSXmlObjectStoreLockerId;
 import com.percussion.error.PSExceptionUtils;
+import com.percussion.error.PSNonUniqueException;
+import com.percussion.error.PSNotFoundException;
+import com.percussion.error.PSNotLockedException;
 import com.percussion.security.PSAuthenticationRequiredException;
 import com.percussion.security.PSAuthorizationException;
 import com.percussion.server.PSRequest;
@@ -166,9 +169,9 @@ public class PSContentTypeHelper
    public static void saveContentType(PSItemDefinition itemDef,
       Set<PSContentTemplateDesc> descSet, int version, boolean enable) 
    throws PSLockedException, PSServerException,
-   PSAuthenticationRequiredException, PSNotFoundException, 
-   PSNotLockedException, PSAuthorizationException, PSSystemValidationException,
-   PSNonUniqueException, IOException, RepositoryException
+   PSAuthenticationRequiredException, PSNotFoundException,
+           PSNotLockedException, PSAuthorizationException, PSSystemValidationException,
+           PSNonUniqueException, IOException, RepositoryException
    {
       saveContentType(itemDef, descSet, version, null, enable);
    }

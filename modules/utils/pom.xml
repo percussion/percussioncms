@@ -352,6 +352,10 @@
             <artifactId>commons-text</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+        </dependency>
     </dependencies>
     <reporting>
         <plugins>

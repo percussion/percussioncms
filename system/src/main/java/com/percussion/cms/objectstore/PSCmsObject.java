@@ -52,7 +52,7 @@ public class PSCmsObject implements IPSCmsComponent
    /**
     * Default constructor, which is needed for Hibernate.
     */
-   private PSCmsObject()
+   public PSCmsObject()
    {
    }
    

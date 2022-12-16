@@ -31,6 +31,7 @@ import com.percussion.design.objectstore.PSBackEndTable;
 import com.percussion.design.objectstore.PSDataMapping;
 import com.percussion.design.objectstore.PSExtensionCall;
 import com.percussion.error.PSIllegalArgumentException;
+import com.percussion.error.PSSqlException;
 
 import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;

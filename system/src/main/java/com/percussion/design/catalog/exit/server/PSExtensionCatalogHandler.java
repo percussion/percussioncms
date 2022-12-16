@@ -27,7 +27,7 @@ package com.percussion.design.catalog.exit.server;
 import com.percussion.design.catalog.IPSCatalogErrors;
 import com.percussion.design.catalog.IPSCatalogRequestHandler;
 import com.percussion.design.catalog.PSCatalogRequestHandler;
-import com.percussion.design.objectstore.PSNotFoundException;
+import com.percussion.error.PSNotFoundException;
 import com.percussion.error.PSIllegalArgumentException;
 import com.percussion.extension.IPSExtensionDef;
 import com.percussion.extension.IPSExtensionDefFactory;

@@ -29,6 +29,7 @@ import com.percussion.server.IPSRequestHandler;
 import com.percussion.server.IPSServerErrors;
 import com.percussion.server.PSBaseResponse;
 import com.percussion.server.PSCachedResponse;
+import com.percussion.util.PSCacheException;
 import com.percussion.util.PSCharSetsConstants;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import org.w3c.dom.Document;

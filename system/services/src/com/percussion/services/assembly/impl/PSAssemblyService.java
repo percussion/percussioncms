@@ -466,7 +466,7 @@ public class PSAssemblyService implements IPSAssemblyService
          log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          throw new PSAssemblyException(IPSAssemblyErrors.ASSEMBLER_INST, name, e);
       }
-      catch (com.percussion.design.objectstore.PSNotFoundException e)
+      catch (com.percussion.error.PSNotFoundException e)
       {
          log.error("Serious problem, cannot find {} Error: {}" ,name,PSExceptionUtils.getMessageForLog(e));
          throw new PSAssemblyException(IPSAssemblyErrors.ASSEMBLER_INST, name, e);
@@ -2075,7 +2075,7 @@ public class PSAssemblyService implements IPSAssemblyService
          PSExtensionRef ref = new PSExtensionRef(finder);
          return (IPSSlotContentFinder) emgr.prepareExtension(ref, null);
       }
-      catch (PSExtensionException | com.percussion.design.objectstore.PSNotFoundException e)
+      catch (PSExtensionException | com.percussion.error.PSNotFoundException e)
       {
          throw new PSAssemblyException(IPSAssemblyErrors.MISSING_FINDER, e);
       }
