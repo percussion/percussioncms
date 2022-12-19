@@ -30,6 +30,7 @@
         <module>modules/perc-tinymce</module>
         <module>modules/utils</module>
         <module>modules/perc-legacy</module>
+        <module>modules/perc-i18n</module>
         <module>modules/perc-shared-test-resources</module>
         <module>modules/webservices</module>
         <module>modules/Simple</module>
