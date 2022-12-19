@@ -44,7 +44,7 @@ import com.percussion.data.PSXslStyleSheetMerger;
 import com.percussion.design.objectstore.PSApplication;
 import com.percussion.design.objectstore.PSConditionalStylesheet;
 import com.percussion.design.objectstore.PSContentEditor;
-import com.percussion.design.objectstore.PSNotFoundException;
+import com.percussion.error.PSNotFoundException;
 import com.percussion.design.objectstore.PSSingleHtmlParameter;
 import com.percussion.design.objectstore.PSSystemValidationException;
 import com.percussion.error.PSBackEndQueryProcessingError;

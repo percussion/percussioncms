@@ -24,6 +24,7 @@
 
 package com.percussion.data;
 
+import com.percussion.error.PSSqlException;
 import com.percussion.util.PSSqlHelper;
 import com.percussion.utils.jdbc.IPSConnectionInfo;
 import com.percussion.utils.jdbc.PSConnectionDetail;

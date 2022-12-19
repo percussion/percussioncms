@@ -24,6 +24,7 @@
 package com.percussion.design.objectstore;
 
 import com.percussion.design.objectstore.server.PSDatabaseComponentLoader;
+import com.percussion.error.PSDatabaseComponentException;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
 import org.apache.logging.log4j.LogManager;

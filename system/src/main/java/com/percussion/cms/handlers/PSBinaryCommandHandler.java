@@ -48,7 +48,7 @@ import com.percussion.design.objectstore.PSExtensionCallSet;
 import com.percussion.design.objectstore.PSField;
 import com.percussion.design.objectstore.PSFieldSet;
 import com.percussion.design.objectstore.PSHtmlParameter;
-import com.percussion.design.objectstore.PSNotFoundException;
+import com.percussion.error.PSNotFoundException;
 import com.percussion.design.objectstore.PSQueryPipe;
 import com.percussion.design.objectstore.PSRequestor;
 import com.percussion.design.objectstore.PSSystemValidationException;

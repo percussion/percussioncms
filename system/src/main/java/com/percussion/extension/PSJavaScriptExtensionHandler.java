@@ -23,7 +23,7 @@
  */
 package com.percussion.extension;
 
-import com.percussion.design.objectstore.PSNotFoundException;
+import com.percussion.error.PSNotFoundException;
 
 /**
  * The handler for Java script functions. Takes a body of text that is

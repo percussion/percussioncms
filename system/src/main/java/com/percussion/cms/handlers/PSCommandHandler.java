@@ -59,7 +59,7 @@ import com.percussion.design.objectstore.PSField;
 import com.percussion.design.objectstore.PSFieldSet;
 import com.percussion.design.objectstore.PSFieldTranslation;
 import com.percussion.design.objectstore.PSFieldValidationRules;
-import com.percussion.design.objectstore.PSNotFoundException;
+import com.percussion.error.PSNotFoundException;
 import com.percussion.design.objectstore.PSSingleHtmlParameter;
 import com.percussion.design.objectstore.PSSystemValidationException;
 import com.percussion.error.PSErrorException;

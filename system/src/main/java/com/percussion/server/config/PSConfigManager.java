@@ -27,7 +27,7 @@ import com.percussion.design.objectstore.IPSObjectStoreErrors;
 import com.percussion.design.objectstore.PSConfig;
 import com.percussion.design.objectstore.PSConfigurationFactory;
 import com.percussion.design.objectstore.PSLockedException;
-import com.percussion.design.objectstore.PSNotLockedException;
+import com.percussion.error.PSNotLockedException;
 import com.percussion.error.PSExceptionUtils;
 import com.percussion.server.IPSServerErrors;
 import com.percussion.server.PSConsole;

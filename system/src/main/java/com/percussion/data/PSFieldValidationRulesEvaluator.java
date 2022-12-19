@@ -34,7 +34,7 @@ import com.percussion.design.objectstore.PSApplyWhen;
 import com.percussion.design.objectstore.PSField;
 import com.percussion.design.objectstore.PSFieldValidationRules;
 import com.percussion.design.objectstore.PSHtmlParameter;
-import com.percussion.design.objectstore.PSNotFoundException;
+import com.percussion.error.PSNotFoundException;
 import com.percussion.design.objectstore.PSUISet;
 import com.percussion.extension.PSExtensionException;
 import com.percussion.i18n.PSI18nUtils;

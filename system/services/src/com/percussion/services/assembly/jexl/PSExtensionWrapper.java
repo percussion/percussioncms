@@ -24,7 +24,7 @@
 package com.percussion.services.assembly.jexl;
 
 import com.percussion.data.PSConversionException;
-import com.percussion.design.objectstore.PSNotFoundException;
+import com.percussion.error.PSNotFoundException;
 import com.percussion.extension.IPSExtensionManager;
 import com.percussion.extension.IPSUdfProcessor;
 import com.percussion.extension.PSExtensionException;

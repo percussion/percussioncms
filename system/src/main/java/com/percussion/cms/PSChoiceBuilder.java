@@ -39,7 +39,7 @@ import com.percussion.design.objectstore.PSDefaultSelected;
 import com.percussion.design.objectstore.PSDisplayText;
 import com.percussion.design.objectstore.PSEntry;
 import com.percussion.design.objectstore.PSExtensionCall;
-import com.percussion.design.objectstore.PSNotFoundException;
+import com.percussion.error.PSNotFoundException;
 import com.percussion.design.objectstore.PSNullEntry;
 import com.percussion.design.objectstore.PSParam;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;

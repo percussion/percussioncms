@@ -69,7 +69,7 @@ import com.percussion.security.PSAuthorizationException;
 import com.percussion.security.PSEncryptionException;
 import com.percussion.security.PSEncryptor;
 import com.percussion.security.PSUserEntry;
-import com.percussion.server.IPSCgiVariables;
+import com.percussion.utils.server.IPSCgiVariables;
 import com.percussion.server.IPSLoadableRequestHandler;
 import com.percussion.server.IPSServerErrors;
 import com.percussion.server.PSConsole;

@@ -1,25 +1,18 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2021 Percussion Software, Inc.
+ * Copyright 1999-2022 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.percussion.i18n;
@@ -27,11 +20,8 @@ package com.percussion.i18n;
 import com.percussion.i18n.tmxdom.IPSTmxDocument;
 import com.percussion.i18n.tmxdom.IPSTmxDtdConstants;
 import com.percussion.i18n.tmxdom.PSTmxDocument;
-import com.percussion.server.PSConsole;
-import com.percussion.server.cache.PSCacheManager;
-import com.percussion.services.general.IPSRhythmyxInfo;
-import com.percussion.services.general.PSRhythmyxInfoLocator;
 import com.percussion.util.PSXMLDomUtil;
+import com.percussion.utils.io.PathUtils;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.logging.log4j.LogManager;
@@ -56,6 +46,7 @@ import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -268,7 +259,7 @@ public class PSTmxResourceBundle
       PSTmxUnit obj = null;
       if(map == null && ms_Debug)
       {
-         PSConsole.printMsg(SUBSYSTEM,
+         log.info(
           "TMX Resource Bundle does not contain any deployed language resources");
       }
       else if(map != null)
@@ -304,7 +295,7 @@ public class PSTmxResourceBundle
 
       if(map == null)
       {
-         PSConsole.printMsg(SUBSYSTEM,
+         log.info(
          "TMX Resource Bundle does not contain any deployed language resources  Check ResourceBundle.tmx file");
       }
       else if(map != null)
@@ -430,27 +421,21 @@ public class PSTmxResourceBundle
            throws IOException, SAXException, ParserConfigurationException {
       flushCache();
 
-      PSConsole.printMsg(SUBSYSTEM, "Loading I18n Resources to Cache...");
+      log.info("Loading I18n Resources to Cache...");
 
-      IPSRhythmyxInfo rxInfo = PSRhythmyxInfoLocator.getRhythmyxInfo();
-      m_rxRootDir = (String) rxInfo
-            .getProperty(IPSRhythmyxInfo.Key.ROOT_DIRECTORY);
+      m_rxRootDir = PathUtils.getRxDir().getAbsolutePath();
 
       //Master file
       addResourcesToCache(getMasterResourceDoc(m_rxRootDir));
 
       //sys_resources/i18n files
-     // processResourceFiles(Paths.get(m_rxRootDir,SYS_RESOURCES_I18NPATH));
+      processResourceFiles(Paths.get(m_rxRootDir,SYS_RESOURCES_I18NPATH));
 
       //rx_resources/i18n files
-     // processResourceFiles(Paths.get(m_rxRootDir,RX_RESOURCES_I18NPATH));
+       processResourceFiles(Paths.get(m_rxRootDir,RX_RESOURCES_I18NPATH));
 
-
-      // flush entire cache
-      if (PSCacheManager.isAvailable())
-         PSCacheManager.getInstance().flush();
       
-      PSConsole.printMsg(SUBSYSTEM, "Done Loading.");
+      log.info("Done Loading.");
       return true;
     }
 
@@ -468,11 +453,10 @@ public class PSTmxResourceBundle
     }
 
     private void addResourcesToCache(Document doc) {
-        NodeList nl = doc.getElementsByTagName(ELEM_HEADER);
+        NodeList nl = doc.getElementsByTagName(IPSTmxDtdConstants.ELEM_HEADER);
         if(nl == null || nl.getLength() < 1)
         {
-            PSConsole.printMsg(
-                    SUBSYSTEM, "Invalid TMX Document. Header element missing");
+            log.error( "Invalid TMX Document. Header element missing");
             return;
         }
 
@@ -481,11 +465,11 @@ public class PSTmxResourceBundle
             header = (Element)nl.item(0);
 
         if(header!=null)
-            nl = header.getElementsByTagName(ELEM_PROP);
+            nl = header.getElementsByTagName(IPSTmxDtdConstants.ELEM_PROP);
 
         if(nl == null || nl.getLength() < 1)
         {
-            PSConsole.printMsg(SUBSYSTEM,
+            log.error(
                     "Invalid TMX Document. No supported language is specified in the header");
             return;
         }
@@ -497,7 +481,7 @@ public class PSTmxResourceBundle
         for(int i=0; i<nlLength; i++)
         {
             elem = nl.item(i);
-            if(elem instanceof Element && !elem.getAttributes().getNamedItem(ATTR_TYPE).getNodeValue().equals(ATTR_VAL_SUPPORTEDLANGUAGE))
+            if(elem instanceof Element && !elem.getAttributes().getNamedItem(IPSTmxDtdConstants.ATTR_TYPE).getNodeValue().equals(IPSTmxDtdConstants.ATTR_VAL_SUPPORTEDLANGUAGE))
                 continue;
             node = elem.getFirstChild();
             value = "";
@@ -509,11 +493,11 @@ public class PSTmxResourceBundle
         }
         if(ms_ResourceBundles.size() < 1)
         {
-            PSConsole.printMsg(SUBSYSTEM,
+            log.error(
                     "Invalid TMX Document. No supported language is specified in the header.");
             return;
         }
-        nl = doc.getElementsByTagName(ELEM_TU);
+        nl = doc.getElementsByTagName(IPSTmxDtdConstants.ELEM_TU);
         NodeList nlTuv = null;
         NodeList nlSeg = null;
         NodeList nlProps = null;
@@ -528,18 +512,18 @@ public class PSTmxResourceBundle
         nlLength = nl.getLength();
         for(int i=0; nl!=null && i<nlLength; i++) {
             elem = (Element) nl.item(i);
-            key = ((Element)elem).getAttribute(ATTR_TUID);
+            key = ((Element)elem).getAttribute(IPSTmxDtdConstants.ATTR_TUID);
             if (key == null || key.length() < 1)
                 continue;
             if(elem instanceof Element){
 
-            nlTuv = ((Element)elem).getElementsByTagName(ELEM_TUV);
+            nlTuv = ((Element)elem).getElementsByTagName(IPSTmxDtdConstants.ELEM_TUV);
             for (int j = 0; nlTuv != null && j < nlTuv.getLength(); j++) {
                 if(nlTuv.item(j) instanceof Element) {
                     elemTuv = (Element) nlTuv.item(j);
                 }
 
-                lang = elemTuv.getAttribute(ATTR_XML_LANG);
+                lang = elemTuv.getAttribute(IPSTmxDtdConstants.ATTR_XML_LANG);
                 map = (HashMap) ms_ResourceBundles.get(lang);
                 if (map == null) {
                     continue;
@@ -547,24 +531,24 @@ public class PSTmxResourceBundle
                 // get the mnemonic and tooltip from the properties
                 mnemonic = null;
                 tooltip = null;
-                nlProps = elemTuv.getElementsByTagName(ELEM_PROP);
+                nlProps = elemTuv.getElementsByTagName(IPSTmxDtdConstants.ELEM_PROP);
                 int propLength = nlProps.getLength();
                 if (nlProps != null && propLength > 0) {
                     for (int k = 0; k < propLength; k++) {
                         elemProp = (Element) nlProps.item(k);
-                        propType = elemProp.getAttribute(ATTR_TYPE);
+                        propType = elemProp.getAttribute(IPSTmxDtdConstants.ATTR_TYPE);
                         if (propType != null
-                                && propType.equalsIgnoreCase(ATTR_VAL_MNEMONIC)) {
+                                && propType.equalsIgnoreCase(IPSTmxDtdConstants.ATTR_VAL_MNEMONIC)) {
                             mnemonic = PSXMLDomUtil.getElementData(elemProp);
                         } else if (propType != null
-                                && propType.equalsIgnoreCase(ATTR_VAL_TOOLTIP)) {
+                                && propType.equalsIgnoreCase(IPSTmxDtdConstants.ATTR_VAL_TOOLTIP)) {
                             tooltip = PSXMLDomUtil.getElementData(elemProp);
                         }
                     }
                 }
 
                 // get the value from "seg" element
-                nlSeg = elemTuv.getElementsByTagName(ELEM_SEG);
+                nlSeg = elemTuv.getElementsByTagName(IPSTmxDtdConstants.ELEM_SEG);
                 value = "";
                 if (nlSeg != null && nlSeg.getLength() > 0) {
                     node = nlSeg.item(0).getFirstChild();
@@ -585,10 +569,10 @@ public class PSTmxResourceBundle
       if(ms_ResourceBundles.isEmpty())
          return;
 
-      PSConsole.printMsg(SUBSYSTEM, "Flushing I18n Resource Cache...");
+      log.info("Flushing I18n Resource Cache...");
       ms_ResourceBundles.clear();
 
-      PSConsole.printMsg(SUBSYSTEM, "Done Flushing.");
+      log.info(SUBSYSTEM, "Done Flushing.");
    }
 
    /**

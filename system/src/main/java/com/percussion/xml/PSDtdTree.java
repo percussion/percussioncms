@@ -25,7 +25,7 @@
 
 package com.percussion.xml;
 
-import com.percussion.design.catalog.PSCatalogException;
+import com.percussion.error.PSCatalogException;
 import com.percussion.error.PSExceptionUtils;
 import com.percussion.server.IPSServerErrors;
 import com.percussion.server.PSConsole;

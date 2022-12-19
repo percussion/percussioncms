@@ -291,7 +291,7 @@ public class PSAntEditionTask implements IPSEditionTask
      */
     private boolean isFtpsType(String deliveryType)
     {
-        return deliveryType.equals(PublishType.ftps.name()) || deliveryType.equals(PublishType.ftps_only.name());
+        return deliveryType.equalsIgnoreCase(PublishType.ftps.name()) || deliveryType.equalsIgnoreCase(PublishType.ftps_only.name());
     }
 
 

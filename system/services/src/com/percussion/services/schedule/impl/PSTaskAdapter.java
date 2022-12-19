@@ -25,7 +25,7 @@ package com.percussion.services.schedule.impl;
 
 import com.percussion.design.objectstore.PSAttribute;
 import com.percussion.design.objectstore.PSAttributeList;
-import com.percussion.design.objectstore.PSNotFoundException;
+import com.percussion.error.PSNotFoundException;
 import com.percussion.design.objectstore.PSSubject;
 import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSExtensionManager;

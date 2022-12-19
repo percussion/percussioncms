@@ -24,7 +24,7 @@
 package com.percussion.services.legacy;
 
 import com.percussion.services.PSBaseServiceLocator;
-import com.percussion.services.PSMissingBeanConfigurationException;
+import com.percussion.error.PSMissingBeanConfigurationException;
 
 /**
  * Finds and loads the class that implements the {@link IPSCmsContentSummaries}

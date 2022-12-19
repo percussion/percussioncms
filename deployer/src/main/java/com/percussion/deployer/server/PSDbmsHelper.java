@@ -32,7 +32,7 @@ import com.percussion.deployer.objectstore.PSDependency;
 import com.percussion.deployer.objectstore.PSDeployComponentUtils;
 import com.percussion.deployer.server.dependencies.PSDependencyUtils;
 import com.percussion.design.objectstore.PSLockedException;
-import com.percussion.design.objectstore.PSNotLockedException;
+import com.percussion.error.PSNotLockedException;
 import com.percussion.design.objectstore.server.PSServerXmlObjectStore;
 import com.percussion.error.IPSDeploymentErrors;
 import com.percussion.error.PSDeployException;

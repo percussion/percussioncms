@@ -81,7 +81,7 @@ import com.percussion.relationship.PSAttemptResult;
 import com.percussion.relationship.PSEffectResult;
 import com.percussion.security.PSAuthorizationException;
 import com.percussion.security.PSThreadRequestUtils;
-import com.percussion.server.IPSCgiVariables;
+import com.percussion.utils.server.IPSCgiVariables;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.server.PSInternalRequest;
 import com.percussion.server.PSRequest;

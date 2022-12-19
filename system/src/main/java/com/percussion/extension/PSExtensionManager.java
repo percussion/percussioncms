@@ -23,8 +23,8 @@
  */
 package com.percussion.extension;
 
-import com.percussion.design.objectstore.PSNonUniqueException;
-import com.percussion.design.objectstore.PSNotFoundException;
+import com.percussion.error.PSNonUniqueException;
+import com.percussion.error.PSNotFoundException;
 import com.percussion.util.PSSortTool;
 import com.percussion.utils.collections.PSIteratorUtils;
 import com.percussion.utils.tools.PSPatternMatcher;

@@ -25,7 +25,7 @@ package com.percussion.cas;
 
 import com.percussion.data.PSInternalRequestCallException;
 import com.percussion.data.macro.PSMacroUtils;
-import com.percussion.design.objectstore.PSNotFoundException;
+import com.percussion.error.PSNotFoundException;
 import com.percussion.extension.IPSResultDocumentProcessor;
 import com.percussion.extension.PSDefaultExtension;
 import com.percussion.extension.PSExtensionProcessingException;

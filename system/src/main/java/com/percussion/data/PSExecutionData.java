@@ -28,6 +28,7 @@ import com.percussion.design.objectstore.PSRelationship;
 import com.percussion.design.objectstore.PSResultPager;
 import com.percussion.error.PSErrorHandler;
 import com.percussion.error.PSIllegalArgumentException;
+import com.percussion.error.PSSqlException;
 import com.percussion.log.PSLogHandler;
 import com.percussion.log.PSLogManager;
 import com.percussion.log.PSLogServerWarning;

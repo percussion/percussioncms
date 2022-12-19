@@ -7,6 +7,7 @@ import com.percussion.design.objectstore.PSRelationshipSet;
 import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.notification.IPSNotificationListener;
 import com.percussion.services.notification.PSNotificationEvent;
+import com.percussion.util.PSCacheException;
 import com.percussion.utils.guid.IPSGuid;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;

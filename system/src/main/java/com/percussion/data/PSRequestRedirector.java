@@ -26,12 +26,12 @@ package com.percussion.data;
 
 import com.percussion.design.objectstore.PSApplication;
 import com.percussion.design.objectstore.PSDataSet;
-import com.percussion.design.objectstore.PSNotFoundException;
+import com.percussion.error.PSNotFoundException;
 import com.percussion.design.objectstore.PSRequestLink;
 import com.percussion.design.objectstore.PSRequestor;
 import com.percussion.error.PSIllegalArgumentException;
 import com.percussion.error.PSResponseSendError;
-import com.percussion.server.IPSCgiVariables;
+import com.percussion.utils.server.IPSCgiVariables;
 import com.percussion.server.PSApplicationHandler;
 import com.percussion.server.PSRequest;
 import com.percussion.server.PSServer;

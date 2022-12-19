@@ -26,7 +26,7 @@ package com.percussion.debug;
 
 import com.percussion.design.objectstore.IPSObjectStoreErrors;
 import com.percussion.design.objectstore.PSApplication;
-import com.percussion.design.objectstore.PSNotFoundException;
+import com.percussion.error.PSNotFoundException;
 import com.percussion.design.objectstore.PSTraceInfo;
 import com.percussion.server.PSServer;
 import com.percussion.util.PSCharSets;

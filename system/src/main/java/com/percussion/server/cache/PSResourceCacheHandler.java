@@ -53,6 +53,7 @@ import com.percussion.services.notification.PSNotificationEvent;
 import com.percussion.services.notification.PSNotificationEvent.EventType;
 import com.percussion.services.notification.PSNotificationServiceLocator;
 import com.percussion.util.IPSHtmlParameters;
+import com.percussion.util.PSCacheException;
 import com.percussion.util.PSCollection;
 import com.percussion.utils.collections.PSIteratorUtils;
 import com.percussion.utils.guid.IPSGuid;

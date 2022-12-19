@@ -25,7 +25,7 @@
 package com.percussion.delivery.metadata;
 
 import com.percussion.services.PSBaseServiceLocator;
-import com.percussion.services.PSMissingBeanConfigurationException;
+import com.percussion.error.PSMissingBeanConfigurationException;
 
 public class PSMetadataExtractorServiceLocator extends PSBaseServiceLocator
 {

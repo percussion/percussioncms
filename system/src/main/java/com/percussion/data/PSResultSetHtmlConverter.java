@@ -24,7 +24,8 @@
 package com.percussion.data;
 
 import com.percussion.design.objectstore.PSDataSet;
-import com.percussion.design.objectstore.PSNotFoundException;
+import com.percussion.error.PSCatalogException;
+import com.percussion.error.PSNotFoundException;
 import com.percussion.design.objectstore.PSResultPage;
 import com.percussion.error.PSIllegalArgumentException;
 import com.percussion.extension.PSExtensionException;
@@ -70,7 +71,7 @@ public class PSResultSetHtmlConverter extends PSResultSetXmlConverter {
    public PSResultSetHtmlConverter(PSApplicationHandler app, PSDataSet def)
       throws PSNotFoundException,
          PSIllegalArgumentException,
-         com.percussion.design.catalog.PSCatalogException,
+           PSCatalogException,
          PSExtensionException
    {
       super(app, def);

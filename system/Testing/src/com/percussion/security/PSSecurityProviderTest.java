@@ -23,7 +23,7 @@
  */
 package com.percussion.security;
 
-import com.percussion.server.IPSCgiVariables;
+import com.percussion.utils.server.IPSCgiVariables;
 import com.percussion.server.PSRequest;
 import com.percussion.server.PSRequestTest;
 import com.percussion.testing.IPSCustomJunitTest;

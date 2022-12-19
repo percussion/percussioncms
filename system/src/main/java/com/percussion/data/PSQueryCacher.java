@@ -40,7 +40,7 @@ import com.percussion.design.objectstore.PSResultPage;
 import com.percussion.design.objectstore.PSResultPageSet;
 import com.percussion.design.objectstore.PSResultPager;
 import com.percussion.error.PSIllegalArgumentException;
-import com.percussion.server.IPSCgiVariables;
+import com.percussion.utils.server.IPSCgiVariables;
 import com.percussion.server.PSApplicationHandler;
 import com.percussion.server.PSRequest;
 import com.percussion.server.PSServer;

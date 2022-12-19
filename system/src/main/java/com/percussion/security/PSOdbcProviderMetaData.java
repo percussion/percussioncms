@@ -25,7 +25,7 @@
 package com.percussion.security;
 
 import com.percussion.data.PSResultSet;
-import com.percussion.data.PSSqlException;
+import com.percussion.error.PSSqlException;
 
 /**
  * The PSOdbcProviderMetaData class implements cataloging for

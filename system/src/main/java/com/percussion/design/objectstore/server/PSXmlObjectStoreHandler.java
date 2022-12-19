@@ -45,6 +45,9 @@ import com.percussion.design.objectstore.legacy.PSTableLocatorConverter;
 import com.percussion.error.PSErrorManager;
 import com.percussion.error.PSException;
 import com.percussion.error.PSExceptionUtils;
+import com.percussion.error.PSNonUniqueException;
+import com.percussion.error.PSNotFoundException;
+import com.percussion.error.PSNotLockedException;
 import com.percussion.error.PSRuntimeException;
 import com.percussion.extension.IPSExtensionDef;
 import com.percussion.extension.IPSExtensionManager;
@@ -58,7 +61,7 @@ import com.percussion.security.PSAuthenticationFailedException;
 import com.percussion.security.PSAuthenticationRequiredException;
 import com.percussion.security.PSAuthorizationException;
 import com.percussion.security.PSUserEntry;
-import com.percussion.server.IPSCgiVariables;
+import com.percussion.utils.server.IPSCgiVariables;
 import com.percussion.server.IPSServerErrors;
 import com.percussion.server.IPSValidateSession;
 import com.percussion.server.PSConsole;
@@ -152,8 +155,7 @@ public class PSXmlObjectStoreHandler extends PSObjectFactory
     * </table>
     * 
     * @param      connInfo                     the object store definition
-    * 
-    * @return the connected object store
+    *
     *
     * @todo: make all request root string public and reuse them.
     */
@@ -6065,10 +6067,10 @@ public class PSXmlObjectStoreHandler extends PSObjectFactory
     *
     * @param   appName The name of the application
     *
-    * @throws   com.percussion.design.objectstore.PSNotFoundException
+    * @throws PSNotFoundException
     */
    private void updateSummaryEntry(String appName)
-      throws com.percussion.design.objectstore.PSNotFoundException,
+      throws PSNotFoundException,
          PSServerException
    {
       Document doc               = null;

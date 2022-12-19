@@ -25,6 +25,7 @@
 package com.percussion.data;
 
 import com.percussion.design.objectstore.PSBackEndTable;
+import com.percussion.error.PSSqlException;
 import com.percussion.log.PSLogServerWarning;
 import com.percussion.server.PSServer;
 import com.percussion.util.PSSqlHelper;

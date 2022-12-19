@@ -24,9 +24,8 @@
 
 package com.percussion.rx.delivery;
 
-import com.percussion.rx.design.IPSDesignModel;
 import com.percussion.services.PSBaseServiceLocator;
-import com.percussion.services.PSMissingBeanConfigurationException;
+import com.percussion.error.PSMissingBeanConfigurationException;
 
 public class PSLocalDeliveryManagerLocator extends PSBaseServiceLocator
 {

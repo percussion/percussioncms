@@ -27,7 +27,7 @@ package com.percussion.server.cache;
 import com.percussion.data.PSExecutionData;
 import com.percussion.data.PSRuleListEvaluator;
 import com.percussion.design.objectstore.IPSObjectStoreErrors;
-import com.percussion.design.objectstore.PSNotFoundException;
+import com.percussion.error.PSNotFoundException;
 import com.percussion.design.objectstore.PSRule;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
 import com.percussion.extension.PSExtensionException;

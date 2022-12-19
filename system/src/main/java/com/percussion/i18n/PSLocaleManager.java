@@ -25,7 +25,7 @@
 package com.percussion.i18n;
 
 import com.percussion.i18n.rxlt.PSLocaleRxResourceCopyHandler;
-import com.percussion.services.PSMissingBeanConfigurationException;
+import com.percussion.error.PSMissingBeanConfigurationException;
 import com.percussion.services.general.IPSRhythmyxInfo;
 import com.percussion.services.general.PSRhythmyxInfoLocator;
 import com.percussion.services.legacy.IPSCmsObjectMgr;

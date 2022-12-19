@@ -24,7 +24,7 @@
 
 package com.percussion.debug;
 
-import com.percussion.server.IPSCgiVariables;
+import com.percussion.utils.server.IPSCgiVariables;
 import com.percussion.server.PSRequest;
 
 import java.io.File;
