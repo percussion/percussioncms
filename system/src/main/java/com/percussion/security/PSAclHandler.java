@@ -26,7 +26,7 @@ package com.percussion.security;
 
 import com.percussion.design.objectstore.PSAcl;
 import com.percussion.design.objectstore.PSAclEntry;
-import com.percussion.server.IPSCgiVariables;
+import com.percussion.utils.server.IPSCgiVariables;
 import com.percussion.server.PSRequest;
 import com.percussion.server.PSUserSession;
 import com.percussion.util.PSCollection;

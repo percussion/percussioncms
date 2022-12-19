@@ -39,7 +39,7 @@ import com.percussion.design.objectstore.PSDataSynchronizer;
 import com.percussion.design.objectstore.PSExtensionCall;
 import com.percussion.design.objectstore.PSExtensionParamValue;
 import com.percussion.design.objectstore.PSHtmlParameter;
-import com.percussion.design.objectstore.PSNotFoundException;
+import com.percussion.error.PSNotFoundException;
 import com.percussion.design.objectstore.PSPipe;
 import com.percussion.design.objectstore.PSQueryPipe;
 import com.percussion.design.objectstore.PSRequestLink;

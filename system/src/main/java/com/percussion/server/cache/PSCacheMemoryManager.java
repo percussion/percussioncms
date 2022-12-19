@@ -29,6 +29,7 @@ import com.percussion.server.IPSServerErrors;
 import com.percussion.server.PSConsole;
 import com.percussion.server.PSServer;
 import com.percussion.server.PSServerLogHandler;
+import com.percussion.util.PSCacheException;
 
 import java.io.File;
 import java.io.NotSerializableException;

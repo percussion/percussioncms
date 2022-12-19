@@ -58,7 +58,7 @@ import com.percussion.design.objectstore.PSDataSet;
 import com.percussion.design.objectstore.PSExtensionCall;
 import com.percussion.design.objectstore.PSFieldSet;
 import com.percussion.design.objectstore.PSLocator;
-import com.percussion.design.objectstore.PSNotFoundException;
+import com.percussion.error.PSNotFoundException;
 import com.percussion.design.objectstore.PSQueryPipe;
 import com.percussion.design.objectstore.PSSearchConfig;
 import com.percussion.design.objectstore.PSServerConfiguration;

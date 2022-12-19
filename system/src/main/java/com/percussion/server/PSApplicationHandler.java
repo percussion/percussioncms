@@ -44,7 +44,7 @@ import com.percussion.design.objectstore.PSDataEncryptor;
 import com.percussion.design.objectstore.PSDataSet;
 import com.percussion.design.objectstore.PSErrorWebPages;
 import com.percussion.design.objectstore.PSLoginWebPage;
-import com.percussion.design.objectstore.PSNotFoundException;
+import com.percussion.error.PSNotFoundException;
 import com.percussion.design.objectstore.PSPipe;
 import com.percussion.design.objectstore.PSQueryPipe;
 import com.percussion.design.objectstore.PSRequestor;
@@ -86,6 +86,7 @@ import com.percussion.server.cache.PSCacheContext;
 import com.percussion.server.cache.PSCacheManager;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.util.PSCollection;
+import com.percussion.utils.server.IPSCgiVariables;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import org.apache.commons.lang.StringUtils;
 

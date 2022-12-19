@@ -29,7 +29,7 @@ import com.percussion.category.data.PSCategoryNode;
 import com.percussion.category.extension.PSCategoryControlUtils;
 import com.percussion.delivery.service.IPSDeliveryInfoService;
 import com.percussion.design.objectstore.PSLocator;
-import com.percussion.design.objectstore.PSNotFoundException;
+import com.percussion.error.PSNotFoundException;
 import com.percussion.design.objectstore.PSRelationshipConfig;
 import com.percussion.designmanagement.service.IPSFileSystemService;
 import com.percussion.error.PSExceptionUtils;

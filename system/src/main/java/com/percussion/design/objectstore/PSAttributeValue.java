@@ -24,10 +24,9 @@
 
 package com.percussion.design.objectstore;
 
+import com.percussion.error.PSDatabaseComponentException;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 

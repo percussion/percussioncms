@@ -34,7 +34,7 @@ import com.percussion.security.PSSecurityProvider;
 import com.percussion.security.PSSecurityToken;
 import com.percussion.security.PSUserEntry;
 import com.percussion.security.SecureStringUtils;
-import com.percussion.server.IPSCgiVariables;
+import com.percussion.utils.server.IPSCgiVariables;
 import com.percussion.server.PSApplicationHandler;
 import com.percussion.server.PSBaseResponse;
 import com.percussion.server.PSRequest;

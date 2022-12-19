@@ -25,7 +25,7 @@
 package com.percussion.data;
 
 import com.percussion.design.objectstore.PSDataSet;
-import com.percussion.design.objectstore.PSNotFoundException;
+import com.percussion.error.PSNotFoundException;
 import com.percussion.design.objectstore.PSRequestor;
 import com.percussion.server.PSApplicationHandler;
 import com.percussion.server.PSRequest;

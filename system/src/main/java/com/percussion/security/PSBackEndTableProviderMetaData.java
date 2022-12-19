@@ -25,7 +25,7 @@ package com.percussion.security;
 
 import com.percussion.data.PSResultSet;
 import com.percussion.data.PSResultSetWrapper;
-import com.percussion.data.PSSqlException;
+import com.percussion.error.PSSqlException;
 import com.percussion.data.jdbc.PSOdbcDriverMetaData;
 import com.percussion.log.PSLogManager;
 import com.percussion.log.PSLogServerWarning;

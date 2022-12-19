@@ -59,7 +59,7 @@ import com.percussion.design.objectstore.PSFieldSet;
 import com.percussion.design.objectstore.PSFunctionCall;
 import com.percussion.design.objectstore.PSFunctionParamValue;
 import com.percussion.design.objectstore.PSLiteralSet;
-import com.percussion.design.objectstore.PSNotFoundException;
+import com.percussion.error.PSNotFoundException;
 import com.percussion.design.objectstore.PSNumericLiteral;
 import com.percussion.design.objectstore.PSPageDataTank;
 import com.percussion.design.objectstore.PSQueryPipe;

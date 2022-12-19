@@ -23,7 +23,7 @@
  */
 package com.percussion.workflow;
 
-import com.percussion.design.objectstore.PSNotFoundException;
+import com.percussion.error.PSNotFoundException;
 import com.percussion.extension.IPSExtension;
 import com.percussion.extension.IPSExtensionDef;
 import com.percussion.extension.IPSExtensionErrors;

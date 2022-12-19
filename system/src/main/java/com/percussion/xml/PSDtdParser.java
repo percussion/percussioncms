@@ -26,7 +26,7 @@ package com.percussion.xml;
 
 //java
 
-import com.percussion.design.catalog.PSCatalogException;
+import com.percussion.error.PSCatalogException;
 import com.percussion.server.IPSServerErrors;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

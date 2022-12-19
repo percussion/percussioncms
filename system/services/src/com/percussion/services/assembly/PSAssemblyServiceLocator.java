@@ -24,7 +24,7 @@
 package com.percussion.services.assembly;
 
 import com.percussion.services.PSBaseServiceLocator;
-import com.percussion.services.PSMissingBeanConfigurationException;
+import com.percussion.error.PSMissingBeanConfigurationException;
 
 /**
  * Locator to get the assembly service

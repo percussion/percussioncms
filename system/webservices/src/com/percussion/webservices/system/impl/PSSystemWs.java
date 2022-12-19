@@ -39,7 +39,7 @@ import com.percussion.server.IPSServerErrors;
 import com.percussion.server.PSRequest;
 import com.percussion.server.PSServer;
 import com.percussion.server.PSUserSession;
-import com.percussion.server.cache.PSCacheException;
+import com.percussion.util.PSCacheException;
 import com.percussion.server.cache.PSCacheProxy;
 import com.percussion.services.guidmgr.data.PSLegacyGuid;
 import com.percussion.services.legacy.IPSCmsObjectMgr;

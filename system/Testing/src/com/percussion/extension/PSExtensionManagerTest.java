@@ -24,7 +24,7 @@
 package com.percussion.extension;
 
 import com.percussion.content.PSMimeContentAdapter;
-import com.percussion.design.objectstore.PSNotFoundException;
+import com.percussion.error.PSNotFoundException;
 import com.percussion.testing.IPSServerBasedJunitTest;
 import com.percussion.utils.collections.PSIteratorUtils;
 import com.percussion.utils.testing.IntegrationTest;

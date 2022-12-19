@@ -29,7 +29,7 @@ import com.percussion.design.objectstore.PSBackEndColumn;
 import com.percussion.design.objectstore.PSDataMapper;
 import com.percussion.design.objectstore.PSDataMapping;
 import com.percussion.design.objectstore.PSDataSet;
-import com.percussion.design.objectstore.PSNotFoundException;
+import com.percussion.error.PSNotFoundException;
 import com.percussion.design.objectstore.PSPipe;
 import com.percussion.design.objectstore.PSRequestor;
 import com.percussion.error.PSIllegalArgumentException;

@@ -30,7 +30,7 @@ import com.percussion.cms.PSRelationshipData;
 import com.percussion.cms.PSSingleValueBuilder;
 import com.percussion.cms.objectstore.PSComponentSummary;
 import com.percussion.data.PSConversionException;
-import com.percussion.design.objectstore.PSNotFoundException;
+import com.percussion.error.PSNotFoundException;
 import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSExtensionManager;
 import com.percussion.extension.IPSUdfProcessor;

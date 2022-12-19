@@ -23,7 +23,7 @@
  */
 package com.percussion.extension;
 
-import com.percussion.design.objectstore.PSNotFoundException;
+import com.percussion.error.PSNotFoundException;
 import com.percussion.server.PSConsole;
 import com.percussion.util.IOTools;
 

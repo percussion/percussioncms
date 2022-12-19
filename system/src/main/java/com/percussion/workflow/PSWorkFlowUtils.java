@@ -27,7 +27,7 @@ package com.percussion.workflow;
 import com.percussion.cms.IPSConstants;
 import com.percussion.cms.objectstore.PSComponentSummary;
 import com.percussion.data.PSInternalRequestCallException;
-import com.percussion.design.objectstore.PSNotFoundException;
+import com.percussion.error.PSNotFoundException;
 import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.PSExtensionException;
 import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;

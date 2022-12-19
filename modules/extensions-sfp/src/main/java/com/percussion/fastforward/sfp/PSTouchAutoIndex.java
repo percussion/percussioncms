@@ -35,7 +35,7 @@ import com.percussion.fastforward.utils.PSRelationshipHelper;
 import com.percussion.security.PSAuthorizationException;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.server.PSRequestValidationException;
-import com.percussion.server.cache.PSCacheException;
+import com.percussion.util.PSCacheException;
 import com.percussion.server.cache.PSCacheProxy;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.guidmgr.data.PSGuid;

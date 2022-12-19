@@ -25,11 +25,12 @@
 package com.percussion.data.jdbc;
 
 import com.percussion.data.PSResultSet;
-import com.percussion.design.catalog.PSCatalogException;
+import com.percussion.error.PSCatalogException;
 import com.percussion.design.objectstore.PSAclEntry;
 import com.percussion.security.PSAuthorizationException;
 import com.percussion.server.PSConsole;
 import com.percussion.util.PSFileFilter;
+import com.percussion.utils.server.IPSCgiVariables;
 import com.percussion.utils.tools.PSPatternMatcher;
 import com.percussion.xml.PSDtd;
 import com.percussion.xml.PSDtdParser;
@@ -3484,7 +3485,7 @@ public class PSXmlDatabaseMetaData extends PSFileSystemDatabaseMetaData {
 
    static
    {
-      Class serverVariables = com.percussion.server.IPSCgiVariables.class;
+      Class serverVariables = IPSCgiVariables.class;
       Field[] serverVariableFields = serverVariables.getFields();
 
       ms_cgiVars = new ArrayList(serverVariableFields.length);

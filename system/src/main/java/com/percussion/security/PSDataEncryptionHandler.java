@@ -25,7 +25,7 @@
 package com.percussion.security;
 
 import com.percussion.design.objectstore.PSDataEncryptor;
-import com.percussion.server.IPSCgiVariables;
+import com.percussion.utils.server.IPSCgiVariables;
 import com.percussion.server.PSRequest;
 import com.percussion.server.PSResponse;
 import com.percussion.server.PSServer;

@@ -29,7 +29,7 @@ import com.percussion.proxyconfig.data.PSProxyConfig;
 import com.percussion.proxyconfig.service.IPSProxyConfigService;
 import com.percussion.proxyconfig.service.PSProxyConfigServiceLocator;
 import com.percussion.server.PSServer;
-import com.percussion.services.PSMissingBeanConfigurationException;
+import com.percussion.error.PSMissingBeanConfigurationException;
 import net.sf.json.JSON;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONNull;

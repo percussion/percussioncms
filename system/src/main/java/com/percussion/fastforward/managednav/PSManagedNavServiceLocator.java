@@ -24,7 +24,7 @@
 package com.percussion.fastforward.managednav;
 
 import com.percussion.services.PSBaseServiceLocator;
-import com.percussion.services.PSMissingBeanConfigurationException;
+import com.percussion.error.PSMissingBeanConfigurationException;
 
 public class PSManagedNavServiceLocator extends PSBaseServiceLocator
 {

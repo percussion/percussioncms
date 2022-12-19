@@ -23,6 +23,7 @@
  */
 package com.percussion.design.objectstore;
 
+import com.percussion.error.PSDatabaseComponentException;
 import com.percussion.util.PSCollection;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;

@@ -23,7 +23,7 @@
  */
 package com.percussion.relationship;
 
-import com.percussion.data.PSSqlException;
+import com.percussion.error.PSSqlException;
 import com.percussion.error.PSException;
 import com.percussion.extension.IPSExtensionErrors;
 import com.percussion.extension.IPSRequestPreProcessor;

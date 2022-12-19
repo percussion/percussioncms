@@ -64,7 +64,7 @@ import com.percussion.data.jdbc.sqlparser.SQLParser;
 import com.percussion.data.jdbc.sqlparser.SQLParserVisitor;
 import com.percussion.data.jdbc.sqlparser.SimpleNode;
 import com.percussion.data.jdbc.sqlparser.UncheckedSQLException;
-import com.percussion.design.catalog.PSCatalogException;
+import com.percussion.error.PSCatalogException;
 import com.percussion.design.objectstore.IPSReplacementValue;
 import com.percussion.design.objectstore.PSBackEndColumn;
 import com.percussion.design.objectstore.PSBackEndJoin;

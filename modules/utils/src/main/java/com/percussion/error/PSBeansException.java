@@ -29,7 +29,7 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 /**
- * This is an independant exception for use within the beans portion of the
+ * This is an independent exception for use within the beans portion of the
  * system.  There are no dependencies on anything Rhythmyx.
  */
 public class PSBeansException extends Exception

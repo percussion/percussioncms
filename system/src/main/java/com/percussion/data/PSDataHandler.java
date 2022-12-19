@@ -28,7 +28,7 @@ import com.percussion.debug.PSTraceMessageFactory;
 import com.percussion.design.objectstore.PSDataSet;
 import com.percussion.design.objectstore.PSExtensionCall;
 import com.percussion.design.objectstore.PSExtensionCallSet;
-import com.percussion.design.objectstore.PSNotFoundException;
+import com.percussion.error.PSNotFoundException;
 import com.percussion.design.objectstore.PSPipe;
 import com.percussion.design.objectstore.PSRequestor;
 import com.percussion.error.PSApplicationAuthorizationError;

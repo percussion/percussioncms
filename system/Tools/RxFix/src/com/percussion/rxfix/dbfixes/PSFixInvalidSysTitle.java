@@ -33,7 +33,7 @@ import com.percussion.error.PSExceptionUtils;
 import com.percussion.rxfix.IPSFix;
 import com.percussion.security.SecureStringUtils;
 import com.percussion.server.PSServer;
-import com.percussion.server.cache.PSCacheException;
+import com.percussion.util.PSCacheException;
 import com.percussion.server.cache.PSCacheManager;
 import com.percussion.server.cache.PSCacheProxy;
 import com.percussion.server.webservices.PSServerFolderProcessor;

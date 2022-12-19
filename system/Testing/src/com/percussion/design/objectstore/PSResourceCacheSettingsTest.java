@@ -24,7 +24,7 @@
 
 package com.percussion.design.objectstore;
 
-import com.percussion.server.IPSCgiVariables;
+import com.percussion.utils.server.IPSCgiVariables;
 import com.percussion.xml.PSXmlDocumentBuilder;
 
 import java.util.ArrayList;

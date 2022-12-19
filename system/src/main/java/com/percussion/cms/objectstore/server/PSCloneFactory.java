@@ -31,7 +31,7 @@ import com.percussion.cms.objectstore.PSFolder;
 import com.percussion.cms.objectstore.PSKey;
 import com.percussion.design.objectstore.PSContentType;
 import com.percussion.design.objectstore.PSLocator;
-import com.percussion.design.objectstore.PSNotFoundException;
+import com.percussion.error.PSNotFoundException;
 import com.percussion.error.PSException;
 import com.percussion.server.IPSServerErrors;
 import com.percussion.server.PSInternalRequest;

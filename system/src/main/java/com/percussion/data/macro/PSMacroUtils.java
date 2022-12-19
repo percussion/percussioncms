@@ -34,7 +34,7 @@ import com.percussion.data.PSInternalRequestCallException;
 import com.percussion.design.objectstore.PSBackEndColumn;
 import com.percussion.design.objectstore.PSBackEndTable;
 import com.percussion.design.objectstore.PSContentItemStatus;
-import com.percussion.design.objectstore.PSNotFoundException;
+import com.percussion.error.PSNotFoundException;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.server.IPSServerErrors;
 import com.percussion.server.PSInternalRequest;

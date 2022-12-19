@@ -26,6 +26,7 @@ package com.percussion.data;
 
 import com.percussion.design.objectstore.PSBackEndColumn;
 import com.percussion.design.objectstore.PSBackEndTable;
+import com.percussion.error.PSSqlException;
 import com.percussion.utils.jdbc.PSConnectionDetail;
 import com.percussion.utils.jdbc.PSConnectionHelper;
 

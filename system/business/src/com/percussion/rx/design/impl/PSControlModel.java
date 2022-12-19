@@ -26,7 +26,7 @@ package com.percussion.rx.design.impl;
 import com.percussion.conn.PSServerException;
 import com.percussion.design.objectstore.PSApplication;
 import com.percussion.design.objectstore.PSControlMeta;
-import com.percussion.design.objectstore.PSNotFoundException;
+import com.percussion.error.PSNotFoundException;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
 import com.percussion.design.objectstore.server.IPSLockerId;
 import com.percussion.design.objectstore.server.PSServerXmlObjectStore;

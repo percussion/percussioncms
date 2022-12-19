@@ -881,7 +881,7 @@ public class PSNavHelper
          return null;
       }
 
-      if (folderLoc!= null && folderLoc.getId()==1) {
+      if (folderLoc.getId() == 1) {
          log.warn("Previewing item using navigation outside of a site");
          return null;
       }
@@ -912,7 +912,7 @@ public class PSNavHelper
                   relSet.remove(i);
                }
             }
-            if (relSet.isEmpty() || relSet.size() > 1)
+            if (relSet.size() != 1)
             {
                log.debug("Invalid folder structure."
                      + " Failed to get proper parent folder for folder id:"

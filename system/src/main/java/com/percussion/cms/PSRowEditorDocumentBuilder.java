@@ -44,7 +44,7 @@ import com.percussion.design.objectstore.PSDisplayMapping;
 import com.percussion.design.objectstore.PSDisplayText;
 import com.percussion.design.objectstore.PSField;
 import com.percussion.design.objectstore.PSFieldSet;
-import com.percussion.design.objectstore.PSNotFoundException;
+import com.percussion.error.PSNotFoundException;
 import com.percussion.design.objectstore.PSSystemValidationException;
 import com.percussion.design.objectstore.PSTextLiteral;
 import com.percussion.design.objectstore.PSUISet;

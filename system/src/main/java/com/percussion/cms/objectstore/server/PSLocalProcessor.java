@@ -30,7 +30,7 @@ import com.percussion.cms.objectstore.PSProcessorCommon;
 import com.percussion.data.IPSInternalResultHandler;
 import com.percussion.data.PSIdGenerator;
 import com.percussion.data.PSInternalRequestCallException;
-import com.percussion.data.PSSqlException;
+import com.percussion.error.PSSqlException;
 import com.percussion.security.PSAuthenticationFailedException;
 import com.percussion.security.PSAuthorizationException;
 import com.percussion.server.IPSRequestContext;

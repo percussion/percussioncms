@@ -24,6 +24,7 @@
 package com.percussion.data;
 
 import com.percussion.error.PSIllegalArgumentException;
+import com.percussion.error.PSSqlException;
 import com.percussion.server.PSRequest;
 import com.percussion.util.PSPreparedStatement;
 import com.percussion.utils.jdbc.PSConnectionDetail;
@@ -185,7 +186,7 @@ public class PSQueryStatement extends PSStatement
          } catch (java.sql.SQLException se) {
             // if this is not supported, that's ok. otherwise, treat it
             // as an error
-            if (!PSSqlException.hasFeatureNotSupported(se, 
+            if (!PSSqlException.hasFeatureNotSupported(se,
                connDetail.getDriver()))
             {
                throw se;

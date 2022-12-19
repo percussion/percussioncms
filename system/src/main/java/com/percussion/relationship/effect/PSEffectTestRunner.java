@@ -29,7 +29,7 @@ import com.percussion.data.PSExtensionRunner;
 import com.percussion.data.PSRuleListEvaluator;
 import com.percussion.design.objectstore.PSConditionalEffect;
 import com.percussion.design.objectstore.PSExtensionCall;
-import com.percussion.design.objectstore.PSNotFoundException;
+import com.percussion.error.PSNotFoundException;
 import com.percussion.extension.IPSExtension;
 import com.percussion.extension.IPSExtensionManager;
 import com.percussion.extension.PSExtensionException;

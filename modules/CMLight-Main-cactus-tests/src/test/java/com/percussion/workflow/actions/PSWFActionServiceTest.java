@@ -9,7 +9,7 @@
  *****************************************************************************/
 package com.percussion.workflow.actions;
 
-import com.percussion.design.objectstore.PSNotFoundException;
+import com.percussion.error.PSNotFoundException;
 import com.percussion.extension.IPSWorkflowAction;
 import com.percussion.extension.PSExtensionException;
 import com.percussion.utils.testing.IntegrationTest;

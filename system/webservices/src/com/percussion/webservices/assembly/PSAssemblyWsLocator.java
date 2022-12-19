@@ -24,7 +24,7 @@
 package com.percussion.webservices.assembly;
 
 import com.percussion.services.PSBaseServiceLocator;
-import com.percussion.services.PSMissingBeanConfigurationException;
+import com.percussion.error.PSMissingBeanConfigurationException;
 
 /**
  * Locator to get the assembly and assembly design webservices.

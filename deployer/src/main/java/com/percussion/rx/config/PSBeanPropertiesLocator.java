@@ -24,7 +24,7 @@
 package com.percussion.rx.config;
 
 import com.percussion.services.PSBaseServiceLocator;
-import com.percussion.services.PSMissingBeanConfigurationException;
+import com.percussion.error.PSMissingBeanConfigurationException;
 
 /**
  * This class provides a way to locate the instance of {@link IPSBeanProperties}.

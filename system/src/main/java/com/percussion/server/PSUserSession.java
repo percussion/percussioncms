@@ -44,6 +44,7 @@ import com.percussion.util.PSCharSets;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.io.PathUtils;
 import com.percussion.utils.request.PSRequestInfo;
+import com.percussion.utils.server.IPSCgiVariables;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

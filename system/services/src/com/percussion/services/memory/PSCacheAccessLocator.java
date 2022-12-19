@@ -24,7 +24,7 @@
 package com.percussion.services.memory;
 
 import com.percussion.services.PSBaseServiceLocator;
-import com.percussion.services.PSMissingBeanConfigurationException;
+import com.percussion.error.PSMissingBeanConfigurationException;
 
 /**
  * Locator for cache service

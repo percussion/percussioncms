@@ -26,7 +26,7 @@ package com.percussion.data.vfs;
 
 import com.percussion.conn.PSServerException;
 import com.percussion.data.IPSDataErrors;
-import com.percussion.design.objectstore.PSNotFoundException;
+import com.percussion.error.PSNotFoundException;
 import com.percussion.design.objectstore.server.IPSObjectStoreHandler;
 import com.percussion.server.PSConsole;
 import com.percussion.server.PSUserSession;

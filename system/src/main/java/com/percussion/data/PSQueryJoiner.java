@@ -25,7 +25,7 @@ package com.percussion.data;
 
 import com.percussion.design.objectstore.PSBackEndJoin;
 import com.percussion.design.objectstore.PSExtensionCall;
-import com.percussion.design.objectstore.PSNotFoundException;
+import com.percussion.error.PSNotFoundException;
 import com.percussion.extension.PSExtensionException;
 import com.percussion.server.PSApplicationHandler;
 

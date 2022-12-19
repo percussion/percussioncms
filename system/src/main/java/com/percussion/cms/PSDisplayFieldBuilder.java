@@ -33,7 +33,7 @@ import com.percussion.design.objectstore.IPSReplacementValue;
 import com.percussion.design.objectstore.PSChoices;
 import com.percussion.design.objectstore.PSField;
 import com.percussion.design.objectstore.PSFieldSet;
-import com.percussion.design.objectstore.PSNotFoundException;
+import com.percussion.error.PSNotFoundException;
 import com.percussion.design.objectstore.PSParam;
 import com.percussion.design.objectstore.PSSystemValidationException;
 import com.percussion.design.objectstore.PSTextLiteral;

@@ -193,7 +193,7 @@ public class PSExtensionMethodParam implements Serializable
    /**
     * Constructs this extension method parameter from its xml representation.
     * 
-    * @param element the xml element from which to construct this object, 
+    * @param source element the xml element from which to construct this object,
     *    nor <code>null</code>.
     * @throws PSExtensionException for any error deserializing the supplied xml.
     */

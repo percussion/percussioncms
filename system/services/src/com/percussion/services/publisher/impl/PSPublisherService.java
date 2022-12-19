@@ -1261,7 +1261,7 @@ public class PSPublisherService
     */
    private IPSExtension lookupExtension(String name)
       throws PSExtensionException,
-      com.percussion.design.objectstore.PSNotFoundException
+           com.percussion.error.PSNotFoundException
    {
       if (StringUtils.isBlank(name))
       {
