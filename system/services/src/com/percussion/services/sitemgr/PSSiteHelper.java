@@ -748,8 +748,8 @@ public class PSSiteHelper
          String linkSitePath = null;
          String currentSitePath = null;
 
-         List<IPSSite> groupSites = new ArrayList<IPSSite>();
-         List<IPSSite> defaultSites = new ArrayList<IPSSite>();
+         List<IPSSite> groupSites = new ArrayList<>();
+         List<IPSSite> defaultSites = new ArrayList<>();
 
          for (IPSSite siteTestItem : folderSites)
          {
@@ -858,7 +858,6 @@ public class PSSiteHelper
    {
       IPSGuid calculatedSite;
       IPSGuid linkSiteGuid = null;
-      boolean foundSite;
       for (IPSSite testSite : filteredSitesByGroup)
       {
          if (testSite.getFolderRoot().equalsIgnoreCase(linkSitePath))
