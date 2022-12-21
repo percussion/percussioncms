@@ -41,6 +41,11 @@ public class PSApacheRedirectConverter extends PSBaseRedirectConverter{
         sb.append("\" ");
 
         sb.append("\"");
+        if(getAbsolutePrefix()!=null){
+            if(!r.getRedirectTo().startsWith("http")) {
+                sb.append(getAbsolutePrefix());
+            }
+        }
         sb.append(r.getRedirectTo());
         sb.append("\" ");
 

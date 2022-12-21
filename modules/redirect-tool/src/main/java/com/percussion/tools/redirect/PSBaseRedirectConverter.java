@@ -91,4 +91,16 @@ public class PSBaseRedirectConverter implements IPSRedirectConverter {
     public String getFilename() {
         return null;
     }
+
+    private String prefix;
+
+    @Override
+    public String getAbsolutePrefix() {
+        return prefix;
+    }
+
+    @Override
+    public void setAbsolutePrefix(String prefix) {
+        this.prefix = prefix;
+    }
 }
