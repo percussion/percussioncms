@@ -54,4 +54,14 @@ public class PSS3RedirectConverter implements IPSRedirectConverter{
     public String getFilename() {
         return null;
     }
+
+    @Override
+    public String getAbsolutePrefix() {
+        return null;
+    }
+
+    @Override
+    public void setAbsolutePrefix(String prefix) {
+
+    }
 }

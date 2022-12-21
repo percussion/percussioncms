@@ -45,6 +45,7 @@ public class PSRedirectTool {
         options.addOption("n", "nginx", false, "generate redirects in nginx formay");
         options.addOption("s3", false, "generate redirects in S3 json redirect policy format");
         options.addOption("csv", true, "input redirect manager CSV file");
+        options.addOption("z", true, "Add absolute url to targets");
         options.addOption("o", false, "the directory to write converted redirects to");
 
         // create the parser
@@ -77,6 +78,10 @@ public class PSRedirectTool {
 
             if(line.hasOption("a")){
                 PSApacheRedirectConverter cvt = new PSApacheRedirectConverter();
+                if(line.hasOption("z")) {
+                    cvt.setAbsolutePrefix(line.getOptionValue("z"));
+                }
+
                 PSPercussionRedirectEntryList list = new PSPercussionRedirectEntryList(csv);
 
                 int count = cvt.convertRedirects(list, Paths.get("").toAbsolutePath().toString(),null,null,null);

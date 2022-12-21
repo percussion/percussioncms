@@ -51,4 +51,9 @@ public interface IPSRedirectConverter {
     String convertRegexRedirect(PSPercussionRedirectEntry e);
 
     String getFilename();
+
+    String getAbsolutePrefix();
+
+    void setAbsolutePrefix(String prefix);
+
 }

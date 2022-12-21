@@ -27,14 +27,14 @@ public class PSJSONRedirectConverter extends PSBaseRedirectConverter{
     public String convertVanityRedirect(PSPercussionRedirectEntry e) {
 
         StringBuilder sb = new StringBuilder(JSON_RULE.replace("{0}",
-                 "^" + e.getCondition()).replace("{1}",e.getRedirectTo()).replace("{2}", "301"));
+                  e.getCondition()).replace("{1}",e.getRedirectTo()).replace("{2}", "301"));
         sb.append(System.lineSeparator());
         return sb.toString();
     }
 
     @Override
     public String convertRegexRedirect(PSPercussionRedirectEntry e) {
-     return convertVanityRedirect(e);
+     return null;//return convertVanityRedirect(e);
     }
 
     @Override
