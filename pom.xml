@@ -62,13 +62,12 @@
         <module>modules/perc-packages</module>
         <module>modules/perc-ant</module>
         <module>modules/perc-thumbnail</module>
-        <module>modules/perc-distribution-tree</module>
-        <module>modules/CMLight-Main-cactus-tests</module>
-        <module>modules/ant-install</module>
         <module>modules/SSLTools</module>
         <module>modules/tlsutils</module>
         <module>modules/perc-toolkit</module>
         <module>modules/perc-taxonomy</module>
+        <module>modules/perc-distribution-tree</module>
+        <module>modules/CMLight-Main-cactus-tests</module>
     </modules>
    <properties>
        <build.profile.id>dev</build.profile.id>
