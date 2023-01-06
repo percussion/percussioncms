@@ -26,22 +26,27 @@ package com.percussion.analytics.data;
 import com.percussion.analytics.data.IPSAnalyticsQueryResult.DataType;
 import com.percussion.analytics.data.impl.PSAnalyticsQueryResult;
 import com.percussion.analytics.error.PSAnalyticsQueryResultException;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 /**
  * @author erikserating
  *
  */
 @SuppressWarnings({"deprecation"})
-public class PSAnalyticsQueryResultTest extends TestCase
+public class PSAnalyticsQueryResultTest
 {
    
-   @Override
+   @Before
    public void setUp() throws Exception
    {
       result = new PSAnalyticsQueryResult();
@@ -54,6 +59,7 @@ public class PSAnalyticsQueryResultTest extends TestCase
    }
    
    @SuppressWarnings("unchecked")
+   @Test
    public void testPutMethods() throws Exception
    {
       PSAnalyticsQueryResult r =  new PSAnalyticsQueryResult();
@@ -68,7 +74,7 @@ public class PSAnalyticsQueryResultTest extends TestCase
       
       try
       {
-         r.put("INVALID_CLASS", new HashMap());
+         r.put("INVALID_CLASS", new HashMap<>());
          fail("Class is an invalid type and put operation should throw an exception.");
       }
       catch (PSAnalyticsQueryResultException e)
@@ -103,7 +109,7 @@ public class PSAnalyticsQueryResultTest extends TestCase
     	  assertEquals(e.getMessage(),"values cannot be null or empty.");
       }
    }
-   
+   @Test
    public void testHasValue() throws Exception
    {
       assertTrue(result.hasValue(KEY_INT));
@@ -119,6 +125,7 @@ public class PSAnalyticsQueryResultTest extends TestCase
       }
    }
    
+   @Test
    public void testGetDataType() throws Exception
    {
 	   DataType testDataType;
@@ -131,7 +138,8 @@ public class PSAnalyticsQueryResultTest extends TestCase
 		   assertEquals(e.getMessage(),"key cannot be null or empty.");
 	   }
    }
-   
+
+   @Test
    public void testGetDate() throws Exception
    {
 	  Date d1 = null; 
@@ -186,7 +194,8 @@ public class PSAnalyticsQueryResultTest extends TestCase
          assertEquals(e.getMessage(), "Type cannot be converted to a Date");
       }
    }
-   
+
+   @Test
    public void testGetInt() throws Exception
    { 
 	  try 
@@ -231,7 +240,8 @@ public class PSAnalyticsQueryResultTest extends TestCase
       
       
    }
-   
+
+   @Test
    public void testGetString() throws Exception
    {
 	  String sNull = result.getString("null");
@@ -261,7 +271,8 @@ public class PSAnalyticsQueryResultTest extends TestCase
     	  assertEquals(e.getMessage(),"key cannot be null or empty.");
       }
    }
-   
+
+   @Test
    public void testGetFloat() throws Exception
    {
 	  try
@@ -274,13 +285,13 @@ public class PSAnalyticsQueryResultTest extends TestCase
 	  }
 	   
       float f1 = result.getFloat(KEY_FLOAT);
-      assertEquals(f1, VALUE_FLOAT);
+      assertEquals(VALUE_FLOAT,f1,0);
       
       float f2 = result.getFloat(KEY_INT);
-      assertEquals(f2, 14F);
+      assertEquals(14F,f2, 0);
       
       float f3 = result.getFloat(KEY_LONG);
-      assertEquals(f3, 35F);
+      assertEquals( 35F, f3, 0);
       
       float f4 = result.getFloat("null");
       assertEquals(null,result.getDate("null"));
@@ -304,7 +315,8 @@ public class PSAnalyticsQueryResultTest extends TestCase
          assertEquals(e.getMessage(), "Type cannot be converted to a Float");
       }
    }
-   
+
+   @Test
    public void testGetLong() throws Exception
    {
 	  long fNull = result.getLong("null");
@@ -341,7 +353,8 @@ public class PSAnalyticsQueryResultTest extends TestCase
          assertEquals(e.getMessage(), "Type cannot be converted to a Long");
       }
    }
-   
+
+   @Test
    public void testConstructor() throws Exception
    {
 	   Map<String,Object> testMap = new HashMap<String,Object>();
