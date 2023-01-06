@@ -63,7 +63,6 @@
         <module>modules/perc-packages</module>
         <module>modules/perc-ant</module>
         <module>modules/perc-thumbnail</module>
-        <module>modules/ant-install</module>
         <module>modules/SSLTools</module>
         <module>modules/tlsutils</module>
         <module>modules/perc-toolkit</module>
@@ -1515,7 +1514,7 @@
             <dependency>
                 <groupId>org.codehaus.jettison</groupId>
                 <artifactId>jettison</artifactId>
-                <version>1.5.1</version>
+                <version>1.5.2</version>
             </dependency>
             <dependency>
                 <groupId>com.jcraft</groupId>
