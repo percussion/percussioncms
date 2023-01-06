@@ -545,12 +545,12 @@ public class PSHttpConnection
    public URL appendPsSessionId(URL url)
    {
       String sUrl = url.toString();
-      if (url.toString().endsWith(GET_SESSIONID_URL))
+      if (url.toString().endsWith(GET_SESSIONID_URL)  || (url.toString().endsWith(GET_USERINFO_URL)))
          return url;
 
       if (sUrl.indexOf("pssessionid=") != -1)
          return url;
-      
+
       if (sUrl.indexOf('?') == -1)
          sUrl = sUrl + "?pssessionid=" + getPsSessionId();
       else
@@ -646,6 +646,8 @@ public class PSHttpConnection
     * The URL used to retrieve the PS Session ID from server.
     */
    private static final String GET_SESSIONID_URL = "/util/getPSSessionID.jsp";
+
+   private static final String GET_USERINFO_URL = "sys_psxCms/userinfo.xml";
    
    /**
     * Set the boundary for posting data of type "multipart/form-data"

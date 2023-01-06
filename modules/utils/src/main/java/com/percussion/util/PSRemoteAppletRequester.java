@@ -123,7 +123,7 @@ public class PSRemoteAppletRequester implements IPSRemoteRequester
       if (resource.startsWith("/")) {
          resource = resource.substring(1);
       }
-      URL url = new URL(m_url, "../" + resource);
+      URL url = new URL(m_url, resource);
       
       log.debug("posting to url {} ", url.toString());
       log.debug("Params = {} ", paramsMap);
