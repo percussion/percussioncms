@@ -55,6 +55,7 @@
         <module>projects/sitemanage</module>
         <module>modules/servletutils</module>
         <module>modules/perc-rxapps</module>
+        <module>modules/DesktopContentExplorer</module>
         <module>modules/perc-jetty</module>
 		<module>modules/perc-jetty-jars</module>
         <module>modules/perc-jetty-logging</module>
@@ -100,6 +101,7 @@
        <maven.clean.plugin.version>3.2.0</maven.clean.plugin.version>
        <maven.build.helper.plugin.version>3.3.0</maven.build.helper.plugin.version>
        <maven.install.plugin.version>3.0.0-M1</maven.install.plugin.version>
+       <maven.jarsigner.plugin.version>3.0.0</maven.jarsigner.plugin.version>
        <spotbugs.plugin.version>4.2.0</spotbugs.plugin.version>
        <maven.checkstyle.plugin.version>3.1.1</maven.checkstyle.plugin.version>
        <maven.gpg.plugin.version>1.6</maven.gpg.plugin.version>
@@ -194,6 +196,7 @@
        <log4j2.version>2.18.0</log4j2.version>
        <guava.version>29.0-jre</guava.version>
        <xerces.version>2.12.2</xerces.version>
+       <xmlresolver.version>1.2</xmlresolver.version>
        <quartz.version>2.3.2</quartz.version>
        <rome.version>1.15.0</rome.version>
        <maven.source.jar.plugin.version>3.2.0</maven.source.jar.plugin.version>

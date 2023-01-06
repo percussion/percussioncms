@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSPY v5 rel. 2 U (http://www.xmlspy.com) by RammohanVangapalli (Percussion Software) -->
+<Node name="ContentExplorer" type="ROOT" label="" expanded="true" childrenurl="">
+   <TableMeta>
+      <Column name="ChildName" type="String"/>
+   </TableMeta>
+   <Props>
+      <Prop name="propname">propvalue</Prop>
+   </Props>
+   <Node name="SystemSite" iconkey="Sites" type="SystemSite" label="Sites" childrenurl="" expanded="false" permissions="1">
+      <RowData>
+         <ColumnData name="ChildName">Sites - Label</ColumnData>
+      </RowData>
+      <Props>
+         <Prop name="sys_contentid">1</Prop>
+      </Props>
+   </Node>
+   <Node name="SystemFolder" iconkey="Folders" type="SystemFolder" label="Folders" childrenurl="" expanded="false" permissions="1">
+      <RowData>
+         <ColumnData name="ChildName">Folders - Label</ColumnData>
+      </RowData>
+      <Props>
+         <Prop name="sys_contentid">2</Prop>
+      </Props>
+   </Node>
+   <Node name="SystemCategory" iconkey="Views" type="SystemCategory" label="Views" childrenurl="" expanded="true">
+      <RowData>
+         <ColumnData name="ChildName">Sites - Label</ColumnData>
+      </RowData>
+      <Node name="SystemView" iconkey="MyContent" type="SystemView" label="My Content" childrenurl="../sys_cxSupport/Views.html?sys_category=1" expanded="true">
+      </Node>
+      <Node name="SystemView" iconkey="CommunityContent" type="SystemView" label="Community Content" childrenurl="../sys_cxSupport/Views.html?sys_category=2" expanded="true">
+      </Node>
+      <Node name="SystemView" iconkey="AllContent" type="SystemView" label="All Content" childrenurl="../sys_cxSupport/Views.html?sys_category=3" expanded="true">
+      </Node>
+      <Node name="SystemView" iconkey="OtherContent" type="SystemView" label="Other Content" childrenurl="../sys_cxSupport/Views.html?sys_category=4" expanded="true">
+      </Node>
+   </Node>
+   <Node name="SystemCategory" iconkey="SearchResults" type="SystemCategory" label="Search Results" childrenurl="" expanded="true">
+      <Node name="NewSearch" iconkey="NewSearch" type="NewSearch" label="New Search" childrenurl="" expanded="false">
+         <Props>
+            <Prop name="sys_displayformat">0</Prop>
+            <Prop name="sys_search">0</Prop>
+         </Props>
+      </Node>
+   </Node>
+</Node>

@@ -27,28 +27,28 @@ public class StatusBar extends JPanel
    /**
     * Initializes the status bar with supplied message as default message and
     * displays the same message in the label.
-    * 
+    *
     * @param strMsg the default message to display when there is no message set,
     * may be <code>null</code>
-    * 
+    *
     * @throws ClassCastException if the default layout used by <code>JPanel
     * </code> changes from <code>FlowLayout</code> to something else.
     */
    public StatusBar(String strMsg)
    {
-      setBorder(BorderFactory.createCompoundBorder(
-         // border size, in pixels: top, left, bot, right, chosen empirically
-      BorderFactory.createEmptyBorder(2, 3, 0, 3),
-      BorderFactory.createBevelBorder(BevelBorder.LOWERED)));
-      ((FlowLayout) getLayout()).setAlignment(FlowLayout.LEFT);
-      add(m_label);     
+
+         setBorder(BorderFactory.createCompoundBorder(
+                 // border size, in pixels: top, left, bot, right, chosen empirically
+                 BorderFactory.createEmptyBorder(2, 3, 0, 3),
+                 BorderFactory.createBevelBorder(BevelBorder.LOWERED)));
+         ((FlowLayout) getLayout()).setAlignment(FlowLayout.LEFT);
+         add(m_label);
       setDefaultMessage(strMsg);
       setMessage(strMsg);
    }
-   
    /**
     * Sets the text of the status bar. If strText is empty or null, the current
-    * message is cleared and the default message is displayed (Ready). 
+    * message is cleared and the default message is displayed (Ready).
     * The screen is repainted after the message has been updated.
     */
    public void setMessage(String strText)
@@ -70,14 +70,14 @@ public class StatusBar extends JPanel
 
    /**
     * Sets the text that will appear whenever the message is cleared (either
-    * explicitly or implicitly). 
+    * explicitly or implicitly). By default, the text is 'Ready'.
     */
    public void setDefaultMessage(String strText)
    {
       m_strDefaultMsg = strText;
    }
-   
+
    // private storage
-   private String m_strDefaultMsg;
-   private JLabel m_label = new JLabel();
+   private String m_strDefaultMsg = "Status";
+   private JLabel m_label = new JLabel( m_strDefaultMsg );
 }

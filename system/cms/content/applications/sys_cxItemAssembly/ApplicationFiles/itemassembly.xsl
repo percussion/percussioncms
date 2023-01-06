@@ -49,9 +49,9 @@
 			<Param name="OPTIONS_URL" value="../sys_cxSupport/options.xml"/>
 			<Param name="MENU_URL" value="../sys_cxItemAssembly/ItemAssemblyMenu.html"/>
 			<Param name="NAV_URL" value="{concat(//iadataurl,'?sys_contentid=', $contentid, '&amp;sys_revision=', $revision, '&amp;sys_variantid=', //variantid, '&amp;sys_slotname=', //slotname, '&amp;sys_slotid=', //slotid,  '&amp;sys_mode=', //mode)}"/>
-			<Param name="CACHE_ARCHIVE" value="rxcx.jar"/>
+			<Param name="CACHE_ARCHIVE" value="ContentExplorer*.jar"/>
 			<Param name="CACHE_OPTION" value="Plugin"/>
-			<Param name="ARCHIVE" value="rxcx.jar"/>
+			<Param name="ARCHIVE" value="ContentExplorer*.jar"/>
 			<Param name="helpset_file" value="../Docs/Rhythmyx/Business_Users/Content_Explorer_Help.hs"/>
 			<Param name="sys_cxpath" value="{//@cxpath}"/>
 			<Param name="TYPE" value="{concat('application/x-java-applet;',//@version_type,'=',//@implementation_version)}"/>

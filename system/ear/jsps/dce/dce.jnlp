@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jnlp spec="6.0+" codebase="$$codebase" href="$$name" version="@jnlp-version@">
+<jnlp spec="6.0+" xmlns:jfx="http://javafx.com" codebase="$$codebase" href="$$name">
     <information>
         <title>Percussion DCE : $$hostname</title>
         <vendor>Percussion Software</vendor>
@@ -19,9 +19,8 @@
         <!-- Application Resources -->
         <j2se version="1.8+" href=
                 "http://java.sun.com/products/autodl/j2se" />
-        <!-- will look for file DesktopContentExplorer__V{version}.jar -->
-        <jar href="DesktopContentExplorer.jar" download="eager" main="true" version="@jnlp-version@" />
-        <jar href="rxCheckboxTree.jar" download="eager" main="false" version="@jnlp-version@" />
+        <!-- will look for file ContentExplorer-{version}.jar -->
+          <jar href="ContentExplorer-${project.version}.jar" download="eager" main="true" version="@jnlp-version@" />
         <property name="jnlp.versionEnabled"
                   value="true"/>
 
