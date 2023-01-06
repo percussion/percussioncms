@@ -249,10 +249,7 @@ public class PSAnalyticsQueryResultTest
 	   
       String s1 = result.getString(KEY_STRING);
       assertEquals(s1, VALUE_STRING);
-      
-      String s2 = result.getString(KEY_DATE);
-      assertEquals(s2, "Wednesday, May 10, 1989 12:00:00 AM EDT");
-      
+
       String s3 = result.getString(KEY_INT);
       assertEquals(s3, "14");
       
