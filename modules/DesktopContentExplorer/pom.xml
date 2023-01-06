@@ -23,6 +23,19 @@
     </resources>
     <plugins>
         <plugin>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <configuration>
+                <jdkToolchain>
+                    <version>8</version>
+                    <vendor>oracle</vendor>
+                </jdkToolchain>
+                <verbose>true</verbose>
+                <source>1.8</source>
+                <target>1.8</target>
+                <debuglevel>lines,vars,source</debuglevel>
+            </configuration>
+        </plugin>
+        <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-shade-plugin</artifactId>
             <executions>
@@ -77,13 +90,11 @@
                 <includes>
                     <include>*.jar</include>
                 </includes>
-                <storepass>storepass</storepass>
-                <keypass>keypass</keypass>
-                <storetype>${keystore.type}</storetype>
-                <keystore>${keystore.path}</keystore>
-                <alias>${keystore.alias}</alias>
-                <storepass>${keystore.store.password}</storepass>
-                <keypass>${keystore.key.password}</keypass>
+                <storepass>${signing.keystorePass}</storepass>
+                <keypass>${signing.keyPass}</keypass>
+                <storetype>${signing.keystoreType}</storetype>
+                <keystore>${signing.keystoreFile}</keystore>
+                <alias>${signing.keyAlias}</alias>
             </configuration>
         </plugin>
     </plugins>
@@ -178,14 +189,8 @@
     </dependencies>
 
     <properties>
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
-        <keystore.path>C:\SCert/keystore.jks</keystore.path>
-        <keystore.type>JKS</keystore.type>
-        <keystore.alias>selfsigned</keystore.alias>
-        <keystore.password>password</keystore.password>
-        <keystore.store.password>password</keystore.store.password>
-        <keystore.key.password>password</keystore.key.password>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
 
 </project>
