@@ -94,14 +94,14 @@ public class PSUserInfo implements IPSCmsComponent
       m_RoleList.clear();
       try
       {
-       // System.out.println("url base="+urlBase);
+         // System.out.println("url base="+urlBase);
          PSRemoteAppletRequester requestor = new PSRemoteAppletRequester(connection,
-            urlBase);
-     //    System.out.println("getting doc");
-         Document doc = requestor.getDocument("sys_psxCms/userinfo.xml", 
-            new HashMap<Object, Object>());
-   //      System.out.println("got doc"+doc);
- //        System.out.println("Server returned userinfo "+PSXMLDomUtil.toString(doc));
+                 urlBase);
+         //    System.out.println("getting doc");
+         Document doc = requestor.getDocument("sys_psxCms/userinfo.xml",
+                 new HashMap<Object, Object>());
+         //      System.out.println("got doc"+doc);
+         //        System.out.println("Server returned userinfo "+PSXMLDomUtil.toString(doc));
          fromXml(doc.getDocumentElement());
       }
       catch(Exception e)
@@ -122,44 +122,39 @@ public class PSUserInfo implements IPSCmsComponent
     * any reason.
     */
    public PSUserInfo(IPSRequestContext request)
-      throws PSCmsException
-   {
+      throws PSCmsException {
       m_RoleList.clear();
-      try
-      {
+     try {
          m_UserName = request.getUserContextInformation(
-            "User/Name", "unknown").toString();
+                 "User/Name", "unknown").toString();
 
-         Object obj = request.getUserContextInformation("Roles/RoleName", null);
 
-         if(obj!=null)
-         {
-            if (obj instanceof PSCollection)
-            {
-               PSCollection psColl = (PSCollection)obj;
+      Object obj = request.getUserContextInformation("Roles/RoleName", null);
+
+         if (obj != null) {
+            if (obj instanceof PSCollection) {
+               PSCollection psColl = (PSCollection) obj;
                Iterator it = psColl.iterator();
-               while(it.hasNext())
+               while (it.hasNext())
                   m_RoleList.add(it.next().toString());
 
-            }
-            else
-            {
+            } else {
                m_RoleList.add(obj.toString());
             }
          }
 
          // get community from session objects
          obj = request.getSessionPrivateObject(
-            IPSHtmlParameters.SYS_COMMUNITY);
-         if(obj!=null)
+                 IPSHtmlParameters.SYS_COMMUNITY);
+         if (obj != null)
             m_CommunityId = Integer.parseInt(obj.toString());
          // get Locale from session objects
          obj = request.getSessionPrivateObject(IPSHtmlParameters.SYS_LANG);
-         if(obj!=null)
+         if (obj != null)
             m_Locale = obj.toString();
 
          m_SessionTimeout =
-            PSServer.getServerConfiguration().getUserSessionTimeout();
+                 PSServer.getServerConfiguration().getUserSessionTimeout();
       }
       catch(Exception e)
       {

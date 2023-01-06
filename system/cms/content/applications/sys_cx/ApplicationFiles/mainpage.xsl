@@ -15,9 +15,14 @@
     <xsl:output method="html" omit-xml-declaration="yes" encoding="UTF-8" />
     <xsl:variable name="lang" select="//@lang"/>
     <xsl:variable name="rxroot">
+
         <xsl:choose>
-            <xsl:when test="string-length(//@rxroot) > 0">..</xsl:when>
-            <xsl:otherwise><xsl:value-of select="//@rxroot"/></xsl:otherwise>
+            <xsl:when test="string-length(//@rxroot) = 0">
+                <xsl:text>..</xsl:text>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="//@rxroot" />
+            </xsl:otherwise>
         </xsl:choose>
     </xsl:variable>
     <xsl:variable name="height">
@@ -47,7 +52,7 @@
     <xsl:variable name="ajaxswingUrl">
         <xsl:value-of disable-output-escaping="yes" select="concat($ajaxSwingRoot,'?')"/>
         <xsl:text disable-output-escaping="yes">CODEBASE=</xsl:text>
- <xsl:value-of select="url:encode(concat($rxroot,'/sys_resources/AppletJars/rxcx.jar'))" />
+ <xsl:value-of select="url:encode(concat($rxroot,'../dce/ContentExplorer-8.1.1-SNAPSHOT.jar'))" />
         <xsl:text disable-output-escaping="yes">&amp;VIEW=CX&amp;MAYSCRIPT=true&amp;NAME=ContentExplorerApplet&amp;ID=ContentExplorerApplet</xsl:text>
         <xsl:text>&amp;DEBUG=</xsl:text>
         <xsl:if test="//@debug = 'true'">
@@ -86,7 +91,7 @@
         <xsl:text disable-output-escaping="yes">&amp;sys_cxdisplaypath=</xsl:text>
         <xsl:value-of select="url:encode(//@cxdisplaypath)" />
 
-        <xsl:text disable-output-escaping="yes"></xsl:text>
+        <xsl:text disable-output-escaping="yes">&amp;pssessionid=</xsl:text>
     </xsl:variable>
     <xsl:template match="/">
         <html lang="{$lang}">
@@ -100,7 +105,8 @@
                 <meta http-equiv="Pragma" content="no-cache" />
                 <meta http-equiv="Expires" content="-1" />
                 <script src="../sys_resources/js/browser.js">;</script>
-                <script >
+                <script src="/Rhythmyx/util/getPSSessionID.jsp" type="text/javascript">;</script>
+                <script type="text/javascript">
                 <xsl:text disable-output-escaping="yes">
                 //&lt;![CDATA[
 					function showWindow(url, target, style)
@@ -119,7 +125,7 @@
 
                      document.getElementById('maincontent').src = "</xsl:text>
                     <xsl:value-of select="$ajaxswingUrl" disable-output-escaping="yes"/>
-                    <xsl:text disable-output-escaping="yes">&amp;ran="+Math.random();
+                     <xsl:text disable-output-escaping="yes">"+pssessionid+"&amp;ran="+Math.random();
                     }
             addEvent(window,"message",function(event) {
                  // Make sure we do not intercept requests not from ajaxswing

@@ -32,7 +32,7 @@ public class PSUiMode
     * Constructs the view mode of UI based on the supplied parameters.
     * 
     * @param view the current view, must be one of the TYPE_VIEW_xx values.
-    * @param mdoe the mode of the current view, must be one of the TYPE_MODE_xx 
+    * @param mode the mode of the current view, must be one of the TYPE_MODE_xx
     * values.
     * 
     * @throws IllegalArgumentException if any parameter is invalid.
