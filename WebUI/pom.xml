@@ -196,11 +196,12 @@
                             </excludes>
                         </resource>
                         <resource>
+                            <!--We need to pass in build property for version of ContentExplorer jar -->
                             <directory>../system/ear/jsps</directory>
                             <!-- override the destination directory for this resource -->
                             <targetPath />
                             <!-- enable filtering -->
-                            <filtering>false</filtering>
+                            <filtering>true</filtering>
                             <excludes>
 
                             </excludes>

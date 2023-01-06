@@ -43,9 +43,9 @@
 			<Param name="MENU_URL" value="../sys_cxDependencyTree/DependencyTreeMenu.html"/>
 			<Param name="TITLE" value="{$tmp}"/>
 			<Param name="TYPE" value="{concat('application/x-java-applet;',//@version_type,'=',//@implementation_version)}"/>
-			<Param name="CACHE_ARCHIVE" value="rxcx.jar"/>
+			<Param name="CACHE_ARCHIVE" value="ContentExplorer*.jar"/>
 			<Param name="CACHE_OPTION" value="Plugin"/>
-			<Param name="ARCHIVE" value="rxcx.jar"/>
+			<Param name="ARCHIVE" value="ContentExplorer*.jar"/>
 			<Param name="MAYSCRIPT" value="true"/>
 			<Param name="classid" value="{//@classid}"/>
 			<Param name="codebaseattr" value="{//@codebase}"/>
