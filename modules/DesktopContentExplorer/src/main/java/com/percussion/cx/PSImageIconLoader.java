@@ -125,8 +125,15 @@ public class PSImageIconLoader extends UIManager
       //Load from the archive
       try
       {
+         String newIconKey = iconKey;
+         if (!newIconKey.contains("images/")){
+            newIconKey = "images/" + newIconKey;
+         }
+         if(!newIconKey.contains(".gif")){
+            newIconKey = newIconKey + ".gif";
+         }
          InputStream in = PSImageIconLoader.class.getResourceAsStream(
-                 rootPath + "images/" + iconKey + ".gif");
+                 rootPath + newIconKey);
          if(in != null)
          {
             ByteArrayOutputStream out = new ByteArrayOutputStream();

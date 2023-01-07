@@ -20,9 +20,7 @@
         <j2se version="1.8+" href=
                 "http://java.sun.com/products/autodl/j2se" />
         <!-- will look for file ContentExplorer-{version}.jar -->
-          <jar href="ContentExplorer-${project.version}.jar" download="eager" main="true" version="@jnlp-version@" />
-        <property name="jnlp.versionEnabled"
-                  value="true"/>
+          <jar href="ContentExplorer-${project.version}.jar" download="eager" main="true" />
 
     </resources>
 
