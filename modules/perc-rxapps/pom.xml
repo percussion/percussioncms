@@ -34,6 +34,7 @@
                     <configuration>
 
                         <target>
+                            <property name="BUILDVERSION" value="${project.parent.version}" />
                             <property name="APPS_DIR" location="${assembly-directory}/RxApp" />
                             <property name="FF_DIST_APPS_DIR" location="${assembly-directory}/RxFastForward" />
                             <property name="WITHFF" location="true" />

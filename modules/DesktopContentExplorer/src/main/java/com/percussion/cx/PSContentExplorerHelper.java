@@ -48,7 +48,7 @@ public class PSContentExplorerHelper
       try
       {
          if (sm_res == null)
-            sm_res = ResourceBundle.getBundle("com.percussion.cx.PSContentExplorerResources", Locale.getDefault());
+            sm_res = ResourceBundle.getBundle("PSContentExplorerResources", Locale.getDefault());
       }
       catch (MissingResourceException e)
       {
