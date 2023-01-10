@@ -134,6 +134,9 @@ public class PSImageIconLoader extends UIManager
          }
          InputStream in = PSImageIconLoader.class.getResourceAsStream(
                  rootPath + newIconKey);
+         if(in == null){
+            in = PSImageIconLoader.class.getResourceAsStream(newIconKey);
+         }
          if(in != null)
          {
             ByteArrayOutputStream out = new ByteArrayOutputStream();

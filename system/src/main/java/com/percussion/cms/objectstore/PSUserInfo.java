@@ -26,6 +26,7 @@ package com.percussion.cms.objectstore;
 import com.percussion.cms.PSCmsException;
 import com.percussion.design.objectstore.PSServerConfiguration;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
+import com.percussion.webservices.security.data.PSRole;
 import com.percussion.error.PSExceptionUtils;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.server.PSServer;
@@ -79,6 +80,18 @@ public class PSUserInfo implements IPSCmsComponent
    public PSUserInfo()
    {
    }
+   public PSUserInfo(String sid, String uName, long communityId, String locale, PSRole[] roles, long sessionTimeOut) throws PSCmsException {
+
+      m_SessionId = sid;
+      m_UserName = uName;
+      m_CommunityId = (int) communityId;
+      m_Locale = locale;
+      for (PSRole role:roles) {
+         m_RoleList.add(role.getName());
+      }
+      m_SessionTimeout = (int) sessionTimeOut;
+}
+
 
    /**
     * Constructor meant to be used in the context of an applet. This may not work
