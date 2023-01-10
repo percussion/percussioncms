@@ -2,6 +2,7 @@ package com.percussion.cx;
 
 
 import com.percussion.border.PSFocusBorder;
+import com.percussion.cms.PSCmsException;
 import com.percussion.cx.guitools.UTMnemonicLabel;
 import com.percussion.error.PSExceptionUtils;
 import com.percussion.guitools.ErrorDialogs;
@@ -592,7 +593,7 @@ public class PSContentExplorerLoginPanel extends JFrame
                }
 
             }
-            catch (InterruptedException | ExecutionException e)
+            catch (InterruptedException | ExecutionException | PSCmsException e)
             {
                // This is thrown if the thread's interrupted.
                log.error(PSExceptionUtils.getMessageForLog(e));

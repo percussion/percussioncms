@@ -1,9 +1,13 @@
 package com.percussion.cx;
 
 
+import com.percussion.cms.PSCmsException;
+import com.percussion.cms.objectstore.PSUserInfo;
 import com.percussion.cx.javafx.PSDesktopExplorerWindow;
 import com.percussion.cx.objectstore.PSMenuAction;
 import com.percussion.guitools.PSDialog;
+import com.percussion.webservices.security.data.PSCommunity;
+import com.percussion.webservices.security.data.PSLogin;
 import javafx.application.Platform;
 import javafx.scene.web.WebEngine;
 import org.apache.commons.lang.StringUtils;
@@ -60,6 +64,8 @@ public class PSContentExplorerFrame extends PSDesktopExplorerWindow implements A
    private URI serverUri = null;
    
    private boolean fixedHost = false;
+
+   private PSUserInfo userInfo = null;
     
    /**
     * The constuctor sets the applications main frame size and title. It adds a
@@ -249,7 +255,7 @@ public class PSContentExplorerFrame extends PSDesktopExplorerWindow implements A
       return applet.getEngine();
    }
    
-   public void initCESession(){
+   public void initCESession() throws PSCmsException {
 
    
   
@@ -259,8 +265,24 @@ public class PSContentExplorerFrame extends PSDesktopExplorerWindow implements A
      CookieManager manager = new CookieManager();
      manager.setCookiePolicy(CookiePolicy.ACCEPT_ALL);
      CookieHandler.setDefault(manager);
-     
+
+    PSLogin login = PSCESessionManager.getInstance().getLoginInfo();
+    PSCommunity[] communities = login.getCommunities();
+    long commId = 0;
+    String defaultComm = login.getDefaultCommunity();
+    for (PSCommunity comm:communities) {
+        if(defaultComm.equals(comm.getName())){
+            commId = comm.getId();
+            break;
+        }
+    }
+    PSUserInfo userInfo = new PSUserInfo(login.getSessionId(),
+    PSCESessionManager.getInstance().getUserName(),commId,login.getDefaultLocaleCode(),login.getRoles(),login.getSessionTimeout()
+    );
+
+
      applet.init();
+     applet.setupApplet(userInfo);
      applet.start();
      
      Dimension dim = this.getSize();
@@ -423,6 +445,7 @@ public class PSContentExplorerFrame extends PSDesktopExplorerWindow implements A
          this.add(applet,  BorderLayout.CENTER);
       }
       applet.init();
+      applet.setupApplet(userInfo);
       applet.start();
       this.toFront();
     

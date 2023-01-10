@@ -163,14 +163,43 @@ public class PSContentExplorerApplet extends JApplet implements IPSActionListene
                log.info("log4j configured");
             }
       }
+   }
 
-      
-      setupApplet();
+
+   public synchronized void setUserInfo(){
+      // test logged in
+      URL rxCodeBase = getRhythmyxCodeBase();
+
+      try
+      {
+         log.debug("checking userinfo");
+         ms_userInfo = new PSUserInfo(getHttpConnection(), rxCodeBase);
+         log.debug("UserInfo sessionId = " + ms_userInfo.getSessionId());
+         log.debug("UserInfo user = " + ms_userInfo.getUserName());
+         log.debug("UserInfo locale = " + ms_userInfo.getLocale());
+         if( m_httpConnection != null){
+            m_httpConnection = new PSHttpConnection(getRhythmyxCodeBase(), ms_userInfo.getSessionId());
+         }
+      }
+      catch (PSCmsException e)
+      {
+         e.printStackTrace();
+         displayErrorMessage(getDialogParentFrame(), getClass(), "{0}", new String[]
+                 {e.getMessage()}, "Error", null);
+         log.error("Error getting userinfo", e);
+      }
 
    }
 
-   public synchronized void setupApplet()
+   public synchronized void setupApplet(PSUserInfo userInfo)
    {
+      if(userInfo == null){
+         setUserInfo();
+      }else{
+         ms_userInfo = userInfo;
+         m_httpConnection = new PSHttpConnection(getRhythmyxCodeBase(), ms_userInfo.getSessionId());
+
+      }
 
       try
       {
@@ -269,28 +298,6 @@ public class PSContentExplorerApplet extends JApplet implements IPSActionListene
             m_view = view;
 
          debugMessage("Current view is " + m_view);
-
-         // test logged in
-         URL rxCodeBase = getRhythmyxCodeBase();
-
-         try
-         {
-            log.debug("checking userinfo");
-            ms_userInfo = new PSUserInfo(getHttpConnection(), rxCodeBase);
-            log.debug("UserInfo sessionId = " + ms_userInfo.getSessionId());
-            log.debug("UserInfo user = " + ms_userInfo.getUserName());
-            log.debug("UserInfo locale = " + ms_userInfo.getLocale());
-            if( m_httpConnection != null){
-                  m_httpConnection = new PSHttpConnection(getRhythmyxCodeBase(), ms_userInfo.getSessionId());
-            }
-         }
-         catch (PSCmsException e)
-         {
-            e.printStackTrace();
-            displayErrorMessage(getDialogParentFrame(), getClass(), "{0}", new String[]
-            {e.getMessage()}, "Error", null);
-            log.error("Error getting userinfo", e);
-         }
 
          try
          {
