@@ -201,7 +201,7 @@
 
         <!-- Copy DesktopContentExplorer resources and jar -->
         <copy todir="${assembly-directory}/jetty/base/webapps/Rhythmyx/dce" overwrite="true" verbose="true" force="true">
-            <fileset dir="${basedir}/../DesktopContentExplorer/src/main/resources/cx">
+            <fileset dir="${basedir}/../DesktopContentExplorer/src/main/resources/com/percussion/cx">
                 <exclude name="**/*.class"/>
             </fileset>
             <fileset dir="${basedir}/../DesktopContentExplorer/target">
