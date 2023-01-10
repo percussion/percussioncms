@@ -4153,8 +4153,12 @@ public class PSActionManager implements IPSConstants, IPSSelectionListener
                String message = m_applet.getResourceString(getClass(), "CommandFailure");
                throw new Exception(message + " no action url");
             }
+            if(actionUrl.startsWith("../")){
+               actionUrl = actionUrl.replace("../","");
+            }
             if (launchNewWindow.equalsIgnoreCase(PSContentExplorerConstants.CONST_YES))
             {
+
                URL absUrl = new URL(m_applet.getRhythmyxCodeBase(), actionUrl);
                WindowScript script = null;
                /*
