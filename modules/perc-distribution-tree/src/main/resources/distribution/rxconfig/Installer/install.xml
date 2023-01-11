@@ -640,23 +640,26 @@
 
     <target name="backupSharedContent">
         <if>
-            <not>
-                <available file="${install.dir}/rxconfig/Server/ContentEditors/shared/rxs_ct_shared.xml_percbak" type="file" />
-            </not>
+            <and>
+                <not>
+                    <available file="${install.dir}/rxconfig/Server/ContentEditors/shared/rxs_ct_shared.xml_percbak" type="file" />
+                </not>
+                <available file="${install.dir}/rxconfig/Server/ContentEditors/shared/rxs_ct_shared.xml" type="file"/>
+            </and>
             <then>
                 <echo>Backup rxs_ct_shared.xml...</echo>
-                <copy file="${install.dir}/rxconfig/Server/ContentEditors/shared/rxs_ct_shared.xml" tofile="${install.dir}/rxconfig/Server/ContentEditors/shared/rxs_ct_shared.xml_percbak" />
+                <copy file="${install.dir}/rxconfig/Server/ContentEditors/shared/rxs_ct_shared.xml" failonerror="false" tofile="${install.dir}/rxconfig/Server/ContentEditors/shared/rxs_ct_shared.xml_percbak" />
             </then>
         </if>
         <echo>Deleting wrong dir from previous install...</echo>
-        <delete dir="${install.dir}/rxconfig/ContentEditors" includeemptydirs="true" verbose="true" />
-        <echo>Deleting wrongcase(shared/Shared) dir incase not Windows...</echo>
+        <delete dir="${install.dir}/rxconfig/ContentEditors" includeemptydirs="true" verbose="true" failonerror="false"/>
+        <echo>Deleting wrong case(shared/Shared) dir in case not Windows...</echo>
         <if>
             <not>
                 <os family="windows" />
             </not>
             <then>
-                <delete dir="${install.dir}/rxconfig/Server/ContentEditors/Shared" includeemptydirs="true" verbose="true" />
+                <delete dir="${install.dir}/rxconfig/Server/ContentEditors/Shared" includeemptydirs="true" verbose="true" failonerror="false"/>
             </then>
         </if>
 
@@ -1042,6 +1045,9 @@
             </replacefilter>
         </replace>
 
+        <if>
+            <available file="${install.dir}/rxconfig/Server/ContentEditors/shared" type="dir"/>
+            <then>
         <echo> updating sys_TinyMCE and sys_EditLive with sys_tinymce in rxs_ct_shared and new columns </echo>
         <replace dir="${install.dir}/rxconfig/Server/ContentEditors/shared">
             <include name="**/*.xml"/>
@@ -1233,7 +1239,8 @@
             </PSXDisplayMapping>]]></replacevalue>
             </replacefilter>
         </replace>
-
+            </then>
+        </if>
         <copy todir="${install.dir}/jetty/base/webapps/Rhythmyx/WEB-INF/config/spring/projects" overwrite="false" failonerror="false">
             <fileset dir="${install.src}/jetty/base/webapps/Rhythmyx/WEB-INF/config/spring/projects" followsymlinks="false" includes="**">
                 <present present="srconly" targetdir="${install.dir}/jetty/base/webapps/Rhythmyx/WEB-INF/config/spring/projects"/>
