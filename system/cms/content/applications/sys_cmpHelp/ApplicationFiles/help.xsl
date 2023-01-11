@@ -66,7 +66,7 @@
 	    <script language="javaScript1.2" src="../sys_resources/js/browser.js">;</script>
             <script language="JavaScript1.2">
  	        
- 	        var helpSetFile = "../../Docs/Rhythmyx/Business_Users/Content_Explorer_Help.hs";
+ 	        var helpSetFile = "../../Docs/Business_Users/Content_Explorer_Help.hs";
 	        var helpId = "<xsl:value-of select="$helpId"/>";
 	        var helpIcon = "<xsl:value-of select="$helpIcon"/>";
 	        var helpAlt = "<xsl:value-of select="$helpAlt"/>";

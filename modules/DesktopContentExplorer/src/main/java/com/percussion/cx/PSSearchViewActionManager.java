@@ -64,11 +64,8 @@ public class PSSearchViewActionManager
     *
     * @param proxy the remote proxy to use to make requests to the server,
     * may not be <code>null</code>
-    * @param m_remCataloger 
     * @param urlBase the base url of the applet to make url requests, may not be
     * <code>null</code>
-    * @param userInfo the info about current user session, may not be <code>null
-    * </code>
     */
    public PSSearchViewActionManager(
       PSComponentProcessorProxy proxy,
@@ -113,8 +110,7 @@ public class PSSearchViewActionManager
 
    /**
     * Sets the current search mode of the manager. The set of display formats
-    * available for search are different for each mode. The {@link
-    * #MODE_IA_SEARCH} limits the search to a slot.
+    * available for search are different for each mode. The  limits the search to a slot.
     *
     * @param mode the search mode, must be one of the <code>MODE_xxx</code>
     * values
@@ -165,7 +161,7 @@ public class PSSearchViewActionManager
    /**
     * saves the new search to the server. Delegates to search processor
     * proxy.
-    * @param    search new  search to save.
+    * @param    searchNode new  search to save.
     * @param name name of the search, must not be <code>null</code> or
     * <code>empty</code>
     */
@@ -449,6 +445,9 @@ public class PSSearchViewActionManager
                      throw new IllegalArgumentException(
                         "A custom search or view must have URL specified");
                   }
+                  if(sUrl.contains("../")){
+                     sUrl=sUrl.replace("../","");
+                  }
                   Document resultDoc = null;
                   String result = null;
                   try
@@ -616,7 +615,6 @@ public class PSSearchViewActionManager
    /**
     * Easy method to find if the supplied node is initializable.
     * @param node node under test, must not be <code>null</code>
-    * @see ms_nodeTypesInitializable
     */
    static public boolean isNodeInitializable(PSNode node)
    {

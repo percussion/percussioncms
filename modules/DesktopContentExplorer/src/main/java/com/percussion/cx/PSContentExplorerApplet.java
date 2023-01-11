@@ -118,6 +118,7 @@ public class PSContentExplorerApplet extends JApplet implements IPSActionListene
    private PSContentExplorerHeader dceHeader = null;
    
    private WebEngine webEngine = null;
+   private boolean m_createdFromFrame = false;
 
    /**
     * The Server Admin resources
@@ -131,6 +132,15 @@ public class PSContentExplorerApplet extends JApplet implements IPSActionListene
       if (m_res == null)
          m_res = ResourceBundle.getBundle(RESOURCE_NAME, Locale.getDefault());
       return m_res;
+   }
+
+   public PSContentExplorerApplet(){
+      super();
+   }
+
+   public PSContentExplorerApplet (boolean createdFromFrame){
+      super();
+      m_createdFromFrame = createdFromFrame;
    }
 
 
@@ -162,6 +172,10 @@ public class PSContentExplorerApplet extends JApplet implements IPSActionListene
                PropertyConfigurator.configure(inputUrl);
                log.info("log4j configured");
             }
+      }
+      //As LoginContextWill be set by ContentExplorerFrame, once login details are gathered from user
+      if(!m_createdFromFrame) {
+         setupApplet(null);
       }
    }
 

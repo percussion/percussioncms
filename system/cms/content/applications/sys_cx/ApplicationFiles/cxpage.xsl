@@ -74,7 +74,7 @@
 			<Param name="CACHE_OPTION" value="Plugin" />
 			<Param name="ARCHIVE" value="ContentExplorer-@BUILDVERSION@.jar" />
 			<Param name="helpset_file"
-				   value="{concat($rxroot,'/Docs/Rhythmyx/Business_Users/Content_Explorer_Help.hs')}" />
+				   value="{concat($rxroot,'/Docs/Business_Users/Content_Explorer_Help.hs')}" />
 			<Param name="sys_cxinternalpath" value="{//@cxinternalpath}" />
 			<Param name="sys_cxdisplaypath" value="{//@cxdisplaypath}" />
 			<Param name="TYPE"

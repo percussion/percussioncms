@@ -96,7 +96,7 @@ public class PSContentExplorerHelper
       parameters.put("CACHE_ARCHIVE", "ContentExplorer*.jar");
       parameters.put("CACHE_OPTION", "Plugin");
       parameters.put("ARCHIVE", "ContentExplorer*.jar");
-      parameters.put("helpset_file", "../Docs/Rhythmyx/Business_Users/Content_Explorer_Help.hs");
+      parameters.put("helpset_file", "../Docs/Business_Users/Content_Explorer_Help.hs");
       parameters.put("sys_cxinternalpath", "");
       parameters.put("sys_cxdisplaypath", "");
       parameters.put("TYPE", "application/x-java-applet;version=1.8.0_12");

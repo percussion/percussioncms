@@ -52,7 +52,7 @@
 			<Param name="CACHE_ARCHIVE" value="ContentExplorer*.jar"/>
 			<Param name="CACHE_OPTION" value="Plugin"/>
 			<Param name="ARCHIVE" value="ContentExplorer*.jar"/>
-			<Param name="helpset_file" value="../Docs/Rhythmyx/Business_Users/Content_Explorer_Help.hs"/>
+			<Param name="helpset_file" value="../Docs/Business_Users/Content_Explorer_Help.hs"/>
 			<Param name="sys_cxpath" value="{//@cxpath}"/>
 			<Param name="TYPE" value="{concat('application/x-java-applet;',//@version_type,'=',//@implementation_version)}"/>
 			<Param name="MAYSCRIPT" value="true"/>

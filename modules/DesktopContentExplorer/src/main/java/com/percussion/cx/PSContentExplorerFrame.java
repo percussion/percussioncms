@@ -167,7 +167,7 @@ public class PSContentExplorerFrame extends PSDesktopExplorerWindow implements A
      
       if (applet == null)
       {
-         applet = new PSContentExplorerApplet();
+         applet = new PSContentExplorerApplet(true);
          this.add(applet,  BorderLayout.CENTER);
       }
     
@@ -276,9 +276,10 @@ public class PSContentExplorerFrame extends PSDesktopExplorerWindow implements A
             break;
         }
     }
-    PSUserInfo userInfo = new PSUserInfo(login.getSessionId(),
-    PSCESessionManager.getInstance().getUserName(),commId,login.getDefaultLocaleCode(),login.getRoles(),login.getSessionTimeout()
-    );
+
+     userInfo = new PSUserInfo(login.getSessionId(),
+        PSCESessionManager.getInstance().getUserName(),commId,login.getDefaultLocaleCode(),login.getRoles(),login.getSessionTimeout()
+        );
 
 
      applet.init();
@@ -441,7 +442,7 @@ public class PSContentExplorerFrame extends PSDesktopExplorerWindow implements A
       cleanup();
       if (applet == null)
       {
-         applet = new PSContentExplorerApplet();
+         applet = new PSContentExplorerApplet(true);
          this.add(applet,  BorderLayout.CENTER);
       }
       applet.init();
