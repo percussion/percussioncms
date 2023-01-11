@@ -49,7 +49,7 @@
 			<Param name="MAYSCRIPT" value="true"/>
 			<Param name="classid" value="{//@classid}"/>
 			<Param name="codebaseattr" value="{//@codebase}"/>
-			<Param name="helpset_file" value="../Docs/Rhythmyx/Business_Users/Content_Explorer_Help.hs"/>
+			<Param name="helpset_file" value="../Docs/Business_Users/Content_Explorer_Help.hs"/>
 			<Param name="NAME" value="ContentExplorerApplet"/>
 			<Param name="WIDTH" value="100%"/>
 			<Param name="HEIGHT" value="100%"/>

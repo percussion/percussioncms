@@ -86,7 +86,7 @@ public class PSPopupAppletFrame extends PSDesktopExplorerWindow
          this.remove(this.applet);
       }
       
-      this.applet = new PSContentExplorerApplet();
+      this.applet = new PSContentExplorerApplet(true);
                   
       Platform.runLater(() -> {
          this.webView = new WebView();
@@ -112,8 +112,10 @@ public class PSPopupAppletFrame extends PSDesktopExplorerWindow
          this.browserProps = new BrowserProps(this.mi_style);
 
          this.add(this.applet, BorderLayout.NORTH);
-         
+
+         PSContentExplorerApplet baseapplet = PSContentExplorerApplication.getApplet();
          this.applet.init();
+         this.applet.setupApplet(baseapplet.getUserInfo());
          this.applet.start();
 
          setVisible(true);

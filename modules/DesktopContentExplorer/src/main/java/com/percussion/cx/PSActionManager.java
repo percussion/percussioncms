@@ -4910,6 +4910,10 @@ public class PSActionManager implements IPSConstants, IPSSelectionListener
       if (strUrl == null || strUrl.trim().length() == 0)
          throw new IllegalArgumentException("strUrl must not be null or empty");
 
+      if(strUrl.startsWith("../")){
+         strUrl = strUrl.replace("../","");
+      }
+
       URL theUrl = null;
       HttpURLConnection connection = null;
       int responseCode = 0;
