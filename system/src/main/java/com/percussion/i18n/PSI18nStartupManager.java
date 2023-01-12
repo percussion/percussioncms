@@ -35,15 +35,12 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.time.FastDateFormat;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.xml.sax.SAXException;
 
-import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.file.Files;
 import java.util.Date;
 import java.util.Properties;
 
@@ -92,18 +89,9 @@ public class PSI18nStartupManager implements IPSNotificationListener {
         if (masterFile.exists())
         {
             boolean backup=false;
-            try {
-                success = PSTmxResourceBundle.getInstance().loadResources();
-                if (success && !needToRun)
-                    return;
-            } catch (IOException | SAXException | ParserConfigurationException e) {
-                log.error("Invalid tmx file detected. will backup and regenerate {} Error: {}",
-                        masterFile.getAbsolutePath() ,
-                        PSExceptionUtils.getMessageForLog(e));
-                log.debug(PSExceptionUtils.getDebugMessageForLog(e));
-                backup = true;
-                success = false;
-            }
+            success = PSTmxResourceBundle.getInstance().loadResources();
+            if (success && !needToRun)
+                return;
 
             if (backup) {
                 backupInvaidFile(masterFile);
@@ -171,7 +159,7 @@ public class PSI18nStartupManager implements IPSNotificationListener {
         if (propFile.exists()) {
             Properties props = new Properties();
 
-            try(InputStream in = new FileInputStream(propFile)) {
+            try(InputStream in = Files.newInputStream(propFile.toPath())) {
                 props.load(in);
                 doRun = "true".equalsIgnoreCase(props.getProperty(
                             RUN_AT_STARTUP, "false"));
@@ -205,7 +193,7 @@ public class PSI18nStartupManager implements IPSNotificationListener {
         Properties props = new Properties();
         props.setProperty(RUN_AT_STARTUP, Boolean.toString(value));
 
-        try(OutputStream out =new FileOutputStream(propFile) ) {
+        try(OutputStream out = Files.newOutputStream(propFile.toPath())) {
             props.store(out, null);
         } catch (IOException e) {
             log.warn("Unable to write to file {}. Error: {}",
