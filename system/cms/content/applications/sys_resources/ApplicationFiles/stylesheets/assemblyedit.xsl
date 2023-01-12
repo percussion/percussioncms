@@ -711,7 +711,7 @@
 				appletCaller.addParam("width", "0");
 				appletCaller.addParam("height", "0");
 				appletCaller.addParam("align", "baseline");
-				appletCaller.addParam("codebase", "../sys_resources/AppletJars");
+				appletCaller.addParam("codebase", "../dce");
 				appletCaller.addParam("archive", "help.jar,jh.jar");
 				appletCaller.addParam("code", "com.percussion.tools.help.PSHelpApplet");
 				appletCaller.addParam("MAYSCRIPT", "true");
