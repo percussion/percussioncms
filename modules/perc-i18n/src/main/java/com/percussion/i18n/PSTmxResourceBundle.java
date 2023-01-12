@@ -17,6 +17,7 @@
 
 package com.percussion.i18n;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.i18n.tmxdom.IPSTmxDocument;
 import com.percussion.i18n.tmxdom.IPSTmxDtdConstants;
 import com.percussion.i18n.tmxdom.PSTmxDocument;
@@ -42,12 +43,10 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -57,7 +56,7 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 /**
- * Singleton class to load the TMX resources and expose methods for serverwide
+ * Singleton class to load the TMX resources and expose methods for server wide
  * usage. The resource bundle is an XML document conforming to TMX DTD. Whole
  * document is parsed into a hash map of hash maps. The key for the first
  * hashmap is the language and the values are the hashmap of key-value pairs
@@ -68,7 +67,7 @@ import java.util.stream.Stream;
  /*
   * Note: right now loading the document into cache is fairly quick process.
   * However, when several languages are deployed and the resource bundle grows
-  * to a size to slowdown loading resources signinfcantly, we may have to
+  * to a size to slowdown loading resources significantly, we may have to
   * consider reading resources in a separate thread.
   */
 @SuppressFBWarnings({"PATH_TRAVERSAL_IN", "PATH_TRAVERSAL_IN"})
@@ -76,12 +75,10 @@ public class PSTmxResourceBundle
    implements IPSTmxDtdConstants
 {
 
+    private static PSTmxResourceBundle INSTANCE;
+
     private static final Logger log = LogManager.getLogger(PSTmxResourceBundle.class);
 
-   private static class TmxResourceBundleHolder
-   {
-      public static final PSTmxResourceBundle BUNDLE = new PSTmxResourceBundle();
-   }
    
    /**
     * Constructor is made private to enforce the singleton pattern.
@@ -95,13 +92,12 @@ public class PSTmxResourceBundle
       }
       catch(Exception t)
       {
-         Logger l = LogManager.getLogger("TmxResourceBundle");
-         l.error("Unexpected error loading resources {}", t.getLocalizedMessage());
+
+         log.error("Unexpected error loading resources {}", t.getMessage());
          
          //if debug is on dump the stack to server console
          if(ms_Debug)
          {
-             log.error(t.getMessage());
              log.debug(t.getMessage(), t);
          }
       }
@@ -114,7 +110,10 @@ public class PSTmxResourceBundle
     */
     public static PSTmxResourceBundle getInstance()
    {
-      return TmxResourceBundleHolder.BUNDLE;
+       if(INSTANCE == null) {
+           INSTANCE = new PSTmxResourceBundle();
+       }
+       return INSTANCE;
    }
    /**
     * Get the value for the given key using the default language. Simply
@@ -156,7 +155,7 @@ public class PSTmxResourceBundle
     * return value will be empty string.
     * @param language language string, if <code>null</code> or <code>empty</code>,
     * default language is assumed.
-    * @return the lookup value for the given key and langauge. Never <code>null</code>
+    * @return the lookup value for the given key and language. Never <code>null</code>
     * may be <code>empty</code>.
     */
    public String getString(String key, String language)
@@ -242,7 +241,7 @@ public class PSTmxResourceBundle
     * for the given key and language string. Unit objects with a null or
     * empty value are invalid and are added to a missing resource list.
     * 
-    * @return the lookup value for the given key and langauge. It may be 
+    * @return the lookup value for the given key and language. It may be
     *    <code>null</code> if cannot find the specified unit.
     */
    private PSTmxUnit getUnit(String key, String language)
@@ -252,9 +251,9 @@ public class PSTmxResourceBundle
       if(language == null || language.length() < 1)
          language = ms_DefaultLanguage;
 
-      Map map = (HashMap)ms_ResourceBundles.get(language);
+      Map<String,PSTmxUnit> map = ms_ResourceBundles.get(language);
       if(map == null)
-         map = (HashMap)ms_ResourceBundles.get(ms_DefaultLanguage);
+         map = ms_ResourceBundles.get(ms_DefaultLanguage);
 
       PSTmxUnit obj = null;
       if(map == null && ms_Debug)
@@ -264,7 +263,7 @@ public class PSTmxResourceBundle
       }
       else if(map != null)
       {
-         obj = (PSTmxUnit) map.get(key);
+         obj = map.get(key);
       }
 
       return obj;
@@ -281,30 +280,27 @@ public class PSTmxResourceBundle
     * @return all of the keys as <code>Strings</code>.  May be
     * <code>null</code> if language is not supported.
     */
-   public Iterator getKeys(String language)
+   public Iterator<String> getKeys(String language)
    {
       if(language == null || language.length() < 1)
          language = ms_DefaultLanguage;
 
-      Map map = (HashMap)ms_ResourceBundles.get(language);
+      Map<String, PSTmxUnit> map =ms_ResourceBundles.get(language);
 
       if(map == null)
-         map = (HashMap)ms_ResourceBundles.get(ms_DefaultLanguage);
+         map = ms_ResourceBundles.get(ms_DefaultLanguage);
 
-      Iterator keys = Collections.emptyIterator();
 
       if(map == null)
       {
          log.info(
          "TMX Resource Bundle does not contain any deployed language resources  Check ResourceBundle.tmx file");
+          return null;
       }
-      else if(map != null)
-      {
+      else {
          // get the keys set and iterator here
-         keys = map.keySet().iterator();
+         return map.keySet().iterator();
       }
-
-      return keys;
    }
 
    /** Sets the debug mode.
@@ -335,7 +331,6 @@ public class PSTmxResourceBundle
     * {@link #loadResources()} has been called.  Modifications to the set do
     * not affect this object.
     */
-   @SuppressWarnings("unchecked")
    public Set<String> getLanguages()
    {
       return new HashSet<>(ms_ResourceBundles.keySet());
@@ -368,7 +363,7 @@ public class PSTmxResourceBundle
      * Map storing all language resources. Never <code>null</code>.
      * <code>Empty</code> until loadResources() is called successfully.
      */
-    static HashMap ms_ResourceBundles = new HashMap();
+    private static final HashMap<String, Map<String, PSTmxUnit>> ms_ResourceBundles = new HashMap<>();
 
     /**
      * Default language for the system
@@ -383,7 +378,7 @@ public class PSTmxResourceBundle
     /**
      * Properties object to cache the missing resources. Never <code>null</code>.
      */
-    static private Properties ms_MissingResources = new Properties();
+    private static final Properties ms_MissingResources = new Properties();
 
     /**
      * Name of the file to store missing resources.
@@ -414,29 +409,43 @@ public class PSTmxResourceBundle
     }
     /**
      * This method loads/reloads the i18n resource to cache.
-     * @throws IOException
-     * @throws SAXException
      */
-   public synchronized boolean loadResources()
-           throws IOException, SAXException, ParserConfigurationException {
-      flushCache();
+   public synchronized boolean loadResources() {
+      boolean ret = true;
+
+       flushCache();
 
       log.info("Loading I18n Resources to Cache...");
 
       m_rxRootDir = PathUtils.getRxDir().getAbsolutePath();
 
-      //Master file
-      addResourcesToCache(getMasterResourceDoc(m_rxRootDir));
+      try {
+          //Master file
+          addResourcesToCache(getMasterResourceDoc(m_rxRootDir));
+      } catch (IOException | SAXException e) {
+          log.error(PSExceptionUtils.getMessageForLog(e));
+          ret = false;
+      }
 
-      //sys_resources/i18n files
-      processResourceFiles(Paths.get(m_rxRootDir,SYS_RESOURCES_I18NPATH));
+       try {
+          //sys_resources/I18n files
+          processResourceFiles(Paths.get(m_rxRootDir, SYS_RESOURCES_I18NPATH));
+      } catch (IOException | ParserConfigurationException | SAXException e) {
+           log.error(PSExceptionUtils.getMessageForLog(e));
+           ret = false;
+       }
 
-      //rx_resources/i18n files
-       processResourceFiles(Paths.get(m_rxRootDir,RX_RESOURCES_I18NPATH));
 
-      
-      log.info("Done Loading.");
-      return true;
+       try {
+          //rx_resources/I18n files
+          processResourceFiles(Paths.get(m_rxRootDir, RX_RESOURCES_I18NPATH));
+      } catch (IOException | ParserConfigurationException | SAXException e) {
+           log.error(PSExceptionUtils.getMessageForLog(e));
+           ret = false;
+       }
+
+       log.info("Done Loading.");
+      return ret;
     }
 
     private Document getTmxResourceDoc(Path f) throws IOException, SAXException, ParserConfigurationException {
@@ -467,16 +476,16 @@ public class PSTmxResourceBundle
         if(header!=null)
             nl = header.getElementsByTagName(IPSTmxDtdConstants.ELEM_PROP);
 
-        if(nl == null || nl.getLength() < 1)
+        if(nl.getLength() < 1)
         {
             log.error(
                     "Invalid TMX Document. No supported language is specified in the header");
             return;
         }
 
-        Node elem = null;
-        String value = null;
-        Node node = null;
+        Node elem;
+        String value;
+        Node node;
         int nlLength = nl.getLength();
         for(int i=0; i<nlLength; i++)
         {
@@ -489,7 +498,8 @@ public class PSTmxResourceBundle
                 value = ((Text)node).getData();
             if(value.length() < 1)
                 continue;
-            ms_ResourceBundles.put(value, new HashMap());
+
+            ms_ResourceBundles.computeIfAbsent(value, k -> new HashMap<>());
         }
         if(ms_ResourceBundles.size() < 1)
         {
@@ -498,58 +508,68 @@ public class PSTmxResourceBundle
             return;
         }
         nl = doc.getElementsByTagName(IPSTmxDtdConstants.ELEM_TU);
-        NodeList nlTuv = null;
-        NodeList nlSeg = null;
-        NodeList nlProps = null;
-        Element elemTuv = null;
-        Element elemProp = null;
-        String key = null;
-        String lang = null;
-        String mnemonic = null;
-        String tooltip = null;
-        String propType = null;
-        Map map = null;
+        NodeList nlTuv;
+        NodeList nlSeg;
+        NodeList nlProps=null;
+        Element elemTuv=null;
+        Element elemProp;
+        String key;
+        String lang=null;
+        String mnemonic;
+        String tooltip;
+        String propType;
+        Map<String,PSTmxUnit> map;
         nlLength = nl.getLength();
-        for(int i=0; nl!=null && i<nlLength; i++) {
-            elem = (Element) nl.item(i);
+        for(int i = 0; i<nlLength; i++) {
+            elem =  nl.item(i);
             key = ((Element)elem).getAttribute(IPSTmxDtdConstants.ATTR_TUID);
-            if (key == null || key.length() < 1)
+            if (key.length() < 1)
                 continue;
-            if(elem instanceof Element){
 
             nlTuv = ((Element)elem).getElementsByTagName(IPSTmxDtdConstants.ELEM_TUV);
-            for (int j = 0; nlTuv != null && j < nlTuv.getLength(); j++) {
+            for (int j = 0; j < nlTuv.getLength(); j++) {
                 if(nlTuv.item(j) instanceof Element) {
                     elemTuv = (Element) nlTuv.item(j);
                 }
 
-                lang = elemTuv.getAttribute(IPSTmxDtdConstants.ATTR_XML_LANG);
-                map = (HashMap) ms_ResourceBundles.get(lang);
+                if(elemTuv!=null) {
+                    lang = elemTuv.getAttribute(IPSTmxDtdConstants.ATTR_XML_LANG);
+                }
+
+                map = ms_ResourceBundles.get(lang);
                 if (map == null) {
                     continue;
                 }
                 // get the mnemonic and tooltip from the properties
                 mnemonic = null;
                 tooltip = null;
-                nlProps = elemTuv.getElementsByTagName(IPSTmxDtdConstants.ELEM_PROP);
-                int propLength = nlProps.getLength();
-                if (nlProps != null && propLength > 0) {
+
+                int propLength=0;
+
+                if(elemTuv != null) {
+                    nlProps = elemTuv.getElementsByTagName(IPSTmxDtdConstants.ELEM_PROP);
+                    propLength = nlProps.getLength();
+                }
+
+                if (propLength > 0) {
                     for (int k = 0; k < propLength; k++) {
                         elemProp = (Element) nlProps.item(k);
                         propType = elemProp.getAttribute(IPSTmxDtdConstants.ATTR_TYPE);
-                        if (propType != null
-                                && propType.equalsIgnoreCase(IPSTmxDtdConstants.ATTR_VAL_MNEMONIC)) {
+                        if (propType.equalsIgnoreCase(IPSTmxDtdConstants.ATTR_VAL_MNEMONIC)) {
                             mnemonic = PSXMLDomUtil.getElementData(elemProp);
-                        } else if (propType != null
-                                && propType.equalsIgnoreCase(IPSTmxDtdConstants.ATTR_VAL_TOOLTIP)) {
+                        } else if (propType.equalsIgnoreCase(IPSTmxDtdConstants.ATTR_VAL_TOOLTIP)) {
                             tooltip = PSXMLDomUtil.getElementData(elemProp);
                         }
                     }
                 }
 
                 // get the value from "seg" element
-                nlSeg = elemTuv.getElementsByTagName(IPSTmxDtdConstants.ELEM_SEG);
+                nlSeg = null;
                 value = "";
+                if(elemTuv!= null) {
+                    nlSeg = elemTuv.getElementsByTagName(IPSTmxDtdConstants.ELEM_SEG);
+                }
+
                 if (nlSeg != null && nlSeg.getLength() > 0) {
                     node = nlSeg.item(0).getFirstChild();
                     if (node instanceof Text)
@@ -558,7 +578,6 @@ public class PSTmxResourceBundle
                 PSTmxUnit entry = new PSTmxUnit(value, mnemonic, tooltip);
                 map.put(key, entry);
             }
-        }
         }
     }
     /**
@@ -572,7 +591,7 @@ public class PSTmxResourceBundle
       log.info("Flushing I18n Resource Cache...");
       ms_ResourceBundles.clear();
 
-      log.info(SUBSYSTEM, "Done Flushing.");
+      log.info("Done Flushing.");
    }
 
    /**
@@ -583,12 +602,10 @@ public class PSTmxResourceBundle
    * may be <code>empty</code>.
    * @return DOM document of the TMX resource file.
    * @throws FileNotFoundException
-   * @throws UnsupportedEncodingException
    * @throws SAXException
-   * @throws IOException
    */
    static public Document getMasterResourceDoc(String rxroot)
-      throws FileNotFoundException, UnsupportedEncodingException, SAXException,
+      throws  SAXException,
              IOException
    {
       synchronized(m_masterResourceMonitor)
@@ -619,9 +636,7 @@ public class PSTmxResourceBundle
     */
    public static File getMasterResourceFile(String rxRootDir)
    {
-      File tmxFile = new File(rxRootDir, MASTER_RESOURCE_FILEPATH);
-      
-      return tmxFile;
+      return new File(rxRootDir, MASTER_RESOURCE_FILEPATH);
    }
 
    /**
@@ -658,6 +673,6 @@ public class PSTmxResourceBundle
     * Monitor object used to synchronize access to the master resource doc.
     * Never <code>null</code> or modified.
     */
-   private static Object m_masterResourceMonitor = new Object();
+   private static final Object m_masterResourceMonitor = new Object();
 
 }
