@@ -107,6 +107,13 @@ public class PSException extends java.lang.Exception
 
    public PSException(Throwable cause){
       super(cause);
+      if(cause instanceof PSException){
+         PSException psException = (PSException) cause;
+         m_code = psException.getErrorCode();
+         m_args = psException.getErrorArguments();
+         m_lang = psException.getLanguageString();
+         m_overridingMessage = psException.m_overridingMessage;
+      }
    }
 
    /**
