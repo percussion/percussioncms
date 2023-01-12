@@ -89,7 +89,7 @@ public class PSContentExplorerHelper
       parameters.put("RESTRICTSEARCHFIELDSTOUSERCOMMUNITY", "");
       parameters.put("CacheSearchableFieldsInApplet", "");
       parameters.put("isManagedNavUsed", "yes");
-      parameters.put("CODEBASE", "../sys_resources/AppletJars");
+      parameters.put("CODEBASE", "../dce");
       parameters.put("OPTIONS_URL", "../sys_cxSupport/options.xml");
       parameters.put("MENU_URL", "../sys_cx/ContentExplorerMenu.html");
       parameters.put("NAV_URL", "../sys_cx/ContentExplorer.html");

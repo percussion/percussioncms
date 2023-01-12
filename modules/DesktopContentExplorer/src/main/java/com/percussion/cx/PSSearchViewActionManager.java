@@ -446,7 +446,7 @@ public class PSSearchViewActionManager
                         "A custom search or view must have URL specified");
                   }
                   if(sUrl.contains("../")){
-                     sUrl=sUrl.replace("../","");
+                     sUrl=sUrl.substring(3);
                   }
                   Document resultDoc = null;
                   String result = null;

@@ -43,7 +43,7 @@ public class PSGlobalTemplateCataloger
       try
       {
          URL url = new URL(urlBase, 
-            "../sys_psxCataloger/getGlobalTemplates.xml");
+            "sys_psxCataloger/getGlobalTemplates.xml");
          Document doc = PSXmlDocumentBuilder.createXmlDocument(
             url.openStream(), false);
          

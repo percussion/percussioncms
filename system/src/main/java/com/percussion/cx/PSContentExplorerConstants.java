@@ -145,7 +145,7 @@ public class PSContentExplorerConstants
    /**
     * The parameter that defines a url to get options.
     */
-   public static final String OPTIONS_URL = "../sys_cxSupport/options.xml";
+   public static final String OPTIONS_URL = "sys_cxSupport/options.xml";
    /**
     * The parameter that defines the 'CONTENTID' of the item
     */

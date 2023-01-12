@@ -54,7 +54,7 @@ public class PSSubjectCataloger
       m_collSubjects.clear();
       try
       {
-         URL url = new URL(urlBase, "../sys_components/getSubject.xml");
+         URL url = new URL(urlBase, "sys_components/getSubject.xml");
          Document doc = PSXmlDocumentBuilder.createXmlDocument(
             url.openStream(), false);
          fromXml(doc.getDocumentElement());

@@ -56,7 +56,7 @@ public class PSSiteCataloger
       try
       {
          URL url = new URL(m_urlBase, 
-            "../sys_pubSites/getSites.xml");
+            "sys_pubSites/getSites.xml");
          Document doc = PSXmlDocumentBuilder.createXmlDocument(
             url.openStream(), false);
          

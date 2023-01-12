@@ -56,6 +56,7 @@ import com.percussion.design.objectstore.PSRelationship;
 import com.percussion.design.objectstore.PSRelationshipConfig;
 import com.percussion.design.objectstore.PSRelationshipSet;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
+import com.percussion.error.PSException;
 import com.percussion.i18n.PSI18nUtils;
 import com.percussion.security.PSSecurityToken;
 import com.percussion.server.PSConsole;
@@ -1740,8 +1741,10 @@ public class PSServerItem extends PSCoreItem implements IPSPersister
             request.setParameter(
                   PSContentEditorHandler.CHILD_ROW_ID_PARAM_NAME, childRowId);
       }
-      catch (Exception ex)
+      catch (PSException ex)
       {
+         if(ex instanceof PSCmsException)
+            throw (PSCmsException)ex;
          throw new PSCmsException(ex);
       }
    }

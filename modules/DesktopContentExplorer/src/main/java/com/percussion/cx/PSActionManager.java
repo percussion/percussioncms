@@ -4147,8 +4147,8 @@ public class PSActionManager implements IPSConstants, IPSSelectionListener
                String message = m_applet.getResourceString(getClass(), "CommandFailure");
                throw new Exception(message + " no action url");
             }
-            if(actionUrl.startsWith("../") && !actionUrl.contains("rceditor")){
-               actionUrl = actionUrl.replace("../","");
+            if(actionUrl.startsWith("../")){
+               actionUrl = actionUrl.substring(3);
             }
             if (launchNewWindow.equalsIgnoreCase(PSContentExplorerConstants.CONST_YES))
             {
@@ -4905,7 +4905,7 @@ public class PSActionManager implements IPSConstants, IPSSelectionListener
          throw new IllegalArgumentException("strUrl must not be null or empty");
 
       if(strUrl.startsWith("../")){
-         strUrl = strUrl.replace("../","");
+         strUrl = strUrl.substring(3);
       }
 
       URL theUrl = null;
