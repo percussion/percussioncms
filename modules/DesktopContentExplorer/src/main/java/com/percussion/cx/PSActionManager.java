@@ -3122,13 +3122,7 @@ public class PSActionManager implements IPSConstants, IPSSelectionListener
             Iterator selectedItems = selection.getNodeList();
             PSNode item = (PSNode) selectedItems.next();
             String codeBase = m_applet.getRhythmyxCodeBase().toString();
-            int res = codeBase.indexOf("/sys_resources");
-            if (res < 0)
-            {
-               throw new RuntimeException("Codebase did not contain " + "expected string /sys_resources");
-            }
-            String base = codeBase.substring(0, res);
-            String link = base + "/sys_ActionPage/Panel.html?sys_contentid=" + item.getContentId();
+            String link = codeBase + "/sys_ActionPage/Panel.html?sys_contentid=" + item.getContentId();
             Transferable trans = new StringSelection(link);
             try
             {
@@ -4153,7 +4147,7 @@ public class PSActionManager implements IPSConstants, IPSSelectionListener
                String message = m_applet.getResourceString(getClass(), "CommandFailure");
                throw new Exception(message + " no action url");
             }
-            if(actionUrl.startsWith("../")){
+            if(actionUrl.startsWith("../") && !actionUrl.contains("rceditor")){
                actionUrl = actionUrl.replace("../","");
             }
             if (launchNewWindow.equalsIgnoreCase(PSContentExplorerConstants.CONST_YES))
@@ -4633,14 +4627,14 @@ public class PSActionManager implements IPSConstants, IPSSelectionListener
       {
          key = iter.next().toString();
          value = actionParams.getParameter(key);
-         //CMS-8722 : the psredirect parameter was giving malformed URL exception while redirecting
-         if(key.equalsIgnoreCase("psredirect")){
-            URL serverCodeBaseURL = m_applet.getCodeBase();
-            String protocol = serverCodeBaseURL.getProtocol();
-            String host = serverCodeBaseURL.getHost();
-            String port = String.valueOf(serverCodeBaseURL.getPort());
-            value = value.replaceFirst("../",protocol+"://"+host+":"+port+"/Rhythmyx/");
-         }
+//         //CMS-8722 : the psredirect parameter was giving malformed URL exception while redirecting
+//         if(key.equalsIgnoreCase("psredirect")){
+//            URL serverCodeBaseURL = m_applet.getCodeBase();
+//            String protocol = serverCodeBaseURL.getProtocol();
+//            String host = serverCodeBaseURL.getHost();
+//            String port = String.valueOf(serverCodeBaseURL.getPort());
+//            value = value.replaceFirst("../",protocol+"://"+host+":"+port+"/Rhythmyx/");
+//         }
          if (value.startsWith("$")) // Dynamic value, already dealt with
             continue;
          if (PASS_THRU_PARAMS.contains(key))

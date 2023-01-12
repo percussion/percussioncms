@@ -39,13 +39,13 @@
 		</xsl:choose>
 	</xsl:variable>
 	<xsl:variable name="appletparams">
-		<AppletParams>
+		<AppletParams xmlns="">
 			<Param name="CODE" value="com.percussion.cx.PSContentExplorerApplet.class"/>
 			<Param name="DEBUG" value="{//@debug}"/>
 			<Param name="RESTRICTSEARCHFIELDSTOUSERCOMMUNITY" value="{//@RestrictSearchFieldsToUserCommunity}"/>
 			<Param name="CacheSearchableFieldsInApplet" value="{//@CacheSearchableFieldsInApplet}"/>
 			<Param name="isManagedNavUsed" value="{//@isManagedNavUsed}"/>
-			<Param name="CODEBASE" value="../sys_resources/AppletJars"/>
+			<Param name="CODEBASE" value="../dce"/>
 			<Param name="OPTIONS_URL" value="../sys_cxSupport/options.xml"/>
 			<Param name="MENU_URL" value="../sys_cxItemAssembly/ItemAssemblyMenu.html"/>
 			<Param name="NAV_URL" value="{concat(//iadataurl,'?sys_contentid=', $contentid, '&amp;sys_revision=', $revision, '&amp;sys_variantid=', //variantid, '&amp;sys_slotname=', //slotname, '&amp;sys_slotid=', //slotid,  '&amp;sys_mode=', //mode)}"/>
@@ -133,7 +133,7 @@
 							<script language="javascript1.2" src="../sys_resources/js/browser.js">;</script>
 							<script language="JavaScript1.2">	        
 			var appletCaller = new AppletCaller();
-			<xsl:for-each select="$appletparams/AppletParams/Param">
+			<xsl:for-each select="document($appletparams)/AppletParams/Param">
 									<xsl:text>appletCaller.addParam("</xsl:text>
 									<xsl:value-of select="@name"/>
 									<xsl:text>", "</xsl:text>
