@@ -11,7 +11,6 @@ import com.percussion.webservices.faults.PSContractViolationFault;
 import com.percussion.webservices.faults.PSNotAuthenticatedFault;
 import com.percussion.webservices.security.data.PSLocale;
 import org.apache.axis.AxisFault;
-import org.apache.batik.apps.svgbrowser.StatusBar;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
@@ -22,13 +21,16 @@ import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
+import javax.swing.border.BevelBorder;
 import javax.swing.border.EtchedBorder;
 import javax.swing.plaf.basic.BasicComboBoxRenderer;
 import java.awt.BorderLayout;
@@ -107,8 +109,8 @@ public class PSContentExplorerLoginPanel extends JFrame
 
       m_login.addActionListener(e -> onOk());
 
-      m_statusBar = new StatusBar();
-      m_statusBar.setMessage(m_res.getString("disconnectedStatus"));
+      m_statusBar = new JLabel();
+      m_statusBar.setText(m_res.getString("disconnectedStatus"));
       for (Component comp : m_statusBar.getComponents())
       {
          comp.setFont(new Font("Arial", Font.BOLD, 18));
@@ -270,6 +272,9 @@ public class PSContentExplorerLoginPanel extends JFrame
       c.insets = new Insets(10, 0, 0, 20); // top padding
       panel.add(m_login, c);
 
+      JPanel statusPanel = new JPanel();
+      statusPanel.setLayout(new BorderLayout());
+      statusPanel.setBorder(new BevelBorder(BevelBorder.LOWERED));
       c.fill = GridBagConstraints.HORIZONTAL;
       c.gridx = 0;
       c.gridy = 5;
@@ -277,8 +282,9 @@ public class PSContentExplorerLoginPanel extends JFrame
       c.gridwidth = 2;
       c.insets = new Insets(10, 0, 0, 0); // top padding
       c.anchor = GridBagConstraints.SOUTH;
+      statusPanel.add(m_statusBar,BorderLayout.SOUTH);
 
-      panel.add(m_statusBar, c);
+      panel.add(statusPanel, c);
 
       panel.setBorder(new EtchedBorder(EtchedBorder.LOWERED));
 
@@ -395,7 +401,7 @@ public class PSContentExplorerLoginPanel extends JFrame
          JOptionPane.showMessageDialog(this, ErrorDialogs.cropErrorMessage(m_res.getString("missUserId")),
                m_res.getString("error"), JOptionPane.ERROR_MESSAGE);
          this.setCursor(getCursor().getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-         m_statusBar.setMessage(m_res.getString("disconnectedStatus"));
+         m_statusBar.setText(m_res.getString("disconnectedStatus"));
          m_userId.requestFocus();
          this.m_login.setEnabled(true);
          return;
@@ -406,7 +412,7 @@ public class PSContentExplorerLoginPanel extends JFrame
          JOptionPane.showMessageDialog(this, ErrorDialogs.cropErrorMessage(m_res.getString("missPassword")),
                m_res.getString("error"), JOptionPane.ERROR_MESSAGE);
          this.setCursor(getCursor().getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-         m_statusBar.setMessage(m_res.getString("disconnectedStatus"));
+         m_statusBar.setText(m_res.getString("disconnectedStatus"));
          m_password.requestFocus();
          this.m_login.setEnabled(true);
          return;
@@ -417,13 +423,13 @@ public class PSContentExplorerLoginPanel extends JFrame
          JOptionPane.showMessageDialog(this, ErrorDialogs.cropErrorMessage(m_res.getString("missLocale")),
                  m_res.getString("error"), JOptionPane.ERROR_MESSAGE);
          this.setCursor(getCursor().getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-         m_statusBar.setMessage(m_res.getString("disconnectedStatus"));
+         m_statusBar.setText(m_res.getString("disconnectedStatus"));
          m_locale.requestFocus();
          this.m_login.setEnabled(true);
          return;
       }
       
-      m_statusBar.setMessage(m_res.getString("connectingStatus"));
+      m_statusBar.setText(m_res.getString("connectingStatus"));
 
       String protocol = null;
       String host = null;
@@ -524,7 +530,7 @@ public class PSContentExplorerLoginPanel extends JFrame
                        m_password.getText(),
                        ((PSLocale)m_locale.getSelectedItem()).getCode());
                
-               m_statusBar.setMessage(m_res.getString("connectedStatus") + host);
+               m_statusBar.setText(m_res.getString("connectedStatus") + host);
 
                // get the jsession from the connection and set it back in the
                // applet
@@ -585,7 +591,7 @@ public class PSContentExplorerLoginPanel extends JFrame
                }
                else
                {
-                  m_statusBar.setMessage(m_res.getString("failedStatus"));
+                  m_statusBar.setText(m_res.getString("failedStatus"));
 
                   JOptionPane.showMessageDialog(PSContentExplorerLoginPanel.this, ErrorDialogs.cropErrorMessage(errorMessage),
                         m_res.getString("error"), JOptionPane.ERROR_MESSAGE);
@@ -797,7 +803,7 @@ public class PSContentExplorerLoginPanel extends JFrame
    /**
     * editable password field for user password
     */
-   private JTextField m_password = new JTextField("");
+   private JPasswordField m_password = new JPasswordField("");
 
    /**
     * the login button
@@ -817,7 +823,7 @@ public class PSContentExplorerLoginPanel extends JFrame
    /**
     * status bar, informing the user about the applets/applications state
     */
-   private StatusBar m_statusBar = null;
+   private JLabel m_statusBar = null;
 
    /** Admin properties gets initialized in <code>initPanel</code> */
    private PSProperties m_adminProps = null;

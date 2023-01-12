@@ -53,7 +53,7 @@ public class PSCommunityContentTypeMapperCataloger
       try
       {
          URL url = new URL(urlBase,
-               "../sys_commSupport/CommunityContentTypeMapper.xml");
+               "sys_commSupport/CommunityContentTypeMapper.xml");
          Document doc = PSXmlDocumentBuilder.createXmlDocument(
             url.openStream(), false);
          fromXml(doc.getDocumentElement());

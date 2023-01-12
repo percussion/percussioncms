@@ -50,7 +50,7 @@ public class PSLocaleCataloger
    {
       try
       {
-         URL url = new URL(urlBase, "../sys_i18nSupport/languagelookup.xml");
+         URL url = new URL(urlBase, "sys_i18nSupport/languagelookup.xml");
          Document doc = PSXmlDocumentBuilder.createXmlDocument(
             url.openStream(), false);
          fromXml(doc.getDocumentElement());

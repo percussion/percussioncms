@@ -54,7 +54,7 @@ public class PSCommunityCataloger
       m_collCommunities.clear();
       try
       {
-         URL url = new URL(urlBase, "../sys_cmpCommunities/communities.xml");
+         URL url = new URL(urlBase, "sys_cmpCommunities/communities.xml");
          Document doc = PSXmlDocumentBuilder.createXmlDocument(
             url.openStream(), false);
          fromXml(doc.getDocumentElement());

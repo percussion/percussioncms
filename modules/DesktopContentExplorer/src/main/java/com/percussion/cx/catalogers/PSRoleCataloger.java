@@ -53,7 +53,7 @@ public class PSRoleCataloger
       m_collRoles.clear();
       try
       {
-         URL url = new URL(urlBase, "../sys_components/getRole.xml");
+         URL url = new URL(urlBase, "sys_components/getRole.xml");
          Document doc = PSXmlDocumentBuilder.createXmlDocument(
             url.openStream(), false);
          fromXml(doc.getDocumentElement());
