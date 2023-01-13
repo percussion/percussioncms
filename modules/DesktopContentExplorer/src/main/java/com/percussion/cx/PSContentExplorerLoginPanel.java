@@ -83,6 +83,8 @@ public class PSContentExplorerLoginPanel extends JFrame
    public final static String LAST_USER = "last_user_name";
 
    public PSContentExplorerApplet applet;
+   Font boldTextFont = new Font("Arial", Font.BOLD, 18);
+   Font plainTextFont = new Font("Arial", Font.PLAIN, 18);
 
    public PSContentExplorerLoginPanel(PSContentExplorerFrame parent, PSContentExplorerApplet applet)
    {
@@ -99,7 +101,7 @@ public class PSContentExplorerLoginPanel extends JFrame
       // be there
       m_res = applet.getResources();
       m_login = new JButton(m_res.getString("login"));
-      m_login.setFont(new Font("Arial", Font.BOLD, 18));
+      m_login.setFont(boldTextFont);
       FontMetrics metrics = getFontMetrics(m_login.getFont());
       int width = metrics.stringWidth(m_login.getText());
       int height = metrics.getHeight();
@@ -113,7 +115,7 @@ public class PSContentExplorerLoginPanel extends JFrame
       m_statusBar.setText(m_res.getString("disconnectedStatus"));
       for (Component comp : m_statusBar.getComponents())
       {
-         comp.setFont(new Font("Arial", Font.BOLD, 18));
+         comp.setFont(boldTextFont);
       }
 
       this.setMinimumSize(new Dimension(400, 200));
@@ -157,7 +159,7 @@ public class PSContentExplorerLoginPanel extends JFrame
 
       UTMnemonicLabel p1alabel = new UTMnemonicLabel(m_res, "serverurl", m_url);
       p1alabel.setMinimumSize(new Dimension(150, 60));
-      p1alabel.setFont(new Font("Arial", Font.BOLD, 18));
+      p1alabel.setFont(boldTextFont);
       p1alabel.setLabelFor(m_url);
       panel.add(p1alabel, c);
       c.weightx = 1.0;
@@ -165,7 +167,7 @@ public class PSContentExplorerLoginPanel extends JFrame
       c.gridy = 0;
       c.fill = GridBagConstraints.HORIZONTAL;
       c.insets = new Insets(5, 0, 0, 20); // top padding
-      m_url.setFont(new Font("Arial", Font.PLAIN, 18));
+      m_url.setFont(plainTextFont);
 
       FontMetrics metrics = getFontMetrics(m_url.getFont());
       int width = metrics.stringWidth(m_url.getText());
@@ -195,7 +197,7 @@ public class PSContentExplorerLoginPanel extends JFrame
       UTMnemonicLabel p2label = new UTMnemonicLabel(m_res, "userId", m_userId);
       p2label.setLabelFor(m_userId);
       p2label.setMinimumSize(new Dimension(150, 60));
-      p2label.setFont(new Font("Arial", Font.BOLD, 18));
+      p2label.setFont(boldTextFont);
       c.fill = GridBagConstraints.NONE;
       c.gridx = 0;
       c.gridy = 1;
@@ -206,14 +208,14 @@ public class PSContentExplorerLoginPanel extends JFrame
       c.gridy = 1;
       c.fill = GridBagConstraints.HORIZONTAL;
       m_userId.setMinimumSize(new Dimension(300, 60));
-      m_userId.setFont(new Font("Arial", Font.PLAIN, 18));
+      m_userId.setFont(plainTextFont);
       c.insets = new Insets(5, 0, 0, 20); // top padding
       panel.add(m_userId, c);
 
       UTMnemonicLabel p3Label = new UTMnemonicLabel(m_res, "password", m_password);
       p3Label.setLabelFor(m_password);
       p3Label.setMinimumSize(new Dimension(150, 60));
-      p3Label.setFont(new Font("Arial", Font.BOLD, 18));
+      p3Label.setFont(boldTextFont);
       c.weightx = 0.2;
       c.fill = 0;
       c.gridx = 0;
@@ -227,7 +229,7 @@ public class PSContentExplorerLoginPanel extends JFrame
       c.insets = new Insets(5, 0, 0, 20); // top padding
       panel.add(m_password, c);
       m_password.setMinimumSize(new Dimension(300, 60));
-      m_password.setFont(new Font("Arial", Font.PLAIN, 18));
+      m_password.setFont(plainTextFont);
       m_password.enableInputMethods(true);
 
       m_locale = createLocaleComboBox();
@@ -235,7 +237,7 @@ public class PSContentExplorerLoginPanel extends JFrame
       UTMnemonicLabel p4Label = new UTMnemonicLabel(m_res, "locale", m_locale);
       p4Label.setLabelFor(m_locale);
       p4Label.setMinimumSize(new Dimension(150, 60));
-      p4Label.setFont(new Font("Arial", Font.BOLD, 18));
+      p4Label.setFont(boldTextFont);
       c.weightx = 0.2;
       c.fill = 0;
       c.gridx = 0;
@@ -249,7 +251,7 @@ public class PSContentExplorerLoginPanel extends JFrame
       c.insets = new Insets(5, 0, 0, 20); // top padding
       panel.add(m_locale, c);
       m_locale.setMinimumSize(new Dimension(300, 60));
-      m_locale.setFont(new Font("Arial", Font.PLAIN, 18));
+      m_locale.setFont(plainTextFont);
       m_locale.enableInputMethods(false);
 
       c.fill = GridBagConstraints.HORIZONTAL;
@@ -282,6 +284,7 @@ public class PSContentExplorerLoginPanel extends JFrame
       c.gridwidth = 2;
       c.insets = new Insets(10, 0, 0, 0); // top padding
       c.anchor = GridBagConstraints.SOUTH;
+      m_statusBar.setFont(boldTextFont);
       statusPanel.add(m_statusBar,BorderLayout.SOUTH);
 
       panel.add(statusPanel, c);
