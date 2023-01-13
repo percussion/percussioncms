@@ -69,7 +69,7 @@ public class SecureStringUtils {
      * \ / | < > ? " : *
      * </pre>
      */
-    public static final String INVALID_WINDOWS_FILE_CHARACTERS = "\\/|<>()?\":*";
+    public static final String INVALID_WINDOWS_FILE_CHARACTERS = "\\/|<>?\":*";
     /**
      * Characters that should not be used as part of URL; otherwise it may cause
      * error in REST layer when the item name contain any of the characters.
