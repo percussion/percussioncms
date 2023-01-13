@@ -150,9 +150,5 @@ public class PSValidateCharacters implements IPSFieldValidator
          IteratorUtils.toArray(def.getRuntimeParameterNames(), String.class);
       this.parameterNames = paramNames;
    }
-   
-   
-   
-   
 
 }
