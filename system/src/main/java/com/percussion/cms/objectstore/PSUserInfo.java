@@ -80,7 +80,7 @@ public class PSUserInfo implements IPSCmsComponent
    public PSUserInfo()
    {
    }
-   public PSUserInfo(String sid, String uName, long communityId, String locale, PSRole[] roles, long sessionTimeOut) throws PSCmsException {
+   public PSUserInfo(String sid, String uName, long communityId, String locale, PSRole[] roles, long sessionTimeOut) {
 
       m_SessionId = sid;
       m_UserName = uName;

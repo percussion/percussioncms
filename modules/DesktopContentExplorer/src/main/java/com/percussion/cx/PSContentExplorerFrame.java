@@ -65,8 +65,6 @@ public class PSContentExplorerFrame extends PSDesktopExplorerWindow implements A
    
    private boolean fixedHost = false;
 
-   private PSUserInfo userInfo = null;
-    
    /**
     * The constuctor sets the applications main frame size and title. It adds a
     * new window listener to watch for closing events. Then it performs the same
@@ -266,23 +264,8 @@ public class PSContentExplorerFrame extends PSDesktopExplorerWindow implements A
      manager.setCookiePolicy(CookiePolicy.ACCEPT_ALL);
      CookieHandler.setDefault(manager);
 
-    PSLogin login = PSCESessionManager.getInstance().getLoginInfo();
-    PSCommunity[] communities = login.getCommunities();
-    long commId = 0;
-    String defaultComm = login.getDefaultCommunity();
-    for (PSCommunity comm:communities) {
-        if(defaultComm.equals(comm.getName())){
-            commId = comm.getId();
-            break;
-        }
-    }
-
-     userInfo = new PSUserInfo(login.getSessionId(),
-        PSCESessionManager.getInstance().getUserName(),commId,login.getDefaultLocaleCode(),login.getRoles(),login.getSessionTimeout()
-        );
-
-
      applet.init();
+     PSUserInfo userInfo = getUserInfo();
      applet.setupApplet(userInfo);
      applet.start();
      
@@ -308,6 +291,25 @@ public class PSContentExplorerFrame extends PSDesktopExplorerWindow implements A
         }
      });
      
+  }
+
+  private PSUserInfo getUserInfo()  {
+       PSLogin login = PSCESessionManager.getInstance().getLoginInfo();
+       PSCommunity[] communities = login.getCommunities();
+       long commId = 0;
+       String defaultComm = login.getDefaultCommunity();
+       for (PSCommunity comm : communities) {
+           if (defaultComm.equals(comm.getName())) {
+               commId = comm.getId();
+               break;
+           }
+       }
+
+       PSUserInfo userInfo = new PSUserInfo(login.getSessionId(),
+               PSCESessionManager.getInstance().getUserName(), commId, login.getDefaultLocaleCode(), login.getRoles(), login.getSessionTimeout()
+       );
+
+       return userInfo;
   }
    
    
@@ -445,8 +447,8 @@ public class PSContentExplorerFrame extends PSDesktopExplorerWindow implements A
          applet = new PSContentExplorerApplet(true);
          this.add(applet,  BorderLayout.CENTER);
       }
-      applet.init();
-      applet.setupApplet(userInfo);
+
+      applet.setupApplet(getUserInfo());
       applet.start();
       this.toFront();
     
