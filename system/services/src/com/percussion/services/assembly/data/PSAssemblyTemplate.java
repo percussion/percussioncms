@@ -41,8 +41,6 @@ import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.xml.IPSXmlSerialization;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.commons.lang.builder.ToStringStyle;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Hibernate;
@@ -248,7 +246,7 @@ public class PSAssemblyTemplate
    @SortComparator(PSExecutionOrderComparator.class)
    private List<PSTemplateBinding> bindings =new ArrayList<>();
 
-   @ManyToMany(targetEntity = PSTemplateSlot.class, cascade =
+   @ManyToMany(fetch = FetchType.EAGER,targetEntity = PSTemplateSlot.class, cascade =
    {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE})
    @JoinTable(name = "RXVARIANTSLOTTYPE", joinColumns =
    {@JoinColumn(name = "VARIANTID")}, inverseJoinColumns =

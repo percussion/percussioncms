@@ -518,8 +518,7 @@ public class PSExitAuthenticateUser implements IPSRequestPreProcessor
       IPSCmsObjectMgr cms = PSCmsObjectMgrLocator.getObjectManager();
       localParams.m_checkoutStatus = checkoutstatus;
       localParams.m_checkedOutUser = checkedOutUser;
-      IPSWorkflowAppsContext wac = cms.loadWorkflowAppContext(nWorkFlowAppID);
-      String sAdminName = wac.getWorkFlowAdministrator();
+
 
       // first check folder security
       if (!PSCms.canReadInFolders(contentID))
@@ -534,11 +533,17 @@ public class PSExitAuthenticateUser implements IPSRequestPreProcessor
 
       boolean isAdmin = false;
       boolean isInternalUser = false;
+      IPSWorkflowAppsContext wac;
+      String sAdminName = null;
       
 
       if (userName.equals(IPSConstants.INTERNAL_USER_NAME))
       {
          isInternalUser = true;
+         sAdminName = userName;
+      }else{
+         wac = cms.loadWorkflowAppContext(nWorkFlowAppID);
+         sAdminName = wac.getWorkFlowAdministrator();
       }
 
       if (isInternalUser
