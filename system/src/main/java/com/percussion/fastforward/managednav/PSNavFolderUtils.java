@@ -54,7 +54,6 @@ import com.percussion.server.IPSRequestContext;
 import com.percussion.services.assembly.impl.nav.PSNavConfig;
 import com.percussion.services.legacy.IPSCmsObjectMgr;
 import com.percussion.services.legacy.PSCmsObjectMgrLocator;
-import com.percussion.services.workflow.PSWorkflowServiceLocator;
 import com.percussion.util.IPSHtmlParameters;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -555,14 +554,11 @@ public class PSNavFolderUtils
          setFieldValue(navon, "sys_communityid", new PSTextValue(String
                .valueOf(communityId)));
          Object workflowId = req.getPrivateObject(SYS_WORKFLOWID);
-         if (workflowId instanceof Integer) {
-            setFieldValue(navon, SYS_WORKFLOWID, new PSTextValue(String
-                    .valueOf(workflowId)));
-         }else if(workflowId == null){
-            workflowId = PSWorkflowServiceLocator.getWorkflowService().getDefaultWorkflowId().getUUID();
-            setFieldValue(navon, SYS_WORKFLOWID, new PSTextValue(String
-                    .valueOf(workflowId)));
+          if(workflowId == null){
+            workflowId = navonDef.getWorkflowId();
          }
+         setFieldValue(navon, SYS_WORKFLOWID, new PSTextValue(String
+                 .valueOf(workflowId)));
          ms_log.debug("before new navon save");
          navon.save(req.getSecurityToken());
          ms_log.debug("after save");
