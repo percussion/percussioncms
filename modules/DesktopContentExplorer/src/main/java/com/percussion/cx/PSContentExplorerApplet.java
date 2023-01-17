@@ -175,8 +175,12 @@ public class PSContentExplorerApplet extends JApplet implements IPSActionListene
       }
       //As LoginContextWill be set by ContentExplorerFrame, once login details are gathered from user
       if(!m_createdFromFrame) {
-         setupApplet(null);
+         setupApplet();
       }
+   }
+
+   public synchronized void setupApplet(){
+      setupApplet(null);
    }
 
 

@@ -45,7 +45,7 @@
 		</xsl:choose>
 	</xsl:variable>
 	<xsl:variable name="editlivedir">
-		<xsl:value-of select="concat($rxroot,'../rx_resources/ephox/editlivejava')" />
+		<xsl:value-of select="concat($rxroot,'/rx_resources/ephox/editlivejava')" />
 	</xsl:variable>
 	<xsl:variable name="appletparams">
 		<AppletParams xmlns="">
@@ -206,7 +206,7 @@
 	<xsl:template name="applet-body">
 		<script language="javascript" type="text/javascript">
 			var appletCaller = new AppletCaller();
-			<xsl:for-each select="document($appletparams)/AppletParams/Param">
+				<xsl:for-each select="exsl:node-set($appletparams)/AppletParams/Param">
 				<xsl:text>appletCaller.addParam("</xsl:text><xsl:value-of select="@name" /><xsl:text>", "</xsl:text><xsl:value-of select="@value" /><xsl:text>");</xsl:text>
 			</xsl:for-each>
 			appletCaller.show();
