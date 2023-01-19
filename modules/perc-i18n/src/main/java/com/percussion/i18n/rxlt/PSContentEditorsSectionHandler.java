@@ -30,7 +30,6 @@ import com.percussion.i18n.tmxdom.IPSTmxTranslationUnit;
 import com.percussion.i18n.tmxdom.PSTmxDocument;
 import com.percussion.util.PSFileFilter;
 import com.percussion.util.PSFilteredFileList;
-import com.percussion.utils.*;
 import com.percussion.utils.tools.PSPatternMatcher;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import org.w3c.dom.*;
