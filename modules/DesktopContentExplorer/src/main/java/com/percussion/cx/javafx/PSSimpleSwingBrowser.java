@@ -26,6 +26,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebErrorEvent;
 import javafx.scene.web.WebEvent;
 import javafx.scene.web.WebView;
 import javafx.stage.Modality;
@@ -116,6 +117,8 @@ public class PSSimpleSwingBrowser extends PSDesktopExplorerWindow
          else
          {
             webView = new WebView();
+            webView.getEngine().setOnAlert((EventHandler<WebEvent<String>>) event -> log.info(event.getData()));
+            webView.getEngine().setOnError((EventHandler<WebErrorEvent>) event -> log.error(event.getMessage()));
             webView.setContextMenuEnabled(false);
             //createContextMenu(webView);
             // Create object to allow javascript to call java
