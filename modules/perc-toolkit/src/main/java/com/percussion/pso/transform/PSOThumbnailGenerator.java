@@ -1,12 +1,19 @@
-/*******************************************************************************
- * Copyright (c) 1999-2011 Percussion Software.
- * 
- * Permission is hereby granted, free of charge, to use, copy and create derivative works of this software and associated documentation files (the "Software") for internal use only and only in connection with products from Percussion Software. 
- * 
- * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
- * 
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL PERCUSSION SOFTWARE BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- ******************************************************************************/
+/*
+ * Copyright 1999-2023 Percussion Software, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.percussion.pso.transform;
 
 import com.percussion.design.objectstore.PSField;
@@ -57,24 +64,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 
-/**
- * Generates a fixed size thumbnail from an uploaded image. 
- * 
- * <p>Title: PSOThumbnailGenerator </p>
- * <p>Description: A Pre-exit that can be used on an Image Content editor to automatically
- * generate a thumbnail for the full image.
- * </p>
- * Modernized to use the ImageIO libraries. The new libraries use biCubic interpolation for 
- * higher image quality.
- * <p>
- * This version is enhanced to handle both PSPurgableTempFile instances and Base64 encoded
- * strings.  
- * <p>Copyright: Copyright (c) 2002, 2008</p>
- * <p>Company: Percussion Software </p>
- * @author Prasad Bandaru
- * @author DavidBenua
- * @version 2.0
- */
 public class PSOThumbnailGenerator extends PSFileInfo
    implements IPSItemInputTransformer, IPSRequestPreProcessor {
  
