@@ -117,7 +117,7 @@ public class PSSimpleSwingBrowser extends PSDesktopExplorerWindow
          else
          {
             webView = new WebView();
-            webView.getEngine().setOnAlert((EventHandler<WebEvent<String>>) event -> log.info(event.getData()));
+            webView.getEngine().setOnAlert((EventHandler<WebEvent<String>>) event -> log.debug(event.getData()));
             webView.getEngine().setOnError((EventHandler<WebErrorEvent>) event -> log.error(event.getMessage()));
             webView.setContextMenuEnabled(false);
             //createContextMenu(webView);
