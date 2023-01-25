@@ -653,15 +653,18 @@
         </if>
         <echo>Deleting wrong dir from previous install...</echo>
         <delete dir="${install.dir}/rxconfig/ContentEditors" includeemptydirs="true" verbose="true" failonerror="false"/>
+        <!--
         <echo>Deleting wrong case(shared/Shared) dir in case not Windows...</echo>
         <if>
             <not>
                 <os family="windows" />
             </not>
             <then>
-                <delete dir="${install.dir}/rxconfig/Server/ContentEditors/Shared" includeemptydirs="true" verbose="true" failonerror="false"/>
+                <delete verbose="true" failonerror="false" includeemptydirs="true">
+                    <fileset casesensitive="true" dir="${install.dir}/rxconfig/Server/ContentEditors/Shared"/>
+                </delete>
             </then>
-        </if>
+        </if> -->
 
     </target>
 

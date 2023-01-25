@@ -5,13 +5,15 @@
     <version>8.1.1-SNAPSHOT</version>
     <packaging>pom</packaging>
     <url>https://www.github.com/percussion/percussioncms</url>
+
     <licenses>
         <license>
-            <name>GNU AFFERO GENERAL PUBLIC LICENSE, Version 3 (AGPL-3.0)</name>
-            <url>https://opensource.org/licenses/AGPL-3.0</url>
-            <distribution />
+            <name>The Apache Software License, Version 2.0</name>
+            <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
         </license>
     </licenses>
+
     <scm>
         <connection>scm:git:https://github.com/percussion/percussioncms</connection>
         <developerConnection>scm:git:https://github.com/percussion/percussioncms</developerConnection>
