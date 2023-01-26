@@ -232,7 +232,7 @@
 					</xsl:call-template>
 				</title>
 				<link rel="stylesheet" type="text/css" href="../cm/themes/base/jquery.ui.all.css"/>
-				<link rel="stylesheet" type="text/css" href="../rx_resources/css/tooltip.css"/>
+				<link rel="stylesheet" type="text/css" href="../sys_resources/css/tooltip.css"/>
 				<link rel="stylesheet" type="text/css" href="../sys_resources/css/templates.css"/>
 				<link rel="stylesheet" type="text/css" href="../rx_resources/css/templates.css"/>
 				<link rel="stylesheet" type="text/css" href="{concat('../rx_resources/css/',$lang,'/templates.css')}"/>
