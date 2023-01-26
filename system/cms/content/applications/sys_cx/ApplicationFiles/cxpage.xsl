@@ -143,7 +143,7 @@
 	</xsl:template>
 	<xsl:template name="js-functions">
 
-		<script type="text/javascript" src="/Rhythmyx/util/getPSSessionID.jsp">;</script>
+		<script type="text/javascript" src="/ui/util/getPSSessionID.jsp">;</script>
 		<script type="text/javascript" src="{concat($rxroot,'/sys_resources/js/browser.js')}">;</script>
 		<script type="text/javascript" src="{concat($editlivedir,'/editlivejava.js')}">;</script>
 		<script src="{concat($rxroot,'/sys_resources/js/jquery/jquery.js')}"></script>

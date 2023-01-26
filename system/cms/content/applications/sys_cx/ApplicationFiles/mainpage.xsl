@@ -105,7 +105,7 @@
                 <meta http-equiv="Pragma" content="no-cache" />
                 <meta http-equiv="Expires" content="-1" />
                 <script src="../sys_resources/js/browser.js">;</script>
-                <script src="/Rhythmyx/util/getPSSessionID.jsp" type="text/javascript">;</script>
+                <script src="/ui/util/getPSSessionID.jsp" type="text/javascript">;</script>
                 <script type="text/javascript">
                 <xsl:text disable-output-escaping="yes">
                 //&lt;![CDATA[
