@@ -29,18 +29,10 @@
 	<script src="<%= root %>/sys_resources/ps/content/SelectTemplates.js">;</script>
 
 
-	<!-- Required only to debug IE/Safari. To be removed for production. Hit F12 to show debug console on Windows (IE)
-<script language="javascript" src="<%= root %>/sys_resources/firebug/firebug.js"></script>
- -->
-
 	<script >
-
         var __rxroot = "<%= root %>";
-        //Global flag to indicatthat the dojo initialization is required for active assembly
+        //Global flag to indicate that the dojo initialization is required for active assembly
         var __isAa = false;
-
-        // Turn on console for dojo.debug.
-        dojo.require("dojo.debug.console");
 
         dojo.hostenv.writeIncludes();
 

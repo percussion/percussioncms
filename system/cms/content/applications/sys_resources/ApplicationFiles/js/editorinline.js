@@ -218,15 +218,6 @@ function createInlineSearchBox(type,selectedText,inlineslotid,ctypeid,callback)
   
 function openWindow()
 {
-	if(window.java != undefined)
-	{
-		___bws = window.java;
-		___bws.openWindow("/ui/content/ContentBrowserDialog.jsp", "contentBrowerDialog", "resizable,status=1,scrollbars=yes,width=750,height=500", false);
-
-
-        setTimeout(function(){___bws.focus();},1000);
-	} else {
 		___bws = window.open("/ui/content/ContentBrowserDialog.jsp", "contentBrowerDialog", "resizable,status=1,scrollbars=yes,width=750,height=500");
         setTimeout(function(){___bws.focus();},1000);
-}
 }

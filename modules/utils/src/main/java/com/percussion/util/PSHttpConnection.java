@@ -638,7 +638,7 @@ public class PSHttpConnection
    /**
     * The URL used to retrieve the PS Session ID from server.
     */
-   private static final String GET_SESSIONID_URL = "/util/getPSSessionID.jsp";
+   private static final String GET_SESSIONID_URL = "/ui/util/getPSSessionID.jsp";
 
    private static final String GET_USERINFO_URL = "sys_psxCms/userinfo.xml";
    
