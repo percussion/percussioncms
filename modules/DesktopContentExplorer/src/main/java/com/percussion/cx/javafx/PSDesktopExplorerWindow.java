@@ -198,6 +198,8 @@ public abstract class PSDesktopExplorerWindow extends JFrame
          SwingUtilities.invokeLater( () ->parentWindow.reload(newParams));
       }
    }
+
+
    
    public void closeDceWindow() {
          wgmr.close(target);
@@ -255,6 +257,7 @@ public abstract class PSDesktopExplorerWindow extends JFrame
             getEngine().executeScript("if(typeof perfInserted == 'undefined') {onerror = function(msg,url,line) { java.log(msg +', url: '+url+', line:'+line); };console.log = function(message){ java.log(message); };window.close = function() { return java.closeWindow();};window.open = function(url, name, specs, replace) { win = java.openWindow(url, name, specs , replace); java.log('window open='+win); return win;};percInserted=true;console.log('inserted perc js overrides')}");
            
          }
+
          if (firebug.get())
             showFirebug();
  
