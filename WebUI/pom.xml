@@ -203,9 +203,21 @@
                             <!-- enable filtering -->
                             <filtering>true</filtering>
                             <excludes>
-
+                                <exclude>favicon.ico</exclude>
                             </excludes>
-                        </resource>
+                    </resource>
+                    <resource>
+                        <directory>../system/ear/jsps</directory>
+                        <!-- override the destination directory for this resource -->
+                        <targetPath />
+                        <!-- disable filtering -->
+                        <filtering>false</filtering>
+                        <excludes>
+                            <exclude>**/*.jsp</exclude>
+                            <exclude>**/*.jnlp</exclude>
+                            <exclude>**/*.html</exclude>
+                        </excludes>
+                    </resource>
                     </webResources>
                     <packagingExcludes>
                         jsps,
