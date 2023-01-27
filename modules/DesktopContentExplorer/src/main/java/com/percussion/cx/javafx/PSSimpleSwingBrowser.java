@@ -17,9 +17,11 @@
 
 package com.percussion.cx.javafx;
 
+import com.vladsch.javafx.webview.debugger.DevToolsDebuggerJsBridge;
 import com.percussion.cx.PSContentExplorerApplication;
 import com.percussion.cx.PSSelection;
 import com.percussion.cx.objectstore.PSMenuAction;
+import com.vladsch.javafx.webview.debugger.JfxScriptStateProvider;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -34,6 +36,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
+import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.Clipboard;
@@ -45,11 +48,14 @@ import javafx.scene.layout.Priority;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebErrorEvent;
 import javafx.scene.web.WebEvent;
+import javafx.scene.web.WebHistory;
 import javafx.scene.web.WebView;
 import javafx.stage.Modality;
 import netscape.javascript.JSObject;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.accessibility.AccessibleContext;
 import javax.swing.BorderFactory;
@@ -61,15 +67,15 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.Rectangle;
+import java.awt.*;
+import java.awt.datatransfer.StringSelection;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Locale;
 import java.util.Optional;
+import java.util.function.Consumer;
 
 import static javafx.concurrent.Worker.State.FAILED;
 
@@ -103,7 +109,62 @@ public class PSSimpleSwingBrowser extends PSDesktopExplorerWindow
    private final JProgressBar progressBar = new JProgressBar();
 
 
-   
+    void addMessage(String message) {
+        addMessage("log", message);
+    }
+    int myMessageCount = 0;
+
+    void addMessage(String type, String message) {
+        myMessageCount++;
+        String countedMessage = "[" + myMessageCount + "]" + message;
+        System.out.println(countedMessage);
+        String suffix = "</span><br/>\n";
+        String prefix;
+
+        switch (type) {
+            case "warn":
+                prefix = "<span class='msg warn'>";
+                break;
+            case "error":
+                prefix = "<span class='msg error'>";
+                break;
+            case "debug":
+                prefix = "<span class='msg debug'>";
+                break;
+            default:
+            case "log":
+                prefix = "<span class='msg'>";
+                break;
+        }
+
+        Platform.runLater(() -> {
+
+
+        });
+    }
+
+    public class DevToolsJsBridge extends DevToolsDebuggerJsBridge {
+        public DevToolsJsBridge(final @NotNull WebView webView, final int instance, @Nullable final JfxScriptStateProvider stateProvider) {
+            super(webView, webView.getEngine(), instance, stateProvider);
+        }
+
+        // need these to update menu item state
+        @Override
+        public void onConnectionOpen() {
+            addMessage("Chrome Dev Tools connected");
+            if (myOnConnectionChangeRunnable != null) {
+                myOnConnectionChangeRunnable.run();
+            }
+        }
+
+        @Override
+        public void onConnectionClosed() {
+            addMessage("warn", "Chrome Dev Tools disconnected");
+            if (myOnConnectionChangeRunnable != null) {
+                myOnConnectionChangeRunnable.run();
+            }
+        }
+    }
    public PSSimpleSwingBrowser()
    {
       super();
@@ -134,12 +195,13 @@ public class PSSimpleSwingBrowser extends PSDesktopExplorerWindow
          else
          {
             webView = new WebView();
-            webView.getEngine().setOnAlert((EventHandler<WebEvent<String>>) event -> log.debug(event.getData()));
+             // webView.getEngine().setOnAlert((EventHandler<WebEvent<String>>) event -> log.info(event.getData()));
             webView.getEngine().setOnError((EventHandler<WebErrorEvent>) event -> log.error(event.getMessage()));
             webView.setContextMenuEnabled(false);
             //createContextMenu(webView);
             // Create object to allow javascript to call java
             PSSimpleSwingBrowser.this.engine = webView.getEngine();
+            myJSBridge = new DevToolsJsBridge(webView, 0, myStateProvider);
             setJavaBridge();
             Platform.runLater( () -> {
                initComponents(this.mi_actionurl);
@@ -208,8 +270,8 @@ public class PSSimpleSwingBrowser extends PSDesktopExplorerWindow
 
       topBar.add(btnGo, BorderLayout.CENTER);
       topBar.add(btnDone, BorderLayout.EAST);
-      topBar.setName("Accessibilty menu");
-      topBar.getAccessibleContext().setAccessibleName("Accessibilty menu");
+      topBar.setName("Accessibility menu");
+      topBar.getAccessibleContext().setAccessibleName("Accessibility menu");
       topBar.setVisible(false);
 
       JPanel statusBar = new JPanel(new BorderLayout(5, 0));
@@ -509,29 +571,14 @@ public class PSSimpleSwingBrowser extends PSDesktopExplorerWindow
             PSSimpleSwingBrowser.this.engine.load(PSSimpleSwingBrowser.this.mi_actionurl)
          );
    }
-
    private ContextMenu createContextMenu(WebView webView) {
       ContextMenu contextMenu = new ContextMenu();
-      MenuItem reload = new MenuItem("Reload");
-      reload.setOnAction(e -> webView.getEngine().reload());
-      MenuItem copyLink = new MenuItem("Copy Link to Clipboard");
-      final CheckMenuItem debugMenuItem = new CheckMenuItem("Debug");
-      debugMenuItem.setSelected(firebug.get());
-      
-      debugMenuItem.setOnAction(e -> 
-      {
-         Platform.runLater(() ->
-         {
-            firebug.set(debugMenuItem.isSelected());
-          
-            if (firebug.get())
-               showFirebug();
-            else
-               webView.getEngine().reload();
-            
-         });
-      });
-      
+       MenuItem reloadAndPause = new MenuItem("Reload Page & Pause");
+       reloadAndPause.setOnAction(e -> myJSBridge.reloadPage(true, false));
+
+       MenuItem copyLink = new MenuItem("Copy Link to Clipboard");
+
+
       copyLink.setOnAction(e -> {
          final Clipboard clipboard = Clipboard.getSystemClipboard();
          final ClipboardContent content = new ClipboardContent();
@@ -545,11 +592,126 @@ public class PSSimpleSwingBrowser extends PSDesktopExplorerWindow
          if (url!=null)
             PSBrowserUtils.openWebpage(url);
       });
-      
-      contextMenu.getItems().addAll(reload, copyLink, openInBrowser, debugMenuItem);
+
+       Menu debugPort = new Menu("");
+       MenuItem decrementPort = new MenuItem("");
+       MenuItem incrementPort = new MenuItem("");
+       debugPort.getItems().addAll(decrementPort, incrementPort);
+       updatePortMenu(debugPort);
+
+       decrementPort.setOnAction(e -> {
+           setPort(getPort() - 1);
+           updatePortMenu(debugPort);
+       });
+       incrementPort.setOnAction(e -> {
+           setPort(getPort() + 1);
+           updatePortMenu(debugPort);
+       });
+
+       MenuItem copyDebugUrl = new MenuItem("Copy Debug Server URL");
+       copyDebugUrl.setOnAction(e -> {
+           // from: https://stackoverflow.com/questions/6710350/copying-text-to-the-clipboard-using-java
+           StringSelection stringSelection = new StringSelection(myJSBridge.getDebuggerURL().replace("chrome-devtools:","devtools:"));
+           java.awt.datatransfer.Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+           clipboard.setContents(stringSelection, null);
+       });
+       copyDebugUrl.setDisable(true);
+
+       MenuItem debuggingEnabled = new MenuItem("Start Debugging");
+
+       Runnable updateDebugOn = () -> {
+           debuggingEnabled.setText("Stop Debug Server");
+           copyDebugUrl.setDisable(false);
+           debugPort.setDisable(true);
+           reloadAndPause.setDisable(!myJSBridge.isDebugging());
+       };
+
+       Runnable updateDebugOff = () -> {
+           debuggingEnabled.setText("Start Debug Server");
+           copyDebugUrl.setDisable(true);
+           debugPort.setDisable(false);
+           reloadAndPause.setDisable(true);
+       };
+
+       myOnConnectionChangeRunnable = () -> {
+           reloadAndPause.setDisable(!myJSBridge.isDebugging());
+       };
+
+       debuggingEnabled.setOnAction(e -> {
+           if (myJSBridge.isDebuggerEnabled()) {
+               stopDebugging(value -> {
+                   // true - stopped and shutdown
+                   // false - stopped and still running for other instances
+                   // null - was not connected so don't know
+                   if (value == null) {
+                       addMessage("Debug server stopped");
+                   } else if (value) {
+                       addMessage("Debug server shutdown");
+                   } else {
+                       addMessage("Debug server connection closed");
+                   }
+                   updateDebugOff.run();
+               });
+           } else {
+               startDebugging((ex) -> {
+                   // failed to start
+                   addMessage("error", "Debug server failed to start: " + ex.getMessage());
+                   updateDebugOff.run();
+               }, () -> {
+                   addMessage("Debug server started, debug URL: " + myJSBridge.getDebuggerURL());
+                   // can copy debug URL to clipboard
+                   updateDebugOn.run();
+               });
+           }
+       });
+
+
+       contextMenu.getItems().addAll(reloadAndPause, copyLink, openInBrowser, debugPort, debuggingEnabled, copyDebugUrl);
 
       return contextMenu;
    }
+
+    /* private ContextMenu createContextMenu(WebView myWebView) {
+        ContextMenu contextMenu = new ContextMenu();
+
+
+        MenuItem goBack = new MenuItem("Go Back");
+        goBack.setOnAction(e -> {
+            WebHistory history = myWebView.getEngine().getHistory();
+            Platform.runLater(() -> {
+                history.go(-1);
+            });
+        });
+
+        MenuItem goForward = new MenuItem("Go Forward");
+        goForward.setOnAction(e -> {
+            WebHistory history = myWebView.getEngine().getHistory();
+            Platform.runLater(() -> {
+                history.go(1);
+            });
+        });
+
+        myOnPageLoadRunnable = () -> {
+            updateHistoryButtons(goBack, goForward);
+        };
+
+
+        contextMenu.getItems().addAll( reloadAndPause, goBack, goForward, debugPort, debuggingEnabled, copyDebugUrl);
+
+        myWebView.setOnMousePressed(e -> {
+            if (e.getButton() == MouseButton.SECONDARY) {
+                contextMenu.show(myWebView, e.getScreenX(), e.getScreenY());
+            } else {
+                contextMenu.hide();
+            }
+        });
+
+        updateDebugOff.run();
+        return contextMenu;
+    }
+*/
+
+
 
    /**
     * Check and show applet warning
@@ -670,4 +832,64 @@ public class PSSimpleSwingBrowser extends PSDesktopExplorerWindow
          return super.getAccessibleName();
       }
   }
+    Runnable myOnPageLoadRunnable = null;
+    Runnable myOnConnectionChangeRunnable = null;
+
+    /* *****************************************************************************************
+     *  Required: JSBridge to handle debugging proxy interface
+     *******************************************************************************************/
+     DevToolsDebuggerJsBridge myJSBridge;
+
+    /* *****************************************************************************************
+     *  Required: to start debugging connection to this web view instance
+     *******************************************************************************************/
+    private void startDebugging(Consumer<Throwable> onStartFail, Runnable onStartSuccess) {
+        if (!myJSBridge.isDebuggerEnabled()) {
+            int port = getPort();
+            myJSBridge.startDebugServer(port, onStartFail, onStartSuccess);
+        }
+    }
+
+    /* *****************************************************************************************
+     *  Required: to stop debugging connection to this web view instance
+     *******************************************************************************************/
+    private void stopDebugging(Consumer<Boolean> onStop) {
+        if (myJSBridge.isDebuggerEnabled()) {
+            myJSBridge.stopDebugServer(onStop);
+        }
+    }
+
+    /* *****************************************************************************************
+     *  Required: to establish a JSBridge connection to JavaScript, called on page loading SUCCEEDED
+     *            does not need to be a separate method, only brought out for illustration purposes
+     *            See myWebView.getEngine().getLoadWorker().stateProperty().addListener() in
+     *            the Browser constructor
+     *******************************************************************************************/
+    private void connectJSBridge() {
+        myJSBridge.connectJsBridge();
+    }
+
+    private void updatePortMenu(Menu debugPort) {
+        int port = getPort();
+        debugPort.setText("Port: " + port);
+        debugPort.getItems().get(0).setText("Change to: " + (port - 1));
+        debugPort.getItems().get(1).setText("Change to: " + (port + 1));
+    }
+
+    private int getPort() {
+        assert myStateProvider != null;
+        return myStateProvider.getState().getJsNumber("debugPort").intValue(51723);
+    }
+
+    private void setPort(int port) {
+        assert myStateProvider != null;
+        myStateProvider.getState().put("debugPort", port);
+    }
+
+    void updateHistoryButtons(MenuItem goBack, MenuItem goForward) {
+        WebHistory history = webView.getEngine().getHistory();
+        goBack.setDisable(history.getCurrentIndex() == 0);
+        goForward.setDisable(history.getCurrentIndex() + 1 >= history.getEntries().size());
+    }
+
 }
