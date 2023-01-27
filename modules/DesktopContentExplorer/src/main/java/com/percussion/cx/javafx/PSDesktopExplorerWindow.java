@@ -258,10 +258,6 @@ public abstract class PSDesktopExplorerWindow extends JFrame
            
          }
 
-         Object currUtils = (Object)window.getMember("percUtils");
-         if(currUtils==null || currUtils.toString().equals("undefined")){
-            window.setMember("percUtils", PSWebViewUtils.getInstance());
-         }
          if (firebug.get())
             showFirebug();
  
