@@ -342,6 +342,11 @@
 													<!-- each template should generate JS that returns a true/false value -->
 													<xsl:attribute name="onsubmit"><xsl:text>addFormRedirect(document.forms['EditForm']); ps_setUpdateFlag(); return </xsl:text><xsl:if test="$hasWebImageFx"><xsl:text>wifxHandleSubmit</xsl:text></xsl:if><xsl:text>(_ignoreMultipleSubmit() &amp;&amp; canSubmit &amp;&amp; true</xsl:text><xsl:apply-templates select="/*/ItemContent" mode="psxcontrol-form-onsubmit"/><xsl:text>)</xsl:text></xsl:attribute>
 													<table width="100%" border="0" cellspacing="5" cellpadding="0" summary="controls for editing metadata">
+														<!-- This row is used just to set column widths. -->
+														<tr>
+															<td width="17%"></td>
+															<td></td>
+														</tr>
 														<tr>
 															<td colspan="2"/>
 														</tr>

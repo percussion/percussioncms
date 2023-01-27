@@ -25,6 +25,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.w3c.dom.ProcessingInstruction;
 import org.xml.sax.SAXParseException;
 
@@ -246,34 +248,36 @@ public class PSXslStyleSheetMerger extends PSStyleSheetMerger
       }
 
       Transformer transformer = null;
-      try
-      {
+      try {
          transformer = ssTemplate.newTransformer();
 
          PSCatalogResolver cr = new PSCatalogResolver();
          cr.setInternalRequestURIResolver(new PSInternalRequestURIResolver());
          transformer.setURIResolver(cr);
-         transformer.setErrorListener( new PSTransformErrorListener() );
+         transformer.setErrorListener(new PSTransformErrorListener());
 
          // add any params supplied
-         if (hasParams)
-         {
-            while (params.hasNext())
-            {
-               Map.Entry param = (Map.Entry)params.next();
+         if (hasParams) {
+            while (params.hasNext()) {
+               Map.Entry param = (Map.Entry) params.next();
                transformer.setParameter(param.getKey().toString(),
-                  param.getValue().toString());
+                       param.getValue().toString());
             }
          }
-         
+
+
          if (req != null)
             req.getRequestTimer().pause();
          Logger l = LogManager.getLogger(getClass());
          PSStopwatch watch = null;
-         if (l.isDebugEnabled())
-         {
+         if (l.isDebugEnabled()) {
             watch = new PSStopwatch();
             watch.start();
+         }
+         DOMSource source = new DOMSource(doc);
+         if (source != null && source.getNode() != null){
+            Node node = source.getNode();
+           deleteNullNode(node);
          }
          transformer.transform(new DOMSource(doc), new StreamResult(out));
          if (watch != null)
@@ -356,6 +360,23 @@ public class PSXslStyleSheetMerger extends PSStyleSheetMerger
          }
 
          throwConversionException( doc, styleFile, e.toString() );
+      }
+   }
+
+   public void deleteNullNode(Node node)
+   {
+
+      NodeList nl = node.getChildNodes();
+      for (int i = 0; i < nl.getLength(); i++)
+      {
+         if (nl.item(i).getNodeType() == Node.TEXT_NODE && nl.item(i).getNodeValue() == null)
+         {
+            nl.item(i).getParentNode().removeChild(nl.item(i));
+         }
+         else
+         {
+            deleteNullNode(nl.item(i));
+         }
       }
    }
 
