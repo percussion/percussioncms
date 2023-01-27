@@ -521,7 +521,7 @@ We are using [CLA Assistant] (https://cla-assistant.io/) to track these agreemen
 > **Note:** TODO: Add link to agreement
 
 The Contributor Agreement covers assignment of copyright for your contribution to Percussion Software, the author of Percussion CMS, with terms to license the
-change back to you under a Free Software Foundation or OSI approved open source license.  Percussion CMS is currently licensed using the AGPL v3 license.
+change back to you under a Free Software Foundation or OSI approved open source license.  Percussion CMS is currently licensed using the Apache 2.0 license.
 
 Once you have executed the Contributor Agreement and the agreement has been approved by a project Admin, the CLA check will clear and your pull request will be
 ready for review.
