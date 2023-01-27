@@ -274,6 +274,7 @@ public class PSXslStyleSheetMerger extends PSStyleSheetMerger
             watch = new PSStopwatch();
             watch.start();
          }
+         //Traverse the nodes of document to delete nodes with Null Text, else transformer fails with NPE.
          DOMSource source = new DOMSource(doc);
          if (source != null && source.getNode() != null){
             Node node = source.getNode();
@@ -363,18 +364,15 @@ public class PSXslStyleSheetMerger extends PSStyleSheetMerger
       }
    }
 
-   public void deleteNullNode(Node node)
+   // Traverse all the nodes recursively and delete the once with Null value for TextType Nodes
+   //else transformer fails with NPE
+   private void deleteNullNode(Node node)
    {
-
       NodeList nl = node.getChildNodes();
-      for (int i = 0; i < nl.getLength(); i++)
-      {
-         if (nl.item(i).getNodeType() == Node.TEXT_NODE && nl.item(i).getNodeValue() == null)
-         {
+      for (int i = 0; i < nl.getLength(); i++) {
+         if (nl.item(i).getNodeType() == Node.TEXT_NODE && nl.item(i).getNodeValue() == null) {
             nl.item(i).getParentNode().removeChild(nl.item(i));
-         }
-         else
-         {
+         } else{
             deleteNullNode(nl.item(i));
          }
       }
