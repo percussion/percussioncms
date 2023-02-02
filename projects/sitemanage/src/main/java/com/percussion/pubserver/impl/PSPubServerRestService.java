@@ -48,7 +48,6 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -262,21 +261,7 @@ public class PSPubServerRestService
     @Produces(MediaType.TEXT_PLAIN)
     public String getAvailablePublishingServer(@PathParam("publishServerType") String publishServer) {
         psDeliveryInfoService = (PSDeliveryInfoService) PSDeliveryInfoServiceLocator.getDeliveryInfoService();
-        psDeliveryInfoServiceList = psDeliveryInfoService.findAll();
-
-        List<String> serverList = new ArrayList<>();
-
-        for (PSDeliveryInfo deliveryInfo : psDeliveryInfoServiceList) {
-            if (deliveryInfo.getServerType()!=null && !deliveryInfo.getServerType().equalsIgnoreCase("license")) {
-
-                if (deliveryInfo.getServerType()!=null && deliveryInfo.getServerType().equalsIgnoreCase(publishServer)) {
-                    serverList.add(deliveryInfo.getAdminUrl());
-
-                }
-
-            }
-        }
-
+        List<String> serverList = psDeliveryInfoService.getAdminUrls(publishServer);
         serverList.add(IPSPubServerService.DEFAULT_DTS);
 
         return JSONArray.fromObject(serverList.toArray()).toString();
