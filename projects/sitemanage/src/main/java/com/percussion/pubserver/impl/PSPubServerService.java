@@ -1274,7 +1274,7 @@ public class PSPubServerService implements IPSPubServerService
             serverInfo.setIsFullPublishRequired(!pubServer.hasFullPublished());
         }
 
-       if(needToSave && includeProperties){
+       if(needToSave){
            try {
                updatePubServer(String.valueOf(pubServer.getSiteId()),String.valueOf(pubServer.getServerId()),serverInfo);
            } catch (PSDataServiceException | PSNotFoundException e) {
