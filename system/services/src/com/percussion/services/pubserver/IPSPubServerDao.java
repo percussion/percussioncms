@@ -57,6 +57,7 @@ public interface IPSPubServerDao
    public static final String PUBLISH_AS3_USE_ASSUME_ROLE = "useAssumeRole";
    public static final String PUBLISH_AS3_ARN_ROLE = "ARNRole";
    public static final String PUBLISH_RELATED_PROPERTY = "publishRelatedItems";
+   public static final String PUBLISH_SERVER_PROPERTY = "publishServer";
 
    @ToDoVulnerability
    @Deprecated
