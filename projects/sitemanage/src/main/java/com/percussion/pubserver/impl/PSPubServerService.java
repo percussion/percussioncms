@@ -1163,6 +1163,7 @@ public class PSPubServerService implements IPSPubServerService
      */
     private PSPublishServerInfo toPSPublishServerInfo(IPSPubServer pubServer, IPSSite site, boolean includeProperties) throws PSPubServerServiceException {
         PSPublishServerInfo serverInfo = new PSPublishServerInfo();
+        boolean needToSave  =false;
 
         Set<PSPubServerProperty> properties = pubServer.getProperties();
 
@@ -1178,6 +1179,20 @@ public class PSPubServerService implements IPSPubServerService
             {
                 String propertyName = property.getName();
                 String propertyValue = property.getValue();
+                //This is handling a special case, where server was created with a AdminURL that is changed in
+                //deliverServer.xml and is not valid anymore, thus , need to fix it.
+                if(IPSPubServerDao.PUBLISH_SERVER_PROPERTY.equalsIgnoreCase(propertyName)){
+                    String server = pubServer.getPublishServer();
+                    if(!server.equalsIgnoreCase(propertyValue)){
+                        needToSave  = true;
+                    }
+                    PSPublishServerProperty serverProperty = new PSPublishServerProperty();
+                    serverProperty.setKey(propertyName);
+                    serverProperty.setValue(server);
+                    serverInfo.getProperties().add(serverProperty);
+                    continue;
+
+                }
                 if(ArrayUtils.contains(encryptableProperties, propertyName))
                 {
                     try
@@ -1259,7 +1274,14 @@ public class PSPubServerService implements IPSPubServerService
             serverInfo.setIsFullPublishRequired(!pubServer.hasFullPublished());
         }
 
-
+       if(needToSave){
+           try {
+               updatePubServer(String.valueOf(pubServer.getSiteId()),String.valueOf(pubServer.getServerId()),serverInfo);
+           } catch (PSDataServiceException | PSNotFoundException e) {
+               log.error("Unable to Save the AdminServer URL. Error: {}",
+                       PSExceptionUtils.getMessageForLog(e));
+           }
+       }
         return serverInfo;
     }
 
@@ -2270,7 +2292,7 @@ public class PSPubServerService implements IPSPubServerService
             return null;
         }else {
             PSPubServer currentDefaultServer = getDefaultPubServer(site.getGUID());
-            String adminUrl = currentDefaultServer.getPropertyValue("publishServer");
+            String adminUrl = currentDefaultServer.getPublishServer();
             return adminUrl;
         }
     }

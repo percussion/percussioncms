@@ -19,6 +19,7 @@ package com.percussion.pubserver;
 import com.percussion.error.PSException;
 import com.percussion.pubserver.data.PSPublishServerInfo;
 import com.percussion.services.error.PSNotFoundException;
+import com.percussion.services.pubserver.IPSPubServer;
 import com.percussion.services.pubserver.data.PSPubServer;
 import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.share.service.exception.PSDataServiceException;
@@ -39,7 +40,7 @@ import java.util.Map;
  */
 public interface IPSPubServerService
 {
-    public static final String DEFAULT_DTS = "NONE";
+    public static final String DEFAULT_DTS = IPSPubServer.DEFAULT_DTS;
     /**
      * Load the server information based on the site name and server name as the
      * parameters.

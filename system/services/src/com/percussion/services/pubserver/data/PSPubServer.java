@@ -16,6 +16,8 @@
  */
 package com.percussion.services.pubserver.data;
 
+import com.percussion.delivery.service.PSDeliveryInfoServiceLocator;
+import com.percussion.delivery.service.impl.PSDeliveryInfoService;
 import com.percussion.services.catalog.IPSCatalogIdentifier;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.guidmgr.data.PSGuid;
@@ -32,10 +34,19 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.xml.sax.SAXException;
 
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import static org.apache.commons.lang.StringUtils.equalsIgnoreCase;
@@ -453,4 +464,17 @@ public class PSPubServer extends PSAbstractDataObject implements Serializable, I
        
        return true;
    }
+
+   public String getPublishServer(){
+      PSDeliveryInfoService psDeliveryInfoService = (PSDeliveryInfoService) PSDeliveryInfoServiceLocator.getDeliveryInfoService();
+      List psDeliveryInfoServiceList = psDeliveryInfoService.getAdminUrls(this.serverType);
+      String server = this.getPropertyValue(IPSPubServerDao.PUBLISH_SERVER_PROPERTY,null);
+      if(psDeliveryInfoServiceList.contains(server)){
+         return server;
+      }else{
+         addProperty(IPSPubServerDao.PUBLISH_SERVER_PROPERTY,DEFAULT_DTS);
+         return DEFAULT_DTS;
+      }
+   }
+
 }

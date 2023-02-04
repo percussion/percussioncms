@@ -32,7 +32,6 @@ import com.percussion.services.publisher.IPSPublisherService;
 import com.percussion.services.publisher.PSPublisherServiceLocator;
 import com.percussion.services.pubserver.PSPubServerDaoLocator;
 import com.percussion.services.pubserver.data.PSPubServer;
-import com.percussion.services.pubserver.data.PSPubServerProperty;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.io.PathUtils;
 import org.apache.commons.lang.StringUtils;
@@ -123,6 +122,24 @@ public class PSDeliveryInfoService implements IPSDeliveryInfoService
         return servers;
     }
 
+    public List<String> getAdminUrls(String publishServer){
+        List<PSDeliveryInfo> servers = findAll();
+
+        List<String> serverList = new ArrayList<>();
+
+        for (PSDeliveryInfo deliveryInfo : servers) {
+            if (deliveryInfo.getServerType()!=null && !deliveryInfo.getServerType().equalsIgnoreCase("license")) {
+
+                if (deliveryInfo.getServerType()!=null && deliveryInfo.getServerType().equalsIgnoreCase(publishServer)) {
+                    serverList.add(deliveryInfo.getAdminUrl());
+
+                }
+
+            }
+        }
+        return serverList;
+    }
+
     /**
      * find delivery server by server type
      * return first server found with type
@@ -175,10 +192,7 @@ public class PSDeliveryInfoService implements IPSDeliveryInfoService
                 if(editionObject != null && editionObject.getPubServerId()!=null) {
                      pubServer = PSPubServerDaoLocator.getPubServerManager()
                             .loadPubServer(editionObject.getPubServerId());
-                    PSPubServerProperty prop = pubServer.getProperty("publishServer");
-                    if(prop!=null){
-                        publishServer = prop.getValue();
-                    }
+                    publishServer = pubServer.getPublishServer();
                 }else{
                     legacyEdition = true;
                 }
