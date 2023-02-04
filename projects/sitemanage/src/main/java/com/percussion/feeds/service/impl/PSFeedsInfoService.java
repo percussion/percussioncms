@@ -168,14 +168,14 @@ public class PSFeedsInfoService implements IPSFeedsInfoService
             return;
         }
 
-        if(server.getPropertyValue("publishServer")!=null && server.getPropertyValue("publishServer").equalsIgnoreCase(IPSPubServerService.DEFAULT_DTS)){
+        if(server.getPublishServer() !=null && server.getPublishServer().equalsIgnoreCase(IPSPubServerService.DEFAULT_DTS)){
             log.info("server is selected none {}", site.getName());
             return;
         }
         try
         {
 
-            String descriptors = createDescriptorsJson(site, feeds, server.getServerType(),server.getPropertyValue("publishServer"));
+            String descriptors = createDescriptorsJson(site, feeds, server.getServerType(),server.getPublishServer());
             log.info("Queuing " + feeds.size() + " feeds for site {}" , site.getName());
             queue.queueDescriptors(site.getName(), descriptors, server.getServerType());
             if(feeds.isEmpty()) {

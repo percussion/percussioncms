@@ -267,8 +267,8 @@ public class PSMetadataDeliveryHandler extends PSBaseDeliveryHandler
         {
            String serverType = jobData.m_pubServer.getServerType();
            String adminURL="";
-           if(jobData.m_pubServer.getPropertyValue("publishServer")!=null){
-               adminURL=jobData.m_pubServer.getPropertyValue("publishServer");
+           if(jobData.m_pubServer.getPublishServer()!=null){
+               adminURL=jobData.m_pubServer.getPublishServer();
            }
 
 
