@@ -21,6 +21,7 @@ import com.percussion.assetmanagement.service.IPSWidgetAssetRelationshipService;
 import com.percussion.cms.objectstore.PSComponentSummary;
 import com.percussion.design.objectstore.PSRelationshipConfig;
 import com.percussion.designmanagement.service.IPSFileSystemService.PSInvalidCharacterInFolderNameException;
+import com.percussion.designmanagement.service.impl.PSFileSystemService;
 import com.percussion.itemmanagement.service.IPSItemWorkflowService;
 import com.percussion.itemmanagement.service.IPSItemWorkflowService.PSItemWorkflowServiceException;
 import com.percussion.pagemanagement.data.PSPage;
@@ -333,7 +334,7 @@ public abstract class PSPathItemService implements IPSPathService
         log.debug("Add new folder to: {}" , folderPath);
 
         String folderName = folderHelper.getUniqueFolderName(
-                getFullFolderPath(folderHelper.concatPath(folderPath, "/")), "New-Folder");
+                getFullFolderPath(folderHelper.concatPath(folderPath, "/")), PSFileSystemService.NEW_FOLDER_NAME_PREFIX);
         return addFolder(folderHelper.concatPath(folderPath, folderName, "/"));
     }
 

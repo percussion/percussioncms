@@ -1516,7 +1516,7 @@
                 var oldName = $nameEl.parent().attr('title');
                 if(value.length === 0)
                     return oldName;
-                if(value !== oldName)
+                if(value.toLowerCase() !== oldName.toLowerCase())
                 {
                     $.PercBlockUI($.PercBlockUIMode.CURSORONLY);
                     $.PercPathService.renameFolder(
