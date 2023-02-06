@@ -19,11 +19,25 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - run: | 
+        echo "${{ secrets.SIGNING_KEYSTORE }}" > ~/.m2/release.keystore.asc
+        gpg -D --passphrase "${{ secrets.SIGNING_KEYSTOREPASS }}" --batch ~/.m2/release.keystore.asc > ~/.m2/release.keystore
     - name: Set up JDK 8
-      uses: actions/setup-java@v3
+    - uses: actions/setup-java@v3
       with:
         java-version: '8'
         distribution: 'liberica'
+    - uses: s4u/maven-settings-action@v2.8.0
+      with:
+        oracleRepo: true
+        servers: |
+          [{
+              "id": "percussion.s3.repo",
+              "username": "${{ secrets.S3_MAVEN_USERNAME }}",
+              "password": "${{ secrets.S3_MAVEN_PASSWORD }}"
+          }]
+        properties: |
+          '[ {"signing.keystoreFile","${{secrets.SIGNING_KEYSTOREFILE}}"},{"signing.keystorePass", "${{secrets.SIGNING_KEYSTOREPASS}}"},{"signing.keystoreType", "${{secrets.SIGNING_KEYSTORE_TYPE}}"},{"signing.keystoreAlias", "${{secrets.SIGNING_KEYSTORE_ALIAS}}"},{"signing.keyPass", "${{secrets.SIGNING_KEY_PASS}}"}]'
     - name: Build with Maven
       run: mvn -B package --file pom.xml
 
