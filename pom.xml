@@ -57,6 +57,7 @@
         <module>projects/sitemanage</module>
         <module>modules/servletutils</module>
         <module>modules/perc-rxapps</module>
+        <module>modules/perc-checkboxtree</module>
         <module>modules/DesktopContentExplorer</module>
         <module>modules/perc-jetty</module>
 		<module>modules/perc-jetty-jars</module>
