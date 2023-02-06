@@ -18,8 +18,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: | 
-          echo "${{ secrets.SIGNING_KEYSTORE }}" > ~/.m2/release.keystore.asc
-          gpg -D --passphrase "${{ secrets.SIGNING_KEYSTOREPASS }}" --batch ~/.m2/release.keystore.asc > ~/.m2/release.keystore
+          echo "${{ secrets.SIGNING_KEYSTORE }}" > release.keystore.asc
+          gpg -d --passphrase "${{ secrets.SIGNING_KEYSTOREPASS }}" --batch release.keystore.asc > release.keystore
       - uses: actions/setup-java@v3
         with:
             java-version: '8'
