@@ -289,14 +289,15 @@ public class PSNavFolderEffect extends PSNavAbstractEffect implements IPSEffect
          throws PSNavException
    {
       PSComponentSummary dependent = currentInfo.getDependent();
-      if (dependent.isFolder())
+      IPSGuid dependType = dependent.getContentTypeGUID();
+      PSNavConfig config = PSNavConfig.getInstance();
+
+      if (dependent.isFolder() && config.getNavonTypes().contains(dependType))
       {
          handleAttemptNewFolder(req, currentInfo, result);
       }
       else
       {
-         IPSGuid dependType = dependent.getContentTypeGUID();
-         PSNavConfig config = PSNavConfig.getInstance();
 
          if (config.getNavonTypes().contains(dependType))
          {

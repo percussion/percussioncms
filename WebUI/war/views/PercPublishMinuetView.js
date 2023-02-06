@@ -110,7 +110,7 @@ function getAllPublishingServer(serverType,serverObj) {
         publishingServerList = pslLst;
         $("#publishServer").empty();
         for(var i in publishingServerList) {
-            $('#publishServer').append(new Option(publishingServerList[i], publishingServerList[i]));
+            $('#publishServer').append(new Option(publishingServerList[i],publishingServerList[i]));
         }
         var selectedserver;
         if(publishingServerList.length > 1){
@@ -124,7 +124,12 @@ function getAllPublishingServer(serverType,serverObj) {
                 selectedserver = selectedserverProp.value;
             }
         }
-        $('#publishServer').val(selectedserver);
+        var isExist = publishingServerList.includes(selectedserver);
+        if(isExist){
+            $('#publishServer').val(selectedserver);
+        }else{
+            $('#publishServer').val("NONE");
+        }
     });
 }
 
