@@ -32,7 +32,7 @@ import java.util.Set;
  */
 public interface IPSPubServer
 {
-   
+   public static final String DEFAULT_DTS = "NONE";
    /**
     * The publishing type. Used to indicate which mechanism to be used to
     * publish to the live site.
@@ -109,6 +109,12 @@ public interface IPSPubServer
     * @return the publish type, never <code>null</code> or empty.
     */
    String getPublishType();
+
+   /**
+    * Returns the Publish Server URL for the server
+    * @return
+    */
+   String getPublishServer();
 
    /**
     * Set the publish type for this server.
