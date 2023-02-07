@@ -22,6 +22,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - run: | 
+          mkdir -p /home/runner/.m2
           echo "${{ secrets.SIGNING_KEYSTORE }}" > ~/.m2/release.keystore.asc
           gpg -d --passphrase "${{ secrets.SIGNING_KEYSTOREPASS }}" --batch ~/.m2/release.keystore.asc > ~/.m2/release.keystore
       - uses: actions/setup-java@v3
