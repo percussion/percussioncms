@@ -24,6 +24,7 @@ import com.percussion.security.xml.PSXmlSecurityOptions;
 import com.percussion.utils.tools.IPSUtilsConstants;
 import com.percussion.utils.xml.PSProcessServerPageTags;
 import com.percussion.utils.xml.PSSaxParseException;
+import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.w3c.dom.DOMException;
@@ -772,9 +773,13 @@ public class PSXmlDocumentBuilder {
             throw new IllegalArgumentException(
                     "rootName may not be null or empty");
         }
-
-        Element root = doc.createElementNS(namespace,
-                aliasTagName(alias, rootName));
+        Element root;
+        if(StringUtils.isEmpty(namespace )) {
+            root = doc.createElement(rootName);
+        }else{
+            root = doc.createElementNS(namespace,
+                    aliasTagName(alias, rootName));
+        }
 
         // namespace equivalent attribute to make sure it works for all XML
         // serializers.
@@ -929,9 +934,15 @@ public class PSXmlDocumentBuilder {
             throw new IllegalArgumentException("name may not be null or empty");
         }
 
-        Element node = parent.getOwnerDocument()
-                .createElementNS(namespace,
-                        aliasTagName(alias, name));
+        Document parentDoc = parent.getOwnerDocument();
+        Element node;
+        if(StringUtils.isEmpty(namespace)){
+            node = parentDoc.createElement(name);
+        }else{
+            node = parentDoc.createElementNS(namespace,
+                    aliasTagName(alias, name));
+        }
+
         parent.appendChild(node);
 
         if (value == null) {
@@ -1001,9 +1012,15 @@ public class PSXmlDocumentBuilder {
             throw new IllegalArgumentException("name may not be null or empty");
         }
 
-        Element node = parent.getOwnerDocument()
-                .createElementNS(namespace,
-                        aliasTagName(alias, name));
+        Document parentDoc = parent.getOwnerDocument();
+        Element node;
+        if(StringUtils.isEmpty(namespace)){
+            node = parentDoc.createElement(name);
+        }else{
+             node = parentDoc.createElementNS(namespace,
+                    aliasTagName(alias, name));
+        }
+
         parent.appendChild(node);
 
         return node;
