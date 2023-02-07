@@ -4,6 +4,9 @@
 name: Java CI with Maven
 
 on:
+#  schedule:
+    # * is a special character in YAML so you have to quote this string
+#    - cron:  '0 0 * * *'
   push:
     branches: [ release, development ]
   pull_request:
@@ -11,12 +14,13 @@ on:
     paths-ignore:
       - '**/*.md'
       - '**/*.txt'
-
 jobs:
   build:
+    #needs: check_date
+    #if: ${{ needs.check_date.outputs.should_run != 'false' }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - run: | 
           echo "${{ secrets.SIGNING_KEYSTORE }}" > release.keystore.asc
           gpg -d --passphrase "${{ secrets.SIGNING_KEYSTOREPASS }}" --batch release.keystore.asc > release.keystore
@@ -24,6 +28,7 @@ jobs:
         with:
             java-version: '8'
             distribution: 'liberica'
+            java-package: 'jdk+fx'
       - uses: s4u/maven-settings-action@v2.8.0
         with:
             oracleRepo: true
@@ -35,3 +40,17 @@ jobs:
                   }]
             properties: '[ {"signing.keystoreFile": "${{secrets.SIGNING_KEYSTOREFILE}}"},{"signing.keystorePass": "${{secrets.SIGNING_KEYSTOREPASS}}"},{"signing.keystoreType": "${{secrets.SIGNING_KEYSTORE_TYPE}}"},{"signing.keystoreAlias": "${{secrets.SIGNING_KEYSTORE_ALIAS}}"},{"signing.keyPass": "${{secrets.SIGNING_KEY_PASS}}"}]'
       - run: mvn -B package --file pom.xml
+ # check_date:
+ #   runs-on: ubuntu-latest
+#    name: Check latest commit
+#    outputs:
+#      should_run: ${{ steps.should_run.outputs.should_run }}
+#    steps:
+#      - uses: actions/checkout@v3
+#      - name: print latest_commit
+#        run: echo ${{ github.sha }}
+#      - id: should_run
+#        continue-on-error: true
+#        name: check latest commit is less than a day
+#        if: ${{ github.event_name == 'schedule' }}
+#        run: test -z $(git rev-list  --after="24 hours"  ${{ github.sha }}) &amp;&amp; echo "::set-output name=should_run::false"
