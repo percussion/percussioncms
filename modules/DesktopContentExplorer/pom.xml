@@ -95,6 +95,7 @@
                 <storetype>${signing.keystoreType}</storetype>
                 <keystore>${signing.keystoreFile}</keystore>
                 <alias>${signing.keyAlias}</alias>
+                <verbose>true</verbose>
             </configuration>
         </plugin>
     </plugins>

@@ -39,7 +39,7 @@ jobs:
                       "username": "${{ secrets.S3_MAVEN_USERNAME }}",
                       "password": "${{ secrets.S3_MAVEN_PASSWORD }}"
                   }]
-            properties: '[ {"signing.keystoreFile": "${{secrets.SIGNING_KEYSTOREFILE}}"},{"signing.keystorePass": "${{secrets.SIGNING_KEYSTOREPASS}}"},{"signing.keystoreType": "${{secrets.SIGNING_KEYSTORE_TYPE}}"},{"signing.keystoreAlias": "${{secrets.SIGNING_KEYSTORE_ALIAS}}"},{"signing.keyPass": "${{secrets.SIGNING_KEY_PASS}}"}]'
+            properties: '[ {"signing.keystoreFile": "${{secrets.SIGNING_KEYSTOREFILE}}"},{"signing.keystorePass": "${{secrets.SIGNING_KEYSTOREPASS}}"},{"signing.keystoreType": "${{secrets.SIGNING_KEYSTORE_TYPE}}"},{"signing.keyAlias": "${{secrets.SIGNING_KEYSTORE_ALIAS}}"},{"signing.keyPass": "${{secrets.SIGNING_KEY_PASS}}"}]'
       - run: mvn -B package --file pom.xml
  # check_date:
  #   runs-on: ubuntu-latest
