@@ -8,12 +8,13 @@ on:
     # * is a special character in YAML so you have to quote this string
 #    - cron:  '0 0 * * *'
   push:
-    branches: [ release, development ]
+    branches: [ development ]
   pull_request:
     branches: [ development ]
     paths-ignore:
       - '**/*.md'
       - '**/*.txt'
+  workflow_call:
 jobs:
   build:
     #needs: check_date
