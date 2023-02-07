@@ -16,21 +16,18 @@
  */
 package com.percussion.services.security.data;
 
+import com.percussion.design.objectstore.PSAclEntry;
 import com.percussion.design.objectstore.PSRole;
 import com.percussion.i18n.PSLocale;
 import com.percussion.services.utils.xml.PSXmlSerializationHelper;
+import org.apache.commons.lang.StringUtils;
+import org.xml.sax.SAXException;
 
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.xml.sax.SAXException;
 
 public class PSLogin implements Serializable 
 {
@@ -166,8 +163,23 @@ public class PSLogin implements Serializable
    {
       if (StringUtils.isWhitespace(defaultCommunity))
          throw new IllegalArgumentException("defaultCommunity cannot be empty");
-      
-      this.defaultCommunity = defaultCommunity;
+      //Check if passed in community exists in valid communitites list for the user,
+      // then only set it, else set it to default.
+     List<PSCommunity> psCommunites = this.getCommunities();
+      boolean commFound = false;
+      for(PSCommunity comm:psCommunites) {
+         if(comm.getName().equalsIgnoreCase(defaultCommunity)){
+            commFound = true;
+            break;
+         }
+
+      }
+      if(commFound){
+         this.defaultCommunity = defaultCommunity;
+      }else{
+         this.defaultCommunity = PSAclEntry.DEFAULT_COMMUNITY;
+      }
+
    }
    
    /**
