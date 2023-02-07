@@ -9,11 +9,16 @@ on:
 #    - cron:  '0 0 * * *'
   push:
     branches: [ development ]
+    paths-ignore:
+      - '**/*.md'
+      - '**/*.txt'
+      - '**/*.yml'    
   pull_request:
     branches: [ development ]
     paths-ignore:
       - '**/*.md'
       - '**/*.txt'
+      - '**/*.yml'
   workflow_call:
 jobs:
   build:
