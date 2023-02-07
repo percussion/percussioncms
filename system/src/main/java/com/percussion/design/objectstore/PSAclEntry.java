@@ -55,6 +55,8 @@ public class PSAclEntry extends PSComponent
     */
    public static final String DEFAULT_USER_NAME      = "Default";
 
+   public static final String DEFAULT_COMMUNITY      = "Default";
+
 
    // **************************** ACE TYPES ****************************
 

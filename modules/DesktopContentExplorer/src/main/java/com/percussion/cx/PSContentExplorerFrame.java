@@ -22,6 +22,7 @@ import com.percussion.cms.PSCmsException;
 import com.percussion.cms.objectstore.PSUserInfo;
 import com.percussion.cx.javafx.PSDesktopExplorerWindow;
 import com.percussion.cx.objectstore.PSMenuAction;
+import com.percussion.design.objectstore.PSAclEntry;
 import com.percussion.guitools.PSDialog;
 import com.percussion.webservices.security.data.PSCommunity;
 import com.percussion.webservices.security.data.PSLogin;
@@ -315,6 +316,9 @@ public class PSContentExplorerFrame extends PSDesktopExplorerWindow implements A
        PSCommunity[] communities = login.getCommunities();
        long commId = 0;
        String defaultComm = login.getDefaultCommunity();
+       if(defaultComm == null){
+           defaultComm = PSAclEntry.DEFAULT_COMMUNITY;
+       }
        for (PSCommunity comm : communities) {
            if (defaultComm.equals(comm.getName())) {
                commId = comm.getId();
