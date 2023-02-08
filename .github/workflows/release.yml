@@ -36,7 +36,7 @@ jobs:
 
       - uses: ncipollo/release-action@v1.12.0
         with:
-          artifacts: "LICENSE.txt,NOTICE.txt,README.md,modules/perc-distribution-tree/target/perc-distribution-tree.jar,deliverytiersuite/delivery-tier-suite/delivery-tier-distribution/target/delivery-tier-distribution.jar,"
+          artifacts: "LICENSE.txt,NOTICE.txt,README.md,modules/perc-distribution-tree/target/perc-distribution-tree.jar,deliverytiersuite/delivery-tier-suite/delivery-tier-distribution/target/delivery-tier-distribution.jar"
           token: "${{ secrets.GITHUB_TOKEN }}"
           draft: false
           makeLatest: true
