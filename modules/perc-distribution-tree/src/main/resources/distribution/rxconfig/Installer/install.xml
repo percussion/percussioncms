@@ -536,6 +536,7 @@
         <exclude name="rxconfig/**"/>
         <exclude name="Deployment"/>
         <exclude name="Staging"/>
+        <exclude name="rx_resources/tinymce/config/customer_config_override.json"/>
         <exclude name="logs"/>
         <exclude name="ObjectStore"/>
         <exclude name="jetty/base/logs"/>

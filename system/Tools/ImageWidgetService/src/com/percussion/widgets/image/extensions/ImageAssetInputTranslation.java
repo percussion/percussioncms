@@ -44,6 +44,7 @@ import com.percussion.widgets.image.services.ImageCacheManagerLocator;
 import com.percussion.widgets.image.services.ImageResizeManager;
 import com.percussion.widgets.image.services.ImageResizeManagerLocator;
 import com.percussion.widgets.image.web.impl.ImageReader;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -67,6 +68,7 @@ public class ImageAssetInputTranslation extends PSDefaultExtension implements IP
    ImageCacheManager cacheManager = null;
    ImageResizeManager resizeManager = null;
 
+   @Override
    public void init(IPSExtensionDef def, File file) throws PSExtensionException
    {
       super.init(def, file);
@@ -85,6 +87,7 @@ public class ImageAssetInputTranslation extends PSDefaultExtension implements IP
     * @throws PSRequestValidationException If the request is invalid
     * @throws PSParameterMismatchException If the parameters are incorrect
     */
+   @Override
    public void preProcessRequest(Object[] params, IPSRequestContext request) throws PSAuthorizationException,
          PSRequestValidationException, PSParameterMismatchException, PSExtensionProcessingException
    {
@@ -93,16 +96,28 @@ public class ImageAssetInputTranslation extends PSDefaultExtension implements IP
          PSExtensionParams ep = new PSExtensionParams(params);
          String imageName = ep.getStringParam(0, "img", false);
          String thumbName = ep.getStringParam(1, "img2", false);
+         String imageFileName  = request.getParameter(imageName+"_filename");
+         String thumbFileName = request.getParameter(thumbName+"_filename");
+
+         if(StringUtils.isBlank(thumbFileName)){
+            thumbFileName = getThumbnailFileName(imageFileName);
+         }
 
          if (StringUtils.isBlank(request.getParameter(thumbName + "_id")))
          {
             PSPurgableTempFile imageFile = (PSPurgableTempFile) request.getParameterObject(imageName);
             if (imageFile != null)
             {
-               updateRequest(request, thumbName, generateThumbnail(imageFile));
+               if(StringUtils.isEmpty(imageFile.getSourceFileName())){
+                  imageFile.setSourceFileName(imageFileName);
+               }
+               if(StringUtils.isEmpty(imageFile.getSourceContentType())){
+                  imageFile.setSourceContentType(request.getParameter(imageName + "_type"));
+               }
 
                String mimeType = request.getParameter(imageName + "_type");
                updateRequest(request, imageName, generateImage(imageFile, mimeType));
+               updateRequest(request, thumbName, generateThumbnail(imageFile));
             }
             else
             {
@@ -164,12 +179,21 @@ public class ImageAssetInputTranslation extends PSDefaultExtension implements IP
 
    private ImageData generateImage(PSPurgableTempFile imageFile, String mimeType) throws Exception {
       try(FileInputStream fin = new FileInputStream(imageFile)){
+         String fileType = FilenameUtils.getExtension(imageFile.getSourceFileName());
+         this.resizeManager.setExtension(fileType);
+         this.resizeManager.setContentType(imageFile.getSourceContentType());
+         this.resizeManager.setImageFormat(fileType);
          ImageData iData = this.resizeManager.generateImage(fin);
          iData.setFilename(imageFile.getSourceFileName());
          iData.setMimeType(mimeType);
 
          return iData;
       }
+   }
+
+   private String getThumbnailFileName(String imageFileName){
+
+      return "thumb_" + imageFileName;
    }
 
    private ImageData generateThumbnail(PSPurgableTempFile imageFile) throws Exception
@@ -179,11 +203,9 @@ public class ImageAssetInputTranslation extends PSDefaultExtension implements IP
 
       Properties serverProps = PSServer.getServerProps();
       String thumbWidthStr = serverProps.getProperty("imageThumbnailWidth", "50");
-      String imageThumbnailExt = serverProps.getProperty("imageThumbnailExtension","png");
-      String imageThumbnailContentType = serverProps.getProperty("imageThumbnailContentType","image/png");
-      String imageThumbnailFormat = serverProps.getProperty("imageThumbnailFormat","png");
-
       int thumbWidth = Integer.parseInt(thumbWidthStr);
+      int thumbHeight = thumbWidth;
+
       try(      FileInputStream fin = new FileInputStream(imageFile)){
          final byte[] imageByteArray = IOUtils.toByteArray(fin);
          BufferedImage image = ImageReader.read(imageByteArray);
@@ -192,15 +214,21 @@ public class ImageAssetInputTranslation extends PSDefaultExtension implements IP
             width = image.getWidth();
             int height = image.getHeight();
             Rectangle rec = new Rectangle(0, 0, width, height);
-            Dimension dim = new Dimension(thumbWidth, height / width * thumbWidth);
-            try(FileInputStream fin2 = new FileInputStream(imageFile)) {
-               this.resizeManager.setExtension(imageThumbnailExt);
-               this.resizeManager.setContentType(imageThumbnailContentType);
-               this.resizeManager.setImageFormat(imageThumbnailFormat);
-               iData = this.resizeManager.generateImage(fin2, rec, dim);
-            }
-         }
+            Dimension dim = new Dimension(thumbWidth, thumbHeight);
 
+            String thumbnailFileName = getThumbnailFileName(imageFile.getSourceFileName());
+
+            try(FileInputStream fin2 = new FileInputStream(imageFile)) {
+               resizeManager.setFileName(thumbnailFileName);
+               iData = this.resizeManager.generateImage(fin2, rec, dim);
+               if(!StringUtils.isEmpty(thumbnailFileName)) {
+                  iData.setFilename(thumbnailFileName);
+               }
+            }
+
+
+
+         }
          return iData;
       }
    }
