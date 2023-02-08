@@ -13,7 +13,8 @@ jobs:
 
     steps:
       - name: "Build & test"
-        uses: ".github/workflows/maven.yml@release"
+        uses: .github/workflows/maven.yml@release
+        secrets: inherit
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
