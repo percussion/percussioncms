@@ -52,6 +52,10 @@
               display_name="Hide phone number"
               default_value="true"
               datatype="bool" />
+    <UserPref name="perc_hidefield_personOfficeLocation"
+              display_name="Hide Office Location"
+              default_value="true"
+              datatype="bool" />
     <UserPref name="perc_hidefield_personEmailField"
               display_name="Hide 'Send Email' link"
               default_value="true"
@@ -100,6 +104,8 @@
             $percHideFieldPersonDepartment = $perc.widget.item.properties.get('perc_hidefield_personDepartment');
             $percHideFieldPersonTitle = $perc.widget.item.properties.get('perc_hidefield_personTitle');
             $percHideFieldPersonPhone = $perc.widget.item.properties.get('perc_hidefield_personPhoneField');
+            $percHideFieldPersonOfficeLocation= $perc.widget.item.properties.get('perc_hidefield_personOfficeLocation');
+
             $percHideFieldPersonEmail = $perc.widget.item.properties.get('perc_hidefield_personEmailField');
             $percHideFieldPersonImage = $perc.widget.item.properties.get('perc_hidefield_personImageField');
             $percDisplayFullDir = $perc.widget.item.properties.get('perc_display_full_dir');
@@ -304,6 +310,12 @@
                                 <a class="sort" tabindex="0" aria-label="Sort by phone" data-sort="perc-person-phone">Phone</a>
                             </th>
 #end##
+#if( !($percHideFieldPersonOfficeLocation) )##
+                            <th id="perc-sort-office-location" class="perc-sort-field">
+                                <a class="sort" tabindex="0" aria-label="Sort by Office Location" data-sort="perc-person-office-location">Office Location</a>
+                            </th>
+#end##
+
 #if( !($percHideFieldPersonEmail) )##
                             <th id="perc-sort-email" class="perc-sort-field">
                                 <a class="sort" tabindex="0" aria-label="Sort by email" data-sort="perc-person-email">Email</a>
@@ -329,6 +341,9 @@
 #if( !($percHideFieldPersonPhone) )##
                     <button class="sort perc-directory-button" aria-label="Sort by phone" data-sort="perc-person-phone">Sort by Phone</button>
 #end##
+#if( !($percHideFieldPersonOfficeLocation) )##
+                    <button class="sort perc-directory-button" aria-label="Sort by office location" data-sort="perc-person-office-location">Sort by Office Location</button>
+#end##
 #if( !($percHideFieldPersonEmail) )##
                     <button class="sort perc-directory-button" aria-label="Sort by email" data-sort="perc-person-email">Sort by Email</button>
 #end##
@@ -348,6 +363,7 @@
 #set( $personFirstName = "" )##
 #set( $personLastName = "" )##
 #set( $personPhone = "" )##
+#set( $personOfficeLocation = "")##
 #set( $personEmail = "" )##
 #set( $emailFormPage_linkId = "" )##
 #set( $sendMailName = "" )##
@@ -369,6 +385,10 @@
 #if( $person.hasProperty("personPhone") )##
 #set( $personPhone = $person.getProperty('personPhone').String )##
 #end##
+#if( $person.hasProperty("personOfficeLocation") )##
+#set( $personOfficeLocation = $person.getProperty('personOfficeLocation').String )##
+#end##
+
 #if( $person.hasProperty("personEmail") )##
 #set( $personEmail = $person.getProperty('personEmail').String )##
 #end##
@@ -580,7 +600,14 @@
                                 <span class="perc-person-field perc-person-phone">$!{personPhone}</span>
 #end##
                             </td>
-#end## --( !($percHideFieldPersonPhone) )--
+#end## --( !($percHideFieldPersonOfficeLocation) )--
+#if( !($percHideFieldPersonOfficeLocation) )##
+                            <td role="gridcell">
+#if( "$!{personOfficeLocation}" != "" && "$!{personOfficeLocation}" != "#")##
+                                <span class="perc-person-field perc-person-office-location">$!{personOfficeLocation}</span>
+#end##
+                            </td>
+#end## --( !($percHideFieldPersonOfficeLocation) )--
 #if( !($percHideFieldPersonEmail) )##
                             <td role="gridcell">
                                 <span class="perc-person-field perc-person-email">
@@ -640,6 +667,11 @@
 #if( !($percHideFieldPersonPhone) && "$!{personPhone}" != "" && "$!{personPhone}" != "#" )##
 ##
                         <div class="perc-person-phone">$!{personPhone}</div>
+##
+#end##
+#if( !($percHideFieldPersonOfficeLocation) && "$!{personOfficeLocation}" != "" && "$!{personOfficeLocation}" != "#" )##
+##
+                        <div class="perc-person-office-location">$!{personOfficeLocation}</div>
 ##
 #end##
 #if( !($percHideFieldPersonEmail) && "$!{personEmail}" != "" && "$!{personEmail}" != "#" )##

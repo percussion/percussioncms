@@ -591,6 +591,7 @@ public interface IPSConstants
     public static final String EXTENSIONS_LOG = "Extensions";
     public static final String IMPORT_LOG = "Import";
    public static final String DESIGN_LOG = "Design";
+   public static final String SERVER_PROP_FILE_COPY_BUFFER_SIZE = "fileCopyBufferSize";
    public static final String CACHING_LOG = "Caching";
     public static String JAVA_EXTENSIONS_LOG = "Java Extensions";
 }

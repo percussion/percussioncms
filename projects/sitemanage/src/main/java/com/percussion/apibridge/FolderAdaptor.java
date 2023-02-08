@@ -219,7 +219,12 @@ public class FolderAdaptor implements IFolderAdaptor {
 			checkAPIPermission();
 
 			return getFolder(baseUri, null, site, path, folderName);
-		} catch (PSDataServiceException e) {
+		} catch(FolderNotFoundException e){
+			log.warn("Folder {} not found. Error: {}",
+					folderName,
+					PSExceptionUtils.getMessageForLog(e));
+			throw(e);
+		} catch(PSDataServiceException e) {
 			throw new BackendException(e);
 		}
 	}
@@ -532,6 +537,10 @@ public class FolderAdaptor implements IFolderAdaptor {
 		try {
 			checkAPIPermission();
 
+			String baseName = folder.getName();
+			String baseSite = folder.getSiteName();
+			String basePath = folder.getPath();
+
 			Folder existingFolder = null;
 			boolean newFolder = false;
 			boolean byId = StringUtils.isNotEmpty(folder.getId()) && folder.getSiteName() == null
@@ -543,7 +552,7 @@ public class FolderAdaptor implements IFolderAdaptor {
 				} else {
 					existingFolder = getFolder(baseUri, folder.getSiteName(), folder.getPath(), folder.getName());
 				}
-			} catch (FolderNotFoundException e) {
+			} catch (FolderNotFoundException | BackendException e) {
 				newFolder = true;
 				if (StringUtils.isEmpty(folder.getPath()) && StringUtils.isEmpty(folder.getName()))
 					throw new BackendException(
@@ -571,6 +580,12 @@ public class FolderAdaptor implements IFolderAdaptor {
 			} else {
 				folder = modifyExistingFolder(baseUri, existingFolder, folder);
 			}
+			if(folder.getName().equalsIgnoreCase("")){
+				folder.setName(baseName);
+				folder.setSiteName(baseSite);
+				folder.setPath(basePath);
+			}
+
 			return folder;
 		} catch (PSDataServiceException | IPSPathService.PSPathServiceException e) {
 			throw new BackendException(e);
@@ -594,17 +609,19 @@ public class FolderAdaptor implements IFolderAdaptor {
 		PSLocator loc = idMapper.getLocator(existingFolder.getId());
 		loc.setRevision(-1);
 		pathItem = folderHelper.findItemById(idMapper.getString(loc));
-		} catch (PSParametersValidationException e) {
-			throw new FolderNotFoundException(e);
-		} catch ( IPSDataService.DataServiceLoadException | PSValidationException | PSNotFoundException e) {
+		} catch (IPSDataService.DataServiceLoadException | PSValidationException | PSNotFoundException e) {
 			throw new FolderNotFoundException(e);
 		}
+
 		pathUtilsPath = pathItem.getFolderPath();
 		if (pathUtilsPath == null && CollectionUtils.isNotEmpty(pathItem.getFolderPaths())) {
 			fullPath = pathItem.getFolderPaths().get(0) + "/" + pathItem.getName();
 			pathUtilsPath = StringUtils.substringAfter(fullPath, "/");
 		} else {
-			fullPath = "/" + pathUtilsPath;
+			if(pathUtilsPath!= null && !pathUtilsPath.startsWith("//"))
+				fullPath = "/" + pathUtilsPath;
+			else
+				fullPath = pathUtilsPath;
 		}
 
 		folderSections = new UrlParts(fullPath);
@@ -628,8 +645,7 @@ public class FolderAdaptor implements IFolderAdaptor {
 			reorderSiteSection(baseUri, existingFolder.getId(), folder, existingFolder);
 		}
 
-		// create patch item so do not need to get everything again.
-		return getFolder(baseUri, existingFolder.getId());
+		return existingFolder;
 	}
 
 	/***
@@ -1252,14 +1268,13 @@ public class FolderAdaptor implements IFolderAdaptor {
 			String folderUrl = urlParts.getUrl();
 
 			//Fix for sites with mismatched sitefolders
-			folderUrl = PSPathUtils.fixSiteFolderPath(siteDataService, folderUrl);
+			if(!siteName.equalsIgnoreCase("assets"))
+				folderUrl = PSPathUtils.fixSiteFolderPath(siteDataService, folderUrl);
 
 			PSPathItem folderPathItem = null;
 			try {
 				folderPathItem = pathService.find(folderUrl);
-			} catch (PSParametersValidationException e) {
-				throw new FolderNotFoundException();
-			} catch (PSPathNotFoundServiceException e) {
+			} catch (PSParametersValidationException | PSPathNotFoundServiceException e) {
 				throw new FolderNotFoundException();
 			}
 			boolean hasChildren = false;
@@ -1274,8 +1289,10 @@ public class FolderAdaptor implements IFolderAdaptor {
 			PSDeleteFolderCriteria criteria = new PSDeleteFolderCriteria();
 			criteria.setPath(StringUtils.substring(folderUrl, 1));
 			pathService.deleteFolder(criteria);
-		} catch (PSDataServiceException | PSNotFoundException | IPSPathService.PSPathServiceException e) {
+		} catch (PSDataServiceException | IPSPathService.PSPathServiceException e) {
 			throw new BackendException(e);
+		} catch(PSNotFoundException e){
+			throw new FolderNotFoundException();
 		}
 	}
 
