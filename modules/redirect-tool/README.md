@@ -11,25 +11,25 @@ A command line utility for converting exported Redirects from Percussion Softwar
 
 ### Help
 ``
-java -jar perc-redirect-tool-8.1.1-SNAPSHOT.jar -h
+java -jar perc-redirect-tool-8.1.1.jar -h
 ``
 
 ### Generate IIS Redirects
 ``
-java -jar perc-redirect-tool-8.1.1-SNAPSHOT.jar -csv <exported csv file name> -i
+java -jar perc-redirect-tool-8.1.1.jar -csv <exported csv file name> -i
 ``
 
 ### Generate Apache Redirects
 ``
-java -jar perc-redirect-tool-8.1.1-SNAPSHOT.jar -csv <exported csv file name> -a
+java -jar perc-redirect-tool-8.1.1.jar -csv <exported csv file name> -a
 ``
 ### Generate NGINX Redirects
 ``
-java -jar perc-redirect-tool-8.1.1-SNAPSHOT.jar -csv <exported csv file name> -n
+java -jar perc-redirect-tool-8.1.1.jar -csv <exported csv file name> -n
 
 ### Generate JSON Redirects
 ``
-java -jar perc-redirect-tool-8.1.1-SNAPSHOT.jar -csv <exported csv file name> -j
+java -jar perc-redirect-tool-8.1.1.jar -csv <exported csv file name> -j
 ``
 ### Applying the redirects to IIS
 IIS stores its redirects in the web.config file in the root of the IIS site. 

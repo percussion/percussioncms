@@ -3,7 +3,7 @@
     <parent>
         <groupId>com.percussion</groupId>
         <artifactId>core</artifactId>
-        <version>8.1.1-SNAPSHOT</version>
+        <version>8.1.1</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <artifactId>perc-web-ui</artifactId>
@@ -1230,7 +1230,7 @@
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>perc-server-ui-cmp</artifactId>
-            <version>8.1.1-SNAPSHOT</version>
+            <version>8.1.1</version>
         </dependency>
     </dependencies>
 </project>
