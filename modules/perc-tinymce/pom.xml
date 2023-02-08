@@ -5,13 +5,13 @@
     <parent>
         <artifactId>core</artifactId>
         <groupId>com.percussion</groupId>
-        <version>8.1.1</version>
+        <version>8.1.2</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>perc-tinymce</artifactId>
-  <version>8.1.1</version>
+  <version>8.1.2</version>
 
     <licenses>
         <license>
@@ -207,7 +207,7 @@
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>rxutils</artifactId>
-            <version>8.1.1</version>
+            <version>8.1.2</version>
             <type>test-jar</type>
             <scope>test</scope>
         </dependency>
