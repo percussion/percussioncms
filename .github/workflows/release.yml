@@ -34,7 +34,7 @@ jobs:
           properties: '[ {"signing.keystoreFile": "${{secrets.SIGNING_KEYSTOREFILE}}"},{"signing.keystorePass": "${{secrets.SIGNING_KEYSTOREPASS}}"},{"signing.keystoreType": "${{secrets.SIGNING_KEYSTORE_TYPE}}"},{"signing.keyAlias": "${{secrets.SIGNING_KEYSTORE_ALIAS}}"},{"signing.keyPass": "${{secrets.SIGNING_KEY_PASS}}"}]'
       - run: mvn -B package --file pom.xml
 
-      - uses: ncipollo/release-action@latest
+      - uses: ncipollo/release-action@v1.12.0
         with:
           artifacts: "LICENSE.txt,NOTICE.txt,README.md,modules/perc-distribution-tree/target/perc-distribution-tree.jar,deliverytiersuite/delivery-tier-suite/delivery-tier-distribution/target/delivery-tier-distribution.jar,"
           token: "${{ secrets.GITHUB_TOKEN }}"
