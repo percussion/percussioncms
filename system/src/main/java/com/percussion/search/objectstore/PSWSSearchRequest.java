@@ -305,6 +305,15 @@ public class PSWSSearchRequest
             String value = PSXMLDomUtil.getElementData(param);
             m_internalSearchParams.put(name, value);
          }
+         params = src.getElementsByTagName(EL_REQ_PARAM);
+         tot = params.getLength();
+         for (int i = 0; i < tot; i++)
+         {
+            Element param = (Element)params.item(i);
+            String name = PSXMLDomUtil.checkAttribute(param, ATTR_NAME, true);
+            String value = PSXMLDomUtil.getElementData(param);
+            m_internalSearchParams.put(name, value);
+         }
          
          m_searchParams = null;
       }
