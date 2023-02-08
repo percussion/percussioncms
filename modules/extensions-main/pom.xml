@@ -3,7 +3,7 @@
     <parent>
         <artifactId>core</artifactId>
         <groupId>com.percussion</groupId>
-        <version>8.1.1-SNAPSHOT</version>
+        <version>8.1.1</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -115,7 +115,7 @@
        <dependency>
            <groupId>com.percussion</groupId>
            <artifactId>perc-deployer</artifactId>
-           <version>8.1.1-SNAPSHOT</version>
+           <version>8.1.1</version>
            <scope>compile</scope>
        </dependency>
        <dependency>
