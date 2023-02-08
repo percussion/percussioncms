@@ -16,7 +16,7 @@
                 xmlns:psxi18n="com.percussion.i18n" extension-element-prefixes="psxi18n"
                 exclude-result-prefixes="psxi18n">
 	<xsl:import href="file:sys_resources/stylesheets/sys_I18nUtils.xsl"/>
-	<xsl:variable name="lang" select="/*/UserStatus/@lang"/>
+   <xsl:variable name="lang" select="//@lang"/>
 	<xsl:variable name="syscontentid" select="//Workflow/@contentId"/>
 	<xsl:variable name="sysrevision" select="//Workflow/BasicInfo/HiddenFormParams/Param[@name='sys_revision']"/>
 	<xsl:include href="file:sys_resources/stylesheets/assemblers/sys_popmenu.xsl"/>
@@ -38,30 +38,27 @@
 						<xsl:with-param name="lang" select="$lang"/>
 					</xsl:call-template>
 				</title>
-				<link rel="stylesheet" type="text/css" href="/sys_resources/css/templates.css"/>
-				<link rel="stylesheet" type="text/css" href="/rx_resources/css/templates.css"/>
-				<link rel="stylesheet" type="text/css" href="{concat('/rx_resources/css/',$lang,'/templates.css')}"/>
+				<link rel="stylesheet" type="text/css" href="../sys_resources/css/templates.css"/>
+				<link rel="stylesheet" type="text/css" href="../rx_resources/css/templates.css"/>
+				<link rel="stylesheet" type="text/css" href="{concat('../rx_resources/css/',$lang,'/templates.css')}"/>
 				<link rel="stylesheet" type="text/css" href="../sys_resources/css/popmenu.css"/>
 				<script language="javascript" src="../sys_resources/js/globalErrorMessages.js">;</script>
 				<script language="javascript" src="{concat('../rx_resources/js/',$lang,'/globalErrorMessages.js')}">;</script>
 				<script language="javascript" src="../sys_resources/js/browser.js">;</script>
 				<script language="javascript" src="../sys_resources/js/href.js">;</script>
 				<script language="javascript" src="../sys_resources/js/popmenu.js">;</script>
-				<script>
+				<script language="javascript" src="../web_resources/cm/jslib/jquery.js">;</script>
+				<script language="javascript" src="../web_resources/cm/jslib/jquery-ui.js">;</script>
+				<script language="javascript">
 					<![CDATA[
 
-					   var textWin = null;
-					   function textWindow(s)
-					   {
-
-					      textWin = window.open('','HistoryComment','width=500,height=100,resizable=yes');
-					      textWin.document.open();
-					      textWin.document.writeln("<html><head><title>History Comment</title></head><body>");
-					      textWin.document.write(s);
-					      textWin.document.writeln("</body></html>");
-					      textWin.document.close();
-					      setTimeout('textWin.close()',5000);				      
-					   }
+					function textWindow(s)
+					{
+						var html = "<div id='historycomment' title='History Comment'></div>";
+						$("body").append(html);
+						$("#historycomment").dialog();
+						$("#historycomment").text(s);
+					}
 					]]>
 				</script>
 			</head>
@@ -134,9 +131,8 @@
 			</body>
 		</html>
 	</xsl:template>
-	<xsl:key name="uniqueElement" match="HistoryEntry" use="@revision"/>
 	<xsl:template match="HistoryList" mode="historybar">
-		<xsl:for-each select="HistoryEntry[generate-id() = generate-id(key('uniqueElement',@revision))]">
+		<xsl:for-each select="//HistoryEntry[not(@revision=preceding::HistoryEntry/@revision)]">
 			<tr>
 				<xsl:choose>
 					<xsl:when test="position() mod 2 = 1">

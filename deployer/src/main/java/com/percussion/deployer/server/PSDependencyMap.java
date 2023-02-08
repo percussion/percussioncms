@@ -1,35 +1,32 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
  
 package com.percussion.deployer.server;
 
+import com.percussion.cms.IPSConstants;
 import com.percussion.deployer.server.dependencies.PSDependencyHandler;
 import com.percussion.design.objectstore.IPSObjectStoreErrors;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
 import com.percussion.error.IPSDeploymentErrors;
 import com.percussion.error.PSDeployException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.xml.PSXmlTreeWalker;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Element;
 
 import java.util.ArrayList;
@@ -45,6 +42,7 @@ import java.util.Map;
  */
 public class PSDependencyMap 
 {
+   private static final Logger log = LogManager.getLogger(IPSConstants.PACKAGING_LOG);
    /**
     * Construct this map from a list of dependency type defintions.
     * 
@@ -271,43 +269,48 @@ public class PSDependencyMap
       m_handlerMap = new HashMap();
       m_parentDefMap = new HashMap();
       m_childDefMap = new HashMap();
-      
-      Iterator defs = m_dependencyMap.values().iterator();
-      while (defs.hasNext())
-      {
-         // create handler and add to handler map
-         PSDependencyDef def = (PSDependencyDef)defs.next();
-         String defType = def.getObjectType();
-         PSDependencyHandler handler = PSDependencyHandler.getHandlerInstance(
-            def, this);
-         m_handlerMap.put(defType, handler);
-         
-         Iterator childTypes = handler.getChildTypes();
-         List childList = new ArrayList();
-         m_childDefMap.put(defType, childList);
-         while(childTypes.hasNext())
-         {
-            // get child defs and add them as children in the child map
-            String childType = (String)childTypes.next();
-            PSDependencyDef childDef = getDependencyDef(childType);
-            if (childDef == null)
-            {
-               Object args[] = {childType, defType};
-               throw new PSDeployException(
-                  IPSDeploymentErrors.CHILD_DEPENDENCY_TYPE_NOT_FOUND, args);
+
+         Iterator defs = m_dependencyMap.values().iterator();
+         while (defs.hasNext()) {
+            try{
+               // create handler and add to handler map
+               PSDependencyDef def = (PSDependencyDef) defs.next();
+               String defType = def.getObjectType();
+               PSDependencyHandler handler = PSDependencyHandler.getHandlerInstance(
+                       def, this);
+               m_handlerMap.put(defType, handler);
+
+               Iterator childTypes = handler.getChildTypes();
+               List childList = new ArrayList();
+               m_childDefMap.put(defType, childList);
+               while (childTypes.hasNext()) {
+                  try {
+                     // get child defs and add them as children in the child map
+                     String childType = (String) childTypes.next();
+                     PSDependencyDef childDef = getDependencyDef(childType);
+                     if (childDef == null) {
+                        Object args[] = {childType, defType};
+                        throw new PSDeployException(
+                                IPSDeploymentErrors.CHILD_DEPENDENCY_TYPE_NOT_FOUND, args);
+                     }
+                     childList.add(childDef);
+
+                     // for each child, add the current def as its parent in parent map
+                     List parentList = (List) m_parentDefMap.get(childType);
+                     if (parentList == null) {
+                        parentList = new ArrayList();
+                        m_parentDefMap.put(childType, parentList);
+                     }
+                     parentList.add(def);
+                  }catch(Exception e){
+                     log.error(PSExceptionUtils.getMessageForLog(e));
+                  }
+               }
+            }catch(Exception e){
+                log.error(PSExceptionUtils.getMessageForLog(e));
             }
-            childList.add(childDef);
-            
-            // for each child, add the current def as its parent in parent map
-            List parentList = (List)m_parentDefMap.get(childType);
-            if (parentList == null)
-            {
-               parentList = new ArrayList();
-               m_parentDefMap.put(childType, parentList);
-            }
-            parentList.add(def);
          }
-      }
+
    }
    
    /**

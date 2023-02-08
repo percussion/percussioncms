@@ -1,25 +1,18 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.percussion.cms.objectstore;
@@ -69,7 +62,7 @@ public class PSItemDefSummary extends PSCmsComponent implements
     *    item is used for. May be <code>null</code> or empty.
     */
    public PSItemDefSummary(String name, String label, int typeId,
-                           String editorUrl, String description)
+                           String editorUrl, String description,boolean hideFromMenu)
    {
       if (null == name || name.trim().length() == 0)
       {
@@ -84,6 +77,12 @@ public class PSItemDefSummary extends PSCmsComponent implements
       setTypeId( typeId );
       setEditorUrl( editorUrl );
       setDescription( description );
+      setHideFromMenu(hideFromMenu);
+   }
+   public PSItemDefSummary(String name, String label, int typeId,
+                           String editorUrl, String description)
+   {
+      this(name,label,typeId,editorUrl,description,false);
    }
    
    /**
@@ -101,13 +100,13 @@ public class PSItemDefSummary extends PSCmsComponent implements
     * @param description An optional message that describes what the associated
     *    item is used for. May be <code>null</code> or empty.
     *    
-    * @deprecated use {@link #PSItemDefSummary(String, String, int, String, String)}
+    * @deprecated use
     * instead
     */
    public PSItemDefSummary(String name, int typeId,
                            String editorUrl, String description)
    {
-      this(name, name, typeId, editorUrl, description);
+      this(name, name, typeId, editorUrl, description,false);
    }
    
    /**
@@ -235,6 +234,8 @@ public class PSItemDefSummary extends PSCmsComponent implements
          return false;
       if (!m_description.equals(summary.m_description))
          return false;
+      if (m_hideFromMenu != summary.m_hideFromMenu)
+         return false;
       return true;
    }
 
@@ -250,7 +251,7 @@ public class PSItemDefSummary extends PSCmsComponent implements
    public int hashCode()
    {
       return (m_name.toLowerCase() + m_description + m_editorUrl
-            + m_typeId).hashCode();
+            + m_typeId + m_hideFromMenu).hashCode();
    }
 
    /**
@@ -282,6 +283,8 @@ public class PSItemDefSummary extends PSCmsComponent implements
       root.setAttribute ("label", getLabel());
       root.setAttribute ("typeId", ""+getTypeId());
       root.setAttribute ("editorUrl", getEditorUrl());
+      boolean val = getHideFromMenu();
+      root.setAttribute ("hideFromMenu", Boolean.toString(val));
 
       //Create description element
       if ( getDescription().length() > 0 )
@@ -363,6 +366,17 @@ public class PSItemDefSummary extends PSCmsComponent implements
             throw new PSUnknownNodeTypeException(
                   IPSObjectStoreErrors.XML_ELEMENT_INVALID_ATTR, args );
          }
+      }
+
+      attrName = "hideFromMenu";
+      temp = walker.getElementData(attrName);
+      if ( null == temp || temp.trim().length() == 0 )
+      {
+         setHideFromMenu(false);
+      }
+      else
+      {
+         setHideFromMenu(Boolean.getBoolean(temp));
       }
 
       attrName = "editorUrl";
@@ -447,6 +461,14 @@ public class PSItemDefSummary extends PSCmsComponent implements
       m_description = desc;
    }
 
+   public boolean getHideFromMenu() {
+      return m_hideFromMenu;
+   }
+
+   public void setHideFromMenu(boolean m_hideFromMenu) {
+      this.m_hideFromMenu = m_hideFromMenu;
+   }
+
    /**
     * See {@link #PSItemDefSummary(String, int, String, String) ctor}
     * for description.
@@ -478,10 +500,12 @@ public class PSItemDefSummary extends PSCmsComponent implements
    private String m_description;
    
    /**
-    * See {@link #PSItemDefSummary(String, String, int, String, String) ctor}
+    * See
     * for description.
     * Set in ctor or <code>toXml</code> method, then never <code>null</code>
     * or changed after that (may be empty).
     */
    private String m_label;
+
+   private boolean m_hideFromMenu;
 }

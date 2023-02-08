@@ -1,25 +1,18 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.percussion.comments.service.impl;
 
@@ -240,10 +233,9 @@ public class PSCommentsService implements IPSCommentsService
     @Path("/commentsonpage/{site}/{pagePath:.*}")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public List<PSComment> getCommentsOnPage(@PathParam("site") String site, @PathParam("pagePath") String pagePath,
-                                             @QueryParam("max") Integer max, @QueryParam("start") Integer start)
-    {
+                                             @QueryParam("max") Integer max, @QueryParam("start") Integer start) {
+        List<PSComment> aggregatedComments = new ArrayList<>();
         try {
-            List<PSComment> aggregatedComments = new ArrayList<>();
 
             if (isBlank(pagePath)) {
                 pagePath = "";
@@ -294,13 +286,12 @@ public class PSCommentsService implements IPSCommentsService
                 log.warn("Error getting all comments data from processor at : {}. Error: {}",
                         serviceUrl,
                         PSExceptionUtils.getMessageForLog(e));
-                throw new WebApplicationException(e, Response.serverError().build());
             }
-
-            return new PSCommentList(aggregatedComments);
         } catch (IPSPubServerService.PSPubServerServiceException | PSNotFoundException e) {
-            throw new WebApplicationException(e);
+            log.warn("Error getting all comments data from processor. Error: {}",
+                    PSExceptionUtils.getMessageForLog(e));
         }
+        return new PSCommentList(aggregatedComments);
     }
 
     /*
@@ -569,8 +560,9 @@ public class PSCommentsService implements IPSCommentsService
         catch (Exception e)
         {
             String urlStr = server.getUrl() + url;
-            log.warn("Error getting all comments data from processor at : {}", urlStr, e);
-            throw new WebApplicationException(e, Response.serverError().build());
+            log.warn("Error getting all comments data from processor at : {}. Error: {}",
+                    urlStr,
+                    PSExceptionUtils.getMessageForLog(e));
         }
 
         return summaries;

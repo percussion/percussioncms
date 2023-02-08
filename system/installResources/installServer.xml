@@ -465,8 +465,6 @@
 		<PSCopy todir="${install.Proxy}" file="${basedir}/config/proxy-config.xml" replaceType="never" />
 		<!-- CM1 Config Files -->
 		<mkdir dir="${install.rxconfig}/DeliveryServer" />
-		<mkdir dir="${install.LDAP}" />
-		<PSCopy todir="${install.LDAP}" file="${configdir}/LDAP/ldapserver.xml" replaceType="never" />
 
 		<!-- Package Installer config -->
 		<if>

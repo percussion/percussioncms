@@ -1,25 +1,18 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.percussion.cms;
@@ -41,13 +34,14 @@ import com.percussion.design.objectstore.IPSReplacementValue;
 import com.percussion.design.objectstore.PSBackEndColumn;
 import com.percussion.design.objectstore.PSField;
 import com.percussion.design.objectstore.PSLocator;
-import com.percussion.design.objectstore.PSNotFoundException;
+import com.percussion.error.PSNotFoundException;
 import com.percussion.design.objectstore.PSRelationship;
 import com.percussion.design.objectstore.PSRelationshipConfig;
 import com.percussion.design.objectstore.PSSystemValidationException;
 import com.percussion.design.objectstore.PSUISet;
 import com.percussion.error.PSException;
 import com.percussion.extension.PSExtensionException;
+import com.percussion.html.PSHtmlUtils;
 import com.percussion.log.PSLogManager;
 import com.percussion.log.PSLogServerWarning;
 import com.percussion.security.PSSecurityToken;
@@ -80,6 +74,7 @@ import com.percussion.xml.PSXmlTreeWalker;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jsoup.helper.W3CDom;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -88,7 +83,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import java.io.ByteArrayInputStream;
-import java.io.StringReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -126,13 +121,14 @@ public class PSSingleValueBuilder extends PSDisplayFieldBuilder
    public static final String ALT = "alt";
    public static final String CLASS = "class";
    public static final String TITLE = "title";
+   public static final String SRC = "src";
    public static final String JRCPATH = "data-jcrpath";
    public static final String HREF = "href";
 
    /**
     * A set of attributes that should be ignored, statically initialized.
     */
-   public static Set<String> IGNORED_ATTRIBUTES = new HashSet<String>();
+   public static Set<String> IGNORED_ATTRIBUTES = new HashSet<>();
 
    static
    {
@@ -156,7 +152,7 @@ public class PSSingleValueBuilder extends PSDisplayFieldBuilder
       IGNORED_ATTRIBUTES.add(RESOURCE_DEFINITION_ID);
    }
    
-   public static Set<String> REMOVE_EMPTY_ATTRIBUTES = new HashSet<String>();
+   public static Set<String> REMOVE_EMPTY_ATTRIBUTES = new HashSet<>();
    {
       REMOVE_EMPTY_ATTRIBUTES.add(ATTR_INLINESLOT);
       REMOVE_EMPTY_ATTRIBUTES.add(INLINE_TYPE);
@@ -258,10 +254,8 @@ public class PSSingleValueBuilder extends PSDisplayFieldBuilder
          throw new IllegalArgumentException(
             "submitName may not be null or empty");
 
-      Element dispNode = PSDisplayFieldElementBuilder.createHiddenFieldElement(
+      return PSDisplayFieldElementBuilder.createHiddenFieldElement(
          doc, controlName, submitName, value, isReadOnly);
-
-      return dispNode;
    }
 
    /**
@@ -326,7 +320,7 @@ public class PSSingleValueBuilder extends PSDisplayFieldBuilder
       if ( null != content && content.length() > 0 )
       {
          //if content has rxinlineslot then fix the variants
-         if (content.indexOf("rxinlineslot") > -1)
+         if (content.contains("rxinlineslot"))
          {
             IPSRequestContext request =
                new PSRequestContext(data.getRequest());
@@ -334,14 +328,12 @@ public class PSSingleValueBuilder extends PSDisplayFieldBuilder
             Document contentDoc = null;
             try
             {
-               contentDoc =
-                  PSXmlDocumentBuilder.createXmlDocument(
-                     new StringReader(content),
-                     false);
+               org.jsoup.nodes.Document jsoupDoc = PSHtmlUtils.createHTMLDocument(content, StandardCharsets.UTF_8,false,null);
+               contentDoc = W3CDom.convert(jsoupDoc);
+               isModified = PSInlineLinkField.expandEmptyElement(contentDoc);
                isModified = PSInlineLinkField.expandEmptyElement(contentDoc);
                
-               processVariant(
-                  contentDoc.getDocumentElement(),
+               processVariant(contentDoc.getDocumentElement(),
                   request,
                   buildRelationshipData(request, null),
                   getControlName());
@@ -349,7 +341,7 @@ public class PSSingleValueBuilder extends PSDisplayFieldBuilder
             catch (Exception e)
             {
                /* This may happen for variety of reasons, however, we cannot
-                * throw an excption just for one field and stop processing
+                * throw an exception just for one field and stop processing
                 * completely
                 * Just write the trace in case if it happens...
                 */
@@ -632,9 +624,9 @@ public class PSSingleValueBuilder extends PSDisplayFieldBuilder
       {
          if (!StringUtils.isEmpty(rel.getProperty(PSRelationshipConfig.PDU_INLINERELATIONSHIP)))
          {
-            Integer dependentid = new Integer(rel.getDependent().getId());
+            Integer dependentid = rel.getDependent().getId();
             inlineLinkRelData.m_relIdContentIdMap.put(
-               new Integer(rel.getId()),
+                    rel.getId(),
                dependentid);
             inlineLinkRelData.m_contentIdPathMap.put(dependentid, null);
          }
@@ -808,15 +800,7 @@ public class PSSingleValueBuilder extends PSDisplayFieldBuilder
                fixedUrl = PSMacroUtils.fixLinkUrlRevisionForFlags(request, url,
                      "i".toCharArray());
             }
-            catch (PSInternalRequestCallException e)
-            {
-               ex = e;
-            }
-            catch (PSNotFoundException e)
-            {
-               ex = e;
-            }
-            catch (PSRequestParsingException e)
+            catch (PSInternalRequestCallException | PSNotFoundException | PSRequestParsingException e)
             {
                ex = e;
             }

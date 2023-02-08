@@ -1,25 +1,18 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.percussion.services.utils.general;
 
@@ -27,25 +20,29 @@ import com.percussion.cms.PSCmsException;
 import com.percussion.server.PSRequestParsingException;
 import com.percussion.services.assembly.IPSAssemblyItem;
 import com.percussion.services.assembly.IPSAssemblyResult;
+import com.percussion.services.assembly.IPSAssemblyResult.Status;
 import com.percussion.services.assembly.IPSAssemblyService;
+import com.percussion.services.assembly.IPSTemplateSlot;
 import com.percussion.services.assembly.PSAssemblyException;
 import com.percussion.services.assembly.PSAssemblyServiceLocator;
 import com.percussion.services.assembly.PSTemplateNotImplementedException;
-import com.percussion.services.assembly.IPSAssemblyResult.Status;
 import com.percussion.services.filter.PSFilterException;
 import com.percussion.util.PSParseUrlQueryString;
-
-import java.io.UnsupportedEncodingException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import com.percussion.utils.guid.IPSGuid;
+import com.percussion.utils.types.PSPair;
+import org.apache.commons.lang.StringUtils;
 
 import javax.jcr.ItemNotFoundException;
 import javax.jcr.RepositoryException;
-
-import org.apache.commons.lang.StringUtils;
+import java.io.UnsupportedEncodingException;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Various methods to allow easy direct calling of the assembly service
@@ -152,6 +149,31 @@ public class PSAssemblyServiceUtils
          return result.toResultString();
       }
       return null;
+   }
+
+   /**
+    * Get a map that associates a particular content type with a set of template
+    * ids for this slot
+    *
+    * @return a map, never <code>null</code> but could be empty
+    */
+   public static Map<IPSGuid, Set<IPSGuid>> getSlotAssociationMap(IPSTemplateSlot slot)
+   {
+      Collection<PSPair<IPSGuid, IPSGuid>> assoc = slot.getSlotAssociations();
+      Map<IPSGuid, Set<IPSGuid>> map = new HashMap<IPSGuid, Set<IPSGuid>>();
+      for (PSPair<IPSGuid, IPSGuid> pair : assoc)
+      {
+         IPSGuid ctype = pair.getFirst();
+         IPSGuid ttype = pair.getSecond();
+         Set<IPSGuid> templates = map.get(ctype);
+         if (templates == null)
+         {
+            templates = new HashSet<IPSGuid>();
+            map.put(ctype, templates);
+         }
+         templates.add(ttype);
+      }
+      return map;
    }
 
 }

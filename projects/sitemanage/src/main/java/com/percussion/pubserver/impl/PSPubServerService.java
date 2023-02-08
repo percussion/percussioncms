@@ -1,25 +1,18 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2021 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.percussion.pubserver.impl;
 
@@ -1170,6 +1163,7 @@ public class PSPubServerService implements IPSPubServerService
      */
     private PSPublishServerInfo toPSPublishServerInfo(IPSPubServer pubServer, IPSSite site, boolean includeProperties) throws PSPubServerServiceException {
         PSPublishServerInfo serverInfo = new PSPublishServerInfo();
+        boolean needToSave  =false;
 
         Set<PSPubServerProperty> properties = pubServer.getProperties();
 
@@ -1185,6 +1179,20 @@ public class PSPubServerService implements IPSPubServerService
             {
                 String propertyName = property.getName();
                 String propertyValue = property.getValue();
+                //This is handling a special case, where server was created with a AdminURL that is changed in
+                //deliverServer.xml and is not valid anymore, thus , need to fix it.
+                if(IPSPubServerDao.PUBLISH_SERVER_PROPERTY.equalsIgnoreCase(propertyName)){
+                    String server = pubServer.getPublishServer();
+                    if(!server.equalsIgnoreCase(propertyValue)){
+                        needToSave  = true;
+                    }
+                    PSPublishServerProperty serverProperty = new PSPublishServerProperty();
+                    serverProperty.setKey(propertyName);
+                    serverProperty.setValue(server);
+                    serverInfo.getProperties().add(serverProperty);
+                    continue;
+
+                }
                 if(ArrayUtils.contains(encryptableProperties, propertyName))
                 {
                     try
@@ -1218,13 +1226,16 @@ public class PSPubServerService implements IPSPubServerService
                     serverInfo.getProperties().add(obfuPasswordProperty);
                 }
             }
-
-            setPublishDates(pubServer, site, serverInfo);
+            if(site.isPageBased()) {
+                setPublishDates(pubServer, site, serverInfo);
+            }
         }
 
         serverInfo.setServerId(pubServer.getServerId());
         serverInfo.setServerName(pubServer.getName());
-        serverInfo.setIsDefault(site.getDefaultPubServer() == pubServer.getServerId());
+        if(site.isPageBased()) {
+            serverInfo.setIsDefault(site.getDefaultPubServer() == pubServer.getServerId());
+        }
         serverInfo.setServerType(pubServer.getServerType());
 
         String pubType = pubServer.getPublishType();
@@ -1258,10 +1269,19 @@ public class PSPubServerService implements IPSPubServerService
         }
 
         // only the default server can incrementally publish
-        serverInfo.setCanIncrementalPublish(serverInfo.getIsDefault() || PSPubServer.STAGING.equalsIgnoreCase(pubServer.getServerType()));
-        serverInfo.setIsFullPublishRequired(!pubServer.hasFullPublished());
+        if(site.isPageBased()) {
+            serverInfo.setCanIncrementalPublish(serverInfo.getIsDefault() || PSPubServer.STAGING.equalsIgnoreCase(pubServer.getServerType()));
+            serverInfo.setIsFullPublishRequired(!pubServer.hasFullPublished());
+        }
 
-
+       if(needToSave){
+           try {
+               updatePubServer(String.valueOf(pubServer.getSiteId()),String.valueOf(pubServer.getServerId()),serverInfo);
+           } catch (PSDataServiceException | PSNotFoundException e) {
+               log.error("Unable to Save the AdminServer URL. Error: {}",
+                       PSExceptionUtils.getMessageForLog(e));
+           }
+       }
         return serverInfo;
     }
 
@@ -2272,7 +2292,7 @@ public class PSPubServerService implements IPSPubServerService
             return null;
         }else {
             PSPubServer currentDefaultServer = getDefaultPubServer(site.getGUID());
-            String adminUrl = currentDefaultServer.getPropertyValue("publishServer");
+            String adminUrl = currentDefaultServer.getPublishServer();
             return adminUrl;
         }
     }

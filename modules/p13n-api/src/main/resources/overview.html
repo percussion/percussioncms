@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>P13N API</title>
+</head>
+<body>
+<h1>Personalization API</h1>
+Personalization (also known as P13N) is composed of three major Systems that follow a Service Oriented Architecture.
+<table>
+	<thead><tr><th>System</th><th>Description</th></tr></thead>
+	<tr><td>Visitor Tracking</td><td>See {@link com.percussion.soln.p13n.tracking} </td></tr>
+	<tr><td>Content Delivery</td><td>See {@link com.percussion.soln.p13n.delivery}</td></tr>
+	<tr><td>Segmentation</td><td>See {@link com.percussion.soln.segment}</td></tr>
+</table>
+<h1>Very High Overview</h1>
+Personalization works by associating segments or tags of a certain weight with visitors and then 
+by selectively displaying content based on those weights.
+<p>
+This is done in two steps when a visitor visits a web page:
+<ol>
+<li>Track the visitor by setting segment weights associated with the page onto the visitor. ({@link com.percussion.soln.p13n.tracking Tracking})</li>
+<li>Portions of the page are filled through dynamic list of HTML snippets whose contents 
+get filtered based on the segment weights. ({@link com.percussion.soln.p13n.delivery Delivery})</li>
+</ol>
+<em><small>Some pages may only do one of those two steps.</small></em>
+</p>
+<h2>Example of personalization</h2>
+Imagine a new visitor visiting page <em>A</em> that is tagged with segments <b>"US"</b> and <b>"Customer"</b>.
+The visitor will have a profile like:
+<table  border="1">
+<tr><th>Segment Identifier</th><th>Weight</th></tr>
+<tr><td>US</td><td>1</td></tr>
+<tr><td>Customer</td><td>1</td></tr>
+</table>
+<p>
+If page <em>A</em> has a dynamic list with three snippets:
+<table border="1">
+<tr><th>Snippet</th><th>Segments</th></tr>
+<tr><td>I</td><td>International,Contractor</td></tr>
+<tr><td>J</td><td>US,Contractor</td></tr>
+<tr><td>K</td><td>US,Customer</td></tr>
+</table>
+and the list has a maximum size of 2 and minimum size of 1.
+<p>
+The list will be displayed for the visitor as:
+<table border="1">
+<tr><th>Snippet</th><th>Score</th><tr>
+<tr><td>K</td><td>2</td></tr>
+<tr><td>J</td><td>1</td></tr>
+</table>
+<h2>Content Contributors Control Personalization</h2>
+Content contributors can actively control personalization of dynamic lists
+by setting properties on the list 
+and by associating segments with snippets in the list and by associating segments with landing pages.
+<p>
+Segmenting landing pages will cause visitors to have their profile updated to the matching segments
+usually by increasing it by one. This update is known as the <em>"update"</em> tracking action.  
+
+</body>
+</html>

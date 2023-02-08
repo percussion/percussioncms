@@ -1,34 +1,27 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.percussion.fastforward.managednav;
 
 import com.percussion.cms.PSCmsException;
 import com.percussion.cms.objectstore.PSComponentSummary;
-import com.percussion.cms.objectstore.PSContentTypeVariant;
+import com.percussion.cms.objectstore.PSContentTypeTemplate;
 import com.percussion.cms.objectstore.PSFolder;
+import com.percussion.cms.objectstore.PSProcessorProxy;
 import com.percussion.cms.objectstore.PSRelationshipFilter;
-import com.percussion.cms.objectstore.PSRelationshipProcessorProxy;
 import com.percussion.cms.objectstore.PSVariantSlotType;
 import com.percussion.cms.objectstore.server.PSRelationshipProcessor;
 import com.percussion.design.objectstore.PSLocator;
@@ -40,6 +33,7 @@ import com.percussion.extension.PSExtensionProcessingException;
 import com.percussion.extension.PSParameterMismatchException;
 import com.percussion.server.IPSInternalRequest;
 import com.percussion.server.IPSRequestContext;
+import com.percussion.services.assembly.impl.nav.PSNavConfig;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.xml.PSXmlTreeWalker;
 import org.apache.logging.log4j.LogManager;
@@ -114,8 +108,8 @@ public class PSNavAutoSlotExtension extends PSDefaultExtension
       try
       {
          Object recurse = req.getPrivateObject(RECURSION_DETECT);
-         if (recurse != null && recurse instanceof Boolean
-               && ((Boolean) recurse).booleanValue() == true)
+         if (recurse instanceof Boolean
+                 && Boolean.TRUE.equals(recurse))
          {
             log.error("Recursion violation in PSNavAutoSlot. Content Id= {} ", req.getParameter(IPSHtmlParameters.SYS_CONTENTID));
             //leave without adding any Navigation
@@ -125,7 +119,7 @@ public class PSNavAutoSlotExtension extends PSDefaultExtension
          {
             req.setPrivateObject(RECURSION_DETECT, true);
          }
-         ms_config = PSNavConfig.getInstance(req);
+         ms_config = PSNavConfig.getInstance();
          PSComponentSummary navon = findNavon(req);
          if (navon != null)
          {
@@ -280,7 +274,7 @@ public class PSNavAutoSlotExtension extends PSDefaultExtension
                   log.debug("Found Site Root folder");
                   PSRelationshipProcessor relProxy = PSRelationshipProcessor.getInstance();
                   PSLocator siteLoc = siteRoot.getCurrentLocator();
-                  String cType = PSRelationshipProcessorProxy.RELATIONSHIP_COMPTYPE;
+                  String cType = PSProcessorProxy.RELATIONSHIP_COMPTYPE;
                   PSNavFolderSet siteFolders = new PSNavFolderSet();
                   Iterator it = allFolders.iterator();
 
@@ -346,14 +340,14 @@ public class PSNavAutoSlotExtension extends PSDefaultExtension
             .getParameter(IPSHtmlParameters.SYS_VARIANTID));
       //int contentTypeId = itemSummary.getContentTypeId();
       int contentTypeId = -1;
-      PSContentTypeVariant variant = PSNavUtil.loadVariantInfo(req,
+      PSContentTypeTemplate variant = PSNavUtil.loadVariantInfo(req,
             contentTypeId, variantId);
 
       if (variant == null)
       {
          Object[] args = new Object[2];
-         args[0] = new Integer(contentTypeId);
-         args[1] = new Integer(variantId);
+         args[0] = contentTypeId;
+         args[1] = variantId;
          String errMsg = MessageFormat.format(MSG_VARIANT, args);
          log.error(errMsg);
          return;
@@ -378,7 +372,7 @@ public class PSNavAutoSlotExtension extends PSDefaultExtension
       {
          PSVariantSlotType varSlot = (PSVariantSlotType) slots.next();
          int varSlotId = varSlot.getSlotId();
-         log.debug("Processing Slot Id {}", String.valueOf(varSlotId));
+         log.debug("Processing Slot Id {}", varSlotId);
 
          //look for the slot in our set of nav slots.
          PSNavSlot navSlot = navSlots.getSlotById(varSlotId);
@@ -388,7 +382,7 @@ public class PSNavAutoSlotExtension extends PSDefaultExtension
             Iterator navSlotVariants = navSlot.getVariantIterator();
             while (navSlotVariants.hasNext())
             {
-               PSContentTypeVariant linkVar = (PSContentTypeVariant) navSlotVariants
+               PSContentTypeTemplate linkVar = (PSContentTypeTemplate) navSlotVariants
                      .next();
                log.debug("Adding Variant {}", linkVar.getName());
 
@@ -451,12 +445,11 @@ public class PSNavAutoSlotExtension extends PSDefaultExtension
    private static Map buildThemeParams(IPSRequestContext req, Document navonDoc)
          throws PSNavException
    {
-      ms_config = PSNavConfig.getInstance(req);
+      ms_config = PSNavConfig.getInstance();
       Map params = new HashMap();
 
       //first see if the caller specified a Theme
-      String themeParam = ms_config
-            .getPropertyString(PSNavConfig.NAVTREE_PARAM_THEME);
+      String themeParam = ms_config.getNavThemeParamName();
       String oldNavTheme = req.getParameter(themeParam);
       if (oldNavTheme != null && oldNavTheme.trim().length() > 0)
       {

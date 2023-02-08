@@ -7,7 +7,7 @@
         <!ENTITY % HTMLspecial PUBLIC "-//W3C//ENTITIES_Special_for_XHTML//EN" "https://www.percussion.com/DTD/HTMLspecialx.ent">
         %HTMLspecial;
 ]>
-<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" extension-element-prefixes="psxi18n"
+<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:psxi18n="com.percussion.i18n" extension-element-prefixes="psxi18n"
                 exclude-result-prefixes="psxi18n">
    <xsl:import href="file:sys_resources/stylesheets/sys_I18nUtils.xsl"/>
    <xsl:variable name="lang" select="//@lang"/>
@@ -132,9 +132,9 @@
                   <xsl:with-param name="lang" select="$lang"/>
                </xsl:call-template>
             </title>
-            <link href="/sys_resources/css/templates.css" rel="stylesheet" type="text/css"/>
-            <link href="/rx_resources/css/templates.css" rel="stylesheet" type="text/css"/>
-            <link rel="stylesheet" type="text/css" href="{concat('/rx_resources/css/',$lang,'/templates.css')}"/>
+            <link href="../sys_resources/css/templates.css" rel="stylesheet" type="text/css"/>
+            <link href="../rx_resources/css/templates.css" rel="stylesheet" type="text/css"/>
+            <link rel="stylesheet" type="text/css" href="{concat('../rx_resources/css/',$lang,'/templates.css')}"/>
          </head>
          <frameset rows="55,*" border="0">
             <frame name="tabframe" scrolling="auto" src="{$taburl}"/>

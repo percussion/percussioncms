@@ -1,31 +1,25 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.percussion.fastforward.managednav;
 
 import com.percussion.cms.objectstore.PSComponentSummary;
 import com.percussion.design.objectstore.PSLocator;
 import com.percussion.server.IPSRequestContext;
+import com.percussion.services.assembly.impl.nav.PSNavConfig;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import org.apache.logging.log4j.LogManager;
@@ -89,7 +83,7 @@ public class PSNavonStack
 
       this.push(req, navon);
       PSNavConfig config = PSNavConfig.getInstance(req);
-      if (navon.getContentTypeId() == config.getNavTreeType())
+      if (config.getNavTreeTypes().contains(navon.getContentTypeGUID()))
       {
          return;
       }
@@ -105,7 +99,7 @@ public class PSNavonStack
             break;
          }
          this.push(req, next);
-         if (next.getContentTypeId() == config.getNavTreeType())
+         if (config.getNavTreeTypes().contains(next.getContentTypeGUID()))
          { // we found a NavTree content item
             log.debug("NavTree found");
             break;
@@ -169,15 +163,13 @@ public class PSNavonStack
          if (oldFolderId != null)
             req.setParameter(IPSHtmlParameters.SYS_FOLDERID, oldFolderId);
       }
-      
-      if (log.isDebugEnabled() && false)
-      {
-         String navDoc = PSXmlDocumentBuilder.toString(doc);
-         log.debug("Navon document is {}", navDoc);
-      }
+
+      String navDoc = PSXmlDocumentBuilder.toString(doc);
+      log.debug("Navon document is {}", navDoc);
+
       PSNavConfig config = PSNavConfig.getInstance(req);
       String navImageSelect = PSNavUtil.getFieldValueFromXML(doc, config
-            .getPropertyString(PSNavConfig.NAVON_SELECTOR_FIELD));
+            .getNavonSelectorField());
       log.debug("navImageSelect is {}", navImageSelect);
       if (m_imageSelector == null && navImageSelect != null
             && navImageSelect.trim().length() > 0)
@@ -187,7 +179,7 @@ public class PSNavonStack
       }
 
       String varSelect = PSNavUtil.getFieldValueFromXML(doc, config
-            .getPropertyString(PSNavConfig.NAVON_VARIABLE_FIELD));
+            .getNavonVariableName());
       log.debug("navVarSelect is {}", varSelect);
       if (m_varSelector == null && varSelect != null
             && varSelect.trim().length() > 0)
@@ -256,7 +248,7 @@ public class PSNavonStack
     */
    public String getVarSelector()
    {
-      log.debug("getting variable selector ", m_varSelector);
+      log.debug("getting variable selector {}", m_varSelector);
       return m_varSelector;
    }
 

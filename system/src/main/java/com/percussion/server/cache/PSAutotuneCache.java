@@ -1,29 +1,23 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.percussion.server.cache;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.security.SecureStringUtils;
 import com.percussion.server.PSServer;
 import com.percussion.services.memory.IPSCacheAccess;
@@ -41,9 +35,9 @@ import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.parser.Parser;
 
+import javax.naming.NamingException;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -92,10 +86,10 @@ public class PSAutotuneCache
       long spaceRequiredSmTables = calcSpaceForSmallerTables();
       long percentageOfHeapForCache = (long) (percentage * freeMemory);
 
-      log.debug("The maximum space (in ehcache) required for all total tables in MB is: "
-            + (DF2.format((double)(spaceRequiredLgTables + spaceRequiredSmTables) / KB_TO_MB)));
+      log.debug("The maximum space (in ehcache) required for all total tables in MB is: {}"
+            , (DF2.format((double)(spaceRequiredLgTables + spaceRequiredSmTables) / KB_TO_MB)));
 
-      log.debug("The amount of memory to be allocated to the ehcache in MB is: " + (percentageOfHeapForCache / BYTES_TO_MB));
+      log.debug("The amount of memory to be allocated to the ehcache in MB is: {}" , (percentageOfHeapForCache / BYTES_TO_MB));
 
       FileInputStream in = new FileInputStream(ehcache);
       Document doc = Jsoup.parse(in, "UTF-8", "", Parser.xmlParser());
@@ -132,8 +126,8 @@ public class PSAutotuneCache
       
       if (in != null) { try { in.close(); } catch (IOException e) {} }
 
-      log.debug("The presumed amount of free space after allocating for the ehcache in MB is: "
-            + DF2.format(((double)this.freeMemory - percentageOfHeapForCache) / (BYTES_TO_MB)));
+      log.debug("The presumed amount of free space after allocating for the ehcache in MB is: {}",
+             DF2.format(((double)this.freeMemory - percentageOfHeapForCache) / (BYTES_TO_MB)));
       log.info("The cache has been autotuned.");
    }
 
@@ -142,7 +136,7 @@ public class PSAutotuneCache
       Properties serverProps = PSServer.getServerProps();
       percentage = Integer.parseInt(serverProps.getProperty("autotuneCachePercentage", "40"));
       percentage /= 100.0;
-      log.debug("The ehcache percentage to be used is: " + percentage);
+      log.debug("The ehcache percentage to be used is: {}" , percentage);
       
       loadEhCacheFile();
       backupEhCache();
@@ -169,22 +163,22 @@ public class PSAutotuneCache
    private long updateCacheItem(String cacheName, Element elem, long percentageOfHeapForCache)
    {
       double regionRowCount = ehcacheDbRowCountValues.get(cacheName);
-      Node cache = (Node) elem;
-      double bytesToSubtract = 0.0;
+      Node cache =  elem;
+      double bytesToSubtract;
       String maxElemValue = cache.attr(MAX_ELEMS_IN_MEMORY);
 
-      log.debug("The cache element name is: " + cacheName);
-      log.debug("The cache element value is: " + maxElemValue);
-      log.debug("The current count from database for this table is: " + regionRowCount);
+      log.debug("The cache element name is: {}" , cacheName);
+      log.debug("The cache element value is: {}" , maxElemValue);
+      log.debug("The current count from database for this table is: {}" , regionRowCount);
 
       regionRowCount += (regionRowCount * .10);
 
-      log.debug("The projected new value after calculation will be: " + regionRowCount);
+      log.debug("The projected new value after calculation will be: {}" , regionRowCount);
 
       if (regionRowCount > Integer.parseInt(maxElemValue) && regionRowCount != 0)
       {
-         log.debug(MAX_ELEMS_IN_MEMORY + " is being updated as it contains a higher value: "
-               + cacheName);
+         log.debug("{} is being updated as it contains a higher value: {}",
+                 MAX_ELEMS_IN_MEMORY ,cacheName);
          String count = String.valueOf(Math.round(regionRowCount));
          cache.attr(MAX_ELEMS_IN_MEMORY, count);
       }
@@ -220,7 +214,7 @@ public class PSAutotuneCache
       {
          kb += ehcacheDbRowCountValues.get(key) * largeTables.get(key);
       }
-      log.debug("The current amount of MB allocated for entries in the cache for larger tables is: " + DF2.format((double) kb / KB_TO_MB));
+      log.debug("The current amount of MB allocated for entries in the cache for larger tables is: {}" , DF2.format((double) kb / KB_TO_MB));
       return kb;
    }
 
@@ -239,7 +233,7 @@ public class PSAutotuneCache
       {
          kb += ehcacheDbRowCountValues.get(key) * smallTables.get(key);
       }
-      log.debug("The current amount of MB allocated for entries in " + "the cache for smaller tables are: " + DF2.format((double) kb / KB_TO_MB));
+      log.debug("The current amount of MB allocated for entries in the cache for smaller tables are: {}" , DF2.format((double) kb / KB_TO_MB));
       return kb;
    }
 
@@ -248,14 +242,9 @@ public class PSAutotuneCache
     * database. This maps the count results to the appropriate ehcache.xml
     * fields.
     */
-   private void getDatabaseCountValues() throws Exception
-   {
-      Connection conn = null;
-      ResultSet resultSet = null;
-      PreparedStatement stmt1 = null;
-      try
+   private void getDatabaseCountValues() throws SQLException, NamingException {
+      try(Connection conn = PSConnectionHelper.getDbConnection())
       {
-         conn = PSConnectionHelper.getDbConnection();
          PSConnectionDetail detail = PSConnectionHelper.getConnectionDetail();
          for (Entry<String, String> entry : cacheRelationships.entrySet())
          {
@@ -264,40 +253,13 @@ public class PSAutotuneCache
                     detail.getDriver());
             String stmt = "SELECT COUNT(*) FROM " + SecureStringUtils.sanitizeStringForSQLStatement(table);
 
-            stmt1 = PSPreparedStatement.getPreparedStatement(conn, stmt);
-            resultSet = stmt1.executeQuery();
-
-            resultSet.next();
-            ehcacheDbRowCountValues.put(entry.getValue(), resultSet.getInt(1));
-
+            try(PreparedStatement stmt1 = PSPreparedStatement.getPreparedStatement(conn, stmt)) {
+              try(ResultSet resultSet = stmt1.executeQuery()){
+                  resultSet.next();
+                  ehcacheDbRowCountValues.put(entry.getValue(), resultSet.getInt(1));
+               }
+             }
          }
-      }
-      finally
-      {
-         if (resultSet != null)
-            try
-            {
-               resultSet.close();
-            }
-            catch (Exception e)
-            {
-            }
-         if (conn != null)
-            try
-            {
-               conn.close();
-            }
-            catch (Exception e)
-            {
-            }
-         if (stmt1 != null)
-            try
-            {
-               stmt1.close();
-            }
-            catch (SQLException e)
-            {
-            }
       }
    }
 
@@ -307,46 +269,16 @@ public class PSAutotuneCache
     */
    private void backupEhCache()
    {
-      FileInputStream input = null;
-      FileOutputStream output = null;
-      try
+      try(FileInputStream input = new FileInputStream(ehcache))
       {
-         input = new FileInputStream(ehcache);
          File temp = File.createTempFile("ehcache", ".xml", ehcache.getParentFile());
-         output = new FileOutputStream(temp);
-         IOUtils.copy(input, output);
-         log.info("ehcache.xml file has been backed up as " + temp.getAbsolutePath());
-      }
-      catch (NullPointerException e)
+         try(FileOutputStream output = new FileOutputStream(temp)) {
+            IOUtils.copy(input, output);
+         }
+         log.info("ehcache.xml file has been backed up as {}" , temp.getAbsolutePath());
+      } catch (NullPointerException | IOException e)
       {
-         log.error(BACKUP_ERROR, e);
-      }
-      catch (FileNotFoundException e)
-      {
-         log.error(BACKUP_ERROR, e);
-      }
-      catch (IOException e)
-      {
-         log.error(BACKUP_ERROR, e);
-      }
-      finally
-      {
-         if (input != null)
-            try
-            {
-               input.close();
-            }
-            catch (IOException e)
-            {
-            }
-         if (output != null)
-            try
-            {
-               output.close();
-            }
-            catch (IOException e)
-            {
-            }
+         log.error(BACKUP_ERROR, PSExceptionUtils.getMessageForLog(e));
       }
    }
 
@@ -360,7 +292,7 @@ public class PSAutotuneCache
       this.heapFreeSize = Runtime.getRuntime().freeMemory();
       this.freeMemory = this.heapMaxSize - (this.heapSize - this.heapFreeSize);
 
-      log.debug(String.format("\n%s%d\n%s%d\n%s%d\n%s%d",
+      log.debug(String.format("%n%s%d%n%s%d%n%s%d%n%s%d",
             "The heap size in MB is:", (this.heapSize / BYTES_TO_MB),
             "The heap max size in MB is: ", (this.heapMaxSize / BYTES_TO_MB),
             "The heap free size in MB is: ", (this.heapFreeSize / BYTES_TO_MB),
@@ -418,7 +350,7 @@ public class PSAutotuneCache
    /**
     * Error to use when backing up ehcache.xml.
     */
-   private static final String BACKUP_ERROR = "Error backing up ehcache.xml document.";
+   private static final String BACKUP_ERROR = "Error backing up ehcache.xml document. Error: {}";
 
    /**
     * maxElementsInMemory cache setting in ehcache.xml.

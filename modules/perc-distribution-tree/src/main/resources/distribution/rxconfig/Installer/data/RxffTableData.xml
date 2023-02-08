@@ -1,27 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-  ~     Percussion CMS
-  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
-  ~
-  ~     This program is free software: you can redistribute it and/or modify
-  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
-  ~
-  ~     This program is distributed in the hope that it will be useful,
-  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
-  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  ~     GNU Affero General Public License for more details.
-  ~
-  ~     Mailing Address:
-  ~
-  ~      Percussion Software, Inc.
-  ~      PO Box 767
-  ~      Burlington, MA 01803, USA
-  ~      +01-781-438-9900
-  ~      support@percussion.com
-  ~      https://www.percussion.com
-  ~
-  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
-  -->
+
 
 <tables>
 	<table name="CONTENTSTATUS" onCreateOnly="no">
@@ -308,6 +286,42 @@
 			<column name="CONTENTTYPENAME">rffPressRelease</column>
 			<column name="CONTENTTYPELABEL">Press Release</column>
 			<column name="CONTENTTYPEDESC">Content Type used to manage press releases as content.</column>
+			<column name="CONTENTTYPEUPDATEREQUEST"/>
+			<column name="HIDEFROMMENU">0</column>
+			<column name="OBJECTTYPE">1</column>
+		</row>
+		<row action="r" onTableCreateOnly="no">
+			<column name="CONTENTTYPEID">313</column>
+			<column name="VERSION">0</column>
+			<column name="CONTENTTYPENEWREQUEST">../psx_cerffNavImage/rffNavImage.html</column>
+			<column name="CONTENTTYPEQUERYREQUEST">../psx_cerffNavImage/rffNavImage.html</column>
+			<column name="CONTENTTYPENAME">rffNavImage</column>
+			<column name="CONTENTTYPELABEL">Nav Image</column>
+			<column name="CONTENTTYPEDESC">A binary image file used in Managed Navigation.</column>
+			<column name="CONTENTTYPEUPDATEREQUEST"/>
+			<column name="HIDEFROMMENU">0</column>
+			<column name="OBJECTTYPE">1</column>
+		</row>
+		<row action="r" onTableCreateOnly="no">
+			<column name="CONTENTTYPEID">314</column>
+			<column name="VERSION">0</column>
+			<column name="CONTENTTYPENEWREQUEST">../psx_cerffNavon/rffNavon.html</column>
+			<column name="CONTENTTYPEQUERYREQUEST">../psx_cerffNavon/rffNavon.html</column>
+			<column name="CONTENTTYPENAME">rffNavon</column>
+			<column name="CONTENTTYPELABEL">Navon</column>
+			<column name="CONTENTTYPEDESC">Content Type for basic Managed Navigation Content Items.</column>
+			<column name="CONTENTTYPEUPDATEREQUEST"/>
+			<column name="HIDEFROMMENU">0</column>
+			<column name="OBJECTTYPE">1</column>
+		</row>
+		<row action="r" onTableCreateOnly="no">
+			<column name="CONTENTTYPEID">315</column>
+			<column name="VERSION">0</column>
+			<column name="CONTENTTYPENEWREQUEST">../psx_cerffNavTree/rffNavTree.html</column>
+			<column name="CONTENTTYPEQUERYREQUEST">../psx_cerffNavTree/rffNavTree.html</column>
+			<column name="CONTENTTYPENAME">rffNavTree</column>
+			<column name="CONTENTTYPELABEL">NavTree</column>
+			<column name="CONTENTTYPEDESC">Managed Navigation Content Item used in the root Folder of a Site.  The Site root Folder must contain a NavTree Content Item for Managed Navigation to work.</column>
 			<column name="CONTENTTYPEUPDATEREQUEST"/>
 			<column name="HIDEFROMMENU">0</column>
 			<column name="OBJECTTYPE">1</column>

@@ -1,25 +1,18 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.percussion.rx.publisher.impl;
 
@@ -50,6 +43,9 @@ import com.percussion.services.assembly.PSAssemblyServiceLocator;
 import com.percussion.services.assembly.PSTemplateNotImplementedException;
 import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.filter.PSFilterException;
+import com.percussion.services.jms.impl.PSQueueErrorHandler;
+import com.percussion.services.notification.IPSNotificationListener;
+import com.percussion.services.notification.PSNotificationEvent;
 import com.percussion.services.publisher.IPSDeliveryType;
 import com.percussion.services.publisher.IPSPublisherService;
 import com.percussion.services.publisher.PSPublisherServiceLocator;
@@ -58,6 +54,7 @@ import com.percussion.services.pubserver.IPSPubServerDao;
 import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.services.sitemgr.IPSSiteManager;
 import com.percussion.services.sitemgr.PSSiteManagerLocator;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.util.PSBaseBean;
 import com.percussion.utils.guid.IPSGuid;
@@ -109,7 +106,7 @@ import static org.apache.commons.lang.Validate.notNull;
  * @author dougrand
  */
 @PSBaseBean("sys_publishQueueListener")
-public class PSPublishHandler implements MessageListener
+public class PSPublishHandler implements MessageListener, IPSNotificationListener
 {
    /**
     * Logger used for publishing handler service.
@@ -171,11 +168,15 @@ public class PSPublishHandler implements MessageListener
     */
    @Autowired
    public PSPublishHandler(IPSDeliveryManager deliveryMgr, 
-      IPSRxPublisherServiceInternal rxPubService)
+      IPSRxPublisherServiceInternal rxPubService,
+                           PSQueueErrorHandler errorHandler)
    {
       Thread.currentThread().setPriority(4);
       m_deliveryManager = deliveryMgr;
       m_rxPubService = rxPubService;
+
+      //register a listener for JMS Queue errors
+      errorHandler.addListener(this);
    }
    
 
@@ -440,10 +441,6 @@ public class PSPublishHandler implements MessageListener
    {
       ItemState state = IPSPublisherJobStatus.ItemState.FAILED;
       long pubServerId = result.getPubServerId() == null ? -1 : result.getPubServerId();
-      if (result.getPubServerId()==null)
-      {
-         log.error("PubServerId not passed in IPSAssemblyItem: {}" , result);
-      }
       
       PSPubItemStatus status = new PSPubItemStatus(result.getReferenceId(),
             result.getJobId(), pubServerId, result.getDeliveryContext(), state);
@@ -612,13 +609,18 @@ public class PSPublishHandler implements MessageListener
          {
             Collection<IPSDeliveryResult> results = 
                m_deliveryManager.commit(jc.getJobId());
+
             for(IPSDeliveryResult result : results)
             {
+               long pubServerId = 0;
                if (!result.hasUpdateSent())
                {
                   final ItemState state = OUTCOME_STATE.get(result.getOutcome());
+                  if(serverguid != null){
+                     pubServerId = serverguid.getUUID();
+                  }
                   PSPubItemStatus status = new PSPubItemStatus(
-                        result.getReferenceId(), result.getJobId(), serverguid.getUUID(), result.getDeliveryContext(), state);
+                        result.getReferenceId(), result.getJobId(), pubServerId, result.getDeliveryContext(), state);
                   if (result.getUnpublishData() != null)
                   {
                      status.setUnpublishingInformation(result.getUnpublishData());
@@ -784,21 +786,24 @@ public class PSPublishHandler implements MessageListener
    private ItemState handleDelivery(IPSAssemblyResult work)
    {
       ItemState state;
+      long pubServerId=0;
       PSStopwatch sw = new PSStopwatch();
       sw.start();
       try
       {
          // Send status
          state = IPSPublisherJobStatus.ItemState.ASSEMBLED;
-         PSPubItemStatus status = new PSPubItemStatus(work.getReferenceId(),
-               work.getJobId(), work.getPubServerId(), work.getDeliveryContext(), state);
-         updateItemStatus(status);
-         
 
+          if(work.getPubServerId() != null) {
+             pubServerId = work.getPubServerId();
+         }
+         PSPubItemStatus status = new PSPubItemStatus(work.getReferenceId(),
+               work.getJobId(),pubServerId , work.getDeliveryContext(), state);
+         updateItemStatus(status);
          IPSDeliveryResult dresult = m_deliveryManager.process(work);
          String message = dresult.getFailureMessage();
          state = OUTCOME_STATE.get(dresult.getOutcome());
-         status = new PSPubItemStatus(work.getReferenceId(), work.getJobId(), work.getPubServerId(), work.getDeliveryContext(),
+         status = new PSPubItemStatus(work.getReferenceId(), work.getJobId(), pubServerId, work.getDeliveryContext(),
                state);
          status.extractInfo(work);
          if (StringUtils.isNotEmpty(message))
@@ -816,8 +821,8 @@ public class PSPublishHandler implements MessageListener
          log.error("Problem in delivery ", e);
          state = IPSPublisherJobStatus.ItemState.FAILED;
          PSPubItemStatus status = new PSPubItemStatus(work.getReferenceId(),
-               work.getJobId(), work.getPubServerId(), work.getDeliveryContext(), state);
-         status.addMessage("Problem in delivery: " + e.getLocalizedMessage());
+               work.getJobId(), pubServerId, work.getDeliveryContext(), state);
+         status.addMessage("Problem in delivery: " + PSExceptionUtils.getMessageForLog(e));
          updateItemStatus(status);
       }
       finally
@@ -896,5 +901,18 @@ public class PSPublishHandler implements MessageListener
       ms_deliveryTypeToAllowsEmptyLocation.put(deliveryType, isEmptyLocationAllowed);
       
       return isEmptyLocationAllowed;
+   }
+
+   /**
+    * Handle errors from the JMS side.
+    * @param notification the notification event, never <code>null</code>
+    * @throws PSDataServiceException
+    * @throws PSNotFoundException
+    */
+   @Override
+   public void notifyEvent(PSNotificationEvent notification) throws PSDataServiceException, PSNotFoundException {
+      if(notification.getType().equals(PSNotificationEvent.EventType.JMS_ERROR)){
+         // there was a JMS error so we need to
+      }
    }
 }

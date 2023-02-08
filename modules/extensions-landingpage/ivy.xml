@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="/ivyrepo/ivy-doc.xsl"?>
+
+<ivy-module xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.0" xsi:noNamespaceSchemaLocation="http://ant.apache.org/ivy/schemas/ivy.xsd">  
+	<info organisation="com.percussion.soln.landingpage" module="soln-landingpage-rx" revision="0.1" status="integration" branch="trunk"> 
+		<license name="percussion" url="http://www.percussion.com"/>  
+		<description homepage="http://www.percussion.com/soln/landingpage">This package provides landing pages</description> 
+	</info>  
+	<configurations> 
+		<include file="${ivy-configurations}"/> 
+	</configurations>  
+	<publications> 
+		<artifact name="soln-landingpage-rx" type="dist" ext="zip" conf="dist"/>
+		<artifact name="soln-landingpage-rx" type="jar" ext="jar" conf="default"/>
+		<artifact name="soln.landingpage" type="dist" ext="ppkg" conf="dist"/>
+	</publications>  
+	<dependencies> 
+		<dependency org="percussion" name="rhythmyx" rev="6.7" conf="default"/>  
+		<dependency org="commons-beanutils" name="commons-beanutils" rev="1.7.0" conf="default"/>  
+		<dependency org="commons-logging" name="commons-logging" rev="1.1.1" conf="default"/>  
+		<!-- add any other dependencies here -->  
+		<!-- make sure you have some unit tests -->  
+		<dependency org="org.jmock" name="jmock" rev="2.4.0" conf="test->*"/>  
+		<dependency org="org.jmock" name="jmock-junit4" rev="2.4.0" conf="test->*"/>  
+		<dependency org="junit" name="junit" rev="4.4" conf="test->*"/>  
+		<dependency org="org.jmock" name="jmock" rev="2.4.0" conf="test->*"/>  
+		<dependency org="org.jmock" name="jmock-junit4" rev="2.4.0" conf="test->*"/>  
+		<dependency org="junit" name="junit" rev="4.4" conf="test->*"/> 
+	</dependencies> 
+</ivy-module>

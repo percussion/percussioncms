@@ -1,25 +1,18 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.percussion.pagemanagement.data;
 
@@ -39,6 +32,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import static org.apache.commons.lang.Validate.notEmpty;
@@ -125,30 +119,29 @@ public abstract class PSRegionWidgetAssociations implements Serializable {
         }
         return null;
     }
-    
-    
-    
-    
+
+
     @Override
-    public boolean equals(Object o)
-    {
-        return EqualsBuilder.reflectionEquals(this, o);
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof PSRegionWidgetAssociations)) return false;
+        PSRegionWidgetAssociations that = (PSRegionWidgetAssociations) o;
+        return Objects.equals(getRegionWidgetAssociations(), that.getRegionWidgetAssociations());
     }
-    
+
     @Override
-    public int hashCode()
-    {
-        //Do not use the id to generate a hash code.
-        return HashCodeBuilder.reflectionHashCode(this, new String[]
-        {"id"});
+    public int hashCode() {
+        return Objects.hash(getRegionWidgetAssociations());
     }
-    
+
     @Override
-    public String toString()
-    {
-        return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("PSRegionWidgetAssociations{");
+        sb.append("regionWidgetAssociations=").append(regionWidgetAssociations);
+        sb.append('}');
+        return sb.toString();
     }
-    
+
     @Override
     public PSRegionWidgetAssociations clone()
     {

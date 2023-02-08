@@ -1,15 +1,19 @@
-/*******************************************************************************
- * Copyright (c) 1999-2011 Percussion Software.
 /*
- * com.percussion.pso.jexl PSONavTools.java
- * 
- * @COPYRIGHT (c) 1999 - 2008 by Percussion Software, Inc., Woburn, MA USA.
- * All rights reserved. This material contains unpublished, copyrighted
- * work including confidential and proprietary information of Percussion.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- * 
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL PERCUSSION SOFTWARE BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- ******************************************************************************/
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 /*
  * @author DavidBenua
  *
@@ -97,7 +101,8 @@ public class PSONavTools extends PSJexlUtilBase implements IPSJexlExpression
                   PSRelationshipProcessorProxy.PROCTYPE_SERVERLOCAL,requestContext);
          } catch (PSCmsException ex)
          {
-            log.error("Unexpected Exception initializing proxy {} Error: {}",ex.getMessage());
+            log.error("Unexpected Exception initializing proxy Error: {}",
+                    PSExceptionUtils.getMessageForLog(ex));
             log.debug(ex.getMessage(),ex);
          }
       }
@@ -144,7 +149,7 @@ public class PSONavTools extends PSJexlUtilBase implements IPSJexlExpression
          log.error(emsg);
          throw new IllegalArgumentException(emsg); 
       }
-      ArrayList<Node> ancestors = new ArrayList<Node>(); 
+      ArrayList<Node> ancestors = new ArrayList<>();
       Node node = selfNode; 
       
       try
@@ -197,8 +202,13 @@ public class PSONavTools extends PSJexlUtilBase implements IPSJexlExpression
       filter.setOwner(new PSLocator(folderid, "0")); 
       filter.setName(PSRelationshipFilter.FILTER_NAME_FOLDER_CONTENT);
       Set<Long> typeIds = new HashSet<Long>();
-      typeIds.add(new Long(navConfig.getNavonType().getUUID()));
-      typeIds.add(new Long(navConfig.getNavTreeType().getUUID())); 
+      for(IPSGuid g :navConfig.getNavonTypes()){
+         typeIds.add(g.longValue());
+      }
+      for(IPSGuid g :navConfig.getNavTreeTypes()){
+         typeIds.add(g.longValue());
+      }
+
       filter.setDependentContentTypeIds(typeIds);
       PSComponentSummaries summs = proxy.getSummaries(filter, false); 
       if(summs.size() > 1)
@@ -208,7 +218,7 @@ public class PSONavTools extends PSJexlUtilBase implements IPSJexlExpression
       }
       if(summs.size() == 1)
       {
-         PSComponentSummary s = (PSComponentSummary)summs.getSummaries().next();
+         PSComponentSummary s = summs.getSummaries().next();
          IPSGuid nguid = gmgr.makeGuid(s.getCurrentLocator()); 
          return objFinder.getNodeByGuid(nguid);
       }
@@ -265,7 +275,14 @@ public class PSONavTools extends PSJexlUtilBase implements IPSJexlExpression
    public IPSNode findParentNavonNode(PSLocator navonLoc) throws Exception
    {
       initServices();
-      Set<PSLocator> parents = parFinder.findParents(navonLoc, navConfig.getSubmenuRelationship(),false);
+      Set<PSLocator> parents = new HashSet<>();
+
+      for(String sr : navConfig.getNavSubMenuSlotNames()) {
+         parents = parFinder.findParents(navonLoc,sr , false);
+         if(parents.size()>0)
+            break;
+      }
+
       if(parents.size() > 1)
       {
          log.warn("Navon has more than one parent. Possible invalid tree");

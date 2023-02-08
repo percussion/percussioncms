@@ -7,7 +7,7 @@
               author="Percussion Software Inc"
               thumbnail="/rx_resources/widgets/PSWidget_RichText/images/widgetIconText.png"
               preferred_editor_width="780"
-              preferred_editor_height="585"
+              preferred_editor_height="750"
               is_responsive="true"/>
  <CssPref name="rootclass"
           display_name="CSS Root Class"

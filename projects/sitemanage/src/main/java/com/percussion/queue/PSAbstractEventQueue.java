@@ -1,34 +1,25 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.percussion.queue;
 
 import com.percussion.queue.impl.PSSiteQueue;
-import com.percussion.utils.request.PSRequestInfo;
+import com.percussion.utils.request.PSRequestInfoBase;
 import com.percussion.utils.types.PSPair;
-
-import java.util.Map;
 
 /**
  * A generic base class used for managing a queue. The queue can be either in memory (light weight) or
@@ -73,9 +64,9 @@ public abstract class PSAbstractEventQueue<T>
 
          m_queueThread = new Thread(getQueueName())
          {
-            public void run()
-            {
-               PSRequestInfo.initRequestInfo((Map<String, Object>)null);
+           @Override
+           public void run() {
+               PSRequestInfoBase.initRequestInfo(null);
 
                while(!m_shutdown)
                {
@@ -84,7 +75,7 @@ public abstract class PSAbstractEventQueue<T>
                   }
                }
 
-               PSRequestInfo.resetRequestInfo();
+              PSRequestInfoBase.resetRequestInfo();
 
                // we've finished, so notify the shutdown method if it's waiting
                m_run = false;
@@ -123,7 +114,7 @@ public abstract class PSAbstractEventQueue<T>
       // notify thread if it's waiting on the queue
       synchronized(m_queueMonitor)
       {
-         m_queueMonitor.notify();
+         m_queueMonitor.notifyAll();
       }
 
       // now wait for queue processing thread to finish any current work
@@ -173,12 +164,12 @@ protected PSPair<PSSiteQueue, Integer> getNextQueueEvent(long timeOut) throws In
       {
          if (!isShutdown())
          {
-            eventSet = getNextEvent();
-            if (eventSet == null)
+
+            while (eventSet == null)
             {
+               eventSet = getNextEvent();
                // Wait for a caller (from different thread) to wake up this thread
                // This will be when some events have been added into the queue
-               
                m_queueMonitor.wait(timeOut);
             }
          }
@@ -195,7 +186,7 @@ protected PSPair<PSSiteQueue, Integer> getNextQueueEvent(long timeOut) throws In
          // Notify the queue processing thread if it is waiting for more events
          synchronized (m_queueMonitor)
          {
-            m_queueMonitor.notify();
+            m_queueMonitor.notifyAll();
          }
       }
    }
@@ -209,19 +200,19 @@ protected PSPair<PSSiteQueue, Integer> getNextQueueEvent(long timeOut) throws In
     * Monitor object to provide synchronization of start and shutdown. Never
     * <code>null</code> or modified.
     */
-   private Object m_runMonitor = new Object();
+   private final Object m_runMonitor = new Object();
 
    /**
     * Monitor object to provide synchronization of queue access. Never
     * <code>null</code> or modified.
     */
-   private Object m_queueMonitor = new Object();
+   private final Object m_queueMonitor = new Object();
 
    /**
     * Monitor object to provide synchronized access to the {@link #m_shutdown}
     * flag. Never <code>null</code> or modified.
     */
-   private Object m_shutdownMonitor = new Object();
+   private final Object m_shutdownMonitor = new Object();
 
    /**
     * Indicates if the queue is running. Initially <code>false</code>,
@@ -232,7 +223,7 @@ protected PSPair<PSSiteQueue, Integer> getNextQueueEvent(long timeOut) throws In
    private boolean m_run = false;
 
    /**
-    * Thread to handle processing of events.  Intialized by {@link #start()},
+    * Thread to handle processing of events.  Initialized by {@link #start()},
     * not <code>null</code> or modified until {@link #shutdown()} is called.
     */
    private Thread m_queueThread;
@@ -241,7 +232,7 @@ protected PSPair<PSSiteQueue, Integer> getNextQueueEvent(long timeOut) throws In
     * Indicates that the queue is shutting down.  Initially <code>false</code>,
     * set to <code>true</code> by {@link #shutdown()}, set back to
     * <code>false</code> once shutdown is completed.  Value should only be
-    * modified by the {@link #shutdown()} method, where access is synchrnoized
+    * modified by the {@link #shutdown()} method, where access is synchronized
     * appropriately.
     */
    private boolean m_shutdown = false;

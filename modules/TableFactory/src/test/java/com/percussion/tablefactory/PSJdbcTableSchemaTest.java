@@ -1,25 +1,18 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.percussion.tablefactory;
 
@@ -51,11 +44,11 @@ public class PSJdbcTableSchemaTest extends TestCase
     */
    public void testDef() throws Exception
    {
-      PSJdbcDataTypeMap dataTypeMap =  new PSJdbcDataTypeMap("MSSQL", "inetdae7",
+      PSJdbcDataTypeMap dataTypeMap =  new PSJdbcDataTypeMap("MSSQL", "sqlserver",
          null);
 
       PSJdbcColumnDef col;
-      ArrayList coldefs = new ArrayList();
+      ArrayList coldefs = new ArrayList<>();
       coldefs.add(new PSJdbcColumnDef(dataTypeMap, "col1",
          PSJdbcTableComponent.ACTION_REPLACE, Types.CHAR, "10", true, null));
       coldefs.add(new PSJdbcColumnDef(dataTypeMap, "col2",
@@ -68,7 +61,7 @@ public class PSJdbcTableSchemaTest extends TestCase
       tableSchema.setAlter(true);
       tableSchema.setDelOldData(true);
 
-      List pkcols = new ArrayList();
+      List pkcols = new ArrayList<>();
       pkcols.add("col1");
       pkcols.add("col2");
       PSJdbcPrimaryKey pk = new PSJdbcPrimaryKey(pkcols.iterator(),
@@ -76,44 +69,45 @@ public class PSJdbcTableSchemaTest extends TestCase
       tableSchema.setPrimaryKey(pk);
 
 
-      List ukcols = new ArrayList();
+      List ukcols = new ArrayList<>();
       ukcols.add("col1");
       PSJdbcUpdateKey uk = new PSJdbcUpdateKey(ukcols.iterator());
       tableSchema.setUpdateKey(uk);
 
-      List fkCols = new ArrayList();
+      List fkCols = new ArrayList<>();
       String[] fcol1 = {"col1", "etable", "ecol1"};
       String[] fcol2 = {"col2", "etable", "ecol2"};
       fkCols.add(fcol1);
       fkCols.add(fcol2);
+     //TODO: Index on foreign key not being generated here.
       PSJdbcForeignKey fk = new PSJdbcForeignKey(fkCols.iterator(),
-         PSJdbcTableComponent.ACTION_DELETE);
+         PSJdbcTableComponent.ACTION_CREATE);
       List<PSJdbcForeignKey> fks = new ArrayList<>();
       fks.add(fk);
-      tableSchema.setForeignKeys(fks);
+      tableSchema.setForeignKeys(fks,true);
 
-      List indexCols = new ArrayList();
+      List indexCols = new ArrayList<>();
       indexCols.add("col2");
       indexCols.add("col3");
       PSJdbcIndex index1 = new PSJdbcIndex("index1", indexCols.iterator(),
          PSJdbcTableComponent.ACTION_CREATE);
       tableSchema.setIndex(index1);
-      indexCols.clear();
-      indexCols.add("col2");
-      PSJdbcIndex index2 = new PSJdbcIndex("index1", indexCols.iterator(),
+      List indexCols2 = new ArrayList<>();
+      indexCols2.add("col2");
+      PSJdbcIndex index2 = new PSJdbcIndex("index2", indexCols2.iterator(),
          PSJdbcTableComponent.ACTION_CREATE);
       tableSchema.setIndex(index2);
 
-
       Document doc = PSXmlDocumentBuilder.createXmlDocument();
       Element el = tableSchema.toXml(doc);
+
       PSJdbcTableSchema tableSchema2 = new PSJdbcTableSchema(el, dataTypeMap);
       assertTrue(tableSchema.equals(tableSchema2));
 
-      List dataCols = new ArrayList();
+      List dataCols = new ArrayList<>();
       dataCols.add(new PSJdbcColumnData("col1", "foo"));
       dataCols.add(new PSJdbcColumnData("col3", "1"));
-      List dataRows = new ArrayList();
+      List dataRows = new ArrayList<>();
       dataRows.add(new PSJdbcRowData(dataCols.iterator(),
          PSJdbcRowData.ACTION_INSERT));
       PSJdbcTableData tableData = new PSJdbcTableData("myTable",
@@ -249,7 +243,7 @@ public class PSJdbcTableSchemaTest extends TestCase
       PSJdbcForeignKey fk = new PSJdbcForeignKey(fkCols.iterator(), PSJdbcTableComponent.ACTION_DELETE);
       List<PSJdbcForeignKey> fks = new ArrayList<>();
       fks.add(fk);
-      tableSchema1.setForeignKeys(fks);
+      tableSchema1.setForeignKeys(fks,true);
 
       List<String> indexCols = new ArrayList<String>();
       indexCols.add("col2");
@@ -301,7 +295,7 @@ public class PSJdbcTableSchemaTest extends TestCase
       PSJdbcForeignKey fk = new PSJdbcForeignKey(fkCols.iterator(), PSJdbcTableComponent.ACTION_DELETE);
       List<PSJdbcForeignKey> fks = new ArrayList<>();
       fks.add(fk);
-      tableSchema1.setForeignKeys(fks);
+      tableSchema1.setForeignKeys(fks,true);
 
       List<String> indexCols = new ArrayList<String>();
       indexCols.add("col1");
@@ -344,7 +338,7 @@ public class PSJdbcTableSchemaTest extends TestCase
               PSJdbcTableComponent.ACTION_DELETE);
       List<PSJdbcForeignKey> fks = new ArrayList<>();
       fks.add(fk);
-      tableSchema1.setForeignKeys(fks);
+      tableSchema1.setForeignKeys(fks,true);
 
       List<String> indexCols = new ArrayList<String>();
       indexCols.add("col2");
@@ -371,7 +365,7 @@ public class PSJdbcTableSchemaTest extends TestCase
    /**
     * Sets a foreign key for a given table schema
     * 
-    * @param tableschema table schema object
+    * @param tableSchema table schema object
     * 
     * @return fk Foreign Key definition 
     * 
@@ -391,14 +385,14 @@ public class PSJdbcTableSchemaTest extends TestCase
       PSJdbcForeignKey fk = new PSJdbcForeignKey(fkCols.iterator(), PSJdbcTableComponent.ACTION_DELETE);
        List<PSJdbcForeignKey> fks = new ArrayList<>();
        fks.add(fk);
-      tableSchema.setForeignKeys(fks);
+      tableSchema.setForeignKeys(fks,true);
       return fk;
    }
     
    /**
     * Sets a primary key for a given table schema
     * 
-    * @param tableschema table schema object
+    * @param tableSchema table schema object
     * 
     * @throws PSJdbcTableFactoryException if error occurs
     */

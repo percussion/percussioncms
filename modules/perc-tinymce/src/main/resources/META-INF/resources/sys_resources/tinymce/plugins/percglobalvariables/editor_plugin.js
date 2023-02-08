@@ -2,13 +2,13 @@
  * Gloabl Variables Plugin.
  */
 (function() {
-	tinymce.create('tinymce.plugins.GlobalVariables', {
-		init : function(ed, url) {
+    tinymce.create('tinymce.plugins.GlobalVariables', {
+        init : function(ed, url) {
             var cls = 'perc-global-variable-marker';
 
             // Register commands
-			ed.addCommand('mceInsertGlobalVariables', function() {
-				//Insert code here
+            ed.addCommand('mceInsertGlobalVariables', function() {
+                //Insert code here
                 var mainEditor = ed.contentWindow.parent;
                 if(!mainEditor.jQuery || !mainEditor.jQuery.topFrameJQuery)
                     return;
@@ -18,7 +18,7 @@
                     dialogHtml += '<tr class="perc-wfconfig-row perc-gv-row"><td align:"left"="" class="perc-column-0 perc-global-variables-column"><input type="radio" class="perc-global-variables-radio" style="width:auto;"><span class="perc-roleName-wrapper perc-ellipsis perc-gv-name">' + varName + '</span></td><td align:"left"="" class="perc-column-1 perc-global-variables-column"><span class="perc-roleName-wrapper perc-ellipsis perc-gv-value">' + varValue + '</span></td></tr>';
                 });
                 dialogHtml += '</table></div></div>';
-                // if we are in the new blog post dialog, the width is 
+                // if we are in the new blog post dialog, the width is
                 var dialogWidth = 700;
                 var dialogHeight = 300;
                 var dialog = topFrJQ(dialogHtml).perc_dialog({
@@ -37,7 +37,7 @@
                                 var varValue = gvRow.find(".perc-gv-value").html();
                                 var urlToServlet = window.location.protocol+"//"+window.location.host + "/Rhythmyx/textToImage?imageText=&lt; " + varValue + " &gt;";
                                 var gvhtml = "<img class='perc-global-variable-marker' title='"+varName+"' src='" + urlToServlet + "'>";
-                                
+
                                 ed.execCommand('mceInsertContent', 0, gvhtml);
                                 dialog.remove();
                             },
@@ -60,34 +60,34 @@
                     $(this).addClass("perc-global-variable-selected").find('td').addClass("perc-global-variable-selected");
                     $(this).addClass("perc-global-variable-selected").find('td').find("input:radio").attr('checked',true);
                 });
-			});
-            
+            });
+
             // Register button
-			ed.addButton('globalvariables', {title : "Global variables", image: url + "/img/GlobalVariablesIcon.png", cmd : 'mceInsertGlobalVariables'});
-            
+            ed.ui.registry.addButton('globalvariables', {title : "Global variables", icon: 'character-count', cmd : 'mceInsertGlobalVariables'});
+
             ed.onInit.add(function() {
-				if (ed.settings.content_css !== false)
-					ed.dom.loadCSS(url + "/css/globalVariables.css");
+                if (ed.settings.content_css !== false)
+                    ed.dom.loadCSS(url + "/css/globalVariables.css");
 
-				if (ed.theme.onResolveName) {
-					ed.theme.onResolveName.add(function(th, o) {
-						if (o.node.nodeName == 'IMG' && ed.dom.hasClass(o.node, cls))
-							o.name = 'globalvariables';
-					});
-				}
-			});
-            
+                if (ed.theme.onResolveName) {
+                    ed.theme.onResolveName.add(function(th, o) {
+                        if (o.node.nodeName == 'IMG' && ed.dom.hasClass(o.node, cls))
+                            o.name = 'globalvariables';
+                    });
+                }
+            });
+
             ed.onClick.add(function(ed, e) {
-				e = e.target;
-				if (e.nodeName === 'IMG' && ed.dom.hasClass(e, cls))
-					ed.selection.select(e);
-			});
+                e = e.target;
+                if (e.nodeName === 'IMG' && ed.dom.hasClass(e, cls))
+                    ed.selection.select(e);
+            });
 
-			ed.onNodeChange.add(function(ed, cm, n) {
-				cm.setActive('globalvariables', n.nodeName === 'IMG' && ed.dom.hasClass(n, cls));
-			});
+            ed.onNodeChange.add(function(ed, cm, n) {
+                cm.setActive('globalvariables', n.nodeName === 'IMG' && ed.dom.hasClass(n, cls));
+            });
 
-			ed.onBeforeSetContent.add(function(ed, o) {
+            ed.onBeforeSetContent.add(function(ed, o) {
                 o.content = o.content.replace(/<span[^>]*?(.*?)<\/span>/g, function(im) {
                     if (im.indexOf('class="perc-global-variable-marker') !== -1){
                         var varName = $(im).attr("title");
@@ -96,15 +96,15 @@
                         {
                             var urlToServlet = window.location.protocol+"//"+window.location.host + "/Rhythmyx/textToImage?imageText=&lt; " + varValue + " &gt;";
                             var gvhtml = "<img class='perc-global-variable-marker' title='"+varName+"' src='" + urlToServlet + "'>";
-                                    
+
                             im = gvhtml;
                         }
                     }
                     return im;
                 });
-			});
+            });
 
-			ed.onPostProcess.add(function(ed, o) {
+            ed.onPostProcess.add(function(ed, o) {
                 if (o.get)
                     o.content = o.content.replace(/<img[^>]+>/g, function(im) {
                         if (im.indexOf('class="perc-global-variable-marker') !== -1){
@@ -116,21 +116,21 @@
                         return im;
                     });
             });
-            
-		},
+
+        },
         //Setup required info
-		getInfo : function() {
-			return {
-				longname : 'Insert global variables',
-				author : 'Percussion Software Inc.',
-				authorurl : 'https://www.percussion.com',
-				infourl : 'https://help.percussion.com/cm1',
-				version : tinymce.majorVersion + "." + tinymce.minorVersion
-			};
-		},
+        getInfo : function() {
+            return {
+                longname : 'Insert global variables',
+                author : 'Percussion Software Inc.',
+                authorurl : 'https://www.percussion.com',
+                infourl : 'https://help.percussion.com/cm1',
+                version : tinymce.majorVersion + "." + tinymce.minorVersion
+            };
+        },
 
-	});
+    });
 
-	// Register plugin
-	tinymce.PluginManager.add('globalvariables', tinymce.plugins.GlobalVariables);
+    // Register plugin
+    tinymce.PluginManager.add('globalvariables', tinymce.plugins.GlobalVariables);
 })();

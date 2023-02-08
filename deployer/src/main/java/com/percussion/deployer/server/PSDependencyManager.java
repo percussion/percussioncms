@@ -1,25 +1,18 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.percussion.deployer.server;
@@ -113,7 +106,7 @@ public class PSDependencyManager implements IPSDependencyManagerBaseline
    {
 
       String configDir = ms_configDir;
-      boolean buildDepMaps = false;
+      boolean buildDepMaps = true;
       try
       {
          if (ms_configDir == null)
@@ -125,7 +118,7 @@ public class PSDependencyManager implements IPSDependencyManagerBaseline
       }
       catch (Exception e)
       {
-         log.error("Failed to load configure file from {}. Error: {}" ,
+         log.error("Failed to load config file from {}. Error: {}" ,
                  configDir,
                  PSExceptionUtils.getDebugMessageForLog(e));
       }
@@ -1273,16 +1266,17 @@ public class PSDependencyManager implements IPSDependencyManagerBaseline
    public Iterator getElementTypes()
    {
       List types = new ArrayList();
-      Iterator defs = m_depMap.getDefs();
-      while (defs.hasNext())
-      {
-         PSDependencyDef def = (PSDependencyDef) defs.next();
-         if (def.isDeployableElement()
-               && !def.getObjectType().equals(
-                     IPSDeployConstants.DEP_OBJECT_TYPE_CUSTOM))
-         {
-            types.add(def);
-         }
+
+      if(m_depMap!=null) {
+          Iterator defs = m_depMap.getDefs();
+          while (defs.hasNext()) {
+             PSDependencyDef def = (PSDependencyDef) defs.next();
+             if (def.isDeployableElement()
+                     && !def.getObjectType().equals(
+                     IPSDeployConstants.DEP_OBJECT_TYPE_CUSTOM)) {
+                types.add(def);
+             }
+          }
       }
       return types.iterator();
    }
@@ -1383,19 +1377,20 @@ public class PSDependencyManager implements IPSDependencyManagerBaseline
    public Iterator getCustomElementTypes() throws PSDeployException
    {
       List types = new ArrayList();
-      PSDependencyDef custDef = m_depMap
-            .getDependencyDef(IPSDeployConstants.DEP_OBJECT_TYPE_CUSTOM);
-      if (custDef != null) // should never be null
-      {
-         PSDependencyHandler custHandler = PSDependencyHandler
-               .getHandlerInstance(custDef, m_depMap);
-         Iterator childTypes = custHandler.getChildTypes();
-         while (childTypes.hasNext())
+      if(m_depMap !=null) {
+         PSDependencyDef custDef = m_depMap
+                 .getDependencyDef(IPSDeployConstants.DEP_OBJECT_TYPE_CUSTOM);
+         if (custDef != null) // should never be null
          {
-            String type = (String) childTypes.next();
-            PSDependencyDef childDef = m_depMap.getDependencyDef(type);
-            if (childDef != null)
-               types.add(childDef);
+            PSDependencyHandler custHandler = PSDependencyHandler
+                    .getHandlerInstance(custDef, m_depMap);
+            Iterator childTypes = custHandler.getChildTypes();
+            while (childTypes.hasNext()) {
+               String type = (String) childTypes.next();
+               PSDependencyDef childDef = m_depMap.getDependencyDef(type);
+               if (childDef != null)
+                  types.add(childDef);
+            }
          }
       }
       return types.iterator();

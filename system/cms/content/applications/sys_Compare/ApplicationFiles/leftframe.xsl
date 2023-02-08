@@ -28,15 +28,15 @@
 	<xsl:variable name="variantid2" select="//sys_variantid2"/>
 	<xsl:variable name="useragent" select="//@useragent"/>
 	<xsl:variable name="appletparams">
-		<AppletParams>
+		<AppletParams xmlns="">
 			<Param name="code" value="com.percussion.tools.help.PSHelpApplet"/>
 			<Param name="archive" value="help.jar,jh.jar"/>
-			<Param name="codebase" value="../sys_resources/AppletJars/"/>
+			<Param name="codebase" value="../dce"/>
 			<Param name="MAYSCRIPT" value="true"/>
 			<Param name="scriptable" value="true"/>
-			<Param name="helpset_file" value="../../Docs/Rhythmyx/Business_Users/Content_Explorer_Help.hs"/>
+			<Param name="helpset_file" value="../../Docs/Business_Users/Content_Explorer_Help.hs"/>
 			<Param name="helpid" value="O15253"/>
-			<Param name="helpIcon" value="/rx_resources/images/en-us/help_icon.gif"/>
+			<Param name="helpIcon" value="../rx_resources/images/en-us/help_icon.gif"/>
 			<Param name="name" value="help"/>
 			<Param name="width" value="0"/>
 			<Param name="height" value="0"/>
@@ -54,9 +54,9 @@
 						<xsl:with-param name="lang" select="$lang"/>
 					</xsl:call-template>
 				</title>
-				<link href="/sys_resources/css/templates.css" rel="stylesheet" type="text/css"/>
-				<link href="/rx_resources/css/templates.css" rel="stylesheet" type="text/css"/>
-				<link rel="stylesheet" type="text/css" href="{concat('/rx_resources/css/',$lang,'/templates.css')}"/>
+				<link href="../sys_resources/css/templates.css" rel="stylesheet" type="text/css"/>
+				<link href="../rx_resources/css/templates.css" rel="stylesheet" type="text/css"/>
+				<link rel="stylesheet" type="text/css" href="{concat('../rx_resources/css/',$lang,'/templates.css')}"/>
 				<script language="javascript" src="../sys_resources/js/href.js">;</script>
 				<script>
                function openSelectRevision(url)
@@ -96,30 +96,12 @@
 							<table border="0" width="220" cellspacing="0" cellpadding="0">
 								<tr class="outerboxcell">
 									<td width="225" class="outerboxcellfont" align="center" colspan="2" height="2">
-										<img src="/sys_resources/images/spacer.gif" height="2" width="225"/>
+										<img src="../sys_resources/images/spacer.gif" height="2" width="225"/>
 									</td>
 								</tr>
 								<tr class="outerboxcell">
-									<td width="225" class="outerboxcellfont" align="center" colspan="2" height="2">
-										<xsl:variable name="helpIcon" select="concat('/rx_resources/images/',$lang,'/help_icon.gif')"/>
-										            <xsl:variable name="helpAlt">
-										               <xsl:call-template name="getLocaleString">
-										                  <xsl:with-param name="key" select="'psx.sys_cmpHelp.help.alt@Help'"/>
-										                  <xsl:with-param name="lang" select="$lang"/>
-										               </xsl:call-template>
-										            </xsl:variable>
-                                                                                <script language="javaScript1.2" src="../sys_resources/js/browser.js">;</script>
-										<script language="JavaScript1.2">	        
-											        var appletCaller = new AppletCaller();
-											        <xsl:for-each select="$appletparams/AppletParams/Param">
-												   <xsl:text>appletCaller.addParam("</xsl:text><xsl:value-of select="@name"/><xsl:text>", "</xsl:text><xsl:value-of select="@value"/><xsl:text>");</xsl:text>					
-												</xsl:for-each>													
-											        appletCaller.show();
-										    
-										 
-	        	        
-	                                                                       </script>
-	                                                                       <a href="javascript:void(0);" onclick="_showHelp()"><img align="absmiddle" alt="{$helpAlt}" border="0" src="{$helpIcon}"/></a>
+									<td width="225" class="outerboxcellfont" align="center" colspan="2" height="2" style="padding:6px">
+										Select revisions to compare
 									</td>
 								</tr>
 								<tr>
@@ -147,7 +129,7 @@
 								</tr>
 								<tr class="outerboxcell">
 									<td width="225" class="outerboxcellfont" align="center" colspan="2" height="2">
-										<img src="/sys_resources/images/spacer.gif" height="2" width="225"/>
+										<img src="../sys_resources/images/spacer.gif" height="2" width="225"/>
 									</td>
 								</tr>
 								<tr>

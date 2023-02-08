@@ -10,7 +10,7 @@ This project, and everyone participating in it, is governed by the [Percussion C
 
 ## I just have a quick question...
 
-Questions can be posted on the [Community](https://community.percussion.com) discussion board.
+Questions can be posted on the [Community](https://github.com/percussion/percussioncms/discussions) discussion board.
 
 ## Getting Started
 
@@ -119,8 +119,31 @@ git pull
 ## Pre-Requisites for Building
 - Apache Maven > 3.6
 - Java 1.8 OpenJDK
+- Oracle 1.8 JDK (for JavaFX) TODO: Pull JavaFX from maven
+
+## Maven Configuration
+The project uses a Maven settings.xml and Maven toolchains.xml to control build properties on developer machines / CI environments.
+
+These files are located in the .m2 directory under your user home directory.
+
+For example:
+``` ~/.m2/settings.xml ``` or ````C:\Users\yourusername\.m2\settings.xml````
+There is a template settings.xml file in the settings-template.xml in the repository root.
+
+Several modules are signed as part of the build process.  The signing will fail without a valid keystore and certificate. 
+To generate a self signed certificate and keystore for the build to use, run the following commands:
+```
+cd ~/.m2
+keytool -genkey -keyalg RSA -alias selfsigned -keystore percussioncms-dev.jks -storepass 12345678 -validity 90
+```
+Fill in your info when prompted and enter y to create the cert and keystore. 
+
+If you have a ~/.m2/settings.xml file
+Key store password properties can be encrypted in your setting.xml by following the Maven encryption guide.  https://maven.apache.org/guides/mini/guide-encryption.html
 
 ## Building
+
+
 
 ```
 mvn clean install
@@ -498,7 +521,7 @@ We are using [CLA Assistant] (https://cla-assistant.io/) to track these agreemen
 > **Note:** TODO: Add link to agreement
 
 The Contributor Agreement covers assignment of copyright for your contribution to Percussion Software, the author of Percussion CMS, with terms to license the
-change back to you under a Free Software Foundation or OSI approved open source license.  Percussion CMS is currently licensed using the AGPL v3 license.
+change back to you under a Free Software Foundation or OSI approved open source license.  Percussion CMS is currently licensed using the Apache 2.0 license.
 
 Once you have executed the Contributor Agreement and the agreement has been approved by a project Admin, the CLA check will clear and your pull request will be
 ready for review.

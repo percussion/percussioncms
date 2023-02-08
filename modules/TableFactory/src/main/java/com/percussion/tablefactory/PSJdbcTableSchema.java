@@ -1,25 +1,18 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.percussion.tablefactory;
@@ -60,7 +53,7 @@ public class PSJdbcTableSchema implements Comparable<PSJdbcTableSchema>
     * @throws PSJdbcTableFactoryException if columns contains any duplicate
     * columns.
     */
-   public PSJdbcTableSchema(String name, Iterator columns)
+   public PSJdbcTableSchema(String name, Iterator<PSJdbcColumnDef> columns)
       throws PSJdbcTableFactoryException
    {
       this(name);
@@ -69,12 +62,7 @@ public class PSJdbcTableSchema implements Comparable<PSJdbcTableSchema>
 
       while (columns.hasNext())
       {
-         Object colObj = columns.next();
-         if (!(colObj instanceof PSJdbcColumnDef))
-            throw new IllegalArgumentException(
-               "columns may only contain PSJdbcColumnDef objects");
-
-         PSJdbcColumnDef column = (PSJdbcColumnDef)colObj;
+         PSJdbcColumnDef column = columns.next();
          PSJdbcColumnDef dupeCol = setColumn(column);
          if (dupeCol != null)
          {
@@ -148,12 +136,8 @@ public class PSJdbcTableSchema implements Comparable<PSJdbcTableSchema>
       m_isView = source.m_isView;
       m_create = source.m_create;
       m_delOldData = source.m_delOldData;
-      m_parentTables.clear();
       m_parentTables.addAll(source.m_parentTables);
-      m_childTables.clear();
       m_childTables.addAll(source.m_childTables);
-      if (m_schemaHandlerCollection != null)
-         m_schemaHandlerCollection.clear();
       if (source.m_schemaHandlerCollection != null)
       {
          m_schemaHandlerCollection = new PSJdbcTableSchemaHandlerCollection();
@@ -167,7 +151,7 @@ public class PSJdbcTableSchema implements Comparable<PSJdbcTableSchema>
                     pk.getAction());
          List<PSJdbcForeignKey> fks = source.getForeignKeys();
          if (fks != null) {
-            List<PSJdbcForeignKey> newKeys = new ArrayList<PSJdbcForeignKey>();
+            List<PSJdbcForeignKey> newKeys = new ArrayList<>();
             for (PSJdbcForeignKey fk : fks) {
                newKeys.add(new PSJdbcForeignKey(fk.getColumns(),
                        fk.getAction()));
@@ -180,16 +164,16 @@ public class PSJdbcTableSchema implements Comparable<PSJdbcTableSchema>
          if (uk != null)
             m_updateKey = new PSJdbcUpdateKey(uk.getColumnNames());
 
-         Iterator cols = source.getColumns();
+         Iterator<PSJdbcColumnDef> cols = source.getColumns();
          while (cols.hasNext())
-            m_columns.add(new PSJdbcColumnDef((PSJdbcColumnDef) cols.next()));
+            m_columns.add(new PSJdbcColumnDef(cols.next()));
 
-         Iterator indexes = source.getIndexes(
+         Iterator<PSJdbcIndex> indexes = source.getIndexes(
                  PSJdbcIndex.TYPE_UNIQUE | PSJdbcIndex.TYPE_NON_UNIQUE);
 
          while (indexes.hasNext()) {
-            PSJdbcIndex index = (PSJdbcIndex)indexes.next();
-            m_indexes.put(index.getName(), new PSJdbcIndex(index.getName(),
+            PSJdbcIndex index = indexes.next();
+            m_indexes.add(new PSJdbcIndex(index.getName(),
                     index.getColumnNames(), index.getAction(), index.getType()));
          }
 
@@ -198,7 +182,7 @@ public class PSJdbcTableSchema implements Comparable<PSJdbcTableSchema>
       {
          // cant' really happen!
          throw new IllegalArgumentException("invalid source schema: "
-            + e.toString());
+            + e);
       }
    }
 
@@ -207,7 +191,7 @@ public class PSJdbcTableSchema implements Comparable<PSJdbcTableSchema>
     *
     * @return The Iterator, never <code>null</code> or empty.
     */
-   public Iterator getColumns()
+   public Iterator<PSJdbcColumnDef> getColumns()
    {
       return m_columns.iterator();
    }
@@ -218,7 +202,7 @@ public class PSJdbcTableSchema implements Comparable<PSJdbcTableSchema>
     *
     * @return the Iterator, may be empty.
     */
-   public Iterator getChildTables()
+   public Iterator<String> getChildTables()
    {
       return m_childTables.iterator();
    }
@@ -229,7 +213,7 @@ public class PSJdbcTableSchema implements Comparable<PSJdbcTableSchema>
     *
     * @return the Iterator, may be empty.
     */
-   public Iterator getParentTables()
+   public Iterator<String> getParentTables()
    {
       return m_parentTables.iterator();
    }
@@ -252,13 +236,13 @@ public class PSJdbcTableSchema implements Comparable<PSJdbcTableSchema>
 
       int index = getColumnIndex(name);
       if (index > -1)
-         column = (PSJdbcColumnDef)m_columns.get(index);
+         column = m_columns.get(index);
 
       return column;
    }
 
    /**
-    * Append's the column to this table definition.  If a column with the same
+    * Appends the column to this table definition.  If a column with the same
     * name already exists, it is replaced.
     *
     * @param column The column to set on this table, may not be <code>null
@@ -276,7 +260,7 @@ public class PSJdbcTableSchema implements Comparable<PSJdbcTableSchema>
       int index = getColumnIndex(column.getName());
       if (index > -1)
       {
-         oldCol = (PSJdbcColumnDef)m_columns.get(index);
+         oldCol = m_columns.get(index);
          m_columns.set(index, column);
       }
       else
@@ -311,7 +295,7 @@ public class PSJdbcTableSchema implements Comparable<PSJdbcTableSchema>
             throw new PSJdbcTableFactoryException(
                IPSTableFactoryErrors.REMOVE_LAST_COLUMN);
 
-         oldCol = (PSJdbcColumnDef)m_columns.get(index);
+         oldCol = m_columns.get(index);
          m_columns.remove(index);
       }
 
@@ -328,7 +312,7 @@ public class PSJdbcTableSchema implements Comparable<PSJdbcTableSchema>
     *
     * @param primaryKey The primary key definition, may be <code>null</code>.
     *
-    * @throws PSJdbcTableFactoryException if the primary key refereneces columns
+    * @throws PSJdbcTableFactoryException if the primary key references columns
     * not defined in this schema.
     */
    public void setPrimaryKey(PSJdbcPrimaryKey primaryKey)
@@ -339,7 +323,7 @@ public class PSJdbcTableSchema implements Comparable<PSJdbcTableSchema>
    }
 
    /**
-    * Returns the primary key defintion if one has been set.
+    * Returns the primary key definition if one has been set.
     *
     * @return The primary key, or <code>null</code> if one has not been set.
     */
@@ -356,11 +340,11 @@ public class PSJdbcTableSchema implements Comparable<PSJdbcTableSchema>
     *
     * @param foreignKeys The List of foreign key definition, may be <code>null</code>.
     *
-    * @throws PSJdbcTableFactoryException if the foreign key refereneces
+    * @throws PSJdbcTableFactoryException if the foreign key references
     * internal columns not defined in this schema (external columns are not
     * validated until the schema is processed).
     */
-   public void setForeignKeys(List<PSJdbcForeignKey> foreignKeys)
+   public void setForeignKeys(List<PSJdbcForeignKey> foreignKeys,boolean createIndexes)
       throws PSJdbcTableFactoryException
    {
       if (foreignKeys == null)
@@ -369,13 +353,18 @@ public class PSJdbcTableSchema implements Comparable<PSJdbcTableSchema>
       }
       else
       {
-         m_foreignKeys = foreignKeys;
+         m_foreignKeys.clear();
+         m_foreignKeys.addAll(foreignKeys);
+         if(createIndexes) {
+            //Add indexes for foreign keys
+            this.createIndexesForForeignKey(this.getDataTypeMap());
+         }
       }
       validateSchema();
    }
 
    /**
-    * Returns the foreign key defintions if one has been set.
+    * Returns the foreign key definitions if one has been set.
     *
     * @return The foreign key, or <code>null</code> if one has not been set.
     */
@@ -385,7 +374,7 @@ public class PSJdbcTableSchema implements Comparable<PSJdbcTableSchema>
    }
 
    /**
-    * Add's the index to this table definition.  If an index with the
+    * Adds the index to this table definition.  If an index with the
     * same name already exists, it is replaced.  All columns referenced by the
     * index must be defined in this schema (may have an action of {@link
     * PSJdbcTableComponent#ACTION_NONE}).
@@ -395,8 +384,8 @@ public class PSJdbcTableSchema implements Comparable<PSJdbcTableSchema>
     * @return <code>null</code> if there is not already an index with the same
     * name that is replaced, or the old index object if it is replaced.
     *
-    * @throws IllegalArgumentExcpetion if index is <code>null</code>.
-    * @throws PSJdbcTableFactoryException if the index refereneces columns
+    * @throws IllegalArgumentException if index is <code>null</code>.
+    * @throws PSJdbcTableFactoryException if the index references columns
     * not defined in this schema.
     */
    public PSJdbcIndex setIndex(PSJdbcIndex index)
@@ -405,10 +394,49 @@ public class PSJdbcTableSchema implements Comparable<PSJdbcTableSchema>
       if (index == null)
          throw new IllegalArgumentException("index may not be null");
 
-      PSJdbcIndex oldIndex = m_indexes.get(index.getName());
-      m_indexes.put(index.getName(),index);
+      int oldIdx = m_indexes.indexOf(index);
+      PSJdbcIndex oldIndex = null;
+
+      if(oldIdx == -1){
+         m_indexes.add(index);
+      }else{
+         oldIndex = m_indexes.get(oldIdx);
+         m_indexes.remove(oldIndex);
+         m_indexes.add(index);
+      }
       validateSchema();
       return oldIndex;
+   }
+
+   public void resetIndexes(List<PSJdbcIndex> indexes)
+           throws PSJdbcTableFactoryException
+   {
+      if (indexes == null)
+         throw new IllegalArgumentException("indexes may not be null");
+      m_indexes.clear();
+      //build Unique Name list of indexes before renaming new Indexes.
+      List<String> uniqueNames = new ArrayList<>();
+      for (PSJdbcIndex idx1 : indexes){
+         if(idx1.getAction() == PSJdbcTableComponent.ACTION_NONE ) {
+            uniqueNames.add(idx1.getName());
+         }
+      }
+      for (PSJdbcIndex idx : indexes){
+         //if Action is Create, then make sure index name is unique
+         if(idx.getAction() == PSJdbcTableComponent.ACTION_CREATE) {
+            String idxName = idx.getName();
+            String newName = idxName;
+            int no = 1;
+            while (uniqueNames.contains(newName)) {
+               newName = idxName +"_" + no;
+               no++;
+            }
+            idx.setName(newName);
+            uniqueNames.add(idx.getName());
+         }
+         m_indexes.add(idx);
+      }
+      validateSchema();
    }
 
    /**
@@ -425,7 +453,26 @@ public class PSJdbcTableSchema implements Comparable<PSJdbcTableSchema>
       if (name == null || name.trim().length() == 0)
          throw new IllegalArgumentException("name may not be null or empty");
 
-      return m_indexes.get(name);
+      for(PSJdbcIndex idx : m_indexes){
+         if(idx.getName().equalsIgnoreCase(name)){
+            return idx;
+         }
+      }
+      return null;
+
+   }
+
+   public PSJdbcIndex getIndex(PSJdbcIndex newIndex)
+   {
+      if (newIndex == null )
+         throw new IllegalArgumentException("index may not be null");
+
+     int idx = m_indexes.indexOf(newIndex);
+     if(idx == -1){
+        return null;
+     }else{
+        return m_indexes.get(idx);
+     }
 
    }
 
@@ -433,7 +480,7 @@ public class PSJdbcTableSchema implements Comparable<PSJdbcTableSchema>
     * Convenience method that calls
     * {@link #getIndexes(int) getIndexes(PSJdbcIndex.TYPE_UNIQUE)}
     */
-   public Iterator getIndexes()
+   public Iterator<PSJdbcIndex> getIndexes()
    {
       return getIndexes(PSJdbcIndex.TYPE_UNIQUE);
    }
@@ -449,17 +496,14 @@ public class PSJdbcTableSchema implements Comparable<PSJdbcTableSchema>
     * @return the Iterator over a list of <code>PSJdbcIndex</code> objects,
     * never <code>null</code>, may be empty.
     */
-   public Iterator getIndexes(int type)
+   public Iterator<PSJdbcIndex> getIndexes(int type)
    {
-      Map<String,PSJdbcIndex> indexes = new HashMap<>();
-      Iterator it = m_indexes.values().iterator();
-      while (it.hasNext())
-      {
-         PSJdbcIndex index = (PSJdbcIndex)it.next();
+      List<PSJdbcIndex> indexList = new ArrayList<>();
+      for (PSJdbcIndex index : m_indexes) {
          if (index.isOfType(type))
-            indexes.put(index.getName(),index);
+            indexList.add(index);
       }
-      return indexes.values().iterator();
+      return indexList.iterator();
    }
 
    /**
@@ -474,9 +518,18 @@ public class PSJdbcTableSchema implements Comparable<PSJdbcTableSchema>
    {
       if (name == null || name.trim().length() == 0)
          throw new IllegalArgumentException("name may not be null or empty");
+      PSJdbcIndex removeIdx = null;
+      for (PSJdbcIndex idx : m_indexes){
+         if(idx.getName().equalsIgnoreCase(name)){
+            removeIdx = idx;
+            break;
+         }
+      }
+      if(removeIdx != null){
+         m_indexes.remove(removeIdx);
+      }
+      return removeIdx;
 
-      PSJdbcIndex oldIndex = m_indexes.remove(name);
-       return oldIndex;
    }
 
    /**
@@ -506,8 +559,8 @@ public class PSJdbcTableSchema implements Comparable<PSJdbcTableSchema>
     * @param updateKey The update key definition, may not be
     * <code>null</code>.
     *
-    * @throws IllegalArgumentExcpetion if updateKey is <code>null</code>.
-    * @throws PSJdbcTableFactoryException if the update key refereneces columns
+    * @throws IllegalArgumentException if updateKey is <code>null</code>.
+    * @throws PSJdbcTableFactoryException if the update key references columns
     * not defined in this schema.
     */
    public void setUpdateKey(PSJdbcUpdateKey updateKey)
@@ -521,7 +574,7 @@ public class PSJdbcTableSchema implements Comparable<PSJdbcTableSchema>
    }
 
    /**
-    * Returns the update key defintion if one has been set.
+    * Returns the update key definition if one has been set.
     *
     * @return The update key, or <code>null</code> if one has not been set.
     */
@@ -564,8 +617,7 @@ public class PSJdbcTableSchema implements Comparable<PSJdbcTableSchema>
       Element row = PSXmlDocumentBuilder.addEmptyElement(doc, root, ROW_EL);
 
       // add each column to the row
-      for (int i = 0; i < m_columns.size(); i++)
-         row.appendChild(((PSJdbcColumnDef)m_columns.get(i)).toXml(doc));
+      for (PSJdbcColumnDef m_column : m_columns) row.appendChild(m_column.toXml(doc));
 
       // add primary key if defined
       if (m_primaryKey != null)
@@ -587,9 +639,11 @@ public class PSJdbcTableSchema implements Comparable<PSJdbcTableSchema>
       if (!m_indexes.isEmpty())
       {
          Element indexdefs = PSXmlDocumentBuilder.addEmptyElement(doc, root,
-            INDEX_DEF_EL);
-         for (int i = 0; i < m_indexes.size(); i++)
-            indexdefs.appendChild(((PSJdbcIndex)m_indexes.values().iterator().next()).toXml(doc));
+                 INDEX_DEF_EL);
+         for (int i = 0; i < m_indexes.size(); i++) {
+            PSJdbcIndex idx = m_indexes.get(i);
+            indexdefs.appendChild(idx.toXml(doc));
+         }
       }
 
       return root;
@@ -628,32 +682,32 @@ public class PSJdbcTableSchema implements Comparable<PSJdbcTableSchema>
 
       // get flags
       String sTemp = sourceNode.getAttribute(NAME_ATTR);
-      if (sTemp == null || sTemp.trim().length() == 0)
+      if (sTemp.trim().length() == 0)
       {
-         Object[] args = {NODE_NAME, NAME_ATTR, sTemp == null ? "null" : sTemp};
+         Object[] args = {NODE_NAME, NAME_ATTR, sTemp};
          throw new PSJdbcTableFactoryException(
             IPSTableFactoryErrors.XML_ELEMENT_INVALID_ATTR, args);
       }
       m_name = sTemp;
 
       sTemp = sourceNode.getAttribute(ALLOW_SCHEMA_CHANGES_ATTR);
-      if (sTemp != null && sTemp.trim().length() != 0)
+      if (sTemp.trim().length() != 0)
          m_allowSchemaChanges = sTemp.equalsIgnoreCase(XML_TRUE);
 
       sTemp = sourceNode.getAttribute(IS_VIEW_ATTR);
-      if (sTemp != null && sTemp.trim().length() != 0)
+      if (sTemp.trim().length() != 0)
          m_isView = sTemp.equalsIgnoreCase(XML_TRUE);
 
       sTemp = sourceNode.getAttribute(CREATE_ATTR);
-      if (sTemp != null && sTemp.trim().length() != 0)
+      if (sTemp.trim().length() != 0)
          m_create = sTemp.equalsIgnoreCase(XML_TRUE);
 
       sTemp = sourceNode.getAttribute(DELOLDDATA_ATTR);
-      if (sTemp != null && sTemp.trim().length() != 0)
+      if (sTemp.trim().length() != 0)
          m_delOldData = sTemp.equalsIgnoreCase(XML_TRUE);
 
       sTemp = sourceNode.getAttribute(ALTER_ATTR);
-      if (sTemp != null && sTemp.trim().length() != 0)
+      if (sTemp.trim().length() != 0)
          m_alter = sTemp.equalsIgnoreCase(XML_TRUE);
 
       // load schema handlers
@@ -720,11 +774,11 @@ public class PSJdbcTableSchema implements Comparable<PSJdbcTableSchema>
          
          
          // populate the parent and child table maps based on this foreign key
-         Iterator parentTables = fk.getTables();
+         Iterator<String> parentTables = fk.getTables();
          
          // Convert old structure where there could only be one foreign key
          // into multiple if there are separate tables.
-         m_foreignKeys.addAll(fk.normalizeForiegnKeys());
+         m_foreignKeys.addAll(fk.normalizeForeignKeys());
          
          
          PSJdbcTableSchemaCollection tableSchemaColl =
@@ -732,18 +786,13 @@ public class PSJdbcTableSchema implements Comparable<PSJdbcTableSchema>
 
          while(parentTables.hasNext())
          {
-            String parentTableName = (String)parentTables.next();
+            String parentTableName = parentTables.next();
             addParentTable(parentTableName);
 
             Object parentTableSchema = tableSchemaColl.getTableSchema(parentTableName);
             if (parentTableSchema != null)
             {
                tableSchemaColl.getTableSchema(parentTableName).addChildTable(m_name);
-            }
-            else
-            {
-               // this will happen if the child table is defined before the
-               // parent table in the table schema definition Xml.
             }
          }
          foreignKey = walker.getNextElement(PSJdbcForeignKey.NODE_NAME,
@@ -779,7 +828,7 @@ public class PSJdbcTableSchema implements Comparable<PSJdbcTableSchema>
          while (index != null)
          {
             PSJdbcIndex indexDef = new PSJdbcIndex(index);
-            m_indexes.put(indexDef.getName(),indexDef);
+            m_indexes.add(indexDef);
             index = walker.getNextElement(PSJdbcIndex.NODE_NAME, nextFlags);
          }
       }
@@ -799,7 +848,7 @@ public class PSJdbcTableSchema implements Comparable<PSJdbcTableSchema>
    {
       if (!(dataTypeMap.isCreateForeignKeyIndexes()))
           return;
-      if (m_foreignKeys == null || m_foreignKeys.size()==0)
+      if (m_foreignKeys == null || m_foreignKeys.isEmpty())
           return;
       if (doForeignKeyColumnsMatch(m_foreignKeys))
              return;
@@ -820,7 +869,7 @@ public class PSJdbcTableSchema implements Comparable<PSJdbcTableSchema>
    {        
       for (PSJdbcForeignKey foreignKey : foreignKeys ) {
       List<String> foreignKeyColumnNames = foreignKey.getForeignKeyColumnNames();
-      Iterator<?> indexIterator = m_indexes.values().iterator();
+      Iterator<?> indexIterator = m_indexes.iterator();
       boolean found=false;
       while(indexIterator.hasNext())
       {
@@ -832,7 +881,7 @@ public class PSJdbcTableSchema implements Comparable<PSJdbcTableSchema>
             break;
          }
          }
-      if (found==false) return false;
+      if (!found) return false;
       }
       return true;
    }
@@ -847,10 +896,7 @@ public class PSJdbcTableSchema implements Comparable<PSJdbcTableSchema>
    boolean doesIndexNameExists(String indexName)
    {
       PSJdbcIndex index = this.getIndex(indexName);
-      if(index == null){
-         return false;
-      }
-      return true;
+      return index != null;
    }
 
    /**
@@ -864,25 +910,24 @@ public class PSJdbcTableSchema implements Comparable<PSJdbcTableSchema>
     * @throws PSJdbcTableFactoryException if error occurs
     */
 
-   private void processIndex(String indexName, Iterator<?> foreignKeyColumnIt) throws PSJdbcTableFactoryException
+   private void processIndex(String indexName, Iterator<String> foreignKeyColumnIt) throws PSJdbcTableFactoryException
    {
       int i = 1;
-      if (doesIndexNameExists(indexName))
-      {
-         PSJdbcIndex indexDef = new PSJdbcIndex(indexName, foreignKeyColumnIt, PSJdbcTableComponent.ACTION_CREATE,
-                 PSJdbcIndex.TYPE_NON_UNIQUE);
-         setIndex(indexDef);
-      }
-      else
-      {
-         while (!(doesIndexNameExists(indexName)))
-         {
-            indexName = indexName + i;
-            i++;
-         }
-         PSJdbcIndex indexDef = new PSJdbcIndex(indexName, foreignKeyColumnIt, PSJdbcTableComponent.ACTION_CREATE,
-                 PSJdbcIndex.TYPE_NON_UNIQUE);
-         setIndex(indexDef);
+
+      PSJdbcIndex indexDef = new PSJdbcIndex(indexName, foreignKeyColumnIt, PSJdbcTableComponent.ACTION_CREATE,
+              PSJdbcIndex.TYPE_NON_UNIQUE);
+
+      if( getIndex(indexDef) == null) {
+         if (!doesIndexNameExists(indexName)) {
+            setIndex(indexDef);
+         } else {
+            while ((doesIndexNameExists(indexName))) {
+               indexName = indexName + i;
+               i++;
+            }
+            indexDef.setName(indexName  );
+               setIndex(indexDef);
+            }
       }
    }
 
@@ -961,7 +1006,7 @@ public class PSJdbcTableSchema implements Comparable<PSJdbcTableSchema>
     * processed by the {@link PSJdbcTableFactory}.
     *
     * @param isCreate If <code>true</code>, table is created if it does not
-    * aleady exist, and data is inserted if supplied.
+    * already exist, and data is inserted if supplied.
     *
     * If <code>false</code>, table is only altered and/or data modified if it
     * already exists.
@@ -1187,10 +1232,7 @@ public class PSJdbcTableSchema implements Comparable<PSJdbcTableSchema>
          }
       }
 
-      Iterator indexes = m_indexes.values().iterator();
-      while (indexes.hasNext())
-      {
-         PSJdbcIndex index = (PSJdbcIndex)indexes.next();
+      for (PSJdbcIndex index : m_indexes) {
          String badCols = checkColumns(index.getColumnNames());
          if (badCols != null)
          {
@@ -1220,10 +1262,10 @@ public class PSJdbcTableSchema implements Comparable<PSJdbcTableSchema>
          throw new IllegalArgumentException("tableData may not be null");
 
       // validate has no columns not defined in schema, required keys defined
-      Iterator columns = tableData.getColumnNames();
+      Iterator<String> columns = tableData.getColumnNames();
       while (columns.hasNext())
       {
-         String columnName = (String)columns.next();
+         String columnName = columns.next();
          PSJdbcColumnDef columnDef = getColumn(columnName);
          if (columnDef == null || (columnDef.getAction() ==
             PSJdbcTableComponent.ACTION_DELETE && isAlter()))
@@ -1246,20 +1288,16 @@ public class PSJdbcTableSchema implements Comparable<PSJdbcTableSchema>
                IPSTableFactoryErrors.UPDATE_DATA_NO_KEYS, getName());
 
          // walk each update row and be sure there's a value for each key column
-         List keyCols = getKeyColumns();
-         Iterator updateRows = tableData.getUpdateRows();
+         List<String> keyCols = getKeyColumns();
+         Iterator<PSJdbcRowData> updateRows = tableData.getUpdateRows();
          while (updateRows.hasNext())
          {
-            PSJdbcRowData row = (PSJdbcRowData)updateRows.next();
+            PSJdbcRowData row = updateRows.next();
 
-            Iterator iKeys = keyCols.iterator();
-            while (iKeys.hasNext())
-            {
-               String columnName = (String)iKeys.next();
-               PSJdbcColumnData colData = row.getColumn(columnName);
-               if (colData == null || colData.getValue() == null)
-               {
-                 Object[] args = {getName(), columnName};
+            for (String keyCol : keyCols) {
+               PSJdbcColumnData colData = row.getColumn(keyCol);
+               if (colData == null || colData.getValue() == null) {
+                  Object[] args = {getName(), keyCol};
                  throw new PSJdbcTableFactoryException(
                     IPSTableFactoryErrors.UPDATE_DATA_NO_KEY_VALUE, args);
                }
@@ -1336,7 +1374,7 @@ public class PSJdbcTableSchema implements Comparable<PSJdbcTableSchema>
    }
 
    /**
-    * Overridden to fullfill the contract that if t1 and t2 are 2 different
+    * Overridden to fulfill the contract that if t1 and t2 are 2 different
     * instances of this class and t1.equals(t2), t1.hashCode() ==
     * t2.hashCode().
     *
@@ -1374,7 +1412,7 @@ public class PSJdbcTableSchema implements Comparable<PSJdbcTableSchema>
    public PSJdbcDataTypeMap getDataTypeMap()
    {
       // get map from first column
-      PSJdbcColumnDef col = (PSJdbcColumnDef)m_columns.get(0);
+      PSJdbcColumnDef col = m_columns.get(0);
       return col.getDataTypeMap();
    }
 
@@ -1387,7 +1425,7 @@ public class PSJdbcTableSchema implements Comparable<PSJdbcTableSchema>
       boolean hasChanges = false;
       for (int i=0; i < m_columns.size() && !hasChanges; i++)
       {
-         PSJdbcColumnDef col = (PSJdbcColumnDef)m_columns.get(i);
+         PSJdbcColumnDef col = m_columns.get(i);
             hasChanges = col.hasChanges();
       }
 
@@ -1436,12 +1474,14 @@ public class PSJdbcTableSchema implements Comparable<PSJdbcTableSchema>
     */
    public boolean canBeAltered()
    {
-      Iterator columns = m_columns.iterator();
-      while (columns.hasNext())
-      {
-         PSJdbcColumnDef col = (PSJdbcColumnDef)columns.next();
-         if (!col.canAlter())
+      for (PSJdbcColumnDef m_column : m_columns) {
+         if (!m_column.canAlter()) {
             return false;
+         }else if(m_column.isChanged()){
+            if(m_primaryKey != null && m_primaryKey.hasColumn(m_column.getName())) {
+               return false;
+            }
+         }
       }
 
       if (m_primaryKey != null && !m_primaryKey.canAlter())
@@ -1450,13 +1490,10 @@ public class PSJdbcTableSchema implements Comparable<PSJdbcTableSchema>
       for (PSJdbcForeignKey foreignKey : m_foreignKeys)
       {
          if (!foreignKey.canAlter())
-         return false;
+            return false;
       }
 
-      Iterator indexes = m_indexes.values().iterator();
-      while (indexes.hasNext())
-      {
-         PSJdbcIndex index = (PSJdbcIndex)indexes.next();
+      for (PSJdbcIndex index : m_indexes) {
          if (!index.canAlter())
             return false;
       }
@@ -1474,12 +1511,12 @@ public class PSJdbcTableSchema implements Comparable<PSJdbcTableSchema>
     * primary key will be used.  If neither are defined, an empty list is
     * returned.
     */
-   public List getKeyColumns()
+   public List<String> getKeyColumns()
    {
-      List keyCols = new ArrayList();
+      List<String> keyCols = new ArrayList<>();
 
       // use update key if defined, else use primary key
-      Iterator colNames = null;
+      Iterator<String> colNames = null;
       if (m_updateKey != null)
       {
          colNames = m_updateKey.getColumnNames();
@@ -1549,7 +1586,7 @@ public class PSJdbcTableSchema implements Comparable<PSJdbcTableSchema>
          throw new IllegalArgumentException("listener may not be null");
 
       if (m_schemaChangeListeners == null)
-         m_schemaChangeListeners = new ArrayList();
+         m_schemaChangeListeners = new ArrayList<>();
       m_schemaChangeListeners.add(listener);
    }
 
@@ -1559,7 +1596,7 @@ public class PSJdbcTableSchema implements Comparable<PSJdbcTableSchema>
     *
     * @return The list, may be <code>null</code>, never empty.
     */
-   public List getSchemaChangeListeners()
+   public List<IPSJdbcTableChangeListener> getSchemaChangeListeners()
    {
       return m_schemaChangeListeners;
    }
@@ -1568,48 +1605,20 @@ public class PSJdbcTableSchema implements Comparable<PSJdbcTableSchema>
     * Returns the index into the internal column list of the specified column.
     *
     * @param name The name of the column to find.  Assumed not <code>null</code>
-    * or emtpy.
+    * or empty.
     *
     * @return The index, or <code>-1</code> if not found in the list.  Match
     * is case insensitive by name.
     */
    private int getColumnIndex(String name)
    {
-      PSJdbcColumnDef column = null;
+      PSJdbcColumnDef column;
       int index = -1;
 
       for (int i = 0; i < m_columns.size(); i++)
       {
-         column = (PSJdbcColumnDef)m_columns.get(i);
+         column = m_columns.get(i);
          if (column.getName().equalsIgnoreCase(name))
-         {
-            index = i;
-            break;
-         }
-      }
-
-      return index;
-   }
-
-   /**
-    * Returns the ordinal position in the internal list of indexes for the
-    * specified index object.
-    *
-    * @param name The name of the index to find.  Assumed not <code>null</code>
-    * or emtpy.
-    *
-    * @return The ordinal position, or <code>-1</code> if not found in the list.
-    * Match is case insensitive by name.
-    */
-   private int getIndexIndex(String name)
-   {
-      PSJdbcIndex indexObj = null;
-      int index = -1;
-
-      for (int i = 0; i < m_indexes.size(); i++)
-      {
-         indexObj = (PSJdbcIndex)m_indexes.get(i);
-         if (indexObj.getName().equalsIgnoreCase(name))
          {
             index = i;
             break;
@@ -1630,12 +1639,12 @@ public class PSJdbcTableSchema implements Comparable<PSJdbcTableSchema>
     * column definitions in this schema, a comma delimited list of invalid names
     * if not.
     */
-   private String checkColumns(Iterator names)
+   private String checkColumns(Iterator<String> names)
    {
-      List badNameList = new ArrayList();
+      List<String> badNameList = new ArrayList<>();
       while (names.hasNext())
       {
-         String name = (String)names.next();
+         String name = names.next();
          if (getColumnIndex(name) == -1)
             badNameList.add(name);
       }
@@ -1660,7 +1669,7 @@ public class PSJdbcTableSchema implements Comparable<PSJdbcTableSchema>
     * have Foreign Keys.
     * @return never <code>null</code>, may be <code>empty</code>.
     */
-   public Iterator getTablesWithForeignKey()
+   public Iterator<PSJdbcTableSchema> getTablesWithForeignKey()
    {
       return m_mapTablesWithForeignKey.values().iterator();
    }
@@ -1711,37 +1720,37 @@ public class PSJdbcTableSchema implements Comparable<PSJdbcTableSchema>
     * This table's column definitions.  Never <code>null</code> or empty after
     * construction, contains only valid PSJdbcColumnDef objects.
     */
-   private List m_columns = new ArrayList();
+   private List<PSJdbcColumnDef> m_columns = new ArrayList<>();
 
    /**
     * List for storing the name of this table's parent tables.
     * May be empty.
     */
-   private List m_parentTables = new ArrayList();
+   private List<String> m_parentTables = new ArrayList<>();
 
    /**
     * List for storing the name of this table's child tables.
     * May be empty.
     */
-   private List m_childTables = new ArrayList();
+   private List<String> m_childTables = new ArrayList<>();
 
    /**
-    * This table's primary key defintion.  May be <code>null</code>.
+    * This table's primary key definition.  May be <code>null</code>.
     */
    private PSJdbcPrimaryKey m_primaryKey = null;
 
    /**
-    * This table's foreign key defintion.  May be <code>null</code>.
+    * This table's foreign key definition.  May be <code>null</code>.
     */
-   private List<PSJdbcForeignKey> m_foreignKeys = new ArrayList<PSJdbcForeignKey>();
+   private List<PSJdbcForeignKey> m_foreignKeys = new ArrayList<>();
 
    /**
     * This table's index definitions.  Never <code>null</code>, may be empty.
     */
-   private Map<String,PSJdbcIndex> m_indexes = new HashMap<>();
+   private List<PSJdbcIndex> m_indexes = new ArrayList<>();
 
    /**
-    * This table's update key defintion.  Used when updating rows as the key
+    * This table's update key definition.  Used when updating rows as the key
     * columns if it has been defined.  May be <code>null</code>.
     */
    private PSJdbcUpdateKey m_updateKey = null;
@@ -1759,14 +1768,14 @@ public class PSJdbcTableSchema implements Comparable<PSJdbcTableSchema>
     * to {@link #addSchemaChangeListener(IPSJdbcTableChangeListener)
     * addTableChangeListener}.
     */
-   private List m_schemaChangeListeners = null;
+   private List<IPSJdbcTableChangeListener> m_schemaChangeListeners = null;
    
    /**
     * This map holds a set of PSJdbcTableSchema objects that have a foreign key
     * relationship with this table. never <code>null</code>,
     * may be <code>empty</code>.
     */
-   private Map  m_mapTablesWithForeignKey = new HashMap();
+   private Map<String,PSJdbcTableSchema>  m_mapTablesWithForeignKey = new HashMap<>();
 
    /**
     * Collection of table schema handler objects, may be <code>null</code>.
@@ -1778,7 +1787,7 @@ public class PSJdbcTableSchema implements Comparable<PSJdbcTableSchema>
      * when createForeignkeyIndexes mapping in is set to "yes" in
      * PSJdbcDataTypeMap.xml
      */
-   private static final String INDEX_PREFIX = "IX_";
+   public static final String INDEX_PREFIX = "IX_";
 
    /**
     * The type of action that will be taken when processing this schema.
@@ -1817,9 +1826,8 @@ public class PSJdbcTableSchema implements Comparable<PSJdbcTableSchema>
     {
         int value = 0;
         if (fks==null) return value;
-        Iterator<PSJdbcForeignKey> fksItt = fks.iterator();
-        while (fksItt.hasNext()) {
-            Iterator<String> fkItt = fksItt.next().getTables();
+       for (PSJdbcForeignKey fk : fks) {
+          Iterator<String> fkItt = fk.getTables();
             if (fkItt.hasNext())
                 value++;
             while (fkItt.hasNext()) {

@@ -1,30 +1,24 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2021 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.percussion.cms.handlers;
 
 import com.percussion.cms.IPSCmsErrors;
 import com.percussion.cms.PSCmsException;
+import com.percussion.cms.objectstore.PSComponentSummary;
 import com.percussion.cms.objectstore.PSRelationshipFilter;
 import com.percussion.cms.objectstore.server.PSCloneFactory;
 import com.percussion.cms.objectstore.server.PSInlineLinkProcessor;
@@ -34,7 +28,6 @@ import com.percussion.data.PSExecutionData;
 import com.percussion.data.PSInternalRequestCallException;
 import com.percussion.design.objectstore.IPSObjectStoreErrors;
 import com.percussion.design.objectstore.PSLocator;
-import com.percussion.design.objectstore.PSNotFoundException;
 import com.percussion.design.objectstore.PSObjectException;
 import com.percussion.design.objectstore.PSProcessCheck;
 import com.percussion.design.objectstore.PSRelationship;
@@ -44,6 +37,8 @@ import com.percussion.design.objectstore.PSSystemValidationException;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
 import com.percussion.error.PSException;
 import com.percussion.error.PSExceptionUtils;
+import com.percussion.error.PSNotFoundException;
+import com.percussion.error.PSRelationshipException;
 import com.percussion.extension.PSExtensionException;
 import com.percussion.relationship.IPSExecutionContext;
 import com.percussion.relationship.PSCloneAlreadyExistsException;
@@ -61,10 +56,13 @@ import com.percussion.server.config.PSServerConfigException;
 import com.percussion.server.webservices.PSServerFolderProcessor;
 import com.percussion.services.guidmgr.IPSGuidManager;
 import com.percussion.services.guidmgr.PSGuidManagerLocator;
+import com.percussion.services.purge.IPSSqlPurgeHelper;
+import com.percussion.services.purge.PSSqlPurgeHelperLocator;
 import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.services.sitemgr.IPSSiteManager;
 import com.percussion.services.sitemgr.PSSiteManagerException;
 import com.percussion.services.sitemgr.PSSiteManagerLocator;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.util.PSCms;
 import com.percussion.util.PSRelationshipUtils;
@@ -77,8 +75,11 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -186,15 +187,17 @@ public class PSConditionalCloneHandler extends PSCloneHandler
             
             clone = PSCloneFactory.createClone(request, source, 
                childRowMappings);
+
+            // update the list of handled objects
+            request.addClone(source.getId(), clone);
          }
-         else
-         {
+         else {
             /*
              * In order to prevent creating duplicated (AA) relationships (fix
              * (both RX-12522 and RX-16302) while deep clone AA relationships
              * during "create translation" process, we decided to simply
              * stop the deep clone processing at all already cloned items.
-             * For example, 
+             * For example,
              *   Pre-condition
              *      A -> B
              *      A -> C
@@ -217,24 +220,17 @@ public class PSConditionalCloneHandler extends PSCloneHandler
              *       (where B -> B'  and  C -> C')
              *       NOTE, there is no E' created in the above last step
              *             because "A'" already exists.
-             *       
+             *
              *   Note, we reverted changes for Rx-12522 here.
              */
-            dedupedRels = new Iterator<PSRelationship>() {
-               @Override
-               public boolean hasNext() {
-                  return false;
-               }
 
-               @Override
-               public PSRelationship next() {
-                  return null;
-               }
-            };
+
+            dedupedRels = Collections.EMPTY_LIST.iterator();
          }
 
-         // update the list of handled objects
-         request.addClone(source.getId(), clone);
+
+//         // update the list of handled objects
+//         request.addClone(source.getId(), clone);
 
          /*
           * We need to save the request parameters before we start recreating
@@ -246,15 +242,26 @@ public class PSConditionalCloneHandler extends PSCloneHandler
          try
          {
             List psRelationships = new ArrayList();
-   
+
+            /*  Sort
+             * RX-16430,RX-13380 Create Translation - Fails With Errors and Leaves Orphaned English Locale Content
+             */
+            ArrayList<PSRelationship> sortedRels = new ArrayList<PSRelationship>();
+            while (dedupedRels.hasNext())
+            {
+               sortedRels.add(dedupedRels.next());
+            }
+
+            Collections.sort(sortedRels,FOLDER_REL_SORT);
+
+
             /*
              * Walk all relationships provided and recreate them base on the
              * configuration settings.
              */
-            while (dedupedRels.hasNext())
+            for (PSRelationship relationship : sortedRels)
             {
                // first check if the relationship allows cloning
-               PSRelationship relationship = dedupedRels.next();
                if (!relationship.getConfig().isCloningAllowed())
                   continue;
    
@@ -345,8 +352,18 @@ public class PSConditionalCloneHandler extends PSCloneHandler
                         PSLocator dependent = getDependent(request,
                            relationship.getConfig().useDependentRevision());
                         
+                        // if folder relationship check if item is already related to a parent folder.
+                        // if already related to clone then do nothing.  If related to other folder
+                        // e.g. translation source then move.  This will happen if translating an ancestor
+                        // of an already translated folder.  We want to move the folder to its newly translated parent.
+                        if (config.getCategory().equals(
+                              PSRelationshipConfig.CATEGORY_FOLDER)) {
+                              preventDuplicateFolderRelationships(source, data, cb, clone, relationship, config,
+                                    dependent);
+                        } else {
                         cb.relate(config.getName(), clone, dependent, data);
                      }
+                  }
                   }
                   else
                      params.put(IPSHtmlParameters.SYS_RELATIONSHIPTYPE,
@@ -385,7 +402,104 @@ public class PSConditionalCloneHandler extends PSCloneHandler
       }
       catch (PSException e)
       {
+
+            Iterator<Serializable> clones = data.getRequest().getClones();
+            List<PSLocator> cloneIds = new ArrayList<PSLocator>();
+            log.error("Cloning failed rolling back clone items");
+            IPSSqlPurgeHelper purgeHelper = PSSqlPurgeHelperLocator.getPurgeHelper();
+            while (clones.hasNext())
+            {
+                PSLocator loc = (PSLocator) clones.next();
+                cloneIds.add(loc);
+            }
+            try
+            {
+               purgeHelper.purgeAll(cloneIds);
+            }
+            catch (PSException | PSValidationException e1)
+            {
+                log.error("Failed to remove cloned items.  There will probably be orphaned items", e);
+            }
+
          throw new PSObjectException(e.getErrorCode(), e.getErrorArguments());
+      }
+   }
+
+   /**
+    * When deep cloning folder relationships for translations we may find a folder and its translated folder.  We want to move the translated
+    * folder to its new translated folder but prevent duplicate folder relationships being created.
+    *
+    * @param source
+    * @param data
+    * @param cb
+    * @param clone
+    * @param relationship
+    * @param config
+    * @param dependent
+    * @throws PSCmsException
+    * @throws PSRelationshipException
+    */
+   private void preventDuplicateFolderRelationships(PSLocator source, PSExecutionData data,
+         IPSRelationshipHandlerCallback cb, PSLocator clone, PSRelationship relationship, PSRelationshipConfig config,
+         PSLocator dependent) throws PSCmsException, PSRelationshipException, com.percussion.services.error.PSNotFoundException, PSRelationshipException {
+      if (dependent.getId() != relationship.getDependent().getId())
+      {
+         PSServerFolderProcessor proc = PSServerFolderProcessor.getInstance();
+         PSComponentSummary[] summaries = proc.getParentSummaries(dependent);
+         boolean move = false;
+         boolean foundExisting = false;
+         List<Integer> removeRels = new ArrayList<Integer>();
+         if (summaries.length > 0)
+         {
+            for (int i = 0; i < summaries.length; i++)
+            {
+               int id = summaries[i].getContentId();
+               if (id == source.getId() && !foundExisting)
+               {
+                  move = true;
+                  log.debug("Found existing relationship to source parent Item setting to move "
+                        + dependent.getId());
+               }
+               else if (id == clone.getId())
+               {
+                  log.debug("Dependent " + dependent.getId() + " is already related to clone parent folder "
+                        + clone.getId());
+                  foundExisting = true;
+                  if (move = true)
+                  {
+                     removeRels.add(source.getId());
+                     move = false;
+                  }
+               }
+               else
+               {
+                  log.debug("Dependent " + dependent.getId() + " is related to unknown parent folder " + id
+                        + " removing relationship to clean up");
+                  removeRels.add(id);
+               }
+            }
+         }
+
+         for (int removeRel : removeRels)
+         {
+            proc.removeChildren(new PSLocator(removeRel), Collections.singletonList(dependent));
+         }
+
+         if (move)
+         {
+            proc.move(PSRelationshipConfig.TYPE_FOLDER_CONTENT, source, Collections.singletonList(dependent), new PSLocator(clone.getId()));
+         }
+         else if (!foundExisting)
+         {
+            log.debug("Only found and cleaned up existing folder relationships creating new folder relationship");
+            cb.relate(config.getName(), clone, dependent, data);
+         }
+
+      }
+      else
+      {
+         log.debug("Folder relationshp clone same as source dependent not processing" + source.getId() + " : "
+               + dependent.getId());
       }
    }
 
@@ -964,6 +1078,7 @@ public class PSConditionalCloneHandler extends PSCloneHandler
          {
             PSRelationshipProcessor processor = PSRelationshipProcessor.getInstance();
             processor.save(needModification);
+            //need to clear relationship Cache in graph as well
          }
       }
    }
@@ -974,7 +1089,7 @@ public class PSConditionalCloneHandler extends PSCloneHandler
     * @param request The request that contains the new relationships.
     *    assume not <code>null</code>.
     *
-    * @param relationships the created / cloned relationships, assumed not
+    * @param createdRels the created / cloned relationships, assumed not
     *    <code>null</code>.
     *
     * @param psRelationships A list of old relationships, assume it is one or
@@ -986,22 +1101,26 @@ public class PSConditionalCloneHandler extends PSCloneHandler
     *    empty.
     */
    private Map<Integer, PSRelationship> getRelationshipMap(PSRequest request,
-         Iterator relationships, List psRelationships)
+         Iterator<PSRelationship> createdRels, List<ProcessedRelationship> psRelationships)
    {
       Map<Integer, PSRelationship> relateMap = 
          new HashMap<>();
 
-      while (relationships.hasNext())
+      List<ProcessedRelationship> origRels = new ArrayList<ProcessedRelationship>();
+      origRels.addAll(psRelationships);
+
+
+      while (createdRels.hasNext())
       {
-         PSRelationship relationship = (PSRelationship) relationships.next();
+         PSRelationship relationship = createdRels.next();
 
-         PSRelationship origRelationship = findOrigRelationship(request,
-            relationship, psRelationships.iterator());
+         ProcessedRelationship origRel = findOrigRelationship(request,
+                 relationship, origRels.iterator());
 
-         if (origRelationship != null)
+         if (origRel != null)
          {
-            relateMap.put(new Integer(origRelationship.getId()),
-               relationship);
+            relateMap.put(new Integer(origRel.m_relationship.getId()), relationship);
+            origRels.remove(origRel);
          }
       }
 
@@ -1029,14 +1148,14 @@ public class PSConditionalCloneHandler extends PSCloneHandler
     * @param newRelationship The created relationship, assume not
     * <code>null</code>.
     * 
-    * @param psRelationships A list of old relationships, assume it is one or
+    * @param origRels A list of old relationships, assume it is one or
     * more <code>ProcessedRelationship</code> objects.
     * 
     * @return The original relationship. It may be <code>null</code> if cannot
     * find one from the <code>psRelationships</code>.
     */
-   private PSRelationship findOrigRelationship(PSRequest request,
-      PSRelationship newRelationship, Iterator psRelationships)
+   private ProcessedRelationship findOrigRelationship(PSRequest request,
+      PSRelationship newRelationship, Iterator<ProcessedRelationship> origRels)
    {
       PSLocator owner = newRelationship.getOwner();
       PSLocator depent = newRelationship.getDependent();
@@ -1049,9 +1168,9 @@ public class PSConditionalCloneHandler extends PSCloneHandler
       PSLocator clonedOwner, clonedDepent;
       PSRelationshipConfig origConfig;
 
-      while (psRelationships.hasNext())
+      while (origRels.hasNext())
       {
-         psRelationship = (ProcessedRelationship) psRelationships.next();
+         psRelationship = origRels.next();
          origRelationship = psRelationship.m_relationship;
          origConfig = psRelationship.m_relationship.getConfig();
 
@@ -1116,7 +1235,7 @@ public class PSConditionalCloneHandler extends PSCloneHandler
          if(!doesRelPropertiesMatch(props,newProps))
             continue;
 
-         return origRelationship;
+         return psRelationship;
       }
       return null;
    }
@@ -1293,6 +1412,22 @@ public class PSConditionalCloneHandler extends PSCloneHandler
          m_relationship = relationship;
          m_isShallowCloning = isShallowCloning;
       }
+
+      @Override
+      public boolean equals(Object o)
+      {
+         if (!(o instanceof ProcessedRelationship))
+            return false;
+         ProcessedRelationship other = (ProcessedRelationship) o;
+         return other.m_relationship.equals(m_relationship) && other.m_isShallowCloning == m_isShallowCloning;
+      }
+
+      @Override
+      public int hashCode()
+      {
+         return m_relationship.hashCode() + (m_isShallowCloning ? 1 : 0);
+      }
+
       /**
        * The processed relationship, init by ctor, never <code>null</code>
        * after that.
@@ -1330,4 +1465,18 @@ public class PSConditionalCloneHandler extends PSCloneHandler
       ms_ignorePropNames.add(PSRelationshipConfig.PDU_FOLDERID);
       ms_ignorePropNames.add(PSRelationshipConfig.PDU_SITEID);
    }
+
+
+   /*
+    * A comparator used to order folder relationshps first for processing to solve
+    * RX-16430,RX-13380 Create Translation - Fails With Errors and Leaves Orphaned English Locale Content
+    */
+   static final Comparator<PSRelationship> FOLDER_REL_SORT =
+           new Comparator<PSRelationship>() {
+              public int compare(PSRelationship o1, PSRelationship o2) {
+                 int foldero1 = o1.getConfig().getCategory().equals(PSRelationshipConfig.CATEGORY_FOLDER) ? 0 : 1;
+                 int foldero2 = o2.getConfig().getCategory().equals(PSRelationshipConfig.CATEGORY_FOLDER) ? 0 : 1;
+                 return foldero1-foldero2;
+              }
+           };
 }

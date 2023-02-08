@@ -15,9 +15,9 @@
 	</xsl:template>
 	<xsl:template match="ActionLink[@name='Workflow'] | Action[@name='Workflow']" mode="copy">
 		<xsl:copy>
-			<xsl:apply-templates select="@*" mode="copy"/>
-			<xsl:attribute name="urlint"><xsl:value-of select="//@wfurlint"/></xsl:attribute>
 			<xsl:attribute name="url"><xsl:value-of select="//@wfurl"/></xsl:attribute>
+			<xsl:attribute name="urlint"><xsl:value-of select="//@wfurlint"/></xsl:attribute>
+			<xsl:apply-templates select="@*" mode="copy"/>
 			<xsl:apply-templates mode="copy"/>
 		</xsl:copy>
 	</xsl:template>

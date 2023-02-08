@@ -13,7 +13,7 @@
    <xsl:import href="file:sys_resources/stylesheets/sys_I18nUtils.xsl"/>
    <xsl:variable name="lang" select="//@lang"/>
    <xsl:include href="file:sys_resources/stylesheets/relatedcontentctrl.xsl"/>
-   <xsl:output method="html"/>
+   <xsl:output method="html" encoding="UTF-8" />
    <xsl:template match="/">
       <html>
          <head>
@@ -40,11 +40,11 @@
                var ___slotId = null;
                var ___bws = null;
                var ___bwsMode = ps.util.BROWSE_MODE_ACTIVE_ASSEMBLY_TABLE_EDITOR;
-               var __rxroot = "/Rhythmyx";
+               var __rxroot = "";
 
                function onClose()
                {
-                  self.close();
+                  window.open("", '_self').window.close();
                }
                function onClickEdit(url)
                {

@@ -35,7 +35,7 @@
 			<xsl:otherwise>1</xsl:otherwise>
 		</xsl:choose>
 	</xsl:variable>
-	<xsl:output method="xml"/>
+	<xsl:output method="xml" encoding="UTF-8" />
 	<xsl:template match="/">
 		<html>
 			<head>

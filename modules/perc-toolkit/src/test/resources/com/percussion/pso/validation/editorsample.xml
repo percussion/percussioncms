@@ -5,7 +5,7 @@
       <ControlName>sys_EditBox</ControlName>
       <ControlName>sys_CalendarSimple</ControlName>
       <ControlName>sys_DropDownSingle</ControlName>
-      <ControlName>sys_EditLive</ControlName>
+      <ControlName>sys_tinymce</ControlName>
       <ControlName>sys_HiddenInput</ControlName>
    </ControlNameSet>
    <ItemContent newDocument="no">
@@ -118,13 +118,13 @@
       </DisplayField>
       <DisplayField displayType="sys_normal">
          <DisplayLabel sourceType="sys_shared">Callout:</DisplayLabel>
-         <Control accessKey="o" dataType="sys_shared" dimension="single" isReadOnly="no" isRequired="no" name="sys_EditLive" paramName="callout">
+         <Control accessKey="o" dataType="sys_shared" dimension="single" isReadOnly="no" isRequired="no" name="sys_tinymce" paramName="callout">
             <Value>&lt;div class="rxbodyfield" xmlns:o="urn:www.microsoft.com/office" xmlns:st1="urn:www.microsoft.com/smarttags" xmlns:st2="urn:www.microsoft.com/smarttags2" xmlns:w="urn:www.microsoft.com/word" xmlns:x="urn:www.microsoft.com/excel"&gt;&lt;p&gt;Enterprise Investments is an international provider of financial services and investment resources that help individuals and institutions meet their financial objectives.&lt;/p&gt;&lt;/div&gt;</Value>
          </Control>
       </DisplayField>
       <DisplayField displayType="sys_normal">
          <DisplayLabel sourceType="sys_shared">Body:</DisplayLabel>
-         <Control accessKey="B" dataType="sys_shared" dimension="single" isReadOnly="no" isRequired="no" name="sys_EditLive" paramName="body">
+         <Control accessKey="B" dataType="sys_shared" dimension="single" isReadOnly="no" isRequired="no" name="sys_tinymce" paramName="body">
             <Value>&lt;div class="rxbodyfield" xmlns:o="urn:www.microsoft.com/office" xmlns:st1="urn:www.microsoft.com/smarttags" xmlns:st2="urn:www.microsoft.com/smarttags2" xmlns:w="urn:www.microsoft.com/word" xmlns:x="urn:www.microsoft.com/excel"&gt;&lt;p&gt;Enterprise Investments is an international provider of financial services and investment resources that help individuals and institutions meet their financial objectives.&lt;br/&gt;Once known primarily as a mutual fund company, Enterprise Investments has adapted and evolved over the years to meet the changing needs of its customers. Today, that evolution is reflected in our menu of products and services. In addition to our mutual funds, we also offer discount brokerage services, retirement services, estate planning, wealth management, securities execution and clearance, life insurance and much, much more.&lt;/p&gt;&lt;div class="rxbodyfield"&gt;&lt;p class="rxbodyfield"&gt;What hasn&amp;#39;t changed over the years is our commitment to continuous improvement, state-of-the-art technology and peerless customer service. Enterprise Investments is responsible for many innovations that are standards in the industry today. We reinvest a substantial portion of our revenues each year back into technology to deliver new products and services to investors. We are consistently recognized by industry surveys and publications for providing some of the highest levels of customer support.&lt;br/&gt;Continuous improvement, ahead-of-the-curve technology, and&amp;#160;superlative customer service; these time-honored Enterprise Investments traditions are apparent in the many investment choices we offer our customers. They are also reflected in the many innovative ways we help you track and manage your investments or simply keep in touch with us.&lt;/p&gt;&lt;p&gt;Enterprise Investments has long been a pioneer of new methods to facilitate customer interaction. We were the first company&amp;#160;to enable customers to buy funds via a toll-free phone call. We were the first to offer automated 24-hour mutual fund yield and price quotes via a voice-activated computer. Enterprise Investments was also one of the earliest financial services firms to offer computerized account access and trading.&lt;br/&gt;&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;</Value>
          </Control>
       </DisplayField>
@@ -363,7 +363,7 @@
       <SectionLink name="bannerincludeurl">http://127.0.0.1:9222/Rhythmyx/sys_ComponentSupport/component.xml?sys_componentname=cmp_banner</SectionLink>
       <SectionLink name="DependencyViewer">http://localhost:9222/Rhythmyx/sys_ceDependency/Depend.html</SectionLink>
       <SectionLink name="RelatedLookupURL">http://127.0.0.1:9222/Rhythmyx/sys_rcSupport/relatedcontent.xml?sys_revision=1&amp;sys_contentid=863</SectionLink>
-      <SectionLink name="VariantListURL">http://127.0.0.1:9222/Rhythmyx/sys_rcSupport/variantlistwithslots.xml?sys_contentid=863</SectionLink>
+      <SectionLink name="VariantListURL">http://127.0.0.1:9222/Rhythmyx/sys_cxSupport/variantlistwithslots.xml?sys_contentid=863</SectionLink>
       <SectionLink name="ContentSlotLookupURL">http://127.0.0.1:9222/Rhythmyx/sys_rcSupport/contentslotvariantlist.xml?sys_contentid=863</SectionLink>
       <SectionLink name="userstatusincludeurl">http://127.0.0.1:9222/Rhythmyx/sys_ComponentSupport/component.xml?sys_componentname=cmp_userstatus</SectionLink>
       <SectionLink name="helpincludeurl">http://127.0.0.1:9222/Rhythmyx/sys_ComponentSupport/component.xml?sys_componentname=ca_help</SectionLink>
@@ -385,7 +385,7 @@
       <ControlName>sys_EditBox</ControlName>
       <ControlName>sys_CalendarSimple</ControlName>
       <ControlName>sys_DropDownSingle</ControlName>
-      <ControlName>sys_EditLive</ControlName>
+      <ControlName>sys_tinymce</ControlName>
       <ControlName>sys_HiddenInput</ControlName>
    </ControlNameSet>
    <ItemContent>
@@ -498,13 +498,13 @@
       </DisplayField>
       <DisplayField displayType="sys_normal">
          <DisplayLabel sourceType="sys_shared">Callout:</DisplayLabel>
-         <Control accessKey="o" dataType="sys_shared" dimension="single" isReadOnly="no" isRequired="no" name="sys_EditLive" paramName="callout">
+         <Control accessKey="o" dataType="sys_shared" dimension="single" isReadOnly="no" isRequired="no" name="sys_tinymce" paramName="callout">
             <Value>&lt;div class="rxbodyfield" xmlns:o="urn:www.microsoft.com/office" xmlns:st1="urn:www.microsoft.com/smarttags" xmlns:st2="urn:www.microsoft.com/smarttags2" xmlns:w="urn:www.microsoft.com/word" xmlns:x="urn:www.microsoft.com/excel"&gt;&lt;p&gt;Enterprise Investments is an international provider of financial services and investment resources that help individuals and institutions meet their financial objectives.&lt;/p&gt;&lt;/div&gt;</Value>
          </Control>
       </DisplayField>
       <DisplayField displayType="sys_normal">
          <DisplayLabel sourceType="sys_shared">Body:</DisplayLabel>
-         <Control accessKey="B" dataType="sys_shared" dimension="single" isReadOnly="no" isRequired="no" name="sys_EditLive" paramName="body">
+         <Control accessKey="B" dataType="sys_shared" dimension="single" isReadOnly="no" isRequired="no" name="sys_tinymce" paramName="body">
             <Value>&lt;div class="rxbodyfield" xmlns:o="urn:www.microsoft.com/office" xmlns:st1="urn:www.microsoft.com/smarttags" xmlns:st2="urn:www.microsoft.com/smarttags2" xmlns:w="urn:www.microsoft.com/word" xmlns:x="urn:www.microsoft.com/excel"&gt;&lt;p&gt;Enterprise Investments is an international provider of financial services and investment resources that help individuals and institutions meet their financial objectives.&lt;br/&gt;Once known primarily as a mutual fund company, Enterprise Investments has adapted and evolved over the years to meet the changing needs of its customers. Today, that evolution is reflected in our menu of products and services. In addition to our mutual funds, we also offer discount brokerage services, retirement services, estate planning, wealth management, securities execution and clearance, life insurance and much, much more.&lt;/p&gt;&lt;div class="rxbodyfield"&gt;&lt;p class="rxbodyfield"&gt;What hasn&amp;#39;t changed over the years is our commitment to continuous improvement, state-of-the-art technology and peerless customer service. Enterprise Investments is responsible for many innovations that are standards in the industry today. We reinvest a substantial portion of our revenues each year back into technology to deliver new products and services to investors. We are consistently recognized by industry surveys and publications for providing some of the highest levels of customer support.&lt;br/&gt;Continuous improvement, ahead-of-the-curve technology, and&amp;#160;superlative customer service; these time-honored Enterprise Investments traditions are apparent in the many investment choices we offer our customers. They are also reflected in the many innovative ways we help you track and manage your investments or simply keep in touch with us.&lt;/p&gt;&lt;p&gt;Enterprise Investments has long been a pioneer of new methods to facilitate customer interaction. We were the first company&amp;#160;to enable customers to buy funds via a toll-free phone call. We were the first to offer automated 24-hour mutual fund yield and price quotes via a voice-activated computer. Enterprise Investments was also one of the earliest financial services firms to offer computerized account access and trading.&lt;br/&gt;&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;</Value>
          </Control>
       </DisplayField>

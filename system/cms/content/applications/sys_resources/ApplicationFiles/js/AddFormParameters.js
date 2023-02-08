@@ -172,7 +172,12 @@ function parseParam(param, href)
 	value = href.substring(index+param.length+1);
   index = value.indexOf("&");
   if(index == -1)
-	 return value;
+  {
+     index = value.indexOf("#");
+     if (index == -1)
+	 	return value;
+     return value.substring(0, index);
+  }
   value = value.substring(0, index);
   return value;
 }

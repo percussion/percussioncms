@@ -1,25 +1,18 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2021 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.percussion.services.assembly.impl;
 
@@ -155,6 +148,7 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicLong;
@@ -167,7 +161,7 @@ import java.util.stream.Collectors;
  * @author dougrand
  */
 @PSBaseBean("sys_assemblyService")
-@Transactional
+@Transactional(noRollbackFor = PSAssemblyException.class)
 public class PSAssemblyService implements IPSAssemblyService
 {
    @PersistenceContext
@@ -465,7 +459,7 @@ public class PSAssemblyService implements IPSAssemblyService
          log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          throw new PSAssemblyException(IPSAssemblyErrors.ASSEMBLER_INST, name, e);
       }
-      catch (com.percussion.design.objectstore.PSNotFoundException e)
+      catch (com.percussion.error.PSNotFoundException e)
       {
          log.error("Serious problem, cannot find {} Error: {}" ,name,PSExceptionUtils.getMessageForLog(e));
          throw new PSAssemblyException(IPSAssemblyErrors.ASSEMBLER_INST, name, e);
@@ -613,10 +607,11 @@ public class PSAssemblyService implements IPSAssemblyService
    private void processItemBinding(IPSAssemblyItem item, Set<IPSAssemblyResult> paginatedItems,
          List<IPSAssemblyItem> debugItems, PSAssemblyJexlEvaluator eval, boolean isLegacy)
    {
+
       try
       {
          ms_item.set(item);
-
+         processBindings(item, eval);
          Number count = null;
          try
          {
@@ -1093,7 +1088,8 @@ public class PSAssemblyService implements IPSAssemblyService
          sws.start(getClass().getName() + "#setupItemForAssembly");
 
          String siteidstr = work.getParameterValue(IPSHtmlParameters.SYS_SITEID, null);
-         String contextstr = work.getParameterValue(IPSHtmlParameters.SYS_CONTEXT, null);
+         String contextstr = work.getParameterValue(
+               IPSHtmlParameters.SYS_CONTEXT, null);
 
          String sys_command = work.getParameterValue(IPSHtmlParameters.SYS_COMMAND, null);
          String defaultAAMode = IPSHtmlParameters.SYS_AAMODE_ICONS;
@@ -1239,24 +1235,14 @@ public class PSAssemblyService implements IPSAssemblyService
          List<IPSGuid> guids = new ArrayList<>();
          guids.add(work.getId());
 
-         try
-         {
             String siteid = work.getParameterValue(IPSHtmlParameters.SYS_SITEID, "");
-            Integer stid = !StringUtils.isBlank(siteid) && StringUtils.isNumeric(siteid) ? new Integer(siteid) : null;
             PSContentMgrConfig config = new PSContentMgrConfig();
             config.addOption(PSContentMgrOption.LAZY_LOAD_CHILDREN);
             config.addOption(PSContentMgrOption.LOAD_MINIMAL);
             config.setBodyAccess(new PSInlineLinkProcessor(work.getFilter(), work));
-            config.setNamespaceCleanup(new PSNamespaceCleanup(stid));
-            //TODO: Isn't the div cleanup needed?
-            // Fix for CMS-3796 <div class="rxbodyfield"> being removed.
-            //config.setDivTagCleanup(new PSDivTagCleanup());
+            config.setNamespaceCleanup( PSNamespaceCleanup2.getInstance());
             items = contentmgr.findItemsByGUID(guids, config);
-         }
-         catch (PSFilterException | PSNotFoundException e)
-         {
-            throw new PSAssemblyException(IPSAssemblyErrors.PARAMS_AUTHTYPE_OR_FILTER, e);
-         }
+
 
          if (items.isEmpty())
             throw new ItemNotFoundException("Can't find item for guid: " + work.getId());
@@ -1274,10 +1260,8 @@ public class PSAssemblyService implements IPSAssemblyService
       // Check to see if this item is a managed nav object. If it is we'll
       // wrap it up into a proxy
       PSNavConfig navcfg = PSNavConfig.getInstance();
-      IPSGuid navontype = navcfg.getNavonType();
-      IPSGuid navtreetype = navcfg.getNavTreeType();
       IPSGuid itemtype = new PSGuid(PSTypeEnum.NODEDEF, item.getProperty("sys_contenttypeid").getString());
-      if (itemtype.equals(navontype) || itemtype.equals(navtreetype))
+      if (navcfg.isManagedNavType(itemtype))
       {
          PSNavHelper h = work.getNavHelper();
          PSLegacyGuid lg = (PSLegacyGuid) work.getId();
@@ -1357,6 +1341,7 @@ public class PSAssemblyService implements IPSAssemblyService
                   }
                }
                session.merge(temp);
+
             }
 
             saveTemplate(temp);
@@ -1627,11 +1612,13 @@ public class PSAssemblyService implements IPSAssemblyService
 
       List<IPSAssemblyTemplate> templateTypes = findTemplatesByContentType(contenttype);
 
-      if (templateTypes.stream().anyMatch(temp -> temp.getGUID() == template.getGUID()))
-         return template;
-      else
-         throw new PSAssemblyException(IPSAssemblyErrors.TEMPLATE_BY_ID_MISSING, name, contenttype.longValue());
+      for(IPSAssemblyTemplate t : templateTypes){
+         if(t.getName().equalsIgnoreCase(template.getName())){
+            return template;
+         }
+      }
 
+      throw new PSAssemblyException(IPSAssemblyErrors.TEMPLATE_BY_ID_MISSING, name, contenttype.longValue());
    }
 
    @Transactional
@@ -1944,14 +1931,9 @@ public class PSAssemblyService implements IPSAssemblyService
       {
          throw new IllegalArgumentException("id may not be null");
       }
-      IPSCacheAccess cache = getCache();
-      IPSTemplateSlot rval = (IPSTemplateSlot) cache.get(id, IPSCacheAccess.IN_MEMORY_STORE);
-      if (rval == null)
-      {
-         rval = getSlotById(id);
-         if (rval != null)
-            cache.save(id, rval, IPSCacheAccess.IN_MEMORY_STORE);
-      }
+
+      IPSTemplateSlot rval = getSlotById(id);
+
       return rval;
    }
 
@@ -2052,8 +2034,9 @@ public class PSAssemblyService implements IPSAssemblyService
          throw new IllegalArgumentException("names may not be null");
       }
 
-      return names.stream().map( name -> session
+      return names.stream().map(name -> session
               .bySimpleNaturalId(PSTemplateSlot.class).load(name))
+              .filter(Objects::nonNull)
               .collect(Collectors.toList());
    }
 
@@ -2065,11 +2048,6 @@ public class PSAssemblyService implements IPSAssemblyService
          Session session = entityManager.unwrap(Session.class);
          IPSTemplateSlot slot = loadSlot(id);
          session.delete(slot);
-         // The deleted object will be (indirectly) evicted by the framework
-         IPSCacheAccess cache = getCache();
-         IPSGuid slotId = slot.getGUID();
-         cache.evict(slotId, IPSCacheAccess.IN_MEMORY_STORE);
-
       }
       catch (DataAccessException e)
       {
@@ -2090,7 +2068,7 @@ public class PSAssemblyService implements IPSAssemblyService
          PSExtensionRef ref = new PSExtensionRef(finder);
          return (IPSSlotContentFinder) emgr.prepareExtension(ref, null);
       }
-      catch (PSExtensionException | com.percussion.design.objectstore.PSNotFoundException e)
+      catch (PSExtensionException | com.percussion.error.PSNotFoundException e)
       {
          throw new PSAssemblyException(IPSAssemblyErrors.MISSING_FINDER, e);
       }

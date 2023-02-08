@@ -3,7 +3,7 @@
     <parent>
         <groupId>com.percussion</groupId>
         <artifactId>core</artifactId>
-        <version>8.1.1-SNAPSHOT</version>
+        <version>8.1.1</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <artifactId>perc-web-ui</artifactId>
@@ -196,15 +196,28 @@
                             </excludes>
                         </resource>
                         <resource>
+                            <!--We need to pass in build property for version of ContentExplorer jar -->
                             <directory>../system/ear/jsps</directory>
                             <!-- override the destination directory for this resource -->
                             <targetPath />
                             <!-- enable filtering -->
-                            <filtering>false</filtering>
+                            <filtering>true</filtering>
                             <excludes>
-
+                                <exclude>favicon.ico</exclude>
                             </excludes>
-                        </resource>
+                    </resource>
+                    <resource>
+                        <directory>../system/ear/jsps</directory>
+                        <!-- override the destination directory for this resource -->
+                        <targetPath />
+                        <!-- disable filtering -->
+                        <filtering>false</filtering>
+                        <excludes>
+                            <exclude>**/*.jsp</exclude>
+                            <exclude>**/*.jnlp</exclude>
+                            <exclude>**/*.html</exclude>
+                        </excludes>
+                    </resource>
                     </webResources>
                     <packagingExcludes>
                         jsps,
@@ -528,6 +541,13 @@
             <artifactId>extensions-nav</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.percussion.soln.serverutils</groupId>
+            <artifactId>soln-serverutils</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>perc-toolkit</artifactId>
@@ -992,6 +1012,11 @@
         </dependency>
         <dependency>
             <groupId>com.percussion</groupId>
+            <artifactId>perc-server-ui-content</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.percussion</groupId>
             <artifactId>perc-system-cactus-tests</artifactId>
             <version>${project.parent.version}</version>
             <scope>compile</scope>
@@ -1201,6 +1226,11 @@
         <dependency>
             <groupId>org.owasp</groupId>
             <artifactId>csrfguard</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.percussion</groupId>
+            <artifactId>perc-server-ui-cmp</artifactId>
+            <version>8.1.1</version>
         </dependency>
     </dependencies>
 </project>

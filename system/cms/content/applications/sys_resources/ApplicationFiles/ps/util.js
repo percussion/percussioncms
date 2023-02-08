@@ -168,7 +168,7 @@ ps.util.swapNodes = function (node1, node2)
    parent1.insertBefore(node2, marker);
 
    dojo.html.destroyNode(marker);
-}
+};
 
 /**
  * Returns the width and height of the main window.
@@ -215,7 +215,7 @@ ps.util.getScreenSize = function(win, useInner)
       dims.height = doc.body.clientHeight;
    }
    return dims;
-}
+};
 
 /**
  * Sets the size of the passed in dialog to the passed in 
@@ -238,7 +238,7 @@ ps.util.setDialogSize = function(dialog, width, height)
    if(pWidth >= scrSize.width)
       width = scrSize.width * .96;
    dialog.resizeTo(width, height);      
-}
+};
 
 /**
  * Returns the size of the passed in dialog as an object with
@@ -250,7 +250,7 @@ ps.util.getDialogSize = function(dialog)
 {
    dojo.lang.assertType(dialog, dojo.widget.FloatingPane);
    return dojo.html.getMarginBox(dialog.domNode);   
-}
+};
 
 /**
  * Forces the passed in dialog to resize. This is used to 
@@ -269,7 +269,7 @@ ps.util.forceDialogResize = function(dialog, preferredWidth, preferredHeight)
    var height = size.height > 0 ? size.height : preferredHeight;
    ps.util.setDialogSize(dialog, width - 1, height - 1);
    ps.util.setDialogSize(dialog, width, height);
-}
+};
 
 /**
  * A helper method to get around the issue in IE 6 where
@@ -286,7 +286,7 @@ ps.util.handleIE6FieldDivHover = function(div, isHovering)
       return;
    var color = isHovering ? "#ffc" : "";   
    div.style.backgroundColor = color;   
-}
+};
 
 /**
  * Returns an object with attributes 'top', 'left', 'bottom', 'right',
@@ -307,7 +307,7 @@ ps.util.getVisibleSides = function (element)
    var right = left + box.width;
 
    return {top: top, left: left, bottom: bottom, right: right};
-}
+};
 
 /**
  * Returns visible position of the node on the page as an object with x, y
@@ -333,7 +333,7 @@ ps.util.getVisiblePosition = function (node)
    }
 
    return {x: visibleSize(node, "left"), y: visibleSize(node, "top")};
-}
+};
 
 /**
  * Creates a dialog with the provided parameters and default parameters.
@@ -382,7 +382,7 @@ ps.util.createDialog = function (params, width, height, isResizable)
    dojo.lang.mixin(p, params);
 
    return dojo.widget.createWidget("ModalFloatingPane", p, div);
-}
+};
 
 /**
  * Gets the target from the supplied event and executes the select() method on
@@ -408,7 +408,7 @@ ps.util.selectAll = function(e)
       targ = targ.parentNode;
    }
    targ.select();
-}
+};
 
 
 /**
@@ -445,7 +445,7 @@ ps.util.ShowPageLinkDialog = function(text)
 
    var foo = dojo.byId("ps.util.wgtShowPageLink");
    foo.focus();
-}
+};
 
 /**
  * Creates a prompt dialog, consisting of a test box with two buttons.
@@ -546,7 +546,7 @@ ps.util.CreatePromptDialog = function(options)
    this.wgtDlg.focusTitle = function()
    {
       _this.wgtPromptText.focus();
-   }
+   };
    var dlgContent = "<div>" + this.promptTitle + "</div>" +
           "<div>" +
           "<input id='ps.util.promptInput' type='text' size='60' value='" + this.promptText + "' /></div>" +
@@ -560,7 +560,7 @@ ps.util.CreatePromptDialog = function(options)
    
    ps.util.setDialogSize(this.wgtDlg, 440, 120);
    return this.wgtDlg;
-}
+};
 
 /**
  * Compares 2 strings ignoring case. Is used for sorting filtering table.
@@ -568,7 +568,7 @@ ps.util.CreatePromptDialog = function(options)
 ps.util.compareIgnoreCase = function (s1, s2)
 {
    s1 = s1.toLowerCase();
-   s2 = s2.toLowerCase()
+   s2 = s2.toLowerCase();
    if (s1 > s2)
    {
       return 1;
@@ -581,7 +581,7 @@ ps.util.compareIgnoreCase = function (s1, s2)
    {
       return 0;
    }
-}
+};
 
 /**
  * Helper class to trim the supplied string.
@@ -594,7 +594,7 @@ ps.util.trim = function(str)
      return "";
    dojo.lang.assertType(str,String);
    return str.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
-}
+};
 
 /**
  * Helper method to get the the css text of the supplied element from the
@@ -658,7 +658,7 @@ ps.util.enableStyleSheet = function(fileName, enabled)
          sheet.disabled = !enabled;
       }
    }
-}
+};
 
 /**
  * Helper class to find all empty Active Assembly containers and
@@ -699,7 +699,7 @@ ps.util.addPlaceholders = function(doc)
       }
    }
    
-}
+};
 
 /**
  * Returns the value of the server property for the given property name. If 
@@ -729,7 +729,7 @@ ps.util.getServerProperty = function(propertyName,defaultValue)
       return ps.util._serverProperties[propertyName];
    else
       return defaultValue;
-}
+};
    
 
 /**
@@ -753,7 +753,7 @@ ps.util.showHidePlaceholders = function(doc, isShow)
          }
       }
    }
-}
+};
 
 /**
  * Array object that holds the server properties. 
@@ -790,7 +790,7 @@ ps.util.BROWSETAB_SEARCH_PANEL_PREF = "ps.content.searchpanel";
 /**
  * Constant: ContentBrowser Dialog page URL
  */
-ps.util.CONTENT_BROWSE_URL = "../ui/content/ContentBrowserDialog.jsp";
+ps.util.CONTENT_BROWSE_URL = "../../ui/content/ContentBrowserDialog.jsp";
 
 /**
  * Constant for active assembly browse mode.

@@ -1,0 +1,268 @@
+<project name="Solution-P13N-Ds" default="dist" basedir=".">
+	<description>Rhythmyx Personalization Build</description>
+    
+	<!-- BEGIN Check and Import Build Tools -->
+	<property environment="my_env"/>
+	<available property="soln-buildtools" value="${my_env.SOLN_BUILDTOOLS}" file="${my_env.SOLN_BUILDTOOLS}" type="dir" />
+	<available property="soln-buildtools" value="../Solution-BuildTools" file="../Solution-BuildTools" type="dir" />
+	<fail unless="soln-buildtools" message="Could not find Solution Build Tools. Check SOLN_BUILDTOOLS env variable." />
+	<import file="${soln-buildtools}/build-share.xml"/>
+	<!-- END Check and Import Build Tools -->
+	<import file="${soln-buildtools}/deploy-webapp.xml" />
+
+	<target name="artifacts" depends="init">
+				
+		
+		
+		<!-- Delivery Side Jars -->
+		<artifact-def id="delivery-ds" fullname="soln-p13n-delivery-ds" conf="ds">
+			<files>
+				<include name="com/percussion/soln/p13n/delivery/ds/**"/>		
+			</files>
+		</artifact-def>
+		
+		<artifact-def id="tracking-ds" fullname="soln-p13n-tracking-ds" conf="ds">
+			<files>
+				<include name="com/percussion/soln/p13n/tracking/data/**"/>
+				<include name="com/percussion/soln/p13n/tracking/ds/**"/>
+			</files>
+		</artifact-def>
+			
+		<artifact-def id="segment-ds" fullname="soln-p13n-segment-ds" conf="ds">
+			<files>
+				<include name="com/percussion/soln/segment/ds/**"/>		
+			</files>
+		</artifact-def>	
+	
+		
+		<!-- Integration Test Jars -->
+		<artifact-def id="integrationtest-ds" fullname="soln-p13n-integrationtest-ds" conf="test,optional">
+			<files>
+				<include name="integrationtest/p13n/**"/>			
+			</files>
+		</artifact-def>
+		
+		<!-- War file -->
+		<artifact-def id="webapp" fullname="soln-p13n" type="war" ext="war" conf="webapp"/>
+		
+		<artifact-def id="dist" conf="dist" type="dist" ext="zip"/>
+		
+		<artifact-def id="p13n-rx" fullname="soln-p13n-rx-war" conf="rx" type="dist" ext="zip"/>
+		
+	</target>
+		
+	<!-- Delivery Side Web App name -->
+	<property name="webapp-name" value="P13N" />
+	
+	
+	
+	<fileset id="webapp-files" dir="ivylib" includesfile="webapp-jars.txt" />
+	
+	
+	<path id="classpath-all">
+		<path refid="classpath-lib" />
+		<path refid="classpath-ivy" />
+	</path>
+	
+	<path id="classpath-test">
+		<path refid="classpath-lib" />
+		<fileset dir="${ivylib}">
+			<exclude name="saxon.jar"/>
+			<include name="**.jar"/>
+		</fileset>
+		<path location="${build-classes}"/>
+	</path>
+	
+	
+		
+	<target name="test-create-db" depends="init">
+		<delete dir="deliveryDB" failonerror="true"/>
+		<ant antfile="create-db.xml">
+			<property name="soln.p13n.config" location="${src}/soln-p13n.properties"/>
+			<reference refid="classpath-all" torefid="jdbc-lib" />
+		</ant>
+	</target>
+	
+	<target name="doc-before" depends="init">
+		<mkdir dir="${build-docs}"/>
+		<!-- Groovy Script converts soln-p13n.properties to soln-p13n.csv for documentation table on properties description-->
+		<groovy>
+			<![CDATA[
+			class ConfigProp {
+				String name;
+				String description = "";
+				String defaultValue = "";
+				String values = "";
+				public String toString() {
+					return "[name=$name,description=$description,values=$values,defaultValue=$defaultValue]";
+				}
+			}
+			File f = new File('src/soln-p13n.properties');
+			def props = [];
+			boolean inDescription = false;
+			boolean inValues = false;
+			
+			
+			f.eachLine { line ->
+				if (line  =~ "^## @description:" ) {
+					currentProp = new ConfigProp();
+					props.add(currentProp); 
+					inDescription = true;
+					inValues = false;
+					currentProp.description = line.replaceAll('^## @description:','').trim();
+				}
+				else if(line  =~ "^## @values:") {
+					inValues = true;
+					inDescription = false;
+					currentProp.values = line.replaceAll('^## @values:','').trim();
+				}
+				else if(line =~ "^##" && inDescription == true) {
+					currentProp.description = currentProp.description + line.replaceAll('^##','');
+				}
+				else if(line =~ "^##" && inValues == true) {
+					currentProp.values = currentProp.values + line.replaceAll('^##','');
+				}
+				else if(line =~ "^[a-zA-Z]") {
+					def split = line.split('=');
+					currentProp.name = split[0];
+					if(split.length > 1)
+						currentProp.defaultValue = split[1];
+				}
+			}
+			
+			File rst = new File(properties['build-docs'] + '/soln-p13n.csv');
+			def lines = props.collect { p ->
+				return [p.name, p.description, p.values, p.defaultValue].collect{ return "\"$it\"";}.join(', ');
+			};
+			
+			rst.write(lines.join('\n'));
+			]]>
+		</groovy>
+	</target>
+	
+	<target name="dist" depends="init,clean,dist-ds" description="Builds Distribution WAR">
+		<!-- copy documents -->
+		<copy todir="${build-dists}" verbose="true" overwrite="false" preservelastmodified="true">
+			<fileset dir="." includes="readme.htm" />
+		</copy>
+		<copy todir="${build-dists}/src-sql" verbose="true" overwrite="false" preservelastmodified="true">
+			<fileset dir="src-sql" includes="readme.htm" />
+		</copy>
+		<copy todir="${build-dists}/resource/IIS-Tomcat" verbose="true" overwrite="false" preservelastmodified="true">
+			<fileset dir="resource/IIS-Tomcat" includes="readme.htm" />
+		</copy>
+		<copy todir="${build-dists}/resource/use-log4j-in-tomcat6" verbose="true" overwrite="false" preservelastmodified="true">
+			<fileset dir="resource/use-log4j-in-tomcat6" includes="readme.htm" />
+		</copy>	
+	</target>
+
+	<target name="dist-ds" unless="no-dist" 
+		depends="clean,war,test-create-db">
+		<mkdir dir="${build-dists}"/>
+		<zip destfile="${build-dists}/${dist-file}">
+			<zipfileset dir="${basedir}" prefix="${zipbasedir}">
+				<include name="readme.txt"/>
+				<include name="readme.htm"/>
+				<include name="build.number"/>
+				<include name="src-sql/**" />
+				<include name="license.txt"/>
+				<include name="create-db.xml" />
+				<include name="deliveryDB/**" />
+				<include name="resource/derby/**" />
+				<include name="resource/IIS-Tomcat/**" />
+				<include name="resource/use-log4j-in-tomcat6/**" />
+				<include name="resource/jdbc/jtds.jar" />
+				<include name="resource/jdbc/ojdbc14.jar" />
+			</zipfileset>
+			<zipfileset dir="ivylib" prefix="${zipbasedir}/lib">
+				<include name="*derby*" />
+			</zipfileset>
+			<zipfileset dir="${src}" prefix="${zipbasedir}">
+				<include name="soln-p13n.properties" />
+			</zipfileset>
+		</zip>
+	</target>
+	
+	<target name="webapp" depends="jarbuilder" description="Creates a webapp (an exploded WAR)">
+		<!-- Delivery side webapp -->
+		<webapp id="p13n" name="soln-p13n">
+			<lib>
+				<fileset dir="${build-jars}" includesfile="ds/webapp-jar-files" />
+				<fileset dir="${ivylib}" includesfile="ds/webapp-jar-files" />
+				<fileset dir="${lib}" includesfile="ds/webapp-jar-files" />
+			</lib>
+			<classes>
+				<fileset dir="${src}">
+    				<include name="soln-p13n.properties"/>
+				</fileset>
+			</classes>
+		</webapp>
+	    <replace 
+	        file="${build-webapps}/soln-p13n/WEB-INF/web.xml"
+	    	token="${soln.p13n.deploy}"
+	        value="ds">
+	    </replace>
+		
+		<!-- Percussion CM System exploded web app -->
+		<webapp id="rx-p13n" name="soln-p13n.war">
+			<lib>
+				<fileset dir="${build-jars}" includesfile="ds/webapp-jar-files" />
+				<fileset dir="${ivylib}" includesfile="ds/webapp-jar-files" />
+				<fileset dir="${lib}" includesfile="ds/webapp-jar-files" />
+			</lib>
+			<classes>
+				<fileset dir="${src}">
+    				<include name="soln-p13n.properties"/>
+				</fileset>
+			</classes>
+		</webapp>
+	    <replace 
+	        file="${build-webapps}/soln-p13n.war/WEB-INF/web.xml"
+	    	token="${soln.p13n.deploy}"
+	        value="rx" />
+	    <replace 
+	        file="${build-webapps}/soln-p13n.war/WEB-INF/classes/soln-p13n.properties"
+	    	token="soln.p13n.track.usingCookies=true"
+	        value="soln.p13n.track.usingCookies=false" /> 
+		
+	</target>
+	
+	<target name="war" depends="webapp" description="Creates a WAR">
+		<webapp-war id="p13n"/>
+		<zip destfile="${build-dists}/${artifact-file-p13n-rx}">
+			<fileset dir="${build-webapps}">
+				<include name="soln-p13n.war/**"/>
+			</fileset>
+		</zip>
+	</target>
+	
+	<target name="test-webapp" depends="init-tomcat,webapp">
+		<echo>Copying Test configuration and Code to webapp</echo>
+		<copy verbose="true" 
+			file="${build-jars}/${jarname-integrationtest-ds}" todir="${webapp-p13n}/WEB-INF/lib" />
+		<copy verbose="true" 
+			file="src/integrationtest/p13n/ds/test-beans.xml" 
+			todir="${webapp-p13n}/WEB-INF/spring" />
+		<copy verbose="true" todir="${webapp-p13n}/WEB-INF/lib" >
+			<fileset dir="${ivylib}">
+				<include name="junit*.jar"/>
+			</fileset>
+		</copy>
+	</target>
+	
+	<target name="test-deploy" depends="test-webapp,war">
+		<!--
+		<tomcat-undeploy name="soln-p13n" />
+		<tomcat-deploy>
+			<wars>
+				<fileset dir="${build-wars}">
+					<include name="*.war"/>
+				</fileset>
+			</wars>
+		</tomcat-deploy>
+		-->
+		<container-start id="p13n" wait="true" />
+		
+	</target>
+
+</project>

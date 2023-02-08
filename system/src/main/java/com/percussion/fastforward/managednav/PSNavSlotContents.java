@@ -1,25 +1,18 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.percussion.fastforward.managednav;
 
@@ -27,7 +20,7 @@ import com.percussion.cms.IPSConstants;
 import com.percussion.cms.PSCmsException;
 import com.percussion.cms.objectstore.PSAaRelationship;
 import com.percussion.cms.objectstore.PSAaRelationshipList;
-import com.percussion.cms.objectstore.PSContentTypeVariant;
+import com.percussion.cms.objectstore.PSContentTypeTemplate;
 import com.percussion.cms.objectstore.PSContentTypeVariantSet;
 import com.percussion.cms.objectstore.PSSlotType;
 import com.percussion.cms.objectstore.PSSlotTypeSet;
@@ -38,6 +31,7 @@ import com.percussion.design.objectstore.PSRelationship;
 import com.percussion.design.objectstore.PSRelationshipConfig;
 import com.percussion.error.PSExceptionUtils;
 import com.percussion.server.IPSRequestContext;
+import com.percussion.services.assembly.impl.nav.PSNavConfig;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.util.PSPreparedStatement;
 import com.percussion.util.PSSQLStatement;
@@ -107,14 +101,14 @@ public class PSNavSlotContents
     */
    public PSAaRelationshipList getSlotContents(PSLocator parent, int slotId)
    {
-      Integer item = new Integer(parent.getId());
+      Integer item = parent.getId();
       Map<Integer, PSAaRelationshipList> slotMap = m_itemMap.get(item);
       if (slotMap == null)
       { //no relationships for this parent
          log.debug("no relationships for this parent {}", parent.getPart(PSLocator.KEY_ID));
          return new PSAaRelationshipList();
       }
-      Integer slot = new Integer(slotId);
+      Integer slot = slotId;
       PSAaRelationshipList relList = slotMap.get(slot);
       if (relList == null)
       { //no relationships for this slot
@@ -130,14 +124,18 @@ public class PSNavSlotContents
     */
    private void addStandardSlots()
    {
-      PSSlotType submenu = m_config.getMenuSlot();
-      this.addSlot(submenu);
-      PSSlotType imageslot = m_config.getImageSlot();
-      this.addSlot(imageslot);
-      String lpSlotName = m_config
-            .getPropertyString(PSNavConfig.NAVON_LANDING_SLOT);
-      PSSlotType lpSlot = m_config.getAllSlots().getSlotTypeByName(lpSlotName);
-      this.addSlot(lpSlot);
+      for(PSSlotType st : m_config.getNavSubMenuSlotTypes()) {
+         this.addSlot(st);
+      }
+
+      for(PSSlotType st : m_config.getNavImageSlotTypes()) {
+         this.addSlot(st);
+      }
+
+      for(PSSlotType st : m_config.getNavLandingPageSlotType()){
+         this.addSlot(st);
+      }
+
    }
 
    /**
@@ -148,7 +146,7 @@ public class PSNavSlotContents
    public void addSlot(PSSlotType slot)
    {
       log.debug("adding slot {}", slot.getSlotName());
-      Integer slotId = new Integer(slot.getSlotId());
+      Integer slotId = slot.getSlotId();
       m_slotMap.put(slotId, slot);
 
    }
@@ -176,7 +174,7 @@ public class PSNavSlotContents
          first = false;
       }
       sb.append(")");
-      log.debug("Slot IN list {}", sb.toString());
+      log.debug("Slot IN list {}", sb);
       return sb.toString();
    }
 
@@ -221,7 +219,7 @@ public class PSNavSlotContents
       }
       List<Integer[]> resultSet = getResultSet();
       //If it is not preview get the adjusted list
-      if (m_authType.intValue() != 0)
+      if (m_authType != 0)
       {
          resultSet = adjustResultSetForLastPublicRevision(resultSet);
       }
@@ -250,7 +248,7 @@ public class PSNavSlotContents
          {
             lastSlotId = currentSlotId;
             aaList = buildSlotRelations(currentSlotMap, currentSlotId);
-            slot = allSlots.getSlotTypeById(lastSlotId.intValue());
+            slot = allSlots.getSlotTypeById(lastSlotId);
             if (slot == null)
             {
                throw new PSNavException("Unknown Slot " + lastSlotId);
@@ -262,15 +260,13 @@ public class PSNavSlotContents
          log.debug(" Revision {}", revision);
          Integer dependentId = currentRow[SQL_ITEMCONTENTID];
          log.debug(" Dependent Id {}", dependentId);
-         PSLocator owner = new PSLocator(currentContentId.intValue(), revision
-               .intValue());
-         PSLocator dependent = new PSLocator(dependentId.intValue());
-         PSRelationship relation = new PSRelationship(sysId.intValue(), owner,
+         PSLocator owner = new PSLocator(currentContentId, revision);
+         PSLocator dependent = new PSLocator(dependentId);
+         PSRelationship relation = new PSRelationship(sysId, owner,
                dependent, relConfig);
          Integer vart = currentRow[SQL_VARIANTID];
          log.debug("adding variant id {}", vart);
-         PSContentTypeVariant variant = allVariants.getContentVariantById(vart
-               .intValue());
+         PSContentTypeTemplate variant = allVariants.getContentVariantById(vart);
          if (variant == null)
          {
             String msg = "Unknown variant " + vart;
@@ -281,7 +277,7 @@ public class PSNavSlotContents
                variant);
          Integer folderidId = currentRow[SQL_FOLDERID];
          if (folderidId != null && folderidId.toString().trim().length() > 0
-               && folderidId.intValue() != 0)
+               && folderidId != 0)
             aaRel.setProperty(IPSHtmlParameters.SYS_FOLDERID, folderidId
                   .toString().trim());
          aaList.add(aaRel);
@@ -323,8 +319,7 @@ public class PSNavSlotContents
          {
             String lprevision = PSMacroUtils.getLastPublicRevision(
                   currentContentId.toString());
-            List<Integer[]> newResults = getRelatedContentData(currentContentId
-                  .intValue(), Integer.parseInt(lprevision));
+            List<Integer[]> newResults = getRelatedContentData(currentContentId, Integer.parseInt(lprevision));
             newList.addAll(newResults);
             processedIds.add(currentContentId);
          }
@@ -396,7 +391,7 @@ public class PSNavSlotContents
          sqlParams[0] = buildSlotInList();
          sqlParams[1] = m_authTypeValidFlags;
 
-         String pattern = getSqlPattern(m_authType.intValue());
+         String pattern = getSqlPattern(m_authType);
          String SqlStatement = MessageFormat.format(pattern,
                   (Object[]) sqlParams);
 
@@ -411,8 +406,7 @@ public class PSNavSlotContents
             Integer[] resArray = new Integer[SQL_MAX_COL];
             for (int i = 1; i <= SQL_MAX_COL; i++)
             {
-               resArray[i - 1] = new Integer(rs.getInt(i));
-               //log.debug(" Column " + i + " value " + resArray[i-1]);
+               resArray[i - 1] = rs.getInt(i);
             }
             results.add(resArray);
             valid = rs.next();
@@ -432,6 +426,24 @@ public class PSNavSlotContents
       return results;
    }
 
+   private String getNavContentTypeInClause(PSNavConfig config){
+      StringBuilder sb = new StringBuilder("");
+
+      for(Long id : config.getNavonTypeIds()){
+         if(sb.length()>0){
+            sb.append(",");
+         }
+         sb.append(id);
+      }
+
+      for(Long id : config.getNavTreeTypeIds()){
+         if(sb.length()>0){
+            sb.append(",");
+         }
+         sb.append(id);
+      }
+      return sb.toString();
+   }
    /**
     * Gets a list Integers of contentids of managed nav content types, that are
     * publishable but not in public state.
@@ -451,8 +463,7 @@ public class PSNavSlotContents
          stmt = PSSQLStatement.getStatement(conn);
          String[] sqlParams = new String[2];
          sqlParams[0] = m_authTypeValidFlagsNonPublic;
-         sqlParams[1] = "(" + m_config.getNavonType() + ","
-               + m_config.getNavTreeType() + ")";
+         sqlParams[1] = "(" + getNavContentTypeInClause(m_config) + ")";
 
          String SqlStatement = SQL_NONPUBLIC_PUBLISHABLE_NAVONS_START
                + getQualifiedTables(SQL_NONPUBLIC_PUBLISHABLE_NAVONS_TABLES)
@@ -463,7 +474,7 @@ public class PSNavSlotContents
          boolean valid = rs.next();
          while (valid)
          {
-            results.add(new Integer(rs.getInt(1)));
+            results.add(rs.getInt(1));
             valid = rs.next();
          }
       }
@@ -516,12 +527,10 @@ public class PSNavSlotContents
             Integer[] resArray = new Integer[SQL_MAX_COL];
             for (int i = 1; i <= SQL_MAX_COL; i++)
             {
-               resArray[i - 1] = new Integer(rs.getInt(i));
-               //log.debug(" Column " + i + " value " + resArray[i-1]);
+               resArray[i - 1] = rs.getInt(i);
             }
             results.add(resArray);
             valid = rs.next();
-            //log.debug("next row");
          }
          log.debug("finished loading rows");
          
@@ -552,59 +561,10 @@ public class PSNavSlotContents
    private String getContentValidFlagsForAuthtype(Integer authType,
          boolean nonPublic)
    {
-      String validFlagsPropName = "authtype." + authType.toString()
-         + ".validFlags";
-      String validFlags = m_config.getPropertyString(validFlagsPropName);
-      if (validFlags != null && validFlags.length() > 0)
-      {
-         if (log.isDebugEnabled())
-         {
-            log.debug("Content valid flag string for authtype {} is specified as: {}", authType, validFlags);
-         }
-         String temp = validFlags;
-         String[] flags = temp.split(",");
-         validFlags = "";
-         for (int i = 0; i < flags.length; i++)
-         {
-            temp = flags[i].trim();
-            if (temp.length() == 1)
-            {
-               //Skip flag y if it is for non public auth type flags.
-               if(nonPublic && temp.equalsIgnoreCase("y"))
-                  continue;
-               //add one flag in lower and one in upper case
-               validFlags = validFlags + "'" + temp.toLowerCase() + "','"
-                  + temp.toUpperCase() + "',";
-            }
-         }
-         //Strip off the trailing ,
-         if (validFlags.endsWith(","))
-            validFlags = validFlags.substring(0, validFlags.length() - 1);
-         if (validFlags.length() < 1)
-         {
-            log.warn("Content valid flags specified appears "
-               + "to be invalid. Using the default");
-            validFlags = DEFAULT_CONTENT_VALID_FLAGS;
-         }
-         else
-            validFlags = "(" + validFlags + ")";
-      }
-      else
-      {
-         if (log.isDebugEnabled())
-         {
-            log.debug("Content valid flag string for authtype {} is not specified and is using the default", authType);
-         }
          if(nonPublic)
-            validFlags = DEFAULT_CONTENT_VALID_FLAGS_NONPUBLIC;
+            return DEFAULT_CONTENT_VALID_FLAGS_NONPUBLIC;
          else
-            validFlags = DEFAULT_CONTENT_VALID_FLAGS;
-      }
-      if (log.isDebugEnabled())
-      {
-         log.debug("Content valid flag string for authtype {} is resolved to ", authType, validFlags);
-      }
-      return validFlags;
+            return DEFAULT_CONTENT_VALID_FLAGS;
    }
 
    /**
@@ -660,7 +620,7 @@ public class PSNavSlotContents
    }
 
    /**
-    * Confiuration instance for local access to config information.
+    * Configuration instance for local access to config information.
     */
    private PSNavConfig m_config = PSNavConfig.getInstance();
 

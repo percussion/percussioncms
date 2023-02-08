@@ -5665,7 +5665,7 @@ ORDER BY PSX_TEMPLATE.NAME ASC</nativeStatement>
                   <PSXExtensionParamValue id="0">
                      <value>
                         <PSXTextLiteral id="0">
-                           <text>sys_rcSupport/variantlistwithslots_comm</text>
+                           <text>sys_cxSupport/variantlistwithslots_comm</text>
                         </PSXTextLiteral>
                      </value>
                   </PSXExtensionParamValue>

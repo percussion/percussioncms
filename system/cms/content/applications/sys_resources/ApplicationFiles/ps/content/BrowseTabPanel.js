@@ -56,7 +56,7 @@ dojo.declare("ps.content.BrowseTabPanel", null,
             }
          });
       }
-   },   
+   },
    /**
     * Forces tab to relayout itself to work around broken layout when user
     * switches to a different tab not waiting when the tab is loaded completely.
@@ -80,7 +80,7 @@ dojo.declare("ps.content.BrowseTabPanel", null,
          p.domNode.style.height = styleHeight;
       }, 1000);
    },
-   
+
    /**
     * Returns <code>true</code> if the tab is already loaded.
     */
@@ -101,7 +101,7 @@ dojo.declare("ps.content.BrowseTabPanel", null,
       this.parseControls();
 
       //this.setSearchMode(true);
-      
+
       if (this.selectOnLoad)
       {
          // tab is already selected
@@ -116,15 +116,14 @@ dojo.declare("ps.content.BrowseTabPanel", null,
     */
    _onTabSelected: function (tab)
    {
-     
+
       if (tab !== this.tab)
       {
          return;
       }
       this.parent.currentTab = this;
 
-      if (!this.slotId
-            || this.slotId.serialize() !== this.parent.slotId.serialize())
+      if (!this.slotId || this.slotId.serialize() !== this.parent.slotId.serialize())
       {
          if (!this._isTabLoaded())
          {
@@ -143,21 +142,11 @@ dojo.declare("ps.content.BrowseTabPanel", null,
          this._refresh();
       }
       //Force resize the dialog to avoid painting issues on some browsers (cheaper and easier!)
-      ps.util.forceDialogResize(this.parent.wgtDlg, 
-         this.parent.preferredWidth, 
+      ps.util.forceDialogResize(this.parent.wgtDlg,
+         this.parent.preferredWidth,
          this.parent.preferredHeight);
-      //			
+      //
    },
-
-   /**
-    * Returns <code>true</code> if the tab is already loaded.
-    */
-   _isTabLoaded: function()
-   {
-      return !!this._getWidgetById("okButton");
-   },
-
-
 
    /**
     *  Parses all the expected controls for this tab.
@@ -166,10 +155,10 @@ dojo.declare("ps.content.BrowseTabPanel", null,
    {
       //Abstract function implemented by subclass
    },
-   
+
    /**
     * Parse the controls common to all tabs
-    */ 
+    */
    _parseCommonControls: function()
    {
       this.okButton = this._getWidgetById("okButton");
@@ -180,7 +169,7 @@ dojo.declare("ps.content.BrowseTabPanel", null,
 
       dojo.event.connect(this.okButton, "onClick", this, "_onOk");
       dojo.event.connect(this.cancelButton, "onClick", this, "_onCancel");
-   },   
+   },
 
    /**
     * Callback function called when the OK button is clicked.
@@ -198,7 +187,7 @@ dojo.declare("ps.content.BrowseTabPanel", null,
       a.onclick();
    },
 
-   
+
    /**
     * Adds a column to the content table.
     * @param {String} field the column field name.
@@ -210,13 +199,13 @@ dojo.declare("ps.content.BrowseTabPanel", null,
    {
       dojo.lang.assertType(field, String);
       dojo.lang.assertType(label, String);
-      
+
       var col = this._cloneColumn(this.contentTableColumns[0]);
       col.field = field;
       col.label = label;
       this.contentTable.columns.push(col);
    },
-   
+
    /**
     * Returns site name selected in UI, if available and requested by the user.
     * Otherwise returns <code>null</code>.
@@ -225,7 +214,7 @@ dojo.declare("ps.content.BrowseTabPanel", null,
    {
       return null;
    },
-   
+
    /**
     * Returns folder path selected in UI, if available and requested by the user.
     * Otherwise returns <code>null</code>.
@@ -234,7 +223,7 @@ dojo.declare("ps.content.BrowseTabPanel", null,
    {
       return null;
    },
-   
+
    /**
     * Same as <code>dojo.byId</code>, but throws an assertion if the node
     * does not exist.
@@ -245,7 +234,7 @@ dojo.declare("ps.content.BrowseTabPanel", null,
       dojo.lang.assert(node, "Could not find node " + id);
       return node;
    },
-   
+
    _handleTemplateOk: function()
    {
       var snippetId = this.templatesPanelObj.getSelectedId();
@@ -261,7 +250,7 @@ dojo.declare("ps.content.BrowseTabPanel", null,
 		    if(temp.sys_siteid != undefined)
 		    {
              snippetId.setSiteId(temp.sys_siteid);
-		    }		 
+		    }
 	  }
 	  else
 	  {
@@ -271,10 +260,10 @@ dojo.declare("ps.content.BrowseTabPanel", null,
       var slotId = this.parent.slotId;
       if(this.parent.mode == ps.util.BROWSE_MODE_ACTIVE_ASSEMBLY ||
 		     this.parent.mode == ps.util.BROWSE_MODE_ACTIVE_ASSEMBLY_TABLE_EDITOR)
-	   { 
-         var response = ps.io.Actions.addSnippet(
+	   {
+         var response1 = ps.io.Actions.addSnippet(
                snippetId, slotId, this._getUIFolderPath(), this._getUISiteName());
-         if(response.isSuccess())
+         if(response1.isSuccess())
          {
             this.parent.okCallback(slotId) ;
             if(this.parent.mode == ps.util.BROWSE_MODE_ACTIVE_ASSEMBLY_TABLE_EDITOR)
@@ -283,7 +272,7 @@ dojo.declare("ps.content.BrowseTabPanel", null,
             }
             else
             {
-               var newRelId = response.getValue();
+               var newRelId = response1.getValue();
                var refRelId = this.parent.refRelId;
                var position = this.parent.position;
                ps.aa.controller.repositionSnippet(slotId,refRelId,newRelId,position);
@@ -291,10 +280,12 @@ dojo.declare("ps.content.BrowseTabPanel", null,
                this.parent.refRelId = newRelId;
                this.parent.position = "after";
             }
+
+            window.close();
          }
          else
          {
-            ps.io.Actions.maybeReportActionError(response);
+            ps.io.Actions.maybeReportActionError(response1);
          }
       }
       else
@@ -305,7 +296,7 @@ dojo.declare("ps.content.BrowseTabPanel", null,
       this.cancelButton.setCaption(this.CLOSE_LABEL);
       this.setSelectTemplateMode(false);
    },
-   
+
    _handleTemplateCancel: function()
    {
       if(!this.isSelectTemplateMode)
@@ -315,19 +306,19 @@ dojo.declare("ps.content.BrowseTabPanel", null,
       this.setSelectTemplateMode(false);
       return false;
    },
-   
+
    /**
     * Callback function called when the Cancel button is clicked.
     * This will also call the parents cancelCallback function and
     * close the dialog.
     */
    _onCancel: function()
-   {      
+   {
       var shouldClose = this._handleTemplateCancel();
       if(shouldClose)
-         this.parent.close();
+    	  window.close();
    },
-   
+
    /**
     * Sets the button state and records current state values.
     * @param {string} name the name key for this button as will be stored
@@ -339,14 +330,15 @@ dojo.declare("ps.content.BrowseTabPanel", null,
     */
    _setButtonRememberState: function(name, button, caption, disabled)
    {
-      var obj = new Object();
+      var obj;
+      obj = {};
       obj.disabled = button.disabled;
       obj.ref = button;
       obj.caption = button.caption;
       this._maybeSetButton(button, caption, disabled);
-      this.lastButtonState.add(name, obj);      
+      this.lastButtonState.add(name, obj);
    },
-   
+
    /**
     * Sets the button's caption or disabled state only if different
     * from what it is currently set to.
@@ -370,9 +362,9 @@ dojo.declare("ps.content.BrowseTabPanel", null,
          }
       }
       if(caption != null && button.caption != caption)
-         button.setCaption(caption);   
+         button.setCaption(caption);
    },
-   
+
    /**
     * Restores the button state if needed.
     */
@@ -383,8 +375,8 @@ dojo.declare("ps.content.BrowseTabPanel", null,
          var obj = this.lastButtonState.item(name);
          this._maybeSetButton(obj.ref, obj.caption, obj.disabled);
          this.lastButtonState.remove(name);
-      }   
-   
+      }
+
    },
 
    /**
@@ -393,21 +385,21 @@ dojo.declare("ps.content.BrowseTabPanel", null,
    _onFilterTyped: function ()
    {
       var _this = this;
-      
+
       // to eliminate too frequent refresh
       if (this.lastFilterValue === this.filterText.value)
       {
          return;
       }
       this.lastFilterValue = this.filterText.value;
-      
+
       // delay the execution until this.filterText.value is updated
       dojo.lang.setTimeout(function ()
       {
          _this._filterContentTable();
       }, 10);
    },
-   
+
    /**
     * Filters contentTable rows using the value of the filterText field
     * as a filter.
@@ -419,18 +411,17 @@ dojo.declare("ps.content.BrowseTabPanel", null,
       {
          var str = value.toLowerCase();
          var filter = _this.filterText.value.toLowerCase();
-         return dojo.string.isBlank(filter)
-               || _this._getCellText(str).indexOf(filter) !== -1;
+         return dojo.string.isBlank(filter) || _this._getCellText(str).indexOf(filter) !== -1;
       });
    },
-   
+
    /**
     * Callback function called when the content table selection changes.
     */
    _onContentTableSelect: function (obj)
    {
       this._maybeRestoreButtonState("okButton");
-      this._maybeSetButton(this.okButton, this.okButton.caption, 
+      this._maybeSetButton(this.okButton, this.okButton.caption,
          !this.contentTable.getSelectedData());
    },
 
@@ -441,15 +432,14 @@ dojo.declare("ps.content.BrowseTabPanel", null,
    {
       this._refresh();
    },
-   
+
    /**
     * Callback function called when the content type dropdown gets focus.
     */
    _onCTypeFocused: function ()
    {
       var list = this.getContentTypeList();
-      if (!list.slotId
-            || list.slotId.serialize() != this.slotId.serialize())
+      if (!list.slotId || list.slotId.serialize() != this.slotId.serialize())
       {
          list.slotId = this.slotId;
 
@@ -462,7 +452,7 @@ dojo.declare("ps.content.BrowseTabPanel", null,
             var types = response.getValue();
             typesNum = types.length;
 
-            // add the 
+            // add the
             for (i = 0; i < typesNum; i++)
             {
                var option = document.createElement('option');
@@ -492,13 +482,13 @@ dojo.declare("ps.content.BrowseTabPanel", null,
       this._setButtonDisabledSpecial(this.upButton, this.getPath() === this.ROOT);
 
       this._maybeRestoreButtonState("okButton");
-      this._maybeSetButton(this.okButton, 
+      this._maybeSetButton(this.okButton,
          psxGetLocalMessage("javascript.ps.content.browse@Open"), true);
-      
+
       this._scrollPathText();
       this.filterText.value = "";
    },
-   
+
    /**
     * Special function to switch the disabled image for the address
     * bar buttons.
@@ -515,19 +505,20 @@ dojo.declare("ps.content.BrowseTabPanel", null,
       var node = button.containerNode ? button.containerNode : button.domNode;
       var img = node.getElementsByTagName('img')[0];
       dojo.lang.assert(img, "Expected to find an image in a button content.");
+      var from,to;
       if (disabled)
       {
-         var from = /16\.gif/;
-         var to = "_disabled16.gif";
+         from = /16\.gif/;
+         to = "_disabled16.gif";
       }
       else
       {
-         var from = /\_disabled16\.gif/;
-         var to = "16.gif";
+         from = /_disabled16\.gif/;
+         to = "16.gif";
       }
       img.src = img.src.replace(from, to);
    },
-   
+
    /**
     * Scrolls path field text, so it shows the last portion of the text.
     * There is no cross-browser way to do that.
@@ -546,7 +537,7 @@ dojo.declare("ps.content.BrowseTabPanel", null,
          // for some reason switching back to a tab on Firefox 2.0
          // causes an exception here
       }
-      
+
       if (this.pathText.dispatchEvent)
       {
          try
@@ -558,10 +549,10 @@ dojo.declare("ps.content.BrowseTabPanel", null,
             this.pathText.dispatchEvent(e);
 
             // remove it with backspace
-            var e = document.createEvent("KeyboardEvent");
-            e.initKeyEvent("keypress", true, true, window,
+            var e1 = document.createEvent("KeyboardEvent");
+            e1.initKeyEvent("keypress", true, true, window,
                   false, false, false, false, 8, 0);
-           this.pathText.dispatchEvent(e);
+           this.pathText.dispatchEvent(e1);
          }
          catch(ignore){}
       }
@@ -572,17 +563,18 @@ dojo.declare("ps.content.BrowseTabPanel", null,
          // because we can't do anything for them.
       }
    },
-   
+
   /**
     * Switches the tab to the new path.
     * Refreshes the tab content for the new path.
     * @param {String} path the path to switch to.
-    * Not <code>null</code>. 
+    * Not <code>null</code>.
     */
    _goTo: function (path, row)
    {
       dojo.lang.assertType(path, String);
       var _this = this;
+      var response;
 
       function maybeSetContent(response)
       {
@@ -605,7 +597,7 @@ dojo.declare("ps.content.BrowseTabPanel", null,
          var action = this.rootContentActions[this.prefix];
          dojo.lang.assert(action,
               "Root content action for " + this.prefix + " should be specified");
-         var response = action();
+         response = action();
          maybeSetContent(response);
       }
       else if (this.isItemPath(path))
@@ -623,25 +615,26 @@ dojo.declare("ps.content.BrowseTabPanel", null,
             this.templatesPanelObj.folderPath = row.Folder;
          }
          this.setSelectTemplateMode(true);
-         this._setButtonRememberState("okButton", this.okButton, 
+         this._setButtonRememberState("okButton", this.okButton,
             psxGetLocalMessage("javascript.ps.content.browse@Select"), false);
          this.cancelButton.setCaption(psxGetLocalMessage("javascript.ps.content.browse@Back"));
-        			
+
 			// See _handleTemplateOk as this is the callback that
          // will handle the work after template selection.
          return;
       }
       else // a folder path
       {
-         var response = this._getFolderChildren(path);
+         response = this._getFolderChildren(path);
          maybeSetContent(response);
       }
-      
+
       dojo.lang.assert(response, "Response should be defined");
       ps.io.Actions.maybeReportActionError(response);
-      response.isSuccess() && this._onPathChanged();
+      if(response.isSuccess())
+         this._onPathChanged();
    },
-   
+
    /**
     * Creates a copy of a FilteringTable.columns data.
     * @param {Array} columns the array to copy.
@@ -653,17 +646,17 @@ dojo.declare("ps.content.BrowseTabPanel", null,
       dojo.lang.forEach(columns, function(column)
       {
          newColumns.push(this._cloneColumn(column));
-      }, this)
+      }, this);
       return newColumns;
    },
-   
+
    /**
     * Creates a copy of one FilteringTable.columns data element.
     * @param {Array} columns the array to copy.
     */
    _cloneColumn: function (column)
    {
-      return dojo.lang.shallowCopy(column, false)
+      return dojo.lang.shallowCopy(column, false);
    },
 
    /**
@@ -676,7 +669,7 @@ dojo.declare("ps.content.BrowseTabPanel", null,
       var temp = path.split("|");
       if(temp.length < 2)
          return "";
-      return dojo.string.trim(temp[1]);   
+      return dojo.string.trim(temp[1]);
    },
 
    /**
@@ -686,7 +679,7 @@ dojo.declare("ps.content.BrowseTabPanel", null,
    {
       this._refresh();
    },
-   
+
    /**
     * Reloads data from the server for the current path.
     */
@@ -701,13 +694,13 @@ dojo.declare("ps.content.BrowseTabPanel", null,
     */
    _assertValidRow: function (row)
    {
-      // Do not validate the ID column since it can be a number (simple id for 
+      // Do not validate the ID column since it can be a number (simple id for
       // a site/folder child) or a string (complex id in case of search results)
       dojo.lang.assertType(row.Name, String);
       dojo.lang.assertType(row.Description, String);
       dojo.lang.assertType(row.Type, Number);
    },
-   
+
    /**
     * Actions to get root content.
     */
@@ -727,21 +720,22 @@ dojo.declare("ps.content.BrowseTabPanel", null,
     */
    _createInitialHistory: function()
    {
+      var path;
       if(this.isSearchTab())
       {
          return new ps.content.History("");
       }
       if (this._getLastStoredPath())
       {
-         var path = this._getLastStoredPath();
+         path = this._getLastStoredPath();
       }
       else if (this.isSiteTab())
       {
-         var path = this._getCurrentSitePath();
+         path = this._getCurrentSitePath();
       }
       else
       {
-         var path = this.ROOT;
+         path = this.ROOT;
       }
 
       dojo.lang.assert(path);
@@ -753,7 +747,7 @@ dojo.declare("ps.content.BrowseTabPanel", null,
       }
       return new ps.content.History(path);
    },
-   
+
    /**
     * Returns last path successfully accessed by the user, which is stored in a
     * cookie.
@@ -774,7 +768,7 @@ dojo.declare("ps.content.BrowseTabPanel", null,
       var daysStoreCookie = 100;
       dojo.io.cookie.setCookie(this.LAST_PATH_COOKIE, path, daysStoreCookie);
    },
-   
+
    /**
     * Returns <code>true</code> if the provided path is valid.
     */
@@ -787,13 +781,13 @@ dojo.declare("ps.content.BrowseTabPanel", null,
     * Returns path for the current site if in Active Assembly mode or the
     * root in any other mode.
     * If has problems to determine the result reports the problems to the user
-    * and returns the root directory. 
+    * and returns the root directory.
     */
    _getCurrentSitePath: function ()
    {
       if(this.mode != ps.util.BROWSE_MODE_ACTIVE_ASSEMBLY)
    	  return this.ROOT;
-
+      var path;
       var siteId = ps.aa.controller.pageId.getSiteId();
       dojo.lang.assert(dojo.lang.isNumeric(siteId), "Can't get site id");
 
@@ -811,11 +805,11 @@ dojo.declare("ps.content.BrowseTabPanel", null,
             }
          }, this);
          dojo.lang.assert(siteName, "Site name was not found");
-         var path = this.ROOT + this._getCellText(siteName);
+         path = this.ROOT + this._getCellText(siteName);
       }
       else
       {
-         var path = this.ROOT;
+         path = this.ROOT;
       }
       dojo.lang.assert(path, "path must be defined at this point");
       return path;
@@ -835,7 +829,7 @@ dojo.declare("ps.content.BrowseTabPanel", null,
             this.parent.slotId.getSlotId(),
             this.isSiteTab());
    },
-   
+
    /**
     * Sets the caret to different positions and to set the selection should.
     * Uses browser-specific code.
@@ -865,7 +859,7 @@ dojo.declare("ps.content.BrowseTabPanel", null,
    {
       this._setSelectionRange(input, input.value.length, input.value.length);
    },
-   
+
    /**
     * Replaces content of the content area.
     * @param {Array} rows an array of JSON objects to initializes the content
@@ -875,8 +869,10 @@ dojo.declare("ps.content.BrowseTabPanel", null,
    setContent: function (rows)
    {
       dojo.lang.assertType(rows, Array);
-      rows.length > 0 && this._assertValidRow(rows[0]);
-      
+      if(rows.length > 0) {
+         this._assertValidRow(rows[0]);
+      }
+
       this._setNameImages(rows);
       this.contentTable.store.setData(rows);
       this._addContentClickHandlers(rows);
@@ -891,7 +887,9 @@ dojo.declare("ps.content.BrowseTabPanel", null,
    _setNameImages: function (rows)
    {
       dojo.lang.assertType(rows, Array);
-      rows.length > 0 && this._assertValidRow(rows[0]);
+      if (rows.length > 0){
+         this._assertValidRow(rows[0]);
+      }
 
       var imgPref = '<img style="vertical-align: middle" src="';
       var folderImg = imgPref + this.parent.rxroot + '/sys_resources/images/folder.gif"/>&nbsp;';
@@ -899,8 +897,7 @@ dojo.declare("ps.content.BrowseTabPanel", null,
       var _this = this;
       dojo.lang.forEach(rows, function (row)
       {
-         var img = row.Type === _this.ITEM_TYPE
-               ? itemImg : folderImg;
+         var img = row.Type === _this.ITEM_TYPE ? itemImg : folderImg;
          if(row.IconPath && row.IconPath.length>0)
          {
            var iPath = row.IconPath;
@@ -922,14 +919,15 @@ dojo.declare("ps.content.BrowseTabPanel", null,
    _addContentClickHandlers: function (rows)
    {
       dojo.lang.assertType(rows, Array);
-      rows.length > 0 && this._assertValidRow(rows[0]);
+      if( rows.length > 0)
+         this._assertValidRow(rows[0]);
 
       var path = this.getPath();
       if (path !== this.ROOT)
       {
          path += "/";
       }
-      
+
       // remember "checked" state now, because in IE the checkboxes checked
       // state is lost and it always reports them as unchecked later
       this.includeSitesChecked =
@@ -940,19 +938,22 @@ dojo.declare("ps.content.BrowseTabPanel", null,
       dojo.lang.forEach(rows, function (row)
       {
          var a = this._getRowA(row);
+         var newPath;
          if (row.Type === this.ITEM_TYPE)
          {
-            var idComponents = (row.Id + "").split(":")
-            var newPath = path + this.ITEM_SEPARATOR + idComponents[0];
+            var idComponents = (row.Id + "").split(":");
+            newPath = path + this.ITEM_SEPARATOR + idComponents[0];
          }
          else
          {
-            var newPath = path + dojo.html.renderedTextContent(a);
+            newPath = path + dojo.html.renderedTextContent(a);
          }
          dojo.lang.assert(newPath);
          var _this = this;
-         dojo.event.connect(a, "onclick",
-               function() {_this._goTo(newPath, row);});
+         var wrapper = {
+            myClickFunc: function(){_this._goTo(newPath, row);}
+         };
+         dojo.event.connect(a, "onclick", wrapper, "myClickFunc");
       }, this);
    },
 
@@ -972,7 +973,7 @@ dojo.declare("ps.content.BrowseTabPanel", null,
       dojo.lang.assert(a, "Name should be a hyperlink to open it");
       return a;
    },
-   
+
    /**
     * Handles setting the appropriate panels visible for
     * select template mode.
@@ -996,16 +997,16 @@ dojo.declare("ps.content.BrowseTabPanel", null,
                   this.mainSplitPane, this.templatesSiteFolderParam, true);
          }
          // We first remove the command panel then add it
-         // so it appears in the correct order.   
+         // so it appears in the correct order.
          this._setSplitPaneChildVisible(
             this.mainSplitPane, this.commandPanel, false);
          this._setSplitPaneChildVisible(
-            this.mainSplitPane, this.commandPanel, true); 
+            this.mainSplitPane, this.commandPanel, true);
          if(this.isSearchTab())
          {
             this._setSplitPaneChildVisible(
                this.mainSplitPane, this.contentSplitPane, false);
-            this.searchBackButton.hide();   
+            this.searchBackButton.hide();
          }
          else
          {
@@ -1030,13 +1031,13 @@ dojo.declare("ps.content.BrowseTabPanel", null,
                this.mainSplitPane, this.addressbarPanel, true);
             this._setSplitPaneChildVisible(
                this.mainSplitPane, this.clientPanel, true);
-         }         
+         }
          // We first remove the command panel then add it
-         // so it appears in the correct order.   
+         // so it appears in the correct order.
          this._setSplitPaneChildVisible(
             this.mainSplitPane, this.commandPanel, false);
          this._setSplitPaneChildVisible(
-            this.mainSplitPane, this.commandPanel, true);    
+            this.mainSplitPane, this.commandPanel, true);
          if (this.templatesPanel)
          {
             this._setSplitPaneChildVisible(
@@ -1049,9 +1050,9 @@ dojo.declare("ps.content.BrowseTabPanel", null,
          }
       }
       ps.util.forceDialogResize(this.parent.wgtDlg,
-       this.parent.preferredWidth, this.parent.preferredHeight);      
+       this.parent.preferredWidth, this.parent.preferredHeight);
    },
-	
+
 	 /**
     * Creates templatesPanel if it is not created yet.
     */
@@ -1108,7 +1109,7 @@ dojo.declare("ps.content.BrowseTabPanel", null,
             dojo.widget.createWidget("ContentPane", params, div);
       new ps.widget.ContentPaneProgress(this.templatesSiteFolderParam);
    },
-	
+
 	/**
     * Loads the template select panel based on the passed in
     * slot object id.
@@ -1118,15 +1119,15 @@ dojo.declare("ps.content.BrowseTabPanel", null,
    _loadTemplatesPanel: function (snippetId)
    {
       dojo.lang.assertType(snippetId, ps.aa.ObjectId);
-
+      var newUrl;
       if (!this.isFolderTab())
       {
          this._maybeCreateTemplatesSiteFolderParam();
-         var newUrl = __rxroot + "/ui/content/sitefolderparam.jsp"
-               + "?idPrefix=" + escape("ps.select.templates.")
-               + "&includeSitesLabel=" + escape(
-                  psxGetLocalMessage("javascript.ps.content.browse@Include_Site"))
-               + "&includeFoldersLabel=" + escape(
+         newUrl = __rxroot + "/ui/content/sitefolderparam.jsp" +
+             "?idPrefix=" + escape("ps.select.templates.")  +
+             "&includeSitesLabel=" + escape(
+                  psxGetLocalMessage("javascript.ps.content.browse@Include_Site"))  +
+             "&includeFoldersLabel=" + escape(
                   psxGetLocalMessage("javascript.ps.content.browse@Include_Folder"));
          this.templatesSiteFolderParam.setUrl(newUrl);
          dojo.event.connect(this.templatesSiteFolderParam, "onLoad", function()
@@ -1136,7 +1137,7 @@ dojo.declare("ps.content.BrowseTabPanel", null,
       }
 
       this._maybeCreateTemplatesPanel();
-      var newUrl = __rxroot + "/ui/content/selecttemplate.jsp" + 
+      newUrl = __rxroot + "/ui/content/selecttemplate.jsp" +
          "?noButtons=false&objectId=" + escape(snippetId.serialize());
       this.templatesPanel.setUrl(newUrl);
       var panel = new ps.content.SelectTemplates();
@@ -1156,7 +1157,7 @@ dojo.declare("ps.content.BrowseTabPanel", null,
     * @param {dojo.widget} the child to be made visible or not.
     * @param {boolean} isVisible flag indicating that the
     * filter panel should or should not be visible.
-    */    
+    */
    _setSplitPaneChildVisible: function (splitpane, child, isVisible)
    {
       if(!child)
@@ -1165,7 +1166,7 @@ dojo.declare("ps.content.BrowseTabPanel", null,
       if(isVisible)
       {
          var alreadyHasChild = false;
-         
+
          for(var x = 0; x < splitpane.children.length; x++)
          {
             if(splitpane.children[x] === child)
@@ -1182,7 +1183,7 @@ dojo.declare("ps.content.BrowseTabPanel", null,
          splitpane.removeChild(child);
       }
    },
-      
+
    /**
     * Is called when templates selection panel is loaded.
     */
@@ -1238,7 +1239,7 @@ dojo.declare("ps.content.BrowseTabPanel", null,
    {
       return this.prefix + "." + s;
    },
-   
+
    /**
     * Returns currently selected content type.
     * If no content type is selected by user, returns "-1".
@@ -1255,7 +1256,7 @@ dojo.declare("ps.content.BrowseTabPanel", null,
          return "-1";
       }
    },
-   
+
    /**
     * The content type list. Should be used instead of direct access to the
     * content list field, because the getter provides additional assertions.
@@ -1265,7 +1266,7 @@ dojo.declare("ps.content.BrowseTabPanel", null,
       dojo.lang.assert(!this.isSearchTab());
       return this._ctypeList;
    },
-   
+
    /**
     * Returns <code>true</code> if this is a site tab.
     */
@@ -1281,7 +1282,7 @@ dojo.declare("ps.content.BrowseTabPanel", null,
    {
       return this.prefix === ps.util.BROWSETAB_SEARCH_PANEL_PREF;
    },
-   
+
    /**
     * Returns <code>true</code> if this is a search tab.
     */
@@ -1296,7 +1297,7 @@ dojo.declare("ps.content.BrowseTabPanel", null,
    {
       return this.pathHistory.getCurrent();
    },
-   
+
    /**
     * Returns </code>true</code> if the current path points to an item.
     * @param {String} path the path to check.
@@ -1304,14 +1305,14 @@ dojo.declare("ps.content.BrowseTabPanel", null,
     */
    isItemPath:  function (path)
    {
-      path && dojo.lang.assertType(path, String);
-      if (!path)
-      {
+      if(path){
+         dojo.lang.assertType(path, String);
+      }else {
          path = this.getPath();
       }
       return /\|\d+$/.test(path);
    },
-   
+
    /**
     * Returns a parent folder.
     * @param {String} path the path to get current folder for.
@@ -1319,23 +1320,23 @@ dojo.declare("ps.content.BrowseTabPanel", null,
     */
    getParentFolder: function (path)
    {
-      path && dojo.lang.assertType(path, String);
-      if (!path)
-      {
+      if(path){
+         dojo.lang.assertType(path, String);
+      } else {
          path = this.getPath();
       }
       dojo.lang.assert(path !== this.ROOT,
             "Tried to get parent folder for a root directory");
       var separator = this.isItemPath(path) ? this.ITEM_SEPARATOR : "/";
       var lastIdx = path.lastIndexOf(separator);
-      var path = path.substring(0, lastIdx);
+      path = path.substring(0, lastIdx);
       if (path === "")
       {
          path = this.ROOT;
       }
       return path;
    },
-   
+
    /**
     * Provides folder part of the current path.
     * @param {String} path the path to get folder for.
@@ -1343,9 +1344,9 @@ dojo.declare("ps.content.BrowseTabPanel", null,
     */
    getFolder: function (path)
    {
-      path && dojo.lang.assertType(path, String);
-      if (!path)
-      {
+      if(path){
+         dojo.lang.assertType(path, String);
+      } else {
          path = this.getPath();
       }
       return this.isItemPath(path) ? this.getParentFolder(path) : path;
@@ -1359,7 +1360,7 @@ dojo.declare("ps.content.BrowseTabPanel", null,
    {
       var beforeStr = '<a href="#">';
       var from = html.lastIndexOf(beforeStr) + beforeStr.length;
-      var to = html.lastIndexOf("</a>")
+      var to = html.lastIndexOf("</a>");
       dojo.lang.assert(from > 0 && to > 0 && from <= to,
             "Unexpected html of the string: " + html);
       return html.substring(from, to);
@@ -1375,7 +1376,7 @@ dojo.declare("ps.content.BrowseTabPanel", null,
    /**
     * Cookie name to store last path successfully accessed by the user.
     */
-   LAST_PATH_COOKIE: this.parent.mode + "." + this.prefix + ".lastPath",  
+   LAST_PATH_COOKIE: this.parent.mode + "." + this.prefix + ".lastPath",
 
    /**
     * A type used for row data indicating an item.

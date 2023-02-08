@@ -1,25 +1,18 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.percussion.fastforward.managednav;
 
@@ -47,13 +40,14 @@ import com.percussion.server.webservices.PSServerFolderProcessor;
 import com.percussion.services.assembly.IPSAssemblyService;
 import com.percussion.services.assembly.IPSTemplateSlot;
 import com.percussion.services.assembly.PSAssemblyException;
+import com.percussion.services.assembly.impl.nav.PSNavConfig;
 import com.percussion.services.content.data.PSItemStatus;
 import com.percussion.services.guidmgr.IPSGuidManager;
 import com.percussion.services.guidmgr.data.PSLegacyGuid;
 import com.percussion.services.legacy.IPSCmsObjectMgr;
 import com.percussion.services.legacy.IPSItemEntry;
 import com.percussion.utils.guid.IPSGuid;
-import com.percussion.utils.request.PSRequestInfo;
+import com.percussion.utils.request.PSRequestInfoBase;
 import com.percussion.webservices.PSErrorException;
 import com.percussion.webservices.PSErrorResultsException;
 import com.percussion.webservices.PSWebserviceUtils;
@@ -67,7 +61,6 @@ import org.springframework.stereotype.Component;
 
 import javax.jcr.Node;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -118,33 +111,43 @@ public class PSManagedNavService implements IPSManagedNavService
    /*
     * //see base interface method for details
     */
-   public long getNavtreeContentTypeId()
+   public List<Long> getNavTreeContentTypeIds()
    {
-      return getNavConfig().getNavTreeType();
+      List<Long> ret = new ArrayList<>();
+
+      for(IPSGuid g : PSNavConfig.getInstance().getNavTreeTypes()){
+         ret.add(g.longValue());
+      }
+      return ret;
    }
    
    /*
     * //see base interface method for details
     */
-   public String getNavtreeContentTypeName()
+   public List<String> getNavTreeContentTypeNames()
    {
-      return getNavConfig().getPropertyString(PSNavConfig.NAVTREE_CONTENT_TYPE);
+      return getNavConfig().getNavTreeContentTypeNames();
    }
    
    /*
     * //see base interface method for details
     */
-   public long getNavonContentTypeId()
+   public List<Long> getNavonContentTypeIds()
    {
-      return getNavConfig().getNavonType();
+      List<Long> ret = new ArrayList<>();
+
+      for(IPSGuid g : PSNavConfig.getInstance().getNavonTypes()){
+         ret.add(g.longValue());
+      }
+      return ret;
    }
    
    /*
     * //see base interface method for details
     */
-   public String getNavonContentTypeName()
+   public List<String> getNavonContentTypeNames()
    {
-      return getNavConfig().getPropertyString(PSNavConfig.NAVON_CONTENT_TYPE);
+      return getNavConfig().getNavonContentTypeNames();
    }
    
    /*
@@ -349,7 +352,7 @@ public class PSManagedNavService implements IPSManagedNavService
    }
 
    /**
-    * This API should return 1 live parent, if returns null, that is a problem with corrupted dataand needs to be looked at
+    * This API should return 1 live parent, if returns null, that is a problem with corrupted data and needs to be looked at
     * @param childId
     * @return
     * @throws PSCmsException
@@ -365,9 +368,7 @@ public class PSManagedNavService implements IPSManagedNavService
 
       List<PSRelationship> relationships = PSRelationshipProcessor.getInstance().getRelationshipList(filter);
       for (PSRelationship rel : relationships) {
-         if(rel.getConfig().equals(PSRelationshipConfig.CATEGORY_RECYCLED)){
-            continue;
-         }else{
+         if(!rel.getConfig().getName().equals(PSRelationshipConfig.CATEGORY_RECYCLED)){
             return rel.getOwner();
          }
       }
@@ -421,7 +422,7 @@ public class PSManagedNavService implements IPSManagedNavService
       if (navSummary != null)
       {
          String msg;
-         if (navSummary.getContentTypeId() == getNavonContentTypeId())
+         if ( getNavonContentTypeIds().contains(navSummary.getContentTypeId()))
          {
             throw new PSNavException(
                     IPSNavigationErrors.NAVIGATION_SERVICE_NAVTREE_CANNOT_BE_ADDED_TO_FOLDER_WITH_NAVON
@@ -438,7 +439,7 @@ public class PSManagedNavService implements IPSManagedNavService
       
       try
       {
-         PSCoreItem coreItem = contentWs.createItems(getNavtreeContentTypeName(), 1).get(0);
+         PSCoreItem coreItem = contentWs.createItems(getNavTreeContentTypeNames().get(0), 1).get(0);
          coreItem.setTextField("sys_title", navTreeName);
          coreItem.setTextField("displaytitle", navTreeTitle);
          PSItemField startDate = coreItem.getFieldByName("sys_contentstartdate");
@@ -452,7 +453,7 @@ public class PSManagedNavService implements IPSManagedNavService
             coreItem.setTextField("sys_workflowid", String.valueOf(workflowId));
          }
 
-         List<IPSGuid> guids = contentWs.saveItems(Arrays.asList(coreItem), false, true);
+         List<IPSGuid> guids = contentWs.saveItems(Collections.singletonList(coreItem), false, true);
          contentWs.addFolderChildren(path, guids);
    
          return guids.get(0);
@@ -559,14 +560,16 @@ public class PSManagedNavService implements IPSManagedNavService
          contentDsWs.findNodesByIds(Collections.singletonList(navId), true);
       if (navNodes.isEmpty())
       {
-         throw new PSNavException("Cannot find nav-node id = " + navId.toString());
+         throw new PSNavException("Cannot find nav-node id = " + navId);
       }
       Node node = navNodes.get(0);
       try
       {
          for(String name : propertyNames)
          {
-            propertyMap.put(name, node.getProperty("rx:" + name).getString());
+            if(node.hasProperty(name)) {
+               propertyMap.put(name, node.getProperty("rx:" + name).getString());
+            }
          }
       }
       catch (Exception e)
@@ -613,7 +616,7 @@ public class PSManagedNavService implements IPSManagedNavService
       catch (Exception e)
       {
          String msg = "Failed to set properties for navon (id="
-               + nodeId.toString() + ").";
+               + nodeId + ").";
          log.error(msg, e);
          throw new PSNavException(msg, e);
       }
@@ -648,7 +651,7 @@ public class PSManagedNavService implements IPSManagedNavService
       }
       catch (PSErrorException e)
       {
-         String errorMsg = "Failed to load slot content for node id = " + nodeId.toString();
+         String errorMsg = "Failed to load slot content for node id = " + nodeId;
          throw new PSNavException(errorMsg, e);
       }
       
@@ -662,6 +665,7 @@ public class PSManagedNavService implements IPSManagedNavService
             for (PSRelationship rel : parentRels) {
                 if (rel.getConfig().getName().equals(FOLDER_RELATE_TYPE)) {
                     doesParentFolderExist = true;
+                    break;
                 }
             }
         }
@@ -692,7 +696,7 @@ public class PSManagedNavService implements IPSManagedNavService
    public List<IPSGuid> findAncestorNavonIds(IPSGuid nodeId)
    {
       if (log.isDebugEnabled())
-          log.debug("[findAncestorNavonIds] nodeId = " + nodeId.toString());
+          log.debug("[findAncestorNavonIds] nodeId = {}" , nodeId.toString());
       
       List<IPSGuid> ancestorIds = new ArrayList<>();
       PSLocator dependent = new PSLocator(((PSLegacyGuid) nodeId).getContentId());
@@ -705,7 +709,9 @@ public class PSManagedNavService implements IPSManagedNavService
    private void findAncestorNavonIds(PSLocator dependent, List<IPSGuid> ancestorIds)
    {
       if (log.isDebugEnabled())
-          log.debug("[findAncestorNavonIds] dependent = " + dependent.getId() + ", ancestorIds = " + ancestorIds);
+          log.debug("[findAncestorNavonIds] dependent = {}, ancestorIds = {}",
+                  dependent.getId(),
+                  ancestorIds);
       
       IPSGuid slotId = getMenuSlot().getGUID();
 
@@ -724,7 +730,9 @@ public class PSManagedNavService implements IPSManagedNavService
             if (isSectionLink(childNavonId, ownerId))
             {
                 if (log.isDebugEnabled())
-                    log.debug("Skip section link ownderId = " + ownerId.getUUID() + ", dependentId = " + childNavonId.getUUID());
+                    log.debug("Skip section link ownerId = {} , dependentId = {}",
+                            ownerId.getUUID(),
+                            childNavonId.getUUID());
 
                 // skip the owner that "links" to the "section link node".
                continue;
@@ -785,8 +793,7 @@ public class PSManagedNavService implements IPSManagedNavService
       notEmpty(templateName);
       
       PSNavConfig config = getNavConfig();
-      String lpSlotName = config
-            .getPropertyString(PSNavConfig.NAVON_LANDING_SLOT);
+      List<String> lpSlotNames = config.getNavLandingPageSlotNames();
 
 
       try
@@ -796,13 +803,14 @@ public class PSManagedNavService implements IPSManagedNavService
          contentWs.prepareForEdit(nodeId);
          contentWs.prepareForEdit(pageId);
          contentWs.addContentRelations(nodeId, 
-               Collections.singletonList(pageId), lpSlotName, templateName, 0);
+               Collections.singletonList(pageId), lpSlotNames.get(0), templateName, 0);
       }
       catch (Exception e)
       {
-         String msg = "Failed to add landing page (id=" + pageId.toString() + 
-            ") to navon (id=" + nodeId.toString() + ").";
-         log.error(msg, e); 
+         String msg = "Failed to add landing page (id=" + pageId +
+            ") to navon (id=" + nodeId + ").";
+         log.error("{} Error: {}",
+                 msg, PSExceptionUtils.getMessageForLog(e));
          throw new PSNavException(msg, e);
       }
    }
@@ -991,12 +999,12 @@ public class PSManagedNavService implements IPSManagedNavService
           {
              return navId;
           }
-           
+
           return null;
       }
       else
       {
-          log.debug("Cannot find landing page for navigation id: " + navId.toString());
+          log.debug("Cannot find landing page for navigation id: {}",  navId);
           return null;
       }
    }
@@ -1013,8 +1021,8 @@ public class PSManagedNavService implements IPSManagedNavService
       
       PSServerFolderProcessor fp = PSServerFolderProcessor.getInstance();
       
-      List<PSLocator> navonFolders = null;
-      List<PSLocator> parentFolders = null;
+      List<PSLocator> navonFolders;
+      List<PSLocator> parentFolders;
 
       try
       {
@@ -1025,7 +1033,7 @@ public class PSManagedNavService implements IPSManagedNavService
       {
          throw new PSNavException(
                "Cannot find related folder for navigation node id = "
-                     + navonId.toString(), e);
+                     + navonId, e);
       }
       
       // if a real section, then the navon's folder's parent folder will be the same as it's parent navon's folder
@@ -1047,7 +1055,10 @@ public class PSManagedNavService implements IPSManagedNavService
 
       
       if (log.isDebugEnabled())
-          log.debug("[isSectionLink : " + result + "] navonId = " + navonId.getUUID() + ", navonParentId = " + navonParentId.getUUID());
+          log.debug("[isSectionLink : {} ] navonId = {} , navonParentId = {}",
+                  result,
+                  navonId.getUUID() ,
+                  navonParentId.getUUID());
       
       return result;
    }
@@ -1063,11 +1074,7 @@ public class PSManagedNavService implements IPSManagedNavService
       {
          IPSItemEntry target = cmsMgr.findItemEntry(((PSLegacyGuid) guid).getContentId());
          String contentTypeName = PSItemDefManager.getInstance().contentTypeIdToName(target.getContentTypeId());
-         if (StringUtils.equalsIgnoreCase(contentTypeName, CT_NAV_TREE))
-         {
-            return true;
-         }
-         return false;
+         return StringUtils.equalsIgnoreCase(contentTypeName, CT_NAV_TREE);
       }
       catch (PSInvalidContentTypeException e)
       {
@@ -1094,7 +1101,7 @@ public class PSManagedNavService implements IPSManagedNavService
     */
    public boolean isManagedNavUsed()
    {
-      return PSNavConfig.getInstance().isManagedNavUsed();
+      return PSNavConfig.isManagedNavUsed();
    }
    
    /**
@@ -1107,7 +1114,7 @@ public class PSManagedNavService implements IPSManagedNavService
    private IPSRequestContext getRequestCtx()
    {
       PSRequestContext req = 
-         (PSRequestContext) PSRequestInfo.getRequestInfo(PSRequestInfo.KEY_PSREQUESTCONTEXT);
+         (PSRequestContext) PSRequestInfoBase.getRequestInfo(PSRequestInfoBase.KEY_PSREQUESTCONTEXT);
       if (req == null)
          req =  new PSRequestContext(PSRequest.getContextForRequest());
       
@@ -1123,7 +1130,7 @@ public class PSManagedNavService implements IPSManagedNavService
    {
       if (menuSlot == null)
       {
-         menuSlot = getSlot(getNavConfig().getMenuSlotName());
+         menuSlot = getSlot(getNavConfig().getNavSubMenuSlotNames().get(0));
       }
       
       return menuSlot;
@@ -1134,7 +1141,7 @@ public class PSManagedNavService implements IPSManagedNavService
     * 
     * @return menu slot UUID.
     */
-   private long getMenuSlotId()
+   public long getMenuSlotId()
    {
       return getMenuSlot().getGUID().getUUID();
    }
@@ -1148,8 +1155,7 @@ public class PSManagedNavService implements IPSManagedNavService
    {
       if (landingPageSlot == null)
       {
-         landingPageSlot = getSlot(getNavConfig().getPropertyString(
-               PSNavConfig.NAVON_LANDING_SLOT));
+         landingPageSlot = getSlot(getNavConfig().getNavLandingPageSlotNames().get(0));
       }
       
       return landingPageSlot;

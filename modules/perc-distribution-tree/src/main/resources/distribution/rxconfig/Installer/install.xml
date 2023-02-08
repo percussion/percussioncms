@@ -1,6 +1,5 @@
 <?xml version="1.0"?>
-<project name="Percussion Install"
-         default="install">
+<project name="Percussion Install" default="install">
 
     <tstamp>
         <format property="timestamp" pattern="yyyy-MM-dd_HH-mm-ss"/>
@@ -89,11 +88,11 @@
 
     <condition property="upgradeFrom732" value="true" else="false">
         <and>
-            <available file="${install.dir}/jetty/base/etc/perc-ds.xml"/>
-            <resourcecontains resource="${install.dir}/jetty/base/etc/perc-ds.xml" substring="com.percussion.utils.container.jetty.PSJettyUtils" />
+            <available file="${install.dir}/Version.properties"/>
+            <resourcecontains resource="${install.dir}/Version.properties" substring="displayVersion=7.3.2" />
         </and>
     </condition>
-
+    <echo>upgradeFrom732=${upgradeFrom732}</echo>
     <echo>development install=${DEVELOPMENT}</echo>
     <echo>clean.install=${clean.install}</echo>
     <echo>base.dir=${base.dir}</echo>
@@ -156,7 +155,7 @@
         </fileset>
     </copy>
 
-       <copy verbose="true" todir="${install.dir}/jetty/base/webapps/Rhythmyx/WEB-INF/config/user" preservelastmodified="true" filtering="false" overwrite="false" force="false" failonerror="false">
+    <copy verbose="true" todir="${install.dir}/jetty/base/webapps/Rhythmyx/WEB-INF/config/user" preservelastmodified="true" filtering="false" overwrite="false" force="false" failonerror="false">
         <fileset dir="${install.dir}/AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/config/user">
         </fileset>
     </copy>
@@ -230,10 +229,10 @@
         <if>
             <!-- don't try to migrate configuration if it has already been done -->
             <available file="${install.dir}/AppServer/server/rx/deploy/jboss-web.deployer/server.xml" />
-        <then>
-            <PSUpdateJettyConfigFromJBoss rootDir="${install.dir}"/>
-            <PSConfigurePort rootDir="${install.dir}"/>
-        </then>
+            <then>
+                <PSUpdateJettyConfigFromJBoss rootDir="${install.dir}"/>
+                <PSConfigurePort rootDir="${install.dir}"/>
+            </then>
         </if>
 
         <echo>Updating CMS Config Files ************************...</echo>
@@ -248,17 +247,8 @@
             </then>
         </if>
 
-
-        <if>
-            <not>
-                <available file="${install.dir}/rxconfig/LDAP" type="dir" />
-            </not>
-            <then>
-                <mkdir dir="${install.dir}/rxconfig/LDAP" />
-                <copy todir="${install.dir}/rxconfig/LDAP" file="${install.src}/rxconfig/LDAP/ldapserver.xml"  failonerror="true" overwrite="false" verbose="true" />
-            </then>
-        </if>
-
+        <echo> Deleting CMS LDAP Directory </echo>
+        <delete dir="${install.dir}/rxconfig/LDAP"/>
 
         <if>
             <not>
@@ -325,18 +315,15 @@
             </then>
         </if>
 
-
-
-
         <if>
             <not>
-                <available file="${install.dir}/rxconfig/ContentEditors" type="dir" />
+                <available file="${install.dir}/rxconfig/Server/ContentEditors" type="dir" />
             </not>
             <then>
-                <mkdir dir="${install.dir}/rxconfig/ContentEditors" />
-                <copy todir="${install.dir}/rxconfig/ContentEditors/"
+                <mkdir dir="${install.dir}/rxconfig/Server/ContentEditors" />
+                <copy todir="${install.dir}/rxconfig/Server/ContentEditors/"
                       failonerror="false" overwrite="false" verbose="true">
-                    <fileset dir="${install.src}/rxconfig/ContentEditors/" defaultexcludes="no">
+                    <fileset dir="${install.src}/rxconfig/Server/ContentEditors/" defaultexcludes="no">
                         <include name="**/*"/>
                     </fileset>
                 </copy>
@@ -500,13 +487,12 @@
         <include name="Synchronizer.bin"/>
         <include name="Synchronizer.exe"/>
         <include name="Synchronizer.lax"/>
-        <include name="sys_search/lucene/indexes/**"/> <!-- Remove old lucene indexes - file format to old -->
+        <include name="sys_search/lucene/indexes/**"/>
     </patternset>
 
     <patternset id="upgrade.overwrite">
         <include name="rxconfig/Server/RequestHandlers.xml"/>
         <include name="rxconfig/Server/ContentEditors/ContentEditorSystemDef.xml"/>
-        <include name="rxconfig/Server/ContentEditors/shared/rxs_ct_shared.xml"/>
         <include name="rxconfig/Server/startupProcessManager.properties"/>
         <include name="rxconfig/Server/sys_DatabaseFunctionDefs.xml"/>
         <include name="rxconfig/Installer/**"/>
@@ -517,7 +503,12 @@
         <include name="Packages/Percussion/**"/>
         <include name="jetty/upstream/**"/>
         <include name="jetty/defaults/**"/>
-        <include name="jetty/base/webapps/**"/>
+        <include name="jetty/base/webapps/CI_Home.war/**"/>
+        <include name="jetty/base/webapps/EI_Home.war/**"/>
+        <include name="jetty/base/webapps/Rhythmyx/**"/>
+        <include name="jetty/base/webapps/CI_Home.xml"/>
+        <include name="jetty/base/webapps/EI_Home.xml"/>
+        <include name="jetty/base/webapps/Rhythmyx.xml"/>
         <include name="**/*.bat"/>
         <include name="**/*.sh"/>
     </patternset>
@@ -529,22 +520,17 @@
         <exclude name="jetty/base/etc/installation.properties"/>
         <exclude name="jetty/base/resources/log4j*.xml"/>
         <exclude name="rxconfig/Installer/rxrepository.properties"/>
-        <exclude name="rx_resources/vm/custom_head.vm"/>
-        <exclude name="rx_resources/tinymce/config/customer_config_override.json"/>
+        <exclude name="**/rx_resources/**"/>
+        <exclude name="**/customer_config_override.json"/>
         <exclude name="Repository/**"/>
         <exclude name="Extensions/**"/>
         <exclude name="rxconfig/**"/>
         <exclude name="Deployment"/>
         <exclude name="Staging"/>
-        <exclude name="rx_resources/tinymce/config/customer_config_override.json"/>
         <exclude name="logs"/>
-        <exclude name="ObjectStore"/>
+        <exclude name="**/ObjectStore/**"/>
         <exclude name="jetty/base/logs"/>
         <exclude name="rxconfig/Installer/*.bat"/>
-        <exclude name="ObjectStore/psx_cerff*.xml"/>
-        <exclude name="ObjectStore/psx_cepercNavImage.xml"/>
-        <exclude name="ObjectStore/psx_cepercNavon.xml"/>
-        <exclude name="ObjectStore/psx_cepercNavTree.xml"/>
     </patternset>
 
     <patternset id="upgrade.preserve">
@@ -610,9 +596,11 @@
     <target name="upgrade.chain">
         <echo>Performing upgrade installation...</echo>
         <antcall target="backup" inheritall="true" inheritrefs="true"/>
+        <antcall target="backupSharedContent" inheritall="true" inheritrefs="true"/>
         <antcall target="deleteOldLog4jJars"  inheritall="true" inheritrefs="true"/>
         <antcall target="upgrade_server" inheritall="true" inheritrefs="true"/>
         <antcall target="setupDB" inheritall="true" inheritrefs="true"/>
+        <antcall target="upgradeRelationshipConfig"  inheritall="true" inheritrefs="true"/>
         <antcall target="updatePackages" inheritall="true" inheritrefs="true"/>
         <antcall target="updateAuditLog" inheritall="true" inheritrefs="true"/>
         <antcall target="updateExtensions" inheritall="true" inheritrefs="true"/>
@@ -624,6 +612,11 @@
         <antcall target="replaceOldFontAwesome"  inheritall="true" inheritrefs="true"/>
         <antcall target="deleteOldJqueryUIJsFile"  inheritall="true" inheritrefs="true"/>
         <antcall target="deleteOldJqueryJsFile"  inheritall="true" inheritrefs="true"/>
+        <antcall target="deleteOldEXEFiles"  inheritall="true" inheritrefs="true"/>
+        <antcall target="deleteOldBouncyCastleJars"  inheritall="true" inheritrefs="true"/>
+        <antcall target="backupTinymceRxresources"  inheritall="true" inheritrefs="true"/>
+        <echo>Upgrade Done...Update Version.properties</echo>
+        <copy file="${install.src}/Version.properties" tofile="${install.dir}/Version.properties" overwrite="true" failonerror="false" force="true"/>
     </target>
 
     <target name="deleteOldLog4jJars">
@@ -645,6 +638,52 @@
 
     </target>
 
+    <target name="backupSharedContent">
+        <if>
+            <and>
+                <not>
+                    <available file="${install.dir}/rxconfig/Server/ContentEditors/shared/rxs_ct_shared.xml_percbak" type="file" />
+                </not>
+                <available file="${install.dir}/rxconfig/Server/ContentEditors/shared/rxs_ct_shared.xml" type="file"/>
+            </and>
+            <then>
+                <echo>Backup rxs_ct_shared.xml...</echo>
+                <copy file="${install.dir}/rxconfig/Server/ContentEditors/shared/rxs_ct_shared.xml" failonerror="false" tofile="${install.dir}/rxconfig/Server/ContentEditors/shared/rxs_ct_shared.xml_percbak" />
+            </then>
+        </if>
+        <echo>Deleting wrong dir from previous install...</echo>
+        <delete dir="${install.dir}/rxconfig/ContentEditors" includeemptydirs="true" verbose="true" failonerror="false"/>
+        <!--
+        <echo>Deleting wrong case(shared/Shared) dir in case not Windows...</echo>
+        <if>
+            <not>
+                <os family="windows" />
+            </not>
+            <then>
+                <delete verbose="true" failonerror="false" includeemptydirs="true">
+                    <fileset casesensitive="true" dir="${install.dir}/rxconfig/Server/ContentEditors/Shared"/>
+                </delete>
+            </then>
+        </if> -->
+
+    </target>
+
+    <target name="deleteOldBouncyCastleJars">
+        <echo>Deleting BouncyCastle Jars...</echo>
+        <delete failonerror="false" >
+            <fileset dir="${install.dir}/JRE/lib/ext" includes="**/bcprov-*.jar"/>
+            <fileset dir="${install.dir}/JRE/lib/ext" includes="**/bctls-*.jar"/>
+            <fileset dir="${install.dir}/JRE/lib/ext" includes="**/bcpkix-*.jar"/>
+            <fileset dir="${install.dir}/JRE/lib/ext" includes="**/bcmail-*.jar"/>
+            <fileset dir="${install.dir}/JRE/lib/ext" includes="**/bcpg-*.jar"/>
+            <fileset dir="${install.dir}/JRE64/lib/ext" includes="**/bcprov-*.jar"/>
+            <fileset dir="${install.dir}/JRE64/lib/ext" includes="**/bctls-*.jar"/>
+            <fileset dir="${install.dir}/JRE64/lib/ext" includes="**/bcpkix-*.jar"/>
+            <fileset dir="${install.dir}/JRE64/lib/ext" includes="**/bcmail-*.jar"/>
+            <fileset dir="${install.dir}/JRE64/lib/ext" includes="**/bcpg-*.jar"/>
+        </delete>
+    </target>
+
     <target name="deleteOldJqueryUIJsFile">
         <if>
             <available file="${install.dir}/web_resources/cm/jslib/jquery-ui.1.12.1.js" type="file" />
@@ -653,6 +692,45 @@
             </then>
         </if>
     </target>
+
+    <target name="upgradeRelationshipConfig">
+        <echo>Upgrading Relationship Config...</echo>
+        <PSUpgradeRelationshipConfig rootDir="${install.dir}"/>
+    </target>
+
+    <target name="backupTinymceRxresources">
+        <echo>Backup tinymce overrides as needs to be upgraded to 5...</echo>
+        <copy todir="${install.dir}/rx_resources/tinymce_811Upgrade_BAK">
+            <fileset dir="${install.dir}/rx_resources/tinymce"/>
+        </copy>
+        <delete failonerror="false" includeemptydirs="true" verbose="true">
+            <fileset dir="${install.dir}/rx_resources/tinymce">
+                <include name="**/*"/>
+                <exclude name="**/customer_config_override.json"/>
+            </fileset>
+        </delete>
+    </target>
+
+    <target name="deleteOldEXEFiles">
+        <echo>Deleting old 7.3.2 exe files...</echo>
+        <delete>
+            <fileset dir="${install.dir}">
+                <include name="lax.jar"/>
+                <include name="PackageBuilderHelp.zip"/>
+                <include name="PackageInstallerHelp.zip"/>
+                <include name="PercussionPackageBuilder.*"/>
+                <include name="PercussionPackageInstaller.*"/>
+                <include name="RhythmyxMultiServerManager.*"/>
+                <include name="RhythmyxServer.*"/>
+                <include name="RhythmyxServerAdministrator.*"/>
+                <include name="RhythmyxServerPropertiesEditor.*"/>
+                <include name="RhythmyxWorkbench.*"/>
+                <include name="RhythmyxWorkbenchHelp.zip"/>
+                <include name="RhythmyxXSpLit.*"/>
+            </fileset>
+        </delete>
+    </target>
+
 
     <target name="deleteOldJqueryJsFile">
         <if>
@@ -676,14 +754,14 @@
 
     <target name="replaceOldFontAwesome">
         <if>
-        <available file="${install.dir}/web_resources/cm/css/FontAwesome/" type="dir" />
-        <then>
-            <delete dir="${install.dir}/web_resources/cm/css/FontAwesome/"/>
-            <mkdir dir="${install.dir}/web_resources/cm/css/fontawesome/"/>
-            <copy todir="${install.dir}/web_resources/cm/css/fontawesome/">
-                <fileset dir="${install.src}/jetty/base/webapps/Rhythmyx/cm/jslib/profiles/3x/libraries/fontawesome" includes="**/*" />
-            </copy>
-        </then>
+            <available file="${install.dir}/web_resources/cm/css/FontAwesome/" type="dir" />
+            <then>
+                <delete dir="${install.dir}/web_resources/cm/css/FontAwesome/"/>
+                <mkdir dir="${install.dir}/web_resources/cm/css/fontawesome/"/>
+                <copy todir="${install.dir}/web_resources/cm/css/fontawesome/">
+                    <fileset dir="${install.src}/jetty/base/webapps/Rhythmyx/cm/jslib/profiles/3x/libraries/fontawesome" includes="**/*" />
+                </copy>
+            </then>
         </if>
     </target>
 
@@ -748,6 +826,7 @@
                 <patternset refid="upgrade.excludes"/>
                 <exclude name="**/Assets.json"/>
                 <exclude name="**/Pages.json"/>
+                <exclude name="**/Version.properties"/>
             </fileset>
         </copy>
 
@@ -761,6 +840,7 @@
                 <exclude name="**/Staging/**"/>
                 <exclude name="TomcatStartup.*"/>
                 <exclude name="TomcatShutdown.*"/>
+                <exclude name="**/Version.properties"/>
             </fileset>
         </delete>
         <copy verbose="true" todir="${install.dir}" preservelastmodified="true" filtering="false" overwrite="true" force="true" includeEmptyDirs="true">
@@ -770,6 +850,7 @@
                 <patternset refid="upgrade.excludes"/>
                 <exclude name="**/Assets.json"/>
                 <exclude name="**/Pages.json"/>
+                <exclude name="**/Version.properties"/>
             </fileset>
 
         </copy>
@@ -780,15 +861,22 @@
                 <include name="**"/>
             </fileset>
         </copy>
-        <copy file="${install.src}/Version.properties" tofile="${install.dir}/Version.properties" overwrite="true" failonerror="false" force="true"/>
 
-        <!-- Copy custom_head.vm in upgrade -->
-        <copy todir="${install.dir}/rx_resources/vm" overwrite="false" failonerror="false">
-            <fileset dir="${install.src}/rx_resources/vm" defaultexcludes="no">
-                <present present="srconly" targetdir="${install.dir}/rx_resources/vm"/>
-                <include name="custom_head.vm"/>
+        <!-- Copy new objects in rx_resources on upgrade -->
+        <echo>Copy any rx_resources missing files</echo>
+        <!-- to avoid overwrite need to touch -->
+        <touch>
+            <fileset dir="${install.dir}/rx_resources"/>
+        </touch>
+        <copy todir="${install.dir}/rx_resources" overwrite="false" failonerror="false">
+            <fileset dir="${install.src}/rx_resources" defaultexcludes="no">
+            <!-- Copy missing files in rx_resources but don't overwrite existing once-->
+                <include name="**/*"/>
+                <patternset refid="cache.file.excludes"/>
+                <exclude name="**/Assets.json"/>
+                <exclude name="**/Pages.json"/>
             </fileset>
-         </copy>
+        </copy>
 
 
         <copy todir="${install.dir}/jetty/base/webapps/Rhythmyx/WEB-INF/config/user" overwrite="false" failonerror="false">
@@ -800,36 +888,369 @@
         <delete verbose="true" failonerror="false" file="${install.dir}/jetty/base/webapps/Rhythmyx/WEB-INF/config/user/spring/imageWidget-beans.xml"/>
         <delete verbose="true" failonerror="false" file="${install.dir}/jetty/base/webapps/Rhythmyx/WEB-INF/config/user/spring/imageWidget-servlet.xml"/>
 
+        <echo>Copy Spring Config </echo>
         <copy verbose="true" todir="${install.dir}/jetty/base/webapps/Rhythmyx/WEB-INF/config/user/spring" overwrite="true" failonerror="false">
             <fileset dir="${install.src}/jetty/base/webapps/Rhythmyx/WEB-INF/config/user/spring" followsymlinks="false" includes="imageWidget*.xml">
             </fileset>
         </copy>
 
+        <echo>Copy Installer Dir </echo>
         <copy todir="${install.dir}/rxconfig/Installer" failonerror="false" overwrite="false">
             <fileset dir="${install.src}/rxconfig/Installer" followsymlinks="false" includes="rxrepository.properties">
                 <present present="srconly" targetdir="${install.dir}/rxconfig/Installer"/>
             </fileset>
         </copy>
 
+        <echo>Copy Repository Dir </echo>
         <copy todir="${install.dir}/Repository" failonerror="false" overwrite="false">
             <fileset dir="${install.src}/Repository" followsymlinks="false" includes="**">
                 <present present="srconly" targetdir="${install.dir}/Repository"/>
             </fileset>
         </copy>
 
-        <copy todir="${install.dir}/ObjectStore" failonerror="false" overwrite="false">
-            <fileset dir="${install.src}/ObjectStore" followsymlinks="false" includes="**">
-                <present present="srconly" targetdir="${install.dir}/ObjectStore"/>
+        <property name="fastforwardfile.list" value="psx_cerffAutoIndex.xml,psx_cerffBrief.xml,psx_cerffCalendar.xml,psx_cerffContacts.xml,psx_cerffEvent.xml,psx_cerffExternalLink.xml,psx_cerffFile.xml,psx_cerffGeneric.xml,psx_cerffGenericWord.xml,psx_cerffHome.xml,psx_cerffImage.xml,psx_cerffNavImage.xml,psx_cerffPressRelease.xml,psx_cerffNavImage.xml,psx_cerffNavon.xml,psx_cerffNavTree.xml"/>
+
+        <echo>Update ObjectStore with latest files </echo>
+        <copy todir="${install.dir}/ObjectStore" failonerror="false" overwrite="true">
+            <fileset dir="${install.src}/ObjectStore" followsymlinks="false" excludes="${fastforwardfile.list}" includes="**">
+                <!-- <present present="srconly" targetdir="${install.dir}/ObjectStore"/> don't copy fastforward files -->
             </fileset>
         </copy>
 
+        <property name="fastforwardfileReplace.list" value="psx_cerffAutoIndex.xml,psx_cerffBrief.xml,psx_cerffCalendar.xml,psx_cerffContacts.xml,psx_cerffEvent.xml,psx_cerffExternalLink.xml,psx_cerffFile.xml,psx_cerffGeneric.xml,psx_cerffGenericWord.xml,psx_cerffHome.xml,psx_cerffImage.xml,psx_cerffPressRelease.xml"/>
+        <echo>Only copy Fastforward files, if already present  </echo>
+        <!-- Only copy Fastforward files, if already present Don't overwrite psx_cerffNavImage.xml,psx_cerffNavon.xml,psx_cerffNavTree.xml-->
+        <for param="file" list="${fastforwardfileReplace.list}">
+            <sequential>
+                <if>
+                    <available file="${install.dir}/ObjectStore/@{file}"/>
+                    <then>
+                        <copy todir="${install.dir}/ObjectStore" file="${install.src}/ObjectStore/@{file}" failonerror="false" overwrite="true"/>
+                    </then>
+                </if>
+            </sequential>
+        </for>
+
+        <echo>Adding IMG HASH Mappings for IMG1 and IMG2 </echo>
+        <replace summary="yes">
+            <fileset dir="${install.dir}/ObjectStore" followsymlinks="false" includes="**">
+                <include name="**/*.xml"/>
+                <not>
+                    <contains text="IMG1_HASH" casesensitive="false" />
+                </not>
+                <and>
+                    <contains text="IMG1" casesensitive="false" />
+                </and>
+            </fileset>
+
+            <replacetoken><![CDATA[<PSXFieldSet name="sharedimage" repeatability="oneOrMore" supportsSequencing="no" type="multiPropertySimpleChild" userSearchable="yes">]]></replacetoken>
+            <replacevalue><![CDATA[ <PSXFieldSet name="sharedimage" repeatability="oneOrMore" supportsSequencing="no" type="multiPropertySimpleChild" userSearchable="yes">
+                    <PSXField forceBinary="no" modificationType="user" name="img1_hash" showInPreview="yes" showInSummary="yes" type="shared">
+              <DataType></DataType>
+              <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="no" visibleToGlobalQuery="yes"/>
+            </PSXField>
+                   <PSXField forceBinary="no" modificationType="user" name="img2_hash" showInPreview="yes" showInSummary="yes" type="shared">
+              <DataType></DataType>
+              <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="no" visibleToGlobalQuery="yes"/>
+            </PSXField>]]></replacevalue>
+            <replacefilter>
+                <replacetoken><![CDATA[ <PSXDisplayMapping>
+               <FieldRef>img1</FieldRef>
+               <PSXUISet>
+                  <Label>
+                     <PSXDisplayText>Image:</PSXDisplayText>
+                  </Label>
+                  <PSXControlRef id="76" name="sys_File"/>
+                  <ErrorLabel>
+                     <PSXDisplayText>Image:</PSXDisplayText>
+                  </ErrorLabel>
+               </PSXUISet>
+            </PSXDisplayMapping>
+        ]]></replacetoken>
+                <replacevalue><![CDATA[ <PSXDisplayMapping>
+               <FieldRef>img1</FieldRef>
+               <PSXUISet>
+                  <Label>
+                     <PSXDisplayText>Image:</PSXDisplayText>
+                  </Label>
+                  <PSXControlRef id="76" name="sys_File"/>
+                  <ErrorLabel>
+                     <PSXDisplayText>Image:</PSXDisplayText>
+                  </ErrorLabel>
+               </PSXUISet>
+            </PSXDisplayMapping>
+            <PSXDisplayMapping>
+               <FieldRef>img1_hash</FieldRef>
+               <PSXUISet>
+                  <Label>
+                     <PSXDisplayText>Image:</PSXDisplayText>
+                  </Label>
+                  <PSXControlRef id="10003" name="sys_HashedFile"/>
+                  <ErrorLabel>
+                     <PSXDisplayText>Image:</PSXDisplayText>
+                  </ErrorLabel>
+               </PSXUISet>
+            </PSXDisplayMapping>
+            <PSXDisplayMapping>
+               <FieldRef>img2_hash</FieldRef>
+               <PSXUISet>
+                  <Label>
+                     <PSXDisplayText>Mini:</PSXDisplayText>
+                  </Label>
+                  <PSXControlRef id="10005" name="sys_HashedFile"/>
+                  <ErrorLabel>
+                     <PSXDisplayText>Mini:</PSXDisplayText>
+                  </ErrorLabel>
+               </PSXUISet>
+            </PSXDisplayMapping>]]></replacevalue>
+            </replacefilter>
+        </replace>
+
+        <echo> updating sys_TinyMCE and sys_EditLive with sys_tinymce in objectstore </echo>
+        <replace dir="${install.dir}/ObjectStore">
+            <include name="**/*.xml"/>
+            <replacefilter>
+                <replacetoken><![CDATA[name="sys_TinyMCE"]]></replacetoken>
+                <replacevalue><![CDATA[name="sys_tinymce"]]></replacevalue>
+            </replacefilter>
+            <replacefilter>
+                <replacetoken><![CDATA[name="sys_EditLive"]]></replacetoken>
+                <replacevalue><![CDATA[name="sys_tinymce"]]></replacevalue>
+            </replacefilter>
+        </replace>
+
+        <echo>Adding ITEM_FILE_ATTACHMENT_HASH Mapping </echo>
+        <replace summary="yes">
+            <fileset dir="${install.dir}/ObjectStore" followsymlinks="false" includes="**">
+                <include name="**/*.xml"/>
+
+                <not>
+                    <contains text="item_file_attachment_hash" />
+                </not>
+                <and>
+                    <contains text="item_file_attachment" />
+                </and>
+            </fileset>
+            <replacefilter>
+                <replacetoken><![CDATA[    <PSXDisplayMapping>
+              <FieldRef>item_file_attachment</FieldRef>
+                        <PSXUISet accessKey="F"/>
+            </PSXDisplayMapping>
+        ]]></replacetoken>
+                <replacevalue><![CDATA[    <PSXDisplayMapping>
+              <FieldRef>item_file_attachment</FieldRef>
+                        <PSXUISet accessKey="F"/>
+            </PSXDisplayMapping>
+              <PSXDisplayMapping>
+              <FieldRef>item_file_attachment_hash</FieldRef>
+                        <PSXUISet accessKey="H"/>
+            </PSXDisplayMapping>]]></replacevalue>
+            </replacefilter>
+        </replace>
+
+        <if>
+            <available file="${install.dir}/rxconfig/Server/ContentEditors/shared" type="dir"/>
+            <then>
+        <echo> updating sys_TinyMCE and sys_EditLive with sys_tinymce in rxs_ct_shared and new columns </echo>
+        <replace dir="${install.dir}/rxconfig/Server/ContentEditors/shared">
+            <include name="**/*.xml"/>
+            <replacefilter>
+                <replacetoken><![CDATA[name="sys_TinyMCE"]]></replacetoken>
+                <replacevalue><![CDATA[name="sys_tinymce"]]></replacevalue>
+            </replacefilter>
+            <replacefilter>
+                <replacetoken><![CDATA[name="sys_EditLive"]]></replacetoken>
+                <replacevalue><![CDATA[name="sys_tinymce"]]></replacevalue>
+            </replacefilter>
+        </replace>
+
+        <echo>Adding IMG HASH Mappings for IMG1 and IMG2 in rxs_ct_shared</echo>
+        <replace summary="yes">
+            <fileset  dir="${install.dir}/rxconfig/Server/ContentEditors/shared" followsymlinks="false" includes="**">
+                <include name="**/*.xml"/>
+
+                <not>
+                    <contains text="IMG1_HASH" />
+                </not>
+            </fileset>
+            <replacetoken><![CDATA[<PSXFieldSet name="sharedimage" repeatability="oneOrMore" supportsSequencing="no" type="multiPropertySimpleChild" userSearchable="yes">]]></replacetoken>
+            <replacevalue><![CDATA[<PSXFieldSet name="sharedimage" repeatability="oneOrMore" supportsSequencing="no" type="multiPropertySimpleChild" userSearchable="yes">
+        <PSXField forceBinary="no" modificationType="user" name="img1_hash" showInPreview="yes" showInSummary="yes" type="shared">
+            <DataLocator>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>RXS_CT_SHAREDIMAGE</tableAlias>
+                  <column>IMG1_HASH</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+            </DataLocator>
+            <DataType>text</DataType>
+            <DataFormat>10</DataFormat>
+            <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+            <PSXPropertySet>
+               <PSXProperty locked="yes" name="cleanupBrokenInlineLinks">
+                  <Value type="Boolean">no</Value>
+               </PSXProperty>
+               <PSXProperty locked="yes" name="mayHaveInlineLinks">
+                  <Value type="Boolean">no</Value>
+               </PSXProperty>
+            </PSXPropertySet>
+            <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+         </PSXField>
+        <PSXField forceBinary="no" modificationType="user" name="img2_hash" showInPreview="yes" showInSummary="yes" type="shared">
+            <DataLocator>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>RXS_CT_SHAREDIMAGE</tableAlias>
+                  <column>IMG2_HASH</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+            </DataLocator>
+            <DataType>text</DataType>
+            <DataFormat>10</DataFormat>
+            <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+            <PSXPropertySet>
+               <PSXProperty locked="yes" name="cleanupBrokenInlineLinks">
+                  <Value type="Boolean">no</Value>
+               </PSXProperty>
+               <PSXProperty locked="yes" name="mayHaveInlineLinks">
+                  <Value type="Boolean">no</Value>
+               </PSXProperty>
+            </PSXPropertySet>
+            <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+         </PSXField>]]></replacevalue>
+            <replacefilter>
+                <replacetoken><![CDATA[ <PSXDisplayMapping>
+               <FieldRef>img1</FieldRef>
+               <PSXUISet>
+                  <Label>
+                     <PSXDisplayText>Image:</PSXDisplayText>
+                  </Label>
+                  <PSXControlRef id="76" name="sys_File"/>
+                  <ErrorLabel>
+                     <PSXDisplayText>Image:</PSXDisplayText>
+                  </ErrorLabel>
+               </PSXUISet>
+            </PSXDisplayMapping>
+        ]]></replacetoken>
+                <replacevalue><![CDATA[ <PSXDisplayMapping>
+               <FieldRef>img1</FieldRef>
+               <PSXUISet>
+                  <Label>
+                     <PSXDisplayText>Image:</PSXDisplayText>
+                  </Label>
+                  <PSXControlRef id="76" name="sys_File"/>
+                  <ErrorLabel>
+                     <PSXDisplayText>Image:</PSXDisplayText>
+                  </ErrorLabel>
+               </PSXUISet>
+            </PSXDisplayMapping>
+            <PSXDisplayMapping>
+               <FieldRef>img1_hash</FieldRef>
+               <PSXUISet>
+                  <Label>
+                     <PSXDisplayText>Image:</PSXDisplayText>
+                  </Label>
+                  <PSXControlRef id="10003" name="sys_HashedFile"/>
+                  <ErrorLabel>
+                     <PSXDisplayText>Image:</PSXDisplayText>
+                  </ErrorLabel>
+               </PSXUISet>
+            </PSXDisplayMapping>
+            <PSXDisplayMapping>
+               <FieldRef>img2_hash</FieldRef>
+               <PSXUISet>
+                  <Label>
+                     <PSXDisplayText>Mini:</PSXDisplayText>
+                  </Label>
+                  <PSXControlRef id="10005" name="sys_HashedFile"/>
+                  <ErrorLabel>
+                     <PSXDisplayText>Mini:</PSXDisplayText>
+                  </ErrorLabel>
+               </PSXUISet>
+            </PSXDisplayMapping>]]></replacevalue>
+            </replacefilter>
+        </replace>
+
+        <echo>Adding ITEM_FILE_ATTACHMENT_HASH Mapping </echo>
+        <replace summary="yes">
+            <fileset  dir="${install.dir}/rxconfig/Server/ContentEditors/shared" followsymlinks="false" includes="**">
+                <include name="**/*.xml"/>
+
+                <not>
+                    <contains text="ITEM_FILE_ATTACHMENT_HASH" />
+                </not>
+            </fileset>
+            <replacetoken><![CDATA[<PSXFieldSet name="sharedbinary" repeatability="oneOrMore" supportsSequencing="no" type="multiPropertySimpleChild" userSearchable="yes">]]></replacetoken>
+            <replacevalue><![CDATA[<PSXFieldSet name="sharedbinary" repeatability="oneOrMore" supportsSequencing="no" type="multiPropertySimpleChild" userSearchable="yes">
+        <PSXField forceBinary="no" modificationType="user" name="item_file_attachment_hash" showInPreview="yes" showInSummary="yes" type="shared">
+            <DataLocator>
+               <PSXBackEndColumn id="0">
+                  <tableAlias>RXS_CT_SHAREDBINARY</tableAlias>
+                  <column>ITEM_FILE_ATTACHMENT_HASH</column>
+                  <columnAlias/>
+               </PSXBackEndColumn>
+            </DataLocator>
+            <DataType>text</DataType>
+            <DataFormat>10</DataFormat>
+            <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+            <PSXPropertySet>
+               <PSXProperty locked="yes" name="cleanupBrokenInlineLinks">
+                  <Value type="Boolean">no</Value>
+               </PSXProperty>
+               <PSXProperty locked="yes" name="mayHaveInlineLinks">
+                  <Value type="Boolean">no</Value>
+               </PSXProperty>
+            </PSXPropertySet>
+            <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+         </PSXField>]]></replacevalue>
+            <replacefilter>
+                <replacetoken><![CDATA[   <PSXDisplayMapping>
+               <FieldRef>item_file_attachment</FieldRef>
+               <PSXUISet>
+                  <Label>
+                     <PSXDisplayText>File:</PSXDisplayText>
+                  </Label>
+                  <PSXControlRef id="121" name="sys_File"/>
+                  <ErrorLabel>
+                     <PSXDisplayText>File:</PSXDisplayText>
+                  </ErrorLabel>
+               </PSXUISet>
+            </PSXDisplayMapping>
+        ]]></replacetoken>
+                <replacevalue><![CDATA[   <PSXDisplayMapping>
+               <FieldRef>item_file_attachment</FieldRef>
+               <PSXUISet>
+                  <Label>
+                     <PSXDisplayText>File:</PSXDisplayText>
+                  </Label>
+                  <PSXControlRef id="121" name="sys_File"/>
+                  <ErrorLabel>
+                     <PSXDisplayText>File:</PSXDisplayText>
+                  </ErrorLabel>
+               </PSXUISet>
+            </PSXDisplayMapping>
+             <PSXDisplayMapping>
+               <FieldRef>item_file_attachment_hash</FieldRef>
+               <PSXUISet>
+                  <Label>
+                     <PSXDisplayText>File:</PSXDisplayText>
+                  </Label>
+                  <PSXControlRef id="10005" name="sys_HashedFile"/>
+                  <ErrorLabel>
+                     <PSXDisplayText>File:</PSXDisplayText>
+                  </ErrorLabel>
+               </PSXUISet>
+            </PSXDisplayMapping>]]></replacevalue>
+            </replacefilter>
+        </replace>
+            </then>
+        </if>
         <copy todir="${install.dir}/jetty/base/webapps/Rhythmyx/WEB-INF/config/spring/projects" overwrite="false" failonerror="false">
             <fileset dir="${install.src}/jetty/base/webapps/Rhythmyx/WEB-INF/config/spring/projects" followsymlinks="false" includes="**">
                 <present present="srconly" targetdir="${install.dir}/jetty/base/webapps/Rhythmyx/WEB-INF/config/spring/projects"/>
             </fileset>
         </copy>
 
-       <copy todir="${install.dir}/jetty/base/logs" failonerror="false" overwrite="false">
+        <copy todir="${install.dir}/jetty/base/logs" failonerror="false" overwrite="false">
             <fileset dir="${install.src}/jetty/base/webapps/Rhythmyx/WEB-INF/config/spring/projects" followsymlinks="false" includes="**">
                 <present present="srconly" targetdir="${install.dir}/jetty/base/webapps/Rhythmyx/WEB-INF/config/spring/projects"/>
             </fileset>
@@ -892,6 +1313,16 @@
                                 </replace>
                             </then>
                         </if>
+                        <if>
+                            <resourcecontains resource="${install.dir}/jetty/base/etc/perc-ds.xml" substring="com.percussion.utils.container.jetty.PSJettyUtils" />
+                            <then>
+                                <echo>Replacing PSJettyUtils with PSStaticContainerUtils from ${install.dir}/jetty/base/etc/perc-ds.xml </echo>
+                                <replace file="${install.dir}/jetty/base/etc/perc-ds.xml" summary="yes">
+                                    <replacetoken><![CDATA[com.percussion.utils.container.jetty.PSJettyUtils]]></replacetoken>
+                                    <replacevalue><![CDATA[com.percussion.utils.container.PSStaticContainerUtils]]></replacevalue>
+                                </replace>
+                            </then>
+                        </if>
                     </else>
                 </if>
             </then>
@@ -902,22 +1333,32 @@
                 <if>
                     <!--- if ugrading from 7.3.2, then this file will be there thus replace with new -->
                     <resourcecontains resource="${install.dir}/jetty/defaults/etc/perc-ds.xml" substring="com.percussion.utils.container.jetty.PSJettyUtils" />
-                <then>
-                    <echo>Replace perc-ds.xml with new version from source </echo>
-                    <copy file="${install.src}/jetty/defaults/etc/perc-ds.xml" tofile="${install.dir}/jetty/defaults/etc/perc-ds.xml" />
-                </then>
-                <else>
-                    <if>
-                    <resourcecontains resource="${install.dir}/jetty/defaults/etc/perc-ds.xml" substring="DOCTYPE Configure PUBLIC " />
+                    <then>
+                        <echo>Replace perc-ds.xml with new version from source </echo>
+                        <copy file="${install.src}/jetty/defaults/etc/perc-ds.xml" tofile="${install.dir}/jetty/defaults/etc/perc-ds.xml" />
+                    </then>
+                    <else>
+                        <if>
+                            <resourcecontains resource="${install.dir}/jetty/defaults/etc/perc-ds.xml" substring="DOCTYPE Configure PUBLIC " />
 
-                        <then>
-                            <echo>Removing Doctype from ${install.dir}/jetty/defaults/etc/perc-ds.xml </echo>
-                            <replace file="${install.dir}/jetty/defaults/etc/perc-ds.xml" summary="yes">
-                                <replacetoken><![CDATA[<!DOCTYPE Configure PUBLIC "-//Jetty//Configure//EN" "http://www.eclipse.org/jetty/configure_9_3.dtd">]]></replacetoken>
-                                <replacevalue><![CDATA[]]></replacevalue>
-                            </replace>
-                        </then>
-                    </if>
+                            <then>
+                                <echo>Removing Doctype from ${install.dir}/jetty/defaults/etc/perc-ds.xml </echo>
+                                <replace file="${install.dir}/jetty/defaults/etc/perc-ds.xml" summary="yes">
+                                    <replacetoken><![CDATA[<!DOCTYPE Configure PUBLIC "-//Jetty//Configure//EN" "http://www.eclipse.org/jetty/configure_9_3.dtd">]]></replacetoken>
+                                    <replacevalue><![CDATA[]]></replacevalue>
+                                </replace>
+                            </then>
+                        </if>
+                        <if>
+                            <resourcecontains resource="${install.dir}/jetty/base/etc/perc-ds.xml" substring="com.percussion.utils.container.jetty.PSJettyUtils" />
+                            <then>
+                                <echo>Replacing PSJettyUtils with PSStaticContainerUtils from ${install.dir}/jetty/base/etc/perc-ds.xml </echo>
+                                <replace file="${install.dir}/jetty/base/etc/perc-ds.xml" summary="yes">
+                                    <replacetoken><![CDATA[com.percussion.utils.container.jetty.PSJettyUtils]]></replacetoken>
+                                    <replacevalue><![CDATA[com.percussion.utils.container.PSStaticContainerUtils]]></replacevalue>
+                                </replace>
+                            </then>
+                        </if>
                     </else>
                 </if>
             </then>
@@ -928,23 +1369,33 @@
                 <if>
                     <!--- if ugrading from 7.3.2, then this file will be there thus replace with new -->
                     <resourcecontains resource="${install.dir}/jetty/defaults/modules/perc-ds/etc/perc-ds.xml" substring="com.percussion.utils.container.jetty.PSJettyUtils" />
-                <then>
-                    <echo>Replace perc-ds.xml with new version from source </echo>
-                    <copy file="${install.src}/jetty/defaults/modules/perc-ds/etc/perc-ds.xml" tofile="${install.dir}/jetty/defaults/modules/perc-ds/etc/perc-ds.xml" />
-                </then>
-                <else>
-                <if>
-                    <resourcecontains resource="${install.dir}/jetty/defaults/modules/perc-ds/etc/perc-ds.xml" substring="!DOCTYPE Configure" />
                     <then>
-                        <echo>Removing Doctype from ${install.dir}/jetty/defaults/modules/perc-ds/etc/perc-ds.xml </echo>
-                        <replace file="${install.dir}/jetty/defaults/modules/perc-ds/etc/perc-ds.xml" summary="yes">
-                            <replacetoken><![CDATA[<!DOCTYPE Configure
-  PUBLIC "-//Jetty//Configure//EN" "http://www.eclipse.org/jetty/configure_9_3.dtd">]]></replacetoken>
-                            <replacevalue><![CDATA[]]></replacevalue>
-                        </replace>
+                        <echo>Replace perc-ds.xml with new version from source </echo>
+                        <copy file="${install.src}/jetty/defaults/modules/perc-ds/etc/perc-ds.xml" tofile="${install.dir}/jetty/defaults/modules/perc-ds/etc/perc-ds.xml" />
                     </then>
-                </if>
-                </else>
+                    <else>
+                        <if>
+                            <resourcecontains resource="${install.dir}/jetty/defaults/modules/perc-ds/etc/perc-ds.xml" substring="!DOCTYPE Configure" />
+                            <then>
+                                <echo>Removing Doctype from ${install.dir}/jetty/defaults/modules/perc-ds/etc/perc-ds.xml </echo>
+                                <replace file="${install.dir}/jetty/defaults/modules/perc-ds/etc/perc-ds.xml" summary="yes">
+                                    <replacetoken><![CDATA[<!DOCTYPE Configure
+  PUBLIC "-//Jetty//Configure//EN" "http://www.eclipse.org/jetty/configure_9_3.dtd">]]></replacetoken>
+                                    <replacevalue><![CDATA[]]></replacevalue>
+                                </replace>
+                            </then>
+                        </if>
+                        <if>
+                            <resourcecontains resource="${install.dir}/jetty/base/etc/perc-ds.xml" substring="com.percussion.utils.container.jetty.PSJettyUtils" />
+                            <then>
+                                <echo>Replacing PSJettyUtils with PSStaticContainerUtils from ${install.dir}/jetty/base/etc/perc-ds.xml </echo>
+                                <replace file="${install.dir}/jetty/base/etc/perc-ds.xml" summary="yes">
+                                    <replacetoken><![CDATA[com.percussion.utils.container.jetty.PSJettyUtils]]></replacetoken>
+                                    <replacevalue><![CDATA[com.percussion.utils.container.PSStaticContainerUtils]]></replacevalue>
+                                </replace>
+                            </then>
+                        </if>
+                    </else>
                 </if>
             </then>
         </if>
@@ -1011,6 +1462,8 @@
             </fileset>
         </copy>
         <delete dir="${install.dir}/AppServer" verbose="true" failonerror="false" />
+        <delete dir="${install.dir}/jetty/base/webapps/RxServices"/>
+        <delete dir="${install.dir}/jetty/base/webapps/root"/>
     </target>
 
 
@@ -1024,10 +1477,7 @@
                 <patternset refid="cache.file.excludes"/>
                 <!-- Exclude Fast Forward Content Types Definitions
                      must be installed with packages instead.-->
-                <exclude name="psx_cerff*.xml"/>
-                <exclude name="psx_cepercNavImage.xml"/>
-                <exclude name="psx_cepercNavon.xml"/>
-                <exclude name="psx_cepercNavTree.xml"/>
+                <exclude name="**/psx_cerff*.xml"/>
                 <exclude name="**/Assets.json"/>
                 <exclude name="**/Pages.json"/>
             </fileset>

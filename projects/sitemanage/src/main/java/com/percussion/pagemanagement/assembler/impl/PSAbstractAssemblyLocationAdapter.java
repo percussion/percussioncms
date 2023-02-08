@@ -1,25 +1,18 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2021 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.percussion.pagemanagement.assembler.impl;
 
@@ -54,6 +47,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import static com.percussion.share.rx.PSLegacyExtensionUtils.addParameters;
 import static org.apache.commons.lang.StringUtils.isNotBlank;
@@ -376,23 +370,33 @@ public abstract class PSAbstractAssemblyLocationAdapter implements IPSAssemblyLo
         }
 
         @Override
-        public boolean equals(Object o)
-        {
-            return EqualsBuilder.reflectionEquals(this, o);
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (!(o instanceof PSAssemblyLocationRequest)) return false;
+            PSAssemblyLocationRequest that = (PSAssemblyLocationRequest) o;
+            return Objects.equals(getItemId(), that.getItemId()) && Objects.equals(getTemplateId(), that.getTemplateId()) && Objects.equals(getSiteId(), that.getSiteId()) && Objects.equals(getFolderId(), that.getFolderId()) && Objects.equals(getContext(), that.getContext()) && Objects.equals(getAssemblyContext(), that.getAssemblyContext()) && Objects.equals(getDeliveryContext(), that.getDeliveryContext()) && Objects.equals(getItemFilter(), that.getItemFilter()) && Objects.equals(getPage(), that.getPage()) && Objects.equals(getParameters(), that.getParameters());
         }
 
         @Override
-        public int hashCode()
-        {
-            //Do not use the id to generate a hash code.
-            return HashCodeBuilder.reflectionHashCode(this, new String[]
-            {"id"});
+        public int hashCode() {
+            return Objects.hash(getItemId(), getTemplateId(), getSiteId(), getFolderId(), getContext(), getAssemblyContext(), getDeliveryContext(), getItemFilter(), getPage(), getParameters());
         }
 
         @Override
-        public String toString()
-        {
-            return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
+        public String toString() {
+            final StringBuffer sb = new StringBuffer("PSAssemblyLocationRequest{");
+            sb.append("itemId=").append(itemId);
+            sb.append(", templateId=").append(templateId);
+            sb.append(", siteId=").append(siteId);
+            sb.append(", folderId=").append(folderId);
+            sb.append(", context=").append(context);
+            sb.append(", assemblyContext=").append(assemblyContext);
+            sb.append(", deliveryContext=").append(deliveryContext);
+            sb.append(", itemFilter='").append(itemFilter).append('\'');
+            sb.append(", page=").append(page);
+            sb.append(", parameters=").append(parameters);
+            sb.append('}');
+            return sb.toString();
         }
 
         @Override

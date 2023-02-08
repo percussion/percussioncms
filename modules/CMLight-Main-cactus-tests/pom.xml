@@ -4,7 +4,7 @@
     <parent>
         <groupId>com.percussion</groupId>
         <artifactId>core</artifactId>
-        <version>8.1.1-SNAPSHOT</version>
+        <version>8.1.1</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
     <artifactId>perc-system-cactus-tests</artifactId>
@@ -295,7 +295,7 @@
                 </exclusion>
                 <exclusion>
                     <groupId>org.bouncycastle</groupId>
-                    <artifactId>gcpg-jdk15on</artifactId>
+                    <artifactId>bcpg-jdk15on</artifactId>
                 </exclusion>
             </exclusions>
             <scope>test</scope>
@@ -303,7 +303,7 @@
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>perc-deployer</artifactId>
-            <version>8.1.1-SNAPSHOT</version>
+            <version>8.1.1</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

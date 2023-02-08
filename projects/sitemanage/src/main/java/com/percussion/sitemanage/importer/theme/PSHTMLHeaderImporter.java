@@ -1,46 +1,37 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.percussion.sitemanage.importer.theme;
+
+import com.percussion.sitemanage.importer.IPSSiteImportLogger;
+import com.percussion.sitemanage.importer.helpers.impl.PSImportThemeHelper.LogCategory;
+import com.percussion.utils.types.PSPair;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
+import java.text.MessageFormat;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.apache.commons.lang.StringUtils.containsIgnoreCase;
 import static org.apache.commons.lang.StringUtils.equalsIgnoreCase;
 import static org.apache.commons.lang.StringUtils.isBlank;
 import static org.apache.commons.lang.StringUtils.isNotBlank;
 import static org.apache.commons.lang.Validate.notNull;
-
-import com.percussion.sitemanage.importer.IPSSiteImportLogger;
-import com.percussion.sitemanage.importer.helpers.impl.PSImportThemeHelper.LogCategory;
-import com.percussion.utils.types.PSPair;
-
-import java.net.MalformedURLException;
-import java.text.MessageFormat;
-import java.util.HashMap;
-import java.util.Map;
-
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
 /**
  * Importer class that will be get the links and scripts from header of a given
@@ -82,7 +73,7 @@ public class PSHTMLHeaderImporter
      * Constructor, builds an instance of the importer with the given
      * parameters.
      * 
-     * @param docHeader {@link Element} which holds the <header> element from
+     * @param sourceDoc {@link Element} which holds the <header> element from
      *            the imported site. Must not be <code>null</code>.
      * @param siteUrl {@link String} with the url for the site the user is
      *            trying to import. Must not be <code>null</code>.
@@ -227,7 +218,6 @@ public class PSHTMLHeaderImporter
      * replaced properly, calls the CSS parser with the style content, and the
      * updates the Style tag inside the document header. A map is returned so the images
      * 
-     * @throws MalformedURLException. If the path for the link cannot be
      *             determined.
      * @return {@link Map}<{@link String}, {@link String}> that holds the images
      *         that need to be downloaded. Never <code>null</code> but may be
@@ -280,8 +270,6 @@ public class PSHTMLHeaderImporter
      * if needed, calls to the PSURLConvert. Then the original URL is replaced
      * in the img tag, and the image is added into the map, to be downloaded.
      * 
-     * @throws MalformedURLException. If the path for the link cannot be
-     *             determined.
      * @return {@link Map}<{@link String}, {@link String}> that holds the images
      *         that need to be downloaded. Never <code>null</code> but may be
      *         empty.
@@ -584,10 +572,9 @@ public class PSHTMLHeaderImporter
      * files that need to be downloaded.
      * 
      * @param flash {@link Element} the flash object element to be processed.
-     * @param cssQuerr {@link String} the jsoup query used to get the elements
+     * @param cssQuery {@link String} the jsoup query used to get the elements
      *            from flash object.
      * @param attribValue {@link String} the attribute value to get and update.
-     * @param embedFlashPaths {@link Map} the map of processed paths.
      * @param siteName {@link String} the name of the site.
      * 
      * @return {@link Map}<{@link String}, {@link String}> that holds the swf
@@ -624,7 +611,6 @@ public class PSHTMLHeaderImporter
      * Process the data attribute of a flash object if exists.
      * 
      * @param flash {@link Element} the flash object element to be processed.
-     * @param embedFlashPaths {@link Map} the map of processed paths.
      * @param siteName {@link String} the name of the site.
      * 
      * @return {@link Map}<{@link String}, {@link String}> that holds the swf

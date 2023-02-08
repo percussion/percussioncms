@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<taglib xmlns="http://java.sun.com/xml/ns/j2ee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd"
+    version="2.0">
+    
+  <description>Tag library provides page tracking and login to tracking system</description>
+
+  <display-name>P13N Tracking</display-name>
+  <tlib-version>1.1</tlib-version>
+  <short-name>track</short-name>
+  <uri>http://www.percussion.com/soln/p13n/tracking</uri>
+  <tag>
+        <description>Connect visitor profile to user</description> 		
+        <name>login</name>
+        <tag-class>com.percussion.soln.p13n.tracking.web.taglib.LoginTag</tag-class>
+        <body-content>JSP</body-content>
+         <attribute>
+         	<description>The username to select the profile of</description>
+        	<name>userName</name>
+        	<required>true</required>
+        	<rtexprvalue>true</rtexprvalue>
+      	</attribute>
+        <attribute>
+        	<description>The URI of the JSON service to connect to</description>
+        	<name>requestURI</name>
+        	<required>false</required>
+        	<rtexprvalue>true</rtexprvalue>
+      	</attribute>
+      	 <attribute>
+        	<description>The segment weights to increment</description>
+        	<name>segmentWeights</name>
+        	<required>false</required>
+        	<rtexprvalue>true</rtexprvalue>
+      	</attribute>
+      	 <attribute>
+        	<description>The segment weights to increment</description>
+        	<name>label</name>
+        	<required>true</required>
+        	<rtexprvalue>true</rtexprvalue>
+      	</attribute>
+    </tag>
+     <tag>
+        <description>Builds a tracking image tag that increments existing values by specified amounts</description> 		
+        <name>track</name>
+        <tag-class>com.percussion.soln.p13n.tracking.web.taglib.TrackTag</tag-class>
+        <body-content>JSP</body-content>
+      	 <attribute>
+        	<description>The segment weights to increment</description>
+        	<name>segmentWeights</name>
+        	<required>false</required>
+        	<rtexprvalue>true</rtexprvalue>
+      	</attribute>
+      	<attribute>
+        	<description>The URI of the JSON service to connect to</description>
+        	<name>requestURI</name>
+        	<required>true</required>
+        	<rtexprvalue>true</rtexprvalue>
+      	</attribute>
+    </tag>
+       <tag>
+        <description>Builds a tracking image tag that sets existing values to specified amounts</description> 			
+        <name>set</name>
+        <tag-class>com.percussion.soln.p13n.tracking.web.taglib.SetTag</tag-class>
+        <body-content>JSP</body-content>
+      	 <attribute>
+        	<description>sets the specified segments to the specified weight</description>
+        	<name>segmentWeights</name>
+        	<required>false</required>
+        	<rtexprvalue>true</rtexprvalue>
+      	</attribute>
+      	<attribute>
+        	<description>The URI of the JSON service to connect to</description>
+        	<name>requestURI</name>
+        	<required>true</required>
+        	<rtexprvalue>true</rtexprvalue>
+      	</attribute>
+    </tag>
+       <tag>
+        <description>Builds a tracking image tag that sets existing values to specified amounts and clears all others</description> 		
+        <name>clear</name>
+        <tag-class>com.percussion.soln.p13n.tracking.web.taglib.ClearTag</tag-class>
+        <body-content>JSP</body-content>
+      	 <attribute>
+        	<description>The segment weights to increment</description>
+        	<name>segmentWeights</name>
+        	<required>false</required>
+        	<rtexprvalue>true</rtexprvalue>
+      	</attribute>
+      	<attribute>
+        	<description>The URI of the JSON service to connect to</description>
+        	<name>requestURI</name>
+        	<required>true</required>
+        	<rtexprvalue>true</rtexprvalue>
+      	</attribute>
+    </tag>
+</taglib>

@@ -28,6 +28,11 @@
     </context-param>
 
     <context-param>
+        <param-name>javax.faces.PARTIAL_STATE_SAVING_METHOD</param-name>
+        <param-value>false</param-value>
+    </context-param>
+
+    <context-param>
         <param-name>org.apache.myfaces.PRETTY_HTML</param-name>
         <param-value>true</param-value>
     </context-param>
@@ -437,6 +442,10 @@
         <servlet-class>com.percussion.services.aaclient.PSAaClientServlet</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>ContentUiAAServlet</servlet-name>
+        <servlet-class>com.percussion.content.ui.aa.PSAAClientServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>EditionJobStatusServlet</servlet-name>
         <servlet-class>com.percussion.rx.publisher.servlet.PSJobStatusServlet</servlet-class>
     </servlet>
@@ -630,6 +639,11 @@
         <servlet-name>ActiveAssemblyServlet</servlet-name>
         <url-pattern>/assembly/aa</url-pattern>
     </servlet-mapping>
+	<servlet-mapping>
+        <servlet-name>ContentUiAAServlet</servlet-name>
+        <url-pattern>/contentui/aa</url-pattern>
+    </servlet-mapping>
+
     <servlet-mapping>
         <servlet-name>PSTdSchemaXmlServlet</servlet-name>
         <url-pattern>/servlet/tdschemaxml</url-pattern>
@@ -899,5 +913,11 @@
         <res-auth>Container</res-auth>
         <res-sharing-scope>Shareable</res-sharing-scope>
     </resource-ref>
+    <jsp-config>
+        <jsp-property-group>
+            <url-pattern>*.jsp</url-pattern>
+            <page-encoding>UTF-8</page-encoding>
+        </jsp-property-group>
+    </jsp-config>
     <absolute-ordering/>
 </web-app>

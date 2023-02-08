@@ -1,25 +1,18 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.percussion.tablefactory;
@@ -38,6 +31,7 @@ import java.io.IOException;
 import java.security.SecureRandom;
 import java.sql.Types;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -88,11 +82,11 @@ public class PSJdbcStatementFactory
       buf.append(fullName);
       buf.append(" (");
 
-      Iterator columns = tableSchema.getColumns();
+      Iterator<PSJdbcColumnDef> columns = tableSchema.getColumns();
       boolean isFirst = true;
       while (columns.hasNext())
       {
-         PSJdbcColumnDef col = (PSJdbcColumnDef)columns.next();
+         PSJdbcColumnDef col = columns.next();
          if (!isFirst)
             buf.append(", ");
          else
@@ -125,7 +119,43 @@ public class PSJdbcStatementFactory
       buf.append(")");
       return new PSJdbcSqlStatement(buf.toString());
    }
-   
+
+   /**
+    * Returns an execution step that will drop FK constraint.
+    * @param dbmsDef Provides the database/schema information for the table.
+    * May not be <code>null</code>.
+    * @param tableSchema Provides the table components that require changes,
+    * but may contain columns with action set to {@link
+    * PSJdbcTableComponent#ACTION_NONE}, which are used in primary or foreign
+    * keys.  May not be <code>null</code>.
+    * @return complete ALTER table SQL statement, returns <code>null</code>
+    * if there is no FK in this table.
+    */
+   public static String getDropFKIndex(PSJdbcDbmsDef dbmsDef,
+                                           PSJdbcTableSchema tableSchema, PSJdbcForeignKey fk)
+   {
+      if (dbmsDef == null)
+         throw new IllegalArgumentException("dbmsDef may not be null");
+
+      if (tableSchema == null)
+         throw new IllegalArgumentException("tableSchema may not be null");
+
+      String ixName;
+
+      if (StringUtils.isEmpty(fk.getName()) || fk.getName().length() < 3)
+      {
+         Iterator<?> itcol = fk.getColumns();
+         String[] fkcolnames = (String[]) itcol.next();
+         String fkcolname = fkcolnames[0];
+         ixName = PSJdbcTableSchema.INDEX_PREFIX + fkcolname;
+      }else{
+         ixName = PSJdbcTableSchema.INDEX_PREFIX + fk.getName().substring(3);
+      }
+
+      return PSSqlHelper.getDropIndexStatement(
+              dbmsDef.getDriver(), tableSchema.getName(),
+              dbmsDef.getDataBase(), dbmsDef.getSchema(), ixName);
+   }
    /**
     * Returns an execution step that will drop FK constraint.
     * @param dbmsDef Provides the database/schema information for the table.
@@ -226,11 +256,21 @@ public class PSJdbcStatementFactory
 
       PSJdbcExecutionBlock block = new PSJdbcExecutionBlock();
 
+      //delete indexes as unique constraints
+      Iterator<PSJdbcIndex> indexes = tableSchema.getIndexes(PSJdbcIndex.TYPE_UNIQUE);
+      while (indexes.hasNext()){
+         PSJdbcIndex index = indexes.next();
+        if (index.getAction() == PSJdbcTableComponent.ACTION_DELETE) {
+            block.addStep(new PSJdbcSqlStatement(getDropUniqueContraint(dbmsDef, tableSchema, index)));
+         }
+      }
+
+
       // add each column create
-      Iterator columns = tableSchema.getColumns();
+      Iterator<PSJdbcColumnDef> columns = tableSchema.getColumns();
       while (columns.hasNext())
       {
-         PSJdbcColumnDef column = (PSJdbcColumnDef)columns.next();
+         PSJdbcColumnDef column = columns.next();
          if (!column.canAlter())
             throw new IllegalArgumentException("invalid alter action on column " + column.getName());
          if (column.getAction() == PSJdbcTableComponent.ACTION_CREATE)
@@ -241,6 +281,18 @@ public class PSJdbcStatementFactory
          {
             block.addStep(getDropComponentStatement(fullTableName, column.getName()));
          }
+         else if (column.getAction() == PSJdbcTableComponent.ACTION_REPLACE)
+         {
+            if(PSSqlHelper.isDerby(dbmsDef.getDriver())){
+               List<PSJdbcSqlStatement> steps = getAlterColumnRecreateStatements(dbmsDef,fullTableName, column);
+               for(PSJdbcExecutionStep step:steps) {
+                  block.addStep(step);
+               }
+            }else {
+               block.addStep(getAlterColumnStatement(dbmsDef, fullTableName, column));
+            }
+         }
+
       }
 
       // add pk create
@@ -249,7 +301,7 @@ public class PSJdbcStatementFactory
       {
          if (pKey.getAction() == PSJdbcTableComponent.ACTION_CREATE) {
             block.addStep(getAddComponentStatement(fullTableName, getPrimaryKeyConstraint(dbmsDef, tableSchema)));
-      }
+         }
          else if (pKey.getAction() == PSJdbcTableComponent.ACTION_DELETE)
          {
             block.addStep(new PSJdbcSqlStatement(getDropPrimaryContraint(dbmsDef, tableSchema, pKey)));
@@ -257,6 +309,7 @@ public class PSJdbcStatementFactory
 
       }
 
+      int i = 1;
       // add each fk create
       for (PSJdbcForeignKey fKey : tableSchema.getForeignKeys())
       {
@@ -266,36 +319,26 @@ public class PSJdbcStatementFactory
             String fkName = getQualifiedFkName(tableSchema.getName(), fKey.getName());
 
          // add a separate alter statement for each external table constraint
-         Iterator tables = fKey.getTables();
-         int i = 1;
-         while (tables.hasNext())
-         {
-            String tableName = (String)tables.next();
-            Iterator cols = fKey.getColumns(tableName);
-               if (fKey.getAction() == PSJdbcTableComponent.ACTION_CREATE)
-               {
-            block.addStep(getAddComponentStatement(fullTableName,
-                        getForeignKeyConstraintInt(dbmsDef, fkName + "_" + i++, cols)));
-         }
-               else if (fKey.getAction() == PSJdbcTableComponent.ACTION_DELETE)
-               {
-                  block.addStep(new PSJdbcSqlStatement(getDropFKContraint(dbmsDef, tableSchema, fKey)));
-      }
-            }
+         Iterator<String> tables = fKey.getTables();
 
+         while (tables.hasNext()){
+               String tableName = tables.next();
+               Iterator<String[]> cols = fKey.getColumns(tableName);
+               if (fKey.getAction() == PSJdbcTableComponent.ACTION_CREATE){
+                  block.addStep(getAddComponentStatement(fullTableName,
+                  getForeignKeyConstraintInt(dbmsDef, fkName + "_" + i++, cols)));
+               }else if (fKey.getAction() == PSJdbcTableComponent.ACTION_DELETE){
+                  block.addStep(new PSJdbcSqlStatement(getDropFKContraint(dbmsDef, tableSchema, fKey)));
+               }
+            }
          }
       }
-      //add indexes as unique constraints
-      Iterator indexes = tableSchema.getIndexes(PSJdbcIndex.TYPE_UNIQUE);
 
       while (indexes.hasNext())
       {
-         PSJdbcIndex index = (PSJdbcIndex)indexes.next();
+         PSJdbcIndex index = indexes.next();
          if (index.getAction() == PSJdbcTableComponent.ACTION_CREATE)
             block.addStep(getAddComponentStatement(fullTableName, getUniqueConstraint(dbmsDef, tableSchema, index)));
-         else if (index.getAction() == PSJdbcTableComponent.ACTION_DELETE) {
-            block.addStep(new PSJdbcSqlStatement(getDropUniqueContraint(dbmsDef, tableSchema, index)));
-         }
       }
 
       return block;
@@ -408,11 +451,11 @@ public class PSJdbcStatementFactory
       StringBuilder valueBuf = new StringBuilder();
       boolean firstTime = true;
       PSCollection values = new PSCollection(PSJdbcStatementColumn.class);
-      Iterator targetColumns = targetTableSchema.getColumns();
+      Iterator<PSJdbcColumnDef> targetColumns = targetTableSchema.getColumns();
       while (targetColumns.hasNext())
       {
          // first check to see if it's in the source
-         PSJdbcColumnDef tCol = (PSJdbcColumnDef)targetColumns.next();
+         PSJdbcColumnDef tCol = targetColumns.next();
          PSJdbcColumnDef sCol = sourceTableSchema.getColumn(tCol.getName());
          boolean inSrc = sCol != null;
 
@@ -457,7 +500,7 @@ public class PSJdbcStatementFactory
 
       buf.append(") ");
       buf.append("SELECT ");
-      buf.append(valueBuf.toString());
+      buf.append(valueBuf);
 
       buf.append(" FROM ");
       buf.append(strFullSource);
@@ -520,14 +563,14 @@ public class PSJdbcStatementFactory
       buf.append("SELECT ");
 
       // add columns
-      List colList = new ArrayList();
+      List<String> colList = new ArrayList<>();
       if (columns == null || columns.length == 0)
       {
          // if no columns specified, fetch all the columns
-         Iterator colSchemas = tableSchema.getColumns();
+         Iterator<PSJdbcColumnDef> colSchemas = tableSchema.getColumns();
          while (colSchemas.hasNext())
          {
-            PSJdbcColumnDef colDef = (PSJdbcColumnDef)colSchemas.next();
+            PSJdbcColumnDef colDef = colSchemas.next();
             colList.add(colDef.getName());
          }
       }
@@ -535,15 +578,14 @@ public class PSJdbcStatementFactory
       {
          // fetch only the specified columns
          int colSize = columns.length;
-         for (int k = 0; k < colSize; k++)
-            colList.add(columns[k]);
+         colList.addAll(Arrays.asList(columns).subList(0, colSize));
       }
 
-      Iterator colIt = colList.iterator();
+      Iterator<String> colIt = colList.iterator();
       boolean isFirst = true;
       while (colIt.hasNext())
       {
-         String colName = (String)colIt.next();
+         String colName = colIt.next();
          if (isFirst)
             isFirst = false;
          else
@@ -625,10 +667,10 @@ public class PSJdbcStatementFactory
       boolean hasRefCols = false;
       for (PSJdbcForeignKey fkey : tableSchema.getForeignKeys() )
       {
-      Iterator cols = fkey.getColumns(parentRowData.getTableName());
+      Iterator<String[]> cols = fkey.getColumns(parentRowData.getTableName());
       while (cols.hasNext())
       {
-         String[] col = (String[])cols.next();
+         String[] col = cols.next();
          String childTableColName = col[0];
          String parentTableColName = col[2];
 
@@ -653,11 +695,11 @@ public class PSJdbcStatementFactory
          PSJdbcPrimaryKey pkey = parentTableSchema.getPrimaryKey();
          if (pkey != null)
          {
-            Iterator it = pkey.getColumnNames();
+            Iterator<String> it = pkey.getColumnNames();
             int i = 0;
             while (it.hasNext())
             {
-               String pkColName = (String)it.next();
+               String pkColName = it.next();
                if (i != 0)
                   str += " AND ";
                else
@@ -680,11 +722,11 @@ public class PSJdbcStatementFactory
             PSJdbcUpdateKey ukey = parentTableSchema.getUpdateKey();
             if (ukey != null)
             {
-               Iterator it = ukey.getColumnNames();
+               Iterator<String> it = ukey.getColumnNames();
                int i = 0;
                while (it.hasNext())
                {
-                  String upColName = (String)it.next();
+                  String upColName = it.next();
                   if (i != 0)
                      str += " AND ";
                   else
@@ -740,9 +782,9 @@ public class PSJdbcStatementFactory
       boolean isDBOracle = isDBOracle(dbmsDef);
       
       StringBuilder selLobString = new StringBuilder("SELECT ");
-      List lobTypes = new ArrayList();
-      List lobValues = new ArrayList();
-      List lobValuesEncoding = new ArrayList();
+      List<Integer> lobTypes = new ArrayList<>();
+      List<String> lobValues = new ArrayList<>();
+      List<Integer> lobValuesEncoding = new ArrayList<>();
 
       StringBuilder buf = new StringBuilder();
       StringBuilder valueBuf = new StringBuilder();
@@ -753,10 +795,10 @@ public class PSJdbcStatementFactory
       buf.append(" (");
 
       boolean firstTime = true;
-      Iterator columns = row.getColumns();
+      Iterator<PSJdbcColumnData> columns = row.getColumns();
       while (columns.hasNext())
       {
-         PSJdbcColumnData dataCol = (PSJdbcColumnData)columns.next();
+         PSJdbcColumnData dataCol = columns.next();
          PSJdbcColumnDef schemaCol = tableSchema.getColumn(dataCol.getName());
 
          if(schemaCol == null)
@@ -798,9 +840,9 @@ public class PSJdbcStatementFactory
          {
             selLobString.append(dataCol.getName());
             selLobString.append(",");
-            lobTypes.add(new Integer(colType));
+            lobTypes.add(colType);
             lobValues.add(dataCol.getValue());
-            lobValuesEncoding.add(new Integer(dataCol.getEncoding()));
+            lobValuesEncoding.add(dataCol.getEncoding());
 
             if (colType == Types.CLOB)
             {
@@ -854,7 +896,7 @@ public class PSJdbcStatementFactory
       else
       {
          buf.append(") values (");
-         buf.append(valueBuf.toString());
+         buf.append(valueBuf);
          buf.append(")");
       }
 
@@ -937,9 +979,9 @@ public class PSJdbcStatementFactory
 
       boolean isDBOracle = isDBOracle(dbmsDef);
       StringBuilder selLobString = new StringBuilder("SELECT ");
-      List lobTypes = new ArrayList();
-      List lobValues = new ArrayList();
-      List lobValuesEncoding = new ArrayList();
+      List<Integer> lobTypes = new ArrayList<>();
+      List<String> lobValues = new ArrayList<>();
+      List<Integer> lobValuesEncoding = new ArrayList<>();
       boolean isDummyUpdate = true;
 
       StringBuilder buf = new StringBuilder();
@@ -954,15 +996,15 @@ public class PSJdbcStatementFactory
 
       boolean firstCol = true;
       boolean firstKey = true;
-      List keyCols = tableSchema.getKeyColumns();
+      List<String> keyCols = tableSchema.getKeyColumns();
       if (keyCols.isEmpty())
          throw new IllegalArgumentException(
             "primary or update keys must be defined for update statements");
 
-      Iterator columns = row.getColumns();
+      Iterator<PSJdbcColumnData> columns = row.getColumns();
       while (columns.hasNext())
       {
-         PSJdbcColumnData dataCol = (PSJdbcColumnData)columns.next();
+         PSJdbcColumnData dataCol = columns.next();
          String colName = dataCol.getName();
          PSJdbcColumnDef schemaCol = tableSchema.getColumn(colName);
          if(schemaCol == null)
@@ -1010,9 +1052,9 @@ public class PSJdbcStatementFactory
             {
                selLobString.append(colName);
                selLobString.append(",");
-               lobTypes.add(new Integer(colType));
+               lobTypes.add(colType);
                lobValues.add(dataCol.getValue());
-               lobValuesEncoding.add(new Integer(dataCol.getEncoding()));
+               lobValuesEncoding.add(dataCol.getEncoding());
             }
             else
             {
@@ -1035,16 +1077,16 @@ public class PSJdbcStatementFactory
          // this line fails if key contains more than 1 column
          // UPDATE animesh.CCML_VCON SET VCON=? AND DOC_ID=? WHERE VCON=? AND DOC_ID=?
          //buf.append(keyBuf.toString());
-         buf.append(keyColBuf.toString());
+         buf.append(keyColBuf);
          buf.append(" WHERE ");
-         buf.append(keyBuf.toString());
+         buf.append(keyBuf);
          values.addAll(keyValues);
          values.addAll(keyValues);
       }
       else
       {
          buf.append(" WHERE ");
-         buf.append(keyBuf.toString());
+         buf.append(keyBuf);
          values.addAll(keyValues);
       }
 
@@ -1054,7 +1096,7 @@ public class PSJdbcStatementFactory
          selLobString.append(" FROM ");
          selLobString.append(fullName);
          selLobString.append(" WHERE ");
-         selLobString.append(keyBuf.toString());
+         selLobString.append(keyBuf);
          selLobString.append(" FOR UPDATE");
 
          int stmtType = PSJdbcOracleSqlStatement.ORACLE_UPDATE;
@@ -1078,9 +1120,7 @@ public class PSJdbcStatementFactory
    private static boolean isDBOracle(PSJdbcDbmsDef dbmsDef)
    {
       String driver = dbmsDef.getDriver();
-      if (driver != null && driver.startsWith(PSJdbcUtils.ORACLE_PRIMARY))
-         return true;
-      return false;
+      return driver != null && driver.startsWith(PSJdbcUtils.ORACLE_PRIMARY);
    }
 
    /**
@@ -1123,15 +1163,15 @@ public class PSJdbcStatementFactory
       keyBuf.append(" WHERE ");
 
       boolean firstKey = true;
-      List keyCols = tableSchema.getKeyColumns();
+      List<String> keyCols = tableSchema.getKeyColumns();
       if (keyCols.isEmpty())
          throw new IllegalArgumentException(
             "primary or update keys must be defined for delete statements");
 
-      Iterator columns = row.getColumns();
+      Iterator<PSJdbcColumnData> columns = row.getColumns();
       while (columns.hasNext())
       {
-         PSJdbcColumnData dataCol = (PSJdbcColumnData)columns.next();
+         PSJdbcColumnData dataCol = columns.next();
          PSJdbcColumnDef schemaCol = tableSchema.getColumn(dataCol.getName());
          boolean isKey = keyCols.contains(dataCol.getName());
 
@@ -1222,7 +1262,7 @@ public class PSJdbcStatementFactory
          }
          buf.append("PRIMARY KEY (");
 
-         Iterator pCols = pKey.getColumnNames();
+         Iterator<String> pCols = pKey.getColumnNames();
 
          boolean isFirst = true;
          while (pCols.hasNext())
@@ -1232,7 +1272,7 @@ public class PSJdbcStatementFactory
             else
                isFirst = false;
 
-            buf.append((String)pCols.next());
+            buf.append(pCols.next());
          }
          buf.append(")");
       }
@@ -1269,11 +1309,11 @@ public class PSJdbcStatementFactory
       {
          buf = new StringBuilder();
 
-         Iterator tables = fKey.getTables();
+         Iterator<String> tables = fKey.getTables();
          int i = 1;
 
          while (tables.hasNext()) {
-            String tableName = (String) tables.next();
+            String tableName =  tables.next();
             if (newTable != null && !tableName.equals(newTable))
                continue;
             String fkName = StringUtils.isBlank(fKey.getName()) ? "fk_" + tableName + "_" + i : fKey.getName();
@@ -1289,9 +1329,9 @@ public class PSJdbcStatementFactory
             {
                HashSet<String> pkCols = new HashSet<>();
                PSJdbcPrimaryKey pk = newSchema.getPrimaryKey();
-               Iterator pkIt = pk.getColumnNames();
+               Iterator<String> pkIt = pk.getColumnNames();
                while (pkIt.hasNext())
-                  pkCols.add((String)pkIt.next());
+                  pkCols.add(pkIt.next());
 
                if (!pkCols.equals(fkCols))
                {
@@ -1324,10 +1364,10 @@ public class PSJdbcStatementFactory
     * external table.  See {@link PSJdbcForeignKey#getColumns(String)} for more
     * info.
     *
-    * @return The foreign key constaint, never <code>null</code>.
+    * @return The foreign key constraint, never <code>null</code>.
     */
    private static String getForeignKeyConstraintInt(PSJdbcDbmsDef dbmsDef,
-      String fkName, Iterator cols)
+      String fkName, Iterator<String[]> cols)
    {
       // first build list of internal and external columns
       StringBuilder intBuf = new StringBuilder();
@@ -1337,7 +1377,7 @@ public class PSJdbcStatementFactory
       boolean firstTime = true;
       while (cols.hasNext())
       {
-         String[] fkeyInfo = (String[])cols.next();
+         String[] fkeyInfo = cols.next();
          if (firstTime)
          {
             tableName = fkeyInfo[1];
@@ -1363,7 +1403,7 @@ public class PSJdbcStatementFactory
          buf.append(fkName).append(" ");
       }
       buf.append("FOREIGN KEY (");
-      buf.append(intBuf.toString());
+      buf.append(intBuf);
       buf.append(") REFERENCES ");
       
       String qualifiedName = PSSqlHelper.qualifyTableName(tableName,
@@ -1371,7 +1411,7 @@ public class PSJdbcStatementFactory
       
       buf.append(qualifiedName);
       buf.append(" (");
-      buf.append(extBuf.toString());
+      buf.append(extBuf);
       buf.append(")");
 
       return buf.toString();
@@ -1394,11 +1434,11 @@ public class PSJdbcStatementFactory
       PSJdbcTableSchema tableSchema)
    {
 
-      Iterator indexes =tableSchema.getIndexes(PSJdbcIndex.TYPE_UNIQUE);
+      Iterator<PSJdbcIndex> indexes =tableSchema.getIndexes(PSJdbcIndex.TYPE_UNIQUE);
       StringBuilder buf = null;
       while (indexes.hasNext())
       {
-         PSJdbcIndex index = (PSJdbcIndex)indexes.next();
+         PSJdbcIndex index = indexes.next();
          if (buf == null)
             buf = new StringBuilder();
          else
@@ -1436,7 +1476,7 @@ public class PSJdbcStatementFactory
       buf.append("UNIQUE (");
 
       boolean isFirst = true;
-      Iterator cols = index.getColumnNames();
+      Iterator<String> cols = index.getColumnNames();
       while (cols.hasNext())
       {
          if (!isFirst)
@@ -1444,7 +1484,7 @@ public class PSJdbcStatementFactory
          else
             isFirst = false;
 
-         buf.append((String)cols.next());
+         buf.append(cols.next());
       }
       buf.append(")");
 
@@ -1469,10 +1509,8 @@ public class PSJdbcStatementFactory
       if (pkName == null || pkName.trim().length() == 0)
          pkName = "pk_" + tableName;
 
-      String qualName = PSSqlHelper.qualifyPrimaryKeyName(pkName,
+      return PSSqlHelper.qualifyPrimaryKeyName(pkName,
          dbmsDef.getDataBase(), dbmsDef.getSchema(), dbmsDef.getDriver());
-
-      return qualName;
    }
 
    /**
@@ -1570,6 +1608,96 @@ public class PSJdbcStatementFactory
       return new PSJdbcSqlStatement(buf.toString());
    }
 
+   private static List<PSJdbcSqlStatement> getAlterColumnRecreateStatements(PSJdbcDbmsDef dbmsDef, String tableName,
+                                                             PSJdbcColumnDef column)
+   {
+
+      List<PSJdbcSqlStatement> steps = new ArrayList<>();
+
+         //ALTER TABLE MY_TABLE ADD COLUMN NEW_COLUMN BLOB(2147483647);
+         //UPDATE MY_TABLE SET NEW_COLUMN=MY_COLUMN;
+         //ALTER TABLE MY_TABLE DROP COLUMN MY_COLUMN;
+         //RENAME COLUMN MY_TABLE.NEW_COLUMN TO MY_COLUMN;
+         StringBuilder buf = new StringBuilder();
+         buf.append("ALTER TABLE ");
+         buf.append(tableName);
+         buf.append(" ADD COLUMN ");
+         buf.append(column.getName()+"_NEW");
+         buf.append(" ");
+         String coldef = column.getSqlDef(dbmsDef);
+         coldef = coldef.replace(column.getName(),"");
+         coldef = coldef.replace(" NOT NULL","");
+         buf.append(coldef);
+         steps.add(new PSJdbcSqlStatement(buf.toString()));
+
+         StringBuilder buf2 = new StringBuilder();
+         buf2.append("UPDATE ");
+         buf2.append(tableName);
+         buf2.append(" SET ");
+         buf2.append(column.getName()+"_NEW=" + column.getName());
+         steps.add(new PSJdbcSqlStatement(buf2.toString()));
+
+         StringBuilder buf3 = new StringBuilder();
+         buf3.append("ALTER TABLE ");
+         buf3.append(tableName);
+         buf3.append(" DROP COLUMN ");
+         buf3.append(column.getName());
+         steps.add(new PSJdbcSqlStatement(buf3.toString()));
+
+         StringBuilder buf4 = new StringBuilder();
+         buf4.append("RENAME COLUMN ");
+         buf4.append(tableName);
+         buf4.append(".");
+         buf4.append(column.getName()+"_NEW TO " + column.getName());
+         steps.add(new PSJdbcSqlStatement(buf4.toString()));
+      return steps;
+   }
+
+
+   /**
+    * Generates an alter column statement to alter column defination as defined.
+    *
+    * @param dbmsDef Table Defination
+    * @param tableName The fully qualified table name.  Assumed not <code>null
+    * </code>.
+    * @param column Column that needs to be modified
+    * @return The add column statement, never <code>null</code>.
+    */
+   private static PSJdbcSqlStatement getAlterColumnStatement(PSJdbcDbmsDef dbmsDef, String tableName,
+                                                                PSJdbcColumnDef column)
+   {
+
+      StringBuilder buf = new StringBuilder();
+
+      if(PSSqlHelper.isMsSql(dbmsDef.getDriver())) {
+         //ALTER TABLE [TABLE_NAME] ALTER COLUMN [COLUMNNAME] nvarchar(500);
+         buf.append("ALTER TABLE ");
+         buf.append(tableName);
+         buf.append(" ALTER COLUMN ");
+         buf.append(column.getSqlDef(dbmsDef));
+      }else if(PSSqlHelper.isOracle(dbmsDef.getDriver()) || PSSqlHelper.isMysql(dbmsDef.getDriver())) {
+         //ALTER TABLE [TABLE_NAME] MODIFY [COLUMNNAME] VARCHAR2(300);
+         buf.append("ALTER TABLE ");
+         buf.append(tableName);
+         buf.append(" MODIFY ");
+         buf.append(column.getSqlDef(dbmsDef));
+      }else if(PSSqlHelper.isDerby(dbmsDef.getDriver()) || PSSqlHelper.isDB2(dbmsDef.getDriver())) {
+         //ALTER TABLE [table] ALTER COLUMN [column] SET DATA TYPE [type];
+         buf.append("ALTER TABLE ");
+         buf.append(tableName);
+         buf.append(" ALTER COLUMN ");
+         buf.append(column.getName());
+         buf.append(" SET DATA TYPE ");
+         String coldef = column.getSqlDef(dbmsDef);
+         coldef = coldef.replace(column.getName(),"");
+         buf.append(coldef);
+
+      }
+       return new PSJdbcSqlStatement(buf.toString());
+   }
+
+
+
    /**
     * Generates an alter table statement to drop the specified component.
     *
@@ -1624,10 +1752,10 @@ public class PSJdbcStatementFactory
          throw new IllegalArgumentException("tableSchema may not be null");
 
       PSJdbcExecutionBlock block = new PSJdbcExecutionBlock();
-      Iterator it =  tableSchema.getIndexes(PSJdbcIndex.TYPE_NON_UNIQUE);
+      Iterator<PSJdbcIndex> it =  tableSchema.getIndexes(PSJdbcIndex.TYPE_UNIQUE | PSJdbcIndex.TYPE_NON_UNIQUE);
       while (it.hasNext())
       {
-         PSJdbcIndex index = (PSJdbcIndex)it.next();
+         PSJdbcIndex index = it.next();
          if (index.getAction() == PSJdbcTableComponent.ACTION_DELETE)
          {
             String indexName = index.getName();
@@ -1673,14 +1801,15 @@ public class PSJdbcStatementFactory
          throw new IllegalArgumentException("tableSchema may not be null");
 
       PSJdbcExecutionBlock block = new PSJdbcExecutionBlock();
-      Iterator it = tableSchema.getIndexes(PSJdbcIndex.TYPE_NON_UNIQUE);
+      Iterator<PSJdbcIndex> it = tableSchema.getIndexes(PSJdbcIndex.TYPE_NON_UNIQUE);
       while (it.hasNext())
       {
-         PSJdbcIndex index = (PSJdbcIndex)it.next();
+         PSJdbcIndex index = it.next();
          if (index.getAction() == PSJdbcTableComponent.ACTION_CREATE)
          {
             PSJdbcExecutionStep step = getCreateIndexStatement(
                dbmsDef, tableSchema, index);
+            step.setStopOnError(false);
             block.addStep(step);
          }
       }
@@ -1745,7 +1874,7 @@ public class PSJdbcStatementFactory
       buf.append(" (");
 
       boolean isFirst = true;
-      Iterator cols = index.getColumnNames();
+      Iterator<String> cols = index.getColumnNames();
       while (cols.hasNext())
       {
          if (!isFirst)
@@ -1753,7 +1882,7 @@ public class PSJdbcStatementFactory
          else
             isFirst = false;
 
-         buf.append((String)cols.next());
+         buf.append(cols.next());
       }
       buf.append(")");
       return new PSJdbcSqlStatement(buf.toString());

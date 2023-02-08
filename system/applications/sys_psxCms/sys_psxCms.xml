@@ -7794,7 +7794,7 @@
                   <name>PSXContentTypeVariantSet/@className</name>
                </PSXXmlField>
                <PSXTextLiteral id="0">
-                  <text>com.percussion.cms.objectstore.PSContentTypeVariant</text>
+                  <text>com.percussion.cms.objectstore.PSContentTypeTemplate</text>
                </PSXTextLiteral>
                <Conditionals/>
             </PSXDataMapping>
@@ -8300,7 +8300,7 @@ ORDER BY
                   <name>PSXContentTypeVariantSet/@className</name>
                </PSXXmlField>
                <PSXTextLiteral id="0">
-                  <text>com.percussion.cms.objectstore.PSContentTypeVariant</text>
+                  <text>com.percussion.cms.objectstore.PSContentTypeTemplate</text>
                </PSXTextLiteral>
                <Conditionals/>
             </PSXDataMapping>

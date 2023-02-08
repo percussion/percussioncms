@@ -1,40 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-  ~     Percussion CMS
-  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
-  ~
-  ~     This program is free software: you can redistribute it and/or modify
-  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
-  ~
-  ~     This program is distributed in the hope that it will be useful,
-  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
-  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  ~     GNU Affero General Public License for more details.
-  ~
-  ~     Mailing Address:
-  ~
-  ~      Percussion Software, Inc.
-  ~      PO Box 767
-  ~      Burlington, MA 01803, USA
-  ~      +01-781-438-9900
-  ~      support@percussion.com
-  ~      https://www.percussion.com
-  ~
-  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
-  -->
-
 <PSXArchiveManifest>
    <PSXDepFilesIdTypes DependencyKey="Keyword-328">
       <PSXDependencyFile fileType="SERVICEGENERATED_XML">
          <RxFile>C:\Users\Usuario\AppData\Local\Temp\FF_NavImageSelector.keyword</RxFile>
          <ArchiveFile>Keyword-328\FF_NavImageSelector.keyword</ArchiveFile>
-      </PSXDependencyFile>
-   </PSXDepFilesIdTypes>
-   <PSXDepFilesIdTypes DependencyKey="SharedGroup-shared">
-      <PSXDependencyFile fileType="SHARED_GROUP_XML">
-         <RxFile>C:\Users\Usuario\AppData\Local\Temp\shared.sharedGroup</RxFile>
-         <ArchiveFile>SharedGroup-shared\shared.sharedGroup</ArchiveFile>
-         <OriginalFile>rxs_ct_shared.xml</OriginalFile>
       </PSXDependencyFile>
    </PSXDepFilesIdTypes>
    <PSXDepFilesIdTypes DependencyKey="SlotDef-513">
@@ -160,12 +129,6 @@
       <PSXDependencyFile fileType="DBMS_SCHEMA">
          <RxFile>C:\Users\Usuario\AppData\Local\Temp\percNavTree.schemaDef.contentType</RxFile>
          <ArchiveFile>ContentType-315\percNavTree.schemaDef.contentType</ArchiveFile>
-      </PSXDependencyFile>
-   </PSXDepFilesIdTypes>
-   <PSXDepFilesIdTypes DependencyKey="Schema-RXS_CT_SHARED">
-      <PSXDependencyFile fileType="DBMS_SCHEMA">
-         <RxFile>C:\Users\Usuario\AppData\Local\Temp\RXS_CT_SHARED.schema</RxFile>
-         <ArchiveFile>Schema-RXS_CT_SHARED\RXS_CT_SHARED.schema</ArchiveFile>
       </PSXDependencyFile>
    </PSXDepFilesIdTypes>
    <PSXDepFilesIdTypes DependencyKey="Stylesheet-rx_resources/stylesheets/assemblers/rx_Globals.xsl">

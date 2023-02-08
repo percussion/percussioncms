@@ -1,25 +1,18 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.percussion.design.objectstore.server;
 
@@ -46,16 +39,16 @@ import com.percussion.design.objectstore.PSContentEditor;
 import com.percussion.design.objectstore.PSContentEditorPipe;
 import com.percussion.design.objectstore.PSContentEditorSharedDef;
 import com.percussion.design.objectstore.PSContentEditorSystemDef;
-import com.percussion.design.objectstore.PSDatabaseComponentException;
+import com.percussion.error.PSDatabaseComponentException;
 import com.percussion.design.objectstore.PSDateLiteral;
 import com.percussion.design.objectstore.PSExtensionCall;
 import com.percussion.design.objectstore.PSExtensionParamValue;
 import com.percussion.design.objectstore.PSField;
 import com.percussion.design.objectstore.PSFieldSet;
 import com.percussion.design.objectstore.PSLockedException;
-import com.percussion.design.objectstore.PSNonUniqueException;
-import com.percussion.design.objectstore.PSNotFoundException;
-import com.percussion.design.objectstore.PSNotLockedException;
+import com.percussion.error.PSNonUniqueException;
+import com.percussion.error.PSNotFoundException;
+import com.percussion.error.PSNotLockedException;
 import com.percussion.design.objectstore.PSNumericLiteral;
 import com.percussion.design.objectstore.PSObjectFactory;
 import com.percussion.design.objectstore.PSRoleConfiguration;
@@ -80,11 +73,9 @@ import com.percussion.services.datasource.PSHibernateDialectConfig;
 import com.percussion.services.notification.PSNotificationHelper;
 import com.percussion.services.security.PSRoleMgrLocator;
 import com.percussion.services.security.data.PSCatalogerConfig;
-import com.percussion.util.IOTools;
 import com.percussion.util.PSCollection;
 import com.percussion.util.PSPathUtil;
 import com.percussion.util.PSSortTool;
-import com.percussion.utils.collections.PSIteratorUtils;
 import com.percussion.utils.container.DefaultConfigurationContextImpl;
 import com.percussion.utils.container.IPSJndiDatasource;
 import com.percussion.utils.container.PSContainerUtilsFactory;
@@ -94,6 +85,7 @@ import com.percussion.utils.spring.PSSpringConfiguration;
 import com.percussion.utils.types.PSPair;
 import com.percussion.utils.xml.PSInvalidXmlException;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -591,14 +583,14 @@ public class PSServerXmlObjectStore extends PSObjectFactory
     * 
     * @throws PSServerException for any other errors encountered.
     */
-   public Iterator getApplicationFiles(String appName)
+   public Iterator<File> getApplicationFiles(String appName)
       throws PSServerException
    {
       // validate inputs
       if (appName == null || appName.trim().length() == 0)
          throw new IllegalArgumentException("appName may not be null or empty");
 
-      Iterator result = null;
+      Iterator<File> result = null;
       // get request root
       PSApplicationSummary sum = m_objectStoreHandler.m_appSums
             .getSummary(appName);
@@ -609,7 +601,17 @@ public class PSServerXmlObjectStore extends PSObjectFactory
       }
 
       if (result == null)
-         result = PSIteratorUtils.emptyIterator();
+         result = new Iterator<File>() {
+            @Override
+            public boolean hasNext() {
+               return false;
+            }
+
+            @Override
+            public File next() {
+               return null;
+            }
+         };
 
       return result;
    }
@@ -679,7 +681,7 @@ public class PSServerXmlObjectStore extends PSObjectFactory
 
      
          ByteArrayOutputStream tmpOut = new ByteArrayOutputStream();
-         IOTools.copyStream(in, tmpOut);
+         IOUtils.copy(in, tmpOut);
          return new ByteArrayInputStream(tmpOut
                .toByteArray());
 
@@ -889,10 +891,10 @@ public class PSServerXmlObjectStore extends PSObjectFactory
       boolean isSaved = false;
       try
       {
-         if (!exists || (exists && overWrite))
+         if (!exists || overWrite)
          {
             out = m_objectStoreHandler.lockOutputStream(appFileName);
-            IOTools.copyStream(in, out);
+            IOUtils.copy(in, out);
             isSaved = true;
          }
 
@@ -1053,10 +1055,10 @@ public class PSServerXmlObjectStore extends PSObjectFactory
       boolean isSaved = false;
       try
       {
-         if (!exists || (exists && overWrite))
+         if (!exists || overWrite)
          {
             out = m_objectStoreHandler.lockOutputStream(appFileName);
-            IOTools.copyStream(in, out);
+            IOUtils.copy(in, out);
             isSaved = true;
          }
 
@@ -2059,17 +2061,11 @@ public class PSServerXmlObjectStore extends PSObjectFactory
 
          data = rh.makeInternalRequest(req);
       }
-      catch (PSInternalRequestCallException ire)
+      catch (PSInternalRequestCallException | PSDatabaseComponentException ire)
       {
          throw new PSServerException(ire.getErrorCode(), ire
                .getErrorArguments());
-      }
-      catch (PSDatabaseComponentException dbe)
-      {
-         throw new PSServerException(dbe.getErrorCode(), dbe
-               .getErrorArguments());
-      }
-      catch (PSAuthenticationFailedException afe)
+      } catch (PSAuthenticationFailedException afe)
       {
          throw new PSAuthenticationRequiredException(afe.getErrorCode(), afe
                .getErrorArguments());
@@ -3394,7 +3390,6 @@ public class PSServerXmlObjectStore extends PSObjectFactory
     * to see, never <code>null</code>, may be empty, sorted ascending by
     * application name.
     */
-   @SuppressWarnings("unchecked")
    public PSApplicationSummary[] getApplicationSummaryObjects(
          PSSecurityToken tok, boolean showHiddenApps)
    {
@@ -3475,8 +3470,7 @@ public class PSServerXmlObjectStore extends PSObjectFactory
     * table alias (lowercased) and each value is the PSBackEndTable that has all
     * properties properly specified. The Map is treated read-only.
     */
-   @SuppressWarnings("unchecked")
-   public static void fixupFields(PSFieldSet fs, Iterator tableSets, Map tables)
+   public static void fixupFields(PSFieldSet fs, Iterator<PSTableSet> tableSets, Map<String,PSBackEndTable> tables)
       throws SQLException
    {
       if (null == fs)
@@ -3495,7 +3489,7 @@ public class PSServerXmlObjectStore extends PSObjectFactory
          allFields[j++] = roField;
       }
 
-      Collection beFields = new ArrayList<>();
+      Collection<PSField> beFields = new ArrayList<>();
 
       for (PSField psField : allFields) {
          if (psField.getLocator() instanceof PSBackEndColumn)
@@ -3510,7 +3504,7 @@ public class PSServerXmlObjectStore extends PSObjectFactory
                psField.setDataType(PSField.DT_TEXT);
             else if (psField.getLocator() instanceof PSExtensionCall) {
                /*
-                * I was debating where this code belongs and settled on her.
+                * I was debating where this code belongs and settled on here.
                 * It's not the ideal location, but I didn't see a better one.
                 */
                PSExtensionParamValue[] params = ((PSExtensionCall) psField
@@ -3529,8 +3523,7 @@ public class PSServerXmlObjectStore extends PSObjectFactory
                      try {
                         col.setTable(table);
                      } catch (IllegalArgumentException iae) {
-                        throw new IllegalArgumentException(iae
-                                .getLocalizedMessage());
+                        throw new IllegalArgumentException(iae);
                      }
                   }
                }
@@ -3539,10 +3532,10 @@ public class PSServerXmlObjectStore extends PSObjectFactory
       }
 
       // get the meta data for each table set
-      Collection meta = new ArrayList();
+      Collection<PSDatabaseMetaData> meta = new ArrayList<>();
       while (tableSets.hasNext())
       {
-         PSTableSet ts = (PSTableSet) tableSets.next();
+         PSTableSet ts = tableSets.next();
          meta.add(PSMetaDataCache.getCachedDatabaseMetaData(ts));
       }
 
@@ -3553,13 +3546,13 @@ public class PSServerXmlObjectStore extends PSObjectFactory
       meta.toArray(dbMeta);
 
       // walk all the fields and look up the db field type
-      Iterator itFields = beFields.iterator();
+      Iterator<PSField> itFields = beFields.iterator();
 
       boolean searchEnabled = PSServer.getServerConfiguration()
             .getSearchConfig().isFtsEnabled();
       while (itFields.hasNext())
       {
-         PSField field = (PSField) itFields.next();
+         PSField field = itFields.next();
          PSBackEndColumn col = (PSBackEndColumn) field.getLocator();
          String colName = col.getColumn();
          for (PSDatabaseMetaData psDatabaseMetaData : dbMeta) {

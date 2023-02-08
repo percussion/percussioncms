@@ -418,6 +418,22 @@
       supportsIdMapping="no"
       supportsUserDependencies="no"
       guidType="SUPPORT_FILE"/>
+  <PSXDependencyDef
+          objectType="SystemDef"
+          objectTypeName="System Def"
+          handlerClass="com.percussion.deployer.server.dependencies.PSSystemDefDependencyHandler"
+          isDeployableElement="no"
+          supportsIdTypes="yes"
+          supportsIdMapping="no"
+          supportsUserDependencies="no"/>
+  <PSXDependencyDef
+          objectType="SystemDefElement"
+          objectTypeName="System Def Override"
+          handlerClass="com.percussion.deployer.server.dependencies.PSSystemDefElementDependencyHandler"
+          isDeployableElement="no"
+          supportsIdTypes="yes"
+          supportsIdMapping="no"
+          supportsUserDependencies="no"/>
   <PSXDependencyDef 
       objectType="sys_Templates"
       objectTypeName="Template"
@@ -550,5 +566,6 @@
 	<Object type="FOLDER_CONTENTS"/>
 	<Object type="FOLDER_TRANSLATIONS"/>
 	<Object type="ACL"/>
+    <Object type="SystemDef"/>
 </UninstallIgnoreTypes>
 </PSXPackageConfiguration>

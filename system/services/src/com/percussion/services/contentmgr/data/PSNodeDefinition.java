@@ -1,25 +1,18 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.percussion.services.contentmgr.data;
 
@@ -715,13 +708,28 @@ public class PSNodeDefinition implements IPSNodeDefinition
       return m_name != null ? m_name.hashCode() : 0;
    }
 
-   /** (non-Javadoc)
-    * @see java.lang.Object#toString()
+   /**
+    * (non-Javadoc)
+    *
+    * @see Object#toString()
     */
    @Override
-   public String toString()
-   {
-      return ToStringBuilder.reflectionToString(this);
+   public String toString() {
+      final StringBuffer sb = new StringBuffer("PSNodeDefinition{");
+      sb.append("m_contenttypeid=").append(m_contenttypeid);
+      sb.append(", m_version=").append(m_version);
+      sb.append(", m_name='").append(m_name).append('\'');
+      sb.append(", m_label='").append(m_label).append('\'');
+      sb.append(", m_description='").append(m_description).append('\'');
+      sb.append(", m_newRequest='").append(m_newRequest).append('\'');
+      sb.append(", m_queryRequest='").append(m_queryRequest).append('\'');
+      sb.append(", m_updateRequest='").append(m_updateRequest).append('\'');
+      sb.append(", m_objectType=").append(m_objectType);
+      sb.append(", m_hideFromMenu=").append(m_hideFromMenu);
+      sb.append(", m_cvDescriptors=").append(m_cvDescriptors);
+      sb.append(", m_ctWfRels=").append(m_ctWfRels);
+      sb.append('}');
+      return sb.toString();
    }
 
    /**

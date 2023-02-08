@@ -1,3 +1,20 @@
+/*
+ * Copyright 1999-2023 Percussion Software, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.percussion.pso.effects;
 
 import com.percussion.cms.PSCmsException;
@@ -20,7 +37,7 @@ import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.PSExtensionProcessingException;
 import com.percussion.extension.PSParameterMismatchException;
 import com.percussion.fastforward.managednav.PSNavAbstractEffect;
-import com.percussion.fastforward.managednav.PSNavConfig;
+import com.percussion.services.assembly.impl.nav.PSNavConfig;
 import com.percussion.fastforward.managednav.PSNavException;
 import com.percussion.fastforward.managednav.PSNavProxyFactory;
 import com.percussion.fastforward.managednav.PSNavRelationshipInfo;
@@ -265,7 +282,7 @@ public class PSNavLandingPageGeneratorEffect extends  PSNavAbstractEffect{
 				this.setDefaultLandingRequiredValues(getCSVList(params[5].toString()));
 		
 			if(params[6]!=null)
-				this.setDefaultLandingCommunityId(Integer.parseInt("0" + params[6].toString()));	
+				this.setDefaultLandingCommunityId(Integer.parseInt("0" + params[6]));
 		
 			if(m_defaultLandingRequiredFields!=null && m_defaultLandingRequiredValues!=null){
 				if(m_defaultLandingRequiredFields.length != m_defaultLandingRequiredValues.length){
@@ -290,13 +307,13 @@ public class PSNavLandingPageGeneratorEffect extends  PSNavAbstractEffect{
 			
 			PSNavConfig navConfig = PSNavConfig.getInstance();
 			
-			if(dep.getContentTypeId() == navConfig.getNavonType()){
+			if(navConfig.getNavonTypeIds().contains(dep.getContentTypeId())){
 				//This is a NavOn so we want to make sure it's landing
 				//page slot is empty.  If it is not, then we want to skip out.
 				//Otherwise we will create a new Landing Page and add it to the 
 				//slot. 
 			
-				String landingSlot = navConfig.getProperty(PSNavConfig.NAVON_LANDING_SLOT, "rffNavLandingPage");
+				String landingSlot = navConfig.getNavLandingPageSlotNames().get(0);
 				PSAaRelationshipList slotContents = PSNavUtil.getSlotContents(req, info.getRelation().getDependent(), landingSlot);
 				
 				if(slotContents.isEmpty()){
@@ -337,7 +354,7 @@ public class PSNavLandingPageGeneratorEffect extends  PSNavAbstractEffect{
 			}
 			
 		} catch (PSNavException e) {
-			log.error("Unable to process NavOn slots for NavOn: {}", dep.getContentId(),e.getMessage());
+			log.error("Unable to process NavOn slots for NavOn: {} Error: {}", dep.getContentId(),e.getMessage());
 			log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 			result.setSuccess();
 		}
@@ -382,7 +399,7 @@ public class PSNavLandingPageGeneratorEffect extends  PSNavAbstractEffect{
            {
                String errmsg = "Unable to find Itemdef for type {0} in community {1}. ";
                Object[] args = new Object[2];
-               args[0] = config.getNavonType();
+               args[0] = config.getNavonTypeIds().get(0);
                args[1] = communityId;
                String sb = MessageFormat.format(errmsg, args);
                log.error(sb);
@@ -392,14 +409,14 @@ public class PSNavLandingPageGeneratorEffect extends  PSNavAbstractEffect{
            PSServerItem lp = new PSServerItem(lpDef, null, req.getSecurityToken());
 
            IPSFieldValue titleValue = new PSTextValue(makeLPTitle(req, folder,m_defaultLandingTitleTemplate));
-           log.debug("New Landing Page name is " + titleValue.getValueAsString());
+           log.debug("New Landing Page name is {}" , titleValue.getValueAsString());
            setFieldValue(lp, "sys_title", titleValue);
 
            IPSFieldValue displaytitleValue = new PSTextValue(makeLPTitle(req, folder,m_defaultLandingDisplayTitleFormat));
            setFieldValue(lp, m_defaultLandingDisplayTitleField, displaytitleValue);
 
            setFieldValue(lp, "sys_contentstartdate", new PSDateValue(new Date()));
-           log.debug("Landing Page community id " + String.valueOf(communityId));
+           log.debug("Landing Page community id {}" , communityId);
            setFieldValue(lp, "sys_communityid", new PSTextValue(String.valueOf(communityId)));
            
            //Set the required fields with the configured default values
@@ -421,9 +438,9 @@ public class PSNavLandingPageGeneratorEffect extends  PSNavAbstractEffect{
            log.debug("after save");
 
            int contentId = lp.getContentId();
-           log.debug("new content id is " + String.valueOf(contentId));
+           log.debug("new content id is {}" , contentId);
            int revision = lp.getRevision();
-           log.debug("new revision is " + String.valueOf(revision));
+           log.debug("new revision is {}" , revision);
            lpLoc = new PSLocator(contentId, revision);
            
            checkInItem(req, lpLoc);
@@ -441,7 +458,7 @@ public class PSNavLandingPageGeneratorEffect extends  PSNavAbstractEffect{
          if (changeCommunity)
          { // we changed communities, so we have to go back
              PSNavUtil.setSessionCommunity(req, savedCommunity);
-             log.debug("Restored community to " + savedCommunity);
+             log.debug("Restored community to {}" , savedCommunity);
          }
          
 		} catch (Exception e) {
@@ -494,10 +511,10 @@ public class PSNavLandingPageGeneratorEffect extends  PSNavAbstractEffect{
 	        
 			
 	        if(lpSlot == null){
-	        	log.debug("Unable to locate the LandingPage slot:" + landingSlotName);
+	        	log.debug("Unable to locate the LandingPage slot: {}" , landingSlotName);
 	        	throw new PSNavException("Unable to locate the LandingPage slot:" + landingSlotName);
 	        }
-	        log.debug("LandingPage slot is " + lpSlot.toString() + " " + landingSlotName);
+	        log.debug("LandingPage slot is {} {}",lpSlot, landingSlotName);
 	        Collection<PSPair<IPSGuid, IPSGuid>> slotTempsAndCTs = lpSlot.getSlotAssociations();
 	        
 	        IPSAssemblyTemplate t;
@@ -517,7 +534,7 @@ public class PSNavLandingPageGeneratorEffect extends  PSNavAbstractEffect{
 	        }
 	        
 	        
-	        log.debug("LP link template" + t.getName() + " " + t.toString());
+	        log.debug("LP link template {} {}" , t.getName() , t);
 
 	        PSLocator childLoc = (PSLocator) lp.clone();
 	        

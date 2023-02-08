@@ -2,11 +2,11 @@
 SEP_PADDING = 5;
 HANDLE_PADDING = 7;
 
-var yToolbars = new Array();  // Array of all toolbars.
+var yToolbars = [];  // Array of all toolbars.
 
 // Initialize everything when the document is ready
 var YInitialized = false;
-function document.onreadystatechange() {
+function documentReadyStateChange() {
   if (YInitialized) return;
   YInitialized = true;
 
@@ -27,13 +27,14 @@ function document.onreadystatechange() {
   DoLayout();
   window.onresize = DoLayout;
 
-  Composition.document.open()
+  Composition.document.open();
   Composition.document.write("<body style=\"font:10pt arial,sans-serif\"></body>");
-  Composition.document.close()
-  Composition.document.designMode="On"
+  Composition.document.close();
+  Composition.document.designMode="On";
   //setTimeout("Composition.focus()",0)
 
 }
+document.onreadystatechange = documentReadyStateChange;
 
 // Initialize a toolbar button
 function InitBtn(btn) {
@@ -131,7 +132,8 @@ function BtnMouseUp() {
   var image = event.srcElement;
   var element = image.parentElement;
 
-  if (element.YUSERONCLICK) eval(element.YUSERONCLICK + "anonymous()");
+  if (element.YUSERONCLICK)
+    eval(element.YUSERONCLICK + "anonymous()");
 
   element.className = "BtnMouseOverUp";
   image.className = "Ico";
@@ -390,12 +392,12 @@ function createInlineLink(type) {
 			params = replace(params,'%25','');
 		}
 		var inlinetext=Composition.document.selection.createRange().text;
-		var params = window.showModalDialog("/Rhythmyx/sys_ceInlineSearch/contentsearch.html?inlineslotid=" + inlineslotid + "&inlinetext=" + inlinetext + "&inlinetype=" + inlinetype + "&" + params, "testVal", "dialogHeight: 300px; dialogWidth: 400px; dialogTop: 65px; dialogLeft: 453px; edge: Raised; center: Yes; help: No; resizable: Yes; status: No;");
+		 params = window.showModalDialog("/Rhythmyx/sys_ceInlineSearch/contentsearch.html?inlineslotid=" + inlineslotid + "&inlinetext=" + inlinetext + "&inlinetype=" + inlinetype + "&" + params, "testVal", "dialogHeight: 300px; dialogWidth: 400px; dialogTop: 65px; dialogLeft: 453px; edge: Raised; center: Yes; help: No; resizable: Yes; status: No;");
 
 		if(params == "cancel")
 			return;
 
-		var urlString = window.showModalDialog("/Rhythmyx/sys_ceInlineSearch/resultpage.html?inlineslotid=" + inlineslotid + "&inlinetext=" + inlinetext + "&inlinetype=" + inlinetype + "&" + params, "testVal", "dialogHeight: 300px; dialogWidth: 400px; dialogTop: 65px; dialogLeft: 453px; edge: Raised; center: Yes; help: No; resizable: Yes; status: No;");
+		 urlString = window.showModalDialog("/Rhythmyx/sys_ceInlineSearch/resultpage.html?inlineslotid=" + inlineslotid + "&inlinetext=" + inlinetext + "&inlinetype=" + inlinetype + "&" + params, "testVal", "dialogHeight: 300px; dialogWidth: 400px; dialogTop: 65px; dialogLeft: 453px; edge: Raised; center: Yes; help: No; resizable: Yes; status: No;");
 		if(urlString == "cancel")
 			return;
 		urlString = window.showModalDialog("/Rhythmyx/sys_ceInlineSearch/returnvariant.html?inlineslotid=" + inlineslotid + "&inlinetext=" + inlinetext + "&inlinetype=" + inlinetype + "&" + urlString, "testVal", "dialogHeight: 300px; dialogWidth: 400px; dialogTop: 65px; dialogLeft: 453px; edge: Raised; center: Yes; help: No; resizable: Yes; status: No;");
@@ -430,7 +432,7 @@ function foreColor() {
   var arr = showModalDialog("colorselect.html", "", "dialogWidth:355px; dialogHeight:370px; center:yes");
   if (arr != null) format('forecolor', arr);
   else {
-  Composition.focus()
+  Composition.focus();
   }
 }
 
@@ -440,7 +442,7 @@ function backColor() {
   var arr = showModalDialog("colorselect.html", "", "dialogWidth:355px; dialogHeight:370px; center:yes");
   if (arr != null) format('backcolor', arr);
   else {
-  Composition.focus()
+  Composition.focus();
   }
 }
 

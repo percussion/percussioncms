@@ -1,0 +1,28 @@
+<project name="Solution-LandingPage" default="dist" basedir=".">
+	<description>Rhythmyx Personalization Build</description>
+
+	<!-- BEGIN Check and Import Build Tools -->
+	<property environment="my_env"/>
+	<available property="soln-buildtools" value="${my_env.SOLN_BUILDTOOLS}" file="${my_env.SOLN_BUILDTOOLS}" type="dir" />
+	<available property="soln-buildtools" value="../Solution-BuildTools" file="../Solution-BuildTools" type="dir" />
+	<fail unless="soln-buildtools" message="Could not find Solution Build Tools. Check SOLN_BUILDTOOLS env variable." />
+	<import file="${soln-buildtools}/build-share.xml"/>
+	<!-- END Check and Import Build Tools -->
+
+	<target name="artifacts" depends="init">
+		<!-- Api jar -->
+		<artifact-def id="landingpage" conf="default">
+			<files>
+				<include name="com/percussion/**" />
+			</files>
+		</artifact-def>
+		<artifact-def id="dist" conf="dist" type="dist" ext="zip"/>
+		<artifact-def id="package" fullname="soln.landingpage" conf="dist" type="dist" ext="ppkg" />
+	</target>
+
+	<target name="build-after" depends="groovy-task">
+		<ppkg-jar ppkg-name="soln.landingpage" jar-name="soln-landingpage-rx" />
+	</target>
+	
+
+</project>
