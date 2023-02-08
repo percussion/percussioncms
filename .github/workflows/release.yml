@@ -13,7 +13,7 @@ jobs:
 
     steps:
       - name: "Build & test"
-        uses: percussion/percussioncs/workflows/maven.yml
+        uses: "./.github/workflows/maven.yml"
 
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
