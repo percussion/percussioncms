@@ -26,7 +26,7 @@ tinymce.PluginManager.add('percadvimage', function(editor, url) {
         }
 
         function setReadWriteMode() {
-            var url = formData.src;
+            var url = formData.url;
             var description = formData.alt;
             var title = formData.title;
             var datadescriptionoverride = formData.isDataDescriptionOverride;
@@ -86,9 +86,13 @@ tinymce.PluginManager.add('percadvimage', function(editor, url) {
                 sys_dependentid : cm1LinkData.sys_dependentid,
                 sys_relationshipid : '',
                 inlinetype : cm1LinkData.inlinetype,
-                'data-jcrpath' : cm1LinkData.jcrpath,
-                'data-pathitem' : JSON.stringify(cm1LinkData.pathItem)
+                'data-jcrpath' : cm1LinkData.jcrpath
             };
+
+            var url = formData.url;
+            if(typeof url === 'undefined'){
+                url = formData.src.value;
+            }
 
             var formImgAttrs = {
                 'data-description-override': formData.isDataDescriptionOverride,
@@ -98,7 +102,7 @@ tinymce.PluginManager.add('percadvimage', function(editor, url) {
                 'data-decorative-override': formData.isDataDecorativeOverride,
                 'data-constrain' : formData.constrain,
 
-                'src' :formData.src,
+                'src' :url,
                 'alt' :formData.alt,
                 'title' : formData.title,
                 'align' : formData.align,
@@ -116,19 +120,19 @@ tinymce.PluginManager.add('percadvimage', function(editor, url) {
                     };
                     jQuery.extend(formImgAttrs, style);
                 }
-
-                dom.removeAllAttribs(imgElm);
-                dom.setAttribs(imgElm, formImgAttrs);
+				dom.setAttribs(imgElm, formImgAttrs);
                 editor.nodeChanged();
             } else {
-                editor.insertContent(dom.createHTML('img', formImgAttrs));
+                editor.insertContent(dom.createHTML('IMG', formImgAttrs));
             }
 
         }
 
-
         function updateDecorativeImage() {
-            var url = formData.src;
+            var url = formData.url;
+			if(typeof url === 'undefined'){
+				url = formData.src.value;
+			}
             var datadecorativeoverride = formData.isDataDecorativeOverride;
             //If it is an external url, we want to be able to write to it.
             if(url.startsWith('http')) {
@@ -160,7 +164,10 @@ tinymce.PluginManager.add('percadvimage', function(editor, url) {
 
 
         function setReadWriteModeAlt() {
-            var url = formData.src;
+            var url = formData.url;
+			if(typeof url === 'undefined'){
+				url = formData.src.value;
+			}
             var description = formData.alt;
             var title = formData.title;
             var sys_dependentid = cm1LinkData.sys_dependentid;
@@ -196,7 +203,10 @@ tinymce.PluginManager.add('percadvimage', function(editor, url) {
 
         function setReadWriteModeTitle() {
             var title = formData.title;
-            var url = formData.src;
+            var url = formData.url;
+			if(typeof url === 'undefined'){
+				url = formData.src.value;
+			}
             var description = formData.alt;
             var sys_dependentid = cm1LinkData.sys_dependentid;
             var dataprevioustitleoverride = (formData.dataPreviousTitleOverride == null || typeof formData.dataPreviousTitleOverride === 'undefined' )? '': formData.dataPreviousTitleOverride;
@@ -275,11 +285,15 @@ tinymce.PluginManager.add('percadvimage', function(editor, url) {
 
             //handle thumb url and switch from thumb to full
             if(formData.dataImgtype === '_thumb') {
-                formData.src = cm1LinkData.thumbUrl;
+				formData.url = cm1LinkData.thumbUrl;
+                formData.src = {value: formData.url};
+
                 cm1LinkData.sys_dependentvariantid = cm1LinkData.thumbVarId;
             }
             else{
-                formData.src = cm1LinkData.fullUrl;
+
+				formData.url = cm1LinkData.fullUrl;
+				formData.src = {value: formData.url};
                 cm1LinkData.sys_dependentvariantid = cm1LinkData.fullVarId;
             }
             var inlineImage = new Image();
@@ -290,7 +304,11 @@ tinymce.PluginManager.add('percadvimage', function(editor, url) {
 
             };
 
-            inlineImage.src = formData.src;
+			if(typeof formData.url === 'undefined'){
+				inlineImage.src = formData.src.value;
+			}else{
+            inlineImage.src = formData.url;
+        }
         }
         function getImageData(itemId, updateTitle, callback) {
 
@@ -315,8 +333,7 @@ tinymce.PluginManager.add('percadvimage', function(editor, url) {
                     cm1LinkData.inlinetype = 'rximage';
                     cm1LinkData.alt = renderLink.altText;
                     cm1LinkData.title = renderLink.title;
-                    cm1LinkData.jcrpath = pathItem.PathItem.folderPaths[0].replace('/Folders/$System$/','') + "/" + pathItem.PathItem.name;
-                    cm1LinkData.pathItem = pathItem.PathItem;
+                    cm1LinkData.jcrpath = pathItem.PathItem.folderPaths.replace('/Folders/$System$/','') + "/" + pathItem.PathItem.name;
 
                     var currentaltoverride = formData.alt;
                     var currenttitleoverride = formData.title;
@@ -430,7 +447,8 @@ tinymce.PluginManager.add('percadvimage', function(editor, url) {
         proportion = width / height;
         formData.dataImgtype = isImage ? dom.getAttrib(imgElm, 'data-imgtype') : '_full';
         formData.constrain = isImage ? (dom.getAttrib(imgElm, 'data-constrain') === 'true') : false;
-        formData.src = isImage ? dom.getAttrib(imgElm, 'src') : '';
+        formData.url = isImage ? dom.getAttrib(imgElm, 'src') : '';
+		formData.src = {value: formData.url};
         formData.alt = isImage ? dom.getAttrib(imgElm, 'alt') : '';
         formData.isDataDescriptionOverride = isImage ? (dom.getAttrib(imgElm, 'data-description-override') === 'true') : false;
         formData.dataPreviousAltOverride = isImage ? dom.getAttrib(imgElm, 'data-previous-alt-override') : '';
@@ -456,8 +474,7 @@ tinymce.PluginManager.add('percadvimage', function(editor, url) {
             body: {
                 type: 'panel', // root body panel
                 items: [
-                    {name: 'srcPath', type: 'urlinput', filetype: 'image', label: 'Source'},
-                    {name: 'src', type: 'input', label: 'Source'},
+                    {name: 'src', type: 'urlinput', filetype: 'image', label: 'Source'},
                     {name: 'isDataDecorativeOverride',type: 'checkbox', label: 'Decorative- Image (WAI)', text: 'Decorative Image'},
                     {type: 'bar',label: 'Image description*',name: 'imageDesc',layout: 'flex',direction: 'row', align: 'center',spacing: 5,
                         items: [
@@ -549,7 +566,7 @@ tinymce.PluginManager.add('percadvimage', function(editor, url) {
                 }
                 if(changeData.name === 'align'){
 
-                    formData.align = newData.align;
+                    formData.align = api.getData().align;
                 }
             },
 
@@ -586,7 +603,10 @@ tinymce.PluginManager.add('percadvimage', function(editor, url) {
                     return;
                 }
 
-                var dataSrc = formData.src;
+                var dataSrc = formData.url;
+				if(typeof dataSrc === 'undefined'){
+					dataSrc = formData.src.value;
+				}
                 var imgPath = dataSrc.trim(),imgPathLower = imgPath.toLowerCase();
                 //Resolve manually entered internal links
                 if(imgPathLower.match('^//sites/') || imgPathLower.match('^//assets/') || imgPathLower.match('^/sites/') || imgPathLower.match('^/assets/') || imgPathLower.match('^sites/') || imgPathLower.match('^assets/')) {
@@ -602,7 +622,8 @@ tinymce.PluginManager.add('percadvimage', function(editor, url) {
                         }
                         else{
                             updateLinkData(result.PathItem, function(fullUrl, thumUrl, title) {
-                                formData.src = formData.dataimgtype === '_thumb' ? thumUrl : fullUrl;
+                                formData.url = formData.dataimgtype === '_thumb' ? thumUrl : fullUrl;
+								formData.src = {value: formData.url};
                                 formData.dimensions.width = width;
                                 formData.dimensiond.height = height;
 
@@ -648,11 +669,36 @@ tinymce.PluginManager.add('percadvimage', function(editor, url) {
         return win;
     }
 
+    /**
+     * This method checks if TinyMCE is part of ContentEditor or CMS UI
+     * In Case it is CMS UI, it enables buttons and menu items applicable to CMS and
+     * disables buttons and menuitems applicable to Rhythmyx Objects and vice a versa.
+     * @returns {boolean}
+     */
+	function isRXEditor(){
+		 var isRxEdr = false;
+		if(typeof contentEditor !== 'undefined' && "yes" === contentEditor){
+			isRxEdr = true;
+		}
+		return isRxEdr;
+	}
+
     editor.ui.registry.addButton('image', {
         icon: 'image',
         tooltip: 'Insert/edit image',
         onAction:showDialog,
         stateSelector: 'img:not([data-mce-object])',
+		onSetup: function (buttonApi) {
+            var editorEventCallback = function (eventApi) {
+              buttonApi.setDisabled(isRXEditor() === true );
+            };
+            editor.on('NodeChange', editorEventCallback);
+
+            /* onSetup should always return the unbind handlers */
+            return function (buttonApi) {
+              editor.off('NodeChange', editorEventCallback);
+            };
+      }
 
     });
 
@@ -661,6 +707,13 @@ tinymce.PluginManager.add('percadvimage', function(editor, url) {
         text: 'Insert image',
         onAction: showDialog,
         context: 'insert',
-        prependToContext: true
+        prependToContext: true,
+        onSetup: function (buttonApi) {
+            if (isRXEditor() === false) {
+                buttonApi.setDisabled(false);
+            } else {
+                buttonApi.setDisabled(true);
+            }
+        }
     });
 });

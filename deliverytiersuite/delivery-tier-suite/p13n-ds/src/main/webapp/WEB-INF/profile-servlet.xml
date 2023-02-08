@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:lang="http://www.springframework.org/schema/lang"
+       xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang-2.0.xsd">	
+
+		
+   <bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+      <property name="urlMap">
+         <map>
+            <entry key="/edit" value-ref="profileEditController" />
+            <entry key="/main" value-ref="profileMainController"/>
+            <entry key="/menu" value-ref="profileMenuController"/>
+         </map>
+      </property>
+   </bean>
+   
+   <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="viewClass">
+           <value>org.springframework.web.servlet.view.JstlView</value>
+        </property>
+        <property name="prefix"><value>/solution/jsp/</value></property>
+        <property name="suffix"><value>.jsp</value></property>
+    </bean>
+    
+    <bean id="themeResolver" class="org.springframework.web.servlet.theme.FixedThemeResolver">
+    	<property name="defaultThemeName" value="deliverySideTheme" />
+    </bean>
+    
+    <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+        <property name="basename"><value>messages</value></property>
+    </bean>
+
+
+   <bean id="profileEditController" class="com.percussion.soln.p13n.tracking.ds.web.ProfileEditController">
+		<property name="segmentService" ref="segmentService" />
+		<property name="visitorProfileDataService" ref="visitorProfileDataService" />
+   </bean>
+   
+   <bean id="profileMainController" class="com.percussion.soln.p13n.tracking.ds.web.ProfileMainController" />
+   
+   <bean id="profileMenuController" class="com.percussion.soln.p13n.tracking.ds.web.DummyController">
+   		<property name="view" value="ProfileMenu" />
+   </bean>
+
+
+</beans>

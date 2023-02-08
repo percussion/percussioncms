@@ -13,6 +13,7 @@ function percTinyMceInitialized(tinymceEditor) {
             dirtyController.setDirty(true, "asset");
             tinymceEditor.off('keypress');
         });
+	}
 
         // This event listener creates a tooltip when hovering over a broken image
         tinymceEditor.on("MouseOver", function(e) {
@@ -21,38 +22,45 @@ function percTinyMceInitialized(tinymceEditor) {
                 $itemTarget = $target;
                 itemJcrPath = $itemTarget.data('jcrpath');
                 itemObject = $itemTarget.data('pathitem');
-                /* var menu = editor.ui.registry.addMenuItem({
-                    classes: 'perc-broken-link-tooltip',
-                    items: [{
-                        text: $itemTarget.is('.perc-brokenlink') ? 'Deleted item referenced: ' + itemJcrPath : itemJcrPath,
-                        onClick: function() {
-                            if($itemTarget.is('.perc-notpubliclink')) {
-                                openEditor(itemObject, itemJcrPath);
-                            }
-                        }
-                    }],
-                    context: "contextmenu",
-                    onhide: function() { menu.remove(); }
-                });
-
-                menu.renderTo(document.body);
-
-                var pos = tinymce.DOM.getPos(tinymceEditor.getContentAreaContainer());
-                var targetPos = tinymceEditor.dom.getPos(e.target);
-                var root = tinymceEditor.dom.getRoot();
 
 
-                targetPos.x -= e.target.scrollLeft || root.scrollLeft;
-                targetPos.y -= e.target.scrollTop || root.scrollTop;
-
-                pos.x += targetPos.x;
-                pos.y += targetPos.y;
-
-                menu.moveTo(pos.x, pos.y + e.target.offsetHeight + 5);*/
             }
         });
 
-    }
+        tinymceEditor.ui.registry.addMenuItem('useBrowserSpellcheck', {
+            text: 'Use `Ctrl+Right click` to access spellchecker',
+            icon:'spell-check',
+            onAction: function () {
+                tinymceEditor.notificationManager.open({
+                    text: 'Spellchecker - hold the Control (Ctrl) key and right-click on the misspelt word.',
+                    type: 'info',
+                    timeout: 5000,
+                    closeButton: true
+                });
+            }
+        });
+
+        tinymceEditor.ui.registry.addButton('useBrowserSpellcheck', {
+            text: 'Use `Ctrl+Right click` to access spellchecker',
+            icon:'spell-check',
+            type: 'button',
+            onAction: function () {
+                tinymceEditor.notificationManager.open({
+                    text: 'Spellchecker - hold the Control (Ctrl) key and right-click on the misspelt word.',
+                    type: 'info',
+                    timeout: 5000,
+                    closeButton: true
+                });
+            }
+        });
+
+        tinymceEditor.ui.registry.addContextMenu('useBrowserSpellcheck', {
+            update: function (node) {
+                return tinymceEditor.selection.isCollapsed() ? ['useBrowserSpellcheck'] : [];
+            }
+        });
+
+
 }
 
 function openEditor(itemObject, itemJcrPath) {
@@ -137,10 +145,10 @@ function getBaseConfig(parameters) {
 
         var mergedBaseOptions = $.extend({}, {
             "branding": false,
-            "mode": "textareas",
-            "selector": "textarea",
+            "selector": "textarea.tinymce",
             "autosave_interval": "10m",
             "autosave_retention": "1440m",
+            "link_context_toolbar": true,
             "perc_config": "../sys_resources/tinymce/config/default_config.json",
             "content_css": "../sys_resources/css/tinymce/content.css",
             "theme": "silver",
@@ -153,8 +161,10 @@ function getBaseConfig(parameters) {
                 'codemirror': '/sys_resources/tinymce/plugins/codemirror/plugin.js',
                 'percadvimage': '/sys_resources/tinymce/plugins/percadvimage/plugin.js',
                 'percadvlink': '/sys_resources/tinymce/plugins/percadvlink/plugin.js',
-                    'percglobalvariables': '/sys_resources/tinymce/plugins/percglobalvariables/plugin.js',
-                    'percmorelink': '/sys_resources/tinymce/plugins/percmorelink/plugin.js',
+                'percglobalvariables': '/sys_resources/tinymce/plugins/percglobalvariables/plugin.js',
+                'percmorelink': '/sys_resources/tinymce/plugins/percmorelink/plugin.js',
+                'rxinline':'/sys_resources/tinymce/plugins/rxinline/plugin.js',
+                'rxinserthtml':'/sys_resources/tinymce/plugins/rxinserthtml/plugin.js',
 
             },
             "codemirror": {
@@ -183,7 +193,7 @@ function getBaseConfig(parameters) {
                 if (meta.filetype == 'file') {
                     var pathSelectionOptions = {
                         okCallback: function(selectedItem){
-							  tinymce.execCommand('updateFileSelection',false,selectedItem);
+                            tinymce.execCommand('updateFileSelection',false,selectedItem);
                         },
                         dialogTitle: I18N.message("perc.ui.widget.tinymce@Please select"),
                         rootPath:topFrJQ.PercFinderTreeConstants.ROOT_PATH_ALL,
@@ -205,7 +215,7 @@ function getBaseConfig(parameters) {
                     var openCreateImageDialog = function(successCallback, cancelCallback) {
                         $.topFrameJQuery.PercCreateNewAssetDialog('percImage', successCallback, cancelCallback);
                     };
-					var validator = function (pathItem) {
+                    var validator = function (pathItem) {
                         return pathItem && pathItem.type === 'percImageAsset' ? null : 'Please select an image.';
                     };
                     var pathSelectionOptions2 = {
@@ -217,14 +227,13 @@ function getBaseConfig(parameters) {
                         initialPath: topFrJQ.cookie('perc-inlineimage-path'),
                         selectedItemValidator:validator,
                         acceptableTypes:'percImageAsset,site,Folder',
-                        createNew:{'label':'Upload', 'iconclass':'icon-upload-alt', 'onAction':openCreateImageDialog}
+                        createNew:{'label':'Upload', 'iconclass':'icon-upload-alt', 'onclick':openCreateImageDialog}
                     };
                     imagePickerDialog = topFrJQ.PercPathSelectionDialog.open(pathSelectionOptions2);
                 }
 
             },
             "convert_urls" : false,
-            "toolbar": "newdocument undo redo restoredraft | cut copy paste searchreplace | styleselect fontselect fontsizeselect forecolor backcolor removeformat | bold italic underline strikethrough superscript subscript | alignleft aligncenter alignright alignjustify alignnone |  bullist numlist outdent indent | link unlink openlink media | visualchars visualblocks fullscreen print preview | anchor charmap hr emoticons insertdatetime | table tabledelete tableinsertrowafter tabledeleterow tableinsertcolbefore tabledeletecol tablesplitcells tablemergecells | rxinlinelink rxinlinetemplate rxinlineimage rxinserthtml | ltr rtl codesample code"
         }, options);
         console.log("From base config="+JSON.stringify(mergedBaseOptions, null, 2));
 

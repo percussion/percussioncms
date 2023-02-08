@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<MenuBar>
+	<Action label="Content" name="Content" type="MENU" sortrank="1" url="" handler="CLIENT" >
+		<Props>
+			<Prop name="AcceleratorKey">alt C</Prop>
+			<Prop name="MnemonicKey">C</Prop>
+			<Prop name="ShortDescription">Description for content menu to show as tooltip</Prop>
+			<Prop name="SmallIcon">content.gif</Prop>
+		</Props>
+		<Params>
+			<Param name="paramname">paramvalue</Param>
+		</Params>
+		<Action label="New" name="New" type="MENU" sortrank="1" handler="SERVER" url="../sys_cx/newmenu.xml">		
+			<Params>
+				<Param name="paramname">paramvalue</Param>
+			</Params>
+		</Action>
+		<Action label="Search..." name="Search" type="MENUITEM" sortrank="2" handler="CLIENT" url="CLIENT">
+			<Props>
+				<Prop name="propname">propvalue</Prop>
+			</Props>
+			<Params>
+				<Param name="paramname">paramvalue</Param>
+			</Params>
+		</Action>
+		<Action label="CONTEXT" name="CONTEXT" type="CONTEXTMENU" sortrank="3" handler="SERVER" url="">
+			<Props>
+				<Prop name="propname">propvalue</Prop>
+			</Props>
+			<Params>
+				<Param name="paramname">paramvalue</Param>
+			</Params>
+		</Action>
+	</Action>
+	<Action label="View" name="View" type="MENU" sortrank="2" handler="CLIENT" url="">
+		<Props>
+			<Prop name="AcceleratorKey">alt V</Prop>
+			<Prop name="MnemonicKey">V</Prop>
+			<Prop name="ShortDescription">Description for view menu to show as tooltip</Prop>
+			<Prop name="SmallIcon">content.gif</Prop>
+		</Props>
+		<Params>
+			<Param name="paramname">paramvalue</Param>
+		</Params>
+		<Action label="Refresh" name="Refresh" type="MENUITEM" sortrank="1" handler="CLIENT" url="CLIENT">
+			<Props>
+				<Prop name="propname">propvalue</Prop>
+			</Props>
+			<Params>
+				<Param name="paramname">paramvalue</Param>
+			</Params>
+		</Action>
+		<Action label="Options" name="Options" type="MENUITEM" sortrank="2" handler="CLIENT" url="CLIENT">
+			<Props>
+				<Prop name="propname">propvalue</Prop>
+			</Props>
+			<Params>
+				<Param name="paramname">paramvalue</Param>
+			</Params>
+		</Action>
+	</Action>
+	<Action label="Help" name="Help" type="MENU" sortrank="3" handler="SERVER" url="">
+		<Props>
+			<Prop name="AcceleratorKey">alt H</Prop>
+			<Prop name="MnemonicKey">H</Prop>
+			<Prop name="ShortDescription">Description for view menu to show as tooltip</Prop>
+			<Prop name="SmallIcon">content.gif</Prop>
+		</Props>
+		<Params>
+			<Param name="paramname">paramvalue</Param>
+		</Params>
+		<Action label="Content Explorer" name="topMenuHelp" type="MENUITEM" sortrank="1" handler="CLIENT" url="">
+			<Props>
+				<Prop name="propname">propvalue</Prop>
+			</Props>
+			<Params>
+				<Param name="paramname">paramvalue</Param>
+			</Params>
+		</Action>
+		<Action label="About" name="About" type="MENUITEM" sortrank="2" handler="CLIENT" url="">
+			<Props>
+				<Prop name="propname">propvalue</Prop>
+			</Props>
+			<Params>
+				<Param name="paramname">paramvalue</Param>
+			</Params>
+		</Action>
+	</Action>
+</MenuBar>

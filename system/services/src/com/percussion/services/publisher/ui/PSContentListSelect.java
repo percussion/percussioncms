@@ -1,25 +1,18 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.percussion.services.publisher.ui;
 
@@ -49,6 +42,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.faces.application.FacesMessage;
@@ -1008,37 +1002,39 @@ public class PSContentListSelect
       return false;
    }
 
-   /**
-    * (non-Javadoc)
-    * 
-    * @see java.lang.Object#equals(java.lang.Object)
-    */
    @Override
-   public boolean equals(Object arg0)
-   {
-      return EqualsBuilder.reflectionEquals(this, arg0);
+   public boolean equals(Object o) {
+      if (this == o) return true;
+      if (!(o instanceof PSContentListSelect)) return false;
+      PSContentListSelect that = (PSContentListSelect) o;
+      return m_resetGenParams == that.m_resetGenParams && m_resetExpParams == that.m_resetExpParams && Objects.equals(m_namefilter, that.m_namefilter) && Objects.equals(m_current, that.m_current) && Objects.equals(m_currentGenParams, that.m_currentGenParams) && Objects.equals(m_currentExpParams, that.m_currentExpParams) && Objects.equals(m_generator, that.m_generator) && Objects.equals(m_expander, that.m_expander) && Objects.equals(m_copyItemName, that.m_copyItemName) && Objects.equals(m_copyItemNewName, that.m_copyItemNewName) && Objects.equals(m_pubui, that.m_pubui);
+   }
+
+   @Override
+   public int hashCode() {
+      return Objects.hash(m_namefilter, m_current, m_resetGenParams, m_resetExpParams, m_currentGenParams, m_currentExpParams, m_generator, m_expander, m_copyItemName, m_copyItemNewName, m_pubui);
    }
 
    /**
     * (non-Javadoc)
-    * 
-    * @see java.lang.Object#hashCode()
+    *
+    * @see Object#toString()
     */
    @Override
-   public int hashCode()
-   {
-      return HashCodeBuilder.reflectionHashCode(this);
+   public String toString() {
+      final StringBuffer sb = new StringBuffer("PSContentListSelect{");
+      sb.append("m_namefilter='").append(m_namefilter).append('\'');
+      sb.append(", m_current=").append(m_current);
+      sb.append(", m_resetGenParams=").append(m_resetGenParams);
+      sb.append(", m_resetExpParams=").append(m_resetExpParams);
+      sb.append(", m_currentGenParams=").append(m_currentGenParams);
+      sb.append(", m_currentExpParams=").append(m_currentExpParams);
+      sb.append(", m_generator='").append(m_generator).append('\'');
+      sb.append(", m_expander='").append(m_expander).append('\'');
+      sb.append(", m_copyItemName='").append(m_copyItemName).append('\'');
+      sb.append(", m_copyItemNewName='").append(m_copyItemNewName).append('\'');
+      sb.append(", m_pubui=").append(m_pubui);
+      sb.append('}');
+      return sb.toString();
    }
-
-   /**
-    * (non-Javadoc)
-    * 
-    * @see java.lang.Object#toString()
-    */
-   @Override
-   public String toString()
-   {
-      return ToStringBuilder.reflectionToString(this);
-   }
-
 }

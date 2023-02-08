@@ -1,25 +1,18 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.percussion.rx.publisher.impl;
 
@@ -80,7 +73,6 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.locks.ReentrantLock;
 
 import static com.percussion.rx.publisher.PSPublisherUtils.validateEditionForOnDemandContentLists;
 
@@ -119,7 +111,7 @@ public class PSRxPublisherService implements IPSRxPublisherServiceInternal
                   for(Integer editionid : m_demandWork.keySet())
                   {
                      Queue<PSDemandWork> q = m_demandWork.get(editionid);
-                     if (q.size() > 0)
+                     if (!q.isEmpty())
                      {
                         IPSGuid edition = gmgr.makeGuid(editionid.longValue(), 
                               PSTypeEnum.EDITION);
@@ -182,7 +174,7 @@ public class PSRxPublisherService implements IPSRxPublisherServiceInternal
     * Further more, don't try to lock/sychronize "m_demandWork" and "this" at
     * the same time, except in the {@link PSDemandWork} - avoid deadlock. 
     */
-   Map<Integer,  ConcurrentLinkedQueue<PSDemandWork>> m_demandWork = 
+   final Map<Integer,  ConcurrentLinkedQueue<PSDemandWork>> m_demandWork =
       new ConcurrentHashMap<>();
    
    /**
@@ -305,6 +297,7 @@ public class PSRxPublisherService implements IPSRxPublisherServiceInternal
       
       try{
          if (checkConnectivity(edition, job)) {
+
              PSDeliveryInfoService.copySecureKeyToDeliveryServer(edition);
             m_jobs.put(job.getJobid(), job);
             job.startJob();
@@ -322,16 +315,19 @@ public class PSRxPublisherService implements IPSRxPublisherServiceInternal
  protected boolean checkConnectivity(IPSGuid edition, PSPublishingJob job) throws PSNotFoundException {
       IPSPublisherService pubService = PSPublisherServiceLocator.getPublisherService();
       IPSEdition editionObject =  pubService.loadEdition(edition);
-      
-      PSPubServer pubServer = PSPubServerDaoLocator.getPubServerManager()
-            .loadPubServer(editionObject.getPubServerId());
-      
-      String pubServerType = pubServer.getPublishType();
-      if (pubServerType != null
-              && (pubServerType.equals("ftp") ||pubServerType.equals("sftp"))) {
-          if (!PSConnectivityCheck.checkFTPConnectivity(edition, job, pubServer, pubServerType, pubServerType.equals("sftp")))
-             return false;
-  
+
+      //Legacy rx sites won't have a pub server id, so skip the check.
+      if(editionObject.getPubServerId()!=null) {
+          PSPubServer pubServer = PSPubServerDaoLocator.getPubServerManager()
+                  .loadPubServer(editionObject.getPubServerId());
+
+          String pubServerType = pubServer.getPublishType();
+          if (pubServerType != null
+                  && (pubServerType.equals("ftp") || pubServerType.equals("sftp"))) {
+              if (!PSConnectivityCheck.checkFTPConnectivity(edition, job, pubServer, pubServerType, pubServerType.equals("sftp")))
+                  return false;
+
+          }
       }
       return true;
    }
@@ -759,10 +755,10 @@ public class PSRxPublisherService implements IPSRxPublisherServiceInternal
       {
          synchronized (m_demandWork)
          {
-            m_demandWork.notify();
+            m_demandWork.notifyAll();
          }
       }
-      ms_log.info("Queued demand work " + work);
+      ms_log.info("Queued demand work {}" , work);
       return work.getRequest();
    }
    
@@ -950,8 +946,7 @@ public class PSRxPublisherService implements IPSRxPublisherServiceInternal
          IOUtils.closeQuietly(os);
       }
    }
-   
-   private ReentrantLock writeBlock = new ReentrantLock();
+
 
    
 }

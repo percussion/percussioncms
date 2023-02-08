@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<!--
+This is the default merge configuration file is used by Percussion Language Tool
+to merge two TMX documents.
+<!DOCTYPE tmxmergeconfig SYSTEM "tmxmergeconfig.dtd">
+-->
+<tmxmergeconfig>
+	<tu>
+		<config>
+			<param name="deleteifexists">no</param>
+			<!-- Always the new one overides the old one -->
+			<param name="replaceifexists">yes</param>
+			<param name="modifyifexists">no</param>
+			<param name="ignoreifexists">no</param>
+			<!-- Add if does not exist -->
+			<param name="addifnotexists">yes</param>
+			<param name="ignoreifnotexists">no</param>
+		</config>
+		<note>
+			<config>
+				<param name="deleteifexists">no</param>
+				<!-- Always the new one overides the old one -->
+				<param name="replaceifexists">yes</param>
+				<param name="modifyifexists">no</param>
+				<param name="ignoreifexists">no</param>
+				<!-- Add if does not exist -->
+				<param name="addifnotexists">yes</param>
+				<param name="ignoreifnotexists">no</param>
+			</config>
+		</note>
+		<prop>
+			<config>
+				<param name="deleteifexists">no</param>
+				<!-- Always the new one overides the old one -->
+				<param name="replaceifexists">yes</param>
+				<param name="modifyifexists">no</param>
+				<param name="ignoreifexists">no</param>
+				<!-- Add if does not exist -->
+				<param name="addifnotexists">yes</param>
+				<param name="ignoreifnotexists">no</param>
+			</config>
+		</prop>
+		<tuv>
+		<!-- The following settings are ignored by virtue of settings for tu element -->
+			<config>
+				<param name="deleteifexists">no</param>
+				<!-- While tuv is replaced from the translated one. So configuration setting
+				for the child elements for tuv have no meaning -->
+				<param name="replaceifexists">yes</param>
+				<param name="modifyifexists">no</param>
+				<param name="ignoreifexists">no</param>
+				<!-- Add if not exists for some reason -->
+				<param name="addifnotexists">yes</param>
+				<param name="ignoreifnotexists">no</param>
+			</config>
+			<note>
+				<config>
+					<param name="deleteifexists">no</param>
+					<!-- Always the new one overides the old one -->
+					<param name="replaceifexists">yes</param>
+					<param name="modifyifexists">no</param>
+					<param name="ignoreifexists">no</param>
+					<!-- Add if does not exist -->
+					<param name="addifnotexists">yes</param>
+					<param name="ignoreifnotexists">no</param>
+				</config>
+			</note>
+			<prop>
+				<config>
+					<param name="deleteifexists">no</param>
+					<!-- Always the new one overides the old one -->
+					<param name="replaceifexists">yes</param>
+					<param name="modifyifexists">no</param>
+					<param name="ignoreifexists">no</param>
+					<!-- Add if does not exist -->
+					<param name="addifnotexists">yes</param>
+					<param name="ignoreifnotexists">no</param>
+				</config>
+			</prop>
+			<seg>
+				<config>
+					<param name="deleteifexists">no</param>
+					<!-- Always the new one overides the old one -->
+					<param name="replaceifexists">yes</param>
+					<param name="modifyifexists">no</param>
+					<param name="ignoreifexists">no</param>
+					<!-- Add if does not exist -->
+					<param name="addifnotexists">yes</param>
+					<param name="ignoreifnotexists">no</param>
+				</config>
+			</seg>
+		</tuv>
+	</tu>
+</tmxmergeconfig>

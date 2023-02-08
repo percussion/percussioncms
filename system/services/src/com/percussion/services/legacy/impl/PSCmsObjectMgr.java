@@ -1,25 +1,18 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.percussion.services.legacy.impl;
 
@@ -98,14 +91,15 @@ import org.apache.commons.lang.Validate;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Cache;
+import org.hibernate.CacheMode;
 import org.hibernate.Criteria;
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.metadata.ClassMetadata;
+import org.hibernate.query.Query;
 import org.hibernate.type.IntegerType;
 import org.hibernate.type.LongType;
 import org.hibernate.type.ShortType;
@@ -527,11 +521,9 @@ public class PSCmsObjectMgr
     @Override
     public PSPersistentPropertyMeta savePersistentPropertyMeta(PSPersistentPropertyMeta meta) {
 
-
+        PSPersistentPropertyMeta prop = findProperties(meta);
         Session session = getSession();
-       Criteria criteria = session.createCriteria(PSPersistentPropertyMeta.class);
-       PSPersistentPropertyMeta prop = ((PSPersistentPropertyMeta) criteria.add(Restrictions.eq("propertyName", meta.getPropertyName()))
-               .add((Restrictions.eq("userName",meta.getUserName()))).uniqueResult());
+
 
        if(prop == null){
           //add new
@@ -545,9 +537,19 @@ public class PSCmsObjectMgr
           prop.setOverridable(meta.getOverridable());
           prop.setPropertyName(meta.getPropertyName());
           prop.setPropertySaveType(meta.getPropertySaveType());
-          return (PSPersistentPropertyMeta)session.merge(prop);
+           prop = (PSPersistentPropertyMeta) session.merge(prop);
+           return prop;
       }
    }
+
+    private  PSPersistentPropertyMeta findProperties(PSPersistentPropertyMeta meta) {
+        Session session = getSession();
+        Criteria criteria = session.createCriteria(PSPersistentPropertyMeta.class);
+        PSPersistentPropertyMeta prop = ((PSPersistentPropertyMeta) criteria.add(Restrictions.eq("propertyName", meta.getPropertyName()))
+                .add((Restrictions.eq("userName",meta.getUserName()))).uniqueResult());
+        return prop;
+    }
+
 
    /*
     * (non-Javadoc)
@@ -614,7 +616,7 @@ public class PSCmsObjectMgr
       if (prop == null)
          throw new IllegalArgumentException("prop may not be null.");
 
-      getSession().merge(prop);
+       getSession().merge(prop);
    }
 
    /*
@@ -1674,11 +1676,7 @@ public class PSCmsObjectMgr
       int objectType        = toInt(item[4], -1);
       String createdBy      = (String)item[5];
       Date lastModifiedDate = (Date)item[6];
-       Date postDate         = (Date)item[7];
-       if(item[7] == null && item[16] != null) {
-           //Find the first PublishDate From PSX_PUBLICATION_DOC and set that as post Date.
-           postDate = getFirstPublishDate(contentId);
-       }
+      Date postDate         = (Date)item[7];
       Date createdDate      = (Date)item[8];
       int workflowId        = toInt(item[9], -1);
       int stateId           = toInt(item[10], -1);
@@ -1713,6 +1711,11 @@ public class PSCmsObjectMgr
            "c.m_contentLastModifiedDate, c.m_contentPostDate, c.m_contentCreatedDate, " +
            "c.m_workflowAppId, c.m_contentStateId, c.m_tipRevision, c.m_currRevision, " +
            "c.m_publicRevision, c.m_contentLastModifier, c.m_checkoutUserName, c.m_contentPublishDate from PSComponentSummary c";
+
+           private static final int DEFAULT_MAX_SUMMARY_CACHE_SIZE = -1;
+           private String CUSTOMIZED_MAX_SUMMARY_CACHE_SIZE;
+           private int maxLimit = DEFAULT_MAX_SUMMARY_CACHE_SIZE;
+           private static final String PROP_MAX_SUMMARY_CACHE_SIZE = "MAX_SUMMARY_CACHE_SIZE";
    /*
     * (non-Javadoc)
     * 
@@ -1720,9 +1723,28 @@ public class PSCmsObjectMgr
     */
    public Collection<IPSItemEntry> loadAllItemEntries()
    {
-      Session session = getSession();
 
+         Session session = getSession();
          Query q = session.createQuery(itemQuery);
+         q.setCacheable(true);
+         q.setCacheMode(CacheMode.NORMAL);
+         q.setCacheRegion("PSComponentSummary");
+
+          // Limit the contentSummary Cache size to customized or default size
+          // incase user sets the value 0 or -1, then it makes it unlimited, else use customized/default value.
+          // We are by default loading all, as required by FolderCache buildup.
+          if(CUSTOMIZED_MAX_SUMMARY_CACHE_SIZE == null){
+              try {
+                CUSTOMIZED_MAX_SUMMARY_CACHE_SIZE = PSServer.getProperty(PROP_MAX_SUMMARY_CACHE_SIZE,Integer.toString(DEFAULT_MAX_SUMMARY_CACHE_SIZE));
+                maxLimit = Integer.parseInt(CUSTOMIZED_MAX_SUMMARY_CACHE_SIZE);
+              }catch (Exception e){
+                  maxLimit = DEFAULT_MAX_SUMMARY_CACHE_SIZE;
+              }
+          }
+          if (maxLimit > 0) {
+              q.setMaxResults(maxLimit);
+          }
+
          List<Object[]> listItems = q.list();
          
          List<IPSItemEntry> allEntries = new ArrayList<>();

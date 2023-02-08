@@ -49,6 +49,7 @@ http://www.springframework.org/schema/context/spring-context.xsd">
     <!-- Publishing handler setup for the assembly and status queues -->
     <bean id="sys_publishMessageHandlerContainerQ"
           class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+        <property name="errorHandler" ref="sys_queueErrorHandler"/>
         <property name="concurrentConsumers" value="4"/>
         <property name="connectionFactory" ref="sys_jmsConnectionFactory" />
         <property name="destination" ref="sys_publishQueueDestination" />
@@ -370,6 +371,8 @@ http://www.springframework.org/schema/context/spring-context.xsd">
                     false
                 </prop>
                 <prop key="hibernate.allow_update_outside_transaction">true</prop>
+				<prop key="hibernate.id.new_generator_mappings">false</prop>
+                <prop key="hibernate.cache.ehcache.missing_cache_strategy">create</prop>
             </props>
         </property>
         <property name="datasourceManager" ref="sys_datasourceManager"/>
@@ -483,11 +486,6 @@ http://www.springframework.org/schema/context/spring-context.xsd">
         </property>
         <property name="classFilter" ref="webServiceAuthorizationClassFilter"/>
         <property name="advice" ref="webServiceAuthorizationInterceptor"/>
-    </bean>
-
-    <bean id="sys_dataCollectionBean"
-          class="com.percussion.services.utils.orm.PSDataCollectionHelper">
-        <constructor-arg ref="sys_sessionFactory"/>
     </bean>
 
     <bean id="sys_notificationService"
@@ -608,14 +606,25 @@ http://www.springframework.org/schema/context/spring-context.xsd">
           class="com.percussion.rx.publisher.impl.PSPublishHandler">
         <constructor-arg type="com.percussion.rx.publisher.IPSRxPublisherServiceInternal" ref="sys_rxpublisherservice"/>
         <constructor-arg type="com.percussion.rx.delivery.IPSDeliveryManager" ref="sys_deliveryManager"/>
+        <constructor-arg type="com.percussion.services.jms.impl.PSQueueErrorHandler" ref="sys_queueErrorHandler"/>
     </bean>
 
     <bean id="sys_designModelFactory"
           class="com.percussion.rx.design.impl.PSDesignModelFactory">
     </bean>
-
+    <bean id="sys_digestService" class="com.percussion.services.filestorage.impl.PSFileDigestService"/>
     <bean id="sys_fileMonitorService"
           class="com.percussion.services.notification.filemonitor.impl.PSFileMonitorService">
+    </bean>
+
+    <bean id="sys_hashDao" class="com.percussion.services.filestorage.impl.PSHashedFileDAO"/>
+
+    <bean id="sys_fileStorageService" class="com.percussion.services.filestorage.impl.PSDbStorageService">
+        <property name="digestService" ref="sys_digestService">
+        </property>
+        <property name="hashDao" ref="sys_hashDao">
+        </property>
+
     </bean>
 
     <!--  Uncomment to add profiling to services, adjust the expression(s) to

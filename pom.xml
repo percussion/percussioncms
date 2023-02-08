@@ -2,16 +2,18 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.percussion</groupId>
     <artifactId>core</artifactId>
-    <version>8.1.1-SNAPSHOT</version>
+    <version>8.1.1</version>
     <packaging>pom</packaging>
     <url>https://www.github.com/percussion/percussioncms</url>
+
     <licenses>
         <license>
-            <name>GNU AFFERO GENERAL PUBLIC LICENSE, Version 3 (AGPL-3.0)</name>
-            <url>https://opensource.org/licenses/AGPL-3.0</url>
-            <distribution />
+            <name>The Apache Software License, Version 2.0</name>
+            <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
         </license>
     </licenses>
+
     <scm>
         <connection>scm:git:https://github.com/percussion/percussioncms</connection>
         <developerConnection>scm:git:https://github.com/percussion/percussioncms</developerConnection>
@@ -30,6 +32,7 @@
         <module>modules/perc-tinymce</module>
         <module>modules/utils</module>
         <module>modules/perc-legacy</module>
+        <module>modules/perc-i18n</module>
         <module>modules/perc-shared-test-resources</module>
         <module>modules/webservices</module>
         <module>modules/Simple</module>
@@ -38,18 +41,24 @@
         <module>rest</module>
         <module>system</module>
         <module>deployer</module>
+        <module>modules/Help</module>
+        <module>modules/ContentUI</module>
+        <module>modules/ServerUIComponents</module>
         <module>modules/extensions-default-template</module>
         <module>modules/extensions-main</module>
         <module>modules/extensions-nav</module>
         <module>modules/extensions-sfp</module>
         <module>modules/extensions-workflow</module>
         <module>modules/extensions-linkback</module>
+        <module>modules/extensions-serverutils</module>
         <module>PCM-PkgMgtUI</module>
         <module>WebUI</module>
         <module>delivery</module>
         <module>projects/sitemanage</module>
         <module>modules/servletutils</module>
         <module>modules/perc-rxapps</module>
+        <module>modules/perc-checkboxtree</module>
+        <module>modules/DesktopContentExplorer</module>
         <module>modules/perc-jetty</module>
 		<module>modules/perc-jetty-jars</module>
         <module>modules/perc-jetty-logging</module>
@@ -57,13 +66,12 @@
         <module>modules/perc-packages</module>
         <module>modules/perc-ant</module>
         <module>modules/perc-thumbnail</module>
-        <module>modules/perc-distribution-tree</module>
-        <module>modules/CMLight-Main-cactus-tests</module>
-        <module>modules/ant-install</module>
         <module>modules/SSLTools</module>
         <module>modules/tlsutils</module>
         <module>modules/perc-toolkit</module>
         <module>modules/perc-taxonomy</module>
+        <module>modules/perc-distribution-tree</module>
+        <module>modules/CMLight-Main-cactus-tests</module>
     </modules>
    <properties>
        <build.profile.id>dev</build.profile.id>
@@ -93,8 +101,10 @@
        <gwt.maven.plugin.version>2.8.2</gwt.maven.plugin.version>
        <build.helper.maven.plugin.version>3.0.0</build.helper.maven.plugin.version>
        <maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
-       <maven.clean.plugin.version>3.1.0</maven.clean.plugin.version>
+       <maven.clean.plugin.version>3.2.0</maven.clean.plugin.version>
+       <maven.build.helper.plugin.version>3.3.0</maven.build.helper.plugin.version>
        <maven.install.plugin.version>3.0.0-M1</maven.install.plugin.version>
+       <maven.jarsigner.plugin.version>3.0.0</maven.jarsigner.plugin.version>
        <spotbugs.plugin.version>4.2.0</spotbugs.plugin.version>
        <maven.checkstyle.plugin.version>3.1.1</maven.checkstyle.plugin.version>
        <maven.gpg.plugin.version>1.6</maven.gpg.plugin.version>
@@ -125,31 +135,31 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-       <spring.version>5.3.19</spring.version>
-       <hibernate.version>5.6.5.Final</hibernate.version>
+       <spring.version>5.3.20</spring.version>
+       <hibernate.version>5.6.10.Final</hibernate.version>
        <hibernate.validator.version>6.2.3.Final</hibernate.validator.version>
        <ehcache.version>2.10.6</ehcache.version>
-       <gson.version>2.8.5</gson.version>
-       <cxf.version>3.4.4</cxf.version>
+       <gson.version>2.8.9</gson.version>
+       <cxf.version>3.4.10</cxf.version>
        <servlet.spec>3.1.0</servlet.spec>
        <xmlgraphics.common.version>2.6</xmlgraphics.common.version>
        <commons-logging.version>1.2</commons-logging.version>
        <commons.io.version>2.8.0</commons.io.version>
        <lucene.version>8.7.0</lucene.version>
-       <myfaces.version>1.1.5</myfaces.version>
+       <myfaces.version>1.1.8</myfaces.version>
        <simplexml.version>2.7.1</simplexml.version>
        <stax.version>1.0.1</stax.version>
-        <poi.version>4.1.2</poi.version>
+        <poi.version>5.2.2</poi.version>
         <esapi.version>2.3.0.0</esapi.version>
         <esapi.encoder.version>1.2.3</esapi.encoder.version>
         <ant.version>1.10.11</ant.version>
         <shindig.version>1.1-BETA5-incubating</shindig.version>
         <any23.version>2.3</any23.version>
         <owl.version>5.1.10</owl.version>
-       <awssdk.version>1.11.804</awssdk.version>
+       <awssdk.version>1.12.261</awssdk.version>
         <bc.version>1.70</bc.version>
-        <jackson.version>2.13.2</jackson.version>
-        <jsoup.version>1.14.2</jsoup.version>
+        <jackson.version>2.13.3</jackson.version>
+        <jsoup.version>1.15.3</jsoup.version>
         <json.version>20201115</json.version>
         <junit.version>4.13.1</junit.version>
         <cactus.version>13-1.7.1</cactus.version>
@@ -165,7 +175,7 @@
        <axis.version>1.4.1</axis.version>
        <axiscore.version>1.4.2</axiscore.version>
        <httpcomponents.version>4.5.13</httpcomponents.version>
-       <tika.version>1.24.1</tika.version>
+       <tika.version>1.28.5</tika.version>
        <commons-cli.version>1.4</commons-cli.version>
        <opencsv.version>4.6</opencsv.version>
        <xmpbox.version>2.0.17</xmpbox.version>
@@ -175,20 +185,21 @@
        <swagger.version>2.1.10</swagger.version>
        <swagger.ui.version>3.51.2</swagger.ui.version>
        <commons.compress.version>1.21</commons.compress.version>
-       <solr.version>8.11.1</solr.version>
+       <solr.version>8.11.2</solr.version>
         <nettyall.version>4.1.45.Final</nettyall.version>
        <hikari.version>4.0.3</hikari.version>
-       <snakeyaml.version>1.29</snakeyaml.version>
+       <snakeyaml.version>1.32</snakeyaml.version>
        <commons-email.version>1.5</commons-email.version>
        <commons.codec.version>1.14</commons.codec.version>
        <tinymce.version>5.10.3</tinymce.version>
        <jfx.version>11.0.2</jfx.version>
-       <twelvemonkeys.version>3.7.0</twelvemonkeys.version>
+       <twelvemonkeys.version>3.7.1</twelvemonkeys.version>
        <commons.beanutils.version>1.9.4</commons.beanutils.version>
        <xstream.version>1.4.19</xstream.version>
-       <log4j2.version>2.17.1</log4j2.version>
+       <log4j2.version>2.18.0</log4j2.version>
        <guava.version>29.0-jre</guava.version>
        <xerces.version>2.12.2</xerces.version>
+       <xmlresolver.version>1.2</xmlresolver.version>
        <quartz.version>2.3.2</quartz.version>
        <rome.version>1.15.0</rome.version>
        <maven.source.jar.plugin.version>3.2.0</maven.source.jar.plugin.version>
@@ -267,6 +278,11 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-site-plugin</artifactId>
                 <version>${maven.site.plugin.version}</version>
+            </plugin>
+            <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>build-helper-maven-plugin</artifactId>
+                <version>${maven.build.helper.plugin.version}</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -645,23 +661,13 @@
 						<dependency>
 							<groupId>com.percussion</groupId>
 							<artifactId>rxutils</artifactId>
-							<version>8.1.1-SNAPSHOT</version>
+							<version>8.1.1</version>
 						</dependency>
 						<dependency>
 							<groupId>xerces</groupId>
 							<artifactId>xercesImpl</artifactId>
 							<version>${xerces.version}</version>
 						</dependency>
-                        <dependency>
-                            <groupId>xalan</groupId>
-                            <artifactId>xalan</artifactId>
-                            <version>2.7.2</version>
-                        </dependency>
-                        <dependency>
-                            <groupId>xalan</groupId>
-                            <artifactId>serializer</artifactId>
-                            <version>2.7.2</version>
-                        </dependency>
                         <dependency>
 							<groupId>xml-apis</groupId>
 							<artifactId>xml-apis</artifactId>
@@ -749,7 +755,7 @@
                         <dependency>
                             <groupId>com.percussion</groupId>
                             <artifactId>build-tools</artifactId>
-                            <version>8.1.1-SNAPSHOT</version>
+                            <version>8.1.1</version>
                         </dependency>
                     </dependencies>
                     <executions>
@@ -779,7 +785,7 @@
                         <dependency>
                             <groupId>com.percussion</groupId>
                             <artifactId>build-tools</artifactId>
-                            <version>8.1.1-SNAPSHOT</version>
+                            <version>8.1.1</version>
                         </dependency>
                     </dependencies>
                 </plugin>
@@ -796,7 +802,7 @@
                         <dependency>
                             <groupId>com.percussion</groupId>
                             <artifactId>perc-security-utils</artifactId>
-                            <version>8.1.1-SNAPSHOT</version>
+                            <version>8.1.1</version>
                         </dependency>
                         <dependency>
                             <groupId>com.h3xstream.findsecbugs</groupId>
@@ -1361,6 +1367,11 @@
                 <version>3.2.2</version>
             </dependency>
             <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-text</artifactId>
+                <version>1.9</version>
+            </dependency>
+            <dependency>
                 <groupId>commons-codec</groupId>
                 <artifactId>commons-codec</artifactId>
                 <version>${commons.codec.version}</version>
@@ -1506,7 +1517,7 @@
             <dependency>
                 <groupId>org.codehaus.jettison</groupId>
                 <artifactId>jettison</artifactId>
-                <version>1.4.1</version>
+                <version>1.5.2</version>
             </dependency>
             <dependency>
                 <groupId>com.jcraft</groupId>
@@ -1995,6 +2006,12 @@
                 <groupId>org.apache.xmlgraphics</groupId>
                 <artifactId>batik-all</artifactId>
                 <version>${batik.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>xalan</groupId>
+                        <artifactId>*</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
                 <groupId>org.apache.xmlgraphics</groupId>
@@ -2829,6 +2846,21 @@
                 <version>1.2</version>
             </dependency>
 
+            <dependency>
+                <groupId>com.percussion</groupId>
+                <artifactId>perc-help</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.percussion</groupId>
+                <artifactId>perc-server-ui-content</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.percussion</groupId>
+                <artifactId>perc-server-ui-cmp</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 

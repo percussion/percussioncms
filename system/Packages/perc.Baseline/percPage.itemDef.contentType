@@ -1303,13 +1303,27 @@
                         <FieldRef>additional_head_content</FieldRef>
                         <PSXUISet>
                            <Label>
-                              <PSXDisplayText>Additional head content:</PSXDisplayText>
+                              <PSXDisplayText>Additional head content: (HTML Code)</PSXDisplayText>
                            </Label>
                            <PSXControlRef id="10004" name="sys_TextArea">
                               <PSXParam name="id">
                                  <DataLocator>
                                     <PSXTextLiteral id="0">
-                                       <text>percpagehead</text>
+                          <text>additional_head_content</text>
+                        </PSXTextLiteral>
+                      </DataLocator>
+                    </PSXParam>
+                    <PSXParam name="codeeditor">
+                      <DataLocator>
+                        <PSXTextLiteral id="0">
+                          <text>yes</text>
+                        </PSXTextLiteral>
+                      </DataLocator>
+                    </PSXParam>
+                    <PSXParam name="codeeditor_mode">
+                      <DataLocator>
+                        <PSXTextLiteral id="0">
+                          <text>html</text>
                                     </PSXTextLiteral>
                                  </DataLocator>
                               </PSXParam>
@@ -1323,19 +1337,33 @@
                         <FieldRef>code_insert_after_body_start</FieldRef>
                         <PSXUISet>
                            <Label>
-                              <PSXDisplayText>Code insert after body start:</PSXDisplayText>
+                              <PSXDisplayText>Code insert after body start: (HTML Code)</PSXDisplayText>
                            </Label>
                            <PSXControlRef id="10003" name="sys_TextArea">
                               <PSXParam name="id">
                                  <DataLocator>
                                     <PSXTextLiteral id="0">
-                                       <text>percpagebodybefore</text>
+                          <text>code_insert_after_body_start</text>
+                        </PSXTextLiteral>
+                      </DataLocator>
+                    </PSXParam>
+                    <PSXParam name="codeeditor">
+                      <DataLocator>
+                        <PSXTextLiteral id="0">
+                          <text>yes</text>
+                        </PSXTextLiteral>
+                      </DataLocator>
+                    </PSXParam>
+                    <PSXParam name="codeeditor_mode">
+                      <DataLocator>
+                        <PSXTextLiteral id="0">
+                          <text>html</text>
                                     </PSXTextLiteral>
                                  </DataLocator>
                               </PSXParam>
                            </PSXControlRef>
                            <ErrorLabel>
-                              <PSXDisplayText>Code insert after body start:</PSXDisplayText>
+                              <PSXDisplayText>Code insert after body start: (HTML Code)</PSXDisplayText>
                            </ErrorLabel>
                         </PSXUISet>
                      </PSXDisplayMapping>
@@ -1343,19 +1371,33 @@
                         <FieldRef>code_insert_before_body_close</FieldRef>
                         <PSXUISet>
                            <Label>
-                              <PSXDisplayText>Code insert before body close:</PSXDisplayText>
+                              <PSXDisplayText>Code insert before body close: (HTML Code)</PSXDisplayText>
                            </Label>
                            <PSXControlRef id="10002" name="sys_TextArea">
                               <PSXParam name="id">
                                  <DataLocator>
                                     <PSXTextLiteral id="0">
-                                       <text>percpagebodyafter</text>
+                          <text>code_insert_before_body_close</text>
+                        </PSXTextLiteral>
+                      </DataLocator>
+                    </PSXParam>
+                    <PSXParam name="codeeditor">
+                      <DataLocator>
+                        <PSXTextLiteral id="0">
+                          <text>yes</text>
+                        </PSXTextLiteral>
+                      </DataLocator>
+                    </PSXParam>
+                    <PSXParam name="codeeditor_mode">
+                      <DataLocator>
+                        <PSXTextLiteral id="0">
+                          <text>html</text>
                                     </PSXTextLiteral>
                                  </DataLocator>
                               </PSXParam>
                            </PSXControlRef>
                            <ErrorLabel>
-                              <PSXDisplayText>Code insert before body close:</PSXDisplayText>
+                              <PSXDisplayText>Code insert before body close: (HTML Code)</PSXDisplayText>
                            </ErrorLabel>
                         </PSXUISet>
                      </PSXDisplayMapping>

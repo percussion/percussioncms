@@ -1,25 +1,18 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.percussion.cms.objectstore;
 
@@ -30,7 +23,7 @@ import com.percussion.cms.objectstore.server.PSRelationshipProcessor;
 import com.percussion.data.PSInternalRequestCallException;
 import com.percussion.design.objectstore.PSCollectionComponent;
 import com.percussion.design.objectstore.PSLocator;
-import com.percussion.design.objectstore.PSNotFoundException;
+import com.percussion.error.PSNotFoundException;
 import com.percussion.design.objectstore.PSRelationship;
 import com.percussion.design.objectstore.PSRelationshipConfig;
 import com.percussion.design.objectstore.PSRelationshipSet;
@@ -119,7 +112,7 @@ public class PSActiveAssemblyProcessorProxy extends PSProcessorProxy
       Set slotKeys = new HashSet();
       while (iter.hasNext())
       {
-         PSContentTypeVariant variant = (PSContentTypeVariant) iter.next();
+         PSContentTypeTemplate variant = (PSContentTypeTemplate) iter.next();
          Iterator iter2 = variant.getVariantSlots().iterator();
          while (iter2.hasNext())
          {
@@ -176,7 +169,7 @@ public class PSActiveAssemblyProcessorProxy extends PSProcessorProxy
             PSComponentDefProcessorProxy.PROCTYPE_SERVERLOCAL,
             m_context);
 
-      PSKey cTypeKey = PSContentTypeVariant.createKey(cTypeId, -1);
+      PSKey cTypeKey = PSContentTypeTemplate.createKey(cTypeId, -1);
       return new PSContentTypeVariantSet(
          defProxy.load(
             PSDbComponent.getComponentType(PSContentTypeVariantSet.class),
@@ -274,11 +267,11 @@ public class PSActiveAssemblyProcessorProxy extends PSProcessorProxy
          }
          IPSAssemblyService assembly = 
             PSAssemblyServiceLocator.getAssemblyService();
-         PSContentTypeVariant variant = null;
+         PSContentTypeTemplate variant = null;
          try
          {
             variant = 
-               new PSContentTypeVariant(assembly
+               new PSContentTypeTemplate(assembly
                      .loadUnmodifiableTemplate(variantstr));
          }
          catch(PSAssemblyException e)
@@ -702,7 +695,7 @@ public class PSActiveAssemblyProcessorProxy extends PSProcessorProxy
                args);
       }
       PSSlotType slot = null;
-      PSContentTypeVariant variant = null;
+      PSContentTypeTemplate variant = null;
       slot = aaRel.getSlot();
       variant = aaRel.getVariant();
       PSSlotTypeContentTypeVariantSet slotVariants = slot.getSlotVariants();

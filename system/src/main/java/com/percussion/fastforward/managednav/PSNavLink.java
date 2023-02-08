@@ -1,31 +1,24 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.percussion.fastforward.managednav;
 
 import com.percussion.cms.objectstore.PSAaRelationship;
 import com.percussion.cms.objectstore.PSComponentSummary;
-import com.percussion.cms.objectstore.PSContentTypeVariant;
+import com.percussion.cms.objectstore.PSContentTypeTemplate;
 import com.percussion.design.objectstore.PSLocator;
 import com.percussion.error.PSExceptionUtils;
 import com.percussion.server.IPSInternalRequest;
@@ -55,12 +48,12 @@ import java.util.Map;
  */
 public class PSNavLink
 {
-   /**
-    * Default constructor
-    */
+
    public PSNavLink()
    {
-
+      /*
+       * Default constructor
+       */
    }
 
    /**
@@ -162,7 +155,7 @@ public class PSNavLink
    public void createLinkToDocument(IPSRequestContext req,
          PSNavComponentSummary summary, int variantId) throws PSNavException
    {
-      PSContentTypeVariant variant = PSNavUtil.loadVariantInfo(req, summary
+      PSContentTypeTemplate variant = PSNavUtil.loadVariantInfo(req, summary
             .getContentTypeId(), variantId);
       if (variant == null)
       {
@@ -182,7 +175,7 @@ public class PSNavLink
     * @throws PSNavException
     */
    public void createLinkToDocument(IPSRequestContext req,
-         PSNavComponentSummary summary, PSContentTypeVariant variant)
+         PSNavComponentSummary summary, PSContentTypeTemplate variant)
          throws PSNavException
    {
       createLinkToDocument(req, summary, variant, Collections.EMPTY_MAP);
@@ -207,7 +200,7 @@ public class PSNavLink
     */
 
    public void createLinkToDocument(IPSRequestContext req,
-         PSComponentSummary summary, PSContentTypeVariant variant,
+         PSComponentSummary summary, PSContentTypeTemplate variant,
          Map extraParams) throws PSNavException
    {
       PSNavComponentSummary navsum = new PSNavComponentSummary(summary);
@@ -228,7 +221,7 @@ public class PSNavLink
     * @throws PSNavException if a link could not be generated.
     */
    public void createLinkToDocument(IPSRequestContext req,
-         PSNavComponentSummary summary, PSContentTypeVariant variant,
+         PSNavComponentSummary summary, PSContentTypeTemplate variant,
          Map extraParams) throws PSNavException
    {
       m_variantId = variant.getVariantId();
@@ -275,7 +268,7 @@ public class PSNavLink
    public void createLinkFromSnippet(IPSRequestContext req,
          PSNavComponentSummary summary, int variantId) throws PSNavException
    {
-      PSContentTypeVariant variant = PSNavUtil.loadVariantInfo(req, summary
+      PSContentTypeTemplate variant = PSNavUtil.loadVariantInfo(req, summary
             .getContentTypeId(), variantId);
       if (variant == null)
       {
@@ -298,7 +291,7 @@ public class PSNavLink
     * @throws PSNavException when any exception is encountered.
     */
    public void createLinkFromSnippet(IPSRequestContext req,
-         PSNavComponentSummary summary, PSContentTypeVariant variant)
+         PSNavComponentSummary summary, PSContentTypeTemplate variant)
          throws PSNavException
    {
       createLinkFromSnippet(req, summary, variant, null);
@@ -318,7 +311,7 @@ public class PSNavLink
     * @throws PSNavException when any exception is encountered.
     */
    public void createLinkFromSnippet(IPSRequestContext req,
-         PSNavComponentSummary summary, PSContentTypeVariant variant,
+         PSNavComponentSummary summary, PSContentTypeTemplate variant,
          Map extraParams) throws PSNavException
    {
       
@@ -393,13 +386,13 @@ public class PSNavLink
     * @throws PSNavException
     */
    public void buildLinkFromRelationship(IPSRequestContext req,
-         PSAaRelationship relation, PSContentTypeVariant useVariant,
+         PSAaRelationship relation, PSContentTypeTemplate useVariant,
          boolean followLink) throws PSNavException
    {
       log.debug("building link from relationship");
 
       PSLocator childLoc = relation.getDependent();
-      Map extraParams = new HashMap();
+      Map extraParams = new HashMap<>();
       String folderid = relation.getProperty(IPSHtmlParameters.SYS_FOLDERID);
       if (folderid != null && folderid.trim().length() > 0)
       {
@@ -407,14 +400,8 @@ public class PSNavLink
       }
       log.debug("loading child summary");
       PSNavComponentSummary childSummary = new PSNavComponentSummary(childLoc);
-      //PSNavUtil.getItemSummary(req, childLoc);
-      if (childSummary == null)
-      {
-         log.error("Dependent item not found");
-         throw new PSNavException("Dependent item not found");
-      }
 
-      PSContentTypeVariant ourVariant = null;
+      PSContentTypeTemplate ourVariant = null;
       if (useVariant != null)
       {
          ourVariant = useVariant;
@@ -447,7 +434,7 @@ public class PSNavLink
     * @return the paraemters for
     */
    private Map buildLinkParams(PSComponentSummary summary,
-         PSContentTypeVariant variant, IPSRequestContext req)
+                               PSContentTypeTemplate variant, IPSRequestContext req)
    {
       PSNavComponentSummary navsum = new PSNavComponentSummary(summary);
       return buildLinkParams(navsum, variant, req);
@@ -463,7 +450,7 @@ public class PSNavLink
     *         <code>Empty</code>.
     */
    private Map buildLinkParams(PSNavComponentSummary summary,
-         PSContentTypeVariant variant, IPSRequestContext req)
+                               PSContentTypeTemplate variant, IPSRequestContext req)
    {
       PSLocator currentLoc = summary.getCurrentLocator();
       String contentId = String.valueOf(currentLoc.getId());
@@ -537,9 +524,9 @@ public class PSNavLink
    /**
     * Folder Id of linked object this gets initialized through
     * {@link #createLinkFromSnippet(IPSRequestContext, 
-    *    PSNavComponentSummary, PSContentTypeVariant, Map)};
+    *    PSNavComponentSummary, PSContentTypeTemplate, Map)};
     * or {@link #createLinkToDocument(IPSRequestContext, 
-    * PSNavComponentSummary, PSContentTypeVariant, Map)};
+    * PSNavComponentSummary, PSContentTypeTemplate, Map)};
     * methods, if the Map consists of IPSHtmlParameters.SYS_FOLDERID.
     * otherwise the value will be 0;
     *  

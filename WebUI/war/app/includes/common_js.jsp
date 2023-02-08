@@ -44,7 +44,6 @@
 <script src="/cm/plugins/PercListEditorWidget.js"></script>
 <script src="/cm/widgets/PercDropdown.js"></script>
 <script src="/cm/services/PercRecentListService.js"></script>
-<script src="/cm/plugins/PercRedirectHandler.js"></script>
 <script src="/cm/plugins/PercExtendUiDialog.js"></script>
 <script src="/cm/plugins/PercPathSelectionDialog.js"></script>
 <script src="/cm/plugins/PercPathSelectionDialog.js"></script>

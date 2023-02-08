@@ -8,16 +8,16 @@
         %HTMLspecial;
 ]>
 <xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                xmlns="http://www.w3.org/1999/xhtml" xmlns:psxi18n="com.percussion.i18n"
+                xmlns="http://www.w3.org/1999/xhtml"
                 extension-element-prefixes="psxi18n" exclude-result-prefixes="psxi18n">
-   <xsl:output method="xml"/>
+   <xsl:output method="xml" encoding="UTF-8" />
    <xsl:variable name="variantlist" select="document(//variantlisturl)"/>
    <xsl:template match="/">
       <html>
          <head>
             <title>Rhythmyx - Document Comparison</title>
-            <link href="/sys_resources/css/templates.css" rel="stylesheet" type="text/css"/>
-            <link href="/rx_resources/css/templates.css" rel="stylesheet" type="text/css"/>
+            <link href="../sys_resources/css/templates.css" rel="stylesheet" type="text/css"/>
+            <link href="../rx_resources/css/templates.css" rel="stylesheet" type="text/css"/>
          </head>
          <body leftmargin="0" topmargin="0">
             <xsl:apply-templates select="itemdetails"/>

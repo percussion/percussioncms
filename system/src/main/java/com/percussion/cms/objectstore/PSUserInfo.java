@@ -1,31 +1,25 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.percussion.cms.objectstore;
 
 import com.percussion.cms.PSCmsException;
 import com.percussion.design.objectstore.PSServerConfiguration;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
+import com.percussion.webservices.security.data.PSRole;
 import com.percussion.error.PSExceptionUtils;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.server.PSServer;
@@ -79,6 +73,18 @@ public class PSUserInfo implements IPSCmsComponent
    public PSUserInfo()
    {
    }
+   public PSUserInfo(String sid, String uName, long communityId, String locale, PSRole[] roles, long sessionTimeOut) {
+
+      m_SessionId = sid;
+      m_UserName = uName;
+      m_CommunityId = (int) communityId;
+      m_Locale = locale;
+      for (PSRole role:roles) {
+         m_RoleList.add(role.getName());
+      }
+      m_SessionTimeout = (int) sessionTimeOut;
+}
+
 
    /**
     * Constructor meant to be used in the context of an applet. This may not work
@@ -94,14 +100,14 @@ public class PSUserInfo implements IPSCmsComponent
       m_RoleList.clear();
       try
       {
-       // System.out.println("url base="+urlBase);
+         // System.out.println("url base="+urlBase);
          PSRemoteAppletRequester requestor = new PSRemoteAppletRequester(connection,
-            urlBase);
-     //    System.out.println("getting doc");
-         Document doc = requestor.getDocument("sys_psxCms/userinfo.xml", 
-            new HashMap<Object, Object>());
-   //      System.out.println("got doc"+doc);
- //        System.out.println("Server returned userinfo "+PSXMLDomUtil.toString(doc));
+                 urlBase);
+         //    System.out.println("getting doc");
+         Document doc = requestor.getDocument("sys_psxCms/userinfo.xml",
+                 new HashMap<Object, Object>());
+         //      System.out.println("got doc"+doc);
+         //        System.out.println("Server returned userinfo "+PSXMLDomUtil.toString(doc));
          fromXml(doc.getDocumentElement());
       }
       catch(Exception e)
@@ -122,44 +128,39 @@ public class PSUserInfo implements IPSCmsComponent
     * any reason.
     */
    public PSUserInfo(IPSRequestContext request)
-      throws PSCmsException
-   {
+      throws PSCmsException {
       m_RoleList.clear();
-      try
-      {
+     try {
          m_UserName = request.getUserContextInformation(
-            "User/Name", "unknown").toString();
+                 "User/Name", "unknown").toString();
 
-         Object obj = request.getUserContextInformation("Roles/RoleName", null);
 
-         if(obj!=null)
-         {
-            if (obj instanceof PSCollection)
-            {
-               PSCollection psColl = (PSCollection)obj;
+      Object obj = request.getUserContextInformation("Roles/RoleName", null);
+
+         if (obj != null) {
+            if (obj instanceof PSCollection) {
+               PSCollection psColl = (PSCollection) obj;
                Iterator it = psColl.iterator();
-               while(it.hasNext())
+               while (it.hasNext())
                   m_RoleList.add(it.next().toString());
 
-            }
-            else
-            {
+            } else {
                m_RoleList.add(obj.toString());
             }
          }
 
          // get community from session objects
          obj = request.getSessionPrivateObject(
-            IPSHtmlParameters.SYS_COMMUNITY);
-         if(obj!=null)
+                 IPSHtmlParameters.SYS_COMMUNITY);
+         if (obj != null)
             m_CommunityId = Integer.parseInt(obj.toString());
          // get Locale from session objects
          obj = request.getSessionPrivateObject(IPSHtmlParameters.SYS_LANG);
-         if(obj!=null)
+         if (obj != null)
             m_Locale = obj.toString();
 
          m_SessionTimeout =
-            PSServer.getServerConfiguration().getUserSessionTimeout();
+                 PSServer.getServerConfiguration().getUserSessionTimeout();
       }
       catch(Exception e)
       {

@@ -1,25 +1,18 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.percussion.fastforward.managednav;
 
@@ -38,18 +31,20 @@ public class PSNavException extends PSRuntimeException
     * Creates an exception with a specific message.
     * 
     * @param msg
+    * @deprecated
     */
    @Deprecated
    public PSNavException(String msg)
    {
       super(-1, msg);
-      this.m_msg.append(msg);
+      this.message.append(msg);
    }
 
    /**
     * Creates an exception that encapsulates a runtime exception.
     * 
     * @param ex the exception to encapsulate
+    * @deprecated
     */
    @Deprecated
    public PSNavException(Exception ex)
@@ -58,13 +53,13 @@ public class PSNavException extends PSRuntimeException
 
       if (ex instanceof PSNavException)
       { // just clone
-         this.m_parentException = ((PSNavException) ex).m_parentException;
-         this.m_msg = ((PSNavException) ex).m_msg;
+         this.parentException = ((PSNavException) ex).parentException;
+         this.message = ((PSNavException) ex).message;
       }
       else
       {
-         this.m_parentException = ex;
-         this.m_msg.append(handleException(ex));
+         this.parentException = ex;
+         this.message.append(handleException(ex));
       }
 
    }
@@ -75,12 +70,13 @@ public class PSNavException extends PSRuntimeException
     * 
     * @param routine the routine where the exception occurred.
     * @param ex the exception to encapsulate.
+    * @deprecated
     */
    @Deprecated
    public PSNavException(String routine, Exception ex)
    {
       this(ex);
-      this.m_msg.append("Caught in " + routine);
+      this.message.append("Caught in ").append(routine);
    }
 
    /**
@@ -88,6 +84,7 @@ public class PSNavException extends PSRuntimeException
     * 
     * @param clazz the class where the exception occurred.
     * @param ex the exception to encapsulate.
+    * @deprecated
     */
    @Deprecated
    public PSNavException(Class clazz, Exception ex)
@@ -139,7 +136,7 @@ public PSNavException(int code, Object[] arrayArgs, Throwable cause){
     * Create a new exception withe specific error code
     * and message parameters.
     * @param code A valid code from IPSErrorCatalog
-    * @param arrayArgs An array of objects to be used in error message rendering
+    * @param arg An array of objects to be used in error message rendering
     */
    public PSNavException(int code, Object arg){
       super(code, arg);
@@ -149,13 +146,14 @@ public PSNavException(int code, Object[] arrayArgs, Throwable cause){
     * The underlying exception that caused this exception.
     */
    @Deprecated
-   Exception m_parentException = null;
+   Exception parentException = null;
 
    /**
     * The message buffer for this exception.
+    * @deprecated
     */
    @Deprecated
-   StringBuilder m_msg = new StringBuilder();
+   StringBuilder message = new StringBuilder();
 
 }
 

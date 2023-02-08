@@ -1,25 +1,18 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.percussion.tablefactory;
@@ -100,22 +93,16 @@ public class PSJdbcTableMapping
       if (tblData == null)
          throw new IllegalArgumentException("tblData may not be null");
 
-      Iterator it = m_rowMapList.iterator();
-      while (it.hasNext())
-      {
-         IPSJdbcRowMapping rowMapping = (IPSJdbcRowMapping)it.next();
+      for (IPSJdbcRowMapping rowMapping : m_rowMapList) {
          rowMapping.setTableData(tblData);
       }
 
-      List rowList = new ArrayList();
-      Iterator rows = tblData.getRows();
+      List<PSJdbcRowData> rowList = new ArrayList<>();
+      Iterator<PSJdbcRowData> rows = tblData.getRows();
       while (rows.hasNext())
       {
-         PSJdbcRowData row = (PSJdbcRowData)rows.next();
-         Iterator mapIt = m_rowMapList.iterator();
-         while (mapIt.hasNext())
-         {
-            IPSJdbcRowMapping rowMapping = (IPSJdbcRowMapping)mapIt.next();
+         PSJdbcRowData row = rows.next();
+         for (IPSJdbcRowMapping rowMapping : m_rowMapList) {
             rowList.add(rowMapping.processRow(conn, row));
          }
       }
@@ -130,7 +117,7 @@ public class PSJdbcTableMapping
     * <code>destTableSchema</code> parameter in the constructor.
     *
     * @param conn the database connection to use, may not be <code>null</code>
-    * @param row a row data object from the source table,
+    * @param srcRow a row data object from the source table,
     * may not be <code>null</code>
 
     * @return a list of <code>PSJdbcRowData<code> objects containing the
@@ -143,7 +130,7 @@ public class PSJdbcTableMapping
     * @throws PSJdbcTableFactoryException if any column specified in row mapping
     * is not found in srcRow.
     */
-   public List processRow(Connection conn, PSJdbcRowData srcRow)
+   public List<PSJdbcRowData> processRow(Connection conn, PSJdbcRowData srcRow)
       throws PSJdbcTableFactoryException
    {
       if (conn == null)
@@ -151,11 +138,8 @@ public class PSJdbcTableMapping
       if (srcRow == null)
          throw new IllegalArgumentException("srcRow may not be null");
 
-      List rowList = new ArrayList();
-      Iterator it = m_rowMapList.iterator();
-      while (it.hasNext())
-      {
-         IPSJdbcRowMapping rowMapping = (IPSJdbcRowMapping)it.next();
+      List<PSJdbcRowData> rowList = new ArrayList<>();
+      for (IPSJdbcRowMapping rowMapping : m_rowMapList) {
          rowList.add(rowMapping.processRow(conn, srcRow));
       }
       return rowList;
@@ -225,20 +209,20 @@ public class PSJdbcTableMapping
     * The database where the tables are located, initialized in the
     * constructor, never <code>null</code> after that.
     */
-   private PSJdbcDbmsDef m_dbmsDef = null;
+   private PSJdbcDbmsDef m_dbmsDef;
 
    /**
     * The schema for destination table for which this mapper object is creating
     * table data, initialized in the constructor, never <code>null</code> after
     * that.
     */
-   private PSJdbcTableSchema m_tableSchema = null;
+   private PSJdbcTableSchema m_tableSchema;
 
    /**
     * List of row mapping rules specified by IPSJdbcRowMapping objects,
     * never <code>null</code>, may be empty
     */
-   private List m_rowMapList = new ArrayList();
+   private List<IPSJdbcRowMapping> m_rowMapList = new ArrayList<>();
 
    /**
     * The name of this objects root Xml element.

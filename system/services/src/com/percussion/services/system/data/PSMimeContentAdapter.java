@@ -1,25 +1,18 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.percussion.services.system.data;
 
@@ -37,6 +30,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
+import java.util.Objects;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -351,65 +345,17 @@ public class PSMimeContentAdapter implements Serializable, IPSCatalogSummary,
       return PSXmlSerializationHelper.writeToXml(this);
    }
 
-   /**
-    * This equals is implemented for testing purposes as it reads from the 
-    * contents input stream in order to compare contents, and resets the input
-    * stream using a ByteArrayInputStream - since the object is technically 
-    * modified, this should not be considered usable in general.
-    */
    @Override
-   public boolean equals(Object obj)
-   {
-      if (obj instanceof PSMimeContentAdapter == false)
-      {
-         return false;
-      }
-      if (this == obj)
-      {
-         return true;
-      }
-      PSMimeContentAdapter other = (PSMimeContentAdapter) obj;
-      boolean isEqual = new EqualsBuilder()
-         .append(m_characterEncoding, other.m_characterEncoding)
-         .append(m_contentLength, other.m_contentLength)
-         .append(m_description, other.m_description)
-         .append(m_href, other.m_href)
-         .append(m_mimeType, other.m_mimeType)
-         .append(m_name, other.m_name)
-         .append(m_transferEncoding, other.m_transferEncoding)
-         .append(m_guid, other.m_guid)
-         .isEquals();
-
-      // handle content
-      if (m_content == null ^ other.m_content == null)
-         isEqual = false;
-
-      if (isEqual && m_content != null)
-      {
-         ByteArrayOutputStream outThis = new ByteArrayOutputStream();
-         ByteArrayOutputStream outOther = new ByteArrayOutputStream();
-         try
-         {
-            IOTools.copyStream(m_content, outThis);
-            m_content = new ByteArrayInputStream(outThis.toByteArray());
-            IOTools.copyStream(other.m_content, outOther);
-            other.m_content = new ByteArrayInputStream(outOther.toByteArray());
-            isEqual = outThis.toString(m_characterEncoding).equals(
-               outOther.toString(other.m_characterEncoding));            
-         }
-         catch (IOException e)
-         {
-            throw new RuntimeException(e);
-         }
-      }
-      
-      return isEqual;
+   public boolean equals(Object o) {
+      if (this == o) return true;
+      if (!(o instanceof PSMimeContentAdapter)) return false;
+      PSMimeContentAdapter that = (PSMimeContentAdapter) o;
+      return m_href == that.m_href && m_contentLength == that.m_contentLength && Objects.equals(m_name, that.m_name) && Objects.equals(m_mimeType, that.m_mimeType) && Objects.equals(m_characterEncoding, that.m_characterEncoding) && Objects.equals(m_transferEncoding, that.m_transferEncoding) && Objects.equals(m_content, that.m_content) && Objects.equals(m_description, that.m_description) && Objects.equals(m_guid, that.m_guid);
    }
 
    @Override
-   public int hashCode()
-   {
-      return HashCodeBuilder.reflectionHashCode(this);
+   public int hashCode() {
+      return Objects.hash(m_href, m_name, m_mimeType, m_contentLength, m_characterEncoding, m_transferEncoding, m_content, m_description, m_guid);
    }
 }
 

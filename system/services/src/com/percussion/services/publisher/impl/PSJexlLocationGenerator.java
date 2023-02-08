@@ -1,25 +1,18 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.percussion.services.publisher.impl;
 
@@ -179,8 +172,7 @@ public class PSJexlLocationGenerator implements IPSAssemblyLocation
       catch (Exception e)
       {
          throw new PSExtensionException(
-               IPSExtensionErrors.EXT_PARAM_VALUE_INVALID, e
-                     .getLocalizedMessage());
+               IPSExtensionErrors.EXT_PARAM_VALUE_INVALID, e);
       }
 
       Iterator<Map.Entry<String, Object>> iter = request
@@ -219,7 +211,7 @@ public class PSJexlLocationGenerator implements IPSAssemblyLocation
       {
          throw new PSExtensionException(
                IPSExtensionErrors.EXT_PARAM_VALUE_INVALID, e1
-                     .getLocalizedMessage());
+                     );
       }
 
       jexlEvaluator.bind("$sys.params", parammap);
@@ -235,7 +227,7 @@ public class PSJexlLocationGenerator implements IPSAssemblyLocation
       try
       {
          List<Node> nodes = cms.findItemsByGUID(guids, ms_options);
-         if (nodes.size() > 0)
+         if (!nodes.isEmpty())
          {
             Node thenode = nodes.get(0);
             jexlEvaluator.bind("$sys.item", thenode);
@@ -256,7 +248,7 @@ public class PSJexlLocationGenerator implements IPSAssemblyLocation
             {
                PSServerFolderProcessor proc = PSServerFolderProcessor.getInstance();
                PSLocator folderLocator = new PSLocator(fidstr);
-               String paths[] = proc.getItemPaths(folderLocator);
+               String[] paths = proc.getItemPaths(folderLocator);
                if (paths != null && paths.length > 0)
                {
                   jexlEvaluator.bind("$sys.path", paths[0]);
@@ -281,14 +273,9 @@ public class PSJexlLocationGenerator implements IPSAssemblyLocation
       catch (RepositoryException e)
       {
          throw new PSExtensionException(
-               IPSExtensionErrors.EXT_PARAM_VALUE_INVALID, e
-                     .getLocalizedMessage());
+               IPSExtensionErrors.EXT_PARAM_VALUE_INVALID, e);
       }
-      catch (PSNotFoundException | PSCmsException e)
-      {
-         set_dummy_site_paths = true;
-      }
-      catch (PSSiteManagerException se)
+      catch (PSNotFoundException | PSCmsException | PSSiteManagerException e)
       {
          set_dummy_site_paths = true;
       }
@@ -318,13 +305,13 @@ public class PSJexlLocationGenerator implements IPSAssemblyLocation
             return (String) rval;
          }
       }
-      catch (Exception e)
+      catch (org.apache.commons.jexl3.JexlException e)
       {
          // Output bindings to console to aid in debugging
-         ms_log.error("Problem in evaluting, dumping bindings: \n"
-               + jexlEvaluator.bindingsToString());
-         throw new PSExtensionException(
-               IPSExtensionErrors.JEXL_EVALUATION_FAILED, e, expression);
+         ms_log.error("Problem in evaluating, dumping bindings: \n {}"
+               , jexlEvaluator.bindingsToString());
+         return "/location-jexl-error/" + contextstr + "/" + cidstr +"-" + revstr;
+
       }
    }
 

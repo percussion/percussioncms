@@ -1,25 +1,18 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.percussion.services.sitemgr.data;
 
@@ -327,7 +320,7 @@ public class PSSite implements IPSSite, IPSCatalogItem
    String generateSiteMap;
 
    @Basic
-   @Column(name="IS_PAGE_BASED", nullable = true)
+   @Column(name="IS_PAGE_BASED", nullable = false)
    String isPageBased;
 
    @OneToMany(targetEntity = PSSiteProperty.class, cascade =
@@ -945,13 +938,53 @@ public class PSSite implements IPSSite, IPSCatalogItem
       return Objects.hash(getSiteId(), getVersion(), getName(), getPreviousName(), getDescription(), getBaseUrl(), getRoot(), getIpAddress(), getPort(), getUserId(), getPassword(), getPrivateKey(), getState(), getFolderRoot(), getNavTheme(), getGlobalTemplate(), getAllowedNamespaces(), getUnpublishFlags(), getLoginPage(), getRegistrationPage(), getRegistrationConfirmationPage(), getResetPage(), getResetRequestPasswordPage(), getDefaultPubServer(), defaultFileExtention, is_secure, is_canonical, getSiteProtocol(), getDefaultDocument(), getCanonicalDist(), is_canonical_replace, overrideJQuery, overrideJQueryUI, overrideFoundation, enableMobilePreview, additionalHeadContent, afterBodyStartContent, beforeBodyCloseContent, generateSiteMap, isPageBased, getProperties(), templates);
    }
 
-   /* (non-Javadoc)
-    * @see java.lang.Object#toString()
-    */
    @Override
-   public String toString()
-   {
-      return ToStringBuilder.reflectionToString(this).toString();
+   public String toString() {
+      final StringBuffer sb = new StringBuffer("PSSite{");
+      sb.append("siteId=").append(siteId);
+      sb.append(", version=").append(version);
+      sb.append(", name='").append(name).append('\'');
+      sb.append(", previousName='").append(previousName).append('\'');
+      sb.append(", description='").append(description).append('\'');
+      sb.append(", baseUrl='").append(baseUrl).append('\'');
+      sb.append(", root='").append(root).append('\'');
+      sb.append(", ipAddress='").append(ipAddress).append('\'');
+      sb.append(", port=").append(port);
+      sb.append(", userId='").append(userId).append('\'');
+      sb.append(", password='").append(password).append('\'');
+      sb.append(", privateKey='").append(privateKey).append('\'');
+      sb.append(", state=").append(state);
+      sb.append(", folderRoot='").append(folderRoot).append('\'');
+      sb.append(", navTheme='").append(navTheme).append('\'');
+      sb.append(", globalTemplate='").append(globalTemplate).append('\'');
+      sb.append(", allowedNamespaces='").append(allowedNamespaces).append('\'');
+      sb.append(", unpublishFlags='").append(unpublishFlags).append('\'');
+      sb.append(", loginPage='").append(loginPage).append('\'');
+      sb.append(", registrationPage='").append(registrationPage).append('\'');
+      sb.append(", registrationConfirmationPage='").append(registrationConfirmationPage).append('\'');
+      sb.append(", resetPage='").append(resetPage).append('\'');
+      sb.append(", resetRequestPasswordPage='").append(resetRequestPasswordPage).append('\'');
+      sb.append(", defaultPubServer=").append(defaultPubServer);
+      sb.append(", defaultFileExtention='").append(defaultFileExtention).append('\'');
+      sb.append(", is_secure='").append(is_secure).append('\'');
+      sb.append(", is_canonical='").append(is_canonical).append('\'');
+      sb.append(", siteProtocol='").append(siteProtocol).append('\'');
+      sb.append(", defaultDocument='").append(defaultDocument).append('\'');
+      sb.append(", canonicalDist='").append(canonicalDist).append('\'');
+      sb.append(", is_canonical_replace='").append(is_canonical_replace).append('\'');
+      sb.append(", overrideJQuery='").append(overrideJQuery).append('\'');
+      sb.append(", overrideJQueryUI='").append(overrideJQueryUI).append('\'');
+      sb.append(", overrideFoundation='").append(overrideFoundation).append('\'');
+      sb.append(", enableMobilePreview='").append(enableMobilePreview).append('\'');
+      sb.append(", additionalHeadContent='").append(additionalHeadContent).append('\'');
+      sb.append(", afterBodyStartContent='").append(afterBodyStartContent).append('\'');
+      sb.append(", beforeBodyCloseContent='").append(beforeBodyCloseContent).append('\'');
+      sb.append(", generateSiteMap='").append(generateSiteMap).append('\'');
+      sb.append(", isPageBased='").append(isPageBased).append('\'');
+      sb.append(", properties=").append(properties);
+      sb.append(", templates=").append(templates);
+      sb.append('}');
+      return sb.toString();
    }
 
    /* (non-Javadoc)

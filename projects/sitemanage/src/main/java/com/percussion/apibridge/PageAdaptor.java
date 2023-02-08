@@ -1,25 +1,18 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2021 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.percussion.apibridge;
@@ -37,11 +30,11 @@ import com.percussion.contentmigration.service.IPSContentMigrationService;
 import com.percussion.contentmigration.service.PSContentMigrationException;
 import com.percussion.design.objectstore.PSLocator;
 import com.percussion.design.objectstore.PSRelationship;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.itemmanagement.data.PSItemStateTransition;
 import com.percussion.itemmanagement.service.IPSItemService;
 import com.percussion.itemmanagement.service.IPSItemWorkflowService;
 import com.percussion.itemmanagement.service.IPSWorkflowHelper;
-import com.percussion.licensemanagement.data.PSModuleLicense;
 import com.percussion.pagemanagement.assembler.PSAbstractMergedRegionTree;
 import com.percussion.pagemanagement.assembler.PSMergedRegion;
 import com.percussion.pagemanagement.assembler.PSMergedRegion.PSMergedRegionOwner;
@@ -64,9 +57,6 @@ import com.percussion.pathmanagement.data.PSPathItem;
 import com.percussion.pathmanagement.service.IPSPathService;
 import com.percussion.pathmanagement.service.impl.PSPathUtils;
 import com.percussion.recent.service.rest.IPSRecentService;
-import com.percussion.redirect.data.PSCreateRedirectRequest;
-import com.percussion.redirect.data.PSRedirectStatus;
-import com.percussion.redirect.service.IPSRedirectService;
 import com.percussion.rest.assets.Asset;
 import com.percussion.rest.assets.AssetField;
 import com.percussion.rest.assets.AssetFieldList;
@@ -141,28 +131,27 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
 	 
     private IPSPathService pathService;
 
-    private IPSFolderHelper folderHelper;
+    private final IPSFolderHelper folderHelper;
 
-    private IPSSiteSectionService sectionService;
+    private final IPSSiteSectionService sectionService;
 
     private IPSPageService pageService;
 
     private IPSTemplateService templateService;
 
-    private IPSWorkflowHelper wfHelper;
+    private final IPSWorkflowHelper wfHelper;
 
-    private IPSContentItemDao contentItemDao;
+    private final IPSContentItemDao contentItemDao;
 
-    private IPSWidgetService widgetService;
+    private final IPSWidgetService widgetService;
 
-    private IPSWidgetAssetRelationshipService widgetAssetService;
+    private final IPSWidgetAssetRelationshipService widgetAssetService;
 
-    private IPSNameGenerator nameGenerator;
+    private final IPSNameGenerator nameGenerator;
 
-    private IPSAssetService assetService;
+    private final IPSAssetService assetService;
     
-    private IAssetAdaptor assetAdaptor;
-    private IPSRedirectService redirectService;
+    private final IAssetAdaptor assetAdaptor;
     
     private IPSSiteDataService siteDataService;
 
@@ -203,7 +192,6 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
         this.nameGenerator = nameGenerator;
         this.assetService = assetService;
         this.assetAdaptor = assetAdaptor;
-        this.redirectService = redirectService;
         this.siteDataService = siteDataService;
         this.migrationService = migrationService;
         this.recentService = recentService;
@@ -439,9 +427,7 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
                     // Manually remove items. remove method does not work due to
                     // hashcode/equals not correct D-01991
                     Set<PSRegionWidgets> newWidgetAssoc = new HashSet<>();
-                    for (Iterator<PSRegionWidgets> it = widgetAssoc.iterator(); it.hasNext();)
-                    {
-                        PSRegionWidgets widgetToAdd = it.next();
+                    for (PSRegionWidgets widgetToAdd : widgetAssoc) {
                         if (!widgetToAdd.getRegionId().equals(updateRegion.getName())) {
                             newWidgetAssoc.add(widgetToAdd);
                         }
@@ -754,33 +740,6 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
               }
           }
           
-          //Check if Redirects are turned on - if they are - generate a redirect.
-          if(redirectService!=null && redirectService.status().getStatusCode() == PSRedirectStatus.SERVICE_OK){
-        	  try{
-        		  PSSiteSummary site = siteDataService.findByPath(psPage.getFolderPath() +"/" + newName);
-        		  
-          		  site.setPubInfo(siteDataService.getS3PubServerInfo(site.getSiteId()));
-        		  PSModuleLicense lic = redirectService.getLicense();
-        		  
-        		  if(lic != null && site.getPubInfo()!=null){
-	        		  PSCreateRedirectRequest request = new PSCreateRedirectRequest();
-	        		  request.setCategory(IPSRedirectService.REDIRECT_CATEGORY_AUTOGEN);
-	        		  request.setCondition(url.getPath() + "/" + url.getName() );
-	        		  request.setEnabled(true);
-	        		  request.setKey(lic.getKey());
-	        		  request.setPermanent(true);
-	        		  request.setRedirectTo(url.getPath() + "/" + newName);
-	        		  request.setSite(site.getPubInfo().getBucketName());
-	        		  request.setType(IPSRedirectService.REDIRECT_TYPE_DEFAULT);
-	        		  redirectService.createRedirect(request);
-        		  }
-        	  }catch(Exception e){
-        		  log.error("An error occurred generating a Redirect while renaming Page: " + psPage.getId(),e);
-        	  }
-        	  
-          }
-          
-          
           return getPage(baseUri, url.getSite(), url.getPath(), newName);
           
     }
@@ -834,7 +793,8 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
 			try{
 				itemService.addToMyPages(u,pageId);
 			}catch(Exception e){
-				log.warn("Error adding Page " + pageId + " to the Recent list for user " + u );
+				log.warn("Error adding Page {} to the Recent list for user {}",
+                        pageId, u );
 			}
 		}
     }
@@ -844,7 +804,8 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
 			try{
 				recentService.addRecentItemByUser(u, pageId);
 			}catch(Exception e){
-				log.warn("Error adding Page " + pageId + " to the Recent list for user " + u );
+				log.warn("Error adding Page {} to the Recent list for user {}",
+                        pageId , u );
 			}
 		}
     }
@@ -914,7 +875,7 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
                 page.setDescription(toPage.getSeo().getMetaDescription());
             }
 
-            // default title to page name;
+            // default title to page name
             if (toPage.getSeo().getBrowserTitle() != null) {
                 page.setTitle(toPage.getSeo().getBrowserTitle());
             }
@@ -1045,13 +1006,6 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
             pageChangeEvent.setPageId(page.getId());
             pageChangeEvent.setType(PSPageChangeEventType.PAGE_SAVED);
             ph.pageChanged(pageChangeEvent);
-        }
-
-        boolean shouldCheckin = true;
-
-        if (toPage.getWorkflow() != null)
-        {
-            shouldCheckin = !Boolean.TRUE.equals(toPage.getWorkflow().getCheckedOut());
         }
 
         currentState = setWorkflowState(page.getId(), endState, new ArrayList<>());
@@ -1287,11 +1241,10 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
                         awRel);
 
             } else {
-                if (idMapper.getContentId(pathItem.getId()) != assetRels.getDependent().getId()) {
-                    if (pathNotFound) {
-                        throw new AssetNotFoundException();
-                    }
+                if(pathItem == null)
+                    throw new AssetNotFoundException();
 
+                if (idMapper.getContentId(pathItem.getId()) != assetRels.getDependent().getId()) {
                     PSAssetWidgetRelationship awRel = new PSAssetWidgetRelationship(page.getId(),
                             Long.parseLong(widget.getId()), widget.getType(), pathItem.getId(), 0);
                     awRel.setResourceType(PSAssetResourceType.shared);
@@ -1581,7 +1534,10 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
                     try {
                         migrationService.migrateContentOnTemplateChange(templateId, null, pageIds);
                     } catch (PSContentMigrationException e) {
-                        log.error("An error occurred change Page " + p.getId() + " to template " + templateName, e);
+                        log.error("An error occurred change Page {} to template {}. Error: {}",
+                                p.getId() ,
+                                templateName,
+                                PSExceptionUtils.getMessageForLog(e));
                         throw new ContentMigrationException();
                     } catch (PSDataServiceException e) {
                         throw new BackendException(e.getMessage(), e);
@@ -1619,7 +1575,7 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
 			 for(PSPageReportLine row : pages){
 	       	  String csvData = row.toCSVRow();
 	       	  
-	       	  if(ret.size()==0) {
+	       	  if(ret.isEmpty()) {
                   ret.add(row.getHeaderRow());
               }
 	       	

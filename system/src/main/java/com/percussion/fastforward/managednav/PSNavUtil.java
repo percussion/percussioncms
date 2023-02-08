@@ -1,25 +1,18 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.percussion.fastforward.managednav;
 
@@ -29,7 +22,7 @@ import com.percussion.cms.objectstore.IPSFieldValue;
 import com.percussion.cms.objectstore.PSAaRelationshipList;
 import com.percussion.cms.objectstore.PSActiveAssemblyProcessorProxy;
 import com.percussion.cms.objectstore.PSComponentSummary;
-import com.percussion.cms.objectstore.PSContentTypeVariant;
+import com.percussion.cms.objectstore.PSContentTypeTemplate;
 import com.percussion.cms.objectstore.PSContentTypeVariantSet;
 import com.percussion.cms.objectstore.PSItemField;
 import com.percussion.cms.objectstore.PSKey;
@@ -40,6 +33,7 @@ import com.percussion.cms.objectstore.server.PSServerItem;
 import com.percussion.design.objectstore.PSLocator;
 import com.percussion.server.IPSInternalRequest;
 import com.percussion.server.IPSRequestContext;
+import com.percussion.services.assembly.impl.nav.PSNavConfig;
 import com.percussion.services.legacy.IPSCmsObjectMgr;
 import com.percussion.services.legacy.PSCmsObjectMgrLocator;
 import com.percussion.util.IPSHtmlParameters;
@@ -207,7 +201,8 @@ public class PSNavUtil
          throw new IllegalArgumentException("summary cannot be null");
 
       PSNavConfig config = PSNavConfig.getInstance();
-      return summary.getContentTypeId() == config.getNavonType();
+
+      return config.getNavonTypes().contains(summary.getContentTypeGUID());
    }
    
    /**
@@ -255,7 +250,7 @@ public class PSNavUtil
          throw new IllegalArgumentException("summary cannot be null");
 
       PSNavConfig config = PSNavConfig.getInstance();
-      return summary.getContentTypeId() == config.getNavTreeType();
+      return config.getNavTreeTypes().contains(summary.getContentTypeGUID());
    }
 
    /**
@@ -310,8 +305,8 @@ public class PSNavUtil
     * @throws PSNavException if information could not be obtained from the
     *            system for any reason.
     */
-   public static PSContentTypeVariant loadVariantInfo(IPSRequestContext req,
-         long contentTypeId, String variantName) throws PSNavException
+   public static PSContentTypeTemplate loadVariantInfo(IPSRequestContext req,
+                                                       long contentTypeId, String variantName) throws PSNavException
    {
       if (req == null)
       {
@@ -327,7 +322,7 @@ public class PSNavUtil
       Iterator iter = variants.iterator();
       while (iter.hasNext())
       {
-         PSContentTypeVariant current = (PSContentTypeVariant) iter.next();
+         PSContentTypeTemplate current = (PSContentTypeTemplate) iter.next();
          if (current.supportsContentType((int) contentTypeId)
                && current.getName().equals(variantName))
          {
@@ -351,8 +346,8 @@ public class PSNavUtil
     * @throws PSNavException if information could not be obtained from the
     *            system for any reason.
     */
-   public static PSContentTypeVariant loadVariantInfo(IPSRequestContext req,
-         long contentTypeId, int variantId) throws PSNavException
+   public static PSContentTypeTemplate loadVariantInfo(IPSRequestContext req,
+                                                       long contentTypeId, int variantId) throws PSNavException
    {
       if (req == null)
       {
@@ -364,7 +359,7 @@ public class PSNavUtil
       Iterator iter = variants.iterator();
       while (iter.hasNext())
       {
-         PSContentTypeVariant current = (PSContentTypeVariant) iter.next();
+         PSContentTypeTemplate current = (PSContentTypeTemplate) iter.next();
          if ((contentTypeId == -1 || current.supportsContentType((int) contentTypeId))
                && current.getVariantId() == variantId)
          {
@@ -614,13 +609,13 @@ public class PSNavUtil
          throw new IllegalArgumentException("navon must not be null");
       }
       PSNavConfig config = PSNavConfig.getInstance(req);
-      PSContentTypeVariant variant;
+      PSContentTypeTemplate variant;
       long contentTypeId = navon.getContentTypeId();
-      if (contentTypeId == config.getNavonType())
+      if (config.getNavonTypeIds().contains(contentTypeId))
       {
-         variant = config.getInfoVariant();
+         variant = config.getNanonInfoTemplate();
       }
-      else if (contentTypeId == config.getNavTreeType())
+      else if (config.getNavTreeTypeIds().contains(contentTypeId))
       {
          variant = config.getNavtreeInfoVariant();
       }
@@ -642,7 +637,7 @@ public class PSNavUtil
     * @throws PSNavException if process fails for any reason.
     */
    public static Document getVariantDocument(IPSRequestContext req,
-         PSContentTypeVariant variant, PSLocator loc) throws PSNavException
+                                             PSContentTypeTemplate variant, PSLocator loc) throws PSNavException
    {
       if (req == null)
       {

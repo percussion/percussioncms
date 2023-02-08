@@ -1,30 +1,24 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.percussion.tablefactory;
 
 import com.percussion.util.PSSqlHelper;
+import com.percussion.utils.jdbc.PSJdbcUtils;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
 import org.w3c.dom.Document;
@@ -113,7 +107,7 @@ public class PSJdbcColumnDef extends PSJdbcTableComponent
       }
       catch (PSJdbcTableFactoryException e)
       {
-         throw new IllegalArgumentException("Invalid type: " + e.toString());
+         throw new IllegalArgumentException("Invalid type: " + e);
       }
 
       // this will validate, must set default value first
@@ -176,11 +170,14 @@ public class PSJdbcColumnDef extends PSJdbcTableComponent
       setAction(srcCol.getAction());
       setAllowsNull(srcCol.allowsNull());
       setDefaultValue(srcCol.getDefaultValue());
+      m_isChanged = srcCol.m_isChanged;
+      isAllowedNullChanged = srcCol.isAllowedNullChanged;
       m_dataTypeMap = srcCol.m_dataTypeMap;
       m_size = srcCol.m_size;
       m_scale = srcCol.m_scale;
       m_limitSizeForIndex = srcCol.m_limitSizeForIndex;
-
+      m_sequence = srcCol.m_sequence;
+      m_nativeType = srcCol.m_nativeType;
       try
       {
          setType(srcCol.getType());
@@ -188,7 +185,7 @@ public class PSJdbcColumnDef extends PSJdbcTableComponent
       catch (PSJdbcTableFactoryException e)
       {
          // this can never happen, but what the heck...
-         throw new IllegalStateException("Invalid type: " + e.toString());
+         throw new IllegalStateException("Invalid type: " + e);
       }
    }
 
@@ -412,6 +409,10 @@ public class PSJdbcColumnDef extends PSJdbcTableComponent
       return hash;
    }
 
+   public boolean isChanged(){
+      return  m_isChanged;
+   }
+
 
    /**
     * Compares this column to another, testing equals of all members excluding
@@ -443,11 +444,12 @@ public class PSJdbcColumnDef extends PSJdbcTableComponent
          
          if (!super.equals(oldCol))
             isChanged = true;
-         else if (m_allowsNull ^ oldCol.m_allowsNull)
+         else if (m_allowsNull ^ oldCol.m_allowsNull) {
             isChanged = true;
-         else if (thisAdjSize != null ^ oldSize != null)
+            isAllowedNullChanged = true;
+         }else if (thisAdjSize != null ^ oldSize != null) {
             isChanged = true;
-         else if (thisAdjSize != null && !thisAdjSize.equals(oldSize))
+         }else if (thisAdjSize != null && !thisAdjSize.equals(oldSize))
          {
             // only consider it a change if the existing size is too small
             try
@@ -494,7 +496,8 @@ public class PSJdbcColumnDef extends PSJdbcTableComponent
          }
       }
 
-      return isChanged;
+      m_isChanged= isChanged;
+      return m_isChanged;
    }
 
    /**
@@ -762,7 +765,7 @@ public class PSJdbcColumnDef extends PSJdbcTableComponent
    
    /**
     * Sets the flag to indicate if this column should limit its size based on 
-    * the maximum defined in the datatype map (see {@link #getAdjustedSize()} 
+    * the maximum defined in the datatype map (see {@link #getAdjustedSize(boolean)}
     * for more info.  Defaults to <code>false</code> if never set.
     * 
     * @param limitSize <code>true</code> to limit the size based on the defined
@@ -822,18 +825,21 @@ public class PSJdbcColumnDef extends PSJdbcTableComponent
             nativeDataType = m_nativeType;
          }
       }
-      buf.append(nativeDataType);
 
-      String size = getAdjustedSize(true);
-      if (size != null)
-      {
-         buf.append("(");
-         buf.append( size );
-         String scale = getScale();
-         if (scale != null)
-            buf.append(",").append( scale );
-         buf.append(")");
-      }
+      //Don't add clob to alter statement as it fails in oracle
+         if(! ( PSJdbcTableComponent.ACTION_REPLACE == getAction() && "clob".equalsIgnoreCase(nativeDataType) &&  dataTypeMapDriver.equals(PSJdbcUtils.ORACLE))){
+
+               buf.append(nativeDataType);
+               String size = getAdjustedSize(true);
+               if (size != null) {
+                  buf.append("(");
+                  buf.append(size);
+                  String scale = getScale();
+                  if (scale != null)
+                     buf.append(",").append(scale);
+                  buf.append(")");
+               }
+         }
 
       // add the suffix, if defined in the mapping
       if (dataType.getSuffix() != null)
@@ -865,9 +871,9 @@ public class PSJdbcColumnDef extends PSJdbcTableComponent
    public boolean canAlter()
    {
       boolean canAlter = super.canAlter();
-      if (canAlter && getAction() == ACTION_CREATE)
+      if (canAlter && (getAction() == ACTION_CREATE || getAction() == ACTION_REPLACE))
       {
-         if (!allowsNull())
+         if (isAllowedNullChanged)
             canAlter = false;
          else if (m_defaultValue != null &&
             m_defaultValue.trim().length() > 0)
@@ -935,7 +941,14 @@ public class PSJdbcColumnDef extends PSJdbcTableComponent
       
       return strAdjSize;
    }
-   
+
+   private boolean m_isChanged = false;
+
+   /**
+    * These Flags are used to decide if table needs to be recreated or columns can be altered, without dropping table
+    */
+   private boolean isAllowedNullChanged = false;
+
    /**
     * The name of this object's root Xml element.
     */

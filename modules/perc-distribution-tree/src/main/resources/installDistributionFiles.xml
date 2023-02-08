@@ -113,6 +113,13 @@
             <fileset dir="${rxapps-directory}/perc-rxapps-${project.version}/RxApp/sysAppSupport">
             </fileset>
         </copy>
+
+        <copy todir="${assembly-directory}/ObjectStore" flatten="true">
+            <fileset dir="${rxbase}/cms/content/applications">
+                <include name="*/*.xml"/>
+            </fileset>
+        </copy>
+
         <copy todir="${assembly-directory}/ObjectStore">
             <fileset dir="${rxapps-directory}/perc-rxapps-${project.version}/RxApp/ObjectStore">
             </fileset>
@@ -177,6 +184,7 @@
             <fileset dir="${basedir}/../../system/DTD" includes="**"/>
         </copy>
 
+
         <!-- Force copy of UI files - they weren't getting refreshed on upgrade without this -->
         <copy todir="${assembly-directory}/jetty/base/webapps/Rhythmyx/" overwrite="true" verbose="true" filtering="true">
             <fileset dir="../../WebUI/target/perc-web-ui-${project.version}">
@@ -190,6 +198,17 @@
                 <include name="favicon.ico"/>
             </fileset>
         </copy>
+
+        <!-- Copy DesktopContentExplorer resources and jar -->
+        <copy todir="${assembly-directory}/jetty/base/webapps/Rhythmyx/dce" overwrite="true" verbose="true" force="true">
+            <fileset dir="${basedir}/../DesktopContentExplorer/src/main/resources/com/percussion/cx">
+                <exclude name="**/*.class"/>
+            </fileset>
+            <fileset dir="${basedir}/../DesktopContentExplorer/target">
+                <include name="ContentExplorer-${project.version}.jar"/>
+            </fileset>
+        </copy>
+
         <!--<copy todir="${assembly-directory}/cm">
             <fileset dir="${assembly-directory}/jetty/base/webapps/Rhythmyx/cm">
             </fileset>
@@ -363,8 +382,6 @@
         <PSCopy todir="${install.config}/Proxy" file="${configdir}/proxy-config.xml" replaceType="never" />
         <!-- CMS Config Files -->
         <mkdir dir="${install.config}/DeliveryServer" />
-        <mkdir dir="${install.config}/LDAP" />
-        <PSCopy todir="${install.config}/LDAP" file="${configdir}/LDAP/ldapserver.xml" replaceType="never" />
 
         <if>
             <and>
@@ -454,7 +471,7 @@
         </PSCopy>
 
         <PSCopy todir="${install.config}/Server/ContentEditors">
-            <fileset dir="${ffconfigdir}/ContentEditors" />
+            <fileset dir="${ffconfigdir}/Server/ContentEditors" />
         </PSCopy>
 
         <PSCopy todir="${install.config}/Server/requestHandlers" replaceType="never">

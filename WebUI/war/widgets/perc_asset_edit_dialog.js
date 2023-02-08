@@ -1,26 +1,19 @@
 
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 /**
@@ -39,7 +32,7 @@
  * Sets the src of the iframe to the url.
  * While creating new content, if the content type produces resource type asset
  * opens a save as dialog to collect name and the location from asset library to store the asset.
- * Otherwise creats the asset with the contentName from criteria.
+ * Otherwise creates the asset with the contentName from criteria.
  */
 (function ($) {
    $.perc_asset_edit_dialog = function (reload_callback, cancelCallback, assetid, widgetData, parentId, ownerType) {
@@ -96,7 +89,7 @@
         });
       
       /**
-       * Creats the content editor dialog. Sets the height and widths as per the criteria
+       * Creates the content editor dialog. Sets the height and widths as per the criteria
        * Sets the src of the Iframe to the url from the criteria.
        */
     function createContentEditDialog() {
@@ -114,7 +107,7 @@
             "&sys_workflowid=" + contentEditCriteria.workflowId;
         
         var dlgHtml = "<div id='edit-widget-content'>" + 
-        "<iframe name='edit-widget-content-frame' id='edit-widget-content-frame' height='100%' FRAMEBORDER='0' width='100%' src='" + 
+        "<iframe name='edit-widget-content-frame' id='edit-widget-content-frame' height='100%' title='Edit Content' frameborder='0' width='100%' src='" +
         url + "'></iframe>" + "</div>";
         //Create dialog and set the preferred height and width from the criteria
         dialog = $(dlgHtml).perc_dialog({
@@ -129,7 +122,7 @@
                            $('#edit-widget-content-frame').width($(this).parent().width()-3); 
                            maximize = $( '<a id="ui-dialog-titlebar-resize" class="ui-dialog-titlebar-resize ui-corner-all" role="button" aria-label="full screen" href="#"><i class="fas fa-expand"/></a>');
                            maximized=false;
-                           $(this).parent().find('.ui-dialog-title').after(maximize)
+                           $(this).parent().find('.ui-dialog-title').after(maximize);
                            
                       
 
@@ -163,7 +156,7 @@
                 },
                 "Cancel":   {
                     click: function(event)   {
-                        if (event.originalEvent.detail === 0) { // if cancle button enabled through tab
+                        if (event.originalEvent.detail === 0) { // if cancel button enabled through tab
                             var options = {
                                 id: 'perc-finder-delete-confirm',
                                 title: I18N.message("perc.ui.closeEditor.title@Close Content Editor"),
@@ -185,11 +178,11 @@
         });
 
         function resizer(){
-          console.log("Resized")
+          console.log("Resized");
            clearTimeout($.data(this, 'resizeTimer'));
         $.data(this, 'resizeTimer', setTimeout(function() {
-           console.log("Resize timer")
-             offset = $('#edit-widget-content').parent().offset()
+           console.log("Resize timer");
+             offset = $('#edit-widget-content').parent().offset();
           
              console.log("left="+offset.left+" top=",offset.top);
              if (offset.left==0 && offset.top==0 && maximized)
@@ -291,7 +284,7 @@
         {
             if(initialized == false){
                 initialized = true;
-                onIntialFrameLoad();
+                onInitialFrameLoad();
             }
             else{
                 onLaterFrameLoads();
@@ -308,7 +301,7 @@
       }
 
        /**
-        * This method gets called  on clicking cancle button of content editor
+        * This method gets called  on clicking cancel button of content editor
         */
        function closeContentEditor(){
            $.PercBlockUI();
@@ -322,7 +315,7 @@
        * This method gets called from frame load binding, it gets called only at the time of initial load
        * to set some initialization settings. 
        */
-      function onIntialFrameLoad(){
+      function onInitialFrameLoad(){
         if(contentEditCriteria.assetType == "shared")
         {
             // show the warning message for shared asset
@@ -374,14 +367,14 @@
        */
       function onSave(path, name, k, err) {
          $.perc_pathmanager.open_containing_folder(path, function (folder_spec) {
-            var sames = $.grep(folder_spec["PathItem"], function (x) {
+            var sames = $.grep(folder_spec.PathItem, function (x) {
                return x.name == name;
             });
             if (sames.length) {
                err(I18N.message("perc.ui.saveasdialog.error@Duplicate asset"));
             } else {
                $.perc_pathmanager.open_path(ut.acop(path), false, function (fs) {
-                  saveAssetContent(name, fs["PathItem"]["folderPath"]);
+                  saveAssetContent(name, fs.PathItem.folderPath);
                   k();
                }, err);
             }
@@ -424,7 +417,7 @@
          if (!$contentFrameElem('#perc-content-form').attr('action').includes('sys_asset_folderid')) {
             $contentFrameElem("#perc-content-form").attr("action", path);
          }
-         //call all the pre submit handlers if nothing returns flase, submit the form.
+         //call all the pre submit handlers if nothing returns false, submit the form.
          var dosubmit = true;
          $.each($.PercContentPreSubmitHandlers.getHandlers(),function(){
             if(!this()){

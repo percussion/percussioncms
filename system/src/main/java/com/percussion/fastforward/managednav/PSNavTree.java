@@ -1,32 +1,27 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.percussion.fastforward.managednav;
 
+import com.percussion.cms.IPSConstants;
 import com.percussion.cms.objectstore.PSComponentSummary;
-import com.percussion.cms.objectstore.PSContentTypeVariant;
+import com.percussion.cms.objectstore.PSContentTypeTemplate;
 import com.percussion.design.objectstore.PSLocator;
 import com.percussion.server.IPSRequestContext;
+import com.percussion.services.assembly.impl.nav.PSNavConfig;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import org.apache.logging.log4j.LogManager;
@@ -57,7 +52,7 @@ public class PSNavTree
       ms_config = PSNavConfig.getInstance(req);
 
       m_rootParams = PSNavUtil.buildStandardParams(req);
-      m_theme = ms_config.getPropertyString(PSNavConfig.NAVTREE_THEME_DEFAULT);
+      m_theme = ms_config.getNavTreeThemeDefault();
 
       log.debug("Creating NavTree");
       PSNavUtil.logMap(m_rootParams, "HTML Parameters", log);
@@ -66,7 +61,7 @@ public class PSNavTree
             .getParameter(IPSHtmlParameters.SYS_CONTENTID));
       PSComponentSummary self = PSNavUtil.getItemSummary(req, selfLoc);
       log.debug("Self node is {}", self.getName());
-      if (self.getContentTypeId() == ms_config.getNavTreeType())
+      if (ms_config.getNavTreeTypeIds().contains(self.getContentTypeId()))
       { // this is the root
          log.debug("starting at root");
          m_root = new PSNavon(req, self);
@@ -74,7 +69,7 @@ public class PSNavTree
          m_root.setRelativeLevel(0);
          loadNavTreeData(req, self.getCurrentLocator());
       }
-      else if (self.getContentTypeId() == ms_config.getNavonType())
+      else if (ms_config.getNavonTypeIds().contains(self.getContentTypeId()))
       { // this is a navon somewhere in the middle of the tree
          log.debug("starting in the middle");
          PSNavon selfNavon = new PSNavon(req, self);
@@ -121,17 +116,17 @@ public class PSNavTree
       try
       {
 
-         PSContentTypeVariant whiteVar = ms_config.getNavtreeInfoVariant();
+         PSContentTypeTemplate whiteVar = ms_config.getNavTreeInfoTemplate();
          Document tdoc = PSNavUtil.getVariantDocument(req, whiteVar, loc);
 
-         this.m_theme = PSNavUtil.getFieldValueFromXML(tdoc, ms_config
-               .getPropertyString(PSNavConfig.NAVTREE_THEME_FIELD));
+         this.m_theme = PSNavUtil.getFieldValueFromXML(tdoc,
+                 ms_config.getNavThemeParamName());
 
-         this.m_variableSelector = PSNavUtil.getFieldValueFromXML(tdoc, ms_config
-               .getPropertyString(PSNavConfig.NAVON_VARIABLE_FIELD));
+         this.m_variableSelector = PSNavUtil.getFieldValueFromXML(tdoc,
+                 ms_config.getNavonVariableName());
 
-         this.m_imageSelector = PSNavUtil.getFieldValueFromXML(tdoc, ms_config
-               .getPropertyString(PSNavConfig.NAVON_SELECTOR_FIELD));
+         this.m_imageSelector = PSNavUtil.getFieldValueFromXML(tdoc,
+                 ms_config.getNavonSelectorField());
 
       }
       catch (Exception e)
@@ -153,10 +148,8 @@ public class PSNavTree
       Element rootElement = PSXmlDocumentBuilder.createRoot(navtreeDoc,
             XML_NODE_NAME);
 
-      Iterator attrIterator = this.m_rootParams.keySet().iterator();
-      while (attrIterator.hasNext())
-      {
-         String paramName = (String) attrIterator.next();
+      for (Object o : this.m_rootParams.keySet()) {
+         String paramName = (String) o;
          String paramValue = this.m_rootParams.get(paramName).toString();
          rootElement.setAttribute(paramName, paramValue);
       }
@@ -197,7 +190,7 @@ public class PSNavTree
    /**
     * Writes the log.
     */
-   private Logger log = LogManager.getLogger(this.getClass().getName());
+   private static final Logger log = LogManager.getLogger(IPSConstants.NAVIGATION_LOG);
 
    /**
     * Theme for the tree. The theme is used for selecting stylesheets in the

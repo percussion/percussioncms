@@ -1,25 +1,18 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.percussion.fastforward.managednav;
 
@@ -27,13 +20,15 @@ import com.percussion.cms.objectstore.PSAaRelationship;
 import com.percussion.cms.objectstore.PSAaRelationshipList;
 import com.percussion.cms.objectstore.PSComponentSummaries;
 import com.percussion.cms.objectstore.PSComponentSummary;
-import com.percussion.cms.objectstore.PSContentTypeVariant;
+import com.percussion.cms.objectstore.PSContentTypeTemplate;
 import com.percussion.cms.objectstore.PSRelationshipFilter;
 import com.percussion.cms.objectstore.PSSlotType;
 import com.percussion.cms.objectstore.server.PSRelationshipProcessor;
 import com.percussion.data.macro.PSMacroUtils;
 import com.percussion.design.objectstore.PSLocator;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.server.IPSRequestContext;
+import com.percussion.services.assembly.impl.nav.PSNavConfig;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.util.PSPreparedStatement;
 import org.apache.logging.log4j.LogManager;
@@ -138,45 +133,26 @@ public class PSNavon
             
          log.debug("Content id {} revision {}", String.valueOf(m_loc.getId()), String.valueOf(m_loc.getRevision()));
          this.LoadViaSQL(m_loc.getId(),req);
-
-         //         Document ddoc = PSNavUtil.getNavonDocument(req, summary);
-         //         
-         //         this.label = PSNavUtil.getFieldValueFromXML(ddoc,
-         //            config.getPropertyString(PSNavConfig.NAVON_TITLE_FIELD));
-         //         log.debug("Label is: " + this.label);
-         //         
-         //         this.name = PSNavUtil.getFieldValueFromXML(ddoc,
-         //            config.getPropertyString(PSNavConfig.NAVON_NAME_FIELD));
-         //         log.debug("Name is: " + this.name);
-         //
-         //         this.imageSelector = PSNavUtil.getFieldValueFromXML(ddoc,
-         //            config.getPropertyString(PSNavConfig.NAVON_SELECTOR_FIELD));
-         //         log.debug("Image selector is " + this.imageSelector);
-         //         
-         //         this.variableSelector = PSNavUtil.getFieldValueFromXML(ddoc,
-         //            config.getPropertyString(PSNavConfig.NAVON_VARIABLE_FIELD));
-
          log.debug("building info link...");
          this.m_infoLink = new PSNavLink();
          //Assume it is Navon
-         PSContentTypeVariant variant = ms_config.getInfoVariant();
+         PSContentTypeTemplate variant = ms_config.getNanonInfoTemplate();
          //It can be a NavTree too, so get the correct info variant
-         if (summary.getContentTypeId() == ms_config.getNavTreeType())
-            variant = ms_config.getNavtreeInfoVariant();
+         if ( ms_config.getNavTreeTypeIds().contains(summary.getContentTypeId()))
+            variant = ms_config.getNavTreeInfoTemplate();
 
          this.m_infoLink.createLinkToDocument(req, summary, variant);
 
          log.debug("building landing page...");
          try
          {
-            this.m_landingPage = buildLinkFromSlot(this.m_loc, ms_config
-                  .getPropertyString(PSNavConfig.NAVON_LANDING_SLOT), req,
+            this.m_landingPage = buildLinkFromSlot(this.m_loc,
+                    ms_config.getNavLandingPageSlotNames().get(0), req,
                   null, false);
          }
          catch (PSNavException e1)
          {
-            log.error("Unable to build landing page {}", e1.getMessage());
-            log.debug(e1.getMessage(),e1);
+            log.error("Unable to build landing page {}", PSExceptionUtils.getMessageForLog(e1));
             this.m_landingPage = null;
          }
 
@@ -240,15 +216,13 @@ public class PSNavon
     */
    private void buildImageList(IPSRequestContext req) throws PSNavException
    {
-      PSSlotType imageSlot = ms_config.getImageSlot();
+      PSSlotType imageSlot = ms_config.getNavImageSlotTypes().get(0);
       PSAaRelationshipList slotContents = PSNavUtil.getSlotContents(req,
             this.m_loc, imageSlot);
-      Iterator slotIter = slotContents.iterator();
-      while (slotIter.hasNext())
-      {
-         PSAaRelationship relation = (PSAaRelationship) slotIter.next();
+      for (Object slotContent : slotContents) {
+         PSAaRelationship relation = (PSAaRelationship) slotContent;
          PSNavImageLink imageLink = new PSNavImageLink(req, relation);
-         this.m_imageList.add(imageLink);
+         this.imageList.add(imageLink);
       }
    }
 
@@ -269,7 +243,7 @@ public class PSNavon
     *            processing exception occurs.
     */
    private PSNavLink buildLinkFromSlot(PSLocator parentDoc, String slotName,
-         IPSRequestContext req, PSContentTypeVariant useVariant,
+         IPSRequestContext req, PSContentTypeTemplate useVariant,
          boolean followLink) throws PSNavException
    {
       PSNavLink resultLink = new PSNavLink();
@@ -322,7 +296,7 @@ public class PSNavon
       { //this must be the top of the tree
          //maybe an error, but maybe not.
          String errMsg = "Unexpected tree root. Navon without parents "
-               + String.valueOf(this.m_loc.getId());
+               + this.m_loc.getId();
          log.debug(errMsg);
          return null;
       }
@@ -331,7 +305,7 @@ public class PSNavon
       this.m_directParent = parentNavon;
       parentNavon.setRelativeLevel(this.m_relLevel - 1);
 
-      if (parentSummary.getContentTypeId() == ms_config.getNavTreeType())
+      if (ms_config.getNavTreeTypeIds().contains(parentSummary.getContentTypeId() ))
       {
          parentType = new PSNavonType(PSNavonType.TYPE_ROOT);
       }
@@ -396,7 +370,7 @@ public class PSNavon
       {
          //danger danger the tree is invalid
          String errMsg = "Invalid tree structure. Item with duplicate parents "
-               + String.valueOf(this.m_loc.getId());
+               + this.m_loc.getId();
          log.error(errMsg);
          throw new PSNavException(errMsg);
       }
@@ -509,7 +483,7 @@ public class PSNavon
     */
    public void findChildren(IPSRequestContext req) throws PSNavException
    {
-      Set nodeSet = new HashSet();
+      Set<Integer> nodeSet = new HashSet<>();
       findChildren(req, nodeSet);
    }
 
@@ -521,10 +495,10 @@ public class PSNavon
     * @param nodeSet the set of Integers representing all nodes in this tree.
     * @throws PSNavException
     */
-   private void findChildren(IPSRequestContext req, Set nodeSet)
+   private void findChildren(IPSRequestContext req, Set<Integer> nodeSet)
          throws PSNavException
    {
-      Integer myID = new Integer(this.m_loc.getId());
+      Integer myID = this.m_loc.getId();
       if (nodeSet.contains(myID))
       {
          log.error("Invalid Tree Structure. Duplicate id in tree {}", myID);
@@ -544,7 +518,7 @@ public class PSNavon
       {
          log.debug("finding children for {}", this.m_name);
 
-         PSSlotType menuSlot = ms_config.getMenuSlot();
+         PSSlotType menuSlot = ms_config.getNavSubMenuSlotTypes().get(0);
 
          if (menuSlot == null)
          {
@@ -552,31 +526,22 @@ public class PSNavon
             throw new PSNavException(MSG_MENU_SLOT_NOT_FOUND);
          }
          log.debug("found slot");
-         //        PSComponentSummaries slotItems =
-         //           aaProxy.getSlotItems(this.loc, menuSlot,
-         // PSNavUtil.getAuthType(req));
 
          PSAaRelationshipList slotItems = PSNavUtil.getSlotContents(req,
                this.m_loc, menuSlot);
          log.debug("found slot contents");
-         Iterator childIterator = slotItems.iterator();
-         while (childIterator.hasNext())
-         {
-            PSAaRelationship aaRel = (PSAaRelationship) childIterator.next();
+         for (Object slotItem : slotItems) {
+            PSAaRelationship aaRel = (PSAaRelationship) slotItem;
             PSLocator childLoc = aaRel.getDependent();
             PSNavComponentSummary childSummary =
-            // PSNavUtil.getItemSummary(req, childLoc);
-            new PSNavComponentSummary(childLoc);
+                    new PSNavComponentSummary(childLoc);
             log.debug("found child named {}", childSummary.getName());
             int childId = childSummary.getCurrentLocator().getId();
-            if (descendentId != -1 && childId == descendentId)
-            { // this is our direct descendent.
+            if (descendentId != -1 && childId == descendentId) { // this is our direct descendent.
                log.debug("this child is a direct descendent");
                childNavon = m_directDescendent;
                childNavon.setAbsoluteLevel(this.m_absLevel + 1);
-            }
-            else
-            {
+            } else {
                log.debug("adding new child");
                childNavon = new PSNavon(req, childSummary);
                childNavon.setParentInfo(req, this);
@@ -584,7 +549,7 @@ public class PSNavon
             childNavon.setAbsoluteLevel(this.m_absLevel + 1);
             m_children.add(childNavon); //append to the list
             log
-                  .debug("recurse to next level {} ", String.valueOf(this.m_absLevel));
+                    .debug("recurse to next level {} ", this.m_absLevel);
             childNavon.findChildren(req, nodeSet); //recurse
          }
       }
@@ -661,23 +626,17 @@ public class PSNavon
          this.m_infoLink.toXML(infoLinkElem);
       }
 
-      if (!this.m_imageList.isEmpty())
+      if (!this.imageList.isEmpty())
       {
          Element imagesElem = doc.createElement(XML_ELEMENT_IMAGELIST);
          navon.appendChild(imagesElem);
-         Iterator images = m_imageList.iterator();
-         while (images.hasNext())
-         {
-            PSNavImageLink il = (PSNavImageLink) images.next();
-            il.toXML(imagesElem);
+         for (PSNavImageLink o : imageList) {
+             o.toXML(imagesElem);
          }
       }
 
-      Iterator childIterator = this.m_children.iterator();
-      while (childIterator.hasNext())
-      {
-         PSNavon childNavon = (PSNavon) childIterator.next();
-         Element childElement = childNavon.toXML(doc);
+      for (PSNavon m_child : this.m_children) {
+         Element childElement = m_child.toXML(doc);
          navon.appendChild(childElement);
       }
 
@@ -697,7 +656,7 @@ public class PSNavon
       ResultSet rs = null;
       String authType = req.getParameter(IPSHtmlParameters.SYS_AUTHTYPE,
             PSNavUtil.PREVIEW_AUTHTYPE);
-      boolean isPreview = authType.equals(PSNavUtil.PREVIEW_AUTHTYPE)?true:false;
+      boolean isPreview = authType.equals(PSNavUtil.PREVIEW_AUTHTYPE);
       try
       {
          String sql_stmt = "";
@@ -746,7 +705,7 @@ public class PSNavon
          else
          {
             String errMsg = "Unable to read Navon from table id = "
-                  + String.valueOf(id);
+                  + id;
             log.error(errMsg);
             throw new PSNavException(errMsg);
          }
@@ -770,7 +729,7 @@ public class PSNavon
    /**
     * Pointer to the config object.
     */
-   private static PSNavConfig ms_config = null;
+   private PSNavConfig ms_config = null;
 
    /**
     * the text label for this Navon.
@@ -810,11 +769,10 @@ public class PSNavon
     */
    private PSNavLink m_infoLink = new PSNavLink();
 
-   //private PSNavLink imageLink = null;
    /**
     * List of images
     */
-   private List m_imageList = new ArrayList();
+   private List<PSNavImageLink> imageList = new ArrayList<>();
 
    /**
     * The navon type.
@@ -826,7 +784,7 @@ public class PSNavon
    /**
     * The child PSNavon objects.
     */
-   private List m_children = new ArrayList();
+   private List<PSNavon> m_children = new ArrayList<>();
 
    /**
     * Get a list of navon object.

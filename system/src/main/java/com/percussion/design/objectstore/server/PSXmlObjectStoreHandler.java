@@ -1,25 +1,18 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.percussion.design.objectstore.server;
@@ -32,35 +25,12 @@ import com.percussion.data.PSMetaDataCache;
 import com.percussion.data.jdbc.PSFileSystemDriver;
 import com.percussion.data.vfs.IPSVirtualDirectory;
 import com.percussion.data.vfs.PSVirtualApplicationDirectory;
-import com.percussion.design.objectstore.IPSObjectStoreErrors;
-import com.percussion.design.objectstore.PSAcl;
-import com.percussion.design.objectstore.PSAclEntry;
-import com.percussion.design.objectstore.PSApplication;
-import com.percussion.design.objectstore.PSApplicationFile;
-import com.percussion.design.objectstore.PSComponent;
-import com.percussion.design.objectstore.PSContentEditorSharedDef;
-import com.percussion.design.objectstore.PSContentEditorSystemDef;
-import com.percussion.design.objectstore.PSExtensionFile;
-import com.percussion.design.objectstore.PSFeatureSet;
-import com.percussion.design.objectstore.PSLockedException;
-import com.percussion.design.objectstore.PSLogger;
-import com.percussion.design.objectstore.PSNonUniqueException;
-import com.percussion.design.objectstore.PSNotFoundException;
-import com.percussion.design.objectstore.PSNotLockedException;
-import com.percussion.design.objectstore.PSObjectFactory;
-import com.percussion.design.objectstore.PSRevisionEntry;
-import com.percussion.design.objectstore.PSRevisionHistory;
-import com.percussion.design.objectstore.PSRoleConfiguration;
-import com.percussion.design.objectstore.PSServerConfiguration;
-import com.percussion.design.objectstore.PSSystemValidationException;
-import com.percussion.design.objectstore.PSTableLocator;
-import com.percussion.design.objectstore.PSUnknownDocTypeException;
-import com.percussion.design.objectstore.PSUnknownNodeTypeException;
-import com.percussion.design.objectstore.PSVersionConflictException;
+import com.percussion.design.objectstore.*;
 import com.percussion.design.objectstore.legacy.IPSComponentConverter;
 import com.percussion.design.objectstore.legacy.IPSComponentUpdater;
 import com.percussion.design.objectstore.legacy.IPSConfigFileLocator;
 import com.percussion.design.objectstore.legacy.IPSRepositoryInfo;
+import com.percussion.design.objectstore.legacy.PSAllowAllCtypeWorkflowsUpdater;
 import com.percussion.design.objectstore.legacy.PSBackendTableConverter;
 import com.percussion.design.objectstore.legacy.PSConfigurationCtx;
 import com.percussion.design.objectstore.legacy.PSContentTypeWorkflowsUpdater;
@@ -68,6 +38,9 @@ import com.percussion.design.objectstore.legacy.PSTableLocatorConverter;
 import com.percussion.error.PSErrorManager;
 import com.percussion.error.PSException;
 import com.percussion.error.PSExceptionUtils;
+import com.percussion.error.PSNonUniqueException;
+import com.percussion.error.PSNotFoundException;
+import com.percussion.error.PSNotLockedException;
 import com.percussion.error.PSRuntimeException;
 import com.percussion.extension.IPSExtensionDef;
 import com.percussion.extension.IPSExtensionManager;
@@ -81,7 +54,7 @@ import com.percussion.security.PSAuthenticationFailedException;
 import com.percussion.security.PSAuthenticationRequiredException;
 import com.percussion.security.PSAuthorizationException;
 import com.percussion.security.PSUserEntry;
-import com.percussion.server.IPSCgiVariables;
+import com.percussion.utils.server.IPSCgiVariables;
 import com.percussion.server.IPSServerErrors;
 import com.percussion.server.IPSValidateSession;
 import com.percussion.server.PSConsole;
@@ -175,8 +148,7 @@ public class PSXmlObjectStoreHandler extends PSObjectFactory
     * </table>
     * 
     * @param      connInfo                     the object store definition
-    * 
-    * @return the connected object store
+    *
     *
     * @todo: make all request root string public and reuse them.
     */
@@ -539,7 +511,7 @@ public class PSXmlObjectStoreHandler extends PSObjectFactory
       
       // CM1RXdiff
 	   updaters.add(new PSContentTypeWorkflowsUpdater());
-     // updaters.add(new PSAllowAllCtypeWorkflowsUpdater());
+       updaters.add(new PSAllowAllCtypeWorkflowsUpdater());
       
       return updaters;
    }
@@ -6088,10 +6060,10 @@ public class PSXmlObjectStoreHandler extends PSObjectFactory
     *
     * @param   appName The name of the application
     *
-    * @throws   com.percussion.design.objectstore.PSNotFoundException
+    * @throws PSNotFoundException
     */
    private void updateSummaryEntry(String appName)
-      throws com.percussion.design.objectstore.PSNotFoundException,
+      throws PSNotFoundException,
          PSServerException
    {
       Document doc               = null;
@@ -6224,7 +6196,7 @@ public class PSXmlObjectStoreHandler extends PSObjectFactory
       synchronized (m_lockedFiles)
       {
          m_lockedFiles.remove(canon);
-         m_lockedFiles.notify();
+         m_lockedFiles.notifyAll();
       }
       try
       {
@@ -6282,7 +6254,7 @@ public class PSXmlObjectStoreHandler extends PSObjectFactory
       {
          File canon = f.getCanonicalFile();
          m_lockedFiles.remove(canon);
-         m_lockedFiles.notify();
+         m_lockedFiles.notifyAll();
       }
       try
       {

@@ -31,6 +31,24 @@
     <inspection_tool class="FallThroughInSwitchStatementJS" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="FlowJSConfig" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="FlowJSFlagCommentPlacement" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="HtmlUnknownAttribute" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="myValues">
+        <value>
+          <list size="9">
+            <item index="0" class="java.lang.String" itemvalue="onpopstate" />
+            <item index="1" class="java.lang.String" itemvalue="onsearch" />
+            <item index="2" class="java.lang.String" itemvalue="onstorage" />
+            <item index="3" class="java.lang.String" itemvalue="onunload" />
+            <item index="4" class="java.lang.String" itemvalue="ondragstart" />
+            <item index="5" class="java.lang.String" itemvalue="ondragenter" />
+            <item index="6" class="java.lang.String" itemvalue="onpagehide" />
+            <item index="7" class="java.lang.String" itemvalue="onbeforeprint" />
+            <item index="8" class="java.lang.String" itemvalue="onhashchange" />
+          </list>
+        </value>
+      </option>
+      <option name="myCustomValuesEnabled" value="true" />
+    </inspection_tool>
     <inspection_tool class="IncompatibleMaskJS" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="IncorrectHttpHeaderInspection" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="customHeaders">

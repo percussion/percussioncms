@@ -3,7 +3,7 @@
  */
 (function() {
 	tinymce.create('tinymce.plugins.MoreLink', {
-		init : function(ed, url) {
+		init : function(ed,url) {
             var ml = '<img src="' + url + '/img/ReadMoreInsert-1.png" class="perc-blog-more-link mceItemNoResize" />';
             var cls = 'perc-blog-more-link';
             var sep = '<!-- morelink -->';
@@ -17,7 +17,7 @@
             // Register button
 			ed.addButton('morelink',
 				{   title : "More link",
-					image: url + "/img/MoreLinkIcon.gif",
+					icon: "MoreLinkIcon",
 					onAction: function () {
 						editor.execCommand('mceInsertMoreLink');
 					}

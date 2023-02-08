@@ -1,25 +1,18 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.percussion.services.assembly.data;
 
@@ -29,7 +22,6 @@ import com.percussion.cms.objectstore.PSRelationshipProcessorProxy;
 import com.percussion.cms.objectstore.server.PSRelationshipProcessor;
 import com.percussion.design.objectstore.PSLocator;
 import com.percussion.design.objectstore.PSRelationshipConfig;
-import com.percussion.server.PSRequest;
 import com.percussion.server.webservices.PSServerFolderProcessor;
 import com.percussion.services.assembly.IPSAssemblyErrors;
 import com.percussion.services.assembly.IPSAssemblyItem;
@@ -56,6 +48,7 @@ import com.percussion.services.guidmgr.PSGuidManagerLocator;
 import com.percussion.services.guidmgr.data.PSGuid;
 import com.percussion.services.legacy.IPSCmsObjectMgr;
 import com.percussion.services.legacy.PSCmsObjectMgrLocator;
+import com.percussion.services.sitemgr.PSSiteHelper;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.util.PSPurgableFileInputStream;
 import com.percussion.util.PSPurgableTempFile;
@@ -63,7 +56,16 @@ import com.percussion.utils.collections.PSCopier;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.string.PSStringUtils;
 import com.percussion.utils.timing.PSStopwatchStack;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.math.NumberUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
+import javax.jcr.Node;
+import javax.jcr.RepositoryException;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -79,18 +81,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
-
-import javax.jcr.Node;
-import javax.jcr.RepositoryException;
-
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.commons.lang.builder.ToStringStyle;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 /**
  * Concrete implementation class for assembly items and results. Allows the
@@ -668,7 +658,7 @@ public class PSAssemblyWorkItem implements IPSAssemblyResult
       if (metadata==null)
          return null;
       
-      if (metadata != null && metadata instanceof Map)
+      if (metadata instanceof Map)
       {
          return (Map<String, Object>)metadata;
       } else {
@@ -770,6 +760,8 @@ public class PSAssemblyWorkItem implements IPSAssemblyResult
       {
          throw new IllegalArgumentException("name may not be null or empty");
       }
+      if (name.equalsIgnoreCase(IPSHtmlParameters.SYS_FOLDERID))
+         m_folderId=0;
       m_parameters.remove(name);
    }
 
@@ -947,11 +939,7 @@ public class PSAssemblyWorkItem implements IPSAssemblyResult
             List<Node> nodes = cmgr.findItemsByGUID(iguids, config);
             m_node = (IPSNode) nodes.get(0);
          }
-         catch (RepositoryException e)
-         {
-            return null;
-         }
-         catch (PSFilterException e)
+         catch (RepositoryException | PSFilterException e)
          {
             return null;
          }
@@ -1007,8 +995,34 @@ public class PSAssemblyWorkItem implements IPSAssemblyResult
    public void setNode(Node node)
    {
       m_node = (IPSNode) node;
+
+      // only reset folderid and id if node id has actually changed.
       if (node != null)
       {
+         // Ensure that folder id is reset, siteid will stay same as parent.
+         int nodeid = 0;
+         try
+         {
+            if (!node.getUUID().equals(""))
+            {
+              nodeid = Integer.parseInt(node.getUUID());
+            }
+         } catch (NumberFormatException | RepositoryException e)
+         {
+            ms_log.error("Cannot get node uuid",e);
+         }
+         if (m_id.getUUID() != nodeid) {
+            m_folderId=0;
+            removeParameter(IPSHtmlParameters.SYS_FOLDERID);
+            try
+            {
+               this.normalize();
+            }
+            catch (PSAssemblyException e)
+            {
+              ms_log.error("cannot normalize work item after node change");
+            }
+         }
          m_id = m_node.getGuid();
       }
       else
@@ -1232,16 +1246,49 @@ public class PSAssemblyWorkItem implements IPSAssemblyResult
             m_mimeType).toHashCode();
    }
 
-   /*
-    * (non-Javadoc)
-    * 
-    * @see java.lang.Object#toString()
-    */
    @Override
-   public String toString()
-   {
-      return ToStringBuilder.reflectionToString(this,
-            ToStringStyle.MULTI_LINE_STYLE);
+   public String toString() {
+      final StringBuffer sb = new StringBuffer("PSAssemblyWorkItem{");
+      sb.append("m_id=").append(m_id);
+      sb.append(", m_mimeType='").append(m_mimeType).append('\'');
+      sb.append(", m_isDebug=").append(m_isDebug);
+      sb.append(", m_isPublish=").append(m_isPublish);
+      sb.append(", m_fileReleased=").append(m_fileReleased);
+      sb.append(", m_status=").append(m_status);
+      sb.append(", m_path='").append(m_path).append('\'');
+     // sb.append(", m_parameters=").append(m_parameters);
+     // sb.append(", m_variables=").append(m_variables);
+      if(m_template == null){
+         sb.append(", m_template=").append("null");
+      }else {
+         sb.append(", m_template=").append(m_template.getName());
+      }
+      sb.append(", m_originalTemplateGuid=").append(m_originalTemplateGuid);
+      sb.append(", m_referenceId=").append(m_referenceId);
+      sb.append(", m_unpublishRefId=").append(m_unpublishRefId);
+      sb.append(", m_ownerId=").append(m_ownerId);
+      sb.append(", m_folderId=").append(m_folderId);
+      sb.append(", m_siteid=").append(m_siteid);
+      sb.append(", m_pubserverid=").append(m_pubserverid);
+      sb.append(", m_jobId=").append(m_jobId);
+      sb.append(", m_depth=").append(m_depth);
+     // sb.append(", m_bindings=").append(m_bindings);
+      if(m_filter == null) {
+         sb.append(", m_filter=").append("null");
+      }else{
+         sb.append(", m_filter=").append(m_filter.getName());
+      }
+      sb.append(", m_userName='").append(m_userName).append('\'');
+      sb.append(", m_deliveryType='").append(m_deliveryType).append('\'');
+      sb.append(", m_deliveryPath='").append(m_deliveryPath).append('\'');
+      sb.append(", m_deliveryContext=").append(m_deliveryContext);
+      sb.append(", m_assemblyUrl='").append(m_assemblyUrl).append('\'');
+      sb.append(", m_elapsed=").append(m_elapsed);
+      sb.append(", m_page=").append(m_page);
+      sb.append(", m_parentPageReference=").append(m_parentPageReference);
+      sb.append(", m_paginated=").append(m_paginated);
+      sb.append('}');
+      return sb.toString();
    }
 
    /*
@@ -1277,33 +1324,44 @@ public class PSAssemblyWorkItem implements IPSAssemblyResult
    private void setPathFromFolderParam(int contentId, int revision)
          throws PSCmsException
    {
-      try {
+
          String folderidParam = getParameterValue(IPSHtmlParameters.SYS_FOLDERID,
                  null);
-         if (!StringUtils.isBlank(folderidParam) && !folderidParam.equals("0")) {
-            PSRequest req = PSRequest.getContextForRequest();
+      if (NumberUtils.toInt(folderidParam)>0)
+      {
             m_folderId = Integer.parseInt(folderidParam);
             PSServerFolderProcessor fproc = PSServerFolderProcessor.getInstance();
 
 
-            String paths[] = fproc.getItemPaths(new PSLocator(m_folderId));
-            String folderpath = paths[0] + "/";
-            String itempaths[] = fproc.getItemPaths(new PSLocator(contentId,
+         String[] paths = null;
+         String[] itempaths = null;
+         try {
+            paths = fproc.getItemPaths(new PSLocator(m_folderId));
+            itempaths = fproc.getItemPaths(new PSLocator(contentId,
                     revision));
-            for (String ipath : itempaths) {
-               if (ipath.startsWith(folderpath)) {
+         }
+         catch (PSNotFoundException e)
+         {
+            ms_log.error("Folder param specified folderid that does not exist "+m_folderId);
+         }
+
+         if (paths!=null && itempaths != null) {
+            String folderpath = paths[0] + "/";
+            for (String ipath : itempaths)
+            {
+               if (ipath.startsWith(folderpath))
+               {
                   m_path = ipath;
                   break;
                }
             }
          }
-         if (m_path == null) {
-            // assign pseudo path when either the folder wasn't right or
-            // no folder was supplied
-            m_path = "/" + contentId + "#" + revision;
-         }
-      } catch (PSNotFoundException e) {
-         throw new PSCmsException(e);
+      }
+      if (m_path == null)
+      {
+         // assign pseudo path when either the folder wasn't right or
+         // no folder was supplied
+         m_path = "/" + contentId + "#" + revision;
       }
    }
 
@@ -1357,7 +1415,7 @@ public class PSAssemblyWorkItem implements IPSAssemblyResult
              * Use the id/folderId to assign parameters and path (if necessary)
              */
             PSLocator loc = gmgr.makeLocator(m_id);
-            if (StringUtils.isBlank(contentidParam))
+            if (StringUtils.isBlank(contentidParam) || (Integer.parseInt(contentidParam) != loc.getId()))
             {
                // assign id parameters
                setParameterValue(IPSHtmlParameters.SYS_CONTENTID, Integer
@@ -1365,19 +1423,35 @@ public class PSAssemblyWorkItem implements IPSAssemblyResult
                setParameterValue(IPSHtmlParameters.SYS_REVISION, Integer
                      .toString(loc.getRevision()));
             }
-            else
+
+
+            if (StringUtils.isBlank(folderIdParam))
             {
-               // id parameters are already set, make sure they match the guid
-               int contentid = Integer.parseInt(contentidParam);
-               if (contentid != loc.getId())
+               if (m_folderId > 0)
                {
-                  throw new PSAssemblyException(
-                        IPSAssemblyErrors.PARAMS_ITEM_ID_MISMATCH, new Object[]
-                        {m_id, contentid});
+                  // set folder parameter from the field (if assigned)
+                  setParameterValue(IPSHtmlParameters.SYS_FOLDERID, Integer
+                          .toString(m_folderId));
                }
             }
+            else if (m_folderId > 0)
+            {
+               // verify folder field and parameter have the same value
+               int folderId = Integer.parseInt(folderIdParam);
 
-            setFolderId(folderIdParam);
+               if (folderId != m_folderId)
+               {
+                  ms_log.debug("folder id in id in field "+m_folderId+" does not match parameter "+ folderId +" using parameter value");
+                  m_folderId=folderId;
+               }
+            }
+            else
+            {
+               // set the folder field from the sys_folderid parameter
+               m_folderId = Integer.parseInt(folderIdParam);
+            }
+
+            PSSiteHelper.fixupSiteFolderId(this);
 
             if (m_path == null)
             {
@@ -1412,7 +1486,7 @@ public class PSAssemblyWorkItem implements IPSAssemblyResult
                }
             }
             
-            setFolderId(folderIdParam);
+            PSSiteHelper.fixupSiteFolderId(this);
 
             if (m_path == null)
             {
@@ -1450,6 +1524,8 @@ public class PSAssemblyWorkItem implements IPSAssemblyResult
             setParameterValue(IPSHtmlParameters.SYS_REVISION, Integer
                   .toString(revision));
 
+            PSSiteHelper.fixupSiteFolderId(this);
+
             setPathFromFolderParam(contentid, revision);
          }
          else if (m_path != null)
@@ -1458,7 +1534,6 @@ public class PSAssemblyWorkItem implements IPSAssemblyResult
              * Use path to assign missing identities (when id is not set, no id
              * parameters, and no pseudo path)
              */
-            PSRequest req = PSRequest.getContextForRequest();
             PSRelationshipProcessor proc = PSRelationshipProcessor.getInstance();
 
             int lastslash = m_path.lastIndexOf("/");
@@ -1487,7 +1562,7 @@ public class PSAssemblyWorkItem implements IPSAssemblyResult
                setParameterValue(IPSHtmlParameters.SYS_FOLDERID, Integer
                      .toString(m_folderId));
             }
-            String parts[] = m_path.split("#");
+            String[] parts = m_path.split("#");
             int rev = 0;
             if (parts.length > 1)
             {
@@ -1510,8 +1585,9 @@ public class PSAssemblyWorkItem implements IPSAssemblyResult
 
             setParameterValue(IPSHtmlParameters.SYS_CONTENTID, Integer
                   .toString(contentid));
-            setParameterValue(IPSHtmlParameters.SYS_REVISION, String
-                  .valueOf(Integer.toString(rev)));
+            setParameterValue(IPSHtmlParameters.SYS_REVISION, Integer.toString(rev));
+
+            PSSiteHelper.fixupSiteFolderId(this);
 
          }
 
@@ -1535,44 +1611,7 @@ public class PSAssemblyWorkItem implements IPSAssemblyResult
       }
    }
 
-   /**
-    * Sets the folder ID from the specified folder ID in string format.
-    * 
-    * @param folderIdParam the folder ID in string format, it may be blank.
-    * 
-    * @throws PSAssemblyException if the internal folder ID does not agree with the specified one.
-    */
-   private void setFolderId(String folderIdParam) throws PSAssemblyException
-   {
-      if (StringUtils.isBlank(folderIdParam))
-      {
-         if (m_folderId > 0)
-         {
-            // set folder parameter from the field (if assigned)
-            setParameterValue(IPSHtmlParameters.SYS_FOLDERID, Integer
-                  .toString(m_folderId));
-         }
-      }
-      else if (m_folderId > 0)
-      {
-         // verify folder field and parameter have the same value
-         int folderId = Integer.parseInt(folderIdParam);
-         if (folderId != m_folderId)
-         {
-            throw new PSAssemblyException(
-                  IPSAssemblyErrors.PARAMS_ITEM_FOLDER_MISMATCH,
-                  new Object[]
-                  {m_folderId, folderId});
-         }
-      }
-      else
-      {
-         // set the folder field from the sys_folderid parameter
-         m_folderId = Integer.parseInt(folderIdParam);
-      }
-   }
-
-   /**
+  /**
     * The work item holds a navigation helper, which contains information that
     * can be used while assembling any part of an item, either the page, global
     * page or snippets. The reference is cloned to subordinate requests.

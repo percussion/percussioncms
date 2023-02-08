@@ -1,25 +1,18 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2021 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.percussion.services.assembly.impl.finder;
 
@@ -51,6 +44,8 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.jcr.RepositoryException;
 import java.io.File;
@@ -83,6 +78,7 @@ import static com.percussion.services.assembly.impl.finder.PSContentFinderUtils.
  * @author dougrand
  * @param <T> 
  */
+@Transactional( readOnly = true, noRollbackFor = Exception.class, propagation = Propagation.REQUIRED)
 public abstract class PSContentFinderBase<T extends Object>
    implements IPSContentFinder<T>
 {
@@ -285,6 +281,7 @@ public abstract class PSContentFinderBase<T extends Object>
          clone.setOwnerId(slotitem.getOwnerId());
          
          items.add(clone);
+         index++;
       }
       Map<String, Object> sys = (Map<String, Object>) sourceItem.getBindings().get("$sys");
       if (sys != null)
@@ -505,7 +502,7 @@ public abstract class PSContentFinderBase<T extends Object>
       if (ms_log.isDebugEnabled())
       {
          ms_log.debug("slotitems size = " + slotitems.size() + ", maxchunk = "
-               + maxChunkItems + ", elapse = " + watch.toString());
+               + maxChunkItems + ", elapse = " + watch);
       }
 
       return slotitems;
@@ -524,15 +521,13 @@ public abstract class PSContentFinderBase<T extends Object>
    protected Set<ContentItem> filter(Set<ContentItem> items, IPSItemFilter filter,
          Map<String, Object> selectors) throws PSFilterException
    {
-      List<IPSFilterItem> temp = new ArrayList<>();
       Map<String, String> params = new HashMap<>();
-      //FIXME: This code is not handling null keys or values gracefully
       for (Map.Entry<String, Object> selector : selectors.entrySet())
       {
          Object value = selector.getValue();
          if (value instanceof String[])
          {
-            String p[] = (String[]) value;
+            String[] p = (String[]) value;
             if (p.length > 0)
             {
                params.put(selector.getKey(), p[0]);
@@ -543,7 +538,7 @@ public abstract class PSContentFinderBase<T extends Object>
             params.put(selector.getKey(), value.toString());
          }
       }
-      temp.addAll(items);
+      List<IPSFilterItem> temp = new ArrayList<>(items);
       if (filter != null)
       {
          temp = filter.filter(temp, params);

@@ -1,25 +1,18 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.percussion.cms.handlers;
 
@@ -67,7 +60,7 @@ import com.percussion.design.objectstore.PSDisplayMapper;
 import com.percussion.design.objectstore.PSDisplayMapping;
 import com.percussion.design.objectstore.PSField;
 import com.percussion.design.objectstore.PSFieldSet;
-import com.percussion.design.objectstore.PSNotFoundException;
+import com.percussion.error.PSNotFoundException;
 import com.percussion.design.objectstore.PSRelationship;
 import com.percussion.design.objectstore.PSRelationshipConfig;
 import com.percussion.design.objectstore.PSRelationshipSet;
@@ -78,7 +71,6 @@ import com.percussion.error.PSBackEndUpdateProcessingError;
 import com.percussion.error.PSErrorException;
 import com.percussion.error.PSEvaluationException;
 import com.percussion.error.PSException;
-import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.PSExtensionException;
 import com.percussion.i18n.PSI18nUtils;
 import com.percussion.security.PSAuthenticationFailedException;
@@ -103,7 +95,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
-import org.xml.sax.SAXException;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -261,7 +252,12 @@ public class PSModifyCommandHandler extends PSCommandHandler
          allLinkFields = new HashMap<>();
          
       String key = fieldSet.getName();
-      List<PSField> value = allLinkFields.computeIfAbsent(key, k -> new ArrayList<>());
+      List value = (List) allLinkFields.get(key);
+      if (value == null)
+      {
+         value = new ArrayList();
+         allLinkFields.put(key, value);
+      }
       return prepareInlineLinkFields(fieldSet, value, allLinkFields);
    }
    
@@ -522,6 +518,8 @@ public class PSModifyCommandHandler extends PSCommandHandler
       
       if (updateFieldData && !inlineLinkDataUpdate)
          preProcessInlineLinks(request, id);
+      else if (planType == PSModifyPlan.TYPE_DELETE_COMPLEX_CHILD)
+    	  preProcessInlineLinks(request, id);
 
       int stepsExecuted=0;
       
@@ -555,6 +553,9 @@ public class PSModifyCommandHandler extends PSCommandHandler
 
       if (updateFieldData && !inlineLinkDataUpdate)
          postProcessInlineLinks(request);
+      else if (planType == PSModifyPlan.TYPE_DELETE_COMPLEX_CHILD)
+    	  postProcessInlineLinks(request);
+
 
       // notify listeners of any change
       if (stepsExecuted > 0)
@@ -636,8 +637,6 @@ public class PSModifyCommandHandler extends PSCommandHandler
    private void preProcessInlineLinks(PSRequest request, int id)
       throws IOException, PSCmsException
    {
-      try
-      {
          PSContentEditorPipe pipe = (PSContentEditorPipe) m_ce.getPipe();
          if (pipe == null)
             return;
@@ -669,11 +668,17 @@ public class PSModifyCommandHandler extends PSCommandHandler
             {
                PSRelationshipSet all = PSInlineLinkField.getInlineRelationships(
                   new PSRequestContext(request));
-               for (PSRelationship psRelationship : (Iterable<PSRelationship>) all) {
-                  String inlineRelationshipId = psRelationship.getProperty(
+            Iterator relationships = all.iterator();
+            while (relationships.hasNext())
+            {
+               PSRelationship relationship =
+                  (PSRelationship) relationships.next();
+               String inlineRelationshipId = relationship.getProperty(
                           PSRelationshipConfig.PDU_INLINERELATIONSHIP);
-                  for (PSField o : fieldList) {
-                     PSField test1 = m_flatInlinelinkFields.get(
+               for (int i=0; i<fieldList.size(); i++)
+               {
+                  PSField field = (PSField) fieldList.get(i);
+                  Object test1 = m_flatInlinelinkFields.get(
                              PSInlineLinkField.getFieldName(inlineRelationshipId));
                      if (test1 == null) {
                         /*
@@ -681,7 +686,7 @@ public class PSModifyCommandHandler extends PSCommandHandler
                          * add it to the delete list. This cleans up orphaned
                          * inline relationships.
                          */
-                        deletes.add(psRelationship);
+                     deletes.add(relationship);
                         break;
                      } else {
                         /*
@@ -691,10 +696,12 @@ public class PSModifyCommandHandler extends PSCommandHandler
                          * for this property.
                          */
                         String test = PSInlineLinkField.getInlineRelationshipId(
-                                request, o);
-                        if (test.equals(
-                                PSInlineLinkField.RS_YES)) {
-                           deletes.add(psRelationship);
+                        request, field);
+                     if (inlineRelationshipId.equals(test) ||
+                        inlineRelationshipId.equals(
+                           PSInlineLinkField.RS_YES))
+                     {
+                        deletes.add(relationship);
                            break;
                         }
                      }
@@ -721,11 +728,9 @@ public class PSModifyCommandHandler extends PSCommandHandler
          m_tlInlineLinkDeletes.set(deletes);
          m_tlInlineLinkModifies.set(modifies);
       }
-      catch (SAXException e)
-      {
-         throw new PSCmsException(1001, PSExceptionUtils.getMessageForLog(e));
-      }
-   }
+
+
+
 
    /**
     * Processes all fields that may contain inline links after the document
@@ -739,17 +744,13 @@ public class PSModifyCommandHandler extends PSCommandHandler
    private void postProcessInlineLinks(PSRequest request)
       throws IOException, PSCmsException
    {
-      try
-      {
+
          PSRelationshipSet deletes = (PSRelationshipSet) m_tlInlineLinkDeletes.get();
          PSRelationshipSet modifies = (PSRelationshipSet) m_tlInlineLinkModifies.get();
          
          PSInlineLinkField.postProcess(request, deletes, modifies);
-      }
-      catch (SAXException e)
-      {
-         throw new PSCmsException(1001, e.getLocalizedMessage());
-      }
+
+
    }
 
    /* ************ IPSRequestHandler Interface Implementation ************ */
@@ -868,8 +869,8 @@ public class PSModifyCommandHandler extends PSCommandHandler
             errMsg += ": ";
 
          // currently only one exit supported for field translations
-         PSExtensionRunner runner = runners.get(0);
-
+         for (PSExtensionRunner runner : runners)
+         {
          try {
             Object result = runner.processUdfCallExtractor(data);
             if (result != null) {
@@ -886,6 +887,8 @@ public class PSModifyCommandHandler extends PSCommandHandler
             throw new PSConversionException(
                     IPSServerErrors.FIELD_TRANSFORM_ERROR, args);
          }
+      }
+
       }
    }
 

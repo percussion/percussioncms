@@ -428,7 +428,7 @@
 									<Label>
 										<PSXDisplayText>Body:</PSXDisplayText>
 									</Label>
-									<PSXControlRef id="5499" name="sys_EditLive"/>
+									<PSXControlRef id="5499" name="sys_tinymce"/>
 								</PSXUISet>
 							</PSXDisplayMapping>
 							<PSXDisplayMapping>

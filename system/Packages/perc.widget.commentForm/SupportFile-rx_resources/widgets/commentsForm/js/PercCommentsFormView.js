@@ -1,25 +1,18 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 /**
@@ -66,11 +59,11 @@
         //Make form fields draggable and sortable
         dragSortFields();
 
-        //Bind the click event on Menu items
-        onClickMenu();
-
         //Attach the mouse over and out
         mouseActionOnMenu();
+
+        //Bind the click event on Menu items
+        onClickMenu();
 
         //If editor is empty load it with basic fields
         if(formData === null) {
@@ -160,9 +153,8 @@
         }
 
         $("." + className).addClass(className + '-disable');
-        var bgimage = $("." + className).css('background-image');
-        bgimage = bgimage.replace("-over.png", "-disable.png");
-        $("." + className).css('background-image', bgimage);
+        $("." + className).css('color', '#CCCCCC');
+
     }
 
     /**
@@ -262,16 +254,20 @@
         $(".perc-control-label").on("mouseenter",function(evt) {
             var bgimage = $(this).css('background-image');
             var fieldClass = $(this).attr('class');
-            if(fieldClass.indexOf('disable') !== -1) {
+            if (fieldClass.indexOf('disable') !== -1) {
                 bgimage = bgimage.replace(".png", ".png");
+                $(this).css({'background-color': '#133C55',
+                    'color':'#CCCCCC',
+                    'background-image':bgimage,
+                    'border-bottom':'1px solid #99C4D8'});
                 return;
-            }
-            else {
+            } else {
                 bgimage = bgimage.replace(".png", "-over.png");
             }
 
-            $(this).css({'background-color': '#247297',
-                'color':'83A9BB',
+
+            $(this).css({'background-color': '#133C55',
+                'color':'#ffffff',
                 'background-image':bgimage,
                 'border-bottom':'1px solid #99C4D8'});
         }).on("mouseleave",function(){
@@ -279,15 +275,15 @@
             bgimage = bgimage.replace(".png", ".png");
             var fieldClass = $(this).attr('class');
             if(fieldClass.indexOf('disable') !== -1) {
-                $(this).css({'background-color': '#3288B0',
-                    'color':'#1a5f7f',
+                $(this).css({'background-color': '#133C55',
+                    'color':'#CCCCCC',
                     'background-image':bgimage,
                     'border-bottom':'1px solid #99C4D8'});
                 return;
             }
             else {
                 bgimage = bgimage.replace("-over.png", ".png");
-                $(this).css({'background-color': '#3288B0',
+                $(this).css({'background-color': '#133C55',
                     'color':'#ffffff',
                     'cursor': 'pointer',
                     'background-image':bgimage,
@@ -307,9 +303,6 @@
         }
         else {
             $("." + className).addClass(className + '-disable');
-            var bgimage = $("." + className).css('background-image');
-            bgimage = bgimage.replace("-over.png", "-disable.png");
-            $("." + className).css('background-image', bgimage);
         }
         var newElem = $.PercCommentsFormController().getNewFieldEditor(controlType);
         addEvents(newElem);
@@ -342,20 +335,24 @@
             deactivateMenuItem("form-email-label" , "PercEmailFieldControl");
         });
 
+
         //Add Title field
         $(".form-title-label").on("click",function(){
             deactivateMenuItem("form-title-label" , "PercTitleFieldControl");
         });
+
 
         //Add Username field
         $(".form-username-label").on("click",function(){
             deactivateMenuItem("form-username-label" , "PercUserFieldControl");
         });
 
+
         //Add Honeypot field
         $(".form-honeypot-label").on("click",function(){
             deactivateMenuItem("form-honeypot-label" , "PercHoneypotFieldControl");
         });
+
 
     }
     /**
@@ -395,9 +392,6 @@
     // Activate menu item once the field is deleted from the form editor
     function activateMenuItem(className) {
         $("." + className).removeClass(className + '-disable');
-        var bgimage = $("." + className).css('background-image');
-        bgimage = bgimage.replace("-disable.png", ".png");
-        $("." + className).css('background-image', bgimage);
     }
 
     // Decativate the Editor
@@ -499,8 +493,8 @@
                     modal: true,
                     zIndex: 50000,
                     buttons:[ {
-                                text:"Apply",
-                                id : "perc-field-prefs-apply",
+                        text:"Apply",
+                        id : "perc-field-prefs-apply",
                         click:function(){
 
                         }

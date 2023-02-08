@@ -1,25 +1,18 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.percussion.fastforward.managednav;
 
@@ -53,28 +46,28 @@ public interface IPSManagedNavService
     *  
     * @return the Content Type ID.
     */
-   long getNavtreeContentTypeId();
+   List<Long> getNavTreeContentTypeIds();
    
    /**
     * Gets Content Type name of Navigation Tree.
     *  
     * @return the Content Type name.  May be <code>null</code> or empty.
     */
-   String getNavtreeContentTypeName();
+   List<String> getNavTreeContentTypeNames();
 
    /**
     * Gets Content Type ID of Navigation Node. 
     *  
     * @return the Content Type ID.
     */
-   long getNavonContentTypeId();
+   List<Long> getNavonContentTypeIds();
    
    /**
     * Gets Content Type name of Navigation Node.
     *  
     * @return the Content Type name.  May be <code>null</code> or empty.
     */
-   String getNavonContentTypeName();
+   List<String> getNavonContentTypeNames();
    
    /**
     * Adds a Navon to a child folder. The Navon should always be added in the
@@ -184,7 +177,7 @@ public interface IPSManagedNavService
    /**
     * Determines if the specified item is a landing page.
     * 
-    * @param item the ID of the item in question, assumed not <code>null</code>.
+    * @param id the ID of the item in question, assumed not <code>null</code>.
     * 
     * @return <code>true</code> if the item is a landing page; otherwise
     * return <code>false</code>.
@@ -194,8 +187,8 @@ public interface IPSManagedNavService
     /**
      * Determines if the specified item is a landing page.
      *
-     * @param item the ID of the item in question, assumed not <code>null</code>.
-     *
+     * @param id the ID of the item in question, assumed not <code>null</code>.
+     * @param relationshipTypeName The relationship type name
      * @return <code>true</code> if the item is a landing page; otherwise
      * return <code>false</code>.
      */
@@ -342,7 +335,7 @@ public interface IPSManagedNavService
    /**
     * Returns a map of property names and values corresponding to the supplied list of field names.
     * Throws exception if any of the supplied name is not a field on navon content type.
-    * @param nodeId the ID of the navigation node, never <code>null</code>.
+    * @param navId the ID of the navigation node, never <code>null</code>.
     * @param propertyNames, names of the navon fields for which the value is required.
     * @return Map<String, String> the map of name and value pairs, corresponding to the supplied list of names.
     */
@@ -352,7 +345,7 @@ public interface IPSManagedNavService
     * Sets the supplied property values on the supplied navon. If the navon is in publishable state, moves to
     * quick edit state and leaves it there checked in.
     * @param nodeId the ID of the navigation node, never <code>null</code>.
-    * @param map of name and value pairs. If the name is not field of navon type throws exception.
+    * @param propertyMap of name and value pairs. If the name is not field of navon type throws exception.
     */
    public void setNavonProperties(IPSGuid nodeId, Map<String, String> propertyMap);
    
@@ -399,6 +392,8 @@ public interface IPSManagedNavService
     *         <code>false</code> otherwise.
     */
    boolean isNavTree(IPSGuid guid);
+
+   long getMenuSlotId();
 
    /**
     * Finds the ancestor's IDs for the specified navon node.

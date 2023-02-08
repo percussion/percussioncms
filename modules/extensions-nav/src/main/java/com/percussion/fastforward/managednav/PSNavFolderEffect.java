@@ -1,35 +1,25 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.percussion.fastforward.managednav;
-
-import static com.percussion.fastforward.managednav.PSNavFolderUtils.*;
 
 import com.percussion.cms.objectstore.PSComponentSummary;
 import com.percussion.design.objectstore.PSLocator;
 import com.percussion.design.objectstore.PSRelationship;
-import com.percussion.extension.IPSExtensionDef;
-import com.percussion.extension.PSExtensionException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.PSExtensionProcessingException;
 import com.percussion.extension.PSParameterMismatchException;
 import com.percussion.relationship.IPSEffect;
@@ -37,23 +27,22 @@ import com.percussion.relationship.IPSExecutionContext;
 import com.percussion.relationship.PSEffectResult;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.server.cache.PSCacheProxy;
+import com.percussion.services.assembly.impl.nav.PSNavConfig;
 import com.percussion.services.contentmgr.IPSContentMgr;
 import com.percussion.services.contentmgr.PSContentMgrConfig;
 import com.percussion.services.contentmgr.PSContentMgrLocator;
 import com.percussion.services.contentmgr.PSContentMgrOption;
 import com.percussion.services.guidmgr.PSGuidUtils;
 import com.percussion.services.guidmgr.data.PSLegacyGuid;
-
-import java.io.File;
-import java.text.MessageFormat;
-import java.util.List;
+import com.percussion.utils.guid.IPSGuid;
 
 import javax.jcr.Node;
 import javax.jcr.Property;
 import javax.jcr.RepositoryException;
+import java.text.MessageFormat;
+import java.util.List;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import static com.percussion.fastforward.managednav.PSNavFolderUtils.addNavonToChildFolder;
 
 /**
  * A relationship effect for managing folders and navons. This effect is
@@ -84,17 +73,6 @@ import org.apache.logging.log4j.Logger;
  */
 public class PSNavFolderEffect extends PSNavAbstractEffect implements IPSEffect
 {
-   /**
-    * Initializes the effect.
-    * 
-    * @see com.percussion.extension.IPSExtension#init(com.percussion.extension.IPSExtensionDef,
-    *      java.io.File)
-    */
-   public void init(IPSExtensionDef arg0, File arg1)
-         throws PSExtensionException
-   {
-      super.init(arg0, arg1);
-   }
 
    /**
     * Tests whether the effect should allow the operation to continue.
@@ -110,6 +88,7 @@ public class PSNavFolderEffect extends PSNavAbstractEffect implements IPSEffect
     * @throws PSParameterMismatchException
     *  
     */
+   @Override
    public void test(Object[] params, IPSRequestContext req,
       IPSExecutionContext excontext, PSEffectResult result)
       throws PSExtensionProcessingException, PSParameterMismatchException
@@ -133,7 +112,7 @@ public class PSNavFolderEffect extends PSNavAbstractEffect implements IPSEffect
       {
          String userName = 
             req.getUserContextInformation("User/Name", "").toString();
-         m_log.debug("User name " + userName);
+         m_log.debug("User name {}" , userName);
 
          if (isExclusive(req))
          {
@@ -151,15 +130,14 @@ public class PSNavFolderEffect extends PSNavAbstractEffect implements IPSEffect
          }
          catch (Exception ex)
          {
-            m_log.warn("Unable to load relationship info rid is "
-                  + currRel.getId(), ex);
+            m_log.warn("Unable to load relationship info rid is {}. Error: {}"
+                  , currRel.getId(), PSExceptionUtils.getMessageForLog(ex));
             result.setSuccess();
             return;
          }
 
          String operation = String.valueOf(excontext.getContextType());
-         m_log.debug("Test Current " + currentInfo.toString() + 
-            "\n Operation " + operation);
+         m_log.debug("Test Current {}\n Operation {}" ,currentInfo, operation);
 
          if (excontext.isPreConstruction())
             handleTestNew(req, currentInfo, result);
@@ -168,12 +146,11 @@ public class PSNavFolderEffect extends PSNavAbstractEffect implements IPSEffect
       }
       catch (Exception ex)
       {
-         m_log.error(this.getClass().getName(), ex);
+         m_log.error(PSExceptionUtils.getMessageForLog(ex));
          result.setError(new PSExtensionProcessingException(this.getClass()
                .getName(), ex));
       }
 
-      return;
    }
 
    /**
@@ -192,6 +169,7 @@ public class PSNavFolderEffect extends PSNavAbstractEffect implements IPSEffect
     *      com.percussion.relationship.IPSExecutionContext,
     *      com.percussion.relationship.PSEffectResult)
     */
+   @Override
    public void attempt(Object[] params, IPSRequestContext req,
          IPSExecutionContext excontext, PSEffectResult result)
          throws PSExtensionProcessingException, PSParameterMismatchException
@@ -214,15 +192,15 @@ public class PSNavFolderEffect extends PSNavAbstractEffect implements IPSEffect
          }
          catch (Exception ex)
          {
-            m_log.warn("Unable to load relationship info rid is "
-                  + currRel.getId(), ex);
+            m_log.warn("Unable to load relationship info rid is {}. Error: {}"
+                  , currRel.getId(), PSExceptionUtils.getMessageForLog(ex));
             result.setSuccess();
             return;
          }
 
          String operation = String.valueOf(excontext.getContextType());
-         m_log.debug("Attempt Current " + currentInfo.toString() + "\n Operation "
-               + operation);
+         m_log.debug("Attempt Current {}\n Operation {}",currentInfo,
+                operation);
          result.setSuccess();
          if (excontext.isPreConstruction())
          {
@@ -241,7 +219,6 @@ public class PSNavFolderEffect extends PSNavAbstractEffect implements IPSEffect
                .getName(), ex));
       }
 
-      return;
    }
 
    /**
@@ -272,17 +249,11 @@ public class PSNavFolderEffect extends PSNavAbstractEffect implements IPSEffect
             
             String folderName = owner.getName();
             String currentItemName = currentNavon.getName();
-            String currentItemType = PSNavUtil.isNavonItem(req, currentNavon) ? 
-               config.getPropertyString(PSNavConfig.NAVON_CONTENT_TYPE) : 
-               config.getPropertyString(PSNavConfig.NAVTREE_CONTENT_TYPE);
 
             String[] args =
             {
                folderName,
-               currentItemName,
-               currentItemType,
-               config.getPropertyString(PSNavConfig.NAVON_CONTENT_TYPE),
-               config.getPropertyString(PSNavConfig.NAVTREE_CONTENT_TYPE)
+               currentItemName
             };
             
             MessageFormat formatter = new MessageFormat(MSG_ALREADY_EXISTS);
@@ -292,7 +263,7 @@ public class PSNavFolderEffect extends PSNavAbstractEffect implements IPSEffect
             return;
          }
          else
-            m_log.debug("no child navon found in folder " + owner.getName());
+            m_log.debug("no child navon found in folder {}" , owner.getName());
       }
       else
       {
@@ -318,19 +289,21 @@ public class PSNavFolderEffect extends PSNavAbstractEffect implements IPSEffect
          throws PSNavException
    {
       PSComponentSummary dependent = currentInfo.getDependent();
-      if (dependent.isFolder())
+      IPSGuid dependType = dependent.getContentTypeGUID();
+      PSNavConfig config = PSNavConfig.getInstance();
+
+      if (dependent.isFolder() && config.getNavonTypes().contains(dependType))
       {
          handleAttemptNewFolder(req, currentInfo, result);
       }
       else
       {
-         long dependType = dependent.getContentTypeId();
-         PSNavConfig config = PSNavConfig.getInstance();
-         if (dependType == config.getNavonType())
+
+         if (config.getNavonTypes().contains(dependType))
          {
             handleAttemptNewNavon(req, currentInfo, result);
          }
-         else if (dependType == config.getNavTreeType())
+         else if (config.getNavTreeTypes().contains(dependType))
          {
             handleAttemptNewNavTree(req, currentInfo, result);
          }
@@ -393,9 +366,9 @@ public class PSNavFolderEffect extends PSNavAbstractEffect implements IPSEffect
       PSComponentSummary folder = currentInfo.getOwner();
       PSComponentSummary navon = currentInfo.getDependent();
       m_log
-            .debug("navon is "
-                  + String.valueOf(navon.getCurrentLocator().getId()) + " rev "
-                  + String.valueOf(navon.getCurrentLocator().getRevision()));
+            .debug("navon is {} rev {}",
+                   navon.getCurrentLocator().getId(),
+                   navon.getCurrentLocator().getRevision());
       PSComponentSummary myParent = PSNavFolderUtils.getParentFolder(req,
             folder);
       if (myParent != null)
@@ -411,10 +384,12 @@ public class PSNavFolderEffect extends PSNavAbstractEffect implements IPSEffect
                   .getCurrentLocator());
          }
       }
+
       m_log
-            .debug("navon is "
-                  + String.valueOf(navon.getCurrentLocator().getId()) + " rev "
-                  + String.valueOf(navon.getCurrentLocator().getRevision()));
+            .debug("navon is {} rev {}",
+                    navon.getCurrentLocator().getId(),
+              navon.getCurrentLocator().getRevision());
+
       boolean propFlag = isPropagate(navon.getCurrentLocator());
       setExclusive(req, true);
       PSNavFolderUtils.processSubFolders(req, folder, navon, propFlag);
@@ -479,7 +454,7 @@ public class PSNavFolderEffect extends PSNavAbstractEffect implements IPSEffect
             return;
          }
          else
-            m_log.debug("parent navon is " + parentNavon.getName());
+            m_log.debug("parent navon is {}" , parentNavon.getName());
 
          PSComponentSummary navon = PSNavFolderUtils.getChildNavonSummary(req, 
             dependent);
@@ -489,15 +464,15 @@ public class PSNavFolderEffect extends PSNavAbstractEffect implements IPSEffect
             return;
          }
          else
-            m_log.debug("child Navon is " + navon.getName());
+            m_log.debug("child Navon is {}" , navon.getName());
 
          PSNavFolderUtils.removeNavonChild(req, parentNavon.getCurrentLocator(), 
             navon.getCurrentLocator());
       }
-      else if (dependent.getContentTypeId() == config.getNavonType())
+      else if (config.getNavonTypes().contains(dependent.getContentTypeGUID()))
       {
          m_log.debug("removing Navon from folder");
-         m_log.debug("child navon is " + dependent.getName());
+         m_log.debug("child navon is {}" , dependent.getName());
 
          PSNavFolderUtils.removeNavonParents(req, dependent.getCurrentLocator(), null);
       }
@@ -551,11 +526,10 @@ public class PSNavFolderEffect extends PSNavAbstractEffect implements IPSEffect
          {
             throw new RuntimeException(
                "Failed to check propagation property of navon: " + 
-               navonLoc.toString());
+               navonLoc);
          }
          Node navonNode = nodes.get(0);
-         String propField = config.getPropertyString(
-            PSNavConfig.NAVON_PROP_FIELD);
+         String propField = config.getNavonPropagateField();
          
          String propValue = null;
          if (propField != null && navonNode.hasProperty(propField))
@@ -566,7 +540,7 @@ public class PSNavFolderEffect extends PSNavAbstractEffect implements IPSEffect
          
          if (propValue != null)
          {
-            m_log.debug("propagate field returns " + propValue);
+            m_log.debug("propagate field returns {}" , propValue);
             if (propValue.equalsIgnoreCase("1"))
             {
                m_log.debug("propagate is TRUE");
@@ -593,6 +567,5 @@ public class PSNavFolderEffect extends PSNavAbstractEffect implements IPSEffect
     * already contains an object of either type.
     */
    private static final String MSG_ALREADY_EXISTS = "Folder \"{0}\" already " +
-      "contains item \"{1}\" of type \"{2}\". Items of type \"{3}\" or " +
-      "\"{4}\" cannot co-exist in a Folder.";;
+      "contains item \"{1}\" of Navigation type. \"{2}\". Multiple items of navigation types cannot co-exist in a Folder.";
 }

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:lang="http://www.springframework.org/schema/lang"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang-2.0.xsd
+http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
+http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
+    
+    <aop:config>
+        <aop:advisor advice-ref="hibernateTxAdvice" pointcut="execution(* com.percussion.soln.p13n.delivery.ds.data.*DataService.*(..))"/>
+        <aop:advisor advice-ref="jdbcTxAdvice" pointcut="execution(* com.percussion.soln.p13n.tracking.*DataService.*(..))"/>
+    </aop:config>
+    
+    <tx:advice id="jdbcTxAdvice" transaction-manager="jdbcTxManager">
+        <tx:attributes>
+            <tx:method name="get*" read-only="true"/>
+            <tx:method name="retrieve*" read-only="true"/>
+            <tx:method name="*"/>
+        </tx:attributes>
+    </tx:advice>
+    
+    <tx:advice id="hibernateTxAdvice" transaction-manager="hibernateTxManager">
+        <tx:attributes>
+            <tx:method name="get*" read-only="true"/>
+            <tx:method name="retrieve*" read-only="true"/>
+            <tx:method name="*"/>
+        </tx:attributes>
+    </tx:advice>
+    
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="${soln.p13n.jdbc.driverClassName}"/>
+        <property name="url" value="${soln.p13n.jdbc.url}"/>
+        <property name="username" value="${soln.p13n.jdbc.username}"/>
+        <property name="password" value="${soln.p13n.jdbc.password}"/>
+    </bean>
+
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="mappingResources">
+            <list>
+                <value>com/percussion/soln/p13n/delivery/ds/data/DeliveryItem.hbm.xml</value>
+                <value>com/percussion/soln/segment/ds/data/Segment.hbm.xml</value>
+            </list>
+        </property>
+        <property name="hibernateProperties">
+            <props>
+            	<prop key="hibernate.jdbc.batch_size">20</prop> 
+                <prop key="hibernate.dialect">${soln.p13n.hibernate.dialect}</prop>
+                <prop key="hibernate.hbm2ddl.auto">update</prop>
+                <prop key="hibernate.cache.provider_class">net.sf.ehcache.hibernate.EhCacheProvider</prop>
+                <prop key="hibernate.cache.use_query_cache">true</prop>
+                <prop key="hibernate.cache.use_second_level_cache">true</prop>
+                <!-- 
+                For Debugging
+				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.format_sql">true</prop>
+				-->
+            </props>
+        </property>
+    </bean>
+
+    <bean id="hibernateTxManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    
+    <bean id="jdbcTxManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+    	<property name="dataSource" ref="dataSource"/>
+  	</bean>
+
+    <bean id="deliveryDao" class="com.percussion.soln.p13n.delivery.ds.data.DSDeliveryHibernateDao">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    
+    <bean id="segmentDao" class="com.percussion.soln.segment.ds.data.DSSegmentDao">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    
+    <bean id="visitorProfileJdbcDao" class="com.percussion.soln.p13n.tracking.data.VisitorProfileJdbcDao">
+    	<property name="dataSource" ref="dataSource"/>     
+    </bean>
+    
+
+    
+    
+</beans>

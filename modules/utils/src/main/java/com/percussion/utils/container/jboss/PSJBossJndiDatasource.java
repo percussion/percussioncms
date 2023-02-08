@@ -1,25 +1,18 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.percussion.utils.container.jboss;
@@ -45,6 +38,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Object representation of a JNDI datasource configuration.  
@@ -415,19 +409,19 @@ public class PSJBossJndiDatasource extends PSJndiDatasourceImpl implements Clone
       
       return intVal;
    }
-   
+
    @Override
-   public boolean equals(Object obj)
-   {
-      return EqualsBuilder.reflectionEquals(this, obj);
+   public boolean equals(Object o) {
+      if (this == o) return true;
+      if (!(o instanceof PSJBossJndiDatasource)) return false;
+      PSJBossJndiDatasource that = (PSJBossJndiDatasource) o;
+      return m_applicationManagedSecurity == that.m_applicationManagedSecurity && Objects.equals(m_useJavaContext, that.m_useJavaContext) && Objects.equals(m_transactionIsolation, that.m_transactionIsolation) && Objects.equals(m_connectionPropMap, that.m_connectionPropMap) && Objects.equals(m_securityDomainApp, that.m_securityDomainApp) && Objects.equals(m_blockingTimeoutMillis, that.m_blockingTimeoutMillis) && Objects.equals(m_noTxSeparatePools, that.m_noTxSeparatePools) && Objects.equals(m_newConnectionSql, that.m_newConnectionSql) && Objects.equals(m_checkValidConnectionSql, that.m_checkValidConnectionSql) && Objects.equals(m_trackStatements, that.m_trackStatements) && Objects.equals(m_preparedStatementCacheSize, that.m_preparedStatementCacheSize) && Objects.equals(m_depends, that.m_depends) && Objects.equals(m_connectionCheckerClass, that.m_connectionCheckerClass) && Objects.equals(m_backgroundValidation, that.m_backgroundValidation) && Objects.equals(m_backgroundValidationMillis, that.m_backgroundValidationMillis) && Objects.equals(m_validateOnMatch, that.m_validateOnMatch) && Objects.equals(m_exceptionSorterClass, that.m_exceptionSorterClass);
    }
 
    @Override
-   public int hashCode()
-   {
-      return HashCodeBuilder.reflectionHashCode(this);
-   }   
-   
+   public int hashCode() {
+      return Objects.hash(m_useJavaContext, m_transactionIsolation, m_connectionPropMap, m_applicationManagedSecurity, m_securityDomainApp, m_blockingTimeoutMillis, m_noTxSeparatePools, m_newConnectionSql, m_checkValidConnectionSql, m_trackStatements, m_preparedStatementCacheSize, m_depends, m_connectionCheckerClass, m_backgroundValidation, m_backgroundValidationMillis, m_validateOnMatch, m_exceptionSorterClass);
+   }
 
    @Override
    public Object clone() throws CloneNotSupportedException

@@ -1,25 +1,18 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.percussion.delivery.metadata.solr.impl;
@@ -64,7 +57,7 @@ public class PSSolrDeliveryHandler
 
    private SolrServer serverConfig = null;
 
-   private String serverType = "PRODUCTION";
+   private String serverType;
 
    private String siteName;
    
@@ -73,10 +66,10 @@ public class PSSolrDeliveryHandler
    public PSSolrDeliveryHandler(String siteName, String serverType, boolean forceSolrClean) throws PSDeliveryException
    {
       // Without this zookeeper looks for sasl config in
-      // AppServer/server/rx/conf/login-config.xml
-      // Default loging contetxt name is "Client" but can be changed with server
+      // TODO: Where is this config pulled from under jetty?
+      // Default logging context name is "Client" but can be changed with server
       // properties "zookeeper.sasl.clientconfig"
-      // If sequrity is required we should use other mechanism. Use of server
+      // If security is required we should use other mechanism. Use of server
       // property to set client config may make
       // having multiple configurations not be thread safe, so we synchronize
       // the access.
@@ -120,8 +113,10 @@ public class PSSolrDeliveryHandler
          SolrClient solrClient = getClient();
          try
          {
-            solrClient.deleteByQuery("*:*");
-            serverConfig.setDelivered(true);
+            if(solrClient != null) {
+               solrClient.deleteByQuery("*:*");
+               serverConfig.setDelivered(true);
+            }
          } catch (Exception e)
          {
             rollback();
@@ -148,7 +143,9 @@ public class PSSolrDeliveryHandler
             sendMetadata(path, serverConfig, entry, client,psPurgableTempFile);
          else
          {
-            sendFile(path, serverConfig, client, transform(serverConfig,entry), psPurgableTempFile);
+            if(client!=null) {
+               sendFile(path, serverConfig, client, transform(serverConfig, entry), psPurgableTempFile);
+            }
          }
       }
       if (!serverConfig.isDelivered())
@@ -184,13 +181,15 @@ public class PSSolrDeliveryHandler
          String type = null;
          log.debug("Sending File to Solr");
          req.setParam("literal.id", path);
-         log.debug("literal.id:"+path);
+         log.debug("literal.id: {}",path);
          for (IPSMetadataProperty property : metaset)
          {
             if (property.getName().equals("dcterms:format"))
                type = property.getValue();
             req.setParam("literal." + property.getName(), property.getValue());
-            log.debug("literal." + property.getName()+":"+property.getValue());
+            log.debug("literal. {}:{}",
+                    property.getName(),
+                    property.getValue());
          }
          
          req.addFile(psPurgableTempFile, type);
@@ -198,21 +197,15 @@ public class PSSolrDeliveryHandler
          NamedList<Object> result;
         
          result = client.request(req);
-         log.info("Solr Result: " + result);
+         log.info("Solr Result: {}" , result);
       }
-      catch (SolrServerException e)
+      catch (SolrServerException | IOException e)
       {
          solrConfig.incrError();
          throw new PSDeliveryException(IPSDeliveryErrors.SOLR_COMMUNICATION_EXCEPTION, e,PSExceptionUtils.getMessageForLog(e));
 
       }
-      catch (IOException e)
-      {
-         solrConfig.incrError();
-         throw new PSDeliveryException(IPSDeliveryErrors.SOLR_COMMUNICATION_EXCEPTION, e,PSExceptionUtils.getMessageForLog(e));
 
-      }
-   
 
    }
 
@@ -222,12 +215,12 @@ public class PSSolrDeliveryHandler
       SolrInputDocument doc = new SolrInputDocument();
       log.debug("Sending Page Metadata");
       doc.addField("id", path);
-      log.debug("id:"+path);
+      log.debug("id:{}",path);
     
      
       for (IPSMetadataProperty meta : metaset)
       {
-         log.debug(meta.getName()+":"+meta.getValue());
+         log.debug("{}:{}",meta.getName(),meta.getValue());
          doc.addField(meta.getName(), meta.getValue());
       }
       
@@ -237,22 +230,12 @@ public class PSSolrDeliveryHandler
          result = client.add(doc);
          sendFile(path, solrConfig, client, metaset, psPurgableTempFile);
       }
-      catch (SolrException e)
+      catch (SolrException | SolrServerException | IOException e)
       {
          solrConfig.incrError();
          throw new PSDeliveryException(IPSDeliveryErrors.SOLR_COMMUNICATION_EXCEPTION, e,PSExceptionUtils.getMessageForLog(e));
       }
-      catch (SolrServerException e)
-      {
-         solrConfig.incrError();
-         throw new PSDeliveryException(IPSDeliveryErrors.SOLR_COMMUNICATION_EXCEPTION, e,PSExceptionUtils.getMessageForLog(e));
-      }
-      catch (IOException e)
-      {
-         solrConfig.incrError();
-         throw new PSDeliveryException(IPSDeliveryErrors.SOLR_COMMUNICATION_EXCEPTION, e,PSExceptionUtils.getMessageForLog(e));
-      }
-      log.debug("Solr Result: " + result);
+      log.debug("Solr Result: {}" , result);
       return true;
    }
 
@@ -274,22 +257,13 @@ public class PSSolrDeliveryHandler
 
          try
          {
-            client.deleteById(String.valueOf(path));
-            if (!serverConfig.isDelivered())
-               serverConfig.setDelivered(true);
+            if(client!=null) {
+               client.deleteById(String.valueOf(path));
+               if (!serverConfig.isDelivered())
+                  serverConfig.setDelivered(true);
+            }
          }
-         catch (SolrException e)
-         {
-            serverConfig.incrError();
-            throw new PSDeliveryException(IPSDeliveryErrors.SOLR_COMMUNICATION_EXCEPTION, e,PSExceptionUtils.getMessageForLog(e));
-         }
-         catch (SolrServerException e)
-         {
-            serverConfig.incrError();
-            throw new PSDeliveryException(IPSDeliveryErrors.SOLR_COMMUNICATION_EXCEPTION, e,PSExceptionUtils.getMessageForLog(e));
-
-         }
-         catch (IOException e)
+         catch (SolrException | SolrServerException | IOException e)
          {
             serverConfig.incrError();
             throw new PSDeliveryException(IPSDeliveryErrors.SOLR_COMMUNICATION_EXCEPTION, e,PSExceptionUtils.getMessageForLog(e));
@@ -314,40 +288,23 @@ public class PSSolrDeliveryHandler
 
       synchronized (this)
       {
-         SolrClient client = getClient();
+         log.info("Committing solr changes for for site {} type={} solrUrl={}",
+                 this.siteName,
+                 this.serverType,
+                 serverConfig.getSolrHost());
 
-         log.info("Committing solr changes for for site " + this.siteName + " type=" + this.serverType + " solrUrl="
-               + serverConfig.getSolrHost());
-
-         try
+         try(SolrClient client = getClient())
          {
-            client.commit();
+            if(client!=null) {
+               client.commit();
+            }
          }
-         catch (SolrException e)
-         {
-            throw new PSDeliveryException(IPSDeliveryErrors.SOLR_COMMUNICATION_EXCEPTION, e,PSExceptionUtils.getMessageForLog(e));
-         }
-         catch (SolrServerException e)
+         catch (SolrException | SolrServerException | IOException e)
          {
             throw new PSDeliveryException(IPSDeliveryErrors.SOLR_COMMUNICATION_EXCEPTION, e,PSExceptionUtils.getMessageForLog(e));
-         }
-         catch (IOException e)
-         {
-            throw new PSDeliveryException(IPSDeliveryErrors.SOLR_COMMUNICATION_EXCEPTION, e,PSExceptionUtils.getMessageForLog(e));
-         }
-         finally
+         } finally
          {
             serverConfig=null;
-            if (client != null)
-            {
-               try
-               {
-                  client.close();
-               }
-               catch (IOException e)
-               {
-               }
-            }
          }
       }
 
@@ -362,48 +319,25 @@ public class PSSolrDeliveryHandler
 
       synchronized (this)
       {
-         SolrClient client = getClient();
-       
          if (!serverConfig.isActive())
             return;
 
-         log.error("Rolling back solr changes on error for site " + this.siteName + " solrUrl="
-               + serverConfig.getSolrHost());
+         log.error("Rolling back solr changes on error for site {} solrUrl={}",
+                 this.siteName,
+                 serverConfig.getSolrHost());
 
-         if (client != null)
+         try(  SolrClient client = getClient())
          {
-            try
-            {
+            if(client!=null) {
                client.rollback();
             }
-            catch (SolrException e)
-            {
-               log.debug("Exception attempting to roll back Solr, continue anyway", e);
-            }
-            catch (SolrServerException e)
-            {
-               log.debug("Exception attempting to roll back Solr, continue anyway", e);
-            }
-            catch (IOException e)
-            {
-               log.debug("Exception attempting to roll back Solr, continue anyway", e);
-            }
-            finally
-            {
-               serverConfig=null;
-               
-               if (client != null)
-               {
-                  try
-                  {
-                     client.close();
-                     
-                  }
-                  catch (IOException e)
-                  {
-                  }
-               }
-            }
+         }
+         catch (SolrException | SolrServerException | IOException e)
+         {
+            log.debug("Exception attempting to roll back Solr, continue anyway", e);
+         } finally
+         {
+            serverConfig=null;
          }
       }
 
@@ -449,7 +383,7 @@ public class PSSolrDeliveryHandler
         if (!serverConfig.isActive())
             return null;
 
-        Boolean isCloudServer = serverConfig.isServerCloudType();
+        boolean isCloudServer = serverConfig.isServerCloudType();
 
         //Depend upon server type Client object would be returned
         if (isCloudServer) {
@@ -464,11 +398,8 @@ public class PSSolrDeliveryHandler
                 }
             }
             if (solrClient == null) {
-                log.info("Connecting to Solr with Zookeeper with sasl authentication in AppServer/server/rx/conf/login-conf.xml with configured context name "
-                        + serverConfig.getSaslContextName());
                 // Must make sure to close cloudClient Instance in commit or
                 // rollback.
-                @SuppressWarnings("resource")
                 CloudSolrClient cloudClient = new CloudSolrClient.Builder().withZkHost(serverConfig.getSolrHost()).build();
                 cloudClient.setDefaultCollection(serverConfig.getDefaultCollection());
                 solrClient = cloudClient;
@@ -476,15 +407,6 @@ public class PSSolrDeliveryHandler
         } else {
 
             if (solrClient == null) {
-              //  @SuppressWarnings("resource")
-
-              /* System.setProperty("javax.net.ssl.keyStore", "C:\\Program Files\\Java\\jre1.8.0_60\\bin\\solr-ssl.keystore.jks");
-               System.setProperty("javax.net.ssl.keyStorePassword", "secret");
-               System.setProperty("javax.net.ssl.trustStore", "C:\\Program Files\\Java\\jre1.8.0_60\\bin\\solr-ssl.keystore.jks");
-               System.setProperty("javax.net.ssl.trustStorePassword", "secret");*/
-
-
-
                HttpSolrClient httpSolrClient = new HttpSolrClient.Builder(serverConfig.getSolrHost()).build();
                httpSolrClient.setUseMultiPartPost(true);
                 solrClient = httpSolrClient;

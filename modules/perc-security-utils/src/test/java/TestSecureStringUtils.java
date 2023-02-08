@@ -1,30 +1,24 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2021 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 import com.percussion.security.PSEncryptionException;
 import com.percussion.security.PSEncryptor;
 import com.percussion.security.SecureStringUtils;
+import org.apache.commons.text.StringEscapeUtils;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Rule;
@@ -222,6 +216,64 @@ public class TestSecureStringUtils {
         assertFalse(SecureStringUtils.isValidString("<script>alert(111);</script>"));
         assertTrue(SecureStringUtils.isValidString("somestring"));
         assertTrue(SecureStringUtils.isValidString("se-inicia-la-postulación-al-fondo-concursable-para-apoyar-tu-practica-en-el-extranjero"));
+    }
+
+    @Test
+    public void testUnescapeXML(){
+
+        String test = "&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;UTF-8&amp;quot; standalone=&amp;quot;yes&amp;quot;?&amp;gt;\n" +
+                "&amp;lt;RegionBranches&amp;gt;\n" +
+                "    &amp;lt;regionWidgetAssociations&amp;gt;\n" +
+                "        &amp;lt;regionWidget&amp;gt;\n" +
+                "            &amp;lt;id&amp;gt;content&amp;lt;/id&amp;gt;\n" +
+                "            &amp;lt;regionId&amp;gt;content&amp;lt;/regionId&amp;gt;\n" +
+                "            &amp;lt;widgetItems&amp;gt;\n" +
+                "                &amp;lt;widgetItem&amp;gt;\n" +
+                "                    &amp;lt;cssProperties/&amp;gt;\n" +
+                "                    &amp;lt;definitionId&amp;gt;percBlogPost&amp;lt;/definitionId&amp;gt;\n" +
+                "                    &amp;lt;id&amp;gt;830717652&amp;lt;/id&amp;gt;\n" +
+                "                    &amp;lt;properties/&amp;gt;\n" +
+                "                &amp;lt;/widgetItem&amp;gt;\n" +
+                "            &amp;lt;/widgetItems&amp;gt;\n" +
+                "        &amp;lt;/regionWidget&amp;gt;\n" +
+                "        &amp;lt;regionWidget&amp;gt;\n" +
+                "            &amp;lt;id&amp;gt;header&amp;lt;/id&amp;gt;\n" +
+                "            &amp;lt;regionId&amp;gt;header&amp;lt;/regionId&amp;gt;\n" +
+                "            &amp;lt;widgetItems&amp;gt;\n" +
+                "                &amp;lt;widgetItem&amp;gt;\n" +
+                "                    &amp;lt;cssProperties/&amp;gt;\n" +
+                "                    &amp;lt;definitionId&amp;gt;percTitle&amp;lt;/definitionId&amp;gt;\n" +
+                "                    &amp;lt;id&amp;gt;533037133&amp;lt;/id&amp;gt;\n" +
+                "                    &amp;lt;properties/&amp;gt;\n" +
+                "                &amp;lt;/widgetItem&amp;gt;\n" +
+                "            &amp;lt;/widgetItems&amp;gt;\n" +
+                "        &amp;lt;/regionWidget&amp;gt;\n" +
+                "    &amp;lt;/regionWidgetAssociations&amp;gt;\n" +
+                "    &amp;lt;regions&amp;gt;\n" +
+                "        &amp;lt;region&amp;gt;\n" +
+                "            &amp;lt;regionId&amp;gt;header&amp;lt;/regionId&amp;gt;\n" +
+                "            &amp;lt;attributes/&amp;gt;\n" +
+                "            &amp;lt;children&amp;gt;\n" +
+                "                &amp;lt;code&amp;gt;\n" +
+                "                    &amp;lt;templateCode&amp;gt;#region(&amp;quot;header&amp;quot;,&amp;quot;&amp;quot;,&amp;quot;&amp;quot;,&amp;quot;&amp;quot;,&amp;quot;&amp;quot;)&amp;lt;/templateCode&amp;gt;\n" +
+                "                &amp;lt;/code&amp;gt;\n" +
+                "            &amp;lt;/children&amp;gt;\n" +
+                "        &amp;lt;/region&amp;gt;\n" +
+                "        &amp;lt;region&amp;gt;\n" +
+                "            &amp;lt;regionId&amp;gt;content&amp;lt;/regionId&amp;gt;\n" +
+                "            &amp;lt;attributes/&amp;gt;\n" +
+                "            &amp;lt;children&amp;gt;\n" +
+                "                &amp;lt;code&amp;gt;\n" +
+                "                    &amp;lt;templateCode&amp;gt;#region(&amp;quot;content&amp;quot;,&amp;quot;&amp;quot;,&amp;quot;&amp;quot;,&amp;quot;&amp;quot;,&amp;quot;&amp;quot;)&amp;lt;/templateCode&amp;gt;\n" +
+                "                &amp;lt;/code&amp;gt;\n" +
+                "            &amp;lt;/children&amp;gt;\n" +
+                "        &amp;lt;/region&amp;gt;\n" +
+                "    &amp;lt;/regions&amp;gt;\n" +
+                "&amp;lt;/RegionBranches&amp;gt;\n";
+        String t2 = test.replaceAll("&amp;","&");
+        System.out.println(StringEscapeUtils.UNESCAPE_XML.translate(t2));
+        assertFalse(t2.contains("&amp;lt;"));
+
     }
 
 }

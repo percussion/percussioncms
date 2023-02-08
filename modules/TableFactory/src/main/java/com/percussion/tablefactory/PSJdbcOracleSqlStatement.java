@@ -1,25 +1,18 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.percussion.tablefactory;
@@ -82,7 +75,7 @@ public class PSJdbcOracleSqlStatement extends PSJdbcPreparedSqlStatement
     */
    public PSJdbcOracleSqlStatement(int statementType, String statement,
       PSCollection values, String selLobString, PSCollection keyValues,
-      List lobTypes, List lobValues, List lobValuesEncoding)
+      List<Integer> lobTypes, List<String> lobValues, List<Integer> lobValuesEncoding)
    {
       super(statement, values);
 
@@ -139,7 +132,7 @@ public class PSJdbcOracleSqlStatement extends PSJdbcPreparedSqlStatement
     */
    private int executeInsert(Connection conn) throws SQLException
    {
-      int updateCount = 0;
+      int updateCount;
       CallableStatement cstmt = null;
       ResultSet insRs = null;
 
@@ -313,9 +306,9 @@ public class PSJdbcOracleSqlStatement extends PSJdbcPreparedSqlStatement
          if (commit)
             conn.setAutoCommit(false);
          lobRs = lobStmt.executeQuery();
-         Iterator lobTypesIterator = m_lobTypes.iterator();
-         Iterator lobValuesIterator = m_lobValues.iterator();
-         Iterator lobValuesEncodingIterator = m_lobValuesEncoding.iterator();
+         Iterator<Integer> lobTypesIterator = m_lobTypes.iterator();
+         Iterator<String> lobValuesIterator = m_lobValues.iterator();
+         Iterator<Integer> lobValuesEncodingIterator = m_lobValuesEncoding.iterator();
          int counter = 1;
          if (lobRs == null)
             return;
@@ -325,12 +318,10 @@ public class PSJdbcOracleSqlStatement extends PSJdbcPreparedSqlStatement
          int size = m_lobTypes.size();
          while (counter <= size)
          {
-            int coltype = ((Integer)lobTypesIterator.next()).intValue();
-            String colValue = (String)lobValuesIterator.next();
+            int coltype = lobTypesIterator.next();
+            String colValue = lobValuesIterator.next();
             int colValueEncoding = PSJdbcColumnData.ENC_TEXT;
-            if (lobValuesEncodingIterator != null)
-               colValueEncoding = ((Integer)
-                  lobValuesEncodingIterator.next()).intValue();
+            colValueEncoding = lobValuesEncodingIterator.next();
 
             byte[] binData = null;
             switch (coltype)
@@ -613,7 +604,7 @@ public class PSJdbcOracleSqlStatement extends PSJdbcPreparedSqlStatement
     */
    private void closeTempLOBs(List<CLOB> tempclobsList, List<BLOB> tempBlobsList)
    {
-      Iterator it = tempclobsList.iterator();
+      Iterator<?> it = tempclobsList.iterator();
       while (it.hasNext())
       {
          Object obj = it.next();
@@ -675,19 +666,19 @@ public class PSJdbcOracleSqlStatement extends PSJdbcPreparedSqlStatement
     * m_lobValues array at the same index, may not be <code>null</code>,
     * intialized in the constructor
     */
-   private List m_lobTypes;
+   private List<Integer> m_lobTypes;
 
    /**
     * an array of LOB objects to be inserted/updated in the database,
     * may not be <code>null</code>, intialized in the constructor
     */
-   private List m_lobValues;
+   private List<String> m_lobValues;
 
    /**
     * an array of encodings of LOB values,
     * may not be <code>null</code>, intialized in the constructor
     */
-   private List m_lobValuesEncoding;
+   private List<Integer> m_lobValuesEncoding;
 
    /**
     * the ROWID of the row inserted using the <code>executeInsert<code> method,

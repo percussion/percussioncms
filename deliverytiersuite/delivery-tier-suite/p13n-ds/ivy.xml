@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="/ivyrepo/ivy-doc.xsl"?>
+
+<ivy-module xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.0" xsi:noNamespaceSchemaLocation="http://ant.apache.org/ivy/schemas/ivy.xsd">  
+	<info organisation="com.percussion.soln.p13n" module="soln-p13n-ds" revision="0.2" status="integration" branch="trunk"> 
+		<license name="percussion" url="http://www.percussion.com"/>  
+		<description homepage="http://agent">This package provides personalization (P13N).</description> 
+	</info>  
+	<configurations> 
+		<include file="${ivy-configurations}"/> 
+	</configurations>  
+	<publications> 
+		<artifact name="soln-p13n-delivery-ds" type="jar" ext="jar" conf="ds"/>
+		<artifact name="soln-p13n-ds" type="dist" ext="zip" conf="dist"/>
+		<artifact name="soln-p13n-integrationtest-ds" type="jar" ext="jar" conf="test,optional"/>
+		<artifact name="soln-p13n-rx-war" type="dist" ext="zip" conf="rx"/>
+		<artifact name="soln-p13n-segment-ds" type="jar" ext="jar" conf="ds"/>
+		<artifact name="soln-p13n-tracking-ds" type="jar" ext="jar" conf="ds"/>
+		<artifact name="soln-p13n" type="war" ext="war" conf="webapp"/>
+	</publications>  
+	<dependencies> 
+		<!--  Percussion solutions -->  
+		<dependency org="com.percussion.soln.segment" name="soln-segment-api" rev="latest.${status}" conf="api"> 
+			<exclude name="commons-httpclient"/> 
+		</dependency>  
+		<dependency org="com.percussion.soln.p13n" name="soln-p13n-api" rev="latest.${status}" conf="default"/>  
+		<!--   dependency org="com.percussion.soln.jcrutils" name="soln-jcrutils" rev="latest.${status}" conf="default"/ -->  
+		<dependency org="org.springframework" name="spring" rev="2.5.5" conf="default"/>  
+		<dependency org="org.springframework" name="spring-test" rev="2.5.5" conf="test-&gt;default"/>  
+		<dependency org="org.springframework" name="spring-webmvc" rev="2.5.5" conf="default"> 
+			<exclude org="org.springframework" matcher="exact" name="spring-beans"/>  
+			<exclude org="org.springframework" matcher="exact" name="spring-context"/>  
+			<exclude org="org.springframework" matcher="exact" name="spring-context-support"/>  
+			<exclude org="org.springframework" matcher="exact" name="spring-web"/>  
+			<exclude org="org.springframework" matcher="exact" name="spring-core"/> 
+		</dependency>  
+		<dependency org="org.aspectj" name="aspectjrt" rev="1.6.0" force="true" conf="default"/>  
+		<dependency org="org.aspectj" name="aspectjweaver" rev="1.6.0" force="true" conf="default"/>  
+		<!-- Spring needs the newer asm that hibernate depends on library -->  
+		<dependency org="asm" name="asm" rev="2.2.3"/>  
+		<dependency org="asm" name="asm-attrs" rev="2.2.3"/>  
+		<!-- Spring prefers the the cglib-nodep over the normal cglib. See the exclusion at the bottom.
+-->  
+		<dependency org="cglib" name="cglib-nodep" rev="2.1_3" conf="default"/>  
+		<dependency org="commons-lang" name="commons-lang" rev="2.+" conf="api-&gt;default;default"/>  
+		<dependency org="org.hibernate" name="hibernate" rev="3.2.6.ga" conf="default"/>  
+		<dependency org="org.hibernate" name="hibernate-annotations" rev="3.3.0.ga" conf="default"/>  
+		<!-- Hibernate is missing this jar http://opensource.atlassian.com/projects/hibernate/browse/HV-26
+-->  
+		<dependency org="org.hibernate" name="hibernate-commons-annotations" rev="3.3.0.ga" conf="default"/>  
+		<dependency org="commons-dbcp" name="commons-dbcp" rev="1.2.+" conf="default"/>  
+		<dependency org="javax.transaction" name="jta" rev="1.1" conf="default"/>  
+		<dependency org="hibernate" name="hibernate" rev="3.0" conf="default"/>  
+		<!--  Default DB is Derby -->  
+		<dependency org="org.apache.derby" name="derby" rev="10.4.2.0" conf="test-&gt;default"/>  
+		<dependency org="org.apache.derby" name="derbyclient" rev="10.4.2.0" conf="test-&gt;default"/>  
+		<dependency rev="1.2.3" name="ehcache" org="ehcache" conf="default"/>  
+		<dependency org="log4j" name="log4j" rev="1.2.14" conf="default"/>  
+		<!-- The following two libraries should be in our repo -->  
+		<dependency org="javax.servlet" name="jstl" rev="1.1.2" conf="default-&gt;*"/>  
+		<dependency org="taglibs" name="standard" rev="1.1.2" conf="default-&gt;*"/>  
+		<!--  XFIRE deps -->  
+		<dependency org="stax" name="stax-api" rev="1.0.1" conf="default"/>  
+		<dependency org="org.codehaus.woodstox" name="wstx-asl" rev="3.1.+" conf="default"/>  
+		<dependency org="wsdl4j" name="wsdl4j" rev="1.6.1" conf="default"/>  
+		<dependency org="org.apache.ws.commons.schema" name="XmlSchema" rev="1.3.2" conf="*-&gt;master"/>  
+		<dependency org="commons-codec" name="commons-codec" rev="1.3" conf="default"/>  
+		<!--  jdom is needed for XFire and will pull in just about every XML lib that we
+	  		will just have to ignore for now. 
+	  -->  
+		<dependency org="jdom" name="jdom" rev="1.0" conf="default-&gt;master"/>  
+		<!-- FIXME Xfire depends on a new version of java mail but seems to work
+	       with the older one that rx uses. java mail will also retrieve
+	       the activation (jaf) jar.
+	  -->  
+		<dependency org="javax.mail" name="mail" rev="1.4"/>  
+		<!-- We will get the deps for XFire explicitly above this comment.  -->  
+		<dependency org="org.codehaus.xfire" name="xfire-all" rev="1.2.6" conf="default-&gt;master"/>  
+		<!-- json-lib and ezmorph-->  
+		<dependency org="commons-beanutils" name="commons-beanutils" rev="1.7.0" conf="default"/>  
+		<dependency org="net.sf.ezmorph" name="ezmorph" rev="1.0.4" conf="default-&gt;master"/>  
+		<dependency org="net.sf.json-lib" name="json-lib" rev="2.2.1" conf="default"/>  
+		<!-- test dependencies here -->  
+		<dependency org="org.jmock" name="jmock" rev="2.4.0" conf="test-&gt;*"/>  
+		<dependency org="org.jmock" name="jmock-junit4" rev="2.4.0" conf="test-&gt;*"/>  
+		<dependency org="junit" name="junit" rev="4.4" conf="test-&gt;*"/>  
+		<dependency rev="3.1" org="commons-httpclient" name="commons-httpclient" force="true"> 
+			<exclude name="commons-logging"/>  
+			<exclude name="commons-codec"/> 
+		</dependency>  
+		<exclude org="cglib" module="cglib"/>  
+		<!-- Commons httpclient 2.0 has many conflicts with the newer one 
+	  <exclude module="commons-httpclient" /> --> 
+	</dependencies> 
+</ivy-module>

@@ -12,7 +12,7 @@
             var fileInputName = $el.attr("for");
             var intialPath = $("#" + fileInputName ).val();
 
-            if(intialPath.trim() === "")
+            if(intialPath.trim() === "" && typeof $.topFrameJQuery !== 'undefined')
                  intialPath = $.topFrameJQuery.cookie("perc-filefield-path");
             var updateFileData = function(pathItem){
                 var path = pathItem.path;
@@ -22,7 +22,8 @@
                 } 
                 
                 //Save the path to cookie
-                $.topFrameJQuery.cookie("perc-filefield-path", path);
+                if(typeof $.topFrameJQuery !== 'undefined')
+                  $.topFrameJQuery.cookie("perc-filefield-path", path);
                 $("#" + fileInputName ).val(path).attr("title",path);
                 if(intialPath != path){
                     $("#" + fileInputName + "_linkId").val(path);

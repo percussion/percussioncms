@@ -1,25 +1,18 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2021 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.percussion.xml;
 
@@ -31,6 +24,7 @@ import com.percussion.security.xml.PSXmlSecurityOptions;
 import com.percussion.utils.tools.IPSUtilsConstants;
 import com.percussion.utils.xml.PSProcessServerPageTags;
 import com.percussion.utils.xml.PSSaxParseException;
+import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.w3c.dom.DOMException;
@@ -183,7 +177,7 @@ public class PSXmlDocumentBuilder {
      * @return the new XML document, never <code>null</code>
      */
     public static Document createXmlDocument(String name, URL dtd,
-        String publicid) {
+                                             String publicid) {
         if (name == null) {
             throw new IllegalArgumentException("name must never be null");
         }
@@ -220,7 +214,7 @@ public class PSXmlDocumentBuilder {
      *         <code>null</code>
      */
     public static DocumentBuilderFactory getDocumentBuilderFactory(
-        boolean validating) {
+            boolean validating) {
         DocumentBuilderFactory dbf = null;
 
         dbf = (DocumentBuilderFactory) popFromCache(ms_factories);
@@ -320,7 +314,19 @@ public class PSXmlDocumentBuilder {
 
             if (db == null) {
                 DocumentBuilderFactory dbf = getDocumentBuilderFactory(validating);
+                dbf.setNamespaceAware(true);
+                db = dbf.newDocumentBuilder();
 
+                PSCatalogResolver resolver  = new PSCatalogResolver();
+                if(internalRequestURIResolver != null){
+                    resolver.setInternalRequestURIResolver(internalRequestURIResolver);
+                }
+                db.setEntityResolver(resolver);
+                returnDocumentBuilderFactory(dbf);
+            }
+            if(db.isNamespaceAware() == false){
+                DocumentBuilderFactory dbf = getDocumentBuilderFactory(validating);
+                dbf.setNamespaceAware(true);
                 db = dbf.newDocumentBuilder();
 
                 PSCatalogResolver resolver  = new PSCatalogResolver();
@@ -370,7 +376,7 @@ public class PSXmlDocumentBuilder {
      * @throws SAXException if a parsing error occurs
      */
     public static Document createXmlDocument(InputStream in, boolean validate)
-        throws IOException, SAXException {
+            throws IOException, SAXException {
         if (null == in) {
             throw new IllegalArgumentException("Input stream may not be null");
         }
@@ -394,7 +400,7 @@ public class PSXmlDocumentBuilder {
      * @throws SAXException if a parsing error occurs
      */
     public static Document createXmlDocument(Reader in, boolean validate)
-        throws IOException, SAXException {
+            throws IOException, SAXException {
         if (null == in) {
             throw new IllegalArgumentException("Reader may not be null");
         }
@@ -417,7 +423,7 @@ public class PSXmlDocumentBuilder {
      * @throws SAXException if a parsing error occurs
      */
     public static Document createXmlDocument(InputSource in, boolean validate)
-        throws IOException, SAXException {
+            throws IOException, SAXException {
         if (null == in) {
             throw new IllegalArgumentException("InputSource may not be null");
         }
@@ -443,7 +449,7 @@ public class PSXmlDocumentBuilder {
      * @throws SAXException if a parsing error occurs
      */
     public static Document createXmlDocument(InputSource in, boolean validate,
-        PrintWriter errorLog) throws IOException, SAXException {
+                                             PrintWriter errorLog) throws IOException, SAXException {
         PSSaxErrorHandler errHandler = new PSSaxErrorHandler(errorLog);
         errHandler.throwOnFatalErrors(false);
 
@@ -469,7 +475,7 @@ public class PSXmlDocumentBuilder {
      * @throws IllegalArgumentException if in or errHandler is <code>null</code>
      */
     public static Document createXmlDocument(InputSource in, boolean validate,
-        PSSaxErrorHandler errHandler) throws IOException, SAXException {
+                                             PSSaxErrorHandler errHandler) throws IOException, SAXException {
         if (in == null) {
             throw new IllegalArgumentException("in may not be null");
         }
@@ -538,16 +544,16 @@ public class PSXmlDocumentBuilder {
      * @throws UnsupportedEncodingException if the requested encoding is invalid.
      */
     public static Document createXmlDocument(String source, String serverRoot,
-        Properties properties, PSProcessServerPageTags serverPageTags,
-        String encoding, boolean validate)
-        throws IOException, SAXException {
+                                             Properties properties, PSProcessServerPageTags serverPageTags,
+                                             String encoding, boolean validate)
+            throws IOException, SAXException {
         if ((source == null) || (source.trim().length() == 0)) {
             return createXmlDocument();
         }
 
         if ((serverRoot == null) || (serverRoot.trim().length() == 0)) {
             throw new IllegalArgumentException(
-                "serverRoot cannot be null or empty");
+                    "serverRoot cannot be null or empty");
         }
 
         String tidiedSource = null;
@@ -564,7 +570,7 @@ public class PSXmlDocumentBuilder {
         }
 
         return createXmlDocument(new InputSource(new StringReader(tidiedSource)),
-            validate);
+                validate);
     }
 
     /**
@@ -587,11 +593,11 @@ public class PSXmlDocumentBuilder {
         }
 
         return "\t<!ENTITY % HTMLlat1 PUBLIC \"-//W3C//ENTITIES_Latin_1_for_XHTML//EN\" SYSTEM \"file:" + serverRoot +
-        "/DTD/HTMLlat1x.ent\">" + NEWLINE + "\t\t%HTMLlat1;" + NEWLINE +
-        "\t<!ENTITY % HTMLsymbol PUBLIC \"-//W3C//ENTITIES_Symbols_for_XHTML//EN\" SYSTEM \"file:" + serverRoot +
-        "/DTD/HTMLsymbolx.ent\">" + NEWLINE + "\t\t%HTMLsymbol;" + NEWLINE +
-        "\t<!ENTITY % HTMLspecial PUBLIC \"-//W3C//ENTITIES_Special_for_XHTML//EN\" SYSTEM \"file:" + serverRoot +
-        "/DTD/HTMLspecialx.ent\">" + NEWLINE + "\t\t%HTMLspecial;";
+                "/DTD/HTMLlat1x.ent\">" + NEWLINE + "\t\t%HTMLlat1;" + NEWLINE +
+                "\t<!ENTITY % HTMLsymbol PUBLIC \"-//W3C//ENTITIES_Symbols_for_XHTML//EN\" SYSTEM \"file:" + serverRoot +
+                "/DTD/HTMLsymbolx.ent\">" + NEWLINE + "\t\t%HTMLsymbol;" + NEWLINE +
+                "\t<!ENTITY % HTMLspecial PUBLIC \"-//W3C//ENTITIES_Special_for_XHTML//EN\" SYSTEM \"file:" + serverRoot +
+                "/DTD/HTMLspecialx.ent\">" + NEWLINE + "\t\t%HTMLspecial;";
     }
 
     /**
@@ -628,8 +634,8 @@ public class PSXmlDocumentBuilder {
      */
     @Deprecated
     public static String tidy(String source, Properties properties,
-        PSProcessServerPageTags serverPageTags, String encoding,
-        String serverRoot) throws UnsupportedEncodingException, IOException {
+                              PSProcessServerPageTags serverPageTags, String encoding,
+                              String serverRoot) throws UnsupportedEncodingException, IOException {
         if ((source == null) || (source.trim().length() == 0)) {
             throw new IllegalArgumentException("source cannot be null or empty");
         }
@@ -640,7 +646,7 @@ public class PSXmlDocumentBuilder {
 
         if ((serverRoot == null) || (serverRoot.trim().length() == 0)) {
             throw new IllegalArgumentException(
-                "serverRoot cannot be null or empty");
+                    "serverRoot cannot be null or empty");
         }
 
         /**
@@ -730,7 +736,7 @@ public class PSXmlDocumentBuilder {
      * createRoot(doc, namespace, null, rootName)}
      */
     public static Element createRoot(Document doc, String namespace,
-        String rootName) {
+                                     String rootName) {
         return createRoot(doc, namespace, null, rootName);
     }
 
@@ -742,7 +748,7 @@ public class PSXmlDocumentBuilder {
      * have an non-empty alias; otherwise some of the XML serializer may not be
      * able to handle the default namespace, such as the transformer of saxon.
      * This method always adds an namespace equivalent attribute as a workaround
-     * for some of the faulty XML serializer, such as the transformer from xalan.
+     * for some of the faulty XML serializer.
      *
      * @param doc the XML document to add the element to, may not be
      *           <code>null</code>.
@@ -758,21 +764,25 @@ public class PSXmlDocumentBuilder {
      * @return the root node, never <code>null</code>.
      */
     public static Element createRoot(Document doc, String namespace,
-        String alias, String rootName) {
+                                     String alias, String rootName) {
         if (doc == null) {
             throw new IllegalArgumentException(DOC_NOT_NULL);
         }
 
         if ((rootName == null) || (rootName.trim().length() == 0)) {
             throw new IllegalArgumentException(
-                "rootName may not be null or empty");
+                    "rootName may not be null or empty");
+        }
+        Element root;
+        if(StringUtils.isEmpty(namespace )) {
+            root = doc.createElement(rootName);
+        }else{
+            root = doc.createElementNS(namespace,
+                    aliasTagName(alias, rootName));
         }
 
-        Element root = doc.createElementNS(namespace,
-                aliasTagName(alias, rootName));
-
         // namespace equivalent attribute to make sure it works for all XML
-        // serializers. This is a workaround for the transformer of xalan.
+        // serializers.
         if ((alias != null) && (alias.trim().length() > 0) &&
                 (namespace != null) && (namespace.trim().length() > 0)) {
             root.setAttribute("xmlns:" + alias, namespace);
@@ -796,7 +806,7 @@ public class PSXmlDocumentBuilder {
      */
     private static String aliasTagName(String alias, String tagName) {
         String elName = ((alias != null) && (alias.trim().length() > 0))
-            ? (alias + ":" + tagName) : tagName;
+                ? (alias + ":" + tagName) : tagName;
 
         return elName;
     }
@@ -811,7 +821,7 @@ public class PSXmlDocumentBuilder {
      * @throws IllegalArgumentException if doc or newRoot is <code>null</code>
      */
     public static Element replaceRoot(Document doc, Element newRoot)
-        throws DOMException {
+            throws DOMException {
         if (doc == null) {
             throw new IllegalArgumentException(DOC_NOT_NULL);
         }
@@ -874,7 +884,7 @@ public class PSXmlDocumentBuilder {
      * addElement(doc, parent, null, name, value)}
      */
     public static Element addElement(Document doc, Element parent, String name,
-        String value) {
+                                     String value) {
         return addElement(doc, parent, null, name, value);
     }
 
@@ -884,7 +894,7 @@ public class PSXmlDocumentBuilder {
      * addElement(doc, parent, namespace, null, name, value)}
      */
     public static Element addElement(Document doc, Element parent,
-        String namespace, String name, String value) {
+                                     String namespace, String name, String value) {
         return addElement(doc, parent, namespace, null, name, value);
     }
 
@@ -911,7 +921,7 @@ public class PSXmlDocumentBuilder {
      *            <code>null</code> or name is empty
      */
     public static Element addElement(Document doc, Element parent,
-        String namespace, String alias, String name, String value) {
+                                     String namespace, String alias, String name, String value) {
         if (doc == null) {
             throw new IllegalArgumentException(DOC_NOT_NULL);
         }
@@ -924,9 +934,15 @@ public class PSXmlDocumentBuilder {
             throw new IllegalArgumentException("name may not be null or empty");
         }
 
-        Element node = parent.getOwnerDocument()
-                             .createElementNS(namespace,
-                aliasTagName(alias, name));
+        Document parentDoc = parent.getOwnerDocument();
+        Element node;
+        if(StringUtils.isEmpty(namespace)){
+            node = parentDoc.createElement(name);
+        }else{
+            node = parentDoc.createElementNS(namespace,
+                    aliasTagName(alias, name));
+        }
+
         parent.appendChild(node);
 
         if (value == null) {
@@ -947,7 +963,7 @@ public class PSXmlDocumentBuilder {
      * addEmptyElement(doc, parent, null, name)}
      */
     public static Element addEmptyElement(Document doc, Element parent,
-        String name) {
+                                          String name) {
         return addEmptyElement(doc, parent, null, name);
     }
 
@@ -957,7 +973,7 @@ public class PSXmlDocumentBuilder {
      * addEmptyElement(doc, parent, namespace, null, name)}
      */
     public static Element addEmptyElement(Document doc, Element parent,
-        String namespace, String name) {
+                                          String namespace, String name) {
         return addEmptyElement(doc, parent, namespace, null, name);
     }
 
@@ -983,7 +999,7 @@ public class PSXmlDocumentBuilder {
      *            <code>null</code> or name is empty
      */
     public static Element addEmptyElement(Document doc, Element parent,
-        String namespace, String alias, String name) {
+                                          String namespace, String alias, String name) {
         if (doc == null) {
             throw new IllegalArgumentException("doc may not be null");
         }
@@ -996,9 +1012,15 @@ public class PSXmlDocumentBuilder {
             throw new IllegalArgumentException("name may not be null or empty");
         }
 
-        Element node = parent.getOwnerDocument()
-                             .createElementNS(namespace,
-                aliasTagName(alias, name));
+        Document parentDoc = parent.getOwnerDocument();
+        Element node;
+        if(StringUtils.isEmpty(namespace)){
+            node = parentDoc.createElement(name);
+        }else{
+             node = parentDoc.createElementNS(namespace,
+                    aliasTagName(alias, name));
+        }
+
         parent.appendChild(node);
 
         return node;
@@ -1041,7 +1063,7 @@ public class PSXmlDocumentBuilder {
      *            <code>null</code>
      */
     public static Node copyTree(Document doc, Node parent, Node tree,
-        boolean bClone) {
+                                boolean bClone) {
         if (tree == null) {
             return null;
         }
@@ -1075,7 +1097,7 @@ public class PSXmlDocumentBuilder {
      * @throws IllegalArgumentException if doc or out is <code>null</code>
      */
     public static void write(Document doc, OutputStream out)
-        throws java.io.IOException {
+            throws java.io.IOException {
         if (doc == null) {
             throw new IllegalArgumentException("doc may not be null");
         }
@@ -1112,7 +1134,7 @@ public class PSXmlDocumentBuilder {
      */
     @Deprecated
     public static void write(Document doc, OutputStream out, URL dtd)
-        throws IOException {
+            throws IOException {
         if (dtd == null) {
             throw new IllegalArgumentException("dtd can not be null");
         }
@@ -1142,7 +1164,7 @@ public class PSXmlDocumentBuilder {
      */
     @Deprecated
     public static void write(Document doc, OutputStream out, String dtdPath)
-        throws IOException {
+            throws IOException {
         if (doc == null) {
             throw new IllegalArgumentException("doc can not be null");
         }
@@ -1153,7 +1175,7 @@ public class PSXmlDocumentBuilder {
 
         if ((dtdPath == null) || (dtdPath.trim().length() == 0)) {
             throw new IllegalArgumentException(
-                "dtdPath can not be null or empty");
+                    "dtdPath can not be null or empty");
         }
 
         try(Writer w = new OutputStreamWriter(out, IPSUtilsConstants.RX_JAVA_ENC)) {
@@ -1184,7 +1206,7 @@ public class PSXmlDocumentBuilder {
      *           will not write an encoding parameter
      */
     private static void writeXmlHeader(Document doc, Writer w, String encoding)
-        throws IOException {
+            throws IOException {
         String standalone = doc.getXmlStandalone() ? "yes" : "no";
         String xmlVer = doc.getXmlVersion();
 
@@ -1217,7 +1239,7 @@ public class PSXmlDocumentBuilder {
      * @throws IllegalArgumentException if doc or out is <code>null</code>
      */
     public static void write(Document doc, Writer out)
-        throws java.io.IOException {
+            throws java.io.IOException {
         write(doc, out, null);
     }
 
@@ -1232,7 +1254,7 @@ public class PSXmlDocumentBuilder {
      * @throws IllegalArgumentException if doc or out is <code>null</code>
      */
     public static void write(Document doc, Writer out, String encoding)
-        throws IOException {
+            throws IOException {
         PSXmlTreeWalker w = new PSXmlTreeWalker(doc);
 
         w.write(out, true, false, false, encoding);
@@ -1246,7 +1268,7 @@ public class PSXmlDocumentBuilder {
      * @param out the output stream to write to
      */
     public static void write(Element node, OutputStream out)
-        throws java.io.IOException {
+            throws java.io.IOException {
         try(OutputStreamWriter os = new OutputStreamWriter(out)) {
             write(node, os);
         }
@@ -1260,7 +1282,7 @@ public class PSXmlDocumentBuilder {
      * @param out the output writer to use
      */
     public static void write(Element node, Writer out)
-        throws java.io.IOException {
+            throws java.io.IOException {
         PSXmlTreeWalker w = new PSXmlTreeWalker(node);
         w.write(out);
     }
@@ -1446,7 +1468,7 @@ public class PSXmlDocumentBuilder {
      *           not be changed.
      */
     public static Element replaceText(Document parentDoc, Element elementNode,
-        String newValue) {
+                                      String newValue) {
         if (parentDoc == null) {
             throw new IllegalArgumentException("parentDoc may not be null");
         }
@@ -1542,7 +1564,7 @@ public class PSXmlDocumentBuilder {
      * @throws java.io.IOException
      */
     public static void printXmlTree(Node currentNode, PrintStream stream,
-        String parentIndent) throws java.io.IOException {
+                                    String parentIndent) throws java.io.IOException {
         if (currentNode == null) {
             throw new IllegalArgumentException("currentNode may not be null");
         }
@@ -1560,74 +1582,74 @@ public class PSXmlDocumentBuilder {
         stream.print(myIndent);
 
         switch (currentNode.getNodeType()) {
-        case Node.DOCUMENT_NODE:
-            stream.print("Document " + currentNode.getNodeValue() +
-                currentNode.toString());
+            case Node.DOCUMENT_NODE:
+                stream.print("Document " + currentNode.getNodeValue() +
+                        currentNode.toString());
 
-            break;
+                break;
 
-        case Node.ATTRIBUTE_NODE:
-            stream.print("Attribute " + currentNode.getNodeName());
+            case Node.ATTRIBUTE_NODE:
+                stream.print("Attribute " + currentNode.getNodeName());
 
-            break;
+                break;
 
-        case Node.CDATA_SECTION_NODE:
-            stream.print("CDATA " + currentNode.toString());
+            case Node.CDATA_SECTION_NODE:
+                stream.print("CDATA " + currentNode.toString());
 
-            break;
+                break;
 
-        case Node.COMMENT_NODE:
-            stream.print("Comment " + currentNode.getNodeValue());
+            case Node.COMMENT_NODE:
+                stream.print("Comment " + currentNode.getNodeValue());
 
-            break;
+                break;
 
-        case Node.DOCUMENT_FRAGMENT_NODE:
-            stream.print("Document Fragment " + currentNode.toString());
+            case Node.DOCUMENT_FRAGMENT_NODE:
+                stream.print("Document Fragment " + currentNode.toString());
 
-            break;
+                break;
 
-        case Node.DOCUMENT_TYPE_NODE:
-            stream.print("Document Type " + currentNode.toString());
+            case Node.DOCUMENT_TYPE_NODE:
+                stream.print("Document Type " + currentNode.toString());
 
-            break;
+                break;
 
-        case Node.ELEMENT_NODE:
-            stream.print("Element " + currentNode.getNodeName());
+            case Node.ELEMENT_NODE:
+                stream.print("Element " + currentNode.getNodeName());
 
-            break;
+                break;
 
-        case Node.ENTITY_NODE:
-            stream.print("Entity " + currentNode.getNodeName());
+            case Node.ENTITY_NODE:
+                stream.print("Entity " + currentNode.getNodeName());
 
-            break;
+                break;
 
-        case Node.ENTITY_REFERENCE_NODE:
-            stream.print("Entity Reference " + currentNode.getNodeName());
+            case Node.ENTITY_REFERENCE_NODE:
+                stream.print("Entity Reference " + currentNode.getNodeName());
 
-            break;
+                break;
 
-        case Node.NOTATION_NODE:
-            stream.print("Notation " + currentNode.getNodeName());
+            case Node.NOTATION_NODE:
+                stream.print("Notation " + currentNode.getNodeName());
 
-            break;
+                break;
 
-        case Node.PROCESSING_INSTRUCTION_NODE:
-            stream.print("Processing Instruction " +
-                currentNode.getNodeValue());
+            case Node.PROCESSING_INSTRUCTION_NODE:
+                stream.print("Processing Instruction " +
+                        currentNode.getNodeValue());
 
-            break;
+                break;
 
-        case Node.TEXT_NODE:
-            stream.print("Text " + currentNode.getNodeValue().length() +
-                " Bytes ");
+            case Node.TEXT_NODE:
+                stream.print("Text " + currentNode.getNodeValue().length() +
+                        " Bytes ");
 
-            break;
+                break;
 
-        default:
-            stream.print("Invalid Node Type" +
-                String.valueOf(currentNode.getNodeType()));
+            default:
+                stream.print("Invalid Node Type" +
+                        String.valueOf(currentNode.getNodeType()));
 
-            break;
+                break;
         }
 
         stream.println();
@@ -1657,7 +1679,7 @@ public class PSXmlDocumentBuilder {
      * @throws java.io.IOException
      */
     public static void printXmlTree(Node currentNode, PrintStream stream)
-        throws java.io.IOException {
+            throws java.io.IOException {
         printXmlTree(currentNode, stream, "");
     }
 
@@ -1676,7 +1698,7 @@ public class PSXmlDocumentBuilder {
      *
      */
     public static void printXmlTree(Document doc, PrintStream stream)
-        throws java.io.IOException {
+            throws java.io.IOException {
         printXmlTree(doc, stream, "");
     }
 

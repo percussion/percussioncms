@@ -711,7 +711,7 @@
 				appletCaller.addParam("width", "0");
 				appletCaller.addParam("height", "0");
 				appletCaller.addParam("align", "baseline");
-				appletCaller.addParam("codebase", "../sys_resources/AppletJars");
+				appletCaller.addParam("codebase", "../dce");
 				appletCaller.addParam("archive", "help.jar,jh.jar");
 				appletCaller.addParam("code", "com.percussion.tools.help.PSHelpApplet");
 				appletCaller.addParam("MAYSCRIPT", "true");
@@ -720,7 +720,7 @@
 				appletCaller.addParam("type", _type);
 				appletCaller.addParam("scriptable", "true");
 				appletCaller.addParam("pluginspage", _pluginpage);
-				appletCaller.addParam("helpset_file", "../../Docs/Rhythmyx/Business_Users/Content_Explorer_Help.hs");
+				appletCaller.addParam("helpset_file", "../../Docs/Business_Users/Content_Explorer_Help.hs");
 				appletCaller.addParam("helpId", "O3042");
 				appletCaller.show();         
 	           

@@ -1,25 +1,18 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.percussion.tablefactory;
@@ -34,7 +27,6 @@ import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -65,9 +57,9 @@ public class PSJdbcPlanBuilder
     * errors occur.
     */
    public static int createSchemaPlan(Connection conn,
-      PSJdbcDbmsDef dbmsDef, PSJdbcTableSchema tableSchema, PSJdbcExecutionPlan
-         schemaPlan)
-      throws PSJdbcTableFactoryException
+                                      PSJdbcDbmsDef dbmsDef, PSJdbcTableSchema tableSchema, PSJdbcExecutionPlan
+                                              schemaPlan)
+           throws PSJdbcTableFactoryException
    {
       if (conn == null)
          throw new IllegalArgumentException("conn may not be null");
@@ -86,33 +78,33 @@ public class PSJdbcPlanBuilder
       // create empty plan
       PSJdbcTableFactory.logMessage("");
       PSJdbcTableFactory.logMessage(
-         "Creating schema plan for table: " + tableSchema.getName());
+              "Creating schema plan for table: " + tableSchema.getName());
 
       // create schema change event in case we need it
-      List changeListeners = tableSchema.getSchemaChangeListeners();
+      List<IPSJdbcTableChangeListener> changeListeners = tableSchema.getSchemaChangeListeners();
       PSJdbcTableChangeEvent changeEvent = null;
       boolean addListeners = changeListeners != null;
       if (addListeners)
       {
          if (dbmsDef.getConnectionDetail() != null)
          {
-            
+
             changeEvent = new PSJdbcTableChangeEvent(
-               dbmsDef.getConnectionInfo(), tableSchema.getName(), 
-               PSJdbcTableChangeEvent.ACTION_SCHEMA_CHANGED);
+                    dbmsDef.getConnectionInfo(), tableSchema.getName(),
+                    PSJdbcTableChangeEvent.ACTION_SCHEMA_CHANGED);
          }
          else
          {
-         changeEvent = new PSJdbcTableChangeEvent(
-            dbmsDef.getDriver(), dbmsDef.getServer(), dbmsDef.getDataBase(),
-            dbmsDef.getSchema(), tableSchema.getName(),
-            PSJdbcTableChangeEvent.ACTION_SCHEMA_CHANGED);
+            changeEvent = new PSJdbcTableChangeEvent(
+                    dbmsDef.getDriver(), dbmsDef.getServer(), dbmsDef.getDataBase(),
+                    dbmsDef.getSchema(), tableSchema.getName(),
+                    PSJdbcTableChangeEvent.ACTION_SCHEMA_CHANGED);
          }
       }
 
       // attempt to catalog the table, no data.
       PSJdbcTableSchema curSchema = PSJdbcTableFactory.catalogTable(conn,
-         dbmsDef, tableSchema.getDataTypeMap(), tableSchema.getName(), false);
+              dbmsDef, tableSchema.getDataTypeMap(), tableSchema.getName(), false);
 
       // Does table exist?
       boolean tableExists = (curSchema != null);
@@ -123,55 +115,29 @@ public class PSJdbcPlanBuilder
          if (tableSchema.isAlter())
          {
             throw new PSJdbcTableFactoryException(
-               IPSTableFactoryErrors.ALTER_NO_TABLE, tableSchema.getName());
+                    IPSTableFactoryErrors.ALTER_NO_TABLE, tableSchema.getName());
          }
          else if (!tableSchema.isCreate())
          {
             // no table and don't create, return empty plan
             PSJdbcTableFactory.logMessage(
-               "Table doesn't exist and create=n, no action taken");
+                    "Table doesn't exist and create=n, no action taken");
             result = SCHEMA_ACTION_NONE;
          }
          else
          {
-            // no table and allowed to create the table
-            PSJdbcTableFactory.logMessage(
-               "Table doesn't exist and create=y, creating table");
             result = SCHEMA_ACTION_CREATE;
-
-            schemaPlan.addStep(PSJdbcStatementFactory.getCreateTableStatement(
-               dbmsDef, tableSchema));
-
-            // add step to create non-unique indexes
-            schemaPlan.addStep(PSJdbcStatementFactory.getCreateIndexStatements(
-               dbmsDef, tableSchema));
-
-            // check if this table schema has a schema handler of type
-            // "onCreate"
-            PSJdbcTableSchemaHandler schemaHandler =
-                  tableSchema.getTableSchemaHandler(
-                     PSJdbcTableSchemaHandler.TYPE_INT_ON_CREATE);
-            if (schemaHandler != null)
-            {
-               // add a step for processing the schema handler after this
-               // table is created
-               PSJdbcTableSchemaHandlerStep handlerStep =
-                  new PSJdbcTableSchemaHandlerStep(
-                     dbmsDef, tableSchema, null, schemaHandler);
-               schemaPlan.addStep(handlerStep);
-            }
+            createMissingTable(conn, dbmsDef,tableSchema,schemaPlan);
          }
-      }
-      else
-      {
+      }else {
          boolean hasRows = PSJdbcTableFactory.hasRows(conn, dbmsDef,
-            tableSchema);
+                 tableSchema);
 
          // if not alter, get diffs, otherwise use alter schema
          StringBuilder schemaChangeBuffer = new StringBuilder();
          PSJdbcTableSchema tableChanges = tableSchema.isAlter() ?
-            tableSchema :
-            getTableChanges(curSchema, tableSchema, schemaChangeBuffer);
+                 tableSchema :
+                 getTableChanges(curSchema, tableSchema, schemaChangeBuffer);
 
          // log the differences between the two schema objects
          if (tableChanges.hasChanges())
@@ -188,256 +154,301 @@ public class PSJdbcPlanBuilder
             {
                PSJdbcTableFactory.logMessage("Deleting all data");
                schemaPlan.addStep(PSJdbcStatementFactory.getClearTableStatement(
-                  dbmsDef, tableSchema));
+                       dbmsDef, tableSchema));
             }
          }
          else if ((tableChanges.canBeAltered()) &&
-            (tableSchema.getTableSchemaHandler(
-               PSJdbcTableSchemaHandler.TYPE_INT_NO_ALTER_TABLE_STMT) == null))
+                 (tableSchema.getTableSchemaHandler(
+                         PSJdbcTableSchemaHandler.TYPE_INT_NO_ALTER_TABLE_STMT) == null))
          {
-            // only adding stuff, so delete data if required, alter table
-            PSJdbcTableFactory.logMessage("Table exists, can alter");
             result = SCHEMA_ACTION_ALTER;
-
-            if (tableSchema.isDelOldData() && hasRows)
-            {
-               PSJdbcTableFactory.logMessage("Deleting all data");
-               schemaPlan.addStep(PSJdbcStatementFactory.getClearTableStatement(
-                  dbmsDef, tableSchema));
-            }
-
-            // use the schema with the changes only to build the alter stmt
-            PSJdbcExecutionStep step =
-               PSJdbcStatementFactory.getAlterTableStatement(
-               dbmsDef, tableChanges);
-
-            // add change event to this step
-            if (addListeners)
-               step.addTableChangeEvent(changeEvent, changeListeners);
-
-            schemaPlan.addStep(step);
-
-            // add step to drop non-unique indexes
-            schemaPlan.addStep(PSJdbcStatementFactory.getDropIndexStatements(
-               dbmsDef, tableChanges));
-            // add step to create non-unique indexes
-            schemaPlan.addStep(PSJdbcStatementFactory.getCreateIndexStatements(
-               dbmsDef, tableChanges));
+            alterModifiedTable(conn, dbmsDef,tableSchema,schemaPlan,hasRows,tableChanges,addListeners ,changeEvent,changeListeners);
          }
          else
          {
-            PSJdbcTableFactory.logMessage("Table exists, can't alter");
             result = SCHEMA_ACTION_RECREATE;
-
-            /* if only alter changes specified, need to overlay the changes onto
-             * the existing schema so we have the full definition of what we
-             * want to create
-             */
-            PSJdbcTableSchema newSchema = new PSJdbcTableSchema(tableSchema.isAlter() ?
-               addTableChanges(curSchema, tableSchema) : tableSchema);
-            // remove ForeignKey constraints to avoid double creation of the constraints (bug RHYT-426)
-            newSchema.clearForeignKeys();
-
-            boolean copyData = false;
-            if (newSchema.isDelOldData() || !hasRows)
-            {
-               // no existing data or we're deleting it, so drop and create
-               PSJdbcTableFactory.logMessage("No data or else deleting " +
-                     "old data, backup, dropping and recreating");
-            }
-            else
-            {
-               // backup, drop, create, and restore
-               PSJdbcTableFactory.logMessage(
-                  "Table has data, backup, dropping, recreating, restore data");
-               copyData = true;
-            }
-            
-            try
-            { 
-               //find out if any other table has a foreign key that will
-               //prevent us from dropping this table
-               DatabaseMetaData dmd = conn.getMetaData();
-               String[] names = {"TABLE"};
-               ResultSet rsTableNames = dmd.getTables(null,
-                  dbmsDef.getSchema(), "%", names); 
-               
-               while (rsTableNames.next())
-               { 
-                  String tableName = rsTableNames.getString("TABLE_NAME");
-                  
-                  //get FKs for a given table 
-                  ResultSet  rs = dmd.getImportedKeys(dbmsDef.getDataBase(), 
-                     dbmsDef.getSchema(), tableName);
-                  if (rs != null)
-                  {
-                     while (rs.next())
-                     {
-                        //get table name
-                        String fTableName = rs.getString(3);
-                        if (fTableName.compareToIgnoreCase(
-                           curSchema.getName())!=0) //is it our child?
-                           continue;
-                        
-                        // attempt to catalog the table, no data.
-                        PSJdbcTableSchema curFKSchema =
-                           PSJdbcTableFactory.catalogTable(conn,
-                              dbmsDef, tableSchema.getDataTypeMap(),
-                              tableName, false);
-                        
-                        curSchema.addTableWithForeignKey(curFKSchema);
-                     }
-                     
-                     rs.close();
-                  }
-               }
-               
-               if (rsTableNames==null)
-                  rsTableNames.close();
-               
-               Iterator itTableSchemasFithFK =
-                  curSchema.getTablesWithForeignKey();
-               
-               while (itTableSchemasFithFK.hasNext())
-               {
-                  PSJdbcTableSchema schemaFK = (PSJdbcTableSchema)
-                  itTableSchemasFithFK.next();
-                  
-                  //drop FK constraint - to be restored later
-                  List<PSJdbcForeignKey> fks = schemaFK.getForeignKeys();
-                  for (PSJdbcForeignKey fk : fks) {
-                  
-                  String dropFKSQL =
-                     PSJdbcStatementFactory.getDropFKContraint(dbmsDef,
-                        schemaFK,fk);
-                  
-                  if (dropFKSQL==null)
-                     continue;
-                  
-                     schemaPlan.addStep(new PSJdbcSqlStatement(dropFKSQL));
-                  }
-               }
-               
-               // does backup table exist?
-               String backupTableName = getBackupTableName(conn,
-                  newSchema.getName());
-               boolean backupExists = PSJdbcTableFactory.catalogTable(
-                  conn, dbmsDef, newSchema.getDataTypeMap(), backupTableName,
-                  false) != null;
-               
-               // don't create backup with any constraints
-               PSJdbcTableSchema backupSchema = new PSJdbcTableSchema(
-                  curSchema);
-               backupSchema.setPrimaryKey(null);
-               backupSchema.clearIndexes();
-               backupSchema.clearForeignKeys();
-               // create backup - need to pass existing table schema
-               // this also copies the data from original table to backup table
-               PSJdbcTableSchemaHandler schemaHandler =
-                  tableSchema.getTableSchemaHandler(
-                     PSJdbcTableSchemaHandler.TYPE_INT_TO_BACKUP);
-               schemaPlan.addStep(getCopyTableStatement(dbmsDef, backupSchema,
-                  backupTableName, backupExists, true, schemaHandler));
-               
-               // drop it
-               schemaPlan.addStep(PSJdbcStatementFactory.getDropTableStatement(
-                  dbmsDef, newSchema.getName()));
-               
-               // recreate
-               PSJdbcExecutionStep createStep =
-                  PSJdbcStatementFactory.getCreateTableStatement(dbmsDef,
-                     newSchema);
-               
-               // need error step to restore original table if create fails
-               backupSchema = new PSJdbcTableSchema(curSchema);
-               backupSchema.setName(backupTableName);
-               PSJdbcExecutionStep errorStep = getCopyTableStatement(dbmsDef,
-                  backupSchema, curSchema.getName(),
-                  false, false, null);
-               createStep.setErrorStep(errorStep);
-               schemaPlan.addStep(createStep);
-               
-               // add step to create non-unique indexes
-               PSJdbcExecutionStep createIndexStep = PSJdbcStatementFactory
-                     .getCreateIndexStatements(dbmsDef, newSchema);
-               schemaPlan.addStep(createIndexStep);
-               
-               PSJdbcExecutionStep listenerStep = createIndexStep; 
-                             
-               if (copyData)
-               {
-                  // restore data from backup
-                  PSJdbcExecutionStep dataStep;
-                  schemaHandler =
-                     tableSchema.getTableSchemaHandler(
-                        PSJdbcTableSchemaHandler.TYPE_INT_FROM_BACKUP);
-                  if (schemaHandler != null)
-                  {
-                     dataStep = new PSJdbcTableSchemaHandlerStep(dbmsDef,
-                        backupSchema, newSchema, schemaHandler);
-                  }
-                  else
-                  {
-                     dataStep = 
-                        PSJdbcStatementFactory.getCopyTableDataStatement(
-                           dbmsDef, backupSchema, newSchema);
-                  }
-                  
-                  schemaPlan.addStep(dataStep);
-                  listenerStep = dataStep;     
-                  
-                  // add error step to this step to restore if data move fails
-                  errorStep = getCopyTableStatement(dbmsDef, backupSchema,
-                     curSchema.getName(), true, false, null);
-                  dataStep.setErrorStep(errorStep);
-               }
-
-               
-               //restore previously removed FKs
-               itTableSchemasFithFK =
-                  curSchema.getTablesWithForeignKey();
-               
-               while (itTableSchemasFithFK.hasNext())
-               {
-                  PSJdbcTableSchema schema = 
-                     (PSJdbcTableSchema) itTableSchemasFithFK.next();
-
-                  String fullFKSQL = 
-                     PSJdbcStatementFactory.getForeignKeyConstraint(dbmsDef,
-                        schema,newSchema);
-                  
-                  if (fullFKSQL==null)
-                     continue;
-                  
-                  String fullTableName = PSSqlHelper.qualifyTableName(
-                     schema.getName(), dbmsDef.getDataBase(), 
-                     dbmsDef.getSchema(), dbmsDef.getDriver());
-                  
-                  String restoreFKStep = "ALTER TABLE " + fullTableName +
-                  " ADD " + fullFKSQL;
-                  
-                  listenerStep = new PSJdbcSqlStatement(restoreFKStep);
-                  schemaPlan.addStep(listenerStep);
-               }
-               
-               // add change event to this step
-               if (addListeners && listenerStep != null)
-               {
-                  listenerStep.addTableChangeEvent(changeEvent, 
-                     changeListeners);
-               }
-            }                     
-            catch (SQLException e)
-            {
-               throw new PSJdbcTableFactoryException(0, e);
-            }
-            
+            recreateExisitngTable(conn, dbmsDef, curSchema, tableSchema,schemaPlan,hasRows,addListeners ,changeEvent,changeListeners);
          }
       }
 
       return result;
    }
 
+   private static void createMissingTable(Connection conn,
+                                          PSJdbcDbmsDef dbmsDef, PSJdbcTableSchema tableSchema, PSJdbcExecutionPlan
+                                                  schemaPlan){
+      // no table and allowed to create the table
+      PSJdbcTableFactory.logMessage(
+              "Table doesn't exist and create=y, creating table");
+
+      schemaPlan.addStep(PSJdbcStatementFactory.getCreateTableStatement(
+              dbmsDef, tableSchema));
+
+      // add step to create non-unique indexes
+      schemaPlan.addStep(PSJdbcStatementFactory.getCreateIndexStatements(
+              dbmsDef, tableSchema));
+
+      // check if this table schema has a schema handler of type
+      // "onCreate"
+      PSJdbcTableSchemaHandler schemaHandler =
+              tableSchema.getTableSchemaHandler(
+                      PSJdbcTableSchemaHandler.TYPE_INT_ON_CREATE);
+      if (schemaHandler != null)
+      {
+         // add a step for processing the schema handler after this
+         // table is created
+         PSJdbcTableSchemaHandlerStep handlerStep =
+                 new PSJdbcTableSchemaHandlerStep(
+                         dbmsDef, tableSchema, null, schemaHandler);
+         schemaPlan.addStep(handlerStep);
+      }
+   }
+
+   private static void alterModifiedTable(Connection conn,
+                                          PSJdbcDbmsDef dbmsDef, PSJdbcTableSchema tableSchema, PSJdbcExecutionPlan
+                                                  schemaPlan,boolean hasRows,PSJdbcTableSchema tableChanges,boolean addListeners,
+                                          PSJdbcTableChangeEvent changeEvent,List<IPSJdbcTableChangeListener> changeListeners){
+      // only adding stuff, so delete data if required, alter table
+      PSJdbcTableFactory.logMessage("Table exists, can alter");
+
+      if (tableSchema.isDelOldData() && hasRows)
+      {
+         PSJdbcTableFactory.logMessage("Deleting all data");
+         schemaPlan.addStep(PSJdbcStatementFactory.getClearTableStatement(
+                 dbmsDef, tableSchema));
+      }
+
+      // use the schema with the changes only to build the alter stmt
+      PSJdbcExecutionStep step =
+              PSJdbcStatementFactory.getAlterTableStatement(
+                      dbmsDef, tableChanges);
+
+      // add change event to this step
+      if (addListeners)
+         step.addTableChangeEvent(changeEvent, changeListeners);
+
+      schemaPlan.addStep(step);
+
+      // add step to drop non-unique indexes
+      schemaPlan.addStep(PSJdbcStatementFactory.getDropIndexStatements(
+              dbmsDef, tableChanges));
+      // add step to create non-unique indexes
+      schemaPlan.addStep(PSJdbcStatementFactory.getCreateIndexStatements(
+              dbmsDef, tableChanges));
+
+   }
+
+   private static void recreateExisitngTable(Connection conn,
+                                             PSJdbcDbmsDef dbmsDef,PSJdbcTableSchema curSchema, PSJdbcTableSchema tableSchema, PSJdbcExecutionPlan
+                                                     schemaPlan,boolean hasRows,boolean addListeners,
+                                             PSJdbcTableChangeEvent changeEvent,List<IPSJdbcTableChangeListener> changeListeners) throws PSJdbcTableFactoryException {
+
+      PSJdbcTableFactory.logMessage("Table exists, can't alter");
+
+
+      /* if only alter changes specified, need to overlay the changes onto
+       * the existing schema so we have the full definition of what we
+       * want to create
+       */
+      PSJdbcTableSchema newSchema = new PSJdbcTableSchema(tableSchema.isAlter() ?
+              addTableChanges(curSchema, tableSchema) : tableSchema);
+      // remove ForeignKey constraints to avoid double creation of the constraints (bug RHYT-426)
+      newSchema.clearForeignKeys();
+      //remove indexes to avoid double creation.
+      newSchema.clearIndexes();
+      boolean copyData = false;
+      if (newSchema.isDelOldData() || !hasRows)
+      {
+         // no existing data or we're deleting it, so drop and create
+         PSJdbcTableFactory.logMessage("No data or else deleting " +
+                 "old data, backup, dropping and recreating");
+      }
+      else
+      {
+         // backup, drop, create, and restore
+         PSJdbcTableFactory.logMessage(
+                 "Table has data, backup, dropping, recreating, restore data");
+         copyData = true;
+      }
+
+      try
+      {
+         //find out if any other table has a foreign key that will
+         //prevent us from dropping this table
+         DatabaseMetaData dmd = conn.getMetaData();
+         String[] names = {"TABLE"};
+         ResultSet rsTableNames = dmd.getTables(null,
+                 dbmsDef.getSchema(), "%", names);
+
+         while (rsTableNames.next())
+         {
+            String tableName = rsTableNames.getString("TABLE_NAME");
+
+            //get FKs for a given table
+            ResultSet  rs = dmd.getImportedKeys(dbmsDef.getDataBase(),
+                    dbmsDef.getSchema(), tableName);
+            if (rs != null)
+            {
+               while (rs.next())
+               {
+                  //get table name
+                  String fTableName = rs.getString(3);
+                  if (fTableName.compareToIgnoreCase(
+                          curSchema.getName())!=0) //is it our child?
+                     continue;
+
+                  // attempt to catalog the table, no data.
+                  PSJdbcTableSchema curFKSchema =
+                          PSJdbcTableFactory.catalogTable(conn,
+                                  dbmsDef, tableSchema.getDataTypeMap(),
+                                  tableName, false);
+
+                  curSchema.addTableWithForeignKey(curFKSchema);
+               }
+
+               rs.close();
+            }
+         }
+
+         rsTableNames.close();
+
+         Iterator<PSJdbcTableSchema> itTableSchemasFithFK =
+                 curSchema.getTablesWithForeignKey();
+
+         while (itTableSchemasFithFK.hasNext())
+         {
+            PSJdbcTableSchema schemaFK = itTableSchemasFithFK.next();
+
+            //drop FK constraint - to be restored later
+            List<PSJdbcForeignKey> fks = schemaFK.getForeignKeys();
+            for (PSJdbcForeignKey fk : fks) {
+
+               String dropFKSQL =
+                       PSJdbcStatementFactory.getDropFKContraint(dbmsDef,
+                               schemaFK,fk);
+
+               if (dropFKSQL!=null) {
+                  schemaPlan.addStep(new PSJdbcSqlStatement(dropFKSQL));
+
+               }
+
+            }
+         }
+
+         // does backup table exist?
+         String backupTableName = getBackupTableName(conn,
+                 newSchema.getName());
+         boolean backupExists = PSJdbcTableFactory.catalogTable(
+                 conn, dbmsDef, newSchema.getDataTypeMap(), backupTableName,
+                 false) != null;
+
+         // don't create backup with any constraints
+         PSJdbcTableSchema backupSchema = new PSJdbcTableSchema(
+                 curSchema);
+         backupSchema.setPrimaryKey(null);
+         backupSchema.clearIndexes();
+         backupSchema.clearForeignKeys();
+         // create backup - need to pass existing table schema
+         // this also copies the data from original table to backup table
+         PSJdbcTableSchemaHandler schemaHandler =
+                 tableSchema.getTableSchemaHandler(
+                         PSJdbcTableSchemaHandler.TYPE_INT_TO_BACKUP);
+         schemaPlan.addStep(getCopyTableStatement(dbmsDef, backupSchema,
+                 backupTableName, backupExists, true, schemaHandler));
+
+         // drop it
+         schemaPlan.addStep(PSJdbcStatementFactory.getDropTableStatement(
+                 dbmsDef, newSchema.getName()));
+
+         // recreate
+         PSJdbcExecutionStep createStep =
+                 PSJdbcStatementFactory.getCreateTableStatement(dbmsDef,
+                         newSchema);
+
+         // need error step to restore original table if create fails
+         backupSchema = new PSJdbcTableSchema(curSchema);
+         backupSchema.setName(backupTableName);
+         PSJdbcExecutionStep errorStep = getCopyTableStatement(dbmsDef,
+                 backupSchema, curSchema.getName(),
+                 false, false, null);
+         createStep.setErrorStep(errorStep);
+         schemaPlan.addStep(createStep);
+
+         // add step to create non-unique indexes
+         PSJdbcExecutionStep createIndexStep = PSJdbcStatementFactory
+                 .getCreateIndexStatements(dbmsDef, newSchema);
+         schemaPlan.addStep(createIndexStep);
+
+         PSJdbcExecutionStep listenerStep = createIndexStep;
+
+         if (copyData)
+         {
+            // restore data from backup
+            PSJdbcExecutionStep dataStep;
+            schemaHandler =
+                    tableSchema.getTableSchemaHandler(
+                            PSJdbcTableSchemaHandler.TYPE_INT_FROM_BACKUP);
+            if (schemaHandler != null)
+            {
+               dataStep = new PSJdbcTableSchemaHandlerStep(dbmsDef,
+                       backupSchema, newSchema, schemaHandler);
+            }
+            else
+            {
+               dataStep =
+                       PSJdbcStatementFactory.getCopyTableDataStatement(
+                               dbmsDef, backupSchema, newSchema);
+            }
+
+            schemaPlan.addStep(dataStep);
+            listenerStep = dataStep;
+
+            // add error step to this step to restore if data move fails
+            errorStep = getCopyTableStatement(dbmsDef, backupSchema,
+                    curSchema.getName(), true, false, null);
+            dataStep.setErrorStep(errorStep);
+         }
+
+
+         //restore previously removed FKs
+         itTableSchemasFithFK =
+                 curSchema.getTablesWithForeignKey();
+
+         while (itTableSchemasFithFK.hasNext())
+         {
+            PSJdbcTableSchema schema = itTableSchemasFithFK.next();
+
+            String fullFKSQL =
+                    PSJdbcStatementFactory.getForeignKeyConstraint(dbmsDef,
+                            schema,newSchema);
+
+            if (fullFKSQL==null)
+               continue;
+
+            String fullTableName = PSSqlHelper.qualifyTableName(
+                    schema.getName(), dbmsDef.getDataBase(),
+                    dbmsDef.getSchema(), dbmsDef.getDriver());
+
+            String restoreFKStep = "ALTER TABLE " + fullTableName +
+                    " ADD " + fullFKSQL;
+
+            listenerStep = new PSJdbcSqlStatement(restoreFKStep);
+            schemaPlan.addStep(listenerStep);
+         }
+
+         // add change event to this step
+         if (addListeners && listenerStep != null)
+         {
+            listenerStep.addTableChangeEvent(changeEvent,
+                    changeListeners);
+         }
+      }
+      catch (SQLException e)
+      {
+         throw new PSJdbcTableFactoryException(0, e);
+      }
+
+   }
    /**
     * Convenience method, calls {@link #getDataPlan(Connection,PSJdbcDbmsDef,
     * Map,PSJdbcTableSchema,PSJdbcTableData,PSJdbcExecutionPlan,
@@ -446,23 +457,23 @@ public class PSJdbcPlanBuilder
     * deletePlan,updatePlan,replacePlan,isChildTable)}
     */
    static public void getDataPlan(Connection conn,
-      PSJdbcDbmsDef dbmsDef, PSJdbcTableSchema tableSchema,
-      PSJdbcTableData tableData, PSJdbcExecutionPlan insertPlan,
-      PSJdbcExecutionPlan deletePlan, PSJdbcExecutionPlan updatePlan,
-      PSJdbcReplaceExecutionPlan replacePlan, boolean isChildTable)
-      throws PSJdbcTableFactoryException
+                                  PSJdbcDbmsDef dbmsDef, PSJdbcTableSchema tableSchema,
+                                  PSJdbcTableData tableData, PSJdbcExecutionPlan insertPlan,
+                                  PSJdbcExecutionPlan deletePlan, PSJdbcExecutionPlan updatePlan,
+                                  PSJdbcReplaceExecutionPlan replacePlan, boolean isChildTable)
+           throws PSJdbcTableFactoryException
    {
       getDataPlan(
-         conn,
-         dbmsDef,
-         null,
-         tableSchema,
-         tableData,
-         insertPlan,
-         deletePlan,
-         updatePlan,
-         replacePlan,
-         isChildTable);
+              conn,
+              dbmsDef,
+              null,
+              tableSchema,
+              tableData,
+              insertPlan,
+              deletePlan,
+              updatePlan,
+              replacePlan,
+              isChildTable);
    }
 
    /**
@@ -509,17 +520,17 @@ public class PSJdbcPlanBuilder
     * @throws PSJdbcTableFactoryException if any errors occur.
     */
    static public void getDataPlan(
-      Connection conn,
-      PSJdbcDbmsDef dbmsDef,
-      Map tableMetaMap,
-      PSJdbcTableSchema tableSchema,
-      PSJdbcTableData tableData,
-      PSJdbcExecutionPlan insertPlan,
-      PSJdbcExecutionPlan deletePlan,
-      PSJdbcExecutionPlan updatePlan,
-      PSJdbcReplaceExecutionPlan replacePlan,
-      boolean isChildTable)
-      throws PSJdbcTableFactoryException
+           Connection conn,
+           PSJdbcDbmsDef dbmsDef,
+           Map<String, PSJdbcTableMetaData> tableMetaMap,
+           PSJdbcTableSchema tableSchema,
+           PSJdbcTableData tableData,
+           PSJdbcExecutionPlan insertPlan,
+           PSJdbcExecutionPlan deletePlan,
+           PSJdbcExecutionPlan updatePlan,
+           PSJdbcReplaceExecutionPlan replacePlan,
+           boolean isChildTable)
+           throws PSJdbcTableFactoryException
    {
       if (conn == null)
          throw new IllegalArgumentException("conn may not be null");
@@ -545,18 +556,18 @@ public class PSJdbcPlanBuilder
       if (replacePlan == null)
          throw new IllegalArgumentException("replacePlan may not be null");
 
-      
+
 
       // check in case schema has been modified to invalidate the data.
       tableSchema.validateTableData(tableData);
 
-      Iterator rows = tableData.getRows();
+      Iterator<PSJdbcRowData> rows = tableData.getRows();
       while (rows.hasNext())
       {
-         PSJdbcRowData row = (PSJdbcRowData)rows.next();
+         PSJdbcRowData row = rows.next();
 
          // for parent tables, catalog all the child tables rows for this parent
-       
+
 
          int schemaAction = tableSchema.getSchemaAction();
          boolean bOnTableCreateOnly = row.onTableCreateOnly();
@@ -581,47 +592,50 @@ public class PSJdbcPlanBuilder
          PSJdbcExecutionStep deleteStep = null;
 
          // create child table plans here.
-        
-       
+
+
          switch (rowAction)
          {
             case PSJdbcRowData.ACTION_INSERT:
                insertStep = PSJdbcStatementFactory.getInsertStatement(
-                  dbmsDef, tableSchema, row);
+                       dbmsDef, tableSchema, row);
                insertPlan.addStep(insertStep);
                processChildTables(conn, dbmsDef, tableMetaMap, tableSchema, tableData, insertPlan, deletePlan,
-                     updatePlan, replacePlan, isChildTable, row);
+                       updatePlan, replacePlan, isChildTable, row);
                break;
 
             case PSJdbcRowData.ACTION_INSERT_IF_NOT_EXIST:
                insertStep = PSJdbcStatementFactory.getInsertStatement(
-                  dbmsDef, tableSchema, row);
+                       dbmsDef, tableSchema, row);
                insertPlan.addStep(insertStep);
                insertStep.setIgnoreSQLExceptions(
-                  PSSqlHelper.SQLSTATE_INTEGRITY_CONSTRAINT_VIOLATIONS);
+                       PSSqlHelper.SQLSTATE_INTEGRITY_CONSTRAINT_VIOLATIONS);
                processChildTables(conn, dbmsDef, tableMetaMap, tableSchema, tableData, insertPlan, deletePlan,
-                     updatePlan, replacePlan, isChildTable, row);
+                       updatePlan, replacePlan, isChildTable, row);
                break;
 
             case PSJdbcRowData.ACTION_UPDATE:
                processChildTables(conn, dbmsDef, tableMetaMap, tableSchema, tableData, insertPlan, deletePlan,
-                     updatePlan, replacePlan, isChildTable, row);
+                       updatePlan, replacePlan, isChildTable, row);
                updateStep = PSJdbcStatementFactory.getUpdateStatement(
-                  dbmsDef, tableSchema, row);
+                       dbmsDef, tableSchema, row);
                updatePlan.addStep(updateStep);
                break;
 
             case PSJdbcRowData.ACTION_REPLACE:
                updateStep = PSJdbcStatementFactory.getUpdateStatement(
-                  dbmsDef, tableSchema, row);
+                       dbmsDef, tableSchema, row);
                // ignore no rows updated exception
                updateStep.setIgnoreSQLExceptions(
-                  PSSqlHelper.SQLSTATE_NO_UPDATE_ROWS);
+                       PSSqlHelper.SQLSTATE_NO_UPDATE_ROWS);
                insertStep = PSJdbcStatementFactory.getInsertStatement(
-                  dbmsDef, tableSchema, row);
+                       dbmsDef, tableSchema, row);
+               insertStep.setIgnoreSQLExceptions(
+                       PSSqlHelper.SQLSTATE_INTEGRITY_CONSTRAINT_VIOLATIONS);
                replacePlan.addStep(updateStep, insertStep);
+
                processChildTables(conn, dbmsDef, tableMetaMap, tableSchema, tableData, insertPlan, deletePlan,
-                     updatePlan, replacePlan, isChildTable, row);
+                       updatePlan, replacePlan, isChildTable, row);
                break;
 
             case PSJdbcRowData.ACTION_DELETE:
@@ -629,7 +643,7 @@ public class PSJdbcPlanBuilder
                // programmatically doing a cascading delete. This option is not
                // supported presently and the database's cascade delete option
                // should be used for achieving this functionality.
-             /* 
+             /*
                Iterator childTablesList = tableSchema.getChildTables();
                while (childTablesList.hasNext())
                {
@@ -640,64 +654,64 @@ public class PSJdbcPlanBuilder
                }
                */
                processChildTables(conn, dbmsDef, tableMetaMap, tableSchema, tableData, insertPlan, deletePlan,
-                     updatePlan, replacePlan, isChildTable, row);
-               
+                       updatePlan, replacePlan, isChildTable, row);
+
                deleteStep = PSJdbcStatementFactory.getDeleteStatement(
-                  dbmsDef, tableSchema, row);
+                       dbmsDef, tableSchema, row);
                deletePlan.addStep(deleteStep);
                break;
 
             default:
                throw new IllegalArgumentException("unknown action (" +
-                  rowAction + ") creating data plan for table: " +
-               tableSchema.getName());
+                       rowAction + ") creating data plan for table: " +
+                       tableSchema.getName());
          }
 
          setLogData(insertStep, dbmsDef, tableSchema, row);
          setLogData(updateStep, dbmsDef, tableSchema, row);
          setLogData(deleteStep, dbmsDef, tableSchema, row);
-         
-        
+
+
       }
    }
 
    private static void processChildTables(
-         Connection conn,
-         PSJdbcDbmsDef dbmsDef,
-         Map tableMetaMap,
-         PSJdbcTableSchema tableSchema,
-         PSJdbcTableData tableData,
-         PSJdbcExecutionPlan insertPlan,
-         PSJdbcExecutionPlan deletePlan,
-         PSJdbcExecutionPlan updatePlan,
-         PSJdbcReplaceExecutionPlan replacePlan,
-         boolean isChildTable,
-         PSJdbcRowData row) throws PSJdbcTableFactoryException
+           Connection conn,
+           PSJdbcDbmsDef dbmsDef,
+           Map tableMetaMap,
+           PSJdbcTableSchema tableSchema,
+           PSJdbcTableData tableData,
+           PSJdbcExecutionPlan insertPlan,
+           PSJdbcExecutionPlan deletePlan,
+           PSJdbcExecutionPlan updatePlan,
+           PSJdbcReplaceExecutionPlan replacePlan,
+           boolean isChildTable,
+           PSJdbcRowData row) throws PSJdbcTableFactoryException
    {
       PSJdbcDataTypeMap dataTypeMap = null;
       try
       {
          dataTypeMap = new PSJdbcDataTypeMap(dbmsDef.getBackEndDB(),
-            dbmsDef.getDriver(), null);
+                 dbmsDef.getDriver(), null);
       }
       catch (Exception e)
       {
          throw new PSJdbcTableFactoryException(
-            IPSTableFactoryErrors.LOAD_DEFAULT_DATATYPE_MAP, e.toString(), e);
+                 IPSTableFactoryErrors.LOAD_DEFAULT_DATATYPE_MAP, e.toString(), e);
       }
       Iterator childTables = row.getChildTables();
       while (childTables.hasNext())
       {
          PSJdbcTableData childTableData =
-            (PSJdbcTableData)childTables.next();
+                 (PSJdbcTableData)childTables.next();
          PSJdbcTableSchema childTableSchema =
-            PSJdbcTableFactory.getTableSchemaCollection().getTableSchema(
-               childTableData.getName());
+                 PSJdbcTableFactory.getTableSchemaCollection().getTableSchema(
+                         childTableData.getName());
          PSJdbcPlanBuilder.getDataPlan(conn, dbmsDef, childTableSchema,
-            childTableData, insertPlan, deletePlan, updatePlan, replacePlan,
-            true);
+                 childTableData, insertPlan, deletePlan, updatePlan, replacePlan,
+                 true);
       }
-      
+
       // table row based on the foreign key relationship
       // we need to retrieve the value of primary key columns only for the
       // child table.
@@ -711,8 +725,8 @@ public class PSJdbcPlanBuilder
          while (childTblIt.hasNext())
          {
             PSJdbcTableSchema childTableSchema =
-               PSJdbcTableFactory.getTableSchemaCollection().getTableSchema(
-                  (String)childTblIt.next());
+                    PSJdbcTableFactory.getTableSchemaCollection().getTableSchema(
+                            (String)childTblIt.next());
 
             if (!canUnpublishChildTables(tableSchema, childTableSchema, row))
             {
@@ -736,20 +750,20 @@ public class PSJdbcPlanBuilder
             if (dbmsDef.getSchema() != null)
             {
                PSJdbcTableSchema testChildTblSchema =
-                  PSJdbcTableFactory.catalogTable(
-                     conn,
-                     dbmsDef,
-                     tableMetaMap,
-                     dataTypeMap,
-                     childTableSchema.getName(),
-                     false);
+                       PSJdbcTableFactory.catalogTable(
+                               conn,
+                               dbmsDef,
+                               tableMetaMap,
+                               dataTypeMap,
+                               childTableSchema.getName(),
+                               false);
                if (testChildTblSchema == null)
                   continue;
             }
 
             String childTableName = PSSqlHelper.qualifyTableName(
-               childTableSchema.getName(), dbmsDef.getDataBase(),
-               dbmsDef.getSchema(), dbmsDef.getDriver());
+                    childTableSchema.getName(), dbmsDef.getDataBase(),
+                    dbmsDef.getSchema(), dbmsDef.getDriver());
 
             // construct the WHERE clause
             PSJdbcFilterContainer selFilter = new PSJdbcFilterContainer();
@@ -762,7 +776,7 @@ public class PSJdbcPlanBuilder
                   String childTableColName = col[0];
                   String parentTableColName = col[2];
                   PSJdbcColumnDef colDef = childTableSchema.getColumn(
-                     childTableColName);
+                          childTableColName);
 
                   PSJdbcColumnData colData = row.getColumn(parentTableColName);
                   if (colData == null)
@@ -771,10 +785,10 @@ public class PSJdbcPlanBuilder
                      continue;
 
                   selFilter.doAND(new PSJdbcSelectFilter(
-                     childTableName + "." + childTableColName,
-                     PSJdbcSelectFilter.EQUALS,
-                     colData.getValue(),
-                     colDef.getType()));
+                          childTableName + "." + childTableColName,
+                          PSJdbcSelectFilter.EQUALS,
+                          colData.getValue(),
+                          colDef.getType()));
                }
             }
             // get the key columns of the child table
@@ -786,9 +800,9 @@ public class PSJdbcPlanBuilder
 
             // catalog the child table
             PSJdbcTableData childTblData =
-               PSJdbcTableFactory.catalogTableData(conn,
-                  dbmsDef, childTableSchema, pkColumns,
-                  selFilter, PSJdbcRowData.ACTION_DELETE);
+                    PSJdbcTableFactory.catalogTableData(conn,
+                            dbmsDef, childTableSchema, pkColumns,
+                            selFilter, PSJdbcRowData.ACTION_DELETE);
 
             // tabledata in memory for child table
             PSJdbcTableData memChildTblData = null;
@@ -796,9 +810,9 @@ public class PSJdbcPlanBuilder
             while (memChildTables.hasNext())
             {
                PSJdbcTableData tempMemChildTblData =
-                  (PSJdbcTableData)memChildTables.next();
+                       (PSJdbcTableData)memChildTables.next();
                if (childTableSchema.getName().equalsIgnoreCase(
-                  tempMemChildTblData.getName()))
+                       tempMemChildTblData.getName()))
                {
                   memChildTblData = tempMemChildTblData;
                   break;
@@ -807,14 +821,14 @@ public class PSJdbcPlanBuilder
 
             // do a diff with the tabledata in memory
             PSJdbcTableData childTableData = doTableDataDiff(childTableSchema,
-               childTblData, memChildTblData);
+                    childTblData, memChildTblData);
 
             // create a plan to remove the rows from the child tables
             if (childTableData != null)
             {
                PSJdbcPlanBuilder.getDataPlan(conn, dbmsDef, childTableSchema,
-                  childTableData, insertPlan, deletePlan, updatePlan,
-                  replacePlan, true);
+                       childTableData, insertPlan, deletePlan, updatePlan,
+                       replacePlan, true);
             }
          }
       }
@@ -840,7 +854,7 @@ public class PSJdbcPlanBuilder
     */
    @SuppressWarnings("unchecked")
    private static boolean canUnpublishChildTables(PSJdbcTableSchema parentTableSchema,
-      PSJdbcTableSchema childTableSchema, PSJdbcRowData parentRowData)
+                                                  PSJdbcTableSchema childTableSchema, PSJdbcRowData parentRowData)
    {
       if (childTableSchema == null)
          return false;
@@ -856,41 +870,41 @@ public class PSJdbcPlanBuilder
       // for obtaining the child table rows corresponing to this parent table
       // row
       List<PSJdbcForeignKey> fkeys = childTableSchema.getForeignKeys();
-      if (fkeys == null || fkeys.size()==0)
+      if (fkeys == null || fkeys.isEmpty())
          return false;
       boolean bHasValidForeignKey = false;
       for (PSJdbcForeignKey fkey : fkeys) {
-      Iterator fkeyColIt = fkey.getColumns(parentTableSchema.getName());
-      List fkeyCols = new ArrayList();
-  
-      while (fkeyColIt.hasNext())
-      {
-         String[] col = (String[])fkeyColIt.next();
-         String childTableColName = col[0];
-         String parentTableColName = col[2];
+         Iterator fkeyColIt = fkey.getColumns(parentTableSchema.getName());
+      List fkeyCols = new ArrayList<>();
 
-         fkeyCols.add(childTableColName);
+         while (fkeyColIt.hasNext())
+         {
+            String[] col = (String[])fkeyColIt.next();
+            String childTableColName = col[0];
+            String parentTableColName = col[2];
 
-         // check if the parent row contains the value for the foreign key column
-         // if not we cannot unpublish since the SELECT query for obtaining the
-         // child table rows will be invalid
-         PSJdbcColumnData colData = parentRowData.getColumn(parentTableColName);
-         if ((colData == null) || (colData.getValue() == null))
-         {
-            // this situation will occur if the parent column is a
-            // sequence/identity so that its value does not exist in the xml
-            // file. we assume that the user will need to define another
-            // foreign key for such cases
+            fkeyCols.add(childTableColName);
+
+            // check if the parent row contains the value for the foreign key column
+            // if not we cannot unpublish since the SELECT query for obtaining the
+            // child table rows will be invalid
+            PSJdbcColumnData colData = parentRowData.getColumn(parentTableColName);
+            if ((colData == null) || (colData.getValue() == null))
+            {
+               // this situation will occur if the parent column is a
+               // sequence/identity so that its value does not exist in the xml
+               // file. we assume that the user will need to define another
+               // foreign key for such cases
+            }
+            else
+            {
+               // if we can obtain the value of one foreign key column from
+               // the parent row, we will allow it to proceed
+               bHasValidForeignKey = true;
+               break;
+            }
          }
-         else
-         {
-            // if we can obtain the value of one foreign key column from
-            // the parent row, we will allow it to proceed
-            bHasValidForeignKey = true;
-            break;
-         }
-      }
-      if (bHasValidForeignKey == true) break;
+         if (bHasValidForeignKey) break;
       }
       return bHasValidForeignKey;
    }
@@ -915,8 +929,8 @@ public class PSJdbcPlanBuilder
     */
    @SuppressWarnings("unchecked")
    private static PSJdbcTableData doTableDataDiff(PSJdbcTableSchema tableSchema,
-      PSJdbcTableData dbChildTblData, PSJdbcTableData memChildTblData)
-      throws PSJdbcTableFactoryException
+                                                  PSJdbcTableData dbChildTblData, PSJdbcTableData memChildTblData)
+           throws PSJdbcTableFactoryException
    {
       if (tableSchema == null)
          throw new IllegalArgumentException("tableSchema may not be null");
@@ -970,29 +984,29 @@ public class PSJdbcPlanBuilder
       if (rowList.isEmpty())
          return null;
       return new PSJdbcTableData(tableSchema.getName(),
-         rowList.iterator());
+              rowList.iterator());
    }
 
 
    /**
     * Compares two rows based upon their primary key values.
-    * 
+    *
     * @param tableSchema Table Schema object from which the primary keys are
     * obtained, may not be <code>null</code>.
     * @param rowData RowData object to be compared, may not be <code>null</code>.
     * @param rowDataToCompare RowData object to be compared, may not be
     * <code>null</code>.
-    * 
+    *
     * @return <code>true</code> if both rows have the same values for primary
     * key, else return <code>false</code>.
-    * 
+    *
     * @throws IllegalArgumentException if rowData or rowDataToCompare or schema
     * is <code>null</code> or table schema has no primary key defined.
     * @throws PSJdbcTableFactoryException if there are any errors.
     */
    public static boolean hasSameKeyValues(PSJdbcTableSchema tableSchema,
-      PSJdbcRowData rowData, PSJdbcRowData rowDataToCompare)
-      throws PSJdbcTableFactoryException
+                                          PSJdbcRowData rowData, PSJdbcRowData rowDataToCompare)
+           throws PSJdbcTableFactoryException
    {
       if (rowData == null)
          throw new IllegalArgumentException("row data may not be null");
@@ -1007,7 +1021,7 @@ public class PSJdbcPlanBuilder
       Iterator pkColNames = pkColList.iterator();
       if(!pkColNames.hasNext())
          throw new IllegalArgumentException(
-            "Invalid primary or update key for table : " + tableSchema.getName());
+                 "Invalid primary or update key for table : " + tableSchema.getName());
 
       PSJdbcColumnData colFirst = null;
       PSJdbcColumnData colSecond = null;
@@ -1020,7 +1034,7 @@ public class PSJdbcPlanBuilder
          {
             Object[] args = {tableSchema.getName(), colName};
             throw new PSJdbcTableFactoryException(
-               IPSTableFactoryErrors.UPDATE_DATA_NO_KEY_VALUE_IN_DB, args);
+                    IPSTableFactoryErrors.UPDATE_DATA_NO_KEY_VALUE_IN_DB, args);
          }
 
          colSecond = rowDataToCompare.getColumn(colName);
@@ -1028,7 +1042,7 @@ public class PSJdbcPlanBuilder
          {
             Object[] args = {tableSchema.getName(), colName};
             throw new PSJdbcTableFactoryException(
-               IPSTableFactoryErrors.UPDATE_DATA_NO_KEY_VALUE, args);
+                    IPSTableFactoryErrors.UPDATE_DATA_NO_KEY_VALUE, args);
          }
 
          if(!colFirst.getValue().equals(colSecond.getValue()))
@@ -1057,9 +1071,9 @@ public class PSJdbcPlanBuilder
     * <code>null</code>
     */
    @SuppressWarnings("unchecked")
-   static private void setLogData(PSJdbcExecutionStep step,
-      PSJdbcDbmsDef dbmsDef, PSJdbcTableSchema tableSchema,
-      PSJdbcRowData row)
+    private static void setLogData(PSJdbcExecutionStep step,
+                                  PSJdbcDbmsDef dbmsDef, PSJdbcTableSchema tableSchema,
+                                  PSJdbcRowData row)
    {
       if(step == null) return;
 
@@ -1098,7 +1112,7 @@ public class PSJdbcPlanBuilder
          if (columns.size() > 0)
          {
             PSJdbcRowData pkRow = new PSJdbcRowData(
-               columns.iterator(), PSJdbcRowData.ACTION_INSERT);
+                    columns.iterator(), PSJdbcRowData.ACTION_INSERT);
             stepLogData.setPrimaryKey(pkRow);
          }
       }
@@ -1123,20 +1137,20 @@ public class PSJdbcPlanBuilder
     * @throws IllegalArgumentException if any parameter is null.
     */
    @SuppressWarnings({"unchecked","unused"})
-   static private void addChildTablesDeletePlan(PSJdbcDbmsDef dbmsDef,
-      PSJdbcTableSchema parentTableSchema, PSJdbcTableSchema childTableSchema,
-      PSJdbcRowData parentRow, PSJdbcExecutionPlan deletePlan)
+    private static void addChildTablesDeletePlan(PSJdbcDbmsDef dbmsDef,
+                                                PSJdbcTableSchema parentTableSchema, PSJdbcTableSchema childTableSchema,
+                                                PSJdbcRowData parentRow, PSJdbcExecutionPlan deletePlan)
    {
       if (dbmsDef == null)
          throw new IllegalArgumentException("dbmsDef may not be null");
 
       if (parentTableSchema == null)
          throw new IllegalArgumentException(
-            "parentTableSchema may not be null");
+                 "parentTableSchema may not be null");
 
       if (childTableSchema == null)
          throw new IllegalArgumentException(
-            "childTableSchema may not be null");
+                 "childTableSchema may not be null");
 
       if (parentRow == null)
          throw new IllegalArgumentException("parentRow may not be null");
@@ -1157,38 +1171,38 @@ public class PSJdbcPlanBuilder
             String childTableColName = col[0];
             String parentTableColName = col[2];
             PSJdbcColumnData parentColData =
-               parentRow.getColumn(parentTableColName);
+                    parentRow.getColumn(parentTableColName);
             if (parentColData != null)
             {
                PSJdbcColumnData childColData =
-                  new PSJdbcColumnData(childTableColName,
-                     parentColData.getValue(), parentColData.getEncoding());
+                       new PSJdbcColumnData(childTableColName,
+                               parentColData.getValue(), parentColData.getEncoding());
                columns.add(childColData);
             }
          }
-        
+
          if (columns.size() > 0)
          {
             PSJdbcRowData childRow = new PSJdbcRowData(columns.iterator(),
-               PSJdbcRowData.ACTION_DELETE);
-   
+                    PSJdbcRowData.ACTION_DELETE);
+
             Iterator grandChildTables = childTableSchema.getChildTables();
             while (grandChildTables.hasNext())
             {
                PSJdbcTableSchema grandChildTableSchema =
-                  PSJdbcTableFactory.getTableSchemaCollection().getTableSchema(
-                     (String)grandChildTables.next());
+                       PSJdbcTableFactory.getTableSchemaCollection().getTableSchema(
+                               (String)grandChildTables.next());
                Iterator childRows = getChildRows(dbmsDef, childTableSchema,
-                  grandChildTableSchema, childRow);
+                       grandChildTableSchema, childRow);
                while (childRows.hasNext())
                {
                   addChildTablesDeletePlan(dbmsDef, childTableSchema,
-                     grandChildTableSchema, (PSJdbcRowData)childRows.next(),
-                     deletePlan);
+                          grandChildTableSchema, (PSJdbcRowData)childRows.next(),
+                          deletePlan);
                }
             }
             deletePlan.addStep(PSJdbcStatementFactory.getDeleteStatement(
-               dbmsDef, childTableSchema, childRow));
+                    dbmsDef, childTableSchema, childRow));
          }
       }
    }
@@ -1215,19 +1229,19 @@ public class PSJdbcPlanBuilder
     * @throws IllegalArgumentException if any parameter is null.
     */
    static private Iterator getChildRows(PSJdbcDbmsDef dbmsDef,
-      PSJdbcTableSchema parentTableSchema, PSJdbcTableSchema childTableSchema,
-      PSJdbcRowData parentRow)
+                                        PSJdbcTableSchema parentTableSchema, PSJdbcTableSchema childTableSchema,
+                                        PSJdbcRowData parentRow)
    {
       if (dbmsDef == null)
          throw new IllegalArgumentException("dbmsDef may not be null");
 
       if (parentTableSchema == null)
          throw new IllegalArgumentException(
-            "parentTableSchema may not be null");
+                 "parentTableSchema may not be null");
 
       if (childTableSchema == null)
          throw new IllegalArgumentException(
-            "childTableSchema may not be null");
+                 "childTableSchema may not be null");
 
       if (parentRow == null)
          throw new IllegalArgumentException("parentRow may not be null");
@@ -1274,16 +1288,16 @@ public class PSJdbcPlanBuilder
     * @return The statement block, never <code>null</code> or empty.
     */
    private static PSJdbcExecutionStep getCopyTableStatement(
-      PSJdbcDbmsDef dbmsDef, PSJdbcTableSchema tableSchema,
-      String targetTableName, boolean targetExists, boolean failOnDataCopyError,
-      PSJdbcTableSchemaHandler schemaHandler)
+           PSJdbcDbmsDef dbmsDef, PSJdbcTableSchema tableSchema,
+           String targetTableName, boolean targetExists, boolean failOnDataCopyError,
+           PSJdbcTableSchemaHandler schemaHandler)
    {
       PSJdbcExecutionBlock block = new PSJdbcExecutionBlock();
 
       // drop current target if it exists
       if (targetExists)
          block.addStep(PSJdbcStatementFactory.getDropTableStatement(dbmsDef,
-            targetTableName));
+                 targetTableName));
 
       // create copy of source schema
       PSJdbcTableSchema targetSchema = new PSJdbcTableSchema(tableSchema);
@@ -1291,19 +1305,19 @@ public class PSJdbcPlanBuilder
 
       // create the table
       block.addStep(PSJdbcStatementFactory.getCreateTableStatement(dbmsDef,
-         targetSchema));
+              targetSchema));
 
       // copy the data
       PSJdbcExecutionStep dataStep = null;
       if (schemaHandler != null)
       {
          dataStep = new PSJdbcTableSchemaHandlerStep(
-            dbmsDef, tableSchema, targetSchema, schemaHandler);
+                 dbmsDef, tableSchema, targetSchema, schemaHandler);
       }
       else
       {
          dataStep = PSJdbcStatementFactory.getCopyTableDataStatement(
-            dbmsDef, tableSchema, targetSchema);
+                 dbmsDef, tableSchema, targetSchema);
       }
       dataStep.setStopOnError(failOnDataCopyError);
       block.addStep(dataStep);
@@ -1333,38 +1347,30 @@ public class PSJdbcPlanBuilder
     */
    @SuppressWarnings("unchecked")
    private static PSJdbcTableSchema getTableChanges(PSJdbcTableSchema oldSchema,
-      PSJdbcTableSchema newSchema, StringBuilder buffer)
-      throws PSJdbcTableFactoryException
-   {
+                                                    PSJdbcTableSchema newSchema, StringBuilder buffer)
+           throws PSJdbcTableFactoryException {
       // First build list of column changes
-      List changedCols = new ArrayList();
+      List changedCols = new ArrayList<>();
       Iterator newCols = newSchema.getColumns();
-      while (newCols.hasNext())
-      {
-         PSJdbcColumnDef newCol = (PSJdbcColumnDef)newCols.next();
+      while (newCols.hasNext()) {
+         PSJdbcColumnDef newCol = (PSJdbcColumnDef) newCols.next();
          PSJdbcColumnDef oldCol = oldSchema.getColumn(newCol.getName());
          int colAction;
-         if (oldCol == null)
-         {
+         if (oldCol == null) {
             // doesn't exist, so it's an add
             colAction = PSJdbcTableComponent.ACTION_CREATE;
-            buffer.append(NEWLINE + " New column: " + NEWLINE);
+            buffer.append(NEWLINE).append(" New column: ").append(NEWLINE);
             buffer.append(newCol);
-         }
-         else
-         {
+         } else {
             // exists, so see if it's changed
-            if (newCol.isChanged(oldCol))
-            {
+            if (newCol.isChanged(oldCol)) {
                colAction = PSJdbcTableComponent.ACTION_REPLACE;
-               buffer.append("Modified column: " + NEWLINE);
+               buffer.append("Modified column: ").append(NEWLINE);
                buffer.append("Old column: " + NEWLINE);
                buffer.append(oldCol);
                buffer.append("New column: " + NEWLINE);
                buffer.append(newCol);
-            }
-            else
-            {
+            } else {
                colAction = PSJdbcTableComponent.ACTION_NONE;
             }
          }
@@ -1374,61 +1380,35 @@ public class PSJdbcPlanBuilder
 
       }
 
-      // Now go through old columns and see if any need to be removed
-      Iterator oldCols = oldSchema.getColumns();
-      while (oldCols.hasNext())
-      {
-         PSJdbcColumnDef oldCol = (PSJdbcColumnDef)oldCols.next();
-         PSJdbcColumnDef newCol = newSchema.getColumn(oldCol.getName());
-         if (newCol == null)
-         {
-            // not in new schema, so we need to delete it
-            PSJdbcColumnDef difCol = new PSJdbcColumnDef(oldCol);
-            difCol.setAction(PSJdbcTableComponent.ACTION_DELETE);
-            changedCols.add(difCol);
-            buffer.append("Deleted column: " + NEWLINE);
-            buffer.append(oldCol);
-         }
-      }
-
       // now we can create the changed schema object using the column list
       PSJdbcTableSchema diffTableSchema = new PSJdbcTableSchema(
-         newSchema.getName(), changedCols.iterator());
+              newSchema.getName(), changedCols.iterator());
       diffTableSchema.setCreate(false);
       diffTableSchema.setAlter(true);
 
       // check primary key for changes
       int flags = PSJdbcTableComponent.COMPARE_IGNORE_NAME |
-         PSJdbcTableComponent.COMPARE_IGNORE_ACTION;
+              PSJdbcTableComponent.COMPARE_IGNORE_ACTION;
 
       PSJdbcPrimaryKey newPKey = newSchema.getPrimaryKey();
       PSJdbcPrimaryKey oldPKey = oldSchema.getPrimaryKey();
-      if (newPKey == null && oldPKey != null)
-      {
+      if (newPKey == null && oldPKey != null) {
          PSJdbcPrimaryKey difPKey = new PSJdbcPrimaryKey(
-            oldPKey.getColumnNames(), PSJdbcTableComponent.ACTION_DELETE);
+                 oldPKey.getColumnNames(), PSJdbcTableComponent.ACTION_DELETE);
          diffTableSchema.setPrimaryKey(difPKey);
          buffer.append("Deleted primary key: " + NEWLINE);
          buffer.append(difPKey);
-      }
-      else if (newPKey != null)
-      {
+      } else if (newPKey != null) {
          int pkAction;
-         if (oldPKey == null)
-         {
+         if (oldPKey == null) {
             pkAction = PSJdbcTableComponent.ACTION_CREATE;
             buffer.append("New primary key: " + NEWLINE);
             buffer.append(newPKey);
-         }
-         else
-         {
+         } else {
             if (newPKey.compare(oldPKey, flags) >=
-               PSJdbcTableComponent.IS_EXACT_MATCH)
-            {
+                    PSJdbcTableComponent.IS_EXACT_MATCH) {
                pkAction = PSJdbcTableComponent.ACTION_NONE;
-            }
-            else
-            {
+            } else {
                pkAction = PSJdbcTableComponent.ACTION_REPLACE;
                buffer.append("Modified primary key: " + NEWLINE);
                buffer.append("Old primary key: " + NEWLINE);
@@ -1438,127 +1418,114 @@ public class PSJdbcPlanBuilder
             }
          }
          PSJdbcPrimaryKey difPKey = new PSJdbcPrimaryKey(
-            newPKey.getColumnNames(), pkAction);
+                 newPKey.getColumnNames(), pkAction);
          diffTableSchema.setPrimaryKey(difPKey);
       }
 
       // check foreign key for changes
       List<PSJdbcForeignKey> newFKeys = newSchema.getForeignKeys();
       List<PSJdbcForeignKey> oldFKeys = oldSchema.getForeignKeys();
-      
       List<PSJdbcForeignKey> updateKeys = new ArrayList<PSJdbcForeignKey>();
-      Map<PSJdbcForeignKey,PSJdbcForeignKey> modifiedKeys = new HashMap<PSJdbcForeignKey,PSJdbcForeignKey>();
-      for (PSJdbcForeignKey fk : oldFKeys) 
-      {
+
+      for (PSJdbcForeignKey fk : oldFKeys) {
          int fkAction;
-         if (!newFKeys.contains(fk)) 
-         {
-               PSJdbcForeignKey difFKey = new PSJdbcForeignKey(fk.getName(),fk.getColumns(),
-                  PSJdbcTableComponent.ACTION_DELETE);
-               updateKeys.add(difFKey);
-               buffer.append("Deleted foreign key: " + NEWLINE);
-               buffer.append(difFKey);
+         int idxFK = newFKeys.indexOf(fk);
+         //if Old FK not found in new one, then delete it
+         if (idxFK == -1) {
+            PSJdbcForeignKey difFKey = new PSJdbcForeignKey(fk.getName(), fk.getColumns(),
+                    PSJdbcTableComponent.ACTION_DELETE);
+            updateKeys.add(difFKey);
+            buffer.append("Deleted foreign key: ").append(difFKey).append(NEWLINE);
          } else {
-            for (PSJdbcForeignKey newKey : newFKeys) {
-               if (newKey==fk) {
-                  if (newKey.isComponentEqual(fk))
-                  {
-                    fkAction = PSJdbcTableComponent.ACTION_NONE;
-                  }
-                  else
-                  {
-                    fkAction = PSJdbcTableComponent.ACTION_REPLACE;
-                     buffer.append("Modified foreign key: " + NEWLINE);
-                     buffer.append("Old foreign key: " + NEWLINE);
-                     buffer.append(fk);
-                     buffer.append("New foreign key: " + NEWLINE);
-                     buffer.append(newKey);
-                  }
-                  PSJdbcForeignKey difFKey = new PSJdbcForeignKey(newKey.getName(),newKey.getColumns(),
-                        fkAction);
-                  updateKeys.add(difFKey);
-                  break;
-               }
-            }
-          
+            //If old Found in New one, don't do anything
+            PSJdbcForeignKey newKey = newFKeys.get(idxFK);
+            newKey.setAction(PSJdbcTableComponent.ACTION_NONE);
+            buffer.append("Don't Do anything to: ").append(fk.getName()).append(NEWLINE);
+            updateKeys.add(newKey);
          }
-           
       }
-      
-      for (PSJdbcForeignKey fk2 : newFKeys) 
-      {
-         if (!oldFKeys.contains(fk2)) 
-         {
-            buffer.append("New foreign key: " + NEWLINE);
-            buffer.append(fk2);
-            PSJdbcForeignKey difFKey = new PSJdbcForeignKey(fk2.getColumns(),
-                  PSJdbcTableComponent.ACTION_CREATE);
+
+      for (PSJdbcForeignKey fk2 : newFKeys) {
+         if (!updateKeys.contains(fk2)) {
+            buffer.append(" Add New foreign key: ").append(fk2).append(NEWLINE);
+            PSJdbcForeignKey difFKey = new PSJdbcForeignKey(fk2.getName(), fk2.getColumns(),
+                    PSJdbcTableComponent.ACTION_CREATE);
             updateKeys.add(difFKey);
          }
       }
-      
-      diffTableSchema.setForeignKeys(updateKeys);
+
+         diffTableSchema.setForeignKeys(updateKeys, true);
+
 
       // check indexes for changes
 
       //Get New Indexes from New Schema
       Iterator<PSJdbcIndex> newIndexes = newSchema.getIndexes(
-         PSJdbcIndex.TYPE_UNIQUE | PSJdbcIndex.TYPE_NON_UNIQUE);
+              PSJdbcIndex.TYPE_UNIQUE | PSJdbcIndex.TYPE_NON_UNIQUE);
 
       //Get Old Indexes from existing schema
       Iterator<PSJdbcIndex> oldIndexes = oldSchema.getIndexes(
               PSJdbcIndex.TYPE_UNIQUE | PSJdbcIndex.TYPE_NON_UNIQUE);
 
-      //Keeps a record of all indexes that are in new schema as well
-      List processedOldIdx = new ArrayList();
+      List<PSJdbcIndex> oldIdxList = new ArrayList<>();
+      oldIndexes.forEachRemaining(oldIdxList::add);
 
-      //Traverse over all new Indexes and see if old Index with same name exists, then replace that index with new one
+      //Keeps a record of all indexes that are in new schema as well
+      List<PSJdbcIndex> processedIdx = new ArrayList<>();
+
+      //Traverse over all new Indexes and see if already exists, else add /replace
       while (newIndexes.hasNext()){
          PSJdbcIndex newIndex = (PSJdbcIndex) newIndexes.next();
-         PSJdbcIndex oldIdx = oldSchema.getIndex(newIndex.getName());
+         PSJdbcIndex oldIdx = oldSchema.getIndex(newIndex);
          if(oldIdx != null) {
-            buffer.append(NEWLINE + " Deleting Found Index: ");
+            buffer.append(NEWLINE).append(" Ignore existing Found Index: ");
             buffer.append(oldIdx.getName());
-            processedOldIdx.add(oldIdx.getName());
-            int indexAction = PSJdbcTableComponent.ACTION_REPLACE;
+            buffer.append(" New Index: ");
+            buffer.append(newIndex.getName());
+            int indexAction = PSJdbcTableComponent.ACTION_NONE;
             PSJdbcIndex difIndex = new PSJdbcIndex(newIndex.getName(),
                     newIndex.getColumnNames(), indexAction, newIndex.getType());
-            diffTableSchema.setIndex(difIndex);
+            processedIdx.add(difIndex);
+            oldIdxList.remove(oldIdx);
+         }else{
+            buffer.append(NEWLINE + " Adding New Index : ");
+            buffer.append(newIndex.getName());
+            int indexAction = newIndex.getAction();
+            PSJdbcIndex difIndex = new PSJdbcIndex(newIndex.getName(),
+                    newIndex.getColumnNames(), indexAction, newIndex.getType());
+            processedIdx.add(difIndex);
          }
       }
 
       //Check old indexes that are not in new schema, and validate them, if are having valid column names, else delete them
-      while (oldIndexes.hasNext()){
-         PSJdbcIndex oldIdx = (PSJdbcIndex) oldIndexes.next();
-         if(processedOldIdx.contains(oldIdx.getName())){
-            continue;
-         }else{
-            Iterator<String> colNames = oldIdx.getColumnNames();
-            boolean valid = true;
-            for (Iterator<String> it = colNames; it.hasNext(); ) {
-               String colName = it.next();
-               if(diffTableSchema.getColumn(colName) == null){
-                  valid = false;
-                  buffer.append(NEWLINE + " Deleting Index as column not found: ");
-                  buffer.append(oldIdx.getName());
-                  int indexAction = PSJdbcTableComponent.ACTION_DELETE;
-                  PSJdbcIndex difIndex = new PSJdbcIndex(oldIdx.getName(),
-                          oldIdx.getColumnNames(), indexAction, oldIdx.getType());
-                  diffTableSchema.setIndex(difIndex);
-                  break;
-               }
-            }
-            //Add valid custom index from old schema
-            if(valid && oldIdx.isOfType(PSJdbcIndex.TYPE_NON_UNIQUE)){
-               buffer.append(NEWLINE + " Adding Old Index : ");
+      for(PSJdbcIndex oldIdx : oldIdxList){
+         Iterator<String> colNames = oldIdx.getColumnNames();
+         boolean valid = true;
+         for (Iterator<String> it = colNames; it.hasNext(); ) {
+            String colName = it.next();
+            if(diffTableSchema.getColumn(colName) == null){
+               valid = false;
+               buffer.append(NEWLINE + " Deleting Index as column not found: ");
                buffer.append(oldIdx.getName());
-               int indexAction = PSJdbcTableComponent.ACTION_CREATE;
+               int indexAction = PSJdbcTableComponent.ACTION_DELETE;
                PSJdbcIndex difIndex = new PSJdbcIndex(oldIdx.getName(),
                        oldIdx.getColumnNames(), indexAction, oldIdx.getType());
-               diffTableSchema.setIndex(difIndex);
+               processedIdx.add(difIndex);
+               break;
             }
          }
+         //Add valid custom index from old schema
+            if(valid && oldIdx.isOfType(PSJdbcIndex.TYPE_NON_UNIQUE)){
+               buffer.append(NEWLINE).append(" Leaving Valid Old Index : ");
+            buffer.append(oldIdx.getName());
+            int indexAction = PSJdbcTableComponent.ACTION_NONE;
+            PSJdbcIndex difIndex = new PSJdbcIndex(oldIdx.getName(),
+                    oldIdx.getColumnNames(), indexAction, oldIdx.getType());
+            processedIdx.add(difIndex);
+         }
+
       }
+      diffTableSchema.resetIndexes(processedIdx);
 
       // check for an update key
       PSJdbcUpdateKey newUKey = newSchema.getUpdateKey();
@@ -1567,13 +1534,13 @@ public class PSJdbcPlanBuilder
       {
          // defined in the new schema, use it
          diffTableSchema.setUpdateKey(new PSJdbcUpdateKey(
-            newUKey.getColumnNames()));
+                 newUKey.getColumnNames()));
       }
       else if (oldUKey != null)
       {
          // only defined in old schema, use it
          diffTableSchema.setUpdateKey(new PSJdbcUpdateKey(
-            oldUKey.getColumnNames()));
+                 oldUKey.getColumnNames()));
       }
 
       return diffTableSchema;
@@ -1596,16 +1563,16 @@ public class PSJdbcPlanBuilder
     * @throws PSJdbcTableFactoryException if there are any errors.
     */
    private static PSJdbcTableSchema addTableChanges(PSJdbcTableSchema oldSchema,
-      PSJdbcTableSchema newSchema) throws PSJdbcTableFactoryException
+                                                    PSJdbcTableSchema newSchema) throws PSJdbcTableFactoryException
    {
       // start with a copy of the old schema
       PSJdbcTableSchema resultSchema = new PSJdbcTableSchema(oldSchema);
 
       // process column changes
-      Iterator newCols = newSchema.getColumns();
+      Iterator<PSJdbcColumnDef> newCols = newSchema.getColumns();
       while (newCols.hasNext())
       {
-         PSJdbcColumnDef newCol = (PSJdbcColumnDef)newCols.next();
+         PSJdbcColumnDef newCol = newCols.next();
          int colAction = newCol.getAction();
          if (colAction == PSJdbcTableComponent.ACTION_NONE)
             continue;
@@ -1628,16 +1595,16 @@ public class PSJdbcPlanBuilder
 
       // process foreign key changes
       List<PSJdbcForeignKey> newFKeys = newSchema.getForeignKeys();
-      List<PSJdbcForeignKey> changedFKeys = new ArrayList<PSJdbcForeignKey>();
+      List<PSJdbcForeignKey> changedFKeys = new ArrayList<>();
       for (PSJdbcForeignKey newFKey : newFKeys) {
          int colAction = newFKey.getAction();
          if (colAction != PSJdbcTableComponent.ACTION_NONE && colAction != PSJdbcTableComponent.ACTION_DELETE)
             changedFKeys.add(newFKey);
       }
-      resultSchema.setForeignKeys(changedFKeys);
+      resultSchema.setForeignKeys(changedFKeys,true);
       // process index changes
       Iterator indexes= newSchema.getIndexes(
-         PSJdbcIndex.TYPE_UNIQUE | PSJdbcIndex.TYPE_NON_UNIQUE);
+              PSJdbcIndex.TYPE_UNIQUE | PSJdbcIndex.TYPE_NON_UNIQUE);
       while (indexes.hasNext())
       {
          PSJdbcIndex newIndex = (PSJdbcIndex)indexes.next();
@@ -1673,7 +1640,7 @@ public class PSJdbcPlanBuilder
     * length allowed from the database.
     */
    private static String getBackupTableName(Connection conn, String tablename)
-      throws PSJdbcTableFactoryException
+           throws PSJdbcTableFactoryException
    {
       try
       {
@@ -1690,9 +1657,9 @@ public class PSJdbcPlanBuilder
       catch (SQLException e)
       {
          Object[] args = {tablename,
-            PSJdbcTableFactoryException.formatSqlException(e)};
+                 PSJdbcTableFactoryException.formatSqlException(e)};
          throw new PSJdbcTableFactoryException(
-            IPSTableFactoryErrors.SCHEMA_PROCESS_ERROR, args, e);
+                 IPSTableFactoryErrors.SCHEMA_PROCESS_ERROR, args, e);
       }
    }
 
@@ -1749,8 +1716,8 @@ public class PSJdbcPlanBuilder
     * Constant for newline character.
     */
    public static final String NEWLINE =
-      System.getProperty("line.separator", "\n");
- }
+           System.getProperty("line.separator", "\n");
+}
 
 
 

@@ -185,7 +185,7 @@
 		<SectionLink name="DependencyViewer">http://localhost:9992/Rhythmyx/sys_ceDependency/Depend.html</SectionLink>
 		<SectionLink name="VariantLookupURL">http://127.0.0.1:9999/Rhythmyx/sys_ceSupport/VariantLookup.xml?pssessionid=103b15dc3d708cf32a86de30893c699f51d4307a</SectionLink>
 		<SectionLink name="RelatedLookupURL">http://127.0.0.1:9999/Rhythmyx/sys_rcSupport/relatedcontent.xml?pssessionid=103b15dc3d708cf32a86de30893c699f51d4307a&amp;sys_contentid=8&amp;sys_revision=1</SectionLink>
-		<SectionLink name="VariantListURL">http://127.0.0.1:9999/Rhythmyx/sys_rcSupport/variantlistwithslots.xml?pssessionid=103b15dc3d708cf32a86de30893c699f51d4307a&amp;sys_contentid=8</SectionLink>
+		<SectionLink name="VariantListURL">http://127.0.0.1:9999/Rhythmyx/sys_cxSupport/variantlistwithslots.xml?pssessionid=103b15dc3d708cf32a86de30893c699f51d4307a&amp;sys_contentid=8</SectionLink>
 		<SectionLink name="ContentSlotLookupURL">http://127.0.0.1:9999/Rhythmyx/sys_rcSupport/contentslotvariantlist.xml?pssessionid=103b15dc3d708cf32a86de30893c699f51d4307a&amp;sys_contentid=8</SectionLink>
 		<SectionLink name="userstatusincludeurl">http://127.0.0.1:9999/Rhythmyx/sys_ComponentSupport/component.xml?pssessionid=103b15dc3d708cf32a86de30893c699f51d4307a&amp;sys_componentname=cmp_userstatus</SectionLink>
 		<SectionLink name="helpincludeurl">http://127.0.0.1:9999/Rhythmyx/sys_ComponentSupport/component.xml?pssessionid=103b15dc3d708cf32a86de30893c699f51d4307a&amp;sys_componentname=ca_help</SectionLink>

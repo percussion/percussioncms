@@ -1,25 +1,18 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.percussion.rx.ui.jsf.beans;
 
@@ -135,7 +128,7 @@ public class PSTopNavigation extends DataModel
       public Tab(String label, String url, String matchPath, String roles)
       {
          this(label, url, matchPath);
-         mi_id = "rx_tab_" + label.replace(" ", "_");
+         mi_id = "rx_tab_" + label.replaceAll(" ", "_");
          if (StringUtils.isBlank(roles))
             mi_enabled = true;
          else
@@ -248,9 +241,9 @@ public class PSTopNavigation extends DataModel
     * Ctor.
     */
    public PSTopNavigation() {
-      m_tabs = new ArrayList<>();
+	   m_tabs = new ArrayList<Tab>();
 
-      m_tabs.add(new Tab("Content", "/Rhythmyx/sys_cx/mainpage.html", null));
+      m_tabs.add(new Tab("Content", "/Rhythmyx/sys_cx/mainpage.html", CONTENT_ROLE));
       m_tabs.add(new Tab("Publishing Design",
             "/ui/publishing",
             "/ui/publishing", PUB_DESIGN_ROLE));
@@ -281,8 +274,7 @@ public class PSTopNavigation extends DataModel
       String[] rolearr = roles.split(",");
       for (String role : rolearr)
       {
-         Boolean b = PSRoleUtilities.hasComponentRole(COMP_BANNER, role.trim());
-         if (Boolean.TRUE.equals(b))
+		   if (PSRoleUtilities.hasComponentRole(COMP_BANNER, role.trim()))
          {
             return true;
          }
@@ -290,6 +282,36 @@ public class PSTopNavigation extends DataModel
       return false;
    }
    
+
+   /**
+    * Determines if content explorer is available based on whether
+    * the server is a publishing hub or has the server property enableContentExplorerRole
+    * set to true.  If so, then we then determine if the current user of the request has one of the roles that
+    * are defined by the {@link #CONTENT_ROLE} properties of the {@link #COMP_BANNER} component.
+    *
+    * If the server does not have the property set to true and is not a publishing hub, then the role is always true.
+    *
+    * @return <code>false</code> if the server is a publishing hub, or that the Content Explorer roles property is enabled
+    * and the current user does not have the content role defined by the component properties; otherwise return <code>true</code>.
+    */
+   public static boolean hasContentCompRoles()
+   {
+	   return hasCompBannerRoles(CONTENT_ROLE);
+   }
+
+   /**
+    * Determines if workflow is available.  It is not available if:
+    * The server is a publishing hub, or the user does not have any of the roles as
+    * defined by the {@link #WORKFLOW_ROLE} properties of the {@link #COMP_BANNER} component.
+    *
+    * @return <code>false</code> if the server is a publishing hub or if the user does not have the workflow rule.
+    * Otherwise return true.
+    */
+   public static boolean hasWorkFlowCompRoles()
+   {
+		   return hasCompBannerRoles(WORKFLOW_ROLE);
+   }
+
    /**
     * Determines if the current user of the request has one of the roles that
     * are defined by the {@link #PUB_DESIGN_ROLE} properties of the 
@@ -339,6 +361,8 @@ public class PSTopNavigation extends DataModel
     * control the visibility and accessibility of the "Publishing Design" tab.
     */
     private static final String PUB_DESIGN_ROLE = "pubrole,PubDesignRole";
+
+   private static final String CONTENT_ROLE = "ContentRole";
    
    /**
     * The property names in {@link #COMP_BANNER} component for defining roles to 
