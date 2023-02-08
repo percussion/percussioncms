@@ -13,8 +13,28 @@ jobs:
 
     steps:
       - name: "Build & test"
-        uses: .github/workflows/maven.yml@release
-        secrets: inherit
+      - uses: actions/checkout@v3
+      - run: |
+          mkdir -p /home/runner/.m2
+          echo "${{ secrets.SIGNING_KEYSTORE }}" > ~/.m2/release.keystore.asc
+          gpg -d --passphrase "${{ secrets.SIGNING_KEYSTOREPASS }}" --batch ~/.m2/release.keystore.asc > ~/.m2/release.keystore
+      - uses: actions/setup-java@v3
+        with:
+          java-version: '8'
+          distribution: 'liberica'
+          java-package: 'jdk+fx'
+      - uses: s4u/maven-settings-action@v2.8.0
+        with:
+          oracleRepo: true
+          servers: |
+            [{
+                "id": "percussion.s3.repo",
+                "username": "${{ secrets.S3_MAVEN_USERNAME }}",
+                "password": "${{ secrets.S3_MAVEN_PASSWORD }}"
+            }]
+          properties: '[ {"signing.keystoreFile": "${{secrets.SIGNING_KEYSTOREFILE}}"},{"signing.keystorePass": "${{secrets.SIGNING_KEYSTOREPASS}}"},{"signing.keystoreType": "${{secrets.SIGNING_KEYSTORE_TYPE}}"},{"signing.keyAlias": "${{secrets.SIGNING_KEYSTORE_ALIAS}}"},{"signing.keyPass": "${{secrets.SIGNING_KEY_PASS}}"}]'
+      - run: mvn -B package --file pom.xml
+
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
