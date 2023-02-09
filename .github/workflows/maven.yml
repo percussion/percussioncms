@@ -36,6 +36,12 @@ jobs:
             java-version: '8'
             distribution: 'liberica'
             java-package: 'jdk+fx'
+      - name: "Cache the Maven packages to speed up build"
+        uses: actions/cache@v3.2.4
+        with:
+            path: ~/.m2
+            key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+            restore-keys: ${{ runner.os }}-m2
       - uses: s4u/maven-settings-action@v2.8.0
         with:
             oracleRepo: true
