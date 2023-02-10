@@ -1,27 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-  ~     Percussion CMS
-  ~     Copyright (C) 1999-2021 Percussion Software, Inc.
-  ~
-  ~     This program is free software: you can redistribute it and/or modify
-  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
-  ~
-  ~     This program is distributed in the hope that it will be useful,
-  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
-  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  ~     GNU Affero General Public License for more details.
-  ~
-  ~     Mailing Address:
-  ~
-  ~      Percussion Software, Inc.
-  ~      PO Box 767
-  ~      Burlington, MA 01803, USA
-  ~      +01-781-438-9900
-  ~      support@percussion.com
-  ~      https://www.percussion.com
-  ~
-  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
-  -->
+
 
 <PSXArchiveInfo archiveRef="perc.defaultLanguage" category="USER" created="1464913423794" editable="true" serverName="cs-pbutkiewicz2:9962" userName="Admin">
    <PSXFormatVersion buildId="0" buildNumber="20160404" displayVersion="5.3.0" interfaceVersion="9" majorVersion="5" microVersion="0" minorVersion="3" optionalId="" versionString="RELEASE"/>
@@ -40,7 +18,7 @@
             <Description>A widget that sets the default-href lang attribute for international SEO purposes.</Description>
             <Publisher name="Percussion Software" url="https://www.percussion.com"/>
             <CmsVersion max="9.0.0" min="5.3.0"/>
-            <Version>2.4.8</Version>
+            <Version>2.5.2</Version>
             <ImplConfigFile/>
             <LocalConfigFile/>
             <PKGDependencies/>

@@ -1,25 +1,18 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.percussion.tablefactory;
@@ -119,11 +112,11 @@ public class PSJdbcRowMapping implements IPSJdbcRowMapping
 
       verifyColumnMapping(srcRow);
 
-      List colDataList = new ArrayList();
-      Iterator rowIt = srcRow.getColumns();
+      List<PSJdbcColumnData> colDataList = new ArrayList<>();
+      Iterator<PSJdbcColumnData> rowIt = srcRow.getColumns();
       while (rowIt.hasNext())
       {
-         PSJdbcColumnData srcColData = (PSJdbcColumnData)rowIt.next();
+         PSJdbcColumnData srcColData = rowIt.next();
          PSJdbcColumnData destColData = processColumn(srcColData);
          if (destColData != null)
             colDataList.add(destColData);
@@ -131,8 +124,7 @@ public class PSJdbcRowMapping implements IPSJdbcRowMapping
       if (m_defColValues.size() > 0)
       {
          // add the columns with default values
-         for (int i=0; i < m_defColValues.size(); i++)
-            colDataList.add((PSJdbcColumnData)m_defColValues.get(i));
+         colDataList.addAll(m_defColValues);
       }
       return new PSJdbcRowData(colDataList.iterator(), m_rowAction);
    }
@@ -257,21 +249,17 @@ public class PSJdbcRowMapping implements IPSJdbcRowMapping
       if (row == null)
          throw new IllegalArgumentException("row may not be null");
 
-      Iterator it = m_colMapping.keySet().iterator();
-      while (it.hasNext())
-      {
-         String srcColName = (String)it.next();
+      for (String srcColName : m_colMapping.keySet()) {
          PSJdbcColumnData srcColData = row.getColumn(srcColName);
-         if (srcColData == null)
-         {
+         if (srcColData == null) {
             // failed to find the column specified in the mapping
             String tableName = "";
             if (m_tblData != null)
                tableName = m_tblData.getName();
             Object[] args = {tableName, srcColName};
             throw new PSJdbcTableFactoryException(
-               IPSTableFactoryErrors.COLUMN_NOT_FOUND,
-               args);
+                    IPSTableFactoryErrors.COLUMN_NOT_FOUND,
+                    args);
          }
       }
    }
@@ -305,7 +293,7 @@ public class PSJdbcRowMapping implements IPSJdbcRowMapping
       if (!m_colMapping.containsKey(srcColName))
          return null;
 
-      String destColName = (String)m_colMapping.get(srcColName);
+      String destColName = m_colMapping.get(srcColName);
       return new PSJdbcColumnData(destColName, srcColData.getValue(),
          srcColData.getEncoding());
    }
@@ -327,7 +315,7 @@ public class PSJdbcRowMapping implements IPSJdbcRowMapping
     * map containing source table column names as key and destination table
     * column names as value, never <code>null</code>, may be empty
     */
-   private Map m_colMapping = new HashMap();
+   private Map<String, String> m_colMapping = new HashMap<>();
 
    /**
     * an array containing PSJdbcColumnData objects that should be added to
@@ -335,7 +323,7 @@ public class PSJdbcRowMapping implements IPSJdbcRowMapping
     * be empty if no column having a default value needs to be added to
     * the row for destination table.
     */
-   private List m_defColValues = new ArrayList();
+   private List<PSJdbcColumnData> m_defColValues = new ArrayList<>();
 
    /**
     * row action that should be set for the rows for the destination

@@ -109,7 +109,7 @@
                password="${perc.ftp.password}"
 			   useFtps="${perc.ftp.useFtps}"
 			   passive="yes"
-               skipFailedTransfers="true"
+               skipFailedTransfers="false"
                verbose="yes"
                ignoreNoncriticalErrors="yes"
                >

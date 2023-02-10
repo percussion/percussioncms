@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context>
+	<Parameter name="soln.p13n.jdbc.sql" value="oracle"/>
+	<Parameter name="soln.p13n.jdbc.driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
+	<Parameter name="soln.p13n.jdbc.url" value="jdbc:oracle:thin:@dev-phoward:1521:dev1"/>
+	<Parameter name="soln.p13n.jdbc.username" value="benchen_p13n"/>
+	<Parameter name="soln.p13n.jdbc.password" value="demo"/>
+	<Parameter name="soln.p13n.hibernate.dialect" value="org.hibernate.dialect.OracleDialect"/>
+
+</Context>

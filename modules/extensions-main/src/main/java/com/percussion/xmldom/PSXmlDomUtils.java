@@ -1,25 +1,18 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.percussion.xmldom;
 
@@ -27,38 +20,33 @@ import com.percussion.extension.PSExtensionProcessingException;
 import com.percussion.util.PSPurgableTempFile;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
+import org.apache.commons.lang.StringUtils;
+import org.jsoup.Jsoup;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
 
+import javax.xml.parsers.DocumentBuilder;
 import java.io.BufferedWriter;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
-import java.io.Writer;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
-
-import javax.xml.parsers.DocumentBuilder;
-
-import org.apache.commons.lang.StringUtils;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.w3c.dom.Text;
-import org.w3c.tidy.Tidy;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-import org.xml.sax.SAXParseException;
 
 
 /**
@@ -150,7 +138,6 @@ public class PSXmlDomUtils
       if (null == cx)
          throw new IllegalArgumentException("PSXmlDomContext cannot be null");
 
-      String tidiedHTML = tidyInput(cx, HTMLString);
       String tidiedOutput;
 
       /*
@@ -162,13 +149,13 @@ public class PSXmlDomUtils
       doctypeHeader += "<!DOCTYPE html [" +
             getDefaultEntities(cx.getServerRoot()) + "]>" + NEWLINE + NEWLINE;
 
-      if (hasXMLHeaders(tidiedHTML))
+      if (hasXMLHeaders(HTMLString))
       {
-         tidiedOutput = tidiedHTML;         
+         tidiedOutput = HTMLString;
       }
       else
       {
-         tidiedOutput = doctypeHeader + tidiedHTML;
+         tidiedOutput = doctypeHeader + HTMLString;
       }
       if (cx.isLogging())
       {
@@ -220,127 +207,6 @@ public class PSXmlDomUtils
       }
 
       return resultDoc;
-   }
-
-
-   /**
-    * Tidy the incoming document, based on the settings in the operation
-    * context.
-    * 
-    * @param cx the PSXmlDomContext for this request, must not be
-    *           <code>null</code>.
-    * 
-    * @param htmlInput a String containing the input to be tidied, if blank
-    *           returns empty string.
-    * 
-    * @returns the tidied output in a String, never <code>null</code> may be
-    *          empty.
-    * 
-    */
-   public static String tidyInput(PSXmlDomContext cx, String htmlInput)
-         throws IOException,PSExtensionProcessingException
-   {
-      if(StringUtils.isBlank(htmlInput))
-      {
-         return StringUtils.EMPTY;
-      }
-      if(cx==null)
-         throw new IllegalArgumentException("cx must not be null");
-      
-      if (!cx.isTidyEnabled())
-      {
-         cx.printTraceMessage("Tidy Not Enabled");
-         return htmlInput;
-      }
-
-      Tidy tidy = new Tidy();
-      tidy.setConfigurationFromProps(cx.getTidyProperties());
-      tidy.setInputEncoding("UTF-8");
-
-      if (cx.isLogging())
-      {
-         cx.printTraceMessage("writing trace file xmldompretidy.doc");
-         try(FileOutputStream preTidy = new FileOutputStream("xmldompretidy.doc")) {
-            preTidy.write(htmlInput.getBytes(DEBUG_ENCODING));
-         }
-      }
-
-      try(ByteArrayInputStream bystream = new ByteArrayInputStream(htmlInput.getBytes(ENCODING))){
-         StringWriter tidyErrors = new StringWriter();
-         tidy.setErrout(new PrintWriter((Writer) tidyErrors));
-         Document TidyXML = tidy.parseDOM(bystream, null);
-         /*
-          * The following code adds a non-breaking space as the first body
-          * node in case the body only contains comments. This is to work 
-          * around a bug in eWebEditPro, which is removing all comments on load
-          * if there are only comments. Adding a non-breaking space is ektrons
-          * recommended workaround.
-          */
-         if (cx.rxCommentHandling())
-         {
-            NodeList nodes = TidyXML.getElementsByTagName("body");
-            if (nodes != null && nodes.getLength() > 0)
-            {
-               Element body = (Element) nodes.item(0);
-               NodeList children = body.getChildNodes();
-               if (children != null)
-               {
-                  boolean commentOnly = true;
-                  for (int i=0; commentOnly && i<children.getLength(); i++)
-                  {
-                     Node child = children.item(i);
-                     commentOnly = child.getNodeType() == Node.COMMENT_NODE;
-                  }
-                  
-                  if (commentOnly)
-                  {
-                     char nbsp = '\u00a0';
-                     Text text = TidyXML.createTextNode("" + nbsp);
-                     body.insertBefore(text, children.item(0));
-                  }
-               }
-            }
-         }
-         
-         if (tidy.getParseErrors() > 0)
-         {
-            cx.printTraceMessage("Tidy Errors: " + tidyErrors.toString());
-            throw new PSExtensionProcessingException(0,
-                                                  "Errors encoutered in Tidy" +
-                                                  tidyErrors.toString());
-         }
-
-         // Write out the document element using PSNodePrinter. This removes
-         // the Xml and Doctype declaration.
-         StringWriter swriter = new StringWriter();
-         PSNodePrinter np = new PSNodePrinter(swriter);
-         np.printNode(TidyXML.getDocumentElement());
-         String result = swriter.toString();
-
-         if(cx.getUsePrettyPrint())
-         {
-            try(ByteArrayInputStream xmlStream = new ByteArrayInputStream(result.getBytes(ENCODING))) {
-               TidyXML = tidy.parseDOM(xmlStream, null);
-               try (ByteArrayOutputStream tidiedStream = new ByteArrayOutputStream()) {
-                  tidy.pprint(TidyXML, (OutputStream) tidiedStream);
-                  result = tidiedStream.toString(ENCODING);
-               }
-            }
-         }
-         if (cx.isLogging())
-         {
-            cx.printTraceMessage("writing trace file xmldomtidied.doc");
-            try(FileOutputStream fs = new FileOutputStream("xmldomtidied.doc")) {
-               PrintWriter pw = new PrintWriter(fs);
-               pw.println(result);
-               pw.flush();
-               pw.close();
-            }
-         }
-         return result;
-      }
-
-
    }
 
    /**
@@ -839,11 +705,12 @@ public class PSXmlDomUtils
     * @return name of the character encoding to use, or <code>null</code> if
     *         the platform default should be used.
     */
-   static String determineCharacterEncoding(PSXmlDomContext contxt,
-                                            PSPurgableTempFile inputSourceFile,
-                                            String encodingDefault)
+   static Charset determineCharacterEncoding(PSXmlDomContext contxt,
+                                             PSPurgableTempFile inputSourceFile,
+                                             String encodingDefault)
    {
-      String encoding = null;
+      String encoding = StandardCharsets.UTF_8.name();
+
       if (inputSourceFile.getCharacterSetEncoding() != null)
       {
          encoding = inputSourceFile.getCharacterSetEncoding();
@@ -858,7 +725,7 @@ public class PSXmlDomUtils
       {
          contxt.printTraceMessage("Encoding is plaform default");
       }
-      return encoding;
+      return Charset.forName(encoding);
    }
 
    /**

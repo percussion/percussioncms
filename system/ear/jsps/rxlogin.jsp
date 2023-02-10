@@ -3,40 +3,11 @@
 <%@ page import="com.percussion.i18n.PSI18nUtils" %>
 <%@ page import="com.percussion.i18n.PSLocaleManager" %>
 <%@ page import="com.percussion.i18n.PSLocale" session="true" %>
-<%@ page import="com.percussion.security.SecureStringUtils" %>
+<%@ page import="com.percussion.i18n.PSLocaleException" %>
 <%@ taglib uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" prefix="csrf" %>
 <%@ taglib uri="http://rhythmyx.percussion.com/components"
 		   prefix="rxcomp"%>
-<%--
-  ~     Percussion CMS
-  ~     Copyright (C) 1999-2021 Percussion Software, Inc.
-  ~
-  ~     This program is free software: you can redistribute it and/or modify
-  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
-  ~
-  ~     This program is distributed in the hope that it will be useful,
-  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
-  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  ~     GNU Affero General Public License for more details.
-  ~
-  ~     Mailing Address:
-  ~
-  ~      Percussion Software, Inc.
-  ~      PO Box 767
-  ~      Burlington, MA 01803, USA
-  ~      +01-781-438-9900
-  ~      support@percussion.com
-  ~      https://www.percussion.com
-  ~
-  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
-  --%>
-
 <%
-	//Checking for vulnerability
-	String str = request.getQueryString();
-	if(str != null && str != ""){
-		response.sendError(response.SC_FORBIDDEN, "Invalid QueryString!");
-	}
 	String username = request.getParameter("j_username");
 	String password = request.getParameter("j_password");
 	String locale = request.getParameter("j_locale");
@@ -60,20 +31,23 @@
 	pageContext.setAttribute("locale",locale);
 
 	String loginComplete = PSServer.getServerProps().getProperty("loginAutoComplete");
-	String autoComplete = "";
+	String autoComplete;
 	if(loginComplete != null && loginComplete.equalsIgnoreCase("off") ){
 		autoComplete = "autocomplete='off'";
 	}else{
 		autoComplete = "autocomplete='on'";
 	}
+
 	PSLocaleManager locManager = PSLocaleManager.getInstance();
+
 %>
 <!DOCTYPE html>
 <html lang="<%=lang %>">
 <head>
 	<title>${rxcomp:i18ntext('jsp_login@Percussion Login',locale)}</title>
 	<style>
-		body {background-color: #6C717C; font-family: Verdana; margin: 0; padding: 0; }
+		body {background-color: #6C717C;
+			font-family: Verdana, serif; margin: 0; padding: 0; }
 		.perc-login-logo {color: #121212; margin-top: 50px; margin-bottom: 50px;}
 		#loginform .perc-form    { }
 		#perc-forgot {color: #fff;}
@@ -98,14 +72,14 @@
 			cmd.focus();
 		}
 	</script>
-	<link rel="stylesheet" type="text/css" href="/cm/cui/components/twitter-bootstrap-3.0.0/dist/css/bootstrap.min.css"/>
+	<link rel="stylesheet" type="text/css" href="/cm/jslib/profiles/3x/libraries/bootstrap/css/bootstrap.min.css"/>
 	<script
 			src="/Rhythmyx/tmx/tmx.jsp?mode=js&amp;prefix=perc.ui.&amp;sys_lang=en-us"></script>
 	<script src="/JavaScriptServlet"></script>
-	<script src="/cm/cui/components/jquery/jquery.min.js"></script>
-	<script src="/cm/cui/components/jquery-migrate/jquery-migrate.min.js"></script>
+	<script src="/cm/jslib/profiles/3x/jquery/jquery-3.6.0.js"></script>
+	<script src="/cm/jslib/profiles/3x/jquery/jquery-migrate-3.3.2.js"></script>
 
-	<script src="/cm/cui/components/twitter-bootstrap-3.0.0/dist/js/bootstrap.min.js"></script>
+	<script src="/cm/jslib/profiles/3x/libraries/bootstrap/js/bootstrap.min.js"></script>
 </head>
 <body onload="setCursor()">
 <div class="container">
@@ -137,6 +111,10 @@
 						<% }%>
 					</select>
 				</div>
+				<div class="form-group">
+					<label for="perc-login-select-ui">${rxcomp:i18ntext('jsp_login@SelectUI',locale)}</label>
+					<input id="perc-login-select-ui" name="j_selectUI" type="checkbox">
+				</div>
 				<button type="submit" id="perc-login-button" form="loginform" class="btn btn-primary btn-default">${rxcomp:i18ntext('jsp_login@LoginButton',locale)}</button>
 			</div>
 		</csrf:form>
@@ -161,7 +139,7 @@
 	<div class="row">
 		<div id="perc-register" class="span 12">
 			<p>Don't have a login?  Click the button below to request access from your System Administrator.</p>
-			<button type="button" id="perc-register-button"class="btn btn-primary">Request an Account</button>
+			<button type="button" id="perc-register-button" class="btn btn-primary">Request an Account</button>
 		</div>
 	</div>
 	<%
@@ -173,6 +151,15 @@
 	%>
 
 </div>
-</div>
+<script>
+	jQuery(function ($) {
+		var checked = localStorage.getItem('perc-login-select-ui-checked') === "true";
+		$('#perc-login-select-ui').prop('checked', checked);
+		$('#perc-login-select-ui').change(function () {
+			var isChecked = $(this).is(':checked');
+			localStorage.setItem('perc-login-select-ui-checked', isChecked);
+		});
+	});
+</script>
 </body>
 </html>

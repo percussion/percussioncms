@@ -1,25 +1,18 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.percussion.tablefactory;
 
@@ -35,7 +28,6 @@ import java.io.InputStream;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -146,7 +138,7 @@ public class PSJdbcDataTypeMap
                isMatch = false;
             else
             {
-               List drivers = PSStringOperation.getSplittedList(driverAttr,
+               List<String> drivers = PSStringOperation.getSplittedList(driverAttr,
                   ';');
                if (!drivers.contains(driver))
                   isMatch = false;
@@ -161,7 +153,7 @@ public class PSJdbcDataTypeMap
                isMatch = false;
             else
             {
-               List osList = PSStringOperation.getSplittedList(osAttr, ';');
+               List<String> osList = PSStringOperation.getSplittedList(osAttr, ';');
                if (!osList.contains(os))
                   isMatch = false;
             }
@@ -190,7 +182,7 @@ public class PSJdbcDataTypeMap
         setMaxIndexColSize(map);
         setCreateForeignKeyIndexes(map);   
        // We have our map, load each type mapping
-      Map typeMap = new HashMap();
+      Map<String,PSJdbcDataTypeMapping> typeMap = new HashMap<>();
       Element mapping = tree.getNextElement( PSJdbcDataTypeMapping.NODE_NAME,
          PSXmlTreeWalker.GET_NEXT_ALLOW_CHILDREN );
       if (mapping == null)
@@ -217,7 +209,7 @@ public class PSJdbcDataTypeMap
     * 
     *@param map The element from which to get this object's attribute. May be <code>null</code> or empty.
     * 
-    * @throws TableFactoryException if error occurs
+    * @throws PSJdbcTableFactoryException if error occurs
     */
 
     private void setMaxIndexColSize(Element map) throws PSJdbcTableFactoryException
@@ -242,15 +234,14 @@ public class PSJdbcDataTypeMap
     * Loads "createForeignKeyIndexes" mapping from PSJdbcDataTypeMaps.xm
     * 
     * @param map The element from which to get this object's attribute. May be <code>null</code> or empty.
-    * 
-    * @throws TableFactoryException if error occurs
+    *
     */
-
-    private void setCreateForeignKeyIndexes(Element map) throws PSJdbcTableFactoryException
+    private void setCreateForeignKeyIndexes(Element map)
    {
       String sTempIndex = map.getAttribute(CREATEFOREIGNKEYINDEXES);
-      if (sTempIndex == null || sTempIndex.trim().length() == 0 || !sTempIndex.equalsIgnoreCase("yes"))
-          return;
+      if (sTempIndex.trim().length() == 0 || !sTempIndex.equalsIgnoreCase("yes"))
+         m_createforeignkeyindexes=false;
+
       m_createforeignkeyindexes = true;
    }
 
@@ -298,7 +289,7 @@ public class PSJdbcDataTypeMap
     * @throws PSJdbcTableFactoryException if any errors occur processing the
     * Map.
     */
-   public PSJdbcDataTypeMap(Map mappings) throws PSJdbcTableFactoryException
+   public PSJdbcDataTypeMap(Map<String,PSJdbcDataTypeMapping> mappings) throws PSJdbcTableFactoryException
    {
       if (mappings == null || mappings.isEmpty())
          throw new IllegalArgumentException(
@@ -321,7 +312,7 @@ public class PSJdbcDataTypeMap
          throw new IllegalArgumentException(
             "jdbcString may not be null or empty");
 
-      return (PSJdbcDataTypeMapping)m_strJdbc2NativeMap.get(jdbcString);
+      return m_strJdbc2NativeMap.get(jdbcString);
    }
    
    /**
@@ -332,7 +323,7 @@ public class PSJdbcDataTypeMap
     */
    public PSJdbcDataTypeMapping getMapping(int jdbcType)
    {
-      return (PSJdbcDataTypeMapping)m_intJdbc2NativeMap.get(new Integer(jdbcType));
+      return m_intJdbc2NativeMap.get(jdbcType);
    }
 
    /**
@@ -355,7 +346,7 @@ public class PSJdbcDataTypeMap
 
       String nativeString = null;
       PSJdbcDataTypeMapping dataType =
-         (PSJdbcDataTypeMapping) m_strJdbc2NativeMap.get(jdbcString);
+              m_strJdbc2NativeMap.get(jdbcString);
       if (dataType != null)
          nativeString = dataType.getNative();
       return nativeString;
@@ -372,7 +363,7 @@ public class PSJdbcDataTypeMap
    {
       String nativeString = null;
       PSJdbcDataTypeMapping dataType =
-         (PSJdbcDataTypeMapping) m_intJdbc2NativeMap.get(new Integer(jdbcType));
+              m_intJdbc2NativeMap.get(jdbcType);
       if (dataType != null)
          nativeString = dataType.getNative();
       return nativeString;
@@ -402,14 +393,11 @@ public class PSJdbcDataTypeMap
       // preserve the old behavior from when we did not store a list of
       // mappings, but stored only one mapping for each native type, as we
       // are doing our best to avoid breaking any existing code.
-      List mappingList = (List)m_native2JdbcMap.get(nativeString.toUpperCase());
+      List<PSJdbcDataTypeMapping> mappingList = m_native2JdbcMap.get(nativeString.toUpperCase());
       if (mappingList != null)
       {
          PSJdbcDataTypeMapping dataTypeMapping = null;
-         Iterator mappings = mappingList.iterator();
-         while (mappings.hasNext())
-         {
-            PSJdbcDataTypeMapping test = (PSJdbcDataTypeMapping)mappings.next();
+         for (PSJdbcDataTypeMapping test : mappingList) {
             if (dataTypeMapping == null)
                dataTypeMapping = test;
             else if (!dataTypeMapping.isNative2Jdbc() && test.isNative2Jdbc())
@@ -488,26 +476,23 @@ public class PSJdbcDataTypeMap
       // in the datatypemap.dtd, but the behavior is actually not truly 
       // predicable, and we are doing our best to avoid breaking any existing
       // code.      
-      List mappingList = (List)m_native2JdbcMap.get(nativeString.toUpperCase());
+      List<PSJdbcDataTypeMapping> mappingList = m_native2JdbcMap.get(nativeString.toUpperCase());
       if (mappingList != null)
       {
          PSJdbcDataTypeMapping dataTypeMapping = null;
-         Iterator mappings = mappingList.iterator();
-         while (mappings.hasNext())
-         {
-            PSJdbcDataTypeMapping test = (PSJdbcDataTypeMapping)mappings.next();
+         for (PSJdbcDataTypeMapping test : mappingList) {
             if (!test.isNative2Jdbc())
                continue;
 
             dataTypeMapping = test;
-            
+
             // if not using size and scale, don't match so we get the last one
             // with the flag set
             String testsize = test.getDefaultSize();
             String testscale = test.getDefaultScale();
             boolean sizeMatch = useSize && size.equals(testsize);
             boolean scaleMatch = useScale && scale.equals(testscale);
-               
+
             // keep going to take last one with flag if no exact match
             if (sizeMatch && scaleMatch)
                break;
@@ -528,7 +513,7 @@ public class PSJdbcDataTypeMap
    /**
     * Converts a jdbc type from a String representation to an integer.
     *
-    * @param jdbcType The jdbc type as a String.  May not be <code>null</code>
+    * @param jdbcString The jdbc type as a String.  May not be <code>null</code>
     * or empty.
     *
     * @return The jdbc type represented as an integer.
@@ -544,12 +529,12 @@ public class PSJdbcDataTypeMap
             IPSTableFactoryErrors.JDBC_INT_DATA_TYPE_CONVERSION,
             jdbcString == null ? "null" : jdbcString);
 
-      Integer jdbcType = (Integer)m_jdbcString2Int.get(jdbcString);
+      Integer jdbcType = m_jdbcString2Int.get(jdbcString);
       if (jdbcType == null)
          throw new PSJdbcTableFactoryException(
             IPSTableFactoryErrors.JDBC_STRING_DATA_TYPE_CONVERSION, jdbcString);
 
-      return jdbcType.intValue();
+      return jdbcType;
    }
 
 
@@ -567,7 +552,7 @@ public class PSJdbcDataTypeMap
    public String convertJdbcType(int jdbcType)
       throws PSJdbcTableFactoryException
    {
-      String jdbcString = (String)m_jdbcInt2String.get(new Integer(jdbcType));
+      String jdbcString = m_jdbcInt2String.get(jdbcType);
       if (jdbcString == null)
          throw new PSJdbcTableFactoryException(
             IPSTableFactoryErrors.JDBC_INT_DATA_TYPE_CONVERSION,
@@ -587,7 +572,7 @@ public class PSJdbcDataTypeMap
    }
    /**
     * Get the maximum size for any column that may be included in an index 
-    * definition, see {@link #setMaxIndexColSize(int)} for more info.
+    * definition, see {@link #setMaxIndexColSize(long)} for more info.
     * 
     * @return The size, either -1 (unlimited) or greater than zero.
     */
@@ -637,33 +622,27 @@ public class PSJdbcDataTypeMap
     * @throws PSJdbcTableFactoryException if there are any errors processing the
     * map.
     */
-   private void processMappings(Map mappings) throws PSJdbcTableFactoryException
+   private void processMappings(Map<String,PSJdbcDataTypeMapping> mappings) throws PSJdbcTableFactoryException
    {
       // store the mappings in the string map
-      m_strJdbc2NativeMap = new HashMap(mappings);
+      m_strJdbc2NativeMap = new HashMap<>(mappings);
 
       // walk the mappings, and add to each of the other maps
-      Iterator entries = mappings.entrySet().iterator();
-      while (entries.hasNext())
-      {
-         Map.Entry entry = (Map.Entry)entries.next();
-         String jdbcStr = (String)entry.getKey();
-         PSJdbcDataTypeMapping dataType = 
-            (PSJdbcDataTypeMapping)entry.getValue();
+      for (Map.Entry<String, PSJdbcDataTypeMapping> stringPSJdbcDataTypeMappingEntry : mappings.entrySet()) {
+         Map.Entry<String, PSJdbcDataTypeMapping> entry = stringPSJdbcDataTypeMappingEntry;
+         String jdbcStr = entry.getKey();
+         PSJdbcDataTypeMapping dataType =
+                 entry.getValue();
 
-         Integer jdbcType = (Integer)m_jdbcString2Int.get(jdbcStr);
-         if (jdbcType == null)
-         {
-            try
-            {
-               jdbcType = new Integer(Types.class.getField(jdbcStr).getInt(
-                  null));
-            }
-            catch (Exception e)
-            {
+         Integer jdbcType = m_jdbcString2Int.get(jdbcStr);
+         if (jdbcType == null) {
+            try {
+               jdbcType = Types.class.getField(jdbcStr).getInt(
+                       null);
+            } catch (Exception e) {
                throw new PSJdbcTableFactoryException(
-                  IPSTableFactoryErrors.INVALID_DATA_TYPE_MAPPING,
-                  new Object[] {jdbcStr, dataType.getNative()} );
+                       IPSTableFactoryErrors.INVALID_DATA_TYPE_MAPPING,
+                       new Object[]{jdbcStr, dataType.getNative()});
             }
             m_jdbcString2Int.put(jdbcStr, jdbcType);
             m_jdbcInt2String.put(jdbcType, jdbcStr);
@@ -674,12 +653,7 @@ public class PSJdbcDataTypeMap
          // build map of native to list of datatypes to use for 
          // native->jdbc calculations.   
          String nativeType = dataType.getNative().toUpperCase();
-         List dataTypeList = (List)m_native2JdbcMap.get(nativeType);
-         if (dataTypeList == null)
-         {
-            dataTypeList = new ArrayList();
-            m_native2JdbcMap.put(nativeType, dataTypeList);
-         }
+         List<PSJdbcDataTypeMapping> dataTypeList = m_native2JdbcMap.computeIfAbsent(nativeType, k -> new ArrayList<>());
          dataTypeList.add(dataType);
       }
    }
@@ -694,13 +668,13 @@ public class PSJdbcDataTypeMap
     * Map of jdbc type as a String to native type as a String.  Initialized in
     * the ctor, never <code>null</code>, empty, or modified after that.
     */
-   private Map m_strJdbc2NativeMap = null;
+   private Map<String,PSJdbcDataTypeMapping> m_strJdbc2NativeMap = null;
 
    /**
     * Map of jdbc type as an Integer to native type as a String.  Initialized in
     * the ctor, never <code>null</code>, empty, or modified after that.
     */
-   private Map m_intJdbc2NativeMap = new HashMap();
+   private Map<Integer,PSJdbcDataTypeMapping> m_intJdbc2NativeMap = new HashMap<>();
 
    /**
     * Map for storing the native type (<code>String</code>) as key and a 
@@ -708,21 +682,21 @@ public class PSJdbcDataTypeMap
     * Initialized in the ctor, never <code>null</code>, empty, or modified after 
     * that.
     */
-   private Map m_native2JdbcMap = new HashMap();
+   private Map<String,List<PSJdbcDataTypeMapping>> m_native2JdbcMap = new HashMap<>();
 
    /**
     * Map of Jdbc types as Integers mapped to the String representation.
     * Initialized in the ctor, never <code>null</code>, empty, or modified after
     * that.
     */
-   private static Map m_jdbcInt2String = new HashMap();
+   private static Map<Integer,String> m_jdbcInt2String = new HashMap<>();
 
    /**
     * Map of Jdbc types as Strings mapped to the Integer representation.
     * Initialized in the ctor, never <code>null</code>, empty, or modified after
     * that.
     */
-   private static Map m_jdbcString2Int = new HashMap();
+   private static Map<String,Integer> m_jdbcString2Int = new HashMap<>();
 
    /**
     * The name of the Jdbc driver.  Initialized in the ctor, never <code>null
@@ -739,7 +713,7 @@ public class PSJdbcDataTypeMap
    
     /**
      * Flag to check if the condition to create indexes with foreign key columns
-     * is set. Look at {@link #setCreateForeignKeyIndexes(map)} for more
+     * is set. Look at {@link #setCreateForeignKeyIndexes(Element)} for more
      * info. Default value is false.
      */
 

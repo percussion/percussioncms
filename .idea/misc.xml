@@ -34,10 +34,25 @@
         <option value="$PROJECT_DIR$/modules/perc-ant/pom.xml" />
         <option value="$PROJECT_DIR$/modules/perc-samples/perc-loader-sample-java/pom.xml" />
         <option value="$PROJECT_DIR$/modules/SSLTools/pom.xml" />
+        <option value="$PROJECT_DIR$/modules/Help/pom.xml" />
+        <option value="$PROJECT_DIR$/modules/redirect-tool/pom.xml" />
+        <option value="$PROJECT_DIR$/modules/p13n-api/pom.xml" />
+        <option value="$PROJECT_DIR$/modules/segmentation-api/pom.xml" />
+        <option value="$PROJECT_DIR$/modules/segmentation-rx/pom.xml" />
+        <option value="$PROJECT_DIR$/modules/extensions-landingpage/pom.xml" />
+        <option value="$PROJECT_DIR$/deliverytiersuite/delivery-tier-suite/p13n-ds/pom.xml" />
+        <option value="$PROJECT_DIR$/modules/extensions-serverutils/pom.xml" />
+        <option value="$PROJECT_DIR$/modules/perc-i18n/pom.xml" />
+        <option value="$PROJECT_DIR$/modules/perc-checkboxtree/pom.xml" />
       </list>
     </option>
+    <option name="ignoredFiles">
+      <set>
+        <option value="$PROJECT_DIR$/modules/ant-install/pom.xml" />
+      </set>
+    </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" project-jdk-name="1.8 (3)" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
   <component name="ProjectType">

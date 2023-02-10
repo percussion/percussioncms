@@ -1,25 +1,18 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 var regionsList;
@@ -117,21 +110,26 @@ function getAllPublishingServer(serverType,serverObj) {
         publishingServerList = pslLst;
         $("#publishServer").empty();
         for(var i in publishingServerList) {
-            $('#publishServer').append(new Option(publishingServerList[i], publishingServerList[i]));
+            $('#publishServer').append(new Option(publishingServerList[i],publishingServerList[i]));
         }
         var selectedserver;
-	    if(publishingServerList.length > 1){
-			selectedserver = publishingServerList[0];
-		}
+        if(publishingServerList.length > 1){
+            selectedserver = publishingServerList[0];
+        }
 
-	    if(typeof serverObj !== 'undefined' && typeof serverObj.serverInfo !== 'undefined'){
-		    var selectedserverProp = getArrayProperty(serverObj.serverInfo.properties, "key", "publishServer");
+        if(typeof serverObj !== 'undefined' && typeof serverObj.serverInfo !== 'undefined'){
+            var selectedserverProp = getArrayProperty(serverObj.serverInfo.properties, "key", "publishServer");
             //Selecting Second Record as default because first one is us gov.
             if( typeof selectedserverProp !== 'undefined' && selectedserverProp !== null && typeof selectedserverProp.value !== 'undefined'){
                 selectedserver = selectedserverProp.value;
             }
-	    }
-        $('#publishServer').val(selectedserver);
+        }
+        var isExist = publishingServerList.includes(selectedserver);
+        if(isExist){
+            $('#publishServer').val(selectedserver);
+        }else{
+            $('#publishServer').val("NONE");
+        }
     });
 }
 
@@ -405,40 +403,40 @@ function bindServerPropertiesEvents() {
         updateDriverPropertiesUi();
     });
 
-    // FTP property bindings
+    // SFTP property bindings
+    $('#fileDriver').on("change", function(evt) {
+        if(evt.currentTarget.options.item(evt.currentTarget.options.selectedIndex).text === 'SFTP') {
+            // Set the SFTP fields.
+            //if neither password or key is checked, trigger the key as it is preferred.
+            if (!$('#SFTPprivateKeyFlag').is(':checked') && !$('#SFTPpasswordFlag').is(':checked')) {
+                $('#perc-sftp-password').prop("disabled", true);
+                $('#privateKeyList').prop("disabled", false);
+                $("#SFTPprivateKeyFlag").prop("checked",true);
+            } else if ($('#SFTPprivateKeyFlag').is(':checked')) {
+                $('#perc-sftp-password').prop("disabled", true);
+                $('#privateKeyList').prop("disabled", false);
+            } else if ($('#SFTPpasswordFlag').is(':checked')) {
+                $('#perc-sftp-password').prop("disabled", false);
+                $('#privateKeyList').prop("disabled", true);
+            }
 
-    $('.perc-password-key-flag').on("change", function(evt) {
-        if($('#privateKeyFlag').is(':checked')) {
-            $('#secureFTP').prop('checked', true);
-            $('#perc-ftp-password').prop('disabled', true);
-            $('#privateKeyList').prop('disabled', false);
-        }
-        else {
-            $('#perc-ftp-password').prop('disabled', false);
-            $('#privateKeyList').prop('disabled', true);
+            $('#SFTPprivateKeyFlag').on("change", function (evt) {
+                if ($('#SFTPprivateKeyFlag').is(':checked')) {
+                    $('#perc-sftp-password').prop("disabled", true);
+                    $('#privateKeyList').prop("disabled", false);
+                }
+
+            });
+
+            $('#SFTPpasswordFlag').on("change", function (evt) {
+                if ($('#SFTPpasswordFlag').is(':checked')) {
+                    $('#perc-sftp-password').prop("disabled", false);
+                    $('#privateKeyList').prop("disabled", true);
+                }
+
+            });
         }
     });
-
-    $('#secureFTP').on("change", function(evt) {
-        if($('#secureFTP').is(':checked') && $('#privateKeyFlag').is(':checked')) {
-            $('#perc-ftp-password').prop('disabled', true);
-            $('#privateKeyFlag').prop('checked', true);
-            $('#privateKeyList').prop('disabled', false);
-        }
-        else {
-            $('#passwordFlag').prop('disabled', false);
-            $('#passwordFlag').prop('checked', true);
-            $('#perc-ftp-password').prop('disabled', false);
-            $('#privateKeyList').prop('disabled', true);
-
-            /*  We need to trigger a change on the flag to ensure
-            *   that the password field does not get enabled
-            *   while the private key radio is selected
-            */
-            $('.perc-password-key-flag').trigger('change');
-        }
-    });
-
 
     // Always trigger driver change and secureFTP flag change on initial load
     $('.perc-driver-group').trigger('change');
@@ -822,7 +820,7 @@ function deleteServerRequest() {
 
                 processAlert(response);
 
-                // Only close the modal when we have a successful reponse
+                // Only close the modal when we have a successful response
                 if(!(response.result.warning)) {
                     $('#percServerPropertiesModal').modal('toggle');
                     clearSelectedServer();
@@ -884,10 +882,10 @@ function processServerPropertiesForm(eventData) {
         driver = '';
     }
     if (driver == 'FTP' || driver == 'FTPS') {
-        $('#secureFTP').prop('checked', false);
+        $('#SFTPprivateKeyFlag').prop('checked', false);
     }
     if(driver == 'SFTP'){
-        $('#secureFTP').prop('checked', true);
+        $('#SFTPprivateKeyFlag').prop('checked', true);
     }
 
     //crawl through all properties and create an array of properties

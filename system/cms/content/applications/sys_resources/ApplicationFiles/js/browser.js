@@ -25,7 +25,7 @@ if (is_firefox || is_safari)
 {
    var pssessionScript = document.createElement('script');
    pssessionScript.type = 'text/javascript';
-   pssessionScript.src = '/util/getPSSessionID.jsp';
+   pssessionScript.src = '/ui/util/getPSSessionID.jsp';
    document.getElementsByTagName('head')[0].appendChild(pssessionScript);
 }
 

@@ -1,25 +1,18 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.percussion.extension;
@@ -39,6 +32,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Properties;
 
 /**
@@ -472,13 +466,7 @@ public class PSExtensionDef implements IPSExtensionDef, Serializable,
 
       return ver;
    }
-   
-   @Override
-   public boolean equals(Object b)
-   {
-      return EqualsBuilder.reflectionEquals(this, b);
-   }
-   
+
    @Override
    public IPSExtensionDef clone()
    {
@@ -512,9 +500,16 @@ public class PSExtensionDef implements IPSExtensionDef, Serializable,
    }
 
    @Override
-   public int hashCode()
-   {
-      return HashCodeBuilder.reflectionHashCode(this);
+   public boolean equals(Object o) {
+      if (this == o) return true;
+      if (!(o instanceof PSExtensionDef)) return false;
+      PSExtensionDef that = (PSExtensionDef) o;
+      return m_isDepecated == that.m_isDepecated && m_isRestoreRequestParamsOnError == that.m_isRestoreRequestParamsOnError && Objects.equals(m_ref, that.m_ref) && Objects.equals(m_resURLs, that.m_resURLs) && Objects.equals(m_initParams, that.m_initParams) && Objects.equals(m_interfaces, that.m_interfaces) && Objects.equals(m_runtimeParams, that.m_runtimeParams) && Objects.equals(m_runtimeParamsMap, that.m_runtimeParamsMap) && Objects.equals(m_suppliedResources, that.m_suppliedResources) && Objects.equals(m_requiredApplications, that.m_requiredApplications) && Objects.equals(m_methods, that.m_methods);
+   }
+
+   @Override
+   public int hashCode() {
+      return Objects.hash(m_ref, m_resURLs, m_initParams, m_interfaces, m_runtimeParams, m_runtimeParamsMap, m_suppliedResources, m_requiredApplications, m_isDepecated, m_isRestoreRequestParamsOnError, m_methods);
    }
 
    /* (non-Javadoc)

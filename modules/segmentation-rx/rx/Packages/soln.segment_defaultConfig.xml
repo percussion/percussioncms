@@ -1,0 +1,30 @@
+<SolutionConfigurations publisherPrefix="soln" publisherName="Percussion Software, Inc."  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="localConfig.xsd">
+	<SolutionConfig name="segment">
+		<property name="Label" value="Segment" />
+		<property name="AllowedTemplates">
+			<pvalues>
+				<!--
+				<pvalue>soln_segment_SegmentData</pvalue>
+				-->
+			</pvalues>
+		</property>
+		<property name="DefaultWorkflow" value="soln_segment_workflow" />
+		<property name="AllowedWorkflows">
+			<pvalues>
+				<pvalue>soln_segment_workflow</pvalue>
+			</pvalues>
+		</property>
+		<property name="effects">
+			<propertySet>
+                <property name="extension" value="Java/global/percussion/user/soln_segment_Effect_ext"/>
+				<property name="executionContext">
+					<pvalues>
+						<pvalue>Pre-Construction</pvalue>
+						<pvalue>Pre-Destruction</pvalue>
+					</pvalues>
+				</property>
+				<property name="direction" value="down"/>
+			</propertySet>
+		</property>
+	</SolutionConfig>
+</SolutionConfigurations>

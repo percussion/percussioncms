@@ -91,22 +91,21 @@
             <h2>International SEO - Individual page language alternates selection</h2>
             <span id="perc-help-toggle" class="perc-toggle-help fa fa-question-circle" title="Click to toggle help"></span><label for="perc-help-toggle">Click to toggle help.</label>
             <div class="perc-help">
-                This widget is used to augment the beharior of the Defaul Language widget which scans your sites to automatically index and add alteranate language page link references to your page.
-                This widget will allow you to manually selecte alternate language pages that may not be automatically detected.
+                This widget is used to augment the behavior of the Default Language widget which scans your sites to automatically index and add alternate language page link references to your page.
+                This widget will allow you to manually select alternate language pages that may not be automatically detected.
                 <br />
                 <br />
                 Edit this widget at the page level to select specific alternate language versions of this page.
                 Add a reference to the table below for each Page, Language, and Region combination. Language is always required.
                 <br />
                 <br />
-                When the Region or Country is selected, Search Engines will only return results from the international site to users speaking that language in that region.
-                Otherwise UK English content might be returned before US English content on US Search Engines and visa versa.
+                When the Region or Country is selected, search engines will only return results from the international site to users speaking that language in that region.
+                Otherwise UK English content might be returned before US English content on US search engines and vice versa.
                 <br />
                 <br />
                 Tips:
                 <ul>
                     <li>Always choose language and country when you want search engines to return search results only in that region.</li>
-                    <li>Site Names should match the <a href="https://support.google.com/webmasters/answer/44231?hl=en" target="_blank" rel="noopener noreferrer">Preferred Domain Name</a> for the site.</li>
                     <li>Click here for more information: <a href="https://support.google.com/webmasters/answer/189077?hl=en" target="_blank" rel="noopener noreferrer">rel=alternate href-lang=x</a></li>
                 </ul>
             </div>

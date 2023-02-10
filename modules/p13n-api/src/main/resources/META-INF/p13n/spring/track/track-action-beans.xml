@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:lang="http://www.springframework.org/schema/lang"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+        
+    <bean class="com.percussion.soln.p13n.tracking.action.impl.VisitorTrackingActionLogin" autowire="byType"/>
+    <bean class="com.percussion.soln.p13n.tracking.action.impl.VisitorTrackingActionUpdate" autowire="byType" />
+    <bean class="com.percussion.soln.p13n.tracking.action.impl.VisitorTrackingActionSetWeights" autowire="byType" />
+    <bean class="com.percussion.soln.p13n.tracking.action.impl.VisitorTrackingActionClear" autowire="byType" />
+	
+</beans>

@@ -1,25 +1,18 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.percussion.tablefactory;
@@ -89,9 +82,9 @@ public class PSJdbcTableSchemaHandler
       root.appendChild(dataHandlersEl);
 
       // add data handlers
-      Iterator it = m_dataHandlers.iterator();
+      Iterator<IPSJdbcTableDataHandler> it = m_dataHandlers.iterator();
       {
-         IPSJdbcTableDataHandler handler = (IPSJdbcTableDataHandler)it.next();
+         IPSJdbcTableDataHandler handler = it.next();
          Element dataHandlerEl = handler.toXml(doc);
          dataHandlersEl.appendChild(dataHandlerEl);
       }
@@ -166,10 +159,10 @@ public class PSJdbcTableSchemaHandler
             String className = sTemp;
 
             // load the data handler class
-            IPSJdbcTableDataHandler dataHandler = null;
+            IPSJdbcTableDataHandler dataHandler;
             try
             {
-               Class cls = Class.forName(className);
+               Class<?> cls = Class.forName(className);
                dataHandler = (IPSJdbcTableDataHandler)cls.newInstance();
                dataHandler.fromXml(dataHandlerEl);
             }
@@ -253,10 +246,7 @@ public class PSJdbcTableSchemaHandler
       }
 
       // initialize the data handlers
-      Iterator it = m_dataHandlers.iterator();
-      while (it.hasNext())
-      {
-         IPSJdbcTableDataHandler handler = (IPSJdbcTableDataHandler)it.next();
+      for (IPSJdbcTableDataHandler handler : m_dataHandlers) {
          handler.init(dbmsDef, conn, srcTableSchema, destTableSchema);
       }
       m_bHandlersInitialized = true;
@@ -281,10 +271,7 @@ public class PSJdbcTableSchemaHandler
             throw new IllegalArgumentException("conn may not be null");
 
       // close the data handlers
-      Iterator it = m_dataHandlers.iterator();
-      while (it.hasNext())
-      {
-         IPSJdbcTableDataHandler handler = (IPSJdbcTableDataHandler)it.next();
+      for (IPSJdbcTableDataHandler handler : m_dataHandlers) {
          handler.close(conn);
       }
       m_bHandlersInitialized = false;
@@ -311,10 +298,7 @@ public class PSJdbcTableSchemaHandler
       if (conn == null)
          throw new IllegalArgumentException("conn may not be null");
       // execute the data handlers
-      Iterator it = m_dataHandlers.iterator();
-      while (it.hasNext())
-      {
-         IPSJdbcTableDataHandler handler = (IPSJdbcTableDataHandler)it.next();
+      for (IPSJdbcTableDataHandler handler : m_dataHandlers) {
          row = handler.execute(conn, row);
       }
       return row;
@@ -425,7 +409,7 @@ public class PSJdbcTableSchemaHandler
     * schema change occurs. These objects process data when the schema plan
     * is being executed. Never <code>null</code>, may be empty.
     */
-   private List m_dataHandlers = new ArrayList();
+   private List<IPSJdbcTableDataHandler> m_dataHandlers = new ArrayList<>();
 
    /**
     * stores the initialization state of the data handlers. If

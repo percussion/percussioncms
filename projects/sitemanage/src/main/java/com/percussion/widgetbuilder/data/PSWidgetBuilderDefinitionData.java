@@ -1,25 +1,18 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.percussion.widgetbuilder.data;
@@ -30,6 +23,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
+
+import java.util.Objects;
 
 @XmlRootElement(name="WidgetBuilderDefinitionData")
 public class PSWidgetBuilderDefinitionData  extends PSWidgetBuilderSummaryData
@@ -118,7 +113,7 @@ public class PSWidgetBuilderDefinitionData  extends PSWidgetBuilderSummaryData
     /**
      * Set the html used to render the widget
      *
-     * @param html The html, not be <code>null<code/> or empty.
+     * @param widgetHtml The html, not be <code>null<code/> or empty.
      */
     public void setWidgetHtml(String widgetHtml)
     {
@@ -176,6 +171,30 @@ public class PSWidgetBuilderDefinitionData  extends PSWidgetBuilderSummaryData
     {
         Validate.notNull(cssFileList);
         this.cssFileList = cssFileList;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("PSWidgetBuilderDefinitionData{");
+        sb.append("fieldsList=").append(fieldsList);
+        sb.append(", widgetHtml='").append(widgetHtml).append('\'');
+        sb.append(", jsFileList=").append(jsFileList);
+        sb.append(", cssFileList=").append(cssFileList);
+        sb.append('}');
+        return sb.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof PSWidgetBuilderDefinitionData)) return false;
+        PSWidgetBuilderDefinitionData that = (PSWidgetBuilderDefinitionData) o;
+        return Objects.equals(getFieldsList(), that.getFieldsList()) && Objects.equals(getWidgetHtml(), that.getWidgetHtml()) && Objects.equals(getJsFileList(), that.getJsFileList()) && Objects.equals(getCssFileList(), that.getCssFileList());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getFieldsList(), getWidgetHtml(), getJsFileList(), getCssFileList());
     }
 }
 

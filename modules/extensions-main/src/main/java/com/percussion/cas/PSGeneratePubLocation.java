@@ -1,25 +1,18 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.percussion.cas;
 
@@ -28,7 +21,7 @@ import com.percussion.data.PSConversionException;
 import com.percussion.data.PSDatabaseMetaData;
 import com.percussion.data.PSInternalRequestCallException;
 import com.percussion.design.objectstore.PSExtensionParamValue;
-import com.percussion.design.objectstore.PSNotFoundException;
+import com.percussion.error.PSNotFoundException;
 import com.percussion.design.objectstore.PSTextLiteral;
 import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSAssemblyLocation;
@@ -65,7 +58,6 @@ import com.percussion.util.PSHtmlParameters;
 import com.percussion.util.PSPreparedStatement;
 import com.percussion.util.PSSqlHelper;
 import com.percussion.util.PSUrlUtils;
-import com.percussion.utils.exceptions.PSExceptionHelper;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.jdbc.PSConnectionDetail;
 import com.percussion.utils.jdbc.PSConnectionHelper;
@@ -205,7 +197,7 @@ public class PSGeneratePubLocation extends PSSimpleJavaUdfExtension
       Number variantid = null;
       Number revision = null;
       String urlString = "";
-      Map paramsBackup = request.getParameters();
+      Map<String, Object> paramsBackup = request.getParameters();
       PSExtensionParams eparams = new PSExtensionParams(params, new String[]
       {IPSHtmlParameters.SYS_VARIANTID, IPSHtmlParameters.SYS_CONTENTID,
             IPSHtmlParameters.SYS_REVISION, IPSHtmlParameters.SYS_CONTEXT,
@@ -345,14 +337,15 @@ public class PSGeneratePubLocation extends PSSimpleJavaUdfExtension
       }
       catch (Exception e)
       {
-         log.error("Problem while generating a publishing "
-               + "location for template " + variantid + " and contentid "
-               + contentid, PSExceptionHelper.findRootCause(e, true));
+         log.error("Problem while generating a publishing location for template {} and contentid {}. Error: {}",
+                 variantid,
+                 contentid,
+                 PSExceptionUtils.getMessageForLog(e));
       }
       finally
       {
          // restore the original HTML parameters
-         request.setParameters((HashMap) paramsBackup);
+         request.setParameters(paramsBackup);
          sws.stop();
       }
 

@@ -1,25 +1,18 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2021 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.percussion.taxonomy.web;
@@ -28,9 +21,9 @@ import com.percussion.taxonomy.domain.Language;
 import com.percussion.taxonomy.domain.Node;
 import com.percussion.taxonomy.domain.Related_node;
 import org.apache.commons.lang.ArrayUtils;
-import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
+import org.apache.commons.text.StringEscapeUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -103,19 +96,19 @@ public class XMLProviderController extends AbstractXMLProviderController {
         String prefix = request.getParameter("prefix");
         
         Collection<Integer> already_picked_node_ids = null;
-        if (prefix.indexOf("related")>=0){
-        	already_picked_node_ids = new ArrayList<Integer>();
-        	for (Related_node related_node : (Collection<Related_node>) nodeService.getRelatedNodes(tp.getNodeID())){
+        if (prefix.contains("related")){
+        	already_picked_node_ids = new ArrayList<>();
+        	for (Related_node related_node : nodeService.getRelatedNodes(tp.getNodeID())){
         		already_picked_node_ids.add(related_node.getRelated_node().getId());
         	}
         	
-        }else if (prefix.indexOf("similar")>=0){
-        	already_picked_node_ids = new ArrayList<Integer>();
-        	for (Related_node related_node : (Collection<Related_node>) nodeService.getSimilarNodes(tp.getNodeID())){
+        }else if (prefix.contains("similar")){
+        	already_picked_node_ids = new ArrayList<>();
+        	for (Related_node related_node : nodeService.getSimilarNodes(tp.getNodeID())){
         		already_picked_node_ids.add(related_node.getRelated_node().getId());
         	}
-        } else if (prefix.indexOf("treenode")>=0){
-        	already_picked_node_ids = new ArrayList<Integer>();
+        } else if (prefix.contains("treenode")){
+        	already_picked_node_ids = new ArrayList<>();
         	if (request.getParameter("already_picked_node_ids").length() > 0){
         		for (String id_as_string : StringUtils.split(StringUtils.trimToEmpty(request.getParameter("already_picked_node_ids")),",")){
         			already_picked_node_ids.add(Integer.parseInt(StringUtils.trimToEmpty(id_as_string)));
@@ -138,20 +131,20 @@ public class XMLProviderController extends AbstractXMLProviderController {
     }
     
     public ModelAndView getJSTreeSearch(HttpServletRequest request, HttpServletResponse response) throws Exception {
-    	HashMap<String, Object> myModel = new HashMap<String, Object>();
+    	HashMap<String, Object> myModel = new HashMap<>();
     	TaxonParams tp = new TaxonParams(request,taxonomyService);
 
     	boolean exclude_disabled = (request.getParameter("exclude_disabled")!=null && request.getParameter("exclude_disabled").equals("true"));
 
     	String prefix = request.getParameter("prefix");
     	
-    	ArrayList<String> a = new ArrayList<String>();
+    	ArrayList<String> a = new ArrayList<>();
     	
     	// TODO in the future admins might be able to browse / search in a different language but for now we assume editors are editing in English (even if they are entering data for different language)
     	// int langID = tp.getLangID();
     	int langID = Language.DEFAUL_LANG; 
     	
-    	for (Node node : (Collection <Node>) nodeService.getNodesFromSearch(tp.getTaxID(), langID, request.getParameter("q"),exclude_disabled)){
+    	for (Node node : nodeService.getNodesFromSearch(tp.getTaxID(), langID, request.getParameter("q"),exclude_disabled)){
     		for (Integer node_id : getSelfAndAncestors(node.getId(), langID)){
     			a.add("\"#" + prefix + node_id + '"');
     		}
@@ -163,21 +156,21 @@ public class XMLProviderController extends AbstractXMLProviderController {
     }
 
     public ModelAndView setInUse(HttpServletRequest request, HttpServletResponse response) throws Exception {
-    	HashMap<String, Object> myModel = new HashMap<String, Object>();
+    	HashMap<String, Object> myModel = new HashMap<>();
     	
     	// TODO in the future admins might be able to browse / search in a different language but for now we assume editors are editing in English (even if they are entering data for different language)
     	// int langID = tp.getLangID();
     	int langID = Language.DEFAUL_LANG;
     	    	
     	// build collection of integer ids
-    	Collection<Integer> ids = new ArrayList<Integer>();
+    	Collection<Integer> ids = new ArrayList<>();
     	for (String id_string : StringUtils.split(StringUtils.trimToEmpty(request.getParameter("ids")), ',')){
     		if (NumberUtils.toInt(StringUtils.trimToEmpty(id_string)) > 0){
     			ids.add(NumberUtils.toInt(StringUtils.trimToEmpty(id_string)));
     		}
     	}
     	
-    	for (Node node : (Collection<Node>)nodeService.getSomeNodes(ids)){
+    	for (Node node : nodeService.getSomeNodes(ids)){
     		if (!node.getIn_use()){
     			node.setIn_use(true);
     			nodeService.saveNode(node);
@@ -189,14 +182,14 @@ public class XMLProviderController extends AbstractXMLProviderController {
     }
     
     public ModelAndView getIdsToString(HttpServletRequest request, HttpServletResponse response) throws Exception {
-    	HashMap<String, Object> myModel = new HashMap<String, Object>();
+    	HashMap<String, Object> myModel = new HashMap<>();
     	
     	// TODO in the future admins might be able to browse / search in a different language but for now we assume editors are editing in English (even if they are entering data for different language)
     	// int langID = tp.getLangID();
     	int langID = Language.DEFAUL_LANG;
     	    	
     	// build collection of integer ids
-    	Collection<Integer> ids = new ArrayList<Integer>();
+    	Collection<Integer> ids = new ArrayList<>();
     	String param_value = StringUtils.trimToEmpty(request.getParameter("ids"));
     	param_value = StringUtils.remove(param_value, " ");
     	for (String id_string : StringUtils.split(param_value, ',')){
@@ -210,8 +203,8 @@ public class XMLProviderController extends AbstractXMLProviderController {
     	   return new ModelAndView("getidstostring", "model", myModel);
     	
     	// build collection of node names
-    	Collection<String> node_names = new ArrayList<String>();
-    	for (Object[] obj : (Collection<Object[]>)nodeService.getSomeNodeNames(ids, langID)){
+    	Collection<String> node_names = new ArrayList<>();
+    	for (Object[] obj : nodeService.getSomeNodeNames(ids, langID)){
     		node_names.add(obj[2].toString());
     	}
     	
@@ -221,7 +214,7 @@ public class XMLProviderController extends AbstractXMLProviderController {
     }
     
     public ModelAndView getAutocompleteSearch(HttpServletRequest request, HttpServletResponse response) throws Exception {
-    	HashMap<String, Object> myModel = new HashMap<String, Object>();
+    	HashMap<String, Object> myModel = new HashMap<>();
     	TaxonParams tp = new TaxonParams(request,taxonomyService);
 
     	String prefix = request.getParameter("prefix");
@@ -233,15 +226,15 @@ public class XMLProviderController extends AbstractXMLProviderController {
     	
     	ConcurrentHashMap<Integer, ConcurrentHashMap<String,Collection<String>>> titles_ConcurrentHashMap = buildTitlesConcurrentHashMap(tp.getTaxID(),langID);
     	
-		Collection<Object[]> unfilted_nodes = (Collection<Object[]>) nodeService.getAllNodeNames(tp.getTaxID(), langID);
+		Collection<Object[]> unfilted_nodes = nodeService.getAllNodeNames(tp.getTaxID(), langID);
     	
-    	ArrayList<String> a = new ArrayList<String>();
+    	ArrayList<String> a = new ArrayList<>();
     	
     	int z = 0;
     	
 
     	
-    	for (Node node : (Collection <Node>) nodeService.getNodesFromSearch(tp.getTaxID(), langID, request.getParameter("term"),true)){
+    	for (Node node : nodeService.getNodesFromSearch(tp.getTaxID(), langID, request.getParameter("term"),true)){
     			// note this is were we set the max dropdown length
     			// done find ones we have already picked
     			if (z <= 5 && !ArrayUtils.contains(exclude_id_strings, String.valueOf(node.getId()))){
@@ -250,7 +243,7 @@ public class XMLProviderController extends AbstractXMLProviderController {
     				// find matching node name value
     				for (Object[] obj : unfilted_nodes){
     					Integer obj_id = new Integer(String.valueOf(obj[0]));
-    					if (obj_id.intValue() == node.getId()){
+    					if (obj_id == node.getId()){
     						tripletPlusTwo = obj;
     					}
     				}
@@ -261,7 +254,7 @@ public class XMLProviderController extends AbstractXMLProviderController {
     				if (node.getParent()!= null){
         				for (Object[] obj : unfilted_nodes){
         					Integer obj_id = new Integer(String.valueOf(obj[0]));
-        					if (obj_id.intValue() == node.getParent().getId()){
+        					if (obj_id == node.getParent().getId()){
         						parent_abbr = obj[2].toString();
         						if (StringUtils.contains(parent_abbr, "(") && StringUtils.contains(parent_abbr, ")")){
         							parent_abbr = StringUtils.split(StringUtils.replace(parent_abbr, ")", "("),"(")[1];
@@ -276,8 +269,8 @@ public class XMLProviderController extends AbstractXMLProviderController {
     				String s = "{";
     				s += "\"id\" : \"#" + prefix + node.getId() + "\", ";
     				s += "\"label\" : \"" + StringUtils.replace(parent_abbr + tripletPlusTwo[2],"\"","\\\"") + "\", ";
-    				s += "\"value\" : \"" + StringEscapeUtils.escapeHtml(parent_abbr + tripletPlusTwo[2]) + "\", ";
-    				s += "\"title\" : \"" + StringUtils.replace(StringEscapeUtils.escapeHtml(title),"|","&#13;&#10;") + "\"";
+    				s += "\"value\" : \"" + StringEscapeUtils.escapeHtml4(parent_abbr + tripletPlusTwo[2]) + "\", ";
+    				s += "\"title\" : \"" + StringUtils.replace(StringEscapeUtils.escapeHtml4(title),"|","&#13;&#10;") + "\"";
     				s +=  "}";
     				
     				a.add(s);

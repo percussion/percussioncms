@@ -28,13 +28,13 @@
 	<xsl:variable name="variantid2" select="//sys_variantid2"/>
 	<xsl:variable name="useragent" select="//@useragent"/>
 	<xsl:variable name="appletparams">
-		<AppletParams>
+		<AppletParams xmlns="">
 			<Param name="code" value="com.percussion.tools.help.PSHelpApplet"/>
 			<Param name="archive" value="help.jar,jh.jar"/>
-			<Param name="codebase" value="../sys_resources/AppletJars/"/>
+			<Param name="codebase" value="../dce"/>
 			<Param name="MAYSCRIPT" value="true"/>
 			<Param name="scriptable" value="true"/>
-			<Param name="helpset_file" value="../../Docs/Rhythmyx/Business_Users/Content_Explorer_Help.hs"/>
+			<Param name="helpset_file" value="../../Docs/Business_Users/Content_Explorer_Help.hs"/>
 			<Param name="helpid" value="O15253"/>
 			<Param name="helpIcon" value="../rx_resources/images/en-us/help_icon.gif"/>
 			<Param name="name" value="help"/>

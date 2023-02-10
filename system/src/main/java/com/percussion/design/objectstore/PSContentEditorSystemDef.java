@@ -1,25 +1,18 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.percussion.design.objectstore;
@@ -41,6 +34,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * This class wraps the system def xml document and provides access to the
@@ -1072,15 +1066,16 @@ public class PSContentEditorSystemDef implements IPSDocument
    }
 
    @Override
-   public boolean equals(Object b)
-   {
-      return EqualsBuilder.reflectionEquals(this, b);
+   public boolean equals(Object o) {
+      if (this == o) return true;
+      if (!(o instanceof PSContentEditorSystemDef)) return false;
+      PSContentEditorSystemDef that = (PSContentEditorSystemDef) o;
+      return m_cacheTimeout == that.m_cacheTimeout && Objects.equals(m_inputDataExits, that.m_inputDataExits) && Objects.equals(m_resultDataExits, that.m_resultDataExits) && Objects.equals(m_paramNames, that.m_paramNames) && Objects.equals(m_containerLocator, that.m_containerLocator) && Objects.equals(m_fieldSet, that.m_fieldSet) && Objects.equals(m_uiDef, that.m_uiDef) && Objects.equals(m_systemLocator, that.m_systemLocator) && Objects.equals(m_appFlow, that.m_appFlow) && Objects.equals(m_styleSheets, that.m_styleSheets) && Objects.equals(m_inputTranslations, that.m_inputTranslations) && Objects.equals(m_outputTranslations, that.m_outputTranslations) && Objects.equals(m_groupValidations, that.m_groupValidations) && Objects.equals(m_initParams, that.m_initParams) && Objects.equals(m_sectionLinkList, that.m_sectionLinkList);
    }
 
    @Override
-   public int hashCode()
-   {
-      return HashCodeBuilder.reflectionHashCode(this);
+   public int hashCode() {
+      return Objects.hash(m_cacheTimeout, m_inputDataExits, m_resultDataExits, m_paramNames, m_containerLocator, m_fieldSet, m_uiDef, m_systemLocator, m_appFlow, m_styleSheets, m_inputTranslations, m_outputTranslations, m_groupValidations, m_initParams, m_sectionLinkList);
    }
 
    @Override

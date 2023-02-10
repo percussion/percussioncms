@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0" xmlns:svg="http://www.w3.org/2000/svg" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns:fo="http://www.w3.org/1999/XSL/Format">
     <xsl:param name="sessionid" />
-	<xsl:output omit-xml-declaration="yes"/>
+	<xsl:output omit-xml-declaration="yes" encoding="UTF-8" />
 	<xsl:template match="/">
 	    <fo:block-container>
 		<fo:block>

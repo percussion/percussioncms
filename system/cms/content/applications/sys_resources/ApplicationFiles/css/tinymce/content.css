@@ -8,6 +8,11 @@ img.perc-notpubliclink {
 	opacity: .40;
 }
 
+img.perc-brokenlink {
+	border: 5px dashed red;
+	opacity: .40;
+}
+
 .perc-brokenlink:after {
 	content: "";
     display: inline-block;

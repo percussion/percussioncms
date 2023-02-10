@@ -1,26 +1,23 @@
-/*******************************************************************************
- * Copyright (c) 1999-2011 Percussion Software.
- * 
- * Permission is hereby granted, free of charge, to use, copy and create derivative works of this software and associated documentation files (the "Software") for internal use only and only in connection with products from Percussion Software. 
- * 
- * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
- * 
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL PERCUSSION SOFTWARE BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- ******************************************************************************/
 /*
- * com.percussion.pso.jexl PSOQueryTools.java
- *  
- * @author DavidBenua
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- * COPYRIGHT (c) 1999 - 2008 by Percussion Software, Inc., Woburn, MA USA.
- * All rights reserved. This material contains unpublished, copyrighted
- * work including confidential and proprietary information of Percussion.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 package com.percussion.pso.jexl;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -87,24 +84,24 @@ public class PSOQueryTools extends PSJexlUtilBase implements IPSJexlExpression
    public List<Map<String, Value>> executeQuery(String query, int maxRows, Map<String,? extends Object> params, String locale ) 
       throws InvalidQueryException, RepositoryException
    {
-      
-      initServices();
-      List<Map<String, Value>> results = new ArrayList<>();
-      QueryResult qres = performQuery(query, maxRows, params, locale);
-      List<String> colNames = Arrays.<String>asList(qres.getColumnNames()); 
-      RowIterator rows = qres.getRows();
-      while(rows.hasNext())
-      {
-         Row row = rows.nextRow(); 
-         Map<String, Value> rowValues = new HashMap<>();
-         for(String colName : colNames)
-         {
-            Value value = row.getValue(colName); 
-            rowValues.put(colName, value); 
+      QueryResult qres;
+
+         initServices();
+         List<Map<String, Value>> results = new ArrayList<>();
+         qres = performQuery(query, maxRows, params, locale);
+         String[] colNames = qres.getColumnNames();
+         RowIterator rows = qres.getRows();
+         while (rows.hasNext()) {
+            Row row = rows.nextRow();
+            Map<String, Value> rowValues = new HashMap<>();
+            for (String colName : colNames) {
+               Value value = row.getValue(colName);
+               rowValues.put(colName, value);
+            }
+            results.add(rowValues);
          }
-         results.add(rowValues);
-      }
-      return results; 
+         return results;
+
    }
    
    /**
@@ -114,8 +111,7 @@ public class PSOQueryTools extends PSJexlUtilBase implements IPSJexlExpression
     * @param maxRows the maximum number of rows. Set to -1 for unlimited rows.
     * @param params the the parameters to pass to the query. 
     * @param locale the locale. Defaults to the JVM system locale if not present. 
-    * @return the Nodes from the query. Never <code>null</code> but may be <code>empty</code>. 
-    * @throws InvalidQueryException
+    * @return the Nodes from the query. Never <code>null</code> but may be <code>empty</code>.
     * @throws RepositoryException
     */
    @IPSJexlMethod(description="executes a JCR Query and returns the Nodes", params={
@@ -125,7 +121,7 @@ public class PSOQueryTools extends PSJexlUtilBase implements IPSJexlExpression
          @IPSJexlParam(name="locale", description="locale for collating results")
       })
       public NodeIterator executeQueryNodes(String query, int maxRows, Map<String,? extends Object> params, String locale ) 
-         throws InvalidQueryException, RepositoryException
+         throws RepositoryException
       {
          
          initServices();

@@ -1,0 +1,43 @@
+<project name="p13n-deploy-ds" default="database-create" basedir=".">
+	
+	
+	<property name="soln.p13n.config" location="soln-p13n.properties" />
+	
+	<target name="init-db">
+		<available file="${soln.p13n.config}" type="file" property="yes-jdbc" />
+		<fail unless="yes-jdbc">
+			You need to create the file ${soln.p13n.config}. 
+			Look at src-sql/jdbc.[db_type].properties for some examples.
+		</fail>
+		<property file="${soln.p13n.config}"/>
+		<echoproperties prefix="soln.p13n." />
+	</target>
+	
+	<target name="database-check" depends="init-db">
+		<property name="database-fail-message" 
+			value="Either jdbc.driverClassName, url, sql, username, or password was not set." />
+		<fail unless="soln.p13n.jdbc.driverClassName" message="${database-fail-message}"/>
+		<fail unless="soln.p13n.jdbc.url" message="${database-fail-message}"/>
+		<fail unless="soln.p13n.jdbc.sql" message="${database-fail-message}"/>
+		<fail unless="soln.p13n.jdbc.username" message="${database-fail-message}"/>
+		<fail unless="soln.p13n.jdbc.password" message="${database-fail-message}"/>
+	</target>
+	
+	<path id="jdbc-lib">
+		<fileset dir="lib">
+			<include name="**.jar"/>
+		</fileset>
+	</path>
+	
+	<target name="database-create" depends="database-check">
+        <sql driver="${soln.p13n.jdbc.driverClassName}" url="${soln.p13n.jdbc.url}"
+            userid="${soln.p13n.jdbc.username}" password="${soln.p13n.jdbc.password}" autocommit="yes">
+            <fileset dir="${basedir}/src-sql">
+                <include name="visitor_profile.${soln.p13n.jdbc.sql}.sql"/>
+            </fileset>
+        	<classpath refid="jdbc-lib" />
+        </sql>
+		<echo>The other tables will be created when the application is run.</echo>
+	</target>
+			
+</project>

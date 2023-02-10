@@ -145,8 +145,7 @@ function getBaseConfig(parameters) {
 
         var mergedBaseOptions = $.extend({}, {
             "branding": false,
-            "mode": "textareas",
-            "selector": "textarea",
+            "selector": "textarea.tinymce",
             "autosave_interval": "10m",
             "autosave_retention": "1440m",
             "link_context_toolbar": true,

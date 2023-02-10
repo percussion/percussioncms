@@ -1,25 +1,18 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.percussion.tablefactory;
@@ -48,9 +41,9 @@ public class PSJdbcImportExportHelper
    public static String BINARY_DATA_FOLDER = "binaryData";
    public static String BINARY_DATA_BUCKET = "bucket";
    public static String BINARY_DATA_INITIAL_BUCKET = BINARY_DATA_BUCKET + "_0";
-   public static Set<String> requiredParams = new HashSet<String>(Arrays.asList(OPTION_DB_PROPS,OPTION_STORAGE_PATH));
+   public static Set<String> requiredParams = new HashSet<>(Arrays.asList(OPTION_DB_PROPS,OPTION_STORAGE_PATH));
    public static int MAX_FILES_IN_FILDER = 500;
-   public static List<String> tablesToSkip = new ArrayList<String>();
+   public static List<String> tablesToSkip = new ArrayList<>();
    
    /* 
     * Import on MySql is choking on import if the limitSizeForIndex value is set to true for DPL_ID_MAPPING mapping.
@@ -60,7 +53,7 @@ public class PSJdbcImportExportHelper
     * If there are multiple columns that needs to be set with true value for limit size.
     * limitSizeForIndexMap.put("DPL_ID_MAPPING", "REPOSITORY_ID:ID_MAP");
     */
-   public static Map<String, String> limitSizeForIndexMap = new HashMap<String, String>();
+   public static Map<String, String> limitSizeForIndexMap = new HashMap<>();
    static {
       limitSizeForIndexMap.put("DPL_ID_MAPPING", "REPOSITORY_ID");
    }
@@ -72,7 +65,7 @@ public class PSJdbcImportExportHelper
       if (!(OPTION_DB_EXPORT.equals(optionType) || OPTION_DB_IMPPORT.equals(optionType))) {
          throw new IllegalArgumentException("first option must be either " + OPTION_DB_EXPORT + " or " + OPTION_DB_IMPPORT);
       }
-      Map<String, String> optionsMap = new HashMap<String, String>();
+      Map<String, String> optionsMap = new HashMap<>();
       optionsMap.put(DB_OPTION, optionType);
       for (int i=1; i<options.length; i = i+2) {
          String key = options[i];
@@ -82,7 +75,7 @@ public class PSJdbcImportExportHelper
       if (!CollectionUtils.isSubCollection(requiredParams, optionsMap.keySet())) {
          out("Required parameters are missing");
          usage(optionType);
-      };
+      }
       //validate props file
       File propsFile = new File(optionsMap.get(OPTION_DB_PROPS));
       if (!propsFile.exists()) {

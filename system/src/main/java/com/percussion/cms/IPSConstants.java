@@ -586,6 +586,7 @@ public interface IPSConstants
      String SERVER_PROP_FILE_COPY_BUFFER_SIZE = "fileCopyBufferSize";
      String LEGACY_UI_ATTR = "sys_legacyui";
 
+
     //system defined Roles
     /**
      * Administrator role.

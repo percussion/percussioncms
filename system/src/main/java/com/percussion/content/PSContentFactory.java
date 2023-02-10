@@ -1,25 +1,18 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2021 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.percussion.content;
 
@@ -1004,135 +997,6 @@ public abstract class PSContentFactory
 
 
    /**
-    * Parses and corrects the HTML file, returning the filename of a
-    * temporary file which contains a corrected, UTF-8 version of the file.
-    * The algorithm follows this flow:
-    *
-    * <DIV ALIGN="CENTER">
-    * <IMG SRC="doc-files/PSContentFactory-1.gif">
-    * </DIV>
-    *
-    * @param in The in-memory version of the document. Must not be
-    * <CODE>null</CODE>.
-    *
-    * @param encoding The initial character encoding to use when reading the
-    * document. This will be superceded by any encoding specified in the
-    * document itself. Must not be <CODE>null</CODE>.
-    *
-    * @return The filename of the corrected version. Never <CODE>null</CODE>.
-    * This file is safe to delete (use
-    * {@link java.io.File#deleteOnExit deleteOnExit} ), but
-    * it is the caller's responsibility to delete it.
-    *
-    * @throws IOException If an IO error occurred.
-    *
-    * @throws HTMLException If a parse error occurred.
-    */
-   /*
-   private static File correctHtmlFile(ByteArrayInputStream in, String encoding)
-      throws IOException, HTMLException
-   {
-      if (in == null)
-         throw new IllegalArgumentException("in cannot be null");
-
-      if (encoding == null)
-         throw new IllegalArgumentException("encoding cannot be null");
-
-      boolean parse = true;
-      HTMLDocumentFragment doc = null;
-      HTMLElement stop = null;
-      Reader rdr = null;
-
-      while (parse)
-      {
-         doc = null;
-         stop = null;
-
-         in.reset();
-         rdr = new InputStreamReader(in, PSCharSets.getJavaName(encoding));
-
-         // by default, the parser automatically converts tags and
-         // attribute names to uppercase, so it is safe and necessary
-         // for us to do all comparisons and attribute-gets in uppercase
-         PSHtmlParser p = createPartialParser();
-         p.parse(rdr);
-         parse = false;
-
-         doc = p.getDocFragment();
-         stop = p.getStoppedElement();
-         if (stop == null)
-         {
-            throw new IOException("Could not parse HTML document");
-         }
-
-         if (doc == null)
-         {
-            throw new IOException("Could not parse HTML document");
-         }
-
-         // get the charset according to the document itself. If this
-         // is set to something other than the initial encoding, then we
-         // will re-parse the document up to this point because we may
-         // already have misinterpreted some chars
-         if (stop.getTagName().equals("META"))
-         {
-            String contentType = stop.getAttribute("CONTENT");
-            HashMap contentParams = new HashMap();
-            try
-            {
-               String mediaType =
-                  PSBaseHttpUtils.parseContentType(contentType, contentParams);
-
-               String charset = (String)contentParams.get("charset");
-               if (charset != null)
-               {
-                  charset = PSCharSets.getStdName(charset);
-                  if (!charset.equals(PSCharSets.getStdName(encoding)))
-                  {
-                     encoding = charset;
-                     parse = true; // set up for re-parse
-                  }
-               }
-            }
-            catch (IllegalArgumentException e)
-            {
-               // malformed content type -- ignore and let us write it out
-               // ourselves
-            }
-         }
-      }
-
-      // correct the HTML document
-      HTMLElement meta = correctHtmlDoc(doc, stop);
-
-      // write the corrected document to the HTML file, along with the
-      // rest of the chars from the reader
-      File corr = File.createTempFile("ps_", ".html");
-
-      // DBG>
-      // System.out.println("Writing to " + corr.toString());
-      // <DBG
-
-      OutputStream out = new BufferedOutputStream(
-         new FileOutputStream(corr));
-
-      try
-      {
-         joinHtml(out, rdr, doc.getFirstElementChild(), stop);
-      }
-      finally
-      {
-         try
-         { out.flush(); out.close(); }
-         catch (IOException e)
-         { / * ignore * / }
-      }
-
-      return corr;
-   }
-   */
-
-   /**
     * Seamlessly joins a parsed partial tree with the rest of the unparsed
     * characters and writes the output in UTF-8 format to the given output
     * stream.
@@ -1234,139 +1098,6 @@ public abstract class PSContentFactory
       out.flush();
       return numChars;
    }
-
-
-   /**
-    * Correct the structure of an HTML document so that it has an HTML element,
-    * a HEAD element, and a META HTTP-EQUIV="Content-Type" within the HEAD that
-    * reflects UTF-8 encoding. If the document is already correct, it will not
-    * be changed.
-    *
-    * @param doc The document fragment which may represent a partial parse.
-    * Must not be <CODE>null</CODE>.
-    *
-    * @param lastEl the stopped element from the parser, which should not have
-    * advanced any further than the first of
-    * (<CODE>&lt;META HTTP-EQUIV="Content-type"&gt;, &lt;BODY>, or &lt;FRAMESET&gt;
-    * </CODE>). Must not be <CODE>null</CODE>.
-    *
-    * @return The <CODE>META</CODE> tag that was added to (or already present in)
-    * the HEAD. Never <CODE>null</CODE>.
-    *
-    * @throws HTMLException If a parse error occurs.
-    */
-   /*
-   private static HTMLElement correctHtmlDoc(HTMLDocumentFragment doc, HTMLElement lastEl)
-      throws HTMLException
-   {
-      if (doc == null)
-         throw new IllegalArgumentException("doc cannot be null");
-      if (lastEl == null)
-         throw new IllegalArgumentException("lastEl cannot be null");
-
-      HTMLElement meta = lastEl;
-      if (meta.getTagName().equals("META"))
-      {
-         Attr attr = meta.getAttributeNode("CONTENT");
-         attr.setValue(IPSMimeContentTypes.MIME_TYPE_TEXT_HTML
-            + "; charset=" + PSCharSets.rxStdEnc());
-      }
-      else // we did not find the tag itself, so we will add it
-      {
-         HTMLElement html = (HTMLElement)doc.getFirstElementChild();
-
-         // get the HTML element, adding it if it doesn't exist
-         if (!html.getNodeName().equals("HTML"))
-         {
-            HTMLElement newElement = new HTMLElement("HTML");
-            newElement.appendChild(new HTMLText(System.getProperty("line.separator")));
-            doc.insertBefore(newElement, html);
-            newElement.appendChild(html);
-            html = newElement;
-         }
-
-         // get the HEAD element from the HTML, adding it if it doesn't exist
-         HTMLElement head = html.getFirstElementChild();
-         if (head == null)
-         {
-            head = new HTMLElement("HEAD");
-            head.appendChild(new HTMLText(System.getProperty("line.separator")));
-            html.appendChild(html);
-         }
-         else if (!head.getNodeName().equals("HEAD"))
-         {
-            // we need to add the HEAD ourselves
-
-            // Check if this is something that belongs in the head.
-            // TODO: instead of complaining, we should pull all the HEAD-belonging
-            // elements up into the HEAD which we create.
-            // That will be a little complicated because
-            // we will have to re-stitch the prev/next-sibling and parent
-            // relationships
-            if (
-               head.getNodeName().equals("TITLE")
-               || head.getNodeName().equals("BASE")
-               || head.getNodeName().equals("META")
-               || head.getNodeName().equals("ISINDEX")
-               || head.getNodeName().equals("LINK")
-               || head.getNodeName().equals("STYLE")
-               )
-            {
-               throw new HTMLException((short)0, "The " + head.getNodeName()
-                  + " element belongs in the HEAD element, which was not found.");
-            }
-
-            // create a new HEAD element
-            HTMLElement newHead = new HTMLElement("HEAD");
-            newHead.appendChild(new HTMLText(System.getProperty("line.separator")));
-            html.insertBefore(newHead, head);
-            head = newHead;
-         }
-
-         // add the META element to the HEAD
-         meta = new HTMLElement("META");
-         meta.appendChild(new HTMLText(System.getProperty("line.separator")));
-         meta.setAttribute("HTTP-EQUIV", "Content-Type");
-         meta.setAttribute("CONTENT", IPSMimeContentTypes.MIME_TYPE_TEXT_HTML
-            + "; charset=" + PSCharSets.rxStdEnc());
-         HTMLElement firstHeadEl = head.getFirstElementChild();
-         if (firstHeadEl == null)
-         {
-            head.appendChild(meta);
-         }
-         else
-         {
-            head.insertBefore(meta, firstHeadEl);
-         }
-      }
-
-      return meta;
-   }
-   */
-
-   /**
-   * Creates a parser that will stop at the end of the
-   * <CODE>&lt;HEAD&gt;</CODE>, the beginning of the
-   * <CODE>&lt;BODY&gt;</CODE>, or the
-   * <CODE>&lt;META HTTP-EQUIV="Content-Type"&gt;</CODE> tag/attribute,
-   * whichever comes first.
-   *
-   * @return A partial parser. Never <CODE>null</CODE>.
-   */
-   /*
-   private static PSHtmlParser createPartialParser()
-   {
-      PSHtmlParser p = new PSHtmlParser();
-      HTMLElement contentSearch = new HTMLElement("META");
-      contentSearch.setAttribute("HTTP-EQUIV", "Content-Type");
-      p.addStopElement(contentSearch, true);
-
-      p.addStopElement(new HTMLElement("BODY"), true);
-      p.addStopElement(new HTMLElement("FRAMESET"), true);
-
-      return p;
-   }
-   */
 
    /**
     * Reads at most <CODE>len</CODE> bytes from <CODE>in</CODE> into memory

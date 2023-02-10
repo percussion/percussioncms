@@ -1,25 +1,18 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.percussion.xmldom;
 
@@ -33,11 +26,13 @@ import com.percussion.server.IPSRequestContext;
 import com.percussion.server.PSRequestValidationException;
 import com.percussion.util.PSPurgableTempFile;
 import com.percussion.xml.PSXmlTreeWalker;
+import org.apache.commons.lang.StringUtils;
+import org.w3c.dom.Document;
 
 import java.io.File;
 import java.io.IOException;
-
-import org.w3c.dom.Document;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 /**
  * A Rhythmyx extension used to translate a text field into a temporary XML
@@ -159,6 +154,9 @@ public class PSXdTextToDom extends PSDefaultExtension
       if (params.length > 5 && null != params[4])
       {
          encodingDefault = params[4].toString().trim();
+         if(StringUtils.isBlank(encodingDefault)){
+            encodingDefault = StandardCharsets.UTF_8.name();
+         }
       }
 
       Object inputSourceObj = request.getParameterObject( fileParamName );
@@ -173,7 +171,7 @@ public class PSXdTextToDom extends PSDefaultExtension
          Document tempXMLDocument;
          if (inputSourceObj instanceof PSPurgableTempFile)
          {
-            String encoding = null;
+            Charset encoding = null;
             PSPurgableTempFile inputSourceFile =
                   (PSPurgableTempFile) inputSourceObj;
             request.printTraceMessage
@@ -181,16 +179,10 @@ public class PSXdTextToDom extends PSDefaultExtension
 
             encoding = PSXmlDomUtils.determineCharacterEncoding
                   ( contxt, inputSourceFile, encodingDefault );
-            if (encoding == null)
-            {
-               tempXMLDocument = PSXmlDomUtils.loadXmlDocument
-                     ( contxt, (File) inputSourceObj );
-            }
-            else
-            {
-               tempXMLDocument = PSXmlDomUtils.loadXmlDocument
-                     ( contxt, (File) inputSourceObj, encoding );
-            }
+
+            tempXMLDocument = PSXmlDomUtils.loadXmlDocument
+                  ( contxt, (File) inputSourceObj,encoding.name() );
+
          }
          else
          {

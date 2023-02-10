@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<!-- Configuration file for the Percussion Language Tool. Packaged as part of JAR file.
+User should never need to edit this. The default settings are suitable for the
+post installer to run the tool so that the language translation keys are generated
+from the existing system and merged with the server resource bundle. Merging with
+the server resource bundle is a kind of redundant since meging is done with
+untranslated keywords. The real process will be complete only when the file
+(tobetranslated.tmx) is given to translation service and merged after translation.
+-->
+<!DOCTYPE rxltconfig [
+	<!ELEMENT action (sections?)>
+	<!ATTLIST action
+	actionid (1 | 2 | 3 ) #REQUIRED
+		process (no | yes) #IMPLIED
+		name CDATA #REQUIRED
+		keepmissingkeysonly CDATA #IMPLIED
+		outputfile CDATA #IMPLIED
+		filepath CDATA #IMPLIED
+		languagestring CDATA #IMPLIED
+		displayname CDATA #IMPLIED
+		description CDATA #IMPLIED
+>
+	<!ELEMENT actions (action+)>
+	<!ELEMENT rxltconfig (actions)>
+	<!ATTLIST rxltconfig
+	rxroot CDATA #IMPLIED
+>
+	<!ELEMENT section EMPTY>
+	<!ATTLIST section
+	sectionid (1 | 2 | 3 | 4 | 5) #REQUIRED
+		name CDATA #REQUIRED
+		process CDATA #IMPLIED
+>
+	<!ELEMENT sections (section+)>
+]>
+<rxltconfig rxroot="../">
+	<!-- root directory is working directory by default -->
+	<actions>
+		<!-- Process this action by default. Generate only missing keywords -->
+		<action actionid="1" process="yes" name="Generate a TMX file" keepmissingkeysonly="yes" outputfile="tobetranslated.tmx">
+			<sections>
+				<section sectionid="1" name="CMS Tables" process="yes"/>
+				<section sectionid="2" name="XSL Stylesheets" process="yes"/>
+				<section sectionid="3" name="Content Editors" process="yes"/>
+				<section sectionid="4" name="Extension and System Resources" process="yes"/>
+            	<section sectionid="5" name="JSP Files" process="yes"/>
+			</sections>
+		</action>
+		<!-- Process this action by default. The file name for this action must match with that for the above action -->
+		<action actionid="2" process="yes" name="Merge a translated TMX file with server TMX file" filepath="tobetranslated.tmx"/>
+		<!-- Does not make sense to process in non-UI mode -->
+		<action actionid="3" process="no" name="Exit"/>
+	</actions>
+</rxltconfig>

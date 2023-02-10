@@ -6,13 +6,6 @@
          <ArchiveFile>Keyword-328\FF_NavImageSelector.keyword</ArchiveFile>
       </PSXDependencyFile>
    </PSXDepFilesIdTypes>
-   <PSXDepFilesIdTypes DependencyKey="SharedGroup-shared">
-      <PSXDependencyFile fileType="SHARED_GROUP_XML">
-         <RxFile>C:\Users\Usuario\AppData\Local\Temp\shared.sharedGroup</RxFile>
-         <ArchiveFile>SharedGroup-shared\shared.sharedGroup</ArchiveFile>
-         <OriginalFile>rxs_ct_shared.xml</OriginalFile>
-      </PSXDependencyFile>
-   </PSXDepFilesIdTypes>
    <PSXDepFilesIdTypes DependencyKey="SlotDef-513">
       <PSXDependencyFile fileType="SERVICEGENERATED_XML">
          <RxFile>C:\Users\Usuario\AppData\Local\Temp\perc.nav.image.slotDef</RxFile>
@@ -136,12 +129,6 @@
       <PSXDependencyFile fileType="DBMS_SCHEMA">
          <RxFile>C:\Users\Usuario\AppData\Local\Temp\percNavTree.schemaDef.contentType</RxFile>
          <ArchiveFile>ContentType-315\percNavTree.schemaDef.contentType</ArchiveFile>
-      </PSXDependencyFile>
-   </PSXDepFilesIdTypes>
-   <PSXDepFilesIdTypes DependencyKey="Schema-RXS_CT_SHARED">
-      <PSXDependencyFile fileType="DBMS_SCHEMA">
-         <RxFile>C:\Users\Usuario\AppData\Local\Temp\RXS_CT_SHARED.schema</RxFile>
-         <ArchiveFile>Schema-RXS_CT_SHARED\RXS_CT_SHARED.schema</ArchiveFile>
       </PSXDependencyFile>
    </PSXDepFilesIdTypes>
    <PSXDepFilesIdTypes DependencyKey="Stylesheet-rx_resources/stylesheets/assemblers/rx_Globals.xsl">

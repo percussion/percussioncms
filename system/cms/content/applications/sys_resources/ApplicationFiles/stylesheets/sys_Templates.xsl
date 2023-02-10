@@ -7,13 +7,13 @@
         ]>
 <xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:psxctl="urn:percussion.com/control"
-                xmlns:xmns="http://www.w3.org/1999/xhtml"
                 xmlns="http://www.w3.org/1999/xhtml" xmlns:psxi18n="com.percussion.i18n"
-                extension-element-prefixes="psxi18n" exclude-result-prefixes="psxi18n psxctl xmns">
+                extension-element-prefixes="psxi18n"
+                exclude-result-prefixes="psxi18n psxctl xmns">
 
    <xsl:import href="file:sys_resources/stylesheets/sys_I18nUtils.xsl"/>
    <!-- write the xml header according to XHTML 1.0 spec -->
-   <xsl:output method="xml" standalone="yes" indent="yes" doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN" doctype-system="DTD/xhtml1-strict.dtd"/>
+   <xsl:output method="text" standalone="yes" indent="yes" doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN" doctype-system="DTD/xhtml1-strict.dtd" encoding="UTF-8" />
    <xsl:variable name="itemLocale" select="/ContentEditor/@itemLocale"/>
 
    <!--
@@ -458,6 +458,16 @@ accept      %ContentTypes; #IMPLIED
             <psxctl:DefaultValue>POPUP</psxctl:DefaultValue>
          </psxctl:Param>
       </psxctl:ParamList>
+      <psxctl:AssociatedFileList>
+         <psxctl:FileDescriptor name="PercFileSelectionControl.js" type="script" mimetype="text/javascript">
+            <psxctl:FileLocation>/sys_resources/js/cm/init.js</psxctl:FileLocation>
+            <psxctl:Timestamp/>
+         </psxctl:FileDescriptor>
+         <psxctl:FileDescriptor name="PercFileSelectionControl.js" type="script" mimetype="text/javascript">
+            <psxctl:FileLocation>/sys_resources/js/browser.js</psxctl:FileLocation>
+            <psxctl:Timestamp/>
+         </psxctl:FileDescriptor>
+      </psxctl:AssociatedFileList>
       <psxctl:Dependencies>
          <psxctl:Dependency status="readyToGo" occurrence="single">
             <psxctl:Default>
@@ -547,8 +557,7 @@ accept      %ContentTypes; #IMPLIED
             </xsl:otherwise>
          </xsl:choose>
       </xsl:variable>
-      <a href="#">
-         <xsl:attribute name="onclick">saveFile('<xsl:value-of select="$url"/>','<xsl:value-of select="$binary_type"/>','<xsl:value-of select="$field_filename"/>');</xsl:attribute>
+      <a href="{$url}{$fileName}" target="_blank"  rel = "noopener noreferrer" class="perc-preview-file-link" id="perc-content-edit-{@paramName}">
          <xsl:call-template name="getLocaleString">
             <xsl:with-param name="key" select="'psx.contenteditor.sys_templates@Preview File'"/>
             <xsl:with-param name="lang" select="$lang"/>
@@ -2893,8 +2902,8 @@ onchange    %Script;       #IMPLIED
          <xsl:value-of select="$name"/><![CDATA[_appletCaller]]>.addParam("id", <xsl:value-of select="$name"/><![CDATA[_name]]>);
          <xsl:value-of select="$name"/><![CDATA[_appletCaller]]>.addParam("width", <xsl:value-of select="$name"/><![CDATA[_width]]>);
          <xsl:value-of select="$name"/><![CDATA[_appletCaller]]>.addParam("height", <xsl:value-of select="$name"/><![CDATA[_height]]>);
-         <xsl:value-of select="$name"/><![CDATA[_appletCaller]]>.addParam("codebase", "/sys_resources/AppletJars");
-         <xsl:value-of select="$name"/><![CDATA[_appletCaller]]>.addParam("archive", "/sys_resources/AppletJars/rxCheckboxTree.jar");
+         <xsl:value-of select="$name"/><![CDATA[_appletCaller]]>.addParam("codebase", "/../dce");
+         <xsl:value-of select="$name"/><![CDATA[_appletCaller]]>.addParam("archive", "/../dce/ContentExplorer-@BUILDVERSION@.jar");
          <xsl:value-of select="$name"/><![CDATA[_appletCaller]]>.addParam("code", "com.percussion.controls.contenteditor.checkboxtree.PSCheckboxTreeApplet");
          <xsl:value-of select="$name"/><![CDATA[_appletCaller]]>.addParam("classid", "clsid:8AD9C840-044E-11D1-B3E9-00805F499D93");
          <xsl:value-of select="$name"/><![CDATA[_appletCaller]]>.addParam("codebaseattr", "http://java.sun.com/products/plugin/autodl/jinstall-1_4-windows-i586.cab#Version=1,4,0,0");
@@ -3437,11 +3446,11 @@ onchange    %Script;       #IMPLIED
          </psxctl:Param>
       </psxctl:ParamList>
       <psxctl:AssociatedFileList>
-	  <psxctl:FileDescriptor name="PercFileSelectionControl.js" type="script" mimetype="text/javascript">
+         <psxctl:FileDescriptor name="PercFileSelectionControl.js" type="script" mimetype="text/javascript">
             <psxctl:FileLocation>/sys_resources/js/cm/init.js</psxctl:FileLocation>
             <psxctl:Timestamp/>
          </psxctl:FileDescriptor>
-	     <psxctl:FileDescriptor name="PercFileSelectionControl.js" type="script" mimetype="text/javascript">
+         <psxctl:FileDescriptor name="PercFileSelectionControl.js" type="script" mimetype="text/javascript">
             <psxctl:FileLocation>/sys_resources/js/browser.js</psxctl:FileLocation>
             <psxctl:Timestamp/>
          </psxctl:FileDescriptor>
@@ -3664,7 +3673,7 @@ onchange    %Script;       #IMPLIED
             <psxctl:FileLocation>/sys_resources/js/cm/init.js</psxctl:FileLocation>
             <psxctl:Timestamp/>
          </psxctl:FileDescriptor>
-	     <psxctl:FileDescriptor name="browser.js" type="script" mimetype="text/javascript">
+         <psxctl:FileDescriptor name="browser.js" type="script" mimetype="text/javascript">
             <psxctl:FileLocation>/sys_resources/js/browser.js</psxctl:FileLocation>
             <psxctl:Timestamp/>
          </psxctl:FileDescriptor>
@@ -4092,9 +4101,8 @@ onchange    %Script;       #IMPLIED
          <xsl:if test="@accessKey!=''">
             <xsl:attribute name="accesskey"><xsl:call-template name="getaccesskey"><xsl:with-param name="label" select="preceding-sibling::DisplayLabel"/><xsl:with-param name="sourceType" select="preceding-sibling::DisplayLabel/@sourceType"/><xsl:with-param name="paramName" select="@paramName+$uniqueName"/><xsl:with-param name="accessKey" select="@accessKey"/></xsl:call-template></xsl:attribute>
          </xsl:if>
-         <xsl:value-of select="Value"/>
+         <xsl:value-of select="Value" disable-output-escaping="yes" />
       </textarea>
-      <!--</div>-->
    </xsl:template>
 
    <xsl:template name="rolejsarray"><xsl:text>[</xsl:text>

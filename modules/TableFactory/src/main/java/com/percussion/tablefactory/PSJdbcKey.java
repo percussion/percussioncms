@@ -1,25 +1,18 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.percussion.tablefactory;
@@ -50,7 +43,7 @@ public abstract class PSJdbcKey extends PSJdbcTableComponent
     * @param names An iterator over one or more column names as Strings to
     *    include in the key.  May not be <code>null</code>.  May not
     *    contain <code>null</code>, empty or duplicate names.
-    * @containerName The name of this key type to use in error messages.  May
+    * @param containerName The name of this key type to use in error messages.  May
     * not be <code>null</code> or empty.
     *
     * @throws IllegalArgumentException if names is <code>null</code> or does not
@@ -61,7 +54,7 @@ public abstract class PSJdbcKey extends PSJdbcTableComponent
     * </code>, empty or duplicate column names, or if there are any other
     * errors.
     */
-   protected PSJdbcKey(String name,  int action, Iterator names,
+   protected PSJdbcKey(String name,  int action, Iterator<String> names,
       String containerName)
       throws PSJdbcTableFactoryException
    {
@@ -91,7 +84,7 @@ public abstract class PSJdbcKey extends PSJdbcTableComponent
     *    the tabledef.dtd.  May not be <code>null</code>.
     * @param nodeName The expected name of the supplied element.  May not be
     *    <code>null</code> or empty.
-    * @containerName The name of this key type to use in error messages.  May
+    * @param containerName The name of this key type to use in error messages.  May
     *    not be <code>null</code> or empty.
     *
     *
@@ -150,10 +143,9 @@ public abstract class PSJdbcKey extends PSJdbcTableComponent
       setComponentState(root);
 
       // now add each name
-      Iterator names = m_names.iterator();
-      while (names.hasNext())
+      for (String m_name : m_names)
          PSXmlDocumentBuilder.addElement(doc, root, NAME_EL,
-            (String)names.next());
+                 m_name);
 
       return root;
    }
@@ -189,7 +181,7 @@ public abstract class PSJdbcKey extends PSJdbcTableComponent
             IPSTableFactoryErrors.XML_ELEMENT_WRONG_TYPE, args);
       }
 
-      List names = new ArrayList();
+      List<String> names = new ArrayList<>();
 
       // allow base class to set its members
       getComponentState(sourceNode);
@@ -205,7 +197,7 @@ public abstract class PSJdbcKey extends PSJdbcTableComponent
             throw new PSJdbcTableFactoryException(
                IPSTableFactoryErrors.XML_ELEMENT_NULL, NAME_EL);
 
-         String name = walker.getElementData(nameEl);
+         String name = PSXmlTreeWalker.getElementData(nameEl);
          if (name.trim().length() == 0)
          {
             Object[] args = {nodeName, NAME_EL, name};
@@ -232,12 +224,15 @@ public abstract class PSJdbcKey extends PSJdbcTableComponent
     */
    public boolean equals(Object obj)
    {
+      if(! (obj instanceof  PSJdbcKey))
+         return false;
+
       return (compare(obj, 0) == IS_EXACT_MATCH);
    }
 
    /**
     * Compares this column to another object.
-    * See {@link PSJdbcTableComponent#compare(Object)} for values returned
+    * See  for values returned
     * by this method.
     *
     * @param obj the object to compare, may be <code>null</code>
@@ -249,7 +244,7 @@ public abstract class PSJdbcKey extends PSJdbcTableComponent
     */
    public int compare(Object obj, int flags)
    {
-      int match = IS_GENERIC_MISMATCH;
+      int match;
       // dummy do...while loop to avoid many return statements
       do
       {
@@ -274,18 +269,10 @@ public abstract class PSJdbcKey extends PSJdbcTableComponent
                match = IS_EXACT_MATCH;
             }
          }
-         if (match < IS_EXACT_MATCH)
-         {
-            break;
-         }
 
          int compareColumns = compareColumns(m_names, other.m_names);
-         if ((match == IS_CASE_INSENSITIVE_MATCH) &&
-            (compareColumns == IS_EXACT_MATCH))
-         {
-            // don't convert case-insensitive match to case-sensitive match
-         }
-         else
+         if (!((match == IS_CASE_INSENSITIVE_MATCH) &&
+            (compareColumns == IS_EXACT_MATCH)))
          {
             match = compareColumns;
          }
@@ -300,10 +287,10 @@ public abstract class PSJdbcKey extends PSJdbcTableComponent
     * the order of the names in the lists,
     * only that they contain the same number of items and have the same names.
     *
-    * @param cols1 list containting column names. 
+    * @param cols1 list containing column names.
     * Not <code>null</code>, may be empty.
     *
-    * @param cols2 list containting column names.
+    * @param cols2 list containing column names.
     * Not <code>null</code>, may be empty.
     *
     * @return
@@ -323,7 +310,7 @@ public abstract class PSJdbcKey extends PSJdbcTableComponent
     * </tr>
     * </table>
     */
-   protected int compareColumns(List cols1, List cols2)
+   protected int compareColumns(List<String> cols1, List<String> cols2)
    {
       notNull(cols1);
       notNull(cols2);
@@ -335,30 +322,31 @@ public abstract class PSJdbcKey extends PSJdbcTableComponent
          {
             break;
          }
-         // create a new list containing all the columns from cols2 in
-         // upper case
-         List cols2UP = new ArrayList();
-         Iterator it = cols2.iterator();
-         while (it.hasNext())
-         {
-            String col2 = (String)it.next();
-            if ((col2 != null) && (col2.trim().length() > 0))
-               cols2UP.add(col2.toUpperCase());
-         }
-
          // start with an exact match, if anything does not match then
          // change the match type
          match = IS_EXACT_MATCH;
 
          // start comparing column names
-         it = cols1.iterator();
-         while (it.hasNext())
+         //We need to match the columns in same order as some Indexes and keys are having same columns but different odrder of indexing
+         //e.g. PSX_ACLENTRIES has 2 indexes
+         //       <index name="IX_ENTRY_NAME_TYPE" isUnique="n">
+         //                <name>NAME</name>
+         //                <name>TYPE</name>
+         //            </index>
+         //            <index name="IX_ENTRY_TYPE_NAME" isUnique="n">
+         //                <name>TYPE</name>
+         //                <name>NAME</name>
+         //            </index>
+        Iterator<String> col1it = cols1.iterator();
+        Iterator<String> col2it = cols2.iterator();
+         while (col1it.hasNext())
          {
-            String col1 = (String)it.next();
-            if (!cols2.contains(col1))
+            String col1 = col1it.next();
+            String col2 = col2it.next();
+            if (!col1.equals(col2))
             {
                // check in the upper-cased list
-               if (cols2UP.contains(col1.toUpperCase()))
+               if (col1.equalsIgnoreCase(col2))
                {
                   // change the type of match
                   match = IS_CASE_INSENSITIVE_MATCH;
@@ -401,9 +389,13 @@ public abstract class PSJdbcKey extends PSJdbcTableComponent
     * @return The names iterator, never <code>null</code>, will always contain
     * at least one non-<code>null</code> entry.
     */
-   public Iterator getColumnNames()
+   public Iterator<String> getColumnNames()
    {
       return m_names.iterator();
+   }
+
+   public boolean hasColumn(String colName){
+     return m_names.contains(colName);
    }
 
    /**
@@ -419,24 +411,19 @@ public abstract class PSJdbcKey extends PSJdbcTableComponent
     * @throws PSJdbcTableFactoryException if columnNames contains any empty or
     * duplicate names (case sensitive).
     */
-   public void setColumnNames(Iterator columnNames)
+   public void setColumnNames(Iterator<String> columnNames)
       throws PSJdbcTableFactoryException
    {
       if (columnNames == null || !columnNames.hasNext())
          throw new IllegalArgumentException(
             "columnNames may not be null or empty");
 
-      List newCols = new ArrayList();
+      List<String> newCols = new ArrayList<>();
 
       while (columnNames.hasNext())
       {
-         Object colObj = columnNames.next();
-         if (!(colObj instanceof String))
-            throw new IllegalArgumentException(
-               "columnNames may only contain String objects");
-
-         String colName = (String)colObj;
-         if (colName.trim().length() == 0)
+         String colName = columnNames.next();
+         if (colName == null || colName.trim().length() == 0)
             throw new PSJdbcTableFactoryException(
                IPSTableFactoryErrors.INVALID_COLUMN_NAME, m_containerName);
 
@@ -456,14 +443,14 @@ public abstract class PSJdbcKey extends PSJdbcTableComponent
     * name of this container for error messages, not <code>null</code>, empty,
     * or modified after construction.
     */
-   private String m_containerName = null;
+   private String m_containerName;
 
    /**
     * List of column names as Strings comprising this primary key.  Never
     * <code>null</code> or empty after ctor, never contains <code>null</code>,
     * empty or duplicate values.
     */
-   private List m_names = null;
+   private List<String> m_names = null;
 
    // xml constants
    private static final String NAME_EL = "name";

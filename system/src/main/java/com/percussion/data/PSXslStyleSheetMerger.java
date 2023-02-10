@@ -1,25 +1,18 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.percussion.data;
@@ -32,6 +25,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.w3c.dom.ProcessingInstruction;
 import org.xml.sax.SAXParseException;
 
@@ -253,34 +248,37 @@ public class PSXslStyleSheetMerger extends PSStyleSheetMerger
       }
 
       Transformer transformer = null;
-      try
-      {
+      try {
          transformer = ssTemplate.newTransformer();
 
          PSCatalogResolver cr = new PSCatalogResolver();
          cr.setInternalRequestURIResolver(new PSInternalRequestURIResolver());
          transformer.setURIResolver(cr);
-         transformer.setErrorListener( new PSTransformErrorListener() );
+         transformer.setErrorListener(new PSTransformErrorListener());
 
          // add any params supplied
-         if (hasParams)
-         {
-            while (params.hasNext())
-            {
-               Map.Entry param = (Map.Entry)params.next();
+         if (hasParams) {
+            while (params.hasNext()) {
+               Map.Entry param = (Map.Entry) params.next();
                transformer.setParameter(param.getKey().toString(),
-                  param.getValue().toString());
+                       param.getValue().toString());
             }
          }
-         
+
+
          if (req != null)
             req.getRequestTimer().pause();
          Logger l = LogManager.getLogger(getClass());
          PSStopwatch watch = null;
-         if (l.isDebugEnabled())
-         {
+         if (l.isDebugEnabled()) {
             watch = new PSStopwatch();
             watch.start();
+         }
+         //Traverse the nodes of document to delete nodes with Null Text, else transformer fails with NPE.
+         DOMSource source = new DOMSource(doc);
+         if (source != null && source.getNode() != null){
+            Node node = source.getNode();
+           deleteNullNode(node);
          }
          transformer.transform(new DOMSource(doc), new StreamResult(out));
          if (watch != null)
@@ -363,6 +361,20 @@ public class PSXslStyleSheetMerger extends PSStyleSheetMerger
          }
 
          throwConversionException( doc, styleFile, e.toString() );
+      }
+   }
+
+   // Traverse all the nodes recursively and delete the once with Null value for TextType Nodes
+   //else transformer fails with NPE
+   private void deleteNullNode(Node node)
+   {
+      NodeList nl = node.getChildNodes();
+      for (int i = 0; i < nl.getLength(); i++) {
+         if (nl.item(i).getNodeType() == Node.TEXT_NODE && nl.item(i).getNodeValue() == null) {
+            nl.item(i).getParentNode().removeChild(nl.item(i));
+         } else{
+            deleteNullNode(nl.item(i));
+         }
       }
    }
 

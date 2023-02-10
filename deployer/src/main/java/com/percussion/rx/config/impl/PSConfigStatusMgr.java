@@ -1,25 +1,18 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.percussion.rx.config.impl;
 
@@ -38,6 +31,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -85,7 +81,6 @@ public class PSConfigStatusMgr  implements IPSConfigStatusMgr
       
        getSession().saveOrUpdate(obj);
    }
-   
    /*
     * (non-Javadoc)
     * @see com.percussion.rx.config.IPSConfigStatusMgr#loadConfigStatus(long)
@@ -106,9 +101,11 @@ public class PSConfigStatusMgr  implements IPSConfigStatusMgr
       PSConfigStatus cfgStatus = null;
       Session session = getSession();
 
-         Criteria criteria = session.createCriteria(PSConfigStatus.class);
-         criteria.add(Restrictions.eq("statusId", statusID));
-         cfgStatus = (PSConfigStatus) criteria.uniqueResult();
+      CriteriaBuilder builder = session.getCriteriaBuilder();
+      CriteriaQuery<PSConfigStatus> criteria = builder.createQuery(PSConfigStatus.class);
+      Root<PSConfigStatus> critRoot = criteria.from(PSConfigStatus.class);
+      criteria.where(builder.equal(critRoot.get("statusid"), statusID));
+      cfgStatus = entityManager.createQuery(criteria).getSingleResult();
 
          if (cfgStatus == null)
          {

@@ -67,7 +67,7 @@ http://www.springframework.org/schema/util/spring-util.xsd">
                 <entry key="inetdae7" value="org.hibernate.dialect.SQLServer2012Dialect"/>
                 <entry key="oracle:thin" value="org.hibernate.dialect.OracleDialect"/>
                 <entry key="db2" value="org.hibernate.dialect.DB2Dialect"/>
-                <entry key="derby" value="org.hibernate.dialect.DerbyTenSevenDialect"/>
+                <entry key="derby" value="com.percussion.services.datasource.DerbyTenOneFourDialect"/>
                 <entry key="mysql" value="org.hibernate.dialect.MySQLInnoDBDialect"/>
             </util:map>
       </property>      

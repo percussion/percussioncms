@@ -1,43 +1,35 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.percussion.services.assembly.impl;
 
 import com.percussion.error.PSExceptionUtils;
+import com.percussion.html.PSHtmlParsingException;
+import com.percussion.html.PSHtmlUtils;
 import com.percussion.i18n.PSI18nUtils;
 import com.percussion.security.SecureStringUtils;
 import com.percussion.services.assembly.IPSAssemblyItem;
 import com.percussion.services.filter.IPSItemFilter;
-import com.percussion.utils.codec.PSXmlEncoder;
 import com.percussion.utils.jsr170.IPSPropertyInterceptor;
-import com.percussion.utils.xml.PSSaxHelper;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.xml.sax.SAXException;
+import org.jsoup.nodes.Document;
 
-import javax.xml.stream.XMLStreamException;
-import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 /**
  * The inline link processor substitutes assembled templates and links for
@@ -47,6 +39,7 @@ import java.io.IOException;
  */
 public class PSInlineLinkProcessor implements IPSPropertyInterceptor
 {
+
    /**
     * The filter to use with the links
     */
@@ -59,10 +52,13 @@ public class PSInlineLinkProcessor implements IPSPropertyInterceptor
 
    private static final Logger log = LogManager.getLogger(PSInlineLinkProcessor.class);
 
+   PSInlineLinkContentHandler contentHandler = new PSInlineLinkContentHandler();
+
+
    /**
     * Create a new inline link processor. One instance should be created for
     * each property to be processed.
-    * 
+    *
     * @param filter the item filter, never <code>null</code>
     * @param workitem the work item being assembled, never <code>null</code>
     */
@@ -100,7 +96,6 @@ public class PSInlineLinkProcessor implements IPSPropertyInterceptor
          {
             PSTrackAssemblyError
                .addProblem("Problem processing inline links", e);
-            PSXmlEncoder enc = new PSXmlEncoder();
             log.warn("Problem processing inline links", e);
             StringBuilder message = new StringBuilder();
             message
@@ -108,9 +103,9 @@ public class PSInlineLinkProcessor implements IPSPropertyInterceptor
             message.append(PSI18nUtils
                   .getString("psx_assembly@Error processing inline link"));
             message.append(" ");
-            message.append(enc.encode(e.getLocalizedMessage()));
+            message.append(e.getLocalizedMessage());
             message.append("<h2 class='perc-assembly-orginal-content'>Original content:</h2>");
-            message.append(enc.encode(originalValue));
+            message.append(originalValue);
             message.append("</div>");
             return message.toString();
          }
@@ -126,30 +121,26 @@ public class PSInlineLinkProcessor implements IPSPropertyInterceptor
     * the {@link PSInlineLinkContentHandler} to do the real work. The handler
     * holds the results and releases them through the
     * {@link PSInlineLinkContentHandler#toString()} method.
-    * 
+    *
     * @param body the body to be processed, assumed never <code>null</code> or
     *           empty
     * @return the processed body, never <code>null</code> or empty
-    * @throws SAXException if a problem occurs during parser
-    * @throws IOException should never occur
-    * @throws XMLStreamException should never occur
     */
    private String processInlineLinks(String body)
-         throws SAXException, IOException,
-         XMLStreamException
    {
       try {
          //Don't bother trying to parse if the string doesn't contain html / xml
          if(SecureStringUtils.isHTML(body) || SecureStringUtils.isXML(body)) {
-            return PSSaxHelper.parseWithXMLWriter(body,
-                    PSInlineLinkContentHandler.class, this);
+            Document htmlDoc = PSHtmlUtils.createHTMLDocument(body, StandardCharsets.UTF_8,false,null);
+            return contentHandler.processDocument(htmlDoc,this);
          }
-      }catch (SAXException e){
+      }catch (PSHtmlParsingException e){
          log.error("Error parsing content for inline links in Content Type field. Error: {}. The offending source code was: {}",
                  PSExceptionUtils.getMessageForLog(e), body);
       }
       return body;
    }
+
 
    /**
     * @return Returns the itemFilter.
@@ -165,5 +156,5 @@ public class PSInlineLinkProcessor implements IPSPropertyInterceptor
    public IPSAssemblyItem getWorkItem()
    {
       return m_workItem;
-   }
+      }
 }

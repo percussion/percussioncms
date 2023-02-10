@@ -1,25 +1,18 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 (function ($) {
@@ -31,7 +24,7 @@
         var warnCloseSpan = "</span>";
         var spec;
 
-        var btn = $('<a id="perc-finder-delete" class="perc-font-icon icon-remove fas fa-trash" title="' + I18N.message("perc.ui.delete.page.button@Click Delete Page") + '"href="#" ></a>')
+        var btn = $('<a id="perc-finder-delete" class="perc-font-icon icon-remove fas fa-trash" title="' + I18N.message("perc.ui.delete.page.button@Click Delete Page") + '" href="#" ></a>')
             .off()
             .perc_button()
             .on("click",function(evt){
@@ -199,7 +192,20 @@
                 asset_delete_handle_error
             );
         }
-		
+
+        function deleteFolder() {
+            // do not validate if deleting folders and user is Admin
+            if ($.PercNavigationManager.isAdmin()) {
+                $.PercPathService.deleteFolderSkipValidation(mcol_path.join('/'), mcol_path[mcol_path.length - 1], mcol_path[1], function (data) {
+                    cbDfSuccess(data);
+                });
+            }
+            else {
+                // call validation as usual
+                $.PercPathService.deleteFolder(mcol_path.join('/'), mcol_path[mcol_path.length - 1], mcol_path[1], cbDfSuccess);
+            }
+        }
+
         function handleDelete() {
 
             $.perc_pathmanager.open_path(ut.acop(mcol_path), false, function (specResponse) {
@@ -242,35 +248,8 @@
                 else if (spec.PathItem.type === 'Folder') {
                     if ((spec.PathItem.category === 'FOLDER') ||
                         spec.PathItem.category === 'SECTION_FOLDER' && mcol_path[1] === $.perc_paths.RECYCLING_ROOT_NO_SLASH) {
-                        function deleteFolder() {
-                            // do not validate if deleting folders and user is Admin
-                            if ($.PercNavigationManager.isAdmin()) {
-                                $.PercPathService.deleteFolderSkipValidation(mcol_path.join('/'), mcol_path[mcol_path.length - 1], mcol_path[1], function (data) {
-                                    cbDfSuccess(data);
-                                });
-                            }
-                            else {
-                                // call validation as usual
-                                $.PercPathService.deleteFolder(mcol_path.join('/'), mcol_path[mcol_path.length - 1], mcol_path[1], cbDfSuccess);
-                            }
-                        }
-                        if (spec.PathItem.path.match("^/Sites/") || spec.PathItem.path.match("^//Sites/")) {
-                            $.PercRedirectHandler.createRedirect(spec.PathItem.path, "", "folder").fail(function (errMsg) {
-                                $.perc_utils.alert_dialog({
-                                    title: I18N.message("perc.ui.contributor.ui.adaptor@Redirect creation error"),
-                                    content: errMsg,
-                                    okCallBack: function () {
-                                        deleteFolder();
-                                    }
-                                });
-                            }).done(function () {
-                                deleteFolder();
-                            });
-                        }
-                        else {
-                            deleteFolder();
-                        }
 
+                        deleteFolder();
                     }
                     else {
                         //not allowed
@@ -287,7 +266,7 @@
                 }
 
                 else if (spec.PathItem.type === 'FSFile') {
-                    var url = "";
+                    let url = "";
                     var paths = spec.PathItem.path.split("/");
                     paths = paths.slice(3, paths.length - 1);
 
@@ -431,26 +410,12 @@
                 purge_item(spec.PathItem.id, $.perc_paths.PAGE_PURGE, 'page');
                 return;
             }
-            $.PercRedirectHandler.createRedirect(spec.PathItem.path, "", "page")
-                .fail(function (errMsg) {
-                    $.perc_utils.alert_dialog({
-                        title: I18N.message("perc.ui.contributor.ui.adaptor@Redirect creation error"), content: errMsg, okCallBack: function () {
-                            $.perc_pagemanager.delete_page(spec.PathItem.id,
-                                function () {
-                                    delete_success(spec.PathItem.id, 'page');
-                                },
-                                page_delete_handle_error
-                            );
-                        }
-                    });
-                })
-                .done(function () {
-                    $.perc_pagemanager.delete_page(spec.PathItem.id,
-                        function () {
-                            delete_success(spec.PathItem.id, 'page');
-                        },
-                        page_delete_handle_error);
-                });
+
+            $.perc_pagemanager.delete_page(spec.PathItem.id,
+                function () {
+                    delete_success(spec.PathItem.id, 'page');
+                },
+                page_delete_handle_error);
         }
         function purge_item(id, path, type) {
             $.PercRecycleService.purgeItem(
