@@ -132,8 +132,10 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-import static com.percussion.role.service.IPSRoleService.ADMINISTRATOR_ROLE;
-import static com.percussion.role.service.IPSRoleService.DESIGNER_ROLE;
+import static com.percussion.cms.IPSConstants.ADMINISTRATOR_ROLE;
+import static com.percussion.cms.IPSConstants.DESIGNER_ROLE;
+import static com.percussion.cms.IPSConstants.NAV_ADMIN_ROLE;
+import static com.percussion.cms.IPSConstants.USER_ADMIN_ROLE;
 import static com.percussion.utils.request.PSRequestInfoBase.KEY_PSREQUEST;
 import static com.percussion.utils.request.PSRequestInfoBase.initRequestInfo;
 import static com.percussion.utils.request.PSRequestInfoBase.resetRequestInfo;
@@ -450,7 +452,7 @@ public class PSUserService implements IPSUserService
 
         user.setEmail("");
         List<String> roles = new ArrayList<>();
-        roles.add(IPSRoleService.ADMINISTRATOR_ROLE); 
+        roles.add(IPSConstants.ADMINISTRATOR_ROLE);
         
         user.setRoles(roles);
         createUser(user);
@@ -797,17 +799,15 @@ public class PSUserService implements IPSUserService
         } catch (Exception e) {
             throw new PSNoCurrentUserException("Error getting current user.", e);
         }
-        PSUser user = find(userName);
-        PSCurrentUser currUser = new PSCurrentUser(user);
 
-        boolean isAdmin = currUser.getRoles().contains(ADMINISTRATOR_ROLE);
-        currUser.setAdminUser(isAdmin);
+        PSCurrentUser currUser = new PSCurrentUser(find(userName));
 
-        boolean isDesigner = currUser.getRoles().contains(DESIGNER_ROLE);
-        currUser.setDesignerUser(isDesigner);
+        currUser.setAdminUser(currUser.getRoles().contains(ADMINISTRATOR_ROLE));
+        currUser.setDesignerUser(currUser.getRoles().contains(DESIGNER_ROLE));
+        currUser.setAccessibilityUser(containsAny(currUser.getRoles(), getAccessibilityRoles()));
+        currUser.setNavAdmin(currUser.getRoles().contains(NAV_ADMIN_ROLE));
+        currUser.setUserAdmin(currUser.getRoles().contains(USER_ADMIN_ROLE));
 
-        boolean isAccessibility = containsAny(currUser.getRoles(), getAccessibilityRoles());
-        currUser.setAccessibilityUser(isAccessibility);
 
         return currUser;
     }
@@ -1422,7 +1422,7 @@ public class PSUserService implements IPSUserService
             return false;
         }
         
-        return findRoles(userName).contains(IPSRoleService.ADMINISTRATOR_ROLE);
+        return findRoles(userName).contains(ADMINISTRATOR_ROLE);
     }
     
     @Override
@@ -1431,7 +1431,7 @@ public class PSUserService implements IPSUserService
         if (StringUtils.isBlank(userName))
             return false;
         
-        return findRoles(userName).contains(IPSRoleService.DESIGNER_ROLE);
+        return findRoles(userName).contains(DESIGNER_ROLE);
     }
 
     /**

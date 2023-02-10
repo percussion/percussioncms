@@ -21,6 +21,7 @@ import static java.util.Arrays.asList;
 
 import com.percussion.assetmanagement.data.PSAsset;
 import com.percussion.assetmanagement.service.IPSAssetService;
+import com.percussion.cms.IPSConstants;
 import com.percussion.cms.objectstore.PSFolder;
 import com.percussion.itemmanagement.service.IPSItemService.PSUserItemTypeEnum;
 import com.percussion.pagemanagement.data.PSPage;
@@ -234,7 +235,7 @@ public class PSItemServiceTest extends PSServletTestCase
         PSUser myPagesUser = new PSUser();
         myPagesUser.setName(testuser);
         myPagesUser.setPassword("demo");
-        myPagesUser.setRoles(Collections.singletonList(PSRoleService.ADMINISTRATOR_ROLE));
+        myPagesUser.setRoles(Collections.singletonList(IPSConstants.ADMINISTRATOR_ROLE));
         userService.create(myPagesUser);
         boolean isUserDeleted = false;
         try

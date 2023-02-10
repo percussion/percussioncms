@@ -1628,6 +1628,14 @@
             <column name="PASSWORD">89e495e7941cf9e40e6980d14a16bf023ccd4c91</column>
         </row>
         <row onTableCreateOnly="no" action="i">
+            <column name="USERID">UserAdmin</column>
+            <column name="PASSWORD">89e495e7941cf9e40e6980d14a16bf023ccd4c91</column>
+        </row>
+        <row onTableCreateOnly="no" action="i">
+            <column name="USERID">NavigationAdmin</column>
+            <column name="PASSWORD">89e495e7941cf9e40e6980d14a16bf023ccd4c91</column>
+        </row>
+        <row onTableCreateOnly="no" action="i">
             <column name="USERID">Editor</column>
             <column name="PASSWORD">89e495e7941cf9e40e6980d14a16bf023ccd4c91</column>
         </row>
@@ -1795,11 +1803,19 @@
     </table>
     <table name="PSX_ROLE_SUBJECT_ATTRIBUTES"/>
     <table name="PSX_ROLE_SUBJECTS">
-            <row action="i" onTableCreateOnly="no">
+        <row action="i" onTableCreateOnly="no">
             <column name="ROLEID">1</column>
             <column name="SUBJECTID">315</column>
         </row>
-            <row action="i" onTableCreateOnly="no">
+        <row action="i" onTableCreateOnly="no">
+            <column name="ROLEID">9</column>
+            <column name="SUBJECTID">316</column>
+        </row>
+        <row action="i" onTableCreateOnly="no">
+            <column name="ROLEID">10</column>
+            <column name="SUBJECTID">317</column>
+        </row>
+        <row action="i" onTableCreateOnly="no">
             <column name="ROLEID">1</column>
             <column name="SUBJECTID">13</column>
         </row>
@@ -1997,6 +2013,30 @@
             <column name="WORKFLOWAPPID">5</column>
         </row>
         <row action="i" onTableCreateOnly="no">
+            <column name="ROLEID">9</column>
+            <column name="ROLENAME">User Admin</column>
+            <column name="ROLEDESC"/>
+            <column name="WORKFLOWAPPID">4</column>
+        </row>
+        <row action="i" onTableCreateOnly="no">
+            <column name="ROLEID">9</column>
+            <column name="ROLENAME">User Admin</column>
+            <column name="ROLEDESC"/>
+            <column name="WORKFLOWAPPID">5</column>
+        </row>
+        <row action="i" onTableCreateOnly="no">
+            <column name="ROLEID">10</column>
+            <column name="ROLENAME">Navigation Admin</column>
+            <column name="ROLEDESC"/>
+            <column name="WORKFLOWAPPID">4</column>
+        </row>
+        <row action="i" onTableCreateOnly="no">
+            <column name="ROLEID">10</column>
+            <column name="ROLENAME">Navigation Admin</column>
+            <column name="ROLEDESC"/>
+            <column name="WORKFLOWAPPID">5</column>
+        </row>
+        <row action="i" onTableCreateOnly="no">
             <column name="ROLEID">2</column>
             <column name="ROLENAME">Author</column>
             <column name="ROLEDESC"/>
@@ -2058,14 +2098,28 @@
         </row>
     </table>
     <table name="PSX_ROLES">
-            <row action="i" onTableCreateOnly="no">
+        <row action="i" onTableCreateOnly="no">
             <column name="ID">1</column>
             <column name="NAME">Admin</column>
             <column name="COMPONENTID">0</column>
             <column name="NORMALNAME">admin</column>
             <column name="DESCRIPTION">Admins have rights to take control of a page from a user that is currently accessing it. Admins can also delete pages that are not in the Public state. Admins have rights beyond the page workflow, such as rights to add new users to the system.</column>
         </row>
-            <row action="i" onTableCreateOnly="no">
+        <row action="i" onTableCreateOnly="no">
+            <column name="ID">9</column>
+            <column name="NAME">User Admin</column>
+            <column name="COMPONENTID">0</column>
+            <column name="NORMALNAME">useradmin</column>
+            <column name="DESCRIPTION">User Admins can create or update users.</column>
+        </row>
+        <row action="i" onTableCreateOnly="no">
+            <column name="ID">10</column>
+            <column name="NAME">Navigation Admin</column>
+            <column name="COMPONENTID">0</column>
+            <column name="NORMALNAME">navadmin</column>
+            <column name="DESCRIPTION">Navigation Admins can edit anything under Navigation section.</column>
+        </row>
+        <row action="i" onTableCreateOnly="no">
             <column name="ID">4</column>
             <column name="NAME">Editor</column>
             <column name="COMPONENTID">0</column>
@@ -2091,14 +2145,6 @@
             <column name="NAME">System</column>
             <column name="COMPONENTID">0</column>
             <column name="NORMALNAME">system</column>
-        </row>
-            <row action="i" onTableCreateOnly="no">
-            <column name="ID">312</column>
-            <column name="NAME">Designer</column>
-            <column name="COMPONENTID">0</column>
-            <column name="NORMALNAME">designer</column>
-            <column name="DESCRIPTION">Designers have the same abilities as Admins, except that they do not have the ability to manage workflows, users, roles, and folders, and cannot create, delete, or copy sites
-            </column>
         </row>
         <row action="i" onTableCreateOnly="no">
             <column name="ID">301</column>
@@ -2172,6 +2218,28 @@
             <column name="COMPONENTID">0</column>
             <column name="NORMALNAME">report_admin</column>
         </row>
+        <row action="i" onTableCreateOnly="no">
+            <column name="ID">312</column>
+            <column name="NAME">Designer</column>
+            <column name="COMPONENTID">0</column>
+            <column name="NORMALNAME">designer</column>
+            <column name="DESCRIPTION">Designers have the same abilities as Admins, except that they do not have the ability to manage workflows, users, roles, and folders, and cannot create, delete, or copy sites
+            </column>
+        </row>
+        <row action="i" onTableCreateOnly="no">
+            <column name="ID">313</column>
+            <column name="NAME">Navigation Admin</column>
+            <column name="COMPONENTID">0</column>
+            <column name="NORMALNAME">Navigation Admin</column>
+            <column name="DESCRIPTION">A Navigation Admin can only administer Navigation</column>
+        </row>
+        <row action="i" onTableCreateOnly="no">
+            <column name="ID">314</column>
+            <column name="NAME">User Admin</column>
+            <column name="COMPONENTID">0</column>
+            <column name="NORMALNAME">User Admin</column>
+            <column name="DESCRIPTION">A User Admin can only administer Users, Roles, Workflows</column>
+        </row>
     </table>
     <table name="PSX_SUBJECTS">
             <row action="i" onTableCreateOnly="no">
@@ -2192,9 +2260,21 @@
             <column name="TYPE">1</column>
             <column name="COMPONENTID">0</column>
         </row>
-            <row action="i" onTableCreateOnly="no">
+        <row action="i" onTableCreateOnly="no">
             <column name="ID">315</column>
             <column name="NAME">Admin</column>
+            <column name="TYPE">1</column>
+            <column name="COMPONENTID">0</column>
+        </row>
+        <row action="i" onTableCreateOnly="no">
+            <column name="ID">316</column>
+            <column name="NAME">UserAdmin</column>
+            <column name="TYPE">1</column>
+            <column name="COMPONENTID">0</column>
+        </row>
+        <row action="i" onTableCreateOnly="no">
+            <column name="ID">317</column>
+            <column name="NAME">NavigationAdmin</column>
             <column name="TYPE">1</column>
             <column name="COMPONENTID">0</column>
         </row>
@@ -23117,6 +23197,15 @@
         <row onTableCreateOnly="no" action="i">
             <column name="METAKEY">perc.role.homepage.Contributor</column>
             <column name="DATA">Home</column>
+        </row>
+
+        <row onTableCreateOnly="no" action="i">
+            <column name="METAKEY">perc.role.homepage.Navigation Admin</column>
+            <column name="DATA">Navigation</column>
+        </row>
+        <row onTableCreateOnly="no" action="i">
+            <column name="METAKEY">perc.role.homepage.User Admin</column>
+            <column name="DATA">Admin</column>
         </row>
     </table>
 
