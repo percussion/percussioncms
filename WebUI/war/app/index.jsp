@@ -30,6 +30,7 @@
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Map" %>
 <%@ page import="com.percussion.server.PSServer" %>
+<%@ page import="org.bouncycastle.util.Arrays" %>
 
 
 
@@ -62,18 +63,17 @@
     Map<String, String> views = new HashMap<String, String>();
     views.put("editAsset", "editAsset.jsp");
     views.put("dash", "dashboard.jsp");
+    views.put("editor", "webmgt.jsp");
+    views.put("editTemplate", "editTemplate.jsp");
+    views.put("home", "home.jsp");
     views.put("design", "admin.jsp");
     views.put("arch", "siteArchitecture.jsp");
-    views.put("editor", "webmgt.jsp");
     views.put("publish", "publish.jsp");
     views.put("workflow", "adminWorkflow.jsp");
-    views.put("editTemplate", "editTemplate.jsp");
     views.put("widgetbuilder", "widgetBuilder.jsp");
-    views.put("home", "home.jsp");
-
 
     // List of views requiring admin role
-    String[] adminViews = new String[]{
+    String[] adminViews = {
             "design",
             "arch",
             "publish",
@@ -82,30 +82,66 @@
     };
 
     // List of views requiring designer role
-    String[] designerViews = new String[]{
+    String[] designerViews = {
             "design",
             "arch",
             "publish",
             "widgetbuilder"
     };
 
-    boolean isAdminView = (view != null && ArrayUtils.contains(adminViews, view));
-    boolean isDesignerView =  (view != null && ArrayUtils.contains(designerViews, view));
+    String[] userAdminViews = {"design", "workflow"};
 
-    if(isAdminView && !(Boolean)request.getAttribute(IS_ADMIN_KEY))
-    {
-        if (isDesignerView)
-        {
-            if (!(Boolean)request.getAttribute(IS_DESIGNER_KEY))
-                view = null; //reset view sending user to default view
-        }
-        else
-        {
-            // no designer access to workflow view, send to default view
-            view = null;
+    String[] navAdminViews = {"arch"};
+
+    boolean isNavAdmin = (boolean) request.getAttribute(IS_NAVADMIN_KEY);
+    boolean isUserAdmin = (boolean) request.getAttribute(IS_USERADMIN_KEY);
+    boolean isDesigner = (boolean) request.getAttribute(IS_DESIGNER_KEY);
+    boolean isAdmin = (boolean) request.getAttribute(IS_ADMIN_KEY);
+
+    // We are collecting just the non-admin views
+    List<String> allowedViews = new ArrayList<>();
+    allowedViews.add("dash");
+    allowedViews.add("editor");
+    allowedViews.add("editor");
+    allowedViews.add("editTemplate");
+    allowedViews.add("home");
+
+
+    if(isAdmin) {
+        for(String s : adminViews) {
+            if(!allowedViews.contains(s)) {
+                allowedViews.add(s);
+            }
         }
     }
 
+    if(isDesigner) {
+        for(String s : designerViews) {
+            if(!allowedViews.contains(s)) {
+                allowedViews.add(s);
+            }
+        }
+    }
+
+    if(isUserAdmin) {
+        for(String s : userAdminViews) {
+            if(!allowedViews.contains(s)) {
+                allowedViews.add(s);
+            }
+        }
+    }
+
+    if(isNavAdmin) {
+        for(String s : navAdminViews) {
+            if(!allowedViews.contains(s)) {
+                allowedViews.add(s);
+            }
+        }
+    }
+
+    if(!allowedViews.contains(view)) {
+        view = null;
+    }
 
 
     String forwardTo = MAINT_ERROR_PAGE_URL;
@@ -127,7 +163,6 @@
         {
             String key = (String)paramNames.nextElement();
             String value = request.getParameter(key);
-            System.out.println(value);
             if(key.equals("view"))
                 continue;
             buff.append(count == 0 ? "" : "&");
@@ -229,6 +264,8 @@
         String name = null;
         Boolean isAdmin = Boolean.FALSE;
         Boolean isDesigner = Boolean.FALSE;
+        Boolean isUserAdmin = Boolean.FALSE;
+        Boolean isNavAdmin = Boolean.FALSE;
         Boolean isAccessibilityUser = Boolean.FALSE;
 
         try
@@ -241,16 +278,20 @@
             isAccessibilityUser = user.isAccessibilityUser();
             isAdmin = user.isAdminUser();
             isDesigner = user.isDesignerUser();
+            isUserAdmin = user.isUserAdmin();
+            isNavAdmin = user.isNavAdmin();
 
 
             List<String> roles  = user.getRoles();
             if(roles == null)
-                  roles = new ArrayList<String>();
+                roles = new ArrayList<String>();
 
             request.setAttribute(CURRENT_USER_NAME_KEY, name);
             request.setAttribute(CURRENT_USER_ROLES_KEY, roles.toString());
             request.setAttribute(IS_ADMIN_KEY, isAdmin);
             request.setAttribute(IS_DESIGNER_KEY, isDesigner);
+            request.setAttribute(IS_USERADMIN_KEY, isUserAdmin);
+            request.setAttribute(IS_NAVADMIN_KEY, isNavAdmin);
         } catch (Exception e) {
             throw new JspException(e);
         }
@@ -259,6 +300,8 @@
         setCookie(request, response, "perc_isAdmin", isAdmin.toString());
         setCookie(request, response, "perc_isDesigner", isDesigner.toString());
         setCookie(request, response, "perc_isAccessibilityUser", isAccessibilityUser.toString());
+        setCookie(request, response, "perc_isNavAdmin", isNavAdmin.toString());
+        setCookie(request, response, "perc_isUserAdmin", isUserAdmin.toString());
     }
 
     private void setCookie(HttpServletRequest request, HttpServletResponse response, String cookieName, String cookieValue) {
@@ -465,6 +508,8 @@
     private static final String HAS_SITES_KEY = "hasSites";
     private static final String IS_ADMIN_KEY = "isAdmin";
     private static final String IS_DESIGNER_KEY = "isDesigner";
+    private static final String IS_USERADMIN_KEY = "isUserAdmin";
+    private static final String IS_NAVADMIN_KEY = "isNavAdmin";
     private static final String ADMIN_ROLE = "Admin";
     private static final String IS_ACCESSIBILITY_USER = "isAccessibilityUser";
     private static final String IS_WIDGET_BUILDER_ACTIVE = "isWidgetBuilderActive";

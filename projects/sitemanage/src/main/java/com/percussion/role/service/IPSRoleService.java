@@ -27,11 +27,7 @@ import com.percussion.user.data.PSUserList;
  */
 public interface IPSRoleService
 {
-    /**
-     * Administrator role.
-     */
-    public static final String ADMINISTRATOR_ROLE = "Admin";
-    public static final String DESIGNER_ROLE = "Designer";
+
     public static final String META_DATA_HOMEPAGE_PREFIX = "perc.role.homepage.";
     public static final String HOMEPAGE_TYPE_DASHBOARD = "Dashboard";
     public static final String HOMEPAGE_TYPE_EDITOR = "Editor";

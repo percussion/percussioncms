@@ -36,6 +36,8 @@
     var id = "";
     var isAdmin = false;
     var isDesigner = false;
+    var isUserAdmin = false;
+    var isNavAdmin = false;
     var isAccessibilityUser = false;
     var userName = "";
     var debug = false;
@@ -93,7 +95,7 @@
      * @param item {Object}
      */
     function onFinderItemOpen(item){
-        var type = item['type'];
+        var type = item.type;
         switch (type)
         {
             case "site":
@@ -113,7 +115,7 @@
                 break;
 
             default:
-                if(item['category'] === 'ASSET') {
+                if(item.category === 'ASSET') {
                     handleOpenAsset(item);
                 }
         }
@@ -126,8 +128,8 @@
     function handleOpenSite(item){
         if(!(isAdmin || isDesigner))
         {
-            changeLocation(item["name"],
-                constants.VIEW_EDITOR, null, null, item["name"],item["path"], null, null);
+            changeLocation(item.name,
+                constants.VIEW_EDITOR, null, null, item.name,item.path, null, null);
             return;
         }
         var toView = constants.VIEW_SITE_ARCH;
@@ -141,8 +143,8 @@
         //If already on publish iew then just change site and reload publish view
         if(view === constants.VIEW_PUBLISH)
             toView = constants.VIEW_PUBLISH;
-        changeLocation(item["id"],
-            toView, mode, null, null, item["path"], null, null);
+        changeLocation(item.id,
+            toView, mode, null, null, item.path, null, null);
     }
 
     /**
@@ -157,7 +159,7 @@
             $.PercViewReadyManager.showRenderingProgressWarning();
             return;
         }
-        $.PercFolderHelper().getAccessLevelById(item["id"],false,function(status, result){
+        $.PercFolderHelper().getAccessLevelById(item.id,false,function(status, result){
             if(status === $.PercFolderHelper().PERMISSION_ERROR)
             {
                 $.perc_utils.alert_dialog({title: I18N.message("perc.ui.publish.title@Error"), content: result});
@@ -167,13 +169,15 @@
             {
                 if(isEditMode && result === $.PercFolderHelper().PERMISSION_READ)
                 {
-                    $.perc_utils.alert_dialog({title: I18N.message("perc.ui.page.general@Warning"), content: I18N.message("perc.ui.navi.manager@No Permissions For Page") + item["name"] +"'."});
+                    $.perc_utils.alert_dialog({title: I18N.message("perc.ui.page.general@Warning"),
+                        content: I18N.message("perc.ui.navi.manager@No Permissions For Page") + item.name +"'."});
                 }
                 else
                 {
-                    var aSite = parseSiteFromPath(item['path']);
+                    var aSite = parseSiteFromPath(item.path);
                     var aMode = isEditMode ? constants.MODE_EDIT : constants.MODE_READONLY;
-                    changeLocation(aSite, constants.VIEW_EDITOR, aMode, item["id"], item["name"], item['path'], constants.PATH_TYPE_PAGE, null);
+                    changeLocation(aSite, constants.VIEW_EDITOR, aMode, item.id, item.name, item.path,
+                        constants.PATH_TYPE_PAGE, null);
                 }
             }
         });
@@ -256,7 +260,7 @@
      * @param isEditMode {boolean}
      */
     function handleOpenAsset(item, isEditMode){
-        $.PercFolderHelper().getAccessLevelById(item["id"],false,function(status, result){
+        $.PercFolderHelper().getAccessLevelById(item.id,false,function(status, result){
             if(status === $.PercFolderHelper().PERMISSION_ERROR)
             {
                 $.perc_utils.alert_dialog({title: I18N.message("perc.ui.publish.title@Error"), content: result});
@@ -266,12 +270,14 @@
             {
                 if(isEditMode && result === $.PercFolderHelper().PERMISSION_READ)
                 {
-                    $.perc_utils.alert_dialog({title: I18N.message("perc.ui.page.general@Warning"), content: I18N.message("perc.ui.navi.manager@No Permissions For Asset") + item["name"] +"'."});
+                    $.perc_utils.alert_dialog({title: I18N.message("perc.ui.page.general@Warning"),
+                        content: I18N.message("perc.ui.navi.manager@No Permissions For Asset") + item.name +"'."});
                 }
                 else
                 {
                     var aMode = isEditMode ? constants.MODE_EDIT : constants.MODE_READONLY;
-                    changeLocation(null, constants.VIEW_EDIT_ASSET, aMode, item["id"], item["name"], item['path'], constants.PATH_TYPE_ASSET, null);
+                    changeLocation(null, constants.VIEW_EDIT_ASSET, aMode, item.id, item.name, item.path,
+                        constants.PATH_TYPE_ASSET, null);
                 }
             }
         });
@@ -292,7 +298,8 @@
      * @param aPathType {String} the pathType, may be <code>null</code> or empty.
      * @param aMemento {Object} the memento object name, may be <code>null</code> or empty.
      */
-    function changeLocation(aSite, aView, aMode, aId, aName, aPath, aPathType, aMemento)
+    function changeLocation(aSite, aView, aMode, aId, aName, aPath,
+                            aPathType, aMemento)
     {
         var params = buildParams(aSite, aView, aMode, aId, aName, aPath, aPathType, aMemento);
         $.PercBlockUI($.PercBlockUIMode.CURSORONLY);
@@ -439,9 +446,12 @@
         userName = $.cookie("perc_userName");
         isAdmin = $.cookie("perc_isAdmin") === 'true' ? true : false;
         isDesigner = $.cookie("perc_isDesigner") === 'true' ? true : false;
+        isUserAdmin = $.cookie("perc_isUserAdmin") === 'true' ? true : false;
+        isNavAdmin = $.cookie("perc_isNavAdmin") === 'true' ? true : false;
         isAccessibilityUser = $.cookie("perc_isAccessibilityUser") === 'true' ? true : false;
 
-        $.perc_utils.info("UserInfo", "userName: " + userName + ", isAdmin: " +  isAdmin + ", isDesigner: " +  isDesigner + ", isAccessibilityUser: " + isAccessibilityUser);
+        $.perc_utils.info("UserInfo", "userName: " + userName + ", isAdmin: " +  isAdmin + ", isDesigner: " +  isDesigner +
+            ", isAccessibilityUser: " + isAccessibilityUser + ", isUserAdmin: " + isUserAdmin + ", isNavAdmin: " + isNavAdmin);
     }
 
     function doReloadIfRequred(url)
@@ -737,6 +747,22 @@
          */
         isDesigner: function(){
             return isDesigner;
+        },
+        /**
+         * Flag indicating that the current user can administer users
+         * @return <code>true</code> if current user is in the User Admin role.
+         * @type boolean
+         */
+        isUserAdmin: function() {
+            return isUserAdmin;
+        },
+        /**
+         * Flag indicating that the current user can administer navigation
+         * @return <code>true</code> if current user is in the Navigation Admin role.
+         * @type boolean
+         */
+        isNavAdmin: function() {
+            return isNavAdmin;
         },
         /**
          * Flag indicating that the current user is an accessibility user.
