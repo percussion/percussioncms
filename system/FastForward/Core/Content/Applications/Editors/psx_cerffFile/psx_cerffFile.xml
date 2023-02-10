@@ -1,27 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-  ~     Percussion CMS
-  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
-  ~
-  ~     This program is free software: you can redistribute it and/or modify
-  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
-  ~
-  ~     This program is distributed in the hope that it will be useful,
-  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
-  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  ~     GNU Affero General Public License for more details.
-  ~
-  ~     Mailing Address:
-  ~
-  ~      Percussion Software, Inc.
-  ~      PO Box 767
-  ~      Burlington, MA 01803, USA
-  ~      +01-781-438-9900
-  ~      support@percussion.com
-  ~      https://www.percussion.com
-  ~
-  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
-  -->
+
 
 <PSXApplication active="no" enabled="yes" hidden="no" id="1050" startPriority="0" version="2.0">
 	<name>psx_cerffFile</name>
@@ -43,14 +21,14 @@
 	</PSXRevisionHistory>
 	<PSXAcl id="0">
 		<PSXAclEntry id="0" type="user">
-         <name>Anonymous</name>
+			<name>Anonymous</name>
 			<applicationAccessLevel dataCreate="yes" dataDelete="yes" dataQuery="yes" dataUpdate="yes" designDelete="no" designRead="no" designUpdate="no" modifyAcl="no"/>
 		</PSXAclEntry>
-      <PSXAclEntry id="0" type="user">
-         <name>Default</name>
+		<PSXAclEntry id="0" type="user">
+			<name>Default</name>
 			<applicationAccessLevel dataCreate="yes" dataDelete="yes" dataQuery="yes" dataUpdate="yes" designDelete="yes" designRead="yes" designUpdate="yes" modifyAcl="yes"/>
 		</PSXAclEntry>
-      <multiMembershipBehavior/>
+		<multiMembershipBehavior/>
 	</PSXAcl>
 	<maxThreads>-1</maxThreads>
 	<maxRequestTime>-1</maxRequestTime>
@@ -62,18 +40,18 @@
 	<requestTypeValueInsert>INSERT</requestTypeValueInsert>
 	<requestTypeValueUpdate>UPDATE</requestTypeValueUpdate>
 	<requestTypeValueDelete>DELETE</requestTypeValueDelete>
-<PSXContentEditor contentType="309" enableRelatedContent="no" iconSource="2" iconValue="item_file_attachment_ext" objectType="1" workflowId="5">
+	<PSXContentEditor contentType="309" enableRelatedContent="no" iconSource="2" iconValue="item_file_attachment_ext" objectType="1" workflowId="5">
 		<PSXDataSet id="80">
-    <name>rffFile</name>
+			<name>rffFile</name>
 			<description>default template</description>
 			<transactionType>none</transactionType>
 			<PSXContentEditorPipe id="0">
 				<name>cePipe</name>
 				<description>This is the ContentEditorLocaDef for Default ContentType</description>
 				<InputDataExits>
-        <PSXExtensionCallSet id="0">
-          <PSXExtensionCall id="10020">
-            <name>Java/global/percussion/generic/sys_HashedFileInfo</name>
+					<PSXExtensionCallSet id="0">
+						<PSXExtensionCall id="10020">
+							<name>Java/global/percussion/generic/sys_HashedFileInfo</name>
 						</PSXExtensionCall>
 						<PSXExtensionCall id="0">
 							<name>Java/global/percussion/exit/sys_imageInfoExtractor</name>
@@ -119,8 +97,8 @@
 						<PSXTableLocator>
 							<PSXBackEndCredential id="275">
 								<alias>contentCredential</alias>
-              <comment></comment>
-              <datasource></datasource>
+								<comment></comment>
+								<datasource></datasource>
 							</PSXBackEndCredential>
 						</PSXTableLocator>
 						<PSXTableRef alias="RXS_CT_FILE" name="RXS_CT_FILE"/>
@@ -135,10 +113,10 @@
 						<SharedFieldGroupName>shared</SharedFieldGroupName>
 						<SharedFieldGroupName>sharedbinary</SharedFieldGroupName>
 						<SharedFieldExcludes>
-						   <FieldRef>description</FieldRef>
-						   <FieldRef>keywords</FieldRef>
-						   <FieldRef>body</FieldRef>
-						   <FieldRef>callout</FieldRef>
+							<FieldRef>description</FieldRef>
+							<FieldRef>keywords</FieldRef>
+							<FieldRef>body</FieldRef>
+							<FieldRef>callout</FieldRef>
 						</SharedFieldExcludes>
 					</SharedFieldIncludes>
 					<PSXFieldSet name="RXS_CT_FILE" repeatability="zeroOrMore" supportsSequencing="yes" type="parent" userSearchable="yes">
@@ -154,10 +132,10 @@
 							<DataFormat>50</DataFormat>
 							<OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
 							<PSXPropertySet>
-              <PSXProperty locked="no" name="cleanupBrokenInlineLinks">
+								<PSXProperty locked="no" name="cleanupBrokenInlineLinks">
 									<Value type="Boolean">no</Value>
 								</PSXProperty>
-              <PSXProperty locked="no" name="mayHaveInlineLinks">
+								<PSXProperty locked="no" name="mayHaveInlineLinks">
 									<Value type="Boolean">no</Value>
 								</PSXProperty>
 							</PSXPropertySet>
@@ -165,19 +143,19 @@
 						</PSXField>
 						<PSXFieldSet name="shared" repeatability="oneOrMore" supportsSequencing="no" type="multiPropertySimpleChild" userSearchable="yes">
 							<PSXField forceBinary="no" modificationType="user" name="filename" showInPreview="no" showInSummary="no" type="shared">
-              <DataType></DataType>
-              <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
-            </PSXField>
-          </PSXFieldSet>
-          <PSXFieldSet name="sharedbinary" repeatability="oneOrMore" supportsSequencing="no" type="multiPropertySimpleChild" userSearchable="yes">
-            <PSXField forceBinary="no" modificationType="user" name="item_file_attachment_filename" showInPreview="yes" showInSummary="yes" type="shared">
-              <DataType></DataType>
-              <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
-              <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
-            </PSXField>
-            <PSXField forceBinary="no" modificationType="user" name="item_file_attachment_type" showInPreview="yes" showInSummary="yes" type="shared">
-              <DataType></DataType>
-              <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+								<DataType></DataType>
+								<PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+							</PSXField>
+						</PSXFieldSet>
+						<PSXFieldSet name="sharedbinary" repeatability="oneOrMore" supportsSequencing="no" type="multiPropertySimpleChild" userSearchable="yes">
+							<PSXField forceBinary="no" modificationType="user" name="item_file_attachment_filename" showInPreview="yes" showInSummary="yes" type="shared">
+								<DataType></DataType>
+								<OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+								<PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+							</PSXField>
+							<PSXField forceBinary="no" modificationType="user" name="item_file_attachment_type" showInPreview="yes" showInSummary="yes" type="shared">
+								<DataType></DataType>
+								<OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
 								<PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
 							</PSXField>
 						</PSXFieldSet>
@@ -186,39 +164,43 @@
 						<PSXDisplayMapper fieldSetRef="RXS_CT_FILE" id="0">
 							<PSXDisplayMapping>
 								<FieldRef>sys_title</FieldRef>
-                        <PSXUISet accessKey="s"/>
+								<PSXUISet accessKey="s"/>
 							</PSXDisplayMapping>
 							<PSXDisplayMapping>
 								<FieldRef>displaytitle</FieldRef>
-                        <PSXUISet accessKey="t"/>
+								<PSXUISet accessKey="t"/>
 							</PSXDisplayMapping>
 							<PSXDisplayMapping>
 								<FieldRef>sys_contentstartdate</FieldRef>
-                        <PSXUISet accessKey="D"/>
+								<PSXUISet accessKey="D"/>
 							</PSXDisplayMapping>
 							<PSXDisplayMapping>
 								<FieldRef>sys_contentexpirydate</FieldRef>
-                        <PSXUISet accessKey="e"/>
+								<PSXUISet accessKey="e"/>
 							</PSXDisplayMapping>
 							<PSXDisplayMapping>
 								<FieldRef>sys_reminderdate</FieldRef>
-                        <PSXUISet accessKey="r"/>
+								<PSXUISet accessKey="r"/>
 							</PSXDisplayMapping>
 							<PSXDisplayMapping>
-              <FieldRef>item_file_attachment_hash</FieldRef>
-                        <PSXUISet accessKey="F"/>
+								<FieldRef>item_file_attachment</FieldRef>
+								<PSXUISet accessKey="F"/>
+							</PSXDisplayMapping>
+							<PSXDisplayMapping>
+								<FieldRef>item_file_attachment_hash</FieldRef>
+								<PSXUISet accessKey="h"/>
 							</PSXDisplayMapping>
 							<PSXDisplayMapping>
 								<FieldRef>item_file_attachment_filename</FieldRef>
-                        <PSXUISet accessKey="B"/>
+								<PSXUISet accessKey="B"/>
 							</PSXDisplayMapping>
 							<PSXDisplayMapping>
 								<FieldRef>item_file_attachment_type</FieldRef>
-                        <PSXUISet accessKey="T"/>
+								<PSXUISet accessKey="T"/>
 							</PSXDisplayMapping>
 							<PSXDisplayMapping>
 								<FieldRef>file_category</FieldRef>
-                        <PSXUISet accessKey="g">
+								<PSXUISet accessKey="g">
 									<Label>
 										<PSXDisplayText>File Category:</PSXDisplayText>
 									</Label>
@@ -239,31 +221,31 @@
 							</PSXDisplayMapping>
 							<PSXDisplayMapping>
 								<FieldRef>filename</FieldRef>
-                        <PSXUISet accessKey="N"/>
+								<PSXUISet accessKey="N"/>
 							</PSXDisplayMapping>
 							<PSXDisplayMapping>
 								<FieldRef>item_file_attachment_ext</FieldRef>
-                        <PSXUISet accessKey="e"/>
+								<PSXUISet accessKey="e"/>
 							</PSXDisplayMapping>
 							<PSXDisplayMapping>
 								<FieldRef>sys_suffix</FieldRef>
-                        <PSXUISet accessKey="S"/>
+								<PSXUISet accessKey="S"/>
 							</PSXDisplayMapping>
 							<PSXDisplayMapping>
 								<FieldRef>item_file_attachment_size</FieldRef>
-                        <PSXUISet accessKey="z"/>
+								<PSXUISet accessKey="z"/>
 							</PSXDisplayMapping>
 							<PSXDisplayMapping>
 								<FieldRef>sys_communityid</FieldRef>
-                        <PSXUISet accessKey="m"/>
+								<PSXUISet accessKey="m"/>
 							</PSXDisplayMapping>
 							<PSXDisplayMapping>
 								<FieldRef>sys_workflowid</FieldRef>
-                        <PSXUISet accessKey="w"/>
+								<PSXUISet accessKey="w"/>
 							</PSXDisplayMapping>
 							<PSXDisplayMapping>
 								<FieldRef>sys_lang</FieldRef>
-                        <PSXUISet accessKey="l"/>
+								<PSXUISet accessKey="l"/>
 							</PSXDisplayMapping>
 							<PSXDisplayMapping>
 								<FieldRef>sys_currentview</FieldRef>
@@ -271,19 +253,19 @@
 							</PSXDisplayMapping>
 							<PSXDisplayMapping>
 								<FieldRef>webdavowner</FieldRef>
-                        <PSXUISet accessKey="O"/>
+								<PSXUISet accessKey="O"/>
 							</PSXDisplayMapping>
-            <PSXDisplayMapping>
-              <FieldRef>sys_hibernateVersion</FieldRef>
-              <PSXUISet/>
-            </PSXDisplayMapping>
+							<PSXDisplayMapping>
+								<FieldRef>sys_hibernateVersion</FieldRef>
+								<PSXUISet/>
+							</PSXDisplayMapping>
 						</PSXDisplayMapper>
 					</PSXUIDefinition>
 				</PSXContentEditorMapper>
-            <userProperties>
-        <userProperty name="Control10001_DependencyIds">10020</userProperty>
-        <userProperty name="Control10001_Dependency10020">sys_HashedFileInfo</userProperty>
-            </userProperties>
+				<userProperties>
+					<userProperty name="Control10001_DependencyIds">10020</userProperty>
+					<userProperty name="Control10001_Dependency10020">sys_HashedFileInfo</userProperty>
+				</userProperties>
 			</PSXContentEditorPipe>
 			<PSXPageDataTank id="79">
 				<schemaSource>file:unspecified</schemaSource>

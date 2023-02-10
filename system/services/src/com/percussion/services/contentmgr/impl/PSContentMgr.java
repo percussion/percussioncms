@@ -1,25 +1,18 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.percussion.services.contentmgr.impl;
 
@@ -56,10 +49,10 @@ import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.jcr.Node;
-import javax.jcr.PathNotFoundException;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import javax.jcr.UnsupportedRepositoryOperationException;
@@ -90,7 +83,7 @@ import java.util.stream.Collectors;
  * 
  * @author dougrand
  */
-@Transactional
+@Transactional(propagation = Propagation.REQUIRED)
 public class PSContentMgr  implements IPSContentMgr
 {
 
@@ -98,7 +91,9 @@ public class PSContentMgr  implements IPSContentMgr
    private EntityManager entityManager;
 
    private org.hibernate.Session getSession(){
+
       return entityManager.unwrap(org.hibernate.Session.class);
+
    }
 
 
@@ -143,6 +138,7 @@ public class PSContentMgr  implements IPSContentMgr
     * 
     * @param rep the repository, never <code>null</code>
     */
+   @Transactional(propagation=Propagation.NOT_SUPPORTED)
    public void setRepository(IPSContentRepository rep)
    {
       if (rep == null)
@@ -152,13 +148,14 @@ public class PSContentMgr  implements IPSContentMgr
       m_repository = rep;
    }
 
+   @Transactional(propagation=Propagation.NOT_SUPPORTED)
    public List<Node> findItemsByPath(Session sess, List<String> paths,
-         PSContentMgrConfig config) throws PathNotFoundException,
-         RepositoryException
+         PSContentMgrConfig config) throws RepositoryException
    {
       return m_repository.loadByPath(paths, config);
    }
 
+   @Transactional(propagation=Propagation.NOT_SUPPORTED)
    public List<Node> findItemsByGUID(List<IPSGuid> guids,
          PSContentMgrConfig config) throws RepositoryException
    {
@@ -292,12 +289,10 @@ public class PSContentMgr  implements IPSContentMgr
          }
          
          // Make unique
-         Set<IPSNodeDefinition> bdefs = new HashSet<>();
-         bdefs.addAll(defs);
+         Set<IPSNodeDefinition> bdefs = new HashSet<>(defs);
          
          // Convert back to a list
-         defs = new ArrayList<IPSNodeDefinition>();
-         defs.addAll(bdefs);
+         defs = new ArrayList<IPSNodeDefinition>(bdefs);
 
          return defs;
       }
@@ -331,8 +326,7 @@ public class PSContentMgr  implements IPSContentMgr
       }
 
    }
-   
-   @SuppressWarnings("unchecked")
+
    public PSContentTemplateDesc findContentTypeTemplateAssociation(
          IPSGuid tmpId, IPSGuid ctId) throws RepositoryException
    {
@@ -395,7 +389,7 @@ public class PSContentMgr  implements IPSContentMgr
          d.add(Restrictions.eq("m_templateid", templateid.longValue()));
          List<IPSNodeDefinition> defs = c.list();
          //there may be an entry for every template association
-         Set deduped = new HashSet<IPSNodeDefinition>(defs);
+         Set<IPSNodeDefinition> deduped = new HashSet<IPSNodeDefinition>(defs);
          return new ArrayList<>(deduped);
 
    }
@@ -533,9 +527,10 @@ public class PSContentMgr  implements IPSContentMgr
     * @see com.percussion.services.contentmgr.IPSContentMgr#executeQuery(javax.jcr.query.Query,
     *      int, java.util.Map, java.lang.String)
     */
+   @Transactional(propagation = Propagation.NOT_SUPPORTED)
    public QueryResult executeQuery(Query query, int maxresults,
          Map<String, ? extends Object> params, String locale)
-         throws InvalidQueryException, RepositoryException
+         throws RepositoryException
    {
       return m_repository.executeInternalQuery(query, maxresults, params,
             locale);

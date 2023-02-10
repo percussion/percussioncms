@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context>
+	<Parameter name="soln.p13n.jdbc.sql" value="derby"/>
+	<Parameter name="soln.p13n.jdbc.driverClassName" value="org.apache.derby.jdbc.ClientDriver"/>
+	<Parameter name="soln.p13n.jdbc.url" value="jdbc:derby://localhost:1527/C:/Solutions/derby/Repository/deliveryDB;create=true"/>
+	<Parameter name="soln.p13n.jdbc.username" value="admin1"/>
+	<Parameter name="soln.p13n.jdbc.password" value="demo"/>
+	<Parameter name="soln.p13n.hibernate.dialect" value="org.hibernate.dialect.DerbyDialect"/>
+
+</Context>

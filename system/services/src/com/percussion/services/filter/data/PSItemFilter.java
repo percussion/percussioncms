@@ -1,25 +1,18 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.percussion.services.filter.data;
 
@@ -35,7 +28,7 @@ import com.percussion.services.filter.IPSItemFilterRuleDef;
 import com.percussion.services.filter.PSFilterException;
 import com.percussion.services.filter.PSFilterServiceLocator;
 import com.percussion.services.guidmgr.PSGuidHelper;
-import com.percussion.services.guidmgr.data.PSGuid;
+import com.percussion.services.guidmgr.PSGuidUtils;
 import com.percussion.services.utils.xml.PSXmlSerializationHelper;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.xml.IPSXmlSerialization;
@@ -371,7 +364,7 @@ public class PSItemFilter implements IPSItemFilter, IPSCatalogSummary,
     */
    public IPSGuid getGUID()
    {
-      return new PSGuid(PSTypeEnum.ITEM_FILTER,filter_id);
+      return PSGuidUtils.makeGuid(filter_id, PSTypeEnum.ITEM_FILTER);
    }
    
    /**
@@ -437,13 +430,22 @@ public class PSItemFilter implements IPSItemFilter, IPSCatalogSummary,
       return Objects.hash(name);
    }
 
-   /* (non-Javadoc)
-    * @see java.lang.Object#toString()
-    */
    @Override
-   public String toString()
-   {
-      return ToStringBuilder.reflectionToString(this);
+   public String toString() {
+      final StringBuffer sb = new StringBuffer("PSItemFilter{");
+      sb.append("filter_id=").append(filter_id);
+      sb.append(", version=").append(version);
+      sb.append(", name='").append(name).append('\'');
+      sb.append(", description='").append(description).append('\'');
+      sb.append(", legacy_authtype=").append(legacy_authtype);
+      sb.append(", rules=").append(rules);
+      if(parentFilter!=null) {
+         sb.append(", parentFilter=").append(parentFilter.getGUID());
+      }else{
+         sb.append(", parentFilter=null");
+      }
+      sb.append('}');
+      return sb.toString();
    }
 
    /* (non-Javadoc)

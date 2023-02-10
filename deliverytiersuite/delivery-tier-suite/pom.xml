@@ -4,7 +4,7 @@
     <parent>
         <groupId>com.percussion</groupId>
         <artifactId>core</artifactId>
-        <version>8.1.1-SNAPSHOT</version>
+        <version>8.1.3-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
     <groupId>com.percussion.deliverytier</groupId>
@@ -52,7 +52,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spring.version>5.3.20</spring.version>
-        <hibernate.version>5.6.5.Final</hibernate.version>
+        <hibernate.version>5.6.14.Final</hibernate.version>
         <ehcache.version>2.10.6</ehcache.version>
         <spring.security.version>5.6.2</spring.security.version>
         <cxf.version>3.3.5</cxf.version>
@@ -67,9 +67,9 @@
         <awssdk.version>1.11.731</awssdk.version>
         <bc.version>1.64</bc.version>
         <spotbugs.plugin.version>4.2.0</spotbugs.plugin.version>
-        <jackson.version>2.13.2</jackson.version>
-        <jackson.data.version>2.13.2.1</jackson.data.version>
-        <jsoup.version>1.14.2</jsoup.version>
+        <jackson.version>2.14.2</jackson.version>
+        <jackson.data.version>2.14.2</jackson.data.version>
+        <jsoup.version>1.15.3</jsoup.version>
         <json.version>20201115</json.version>
         <junit.version>4.13.2</junit.version>
         <cactus.version>13-1.7.1</cactus.version>
@@ -84,7 +84,7 @@
         <axis.version>1.4.1</axis.version>
         <axiscore.version>1.4.2</axiscore.version>
         <httpcomponents.version>4.5.8</httpcomponents.version>
-        <log4j2.version>2.17.1</log4j2.version>
+        <log4j2.version>2.18.0</log4j2.version>
         <tika.version>1.17</tika.version>
         <xmpbox.version>2.0.17</xmpbox.version>
         <jbig2.version>3.0.2</jbig2.version>
@@ -100,7 +100,7 @@
         <tinymce.version>4.9.10</tinymce.version>
         <jfx.version>11.0.2</jfx.version>
         <eclipse-manifest-location>META-INF</eclipse-manifest-location>
-        <tomcat.version>9.0.58</tomcat.version>
+        <tomcat.version>9.0.71</tomcat.version>
         <install.jre.version>8.222.10.1</install.jre.version>
         <derby.version>10.14.2.0</derby.version>
         <jtds.version>1.3.1</jtds.version>
@@ -616,7 +616,7 @@
                     <dependency>
                         <groupId>com.percussion</groupId>
                         <artifactId>build-tools</artifactId>
-                        <version>8.1.1-SNAPSHOT</version>
+                        <version>8.1.3-SNAPSHOT</version>
                     </dependency>
                 </dependencies>
             </plugin>
@@ -636,7 +636,7 @@
                     <dependency>
                         <groupId>com.percussion</groupId>
                         <artifactId>build-tools</artifactId>
-                        <version>8.1.1-SNAPSHOT</version>
+                        <version>8.1.3-SNAPSHOT</version>
                     </dependency>
                 </dependencies>
             </plugin>

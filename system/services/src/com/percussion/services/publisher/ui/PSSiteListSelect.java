@@ -1,25 +1,18 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.percussion.services.publisher.ui;
 
@@ -52,6 +45,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -886,33 +880,46 @@ public class PSSiteListSelect
       ms_siteMgr.saveSite(s);
       return "save";
    }
-   
-   
+
+
    @Override
-   public boolean equals(Object arg0)
-   {
-      return EqualsBuilder.reflectionEquals(this, arg0);
+   public boolean equals(Object o) {
+      if (this == o) return true;
+      if (!(o instanceof PSSiteListSelect)) return false;
+      PSSiteListSelect that = (PSSiteListSelect) o;
+      return Objects.equals(m_name, that.m_name) && Objects.equals(m_description, that.m_description) && Objects.equals(m_folderRoot, that.m_folderRoot) && Objects.equals(m_globalTemplate, that.m_globalTemplate) && Objects.equals(m_globalTemplateList, that.m_globalTemplateList) && Objects.equals(m_sitePath, that.m_sitePath) && Objects.equals(m_navTheme, that.m_navTheme) && Objects.equals(m_ipAddress, that.m_ipAddress) && Objects.equals(m_ftpPort, that.m_ftpPort) && Objects.equals(m_userName, that.m_userName) && Objects.equals(m_password, that.m_password) && Objects.equals(m_nameSpace, that.m_nameSpace) && Objects.equals(m_baseURL, that.m_baseURL) && Objects.equals(m_properties, that.m_properties) && Objects.equals(m_current, that.m_current) && Objects.equals(m_siteProps, that.m_siteProps);
+   }
+
+   @Override
+   public int hashCode() {
+      return Objects.hash(m_name, m_description, m_folderRoot, m_globalTemplate, m_globalTemplateList, m_sitePath, m_navTheme, m_ipAddress, m_ftpPort, m_userName, m_password, m_nameSpace, m_baseURL, m_properties, m_current, m_siteProps);
    }
 
    /**
     * (non-Javadoc)
-    * 
-    * @see java.lang.Object#hashCode()
+    *
+    * @see Object#toString()
     */
    @Override
-   public int hashCode()
-   {
-      return HashCodeBuilder.reflectionHashCode(this);
-   }
-
-   /**
-    * (non-Javadoc)
-    * 
-    * @see java.lang.Object#toString()
-    */
-   @Override
-   public String toString()
-   {
-      return ToStringBuilder.reflectionToString(this);
+   public String toString() {
+      final StringBuffer sb = new StringBuffer("PSSiteListSelect{");
+      sb.append("m_name='").append(m_name).append('\'');
+      sb.append(", m_description='").append(m_description).append('\'');
+      sb.append(", m_folderRoot='").append(m_folderRoot).append('\'');
+      sb.append(", m_globalTemplate='").append(m_globalTemplate).append('\'');
+      sb.append(", m_globalTemplateList=").append(m_globalTemplateList);
+      sb.append(", m_sitePath='").append(m_sitePath).append('\'');
+      sb.append(", m_navTheme='").append(m_navTheme).append('\'');
+      sb.append(", m_ipAddress='").append(m_ipAddress).append('\'');
+      sb.append(", m_ftpPort=").append(m_ftpPort);
+      sb.append(", m_userName='").append(m_userName).append('\'');
+      sb.append(", m_password='").append(m_password).append('\'');
+      sb.append(", m_nameSpace='").append(m_nameSpace).append('\'');
+      sb.append(", m_baseURL='").append(m_baseURL).append('\'');
+      sb.append(", m_properties=").append(m_properties);
+      sb.append(", m_current=").append(m_current);
+      sb.append(", m_siteProps=").append(m_siteProps);
+      sb.append('}');
+      return sb.toString();
    }
 }

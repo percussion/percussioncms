@@ -1,25 +1,18 @@
 ﻿/*
- *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 tinymce.PluginManager.add('percadvlink', function(editor) {
@@ -56,10 +49,14 @@ tinymce.PluginManager.add('percadvlink', function(editor) {
         }
 
         data.text = initialText = selection.getContent({format: 'text'});
+	    data.target = anchorElm ? dom.getAttrib(anchorElm, 'target') : '';
         data.url = anchorElm ? dom.getAttrib(anchorElm, 'href') : '';
+		if(data.url){
+
 		data.href = {value: data.url};
+		}
         data.title = anchorElm ? dom.getAttrib(anchorElm, 'title') : '';
-        data.target = anchorElm ? dom.getAttrib(anchorElm, 'target') : '';
+
         data.rel = anchorElm ? dom.getAttrib(anchorElm, 'rel') : '';
         cm1LinkData.sys_dependentvariantid = anchorElm ? dom.getAttrib(anchorElm, 'sys_dependentvariantid') : '';
         cm1LinkData.rxinlineslot = anchorElm ? dom.getAttrib(anchorElm, 'rxinlineslot') : '';
@@ -101,16 +98,24 @@ tinymce.PluginManager.add('percadvlink', function(editor) {
 			initialData: data,
 			onChange: function(api, changeData){
 				if(changeData.name === 'target'){
-					    var newData = api.getData();
-						data.target = newData.target;
+						data.target = api.getData().target;
+				}
+				if(changeData.name === 'href'){
+						data.href = api.getData().href;
+				}
+				if(changeData.name === 'title'){
+						data.title = api.getData().title;
 				}
             },
 
             onSubmit: function(e) {
                 var linkPath = data.url;
                 if (!linkPath) {
-                    editor.execCommand('unlink');
-                    return;
+					linkPath = data.href.value;
+					if (!linkPath) {
+                        editor.execCommand('unlink');
+                        return;
+                    }
                 }
 
                 //Resolve manually entered internal links
@@ -160,7 +165,6 @@ tinymce.PluginManager.add('percadvlink', function(editor) {
                 cm1LinkData.sys_dependentid = renderLink.sys_dependentid;
                 cm1LinkData.inlinetype = 'rxhyperlink';
                 cm1LinkData.jcrPath = pathItem.path;
-                cm1LinkData.pathItem = pathItem;
                 data.url = renderLink.url;
 				data.href = {value: data.url};
                 data.title= renderLink.title;
@@ -172,8 +176,9 @@ tinymce.PluginManager.add('percadvlink', function(editor) {
         //Inner function that adds the link.
         function addLink(extLink){
             var anchorAttrs = {
-                href: data.url,
+
                 target: data.target ? data.target : null,
+				href:data.href?data.href.value :data.url,
                 title: data.title ? data.title : null,
                 rel: data.rel ? data.rel : null,
                 sys_dependentvariantid : cm1LinkData.sys_dependentvariantid,
@@ -182,12 +187,11 @@ tinymce.PluginManager.add('percadvlink', function(editor) {
                 sys_dependentid : cm1LinkData.sys_dependentid,
                 inlinetype : cm1LinkData.inlinetype,
                 'class': cm1LinkData.stateClass,
-                'data-jcrpath': cm1LinkData.jcrPath,
-                'data-pathitem': JSON.stringify(cm1LinkData.pathItem)
+                'data-jcrpath': cm1LinkData.jcrPath
             };
             var extAnchorAttrs = {
-                href: data.url,
                 target: data.target ? data.target : null,
+				href:data.href? data.href.value :data.url,
                 title: data.title ? data.title : null
             };
             if (anchorElm) {
@@ -197,11 +201,6 @@ tinymce.PluginManager.add('percadvlink', function(editor) {
                 }
 
                 if(extLink === 'yes'){
-                    var attrList = anchorElm.attributes;
-                    var i = attrList.length;
-                    while( i-- ){
-                        anchorElm.removeAttributeNode(attrList[i]);
-                    }
                     dom.setAttribs(anchorElm, extAnchorAttrs);
                 } else {
                     dom.setAttribs(anchorElm, anchorAttrs);
@@ -224,13 +223,38 @@ tinymce.PluginManager.add('percadvlink', function(editor) {
         });
     }
 
+    /**
+     * This method checks if TinyMCE is part of ContentEditor or CMS UI
+     * In Case it is CMS UI, it enables buttons and menu items applicable to CMS and
+     * disables buttons and menuitems applicable to Rhythmyx Objects and vice a versa.
+     * @returns {boolean}
+     */
+	function isRXEditor(){
+		 var isRxEdr = false;
+		if(typeof contentEditor !== 'undefined' && "yes" === contentEditor){
+			isRxEdr = true;
+		}
+		return isRxEdr;
+	}
+
     editor.ui.registry.addButton('link', {
         icon: 'link',
         type: 'button',
         tooltip: I18N.message("perc.ui.widget.tinymce@Insert Edit Link"),
         shortcut: 'Ctrl+K',
         onAction: createLinkList(showDialog),
-        stateSelector: 'a[href]'
+        stateSelector: 'a[href]',
+		onSetup: function (buttonApi) {
+            var editorEventCallback = function (eventApi) {
+              buttonApi.setDisabled(isRXEditor() === true );
+            };
+            editor.on('NodeChange', editorEventCallback);
+
+            /* onSetup should always return the unbind handlers */
+            return function (buttonApi) {
+              editor.off('NodeChange', editorEventCallback);
+            };
+      }
     });
 
     editor.ui.registry.addButton('unlink', {
@@ -240,7 +264,18 @@ tinymce.PluginManager.add('percadvlink', function(editor) {
         onAction: function () {
             editor.execCommand('unlink');
         },
-        stateSelector: 'a[href]'
+        stateSelector: 'a[href]',
+		onSetup: function (buttonApi) {
+            var editorEventCallback = function (eventApi) {
+              buttonApi.setDisabled(isRXEditor() === true );
+            };
+            editor.on('NodeChange', editorEventCallback);
+
+            /* onSetup should always return the unbind handlers */
+            return function (buttonApi) {
+              editor.off('NodeChange', editorEventCallback);
+            };
+      }
     });
 	 editor.ui.registry.addButton('openlink', {
         icon: 'new-tab',
@@ -251,6 +286,17 @@ tinymce.PluginManager.add('percadvlink', function(editor) {
         stateSelector: 'a[href]',
 		 selector: 'textarea',
 		 default_link_target: '_blank',
+		 onSetup: function (buttonApi) {
+            var editorEventCallback = function (eventApi) {
+              buttonApi.setDisabled(isRXEditor() === true );
+            };
+            editor.on('NodeChange', editorEventCallback);
+
+            /* onSetup should always return the unbind handlers */
+            return function (buttonApi) {
+              editor.off('NodeChange', editorEventCallback);
+            };
+      }
     });
 
     editor.shortcuts.add('ctrl+k', '', createLinkList(showDialog));
@@ -265,7 +311,14 @@ tinymce.PluginManager.add('percadvlink', function(editor) {
         },
         stateSelector: 'a[href]',
         context: 'insert',
-        prependToContext: true
+        prependToContext: true,
+        onSetup: function (buttonApi) {
+            if (isRXEditor() === false) {
+                buttonApi.setDisabled(false);
+            } else {
+                buttonApi.setDisabled(true);
+            }
+        }
     });
 
     editor.ui.registry.addMenuItem('link', {
@@ -275,7 +328,14 @@ tinymce.PluginManager.add('percadvlink', function(editor) {
         onAction: createLinkList(showDialog),
         stateSelector: 'a[href]',
         context: 'insert',
-        prependToContext: true
+        prependToContext: true,
+        onSetup: function (buttonApi) {
+            if (isRXEditor() === false) {
+                buttonApi.setDisabled(false);
+            } else {
+                buttonApi.setDisabled(true);
+            }
+        }
     });
 
 	editor.ui.registry.addMenuItem('unlink', {
@@ -286,6 +346,13 @@ tinymce.PluginManager.add('percadvlink', function(editor) {
         },
         stateSelector: 'a[href]',
         context: 'insert',
-        prependToContext: true
+        prependToContext: true,
+        onSetup: function (buttonApi) {
+            if (isRXEditor() === false) {
+                buttonApi.setDisabled(false);
+            } else {
+                buttonApi.setDisabled(true);
+            }
+        }
     });
 });

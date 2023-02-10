@@ -261,7 +261,6 @@
   <path id="LANGUAGE_TOOL.CLASSPATH">
   	<pathelement location="${toolsdir}/xerces/xercesImpl.jar"/>
   	<pathelement location="${toolsdir}/xerces/xml-apis.jar"/>  	    
-  	<pathelement location="${toolsdir}/xalan/xalan.jar"/>
     <pathelement location="${install.Repository}/lib/derbyclient.jar"/>
     <pathelement location="${install.mysql}/mysql-connector.jar"/>
     <pathelement location="${jdbcdir}/DB2/db2jcc.jar"/>
@@ -315,6 +314,10 @@
 
   <taskdef name="PSTrimRxPubDocs" classname="${ant.install}.PSTrimRxPubDocs" loaderref="ant.coreLoader">
   
+  </taskdef>
+
+  <taskdef name="PSUpgradeRelationshipConfig" classname="${ant.install}.PSUpgradeRelationshipConfig" loaderref="ant.coreLoader">
+
   </taskdef>
 
   <taskdef name="PSTableAction" classname="${ant.install}.PSTableAction" loaderref="ant.coreLoader">
@@ -798,6 +801,9 @@
                          
             <!-- Rename deprecated system apps if any were found during pre-upgrade checks -->
             <PSRenameDeprecatedApps/>
+
+            <!-- Add New RaltionshipConfigs Types  -->
+            <PSUpgradeRelationshipConfig/>
      
          </then>
         </if>

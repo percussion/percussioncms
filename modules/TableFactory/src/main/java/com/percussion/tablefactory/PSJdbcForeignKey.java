@@ -1,25 +1,18 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.percussion.tablefactory;
@@ -81,7 +74,7 @@ public class PSJdbcForeignKey extends PSJdbcTableComponent
     *
     * @throws IllegalArgumentException if any param is invalid.
     */
-   public PSJdbcForeignKey(Iterator cols, int action)
+   public PSJdbcForeignKey(Iterator<String[]> cols, int action)
    {
       super(null, action);
 
@@ -90,12 +83,7 @@ public class PSJdbcForeignKey extends PSJdbcTableComponent
 
       while (cols.hasNext())
       {
-         Object obj = cols.next();
-         if (!(obj instanceof String[]))
-            throw new IllegalArgumentException(
-               "invalid entry in cols: not a String[]");
-
-         String[] col = (String[])obj;
+         String[] col = cols.next();
          if (col.length != 3)
             throw new IllegalArgumentException(
                "invalid entry in cols: wrong size");
@@ -108,7 +96,7 @@ public class PSJdbcForeignKey extends PSJdbcTableComponent
          catch (IllegalArgumentException e)
          {
             throw new IllegalArgumentException("invalid entry in cols: " +
-               e.toString());
+               e);
          }
       }
    }
@@ -125,7 +113,7 @@ public class PSJdbcForeignKey extends PSJdbcTableComponent
     * @param action One of the <code>PSJdbcTableComponent.ACTION_xxx</code>
     *    constants.
     */
-   public PSJdbcForeignKey(String fkName, Iterator cols, int action)
+   public PSJdbcForeignKey(String fkName, Iterator<String[]> cols, int action)
    {
        this(cols, action);
        setName(fkName);
@@ -188,7 +176,7 @@ public class PSJdbcForeignKey extends PSJdbcTableComponent
     * a String[] with 3 entries, the column name, the external table name, and
     * the external column name respectively, all not <code>null</code> or empty.
     */
-   public Iterator getColumns()
+   public Iterator<String[]> getColumns()
    {
       return m_columns.iterator();
    }
@@ -200,13 +188,10 @@ public class PSJdbcForeignKey extends PSJdbcTableComponent
     * @return An iterator over one or more column names as Strings.
     * Never <code>null</code>.
     */
-   public Iterator getInternalColumns()
+   public Iterator<String> getInternalColumns()
    {
-      List names = new ArrayList();
-      Iterator cols = m_columns.iterator();
-      while (cols.hasNext())
-      {
-         String[] col = (String[])cols.next();
+      List<String> names = new ArrayList<>();
+      for (String[] col : m_columns) {
          names.add(col[0]);
       }
       return names.iterator();
@@ -230,19 +215,16 @@ public class PSJdbcForeignKey extends PSJdbcTableComponent
     * @throws IllegalArgumentException if tableName is <code>null</code> or
     * empty.
     */
-   public Iterator getColumns(String tableName)
+   public Iterator<String[]> getColumns(String tableName)
    {
       if (tableName == null || tableName.trim().length() == 0)
          throw new IllegalArgumentException(
             "tableName may not be null or empty");
 
-      List tableCols = new ArrayList();
+      List<String[]> tableCols = new ArrayList<>();
       if (m_tables.contains(tableName))
       {
-         Iterator cols = m_columns.iterator();
-         while (cols.hasNext())
-         {
-            String[] col = (String[])cols.next();
+         for (String[] col : m_columns) {
             if (col[1].equals(tableName))
                tableCols.add(col);
          }
@@ -260,7 +242,7 @@ public class PSJdbcForeignKey extends PSJdbcTableComponent
    List<String> getForeignKeyColumnNames()
    {
       Iterator<?> columnNameIterator = getColumns();
-      ArrayList<String> columnList = new ArrayList<String>();
+      ArrayList<String> columnList = new ArrayList<>();
       while (columnNameIterator.hasNext())
       {
           String[] columnNames = (String[]) columnNameIterator.next();
@@ -276,7 +258,7 @@ public class PSJdbcForeignKey extends PSJdbcTableComponent
     *
     * @return The table names, never <code>null</code> or empty.
     */
-   public Iterator getTables()
+   public Iterator<String> getTables()
    {
       return m_tables.iterator();
    }
@@ -304,9 +286,9 @@ public class PSJdbcForeignKey extends PSJdbcTableComponent
             IPSTableFactoryErrors.XML_ELEMENT_WRONG_TYPE, args);
       }
 
-      m_columns.clear();;
+      m_columns.clear();
 
-      // allow base class to set its memebers
+      // allow base class to set its members
       getComponentState(sourceNode);
 
       // find first fkcolumn
@@ -357,10 +339,7 @@ public class PSJdbcForeignKey extends PSJdbcTableComponent
       setComponentState(root);
 
       // now add each name
-      Iterator cols = m_columns.iterator();
-      while (cols.hasNext())
-      {
-         String[] colDef = (String[])cols.next();
+      for (String[] colDef : m_columns) {
          Element colEl = PSXmlDocumentBuilder.addEmptyElement(doc, root,
             FK_COLUMN_EL);
          PSXmlDocumentBuilder.addElement(doc, colEl, NAME_EL, colDef[0]);
@@ -379,26 +358,23 @@ public class PSJdbcForeignKey extends PSJdbcTableComponent
     * and new.
     * 
     * @return The A list of PSJdbcForeignKey objects never null <code>
-    *    null</code>. If the foreign key does not reverence more than one table
+    *    null</code>. If the foreign key does not reference more than one table
     *         the list will contain a single instance of the current object.
     * 
     * @throws IllegalArgumentException if doc is <code>null</code>.
     */
-   public List<PSJdbcForeignKey> normalizeForiegnKeys()
+   public List<PSJdbcForeignKey> normalizeForeignKeys()
    {
-      List<PSJdbcForeignKey> newKeysList = new ArrayList<PSJdbcForeignKey>();
+      List<PSJdbcForeignKey> newKeysList = new ArrayList<>();
       if (m_tables != null && m_tables.size() > 1)
       {
-         Iterator tables = m_tables.iterator();
+         Iterator<String> tables = m_tables.iterator();
          int i = 0;
          while (tables.hasNext())
          {
-            String tableName = (String) tables.next();
-            List<String[]> tableCols = new ArrayList<String[]>();
-            Iterator cols = m_columns.iterator();
-            while (cols.hasNext())
-            {
-               String[] col = (String[]) cols.next();
+            String tableName =  tables.next();
+            List<String[]> tableCols = new ArrayList<>();
+            for (String[] col : m_columns) {
                if (col[1].equals(tableName))
                   tableCols.add(col);
             }
@@ -427,9 +403,10 @@ public class PSJdbcForeignKey extends PSJdbcTableComponent
     * @return <code>true</code> if the object is a PSJdbcForeignKey with
     *    the same columns. Otherwise returns <code>false</code>.
     */
+   @Override
    public boolean equals(Object obj)
    {
-      boolean isMatch = true;
+      boolean isMatch;
       if (!(obj instanceof PSJdbcForeignKey))
          isMatch = false;
       else
@@ -464,9 +441,9 @@ public class PSJdbcForeignKey extends PSJdbcTableComponent
       boolean isMatch = true;
 
       if (this.m_columns.size() != other.m_columns.size())
-         isMatch = false;
+         return false;
       else if (this.m_tables.size() != other.m_tables.size())
-         isMatch = false;
+         return false;
       else
       {
          /*
@@ -475,17 +452,17 @@ public class PSJdbcForeignKey extends PSJdbcTableComponent
           */
          for (int i = 0; i < this.m_columns.size() && isMatch; i++)
          {
-            String[] thisCol = (String[])this.m_columns.get(i);
+            String[] thisCol = this.m_columns.get(i);
             // walk other's columns to find a match
             boolean found = false;
             for (int j = 0; j < other.m_columns.size() && !found; j++)
             {
-               String[] otherCol = (String[])other.m_columns.get(j);
+               String[] otherCol = other.m_columns.get(j);
                // see if the two column's are equal
                boolean equals = true;
                for (int k = 0; k < thisCol.length; k++)
                {
-                  if (!thisCol[k].equals(otherCol[k]))
+                  if (!thisCol[k].equalsIgnoreCase(otherCol[k]))
                   {
                      equals = false;
                      break;
@@ -498,6 +475,7 @@ public class PSJdbcForeignKey extends PSJdbcTableComponent
                isMatch = false;
          }
       }
+
       return isMatch;
    }
 
@@ -508,14 +486,12 @@ public class PSJdbcForeignKey extends PSJdbcTableComponent
     *
     * @return The sum of all the hash codes of the composite objects.
     */
+   @Override
    public int hashCode()
    {
       int hash = 0;
       hash += super.hashCode();
-      Iterator i = m_columns.iterator();
-      while (i.hasNext())
-      {
-         String[] col = (String[])i.next();
+      for (String[] col : m_columns) {
          hash += col[0].hashCode();
          hash += col[1].hashCode();
          hash += col[2].hashCode();
@@ -547,7 +523,7 @@ public class PSJdbcForeignKey extends PSJdbcTableComponent
     * @return not empty, not <code>null</code> String containing the element
     *         data from the specified node.
     *
-    * @throws PSJdbcTableFacotryException if the specified node is missing,
+    * @throws PSJdbcTableFactoryException if the specified node is missing,
     *         or empty.
     */
    private static String getRequiredElement(PSXmlTreeWalker tree,
@@ -581,14 +557,14 @@ public class PSJdbcForeignKey extends PSJdbcTableComponent
     * respectively, all not <code>null</code> or empty.  Each entry in the
     * list is not <code>null</code>.  Never <code>null</code> or empty.
     */
-   private List m_columns = new ArrayList();
+   private List<String[]> m_columns = new ArrayList<>();
 
    /**
     * A Set of tables referenced by foreign key columns.  Each entry is the
     * tableName as a String.  Each entry in the list is not <code>null</code> or
     * empty. Never <code>null</code> or empty.
     */
-   private Set m_tables = new HashSet();
+   private Set<String> m_tables = new HashSet<>();
 
    // xml elements
    private static final String FK_COLUMN_EL = "fkColumn";

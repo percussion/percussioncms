@@ -1,27 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-  ~     Percussion CMS
-  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
-  ~
-  ~     This program is free software: you can redistribute it and/or modify
-  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
-  ~
-  ~     This program is distributed in the hope that it will be useful,
-  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
-  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  ~     GNU Affero General Public License for more details.
-  ~
-  ~     Mailing Address:
-  ~
-  ~      Percussion Software, Inc.
-  ~      PO Box 767
-  ~      Burlington, MA 01803, USA
-  ~      +01-781-438-9900
-  ~      support@percussion.com
-  ~      https://www.percussion.com
-  ~
-  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
-  -->
+
 
 <PSXApplication active="no" enabled="yes" hidden="no" id="1054" startPriority="0" version="2.0">
 	<name>psx_cerffImage</name>
@@ -260,6 +238,10 @@
               <DataType></DataType>
               <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="no" visibleToGlobalQuery="yes"/>
             </PSXField>
+			<PSXField forceBinary="no" modificationType="user" name="img1" showInPreview="yes" showInSummary="yes" type="shared">
+				<DataType></DataType>
+				<PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="no" visibleToGlobalQuery="yes"/>
+			</PSXField>
             <PSXField forceBinary="no" modificationType="user" name="img1_type" showInPreview="yes" showInSummary="no" type="shared">
               <DataType></DataType>
 								<OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
@@ -268,6 +250,10 @@
             <PSXField forceBinary="no" modificationType="user" name="img2_hash" showInPreview="yes" showInSummary="yes" type="shared">
               <DataType></DataType>
               <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="no" visibleToGlobalQuery="yes"/>
+							</PSXField>
+							<PSXField forceBinary="no" modificationType="user" name="img2" showInPreview="yes" showInSummary="yes" type="shared">
+								<DataType></DataType>
+								<PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="no" visibleToGlobalQuery="yes"/>
 							</PSXField>
 						</PSXFieldSet>
 					</PSXFieldSet>
@@ -298,8 +284,12 @@
 								<PSXUISet accessKey="D"/>
 							</PSXDisplayMapping>
 							<PSXDisplayMapping>
-								<FieldRef>img1_hash</FieldRef>
+								<FieldRef>img1</FieldRef>
 								<PSXUISet accessKey="m"/>
+							</PSXDisplayMapping>
+							<PSXDisplayMapping>
+								<FieldRef>img1_hash</FieldRef>
+								<PSXUISet accessKey="i"/>
 							</PSXDisplayMapping>
 							<PSXDisplayMapping>
 								<FieldRef>img1_filename</FieldRef>
@@ -393,6 +383,10 @@
 							<PSXDisplayMapping>
 								<FieldRef>img2_hash</FieldRef>
 								<PSXUISet accessKey="M"/>
+							</PSXDisplayMapping>
+							<PSXDisplayMapping>
+								<FieldRef>img2</FieldRef>
+								<PSXUISet accessKey="O"/>
 							</PSXDisplayMapping>
 							<PSXDisplayMapping>
 								<FieldRef>img2_filename</FieldRef>

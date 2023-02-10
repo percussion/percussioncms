@@ -1,31 +1,23 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.percussion.utils.jexl;
 
 import com.percussion.utils.timing.PSStopwatchStack;
 import org.apache.commons.jexl3.JexlException;
-import org.apache.commons.jexl3.JexlExpression;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -66,7 +58,6 @@ public class PSJexlEvaluator
 
    /**
     * Internal context which is modified after each call to
-    * {@link #evaluate(String, JexlExpression)}
     */
    private Map<String,Object> m_vars =  new HashMap<>();
 
@@ -120,9 +111,8 @@ public class PSJexlEvaluator
     * @param var the variable to bind the result of the expression to, may be
     *           <code>null</code> or empty if no binding is to be done.
     * @param jexlexpression the expression, never <code>null</code>
-    * @throws Exception if an error occurs while evaluating the expression
     */
-   public void evaluate(String var, IPSScript jexlexpression) throws Exception
+   public void evaluate(String var, IPSScript jexlexpression)
    {
       if (StringUtils.isBlank(var))
       {
@@ -143,9 +133,8 @@ public class PSJexlEvaluator
     * @param required if <code>true</code> then a missing value will cause an
     *           exception
     * @return the value, could be <code>null</code> or empty
-    * @throws Exception
     */
-   public String getStringValue(IPSScript var, String defaultval, boolean required) throws Exception
+   public String getStringValue(IPSScript var, String defaultval, boolean required)
    {
       if (var == null)
       {
@@ -156,13 +145,13 @@ public class PSJexlEvaluator
       if (val == null)
       {
          if (required)
-            throw new IllegalStateException("No value for required expression " + var.toString());
+            throw new IllegalStateException("No value for required expression " + var);
     
          return defaultval;
       } 
       
      if (!(val instanceof String))
-        throw new IllegalStateException("Value not a string for expression " + var.toString());
+        throw new IllegalStateException("Value not a string for expression " + var);
    
      return (String) val;
  
@@ -174,9 +163,8 @@ public class PSJexlEvaluator
     * 
     * @param jexlexpression the expression to evaluate
     * @return the value of the evaluated expression
-    * @throws Exception
     */
-   public Object evaluate(IPSScript jexlexpression) throws Exception
+   public Object evaluate(IPSScript jexlexpression)
    {
       if (null == jexlexpression)
       {
@@ -227,7 +215,7 @@ public class PSJexlEvaluator
       {
          throw new IllegalArgumentException("var must start with a dollar sign");
       }
-      String components[] = var.split(PERIOD_PATTERN);
+      String[] components = var.split(PERIOD_PATTERN);
       if (components.length == 0)
       {
          components = new String[]
@@ -247,7 +235,7 @@ public class PSJexlEvaluator
             index = -1;
             if (square > 0)
             {
-               String parts[] = component.split(SQUARE_BRACKET_PATTERN);
+               String[] parts = component.split(SQUARE_BRACKET_PATTERN);
                if (parts.length < 2)
                   throw new IllegalStateException("Insufficient parts for array deref");
                component = parts[0];
@@ -278,14 +266,14 @@ public class PSJexlEvaluator
                   List nlist = (List) next;
                   if (nlist == null)
                   {
-                     nlist = new ArrayList();
+                     nlist = new ArrayList<>();
                      ((Map) current).put(component, nlist);
                   }
                   matchLength((ArrayList) nlist, index);
                   next = nlist.get(index);
                   if (next == null)
                   {
-                     next = new HashMap();
+                     next = new HashMap<>();
                      nlist.set(index, next);
                   }
                   current = next;
@@ -342,9 +330,8 @@ public class PSJexlEvaluator
     *           <code>null</code>
     * @param bindings a set of additional bindings to add in, never
     *           <code>null</code>
-    * @throws Exception
     */
-   public void add(String var, IPSScript varexp, Map<String, Object> bindings) throws Exception {
+   public void add(String var, IPSScript varexp, Map<String, Object> bindings) {
       if (StringUtils.isBlank(var)) {
          throw new IllegalArgumentException("var may not be null or empty");
       }
@@ -359,7 +346,7 @@ public class PSJexlEvaluator
          value = evaluate(varexp);
       } catch (JexlException.Variable e)
       {
-         // If variable expression does not exist e.g. $rx then we will create a new map;
+         // If the variable expression does not exist e.g. $rx then we will create a new map;
          if (!e.isUndefined())
             throw e;
 
@@ -494,8 +481,7 @@ public class PSJexlEvaluator
     * Create an expression using the expression factory. If this expression has
     * already been parsed, and is in the cache, then the original expression is
     * returned.
-    * 
-    * Added support for a cacher. We cannot add Ehcache here as this utils
+    * Added support for a cache. We cannot add Ehcache here as this utils
     * package does not have access. Cache manager will be injected on startup
     * 
     * @param expression the expression, never <code>null</code> or empty
@@ -503,9 +489,8 @@ public class PSJexlEvaluator
     * @return the expression object, never <code>null</code>, may be shared with
     *         other threads, care must be used if any methods are called that
     *         modify this object
-    * @throws Exception
     */
-   public static IPSScript createExpression(String expression) throws Exception
+   public static IPSScript createExpression(String expression)
    {
        return new PSScript(expression);
    }
@@ -521,9 +506,8 @@ public class PSJexlEvaluator
     * @return the script object, never <code>null</code>, may be shared with
     *         other threads, care must be used if any methods are called that
     *         modify this object
-    * @throws Exception
     */
-   public static IPSScript createScript(String script) throws Exception
+   public static IPSScript createScript(String script)
    {
        return new PSScript(script);
    }
@@ -537,17 +521,7 @@ public class PSJexlEvaluator
     */
    public static IPSScript createStaticExpression(String expression)
    {
-
-       
-      try
-      {
           return new PSScript(expression);
-      }
-      catch (Exception e)
-      {
-         log.error(e);
-         return null;
-      }
    }
 
    /**
@@ -558,16 +532,7 @@ public class PSJexlEvaluator
     */
    public static IPSScript createStaticScript(String script)
    {
-
-       try
-       {
            return new PSScript(script);
-       }
-      catch (Exception e)
-      {
-         log.error(e);
-         return null;
-      }
    }
 
 }

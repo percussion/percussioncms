@@ -1,25 +1,18 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.percussion.services.contentmgr.impl.legacy;
 
@@ -113,7 +106,7 @@ public class PSTypeConfiguration implements NodeType, Serializable
       /**
        * The sysid is used, as for child tables
        */
-      CHILDID;
+      CHILDID
    }
 
    /**
@@ -489,7 +482,7 @@ public class PSTypeConfiguration implements NodeType, Serializable
     */
    private static Map<String,Class> ms_hibernateTypeMap = 
       new HashMap<>();
-   /**
+   /*
     * Initialize type map
     */
    static {
@@ -514,7 +507,6 @@ public class PSTypeConfiguration implements NodeType, Serializable
     * @param isDerbyDatabase if <code>true</code> then the repository is a 
     *      derby database.
     */
-   @SuppressWarnings("unchecked")
    public PSTypeConfiguration(PSItemDefinition definition, PSItemChild child, 
          boolean isDerbyDatabase) 
    {
@@ -630,7 +622,6 @@ public class PSTypeConfiguration implements NodeType, Serializable
     *    
     * @return <code>true</code> the maps are equal. 
     */
-   @SuppressWarnings("unchecked")
    private boolean isEqualMap(Map<Class, ? extends Object> m1,
          Map<Class, ? extends Object> m2)
    {
@@ -658,7 +649,7 @@ public class PSTypeConfiguration implements NodeType, Serializable
     * @return the map value where the map key has the same base name as the 
     *    supplied key. It may be <code>null</code> if cannot find one in the map.
     */
-   @SuppressWarnings("unchecked")
+
    private Object getMapValue(Class srcKey, Map<Class, ? extends Object> m)
    {
       for (Class k : m.keySet())
@@ -1023,7 +1014,7 @@ public class PSTypeConfiguration implements NodeType, Serializable
 
       // Add to the implementing classes
       m_implementingClasses.add(new ImplementingClass(beanClass, hibConfig
-            .toString(), lazyFields));
+            , lazyFields));
       m_properties.put(beanClass, props);
       m_loadpolicy.put(beanClass, load);
    }
@@ -1142,14 +1133,15 @@ public class PSTypeConfiguration implements NodeType, Serializable
     */
    private String buildHibernateConfiguration(String firstTable,
          StringBuilder hibProps, StringBuilder hibId, StringBuilder hibJoin,
-         Class beanClass)
+         Class<?> beanClass)
    {
       StringBuilder hibConfig = new StringBuilder(512);
-      hibConfig.append("<?xml version=\"1.0\"?>\n");
+      hibConfig.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
       hibConfig
             .append("<!DOCTYPE hibernate-mapping PUBLIC\r\n"
-                  + "      \"-//Hibernate/Hibernate Mapping DTD 3.0//EN\"\r\n"
-                  + "          \"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd\">\n");
+                  + "      \"-//Hibernate/Hibernate Mapping DTD//EN\"\r\n"
+                  + "          \"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd\">\n");
+
       hibConfig.append("<hibernate-mapping>\n");
       hibConfig.append("<class name=\"");
       hibConfig.append(beanClass.getName());
@@ -1178,7 +1170,7 @@ public class PSTypeConfiguration implements NodeType, Serializable
       if (ms_logger.isDebugEnabled())
       {
          ms_logger.debug("Hibernate config for class-name = \""
-               + beanClass.getName() + "\"\n" + hibConfig.toString());
+               + beanClass.getName() + "\"\n" + hibConfig);
       }
       return hibConfig.toString();
    }
@@ -1828,7 +1820,7 @@ public class PSTypeConfiguration implements NodeType, Serializable
    {
       loadPropertyDefinitions();
       Collection<PSPropertyDefinition> defs = m_propertyDefinitions.values();
-      PropertyDefinition rval[] = new PropertyDefinition[defs.size()];
+      PropertyDefinition[] rval = new PropertyDefinition[defs.size()];
       defs.toArray(rval);
       return rval;
    }

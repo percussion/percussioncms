@@ -1,25 +1,18 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2021 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.percussion.user.service.impl;
 
@@ -67,7 +60,6 @@ import com.percussion.services.workflow.data.PSState;
 import com.percussion.services.workflow.data.PSWorkflow;
 import com.percussion.servlets.PSSecurityFilter;
 import com.percussion.share.dao.IPSGenericDao;
-import com.percussion.share.dao.impl.PSServerConfigUpdater;
 import com.percussion.share.service.IPSIdMapper;
 import com.percussion.share.service.IPSSystemProperties;
 import com.percussion.share.service.PSCollectionUtils;
@@ -222,6 +214,10 @@ public class PSUserService implements IPSUserService
     public static final String EDITOR2_NAME="editor2";
     public static final String QA1_NAME="qa1";
     public static final String QA2_NAME="qa2";
+    /**
+     * Name of the auto-generated directory set.
+     */
+    public static final String DIRECTORY_SET_NAME = "DirectorySet";
 
 
 
@@ -328,7 +324,7 @@ public class PSUserService implements IPSUserService
                 }
 
 
-            } catch (InterruptedException e) {
+            } catch (InterruptedException | PSDataServiceException e) {
                 log.warn("Shutting down user update thread...");
                 Thread.currentThread().interrupt();
             }
@@ -445,7 +441,7 @@ public class PSUserService implements IPSUserService
      * Create the PercussionUser.  Will generate a password and write the password
      * to system log and to the PWD_CONFIG_PATH + "password" file.
      */
-    protected void createPercussionUser() {
+    protected void createPercussionUser() throws PSDataServiceException {
 
         PSUser user = new PSUser();
 
@@ -479,8 +475,7 @@ public class PSUserService implements IPSUserService
         return createUser(user);
     }
 
-    private PSUser createUser(PSUser user)
-    {
+    private PSUser createUser(PSUser user) throws PSDataServiceException {
         PSUserLogin login = new PSUserLogin();
         login.setUserid(user.getName());
         String cryptPW = (passwordFilter == null) ? user.getPassword() : passwordFilter.encrypt(user.getPassword());
@@ -496,7 +491,12 @@ public class PSUserService implements IPSUserService
             log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
 
-        PSUser rvalue = user.clone();
+        PSUser rvalue = null;
+        try {
+            rvalue = user.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new PSDataServiceException(e);
+        }
         rvalue.setProviderType(PSUserProviderType.INTERNAL);
         rvalue.setPassword(null);
         rvalue.setEmail(user.getEmail());
@@ -708,7 +708,12 @@ public class PSUserService implements IPSUserService
         }
         updateRoles(user.getName(), user.getRoles());
 
-        PSUser rvalue = user.clone();
+        PSUser rvalue = null;
+        try {
+            rvalue = user.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new PSDataServiceException(e);
+        }
         rvalue.setProviderType(provider);
         rvalue.setPassword(null);
         if (provider.equals(PSUserProviderType.INTERNAL))
@@ -767,7 +772,11 @@ public class PSUserService implements IPSUserService
             // save changes
             userLoginDao.save(login);
 
-            rvalue = user.clone();
+            try {
+                rvalue = user.clone();
+            } catch (CloneNotSupportedException e) {
+                throw new PSDataServiceException(e);
+            }
             rvalue.setRoles(currentUser.getRoles());
             rvalue.setProviderType(provider);
             rvalue.setPassword(null);
@@ -1150,7 +1159,7 @@ public class PSUserService implements IPSUserService
         List<Subject> subjects;
         try
         {
-            subjects = roleMgr.findUsers(Collections.singletonList(query), PSServerConfigUpdater.DIRECTORY_SET_NAME, "directorySet", null, true);
+            subjects = roleMgr.findUsers(Collections.singletonList(query), DIRECTORY_SET_NAME, "directorySet", null, true);
         }
         catch (PSSecurityCatalogException | PSSecurityException e)
         {

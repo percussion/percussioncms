@@ -130,7 +130,11 @@ are not defined in this catalog file to prevent XXE vulnerabilities -->
     <uri name="file:sys_resources/stylesheets/customControlImports.xsl" uri="file://@@rxdir@@/sys_resources/stylesheets/customControlImports.xsl"/>
     <uri name="file:rx_resources/stylesheets/rx_Templates.xsl" uri="file://@@rxdir@@/rx_resources/stylesheets/rx_Templates.xsl"/>
     <uri name="file:sys_resources/stylesheets/ActionList.xsl" uri="file://@@rxdir@@/sys_resources/stylesheets/ActionList.xsl"/>
-    
+    <uri name="file:sys_resources/stylesheets/PreviewBar.xsl" uri="file://@@rxdir@@/sys_resources/stylesheets/PreviewBar.xsl"/>
+    <uri name="file:sys_resources/stylesheets/ce_globals.xsl" uri="file://@@rxdir@@/sys_resources/stylesheets/ce_globals.xsl"/>
+    <uri name="file:sys_resources/stylesheets/relatedcontentctrl.xsl" uri="file://@@rxdir@@/sys_resources/stylesheets/relatedcontentctrl.xsl"/>
+    <uri name="file:sys_cxSupport/variantlistwithslots.xsl" uri="file://@@rxdir@@/sys_cxSupport/variantlistwithslots.xsl"/>
+
     <rewriteURI
             uriStartString="file:sys_resources/"
             rewritePrefix="file://@@rxdir@@/sys_resources/" />
@@ -338,10 +342,6 @@ are not defined in this catalog file to prevent XXE vulnerabilities -->
     <rewriteURI
             uriStartString="file:sys_psxContentEditorCataloger/"
             rewritePrefix="file://@@rxdir@@/sys_psxContentEditorCataloger/" />
-
-    <rewriteURI
-            uriStartString="file:sys_psxFTSearchSupport/"
-            rewritePrefix="file://@@rxdir@@/sys_psxFTSearchSupport/" />
 
     <rewriteURI
             uriStartString="file:sys_psxInternalSearches/"

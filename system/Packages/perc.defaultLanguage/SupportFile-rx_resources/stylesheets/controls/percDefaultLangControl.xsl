@@ -88,8 +88,8 @@
             <span id="perc-help-toggle" class="perc-toggle-help fa fa-question-circle" title="Click to toggle help"></span><label for="perc-help-toggle">Click to toggle help.</label>
             <div class="perc-help">
                 To ensure that search engines index your international sites correctly, add this Widget to all Templates on International sites.  Add a reference to the table below for each Site, Language, and Region combination. Language is always required.
-                When the Region or Country is selected, Search Engines will only return results from the international site to users speaking that language in that region.
-                Otherwise UK English content might be returned before US English content on US Search Engines and visa versa.
+                When the Region or Country is selected, search engines will only return results from the international site to users speaking that language in that region.
+                Otherwise UK English content might be returned before US English content on US search engines and vice versa.
 
                 Tips:
                 <ul>
@@ -97,7 +97,6 @@
                     <li>Always choose language and country when you want search engines to return search results only in that region.</li>
                     <li>Save this Widget as a Shared Asset and re-use that asset on all sites.</li>
                     <li>There should only be one Default site.</li>
-                    <li>Site Names should match the <a href="https://support.google.com/webmasters/answer/44231?hl=en" target="_blank" rel="noopener noreferrer">Preferred Domain Name</a> for the site.</li>
                     <li>Click here for more information: <a href="https://support.google.com/webmasters/answer/189077?hl=en" target="_blank" rel="noopener noreferrer">rel=alternate href-lang=x</a></li>
                 </ul>
             </div>

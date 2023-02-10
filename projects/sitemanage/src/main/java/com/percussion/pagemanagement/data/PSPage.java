@@ -1,25 +1,18 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.percussion.pagemanagement.data;
 
@@ -30,6 +23,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -44,6 +38,19 @@ import net.sf.oval.constraint.NotNull;
 @XmlRootElement(name = "Page")
 public class PSPage extends PSPageSummary implements IPSLinkableItem, IPSHtmlMetadata
 {
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof PSPage)) return false;
+        PSPage psPage = (PSPage) o;
+        return isAddToRecent() == psPage.isAddToRecent() && Objects.equals(getAdditionalHeadContent(), psPage.getAdditionalHeadContent()) && Objects.equals(getAfterBodyStartContent(), psPage.getAfterBodyStartContent()) && Objects.equals(getBeforeBodyCloseContent(), psPage.getBeforeBodyCloseContent()) && Objects.equals(getProtectedRegion(), psPage.getProtectedRegion()) && Objects.equals(getProtectedRegionText(), psPage.getProtectedRegionText()) && Objects.equals(getRegionBranches(), psPage.getRegionBranches()) && Objects.equals(getSummary(), psPage.getSummary()) && Objects.equals(getWorkflowId(), psPage.getWorkflowId()) && Objects.equals(getDocType(), psPage.getDocType());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getAdditionalHeadContent(), getAfterBodyStartContent(), getBeforeBodyCloseContent(), getProtectedRegion(), getProtectedRegionText(), getRegionBranches(), getSummary(), getWorkflowId(), getDocType(), isAddToRecent());
+    }
+
     /**
      *  Safe to serialize
      */
@@ -298,5 +305,21 @@ public void setAddToRecent(boolean addToRecent)
      * If set to true, the newly created item and its template and folder will be added to the recent list.
      */
     private boolean addToRecent;
-    
+
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("PSPage{");
+        sb.append("additionalHeadContent='").append(additionalHeadContent).append('\'');
+        sb.append(", afterBodyStartContent='").append(afterBodyStartContent).append('\'');
+        sb.append(", beforeBodyCloseContent='").append(beforeBodyCloseContent).append('\'');
+        sb.append(", protectedRegion='").append(protectedRegion).append('\'');
+        sb.append(", protectedRegionText='").append(protectedRegionText).append('\'');
+        sb.append(", regionBranches=").append(regionBranches);
+        sb.append(", summary='").append(summary).append('\'');
+        sb.append(", workflowId=").append(workflowId);
+        sb.append(", docType=").append(docType);
+        sb.append(", addToRecent=").append(addToRecent);
+        sb.append('}');
+        return sb.toString();
+    }
 }

@@ -68,9 +68,9 @@
       </td>
    </xsl:template>
    <xsl:template match="VariantList" mode="previewbar-edit">
-      <xsl:comment>Start of Preview Bar</xsl:comment>
       <xsl:param name="contentid"/>
       <xsl:param name="revision"/>
+      <xsl:comment>Start of Preview Bar</xsl:comment>
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
          <tr>
             <td  valign="top">

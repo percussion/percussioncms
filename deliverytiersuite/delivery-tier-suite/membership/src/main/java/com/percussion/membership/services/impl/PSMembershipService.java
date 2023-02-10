@@ -1,25 +1,18 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2021 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.percussion.membership.services.impl;
 
@@ -38,10 +31,10 @@ import com.percussion.membership.services.IPSMembershipService;
 import com.percussion.membership.services.PSAuthenticationFailedException;
 import com.percussion.membership.services.PSMemberExistsException;
 import com.percussion.membership.services.PSResetPwdException;
-import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 import org.apache.commons.lang.time.DateUtils;
+import org.apache.commons.text.StringEscapeUtils;
 import org.jasypt.util.password.PasswordEncryptor;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -141,7 +134,7 @@ public class PSMembershipService implements IPSMembershipService
 
 
         // ensure no html elements in the email
-        String escapedEmail = StringEscapeUtils.escapeHtml(email);
+        String escapedEmail = StringEscapeUtils.escapeHtml4(email);
         if (!email.equals(escapedEmail))
         {
             throw new IllegalArgumentException("Invalid email address");
@@ -166,7 +159,7 @@ public class PSMembershipService implements IPSMembershipService
         }
         else if (member.getStatus().equals(PSMemberStatus.Unconfirmed))
         {
-            resetKey = member.getPwdResetKey().toString();
+            resetKey = member.getPwdResetKey();
         }
         else if (member.getStatus().equals(PSMemberStatus.Active)
                 || member.getStatus().equals(PSMemberStatus.Blocked))
@@ -211,7 +204,7 @@ public class PSMembershipService implements IPSMembershipService
         Validate.notEmpty(email);
 
         // ensure no html elements in the email
-        String escapedEmail = StringEscapeUtils.escapeHtml(email);
+        String escapedEmail = StringEscapeUtils.escapeHtml4(email);
         if (!email.equals(escapedEmail))
         {
             throw new IllegalArgumentException("Invalid email address");
@@ -320,7 +313,7 @@ public class PSMembershipService implements IPSMembershipService
         {
             throw new PSAuthenticationFailedException("Unable to process the reset password request.");
         }
-        Boolean isValid = this.genericKeyService.isValidKey(resetKey);
+        boolean isValid = this.genericKeyService.isValidKey(resetKey);
 
         if(!isValid)
         {
@@ -349,7 +342,7 @@ public class PSMembershipService implements IPSMembershipService
             throw new PSAuthenticationFailedException("Unable to process the reset password.");
         }
         // Call the key service to validate the reset key
-        Boolean isValid = this.genericKeyService.isValidKey(resetKey);
+        boolean isValid = this.genericKeyService.isValidKey(resetKey);
 
         if(!isValid)
         {
@@ -395,7 +388,7 @@ public class PSMembershipService implements IPSMembershipService
             throw new PSAuthenticationFailedException("Unable to find the member by the key provided.");
         }
         // Call the key service to validate the reset key
-        Boolean isValid = this.genericKeyService.isValidKey(confirmKey);
+        boolean isValid = this.genericKeyService.isValidKey(confirmKey);
 
         if((!isValid))
         {
@@ -577,11 +570,9 @@ public class PSMembershipService implements IPSMembershipService
         sb.append("\r\n");
         sb.append("If you did not initiate a password reset, please ignore this email.");
         sb.append("\r\n");
-        sb.append("");
         sb.append("\r\n");
         sb.append("To reset the password, click the link below or copy and paste the link into your browser:");
         sb.append("\r\n");
-        sb.append("");
         sb.append(redirectLink);
 
         return sb.toString();
@@ -603,18 +594,15 @@ public class PSMembershipService implements IPSMembershipService
         sb.append("\r\n\n");
         sb.append("To complete the registration process and activate your account, simply visit the link below:");
         sb.append("\r\n");
-        sb.append("");
         sb.append(redirectLink);
         sb.append("\r\n");
         sb.append("If clicking the link does not work, just copy and paste the entire link into your browser.");
-        sb.append("");
         sb.append("\r\n\n");
         sb.append("We're excited to have you on board!");
-        sb.append("");
         sb.append("\r\n\n");
         sb.append("Sincerely,");
         sb.append("\r\n");
-        sb.append("The " + customerSite + " Team");
+        sb.append("The ").append(customerSite).append(" Team");
         return sb.toString();
     }
 

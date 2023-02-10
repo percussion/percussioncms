@@ -1,25 +1,18 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.percussion.cms.handlers;
@@ -44,7 +37,7 @@ import com.percussion.design.objectstore.PSDisplayMapper;
 import com.percussion.design.objectstore.PSDisplayMapping;
 import com.percussion.design.objectstore.PSField;
 import com.percussion.design.objectstore.PSFieldSet;
-import com.percussion.design.objectstore.PSNotFoundException;
+import com.percussion.error.PSNotFoundException;
 import com.percussion.design.objectstore.PSSystemValidationException;
 import com.percussion.error.PSIllegalArgumentException;
 import com.percussion.extension.PSExtensionException;
@@ -171,7 +164,7 @@ public class PSEditCommandHandler extends PSQueryCommandHandler
     * authenticateUser exit. This is called by the base classes
     * processRequest method before it does its work.
     *
-    * @param request the request needed to make an internal request
+    * @param req the request needed to make an internal request
     *  to get workflow communities. Assumed not <code>null</code>.
     * @throws PSInternalRequestCallException if the request to get
     *  the list of workflows for a community fails while processing.
@@ -181,12 +174,13 @@ public class PSEditCommandHandler extends PSQueryCommandHandler
     *  authenticated.
     *
     */
+   @Override
    public void preProcessRequest(PSRequest req)
       throws PSInternalRequestCallException, PSAuthorizationException,
          PSAuthenticationFailedException
    {
       String contentId =
-            req.getParameter( m_ceHandler.CONTENT_ID_PARAM_NAME );
+            req.getParameter(PSContentEditorHandler.CONTENT_ID_PARAM_NAME);
       String condition;
       if ( null == contentId || contentId.trim().length() == 0 )
       {
@@ -222,6 +216,7 @@ public class PSEditCommandHandler extends PSQueryCommandHandler
 
 
    // see base for description
+   @Override
    protected Iterator getAppList( int id, PSExecutionData data,
          boolean isNewDoc )
       throws PSDataExtractionException
@@ -230,12 +225,12 @@ public class PSEditCommandHandler extends PSQueryCommandHandler
          return PSIteratorUtils.emptyIterator();
 
       // todo: cache these?
-      PSPageInfo info = (PSPageInfo) m_pageInfo.get( new Integer( id ));
-      Iterator datasetNames = info.getDatasetList();
-      List handlers = new ArrayList();
+      PSPageInfo info = m_pageInfo.get(id);
+      Iterator<String> datasetNames = info.getDatasetList();
+      List<IPSInternalResultHandler> handlers = new ArrayList<>();
       while ( datasetNames.hasNext())
       {
-         String datasetName = (String) datasetNames.next();
+         String datasetName = datasetNames.next();
          String reqName = createRequestName( m_appName, datasetName );
          IPSInternalResultHandler rh = (IPSInternalResultHandler)
             PSServer.getInternalRequestHandler( reqName );
@@ -260,7 +255,7 @@ public class PSEditCommandHandler extends PSQueryCommandHandler
       if (data == null) // this constrain is defined by base class
          throw new IllegalArgumentException("data may not be null");
          
-      PSPageInfo info = (PSPageInfo) m_pageInfo.get( new Integer( id ));
+      PSPageInfo info =  m_pageInfo.get(id);
       return null == info ? null : info.getBuilder();
    }
 
@@ -288,21 +283,21 @@ public class PSEditCommandHandler extends PSQueryCommandHandler
       if ( tableDepth < 0 )
          throw new IllegalArgumentException( "table depth can't be negative" );
 
-      HashMap keys = new HashMap();
+      HashMap keys = new HashMap<>();
 
       // children of children don't get these keys
       if ( tableDepth >= 0 && tableDepth <= 1 )
       {
          keys.put( IPSConstants.ITEM_PKEY_CONTENTID, m_ceHandler.
-               getParamName( m_ceHandler.CONTENT_ID_PARAM_NAME ));
+               getParamName(PSContentEditorHandler.CONTENT_ID_PARAM_NAME));
          keys.put( IPSConstants.ITEM_PKEY_REVISIONID, m_ceHandler.
-               getParamName( m_ceHandler.REVISION_ID_PARAM_NAME ));
+               getParamName(PSContentEditorHandler.REVISION_ID_PARAM_NAME));
       }
 
       if ( tableDepth > 0 )
       {
          keys.put( IPSConstants.CHILD_ITEM_PKEY, m_ceHandler.
-               getParamName( m_ceHandler.CHILD_ROW_ID_PARAM_NAME ));
+               getParamName(PSContentEditorHandler.CHILD_ROW_ID_PARAM_NAME ));
       }
 
       return keys.entrySet();
@@ -326,19 +321,19 @@ public class PSEditCommandHandler extends PSQueryCommandHandler
          PSDisplayMapper dispMapper )
    {
       // This list contains 1 PSMapPair entry for each sdmp child
-      List fieldSetMappers = new ArrayList();
+      List<PSMapPair> fieldSetMappers = new ArrayList<>();
 
       Iterator mappings = dispMapper.iterator();
       while ( mappings.hasNext())
       {
          PSDisplayMapping mapping = (PSDisplayMapping) mappings.next();
          PSField sdmpField = fields.getChildField( mapping.getFieldRef(),
-               fields.TYPE_MULTI_PROPERTY_SIMPLE_CHILD );
+                 PSFieldSet.TYPE_MULTI_PROPERTY_SIMPLE_CHILD);
          if ( null != sdmpField )
          {
             PSFieldSet sdmpFieldSet = fields.getChildsFieldSet(
                   sdmpField.getSubmitName(),
-                  fields.TYPE_MULTI_PROPERTY_SIMPLE_CHILD );
+                    PSFieldSet.TYPE_MULTI_PROPERTY_SIMPLE_CHILD);
             PSDisplayMapper mapper = null;
             if ( !contains( fieldSetMappers, sdmpFieldSet ))
             {
@@ -369,10 +364,10 @@ public class PSEditCommandHandler extends PSQueryCommandHandler
     * it finds key or there are no more entries in the list. It compares the
     * objects using the <code>equals</code> method.
     *
-    * @param A valid list of 0 or more entries. Each entry is a PSMapPair.
+    * @param pairs A valid list of 0 or more entries. Each entry is a PSMapPair.
     *    Assumed not <code>null</code>.
     *
-    * @param kay A valid ref. Assumed not <code>null</code>.
+    * @param key A valid ref. Assumed not <code>null</code>.
     *
     * @return <code>true</code> if the list contains an entry whose key
     *    matches the supplied key.
@@ -396,10 +391,10 @@ public class PSEditCommandHandler extends PSQueryCommandHandler
     * objects using the <code>equals</code> method. The matching entry is
     * returned.
     *
-    * @param A valid list of 0 or more entries. Each entry is a PSMapPair.
+    * @param pairs A valid list of 0 or more entries. Each entry is a PSMapPair.
     *    Assumed not <code>null</code>.
     *
-    * @param kay A valid ref. Assumed not <code>null</code>.
+    * @param key A valid ref. Assumed not <code>null</code>.
     *
     * @return The value associated with the entry whose key matches the
     *    supplied key.
@@ -440,7 +435,7 @@ public class PSEditCommandHandler extends PSQueryCommandHandler
     * @param pageId The key that will be used when the builder is added
     *    to the pageMap. An entry with this key must already exist, the
     *    builder will be added to the object. This key must be supplied as the
-    *    param to {@link #getDocumentBuilder(int) getDocumentBuilder} when
+    *    param to {@link #getDocumentBuilder(int, PSExecutionData)} when
     *    requesting this builder at run time.
     *
     * @param rowCtx The doc context for the row editor. Assumed not <code>
@@ -519,7 +514,7 @@ public class PSEditCommandHandler extends PSQueryCommandHandler
          PSEditorDocumentBuilder builder )
       throws PSNotFoundException
    {
-      Integer key = new Integer(pageId);
+      Integer key = pageId;
       PSPageInfo info = (PSPageInfo) pageInfo.get(key);
       if ( null == info )
       {
@@ -626,7 +621,7 @@ public class PSEditCommandHandler extends PSQueryCommandHandler
             colName = IPSConstants.CHILD_SORT_KEY;
          else //otherwise use sysid as default
             colName = IPSConstants.CHILD_ITEM_PKEY;
-         List sortCols = new ArrayList();
+         List sortCols = new ArrayList<>();
          sortCols.add( colName );
          sortedCols = sortCols.iterator();
       }
@@ -637,7 +632,7 @@ public class PSEditCommandHandler extends PSQueryCommandHandler
       resultDatasetName.delete( 0, resultDatasetName.length());
       resultDatasetName.append( datasetName );
 
-      List datasetNames = new ArrayList();
+      List datasetNames = new ArrayList<>();
       datasetNames.add( datasetName );
 
       // add all of the SDMP child tables next
@@ -685,25 +680,25 @@ public class PSEditCommandHandler extends PSQueryCommandHandler
                   process for the row editor */
                int summaryPageId = nextPageId++;
 
-               pageMap.add( new Integer( summaryPageId ));
-               pageMap.add( new Integer( nextPageId ));
+               pageMap.add(summaryPageId);
+               pageMap.add(nextPageId);
                nextPageId = initializeRequestResources( app, ce, childMapper,
                      recursionDepth+1, nextPageId, pageInfoMap, resultName );
                datasetNames.add( resultName.toString());
 
                /* we must do the summary editor last, because it uses the
                   dataset generated by the row editor  */
-               List summaryDSName = new ArrayList(1);
+               List summaryDSName = new ArrayList<>(1);
                summaryDSName.add( resultName.toString());
-               List summaryPageMap = new ArrayList(1);
-               summaryPageMap.add( new Integer( summaryPageId+1 ));
-               pageInfoMap.put( new Integer( summaryPageId ),
+               List summaryPageMap = new ArrayList<>(1);
+               summaryPageMap.add(summaryPageId + 1);
+               pageInfoMap.put(summaryPageId,
                      new PSPageInfo( PSPageInfo.TYPE_SUMMARY_EDITOR,
                      childMapper.getId(), summaryDSName, summaryPageMap ));
 
                //Hack alert: see COMPLETE_CHILD_PAGEID_OFFSET for details
                pageInfoMap.put(
-                     new Integer( summaryPageId+COMPLETE_CHILD_PAGEID_OFFSET ),
+                       summaryPageId + COMPLETE_CHILD_PAGEID_OFFSET,
                      new PSPageInfo( PSPageInfo.TYPE_SUMMARY_DATA,
                      childMapper.getId(), summaryDSName, summaryPageMap ));
             }
@@ -717,7 +712,7 @@ public class PSEditCommandHandler extends PSQueryCommandHandler
             }
          }
       }
-      pageInfoMap.put( new Integer( pageId ),
+      pageInfoMap.put(pageId,
             new PSPageInfo( PSPageInfo.TYPE_ROW_EDITOR, dispMapper.getId(),
             datasetNames, pageMap ));
 
@@ -731,7 +726,7 @@ public class PSEditCommandHandler extends PSQueryCommandHandler
     * The info is keyed by the pageid of the editor. Never <code>null</code>.
     * Never empty after construction.
     */
-   private HashMap m_pageInfo = new HashMap();
+   private HashMap<Integer,PSPageInfo> m_pageInfo = new HashMap<>();
 
    /**
     * The name of the application that contains all of the datasets

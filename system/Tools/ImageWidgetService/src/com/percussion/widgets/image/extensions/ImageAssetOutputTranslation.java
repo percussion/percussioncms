@@ -1,30 +1,24 @@
       /*
- *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.percussion.widgets.image.extensions;
-      
+
       import com.percussion.design.objectstore.PSLocator;
+      import com.percussion.error.PSExceptionUtils;
       import com.percussion.extension.IPSExtensionDef;
       import com.percussion.extension.IPSItemOutputTransformer;
       import com.percussion.extension.PSDefaultExtension;
@@ -42,20 +36,21 @@ package com.percussion.widgets.image.extensions;
       import com.percussion.widgets.image.data.ImageData;
       import com.percussion.widgets.image.services.ImageCacheManager;
       import com.percussion.widgets.image.services.ImageCacheManagerLocator;
+      import org.apache.commons.lang.StringUtils;
+      import org.apache.logging.log4j.LogManager;
+      import org.apache.logging.log4j.Logger;
+      import org.w3c.dom.Document;
+
+      import javax.jcr.Node;
+      import javax.jcr.PathNotFoundException;
+      import javax.jcr.RepositoryException;
+      import javax.jcr.ValueFormatException;
       import java.io.ByteArrayOutputStream;
       import java.io.File;
       import java.io.IOException;
       import java.io.InputStream;
       import java.util.Collections;
       import java.util.List;
-      import javax.jcr.Node;
-      import javax.jcr.PathNotFoundException;
-      import javax.jcr.RepositoryException;
-      import javax.jcr.ValueFormatException;
-      import org.apache.commons.lang.StringUtils;
-      import org.apache.logging.log4j.Logger;
-      import org.apache.logging.log4j.LogManager;
-      import org.w3c.dom.Document;
       
       public class ImageAssetOutputTranslation extends PSDefaultExtension
         implements IPSItemOutputTransformer
@@ -70,7 +65,8 @@ package com.percussion.widgets.image.extensions;
         {
         	return false;
         }
-      
+
+        @Override
         public void init(IPSExtensionDef def, File codeRoot)
           throws PSExtensionException
         {
@@ -89,7 +85,8 @@ package com.percussion.widgets.image.extensions;
         		this.cmgr = PSContentMgrLocator.getContentMgr();
           }
         }
-      
+
+        @Override
         public Document processResultDocument(Object[] params, IPSRequestContext request, Document resultDoc)
           throws PSParameterMismatchException, PSExtensionProcessingException
         {
@@ -116,7 +113,8 @@ package com.percussion.widgets.image.extensions;
             }
           }
           catch (Exception ex) {
-        	  log.error("Unexpected Exception " + ex, ex);
+        	  log.error("Unexpected Exception: {}",
+                      PSExceptionUtils.getMessageForLog(ex));
         	  throw new PSExtensionProcessingException(getClass().getName(), ex);
           }
       
@@ -138,7 +136,8 @@ package com.percussion.widgets.image.extensions;
         	List nodes = this.cmgr.findItemsByGUID(Collections.singletonList(guid), null);
         	if (nodes.size() < 1)
           {
-        		throw new RepositoryException("Item not found for GUID " + guid);
+        		log.warn("Item not found for GUID " + guid);
+                return null;
           }
         	return (Node)nodes.get(0);
         }

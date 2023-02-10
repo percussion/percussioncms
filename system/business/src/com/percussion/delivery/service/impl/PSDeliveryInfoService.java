@@ -1,25 +1,18 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.percussion.delivery.service.impl;
@@ -39,7 +32,6 @@ import com.percussion.services.publisher.IPSPublisherService;
 import com.percussion.services.publisher.PSPublisherServiceLocator;
 import com.percussion.services.pubserver.PSPubServerDaoLocator;
 import com.percussion.services.pubserver.data.PSPubServer;
-import com.percussion.services.pubserver.data.PSPubServerProperty;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.io.PathUtils;
 import org.apache.commons.lang.StringUtils;
@@ -130,6 +122,24 @@ public class PSDeliveryInfoService implements IPSDeliveryInfoService
         return servers;
     }
 
+    public List<String> getAdminUrls(String publishServer){
+        List<PSDeliveryInfo> servers = findAll();
+
+        List<String> serverList = new ArrayList<>();
+
+        for (PSDeliveryInfo deliveryInfo : servers) {
+            if (deliveryInfo.getServerType()!=null && !deliveryInfo.getServerType().equalsIgnoreCase("license")) {
+
+                if (deliveryInfo.getServerType()!=null && deliveryInfo.getServerType().equalsIgnoreCase(publishServer)) {
+                    serverList.add(deliveryInfo.getAdminUrl());
+
+                }
+
+            }
+        }
+        return serverList;
+    }
+
     /**
      * find delivery server by server type
      * return first server found with type
@@ -173,52 +183,54 @@ public class PSDeliveryInfoService implements IPSDeliveryInfoService
     }
     public static void copySecureKeyToDeliveryServer(IPSGuid edition) throws PSNotFoundException {
         String publishServer = null;
+        boolean legacyEdition = false; //When true this is a legacy edition so skip this step
         if(edition != null) {
             IPSPublisherService pubService = PSPublisherServiceLocator.getPublisherService();
             if(pubService != null) {
                 IPSEdition editionObject = pubService.loadEdition(edition);
                 PSPubServer pubServer;
-                if(editionObject != null) {
+                if(editionObject != null && editionObject.getPubServerId()!=null) {
                      pubServer = PSPubServerDaoLocator.getPubServerManager()
                             .loadPubServer(editionObject.getPubServerId());
-                    PSPubServerProperty prop = pubServer.getProperty("publishServer");
-                    if(prop!=null){
-                        publishServer = prop.getValue();
-                    }
+                    publishServer = pubServer.getPublishServer();
+                }else{
+                    legacyEdition = true;
                 }
                 
             }
         }
-
-        PSDeliveryInfoService psDeliveryInfoService = (PSDeliveryInfoService) PSDeliveryInfoServiceLocator.getDeliveryInfoService();
-        List<PSDeliveryInfo> psDeliveryInfoServiceList = psDeliveryInfoService.findAll();
-        String secureKey= getSecureKey();
-        if(secureKey == null){
-            return;
-        }
-
-        for(PSDeliveryInfo info : psDeliveryInfoServiceList) {
-            //Copy only for passed in ServerID incase a serverId is passed.
-            if(publishServer != null && !publishServer.equals(info.getAdminUrl())){
-                continue;
+        //Skip dts processing for legacy editions.
+        if(!legacyEdition) {
+            PSDeliveryInfoService psDeliveryInfoService = (PSDeliveryInfoService) PSDeliveryInfoServiceLocator.getDeliveryInfoService();
+            List<PSDeliveryInfo> psDeliveryInfoServiceList = psDeliveryInfoService.findAll();
+            String secureKey = getSecureKey();
+            if (secureKey == null) {
+                return;
             }
-            if (info.getAvailableServices().contains(PSDeliveryInfo.SERVICE_FEEDS)) {
-                PSDeliveryClient deliveryClient = new PSDeliveryClient();
-                try {
-                    Set<Integer> successfullHttpStatusCodes = new HashSet<>();
-                    successfullHttpStatusCodes.add(204);
-                    deliveryClient.push(
-                            new IPSDeliveryClient.PSDeliveryActionOptions()
-                                    .setActionUrl("/feeds/rss/rotateKey")
-                                    .setDeliveryInfo(info)
-                                    .setHttpMethod(IPSDeliveryClient.HttpMethodType.PUT)
-                                    .setSuccessfullHttpStatusCodes(successfullHttpStatusCodes)
-                                    .setAdminOperation(true),
-                            secureKey);
-                    log.info("Updated security key pushed to DTS server: {}" , info.getAdminUrl());
-                } catch (Exception ex) {
-                    log.warn("Unable to push updated security key to DTS server:{} ",info.getAdminUrl());
-                    log.debug( "Unable to push updated security key to DTS server:{}  ERROR: {} ",info.getAdminUrl(), ex.getMessage(),ex);
+
+            for (PSDeliveryInfo info : psDeliveryInfoServiceList) {
+                //Copy only for passed in ServerID incase a serverId is passed.
+                if (publishServer != null && !publishServer.equals(info.getAdminUrl())) {
+                    continue;
+                }
+                if (info.getAvailableServices().contains(PSDeliveryInfo.SERVICE_FEEDS)) {
+                    PSDeliveryClient deliveryClient = new PSDeliveryClient();
+                    try {
+                        Set<Integer> successfullHttpStatusCodes = new HashSet<>();
+                        successfullHttpStatusCodes.add(204);
+                        deliveryClient.push(
+                                new IPSDeliveryClient.PSDeliveryActionOptions()
+                                        .setActionUrl("/feeds/rss/rotateKey")
+                                        .setDeliveryInfo(info)
+                                        .setHttpMethod(IPSDeliveryClient.HttpMethodType.PUT)
+                                        .setSuccessfullHttpStatusCodes(successfullHttpStatusCodes)
+                                        .setAdminOperation(true),
+                                secureKey);
+                        log.info("Updated security key pushed to DTS server: {}", info.getAdminUrl());
+                    } catch (Exception ex) {
+                        log.warn("Unable to push updated security key to DTS server:{} ", info.getAdminUrl());
+                        log.debug("Unable to push updated security key to DTS server:{}  ERROR: {} ", info.getAdminUrl(), ex.getMessage(), ex);
+                    }
                 }
             }
         }

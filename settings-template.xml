@@ -1,0 +1,30 @@
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 https://maven.apache.org/xsd/settings-1.0.0.xsd">
+
+    <activeProfiles>
+        <activeProfile>percussioncms-dev</activeProfile>
+    </activeProfiles>
+    <profiles>
+        <profile>
+            <id>percussioncms-dev</id>
+            <properties>
+                <!--
+                Generate a self signed keystore for the build to use when
+                signing code, example below generates a keystore valid for 90 days:
+                cd ~/.m2
+                keytool -genkey -keyalg RSA -alias selfsigned -keystore percussioncms-dev.jks -storepass 12345678 -validity 90
+                -->
+                <keystorefile>~/.m2/percussioncms-dev.jks</keystorefile>
+                <keystorepass>12345678</keystorepass>
+            </properties>
+        </profile>
+        <profile>
+            <id>percussioncms-test</id>
+            <properties>
+                <keystorefile>~/.m2/percussioncms-dev.jks</keystorefile>
+                <keystorepass>12345678</keystorepass>
+            </properties>
+        </profile>
+
+    </profiles>
+</settings>

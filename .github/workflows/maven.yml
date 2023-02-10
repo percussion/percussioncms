@@ -4,25 +4,66 @@
 name: Java CI with Maven
 
 on:
+#  schedule:
+    # * is a special character in YAML so you have to quote this string
+#    - cron:  '0 0 * * *'
   push:
-    branches: [ release, development ]
+    branches: [ development ]
+    paths-ignore:
+      - '**/*.md'
+      - '**/*.txt'
+      - '**/*.yml'    
   pull_request:
     branches: [ development ]
     paths-ignore:
       - '**/*.md'
       - '**/*.txt'
-
+      - '**/*.yml'
+  workflow_call:
 jobs:
   build:
-
+    #needs: check_date
+    #if: ${{ needs.check_date.outputs.should_run != 'false' }}
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up JDK 1.8
-      uses: actions/setup-java@v1
-      with:
-        java-version: 1.8
-    - name: Build with Maven
-      run: mvn -B package --file pom.xml
-
+      - uses: actions/checkout@v3
+      - run: | 
+          mkdir -p /home/runner/.m2
+          echo "${{ secrets.SIGNING_KEYSTORE }}" > ~/.m2/release.keystore.asc
+          gpg -d --passphrase "${{ secrets.SIGNING_KEYSTOREPASS }}" --batch ~/.m2/release.keystore.asc > ~/.m2/release.keystore
+      - uses: actions/setup-java@v3
+        with:
+            java-version: '8'
+            distribution: 'liberica'
+            java-package: 'jdk+fx'
+      - name: "Cache the Maven packages to speed up build"
+        uses: actions/cache@v3.2.4
+        with:
+            path: ~/.m2
+            key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+            restore-keys: ${{ runner.os }}-m2
+      - uses: s4u/maven-settings-action@v2.8.0
+        with:
+            oracleRepo: true
+            servers: |
+                  [{
+                      "id": "percussion.s3.repo",
+                      "username": "${{ secrets.S3_MAVEN_USERNAME }}",
+                      "password": "${{ secrets.S3_MAVEN_PASSWORD }}"
+                  }]
+            properties: '[ {"signing.keystoreFile": "${{secrets.SIGNING_KEYSTOREFILE}}"},{"signing.keystorePass": "${{secrets.SIGNING_KEYSTOREPASS}}"},{"signing.keystoreType": "${{secrets.SIGNING_KEYSTORE_TYPE}}"},{"signing.keyAlias": "${{secrets.SIGNING_KEYSTORE_ALIAS}}"},{"signing.keyPass": "${{secrets.SIGNING_KEY_PASS}}"}]'
+      - run: mvn -B package --file pom.xml
+ # check_date:
+ #   runs-on: ubuntu-latest
+#    name: Check latest commit
+#    outputs:
+#      should_run: ${{ steps.should_run.outputs.should_run }}
+#    steps:
+#      - uses: actions/checkout@v3
+#      - name: print latest_commit
+#        run: echo ${{ github.sha }}
+#      - id: should_run
+#        continue-on-error: true
+#        name: check latest commit is less than a day
+#        if: ${{ github.event_name == 'schedule' }}
+#        run: test -z $(git rev-list  --after="24 hours"  ${{ github.sha }}) &amp;&amp; echo "::set-output name=should_run::false"

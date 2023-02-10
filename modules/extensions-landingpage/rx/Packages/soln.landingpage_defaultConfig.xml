@@ -1,0 +1,58 @@
+<SolutionConfigurations publisherPrefix="soln" publisherName="Percussion Software, Inc."  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="localConfig.xsd">
+	<SolutionConfig name="landingpage">
+		<property name="Label" value="Landing Page" />
+		<property name="AllowedTemplates">
+			<pvalues>
+				<pvalue>soln_landingpage_DefaultPage</pvalue>
+				<pvalue>soln_list_ItemCalloutDispatch</pvalue>
+				<pvalue>soln_list_ItemTitleCalloutDispatch</pvalue>
+				<pvalue>soln_list_ItemTitleLinkDispatch</pvalue>
+			</pvalues>
+		</property>
+		<property name="DefaultWorkflow" value="Standard Workflow" />
+		<property name="AllowedWorkflows">
+			<pvalues>
+				<pvalue>Standard Workflow</pvalue>
+			</pvalues>
+		</property>
+		<property name="template.Label" value="P - Landing Default" />
+		<property name="effects">
+			<propertySet>
+				<property name="extension" value="Java/global/percussion/relationship/effect/soln_landingpage_FolderEffect"/>
+				<property name="executionContext">
+					<pvalues>
+						<pvalue>Pre-Construction</pvalue>
+						<pvalue>Pre-Destruction</pvalue>
+					</pvalues>
+				</property>
+				<property name="direction" value="either"/>
+				<property name="condition">
+					<propertySet>
+						<property name="type" value="Conditional"/>
+						<property name="rules">
+							<propertySet>
+								<property name="variable1" value="PSXSingleHTMLParameter/rxs_disableNavFolderEffect"/>
+								<property name="variable2" value="y"/>
+								<property name="operator" value="!="/>
+								<property name="boolean" value="AND"/>
+							</propertySet>
+						</property>
+						<property name="boolean" value="AND"/>
+					</propertySet>
+					<propertySet>
+						<property name="type" value="Conditional"/>
+						<property name="rules">
+							<propertySet>
+								<property name="variable1" value="PSXOriginatingRelationshipProperty/category"/>
+								<property name="variable2" value="rs_translation"/>
+								<property name="operator" value="!="/>
+								<property name="boolean" value="AND"/>
+							</propertySet>
+						</property>
+						<property name="boolean" value="AND"/>
+					</propertySet>
+				</property>
+			</propertySet>
+		</property>
+	</SolutionConfig>
+</SolutionConfigurations>

@@ -13,7 +13,7 @@
    <xsl:import href="file:sys_resources/stylesheets/sys_I18nUtils.xsl"/>
    <xsl:variable name="lang" select="//@lang"/>
    <xsl:include href="file:sys_resources/stylesheets/relatedcontentctrl.xsl"/>
-   <xsl:output method="html"/>
+   <xsl:output method="html" encoding="UTF-8" />
    <xsl:template match="/">
       <html>
          <head>
@@ -44,7 +44,7 @@
 
                function onClose()
                {
-                  window.open(location.href, "_self", "");window.close();
+                  window.open("", '_self').window.close();
                }
                function onClickEdit(url)
                {

@@ -1,25 +1,18 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.percussion.services.workflow.data;
 
@@ -38,6 +31,7 @@ import javax.persistence.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Represent a workflow transition for both aging and non-aging transitions.
@@ -173,7 +167,7 @@ public class PSTransitionHib implements IPSTransition, IPSAgingTransition
    private String transitionRoles = 
       IPSTransitionsContext.NO_TRANSITION_ROLE_RESTRICTION;
 
-   @OneToMany(targetEntity = PSTransitionRole.class, fetch = FetchType.LAZY, cascade =
+   @OneToMany(targetEntity = PSTransitionRole.class, fetch = FetchType.EAGER, cascade =
    {CascadeType.ALL}, orphanRemoval = true )
    @JoinColumns({
       @JoinColumn(name = "WORKFLOWAPPID", referencedColumnName = "WORKFLOWAPPID", insertable = false, updatable = false),
@@ -487,21 +481,41 @@ public class PSTransitionHib implements IPSTransition, IPSAgingTransition
    }
 
    @Override
-   public boolean equals(Object b)
-   {
-      return EqualsBuilder.reflectionEquals(this, b);
+   public boolean equals(Object o) {
+      if (this == o) return true;
+      if (!(o instanceof PSTransitionHib)) return false;
+      PSTransitionHib that = (PSTransitionHib) o;
+      return transitionId == that.transitionId && getWorkflowId() == that.getWorkflowId() && getStateId() == that.getStateId() && getToState() == that.getToState() && getTransitionType() == that.getTransitionType() && getApprovals() == that.getApprovals() && Objects.equals(getLabel(), that.getLabel()) && Objects.equals(getDescription(), that.getDescription()) && Objects.equals(getTrigger(), that.getTrigger()) && Objects.equals(getTransitionAction(), that.getTransitionAction()) && Objects.equals(getNotifications(), that.getNotifications()) && Objects.equals(getRequiresComment(), that.getRequiresComment()) && Objects.equals(isDefaultTransition(), that.isDefaultTransition()) && Objects.equals(getTransitionRoles(), that.getTransitionRoles()) && Objects.equals(roles, that.roles) && Objects.equals(agingType, that.agingType) && Objects.equals(getInterval(), that.getInterval()) && Objects.equals(getSystemField(), that.getSystemField());
    }
 
    @Override
-   public int hashCode()
-   {
-      return HashCodeBuilder.reflectionHashCode(this);
+   public int hashCode() {
+      return Objects.hash(transitionId, getWorkflowId(), getStateId(), getLabel(), getDescription(), getTrigger(), getToState(), getTransitionAction(), getNotifications(), getTransitionType(), getApprovals(), getRequiresComment(), isDefaultTransition(), getTransitionRoles(), roles, agingType, getInterval(), getSystemField());
    }
 
    @Override
-   public String toString()
-   {
-      return ToStringBuilder.reflectionToString(this);
+   public String toString() {
+      final StringBuffer sb = new StringBuffer("PSTransitionHib{");
+      sb.append("transitionId=").append(transitionId);
+      sb.append(", workflowId=").append(workflowId);
+      sb.append(", stateId=").append(stateId);
+      sb.append(", label='").append(label).append('\'');
+      sb.append(", description='").append(description).append('\'');
+      sb.append(", trigger='").append(trigger).append('\'');
+      sb.append(", toState=").append(toState);
+      sb.append(", transitionAction='").append(transitionAction).append('\'');
+      sb.append(", notifications=").append(notifications);
+      sb.append(", transitionType=").append(transitionType);
+      sb.append(", approvals=").append(approvals);
+      sb.append(", requiresComment='").append(requiresComment).append('\'');
+      sb.append(", defaultTransition='").append(defaultTransition).append('\'');
+      sb.append(", transitionRoles='").append(transitionRoles).append('\'');
+      sb.append(", roles=").append(roles);
+      sb.append(", agingType=").append(agingType);
+      sb.append(", interval=").append(interval);
+      sb.append(", systemField='").append(systemField).append('\'');
+      sb.append('}');
+      return sb.toString();
    }
 
    /* (non-Javadoc)

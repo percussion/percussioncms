@@ -1,25 +1,18 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.percussion.fastforward.managednav;
 
@@ -147,10 +140,14 @@ public class PSNavFolderUtils
          PSLocator parentFolder, PSLocator childFolder, String navonName, 
          String navonTitle, Long slotId, Long templateId)
    {
-      PSComponentSummary parentNavon = getChildNavonSummary(req, parentFolder);
+      PSComponentSummary parentNavon = getParentNavOn(req,parentFolder);
+
       if (parentNavon == null)
-      { //there's no parent navon
-         ms_log.debug("parent folder has no Navon");
+      {
+
+         //there's no parent navon
+         ms_log.warn("Parent folder {} has no Navon", parentFolder.getId());
+
          return null; // we are done
       }
       else
@@ -176,6 +173,29 @@ public class PSNavFolderUtils
       
       return currentNavon;
    }
+
+   /**
+    * Attempts to locate the closest parent NavOn for a folder.  This is to handle
+    * situations where a nav section is created under a regular folder.
+    *
+    * @param req The current request
+    * @param parentFolder The locator for the parent folder.
+    * @return The closest parent navon or null if none is found
+    */
+   public static PSComponentSummary getParentNavOn(IPSRequestContext req, PSLocator parentFolder) {
+
+      IPSCmsObjectMgr objMgr = PSCmsObjectMgrLocator.getObjectManager();
+      PSComponentSummary parentSum = objMgr.loadComponentSummary(parentFolder.getId());
+
+      PSNavFolder parentNavon = getNavParentFolder(req, parentSum, true);
+
+      if(parentNavon == null){
+         return null;
+      }else{
+         return parentNavon.getNavonSummary();
+      }
+   }
+
    /**
     * Finds all parent folders for a given item.
     * 
@@ -196,6 +216,8 @@ public class PSNavFolderUtils
          parentFilter.setDependent(loc);
          parentFilter.setName(PSRelationshipFilter.FILTER_NAME_FOLDER_CONTENT);
          parentFilter.setCommunityFiltering(false);
+         //remove the recycled folder
+         parentFilter.setCategory(PSRelationshipConfig.CATEGORY_FOLDER);
 
          // get all folder parents
          return relProxy.getSummaries(parentFilter,
@@ -485,6 +507,9 @@ public class PSNavFolderUtils
       try
       {
          PSItemDefManager defMgr = PSItemDefManager.getInstance();
+            String folderName = navonName;
+            ms_log.debug("adding new navon to folder " + folderName);
+
          if (communityId != req.getSecurityToken().getCommunityId())
          {
             // the user is in a different community from the parent navon
@@ -522,9 +547,11 @@ public class PSNavFolderUtils
          setFieldValue(navon, "sys_communityid", new PSTextValue(String
                .valueOf(communityId)));
          Object workflowId = req.getPrivateObject(SYS_WORKFLOWID);
-         if (workflowId instanceof Integer)
-            setFieldValue(navon, SYS_WORKFLOWID, new PSTextValue(String
-                  .valueOf(workflowId)));
+          if(workflowId == null){
+            workflowId = navonDef.getWorkflowId();
+         }
+         setFieldValue(navon, SYS_WORKFLOWID, new PSTextValue(String
+                 .valueOf(workflowId)));
          ms_log.debug("before new navon save");
          navon.save(req.getSecurityToken());
          ms_log.debug("after save");

@@ -1,29 +1,23 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.percussion.soln.linkback.codec.impl;
 
+import com.percussion.cms.IPSConstants;
 import com.percussion.soln.linkback.codec.LinkbackTokenCodec;
 import com.percussion.util.IPSHtmlParameters;
 import org.apache.commons.codec.binary.Base64;
@@ -31,7 +25,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,9 +38,9 @@ import java.util.Map;
  */
 public class StringLinkBackTokenImpl implements LinkbackTokenCodec {
 
-    private static final Logger log = LogManager.getLogger(StringLinkBackTokenImpl.class);
+    private static final Logger log = LogManager.getLogger(IPSConstants.PUBLISHING_LOG);
 
-    private static byte bitMask;
+    private final byte bitMask;
 
     /**
      * Default Constructor.
@@ -62,21 +56,15 @@ public class StringLinkBackTokenImpl implements LinkbackTokenCodec {
     public Map<String, String> decode(String token) throws IllegalArgumentException {
         Map<String, String> oparm = new HashMap<>();
         String codedToken;
-        try {
-            byte[] tokenBytes = Base64.decodeBase64(token.getBytes(ASCII));
-            for (int i = 0; i < tokenBytes.length; i++) {
-                tokenBytes[i] ^= bitMask;
-            }
-            codedToken = new String(tokenBytes, ASCII);
-        } catch (UnsupportedEncodingException ex) { // Should never happen ASCII
-            // is always supported.
-            log.error("Unsupported Encoding " + ASCII, ex);
-            throw new IllegalStateException("Encoding Error");
+        byte[] tokenBytes = Base64.decodeBase64(token.getBytes(StandardCharsets.US_ASCII));
+        for (int i = 0; i < tokenBytes.length; i++) {
+            tokenBytes[i] ^= bitMask;
         }
+        codedToken = new String(tokenBytes, StandardCharsets.US_ASCII);
         log.debug("Decoded token is {}", codedToken);
         String[] parts = codedToken.split(DELIM);
-        for (int i = 0; i < parts.length; i++) {
-            decodePart(oparm, parts[i]);
+        for (String part : parts) {
+            decodePart(oparm, part);
         }
         return oparm;
     }
@@ -129,19 +117,12 @@ public class StringLinkBackTokenImpl implements LinkbackTokenCodec {
         appendPart(params, sb, IPSHtmlParameters.SYS_FOLDERID, FOLDER);
         log.debug("Encoded Raw value is {}", sb);
         String token;
-        try {
-            byte[] tokenBytes = sb.toString().getBytes(ASCII);
-            for (int i = 0; i < tokenBytes.length; i++) {
-                tokenBytes[i] ^= bitMask;
-            }
-            token = new String(Base64.encodeBase64(tokenBytes), ASCII);
-            return token;
-        } catch (UnsupportedEncodingException ex) {
-            // this should never happen, ascii is always supported.
-            log.error("Unsupported Encoding {}, Error: {}", ASCII, ex.getMessage());
-            log.debug(ex.getMessage(), ex);
-            return null;
+        byte[] tokenBytes = sb.toString().getBytes(StandardCharsets.US_ASCII);
+        for (int i = 0; i < tokenBytes.length; i++) {
+            tokenBytes[i] ^= bitMask;
         }
+        token = new String(Base64.encodeBase64(tokenBytes), StandardCharsets.US_ASCII);
+        return token;
     }
 
     private static void appendPart(Map<String, Object> params, StringBuilder sb, String pname, char marker) {
@@ -153,12 +134,11 @@ public class StringLinkBackTokenImpl implements LinkbackTokenCodec {
             sb.append(marker);
             sb.append(value);
         } else {
-            log.warn("Missing value in parameter map {}", pname);
+            log.debug("Missing value in parameter map {}", pname);
         }
 
     }
 
-    @SuppressWarnings("unchecked")
     public static String simplifyValue(Object value) {
         if (value == null) {
             log.debug("null value");
@@ -200,5 +180,4 @@ public class StringLinkBackTokenImpl implements LinkbackTokenCodec {
 
     public static final String DELIM = "-";
 
-    private static final String ASCII = "ASCII";
 }

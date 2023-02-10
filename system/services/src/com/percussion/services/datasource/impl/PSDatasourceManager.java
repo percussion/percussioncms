@@ -1,25 +1,18 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.percussion.services.datasource.impl;
 
@@ -63,7 +56,8 @@ public class PSDatasourceManager implements IPSDatasourceManager
 
       //backward compatibility
       props.put("hibernate.allow_update_outside_transaction","true");
-    //  props.put("hibernate.connection.provider_class","com.zaxxer.hikari.hibernate.HikariConnectionProvider");
+
+      defaultHibernateProperties = props;
    }
 
    public IPSHibernateDialectConfig getDialectCfg()
@@ -99,23 +93,21 @@ public class PSDatasourceManager implements IPSDatasourceManager
    }
 
    protected String getConnectionUrl(String dsName) throws NamingException, SQLException{
-    Connection conn = null;
-      try
+      try(Connection conn = getDbConnection(dsName))
       {
-         conn = getDbConnection(dsName);
-         
          return  conn.getMetaData().getURL(); 
-         
-         }
-      finally
-      {
-         if (conn != null)
-         {
-            try {conn.close();} catch (Exception e) {}
-         }
       }
    }
-   // see IPSDatasourceManager
+
+   /**
+    *
+    * @param info the connection info, may be <code>null</code> to use the
+    * repository connection.
+    *
+    * @return a database connection.  The caller is responsible for releasing the connection.
+    * @throws NamingException If a JNDI lookup error occurs
+    * @throws SQLException If a SQL exception occurs
+    */
    public Connection getDbConnection(IPSConnectionInfo info)
       throws NamingException, SQLException
    {
@@ -126,14 +118,11 @@ public class PSDatasourceManager implements IPSDatasourceManager
       if(conn.getMetaData().getURL().contains("oracle")){
          conn = new PSOracleConnectionWrapper(conn);
       }
-
-
       if (!StringUtils.isBlank(dbName))
       {
          if (!dbName.equals(conn.getCatalog()))
             conn.setCatalog(dbName);
       }
-      
       return conn;
    }
 
@@ -172,18 +161,7 @@ public class PSDatasourceManager implements IPSDatasourceManager
    private  Connection getDbConnection(String dsName) 
       throws NamingException, SQLException
    {
-      DataSource ds = getDatasource(dsName);
-      // clears interrupted if it was set.  workaround https://sourceforge.net/p/jboss/bugs/2224/
-      boolean isInterrupted = Thread.interrupted();
-      Connection con = null;
-      try {
-         con = ds.getConnection();
-      } finally
-      {
-        if (isInterrupted) 
-           Thread.currentThread().interrupt(); 
-      }
-      return con;
+         return getDatasource(dsName).getConnection();
    }   
 
    /**
@@ -197,8 +175,7 @@ public class PSDatasourceManager implements IPSDatasourceManager
    private  DataSource getDatasource(String dsName) throws NamingException
    {
       PSJndiObjectLocator loc = new PSJndiObjectLocator(dsName);
-      DataSource ds = loc.lookupDataSource();
-      return ds;
+      return loc.lookupDataSource();
    }
    
    /**
@@ -245,16 +222,11 @@ public class PSDatasourceManager implements IPSDatasourceManager
     */
    private static IPSDatasourceResolver m_datasourceResolver;
 
-   private IPSDatasourceResolver getDatasourceResolver()
+   private synchronized IPSDatasourceResolver getDatasourceResolver()
    {
        if (m_datasourceResolver==null)
        {
-           synchronized (this)
-           {
-               if (m_datasourceResolver==null) {
-                   m_datasourceResolver = PSContainerUtilsFactory.getInstance().getDatasourceResolver();
-               }
-           }
+          m_datasourceResolver = PSContainerUtilsFactory.getInstance().getDatasourceResolver();
        }
        return m_datasourceResolver;
    }
@@ -321,7 +293,7 @@ public class PSDatasourceManager implements IPSDatasourceManager
    }
 
    // see IPSDatasourceManager
-   public Properties getDefaultHibernateProperties(Properties properties) 
+   public Properties getDefaultHibernateProperties()
    {
       return defaultHibernateProperties;
    }

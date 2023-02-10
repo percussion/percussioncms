@@ -1,25 +1,18 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.percussion.services.assembly.jexl;
 
@@ -50,6 +43,9 @@ import javax.jcr.ValueFormatException;
 import javax.naming.NamingException;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 
 /**
@@ -57,6 +53,7 @@ import org.apache.commons.lang.StringUtils;
  * 
  * @author dougrand
  */
+@Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_UNCOMMITTED,readOnly = true)
 public class PSDbUtils extends PSJexlUtilBase
 {
    /**
@@ -66,8 +63,8 @@ public class PSDbUtils extends PSJexlUtilBase
     * @param sqlselect the sql select statement, never <code>null</code> or empty
     * @return list of results. Each list item is a map from the column name in
     * the result set to the value of that column in the result.
-    * @throws SQLException
-    * @throws NamingException
+    * @throws SQLException When a SQL error happens
+    * @throws NamingException If the JNDI resource name given does not resolve
     */
    @IPSJexlMethod(description = "Execute a sql query", params =
    {
@@ -82,35 +79,29 @@ public class PSDbUtils extends PSJexlUtilBase
       }
       List<Map<String,Object>> rval = new ArrayList<>();
       IPSDatasourceManager dsmgr = PSDatasourceMgrLocator.getDatasourceMgr();
-      Connection c = null;
-      PreparedStatement st = null;
-      ResultSet rs = null;
-      try
-      {
+
          IPSConnectionInfo cinfo = new PSConnectionInfo(datasource);
-         c = dsmgr.getDbConnection(cinfo);
-         st = c.prepareStatement(sqlselect);
-         rs = st.executeQuery();
-         if (rs == null) return rval;
-         ResultSetMetaData rsmd = rs.getMetaData();
-         while(rs.next())
-         {
-            Map<String,Object> row = new HashMap<>();
-            rval.add(row);
-            for(int i = 0; i < rsmd.getColumnCount(); i++)
-            {
-               String cname = rsmd.getColumnName(i+1);
-               Object val = rs.getObject(i+1);
-               row.put(cname, val);
-            }
+         try(Connection c = dsmgr.getDbConnection(cinfo)){
+               try(PreparedStatement st = c.prepareStatement(sqlselect,ResultSet.TYPE_FORWARD_ONLY,
+                       ResultSet.CONCUR_READ_ONLY)) {
+                  try(ResultSet rs = st.executeQuery()) {
+                     if (rs == null) {
+                        return rval;
+                     }
+
+                     ResultSetMetaData rsmd = rs.getMetaData();
+                     while (rs.next()) {
+                        Map<String, Object> row = new HashMap<>();
+                        for (int i = 0; i < rsmd.getColumnCount(); i++) {
+                           String cname = rsmd.getColumnName(i + 1);
+                           Object val = rs.getObject(i + 1);
+                           row.put(cname, val);
+                        }
+                        rval.add(row);
+                     }
+                  }
+               }
          }
-      }
-      finally
-      {
-         if(rs!=null)try{rs.close();}catch(SQLException e){/* ignored */}
-         if(st!=null)try{st.close();}catch(SQLException e){/* ignored */}
-         if(c!=null)try{c.close();}catch(SQLException e){/* ignored */}   
-      }
       
       return rval;
    }
@@ -134,19 +125,19 @@ public class PSDbUtils extends PSJexlUtilBase
          int m_current = start;
          int m_increment = increment;
          
-         public boolean getBoolean() throws ValueFormatException, IllegalStateException, RepositoryException
+         public boolean getBoolean() throws IllegalStateException, RepositoryException
          {
             throw new ValueFormatException("Sequence cannot be represented as a boolean");
          }
 
-         public Calendar getDate() throws ValueFormatException, IllegalStateException, RepositoryException
+         public Calendar getDate() throws IllegalStateException, RepositoryException
          {
             throw new ValueFormatException("Sequence cannot be represented as a date");
          }
 
          public double getDouble() throws IllegalStateException
          {
-            return new Double(getLong());
+            return getLong();
          }
 
          public long getLong() throws IllegalStateException

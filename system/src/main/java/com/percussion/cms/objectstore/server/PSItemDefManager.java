@@ -1,25 +1,18 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.percussion.cms.objectstore.server;
 
@@ -71,6 +64,7 @@ import com.percussion.services.guidmgr.data.PSGuid;
 import com.percussion.services.legacy.IPSItemEntry;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.xml.PSXmlTreeWalker;
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -82,7 +76,6 @@ import javax.jcr.Property;
 import javax.jcr.RepositoryException;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -174,23 +167,18 @@ public class PSItemDefManager
          ctypeIds = getContentTypeIds(COMMUNITY_ANY);
 
       Collection<PSField> fieldDefs = new ArrayList<>();
-      for (int i = 0; i < ctypeIds.length; i++)
-      {
-         long ctypeId = ctypeIds[i];
-         if (!isRegisteredItemType(ctypeId))
-            continue;
+       for (long ctypeId : ctypeIds) {
+           if (!isRegisteredItemType(ctypeId))
+               continue;
 
-         try
-         {
-            PSItemDefinition def = getItemDef(ctypeId, COMMUNITY_ANY);
-            PSField f = def.getFieldByName(fieldName);
-            if (null != f)
-               fieldDefs.add(f);
-         }
-         catch (PSInvalidContentTypeException e)
-         { /* this will never happen as we just made sure it is a valid id */
-         }
-      }
+           try {
+               PSItemDefinition def = getItemDef(ctypeId, COMMUNITY_ANY);
+               PSField f = def.getFieldByName(fieldName);
+               if (null != f)
+                   fieldDefs.add(f);
+           } catch (PSInvalidContentTypeException e) { /* this will never happen as we just made sure it is a valid id */
+           }
+       }
       return fieldDefs;
    }
    
@@ -264,13 +252,9 @@ public class PSItemDefManager
                 }
                 if (mapping.getDisplayMapper() != null) 
                 {
-                    Iterator<?> imappings = mapping.getDisplayMapper().iterator();
-                    while (imappings.hasNext()) 
-                    {
-                        PSDisplayMapping imapping = (PSDisplayMapping) imappings
-                            .next();
-                        if (imapping.getFieldRef().equals(fieldName)) 
-                        {
+                    for (Object o : mapping.getDisplayMapper()) {
+                        PSDisplayMapping imapping = (PSDisplayMapping) o;
+                        if (imapping.getFieldRef().equals(fieldName)) {
                             dmapping = mapping;
                             break;
                         }
@@ -316,7 +300,12 @@ public class PSItemDefManager
     */
    public long[] getContentTypeIds(int communityId)
    {
-      return getVisibleContentTypes(communityId, true);
+        return getVisibleContentTypes(communityId, true,false);
+    }
+
+    public long[] getContentTypeIdsForContentExplorer(int communityId)
+    {
+        return getVisibleContentTypes(communityId, false,true);
    }
 
    /**
@@ -333,7 +322,7 @@ public class PSItemDefManager
     */
    public long[] getAllContentTypeIds(int communityId)
    {
-      return getVisibleContentTypes(communityId, false);
+        return getVisibleContentTypes(communityId, false,false);
    }
 
    /**
@@ -400,7 +389,7 @@ public class PSItemDefManager
        * we don't use the access methods for the member here because we don't
        * have a security token
        */
-      List<?> defs = m_itemDefMap.get(new Long(contentTypeId));
+      List<?> defs = m_itemDefMap.get(contentTypeId);
       if (null == defs)
          throw new PSInvalidContentTypeException("" + contentTypeId);
       return ((PSItemDefSummary) defs.get(1)).getName();
@@ -412,7 +401,6 @@ public class PSItemDefManager
     * @param sharedGroupName cannot be <code>null</code> or empty.
     * @return array of all content type names using the specified shared field group.
     * Never <code>null</code>, may be empty.
-    * @throws PSInvalidContentTypeException
     */
    public String[] getContentTypesUsingSharedFieldGroup(String sharedGroupName) throws PSInvalidContentTypeException
    {
@@ -458,7 +446,7 @@ public class PSItemDefManager
        * we don't use the access methods for the member here because we don't
        * have a security token
        */
-      List<?> defs = m_itemDefMap.get(new Long(contentTypeId));
+      List<?> defs = m_itemDefMap.get(contentTypeId);
       if (null == defs)
          throw new PSInvalidContentTypeException("" + contentTypeId);
       return ((PSItemDefSummary) defs.get(1)).getLabel();
@@ -632,10 +620,9 @@ public class PSItemDefManager
 
       Collection<PSItemDefSummary> summaries = new ArrayList<>();
       long[] ids = getContentTypeIds(securityToken);
-      for (int i = 0; i < ids.length; i++)
-      {
-         summaries.add(getItemDefSummary(ids[i]));
-      }
+       for (long id : ids) {
+           summaries.add(getItemDefSummary(id));
+       }
       return summaries;
    }
 
@@ -656,10 +643,9 @@ public class PSItemDefManager
    {
       Collection<PSItemDefSummary> summaries = new ArrayList<>();
       long[] ids = getContentTypeIds(communityId);
-      for (int i = 0; i < ids.length; i++)
-      {
-         summaries.add(getItemDefSummary(ids[i]));
-      }
+       for (long id : ids) {
+           summaries.add(getItemDefSummary(id));
+       }
       return summaries;
    }
 
@@ -723,12 +709,11 @@ public class PSItemDefManager
    public PSItemDefinition getItemDef(long contentTypeId, int communityId)
          throws PSInvalidContentTypeException
    {
-      //TODO: FIXME Add community support back.
-      // No longer filter by community in CM1
-      // if (!isVisibleToCommunity(contentTypeId, communityId))
-      //   return null;
 
-      List defs = m_itemDefMap.get(new Long(contentTypeId));
+       if (!isVisibleToCommunity(contentTypeId, communityId))
+         return null;
+
+      List<Object> defs = m_itemDefMap.get(contentTypeId);
       if (defs == null)
          throw new PSInvalidContentTypeException(String.valueOf(contentTypeId));
       return (PSItemDefinition) defs.get(0);
@@ -904,10 +889,10 @@ public class PSItemDefManager
       PSSecurityToken internalToken = PSRequest.getContextForRequest()
             .getSecurityToken();
 
-      PSContentType typeDef = null;
-       IPSNodeDefinition nodeDef = null;
-      String typeName = ""; 
-      String namenows = "";
+      PSContentType typeDef;
+       IPSNodeDefinition nodeDef;
+      String typeName;
+      String namenows;
 
        IPSContentMgr cml = PSContentMgrLocator.getContentMgr();
        try {
@@ -996,7 +981,7 @@ public class PSItemDefManager
       defs.add(def.getContentEditor());
       defs.add(cmsObject);
 
-      m_itemDefMap.put(new Long(def.getContentEditor().getContentType()), defs);
+      m_itemDefMap.put(def.getContentEditor().getContentType(), defs);
    }
 
    /**
@@ -1030,20 +1015,14 @@ public class PSItemDefManager
    {
       synchronized (m_itemDefListeners)
       {
-         for (Iterator<IPSItemDefChangeListener> iter = m_itemDefListeners.iterator(); iter.hasNext();)
-         {
-            IPSItemDefChangeListener listener = (IPSItemDefChangeListener) iter
-                  .next();
-            try
-            {
-               listener.registered(def, notify);
-            }
-            catch (PSException e)
-            {
-               throw new PSRuntimeException(e.getErrorCode(), e
-                     .getErrorArguments());
-            }
-         }
+          for (IPSItemDefChangeListener listener : m_itemDefListeners) {
+              try {
+                  listener.registered(def, notify);
+              } catch (PSException e) {
+                  throw new PSRuntimeException(e.getErrorCode(), e
+                          .getErrorArguments());
+              }
+          }
       }
    }
 
@@ -1130,12 +1109,12 @@ public class PSItemDefManager
       if (contentTypeId == 0)
          throw new IllegalArgumentException("contentTypeId may not be = 0");
 
-      int ctIds[] =
+      int[] ctIds =
       {(int) contentTypeId};
       PSKey[] keys = PSContentType.createKeys(ctIds);
 
       Element[] elems;
-      PSContentType contentType = null;
+      PSContentType contentType;
 
       try
       {
@@ -1208,8 +1187,7 @@ public class PSItemDefManager
     */
    private PSItemDefSummary getItemDefSummary(long contentTypeId)
    {
-      return (PSItemDefSummary) ((List<?>) (m_itemDefMap.get(new Long(
-            contentTypeId)))).get(1);
+      return (PSItemDefSummary) ((List<?>) (m_itemDefMap.get(contentTypeId))).get(1);
    }
 
    /**
@@ -1261,9 +1239,40 @@ public class PSItemDefManager
    public boolean isVisibleToCommunity(long contentTypeId, int communityId)
          throws PSInvalidContentTypeException
    {
-      //TODO: FIXME We need community support added back to CM1.
-      //We do not use community in CM1
+        PSCmsObject obj = getCmsObject(contentTypeId);
+        // Make sure the supplied content type id is listed in the available
+        // content type definitions.
+        if (obj == null)
+        {
+            throw new PSInvalidContentTypeException(
+                    contentTypeIdToName(contentTypeId));
+        }
+        // only check community access for ITEMS, all others succeed
+        if (obj.getTypeId() != PSCmsObject.TYPE_ITEM)
+            return true;
+
+        // if community id is -1, no filtering is to be done.
+        // IF community id is 10, this is a CMS object, so no filtering to be done.
+        if (communityId == -1 || communityId == 10)
       return true;
+
+        //if communities are not enabled, then no filtering required
+        String enabled = PSServer.getProperty("communities_enabled", "no");
+        if(! "yes".equalsIgnoreCase(enabled))
+        {
+            return true;
+        }
+
+        // Check if the content type id supplied is listed for the community.
+        Map params = new HashMap();
+        params.put(IPSHtmlParameters.SYS_CONTENTTYPEID, "" + contentTypeId);
+        params.put(IPSHtmlParameters.SYS_COMMUNITYID, "" + communityId);
+
+        // returns null if the content type is not available for the community
+        Element e = load("contentTypeInCommunity.xml", params);
+        String available = e != null ? e.getAttribute("available") : null;
+
+        return (available != null && available.equals("yes"));
    }
 
    /**
@@ -1278,24 +1287,20 @@ public class PSItemDefManager
     */
    private boolean isRegisteredItemType(long contentTypeId)
    {
-      Iterator<Long> keys = m_itemDefMap.keySet().iterator();
 
-      while (keys.hasNext())
-      {
-         Long key = (Long) keys.next();
-         List<?> list = m_itemDefMap.get(key);
-         if (list != null)
-         {
-            // skip Folder, which should not be visible from UI or MENU
-            PSCmsObject cmsObj = (PSCmsObject) list.get(3);
-            if (cmsObj != null && cmsObj.getTypeId() != PSCmsObject.TYPE_ITEM)
-               continue;
-         }
+       for (Long key : m_itemDefMap.keySet()) {
+           List<?> list = m_itemDefMap.get(key);
+           if (list != null) {
+               // skip Folder, which should not be visible from UI or MENU
+               PSCmsObject cmsObj = (PSCmsObject) list.get(3);
+               if (cmsObj != null && cmsObj.getTypeId() != PSCmsObject.TYPE_ITEM)
+                   continue;
+           }
 
-         long id = key.longValue();
-         if (contentTypeId == id)
-            return true;
-      }
+           long id = key;
+           if (contentTypeId == id)
+               return true;
+       }
       return false;
    }
 
@@ -1315,7 +1320,7 @@ public class PSItemDefManager
     * @return A valid array with 0 or more entries. Each entry is visible to the
     *         requestor.
     */
-   private long[] getVisibleContentTypes(int communityId, boolean isUIVisible)
+    private long[] getVisibleContentTypes(int communityId, boolean isUIVisible, boolean forContentExplorer)
    {
       Collection<Long> visibleIds = new ArrayList<>();
       
@@ -1324,18 +1329,29 @@ public class PSItemDefManager
          Long key = entry.getKey();
          int id = key.intValue();
 
-         if (isUIVisible)
-         {
+         if (isUIVisible || forContentExplorer) {
             List<?> list = entry.getValue();
-            if (list != null)
-            {
+             if (list != null) {
+                 if (isUIVisible) {
                // skip Folder, which should not be visible from UI or MENU
                PSCmsObject cmsObj = (PSCmsObject) list.get(3);
                if (cmsObj != null
                      && cmsObj.getTypeId() == PSCmsObject.TYPE_FOLDER)
                   continue;
+                 }
+                 //Don't return CMS Objects to ContentExplorer
+                 if (forContentExplorer) {
+                     // skip Folder, which should not be visible from UI or MENU
+                     PSCmsObject cmsObj = (PSCmsObject) list.get(3);
+                     boolean isFolder = (cmsObj != null && cmsObj.getTypeId() == PSCmsObject.TYPE_FOLDER);
+                     PSItemDefSummary def = (PSItemDefSummary) list.get(1);
+                     if (def.getHideFromMenu() && !isFolder) {
+                         continue;
             }
          }
+             }
+         }
+
 
          // Skip any content type that's in the process of registering
          if (id == m_currentRegisteredId)
@@ -1353,15 +1369,9 @@ public class PSItemDefManager
          }
       }
 
-      long[] results = new long[visibleIds.size()];
-      Iterator<Long> ids = visibleIds.iterator();
-      for (int i = 0; ids.hasNext(); i++)
-      {
-         Long id = (Long) ids.next();
-         results[i] = id.intValue();
-      }
+        Long[] l = visibleIds.toArray(new Long[visibleIds.size()]);
+        return ArrayUtils.toPrimitive(l);
 
-      return results;
    }
 
    /**
@@ -1370,11 +1380,11 @@ public class PSItemDefManager
     * This does not test against the dynamic generated value but the display
     * value of the configuration as seen in the properties dialog of workbench
     * 
-    * @param propertyName
-    * @param propertyValue
+    * @param propertyName propertyName
+    * @param propertyValue propertyValue
     * @return A List of field names keyed of the content type name, never <code>null</code>.
     *         
-    * @throws PSInvalidContentTypeException
+    * @throws PSInvalidContentTypeException PSInvalidContentTypeException
     */
    public Map<String, List<String>> getFieldsWithControlProp(String propertyName, String propertyValue)
          throws PSInvalidContentTypeException
@@ -1410,7 +1420,7 @@ public class PSItemDefManager
          {
             for (Iterator<IPSItemDefChangeListener> iter = m_itemDefListeners.iterator(); iter.hasNext();)
             {
-               IPSItemDefChangeListener listener = (IPSItemDefChangeListener) iter
+               IPSItemDefChangeListener listener = iter
                      .next();
                listener.unregistered(def, true);
             }
@@ -1486,7 +1496,7 @@ public class PSItemDefManager
          for (Iterator<PSItemDefinition> iter = m_deferredNotifications.iterator(); iter
                .hasNext();)
          {
-            PSItemDefinition def = (PSItemDefinition) iter.next();
+            PSItemDefinition def = iter.next();
             // Calls with a true notification flag for the last definition
             callItemDefListenersInternal(def, !iter.hasNext());
          }
@@ -1612,11 +1622,7 @@ public class PSItemDefManager
             iconMap.put(locator, null);
          }
       }
-      if (!fileItems.isEmpty())
-      {
-         //Remove until more efficient code can be written
-         //iconMap.putAll(getFileIconPaths(fileItems));
-      }
+
       return iconMap;
    }
    
@@ -1732,7 +1738,7 @@ public class PSItemDefManager
       {
          return iconFn;
       }
-      String fullPath = "";
+      String fullPath;
       if (isSys)
       {
          fullPath = "../" + SYS_ICON_FOLDER + FILE_ICONS_FOLDER + "/" + iconFn;
@@ -1780,18 +1786,13 @@ public class PSItemDefManager
             rxPropsIn = new FileInputStream(file);
             rxProps.load(rxPropsIn);
          }
-         catch (FileNotFoundException e)
+         catch (IOException e)
          {
             log.warn("Error getting the rx resources file icon details.", e);
             log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          }
-         catch (IOException e)
-         {
-            log.warn("Error getting the rx resources file icon details.", e);
-             log.debug(PSExceptionUtils.getDebugMessageForLog(e));
-         }
          ms_rxFileIconProperties = new HashMap<>();
-         ms_rxFileIconProperties.put(new Long(file.lastModified()), rxProps);
+         ms_rxFileIconProperties.put(file.lastModified(), rxProps);
       }
       return rxProps;
    }
@@ -1891,7 +1892,7 @@ public class PSItemDefManager
     * Used to store the current type id being registered to avoid returning
     * content types that are not yet "available" to external users. Set and
     * reset in {@link #registerDef(String, PSContentEditor)} and checked in
-    * {@link #getVisibleContentTypes(int, boolean)}
+     * {@link #getVisibleContentTypes(int, boolean,boolean)}
     */
    private long m_currentRegisteredId = -1;
 

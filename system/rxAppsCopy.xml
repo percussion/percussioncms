@@ -44,6 +44,15 @@
    <property name="FF_MANAGEDNAV_WEB_RESOURCES_DIR" value="${FF_DIST_MANAGEDNAV_DIR}/web_resources"/>
    <property name="FF_LIB_DIR" value="${FF_DIST_APPS_DIR}/lib"/>
    <property name="FIX_APPLICATION_ACLS" value="buildResources/fixApplicationAcls.xsl"/>
+
+   <tstamp>
+      <format property="year" pattern="YYYY"/>
+   </tstamp>
+
+   <filterset id="default-filters">
+      <filter token="COPYRIGHTYEAR" value="${year}"/>
+      <filter token="BUILDVERSION" value="${BUILDVERSION}"/>
+   </filterset>
    <!-- Define all pattern sets -->
    <patternset id="APPS_SUPPORT_PATTERN">
       <include name="**/${APPFILES.DIR}/*.*"/>
@@ -114,17 +123,12 @@
       <mkdir dir="${WEB.RESOURCES_DIR}"/>
       <!-- Set token replacement filters -->
     
-  	  <tstamp>
-  	      <format property="year" pattern="YYYY"/>
-  	  </tstamp>
-   	
-   	  <filterset id="default-filters">
-   		   	    <filter token="COPYRIGHTYEAR" value="${year}"/>
-   	  </filterset>
+
    	
       <!-- Copy all the app support files to the appropriate location -->
       <echo>Copying all "sys" application support files...</echo>
-      <copy todir="${SYSAPPSUPPORT_DIR}" overwrite="yes" filtering="false">
+      <copy todir="${SYSAPPSUPPORT_DIR}" overwrite="yes" filtering="true">
+         <filterset refid="default-filters"/>
          <fileset dir="${CMS.APPS.DIR}">
             <patternset refid="APPS_SUPPORT_PATTERN"/>
             <exclude name="**/rx_*/**"/>
@@ -149,6 +153,7 @@
          <regexpmapper from="^(.*)/(.*)/(.*)$$" to="\1/\3" handledirsep="true" />
       </copy>
       <copy todir="${SYSAPPSUPPORT_DIR}" overwrite="yes" filtering="true">
+         <filterset refid="default-filters"/>
          <fileset dir="${CMS.APPS.DIR}">
             <patternset refid="APPS_XSL_SUPPORT_PATTERN"/>
             <exclude name="**/rx_*/**"/>
@@ -174,6 +179,7 @@
       </copy>
       <!-- Hack to force copy a dtd that starts with "rx_" prefix -->
       <copy todir="${SYSAPPSUPPORT_DIR}" overwrite="yes">
+         <filterset refid="default-filters"/>
          <fileset dir="${CMS.APPS.DIR}">
             <include name="**/rx_20021017b_RXDUAL.dtd"/>
             <include name="**/rx_20021017b_RXDUAL.pdt"/>
@@ -182,7 +188,8 @@
       </copy>
       <!-- Copy all "rx" app files to the appropriate location -->
       <echo>Copying all "rx" application support files...</echo>
-      <copy todir="${RXAPPSUPPORT_DIR}" overwrite="yes">
+      <copy todir="${RXAPPSUPPORT_DIR}" overwrite="yes" filtering="true">
+         <filterset refid="default-filters"/>
          <fileset dir="${CMS.APPS.DIR}">
             <patternset refid="APPS_SUPPORT_PATTERN"/>
             <exclude name="**/sys_*/**"/>
@@ -205,7 +212,8 @@
          </fileset>
          <regexpmapper from="^(.*)/(.*)/(.*)$$" to="\1/\3" handledirsep="true" />
       </copy>
-      <copy todir="${RXAPPSUPPORT_DIR}" overwrite="yes">
+      <copy todir="${RXAPPSUPPORT_DIR}" overwrite="yes" filtering="true">
+         <filterset refid="default-filters"/>
          <fileset dir="${CMS.APPS.DIR}">
             <include name="**/${APPFILES.DIR}/**/src/*.*"/>
             <exclude name="**/sys_*/**"/>
@@ -214,7 +222,8 @@
       </copy>
       <!-- Copy each app dataset xml to the ObjectStore -->
       <echo>Copying all objectstore files...</echo>
-         <copy todir="${OBJECTSTORE_DIR}" overwrite="yes">
+         <copy todir="${OBJECTSTORE_DIR}" overwrite="yes" filtering="true">
+            <filterset refid="default-filters"/>
             <fileset dir="${CMS.APPS.DIR}">
                <include name="**/*.xml"/>
                <exclude name="**/texteditor.xml"/>
@@ -256,14 +265,16 @@
             <exclude name="rx_reports.xml"/>
 			<exclude name="sys_wfEditor.xml"/>
 		 </xslt>
-         <copy todir="${OBJECTSTORE_DIR}">
+         <copy todir="${OBJECTSTORE_DIR}" filtering="true">
+            <filterset refid="default-filters"/>
             <fileset dir="${OBJECTSTORE_DIR}/temp"/>
          </copy>
       <delete dir="${OBJECTSTORE_DIR}/temp"/>
       <!-- RXOBJECTSTORE -->
       <!-- Handle some specific copying -->
       <echo>Copying misc files...</echo>
-         <copy todir="${OBJECTSTORE_DIR}" overwrite="yes">
+         <copy todir="${OBJECTSTORE_DIR}" overwrite="yes" filtering="true">
+            <filterset refid="default-filters"/>
             <fileset dir="${CMS.APPS.DIR}">
                <include name="web_resources/web_resources.xml"/>
                <include name="sys_resources/sys_resources.xml"/>
@@ -283,7 +294,8 @@
    <target name="copyXercesToAppServer">
       <mkdir dir="${TOMCAT.ENDORSED.DIR}"/>
       <echo>Copying xerces files to tomcat...</echo>
-      <copy todir="${TOMCAT.ENDORSED.DIR}" overwrite="true" force="true" failonerror="true" verbose="true">
+      <copy todir="${TOMCAT.ENDORSED.DIR}" filtering="true" overwrite="true" force="true" failonerror="true" verbose="true">
+         <filterset refid="default-filters"/>
          <fileset dir="${TOOLS.DIR}/xerces">
             <include name="xercesImpl.jar"/>
             <include name="xmlParserAPIs.jar"/>
@@ -312,7 +324,8 @@
       <mkdir dir="${FF_LIB_DIR}"/>
       <!-- Copy all the Editors, Assemblers and "rxs" app files to the appropriate location -->
       <echo>Copying all "rxs" application support files...</echo>
-      <copy todir="${FF_CORE_APPSUPPORT_DIR}" overwrite="yes">
+      <copy todir="${FF_CORE_APPSUPPORT_DIR}" overwrite="yes" filtering="true">
+         <filterset refid="default-filters"/>
          <fileset dir="${FF_CORE_APPS}/${EDITORS.DIR}">
             <patternset refid="EDITOR_CAS_PATTERN"/>
          </fileset>
@@ -321,7 +334,8 @@
          </fileset>
          <regexpmapper from="^(.*)/(.*)/(.*)$$" to="\1/\3"  handledirsep="true" />
       </copy>
-      <copy todir="${FF_MANAGEDNAV_APPSUPPORT_DIR}" overwrite="yes">
+      <copy todir="${FF_MANAGEDNAV_APPSUPPORT_DIR}" overwrite="yes" filtering="true">
+         <filterset refid="default-filters"/>
          <fileset dir="${FF_MANAGEDNAV_APPS}/${EDITORS.DIR}">
             <patternset refid="EDITOR_CAS_PATTERN"/>
          </fileset>
@@ -330,13 +344,15 @@
          </fileset>
          <regexpmapper from="^(.*)/(.*)/(.*)$$" to="\1/\3" handledirsep="true" />
       </copy>
-      <copy todir="${FF_CORE_APPSUPPORT_DIR}" overwrite="yes">
+      <copy todir="${FF_CORE_APPSUPPORT_DIR}" overwrite="yes" filtering="true">
+         <filterset refid="default-filters"/>
          <fileset dir="${FF_CORE_APPS}">
             <include name="**/${APPFILES.DIR}/**/src/*.*"/>
          </fileset>
          <regexpmapper from="^(.*)/(.*)/(.*)/(.*)/(.*)$$" to="\2/\4/\5" handledirsep="true" />
       </copy>
-      <copy todir="${FF_MANAGEDNAV_APPSUPPORT_DIR}" overwrite="yes">
+      <copy todir="${FF_MANAGEDNAV_APPSUPPORT_DIR}" overwrite="yes" filtering="true">
+         <filterset refid="default-filters"/>
          <fileset dir="${FF_MANAGEDNAV_APPS}">
             <include name="**/${APPFILES.DIR}/**/src/*.*"/>
          </fileset>
@@ -344,7 +360,8 @@
       </copy>
       <!-- RXSOBJECTSTORE -->
       <echo>Copying all "psx" objectstore files...</echo>
-      <copy todir="${FF_CORE_OBJECTSTORE_DIR}" overwrite="yes">
+      <copy todir="${FF_CORE_OBJECTSTORE_DIR}" overwrite="yes" filtering="true">
+         <filterset refid="default-filters"/>
          <fileset dir="${FF_CORE_APPS}">
             <include name="**/psx*.xml"/>
             <include name="**/rx*.xml"/>
@@ -361,11 +378,13 @@
          <include name="*.xml"/>
 		 <exclude name="psx_cerff*.xml"/>
       </xslt>
-      <copy todir="${FF_CORE_OBJECTSTORE_DIR}">
+      <copy todir="${FF_CORE_OBJECTSTORE_DIR}" filtering="true">
+         <filterset refid="default-filters"/>
          <fileset dir="${FF_CORE_OBJECTSTORE_DIR}/temp"/>
       </copy>
       <delete dir="${FF_CORE_OBJECTSTORE_DIR}/temp"/>
-      <copy todir="${FF_MANAGEDNAV_OBJECTSTORE_DIR}" overwrite="yes">
+      <copy todir="${FF_MANAGEDNAV_OBJECTSTORE_DIR}" overwrite="yes" filtering="true">
+         <filterset refid="default-filters"/>
          <fileset dir="${FF_MANAGEDNAV_APPS}">
             <include name="**/psx*.xml"/>
             <include name="**/rx*.xml"/>
@@ -381,7 +400,8 @@
       <xslt basedir="${FF_MANAGEDNAV_OBJECTSTORE_DIR}" destdir="${FF_MANAGEDNAV_OBJECTSTORE_DIR}/temp" style="${FIX_APPLICATION_ACLS}" extension=".xml" classpathref="xslt.classpath">
          <include name="*.xml"/>
       </xslt>
-      <copy todir="${FF_MANAGEDNAV_OBJECTSTORE_DIR}">
+      <copy todir="${FF_MANAGEDNAV_OBJECTSTORE_DIR}" filtering="true">
+         <filterset refid="default-filters"/>
          <fileset dir="${FF_MANAGEDNAV_OBJECTSTORE_DIR}/temp"/>
       </copy>
       <delete dir="${FF_MANAGEDNAV_OBJECTSTORE_DIR}/temp"/>
@@ -391,12 +411,14 @@
       <xslt basedir="${FF_SITEFOLDER_OBJECTSTORE_DIR}" destdir="${FF_SITEFOLDER_OBJECTSTORE_DIR}/temp" style="${FIX_APPLICATION_ACLS}" extension=".xml" classpathref="xslt.classpath">
          <include name="*.xml"/>
       </xslt>
-      <copy todir="${FF_SITEFOLDER_OBJECTSTORE_DIR}">
+      <copy todir="${FF_SITEFOLDER_OBJECTSTORE_DIR}" filtering="true">
+         <filterset refid="default-filters"/>
          <fileset dir="${FF_SITEFOLDER_OBJECTSTORE_DIR}/temp"/>
       </copy>
       <delete dir="${FF_SITEFOLDER_OBJECTSTORE_DIR}/temp"/>
       <!-- Copy Editor defs for extraction -->
-      <copy todir="${FF_DIST_EDITORS_DIR}" overwrite="yes">
+      <copy todir="${FF_DIST_EDITORS_DIR}" overwrite="yes" filtering="true">
+         <filterset refid="default-filters"/>
          <fileset dir="${FF_CORE_APPS}/Editors">
             <include name="**/*ce.xml"/>
             <exclude name="**/${APPFILES.DIR}/**/*.xml"/>
@@ -413,19 +435,22 @@
       </xslt>
       <!-- WEB RESOURCES -->
      
-      <copy todir="${FF_CORE_WEB_RESOURCES_DIR}" overwrite="yes">
+      <copy todir="${FF_CORE_WEB_RESOURCES_DIR}" overwrite="yes" filtering="true">
+         <filterset refid="default-filters"/>
          <fileset dir="${FF_CORE_APPS}/web_resources">
             <patternset refid="RESOURCES1_PATTERN"/>
          </fileset>
          <regexpmapper from="^(.*)/(.*)/(.*)$$" to="\2/\3" handledirsep="true" />
       </copy>
-      <copy todir="${FF_CORE_WEB_RESOURCES_DIR}" overwrite="yes">
+      <copy todir="${FF_CORE_WEB_RESOURCES_DIR}" overwrite="yes" filtering="true">
+         <filterset refid="default-filters"/>
          <fileset dir="${FF_CORE_APPS}/web_resources">
             <patternset refid="RESOURCES2_PATTERN"/>
          </fileset>
          <regexpmapper from="^(.*)/(.*)/(.*)/(.*)$$" to="\2/\3/\4" handledirsep="true" />
       </copy>
-      <copy todir="${FF_CORE_WEB_RESOURCES_DIR}" overwrite="yes">
+      <copy todir="${FF_CORE_WEB_RESOURCES_DIR}" overwrite="yes" filtering="true">
+         <filterset refid="default-filters"/>
          <fileset dir="${FF_CORE_APPS}/web_resources">
             <patternset refid="RESOURCES3_PATTERN"/>
          </fileset>
@@ -454,17 +479,20 @@
       -->
       <!-- CONFIG -->
       <mkdir dir="${FF_DIST_CORE_DIR}/Config"/>
-      <copy todir="${FF_DIST_CORE_DIR}/Config">
+      <copy todir="${FF_DIST_CORE_DIR}/Config" filtering="true">
+         <filterset refid="default-filters"/>
          <fileset dir="${FF_CORE}/Config"/>
       </copy>
       <!-- Copy sample content -->
       <mkdir dir="${FF_DIST_SAMPLECONTENT_DIR}"/>
-      <copy todir="${FF_DIST_SAMPLECONTENT_DIR}">
+      <copy todir="${FF_DIST_SAMPLECONTENT_DIR}" filtering="true">
+         <filterset refid="default-filters"/>
          <fileset dir="${FF_SAMPLECONTENT}"/>
       </copy>
       <!-- EXITS -->
       <mkdir dir="${FF_DIST_MANAGEDNAV_DIR}/Exits"/>
-      <copy todir="${FF_DIST_MANAGEDNAV_DIR}/Exits">
+      <copy todir="${FF_DIST_MANAGEDNAV_DIR}/Exits" filtering="true">
+         <filterset refid="default-filters"/>
          <fileset dir="${FF_MANAGEDNAV}/Exits"/>
       </copy>
  <!--     <mkdir dir="${FF_DIST_SITEFOLDER_DIR}/Exits"/>
@@ -473,7 +501,8 @@
       </copy>
       -->
       <mkdir dir="${FF_DIST_DEFAULTTEMPLATE_DIR}/Exits"/>
-      <copy todir="${FF_DIST_DEFAULTTEMPLATE_DIR}/Exits">
+      <copy todir="${FF_DIST_DEFAULTTEMPLATE_DIR}/Exits" filtering="true">
+         <filterset refid="default-filters"/>
          <fileset dir="${FF_DEFAULTTEMPLATE}/Exits"/>
       </copy>
       <available property="libExists" file="${basedir}/build/lib" type="dir"/>
@@ -481,7 +510,8 @@
    </target>
    <!-- COPY FF JARS INTO LIB -->
    <target name="copyJars" if="libExists">
-      <copy todir="${FF_LIB_DIR}">
+      <copy todir="${FF_LIB_DIR}" filtering="true">
+         <filterset refid="default-filters"/>
          <fileset dir="${basedir}/build/lib">
             <include name="rxff*.jar"/>
          </fileset>

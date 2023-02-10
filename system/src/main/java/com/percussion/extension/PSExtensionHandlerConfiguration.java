@@ -1,25 +1,18 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.percussion.extension;
 
@@ -53,6 +46,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -833,21 +827,27 @@ class PSExtensionHandlerConfiguration
    }
 
    @Override
-   public boolean equals(Object b)
-   {
-      return EqualsBuilder.reflectionEquals(this, b);
+   public boolean equals(Object o) {
+      if (this == o) return true;
+      if (!(o instanceof PSExtensionHandlerConfiguration)) return false;
+      PSExtensionHandlerConfiguration that = (PSExtensionHandlerConfiguration) o;
+      return Objects.equals(m_handlerName, that.m_handlerName) && Objects.equals(m_defFactory, that.m_defFactory) && Objects.equals(m_extensionContexts, that.m_extensionContexts) && Objects.equals(m_pendingRemovals, that.m_pendingRemovals);
    }
 
    @Override
-   public int hashCode()
-   {
-      return HashCodeBuilder.reflectionHashCode(this);
+   public int hashCode() {
+      return Objects.hash(m_handlerName, m_defFactory, m_extensionContexts, m_pendingRemovals);
    }
 
    @Override
-   public String toString()
-   {
-      return ToStringBuilder.reflectionToString(this);
+   public String toString() {
+      final StringBuffer sb = new StringBuffer("PSExtensionHandlerConfiguration{");
+      sb.append("m_handlerName='").append(m_handlerName).append('\'');
+      sb.append(", m_defFactory=").append(m_defFactory);
+      sb.append(", m_extensionContexts=").append(m_extensionContexts);
+      sb.append(", m_pendingRemovals=").append(m_pendingRemovals);
+      sb.append('}');
+      return sb.toString();
    }
 
    /** The handler name. Non-<CODE>null</CODE>.*/

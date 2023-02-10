@@ -1,25 +1,18 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.percussion.tablefactory;
@@ -34,7 +27,7 @@ import java.util.List;
 /**
  * This class is used to represent both a unique index and a unique constraint
  * in a table schema, and the action to perform when that table schema is used
- * to create or modify a table.  Unique indexes and unique constriants are
+ * to create or modify a table.  Unique indexes and unique constraints are
  * considered to be interchangeable, and in most dbms systems, unique
  * constraints are implemented using unique indexes.  When
  * a table is cataloged, all unique index columns are queried to construct this
@@ -48,7 +41,7 @@ public class PSJdbcIndex extends PSJdbcKey
     * {@link #PSJdbcIndex(String, Iterator, int, int)}
     * with <code>type</code> set to <code>PSJdbcIndex.TYPE_UNIQUE</code>
     */
-   public PSJdbcIndex(String name, Iterator colNames,  int action)
+   public PSJdbcIndex(String name, Iterator<String> colNames,  int action)
       throws PSJdbcTableFactoryException
    {
       this(name, colNames, action, TYPE_UNIQUE);
@@ -76,7 +69,7 @@ public class PSJdbcIndex extends PSJdbcKey
     * any <code>null</code>, empty or duplicate column names, or if there are
     * any other errors.
     */
-   public PSJdbcIndex(String name, Iterator colNames, int action, int type)
+   public PSJdbcIndex(String name, Iterator<String> colNames, int action, int type)
       throws PSJdbcTableFactoryException
    {
       super(name, action, colNames, CONTAINER_NAME);
@@ -157,7 +150,7 @@ public class PSJdbcIndex extends PSJdbcKey
       // for backwards compatibility
       m_type = TYPE_UNIQUE;
       String sTemp = sourceNode.getAttribute(ATTR_IS_UNIQUE);
-      if ((sTemp != null) && (sTemp.trim().length() > 0))
+      if (sTemp.trim().length() > 0)
          m_type = sTemp.trim().equalsIgnoreCase(XML_FALSE) ?
             TYPE_NON_UNIQUE : TYPE_UNIQUE;
    }
@@ -213,23 +206,24 @@ public class PSJdbcIndex extends PSJdbcKey
       switch (getAction())
       {
          case ACTION_CREATE:
+            canAlter = true;
+            break;
          case ACTION_NONE:
             canAlter = true;
             break;
-
+         case ACTION_REPLACE:
+            canAlter = true;
+            break;
          case ACTION_DELETE:
             if (getType() == TYPE_NON_UNIQUE)
                canAlter = true;
             break;
       }
-
       return canAlter;
    }
 
    /**
     * Compares this index to another object.
-    * See {@link PSJdbcTableComponent#compare(Object)} for values returned
-    * by this method.
     *
     * @param obj the object to compare, may be <code>null</code>
     * @param flags one or more <code>COMPARE_XXX</code> values OR'ed
@@ -240,7 +234,7 @@ public class PSJdbcIndex extends PSJdbcKey
     */
    public int compare(Object obj, int flags)
    {
-      int match = IS_GENERIC_MISMATCH;
+      int match;
       // dummy do...while loop to avoid many return statements
       do
       {
@@ -265,12 +259,41 @@ public class PSJdbcIndex extends PSJdbcKey
       return match;
    }
 
+   public boolean equals(Object obj)
+   {
+      if (!(obj instanceof PSJdbcIndex))
+         return false;
+      PSJdbcIndex other = (PSJdbcIndex)obj;
+      return isComponentEqual(other);
+   }
+
+   public boolean isComponentEqual(PSJdbcIndex other)
+   {
+      if (other == null)
+         return false;
+
+      if (this.getType() != other.getType())
+         return false;
+      else if (this.getIndexColumnNames().size() != other.getIndexColumnNames().size())
+         return false;
+      else
+      {
+         if(other.getAction() != getAction()){
+            return false;
+         }
+         if(  compareColumns(this.getIndexColumnNames(),other.getIndexColumnNames()) == IS_GENERIC_MISMATCH){
+            return false;
+         }
+      }
+      return true;
+   }
+
    /**
     * Takes into account the order of the columns.
     * {@inheritDoc}
     */
    @Override
-   protected int compareColumns(List cols1, List cols2)
+   protected int compareColumns(List<String> cols1, List<String> cols2)
    {
       return super.compareColumns(numberColumns(cols1), numberColumns(cols2));
    }
@@ -287,7 +310,7 @@ public class PSJdbcIndex extends PSJdbcKey
     */
    private List<String> numberColumns(List<String> columns)
    {
-      final List<String> numbered = new ArrayList<String>();
+      final List<String> numbered = new ArrayList<>();
       for (int i = 0; i < columns.size(); i++)
       {
          numbered.add(i + " " + columns.get(i));
@@ -304,7 +327,7 @@ public class PSJdbcIndex extends PSJdbcKey
    List<String> getIndexColumnNames()
    {
       Iterator<?> columnNameIterator = getColumnNames();
-      ArrayList<String> columnNameList = new ArrayList<String>();
+      ArrayList<String> columnNameList = new ArrayList<>();
       while (columnNameIterator.hasNext())
       {
          String columnName = (String) columnNameIterator.next();

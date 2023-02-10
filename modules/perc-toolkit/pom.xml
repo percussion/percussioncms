@@ -7,13 +7,13 @@
     <parent>
         <artifactId>core</artifactId>
         <groupId>com.percussion</groupId>
-        <version>8.1.1-SNAPSHOT</version>
+        <version>8.1.3-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <artifactId>perc-toolkit</artifactId>
     <packaging>jar</packaging>
-    <version>8.1.1-SNAPSHOT</version>
+    <version>8.1.3-SNAPSHOT</version>
     <name>perc-toolkit</name>
 
     <properties>
@@ -76,49 +76,49 @@
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>perc-system</artifactId>
-            <version>8.1.1-SNAPSHOT</version>
+            <version>8.1.3-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>rxutils</artifactId>
-            <version>8.1.1-SNAPSHOT</version>
+            <version>8.1.3-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>perc-deployer</artifactId>
-            <version>8.1.1-SNAPSHOT</version>
+            <version>8.1.3-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>sitemanage</artifactId>
-            <version>8.1.1-SNAPSHOT</version>
+            <version>8.1.3-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>extensions-main</artifactId>
-            <version>8.1.1-SNAPSHOT</version>
+            <version>8.1.3-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>extensions-nav</artifactId>
-            <version>8.1.1-SNAPSHOT</version>
+            <version>8.1.3-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>extensions-sfp</artifactId>
-            <version>8.1.1-SNAPSHOT</version>
+            <version>8.1.3-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>webservices</artifactId>
-            <version>8.1.1-SNAPSHOT</version>
+            <version>8.1.3-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

@@ -1,25 +1,18 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.percussion.design.objectstore;
 
@@ -35,8 +28,8 @@ import org.w3c.dom.Node;
 
 import java.io.File;
 import java.io.Serializable;
+import java.nio.charset.StandardCharsets;
 import java.sql.Types;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -113,60 +106,61 @@ public class PSField extends PSComponent
 
 
    /**
-    * One of the indentifiers for the allowed Data types. Indicates that the
+    * One of the identifiers for the allowed Data types. Indicates that the
     * field contains character data.
     */
    public static final String DT_TEXT = "text";
 
    /**
-    * One of the indentifiers for the allowed Data types. Indicates that the
+    * One of the identifiers for the allowed Data types. Indicates that the
     * field contains only a date, no time component is allowed.
     */
    public static final String DT_DATE = "date";
 
    /**
-    * One of the indentifiers for the allowed Data types. Indicates that the
+    * One of the identifiers for the allowed Data types. Indicates that the
     * field contains only a time, no date component is allowed.
     */
    public static final String DT_TIME = "time";
 
    /**
-    * One of the indentifiers for the allowed Data types. Indicates that the
+    * One of the identifiers for the allowed Data types. Indicates that the
     * field contains a date and time (the time is usually 00:00:00 if not
     * supplied).
     */
    public static final String DT_DATETIME = "datetime";
 
    /**
-    * One of the indentifiers for the allowed Data types. Indicates that the
+    * One of the identifiers for the allowed Data types. Indicates that the
     * field contains a value that should be interpreted as either <code>true
     * </code> or Ccode>false</code>.
     */
    public static final String DT_BOOLEAN = "bool";
 
    /**
-    * One of the indentifiers for the allowed Data types. Indicates that the
+    * One of the identifiers for the allowed Data types. Indicates that the
     * field contains a value that should be interpreted as a whole number.
     */
    public static final String DT_INTEGER = "integer";
 
    /**
-    * One of the indentifiers for the allowed Data types. Indicates that the
+    * One of the identifiers for the allowed Data types. Indicates that the
     * field contains a value that should be interpreted as a whole number.
     * 
     * @deprecated use {@link #DT_INTEGER} instead.
     */
+   @Deprecated
    public static final String DT_NUMBER = "number";
 
    
    /**
-    * One of the indentifiers for the allowed Data types. Indicates that the
+    * One of the identifiers for the allowed Data types. Indicates that the
     * field contains a value that should be interpreted as a real number.
     */
    public static final String DT_FLOAT = "float";
 
    /**
-    * One of the indentifiers for the allowed Data types. Indicates that the
+    * One of the identifiers for the allowed Data types. Indicates that the
     * field contains non human readable data.
     */
    public static final String DT_BINARY = "binary";
@@ -262,6 +256,7 @@ public class PSField extends PSComponent
     * 
     * @deprecated Use {@link #getSearchProperties()}.isUserCustomizable().
     */
+   @Deprecated
    public boolean isUserCustomizable()
    {
       return m_searchProps.isUserCustomizable();
@@ -273,6 +268,7 @@ public class PSField extends PSComponent
     * 
     * @deprecated Use {@link #getSearchProperties()}.getDefaultSearchLabel().
     */
+   @Deprecated
    public String getDefaultSearchLabel()
    {
       return m_searchProps.getDefaultSearchLabel();
@@ -552,8 +548,7 @@ public class PSField extends PSComponent
       PSProperty property = (PSProperty) m_properties.get(name);
       if (property != null)
       {
-         if (((Boolean) property.getValue()).booleanValue())
-            return true;
+         return (Boolean) property.getValue();
       }
 
       return false;
@@ -680,7 +675,7 @@ public class PSField extends PSComponent
    
    /**
     * This tells text cleanup that JSP and ASP tags 
-    * may appear in the content. These are escaped by inclosing them in 
+    * may appear in the content. These are escaped by enclosing them in 
     * processing instructions (PIs). These PIs have the name 
     * &quot;psx-activetag&quot;. 
     * The assembly system will selectively remove PIs from around these 
@@ -721,9 +716,9 @@ public class PSField extends PSComponent
       String allowedstr = allowedvalue != null ? allowedvalue.toString() : null; 
          
       if (StringUtils.isBlank(allowedstr))
-         return null;
+         return new String[]{};
       
-      String ns[] = allowedstr.split(",");
+      String[] ns = allowedstr.split(",");
       
       // Trim
       for(int i = 0; i < ns.length; i++)
@@ -891,7 +886,7 @@ public class PSField extends PSComponent
       if (property != null)
          return (String) property.getValue();
 
-      return "UTF8";
+      return StandardCharsets.UTF_8.name();
    }
 
    /**
@@ -1259,9 +1254,7 @@ public class PSField extends PSComponent
                m_searchProps.setUserSearchable(false);
          default:
             // all types except binary can be represented in a text column
-            changed = false;
-            if ( currentType.length() == 0 || currentType.equals(DT_BINARY))
-               changed = true;
+            changed = currentType.length() == 0 || currentType.equals(DT_BINARY);
             break;
       }
 
@@ -2523,7 +2516,7 @@ public class PSField extends PSComponent
       {
          if (m_locator != null && m_default instanceof IPSComponent)
             ((IPSComponent) m_locator).validate(context);
-         if (m_default != null && m_default instanceof IPSComponent)
+         if ( m_default instanceof IPSComponent)
             ((IPSComponent) m_default).validate(context);
          if (m_inputTranslation != null)
             m_inputTranslation.validate(context);
@@ -2568,7 +2561,7 @@ public class PSField extends PSComponent
    }
 
    /**
-    * Clears the occurence setting for this field.
+    * Clears the occurance setting for this field.
     */
    public void clearOccurrenceSettings()
    {
@@ -2576,17 +2569,17 @@ public class PSField extends PSComponent
    }
 
    /**
-    * Returns the array of Occurence settings Transition Ids.
+    * Returns the array of Occurance settings Transition Ids.
     * 
-    * @return Integer[] of Occurence settings Transition Ids.
+    * @return Integer[] of Occurance settings Transition Ids.
     */
-   public Integer[] getOccurenceSettingsTransitionIds()
+   public Integer[] getOccuranceSettingsTransitionIds()
    {
       return (Integer[]) m_occurrenceSettings.keySet().toArray(new Integer[0]);
    }
 
    /**
-    * Replaces this field's occurence settings with those of the supplied
+    * Replaces this field's occurance settings with those of the supplied
     * field.  A shallow copy of is performed, so any changes to the original
     * will also affect this object.
     *
@@ -2628,7 +2621,7 @@ public class PSField extends PSComponent
     * <li>If source has validation rules, target cannot also have them</li>
     * <li>If DataTypes are set on both, they must match. Otherwise, the set
     *    data type will be used in the merged field.</li>
-    * <li>Occurence Dimension must match</li>
+    * <li>Occurance Dimension must match</li>
     * <li>ForceBinary must match</li>
     * <li>Locators must match if both have them</li>
     * <li>systemMandatory overrides are ignored</li>
@@ -2675,10 +2668,11 @@ public class PSField extends PSComponent
             setting = "data type";
          else if (fbOverride)
             setting = "force binary";
-         throw new PSSystemValidationException(
+         PSSystemValidationException ex =  new PSSystemValidationException(
             IPSObjectStoreErrors.CE_INVALID_FIELD_OVERRIDE, 
             new Object[] {getSubmitName(), TYPE_ENUM[source.getType()], 
                setting});
+         ms_logger.warn(ex.getMessage());
       }
 
       if(getLocator() != null && source.getLocator() != null)
@@ -3580,7 +3574,7 @@ public class PSField extends PSComponent
    }
    
    /**
-    * This class encapsulates a set of OccurenceSettings.
+    * This class encapsulates a set of OccuranceSettings.
     */
    private class PSOccurrenceSetting implements Serializable
    {

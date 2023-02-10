@@ -1,25 +1,18 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.percussion.tablefactory;
@@ -58,7 +51,7 @@ public class PSJdbcRowData
     * @throws IllegalArgumentException if columns is <code>null</code> or
     * contains an object of the wrong type, or is empty.
     */
-   public PSJdbcRowData(Iterator columns, int action)
+   public PSJdbcRowData(Iterator<PSJdbcColumnData> columns, int action)
    {
       if (columns == null)
          throw new IllegalArgumentException("columns may not be null");
@@ -68,12 +61,7 @@ public class PSJdbcRowData
 
       while (columns.hasNext())
       {
-         Object colObj = columns.next();
-         if (!(colObj instanceof PSJdbcColumnData))
-            throw new IllegalArgumentException(
-               "columns may only contain valid PSJdbcColumnData objects");
-
-         m_columns.add(colObj);
+         m_columns.add(columns.next());
       }
 
       switch (action)
@@ -243,7 +231,7 @@ public class PSJdbcRowData
     *
     * @return The iterator, never <code>null</code>.
     */
-   public Iterator getColumns()
+   public Iterator<PSJdbcColumnData> getColumns()
    {
       return m_columns.iterator();
    }
@@ -253,7 +241,7 @@ public class PSJdbcRowData
     *
     * @return The iterator, never <code>null</code>.
     */
-   public Iterator getChildTables()
+   public Iterator<PSJdbcTableData> getChildTables()
    {
       return m_childTables.iterator();
    }
@@ -285,10 +273,10 @@ public class PSJdbcRowData
 
       PSJdbcColumnData result = null;
 
-      Iterator cols = m_columns.iterator();
+      Iterator<PSJdbcColumnData> cols = m_columns.iterator();
       while (cols.hasNext() && result == null)
       {
-         PSJdbcColumnData col = (PSJdbcColumnData)cols.next();
+         PSJdbcColumnData col = cols.next();
          if (ignoreCase && col.getName().equalsIgnoreCase(name))
             result = col;
          else if (!ignoreCase && col.getName().equals(name))
@@ -339,7 +327,7 @@ public class PSJdbcRowData
 
       for (int i=0; i<m_columns.size(); i++)
       {
-         PSJdbcColumnData col = (PSJdbcColumnData) m_columns.get(i);
+         PSJdbcColumnData col = m_columns.get(i);
          if (col.getName().equals(name))
          {
             m_columns.remove(i);
@@ -396,12 +384,12 @@ public class PSJdbcRowData
          {
             for (PSJdbcForeignKey foreignKey : childTableSchema.getForeignKeys()) 
             {
-               Iterator cols = foreignKey.getColumns(m_tableName);
+               Iterator<String[]> cols = foreignKey.getColumns(m_tableName);
                if (cols.hasNext())
                {
                   while (cols.hasNext())
                   {
-                     String[] col = (String[])cols.next();
+                     String[] col = cols.next();
                      String childTableColName = col[0];
                      String parentTableColName = col[2];
 
@@ -427,11 +415,10 @@ public class PSJdbcRowData
                            parentColData.getValue(),
                            parentColData.getEncoding());
                      }
-                     Iterator childTableRows = childTableData.getRows();
+                     Iterator<PSJdbcRowData> childTableRows = childTableData.getRows();
                      while (childTableRows.hasNext())
                      {
-                        PSJdbcRowData childTableRowData =
-                           (PSJdbcRowData)childTableRows.next();
+                        PSJdbcRowData childTableRowData = childTableRows.next();
 
                         // if the column already exist remove it first
                         if (childTableRowData.getColumn(childTableColName) != null)
@@ -539,21 +526,18 @@ public class PSJdbcRowData
       root.setAttribute(ON_TABLE_CREATE_ONLY_ATTR,
          m_bOnTableCreateOnly ? XML_TRUE : XML_FALSE);
 
-      for (int i = 0; i < m_columns.size(); i++)
-         root.appendChild(((PSJdbcColumnData)m_columns.get(i)).toXml(doc));
+      for (PSJdbcColumnData m_column : m_columns) root.appendChild(m_column.toXml(doc));
          
       // append all child tables
-      for (int i=0; i<m_childTables.size(); i++)
-      {
-         PSJdbcTableData child = (PSJdbcTableData) m_childTables.get(i);
+      for (PSJdbcTableData m_childTable : m_childTables) {
          
          Element childtable = doc.createElement("childtable");
-         childtable.setAttribute("name", child.getName());
+         childtable.setAttribute("name", m_childTable.getName());
          root.appendChild(childtable);
          
-         Iterator rows = child.getRows();
+         Iterator<PSJdbcRowData> rows = m_childTable.getRows();
          while (rows.hasNext())
-            childtable.appendChild(((PSJdbcRowData)rows.next()).toXml(doc));
+            childtable.appendChild((rows.next()).toXml(doc));
       }
 
       return root;
@@ -646,13 +630,13 @@ public class PSJdbcRowData
     * List of PSJdbcColumnData objects for this row.  Never <code>null</code>,
     * never empty after construction.
     */
-   private List m_columns = new ArrayList();
+   private List<PSJdbcColumnData> m_columns = new ArrayList<>();
 
    /**
     * List of PSJdbcTableData objects of the child tables for this row.
     * May be empty.
     */
-   private List m_childTables = new ArrayList();
+   private List<PSJdbcTableData> m_childTables = new ArrayList<>();
 
    /**
     * Action for this row, one of the ACTION_xxx constants, defaults to

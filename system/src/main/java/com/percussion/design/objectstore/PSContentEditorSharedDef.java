@@ -1,25 +1,18 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.percussion.design.objectstore;
 
@@ -40,7 +33,6 @@ import java.util.Objects;
  * Implements the PSXContentEditorSharedDef DTD defined in
  * ContentEditorSharedDef.dtd.
  */
-@SuppressWarnings("serial")
 public class PSContentEditorSharedDef extends PSComponent
       implements
          IPSDocument
@@ -74,7 +66,7 @@ public class PSContentEditorSharedDef extends PSComponent
     *            appropriate type
     */
    public PSContentEditorSharedDef(Element sourceNode, IPSDocument parentDoc,
-         List parentComponents) throws PSUnknownNodeTypeException {
+                                   List<IPSComponent> parentComponents) throws PSUnknownNodeTypeException {
       fromXml(sourceNode, parentDoc, parentComponents);
    }
 
@@ -174,8 +166,7 @@ public class PSContentEditorSharedDef extends PSComponent
     */
    public PSCollection lookupFieldGroupByFileName(String fileName)
    {
-      PSCollection fieldGroups = new PSCollection((new PSSharedFieldGroup())
-            .getClass());
+      PSCollection fieldGroups = new PSCollection(PSSharedFieldGroup.class);
       Iterator iter = getFieldGroups();
       while (iter.hasNext())
       {
@@ -201,9 +192,9 @@ public class PSContentEditorSharedDef extends PSComponent
 
       PSSharedFieldGroup first = (PSSharedFieldGroup) group.next();
       PSCollection g = lookupFieldGroupByFileName(first.getFilename());
-      Iterator iter = g.iterator();
-      while (iter.hasNext())
-         m_fieldGroups.remove(iter.next());
+      for (Object psSharedFieldGroup : g) {
+         m_fieldGroups.remove(psSharedFieldGroup);
+      }
 
       m_fieldGroups.add(first);
       while (group.hasNext())
@@ -267,7 +258,6 @@ public class PSContentEditorSharedDef extends PSComponent
     *
     * @return The group, may be <code>null</code> if not found.
     */
-   @SuppressWarnings("unchecked")
    public PSSharedFieldGroup getSharedGroup(String groupName)
    {
       if (groupName == null || groupName.trim().length() == 0)
@@ -277,10 +267,10 @@ public class PSContentEditorSharedDef extends PSComponent
       }
       
       PSSharedFieldGroup group = null;
-      Iterator groups = getFieldGroups();      
+      Iterator groups = getFieldGroups();
       while (groups.hasNext() && group == null) 
       {
-         PSSharedFieldGroup test = (PSSharedFieldGroup)groups.next();
+         PSSharedFieldGroup test = (PSSharedFieldGroup) groups.next();
          if (groupName.equals(test.getName()))
             group = test;
       }
@@ -343,7 +333,7 @@ public class PSContentEditorSharedDef extends PSComponent
     * @see IPSComponent
     */
    public void fromXml(Element sourceNode, IPSDocument parentDoc,
-         List parentComponents) throws PSUnknownNodeTypeException
+                       List<IPSComponent> parentComponents) throws PSUnknownNodeTypeException
    {
       if (sourceNode == null)
          throw new PSUnknownNodeTypeException(
@@ -559,6 +549,5 @@ public class PSContentEditorSharedDef extends PSComponent
     * A collection of PSSharedFieldGroup objects, never <code>null</code>,
     * might be empty after construction.
     */
-   private PSCollection m_fieldGroups = new PSCollection(
-         (new PSSharedFieldGroup()).getClass());
+   private PSCollection m_fieldGroups = new PSCollection(PSSharedFieldGroup.class);
 }

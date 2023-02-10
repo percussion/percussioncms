@@ -1,25 +1,18 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.percussion.services.filestorage.impl;
 
@@ -36,7 +29,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
-import org.hibernate.Query;
+import org.hibernate.query.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -49,6 +42,11 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.naming.NamingException;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.io.InputStream;
 import java.sql.Blob;
 import java.sql.Connection;
@@ -60,6 +58,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+
 
 /**
  * @author stephenbolton
@@ -76,18 +75,14 @@ public class PSHashedFileDAO implements IPSHashedFileDAO
     */
    private static final Logger log = LogManager.getLogger(IPSConstants.CONTENTREPOSITORY_LOG);
 
-   private SessionFactory sessionFactory;
-
-   @Autowired
-   public void setSessionFactory(SessionFactory sessionFactory) {
-      this.sessionFactory = sessionFactory;
-   }
+   @PersistenceContext
+   private EntityManager entityManager;
 
    private Session getSession(){
-
-      return sessionFactory.getCurrentSession();
-
+      return entityManager.unwrap(Session.class);
    }
+
+
 
    /**
     * 
@@ -154,9 +149,13 @@ public class PSHashedFileDAO implements IPSHashedFileDAO
 
       if (hash != null && StringUtils.isNotBlank(hash))
       {
-         Criteria crit = getSession().createCriteria(PSBinary.class);
-         crit.add(Restrictions.eq("hash", hash));
-         return (PSBinary) crit.uniqueResult();
+
+         CriteriaBuilder builder = getSession().getCriteriaBuilder();
+         CriteriaQuery<PSBinary> criteria = builder.createQuery(PSBinary.class);
+         Root<PSBinary> critRoot = criteria.from(PSBinary.class);
+         criteria.where(builder.equal(critRoot.get("hash"),hash));
+         return entityManager.createQuery(criteria).getSingleResult();
+
       }
       else
          return null;
@@ -296,9 +295,14 @@ public class PSHashedFileDAO implements IPSHashedFileDAO
    @Override
    public List<PSBinaryMetaKey> getMetaKeys()
    {
-      Criteria crit = getSession().createCriteria(PSBinaryMetaKey.class);
-      crit.addOrder(Order.asc("name"));
-      return (List<PSBinaryMetaKey>) crit.list();
+
+
+      CriteriaBuilder builder = getSession().getCriteriaBuilder();
+      CriteriaQuery<PSBinaryMetaKey> criteria = builder.createQuery(PSBinaryMetaKey.class);
+      Root<PSBinaryMetaKey> critRoot = criteria.from(PSBinaryMetaKey.class);
+      criteria.orderBy(builder.asc(critRoot.get("name")));
+      return entityManager.createQuery(criteria).getResultList();
+
    }
 
    /* (non-Javadoc)
@@ -307,9 +311,13 @@ public class PSHashedFileDAO implements IPSHashedFileDAO
    @Override
    public PSBinaryMetaKey getMetaKey(String keyname)
    {
-      Criteria crit = getSession().createCriteria(PSBinaryMetaKey.class);
-      crit.add(Restrictions.eq("name", keyname));
-      return (PSBinaryMetaKey) crit.uniqueResult();
+
+
+      CriteriaBuilder builder = getSession().getCriteriaBuilder();
+      CriteriaQuery<PSBinaryMetaKey> criteria = builder.createQuery(PSBinaryMetaKey.class);
+      Root<PSBinaryMetaKey> critRoot = criteria.from(PSBinaryMetaKey.class);
+      criteria.where(builder.equal(critRoot.get("name"),keyname));
+      return entityManager.createQuery(criteria).getSingleResult();
    }
 
    /* (non-Javadoc)

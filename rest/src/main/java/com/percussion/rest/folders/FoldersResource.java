@@ -1,25 +1,18 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.percussion.rest.folders;
@@ -28,6 +21,7 @@ import com.percussion.error.PSExceptionUtils;
 import com.percussion.rest.MoveFolderItem;
 import com.percussion.rest.Status;
 import com.percussion.rest.errors.BackendException;
+import com.percussion.rest.errors.FolderNotFoundException;
 import com.percussion.rest.errors.LocationMismatchException;
 import com.percussion.util.PSSiteManageBean;
 import io.swagger.v3.oas.annotations.Operation;
@@ -137,7 +131,10 @@ public class FoldersResource
             }
 
             return folderAdaptor.getFolder(uriInfo.getBaseUri(), siteName, apiPath, folderName);
-        } catch (BackendException | UnsupportedEncodingException e) {
+        }catch(FolderNotFoundException e){
+            throw new WebApplicationException(e.getMessage(),404);
+        }
+        catch (BackendException | UnsupportedEncodingException e) {
             log.error(PSExceptionUtils.getMessageForLog(e));
             log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e);
@@ -279,11 +276,13 @@ public class FoldersResource
             }
 
             folderAdaptor.deleteFolder(uriInfo.getBaseUri(), siteName, apiPath, folderName, includeSubFolders);
-            return new Status("Deleted");
+            return new Status(200,"Deleted");
         } catch (BackendException | UnsupportedEncodingException e) {
             log.error(PSExceptionUtils.getMessageForLog(e));
             log.debug(PSExceptionUtils.getDebugMessageForLog(e));
-            throw new WebApplicationException(e);
+            throw new WebApplicationException(e.getMessage(),500);
+        } catch(FolderNotFoundException e){
+            throw new WebApplicationException("Folder not found",404);
         }
     }
     

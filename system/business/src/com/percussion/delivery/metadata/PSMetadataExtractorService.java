@@ -1,25 +1,18 @@
 /*
- *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ * Copyright 1999-2023 Percussion Software, Inc.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *     Mailing Address:
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.percussion.delivery.metadata;
@@ -31,11 +24,8 @@ import com.percussion.delivery.metadata.extractor.data.PSMetadataEntry;
 import com.percussion.delivery.metadata.extractor.data.PSMetadataProperty;
 import org.apache.any23.Any23;
 import org.apache.any23.ExtractionReport;
-import org.apache.any23.configuration.Configuration;
 import org.apache.any23.extractor.ExtractionParameters;
-import org.apache.any23.extractor.html.JsoupUtils;
 import org.apache.any23.mime.NaiveMIMETypeDetector;
-import org.apache.any23.mime.TikaMIMETypeDetector;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
@@ -48,14 +38,18 @@ import org.jsoup.nodes.Element;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
-import java.nio.charset.Charset;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import static org.apache.commons.lang.StringUtils.*;
+import static org.apache.commons.lang.StringUtils.contains;
+import static org.apache.commons.lang.StringUtils.endsWith;
+import static org.apache.commons.lang.StringUtils.removeStart;
+import static org.apache.commons.lang.StringUtils.startsWith;
+import static org.apache.commons.lang.StringUtils.substringAfter;
+import static org.apache.commons.lang.StringUtils.substringBefore;
 import static org.apache.commons.lang.Validate.isTrue;
 import static org.apache.commons.lang.Validate.notEmpty;
 
@@ -236,9 +230,8 @@ public class PSMetadataExtractorService implements IPSMetadataExtractorService
              //  Hack to not use default saxon xslt parser.  This sets a transformer factory that can be used
              //  just by the thread in Any23 parser and does not affect the rest of the system. See ThreadLocalProperties class
 
-             //System.setProperty("threadlocal.javax.xml.transform.TransformerFactory", "org.apache.xalan.processor.TransformerFactoryImpl");
-             // DTS Was falling back to JRE internal transformer.  It seems the xalan version was stripping out the namespace declaration
-             // preventing the any23 rdfa stylesheet from processing the meta tags properly.
+             //System.setProperty("threadlocal.javax.xml.transform.TransformerFactory", "javax.xml.transform.sax.SAXTransformerFactory");
+             // DTS Was falling back to JRE internal transformer.
              System.setProperty("threadlocal.javax.xml.transform.TransformerFactory", "com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl");
 
              runner = new Any23();

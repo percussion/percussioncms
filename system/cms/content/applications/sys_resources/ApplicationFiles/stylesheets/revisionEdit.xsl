@@ -16,7 +16,7 @@
                 xmlns:psxi18n="com.percussion.i18n" extension-element-prefixes="psxi18n"
                 exclude-result-prefixes="psxi18n">
 	<xsl:import href="file:sys_resources/stylesheets/sys_I18nUtils.xsl"/>
-	<xsl:variable name="lang" select="/*/UserStatus/@lang"/>
+   <xsl:variable name="lang" select="//@lang"/>
 	<xsl:variable name="syscontentid" select="//Workflow/@contentId"/>
 	<xsl:variable name="sysrevision" select="//Workflow/BasicInfo/HiddenFormParams/Param[@name='sys_revision']"/>
 	<xsl:include href="file:sys_resources/stylesheets/assemblers/sys_popmenu.xsl"/>
@@ -49,21 +49,16 @@
 				<script language="javascript" src="../sys_resources/js/popmenu.js">;</script>
 				<script language="javascript" src="../web_resources/cm/jslib/jquery.js">;</script>
 				<script language="javascript" src="../web_resources/cm/jslib/jquery-ui.js">;</script>
-				<script>
-				<![CDATA[
+				<script language="javascript">
+					<![CDATA[
 
-					   var textWin = null;
-					   function textWindow(s)
-					   {
-
-					      textWin = window.open('','HistoryComment','width=500,height=100,resizable=yes');
-					      textWin.document.open();
-					      textWin.document.writeln("<html><head><title>History Comment</title></head><body>");
-					      textWin.document.write(s);
-					      textWin.document.writeln("</body></html>");
-					      textWin.document.close();
-					      setTimeout('textWin.close()',5000);				      
-					   }
+					function textWindow(s)
+					{
+						var html = "<div id='historycomment' title='History Comment'></div>";
+						$("body").append(html);
+						$("#historycomment").dialog();
+						$("#historycomment").text(s);
+					}
 					]]>
 				</script>
 			</head>
@@ -136,9 +131,8 @@
 			</body>
 		</html>
 	</xsl:template>
-	<xsl:key name="uniqueElement" match="HistoryEntry" use="@revision"/>
 	<xsl:template match="HistoryList" mode="historybar">
-		<xsl:for-each select="HistoryEntry[generate-id() = generate-id(key('uniqueElement',@revision))]">
+		<xsl:for-each select="//HistoryEntry[not(@revision=preceding::HistoryEntry/@revision)]">
 			<tr>
 				<xsl:choose>
 					<xsl:when test="position() mod 2 = 1">
@@ -153,7 +147,7 @@
 						<xsl:with-param name="rev" select="@revision"/>
 						<xsl:with-param name="showpromote">
 							<xsl:choose>
-								<xsl:when test="//BasicInfo/@CheckOutUserName='' and //BasicInfo/UserName/@assignmentType > 2 and 	//ContentStatus/StateName/@isPublishable='no' and not(//ContentEditor/@isNavType='true')">
+								<xsl:when test="//BasicInfo/@CheckOutUserName='' and //BasicInfo/UserName/@assignmentType > 2 and 	//ContentStatus/StateName/@isPublishable='no'">
 									<xsl:value-of select="'yes'"/>
 								</xsl:when>
 								<xsl:otherwise>
