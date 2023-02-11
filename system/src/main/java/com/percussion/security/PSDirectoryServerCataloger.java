@@ -81,12 +81,18 @@ public class PSDirectoryServerCataloger extends PSDirectoryCataloger
 
       String result = null;
       Iterator directories = getDirectories().values().iterator();
+      String dirName = "";
       while (result == null && directories.hasNext())
       {
-         PSDirectoryDefinition directory = 
-            (PSDirectoryDefinition) directories.next();
-         result = getAttribute(directory, user.getName(), 
-            getObjectAttributeName(), attributeName);
+         try {
+            PSDirectoryDefinition directory =
+                    (PSDirectoryDefinition) directories.next();
+            dirName = directory.getDirectory().getName();
+            result = getAttribute(directory, user.getName(),
+                    getObjectAttributeName(), attributeName);
+          }catch (Exception e) {
+            log.error("Error finding users for ldap Directory:{} : Error: {}", dirName, PSExceptionUtils.getMessageForLog(e));
+         }
       }
       
       return result;
@@ -100,13 +106,18 @@ public class PSDirectoryServerCataloger extends PSDirectoryCataloger
 
       // do the search for all configured directories
       Iterator directories = getDirectories().values().iterator();
-      while (directories.hasNext())
-      {
-         PSDirectoryDefinition directory = 
-            (PSDirectoryDefinition) directories.next();
-         Collection attributeNames = directory.getDirectory().getAttributes();
-         
-         getAttributes(user, attributeNames);
+      String dirName = "";
+      while (directories.hasNext()) {
+         try{
+            PSDirectoryDefinition directory =
+                    (PSDirectoryDefinition) directories.next();
+            dirName = directory.getDirectory().getName();
+            Collection attributeNames = directory.getDirectory().getAttributes();
+
+            getAttributes(user, attributeNames);
+         }catch (Exception e) {
+            log.error("Error finding users for ldap Directory:{} : Error: {}", dirName, PSExceptionUtils.getMessageForLog(e));
+         }
       }
       
       return user;
