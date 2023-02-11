@@ -100,7 +100,7 @@ public class PSSecurityProviderPool
          if (dirCat != null)
             ms_directoryCatalogers.add(dirCat);
       }
-      
+
       // instantiate backend dir provider and save it in collection as
       // well as in member
       ms_defaultDirCataloger = new PSBackEndDirectoryCataloger();
@@ -295,7 +295,7 @@ public class PSSecurityProviderPool
    public synchronized static List<IPSInternalRoleCataloger> 
       getAllRoleCatalogers()
    {
-      return ms_roleCatalogers == null ? new ArrayList<IPSInternalRoleCataloger>() : new ArrayList<IPSInternalRoleCataloger>(ms_roleCatalogers);
+      return new ArrayList<IPSInternalRoleCataloger>(ms_roleCatalogers);
    }   
    
    /**
@@ -351,7 +351,7 @@ public class PSSecurityProviderPool
          case PSSecurityProvider.SP_TYPE_WEB_SERVER:
             sp = new PSWebServerProvider(props, spInstName);
             break;
-            
+
          case PSSecurityProvider.SP_TYPE_DIRCONN:
             try
             {

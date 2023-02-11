@@ -21,6 +21,9 @@ import com.percussion.design.objectstore.PSAttributeList;
 import com.percussion.design.objectstore.PSConditional;
 import com.percussion.design.objectstore.PSServerConfiguration;
 import com.percussion.design.objectstore.PSSubject;
+import com.percussion.error.PSExceptionUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -41,6 +44,8 @@ public class PSDirectoryServerCataloger extends PSDirectoryCataloger
    {
       super(properties);
    }
+
+   private static final Logger log = LogManager.getLogger(PSDirectoryServerCataloger.class);
    
    /** @see PSCataloger */
    public PSDirectoryServerCataloger(Properties properties, 
@@ -151,37 +156,51 @@ public class PSDirectoryServerCataloger extends PSDirectoryCataloger
       
       if (criteria == null)
          criteria = new PSConditional[] {null};
-      
-      // walk criteria, and build list of conditionals, searching every 1000
-      Map<String, List<String>> filter = new HashMap<>();
-      for (int i = 0; i < criteria.length; i++)
-      {
-         Map<String, String> aFilter = createFilter(criteria[i]);
-         for (Map.Entry<String, String> entry : aFilter.entrySet())
-         {
-            String val = PSJndiUtils.processFilter(entry.getValue());
-            List valList = filter.get(entry.getKey());
-            if (valList == null)
-            {
-               valList = new ArrayList<String>();
-               filter.put(entry.getKey(), valList);
+
+         // walk criteria, and build list of conditionals, searching every 1000
+         Map<String, List<String>> filter = new HashMap<>();
+         for (int i = 0; i < criteria.length; i++) {
+            Map<String, String> aFilter = createFilter(criteria[i]);
+            for (Map.Entry<String, String> entry : aFilter.entrySet()) {
+               String val = PSJndiUtils.processFilter(entry.getValue());
+               List valList = filter.get(entry.getKey());
+               if (valList == null) {
+                  valList = new ArrayList<String>();
+                  filter.put(entry.getKey(), valList);
+               }
+               valList.add(val);
             }
-            valList.add(val);
-         }
-         
-         if ((i % 100 == 0) || i == criteria.length - 1)
-         {
-            Iterator directories = getDirectories().values().iterator();
-            while (directories.hasNext())
-            {
-               PSDirectoryDefinition directory = 
-                  (PSDirectoryDefinition) directories.next();
-               result.addAll(getSubjects(directory, filter, attributeNames));
+            int errorLoadingDir=0;
+            int dirSize = 0;
+            Exception ex = null;
+            if ((i % 100 == 0) || i == criteria.length - 1) {
+
+               Iterator directories = getDirectories().values().iterator();
+               String dirName = "";
+               while (directories.hasNext()) {
+                  try{
+                     dirSize++;
+                     PSDirectoryDefinition directory =
+                             (PSDirectoryDefinition) directories.next();
+                     dirName = directory.getDirectory().getName();
+                     Collection subs = getSubjects(directory, filter, attributeNames);
+                     result.addAll(subs);
+                  }catch (Exception e){
+                     log.error("Error finding users for ldap Directory:{} : Error: {}" ,dirName, PSExceptionUtils.getMessageForLog(e));
+                     log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+                     errorLoadingDir++;
+                     ex = e;
+                  }
+               }
+               filter.clear();
             }
-            filter.clear();
+            //throw an exception if all ldap directories fail to load, incase only a few of those fails to load,
+            //then just log the error.
+            if(dirSize != 0 && dirSize == errorLoadingDir){
+               throw new PSSecurityException(IPSSecurityErrors.UNKNOWN_NAMING_ERROR,
+                       new String[]{PSExceptionUtils.getDebugMessageForLog(ex)}, ex);
+            }
          }
-      }      
-      
       return result;
    }
 }
