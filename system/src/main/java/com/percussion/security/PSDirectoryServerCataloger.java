@@ -128,12 +128,18 @@ public class PSDirectoryServerCataloger extends PSDirectoryCataloger
       
       // do the search for all configured directories
       Iterator directories = getDirectories().values().iterator();
+      String dirName = "";
       while (directories.hasNext())
       {
-         PSDirectoryDefinition directory = 
-            (PSDirectoryDefinition) directories.next();
-         getAttributes(directory, user.getName(), getObjectAttributeName(), 
-            returningAttrs, searchResults);
+         try {
+            PSDirectoryDefinition directory =
+                    (PSDirectoryDefinition) directories.next();
+            dirName = directory.getDirectory().getName();
+            getAttributes(directory, user.getName(), getObjectAttributeName(),
+                    returningAttrs, searchResults);
+         }catch(Exception e){
+            log.debug("Auth Failed for directory {}. Error : {} ",dirName,PSExceptionUtils.getDebugMessageForLog(e));
+         }
       }
       
       // set attributes in returned subject
