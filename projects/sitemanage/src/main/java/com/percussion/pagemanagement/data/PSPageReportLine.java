@@ -27,14 +27,30 @@ import com.percussion.share.data.PSAbstractBaseCSVReportRow;
  */
 public class PSPageReportLine extends PSAbstractBaseCSVReportRow {
 
-	
+	private int getIdFromGuid(String guid){
+		String[] parts = guid.split("-");
+		if(parts.length>2) {
+			return Integer.parseInt(parts[parts.length - 1]);
+		}else {
+			return 0;
+		}
+	}
+	public PSPageReportLine(PSPage p){
+
+		this.id = getIdFromGuid(p.getId());
+		this.guid = p.getId();
+		this.filename = p.getName();
+		this.title = p.getTitle();
+		this.folderPath = p.getFolderPath();
+	}
+
 	private int id;
 	private String guid;
 	private String name;
 	private String title;
 	private String extension;
 	private String filename;
-	
+
 	public int getId() {
 		return id;
 	}
