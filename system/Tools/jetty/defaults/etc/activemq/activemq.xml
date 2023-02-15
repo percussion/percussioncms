@@ -8,7 +8,7 @@ http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
  <!--
         The <broker> element is used to configure the ActiveMQ broker.
     -->
-    <broker useJmx="false" persistent="true" deleteAllMessagesOnStartup="true" xmlns="http://activemq.apache.org/schema/core" brokerName="localhost" dataDirectory="data/activemq-data">
+    <broker useShutdownHook="false" useJmx="false" persistent="true" deleteAllMessagesOnStartup="true" xmlns="http://activemq.apache.org/schema/core" brokerName="localhost" dataDirectory="data/activemq-data">
         <destinationPolicy>
             <policyMap>
               <policyEntries>
