@@ -95,7 +95,6 @@ import com.percussion.sitemanage.dao.IPSiteDao;
 import com.percussion.sitemanage.data.PSSiteSummary;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.request.PSRequestInfo;
-import com.percussion.webservices.PSErrorResultsException;
 import com.percussion.webservices.content.IPSContentDesignWs;
 import com.percussion.webservices.content.IPSContentWs;
 import com.percussion.webservices.publishing.IPSPublishingWs;
@@ -1402,20 +1401,11 @@ try {
 	public List<PSPageReportLine> findAllPages(String sitePath) throws PSReportFailedToRunException, PSDataServiceException {
 		List<PSPageReportLine> ret = new ArrayList<>();
 		List<PSPage> pages = pageDao.findAllPagesBySite(sitePath);
-		
-		List<PSCoreItem> nodes = null;
+
 		for(PSPage p : pages){
-			PSPageReportLine line = new PSPageReportLine();
-			try {
-				nodes = this.contentWs.loadItems(new ArrayList<>(), false, true, false, true);
-			} catch (PSErrorResultsException e) {
-				log.error("Error retrieving");
-			}
-			line.setBulkImportAction("UPDATE");
-		
+			PSPageReportLine line = new PSPageReportLine(p);
+            ret.add(line);
 		}
-		
-		
 		return ret;
 	}
 }
