@@ -536,7 +536,7 @@ public class PSLegacyServerConfig extends PSServerConfiguration
          while (authentication != null)
          {
             m_authentications.add(new PSAuthentication(authentication,
-               this, null));
+               this, null,true));
 
             authentication = tree.getNextElement(
                PSAuthentication.XML_NODE_NAME, nextFlags);
