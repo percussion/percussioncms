@@ -190,7 +190,7 @@
        <hikari.version>4.0.3</hikari.version>
        <snakeyaml.version>1.32</snakeyaml.version>
        <commons-email.version>1.5</commons-email.version>
-       <commons.codec.version>1.14</commons.codec.version>
+       <commons.codec.version>1.15</commons.codec.version>
        <tinymce.version>5.10.3</tinymce.version>
        <jfx.version>11.0.2</jfx.version>
        <twelvemonkeys.version>3.7.1</twelvemonkeys.version>
@@ -1517,7 +1517,7 @@
             <dependency>
                 <groupId>org.codehaus.jettison</groupId>
                 <artifactId>jettison</artifactId>
-                <version>1.5.2</version>
+                <version>1.5.3</version>
             </dependency>
             <dependency>
                 <groupId>com.jcraft</groupId>
