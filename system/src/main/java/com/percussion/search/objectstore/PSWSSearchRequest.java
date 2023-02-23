@@ -64,7 +64,7 @@ public class PSWSSearchRequest
     * value is the parameter value, both as <code>String</code> objects.  A 
     * shallow copy of the map is stored in this object.
     */
-   public PSWSSearchRequest(String searchName, Map params)
+   public PSWSSearchRequest(String searchName, Map<String,String> params)
    {
       if (searchName == null || searchName.trim().length() == 0)
          throw new IllegalArgumentException(
@@ -73,19 +73,8 @@ public class PSWSSearchRequest
       m_internalSearchName = searchName;
       if (params != null)
       {
-         m_internalSearchParams = new HashMap(); 
-         Iterator entries = params.entrySet().iterator();
-         while (entries.hasNext())
-         {
-            Map.Entry entry = (Map.Entry)entries.next();
-            if (!(entry.getKey() instanceof String && 
-               entry.getValue() instanceof String))
-            {
-               throw new IllegalArgumentException("params must have" +
-                  "only String objects for keys and values");
-            }
-            m_internalSearchParams.put(entry.getKey(), entry.getValue());
-         }
+         m_internalSearchParams = new HashMap<>();
+         m_internalSearchParams.putAll(params);
       }
       else
          m_internalSearchParams = null;
@@ -295,8 +284,8 @@ public class PSWSSearchRequest
       if (internalSearch)
       {
          // get params
-         m_internalSearchParams = new HashMap();
-         NodeList params = src.getElementsByTagNameNS("*", EL_REQ_PARAM);
+         m_internalSearchParams = new HashMap<>();
+         NodeList params = src.getElementsByTagName( EL_REQ_PARAM);
          int tot = params.getLength();
          for (int i = 0; i < tot; i++)
          {
@@ -412,7 +401,7 @@ public class PSWSSearchRequest
     * may be <code>null</code>, possibly supplied by ctor only if 
     * {@link #m_internalSearchName} was supplied, never modified after that.
     */
-   private Map m_internalSearchParams;
+   private Map<String,String> m_internalSearchParams;
    
    /**
     * Determines if search is to be case-insentive or if dbms defaults will be

@@ -17,53 +17,49 @@
 package com.percussion.search.objectstore;
 
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.junit.Test;
+import org.w3c.dom.Element;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import org.w3c.dom.Element;
-
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Unit test for <code>PSWSSearchRequest</code> class 
  */
-public class PSWSSearchRequestTest extends TestCase
+public class PSWSSearchRequestTest
 {
 
-   /**
-    * Default constructor.
-    * 
-    * @param name the name of the test
-    */
-   public PSWSSearchRequestTest(String name)
-   {
-      super(name);
-   }
-   
+public PSWSSearchRequestTest(){}
+
    /**
     * Test constructing with invalid values
-    * 
-    * @throws Exception If there are any erros.
+    *
     */
-   public void testCtors() throws Exception
-   {
+   @Test
+   public void testCtors() {
       // valid
-      PSWSSearchRequest req = null;
-      
-      // suppress eclipse warning
-      if (req == null);
+      PSWSSearchRequest req;
+
       
       req = new PSWSSearchRequest("test", null);
-      req = new PSWSSearchRequest("test", new HashMap());      
+      assertNotNull(req);
+      req = new PSWSSearchRequest("test", new HashMap<>());
+      assertNotNull(req);
       req = new PSWSSearchRequest(new PSWSSearchParams());
+      assertNotNull(req);
       
       // invalid
       boolean didThrow;
       didThrow = false;
       try
       {
-         req = new PSWSSearchRequest(null, null);   
+         req = new PSWSSearchRequest(null, null);
+         assertNotNull(req);
       }
       catch (Exception e)
       {
@@ -74,7 +70,8 @@ public class PSWSSearchRequestTest extends TestCase
       didThrow = false;
       try
       {
-         req = new PSWSSearchRequest("", null);   
+         req = new PSWSSearchRequest("", null);
+         assertNotNull(req);
       }
       catch (Exception e)
       {
@@ -85,7 +82,8 @@ public class PSWSSearchRequestTest extends TestCase
       didThrow = false;
       try
       {  
-         req = new PSWSSearchRequest((PSWSSearchParams)null);   
+         req = new PSWSSearchRequest((PSWSSearchParams)null);
+         assertNotNull(req);
       }
       catch (Exception e)
       {
@@ -96,7 +94,8 @@ public class PSWSSearchRequestTest extends TestCase
       didThrow = false;
       try
       {
-         req = new PSWSSearchRequest((Element)null);   
+         req = new PSWSSearchRequest((Element)null);
+         assertNotNull(req);
       }
       catch (Exception e)
       {
@@ -110,6 +109,7 @@ public class PSWSSearchRequestTest extends TestCase
     * 
     * @throws Exception if there are any errors.
     */
+   @Test
    public void testEquals() throws Exception
    {
       PSWSSearchRequest req1 = new PSWSSearchRequest("test", null);
@@ -117,9 +117,9 @@ public class PSWSSearchRequestTest extends TestCase
       assertEquals(req1, req2);
       assertEquals(req1.hashCode(), req2.hashCode());
       req2 = new PSWSSearchRequest("test2", null);
-      assertTrue(!req1.equals(req2));
+      assertNotEquals(req1, req2);
       
-      Map params = new HashMap();
+      Map<String,String> params = new HashMap<>();
       params.put("foo", "bar");
       params.put("a", "b");
       req1 = new PSWSSearchRequest("test", params);
@@ -127,10 +127,10 @@ public class PSWSSearchRequestTest extends TestCase
       assertEquals(req1, req2);
       assertEquals(req1.hashCode(), req2.hashCode());      
       req2 = new PSWSSearchRequest("test", null);
-      assertTrue(!req1.equals(req2));
+      assertNotEquals(req1, req2);
       params.clear();
       req2 = new PSWSSearchRequest("test", params);
-      assertTrue(!req1.equals(req2));
+      assertNotEquals(req1, req2);
       
       
       PSWSSearchParams searchParams1 = new PSWSSearchParams();
@@ -145,7 +145,7 @@ public class PSWSSearchRequestTest extends TestCase
       assertEquals(req1, req2);
       assertEquals(req1.hashCode(), req2.hashCode());      
       req2 = new PSWSSearchRequest(searchParams2);
-      assertTrue(!req1.equals(req2));
+      assertNotEquals(req1, req2);
    }
    
    /**
@@ -153,13 +153,14 @@ public class PSWSSearchRequestTest extends TestCase
     * 
     * @throws Exception if there are any errors.
     */
+   @Test
    public void testXml() throws Exception
    {
       PSWSSearchRequest req1 = new PSWSSearchRequest("test", null);
       assertEquals(req1, new PSWSSearchRequest(req1.toXml(
          PSXmlDocumentBuilder.createXmlDocument())));
       
-      Map params = new HashMap();
+      Map<String,String> params = new HashMap<>();
       params.put("foo", "bar");
       params.put("a", "b");
       req1 = new PSWSSearchRequest("test", params);
