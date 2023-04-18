@@ -368,6 +368,7 @@
                             <exclude name="rxconfig/"/>
                             <exclude name="tomcat9.exe"/>
                             <exclude name="tomcat9w.exe"/>
+                            <exclude name="tcnative-1.dll"/>
                             <exclude name="DTSProductionService.bat"/>
                             <exclude name="DTSStagingService.bat"/>
                             <exclude name="DTSProductionService.sh"/>
@@ -386,6 +387,7 @@
                         <fileset dir="${install.src}">
                             <include name="tomcat9.exe" if="${isWindows}"/>
                             <include name="tomcat9w.exe" if="${isWindows}"/>
+                            <include name="tcnative-1.dll" if="${isWindows}"/>
                         </fileset>
                     </copy>
                     <if>
@@ -501,6 +503,7 @@
                         <fileset dir="${install.src}">
                             <include name="tomcat9.exe" if="${isWindows}"/>
                             <include name="tomcat9w.exe" if="${isWindows}"/>
+                            <include name="tcnative-1.dll" if="${isWindows}"/>
                         </fileset>
                     </copy>
 
@@ -601,6 +604,7 @@
                             <exclude name="rxconfig/"/>
                             <exclude name="tomcat9.exe"/>
                             <exclude name="tomcat9w.exe"/>
+                            <exclude name="tcnative-1.dll"/>
                             <exclude name="DTSProductionService.bat"/>
                             <exclude name="DTSStagingService.bat"/>
                             <exclude name="DTSProductionService.sh"/>
