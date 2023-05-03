@@ -820,8 +820,8 @@ Tables 1 and 2 also document conformance with:
 <li>504.2 (Authoring Tool)</li>
 <li>602.3 (Support Docs)</li>
 </ul></td>
-<td><!-- INSERT CONTENT HERE --></td>
-<td><!-- INSERT CONTENT HERE --></td>
+<td>Partially Supports</td>
+<td><ul><li>Dashboard see <a href="https://github.com/percussion/percussioncms/issues/759">Issue 759</a></li></ul></td>
 </tr>
 <tr id="resize-text" valign="top">
 <td><a href="http://www.w3.org/TR/WCAG20/#visual-audio-contrast-scale"><strong>1.4.4 Resize text</strong></a> (Level AA)

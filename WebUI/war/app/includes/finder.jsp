@@ -51,9 +51,9 @@
 	                                <a class="perc-action perc-action-goto-or-search perc-font-icon icon-search fas fa-search" href="#" role="button" title="Click to Search"></a>
 	                                <div class="perc-hide" style="display:none;" aria-hidden="true">
 	                                    <!-- using this old ui behind the scenes to minimize code changes -->
-	                                    <a id="perc-finder-go-action" href="#"></a>
-	                                    <a id="perc-finder-search-submit" href="#"></a>
-	                                    <input id="perc-finder-item-search" type="text"/>
+	                                    <a id="perc-finder-go-action" title="Go" href="#"></a>
+	                                    <a id="perc-finder-search-submit" title="Search Submit" href="#"></a>
+	                                    <input id="perc-finder-item-search" type="text" title="Search"/>
 	                                </div>
                                 <%}%>
                             </td>
