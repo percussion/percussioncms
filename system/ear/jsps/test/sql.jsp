@@ -5,7 +5,7 @@
          import="org.apache.commons.lang.*"
          import="com.percussion.rx.ui.jsf.beans.PSTopNavigation"
          import="org.jsoup.Jsoup"
-         import="org.jsoup.safety.Whitelist"
+         import="org.jsoup.safety.Safelist"
          import="org.owasp.encoder.Encode"
          import="com.percussion.server.PSServer"
 %>
@@ -21,7 +21,7 @@
 private String sanitizeForHtml(String input){
 	   String ret = null;
 	   if(input != null){
-		   ret = Jsoup.clean(input, Whitelist.none());
+		   ret = Jsoup.clean(input, Safelist.none());
 	   }
 	   return ret;
 } 
