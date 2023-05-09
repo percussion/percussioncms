@@ -45,7 +45,7 @@ if(locale==null){
                              <div id="perc-new-wf-name-label" class = "perc-required-field"><label class="perc-name-label"><i18n:message key = "perc.ui.workflow@Name"/><br></label>
                                 <input maxlength = '50' required pattern='^[a-zA-Z0-9-_\. ]{1,50}$' title='1 to 50 letters,numbers,-, _, or space' id="perc-new-workflow-name">
                             </div>
-                            <div class = "perc-wf-default"><input type = "checkbox" /> <span><i18n:message key = "perc.ui.workflow@Make Default"/></span></div>
+							<div class = "perc-wf-default"><input type="checkbox" id="perc-wf-default-new-checkbox" /> <label for ="perc-wf-default-new-checkbox"><i18n:message key = "perc.ui.workflow@Make Default"/></label></div>
                             <!-- control gets generated here in percWorkflowView -->
                            <div id="perc-publish-now-roles-control-new" style="display:block; width:340px;"></div>
                             <div style="width: 100%; height: 50px;" id="perc-new-wf-save-cancel-block"> 
@@ -60,7 +60,7 @@ if(locale==null){
                              <div id="perc-update-wf-name-label" class = "perc-required-field" ><label class="perc-name-label"><i18n:message key = "perc.ui.workflow@Name"/><br></label>
                                 <input maxlength = '50' required pattern='^[a-zA-Z0-9-_\. ]{1,50}$' title='1 to 50 letters,numbers,-, _, or space' id="perc-update-workflow-name">
                             </div>
-                             <div class = "perc-wf-default"><input type = "checkbox" /> <span><i18n:message key = "perc.ui.workflow@Make Default"/></span></div>
+							 <div class = "perc-wf-default"><input type = "checkbox" id="perc-wf-default-update-checkbox" /> <label for="perc-wf-default-update-checkbox"><i18n:message key = "perc.ui.workflow@Make Default"/></label></div>
                              <!-- control gets generated here in percWorkflowView -->
                              <div id="perc-publish-now-roles-control" style="display:block; width:340px;"></div>
                             <div style="width: 100%; height: 50px; " id="perc-update-wf-save-cancel-block"> 
