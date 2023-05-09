@@ -34,7 +34,7 @@
                 <div id="dragger-tool" style="float:left;">&nbsp;</div>
                 <div class="perc-lib-expander-div">
                         <span id="perc-wid-lib-expander">
-                            <a id="perc-wid-lib-maximizer" title ="<i18n:message key = "perc.ui.template.layout@Maximize Widgets"/>" href="#" role="button" style="float: left;">Widget Maximize</a>
+                            <a id="perc-wid-lib-maximizer" title ="<i18n:message key = "perc.ui.template.layout@Maximize Widgets"/>" href="#" role="button" style="float: left;"></a>
                             <span><i18n:message key = "perc.ui.template.layout@Add Widget"/></span>
                         </span>
                 </div>
@@ -42,7 +42,7 @@
                 <!-- Explore Regions Expander Link-->
                 <div class="perc-lib-expander-div">
                         <span id="perc-region-library-expander">
-                            <a id="perc-region-library-maximizer" title ="<i18n:message key = "perc.ui.template.layout@Maximize Regions"/>" href="#" role="button" style="float: left;">Region Maximize</a>
+                            <a id="perc-region-library-maximizer" title ="<i18n:message key = "perc.ui.template.layout@Maximize Regions"/>" href="#" role="button" style="float: left;"></a>
                             <span><i18n:message key = "perc.ui.template.layout@Explore Regions"/></span>
                         </span>
                 </div>
