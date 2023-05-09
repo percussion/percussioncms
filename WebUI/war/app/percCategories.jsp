@@ -61,16 +61,16 @@
             <div id="perc-category-info">
                 <span class="perc-required-label" style="display:none;"><label><i18n:message key = "perc.ui.general@Denotes Required Field"/></label></span> 
                 <div id="perc-category-name-label"><i18n:message key = "perc.ui.perc.categories@Category Name"/>
-                    <input id="perc-category-name-field" maxlength="255" />
+					<input id="perc-category-name-field" maxlength="255" title='<i18n:message key = "perc.ui.perc.categories@Category Name"/>'/>
                 </div><br />
                 <div id="perc-category-selectable-label"><i18n:message key = "perc.ui.perc.categories@Is It Selectable"/>
-                    <input type="checkbox" id="perc-category-selectable-field"/>
+					<input type="checkbox" id="perc-category-selectable-field" title='<i18n:message key = "perc.ui.perc.categories@Is It Selectable"/>'/>
                 </div><br />
                 <div id="perc-category-show-in-page-label"><i18n:message key = "perc.ui.perc.categories@Show in Page Metadata"/>
-                    <input type="checkbox" id="perc-category-show-in-page-field"/>
+					<input type="checkbox" id="perc-category-show-in-page-field" title='<i18n:message key = "perc.ui.perc.categories@Show in Page Metadata"/>'/>
                 </div><br />
                 <div id="perc-allowedsites-label"><i18n:message key = "perc.ui.perc.categories@Allowed Sites"/> 
-                    <select id="perc-allowedsites-field" multiple>
+					<select id="perc-allowedsites-field" multiple title='<i18n:message key = "perc.ui.perc.categories@Allowed Sites"/>'>
                     </select>
                 </div><br />
                 <div id="perc-category-save-cancel-block" style="width:100%; height:50px;"> 
@@ -79,16 +79,16 @@
                 </div>
                 <div id="perc-category-details-label"><i18n:message key = "perc.ui.perc.categories@Details"/></div><br />
                 <div id="perc-category-created-by-label"><i18n:message key = "perc.ui.perc.categories@Created By"/> 
-                    <input id="perc-category-createdby-field" class="perc-category-field-readonly" disabled/>
+					<input id="perc-category-createdby-field" class="perc-category-field-readonly" disabled title='<i18n:message key = "perc.ui.perc.categories@Created By"/>'/>
                 </div><br />
                 <div id="perc-category-creation-date-label"><i18n:message key = "perc.ui.perc.categories@Creation Date"/> 
-                    <input id="perc-category-creationdt-field" class="perc-category-field-readonly" disabled/>
+					<input id="perc-category-creationdt-field" class="perc-category-field-readonly" disabled title='<i18n:message key = "perc.ui.perc.categories@Creation Date"/>'/>
                 </div><br />
                 <div id="perc-category-last-modified-by-label"><i18n:message key = "perc.ui.perc.categories@Last Modified By"/> 
-                    <input id="perc-category-lstmodifiedby-field" class="perc-category-field-readonly" disabled/>
+					<input id="perc-category-lstmodifiedby-field" class="perc-category-field-readonly" disabled title='<i18n:message key = "perc.ui.perc.categories@Last Modified By"/>'/>
                 </div><br />
                 <div id="perc-category-last-modified-date-label"><i18n:message key = "perc.ui.perc.categories@Last Modified Date"/>
-                    <input id="perc-category-lstmodifieddt-field" class="perc-category-field-readonly" disabled/>
+					<input id="perc-category-lstmodifieddt-field" class="perc-category-field-readonly" disabled title='<i18n:message key = "perc.ui.perc.categories@Last Modified Date"/>'/>
                 </div><br />
               
             </div>
