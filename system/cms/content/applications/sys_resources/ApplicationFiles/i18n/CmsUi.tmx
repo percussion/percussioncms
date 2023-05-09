@@ -11957,6 +11957,26 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
 	        <seg>Resumen de Importación</seg>
 	    </tuv>
 	 </tu>
+	 <tu tuid="perc.ui.template.create@Data List">
+        <prop type="sectionname" xml:lang="en-us">General</prop>
+        <note xml:lang="en-us"></note>
+        <tuv xml:lang="en-us">
+            <seg>Data List</seg>
+        </tuv>
+         <tuv xml:lang="es">
+            <seg>Lista de datos</seg>
+        </tuv>
+     </tu>
+     <tu tuid="perc.ui.template.create@Pages Jump">
+     <prop type="sectionname" xml:lang="en-us">General</prop>
+     <note xml:lang="en-us"></note>
+     <tuv xml:lang="en-us">
+         <seg>Pages Control Jump</seg>
+     </tuv>
+      <tuv xml:lang="es">
+         <seg>Salto de control de páginas</seg>
+     </tuv>
+     </tu>
 	 <tu tuid="perc.ui.template.create@Unassigned">
 	    <prop type="sectionname" xml:lang="en-us">General</prop>
 	    <note xml:lang="en-us"></note>
@@ -12307,6 +12327,46 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
 	        <seg>Arrastrar y soltar para agregar regiones</seg>
 	    </tuv>
 	 </tu>
+	 <tu tuid="perc.ui.template.layout@Maximize Regions">
+        <prop type="sectionname" xml:lang="en-us">General</prop>
+        <note xml:lang="en-us"></note>
+        <tuv xml:lang="en-us">
+            <seg>Maximize Regions</seg>
+        </tuv>
+         <tuv xml:lang="es">
+            <seg>Maximizar regiones</seg>
+        </tuv>
+     </tu>
+     <tu tuid="perc.ui.template.layout@Minimize Regions">
+             <prop type="sectionname" xml:lang="en-us">General</prop>
+             <note xml:lang="en-us"></note>
+             <tuv xml:lang="en-us">
+                 <seg>Minimize Regions</seg>
+             </tuv>
+              <tuv xml:lang="es">
+                 <seg>Minimizar regiones</seg>
+             </tuv>
+          </tu>
+     <tu tuid="perc.ui.template.layout@Maximize Widgets">
+         <prop type="sectionname" xml:lang="en-us">General</prop>
+         <note xml:lang="en-us"></note>
+         <tuv xml:lang="en-us">
+             <seg>Maximize Widgets</seg>
+         </tuv>
+          <tuv xml:lang="es">
+             <seg>Maximizar widgets</seg>
+         </tuv>
+      </tu>
+      <tu tuid="perc.ui.template.layout@Minimize Widgets">
+           <prop type="sectionname" xml:lang="en-us">General</prop>
+           <note xml:lang="en-us"></note>
+           <tuv xml:lang="en-us">
+               <seg>Minimize Widgets</seg>
+           </tuv>
+            <tuv xml:lang="es">
+               <seg>Minimizar widgets</seg>
+           </tuv>
+        </tu>
 	 <tu tuid="perc.ui.template.layout@Design Inspector">
 	    <prop type="sectionname" xml:lang="en-us">General</prop>
 	    <note xml:lang="en-us"></note>
