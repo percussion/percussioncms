@@ -86,8 +86,10 @@ Tables 1 and 2 also document conformance with:
 <li>504.2 (Authoring Tool)</li>
 <li>602.3 (Support Docs)</li>
 </ul></td>
-<td><!-- INSERT CONTENT HERE --></td>
-<td><!-- INSERT CONTENT HERE --></td>
+<td>Partially Supports</td>
+<td>
+<ul><li>Admin see <a href="https://github.com/percussion/percussioncms/issues/769">Issue 769</a></li></ul>
+</td>
 </tr>
 <tr id="audio-only-and-video-only-prerecorded" valign="top">
 <td><a href="http://www.w3.org/TR/WCAG20/#media-equiv-av-only-alt"><strong>1.2.1 Audio-only and Video-only (Prerecorded)</strong></a> (Level A)
@@ -174,8 +176,10 @@ Tables 1 and 2 also document conformance with:
 <li>504.2 (Authoring Tool)</li>
 <li>602.3 (Support Docs)</li>
 </ul></td>
-<td><!-- INSERT CONTENT HERE --></td>
-<td><!-- INSERT CONTENT HERE --></td>
+<td>Partially Supports</td>
+<td>
+<ul><li>Admin</li></ul>
+</td>
 </tr>
 <tr id="meaningful-sequence" valign="top">
 <td><a href="http://www.w3.org/TR/WCAG20/#content-structure-separation-sequence"><strong>1.3.2 Meaningful Sequence</strong></a> (Level A)
@@ -478,8 +482,10 @@ Tables 1 and 2 also document conformance with:
 <li>504.2 (Authoring Tool)</li>
 <li>602.3 (Support Docs)</li>
 </ul></td>
-<td><!-- INSERT CONTENT HERE --></td>
-<td><!-- INSERT CONTENT HERE --></td>
+<td>Partially Supports</td>
+<td>
+<ul><li>Admin see <a href="https://github.com/percussion/percussioncms/issues/769">Issue 769</a></li></ul>
+</td>
 </tr>
 <tr id="pointer-gestures" valign="top">
 <td><a href="https://www.w3.org/TR/WCAG21/#pointer-gestures"><strong>2.5.1 Pointer Gestures</strong></a> (Level A 2.1 only)
@@ -660,8 +666,10 @@ Tables 1 and 2 also document conformance with:
 <li>504.2 (Authoring Tool)</li>
 <li>602.3 (Support Docs)</li>
 </ul></td>
-<td><!-- INSERT CONTENT HERE --></td>
-<td><!-- INSERT CONTENT HERE --></td>
+<td>Partially Supports</td>
+<td>
+<ul><li>Admin</li></ul>
+</td>
 </tr>
 <tr id="parsing" valign="top">
 <td><a href="http://www.w3.org/TR/WCAG20/#ensure-compat-parses"><strong>4.1.1 Parsing</strong></a> (Level A)
@@ -821,7 +829,11 @@ Tables 1 and 2 also document conformance with:
 <li>602.3 (Support Docs)</li>
 </ul></td>
 <td>Partially Supports</td>
-<td><ul><li>Dashboard see <a href="https://github.com/percussion/percussioncms/issues/759">Issue 759</a></li></ul></td>
+<td>
+<ul><li>Dashboard see <a href="https://github.com/percussion/percussioncms/issues/759">Issue 759</a></li></ul>
+<ul><li>Admin</li></ul>
+</td>
+
 </tr>
 <tr id="resize-text" valign="top">
 <td><a href="http://www.w3.org/TR/WCAG20/#visual-audio-contrast-scale"><strong>1.4.4 Resize text</strong></a> (Level AA)
@@ -980,8 +992,10 @@ Tables 1 and 2 also document conformance with:
 <li>504.2 (Authoring Tool)</li>
 <li>602.3 (Support Docs)</li>
 </ul></td>
-<td><!-- INSERT CONTENT HERE --></td>
-<td><!-- INSERT CONTENT HERE --></td>
+<td>Partially Supports</td>
+<td>
+<ul><li>Admin</li></ul>
+</td>
 </tr>
 <tr id="focus-visible" valign="top">
 <td><a href="http://www.w3.org/TR/WCAG20/#navigation-mechanisms-focus-visible"><strong>2.4.7 Focus Visible</strong></a> (Level AA)
@@ -1652,7 +1666,7 @@ Notes: This product does not include non-web documents and is therefore not subj
 <th scope="column" colspan="3" id="11-authoring">11.8 Authoring tools</th>
 </tr>
 <tr>
-<th scope="column" colspan="3" id="11-content-tech">11.8.1 Content technology</td>
+<th scope="column" colspan="3" id="11-content-tech">11.8.1 Content technology</th>
 </tr>
 <tr>
 <td headers="11-content-tech chap-11-criteria">11.8.2 Accessible content creation (if not authoring tool, enter “not applicable”)</td>
