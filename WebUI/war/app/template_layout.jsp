@@ -34,7 +34,7 @@
                 <div id="dragger-tool" style="float:left;">&nbsp;</div>
                 <div class="perc-lib-expander-div">
                         <span id="perc-wid-lib-expander">
-                            <a id="perc-wid-lib-maximizer" href="#" style="float: left;"></a>
+                            <a id="perc-wid-lib-maximizer" title ="<i18n:message key = "perc.ui.template.layout@Maximize Widgets"/>" href="#" role="button" style="float: left;"></a>
                             <span><i18n:message key = "perc.ui.template.layout@Add Widget"/></span>
                         </span>
                 </div>
@@ -42,7 +42,7 @@
                 <!-- Explore Regions Expander Link-->
                 <div class="perc-lib-expander-div">
                         <span id="perc-region-library-expander">
-                            <a id="perc-region-library-maximizer" href="#" style="float: left;"></a>
+                            <a id="perc-region-library-maximizer" title ="<i18n:message key = "perc.ui.template.layout@Maximize Regions"/>" href="#" role="button" style="float: left;"></a>
                             <span><i18n:message key = "perc.ui.template.layout@Explore Regions"/></span>
                         </span>
                 </div>
@@ -184,7 +184,7 @@
                 </table>
             </div>
             <div id="perc-css-overrides-disable-container">
-                <input id="perc-css-overrides-disable" type="checkbox" /> <span id="perc-css-overrides-disable-span"><i18n:message key = "perc.ui.template.layout@Do Not Use CSS Overrides"/></span>
+                <input id="perc-css-overrides-disable" title="<i18n:message key = "perc.ui.users.import.dialogs@SelectAll"/>" type="checkbox"/> <span id="perc-css-overrides-disable-span"><i18n:message key = "perc.ui.template.layout@Do Not Use CSS Overrides"/></span>
             </div>
         </div>
     </div>
