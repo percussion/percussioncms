@@ -39,10 +39,10 @@
                 <span class="perc-required-label" style="display:none;"><label><i18n:message key = "perc.ui.general@Denotes Required Field"/></label></span> 
                 <div id="perc-roles-name-label"><i18n:message key = "perc.ui.workflow@Name"/><br />
                     <input id="perc-orig-roles-name-field" type="hidden" />
-                    <input id="perc-roles-name-field" class="perc-roles-name-edit-field" maxlength="50" />
+					<input title='<i18n:message key = "perc.ui.workflow@Name"/>' id="perc-roles-name-field" class="perc-roles-name-edit-field" maxlength="50" />
                 </div><br />
                 <div id="perc-roles-description-label"><i18n:message key = "perc.ui.roles@Description"/><br />
-                    <textarea id="perc-roles-description-field" maxlength="255" style="overflow:auto" ></textarea>
+				    <textarea title='<i18n:message key = "perc.ui.roles@Description"/>' id="perc-roles-description-field" maxlength="255" style="overflow:auto" ></textarea>
                 </div><br />
                 <div id="perc-roles-homepage-label"><i18n:message key = "perc.ui.roles@Homepage"/><br />
                     <select id="perc-roles-homepage-field">
