@@ -103,29 +103,29 @@
 				  </label>
 				</span><br />
                 <!--  fake fields are a workaround for chrome/opera autofill getting the wrong fields -->
-                <input id="username" style="display:none" type="text" name="fakeusernameremembered">
-                <input id="password" style="display:none" type="password" name="fakepasswordremembered">
+				<input title="fakeusernameremembered" id="username" style="display:none" type="text" name="fakeusernameremembered">
+                <input title="fakepasswordremembered" id="password" style="display:none" type="password" name="fakepasswordremembered">
 
                 <div id="perc-users-info">
                     <div id="perc-users-edit-user-button" title="<i18n:message key='perc.ui.users@Edit User Details' />"></div>
                     <div id="perc-users-username-label">
                         <i18n:message key="perc.ui.workflow@Name" /><br />
-                        <input id="perc-users-username-field" maxlength="50" autocomplete="nope" />
+						<input id="perc-users-username-field" maxlength="50" autocomplete="nope" title='<i18n:message key="perc.ui.workflow@Name" />'/>
                     </div><br />
                     <div id="perc-users-external-user-label" style="display : none">
                         <i18n:message key="perc.ui.users.import.label@ThisIsLDAPUser" />.</div>
                     <div id="perc-users-password-block">
                         <div id="perc-users-password-label">
                             <i18n:message key="perc.ui.users@Password" /><br />
-                            <input id="perc-users-password-field" type="password" value="*******" autocomplete="new-password" />
+							<input id="perc-users-password-field" type="password" value="*******" autocomplete="new-password" title='<i18n:message key="perc.ui.users@Password" />' />
                         </div><br />
                         <div id="perc-users-password-confirm-label">
                             <i18n:message key="perc.ui.users@Confirm Password" /><br />
-                            <input id="perc-users-password-confirm-field" type="password" value="*******" autocomplete="new-password" />
+							<input id="perc-users-password-confirm-field" type="password" value="*******" autocomplete="new-password" title='<i18n:message key="perc.ui.users@Confirm Password" />' />
                         </div><br />
                         <div id="perc-users-email-label">
                             <i18n:message key="perc.ui.users@Email" /><br />
-                            <input id="perc-users-email-field" maxlength="250" />
+							<input id="perc-users-email-field" maxlength="250" title='<i18n:message key="perc.ui.users@Email" />'/>
                         </div><br />
                     </div>
                     <div id="perc-users-available-roles">
@@ -155,7 +155,7 @@
       <span id="perc-users-search-label">
         <i18n:message key="perc.ui.users.import.dialogs@NameStartsWith" />
       </span><br />
-            <input id="perc-users-search-input" style="width : 355px"></input>
+			<input id="perc-users-search-input" style="width : 355px" title='<i18n:message key="perc.ui.users.import.dialogs@NameStartsWith" />'></input>
             <button id="perc-users-search-button" class="btn btn-primary" name="perc-users-search-button">
                 <i18n:message key="perc.ui.users.import.dialogs@Search" />
             </button>
@@ -166,7 +166,7 @@
         <div style="margin-left : 5px;">
             <table id="perc-users-directory-users-header">
                 <tr>
-                    <td><input id="perc-users-directory-users-selectall-checkbox" type="checkbox"/>&nbsp;<span id="perc-users-directory-users-selectall-label">
+                    <td><input id="perc-users-directory-users-selectall-checkbox" type="checkbox" title='<i18n:message key="perc.ui.users.import.dialogs@SelectAll" />'/>&nbsp;<span id="perc-users-directory-users-selectall-label">
                         <i18n:message key="perc.ui.users.import.dialogs@SelectAll" /></span>
                     </td>
                 </tr>

@@ -977,7 +977,7 @@ li.ui-tabs-active #perc-tab-workflow,#perc-tab-workflow:hover
 
 .perc-action-label
 {
-    color:#FFF;
+    color:#000;
     font-weight:bold;
     position:absolute;
     bottom:5px;
