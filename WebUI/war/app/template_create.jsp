@@ -85,7 +85,7 @@
         <h3 class="perc-site-summary-missing-page"><i18n:message key = "perc.ui.template.create@Missing Pages"/></h3>
         <h3 class="perc-site-summary-missing-asset"><i18n:message key = "perc.ui.template.create@Missing Assets"/></h3>
         <h3 class="perc-site-summary-missing-css"><i18n:message key = "perc.ui.template.create@Missing Style Sheets"/></h3>
-        <h3 class="perc-site-summary-missing-unknown">&nbsp;<!-- the stat name is used instead --></h3>
+        <h3 class="perc-site-summary-missing-unknown">-<!-- the stat name is used instead --></h3>
         <div class="perc-site-summary">
         <div class="perc-site-summary-dialog-actions perc-do-not-print">
         <a href="#" class="perc-action-refresh ui-icon ui-icon-refresh" title="Refresh"><span><i18n:message key = "perc.ui.template.create@Refresh"/></span></a>

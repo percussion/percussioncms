@@ -307,7 +307,7 @@
                 buffer += '    </ul>';
                 buffer += '    <form action="#" class="perc-template-pages-controls">';
                 buffer += '        <div style="right:56px;" class="previous">Prev</div>';
-                buffer += '        <input type="text" class="perc-jump" name="perc-template-pages-controls-jump" autocomplete="off" />';
+                buffer += '        <input type="text" title="' +I18N.message("perc.ui.template.create@Pages Jump") + '" class="perc-jump" name="perc-template-pages-controls-jump" autocomplete="off" />';
                 buffer += '        <div style="right:0px;" class="next">Next</div>';
                 buffer += '    </form>';
                 buffer += '    <div class="perc-template-showing" style="width: 100px; margin: 6px 0pt 0px 24px;">';
