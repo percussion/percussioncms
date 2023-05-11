@@ -554,6 +554,15 @@
                   <seg>Publicar Artículos Intentados</seg>
               </tuv>
   		 </tu>
+  		 <tu tuid="perc.ui.publish.title@Site Configuration">
+                       <note xml:lang="en-us">Site Configuration</note>
+                       <tuv xml:lang="en-us">
+                           <seg>Site Configuration</seg>
+                       </tuv>
+                       <tuv xml:lang="es">
+                           <seg>Configuración del sitio</seg>
+                       </tuv>
+           		 </tu>
          <tu tuid="perc.ui.publish.title@Publish Item Details">
               <note xml:lang="en-us">Title for publish item details</note>
               <tuv xml:lang="en-us">
