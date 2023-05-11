@@ -41,10 +41,10 @@
                     <div class="card-header perc-site-card-name text-center">
                         {{name}}
                     </div>
-                    <div class="card-body perc-site-card-icon-container">
-                        <h5 class="card-title perc-site-card-icon text-center align-middle">
+                    <div class="card-body perc-site-card-icon-container perc-site-card-icon-container-changes">
+                        <button title="<i18n:message key = "perc.ui.publish.title@Site Configuration"/>" class="card-title perc-site-card-icon perc-site-card-icon-changes text-center align-middle">
                             <i aria-hidden class="fas fa-globe-americas fa-10x"></i>
-                        </h5>
+                        </button>
                     </div>
                 </div>
             </div>
