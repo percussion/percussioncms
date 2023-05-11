@@ -88,7 +88,10 @@ Tables 1 and 2 also document conformance with:
 </ul></td>
 <td>Partially Supports</td>
 <td>
+<ul><li>Dashboard</li></ul>
 <ul><li>Admin see <a href="https://github.com/percussion/percussioncms/issues/769">Issue 769</a></li></ul>
+<ul><li>Editor</li></ul>
+<ul><li>Design</li></ul>
 </td>
 </tr>
 <tr id="audio-only-and-video-only-prerecorded" valign="top">
@@ -178,7 +181,11 @@ Tables 1 and 2 also document conformance with:
 </ul></td>
 <td>Partially Supports</td>
 <td>
+<ul><li>Dashboard</li></ul>
 <ul><li>Admin</li></ul>
+<ul><li>Editor</li></ul>
+<ul><li>Design</li></ul>
+<ul><li>Publish</li></ul>
 </td>
 </tr>
 <tr id="meaningful-sequence" valign="top">
@@ -416,8 +423,11 @@ Tables 1 and 2 also document conformance with:
 <li>504.2 (Authoring Tool)</li>
 <li>602.3 (Support Docs) – Does not apply to non-web docs</li>
 </ul></td>
-<td><!-- INSERT CONTENT HERE --></td>
-<td><!-- INSERT CONTENT HERE --></td>
+<td>Partially Supports</td>
+<td>
+<ul><li>Design</li></ul>
+<ul><li>Publish</li></ul>
+</td>
 </tr>
 <tr id="page-titled" valign="top">
 <td><a href="http://www.w3.org/TR/WCAG20/#navigation-mechanisms-title"><strong>2.4.2 Page Titled</strong></a> (Level A)
@@ -484,7 +494,10 @@ Tables 1 and 2 also document conformance with:
 </ul></td>
 <td>Partially Supports</td>
 <td>
+<ul><li>Dashboard</li></ul>
 <ul><li>Admin see <a href="https://github.com/percussion/percussioncms/issues/769">Issue 769</a></li></ul>
+<ul><li>Editor</li></ul>
+<ul><li>Design</li></ul>
 </td>
 </tr>
 <tr id="pointer-gestures" valign="top">
@@ -668,7 +681,10 @@ Tables 1 and 2 also document conformance with:
 </ul></td>
 <td>Partially Supports</td>
 <td>
+<ul><li>Dashboard</li></ul>
 <ul><li>Admin</li></ul>
+<ul><li>Editor</li></ul>
+<ul><li>Design</li></ul>
 </td>
 </tr>
 <tr id="parsing" valign="top">
@@ -832,6 +848,8 @@ Tables 1 and 2 also document conformance with:
 <td>
 <ul><li>Dashboard see <a href="https://github.com/percussion/percussioncms/issues/759">Issue 759</a></li></ul>
 <ul><li>Admin</li></ul>
+<ul><li>Editor see <a href="https://github.com/percussion/percussioncms/issues/759">Issue 759</a></li></ul>
+<ul><li>Design see <a href="https://github.com/percussion/percussioncms/issues/759">Issue 759</a></li></ul>
 </td>
 
 </tr>
@@ -994,7 +1012,11 @@ Tables 1 and 2 also document conformance with:
 </ul></td>
 <td>Partially Supports</td>
 <td>
+<ul><li>Dashboard</li></ul>
 <ul><li>Admin</li></ul>
+<ul><li>Editor</li></ul>
+<ul><li>Design</li></ul>
+<ul><li>Publish</li></ul>
 </td>
 </tr>
 <tr id="focus-visible" valign="top">
