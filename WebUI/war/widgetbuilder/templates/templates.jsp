@@ -54,7 +54,7 @@
             <br/>
         </div>
         <div type="sys_normal">
-            <input type="checkbox" name="responsive" class="datadisplay" style="height: 15px; padding-top: 3px; padding-bottom: 5px; vertical-align:middle" <@ print(responsive==true?checked='checked':'') @>/><label accesskey="" for="isResponsive"><i18n:message key="perc.ui.widget.builder@Is Responsive"/></label>
+		    <input type="checkbox" id="isResponsive" name="responsive" class="datadisplay" style="height: 15px; padding-top: 3px; padding-bottom: 5px; vertical-align:middle" <@ print(responsive==true?checked='checked':'') @>/><label accesskey="" for="isResponsive"><i18n:message key="perc.ui.widget.builder@Is Responsive"/></label>
             <br/>
         </div>
     </csrf:form>
@@ -99,7 +99,7 @@
 <script type="text/template" id="perc-widget-display-editor-template">
 <csrf:form name="perc-widget-display-tab-form" action="templates.jsp" method="post">
     <div type="sys_normal">
-        <textarea id="widgetHtml" name="widgetHtml" wrap="soft" class="datadisplay" rows="25" cols="110"><@- widgetHtml @></textarea>
+	    <textarea id="widgetHtml" title='<i18n:message key = "perc.ui.publishing.history@DisplayHTML"/>' name="widgetHtml" wrap="soft" class="datadisplay" rows="25" cols="110"><@- widgetHtml @></textarea>
         <br/>
         <script>
             var editor = CodeMirror.fromTextArea(document.getElementById('widgetHtml'), {
