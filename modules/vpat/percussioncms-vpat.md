@@ -92,6 +92,7 @@ Tables 1 and 2 also document conformance with:
 <ul><li>Admin see <a href="https://github.com/percussion/percussioncms/issues/769">Issue 769</a></li></ul>
 <ul><li>Editor</li></ul>
 <ul><li>Design</li></ul>
+<ul><li><a href="https://github.com/percussion/percussioncms/issues/773">Issue 773</a></li></ul>
 </td>
 </tr>
 <tr id="audio-only-and-video-only-prerecorded" valign="top">
