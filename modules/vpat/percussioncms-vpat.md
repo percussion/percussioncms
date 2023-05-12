@@ -116,8 +116,10 @@ Tables 1 and 2 also document conformance with:
 <li>504.2 (Authoring Tool)</li>
 <li>602.3 (Support Docs)</li>
 </ul></td>
-<td><!-- INSERT CONTENT HERE --></td>
-<td><!-- INSERT CONTENT HERE --></td>
+<td>Not Applicable</td>
+<td>
+<ul><li>Design see <a href="https://github.com/percussion/percussioncms/issues/778">Issue 778</a></li></ul>
+</td>
 </tr>
 <tr id="captions-prerecorded" valign="top">
 <td><a href="http://www.w3.org/TR/WCAG20/#media-equiv-captions"><strong>1.2.2 Captions (Prerecorded)</strong></a> (Level A)
@@ -138,7 +140,7 @@ Tables 1 and 2 also document conformance with:
 <li>504.2 (Authoring Tool)</li>
 <li>602.3 (Support Docs)</li>
 </ul></td>
-<td><!-- INSERT CONTENT HERE --></td>
+<td>Not Applicable</td>
 <td><!-- INSERT CONTENT HERE --></td>
 </tr>
 <tr id="audio-description-or-media-alternative-prerecorded" valign="top">
@@ -160,7 +162,7 @@ Tables 1 and 2 also document conformance with:
 <li>504.2 (Authoring Tool)</li>
 <li>602.3 (Support Docs)</li>
 </ul></td>
-<td><!-- INSERT CONTENT HERE --></td>
+<td>Not Applicable</td>
 <td><!-- INSERT CONTENT HERE --></td>
 </tr>
 <tr id="info-and-relationships" valign="top">
@@ -211,8 +213,13 @@ Tables 1 and 2 also document conformance with:
 <li>504.2 (Authoring Tool)</li>
 <li>602.3 (Support Docs)</li>
 </ul></td>
-<td><!-- INSERT CONTENT HERE --></td>
-<td><!-- INSERT CONTENT HERE --></td>
+<td>Partially Supports</td>
+<td>
+<ul><li>Design see <a href="https://github.com/percussion/percussioncms/issues/779">Issue 779</a></li></ul>
+<ul><li>Publish see <a href="https://github.com/percussion/percussioncms/issues/780">Issue 780</a></li></ul>
+<ul><li>Admin see <a href="https://github.com/percussion/percussioncms/issues/781">Issue 781</a></li></ul>
+<ul><li>Widget Builder see <a href="https://github.com/percussion/percussioncms/issues/782">Issue 782</a></li></ul>
+</td>
 </tr>
 <tr id="sensory-characteristics" valign="top">
 <td><strong><a href="http://www.w3.org/TR/WCAG20/#content-structure-separation-understanding">1.3.3 Sensory Characteristics</a></strong> (Level A)
@@ -233,8 +240,13 @@ Tables 1 and 2 also document conformance with:
 <li>504.2 (Authoring Tool)</li>
 <li>602.3 (Support Docs)</li>
 </ul></td>
-<td><!-- INSERT CONTENT HERE --></td>
-<td><!-- INSERT CONTENT HERE --></td>
+<td>Partially Supports</td>
+<td>
+<ul><li>Design see <a href="https://github.com/percussion/percussioncms/issues/783">Issue 773</a></li></ul>
+<ul><li>Publish see <a href="https://github.com/percussion/percussioncms/issues/784">Issue 784</a></li></ul>
+<ul><li>Admin see <a href="https://github.com/percussion/percussioncms/issues/785">Issue 785</a></li></ul>
+<ul><li>Widget Builder see <a href="https://github.com/percussion/percussioncms/issues/786">Issue 786</a></li></ul>
+</td>
 </tr>
 <tr id="use-of-color" valign="top">
 <td><a href="http://www.w3.org/TR/WCAG20/#visual-audio-contrast-without-color"><strong>1.4.1 Use of Color</strong></a> (Level A)
@@ -255,8 +267,13 @@ Tables 1 and 2 also document conformance with:
 <li>504.2 (Authoring Tool)</li>
 <li>602.3 (Support Docs)</li>
 </ul></td>
-<td><!-- INSERT CONTENT HERE --></td>
-<td><!-- INSERT CONTENT HERE --></td>
+<td>Partially Supports</td>
+<td>
+<ul><li>Design see <a href="https://github.com/percussion/percussioncms/issues/787">Issue 787</a></li></ul>
+<ul><li>Publish</li></ul>
+<ul><li>Admin see <a href="https://github.com/percussion/percussioncms/issues/788">Issue 788</a></li></ul>
+<ul><li>Widget Builder see <a href="https://github.com/percussion/percussioncms/issues/789">Issue 789</a></li></ul>
+</td>
 </tr>
 <tr id="audio-control" valign="top">
 <td><a href="http://www.w3.org/TR/WCAG20/#visual-audio-contrast-dis-audio"><strong>1.4.2 Audio Control</strong></a> (Level A)
