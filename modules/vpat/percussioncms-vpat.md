@@ -212,7 +212,7 @@ Tables 1 and 2 also document conformance with:
 <li>501 (Web)(Software)</li>
 <li>504.2 (Authoring Tool)</li>
 <li>602.3 (Support Docs)</li>
-</ul></td>
+</ul></td> 
 <td>Partially Supports</td>
 <td>
 <ul><li>Design see <a href="https://github.com/percussion/percussioncms/issues/779">Issue 779</a></li></ul>
