@@ -251,7 +251,11 @@ Tables 1 and 2 also document conformance with:
 </ul></td>
 <td>Partially Supports</td>
 <td>
-<ul><li>Design see <a href="https://github.com/percussion/percussioncms/issues/783">Issue 773</a></li></ul>
+<ul><li>Home see <a href="https://github.com/percussion/percussioncms/issues/796">Issue 796</a></li></ul>
+<ul><li>Dashboard see <a href="https://github.com/percussion/percussioncms/issues/797">Issue 797</a></li></ul>
+<ul><li>Editor see <a href="https://github.com/percussion/percussioncms/issues/798">Issue 798</a></li></ul>
+<ul><li>Navigation-supports</li></ul>
+<ul><li>Design see <a href="https://github.com/percussion/percussioncms/issues/783">Issue 783</a></li></ul>
 <ul><li>Publish see <a href="https://github.com/percussion/percussioncms/issues/784">Issue 784</a></li></ul>
 <ul><li>Admin see <a href="https://github.com/percussion/percussioncms/issues/785">Issue 785</a></li></ul>
 <ul><li>Widget Builder see <a href="https://github.com/percussion/percussioncms/issues/786">Issue 786</a></li></ul>
