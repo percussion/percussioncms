@@ -286,6 +286,10 @@ Tables 1 and 2 also document conformance with:
 <ul><li>Publish</li></ul>
 <ul><li>Admin see <a href="https://github.com/percussion/percussioncms/issues/788">Issue 788</a></li></ul>
 <ul><li>Widget Builder see <a href="https://github.com/percussion/percussioncms/issues/789">Issue 789</a></li></ul>
+<ul><li>Home-supports</li></ul>
+<ul><li>Dashboard see <a href="https://github.com/percussion/percussioncms/issues/809">Issue 809</a></li></ul>
+<ul><li>Editor-supports</li></ul>
+<ul><li>Navigation see <a href="https://github.com/percussion/percussioncms/issues/810">Issue 810</a></li></ul>
 </td>
 </tr>
 <tr id="audio-control" valign="top">
@@ -329,8 +333,13 @@ Tables 1 and 2 also document conformance with:
 <li>504.2 (Authoring Tool)</li>
 <li>602.3 (Support Docs)</li>
 </ul></td>
-<td><!-- INSERT CONTENT HERE --></td>
-<td><!-- INSERT CONTENT HERE --></td>
+<td>Partially Supports</td>
+<td>
+<ul><li>Home see <a href="https://github.com/percussion/percussioncms/issues/811">Issue 811</a></li></ul>
+<ul><li>Dashboard see <a href="https://github.com/percussion/percussioncms/issues/812">Issue 812</a></li></ul>
+<ul><li>Editor see <a href="https://github.com/percussion/percussioncms/issues/813">Issue 813</a></li></ul>
+<ul><li>Navigation see <a href="https://github.com/percussion/percussioncms/issues/814">Issue 814</a></li></ul>
+</td>
 </tr>
 <tr id="no-keyboard-trap" valign="top">
 <td><a href="http://www.w3.org/TR/WCAG20/#keyboard-operation-trapping"><strong>2.1.2 No Keyboard Trap</strong></a> (Level A)
@@ -351,8 +360,13 @@ Tables 1 and 2 also document conformance with:
 <li>504.2 (Authoring Tool)</li>
 <li>602.3 (Support Docs)</li>
 </ul></td>
-<td><!-- INSERT CONTENT HERE --></td>
-<td><!-- INSERT CONTENT HERE --></td>
+<td>Partially Supports</td>
+<td>
+<ul><li>Home-supports</li></ul>
+<ul><li>Dashboard see <a href="https://github.com/percussion/percussioncms/issues/812">Issue 812</a></li></ul>
+<ul><li>Editor see <a href="https://github.com/percussion/percussioncms/issues/813">Issue 813</a></li></ul>
+<ul><li>Navigation-supports</li></ul>
+</td>
 </tr>
 <tr id="character-key-shortcuts" valign="top">
 <td><a href="https://www.w3.org/TR/WCAG21/#character-key-shortcuts"><strong>2.1.4 Character Key Shortcuts</strong></a> (Level A 2.1 only)
