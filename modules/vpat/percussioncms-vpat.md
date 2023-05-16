@@ -524,8 +524,13 @@ Tables 1 and 2 also document conformance with:
 <li>504.2 (Authoring Tool)</li>
 <li>602.3 (Support Docs)</li>
 </ul></td>
-<td><!-- INSERT CONTENT HERE --></td>
-<td><!-- INSERT CONTENT HERE --></td>
+<td>Partially Supports</td>
+<td>
+<ul><li>Home see <a href="https://github.com/percussion/percussioncms/issues/823">Issue 823</a></li></ul>
+<ul><li>Dashboard see <a href="https://github.com/percussion/percussioncms/issues/824">Issue 824</a></li></ul>
+<ul><li>Editor see <a href="https://github.com/percussion/percussioncms/issues/825">Issue 825</a></li></ul>
+<ul><li>Navigation see <a href="https://github.com/percussion/percussioncms/issues/826">Issue 826</a></li></ul>
+</td>
 </tr>
 <tr id="link-purpose-in-context" valign="top">
 <td><a href="http://www.w3.org/TR/WCAG20/#navigation-mechanisms-refs"><strong>2.4.4 Link Purpose (In Context)</strong></a> (Level A)
