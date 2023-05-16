@@ -539,8 +539,13 @@ Tables 1 and 2 also document conformance with:
 <li>504.2 (Authoring Tool)</li>
 <li>602.3 (Support Docs)</li>
 </ul></td>
-<td><!-- INSERT CONTENT HERE --></td>
-<td><!-- INSERT CONTENT HERE --></td>
+<td>Partially Supports</td>
+<td>
+<ul><li>Design see <a href="https://github.com/percussion/percussioncms/issues/819">Issue 819</a></li></ul>
+<ul><li>Publish see <a href="https://github.com/percussion/percussioncms/issues/820">Issue 820</a></li></ul>
+<ul><li>Admin see <a href="https://github.com/percussion/percussioncms/issues/821">Issue 821</a></li></ul>
+<ul><li>Widget Builder see <a href="https://github.com/percussion/percussioncms/issues/822">Issue 822</a></li></ul>
+</td>
 </tr>
 <tr id="link-purpose-in-context" valign="top">
 <td><a href="http://www.w3.org/TR/WCAG20/#navigation-mechanisms-refs"><strong>2.4.4 Link Purpose (In Context)</strong></a> (Level A)
@@ -588,7 +593,7 @@ Tables 1 and 2 also document conformance with:
 </ul>
 <em>Revised Section 508 - does not apply</em>
 </td>
-<td><!-- INSERT CONTENT HERE --></td>
+<td>Not Applicable</td>
 <td><!-- INSERT CONTENT HERE --></td>
 </tr>
 <tr id="pointer-cancellation" valign="top">
@@ -606,8 +611,17 @@ Tables 1 and 2 also document conformance with:
 </ul>
 <em>Revised Section 508 - does not apply</em>
 </td>
-<td><!-- INSERT CONTENT HERE --></td>
-<td><!-- INSERT CONTENT HERE --></td>
+<td>Supports</td>
+<td>
+<ul><li>Home </li></ul>
+<ul><li>Dashboard </li></ul>
+<ul><li>Editor </li></ul>
+<ul><li>Navigation </li></ul>
+<ul><li>Design </li></ul>
+<ul><li>Publish </li></ul>
+<ul><li>Admin </li></ul>
+<ul><li>Widget Builder </li></ul>
+</td>
 </tr>
 <tr id="label-in-name" valign="top">
 <td><a href="https://www.w3.org/TR/WCAG21/#label-in-name"><strong>2.5.3 Label in Name</strong></a> (Level A 2.1 only)
@@ -624,8 +638,17 @@ Tables 1 and 2 also document conformance with:
 </ul>
 <em>Revised Section 508 - does not apply</em>
 </td>
-<td><!-- INSERT CONTENT HERE --></td>
-<td><!-- INSERT CONTENT HERE --></td>
+<td>Supports</td>
+<td>
+<ul><li>Home </li></ul>
+<ul><li>Dashboard </li></ul>
+<ul><li>Editor </li></ul>
+<ul><li>Navigation </li></ul>
+<ul><li>Design </li></ul>
+<ul><li>Publish </li></ul>
+<ul><li>Admin </li></ul>
+<ul><li>Widget Builder </li></ul>
+</td>
 </tr>
 <tr id="motion-actuation" valign="top">
 <td><a href="https://www.w3.org/TR/WCAG21/#motion-actuation"><strong>2.5.4 Motion Actuation</strong></a> (Level A 2.1 only)
@@ -664,8 +687,17 @@ Tables 1 and 2 also document conformance with:
 <li>504.2 (Authoring Tool)</li>
 <li>602.3 (Support Docs)</li>
 </ul></td>
-<td><!-- INSERT CONTENT HERE --></td>
-<td><!-- INSERT CONTENT HERE --></td>
+<td>Supports</td>
+<td>
+<ul><li>Home </li></ul>
+<ul><li>Dashboard </li></ul>
+<ul><li>Editor </li></ul>
+<ul><li>Navigation </li></ul>
+<ul><li>Design </li></ul>
+<ul><li>Publish </li></ul>
+<ul><li>Admin </li></ul>
+<ul><li>Widget Builder </li></ul>
+</td>
 </tr>
 <tr id="on-focus" valign="top">
 <td><a href="http://www.w3.org/TR/WCAG20/#consistent-behavior-receive-focus"><strong>3.2.1 On Focus</strong></a> (Level A)
@@ -686,8 +718,17 @@ Tables 1 and 2 also document conformance with:
 <li>504.2 (Authoring Tool)</li>
 <li>602.3 (Support Docs)</li>
 </ul></td>
-<td><!-- INSERT CONTENT HERE --></td>
-<td><!-- INSERT CONTENT HERE --></td>
+<td>Supports</td>
+<td>
+<ul><li>Home </li></ul>
+<ul><li>Dashboard </li></ul>
+<ul><li>Editor </li></ul>
+<ul><li>Navigation </li></ul>
+<ul><li>Design </li></ul>
+<ul><li>Publish </li></ul>
+<ul><li>Admin </li></ul>
+<ul><li>Widget Builder </li></ul>
+</td>
 </tr>
 <tr id="on-input" valign="top">
 <td><a href="http://www.w3.org/TR/WCAG20/#consistent-behavior-unpredictable-change"><strong>3.2.2 On Input</strong></a> (Level A)
