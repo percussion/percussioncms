@@ -286,6 +286,10 @@ Tables 1 and 2 also document conformance with:
 <ul><li>Publish</li></ul>
 <ul><li>Admin see <a href="https://github.com/percussion/percussioncms/issues/788">Issue 788</a></li></ul>
 <ul><li>Widget Builder see <a href="https://github.com/percussion/percussioncms/issues/789">Issue 789</a></li></ul>
+<ul><li>Home-supports</li></ul>
+<ul><li>Dashboard see <a href="https://github.com/percussion/percussioncms/issues/809">Issue 809</a></li></ul>
+<ul><li>Editor-supports</li></ul>
+<ul><li>Navigation see <a href="https://github.com/percussion/percussioncms/issues/810">Issue 810</a></li></ul>
 </td>
 </tr>
 <tr id="audio-control" valign="top">
@@ -331,6 +335,10 @@ Tables 1 and 2 also document conformance with:
 </ul></td>
 <td>Partially Supports</td>
 <td>
+<ul><li>Home see <a href="https://github.com/percussion/percussioncms/issues/811">Issue 811</a></li></ul>
+<ul><li>Dashboard see <a href="https://github.com/percussion/percussioncms/issues/812">Issue 812</a></li></ul>
+<ul><li>Editor see <a href="https://github.com/percussion/percussioncms/issues/813">Issue 813</a></li></ul>
+<ul><li>Navigation see <a href="https://github.com/percussion/percussioncms/issues/814">Issue 814</a></li></ul>
 <ul><li>Design see <a href="https://github.com/percussion/percussioncms/issues/801">Issue 801</a></li></ul>
 <ul><li>Publish</li></ul>
 <ul><li>Admin see <a href="https://github.com/percussion/percussioncms/issues/802">Issue 802</a></li></ul>
@@ -358,12 +366,16 @@ Tables 1 and 2 also document conformance with:
 </ul></td>
 <td>Partially Supports</td>
 <td>
+<ul><li>Home-supports</li></ul>
+<ul><li>Dashboard see <a href="https://github.com/percussion/percussioncms/issues/812">Issue 812</a></li></ul>
+<ul><li>Editor see <a href="https://github.com/percussion/percussioncms/issues/813">Issue 813</a></li></ul>
+<ul><li>Navigation-supports</li></ul>
+</td>
 <ul><li>Design see <a href="https://github.com/percussion/percussioncms/issues/804">Issue 804</a></li></ul>
 <ul><li>Publish see <a href="https://github.com/percussion/percussioncms/issues/805">Issue 805</a></li></ul>
 <ul><li>Admin see <a href="https://github.com/percussion/percussioncms/issues/806">Issue 806</a></li></ul>
 <ul><li>Widget Builder see <a href="https://github.com/percussion/percussioncms/issues/807">Issue 807</a></li></ul>
 </td>
-
 </tr>
 <tr id="character-key-shortcuts" valign="top">
 <td><a href="https://www.w3.org/TR/WCAG21/#character-key-shortcuts"><strong>2.1.4 Character Key Shortcuts</strong></a> (Level A 2.1 only)
@@ -541,6 +553,10 @@ Tables 1 and 2 also document conformance with:
 </ul></td>
 <td>Partially Supports</td>
 <td>
+<ul><li>Home see <a href="https://github.com/percussion/percussioncms/issues/823">Issue 823</a></li></ul>
+<ul><li>Dashboard see <a href="https://github.com/percussion/percussioncms/issues/824">Issue 824</a></li></ul>
+<ul><li>Editor see <a href="https://github.com/percussion/percussioncms/issues/825">Issue 825</a></li></ul>
+<ul><li>Navigation see <a href="https://github.com/percussion/percussioncms/issues/826">Issue 826</a></li></ul>
 <ul><li>Design see <a href="https://github.com/percussion/percussioncms/issues/819">Issue 819</a></li></ul>
 <ul><li>Publish see <a href="https://github.com/percussion/percussioncms/issues/820">Issue 820</a></li></ul>
 <ul><li>Admin see <a href="https://github.com/percussion/percussioncms/issues/821">Issue 821</a></li></ul>
