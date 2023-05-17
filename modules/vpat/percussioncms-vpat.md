@@ -370,12 +370,12 @@ Tables 1 and 2 also document conformance with:
 <ul><li>Dashboard see <a href="https://github.com/percussion/percussioncms/issues/812">Issue 812</a></li></ul>
 <ul><li>Editor see <a href="https://github.com/percussion/percussioncms/issues/813">Issue 813</a></li></ul>
 <ul><li>Navigation-supports</li></ul>
-</td>
 <ul><li>Design see <a href="https://github.com/percussion/percussioncms/issues/804">Issue 804</a></li></ul>
 <ul><li>Publish see <a href="https://github.com/percussion/percussioncms/issues/805">Issue 805</a></li></ul>
 <ul><li>Admin see <a href="https://github.com/percussion/percussioncms/issues/806">Issue 806</a></li></ul>
 <ul><li>Widget Builder see <a href="https://github.com/percussion/percussioncms/issues/807">Issue 807</a></li></ul>
 </td>
+
 </tr>
 <tr id="character-key-shortcuts" valign="top">
 <td><a href="https://www.w3.org/TR/WCAG21/#character-key-shortcuts"><strong>2.1.4 Character Key Shortcuts</strong></a> (Level A 2.1 only)
@@ -414,8 +414,13 @@ Tables 1 and 2 also document conformance with:
 <li>504.2 (Authoring Tool)</li>
 <li>602.3 (Support Docs)</li>
 </ul></td>
-<td><!-- INSERT CONTENT HERE --></td>
-<td><!-- INSERT CONTENT HERE --></td>
+<td>Partially Supports</td>
+<td>
+<ul><li>Design see <a href="https://github.com/percussion/percussioncms/issues/829">Issue 829</a></li></ul>
+<ul><li>Publish see <a href="https://github.com/percussion/percussioncms/issues/830">Issue 830</a></li></ul>
+<ul><li>Admin see <a href="https://github.com/percussion/percussioncms/issues/831">Issue 831</a></li></ul>
+<ul><li>Widget Builder see <a href="https://github.com/percussion/percussioncms/issues/832">Issue 832</a></li></ul>
+</td>
 </tr>
 <tr id="pause-stop-hide" valign="top">
 <td><a href="http://www.w3.org/TR/WCAG20/#time-limits-pause"><strong>2.2.2 Pause, Stop, Hide</strong></a> (Level A)
@@ -681,7 +686,7 @@ Tables 1 and 2 also document conformance with:
 </ul>
 <em>Revised Section 508 - does not apply</em>
 </td>
-<td><!-- INSERT CONTENT HERE --></td>
+<td>Not Applicable</td>
 <td><!-- INSERT CONTENT HERE --></td>
 </tr>
 <tr id="language-of-page" valign="top">
@@ -765,8 +770,13 @@ Tables 1 and 2 also document conformance with:
 <li>504.2 (Authoring Tool)</li>
 <li>602.3 (Support Docs)</li>
 </ul></td>
-<td><!-- INSERT CONTENT HERE --></td>
-<td><!-- INSERT CONTENT HERE --></td>
+<td>Partially Supports</td>
+<td>
+<ul><li>Design </li></ul>
+<ul><li>Publish </li></ul>
+<ul><li>Admin </li></ul>
+<ul><li>Widget Builder </li></ul>
+</td>
 </tr>
 <tr id="error-identification" valign="top">
 <td><a href="http://www.w3.org/TR/WCAG20/#minimize-error-identified"><strong>3.3.1 Error Identification</strong></a> (Level A)
@@ -787,8 +797,13 @@ Tables 1 and 2 also document conformance with:
 <li>504.2 (Authoring Tool)</li>
 <li>602.3 (Support Docs)</li>
 </ul></td>
-<td><!-- INSERT CONTENT HERE --></td>
-<td><!-- INSERT CONTENT HERE --></td>
+<td>Partially Supports</td>
+<td>
+<ul><li>Design </li></ul>
+<ul><li>Publish see <a href="https://github.com/percussion/percussioncms/issues/828">Issue 828</a></li></ul>
+<ul><li>Admin see <a href="https://github.com/percussion/percussioncms/issues/827">Issue 827</a></li></ul>
+<ul><li>Widget Builder </li></ul>
+</td>
 </tr>
 <tr id="labels-or-instructions" valign="top">
 <td><a href="http://www.w3.org/TR/WCAG20/#minimize-error-cues"><strong>3.3.2 Labels or Instructions</strong></a> (Level A)
@@ -862,8 +877,13 @@ Tables 1 and 2 also document conformance with:
 <li>504.2 (Authoring Tool)</li>
 <li>602.3 (Support Docs)</li>
 </ul></td>
-<td><!-- INSERT CONTENT HERE --></td>
-<td><!-- INSERT CONTENT HERE --></td>
+<td>Partially Supports</td>
+<td>
+<ul><li>Design see <a href="https://github.com/percussion/percussioncms/issues/833">Issue 833</a></li></ul>
+<ul><li>Publish </li></ul>
+<ul><li>Admin see <a href="https://github.com/percussion/percussioncms/issues/834">Issue 834</a></li></ul>
+<ul><li>Widget Builder </li></ul>
+</td>
 </tr>
 </tbody>
 </table>
