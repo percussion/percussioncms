@@ -414,8 +414,13 @@ Tables 1 and 2 also document conformance with:
 <li>504.2 (Authoring Tool)</li>
 <li>602.3 (Support Docs)</li>
 </ul></td>
-<td><!-- INSERT CONTENT HERE --></td>
-<td><!-- INSERT CONTENT HERE --></td>
+<td>Partially Supports</td>
+<td>
+<ul><li>Home see <a href="https://github.com/percussion/percussioncms/issues/836">Issue 836</a></li></ul>
+<ul><li>Dashboard see <a href="https://github.com/percussion/percussioncms/issues/837">Issue 837</a></li></ul>
+<ul><li>Editor see <a href="https://github.com/percussion/percussioncms/issues/838">Issue 838</a></li></ul>
+<ul><li>Navigation see <a href="https://github.com/percussion/percussioncms/issues/839">Issue 839</a></li></ul>
+</td>
 </tr>
 <tr id="pause-stop-hide" valign="top">
 <td><a href="http://www.w3.org/TR/WCAG20/#time-limits-pause"><strong>2.2.2 Pause, Stop, Hide</strong></a> (Level A)
@@ -787,8 +792,13 @@ Tables 1 and 2 also document conformance with:
 <li>504.2 (Authoring Tool)</li>
 <li>602.3 (Support Docs)</li>
 </ul></td>
-<td><!-- INSERT CONTENT HERE --></td>
-<td><!-- INSERT CONTENT HERE --></td>
+<td>Partially Supports</td>
+<td>
+<ul><li>Home-supports</li></ul>
+<ul><li>Dashboard-supports</li></ul>
+<ul><li>Editor-supports</li></ul>
+<ul><li>Navigation-supports</li></ul>
+</td>
 </tr>
 <tr id="labels-or-instructions" valign="top">
 <td><a href="http://www.w3.org/TR/WCAG20/#minimize-error-cues"><strong>3.3.2 Labels or Instructions</strong></a> (Level A)
@@ -862,8 +872,13 @@ Tables 1 and 2 also document conformance with:
 <li>504.2 (Authoring Tool)</li>
 <li>602.3 (Support Docs)</li>
 </ul></td>
-<td><!-- INSERT CONTENT HERE --></td>
-<td><!-- INSERT CONTENT HERE --></td>
+<td>Partially Supports</td>
+<td>
+<ul><li>Home see <a href="https://github.com/percussion/percussioncms/issues/840">Issue 840</a></li></ul>
+<ul><li>Dashboard see <a href="https://github.com/percussion/percussioncms/issues/841">Issue 841</a></li></ul>
+<ul><li>Editor-supports</li></ul>
+<ul><li>Navigation see <a href="https://github.com/percussion/percussioncms/issues/842">Issue 842</a></li></ul>
+</td>
 </tr>
 </tbody>
 </table>
