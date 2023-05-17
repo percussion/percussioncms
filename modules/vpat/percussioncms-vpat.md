@@ -416,6 +416,10 @@ Tables 1 and 2 also document conformance with:
 </ul></td>
 <td>Partially Supports</td>
 <td>
+<ul><li>Home see <a href="https://github.com/percussion/percussioncms/issues/836">Issue 836</a></li></ul>
+<ul><li>Dashboard see <a href="https://github.com/percussion/percussioncms/issues/837">Issue 837</a></li></ul>
+<ul><li>Editor see <a href="https://github.com/percussion/percussioncms/issues/838">Issue 838</a></li></ul>
+<ul><li>Navigation see <a href="https://github.com/percussion/percussioncms/issues/839">Issue 839</a></li></ul>
 <ul><li>Design see <a href="https://github.com/percussion/percussioncms/issues/829">Issue 829</a></li></ul>
 <ul><li>Publish see <a href="https://github.com/percussion/percussioncms/issues/830">Issue 830</a></li></ul>
 <ul><li>Admin see <a href="https://github.com/percussion/percussioncms/issues/831">Issue 831</a></li></ul>
@@ -799,6 +803,10 @@ Tables 1 and 2 also document conformance with:
 </ul></td>
 <td>Partially Supports</td>
 <td>
+<ul><li>Home-supports</li></ul>
+<ul><li>Dashboard-supports</li></ul>
+<ul><li>Editor-supports</li></ul>
+<ul><li>Navigation-supports</li></ul>
 <ul><li>Design </li></ul>
 <ul><li>Publish see <a href="https://github.com/percussion/percussioncms/issues/828">Issue 828</a></li></ul>
 <ul><li>Admin see <a href="https://github.com/percussion/percussioncms/issues/827">Issue 827</a></li></ul>
@@ -879,6 +887,10 @@ Tables 1 and 2 also document conformance with:
 </ul></td>
 <td>Partially Supports</td>
 <td>
+<ul><li>Home see <a href="https://github.com/percussion/percussioncms/issues/840">Issue 840</a></li></ul>
+<ul><li>Dashboard see <a href="https://github.com/percussion/percussioncms/issues/841">Issue 841</a></li></ul>
+<ul><li>Editor-supports</li></ul>
+<ul><li>Navigation see <a href="https://github.com/percussion/percussioncms/issues/842">Issue 842</a></li></ul>
 <ul><li>Design see <a href="https://github.com/percussion/percussioncms/issues/833">Issue 833</a></li></ul>
 <ul><li>Publish </li></ul>
 <ul><li>Admin see <a href="https://github.com/percussion/percussioncms/issues/834">Issue 834</a></li></ul>
