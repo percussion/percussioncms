@@ -774,8 +774,12 @@ Tables 1 and 2 also document conformance with:
 <li>504.2 (Authoring Tool)</li>
 <li>602.3 (Support Docs)</li>
 </ul></td>
-<td>Partially Supports</td>
+<td>Supports</td>
 <td>
+<ul><li>Home </li></ul>
+<ul><li>Dashboard </li></ul>
+<ul><li>Editor </li></ul>
+<ul><li>Navigation </li></ul>
 <ul><li>Design </li></ul>
 <ul><li>Publish </li></ul>
 <ul><li>Admin </li></ul>
