@@ -811,10 +811,10 @@ Tables 1 and 2 also document conformance with:
 <ul><li>Dashboard-supports</li></ul>
 <ul><li>Editor-supports</li></ul>
 <ul><li>Navigation-supports</li></ul>
-<ul><li>Design </li></ul>
+<ul><li>Design-supports </li></ul>
 <ul><li>Publish see <a href="https://github.com/percussion/percussioncms/issues/828">Issue 828</a></li></ul>
 <ul><li>Admin see <a href="https://github.com/percussion/percussioncms/issues/827">Issue 827</a></li></ul>
-<ul><li>Widget Builder </li></ul>
+<ul><li>Widget Builder-supports </li></ul>
 </td>
 </tr>
 <tr id="labels-or-instructions" valign="top">
@@ -869,10 +869,14 @@ Tables 1 and 2 also document conformance with:
 </ul></td>
 <td>Partially Supports</td>
 <td>
-<ul><li>Design</li></ul>
+<ul><li>Home-supports</li></ul>
+<ul><li>Dashboard-supports</li></ul>
+<ul><li>Editor-supports</li></ul>
+<ul><li>Navigation-supports</li></ul>
+<ul><li>Design-supports</li></ul>
 <ul><li>Publish see <a href="https://github.com/percussion/percussioncms/issues/848">Issue 848</a></li></ul>
-<ul><li>Admin</li></ul>
-<ul><li>Widget Builder </li></ul>
+<ul><li>Admin-supports</li></ul>
+<ul><li>Widget Builder-supports </li></ul>
 </td>
 </tr>
 <tr id="name-role-value" valign="top">
@@ -901,9 +905,9 @@ Tables 1 and 2 also document conformance with:
 <ul><li>Editor-supports</li></ul>
 <ul><li>Navigation see <a href="https://github.com/percussion/percussioncms/issues/842">Issue 842</a></li></ul>
 <ul><li>Design see <a href="https://github.com/percussion/percussioncms/issues/833">Issue 833</a></li></ul>
-<ul><li>Publish </li></ul>
+<ul><li>Publish-supports </li></ul>
 <ul><li>Admin see <a href="https://github.com/percussion/percussioncms/issues/834">Issue 834</a></li></ul>
-<ul><li>Widget Builder </li></ul>
+<ul><li>Widget Builder-supports </li></ul>
 </td>
 </tr>
 </tbody>
@@ -981,10 +985,14 @@ Tables 1 and 2 also document conformance with:
 </td>
 <td>Partially Supports</td>
 <td>
-<ul><li>Design</li></ul>
-<ul><li>Publish</li></ul>
+<ul><li>Home-supports</li></ul>
+<ul><li>Dashboard-supports</li></ul>
+<ul><li>Editor-supports</li></ul>
+<ul><li>Navigation-supports</li></ul>
+<ul><li>Design-supports</li></ul>
+<ul><li>Publish-supports</li></ul>
 <ul><li>Admin see <a href="https://github.com/percussion/percussioncms/issues/847">Issue 847</a></li></ul>
-<ul><li>Widget Builder </li></ul>
+<ul><li>Widget Builder-supports</li></ul>
 </td>
 </tr>
 <tr id="identify-input-purpose" valign="top">
@@ -1056,8 +1064,12 @@ Tables 1 and 2 also document conformance with:
 <li>504.2 (Authoring Tool)</li>
 <li>602.3 (Support Docs)</li>
 </ul></td>
-<td>Partially Supports</td>
+<td>Supports</td>
 <td>
+<ul><li>Home</li></ul>
+<ul><li>Dashboard</li></ul>
+<ul><li>Editor</li></ul>
+<ul><li>Navigation</li></ul>
 <ul><li>Design</li></ul>
 <ul><li>Publish</li></ul>
 <ul><li>Admin</li></ul>
@@ -1083,8 +1095,12 @@ Tables 1 and 2 also document conformance with:
 <li>504.2 (Authoring Tool)</li>
 <li>602.3 (Support Docs)</li>
 </ul></td>
-<td>Partially Supports</td>
+<td>Supports</td>
 <td>
+<ul><li>Home</li></ul>
+<ul><li>Dashboard</li></ul>
+<ul><li>Editor</li></ul>
+<ul><li>Navigation</li></ul>
 <ul><li>Design</li></ul>
 <ul><li>Publish</li></ul>
 <ul><li>Admin</li></ul>
