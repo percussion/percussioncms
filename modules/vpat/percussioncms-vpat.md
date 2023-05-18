@@ -867,8 +867,13 @@ Tables 1 and 2 also document conformance with:
 <li>504.2 (Authoring Tool)</li>
 <li>602.3 (Support Docs)</li>
 </ul></td>
-<td><!-- INSERT CONTENT HERE --></td>
-<td><!-- INSERT CONTENT HERE --></td>
+<td>Partially Supports</td>
+<td>
+<ul><li>Design</li></ul>
+<ul><li>Publish see <a href="https://github.com/percussion/percussioncms/issues/848">Issue 848</a></li></ul>
+<ul><li>Admin</li></ul>
+<ul><li>Widget Builder </li></ul>
+</td>
 </tr>
 <tr id="name-role-value" valign="top">
 <td><a href="http://www.w3.org/TR/WCAG20/#ensure-compat-rsv"><strong>4.1.2 Name, Role, Value</strong></a> (Level A)
@@ -934,7 +939,7 @@ Tables 1 and 2 also document conformance with:
 <li>504.2 (Authoring Tool)</li>
 <li>602.3 (Support Docs)</li>
 </ul></td>
-<td><!-- INSERT CONTENT HERE --></td>
+<td>Not Applicable</td>
 <td><!-- INSERT CONTENT HERE --></td>
 </tr>
 <tr id="audio-description-prerecorded" valign="top">
@@ -956,7 +961,7 @@ Tables 1 and 2 also document conformance with:
 <li>504.2 (Authoring Tool)</li>
 <li>602.3 (Support Docs)</li>
 </ul></td>
-<td><!-- INSERT CONTENT HERE --></td>
+<td>Not Applicable</td>
 <td><!-- INSERT CONTENT HERE --></td>
 </tr>
 <tr id="orientation" valign="top">
@@ -974,8 +979,13 @@ Tables 1 and 2 also document conformance with:
 </ul>
 <em>Revised Section 508 - does not apply</em>
 </td>
-<td><!-- INSERT CONTENT HERE --></td>
-<td><!-- INSERT CONTENT HERE --></td>
+<td>Partially Supports</td>
+<td>
+<ul><li>Design</li></ul>
+<ul><li>Publish</li></ul>
+<ul><li>Admin see <a href="https://github.com/percussion/percussioncms/issues/847">Issue 847</a></li></ul>
+<ul><li>Widget Builder </li></ul>
+</td>
 </tr>
 <tr id="identify-input-purpose" valign="top">
 <td><a href="https://www.w3.org/TR/WCAG21/#identify-input-purpose"><strong>1.3.5 Identify Input Purpose</strong></a> (Level AA 2.1 only)
@@ -992,7 +1002,7 @@ Tables 1 and 2 also document conformance with:
 </ul>
 <em>Revised Section 508 - does not apply</em>
 </td>
-<td><!-- INSERT CONTENT HERE --></td>
+<td>Not Applicable</td>
 <td><!-- INSERT CONTENT HERE --></td>
 </tr>
 <tr id="contrast-minimum" valign="top">
@@ -1046,8 +1056,13 @@ Tables 1 and 2 also document conformance with:
 <li>504.2 (Authoring Tool)</li>
 <li>602.3 (Support Docs)</li>
 </ul></td>
-<td><!-- INSERT CONTENT HERE --></td>
-<td><!-- INSERT CONTENT HERE --></td>
+<td>Partially Supports</td>
+<td>
+<ul><li>Design</li></ul>
+<ul><li>Publish</li></ul>
+<ul><li>Admin</li></ul>
+<ul><li>Widget Builder </li></ul>
+</td>
 </tr>
 <tr id="images-of-text" valign="top">
 <td><a href="http://www.w3.org/TR/WCAG20/#visual-audio-contrast-text-presentation"><strong>1.4.5 Images of Text</strong></a> (Level AA)
@@ -1068,8 +1083,13 @@ Tables 1 and 2 also document conformance with:
 <li>504.2 (Authoring Tool)</li>
 <li>602.3 (Support Docs)</li>
 </ul></td>
-<td><!-- INSERT CONTENT HERE --></td>
-<td><!-- INSERT CONTENT HERE --></td>
+<td>Partially Supports</td>
+<td>
+<ul><li>Design</li></ul>
+<ul><li>Publish</li></ul>
+<ul><li>Admin</li></ul>
+<ul><li>Widget Builder </li></ul>
+</td>
 </tr>
 <tr id="reflow" valign="top">
 <td><a href="https://www.w3.org/TR/WCAG21/#reflow"><strong>1.4.10 Reflow</strong></a> (Level AA 2.1 only)
@@ -1086,7 +1106,7 @@ Tables 1 and 2 also document conformance with:
 </ul>
 <em>Revised Section 508 - does not apply</em>
 </td>
-<td><!-- INSERT CONTENT HERE --></td>
+<td>Does Not Support</td>
 <td><!-- INSERT CONTENT HERE --></td>
 </tr>
 <tr id="non-text-contrast" valign="top">
