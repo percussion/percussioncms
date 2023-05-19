@@ -320,7 +320,7 @@ public class PSAclService implements IPSAclService
             if (guid != null)
                criteria.where(builder.equal(critRoot.get("objectId"), (long) guid.getUUID()));
 
-            List<PSAclImpl> results =  entityManager.createQuery(criteria).getResultList();
+            List<PSAclImpl> results =  session.createQuery(criteria).getResultList();
             if(results != null && !results.isEmpty()) {
                acls.addAll(results);
 
@@ -359,19 +359,20 @@ public class PSAclService implements IPSAclService
    private List<IPSAcl> loadAllAcls()
    {
       synchronized (this) {
-         getSession().flush();
-         CriteriaBuilder builder = getSession().getCriteriaBuilder();
+         Session session = getSession();
+         session.flush();
+         CriteriaBuilder builder = session.getCriteriaBuilder();
          CriteriaQuery criteria = builder.createQuery(PSAclImpl.class);
          Root critRoot = criteria.from(PSAclImpl.class);
 
-         List<IPSAcl> acls = entityManager.createQuery(criteria).getResultList();
+         List<IPSAcl> acls = session.createQuery(criteria).getResultList();
          for (IPSAcl acl : acls) {
             if (acl.getObjectId() >> 32 != 0) {
                ms_logger.error("Fixing acl entry with bad id " + acl.getObjectId());
-               PSAclImpl dup = getSession().get(PSAclImpl.class, acl.getObjectId() & BIT32);
+               PSAclImpl dup = session.get(PSAclImpl.class, acl.getObjectId() & BIT32);
                if (dup != null) {
                   ms_objectIdToAclIdMap.remove(acl.getObjectId());
-                  getSession().delete(acl);
+                  session.delete(acl);
                } else {
                   acl.setObjectId(acl.getObjectId() & BIT32);
                }
