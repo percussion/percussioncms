@@ -1140,8 +1140,13 @@ Tables 1 and 2 also document conformance with:
 </ul>
 <em>Revised Section 508 - does not apply</em>
 </td>
-<td><!-- INSERT CONTENT HERE --></td>
-<td><!-- INSERT CONTENT HERE --></td>
+<td>Partially Supports</td>
+<td>
+<ul><li>Home-supports</li></ul>
+<ul><li>Dashboard see <a href="https://github.com/percussion/percussioncms/issues/857">Issue 857</a></li></ul>
+<ul><li>Editor see <a href="https://github.com/percussion/percussioncms/issues/856">Issue 856</a></li></ul>
+<ul><li>Navigation see <a href="https://github.com/percussion/percussioncms/issues/855">Issue 855</a></li></ul>
+</td>
 </tr>
 <tr id="text-spacing" valign="top">
 <td><a href="https://www.w3.org/TR/WCAG21/#text-spacing"><strong>1.4.12 Text Spacing</strong></a> (Level AA 2.1 only)
