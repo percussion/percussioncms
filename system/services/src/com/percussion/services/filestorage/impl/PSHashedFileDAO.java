@@ -149,12 +149,12 @@ public class PSHashedFileDAO implements IPSHashedFileDAO
 
       if (hash != null && StringUtils.isNotBlank(hash))
       {
-
-         CriteriaBuilder builder = getSession().getCriteriaBuilder();
+         Session session = getSession();
+         CriteriaBuilder builder = session.getCriteriaBuilder();
          CriteriaQuery<PSBinary> criteria = builder.createQuery(PSBinary.class);
          Root<PSBinary> critRoot = criteria.from(PSBinary.class);
          criteria.where(builder.equal(critRoot.get("hash"),hash));
-         return entityManager.createQuery(criteria).getSingleResult();
+         return session.createQuery(criteria).getSingleResult();
 
       }
       else
@@ -296,12 +296,12 @@ public class PSHashedFileDAO implements IPSHashedFileDAO
    public List<PSBinaryMetaKey> getMetaKeys()
    {
 
-
-      CriteriaBuilder builder = getSession().getCriteriaBuilder();
+      Session session = getSession();
+      CriteriaBuilder builder = session.getCriteriaBuilder();
       CriteriaQuery<PSBinaryMetaKey> criteria = builder.createQuery(PSBinaryMetaKey.class);
       Root<PSBinaryMetaKey> critRoot = criteria.from(PSBinaryMetaKey.class);
       criteria.orderBy(builder.asc(critRoot.get("name")));
-      return entityManager.createQuery(criteria).getResultList();
+      return session.createQuery(criteria).getResultList();
 
    }
 
@@ -312,12 +312,12 @@ public class PSHashedFileDAO implements IPSHashedFileDAO
    public PSBinaryMetaKey getMetaKey(String keyname)
    {
 
-
-      CriteriaBuilder builder = getSession().getCriteriaBuilder();
+      Session session = getSession();
+      CriteriaBuilder builder = session.getCriteriaBuilder();
       CriteriaQuery<PSBinaryMetaKey> criteria = builder.createQuery(PSBinaryMetaKey.class);
       Root<PSBinaryMetaKey> critRoot = criteria.from(PSBinaryMetaKey.class);
       criteria.where(builder.equal(critRoot.get("name"),keyname));
-      return entityManager.createQuery(criteria).getSingleResult();
+      return session.createQuery(criteria).getSingleResult();
    }
 
    /* (non-Javadoc)

@@ -146,7 +146,7 @@ public class PSUiService implements IPSUiService
       criteria.where(builder.equal(critRoot.get("name"),"guid"));
 
 
-      return  entityManager.createQuery(criteria).getResultList();
+      return  session.createQuery(criteria).getResultList();
    }
 
    /*
