@@ -53,15 +53,12 @@ public class PSTransitionRole implements Serializable, IPSCatalogItem
    private static final long serialVersionUID = 1L;
 
    @Id
-   @Column(name = "TRANSITIONROLEID", nullable = false)
    private long roleId;
    
    @Id
-   @Column(name = "TRANSITIONID", nullable = false)
    private long transitionId;
    
    @Id
-   @Column(name = "WORKFLOWAPPID", nullable = false)
    private long workflowId;
    
    /**
@@ -140,11 +137,12 @@ public class PSTransitionRole implements Serializable, IPSCatalogItem
     */
    public void setGUID(IPSGuid newguid) throws IllegalStateException
    {
-      if (newguid == null)
+      if (newguid == null) {
          throw new IllegalArgumentException("newguid may not be null");
-
-      if (roleId != 0)
+      }
+      if (roleId != 0) {
          throw new IllegalStateException("cannot change existing guid");
+      }
 
       roleId = newguid.longValue();
    }
@@ -162,10 +160,14 @@ public class PSTransitionRole implements Serializable, IPSCatalogItem
 
    @Override
    public boolean equals(Object o) {
-      if (this == o) return true;
-      if (!(o instanceof PSTransitionRole)) return false;
+      if (this == o) { 
+         return true;
+      }
+      if (!(o instanceof PSTransitionRole)) { 
+         return false;
+      }
       PSTransitionRole that = (PSTransitionRole) o;
-      return getRoleId() == that.getRoleId() && getTransitionId() == that.getTransitionId() && getWorkflowId() == that.getWorkflowId();
+      return (getRoleId() == that.getRoleId() && getTransitionId() == that.getTransitionId() && getWorkflowId() == that.getWorkflowId());
    }
 
    @Override

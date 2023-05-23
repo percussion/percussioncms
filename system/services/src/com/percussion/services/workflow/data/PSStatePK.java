@@ -101,7 +101,7 @@ public class PSStatePK implements Serializable
 
    @Override
    public int hashCode() {
-      return Objects.hash(getWorkflowId(), stateId);
+      return Objects.hash(getWorkflowId(), getStateid());
    }
 }
 

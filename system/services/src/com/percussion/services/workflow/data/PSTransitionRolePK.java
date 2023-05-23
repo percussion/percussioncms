@@ -126,10 +126,14 @@ public class PSTransitionRolePK implements Serializable
 
    @Override
    public boolean equals(Object o) {
-      if (this == o) return true;
-      if (!(o instanceof PSTransitionRolePK)) return false;
+      if (this == o) {
+         return true;
+      }
+      if (!(o instanceof PSTransitionRolePK)) {
+         return false;
+      }
       PSTransitionRolePK that = (PSTransitionRolePK) o;
-      return getRoleId() == that.getRoleId() && getTransitionId() == that.getTransitionId() && getWorkflowId() == that.getWorkflowId();
+      return (getRoleId() == that.getRoleId() && getTransitionId() == that.getTransitionId() && getWorkflowId() == that.getWorkflowId());
    }
 
    @Override
