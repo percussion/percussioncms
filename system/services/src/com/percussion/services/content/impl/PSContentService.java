@@ -367,7 +367,7 @@ public class PSContentService
       CriteriaQuery<PSAutoTranslation> criteria = builder.createQuery(PSAutoTranslation.class);
       Root<PSAutoTranslation> critRoot = criteria.from(PSAutoTranslation.class);
 
-         return entityManager.createQuery(criteria).getResultList();
+         return session.createQuery(criteria).getResultList();
 
    }
 
