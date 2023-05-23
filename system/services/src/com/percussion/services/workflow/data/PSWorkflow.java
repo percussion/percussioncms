@@ -111,6 +111,11 @@ public class PSWorkflow
    @JoinColumn(name = "WORKFLOWAPPID", insertable = false, updatable = false)
    private List<PSNotificationDef> notificationDefs = new ArrayList<>();
 
+   /*@OneToMany(targetEntity = PSTransitionRole.class, 
+   cascade=CascadeType.ALL, orphanRemoval = true)
+   @JoinColumn(name = "WORKFLOWAPPID")
+   private List<PSTransitionRole> transitionRoles = new ArrayList<>();*/
+
    /*
     * (non-Javadoc)
     * 
@@ -384,6 +389,19 @@ public class PSWorkflow
 
       this.roles = wfroles;
    }
+
+   /**
+    * Add a transition role .
+    * 
+    * @param transitionRole The transition role to add, may not be <code>null</code>.
+    */
+    /*public void addTransitionRole(PSTransitionRole transitionRole)
+    {
+       if (transitionRole == null)
+          throw new IllegalArgumentException("transition role may not be null");
+ 
+       transitionRoles.add(transitionRole);
+    }*/
 
    /**
     * Add a notification to the collection.

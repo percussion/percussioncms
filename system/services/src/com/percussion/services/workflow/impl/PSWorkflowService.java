@@ -966,7 +966,7 @@ public class PSWorkflowService
    public List<PSContentWorkflowState> getWorkflowStateForContent(
          List<IPSGuid> contentids)
    {
-      Session s = getSession();
+         Session s = getSession();
 
          List<PSContentWorkflowState> rval = new ArrayList<>();
          // Extract content ids

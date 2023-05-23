@@ -88,8 +88,8 @@ public class PSState implements Serializable, IPSCatalogSummary, IPSCatalogItem
    @Column(name = "CONTENTVALID")
    private String contentValidValue = "n";
 
-   @OneToMany(targetEntity = PSTransitionHib.class, cascade =
-   {CascadeType.ALL},orphanRemoval = true)
+   @OneToMany(targetEntity = PSTransitionHib.class, 
+   cascade = {CascadeType.ALL}, orphanRemoval = true)
    @JoinColumns(
    {
          @JoinColumn(name = "WORKFLOWAPPID", referencedColumnName = "WORKFLOWAPPID", insertable = false, updatable = false),
@@ -98,7 +98,6 @@ public class PSState implements Serializable, IPSCatalogSummary, IPSCatalogItem
 
    @OneToMany(targetEntity = PSAssignedRole.class, cascade =
    {CascadeType.ALL}, orphanRemoval = true)
-
    @JoinColumns(
    {
          @JoinColumn(name = "WORKFLOWAPPID", referencedColumnName = "WORKFLOWAPPID", insertable = false, updatable = false),
