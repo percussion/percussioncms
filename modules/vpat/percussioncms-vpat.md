@@ -1142,6 +1142,10 @@ Tables 1 and 2 also document conformance with:
 </td>
 <td>Partially Supports</td>
 <td>
+<ul><li>Design see <a href="https://github.com/percussion/percussioncms/issues/852">Issue 852</a></li></ul>
+<ul><li>Publish</li></ul>
+<ul><li>Admin see <a href="https://github.com/percussion/percussioncms/issues/853">Issue 853</a></li></ul>
+<ul><li>Widget Builder </li></ul>
 <ul><li>Home-supports</li></ul>
 <ul><li>Dashboard see <a href="https://github.com/percussion/percussioncms/issues/857">Issue 857</a></li></ul>
 <ul><li>Editor see <a href="https://github.com/percussion/percussioncms/issues/856">Issue 856</a></li></ul>
@@ -1183,6 +1187,10 @@ Tables 1 and 2 also document conformance with:
 </td>
 <td>Partially Supports</td>
 <td>
+<ul><li>Design see <a href="https://github.com/percussion/percussioncms/issues/860">Issue 860</a>, <a href="https://github.com/percussion/percussioncms/issues/861">Issue 861</a></li></ul>
+<ul><li>Publish see <a href="https://github.com/percussion/percussioncms/issues/862">Issue 862</a></li></ul>
+<ul><li>Admin see <a href="https://github.com/percussion/percussioncms/issues/863">Issue 863</a></li></ul>
+<ul><li>Widget Builder see <a href="https://github.com/percussion/percussioncms/issues/864">Issue 864</a></li></ul>
 <ul><li>Home see <a href="https://github.com/percussion/percussioncms/issues/866">Issue 866</a>, <a href="https://github.com/percussion/percussioncms/issues/865">Issue 865</a></li></ul>
 <ul><li>Dashboard see <a href="https://github.com/percussion/percussioncms/issues/867">Issue 867</a></li></ul>
 <ul><li>Editor-supports</li></ul>
@@ -1208,8 +1216,17 @@ Tables 1 and 2 also document conformance with:
 <li>504.2 (Authoring Tool)</li>
 <li>602.3 (Support Docs) – Does not apply to non-web docs</li>
 </ul></td>
-<td><!-- INSERT CONTENT HERE --></td>
-<td><!-- INSERT CONTENT HERE --></td>
+<td>Supports</td>
+<td>
+<ul><li>Home </li></ul>
+<ul><li>Dashboard </li></ul>
+<ul><li>Editor </li></ul>
+<ul><li>Navigation </li></ul>
+<ul><li>Design </li></ul>
+<ul><li>Publish </li></ul>
+<ul><li>Admin </li></ul>
+<ul><li>Widget Builder </li></ul>
+</td>
 </tr>
 <tr id="headings-and-labels" valign="top">
 <td><a href="http://www.w3.org/TR/WCAG20/#navigation-mechanisms-descriptive"><strong>2.4.6 Headings and Labels</strong></a> (Level AA)
@@ -1261,8 +1278,18 @@ Tables 1 and 2 also document conformance with:
 <li>504.2 (Authoring Tool)</li>
 <li>602.3 (Support Docs)</li>
 </ul></td>
-<td><!-- INSERT CONTENT HERE --></td>
-<td><!-- INSERT CONTENT HERE --></td>
+<td>Supports</td>
+<td>
+<ul><li>Home </li></ul>
+<ul><li>Dashboard </li></ul>
+<ul><li>Editor </li></ul>
+<ul><li>Navigation </li></ul>
+<ul><li>Design </li></ul>
+<ul><li>Publish </li></ul>
+<ul><li>Publish </li></ul>
+<ul><li>Admin </li></ul>
+<ul><li>Widget Builder </li></ul>
+</td>
 </tr>
 <tr id="language-of-parts" valign="top">
 <td><a href="http://www.w3.org/TR/WCAG20/#meaning-other-lang-id"><strong>3.1.2 Language of Parts</strong></a> (Level AA)
@@ -1283,7 +1310,7 @@ Tables 1 and 2 also document conformance with:
 <li>504.2 (Authoring Tool)</li>
 <li>602.3 (Support Docs)</li>
 </ul></td>
-<td><!-- INSERT CONTENT HERE --></td>
+<td>Not Applicable</td>
 <td><!-- INSERT CONTENT HERE --></td>
 </tr>
 <tr id="consistent-navigation" valign="top">
@@ -1305,8 +1332,17 @@ Tables 1 and 2 also document conformance with:
 <li>504.2 (Authoring Tool)</li>
 <li>602.3 (Support Docs) – Does not apply to non-web docs</li>
 </ul></td>
-<td><!-- INSERT CONTENT HERE --></td>
-<td><!-- INSERT CONTENT HERE --></td>
+<td>Supports</td>
+<td>
+<ul><li>Home </li></ul>
+<ul><li>Dashboard </li></ul>
+<ul><li>Editor </li></ul>
+<ul><li>Navigation </li></ul>
+<ul><li>Design </li></ul>
+<ul><li>Publish </li></ul>
+<ul><li>Admin </li></ul>
+<ul><li>Widget Builder </li></ul>
+</td>
 </tr>
 <tr id="consistent-identification" valign="top">
 <td><a href="http://www.w3.org/TR/WCAG20/#consistent-behavior-consistent-functionality"><strong>3.2.4 Consistent Identification</strong></a> (Level AA)
