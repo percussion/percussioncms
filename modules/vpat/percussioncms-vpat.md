@@ -1146,6 +1146,10 @@ Tables 1 and 2 also document conformance with:
 <ul><li>Publish</li></ul>
 <ul><li>Admin see <a href="https://github.com/percussion/percussioncms/issues/853">Issue 853</a></li></ul>
 <ul><li>Widget Builder </li></ul>
+<ul><li>Home-supports</li></ul>
+<ul><li>Dashboard see <a href="https://github.com/percussion/percussioncms/issues/857">Issue 857</a></li></ul>
+<ul><li>Editor see <a href="https://github.com/percussion/percussioncms/issues/856">Issue 856</a></li></ul>
+<ul><li>Navigation see <a href="https://github.com/percussion/percussioncms/issues/855">Issue 855</a></li></ul>
 </td>
 </tr>
 <tr id="text-spacing" valign="top">
@@ -1187,6 +1191,10 @@ Tables 1 and 2 also document conformance with:
 <ul><li>Publish see <a href="https://github.com/percussion/percussioncms/issues/862">Issue 862</a></li></ul>
 <ul><li>Admin see <a href="https://github.com/percussion/percussioncms/issues/863">Issue 863</a></li></ul>
 <ul><li>Widget Builder see <a href="https://github.com/percussion/percussioncms/issues/864">Issue 864</a></li></ul>
+<ul><li>Home see <a href="https://github.com/percussion/percussioncms/issues/866">Issue 866</a>, <a href="https://github.com/percussion/percussioncms/issues/865">Issue 865</a></li></ul>
+<ul><li>Dashboard see <a href="https://github.com/percussion/percussioncms/issues/867">Issue 867</a></li></ul>
+<ul><li>Editor-supports</li></ul>
+<ul><li>Navigation see <a href="https://github.com/percussion/percussioncms/issues/868">Issue 868</a></li></ul>
 </td>
 </tr>
 <tr id="multiple-ways" valign="top">
