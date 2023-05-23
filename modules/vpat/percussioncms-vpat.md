@@ -1270,8 +1270,18 @@ Tables 1 and 2 also document conformance with:
 <li>504.2 (Authoring Tool)</li>
 <li>602.3 (Support Docs)</li>
 </ul></td>
-<td><!-- INSERT CONTENT HERE --></td>
-<td><!-- INSERT CONTENT HERE --></td>
+<td>Supports</td>
+<td>
+<ul><li>Home </li></ul>
+<ul><li>Dashboard </li></ul>
+<ul><li>Editor </li></ul>
+<ul><li>Navigation </li></ul>
+<ul><li>Design </li></ul>
+<ul><li>Publish </li></ul>
+<ul><li>Publish </li></ul>
+<ul><li>Admin </li></ul>
+<ul><li>Widget Builder </li></ul>
+</td>
 </tr>
 <tr id="language-of-parts" valign="top">
 <td><a href="http://www.w3.org/TR/WCAG20/#meaning-other-lang-id"><strong>3.1.2 Language of Parts</strong></a> (Level AA)
@@ -1292,7 +1302,7 @@ Tables 1 and 2 also document conformance with:
 <li>504.2 (Authoring Tool)</li>
 <li>602.3 (Support Docs)</li>
 </ul></td>
-<td><!-- INSERT CONTENT HERE --></td>
+<td>Not Applicable</td>
 <td><!-- INSERT CONTENT HERE --></td>
 </tr>
 <tr id="consistent-navigation" valign="top">
@@ -1314,8 +1324,17 @@ Tables 1 and 2 also document conformance with:
 <li>504.2 (Authoring Tool)</li>
 <li>602.3 (Support Docs) – Does not apply to non-web docs</li>
 </ul></td>
-<td><!-- INSERT CONTENT HERE --></td>
-<td><!-- INSERT CONTENT HERE --></td>
+<td>Supports</td>
+<td>
+<ul><li>Home </li></ul>
+<ul><li>Dashboard </li></ul>
+<ul><li>Editor </li></ul>
+<ul><li>Navigation </li></ul>
+<ul><li>Design </li></ul>
+<ul><li>Publish </li></ul>
+<ul><li>Admin </li></ul>
+<ul><li>Widget Builder </li></ul>
+</td>
 </tr>
 <tr id="consistent-identification" valign="top">
 <td><a href="http://www.w3.org/TR/WCAG20/#consistent-behavior-consistent-functionality"><strong>3.2.4 Consistent Identification</strong></a> (Level AA)
