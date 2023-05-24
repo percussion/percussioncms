@@ -1385,8 +1385,13 @@ Tables 1 and 2 also document conformance with:
 <li>504.2 (Authoring Tool)</li>
 <li>602.3 (Support Docs)</li>
 </ul></td>
-<td><!-- INSERT CONTENT HERE --></td>
-<td><!-- INSERT CONTENT HERE --></td>
+<td>Partially Supports</td>
+<td>
+<ul><li>Home see <a href="https://github.com/percussion/percussioncms/issues/876">Issue 876</a></li></ul>
+<ul><li>Dashboard see <a href="https://github.com/percussion/percussioncms/issues/877">Issue 877</a></li></ul>
+<ul><li>Editor see <a href="https://github.com/percussion/percussioncms/issues/878">Issue 878</a></li></ul>
+<ul><li>Navigation see <a href="https://github.com/percussion/percussioncms/issues/879">Issue 879</a></li></ul>
+</td>
 </tr>
 <tr id="error-prevention-legal-financial-data" valign="top">
 <td><a href="http://www.w3.org/TR/WCAG20/#minimize-error-reversible"><strong>3.3.4 Error Prevention (Legal, Financial, Data)</strong></a> (Level AA)
@@ -1425,8 +1430,13 @@ Tables 1 and 2 also document conformance with:
 </ul>
 <em>Revised Section 508 - does not apply</em>
 </td>
-<td><!-- INSERT CONTENT HERE --></td>
-<td><!-- INSERT CONTENT HERE --></td>
+<td>Partially Supports</td>
+<td>
+<ul><li>Home-supports</li></ul>
+<ul><li>Dashboard see <a href="https://github.com/percussion/percussioncms/issues/880">Issue 880</a></li></ul>
+<ul><li>Editor-supports</li></ul>
+<ul><li>Navigation-supports</li></ul>
+</td>
 </tr>
 </tbody>
 </table>
