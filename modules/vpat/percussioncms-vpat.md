@@ -1403,6 +1403,10 @@ Tables 1 and 2 also document conformance with:
 <ul><li>Publish</li></ul>
 <ul><li>Admin see <a href="https://github.com/percussion/percussioncms/issues/871">Issue 871</a></li></ul>
 <ul><li>Widget Builder see <a href="https://github.com/percussion/percussioncms/issues/872">Issue 872</a></li></ul>
+<ul><li>Home see <a href="https://github.com/percussion/percussioncms/issues/876">Issue 876</a></li></ul>
+<ul><li>Dashboard see <a href="https://github.com/percussion/percussioncms/issues/877">Issue 877</a></li></ul>
+<ul><li>Editor see <a href="https://github.com/percussion/percussioncms/issues/878">Issue 878</a></li></ul>
+<ul><li>Navigation see <a href="https://github.com/percussion/percussioncms/issues/879">Issue 879</a></li></ul>
 </td>
 </tr>
 <tr id="error-prevention-legal-financial-data" valign="top">
@@ -1448,6 +1452,10 @@ Tables 1 and 2 also document conformance with:
 <ul><li>Publish</li></ul>
 <ul><li>Admin see <a href="https://github.com/percussion/percussioncms/issues/874">Issue 874</a></li></ul>
 <ul><li>Widget Builder </li></ul>
+<ul><li>Home-supports</li></ul>
+<ul><li>Dashboard see <a href="https://github.com/percussion/percussioncms/issues/880">Issue 880</a></li></ul>
+<ul><li>Editor-supports</li></ul>
+<ul><li>Navigation-supports</li></ul>
 </td>
 </tr>
 </tbody>
