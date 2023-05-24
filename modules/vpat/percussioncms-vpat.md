@@ -1167,8 +1167,17 @@ Tables 1 and 2 also document conformance with:
 </ul>
 <em>Revised Section 508 - does not apply</em>
 </td>
-<td><!-- INSERT CONTENT HERE --></td>
-<td><!-- INSERT CONTENT HERE --></td>
+<td>Supports</td>
+<td>
+<ul><li>Home </li></ul>
+<ul><li>Dashboard </li></ul>
+<ul><li>Editor </li></ul>
+<ul><li>Navigation </li></ul>
+<ul><li>Design </li></ul>
+<ul><li>Publish </li></ul>
+<ul><li>Admin </li></ul>
+<ul><li>Widget Builder </li></ul>
+</td>
 </tr>
 <tr id="content-on-hover-or-focus" valign="top">
 <td><a href="https://www.w3.org/TR/WCAG21/#content-on-hover-or-focus"><strong>1.4.13 Content on Hover or Focus</strong></a> (Level AA 2.1 only)
@@ -1363,8 +1372,11 @@ Tables 1 and 2 also document conformance with:
 <li>504.2 (Authoring Tool)</li>
 <li>602.3 (Support Docs) – Does not apply to non-web docs</li>
 </ul></td>
-<td><!-- INSERT CONTENT HERE --></td>
-<td><!-- INSERT CONTENT HERE --></td>
+<td>Partially Supports</td>
+<td>However support is impacted by 
+<ul><li>1.3.3 Sensory Characteristics (Level A) </li></ul>
+<ul><li>4.1.2 Name, Role, Value (Level A) </li></ul>
+</td>
 </tr>
 <tr id="error-suggestion" valign="top">
 <td><a href="http://www.w3.org/TR/WCAG20/#minimize-error-suggestions"><strong>3.3.3 Error Suggestion</strong></a> (Level AA)
@@ -1385,8 +1397,13 @@ Tables 1 and 2 also document conformance with:
 <li>504.2 (Authoring Tool)</li>
 <li>602.3 (Support Docs)</li>
 </ul></td>
-<td><!-- INSERT CONTENT HERE --></td>
-<td><!-- INSERT CONTENT HERE --></td>
+<td>Partially Supports</td>
+<td>
+<ul><li>Design see <a href="https://github.com/percussion/percussioncms/issues/870">Issue 870</a></li></ul>
+<ul><li>Publish</li></ul>
+<ul><li>Admin see <a href="https://github.com/percussion/percussioncms/issues/871">Issue 871</a></li></ul>
+<ul><li>Widget Builder see <a href="https://github.com/percussion/percussioncms/issues/872">Issue 872</a></li></ul>
+</td>
 </tr>
 <tr id="error-prevention-legal-financial-data" valign="top">
 <td><a href="http://www.w3.org/TR/WCAG20/#minimize-error-reversible"><strong>3.3.4 Error Prevention (Legal, Financial, Data)</strong></a> (Level AA)
@@ -1407,7 +1424,7 @@ Tables 1 and 2 also document conformance with:
 <li>504.2 (Authoring Tool)</li>
 <li>602.3 (Support Docs)</li>
 </ul></td>
-<td><!-- INSERT CONTENT HERE --></td>
+<td>Not Applicable</td>
 <td><!-- INSERT CONTENT HERE --></td>
 </tr>
 <tr id="status-messages" valign="top">
@@ -1425,8 +1442,13 @@ Tables 1 and 2 also document conformance with:
 </ul>
 <em>Revised Section 508 - does not apply</em>
 </td>
-<td><!-- INSERT CONTENT HERE --></td>
-<td><!-- INSERT CONTENT HERE --></td>
+<td>Partially Supports</td>
+<td>
+<ul><li>Design see <a href="https://github.com/percussion/percussioncms/issues/873">Issue 873</a></li></ul>
+<ul><li>Publish</li></ul>
+<ul><li>Admin see <a href="https://github.com/percussion/percussioncms/issues/874">Issue 874</a></li></ul>
+<ul><li>Widget Builder </li></ul>
+</td>
 </tr>
 </tbody>
 </table>
