@@ -1480,47 +1480,47 @@ Notes: This product has not been evaluated for WCAG 2.0 Level AAA conformance.
 <tbody>
 <tr>
 <td>302.1 Without Vision</td>
-<td></td>
+<td>Partially Supports</td>
 <td></td>
 </tr>
 <tr>
 <td>302.2 With Limited Vision</td>
-<td></td>
+<td>Partially Supports</td>
 <td></td>
 </tr>
 <tr>
 <td>302.3 Without Perception of Color</td>
-<td></td>
+<td>Partially Supports</td>
 <td></td>
 </tr>
 <tr>
 <td>302.4 Without Hearing</td>
-<td></td>
+<td>Partially Supports</td>
 <td></td>
 </tr>
 <tr>
 <td>302.5 With Limited Hearing</td>
-<td></td>
+<td>Supports</td>
 <td></td>
 </tr>
 <tr>
 <td>302.6 Without Speech</td>
-<td></td>
+<td>Supports</td>
 <td></td>
 </tr>
 <tr>
 <td>302.7 With Limited Manipulation</td>
-<td></td>
+<td>Supports</td>
 <td></td>
 </tr>
 <tr>
 <td>302.8 With Limited Reach and Strength</td>
-<td></td>
+<td>Supports</td>
 <td></td>
 </tr>
 <tr>
 <td>302.9 With Limited Language, Cognitive, and Learning Abilities</td>
-<td></td>
+<td>Not Supported</td>
 <td></td>
 </tr>
 </tbody>
@@ -1551,12 +1551,12 @@ Notes: This product is a web software application and is not subject to the requ
 </tr>
 <tr>
 <td headers="502-interop chap-5-criteria">502.2.1 User Control of Accessibility Features</td>
-<td headers="502-interop chap-5-conformance"></td>
+<td headers="502-interop chap-5-conformance">Supports</td>
 <td headers="502-interop chap-5-remarks"></td>
 </tr>
 <tr>
 <td headers="502-interop chap-5-criteria">502.2.2 No Disruption of Accessibility Features</td>
-<td headers="502-interop chap-5-conformance"></td>
+<td headers="502-interop chap-5-conformance">Supports</td>
 <td headers="502-interop chap-5-remarks"></td>
 </tr>
 <tr>
@@ -1564,18 +1564,22 @@ Notes: This product is a web software application and is not subject to the requ
 </tr>
 <tr>
 <td headers="502-services chap-5-criteria">502.3.1 Object Information</td>
-<td headers="502-services chap-5-conformance"></td>
+<td headers="502-services chap-5-conformance">Supports</td>
 <td headers="502-services chap-5-remarks"></td>
 </tr>
 <tr>
 <td headers="502-services chap-5-criteria">502.3.2 Modification of Object Information</td>
-<td headers="502-services chap-5-conformance"></td>
+<td headers="502-services chap-5-conformance">Supports</td>
 <td headers="502-services chap-5-remarks"></td>
 </tr>
 <tr>
 <td headers="502-services chap-5-criteria">502.3.3 Row, Column, and Headers</td>
 <td headers="502-services chap-5-conformance">Partially Supports</td>
 <td headers="502-services chap-5-remarks">
+<ul><li>Home-supports</li></ul>
+<ul><li>Dashboard see <a href="https://github.com/percussion/percussioncms/issues/887">Issue 887</a></li></ul>
+<ul><li>Editor-supports</li></ul>
+<ul><li>Navigation-supports</li></ul>
 <ul><li>Design see <a href="https://github.com/percussion/percussioncms/issues/882">Issue 882</a></li></ul>
 <ul><li>Publish see <a href="https://github.com/percussion/percussioncms/issues/883">Issue 883</a></li></ul>
 <ul><li>Admin see <a href="https://github.com/percussion/percussioncms/issues/884">Issue 884</a></li></ul>
@@ -1584,62 +1588,80 @@ Notes: This product is a web software application and is not subject to the requ
 </tr>
 <tr>
 <td headers="502-services chap-5-criteria">502.3.4 Values</td>
-<td headers="502-services chap-5-conformance"></td>
-<td headers="502-services chap-5-remarks"></td>
+<td headers="502-services chap-5-conformance">Partially Supports</td>
+<td headers="502-services chap-5-remarks">However support is impacted by 
+<ul><li>4.1.2 Name, Role, Value (Level A) </li></ul>
+</td>
 </tr>
 <tr>
 <td headers="502-services chap-5-criteria">502.3.5 Modification of Values</td>
-<td headers="502-services chap-5-conformance"></td>
-<td headers="502-services chap-5-remarks"></td>
+<td headers="502-services chap-5-conformance">Partially Supports</td>
+<td headers="502-services chap-5-remarks">However support is impacted by 
+<ul><li>4.1.2 Name, Role, Value (Level A) </li></ul>
+</td>
 </tr>
 <tr>
 <td headers="502-services chap-5-criteria">502.3.6 Label Relationships</td>
-<td headers="502-services chap-5-conformance"></td>
-<td headers="502-services chap-5-remarks"></td>
+<td headers="502-services chap-5-conformance">Partially Supports</td>
+<td headers="502-services chap-5-remarks">However support is impacted by 
+<ul><li>1.3.1 Info and Relationships (Level A) </li></ul>
+</td>
 </tr>
 <tr>
 <td headers="502-services chap-5-criteria">502.3.7 Hierarchical Relationships</td>
-<td headers="502-services chap-5-conformance"></td>
-<td headers="502-services chap-5-remarks"></td>
+<td headers="502-services chap-5-conformance">Partially Supports</td>
+<td headers="502-services chap-5-remarks">However support is impacted by 
+<ul><li>1.3.1 Info and Relationships (Level A) </li></ul>
+</td>
 </tr>
 <tr>
 <td headers="502-services chap-5-criteria">502.3.8 Text</td>
-<td headers="502-services chap-5-conformance"></td>
+<td headers="502-services chap-5-conformance">Supports</td>
 <td headers="502-services chap-5-remarks"></td>
 </tr>
 <tr>
 <td headers="502-services chap-5-criteria">502.3.9 Modification of Text</td>
-<td headers="502-services chap-5-conformance"></td>
+<td headers="502-services chap-5-conformance">Supports</td>
 <td headers="502-services chap-5-remarks"></td>
 </tr>
 <tr>
 <td headers="502-services chap-5-criteria">502.3.10 List of Actions</td>
-<td headers="502-services chap-5-conformance"></td>
-<td headers="502-services chap-5-remarks"></td>
+<td headers="502-services chap-5-conformance">Partially Supports</td>
+<td headers="502-services chap-5-remarks">However support is impacted by 
+<ul><li>3.3.3 Error Suggestion (Level AA) </li></ul>
+</td>
 </tr>
 <tr>
 <td headers="502-services chap-5-criteria">502.3.11 Actions on Objects</td>
-<td headers="502-services chap-5-conformance"></td>
-<td headers="502-services chap-5-remarks"></td>
+<td headers="502-services chap-5-conformance">Partially Supports</td>
+<td headers="502-services chap-5-remarks">However support is impacted by 
+<ul><li>3.3.3 Error Suggestion (Level AA) </li></ul>
+</td>
 </tr>
 <tr>
 <td headers="502-services chap-5-criteria">502.3.12 Focus Cursor</td>
-<td headers="502-services chap-5-conformance"></td>
-<td headers="502-services chap-5-remarks"></td>
+<td headers="502-services chap-5-conformance">Partially Supports</td>
+<td headers="502-services chap-5-remarks">However support is impacted by 
+<ul><li>1.3.2 Meaningful Sequence (Level A)  </li></ul>
+</td>
 </tr>
 <tr>
 <td headers="502-services chap-5-criteria">502.3.13 Modification of Focus Cursor</td>
-<td headers="502-services chap-5-conformance"></td>
-<td headers="502-services chap-5-remarks"></td>
+<td headers="502-services chap-5-conformance">Partially Supports</td>
+<td headers="502-services chap-5-remarks">However support is impacted by 
+<ul><li>1.3.2 Meaningful Sequence (Level A)  </li></ul>
+</td>
 </tr>
 <tr>
 <td headers="502-services chap-5-criteria">502.3.14 Event Notification</td>
-<td headers="502-services chap-5-conformance"></td>
-<td headers="502-services chap-5-remarks"></td>
+<td headers="502-services chap-5-conformance">Partially Supports</td>
+<td headers="502-services chap-5-remarks">However support is impacted by
+<ul><li>4.1.3 Status Messages (Level AA 2.1 only)  </li></ul>
+</td>
 </tr>
 <tr>
 <td headers="502-services chap-5-criteria">502.4 Platform Accessibility Features</td>
-<td headers="502-services chap-5-conformance"></td>
+<td headers="502-services chap-5-conformance">Supports</td>
 <td headers="502-services chap-5-remarks"></td>
 </tr>
 <tr>
@@ -1647,12 +1669,12 @@ Notes: This product is a web software application and is not subject to the requ
 </tr>
 <tr>
 <td headers="503-apps chap-5-criteria">503.2 User Preferences</td>
-<td headers="503-apps chap-5-conformance"></td>
+<td headers="503-apps chap-5-conformance">Not Applicable</td>
 <td headers="503-apps chap-5-remarks"></td>
 </tr>
 <tr>
 <td headers="503-apps chap-5-criteria">503.3 Alternative User Interfaces</td>
-<td headers="503-apps chap-5-conformance"></td>
+<td headers="503-apps chap-5-conformance">Not Applicable</td>
 <td headers="503-apps chap-5-remarks"></td>
 </tr>
 <tr>
@@ -1660,12 +1682,12 @@ Notes: This product is a web software application and is not subject to the requ
 </tr>
 <tr>
 <td headers="503-usercon chap-5-criteria">503.4.1 Caption Controls</td>
-<td headers="503-usercon chap-5-conformance"></td>
+<td headers="503-usercon chap-5-conformance">Not Applicable</td>
 <td headers="503-usercon chap-5-remarks"></td>
 </tr>
 <tr>
 <td headers="503-usercon chap-5-criteria">503.4.2 Audio Description Controls</td>
-<td headers="503-usercon chap-5-conformance"></td>
+<td headers="503-usercon chap-5-conformance">Not Applicable</td>
 <td headers="503-usercon chap-5-remarks"></td>
 </tr>
 <tr>
@@ -1678,22 +1700,22 @@ Notes: This product is a web software application and is not subject to the requ
 </tr>
 <tr>
 <td headers="504-authoring chap-5-criteria">504.2.1 Preservation of Information Provided for Accessibility in Format Conversion</td>
-<td headers="504-authoring chap-5-conformance"></td>
+<td headers="504-authoring chap-5-conformance">Supports</td>
 <td headers="504-authoring chap-5-remarks"></td>
 </tr>
 <tr>
 <td headers="504-authoring chap-5-criteria">504.2.2 PDF Export</td>
-<td headers="504-authoring chap-5-conformance"></td>
+<td headers="504-authoring chap-5-conformance">Not Applicable</td>
 <td headers="504-authoring chap-5-remarks"></td>
 </tr>
 <tr>
 <td headers="504-authoring chap-5-criteria">504.3 Prompts</td>
-<td headers="504-authoring chap-5-conformance"></td>
+<td headers="504-authoring chap-5-conformance">Supports</td>
 <td headers="504-authoring chap-5-remarks"></td>
 </tr>
 <tr>
 <td headers="504-authoring chap-5-criteria">504.4 Templates</td>
-<td headers="504-authoring chap-5-conformance"></td>
+<td headers="504-authoring chap-5-conformance">Supports</td>
 <td headers="504-authoring chap-5-remarks"></td>
 </tr>
 </tbody>
@@ -1758,7 +1780,7 @@ Notes: This report covers accessibility conformance for the web product and does
 </tr>
 <tr>
 <td>4.2.9 Minimize photosensitive seizure triggers</td>
-<td></td>
+<td>Not Applicable</td>
 <td></td>
 </tr>
 <tr>
@@ -1768,7 +1790,7 @@ Notes: This report covers accessibility conformance for the web product and does
 </tr>
 <tr>
 <td>4.2.11 Privacy</td>
-<td></td>
+<td>Supports</td>
 <td></td>
 </tr>
 </tbody>
@@ -1800,37 +1822,37 @@ Notes:
 </tr>
 <tr>
 <td headers="7-caption chap-7-criteria">7.1.1 Captioning playback</td>
-<td headers="7-caption chap-7-conformance"></td>
+<td headers="7-caption chap-7-conformance">Not Applicable</td>
 <td headers="7-caption chap-7-remarks"></td>
 </tr>
 <tr>
 <td headers="7-caption chap-7-criteria">7.1.2 Captioning synchronization</td>
-<td headers="7-caption chap-7-conformance"></td>
+<td headers="7-caption chap-7-conformance">Not Applicable</td>
 <td headers="7-caption chap-7-remarks"></td>
 </tr>
 <tr>
 <td headers="7-caption chap-7-criteria">7.1.3 Preservation of captioning</td>
-<td headers="7-caption chap-7-conformance"></td>
+<td headers="7-caption chap-7-conformance">Not Applicable</td>
 <td headers="7-caption chap-7-remarks"></td>
 </tr>
 <tr>
 <td headers="7-caption chap-7-criteria">7.2.1 Audio description playback</td>
-<td headers="7-caption chap-7-conformance"></td>
+<td headers="7-caption chap-7-conformance">Not Applicable</td>
 <td headers="7-caption chap-7-remarks"></td>
 </tr>
 <tr>
 <td headers="7-caption chap-7-criteria">7.2.2 Audio description synchronization</td>
-<td headers="7-caption chap-7-conformance"></td>
+<td headers="7-caption chap-7-conformance">Not Applicable</td>
 <td headers="7-caption chap-7-remarks"></td>
 </tr>
 <tr>
 <td headers="7-caption chap-7-criteria">7.2.3 Preservation of audio description</td>
-<td headers="7-caption chap-7-conformance"></td>
+<td headers="7-caption chap-7-conformance">Not Applicable</td>
 <td headers="7-caption chap-7-remarks"></td>
 </tr>
 <tr>
 <td headers="7-caption chap-7-criteria">7.3 User controls for captions and audio description</td>
-<td headers="7-caption chap-7-conformance"></td>
+<td headers="7-caption chap-7-conformance">Not Applicable</td>
 <td headers="7-caption chap-7-remarks"></td>
 </tr>
 </tbody>
@@ -1893,7 +1915,7 @@ Notes: This product does not include non-web documents and is therefore not subj
 </tr>
 <tr>
 <td headers="11-a11y-serv chap-11-criteria">11.5.2.4 Assistive technology</td>
-<td headers="11-a11y-serv chap-11-conformance"></td>
+<td headers="11-a11y-serv chap-11-conformance">Supports</td>
 <td headers="11-ally-serv chap-11-remarks"></td>
 </tr><tr>
 <td headers="11-a11y-serv chap-11-criteria">11.5.2.5 Object information</td>
@@ -1965,17 +1987,17 @@ Notes: This product does not include non-web documents and is therefore not subj
 </tr>
 <tr>
 <td headers="11-doc-a11y chap-11-criteria">11.6.1 User control of accessibility features</td>
-<td headers="11-doc-a11y chap-11-conformance"></td>
+<td headers="11-doc-a11y chap-11-conformance">Supports</td>
 <td headers="11-doc-a11y chap-11-remarks"></td>
 </tr>
 <tr>
 <td headers="11-doc-a11y chap-11-criteria">11.6.2 No disruption of accessibility features</td>
-<td headers="11-doc-a11y chap-11-conformance"></td>
+<td headers="11-doc-a11y chap-11-conformance">Supports</td>
 <td headers="11-doc-a11y chap-11-remarks"></td>
 </tr>
 <tr>
 <td headers="11-doc-a11y chap-11-criteria">11.7 User preferences</td>
-<td headers="11-doc-a11y chap-11-conformance"></td>
+<td headers="11-doc-a11y chap-11-conformance">Supports</td>
 <td headers="11-doc-a11y chap-11-remarks"></td>
 </tr>
 <tr>
@@ -1991,17 +2013,17 @@ Notes: This product does not include non-web documents and is therefore not subj
 </tr>
 <tr>
 <td headers="11-content-tech chap-11-criteria">11.8.3 Preservation of accessibility information in transformations</td>
-<td headers="11-content-tech chap-11-conformance"></td>
+<td headers="11-content-tech chap-11-conformance">Supports</td>
 <td headers="11-content-tech chap-11-remarks"></td>
 </tr>
 <tr>
 <td headers="11-content-tech chap-11-criteria">11.8.4 Repair assistance</td>
-<td headers="11-content-tech chap-11-conformance"></td>
+<td headers="11-content-tech chap-11-conformance">Partially Supports</td>
 <td headers="11-content-tech chap-11-remarks"></td>
 </tr>
 <tr>
 <td headers="11-content-tech chap-11-criteria">11.8.5 Templates</td>
-<td headers="11-content-tech chap-11-conformance"></td>
+<td headers="11-content-tech chap-11-conformance">Supports</td>
 <td headers="11-content-tech chap-11-remarks"></td>
 </tr>
 </tbody>
