@@ -1580,6 +1580,10 @@ Notes: This product is a web software application and is not subject to the requ
 <ul><li>Dashboard see <a href="https://github.com/percussion/percussioncms/issues/887">Issue 887</a></li></ul>
 <ul><li>Editor-supports</li></ul>
 <ul><li>Navigation-supports</li></ul>
+<ul><li>Design see <a href="https://github.com/percussion/percussioncms/issues/882">Issue 882</a></li></ul>
+<ul><li>Publish see <a href="https://github.com/percussion/percussioncms/issues/883">Issue 883</a></li></ul>
+<ul><li>Admin see <a href="https://github.com/percussion/percussioncms/issues/884">Issue 884</a></li></ul>
+<ul><li>Widget Builder see <a href="https://github.com/percussion/percussioncms/issues/885">Issue 885</a></li></ul>
 </td>
 </tr>
 <tr>
