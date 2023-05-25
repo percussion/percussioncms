@@ -1574,8 +1574,13 @@ Notes: This product is a web software application and is not subject to the requ
 </tr>
 <tr>
 <td headers="502-services chap-5-criteria">502.3.3 Row, Column, and Headers</td>
-<td headers="502-services chap-5-conformance"></td>
-<td headers="502-services chap-5-remarks"></td>
+<td headers="502-services chap-5-conformance">Partially Supports</td>
+<td headers="502-services chap-5-remarks">
+<ul><li>Design see <a href="https://github.com/percussion/percussioncms/issues/882">Issue 882</a></li></ul>
+<ul><li>Publish see <a href="https://github.com/percussion/percussioncms/issues/883">Issue 883</a></li></ul>
+<ul><li>Admin see <a href="https://github.com/percussion/percussioncms/issues/884">Issue 884</a></li></ul>
+<ul><li>Widget Builder see <a href="https://github.com/percussion/percussioncms/issues/885">Issue 885</a></li></ul>
+</td>
 </tr>
 <tr>
 <td headers="502-services chap-5-criteria">502.3.4 Values</td>
