@@ -1403,7 +1403,7 @@ li.ui-tabs-active #perc-tab-workflow,#perc-tab-workflow:hover
 }
 
 #perc-category-save-cancel-block>.btn-primary {
-    height: 23px !important;
+    height: 33px !important;
     color: #ffffff !important;
     padding-top: 3px !important;
 }

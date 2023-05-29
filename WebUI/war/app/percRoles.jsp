@@ -35,7 +35,7 @@
         </div>
         <div id="perc-roles-details">
             <div id="perc-roles-info">
-                <div id="perc-roles-edit-role-button" title="<i18n:message key = "perc.ui.users@Edit Role Details"/>"></div>
+                <div id="perc-roles-edit-role-button" role="button" title="<i18n:message key = "perc.ui.users@Edit Role Details"/>"></div>
                 <span class="perc-required-label" style="display:none;"><label><i18n:message key = "perc.ui.general@Denotes Required Field"/></label></span> 
                 <div id="perc-roles-name-label"><i18n:message key = "perc.ui.workflow@Name"/><br />
                     <input id="perc-orig-roles-name-field" type="hidden" />
@@ -60,8 +60,8 @@
             <div           id="perc-roles-users-editor">
                 <div       id="perc-roles-assigned-users">
                     <div    id="perc-roles-assigned-users-label"><i18n:message key = "perc.ui.roles@Users"/>
-                        <div class="perc-roles-removeusers-button perc-item-disabled" title="Remove users from role"></div>
-                        <div class="perc-roles-addusers-button" title="<i18n:message key = "perc.ui.users@Add Users To Role"/>"></div>
+                        <div role="button" class="perc-roles-removeusers-button perc-item-disabled" title="Remove users from role"></div>
+                        <div role="button" class="perc-roles-addusers-button" title="<i18n:message key = "perc.ui.users@Add Users To Role"/>"></div>
                     </div>
                     <div class="perc-roles-assigned-users-list"></div>
                 </div>
