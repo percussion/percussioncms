@@ -52,12 +52,12 @@
             <div id = "perc-category-tree">
             </div>
         <div id="perc-category-details">
-            <div id="perc-categories-add-category-button" title="<i18n:message key = "perc.ui.categories@Add New Category"/>"></div>
-            <div id="perc-categories-add-child-category-button" title="<i18n:message key = "perc.ui.categories@Add New Child Category"/>"></div>
-            <div id="perc-categories-delete-category-button" title="<i18n:message key = "perc.ui.categories@Remove Category"/>"></div>
-            <div id="perc-categories-edit-category-button" title="<i18n:message key = "perc.ui.categories@Edit Category Details"/>"></div>
-            <div id="perc-categories-moveup-button" title="<i18n:message key = "perc.ui.categories@Move Up"/>"><i class="perc-font-icon icon-arrow-up fas fa-arrow-up"></i></div>
-            <div id="perc-categories-movedown-button" title="<i18n:message key = "perc.ui.categories@Move Down"/>"><i class="perc-font-icon icon-arrow-down fas fa-arrow-down"></i></div>
+            <div id="perc-categories-add-category-button" role="button" tabindex="0"  title="<i18n:message key = "perc.ui.categories@Add New Category"/>"></div>
+            <div id="perc-categories-add-child-category-button" role="button" title="<i18n:message key = "perc.ui.categories@Add New Child Category"/>"></div>
+            <div id="perc-categories-delete-category-button" role="button" title="<i18n:message key = "perc.ui.categories@Remove Category"/>"></div>
+            <div id="perc-categories-edit-category-button" role="button" title="<i18n:message key = "perc.ui.categories@Edit Category Details"/>"></div>
+            <div id="perc-categories-moveup-button" role="button" title="<i18n:message key = "perc.ui.categories@Move Up"/>"><i class="perc-font-icon icon-arrow-up fas fa-arrow-up"></i></div>
+            <div id="perc-categories-movedown-button" role="button" title="<i18n:message key = "perc.ui.categories@Move Down"/>"><i class="perc-font-icon icon-arrow-down fas fa-arrow-down"></i></div>
             <div id="perc-category-info">
                 <span class="perc-required-label" style="display:none;"><label><i18n:message key = "perc.ui.general@Denotes Required Field"/></label></span> 
                 <div id="perc-category-name-label"><i18n:message key = "perc.ui.perc.categories@Category Name"/>
@@ -74,8 +74,8 @@
                     </select>
                 </div><br />
                 <div id="perc-category-save-cancel-block" style="width:100%; height:50px;"> 
-                    <a id="perc-category-save"   class="btn btn-primary" type="button"  name="perc_wizard_save"   style="float: right; margin:0 27px 27px 0px;"><i18n:message key ="perc.ui.button@Save"/> </a>
-                    <a id="perc-category-cancel" class="btn btn-primary" type="button"  name="perc_wizard_cancel" style="float: right; margin: 0 8px 27px 0"><i18n:message key ="perc.ui.common.label@Cancel"/>  </a>
+                    <button id="perc-category-save"   class="btn btn-primary" type="button"  name="perc_wizard_save"   style="float: right; margin:0 27px 27px 0px;"><i18n:message key ="perc.ui.button@Save"/> </button>
+                    <button id="perc-category-cancel" class="btn btn-primary" type="button"  name="perc_wizard_cancel" style="float: right; margin: 0 8px 27px 0"><i18n:message key ="perc.ui.common.label@Cancel"/>  </button>
                 </div>
                 <div id="perc-category-details-label"><i18n:message key = "perc.ui.perc.categories@Details"/></div><br />
                 <div id="perc-category-created-by-label"><i18n:message key = "perc.ui.perc.categories@Created By"/> 
