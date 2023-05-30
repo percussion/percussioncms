@@ -104,7 +104,7 @@
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>perc-system</artifactId>
-            <version>${project.parent.version}</version>
+            <version>8.1.2.1</version>
         </dependency>
         <dependency>
             <groupId>com.percussion</groupId>

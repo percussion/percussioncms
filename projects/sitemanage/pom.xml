@@ -131,7 +131,7 @@
   <dependency>
         <groupId>com.percussion</groupId>
         <artifactId>perc-system</artifactId>
-        <version>${project.parent.version}</version>
+        <version>8.1.2.1</version>
         <exclusions>
             <exclusion>
                 <groupId>org.aspectj</groupId>
@@ -178,7 +178,7 @@
       <dependency>
         <groupId>com.percussion</groupId>
         <artifactId>perc-system</artifactId>
-        <version>${project.parent.version}</version>
+        <version>8.1.2.1</version>
         <classifier>tests</classifier>
       <type>test-jar</type>
       <scope>test</scope>
