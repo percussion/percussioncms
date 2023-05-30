@@ -53,11 +53,11 @@
             </div>
         <div id="perc-category-details">
             <div id="perc-categories-add-category-button" role="button" tabindex="0"  title="<i18n:message key = "perc.ui.categories@Add New Category"/>"></div>
-            <div id="perc-categories-add-child-category-button" role="button" title="<i18n:message key = "perc.ui.categories@Add New Child Category"/>"></div>
-            <div id="perc-categories-delete-category-button" role="button" title="<i18n:message key = "perc.ui.categories@Remove Category"/>"></div>
-            <div id="perc-categories-edit-category-button" role="button" title="<i18n:message key = "perc.ui.categories@Edit Category Details"/>"></div>
-            <div id="perc-categories-moveup-button" role="button" title="<i18n:message key = "perc.ui.categories@Move Up"/>"><i class="perc-font-icon icon-arrow-up fas fa-arrow-up"></i></div>
-            <div id="perc-categories-movedown-button" role="button" title="<i18n:message key = "perc.ui.categories@Move Down"/>"><i class="perc-font-icon icon-arrow-down fas fa-arrow-down"></i></div>
+            <div id="perc-categories-add-child-category-button" role="button"  tabindex="0" title="<i18n:message key = "perc.ui.categories@Add New Child Category"/>"></div>
+            <div id="perc-categories-delete-category-button" role="button" tabindex="0" title="<i18n:message key = "perc.ui.categories@Remove Category"/>"></div>
+            <div id="perc-categories-edit-category-button" role="button" tabindex="0" title="<i18n:message key = "perc.ui.categories@Edit Category Details"/>"></div>
+            <div id="perc-categories-moveup-button" role="button" tabindex="0" title="<i18n:message key = "perc.ui.categories@Move Up"/>"><i class="perc-font-icon icon-arrow-up fas fa-arrow-up"></i></div>
+            <div id="perc-categories-movedown-button" role="button" tabindex="0" title="<i18n:message key = "perc.ui.categories@Move Down"/>"><i class="perc-font-icon icon-arrow-down fas fa-arrow-down"></i></div>
             <div id="perc-category-info">
                 <span class="perc-required-label" style="display:none;"><label><i18n:message key = "perc.ui.general@Denotes Required Field"/></label></span> 
                 <div id="perc-category-name-label"><i18n:message key = "perc.ui.perc.categories@Category Name"/>
