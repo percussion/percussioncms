@@ -621,7 +621,7 @@
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>sitemanage</artifactId>
-            <version>${project.parent.version}</version>
+            <version>8.1.2.1</version>
             <exclusions>
                 <exclusion>
                     <artifactId>commons-beanutils</artifactId>
@@ -1002,7 +1002,7 @@
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>perc-system</artifactId>
-            <version>${project.parent.version}</version>
+            <version>8.1.2.1</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.aspectj</groupId>

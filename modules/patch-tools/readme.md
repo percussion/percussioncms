@@ -1,0 +1,1 @@
+This module contains template sh / bat scripts that can be used to create a hotfix type of patch release.
