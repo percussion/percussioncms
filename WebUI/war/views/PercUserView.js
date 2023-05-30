@@ -718,7 +718,7 @@
             '     class="perc-username"' +
             '     title="_username_">' +
             '         _username_' +
-            '     <div class="perc-user-delete">' +
+            '     <div class="perc-user-delete" role="button" tabindex="0">' +
             '     </div>' +
             '</li>';
 

@@ -73,7 +73,7 @@ if(locale==null){
                         <div id="perc-wf-name-wrapper">
                         <div class = "perc-wf-action-wrapper">
                             <div class = 'perc-default-wf-marker'><i18n:message key = "perc.ui.workflow@Default"/></div>
-                            <div role="button" title="<i18n:message key = "perc.ui.workflow@Edit Workflow Details"/>" id="perc-wf-edit"></div>
+                            <div role="button" tabindex="0" title="<i18n:message key = "perc.ui.workflow@Edit Workflow Details"/>" id="perc-wf-edit"></div>
                         </div>     
                             <div id="perc-workflow-name"></div>
                         </div>

@@ -65,9 +65,9 @@
         container.append(head);
         //At the top we could show a add or delete button
         if (options.enableDelete)
-            container.find('.perc-item-list-label').append($('<div class="perc-item-delete-button" />').attr('title', options.deleteTitle));
+            container.find('.perc-item-list-label').append($('<div class="perc-item-delete-button" role="button" tabindex="0" />').attr('title', options.deleteTitle));
         if (options.enableAdd)
-            container.find('.perc-item-list-label').append($('<div class="perc-item-add-button"/>').attr('title', options.addTitle));
+            container.find('.perc-item-list-label').append($('<div class="perc-item-add-button" role="button" tabindex="0"/>').attr('title', options.addTitle));
         if(options.collapsible) {
             container.find('.perc-item-list-label').append($('<span style="float: left;" id="perc-wf-min-max" class = "perc-items-minimizer" />'));
         }    

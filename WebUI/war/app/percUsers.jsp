@@ -86,8 +86,8 @@
         <div id="perc-users-list">
             <div class="perc-user-list-label">
                 Users
-                <div role="button" id="perc-users-add-user-button" title="<i18n:message key='perc.ui.users@Add New User' />"></div>
-                <div role="button" id="perc-users-import-users-button" title="<i18n:message key='perc.ui.users.import.tooltips@ImportDirectoryUsersTooltip'/>" class="perc-users-import-users-button-enabled"></div>
+                <div role="button" tabindex="0" id="perc-users-add-user-button" title="<i18n:message key='perc.ui.users@Add New User' />"></div>
+                <div role="button" tabindex="0" id="perc-users-import-users-button" title="<i18n:message key='perc.ui.users.import.tooltips@ImportDirectoryUsersTooltip'/>" class="perc-users-import-users-button-enabled"></div>
             </div>
             <div id="perc-username-list">
                 <ul>
@@ -107,7 +107,7 @@
                 <input title="fakepasswordremembered" id="password" style="display:none" type="password" name="fakepasswordremembered">
 
                 <div id="perc-users-info">
-                    <div role="button" id="perc-users-edit-user-button" title="<i18n:message key='perc.ui.users@Edit User Details' />"></div>
+                    <div role="button" tabindex="0" id="perc-users-edit-user-button" title="<i18n:message key='perc.ui.users@Edit User Details' />"></div>
                     <div id="perc-users-username-label">
                         <i18n:message key="perc.ui.workflow@Name" /><br />
 						<input id="perc-users-username-field" maxlength="50" autocomplete="nope" title='<i18n:message key="perc.ui.workflow@Name" />'/>
@@ -133,8 +133,8 @@
                         <select size="5"></select>
                     </div>
                     <div id="perc-users-roles-add-remove-buttons">
-                        <div role="button" label="move right" title="move right" id="perc-users-add-role-button"></div>
-                        <div role="button" label="move left" title="move left" id="perc-users-remove-role-button"></div>
+                        <div role="button" tabindex="0" label="move right" title="move right" id="perc-users-add-role-button"></div>
+                        <div role="button" tabindex="0" label="move left" title="move left" id="perc-users-remove-role-button"></div>
                     </div>
                     <div id="perc-users-assigned-roles">
                         <div id="perc-users-assigned-roles-label" class="perc-required-field">
