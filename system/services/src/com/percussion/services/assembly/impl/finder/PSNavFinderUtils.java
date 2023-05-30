@@ -81,7 +81,9 @@ public class PSNavFinderUtils
       }
       catch (Exception e1)
       {
-         ms_log.warn("Problem finding the navon - probably previewing a managed nav slot outside of a site. Caught exception: {}",
+         ms_log.warn("Problem finding the navon for Page {} with Template {} - probably previewing a managed nav slot outside of a site. Caught exception: {}",
+                 sourceItem.getId(),
+                 templateNameId,
                  PSExceptionUtils.getMessageForLog(e1));
          // If we have a problem finding the node, just set it to null and
          // we'll have no navon. This will generally happen when previewing
