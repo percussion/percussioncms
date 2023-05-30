@@ -1018,7 +1018,7 @@
                 //Add edit button if this is readonly mode
                 if ($.PercNavigationManager.getMode() !== $.PercNavigationManager.MODE_EDIT)
                 {
-                    var editButton = '<button name="perc_page_edit" class="btn btn-primary" id="perc-page-edit">' +I18N.message("perc.ui.finder.view@Edit") + '</button>';
+                    var editButton = '<button name="perc_page_edit" title="Edit" class="btn btn-primary" id="perc-page-edit">' +I18N.message("perc.ui.finder.view@Edit") + '</button>';
                     $("#perc-content-menu").append($(editButton));
                     currentContentPath = $.PercNavigationManager.getPath();
                     $.PercPathService.getPathItemForPath(currentContentPath, function(message, item)
@@ -1062,7 +1062,7 @@
 
                 }
                 //Add close button, this will close the editor and switch to the dashboard
-                var closeButton = "<button class='btn btn-primary' id='perc-page-close'>" +I18N.message("perc.ui.change.pw@Close") + "</button>";
+                var closeButton = "<button class='btn btn-primary' id='perc-page-close' title='Close'>" +I18N.message("perc.ui.change.pw@Close") + "</button>";
                 $("#perc-content-menu").append($(closeButton));
                 $("#perc-page-close").on("click",function()
                 {

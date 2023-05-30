@@ -347,13 +347,13 @@
             </div>
             <ul>
                 <li>
-                    <a id="perc-tab-content" href="#tabs-2"><i18n:message key="perc.ui.web.mgt@Content"/></a>
+                    <a id="perc-tab-content" title = "Content" href="#tabs-2"><i18n:message key="perc.ui.web.mgt@Content"/></a>
                 </li>
                 <li>
-                    <a id="perc-tab-layout"  href="#tabs-3"><i18n:message key = "perc.ui.web.mgt@Layout"/></a>
+                    <a id="perc-tab-layout" title = "Layout" href="#tabs-3"><i18n:message key = "perc.ui.web.mgt@Layout"/></a>
                 </li>
                 <li>
-                    <a id="perc-tab-style"  href="#tabs-4"><i18n:message key = "perc.ui.web.mgt@Style"/></a>
+                    <a id="perc-tab-style" title = "Style" href="#tabs-4"><i18n:message key = "perc.ui.web.mgt@Style"/></a>
                 </li>
             </ul>
             <div id="tabs-2" style="padding-top: 10px;" >
@@ -366,8 +366,8 @@
                 <div id="perc-style-menu" >
                     <div id="perc-dropdown-actions-style" style="float:left;"></div>
                     <div id="perc-dropdown-view-style" style="float:left;"></div>
-                    <button id="perc-css-editor-save" class="btn btn-primary" style="float:right;" name="perc_wizard_save"><i18n:message key ="perc.ui.button@Save"/></button>
-                    <button id="perc-css-editor-cancel" class="btn btn-primary" style="float:right;" name="perc_wizard_cancel"><i18n:message key ="perc.ui.common.label@Cancel"/></button>
+                    <button id="perc-css-editor-save" title="Save" class="btn btn-primary" style="float:right;" name="perc_wizard_save"><i18n:message key ="perc.ui.button@Save"/></button>
+                    <button id="perc-css-editor-cancel" title="Cancel" class="btn btn-primary" style="float:right;" name="perc_wizard_cancel"><i18n:message key ="perc.ui.common.label@Cancel"/></button>
                 </div>
             </div>
             <div id="perc-editor-inline-help">

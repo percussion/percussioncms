@@ -66,8 +66,8 @@
                 </div>
             </td>
             <td style = 'width:43%'>
-                <button id="perc-save" class="btn btn-primary" type="button" name="perc_wizard_save" ><i18n:message key ="perc.ui.button@Save"/></button>
-                <button id="perc-layout-cancel" class="btn btn-primary" type="button" name="perc_wizard_cancel"><i18n:message key ="perc.ui.common.label@Cancel"/></button>
+                <button id="perc-save" class="btn btn-primary" type="button" title="Save" name="perc_wizard_save" ><i18n:message key ="perc.ui.button@Save"/></button>
+                <button id="perc-layout-cancel" class="btn btn-primary" type="button" title="Cancel" name="perc_wizard_cancel"><i18n:message key ="perc.ui.common.label@Cancel"/></button>
             </td>
             <div class = 'perc-overlay-div' style = 'display:none'></div>
         </tr>
