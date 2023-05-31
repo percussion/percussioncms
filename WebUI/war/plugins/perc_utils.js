@@ -963,7 +963,7 @@
         if($(baseEle).parent().find(".perc-template-container").hasClass("perc-visible")) {
             $(baseEle).parent().find(".perc-template-container").removeClass("perc-visible").addClass("perc-hidden");
             $(baseEle).parent().find("#perc-wid-lib-expander").removeClass("perc-whitebg");
-            $(baseEle).parent().find("#perc-wid-lib-minimizer").replaceWith('<a id="perc-wid-lib-maximizer" style="float: left;" href="#" role="button" title = "'+I18N.message("perc.ui.template.layout@Maximize Widgets")+'"></a>');
+            $(baseEle).parent().find("#perc-wid-lib-minimizer").replaceWith('<a  role="button" tabindex="0" id="perc-wid-lib-maximizer" style="float: left;" href="#" role="button" title = "'+I18N.message("perc.ui.template.layout@Maximize Widgets")+'"></a>');
         } else {
             var regionLibContainer   = $(baseEle).parent().find(".perc-region-library-container");
             // if region tray is visible, toggle it (close it) so that only the widget tray is shown
@@ -973,7 +973,7 @@
 
             $(baseEle).parent().find(".perc-template-container").removeClass("perc-hidden").addClass("perc-visible");
             $(baseEle).parent().find("#perc-wid-lib-expander").addClass("perc-whitebg");
-            $(baseEle).parent().find("#perc-wid-lib-maximizer").replaceWith('<a id="perc-wid-lib-minimizer" style="float: left;" href="#" role="button" title = "'+I18N.message("perc.ui.template.layout@Minimize Widgets")+'"></a>');
+            $(baseEle).parent().find("#perc-wid-lib-maximizer").replaceWith('<a  role="button" tabindex="0" id="perc-wid-lib-minimizer" style="float: left;" href="#" role="button" title = "'+I18N.message("perc.ui.template.layout@Minimize Widgets")+'"></a>');
         }
 
         // fix the height of the iframe based on the height of the top part
@@ -1002,7 +1002,7 @@
         if( regionLibraryContainer.hasClass("perc-visible")) {
             regionLibraryContainer.removeClass("perc-visible").addClass("perc-hidden");
             regionLibraryExpander.removeClass("perc-whitebg");
-            regionLibraryMinimizer.replaceWith('<a id="perc-region-library-maximizer" style="float: left;" href="#" role="button" title = "'+I18N.message("perc.ui.template.layout@Maximize Regions")+'"></a>');
+            regionLibraryMinimizer.replaceWith('<a  role="button" tabindex="0" id="perc-region-library-maximizer" style="float: left;" href="#" role="button" title = "'+I18N.message("perc.ui.template.layout@Maximize Regions")+'"></a>');
         } else {
             // if widget tray is visible, toggle it (close it) so that only the region tray is shown
             if(templateContainer.hasClass("perc-visible")) {
@@ -1011,7 +1011,7 @@
 
             regionLibraryContainer.removeClass("perc-hidden").addClass("perc-visible");
             regionLibraryExpander.addClass("perc-whitebg");
-            regionLibraryMaximizer.replaceWith('<a id="perc-region-library-minimizer" style="float: left;" href="#" role="button" title = "'+I18N.message("perc.ui.template.layout@Minimize Regions")+'"></a>');
+            regionLibraryMaximizer.replaceWith('<a  role="button" tabindex="0" id="perc-region-library-minimizer" style="float: left;" href="#" role="button" title = "'+I18N.message("perc.ui.template.layout@Minimize Regions")+'"></a>');
         }
 
         // fix the height of the iframe based on the height of the top part
