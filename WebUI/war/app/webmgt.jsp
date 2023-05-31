@@ -347,13 +347,13 @@
             </div>
             <ul>
                 <li>
-                    <a id="perc-tab-content" title = "Content" href="#tabs-2"><i18n:message key="perc.ui.web.mgt@Content"/></a>
+                    <a role="button" tabindex="0" id="perc-tab-content" href="#tabs-2"><i18n:message key="perc.ui.web.mgt@Content"/></a>
                 </li>
                 <li>
-                    <a id="perc-tab-layout" title = "Layout" href="#tabs-3"><i18n:message key = "perc.ui.web.mgt@Layout"/></a>
+                    <a role="button" tabindex="0" id="perc-tab-layout"  href="#tabs-3"><i18n:message key = "perc.ui.web.mgt@Layout"/></a>
                 </li>
                 <li>
-                    <a id="perc-tab-style" title = "Style" href="#tabs-4"><i18n:message key = "perc.ui.web.mgt@Style"/></a>
+                    <a role="button" tabindex="0" id="perc-tab-style"  href="#tabs-4"><i18n:message key = "perc.ui.web.mgt@Style"/></a>
                 </li>
             </ul>
             <div id="tabs-2" style="padding-top: 10px;" >

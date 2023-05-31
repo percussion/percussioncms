@@ -292,7 +292,7 @@
                 buffer = '<div class="perc-template-item" tabindex="0" id="' + template.getTemplateId() + '" ' + selected + '>';
                 buffer += '    <button class="perc-apply" tabindex="0" id="' + template.getTemplateId() + '-apply" title="' +I18N.message("perc.ui.site.templates.widget@Match Content To Template Layout") + '">' + '</button>';
                 buffer += '    <button class="perc-edit" tabindex="0" id="' + template.getTemplateId() + '-edit" title="' +I18N.message("perc.ui.site.templates.widget@Edit Template") + '">' + '</button>';
-                buffer += '    <button class="perc-delete" id="' + template.getTemplateId() + '-delete" title="' +I18N.message("perc.ui.admin.packed@Delete Template") + '">' + '</button>';
+                buffer += '    <button class="perc-delete" tabindex="0" id="' + template.getTemplateId() + '-delete" title="' +I18N.message("perc.ui.admin.packed@Delete Template") + '">' + '</button>';
                 buffer += '    <div class="perc-template-label" title="' + originalName + '" id="' + template.getTemplateId() + '-name">' + originalName + '</div>';
                 buffer += '    <div data-base-template="' + template.getBaseTemplateName() + '" id="' + template.getTemplateId() + 'id" class="perc-template-thumbnail-container perc-template-background">';
                 buffer += '         <img height = "122px" width="174px" src = "' + template.getImageUrl() + '" alt="' + I18N.message("perc.ui.new.site.dialog@Basic Template") + '" />';
