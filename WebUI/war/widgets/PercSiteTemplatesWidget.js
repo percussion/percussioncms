@@ -306,9 +306,9 @@
                 buffer += '         <li class="perc-template-pages-items" ></li>';
                 buffer += '    </ul>';
                 buffer += '    <form action="#" class="perc-template-pages-controls">';
-                buffer += '        <div style="right:56px;" class="previous">Prev</div>';
+                buffer += '        <div role="button" tabindex="0" style="right:56px;" class="previous">Prev</div>';
                 buffer += '        <input type="text" title="' +I18N.message("perc.ui.template.create@Pages Jump") + '" class="perc-jump" name="perc-template-pages-controls-jump" autocomplete="off" />';
-                buffer += '        <div style="right:0px;" class="next">Next</div>';
+                buffer += '        <div role="button" tabindex="0" style="right:0px;" class="next">Next</div>';
                 buffer += '    </form>';
                 buffer += '    <div class="perc-template-showing" style="width: 100px; margin: 6px 0pt 0px 24px;">';
                 buffer += '        Items: <span class="perc-template-page-group-range">0-0</span>';
