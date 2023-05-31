@@ -432,6 +432,7 @@
                             {"level": levelCount + 1, "parentSectionId": parentId, "context": this},
                             "level_" + levelCount + 1);
                     $imgButton.attr("id", "perc_level_" + (levelCount + 1) + "_add");
+                    $imgButton.attr("tabindex", "0");
                     var $addSectionButton = $level.append($("<div></div>")
                         .addClass("perc-site-map-addpage-button").append($imgButton));
                 }
@@ -484,6 +485,7 @@
                         .css("padding-right", "30px")
                         .attr("id", "perc-site-map-delete")
                         .attr("title", "Delete Site")
+                        .attr("tabindex", "0")
                         .text(I18N.message("perc.ui.site.map@Delete Site"));
 
                     isSiteBeingImported(function(result){
@@ -509,6 +511,8 @@
                         .css("display", "table-cell")
                         .css("padding-right", "30px")
                         .attr("id", "perc-site-map-copy")
+                        .attr("title", "Copy Site")
+                        .attr("tabindex", "0")
                         .text(I18N.message("perc.ui.site.map@Copy Site"))
                         .on("click", function(evt){
                            // self.onCopySiteDialog();
@@ -522,6 +526,8 @@
                     .addClass("perc-site-map-action-item-disabled")
                     .css("display", "table-cell")
                     .attr("id", "perc-site-map-move")
+                    .attr("title", "Move Section")
+                    .attr("tabindex", "0")
                     .text(I18N.message('perc.ui.sitemap.menuitem@Move Section'))
                     .on("click", function(evt){
                         self.onMoveWithDialog();
@@ -762,6 +768,7 @@
                             "context": this, site: site},
                         "level_" + levelIdx);
                 $configButton.attr("id", sectionObj.id + "_config");
+                $configButton.attr("tabindex", "0");
                 $configButton.addClass("perc-site-map-config-button");
                 $nodeButtons.append($configButton);
                 if(levelIdx > 1)
@@ -772,6 +779,7 @@
                             this.onDelete, {"sectionId": sectionObj.id, "context": self},
                             "level_" + levelIdx);
                     $deleteButton.attr("id", sectionObj.id + "_delete");
+                    $deleteButton.attr("tabindex", "0");
                     $deleteButton.addClass("perc-site-map-delete-button");
                     $nodeButtons.append($deleteButton);
                 }
@@ -793,7 +801,7 @@
                 }
                 else if(sectionObj.sectionType === $.Perc_SectionServiceClient.PERC_SECTION_TYPE.SECTION_LINK)
                 {
-                    var $secLink = $("<div></div>").addClass("perc-site-map-sectionlink").append("Section Link");
+                    var $secLink = $("<div></div>").addClass("perc-site-map-sectionlink").append("Section Link").attr("tabindex","0");
                     $parent.append($secLink);
                 }
                 else
@@ -803,7 +811,8 @@
                     var $pageCount = $("<div></div>").addClass("perc-site-map-pagecount");
                     $nodeCount.append($pageCount);
                     var $arrowImg = $("<img/>").attr("src", this.getImageSrc(this.ARROW_OFF_IMAGE))
-                        .attr("alt", "perc.ui.images@ArrowIconAlt");
+                        .attr("alt", "perc.ui.images@ArrowIconAlt")
+                        .attr("tabindex","0");
                     $pageCount.append($arrowImg);
                     var count = this.convertCXFArray(sectionObj.childIds).length;
                     $pageCount.append($("<span value=\"" + count + "\"></span>").text(count));
