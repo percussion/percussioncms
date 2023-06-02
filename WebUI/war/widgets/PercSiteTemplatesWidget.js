@@ -306,9 +306,9 @@
                 buffer += '         <li class="perc-template-pages-items" ></li>';
                 buffer += '    </ul>';
                 buffer += '    <form action="#" class="perc-template-pages-controls">';
-                buffer += '        <div role="button" tabindex="0" style="right:56px;" class="previous">Prev</div>';
+                buffer += '        <div role="button" tabindex="0" title="' +I18N.message("perc.ui.template.create@Prev") + '" style="right:56px;" class="previous">Prev</div>';
                 buffer += '        <input type="text" title="' +I18N.message("perc.ui.template.create@Pages Jump") + '" class="perc-jump" name="perc-template-pages-controls-jump" autocomplete="off" />';
-                buffer += '        <div role="button" tabindex="0" style="right:0px;" class="next">Next</div>';
+                buffer += '        <div role="button" tabindex="0" title="' +I18N.message("perc.ui.common.label@Next") + '" style="right:0px;" class="next">Next</div>';
                 buffer += '    </form>';
                 buffer += '    <div class="perc-template-showing" style="width: 100px; margin: 6px 0pt 0px 24px;">';
                 buffer += '        Items: <span class="perc-template-page-group-range">0-0</span>';
@@ -472,11 +472,11 @@
             {
                 if($(".perc-prev-templates-carousel").length == 0)
                 {
-                    var scrollbarDivLeft = $('<div class="perc-prev-templates-carousel" />').append($('<a id="perc_prev_templates_carousel_arrow" class="prevPageCarousel perc-prev-templates-carousel-arrow"></a>'));
+                    var scrollbarDivLeft = $('<div class="perc-prev-templates-carousel" />').append($('<a role="button" title="' +I18N.message("perc.ui.template.create@Prev") + '" tabindex="0" id="perc_prev_templates_carousel_arrow" class="prevPageCarousel perc-prev-templates-carousel-arrow"></a>'));
 
                     assignedTemplatesDiv.css("overflow", "hidden");
 
-                    var scrollbarDivRight = $('<div class="perc-next-templates-carousel" />').append($('<a id="perc_next_templates_carousel_arrow" class="nextPageCarousel perc-next-templates-carousel-arrow"></a>'));
+                    var scrollbarDivRight = $('<div class="perc-next-templates-carousel" />').append($('<a role="button" title="' +I18N.message("perc.ui.common.label@Next") + '" tabindex="0" id="perc_next_templates_carousel_arrow" class="nextPageCarousel perc-next-templates-carousel-arrow"></a>'));
 
                     assignedTemplatesDiv.parents("#perc-activated-templates-scrollable").prepend(scrollbarDivRight);
                     assignedTemplatesDiv.parents("#perc-activated-templates-scrollable").prepend(scrollbarDivLeft);

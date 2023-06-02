@@ -178,10 +178,10 @@
         <div id="tabs" class = 'perc-template-tabs'>
             <ul>
                 <li>
-                    <a id="perc-tab-content" href="#tabs-2" ><i18n:message key="perc.ui.web.mgt@Content"/></a>
+                    <a role="button" tabindex="0" id="perc-tab-content" href="#tabs-2" ><i18n:message key="perc.ui.web.mgt@Content"/></a>
                 </li>
-                <li><a id="perc-tab-layout" href="#tabs-3" ><i18n:message key = "perc.ui.web.mgt@Layout"/></a></li>
-                <li><a id="perc-tab-style" href="#tabs-4" ><i18n:message key = "perc.ui.web.mgt@Style"/></a></li>
+                <li><a role="button" tabindex="0" id="perc-tab-layout" href="#tabs-3" ><i18n:message key = "perc.ui.web.mgt@Layout"/></a></li>
+                <li><a role="button" tabindex="0" id="perc-tab-style" href="#tabs-4" ><i18n:message key = "perc.ui.web.mgt@Style"/></a></li>
                 <div class="perc-template-details">
                     <div id="perc_selected_template_name"><span class ="perc-template-name-label"><i18n:message key = "perc.ui.edit.template@Editing Template"/></span> <span class = "perc-template-name-text"></span></div>
                 </div>
