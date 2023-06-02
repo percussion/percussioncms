@@ -62,13 +62,18 @@
                 <%} %>
             </div>
             <p class="hint"><strong><i18n:message key="perc.ui.newsitedialog.text@page1 summary"/></strong></p>
-            <div class="perc_url_field">
+            <!--
+			<div class="perc_url_field">
                 <input class="perc_dialog_input" type="radio" name="site_type" id="type_url" value="type_url" checked="checked" /><label class="perc_dialog_label" for="type_url"><i18n:message key="perc.ui.newsitedialog.label@URL:"/></label>
                 <br/>
-                <input class="perc_dialog_input perc_dialog_field" id="url" name="url" maxlength="2048" type="text" title="URL"/>
+				-->
+				<!-- Change -->
+			<!--
+                <input title="url" class="perc_dialog_input perc_dialog_field" id="url" name="url" maxlength="2048" type="text"/>
             </div>
+			-->
             <div class="perc_percussion_template_field">
-                <input class="perc_dialog_input" type="radio" name="site_type" id="type_percussion_template" value="type_percussion_template" /><label class="perc_dialog_label" for="type_percussion_template"><i18n:message key="Percussion Templates"/></label>
+                <input class="perc_dialog_input" type="radio" name="site_type" id="type_percussion_template" value="type_percussion_template" checked="checked"  /><label class="perc_dialog_label" for="type_percussion_template"><i18n:message key="Percussion Templates"/></label>
             </div>
         </div>
         <div id="perc_wizard_step2" class="perc_wizard_step">
