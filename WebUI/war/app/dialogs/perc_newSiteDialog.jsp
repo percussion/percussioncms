@@ -21,9 +21,9 @@
 		else
 			lang=locale;
 	}
-    String debug = request.getParameter("debug");     
-    boolean isDebug = "true".equals(debug);     
-    String debugQueryString = isDebug ? "?debug=true" : "";  
+    String debug = request.getParameter("debug");
+    boolean isDebug = "true".equals(debug);
+    String debugQueryString = isDebug ? "?debug=true" : "";
     PSUtilityService utilityService = (PSUtilityService) PSSpringBeanProvider.getBean("utilityService");
     PSSiteDataService siteService = (PSSiteDataService) PSSpringBeanProvider.getBean("siteDataService");
     boolean isSaaS = utilityService.isSaaSEnvironment();
@@ -65,7 +65,7 @@
             <div class="perc_url_field">
                 <input class="perc_dialog_input" type="radio" name="site_type" id="type_url" value="type_url" checked="checked" /><label class="perc_dialog_label" for="type_url"><i18n:message key="perc.ui.newsitedialog.label@URL:"/></label>
                 <br/>
-                <input class="perc_dialog_input perc_dialog_field" id="url" name="url" maxlength="2048" type="text" title="URL"/>
+                <input title="url" class="perc_dialog_input perc_dialog_field" id="url" name="url" maxlength="2048" type="text"/>
             </div>
             <div class="perc_percussion_template_field">
                 <input class="perc_dialog_input" type="radio" name="site_type" id="type_percussion_template" value="type_percussion_template" /><label class="perc_dialog_label" for="type_percussion_template"><i18n:message key="Percussion Templates"/></label>
