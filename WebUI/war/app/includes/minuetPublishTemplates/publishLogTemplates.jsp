@@ -35,7 +35,7 @@
                             </select>
                         </div>
                         <div class="d-flex align-items-end form-group col-sm">
-                            <button aria-label='<i18n:message key="perc.ui.perc.pub.reports@Delete Logs"/>' type="button" id="percDeleteServerLogs" class="btn btn-sm btn-block perc-btn-inverse"><i class="fas fa-trash-alt"></i></button>
+                            <button title='<i18n:message key="perc.ui.perc.pub.reports@Delete Logs"/>' tabindex="0" aria-label='<i18n:message key="perc.ui.perc.pub.reports@Delete Logs"/>' type="button" id="percDeleteServerLogs" class="btn btn-sm btn-block perc-btn-inverse"><i class="fas fa-trash-alt"></i></button>
                         </div>
                     </div>
                 </csrf:form>

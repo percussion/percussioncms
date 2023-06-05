@@ -19,45 +19,45 @@
     <div class="container mt-5">
         <div class="row">
             <div class="col-6 col-md-4 col-lg-3">
-                <div role="button" tabindex="0" data-navmgr="VIEW_HOME" class="perc-nav-item perc-actions-menu-item text-center">
+                <div role="button" title='<i18n:message key="perc.ui.navMenu.home@Home"/>' tabindex="0" data-navmgr="VIEW_HOME" class="perc-nav-item perc-actions-menu-item text-center">
                     <i aria-hidden class="fas fa-home fa-5x fa-fw"></i>
                     <span class="perc-nav-description"><i18n:message key="perc.ui.navMenu.home@Home"/></span>
                 </div>
             </div>
             <div class="col-6 col-md-4 col-lg-3">
-                <div role="button" tabindex="0" data-navmgr="VIEW_DASHBOARD" class="perc-nav-item perc-actions-menu-item text-center">
+                <div role="button" title='<i18n:message key="perc.ui.navMenu.dashboard@Dashboard"/>' tabindex="0" data-navmgr="VIEW_DASHBOARD" class="perc-nav-item perc-actions-menu-item text-center">
                     <i aria-hidden class="perc-nav-icon fas fa-tachometer-alt fa-5x fa-fw"></i>
                     <span class="perc-nav-description"><i18n:message key="perc.ui.navMenu.dashboard@Dashboard"/></span>
                 </div>
             </div>
             <div class="col-6 col-md-4 col-lg-3">
-                <div role="button" tabindex="0" data-navmgr="VIEW_EDITOR" class="perc-nav-item perc-actions-menu-item text-center">
+                <div role="button" title='<i18n:message key="perc.ui.navMenu.webmgt@Editor"/>' tabindex="0" data-navmgr="VIEW_EDITOR" class="perc-nav-item perc-actions-menu-item text-center">
                     <i aria-hidden class="perc-nav-icon fas fa-edit fa-5x fa-fw"></i>
                     <span class="perc-nav-description"><i18n:message key="perc.ui.navMenu.webmgt@Editor"/></span>
                 </div>
             </div>
             <% if (isAdmin || isDesigner) { %>
             <div class="col-6 col-md-4 col-lg-3">
-                <div role="button" tabindex="0" data-navmgr="VIEW_SITE_ARCH" class="perc-nav-item perc-actions-menu-item text-center">
+                <div role="button" title='<i18n:message key="perc.ui.navMenu.architecture@Architecture"/>' tabindex="0" data-navmgr="VIEW_SITE_ARCH" class="perc-nav-item perc-actions-menu-item text-center">
                     <i aria-hidden class="perc-nav-icon fas fa-sitemap fa-5x fa-fw"></i>
                     <span class="perc-nav-description"><i18n:message key="perc.ui.navMenu.architecture@Architecture"/></span>
                 </div>
             </div>
             <div class="col-6 col-md-4 col-lg-3">
-                <div role="button" tabindex="0" data-navmgr="VIEW_DESIGN" class="perc-nav-item perc-actions-menu-item text-center">
+                <div role="button" title='<i18n:message key="perc.ui.navMenu.design@Design"/>' tabindex="0" data-navmgr="VIEW_DESIGN" class="perc-nav-item perc-actions-menu-item text-center">
                     <i aria-hidden class="perc-nav-icon fas fa-paint-brush fa-5x fa-fw"></i>
                     <span class="perc-nav-description"><i18n:message key="perc.ui.navMenu.design@Design"/></span>
                 </div>
             </div>
             <div class="col-6 col-md-4 col-lg-3">
-                <div role="button" tabindex="0" data-navmgr="VIEW_PUBLISH" class="perc-nav-item perc-actions-menu-item text-center">
+                <div role="button"  title='<i18n:message key="perc.ui.navMenu.publish@Publish"/>' tabindex="0" data-navmgr="VIEW_PUBLISH" class="perc-nav-item perc-actions-menu-item text-center">
                     <i aria-hidden class="perc-nav-icon fas fa-newspaper fa-5x fa-fw"></i>
                     <span class="perc-nav-description"><i18n:message key="perc.ui.navMenu.publish@Publish"/></span>
                 </div>
             </div>
             <% } %><% if (isAdmin) { %>
             <div class="col-6 col-md-4 col-lg-3">
-                <div role="button" tabindex="0" data-navmgr="VIEW_WORKFLOW" class="perc-nav-item perc-actions-menu-item text-center">
+                <div role="button" title='<i18n:message key="perc.ui.navMenu.admin@Administration"/>' tabindex="0" data-navmgr="VIEW_WORKFLOW" class="perc-nav-item perc-actions-menu-item text-center">
                     <i aria-hidden class="perc-nav-icon fas fa-users-cog fa-5x fa-fw"></i>
                     <span class="perc-nav-description"><i18n:message key="perc.ui.navMenu.admin@Administration"/></span>
                 </div>
@@ -65,7 +65,7 @@
             <% } %>
             <% if (isWdgActive && (isAdmin || isDesigner)) { %>
             <div class="col-6 col-md-4 col-lg-3">
-                <div role="button" tabindex="0" data-navmgr="VIEW_WIDGET_BUILDER" class="perc-nav-item perc-actions-menu-item text-center">
+                <div role="button" title='<i18n:message key="perc.ui.navMenu.admin@Widget Builder"/>' tabindex="0" data-navmgr="VIEW_WIDGET_BUILDER" class="perc-nav-item perc-actions-menu-item text-center">
                     <i aria-hidden class="perc-nav-icon fas fa-wrench fa-5x fa-fw"></i>
                     <span class="perc-nav-description"><i18n:message key="perc.ui.navMenu.admin@Widget Builder"/></span>
                 </div>
@@ -80,7 +80,7 @@
         <section id="percNavMenuButtons">
             <div class="row">
                 <div class="col">
-                    <button title="<i18n:message key="perc.ui.change.pw@Change Password" />" role="button" class="perc-toggle-password btn btn-block perc-btn-inverse perc-nav-menu-button text-left">
+                    <button tabindex="0" title='<i18n:message key="perc.ui.change.pw@Change Password" />' role="button" class="perc-toggle-password btn btn-block perc-btn-inverse perc-nav-menu-button text-left">
                   <span>
                     <i aria-hidden class="fas fa-user-cog  fa-fw"></i>
                   </span>
@@ -92,7 +92,7 @@
             </div>
             <div class="row">
                 <div class="col">
-                    <a href="https://help.percussion.com" target="_blank" rel="noopener noreferrer" title="<i18n:message key="perc.ui.common.label@Help" />" role="button" class="btn btn-block perc-btn-inverse perc-nav-menu-button text-left">
+                    <a tabindex="0" role="button" href="https://help.percussion.com" target="_blank" rel="noopener noreferrer" title="<i18n:message key="perc.ui.common.label@Help" />" role="button" class="btn btn-block perc-btn-inverse perc-nav-menu-button text-left">
                   <span>
                     <i aria-hidden class="fas fa-question-circle fa-fw"></i>
                   </span>
@@ -104,7 +104,7 @@
             </div>
             <div class="row">
                 <div class="col">
-                    <a href="https://github.com/percussion/percussioncms/discussions/" target="_blank" rel="noopener noreferrer" title="<i18n:message key="perc.ui.common.label@Percussion Community" />" role="button" class="btn btn-block perc-btn-inverse perc-nav-menu-button text-left">
+                    <a tabindex="0" role="button" href="https://github.com/percussion/percussioncms/discussions/" target="_blank" rel="noopener noreferrer" title="<i18n:message key="perc.ui.common.label@Percussion Community" />" role="button" class="btn btn-block perc-btn-inverse perc-nav-menu-button text-left">
                   <span>
                     <i aria-hidden class="fas fa-hands-helping fa-fw"></i>
                   </span>
@@ -116,7 +116,7 @@
             </div>
             <div class="row">
                 <div class="col">
-                    <button title="<i18n:message key="perc.ui.common.label@About" />" role="button" class="perc-toggle-about btn btn-block perc-btn-inverse perc-nav-menu-button text-left">
+                    <button tabindex="0" role="button" title="<i18n:message key="perc.ui.common.label@About" />" role="button" class="perc-toggle-about btn btn-block perc-btn-inverse perc-nav-menu-button text-left">
                   <span>
                     <i aria-hidden class="fas fa-info-circle fa-fw"></i>
                   </span>
@@ -128,7 +128,7 @@
             </div>
             <div class="row">
                 <div class="col">
-                    <a href="/Rhythmyx/logout" title="<i18n:message key="perc.ui.common.label@Log Out" />" role="button" class="btn btn-block perc-btn-inverse perc-nav-menu-button text-left">
+                    <a tabindex="0" role="button" href="/Rhythmyx/logout" title="<i18n:message key="perc.ui.common.label@Log Out" />" role="button" class="btn btn-block perc-btn-inverse perc-nav-menu-button text-left">
                   <span>
                     <i aria-hidden class="fas fa-sign-out-alt fa-fw"></i>
                   </span>
@@ -159,7 +159,7 @@
                 <p><%= ver %></p>
                 <p>Copyright &copy; <%= year %> by Percussion&nbsp;Software&nbsp;Inc.</p>
                 <p><a title="Percussion Software" href="https://www.percussion.com" target="_blank" rel="noopener noreferrer" class="perc-about-link">https://www.percussion.com</a></p>
-                <p><button class="perc-toggle-about perc-close-about btn btn-block perc-confirmation-button perc-confirmation-button-dark"><i18n:message key="perc.ui.common.label@Close" /></button></p>
+                <p><button tabindex="0" title='<i18n:message key="perc.ui.common.label@Close" />' class="perc-toggle-about perc-close-about btn btn-block perc-confirmation-button perc-confirmation-button-dark"><i18n:message key="perc.ui.common.label@Close" /></button></p>
             </div>
         </div>
     </div>
@@ -189,10 +189,10 @@
                     </div>
                     <div class="row">
                         <div class="col-6">
-                            <button role="button" class="perc-toggle-password btn btn-block perc-confirmation-button perc-confirmation-button-dark"><i18n:message key="perc.ui.common.label@Cancel" /></button>
+                            <button role="button" tabindex="0" title='<i18n:message key="perc.ui.common.label@Cancel" />' class="perc-toggle-password btn btn-block perc-confirmation-button perc-confirmation-button-dark"><i18n:message key="perc.ui.common.label@Cancel" /></button>
                         </div>
                         <div class="col-6">
-                            <button role="button" class="btn btn-block perc-confirmation-button perc-confirmation-button-dark perc-submit-password-change"><i18n:message key="perc.ui.common.label@Submit" /></button>
+                            <button role="button" tabindex="0" title='<i18n:message key="perc.ui.common.label@Submit" />' class="btn btn-block perc-confirmation-button perc-confirmation-button-dark perc-submit-password-change"><i18n:message key="perc.ui.common.label@Submit" /></button>
                         </div>
                     </div>
                 </div>
