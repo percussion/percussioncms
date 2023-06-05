@@ -133,12 +133,7 @@
             if (config.showVideo === true)
             {
                 dialogMarkup.append(
-                //$('<div align="center" style="margin-top:24px;height: 315px; overflow:hidden">')
                 $('<div align="center" style="margin-top:24px; overflow:hidden">')
-                    /*
-                    .append(
-                        $('<iframe id="perc_import_video" src="//help.percussion.com/in-product/single2" scrolling="no" marginheight="0" marginwidth="0" frameborder="0" width="560px" height="0px" style="display: block; overflow: hidden">')
-                    )*/
                     .append(
                         $('<img id="perc_import_image" src="../images/images/ImportVideoNotFound.png" width="560px" height="0px">')
                     )
