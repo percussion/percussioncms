@@ -14,7 +14,7 @@
         <div class="row">
             <div class="col-md-4 order-sm-first order-md-2 mb-3">
                 <div class="btn-group btn-group-toggle d-flex" data-toggle="buttons">
-                    <label title='<i18n:message key = "perc.ui.publish.title@Card"/>' tabindex="0" role="Button" sr-only='<i18n:message key = "perc.ui.publish.title@Card"/>' class="btn btn-secondary perc-site-view-toggle-button active">
+                    <label title='<i18n:message key = "perc.ui.publish.title@Card"/>' tabindex="0" role="button" sr-only='<i18n:message key = "perc.ui.publish.title@Card"/>' class="btn btn-secondary perc-site-view-toggle-button active">
                         <input value="card" type="radio" name="percSiteView" id="percSiteCardOption" autocomplete="off" checked><i aria-hidden class="fas fa-th fa-fw"></i>&nbsp;&nbsp;<i18n:message key = "perc.ui.publish.title@Card"/>
                     </label>
                     <label title='<i18n:message key = "perc.ui.publish.title@List"/>' tabindex="0" role="Button" sr-only='<i18n:message key = "perc.ui.publish.title@List"/>' class="btn btn-secondary perc-site-view-toggle-button">

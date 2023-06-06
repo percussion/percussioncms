@@ -80,7 +80,7 @@
         <section id="percNavMenuButtons">
             <div class="row">
                 <div class="col">
-                    <button tabindex="0" title='<i18n:message key="perc.ui.change.pw@Change Password" />' role="button" class="perc-toggle-password btn btn-block perc-btn-inverse perc-nav-menu-button text-left">
+                    <button tabindex="0" title='<i18n:message key="perc.ui.change.pw@Change Password" />'  class="perc-toggle-password btn btn-block perc-btn-inverse perc-nav-menu-button text-left">
                   <span>
                     <i aria-hidden class="fas fa-user-cog  fa-fw"></i>
                   </span>
@@ -116,7 +116,7 @@
             </div>
             <div class="row">
                 <div class="col">
-                    <button tabindex="0" role="button" title="<i18n:message key="perc.ui.common.label@About" />" role="button" class="perc-toggle-about btn btn-block perc-btn-inverse perc-nav-menu-button text-left">
+                    <button tabindex="0" title="<i18n:message key="perc.ui.common.label@About" />" class="perc-toggle-about btn btn-block perc-btn-inverse perc-nav-menu-button text-left">
                   <span>
                     <i aria-hidden class="fas fa-info-circle fa-fw"></i>
                   </span>
@@ -189,10 +189,10 @@
                     </div>
                     <div class="row">
                         <div class="col-6">
-                            <button role="button" tabindex="0" title='<i18n:message key="perc.ui.common.label@Cancel" />' class="perc-toggle-password btn btn-block perc-confirmation-button perc-confirmation-button-dark"><i18n:message key="perc.ui.common.label@Cancel" /></button>
+                            <button tabindex="0" title='<i18n:message key="perc.ui.common.label@Cancel" />' class="perc-toggle-password btn btn-block perc-confirmation-button perc-confirmation-button-dark"><i18n:message key="perc.ui.common.label@Cancel" /></button>
                         </div>
                         <div class="col-6">
-                            <button role="button" tabindex="0" title='<i18n:message key="perc.ui.common.label@Submit" />' class="btn btn-block perc-confirmation-button perc-confirmation-button-dark perc-submit-password-change"><i18n:message key="perc.ui.common.label@Submit" /></button>
+                            <button tabindex="0" title='<i18n:message key="perc.ui.common.label@Submit" />' class="btn btn-block perc-confirmation-button perc-confirmation-button-dark perc-submit-password-change"><i18n:message key="perc.ui.common.label@Submit" /></button>
                         </div>
                     </div>
                 </div>
