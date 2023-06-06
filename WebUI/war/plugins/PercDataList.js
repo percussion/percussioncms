@@ -69,9 +69,9 @@
         if (options.enableAdd)
             container.find('.perc-item-list-label').append($('<div class="perc-item-add-button" role="button" tabindex="0"/>').attr('title', options.addTitle));
         if(options.collapsible) {
-            container.find('.perc-item-list-label').append($('<span style="float: left;" id="perc-wf-min-max" class = "perc-items-minimizer" />'));
+            container.find('.perc-item-list-label').append($('<span style="float: left;" role="button" tabindex="0" id="perc-wf-min-max" class = "perc-items-minimizer" />').attr('title', I18N.message("perc.ui.workflow.view@Minimize")));
         }    
-        
+
         var list = $('<div class="perc-itemname-list" />').append($("<ul/>"));
         container.append(list);
         updateList(container, []);
@@ -87,7 +87,13 @@
 
         container.find("#perc-wf-min-max").off("click").on("click",function() {
             $(this).toggleClass('perc-items-minimizer').toggleClass('perc-items-maximizer');
-           container.find('.perc-itemname-list').slideToggle("fast");
+			var myclass = $(this).attr('class');
+			if(myclass == "perc-items-minimizer"){
+				$(this).attr('title',I18N.message("perc.ui.workflow.view@Minimize"));
+			}else if(myclass == "perc-items-maximizer"){
+				$(this).attr('title',I18N.message("perc.ui.workflow.view@Maximize"));
+			}
+		   container.find('.perc-itemname-list').slideToggle("fast");
         
         });
         

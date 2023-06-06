@@ -102,12 +102,21 @@
             var head = $('<div class="' + LABEL_HEAD_CLASS + '" />').html(options.title);//.css('color', '#0099CC');
             container.append(head);
             // Enable/disable collapse and add buttons (the sentence after '&&' is evaluated only if the option is truthy)
-            options.collapsible  && head.append($('<span style="float: left;" class ="' + COLLAPSE_BTN_CLASS + ' ' + MINIMIZER_CLASS + '" />'));
-            options.enableAdd    && head.append($('<div class="' + ADD_BTN_CLASS + '"/>').attr('title', options.addTitle));
+            options.collapsible  && head.append($('<span role="button" tabindex="0" style="float: left;" class ="' + COLLAPSE_BTN_CLASS + ' ' + MINIMIZER_CLASS + '" />').attr('title', I18N.message("perc.ui.workflow.view@Minimize")));
+            options.enableAdd    && head.append($('<div role="button" tabindex="0" class="' + ADD_BTN_CLASS + '"/>').attr('title', options.addTitle));
 
             // Bind collapse and add button evetns
             container.find('.' + COLLAPSE_BTN_CLASS).off().on("click",function() {
                 $(this).toggleClass(MINIMIZER_CLASS).toggleClass(MAXIMIZER_CLASS);
+
+				var combinedClass = $(this).attr('class');
+				var minmaxClass = combinedClass.split(" ");
+				if(minmaxClass[1] == MINIMIZER_CLASS){
+					$(this).attr('title',I18N.message("perc.ui.workflow.view@Minimize"));
+				}else if(minmaxClass[1] == MAXIMIZER_CLASS){
+					$(this).attr('title',I18N.message("perc.ui.workflow.view@Maximize"));
+				}
+
                 container.find('.' + TREELIST_CONTAINER_CLASS).slideToggle("fast");
             });
             container.find('.' + ADD_BTN_CLASS).off().on("click",function() {
