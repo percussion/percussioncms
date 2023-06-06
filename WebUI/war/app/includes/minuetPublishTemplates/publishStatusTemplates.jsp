@@ -37,7 +37,7 @@
             </div>
         </td>
         <td class="align-middle">
-            <button data-perc-job-id="{{jobId}}" role="button" class="btn btn-sm perc-btn-primary perc-stop-job-button" {{#if isStopping}}disabled{{/if}}><i18n:message key="perc.ui.publish.title@Stop"></i18n:message></button>
+            <button tabindex="0" title='<i18n:message key="perc.ui.publish.title@Stop"></i18n:message>' data-perc-job-id="{{jobId}}" class="btn btn-sm perc-btn-primary perc-stop-job-button" {{#if isStopping}}disabled{{/if}}><i18n:message key="perc.ui.publish.title@Stop"></i18n:message></button>
         </td>
     </tr>
     {{/each}}
