@@ -9775,6 +9775,26 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
 	        <seg>Añadir un nuevo flujo de trabajo</seg>
 	    </tuv>
 	 </tu>
+	 <tu tuid="perc.ui.workflow.view@Minimize">
+     	    <prop type="sectionname" xml:lang="en-us">Initialization</prop>
+     	    <note xml:lang="en-us"></note>
+     	    <tuv xml:lang="en-us">
+     	        <seg>Minimize</seg>
+     	    </tuv>
+     	      <tuv xml:lang="es">
+     	        <seg>Minimizar</seg>
+     	    </tuv>
+     	 </tu>
+     	 <tu tuid="perc.ui.workflow.view@Maximize">
+     	    <prop type="sectionname" xml:lang="en-us">Initialization</prop>
+     	    <note xml:lang="en-us"></note>
+     	    <tuv xml:lang="en-us">
+     	        <seg>Maximize</seg>
+     	    </tuv>
+     	      <tuv xml:lang="es">
+     	        <seg>Maximizar</seg>
+     	    </tuv>
+     	 </tu>
 	 <tu tuid="perc.ui.workflow.view@Delete Workflow">
 	    <prop type="sectionname" xml:lang="en-us">Initialization</prop>
 	    <note xml:lang="en-us"></note>
