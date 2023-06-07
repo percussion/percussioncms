@@ -148,26 +148,26 @@
         </div>
         <ul role="tablist">
             <li role="presentation">
-                <a id="perc-tab-widget-general" class="perc-widget-def-tab-link"
+                <a id="perc-tab-widget-general" role="button" tabindex="0" title='<i18n:message key = "perc.ui.folder.properties.dialog@General"/>' class="perc-widget-def-tab-link"
                    href="#perc-widget-tab-general" role="tab"><i18n:message key = "perc.ui.folder.properties.dialog@General"/></a>
             </li>
             <li role="presentation">
-                <a id="perc-tab-widget-content" class="perc-widget-def-tab-link"
+                <a id="perc-tab-widget-content" role="button" tabindex="0" title='<i18n:message key = "perc.ui.widget.builder@Content"/>' class="perc-widget-def-tab-link"
                    href="#perc-widget-tab-content" role="tab"><i18n:message key = "perc.ui.widget.builder@Content"/></a>
             </li>
             <li role="presentation">
-                <a id="perc-tab-widget-resources" class="perc-widget-def-tab-link" href="#perc-widget-tab-resources" role="tab"><i18n:message key = "perc.ui.widget.builder@Resources"/></a>
+                <a id="perc-tab-widget-resources" role="button" tabindex="0" title='<i18n:message key = "perc.ui.widget.builder@Resources"/>' class="perc-widget-def-tab-link" href="#perc-widget-tab-resources" role="tab"><i18n:message key = "perc.ui.widget.builder@Resources"/></a>
             </li>
             <li role="presentation">
-                <a id="perc-tab-widget-display" class="perc-widget-def-tab-link"
+                <a id="perc-tab-widget-display"role="button" tabindex="0" title='<i18n:message key = "perc.ui.widget.builder@Display"/>' class="perc-widget-def-tab-link"
                    href="#perc-widget-tab-display" role="tab"><i18n:message key = "perc.ui.widget.builder@Display"/></a>
             </li>
         </ul>
         <div id="perc-widget-def-action-bar">
             <div id="perc-widget-menu" style='position:relative;'>
                 <div id="perc-widget-menu-buttons" style="display:none">
-                    <button id="perc-widget-save" class="btn btn-primary" name="perc-widget-save" style="float: right;margin-right:10px;"><i18n:message key ="perc.ui.button@Save"/> </button>
-                    <button id="perc-widget-close" class="btn btn-primary" name="perc-widget-close" style="float: right;"><i18n:message key ="perc.ui.common.label@Cancel"/> </button>
+                    <button id="perc-widget-save" tabindex="0" title='<i18n:message key ="perc.ui.button@Save"/>' class="btn btn-primary" name="perc-widget-save" style="float: right;margin-right:10px;"><i18n:message key ="perc.ui.button@Save"/> </button>
+                    <button id="perc-widget-close" tabindex="0" title='<i18n:message key ="perc.ui.common.label@Cancel"/>' class="btn btn-primary" name="perc-widget-close" style="float: right;"><i18n:message key ="perc.ui.common.label@Cancel"/> </button>
                 </div>
             </div>
         </div>
