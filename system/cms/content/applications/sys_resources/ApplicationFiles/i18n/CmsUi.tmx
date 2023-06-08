@@ -3213,6 +3213,16 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
         <seg>Introducir un rol</seg>
     </tuv>
 </tu>
+<tu tuid="perc.ui.rolePropsDialog.title@Add User">
+    <prop type="sectionname" xml:lang="en-us">Role Properties</prop>
+    <note xml:lang="en-us">Dialog to enter role</note>
+    <tuv xml:lang="en-us">
+        <seg>Add User</seg>
+    </tuv>
+    <tuv xml:lang="es">
+        <seg>Agregar usuario</seg>
+    </tuv>
+</tu>
 <tu tuid="perc.ui.folderPropsDialog.inputField@Enter a username">
     <prop type="sectionname" xml:lang="en-us">Folder Properties Dialog</prop>
     <note xml:lang="en-us">Helpful text</note>
