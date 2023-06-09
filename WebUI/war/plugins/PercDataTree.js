@@ -51,7 +51,8 @@
         cookieId            : "dynatree-checkbox",
         idPrefix            : "dynatree-checkbox-",
         customOnRender      : function(){},
-        customOnExpand      : function(){}
+        customOnExpand      : function(){},
+		keyboard            : true
      };
 
     // Some CLASSES to reuse in selectors
@@ -170,7 +171,18 @@
                 span = $(nodeSpan);
                 var uls  = span.parents("ul").length - 1;
                 span.attr("for",dtnode.data.title).css("padding-left", uls * DYNATREE_UL_LI_PADDING + DYNATREE_UL_LI_PADDING_OFFSET).find('.dynatree-title').addClass("perc-ellipsis");
-                // If the element has no children, correct the align
+                var titleSpan = span.find('.dynatree-title');
+				var checkSpan = span.find('.dynatree-checkbox');
+				if(typeof titleSpan !== 'undefined'){
+
+				}
+				if(typeof checkSpan !== 'undefined'){
+					checkSpan.attr("title",dtnode.data.title);
+					checkSpan.attr("role","button");
+					checkSpan.attr("tabindex","0");
+				}
+
+				// If the element has no children, correct the align
                 if (! $(span[0]).hasClass('dynatree-has-children')) {
                     span.find('.dynatree-title').css('padding-left', '13px');
                 }

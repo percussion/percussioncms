@@ -146,12 +146,22 @@
             .append(
                 $('<div id="perc-assign-workflow-sites-title"></div>')
                     .append($('<div id="perc-assign-workflow-sites-expander" style="display: inline;"></div>')
-                        .append($('<div id="perc-assign-workflow-sites-title-span" class="perc-assign-workflow-expander-image collapsed">&nbsp;</div>'))
+                        .append($('<div id="perc-assign-workflow-sites-title-span" role="button" tabindex="0" title="'+I18N.message("perc.ui.workflow.view@Minimize")+'" class="perc-assign-workflow-expander-image collapsed">&nbsp;</div>'))
                         .append('<span>' + I18N.message("perc.ui.assign.workflow@Sites Collapsible Panel") + '</span>')
                         .on("click",function() {
-                            $("#perc-assign-workflow-sites-tree-wrapper").toggle();
-                            $("#perc-assign-workflow-sites-title-span").toggleClass('collapsed');
-                            swapShowInfoSpans("sites");
+
+						$("#perc-assign-workflow-sites-tree-wrapper").toggle();
+						$("#perc-assign-workflow-sites-title-span").toggleClass('collapsed');
+						swapShowInfoSpans("sites");
+
+						var topSpan = $("#perc-assign-workflow-sites-title-span");
+						var combinedClass = $(topSpan).attr('class');
+						if(combinedClass == "perc-assign-workflow-expander-image collapsed"){
+							$(topSpan).attr('title',I18N.message("perc.ui.workflow.view@Minimize"));
+						}else if(combinedClass == "perc-assign-workflow-expander-image"){
+							$(topSpan).attr('title',I18N.message("perc.ui.workflow.view@Maximize"));
+						}
+
                         })
                     )
                     .append($('<span class="perc-assign-workflow-sites-apply-top">Apply <span class="perc-assign-workflow-sites-apply-top-icon" title="' + infoTitle + '"/></span>')
@@ -169,12 +179,21 @@
             .append(
                 $('<div id="perc-assign-workflow-assets-title"></div>')
                     .append($('<div id="perc-assign-workflow-assets-expander" style="display: inline;"></div>')
-                        .append($('<div id="perc-assign-workflow-assets-title-span" class="perc-assign-workflow-expander-image collapsed">&nbsp;</div>'))
+                        .append($('<div id="perc-assign-workflow-assets-title-span" role="button" tabindex="0" title="'+I18N.message("perc.ui.workflow.view@Minimize")+'" class="perc-assign-workflow-expander-image collapsed">&nbsp;</div>'))
                         .append('<span> ' + I18N.message("perc.ui.assign.workflow@Assets Collapsible Panel") + ' </span>')
                         .on("click",function() {
                             $("#perc-assign-workflow-assets-tree-wrapper").toggle();
                             $("#perc-assign-workflow-assets-title-span").toggleClass('collapsed');
                             swapShowInfoSpans("assets");
+
+							var topSpan = $("#perc-assign-workflow-assets-title-span");
+							var combinedClass = $(topSpan).attr('class');
+							if(combinedClass == "perc-assign-workflow-expander-image collapsed"){
+								$(topSpan).attr('title',I18N.message("perc.ui.workflow.view@Minimize"));
+							}else if(combinedClass == "perc-assign-workflow-expander-image"){
+								$(topSpan).attr('title',I18N.message("perc.ui.workflow.view@Maximize"));
+							}
+
                         })
                     )
                     .append($('<span class="perc-assign-workflow-assets-apply-top">Apply <span class="perc-assign-workflow-assets-apply-top-icon" title="' + infoTitle + '"/></span>')
@@ -364,6 +383,14 @@
         {
             var newSpan = $('<span />')
                 .addClass("dynatree-custom-checkbox")
+				.attr("role","button")
+				.attr("title","Apply")
+				.attr("tabindex","0")
+				.on("keydown",function(eventHandler){
+					if(eventHandler.code == "Enter" || eventHandler.code == "Space"){
+						document.activeElement.click();
+					}
+				})
                 .on("click",function(eventHandler){
                     if (!$(eventHandler.currentTarget).hasClass("dynatree-custom-checkbox-disabled"))
                     {
