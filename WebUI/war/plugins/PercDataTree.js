@@ -180,6 +180,11 @@
 					checkSpan.attr("title",dtnode.data.title);
 					checkSpan.attr("role","button");
 					checkSpan.attr("tabindex","0");
+					checkSpan.on("keydown",function(eventHandler){
+					if(eventHandler.code == "Space"){
+						document.activeElement.click();
+						}
+					});
 				}
 
 				// If the element has no children, correct the align
