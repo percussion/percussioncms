@@ -398,10 +398,7 @@
                 }
 
                 $('<button></button>').attr("id", fn.id)
-                //.css("background-image", mapping[name].bgimage)
-                //.css("display", mapping[name].display)
-                // .css("height", mapping[name].height)
-                // .css("width", mapping[name].width)
+					.attr("title", name)
                     .css("type", "button")
                     .css("float", "right")
                     .css("margin-right", "10px")
