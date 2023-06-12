@@ -90,7 +90,7 @@
                 var itemName = itemList[i];
                 var html = $("<div class='perc-item-entry'/>")
                     .append(
-                        $("<input type='checkbox'/>")
+                         $("<input type='checkbox' tabindex='0' title='"+itemName+"'/>")
                             .val(itemName)
                     )
                     .append(

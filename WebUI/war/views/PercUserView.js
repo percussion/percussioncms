@@ -93,6 +93,11 @@
                 controller.editSelectedUser();
                 addingNewUser = false;
             });
+			$("#perc-users-edit-user-button").off("keydown").on("keydown",function(eventHandler){
+               if(eventHandler.code == "Enter" || eventHandler.code == "Space"){
+						document.activeElement.click();
+				}
+            });
             $("#perc-users-add-user-button").off("click").on("click",function(){
                 dirtyController.confirmIfDirty(function(){
                     addingNewUser = true;
@@ -100,6 +105,11 @@
                     controller.addNewUser();
                 });
             });
+			$("#perc-users-add-user-button").off("keydown").on("keydown",function(eventHandler){
+               	if(eventHandler.code == "Enter" || eventHandler.code == "Space"){
+						document.activeElement.click();
+				}
+			});
             $("#perc-users-save").off("click").on("click",function(){
                 save();
                 addingNewUser = false;
@@ -113,6 +123,16 @@
             });
             $("#perc-users-add-role-button").off("click").on("click",function(){
                 addRoleToSelectedUser();
+            });
+			$("#perc-users-remove-role-button").off("keydown").on("keydown",function(eventHandler){
+				if(eventHandler.code == "Enter" || eventHandler.code == "Space"){
+						document.activeElement.click();
+				}
+            });
+			$("#perc-users-add-role-button").off("keydown").on("keydown",function(eventHandler){
+                if(eventHandler.code == "Enter" || eventHandler.code == "Space"){
+						document.activeElement.click();
+				}
             });
 
             importDialog.dialog({
