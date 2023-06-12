@@ -45,7 +45,7 @@
 				    <textarea id="perc-roles-description-field" maxlength="255" style="overflow:auto" title="<i18n:message key = "perc.ui.roles@Description"/>"></textarea>
                 </div><br />
                 <div id="perc-roles-homepage-label"><i18n:message key = "perc.ui.roles@Homepage"/><br />
-                    <select id="perc-roles-homepage-field">
+                    <select tabindex="0" title='<i18n:message key = "perc.ui.roles@Homepage"/>' id="perc-roles-homepage-field">
                         <option value="Dashboard"><i18n:message key = "perc.ui.navMenu.dashboard@Dashboard"/></option>
                         <option value="Editor"><i18n:message key = "perc.ui.navMenu.webmgt@Editor"/></option>
                         <option value="Home"><i18n:message key = "perc.ui.navMenu.home@Home"/></option>
@@ -53,8 +53,8 @@
                     <div id="perc-roles-homepage-field-readonly" class="perc-roles-field-readonly"></div>
                 </div>
                 <div id="perc-role-save-cancel-block" style="width:100%; height:50px;"> 
-                    <button id="perc-roles-save"   class="btn btn-primary" name="perc_wizard_save"><i18n:message key ="perc.ui.button@Save"/></button>
-                    <button id="perc-roles-cancel" class="btn btn-primary" name="perc_wizard_cancel"><i18n:message key ="perc.ui.common.label@Cancel"/></button>
+                    <button id="perc-roles-save" tabindex="0" title='<i18n:message key ="perc.ui.button@Save"/>'   class="btn btn-primary" name="perc_wizard_save"><i18n:message key ="perc.ui.button@Save"/></button>
+                    <button id="perc-roles-cancel" tabindex="0" title='<i18n:message key ="perc.ui.common.label@Cancel"/>' class="btn btn-primary" name="perc_wizard_cancel"><i18n:message key ="perc.ui.common.label@Cancel"/></button>
                 </div>
             </div>
             <div           id="perc-roles-users-editor">

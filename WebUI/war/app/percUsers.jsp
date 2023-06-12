@@ -73,9 +73,9 @@
 
 <div id="perc-users-menu" style="height:54px;">
     <div id="perc-button-format">
-        <button id="perc-users-cancel" class="btn btn-primary" name="perc_wizard_cancel">
+        <button title='<i18n:message key="perc.ui.common.label@Cancel" />' tabindex="0" id="perc-users-cancel" class="btn btn-primary" name="perc_wizard_cancel">
             <i18n:message key="perc.ui.common.label@Cancel" /></button>
-        <button id="perc-users-save" class="btn btn-primary" name="perc_wizard_save">
+        <button tabindex="0" title='<i18n:message key="perc.ui.button@Save" />' id="perc-users-save" class="btn btn-primary" name="perc_wizard_save">
             <i18n:message key="perc.ui.button@Save" /></button>
     </div>
 </div>
@@ -110,27 +110,27 @@
                     <div role="button" tabindex="0" id="perc-users-edit-user-button" title="<i18n:message key='perc.ui.users@Edit User Details' />"></div>
                     <div id="perc-users-username-label">
                         <i18n:message key="perc.ui.workflow@Name" /><br />
-						<input id="perc-users-username-field" maxlength="50" autocomplete="nope" title='<i18n:message key="perc.ui.workflow@Name" />'/>
+						<input tabindex="0" id="perc-users-username-field" maxlength="50" autocomplete="nope" title='<i18n:message key="perc.ui.workflow@Name" />'/>
                     </div><br />
                     <div id="perc-users-external-user-label" style="display : none">
                         <i18n:message key="perc.ui.users.import.label@ThisIsLDAPUser" />.</div>
                     <div id="perc-users-password-block">
                         <div id="perc-users-password-label">
                             <i18n:message key="perc.ui.users@Password" /><br />
-							<input id="perc-users-password-field" type="password" value="*******" autocomplete="new-password" title='<i18n:message key="perc.ui.users@Password" />' />
+							<input tabindex="0" id="perc-users-password-field" type="password" value="*******" autocomplete="new-password" title='<i18n:message key="perc.ui.users@Password" />' />
                         </div><br />
                         <div id="perc-users-password-confirm-label">
                             <i18n:message key="perc.ui.users@Confirm Password" /><br />
-							<input id="perc-users-password-confirm-field" type="password" value="*******" autocomplete="new-password" title='<i18n:message key="perc.ui.users@Confirm Password" />' />
+							<input tabindex="0" id="perc-users-password-confirm-field" type="password" value="*******" autocomplete="new-password" title='<i18n:message key="perc.ui.users@Confirm Password" />' />
                         </div><br />
                         <div id="perc-users-email-label">
                             <i18n:message key="perc.ui.users@Email" /><br />
-							<input id="perc-users-email-field" maxlength="250" title='<i18n:message key="perc.ui.users@Email" />'/>
+							<input tabindex="0" id="perc-users-email-field" maxlength="250" title='<i18n:message key="perc.ui.users@Email" />'/>
                         </div><br />
                     </div>
                     <div id="perc-users-available-roles">
                         <div id="perc-users-available-roles-label"><i18n:message key = "perc.ui.users@Available Roles"/></div>
-                        <select size="5"></select>
+                        <select tabindex="0" title='<i18n:message key = "perc.ui.users@Available Roles"/>' size="5"></select>
                     </div>
                     <div id="perc-users-roles-add-remove-buttons">
                         <div role="button" tabindex="0" label="move right" title="move right" id="perc-users-add-role-button"></div>
@@ -140,7 +140,7 @@
                         <div id="perc-users-assigned-roles-label" class="perc-required-field">
                             <i18n:message key="perc.ui.users@Assigned Roles" />
                         </div>
-                        <select size="5">
+                        <select tabindex="0" title='<i18n:message key="perc.ui.users@Assigned Roles" />' size="5">
                         </select>
                     </div>
                 </div>
