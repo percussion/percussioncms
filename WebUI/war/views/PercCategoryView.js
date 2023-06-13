@@ -161,6 +161,11 @@
                 controller.getCategories(this.value);
             });
             
+			$("#perc-categories-add-category-button").off("keydown").on("keydown",function(event) {
+				if(event.code == "Enter" || event.code == "Space"){
+						document.activeElement.click();
+				}
+            });
             $("#perc-categories-add-category-button").off("click").on("click", function(){
                 
                 if (!$.PercNavigationManager.isAdmin()) {
@@ -181,6 +186,11 @@
 
             });
 
+			$("#perc-categories-add-child-category-button").off("keydown").on("keydown",function(event) {
+				if(event.code == "Enter" || event.code == "Space"){
+						document.activeElement.click();
+				}
+            });
             $("#perc-categories-add-child-category-button").off("click").on("click", function(){
                 
                 if (!$.PercNavigationManager.isAdmin()) {
@@ -200,7 +210,11 @@
                 showSelectedCategoryEditor(node);
 
             });
-            
+            $("#perc-categories-delete-category-button").off("keydown").on("keydown",function(event) {
+				if(event.code == "Enter" || event.code == "Space"){
+						document.activeElement.click();
+				}
+            });
             $("#perc-categories-delete-category-button").off("click").on("click", function(){
                 
                 if (!$.PercNavigationManager.isAdmin()) {
@@ -225,6 +239,11 @@
 
             });
             
+			$("#perc-categories-edit-category-button").off("keydown").on("keydown",function(event) {
+				if(event.code == "Enter" || event.code == "Space"){
+						document.activeElement.click();
+				}
+            });
             $("#perc-categories-edit-category-button").off("click").on("click", function(){
                 
                 if (!$.PercNavigationManager.isAdmin()) {
@@ -244,6 +263,11 @@
                     
             });
             
+			$("#perc-categories-moveup-button").off("keydown").on("keydown",function(event) {
+				if(event.code == "Enter" || event.code == "Space"){
+						document.activeElement.click();
+				}
+            });
             $("#perc-categories-moveup-button").off("click").on("click", function(){
                 
                 if (editing)
@@ -262,6 +286,11 @@
                 displayCategoryDetails(container.dynatree("getActiveNode"));
             });
             
+			$("#perc-categories-movedown-button").off("keydown").on("keydown",function(event) {
+				if(event.code == "Enter" || event.code == "Space"){
+						document.activeElement.click();
+				}
+            });
             $("#perc-categories-movedown-button").off("click").on("click", function(){
                 
                 if (editing)
