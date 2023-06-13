@@ -38,9 +38,9 @@
                 '<div class="fieldGroup">' +
                 "<div id='perc-site-general-container'>" +
                 "<label for='perc-site-hostname' class='perc-required-field'>" + I18N.message( "perc.ui.editSiteSectionDialog.label@Site hostname" ) + ":</label> <br/> " +
-                "<input type='text' class='required' tabindex='" + taborder + "' id='perc-site-hostname' maxlength='80' name='site_hostname'/> <br/>" +
+                "<input type='text' class='required' aria-required='true' tabindex='" + taborder + "' id='perc-site-hostname' maxlength='80' name='site_hostname'/> <br/>" +
                 "<label for='perc-page-title-link' class='perc-required-field'>" + I18N.message( "perc.ui.editSiteSectionDialog.label@Home page link text" ) + ":</label> <br/> " +
-                "<input type='text' tabindex='" + taborder + "' id='perc-page-title-link' class='required' name='page_title_link'/><br/> " +
+                "<input type='text' aria-required='true' tabindex='" + taborder + "' id='perc-page-title-link' class='required' name='page_title_link'/><br/> " +
                 "<label for='perc-site-desc'>" + I18N.message( "perc.ui.editSiteSectionDialog.label@Description" ) + ":</label> <br/> " +
                 "<textarea type='text' tabindex='" + taborder + "' id='perc-site-desc' name='site_desc'></textarea><br/> " +
                 "<label for='perc-site-navigation-cssclassnames'>" + I18N.message( "perc.ui.editSiteSectionDialog.label@Navigation class names") + ":</label> <br/> " +
