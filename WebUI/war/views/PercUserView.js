@@ -383,6 +383,12 @@
             $("#perc-username-list ul li div").addClass("perc-user-delete").removeClass("perc-user-delete-disabled").attr("title","Delete user");
             $("#perc-username-list #" + id + " #" + id).addClass("perc-user-delete-disabled").removeClass("perc-user-delete");
 
+			$(".perc-user-delete").off("keydown").on("keydown",function(event) {
+				if(event.code == "Enter" || event.code == "Space"){
+						document.activeElement.click();
+				}
+            });
+
 
             // bind the delete button for each user element
             $(".perc-user-delete").off("click").on("click",function(event) {

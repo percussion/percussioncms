@@ -74,8 +74,8 @@
                     </select>
                 </div><br />
                 <div id="perc-category-save-cancel-block" style="width:100%; height:50px;"> 
-                    <button id="perc-category-save"   class="btn btn-primary" type="button"  name="perc_wizard_save"   style="float: right; margin:0 27px 27px 0px;"><i18n:message key ="perc.ui.button@Save"/> </button>
-                    <button id="perc-category-cancel" class="btn btn-primary" type="button"  name="perc_wizard_cancel" style="float: right; margin: 0 8px 27px 0"><i18n:message key ="perc.ui.common.label@Cancel"/>  </button>
+                    <button id="perc-category-save" tabindex="0" title='<i18n:message key ="perc.ui.button@Save"/>'  class="btn btn-primary" type="button"  name="perc_wizard_save"   style="float: right; margin:0 27px 27px 0px;"><i18n:message key ="perc.ui.button@Save"/> </button>
+                    <button id="perc-category-cancel" tabindex="0" title='<i18n:message key ="perc.ui.common.label@Cancel"/>' class="btn btn-primary" type="button"  name="perc_wizard_cancel" style="float: right; margin: 0 8px 27px 0"><i18n:message key ="perc.ui.common.label@Cancel"/>  </button>
                 </div>
                 <div id="perc-category-details-label"><i18n:message key = "perc.ui.perc.categories@Details"/></div><br />
                 <div id="perc-category-created-by-label"><i18n:message key = "perc.ui.perc.categories@Created By"/> 
