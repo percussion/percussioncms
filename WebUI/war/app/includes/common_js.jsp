@@ -1,6 +1,7 @@
 <!-- Start Common JS -->
-<script src="/cm/jslib/profiles/3x/jquery/jquery-3.6.0.js"></script>
 <script src="/cm/jslib/profiles/3x/libraries/bowser/es5.js"></script>
+<script src="/cm/jslib/profiles/3x/jquery/jquery-3.6.0.js"></script>
+<script src="/cm/jslib/profiles/3x/libraries/bootstrap/js/bootstrap.bundle.js"></script>
 <script src="/cm/jslib/profiles/3x/jquery/libraries/jquery-ui/jquery-ui.js"></script>
 <script src="/cm/jslib/profiles/3x/libraries/perc-retiredjs/json2.js"></script>
 <script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-form/jquery.form.js"></script>
@@ -8,8 +9,8 @@
 <script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.caret.js"></script>
 <script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-datatables/js/jquery.dataTables.js"></script>
 <script src="/cm/plugins/PercViewReadyManager.js"></script>
-<script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-percutils/jquery.percutils.js"></script>
 <script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/tools.scrollable-1.1.2.js"></script>
+<script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-percutils/jquery.percutils.js"></script>
 <script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-dropdown/jquery.dropdown.js"></script>
 <script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-ui-multiselect-widget/jquery.multiselect.js"></script>
 <script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-ui-multiselect-widget/jquery.multiselect.filter.js"></script>
@@ -44,8 +45,8 @@
 <script src="/cm/plugins/PercListEditorWidget.js"></script>
 <script src="/cm/widgets/PercDropdown.js"></script>
 <script src="/cm/services/PercRecentListService.js"></script>
+<script src="/cm/plugins/PercRedirectHandler.js"></script>
 <script src="/cm/plugins/PercExtendUiDialog.js"></script>
-<script src="/cm/plugins/PercPathSelectionDialog.js"></script>
 <script src="/cm/plugins/PercPathSelectionDialog.js"></script>
 <script src="/cm/views/PercCreateNewAssetDialog.js"></script>
 <script src="/cm/plugins/PercFolderPropertiesDialog.js"></script>
