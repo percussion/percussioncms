@@ -7,7 +7,7 @@
         <button id="library-toggle-action-button" data-bind="click:browseLibrary" title="Browse Library" class="button primary-button primary-button-ext">Browse Library</button>
     </div>
 	<div class="gray-tab-bar" data-bind="foreach:sections">
-        <div data-bind="click: $parent.selectedSection, visible:enabled(), css:{'gray-tab-active':isSelected,'gray-tab-item':true}, text:name, attr {id: $root.formatTabId('tab', name) }"></div>
+        <div tabindex="0" data-bind="click: $parent.selectedSection, event:{keyup: $parent.selectedSection}, visible:enabled(), css:{'gray-tab-active':isSelected,'gray-tab-item':true}, text:name, attr {id: $root.formatTabId('tab', name) }"></div>
     </div>
     <div class="tab-content">
     </div>
