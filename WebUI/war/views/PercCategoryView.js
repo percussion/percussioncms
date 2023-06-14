@@ -344,6 +344,11 @@
                 }catch(err) {}
             });
             
+			 $("#perc-categories-publish-staging").off("click").on("click", function(event){
+                if(event.code == "Enter"){
+						document.activeElement.click();
+				}
+            });
             $("#perc-categories-publish-staging").off("click").on("click", function(){
                 if (editing)
                 {
@@ -354,7 +359,13 @@
                 var node = container.dynatree("getActiveNode");
                 publishToDTS(node, "Staging");
             });
-            
+
+			 $("#perc-categories-publish-production").off("click").on("click", function(event){
+                if(event.code == "Enter"){
+						document.activeElement.click();
+				}
+            });
+
             $("#perc-categories-publish-production").off("click").on("click", function(){
                 if (editing)
                 {
@@ -366,6 +377,12 @@
                 publishToDTS(node, "Production");
             });
             
+			$("#perc-categories-publish-both").off("click").on("click", function(event){
+                if(event.code == "Enter"){
+						document.activeElement.click();
+				}
+            });
+
             $("#perc-categories-publish-both").off("click").on("click", function(){
                 if (editing)
                 {
