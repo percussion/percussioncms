@@ -26,12 +26,12 @@
 <div id="perc-category-menu" style="height:54px;"> 
 
 <div class="dropdown"  id="perc-categories-publish">
-    <button id="perc-categories-publish-dropdown" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" style="border-style: outset; border-width:2px;"><i18n:message key = "perc.ui.perc.categories@Publish"/>
+    <button tabindex="0" title='<i18n:message key = "perc.ui.perc.categories@Publish"/>' id="perc-categories-publish-dropdown" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" style="border-style: outset; border-width:2px;"><i18n:message key = "perc.ui.perc.categories@Publish"/>
     <span class="caret"></span></button>
     <ul id="perc-categories-publish-dropdown-menu" class="dropdown-menu pull-right" role="menu" aria-labelledby="perc-categories-publish-dropdown">
-      <li role="presentation"><a role="menuitem" href="#" id="perc-categories-publish-staging"><i18n:message key = "perc.ui.perc.categories@Publish Staging DTS"/></a></li>
-      <li role="presentation"><a role="menuitem" href="#" id="perc-categories-publish-production"><i18n:message key = "perc.ui.perc.categories@Publish Production DTS"/></a></li>
-      <li role="presentation"><a role="menuitem" href="#" id="perc-categories-publish-both"><i18n:message key = "perc.ui.perc.categories@Publish to Both"/></a></li>
+      <li role="presentation"><a tabindex="0" title='<i18n:message key = "perc.ui.perc.categories@Publish Staging DTS"/>' role="menuitem" href="#" id="perc-categories-publish-staging"><i18n:message key = "perc.ui.perc.categories@Publish Staging DTS"/></a></li>
+      <li role="presentation"><a tabindex="0" title='<i18n:message key = "perc.ui.perc.categories@Publish Production DTS"/>' role="menuitem" href="#" id="perc-categories-publish-production"><i18n:message key = "perc.ui.perc.categories@Publish Production DTS"/></a></li>
+      <li role="presentation"><a tabindex="0" title='<i18n:message key = "perc.ui.perc.categories@Publish to Both"/>' role="menuitem" href="#" id="perc-categories-publish-both"><i18n:message key = "perc.ui.perc.categories@Publish to Both"/></a></li>
     </ul>
 
 </div>
