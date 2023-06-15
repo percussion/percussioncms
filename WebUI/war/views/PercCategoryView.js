@@ -421,11 +421,18 @@
             }
             container.dynatree({
                 selectMode: 3,
+				keyboard: true,
                 autoCollapse: true,
                 children: categorytree,
                 onPostInit: function(isReloading, isError) {
                     visitTreeForBaseProperties();
                     this.activateKey("_2");
+					$("a.dynatree-title").each(function(){
+						this.title=this.innerHTML;
+						this.tabIndex="0";
+						this.setAttribute("role", "button");
+
+					});
                 },
                 onQueryActivate: function(flag,node) {
     
