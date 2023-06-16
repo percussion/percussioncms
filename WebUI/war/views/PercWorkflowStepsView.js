@@ -162,7 +162,7 @@
                 stepUp.text(I18N.message("perc.ui.workflow.steps.view@Submit"));
                 percStepColumnSpacer.addClass('perc-twoheaded-arrow');
                 percStepColumnSpacer.addClass('perc-twoheaded-arrow');
-                percStepColumnSpacer.append('<div class = "perc-create-new-step" title = ' +I18N.message("perc.ui.workflow.steps.view@Add New Step") + '></div>');
+                percStepColumnSpacer.append('<div role="button" tabindex="0" class = "perc-create-new-step" title = ' +I18N.message("perc.ui.workflow.steps.view@Add New Step") + '></div>');
                 percStepColumnSpacer.attr('name', percStepColumnSpacer.prev().attr('name'));
                 break;
             case 'Review':
@@ -181,7 +181,7 @@
                 stepUp.text(I18N.message("perc.ui.workflow.steps.view@Submit"));
                 percStepColumnSpacer.addClass('perc-twoheaded-arrow');
                 percStepColumnSpacer.addClass('perc-twoheaded-arrow');
-                percStepColumnSpacer.append('<div class = "perc-create-new-step" title = ' +I18N.message("perc.ui.workflow.steps.view@Add New Step") + '></div>');
+                percStepColumnSpacer.append('<div role="button" tabindex="0" class = "perc-create-new-step" title = ' +I18N.message("perc.ui.workflow.steps.view@Add New Step") + '></div>');
                 percStepColumnSpacer.attr('name', percStepColumnSpacer.prev().attr('name'));
                 $(percStepColumn).find('.perc-action-button').html('<span role="button" tabindex="0" title=' +I18N.message("perc.ui.workflow.steps.view@Configure Step") + ' class="perc-step-config-button"></span><span title=' +I18N.message("perc.ui.workflow.steps.view@Delete Step") + ' class="perc-step-delete-button"></span>');
                 $(percStepColumn).find('.perc-reserved-step-config-bttn').data({"isReservedStep":false});
@@ -205,13 +205,24 @@
         $('.perc-create-new-step').on("click",function(){
             __createNewStep(this);
         });
-        
+		 $('.perc-create-new-step').on("keydown",function(event){
+           if(event.code == "Enter" || event.code == "Space"){
+					document.activeElement.click();
+			}
+        });
+
         // Bind delete workflow step event
         $('.perc-step-delete-button').on("click",function() {
             __deleteWorkflowStep(this);
         });
         
         // Bind update workflow step event
+		 $('.perc-step-config-button, .perc-reserved-step-config-bttn').on("keydown",function(eventHandler) {
+
+		    if(eventHandler.code == "Enter" || eventHandler.code == "Space"){
+				document.activeElement.click();
+			}
+        });
         $('.perc-step-config-button, .perc-reserved-step-config-bttn').on("click",function() {
             __updateWorflowStep(this);
         });

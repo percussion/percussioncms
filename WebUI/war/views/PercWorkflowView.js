@@ -536,6 +536,12 @@
             });
 
             //Bind Edit event
+			$("#perc-wf-edit").off("keydown").on("keydown", function(eventHandler)
+            {
+                if(eventHandler.code == "Enter" || eventHandler.code == "Space"){
+				document.activeElement.click();
+			}
+            });
             $("#perc-wf-edit").off("click").on("click", function(evt)
             {
                 editWorkflow(evt);

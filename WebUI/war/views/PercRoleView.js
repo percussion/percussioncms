@@ -75,8 +75,20 @@
                 disableButtons();
                 unhighlightAllUsers();
             });
+			$("#perc-roles-edit-role-button").off("keydown").on("keydown", function(evt){
+               if(evt.code == "Enter" || evt.code == "Space"){
+						document.activeElement.click();
+				}
+            });
 
             //Bind Add Users to Role event
+			 $(".perc-roles-addusers-button").off("keydown").on("keydown",
+                function(evt){
+                    if(evt.code == "Enter" || evt.code == "Space"){
+						document.activeElement.click();
+					}
+                });
+
             $(".perc-roles-addusers-button").off("click").on("click",
                 function(evt){
                     addUsers(evt);
@@ -85,6 +97,12 @@
             $(".perc-roles-removeusers-button").off("click").on("click",
                 function(evt){
                     removeUsers(evt);
+                });
+			$(".perc-roles-removeusers-button").off("keydown").on("keydown",
+                function(evt){
+                    if(evt.code == "Enter" || evt.code == "Space"){
+						document.activeElement.click();
+					}
                 });
 
             //Bind Save event
@@ -382,6 +400,14 @@
                 .on("click", function(evt){
                     addUsers(evt);
                 });
+			$(".perc-roles-addusers-button")
+                .removeClass("perc-item-disabled")
+                .off("keydown")
+                .on("keydown", function(evt){
+                    if(evt.code == "Enter" || evt.code == "Space"){
+						document.activeElement.click();
+				}
+                });
         }
 
         function enableRemoveUsers(){
@@ -390,6 +416,14 @@
                 .off("click")
                 .on("click", function(evt){
                     removeUsers(evt);
+                });
+			$(".perc-roles-removeusers-button")
+                .removeClass("perc-item-disabled")
+                .off("click")
+                .on("click", function(evt){
+                    if(event.code == "keydown" || event.code == "keydown"){
+						document.activeElement.click();
+					}
                 });
         }
 
