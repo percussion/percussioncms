@@ -77,7 +77,6 @@
         updateList(container, []);
         
         //bind create event
-		//$("#perc-users-add-user-button").off("keydown").on("keydown",function(eventHandler){
 		container.find(".perc-item-add-button").off("keydown").on("keydown",function(eventHandler){
 			if(eventHandler.code == "Enter" || eventHandler.code == "Space"){
 					document.activeElement.click();
