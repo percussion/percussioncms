@@ -120,13 +120,28 @@
 
                 container.find('.' + TREELIST_CONTAINER_CLASS).slideToggle("fast");
             });
+			$('.' + COLLAPSE_BTN_CLASS).off("keydown").on("keydown",function(event) {
+				if(event.code == "Enter" || event.code == "Space"){
+						document.activeElement.click();
+				}
+            });
+
             container.find('.' + ADD_BTN_CLASS).off().on("click",function() {
                 var options = container.data('options');
                 if (typeof(options.createItem) == 'function')
                 {                
                     options.createItem();
                 }    
-            });  
+            });
+
+
+			///
+			$("."+ADD_BTN_CLASS).off("keydown").on("keydown",function(event) {
+				if(event.code == "Enter" || event.code == "Space"){
+						document.activeElement.click();
+				}
+            });
+			///
         }
 
         // Create the tree/list container after the head
@@ -346,6 +361,11 @@
                     {
                         options.createItem();
                     }
+                })
+				.on("keydown",function(eventHandler) {
+                    if(eventHandler.code == "Enter" || eventHandler.code == "Space"){
+						document.activeElement.click();
+					}
                 });
         }
     }
