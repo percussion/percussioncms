@@ -181,6 +181,7 @@
                     setPanelPreference(panelExpanderIcon.is(".perc-collapsed"));
                     if (panelExpanderIcon.is(".perc-collapsed")){
                         panel.removeClass("perc-closed").addClass("perc-opened");
+						panelExpanderIcon.attr('title','<i18n:message key = "perc.ui.workflow.view@Minimize"/>');
                         panel.show("slide",{},500,function(){
                             $("#perc-assigned-templates").template_selected('updateTemplatesPagingSize');
                         });
@@ -194,12 +195,18 @@
                             $("#perc-assigned-templates").template_selected('updateTemplatesPagingSize');
                         });
                         panelExpanderIcon.removeClass("perc-expanded").addClass("perc-collapsed");
+						panelExpanderIcon.attr('title','<i18n:message key = "perc.ui.workflow.view@Maximize"/>');
                         window.clearInterval(intervalId);
                         setPanelPreference(false);
                     }
                 }
             });
-            
+			panelExpanderIcon.on("keydown", function(event){
+                if(event.code == "Enter" || event.code == "Space"){
+						document.activeElement.click();
+				}
+            });
+
             var siteName = $.PercNavigationManager.getSiteName();
             if (typeof(siteName) != "undefined"){
                 $.PercPageService.getUnassignedPagesBySite(siteName, 1, UNASSIGNED_MAX_RESULTS, function(status, result){
