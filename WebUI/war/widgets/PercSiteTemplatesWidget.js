@@ -702,12 +702,12 @@
                                 var dropDownElement = '<span class="perc-template-pages-items-dropdown"></span>';
                                 var migrationEmptyWidgetIndicator = typeProps["migrationEmptyWidgetFlag"] == "yes" ?
                                     "<span><img src='../images/images/errorIcon.gif' title='Content migration did not populate all widgets on the page. The original content can be accessed in the Unused Asset tray.'/></span>" : "";
-                                var html = '<span class="perc-template-pages-items-thumbnail"><img src="../images/images/inspectButton.png" alt="perc.ui.extend.ui.dialog@Inspect Button"/></span><div class="perc-template-page-title">' +
+                                var html = '<span class="perc-template-pages-items-thumbnail"><img tabindex="0" src="../images/images/inspectButton.png" alt="perc.ui.extend.ui.dialog@Inspect Button"/></span><div tabindex="0" class="perc-template-page-title">' +
                                     data.childrenInPage[j].name + '</div>' + migrationEmptyWidgetIndicator + dropDownElement;
                                 //because if pagePath is empty, then page is in recycle
                                 //don't add drop down and change icon to broken
                                 if (recycledPage) {
-                                    html = '<span class="perc-template-pages-items-thumbnail"><img src="../images/images/brokenlink.png" alt="perc.ui.recycledPage@RecycledPage"/></span><div class="perc-template-page-title">' +
+                                    html = '<span class="perc-template-pages-items-thumbnail"><img tabindex="0" src="../images/images/brokenlink.png" alt="perc.ui.recycledPage@RecycledPage"/></span><div tabindex="0" class="perc-template-page-title">' +
                                         data.childrenInPage[j].name + '</div>' + migrationEmptyWidgetIndicator + dropDownElement;
                                     curPageElem.attr('title', I18N.message("perc.ui.recycledPage@RecycledPage")).attr('id', curPageId)
                                         .data("pageInfo", data.childrenInPage[j])

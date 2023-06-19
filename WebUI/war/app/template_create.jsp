@@ -43,7 +43,7 @@
         </div>
         <div class="perc-templates-layout">
         <div class="perc-unassigned-panel-expander">
-        <a class="perc-panel-expander-icon perc-collapsed"></a>
+        <a role="button" tabindex="0" title='<i18n:message key = "perc.ui.workflow.view@Maximize"/>' class="perc-panel-expander-icon perc-collapsed"></a>
         </div>
         <div class="perc-unassigned-panel perc-closed">
         <div class="perc-panel-title"><i18n:message key = "perc.ui.template.create@Unassigned"/></div>
@@ -59,9 +59,9 @@
         <div class="perc-panel-pages-list">
         </div>
         <csrf:form class="perc-template-pages-controls" method="post" action="template_create.jsp">
-            <div class="previous-disabled" style="right:56px;"><i18n:message key = "perc.ui.template.create@Prev"/></div>
-            <input type="text" title="<i18n:message key = "perc.ui.template.create@Pages Jump"/>" autocomplete="off" name="perc-template-pages-controls-jump" class="perc-jump">
-            <div class="next" style="right:0;"><i18n:message key = "perc.ui.common.label@Next"/></div>
+            <div title='<i18n:message key = "perc.ui.template.create@Prev"/>' class="previous-disabled" role="button" tabindex="0" style="right:56px;"><i18n:message key = "perc.ui.template.create@Prev"/></div>
+            <input type="text" autocomplete="off" name="perc-template-pages-controls-jump" class="perc-jump">
+            <div title='<i18n:message key = "perc.ui.common.label@Next"/>' class="next" role="button" tabindex="0"  style="right:0;"><i18n:message key = "perc.ui.common.label@Next"/></div>
         </csrf:form>
         <div class="perc-panel-page-range"><i18n:message key = "perc.ui.template.create@Items"/><span class="perc-panel-page-group-range"></span></div>
         <div class="perc-panel-total-item"><i18n:message key = "perc.ui.template.create@Total Items"/><span class="perc-panel-total"></span></div>
