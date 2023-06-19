@@ -161,8 +161,12 @@
 						}else if(combinedClass == "perc-assign-workflow-expander-image"){
 							$(topSpan).attr('title',I18N.message("perc.ui.workflow.view@Maximize"));
 						}
-
-                        })
+						})
+						.on("keydown",function(event) {
+							 if(event.code == "Enter" || event.code == "Space"){
+								document.activeElement.click();
+							 }
+						})
                     )
                     .append($('<span class="perc-assign-workflow-sites-apply-top">Apply <span class="perc-assign-workflow-sites-apply-top-icon" title="' + infoTitle + '"/></span>')
                     )
@@ -193,8 +197,12 @@
 							}else if(combinedClass == "perc-assign-workflow-expander-image"){
 								$(topSpan).attr('title',I18N.message("perc.ui.workflow.view@Maximize"));
 							}
-
-                        })
+						})
+						.on("keydown",function(event) {
+							 if(event.code == "Enter" || event.code == "Space"){
+								document.activeElement.click();
+							 }
+						})
                     )
                     .append($('<span class="perc-assign-workflow-assets-apply-top">Apply <span class="perc-assign-workflow-assets-apply-top-icon" title="' + infoTitle + '"/></span>')
                     )
