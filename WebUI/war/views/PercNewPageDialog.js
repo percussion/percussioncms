@@ -84,11 +84,11 @@
                 dialogHtml = dialogHtml + "<div style='float:left;'><label for='perc-select-template'>" +I18N.message("perc.ui.new.page.dialog@Select A Template") + "</label><br/>" +
                     "  <input list='perc-page-items-datalist' id='perc-page-item-filter' />" +
                     "  <datalist id='perc-page-items-datalist'></datalist><br/>" +
-                    "<a class='prevPage browse left'></a>" +
+                    "<a role='button' tabindex='0' title='"+I18N.message("perc.ui.template.create@Prev")+"' class='prevPage browse left'></a>" +
                     "<div class='perc-scrollable'><input type='hidden' id='perc-select-template' name='template'/>" +
                     "<div class='perc-items'>" +
                     "</div></div>" +
-                    "<a class='nextPage browse right' ></a></div>   ";
+                    "<a role='button' tabindex='0' title='"+I18N.message("perc.ui.common.label@Next")+"' class='nextPage browse right' ></a></div>   ";
             }
             else
             {
