@@ -259,6 +259,29 @@
                 requestUnassignedPages(parseInt(percJump.val()));
                 return false;
             });
+			//setting attributes for first child, for Action dropdown
+			var actionMenuAnchor_child = $("#perc-dropdown-actions").children().children().children();
+			for(var i=0; i<actionMenuAnchor_child.length; i++){
+				var child = actionMenuAnchor_child[i];
+				if(child.nodeName=="A"){
+					child.tabIndex="0";
+					child.setAttribute("role", "button");
+					child.title='I18N.message("perc.ui.template.design.view@Actions")';
+					break;
+				}
+			}
+			//setting attributes for first child, for View dropdown
+			var viewMenuAnchor_child = $("#perc-dropdown-view").children().children().children();
+			for(var i=0; i<viewMenuAnchor_child.length; i++){
+				var child = viewMenuAnchor_child[i];
+				if(child.nodeName=="A"){
+					child.tabIndex="0";
+					child.setAttribute("role", "button");
+					child.title='I18N.message("perc.ui.template.design.view@View")';
+					break;
+				}
+			}
+
         }
         
         function unassignedPreviousClick(event){
@@ -653,6 +676,17 @@
                 percDropdownCallbackData: callbackData,
                 percDropdownDisabledFlag: disableView
             });
+			//setting attributes for first child, for View dropdown
+			var viewMenuAnchor_child = $("#perc-dropdown-view").children().children().children();
+			for(var i=0; i<viewMenuAnchor_child.length; i++){
+				var child = viewMenuAnchor_child[i];
+				if(child.nodeName=="A"){
+					child.tabIndex="0";
+					child.setAttribute("role", "button");
+					child.title='I18N.message("perc.ui.template.design.view@View")';
+					break;
+				}
+			}
         }
 
         /**

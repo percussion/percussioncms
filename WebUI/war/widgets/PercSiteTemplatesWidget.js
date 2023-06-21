@@ -751,6 +751,15 @@
                                     };
                                 }
                                 curPageElem.find(".perc-template-pages-items-dropdown").PercDropdown(dropDownConfig);
+								//setting attributes for child Anchor element (A) , for dropdown
+								var actionMenuAnchor_child = $(".perc-template-pages-items-dropdown").children().children().children();
+								for(var i=0; i<actionMenuAnchor_child.length; i++){
+									var child = actionMenuAnchor_child[i];
+									if(child.nodeName=="A"){
+										child.tabIndex="0";
+										child.setAttribute("role", "button");
+									}
+								}
                             }
                             updateIndicators(templateId, data.childrenCount, data.startIndex);
 

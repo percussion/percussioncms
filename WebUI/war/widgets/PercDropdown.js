@@ -236,6 +236,12 @@
 
             dropdownOptionItem.on("click",null,callbackData[k], callbacks[k]);
 
+			dropdownOptionItem.on("keydown", function(event){
+                if(event.code == "Enter" || event.code == "Space"){
+						document.activeElement.click();
+				}
+            });
+
         }
         dropdownOptionItemTemplate.remove();
         dropdown.superfish(config);
