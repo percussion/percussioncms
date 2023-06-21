@@ -433,6 +433,7 @@
                             "level_" + levelCount + 1);
                     $imgButton.attr("id", "perc_level_" + (levelCount + 1) + "_add");
                     $imgButton.attr("tabindex", "0");
+                    $imgButton.attr("role", "button");
                     var $addSectionButton = $level.append($("<div></div>")
                         .addClass("perc-site-map-addpage-button").append($imgButton));
                 }
@@ -486,6 +487,7 @@
                         .attr("id", "perc-site-map-delete")
                         .attr("title", "Delete Site")
                         .attr("tabindex", "0")
+                        .attr("role", "button")
                         .text(I18N.message("perc.ui.site.map@Delete Site"));
 
                     isSiteBeingImported(function(result){
@@ -513,6 +515,7 @@
                         .attr("id", "perc-site-map-copy")
                         .attr("title", "Copy Site")
                         .attr("tabindex", "0")
+                        .attr("role", "button")
                         .text(I18N.message("perc.ui.site.map@Copy Site"))
                         .on("click", function(evt){
                            // self.onCopySiteDialog();
@@ -528,6 +531,7 @@
                     .attr("id", "perc-site-map-move")
                     .attr("title", "Move Section")
                     .attr("tabindex", "0")
+                    .attr("role", "button")
                     .text(I18N.message('perc.ui.sitemap.menuitem@Move Section'))
                     .on("click", function(evt){
                         self.onMoveWithDialog();
@@ -769,6 +773,7 @@
                         "level_" + levelIdx);
                 $configButton.attr("id", sectionObj.id + "_config");
                 $configButton.attr("tabindex", "0");
+                $configButton.attr("role", "button");
                 $configButton.addClass("perc-site-map-config-button");
                 $nodeButtons.append($configButton);
                 if(levelIdx > 1)
@@ -780,6 +785,7 @@
                             "level_" + levelIdx);
                     $deleteButton.attr("id", sectionObj.id + "_delete");
                     $deleteButton.attr("tabindex", "0");
+                    $deleteButton.attr("role", "button");
                     $deleteButton.addClass("perc-site-map-delete-button");
                     $nodeButtons.append($deleteButton);
                 }
