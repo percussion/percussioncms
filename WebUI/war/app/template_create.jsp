@@ -35,7 +35,7 @@
         <div id = "perc-dropdown-actions"></div>
         <div id = "perc-dropdown-view"></div>
         <div class="perc-menu-action perc-pull-left">
-        <a class = "perc-site-summary-action perc-open-dialog" role="heading" aria-level="1"><span><i18n:message key = "perc.ui.template.create@Import Summary"/></span></a>
+        <a role="button" tabindex="0" title='<i18n:message key = "perc.ui.template.create@Import Summary"/>' class = "perc-site-summary-action perc-open-dialog" role="heading" aria-level="1"><span><i18n:message key = "perc.ui.template.create@Import Summary"/></span></a>
         </div>
         <a href="#" id="perc-template-preview"  style="float:right"><i18n:message key = "perc.ui.control.imageSlider@Preview"/></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         </div>
