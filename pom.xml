@@ -197,7 +197,7 @@
        <commons.beanutils.version>1.9.4</commons.beanutils.version>
        <xstream.version>1.4.20</xstream.version>
        <log4j2.version>2.18.0</log4j2.version>
-       <guava.version>32.0.1-jre</guava.version>
+       <guava.version>32.0.0-jre</guava.version>
        <xerces.version>2.12.2</xerces.version>
        <xmlresolver.version>1.2</xmlresolver.version>
        <quartz.version>2.3.2</quartz.version>
