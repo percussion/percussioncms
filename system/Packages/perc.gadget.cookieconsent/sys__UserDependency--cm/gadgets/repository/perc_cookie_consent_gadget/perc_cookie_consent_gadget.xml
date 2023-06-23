@@ -62,7 +62,7 @@
                 
                 <!-- export all consent entries button -->
                 <div class="export-button">
-                    <a href="#" role="button" title= "Export All Cookie Consent Entries" id="export-link">Export All Cookie Consent Entries</a>
+                    <a href="#" role="button" title= "Export All Cookie Consent Entries" tabindex="0" id="export-link">Export All Cookie Consent Entries</a>
                 </div>
             </div>
 

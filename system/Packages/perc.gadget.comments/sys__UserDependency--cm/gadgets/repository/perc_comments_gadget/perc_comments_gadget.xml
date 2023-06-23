@@ -101,7 +101,7 @@
             </script>
             <div id="perc-comments-gadget">
                 <div id="perc-comments-gadget-toolbar" class="perc-gadget-toolbar">
-                    <span class="perc-link" id="perc-set-default-moderation-link" role="button" title="Moderation Default" style="display:none">Moderation Default</span>
+                    <span class="perc-link" id="perc-set-default-moderation-link" role="button" tabindex="0" title="Moderation Default" style="display:none">Moderation Default</span>
                 </div>
             </div>
         ]]>
