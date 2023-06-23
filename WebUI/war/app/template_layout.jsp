@@ -34,7 +34,7 @@
                 <div id="dragger-tool" style="float:left;">&nbsp;</div>
                 <div class="perc-lib-expander-div">
                         <span id="perc-wid-lib-expander">
-                            <a  role="button" tabindex="0" id="perc-wid-lib-maximizer" title ="<i18n:message key = "perc.ui.template.layout@Maximize Widgets"/>" href="#" role="button" style="float: left;"></a>
+                            <a role="button" tabindex="0" title='<i18n:message key = "perc.ui.workflow.view@Maximize"/>' id="perc-wid-lib-maximizer" href="#" style="float: left;"></a>
                             <span><i18n:message key = "perc.ui.template.layout@Add Widget"/></span>
                         </span>
                 </div>
@@ -42,7 +42,7 @@
                 <!-- Explore Regions Expander Link-->
                 <div class="perc-lib-expander-div">
                         <span id="perc-region-library-expander">
-                            <a  role="button" tabindex="0" id="perc-region-library-maximizer" title ="<i18n:message key = "perc.ui.template.layout@Maximize Regions"/>" href="#" role="button" style="float: left;"></a>
+                            <a role="button" tabindex="0"  title='<i18n:message key = "perc.ui.workflow.view@Maximize"/>' id="perc-region-library-maximizer" href="#" style="float: left;"></a>
                             <span><i18n:message key = "perc.ui.template.layout@Explore Regions"/></span>
                         </span>
                 </div>
@@ -53,7 +53,7 @@
             <td style = 'width:14%; min-width:135px' >
                 <div id = 'perc-region-tool-wrapper'>
                     <div id='region-tool' >
-                        <img src='../images/images/iconAddCell.gif' alt="Click and Drag to Add a Region" title ="<i18n:message key = "perc.ui.template.layout@Drag and drop"/>" onMouseOver="this.src='../images/images/iconAddCellOver.gif';this.style.cursor='pointer';" onMouseOut="this.src='../images/images/iconAddCell.gif';" draggable="true" aria-dropeffect="execute"/>
+                        <img tabindex="0" src='../images/images/iconAddCell.gif' alt="Click and Drag to Add a Region" title ="<i18n:message key = "perc.ui.template.layout@Drag and drop"/>" onMouseOver="this.src='../images/images/iconAddCellOver.gif';this.style.cursor='pointer';" onMouseOut="this.src='../images/images/iconAddCell.gif';" draggable="true" aria-dropeffect="execute"/>
                     </div>
                     <div id='region-tool-disabled' style = 'display:none' aria-hidden="true">
                         <img src='../images/images/iconAddCellGray.png' alt="<i18n:message key = "perc.ui.template.layout@Drag and drop disabled"/>" title ="<i18n:message key = "perc.ui.template.layout@Drag and drop"/>" />
@@ -66,8 +66,8 @@
                 </div>
             </td>
             <td style = 'width:43%'>
-                <button id="perc-save" class="btn btn-primary" type="button" title="Save" name="perc_wizard_save" ><i18n:message key ="perc.ui.button@Save"/></button>
-                <button id="perc-layout-cancel" class="btn btn-primary" type="button" title="Cancel" name="perc_wizard_cancel"><i18n:message key ="perc.ui.common.label@Cancel"/></button>
+                <button id="perc-save" class="btn btn-primary" type="button" tabindex="0" title='<i18n:message key ="perc.ui.button@Save"/>' name="perc_wizard_save" ><i18n:message key ="perc.ui.button@Save"/></button>
+                <button id="perc-layout-cancel" class="btn btn-primary" type="button" tabindex="0" title='<i18n:message key ="perc.ui.common.label@Cancel"/>' name="perc_wizard_cancel"><i18n:message key ="perc.ui.common.label@Cancel"/></button>
             </td>
             <div class = 'perc-overlay-div' style = 'display:none'></div>
         </tr>
