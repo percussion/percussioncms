@@ -6662,6 +6662,26 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
 	        <seg>Seleccione una página existente para comenzar su plantilla o elija una plantilla de Percussion</seg>
 	    </tuv>
 	 </tu>
+	 <tu tuid="perc.ui.addTemplateDialog@EnterpageURL">
+     	    <prop type="sectionname" xml:lang="en-us">Hint</prop>
+     	    <note xml:lang="en-us"></note>
+     	    <tuv xml:lang="en-us">
+     	        <seg>Enter page URL from existing site:</seg>
+     	    </tuv>
+     	      <tuv xml:lang="es">
+     	        <seg>Ingrese la URL de la página del sitio existente:</seg>
+     	    </tuv>
+     </tu>
+     <tu tuid="perc.ui.addTemplateDialog@PercussionTemplates">
+          	    <prop type="sectionname" xml:lang="en-us">Hint</prop>
+          	    <note xml:lang="en-us"></note>
+          	    <tuv xml:lang="en-us">
+          	        <seg>Percussion Templates</seg>
+          	    </tuv>
+          	      <tuv xml:lang="es">
+          	        <seg>Plantillas de percusión</seg>
+          	    </tuv>
+     </tu>
 	 <tu tuid="perc.ui.addTemplateDialog@URL Required">
 	    <prop type="sectionname" xml:lang="en-us">Error</prop>
 	    <note xml:lang="en-us"></note>
@@ -12346,6 +12366,16 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
 	        <seg>Clases separadas con un espacio</seg>
 	    </tuv>
 	 </tu>
+	 <tu tuid="perc.ui.template.layout@Enter root class from site theme">
+     	    <prop type="sectionname" xml:lang="en-us">General</prop>
+     	    <note xml:lang="en-us"></note>
+     	    <tuv xml:lang="en-us">
+     	        <seg>Enter root class from site theme</seg>
+     	    </tuv>
+     	     <tuv xml:lang="es">
+     	        <seg>Geben Sie die Stammklasse aus dem Site-Thema ein</seg>
+     	    </tuv>
+     	 </tu>
 	 <tu tuid="perc.ui.template.layout@Do Not Use CSS Overrides">
 	    <prop type="sectionname" xml:lang="en-us">General</prop>
 	    <note xml:lang="en-us"></note>

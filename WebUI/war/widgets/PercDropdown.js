@@ -116,7 +116,7 @@
     var dropdownHtml = "" +
         "<ul class='sf-menu perc-dropdown'>" +
         "<li class='current'>" +
-        "<a class='perc-dropdown-title'>_TITLE_</a>" +
+        "<a tabindex='0' role='button' class='perc-dropdown-title'>_TITLE_</a>" +
         "<ul class='perc-dropdown-option-list'>" +
         "<li class='perc-dropdown-option-item-template '>" +
         "<a href='#' class='perc-dropdown-option'>" + I18N.message("perc.ui.edit.workflow.step.dialog@" + "_OPTION_") + "</a>" +
@@ -184,6 +184,7 @@
         title
             .addClass("perc-dropdown-title-"+labels[0])
             .data("callback", callbacks[0])
+			.attr("title",labels[0])
             .data("callbackData", callbackData[0])
             .on("click",function(evt){
                 clickDropdown(evt);
@@ -210,6 +211,7 @@
             {
                 optionAElem = dropdownOptionItem.find("a")
                     .html(I18N.message("perc.ui.edit.workflow.step.dialog@" + dropdownOptionLabel))
+					.attr("title",dropdownOptionLabel)
                     .addClass("perc-dropdown-option-"+$.perc_textFilters.IDNAMECDATA(dropdownOptionLabel));
             }
 

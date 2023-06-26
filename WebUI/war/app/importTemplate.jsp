@@ -54,7 +54,7 @@
                 <label style = "font-size:11px; font-family:Verdana,serif; font-weight:normal"><i18n:message key = "perc.ui.import.template@File Name"/></label>
             </div>
             <div id = "per-import-input-field">
-                <input type = "file" size = "53" class = "perc-template-import-field" style = "margin:5px 0px 0px 0px" name = "import-template" />
+                <input role="button" tabindex="0" type = "file" title='<i18n:message key = "perc.ui.import.template@File Name"/>' size = "53" class = "perc-template-import-field" style = "margin:5px 0px 0px 0px" name = "import-template" />
             </div>
             <div class = "perc-import-error">
                 <i18n:message key = "perc.ui.import.template@Select Template File"/>
