@@ -152,7 +152,7 @@
     <div class="fieldGroup">
         <div id='perc-region-edit-properties-container'>
             <label class="perc-required-field" for="perc-region-name" accesskey=""><i18n:message key = "perc.ui.template.layout@Region Name"/></label><br/>
-            <input id='perc-region-name' type='text' />
+            <input tabindex="0" title='<i18n:message key = "perc.ui.template.layout@Region Name"/>' id='perc-region-name' type='text' />
             <div id="perc-region-css-table_wrapper" class="dataTables_wrapper">
                 <table style="padding: 0; border-spacing: 0; border-width: 0" id="perc-region-css-table">
                 </table>
@@ -173,7 +173,7 @@
         <div id='perc-region-edit-css-container'>
             <label><i18n:message key = "perc.ui.template.layout@Region Root Class"/></label><br/>
             <label class="visuallyhidden" for="perc-region-cssClass"><i18n:message key = "perc.ui.template.layout@Search"/></label>
-            <input id='perc-region-cssClass' type='text' placeholder='Enter root class from site theme' />
+            <input id='perc-region-cssClass' tabindex="0" title='<i18n:message key = "perc.ui.template.layout@Enter root class from site theme"/>'type='text' placeholder='<i18n:message key = "perc.ui.template.layout@Enter root class from site theme"/>' />
             <div id="perc-region-cssClass-hint"><i18n:message key = "perc.ui.template.layout@Seperate Classes"/></div>
         </div>
     </div>
@@ -184,7 +184,7 @@
                 </table>
             </div>
             <div id="perc-css-overrides-disable-container">
-                <input id="perc-css-overrides-disable" title="<i18n:message key = "perc.ui.users.import.dialogs@SelectAll"/>" type="checkbox"/> <span id="perc-css-overrides-disable-span"><i18n:message key = "perc.ui.template.layout@Do Not Use CSS Overrides"/></span>
+                <input tabindex="0" title='<i18n:message key = "perc.ui.template.layout@Do Not Use CSS Overrides"/>' id="perc-css-overrides-disable" type="checkbox" /> <span id="perc-css-overrides-disable-span"><i18n:message key = "perc.ui.template.layout@Do Not Use CSS Overrides"/></span>
             </div>
         </div>
     </div>
