@@ -12366,6 +12366,16 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
 	        <seg>Clases separadas con un espacio</seg>
 	    </tuv>
 	 </tu>
+	 <tu tuid="perc.ui.template.layout@Enter root class from site theme">
+     	    <prop type="sectionname" xml:lang="en-us">General</prop>
+     	    <note xml:lang="en-us"></note>
+     	    <tuv xml:lang="en-us">
+     	        <seg>Enter root class from site theme</seg>
+     	    </tuv>
+     	     <tuv xml:lang="es">
+     	        <seg>Geben Sie die Stammklasse aus dem Site-Thema ein</seg>
+     	    </tuv>
+     	 </tu>
 	 <tu tuid="perc.ui.template.layout@Do Not Use CSS Overrides">
 	    <prop type="sectionname" xml:lang="en-us">General</prop>
 	    <note xml:lang="en-us"></note>
