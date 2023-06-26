@@ -62,7 +62,7 @@
                 
                 <!-- export all consent entries button -->
                 <div class="export-button">
-                    <a href="#" id="export-link">Export All Cookie Consent Entries</a>
+                    <a href="#" role="button" title= "Export All Cookie Consent Entries" tabindex="0" id="export-link">Export All Cookie Consent Entries</a>
                 </div>
             </div>
 
@@ -102,19 +102,19 @@
 
             <!-- advanced button all sites -->
             <div id="delete-btn-all">
-                <button id="advanced-all-sites-btn" type="button" aria-label="Advanced Settings" class="btn btn-primary advanced" data-toggle="collapse" data-target="#advanced" style = 'float:left'>Advanced</button>
+                <button id="advanced-all-sites-btn" title="Advanced Settings" type="button" aria-label="Advanced Settings" class="btn btn-primary advanced" data-toggle="collapse" data-target="#advanced" style = 'float:left'>Advanced</button>
                 <div id="advanced" class="collapse cookie-consent-advanced">
                     <p>Delete all cookie consent entries.</p>
-                    <button id="cookie-consent-delete-btn" aria-label="Delete all cookie consent entries" class="cookie-consent-delete-btn">Delete entries</button>
+                    <button id="cookie-consent-delete-btn" title="Delete all cookie consent entries" aria-label="Delete all cookie consent entries" class="cookie-consent-delete-btn">Delete entries</button>
                 </div>
             </div>
 
             <!-- advanced button for selected site -->
             <div id="delete-btn-site" style="display: none;">
-                <button id="advanced-site-btn" type="button" aria-label="Advanced Settings" class="btn btn-primary advanced" data-toggle="collapse" data-target="#advanced-site" style = 'float:left'>Advanced</button>
+                <button id="advanced-site-btn" title="Advanced Settings" type="button" aria-label="Advanced Settings" class="btn btn-primary advanced" data-toggle="collapse" data-target="#advanced-site" style = 'float:left'>Advanced</button>
                 <div id="advanced-site" class="collapse cookie-consent-advanced">
                     <p>Delete cookie consent entries for site: </p>
-                    <button id="cookie-consent-site-delete-btn" aria-label="Delete cookie consent entries for selected site" class="cookie-consent-delete-btn">Delete entries for site</button>
+                    <button id="cookie-consent-site-delete-btn" title="Delete cookie consent entries for selected site" aria-label="Delete cookie consent entries for selected site" class="cookie-consent-delete-btn">Delete entries for site</button>
                 </div>
             </div>
         </div>
