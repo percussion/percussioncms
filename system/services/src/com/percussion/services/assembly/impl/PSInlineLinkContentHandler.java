@@ -174,9 +174,15 @@ public class PSInlineLinkContentHandler
       //Process all "img" tags
       Elements imgTags = htmlDoc.select(IMG_TAG);
       processIMGTags(imgTags);
-      result=htmlDoc.toString();
-      result = StringUtils.replace(result, RX_FILLER, "");
-      return result;
+      Element body = htmlDoc.selectFirst("body");
+
+      //Check for body, if not there
+      if(body == null) {
+         result = htmlDoc.html();
+      }else{
+         result = body.html();
+      }
+      return StringUtils.replace(result, RX_FILLER, "");
    }
 
    /**
