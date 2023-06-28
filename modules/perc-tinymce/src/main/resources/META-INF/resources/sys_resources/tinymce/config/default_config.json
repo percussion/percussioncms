@@ -5,6 +5,7 @@
 	"browser_spellcheck": true,
 	"forced_root_block": "",
 	"force_br_newlines": true,
+	"table_style_by_css": true,
 	"force_p_newlines": false,
 	"autosave_ask_before_unload": false,
 	"plugins":[
