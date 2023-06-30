@@ -306,9 +306,9 @@
                 buffer += '         <li class="perc-template-pages-items" ></li>';
                 buffer += '    </ul>';
                 buffer += '    <form action="#" class="perc-template-pages-controls">';
-                buffer += '        <div role="button" tabindex="0" title="' +I18N.message("perc.ui.template.create@Prev") + '" style="right:56px;" class="previous">Prev</div>';
-                buffer += '        <input type="text" title="' +I18N.message("perc.ui.template.create@Pages Jump") + '" class="perc-jump" name="perc-template-pages-controls-jump" autocomplete="off" />';
-                buffer += '        <div role="button" tabindex="0" title="' +I18N.message("perc.ui.common.label@Next") + '" style="right:0px;" class="next">Next</div>';
+                buffer += '        <div role="button" tabindex="0" title="' +I18N.message("perc.ui.template.create@Prev") + '" style="right:56px;" aria-disabled="false" class="previous">Prev</div>';
+                buffer += '        <input type="text" class="perc-jump" name="perc-template-pages-controls-jump" autocomplete="off" />';
+                buffer += '        <div role="button" tabindex="0" title="' +I18N.message("perc.ui.common.label@Next") + '"style="right:0px;" aria-disabled="false" class="next">Next</div>';
                 buffer += '    </form>';
                 buffer += '    <div class="perc-template-showing" style="width: 100px; margin: 6px 0pt 0px 24px;">';
                 buffer += '        Items: <span class="perc-template-page-group-range">0-0</span>';
@@ -881,23 +881,23 @@
                 //If this is the first page, disable previous button
                 if(startIndex <= 1)
                 {
-                    $('#' + templateId).find('.perc-template-pages-controls div.previous').removeClass('previous').addClass('previous-disabled');
+                    $('#' + templateId).find('.perc-template-pages-controls div.previous').removeClass('previous').addClass('previous-disabled').attr('aria-disabled',"true");
                 }
                 else
                 {
                     var disabledPrevButton = $('#' + templateId).find('.perc-template-pages-controls div.previous-disabled');
-                    if(disabledPrevButton != undefined) $(disabledPrevButton).removeClass('previous-disabled').addClass('previous');
+                    if(disabledPrevButton != undefined) $(disabledPrevButton).removeClass('previous-disabled').addClass('previous').attr('aria-disabled',"false");
                 }
 
                 //If this is the last page, disable next button
                 if(endIndex >= totalNumberOfItems)
                 {
-                    $('#' + templateId).find('.perc-template-pages-controls div.next').removeClass('next').addClass('next-disabled');
+                    $('#' + templateId).find('.perc-template-pages-controls div.next').removeClass('next').addClass('next-disabled').attr('aria-disabled',"true");
                 }
                 else
                 {
                     var disabledNextButton = $('#' + templateId).find('.perc-template-pages-controls div.next-disabled');
-                    if(disabledNextButton != undefined) $(disabledNextButton).removeClass('next-disabled').addClass('next');
+                    if(disabledNextButton != undefined) $(disabledNextButton).removeClass('next-disabled').addClass('next').attr('aria-disabled',"false");
                 }
             }
 
