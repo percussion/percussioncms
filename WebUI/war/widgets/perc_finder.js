@@ -165,9 +165,16 @@ var assetPagination = null;
         // dim the ui when the user is not in the finder
         $('.perc-finder-outer').on("mouseenter",function highligh_actions () {
             $(this).removeClass('ui-disabled');
+			$(this).find('a').each(function() {
+				$(this).attr('aria-disabled',"false");
+			});
+
         })
             .on("mouseleave",function dim_actions () {
                 $(this).addClass('ui-disabled');
+				$(this).find('a').each(function() {
+					$(this).attr('aria-disabled',"true");
+				});
             });
 
         function absPath(strPath){
