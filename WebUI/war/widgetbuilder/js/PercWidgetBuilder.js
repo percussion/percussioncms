@@ -364,7 +364,7 @@ var WidgetBuilderApp = {};
         //Add fields
         dataObj.WidgetBuilderDefinitionData.fieldsList = {};
         dataObj.WidgetBuilderDefinitionData.fieldsList.fields = WidgetBuilderApp.fieldsList.toJSON();
-        dataObj.WidgetBuilderDefinitionData.widgetHtml = WidgetBuilderApp.widgetHtmlView.model.get("widgetHtml");
+        dataObj.WidgetBuilderDefinitionData.widgetHtml = editor.getValue();
         //Add Resources
         dataObj.WidgetBuilderDefinitionData.jsFileList = {};
         dataObj.WidgetBuilderDefinitionData.jsFileList.resourceList = WidgetBuilderApp.jsResListView.toStringArray();
