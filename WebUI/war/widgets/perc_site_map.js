@@ -138,14 +138,16 @@
                     $(".perc-site-map-action-item-disabled")
                         .not('#perc-site-map-copy,#perc-site-map-delete')
                         .removeClass("perc-site-map-action-item-disabled")
-                        .addClass("perc-site-map-action-item-enabled");
+                        .addClass("perc-site-map-action-item-enabled")
+                        .attr('aria-disabled',"false");
                 }
                 else
                 {
                     $(".perc-site-map-action-item")
                         .not('#perc-site-map-copy,#perc-site-map-delete')
                         .removeClass("perc-site-map-action-item-enabled")
-                        .addClass("perc-site-map-action-item-disabled");
+                        .addClass("perc-site-map-action-item-disabled")
+                        .attr('aria-disabled',"true");
                 }
 
             },
@@ -488,6 +490,7 @@
                         .attr("title", "Delete Site")
                         .attr("tabindex", "0")
                         .attr("role", "button")
+                        .attr('aria-disabled',"true")
                         .text(I18N.message("perc.ui.site.map@Delete Site"));
 
                     isSiteBeingImported(function(result){
@@ -497,6 +500,7 @@
                         {
                             $delete.removeClass("perc-site-map-action-item-disabled")
                                 .addClass("perc-site-map-action-item-enabled")
+                                .attr('aria-disabled',"false")
                                 .attr("for", self.options.site)
                                 .on("click", function(evt) {
                                     self.onDeleteSiteDialog();
@@ -516,6 +520,7 @@
                         .attr("title", "Copy Site")
                         .attr("tabindex", "0")
                         .attr("role", "button")
+                        .attr('aria-disabled',"true")
                         .text(I18N.message("perc.ui.site.map@Copy Site"))
                         .on("click", function(evt){
                            // self.onCopySiteDialog();
@@ -532,6 +537,7 @@
                     .attr("title", "Move Section")
                     .attr("tabindex", "0")
                     .attr("role", "button")
+                    .attr('aria-disabled',"true")
                     .text(I18N.message('perc.ui.sitemap.menuitem@Move Section'))
                     .on("click", function(evt){
                         self.onMoveWithDialog();
@@ -630,7 +636,7 @@
                     if(status === $.PercServiceUtils.STATUS_SUCCESS)
                     {
                         if (!jQuery.isEmptyObject(result.psmap.entries)){
-                            $('#perc-site-map-copy').addClass("perc-site-map-action-item-disabled").removeClass("perc-site-map-action-item-enabled");
+                            $('#perc-site-map-copy').addClass("perc-site-map-action-item-disabled").removeClass("perc-site-map-action-item-enabled").attr('aria-disabled',"true");
                         }
                         else{
                             //$('#perc-site-map-copy').removeClass("perc-site-map-action-item-disabled").addClass("perc-site-map-action-item-enabled").attr("for", self.options.site);
