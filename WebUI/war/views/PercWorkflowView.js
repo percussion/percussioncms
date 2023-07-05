@@ -51,6 +51,7 @@
         function showNewWorkflowEditor()
         {
             $(".perc-wf-default").find('input').prop('checked', false).prop('disabled', false);
+			$(".perc-wf-default").find('input').attr('aria-disabled', "false");
             hideWorkflowUpdateEditor();
             hideWorkflowEditButton();
             //create the workflow control for publish now to staging permissions
@@ -127,11 +128,18 @@
         function editWorkflow(evt)
         {
             $(".perc-wf-default").find('input[type="checkbox"]').prop('checked', false).prop('disabled', false);
+			$(".perc-wf-default").find('input[type="checkbox"]').attr('aria-disabled', "false");
             $(".perc-step-config-button, .perc-reserved-step-config-bttn, .perc-step-delete-button, .perc-create-new-step").off("click").on("click");
             $(".perc-create-new-step").addClass("perc-step-disable");
             $(".perc-step-delete-button").addClass("perc-step-delete-disable");
             $(".perc-step-config-button").addClass("perc-step-config-disable");
             $(".perc-reserved-step-config-bttn").addClass("perc-reserved-step-config-disable");
+			//adding aria-disabled attribute to indicate disability
+			$(".perc-create-new-step").attr("aria-disabled","true");
+            $(".perc-step-delete-button").attr("aria-disabled","true");
+            $(".perc-step-config-button").attr("aria-disabled","true");
+            $(".perc-reserved-step-config-bttn").attr("aria-disabled","true");
+
             hideWorkflowEditButton();
             $("#perc-wf-update-editor").show();
             var workflowName = $("#perc-workflow-steps-container").data("workflowName");
@@ -141,6 +149,7 @@
 
             if(defaultWorkflow === workflowName) {
                 $(".perc-wf-default").find('input[type="checkbox"]').prop('checked', true).prop('disabled', true);
+				$(".perc-wf-default").find('input[type="checkbox"]').attr('aria-disabled', "true");
             }
             $("#perc-update-workflow-name").val(workflowName).on("focus change", function(evt)
             {
@@ -272,6 +281,7 @@
                 container.find(".perc-item-delete-button").off("click");
 
                 container.find('.perc-item-delete-button').addClass('perc-item-disabled');
+				container.find('.perc-item-delete-button').attr("aria-disabled","true");
             }
 
             // Update the Assigned tree/list

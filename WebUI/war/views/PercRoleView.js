@@ -387,6 +387,7 @@
             if (editingRole){
                 $(".perc-roles-addusers-button")
                     .addClass("perc-item-disabled")
+					.attr("aria-disabled","true")
                     .off();
                 disableRemoveUsers();
             }
@@ -396,12 +397,14 @@
             $.PercDataList.enableButtons(container);
             $(".perc-roles-addusers-button")
                 .removeClass("perc-item-disabled")
+				.attr("aria-disabled","false")
                 .off("click")
                 .on("click", function(evt){
                     addUsers(evt);
                 });
 			$(".perc-roles-addusers-button")
                 .removeClass("perc-item-disabled")
+				.attr("aria-disabled","false")
                 .off("keydown")
                 .on("keydown", function(evt){
                     if(evt.code == "Enter" || evt.code == "Space"){
@@ -413,12 +416,14 @@
         function enableRemoveUsers(){
             $(".perc-roles-removeusers-button")
                 .removeClass("perc-item-disabled")
+				.attr("aria-disabled","false")
                 .off("click")
                 .on("click", function(evt){
                     removeUsers(evt);
                 });
 			$(".perc-roles-removeusers-button")
                 .removeClass("perc-item-disabled")
+				.attr("aria-disabled","false")
                 .off("click")
                 .on("click", function(evt){
                     if(event.code == "keydown" || event.code == "keydown"){
@@ -430,6 +435,7 @@
         function disableRemoveUsers(){
             $(".perc-roles-removeusers-button")
                 .addClass("perc-item-disabled")
+				.attr("aria-disabled","true")
                 .off();
         }
 

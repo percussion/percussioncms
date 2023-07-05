@@ -373,12 +373,14 @@
         function disablePlusButton() {
             plusButton
                 .addClass("disabled")
+				.attr("aria-disabled","true")
                 .off();
         }
 
         function enablePlusButton() {
             plusButton
                 .removeClass("disabled")
+				.attr("aria-disabled","false")
                 .on("click",function() {
                     var itemText = inputField.val();
                     addListItem(itemText);
