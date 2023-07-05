@@ -65,9 +65,9 @@
         container.append(head);
         //At the top we could show a add or delete button
         if (options.enableDelete)
-            container.find('.perc-item-list-label').append($('<div class="perc-item-delete-button" role="button" tabindex="0" />').attr('title', options.deleteTitle));
+            container.find('.perc-item-list-label').append($('<div class="perc-item-delete-button" aria-disabled="false" role="button" tabindex="0" />').attr('title', options.deleteTitle));
         if (options.enableAdd)
-            container.find('.perc-item-list-label').append($('<div class="perc-item-add-button" role="button" tabindex="0"/>').attr('title', options.addTitle));
+            container.find('.perc-item-list-label').append($('<div class="perc-item-add-button" aria-disabled="false" role="button" tabindex="0"/>').attr('title', options.addTitle));
         if(options.collapsible) {
             container.find('.perc-item-list-label').append($('<span style="float: left;" role="button" tabindex="0" id="perc-wf-min-max" class = "perc-items-minimizer" />').attr('title', I18N.message("perc.ui.workflow.view@Minimize")));
         }    
@@ -229,7 +229,8 @@
 					}
                 })
                 .removeClass("perc-item-disabled")
-                .addClass("perc-item-enabled");
+                .addClass("perc-item-enabled")
+				.attr("aria-disabled","false");;
         }
     }
     
@@ -249,7 +250,8 @@
 					}
                 })
                 .removeClass("perc-item-disabled")
-                .addClass("perc-item-enabled");
+                .addClass("perc-item-enabled")
+				.attr("aria-disabled","false");;
         }
     }
     
@@ -264,7 +266,8 @@
             container.find(".perc-item-add-button")
                 .off()
                 .addClass("perc-item-disabled")
-                .removeClass("perc-item-enabled");
+                .removeClass("perc-item-enabled")
+				.attr("aria-disabled","true");
         }
     }
     
@@ -274,7 +277,8 @@
             container.find(".perc-item-delete-button")
                 .off()
                 .removeClass("perc-item-enabled")
-                .addClass("perc-item-disabled");
+                .addClass("perc-item-disabled")
+				.attr("aria-disabled","true");;
         }
     }
     

@@ -493,11 +493,13 @@
             
             $("#perc-category-name-field").prop("disabled", true);
             $("#perc-category-name-field").addClass("perc-category-field-readonly");
-       
+			$("#perc-category-name-field").attr("aria-disabled","true");
+
             $("#perc-category-name-field").val(node.data.title);
             
             $("#perc-category-selectable-field").prop("disabled", true);
             $("#perc-category-selectable-field").addClass("perc-category-field-readonly");
+			$("#perc-category-selectable-field").attr("aria-disabled","true");
             var selectable = node.data.selectable;
             if(selectable === true || selectable === "true") {
                 $("#perc-category-selectable-field").prop("checked", true);
@@ -508,6 +510,7 @@
             
             $("#perc-category-show-in-page-field").prop("disabled", true);
             $("#perc-category-show-in-page-field").addClass("perc-category-field-readonly");
+			$("#perc-category-show-in-page-field").attr("aria-disabled","true");
             var sinpmd = node.data.showInPgMetaData;
             if(sinpmd === "true" || sinpmd === true) {
                 $("#perc-category-show-in-page-field").prop("checked", true);
@@ -518,7 +521,8 @@
      
             $("#perc-allowedsites-field").addClass("perc-category-field-readonly");
             $("#perc-allowedsites-field").prop("disabled", true);
-      
+			$("#perc-allowedsites-field").attr("aria-disabled","true");
+
             addSitesToDropdown("#perc-allowedsites-field",getAllowedSites(node),getSelectedSites(node));
             
 
@@ -533,6 +537,7 @@
             originalTitle = node.data.title;
 
             $("#perc-category-name-field").prop("disabled", false);
+			$("#perc-category-name-field").attr("aria-disabled","false");
 
             $("#perc-category-name-field").on('keyup', function() {
                  var node = container.dynatree("getActiveNode");
@@ -546,10 +551,12 @@
             
             $("#perc-allowedsites-field").removeClass("perc-category-field-readonly");
             $("#perc-allowedsites-field").prop("disabled", false);
+			$("#perc-allowedsites-field").attr("aria-disabled","false");
 
             $("#perc-category-selectable-field").prop("disabled", false);
             $("#perc-category-selectable-field").removeClass("perc-category-field-readonly");
-            
+			$("#perc-category-selectable-field").attr("aria-disabled","false");
+
             $('#perc-category-selectable-field option[value="'+sitename+'"]').prop('disabled', true);
     
             $("#perc-category-selectable-field option").on('click',function() {
@@ -558,7 +565,8 @@
 
             $("#perc-category-show-in-page-field").prop("disabled", false)
                 .removeClass("perc-category-field-readonly");
-        
+			$("#perc-category-show-in-page-field").attr("aria-disabled","false");
+
             $("#perc-category-save-cancel-block").show();
             $("#perc-category-name-field").trigger("focus");
         }

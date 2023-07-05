@@ -79,16 +79,16 @@
                 </div>
                 <div id="perc-category-details-label"><i18n:message key = "perc.ui.perc.categories@Details"/></div><br />
                 <div id="perc-category-created-by-label"><i18n:message key = "perc.ui.perc.categories@Created By"/> 
-					<input id="perc-category-createdby-field" class="perc-category-field-readonly" disabled title='<i18n:message key = "perc.ui.perc.categories@Created By"/>'/>
+					<input id="perc-category-createdby-field" aria-disabled="true" class="perc-category-field-readonly" disabled title='<i18n:message key = "perc.ui.perc.categories@Created By"/>'/>
                 </div><br />
                 <div id="perc-category-creation-date-label"><i18n:message key = "perc.ui.perc.categories@Creation Date"/> 
-					<input id="perc-category-creationdt-field" class="perc-category-field-readonly" disabled title='<i18n:message key = "perc.ui.perc.categories@Creation Date"/>'/>
+					<input id="perc-category-creationdt-field" aria-disabled="true"  class="perc-category-field-readonly" disabled title='<i18n:message key = "perc.ui.perc.categories@Creation Date"/>'/>
                 </div><br />
                 <div id="perc-category-last-modified-by-label"><i18n:message key = "perc.ui.perc.categories@Last Modified By"/> 
-					<input id="perc-category-lstmodifiedby-field" class="perc-category-field-readonly" disabled title='<i18n:message key = "perc.ui.perc.categories@Last Modified By"/>'/>
+					<input id="perc-category-lstmodifiedby-field" aria-disabled="true"  class="perc-category-field-readonly" disabled title='<i18n:message key = "perc.ui.perc.categories@Last Modified By"/>'/>
                 </div><br />
                 <div id="perc-category-last-modified-date-label"><i18n:message key = "perc.ui.perc.categories@Last Modified Date"/>
-					<input id="perc-category-lstmodifieddt-field" class="perc-category-field-readonly" disabled title='<i18n:message key = "perc.ui.perc.categories@Last Modified Date"/>'/>
+					<input id="perc-category-lstmodifieddt-field" aria-disabled="true" class="perc-category-field-readonly" disabled title='<i18n:message key = "perc.ui.perc.categories@Last Modified Date"/>'/>
                 </div><br />
               
             </div>
