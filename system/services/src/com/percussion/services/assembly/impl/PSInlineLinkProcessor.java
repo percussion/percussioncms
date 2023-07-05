@@ -131,7 +131,7 @@ public class PSInlineLinkProcessor implements IPSPropertyInterceptor
       try {
          //Don't bother trying to parse if the string doesn't contain html / xml
          if(SecureStringUtils.isHTML(body) || SecureStringUtils.isXML(body)) {
-            Document htmlDoc = PSHtmlUtils.createHTMLDocument(body, StandardCharsets.UTF_8,false,null);
+            Document htmlDoc = PSHtmlUtils.createHTMLDocument(body, StandardCharsets.UTF_8,true,null);
             return contentHandler.processDocument(htmlDoc,this);
          }
       }catch (PSHtmlParsingException e){
