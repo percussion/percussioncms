@@ -213,6 +213,9 @@ var WidgetBuilderApp = {};
             return;
         }
         $("#perc-widget-def-tabs").tabs({disabled: []});
+		$("#perc-widget-def-tabs").find('li').each(function() {
+				$(this).attr('aria-disabled',"false");
+			});
         //CMS-8177 : "perc-widget-editing-container" class is used on all tab containers. Calling ".show()" function on the class caused all the tab content to show in first tab container element.
         $("#perc-widget-tab-general").show();
         var wdgModel = new WidgetBuilderApp.WidgetDefinitionModel();
@@ -442,6 +445,9 @@ var WidgetBuilderApp = {};
             $(".perc-widget-editing-container").hide();
             $("#perc-widget-menu-buttons").hide();
             $("#perc-widget-def-tabs").tabs({disabled: [0,1,2, 3]});
+			$("#perc-widget-def-tabs").find('li').each(function() {
+				$(this).attr('aria-disabled',"true");
+			});
         });
     }
     //This method is just written for selenium webdriver
