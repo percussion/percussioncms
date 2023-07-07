@@ -136,6 +136,10 @@ rm -f $INSTALL_DIR/jetty/base/webapps/Rhythmyx/WEB-INF/lib/perc-system-8.1.2.jar
 rm -f $INSTALL_DIR/jetty/base/webapps/Rhythmyx/WEB-INF/lib/sitemanage-8.1.2.jar
 /bin/cp -rf jetty/base/webapps/Rhythmyx/WEB-INF/lib/sitemanage-8.1.2.1.jar $INSTALL_DIR/jetty/base/webapps/Rhythmyx/WEB-INF/lib/
 
+/bin/cp -rf $INSTALL_DIR/jetty/base/webapps/Rhythmyx/WEB-INF/lib/rxutils-8.1.2.jar backup/jetty/base/webapps/Rhythmyx/WEB-INF/lib/
+rm -f $INSTALL_DIR/jetty/base/webapps/Rhythmyx/WEB-INF/lib/rxutils-8.1.2.jar
+/bin/cp -rf jetty/base/webapps/Rhythmyx/WEB-INF/lib/rxutils-8.1.2.1.jar $INSTALL_DIR/jetty/base/webapps/Rhythmyx/WEB-INF/lib/
+
 echo "--------------------------------------------"
 echo "Percussion CMS patching completed."
 echo "--------------------------------------------"
