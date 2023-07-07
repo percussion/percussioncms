@@ -202,16 +202,19 @@ public class PSInlineLinkContentHandler
             path = aTag.attr(HREF_ATTR);
 
             processTag(aTag, path, RXLINK, false);
+            if(m_processor.getWorkItem().getContext()>0){
+               //Remove cms inline link attributes on publish.
+               stripSystemAttributes(aTag);
+            }
          }
       }
    }
 
    /**
     * Processes all "img" tags in the document
-    * @param imgTags
-    * @throws PSHtmlParsingException
+    * @param imgTags A set of img tags to process
+    * @throws PSHtmlParsingException When the HTML can't be parsed
     */
-
    private void processIMGTags(Elements imgTags) throws PSHtmlParsingException {
       if(imgTags == null || imgTags.isEmpty() ){
          return;
@@ -226,7 +229,22 @@ public class PSInlineLinkContentHandler
          if(inlineType.equalsIgnoreCase(PSInlineLinkContentHandler.RXIMAGE)) {
             path = imgTag.attr(SRC_ATTR);
             processTag(imgTag, path, RXIMAGE, true);
+
+            if(m_processor.getWorkItem().getContext()>0){
+               //Remove cms inline link attributes on publish.
+              stripSystemAttributes(imgTag);
+            }
          }
+      }
+   }
+
+   /**
+    * Removes system attributes from an element
+    * @param tag A valid element
+    */
+   private void stripSystemAttributes(Element tag){
+      for(String attr : PSSingleValueBuilder.IGNORED_ATTRIBUTES) {
+         tag.attributes().removeIgnoreCase(attr);
       }
    }
 
@@ -266,7 +284,7 @@ public class PSInlineLinkContentHandler
             IPSAssemblyItem target = link.getTargetItem();
 
             if (link.inlineType.equals(RXLINK)) {
-               doRxHyperLink(link, target, attrs.get(PSSingleValueBuilder.JRCPATH));
+               doRxHyperLink(link, target, attrs.get(PSSingleValueBuilder.DATA_JCRPATH));
             } else if (link.inlineType.equals(RXIMAGE)) {
                doRxImage(link, target);
             } else if (link.inlineType.equals(RXVARIANT)) {
@@ -344,7 +362,7 @@ public class PSInlineLinkContentHandler
                            attr.setKey (name);
                            attr.setValue(override);
                         }else {
-                           String v = (String)attrs.get(PSSingleValueBuilder.JRCPATH);
+                           String v = (String)attrs.get(PSSingleValueBuilder.DATA_JCRPATH);
                            if (v == null || v.trim().isEmpty()) {
                               attr.setValue(attr.getValue());
                            } else {
@@ -394,7 +412,7 @@ public class PSInlineLinkContentHandler
                      if(override != null ){
                         attr.setValue(override);
                      }else {
-                        String v = (String) attrs.get(PSSingleValueBuilder.JRCPATH);
+                        String v = (String) attrs.get(PSSingleValueBuilder.DATA_JCRPATH);
                         if (v == null || v.trim().isEmpty()) {
                            attr.setValue( attr.getValue());
                         } else {
