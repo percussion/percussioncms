@@ -273,7 +273,7 @@ public class PSMetadataDeliveryHandler extends PSBaseDeliveryHandler
 
 
            IPSDeliveryInfoService srv = PSDeliveryInfoServiceLocator.getDeliveryInfoService();
-           if(adminURL!=""){
+           if(adminURL!=""  && !adminURL.equalsIgnoreCase("NONE")){
                deliveryServer = srv.findByService(PSDeliveryInfo.SERVICE_INDEXER,serverType,adminURL);
 
            }else{
@@ -283,7 +283,7 @@ public class PSMetadataDeliveryHandler extends PSBaseDeliveryHandler
 
            PSPublishingJob job = PSRxPubServiceInternalLocator.getRxPublisherService().getPublishingJob(jobId);
            
-           if (deliveryServer == null) 
+           if (deliveryServer == null && !adminURL.equalsIgnoreCase("NONE"))
            {
               String message = "PSMetadataDeliveryHandler is disabled because cannot find a server that runs \""
                     + PSDeliveryInfo.SERVICE_INDEXER + "\" service.";

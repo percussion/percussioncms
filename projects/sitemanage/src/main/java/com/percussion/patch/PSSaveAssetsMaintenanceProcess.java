@@ -491,7 +491,7 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
 
     /**
      * For a type name get a list of field names that use managed links.
-     * @param typeName
+     * @param type
      * @return List of field names
      */
     public List<String>  getManagedLinkFields(String type)
@@ -579,7 +579,7 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
             hasUnmanagedLinks = qualifyLinkPaths(anchors, imgs) || !targetAnchors.isEmpty();
         }
         
-        return  new PSPair<>(hasUnmanagedLinks, doc.html());
+        return  new PSPair<>(hasUnmanagedLinks, doc.body().html());
     }
     
     /**
@@ -620,7 +620,7 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
             }
         }
         
-        //no qualified paths found there fore nothing to do
+        //no qualified paths found therefore nothing to do
         return result;
     }
     
@@ -661,7 +661,7 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
     /**
      * Save and check-in the Asset
      * always check in the asset so that we do not leave content in a bad state
-     * @param PSAsset asset
+     * @param asset
      * @throws Exception - Must be caught when calling this method
      */
     public void saveAsset(PSAsset asset) throws Exception
@@ -713,7 +713,7 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
     
     /**
      * Add Asset set to the global asset Set
-     * @param ids
+     * @param assets
      */
     private void addAssets(Set<ItemWrapper> assets)
     {

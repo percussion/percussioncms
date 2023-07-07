@@ -122,7 +122,7 @@ public class PSSingleValueBuilder extends PSDisplayFieldBuilder
    public static final String CLASS = "class";
    public static final String TITLE = "title";
    public static final String SRC = "src";
-   public static final String JRCPATH = "data-jcrpath";
+   public static final String DATA_JCRPATH = "data-jcrpath";
    public static final String HREF = "href";
 
    /**
@@ -137,7 +137,7 @@ public class PSSingleValueBuilder extends PSDisplayFieldBuilder
       IGNORED_ATTRIBUTES.add(DATA_CONSTRAIN);
       IGNORED_ATTRIBUTES.add(DATA_PREVIOUS_ALT_OVERRIDE);
       IGNORED_ATTRIBUTES.add(DATA_DESCRIPTION_OVERRIDE);
-      
+      IGNORED_ATTRIBUTES.add(DATA_JCRPATH);
       IGNORED_ATTRIBUTES.add(DATA_PREVIOUS_TITLE_OVERRIDE);
       IGNORED_ATTRIBUTES.add(DATA_TITLE_OVERRIDE);
       IGNORED_ATTRIBUTES.add(DATA_DECORATIVE_OVERRIDE);
