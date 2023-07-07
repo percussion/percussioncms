@@ -58,7 +58,7 @@
                     </select>
                     <input class="perc_dialog_input perc_dialog_field" id="sitename" name="sitename" maxlength="80" type="hidden"/>
                 <%}else{ %>
-                    <input class="perc_dialog_input perc_dialog_field" id="sitename" name="sitename" maxlength="80" type="text" autofocus="true"/>
+                    <input class="perc_dialog_input perc_dialog_field" id="sitename" aria-required="true" name="sitename" maxlength="80" type="text" autofocus="true"/>
                 <%} %>
             </div>
             <p class="hint"><strong><i18n:message key="perc.ui.newsitedialog.text@page1 summary"/></strong></p>
