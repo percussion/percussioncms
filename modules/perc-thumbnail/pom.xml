@@ -199,7 +199,7 @@
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>rxutils</artifactId>
-            <version>8.1.2</version>
+            <version>8.1.2.1</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -319,7 +319,7 @@
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>rxutils</artifactId>
-            <version>8.1.2</version>
+            <version>8.1.2.1</version>
             <type>test-jar</type>
             <scope>test</scope>
         </dependency>

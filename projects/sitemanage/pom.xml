@@ -163,7 +163,7 @@
       <dependency>
         <groupId>com.percussion</groupId>
         <artifactId>rxutils</artifactId>
-        <version>${project.parent.version}</version>
+        <version>8.1.2.1</version>
         <classifier>tests</classifier>
       <type>test-jar</type>
       <scope>test</scope>
@@ -494,7 +494,7 @@
       <dependency>
           <groupId>com.percussion</groupId>
           <artifactId>rxutils</artifactId>
-          <version>${project.parent.version}</version>
+          <version>8.1.2.1</version>
           <scope>compile</scope>
       </dependency>
       <dependency>

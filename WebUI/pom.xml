@@ -575,7 +575,7 @@
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>rxutils</artifactId>
-            <version>${project.parent.version}</version>
+            <version>8.1.2.1</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.aspectj</groupId>
@@ -1035,6 +1035,7 @@
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>rxutils</artifactId>
+            <version>8.1.2.1</version>
             <type>test-jar</type>
             <scope>compile</scope>
             <exclusions>
@@ -1047,7 +1048,6 @@
                     <groupId>aspectjrt</groupId>
                 </exclusion>
             </exclusions>
-            <version>${project.parent.version}</version>
         </dependency>
         <dependency>
             <groupId>commons-httpclient</groupId>
