@@ -120,38 +120,39 @@ copy /V /Z /D /Y %~pd1jetty\base\webapps\Rhythmyx\WEB-INF\lib\shiro-web-1.7.1.ja
 del /F /Q  %~pd1jetty\base\webapps\Rhythmyx\WEB-INF\lib\shiro-web-1.7.1.jar
 copy /V /Z /D /Y jetty\base\webapps\Rhythmyx\WEB-INF\lib\shiro-web-1.10.0.jar %~pd1jetty\base\webapps\Rhythmyx\WEB-INF\lib\
 
-echo "Updating Percussion application to resolve issues: #890, #762, #851..."
+echo "Updating Percussion application to resolve issues..."
 
-copy /V /Z /D /Y %~pd1jetty\base\webapps\Rhythmyx\test\sql.jsp backup\jetty\base\webapps\Rhythmyx\test\ 
+copy /V /Z /D /Y %~pd1jetty\base\webapps\Rhythmyx\test\sql.jsp backup\jetty\base\webapps\Rhythmyx\test\
 del /F /Q  %~pd1jetty\base\webapps\Rhythmyx\test\sql.jsp
 copy /V /Z /D /Y jetty\base\webapps\Rhythmyx\test\sql.jsp %~pd1jetty\base\webapps\Rhythmyx\test\
 
-copy /V /Z /D /Y %~pd1jetty\base\webapps\Rhythmyx\WEB-INF\lib\perc-system-8.1.2.jar backup\jetty\base\webapps\Rhythmyx\WEB-INF\lib\ 
+copy /V /Z /D /Y %~pd1jetty\base\webapps\Rhythmyx\WEB-INF\lib\perc-system-8.1.2.jar backup\jetty\base\webapps\Rhythmyx\WEB-INF\lib\
 del /F /Q  %~pd1jetty\base\webapps\Rhythmyx\WEB-INF\lib\perc-system-8.1.2.jar
 copy /V /Z /D /Y jetty\base\webapps\Rhythmyx\WEB-INF\lib\perc-system-8.1.2.1.jar %~pd1jetty\base\webapps\Rhythmyx\WEB-INF\lib\
 
-copy /V /Z /D /Y %~pd1jetty\base\webapps\Rhythmyx\WEB-INF\lib\sitemanage-8.1.2.jar backup\jetty\base\webapps\Rhythmyx\WEB-INF\lib\ 
+copy /V /Z /D /Y %~pd1jetty\base\webapps\Rhythmyx\WEB-INF\lib\sitemanage-8.1.2.jar backup\jetty\base\webapps\Rhythmyx\WEB-INF\lib\
 del /F /Q  %~pd1jetty\base\webapps\Rhythmyx\WEB-INF\lib\sitemanage-8.1.2.jar
 copy /V /Z /D /Y jetty\base\webapps\Rhythmyx\WEB-INF\lib\sitemanage-8.1.2.1.jar %~pd1jetty\base\webapps\Rhythmyx\WEB-INF\lib\
 
 echo --------------------------------------------
 echo Percussion CMS patching completed.
 echo --------------------------------------------
-echo( 
+echo(
 echo To uninstall this patch use the provided uninstall.bat script.
 echo The CMS service should be stopped and started after applying this patch.
 echo For example:
-echo( 
+echo(
 echo net stop PercussionCMS
 echo net start PercussionCMS
-echo( 
+echo(
 echo The backup folder may be deleted after the patching is confirmed.  Note that this patch cannot be uninstalled once the backup folder is removed.
 echo(
-pause 
+pause
 exit 0
 
 :helpFunction
-   echo( 
-   echo "Usage: %0 <Path To PercussionCMS Installation> For example: %0 C:\Percussion"
-   echo( 
+   echo(
+   echo "Usage: %0 <Path To PercussionCMS Installation> For example: %0 C:\Percussion\"
+   echo "Note: Include the trailing backslash in the path."
+   echo(
    pause
