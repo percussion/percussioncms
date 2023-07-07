@@ -249,11 +249,14 @@
                 String colData="";
                 for (int i = 1; i < columnCount + 1; i++ ) {
                     int type = rsmd.getColumnType(i);
-                    Object o;
+                    Object o = null;
                     if(type == Types.CLOB){
                         Clob clob = rs.getClob(i);
-                        o = clob.getSubString(1, (int) clob.length());
-                        clob.free();
+                        if(clob!=null){
+                            o = clob.getSubString(1, (int) clob.length());
+                            clob.free();
+                        }
+
                     }else{
                         o = rs.getObject(i);
                     }
