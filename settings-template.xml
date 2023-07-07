@@ -18,7 +18,7 @@
                       <signing.keystorePass>12345678</signing.keystorePass>
                       <signing.keystoreType>JKS</signing.keystoreType>
                       <signing.keyAlias>selfsigned</signing.keyAlias>
-		  <signing.keyPass>12345678</signing.keyPass>
+		              <signing.keyPass>12345678</signing.keyPass>
             </properties>
         </profile>
         <profile>
@@ -28,7 +28,7 @@
                       <signing.keystorePass>12345678</signing.keystorePass>
                       <signing.keystoreType>JKS</signing.keystoreType>
                       <signing.keyAlias>selfsigned</signing.keyAlias>
-		  <signing.keyPass>12345678</signing.keyPass>
+                      <signing.keyPass>12345678</signing.keyPass>
             </properties>
         </profile>
 
