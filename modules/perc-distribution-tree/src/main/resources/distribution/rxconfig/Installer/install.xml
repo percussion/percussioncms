@@ -1424,6 +1424,7 @@
             <patternset refid="text.files"/>
             <exclude name="**/Deployment/**"/>
             <exclude name="**/Staging/**"/>
+            <exclude name="JRE/**"/>
         </fixcrlf>
 
         <if>
