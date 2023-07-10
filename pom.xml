@@ -135,7 +135,7 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <activemq.version>5.18.2</activemq.version>
+        <activemq.version>5.16.6</activemq.version><!-- 5.17.x and up require Java 11 -->
        <spring.version>5.3.27</spring.version>
        <hibernate.version>5.6.10.Final</hibernate.version>
        <hibernate.validator.version>6.2.3.Final</hibernate.validator.version>
@@ -977,7 +977,7 @@
     <repositories>
         <repository>
             <id>perc-release-repo</id>
-            <url>https://mvn.percussion.com/repositories/releases/</url>
+            <url>https://mvn.intsof.com/repositories/releases/</url>
             <releases>
                 <enabled>true</enabled>
                 <updatePolicy>never</updatePolicy>
@@ -989,7 +989,7 @@
         <repository>
             <id>thirdparty</id>
             <name>thirdparty</name>
-            <url>https://mvn.percussion.com/repositories/thirdparty/</url>
+            <url>https://mvn.intsof.com/repositories/thirdparty/</url>
             <releases>
                 <enabled>true</enabled>
                 <updatePolicy>never</updatePolicy>
@@ -1002,8 +1002,8 @@
             <id>maven-central</id>
             <url>https://repo1.maven.org/maven2</url>
             <releases>
-                    <enabled>true</enabled>
-                    <updatePolicy>never</updatePolicy>
+                <enabled>true</enabled>
+                <updatePolicy>never</updatePolicy>
             </releases>
             <snapshots>
                 <enabled>false</enabled>
@@ -1012,7 +1012,7 @@
         <repository>
             <id>perc-snapshot-repo</id>
             <name>Snapshots</name>
-            <url>https://mvn.percussion.com/repositories/snapshots/</url>
+            <url>https://mvn.intsof.com/repositories/snapshots/</url>
             <snapshots>
                 <enabled>true</enabled>
                 <updatePolicy>never</updatePolicy>
@@ -1026,7 +1026,7 @@
         <pluginRepository>
             <id>perc-releases-repo</id>
             <name>Perc releases Repository</name>
-            <url>https://mvn.percussion.com/repositories/releases/</url>
+            <url>https://mvn.intsof.com/repositories/releases/</url>
             <layout>default</layout>
             <snapshots>
                 <enabled>false</enabled>
@@ -1037,7 +1037,7 @@
         <pluginRepository>
             <id>perc-snapshot-repo</id>
             <name>Perc Snapshots Repository</name>
-            <url>https://mvn.percussion.com/repositories/snapshots/</url>
+            <url>https://mvn.intsof.com/repositories/snapshots/</url>
             <layout>default</layout>
             <snapshots>
                 <enabled>true</enabled>
@@ -1049,7 +1049,7 @@
         <pluginRepository>
             <id>thirdparty</id>
             <name>thirdparty</name>
-            <url>https://mvn.percussion.com/repositories/thirdparty/</url>
+            <url>https://mvn.intsof.com/repositories/thirdparty/</url>
         </pluginRepository>
         <pluginRepository>
             <id>maven-central</id>
@@ -1840,17 +1840,38 @@
                 <artifactId>commons-compress</artifactId>
                 <version>${commons.compress.version}</version>
             </dependency>
+
             <dependency>
                 <groupId>org.apache.activemq</groupId>
-                <artifactId>activemq-core</artifactId>
+                <artifactId>activemq-broker</artifactId>
                 <version>${activemq.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <artifactId>activemq-protobuf</artifactId>
-                        <groupId>org.apache.activemq.protobuf</groupId>
-                    </exclusion>
-                </exclusions>
             </dependency>
+
+            <dependency>
+                <groupId>org.apache.activemq</groupId>
+                <artifactId>activemq-client</artifactId>
+                <version>${activemq.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.activemq</groupId>
+                <artifactId>activemq-kahadb-store</artifactId>
+                <version>${activemq.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.activemq</groupId>
+                <artifactId>activemq-spring</artifactId>
+                <version>${activemq.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.activemq</groupId>
+                <artifactId>activemq-jms-pool</artifactId>
+                <version>${activemq.version}</version>
+            </dependency>
+
+
             <dependency>
                 <groupId>commons-digester</groupId>
                 <artifactId>commons-digester</artifactId>

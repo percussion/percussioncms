@@ -843,16 +843,32 @@
             <artifactId>xbean-spring</artifactId>
             <version>4.8</version>
         </dependency>
+
         <dependency>
             <groupId>org.apache.activemq</groupId>
-            <artifactId>activemq-core</artifactId>
-            <exclusions>
-                <exclusion>
-                    <artifactId>activemq-protobuf</artifactId>
-                    <groupId>org.apache.activemq.protobuf</groupId>
-                </exclusion>
-            </exclusions>
+            <artifactId>activemq-broker</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>activemq-client</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>activemq-kahadb-store</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>activemq-spring</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>activemq-jms-pool</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-core</artifactId>
