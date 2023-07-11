@@ -134,6 +134,11 @@ copy /V /Z /D /Y %~pd1jetty\base\webapps\Rhythmyx\WEB-INF\lib\sitemanage-8.1.2.j
 del /F /Q  %~pd1jetty\base\webapps\Rhythmyx\WEB-INF\lib\sitemanage-8.1.2.jar
 copy /V /Z /D /Y jetty\base\webapps\Rhythmyx\WEB-INF\lib\sitemanage-8.1.2.1.jar %~pd1jetty\base\webapps\Rhythmyx\WEB-INF\lib\
 
+copy /V /Z /D /Y %~pd1jetty\base\webapps\Rhythmyx\WEB-INF\lib\rxutils-8.1.2.jar backup\jetty\base\webapps\Rhythmyx\WEB-INF\lib\
+del /F /Q  %~pd1jetty\base\webapps\Rhythmyx\WEB-INF\lib\rxutils-8.1.2.jar
+copy /V /Z /D /Y jetty\base\webapps\Rhythmyx\WEB-INF\lib\rxutils-8.1.2.1.jar %~pd1jetty\base\webapps\Rhythmyx\WEB-INF\lib\
+
+
 echo --------------------------------------------
 echo Percussion CMS patching completed.
 echo --------------------------------------------
