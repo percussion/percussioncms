@@ -54,9 +54,11 @@
 	WidgetBuilderApp.addNewResource = function(type){
 		if(type==="JS"){
 			WidgetBuilderApp.jsResList.add(new WidgetBuilderApp.WidgetResourceModel());
+			setTabIndexForJsResources();
 		}
 		else if(type==="CSS"){
             WidgetBuilderApp.cssResList.add(new WidgetBuilderApp.WidgetResourceModel());
+			setTabIndexForCssResources();
 		}
 	};
 
@@ -64,7 +66,10 @@
         tagName:'div',
         events: {
             "change input" : "updateEdits",
-			"click .perc-resource-delete" : "deleteResource"
+			"click .perc-resource-delete" : "deleteResource",
+			"keydown .perc-resource-delete" : "deleteResourceOnKeydown",
+			"keydown .datadisplay" : "avoidOnEnter"
+
         },
         updateEdits: function(event){
             WidgetBuilderApp.dirtyController.setDirty(true,"Widget",WidgetBuilderApp.saveOnDirty);
@@ -81,7 +86,47 @@
 		deleteResource:function(){
             WidgetBuilderApp.dirtyController.setDirty(true,"Widget",WidgetBuilderApp.saveOnDirty);
 			this.model.destroy();
+		},
+		deleteResourceOnKeydown:function(eventHandler){
+			if(eventHandler.code == "Enter" || eventHandler.code == "Space"){
+				WidgetBuilderApp.dirtyController.setDirty(true,"Widget",WidgetBuilderApp.saveOnDirty);
+				this.model.destroy();
+			}
+		},
+		avoidOnEnter:function(eventHandler){
+			if(eventHandler.code == "Enter" || eventHandler.code == "Space"){
+				return false;
+			}
 		}
     });    
+	function setTabIndexForJsResources(){
+		var tabindexCounter = 172;
+		var tagCol = "";
+		$('#perc-widget-js-resources-container').find('*').each(function(){
+			var tagName = this.tagName;
+			tagCol = tagCol+", "+tagName
+			if(tagName == "INPUT"){
+				this.setAttribute("tabindex", tabindexCounter++);
+			}
+			if(tagName == "SPAN"){
+				this.setAttribute("tabindex", tabindexCounter++);
+			}
+		});
+	}
+
+	function setTabIndexForCssResources(){
+		var tabindexCounter = 192;
+		var tagCol = "";
+		$('#perc-widget-css-resources-container').find('*').each(function(){
+			var tagName = this.tagName;
+			tagCol = tagCol+", "+tagName
+			if(tagName == "INPUT"){
+				this.setAttribute("tabindex", tabindexCounter++);
+			}
+			if(tagName == "SPAN"){
+				this.setAttribute("tabindex", tabindexCounter++);
+			}
+		});
+	}
 
 })(jQuery);
