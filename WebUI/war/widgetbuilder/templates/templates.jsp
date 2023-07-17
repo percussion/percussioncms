@@ -6,7 +6,7 @@
         <div class="perc-widget-field-entry" title="<@- name @>"><@- name @></div>
         <div class="perc-widget-field-entry" title="<@- label @>"><@- label @></div>
         <div class="perc-widget-field-entry"><@- type.toLowerCase().replace("_", " ") @></div>
-        <div class="perc-widget-field-entry"><div class="perc-widget-field-actions" for="<@- name @>" style="display:none"><span role="button" tabindex="0" title='<i18n:message key="perc.ui.widget.builder@Edit"/>' class="perc-widget-field-action-edit" style="cursor:pointer"><i18n:message key="perc.ui.widget.builder@Edit"/></span> | <span role="button" tabindex="0" title='<i18n:message key="perc.ui.widget.builder@Delete"/>' class="perc-widget-field-action-delete" style="cursor:pointer"><i18n:message key="perc.ui.widget.builder@Delete"/></span></div>
+        <div class="perc-widget-field-entry"><div class="perc-widget-field-actions" for="<@- name @>" ><span role="button" tabindex="128" title='<i18n:message key="perc.ui.widget.builder@Edit"/>' class="perc-widget-field-action-edit" style="cursor:pointer"><i18n:message key="perc.ui.widget.builder@Edit"/></span> | <span role="button" tabindex="129" title='<i18n:message key="perc.ui.widget.builder@Delete"/>' class="perc-widget-field-action-delete" style="cursor:pointer"><i18n:message key="perc.ui.widget.builder@Delete"/></span></div>
         </div>
 </script>
 
@@ -15,46 +15,46 @@
     <csrf:form name="perc-widget-general-tab-form" action="templates.jsp" method="post">
         <div type="sys_normal">
             <label accesskey="" for="widgetname" class="perc-required-field"><i18n:message key="perc.ui.widget.builder@Name"/>:</label><br/>
-            <input tabindex="0" title='<i18n:message key="perc.ui.widget.builder@Name"/>' id="widgetname" <@- widgetname != ''?'readonly=readonly':'' @> <@- widgetname != ''?'class=perc-disabled-input':'class="datadisplay"' @> type="text" name="widgetname" size="50" maxlength="100" style="height: 15px; padding-top: 3px; padding-bottom: 5px;" value="<@- widgetname @>"/>
+            <input tabindex="130" title='<i18n:message key="perc.ui.widget.builder@Name"/>' id="widgetname" <@- widgetname != ''?'readonly=readonly':'' @> <@- widgetname != ''?'class=perc-disabled-input':'class="datadisplay"' @> type="text" name="widgetname" size="50" maxlength="100" style="height: 15px; padding-top: 3px; padding-bottom: 5px;" value="<@- widgetname @>"/>
             <br/>
         </div>
         <div type="sys_normal">
             <label accesskey="" for="description"><i18n:message key="perc.ui.widget.builder@Description"/>:</label><br/>
-            <textarea tabindex="0" title='<i18n:message key="perc.ui.widget.builder@Description"/>' id="description" name="description" wrap="soft" class="datadisplay" rows="4" cols="80" maxlength="1024"><@- description @></textarea>
+            <textarea tabindex="131" title='<i18n:message key="perc.ui.widget.builder@Description"/>' id="description" name="description" wrap="soft" class="datadisplay" rows="4" cols="80" maxlength="1024"><@- description @></textarea>
             <br/>
         </div>
         <div type="sys_normal">
             <label accesskey="" for="prefix" class="perc-required-field"><i18n:message key="perc.ui.widget.builder@Prefix"/>:</label><br/>
-            <input tabindex="0" title='<i18n:message key="perc.ui.widget.builder@Prefix"/>' type="text" id="prefix" <@- prefix != ''?'readonly=readonly':'' @> <@- prefix != ''?'class=perc-disabled-input':'class="datadisplay"' @> type="text" name="prefix" class="datadisplay" size="50" maxlength="100" style="height: 15px; padding-top: 3px; padding-bottom: 5px;" value="<@- prefix @>"/>
+            <input tabindex="132" title='<i18n:message key="perc.ui.widget.builder@Prefix"/>' type="text" id="prefix" <@- prefix != ''?'readonly=readonly':'' @> <@- prefix != ''?'class=perc-disabled-input':'class="datadisplay"' @> type="text" name="prefix" class="datadisplay" size="50" maxlength="100" style="height: 15px; padding-top: 3px; padding-bottom: 5px;" value="<@- prefix @>"/>
             <br/>
         </div>
         <div type="sys_normal">
             <label accesskey="" for="author" class="perc-required-field"><i18n:message key="perc.ui.widget.builder@Author"/>:</label><br/>
-            <input tabindex="0" title='<i18n:message key="perc.ui.widget.builder@Author"/>' type="text" id="author" name="author" class="datadisplay" size="50" maxlength="100" style="height: 15px; padding-top: 3px; padding-bottom: 5px;" value="<@- author @>"/>
+            <input tabindex="133" title='<i18n:message key="perc.ui.widget.builder@Author"/>' type="text" id="author" name="author" class="datadisplay" size="50" maxlength="100" style="height: 15px; padding-top: 3px; padding-bottom: 5px;" value="<@- author @>"/>
             <br/>
         </div>
         <div type="sys_normal">
             <label accesskey="" for="publisherUrl" class="perc-required-field"><i18n:message key="perc.ui.widget.builder@Publisher URL"/>:</label><br/>
-            <input tabindex="0" title='<i18n:message key="perc.ui.widget.builder@Publisher URL"/>' type="text" id="publisherUrl" name="publisherUrl" class="datadisplay" size="50" maxlength="100" style="height: 15px; padding-top: 3px; padding-bottom: 5px;" value="<@- publisherUrl @>"/>
+            <input tabindex="134" title='<i18n:message key="perc.ui.widget.builder@Publisher URL"/>' type="text" id="publisherUrl" name="publisherUrl" class="datadisplay" size="50" maxlength="100" style="height: 15px; padding-top: 3px; padding-bottom: 5px;" value="<@- publisherUrl @>"/>
             <br/>
         </div>
         <div type="sys_normal">
             <label accesskey="" for="version" class="perc-required-field"><i18n:message key="perc.ui.widget.builder@Version"/>:</label><br/>
-            <input tabindex="0" title='<i18n:message key="perc.ui.widget.builder@Version"/>' type="text" id="version" name="version" class="datadisplay" size="50" maxlength="50" style="height: 15px; padding-top: 3px; padding-bottom: 5px;" value="<@- version @>"/>
+            <input tabindex="135" title='<i18n:message key="perc.ui.widget.builder@Version"/>' type="text" id="version" name="version" class="datadisplay" size="50" maxlength="50" style="height: 15px; padding-top: 3px; padding-bottom: 5px;" value="<@- version @>"/>
             <br/>
         </div>
         <div type="sys_normal">
             <label accesskey="" for="widgetTrayCustomizedIconPath" ><i18n:message key="perc.ui.widget.builder@Widget Tray Icon Path"/>:</label><br/>
-            <input tabindex="0" title='<i18n:message key="perc.ui.widget.builder@Widget Tray Icon Path"/>' type="text" id="widgetTrayCustomizedIconPath" name="widgetTrayCustomizedIconPath" class="datadisplay" size="50" maxlength="100" style="height: 15px; padding-top: 3px; padding-bottom: 5px;" value="<@- widgetTrayCustomizedIconPath @>"/>
+            <input tabindex="136" title='<i18n:message key="perc.ui.widget.builder@Widget Tray Icon Path"/>' type="text" id="widgetTrayCustomizedIconPath" name="widgetTrayCustomizedIconPath" class="datadisplay" size="50" maxlength="100" style="height: 15px; padding-top: 3px; padding-bottom: 5px;" value="<@- widgetTrayCustomizedIconPath @>"/>
             <br/>
         </div>
         <div type="sys_normal">
             <label accesskey="" for="toolTipMessage" ><i18n:message key="perc.ui.widget.builder@ToolTip Message"/>:</label><br/>
-            <input tabindex="0" title='<i18n:message key="perc.ui.widget.builder@ToolTip Message"/>' type="text" id="toolTipMessage" name="toolTipMessage" class="datadisplay" size="50" maxlength="100" style="height: 15px; padding-top: 3px; padding-bottom: 5px;" value="<@- toolTipMessage @>"/>
+            <input tabindex="137" title='<i18n:message key="perc.ui.widget.builder@ToolTip Message"/>' type="text" id="toolTipMessage" name="toolTipMessage" class="datadisplay" size="50" maxlength="100" style="height: 15px; padding-top: 3px; padding-bottom: 5px;" value="<@- toolTipMessage @>"/>
             <br/>
         </div>
         <div type="sys_normal">
-		    <input title='<i18n:message key="perc.ui.widget.builder@Is Responsive"/>'  type="checkbox" id="isResponsive" name="responsive" class="datadisplay" style="height: 15px; padding-top: 3px; padding-bottom: 5px; vertical-align:middle" <@ print(responsive==true?checked='checked':'') @>/><label accesskey="" for="isResponsive"><i18n:message key="perc.ui.widget.builder@Is Responsive"/></label>
+		    <input tabindex="138" title='<i18n:message key="perc.ui.widget.builder@Is Responsive"/>'  type="checkbox" id="isResponsive" name="responsive" class="datadisplay" style="height: 15px; padding-top: 3px; padding-bottom: 5px; vertical-align:middle" <@ print(responsive==true?checked='checked':'') @>/><label accesskey="" for="isResponsive"><i18n:message key="perc.ui.widget.builder@Is Responsive"/></label>
             <br/>
         </div>
     </csrf:form>

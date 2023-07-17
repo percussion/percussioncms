@@ -56,19 +56,35 @@
             },
             'mouseleave':function(){
                 $(this.el).find(".perc-widget-field-wrapper").removeClass("perc-widget-field-wrapper-hover");
-                $(this.el).find(".perc-widget-field-actions").hide();
            },
            'click .perc-widget-field-action-edit':function(){
                WidgetBuilderApp.showFieldEditor(this.model);
+			   setRowIndexOnContentData_2();
            },
            'click .perc-widget-field-action-delete':function(){
                WidgetBuilderApp.fieldsList.remove(this.model);
                WidgetBuilderApp.dirtyController.setDirty(true,"Widget",WidgetBuilderApp.saveOnDirty);
+			   setRowIndexOnContentData_2();
+           },
+		   'keydown .perc-widget-field-action-edit':function(eventHandler){
+			   if(eventHandler.code == "Enter" || eventHandler.code == "Space"){
+				   WidgetBuilderApp.showFieldEditor(this.model);
+				   setRowIndexOnContentData_2();
+			   }
+           },
+           'keydown .perc-widget-field-action-delete':function(eventHandler){
+			   if(eventHandler.code == "Enter" || eventHandler.code == "Space"){
+				   WidgetBuilderApp.fieldsList.remove(this.model);
+				   WidgetBuilderApp.dirtyController.setDirty(true,"Widget",WidgetBuilderApp.saveOnDirty);
+				   setRowIndexOnContentData_2();
+				}
            },
            'drop' : function(event, index) {
                 this.$el.trigger('update-sort', [this.model, index]);
            },
-           'update-sort': 'updateSort'
+           'update-sort': 'updateSort',
+		   "focusin": "rowFocusedContent",
+		   "focusout": "rowLostFocusContent"
         },
         render:function (eventName) {
             $(this.el).html(this.template(this.model.toJSON()));
@@ -87,7 +103,14 @@
             model.set('ordinal', position);
             WidgetBuilderApp.fieldsList.add(model, {at: position});
             this.render();
-        }
+        },
+		rowFocusedContent:function(eventHandler){
+			$(this.el).find(".perc-widget-field-wrapper").addClass("perc-widget-field-wrapper-hover");
+            $(this.el).find(".perc-widget-field-actions").show();
+		},
+		rowLostFocusContent:function(eventHandler){
+		  $(this.el).find(".perc-widget-field-wrapper").removeClass("perc-widget-field-wrapper-hover");
+		}
     });
     
     WidgetBuilderApp.FieldEditorView = Backbone.View.extend({
@@ -172,5 +195,23 @@
     WidgetBuilderApp.updateFieldsModel = function(){
         $(WidgetBuilderApp.fieldEditorView).find("input, textarea, select").trigger("change");
     }
+
+	function setRowIndexOnContentData_2(){
+		if ($('#perc-widget-fields-container').length){
+		var tbl= $("#perc-widget-fields-container");
+		var tabIndex=140;
+		tbl.find('div').each(function (i, el) {
+			var $this = $(this);
+			var myClassName = this.className;
+			if(myClassName == "perc-widget-field-wrapper"){
+				this.setAttribute("tabindex", tabIndex++);
+
+				$this.find('span').each(function (i, el) {
+					this.setAttribute("tabindex", tabIndex++);
+				});
+			}
+		});
+	   }
+	}
 
 })(jQuery);
