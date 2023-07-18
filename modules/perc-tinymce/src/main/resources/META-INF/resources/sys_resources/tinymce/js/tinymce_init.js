@@ -165,6 +165,7 @@ function getBaseConfig(parameters) {
                 'percmorelink': '/sys_resources/tinymce/plugins/percmorelink/plugin.js',
                 'rxinline':'/sys_resources/tinymce/plugins/rxinline/plugin.js',
                 'rxinserthtml':'/sys_resources/tinymce/plugins/rxinserthtml/plugin.js',
+				'fontawesome':'/sys_resources/tinymce/plugins/fontawesome/plugin.js',
 
             },
             "codemirror": {
