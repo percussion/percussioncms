@@ -504,6 +504,12 @@
                                 .attr("for", self.options.site)
                                 .on("click", function(evt) {
                                     self.onDeleteSiteDialog();
+                                })
+                                .on("keydown",function(eventHandler){
+                                    if(eventHandler.code == "Enter" || eventHandler.code == "Space"){
+                                        document.activeElement.click();
+                                        return false;
+                                    }
                                 });
                         }
 
@@ -541,6 +547,11 @@
                     .text(I18N.message('perc.ui.sitemap.menuitem@Move Section'))
                     .on("click", function(evt){
                         self.onMoveWithDialog();
+                    })
+                    .on("keydown",function(eventHandler){
+                        if(eventHandler.code == "Enter" || eventHandler.code == "Space"){
+                            document.activeElement.click();
+                        }
                     });
                 $menu.append($move);
 
@@ -695,6 +706,11 @@
                         $(this).addClass("perc-site-map-box-selected");
                         self.handleMoveActionItemState();
                     });
+                    $box.on("keydown",function(eventHandler){
+                        if(eventHandler.code == "Enter" || eventHandler.code == "Space"){
+                            document.activeElement.click();
+                        }
+                    });
                     // Add Drag & Drop
                     $box.draggable({opacity: 0.7,
                         helper: 'clone',
@@ -833,6 +849,12 @@
                         {"sectionId" : sectionObj.id}, function(evt){
                             self.onNodeCountClick(evt);
                         });
+                    $nodeCount.on("keydown." + "level_" + levelIdx,
+                        {"sectionId" : sectionObj.id}, function(eventHandler){
+                            if(eventHandler.code == "Enter" || eventHandler.code == "Space"){
+                                document.activeElement.click();
+                            }
+                        });
                 }
             },
 
@@ -856,6 +878,11 @@
                     .attr("title", tooltip)
                     .on("click." + namespace, data, function(evt){
                         onclick(evt);
+                    })
+                    .on("keydown." + namespace, data, function(eventHandler){
+                        if(eventHandler.code == "Enter" || eventHandler.code == "Space"){
+                            document.activeElement.click();
+                        }
                     })
                     .on("mouseenter." + namespace, function(evt){
                         $(this).attr("src", self.getImageSrc(image, true));
