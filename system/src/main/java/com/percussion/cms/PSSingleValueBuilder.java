@@ -328,7 +328,7 @@ public class PSSingleValueBuilder extends PSDisplayFieldBuilder
             Document contentDoc = null;
             try
             {
-               org.jsoup.nodes.Document jsoupDoc = PSHtmlUtils.createHTMLDocument(content, StandardCharsets.UTF_8,false,null);
+               org.jsoup.nodes.Document jsoupDoc = PSHtmlUtils.createHTMLDocument(content, StandardCharsets.UTF_8,true,null);
                contentDoc = W3CDom.convert(jsoupDoc);
                isModified = PSInlineLinkField.expandEmptyElement(contentDoc);
                isModified = PSInlineLinkField.expandEmptyElement(contentDoc);
