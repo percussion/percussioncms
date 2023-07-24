@@ -302,6 +302,11 @@ function bindSitesEvents() {
     $('.perc-site-view-toggle-button').on("click", function(evt) {
         toggleSiteView(this);
     });
+	$('.perc-site-view-toggle-button').on("keydown", function(event) {
+		if(event.code == "Enter" || event.code == "Space"){
+				document.activeElement.click();
+		}
+    });
 
     $('.perc-site-filter-field').on('keyup', function() {
         filterString = $(this).val().toLowerCase();
