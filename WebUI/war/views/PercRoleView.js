@@ -281,7 +281,7 @@
             // iterate over the list of users and add it to the user option
             for(i in assignedUsersArray) {
                 var userName = assignedUsersArray[i];
-                var liUser = $("<li class='perc-assigned-user-entry'/>")
+                var liUser = $("<li tabindex='0' class='perc-assigned-user-entry'/>")
                     .append(
                         $("<span />")
                             .html(userName)
@@ -296,6 +296,13 @@
                     liUser.on("click",
                         function(evt){
                             selectUser.call(this,[evt]);
+                        });
+					liUser.on("keydown",
+                        function(eventHandler){
+                            if(eventHandler.code == "Enter" || eventHandler.code == "Space"){
+								document.activeElement.click();
+							}
+
                         });
                 }
                 ulUsers.append(liUser);

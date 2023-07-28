@@ -769,8 +769,80 @@
             {
                 $(".perc-sa-loading-warning-message").addClass("perc-sa-loading-warning-message-hidden").removeClass("perc-sa-loading-warning-message");
                 $.PercDataTree.updateTree(assign_container, [originalSitesJson, originalAssetsJson], selectedWorkflow);
+				setTabIndexForAdminWF()
             }
         }
+		//setting tab index
+		function setTabIndexForAdminWF(){
+			var tabCounterAdminWF = 205;
+			$( "#perc-wf-min-max" ).attr("tabindex",tabCounterAdminWF++);
+			$( ".perc-item-add-button" ).attr("tabindex",tabCounterAdminWF++);
+			$( ".perc-item-delete-button" ).attr("tabindex",tabCounterAdminWF++);
+
+			$(".perc-itemname-list").find('li').each(function() {
+				$(this).attr('tabindex',tabCounterAdminWF++);
+			});
+
+			$( ".perc-datatree-label span" ).attr("tabindex",tabCounterAdminWF++);
+			$( ".perc-datatree-label div" ).attr("tabindex",tabCounterAdminWF++);
+
+			var siteFound = false;
+			$("#perc-workflows-assigned-sites-folders").find('*').each(function() {
+				var classNameVal = this.className;
+				if(classNameVal == "dynatree-expander"){
+					$(this).attr('tabindex',tabCounterAdminWF++);
+					siteFound = true;
+				}
+			});
+
+			if(siteFound){
+				$(".dynatree-expander").bind("keydown", function(eventHandler){
+					if(eventHandler.code == "Enter" || eventHandler.code == "Space"){
+						document.activeElement.click();
+					}
+				});
+			}
+
+			$( "#perc-wf-edit" ).attr("tabindex",tabCounterAdminWF++);
+
+			$('#perc-workflow-table').find('*').each(function(){
+				var classNameVal = this.className;
+				if(classNameVal == "perc-reserved-step-config-bttn"){
+					this.setAttribute("tabindex", tabCounterAdminWF++);
+				}
+
+				if(classNameVal == "perc-step-config-button"){
+					this.setAttribute("tabindex", tabCounterAdminWF++);
+				}
+
+
+				if(classNameVal == "perc-step-delete-button"){
+					this.setAttribute("tabindex", tabCounterAdminWF++);
+				}
+
+
+				if(classNameVal == "perc-moreLink perc-visible"){
+					this.setAttribute("tabindex", tabCounterAdminWF++);
+				}
+
+				if(classNameVal == "perc-ellipsis perc-more-list perc-hidden"){
+					this.setAttribute("tabindex", tabCounterAdminWF++);
+				}
+
+				if(classNameVal == "perc-lessLink perc-ellipsis perc-hidden"){
+					this.setAttribute("tabindex", tabCounterAdminWF++);
+				}
+
+				if(classNameVal == "perc-create-new-step"){
+					this.setAttribute("tabindex", tabCounterAdminWF++);
+				}
+
+				if(classNameVal == "perc-create-new-step"){
+					this.setAttribute("tabindex", tabCounterAdminWF++);
+				}
+
+			});
+		}
 
 
         /**

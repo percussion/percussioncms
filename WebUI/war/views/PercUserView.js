@@ -377,6 +377,11 @@
                     controller.selectUser(username);
                 });
             });
+			 $(".perc-username").off("keydown").on("keydown",function(event){
+                if(event.code == "Enter" || event.code == "Space"){
+						document.activeElement.click();
+				}
+            });
 
             var currentUser = controller.getCurrentUser();
             var id = currentUserIds[currentUser];
@@ -739,7 +744,7 @@
         // templates
         // template html for each user item
         var userLiTpl = '' +
-            '<li' +
+            '<li tabindex="0" ' +
             '     id="_id_"' +
             '     class="perc-username"' +
             '     title="_username_">' +
