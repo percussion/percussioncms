@@ -69,7 +69,7 @@
         if (options.enableAdd)
             container.find('.perc-item-list-label').append($('<div class="perc-item-add-button" aria-disabled="false" role="button" tabindex="0"/>').attr('title', options.addTitle));
         if(options.collapsible) {
-            container.find('.perc-item-list-label').append($('<span style="float: left;" role="button" tabindex="0" id="perc-wf-min-max" class = "perc-items-minimizer" />').attr('title', I18N.message("perc.ui.workflow.view@Minimize")));
+            container.find('.perc-item-list-label').append($('<span style="float: left;" role="button"  id="perc-wf-min-max" class = "perc-items-minimizer" />').attr('title', I18N.message("perc.ui.workflow.view@Minimize")));
         }    
 
         var list = $('<div class="perc-itemname-list" />').append($("<ul/>"));

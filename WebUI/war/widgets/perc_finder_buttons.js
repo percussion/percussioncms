@@ -90,6 +90,11 @@
             
            $(".perc-finder-menu ").append(percButtons);
 
+		    var tabIndex = 19;
+			$( ".perc-finder-menu" ).find('a').each(function (i, el) {
+					this.setAttribute("tabindex", tabIndex--);
+			});
+
             function onSuccessCallBackHandler(sitename)
             {
               $.PercNavigationManager.goToLocation(
