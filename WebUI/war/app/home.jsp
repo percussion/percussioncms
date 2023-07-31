@@ -238,9 +238,9 @@
 </div>
 <%if ("library".equals(initialScreen)) { %>
 <div id="top-menu" class="top-menu" style="margin:36px 20px 20px 70px;">
-    <div id="add-new-action-button" class="button primary-button" for="newitem" style="margin-right:30px;"><i18n:message key = "perc.ui.home@Add New"/></div>
-    <div id="search-action-button" class="button primary-button" for="search" style="margin-right:30px;"><i18n:message key = "perc.ui.dashboard@Search"/></div>
-    <div id="library-toggle-action-button" class="button primary-button primary-button-ext" for="list"
+    <div id="add-new-action-button" tabindex="0" title="Add New" class="button primary-button" for="newitem" style="margin-right:30px;"><i18n:message key = "perc.ui.home@Add New"/></div>
+    <div id="search-action-button" tabindex="0" title="Search" class="button primary-button" for="search" style="margin-right:30px;"><i18n:message key = "perc.ui.dashboard@Search"/></div>
+    <div id="library-toggle-action-button" tabindex="0" title="My Recent" class="button primary-button primary-button-ext" for="list"
          style="margin-right:30px;"><i18n:message key = "perc.ui.home@My Recent"/>
     </div>
 </div>
