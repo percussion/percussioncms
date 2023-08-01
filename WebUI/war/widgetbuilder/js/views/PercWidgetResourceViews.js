@@ -104,7 +104,7 @@
 		var tagCol = "";
 		$('#perc-widget-js-resources-container').find('*').each(function(){
 			var tagName = this.tagName;
-			tagCol = tagCol+", "+tagName
+			tagCol = tagCol+", "+tagName;
 			if(tagName == "INPUT"){
 				this.setAttribute("tabindex", tabindexCounter++);
 			}
@@ -119,7 +119,7 @@
 		var tagCol = "";
 		$('#perc-widget-css-resources-container').find('*').each(function(){
 			var tagName = this.tagName;
-			tagCol = tagCol+", "+tagName
+			tagCol = tagCol+", "+tagName;
 			if(tagName == "INPUT"){
 				this.setAttribute("tabindex", tabindexCounter++);
 			}

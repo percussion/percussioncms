@@ -190,11 +190,11 @@
             id: "perc-widget-field-editor-dialog",
             modal: true
         });
-    }
+    };
     //This method is just written for selenium webdriver
     WidgetBuilderApp.updateFieldsModel = function(){
         $(WidgetBuilderApp.fieldEditorView).find("input, textarea, select").trigger("change");
-    }
+    };
 
 	function setRowIndexOnContentData_2(){
 		if ($('#perc-widget-fields-container').length){
