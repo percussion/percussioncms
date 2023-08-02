@@ -19,7 +19,10 @@ set INSTALL_DIR = %~pd1
 
 if exist  %~pd1Version.properties ( echo PercussionCMS installation detected... ) else ( echo "Version.properties not found at %INSTALL_DIR%Version.properties. Please confirm that %INSTALL_DIR% contains a Percussion installation."; pause; exit 1)
 
-if exist backup ( echo Backup directory detected... ) else ( mkdir backup; echo "Created patch backup folder to enable patch rollback with uninstall.bat")
+if exist backup ( echo Backup directory detected... ) else (
+    mkdir backup
+    echo "Created patch backup folder to enable patch rollback with uninstall.bat"
+)
 
 echo Backing up existing files...
 if not exist backup\sys_resources\webapps\secure\WEB-INF\lib ( 
