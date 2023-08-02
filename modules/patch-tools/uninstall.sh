@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env sh
 
 echo "------------------------------------------------"
 echo "Percussion CMS Patch Uninstall Script  - 8.1.2.1"
@@ -58,7 +58,7 @@ echo "Reverting Apache Shiro for CVE-2022-40664 ..."
 /bin/cp -rf backup/jetty/base/webapps/Rhythmyx/WEB-INF/lib/shiro-*-1.7.1.jar $INSTALL_DIR/jetty/base/webapps/Rhythmyx/WEB-INF/lib/
 rm -f $INSTALL_DIR/jetty/base/webapps/Rhythmyx/WEB-INF/lib/shiro-*-1.10.0.jar
 
-echo "RRevertting Percussion application updates that resolved issues: #890, #762, #851..."
+echo "RRevertting Percussion application updates that resolved issues..."
 
 /bin/cp -rf backup/jetty/base/webapps/Rhythmyx/test/sql.jsp $INSTALL_DIR/jetty/base/webapps/Rhythmyx/test/sql.jsp 
 
