@@ -155,7 +155,7 @@
 	jQuery(function ($) {
 		var checked = localStorage.getItem('perc-login-select-ui-checked') === "true";
 		$('#perc-login-select-ui').prop('checked', checked);
-		$('#perc-login-select-ui').change(function () {
+		$('#perc-login-select-ui').on("change",function () {
 			var isChecked = $(this).is(':checked');
 			localStorage.setItem('perc-login-select-ui-checked', isChecked);
 		});
