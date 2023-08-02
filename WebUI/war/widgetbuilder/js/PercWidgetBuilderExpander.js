@@ -28,16 +28,18 @@
 
     function handleDefsCollapseExpander(){
         // dim the ui when the user is not in the finder
-        $('.perc-wb-defs-outer').on("mouseenter",function highligh_actions () {
-            $(this).removeClass('ui-disabled');
-        })
-        .on('mouseleave',function dim_actions () {
-            $(this).addClass('ui-disabled');
-        });
+
         $("#perc-wb-defs-expander").on("click",function(){
             expandCollapseDefs(!$("#perc-wb-defs-container").is(":visible"));
         });
-        var state = getDefsExpandedStateFromCookie();
+		 $("#perc-wb-defs-expander").on("keydown",function(eventHandler){
+			 if(eventHandler.code == "Enter" || eventHandler.code == "Space"){
+					document.activeElement.click();
+			}
+
+        });
+
+		var state = getDefsExpandedStateFromCookie();
         expandCollapseDefs(state !== 'collapsed');
     }
     

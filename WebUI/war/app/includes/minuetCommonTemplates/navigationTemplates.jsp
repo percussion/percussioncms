@@ -11,7 +11,7 @@
 %>
 <nav class="navbar perc-nav-title perc-navbar-dark navbar-expand-xs fixed-top">
     <span class="float-left perc-page-title"><%=currentPage%></span>
-    <button aria-hidden title="Toggle Navigation" role="button" id="percToggleNavigation" class="btn perc-nav-toggle perc-btn-primary mt-2 mt-md-0">
+    <button aria-hidden title="Toggle Navigation" role="button" tabindex="1"  id="percToggleNavigation" class="btn perc-nav-toggle perc-btn-primary mt-2 mt-md-0">
         <i aria-hidden class="fas fa-ellipsis-v fa-2x"></i>
     </button>
 </nav>

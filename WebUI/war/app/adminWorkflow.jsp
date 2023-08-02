@@ -211,11 +211,7 @@
     <jsp:include page="includes/header.jsp" flush="true">
         <jsp:param name="mainNavTab" value="workflow"/>
     </jsp:include>
-    <div class="ui-layout-north" style="padding: 0px 0px; overflow: visible">
-        <jsp:include page="includes/finder.jsp" flush="true">
-            <jsp:param name="openedObject" value="PERC_SITE"/>
-        </jsp:include>
-    </div>
+
 </div>
 <div class="perc-workflow-container">
     <div id="tabs" style="min-width:500px;">
@@ -245,3 +241,12 @@
 <%@include file='includes/siteimprove_integration.html'%>
 </body>
 </html>
+<script>
+$(document).ready(function()
+{
+	$( "#perc-tab-workflow" ).attr("tabindex","201");
+	$( "#perc-tab-roles" ).attr("tabindex","202");
+	$( "#perc-tab-users" ).attr("tabindex","203");
+	$( "#perc-tab-category" ).attr("tabindex","204");
+});
+</script>

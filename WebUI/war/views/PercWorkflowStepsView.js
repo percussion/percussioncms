@@ -215,7 +215,12 @@
         $('.perc-step-delete-button').on("click",function() {
             __deleteWorkflowStep(this);
         });
-        
+		$('.perc-step-delete-button').on("keydown",function(eventHandler) {
+            if(eventHandler.code == "Enter" || eventHandler.code == "Space"){
+				document.activeElement.click();
+			}
+        });
+
         // Bind update workflow step event
 		 $('.perc-step-config-button, .perc-reserved-step-config-bttn').on("keydown",function(eventHandler) {
 
@@ -236,7 +241,13 @@
         $('#perc-workflow-steps-container .perc-moreLink, #perc-workflow-steps-container .perc-lessLink')
             .on("click",function(){
             __activateMoreLessLink(this);
-        });    
+        });
+		$('#perc-workflow-steps-container .perc-moreLink, #perc-workflow-steps-container .perc-lessLink')
+            .on("keydown",function(eventHandler){
+			if(eventHandler.code == "Enter" || eventHandler.code == "Space"){
+				document.activeElement.click();
+			}
+        });
     }
     
     /**

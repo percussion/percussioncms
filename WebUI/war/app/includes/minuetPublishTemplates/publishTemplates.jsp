@@ -14,10 +14,10 @@
         <div class="row">
             <div class="col-md-4 order-sm-first order-md-2 mb-3">
                 <div class="btn-group btn-group-toggle d-flex" data-toggle="buttons">
-                    <label title='<i18n:message key = "perc.ui.publish.title@Card"/>' tabindex="0" role="button" sr-only='<i18n:message key = "perc.ui.publish.title@Card"/>' class="btn btn-secondary perc-site-view-toggle-button active">
+                    <label title='<i18n:message key = "perc.ui.publish.title@Card"/>' tabindex="3" role="button" sr-only='<i18n:message key = "perc.ui.publish.title@Card"/>' class="btn btn-secondary perc-site-view-toggle-button active">
                         <input value="card" type="radio" name="percSiteView" id="percSiteCardOption" autocomplete="off" checked><i aria-hidden class="fas fa-th fa-fw"></i>&nbsp;&nbsp;<i18n:message key = "perc.ui.publish.title@Card"/>
                     </label>
-                    <label title='<i18n:message key = "perc.ui.publish.title@List"/>' tabindex="0" role="Button" sr-only='<i18n:message key = "perc.ui.publish.title@List"/>' class="btn btn-secondary perc-site-view-toggle-button">
+                    <label title='<i18n:message key = "perc.ui.publish.title@List"/>' tabindex="4" role="Button" sr-only='<i18n:message key = "perc.ui.publish.title@List"/>' class="btn btn-secondary perc-site-view-toggle-button">
                         <input value="list" type="radio" name="percSiteView" id="percSiteListOption" autocomplete="off"><i aria-hidden class="fas fa-th-list"></i>&nbsp;&nbsp;<i18n:message key = "perc.ui.publish.title@List"/>
                     </label>
                 </div>
@@ -25,7 +25,7 @@
             <div class="col-md-8 float-left">
                 <!-- Filter Field -->
                 <div class="md-form mt-0">
-                    <input class="form-control perc-site-filter-field" type="text" placeholder='<i18n:message key="perc.ui.publish.title@Filter Sites"/>' aria-label='<i18n:message key="perc.ui.publish.title@Filter Sites"/>'>
+                    <input class="form-control perc-site-filter-field" tabindex="2" type="text" placeholder='<i18n:message key="perc.ui.publish.title@Filter Sites"/>' aria-label='<i18n:message key="perc.ui.publish.title@Filter Sites"/>'>
                 </div>
             </div>
         </div>
@@ -854,3 +854,28 @@
     {{/each}}
 </script>
 
+<script>
+
+setTimeout(setTabIndexForSites, 1000);
+function setTabIndexForSites(){
+	var tabCounterForCard = 5;
+
+	$('#sitesCardView').find('*').each(function(){
+		var classNameVal = this.className;
+		if(classNameVal == "card perc-site-card perc-site-select h-100"){
+			this.setAttribute("tabindex", tabCounterForCard++);
+		}
+
+	});
+
+	var tabCounterForList = 100;
+	$('#sitesListView').find('*').each(function(){
+		var classNameVal = this.className;
+		if(classNameVal == "perc-site-select"){
+			this.setAttribute("tabindex", tabCounterForList++);
+		}
+
+	});
+};
+
+</script>

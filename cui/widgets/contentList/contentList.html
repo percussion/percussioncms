@@ -13,7 +13,7 @@
 	</div>
 	<div id="spinner" class="center" data-bind="visible: isLoading()"><i class="fa fa-spinner" data-bind="css: {'fa-spin': isLoading()}"></i></div>
 	<div id='content-list-body' data-bind="visible: !isLoading(), foreach: contentListItems">
-		<div class="row" data-bind="event: { mouseenter: showRollover,  mouseleave:  hideRollover}">
+		<div tabindex="0" class="row" data-bind="event: { mouseenter: showRollover,  mouseleave:  hideRollover, keyup: showRollover}">
 			<div class="content-list-item col-xs-2 cm-grid cm-ac" data-bind="text: fileName"></div>
 			<div class="content-list-item col-xs-3 cm-grid cm-ac" data-bind="text: name"></div>
 			<div class="content-list-item col-xs-1 cm-grid cm-ac" data-bind="text: type"></div>
@@ -21,13 +21,13 @@
 			<div class="content-list-item col-xs-2 cm-grid cm-ac" data-bind="text: lastModifiedDate"></div>
 			<div class="content-list-item col-xs-2 cm-grid cm-ac" data-bind="text: lastPublishedDate"></div>
 			<div class="content-list-item col-xs-1 cm-grid cm-ac" data-bind="text: lastModifier"></div>
-			<div class="content-list-rollover-menu cm-grid cm-ac" data-bind="visible: isSelected">
+			<div tabindex="0" class="content-list-rollover-menu cm-grid cm-ac" data-bind="visible: isSelected">
 				<div>
-					<div class="content-list-rollover-menu-option col-xs-2" data-bind="click: $root.launchOpen"><i class="fa fa-pencil icon"></i>Open</div>
-					<div class="content-list-rollover-menu-option col-xs-2" data-bind="click: $root.launchPreview"><i class="fa fa-eye icon"></i>Preview</div>
-					<div class="content-list-rollover-menu-option col-xs-2" data-bind="click: $root.launchCopy, visible:isCopyAllowed"><i class="fa fa-files-o icon"></i>Copy</div>
-					<div class="content-list-rollover-menu-option col-xs-2" data-bind="click: $root.launchDelete"><i class="fa fa-times icon"></i>Delete</div>
-					<div class="content-list-rollover-menu-option col-xs-2" data-bind="visible: isBookmarkAllowed, click: $root.launchBookmark"><i class='fa fa-star icon'></i>Bookmark</div>
+					<div tabindex="0" class="content-list-rollover-menu-option col-xs-2" data-bind="click: $root.launchOpen, event:{keyup: $root.launchOpenKeyPress}"><i class="fa fa-pencil icon"></i>Open</div>
+					<div tabindex="0" class="content-list-rollover-menu-option col-xs-2" data-bind="click: $root.launchPreview, event:{keyup: $root.launchPreviewKeyPress}"><i class="fa fa-eye icon"></i>Preview</div>
+					<div tabindex="0" class="content-list-rollover-menu-option col-xs-2" data-bind="click: $root.launchCopy, event:{keyup: $root.launchCopyKeyPress}, visible:isCopyAllowed"><i class="fa fa-files-o icon"></i>Copy</div>
+					<div tabindex="0" class="content-list-rollover-menu-option col-xs-2" data-bind="click: $root.launchDelete, event:{keyup: $root.launchDeleteKeyPress}"><i class="fa fa-times icon"></i>Delete</div>
+					<div tabindex="0" class="content-list-rollover-menu-option col-xs-2" data-bind="visible: isBookmarkAllowed, click: $root.launchBookmark, event:{keyup: $root.launchBookmarkKeyPress}"><i class='fa fa-star icon'></i>Bookmark</div>
 				</div>
 				<div class="preview" data-bind="fadeVisible: isSelected">
 				<div class="preview-data-header" data-bind="text: name"></div>

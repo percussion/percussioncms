@@ -122,19 +122,19 @@
         <table class="perc-wb-list-toolbar">
             <tr>
                 <td class="perc-wb-list-view-options">
-                    <a id='perc-wb-defs-expander' class="perc-font-icon icon-plus-sign fas fa-plus ui-state-enabled"></a>
+                    <a id='perc-wb-defs-expander' role="button" tabindex="8" title='<i18n:message key = "perc.ui.workflow.view@Maximize"/>-<i18n:message key = "perc.ui.workflow.view@Minimize"/>' class="perc-font-icon icon-plus-sign fas fa-plus ui-state-enabled"></a>
                 </td>
                 <td class="perc-wb-list-menu">
                     <div class="perc-wb-list-buttonbar" role="toolbar" aria-label="Widget Builder Toolbar">
-                        <a id="perc-wb-button-delete" class="perc-font-icon icon-remove fas fa-minus ui-disabled"
-                           title="Click to delete selected widget" href="#" role="button"></a>
-                        <a id="perc-wb-button-new" class="perc-font-icon" href="#" title="Click to create new widget"
+                        <a tabindex="13" id="perc-wb-button-delete" class="perc-font-icon icon-remove fas fa-minus ui-disabled"
+                           title="Click to delete selected widget (DEL)" href="#" role="button"></a>
+                        <a tabindex="12" id="perc-wb-button-new" class="perc-font-icon" href="#" title="Click to create new widget"
                            style="" role="button"><span class="icon-plus fas fa-plus"></span><span class="icon-file fas fa-file"></span></a>
-                        <a id="perc-wb-button-edit" class="perc-font-icon icon-edit fas fa-edit ui-disabled"
-                           title="Click to edit selected widget" href="#" role="button"></a>
-                        <a id="perc-wb-button-deploy" class="perc-font-icon icon-download-alt fas fa-upload ui-disabled"
-                           title="Click to deploy selected widget" href="#" role="button"></a>
-                        <a id="perc-wb-button-package-manager" class="perc-font-icon icon-folder-open fas fa-folder-open"
+                        <a tabindex="11" id="perc-wb-button-edit" class="perc-font-icon icon-edit fas fa-edit ui-disabled"
+                           title="Click to edit selected widget (ENTER)" href="#" role="button"></a>
+                        <a tabindex="10" id="perc-wb-button-deploy" class="perc-font-icon icon-download-alt fas fa-upload ui-disabled"
+                           title="Click to deploy selected widget (SPC)" href="#" role="button"></a>
+                        <a tabindex="9" id="perc-wb-button-package-manager" class="perc-font-icon icon-folder-open fas fa-folder-open"
                            title="Click to access Package Manager" href="/cm/packages" role="button" target="_blank" rel = "noopener noreferrer"></a>
                     </div>
                 </td>
@@ -147,27 +147,27 @@
         <div class="perc-widget-name">
         </div>
         <ul role="tablist">
-            <li role="presentation">
-                <a id="perc-tab-widget-general" role="button" tabindex="0" title='<i18n:message key = "perc.ui.folder.properties.dialog@General"/>' class="perc-widget-def-tab-link"
+            <li role="presentation" class="WBTabs">
+                <a id="perc-tab-widget-general" role="button" tabindex="122" title='<i18n:message key = "perc.ui.folder.properties.dialog@General"/>' class="perc-widget-def-tab-link"
                    href="#perc-widget-tab-general" role="tab"><i18n:message key = "perc.ui.folder.properties.dialog@General"/></a>
             </li>
-            <li role="presentation">
-                <a id="perc-tab-widget-content" role="button" tabindex="0" title='<i18n:message key = "perc.ui.widget.builder@Content"/>' class="perc-widget-def-tab-link"
+            <li role="presentation" class="WBTabs" onclick="javascript:setRowIndexOnContentData_1();">
+                <a id="perc-tab-widget-content"  role="button" tabindex="123" title='<i18n:message key = "perc.ui.widget.builder@Content"/>' class="perc-widget-def-tab-link"
                    href="#perc-widget-tab-content" role="tab"><i18n:message key = "perc.ui.widget.builder@Content"/></a>
             </li>
-            <li role="presentation">
-                <a id="perc-tab-widget-resources" role="button" tabindex="0" title='<i18n:message key = "perc.ui.widget.builder@Resources"/>' class="perc-widget-def-tab-link" href="#perc-widget-tab-resources" role="tab"><i18n:message key = "perc.ui.widget.builder@Resources"/></a>
+            <li role="presentation" class="WBTabs" >
+                <a  id="perc-tab-widget-resources" role="button" tabindex="124" title='<i18n:message key = "perc.ui.widget.builder@Resources"/>' class="perc-widget-def-tab-link" href="#perc-widget-tab-resources" role="tab"><i18n:message key = "perc.ui.widget.builder@Resources"/></a>
             </li>
-            <li role="presentation">
-                <a id="perc-tab-widget-display"role="button" tabindex="0" title='<i18n:message key = "perc.ui.widget.builder@Display"/>' class="perc-widget-def-tab-link"
+            <li role="presentation" class="WBTabs" onclick="javascript:setOnClickForDisplayAutoGenerate();">
+                <a id="perc-tab-widget-display"role="button" tabindex="125" title='<i18n:message key = "perc.ui.widget.builder@Display"/>' class="perc-widget-def-tab-link"
                    href="#perc-widget-tab-display" role="tab"><i18n:message key = "perc.ui.widget.builder@Display"/></a>
             </li>
         </ul>
         <div id="perc-widget-def-action-bar">
             <div id="perc-widget-menu" style='position:relative;'>
                 <div id="perc-widget-menu-buttons" style="display:none">
-                    <button id="perc-widget-save" tabindex="0" title='<i18n:message key ="perc.ui.button@Save"/>' class="btn btn-primary" name="perc-widget-save" style="float: right;margin-right:10px;"><i18n:message key ="perc.ui.button@Save"/> </button>
-                    <button id="perc-widget-close" tabindex="0" title='<i18n:message key ="perc.ui.common.label@Cancel"/>' class="btn btn-primary" name="perc-widget-close" style="float: right;"><i18n:message key ="perc.ui.common.label@Cancel"/> </button>
+                    <button id="perc-widget-save" tabindex="127" title='<i18n:message key ="perc.ui.button@Save"/>' class="btn btn-primary" name="perc-widget-save" style="float: right;margin-right:10px;"><i18n:message key ="perc.ui.button@Save"/> </button>
+                    <button id="perc-widget-close" tabindex="126" title='<i18n:message key ="perc.ui.common.label@Cancel"/>' class="btn btn-primary" name="perc-widget-close" style="float: right;"><i18n:message key ="perc.ui.common.label@Cancel"/> </button>
                 </div>
             </div>
         </div>
@@ -178,7 +178,7 @@
         <div id="perc-widget-tab-content" class="perc-widget-editing-container">
             <div id="perc-widget-fields-top-container">
                 <div class="perc-add-field-button-row"><span class="perc-group-header"><span
-                        class="ui-widget-content-header"><i18n:message key = "perc.ui.widget.builder@Content Editing Fields"/></span></span><span
+                        class="ui-widget-content-header"><i18n:message key = "perc.ui.widget.builder@Content Editing Fields"/></span></span><span tabindex="139"
                         class="perc-add-field-button"
                         style="float:left; margin-left:754px;margin-bottom:8px;display:inline-block;cursor:pointer;"
                         onclick="WidgetBuilderApp.showFieldEditor(null);"><i18n:message key = "perc.ui.widget.builder@Add Field"/></span></div>
@@ -200,7 +200,7 @@
                     <div class="perc-group-header">
                         <div class="ui-widget-content-header"><i18n:message key = "perc.ui.widget.builder@Javascript Resources"/></div>
                     </div>
-                    <div id="perc-add-js-resource-button" title="Add Javascript Resource"
+                    <div id="perc-add-js-resource-button" title="Add Javascript Resource" role="button" tabindex="171"
                          class="perc-add-resource-button" onclick="WidgetBuilderApp.addNewResource('JS');">
                         <span class="perc-font-icon resource-tab-button-background"><span
                                 class="font-icon-size icon-plus fas fa-plus"></span><span class="icon-file-alt fas fa-file-alt"></span></span></div>
@@ -214,7 +214,7 @@
                     <div class="perc-group-header">
                         <div class="ui-widget-content-header"><i18n:message key = "perc.ui.widget.builder@CSS Resources"/></div>
                     </div>
-                    <div id="perc-add-css-resource-button" title="Add CSS Resource" class="perc-add-resource-button"
+                    <div id="perc-add-css-resource-button" title="Add CSS Resource" class="perc-add-resource-button" role="button" tabindex="191"
                          onclick="WidgetBuilderApp.addNewResource('CSS');"><span
                             class="perc-font-icon resource-tab-button-background"><span
                             class="font-icon-size icon-plus fas fa-plus"></span><span class="icon-file-alt fas fa-file-alt"></span></span></div>
@@ -229,7 +229,7 @@
                     <div class="perc-group-header">
                         <div class="ui-widget-content-header"><i18n:message key = "perc.ui.widget.builder@Display HTML"/></div>
                     </div>
-                    <div id="perc-display-html-auto-generate-button" class="perc-display-html-auto-generate-button"
+                    <div id="perc-display-html-auto-generate-button" class="perc-display-html-auto-generate-button" role="button" tabindex="142"
                          onclick="WidgetBuilderApp.autoGenerateHtml();"><i18n:message key = "perc.ui.widget.builder@Auto Generate"/>
                     </div>
                 </div>
