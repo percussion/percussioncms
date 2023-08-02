@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env sh
 
 echo "------------------------------------------------"
 echo "Percussion CMS Patch Uninstall Script  - 8.1.2.1"
@@ -36,37 +36,68 @@ fi
 
 
 echo "Rolling back patch..."
-echo "Reverting Commons Text for CVE-2022-42889..."
-/bin/cp -rf backup/sys_resources/webapps/secure/WEB-INF/lib/commons-text-1.9.jar $INSTALL_DIR/sys_resources/webapps/secure/WEB-INF/lib/commons-text-1.9.jar 
-rm -f $INSTALL_DIR/sys_resources/webapps/secure/WEB-INF/lib/commons-text-1.10.0.jar
+if [ -e "backup/sys_resources/webapps/secure/WEB-INF/lib/commons-text-1.9.jar" ]
+then
+    echo "Reverting Commons Text for CVE-2022-42889..."
+    /bin/cp -rf backup/sys_resources/webapps/secure/WEB-INF/lib/commons-text-1.9.jar $INSTALL_DIR/sys_resources/webapps/secure/WEB-INF/lib/commons-text-1.9.jar
+    rm -f $INSTALL_DIR/sys_resources/webapps/secure/WEB-INF/lib/commons-text-1.10.0.jar
 
-/bin/cp -rf backup/jetty/defaults/lib/perc/commons-text-1.9.jar $INSTALL_DIR/jetty/defaults/lib/perc/commons-text-1.9.jar 
-rm -f $INSTALL_DIR/jetty/defaults/lib/perc/commons-text-1.10.0.jar
+    /bin/cp -rf backup/jetty/defaults/lib/perc/commons-text-1.9.jar $INSTALL_DIR/jetty/defaults/lib/perc/commons-text-1.9.jar
+    rm -f $INSTALL_DIR/jetty/defaults/lib/perc/commons-text-1.10.0.jar
 
-/bin/cp -rf backup/rxconfig/SiteConfigs/\$log\$/lib/commons-text-1.9.jar $INSTALL_DIR/rxconfig/SiteConfigs/\$log\$/lib/commons-text-1.9.jar  
-rm -f $INSTALL_DIR/rxconfig/SiteConfigs/\$log\$/lib/commons-text-1.10.0.jar
+    /bin/cp -rf backup/rxconfig/SiteConfigs/\$log\$/lib/commons-text-1.9.jar $INSTALL_DIR/rxconfig/SiteConfigs/\$log\$/lib/commons-text-1.9.jar
+    rm -f $INSTALL_DIR/rxconfig/SiteConfigs/\$log\$/lib/commons-text-1.10.0.jar
 
-/bin/cp -rf backup/jetty/base/webapps/Rhythmyx/WEB-INF/lib/commons-text-1.9.jar $INSTALL_DIR/jetty/base/webapps/Rhythmyx/WEB-INF/lib/commons-text-1.9.jar 
-rm -f $INSTALL_DIR/jetty/base/webapps/Rhythmyx/WEB-INF/lib/commons-text-1.10.0.jar
+    /bin/cp -rf backup/jetty/base/webapps/Rhythmyx/WEB-INF/lib/commons-text-1.9.jar $INSTALL_DIR/jetty/base/webapps/Rhythmyx/WEB-INF/lib/commons-text-1.9.jar
+    rm -f $INSTALL_DIR/jetty/base/webapps/Rhythmyx/WEB-INF/lib/commons-text-1.10.0.jar
+fi
 
+if [ -e "backup/sys_resources/webapps/secure/WEB-INF/lib/spring-security-core-5.6.2.jar" ]
+then
+    echo "Reverting Spring Security for CVE-2022-31692.."
+    /bin/cp -rf backup/sys_resources/webapps/secure/WEB-INF/lib/spring-security-*-5.6.2.jar $INSTALL_DIR/sys_resources/webapps/secure/WEB-INF/lib
+    rm -f $INSTALL_DIR/sys_resources/webapps/secure/WEB-INF/lib/spring-security-*-5.6.9.jar
+fi
 
-echo "Reverting Spring Security for CVE-2022-31692.."
-/bin/cp -rf backup/sys_resources/webapps/secure/WEB-INF/lib/spring-security-*-5.6.2.jar $INSTALL_DIR/sys_resources/webapps/secure/WEB-INF/lib
-rm -f $INSTALL_DIR/sys_resources/webapps/secure/WEB-INF/lib/spring-security-*-5.6.9.jar
+if [ -e "backup/jetty/base/webapps/Rhythmyx/WEB-INF/lib/shiro-core-1.7.1.jar" ]
+then
+    echo "Reverting Apache Shiro for CVE-2022-40664 ..."
+    /bin/cp -rf backup/jetty/base/webapps/Rhythmyx/WEB-INF/lib/shiro-*-1.7.1.jar $INSTALL_DIR/jetty/base/webapps/Rhythmyx/WEB-INF/lib/
+    rm -f $INSTALL_DIR/jetty/base/webapps/Rhythmyx/WEB-INF/lib/shiro-*-1.10.0.jar
+fi
 
-echo "Reverting Apache Shiro for CVE-2022-40664 ..."
-/bin/cp -rf backup/jetty/base/webapps/Rhythmyx/WEB-INF/lib/shiro-*-1.7.1.jar $INSTALL_DIR/jetty/base/webapps/Rhythmyx/WEB-INF/lib/
-rm -f $INSTALL_DIR/jetty/base/webapps/Rhythmyx/WEB-INF/lib/shiro-*-1.10.0.jar
+echo "Reverting Percussion application updates that resolved issues..."
 
-echo "RRevertting Percussion application updates that resolved issues: #890, #762, #851..."
+/bin/cp -rf backup/jetty/base/webapps/Rhythmyx/test/sql.jsp $INSTALL_DIR/jetty/base/webapps/Rhythmyx/test/sql.jsp
 
-/bin/cp -rf backup/jetty/base/webapps/Rhythmyx/test/sql.jsp $INSTALL_DIR/jetty/base/webapps/Rhythmyx/test/sql.jsp 
+if [ -e "backup/jetty/base/webapps/Rhythmyx/WEB-INF/lib/perc-system-8.1.2.1.jar" ]
+then
+    rm -f $INSTALL_DIR/jetty/base/webapps/Rhythmyx/WEB-INF/lib/perc-system-8.1.2.1.jar
+    /bin/cp -rf backup/jetty/base/webapps/Rhythmyx/WEB-INF/lib/perc-system-8.1.2.1.jar  $INSTALL_DIR/jetty/base/webapps/Rhythmyx/WEB-INF/lib/perc-system-8.1.2.1.jar
 
-/bin/cp -rf backup/jetty/base/webapps/Rhythmyx/WEB-INF/lib/perc-system-8.1.2.jar  $INSTALL_DIR/jetty/base/webapps/Rhythmyx/WEB-INF/lib/perc-system-8.1.2.jar 
-rm -f $INSTALL_DIR/jetty/base/webapps/Rhythmyx/WEB-INF/lib/perc-system-8.1.2.1.jar
+else
+    /bin/cp -rf backup/jetty/base/webapps/Rhythmyx/WEB-INF/lib/perc-system-8.1.2.jar  $INSTALL_DIR/jetty/base/webapps/Rhythmyx/WEB-INF/lib/perc-system-8.1.2.jar
+    rm -f $INSTALL_DIR/jetty/base/webapps/Rhythmyx/WEB-INF/lib/perc-system-8.1.2.1.jar
+fi
 
-/bin/cp -rf  backup/jetty/base/webapps/Rhythmyx/WEB-INF/lib/sitemanage-8.1.2.jar $INSTALL_DIR/jetty/base/webapps/Rhythmyx/WEB-INF/lib/sitemanage-8.1.2.jar
-rm -f $INSTALL_DIR/jetty/base/webapps/Rhythmyx/WEB-INF/lib/sitemanage-8.1.2.1.jar
+if [ -e "backup/jetty/base/webapps/Rhythmyx/WEB-INF/lib/sitemanage-8.1.2.1.jar" ]
+then
+    rm -f $INSTALL_DIR/jetty/base/webapps/Rhythmyx/WEB-INF/lib/sitemanage-8.1.2.1.jar
+    /bin/cp -rf  backup/jetty/base/webapps/Rhythmyx/WEB-INF/lib/sitemanage-8.1.2.1.jar $INSTALL_DIR/jetty/base/webapps/Rhythmyx/WEB-INF/lib/sitemanage-8.1.2.1.jar
+else
+    /bin/cp -rf  backup/jetty/base/webapps/Rhythmyx/WEB-INF/lib/sitemanage-8.1.2.jar $INSTALL_DIR/jetty/base/webapps/Rhythmyx/WEB-INF/lib/sitemanage-8.1.2.jar
+    rm -f $INSTALL_DIR/jetty/base/webapps/Rhythmyx/WEB-INF/lib/sitemanage-8.1.2.1.jar
+fi
+
+if [ -e "backup/jetty/base/webapps/Rhythmyx/WEB-INF/lib/rxutils-8.1.2.1.jar" ]
+then
+    rm -f $INSTALL_DIR/jetty/base/webapps/Rhythmyx/WEB-INF/lib/rxutils-8.1.2.1.jar
+    /bin/cp -rf  backup/jetty/base/webapps/Rhythmyx/WEB-INF/lib/rxutils-8.1.2.1.jar $INSTALL_DIR/jetty/base/webapps/Rhythmyx/WEB-INF/lib/rxutils-8.1.2.1.jar
+
+else
+    /bin/cp -rf  backup/jetty/base/webapps/Rhythmyx/WEB-INF/lib/rxutils-8.1.2.jar $INSTALL_DIR/jetty/base/webapps/Rhythmyx/WEB-INF/lib/rxutils-8.1.2.jar
+    rm -f $INSTALL_DIR/jetty/base/webapps/Rhythmyx/WEB-INF/lib/rxutils-8.1.2.1.jar
+fi
 
 echo "--------------------------------------------"
 echo "Uninstall of Percussion CMS patch completed."

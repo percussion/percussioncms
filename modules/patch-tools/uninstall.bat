@@ -21,39 +21,63 @@ if exist  %~pd1Version.properties ( echo PercussionCMS installation detected... 
 
 if exist backup ( echo Backup directory detected... ) else ( echo "Unable to rollback patch due to missing backup folder.";exit)
 
-echo "Reverting Commons Text for CVE-2022-42889..."
-copy /V /Z /D /Y backup\sys_resources\webapps\secure\WEB-INF\lib\commons-text-1.9.jar %~pd1sys_resources\webapps\secure\WEB-INF\lib\commons-text-1.9.jar
-del /F /Q  %~pd1sys_resources\webapps\secure\WEB-INF\lib\commons-text-1.10.0jar
+if exist backup\sys_resources\webapps\secure\WEB-INF\lib\commons-text-1.9.jar (
+    echo "Reverting Commons Text for CVE-2022-42889..."
+    copy /V /Z /D /Y backup\sys_resources\webapps\secure\WEB-INF\lib\commons-text-1.9.jar %~pd1sys_resources\webapps\secure\WEB-INF\lib\commons-text-1.9.jar
+    del /F /Q  %~pd1sys_resources\webapps\secure\WEB-INF\lib\commons-text-1.10.0jar
 
-copy /V /Z /D /Y backup\jetty\defaults\lib\perc\commons-text-1.9.jar %~pd1jetty\defaults\lib\perc\
-del /F /Q  %~pd1jetty\defaults\lib\perc\commons-text-1.10.0.jar
+    copy /V /Z /D /Y backup\jetty\defaults\lib\perc\commons-text-1.9.jar %~pd1jetty\defaults\lib\perc\
+    del /F /Q  %~pd1jetty\defaults\lib\perc\commons-text-1.10.0.jar
 
-copy /V /Z /D /Y backup\rxconfig\SiteConfigs\$log$\lib\commons-text-1.9.ja %~pd1rxconfig\SiteConfigs\$log$\lib\
-del /F /Q  %~pd1rxconfig\SiteConfigs\$log$\lib\commons-text-1.10.0.jar
+    copy /V /Z /D /Y backup\rxconfig\SiteConfigs\$log$\lib\commons-text-1.9.ja %~pd1rxconfig\SiteConfigs\$log$\lib\
+    del /F /Q  %~pd1rxconfig\SiteConfigs\$log$\lib\commons-text-1.10.0.jar
 
-copy /V /Z /D /Y backup\jetty\base\webapps\Rhythmyx\WEB-INF\lib\commons-text-1.9.jar %~pd1jetty\base\webapps\Rhythmyx\WEB-INF\lib\
-del /F /Q  %~pd1jetty\base\webapps\Rhythmyx\WEB-INF\lib\commons-text-1.10.0.jar
+    copy /V /Z /D /Y backup\jetty\base\webapps\Rhythmyx\WEB-INF\lib\commons-text-1.9.jar %~pd1jetty\base\webapps\Rhythmyx\WEB-INF\lib\
+    del /F /Q  %~pd1jetty\base\webapps\Rhythmyx\WEB-INF\lib\commons-text-1.10.0.jar
+)
 
-echo "Reverting Spring Security for CVE-2022-31692.."
-copy /V /Z /D /Y  backup\sys_resources\webapps\secure\WEB-INF\lib\spring-security-*-5.6.2.jar %~pd1sys_resources\webapps\secure\WEB-INF\lib\
-del /F /Q  %~pd1sys_resources\webapps\secure\WEB-INF\lib\spring-security-*-5.6.9.jar
+if exist backup\sys_resources\webapps\secure\WEB-INF\lib\spring-security-core-5.6.2.jar (
+    echo "Reverting Spring Security for CVE-2022-31692.."
+    copy /V /Z /D /Y  backup\sys_resources\webapps\secure\WEB-INF\lib\spring-security-*-5.6.2.jar %~pd1sys_resources\webapps\secure\WEB-INF\lib\
+    del /F /Q  %~pd1sys_resources\webapps\secure\WEB-INF\lib\spring-security-*-5.6.9.jar
+)
 
-echo "Reverting Apache Shiro for CVE-2022-40664 ..."
-copy /V /Z /D /Y backup\jetty\base\webapps\Rhythmyx\WEB-INF\lib\shiro-*-1.7.1.jar %~pd1jetty\base\webapps\Rhythmyx\WEB-INF\lib\
-del /F /Q  %~pd1jetty\base\webapps\Rhythmyx\WEB-INF\lib\shiro-*-1.10.0.jar
+if exist backup\jetty\base\webapps\Rhythmyx\WEB-INF\lib\shiro-core-1.7.1.jar (
+    echo "Reverting Apache Shiro for CVE-2022-40664 ..."
+    copy /V /Z /D /Y backup\jetty\base\webapps\Rhythmyx\WEB-INF\lib\shiro-*-1.7.1.jar %~pd1jetty\base\webapps\Rhythmyx\WEB-INF\lib\
+    del /F /Q  %~pd1jetty\base\webapps\Rhythmyx\WEB-INF\lib\shiro-*-1.10.0.jar
+)
 
 echo "Reverting Percussion application updates to resolve issues..."
 
-copy /V /Z /D /Y backup\jetty\base\webapps\Rhythmyx\test\sql.jsp  %~pd1jetty\base\webapps\Rhythmyx\test\
+if exist backup\jetty\base\webapps\Rhythmyx\test\sql.jsp (
+    copy /V /Z /D /Y backup\jetty\base\webapps\Rhythmyx\test\sql.jsp  %~pd1jetty\base\webapps\Rhythmyx\test\
+)
 
-copy /V /Z /D /Y backup\jetty\base\webapps\Rhythmyx\WEB-INF\lib\perc-system-8.1.2.jar  %~pd1jetty\base\webapps\Rhythmyx\WEB-INF\lib\
-del /F /Q  %~pd1jetty\base\webapps\Rhythmyx\WEB-INF\lib\perc-system-8.1.2.1.jar
+if exist backup\jetty\base\webapps\Rhythmyx\WEB-INF\lib\perc-system-8.1.2.1.jar (
+    del /F /Q  %~pd1jetty\base\webapps\Rhythmyx\WEB-INF\lib\perc-system-8.1.2.1.jar
+    copy /V /Z /D /Y backup\jetty\base\webapps\Rhythmyx\WEB-INF\lib\perc-system-8.1.2.1.jar  %~pd1jetty\base\webapps\Rhythmyx\WEB-INF\lib\
+) else (
+    del /F /Q  %~pd1jetty\base\webapps\Rhythmyx\WEB-INF\lib\perc-system-8.1.2.1.jar
+    copy /V /Z /D /Y backup\jetty\base\webapps\Rhythmyx\WEB-INF\lib\perc-system-8.1.2.jar  %~pd1jetty\base\webapps\Rhythmyx\WEB-INF\lib\
+)
 
-copy /V /Z /D /Y backup\jetty\base\webapps\Rhythmyx\WEB-INF\lib\sitemanage-8.1.2.jar  %~pd1jetty\base\webapps\Rhythmyx\WEB-INF\lib\
-del /F /Q  %~pd1jetty\base\webapps\Rhythmyx\WEB-INF\lib\sitemanage-8.1.2.1.jar
+if exist backup\jetty\base\webapps\Rhythmyx\WEB-INF\lib\sitemanage-8.1.2.1.jar (
+    del /F /Q  %~pd1jetty\base\webapps\Rhythmyx\WEB-INF\lib\sitemanage-8.1.2.1.jar
+    copy /V /Z /D /Y backup\jetty\base\webapps\Rhythmyx\WEB-INF\lib\sitemanage-8.1.2.1.jar  %~pd1jetty\base\webapps\Rhythmyx\WEB-INF\lib\
+) else (
+    del /F /Q  %~pd1jetty\base\webapps\Rhythmyx\WEB-INF\lib\sitemanage-8.1.2.1.jar
+    copy /V /Z /D /Y backup\jetty\base\webapps\Rhythmyx\WEB-INF\lib\sitemanage-8.1.2.jar  %~pd1jetty\base\webapps\Rhythmyx\WEB-INF\lib\
+)
 
-copy /V /Z /D /Y backup\jetty\base\webapps\Rhythmyx\WEB-INF\lib\rxutils-8.1.2.jar  %~pd1jetty\base\webapps\Rhythmyx\WEB-INF\lib\
-del /F /Q  %~pd1jetty\base\webapps\Rhythmyx\WEB-INF\lib\rxutils-8.1.2.1.jar
+if exist backup\jetty\base\webapps\Rhythmyx\WEB-INF\lib\rxutils-8.1.2.1.jar (
+    del /F /Q  %~pd1jetty\base\webapps\Rhythmyx\WEB-INF\lib\rxutils-8.1.2.1.jar
+    copy /V /Z /D /Y backup\jetty\base\webapps\Rhythmyx\WEB-INF\lib\rxutils-8.1.2.1.jar  %~pd1jetty\base\webapps\Rhythmyx\WEB-INF\lib\
+
+) else (
+    del /F /Q  %~pd1jetty\base\webapps\Rhythmyx\WEB-INF\lib\rxutils-8.1.2.1.jar
+    copy /V /Z /D /Y backup\jetty\base\webapps\Rhythmyx\WEB-INF\lib\rxutils-8.1.2.jar  %~pd1jetty\base\webapps\Rhythmyx\WEB-INF\lib\
+)
 
 
 echo --------------------------------------------
@@ -76,6 +100,5 @@ exit 0
 :helpFunction
    echo(
    echo "Usage: %0 <Path To PercussionCMS Installation> For example: %0 C:\Percussion\"
-   echo "Note:  Include the trailing backslash in the path."
    echo(
    pause
