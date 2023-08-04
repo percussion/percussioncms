@@ -9002,6 +9002,26 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
 	        <seg>Estado actual</seg>
 	    </tuv>
 	 </tu>
+	  <tu tuid="perc.ui.publish.servers.mssql@Folder Location">
+     	    <prop type="sectionname" xml:lang="en-us">Error</prop>
+     	    <note xml:lang="en-us"></note>
+     	    <tuv xml:lang="en-us">
+     	        <seg>Folder Location. Use the arrow keys to toggle between options.</seg>
+     	    </tuv>
+     	      <tuv xml:lang="es">
+     	        <seg>Ubicación de la carpeta. Utilice las teclas de flecha para alternar entre las opciones.</seg>
+     	    </tuv>
+     	 </tu>
+     	  <tu tuid="perc.ui.publish.servers.local@Format">
+     	    <prop type="sectionname" xml:lang="en-us">Error</prop>
+     	    <note xml:lang="en-us"></note>
+     	    <tuv xml:lang="en-us">
+     	        <seg>Format. Use the arrow keys to toggle between options.</seg>
+     	    </tuv>
+     	      <tuv xml:lang="es">
+     	        <seg>Formato. Utilice las teclas de flecha para alternar entre las opciones.</seg>
+     	    </tuv>
+     	 </tu>
 	 <tu tuid="perc.ui.perc.pub.reports@Unable To Retrieve Logs">
 	    <prop type="sectionname" xml:lang="en-us">Error</prop>
 	    <note xml:lang="en-us"></note>
