@@ -585,24 +585,5 @@ public interface IPSConstants
     String JAVA_EXTENSIONS_LOG = "Java Extensions";
      String SERVER_PROP_FILE_COPY_BUFFER_SIZE = "fileCopyBufferSize";
      String LEGACY_UI_ATTR = "sys_legacyui";
-
-
-    //system defined Roles
-    /**
-     * Administrator role.
-     */
-    String ADMINISTRATOR_ROLE = "Admin";
-    String DESIGNER_ROLE = "Designer";
-
-    /**
-     * Can administer Navigation Only
-     */
-    String NAV_ADMIN_ROLE = "Navigation Admin";
-
-    /**
-     * Can administer users only.
-     */
-    String USER_ADMIN_ROLE = "User Admin";
-
 }
 

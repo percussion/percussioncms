@@ -17,7 +17,7 @@
 
 package com.percussion.user.service.impl;
 
-import com.percussion.cms.IPSConstants;
+import com.percussion.role.service.IPSRoleService;
 import com.percussion.share.service.IPSSystemProperties;
 import com.percussion.share.spring.PSSpringWebApplicationContextUtils;
 import com.percussion.test.PSServletTestCase;
@@ -169,7 +169,7 @@ public class PSUserServiceTest extends PSServletTestCase
         PSUser designUser = new PSUser();
         designUser.setName(name);
         designUser.setPassword(pwd);
-        designUser.setRoles(Collections.singletonList(IPSConstants.DESIGNER_ROLE));
+        designUser.setRoles(Collections.singletonList(IPSRoleService.DESIGNER_ROLE));
         
         //FB: DLS_DEAD_LOCAL_STORE NC 1-17-16
         designUser = userService.create(designUser);

@@ -22,8 +22,6 @@
     boolean isDebug = "true".equals(debug);
     boolean isAdmin = (Boolean)request.getAttribute("isAdmin");
     boolean isDesigner = (Boolean)request.getAttribute("isDesigner");
-    boolean isUserAdmin = (Boolean)request.getAttribute("isUserAdmin");
-    boolean isNavAdmin = (Boolean)request.getAttribute("isNavAdmin");
     String wdgBuilderParam = (String)request.getAttribute("isWidgetBuilderActive");
     boolean isWdgActive = "true".equalsIgnoreCase(wdgBuilderParam.trim());
     String debugQueryString = isDebug ? "&debug=true" : "";
@@ -110,12 +108,11 @@
         <li role="menuitem" class="perc-actions-menu-item" data-navmgr="VIEW_HOME"><i18n:message key="perc.ui.navMenu.home@Home"/></li>
         <li role="menuitem" class="perc-actions-menu-item" data-navmgr="VIEW_DASHBOARD"><i18n:message key="perc.ui.navMenu.dashboard@Dashboard"/></li>
         <li role="menuitem" class="perc-actions-menu-item" data-navmgr="VIEW_EDITOR"><i18n:message key="perc.ui.navMenu.webmgt@Editor"/></li>
-        <% if (isAdmin || isDesigner || isNavAdmin) { %>
+        <% if (isAdmin || isDesigner) { %>
         <li role="menuitem" class="perc-actions-menu-item" data-navmgr="VIEW_SITE_ARCH"><i18n:message key="perc.ui.navMenu.architecture@Architecture"/></li>
-        <% } %><% if (isAdmin || isDesigner) { %>
         <li role="menuitem" class="perc-actions-menu-item" data-navmgr="VIEW_DESIGN"><i18n:message key="perc.ui.navMenu.design@Design"/></li>
         <li role="menuitem" class="perc-actions-menu-item" data-navmgr="VIEW_PUBLISH"><i18n:message key="perc.ui.navMenu.publish@Publish"/></li>
-        <% } %><% if (isAdmin || isUserAdmin) { %>
+        <% } %><% if (isAdmin) { %>
         <li role="menuitem" class="perc-actions-menu-item" data-navmgr="VIEW_WORKFLOW"><i18n:message key="perc.ui.navMenu.admin@Administration"/></li>
         <% } %>
         <% if (isWdgActive && (isAdmin || isDesigner)) { %>

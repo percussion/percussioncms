@@ -30,8 +30,6 @@ public class PSCurrentUser extends PSUser
     private boolean accessibilityUser = false;
     private boolean adminUser = false;
     private boolean designerUser = false;
-    private boolean navAdmin = false;
-    private boolean userAdmin = false;
     
     public PSCurrentUser()
     {
@@ -78,21 +76,5 @@ public class PSCurrentUser extends PSUser
     public boolean isDesignerUser()
     {
         return designerUser;
-    }
-
-    public boolean isNavAdmin() {
-        return navAdmin;
-    }
-
-    public void setNavAdmin(boolean navAdmin) {
-        this.navAdmin = navAdmin;
-    }
-
-    public boolean isUserAdmin() {
-        return userAdmin;
-    }
-
-    public void setUserAdmin(boolean userAdmin) {
-        this.userAdmin = userAdmin;
     }
 }
