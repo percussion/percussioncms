@@ -16,7 +16,6 @@
  */
 package com.percussion.workflow.service.impl;
 
-import com.percussion.cms.IPSConstants;
 import com.percussion.error.PSExceptionUtils;
 import com.percussion.foldermanagement.service.IPSFolderService;
 import com.percussion.maintenance.service.IPSMaintenanceManager;
@@ -373,8 +372,8 @@ public class PSSteppedWorkflowService implements IPSSteppedWorkflowService, IPSN
                 // Set the new workflow ID to the assigned roles for the current state
                 List<PSAssignedRole> assignedRoles = psState.getAssignedRoles();
                 List<PSWorkflowRole> wfRoles = newWorkflow.getRoles();
-                int roleAdminId = getRoleIdByName(wfRoles, IPSConstants.ADMINISTRATOR_ROLE);
-                int roleDesignerId = getRoleIdByName(wfRoles, IPSConstants.DESIGNER_ROLE);
+                int roleAdminId = getRoleIdByName(wfRoles, "Admin");
+                int roleDesignerId = getRoleIdByName(wfRoles, "Designer");
                 
                 for (PSAssignedRole psAssignedRole : assignedRoles) 
                 {
