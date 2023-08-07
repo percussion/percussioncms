@@ -34,7 +34,7 @@
         <script src="/Rhythmyx/tmx/tmx.jsp?mode=js&amp;prefix=perc.ui.&amp;sys_lang=<%=locale%>"></script>
         <script src="/JavaScriptServlet"></script>
         <style>
-        body {background-color: #6C717C; font-family: Verdana; margin: 0; padding: 0; }
+        body { font-family: Verdana; margin: 0; padding: 0; }
         .perc-login-logo { font-size: 48px; color: #121212; margin-top: 160px; margin-bottom: 100px;}
         #loginform .perc-form    {font-size: 14px; }
         #perc-forgot {color: #fff;}
