@@ -18,7 +18,7 @@
     <head>
         <title>${rxcomp:i18ntext('jsp_maintenance@Maintenance',locale)}</title> 
         <style type="text/css">
-         body {background-color: #6C717C; font-family: Verdana; margin: 0; padding: 0; }
+         body { font-family: Verdana; margin: 0; padding: 0; }
         .perc-login-logo { font-size: 48px; color: #121212; margin-top: 160px; margin-bottom: 100px;}
         .perc-warning-message { width:500px; text-align:center;}
         .perc-warning-message a { color: #CCCCCC; text-decoration: none; font-weight: bold; }
