@@ -119,7 +119,7 @@ public class PSCms
 
       boolean result = false;
       NodeList nodes = linkurl.getElementsByTagName("Value");
-      if (nodes != null && nodes.getLength() > 0)
+      if (nodes.getLength() > 0)
       {
          // Only first element will be considered.
          Element url = (Element) nodes.item(0);
@@ -179,7 +179,7 @@ public class PSCms
          + IPSHtmlParameters.SYS_FOLDERID + " parameter");
       }
 
-      List<Object> tgtFolders = null;
+      List<Object> tgtFolders;
       if (obj instanceof List)
       {
         tgtFolders = (List<Object>)obj;
@@ -196,7 +196,7 @@ public class PSCms
            + IPSHtmlParameters.SYS_FOLDERID + " parameter");
       }
        
-      int ids[] = new int[tgtFolders.size()];
+      int[] ids = new int[tgtFolders.size()];
       for (int i = 0; i < tgtFolders.size(); i++)
       {
          ids[i] = Integer.parseInt(tgtFolders.get(i).toString());
@@ -204,20 +204,14 @@ public class PSCms
       
       PSServerFolderProcessor processor = PSServerFolderProcessor.getInstance();
       PSFolderAcl[] acls = processor.getFolderAcls(ids);
-      for (int i = 0; i < acls.length; i++)
-      {
-         PSFolderAcl acl = acls[i];
+      for (PSFolderAcl acl : acls) {
          PSFolderPermissions folderPerms;
-         try
-         {
+         try {
             folderPerms = new PSFolderPermissions(acl);
-            if(!folderPerms.hasWriteAccess())
-            {
-                return false;
+            if (!folderPerms.hasWriteAccess()) {
+               return false;
             }
-         }
-         catch (PSAuthorizationException e)
-         {
+         } catch (PSAuthorizationException e) {
             return false;
          }
       }
@@ -240,8 +234,7 @@ public class PSCms
    /**
     * Checks to see if the current user has folder read access to the specified
     * item.
-    *  
-    * @param request The current request, may not be <code>null</code>.
+    *
     * @param contentid The id of the item to check.
     * 
     * @return <code>true</code> if the user has read access to at least one of
@@ -258,8 +251,7 @@ public class PSCms
    /**
     * Checks to see if the current user has folder write access to the specified
     * item.
-    *  
-    * @param request The current request, may not be <code>null</code>.
+    *
     * @param contentid The id of the item to check.
     * 
     * @return <code>true</code> if the user has write access to at least one of
@@ -276,8 +268,7 @@ public class PSCms
    /**
     * Checks to see if the current user has the given folder permission
     * access to the specified item.
-    *  
-    * @param request The current request, may not be <code>null</code>.
+    *
     * @param contentid The id of the item to check.
     * @param folderPermAccess is of one of {@link PSFolderPermissions}.ACCESS_XXX
     * 
@@ -292,15 +283,15 @@ public class PSCms
    {
       
       // check to see if feature is disabled
-      if ("true".equals(PSServer.getServerProps().getProperty(
-         "disableFolderItemSecurity", "false").toLowerCase()))
+      if ("true".equalsIgnoreCase(PSServer.getServerProps().getProperty(
+         "disableFolderItemSecurity", "false")))
       {
          return true;
       }
       
       try
       {
-         String userName = ((PSLiteralSet)PSUserContextExtractor.getUserContextInformation("User/Name",
+         String userName = (PSUserContextExtractor.getUserContextInformation("User/Name",
                PSThreadRequestUtils.getPSRequest(), new PSLiteralSet(String.class))).toString();
          
          if (userName.equals(IPSConstants.INTERNAL_USER_NAME))
@@ -330,7 +321,7 @@ public class PSCms
                continue; // shouldn't happen
             
             // first locator is parent folder
-            PSLocator folderLoc = (PSLocator) locs.get(0);
+            PSLocator folderLoc = locs.get(0);
             folderids[i] = folderLoc.getId();
          }
          
@@ -341,23 +332,17 @@ public class PSCms
          // no acl means full access, so see if any folders have no acls
          if (acls.length < folderids.length)
             return true;
-         
-         for (int i = 0; i < acls.length; i++)
-         {
-            PSFolderAcl acl = acls[i];
+
+         for (PSFolderAcl acl : acls) {
             PSFolderPermissions folderPerms;
-            try
-            {
+            try {
                folderPerms = new PSFolderPermissions(acl);
-               
-               if(folderPerms.hasAccessOrHigher(folderPermAccess))
-               {
-                   hasAccess = true;
-                   break;
+
+               if (folderPerms.hasAccessOrHigher(folderPermAccess)) {
+                  hasAccess = true;
+                  break;
                }
-            }
-            catch (PSAuthorizationException e)
-            {
+            } catch (PSAuthorizationException e) {
                break;
             }
          }
@@ -367,14 +352,12 @@ public class PSCms
       }
       catch (PSCmsException e)
       {
-         SQLException sqe = new SQLException(e.getLocalizedMessage());
-         sqe.initCause(e);
-         throw sqe;
+         throw new SQLException(e);
       }
    }
 
    /**
-    * This is a utility method to test whether or not the addressed content is
+    * This is a utility method to test whether the addressed content is
     * publishable or not. This is determined with an internal request to the
     * <code>sys_casSupport/ContentValid</code> resource.
     * 
@@ -498,7 +481,7 @@ public class PSCms
          throw new IllegalArgumentException("request cannot be null");
 
       if (source == null)
-         throw new IllegalArgumentException("source cnnot be null");
+         throw new IllegalArgumentException("source cannot be null");
 
       PSContentType contentType = getContentType(request, source);
       return contentType == null ? null : contentType.getNewURL();
@@ -530,7 +513,7 @@ public class PSCms
          throw new IllegalArgumentException("request cannot be null");
       
       if (source == null)
-         throw new IllegalArgumentException("source cnnot be null");
+         throw new IllegalArgumentException("source cannot be null");
 
       String resource = PSRelationshipUtils.SYS_PSXRELATIONSHIPSUPPORT + "/" +
          PSRelationshipUtils.GET_CONTENTTYPEINFO;
@@ -582,7 +565,7 @@ public class PSCms
     * @param variantid VariantId for the Url, must not be <code>null</code> or
     *           empty.
     * @param context publishing context, may be <code>null</code> or emoty in
-    *           which case, the value is assmued to be "0" which is the preview
+    *           which case, the value is assumed to be "0" which is the preview
     *           context.
     * @return the publication url for the item, may be <code>null</code> or
     *         empty.
@@ -624,7 +607,7 @@ public class PSCms
     * {@link IPSHtmlParameters#SYS_VARIANTID variantid}. Rest of the assembly 
     * parameters are optional. 
     * context. The Url will contain the current revision of the item.
-    * @param request request context to make an iternal request to get the 
+    * @param request request context to make an internal request to get the
     * publication Url.
     * @param assemblyParamMap map of assembly parameters, must not be 
     * <code>null</code> or empty.
@@ -660,29 +643,23 @@ public class PSCms
       Map<String,Object> params = new HashMap<>();
       params.put(IPSHtmlParameters.SYS_CONTENTID, contentid);
       params.put(IPSHtmlParameters.SYS_VARIANTID, variantid);
-      Iterator<String> iter = assemblyParamMap.keySet().iterator();
-      while (iter.hasNext()) 
-      {
-         String element = iter.next().toString();
+      for (String s : assemblyParamMap.keySet()) {
          //Already taken care
-         if(element.equals(IPSHtmlParameters.SYS_CONTENTID) ||
-            element.equals(IPSHtmlParameters.SYS_VARIANTID))
-         {
-            continue;
+         switch (s) {
+            case IPSHtmlParameters.SYS_CONTENTID:
+            case IPSHtmlParameters.SYS_VARIANTID:
+               continue;
+            case IPSHtmlParameters.SYS_CONTEXT:
+               context = assemblyParamMap.get(s);
+               break;
+            case IPSHtmlParameters.SYS_AUTHTYPE:
+               authtype = assemblyParamMap.get(s);
+               break;
+            default:
+               params.put(s, assemblyParamMap.get(s));
+               break;
          }
-         else if(element.equals(IPSHtmlParameters.SYS_CONTEXT))
-         {
-             context = assemblyParamMap.get(element);
-         }
-         else if(element.equals(IPSHtmlParameters.SYS_AUTHTYPE))
-         {
-             authtype = assemblyParamMap.get(element);
-         }
-         else
-         {
-            params.put(element, assemblyParamMap.get(element));
-         }
-        
+
       }
       params.put(IPSHtmlParameters.SYS_CONTEXT, context);
       params.put(IPSHtmlParameters.SYS_AUTHTYPE, authtype);
@@ -700,7 +677,7 @@ public class PSCms
             "sys_casSupport/PublicationUrl",
             params,
             false);
-      Document doc = null;
+      Document doc;
       try
       {
          doc = iReq.getResultDoc();
@@ -785,9 +762,8 @@ public class PSCms
          Iterator<String> it = workflowIds.iterator();
          boolean haveWorkflowInfo = info != null 
             && info.getWorkflowIds() != null;
-         boolean isInclusionary = haveWorkflowInfo ? 
-            info.getType().equals(
-               PSWorkflowInfo.TYPE_INCLUSIONARY) : true;
+         boolean isInclusionary = !haveWorkflowInfo || info.getType().equals(
+                 PSWorkflowInfo.TYPE_INCLUSIONARY);
 
          boolean matchesDefault = false;
          while(it.hasNext())
@@ -826,17 +802,12 @@ public class PSCms
           * Set the workflowid if there is only one, otherwise throw a
           * runtime error.
           */
-         switch (resultWorkflows.size())
-         {
-            case 1:
-               theWorkflowId = resultWorkflows.iterator()
-                     .next().intValue();
-               break;
-               
-            default:
-               if (resultWorkflows.isEmpty() || matchesDefault )
-                  theWorkflowId = Integer.parseInt(defaultWorkflowId);
-
+         if (resultWorkflows.size() == 1) {
+            theWorkflowId = resultWorkflows.iterator()
+                    .next();
+         } else {
+            if (resultWorkflows.isEmpty() || matchesDefault)
+               theWorkflowId = Integer.parseInt(defaultWorkflowId);
          }
       }
 
@@ -846,9 +817,9 @@ public class PSCms
 
    /**
     * Determine if the specified workflow is allowed for the content type and community.
-    * @param request
     * @param ce
     * @param communityId
+    * @param workflowId
     */
    public static boolean isAllowedWorkflow( 
          PSContentEditor ce, String communityId, int workflowId)
@@ -862,8 +833,7 @@ public class PSCms
             return false;
          
          PSWorkflowInfo info = ce.getWorkflowInfo();
-         if (info != null && !info.getWorkflowIds().contains(Integer.valueOf(workflowId)))
-            return false;
+         return info == null || info.getWorkflowIds().contains(workflowId);
       }
       
       return true;
@@ -871,9 +841,8 @@ public class PSCms
    
    private static boolean isCommunitiesEnabled()
    {
-      boolean communitiesEnabled = PSServer.getServerProps().getProperty(
+      return PSServer.getServerProps().getProperty(
          "communities_enabled").trim().equalsIgnoreCase("yes");
-      return communitiesEnabled;
    }
 
    /**
@@ -893,7 +862,7 @@ public class PSCms
 
          IPSBackEndRoleMgr beRoleMgr = PSRoleMgrLocator.getBackEndRoleManager();
          PSCommunity comm = beRoleMgr.loadCommunity(
-            new PSGuid(PSTypeEnum.COMMUNITY_DEF, Long.valueOf(communityId)));
+            new PSGuid(PSTypeEnum.COMMUNITY_DEF, Long.parseLong(communityId)));
          
          IPSAclService svc = PSAclServiceLocator.getAclService();
          Collection<IPSGuid> guids = svc.findObjectsVisibleToCommunities(
@@ -938,11 +907,11 @@ public class PSCms
    }
    
    /**
-    * Constatant for ContentValid XML Element
+    * Constant for ContentValid XML Element
     */
    public static String ELEM_CONTENTVALID = "ContentValid";
    /**
-    * Constatant for publishable XML Attribute
+    * Constant for publishable XML Attribute
     */
    public static String ATTR_PUBLISHABLE = "publishable";
 }

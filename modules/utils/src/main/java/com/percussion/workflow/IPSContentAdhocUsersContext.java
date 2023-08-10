@@ -16,27 +16,28 @@
  */
 package com.percussion.workflow;
 
+
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.List;
+
 /**
- * An interface that defines methods for State Adhoc Users Context. 
+ * An interface that defines methods for State Adhoc Users Context.
  *
  * @author Rammohan Vangapalli
  * @version 1.0
  * @since 2.0
  *
  */
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.List;
-
 public interface IPSContentAdhocUsersContext
 {
    /**
-    * Gets a list of adhoc normal user names
+    * Gets a list of adhoc normal usernames
     *
-    * @return list of adhoc normal user names, or
+    * @return list of adhoc normal usernames, or
     *                  <CODE>null</CODE> if there are no adhoc normal users
     */
-   public List getAdhocNormalUserNames();
+   List<String> getAdhocNormalUserNames();
       
    /**
     * Gets a list of adhoc normal role IDs for a specified user
@@ -45,10 +46,10 @@ public interface IPSContentAdhocUsersContext
     *                  desired 
     * @return          list of adhoc normal role IDs for the user, or
     *                  <CODE>null</CODE> if the user has no adhoc normal roles
-    * @throws IllegalArgumentException if the user name is <CODE>null</CODE> or
+    * @throws IllegalArgumentException if the username is <CODE>null</CODE> or
     *                                  empty after trimming. 
     */
-   public List getUserAdhocNormalRoleIDs(String userName);
+   List<Integer> getUserAdhocNormalRoleIDs(String userName);
       
    /**
     * Gets the adhoc normal user count
@@ -56,15 +57,15 @@ public interface IPSContentAdhocUsersContext
     * @return   the adhoc normal user count greater  or equal 0
     *
     */
-   public int getContentAdhocNormalUserCount();
+   int getContentAdhocNormalUserCount();
 
    /**
-    * Gets a list of adhoc anonymous user names
+    * Gets a list of adhoc anonymous usernames
     *
-    * @return list of adhoc anonymous user names , or
+    * @return list of adhoc anonymous usernames , or
     *         <CODE>null</CODE> if there are no adhoc anonymous users
     */
-   public List getAdhocAnonymousUserNames();
+    List<String> getAdhocAnonymousUserNames();
 
    /**
     * Gets a list of adhoc anonymous user role IDs
@@ -72,7 +73,7 @@ public interface IPSContentAdhocUsersContext
     * @return list of adhoc anonymous user role IDs, or
     *         <CODE>null</CODE> if there are no adhoc anonymous roles
     */
-   public List getAdhocAnonymousRoleIDs();
+    List<Integer> getAdhocAnonymousRoleIDs();
       
    /**
     * Gets the adhoc anonymous user count
@@ -80,51 +81,51 @@ public interface IPSContentAdhocUsersContext
     * @return   the adhoc anonymous user count 
     *
     */
-   public int getContentAdhocAnonymousUserCount();
+    int getContentAdhocAnonymousUserCount();
 
    
    /**
     * Adds a list of adhoc normal role IDs for a specific user to the context,
     * without committing the change. If a user already has adhoc normal roles,
-    * (based on case-insensitive comparison of user names) any additional roles
+    * (based on case-insensitive comparison of usernames) any additional roles
     * will be added, and any existing roles ignored. The first capitalization
-    * of any user name will be the one written to the data base.
+    * of any username will be the one written to the database.
     *
     * @param userName   name of the for whom adhoc normal roles will be added
     *                   may not be <CODE>null</CODE> or  the empty string
     * @param roleIDs    list of adhoc normal role IDs to be added may not be
     *                   <CODE>null</CODE> or empty
-    * @throws IllegalArgumentException if the user name is <CODE>null</CODE>
+    * @throws IllegalArgumentException if the username is <CODE>null</CODE>
     * or empty after trimming. 
     * 
     */
-   public void addUserAdhocNormalRoleIDs(String userName, List roleIDs);
+   void addUserAdhocNormalRoleIDs(String userName, List<Integer> roleIDs);
    
    /**
-    * Sets the lists of adhoc anonymous role IDs and user names in the context,
+    * Sets the lists of adhoc anonymous role IDs and usernames in the context,
     * without committing the change.
     *
     * @param userNames  names of users with anonymous adhoc roles, may not be
     *                   <CODE>null</CODE> or empty
     * @param roleIDs    list of adhoc anonymous role IDs  may not be
     *                   <CODE>null</CODE> or empty               
-    * @throws IllegalArgumentException if the list of user names  or of role 
+    * @throws IllegalArgumentException if the list of usernames  or of role
     * IDs is empty, or one, but not both of them is <CODE>null</CODE>.
     */
-   public void setAdhocAnonymousUsersAndRoles(List userNames, List roleIDs);
+   void setAdhocAnonymousUsersAndRoles(List<String> userNames, List<Integer> roleIDs);
    
    /**
     * Convenience method that calls 
     * {@link #emptyAdhocUserEntries(Connection, boolean) 
     * emptyAdhocUserEntries(connection, true)}
     */
-   public int emptyAdhocUserEntries(Connection connection) throws SQLException;
+   int emptyAdhocUserEntries(Connection connection) throws SQLException;
 
    /**
-    * Deletes data base entries for all adhoc assignees for this content item,
+    * Deletes database entries for all adhoc assignees for this content item,
     * and optionally clears context variables containing this information.
     *
-    * @param connection  open backend data base connection, may not be
+    * @param connection  open backend database connection, may not be
     *                   <CODE>null</CODE>
     * @param clearState <code>true</code> to clear the in memory context 
     * variables, <code>false</code> to leave the in memory data.  If 
@@ -135,20 +136,20 @@ public interface IPSContentAdhocUsersContext
     * @return            number of entries deleted             
     * @throws            SQLException if an SQL error occurs
     */
-   public int emptyAdhocUserEntries(Connection connection, boolean clearState) 
+   int emptyAdhocUserEntries(Connection connection, boolean clearState)
       throws SQLException;
 
    /**
     * Commits all content adhoc assignee information stored in the context to
-    * the data base.  Any previously existing data base entries for the content
+    * the database.  Any previously existing database entries for the content
     * item will be deleted.
     *
-   * @param connection  open backend data base connection, may not be
+   * @param connection  open backend database connection, may not be
     *                   <CODE>null</CODE>     
-    * @return            number of entries written to the data base
+    * @return            number of entries written to the database
     * @throws            SQLException if an SQL error occurs
     */   
-   public int commit(Connection connection)
+   int commit(Connection connection)
         throws SQLException;
    
    /**
@@ -156,12 +157,11 @@ public interface IPSContentAdhocUsersContext
     *
     * @author   Ram
     *
-    * @version 1.0
     *
     * @return    <CODE>true</CODE> if the context has no adhoc users, else
     *            <CODE>false</CODE> 
     *
     */
-   public boolean isEmpty();
+   boolean isEmpty();
  
 }

@@ -393,9 +393,9 @@ public class PSAttribute extends PSDatabaseComponentCollection
     *
     * @return the value list never <code>null<code>, may be empty.
     */
-   public List getValues()
+   public List<String> getValues()
    {
-      ArrayList values = new ArrayList();
+      ArrayList<String> values = new ArrayList<>();
 
       for (int i = 0; i < size(); i++)
       {

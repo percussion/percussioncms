@@ -41,7 +41,7 @@ public class PSStateRolesContext implements IPSStateRolesContext
     * assignment type.
     *
     * @param workFlowID      ID of the workflow
-    * @param connection      data base connection
+    * @param connection      database connection
     * @param stateID         ID of the state
     * @param assignmentType  minimum assignment type
     * @throws                SQLException if an SQL error occurs
@@ -55,18 +55,17 @@ public class PSStateRolesContext implements IPSStateRolesContext
                               int assignmentType)
       throws SQLException, PSRoleException, PSEntryNotFoundException
    {
-      String lowerCaseRoleName = "";
-      List workingList = null;
-      Integer roleID = null;
-      this.workflowID = workFlowID;
-      this.connection = connection;
-      this.stateID = stateID;
+      String lowerCaseRoleName;
+      Integer roleID;
+      /* ID of the workflow for this state. */
+      /* Connection to the database */
+      /* State ID for this context. */
       try
       {
          statement =
             PSPreparedStatement.getPreparedStatement(connection, QRYSTRING);
          statement.clearParameters();
-         statement.setInt(1, workflowID);
+         statement.setInt(1, workFlowID);
          statement.setInt(2, stateID);
          statement.setInt(3, assignmentType);
          rs = statement.executeQuery();
@@ -78,14 +77,14 @@ public class PSStateRolesContext implements IPSStateRolesContext
                 IPSExtensionErrors.STATEROLE_NULL_EMPTY_TRIM);
             }
             m_nCount++;
-            roleID = new Integer(m_nStateRoleID);
+            roleID = m_nStateRoleID;
             m_StateRoleIDs.add(roleID);
             lowerCaseRoleName = m_sStateRoleName.toLowerCase();
 
             m_isNotificationOnMap.put(roleID, m_bNotifyOn);
             m_stateRoleNameMap.put(roleID, m_sStateRoleName);
             m_stateRoleAssignmentTypeMap.put(roleID,
-                                             new Integer(m_nAssignmentType));
+                    m_nAssignmentType);
 
             m_lowerCaseRoleNameToIDMap.put(lowerCaseRoleName, roleID);
 
@@ -122,28 +121,26 @@ public class PSStateRolesContext implements IPSStateRolesContext
    }
 
    /**
-    * Moves the cursor to next record in the resultset and updates the current
+    * Moves the cursor to next record in the result set and updates the current
     * column values.
     *
     * @return <CODE>true</CODE> if another record is read else
     *  <CODE>false</CODE>
     *
-    * @throws SQLException
+    * @throws SQLException On SQL error
     *
     */
    private boolean moveNext() throws SQLException
    {
       boolean bSuccess = rs.next();
-      if(false == bSuccess)
+      if(!bSuccess)
          return bSuccess;
 
       m_nStateRoleID = rs.getInt("ROLEID");
       m_nAdhocType = rs.getInt("ADHOCTYPE");
       m_nAssignmentType = rs.getInt("ASSIGNMENTTYPE");
       String tmp = rs.getString("ISNOTIFYON");
-      m_bNotifyOn = false;
-      if(null != tmp && tmp.equalsIgnoreCase("Y"))
-         m_bNotifyOn = true;
+      m_bNotifyOn = null != tmp && tmp.equalsIgnoreCase("Y");
 
       m_sStateRoleName = PSWorkFlowUtils.trimmedOrEmptyString(
          rs.getString("ROLENAME"));
@@ -188,57 +185,57 @@ public class PSStateRolesContext implements IPSStateRolesContext
       return m_nCount;
    }
 
-   public List getStateRoleIDs()
+   public List<Integer> getStateRoleIDs()
    {
       return  m_StateRoleIDs;
    }
 
-   public List getStateRoleNames()
+   public List<String> getStateRoleNames()
    {
-      return  new ArrayList(m_stateRoleNameMap.values());
+      return  new ArrayList<>(m_stateRoleNameMap.values());
    }
 
-   public List getNonAdhocStateRoleIDs()
+   public List<Integer> getNonAdhocStateRoleIDs()
    {
       return m_nonAdhocStateRoleIDs;
    }
 
-   public List getAdhocNormalStateRoleIDs()
+   public List<Integer> getAdhocNormalStateRoleIDs()
    {
       return m_adhocNormalStateRoleIDs;
    }
 
-   public List getAdhocAnonymousStateRoleIDs()
+   public List<Integer> getAdhocAnonymousStateRoleIDs()
    {
       return m_adhocAnonymousStateRoleIDs;
    }
 
-   public Map getStateRoleAssignmentTypeMap()
+   public Map<Integer,Integer> getStateRoleAssignmentTypeMap()
    {
       return m_stateRoleAssignmentTypeMap;
    }
 
-   public Map getStateRoleNameMap()
+   public Map<Integer,String> getStateRoleNameMap()
    {
       return m_stateRoleNameMap;
    }
 
-   public Map getIsNotificationOnMap()
+   public Map<Integer,Boolean>getIsNotificationOnMap()
    {
       return m_isNotificationOnMap;
    }
 
-   public Map getNonAdhocStateRoleNameToRoleIDMap()
+   public Map<String,Integer> getNonAdhocStateRoleNameToRoleIDMap()
    {
       return m_nonAdhocStateRoleNameToRoleIDMap;
    }
 
-   public Map getAdhocNormalStateRoleNameToRoleIDMap()
+   public Map<String, Integer> getAdhocNormalStateRoleNameToRoleIDMap()
    {
       return m_adhocNormalStateRoleNameToRoleIDMap;
    }
 
-   public Map getLowerCaseRoleNameToIDMap()
+   public Map<String,Integer> getLowerCaseRoleNameToIDMap()
    {
       return m_lowerCaseRoleNameToIDMap;
    }
@@ -252,7 +249,7 @@ public class PSStateRolesContext implements IPSStateRolesContext
    /* *** End Implementation of IPSStateRolesContext Interface *** */
 
    /**
-    * Produces a string representation of the state roles context.
+    * Produces a string representation of the state role context.
     *
     * @return a string representation of the state roles context
     */
@@ -267,7 +264,7 @@ public class PSStateRolesContext implements IPSStateRolesContext
        else
        {
           buf.append("\nState roles  = ");
-          buf.append(m_StateRoleIDs.toString());
+          buf.append(m_StateRoleIDs);
        }
 
        if (m_nonAdhocStateRoleIDs.isEmpty())
@@ -277,7 +274,7 @@ public class PSStateRolesContext implements IPSStateRolesContext
        else
        {
           buf.append("\nNon adhoc state role IDs  = ");
-          buf.append(m_nonAdhocStateRoleIDs.toString());
+          buf.append(m_nonAdhocStateRoleIDs);
        }
 
        if (m_adhocNormalStateRoleIDs.isEmpty())
@@ -287,7 +284,7 @@ public class PSStateRolesContext implements IPSStateRolesContext
        else
        {
           buf.append("\nAdhoc normal state role IDs  = ");
-          buf.append(m_adhocNormalStateRoleIDs.toString());
+          buf.append(m_adhocNormalStateRoleIDs);
        }
 
        if (m_adhocAnonymousStateRoleIDs.isEmpty())
@@ -297,62 +294,53 @@ public class PSStateRolesContext implements IPSStateRolesContext
        else
        {
           buf.append("\nAdhoc anonymous state role IDs  = ");
-          buf.append(m_adhocAnonymousStateRoleIDs.toString());
+          buf.append(m_adhocAnonymousStateRoleIDs);
        }
 
        if (!m_stateRoleAssignmentTypeMap.isEmpty())
        {
           buf.append("\nMap role ID  -> assignment type = ");
-          buf.append(m_stateRoleAssignmentTypeMap.toString());
+          buf.append(m_stateRoleAssignmentTypeMap);
        }
 
        if (!m_stateRoleNameMap.isEmpty())
        {
           buf.append("\nMap role ID  -> role name = ");
-          buf.append(m_stateRoleNameMap.toString());
+          buf.append(m_stateRoleNameMap);
        }
 
        if (!m_isNotificationOnMap.isEmpty())
        {
           buf.append("\nMap role ID  -> notification on/off = ");
-          buf.append(m_isNotificationOnMap.toString());
+          buf.append(m_isNotificationOnMap);
        }
 
        if (!m_nonAdhocStateRoleNameToRoleIDMap.isEmpty())
        {
           buf.append("\nMap lower case role name -> nonadhoc role ID  = ");
-          buf.append(m_nonAdhocStateRoleNameToRoleIDMap.toString());
+          buf.append(m_nonAdhocStateRoleNameToRoleIDMap);
        }
 
        if (!m_adhocNormalStateRoleNameToRoleIDMap.isEmpty())
        {
           buf.append("\nMap lower case role name -> adhoc normal role ID = ");
-          buf.append(m_adhocNormalStateRoleNameToRoleIDMap.toString());
+          buf.append(m_adhocNormalStateRoleNameToRoleIDMap);
        }
 
        if (!m_lowerCaseRoleNameToIDMap.isEmpty())
        {
           buf.append("\nMap all lower case role name -> role ID = ");
-          buf.append(m_lowerCaseRoleNameToIDMap.toString());
+          buf.append(m_lowerCaseRoleNameToIDMap);
        }
 
        return buf.toString();
    }
 
-   /** ID of the workflow for this state. */
-   private int workflowID = 0;
-
-   /** State ID for this context. */
-   private int stateID = 0;
-
    /** JDBC version of SQL statement to be executed. */
-   private PreparedStatement statement = null;
-
-   /** Connection to the database */
-   private Connection connection = null;
+   private PreparedStatement statement;
 
    /** Result of database query */
-   private ResultSet rs = null;
+   private ResultSet rs;
 
    /** Number of database records found */
    int m_nCount = 0;
@@ -401,27 +389,27 @@ public class PSStateRolesContext implements IPSStateRolesContext
    /**
     * List of all state role IDs
     */
-   private List m_StateRoleIDs = new ArrayList();
+   private List<Integer> m_StateRoleIDs = new ArrayList<>();
 
    /**
     * List of all state role Names
     */
-   private List m_StateRoleNames = new ArrayList();
+   private List<String> m_StateRoleNames = new ArrayList<>();
 
    /**
     * List of non adhoc state role IDs
     */
-   private List m_nonAdhocStateRoleIDs = new ArrayList();
+   private List<Integer> m_nonAdhocStateRoleIDs = new ArrayList<>();
 
    /**
     * List of adhoc normal state role IDs
     */
-   private List m_adhocNormalStateRoleIDs = new ArrayList();
+   private List<Integer> m_adhocNormalStateRoleIDs = new ArrayList<>();
 
    /**
     * List of adhoc anonymous state role IDs
     */
-   private List m_adhocAnonymousStateRoleIDs = new ArrayList();
+   private List<Integer> m_adhocAnonymousStateRoleIDs = new ArrayList<>();
 
    /**
     * Map with role ID as key and value = assignment type, which can take
@@ -434,36 +422,36 @@ public class PSStateRolesContext implements IPSStateRolesContext
     * <li><CODE>ASSIGNMENT_TYPE_ADMIN</CODE></li>
     * </ul>
     */
-   private Map m_stateRoleAssignmentTypeMap = new HashMap();
+   private Map<Integer,Integer> m_stateRoleAssignmentTypeMap = new HashMap<>();
 
    /**
     * Map with role ID as key and value = role name
     */
-   private Map m_stateRoleNameMap = new HashMap();
+   private Map<Integer,String> m_stateRoleNameMap = new HashMap<>();
 
    /**
     * Map with role ID as key and value <CODE>true</CODE> if notification
     * for the role is on, else <CODE>false</CODE>
     */
-   private Map m_isNotificationOnMap = new HashMap();
+   private Map<Integer, Boolean> m_isNotificationOnMap = new HashMap<>();
 
    /**
     * Map of role IDs for nonadhoc roles with trimmed lower case role
     * names as key
     */
-   private Map m_nonAdhocStateRoleNameToRoleIDMap = new HashMap();
+   private Map<String,Integer> m_nonAdhocStateRoleNameToRoleIDMap = new HashMap<>();
 
    /**
     * Map of role IDs for adhoc normal roles with trimmed lower case role
     * names as key
     */
-   private Map m_adhocNormalStateRoleNameToRoleIDMap = new HashMap();
+   private Map<String,Integer> m_adhocNormalStateRoleNameToRoleIDMap = new HashMap<>();
 
    /**
     * Map of role IDs for all state roles with trimmed lower case role
     * names as key
     */
-   private Map m_lowerCaseRoleNameToIDMap = new HashMap();
+   private Map<String, Integer> m_lowerCaseRoleNameToIDMap = new HashMap<>();
 
    /* String for data base read query */
    static private String SR = 

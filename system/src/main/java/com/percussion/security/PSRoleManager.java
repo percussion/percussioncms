@@ -305,7 +305,7 @@ public class PSRoleManager
     * @return a list with all subjects found for the supplied parameters from
     *    all defined security providers, never <code>null</code>, may be empty.
     */
-   private List getSecurityProviderSubjects(String subjectNameFilter,
+   private List<PSSubject> getSecurityProviderSubjects(String subjectNameFilter,
       int subjectType, String roleName, String attributeNameFilter,
       boolean includeEmptySubjects, String communityId, int backendType)
    {
@@ -806,13 +806,13 @@ public class PSRoleManager
     * @throws PSSecurityException If the meta data to process the request
     *    can't be obtained.
     */
-   public List roleMembers(String roleName, int memberFlags, 
+   public List<PSSubject> roleMembers(String roleName, int memberFlags,
       String subjectNameFilter)
    {
-      Set members = getSubjects(roleName, subjectNameFilter);
+      Set<PSSubject> members = getSubjects(roleName, subjectNameFilter);
       if (members.size() > 0 && memberFlags > 0)
       {
-         Iterator iter = members.iterator();
+         Iterator<PSSubject> iter = members.iterator();
          while (iter.hasNext())
          {
             PSSubject member = (PSSubject) iter.next();
@@ -821,7 +821,7 @@ public class PSRoleManager
          }
       }
       
-      return new ArrayList(members);
+      return new ArrayList<>(members);
    }
 
    /**
@@ -989,19 +989,19 @@ public class PSRoleManager
     *    ordered in ascending alpha order by subject name. The caller
     *    takes ownership of the list.
     */
-   public List getSubjectGlobalAttributes(String subjectNameFilter,
+   public List<PSSubject> getSubjectGlobalAttributes(String subjectNameFilter,
       int subjectType, String roleName, String attributeNameFilter,
       boolean includeEmptySubjects, String communityId)
    {
       // use treeset to prevent duplicates and enforce ordering
-      Set subjects = new TreeSet(PSSubject.getSubjectIdentifierComparator());
+      Set<PSSubject> subjects = new TreeSet<PSSubject>(PSSubject.getSubjectIdentifierComparator());
       
       // add all subjects from all security providers
       subjects.addAll(getSecurityProviderSubjects(subjectNameFilter, 
          subjectType, roleName, attributeNameFilter, includeEmptySubjects, 
          communityId, BACKEND_GLOBAL_ATTRIBUTES));         
 
-      return new ArrayList(subjects);
+      return new ArrayList<>(subjects);
    }
 
    /**
@@ -1010,7 +1010,7 @@ public class PSRoleManager
     * subjectType, attributeNameFilter and communityId and to include empty
     * subjects.
     */
-   public Set getSubjects(String roleName, String subjectNameFilter)
+   public Set<PSSubject> getSubjects(String roleName, String subjectNameFilter)
    {
       return getSubjects(roleName, subjectNameFilter, 0, null, null, true);
    }
@@ -1023,12 +1023,12 @@ public class PSRoleManager
     * @return a set of subjects retrieved from all defined security providers
     *    for the supplied parameters, never <code>null</code>, may be empty.
     */
-   public Set getSubjects(String roleName, String subjectNameFilter, 
+   public Set<PSSubject> getSubjects(String roleName, String subjectNameFilter,
       int subjectType, String attributeNameFilter, String communityId, 
       boolean includeEmpty)
    {
       // use treeset to prevent duplicates and enforce ordering
-      Set results = new TreeSet(PSSubject.getSubjectIdentifierComparator());
+      Set<PSSubject> results = new TreeSet<>(PSSubject.getSubjectIdentifierComparator());
       
       // add all subjects from all security providers
       results.addAll(getSecurityProviderSubjects(subjectNameFilter, subjectType, 

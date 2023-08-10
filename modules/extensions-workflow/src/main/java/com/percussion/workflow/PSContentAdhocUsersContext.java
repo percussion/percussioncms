@@ -47,7 +47,7 @@ public class PSContentAdhocUsersContext implements IPSContentAdhocUsersContext
     * Constructor specifying content ID, used to create a context with no
     * content adhoc user information in its local variables.
     *
-    * @param contentid   content ID of the item/document
+    * @param contentID   content ID of the item/document
     */
    public PSContentAdhocUsersContext(int contentID)
    {
@@ -65,16 +65,14 @@ public class PSContentAdhocUsersContext implements IPSContentAdhocUsersContext
    }
 
    /**
-    * Constructor specifying content ID and data base connection, retrieves
-    * information from the data base.
+    * Constructor specifying content ID and database connection, retrieves
+    * information from the database.
     *
-    * @param contentid   content ID of the current item/document
+    * @param contentID   content ID of the current item/document
     *
     * @param connection  database connection - must not be <CODE>null</CODE>
     *
     * @throws SQLException if an SQL error occurs
-    * @throws PSEntryNotFoundException when there are no entries in the table
-    *         CONTENTADHOCUSERS for this content item
     * @throws IllegalArgumentException if the connection is <CODE>null</CODE>
     */
    @Deprecated // TODO: This class needs refactored to use spring  hibernate
@@ -83,9 +81,9 @@ public class PSContentAdhocUsersContext implements IPSContentAdhocUsersContext
       throws  PSRoleException, SQLException
    {
       this(contentID);
-      String lowerCaseUserName = "";
-      List workingList = null;
-      Integer roleID = null;
+      String lowerCaseUserName;
+      List<Integer> workingList;
+      Integer roleID;
       if(null == connection)
       {
          throw new IllegalArgumentException("Connection cannot be null: " +
@@ -99,7 +97,7 @@ public class PSContentAdhocUsersContext implements IPSContentAdhocUsersContext
          m_Statement.clearParameters();
          m_Statement.setInt(1, contentID);
 
-         // collect a list of user names and assignment types
+         // collect a list of usernames and assignment types
          m_Rs = m_Statement.executeQuery();
          m_nCount = 0;
          while(moveNext())
@@ -112,13 +110,13 @@ public class PSContentAdhocUsersContext implements IPSContentAdhocUsersContext
             m_nCount++;
 
             lowerCaseUserName = m_sUserName.toLowerCase();
-            roleID = new Integer(m_nRoleID);
+            roleID = m_nRoleID;
 
             if (!m_adhocRoleIDtoAdhocTypeMap.
                 containsKey(roleID))
             {
                m_adhocRoleIDtoAdhocTypeMap.put(roleID,
-                                               new Integer(m_nAdhocType));
+                       m_nAdhocType);
             }
 
             if (m_nAdhocType == PSWorkFlowUtils.ADHOC_ENABLED)
@@ -127,11 +125,11 @@ public class PSContentAdhocUsersContext implements IPSContentAdhocUsersContext
                    containsKey(lowerCaseUserName))
                {
                   m_adhocNormalUserNames.add(m_sUserName);
-                  workingList = new ArrayList();
+                  workingList = new ArrayList<>();
                }
                else
                {
-                  workingList = (List)
+                  workingList =
                      m_userNameToAdhocNormalRoleIDMap.get(lowerCaseUserName);
                }
                workingList.add(roleID);
@@ -173,13 +171,13 @@ public class PSContentAdhocUsersContext implements IPSContentAdhocUsersContext
     * @return <CODE>true</CODE> if another record is read else
     *  <CODE>false</CODE>
     *
-    * @throws SQLException
+    * @throws SQLException A SQL error
     *
     */
    private boolean moveNext() throws SQLException
    {
       boolean bSuccess = m_Rs.next();
-      if(false == bSuccess)
+      if(!bSuccess)
       {
          return bSuccess;
       }
@@ -218,18 +216,18 @@ public class PSContentAdhocUsersContext implements IPSContentAdhocUsersContext
    }
 
    /**
-    * Deletes data base entries for all adhoc assignees for this content item,
+    * Deletes database entries for all adhoc assignees for this content item,
     * optionally clearing context variables containing this information.
     *
     * @param clearStateVariables  <CODE>true</CODE>  if context variables
-    *                             shouldbe cleared, else <CODE>false</CODE>.
+    *                             should be cleared, else <CODE>false</CODE>.
     * @return                     number of entries deleted
     * @throws                     SQLException if an SQL error occurs
     */
    private int emptyAdhocUserEntries(boolean clearStateVariables)
          throws SQLException
    {
-      int numEntriesDeleted = 0;
+      int numEntriesDeleted;
       boolean modifiedCommit = false;
       try
       {
@@ -262,7 +260,7 @@ public class PSContentAdhocUsersContext implements IPSContentAdhocUsersContext
                m_lowerCaseUserNameToUserNameMap.clear();
             }
 
-            if (null != m_adhocAnonymousUserNames)
+            if (null != m_adhocNormalUserNames)
             {
                m_adhocNormalUserNames.clear();
             }
@@ -296,6 +294,7 @@ public class PSContentAdhocUsersContext implements IPSContentAdhocUsersContext
          }
          catch(Exception e)
          {
+            log.error(PSExceptionUtils.getMessageForLog(e));
          }
 
       }
@@ -310,8 +309,8 @@ public class PSContentAdhocUsersContext implements IPSContentAdhocUsersContext
          throw new IllegalStateException(
             "Cannot call commit if data is out of sync");
             
-      Iterator nameIter = null;
-      Iterator roleIDIter = null;
+      Iterator<String> nameIter;
+      Iterator<Integer> roleIDIter;
 
       if (m_connection != null)
       {
@@ -321,7 +320,7 @@ public class PSContentAdhocUsersContext implements IPSContentAdhocUsersContext
       }
 
       m_connection = connection;
-      int nRows = 0;
+      int nRows;
 
       try
       {
@@ -334,9 +333,9 @@ public class PSContentAdhocUsersContext implements IPSContentAdhocUsersContext
          nameIter = m_adhocNormalUserNames.iterator();
          while (nameIter.hasNext())
          {
-            m_sUserName = (String) nameIter.next();
+            m_sUserName = nameIter.next();
             String lowerCaseUserName =  m_sUserName.toLowerCase();
-            List workingList = (List)
+            List<Integer> workingList =
                      m_userNameToAdhocNormalRoleIDMap.get(lowerCaseUserName);
             if (null == workingList)
             {
@@ -348,7 +347,7 @@ public class PSContentAdhocUsersContext implements IPSContentAdhocUsersContext
             // the repeated code below could go into a method
             while (roleIDIter.hasNext())
             {
-               m_nRoleID = ((Integer) roleIDIter.next()).intValue();
+               m_nRoleID = roleIDIter.next();
                m_Statement = null;
                m_Statement =
                   PSPreparedStatement.getPreparedStatement(
@@ -378,12 +377,12 @@ public class PSContentAdhocUsersContext implements IPSContentAdhocUsersContext
 
          while (nameIter.hasNext())
          {
-            m_sUserName = (String) nameIter.next();
+            m_sUserName = nameIter.next();
             roleIDIter = m_adhocAnonymousRoleIDs.iterator();
             // this repeats code above, could go into a method
             while (roleIDIter.hasNext())
             {
-               m_nRoleID = ((Integer) roleIDIter.next()).intValue();
+               m_nRoleID = roleIDIter.next();
                m_Statement = null;
                m_Statement =
                   PSPreparedStatement.getPreparedStatement(
@@ -419,14 +418,16 @@ public class PSContentAdhocUsersContext implements IPSContentAdhocUsersContext
          }
          catch(Exception e)
          {
+            log.error(PSExceptionUtils.getMessageForLog(e));
          }
       }
    }
 
-   public void addUserAdhocNormalRoleIDs(String userName, List roleIDs)
+   @Override
+   public void addUserAdhocNormalRoleIDs(String userName, List<Integer> roleIDs)
    {
-      String lowerCaseUserName = "";
-      List workingList = null;
+      String lowerCaseUserName;
+      List<Integer> workingList;
       //validate
       if ((null == userName) || userName.length() == 0)
       {
@@ -457,14 +458,14 @@ public class PSContentAdhocUsersContext implements IPSContentAdhocUsersContext
       }
       else
       {
-         workingList = (List)
-               m_userNameToAdhocNormalRoleIDMap.get(lowerCaseUserName);
+         workingList = m_userNameToAdhocNormalRoleIDMap.get(lowerCaseUserName);
           workingList.addAll(roleIDs);
       }
       m_userNameToAdhocNormalRoleIDMap.put(lowerCaseUserName, workingList);
    }
 
-   public void setAdhocAnonymousUsersAndRoles(List userNames, List roleIDs)
+   @Override
+   public void setAdhocAnonymousUsersAndRoles(List<String> userNames, List<Integer> roleIDs)
    {
 
       //validate
@@ -492,7 +493,7 @@ public class PSContentAdhocUsersContext implements IPSContentAdhocUsersContext
       m_adhocAnonymousRoleIDs = roleIDs;
    }
 
-   public List getUserAdhocNormalRoleIDs(String userName)
+   public List<Integer> getUserAdhocNormalRoleIDs(String userName)
    {
       if ((null == userName) || userName.length() == 0)
       {
@@ -506,20 +507,20 @@ public class PSContentAdhocUsersContext implements IPSContentAdhocUsersContext
             "The user name must not be empty after trimming");
       }
 
-      return (List) m_userNameToAdhocNormalRoleIDMap.get(userName);
+      return m_userNameToAdhocNormalRoleIDMap.get(userName);
    }
 
-   public List getAdhocNormalUserNames()
+   public List<String> getAdhocNormalUserNames()
    {
       return m_adhocNormalUserNames;
    }
 
-   public List getAdhocAnonymousUserNames()
+   public List<String> getAdhocAnonymousUserNames()
    {
       return m_adhocAnonymousUserNames;
    }
 
-   public List getAdhocAnonymousRoleIDs()
+   public List<Integer> getAdhocAnonymousRoleIDs()
    {
       return m_adhocAnonymousRoleIDs;
    }
@@ -534,22 +535,18 @@ public class PSContentAdhocUsersContext implements IPSContentAdhocUsersContext
       return m_adhocAnonymousUserNames.size();
    }
 
-   public List getEmptyAdhocRoles(List roleIDList)
+   public List<Integer> getEmptyAdhocRoles(List<Integer> roleIDList)
    {
-      List emptyAdhocRoles = new ArrayList();
-      Integer roleID = null;
+      List<Integer> emptyAdhocRoles = new ArrayList<>();
+      Integer roleID;
       if (null == roleIDList || roleIDList.isEmpty())
       {
          return emptyAdhocRoles;
       }
 
-      Iterator iter = roleIDList.iterator();
-
-      while (iter.hasNext())
-      {
-         roleID = (Integer) iter.next();
-         if (null != roleID && !hasAdhocUsers(roleID.intValue()))
-         {
+      for (Integer integer : roleIDList) {
+         roleID = integer;
+         if (null != roleID && !hasAdhocUsers(roleID)) {
             emptyAdhocRoles.add(roleID);
          }
       }
@@ -558,7 +555,7 @@ public class PSContentAdhocUsersContext implements IPSContentAdhocUsersContext
 
    public boolean hasAdhocUsers(int roleID)
    {
-      return (m_adhocRoleIDtoAdhocTypeMap.containsKey(new Integer(roleID)));
+      return (m_adhocRoleIDtoAdhocTypeMap.containsKey(roleID));
    }
 
    public boolean isEmpty()
@@ -599,7 +596,7 @@ public class PSContentAdhocUsersContext implements IPSContentAdhocUsersContext
        if (!m_userNameToAdhocNormalRoleIDMap.isEmpty())
        {
           buf.append("\nMap Adhoc normal usernames -> role IDs = ");
-          buf.append(m_userNameToAdhocNormalRoleIDMap.toString());
+          buf.append(m_userNameToAdhocNormalRoleIDMap);
        }
 
        if (m_adhocNormalUserNames.isEmpty())
@@ -654,9 +651,9 @@ public class PSContentAdhocUsersContext implements IPSContentAdhocUsersContext
     * Content ID for which adhoc users are valid
     *
     */
-   private int m_nContentID = 0;
+   private int m_nContentID;
    /**
-    * User name at the current cursor position - updated every time moveNext().
+    * Username at the current cursor position - updated every time moveNext().
     * is called
     */
    private String m_sUserName = "";
@@ -664,7 +661,7 @@ public class PSContentAdhocUsersContext implements IPSContentAdhocUsersContext
 
    /**
     * Adhoc type at the current cursor position - updated every time
-    * moveNext() is called, valid values in the data base are
+    * moveNext() is called, valid values in the database are
     * <CODE>PSWorkFlowUtils.ADHOC_ENABLED</CODE> and
     * <CODE>PSWorkFlowUtils.ADHOC_ANONYMOUS</CODE>
     */
@@ -680,33 +677,33 @@ public class PSContentAdhocUsersContext implements IPSContentAdhocUsersContext
     * Map of role IDs for adhoc normal assignees with trimmed lowercase
     * username as key
     */
-   private Map m_userNameToAdhocNormalRoleIDMap = new HashMap();
+   private Map<String,List<Integer>> m_userNameToAdhocNormalRoleIDMap = new HashMap<>();
 
    /**
     * Map from adhoc role IDs to adhoc type
     */
-   private Map m_adhocRoleIDtoAdhocTypeMap = new HashMap();
+   private Map<Integer,Integer> m_adhocRoleIDtoAdhocTypeMap = new HashMap<>();
 
    /**
     * Map of usernames for adhoc anonymous assignees with trimmed lowercase
     * username as key
     */
-   private Map m_lowerCaseUserNameToUserNameMap = new HashMap();
+   private Map<String,String> m_lowerCaseUserNameToUserNameMap = new HashMap<>();
 
    /**
-    * List of user names of adhoc normal assignees
+    * List of usernames of adhoc normal assignees
     */
-   private List m_adhocNormalUserNames = new ArrayList();
+   private List<String> m_adhocNormalUserNames = new ArrayList<>();
 
    /**
-    * List of user names of adhoc anonymous assignees
+    * List of usernames of adhoc anonymous assignees
     */
-   private List m_adhocAnonymousUserNames = new ArrayList();
+   private List<String> m_adhocAnonymousUserNames = new ArrayList<>();
 
    /**
     * List of role IDs for adhoc anonymous assignees
     */
-   private List m_adhocAnonymousRoleIDs = new ArrayList();
+   private List<Integer> m_adhocAnonymousRoleIDs = new ArrayList<>();
    
    /**
     * Flag to indicate if the in memory data is out of sync with the repository
@@ -739,13 +736,13 @@ public class PSContentAdhocUsersContext implements IPSContentAdhocUsersContext
    /**
     * static constant string that represents the qualified table name.
     */
-   static private String TABLE_CAU = 
+   private static final String TABLE_CAU =
       PSConnectionMgr.getQualifiedIdentifier(CONTENTADHOCUSERS);
 
    /**
     * SQL query string is constructed based on fully qualified table name(s).
     */
-   static private String QRYSTRING = 
+   private static final String QRYSTRING =
       "SELECT " +
       TABLE_CAU + ".USERNAME, " +
       TABLE_CAU + ".ADHOCTYPE, " +

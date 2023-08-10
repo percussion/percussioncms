@@ -1365,8 +1365,7 @@ public class PSPageUtils extends PSJexlUtilBase
     }
 
     /**
-     * A utility method that sorts a list of tags alphabetically case
-     * insensitive.
+     * A utility method that sorts a list of tags alphabetically case-insensitive.
      *
      * @param arrayElements The list of tags.
      */
