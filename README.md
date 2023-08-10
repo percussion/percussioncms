@@ -21,7 +21,7 @@ Download links are available on the project [Releases page](https://github.com/p
 
 ### Commercial Providers
 * [Percussion](https://www.percussion.com) will offer commercial support for Percussion CMS through June 2023.
-* [Intersoft Data Group](https://www.intsof.com) will offer commercial support for Percussion CMS starting in July 2023.
+* [Intersoft Data Labs](https://www.intsof.com) will offer commercial support for Percussion CMS starting in July 2023.
 
 ## I am a Percussion customer, is this where I download updates?
 Commercial customers should access the release distribution on the [Percussion Support portal](https://support.percussion.com).
