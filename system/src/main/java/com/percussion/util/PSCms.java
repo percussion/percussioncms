@@ -27,6 +27,7 @@ import com.percussion.design.objectstore.PSContentEditor;
 import com.percussion.design.objectstore.PSContentType;
 import com.percussion.design.objectstore.PSLiteralSet;
 import com.percussion.design.objectstore.PSLocator;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.error.PSNotFoundException;
 import com.percussion.design.objectstore.PSSystemValidationException;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
@@ -67,12 +68,16 @@ import java.util.Map;
 import java.util.StringTokenizer;
 
 import static org.apache.commons.lang.StringUtils.equalsIgnoreCase;
-
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 /**
  * Utility class for cms related methods.
  */
 public class PSCms
 {
+
+   private static Logger log = LogManager.getLogger(IPSConstants.CONTENTREPOSITORY_LOG);
+
    /**
     * Convenience method that calls {@link #isRelatedItemPublishable(Element, 
     * IPSRequestContext, String) linkurl, request, null}.
@@ -153,7 +158,7 @@ public class PSCms
     * request. This parameter value can be a single string value or an 
     * array of string values for one or more folders for which the check needs 
     * to be performed. 
-    * @param request requets context object, must not be <code>null</code>. 
+    * @param request requests context object, must not be <code>null</code>.
     * The method assumes the request context contains valid folderids otherwise 
     * throws {@link IllegalArgumentException} exception.
     * @return <code>true</code> if every folder in the request has write access 
@@ -162,7 +167,6 @@ public class PSCms
     * @throws PSCmsException if it fails to verify folder permissions for any
     * reason.
     */
-   @SuppressWarnings("unchecked")
    static public boolean canWriteToFolders(IPSRequestContext request) 
       throws PSCmsException
    {
@@ -170,27 +174,31 @@ public class PSCms
          throw new IllegalArgumentException("request context must not be null");
         
       //A valid sys_folderid parameter must be present
-      Object obj = request.getParameterObject(IPSHtmlParameters.SYS_FOLDERID);
+      Object folderId = request.getParameterObject(IPSHtmlParameters.SYS_FOLDERID);
 
-      if (obj == null || StringUtils.isBlank(obj.toString()))
+      if (folderId == null || StringUtils.isBlank(folderId.toString()))
       {
+         log.error("canWriteToFolders: Missing sys_folderid parameter on the request, unable to validate user permissions for folder.");
       throw new IllegalArgumentException(
          "request context must contain valid " 
          + IPSHtmlParameters.SYS_FOLDERID + " parameter");
       }
 
       List<Object> tgtFolders;
-      if (obj instanceof List)
+      if (folderId instanceof List)
       {
-        tgtFolders = (List<Object>)obj;
+         log.debug("Got a list of Folder ids...");
+        tgtFolders = (List<Object>)folderId;
       }
       else
       {
+         log.debug("Got a single folder id: {}", folderId);
         tgtFolders = new ArrayList<>();
-        tgtFolders.add(obj.toString());
+        tgtFolders.add(folderId.toString());
       }
       if(tgtFolders.size()<1)
       {
+         log.error("request context must contain valid {} parameter",IPSHtmlParameters.SYS_FOLDERID);
         throw new IllegalArgumentException(
            "request context must contain valid " 
            + IPSHtmlParameters.SYS_FOLDERID + " parameter");
@@ -203,16 +211,22 @@ public class PSCms
       }
       
       PSServerFolderProcessor processor = PSServerFolderProcessor.getInstance();
+      log.debug("Getting acls for Folders: {}",ids);
       PSFolderAcl[] acls = processor.getFolderAcls(ids);
-      for (PSFolderAcl acl : acls) {
-         PSFolderPermissions folderPerms;
-         try {
-            folderPerms = new PSFolderPermissions(acl);
-            if (!folderPerms.hasWriteAccess()) {
+      log.debug("Got ACLS for Folder ids: {}", acls);
+      if(acls != null) {
+         for (PSFolderAcl acl : acls) {
+            PSFolderPermissions folderPerms;
+            try {
+               folderPerms = new PSFolderPermissions(acl);
+               if (!folderPerms.hasWriteAccess()) {
+                  log.debug("Folder does not have write access. Folder id: {} ACL: {}", acl.getContentId(),folderPerms);
+                  return false;
+               }
+            } catch (PSAuthorizationException e) {
+               log.error("An Authorization exception was thrown by PSFolderPermissions. {}", PSExceptionUtils.getMessageForLog(e));
                return false;
             }
-         } catch (PSAuthorizationException e) {
-            return false;
          }
       }
       return true;

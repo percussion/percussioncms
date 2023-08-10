@@ -540,8 +540,8 @@ public class PSWorkFlowUtils
       }
       catch(Exception e)
       {
-         ms_log.error(PSExceptionUtils.getMessageForLog(e));
-         ms_log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
    }
 
@@ -573,7 +573,6 @@ public class PSWorkFlowUtils
    public static void printWorkflowMessage(IPSRequestContext request,
                                            String message)
    {
-      // TODO: use get/set methods that don't require restarting the server
       boolean useSysOut = m_bSystemOutTraceMessages;
       boolean usePSConsole = m_bPSConsoleTraceMessages;
       printWorkflowMessage(request,
@@ -611,13 +610,9 @@ public class PSWorkFlowUtils
       {
          request.printTraceMessage(message);
       }
-      if (usePSConsole)
+      if (usePSConsole || useSysOut)
       {
-         PSConsole.printMsg("Workflow", message);
-      }
-      if (useSysOut)
-      {
-         System.out.println(message);
+         log.info(message);
       }
    }
 
@@ -2453,7 +2448,7 @@ public class PSWorkFlowUtils
       }
       
       String errorMsg = "Cannot find default workflow name: \"" + wfName + "\"";
-      ms_log.error(errorMsg);
+      log.error(errorMsg);
       throw new com.percussion.services.error.PSNotFoundException(errorMsg);
    }
 
@@ -2718,7 +2713,7 @@ public class PSWorkFlowUtils
    /**
     * The logger
     */
-   private static final Logger ms_log = LogManager.getLogger(IPSConstants.WORKFLOW_LOG);
+   private static final Logger log = LogManager.getLogger(IPSConstants.WORKFLOW_LOG);
 
    /**
     * When test run mode is enabled for notifications, writes all notifications
@@ -2767,7 +2762,7 @@ public class PSWorkFlowUtils
          writer.append("==================================================================");
          writer.newLine();
       } catch (IOException e) {
-         ms_log.error(PSExceptionUtils.getMessageForLog(e));
+         log.error(PSExceptionUtils.getMessageForLog(e));
       }
    }
 }
