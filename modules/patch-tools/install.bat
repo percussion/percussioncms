@@ -3,6 +3,7 @@
 
 echo ------------------------------------------------
 echo Percussion CMS Patch Install Script  - 8.1.2.1
+echo v8.1.2.1-08102023
 echo ------------------------------------------------
 echo(
 
@@ -25,7 +26,7 @@ if exist backup ( echo Backup directory detected... ) else (
 )
 
 echo Backing up existing files...
-if not exist backup\sys_resources\webapps\secure\WEB-INF\lib ( 
+if not exist backup\sys_resources\webapps\secure\WEB-INF\lib (
     mkdir backup\sys_resources\webapps\secure\WEB-INF\lib
 )
 if not exist backup\jetty\defaults\lib\perc (
@@ -34,7 +35,7 @@ if not exist backup\jetty\defaults\lib\perc (
 if not exist backup\rxconfig\SiteConfigs\$log$\lib\ (
     mkdir backup\rxconfig\SiteConfigs\$log$\lib\
 )
-if not exist backup\jetty\base\webapps\Rhythmyx\WEB-INF\lib\ ( 
+if not exist backup\jetty\base\webapps\Rhythmyx\WEB-INF\lib\ (
     mkdir backup\jetty\base\webapps\Rhythmyx\WEB-INF\lib\
 )
 
@@ -166,17 +167,25 @@ if exist %~pd1jetty\base\webapps\Rhythmyx\test\sql.jsp (
     copy /V /Z /D /Y jetty\base\webapps\Rhythmyx\test\sql.jsp %~pd1jetty\base\webapps\Rhythmyx\test\
 )
 
+rem Check for previous patch update
+if exist %~pd1jetty\base\webapps\Rhythmyx\WEB-INF\lib\perc-system-8.1.2.1.jar (
+    copy /V /Z /D /Y %~pd1jetty\base\webapps\Rhythmyx\WEB-INF\lib\perc-system-8.1.2.1.jar backup\jetty\base\webapps\Rhythmyx\WEB-INF\lib\
+    del /F /Q  %~pd1jetty\base\webapps\Rhythmyx\WEB-INF\lib\perc-system-8.1.2.1.jar
+    copy /V /Z /D /Y jetty\base\webapps\Rhythmyx\WEB-INF\lib\perc-system-8.1.2.1.jar %~pd1jetty\base\webapps\Rhythmyx\WEB-INF\lib\
+)
+
 if exist %~pd1jetty\base\webapps\Rhythmyx\WEB-INF\lib\perc-system-8.1.2.jar (
     copy /V /Z /D /Y %~pd1jetty\base\webapps\Rhythmyx\WEB-INF\lib\perc-system-8.1.2.jar backup\jetty\base\webapps\Rhythmyx\WEB-INF\lib\
     del /F /Q  %~pd1jetty\base\webapps\Rhythmyx\WEB-INF\lib\perc-system-8.1.2.jar
     copy /V /Z /D /Y jetty\base\webapps\Rhythmyx\WEB-INF\lib\perc-system-8.1.2.1.jar %~pd1jetty\base\webapps\Rhythmyx\WEB-INF\lib\
 )
 
+
 rem Check for previous patch update
-if exist %~pd1jetty\base\webapps\Rhythmyx\WEB-INF\lib\perc-system-8.1.2.1.jar (
-    copy /V /Z /D /Y %~pd1jetty\base\webapps\Rhythmyx\WEB-INF\lib\perc-system-8.1.2.1.jar backup\jetty\base\webapps\Rhythmyx\WEB-INF\lib\
-    del /F /Q  %~pd1jetty\base\webapps\Rhythmyx\WEB-INF\lib\perc-system-8.1.2.1.jar
-    copy /V /Z /D /Y jetty\base\webapps\Rhythmyx\WEB-INF\lib\perc-system-8.1.2.1.jar %~pd1jetty\base\webapps\Rhythmyx\WEB-INF\lib\
+if exist %~pd1jetty\base\webapps\Rhythmyx\WEB-INF\lib\sitemanage-8.1.2.1jar (
+    copy /V /Z /D /Y %~pd1jetty\base\webapps\Rhythmyx\WEB-INF\lib\sitemanage-8.1.2.1.jar backup\jetty\base\webapps\Rhythmyx\WEB-INF\lib\
+    del /F /Q  %~pd1jetty\base\webapps\Rhythmyx\WEB-INF\lib\sitemanage-8.1.2.1.jar
+    copy /V /Z /D /Y jetty\base\webapps\Rhythmyx\WEB-INF\lib\sitemanage-8.1.2.1.jar %~pd1jetty\base\webapps\Rhythmyx\WEB-INF\lib\
 )
 
 if exist %~pd1jetty\base\webapps\Rhythmyx\WEB-INF\lib\sitemanage-8.1.2.jar (
@@ -185,11 +194,11 @@ if exist %~pd1jetty\base\webapps\Rhythmyx\WEB-INF\lib\sitemanage-8.1.2.jar (
     copy /V /Z /D /Y jetty\base\webapps\Rhythmyx\WEB-INF\lib\sitemanage-8.1.2.1.jar %~pd1jetty\base\webapps\Rhythmyx\WEB-INF\lib\
 )
 
-rem Check for previous patch update
-if exist %~pd1jetty\base\webapps\Rhythmyx\WEB-INF\lib\sitemanage-8.1.2.1jar (
-    copy /V /Z /D /Y %~pd1jetty\base\webapps\Rhythmyx\WEB-INF\lib\sitemanage-8.1.2.1.jar backup\jetty\base\webapps\Rhythmyx\WEB-INF\lib\
-    del /F /Q  %~pd1jetty\base\webapps\Rhythmyx\WEB-INF\lib\sitemanage-8.1.2.1.jar
-    copy /V /Z /D /Y jetty\base\webapps\Rhythmyx\WEB-INF\lib\sitemanage-8.1.2.1.jar %~pd1jetty\base\webapps\Rhythmyx\WEB-INF\lib\
+rem check for prior patch update
+if exist %~pd1jetty\base\webapps\Rhythmyx\WEB-INF\lib\rxutils-8.1.2.1.jar (
+    copy /V /Z /D /Y %~pd1jetty\base\webapps\Rhythmyx\WEB-INF\lib\rxutils-8.1.2.1.jar backup\jetty\base\webapps\Rhythmyx\WEB-INF\lib\
+    del /F /Q  %~pd1jetty\base\webapps\Rhythmyx\WEB-INF\lib\rxutils-8.1.2.1.jar
+    copy /V /Z /D /Y jetty\base\webapps\Rhythmyx\WEB-INF\lib\rxutils-8.1.2.1.jar %~pd1jetty\base\webapps\Rhythmyx\WEB-INF\lib\
 )
 
 if exist %~pd1jetty\base\webapps\Rhythmyx\WEB-INF\lib\rxutils-8.1.2.jar (
@@ -199,11 +208,18 @@ if exist %~pd1jetty\base\webapps\Rhythmyx\WEB-INF\lib\rxutils-8.1.2.jar (
 )
 
 rem check for prior patch update
-if exist %~pd1jetty\base\webapps\Rhythmyx\WEB-INF\lib\rxutils-8.1.2.1.jar (
-    copy /V /Z /D /Y %~pd1jetty\base\webapps\Rhythmyx\WEB-INF\lib\rxutils-8.1.2.1.jar backup\jetty\base\webapps\Rhythmyx\WEB-INF\lib\
-    del /F /Q  %~pd1jetty\base\webapps\Rhythmyx\WEB-INF\lib\rxutils-8.1.2.1.jar
-    copy /V /Z /D /Y jetty\base\webapps\Rhythmyx\WEB-INF\lib\rxutils-8.1.2.1.jar %~pd1jetty\base\webapps\Rhythmyx\WEB-INF\lib\
+if exist %~pd1jetty\base\webapps\Rhythmyx\WEB-INF\lib\extensions-workflow-8.1.2.1.jar (
+    copy /V /Z /D /Y %~pd1jetty\base\webapps\Rhythmyx\WEB-INF\lib\extensions-workflow-8.1.2.1.jar backup\jetty\base\webapps\Rhythmyx\WEB-INF\lib\
+    del /F /Q  %~pd1jetty\base\webapps\Rhythmyx\WEB-INF\lib\extensions-workflow-8.1.2.1.jar
+    copy /V /Z /D /Y jetty\base\webapps\Rhythmyx\WEB-INF\lib\extensions-workflow-8.1.2.1.jar %~pd1jetty\base\webapps\Rhythmyx\WEB-INF\lib\
 )
+
+if exist %~pd1jetty\base\webapps\Rhythmyx\WEB-INF\lib\extensions-workflow-8.1.2.jar (
+    copy /V /Z /D /Y %~pd1jetty\base\webapps\Rhythmyx\WEB-INF\lib\extensions-workflow-8.1.2.jar backup\jetty\base\webapps\Rhythmyx\WEB-INF\lib\
+    del /F /Q  %~pd1jetty\base\webapps\Rhythmyx\WEB-INF\lib\extensions-workflow-8.1.2.jar
+    copy /V /Z /D /Y jetty\base\webapps\Rhythmyx\WEB-INF\lib\extensions-workflow-8.1.2.1.jar %~pd1jetty\base\webapps\Rhythmyx\WEB-INF\lib\
+)
+
 
 echo --------------------------------------------
 echo Percussion CMS patching completed.
