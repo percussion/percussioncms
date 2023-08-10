@@ -21,19 +21,11 @@ import com.percussion.design.objectstore.PSExtensionParamDef;
 import com.percussion.services.data.IPSCloneTuner;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.w3c.dom.Element;
 
 import java.io.Serializable;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Properties;
+import java.util.*;
 
 /**
  * An extension definition defines the name, initialization parameters,

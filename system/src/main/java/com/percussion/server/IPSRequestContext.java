@@ -18,6 +18,7 @@ package com.percussion.server;
 
 import com.percussion.data.PSDataExtractionException;
 import com.percussion.design.objectstore.PSSubject;
+import com.percussion.security.PSNotificationEmailAddress;
 import com.percussion.security.PSSecurityToken;
 
 import java.util.Enumeration;
@@ -679,7 +680,7 @@ public interface IPSRequestContext
       String name);
 
    /**
-    * Re-added for custom exit backwards compatiblity. Calls 
+    * Re-added for custom exit backwards compatibility. Calls
     * {@link #getSubjectGlobalAttributes(String, int, String, String, boolean, 
     * String) getSubjectGlobalAttributes(subjectNameFilter, subjectType, 
     * roleName, attributeNameFilter, includeEmptySubjects, 
@@ -688,13 +689,13 @@ public interface IPSRequestContext
     * @deprecated use {@link #getSubjectGlobalAttributes(String, int, String, 
     *    String, boolean, String)} instead.
     */
-   public List getSubjectGlobalAttributes(String subjectNameFilter,
+    List<PSSubject> getSubjectGlobalAttributes(String subjectNameFilter,
       int subjectType, int providerType, String providerInstance,
       String roleName, String attributeNameFilter, 
       boolean includeEmptySubjects);
    
    /**
-    * Re-added for custom exit backwards compatiblity. Calls 
+    * Re-added for custom exit backwards compatibility. Calls
     * {@link #getSubjectRoleAttributes(String, int, String, String) 
     * getSubjectRoleAttributes(subjectNameFilter, subjectType, roleName, 
     * attributeNameFilter)}.
@@ -702,7 +703,7 @@ public interface IPSRequestContext
     * @deprecated use {@link #getSubjectRoleAttributes(String, int, String, 
     *    String)} instead.
     */
-   public List getSubjectRoleAttributes(String subjectNameFilter,
+    List<PSSubject> getSubjectRoleAttributes(String subjectNameFilter,
       int subjectType, int providerType, String providerInstance,
       String roleName, String attributeNameFilter);
 
@@ -778,7 +779,7 @@ public interface IPSRequestContext
     *
     * @since 4.0
     */
-   public List getRoleSubjects(String roleName);
+   public List<PSSubject> getRoleSubjects(String roleName);
 
 
    /**
@@ -802,7 +803,7 @@ public interface IPSRequestContext
     *
     * @since 4.0
     */
-   public List getRoleSubjects(String roleName, int memberFlags,
+   public List<PSSubject> getRoleSubjects(String roleName, int memberFlags,
          String subjectNameFilter);
 
 
@@ -814,7 +815,7 @@ public interface IPSRequestContext
     *
     * @since 4.0
     */
-   public List getSubjects( String subjectNameFilter );
+   public List<PSSubject> getSubjects( String subjectNameFilter );
 
 
    /**
@@ -858,19 +859,18 @@ public interface IPSRequestContext
     *    ordered in ascending alpha order by subject name. The caller
     *    takes ownership of the list.
     */
-   public List getSubjectGlobalAttributes(String subjectNameFilter, 
+    List<PSSubject> getSubjectGlobalAttributes(String subjectNameFilter,
       int subjectType, String roleName, String attributeNameFilter, 
       boolean includeEmptySubjects, String communityId);
 
    /**
     * Gets the global attributes for the specified subjects.
-    *
     * Convenience method that gets the attributes of the subject that made the
     * current request. See {@link
     * #getSubjectGlobalAttributes(String, int, String, String, boolean, String)} 
     * for a full description.
     */
-   public List getSubjectGlobalAttributes(String subjectNameFilter,
+    List<PSSubject> getSubjectGlobalAttributes(String subjectNameFilter,
          int subjectType, String roleName, String attributeNameFilter, 
          boolean includeEmptySubjects);
 
@@ -881,11 +881,11 @@ public interface IPSRequestContext
     *
     * @since 4.0
     */
-   public List getSubjectGlobalAttributes();
+    List<PSSubject> getSubjectGlobalAttributes();
 
 
    /**
-    * Convenience method that gets all of the global attributes for the
+    * Convenience method that gets all the global attributes for the
     * supplied subject. See {@link
     * #getSubjectGlobalAttributes(String, int, String, String, boolean)
     * here} for a full description.
@@ -894,7 +894,7 @@ public interface IPSRequestContext
     *    <code>null</code>, the subject of the current request is used.
     * @since 4.0
     */
-   public List getSubjectGlobalAttributes( PSSubject subject );
+    List<PSSubject> getSubjectGlobalAttributes( PSSubject subject );
 
 
    /**
@@ -922,7 +922,7 @@ public interface IPSRequestContext
     *    <code>null</code> or empty.
     * @since 4.0
     */
-   public List getSubjectRoleAttributes(String subjectNameFilter,
+    List<PSSubject> getSubjectRoleAttributes(String subjectNameFilter,
       int subjectType, String roleName, String attributeNameFilter);
 
 
@@ -934,7 +934,7 @@ public interface IPSRequestContext
     *
     * @since 4.0
     */
-   public List getSubjectRoleAttributes( String roleName );
+    List<PSSubject> getSubjectRoleAttributes( String roleName );
    
    /**
     * Get the subject who made the original request.
@@ -945,7 +945,7 @@ public interface IPSRequestContext
    public PSSubject getOriginalSubject();
    
    /**
-    * @return get the authenticated user name from the request
+    * @return get the authenticated username from the request
     */
    public String getUserName();
    
@@ -1012,8 +1012,8 @@ public interface IPSRequestContext
     * @return a set of email addresses as <code>String</code> objects, 
     *    never <code>null</code>, may be empty.
     */
-   public Set getSubjectEmailAddresses(String subjectName, 
-      String emailAttributeName, String community);
+   public Set<PSNotificationEmailAddress> getSubjectEmailAddresses(String subjectName,
+                                                                   String emailAttributeName, String community);
 
    /**
     * Now behaves the same as calling {@link #getRoleSubjects(String,int,

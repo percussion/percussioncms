@@ -7687,20 +7687,20 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
 	    <prop type="sectionname" xml:lang="en-us">title</prop>
 	    <note xml:lang="en-us"></note>
 	    <tuv xml:lang="en-us">
-	        <seg>Edit Meta-data</seg>
+	        <seg>Edit Metadata</seg>
 	    </tuv>
 	      <tuv xml:lang="es">
-	        <seg>Editar Meta-datos</seg>
+	        <seg>Editar Metadatos</seg>
 	    </tuv>
 	 </tu>
 	 <tu tuid="perc.ui.page.edit.dialog@Metadata">
 	    <prop type="sectionname" xml:lang="en-us">title</prop>
 	    <note xml:lang="en-us"></note>
 	    <tuv xml:lang="en-us">
-	        <seg>Meta-data</seg>
+	        <seg>Metadata</seg>
 	    </tuv>
 	      <tuv xml:lang="es">
-	        <seg>Meta-datos</seg>
+	        <seg>Metadatos</seg>
 	    </tuv>
 	 </tu>
 	 <tu tuid="perc.ui.page.edit.dialog@Unable To See Content">
@@ -9352,11 +9352,11 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
 	        <seg>Catálogo</seg>
 	    </tuv>
 	 </tu>
-	 <tu tuid="perc.ui.template.design.view@Edit Meta Data">
+	 <tu tuid="perc.ui.template.design.view@Edit Metadata">
 	    <prop type="sectionname" xml:lang="en-us">General</prop>
 	    <note xml:lang="en-us"></note>
 	    <tuv xml:lang="en-us">
-	        <seg>Edit Meta-Data</seg>
+	        <seg>Edit Metadata</seg>
 	    </tuv>
 	      <tuv xml:lang="es">
 	        <seg>Editar Metadatos</seg>
@@ -11213,7 +11213,7 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
 	    <prop type="sectionname" xml:lang="en-us">General</prop>
 	    <note xml:lang="en-us"></note>
 	    <tuv xml:lang="en-us">
-	        <seg>Template Meta-data</seg>
+	        <seg>Template Metadata</seg>
 	    </tuv>
 	      <tuv xml:lang="es">
 	        <seg>Metadatos de plantilla</seg>
@@ -11849,7 +11849,7 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
 	    <prop type="sectionname" xml:lang="en-us">Question</prop>
 	    <note xml:lang="en-us"></note>
 	    <tuv xml:lang="en-us">
-	        <seg>Show in Page Meta-data?:</seg>
+	        <seg>Show in Page Metadata?:</seg>
 	    </tuv>
 	      <tuv xml:lang="es">
 	        <seg>¿Mostrar en los metadatos de la página?:</seg>

@@ -44,7 +44,7 @@ import java.util.List;
 /**
  * This exit is used to enforce workflow security when we are in active
  * assembly. This exit determines if the user has the authority to
- * edit the current active item and its' parent item. Two flags will be
+ * edit the current active item and its parent item. Two flags will be
  * added to the activeitem element "editauthorized" and
  * "parenteditauthorized". The "editauthorized" flag, if set to "yes" means
  * the user can edit the activeitem. The "parenteditauthorized" flag, if set to
@@ -90,7 +90,7 @@ public class PSExitAddEditAuthFlag implements
 
       // If no result document then do nothing
       if(null == resDoc)
-        return resDoc;
+        return null;
 
       // Get language
       String lang = (String)request.getSessionPrivateObject(
@@ -98,20 +98,12 @@ public class PSExitAddEditAuthFlag implements
       if (lang == null)
          lang =   PSI18nUtils.DEFAULT_LANG;
 
-      // Check for existance of request object
-      if(null == request)
-      {
-         throw new PSExtensionProcessingException(
-           ms_fullExtensionName,
-           new IllegalArgumentException("The request must not be null"));
-      }
-
-      // Create the parameter container object
+       // Create the parameter container object
       AuthParams localParams = new AuthParams();
       localParams.m_request = request;
 
       PSConnectionMgr connectionMgr = null;
-      Element activeItemElem = null;
+      Element activeItemElem;
 
       try
       {
@@ -158,7 +150,7 @@ public class PSExitAddEditAuthFlag implements
         }
         localParams.m_roleNameList = params[1].toString();
 
-         Connection connection = null;
+         Connection connection;
          //Get the connection
          try
          {
@@ -249,13 +241,13 @@ public class PSExitAddEditAuthFlag implements
       PSWorkFlowUtils.printWorkflowMessage(localParams.m_request,
         "  Entering canUserEditContent");
 
-      PSContentStatusContext csc = null;
+      PSContentStatusContext csc;
       int contentID = localParams.m_contentID;
       String userName = localParams.m_userName;
       String roleNameList = localParams.m_roleNameList;
       int requiredAccessLevel = localParams.m_requiredAccessLevel;
-      int assignmentType = localParams.m_assignmentType;
-      List actorRoles = null;
+      int assignmentType;
+      List<Integer> actorRoles;
 
       try
       {
@@ -277,24 +269,20 @@ public class PSExitAddEditAuthFlag implements
       if(usercomm != null)
          userCommunityID = Integer.parseInt(usercomm);
 
-      IPSWorkflowAppsContext wac = null;
+      IPSWorkflowAppsContext wac;
       IPSCmsObjectMgr cms = PSCmsObjectMgrLocator.getObjectManager();
       wac = cms.loadWorkflowAppContext(nWorkFlowAppID);
       String sAdminName = wac.getWorkFlowAdministrator();
 
-      //if the login community and user community are different then return
+      //if the login community and user community are different from return
       //false
       if(itemCommunityID != userCommunityID)
          return false;
 
       // Check whether the user is Workflow admin
-     boolean isAdmin = false;
+     boolean isAdmin = PSWorkFlowUtils.isAdmin(sAdminName, userName, roleNameList);
 
-      if (PSWorkFlowUtils.isAdmin(sAdminName, userName, roleNameList))
-      {
-         isAdmin = true;
-      }
-      // Determine the checkout status and checkedout user
+       // Determine the checkout status and checkedout user
       // and return false if the content is checked out
       // by another user or not checked out.
 
@@ -325,7 +313,7 @@ public class PSExitAddEditAuthFlag implements
 
 
 
-      PSStateRolesContext src = null;
+      PSStateRolesContext src;
 
       try
       {
@@ -335,17 +323,12 @@ public class PSExitAddEditAuthFlag implements
                                        requiredAccessLevel);
       }
 
-      catch(PSRoleException e)
+      catch(PSRoleException | PSEntryNotFoundException e)
       {
          return false;
       }
 
-      catch (PSEntryNotFoundException e)
-      {
-         return false;
-      }
-
-      actorRoles = PSWorkflowRoleInfoStatic.getActorRoles(contentID,
+       actorRoles = PSWorkflowRoleInfoStatic.getActorRoles(contentID,
                                                     src,
                                                     userName,
                                                     roleNameList,
@@ -374,7 +357,7 @@ public class PSExitAddEditAuthFlag implements
     * object in the main processrequest method (called by server) and pass
     * around the methods. This is meant for convenience only.
     */
-   private class AuthParams
+   private static class AuthParams
    {
       /** The content id of the active item */
       public int     m_contentID = 0;

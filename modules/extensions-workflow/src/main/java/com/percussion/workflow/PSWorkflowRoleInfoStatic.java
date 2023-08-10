@@ -41,13 +41,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static com.percussion.server.PSServer.getProperty;
 import static java.util.Collections.singletonList;
@@ -78,13 +72,11 @@ public class PSWorkflowRoleInfoStatic {
     *                   <CODE>null</CODE> or empty list if original list is
     *                   <CODE>null</CODE> or empty.
     */
-   public static List roleIDListToRoleNameList(List roleIDList,
-                                               PSStateRolesContext src)
+   public static List<String> roleIDListToRoleNameList(List<Integer> roleIDList,
+                                                    PSStateRolesContext src)
    {
-      List roleNameList =
-            PSWorkFlowUtils.applyMapList(roleIDList,
-                                         src.getStateRoleNameMap());
-      return roleNameList;
+      return PSWorkFlowUtils.applyMapList(roleIDList,
+                                   src.getStateRoleNameMap());
    }
 
    /* Obtain actor and role information */
@@ -99,7 +91,7 @@ public class PSWorkflowRoleInfoStatic {
     * @param userName           The user's name, cannot be <CODE>null</CODE>
     * @param userRoleNameList   A comma-delimited list of the user's roles,
     *                           may not be <CODE>null</CODE> or empty
-    * @param connection         data base connection, may be not be
+    * @param connection         database connection, may be not be
     *                           <CODE>null</CODE>
     * @param authUser           if true indicates that PSExitAuthenticateUser
     *                           is the caller, false otherwise
@@ -113,7 +105,7 @@ public class PSWorkflowRoleInfoStatic {
     * @throws                   PSRoleException if the content adhoc user
     *                           records contain invalid data
     */
-   static public List getActorRoles(int contentID,
+   static public List<Integer> getActorRoles(int contentID,
                                     PSStateRolesContext src,
                                     String userName,
                                     String userRoleNames,
@@ -121,7 +113,7 @@ public class PSWorkflowRoleInfoStatic {
                                     boolean authUser)
       throws SQLException, PSRoleException
    {
-      List actorRoles = null;
+      List<Integer> actorRoles;
       if (null == src)
       {
          throw new IllegalArgumentException(
@@ -159,7 +151,7 @@ public class PSWorkflowRoleInfoStatic {
             "User role names string  may not be empty after trimming " +
             "in getActorRoles.");
       }
-      PSContentAdhocUsersContext cauc = null;
+      PSContentAdhocUsersContext cauc;
 
       cauc = new PSContentAdhocUsersContext(contentID, connection);
 
@@ -186,26 +178,25 @@ public class PSWorkflowRoleInfoStatic {
     * @throws                   IllegalArgumentException if any of the input
     *                           parameters is not valid.
     */
-   @SuppressWarnings("unchecked")
-   static public List getActorRoles(String userName,
+   static public List<Integer> getActorRoles(String userName,
                                     String userRoleNames,
                                     PSStateRolesContext src,
                                     PSContentAdhocUsersContext cauc,
                                     boolean authUser)
    {
-      List actorNonAdhocRoles  = null;
-      List actorAdhocNormalRoles  = null;
-      List userRoleNameList = null;
-      List userAdhocNormalRoles = null;
-      List userAdhocAnonymousRoles = null;
-      List stateAdhocNormalRoles = null;
-      List stateAdhocAnonymousRoles = null;
-      List emptyAdhocNormalRoles = null;
-      List emptyAdhocAnonymousRoles = null;
-      List adhocAnonymousUserNames = null;
-      List adhocNormalUserNames = null;
+      List<Integer> actorNonAdhocRoles;
+      List<Integer> actorAdhocNormalRoles;
+      List<String> userRoleNameList;
+      List<Integer> userAdhocNormalRoles = null;
+      List<Integer> userAdhocAnonymousRoles = null;
+      List<Integer> stateAdhocNormalRoles;
+      List<Integer> stateAdhocAnonymousRoles;
+      List<Integer> emptyAdhocNormalRoles;
+      List<Integer> emptyAdhocAnonymousRoles;
+      List<String> adhocAnonymousUserNames = null;
+      List<String> adhocNormalUserNames = null;
 
-      List actorRoles = new ArrayList();
+      List<Integer> actorRoles = new ArrayList<>();
 
       if (null == src)
          throw new IllegalArgumentException(
@@ -234,12 +225,12 @@ public class PSWorkflowRoleInfoStatic {
             PSWorkFlowUtils.tokenizeString(userRoleNames.toLowerCase(),
                                            PSWorkFlowUtils.ROLE_DELIMITER);
 
-      if (null == userRoleNameList || userRoleNameList.isEmpty())
+      if (userRoleNameList.isEmpty())
          return null;
 
-      Map nonAdhocStateRoleNameToRoleIDMap =
+      Map<String,Integer> nonAdhocStateRoleNameToRoleIDMap =
             src.getNonAdhocStateRoleNameToRoleIDMap();
-      Map adhocNormalStateRoleNameToRoleIDMap =
+      Map<String,Integer> adhocNormalStateRoleNameToRoleIDMap =
             src.getAdhocNormalStateRoleNameToRoleIDMap();
       stateAdhocAnonymousRoles =
             src.getAdhocAnonymousStateRoleIDs();
@@ -286,13 +277,13 @@ public class PSWorkflowRoleInfoStatic {
        *    state role context
        * 3) be a role with an adhoc assignment type of adhoc normal in the
        *    content adhoc users context
-       * 4) actor's user name must be present in the normal adhoc list assigned
+       * 4) actor's username must be present in the normal adhoc list assigned
        * to the current state
       */
       if (userAdhocNormalRoles != null && !userAdhocNormalRoles.isEmpty())
       {
-         List uAdhocNormalRoles = null;
-         if (authUser == true)
+         List<Integer> uAdhocNormalRoles = null;
+         if (authUser)
          {
             //make sure that for a normal adhoc roles match
             if (null !=  adhocNormalStateRoleNameToRoleIDMap &&
@@ -339,12 +330,12 @@ public class PSWorkflowRoleInfoStatic {
       }
 
       /*
-       * Ad hoc roles that have no ad hoc assigness are also effectively
-       * non ad hoc
+       * Ad hoc roles that have no ad hoc assignees are also effectively
+       * non-adhoc
        */
       if (null != emptyAdhocNormalRoles && !emptyAdhocNormalRoles.isEmpty())
       {
-         if (authUser == true)
+         if (authUser)
          {
             actorAdhocNormalRoles =
               PSWorkFlowUtils.applyMapList(userRoleNameList,
@@ -379,24 +370,24 @@ public class PSWorkflowRoleInfoStatic {
 
 
    /**
-    * Add a list of adhoc roles if a user is acting as eather normal adhoc or
-    * anonymous adhoc. If adhoc user name(s) are found then it compares current
-    * user name with those adhoced. This user name check override user role by
-    * only allowing the user with a user name who was adhoced to act on the state
+    * Add a list of adhoc roles if a user is acting as either normal adhoc or
+    * anonymous adhoc. If adhoc username(s) are found then it compares current
+    * username with those adhoc. This username check override user role by
+    * only allowing the user with a username who was adhoc to act on the state
     *
     * @param actorRoles a list of role ids in which the actor is acting
     * @param userName current user name
-    * @param userAdhocRoles a list of role ids which were adhoced to the state
-    * @param adhocUserNames a list of user names which were adhoced to the state
+    * @param userAdhocRoles a list of role ids which were adhoc-ed to the state
+    * @param adhocUserNames a list of usernames which were adhoc-ed to the state
     * @param stateAdhocRoles a list of role ids who are state assignees
     * @param authUser if true indicates that PSExitAuthenticateUser
     * is the caller, false otherwise
    */
-   private static void addAdhocActorRoles(List actorRoles,
+   private static void addAdhocActorRoles(List<Integer> actorRoles,
                                           String userName,
-                                          List userAdhocRoles,
-                                          List adhocUserNames,
-                                          List stateAdhocRoles,
+                                          List<Integer> userAdhocRoles,
+                                          List<String> adhocUserNames,
+                                          List<Integer> stateAdhocRoles,
                                           boolean authUser)
    {
       if(actorRoles == null || userName == null ||
@@ -405,9 +396,9 @@ public class PSWorkflowRoleInfoStatic {
          return;
       }
 
-      List resAdhocRoles = null;
+      List<Integer> resAdhocRoles;
 
-      if (authUser == true && stateAdhocRoles!=null)
+      if (authUser && stateAdhocRoles!=null)
       {
 
           resAdhocRoles =
@@ -421,30 +412,27 @@ public class PSWorkflowRoleInfoStatic {
 
       if (adhocUserNames != null && !adhocUserNames.isEmpty())
       {
-         //compare actor's user name with an adhoced user name
+         //compare actor's username with an adhoc-ed username
          //if case-insensitive match is found add user's role to the list
-         for (Iterator i = adhocUserNames.iterator(); i.hasNext();)
-         {
-           String adhocUser = (String)i.next();
+         for (String adhocUserName : adhocUserNames) {
 
-           if (userName.equalsIgnoreCase(adhocUser))
-           {
-              //this user was ad-hoced, allow him to act on the state
-              if (resAdhocRoles!=null && !resAdhocRoles.isEmpty())
+            if (userName.equalsIgnoreCase(adhocUserName)) {
+               //this user was adhoc-ed, allow him to act on the state
+               if (resAdhocRoles != null && !resAdhocRoles.isEmpty())
                   actorRoles.addAll(resAdhocRoles);
 
-              break;
-           }
+               break;
+            }
          }
        }
        else
        {
            if (stateAdhocRoles!=null && !stateAdhocRoles.isEmpty())
            {
-              //no user names have been adhoced yet
-              resAdhocRoles = new ArrayList(stateAdhocRoles);
+              //no usernames have been adhoc-ed yet
+              resAdhocRoles = new ArrayList<>(stateAdhocRoles);
 
-              if (resAdhocRoles!=null && !resAdhocRoles.isEmpty())
+              if (!resAdhocRoles.isEmpty())
                   actorRoles.addAll(resAdhocRoles);
            }
        }
@@ -461,7 +449,7 @@ public class PSWorkflowRoleInfoStatic {
     * @return               highest assignment type for the state roles
     */
    static public int getAssignmentType(PSStateRolesContext src,
-                                       List actorRoleList)
+                                       List<Integer> actorRoleList)
    {
       int assignmentType = PSWorkFlowUtils.ASSIGNMENT_TYPE_NOT_IN_WORKFLOW;
       if (null == src)
@@ -496,13 +484,12 @@ public class PSWorkflowRoleInfoStatic {
     * @throws               IllegalArgumentException if any of the input
     *                       parameters is not valid.
     */
-   static int getAssignmentType(Map assignmentTypeMap,
-                                List actorRoleList)
+   static int getAssignmentType(Map<Integer,Integer> assignmentTypeMap,
+                                List<Integer> actorRoleList)
    {
       // validate arguments
       int assignmentType = PSWorkFlowUtils.ASSIGNMENT_TYPE_NOT_IN_WORKFLOW;
-      int assignmentTemp = 0;
-      Integer roleID = null;
+      int assignmentTemp;
 
       if (null == assignmentTypeMap || assignmentTypeMap.isEmpty())
       {
@@ -514,21 +501,17 @@ public class PSWorkflowRoleInfoStatic {
          return assignmentType;
       }
 
-      Iterator roleIter = actorRoleList.iterator();
-      while (roleIter.hasNext())
-      {
-         roleID = (Integer) roleIter.next();
-         assignmentTemp = ((Integer)assignmentTypeMap.get(roleID)).intValue();
-         if (assignmentTemp > assignmentType)
-         {
-             assignmentType = assignmentTemp;
+      for (Integer id : actorRoleList) {
+         assignmentTemp = assignmentTypeMap.get(id);
+         if (assignmentTemp > assignmentType) {
+            assignmentType = assignmentTemp;
          }
       }
       return assignmentType;
    }
 
    /**
-    * Given a user name and a state role context, return a list of IDs for
+    * Given a username and a state role context, return a list of IDs for
     * the user's adhoc normal state roles
     *
     * @param userName name of user for whom ad hoc roles are desired
@@ -543,16 +526,16 @@ public class PSWorkflowRoleInfoStatic {
     * @throws         IllegalArgumentException if any of the input
     *                 parameters is not valid.
     */
-   static List findAdhocNormalRoles(String userName,
+   static List<Integer> findAdhocNormalRoles(String userName,
                                     PSStateRolesContext src,
                                     IPSRequestContext request)
    {
       PSWorkFlowUtils.printWorkflowMessage(
          request, "    Entering Method findAdhocNormalRoles");
 
-      Map adhocNormalStateRoleNameToRoleIDMap = null;
-      List userRoleNameList = null;
-      List actorAdhocNormalRoles = null;
+      Map<String,Integer> adhocNormalStateRoleNameToRoleIDMap;
+      List<String> userRoleNameList;
+      List<Integer> actorAdhocNormalRoles;
 
       if (null == userName || 0 == userName.length())
       {
@@ -621,16 +604,15 @@ public class PSWorkflowRoleInfoStatic {
     * @return                content adhoc users context specifying adhoc
     *                        cannot be <CODE>null</CODE>
     *                        users and roles. Calling method must commit
-    *                        the changes to the data base
+    *                        the changes to the database
     *                        <CODE>null</CODE> if the adhocUserNames list is
-    *                        <CODE>null</CODE>, empty or contains no user names
+    *                        <CODE>null</CODE>, empty or contains no usernames
     *
     * @throws                PSRoleException if a user cannot be given an ad
     *                        hoc role
     * @throws                IllegalArgumentException if any of the input
     *                        parameters is not valid.
     */
-   @SuppressWarnings("unchecked")
    static PSContentAdhocUsersContext classifyAdhocUsers(
       int contentID,
       String adhocUserNames,
@@ -657,56 +639,49 @@ public class PSWorkflowRoleInfoStatic {
       if (lang == null)
          lang =   PSI18nUtils.DEFAULT_LANG;
 
-      String userName = "";
+      String userName;
       PSContentAdhocUsersContext cauc =
             new PSContentAdhocUsersContext(contentID);
-      List unassignedUserList = new ArrayList();
-      List anonymousStateRoleIDs = src.getAdhocAnonymousStateRoleIDs();
+      List<String> unassignedUserList = new ArrayList<>();
+      List<Integer> anonymousStateRoleIDs = src.getAdhocAnonymousStateRoleIDs();
       boolean existsAnonymousStateRole =
             (!anonymousStateRoleIDs.isEmpty());
-      List adhocNormalRoles = null;
+      List<Integer> adhocNormalRoles;
 
       if ((null == adhocUserNames) || adhocUserNames.trim().length() == 0)
       {
          return null;
       }
 
-      List adhocUserNameList =
+      List<String> adhocUserNameList =
             PSWorkFlowUtils.tokenizeString(
                adhocUserNames, PSWorkFlowUtils.ADHOC_USER_LIST_DELIMITER);
 
-      if (null ==  adhocUserNameList || adhocUserNameList.isEmpty())
+      if (adhocUserNameList.isEmpty())
       {
          return null;
       }
 
-      Iterator iter = adhocUserNameList.iterator();
-
-      while (iter.hasNext())
-      {
-         userName = (String) iter.next();
-         if (null == userName)
-         {
+      for (String s : adhocUserNameList) {
+         userName = s;
+         if (null == userName) {
             continue;
          }
 
          adhocNormalRoles = findAdhocNormalRoles(userName, src, request);
          PSAssignmentTypeHelper.filterAssignedRolesByCommunity(contentID,
-            adhocNormalRoles);
+                 adhocNormalRoles);
 
-         if (null == adhocNormalRoles || adhocNormalRoles.isEmpty())
-         {
+         if (adhocNormalRoles.isEmpty()) {
             /*
              * Unassigned users will become adhoc anonymous if such a role
              * is available, otherwise an exception will be thrown listing
              * the unassigned users.
              */
             unassignedUserList.add(userName);
-         }
-         else
-         {
+         } else {
             cauc.addUserAdhocNormalRoleIDs(userName,
-                                           adhocNormalRoles);
+                    adhocNormalRoles);
          }
 
       }
@@ -747,13 +722,11 @@ public class PSWorkflowRoleInfoStatic {
     *                    if the role list is null, or no roles have
     *                    notification enabled.
     */
-   static List filterRolesNotificationEnabled(List roleList,
+   static List<Integer> filterRolesNotificationEnabled(List<Integer> roleList,
                                               PSStateRolesContext src)
    {
-      Map notifyEnabledMap = src.getIsNotificationOnMap();
-      List notificationEnabledRoles =
-            PSWorkFlowUtils.filterList(roleList, notifyEnabledMap);
-      return notificationEnabledRoles;
+      Map<Integer,Boolean> notifyEnabledMap = src.getIsNotificationOnMap();
+      return PSWorkFlowUtils.filterList(roleList, notifyEnabledMap);
    }
 
    /**
@@ -768,8 +741,7 @@ public class PSWorkflowRoleInfoStatic {
     * @throws            IllegalArgumentException if any of the input
     *                    parameters is not valid.
     */
-   @SuppressWarnings("unchecked")
-   static List getStateRoleIDNotificationList(PSStateRolesContext src,
+   static List<Integer> getStateRoleIDNotificationList(PSStateRolesContext src,
       int contentId)
    {
       if (null == src)
@@ -777,13 +749,12 @@ public class PSWorkflowRoleInfoStatic {
          throw new IllegalArgumentException(
             "State roles context may not be null.");
       }
-      Map notifyEnabledMap = src.getIsNotificationOnMap();
+      Map<Integer,Boolean> notifyEnabledMap = src.getIsNotificationOnMap();
       filterNotifyEnabledMapByCommunity(contentId, notifyEnabledMap);
-      List nonAdhocStateRoleIDs = src.getNonAdhocStateRoleIDs();
-      List notificationEnabledRoles =
-            PSWorkFlowUtils.filterList(nonAdhocStateRoleIDs,
-                                       notifyEnabledMap);
-      return notificationEnabledRoles;
+
+      List<Integer> nonAdhocStateRoleIDs = src.getNonAdhocStateRoleIDs();
+      return PSWorkFlowUtils.filterList(nonAdhocStateRoleIDs,
+                                 notifyEnabledMap);
    }
 
    /**
@@ -798,8 +769,8 @@ public class PSWorkflowRoleInfoStatic {
     * @throws            IllegalArgumentException if any of the input
     *                    parameters is not valid.
     */
-   @SuppressWarnings("unchecked")
-   static List getStateRoleNameNotificationList(PSStateRolesContext src,
+
+   static List<String> getStateRoleNameNotificationList(PSStateRolesContext src,
       int contentId)
    {
       if (null == src)
@@ -808,11 +779,9 @@ public class PSWorkflowRoleInfoStatic {
             "State roles context may not be null.");
       }
 
-      List roleNameList = PSWorkFlowUtils.applyMapList(
+      return PSWorkFlowUtils.applyMapList(
          getStateRoleIDNotificationList(src, contentId),
          src.getStateRoleNameMap());
-
-      return roleNameList;
    }
 
    /**
@@ -820,7 +789,7 @@ public class PSWorkflowRoleInfoStatic {
     * state roles that have notification on, validating role membership for
     * adhoc normal roles.
     */
-   static List getStateAdhocActorNotificationList(
+   static List<String> getStateAdhocActorNotificationList(
       IPSContentAdhocUsersContext cauc,
       PSStateRolesContext src,
       int contentId, IPSRequestContext request)
@@ -843,14 +812,14 @@ public class PSWorkflowRoleInfoStatic {
     * @param validateRoleMembership  <CODE>true</CODE> if users role membership
     *       should be validated for adhoc normal roles, else <CODE>false</CODE>
     *
-    * @return            List of adhoc actors that should be notified. ,
+    * @return            List of adhoc actors that should be notified.
     *                    <CODE>null</CODE> if content ad hoc user context is
     *                    null.
     * @throws            IllegalArgumentException if any of the input
     *                    parameters is not valid.
     */
    @SuppressWarnings("unchecked")
-   static List getStateAdhocActorNotificationList(
+   static List<String> getStateAdhocActorNotificationList(
       IPSContentAdhocUsersContext cauc,
       PSStateRolesContext src,
       int contentId,
@@ -858,15 +827,15 @@ public class PSWorkflowRoleInfoStatic {
    {
       PSWorkFlowUtils.printWorkflowMessage(
          request, "    Entering Method getStateAdhocActorNotificationList");
-      Set stateAdhocActorSet = new HashSet();
+      Set<String> stateAdhocActorSet = new HashSet<>();
 
-      List userAdhocNormalRoles = null;
-      Iterator adhocNormalUserNameIter = null;
+      List<Integer> userAdhocNormalRoles = null;
+      Iterator<String> adhocNormalUserNameIter;
 
-      List stateNotificationEnabledAdhocNormalRoles = null;
-      List notificationEnabledAdhocAnonymousRoles = null;
-      List userRoleList = null;
-      String userName = "";
+      List<Integer> stateNotificationEnabledAdhocNormalRoles;
+      List<Integer> notificationEnabledAdhocAnonymousRoles;
+      List<Integer> userRoleList = null;
+      String userName;
 
       //validation
       if (null == src)
@@ -874,9 +843,9 @@ public class PSWorkflowRoleInfoStatic {
          throw new IllegalArgumentException(
             "State roles context may not be null.");
       }
-      List stateAdhocNormalRoles = src.getAdhocNormalStateRoleIDs();
-      List stateAdhocAnonymousRoles = src.getAdhocAnonymousStateRoleIDs();
-      Map notifyEnabledMap = src.getIsNotificationOnMap();
+      List<Integer> stateAdhocNormalRoles = src.getAdhocNormalStateRoleIDs();
+      List<Integer> stateAdhocAnonymousRoles = src.getAdhocAnonymousStateRoleIDs();
+      Map<Integer,Boolean> notifyEnabledMap = src.getIsNotificationOnMap();
 
       filterNotifyEnabledMapByCommunity(contentId, notifyEnabledMap);
 
@@ -887,15 +856,15 @@ public class PSWorkflowRoleInfoStatic {
             "must be validated.");
       }
 
-      List userAdhocAnonymousRoles;
-      List adhocAnonymousUserNames;
-      List adhocNormalUserNames;
+      List<Integer> userAdhocAnonymousRoles;
+      List<String> adhocAnonymousUserNames;
+      List<String> adhocNormalUserNames;
 
       if (null == cauc)
       {
-         userAdhocAnonymousRoles = new ArrayList();
-         adhocAnonymousUserNames = new ArrayList();
-         adhocNormalUserNames = new ArrayList();
+         userAdhocAnonymousRoles = new ArrayList<>();
+         adhocAnonymousUserNames = new ArrayList<>();
+         adhocNormalUserNames = new ArrayList<>();
       }
       else
       {
@@ -908,7 +877,7 @@ public class PSWorkflowRoleInfoStatic {
       stateNotificationEnabledAdhocNormalRoles =
             PSWorkFlowUtils.filterList(stateAdhocNormalRoles,
                                        notifyEnabledMap);
-      List unnotifiedAdhocRoleIds = new ArrayList();
+      List<Integer> unnotifiedAdhocRoleIds = new ArrayList<>();
 
       /*
        * All adhoc anonymous users will be added if at least one of the adhoc
@@ -937,12 +906,14 @@ public class PSWorkflowRoleInfoStatic {
 
       if (null !=  adhocNormalUserNames)
       {
-         Set notifiedAdhocRoleIds = new HashSet();
+         Set<Integer> notifiedAdhocRoleIds = new HashSet<>();
          adhocNormalUserNameIter = adhocNormalUserNames.iterator();
          while (adhocNormalUserNameIter.hasNext())
          {
-            userName = (String)  adhocNormalUserNameIter.next();
-            userAdhocNormalRoles = cauc.getUserAdhocNormalRoleIDs(userName);
+            userName =  adhocNormalUserNameIter.next();
+            if(cauc != null) {
+               userAdhocNormalRoles = cauc.getUserAdhocNormalRoleIDs(userName);
+            }
             userAdhocNormalRoles = PSWorkFlowUtils.intersectLists(
                userAdhocNormalRoles, stateNotificationEnabledAdhocNormalRoles);
             if (validateRoleMembership &&
@@ -970,7 +941,7 @@ public class PSWorkflowRoleInfoStatic {
 
       PSWorkFlowUtils.printWorkflowMessage(
          request, "    Exiting Method getStateAdhocActorNotificationList");
-      return new ArrayList(stateAdhocActorSet);
+      return new ArrayList<>(stateAdhocActorSet);
    }
 
    /**
@@ -992,9 +963,8 @@ public class PSWorkflowRoleInfoStatic {
     * setting value (value is not read by this method), assumed not
     * <code>null</code>.  Entries are removed from the map.
     */
-   @SuppressWarnings("unchecked")
    private static void filterNotifyEnabledMapByCommunity(int contentId,
-      Map notifyEnabledMap)
+      Map<Integer,Boolean> notifyEnabledMap)
    {
       Set<Integer> notifyRoleIds =
          new HashSet<>(notifyEnabledMap.keySet());
@@ -1026,15 +996,15 @@ public class PSWorkflowRoleInfoStatic {
     * @throws         IllegalArgumentException if any of the input
     *                 parameters is not valid.
     */
-   public static List getSubjectRoleIDs(String subject,
+   public static List<Integer> getSubjectRoleIDs(String subject,
                                         PSStateRolesContext src,
                                         IPSRequestContext request)
    {
       PSWorkFlowUtils.printWorkflowMessage(
          request, "    Entering Method getSubjectRoleIDs");
 
-      List subjectRoleNames = null;
-      List subjectRoleIDs = null;
+      List<String> subjectRoleNames;
+      List<Integer> subjectRoleIDs;
 
       if (null == subject || 0 == subject.length())
       {
@@ -1080,6 +1050,29 @@ public class PSWorkflowRoleInfoStatic {
       return subjectRoleIDs;
    }
 
+   private static void validateSubjectRequestParams(String subject, IPSRequestContext request){
+      if (null == subject || 0 == subject.length())
+      {
+         throw new IllegalArgumentException(
+                 "Subject name may not be null or empty.");
+      }
+
+      subject = subject.trim();
+
+      if (0 == subject.length())
+      {
+         throw new IllegalArgumentException(
+                 "Subject name may not be empty after trimming.");
+      }
+
+      if (null == request)
+      {
+         throw new IllegalArgumentException(
+                 "Request context may not be null.");
+      }
+
+   }
+
    /**
     * Gets a list of names of a subject's state roles
     *
@@ -1092,32 +1085,15 @@ public class PSWorkflowRoleInfoStatic {
     * @throws         IllegalArgumentException if any of the input
     *                 parameters is not valid.
     */
-   public static List getSubjectRoles(String subject,
+   public static List<String> getSubjectRoles(String subject,
                                       IPSRequestContext request)
    {
       PSWorkFlowUtils.printWorkflowMessage(
          request, "    Entering Method getSubjectRoles");
-      List roleList = null;
+      List<String> roleList;
 
-      if (null == subject || 0 == subject.length())
-      {
-         throw new IllegalArgumentException(
-            "Subject name may not be null or empty.");
-      }
+      validateSubjectRequestParams(subject, request);
 
-      subject = subject.trim();
-
-      if (0 == subject.length())
-      {
-         throw new IllegalArgumentException(
-            "Subject name may not be empty after trimming.");
-      }
-
-      if (null == request)
-      {
-         throw new IllegalArgumentException(
-            "Request context may not be null.");
-      }
 
       roleList = request.getSubjectRoles(subject);
       PSWorkFlowUtils.printWorkflowMessage(
@@ -1138,12 +1114,12 @@ public class PSWorkflowRoleInfoStatic {
     * @throws                   IllegalArgumentException if any of the input
     *                           parameters is not valid.
     */
-   public static List getRoleSubjects(String roleName,
+   public static List<PSSubject> getRoleSubjects(String roleName,
                                       IPSRequestContext request)
    {
       PSWorkFlowUtils.printWorkflowMessage(
          request, "    Entering Method getRoleSubjects");
-      List subjectList = null;
+      List<PSSubject> subjectList;
 
       if (null == roleName || 0 == roleName.length())
       {
@@ -1185,17 +1161,17 @@ public class PSWorkflowRoleInfoStatic {
     *                       list that is empty, or contains an attribute list
                             for the desired attribute.
     * @throws               IllegalArgumentException if the subject is
-    *                       is <CODE>null</CODE> or the attribute name
+    *                        <CODE>null</CODE> or the attribute name
     *                       is <CODE>null</CODE> or empty.
     */
-   public static List getSubjectAttributeValueTextList(PSSubject subject,
+   public static List<String> getSubjectAttributeValueTextList(PSSubject subject,
                                                        String attributeName,
                                                        String defaultValue)
    {
-      PSAttributeList attributeList = null;
-      PSAttribute attribute = null;
-      List attributeValueList = null;
-      List defaultValueList = new ArrayList();
+      PSAttributeList attributeList;
+      PSAttribute attribute;
+      List<String> attributeValueList;
+      List<String> defaultValueList = new ArrayList<>();
 
       defaultValueList.add(defaultValue);
 
@@ -1267,10 +1243,9 @@ public class PSWorkflowRoleInfoStatic {
     * @throws               IllegalArgumentException if any of the input
     *                       parameters is not valid.
     */
-   public static List getRoleSubjectsGlobalAttribute(String roleName,
+   public static List<PSSubject> getRoleSubjectsGlobalAttribute(String roleName,
       String attributeName, IPSRequestContext request, String communityId)
    {
-      List subjectsWithAttribute = null;
 
       if (null == roleName || 0 == roleName.length())
       {
@@ -1307,15 +1282,14 @@ public class PSWorkflowRoleInfoStatic {
             "method getRoleSubjectsGlobalAttribute.");
       }
 
-      subjectsWithAttribute = request.getSubjectGlobalAttributes(
-         null,          // get all users
-         0,             // get all subject types
-         roleName,
-         attributeName,
-         true,          // include the attribute list even if it is empty
-         communityId);  // filtered by the supplied community
 
-      return subjectsWithAttribute;
+      return request.getSubjectGlobalAttributes(
+              null,          // get all users
+              0,             // get all subject types
+              roleName,
+              attributeName,
+              true,          // include the attribute list even if it is empty
+              communityId);  // filtered by the supplied community;
    }
 
    /**
@@ -1339,10 +1313,10 @@ public class PSWorkflowRoleInfoStatic {
     * @throws               IllegalArgumentException if any of the input
     *                       parameters is not valid.
     */
-   public static List getSubjectGlobalAttribute(String subjectName,
+   public static List<PSSubject> getSubjectGlobalAttribute(String subjectName,
       String attributeName, IPSRequestContext request, String communityId)
    {
-      List subjectWithAttribute = null;
+      List<PSSubject> subjectWithAttribute;
 
       if (null == subjectName || 0 == subjectName.length())
       {
@@ -1414,14 +1388,14 @@ public class PSWorkflowRoleInfoStatic {
     * @throws         IllegalArgumentException if any of the input
     *                 parameters is not valid.
     */
-   public static List<String> getRolesEmailAddresses(List roleList,
+   public static List<String> getRolesEmailAddresses(List<String> roleList,
       IPSRequestContext request, String communityId)
    {
       PSWorkFlowUtils.printWorkflowMessage(
          request, "    Entering Method getRolesEmailAddresses");
       List<String> membersEmail = new ArrayList<>();
-      String roleName = "";
-      List<String> roleEmailAddresses = new ArrayList<>();
+      String roleName;
+      List<String> roleEmailAddresses;
       if (null == request)
       {
          throw new IllegalArgumentException(
@@ -1439,24 +1413,19 @@ public class PSWorkflowRoleInfoStatic {
       {
          return membersEmail;
       }
-      Iterator iter = roleList.iterator();
 
-      while (iter.hasNext())
-      {
-         roleName = (String) iter.next();
-         if (null == roleName || 0 == roleName.length())
-         {
+      for (String s : roleList) {
+         roleName = s;
+         if (null == roleName || 0 == roleName.length()) {
             continue;
          }
          roleName = roleName.trim();
-         if (0 == roleName.length())
-         {
+         if (0 == roleName.length()) {
             continue;
          }
          roleEmailAddresses = getRoleEmailAddresses(roleName, request,
-            communityId);
-         if (null !=  roleEmailAddresses && !roleEmailAddresses.isEmpty())
-         {
+                 communityId);
+         if (!roleEmailAddresses.isEmpty()) {
             membersEmail.addAll(roleEmailAddresses);
          }
       }
@@ -1487,7 +1456,7 @@ public class PSWorkflowRoleInfoStatic {
     * @throws         IllegalArgumentException if any of the input
     *                 parameters is not valid.
     */
-   public static List getRoleEmailAddresses(String roleName,
+   public static List<String> getRoleEmailAddresses(String roleName,
       IPSRequestContext request, String communityId)
    {
       PSWorkFlowUtils.printWorkflowMessage(
@@ -1507,12 +1476,11 @@ public class PSWorkflowRoleInfoStatic {
          throw new IllegalArgumentException(
             "Request context may not be null.");
 
-      List membersEmail = new ArrayList();
       String emailAttributeName = PSWorkFlowUtils.properties.getProperty(
          PSWorkFlowUtils.USER_EMAIL_ATTRIBUTE_PROPERTY,
             PSWorkFlowUtils.USER_EMAIL_ATTRIBUTE);
-      membersEmail.addAll(request.getRoleEmailAddresses(roleName,
-         emailAttributeName, communityId));
+      List<String> membersEmail = new ArrayList<String>(request.getRoleEmailAddresses(roleName,
+              emailAttributeName, communityId));
 
       PSWorkFlowUtils.printWorkflowMessage(
          request, "    Exiting Method getRoleEmailAddresses");
@@ -1533,10 +1501,7 @@ public class PSWorkflowRoleInfoStatic {
             PSWorkFlowUtils.USER_EMAIL_ATTRIBUTE_PROPERTY,
             PSWorkFlowUtils.USER_EMAIL_ATTRIBUTE);
 
-      List<PSNotificationEmailAddress> emails = new ArrayList<>();
-      emails.addAll(PSRoleManager.getInstance().getSubjectEmailAddresses(null, princes, emailAttributeName, null));
-
-      return emails;
+      return new ArrayList<>(PSRoleManager.getInstance().getSubjectEmailAddresses(null, princes, emailAttributeName, null));
    }
 
    /**
@@ -1608,11 +1573,11 @@ public class PSWorkflowRoleInfoStatic {
    }
 
    /**
-    * Converts a list of user names to a list of principals
-    * @param userNames the list of user names, not <code>null</code>, may be empty.
+    * Converts a list of usernames to a list of principals
+    * @param userNames the list of usernames, not <code>null</code>, may be empty.
     * @return the list of converted principals, never <code>null</code>, may be empty.
     */
-   public static Set<IPSTypedPrincipal> getPricipalsFromNames(List<String> userNames)
+   public static Set<IPSTypedPrincipal> getPrincipalsFromNames(List<String> userNames)
    {
       notNull(userNames);
       Set<IPSTypedPrincipal> principals = new HashSet<>();
@@ -1634,8 +1599,7 @@ public class PSWorkflowRoleInfoStatic {
        */
       final PSComponentSummary summary =
          PSCmsObjectMgrLocator.getObjectManager().loadComponentSummaries(singletonList(contentid)).get(0);
-      final int itemCommunityId = summary.getCommunityId();
-      return itemCommunityId;
+      return summary.getCommunityId();
    }
 
   /**
@@ -1661,13 +1625,13 @@ public class PSWorkflowRoleInfoStatic {
     * @throws            IllegalArgumentException if any of the input
     *                    parameters is not valid.
     */
-   public static List getSubjectsEmailAddresses(List subjectList,
+   public static List<PSNotificationEmailAddress> getSubjectsEmailAddresses(List<String> subjectList,
       IPSRequestContext request, String communityId)
    {
       PSWorkFlowUtils.printWorkflowMessage(
          request, "    Entering Method getSubjectsEmailAddresses");
-      List subjectsEmail = new ArrayList();
-      String subjectName = "";
+      List<PSNotificationEmailAddress> subjectsEmail = new ArrayList<>();
+      String subjectName;
 
       if (null == request)
       {
@@ -1687,27 +1651,22 @@ public class PSWorkflowRoleInfoStatic {
          return subjectsEmail;
       }
 
-      Iterator iter = subjectList.iterator();
-
-      while (iter.hasNext())
-      {
-         subjectName = (String) iter.next();
-         if (null == subjectName || 0 == subjectName.length())
-         {
+      for (String s : subjectList) {
+         subjectName = s;
+         if (null == subjectName || 0 == subjectName.length()) {
             continue;
          }
          subjectName = subjectName.trim();
-         if (0 == subjectName.length())
-         {
+         if (0 == subjectName.length()) {
             continue;
          }
          subjectsEmail.addAll(getSubjectEmailAddresses(subjectName, request,
-            communityId));
+                 communityId));
       }
 
       PSWorkFlowUtils.printWorkflowMessage(
          request, "    Exiting Method getSubjectsEmailAddresses");
-      return PSWorkFlowUtils.caseInsensitiveUniqueList(subjectsEmail);
+      return subjectsEmail;
 
    }
 
@@ -1737,25 +1696,13 @@ public class PSWorkflowRoleInfoStatic {
       PSWorkFlowUtils.printWorkflowMessage(
          request, "    Entering Method getSubjectEmailAddresses");
 
-      if (null == subjectName || 0 == subjectName.length())
-         throw new IllegalArgumentException(
-            "Subject name may not be null or empty.");
+      validateSubjectRequestParams(subjectName,request);
 
-      subjectName = subjectName.trim();
-      if (0 == subjectName.length())
-         throw new IllegalArgumentException(
-            "Subject name may not be empty after trimming.");
-
-      if (null == request)
-         throw new IllegalArgumentException(
-            "Request context may not be null.");
-
-      List<PSNotificationEmailAddress> subjectsEmail = new ArrayList();
       String emailAttributeName = PSWorkFlowUtils.properties.getProperty(
          PSWorkFlowUtils.USER_EMAIL_ATTRIBUTE_PROPERTY,
             PSWorkFlowUtils.USER_EMAIL_ATTRIBUTE);
-      subjectsEmail.addAll(request.getSubjectEmailAddresses(subjectName,
-            emailAttributeName, communityId));
+      List<PSNotificationEmailAddress> subjectsEmail = new ArrayList<>(request.getSubjectEmailAddresses(subjectName,
+              emailAttributeName, communityId));
 
       PSWorkFlowUtils.printWorkflowMessage(
          request, "    Exiting Method getSubjectEmailAddresses");
@@ -1773,39 +1720,33 @@ public class PSWorkflowRoleInfoStatic {
     * @param roleIds The list of role ids as <code>Integer</code> objects,
     * may not be <code>null</code>, may be empty.
     *
-    * @return The role memeber subject names as <code>String</code> objects,
+    * @return The role member subject names as <code>String</code> objects,
     * never <code>null</code>, may be empty.
     */
-   public static List getRoleSubjectNames(
+   public static List<String> getRoleSubjectNames(
       PSStateRolesContext src,
       IPSRequestContext request,
-      List roleIds)
+      List<Integer> roleIds)
    {
-      Set subjectNames = new HashSet();
+      Set<String> subjectNames = new HashSet<>();
       if (!roleIds.isEmpty())
       {
-         Set subjects = new HashSet();
-         List roleNameList = roleIDListToRoleNameList(roleIds,
+         Set<PSSubject> subjects = new HashSet<>();
+         List<String> roleNameList = roleIDListToRoleNameList(roleIds,
             src);
          if (roleNameList != null)
          {
-            Iterator roleNames = roleNameList.iterator();
-            while (roleNames.hasNext())
-            {
-               String roleName = (String)roleNames.next();
+            for (String roleName : roleNameList) {
                subjects.addAll(request.getRoleSubjects(roleName));
             }
          }
 
-         Iterator subjectIter = subjects.iterator();
-         while (subjectIter.hasNext())
-         {
-            PSSubject subject = (PSSubject)subjectIter.next();
+         for (PSSubject subject : subjects) {
             subjectNames.add(subject.getName());
          }
       }
 
-      return new ArrayList(subjectNames);
+      return new ArrayList<>(subjectNames);
    }
 
 

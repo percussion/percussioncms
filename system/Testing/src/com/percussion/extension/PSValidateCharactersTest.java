@@ -403,7 +403,7 @@ public class PSValidateCharactersTest
          return null;
       }
 
-      public List getSubjectGlobalAttributes(String subjectNameFilter,
+      public List<PSSubject> getSubjectGlobalAttributes(String subjectNameFilter,
             int subjectType, int providerType, String providerInstance,
             String roleName, String attributeNameFilter,
             boolean includeEmptySubjects)
@@ -412,7 +412,7 @@ public class PSValidateCharactersTest
          return null;
       }
 
-      public List getSubjectGlobalAttributes(String subjectNameFilter,
+      public List<PSSubject> getSubjectGlobalAttributes(String subjectNameFilter,
             int subjectType, String roleName, String attributeNameFilter,
             boolean includeEmptySubjects, String communityId)
       {
