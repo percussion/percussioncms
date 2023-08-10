@@ -66,7 +66,6 @@ public class PSWorkflowRoleInfoTest extends ServletTestCase
     * 
     * @throws Exception If the test fails.
     */
-   @SuppressWarnings("unchecked")
    public void testWorkflowRoleInfo() throws Exception
    {
       try
@@ -75,13 +74,13 @@ public class PSWorkflowRoleInfoTest extends ServletTestCase
          
          Connection connection = PSConnectionHelper.getDbConnection();
 
-         PSStateRolesContext src = null;
-         PSContentAdhocUsersContext cauc = null;
+         PSStateRolesContext src;
+         PSContentAdhocUsersContext cauc;
          List stateRoleIDNotificationList = null;
-         List stateRoleNameNotificationList = null;
+         List stateRoleNameNotificationList;
          List stateAdhocActorNotificationList = null;
-         IPSRequestContext requestCtx = null;
-         List actorRolesList = null;
+         IPSRequestContext requestCtx;
+         List<String> actorRolesList;
 
          IPSSecurityWs secWs = PSSecurityWsLocator.getSecurityWebservice();
          requestCtx = secWs.getRequestContext();
@@ -100,15 +99,15 @@ public class PSWorkflowRoleInfoTest extends ServletTestCase
                  PSWorkflowRoleInfoStatic.roleIDListToRoleNameList(src.getStateRoleIDs(),
                src)));
 
-         List<Integer> notifRoleIDs = new ArrayList<Integer>();
-         notifRoleIDs.add(new Integer(TestRole.EDITOR.getRoleId()));
-         notifRoleIDs.add(new Integer(TestRole.QA.getRoleId()));
-         notifRoleIDs.add(new Integer(TestRole.EI_ADMIN_MEMBERS.getRoleId()));
-         notifRoleIDs.add(new Integer(TestRole.EI_MEMBERS.getRoleId()));
+         List<Integer> notifRoleIDs = new ArrayList<>();
+         notifRoleIDs.add(TestRole.EDITOR.getRoleId());
+         notifRoleIDs.add(TestRole.QA.getRoleId());
+         notifRoleIDs.add(TestRole.EI_ADMIN_MEMBERS.getRoleId());
+         notifRoleIDs.add(TestRole.EI_MEMBERS.getRoleId());
 
-         List<Integer> roleIDs = new ArrayList<Integer>();
-         roleIDs.add(new Integer(TestRole.AUTHOR.getRoleId()));
-         roleIDs.add(new Integer(TestRole.ADMIN.getRoleId()));
+         List<Integer> roleIDs = new ArrayList<>();
+         roleIDs.add(TestRole.AUTHOR.getRoleId());
+         roleIDs.add(TestRole.ADMIN.getRoleId());
          roleIDs.addAll(notifRoleIDs);
 
          List rolesNotificationEnabled =
@@ -120,19 +119,18 @@ public class PSWorkflowRoleInfoTest extends ServletTestCase
             rolesNotificationEnabled));
 
          //used by PSExitAuthenticateUser
-         List<String> assignedRoleNames = new ArrayList<String>();
+         List<String> assignedRoleNames = new ArrayList<>();
          assignedRoleNames.add(TestRole.EDITOR.name());
          assignedRoleNames.add(TestRole.QA.name());
          assignedRoleNames.add(TestRole.EI_ADMIN_MEMBERS.name());
          assignedRoleNames.add(TestRole.AUTHOR.name());
-         List<String> memberRoleNames = new ArrayList<String>();
-         memberRoleNames.addAll(assignedRoleNames);
+         List<String> memberRoleNames = new ArrayList<>(assignedRoleNames);
          memberRoleNames.add(TestRole.CI_MEMBERS.name());
          memberRoleNames.add(TestRole.ADMIN.name());
 
          String userRoleNames = PSWorkFlowUtils.listToDelimitedString(
             memberRoleNames, ",");
-         List actorRoleIDList = PSWorkflowRoleInfoStatic.getActorRoles(contentid, src,
+         List<Integer> actorRoleIDList = PSWorkflowRoleInfoStatic.getActorRoles(contentid, src,
             PSAssignmentTypeHelperTest.ADHOC_USER_ANON, userRoleNames,
             connection, true);
          actorRolesList = PSWorkflowRoleInfoStatic.roleIDListToRoleNameList(

@@ -48,7 +48,7 @@ public class PSExtensionManager
    private static final Logger log = LogManager.getLogger(PSExtensionManager.class);
    
    /***
-    * Key to store listeners that respond to any change in the extensions 
+    * Key to store listeners that respond to any change in the extension
     * manager.
     */
    private static final String GLOBAL_LISTENER = "GLOBAL_LISTENER";
@@ -174,11 +174,11 @@ public class PSExtensionManager
     *
     * @param handlerNamePattern A case-sensitive SQL-like pattern for
     * the extension handler name. An extension will be returned only if its
-    * handler's name matches this pattern. If <CODE>null</CODE>, then this
-    * criteria is dropped from the search.
+    * handler's name matches this pattern. If <CODE>null</CODE>, then these
+    * criteria are dropped from the search.
     *
     * @param context The context in which to search inside each handler. This
-    * is not a pattern -- it is a literal context whose canonicalized version
+    * is not a pattern -- it is a literal context whose canonical version
     * will be used to further narrow down the list of extensions. If
     * <CODE>null</CODE>, this criteria will be dropped from the search
     * (will return extensions from all contexts within each handler).
@@ -186,7 +186,7 @@ public class PSExtensionManager
     * @param interfacePattern A case-sensitive SQL-like pattern for the
     * interfaces implemented by the extension. Only extensions which
     * implement an interface whose name matches this pattern will
-    * be returned. If <CODE>null</CODE>, then this criteria is dropped
+    * be returned. If <CODE>null</CODE>, then these criteria are dropped
     * from the search.
     *
     * @param extensionNamePattern A case-sensitive SQL-like pattern
@@ -203,7 +203,7 @@ public class PSExtensionManager
     *
     * @throws IllegalArgumentException If any param is invalid.
     */
-   public synchronized Iterator getExtensionNames(
+   public synchronized Iterator<PSExtensionRef> getExtensionNames(
       String handlerNamePattern,
       String context,
       String interfacePattern,
@@ -589,7 +589,7 @@ public class PSExtensionManager
             registerListener(def.getRef(), listener);
          }
 
-         // prepare the handler so we can install the extension to it
+         // prepare the handler, so we can install the extension to it
          PSExtensionRef handlerRef = getHandlerRef(handlerName);
          extHandler = 
             (IPSExtensionHandler)(m_extHandlerHandler.prepare(handlerRef));
@@ -601,7 +601,7 @@ public class PSExtensionManager
    /**
     * Permanently disables and removes the extension with the given name.
     *
-    * @param ext The name of the extension to be removed. Must not be
+    * @param ref The name of the extension to be removed. Must not be
     * <CODE>null</CODE>.
     *
     * @throws PSExtensionException If the extension handler
@@ -619,7 +619,7 @@ public class PSExtensionManager
       if (ref == null)
          throw new IllegalArgumentException("ref cannot be null");
 
-      // prepare the handler so we can remove the extension from it
+      // prepare the handler, so we can remove the extension from it
       String handlerName = ref.getHandlerName();
       IPSExtensionHandler extHandler = null;
 
@@ -639,9 +639,9 @@ public class PSExtensionManager
    }
 
    /**
-    * Synchronously removes and re-installs the given extension. Currently
+    * Synchronously removes and re-installs the given extension. Currently,
     * this method is not guaranteed to be transactional, that is, the remove
-    * may succeed but the install may fail.
+    * may succeed but the installation may fail.
     *
     * @param def The extension definition. Must not be <CODE>null</CODE>.
     *
@@ -677,7 +677,7 @@ public class PSExtensionManager
          throw new IllegalArgumentException("resources cannot be null");
 
 
-      // prepare extension handler so we can update the extension into it
+      // prepare extension handler, so we can update the extension into it
       String handlerName = def.getRef().getHandlerName();
       IPSExtensionHandler extHandler = null;
 
@@ -735,7 +735,7 @@ public class PSExtensionManager
    }
 
    /**
-    * Unegisters the given listener for events concerning the extension
+    * Unregisters the given listener for events concerning the extension
     * referred to be extRef. If the listener is not registered, nothing
     * will happen. If the extension does not exist, nothing will
     * happen.
