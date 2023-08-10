@@ -176,7 +176,7 @@
                             <artifactItem>
                                 <groupId>com.percussion</groupId>
                                 <artifactId>extensions-workflow</artifactId>
-                                <version>${project.version}</version>
+                                <version>8.1.2.1</version>
                                 <type>jar</type>
                                 <overWrite>true</overWrite>
                                 <outputDirectory>${extensions-directory}/WorkflowExits</outputDirectory>

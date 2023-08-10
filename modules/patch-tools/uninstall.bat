@@ -79,6 +79,14 @@ if exist backup\jetty\base\webapps\Rhythmyx\WEB-INF\lib\rxutils-8.1.2.1.jar (
     copy /V /Z /D /Y backup\jetty\base\webapps\Rhythmyx\WEB-INF\lib\rxutils-8.1.2.jar  %~pd1jetty\base\webapps\Rhythmyx\WEB-INF\lib\
 )
 
+if exist backup\jetty\base\webapps\Rhythmyx\WEB-INF\lib\extension-workflow-8.1.2.1.jar (
+    del /F /Q  %~pd1jetty\base\webapps\Rhythmyx\WEB-INF\lib\extension-workflow-8.1.2.1.jar
+    copy /V /Z /D /Y backup\jetty\base\webapps\Rhythmyx\WEB-INF\lib\extension-workflow-8.1.2.1.jar  %~pd1jetty\base\webapps\Rhythmyx\WEB-INF\lib\
+
+) else (
+    del /F /Q  %~pd1jetty\base\webapps\Rhythmyx\WEB-INF\lib\extension-workflow-8.1.2.1.jar
+    copy /V /Z /D /Y backup\jetty\base\webapps\Rhythmyx\WEB-INF\lib\extension-workflow-8.1.2.jar  %~pd1jetty\base\webapps\Rhythmyx\WEB-INF\lib\
+)
 
 echo --------------------------------------------
 echo Percussion CMS patching completed.

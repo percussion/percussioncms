@@ -99,6 +99,16 @@ else
     rm -f $INSTALL_DIR/jetty/base/webapps/Rhythmyx/WEB-INF/lib/rxutils-8.1.2.1.jar
 fi
 
+if [ -e "backup/jetty/base/webapps/Rhythmyx/WEB-INF/lib/extensions-workflow-8.1.2.1.jar" ]
+then
+    rm -f $INSTALL_DIR/jetty/base/webapps/Rhythmyx/WEB-INF/lib/extensions-workflow-8.1.2.1.jar
+    /bin/cp -rf  backup/jetty/base/webapps/Rhythmyx/WEB-INF/lib/extensions-workflow-8.1.2.1.jar $INSTALL_DIR/jetty/base/webapps/Rhythmyx/WEB-INF/lib/extensions-workflow-8.1.2.1.jar
+
+else
+    /bin/cp -rf  backup/jetty/base/webapps/Rhythmyx/WEB-INF/lib/extensions-workflow-8.1.2.jar $INSTALL_DIR/jetty/base/webapps/Rhythmyx/WEB-INF/lib/extensions-workflow-8.1.2.jar
+    rm -f $INSTALL_DIR/jetty/base/webapps/Rhythmyx/WEB-INF/lib/extensions-workflow-8.1.2.1.jar
+fi
+
 echo "--------------------------------------------"
 echo "Uninstall of Percussion CMS patch completed."
 echo "--------------------------------------------"
