@@ -576,7 +576,10 @@ public interface IPSConstants
     String SERVER_PROP_ALLOWED_ORIGINS_DEFAULT = "*";
     String SERVER_PROP_PUBLIC_CMS_HOSTNAME = "publicCmsHostname";
     String SERVER_PROP_REQUEST_BEHIND_PROXY= "requestBehindProxy";
-
+    /**
+     * A yes or no value.  When yes, communities are enabled.
+     */
+    String SERVER_PROP_COMMUNITIES_ENABLED = "communities_enabled";
 
      String EXTENSIONS_LOG = "Extensions";
      String IMPORT_LOG = "Import";

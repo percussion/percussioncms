@@ -58,7 +58,6 @@ public abstract class PSObjectPermissions
     * This constructor will typically be used on the server side. This sets the
     * user's server access level based on the credentials in the request object.
     *
-    * @param request request context information, may not be <code>null</code>.
     *
     * @throws IllegalArgumentException if <code>request</code> is
     * <code>null</code>
@@ -74,7 +73,6 @@ public abstract class PSObjectPermissions
    {
       m_accessLevel=PSThreadRequestUtils.getUserAccessLevel();
       m_userInfo=PSThreadRequestUtils.getUserInfo();
-      return;
    }
 
 
@@ -247,7 +245,7 @@ public abstract class PSObjectPermissions
     * <code>PSObjectPermissions.ACCESS_SERVER_ADMIN_STR</code>
     *
     * @return <code>true</code> if the encapsulated accessMask has the bit set
-    * corresponding to the permission specified by <code>desiredAcess</code>,
+    * corresponding to the permission specified by <code>desiredAccess</code>,
     * <code>false</code> otherwise.
     *
     * @throws IllegalArgumentException if <code>accessLevel</code> is invalid
@@ -260,7 +258,7 @@ public abstract class PSObjectPermissions
    
    /**
     * Returns <code>true</code> if the given access level 
-    * has access even if the the mask is set to lower value.
+    * has access even if the mask is set to lower value.
     *
     * @param accessLevel the desired level of access, must be one of the
     * following:
@@ -294,7 +292,6 @@ public abstract class PSObjectPermissions
     *
     * @return string based access level, never <code>null</code> or empty
     *
-    * @throws IllegaArgumentException if <code>accessLevel</code> is invalid
     */
    public static String translateAccess(int accessLevel)
    {
@@ -340,7 +337,7 @@ public abstract class PSObjectPermissions
     *
     * @return integer based access level
     *
-    * @throws IllegaArgumentException if <code>accessLevel</code> is invalid
+    * @throws IllegalArgumentException if <code>accessLevel</code> is invalid
     */
    public static int translateAccess(String accessLevel)
    {
@@ -348,7 +345,7 @@ public abstract class PSObjectPermissions
          throw new IllegalArgumentException(
             "accessLevel may not be null or empty");
 
-      int iAccess = 0;
+      int iAccess;
       if (accessLevel.equalsIgnoreCase(ACCESS_DENY_STR))
          iAccess = ACCESS_DENY;
       else if (accessLevel.equalsIgnoreCase(ACCESS_READ_STR))
@@ -389,7 +386,7 @@ public abstract class PSObjectPermissions
     *
     * @return the next higher level of access as described above.
     *
-    * @throws IllegaArgumentException if <code>accessLevel</code> is invalid
+    * @throws IllegalArgumentException if <code>accessLevel</code> is invalid
     */
    public static int getHigherAccessLevel(int accessLevel)
    {
@@ -515,7 +512,7 @@ public abstract class PSObjectPermissions
    public static final String ACCESS_READ_STR = "read";
 
    /**
-    * This is an access mask for allowing write access to the securable object.
+    * This is an access mask for allowing to write access to the securable object.
     */
    public static final int ACCESS_WRITE = 2;
 
@@ -563,7 +560,7 @@ public abstract class PSObjectPermissions
     * Contains the set of permissions specified on the securable object
     * (such as Folders), may be <code>null</code> if single arg constructor is
     * used, otherwise initialized in the constructor, never modified after
-    * initializartion.
+    * initialization.
     */
    protected PSObjectAcl m_objectAcl = null;
 

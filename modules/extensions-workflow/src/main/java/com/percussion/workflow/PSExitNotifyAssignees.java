@@ -142,7 +142,7 @@ public class PSExitNotifyAssignees implements IPSResultDocumentProcessor
            throws PSParameterMismatchException,
            PSExtensionProcessingException
    {
-      Logger l = LogManager.getLogger(getClass());
+      Logger l = LogManager.getLogger(IPSConstants.WORKFLOW_LOG);
       PSWorkFlowUtils.printWorkflowMessage(request,
               "\nNotify Assignees: enter processResultDocument ");
 

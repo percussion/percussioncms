@@ -2,6 +2,7 @@
 
 echo "------------------------------------------------"
 echo "Percussion CMS Patch Install Script  - 8.1.2.1"
+echo "v8.1.2.1-08102023"
 echo "------------------------------------------------"
 echo ""
 
@@ -186,13 +187,6 @@ then
     /bin/cp -rf jetty/base/webapps/Rhythmyx/test/sql.jsp $INSTALL_DIR/jetty/base/webapps/Rhythmyx/test/
 fi
 
-if [ -e "$INSTALL_DIR/jetty/base/webapps/Rhythmyx/WEB-INF/lib/perc-system-8.1.2.jar" ]
-then
-    /bin/cp -rf $INSTALL_DIR/jetty/base/webapps/Rhythmyx/WEB-INF/lib/perc-system-8.1.2.jar backup/jetty/base/webapps/Rhythmyx/WEB-INF/lib/
-    rm -f $INSTALL_DIR/jetty/base/webapps/Rhythmyx/WEB-INF/lib/perc-system-8.1.2.jar
-    /bin/cp -rf jetty/base/webapps/Rhythmyx/WEB-INF/lib/perc-system-8.1.2.1.jar $INSTALL_DIR/jetty/base/webapps/Rhythmyx/WEB-INF/lib/
-fi
-
 # Check for previous patch update
 if [ -e "$INSTALL_DIR/jetty/base/webapps/Rhythmyx/WEB-INF/lib/perc-system-8.1.2.1.jar" ]
 then
@@ -201,12 +195,13 @@ then
     /bin/cp -rf jetty/base/webapps/Rhythmyx/WEB-INF/lib/perc-system-8.1.2.1.jar $INSTALL_DIR/jetty/base/webapps/Rhythmyx/WEB-INF/lib/
 fi
 
-if [ -e "$INSTALL_DIR/jetty/base/webapps/Rhythmyx/WEB-INF/lib/sitemanage-8.1.2.jar" ]
+if [ -e "$INSTALL_DIR/jetty/base/webapps/Rhythmyx/WEB-INF/lib/perc-system-8.1.2.jar" ]
 then
-    /bin/cp -rf $INSTALL_DIR/jetty/base/webapps/Rhythmyx/WEB-INF/lib/sitemanage-8.1.2.jar backup/jetty/base/webapps/Rhythmyx/WEB-INF/lib/
-    rm -f $INSTALL_DIR/jetty/base/webapps/Rhythmyx/WEB-INF/lib/sitemanage-8.1.2.jar
-    /bin/cp -rf jetty/base/webapps/Rhythmyx/WEB-INF/lib/sitemanage-8.1.2.1.jar $INSTALL_DIR/jetty/base/webapps/Rhythmyx/WEB-INF/lib/
+    /bin/cp -rf $INSTALL_DIR/jetty/base/webapps/Rhythmyx/WEB-INF/lib/perc-system-8.1.2.jar backup/jetty/base/webapps/Rhythmyx/WEB-INF/lib/
+    rm -f $INSTALL_DIR/jetty/base/webapps/Rhythmyx/WEB-INF/lib/perc-system-8.1.2.jar
+    /bin/cp -rf jetty/base/webapps/Rhythmyx/WEB-INF/lib/perc-system-8.1.2.1.jar $INSTALL_DIR/jetty/base/webapps/Rhythmyx/WEB-INF/lib/
 fi
+
 
 # Check for previous patch update
 if [ -e "$INSTALL_DIR/jetty/base/webapps/Rhythmyx/WEB-INF/lib/sitemanage-8.1.2.1.jar" ]
@@ -216,11 +211,11 @@ then
     /bin/cp -rf jetty/base/webapps/Rhythmyx/WEB-INF/lib/sitemanage-8.1.2.1.jar $INSTALL_DIR/jetty/base/webapps/Rhythmyx/WEB-INF/lib/
 fi
 
-if [ -e "$INSTALL_DIR/jetty/base/webapps/Rhythmyx/WEB-INF/lib/rxutils-8.1.2.jar" ]
+if [ -e "$INSTALL_DIR/jetty/base/webapps/Rhythmyx/WEB-INF/lib/sitemanage-8.1.2.jar" ]
 then
-    /bin/cp -rf $INSTALL_DIR/jetty/base/webapps/Rhythmyx/WEB-INF/lib/rxutils-8.1.2.jar backup/jetty/base/webapps/Rhythmyx/WEB-INF/lib/
-    rm -f $INSTALL_DIR/jetty/base/webapps/Rhythmyx/WEB-INF/lib/rxutils-8.1.2.jar
-    /bin/cp -rf jetty/base/webapps/Rhythmyx/WEB-INF/lib/rxutils-8.1.2.1.jar $INSTALL_DIR/jetty/base/webapps/Rhythmyx/WEB-INF/lib/
+    /bin/cp -rf $INSTALL_DIR/jetty/base/webapps/Rhythmyx/WEB-INF/lib/sitemanage-8.1.2.jar backup/jetty/base/webapps/Rhythmyx/WEB-INF/lib/
+    rm -f $INSTALL_DIR/jetty/base/webapps/Rhythmyx/WEB-INF/lib/sitemanage-8.1.2.jar
+    /bin/cp -rf jetty/base/webapps/Rhythmyx/WEB-INF/lib/sitemanage-8.1.2.1.jar $INSTALL_DIR/jetty/base/webapps/Rhythmyx/WEB-INF/lib/
 fi
 
 # check for previous patch update
@@ -231,6 +226,27 @@ then
     /bin/cp -rf jetty/base/webapps/Rhythmyx/WEB-INF/lib/rxutils-8.1.2.1.jar $INSTALL_DIR/jetty/base/webapps/Rhythmyx/WEB-INF/lib/
 fi
 
+if [ -e "$INSTALL_DIR/jetty/base/webapps/Rhythmyx/WEB-INF/lib/rxutils-8.1.2.jar" ]
+then
+    /bin/cp -rf $INSTALL_DIR/jetty/base/webapps/Rhythmyx/WEB-INF/lib/rxutils-8.1.2.jar backup/jetty/base/webapps/Rhythmyx/WEB-INF/lib/
+    rm -f $INSTALL_DIR/jetty/base/webapps/Rhythmyx/WEB-INF/lib/rxutils-8.1.2.jar
+    /bin/cp -rf jetty/base/webapps/Rhythmyx/WEB-INF/lib/rxutils-8.1.2.1.jar $INSTALL_DIR/jetty/base/webapps/Rhythmyx/WEB-INF/lib/
+fi
+
+# check for previous patch update
+if [ -e "$INSTALL_DIR/jetty/base/webapps/Rhythmyx/WEB-INF/lib/extensions-workflow-8.1.2.1.jar" ]
+then
+    /bin/cp -rf $INSTALL_DIR/jetty/base/webapps/Rhythmyx/WEB-INF/lib/extensions-workflow-8.1.2.1.jar backup/jetty/base/webapps/Rhythmyx/WEB-INF/lib/
+    rm -f $INSTALL_DIR/jetty/base/webapps/Rhythmyx/WEB-INF/lib/extensions-workflow-8.1.2.1.jar
+    /bin/cp -rf jetty/base/webapps/Rhythmyx/WEB-INF/lib/extensions-workflow-8.1.2.1.jar $INSTALL_DIR/jetty/base/webapps/Rhythmyx/WEB-INF/lib/
+fi
+
+if [ -e "$INSTALL_DIR/jetty/base/webapps/Rhythmyx/WEB-INF/lib/extensions-workflow-8.1.2.jar" ]
+then
+    /bin/cp -rf $INSTALL_DIR/jetty/base/webapps/Rhythmyx/WEB-INF/lib/extensions-workflow-8.1.2.jar backup/jetty/base/webapps/Rhythmyx/WEB-INF/lib/
+    rm -f $INSTALL_DIR/jetty/base/webapps/Rhythmyx/WEB-INF/lib/extensions-workflow-8.1.2.jar
+    /bin/cp -rf jetty/base/webapps/Rhythmyx/WEB-INF/lib/extensions-workflow-8.1.2.1.jar $INSTALL_DIR/jetty/base/webapps/Rhythmyx/WEB-INF/lib/
+fi
 
 
 echo "--------------------------------------------"
