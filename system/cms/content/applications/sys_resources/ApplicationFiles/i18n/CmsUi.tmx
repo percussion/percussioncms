@@ -10767,6 +10767,26 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
 	        <seg>El usuario debe tener al menos un rol.</seg>
 	    </tuv>
 	 </tu>
+	  <tu tuid="perc.ui.user.controller@Passwords is Mandatory">
+             <prop type="sectionname" xml:lang="en-us">User Controller</prop>
+             <note xml:lang="en-us"></note>
+             <tuv xml:lang="en-us">
+                 <seg>Passwords is mandatory.</seg>
+             </tuv>
+               <tuv xml:lang="es">
+                 <seg>Las contraseñas son obligatorias.</seg>
+             </tuv>
+          </tu>
+          <tu tuid="perc.ui.user.controller@Confirm Passwords is Mandatory">
+             <prop type="sectionname" xml:lang="en-us">User Controller</prop>
+             <note xml:lang="en-us"></note>
+             <tuv xml:lang="en-us">
+                 <seg>Confirm Passwords is mandatory.</seg>
+             </tuv>
+               <tuv xml:lang="es">
+                 <seg>Confirmar contraseñas es obligatorio.</seg>
+             </tuv>
+          </tu>
 	 <tu tuid="perc.ui.user.controller@Error loading available roles">
 	    <prop type="sectionname" xml:lang="en-us">User Controller</prop>
 	    <note xml:lang="en-us"></note>
