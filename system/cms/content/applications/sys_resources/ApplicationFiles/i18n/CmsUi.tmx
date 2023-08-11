@@ -10771,7 +10771,7 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
              <prop type="sectionname" xml:lang="en-us">User Controller</prop>
              <note xml:lang="en-us"></note>
              <tuv xml:lang="en-us">
-                 <seg>Passwords is mandatory.</seg>
+                 <seg>Password is required.</seg>
              </tuv>
                <tuv xml:lang="es">
                  <seg>Las contraseñas son obligatorias.</seg>
@@ -10781,7 +10781,7 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
              <prop type="sectionname" xml:lang="en-us">User Controller</prop>
              <note xml:lang="en-us"></note>
              <tuv xml:lang="en-us">
-                 <seg>Confirm Passwords is mandatory.</seg>
+                 <seg>Confirm Password is Required.</seg>
              </tuv>
                <tuv xml:lang="es">
                  <seg>Confirmar contraseñas es obligatorio.</seg>
