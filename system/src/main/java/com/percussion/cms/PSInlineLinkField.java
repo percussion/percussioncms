@@ -316,7 +316,7 @@ public class PSInlineLinkField
 
       PSRelationshipProcessor processor = PSRelationshipProcessor.getInstance();
 
-      // process moidifies
+      // process modifies
       processor.save(modifies);
 
       // process deletes
