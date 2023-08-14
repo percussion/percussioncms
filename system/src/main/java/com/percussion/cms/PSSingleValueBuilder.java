@@ -265,8 +265,8 @@ public class PSSingleValueBuilder extends PSDisplayFieldBuilder
     *
     * @param value The definition of the value. Maybe <code>null</code>.
     *
-    * @return If value is <code>null</code>, <code>null</code> is returned.
-    *    Otherwise a valid extractor is returned.
+    * @return If value is <code>null</code>, <code>null</code> is returned,
+    *    otherwise a valid extractor is returned.
     */
    private IPSDataExtractor createExtractor( IPSReplacementValue value )
    {
@@ -330,7 +330,6 @@ public class PSSingleValueBuilder extends PSDisplayFieldBuilder
             {
                org.jsoup.nodes.Document jsoupDoc = PSHtmlUtils.createHTMLDocument(content, StandardCharsets.UTF_8,true,null);
                contentDoc = W3CDom.convert(jsoupDoc);
-               isModified = PSInlineLinkField.expandEmptyElement(contentDoc);
                isModified = PSInlineLinkField.expandEmptyElement(contentDoc);
                
                processVariant(contentDoc.getDocumentElement(),
@@ -514,7 +513,7 @@ public class PSSingleValueBuilder extends PSDisplayFieldBuilder
          Node p = elem.getParentNode();
          NodeList nl = elem.getChildNodes();
          int len = nl.getLength();
-         List<Node> nodes = new ArrayList<Node>();
+         List<Node> nodes = new ArrayList<>();
          for(int i = 0; i < len; i++)
          {
             nodes.add(nl.item(i));
@@ -649,7 +648,7 @@ public class PSSingleValueBuilder extends PSDisplayFieldBuilder
          if (StringUtils.isEmpty(attr.getValue()) && REMOVE_EMPTY_ATTRIBUTES.contains(name))
          {
             if (removeAttrs == null)
-               removeAttrs = new ArrayList<String>();
+               removeAttrs = new ArrayList<>();
             removeAttrs.add(name);
          }
       }
@@ -768,7 +767,7 @@ public class PSSingleValueBuilder extends PSDisplayFieldBuilder
       
       
       
-      Map params = new HashMap();
+      Map params = new HashMap<>();
       params.put(IPSHtmlParameters.SYS_CONTENTID, newContentId);
       params.put(IPSHtmlParameters.SYS_VARIANTID, variantid);
       params.put(IPSHtmlParameters.SYS_CONTEXT, context);
@@ -844,7 +843,7 @@ public class PSSingleValueBuilder extends PSDisplayFieldBuilder
 
    public static String getValidFlag(int contentid)
    {
-      /**
+      /*
        * First checking if object is in Recycle Bin, if "Yes" then return "u" as
        * flag to mark link as PERC_BROKENLINK
        */
@@ -909,7 +908,7 @@ public class PSSingleValueBuilder extends PSDisplayFieldBuilder
    }
    
    /**
-    * Utility method to replace the variant by requesting latest output from
+    * Utility method to replace the variant by requesting the latest output from
     * the given parameters.
     *
     * @param pssessionid The session id, it may not be <code>null</code> or
@@ -1201,7 +1200,7 @@ public class PSSingleValueBuilder extends PSDisplayFieldBuilder
       {
          rel = svc.loadRelationship(Integer.parseInt(relationshipid));
       }
-      catch (NumberFormatException e)
+      catch (NumberFormatException | PSException e)
       {
          throw new PSCmsException(IPSCmsErrors.LOAD_AA_RELATIONSHIP_FAILED,
                new Object[]
@@ -1209,15 +1208,7 @@ public class PSSingleValueBuilder extends PSDisplayFieldBuilder
                   relationshipid
                },e);
       }
-      catch (PSException e)
-      {
-         throw new PSCmsException(IPSCmsErrors.LOAD_AA_RELATIONSHIP_FAILED,
-               new Object[]
-               {
-                     relationshipid
-               },e);
-      }
-    
+
       if(rel==null)
       {
          throw new PSCmsException(IPSCmsErrors.LOAD_AA_RELATIONSHIP_FAILED,
@@ -1319,7 +1310,7 @@ public class PSSingleValueBuilder extends PSDisplayFieldBuilder
                   break;
                }
             }
-            contentid = (found == true) ? contentid : null;
+            contentid = (found) ? contentid : null;
          }
       }
       return contentid;
@@ -1341,11 +1332,9 @@ public class PSSingleValueBuilder extends PSDisplayFieldBuilder
          return false;
 
       int cid = Integer.parseInt(contentid);
-      Iterator iter = locatorList.iterator();
-      while (iter.hasNext())
-      {
-         PSLocator locator = (PSLocator) iter.next();
-         if(locator.getId()==cid)
+      for (Object o : locatorList) {
+         PSLocator locator = (PSLocator) o;
+         if (locator.getId() == cid)
             return true;
       }
       return false;
@@ -1451,7 +1440,7 @@ public class PSSingleValueBuilder extends PSDisplayFieldBuilder
        {
            /*This should not happen,
             *but may happen if user opens the ektron control in html
-            *mode and changes some thing over there.
+            *mode and changes something over there.
             *We can not fix the variants in that case.
             *Just print the trace message.*/
             request.printTraceMessage(
@@ -1547,19 +1536,11 @@ public class PSSingleValueBuilder extends PSDisplayFieldBuilder
             fixedUrl = PSMacroUtils.fixLinkUrlRevisionForFlags(request,
                   variantUrl, "i".toCharArray());
          }
-         catch (PSInternalRequestCallException e)
+         catch (PSInternalRequestCallException | PSNotFoundException | PSRequestParsingException e)
          {
             ex = e;
          }
-         catch (PSNotFoundException e)
-         {
-            ex = e;
-         }
-         catch (PSRequestParsingException e)
-         {
-            ex = e;
-         }
-         if (ex != null)
+          if (ex != null)
          {
             throw new PSCmsException(ex);
          }
@@ -1680,12 +1661,12 @@ public class PSSingleValueBuilder extends PSDisplayFieldBuilder
     * The selected text needs to be decoded as the
     * original text has been "escaped()" by the Java-Script on the client
     * (browser).
-    * 
+    * <br/>
     * However, Codecs.URLDecode() only works with single byte characters it
     * doesn't work with multi-byte characters. This is fine in this specific
     * situation, because we are expecting the (client) Java-Script will convert
     * multi-byte characters to numeric character reference (in the format of
-    * "&#D;", "&#XH" or "&#xH", where "D" is decimal numeric, "H" is hex numeric
+    * "&#D;", "&#XH" or "&#xH"), where "D" is decimal numeric, "H" is hex numeric
     * value.
     * 
     * @param selectedText The text that needs to be decoded, if
@@ -1736,8 +1717,9 @@ public class PSSingleValueBuilder extends PSDisplayFieldBuilder
                for (int i=0; i<children.getLength(); i++)
                {
                   Node test = children.item(i);
-                  if (test.getNodeType() == Node.ELEMENT_NODE)
-                  addReadOnlyAttributes((Element) test);
+                  if (test.getNodeType() == Node.ELEMENT_NODE) {
+                     addReadOnlyAttributes((Element) test);
+                  }
                }
             }
        }
@@ -1764,11 +1746,11 @@ public class PSSingleValueBuilder extends PSDisplayFieldBuilder
    /**
     * The values of inline link types.
     */
-   private static String RX_INLINETYPE_HYPERLINK = "hyperlink";
-   private static String RX_INLINETYPE_IMAGE = "image";
-   private static String RX_INLINETYPE_RXVARIANT = "rxvariant";
-   private static String RX_INLINETYPE_RXHYPERLINK = "rxhyperlink";
-   private static String RX_INLINETYPE_RXIMAGE = "rximage";
+   private static final String RX_INLINETYPE_HYPERLINK = "hyperlink";
+   private static final String RX_INLINETYPE_IMAGE = "image";
+   private static final String RX_INLINETYPE_RXVARIANT = "rxvariant";
+   private static final String RX_INLINETYPE_RXHYPERLINK = "rxhyperlink";
+   private static final String RX_INLINETYPE_RXIMAGE = "rximage";
 
    /**
     * Attribute name to represent the selected text.
