@@ -53,9 +53,9 @@
                     "<div class='fieldGroup'>" +
                     "<div id='perc-section-general-container'>" +
                     "<label for='perc-section-name' class='perc-required-field'>" + I18N.message( "perc.ui.newSectionDialog.label@Section name" ) + ":</label> <br/> " +
-                    "<input type='text' class='required' tabindex='" + taborder + "' id='perc-section-name' name='section_name' maxlength='512'/> <br/>" +
+                    "<input type='text' aria-required='true' class='required' tabindex='" + taborder + "' id='perc-section-name' name='section_name' maxlength='512'/> <br/>" +
                     "<label for='perc-section-url' class='perc-required-field'>" + I18N.message( "perc.ui.newSectionDialog.label@URL" ) + ":</label> <br/> " +
-                    "<input type='text' class='required' tabindex='" + taborder + "' id='perc-section-url' name='page_url' maxlength='100'/> <br/>" +
+                    "<input type='text' class='required' aria-required='true' tabindex='" + taborder + "' id='perc-section-url' name='page_url' maxlength='100'/> <br/>" +
                     "<label for='perc-external-link-target'>" + I18N.message( "perc.ui.editSectionDialog.label@Target window" ) + ":</label> <br/>" +
                     "<select id='perc-section-target' name='perc-section-target'>" +
                     "<option value='_self' selected>" + I18N.message( "perc.ui.editSectionDialog.label@Same window" ) + "</option>" +

@@ -1107,12 +1107,10 @@ public class PSSteppedWorkflowService implements IPSSteppedWorkflowService, IPSN
     		transRole.setRoleId(roleId);
     		transRole.setTransitionId(transition.getGUID().getUUID());
     		transRole.setWorkflowId(workflow.getGUID().getUUID());
-
             //Don't add duplicates
             if(!tranRoles.contains(transRole)) {
                 tranRoles.add(transRole);
             }
-
 		}
     	return tranRoles;
     }   

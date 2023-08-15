@@ -17,7 +17,6 @@
 
 package com.percussion.workflow;
 
-import com.github.javafaker.Bool;
 import com.percussion.cms.IPSCmsErrors;
 import com.percussion.cms.IPSConstants;
 import com.percussion.cms.PSCmsException;

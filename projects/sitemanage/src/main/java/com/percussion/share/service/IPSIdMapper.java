@@ -17,6 +17,7 @@
 package com.percussion.share.service;
 
 import com.percussion.design.objectstore.PSLocator;
+import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.utils.guid.IPSGuid;
 
 import java.util.List;
@@ -44,6 +45,23 @@ public interface IPSIdMapper
     * @return the id as an {@link IPSGuid}, never <code>null</code>.
     */
    public IPSGuid getGuid(String id);
+
+    /**
+     * Converts a guid string into a valid guid for the specified type.
+     * @param id String representation of a GUID
+     * @param type The type of guid to create
+     * @return A valid GUID
+     */
+    IPSGuid getGuid(String id, PSTypeEnum type);
+
+   /**
+    * Converts a guid string into a valid guid for the specified type.
+    * @param id String representation of a GUID
+    * @param type The type of guid to create
+    * @param forceType When true, the specified type will be forced on the returned guid
+    * @return A valid GUID
+    */
+   IPSGuid getGuid(String id, PSTypeEnum type, boolean forceType);
    
    /**
     * Gets the content ID from an item GUID.

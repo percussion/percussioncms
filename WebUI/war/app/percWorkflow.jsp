@@ -43,14 +43,14 @@ if(locale==null){
                         <div  id="perc-wf-new-editor" class="perc-wf-editor" style="display: none;">
                             <span class="perc-required-label"><label><i18n:message key = "perc.ui.general@Denotes Required Field"/></label></span>
                              <div id="perc-new-wf-name-label" class = "perc-required-field"><label class="perc-name-label"><i18n:message key = "perc.ui.workflow@Name"/><br></label>
-                                <input maxlength = '50' required pattern='^[a-zA-Z0-9-_\. ]{1,50}$' title='1 to 50 letters,numbers,-, _, or space' id="perc-new-workflow-name">
+                                <input tabindex="0" maxlength = '50' required pattern='^[a-zA-Z0-9-_\. ]{1,50}$' title='1 to 50 letters,numbers,-, _, or space' id="perc-new-workflow-name">
                             </div>
-                            <div class = "perc-wf-default"><input type = "checkbox" /> <span><i18n:message key = "perc.ui.workflow@Make Default"/></span></div>
+							<div class = "perc-wf-default"><input tabindex="0" title='<i18n:message key = "perc.ui.workflow@Make Default"/>' type="checkbox" id="perc-wf-default-new-checkbox" /> <label for ="perc-wf-default-new-checkbox"><i18n:message key = "perc.ui.workflow@Make Default"/></label></div>
                             <!-- control gets generated here in percWorkflowView -->
                            <div id="perc-publish-now-roles-control-new" style="display:block; width:340px;"></div>
                             <div style="width: 100%; height: 50px;" id="perc-new-wf-save-cancel-block"> 
-                                <button id="perc-wf-save" class="btn btn-primary" name="perc_wizard_save"><i18n:message key ="perc.ui.button@Save"/></button>
-                                <button id="perc-wf-cancel" class="btn btn-primary" name="perc_wizard_cancel"><i18n:message key ="perc.ui.common.label@Cancel"/></button>
+                                <button tabindex="0" title='<i18n:message key ="perc.ui.button@Save"/>' id="perc-wf-save" class="btn btn-primary" name="perc_wizard_save"><i18n:message key ="perc.ui.button@Save"/></button>
+                                <button tabindex="0" title='<i18n:message key ="perc.ui.common.label@Cancel"/>' id="perc-wf-cancel" class="btn btn-primary" name="perc_wizard_cancel"><i18n:message key ="perc.ui.common.label@Cancel"/></button>
                             </div>
                         </div>   
 
@@ -60,12 +60,12 @@ if(locale==null){
                              <div id="perc-update-wf-name-label" class = "perc-required-field" ><label class="perc-name-label"><i18n:message key = "perc.ui.workflow@Name"/><br></label>
                                 <input maxlength = '50' required pattern='^[a-zA-Z0-9-_\. ]{1,50}$' title='1 to 50 letters,numbers,-, _, or space' id="perc-update-workflow-name">
                             </div>
-                             <div class = "perc-wf-default"><input type = "checkbox" /> <span><i18n:message key = "perc.ui.workflow@Make Default"/></span></div>
+							 <div class = "perc-wf-default"><input tabindex="0" title='<i18n:message key = "perc.ui.workflow@Make Default"/>' type = "checkbox" id="perc-wf-default-update-checkbox" /> <label for="perc-wf-default-update-checkbox"><i18n:message key = "perc.ui.workflow@Make Default"/></label></div>
                              <!-- control gets generated here in percWorkflowView -->
                              <div id="perc-publish-now-roles-control" style="display:block; width:340px;"></div>
                             <div style="width: 100%; height: 50px; " id="perc-update-wf-save-cancel-block"> 
-                                <button name="perc_wizard_save" class="btn btn-primary" id="perc-wf-update-save"><i18n:message key ="perc.ui.button@Save"/></button>
-                                <button name="perc_wizard_cancel" class="btn btn-primary" id="perc-wf-update-cancel"><i18n:message key ="perc.ui.common.label@Cancel"/></button>
+                                <button tabindex="0" title='<i18n:message key ="perc.ui.button@Save"/>' name="perc_wizard_save" class="btn btn-primary" id="perc-wf-update-save"><i18n:message key ="perc.ui.button@Save"/></button>
+                                <button tabindex="0" title='<i18n:message key ="perc.ui.common.label@Cancel"/>' name="perc_wizard_cancel" class="btn btn-primary" id="perc-wf-update-cancel"><i18n:message key ="perc.ui.common.label@Cancel"/></button>
                             </div>
                         </div> 
                         
@@ -73,7 +73,7 @@ if(locale==null){
                         <div id="perc-wf-name-wrapper">
                         <div class = "perc-wf-action-wrapper">
                             <div class = 'perc-default-wf-marker'><i18n:message key = "perc.ui.workflow@Default"/></div>
-                            <div title="<i18n:message key = "perc.ui.workflow@Edit Workflow Details"/>" id="perc-wf-edit"></div>
+                            <div role="button" tabindex="0" title="<i18n:message key = "perc.ui.workflow@Edit Workflow Details"/>" id="perc-wf-edit"></div>
                         </div>     
                             <div id="perc-workflow-name"></div>
                         </div>

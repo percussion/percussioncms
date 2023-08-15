@@ -5,20 +5,20 @@
 		<div class="form-title">* Select Site</div>
         <div class="wizard-form-error" data-bind="slideVisible: invalidSiteSelection()">Site selection is required</div>
 		<div class="site-select">
-			<select class="styled-select" data-bind="options: sites, optionsText: function(site) {return site.name}, value: selectedSite, optionsCaption: 'Select the Site for this page'">
+			<select class="styled-select" aria-required="true" data-bind="options: sites, optionsText: function(site) {return site.name}, value: selectedSite, optionsCaption: 'Select the Site for this page'">
 			</select>
 		</div>
 	</div>
 	<div class="form-title">* Page Title</div>
     <div class="wizard-form-error" data-bind="slideVisible: invalidPageTitle()">Page Title is required</div>
 	<div class="page-title-input">
-		<input data-bind="hasFocus: titleHasFocus, value: pageTitle, valueUpdate: 'afterkeydown'" type="text" name="pageTitle" class="styled-input" placeholder="Enter a title for your Page"></input>
+		<input data-bind="hasFocus: titleHasFocus, value: pageTitle, valueUpdate: 'afterkeydown'" type="text" name="pageTitle" aria-required="true" class="styled-input" placeholder="Enter a title for your Page"></input>
 	</div>
 	<div class="form-title">* File Name (URL)</div>
     <div class="wizard-form-error" data-bind="slideVisible: invalidPageFile()">File Name is required</div>
 	<div class="wizard-form-error" data-bind="slideVisible: fileNameTooLong()">File Name cannot exceed 255 characters</div>
 	<div class="blog-file-name-input">
-		<input data-bind="hasFocus: fileHasFocus, value: pageFile, valueUpdate: 'afterkeydown'" type="text" name="pageFile" class="styled-input" placeholder="Enter a file name. Your file name will be used in your URL. Include your file extension (.htm, .html, etc.)"></input>
+		<input data-bind="hasFocus: fileHasFocus, value: pageFile, valueUpdate: 'afterkeydown'" type="text" name="pageFile" aria-required="true" class="styled-input" placeholder="Enter a file name. Your file name will be used in your URL. Include your file extension (.htm, .html, etc.)"></input>
 	</div>
     
     <div class="control-container">

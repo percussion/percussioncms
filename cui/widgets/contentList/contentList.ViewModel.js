@@ -238,12 +238,32 @@ define(['knockout', 'pubsub', 'utils', 'jquery-ui'], function(ko,PubSub, utils) 
             });
         };
 
+        self.launchOpenKeyPress = function(item, event) {
+            if(event.which == 13){
+                self.options.cm1Adaptor.openItem(item.path(),item.id()).fail(function(message){
+                    PubSub.publish("OpenErrorDialog", message);
+                }).always(function(){
+                    item.isSelected(false);
+                });
+            };
+        };
+
         self.launchPreview = function(item) {
             self.options.cm1Adaptor.previewItem(item.path(),item.id()).fail(function(message){
                 PubSub.publish("OpenErrorDialog", message);
             }).always(function(){
                 item.isSelected(false);
             });
+        };
+
+        self.launchPreviewKeyPress = function(item, event) {
+            if(event.which == 13){
+                self.options.cm1Adaptor.previewItem(item.path(),item.id()).fail(function(message){
+                    PubSub.publish("OpenErrorDialog", message);
+                }).always(function(){
+                    item.isSelected(false);
+                });
+            };
         };
 
         self.launchCopy = function(item) {
@@ -254,6 +274,18 @@ define(['knockout', 'pubsub', 'utils', 'jquery-ui'], function(ko,PubSub, utils) 
             }).always(function(){
                 item.isSelected(false);
             });
+        };
+
+        self.launchCopyKeyPress = function(item, event) {
+            if(event.which == 13){
+                self.options.cm1Adaptor.copyItem(item.path(),item.id()).done(function(){
+                    refreshView();
+                }).fail(function(message){
+                    PubSub.publish("OpenErrorDialog", message);
+                }).always(function(){
+                    item.isSelected(false);
+                });
+            };
         };
 
         self.launchDelete = function(item) {
@@ -287,12 +319,57 @@ define(['knockout', 'pubsub', 'utils', 'jquery-ui'], function(ko,PubSub, utils) 
             var data = {message: self.constants.DELETE_PROMPT_MESSAGE, title:"Confirmation", primaryButton:{"text":"Yes", callback:delCallback}};
             PubSub.publish("OpenConfirmationDialog", data);
         };
+
+        self.launchDeleteKeyPress = function(item, event) {
+            if(event.which == 13){
+                var forceDelCallback = function(){
+                    self.options.cm1Adaptor.forceDeleteItem(item.path(), item.id(), item.name()).done(function(){
+                        removeItemFromSearchResults(item);
+                        refreshView();
+                    }).fail(function(fdmsg){
+                        PubSub.publish("OpenErrorDialog", fdmsg);
+                    }).always(function(){
+                        item.isSelected(false);
+                    });
+                };
+                var delCallback = function(){
+                    self.options.cm1Adaptor.deleteItem(item.path(), item.id(), item.name()).done(function(){
+                        removeItemFromSearchResults(item);
+                        refreshView();
+                    }).fail(function(result){
+                        var message = result.content;
+                        if(!result.canForceDelete){
+                            PubSub.publish("OpenErrorDialog", message);
+                        }
+                        else{
+                            var data = {message: message, forceChkBoxId:result.chkBoxId, title:"Confirmation", primaryButton:{"text":"Yes", callback:forceDelCallback}};
+                            PubSub.publish("OpenForceDeleteConfirmationDialog", data);
+                        }
+                    }).always(function(){
+                        item.isSelected(false);
+                    });
+                };
+                var data = {message: self.constants.DELETE_PROMPT_MESSAGE, title:"Confirmation", primaryButton:{"text":"Yes", callback:delCallback}};
+                PubSub.publish("OpenConfirmationDialog", data);
+            };
+        };
+
         self.launchBookmark = function(item) {
             self.options.cm1Adaptor.bookMarkItem(item.path(),item.id()).fail(function(message){
                 PubSub.publish("OpenErrorDialog", message);
             }).always(function(){
                 item.isSelected(false);
             });
+        };
+
+        self.launchBookmarkKeyPress = function(item, event) {
+            if(event.which == 13){
+                self.options.cm1Adaptor.bookMarkItem(item.path(),item.id()).fail(function(message){
+                    PubSub.publish("OpenErrorDialog", message);
+                }).always(function(){
+                    item.isSelected(false);
+                });
+            };
         };
 
         $(function() {

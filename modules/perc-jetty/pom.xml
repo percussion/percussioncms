@@ -5,7 +5,7 @@
   <parent>
     <groupId>com.percussion</groupId>
     <artifactId>core</artifactId>
-    <version>8.1.2</version>
+    <version>8.1.3-SNAPSHOT</version>
     <relativePath>../../pom.xml</relativePath>
   </parent>
   <artifactId>perc-jetty</artifactId>
@@ -243,7 +243,7 @@
               <dependency>
                   <groupId>com.percussion</groupId>
                   <artifactId>perc-system</artifactId>
-                  <version>8.1.2.1</version>
+                  <version>${project.version}</version>
               </dependency>
           </dependencies>
       </plugin>
@@ -379,7 +379,7 @@
      <dependency>
         <groupId>com.percussion</groupId>
         <artifactId>sitemanage</artifactId>
-         <version>8.1.2.1</version>
+         <version>${project.version}</version>
     </dependency>
 
  <dependency>

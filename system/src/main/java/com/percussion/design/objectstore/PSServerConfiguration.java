@@ -85,6 +85,14 @@ public class PSServerConfiguration implements IPSDocument
       m_serverCacheSettings = new PSServerCacheSettings();
    }
 
+   public PSServerConfiguration(boolean encryptPwd)
+   {
+      m_securityProviders = new PSCollection(PSSecurityProviderInstance.class);
+      m_serverCacheSettings = new PSServerCacheSettings();
+      m_encryptPassword = encryptPwd;
+   }
+
+
    /**
     * Get the number of days the log has been running.
     *
@@ -1147,7 +1155,7 @@ public class PSServerConfiguration implements IPSDocument
          while (sources.hasNext())
          {
             PSAuthentication source = (PSAuthentication) sources.next();
-            authentications.appendChild(source.toXml(doc));
+            authentications.appendChild(source.toXml(doc,m_encryptPassword));
          }
       }
 
@@ -1515,8 +1523,7 @@ public class PSServerConfiguration implements IPSDocument
          while (authentication != null)
          {
             m_authentications.add(new PSAuthentication(authentication,
-               this, null));
-
+               this, null,m_encryptPassword));
             authentication = tree.getNextElement(
                PSAuthentication.XML_NODE_NAME, nextFlags);
          }
@@ -2467,6 +2474,8 @@ public class PSServerConfiguration implements IPSDocument
     * The maximum number of open user sessions cached by the server.
     */
    protected int m_maxOpenSessions = DEFAULT_OPEN_SESSIONS;
+
+   private boolean m_encryptPassword = true;
 
    private   boolean                  m_modified = false;   // Save will use this to update data to server. Can be used to bring Save prompts
 

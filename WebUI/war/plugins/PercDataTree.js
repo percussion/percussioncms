@@ -51,7 +51,8 @@
         cookieId            : "dynatree-checkbox",
         idPrefix            : "dynatree-checkbox-",
         customOnRender      : function(){},
-        customOnExpand      : function(){}
+        customOnExpand      : function(){},
+		keyboard            : true
      };
 
     // Some CLASSES to reuse in selectors
@@ -102,21 +103,45 @@
             var head = $('<div class="' + LABEL_HEAD_CLASS + '" />').html(options.title);//.css('color', '#0099CC');
             container.append(head);
             // Enable/disable collapse and add buttons (the sentence after '&&' is evaluated only if the option is truthy)
-            options.collapsible  && head.append($('<span style="float: left;" class ="' + COLLAPSE_BTN_CLASS + ' ' + MINIMIZER_CLASS + '" />'));
-            options.enableAdd    && head.append($('<div class="' + ADD_BTN_CLASS + '"/>').attr('title', options.addTitle));
+            options.collapsible  && head.append($('<span role="button" tabindex="0" style="float: left;" class ="' + COLLAPSE_BTN_CLASS + ' ' + MINIMIZER_CLASS + '" />').attr('title', I18N.message("perc.ui.workflow.view@Minimize")));
+            options.enableAdd    && head.append($('<div role="button" tabindex="0" class="' + ADD_BTN_CLASS + '"/>').attr('title', options.addTitle));
 
             // Bind collapse and add button evetns
             container.find('.' + COLLAPSE_BTN_CLASS).off().on("click",function() {
                 $(this).toggleClass(MINIMIZER_CLASS).toggleClass(MAXIMIZER_CLASS);
+
+				var combinedClass = $(this).attr('class');
+				var minmaxClass = combinedClass.split(" ");
+				if(minmaxClass[1] == MINIMIZER_CLASS){
+					$(this).attr('title',I18N.message("perc.ui.workflow.view@Minimize"));
+				}else if(minmaxClass[1] == MAXIMIZER_CLASS){
+					$(this).attr('title',I18N.message("perc.ui.workflow.view@Maximize"));
+				}
+
                 container.find('.' + TREELIST_CONTAINER_CLASS).slideToggle("fast");
             });
+			$('.' + COLLAPSE_BTN_CLASS).off("keydown").on("keydown",function(event) {
+				if(event.code == "Enter" || event.code == "Space"){
+						document.activeElement.click();
+				}
+            });
+
             container.find('.' + ADD_BTN_CLASS).off().on("click",function() {
                 var options = container.data('options');
                 if (typeof(options.createItem) == 'function')
                 {                
                     options.createItem();
                 }    
-            });  
+            });
+
+
+			///
+			$("."+ADD_BTN_CLASS).off("keydown").on("keydown",function(event) {
+				if(event.code == "Enter" || event.code == "Space"){
+						document.activeElement.click();
+				}
+            });
+			///
         }
 
         // Create the tree/list container after the head
@@ -161,7 +186,23 @@
                 span = $(nodeSpan);
                 var uls  = span.parents("ul").length - 1;
                 span.attr("for",dtnode.data.title).css("padding-left", uls * DYNATREE_UL_LI_PADDING + DYNATREE_UL_LI_PADDING_OFFSET).find('.dynatree-title').addClass("perc-ellipsis");
-                // If the element has no children, correct the align
+                var titleSpan = span.find('.dynatree-title');
+				var checkSpan = span.find('.dynatree-checkbox');
+				if(typeof titleSpan !== 'undefined'){
+
+				}
+				if(typeof checkSpan !== 'undefined'){
+					checkSpan.attr("title",dtnode.data.title);
+					checkSpan.attr("role","button");
+					checkSpan.attr("tabindex","0");
+					checkSpan.on("keydown",function(eventHandler){
+					if(eventHandler.code == "Space"){
+						document.activeElement.click();
+						}
+					});
+				}
+
+				// If the element has no children, correct the align
                 if (! $(span[0]).hasClass('dynatree-has-children')) {
                     span.find('.dynatree-title').css('padding-left', '13px');
                 }
@@ -320,6 +361,11 @@
                     {
                         options.createItem();
                     }
+                })
+				.on("keydown",function(eventHandler) {
+                    if(eventHandler.code == "Enter" || eventHandler.code == "Space"){
+						document.activeElement.click();
+					}
                 });
         }
     }

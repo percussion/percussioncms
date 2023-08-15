@@ -51,6 +51,7 @@
         function showNewWorkflowEditor()
         {
             $(".perc-wf-default").find('input').prop('checked', false).prop('disabled', false);
+			$(".perc-wf-default").find('input').attr('aria-disabled', "false");
             hideWorkflowUpdateEditor();
             hideWorkflowEditButton();
             //create the workflow control for publish now to staging permissions
@@ -127,11 +128,18 @@
         function editWorkflow(evt)
         {
             $(".perc-wf-default").find('input[type="checkbox"]').prop('checked', false).prop('disabled', false);
+			$(".perc-wf-default").find('input[type="checkbox"]').attr('aria-disabled', "false");
             $(".perc-step-config-button, .perc-reserved-step-config-bttn, .perc-step-delete-button, .perc-create-new-step").off("click").on("click");
             $(".perc-create-new-step").addClass("perc-step-disable");
             $(".perc-step-delete-button").addClass("perc-step-delete-disable");
             $(".perc-step-config-button").addClass("perc-step-config-disable");
             $(".perc-reserved-step-config-bttn").addClass("perc-reserved-step-config-disable");
+			//adding aria-disabled attribute to indicate disability
+			$(".perc-create-new-step").attr("aria-disabled","true");
+            $(".perc-step-delete-button").attr("aria-disabled","true");
+            $(".perc-step-config-button").attr("aria-disabled","true");
+            $(".perc-reserved-step-config-bttn").attr("aria-disabled","true");
+
             hideWorkflowEditButton();
             $("#perc-wf-update-editor").show();
             var workflowName = $("#perc-workflow-steps-container").data("workflowName");
@@ -141,6 +149,7 @@
 
             if(defaultWorkflow === workflowName) {
                 $(".perc-wf-default").find('input[type="checkbox"]').prop('checked', true).prop('disabled', true);
+				$(".perc-wf-default").find('input[type="checkbox"]').attr('aria-disabled', "true");
             }
             $("#perc-update-workflow-name").val(workflowName).on("focus change", function(evt)
             {
@@ -272,6 +281,7 @@
                 container.find(".perc-item-delete-button").off("click");
 
                 container.find('.perc-item-delete-button').addClass('perc-item-disabled');
+				container.find('.perc-item-delete-button').attr("aria-disabled","true");
             }
 
             // Update the Assigned tree/list
@@ -536,6 +546,12 @@
             });
 
             //Bind Edit event
+			$("#perc-wf-edit").off("keydown").on("keydown", function(eventHandler)
+            {
+                if(eventHandler.code == "Enter" || eventHandler.code == "Space"){
+				document.activeElement.click();
+			}
+            });
             $("#perc-wf-edit").off("click").on("click", function(evt)
             {
                 editWorkflow(evt);
@@ -753,8 +769,80 @@
             {
                 $(".perc-sa-loading-warning-message").addClass("perc-sa-loading-warning-message-hidden").removeClass("perc-sa-loading-warning-message");
                 $.PercDataTree.updateTree(assign_container, [originalSitesJson, originalAssetsJson], selectedWorkflow);
+				setTabIndexForAdminWF()
             }
         }
+		//setting tab index
+		function setTabIndexForAdminWF(){
+			var tabCounterAdminWF = 205;
+			$( "#perc-wf-min-max" ).attr("tabindex",tabCounterAdminWF++);
+			$( ".perc-item-add-button" ).attr("tabindex",tabCounterAdminWF++);
+			$( ".perc-item-delete-button" ).attr("tabindex",tabCounterAdminWF++);
+
+			$(".perc-itemname-list").find('li').each(function() {
+				$(this).attr('tabindex',tabCounterAdminWF++);
+			});
+
+			$( ".perc-datatree-label span" ).attr("tabindex",tabCounterAdminWF++);
+			$( ".perc-datatree-label div" ).attr("tabindex",tabCounterAdminWF++);
+
+			var siteFound = false;
+			$("#perc-workflows-assigned-sites-folders").find('*').each(function() {
+				var classNameVal = this.className;
+				if(classNameVal == "dynatree-expander"){
+					$(this).attr('tabindex',tabCounterAdminWF++);
+					siteFound = true;
+				}
+			});
+
+			if(siteFound){
+				$(".dynatree-expander").bind("keydown", function(eventHandler){
+					if(eventHandler.code == "Enter" || eventHandler.code == "Space"){
+						document.activeElement.click();
+					}
+				});
+			}
+
+			$( "#perc-wf-edit" ).attr("tabindex",tabCounterAdminWF++);
+
+			$('#perc-workflow-table').find('*').each(function(){
+				var classNameVal = this.className;
+				if(classNameVal == "perc-reserved-step-config-bttn"){
+					this.setAttribute("tabindex", tabCounterAdminWF++);
+				}
+
+				if(classNameVal == "perc-step-config-button"){
+					this.setAttribute("tabindex", tabCounterAdminWF++);
+				}
+
+
+				if(classNameVal == "perc-step-delete-button"){
+					this.setAttribute("tabindex", tabCounterAdminWF++);
+				}
+
+
+				if(classNameVal == "perc-moreLink perc-visible"){
+					this.setAttribute("tabindex", tabCounterAdminWF++);
+				}
+
+				if(classNameVal == "perc-ellipsis perc-more-list perc-hidden"){
+					this.setAttribute("tabindex", tabCounterAdminWF++);
+				}
+
+				if(classNameVal == "perc-lessLink perc-ellipsis perc-hidden"){
+					this.setAttribute("tabindex", tabCounterAdminWF++);
+				}
+
+				if(classNameVal == "perc-create-new-step"){
+					this.setAttribute("tabindex", tabCounterAdminWF++);
+				}
+
+				if(classNameVal == "perc-create-new-step"){
+					this.setAttribute("tabindex", tabCounterAdminWF++);
+				}
+
+			});
+		}
 
 
         /**

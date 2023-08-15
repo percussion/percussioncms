@@ -22,6 +22,12 @@ body {
     margin-bottom: 20px;
 }
 
+.perc-site-card-icon-container-changes {
+    display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
 .perc-site-card-name {
     background-color: #133c55;
     background-color: var(--perc-branded-dark);
@@ -33,6 +39,11 @@ body {
 .perc-site-card-icon {
     color: #133c55;
     color: var(--perc-branded-dark);
+}
+
+.perc-site-card-icon-changes {
+    background-color: #ffffff;
+	border: none;
 }
 
 #percSiteCardOption {

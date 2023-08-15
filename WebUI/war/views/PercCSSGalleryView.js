@@ -113,7 +113,7 @@
         function renderGalleryEntry(name, thumbUrl, nameAsEntered) {
             var output;
     
-            output = '<td><div id="theme-'+name+'-container" class="perc-css-gallery-item" style="display: table-cell"><a id="theme-'+name+'" href="#"><img src="'+thumbUrl+'" alt="perc.ui.template.layout@Theme"/><br /><span class="perc-css-gallery-item-name" style="text-align: center">'+nameAsEntered+'</span></div></a></td>';
+            output = '<td><div id="theme-'+name+'-container" class="perc-css-gallery-item" style="display: table-cell"><a id="theme-'+name+'" tabindex="0" title="'+name+'" role="button"  href="#"><img src="'+thumbUrl+'" alt="perc.ui.template.layout@Theme"/><br /><span class="perc-css-gallery-item-name" style="text-align: center">'+nameAsEntered+'</span></div></a></td>';
     
             return output;
         }

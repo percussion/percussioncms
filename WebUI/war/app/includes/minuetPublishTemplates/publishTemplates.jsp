@@ -14,10 +14,10 @@
         <div class="row">
             <div class="col-md-4 order-sm-first order-md-2 mb-3">
                 <div class="btn-group btn-group-toggle d-flex" data-toggle="buttons">
-                    <label sr-only='<i18n:message key = "perc.ui.publish.title@Card"/>' class="btn btn-secondary perc-site-view-toggle-button active">
+                    <label title='<i18n:message key = "perc.ui.publish.title@Card"/>' tabindex="3" role="button" sr-only='<i18n:message key = "perc.ui.publish.title@Card"/>' class="btn btn-secondary perc-site-view-toggle-button active">
                         <input value="card" type="radio" name="percSiteView" id="percSiteCardOption" autocomplete="off" checked><i aria-hidden class="fas fa-th fa-fw"></i>&nbsp;&nbsp;<i18n:message key = "perc.ui.publish.title@Card"/>
                     </label>
-                    <label sr-only='<i18n:message key = "perc.ui.publish.title@List"/>' class="btn btn-secondary perc-site-view-toggle-button">
+                    <label title='<i18n:message key = "perc.ui.publish.title@List"/>' tabindex="4" role="Button" sr-only='<i18n:message key = "perc.ui.publish.title@List"/>' class="btn btn-secondary perc-site-view-toggle-button">
                         <input value="list" type="radio" name="percSiteView" id="percSiteListOption" autocomplete="off"><i aria-hidden class="fas fa-th-list"></i>&nbsp;&nbsp;<i18n:message key = "perc.ui.publish.title@List"/>
                     </label>
                 </div>
@@ -25,7 +25,7 @@
             <div class="col-md-8 float-left">
                 <!-- Filter Field -->
                 <div class="md-form mt-0">
-                    <input class="form-control perc-site-filter-field" type="text" placeholder='<i18n:message key="perc.ui.publish.title@Filter Sites"/>' aria-label='<i18n:message key="perc.ui.publish.title@Filter Sites"/>'>
+                    <input class="form-control perc-site-filter-field" tabindex="2" type="text" placeholder='<i18n:message key="perc.ui.publish.title@Filter Sites"/>' aria-label='<i18n:message key="perc.ui.publish.title@Filter Sites"/>'>
                 </div>
             </div>
         </div>
@@ -37,14 +37,14 @@
         <div id="sitesCardView" class="row justify-content-center" style="display:none;">
             {{#each SiteSummary}}
             <div class="col-lg-4 perc-site-card-container mb-4">
-                <div aria-label="{{name}}" tabindex="0" role="button" data-perc-site-id="{{siteId}}" class="card perc-site-card perc-site-select h-100">
+                <div aria-label="{{name}}" title="{{name}}" tabindex="0" role="button" data-perc-site-id="{{siteId}}" class="card perc-site-card perc-site-select h-100">
                     <div class="card-header perc-site-card-name text-center">
                         {{name}}
                     </div>
-                    <div class="card-body perc-site-card-icon-container">
-                        <h5 class="card-title perc-site-card-icon text-center align-middle">
+                    <div class="card-body perc-site-card-icon-container perc-site-card-icon-container-changes">
+                        <button title="<i18n:message key = "perc.ui.publish.title@Site Configuration"/>" class="card-title perc-site-card-icon perc-site-card-icon-changes text-center align-middle">
                             <i aria-hidden class="fas fa-globe-americas fa-10x"></i>
-                        </h5>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -83,9 +83,9 @@
         </div>
         <div class="row">
             <div class="col perc-publish-state-nav text-right">
-                <span class="float-left"><button id="percBackToSites" class="btn perc-btn-primary"><i18n:message key="perc.ui.publish.reports@Back"/></button></span>&nbsp;
-                <span><button title='<i18n:message key="perc.ui.publish.view@Add New Server"/>' id="percAddServer" class="btn perc-btn-primary"><i aria-hidden class="fas fa-plus"></i></button></span>
-                <span><button title='<i18n:message key="perc.ui.publish.view@Refresh Server Info"/>' id="percRefreshServerList" class="btn perc-btn-primary"><i aria-hidden class="fas fa-sync-alt"></i></button></span>
+                <span class="float-left"><button title='<i18n:message key="perc.ui.publish.reports@Back"/>' tabindex="0" id="percBackToSites" class="btn perc-btn-primary"><i18n:message key="perc.ui.publish.reports@Back"/></button></span>&nbsp;
+                <span><button title='<i18n:message key="perc.ui.publish.view@Add New Server"/>' tabindex="0" id="percAddServer" class="btn perc-btn-primary"><i aria-hidden class="fas fa-plus"></i></button></span>
+                <span><button title='<i18n:message key="perc.ui.publish.view@Refresh Server Info"/>' tabindex="0" id="percRefreshServerList" class="btn perc-btn-primary"><i aria-hidden class="fas fa-sync-alt"></i></button></span>
             </div>
         </div>
         <div class="row">
@@ -146,14 +146,14 @@
             <span class="perc-server-list-name">{{serverName}}{{#if (validatePropertyValue serverType 'PRODUCTION')}}&nbsp;&nbsp;<i aria-label='<i18n:message key="perc.ui.publish.view@Production"/>' class="fas fa-globe-americas"></i>{{/if}}{{#if isDefault}}&nbsp;&nbsp;<i aria-label='<i18n:message key="perc.ui.publish.view@Publish Now Server"/>' class="fas fa-star"></i>{{/if}}</span>
         </div>
         <div class="col-sm-12 col-md-5 perc-server-list-col text-md-right text-sm-left">
-            <button aria-label='<i18n:message key="perc.ui.publish.title@Server Configuration"/>' class="btn perc-btn-primary perc-edit-server-properties" data-perc-server-id="{{serverId}}"><i class="fas fa-cog"></i></button>&nbsp;
+            <button title='<i18n:message key="perc.ui.publish.title@Server Configuration"/>' tabindex="0" aria-label='<i18n:message key="perc.ui.publish.title@Server Configuration"/>' class="btn perc-btn-primary perc-edit-server-properties" data-perc-server-id="{{serverId}}"><i class="fas fa-cog"></i></button>&nbsp;
             <div data-perc-server-name="{{serverName}}" class="btn-group perc-publish-button-group">
                 {{#if (enableIncremental canIncrementalPublish isFullPublishRequired)}}
-                <button aria-label='<i18n:message key="perc.ui.publish.view@Incremental Publish"/>' data-perc-publish-type="incremental" data-perc-server-id="{{serverId}}" type="button" class="btn perc-btn-primary perc-publish-button"><i18n:message key="perc.ui.publish.view@Incremental"/></button>
-                <button type="button" class="btn perc-btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <button title='<i18n:message key="perc.ui.publish.view@Incremental Publish"/>' tabindex="0" aria-label='<i18n:message key="perc.ui.publish.view@Incremental Publish"/>' data-perc-publish-type="incremental" data-perc-server-id="{{serverId}}" type="button" class="btn perc-btn-primary perc-publish-button"><i18n:message key="perc.ui.publish.view@Incremental"/></button>
+                <button title='<i18n:message key="perc.ui.publish.title@Toggle Dropdown"/>' tabindex=""0 type="button" class="btn perc-btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <span class="sr-only"><i18n:message key="perc.ui.publish.title@Toggle Dropdown"/></span>
                 </button>
-                <div class="dropdown-menu">
+                <div role="button" title='<i18n:message key="perc.ui.publish.view@Full Publish"/>' tabindex="0" class="dropdown-menu">
                     <a aria-label='<i18n:message key="perc.ui.publish.view@Full Publish"/>' data-perc-publish-type="full" href="#" class="dropdown-item perc-publish-button"><i18n:message key="perc.ui.publish.title@Full"/></a>
                 </div>
                 {{else}}
@@ -854,3 +854,28 @@
     {{/each}}
 </script>
 
+<script>
+
+setTimeout(setTabIndexForSites, 1000);
+function setTabIndexForSites(){
+	var tabCounterForCard = 5;
+
+	$('#sitesCardView').find('*').each(function(){
+		var classNameVal = this.className;
+		if(classNameVal == "card perc-site-card perc-site-select h-100"){
+			this.setAttribute("tabindex", tabCounterForCard++);
+		}
+
+	});
+
+	var tabCounterForList = 100;
+	$('#sitesListView').find('*').each(function(){
+		var classNameVal = this.className;
+		if(classNameVal == "perc-site-select"){
+			this.setAttribute("tabindex", tabCounterForList++);
+		}
+
+	});
+};
+
+</script>

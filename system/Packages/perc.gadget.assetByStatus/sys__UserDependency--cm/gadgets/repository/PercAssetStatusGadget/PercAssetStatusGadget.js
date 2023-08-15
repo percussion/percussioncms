@@ -158,7 +158,7 @@
             var checkBoxContent = "<input class='perc-table-row-checkbox' type = 'checkbox' data-perc-id='" + assetId + "'/>";
             var previewColContent = "<div class ='perc-preview-col perc-datatable-columnrow' style = 'display:none;'><img src='/cm/gadgets/repository/perc_workflow_status_gadget/images/previewIcon.png'/></div><span></span>";
             var previewTitle = "Preview '" + pageName + "' page";
-            var statusContent = "<span class='perc-table-row-status' data-perc-id='" + assetId + "'>" + itemStatus + "</span><span class='perc-table-row-status-icon'></span>";
+            var statusContent = "<span role='status' class='perc-table-row-status' data-perc-id='" + assetId + "'>" + itemStatus + "</span><span class='perc-table-row-status-icon'></span>";
             var row = {rowData : {assetId : assetId, assetPath : assetPath}, rowContent : [[{content : checkBoxContent, callback:function(){}}],
                     [{content : pageName, title : assetPath, callback:$.PercOpenAsset}],
                     [{content : previewColContent, title: previewTitle, callback: $.PercPreviewAsset}],

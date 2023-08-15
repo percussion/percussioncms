@@ -292,7 +292,7 @@
                 buffer = '<div class="perc-template-item" tabindex="0" id="' + template.getTemplateId() + '" ' + selected + '>';
                 buffer += '    <button class="perc-apply" tabindex="0" id="' + template.getTemplateId() + '-apply" title="' +I18N.message("perc.ui.site.templates.widget@Match Content To Template Layout") + '">' + '</button>';
                 buffer += '    <button class="perc-edit" tabindex="0" id="' + template.getTemplateId() + '-edit" title="' +I18N.message("perc.ui.site.templates.widget@Edit Template") + '">' + '</button>';
-                buffer += '    <button class="perc-delete" id="' + template.getTemplateId() + '-delete" title="' +I18N.message("perc.ui.admin.packed@Delete Template") + '">' + '</button>';
+                buffer += '    <button class="perc-delete" tabindex="0" id="' + template.getTemplateId() + '-delete" title="' +I18N.message("perc.ui.admin.packed@Delete Template") + '">' + '</button>';
                 buffer += '    <div class="perc-template-label" title="' + originalName + '" id="' + template.getTemplateId() + '-name">' + originalName + '</div>';
                 buffer += '    <div data-base-template="' + template.getBaseTemplateName() + '" id="' + template.getTemplateId() + 'id" class="perc-template-thumbnail-container perc-template-background">';
                 buffer += '         <img height = "122px" width="174px" src = "' + template.getImageUrl() + '" alt="' + I18N.message("perc.ui.new.site.dialog@Basic Template") + '" />';
@@ -306,9 +306,9 @@
                 buffer += '         <li class="perc-template-pages-items" ></li>';
                 buffer += '    </ul>';
                 buffer += '    <form action="#" class="perc-template-pages-controls">';
-                buffer += '        <div style="right:56px;" class="previous">Prev</div>';
+                buffer += '        <div role="button" tabindex="0" title="' +I18N.message("perc.ui.template.create@Prev") + '" style="right:56px;" aria-disabled="false" class="previous">Prev</div>';
                 buffer += '        <input type="text" class="perc-jump" name="perc-template-pages-controls-jump" autocomplete="off" />';
-                buffer += '        <div style="right:0px;" class="next">Next</div>';
+                buffer += '        <div role="button" tabindex="0" title="' +I18N.message("perc.ui.common.label@Next") + '"style="right:0px;" aria-disabled="false" class="next">Next</div>';
                 buffer += '    </form>';
                 buffer += '    <div class="perc-template-showing" style="width: 100px; margin: 6px 0pt 0px 24px;">';
                 buffer += '        Items: <span class="perc-template-page-group-range">0-0</span>';
@@ -472,11 +472,11 @@
             {
                 if($(".perc-prev-templates-carousel").length == 0)
                 {
-                    var scrollbarDivLeft = $('<div class="perc-prev-templates-carousel" />').append($('<a id="perc_prev_templates_carousel_arrow" class="prevPageCarousel perc-prev-templates-carousel-arrow"></a>'));
+                    var scrollbarDivLeft = $('<div class="perc-prev-templates-carousel" />').append($('<a role="button" title="' +I18N.message("perc.ui.template.create@Prev") + '" tabindex="0" id="perc_prev_templates_carousel_arrow" class="prevPageCarousel perc-prev-templates-carousel-arrow"></a>'));
 
                     assignedTemplatesDiv.css("overflow", "hidden");
 
-                    var scrollbarDivRight = $('<div class="perc-next-templates-carousel" />').append($('<a id="perc_next_templates_carousel_arrow" class="nextPageCarousel perc-next-templates-carousel-arrow"></a>'));
+                    var scrollbarDivRight = $('<div class="perc-next-templates-carousel" />').append($('<a role="button" title="' +I18N.message("perc.ui.common.label@Next") + '" tabindex="0" id="perc_next_templates_carousel_arrow" class="nextPageCarousel perc-next-templates-carousel-arrow"></a>'));
 
                     assignedTemplatesDiv.parents("#perc-activated-templates-scrollable").prepend(scrollbarDivRight);
                     assignedTemplatesDiv.parents("#perc-activated-templates-scrollable").prepend(scrollbarDivLeft);
@@ -702,12 +702,12 @@
                                 var dropDownElement = '<span class="perc-template-pages-items-dropdown"></span>';
                                 var migrationEmptyWidgetIndicator = typeProps["migrationEmptyWidgetFlag"] == "yes" ?
                                     "<span><img src='../images/images/errorIcon.gif' title='Content migration did not populate all widgets on the page. The original content can be accessed in the Unused Asset tray.'/></span>" : "";
-                                var html = '<span class="perc-template-pages-items-thumbnail"><img src="../images/images/inspectButton.png" alt="perc.ui.extend.ui.dialog@Inspect Button"/></span><div class="perc-template-page-title">' +
+                                var html = '<span class="perc-template-pages-items-thumbnail"><img tabindex="0" src="../images/images/inspectButton.png" alt="perc.ui.extend.ui.dialog@Inspect Button"/></span><div tabindex="0" class="perc-template-page-title">' +
                                     data.childrenInPage[j].name + '</div>' + migrationEmptyWidgetIndicator + dropDownElement;
                                 //because if pagePath is empty, then page is in recycle
                                 //don't add drop down and change icon to broken
                                 if (recycledPage) {
-                                    html = '<span class="perc-template-pages-items-thumbnail"><img src="../images/images/brokenlink.png" alt="perc.ui.recycledPage@RecycledPage"/></span><div class="perc-template-page-title">' +
+                                    html = '<span class="perc-template-pages-items-thumbnail"><img tabindex="0" src="../images/images/brokenlink.png" alt="perc.ui.recycledPage@RecycledPage"/></span><div tabindex="0" class="perc-template-page-title">' +
                                         data.childrenInPage[j].name + '</div>' + migrationEmptyWidgetIndicator + dropDownElement;
                                     curPageElem.attr('title', I18N.message("perc.ui.recycledPage@RecycledPage")).attr('id', curPageId)
                                         .data("pageInfo", data.childrenInPage[j])
@@ -751,6 +751,15 @@
                                     };
                                 }
                                 curPageElem.find(".perc-template-pages-items-dropdown").PercDropdown(dropDownConfig);
+								//setting attributes for child Anchor element (A) , for dropdown
+								var actionMenuAnchor_child = $(".perc-template-pages-items-dropdown").children().children().children();
+								for(var i=0; i<actionMenuAnchor_child.length; i++){
+									var child = actionMenuAnchor_child[i];
+									if(child.nodeName=="A"){
+										child.tabIndex="0";
+										child.setAttribute("role", "button");
+									}
+								}
                             }
                             updateIndicators(templateId, data.childrenCount, data.startIndex);
 
@@ -872,23 +881,23 @@
                 //If this is the first page, disable previous button
                 if(startIndex <= 1)
                 {
-                    $('#' + templateId).find('.perc-template-pages-controls div.previous').removeClass('previous').addClass('previous-disabled');
+                    $('#' + templateId).find('.perc-template-pages-controls div.previous').removeClass('previous').addClass('previous-disabled').attr('aria-disabled',"true");
                 }
                 else
                 {
                     var disabledPrevButton = $('#' + templateId).find('.perc-template-pages-controls div.previous-disabled');
-                    if(disabledPrevButton != undefined) $(disabledPrevButton).removeClass('previous-disabled').addClass('previous');
+                    if(disabledPrevButton != undefined) $(disabledPrevButton).removeClass('previous-disabled').addClass('previous').attr('aria-disabled',"false");
                 }
 
                 //If this is the last page, disable next button
                 if(endIndex >= totalNumberOfItems)
                 {
-                    $('#' + templateId).find('.perc-template-pages-controls div.next').removeClass('next').addClass('next-disabled');
+                    $('#' + templateId).find('.perc-template-pages-controls div.next').removeClass('next').addClass('next-disabled').attr('aria-disabled',"true");
                 }
                 else
                 {
                     var disabledNextButton = $('#' + templateId).find('.perc-template-pages-controls div.next-disabled');
-                    if(disabledNextButton != undefined) $(disabledNextButton).removeClass('next-disabled').addClass('next');
+                    if(disabledNextButton != undefined) $(disabledNextButton).removeClass('next-disabled').addClass('next').attr('aria-disabled',"false");
                 }
             }
 

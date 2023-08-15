@@ -93,6 +93,11 @@
                 controller.editSelectedUser();
                 addingNewUser = false;
             });
+			$("#perc-users-edit-user-button").off("keydown").on("keydown",function(eventHandler){
+               if(eventHandler.code == "Enter" || eventHandler.code == "Space"){
+						document.activeElement.click();
+				}
+            });
             $("#perc-users-add-user-button").off("click").on("click",function(){
                 dirtyController.confirmIfDirty(function(){
                     addingNewUser = true;
@@ -100,6 +105,11 @@
                     controller.addNewUser();
                 });
             });
+			$("#perc-users-add-user-button").off("keydown").on("keydown",function(eventHandler){
+               	if(eventHandler.code == "Enter" || eventHandler.code == "Space"){
+						document.activeElement.click();
+				}
+			});
             $("#perc-users-save").off("click").on("click",function(){
                 save();
                 addingNewUser = false;
@@ -113,6 +123,16 @@
             });
             $("#perc-users-add-role-button").off("click").on("click",function(){
                 addRoleToSelectedUser();
+            });
+			$("#perc-users-remove-role-button").off("keydown").on("keydown",function(eventHandler){
+				if(eventHandler.code == "Enter" || eventHandler.code == "Space"){
+						document.activeElement.click();
+				}
+            });
+			$("#perc-users-add-role-button").off("keydown").on("keydown",function(eventHandler){
+                if(eventHandler.code == "Enter" || eventHandler.code == "Space"){
+						document.activeElement.click();
+				}
             });
 
             importDialog.dialog({
@@ -357,11 +377,22 @@
                     controller.selectUser(username);
                 });
             });
+			 $(".perc-username").off("keydown").on("keydown",function(event){
+                if(event.code == "Enter" || event.code == "Space"){
+						document.activeElement.click();
+				}
+            });
 
             var currentUser = controller.getCurrentUser();
             var id = currentUserIds[currentUser];
             $("#perc-username-list ul li div").addClass("perc-user-delete").removeClass("perc-user-delete-disabled").attr("title","Delete user");
             $("#perc-username-list #" + id + " #" + id).addClass("perc-user-delete-disabled").removeClass("perc-user-delete");
+
+			$(".perc-user-delete").off("keydown").on("keydown",function(event) {
+				if(event.code == "Enter" || event.code == "Space"){
+						document.activeElement.click();
+				}
+            });
 
 
             // bind the delete button for each user element
@@ -713,12 +744,12 @@
         // templates
         // template html for each user item
         var userLiTpl = '' +
-            '<li' +
+            '<li tabindex="0" ' +
             '     id="_id_"' +
             '     class="perc-username"' +
             '     title="_username_">' +
             '         _username_' +
-            '     <div class="perc-user-delete">' +
+            '     <div class="perc-user-delete" role="button" tabindex="0">' +
             '     </div>' +
             '</li>';
 

@@ -24,6 +24,7 @@ import com.percussion.security.PSEncryptor;
 import com.percussion.utils.io.PathUtils;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
+import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
@@ -57,8 +58,9 @@ public class PSAuthentication extends PSComponent
     *    the appropriate type
     */
    public PSAuthentication(Element sourceNode, IPSDocument parentDoc,
-      List parentComponents) throws PSUnknownNodeTypeException
+      List parentComponents,boolean encryptPwd) throws PSUnknownNodeTypeException
    {
+      this.encryptPwd = encryptPwd;
       fromXml(sourceNode, parentDoc, parentComponents);
    }
 
@@ -462,15 +464,15 @@ public class PSAuthentication extends PSComponent
       }
 
       String encryptedValue = tree.getElementData(XML_ATTR_ENCRYPTED, false);
-      boolean encrypted = (encryptedValue != null && 
+      isPasswordEncrypted = (encryptedValue != null &&
          encryptedValue.trim().equalsIgnoreCase(XML_ATTRVALUE_YES));
 
       data = tree.getElementData(XML_ELEM_PASSWORD, false);
       String encData = data;
-      if (encrypted)
+      if (isPasswordEncrypted && encryptPwd)
       {
          try{
-            data = PSEncryptor.decryptString(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),data);
+            data = PSEncryptor.decryptString(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),encData);
          } catch (PSEncryptionException e) {
             String userStr = getUser();
             String key = userStr.trim().length() == 0 ? PSLegacyEncrypter.getInstance(
@@ -480,7 +482,7 @@ public class PSAuthentication extends PSComponent
                try{
                   data = PSCryptographer.decrypt(PSLegacyEncrypter.getInstance(
                           PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
-                  ).INVALID_CRED(), key, data);
+                  ).INVALID_CRED(), key, encData);
                   if(data.isEmpty()){
                      data = PSCryptographer.decryptWithOldAlgo(userStr, encData);
                   }
@@ -489,6 +491,9 @@ public class PSAuthentication extends PSComponent
                }
          }
 
+      }
+      if(!StringUtils.equals(data,encData)){
+         isPasswordEncrypted = true;
       }
       setPassword(data);
 
@@ -523,8 +528,12 @@ public class PSAuthentication extends PSComponent
     *  
     * @see IPSComponent 
     */
-   public Element toXml(Document doc)
+   public Element toXml(Document doc) {
+      return toXml(doc,true);
+   }
+   public Element toXml(Document doc,boolean encPwd)
    {
+      encryptPwd = encPwd;
       Element root = doc.createElement(XML_NODE_NAME);
       root.setAttribute(XML_ATTR_NAME, getName());
       root.setAttribute(XML_ATTR_SCHEME, getScheme());
@@ -540,24 +549,56 @@ public class PSAuthentication extends PSComponent
       if (getUserAttr() != null)
          user.setAttribute(XML_ATTR_ATTRIBUTE_NAME, getUserAttr());
 
-      String pw = null;
-      try {
-         pw = PSEncryptor.encryptString(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),getPassword());
-      } catch (PSEncryptionException e) {
-         logger.error("Error encrypting password: {}" , PSExceptionUtils.getMessageForLog(e));
-         logger.debug(e);
-         pw = "";
+      String pw = getPassword();
+      if(encryptPwd) {
+         try {
+            pw = PSEncryptor.encryptString(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR), getPassword());
+            isPasswordEncrypted = true;
+         } catch (PSEncryptionException e) {
+            logger.error("Error encrypting password: {}", PSExceptionUtils.getMessageForLog(e));
+            logger.debug(e);
+            pw = getPassword();
+         }
       }
 
       Element password = PSXmlDocumentBuilder.addElement(doc, credentials,
          XML_ELEM_PASSWORD, pw);
-      password.setAttribute(XML_ATTR_ENCRYPTED, XML_ATTRVALUE_YES);
+      if(isPasswordEncrypted) {
+         password.setAttribute(XML_ATTR_ENCRYPTED, XML_ATTRVALUE_YES);
+      }else{
+         password.setAttribute(XML_ATTR_ENCRYPTED, XML_ATTRVALUE_NO);
+      }
 
       if (getFilterExtension().length() != 0)
          PSXmlDocumentBuilder.addElement(doc, root,
             XML_ELEM_FILTER_EXTENSION_NAME, getFilterExtension());
 
       return root;
+   }
+
+   /**
+    * This flag is set by UI dialog, when user changes the password, that is in plain text, thus needs to be reEncrypted.
+    *
+    * Password Encryption and Decryption takes place only on server side, not on client side.
+    * Thus if password was already encrypted and user has not changed it, then we don't need to reencrypt the password, else
+    * we need to encrypt the password.
+    * @param passwordEncrypted
+    */
+   public void setPasswordEncrypted(boolean passwordEncrypted) {
+      isPasswordEncrypted = passwordEncrypted;
+   }
+
+   public boolean isPasswordEncrypted() {
+      return isPasswordEncrypted;
+   }
+
+   /**
+    * THis is a flag set by Client to not encrypt the password on client side. so all client code sets this flag to false
+    * and server side code is defaulted to true
+    * @param encryptPwd
+    */
+   public void setEncryptPwd(boolean encryptPwd) {
+      this.encryptPwd = encryptPwd;
    }
 
    /** @see PSComponent */
@@ -682,6 +723,9 @@ public class PSAuthentication extends PSComponent
     * never <code>null</code> after that, may be empty.
     */
    private String m_pw = null;
+
+   private boolean isPasswordEncrypted = false;
+   private boolean encryptPwd = true;
 
    /**
     * Holds the fully qualified name for the filter extension used to filter

@@ -9,7 +9,7 @@
                         <thead>
                         <tr>
                             <th role="button" tabindex="0" scope="col" class="perc-sortable-header perc-inactive-sort" data-perc-sort-prop="siteName"><i18n:message key="perc.ui.publish.title@SiteName"/>&nbsp;&nbsp;</th>
-                            <th role="button" tabindex="0" scope="col" class="perc-sortable-header perc-inactive-sort" data-perc-sort-prop="status"><i18n:message key="perc.ui.publish.title@Status"/>&nbsp;&nbsp;</th>
+                            <th role="status" tabindex="0" scope="col" class="perc-sortable-header perc-inactive-sort" data-perc-sort-prop="status"><i18n:message key="perc.ui.publish.title@Status"/>&nbsp;&nbsp;</th>
                             <th role="button" tabindex="0" scope="col" class="perc-sortable-header perc-active-sort" data-perc-sort-order="desc" data-perc-sort-prop="startTime"><i18n:message key="perc.ui.publish.title@Time"/>&nbsp;&nbsp;</th>
                             <th role="button" tabindex="0" scope="col" class="perc-sortable-header perc-inactive-sort" data-perc-sort-order="desc" data-perc-sort-prop="elapsedTime"><i18n:message key="perc.ui.publish.title@Duration"/>&nbsp;&nbsp;</th>
                             <th role="button" tabindex="0" scope="col" class="perc-sortable-header perc-inactive-sort" data-perc-sort-prop="calculatedProgress"><i18n:message key="perc.ui.publish.title@Progress"/>&nbsp;&nbsp;</th>
@@ -28,7 +28,7 @@
     {{#each SitePublishJob}}
     <tr>
         <td class="align-middle">{{siteName}}</td>
-        <td class="align-middle">{{status}}</td>
+        <td role="status" class="align-middle">{{status}}</td>
         <td class="align-middle">{{startDate}} {{startTime}}</td>
         <td class="align-middle">{{#duration elapsedTime}}{{/duration}}</td>
         <td class="align-middle">
@@ -37,7 +37,7 @@
             </div>
         </td>
         <td class="align-middle">
-            <button data-perc-job-id="{{jobId}}" role="button" class="btn btn-sm perc-btn-primary perc-stop-job-button" {{#if isStopping}}disabled{{/if}}><i18n:message key="perc.ui.publish.title@Stop"></i18n:message></button>
+            <button tabindex="0" title='<i18n:message key="perc.ui.publish.title@Stop"></i18n:message>' data-perc-job-id="{{jobId}}" class="btn btn-sm perc-btn-primary perc-stop-job-button" {{#if isStopping}}disabled{{/if}}><i18n:message key="perc.ui.publish.title@Stop"></i18n:message></button>
         </td>
     </tr>
     {{/each}}

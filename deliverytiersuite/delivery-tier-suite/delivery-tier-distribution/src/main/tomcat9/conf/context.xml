@@ -4,5 +4,5 @@
     <!-- web application will be reloaded.                                   -->
     <WatchedResource>WEB-INF/web.xml</WatchedResource>
     <WatchedResource>${catalina.base}/conf/web.xml</WatchedResource>
-    <CookieProcessor sameSiteCookies="none" />
+    <CookieProcessor sameSiteCookies="lax" />
 </Context>

@@ -3,7 +3,7 @@
     <parent>
         <groupId>com.percussion</groupId>
         <artifactId>core</artifactId>
-        <version>8.1.2</version>
+        <version>8.1.3-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 <packaging>jar</packaging>
@@ -321,7 +321,7 @@
         <dependency>
             <groupId>org.apache.shiro</groupId>
             <artifactId>shiro-web</artifactId>
-            <version>1.10.0</version>
+            <version>1.12.0</version>
             <scope>compile</scope>
         </dependency>
         <dependency>

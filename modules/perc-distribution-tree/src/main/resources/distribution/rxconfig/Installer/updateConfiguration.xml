@@ -82,7 +82,7 @@
                 <entry key="maxUsersAllowed" default="0"/>
                 <entry key="compressOutput" value="false"/>
                 <entry key="AUTO_MANAGE_LOCAL_PATHS" value="true"/>
-                <entry key="enabledCiphers" value="TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_DHE_RSA_WITH_CHACHA20_POLY1305_SHA256,TLS_CHACHA20_POLY1305_SHA256,TLS_DH_RSA_WITH_AES_128_GCM_SHA256,TLS_RSA_WITH_AES_128_GCM_SHA256,TLS_RSA_WITH_AES_256_GCM_SHA384"/>
+                <entry key="enabledCiphers" value="TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_DH_RSA_WITH_AES_128_GCM_SHA256,TLS_RSA_WITH_AES_128_GCM_SHA256,TLS_RSA_WITH_AES_256_GCM_SHA384"/>
                 <entry key="isWidgetBuilderActive" value="true"/>
                 <entry key="publishNonPageMetadata" default="true"/>
                 <entry key="requireContentSecurityPolicy" value="true" default="true"/>
@@ -100,7 +100,7 @@
                 <entry key="autotuneCachePercentage" default="60"/>
                 <entry key="brokenManagedLinkBehavior" default="deadLink"/>
                 <entry key="caseSensitiveUrl" default="true"/>
-                <entry key="communities_enabled" value="yes" default="yes" operation="="/>
+                <entry key="communities_enabled" value="no" default="yes" operation="="/>
                 <entry key="forceSockets" default="true"/>
                 <entry key="requireUniqueFieldNames" default="true"/>
                 <entry key="responseCloseDelay" default="10"/>

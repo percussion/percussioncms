@@ -1424,6 +1424,7 @@
             <patternset refid="text.files"/>
             <exclude name="**/Deployment/**"/>
             <exclude name="**/Staging/**"/>
+            <exclude name="JRE/**"/>
         </fixcrlf>
 
         <if>
@@ -1626,7 +1627,7 @@
     <target name="updateExtensions">
         <echo>Updating updateExtensions ...</echo>
         <PSInstallExtensions extensionJar="${extensions.jar.path}/extensions-main-${project.parent.version}.jar" destDir="Exits"/>
-        <PSInstallExtensions extensionJar="${extensions.jar.path}/extensions-workflow-8.1.2.1.jar" destDir="WorkflowExits"/>
+        <PSInstallExtensions extensionJar="${extensions.jar.path}/extensions-workflow-${project.parent.version}.jar" destDir="WorkflowExits"/>
         <PSInstallExtensions extensionJar="${extensions.jar.path}/extensions-sfp-${project.parent.version}.jar" destDir="SiteFolderPublishinExits"/>
         <PSInstallExtensions extensionJar="${extensions.jar.path}/extensions-nav-${project.parent.version}.jar" destDir="ManagedNavExits"/>
         <PSInstallExtensions extensionJar="${extensions.jar.path}/extensions-default-template-${project.parent.version}.jar" destDir="DefaultTemplateExits"/>

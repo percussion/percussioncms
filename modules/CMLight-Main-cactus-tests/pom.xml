@@ -4,7 +4,7 @@
     <parent>
         <groupId>com.percussion</groupId>
         <artifactId>core</artifactId>
-        <version>8.1.2</version>
+        <version>8.1.3-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
     <artifactId>perc-system-cactus-tests</artifactId>
@@ -68,7 +68,7 @@
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>perc-system</artifactId>
-            <version>8.1.2.1</version>
+            <version>${project.parent.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -92,7 +92,7 @@
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>rxutils</artifactId>
-            <version>8.1.2.1</version>
+            <version>${project.parent.version}</version>
             <type>test-jar</type>
             <scope>provided</scope>
         </dependency>
@@ -235,7 +235,7 @@
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>rxutils</artifactId>
-            <version>8.1.2.1</version>
+            <version>${project.parent.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -303,7 +303,7 @@
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>perc-deployer</artifactId>
-            <version>8.1.2</version>
+            <version>8.1.3-SNAPSHOT</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

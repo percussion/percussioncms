@@ -16,8 +16,6 @@
  */
 package com.percussion.util;
 
-import java.io.File;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -329,42 +327,13 @@ public class PSCollection extends PSConcurrentList
     */
    public Object clone()
    {
+      Object copy = null;
       try {
-         PSCollection copy = (PSCollection) super.clone();
-         copy.clear();
-         for (Iterator iter = this.iterator(); iter.hasNext(); ) {
-            Object o = null;
-            try {
-               o = iter.next();
-               //String is an immutable object don't need to clone
-               if (o instanceof String) {
-                  copy.add(o);
-               }
-               //File is an immutable object don't need to clone
-               else if (o instanceof File) {
-                  copy.add(o);
-               } else {
-                  copy.add(
-                          o.getClass().getDeclaredMethod("clone", null).invoke(o, null));
-               }
-            } catch (NoSuchMethodException e) {
-               //Object does not have clone implemented
-               throw new InternalError("While attempting to clone PSCollection, "
-                       + "a member was found that does not contain an accessible "
-                       + "'clone' method."
-                       + "\r\nThe offending class is " + o.getClass().getName());
-            } catch (IllegalAccessException e) {
-               //clone method is not accessible
-               throw new InternalError(e.toString());
-            } catch (InvocationTargetException e) {
-               //clone method throw an exception
-               throw new InternalError(e.toString());
-            }
-         }
-         return copy;
+         copy = super.clone();
       } catch (CloneNotSupportedException e) {
          throw new InternalError(e.toString());
       }
+      return copy;
    }
 
    public  Object lastElement(){

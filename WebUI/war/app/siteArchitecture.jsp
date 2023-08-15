@@ -84,12 +84,15 @@
 <script src="../plugins/PercEditSectionLinksDialog.js"></script>
 <script src="../plugins/PercSectionTreeDialog.js"></script>
 <script src="../plugins/PercCopySiteDialog.js"></script>
+<script src="../services/PercFolderService.js"></script>
 <script src="../plugins/perc_newSectionDialog.js"></script>
 <script src="../plugins/perc_editSectionDialog.js"></script>
 <script src="../plugins/perc_editSiteSectionDialog.js"></script>
 <script src="../widgets/perc_site_map.js"></script>
 <script src="../widgets/perc_save_as.js"></script>
 <script src="../plugins/perc_ChangePwDialog.js"></script>
+<script src="../plugins/perc_ChangeUserEmailDialog.js"></script>
+<script src="../plugins/perc_newsitedialog.js"></script>
 <% } else { %>
 <link rel="stylesheet" type="text/css" href="../cssMin/perc_architecture.packed.min.css"/>
 <script src="../jslibMin/perc_architecture.packed.min.js"></script>

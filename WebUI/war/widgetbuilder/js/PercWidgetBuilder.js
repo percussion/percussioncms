@@ -52,7 +52,12 @@ var WidgetBuilderApp = {};
                 return isValid;
             }
         });
+		var tabindexCounter = 122;
+			$("#perc-widget-def-tabs").find('li').each(function() {
+				$(this).attr('aria-disabled',"true");
+				$(this).attr('tabindex',tabindexCounter++);
 
+			});
 
         addButtonClickHandlers();
 
@@ -213,6 +218,11 @@ var WidgetBuilderApp = {};
             return;
         }
         $("#perc-widget-def-tabs").tabs({disabled: []});
+		var tabindexCounter = 122;
+		$("#perc-widget-def-tabs").find('li').each(function() {
+				$(this).attr('aria-disabled',"false");
+				$(this).attr('tabindex',tabindexCounter++);
+			});
         //CMS-8177 : "perc-widget-editing-container" class is used on all tab containers. Calling ".show()" function on the class caused all the tab content to show in first tab container element.
         $("#perc-widget-tab-general").show();
         var wdgModel = new WidgetBuilderApp.WidgetDefinitionModel();
@@ -364,7 +374,7 @@ var WidgetBuilderApp = {};
         //Add fields
         dataObj.WidgetBuilderDefinitionData.fieldsList = {};
         dataObj.WidgetBuilderDefinitionData.fieldsList.fields = WidgetBuilderApp.fieldsList.toJSON();
-        dataObj.WidgetBuilderDefinitionData.widgetHtml = WidgetBuilderApp.widgetHtmlView.model.get("widgetHtml");
+        dataObj.WidgetBuilderDefinitionData.widgetHtml = editor.getValue();
         //Add Resources
         dataObj.WidgetBuilderDefinitionData.jsFileList = {};
         dataObj.WidgetBuilderDefinitionData.jsFileList.resourceList = WidgetBuilderApp.jsResListView.toStringArray();
@@ -442,6 +452,12 @@ var WidgetBuilderApp = {};
             $(".perc-widget-editing-container").hide();
             $("#perc-widget-menu-buttons").hide();
             $("#perc-widget-def-tabs").tabs({disabled: [0,1,2, 3]});
+			var tabindexCounter = 122;
+			$("#perc-widget-def-tabs").find('li').each(function() {
+				$(this).attr('aria-disabled',"true");
+				$(this).attr('tabindex',tabindexCounter++);
+
+			});
         });
     }
     //This method is just written for selenium webdriver
@@ -450,3 +466,95 @@ var WidgetBuilderApp = {};
     };
 
 })(jQuery);
+
+
+
+$(document).ready(function()
+{
+   $('.WBTabs').click(function(e)
+   {
+		var tabindexCounter = 122;
+		$("#perc-widget-def-tabs").find('li').each(function() {
+		$(this).attr('aria-disabled',"true");
+		$(this).attr('tabindex',tabindexCounter++);
+	});
+   });
+
+   $('.WBTabs').keydown(function(eventHandler){
+    if(eventHandler.code == "Enter" || eventHandler.code == "Space"){
+		document.activeElement.click();
+	}
+   });
+
+   if ($('#perc-add-js-resource-button').length){
+	   $('#perc-add-js-resource-button').keydown(function(eventHandler){
+		if(eventHandler.code == "Enter" || eventHandler.code == "Space"){
+			document.activeElement.click();
+		}
+	   });
+   }
+
+   if ($('#perc-add-css-resource-button').length){
+	   $('#perc-add-css-resource-button').keydown(function(eventHandler){
+		if(eventHandler.code == "Enter" || eventHandler.code == "Space"){
+			document.activeElement.click();
+		}
+	   });
+   }
+
+   if ($('#perc-display-html-auto-generate-button').length){
+	   $('#perc-display-html-auto-generate-button').keydown(function(eventHandler){
+		if(eventHandler.code == "Enter" || eventHandler.code == "Space"){
+			document.activeElement.click();
+		}
+	   });
+   }
+});
+
+$(window).on('load', function() {
+   if ($('#perc-wb-defs-container  .backgrid').length){
+		var tbl= $("#perc-wb-defs-container  .backgrid");
+		var tabCounter = 22;
+		tbl.find('tr').each(function (i, el) {
+			$(this).attr('tabindex', tabCounter++);
+		});
+   }
+});
+
+function setRowIndexOnContentData_1(){
+	if ($('#perc-widget-fields-container').length){
+		var tbl= $("#perc-widget-fields-container");
+		var tabIndex=140;
+		tbl.find('div').each(function (i, el) {
+			var $this = $(this);
+			var myClassName = this.className;
+			if(myClassName == "perc-widget-field-wrapper"){
+				this.setAttribute("tabindex", tabIndex++);
+
+				$this.find('span').each(function (i, el) {
+					this.setAttribute("tabindex", tabIndex++);
+				});
+			}
+		});
+   }
+    $('.perc-add-field-button').keydown(function(eventHandler){
+		if(eventHandler.code == "Enter" || eventHandler.code == "Space"){
+			document.activeElement.click();
+		}
+	   });
+
+
+}
+
+function setOnClickForDisplayAutoGenerate(){
+	 $('#perc-display-html-auto-generate-button').keydown(function(eventHandler){
+		if(eventHandler.code == "Enter" || eventHandler.code == "Space"){
+			document.activeElement.click();
+		}
+	   });
+}
+
+
+
+
+

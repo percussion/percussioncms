@@ -116,7 +116,7 @@
                         htmlTitleLine += '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color:grey; font-weight:bold;"> Author: ' + post.author + '</span>';
                     }
 
-                    var commentLine = "<span class='perc-comments-commentsIcon'>&nbsp;</span> Comments (" + post.commentsCount + ") " + (post.newCommentsCount != undefined && post.newCommentsCount != 0 ? "<span class='perc-comments-newCount'>" + post.newCommentsCount + " New</span>" : "");
+                    var commentLine = "<span role='button' title='Comments' class='perc-comments-commentsIcon'>&nbsp;</span> Comments (" + post.commentsCount + ") " + (post.newCommentsCount != undefined && post.newCommentsCount != 0 ? "<span class='perc-comments-newCount'>" + post.newCommentsCount + " New</span>" : "");
                     var row =
                     {
                         rowData: { pageId: pageId, pagePath: pagePath },
@@ -205,7 +205,7 @@
                                 title: blog.description
                             },
                             {
-                                content: "<span class='perc-blog-post-link' style='font-weight: normal; cursor: pointer;' for='" + blog.title + "'>Open Blog</span>",
+                                content: "<span role='button' title='Open Blog' class='perc-blog-post-link' style='font-weight: normal; cursor: pointer;' for='" + blog.title + "'>Open Blog</span>",
                                 title: "",
                                 callback: function (event) { openPosts(event); }
                             }
