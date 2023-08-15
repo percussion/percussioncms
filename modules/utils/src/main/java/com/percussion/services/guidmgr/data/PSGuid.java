@@ -55,7 +55,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
  * <p>
  * Set methods are included here for XML serialization. Guid values should not
  * be modified after creation. Calling the set methods if the given field is not
- * zeroed will results in an exception.
+ * zeroed will result in an exception.
  * <p>
  * Although this object is derived from the abstract class {@link Number} and
  * implements the methods, only {@link #longValue()} should be used for 
@@ -105,7 +105,7 @@ public class PSGuid extends Number implements IPSGuid
 
    /**
     * Constructor for a guid from string form without a type.
-    * 
+    *
     * @param type a type value, not <code>null</code>.
     * @param representation the string, must be in the following format, where
     * parts in [] are optional:
@@ -115,7 +115,21 @@ public class PSGuid extends Number implements IPSGuid
     */
    public PSGuid(PSTypeEnum type, String representation)
    {
-      assemble(representation, type);
+      assemble(representation, type,false);
+   }
+   /**
+    * Constructor for a guid from string form without a type.
+    * 
+    * @param type a type value, not <code>null</code>.
+    * @param representation the string, must be in the following format, where
+    * parts in [] are optional:
+    * <pre>
+    *    [hostid-[typeid-]]uuid
+    * </pre>.
+    */
+   public PSGuid(PSTypeEnum type, String representation, boolean forceType)
+   {
+      assemble(representation, type,forceType);
    }
 
    /**
@@ -159,7 +173,7 @@ public class PSGuid extends Number implements IPSGuid
     */
    public PSGuid(String representation)
    {
-      assemble(representation, null);
+      assemble(representation, null,false);
    }
 
    /**
@@ -180,6 +194,29 @@ public class PSGuid extends Number implements IPSGuid
          setType(type.getOrdinal());
       else if (getType() != type.getOrdinal())
          throw new IllegalArgumentException("Type does not match");
+   }
+
+   /**
+    * Constructor for a guid from a direct value, e.g. the database.
+    *
+    * @param type the type of the guid to be constructed, never
+    *    <code>null</code> and must match the type if the type is present in
+    *    the value passed in.
+    * @param value the guid value.
+    */
+   public PSGuid(PSTypeEnum type, long value, boolean forceType)
+   {
+      if (type == null)
+         throw new IllegalArgumentException(TYPE_NOT_NULL);
+
+      m_guid = value;
+      if (getType() == 0)
+         setType(type.getOrdinal());
+      else if (getType() != type.getOrdinal())
+         if(forceType)
+            setType(type.getOrdinal());
+         else
+            throw new IllegalArgumentException("Type does not match");
    }
 
    /**
@@ -210,7 +247,7 @@ public class PSGuid extends Number implements IPSGuid
     * is one component, then the conversion to a guid must be consistent, either
     * with a simple number or with a consistent type in the type passed as
     * compared with the "middle" number in the string representation. The passed
-    * string may also be a 64 bit number, in which case the type must match the
+    * string may also be a 64-bit number, in which case the type must match the
     * type that is specified in the number.
     * 
     * @param guid the string, may have one, two or three components, separated
@@ -218,7 +255,7 @@ public class PSGuid extends Number implements IPSGuid
     * @param type the type of the GUID being created, may be <code>null</code>,
     *    in which case there must be three components.
     */
-   protected void assemble(String guid, PSTypeEnum type)
+   protected void assemble(String guid, PSTypeEnum type, boolean forceType)
    {
       if (StringUtils.isBlank(guid))
          throw new IllegalArgumentException("guid may not be null or empty");
@@ -252,9 +289,11 @@ public class PSGuid extends Number implements IPSGuid
                }
                setType(type.getOrdinal());
             }
-            else if ((type != null) && (getType() != type.getOrdinal()))
+            else if ((type != null) && (getType() != type.getOrdinal()) && !forceType )
             {
                throw new IllegalArgumentException("Type does not match");
+            }else if (type != null && getType() != type.getOrdinal()){
+               setType(type.getOrdinal());
             }
          }
          break;
@@ -276,8 +315,11 @@ public class PSGuid extends Number implements IPSGuid
             long hostid = Long.parseLong(tokens[0]);
             long typeid = Long.parseLong(tokens[1]);
             long uuid = Long.parseLong(tokens[2]);
-            if ((type != null) && (typeid != type.getOrdinal()))
+            if ((type != null) && (typeid != type.getOrdinal()) && !forceType)
                throw new IllegalArgumentException("Type did not match");
+            else if(type != null && (typeid != type.getOrdinal())){
+               setType(type.getOrdinal());
+            }
 
             if (type == null)
                type = PSTypeEnum.valueOf((int) typeid);
@@ -509,7 +551,7 @@ public class PSGuid extends Number implements IPSGuid
    }
    
    /**
-    * Returns if the corresponding bits in the passed value do indeed correspond
+    * Returns if the corresponding bits in the value do indeed correspond
     * to a type. If those bits have 0 value, it is also valid 
     * @param type the type of the guid to be checked, never <code>null</code>
     * @param value the guid value.
@@ -526,7 +568,7 @@ public class PSGuid extends Number implements IPSGuid
    
    
    /**
-    * Returns if the corresponding bits in the passed value do indeed correspond
+    * Returns if the corresponding bits in the value do indeed correspond
     * to a type. If those bits have 0 value, it is also valid 
     * @param type the type of the guid to be checked, never <code>null</code>
     * @param value the guid value as a string
