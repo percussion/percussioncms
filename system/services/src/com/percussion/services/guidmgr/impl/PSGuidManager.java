@@ -46,7 +46,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Guid manager implementation. Allocates new ids in groups, updating the
- * database as each group is allocated. Each type has it's own pool of ids.
+ * database as each group is allocated. Each type has its own pool of ids.
  * <P>
  * The site id is stored under the -1 id.
  * <P>
@@ -269,14 +269,32 @@ public class PSGuidManager implements IPSGuidManager
     * @see com.percussion.services.guidmgr.IPSGuidManager#convertToGuid(long,
     * com.percussion.services.catalog.PSTypeEnum)
     */
-   public IPSGuid makeGuid(long raw, PSTypeEnum type)
+   public IPSGuid makeGuid(long raw, PSTypeEnum type, boolean forceType)
    {
       if (type == PSTypeEnum.LEGACY_CONTENT || type == PSTypeEnum.LEGACY_CHILD)
          return new PSLegacyGuid(raw);
-      return new PSGuid(type, raw);
+      return new PSGuid(type, raw,forceType);
    }
 
-   /*
+    /**
+     * Recreates a guid instance from a value originally obtained from
+     * {@link IPSGuid#longValue()} or from a uuid.
+     *
+     * @param raw  This value may or may not contain the type id. If it does,
+     *             then it must match the supplied <code>type</code>, otherwise, the supplied
+     *             type is used as the type for the new guid.
+     * @param type the type, never <code>null</code>
+     * @return a guid of the specified type built from the specified raw value,
+     * never <code>null</code>.
+     */
+    @Override
+    public IPSGuid makeGuid(long raw, PSTypeEnum type) {
+        if (type == PSTypeEnum.LEGACY_CONTENT || type == PSTypeEnum.LEGACY_CHILD)
+            return new PSLegacyGuid(raw);
+        return new PSGuid(type, raw);
+    }
+
+    /*
     * (non-Javadoc)
     *
     * @see
@@ -312,16 +330,43 @@ public class PSGuidManager implements IPSGuidManager
     * com.percussion.services.guidmgr.IPSGuidManager#makeGuid(java.lang.String,
     * com.percussion.services.catalog.PSTypeEnum)
     */
-   public IPSGuid makeGuid(String raw, PSTypeEnum type)
+   public IPSGuid makeGuid(String raw, PSTypeEnum type, boolean forceType)
    {
       if (type == PSTypeEnum.LEGACY_CONTENT || type == PSTypeEnum.LEGACY_CHILD)
       {
-         return makeGuid(Long.parseLong(raw), type);
+         return makeGuid(Long.parseLong(raw), type,forceType);
       }
-      return new PSGuid(type, raw);
+      return new PSGuid(type, raw, forceType);
    }
 
-   /*
+    /**
+     * Recreates a guid instance from a human readable form of the guid.
+     *
+     * @param raw  Never <code>null</code> or empty. The generic format of the
+     *             supplied string is of the form: hostid-typeid-uuid (e.g. 10-103-125). A
+     *             single long value that is supported by {@link #makeGuid(long, PSTypeEnum)}
+     *             can also be supplied, in which case, the rules defined in that method must
+     *             be followed. Two different represenations are allowed: hostid-uuid,
+     *             hostid-typeid-uuid. If a typeid is supplied, it must match that of the
+     *             <code>type</code> param, otherwise, the supplied type is used. If the
+     *             type is {@link PSTypeEnum#LEGACY_CONTENT} or
+     *             {@link PSTypeEnum#LEGACY_CHILD}, the human-readable forms are not
+     *             supported.
+     * @param type the type, never <code>null</code>
+     *             *
+     * @return a guid of the specified type built from the specified raw value,
+     * never <code>null</code>.
+     */
+    @Override
+    public IPSGuid makeGuid(String raw, PSTypeEnum type) {
+        if (type == PSTypeEnum.LEGACY_CONTENT || type == PSTypeEnum.LEGACY_CHILD)
+        {
+            return makeGuid(Long.parseLong(raw), type,false);
+        }
+        return new PSGuid(type, raw, false);
+    }
+
+    /*
     * //see base interface method for details
     */
    public IPSGuid makeGuid(String raw)
@@ -436,7 +481,7 @@ public class PSGuidManager implements IPSGuidManager
       if (useRepository)
       {
          hostValue = repositoryId | 0xFFFF00L;
-         // Each repository has it's own allocation
+         // Each repository has its own allocation
          // To make this easy to interpret in the database, multiply
          // by a power of 10.
          key = type.getOrdinal() + repositoryId * 1000;
