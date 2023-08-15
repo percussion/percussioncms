@@ -36,6 +36,26 @@ import static org.apache.commons.lang.Validate.notEmpty;
 @JsonRootName("Template")
 public class PSTemplate extends PSTemplateSummary implements IPSHtmlMetadata
 {
+    public PSTemplate(){}
+
+    public PSTemplate(PSTemplate template) {
+        super(template);
+        this.bodyMarkup = template.bodyMarkup;
+        this.htmlHeader = template.htmlHeader;
+        this.cssRegion = template.cssRegion;
+        this.cssOverride = template.cssOverride;
+        this.theme = template.theme;
+        this.regionTree = template.regionTree;
+        this.additionalHeadContent = template.additionalHeadContent;
+        this.afterBodyStartContent = template.afterBodyStartContent;
+        this.beforeBodyCloseContent = template.beforeBodyCloseContent;
+        this.protectedRegion = template.protectedRegion;
+        this.protectedRegionText = template.protectedRegionText;
+        this.serverVersion = template.serverVersion;
+        this.docType = template.docType;
+        this.type = template.type;
+    }
+
     /**
      * Safe to serialize
      */
@@ -84,7 +104,7 @@ public class PSTemplate extends PSTemplateSummary implements IPSHtmlMetadata
     private String theme;
     
     /**
-     * Containes the region tree for the template.
+     * Contains the region tree for the template.
      * Widgets are associated in the region tree.
      */
     @AssertValid
@@ -456,7 +476,7 @@ public class PSTemplate extends PSTemplateSummary implements IPSHtmlMetadata
 
         private String label;
 
-        private PSTemplateTypeEnum(String label)
+        PSTemplateTypeEnum(String label)
         {
             this.label = label;
         }

@@ -135,11 +135,27 @@ public interface IPSGuidManager
     * type is used as the type for the new guid.
     *  
     * @param type the type, never <code>null</code>
+    * @param forceType When true, if a type is supplied it will be rewritten to the specified type without error
+    * @return a guid of the specified type built from the specified raw value,
+    * never <code>null</code>.
+    */
+   IPSGuid makeGuid(long raw, PSTypeEnum type, boolean forceType);
+
+   /**
+    * Recreates a guid instance from a value originally obtained from
+    * {@link IPSGuid#longValue()} or from a uuid.
+    *
+    * @param raw This value may or may not contain the type id. If it does,
+    * then it must match the supplied <code>type</code>, otherwise, the supplied
+    * type is used as the type for the new guid.
+    *
+    * @param type the type, never <code>null</code>
     * @return a guid of the specified type built from the specified raw value,
     * never <code>null</code>.
     */
    IPSGuid makeGuid(long raw, PSTypeEnum type);
-   
+
+
    /**
     * Recreates a guid instance from a human readable form of the guid.
     * 
@@ -155,11 +171,33 @@ public interface IPSGuidManager
     * supported.
     * 
     * @param type the type, never <code>null</code>
+    * @param forceType When true, if a type is supplied it will be rewritten to the specified type without error
+    *
     * @return a guid of the specified type built from the specified raw value,
     * never <code>null</code>.
     */
-   IPSGuid makeGuid(String raw, PSTypeEnum type);  
-   
+   IPSGuid makeGuid(String raw, PSTypeEnum type, boolean forceType);
+
+   /**
+    * Recreates a guid instance from a human readable form of the guid.
+    *
+    * @param raw Never <code>null</code> or empty. The generic format of the
+    * supplied string is of the form: hostid-typeid-uuid (e.g. 10-103-125). A
+    * single long value that is supported by {@link #makeGuid(long, PSTypeEnum)}
+    * can also be supplied, in which case, the rules defined in that method must
+    * be followed. Two different represenations are allowed: hostid-uuid,
+    * hostid-typeid-uuid. If a typeid is supplied, it must match that of the
+    * <code>type</code> param, otherwise, the supplied type is used. If the
+    * type is {@link PSTypeEnum#LEGACY_CONTENT} or
+    * {@link PSTypeEnum#LEGACY_CHILD}, the human-readable forms are not
+    * supported.
+    *
+    * @param type the type, never <code>null</code>
+    *             *
+    * @return a guid of the specified type built from the specified raw value,
+    * never <code>null</code>.
+    */
+   IPSGuid makeGuid(String raw, PSTypeEnum type);
    /**
     * Create a legacy guid from a locator
     * 
