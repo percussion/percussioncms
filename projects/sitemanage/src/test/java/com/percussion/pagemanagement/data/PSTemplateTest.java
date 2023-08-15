@@ -30,6 +30,7 @@ public class PSTemplateTest {
 
         PSTemplate copy = new PSTemplate(testTemplate);
 
+        //They different objects, but values should be the same.
         assertEquals(copy.getAdditionalHeadContent(),testTemplate.getAdditionalHeadContent());
         assertEquals(copy.getAfterBodyStartContent(),testTemplate.getAfterBodyStartContent());
         assertEquals(copy.getBodyMarkup(),testTemplate.getBodyMarkup());
@@ -49,6 +50,28 @@ public class PSTemplateTest {
         assertEquals(copy.getProtectedRegion(),testTemplate.getProtectedRegion());
         assertEquals(copy.getProtectedRegionText(), testTemplate.getProtectedRegionText());
         assertEquals(copy.getTheme(),testTemplate.getTheme());
+
+        //Now check actual values to make sure no fields values are missing
+        assertEquals(ADDITIONAL_HEAD, copy.getAdditionalHeadContent());
+        assertEquals(AFTER_BODY_START,copy.getAfterBodyStartContent());
+        assertEquals(BODY_MARKUP, copy.getBodyMarkup());
+        assertEquals(CSS_REGION,copy.getCssRegion());
+        assertEquals(BEFORE_BODY_CLOSE, copy.getBeforeBodyCloseContent());
+        assertEquals(CSS_OVERRIDE, copy.getCssOverride());
+        assertEquals(DOC_TYPE, copy.getDocType());
+        assertEquals(HTML_HEADER, copy.getHtmlHeader());
+        assertEquals(SERVER_VERSION,copy.getServerVersion());
+        assertEquals(SOURCE_TEMPLATE,copy.getSourceTemplateName());
+        assertEquals(DESCRIPTION,copy.getDescription());
+        assertEquals(TYPE,copy.getType());
+        assertEquals(LABEL, copy.getLabel());
+        assertEquals(ID, copy.getId());
+        assertEquals(THUMB_PATH,copy.getImageThumbPath());
+        assertEquals(copy.getWidgets(), testTemplate.getWidgets());
+        assertEquals(PROTECTED_REGION,copy.getProtectedRegion());
+        assertEquals(PROTECTED_REGION_TEXT,copy.getProtectedRegionText());
+        assertEquals(THEME,copy.getTheme());
+
 
     }
 
