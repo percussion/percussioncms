@@ -128,6 +128,9 @@
 							<input tabindex="0" id="perc-users-email-field" maxlength="250" title='<i18n:message key="perc.ui.users@Email" />'/>
                         </div><br />
                     </div>
+                    <div id="perc-users-arrow-keys">
+                        <i18n:message key="perc.ui.users@ArrowKeys" />
+                    </div>
                     <div id="perc-users-available-roles">
                         <div id="perc-users-available-roles-label"><i18n:message key = "perc.ui.users@Available Roles"/></div>
                         <select tabindex="0" title='<i18n:message key = "perc.ui.users@Available Roles"/>' size="5"></select>
