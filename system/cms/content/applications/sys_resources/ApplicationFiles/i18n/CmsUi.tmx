@@ -12035,6 +12035,16 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
 	        <seg>Papeles disponibles:</seg>
 	    </tuv>
 	 </tu>
+	 <tu tuid="perc.ui.users@ArrowKeys">
+    <prop type="sectionname" xml:lang="en-us">General</prop>
+    <note xml:lang="en-us"></note>
+    <tuv xml:lang="en-us">
+        <seg>Use the arrow keys to toggle between options.</seg>
+    </tuv>
+     <tuv xml:lang="es">
+        <seg>Utilice las teclas de flecha para alternar entre las opciones.</seg>
+    </tuv>
+    </tu>
 	 <tu tuid="perc.ui.users@Assigned Roles">
 	    <prop type="sectionname" xml:lang="en-us">General</prop>
 	    <note xml:lang="en-us"></note>
