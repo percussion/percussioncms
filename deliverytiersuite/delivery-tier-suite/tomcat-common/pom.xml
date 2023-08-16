@@ -6,7 +6,7 @@
     <parent>
         <artifactId>delivery-tier-suite</artifactId>
         <groupId>com.percussion.deliverytier</groupId>
-        <version>8.1.3-SNAPSHOT</version>
+        <version>8.1.2</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <artifactId>perc-tomcat-common</artifactId>
@@ -53,10 +53,10 @@
             <version>${jersey.version}</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
+       <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>rxutils</artifactId>
-            <version>${project.parent.version}</version>
+            <version>8.1.2.1</version>
             <exclusions>
                 <exclusion>
                     <groupId>commons-beanutils</groupId>

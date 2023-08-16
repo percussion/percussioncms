@@ -3,7 +3,7 @@
     <parent>
         <groupId>com.percussion</groupId>
         <artifactId>core</artifactId>
-        <version>8.1.3-SNAPSHOT</version>
+        <version>8.1.2</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <artifactId>perc-web-ui</artifactId>
@@ -522,7 +522,7 @@
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>extensions-workflow</artifactId>
-            <version>${project.parent.version}</version>
+            <version>8.1.2.1</version>
         </dependency>
         <dependency>
             <groupId>com.percussion</groupId>
@@ -572,10 +572,10 @@
             <scope>provided</scope>
         </dependency>
 
-        <dependency>
+       <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>rxutils</artifactId>
-            <version>${project.parent.version}</version>
+            <version>8.1.2.1</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.aspectj</groupId>
@@ -621,7 +621,7 @@
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>sitemanage</artifactId>
-            <version>${project.parent.version}</version>
+            <version>8.1.2.1</version>
             <exclusions>
                 <exclusion>
                     <artifactId>commons-beanutils</artifactId>
@@ -1017,7 +1017,7 @@
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>perc-system</artifactId>
-            <version>${project.parent.version}</version>
+            <version>8.1.2.1</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.aspectj</groupId>
@@ -1062,7 +1062,7 @@
                     <groupId>aspectjrt</groupId>
                 </exclusion>
             </exclusions>
-            <version>${project.parent.version}</version>
+            <version>8.1.2.1</version>
         </dependency>
         <dependency>
             <groupId>commons-httpclient</groupId>
@@ -1245,7 +1245,7 @@
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>perc-server-ui-cmp</artifactId>
-            <version>8.1.3-SNAPSHOT</version>
+            <version>8.1.2</version>
         </dependency>
     </dependencies>
 </project>

@@ -3,7 +3,7 @@
     <parent>
         <groupId>com.percussion.deliverytier</groupId>
         <artifactId>delivery-tier-suite</artifactId>
-        <version>8.1.3-SNAPSHOT</version>
+        <version>8.1.2</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <groupId>com.percussion.soln.p13n</groupId>
@@ -39,12 +39,12 @@
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>rxutils</artifactId>
-            <version>${project.parent.version}</version>
+            <version>8.1.2.1</version>
         </dependency>
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>perc-system</artifactId>
-            <version>${project.parent.version}</version>
+            <version>8.1.2.1</version>
         </dependency>
         <dependency>
             <groupId>com.percussion.soln.segment</groupId>
@@ -105,7 +105,7 @@
         <dependency>
             <groupId>com.percussion.soln.p13n</groupId>
             <artifactId>p13n-api</artifactId>
-            <version>8.1.3-SNAPSHOT</version>
+            <version>8.1.2</version>
             <scope>compile</scope>
         </dependency>
 

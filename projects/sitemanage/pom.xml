@@ -3,10 +3,11 @@
   <parent>
     <groupId>com.percussion</groupId>
     <artifactId>core</artifactId>
-    <version>8.1.3-SNAPSHOT</version>
+    <version>8.1.2</version>
     <relativePath>../../pom.xml</relativePath>
   </parent>
   <artifactId>sitemanage</artifactId>
+    <version>8.1.2.1</version>
     <packaging>jar</packaging>
     <properties>
         <failOnMissingWebXml>false</failOnMissingWebXml>
@@ -130,7 +131,7 @@
   <dependency>
         <groupId>com.percussion</groupId>
         <artifactId>perc-system</artifactId>
-        <version>${project.parent.version}</version>
+        <version>8.1.2.1</version>
         <exclusions>
             <exclusion>
                 <groupId>org.aspectj</groupId>
@@ -177,7 +178,7 @@
       <dependency>
         <groupId>com.percussion</groupId>
         <artifactId>perc-system</artifactId>
-        <version>${project.parent.version}</version>
+        <version>8.1.2.1</version>
         <classifier>tests</classifier>
       <type>test-jar</type>
       <scope>test</scope>
@@ -748,7 +749,7 @@
       <dependency>
           <groupId>com.percussion</groupId>
           <artifactId>extensions-main</artifactId>
-          <version>8.1.3-SNAPSHOT</version>
+          <version>8.1.2</version>
       </dependency>
   </dependencies>
 </project>

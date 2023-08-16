@@ -3,7 +3,7 @@
     <parent>
         <artifactId>core</artifactId>
         <groupId>com.percussion</groupId>
-        <version>8.1.3-SNAPSHOT</version>
+        <version>8.1.2</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -58,10 +58,10 @@
 
     </build>
     <dependencies>
-        <dependency>
+       <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>rxutils</artifactId>
-            <version>${project.parent.version}</version>
+            <version>8.1.2.1</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
@@ -74,10 +74,10 @@
             <artifactId>perc-legacy</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
-        <dependency>
+       <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>rxutils</artifactId>
-            <version>${project.parent.version}</version>
+            <version>8.1.2.1</version>
             <type>test-jar</type>
             <scope>test</scope>
         </dependency>
