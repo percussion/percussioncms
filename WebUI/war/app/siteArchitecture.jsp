@@ -67,10 +67,10 @@
 
 <!-- CSS Includes -->
 <%@include file="includes/common_css.jsp" %>
-<link rel="stylesheet" type="text/css" href="../css/styles.css"/>
-<link rel="stylesheet" type="text/css" href="../css/perc_newSectionDialog.css"/>
 <link type="text/css" href="../css/perc_mcol.css" rel="stylesheet"/>
+<link rel="stylesheet" type="text/css" href="../css/styles.css"/>
 <link rel="stylesheet" type="text/css" href="../css/perc_site_map.css"/>
+<link rel="stylesheet" type="text/css" href="../css/perc_newSectionDialog.css"/>
 <link rel="stylesheet" type="text/css" href="../css/perc_newsitedialog.css"/>
 <link rel="stylesheet" type="text/css" href="../css/perc_new_page_button.css"/>
 <link rel="stylesheet" type="text/css" href="../css/perc_save_as_dialog.css"/>
@@ -78,7 +78,6 @@
 <!-- JavaScript Includes (order matters) -->
 <%@include file="includes/common_js.jsp" %>
 <%@include file="includes/finder_js.jsp" %>
-
 <script src="../services/perc_sectionServiceClient.js"></script>
 <script src="../services/PercSiteService.js"></script>
 <script src="../plugins/PercEditSectionLinksDialog.js"></script>
@@ -97,15 +96,11 @@
 <link rel="stylesheet" type="text/css" href="../cssMin/perc_architecture.packed.min.css"/>
 <script src="../jslibMin/perc_architecture.packed.min.js"></script>
 <% } %>
-<!--[if lte IE 7]>
-<link rel="stylesheet" type="text/css" href="../css/IE_styles.css"/><![endif]-->
-<!--[if gte IE 8]>
-<link rel="stylesheet" type="text/css" href="../css/IE8_styles.css"/><![endif]-->
-<script  >
+<script>
 
     $(function () {
 
-        <% if( site != null && site != ""){ %>
+        <% if(!site.equals("")){ %>
         var siteArchUrl = "<%=site%>";
 
         $("#perc_site_map").perc_site_map({
@@ -129,7 +124,7 @@
         </jsp:include>
     </div>
 
-    <div class="ui-layout-north" style="padding: 0px 0px; overflow:visible">
+    <div class="ui-layout-north" style="padding: 0 0; overflow:visible">
         <jsp:include page="includes/finder.jsp" flush="true">
             <jsp:param name="openedObject" value="PERC_SITE"/>
         </jsp:include>

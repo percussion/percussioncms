@@ -70,14 +70,14 @@ $.perc_newSectionDialog = function() {
                 "<div id='perc-section-link-container' style='display:none'>" +
                 "<fieldset>" +
                 "<label for='perc-section-link-target' class='perc-required-field'>" + I18N.message( "perc.ui.newSectionDialog.label@Target section" ) + ":</label> <br/> " +
-                "<div><input type='text' class='required' readonly='true' name='perc-section-link-target' id='perc-section-link-target'/><img id='perc-section-link-targetid-button' src='../images/images/buttonEllipse.png' class='perc-button-ellipse'/></div>" +
+                "<div><input aria-required='true' type='text' class='required' name='perc-section-link-target' id='perc-section-link-target'/><img id='perc-section-link-targetid-button' src='../images/images/buttonEllipse.png' class='perc-button-ellipse' alt='Browse Sections...'/></div>" +
                 "<input type='hidden' name='perc-section-link-targetid' id='perc-section-link-targetid'/>" +
                 "</fieldset>" +
                 "</div>" +
                 "<div id='perc-convert-folder-container' style='display:none'>" +
                 "<fieldset>" +
                 "<label for='perc-convert-folder-path' class='perc-required-field'>" + I18N.message( "perc.ui.newSectionDialog.label@Target folder" ) + ":</label> <br/> " +
-                "<div><input type='text' class='required' readonly='true' name='perc-convert-folder-path' id='perc-convert-folder-path'/><img id='perc-convert-folder-path-button' src='../images/images/buttonEllipse.png' class='perc-button-ellipse'/></div>" +
+                "<div><input type='text' class='required' aria-required='true' name='perc-convert-folder-path' id='perc-convert-folder-path'/><img id='perc-convert-folder-path-button' src='../images/images/buttonEllipse.png' class='perc-button-ellipse' alt='Browse Folders...'/></div>" +
                 "<label class='perc-required-field' for='perc-landing-page'>" + I18N.message("perc.ui.newSectionDialog.label@Select landing page") + ":</label> <br>" +
                 "<select id='perc-landing-page' name='perc-landing-page' class='required'>" +
                     "<option value='perc-empty-landing-page'>" + I18N.message("perc.ui.newSectionDialog.label@Select a folder to see landing pages") + "</option>" +
